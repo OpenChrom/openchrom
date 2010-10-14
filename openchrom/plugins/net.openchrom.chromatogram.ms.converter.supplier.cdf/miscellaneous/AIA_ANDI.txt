@@ -1,0 +1,147 @@
+netCDF AIA_chromatography_template
+
+{
+
+// File: chrom12.cdl.                       Date: 1-26-92
+// CDL code for AIA Chrom netCDF file.  AIA Specification Version 1.0.
+// AIA Specification Version 1.0 only includes Analytical Information
+// Categories 1 & 2.
+// It requires Version 2.0 of netCDF.
+
+// Copyright 1992 - The Analytical Instrument Association
+
+
+dimensions:
+
+// The following dimensions predefine some useful character array
+// default string lengths.  The actual size of a character dimension is
+// arbitrary.  These were picked by considering computer string length
+// storage efficiency.  These dimension values should not be changed
+// by your data source program.
+
+	_2_byte_string = 2;         // 2 character string length
+	_4_byte_string = 4;         // 4 character string length
+	_8_byte_string = 8;         // 8 character string length
+	_16_byte_string = 16;       // 16 character string length
+	_32_byte_string = 32;       // 32 character string length
+	_64_byte_string = 64;       // 64 character string length
+	_128_byte_string = 128;     // 128 character string length
+	_255_byte_string = 255;     // 255 character string
+
+
+// The following dimensions need to be set by your program. The values 
+// below are given just as examples.  The actual values will be set by
+// the data source program after it does the peak integrations and 
+// computes how many peaks and components there are.  This should be done 
+// before the netCDF file is written out from your application.
+
+	point_number = 7;   // point number dimension for raw data
+						// M1
+	peak_number = 1;    // number of peaks
+						// M2
+	error_number = 1;
+
+
+variables:
+
+// Administrative Information Class - Category 1,2 Data Elements
+
+	:dataset_completeness               = "C1+C2";                  // M12345
+				// Categories 1&2, raw & result data
+	:aia_template_revision              = "1.0";                    // M12345
+	:netcdf_revision                    = "2.0";                    // M12345
+	:languages                          = "English-only for now";
+	:administrative_comments            = "none for now!";
+	:dataset_origin                     = "AIA member company name";  // M5
+	:dataset_owner                      = "AIA Companies";
+	:dataset_date_time_stamp            = "19910901123030-0500";
+	:injection_date_time_stamp          = "19910901123030-0500";    // M12345
+	:experiment_title                   = "Working Demonstrations";
+	:operator_name                      = "Joe Scibler"; // M5
+	:separation_experiment_type         = "liquid chromatography";
+	:company_method_name                = "sandope analysis XYZ";
+	:company_method_id                  = "SAXYZ";
+	:pre_experiment_program_name        = "setup";
+	:post_experiment_program_name       = "response calibration";
+	:source_file_reference              = "IODINE::dka100:[aia]test.cdl";
+	char  error_log(error_number, _64_byte_string);
+
+// SAMPLE-DESCRIPTION Information Class - Category 1 Data Elements
+
+	:sample_id_comments                 = "none";
+	:sample_id                          = "JOU812";
+	:sample_name                        = "test sample";
+	:sample_type                        = "control";
+	:sample_injection_volume            = "2.0";
+	:sample_amount                      = "2.0";
+
+// DETECTION-METHOD Information Class - Category 1 Data Elements
+
+	:detection_method_table_name        = "test 1";
+	:detector_method_comments           = "An optical detector";
+	:detection_method_name              = " ";
+	:detector_name                      = "Variable Wavelength Detector";
+
+		// the following information is used for proper raw data scaling
+
+	float detector_maximum_value;                                   // M1
+	float detector_minimum_value;                                   // M1
+	:detector_unit                      = "Absorbance Unit";        // M1
+
+// RAW-DATA Information Class - Category 1 Data Elements
+
+	:raw_data_table_name                        = "test raw data set";
+	:retention_unit                             = "time in seconds"; // M12
+	float actual_run_time_length;               // M12, in retention_unit
+	float actual_sampling_interval;             // M12, in retention_unit
+	float actual_delay_time;                    // M12, in retention_unit
+	float ordinate_values(point_number);                            // M1
+		  ordinate_values:uniform_sampling_flag = "Y";              // M1
+		  ordinate_values:autosampler_position = "1.01";
+									// real time autosampler position
+	float raw_data_retention(point_number);
+									// M1 only if uniform_sampling_flag = "N"
+
+// PEAK-PROCESSING-RESULTS Information Class - Category 2 Elements
+
+	:peak_processing_results_table_name         = "Impl. Guide Demo Code";
+	:peak_processing_results_comments           = "level 1 calibration results";
+	:peak_processing_method_name                = "test processing method";
+	:peak_processing_date_time_stamp            = "19910901123030-0500";
+	float peak_retention_time(peak_number);     // M2
+	char  peak_name(peak_number, _32_byte_string);
+	float peak_amount(peak_number);             // M3
+	:peak_amount_unit                           = "grams";
+	float peak_start_time(peak_number);         // unit = retention_unit
+	float peak_end_time(peak_number);           // unit = retention_unit
+	float peak_width(peak_number);
+	float peak_area(peak_number);               // M2
+	float peak_area_percent(peak_number);
+	float peak_height(peak_number);             // M2
+	float peak_height_percent(peak_number);
+	float baseline_start_time(peak_number);
+	float baseline_start_value(peak_number);
+	float baseline_stop_time(peak_number);
+	float baseline_stop_value(peak_number);
+	char  peak_start_detection_code(peak_number, _2_byte_string);
+												//baseline type
+	char  peak_stop_detection_code(peak_number, _2_byte_string);
+												//baseline type
+	float retention_index(peak_number);
+	float migration_time(peak_number);
+	float peak_asymmetry(peak_number);
+	float peak_efficiency(peak_number);
+	float mass_on_column(peak_number);
+	short manually_reintegrated_peaks(peak_number);     // 0=no, 1=yes
+
+data:
+
+// Data will be inserted here by your program.
+// There will be a great deal of data in your netCDF dataset!
+// The following is an example of typical data.
+
+	ordinate_values = 998760, 997650, 1002340, 1102340, 1203450, 1145670,
+	1000000;
+	peak_retention_time = 105;
+	peak_name = "Peak A";
+}
