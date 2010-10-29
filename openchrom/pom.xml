@@ -192,7 +192,7 @@
         <groupId>org.sonatype.tycho</groupId>
         <artifactId>maven-osgi-test-plugin</artifactId>
         <configuration>
-          <useUIHarness>true</useUIHarness>
+          <useUIHarness>false</useUIHarness>
           <argLine>-Xmx500m -XX:MaxPermSize=256m</argLine>
         </configuration>
       </plugin> 
