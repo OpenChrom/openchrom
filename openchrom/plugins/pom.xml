@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>net.openchrom</groupId>
+    <artifactId>parent</artifactId>
+    <version>BUILD-VERSION</version>
+  </parent>
+
+  <artifactId>net.openchrom.plugins.parent</artifactId>
+  <packaging>pom</packaging>
+  <name>plugins</name>
+
+</project>
