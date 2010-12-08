@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Eclipse-RegisterBuddy: net.openchrom.thirdpartylibraries.junitaddons
+Bundle-ManifestVersion: 2
+Bundle-Name: Pbm Plug-in
+Bundle-SymbolicName: net.openchrom.chromatogram.msd.comparison.supplier.pbm;singleton:=true
+Bundle-Version: 0.4.0.qualifier
+Bundle-Activator: net.openchrom.chromatogram.msd.comparison.supplier.pbm.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ net.openchrom.chromatogram.msd.comparison;bundle-version="0.4.0",
+ net.openchrom.chromatogram.msd.model;bundle-version="0.4.0",
+ net.openchrom.logging;bundle-version="0.4.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: http://www.openchrom.net
