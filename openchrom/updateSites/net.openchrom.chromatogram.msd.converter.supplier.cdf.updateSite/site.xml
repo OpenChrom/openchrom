@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="NetCDF Chromatogram Converter" url="http://www.openchrom.net/plugins/converter/netcdf/update">
+      This is a netCDF chromatogram converter.
+   </description>
+   <feature url="features/net.openchrom.chromatogram.msd.converter.supplier.cdf.feature_0.3.0.201010021112.jar" id="net.openchrom.chromatogram.msd.converter.supplier.cdf.feature" version="0.3.0.201010021112">
+      <category name="net.openchrom.chromatogram.msd.plugins.converter"/>
+   </feature>
+   <category-def name="net.openchrom.chromatogram.msd.plugins.converter" label="Chromatogram Converter"/>
+</site>

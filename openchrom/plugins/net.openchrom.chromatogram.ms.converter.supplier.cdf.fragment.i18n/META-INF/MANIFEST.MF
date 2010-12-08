@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Localization Fragment
-Bundle-SymbolicName: net.openchrom.chromatogram.ms.converter.supplier.cdf.fragment.i18n
-Bundle-Version: 0.4.0.qualifier
-Fragment-Host: net.openchrom.chromatogram.ms.converter.supplier.cdf;bundle-version="0.4.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-Vendor: http://www.openchrom.net

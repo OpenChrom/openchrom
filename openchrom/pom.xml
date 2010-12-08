@@ -54,14 +54,14 @@
 	MODULES
   -->
   <modules>
-    <module>./plugins/net.openchrom.chromatogram.ms.converter.supplier.cdf</module>
-    <module>./plugins/net.openchrom.chromatogram.ms.converter.supplier.cdf.fragment.i18n</module>
-    <!--<module>./plugins/net.openchrom.chromatogram.ms.converter.supplier.cdf.fragment.test</module>-->
-    <module>./plugins/net.openchrom.chromatogram.ms.converter.supplier.cdf.ui</module>
-    <module>./plugins/net.openchrom.chromatogram.ms.converter.supplier.cdf.ui.fragment.i18n</module>
-    <!--<module>./plugins/net.openchrom.chromatogram.ms.converter.supplier.cdf.ui.fragment.test</module>-->
-    <module>./features/net.openchrom.chromatogram.ms.converter.supplier.cdf.feature</module>
-    <!--<module>./updateSites/net.openchrom.chromatogram.ms.converter.supplier.cdf.updateSite</module>-->
+    <module>./plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf</module>
+    <module>./plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.fragment.i18n</module>
+    <!--<module>./plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.fragment.test</module>-->
+    <module>./plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.ui</module>
+    <module>./plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.ui.fragment.i18n</module>
+    <!--<module>./plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.ui.fragment.test</module>-->
+    <module>./features/net.openchrom.chromatogram.msd.converter.supplier.cdf.feature</module>
+    <!--<module>./updateSites/net.openchrom.chromatogram.msd.converter.supplier.cdf.updateSite</module>-->
   </modules>
   <!--
 	DEPENDENCIES SHOULD BE EDITED IN EACH MODULE.
