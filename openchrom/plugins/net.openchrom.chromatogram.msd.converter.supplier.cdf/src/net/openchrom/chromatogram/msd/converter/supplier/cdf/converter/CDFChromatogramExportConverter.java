@@ -39,8 +39,8 @@ public class CDFChromatogramExportConverter extends AbstractChromatogramExportCo
 	@Override
 	public File convert(File file, IChromatogram chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
 
-		super.validate(file);
 		file = SpecificationValidator.validateCDFSpecification(file);
+		super.validate(file);
 		monitor.subTask(IConstants.EXPORT_CDF_CHROMATOGRAM);
 		CDFChromatogramWriter writer = new CDFChromatogramWriter();
 		writer.writeChromatogram(file, chromatogram, monitor);
