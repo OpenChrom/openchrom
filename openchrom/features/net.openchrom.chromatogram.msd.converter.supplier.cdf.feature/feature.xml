@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.chromatogram.msd.converter.supplier.cdf.feature"
       label="NetCDF Converter"
-      version="0.4.0.qualifier"
+      version="0.5.0.qualifier"
       provider-name="http://www.openchrom.net">
 
    <description url="http://www.openchrom.net/plugins/converter/netcdf/">
