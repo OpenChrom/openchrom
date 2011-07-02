@@ -32,11 +32,11 @@ import net.openchrom.chromatogram.msd.converter.supplier.cdf.TestPathHelper;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 
 /**
- * Tests if the right exception will be thrown if the file is empty.
+ * Tests if the right exception will be thrown if the file is not readable.
  * 
  * @author eselmeister
  */
-public class CDFChromatogramReader_EMPTY_1_Test extends TestCase {
+public class CDFChromatogramReader_NOT_READABLE_1_ITest extends TestCase {
 
 	private IChromatogram chromatogram;
 	private String pathImport;
@@ -47,13 +47,15 @@ public class CDFChromatogramReader_EMPTY_1_Test extends TestCase {
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		this.pathImport = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_EMPTY);
+		this.pathImport = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_NOT_READABLE);
 		fileImport = new File(this.pathImport);
+		fileImport.setReadable(false);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 
+		fileImport.setReadable(true);
 		fileImport = null;
 		pathImport = null;
 		super.tearDown();
@@ -66,9 +68,9 @@ public class CDFChromatogramReader_EMPTY_1_Test extends TestCase {
 		} catch(FileNotFoundException e) {
 			assertTrue("FileNotFoundException", false);
 		} catch(FileIsNotReadableException e) {
-			assertTrue("FileIsNotReadableException", false);
+			assertTrue("FileIsNotReadableException", true);
 		} catch(FileIsEmptyException e) {
-			assertTrue("FileIsEmptyException", true);
+			assertTrue("FileIsEmptyException", false);
 		} catch(IOException e) {
 			assertTrue("IOException", false);
 		} catch(NoChromatogramConverterAvailableException e) {
@@ -87,9 +89,9 @@ public class CDFChromatogramReader_EMPTY_1_Test extends TestCase {
 		} catch(FileNotFoundException e) {
 			assertTrue("FileNotFoundException", false);
 		} catch(FileIsNotReadableException e) {
-			assertTrue("FileIsNotReadableException", false);
+			assertTrue("FileIsNotReadableException", true);
 		} catch(FileIsEmptyException e) {
-			assertTrue("FileIsEmptyException", true);
+			assertTrue("FileIsEmptyException", false);
 		} catch(NoChromatogramConverterAvailableException e) {
 			assertTrue("NoChromatogramConverterAvailableException should not be thrown.", false);
 		}

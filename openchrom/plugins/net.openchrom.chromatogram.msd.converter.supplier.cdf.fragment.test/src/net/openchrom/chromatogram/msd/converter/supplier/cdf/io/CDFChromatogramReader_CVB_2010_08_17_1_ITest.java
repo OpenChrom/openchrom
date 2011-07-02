@@ -27,7 +27,7 @@ import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignals;
  * 
  * @author Philip (eselmeister) Wenig
  */
-public class CDFChromatogramReader_CVB_2010_08_17_1_Test extends CDFChromatogramReaderTestCase {
+public class CDFChromatogramReader_CVB_2010_08_17_1_ITest extends CDFChromatogramReaderTestCase {
 
 	@Override
 	protected void setUp() throws Exception {

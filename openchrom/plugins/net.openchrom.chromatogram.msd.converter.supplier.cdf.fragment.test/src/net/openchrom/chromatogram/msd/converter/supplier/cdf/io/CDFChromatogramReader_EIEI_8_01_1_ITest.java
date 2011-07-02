@@ -23,16 +23,16 @@ import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignals;
 import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignals;
 
 /**
- * IChromatogram EI-EI_2_01<br/>
+ * IChromatogram EI-EI_8_01<br/>
  * 
  * @author eselmeister
  */
-public class CDFChromatogramReader_EIEI_2_01_1_Test extends CDFChromatogramReaderTestCase {
+public class CDFChromatogramReader_EIEI_8_01_1_ITest extends CDFChromatogramReaderTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
 
-		pathImport = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_EIEI_2_01);
+		pathImport = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_EIEI_8_01);
 		super.setUp();
 	}
 
@@ -41,35 +41,35 @@ public class CDFChromatogramReader_EIEI_2_01_1_Test extends CDFChromatogramReade
 		IMassSpectrum massSpectrum;
 		ITotalIonSignals tic;
 		IExtractedIonSignals xic;
-		assertEquals("scanDelay", 5230, chromatogram.getScanDelay());
-		assertEquals("scanInterval", 438, chromatogram.getScanInterval());
+		assertEquals("scanDelay", 5244, chromatogram.getScanDelay());
+		assertEquals("scanInterval", 434, chromatogram.getScanInterval());
 		assertEquals("operator", "Wilmschen", chromatogram.getOperator());
 		assertEquals("file", fileImport, chromatogram.getFile());
-		assertEquals("name", "EI-EI_2_01", chromatogram.getName());
+		assertEquals("name", "EI-EI_8_01", chromatogram.getName());
 		assertTrue("date", chromatogram.getDate() != null);
-		// assertEquals("date", 1156320960000l,
+		// assertEquals("date", 1156414380000l,
 		// chromatogram.getDate().getTime());
-		assertEquals("numberOfScans", 1260, chromatogram.getNumberOfScans());
-		assertEquals("numberOfScanMassFragments", 576322, chromatogram.getNumberOfScanMassFragments());
-		assertEquals("startRetentionTime", 5230, chromatogram.getStartRetentionTime());
-		assertEquals("stopRetentionTime", 575253, chromatogram.getStopRetentionTime());
-		assertEquals("minSignal", 541556.0f, chromatogram.getMinSignal());
-		assertEquals("maxSignal", 108283456.0f, chromatogram.getMaxSignal());
-		assertEquals("miscInfo", "2", chromatogram.getMiscInfo());
+		assertEquals("numberOfScans", 1036, chromatogram.getNumberOfScans());
+		assertEquals("numberOfScanMassFragments", 464627, chromatogram.getNumberOfScanMassFragments());
+		assertEquals("startRetentionTime", 5244, chromatogram.getStartRetentionTime());
+		assertEquals("stopRetentionTime", 473849, chromatogram.getStopRetentionTime());
+		assertEquals("minSignal", 277447.0f, chromatogram.getMinSignal());
+		assertEquals("maxSignal", 122215592.0f, chromatogram.getMaxSignal());
+		assertEquals("miscInfo", "8", chromatogram.getMiscInfo());
 		tic = chromatogram.getTotalIonSignals();
-		assertEquals("ITotalIonSignals size", 1260, tic.size());
-		assertEquals("totalIonSignal", 9522305000.0f, chromatogram.getTotalSignal());
+		assertEquals("ITotalIonSignals size", 1036, tic.size());
+		assertEquals("totalIonSignal", 13211817000.0f, chromatogram.getTotalSignal());
 		xic = chromatogram.getExtractedIonSignals();
-		assertEquals("IExtractedIonSignals size", 1260, xic.size());
+		assertEquals("IExtractedIonSignals size", 1036, xic.size());
 		xic = chromatogram.getExtractedIonSignals(1.0f, 600.5f);
-		assertEquals("IExtractedIonSignals size", 1260, xic.size());
+		assertEquals("IExtractedIonSignals size", 1036, xic.size());
 		// --------------------test mass spectra
 		massSpectrum = chromatogram.getScan(5727);
 		assertTrue("massSpectrum", null == massSpectrum);
 		massSpectrum = chromatogram.getScan(340);
-		assertEquals("TotalSignal", 2984685.0f, massSpectrum.getTotalSignal());
+		assertEquals("TotalSignal", 1046394.0f, massSpectrum.getTotalSignal());
 		massSpectrum = chromatogram.getScan(628);
-		assertEquals("TotalSignal", 1285660.0f, massSpectrum.getTotalSignal());
+		assertEquals("TotalSignal", 4281139.0f, massSpectrum.getTotalSignal());
 		massSpectrum = chromatogram.getScan(5726);
 		assertTrue("massSpectrum", null == massSpectrum);
 		// --------------------test mass spectra

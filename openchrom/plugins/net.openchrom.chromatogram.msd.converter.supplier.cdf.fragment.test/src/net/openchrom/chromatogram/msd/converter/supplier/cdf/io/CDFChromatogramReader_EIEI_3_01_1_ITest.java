@@ -23,16 +23,16 @@ import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignals;
 import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignals;
 
 /**
- * IChromatogram OP17780<br/>
+ * IChromatogram EI-EI_3_01<br/>
  * 
  * @author eselmeister
  */
-public class CDFChromatogramReader_OP17780_1_Test extends CDFChromatogramReaderTestCase {
+public class CDFChromatogramReader_EIEI_3_01_1_ITest extends CDFChromatogramReaderTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
 
-		pathImport = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_OP17780);
+		pathImport = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_EIEI_3_01);
 		super.setUp();
 	}
 
@@ -41,37 +41,37 @@ public class CDFChromatogramReader_OP17780_1_Test extends CDFChromatogramReaderT
 		IMassSpectrum massSpectrum;
 		ITotalIonSignals tic;
 		IExtractedIonSignals xic;
-		assertEquals("scanDelay", 5181, chromatogram.getScanDelay());
-		assertEquals("scanInterval", 769, chromatogram.getScanInterval());
-		assertEquals("operator", "Wenig", chromatogram.getOperator());
+		assertEquals("scanDelay", 5242, chromatogram.getScanDelay());
+		assertEquals("scanInterval", 437, chromatogram.getScanInterval());
+		assertEquals("operator", "Wilmschen", chromatogram.getOperator());
 		assertEquals("file", fileImport, chromatogram.getFile());
-		assertEquals("name", "OP17780", chromatogram.getName());
+		assertEquals("name", "EI-EI_3_01", chromatogram.getName());
 		assertTrue("date", chromatogram.getDate() != null);
-		// assertEquals("date", 1205402400000l,
+		// assertEquals("date", 1156322940000l,
 		// chromatogram.getDate().getTime());
-		assertEquals("numberOfScans", 5726, chromatogram.getNumberOfScans());
-		assertEquals("numberOfScanMassFragments", 874611, chromatogram.getNumberOfScanMassFragments());
-		assertEquals("startRetentionTime", 5181, chromatogram.getStartRetentionTime());
-		assertEquals("stopRetentionTime", 4439850, chromatogram.getStopRetentionTime());
-		assertEquals("minSignal", 15947.0f, chromatogram.getMinSignal());
-		assertEquals("maxSignal", 16350498.0f, chromatogram.getMaxSignal());
-		assertEquals("miscInfo", "NH431-1 126�g", chromatogram.getMiscInfo());
+		assertEquals("numberOfScans", 1160, chromatogram.getNumberOfScans());
+		assertEquals("numberOfScanMassFragments", 537595, chromatogram.getNumberOfScanMassFragments());
+		assertEquals("startRetentionTime", 5242, chromatogram.getStartRetentionTime());
+		assertEquals("stopRetentionTime", 529989, chromatogram.getStopRetentionTime());
+		assertEquals("minSignal", 440262.0f, chromatogram.getMinSignal());
+		assertEquals("maxSignal", 77838560.0f, chromatogram.getMaxSignal());
+		assertEquals("miscInfo", "3", chromatogram.getMiscInfo());
 		tic = chromatogram.getTotalIonSignals();
-		assertEquals("ITotalIonSignals size", 5726, tic.size());
-		assertEquals("totalIonSignal", 797918080.0f, chromatogram.getTotalSignal());
+		assertEquals("ITotalIonSignals size", 1160, tic.size());
+		assertEquals("totalIonSignal", 7623335400.0f, chromatogram.getTotalSignal());
 		xic = chromatogram.getExtractedIonSignals();
-		assertEquals("IExtractedIonSignals size", 5726, xic.size());
+		assertEquals("IExtractedIonSignals size", 1160, xic.size());
 		xic = chromatogram.getExtractedIonSignals(1.0f, 600.5f);
-		assertEquals("IExtractedIonSignals size", 5726, xic.size());
+		assertEquals("IExtractedIonSignals size", 1160, xic.size());
 		// --------------------test mass spectra
 		massSpectrum = chromatogram.getScan(5727);
 		assertTrue("massSpectrum", null == massSpectrum);
 		massSpectrum = chromatogram.getScan(340);
-		assertEquals("TotalSignal", 150741.0f, massSpectrum.getTotalSignal());
+		assertEquals("TotalSignal", 1962572.0f, massSpectrum.getTotalSignal());
 		massSpectrum = chromatogram.getScan(628);
-		assertEquals("TotalSignal", 16350498.0f, massSpectrum.getTotalSignal());
+		assertEquals("TotalSignal", 960126.0f, massSpectrum.getTotalSignal());
 		massSpectrum = chromatogram.getScan(5726);
-		assertEquals("TotalSignal", 95393.0f, massSpectrum.getTotalSignal());
+		assertTrue("massSpectrum", null == massSpectrum);
 		// --------------------test mass spectra
 	}
 }

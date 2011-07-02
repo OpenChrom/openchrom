@@ -25,7 +25,7 @@ import net.openchrom.chromatogram.msd.converter.supplier.cdf.TestPathHelper;
  * 
  * @author eselmeister
  */
-public class CDFChromatogramReader_MemoryTest_1_Test extends CDFChromatogramReaderTestCase {
+public class CDFChromatogramReader_MemoryTest_1_ITest extends CDFChromatogramReaderTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
