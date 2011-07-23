@@ -17,7 +17,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.converter.supplier.cdf.model;
 
-import net.openchrom.chromatogram.msd.model.core.ISupplierMassFragment;
+import net.openchrom.chromatogram.msd.model.core.ISupplierIon;
 
-public interface ICDFMassFragment extends ISupplierMassFragment {
+public interface ICDFIon extends ISupplierIon {
 }

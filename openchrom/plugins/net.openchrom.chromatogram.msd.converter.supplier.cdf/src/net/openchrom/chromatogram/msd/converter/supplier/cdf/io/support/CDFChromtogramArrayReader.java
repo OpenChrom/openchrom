@@ -22,7 +22,7 @@ import java.io.IOException;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
-import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFMassFragment;
+import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFIon;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFMassSpectrum;
 import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
 import net.openchrom.chromatogram.msd.model.exceptions.MZLimitExceededException;
@@ -98,7 +98,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		if(scan < 1 || scan > getNumberOfScans()) {
 			throw new NoSuchScanStored("The requested scan " + scan + " is not available");
 		}
-		CDFMassFragment massFragment;
+		CDFIon massFragment;
 		CDFMassSpectrum massSpectrum = new CDFMassSpectrum();
 		int peaks;
 		int offset;
@@ -110,8 +110,8 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		for(int i = 0; i < peaks; i++) {
 			position = offset + i;
 			try {
-				massFragment = new CDFMassFragment(valueArrayMZ[position], valueArrayAbundance[position]);
-				massSpectrum.addMassFragment(massFragment, false);
+				massFragment = new CDFIon(valueArrayMZ[position], valueArrayAbundance[position]);
+				massSpectrum.addIon(massFragment, false);
 			} catch(AbundanceLimitExceededException e) {
 				logger.warn(e);
 			} catch(MZLimitExceededException e) {

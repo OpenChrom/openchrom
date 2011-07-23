@@ -19,9 +19,9 @@ package net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support;
 
 import java.util.ArrayList;
 
-import net.openchrom.chromatogram.msd.model.core.AbstractMassFragment;
+import net.openchrom.chromatogram.msd.model.core.AbstractIon;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
-import net.openchrom.chromatogram.msd.model.core.IMassFragment;
+import net.openchrom.chromatogram.msd.model.core.IIon;
 import net.openchrom.chromatogram.msd.model.core.ISupplierMassSpectrum;
 import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayDouble;
@@ -45,7 +45,7 @@ public class DimensionSupport implements IDimensionSupport {
 	private Dimension byteString32;
 	private Dimension byteString64;
 	private Dimension numberOfScans;
-	private Dimension numberOfScanMassFragments;
+	private Dimension numberOfScanIons;
 	private Dimension instrumentNumber;
 	private Dimension errorNumber;
 
@@ -72,7 +72,7 @@ public class DimensionSupport implements IDimensionSupport {
 		cdfChromatogram.addDimension(CDFConstants.DIMENSION_255_BYTE_STRING, 255);
 		cdfChromatogram.addDimension(CDFConstants.DIMENSION_RANGE, 2);
 		// ----------
-		numberOfScanMassFragments = cdfChromatogram.addDimension(CDFConstants.DIMENSION_POINT_NUMBER, chromatogram.getNumberOfScanMassFragments(), true, true, true);
+		numberOfScanIons = cdfChromatogram.addDimension(CDFConstants.DIMENSION_POINT_NUMBER, chromatogram.getNumberOfScanIons(), true, true, true);
 		errorNumber = cdfChromatogram.addDimension(CDFConstants.DIMENSION_ERROR_NUMBER, 1);
 		numberOfScans = cdfChromatogram.addDimension(CDFConstants.DIMENSION_SCAN_NUMBER, chromatogram.getNumberOfScans());
 		instrumentNumber = cdfChromatogram.addDimension(CDFConstants.DIMENSION_INSTRUMENT_NUMBER, 1);
@@ -182,7 +182,7 @@ public class DimensionSupport implements IDimensionSupport {
 		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
 		ArrayDouble.D1 values = new ArrayDouble.D1(numberOfScans.getLength());
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
-			values.set(i, AbstractMassFragment.getMZ(scanSupport.getMinMassFragment(i))); // TODO
+			values.set(i, AbstractIon.getMZ(scanSupport.getMinIon(i))); // TODO
 																							// da
 																							// funktioniert
 																							// was
@@ -204,7 +204,7 @@ public class DimensionSupport implements IDimensionSupport {
 		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
 		ArrayDouble.D1 values = new ArrayDouble.D1(numberOfScans.getLength());
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
-			values.set(i, AbstractMassFragment.getMZ(scanSupport.getMaxMassFragment(i))); // TODO
+			values.set(i, AbstractIon.getMZ(scanSupport.getMaxIon(i))); // TODO
 																							// da
 																							// funktioniert
 																							// was
@@ -251,21 +251,21 @@ public class DimensionSupport implements IDimensionSupport {
 		ISupplierMassSpectrum scan;
 		String varNameMassValues = CDFConstants.VARIABLE_MASS_VALUES;
 		ArrayList<Dimension> dimensionMassValues = new ArrayList<Dimension>();
-		dimensionMassValues.add(numberOfScanMassFragments);
+		dimensionMassValues.add(numberOfScanIons);
 		cdfChromatogram.addVariable(varNameMassValues, DataType.FLOAT, dimensionMassValues);
-		ArrayFloat.D1 valuesMassFragments = new ArrayFloat.D1(numberOfScanMassFragments.getLength());
+		ArrayFloat.D1 valuesIons = new ArrayFloat.D1(numberOfScanIons.getLength());
 		String varNameTimeValues = CDFConstants.VARIABLE_TIME_VALUES;
 		ArrayList<Dimension> dimensionTimeValues = new ArrayList<Dimension>();
-		dimensionTimeValues.add(numberOfScanMassFragments);
+		dimensionTimeValues.add(numberOfScanIons);
 		cdfChromatogram.addVariable(varNameTimeValues, DataType.FLOAT, dimensionTimeValues);
-		ArrayFloat.D1 valuesTime = new ArrayFloat.D1(numberOfScanMassFragments.getLength());
+		ArrayFloat.D1 valuesTime = new ArrayFloat.D1(numberOfScanIons.getLength());
 		String varNameAbundanceValues = CDFConstants.VARIABLE_INTENSITY_VALUES;
 		ArrayList<Dimension> dimensionAbundanceValues = new ArrayList<Dimension>();
-		dimensionAbundanceValues.add(numberOfScanMassFragments);
+		dimensionAbundanceValues.add(numberOfScanIons);
 		cdfChromatogram.addVariable(varNameAbundanceValues, DataType.FLOAT, dimensionAbundanceValues);
-		ArrayFloat.D1 valuesAbundance = new ArrayFloat.D1(numberOfScanMassFragments.getLength());
+		ArrayFloat.D1 valuesAbundance = new ArrayFloat.D1(numberOfScanIons.getLength());
 		/*
-		 * F-Search could not show mass fragment values correctly. Has F-Search
+		 * F-Search could not show ion values correctly. Has F-Search
 		 * implemented the cdf format correctly?
 		 */
 		int counter = 0;
@@ -273,8 +273,8 @@ public class DimensionSupport implements IDimensionSupport {
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
 			scan = chromatogram.getScan(i + 1);
 			// retentionTime = scan.getRetentionTime() / (1000.0f * 60.0f);
-			for(IMassFragment mf : scan.getMassFragments()) {
-				valuesMassFragments.set(counter, AbstractMassFragment.getMZ(mf.getMZ()));
+			for(IIon mf : scan.getIons()) {
+				valuesIons.set(counter, AbstractIon.getMZ(mf.getMZ()));
 				valuesTime.set(counter, NULL_VALUE_TIME);
 				// valuesTime.set(counter, retentionTime);
 				valuesAbundance.set(counter, mf.getAbundance());
@@ -284,7 +284,7 @@ public class DimensionSupport implements IDimensionSupport {
 		cdfChromatogram.addVariableAttribute(varNameMassValues, "units", "M/Z");
 		cdfChromatogram.addVariableAttribute(varNameTimeValues, "units", "Seconds");
 		cdfChromatogram.addVariableAttribute(varNameAbundanceValues, "units", "Arbitrary Intensity Units");
-		dataEntries.add(new DataEntry(varNameMassValues, valuesMassFragments));
+		dataEntries.add(new DataEntry(varNameMassValues, valuesIons));
 		dataEntries.add(new DataEntry(varNameTimeValues, valuesTime));
 		dataEntries.add(new DataEntry(varNameAbundanceValues, valuesAbundance));
 	}
@@ -314,9 +314,9 @@ public class DimensionSupport implements IDimensionSupport {
 	}
 
 	@Override
-	public Dimension getNumberOfScanMassFragments() {
+	public Dimension getNumberOfScanIons() {
 
-		return numberOfScanMassFragments;
+		return numberOfScanIons;
 	}
 
 	@Override

@@ -28,7 +28,7 @@ public interface IScanSupport {
 	int getScanIndex(int scan);
 
 	/**
-	 * Returns the point count (number of mass fragments) for the given scan.
+	 * Returns the point count (number of ions) for the given scan.
 	 * 
 	 * @param scan
 	 * @return int
@@ -36,18 +36,18 @@ public interface IScanSupport {
 	int getPointCount(int scan);
 
 	/**
-	 * Returns the min mass fragment of the given scan.
+	 * Returns the min ion of the given scan.
 	 * 
 	 * @param scan
 	 * @return float
 	 */
-	float getMinMassFragment(int scan);
+	float getMinIon(int scan);
 
 	/**
-	 * Returns the max mass fragment of the given scan.
+	 * Returns the max ion of the given scan.
 	 * 
 	 * @param scan
 	 * @return float
 	 */
-	float getMaxMassFragment(int scan);
+	float getMaxIon(int scan);
 }

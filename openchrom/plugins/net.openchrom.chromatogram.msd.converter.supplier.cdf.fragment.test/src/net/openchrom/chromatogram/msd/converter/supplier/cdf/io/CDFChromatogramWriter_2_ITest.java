@@ -51,7 +51,7 @@ public class CDFChromatogramWriter_2_ITest extends CDFChromatogramWriterTestCase
 		// assertEquals("date", 1205321160000l,
 		// chromatogram.getDate().getTime());
 		assertEquals("numberOfScans", 5726, chromatogram.getNumberOfScans());
-		assertEquals("numberOfScanMassFragments", 1031366, chromatogram.getNumberOfScanMassFragments());
+		assertEquals("numberOfScanIons", 1031366, chromatogram.getNumberOfScanIons());
 		assertEquals("startRetentionTime", 5190, chromatogram.getStartRetentionTime());
 		assertEquals("stopRetentionTime", 4439858, chromatogram.getStopRetentionTime());
 		assertEquals("minSignal", 17475.0f, chromatogram.getMinSignal());

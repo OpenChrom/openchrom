@@ -50,7 +50,7 @@ public class CDFChromatogramReader_EIEI_3_01_1_ITest extends CDFChromatogramRead
 		// assertEquals("date", 1156322940000l,
 		// chromatogram.getDate().getTime());
 		assertEquals("numberOfScans", 1160, chromatogram.getNumberOfScans());
-		assertEquals("numberOfScanMassFragments", 537595, chromatogram.getNumberOfScanMassFragments());
+		assertEquals("numberOfScanIons", 537595, chromatogram.getNumberOfScanIons());
 		assertEquals("startRetentionTime", 5242, chromatogram.getStartRetentionTime());
 		assertEquals("stopRetentionTime", 529989, chromatogram.getStopRetentionTime());
 		assertEquals("minSignal", 440262.0f, chromatogram.getMinSignal());

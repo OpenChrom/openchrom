@@ -25,8 +25,8 @@ public class ScanSupport implements IScanSupport {
 	private int counter;
 	private int[] scanIndex;
 	private int[] pointCount;
-	private float[] maxMassFragment;
-	private float[] minMassFragment;
+	private float[] maxIon;
+	private float[] minIon;
 
 	public ScanSupport(IChromatogram chromatogram) {
 
@@ -40,56 +40,56 @@ public class ScanSupport implements IScanSupport {
 		numberOfScans++;
 		scanIndex = new int[numberOfScans];
 		pointCount = new int[numberOfScans];
-		minMassFragment = new float[numberOfScans];
-		maxMassFragment = new float[numberOfScans];
+		minIon = new float[numberOfScans];
+		maxIon = new float[numberOfScans];
 		for(int i = 1; i <= chromatogram.getNumberOfScans(); i++) {
 			massSpectrum = chromatogram.getScan(i);
-			addNumberOfMassFragments(i, massSpectrum.getNumberOfMassFragments());
-			if(massSpectrum.getNumberOfMassFragments() > 0) {
-				addMinMassFragment(i, massSpectrum.getLowestMZ().getMZ());
-				addMaxMassFragment(i, massSpectrum.getHighestMZ().getMZ());
+			addNumberOfIons(i, massSpectrum.getNumberOfIons());
+			if(massSpectrum.getNumberOfIons() > 0) {
+				addMinIon(i, massSpectrum.getLowestMZ().getMZ());
+				addMaxIon(i, massSpectrum.getHighestMZ().getMZ());
 			} else {
-				addMinMassFragment(i, 0);
-				addMaxMassFragment(i, 0);
+				addMinIon(i, 0);
+				addMaxIon(i, 0);
 			}
 		}
 	}
 
 	/**
-	 * Adds the number of mass fragments for the given scan to the internal
+	 * Adds the number of ions for the given scan to the internal
 	 * list.<br/>
 	 * The information is used to calculate the scan index.
 	 * 
 	 * @param scan
 	 * @param numberOfPeaks
 	 */
-	private void addNumberOfMassFragments(int scan, int numberOfMassFragments) {
+	private void addNumberOfIons(int scan, int numberOfIons) {
 
-		counter += numberOfMassFragments;
+		counter += numberOfIons;
 		scanIndex[scan] = counter;
-		pointCount[scan] = numberOfMassFragments;
+		pointCount[scan] = numberOfIons;
 	}
 
 	/**
-	 * Adds the max mass fragment value to the given scan.
+	 * Adds the max ion value to the given scan.
 	 * 
 	 * @param scan
 	 * @param mz
 	 */
-	private void addMaxMassFragment(int scan, float mz) {
+	private void addMaxIon(int scan, float mz) {
 
-		maxMassFragment[scan] = mz;
+		maxIon[scan] = mz;
 	}
 
 	/**
-	 * Adds the min mass fragment value to the given scan.
+	 * Adds the min ion value to the given scan.
 	 * 
 	 * @param scan
 	 * @param mz
 	 */
-	private void addMinMassFragment(int scan, float mz) {
+	private void addMinIon(int scan, float mz) {
 
-		minMassFragment[scan] = mz;
+		minIon[scan] = mz;
 	}
 
 	// --------------------------------------IScanSupport
@@ -107,15 +107,15 @@ public class ScanSupport implements IScanSupport {
 	}
 
 	@Override
-	public float getMinMassFragment(int scan) {
+	public float getMinIon(int scan) {
 
-		return minMassFragment[scan];
+		return minIon[scan];
 	}
 
 	@Override
-	public float getMaxMassFragment(int scan) {
+	public float getMaxIon(int scan) {
 
-		return maxMassFragment[scan];
+		return maxIon[scan];
 	}
 	// --------------------------------------IScanSupport
 }

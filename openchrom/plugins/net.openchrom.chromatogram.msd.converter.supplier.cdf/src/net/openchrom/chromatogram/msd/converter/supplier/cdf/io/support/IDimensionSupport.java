@@ -29,7 +29,7 @@ public interface IDimensionSupport {
 
 	public Dimension getNumberOfScans();
 
-	public Dimension getNumberOfScanMassFragments();
+	public Dimension getNumberOfScanIons();
 
 	public Dimension getInstrumentNumber();
 

@@ -17,11 +17,11 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.converter.supplier.cdf.model;
 
-import net.openchrom.chromatogram.msd.model.core.AbstractSupplierMassFragment;
+import net.openchrom.chromatogram.msd.model.core.AbstractSupplierIon;
 import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
 import net.openchrom.chromatogram.msd.model.exceptions.MZLimitExceededException;
 
-public class CDFMassFragment extends AbstractSupplierMassFragment implements ICDFMassFragment {
+public class CDFIon extends AbstractSupplierIon implements ICDFIon {
 
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
@@ -35,18 +35,18 @@ public class CDFMassFragment extends AbstractSupplierMassFragment implements ICD
 	public static final float MIN_MZ = 1.0f;
 	public static final float MAX_MZ = 65535.0f;
 
-	public CDFMassFragment(float mz) throws MZLimitExceededException {
+	public CDFIon(float mz) throws MZLimitExceededException {
 
 		super(mz);
 	}
 
-	public CDFMassFragment(float mz, boolean ignoreAbundanceLimit) throws MZLimitExceededException {
+	public CDFIon(float mz, boolean ignoreAbundanceLimit) throws MZLimitExceededException {
 
 		super(mz);
 		setIgnoreAbundanceLimit(ignoreAbundanceLimit);
 	}
 
-	public CDFMassFragment(float mz, float abundance) throws AbundanceLimitExceededException, MZLimitExceededException {
+	public CDFIon(float mz, float abundance) throws AbundanceLimitExceededException, MZLimitExceededException {
 
 		super(mz, abundance);
 	}

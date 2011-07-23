@@ -41,11 +41,11 @@ import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support.CDFChrom
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support.DateSupport;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFChromatogram;
-import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFMassFragment;
+import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFIon;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFMassSpectrum;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramOverview;
-import net.openchrom.chromatogram.msd.model.core.IMassFragment;
+import net.openchrom.chromatogram.msd.model.core.IIon;
 import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
 import net.openchrom.chromatogram.msd.model.exceptions.MZLimitExceededException;
 import net.openchrom.logging.core.Logger;
@@ -174,7 +174,7 @@ public class CDFChromatogramReader implements ICDFChromatogramReader {
 
 		CDFChromatogram chromatogram;
 		CDFMassSpectrum massSpectrum;
-		CDFMassFragment massFragment;
+		CDFIon massFragment;
 		NetcdfFile cdfChromatogram = NetcdfFileCache.acquire(file.getAbsolutePath(), null);
 		CDFChromatogramOverviewArrayReader in = new CDFChromatogramOverviewArrayReader(cdfChromatogram);
 		chromatogram = new CDFChromatogram();
@@ -184,9 +184,9 @@ public class CDFChromatogramReader implements ICDFChromatogramReader {
 			monitor.subTask(IConstants.SCAN + " " + i);
 			massSpectrum = new CDFMassSpectrum();
 			massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
-			massFragment = new CDFMassFragment(IMassFragment.TIC_MZ, true);
+			massFragment = new CDFIon(IIon.TIC_MZ, true);
 			massFragment.setAbundance(in.getTotalSignal(i));
-			massSpectrum.addMassFragment(massFragment);
+			massSpectrum.addIon(massFragment);
 			chromatogram.addScan(massSpectrum);
 		}
 		// Close the cdf chromatogram.

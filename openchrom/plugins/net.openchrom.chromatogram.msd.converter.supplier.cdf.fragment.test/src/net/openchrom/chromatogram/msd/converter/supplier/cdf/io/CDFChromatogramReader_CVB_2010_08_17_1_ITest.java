@@ -49,7 +49,7 @@ public class CDFChromatogramReader_CVB_2010_08_17_1_ITest extends CDFChromatogra
 		 * System.out.println(chromatogram.getName());
 		 * System.out.println("DATE");
 		 * System.out.println(chromatogram.getNumberOfScans());
-		 * System.out.println(chromatogram.getNumberOfScanMassFragments());
+		 * System.out.println(chromatogram.getNumberOfScanIons());
 		 * System.out.println(chromatogram.getStartRetentionTime());
 		 * System.out.println(chromatogram.getStopRetentionTime());
 		 * System.out.println(chromatogram.getMinSignal());
@@ -79,7 +79,7 @@ public class CDFChromatogramReader_CVB_2010_08_17_1_ITest extends CDFChromatogra
 		// assertEquals("date", 1156320960000l,
 		// chromatogram.getDate().getTime());
 		assertEquals("numberOfScans", 4441, chromatogram.getNumberOfScans());
-		assertEquals("numberOfScanMassFragments", 57733, chromatogram.getNumberOfScanMassFragments());
+		assertEquals("numberOfScanIons", 57733, chromatogram.getNumberOfScanIons());
 		assertEquals("startRetentionTime", 240, chromatogram.getStartRetentionTime());
 		assertEquals("stopRetentionTime", 2220240, chromatogram.getStopRetentionTime());
 		assertEquals("minSignal", 47620.0f, chromatogram.getMinSignal());
