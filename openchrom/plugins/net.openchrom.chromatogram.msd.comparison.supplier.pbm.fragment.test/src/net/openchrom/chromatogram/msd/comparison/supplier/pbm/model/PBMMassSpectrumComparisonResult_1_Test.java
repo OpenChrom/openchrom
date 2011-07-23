@@ -6,12 +6,12 @@
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.model;
 
 import net.openchrom.chromatogram.msd.comparison.exceptions.ComparisonException;
-import net.openchrom.chromatogram.msd.model.core.IMassFragment;
+import net.openchrom.chromatogram.msd.model.core.IIon;
 import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
-import net.openchrom.chromatogram.msd.model.implementation.DefaultMassFragment;
+import net.openchrom.chromatogram.msd.model.implementation.DefaultIon;
 import net.openchrom.chromatogram.msd.model.implementation.DefaultMassSpectrum;
-import net.openchrom.chromatogram.msd.model.xic.IMassFragmentRange;
-import net.openchrom.chromatogram.msd.model.xic.MassFragmentRange;
+import net.openchrom.chromatogram.msd.model.xic.IIonRange;
+import net.openchrom.chromatogram.msd.model.xic.IonRange;
 import junit.framework.TestCase;
 
 public class PBMMassSpectrumComparisonResult_1_Test extends TestCase {
@@ -19,34 +19,34 @@ public class PBMMassSpectrumComparisonResult_1_Test extends TestCase {
 	private PBMMassSpectrumComparisonResult result;
 	private IMassSpectrum unknown;
 	private IMassSpectrum reference;
-	private IMassFragment massFragment;
-	private IMassFragmentRange massFragmentRange;
+	private IIon massFragment;
+	private IIonRange massFragmentRange;
 
 	@Override
 	protected void setUp() throws Exception {
 
 		super.setUp();
 		unknown = new DefaultMassSpectrum();
-		massFragment = new DefaultMassFragment(45.5f, 500.0f);
-		unknown.addMassFragment(massFragment);
-		massFragment = new DefaultMassFragment(55.5f, 320.0f);
-		unknown.addMassFragment(massFragment);
-		massFragment = new DefaultMassFragment(85.5f, 8500.0f);
-		unknown.addMassFragment(massFragment);
-		massFragment = new DefaultMassFragment(95.5f, 740.0f);
-		unknown.addMassFragment(massFragment);
-		massFragment = new DefaultMassFragment(105.5f, 6900.0f);
-		unknown.addMassFragment(massFragment);
+		massFragment = new DefaultIon(45.5f, 500.0f);
+		unknown.addIon(massFragment);
+		massFragment = new DefaultIon(55.5f, 320.0f);
+		unknown.addIon(massFragment);
+		massFragment = new DefaultIon(85.5f, 8500.0f);
+		unknown.addIon(massFragment);
+		massFragment = new DefaultIon(95.5f, 740.0f);
+		unknown.addIon(massFragment);
+		massFragment = new DefaultIon(105.5f, 6900.0f);
+		unknown.addIon(massFragment);
 		reference = new DefaultMassSpectrum();
-		massFragment = new DefaultMassFragment(45.5f, 500.0f);
-		reference.addMassFragment(massFragment);
-		massFragment = new DefaultMassFragment(55.5f, 320.0f);
-		reference.addMassFragment(massFragment);
-		massFragment = new DefaultMassFragment(75.5f, 2800.0f);
-		reference.addMassFragment(massFragment);
-		massFragment = new DefaultMassFragment(105.5f, 6900.0f);
-		reference.addMassFragment(massFragment);
-		massFragmentRange = new MassFragmentRange(20, 120);
+		massFragment = new DefaultIon(45.5f, 500.0f);
+		reference.addIon(massFragment);
+		massFragment = new DefaultIon(55.5f, 320.0f);
+		reference.addIon(massFragment);
+		massFragment = new DefaultIon(75.5f, 2800.0f);
+		reference.addIon(massFragment);
+		massFragment = new DefaultIon(105.5f, 6900.0f);
+		reference.addIon(massFragment);
+		massFragmentRange = new IonRange(20, 120);
 	}
 
 	@Override

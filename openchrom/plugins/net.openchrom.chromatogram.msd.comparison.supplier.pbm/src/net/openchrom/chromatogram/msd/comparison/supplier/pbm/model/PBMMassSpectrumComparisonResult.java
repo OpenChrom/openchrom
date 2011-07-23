@@ -7,14 +7,14 @@ package net.openchrom.chromatogram.msd.comparison.supplier.pbm.model;
 
 import net.openchrom.chromatogram.msd.comparison.exceptions.ComparisonException;
 import net.openchrom.chromatogram.msd.comparison.spectrum.AbstractMassSpectrumComparisonResult;
-import net.openchrom.chromatogram.msd.model.core.IMassFragment;
+import net.openchrom.chromatogram.msd.model.core.IIon;
 import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
 import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
 import net.openchrom.chromatogram.msd.model.exceptions.MZLimitExceededException;
-import net.openchrom.chromatogram.msd.model.implementation.DefaultMassFragment;
+import net.openchrom.chromatogram.msd.model.implementation.DefaultIon;
 import net.openchrom.chromatogram.msd.model.implementation.DefaultMassSpectrum;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignal;
-import net.openchrom.chromatogram.msd.model.xic.IMassFragmentRange;
+import net.openchrom.chromatogram.msd.model.xic.IIonRange;
 import net.openchrom.logging.core.Logger;
 
 public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumComparisonResult {
@@ -24,7 +24,7 @@ public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumCompari
 	private static final int NORMALIZATION_FACTOR = 100;
 	private float matchQuality = 0.0f;
 
-	public PBMMassSpectrumComparisonResult(IMassSpectrum unknown, IMassSpectrum reference, IMassFragmentRange massFragmentRange) throws ComparisonException {
+	public PBMMassSpectrumComparisonResult(IMassSpectrum unknown, IMassSpectrum reference, IIonRange massFragmentRange) throws ComparisonException {
 
 		/*
 		 * The super method checks if one of the arguments is null and throws an
@@ -50,7 +50,7 @@ public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumCompari
 	// ----------------------------------------private methods
 	/**
 	 * This method will calculate new abundance values in the following manner:<br/>
-	 * For each mass fragment the new abundance will be set to:<br/>
+	 * For each ion the new abundance will be set to:<br/>
 	 * <br/>
 	 * Inew = I * MZ;<br/>
 	 * <br/>
@@ -58,16 +58,16 @@ public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumCompari
 	 * when you calculate the new abundance values. A new mass spectrum will be
 	 * returned.
 	 */
-	private IMassSpectrum adjustMassSpectrum(IMassSpectrum massSpectrum, IMassFragmentRange massFragmentRange) {
+	private IMassSpectrum adjustMassSpectrum(IMassSpectrum massSpectrum, IIonRange massFragmentRange) {
 
 		IMassSpectrum adjustedMassSpectrum = new DefaultMassSpectrum();
-		IMassFragment adjustedMassFragment;
+		IIon adjustedIon;
 		/*
 		 * Normalize the abundance values to a highest value of 100.
 		 */
 		massSpectrum.normalize(NORMALIZATION_FACTOR);
-		int startMZ = massFragmentRange.getStartMassFragment();
-		int stopMZ = massFragmentRange.getStopMassFragment();
+		int startMZ = massFragmentRange.getStartIon();
+		int stopMZ = massFragmentRange.getStopIon();
 		IExtractedIonSignal signal;
 		signal = massSpectrum.getExtractedIonSignal(startMZ, stopMZ);
 		/*
@@ -78,15 +78,15 @@ public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumCompari
 			abundance = signal.getAbundance(mz);
 			if(abundance >= 0) {
 				/*
-				 * Calculate the new abundance and add the mass fragment to the
+				 * Calculate the new abundance and add the ion to the
 				 * fresh created mass spectrum.
 				 */
 				try {
 					/*
 					 * Inew = I * MZ
 					 */
-					adjustedMassFragment = new DefaultMassFragment(mz, abundance * mz);
-					adjustedMassSpectrum.addMassFragment(adjustedMassFragment);
+					adjustedIon = new DefaultIon(mz, abundance * mz);
+					adjustedMassSpectrum.addIon(adjustedIon);
 				} catch(AbundanceLimitExceededException e) {
 					logger.warn(e);
 				} catch(MZLimitExceededException e) {

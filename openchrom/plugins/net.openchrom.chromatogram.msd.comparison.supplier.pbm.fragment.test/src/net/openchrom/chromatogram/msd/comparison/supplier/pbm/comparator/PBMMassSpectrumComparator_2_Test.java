@@ -10,8 +10,8 @@ import net.openchrom.chromatogram.msd.comparison.spectrum.IMassSpectrumCompariso
 import net.openchrom.chromatogram.msd.comparison.spectrum.MassSpectrumComparator;
 import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
 import net.openchrom.chromatogram.msd.model.implementation.DefaultMassSpectrum;
-import net.openchrom.chromatogram.msd.model.xic.IMassFragmentRange;
-import net.openchrom.chromatogram.msd.model.xic.MassFragmentRange;
+import net.openchrom.chromatogram.msd.model.xic.IIonRange;
+import net.openchrom.chromatogram.msd.model.xic.IonRange;
 import junit.framework.TestCase;
 
 public class PBMMassSpectrumComparator_2_Test extends TestCase {
@@ -20,14 +20,14 @@ public class PBMMassSpectrumComparator_2_Test extends TestCase {
 	private IMassSpectrumComparisonResult result;
 	private IMassSpectrum unknown;
 	private IMassSpectrum reference;
-	private IMassFragmentRange massFragmentRange;
+	private IIonRange massFragmentRange;
 
 	@Override
 	protected void setUp() throws Exception {
 
 		unknown = new DefaultMassSpectrum();
 		reference = new DefaultMassSpectrum();
-		massFragmentRange = new MassFragmentRange(20, 120);
+		massFragmentRange = new IonRange(20, 120);
 		super.setUp();
 	}
 

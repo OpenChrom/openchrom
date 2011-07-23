@@ -10,7 +10,7 @@ import net.openchrom.chromatogram.msd.comparison.spectrum.IMassSpectrumComparato
 import net.openchrom.chromatogram.msd.comparison.spectrum.IMassSpectrumComparisonResult;
 import net.openchrom.chromatogram.msd.comparison.supplier.pbm.model.PBMMassSpectrumComparisonResult;
 import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
-import net.openchrom.chromatogram.msd.model.xic.IMassFragmentRange;
+import net.openchrom.chromatogram.msd.model.xic.IIonRange;
 import net.openchrom.logging.core.Logger;
 
 /**
@@ -25,7 +25,7 @@ public class PBMMassSpectrumComparator implements IMassSpectrumComparator {
 	private static final Logger logger = Logger.getLogger(PBMMassSpectrumComparator.class);
 
 	@Override
-	public IMassSpectrumComparisonResult compare(IMassSpectrum unknown, IMassSpectrum reference, IMassFragmentRange massFragmentRange) {
+	public IMassSpectrumComparisonResult compare(IMassSpectrum unknown, IMassSpectrum reference, IIonRange massFragmentRange) {
 
 		PBMMassSpectrumComparisonResult result = null;
 		try {
