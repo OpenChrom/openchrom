@@ -98,7 +98,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		if(scan < 1 || scan > getNumberOfScans()) {
 			throw new NoSuchScanStored("The requested scan " + scan + " is not available");
 		}
-		CDFIon massFragment;
+		CDFIon ion;
 		CDFMassSpectrum massSpectrum = new CDFMassSpectrum();
 		int peaks;
 		int offset;
@@ -110,8 +110,8 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		for(int i = 0; i < peaks; i++) {
 			position = offset + i;
 			try {
-				massFragment = new CDFIon(valueArrayMZ[position], valueArrayAbundance[position]);
-				massSpectrum.addIon(massFragment, false);
+				ion = new CDFIon(valueArrayMZ[position], valueArrayAbundance[position]);
+				massSpectrum.addIon(ion, false);
 			} catch(AbundanceLimitExceededException e) {
 				logger.warn(e);
 			} catch(MZLimitExceededException e) {

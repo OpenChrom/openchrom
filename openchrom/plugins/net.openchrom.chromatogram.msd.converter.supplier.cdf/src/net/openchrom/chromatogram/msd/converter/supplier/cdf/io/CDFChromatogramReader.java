@@ -174,7 +174,7 @@ public class CDFChromatogramReader implements ICDFChromatogramReader {
 
 		CDFChromatogram chromatogram;
 		CDFMassSpectrum massSpectrum;
-		CDFIon massFragment;
+		CDFIon ion;
 		NetcdfFile cdfChromatogram = NetcdfFileCache.acquire(file.getAbsolutePath(), null);
 		CDFChromatogramOverviewArrayReader in = new CDFChromatogramOverviewArrayReader(cdfChromatogram);
 		chromatogram = new CDFChromatogram();
@@ -184,9 +184,9 @@ public class CDFChromatogramReader implements ICDFChromatogramReader {
 			monitor.subTask(IConstants.SCAN + " " + i);
 			massSpectrum = new CDFMassSpectrum();
 			massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
-			massFragment = new CDFIon(IIon.TIC_MZ, true);
-			massFragment.setAbundance(in.getTotalSignal(i));
-			massSpectrum.addIon(massFragment);
+			ion = new CDFIon(IIon.TIC_MZ, true);
+			ion.setAbundance(in.getTotalSignal(i));
+			massSpectrum.addIon(ion);
 			chromatogram.addScan(massSpectrum);
 		}
 		// Close the cdf chromatogram.

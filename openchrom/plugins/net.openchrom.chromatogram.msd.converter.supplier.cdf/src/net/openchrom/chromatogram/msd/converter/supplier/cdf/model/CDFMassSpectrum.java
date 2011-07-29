@@ -32,12 +32,12 @@ public class CDFMassSpectrum extends AbstractSupplierMassSpectrum implements ICD
 	private static final long serialVersionUID = 251851545112617476L;
 	private static final Logger logger = Logger.getLogger(CDFMassSpectrum.class);
 	/**
-	 * MAX_MASSFRAGMENTS The total amount of ions to be stored in the
+	 * MAX_ionS The total amount of ions to be stored in the
 	 * cdf chromatogram.<br/>
 	 * It does not mean, that m/z 65535 is the upper bound, but only 65535 mass
 	 * fragments can be stored in a mass spectrum.
 	 */
-	public static final int MAX_MASSFRAGMENTS = 65535;
+	public static final int MAX_ionS = 65535;
 	public static final int MIN_RETENTION_TIME = 0;
 	public static final int MAX_RETENTION_TIME = Integer.MAX_VALUE;
 
@@ -49,7 +49,7 @@ public class CDFMassSpectrum extends AbstractSupplierMassSpectrum implements ICD
 	@Override
 	public int getMaxPossibleIons() {
 
-		return MAX_MASSFRAGMENTS;
+		return MAX_ionS;
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class CDFMassSpectrum extends AbstractSupplierMassSpectrum implements ICD
 	public ICDFMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
 
 		ICDFMassSpectrum massSpectrum = (ICDFMassSpectrum)super.clone();
-		ICDFIon massFragment;
+		ICDFIon ion;
 		/*
 		 * The instance variables have been copied by super.clone();.<br/> The
 		 * ions in the ion list need not to be removed via
@@ -85,8 +85,8 @@ public class CDFMassSpectrum extends AbstractSupplierMassSpectrum implements ICD
 		 */
 		for(IIon mf : getIons()) {
 			try {
-				massFragment = new CDFIon(mf.getMZ(), mf.getAbundance());
-				massSpectrum.addIon(massFragment);
+				ion = new CDFIon(mf.getMZ(), mf.getAbundance());
+				massSpectrum.addIon(ion);
 			} catch(AbundanceLimitExceededException e) {
 				logger.warn(e);
 			} catch(MZLimitExceededException e) {
