@@ -19,34 +19,34 @@ public class PBMMassSpectrumComparisonResult_1_Test extends TestCase {
 	private PBMMassSpectrumComparisonResult result;
 	private IMassSpectrum unknown;
 	private IMassSpectrum reference;
-	private IIon massFragment;
-	private IIonRange massFragmentRange;
+	private IIon ion;
+	private IIonRange ionRange;
 
 	@Override
 	protected void setUp() throws Exception {
 
 		super.setUp();
 		unknown = new DefaultMassSpectrum();
-		massFragment = new DefaultIon(45.5f, 500.0f);
-		unknown.addIon(massFragment);
-		massFragment = new DefaultIon(55.5f, 320.0f);
-		unknown.addIon(massFragment);
-		massFragment = new DefaultIon(85.5f, 8500.0f);
-		unknown.addIon(massFragment);
-		massFragment = new DefaultIon(95.5f, 740.0f);
-		unknown.addIon(massFragment);
-		massFragment = new DefaultIon(105.5f, 6900.0f);
-		unknown.addIon(massFragment);
+		ion = new DefaultIon(45.5f, 500.0f);
+		unknown.addIon(ion);
+		ion = new DefaultIon(55.5f, 320.0f);
+		unknown.addIon(ion);
+		ion = new DefaultIon(85.5f, 8500.0f);
+		unknown.addIon(ion);
+		ion = new DefaultIon(95.5f, 740.0f);
+		unknown.addIon(ion);
+		ion = new DefaultIon(105.5f, 6900.0f);
+		unknown.addIon(ion);
 		reference = new DefaultMassSpectrum();
-		massFragment = new DefaultIon(45.5f, 500.0f);
-		reference.addIon(massFragment);
-		massFragment = new DefaultIon(55.5f, 320.0f);
-		reference.addIon(massFragment);
-		massFragment = new DefaultIon(75.5f, 2800.0f);
-		reference.addIon(massFragment);
-		massFragment = new DefaultIon(105.5f, 6900.0f);
-		reference.addIon(massFragment);
-		massFragmentRange = new IonRange(20, 120);
+		ion = new DefaultIon(45.5f, 500.0f);
+		reference.addIon(ion);
+		ion = new DefaultIon(55.5f, 320.0f);
+		reference.addIon(ion);
+		ion = new DefaultIon(75.5f, 2800.0f);
+		reference.addIon(ion);
+		ion = new DefaultIon(105.5f, 6900.0f);
+		reference.addIon(ion);
+		ionRange = new IonRange(20, 120);
 	}
 
 	@Override
@@ -54,26 +54,26 @@ public class PBMMassSpectrumComparisonResult_1_Test extends TestCase {
 
 		unknown = null;
 		reference = null;
-		massFragment = null;
-		massFragmentRange = null;
+		ion = null;
+		ionRange = null;
 		super.tearDown();
 	}
 
 	public void testFitValue_1() throws ComparisonException {
 
-		result = new PBMMassSpectrumComparisonResult(unknown, reference, massFragmentRange);
+		result = new PBMMassSpectrumComparisonResult(unknown, reference, ionRange);
 		assertEquals("FIT Value", 0.6f, result.getFitValue());
 	}
 
 	public void testReverseFitValue_1() throws ComparisonException {
 
-		result = new PBMMassSpectrumComparisonResult(unknown, reference, massFragmentRange);
+		result = new PBMMassSpectrumComparisonResult(unknown, reference, ionRange);
 		assertEquals("ReverseFIT Value", 0.75f, result.getReverseFitValue());
 	}
 
 	public void testMatchQuality_1() throws ComparisonException {
 
-		result = new PBMMassSpectrumComparisonResult(unknown, reference, massFragmentRange);
+		result = new PBMMassSpectrumComparisonResult(unknown, reference, ionRange);
 		assertEquals("MatchQuality", 0.698283f, result.getMatchQuality());
 	}
 }

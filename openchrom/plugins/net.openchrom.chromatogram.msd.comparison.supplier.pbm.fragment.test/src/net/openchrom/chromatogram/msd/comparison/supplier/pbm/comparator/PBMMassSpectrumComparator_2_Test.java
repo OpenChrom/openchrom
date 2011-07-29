@@ -20,14 +20,14 @@ public class PBMMassSpectrumComparator_2_Test extends TestCase {
 	private IMassSpectrumComparisonResult result;
 	private IMassSpectrum unknown;
 	private IMassSpectrum reference;
-	private IIonRange massFragmentRange;
+	private IIonRange ionRange;
 
 	@Override
 	protected void setUp() throws Exception {
 
 		unknown = new DefaultMassSpectrum();
 		reference = new DefaultMassSpectrum();
-		massFragmentRange = new IonRange(20, 120);
+		ionRange = new IonRange(20, 120);
 		super.setUp();
 	}
 
@@ -36,7 +36,7 @@ public class PBMMassSpectrumComparator_2_Test extends TestCase {
 
 		unknown = null;
 		reference = null;
-		massFragmentRange = null;
+		ionRange = null;
 		result = null;
 		super.tearDown();
 	}
@@ -80,7 +80,7 @@ public class PBMMassSpectrumComparator_2_Test extends TestCase {
 	public void testMassSpectrumComparatorCompare_5() {
 
 		try {
-			result = MassSpectrumComparator.compare(unknown, reference, massFragmentRange, PBMMassSpectrumComparator.COMPARATOR_ID);
+			result = MassSpectrumComparator.compare(unknown, reference, ionRange, PBMMassSpectrumComparator.COMPARATOR_ID);
 		} catch(NoMassSpectrumComparisonResultAvailableException e) {
 			assertTrue("NoMassSpectrumComparisonResultAvailableException", true);
 		}
@@ -89,7 +89,7 @@ public class PBMMassSpectrumComparator_2_Test extends TestCase {
 	public void testMassSpectrumComparatorCompare_6() {
 
 		try {
-			result = MassSpectrumComparator.compare(unknown, reference, massFragmentRange, null);
+			result = MassSpectrumComparator.compare(unknown, reference, ionRange, null);
 		} catch(NoMassSpectrumComparisonResultAvailableException e) {
 			assertTrue("NoMassSpectrumComparisonResultAvailableException", true);
 		}

@@ -25,11 +25,11 @@ public class PBMMassSpectrumComparator implements IMassSpectrumComparator {
 	private static final Logger logger = Logger.getLogger(PBMMassSpectrumComparator.class);
 
 	@Override
-	public IMassSpectrumComparisonResult compare(IMassSpectrum unknown, IMassSpectrum reference, IIonRange massFragmentRange) {
+	public IMassSpectrumComparisonResult compare(IMassSpectrum unknown, IMassSpectrum reference, IIonRange ionRange) {
 
 		PBMMassSpectrumComparisonResult result = null;
 		try {
-			result = new PBMMassSpectrumComparisonResult(unknown, reference, massFragmentRange);
+			result = new PBMMassSpectrumComparisonResult(unknown, reference, ionRange);
 		} catch(ComparisonException e) {
 			logger.warn(e);
 			return null;

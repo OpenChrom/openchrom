@@ -24,20 +24,20 @@ public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumCompari
 	private static final int NORMALIZATION_FACTOR = 100;
 	private float matchQuality = 0.0f;
 
-	public PBMMassSpectrumComparisonResult(IMassSpectrum unknown, IMassSpectrum reference, IIonRange massFragmentRange) throws ComparisonException {
+	public PBMMassSpectrumComparisonResult(IMassSpectrum unknown, IMassSpectrum reference, IIonRange ionRange) throws ComparisonException {
 
 		/*
 		 * The super method checks if one of the arguments is null and throws an
 		 * ComparisonException.
 		 */
-		super(unknown, reference, massFragmentRange);
+		super(unknown, reference, ionRange);
 		/*
 		 * Build new mass spectra (normalized and with weighted intensity) and
 		 * reassign the mass spectra to not override the original ones.
 		 */
-		unknown = adjustMassSpectrum(unknown, massFragmentRange);
-		reference = adjustMassSpectrum(reference, massFragmentRange);
-		matchQuality = calculateGeometricDistanceMatchQuality(unknown, reference, massFragmentRange);
+		unknown = adjustMassSpectrum(unknown, ionRange);
+		reference = adjustMassSpectrum(reference, ionRange);
+		matchQuality = calculateGeometricDistanceMatchQuality(unknown, reference, ionRange);
 		setDescription(DESCRIPTION);
 	}
 
@@ -58,7 +58,7 @@ public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumCompari
 	 * when you calculate the new abundance values. A new mass spectrum will be
 	 * returned.
 	 */
-	private IMassSpectrum adjustMassSpectrum(IMassSpectrum massSpectrum, IIonRange massFragmentRange) {
+	private IMassSpectrum adjustMassSpectrum(IMassSpectrum massSpectrum, IIonRange ionRange) {
 
 		IMassSpectrum adjustedMassSpectrum = new DefaultMassSpectrum();
 		IIon adjustedIon;
@@ -66,8 +66,8 @@ public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumCompari
 		 * Normalize the abundance values to a highest value of 100.
 		 */
 		massSpectrum.normalize(NORMALIZATION_FACTOR);
-		int startMZ = massFragmentRange.getStartIon();
-		int stopMZ = massFragmentRange.getStopIon();
+		int startMZ = ionRange.getStartIon();
+		int stopMZ = ionRange.getStopIon();
 		IExtractedIonSignal signal;
 		signal = massSpectrum.getExtractedIonSignal(startMZ, stopMZ);
 		/*
