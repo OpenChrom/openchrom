@@ -16,7 +16,9 @@
   --> 
   <properties>
     <tycho-version>0.13.0</tycho-version>
-    <tycho-groupid>org.sonatype.tycho</tycho-groupid>
+    <tycho-groupid>org.eclipse.tycho</tycho-groupid>
+    <sonatype-groupid>org.sonatype.tycho</sonatype-groupid>
+    <maven-groupid>org.apache.maven.plugins</maven-groupid>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <!--
@@ -70,21 +72,16 @@
 	P2 REPOSITORIES
   -->
   <repositories>
+   <!-- Use to avoid problems determining the SWT bundle version. -->
    <repository>
-     <id>forge</id>
-     <url>http://repository.sonatype.org/content/groups/public</url>
-     <snapshots>
-       <enabled>true</enabled>
-     </snapshots>
-     <releases>
-       <enabled>true</enabled>
-     </releases>
-   </repository>
-   <!-- Use update35 to avoid problems determining the SWT bundle version. -->
-   <repository>
-     <id>update35</id>
+     <id>swtbothelios</id>
      <layout>p2</layout>
-     <url>http://download.eclipse.org/eclipse/updates/3.5</url>
+     <url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</url>
+   </repository>
+   <repository>
+     <id>swtbotgalileo</id>
+     <layout>p2</layout>
+     <url>http://download.eclipse.org/technology/swtbot/galileo/dev-build/update-site</url>
    </repository>
 <!--
    <repository>
@@ -112,28 +109,6 @@
   <!--
 	PLUGIN REPOSITORIES
   -->
-  <pluginRepositories>
-    <pluginRepository>
-      <id>forge</id>
-      <url>http://repository.sonatype.org/content/groups/public</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
-    <pluginRepository>
-      <id>forge1</id>
-      <url>http://repository.sonatype.org/content/repositories/all-001</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
   <!--
 	SOURCE CODE MANAGEMENT
   -->
@@ -154,12 +129,11 @@
 	Use the maven source code management plugin.
       -->
       <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
+	<groupId>${maven-groupid}</groupId>
 	<artifactId>maven-scm-plugin</artifactId>
-	<version>1.2</version>
-	  <configuration>
-	    <checkoutDirectory>.</checkoutDirectory>
-	  </configuration>
+	<configuration>
+	  <checkoutDirectory>.</checkoutDirectory>
+	</configuration>
       </plugin>
       <!-- 
 	Tycho Maven Plugin
@@ -174,9 +148,8 @@
 	Source and target to Java version 1.6, otherwise "method must implement @override" failures will occur.
       -->
       <plugin>
-        <groupId>${tycho-groupid}</groupId>
+        <groupId>${sonatype-groupid}</groupId>
         <artifactId>maven-osgi-compiler-plugin</artifactId>
-	<version>${tycho-version}</version>
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
@@ -197,13 +170,13 @@
 	Settings of the JUnit-Tests.
       -->
       <plugin>
-        <groupId>${tycho-groupid}</groupId>
+        <groupId>${sonatype-groupid}</groupId>
         <artifactId>maven-osgi-test-plugin</artifactId>
         <configuration>
           <useUIHarness>false</useUIHarness>
           <argLine>-Xmx500m -XX:MaxPermSize=256m</argLine>
         </configuration>
-      </plugin> 
+      </plugin>
     </plugins>
   </build>
 </project>
