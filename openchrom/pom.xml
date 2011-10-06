@@ -15,7 +15,7 @@
 	PROPERTIES
   --> 
   <properties>
-    <tycho-version>0.10.0</tycho-version>
+    <tycho-version>0.13.0</tycho-version>
     <tycho-groupid>org.sonatype.tycho</tycho-groupid>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
