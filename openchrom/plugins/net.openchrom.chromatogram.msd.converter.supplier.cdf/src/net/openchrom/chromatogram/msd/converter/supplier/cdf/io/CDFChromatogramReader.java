@@ -205,8 +205,12 @@ public class CDFChromatogramReader implements ICDFChromatogramReader {
 	private void setChromatogramEntries(CDFChromatogram chromatogram, IAbstractCDFChromatogramArrayReader in, File file) {
 
 		assert chromatogram != null : getClass().getName() + " The chromatogram must not be null";
-		// TODO ScanDelay must be not negative, see literature how to calculate
-		chromatogram.setScanDelay(in.getScanDelay());
+		/*
+		 * Scan delay must be not negative.
+		 */
+		int scanDelay = in.getScanDelay();
+		scanDelay = (scanDelay < 0) ? 0 : scanDelay;
+		chromatogram.setScanDelay(scanDelay);
 		chromatogram.setScanInterval(in.getScanInterval());
 		/*
 		 * Extension
