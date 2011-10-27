@@ -19,7 +19,7 @@ package net.openchrom.chromatogram.msd.converter.supplier.cdf.model;
 
 import net.openchrom.chromatogram.msd.model.core.AbstractSupplierIon;
 import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
-import net.openchrom.chromatogram.msd.model.exceptions.MZLimitExceededException;
+import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
 
 public class CDFIon extends AbstractSupplierIon implements ICDFIon {
 
@@ -31,24 +31,24 @@ public class CDFIon extends AbstractSupplierIon implements ICDFIon {
 	// A max value for abundance
 	public static final float MIN_ABUNDANCE = 0.0f;
 	public static final float MAX_ABUNDANCE = Float.MAX_VALUE;
-	// A max value for m/z
-	public static final float MIN_MZ = 1.0f;
-	public static final float MAX_MZ = 65535.0f;
+	// A max value for ion
+	public static final float MIN_Ion = 1.0f;
+	public static final float MAX_Ion = 65535.0f;
 
-	public CDFIon(float mz) throws MZLimitExceededException {
+	public CDFIon(float ion) throws IonLimitExceededException {
 
-		super(mz);
+		super(ion);
 	}
 
-	public CDFIon(float mz, boolean ignoreAbundanceLimit) throws MZLimitExceededException {
+	public CDFIon(float ion, boolean ignoreAbundanceLimit) throws IonLimitExceededException {
 
-		super(mz);
+		super(ion);
 		setIgnoreAbundanceLimit(ignoreAbundanceLimit);
 	}
 
-	public CDFIon(float mz, float abundance) throws AbundanceLimitExceededException, MZLimitExceededException {
+	public CDFIon(float ion, float abundance) throws AbundanceLimitExceededException, IonLimitExceededException {
 
-		super(mz, abundance);
+		super(ion, abundance);
 	}
 
 	@Override
@@ -64,14 +64,14 @@ public class CDFIon extends AbstractSupplierIon implements ICDFIon {
 	}
 
 	@Override
-	public float getMinPossibleMZValue() {
+	public float getMinPossibleIonValue() {
 
-		return MIN_MZ;
+		return MIN_Ion;
 	}
 
 	@Override
-	public float getMaxPossibleMZValue() {
+	public float getMaxPossibleIonValue() {
 
-		return MAX_MZ;
+		return MAX_Ion;
 	}
 }

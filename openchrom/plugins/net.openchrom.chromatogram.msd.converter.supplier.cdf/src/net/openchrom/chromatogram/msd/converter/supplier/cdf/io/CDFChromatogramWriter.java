@@ -82,7 +82,7 @@ public class CDFChromatogramWriter implements ICDFChromatogramWriter {
 																										// was
 																										// mit
 																										// den
-																										// mz
+																										// ion
 																										// werten
 																										// nicht
 		// dimensionSupport.addVariableMassRangeMin();

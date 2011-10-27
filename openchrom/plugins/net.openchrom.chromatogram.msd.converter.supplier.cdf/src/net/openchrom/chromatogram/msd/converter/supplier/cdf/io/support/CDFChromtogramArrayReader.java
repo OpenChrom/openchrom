@@ -25,7 +25,7 @@ import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NotEnoug
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFIon;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFMassSpectrum;
 import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
-import net.openchrom.chromatogram.msd.model.exceptions.MZLimitExceededException;
+import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
 import net.openchrom.logging.core.Logger;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
@@ -38,9 +38,9 @@ import ucar.nc2.Variable;
 public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReader implements ICDFChromatogramArrayReader {
 
 	private static final Logger logger = Logger.getLogger(CDFChromtogramArrayReader.class);
-	private Variable valuesMZ;
+	private Variable valuesIon;
 	private Variable valuesAbundance;
-	private float[] valueArrayMZ;
+	private float[] valueArrayIon;
 	private float[] valueArrayAbundance;
 	private Variable valuesPointCount;
 	private Variable valuesScanIndex;
@@ -57,8 +57,8 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 
 		String variable;
 		variable = CDFConstants.VARIABLE_MASS_VALUES;
-		valuesMZ = getChromatogram().findVariable(variable);
-		if(valuesMZ == null) {
+		valuesIon = getChromatogram().findVariable(variable);
+		if(valuesIon == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
 		variable = CDFConstants.VARIABLE_INTENSITY_VALUES;
@@ -78,11 +78,11 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		}
 		/*
 		 * The system vendors store the cdf data arrays in different formats.
-		 * Shimadzu: MZ -> Double Abundance -> Int PointCount -> Int ScanIndex
-		 * -> Int ------------- Agilent: MZ -> Float Abundance -> Float
+		 * Shimadzu: Ion -> Double Abundance -> Int PointCount -> Int ScanIndex
+		 * -> Int ------------- Agilent: Ion -> Float Abundance -> Float
 		 * PointCount -> Int ScanIndex -> Int
 		 */
-		valueArrayMZ = (float[])valuesMZ.read().get1DJavaArray(float.class);
+		valueArrayIon = (float[])valuesIon.read().get1DJavaArray(float.class);
 		valueArrayAbundance = (float[])valuesAbundance.read().get1DJavaArray(float.class);
 		valueArrayPointCount = (int[])valuesPointCount.read().get1DJavaArray(int.class);
 		valueArrayScanIndex = (int[])valuesScanIndex.read().get1DJavaArray(int.class);
@@ -110,11 +110,11 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		for(int i = 0; i < peaks; i++) {
 			position = offset + i;
 			try {
-				ion = new CDFIon(valueArrayMZ[position], valueArrayAbundance[position]);
+				ion = new CDFIon(valueArrayIon[position], valueArrayAbundance[position]);
 				massSpectrum.addIon(ion, false);
 			} catch(AbundanceLimitExceededException e) {
 				logger.warn(e);
-			} catch(MZLimitExceededException e) {
+			} catch(IonLimitExceededException e) {
 				logger.warn(e);
 			}
 		}

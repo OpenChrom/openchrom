@@ -182,15 +182,15 @@ public class DimensionSupport implements IDimensionSupport {
 		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
 		ArrayDouble.D1 values = new ArrayDouble.D1(numberOfScans.getLength());
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
-			values.set(i, AbstractIon.getMZ(scanSupport.getMinIon(i))); // TODO
-																							// da
-																							// funktioniert
-																							// was
-																							// mit
-																							// den
-																							// mz
-																							// werten
-																							// nicht
+			values.set(i, AbstractIon.getIon(scanSupport.getMinIon(i))); // TODO
+																			// da
+																			// funktioniert
+																			// was
+																			// mit
+																			// den
+																			// ion
+																			// werten
+																			// nicht
 		}
 		dataEntries.add(new DataEntry(varName, values));
 	}
@@ -204,15 +204,15 @@ public class DimensionSupport implements IDimensionSupport {
 		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
 		ArrayDouble.D1 values = new ArrayDouble.D1(numberOfScans.getLength());
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
-			values.set(i, AbstractIon.getMZ(scanSupport.getMaxIon(i))); // TODO
-																							// da
-																							// funktioniert
-																							// was
-																							// mit
-																							// den
-																							// mz
-																							// werten
-																							// nicht
+			values.set(i, AbstractIon.getIon(scanSupport.getMaxIon(i))); // TODO
+																			// da
+																			// funktioniert
+																			// was
+																			// mit
+																			// den
+																			// ion
+																			// werten
+																			// nicht
 		}
 		dataEntries.add(new DataEntry(varName, values));
 	}
@@ -273,15 +273,15 @@ public class DimensionSupport implements IDimensionSupport {
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
 			scan = chromatogram.getScan(i + 1);
 			// retentionTime = scan.getRetentionTime() / (1000.0f * 60.0f);
-			for(IIon mf : scan.getIons()) {
-				valuesIons.set(counter, AbstractIon.getMZ(mf.getMZ()));
+			for(IIon ion : scan.getIons()) {
+				valuesIons.set(counter, AbstractIon.getIon(ion.getIon()));
 				valuesTime.set(counter, NULL_VALUE_TIME);
 				// valuesTime.set(counter, retentionTime);
-				valuesAbundance.set(counter, mf.getAbundance());
+				valuesAbundance.set(counter, ion.getAbundance());
 				counter++;
 			}
 		}
-		cdfChromatogram.addVariableAttribute(varNameMassValues, "units", "M/Z");
+		cdfChromatogram.addVariableAttribute(varNameMassValues, "units", "Ion");
 		cdfChromatogram.addVariableAttribute(varNameTimeValues, "units", "Seconds");
 		cdfChromatogram.addVariableAttribute(varNameAbundanceValues, "units", "Arbitrary Intensity Units");
 		dataEntries.add(new DataEntry(varNameMassValues, valuesIons));

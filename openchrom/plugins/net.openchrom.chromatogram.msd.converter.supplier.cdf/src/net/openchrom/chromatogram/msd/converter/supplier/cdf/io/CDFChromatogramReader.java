@@ -47,7 +47,7 @@ import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramOverview;
 import net.openchrom.chromatogram.msd.model.core.IIon;
 import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
-import net.openchrom.chromatogram.msd.model.exceptions.MZLimitExceededException;
+import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
 import net.openchrom.logging.core.Logger;
 
 /**
@@ -167,10 +167,10 @@ public class CDFChromatogramReader implements ICDFChromatogramReader {
 	 * @throws IOException
 	 * @throws NoCDFVariableDataFound
 	 * @throws NotEnoughScanDataStored
-	 * @throws MZLimitExceededException
+	 * @throws IonLimitExceededException
 	 * @throws AbundanceLimitExceededException
 	 */
-	private CDFChromatogram readChromatogramOverview(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored, AbundanceLimitExceededException, MZLimitExceededException {
+	private CDFChromatogram readChromatogramOverview(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored, AbundanceLimitExceededException, IonLimitExceededException {
 
 		CDFChromatogram chromatogram;
 		CDFMassSpectrum massSpectrum;
@@ -184,7 +184,7 @@ public class CDFChromatogramReader implements ICDFChromatogramReader {
 			monitor.subTask(IConstants.SCAN + " " + i);
 			massSpectrum = new CDFMassSpectrum();
 			massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
-			ion = new CDFIon(IIon.TIC_MZ, true);
+			ion = new CDFIon(IIon.TIC_Ion, true);
 			ion.setAbundance(in.getTotalSignal(i));
 			massSpectrum.addIon(ion);
 			chromatogram.addScan(massSpectrum);

@@ -46,8 +46,8 @@ public class ScanSupport implements IScanSupport {
 			massSpectrum = chromatogram.getScan(i);
 			addNumberOfIons(i, massSpectrum.getNumberOfIons());
 			if(massSpectrum.getNumberOfIons() > 0) {
-				addMinIon(i, massSpectrum.getLowestMZ().getMZ());
-				addMaxIon(i, massSpectrum.getHighestMZ().getMZ());
+				addMinIon(i, massSpectrum.getLowestIon().getIon());
+				addMaxIon(i, massSpectrum.getHighestIon().getIon());
 			} else {
 				addMinIon(i, 0);
 				addMaxIon(i, 0);
@@ -74,22 +74,22 @@ public class ScanSupport implements IScanSupport {
 	 * Adds the max ion value to the given scan.
 	 * 
 	 * @param scan
-	 * @param mz
+	 * @param ion
 	 */
-	private void addMaxIon(int scan, float mz) {
+	private void addMaxIon(int scan, float ion) {
 
-		maxIon[scan] = mz;
+		maxIon[scan] = ion;
 	}
 
 	/**
 	 * Adds the min ion value to the given scan.
 	 * 
 	 * @param scan
-	 * @param mz
+	 * @param ion
 	 */
-	private void addMinIon(int scan, float mz) {
+	private void addMinIon(int scan, float ion) {
 
-		minIon[scan] = mz;
+		minIon[scan] = ion;
 	}
 
 	// --------------------------------------IScanSupport

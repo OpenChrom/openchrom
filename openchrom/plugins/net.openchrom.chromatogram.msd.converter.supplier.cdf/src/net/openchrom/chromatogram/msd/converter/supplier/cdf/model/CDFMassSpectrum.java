@@ -20,7 +20,7 @@ package net.openchrom.chromatogram.msd.converter.supplier.cdf.model;
 import net.openchrom.chromatogram.msd.model.core.AbstractSupplierMassSpectrum;
 import net.openchrom.chromatogram.msd.model.core.IIon;
 import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
-import net.openchrom.chromatogram.msd.model.exceptions.MZLimitExceededException;
+import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
 import net.openchrom.logging.core.Logger;
 
 public class CDFMassSpectrum extends AbstractSupplierMassSpectrum implements ICDFMassSpectrum {
@@ -34,7 +34,7 @@ public class CDFMassSpectrum extends AbstractSupplierMassSpectrum implements ICD
 	/**
 	 * MAX_IONS The total amount of ions to be stored in the
 	 * cdf chromatogram.<br/>
-	 * It does not mean, that m/z 65535 is the upper bound, but only 65535 mass
+	 * It does not mean, that ion 65535 is the upper bound, but only 65535 mass
 	 * fragments can be stored in a mass spectrum.
 	 */
 	public static final int MAX_IONS = 65535;
@@ -74,7 +74,7 @@ public class CDFMassSpectrum extends AbstractSupplierMassSpectrum implements ICD
 	public ICDFMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
 
 		ICDFMassSpectrum massSpectrum = (ICDFMassSpectrum)super.clone();
-		ICDFIon ion;
+		ICDFIon cdfIon;
 		/*
 		 * The instance variables have been copied by super.clone();.<br/> The
 		 * ions in the ion list need not to be removed via
@@ -83,13 +83,13 @@ public class CDFMassSpectrum extends AbstractSupplierMassSpectrum implements ICD
 		 * super class does not know each available type of ion.<br/>
 		 * Make a deep copy of all ions.
 		 */
-		for(IIon mf : getIons()) {
+		for(IIon ion : getIons()) {
 			try {
-				ion = new CDFIon(mf.getMZ(), mf.getAbundance());
-				massSpectrum.addIon(ion);
+				cdfIon = new CDFIon(ion.getIon(), ion.getAbundance());
+				massSpectrum.addIon(cdfIon);
 			} catch(AbundanceLimitExceededException e) {
 				logger.warn(e);
-			} catch(MZLimitExceededException e) {
+			} catch(IonLimitExceededException e) {
 				logger.warn(e);
 			}
 		}
