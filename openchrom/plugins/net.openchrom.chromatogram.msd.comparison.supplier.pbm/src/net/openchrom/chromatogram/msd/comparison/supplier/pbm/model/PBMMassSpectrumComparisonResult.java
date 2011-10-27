@@ -10,7 +10,7 @@ import net.openchrom.chromatogram.msd.comparison.spectrum.AbstractMassSpectrumCo
 import net.openchrom.chromatogram.msd.model.core.IIon;
 import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
 import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
-import net.openchrom.chromatogram.msd.model.exceptions.MZLimitExceededException;
+import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
 import net.openchrom.chromatogram.msd.model.implementation.DefaultIon;
 import net.openchrom.chromatogram.msd.model.implementation.DefaultMassSpectrum;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignal;
@@ -52,7 +52,7 @@ public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumCompari
 	 * This method will calculate new abundance values in the following manner:<br/>
 	 * For each ion the new abundance will be set to:<br/>
 	 * <br/>
-	 * Inew = I * MZ;<br/>
+	 * Inew = I * Ion;<br/>
 	 * <br/>
 	 * Set the highest intensity value to 100 so that no problems will occur
 	 * when you calculate the new abundance values. A new mass spectrum will be
@@ -66,16 +66,16 @@ public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumCompari
 		 * Normalize the abundance values to a highest value of 100.
 		 */
 		massSpectrum.normalize(NORMALIZATION_FACTOR);
-		int startMZ = ionRange.getStartIon();
-		int stopMZ = ionRange.getStopIon();
+		int startIon = ionRange.getStartIon();
+		int stopIon = ionRange.getStopIon();
 		IExtractedIonSignal signal;
-		signal = massSpectrum.getExtractedIonSignal(startMZ, stopMZ);
+		signal = massSpectrum.getExtractedIonSignal(startIon, stopIon);
 		/*
 		 * Calculate the new abundance value.
 		 */
 		float abundance;
-		for(int mz = startMZ; mz <= stopMZ; mz++) {
-			abundance = signal.getAbundance(mz);
+		for(int ion = startIon; ion <= stopIon; ion++) {
+			abundance = signal.getAbundance(ion);
 			if(abundance >= 0) {
 				/*
 				 * Calculate the new abundance and add the ion to the
@@ -83,13 +83,13 @@ public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumCompari
 				 */
 				try {
 					/*
-					 * Inew = I * MZ
+					 * Inew = I * Ion
 					 */
-					adjustedIon = new DefaultIon(mz, abundance * mz);
+					adjustedIon = new DefaultIon(ion, abundance * ion);
 					adjustedMassSpectrum.addIon(adjustedIon);
 				} catch(AbundanceLimitExceededException e) {
 					logger.warn(e);
-				} catch(MZLimitExceededException e) {
+				} catch(IonLimitExceededException e) {
 					logger.warn(e);
 				}
 			}
