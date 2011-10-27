@@ -184,7 +184,7 @@ public class CDFChromatogramReader implements ICDFChromatogramReader {
 			monitor.subTask(IConstants.SCAN + " " + i);
 			massSpectrum = new CDFMassSpectrum();
 			massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
-			ion = new CDFIon(IIon.TIC_Ion, true);
+			ion = new CDFIon(IIon.TIC_ION, true);
 			ion.setAbundance(in.getTotalSignal(i));
 			massSpectrum.addIon(ion);
 			chromatogram.addScan(massSpectrum);
