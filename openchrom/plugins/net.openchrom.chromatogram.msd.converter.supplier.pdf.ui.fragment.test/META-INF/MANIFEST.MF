@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test
+Bundle-SymbolicName: net.openchrom.chromatogram.msd.converter.supplier.pdf.ui.fragment.test
+Bundle-Version: 0.6.0.qualifier
+Bundle-Vendor: http://www.openchrom.net
+Fragment-Host: net.openchrom.chromatogram.msd.converter.supplier.pdf.ui;bundle-version="0.6.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

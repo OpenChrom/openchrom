@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ui
+Bundle-SymbolicName: net.openchrom.chromatogram.msd.converter.supplier.pdf.ui
+Bundle-Version: 0.6.0.qualifier
+Bundle-Activator: net.openchrom.chromatogram.msd.converter.supplier.pdf.ui.Activator
+Bundle-Vendor: http://www.openchrom.net
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
