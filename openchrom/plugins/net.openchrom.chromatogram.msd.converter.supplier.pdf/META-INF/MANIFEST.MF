@@ -1,10 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Pdf
-Bundle-SymbolicName: net.openchrom.chromatogram.msd.converter.supplier.pdf
+Bundle-SymbolicName: net.openchrom.chromatogram.msd.converter.supplier.pdf;singleton:=true
 Bundle-Version: 0.6.0.qualifier
 Bundle-Activator: net.openchrom.chromatogram.msd.converter.supplier.pdf.Activator
 Bundle-Vendor: http://www.openchrom.net
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ net.openchrom.chromatogram.msd.converter;bundle-version="0.6.0",
+ net.openchrom.chromatogram.msd.model;bundle-version="0.6.0",
+ net.openchrom.keys;bundle-version="0.6.0",
+ net.openchrom.logging;bundle-version="0.6.0",
+ net.openchrom.support;bundle-version="0.6.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
