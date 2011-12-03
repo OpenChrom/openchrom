@@ -58,6 +58,7 @@ public class BundleProductPreferences {
 		 * store, so a unique product id from the model plugin (e.g. this
 		 * P_PRODUCT_ID) can't be used.
 		 */
+		@SuppressWarnings("deprecation")
 		Preferences preferences = new InstanceScope().getNode("net.openchrom.chromatogram.msd.converter.supplier.pdf.ui");
 		IProductPreferences productPreferences = new ProductPreferences(preferences, P_TRIAL_KEY, P_TRIAL_START_DATE_KEY, P_PRODUCT_SERIAL_KEY, P_TRIAL_DAYS);
 		productPreferences.setProductName(PRODUCT_NAME);
