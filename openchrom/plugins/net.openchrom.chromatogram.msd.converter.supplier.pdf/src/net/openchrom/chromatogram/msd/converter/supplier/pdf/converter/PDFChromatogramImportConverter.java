@@ -17,7 +17,6 @@ import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotReadableExce
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramOverview;
 
-
 public class PDFChromatogramImportConverter extends AbstractChromatogramImportConverter {
 
 	@Override

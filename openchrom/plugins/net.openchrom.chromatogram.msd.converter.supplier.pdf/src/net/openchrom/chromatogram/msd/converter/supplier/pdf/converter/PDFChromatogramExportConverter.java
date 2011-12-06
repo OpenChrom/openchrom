@@ -15,7 +15,6 @@ import net.openchrom.chromatogram.msd.converter.chromatogram.AbstractChromatogra
 import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotWriteableException;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 
-
 public class PDFChromatogramExportConverter extends AbstractChromatogramExportConverter {
 
 	@Override
