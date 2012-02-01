@@ -6,6 +6,7 @@
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
 import net.openchrom.chromatogram.msd.comparison.exceptions.ComparisonException;
+import net.openchrom.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
 import net.openchrom.chromatogram.msd.comparison.spectrum.IMassSpectrumComparisonResult;
 import net.openchrom.chromatogram.msd.comparison.spectrum.MassSpectrumComparator;
 import net.openchrom.chromatogram.msd.model.core.IIon;
@@ -49,7 +50,8 @@ public class PBMMassSpectrumComparator_1_Test extends TestCase {
 		ion = new DefaultIon(105.5f, 4000.0f);
 		reference.addIon(ion);
 		ionRange = new IonRange(20, 120);
-		result = MassSpectrumComparator.compare(unknown, reference, ionRange, PBMMassSpectrumComparator.COMPARATOR_ID);
+		IMassSpectrumComparatorProcessingInfo processingInfo = MassSpectrumComparator.compare(unknown, reference, ionRange, PBMMassSpectrumComparator.COMPARATOR_ID);
+		result = processingInfo.getMassSpectrumComparisonResult();
 	}
 
 	@Override

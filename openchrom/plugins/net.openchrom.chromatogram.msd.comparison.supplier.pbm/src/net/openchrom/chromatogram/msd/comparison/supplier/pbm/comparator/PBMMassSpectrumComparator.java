@@ -6,6 +6,8 @@
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
 import net.openchrom.chromatogram.msd.comparison.exceptions.ComparisonException;
+import net.openchrom.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
+import net.openchrom.chromatogram.msd.comparison.processing.MassSpectrumComparatorProcessingInfo;
 import net.openchrom.chromatogram.msd.comparison.spectrum.IMassSpectrumComparator;
 import net.openchrom.chromatogram.msd.comparison.spectrum.IMassSpectrumComparisonResult;
 import net.openchrom.chromatogram.msd.comparison.supplier.pbm.model.PBMMassSpectrumComparisonResult;
@@ -23,17 +25,19 @@ public class PBMMassSpectrumComparator implements IMassSpectrumComparator {
 
 	public static final String COMPARATOR_ID = "net.openchrom.chromatogram.msd.comparison.supplier.pbm";
 	private static final Logger logger = Logger.getLogger(PBMMassSpectrumComparator.class);
+	private static final String DESCRIPTION = "PBM Distance Comparator";
 
 	@Override
-	public IMassSpectrumComparisonResult compare(IMassSpectrum unknown, IMassSpectrum reference, IIonRange ionRange) {
+	public IMassSpectrumComparatorProcessingInfo compare(IMassSpectrum unknown, IMassSpectrum reference, IIonRange ionRange) {
 
-		PBMMassSpectrumComparisonResult result = null;
+		IMassSpectrumComparatorProcessingInfo processingInfo = new MassSpectrumComparatorProcessingInfo();
 		try {
-			result = new PBMMassSpectrumComparisonResult(unknown, reference, ionRange);
+			IMassSpectrumComparisonResult massSpectrumComparisonResult = new PBMMassSpectrumComparisonResult(unknown, reference, ionRange);
+			processingInfo.setMassSpectrumComparisonResult(massSpectrumComparisonResult);
 		} catch(ComparisonException e) {
 			logger.warn(e);
-			return null;
+			processingInfo.addErrorMessage(DESCRIPTION, "The unknown mass spectrum couldn't be identified.");
 		}
-		return result;
+		return processingInfo;
 	}
 }

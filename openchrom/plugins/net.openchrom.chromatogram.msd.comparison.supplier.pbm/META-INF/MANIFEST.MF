@@ -8,7 +8,8 @@ Bundle-Activator: net.openchrom.chromatogram.msd.comparison.supplier.pbm.Activat
 Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.chromatogram.msd.comparison;bundle-version="0.6.0",
  net.openchrom.chromatogram.msd.model;bundle-version="0.6.0",
- net.openchrom.logging;bundle-version="0.6.0"
+ net.openchrom.logging;bundle-version="0.6.0",
+ net.openchrom.processing;bundle-version="0.6.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: http://www.openchrom.net
