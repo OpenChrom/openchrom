@@ -18,18 +18,15 @@
 package net.openchrom.chromatogram.msd.converter.supplier.cdf;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Date;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsEmptyException;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotReadableException;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotWriteableException;
-import net.openchrom.chromatogram.msd.converter.exceptions.NoChromatogramConverterAvailableException;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.processing.core.exceptions.TypeCastException;
 
 import junit.framework.TestCase;
 
@@ -64,32 +61,29 @@ public class CDFConverterTestX extends TestCase {
 		// String pathExport = "/home/eselmeister/tmp/OPCDF.CDF";
 		// String pathExport = "/home/eselmeister/tmp/OPCDF.D/DATA.MS";
 		File chromatogramExport = new File(pathExport);
+		start = new Date();
+		IChromatogram chrom;
+		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(chromatogram, EXTENSION_POINT_AGILENT_ID, new NullProgressMonitor());
 		try {
-			start = new Date();
-			IChromatogram chrom;
-			chrom = ChromatogramConverter.convert(chromatogram, EXTENSION_POINT_AGILENT_ID, new NullProgressMonitor());
+			chrom = processingInfo.getChromatogram();
 			stop = new Date();
 			System.out.println("Milliseconds Lesen: " + (stop.getTime() - start.getTime()));
 			assertEquals("Scans", 5726, chrom.getNumberOfScans());
 			// assertEquals("TS", 55822.0d, chrom.getScan(3).getTotalSignal());
 			// chrom.removeScans(3398, 3585);
 			start = new Date();
-			File test = ChromatogramConverter.convert(chromatogramExport, chrom, EXTENSION_POINT_CDF_ID, new NullProgressMonitor());
-			stop = new Date();
-			System.out.println("Milliseconds Schreiben: " + (stop.getTime() - start.getTime()));
-			assertEquals("File path", pathExport, test.getAbsolutePath());
-		} catch(FileNotFoundException e) {
-			e.printStackTrace();
-		} catch(FileIsNotReadableException e) {
-			e.printStackTrace();
-		} catch(FileIsEmptyException e) {
-			e.printStackTrace();
-		} catch(IOException e) {
-			e.printStackTrace();
-		} catch(FileIsNotWriteableException e) {
-			e.printStackTrace();
-		} catch(NoChromatogramConverterAvailableException e) {
-			e.printStackTrace();
+			IChromatogramExportConverterProcessingInfo processingInfoExport = ChromatogramConverter.convert(chromatogramExport, chrom, EXTENSION_POINT_CDF_ID, new NullProgressMonitor());
+			File test;
+			try {
+				test = processingInfoExport.getFile();
+				stop = new Date();
+				System.out.println("Milliseconds Schreiben: " + (stop.getTime() - start.getTime()));
+				assertEquals("File path", pathExport, test.getAbsolutePath());
+			} catch(TypeCastException e) {
+				e.printStackTrace();
+			}
+		} catch(TypeCastException e1) {
+			e1.printStackTrace();
 		}
 	}
 }

@@ -18,18 +18,15 @@
 package net.openchrom.chromatogram.msd.converter.supplier.cdf.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import junit.framework.TestCase;
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsEmptyException;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotReadableException;
-import net.openchrom.chromatogram.msd.converter.exceptions.NoChromatogramConverterAvailableException;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.TestPathHelper;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.processing.core.exceptions.TypeCastException;
 
 /**
  * Tests if the right exception will be thrown if the file is empty.
@@ -61,37 +58,23 @@ public class CDFChromatogramReader_EMPTY_1_ITest extends TestCase {
 
 	public void testNotReadable_1() {
 
+		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(fileImport, EXTENSION_POINT_ID, new NullProgressMonitor());
 		try {
-			chromatogram = ChromatogramConverter.convert(fileImport, EXTENSION_POINT_ID, new NullProgressMonitor());
-		} catch(FileNotFoundException e) {
-			assertTrue("FileNotFoundException", false);
-		} catch(FileIsNotReadableException e) {
-			assertTrue("FileIsNotReadableException", false);
-		} catch(FileIsEmptyException e) {
-			assertTrue("FileIsEmptyException", true);
-		} catch(IOException e) {
-			assertTrue("IOException", false);
-		} catch(NoChromatogramConverterAvailableException e) {
-			assertTrue("NoChromatogramConverterAvailableException should not be thrown.", false);
-		} finally {
-			if(chromatogram != null) {
-				chromatogram = null;
-			}
+			chromatogram = processingInfo.getChromatogram();
+			assertNotNull(chromatogram);
+		} catch(TypeCastException e) {
+			assertTrue("TypeCastException", false);
 		}
 	}
 
 	public void testNotReadable_2() {
 
+		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(fileImport, new NullProgressMonitor());
 		try {
-			chromatogram = ChromatogramConverter.convert(fileImport, new NullProgressMonitor());
-		} catch(FileNotFoundException e) {
-			assertTrue("FileNotFoundException", false);
-		} catch(FileIsNotReadableException e) {
-			assertTrue("FileIsNotReadableException", false);
-		} catch(FileIsEmptyException e) {
-			assertTrue("FileIsEmptyException", true);
-		} catch(NoChromatogramConverterAvailableException e) {
-			assertTrue("NoChromatogramConverterAvailableException should not be thrown.", false);
+			chromatogram = processingInfo.getChromatogram();
+			assertNotNull(chromatogram);
+		} catch(TypeCastException e) {
+			assertTrue("TypeCastException", false);
 		}
 	}
 }

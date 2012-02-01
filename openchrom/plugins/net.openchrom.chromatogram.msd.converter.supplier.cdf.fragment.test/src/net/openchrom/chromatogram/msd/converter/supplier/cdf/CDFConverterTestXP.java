@@ -18,19 +18,17 @@
 package net.openchrom.chromatogram.msd.converter.supplier.cdf;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Date;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsEmptyException;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotReadableException;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotWriteableException;
-import net.openchrom.chromatogram.msd.converter.exceptions.NoChromatogramConverterAvailableException;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramOverview;
+import net.openchrom.processing.core.exceptions.TypeCastException;
 
 import junit.framework.TestCase;
 
@@ -64,30 +62,23 @@ public class CDFConverterTestXP extends TestCase {
 		// String pathExport = "/home/eselmeister/tmp/OPCDF.CDF";
 		// String pathExport = "/home/eselmeister/tmp/OPCDF.D/DATA.MS";
 		File chromatogramExport = new File(pathExport);
+		start = new Date();
+		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(chromatogram, EXTENSION_POINT_ID, new NullProgressMonitor());
+		IChromatogram chrom;
 		try {
-			start = new Date();
-			IChromatogram chrom = ChromatogramConverter.convert(chromatogram, EXTENSION_POINT_ID, new NullProgressMonitor());
+			chrom = processingInfo.getChromatogram();
 			stop = new Date();
 			System.out.println("Milliseconds Lesen: " + (stop.getTime() - start.getTime()));
 			assertEquals("Scans", 5726, chrom.getNumberOfScans());
 			assertEquals("TS", 55822.0f, chrom.getScan(3).getTotalSignal());
 			// chrom.removeScans(3398, 3585);
 			start = new Date();
-			File test = ChromatogramConverter.convert(chromatogramExport, chrom, EXTENSION_POINT_ID, new NullProgressMonitor());
+			IChromatogramExportConverterProcessingInfo processingInfoExport = ChromatogramConverter.convert(chromatogramExport, chrom, EXTENSION_POINT_ID, new NullProgressMonitor());
+			File test = processingInfoExport.getFile();
 			stop = new Date();
 			System.out.println("Milliseconds Schreiben: " + (stop.getTime() - start.getTime()));
 			assertEquals("File path", pathExport, test.getAbsolutePath());
-		} catch(FileNotFoundException e) {
-			e.printStackTrace();
-		} catch(FileIsNotReadableException e) {
-			e.printStackTrace();
-		} catch(FileIsEmptyException e) {
-			e.printStackTrace();
-		} catch(IOException e) {
-			e.printStackTrace();
-		} catch(FileIsNotWriteableException e) {
-			e.printStackTrace();
-		} catch(NoChromatogramConverterAvailableException e) {
+		} catch(TypeCastException e) {
 			e.printStackTrace();
 		}
 	}
@@ -98,9 +89,11 @@ public class CDFConverterTestXP extends TestCase {
 		Date stop;
 		String path = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_OP17760);
 		File chromatogram = new File(path);
+		start = new Date();
+		IChromatogramOverviewImportConverterProcessingInfo processingInfo = ChromatogramConverter.convertOverview(chromatogram, EXTENSION_POINT_ID, new NullProgressMonitor());
+		IChromatogramOverview chrom;
 		try {
-			start = new Date();
-			IChromatogramOverview chrom = ChromatogramConverter.convertOverview(chromatogram, EXTENSION_POINT_ID, new NullProgressMonitor());
+			chrom = processingInfo.getChromatogramOverview();
 			stop = new Date();
 			System.out.println("Milliseconds Lesen Overview: " + (stop.getTime() - start.getTime()));
 			assertEquals("Scans", 5726, chrom.getNumberOfScans());
@@ -110,15 +103,7 @@ public class CDFConverterTestXP extends TestCase {
 			 * System.out.println(signal.getRetentionTime() + " " +
 			 * signal.getTotalSignal()); }
 			 */
-		} catch(FileNotFoundException e) {
-			e.printStackTrace();
-		} catch(FileIsNotReadableException e) {
-			e.printStackTrace();
-		} catch(FileIsEmptyException e) {
-			e.printStackTrace();
-		} catch(IOException e) {
-			e.printStackTrace();
-		} catch(NoChromatogramConverterAvailableException e) {
+		} catch(TypeCastException e) {
 			e.printStackTrace();
 		}
 	}

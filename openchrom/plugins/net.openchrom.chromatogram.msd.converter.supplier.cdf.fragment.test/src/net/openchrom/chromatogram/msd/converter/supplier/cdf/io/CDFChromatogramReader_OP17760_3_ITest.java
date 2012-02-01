@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import junit.framework.TestCase;
 
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.TestPathHelper;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 
@@ -45,7 +46,8 @@ public class CDFChromatogramReader_OP17760_3_ITest extends TestCase {
 		super.setUp();
 		this.pathImport = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_OP17760);
 		fileImport = new File(this.pathImport);
-		chromatogram = ChromatogramConverter.convert(fileImport, new NullProgressMonitor());
+		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(fileImport, new NullProgressMonitor());
+		chromatogram = processingInfo.getChromatogram();
 	}
 
 	@Override

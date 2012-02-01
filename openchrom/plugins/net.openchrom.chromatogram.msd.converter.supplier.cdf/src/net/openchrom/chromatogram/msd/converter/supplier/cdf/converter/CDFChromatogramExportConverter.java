@@ -18,32 +18,49 @@
 package net.openchrom.chromatogram.msd.converter.supplier.cdf.converter;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.converter.chromatogram.AbstractChromatogramExportConverter;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotWriteableException;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.support.IConstants;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.CDFChromatogramWriter;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.logging.core.Logger;
+import net.openchrom.processing.core.IProcessingInfo;
 
 public class CDFChromatogramExportConverter extends AbstractChromatogramExportConverter {
 
-	public CDFChromatogramExportConverter() {
-
-	}
+	private static final Logger logger = Logger.getLogger(CDFChromatogramExportConverter.class);
+	private static final String DESCRIPTION = "NetCDF Export Converter";
 
 	@Override
-	public File convert(File file, IChromatogram chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public IChromatogramExportConverterProcessingInfo convert(File file, IChromatogram chromatogram, IProgressMonitor monitor) {
 
+		IChromatogramExportConverterProcessingInfo processingInfo = new ChromatogramExportConverterProcessingInfo();
+		/*
+		 * Validate the file.
+		 */
 		file = SpecificationValidator.validateCDFSpecification(file);
-		super.validate(file);
-		monitor.subTask(IConstants.EXPORT_CDF_CHROMATOGRAM);
-		CDFChromatogramWriter writer = new CDFChromatogramWriter();
-		writer.writeChromatogram(file, chromatogram, monitor);
-		return file;
+		IProcessingInfo processingInfoValidate = super.validate(file);
+		/*
+		 * Don't process if errors have occurred.
+		 */
+		if(processingInfoValidate.hasErrorMessages()) {
+			processingInfo.addMessages(processingInfoValidate);
+		} else {
+			monitor.subTask(IConstants.EXPORT_CDF_CHROMATOGRAM);
+			CDFChromatogramWriter writer = new CDFChromatogramWriter();
+			try {
+				writer.writeChromatogram(file, chromatogram, monitor);
+			} catch(Exception e) {
+				logger.warn(e);
+				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
+			}
+			processingInfo.setFile(file);
+		}
+		return processingInfo;
 	}
 }

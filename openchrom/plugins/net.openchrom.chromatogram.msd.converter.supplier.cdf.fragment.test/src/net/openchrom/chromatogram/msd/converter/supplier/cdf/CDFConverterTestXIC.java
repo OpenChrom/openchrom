@@ -18,18 +18,15 @@
 package net.openchrom.chromatogram.msd.converter.supplier.cdf;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Date;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsEmptyException;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotReadableException;
-import net.openchrom.chromatogram.msd.converter.exceptions.NoChromatogramConverterAvailableException;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignals;
+import net.openchrom.processing.core.exceptions.TypeCastException;
 
 import junit.framework.TestCase;
 
@@ -57,9 +54,11 @@ public class CDFConverterTestXIC extends TestCase {
 		Date stop;
 		String path = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_OP17760);
 		File chromatogram = new File(path);
+		start = new Date();
+		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(chromatogram, EXTENSION_POINT_ID, new NullProgressMonitor());
+		IChromatogram chrom;
 		try {
-			start = new Date();
-			IChromatogram chrom = ChromatogramConverter.convert(chromatogram, EXTENSION_POINT_ID, new NullProgressMonitor());
+			chrom = processingInfo.getChromatogram();
 			stop = new Date();
 			System.out.println("Milliseconds Lesen Overview: " + (stop.getTime() - start.getTime()));
 			assertEquals("Scans", 5726, chrom.getNumberOfScans());
@@ -79,15 +78,7 @@ public class CDFConverterTestXIC extends TestCase {
 			signals = chrom.getExtractedIonSignals(28.0f, 600.0f);
 			stop = new Date();
 			System.out.println("XIC 28-600: " + (stop.getTime() - start.getTime()));
-		} catch(FileNotFoundException e) {
-			e.printStackTrace();
-		} catch(FileIsNotReadableException e) {
-			e.printStackTrace();
-		} catch(FileIsEmptyException e) {
-			e.printStackTrace();
-		} catch(IOException e) {
-			e.printStackTrace();
-		} catch(NoChromatogramConverterAvailableException e) {
+		} catch(TypeCastException e) {
 			e.printStackTrace();
 		}
 	}

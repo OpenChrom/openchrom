@@ -18,43 +18,80 @@
 package net.openchrom.chromatogram.msd.converter.supplier.cdf.converter;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.converter.chromatogram.AbstractChromatogramImportConverter;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsEmptyException;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotReadableException;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.ChromatogramImportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.ChromatogramOverviewImportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.support.IConstants;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.CDFChromatogramReader;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramOverview;
+import net.openchrom.logging.core.Logger;
+import net.openchrom.processing.core.IProcessingInfo;
 
 public class CDFChromatogramImportConverter extends AbstractChromatogramImportConverter {
 
-	public CDFChromatogramImportConverter() {
+	private static final Logger logger = Logger.getLogger(CDFChromatogramImportConverter.class);
+	private static final String DESCRIPTION = "NetCDF Import Converter";
 
+	@Override
+	public IChromatogramImportConverterProcessingInfo convert(File file, IProgressMonitor monitor) {
+
+		IChromatogramImportConverterProcessingInfo processingInfo = new ChromatogramImportConverterProcessingInfo();
+		/*
+		 * Validate the file.
+		 */
+		IProcessingInfo processingInfoValidate = super.validate(file);
+		if(processingInfoValidate.hasErrorMessages()) {
+			processingInfo.addMessages(processingInfoValidate);
+		} else {
+			/*
+			 * Read the chromatogram.
+			 */
+			file = SpecificationValidator.validateCDFSpecification(file);
+			CDFChromatogramReader reader = new CDFChromatogramReader();
+			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM);
+			try {
+				IChromatogram chromatogram = reader.read(file, monitor);
+				processingInfo.setChromatogram(chromatogram);
+			} catch(Exception e) {
+				logger.warn(e);
+				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
+			}
+		}
+		return processingInfo;
 	}
 
 	@Override
-	public IChromatogram convert(File chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramOverviewImportConverterProcessingInfo convertOverview(File file, IProgressMonitor monitor) {
 
-		super.validate(chromatogram);
-		chromatogram = SpecificationValidator.validateCDFSpecification(chromatogram);
-		CDFChromatogramReader reader = new CDFChromatogramReader();
-		monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM);
-		return reader.read(chromatogram, monitor);
-	}
-
-	@Override
-	public IChromatogramOverview convertOverview(File chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
-
-		super.validate(chromatogram);
-		chromatogram = SpecificationValidator.validateCDFSpecification(chromatogram);
-		CDFChromatogramReader reader = new CDFChromatogramReader();
-		monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM_OVERVIEW);
-		return reader.readOverview(chromatogram, monitor);
+		IChromatogramOverviewImportConverterProcessingInfo processingInfo = new ChromatogramOverviewImportConverterProcessingInfo();
+		/*
+		 * Validate the file.
+		 */
+		IProcessingInfo processingInfoValidate = super.validate(file);
+		if(processingInfoValidate.hasErrorMessages()) {
+			processingInfo.addMessages(processingInfoValidate);
+		} else {
+			/*
+			 * Read the chromatogram overview.
+			 */
+			file = SpecificationValidator.validateCDFSpecification(file);
+			CDFChromatogramReader reader = new CDFChromatogramReader();
+			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM_OVERVIEW);
+			try {
+				IChromatogramOverview chromatogramOverview = reader.readOverview(file, monitor);
+				processingInfo.setChromatogramOverview(chromatogramOverview);
+			} catch(Exception e) {
+				logger.warn(e);
+				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
+			}
+		}
+		return processingInfo;
 	}
 }

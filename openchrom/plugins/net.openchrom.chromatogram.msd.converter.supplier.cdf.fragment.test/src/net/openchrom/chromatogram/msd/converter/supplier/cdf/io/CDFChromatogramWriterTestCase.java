@@ -22,6 +22,8 @@ import java.io.File;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 import junit.framework.TestCase;
 
@@ -44,17 +46,20 @@ public class CDFChromatogramWriterTestCase extends TestCase {
 		 * Import the chromatogram.
 		 */
 		fileImport = new File(this.pathImport);
-		chromatogramImport = ChromatogramConverter.convert(fileImport, this.extensionPointImport, new NullProgressMonitor());
+		IChromatogramImportConverterProcessingInfo processingInfoImport = ChromatogramConverter.convert(fileImport, this.extensionPointImport, new NullProgressMonitor());
+		chromatogramImport = processingInfoImport.getChromatogram();
 		/*
 		 * Export the chromatogram.
 		 */
 		fileExport = new File(this.pathExport);
-		fileExport = ChromatogramConverter.convert(fileExport, chromatogramImport, this.extensionPointExportReimport, new NullProgressMonitor());
+		IChromatogramExportConverterProcessingInfo processingInfoExport = ChromatogramConverter.convert(fileExport, chromatogramImport, this.extensionPointExportReimport, new NullProgressMonitor());
+		fileExport = processingInfoExport.getFile();
 		/*
 		 * Reimport the exported chromatogram.
 		 */
 		chromatogramImport = null;
-		chromatogram = ChromatogramConverter.convert(fileExport, this.extensionPointExportReimport, new NullProgressMonitor());
+		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(fileExport, this.extensionPointExportReimport, new NullProgressMonitor());
+		chromatogram = processingInfo.getChromatogram();
 	}
 
 	@Override
