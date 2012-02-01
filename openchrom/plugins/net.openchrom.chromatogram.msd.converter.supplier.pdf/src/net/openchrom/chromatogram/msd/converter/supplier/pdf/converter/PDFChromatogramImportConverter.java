@@ -6,28 +6,45 @@
 package net.openchrom.chromatogram.msd.converter.supplier.pdf.converter;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.converter.chromatogram.AbstractChromatogramImportConverter;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsEmptyException;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotReadableException;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
-import net.openchrom.chromatogram.msd.model.core.IChromatogramOverview;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.ChromatogramImportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.ChromatogramOverviewImportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.supplier.pdf.Activator;
 
 public class PDFChromatogramImportConverter extends AbstractChromatogramImportConverter {
 
-	@Override
-	public IChromatogram convert(File chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	private static final String DESCRIPTION = "PDF Import Converter";
 
-		return null;
+	@Override
+	public IChromatogramImportConverterProcessingInfo convert(File file, IProgressMonitor monitor) {
+
+		IChromatogramImportConverterProcessingInfo processingInfo = new ChromatogramImportConverterProcessingInfo();
+		/*
+		 * Check the key.
+		 */
+		if(!Activator.isValidVersion()) {
+			processingInfo.addErrorMessage(DESCRIPTION, "The PDF chromatogram overview import converter has no valid licence.");
+			return processingInfo;
+		}
+		return processingInfo;
 	}
 
 	@Override
-	public IChromatogramOverview convertOverview(File chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramOverviewImportConverterProcessingInfo convertOverview(File file, IProgressMonitor monitor) {
 
-		return null;
+		IChromatogramOverviewImportConverterProcessingInfo processingInfo = new ChromatogramOverviewImportConverterProcessingInfo();
+		/*
+		 * Check the key.
+		 */
+		if(!Activator.isValidVersion()) {
+			processingInfo.addErrorMessage(DESCRIPTION, "The PDF chromatogram overview import converter has no valid licence.");
+			return processingInfo;
+		}
+		return processingInfo;
 	}
 }
