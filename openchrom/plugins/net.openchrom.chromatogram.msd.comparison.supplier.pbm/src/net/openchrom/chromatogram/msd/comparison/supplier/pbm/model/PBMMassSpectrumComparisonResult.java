@@ -44,7 +44,7 @@ public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumCompari
 	@Override
 	public float getMatchQuality() {
 
-		return matchQuality;
+		return matchQuality * 100; // internally it's normalized to 1, but a percentage value is used normally
 	}
 
 	// ----------------------------------------private methods

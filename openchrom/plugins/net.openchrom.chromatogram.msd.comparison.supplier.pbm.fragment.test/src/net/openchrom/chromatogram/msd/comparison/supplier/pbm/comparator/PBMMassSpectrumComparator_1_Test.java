@@ -66,16 +66,16 @@ public class PBMMassSpectrumComparator_1_Test extends TestCase {
 
 	public void testFitValue_1() throws ComparisonException {
 
-		assertEquals("FIT Value", 0.6f, result.getFitValue());
+		assertEquals("FIT Value", 60.000004f, result.getFitValue());
 	}
 
 	public void testReverseFitValue_1() throws ComparisonException {
 
-		assertEquals("ReverseFIT Value", 0.75f, result.getReverseFitValue());
+		assertEquals("ReverseFIT Value", 75.0f, result.getReverseFitValue());
 	}
 
 	public void testMatchQuality_1() throws ComparisonException {
 
-		assertEquals("MatchQuality", 0.8162296f, result.getMatchQuality());
+		assertEquals("MatchQuality", 81.622955f, result.getMatchQuality());
 	}
 }
