@@ -6,11 +6,11 @@
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
 import net.openchrom.chromatogram.msd.comparison.exceptions.ComparisonException;
+import net.openchrom.chromatogram.msd.comparison.massspectrum.MassSpectrumComparator;
 import net.openchrom.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
-import net.openchrom.chromatogram.msd.comparison.spectrum.IMassSpectrumComparisonResult;
-import net.openchrom.chromatogram.msd.comparison.spectrum.MassSpectrumComparator;
 import net.openchrom.chromatogram.msd.model.core.IIon;
 import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
+import net.openchrom.chromatogram.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
 import net.openchrom.chromatogram.msd.model.implementation.DefaultIon;
 import net.openchrom.chromatogram.msd.model.implementation.DefaultMassSpectrum;
 import net.openchrom.chromatogram.msd.model.xic.IIonRange;
@@ -64,18 +64,18 @@ public class PBMMassSpectrumComparator_1_Test extends TestCase {
 		super.tearDown();
 	}
 
-	public void testFitValue_1() throws ComparisonException {
+	public void testGetMatchFactor_1() throws ComparisonException {
 
-		assertEquals("FIT Value", 60.000004f, result.getFitValue());
+		assertEquals("MatchFactor", 81.622955f, result.getMatchFactor());
 	}
 
-	public void testReverseFitValue_1() throws ComparisonException {
+	public void testGetReverseMatchFactor_1() throws ComparisonException {
 
-		assertEquals("ReverseFIT Value", 75.0f, result.getReverseFitValue());
+		assertEquals("ReverseMatchFactor", 81.622955f, result.getReverseMatchFactor());
 	}
 
-	public void testMatchQuality_1() throws ComparisonException {
+	public void testGetProbability_1() throws ComparisonException {
 
-		assertEquals("MatchQuality", 81.622955f, result.getMatchQuality());
+		assertEquals("Probability", 0.0f, result.getProbability());
 	}
 }

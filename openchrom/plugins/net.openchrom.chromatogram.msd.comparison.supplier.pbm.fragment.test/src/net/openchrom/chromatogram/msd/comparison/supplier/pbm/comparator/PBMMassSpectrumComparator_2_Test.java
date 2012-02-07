@@ -5,10 +5,10 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
+import net.openchrom.chromatogram.msd.comparison.massspectrum.MassSpectrumComparator;
 import net.openchrom.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
-import net.openchrom.chromatogram.msd.comparison.spectrum.IMassSpectrumComparisonResult;
-import net.openchrom.chromatogram.msd.comparison.spectrum.MassSpectrumComparator;
 import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
+import net.openchrom.chromatogram.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
 import net.openchrom.chromatogram.msd.model.implementation.DefaultMassSpectrum;
 import net.openchrom.chromatogram.msd.model.xic.IIonRange;
 import net.openchrom.chromatogram.msd.model.xic.IonRange;
