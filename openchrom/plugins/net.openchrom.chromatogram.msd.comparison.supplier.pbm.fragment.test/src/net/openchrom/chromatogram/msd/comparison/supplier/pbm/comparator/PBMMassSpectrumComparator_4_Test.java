@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Philip (eselmeister) Wenig.
+ * Copyright (c) 2012 Philip (eselmeister) Wenig.
  * 
  * All rights reserved.
  *******************************************************************************/
@@ -15,7 +15,7 @@ import net.openchrom.chromatogram.msd.model.implementation.DefaultIon;
 import net.openchrom.chromatogram.msd.model.implementation.DefaultMassSpectrum;
 import junit.framework.TestCase;
 
-public class PBMMassSpectrumComparator_1_Test extends TestCase {
+public class PBMMassSpectrumComparator_4_Test extends TestCase {
 
 	private IMassSpectrumComparisonResult result;
 	private IMassSpectrum unknown;
@@ -30,15 +30,11 @@ public class PBMMassSpectrumComparator_1_Test extends TestCase {
 		 * Unknown
 		 */
 		unknown = new DefaultMassSpectrum();
-		ion = new DefaultIon(45.5f, 4000.0f);
-		unknown.addIon(ion);
 		ion = new DefaultIon(55.5f, 4000.0f);
 		unknown.addIon(ion);
 		ion = new DefaultIon(85.5f, 4000.0f);
 		unknown.addIon(ion);
 		ion = new DefaultIon(95.5f, 4000.0f);
-		unknown.addIon(ion);
-		ion = new DefaultIon(105.5f, 4000.0f);
 		unknown.addIon(ion);
 		/*
 		 * Reference
@@ -67,12 +63,12 @@ public class PBMMassSpectrumComparator_1_Test extends TestCase {
 
 	public void testGetMatchFactor_1() throws ComparisonException {
 
-		assertEquals("MatchFactor", 56.014168f, result.getMatchFactor());
+		assertEquals("MatchFactor", 39.569134f, result.getMatchFactor());
 	}
 
 	public void testGetReverseMatchFactor_1() throws ComparisonException {
 
-		assertEquals("ReverseMatchFactor", 56.014168f, result.getReverseMatchFactor());
+		assertEquals("ReverseMatchFactor", 37.024944f, result.getReverseMatchFactor());
 	}
 
 	public void testGetProbability_1() throws ComparisonException {
