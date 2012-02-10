@@ -83,18 +83,17 @@
      <layout>p2</layout>
      <url>http://download.eclipse.org/technology/swtbot/galileo/dev-build/update-site</url>
    </repository>
-<!--
    <repository>
      <id>indigo</id>
      <layout>p2</layout>
      <url>http://download.eclipse.org/releases/indigo</url>
    </repository>
--->
    <repository>
      <id>helios</id>
      <layout>p2</layout>
      <url>http://download.eclipse.org/releases/helios</url>
    </repository>
+   <!--
    <repository>
      <id>galileo</id>
      <layout>p2</layout>
@@ -105,6 +104,7 @@
      <layout>p2</layout>
      <url>http://download.eclipse.org/releases/ganymede</url>
    </repository>
+   -->
   </repositories>
   <!--
 	PLUGIN REPOSITORIES
