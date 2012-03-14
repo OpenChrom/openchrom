@@ -17,9 +17,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.converter.supplier.cdf.model;
 
-import java.io.File;
 import java.util.Date;
-import java.util.StringTokenizer;
 
 import net.openchrom.chromatogram.msd.model.core.AbstractChromatogram;
 
@@ -46,32 +44,9 @@ public class CDFChromatogram extends AbstractChromatogram implements ICDFChromat
 	}
 
 	// ---------------------------------------------ICDFChromatogram
-	// ---------------------------------------------IChromatogram
 	@Override
 	public String getName() {
 
-		String name = "CDFChromatogram";
-		File file = getFile();
-		if(file != null) {
-			String fileName = getFile().getName();
-			if(fileName != "" && fileName != null) {
-				StringTokenizer tokenizer = new StringTokenizer(fileName, ".");
-				if(tokenizer.hasMoreTokens()) {
-					name = tokenizer.nextToken();
-				}
-			}
-		}
-		return name;
-		/*
-		 * StringTokenizer tokenizer = new
-		 * StringTokenizer(getFile().getAbsolutePath(), File.separator); int
-		 * element = tokenizer.countTokens() - 1; // Get the CDFChromatogramFile
-		 * directory. for(int i = 1; i < element; i++) {
-		 * if(tokenizer.hasMoreElements()) { tokenizer.nextToken(); } }
-		 * if(tokenizer.hasMoreElements()) { name = tokenizer.nextToken(); } //
-		 * Shorten the directory. ".D" is not needed. if(name != null) { name =
-		 * name.substring(0, name.length() - 2); } return name;
-		 */
+		return extractNameFromFile("CDFChromatogram");
 	}
-	// ---------------------------------------------IChromatogram
 }
