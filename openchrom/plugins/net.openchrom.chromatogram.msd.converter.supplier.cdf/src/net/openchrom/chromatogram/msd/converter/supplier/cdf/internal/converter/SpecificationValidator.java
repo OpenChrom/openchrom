@@ -38,6 +38,12 @@ public class SpecificationValidator {
 	 */
 	public static File validateCDFSpecification(File file) {
 
+		if(file == null) {
+			return null;
+		}
+		/*
+		 * Validate
+		 */
 		File validFile;
 		String path = file.getAbsolutePath().toUpperCase();
 		if(file.isDirectory()) {
