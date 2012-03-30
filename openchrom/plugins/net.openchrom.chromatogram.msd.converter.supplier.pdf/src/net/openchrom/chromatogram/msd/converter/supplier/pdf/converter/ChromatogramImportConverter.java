@@ -16,9 +16,10 @@ import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromat
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.Activator;
 
-public class PDFChromatogramImportConverter extends AbstractChromatogramImportConverter {
+public class ChromatogramImportConverter extends AbstractChromatogramImportConverter {
 
 	private static final String DESCRIPTION = "PDF Import Converter";
+	private static final String EXPORT_ERROR = "The PDF converter is not able to import chromatograms.";
 
 	@Override
 	public IChromatogramImportConverterProcessingInfo convert(File file, IProgressMonitor monitor) {
@@ -31,6 +32,7 @@ public class PDFChromatogramImportConverter extends AbstractChromatogramImportCo
 			processingInfo.addErrorMessage(DESCRIPTION, "The PDF chromatogram overview import converter has no valid licence.");
 			return processingInfo;
 		}
+		processingInfo.addErrorMessage(DESCRIPTION, EXPORT_ERROR);
 		return processingInfo;
 	}
 
@@ -45,6 +47,7 @@ public class PDFChromatogramImportConverter extends AbstractChromatogramImportCo
 			processingInfo.addErrorMessage(DESCRIPTION, "The PDF chromatogram overview import converter has no valid licence.");
 			return processingInfo;
 		}
+		processingInfo.addErrorMessage(DESCRIPTION, EXPORT_ERROR);
 		return processingInfo;
 	}
 }

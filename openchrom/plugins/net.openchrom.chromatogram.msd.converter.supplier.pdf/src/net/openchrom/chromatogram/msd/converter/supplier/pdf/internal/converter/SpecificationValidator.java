@@ -16,7 +16,7 @@ public class SpecificationValidator {
 
 	}
 
-	public static File validateExcelSpecification(File file) {
+	public static File validateSpecification(File file) {
 
 		File validFile;
 		String path = file.getAbsolutePath().toLowerCase();
