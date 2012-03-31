@@ -53,6 +53,7 @@ public class PDFSupport {
 	private static final double L_200_MM = 200 * L_1_MM;
 	private Font font;
 	private Font font10pt;
+	private Font font14pt;
 	private DecimalFormat decimalFormat;
 	private DecimalFormat abundanceFormat;
 	//
@@ -89,6 +90,9 @@ public class PDFSupport {
 		font = new Font(pdf, "Helvetica");
 		font10pt = new Font(pdf, "Helvetica");
 		font10pt.setSize(10.0);
+		font14pt = new Font(pdf, "Helvetica");
+		font14pt.setSize(14.0);
+		//
 		createFirstPage(pdf);
 		/*
 		 * Close the streams
@@ -124,15 +128,17 @@ public class PDFSupport {
 		 * Content
 		 */
 		double yPosition = L_10_MM;
-		createUpperBoxText(page, box, "Chromatogram Name: " + chromatogram.getName(), yPosition);
+		createHeadlineText(page, box, chromatogram.getName(), yPosition);
+		yPosition += 7 * L_1_MM;
+		createUpperBoxText(page, box, "-------------------------------------------------------------------------------", yPosition);
 		yPosition += L_5_MM;
 		createUpperBoxText(page, box, "Min Abundance: " + minAbundance, yPosition);
 		yPosition += L_5_MM;
 		createUpperBoxText(page, box, "Max Abundance: " + maxAbundance, yPosition);
 		yPosition += L_5_MM;
-		createUpperBoxText(page, box, "Min Retention Time: " + decimalFormat.format(minRetentionTime / AbstractChromatogram.MINUTE_CORRELATION_FACTOR) + " Minutes = " + minRetentionTime + " Milliseconds", yPosition);
+		createUpperBoxText(page, box, "Min Retention Time: " + decimalFormat.format(minRetentionTime / AbstractChromatogram.MINUTE_CORRELATION_FACTOR) + " Minutes = " + (int)minRetentionTime + " Milliseconds", yPosition);
 		yPosition += L_5_MM;
-		createUpperBoxText(page, box, "Max Retention Time: " + decimalFormat.format(maxRetentionTime / AbstractChromatogram.MINUTE_CORRELATION_FACTOR) + " Minutes = " + maxRetentionTime + " Milliseconds", yPosition);
+		createUpperBoxText(page, box, "Max Retention Time: " + decimalFormat.format(maxRetentionTime / AbstractChromatogram.MINUTE_CORRELATION_FACTOR) + " Minutes = " + (int)maxRetentionTime + " Milliseconds", yPosition);
 		yPosition += L_5_MM;
 		createUpperBoxText(page, box, "Scans: " + chromatogram.getNumberOfScans(), yPosition);
 		yPosition += L_5_MM;
@@ -170,6 +176,14 @@ public class PDFSupport {
 		image.scaleBy(0.24d);
 		image.placeIn(boxImage);
 		image.drawOn(page);
+	}
+
+	private void createHeadlineText(Page page, Box box, String text, double yPosition) throws Exception {
+
+		TextLine textLine = new TextLine(font14pt, text);
+		textLine.placeIn(box);
+		textLine.setPosition(L_5_MM, yPosition);
+		textLine.drawOn(page);
 	}
 
 	private void createUpperBoxText(Page page, Box box, String text, double yPosition) throws Exception {
