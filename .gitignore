@@ -4,3 +4,7 @@ openchrom/plugins/net.openchrom.chromatogram.msd.converter.supplier.pdf.ui.fragm
 openchrom/plugins/net.openchrom.chromatogram.msd.converter.supplier.pdf/bin/
 openchrom/plugins/net.openchrom.chromatogram.msd.converter.supplier.pdf.fragment.i18n/bin/
 openchrom/plugins/net.openchrom.chromatogram.msd.converter.supplier.pdf.fragment.test/bin/
+openchrom/updateSites/net.openchrom.chromatogram.msd.converter.supplier.pdf.updateSite/artifacts.jar
+openchrom/updateSites/net.openchrom.chromatogram.msd.converter.supplier.pdf.updateSite/content.jar
+openchrom/updateSites/net.openchrom.chromatogram.msd.converter.supplier.pdf.updateSite/features/
+openchrom/updateSites/net.openchrom.chromatogram.msd.converter.supplier.pdf.updateSite/plugins/
