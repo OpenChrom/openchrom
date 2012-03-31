@@ -7,7 +7,6 @@ package net.openchrom.chromatogram.msd.converter.supplier.pdf.internal.io;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 
@@ -26,7 +25,6 @@ import com.pdfjet.Point;
 import com.pdfjet.RGB;
 import com.pdfjet.TextLine;
 
-import net.openchrom.chromatogram.msd.converter.supplier.pdf.PathResolver;
 import net.openchrom.chromatogram.msd.model.core.AbstractChromatogram;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignal;
@@ -170,8 +168,7 @@ public class PDFSupport {
 		/*
 		 * Place OpenChroms Logo
 		 */
-		String imageFile = PathResolver.getAbsolutePath("icons/openchrom.png");
-		BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(new File(imageFile)));
+		BufferedInputStream bufferedInputStream = new BufferedInputStream(PDFSupport.class.getResourceAsStream("openchrom.png"));
 		Image image = new Image(pdf, bufferedInputStream, ImageType.PNG);
 		image.scaleBy(0.24d);
 		image.placeIn(boxImage);
