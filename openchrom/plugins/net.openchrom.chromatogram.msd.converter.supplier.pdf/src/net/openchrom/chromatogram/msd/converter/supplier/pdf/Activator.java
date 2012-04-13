@@ -49,6 +49,6 @@ public class Activator implements BundleActivator {
 	public static boolean isValidVersion() {
 
 		IProductPreferences productPreferences = BundleProductPreferences.getProductPreferences();
-		return ProductValidator.isValidVersion(productPreferences, false);
+		return ProductValidator.isValidVersion(productPreferences, false, false);
 	}
 }
