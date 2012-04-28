@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: I18n
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.converter.supplier.cdf.ui.fragment.i18n
-Bundle-Version: 0.6.0.qualifier
-Fragment-Host: net.openchrom.chromatogram.msd.converter.supplier.cdf.ui;bundle-version="0.6.0"
+Bundle-Version: 0.7.0.qualifier
+Fragment-Host: net.openchrom.chromatogram.msd.converter.supplier.cdf.ui;bundle-version="0.7.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: http://www.openchrom.net
