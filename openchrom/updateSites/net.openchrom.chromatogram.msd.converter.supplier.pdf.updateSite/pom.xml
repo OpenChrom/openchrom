@@ -9,6 +9,6 @@
   </parent>
   <artifactId>net.openchrom.chromatogram.msd.converter.supplier.pdf.updateSite</artifactId>
   <packaging>eclipse-update-site</packaging>
-  <version>0.6.0-SNAPSHOT</version>
+  <version>0.7.0-SNAPSHOT</version>
   
 </project>
