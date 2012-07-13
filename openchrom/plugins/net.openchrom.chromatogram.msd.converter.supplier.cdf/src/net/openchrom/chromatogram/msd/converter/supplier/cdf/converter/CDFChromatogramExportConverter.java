@@ -22,6 +22,7 @@ import java.io.File;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.converter.chromatogram.AbstractChromatogramExportConverter;
+import net.openchrom.chromatogram.msd.converter.io.IChromatogramWriter;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.converter.SpecificationValidator;
@@ -52,7 +53,7 @@ public class CDFChromatogramExportConverter extends AbstractChromatogramExportCo
 			processingInfo.addMessages(processingInfoValidate);
 		} else {
 			monitor.subTask(IConstants.EXPORT_CDF_CHROMATOGRAM);
-			CDFChromatogramWriter writer = new CDFChromatogramWriter();
+			IChromatogramWriter writer = new CDFChromatogramWriter();
 			try {
 				writer.writeChromatogram(file, chromatogram, monitor);
 			} catch(Exception e) {

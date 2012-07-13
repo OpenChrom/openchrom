@@ -22,6 +22,7 @@ import java.io.File;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.converter.chromatogram.AbstractChromatogramImportConverter;
+import net.openchrom.chromatogram.msd.converter.io.IChromatogramReader;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.ChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.ChromatogramOverviewImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
@@ -54,7 +55,7 @@ public class CDFChromatogramImportConverter extends AbstractChromatogramImportCo
 			 * Read the chromatogram.
 			 */
 			file = SpecificationValidator.validateCDFSpecification(file);
-			CDFChromatogramReader reader = new CDFChromatogramReader();
+			IChromatogramReader reader = new CDFChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM);
 			try {
 				IChromatogram chromatogram = reader.read(file, monitor);
@@ -82,7 +83,7 @@ public class CDFChromatogramImportConverter extends AbstractChromatogramImportCo
 			 * Read the chromatogram overview.
 			 */
 			file = SpecificationValidator.validateCDFSpecification(file);
-			CDFChromatogramReader reader = new CDFChromatogramReader();
+			IChromatogramReader reader = new CDFChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM_OVERVIEW);
 			try {
 				IChromatogramOverview chromatogramOverview = reader.readOverview(file, monitor);

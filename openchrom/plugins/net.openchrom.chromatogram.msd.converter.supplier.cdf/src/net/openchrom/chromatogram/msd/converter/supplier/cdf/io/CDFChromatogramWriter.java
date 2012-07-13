@@ -29,6 +29,7 @@ import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFileWriteable;
 
 import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotWriteableException;
+import net.openchrom.chromatogram.msd.converter.io.IChromatogramWriter;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.support.IConstants;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support.AttributeSupport;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support.CDFConstants;
@@ -43,7 +44,7 @@ import net.openchrom.logging.core.Logger;
  * 
  * @author eselmeister
  */
-public class CDFChromatogramWriter implements ICDFChromatogramWriter {
+public class CDFChromatogramWriter implements IChromatogramWriter {
 
 	private static final Logger logger = Logger.getLogger(CDFChromatogramWriter.class);
 
