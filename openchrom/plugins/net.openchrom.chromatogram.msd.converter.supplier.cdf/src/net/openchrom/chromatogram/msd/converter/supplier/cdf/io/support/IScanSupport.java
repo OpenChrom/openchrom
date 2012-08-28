@@ -39,15 +39,15 @@ public interface IScanSupport {
 	 * Returns the min ion of the given scan.
 	 * 
 	 * @param scan
-	 * @return float
+	 * @return double
 	 */
-	float getMinIon(int scan);
+	double getMinIon(int scan);
 
 	/**
 	 * Returns the max ion of the given scan.
 	 * 
 	 * @param scan
-	 * @return float
+	 * @return double
 	 */
-	float getMaxIon(int scan);
+	double getMaxIon(int scan);
 }

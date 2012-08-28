@@ -32,21 +32,21 @@ public class CDFIon extends AbstractSupplierIon implements ICDFIon {
 	public static final float MIN_ABUNDANCE = 0.0f;
 	public static final float MAX_ABUNDANCE = Float.MAX_VALUE;
 	// A max value for ion
-	public static final float MIN_Ion = 1.0f;
-	public static final float MAX_Ion = 65535.0f;
+	public static final double MIN_ION = 1.0d;
+	public static final double MAX_ION = 65535.0d;
 
 	public CDFIon(float ion) throws IonLimitExceededException {
 
 		super(ion);
 	}
 
-	public CDFIon(float ion, boolean ignoreAbundanceLimit) throws IonLimitExceededException {
+	public CDFIon(double ion, boolean ignoreAbundanceLimit) throws IonLimitExceededException {
 
 		super(ion);
 		setIgnoreAbundanceLimit(ignoreAbundanceLimit);
 	}
 
-	public CDFIon(float ion, float abundance) throws AbundanceLimitExceededException, IonLimitExceededException {
+	public CDFIon(double ion, float abundance) throws AbundanceLimitExceededException, IonLimitExceededException {
 
 		super(ion, abundance);
 	}
@@ -64,14 +64,14 @@ public class CDFIon extends AbstractSupplierIon implements ICDFIon {
 	}
 
 	@Override
-	public float getMinPossibleIonValue() {
+	public double getMinPossibleIonValue() {
 
-		return MIN_Ion;
+		return MIN_ION;
 	}
 
 	@Override
-	public float getMaxPossibleIonValue() {
+	public double getMaxPossibleIonValue() {
 
-		return MAX_Ion;
+		return MAX_ION;
 	}
 }

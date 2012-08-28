@@ -25,8 +25,8 @@ public class ScanSupport implements IScanSupport {
 	private int counter;
 	private int[] scanIndex;
 	private int[] pointCount;
-	private float[] maxIon;
-	private float[] minIon;
+	private double[] maxIon;
+	private double[] minIon;
 
 	public ScanSupport(IChromatogram chromatogram) {
 
@@ -40,8 +40,8 @@ public class ScanSupport implements IScanSupport {
 		numberOfScans++;
 		scanIndex = new int[numberOfScans];
 		pointCount = new int[numberOfScans];
-		minIon = new float[numberOfScans];
-		maxIon = new float[numberOfScans];
+		minIon = new double[numberOfScans];
+		maxIon = new double[numberOfScans];
 		for(int i = 1; i <= chromatogram.getNumberOfScans(); i++) {
 			massSpectrum = chromatogram.getScan(i);
 			addNumberOfIons(i, massSpectrum.getNumberOfIons());
@@ -76,7 +76,7 @@ public class ScanSupport implements IScanSupport {
 	 * @param scan
 	 * @param ion
 	 */
-	private void addMaxIon(int scan, float ion) {
+	private void addMaxIon(int scan, double ion) {
 
 		maxIon[scan] = ion;
 	}
@@ -87,7 +87,7 @@ public class ScanSupport implements IScanSupport {
 	 * @param scan
 	 * @param ion
 	 */
-	private void addMinIon(int scan, float ion) {
+	private void addMinIon(int scan, double ion) {
 
 		minIon[scan] = ion;
 	}
@@ -107,13 +107,13 @@ public class ScanSupport implements IScanSupport {
 	}
 
 	@Override
-	public float getMinIon(int scan) {
+	public double getMinIon(int scan) {
 
 		return minIon[scan];
 	}
 
 	@Override
-	public float getMaxIon(int scan) {
+	public double getMaxIon(int scan) {
 
 		return maxIon[scan];
 	}
