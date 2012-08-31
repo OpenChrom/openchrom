@@ -19,8 +19,6 @@ package net.openchrom.chromatogram.msd.converter.supplier.cdf.model;
 
 import net.openchrom.chromatogram.msd.model.core.AbstractSupplierMassSpectrum;
 import net.openchrom.chromatogram.msd.model.core.IIon;
-import net.openchrom.chromatogram.msd.model.core.SupplierMassSpectrometer;
-import net.openchrom.chromatogram.msd.model.core.SupplierMassSpectrumType;
 import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
 import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
 import net.openchrom.logging.core.Logger;
@@ -64,18 +62,6 @@ public class CDFMassSpectrum extends AbstractSupplierMassSpectrum implements ICD
 	public int getMinPossibleRetentionTime() {
 
 		return MIN_RETENTION_TIME;
-	}
-
-	@Override
-	public SupplierMassSpectrometer getSupplierMassSpectrometer() {
-
-		return SupplierMassSpectrometer.MS1;
-	}
-
-	@Override
-	public SupplierMassSpectrumType getSupplierMassSpectrumType() {
-
-		return SupplierMassSpectrumType.CENTROID;
 	}
 
 	// -------------------------------IMassSpectrumCloneable
