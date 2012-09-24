@@ -9,6 +9,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.preferences.BundleProductPreferences;
+import net.openchrom.keys.preferences.IBundleProductPreferences;
 import net.openchrom.keys.preferences.IProductPreferences;
 import net.openchrom.keys.validator.ProductValidator;
 
@@ -41,7 +42,8 @@ public class Activator extends AbstractUIPlugin {
 		 * The key will be checked each time the plugin gets activated.<br/> The
 		 * user can select the trial (if not expired) or full option.
 		 */
-		IProductPreferences productPreferences = BundleProductPreferences.getProductPreferences();
+		IBundleProductPreferences bundleProductPreferences = new BundleProductPreferences();
+		IProductPreferences productPreferences = bundleProductPreferences.getProductPreferences();
 		ProductValidator.isValidVersion(productPreferences, true, false);
 	}
 

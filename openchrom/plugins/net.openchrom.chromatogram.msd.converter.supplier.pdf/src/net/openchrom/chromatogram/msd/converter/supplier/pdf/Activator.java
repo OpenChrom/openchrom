@@ -9,6 +9,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.preferences.BundleProductPreferences;
+import net.openchrom.keys.preferences.IBundleProductPreferences;
 import net.openchrom.keys.preferences.IProductPreferences;
 import net.openchrom.keys.validator.ProductValidator;
 
@@ -48,7 +49,8 @@ public class Activator implements BundleActivator {
 	 */
 	public static boolean isValidVersion() {
 
-		IProductPreferences productPreferences = BundleProductPreferences.getProductPreferences();
+		IBundleProductPreferences bundleProductPreferences = new BundleProductPreferences();
+		IProductPreferences productPreferences = bundleProductPreferences.getProductPreferences();
 		return ProductValidator.isValidVersion(productPreferences, false, false);
 	}
 }
