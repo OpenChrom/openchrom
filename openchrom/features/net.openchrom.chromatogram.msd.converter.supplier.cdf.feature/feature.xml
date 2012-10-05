@@ -44,10 +44,6 @@ Boston MA 02111-1307, USA
       <discovery label="NetCDF" url="http://www.unidata.ucar.edu/software/netcdf/"/>
    </url>
 
-   <includes
-         id="net.openchrom.thirdpartylibraries.netcdf.feature"
-         version="0.0.0"/>
-
    <requires>
       <import feature="net.openchrom.thirdpartylibraries.netcdf.feature" version="2.2.22"/>
    </requires>
