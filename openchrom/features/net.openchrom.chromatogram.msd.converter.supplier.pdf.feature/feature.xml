@@ -37,12 +37,9 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    </license>
 
-   <includes
-         id="net.openchrom.thirdpartylibraries.pdfjet.feature"
-         version="0.0.0"/>
-
    <requires>
       <import feature="net.openchrom.keys.feature" version="0.7.0.qualifier"/>
+      <import feature="net.openchrom.thirdpartylibraries.pdfjet.feature" version="2.81.0.qualifier"/>
    </requires>
 
    <plugin
