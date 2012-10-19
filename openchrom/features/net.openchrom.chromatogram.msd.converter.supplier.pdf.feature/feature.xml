@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.openchrom.chromatogram.msd.converter.supplier.pdf.feature"
-      label="Feature"
+      label="PDF Converter"
       version="0.7.0.qualifier"
       provider-name="http://www.openchrom.net">
 
