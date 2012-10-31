@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.chromatogram.msd.converter.supplier.pdf.feature"
       label="PDF Converter"
-      version="0.7.0.qualifier"
+      version="0.8.0.qualifier"
       provider-name="http://www.openchrom.net">
 
    <description url="http://www.openchrom.net/plugins/converter/pdf/">
@@ -38,7 +38,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    </license>
 
    <requires>
-      <import feature="net.openchrom.keys.feature" version="0.7.0.qualifier"/>
+      <import feature="net.openchrom.keys.feature" version="0.8.0.qualifier"/>
       <import feature="net.openchrom.thirdpartylibraries.pdfjet.feature" version="2.81.0.qualifier"/>
    </requires>
 
