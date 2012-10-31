@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test Fragment
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test
-Bundle-Version: 0.7.0.qualifier
-Fragment-Host: net.openchrom.chromatogram.msd.comparison.supplier.pbm;bundle-version="0.7.0"
+Bundle-Version: 0.8.0.qualifier
+Fragment-Host: net.openchrom.chromatogram.msd.comparison.supplier.pbm;bundle-version="0.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit4;bundle-version="4.8.1",
  net.openchrom.thirdpartylibraries.junitaddons;bundle-version="1.4.0"
