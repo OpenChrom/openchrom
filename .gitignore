@@ -1,4 +1,8 @@
 openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test/bin/*
+openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.ui/bin/*
 openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm/bin/*
-openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.i18n/bin/*
-openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test/*.log*
+openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.ui.fragment.test/bin/*
+openchrom/sites/net.openchrom.chromatogram.msd.comparison.supplier.pbm.updateSite/artifacts.jar
+openchrom/sites/net.openchrom.chromatogram.msd.comparison.supplier.pbm.updateSite/content.jar
+openchrom/sites/net.openchrom.chromatogram.msd.comparison.supplier.pbm.updateSite/features/
+openchrom/sites/net.openchrom.chromatogram.msd.comparison.supplier.pbm.updateSite/plugins/
