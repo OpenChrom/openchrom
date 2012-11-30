@@ -6,9 +6,10 @@
     <groupId>net.openchrom</groupId>
     <artifactId>parent</artifactId>
     <version>BUILD-VERSION</version>
+    <relativePath>../cbi/net.openchrom.chromatogram.msd.converter.supplier.pdf.cbi/pom.xml</relativePath>
   </parent>
 
-  <artifactId>net.openchrom.updateSites.parent</artifactId>
+  <artifactId>net.openchrom.sites.parent</artifactId>
   <packaging>pom</packaging>
   <name>updateSites</name>
 

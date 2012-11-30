@@ -50,26 +50,10 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
          unpack="false"/>
 
    <plugin
-         id="net.openchrom.chromatogram.msd.converter.supplier.pdf.fragment.i18n"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
          id="net.openchrom.chromatogram.msd.converter.supplier.pdf.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.openchrom.chromatogram.msd.converter.supplier.pdf.ui.fragment.i18n"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
          unpack="false"/>
 
 </feature>
