@@ -16,11 +16,5 @@
             class="net.openchrom.chromatogram.msd.converter.supplier.pdf.ui.preferences.PreferenceInitializer">
       </initializer>
    </extension>
-   <extension
-         point="net.openchrom.chromatogram.msd.model.chromatogramSelectionUpdater">
-      <ChromatogramSelectionUpdater
-            updateNotifier="net.openchrom.chromatogram.msd.converter.supplier.pdf.ui.notifier.SelectionUpdateNotifier">
-      </ChromatogramSelectionUpdater>
-   </extension>   
 
 </plugin>
