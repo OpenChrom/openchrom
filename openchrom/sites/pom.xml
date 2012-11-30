@@ -8,7 +8,7 @@
     <version>BUILD-VERSION</version>
   </parent>
 
-  <artifactId>net.openchrom.updateSites.parent</artifactId>
+  <artifactId>net.openchrom.sites.parent</artifactId>
   <packaging>pom</packaging>
   <name>updateSites</name>
 

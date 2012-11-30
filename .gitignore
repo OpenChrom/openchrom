@@ -3,10 +3,8 @@ openchrom/plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.fragment
 openchrom/plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.fragment.test/bin/*
 openchrom/plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.ui/bin/*
 openchrom/plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf/bin/*
-openchrom/plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.fragment.i18n/bin/*
-openchrom/plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.ui.fragment.i18n/bin/*
 openchrom/plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.ui.fragment.test/bin/*
-openchrom/updateSites/net.openchrom.chromatogram.msd.converter.supplier.cdf.updateSite/artifacts.jar
-openchrom/updateSites/net.openchrom.chromatogram.msd.converter.supplier.cdf.updateSite/content.jar
-openchrom/updateSites/net.openchrom.chromatogram.msd.converter.supplier.cdf.updateSite/features/
-openchrom/updateSites/net.openchrom.chromatogram.msd.converter.supplier.cdf.updateSite/plugins/
+openchrom/sites/net.openchrom.chromatogram.msd.converter.supplier.cdf.updateSite/artifacts.jar
+openchrom/sites/net.openchrom.chromatogram.msd.converter.supplier.cdf.updateSite/content.jar
+openchrom/sites/net.openchrom.chromatogram.msd.converter.supplier.cdf.updateSite/features/
+openchrom/sites/net.openchrom.chromatogram.msd.converter.supplier.cdf.updateSite/plugins/
