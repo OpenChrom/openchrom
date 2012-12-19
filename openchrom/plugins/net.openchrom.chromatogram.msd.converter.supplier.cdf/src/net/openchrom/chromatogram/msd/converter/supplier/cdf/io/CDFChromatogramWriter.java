@@ -28,7 +28,7 @@ import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFileWriteable;
 
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotWriteableException;
+import net.openchrom.chromatogram.converter.exceptions.FileIsNotWriteableException;
 import net.openchrom.chromatogram.msd.converter.io.IChromatogramWriter;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.support.IConstants;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support.AttributeSupport;

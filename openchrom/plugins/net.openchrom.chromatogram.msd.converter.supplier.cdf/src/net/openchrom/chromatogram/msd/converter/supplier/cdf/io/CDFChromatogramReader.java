@@ -29,8 +29,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFileCache;
 
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsEmptyException;
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotReadableException;
+import net.openchrom.chromatogram.converter.exceptions.FileIsEmptyException;
+import net.openchrom.chromatogram.converter.exceptions.FileIsNotReadableException;
 import net.openchrom.chromatogram.msd.converter.io.IChromatogramReader;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
