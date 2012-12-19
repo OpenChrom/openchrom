@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.chromatogram.msd.converter.exceptions.FileIsNotWriteableException;
+import net.openchrom.chromatogram.converter.exceptions.FileIsNotWriteableException;
 import net.openchrom.chromatogram.msd.converter.io.AbstractChromatogramWriter;
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.internal.io.PDFSupport;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
