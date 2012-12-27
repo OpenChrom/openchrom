@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.support;bundle-version="0.8.0",
  net.openchrom.processing;bundle-version="0.8.0",
  net.openchrom.thirdpartylibraries.pdfjet;bundle-version="2.81.0",
- net.openchrom.chromatogram.converter;bundle-version="0.8.0"
+ net.openchrom.chromatogram.converter;bundle-version="0.8.0",
+ net.openchrom.chromatogram.model;bundle-version="0.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.chromatogram.msd.converter.supplier.pdf.converter,
