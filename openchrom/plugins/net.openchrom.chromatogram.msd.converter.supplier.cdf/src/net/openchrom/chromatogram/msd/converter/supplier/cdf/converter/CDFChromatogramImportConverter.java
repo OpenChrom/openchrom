@@ -21,6 +21,7 @@ import java.io.File;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.chromatogram.model.core.IChromatogramOverview;
 import net.openchrom.chromatogram.msd.converter.chromatogram.AbstractChromatogramImportConverter;
 import net.openchrom.chromatogram.msd.converter.io.IChromatogramReader;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.ChromatogramImportConverterProcessingInfo;
@@ -31,7 +32,6 @@ import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.converter.
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.support.IConstants;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.CDFChromatogramReader;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
-import net.openchrom.chromatogram.msd.model.core.IChromatogramOverview;
 import net.openchrom.logging.core.Logger;
 import net.openchrom.processing.core.IProcessingInfo;
 

@@ -22,12 +22,12 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import net.openchrom.chromatogram.model.core.IChromatogramOverview;
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
-import net.openchrom.chromatogram.msd.model.core.IChromatogramOverview;
 import net.openchrom.processing.core.exceptions.TypeCastException;
 
 import junit.framework.TestCase;
