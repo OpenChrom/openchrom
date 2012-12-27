@@ -17,7 +17,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support;
 
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
 
 public class ScanSupport implements IScanSupport {
@@ -28,7 +28,7 @@ public class ScanSupport implements IScanSupport {
 	private double[] maxIon;
 	private double[] minIon;
 
-	public ScanSupport(IChromatogram chromatogram) {
+	public ScanSupport(IChromatogramMSD chromatogram) {
 
 		IMassSpectrum massSpectrum;
 		int numberOfScans = chromatogram.getNumberOfScans();

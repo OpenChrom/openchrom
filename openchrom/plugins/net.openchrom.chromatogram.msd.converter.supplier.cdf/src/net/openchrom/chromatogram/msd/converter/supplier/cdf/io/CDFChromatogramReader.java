@@ -45,7 +45,7 @@ import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support.IAbstrac
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFChromatogram;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFIon;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFMassSpectrum;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.chromatogram.msd.model.core.IIon;
 import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
 import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
@@ -63,7 +63,7 @@ public class CDFChromatogramReader implements IChromatogramReader {
 	private static final Logger logger = Logger.getLogger(CDFChromatogramReader.class);
 
 	@Override
-	public IChromatogram read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
 		CDFChromatogram chromatogram;
 		if(!isValidFileFormat(file)) {

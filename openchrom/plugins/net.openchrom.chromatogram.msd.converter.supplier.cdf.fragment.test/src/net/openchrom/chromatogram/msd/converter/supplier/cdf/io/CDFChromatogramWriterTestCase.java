@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.chromatogram.msd.model.xic.ExtractedIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignalExtractor;
@@ -34,8 +34,8 @@ import junit.framework.TestCase;
 
 public class CDFChromatogramWriterTestCase extends TestCase {
 
-	protected IChromatogram chromatogramImport;
-	protected IChromatogram chromatogram;
+	protected IChromatogramMSD chromatogramImport;
+	protected IChromatogramMSD chromatogram;
 	protected String pathImport;
 	protected String pathExport;
 	protected File fileImport;

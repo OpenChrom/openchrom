@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.chromatogram.msd.model.exceptions.ChromatogramIsNullException;
 import net.openchrom.chromatogram.msd.model.xic.ExtractedIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignalExtractor;
@@ -60,7 +60,7 @@ public class CDFConverterTestXIC extends TestCase {
 		File chromatogram = new File(path);
 		start = new Date();
 		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(chromatogram, EXTENSION_POINT_ID, new NullProgressMonitor());
-		IChromatogram chrom;
+		IChromatogramMSD chrom;
 		try {
 			chrom = processingInfo.getChromatogram();
 			stop = new Date();

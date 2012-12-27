@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.TestPathHelper;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.processing.core.exceptions.TypeCastException;
 
 /**
@@ -35,7 +35,7 @@ import net.openchrom.processing.core.exceptions.TypeCastException;
  */
 public class CDFChromatogramReader_NOT_READABLE_1_ITest extends TestCase {
 
-	private IChromatogram chromatogram;
+	private IChromatogramMSD chromatogram;
 	private String pathImport;
 	private File fileImport;
 	private final static String EXTENSION_POINT_ID = "net.openchrom.chromatogram.msd.converter.supplier.cdf";

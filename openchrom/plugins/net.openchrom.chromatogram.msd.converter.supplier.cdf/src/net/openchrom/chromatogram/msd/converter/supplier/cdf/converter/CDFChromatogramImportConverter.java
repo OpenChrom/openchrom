@@ -31,7 +31,7 @@ import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromat
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.support.IConstants;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.CDFChromatogramReader;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.logging.core.Logger;
 import net.openchrom.processing.core.IProcessingInfo;
 
@@ -58,7 +58,7 @@ public class CDFChromatogramImportConverter extends AbstractChromatogramImportCo
 			IChromatogramReader reader = new CDFChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM);
 			try {
-				IChromatogram chromatogram = reader.read(file, monitor);
+				IChromatogramMSD chromatogram = reader.read(file, monitor);
 				processingInfo.setChromatogram(chromatogram);
 			} catch(Exception e) {
 				logger.warn(e);

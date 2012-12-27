@@ -27,7 +27,7 @@ import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConvert
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.processing.core.exceptions.TypeCastException;
 
 import junit.framework.TestCase;
@@ -64,7 +64,7 @@ public class CDFConverterTestXP extends TestCase {
 		File chromatogramExport = new File(pathExport);
 		start = new Date();
 		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(chromatogram, EXTENSION_POINT_ID, new NullProgressMonitor());
-		IChromatogram chrom;
+		IChromatogramMSD chrom;
 		try {
 			chrom = processingInfo.getChromatogram();
 			stop = new Date();

@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.processing.core.exceptions.TypeCastException;
 
 import junit.framework.TestCase;
@@ -62,7 +62,7 @@ public class CDFConverterTestX extends TestCase {
 		// String pathExport = "/home/eselmeister/tmp/OPCDF.D/DATA.MS";
 		File chromatogramExport = new File(pathExport);
 		start = new Date();
-		IChromatogram chrom;
+		IChromatogramMSD chrom;
 		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(chromatogram, EXTENSION_POINT_AGILENT_ID, new NullProgressMonitor());
 		try {
 			chrom = processingInfo.getChromatogram();

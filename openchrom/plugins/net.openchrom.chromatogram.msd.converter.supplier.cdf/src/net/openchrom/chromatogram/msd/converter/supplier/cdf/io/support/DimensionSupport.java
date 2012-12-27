@@ -20,7 +20,7 @@ package net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support;
 import java.util.ArrayList;
 
 import net.openchrom.chromatogram.msd.model.core.AbstractIon;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.chromatogram.msd.model.core.IIon;
 import net.openchrom.chromatogram.msd.model.core.ISupplierMassSpectrum;
 import ucar.ma2.ArrayChar;
@@ -40,7 +40,7 @@ public class DimensionSupport implements IDimensionSupport {
 	public final float NULL_VALUE_TIME = 9.96921E36f;
 	private ArrayList<IDataEntry> dataEntries;
 	private NetcdfFileWriteable cdfChromatogram;
-	private IChromatogram chromatogram;
+	private IChromatogramMSD chromatogram;
 	private ScanSupport scanSupport;
 	private Dimension byteString32;
 	private Dimension byteString64;
@@ -49,7 +49,7 @@ public class DimensionSupport implements IDimensionSupport {
 	private Dimension instrumentNumber;
 	private Dimension errorNumber;
 
-	public DimensionSupport(NetcdfFileWriteable cdfChromatogram, IChromatogram chromatogram) {
+	public DimensionSupport(NetcdfFileWriteable cdfChromatogram, IChromatogramMSD chromatogram) {
 
 		dataEntries = new ArrayList<IDataEntry>();
 		this.cdfChromatogram = cdfChromatogram;

@@ -19,9 +19,9 @@ package net.openchrom.chromatogram.msd.converter.supplier.cdf.model;
 
 import java.util.Date;
 
-import net.openchrom.chromatogram.msd.model.core.AbstractChromatogram;
+import net.openchrom.chromatogram.msd.model.core.AbstractChromatogramMSD;
 
-public class CDFChromatogram extends AbstractChromatogram implements ICDFChromatogram {
+public class CDFChromatogram extends AbstractChromatogramMSD implements ICDFChromatogram {
 
 	private Date dateOfExperiment = new Date();
 

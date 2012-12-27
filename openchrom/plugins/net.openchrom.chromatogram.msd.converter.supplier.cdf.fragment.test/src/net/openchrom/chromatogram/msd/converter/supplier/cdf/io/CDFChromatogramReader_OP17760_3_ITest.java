@@ -26,7 +26,7 @@ import junit.framework.TestCase;
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.TestPathHelper;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 
 /**
  * This class tries to read the chromatogram OP17760 without specifying the
@@ -36,7 +36,7 @@ import net.openchrom.chromatogram.msd.model.core.IChromatogram;
  */
 public class CDFChromatogramReader_OP17760_3_ITest extends TestCase {
 
-	protected IChromatogram chromatogram;
+	protected IChromatogramMSD chromatogram;
 	protected String pathImport;
 	protected File fileImport;
 

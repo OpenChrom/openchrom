@@ -35,7 +35,7 @@ import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support.Attribut
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support.CDFConstants;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support.DimensionSupport;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support.IDataEntry;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.logging.core.Logger;
 
 /**
@@ -49,7 +49,7 @@ public class CDFChromatogramWriter implements IChromatogramWriter {
 	private static final Logger logger = Logger.getLogger(CDFChromatogramWriter.class);
 
 	@Override
-	public void writeChromatogram(File file, IChromatogram chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
 
 		// Do not distinguish between CDFChromatogram and others.
 		monitor.subTask(IConstants.EXPORT_CDF_CHROMATOGRAM);
@@ -58,7 +58,7 @@ public class CDFChromatogramWriter implements IChromatogramWriter {
 
 	// ------------------------------------------------------------private
 	// methods
-	private void writeCDFChromatogram(File file, IChromatogram chromatogram, IProgressMonitor monitor) {
+	private void writeCDFChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) {
 
 		NetcdfFileWriteable cdfChromatogram = NetcdfFileWriteable.createNew(file.getAbsolutePath());
 		DimensionSupport dimensionSupport = new DimensionSupport(cdfChromatogram, chromatogram);

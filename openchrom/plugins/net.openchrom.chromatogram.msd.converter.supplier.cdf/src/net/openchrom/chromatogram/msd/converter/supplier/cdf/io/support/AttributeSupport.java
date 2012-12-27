@@ -18,12 +18,12 @@
 package net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support;
 
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFChromatogram;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import ucar.nc2.NetcdfFileWriteable;
 
 public class AttributeSupport {
 
-	public static void setAttributes(NetcdfFileWriteable cdfChromatogram, IChromatogram chromatogram) {
+	public static void setAttributes(NetcdfFileWriteable cdfChromatogram, IChromatogramMSD chromatogram) {
 
 		cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_DATASET_COMPLETENESS, "C1+C2");
 		cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_MS_TEMPLATE_REVISION, "1.0.1");

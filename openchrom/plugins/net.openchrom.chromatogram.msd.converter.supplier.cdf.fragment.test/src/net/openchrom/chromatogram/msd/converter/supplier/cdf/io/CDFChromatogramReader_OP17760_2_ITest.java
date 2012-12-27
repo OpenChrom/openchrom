@@ -26,7 +26,7 @@ import junit.framework.TestCase;
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.TestPathHelper;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
 import net.openchrom.chromatogram.msd.model.xic.ExtractedIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignalExtractor;
@@ -43,7 +43,7 @@ import net.openchrom.chromatogram.msd.model.xic.TotalIonSignalExtractor;
  */
 public class CDFChromatogramReader_OP17760_2_ITest extends TestCase {
 
-	protected IChromatogram chromatogram;
+	protected IChromatogramMSD chromatogram;
 	protected String pathImport;
 	protected File fileImport;
 	protected ITotalIonSignalExtractor totalIonSignalExtractor;
