@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import net.openchrom.chromatogram.msd.model.core.AbstractIon;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.chromatogram.msd.model.core.IIon;
-import net.openchrom.chromatogram.msd.model.core.ISupplierMassSpectrum;
+import net.openchrom.chromatogram.msd.model.core.ISupplierScanMassSpectrum;
 import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayDouble;
 import ucar.ma2.ArrayFloat;
@@ -248,7 +248,7 @@ public class DimensionSupport implements IDimensionSupport {
 	@Override
 	public void addVariableScanValues() {
 
-		ISupplierMassSpectrum scan;
+		ISupplierScanMassSpectrum scan;
 		String varNameMassValues = CDFConstants.VARIABLE_MASS_VALUES;
 		ArrayList<Dimension> dimensionMassValues = new ArrayList<Dimension>();
 		dimensionMassValues.add(numberOfScanIons);
@@ -271,7 +271,7 @@ public class DimensionSupport implements IDimensionSupport {
 		int counter = 0;
 		// float retentionTime = 0.0f;
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
-			scan = chromatogram.getScan(i + 1);
+			scan = chromatogram.getSupplierScan(i + 1);
 			// retentionTime = scan.getRetentionTime() / (1000.0f * 60.0f);
 			for(IIon ion : scan.getIons()) {
 				valuesIons.set(counter, AbstractIon.getIon(ion.getIon()));

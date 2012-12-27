@@ -64,10 +64,10 @@ public class CDFChromatogramReader_CVB_2010_08_17_1_ITest extends CDFChromatogra
 		 * System.out.println("");
 		 * System.out.println(chromatogram.getExtractedIonSignals(1.0f,
 		 * 600.5f)); System.out.println(""); System.out.println(massSpectrum =
-		 * chromatogram.getScan(340));
+		 * chromatogram.getSupplierScan(340));
 		 * System.out.println(massSpectrum.getTotalSignal());
 		 * System.out.println(""); System.out.println(massSpectrum =
-		 * chromatogram.getScan(628));
+		 * chromatogram.getSupplierScan(628));
 		 * System.out.println(massSpectrum.getTotalSignal());
 		 */
 		assertEquals("scanDelay", 240, chromatogram.getScanDelay());
@@ -93,13 +93,13 @@ public class CDFChromatogramReader_CVB_2010_08_17_1_ITest extends CDFChromatogra
 		xic = extractedIonSignalExtractor.getExtractedIonSignals(1.0f, 600.5f);
 		assertEquals("IExtractedIonSignals size", 4441, xic.size());
 		// --------------------test mass spectra
-		massSpectrum = chromatogram.getScan(5727);
+		massSpectrum = chromatogram.getSupplierScan(5727);
 		assertTrue("massSpectrum", null == massSpectrum);
-		massSpectrum = chromatogram.getScan(340);
+		massSpectrum = chromatogram.getSupplierScan(340);
 		assertEquals("TotalSignal", 1395205.0f, massSpectrum.getTotalSignal());
-		massSpectrum = chromatogram.getScan(628);
+		massSpectrum = chromatogram.getSupplierScan(628);
 		assertEquals("TotalSignal", 369288.0f, massSpectrum.getTotalSignal());
-		massSpectrum = chromatogram.getScan(5726);
+		massSpectrum = chromatogram.getSupplierScan(5726);
 		assertTrue("massSpectrum", null == massSpectrum);
 		// --------------------test mass spectra
 	}

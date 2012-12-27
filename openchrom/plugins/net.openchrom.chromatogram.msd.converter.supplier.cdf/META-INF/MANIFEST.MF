@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Eclipse-RegisterBuddy: 	net.openchrom.chromatogram.msd.model, net.openchrom.thirdpartylibraries.netcdf, net.openchrom.thirdpartylibraries.junitaddons
+Eclipse-RegisterBuddy: 	net.openchrom.chromatogram.model, net.openchrom.chromatogram.msd.model, net.openchrom.thirdpartylibraries.netcdf, net.openchrom.thirdpartylibraries.junitaddons
 Bundle-ManifestVersion: 2
 Bundle-Name: Cdf Plug-in
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.converter.supplier.cdf;singleton:=true
