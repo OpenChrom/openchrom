@@ -28,7 +28,9 @@ import com.pdfjet.TextLine;
 import net.openchrom.chromatogram.msd.model.core.AbstractChromatogram;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignal;
+import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignals;
+import net.openchrom.chromatogram.msd.model.xic.TotalIonSignalExtractor;
 
 public class PDFSupport {
 
@@ -261,7 +263,8 @@ public class PDFSupport {
 		/*
 		 * Parse each scan
 		 */
-		ITotalIonSignals scans = chromatogram.getTotalIonSignals();
+		ITotalIonSignalExtractor totalIonSignalExtractor = new TotalIonSignalExtractor(chromatogram);
+		ITotalIonSignals scans = totalIonSignalExtractor.getTotalIonSignals();
 		for(ITotalIonSignal scan : scans.getTotalIonSignals()) {
 			int rt = scan.getRetentionTime();
 			float abundance = scan.getTotalSignal();
