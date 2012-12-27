@@ -25,6 +25,8 @@ import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConvert
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.xic.ExtractedIonSignalExtractor;
+import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.TotalIonSignalExtractor;
 
@@ -41,6 +43,7 @@ public class CDFChromatogramWriterTestCase extends TestCase {
 	protected String extensionPointImport;
 	protected String extensionPointExportReimport;
 	protected ITotalIonSignalExtractor totalIonSignalExtractor;
+	protected IExtractedIonSignalExtractor extractedIonSignalExtractor;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -65,6 +68,7 @@ public class CDFChromatogramWriterTestCase extends TestCase {
 		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(fileExport, this.extensionPointExportReimport, new NullProgressMonitor());
 		chromatogram = processingInfo.getChromatogram();
 		totalIonSignalExtractor = new TotalIonSignalExtractor(chromatogram);
+		extractedIonSignalExtractor = new ExtractedIonSignalExtractor(chromatogram);
 	}
 
 	@Override

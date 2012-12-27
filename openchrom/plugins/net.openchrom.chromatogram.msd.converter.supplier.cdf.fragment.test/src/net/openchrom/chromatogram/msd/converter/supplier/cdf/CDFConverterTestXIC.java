@@ -25,6 +25,9 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.exceptions.ChromatogramIsNullException;
+import net.openchrom.chromatogram.msd.model.xic.ExtractedIonSignalExtractor;
+import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignals;
 import net.openchrom.processing.core.exceptions.TypeCastException;
 
@@ -33,6 +36,7 @@ import junit.framework.TestCase;
 public class CDFConverterTestXIC extends TestCase {
 
 	private final static String EXTENSION_POINT_ID = "net.openchrom.chromatogram.msd.converter.supplier.cdf";
+	private IExtractedIonSignalExtractor extractedIonSignalExtractor;
 
 	// private final static String EXTENSION_POINT_EXPORT_ID =
 	// "net.openchrom.chromatogram.msd.supplier.agilent";
@@ -70,15 +74,16 @@ public class CDFConverterTestXIC extends TestCase {
 			 */
 			IExtractedIonSignals signals;
 			start = new Date();
-			signals = chrom.getExtractedIonSignals();
+			extractedIonSignalExtractor = new ExtractedIonSignalExtractor(chrom);
+			signals = extractedIonSignalExtractor.getExtractedIonSignals();
 			System.out.println(signals.size());
 			stop = new Date();
 			System.out.println("XIC: " + (stop.getTime() - start.getTime()));
 			start = new Date();
-			signals = chrom.getExtractedIonSignals(28.0f, 600.0f);
+			signals = extractedIonSignalExtractor.getExtractedIonSignals(28.0f, 600.0f);
 			stop = new Date();
 			System.out.println("XIC 28-600: " + (stop.getTime() - start.getTime()));
-		} catch(TypeCastException e) {
+		} catch(TypeCastException | ChromatogramIsNullException e) {
 			e.printStackTrace();
 		}
 	}

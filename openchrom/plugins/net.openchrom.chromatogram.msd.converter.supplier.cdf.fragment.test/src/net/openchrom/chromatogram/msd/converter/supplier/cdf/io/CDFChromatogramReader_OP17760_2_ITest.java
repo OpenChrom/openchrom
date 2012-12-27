@@ -28,6 +28,8 @@ import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromat
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.TestPathHelper;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
+import net.openchrom.chromatogram.msd.model.xic.ExtractedIonSignalExtractor;
+import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignals;
 import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignals;
@@ -45,6 +47,7 @@ public class CDFChromatogramReader_OP17760_2_ITest extends TestCase {
 	protected String pathImport;
 	protected File fileImport;
 	protected ITotalIonSignalExtractor totalIonSignalExtractor;
+	protected IExtractedIonSignalExtractor extractedIonSignalExtractor;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -55,6 +58,7 @@ public class CDFChromatogramReader_OP17760_2_ITest extends TestCase {
 		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(fileImport, new NullProgressMonitor());
 		chromatogram = processingInfo.getChromatogram();
 		totalIonSignalExtractor = new TotalIonSignalExtractor(chromatogram);
+		extractedIonSignalExtractor = new ExtractedIonSignalExtractor(chromatogram);
 	}
 
 	@Override
@@ -89,9 +93,9 @@ public class CDFChromatogramReader_OP17760_2_ITest extends TestCase {
 		tic = totalIonSignalExtractor.getTotalIonSignals();
 		assertEquals("ITotalIonSignals size", 5726, tic.size());
 		assertEquals("totalIonSignal", 1024242300.0f, chromatogram.getTotalSignal());
-		xic = chromatogram.getExtractedIonSignals();
+		xic = extractedIonSignalExtractor.getExtractedIonSignals();
 		assertEquals("IExtractedIonSignals size", 5726, xic.size());
-		xic = chromatogram.getExtractedIonSignals(1.0f, 600.5f);
+		xic = extractedIonSignalExtractor.getExtractedIonSignals(1.0f, 600.5f);
 		assertEquals("IExtractedIonSignals size", 5726, xic.size());
 		// --------------------test mass spectra
 		massSpectrum = chromatogram.getScan(5727);

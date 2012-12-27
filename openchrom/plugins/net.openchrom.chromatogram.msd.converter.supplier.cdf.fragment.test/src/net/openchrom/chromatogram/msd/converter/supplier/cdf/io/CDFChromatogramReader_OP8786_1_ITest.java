@@ -59,9 +59,9 @@ public class CDFChromatogramReader_OP8786_1_ITest extends CDFChromatogramReaderT
 		tic = totalIonSignalExtractor.getTotalIonSignals();
 		assertEquals("ITotalIonSignals size", 22435, tic.size());
 		assertEquals("totalIonSignal", 9039252500.0f, chromatogram.getTotalSignal());
-		xic = chromatogram.getExtractedIonSignals();
+		xic = extractedIonSignalExtractor.getExtractedIonSignals();
 		assertEquals("IExtractedIonSignals size", 22435, xic.size());
-		xic = chromatogram.getExtractedIonSignals(1.0f, 600.5f);
+		xic = extractedIonSignalExtractor.getExtractedIonSignals(1.0f, 600.5f);
 		assertEquals("IExtractedIonSignals size", 22435, xic.size());
 		// --------------------test mass spectra
 		massSpectrum = chromatogram.getScan(22436);
