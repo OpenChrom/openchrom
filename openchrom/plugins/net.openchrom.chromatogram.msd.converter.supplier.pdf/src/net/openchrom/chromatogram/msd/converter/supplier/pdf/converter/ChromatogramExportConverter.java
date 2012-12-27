@@ -16,7 +16,7 @@ import net.openchrom.chromatogram.msd.converter.supplier.pdf.Activator;
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.internal.converter.SpecificationValidator;
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.internal.support.IConstants;
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.io.ChromatogramWriter;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 
 import net.openchrom.logging.core.Logger;
 import net.openchrom.processing.core.IProcessingInfo;
@@ -27,7 +27,7 @@ public class ChromatogramExportConverter extends AbstractChromatogramExportConve
 	private static final String DESCRIPTION = "PDF Export Converter";
 
 	@Override
-	public IChromatogramExportConverterProcessingInfo convert(File file, IChromatogram chromatogram, IProgressMonitor monitor) {
+	public IChromatogramExportConverterProcessingInfo convert(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) {
 
 		IChromatogramExportConverterProcessingInfo processingInfo = new ChromatogramExportConverterProcessingInfo();
 		/*

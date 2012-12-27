@@ -25,8 +25,8 @@ import com.pdfjet.Point;
 import com.pdfjet.RGB;
 import com.pdfjet.TextLine;
 
-import net.openchrom.chromatogram.msd.model.core.AbstractChromatogram;
-import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.core.AbstractChromatogramMSD;
+import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignal;
 import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignals;
@@ -61,7 +61,7 @@ public class PDFSupport {
 	private double maxRetentionTime;
 	private double minAbundance;
 	private double maxAbundance;
-	private IChromatogram chromatogram;
+	private IChromatogramMSD chromatogram;
 
 	public PDFSupport() {
 
@@ -69,7 +69,7 @@ public class PDFSupport {
 		abundanceFormat = new DecimalFormat("0");
 	}
 
-	public void exportChromatogram(File file, IChromatogram chromatogram, IProgressMonitor monitor) throws Exception {
+	public void exportChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws Exception {
 
 		/*
 		 * Get basic chromatogram values.
@@ -136,9 +136,9 @@ public class PDFSupport {
 		yPosition += L_5_MM;
 		createUpperBoxText(page, box, "Max Abundance: " + maxAbundance, yPosition);
 		yPosition += L_5_MM;
-		createUpperBoxText(page, box, "Min Retention Time: " + decimalFormat.format(minRetentionTime / AbstractChromatogram.MINUTE_CORRELATION_FACTOR) + " Minutes = " + (int)minRetentionTime + " Milliseconds", yPosition);
+		createUpperBoxText(page, box, "Min Retention Time: " + decimalFormat.format(minRetentionTime / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR) + " Minutes = " + (int)minRetentionTime + " Milliseconds", yPosition);
 		yPosition += L_5_MM;
-		createUpperBoxText(page, box, "Max Retention Time: " + decimalFormat.format(maxRetentionTime / AbstractChromatogram.MINUTE_CORRELATION_FACTOR) + " Minutes = " + (int)maxRetentionTime + " Milliseconds", yPosition);
+		createUpperBoxText(page, box, "Max Retention Time: " + decimalFormat.format(maxRetentionTime / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR) + " Minutes = " + (int)maxRetentionTime + " Milliseconds", yPosition);
 		yPosition += L_5_MM;
 		createUpperBoxText(page, box, "Scans: " + chromatogram.getNumberOfScans(), yPosition);
 		yPosition += L_5_MM;
@@ -146,9 +146,9 @@ public class PDFSupport {
 		yPosition += L_5_MM;
 		createUpperBoxText(page, box, "Noise Factor: " + chromatogram.getNoiseFactor(), yPosition);
 		yPosition += L_5_MM;
-		createUpperBoxText(page, box, "Scan Delay: " + decimalFormat.format(chromatogram.getScanDelay() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR) + " Minutes = " + chromatogram.getScanDelay() + " Milliseconds", yPosition);
+		createUpperBoxText(page, box, "Scan Delay: " + decimalFormat.format(chromatogram.getScanDelay() / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR) + " Minutes = " + chromatogram.getScanDelay() + " Milliseconds", yPosition);
 		yPosition += L_5_MM;
-		createUpperBoxText(page, box, "Scan Interval: " + decimalFormat.format(chromatogram.getScanInterval() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR) + " Minutes = " + chromatogram.getScanInterval() + " Milliseconds", yPosition);
+		createUpperBoxText(page, box, "Scan Interval: " + decimalFormat.format(chromatogram.getScanInterval() / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR) + " Minutes = " + chromatogram.getScanInterval() + " Milliseconds", yPosition);
 		/*
 		 * Logo
 		 */
@@ -224,7 +224,7 @@ public class PDFSupport {
 		builder.append(" - ");
 		builder.append("Max Retention Time:");
 		builder.append(" ");
-		builder.append(decimalFormat.format(maxRetentionTime / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+		builder.append(decimalFormat.format(maxRetentionTime / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR));
 		builder.append(" ");
 		builder.append("min");
 		//
@@ -335,8 +335,8 @@ public class PDFSupport {
 	private void createChromatogramBoxScaleX(Page page, Box box) throws Exception {
 
 		int delta = (int)(maxRetentionTime - minRetentionTime);
-		float part = (float)((delta / 10.0f) / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-		float start = (float)(minRetentionTime / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		float part = (float)((delta / 10.0f) / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR);
+		float start = (float)(minRetentionTime / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR);
 		float scaleIndex = start;
 		Line line;
 		TextLine textLine;
