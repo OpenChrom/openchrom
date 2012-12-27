@@ -25,6 +25,9 @@ import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConvert
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignalExtractor;
+import net.openchrom.chromatogram.msd.model.xic.TotalIonSignalExtractor;
+
 import junit.framework.TestCase;
 
 public class CDFChromatogramWriterTestCase extends TestCase {
@@ -37,6 +40,7 @@ public class CDFChromatogramWriterTestCase extends TestCase {
 	protected File fileExport;
 	protected String extensionPointImport;
 	protected String extensionPointExportReimport;
+	protected ITotalIonSignalExtractor totalIonSignalExtractor;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -60,6 +64,7 @@ public class CDFChromatogramWriterTestCase extends TestCase {
 		chromatogramImport = null;
 		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(fileExport, this.extensionPointExportReimport, new NullProgressMonitor());
 		chromatogram = processingInfo.getChromatogram();
+		totalIonSignalExtractor = new TotalIonSignalExtractor(chromatogram);
 	}
 
 	@Override
@@ -71,6 +76,7 @@ public class CDFChromatogramWriterTestCase extends TestCase {
 		fileExport = null;
 		chromatogramImport = null;
 		chromatogram = null;
+		totalIonSignalExtractor = null;
 		super.tearDown();
 	}
 }

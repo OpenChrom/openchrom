@@ -24,6 +24,9 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
+import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignalExtractor;
+import net.openchrom.chromatogram.msd.model.xic.TotalIonSignalExtractor;
+
 import junit.framework.TestCase;
 
 /**
@@ -36,6 +39,7 @@ public class CDFChromatogramReaderTestCase extends TestCase {
 	protected IChromatogram chromatogram;
 	protected String pathImport;
 	protected File fileImport;
+	protected ITotalIonSignalExtractor totalIonSignalExtractor;
 	private final static String EXTENSION_POINT_ID = "net.openchrom.chromatogram.msd.converter.supplier.cdf";
 
 	@Override
@@ -45,6 +49,7 @@ public class CDFChromatogramReaderTestCase extends TestCase {
 		fileImport = new File(this.pathImport);
 		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(fileImport, EXTENSION_POINT_ID, new NullProgressMonitor());
 		chromatogram = processingInfo.getChromatogram();
+		totalIonSignalExtractor = new TotalIonSignalExtractor(chromatogram);
 	}
 
 	@Override
@@ -53,6 +58,7 @@ public class CDFChromatogramReaderTestCase extends TestCase {
 		pathImport = null;
 		fileImport = null;
 		chromatogram = null;
+		totalIonSignalExtractor = null;
 		super.tearDown();
 	}
 }

@@ -29,7 +29,9 @@ import net.openchrom.chromatogram.msd.converter.supplier.cdf.TestPathHelper;
 import net.openchrom.chromatogram.msd.model.core.IChromatogram;
 import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignals;
+import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignals;
+import net.openchrom.chromatogram.msd.model.xic.TotalIonSignalExtractor;
 
 /**
  * This class tries to read the chromatogram OP17760 without specifying the
@@ -42,6 +44,7 @@ public class CDFChromatogramReader_OP17760_2_ITest extends TestCase {
 	protected IChromatogram chromatogram;
 	protected String pathImport;
 	protected File fileImport;
+	protected ITotalIonSignalExtractor totalIonSignalExtractor;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -51,6 +54,7 @@ public class CDFChromatogramReader_OP17760_2_ITest extends TestCase {
 		fileImport = new File(this.pathImport);
 		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(fileImport, new NullProgressMonitor());
 		chromatogram = processingInfo.getChromatogram();
+		totalIonSignalExtractor = new TotalIonSignalExtractor(chromatogram);
 	}
 
 	@Override
@@ -82,7 +86,7 @@ public class CDFChromatogramReader_OP17760_2_ITest extends TestCase {
 		assertEquals("minSignal", 17475.0f, chromatogram.getMinSignal());
 		assertEquals("maxSignal", 9571087.0f, chromatogram.getMaxSignal());
 		assertEquals("miscInfo", "439-2   142�g", chromatogram.getMiscInfo());
-		tic = chromatogram.getTotalIonSignals();
+		tic = totalIonSignalExtractor.getTotalIonSignals();
 		assertEquals("ITotalIonSignals size", 5726, tic.size());
 		assertEquals("totalIonSignal", 1024242300.0f, chromatogram.getTotalSignal());
 		xic = chromatogram.getExtractedIonSignals();

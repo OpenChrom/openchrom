@@ -57,7 +57,7 @@ public class CDFChromatogramWriter_2_ITest extends CDFChromatogramWriterTestCase
 		assertEquals("minSignal", 17475.0f, chromatogram.getMinSignal());
 		assertEquals("maxSignal", 9571087.0f, chromatogram.getMaxSignal());
 		assertEquals("miscInfo", "", chromatogram.getMiscInfo());
-		tic = chromatogram.getTotalIonSignals();
+		tic = totalIonSignalExtractor.getTotalIonSignals();
 		assertEquals("ITotalIonSignals size", 5726, tic.size());
 		assertEquals("totalIonSignal", 1024242300.0f, chromatogram.getTotalSignal());
 		xic = chromatogram.getExtractedIonSignals();

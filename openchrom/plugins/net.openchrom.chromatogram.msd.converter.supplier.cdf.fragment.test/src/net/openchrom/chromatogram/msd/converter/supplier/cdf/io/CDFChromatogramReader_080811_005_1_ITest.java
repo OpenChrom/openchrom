@@ -56,7 +56,7 @@ public class CDFChromatogramReader_080811_005_1_ITest extends CDFChromatogramRea
 		assertEquals("minSignal", 3001.0f, chromatogram.getMinSignal());
 		assertEquals("maxSignal", 34367016.0f, chromatogram.getMaxSignal());
 		assertEquals("miscInfo", "A4", chromatogram.getMiscInfo());
-		tic = chromatogram.getTotalIonSignals();
+		tic = totalIonSignalExtractor.getTotalIonSignals();
 		assertEquals("List<ITotalIonSignal> size", 6215, tic.size());
 		assertEquals("totalIonSignal", 1372029950.0f, chromatogram.getTotalSignal());
 		xic = chromatogram.getExtractedIonSignals();
