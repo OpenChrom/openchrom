@@ -21,9 +21,9 @@ import java.io.File;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
-import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
-import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
+import net.openchrom.chromatogram.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverterMSD;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.chromatogram.msd.model.xic.ExtractedIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignalExtractor;
@@ -53,19 +53,19 @@ public class CDFChromatogramWriterTestCase extends TestCase {
 		 * Import the chromatogram.
 		 */
 		fileImport = new File(this.pathImport);
-		IChromatogramImportConverterProcessingInfo processingInfoImport = ChromatogramConverter.convert(fileImport, this.extensionPointImport, new NullProgressMonitor());
+		IChromatogramMSDImportConverterProcessingInfo processingInfoImport = ChromatogramConverterMSD.convert(fileImport, this.extensionPointImport, new NullProgressMonitor());
 		chromatogramImport = processingInfoImport.getChromatogram();
 		/*
 		 * Export the chromatogram.
 		 */
 		fileExport = new File(this.pathExport);
-		IChromatogramExportConverterProcessingInfo processingInfoExport = ChromatogramConverter.convert(fileExport, chromatogramImport, this.extensionPointExportReimport, new NullProgressMonitor());
+		IChromatogramExportConverterProcessingInfo processingInfoExport = ChromatogramConverterMSD.convert(fileExport, chromatogramImport, this.extensionPointExportReimport, new NullProgressMonitor());
 		fileExport = processingInfoExport.getFile();
 		/*
 		 * Reimport the exported chromatogram.
 		 */
 		chromatogramImport = null;
-		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(fileExport, this.extensionPointExportReimport, new NullProgressMonitor());
+		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(fileExport, this.extensionPointExportReimport, new NullProgressMonitor());
 		chromatogram = processingInfo.getChromatogram();
 		totalIonSignalExtractor = new TotalIonSignalExtractor(chromatogram);
 		extractedIonSignalExtractor = new ExtractedIonSignalExtractor(chromatogram);

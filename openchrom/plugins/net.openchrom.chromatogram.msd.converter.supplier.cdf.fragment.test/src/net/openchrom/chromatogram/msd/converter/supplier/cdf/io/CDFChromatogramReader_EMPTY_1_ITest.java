@@ -22,8 +22,8 @@ import java.io.File;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import junit.framework.TestCase;
-import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
-import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverterMSD;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.TestPathHelper;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.processing.core.exceptions.TypeCastException;
@@ -58,7 +58,7 @@ public class CDFChromatogramReader_EMPTY_1_ITest extends TestCase {
 
 	public void testNotReadable_1() {
 
-		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(fileImport, EXTENSION_POINT_ID, new NullProgressMonitor());
+		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(fileImport, EXTENSION_POINT_ID, new NullProgressMonitor());
 		try {
 			chromatogram = processingInfo.getChromatogram();
 			assertNotNull(chromatogram);
@@ -69,7 +69,7 @@ public class CDFChromatogramReader_EMPTY_1_ITest extends TestCase {
 
 	public void testNotReadable_2() {
 
-		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(fileImport, new NullProgressMonitor());
+		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(fileImport, new NullProgressMonitor());
 		try {
 			chromatogram = processingInfo.getChromatogram();
 			assertNotNull(chromatogram);

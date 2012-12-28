@@ -32,7 +32,7 @@ import ucar.nc2.NetcdfFileCache;
 import net.openchrom.chromatogram.converter.exceptions.FileIsEmptyException;
 import net.openchrom.chromatogram.converter.exceptions.FileIsNotReadableException;
 import net.openchrom.chromatogram.model.core.IChromatogramOverview;
-import net.openchrom.chromatogram.msd.converter.io.IChromatogramReader;
+import net.openchrom.chromatogram.msd.converter.io.IChromatogramMSDReader;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
@@ -58,7 +58,7 @@ import net.openchrom.logging.core.Logger;
  * 
  * @author eselmeister
  */
-public class CDFChromatogramReader implements IChromatogramReader {
+public class CDFChromatogramReader implements IChromatogramMSDReader {
 
 	private static final Logger logger = Logger.getLogger(CDFChromatogramReader.class);
 

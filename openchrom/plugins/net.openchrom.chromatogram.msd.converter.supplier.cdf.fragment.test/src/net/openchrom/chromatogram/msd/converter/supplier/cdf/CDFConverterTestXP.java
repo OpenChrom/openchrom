@@ -22,11 +22,11 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import net.openchrom.chromatogram.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import net.openchrom.chromatogram.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
 import net.openchrom.chromatogram.model.core.IChromatogramOverview;
-import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
-import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
-import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
-import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverterMSD;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.processing.core.exceptions.TypeCastException;
 
@@ -63,7 +63,7 @@ public class CDFConverterTestXP extends TestCase {
 		// String pathExport = "/home/eselmeister/tmp/OPCDF.D/DATA.MS";
 		File chromatogramExport = new File(pathExport);
 		start = new Date();
-		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(chromatogram, EXTENSION_POINT_ID, new NullProgressMonitor());
+		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(chromatogram, EXTENSION_POINT_ID, new NullProgressMonitor());
 		IChromatogramMSD chrom;
 		try {
 			chrom = processingInfo.getChromatogram();
@@ -73,7 +73,7 @@ public class CDFConverterTestXP extends TestCase {
 			assertEquals("TS", 55822.0f, chrom.getScan(3).getTotalSignal());
 			// chrom.removeScans(3398, 3585);
 			start = new Date();
-			IChromatogramExportConverterProcessingInfo processingInfoExport = ChromatogramConverter.convert(chromatogramExport, chrom, EXTENSION_POINT_ID, new NullProgressMonitor());
+			IChromatogramExportConverterProcessingInfo processingInfoExport = ChromatogramConverterMSD.convert(chromatogramExport, chrom, EXTENSION_POINT_ID, new NullProgressMonitor());
 			File test = processingInfoExport.getFile();
 			stop = new Date();
 			System.out.println("Milliseconds Schreiben: " + (stop.getTime() - start.getTime()));
@@ -90,7 +90,7 @@ public class CDFConverterTestXP extends TestCase {
 		String path = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_OP17760);
 		File chromatogram = new File(path);
 		start = new Date();
-		IChromatogramOverviewImportConverterProcessingInfo processingInfo = ChromatogramConverter.convertOverview(chromatogram, EXTENSION_POINT_ID, new NullProgressMonitor());
+		IChromatogramOverviewImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convertOverview(chromatogram, EXTENSION_POINT_ID, new NullProgressMonitor());
 		IChromatogramOverview chrom;
 		try {
 			chrom = processingInfo.getChromatogramOverview();

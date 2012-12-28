@@ -22,9 +22,9 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverter;
-import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
-import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramImportConverterProcessingInfo;
+import net.openchrom.chromatogram.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverterMSD;
+import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.processing.core.exceptions.TypeCastException;
 
@@ -63,7 +63,7 @@ public class CDFConverterTestX extends TestCase {
 		File chromatogramExport = new File(pathExport);
 		start = new Date();
 		IChromatogramMSD chrom;
-		IChromatogramImportConverterProcessingInfo processingInfo = ChromatogramConverter.convert(chromatogram, EXTENSION_POINT_AGILENT_ID, new NullProgressMonitor());
+		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(chromatogram, EXTENSION_POINT_AGILENT_ID, new NullProgressMonitor());
 		try {
 			chrom = processingInfo.getChromatogram();
 			stop = new Date();
@@ -72,7 +72,7 @@ public class CDFConverterTestX extends TestCase {
 			// assertEquals("TS", 55822.0d, chrom.getScan(3).getTotalSignal());
 			// chrom.removeScans(3398, 3585);
 			start = new Date();
-			IChromatogramExportConverterProcessingInfo processingInfoExport = ChromatogramConverter.convert(chromatogramExport, chrom, EXTENSION_POINT_CDF_ID, new NullProgressMonitor());
+			IChromatogramExportConverterProcessingInfo processingInfoExport = ChromatogramConverterMSD.convert(chromatogramExport, chrom, EXTENSION_POINT_CDF_ID, new NullProgressMonitor());
 			File test;
 			try {
 				test = processingInfoExport.getFile();

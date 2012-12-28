@@ -21,10 +21,10 @@ import java.io.File;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.chromatogram.msd.converter.chromatogram.AbstractChromatogramExportConverter;
-import net.openchrom.chromatogram.msd.converter.io.IChromatogramWriter;
-import net.openchrom.chromatogram.msd.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
-import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import net.openchrom.chromatogram.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
+import net.openchrom.chromatogram.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.chromatogram.AbstractChromatogramMSDExportConverter;
+import net.openchrom.chromatogram.msd.converter.io.IChromatogramMSDWriter;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.support.IConstants;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.CDFChromatogramWriter;
@@ -32,7 +32,7 @@ import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.logging.core.Logger;
 import net.openchrom.processing.core.IProcessingInfo;
 
-public class CDFChromatogramExportConverter extends AbstractChromatogramExportConverter {
+public class CDFChromatogramExportConverter extends AbstractChromatogramMSDExportConverter {
 
 	private static final Logger logger = Logger.getLogger(CDFChromatogramExportConverter.class);
 	private static final String DESCRIPTION = "NetCDF Export Converter";
@@ -53,7 +53,7 @@ public class CDFChromatogramExportConverter extends AbstractChromatogramExportCo
 			processingInfo.addMessages(processingInfoValidate);
 		} else {
 			monitor.subTask(IConstants.EXPORT_CDF_CHROMATOGRAM);
-			IChromatogramWriter writer = new CDFChromatogramWriter();
+			IChromatogramMSDWriter writer = new CDFChromatogramWriter();
 			try {
 				writer.writeChromatogram(file, chromatogram, monitor);
 			} catch(Exception e) {
