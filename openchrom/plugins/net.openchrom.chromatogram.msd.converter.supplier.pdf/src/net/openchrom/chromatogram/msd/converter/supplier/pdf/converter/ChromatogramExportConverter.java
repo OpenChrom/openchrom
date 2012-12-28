@@ -9,9 +9,9 @@ import java.io.File;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.chromatogram.msd.converter.chromatogram.AbstractChromatogramExportConverter;
-import net.openchrom.chromatogram.msd.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
-import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import net.openchrom.chromatogram.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
+import net.openchrom.chromatogram.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import net.openchrom.chromatogram.msd.converter.chromatogram.AbstractChromatogramMSDExportConverter;
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.Activator;
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.internal.converter.SpecificationValidator;
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.internal.support.IConstants;
@@ -21,7 +21,7 @@ import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.logging.core.Logger;
 import net.openchrom.processing.core.IProcessingInfo;
 
-public class ChromatogramExportConverter extends AbstractChromatogramExportConverter {
+public class ChromatogramExportConverter extends AbstractChromatogramMSDExportConverter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramExportConverter.class);
 	private static final String DESCRIPTION = "PDF Export Converter";
