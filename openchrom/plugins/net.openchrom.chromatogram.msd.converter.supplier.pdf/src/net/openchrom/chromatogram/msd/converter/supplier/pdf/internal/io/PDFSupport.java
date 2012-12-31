@@ -25,12 +25,12 @@ import com.pdfjet.Point;
 import com.pdfjet.RGB;
 import com.pdfjet.TextLine;
 
+import net.openchrom.chromatogram.model.signals.ITotalScanSignal;
+import net.openchrom.chromatogram.model.signals.ITotalScanSignalExtractor;
+import net.openchrom.chromatogram.model.signals.ITotalScanSignals;
+import net.openchrom.chromatogram.model.signals.TotalScanSignalExtractor;
 import net.openchrom.chromatogram.msd.model.core.AbstractChromatogramMSD;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
-import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignal;
-import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignalExtractor;
-import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignals;
-import net.openchrom.chromatogram.msd.model.xic.TotalIonSignalExtractor;
 
 public class PDFSupport {
 
@@ -263,9 +263,9 @@ public class PDFSupport {
 		/*
 		 * Parse each scan
 		 */
-		ITotalIonSignalExtractor totalIonSignalExtractor = new TotalIonSignalExtractor(chromatogram);
-		ITotalIonSignals scans = totalIonSignalExtractor.getTotalIonSignals();
-		for(ITotalIonSignal scan : scans.getTotalIonSignals()) {
+		ITotalScanSignalExtractor totalIonSignalExtractor = new TotalScanSignalExtractor(chromatogram);
+		ITotalScanSignals scans = totalIonSignalExtractor.getTotalScanSignals();
+		for(ITotalScanSignal scan : scans.getTotalIonSignals()) {
 			int rt = scan.getRetentionTime();
 			float abundance = scan.getTotalSignal();
 			double x = calculateRetentionTime(rt, width);
