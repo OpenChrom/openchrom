@@ -17,10 +17,10 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.converter.supplier.cdf.io;
 
+import net.openchrom.chromatogram.model.signals.ITotalScanSignals;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.TestPathHelper;
 import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignals;
-import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignals;
 
 /**
  * IChromatogram 080811_026<br/>
@@ -39,7 +39,7 @@ public class CDFChromatogramReader_080811_026_1_ITest extends CDFChromatogramRea
 	public void testCDFChromatogramReader_1() {
 
 		IMassSpectrum massSpectrum;
-		ITotalIonSignals tic;
+		ITotalScanSignals tic;
 		IExtractedIonSignals xic;
 		assertEquals("scanDelay", 5627, chromatogram.getScanDelay());
 		assertEquals("scanInterval", 354, chromatogram.getScanInterval());
@@ -56,7 +56,7 @@ public class CDFChromatogramReader_080811_026_1_ITest extends CDFChromatogramRea
 		assertEquals("minSignal", 696.0f, chromatogram.getMinSignal());
 		assertEquals("maxSignal", 1454835.0f, chromatogram.getMaxSignal());
 		assertEquals("miscInfo", "P2", chromatogram.getMiscInfo());
-		tic = totalIonSignalExtractor.getTotalIonSignals();
+		tic = totalIonSignalExtractor.getTotalScanSignals();
 		assertEquals("List<ITotalIonSignal> size", 6215, tic.size());
 		assertEquals("totalIonSignal", 276475808.0f, chromatogram.getTotalSignal());
 		xic = extractedIonSignalExtractor.getExtractedIonSignals();

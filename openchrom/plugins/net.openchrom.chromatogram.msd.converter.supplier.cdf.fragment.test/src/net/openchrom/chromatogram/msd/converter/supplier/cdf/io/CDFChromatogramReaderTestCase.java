@@ -21,13 +21,13 @@ import java.io.File;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import net.openchrom.chromatogram.model.signals.ITotalScanSignalExtractor;
+import net.openchrom.chromatogram.model.signals.TotalScanSignalExtractor;
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverterMSD;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.chromatogram.msd.model.xic.ExtractedIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignalExtractor;
-import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignalExtractor;
-import net.openchrom.chromatogram.msd.model.xic.TotalIonSignalExtractor;
 
 import junit.framework.TestCase;
 
@@ -41,7 +41,7 @@ public class CDFChromatogramReaderTestCase extends TestCase {
 	protected IChromatogramMSD chromatogram;
 	protected String pathImport;
 	protected File fileImport;
-	protected ITotalIonSignalExtractor totalIonSignalExtractor;
+	protected ITotalScanSignalExtractor totalIonSignalExtractor;
 	protected IExtractedIonSignalExtractor extractedIonSignalExtractor;
 	private final static String EXTENSION_POINT_ID = "net.openchrom.chromatogram.msd.converter.supplier.cdf";
 
@@ -52,7 +52,7 @@ public class CDFChromatogramReaderTestCase extends TestCase {
 		fileImport = new File(this.pathImport);
 		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(fileImport, EXTENSION_POINT_ID, new NullProgressMonitor());
 		chromatogram = processingInfo.getChromatogram();
-		totalIonSignalExtractor = new TotalIonSignalExtractor(chromatogram);
+		totalIonSignalExtractor = new TotalScanSignalExtractor(chromatogram);
 		extractedIonSignalExtractor = new ExtractedIonSignalExtractor(chromatogram);
 	}
 

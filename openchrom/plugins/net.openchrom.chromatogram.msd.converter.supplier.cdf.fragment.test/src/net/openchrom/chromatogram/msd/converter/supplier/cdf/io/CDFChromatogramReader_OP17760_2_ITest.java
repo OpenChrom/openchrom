@@ -23,6 +23,9 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 
 import junit.framework.TestCase;
 
+import net.openchrom.chromatogram.model.signals.ITotalScanSignalExtractor;
+import net.openchrom.chromatogram.model.signals.ITotalScanSignals;
+import net.openchrom.chromatogram.model.signals.TotalScanSignalExtractor;
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverterMSD;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.TestPathHelper;
@@ -31,9 +34,6 @@ import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
 import net.openchrom.chromatogram.msd.model.xic.ExtractedIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignals;
-import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignalExtractor;
-import net.openchrom.chromatogram.msd.model.xic.ITotalIonSignals;
-import net.openchrom.chromatogram.msd.model.xic.TotalIonSignalExtractor;
 
 /**
  * This class tries to read the chromatogram OP17760 without specifying the
@@ -46,7 +46,7 @@ public class CDFChromatogramReader_OP17760_2_ITest extends TestCase {
 	protected IChromatogramMSD chromatogram;
 	protected String pathImport;
 	protected File fileImport;
-	protected ITotalIonSignalExtractor totalIonSignalExtractor;
+	protected ITotalScanSignalExtractor totalIonSignalExtractor;
 	protected IExtractedIonSignalExtractor extractedIonSignalExtractor;
 
 	@Override
@@ -57,7 +57,7 @@ public class CDFChromatogramReader_OP17760_2_ITest extends TestCase {
 		fileImport = new File(this.pathImport);
 		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(fileImport, new NullProgressMonitor());
 		chromatogram = processingInfo.getChromatogram();
-		totalIonSignalExtractor = new TotalIonSignalExtractor(chromatogram);
+		totalIonSignalExtractor = new TotalScanSignalExtractor(chromatogram);
 		extractedIonSignalExtractor = new ExtractedIonSignalExtractor(chromatogram);
 	}
 
@@ -73,7 +73,7 @@ public class CDFChromatogramReader_OP17760_2_ITest extends TestCase {
 	public void testCDFChromatogramReader_1() {
 
 		IMassSpectrum massSpectrum;
-		ITotalIonSignals tic;
+		ITotalScanSignals tic;
 		IExtractedIonSignals xic;
 		assertEquals("scanDelay", 5189, chromatogram.getScanDelay());
 		assertEquals("scanInterval", 769, chromatogram.getScanInterval());
@@ -90,7 +90,7 @@ public class CDFChromatogramReader_OP17760_2_ITest extends TestCase {
 		assertEquals("minSignal", 17475.0f, chromatogram.getMinSignal());
 		assertEquals("maxSignal", 9571087.0f, chromatogram.getMaxSignal());
 		assertEquals("miscInfo", "439-2   142�g", chromatogram.getMiscInfo());
-		tic = totalIonSignalExtractor.getTotalIonSignals();
+		tic = totalIonSignalExtractor.getTotalScanSignals();
 		assertEquals("ITotalIonSignals size", 5726, tic.size());
 		assertEquals("totalIonSignal", 1024242300.0f, chromatogram.getTotalSignal());
 		xic = extractedIonSignalExtractor.getExtractedIonSignals();

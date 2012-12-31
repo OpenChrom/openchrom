@@ -22,10 +22,10 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import net.openchrom.chromatogram.model.exceptions.ChromatogramIsNullException;
 import net.openchrom.chromatogram.msd.converter.chromatogram.ChromatogramConverterMSD;
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
-import net.openchrom.chromatogram.msd.model.exceptions.ChromatogramIsNullException;
 import net.openchrom.chromatogram.msd.model.xic.ExtractedIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignalExtractor;
 import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignals;
