@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2013 Philip (eselmeister) Wenig.
+ * 
+ * All rights reserved.
+ *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
