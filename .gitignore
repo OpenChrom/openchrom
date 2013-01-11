@@ -6,3 +6,7 @@ openchrom/sites/net.openchrom.chromatogram.msd.converter.supplier.pdf.updateSite
 openchrom/sites/net.openchrom.chromatogram.msd.converter.supplier.pdf.updateSite/content.jar
 openchrom/sites/net.openchrom.chromatogram.msd.converter.supplier.pdf.updateSite/features/
 openchrom/sites/net.openchrom.chromatogram.msd.converter.supplier.pdf.updateSite/plugins/
+openchrom/features/net.openchrom.chromatogram.msd.converter.supplier.pdf.feature/target/
+openchrom/plugins/net.openchrom.chromatogram.msd.converter.supplier.pdf.ui/target/
+openchrom/plugins/net.openchrom.chromatogram.msd.converter.supplier.pdf/target/
+openchrom/sites/net.openchrom.chromatogram.msd.converter.supplier.pdf.updateSite/target/
