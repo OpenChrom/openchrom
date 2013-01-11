@@ -2,12 +2,10 @@
 <!--
   Copyright (c) 2012, 2013 Philip (eselmeister) Wenig.
 -->
-
 <project
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
   xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>net.openchrom</groupId>
   <artifactId>parent</artifactId>
   <version>BUILD-VERSION</version>
@@ -28,7 +26,9 @@
     <sonatype.groupid>org.sonatype.tycho</sonatype.groupid>
     <maven.groupid>org.apache.maven.plugins</maven.groupid>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+    <!--
+      REPOSITORY URLS
+    -->
     <orbit-repo.url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-repo.url>
     <jetty-repo.url>http://www.eclipse.org/external/jetty/updates/jetty-bundles-8.x/8.1.3.v20120522/</jetty-repo.url>
     <ecf-repo.url>http://download.eclipse.org/rt/ecf/3.5.6/site.p2</ecf-repo.url>
@@ -36,16 +36,16 @@
     <aspectj-repo.url>http://download.eclipse.org/tools/ajdt/aspectj/update</aspectj-repo.url>
     <egit-repo.url>http://download.eclipse.org/egit/updates</egit-repo.url>
     <swtbot-repo.url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-repo.url>
-
     <juno-repo.url>http://download.eclipse.org/releases/juno</juno-repo.url>
     <tycho-repo.url>https://oss.sonatype.org/content/groups/public/</tycho-repo.url>
+    <kepler-repo.url>http://download.eclipse.org/releases/kepler</kepler-repo.url>
   </properties>
   <!--
 	DESCRIPTION
   --> 
-  <name>OpenChrom mzXML MS Plug-in</name>
+  <name>OpenChrom PBM comp</name>
   <description>
-	The OpenChrom mzXML MS plug-in offers a solution to read and write mzXML mass spectrometric data files. It extends the functionality of the OpenChrom Rich Client Platform (RCP).
+	The OpenChrom PBM comp.
   </description>
   <url>http://www.openchrom.net</url>
   <!--
@@ -75,12 +75,12 @@
 	MODULES
   -->
   <modules>
-    <module>./plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm</module>
-    <!--<module>./plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test</module>-->
-    <module>./plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.ui</module>
-    <!--<module>./plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.ui.fragment.test</module>-->
-    <module>./features/net.openchrom.chromatogram.msd.comparison.supplier.pbm.feature</module>
-    <!--<module>./updateSites/net.openchrom.chromatogram.msd.comparison.supplier.pbm.updateSite</module>-->
+    <module>../../plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm</module>
+    <module>../../plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.ui</module>
+    <module>../../features/net.openchrom.chromatogram.msd.comparison.supplier.pbm.feature</module>
+    <!--<module>../../plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test</module>-->
+    <!--<module>../../plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.ui.fragment.test</module>-->
+    <module>../../sites/net.openchrom.chromatogram.msd.comparison.supplier.pbm.updateSite</module>
   </modules>
   <!--
 	DEPENDENCIES SHOULD BE EDITED IN EACH MODULE.
@@ -92,6 +92,11 @@
     <repository>
       <id>juno</id>
       <url>${juno-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>kepler</id>
+      <url>${kepler-repo.url}</url>
       <layout>p2</layout>
     </repository>
     <repository>
@@ -158,7 +163,6 @@
         <version>${tycho.version}</version>
         <extensions>true</extensions>
       </plugin>
-
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>target-platform-configuration</artifactId>
@@ -199,7 +203,6 @@
           </filters>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-source-plugin</artifactId>
@@ -304,4 +307,144 @@
       </plugins>
     </pluginManagement>
   </build>
+  <!--
+    PROFILES
+  -->  
+  <profiles>
+    <!--
+      ECLIPSE-SIGN
+    -->  
+    <profile>
+      <id>eclipse-sign</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <version>${tycho.version}</version>
+            <configuration>
+              <includePackedArtifacts>true</includePackedArtifacts>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.eclipse.tycho.extras</groupId>
+            <artifactId>tycho-pack200a-plugin</artifactId>
+            <version>${tycho-extras.version}</version>
+            <executions>
+              <execution>
+                <id>pack200-normalize</id>
+                <goals>
+                  <goal>normalize</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.eclipse.cbi.maven.plugins</groupId>
+            <artifactId>eclipse-jarsigner-plugin</artifactId>
+            <version>1.0.2-SNAPSHOT</version>
+            <executions>
+              <execution>
+                <id>sign</id>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.eclipse.tycho.extras</groupId>
+            <artifactId>tycho-pack200b-plugin</artifactId>
+            <version>${tycho-extras.version}</version>
+            <executions>
+              <execution>
+                <id>pack200-pack</id>
+                <goals>
+                  <goal>pack</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>tycho-p2-plugin</artifactId>
+            <version>${tycho.version}</version>
+            <executions>
+              <execution>
+                <id>p2-metadata</id>
+                <goals>
+                  <goal>p2-metadata</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <defaultP2Metadata>false</defaultP2Metadata>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!--
+      ECLIPSE-PACK
+    -->  
+    <profile>
+      <id>eclipse-pack</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <version>${tycho.version}</version>
+            <configuration>
+              <includePackedArtifacts>true</includePackedArtifacts>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.eclipse.tycho.extras</groupId>
+            <artifactId>tycho-pack200a-plugin</artifactId>
+            <version>${tycho-extras.version}</version>
+            <executions>
+              <execution>
+                <id>pack200-normalize</id>
+                <goals>
+                  <goal>normalize</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.eclipse.tycho.extras</groupId>
+            <artifactId>tycho-pack200b-plugin</artifactId>
+            <version>${tycho-extras.version}</version>
+            <executions>
+              <execution>
+                <id>pack200-pack</id>
+                <goals>
+                  <goal>pack</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>tycho-p2-plugin</artifactId>
+            <version>${tycho.version}</version>
+            <executions>
+              <execution>
+                <id>p2-metadata</id>
+                <goals>
+                  <goal>p2-metadata</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <defaultP2Metadata>false</defaultP2Metadata>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
