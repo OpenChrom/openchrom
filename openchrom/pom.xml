@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2012, 2013 Philip (eselmeister) Wenig.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the Eclipse Distribution License v1.0
+  which accompanies this distribution, and is available at
+  http://www.eclipse.org/org/documents/edl-v10.php
+ 
+  Contributors:
+     Philip (eselmeister) Wenig - created the pom to build the plug-ins
+-->
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.openchrom</groupId>
+  <artifactId>master</artifactId>
+  <version>BUILD-VERSION</version>
+  <packaging>pom</packaging>
+  <!--
+	USE MAVEN 3.0
+  --> 
+  <prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
+  <!--
+	PROPERTIES
+  --> 
+  <properties>
+    <!-- VERSIONS -->
+    <tycho.version>0.16.0</tycho.version>
+    <tycho-extras.version>0.16.0</tycho-extras.version>
+    <pmd.version>2.7.1</pmd.version>
+    <checkstyle.version>2.9.1</checkstyle.version>
+    <!-- IDS -->
+    <tycho.groupid>org.eclipse.tycho</tycho.groupid>
+    <sonatype.groupid>org.sonatype.tycho</sonatype.groupid>
+    <maven.groupid>org.apache.maven.plugins</maven.groupid>
+    <!-- REPOSITORY URLS -->
+    <orbit-repo.url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-repo.url>
+    <jetty-repo.url>http://www.eclipse.org/external/jetty/updates/jetty-bundles-8.x/8.1.3.v20120522/</jetty-repo.url>
+    <ecf-repo.url>http://download.eclipse.org/rt/ecf/3.5.6/site.p2</ecf-repo.url>
+    <emf-repo.url>http://download.eclipse.org/modeling/emf/emf/updates/2.8milestones/</emf-repo.url>
+    <aspectj-repo.url>http://download.eclipse.org/tools/ajdt/aspectj/update</aspectj-repo.url>
+    <egit-repo.url>http://download.eclipse.org/egit/updates</egit-repo.url>
+    <swtbot-repo.url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-repo.url>
+    <juno-repo.url>http://download.eclipse.org/releases/juno</juno-repo.url>
+    <tycho-repo.url>https://oss.sonatype.org/content/groups/public/</tycho-repo.url>
+    <kepler-repo.url>http://download.eclipse.org/releases/kepler</kepler-repo.url>
+    <e4-tools.url>http://download.eclipse.org/e4/updates/0.12</e4-tools.url>
+    <!-- ENCODING -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <!--
+	P2 REPOSITORIES
+  -->
+  <repositories>
+    <repository>
+      <id>juno</id>
+      <url>${juno-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>kepler</id>
+      <url>${kepler-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>e4-tools</id>
+      <url>${e4-tools.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>orbit</id>
+      <url>${orbit-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>ecf</id>
+      <url>${ecf-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>jetty</id>
+      <url>${jetty-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>emf</id>
+      <url>${emf-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>egit</id>
+      <url>${egit-repo.url}</url>
+      <layout>p2</layout>
+    </repository> 
+    <repository>
+      <id>swtbot</id>
+      <url>${swtbot-repo.url}</url>
+      <layout>p2</layout>
+    </repository> 
+  </repositories>
+  <!--
+	PLUGIN REPOSITORIES
+  -->
+  <pluginRepositories>
+    <pluginRepository>
+      <id>tycho</id>
+      <url>${tycho-repo.url}</url>
+      <releases><enabled>false</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+  <!--
+	BUILD
+  -->
+  <build>
+    <!--
+	PLUGINS
+    -->  
+    <plugins>
+      <plugin>
+        <groupId>${tycho.groupid}</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+        <groupId>${tycho.groupid}</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho.version}</version>
+        <configuration>
+          <environments>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>x86_64</arch>
+            </environment>
+          </environments>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>${tycho.groupid}</groupId>
+        <artifactId>tycho-source-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <executions>
+          <execution>
+            <id>plugin-source</id>
+            <goals>
+              <goal>plugin-source</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-compiler-plugin</artifactId>
+        <version>${tycho.version}</version>
+          <configuration>
+            <compilerArguments>
+              <encoding>${project.build.sourceEncoding}</encoding>
+            </compilerArguments>
+          </configuration>
+      </plugin>
+      <plugin>
+        <groupId>${tycho.groupid}</groupId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <version>${tycho.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>${maven.groupid}</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${pmd.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>${maven.groupid}</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${checkstyle.version}</version>
+        <configuration>
+          <enableRulesSummary>false</enableRulesSummary>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
