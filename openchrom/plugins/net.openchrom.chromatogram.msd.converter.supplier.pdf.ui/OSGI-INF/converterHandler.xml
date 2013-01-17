@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<component name="net.openchrom.chromatogram.msd.converter.supplier.pdf.ui.handlers.ConverterHandler">
+   <implementation class="net.openchrom.chromatogram.msd.converter.supplier.pdf.ui.handlers.ConverterHandler" />
+   <property name="event.topics" value="chromatogram/msd/update/rawfile" />
+   <service>
+      <provide interface="org.osgi.service.event.EventHandler" />
+   </service>
+</component>
