@@ -32,6 +32,7 @@ import ucar.nc2.NetcdfFileCache;
 import net.openchrom.chromatogram.converter.exceptions.FileIsEmptyException;
 import net.openchrom.chromatogram.converter.exceptions.FileIsNotReadableException;
 import net.openchrom.chromatogram.model.core.IChromatogramOverview;
+import net.openchrom.chromatogram.model.exceptions.AbundanceLimitExceededException;
 import net.openchrom.chromatogram.msd.converter.io.IChromatogramMSDReader;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
@@ -47,7 +48,6 @@ import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFIon;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFMassSpectrum;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.chromatogram.msd.model.core.IIon;
-import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
 import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
 import net.openchrom.logging.core.Logger;
 

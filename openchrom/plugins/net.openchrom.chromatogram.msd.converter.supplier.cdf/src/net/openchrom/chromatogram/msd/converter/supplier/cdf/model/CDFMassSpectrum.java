@@ -17,9 +17,9 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.converter.supplier.cdf.model;
 
+import net.openchrom.chromatogram.model.exceptions.AbundanceLimitExceededException;
 import net.openchrom.chromatogram.msd.model.core.AbstractSupplierScanMassSpectrum;
 import net.openchrom.chromatogram.msd.model.core.IIon;
-import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
 import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
 import net.openchrom.logging.core.Logger;
 
