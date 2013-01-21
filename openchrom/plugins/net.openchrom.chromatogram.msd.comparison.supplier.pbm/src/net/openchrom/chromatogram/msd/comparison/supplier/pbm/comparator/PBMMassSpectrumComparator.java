@@ -5,6 +5,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
+import net.openchrom.chromatogram.model.exceptions.AbundanceLimitExceededException;
 import net.openchrom.chromatogram.msd.comparison.massspectrum.AbstractMassSpectrumComparator;
 import net.openchrom.chromatogram.msd.comparison.massspectrum.IMassSpectrumComparator;
 import net.openchrom.chromatogram.msd.comparison.math.GeometricDistanceCalculator;
@@ -15,7 +16,6 @@ import net.openchrom.chromatogram.msd.comparison.supplier.pbm.results.PBMMassSpe
 import net.openchrom.chromatogram.msd.model.core.IIon;
 import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
 import net.openchrom.chromatogram.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
-import net.openchrom.chromatogram.msd.model.exceptions.AbundanceLimitExceededException;
 import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
 import net.openchrom.chromatogram.msd.model.implementation.DefaultIon;
 import net.openchrom.chromatogram.msd.model.implementation.DefaultMassSpectrum;
