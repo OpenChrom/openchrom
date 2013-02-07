@@ -7,4 +7,4 @@ Fragment-Host: net.openchrom.chromatogram.msd.comparison.supplier.pbm;bundle-ver
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit4;bundle-version="4.8.1",
  net.openchrom.thirdpartylibraries.junitaddons;bundle-version="1.4.0"
-Bundle-Vendor: http://www.openchrom.net
+Bundle-Vendor: OpenChrom
