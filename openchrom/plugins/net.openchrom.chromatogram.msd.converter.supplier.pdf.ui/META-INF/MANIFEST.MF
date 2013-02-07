@@ -4,7 +4,7 @@ Bundle-Name: Ui
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.converter.supplier.pdf.ui;singleton:=true
 Bundle-Version: 0.8.0.qualifier
 Bundle-Activator: net.openchrom.chromatogram.msd.converter.supplier.pdf.ui.Activator
-Bundle-Vendor: http://www.openchrom.net
+Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  net.openchrom.chromatogram.msd.converter.supplier.pdf;bundle-version="0.8.0",
