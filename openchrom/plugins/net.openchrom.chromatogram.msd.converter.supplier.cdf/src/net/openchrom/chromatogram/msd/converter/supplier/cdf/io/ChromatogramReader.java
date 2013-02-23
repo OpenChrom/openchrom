@@ -33,6 +33,7 @@ import net.openchrom.chromatogram.converter.exceptions.FileIsEmptyException;
 import net.openchrom.chromatogram.converter.exceptions.FileIsNotReadableException;
 import net.openchrom.chromatogram.model.core.IChromatogramOverview;
 import net.openchrom.chromatogram.model.exceptions.AbundanceLimitExceededException;
+import net.openchrom.chromatogram.msd.converter.io.AbstractChromatogramMSDReader;
 import net.openchrom.chromatogram.msd.converter.io.IChromatogramMSDReader;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
@@ -58,9 +59,9 @@ import net.openchrom.logging.core.Logger;
  * 
  * @author eselmeister
  */
-public class CDFChromatogramReader implements IChromatogramMSDReader {
+public class ChromatogramReader extends AbstractChromatogramMSDReader implements IChromatogramMSDReader {
 
-	private static final Logger logger = Logger.getLogger(CDFChromatogramReader.class);
+	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 
 	@Override
 	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {

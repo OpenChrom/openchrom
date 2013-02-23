@@ -27,7 +27,7 @@ import net.openchrom.chromatogram.msd.converter.chromatogram.AbstractChromatogra
 import net.openchrom.chromatogram.msd.converter.io.IChromatogramMSDWriter;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.support.IConstants;
-import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.CDFChromatogramWriter;
+import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.ChromatogramWriter;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.logging.core.Logger;
 import net.openchrom.processing.core.IProcessingInfo;
@@ -53,7 +53,7 @@ public class CDFChromatogramExportConverter extends AbstractChromatogramMSDExpor
 			processingInfo.addMessages(processingInfoValidate);
 		} else {
 			monitor.subTask(IConstants.EXPORT_CDF_CHROMATOGRAM);
-			IChromatogramMSDWriter writer = new CDFChromatogramWriter();
+			IChromatogramMSDWriter writer = new ChromatogramWriter();
 			try {
 				writer.writeChromatogram(file, chromatogram, monitor);
 			} catch(Exception e) {

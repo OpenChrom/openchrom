@@ -30,7 +30,7 @@ import net.openchrom.chromatogram.msd.converter.processing.chromatogram.Chromato
 import net.openchrom.chromatogram.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.internal.support.IConstants;
-import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.CDFChromatogramReader;
+import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.ChromatogramReader;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.logging.core.Logger;
 import net.openchrom.processing.core.IProcessingInfo;
@@ -55,7 +55,7 @@ public class CDFChromatogramImportConverter extends AbstractChromatogramMSDImpor
 			 * Read the chromatogram.
 			 */
 			file = SpecificationValidator.validateCDFSpecification(file);
-			IChromatogramMSDReader reader = new CDFChromatogramReader();
+			IChromatogramMSDReader reader = new ChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM);
 			try {
 				IChromatogramMSD chromatogram = reader.read(file, monitor);
@@ -83,7 +83,7 @@ public class CDFChromatogramImportConverter extends AbstractChromatogramMSDImpor
 			 * Read the chromatogram overview.
 			 */
 			file = SpecificationValidator.validateCDFSpecification(file);
-			IChromatogramMSDReader reader = new CDFChromatogramReader();
+			IChromatogramMSDReader reader = new ChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM_OVERVIEW);
 			try {
 				IChromatogramOverview chromatogramOverview = reader.readOverview(file, monitor);

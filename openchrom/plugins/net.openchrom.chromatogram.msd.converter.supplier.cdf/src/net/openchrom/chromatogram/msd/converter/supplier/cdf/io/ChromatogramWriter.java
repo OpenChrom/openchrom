@@ -44,9 +44,9 @@ import net.openchrom.logging.core.Logger;
  * 
  * @author eselmeister
  */
-public class CDFChromatogramWriter implements IChromatogramMSDWriter {
+public class ChromatogramWriter implements IChromatogramMSDWriter {
 
-	private static final Logger logger = Logger.getLogger(CDFChromatogramWriter.class);
+	private static final Logger logger = Logger.getLogger(ChromatogramWriter.class);
 
 	@Override
 	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
