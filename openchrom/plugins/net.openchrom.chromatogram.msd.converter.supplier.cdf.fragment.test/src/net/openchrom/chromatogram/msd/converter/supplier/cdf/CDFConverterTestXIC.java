@@ -83,7 +83,9 @@ public class CDFConverterTestXIC extends TestCase {
 			signals = extractedIonSignalExtractor.getExtractedIonSignals(28.0f, 600.0f);
 			stop = new Date();
 			System.out.println("XIC 28-600: " + (stop.getTime() - start.getTime()));
-		} catch(TypeCastException | ChromatogramIsNullException e) {
+		} catch(TypeCastException e) {
+			e.printStackTrace();
+		} catch(ChromatogramIsNullException e) {
 			e.printStackTrace();
 		}
 	}
