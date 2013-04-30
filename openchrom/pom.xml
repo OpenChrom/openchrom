@@ -28,8 +28,8 @@
   --> 
   <properties>
     <!-- VERSIONS -->
-    <tycho.version>0.16.0</tycho.version>
-    <tycho-extras.version>0.16.0</tycho-extras.version>
+    <tycho.version>0.17.0</tycho.version>
+    <tycho-extras.version>0.17.0</tycho-extras.version>
     <pmd.version>2.7.1</pmd.version>
     <checkstyle.version>2.9.1</checkstyle.version>
     <!-- IDS -->
@@ -47,7 +47,7 @@
     <juno-repo.url>http://download.eclipse.org/releases/juno</juno-repo.url>
     <tycho-repo.url>https://oss.sonatype.org/content/groups/public/</tycho-repo.url>
     <kepler-repo.url>http://download.eclipse.org/releases/kepler</kepler-repo.url>
-    <e4-tools.url>http://download.eclipse.org/e4/updates/0.12</e4-tools.url>
+    <e4-tools.url>http://download.eclipse.org/e4/updates/0.13</e4-tools.url>
     <!-- ENCODING -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
