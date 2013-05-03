@@ -77,15 +77,7 @@ public class ChromatogramWriter implements IChromatogramMSDWriter {
 		dimensionSupport.addVariableDoubleD1(CDFConstants.VARIABLE_RESOLUTION, numberOfScans, dimensionSupport.NULL_VALUE_DOUBLE);
 		dimensionSupport.addVariableActualScanNumber();
 		dimensionSupport.addVariableTotalIntensity();
-		dimensionSupport.addVariableDoubleD1(CDFConstants.VARIABLE_MASS_RANGE_MIN, numberOfScans, 0); // TODO
-																										// da
-																										// funktioniert
-																										// was
-																										// mit
-																										// den
-																										// ion
-																										// werten
-																										// nicht
+		dimensionSupport.addVariableDoubleD1(CDFConstants.VARIABLE_MASS_RANGE_MIN, numberOfScans, 0);
 		// dimensionSupport.addVariableMassRangeMin();
 		dimensionSupport.addVariableMassRangeMax();
 		dimensionSupport.addVariableDoubleD1(CDFConstants.VARIABLE_TIME_RANGE_MIN, numberOfScans, dimensionSupport.NULL_VALUE_DOUBLE);

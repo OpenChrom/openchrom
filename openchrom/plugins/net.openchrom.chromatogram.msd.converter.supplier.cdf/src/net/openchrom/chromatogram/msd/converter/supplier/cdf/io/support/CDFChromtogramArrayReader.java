@@ -25,6 +25,7 @@ import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NoSuchSc
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFIon;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFMassSpectrum;
+import net.openchrom.chromatogram.msd.model.core.AbstractIon;
 import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
 import net.openchrom.logging.core.Logger;
 
@@ -41,7 +42,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 	private static final Logger logger = Logger.getLogger(CDFChromtogramArrayReader.class);
 	private Variable valuesIon;
 	private Variable valuesAbundance;
-	private float[] valueArrayIon;
+	private double[] valueArrayIon;
 	private float[] valueArrayAbundance;
 	private Variable valuesPointCount;
 	private Variable valuesScanIndex;
@@ -83,7 +84,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		 * -> Int ------------- Agilent: Ion -> Float Abundance -> Float
 		 * PointCount -> Int ScanIndex -> Int
 		 */
-		valueArrayIon = (float[])valuesIon.read().get1DJavaArray(float.class);
+		valueArrayIon = (double[])valuesIon.read().get1DJavaArray(double.class);
 		valueArrayAbundance = (float[])valuesAbundance.read().get1DJavaArray(float.class);
 		valueArrayPointCount = (int[])valuesPointCount.read().get1DJavaArray(int.class);
 		valueArrayScanIndex = (int[])valuesScanIndex.read().get1DJavaArray(int.class);
@@ -91,7 +92,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 
 	// ------------------------------------------------ICDFChromatogramArrayReader
 	@Override
-	public CDFMassSpectrum getMassSpectrum(int scan) throws NoSuchScanStored {
+	public CDFMassSpectrum getMassSpectrum(int scan, int precision) throws NoSuchScanStored {
 
 		/*
 		 * If the scan is out of a valid range.
@@ -111,7 +112,8 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		for(int i = 0; i < peaks; i++) {
 			position = offset + i;
 			try {
-				ion = new CDFIon(valueArrayIon[position], valueArrayAbundance[position]);
+				double mz = AbstractIon.getIon(valueArrayIon[position], precision);
+				ion = new CDFIon(mz, valueArrayAbundance[position]);
 				massSpectrum.addIon(ion, false);
 			} catch(AbundanceLimitExceededException e) {
 				logger.warn(e);

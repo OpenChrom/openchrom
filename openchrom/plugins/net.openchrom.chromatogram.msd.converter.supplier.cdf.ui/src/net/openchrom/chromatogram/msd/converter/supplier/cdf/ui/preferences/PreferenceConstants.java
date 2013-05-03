@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Philip (eselmeister) Wenig.
+ * Copyright (c) 2013 Dr. Philip Wenig.
  * 
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
@@ -13,22 +13,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston MA 02111-1307, USA
  * 
  * 
- * Contributors: Philip (eselmeister) Wenig - initial API and implementation
+ * Contributors: Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support;
+package net.openchrom.chromatogram.msd.converter.supplier.cdf.ui.preferences;
 
-import net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
-import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFMassSpectrum;
-
-public interface ICDFChromatogramArrayReader extends IAbstractCDFChromatogramArrayReader {
-
-	/**
-	 * Returns a valid mass spectrum of the given scan.
-	 * 
-	 * @param scan
-	 * @param precision
-	 * @return CDFMassSpectrum
-	 * @throws NoSuchScanStored
-	 */
-	public CDFMassSpectrum getMassSpectrum(int scan, int precision) throws NoSuchScanStored;
+/**
+ * Constant definitions for plug-in preferences
+ */
+public class PreferenceConstants {
 }

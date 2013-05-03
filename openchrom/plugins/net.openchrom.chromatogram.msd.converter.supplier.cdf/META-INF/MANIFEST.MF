@@ -16,3 +16,9 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: OpenChrom
+Export-Package: net.openchrom.chromatogram.msd.converter.supplier.cdf.converter,
+ net.openchrom.chromatogram.msd.converter.supplier.cdf.exceptions,
+ net.openchrom.chromatogram.msd.converter.supplier.cdf.io,
+ net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support,
+ net.openchrom.chromatogram.msd.converter.supplier.cdf.model,
+ net.openchrom.chromatogram.msd.converter.supplier.cdf.preferences

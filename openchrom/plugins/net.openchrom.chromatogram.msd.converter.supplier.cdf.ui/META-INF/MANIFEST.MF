@@ -1,12 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ui
-Bundle-SymbolicName: net.openchrom.chromatogram.msd.converter.supplier.cdf.ui
+Bundle-SymbolicName: net.openchrom.chromatogram.msd.converter.supplier.cdf.ui;singleton:=true
 Bundle-Version: 0.8.0.qualifier
 Bundle-Activator: net.openchrom.chromatogram.msd.converter.supplier.cdf.ui.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui;bundle-version="3.5.1",
- net.openchrom.logging;bundle-version="0.8.0"
+ net.openchrom.logging;bundle-version="0.8.0",
+ net.openchrom.chromatogram.msd.converter.supplier.cdf;bundle-version="0.8.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: OpenChrom

@@ -182,15 +182,7 @@ public class DimensionSupport implements IDimensionSupport {
 		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
 		ArrayDouble.D1 values = new ArrayDouble.D1(numberOfScans.getLength());
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
-			values.set(i, AbstractIon.getIon(scanSupport.getMinIon(i))); // TODO
-																			// da
-																			// funktioniert
-																			// was
-																			// mit
-																			// den
-																			// ion
-																			// werten
-																			// nicht
+			values.set(i, AbstractIon.getIon(scanSupport.getMinIon(i)));
 		}
 		dataEntries.add(new DataEntry(varName, values));
 	}
@@ -204,15 +196,7 @@ public class DimensionSupport implements IDimensionSupport {
 		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
 		ArrayDouble.D1 values = new ArrayDouble.D1(numberOfScans.getLength());
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
-			values.set(i, AbstractIon.getIon(scanSupport.getMaxIon(i))); // TODO
-																			// da
-																			// funktioniert
-																			// was
-																			// mit
-																			// den
-																			// ion
-																			// werten
-																			// nicht
+			values.set(i, AbstractIon.getIon(scanSupport.getMaxIon(i)));
 		}
 		dataEntries.add(new DataEntry(varName, values));
 	}
@@ -253,7 +237,7 @@ public class DimensionSupport implements IDimensionSupport {
 		ArrayList<Dimension> dimensionMassValues = new ArrayList<Dimension>();
 		dimensionMassValues.add(numberOfScanIons);
 		cdfChromatogram.addVariable(varNameMassValues, DataType.FLOAT, dimensionMassValues);
-		ArrayFloat.D1 valuesIons = new ArrayFloat.D1(numberOfScanIons.getLength());
+		ArrayDouble.D1 valuesIons = new ArrayDouble.D1(numberOfScanIons.getLength());
 		String varNameTimeValues = CDFConstants.VARIABLE_TIME_VALUES;
 		ArrayList<Dimension> dimensionTimeValues = new ArrayList<Dimension>();
 		dimensionTimeValues.add(numberOfScanIons);
@@ -274,7 +258,7 @@ public class DimensionSupport implements IDimensionSupport {
 			scan = chromatogram.getSupplierScan(i + 1);
 			// retentionTime = scan.getRetentionTime() / (1000.0f * 60.0f);
 			for(IIon ion : scan.getIons()) {
-				valuesIons.set(counter, AbstractIon.getIon(ion.getIon()));
+				valuesIons.set(counter, ion.getIon());
 				valuesTime.set(counter, NULL_VALUE_TIME);
 				// valuesTime.set(counter, retentionTime);
 				valuesAbundance.set(counter, ion.getAbundance());

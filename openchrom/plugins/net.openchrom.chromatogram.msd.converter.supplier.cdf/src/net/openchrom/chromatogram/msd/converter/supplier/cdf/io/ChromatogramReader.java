@@ -47,6 +47,7 @@ import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support.IAbstrac
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFChromatogram;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFIon;
 import net.openchrom.chromatogram.msd.converter.supplier.cdf.model.CDFMassSpectrum;
+import net.openchrom.chromatogram.msd.converter.supplier.cdf.preferences.ConverterPreferences;
 import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.chromatogram.msd.model.core.IIon;
 import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
@@ -146,11 +147,14 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
 		chromatogram = new CDFChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
+		//
+		int precision = ConverterPreferences.getPrecision();
+		//
 		monitor.subTask(IConstants.PARSE_SCANS);
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
 			try {
 				monitor.subTask(IConstants.SCAN + " " + i);
-				massSpectrum = in.getMassSpectrum(i);
+				massSpectrum = in.getMassSpectrum(i, precision);
 				chromatogram.addScan(massSpectrum);
 			} catch(NoSuchScanStored e) {
 				logger.warn(e);
