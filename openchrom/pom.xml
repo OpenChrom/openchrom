@@ -28,8 +28,8 @@
   --> 
   <properties>
     <!-- VERSIONS -->
-    <tycho.version>0.17.0</tycho.version>
-    <tycho-extras.version>0.17.0</tycho-extras.version>
+    <tycho.version>0.18.0</tycho.version>
+    <tycho-extras.version>0.18.0</tycho-extras.version>
     <pmd.version>2.7.1</pmd.version>
     <checkstyle.version>2.9.1</checkstyle.version>
     <!-- IDS -->
@@ -37,17 +37,16 @@
     <sonatype.groupid>org.sonatype.tycho</sonatype.groupid>
     <maven.groupid>org.apache.maven.plugins</maven.groupid>
     <!-- REPOSITORY URLS -->
-    <orbit-repo.url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-repo.url>
-    <jetty-repo.url>http://www.eclipse.org/external/jetty/updates/jetty-bundles-8.x/8.1.3.v20120522/</jetty-repo.url>
-    <ecf-repo.url>http://download.eclipse.org/rt/ecf/3.5.6/site.p2</ecf-repo.url>
-    <emf-repo.url>http://download.eclipse.org/modeling/emf/emf/updates/2.8milestones/</emf-repo.url>
-    <aspectj-repo.url>http://download.eclipse.org/tools/ajdt/aspectj/update</aspectj-repo.url>
-    <egit-repo.url>http://download.eclipse.org/egit/updates</egit-repo.url>
-    <swtbot-repo.url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-repo.url>
-    <juno-repo.url>http://download.eclipse.org/releases/juno</juno-repo.url>
-    <tycho-repo.url>https://oss.sonatype.org/content/groups/public/</tycho-repo.url>
+    <tycho-repo.url>https://oss.sonatype.org/content/groups/public</tycho-repo.url>
     <kepler-repo.url>http://download.eclipse.org/releases/kepler</kepler-repo.url>
-    <e4-tools.url>http://download.eclipse.org/e4/updates/0.13</e4-tools.url>
+    <kepler-updates-repo.url>http://download.eclipse.org/eclipse/updates/4.3</kepler-updates-repo.url>
+    <orbit-repo.url>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit-repo.url>
+    <e4-tools.url>http://download.eclipse.org/e4/downloads/drops/I20130624-2200/repository</e4-tools.url>
+    <juno-repo.url>http://download.eclipse.org/releases/juno</juno-repo.url>
+    <jetty-repo.url>http://download.eclipse.org/jetty/updates/jetty-bundles-9.x</jetty-repo.url>
+    <ecf-repo.url>http://download.eclipse.org/rt/ecf/3.6.1/site.p2</ecf-repo.url>
+    <egit-repo.url>http://download.eclipse.org/egit/updates</egit-repo.url>
+    <swtbot-repo.url>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot-repo.url>
     <!-- ENCODING -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -56,13 +55,13 @@
   -->
   <repositories>
     <repository>
-      <id>juno</id>
-      <url>${juno-repo.url}</url>
+      <id>kepler</id>
+      <url>${kepler-repo.url}</url>
       <layout>p2</layout>
     </repository>
     <repository>
-      <id>kepler</id>
-      <url>${kepler-repo.url}</url>
+      <id>kepler-updates</id>
+      <url>${kepler-updates-repo.url}</url>
       <layout>p2</layout>
     </repository>
     <repository>
@@ -76,6 +75,11 @@
       <layout>p2</layout>
     </repository>
     <repository>
+      <id>juno</id>
+      <url>${juno-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
       <id>ecf</id>
       <url>${ecf-repo.url}</url>
       <layout>p2</layout>
@@ -83,11 +87,6 @@
     <repository>
       <id>jetty</id>
       <url>${jetty-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-    <repository>
-      <id>emf</id>
-      <url>${emf-repo.url}</url>
       <layout>p2</layout>
     </repository>
     <repository>
