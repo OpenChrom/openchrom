@@ -43,7 +43,7 @@
     <orbit-repo.url>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository</orbit-repo.url>
     <e4-tools.url>http://download.eclipse.org/e4/downloads/drops/I20130624-2200/repository</e4-tools.url>
     <juno-repo.url>http://download.eclipse.org/releases/juno</juno-repo.url>
-    <jetty-repo.url>http://download.eclipse.org/jetty/updates/jetty-bundles-9.x</jetty-repo.url>
+    <jetty-repo.url>http://download.eclipse.org/jetty/updates/jetty-bundles-8.x</jetty-repo.url>
     <ecf-repo.url>http://download.eclipse.org/rt/ecf/3.6.1/site.p2</ecf-repo.url>
     <egit-repo.url>http://download.eclipse.org/egit/updates</egit-repo.url>
     <swtbot-repo.url>http://download.eclipse.org/technology/swtbot/releases/latest</swtbot-repo.url>
