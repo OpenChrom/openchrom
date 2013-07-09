@@ -4,16 +4,17 @@
       label="Feature"
       version="0.8.0.qualifier">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description url="http://www.openchrom.net">
+      This is a MS comparison supplier PBM.
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright url="http://www.openchrom.net">
+      Copyright (c) 2008, 2013 Dr. Philip Wenig.
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="http://www.openchrom.net">
+      Copyright (c) 2008, 2013 Dr. Philip Wenig.
+All rights reserved.
    </license>
 
    <plugin
