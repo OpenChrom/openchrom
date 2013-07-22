@@ -63,6 +63,10 @@ public class CDFChromatogramReaderTestCase extends TestCase {
 		fileImport = null;
 		chromatogram = null;
 		totalIonSignalExtractor = null;
+		extractedIonSignalExtractor = null;
+		//
+		System.gc();
+		//
 		super.tearDown();
 	}
 }
