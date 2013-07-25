@@ -63,7 +63,7 @@ public class CDFChromatogramReader_EMPTY_1_ITest extends TestCase {
 			chromatogram = processingInfo.getChromatogram();
 			assertNotNull(chromatogram);
 		} catch(TypeCastException e) {
-			assertTrue("TypeCastException", false);
+			assertTrue("TypeCastException", true);
 		}
 	}
 
@@ -74,7 +74,7 @@ public class CDFChromatogramReader_EMPTY_1_ITest extends TestCase {
 			chromatogram = processingInfo.getChromatogram();
 			assertNotNull(chromatogram);
 		} catch(TypeCastException e) {
-			assertTrue("TypeCastException", false);
+			assertTrue("TypeCastException", true);
 		}
 	}
 }
