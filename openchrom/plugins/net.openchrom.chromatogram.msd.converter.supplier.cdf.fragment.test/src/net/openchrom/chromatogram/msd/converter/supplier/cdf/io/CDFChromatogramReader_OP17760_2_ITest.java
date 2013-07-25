@@ -70,7 +70,7 @@ public class CDFChromatogramReader_OP17760_2_ITest extends TestCase {
 		super.tearDown();
 	}
 
-	public void testCDFChromatogramReader_1() {
+	private void testCDFChromatogramReader_1() {
 
 		IMassSpectrum massSpectrum;
 		ITotalScanSignals tic;

@@ -37,7 +37,7 @@ public class CDFChromatogramWriter_1_ITest extends CDFChromatogramWriterTestCase
 		super.setUp();
 	}
 
-	public void testCDFChromatogramReader_1() {
+	private void testCDFChromatogramReader_1() {
 
 		IMassSpectrum massSpectrum;
 		ITotalScanSignals tic;

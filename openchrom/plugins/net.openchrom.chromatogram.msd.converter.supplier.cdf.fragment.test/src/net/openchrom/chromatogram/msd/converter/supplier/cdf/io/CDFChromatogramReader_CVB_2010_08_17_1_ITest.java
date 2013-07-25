@@ -36,7 +36,7 @@ public class CDFChromatogramReader_CVB_2010_08_17_1_ITest extends CDFChromatogra
 		super.setUp();
 	}
 
-	public void testCDFChromatogramReader_1() {
+	private void testCDFChromatogramReader_1() {
 
 		IMassSpectrum massSpectrum;
 		ITotalScanSignals tic;

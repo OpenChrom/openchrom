@@ -59,7 +59,7 @@ public class CDFChromatogramReader_OP17760_3_ITest extends TestCase {
 		super.tearDown();
 	}
 
-	public void testCDFChromatogramReader_1() {
+	private void testCDFChromatogramReader_1() {
 
 		assertEquals("startRetentionTime", 5189, chromatogram.getStartRetentionTime());
 		assertEquals("stopRetentionTime", 4439858, chromatogram.getStopRetentionTime());
