@@ -10,6 +10,6 @@
 
   <artifactId>net.openchrom.chromatogram.msd.comparison.supplier.pbm.feature</artifactId>
   <packaging>eclipse-feature</packaging>
-  <version>0.8.0-SNAPSHOT</version>
+  <version>0.9.0-SNAPSHOT</version>
   
 </project>
