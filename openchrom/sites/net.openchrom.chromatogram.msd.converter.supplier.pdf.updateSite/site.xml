@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/net.openchrom.chromatogram.msd.converter.supplier.pdf.feature_0.8.0.qualifier.jar" id="net.openchrom.chromatogram.msd.converter.supplier.pdf.feature" version="0.8.0.qualifier">
+   <feature url="features/net.openchrom.chromatogram.msd.converter.supplier.pdf.feature_0.8.0.201307291123.jar" id="net.openchrom.chromatogram.msd.converter.supplier.pdf.feature" version="0.8.0.201307291123">
       <category name="net.openchrom.chromatogram.msd.plugins.converter"/>
    </feature>
    <category-def name="net.openchrom.chromatogram.msd.plugins.converter" label="Chromatogram Converter"/>
