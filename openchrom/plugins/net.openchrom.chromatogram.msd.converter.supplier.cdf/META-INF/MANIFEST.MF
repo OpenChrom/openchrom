@@ -3,16 +3,16 @@ Eclipse-RegisterBuddy: 	net.openchrom.chromatogram.model, net.openchrom.chromato
 Bundle-ManifestVersion: 2
 Bundle-Name: Cdf Plug-in
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.converter.supplier.cdf;singleton:=true
-Bundle-Version: 0.8.0.qualifier
+Bundle-Version: 0.9.0.qualifier
 Bundle-Activator: net.openchrom.chromatogram.msd.converter.supplier.cdf.Activator
 Require-Bundle: org.eclipse.core.runtime,
- net.openchrom.chromatogram.msd.converter;bundle-version="0.8.0",
- net.openchrom.chromatogram.msd.model;bundle-version="0.8.0",
- net.openchrom.logging;bundle-version="0.8.0",
+ net.openchrom.chromatogram.msd.converter;bundle-version="0.9.0",
+ net.openchrom.chromatogram.msd.model;bundle-version="0.9.0",
+ net.openchrom.logging;bundle-version="0.9.0",
  net.openchrom.thirdpartylibraries.netcdf;bundle-version="2.2.22",
- net.openchrom.processing;bundle-version="0.8.0",
- net.openchrom.chromatogram.converter;bundle-version="0.8.0",
- net.openchrom.chromatogram.model;bundle-version="0.8.0"
+ net.openchrom.processing;bundle-version="0.9.0",
+ net.openchrom.chromatogram.converter;bundle-version="0.9.0",
+ net.openchrom.chromatogram.model;bundle-version="0.9.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: OpenChrom
