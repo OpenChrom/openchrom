@@ -1,0 +1,14 @@
+openchrom/plugins/net.openchrom.supplier.cdk.fragment.test/bin/*
+openchrom/plugins/net.openchrom.supplier.cdk.ui/bin/*
+openchrom/plugins/net.openchrom.supplier.cdk/bin/*
+openchrom/plugins/net.openchrom.supplier.cdk.fragment.i18n/bin/*
+openchrom/plugins/net.openchrom.supplier.cdk.ui.fragment.i18n/bin/*
+openchrom/plugins/net.openchrom.supplier.cdk.ui.fragment.test/bin/*
+openchrom/sites/net.openchrom.supplier.cdk.updateSite/artifacts.jar
+openchrom/sites/net.openchrom.supplier.cdk.updateSite/content.jar
+openchrom/sites/net.openchrom.supplier.cdk.updateSite/features/
+openchrom/sites/net.openchrom.supplier.cdk.updateSite/plugins/
+openchrom/features/net.openchrom.supplier.cdk.feature/target/
+openchrom/plugins/net.openchrom.supplier.cdk.ui/target/
+openchrom/plugins/net.openchrom.supplier.cdk/target/
+openchrom/sites/net.openchrom.supplier.cdk.updateSite/target/
