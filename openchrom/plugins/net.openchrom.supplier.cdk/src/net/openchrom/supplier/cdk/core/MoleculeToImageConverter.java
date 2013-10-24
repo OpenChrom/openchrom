@@ -31,8 +31,11 @@ import org.openscience.cdk.renderer.generators.BasicSceneGenerator;
 import org.openscience.cdk.renderer.generators.IGenerator;
 import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
 
+import net.openchrom.logging.core.Logger;
+
 public class MoleculeToImageConverter {
 
+	private static final Logger logger = Logger.getLogger(MoleculeToImageConverter.class);
 	// Hold track of one molecule:
 	private IMolecule molecule;
 	// Standard width and height of the molecule image
@@ -42,11 +45,9 @@ public class MoleculeToImageConverter {
 	/**
 	 * Generate Molecule out of smilesString and
 	 * render.
-	 * (@params)
 	 **/
 	private static MoleculeToImageConverter singleton;
 
-	//
 	public static MoleculeToImageConverter getInstance() {
 
 		if(singleton == null) {
@@ -65,25 +66,26 @@ public class MoleculeToImageConverter {
 		Rectangle drawArea = new Rectangle(width, height);
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		//
-		StructureDiagramGenerator sdg = new StructureDiagramGenerator();
+		StructureDiagramGenerator structureDiagramGenerator = new StructureDiagramGenerator();
 		//
-		sdg.setMolecule(molecule);
+		structureDiagramGenerator.setMolecule(molecule);
 		try {
-			sdg.generateCoordinates();
+			structureDiagramGenerator.generateCoordinates();
 		} catch(Exception e) {
 			// Its not possible to parse the molecule => well-formed smiles?
-			System.err.println("CANNOT INSTANTIATE COORDINATES: " + e);
+			logger.warn("CANNOT INSTANTIATE COORDINATES: " + e);
 			return null;
 		}
-		molecule = sdg.getMolecule();
+		molecule = structureDiagramGenerator.getMolecule();
 		// Generators make the image elements
 		List<IGenerator<IAtomContainer>> generators = new ArrayList<IGenerator<IAtomContainer>>();
 		generators.add(new BasicSceneGenerator());
 		generators.add(new BasicBondGenerator());
 		generators.add(new BasicAtomGenerator());
-		//
-		// The renderer needs to have a toolkit-specific font manager
-		IRenderer renderer = new AtomContainerRenderer(generators, new AWTFontManager());
+		/*
+		 * The renderer needs to have a toolkit-specific font manager
+		 */
+		IRenderer<IAtomContainer> renderer = new AtomContainerRenderer(generators, new AWTFontManager());
 		//
 		renderer.setup(molecule, drawArea);
 		// Paint the background
