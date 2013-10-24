@@ -1,10 +1,16 @@
 Manifest-Version: 1.0
+Eclipse-RegisterBuddy: net.openchrom.thirdpartylibraries.junitaddons, net.openchrom.thirdpartylibraries.cdk
 Bundle-ManifestVersion: 2
 Bundle-Name: Cdk
 Bundle-SymbolicName: net.openchrom.supplier.cdk
 Bundle-Version: 0.9.0.qualifier
 Bundle-Activator: net.openchrom.supplier.cdk.Activator
 Bundle-Vendor: OpenChrom
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ net.openchrom.chromatogram.model;bundle-version="0.9.0",
+ net.openchrom.chromatogram.msd.model;bundle-version="0.9.0",
+ net.openchrom.logging;bundle-version="0.9.0",
+ net.openchrom.support;bundle-version="0.9.0",
+ net.openchrom.thirdpartylibraries.cdk;bundle-version="1.4.19"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
