@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2013 Marwin Wollschläger.
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Marwin Wollschläger - initial API and implementation
+ *******************************************************************************/
 package net.openchrom.supplier.cdk.core;
 
 import org.openscience.cdk.DefaultChemObjectBuilder;
@@ -15,30 +26,35 @@ import org.openscience.cdk.smiles.SmilesParser;
 public class ChromSmilesParser {
 
 	// The actual SmilesParser:
-	private SmilesParser _sp;
+	private SmilesParser smilesParser;
 
-	//
+	/**
+	 * This class is used as a Singleton only.
+	 */
 	private ChromSmilesParser() {
 
 	};
 
-	//
 	public static ChromSmilesParser getInstance() {
 
-		ChromSmilesParser parser = new ChromSmilesParser();
-		parser._sp = new SmilesParser(DefaultChemObjectBuilder.getInstance());
-		return parser;
+		ChromSmilesParser chromSmilesParser = new ChromSmilesParser();
+		chromSmilesParser.smilesParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
+		return chromSmilesParser;
 	}
 
-	// Class to generate IMolecule out of a smiles String
+	/**
+	 * Class to generate IMolecule out of a smiles String
+	 * 
+	 * @param smilesString
+	 * @return {@link IMolecule}
+	 */
 	public IMolecule generate(String smilesString) {
 
 		IMolecule molecule = null;
 		try {
-			molecule = _sp.parseSmiles(smilesString);
-		} catch(InvalidSmilesException ise) {
-			System.err.println(//
-			"Cannot parse input as Smiles String, \n" + "because the following error occured:\n" + ise);
+			molecule = smilesParser.parseSmiles(smilesString);
+		} catch(InvalidSmilesException e) {
+			System.err.println("Cannot parse input as Smiles String, \n" + "because the following error occured:\n" + e);
 		}
 		return molecule;
 	}
