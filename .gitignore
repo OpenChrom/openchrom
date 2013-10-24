@@ -12,3 +12,6 @@ openchrom/features/net.openchrom.supplier.cdk.feature/target/
 openchrom/plugins/net.openchrom.supplier.cdk.ui/target/
 openchrom/plugins/net.openchrom.supplier.cdk/target/
 openchrom/sites/net.openchrom.supplier.cdk.updateSite/target/
+openchrom/plugins/net.openchrom.supplier.cdk.fragment.test/Openchrom.log
+openchrom/plugins/net.openchrom.supplier.cdk.fragment.test/Openchrom*.log*
+
