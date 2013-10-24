@@ -18,8 +18,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import net.openchrom.support.settings.OpenChromSettings;
-
 /**
  * A Simple utility class for converting smile Strings to PNG files,
  * where the resultant image file is stored in the specified directory.
@@ -43,7 +41,6 @@ public class AWTMolDrawer {
 	public AWTMolDrawer(String smilesString, String imageFile) {
 
 		// OpenChromSettings.getSettingsDirectory().getAbsolutePath() + File.separator + "net.openchrom.supplier.cdk" + File.separator + "aTestMolecule.png";
-		System.out.println("Image: " + imageFile);
 		Image image = MoleculeToImageConverter.getInstance().smilesToImage(smilesString);
 		try {
 			ImageIO.write((RenderedImage)image, "PNG", new File(imageFile));

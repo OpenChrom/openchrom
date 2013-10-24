@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Eclipse-RegisterBuddy: net.openchrom.thirdpartylibraries.junitaddons, net.openchrom.thirdpartylibraries.cdk
 Bundle-ManifestVersion: 2
 Bundle-Name: Cdk
-Bundle-SymbolicName: net.openchrom.supplier.cdk
+Bundle-SymbolicName: net.openchrom.supplier.cdk;singleton:=true
 Bundle-Version: 0.9.0.qualifier
 Bundle-Activator: net.openchrom.supplier.cdk.Activator
 Bundle-Vendor: OpenChrom

@@ -24,5 +24,5 @@ public class TestPathHelper extends PathResolver {
 	/*
 	 * EXPORT
 	 */
-	public static final String TESTFILE_EXPORT_PNG = "testData/files/export/TEST.png";
+	public static final String TEST_DIRECTORY_EXPORT_PNG = "testData/files/export/";
 }

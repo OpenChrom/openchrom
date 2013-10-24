@@ -16,7 +16,7 @@ import net.openchrom.supplier.cdk.core.AWTMolDrawer;
 
 import junit.framework.TestCase;
 
-public class AWTMolDrawer_1_Test extends TestCase {
+public class AWTMolDrawer_1_ITest extends TestCase {
 
 	private AWTMolDrawer awtMolDrawer;
 
@@ -24,7 +24,7 @@ public class AWTMolDrawer_1_Test extends TestCase {
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		String imageFile = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_EXPORT_PNG);
+		String imageFile = TestPathHelper.getAbsolutePath(TestPathHelper.TEST_DIRECTORY_EXPORT_PNG) + "TEST.png";
 		awtMolDrawer = new AWTMolDrawer("c1(nnc)cccc1c", imageFile);
 	}
 
