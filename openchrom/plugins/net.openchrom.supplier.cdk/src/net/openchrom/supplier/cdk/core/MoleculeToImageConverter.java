@@ -16,13 +16,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IMolecule;
@@ -38,80 +33,87 @@ import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
 
 public class MoleculeToImageConverter {
 
-	// want to draw one molecule:
-	private IMolecule _mol;
+	// Hold track of one molecule:
+	private IMolecule molecule;
 	// Standard width and height of the molecule image
-	int WIDTH = 200;
-	int HEIGHT = 200;
+	private int width = 200;
+	private int height = 200;
 	//
-	private Image _image;
-	//
-	private String _filePath = "/home/administrator_marwin/Dokumente/test/";
-	//
-	private String _nameOfImage = "aTestMolecule.png";
-	// Generate Molecule out of smilesString and
-	// render
-	//
-	private static MoleculeToImageConverter _singleton;
+	/**
+	 * Generate Molecule out of smilesString and
+	 * render.
+	 * (@params)
+	 **/
+	private static MoleculeToImageConverter singleton;
 
 	//
 	public static MoleculeToImageConverter getInstance() {
 
-		if(_singleton == null)
-			_singleton = new MoleculeToImageConverter();
-		return _singleton;
+		if(singleton == null) {
+			singleton = new MoleculeToImageConverter();
+		}
+		return singleton;
 	}
 
 	//
 	public Image smilesToImage(String smilesString) {
 
-		// generates smile
-		_mol = ChromSmilesParser.getInstance().generate(smilesString);
-		// the draw area and the image should be the same size
-		Rectangle drawArea = new Rectangle(WIDTH, HEIGHT);
-		_image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		Image image;
+		// Generate smiles
+		molecule = ChromSmilesParser.getInstance().generate(smilesString);
+		// The draw area and the image should be the same size
+		Rectangle drawArea = new Rectangle(width, height);
+		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		//
 		StructureDiagramGenerator sdg = new StructureDiagramGenerator();
 		//
-		sdg.setMolecule(_mol);
+		sdg.setMolecule(molecule);
 		try {
 			sdg.generateCoordinates();
-		} catch(Exception ex) {
-			// its not possible to parse the molecule => well-formed smiles?
-			System.err.println("CANNOT INSTATIATE COORDINATES");
+		} catch(Exception e) {
+			// Its not possible to parse the molecule => well-formed smiles?
+			System.err.println("CANNOT INSTANTIATE COORDINATES: " + e);
 			return null;
 		}
-		_mol = sdg.getMolecule();
-		// generators make the image elements
+		molecule = sdg.getMolecule();
+		// Generators make the image elements
 		List<IGenerator<IAtomContainer>> generators = new ArrayList<IGenerator<IAtomContainer>>();
 		generators.add(new BasicSceneGenerator());
 		generators.add(new BasicBondGenerator());
 		generators.add(new BasicAtomGenerator());
 		//
-		// the renderer needs to have a toolkit-specific font manager
+		// The renderer needs to have a toolkit-specific font manager
 		IRenderer renderer = new AtomContainerRenderer(generators, new AWTFontManager());
-		// the call to 'setup' only needs to be done on the first paint
-		renderer.setup(_mol, drawArea);
-		// paint the background
-		Graphics2D g2 = (Graphics2D)_image.getGraphics();
-		g2.setColor(Color.WHITE);
-		g2.fillRect(0, 0, WIDTH, HEIGHT);
-		// the paint method also needs a toolkit-specific renderer
-		renderer.paint(_mol, new AWTDrawVisitor(g2));
 		//
-		return _image;
+		renderer.setup(molecule, drawArea);
+		// Paint the background
+		Graphics2D g2 = (Graphics2D)image.getGraphics();
+		g2.setColor(Color.WHITE);
+		g2.fillRect(0, 0, width, height);
+		// The paint method also needs a toolkit-specific renderer
+		renderer.paint(molecule, new AWTDrawVisitor(g2));
+		//
+		return image;
 	}
 
 	//
-	// client
-	public static void main(String[] args) {
+	public void setWidth(int width) {
 
-		String smiles = "c1=cc=cc=c1";
-		Image hexane = MoleculeToImageConverter.getInstance().smilesToImage(smiles);
-		try {
-			ImageIO.write((RenderedImage)hexane, "PNG", new File("/home/administrator_marwin/Dokumente/test/hexane.png"));
-		} catch(IOException e) {
-			System.err.println("Some IO Error occured!");
-		}
+		this.width = width;
+	}
+
+	public void setHeight(int height) {
+
+		this.height = height;
+	}
+
+	public int getWidth() {
+
+		return width;
+	}
+
+	public int getHeight() {
+
+		return height;
 	}
 }
