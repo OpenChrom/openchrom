@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 administrator_marwin.
+ * Copyright (c) 2013 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,35 +7,18 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * administrator_marwin - initial API and implementation
+ * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
 package net.openchrom.supplier.cdk.core;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IMolecule;
-import org.openscience.cdk.layout.StructureDiagramGenerator;
-import org.openscience.cdk.renderer.AtomContainerRenderer;
-import org.openscience.cdk.renderer.IRenderer;
-import org.openscience.cdk.renderer.ReactionRenderer;
-import org.openscience.cdk.renderer.font.AWTFontManager;
-import org.openscience.cdk.renderer.generators.BasicAtomGenerator;
-import org.openscience.cdk.renderer.generators.BasicBondGenerator;
-import org.openscience.cdk.renderer.generators.BasicSceneGenerator;
-import org.openscience.cdk.renderer.generators.IGenerator;
-import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
+import net.openchrom.support.settings.OpenChromSettings;
 
 /**
  * A Simple utility class for converting smile Strings to PNG files,
@@ -46,79 +29,46 @@ import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
  */
 public class AWTMolDrawer {
 
-	// want to draw one molecule:
-	IMolecule _mol;
-	// Standard width and height of the molecule image
-	int WIDTH = 200;
-	int HEIGHT = 200;
-	//
-	private Image _image;
-	//
-	private String _filePath = "/home/administrator_marwin/Dokumente/test/";
-	//
-	private String _nameOfImage = "aTestMolecule.png";
+	/*
+	 * Standard width and height of the molecule image
+	 */
+	private int width = 200;
+	private int height = 200;
 
-	// Generate Molecule out of smilesString and
-	// render
-	public AWTMolDrawer(String smilesString) {
+	/**
+	 * Generate Molecule out of smilesString and render it.
+	 * 
+	 * @param smilesString
+	 */
+	public AWTMolDrawer(String smilesString, String imageFile) {
 
-		_image = MoleculeToImageConverter.getInstance().smilesToImage(smilesString);
+		// OpenChromSettings.getSettingsDirectory().getAbsolutePath() + File.separator + "net.openchrom.supplier.cdk" + File.separator + "aTestMolecule.png";
+		System.out.println("Image: " + imageFile);
+		Image image = MoleculeToImageConverter.getInstance().smilesToImage(smilesString);
 		try {
-			ImageIO.write((RenderedImage)_image, "PNG", new File(_filePath + _nameOfImage));
+			ImageIO.write((RenderedImage)image, "PNG", new File(imageFile));
 		} catch(IOException e) {
 			System.err.println("Some IO Error occured!");
 		}
 	}
 
-	// --------------------------------------------------------------------------- //
-	// Getters and Setters
-	public void setWidth(int w) {
+	public void setWidth(int width) {
 
-		WIDTH = w;
+		this.width = width;
 	}
 
-	public void setHeight(int h) {
+	public void setHeight(int height) {
 
-		HEIGHT = h;
+		this.height = height;
 	}
 
-	public void setNameOfImageFile(String name) {
-
-		_nameOfImage = name;
-	}
-
-	public void setFilePath(String path) {
-
-		_filePath = path;
-	}
-
-	//
 	public int getWidth() {
 
-		return WIDTH;
+		return width;
 	}
 
 	public int getHeight() {
 
-		return HEIGHT;
-	}
-
-	public String getNameOfImageFile() {
-
-		return _nameOfImage;
-	}
-
-	public String getFilePath() {
-
-		return _filePath;
-	}
-
-	// End of Getters and Setters
-	// --------------------------------------------------------------------------- //
-	//
-	// client
-	public static void main(String[] args) {
-
-		AWTMolDrawer dr = new AWTMolDrawer("c1(nnc)cccc1c");
+		return height;
 	}
 }
