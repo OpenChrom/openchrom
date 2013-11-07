@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.supplier.cdk.ui.views;
 
+import java.awt.Color;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import javax.annotation.PostConstruct;
@@ -21,14 +23,20 @@ import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
-
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.openscience.cdk.interfaces.IMolecule;
 
 import net.openchrom.supplier.cdk.core.AwtToSwtImageBridge;
@@ -38,7 +46,7 @@ import net.openchrom.supplier.cdk.core.MoleculeToImageConverter;
 public class MoleculeView {
 
 	private Label label;
-	private Composite composite;
+	private Composite moleculeComposite;
 	// private String moleculeString = "C(C(CO[N+](=O)[O-])O[N+](=O)[O-])O[N+](=O)[O-]";// example molecule for SMILES
 	private String moleculeString = "hexane"; // example molecule for IUPAC
 	private Image moleculeImage = null;
@@ -53,10 +61,10 @@ public class MoleculeView {
 
 		MoleculeToImageConverter moleculeToImageConverter = MoleculeToImageConverter.getInstance();
 		//
-		if(composite.getSize().x != 0)
-			moleculeToImageConverter.setWidth(composite.getSize().x);
-		if(composite.getSize().y != 0)
-			moleculeToImageConverter.setHeight(composite.getSize().y);
+		if(moleculeComposite.getSize().x != 0)
+			moleculeToImageConverter.setWidth(moleculeComposite.getSize().x);
+		if(moleculeComposite.getSize().y != 0)
+			moleculeToImageConverter.setHeight(moleculeComposite.getSize().y);
 		if(convertModus == MODUS_SMILES) {
 			// process SMILES input
 			moleculeImage = //
@@ -84,18 +92,24 @@ public class MoleculeView {
 	private Composite parent;
 
 	@PostConstruct
-	private void createControl() {
+	private void createControl2() {
 
-		parent.setLayout(new FillLayout());
+		parent.setLayout(new GridLayout(1, true));
+		Composite iupacComposite = new Composite(parent, SWT.NONE);
+		moleculeComposite = new Composite(parent, SWT.NONE);
+		iupacComposite.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		iupacComposite.setLayout(new GridLayout(2, true));
+		iupacComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		moleculeComposite.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		moleculeComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		// TODO: Put all the stuff here!
 		//
-		composite = new Composite(parent, SWT.NONE);
-		//
-		composite.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
-		composite.setLayout(new GridLayout(1, true));
-		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		// moleculeComposite.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+		moleculeComposite.setLayout(new GridLayout(2, true));
+		// moleculeComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		//
 		// use ControlListener instead of FocusListener ...
-		composite.addControlListener(new ControlListener() {
+		moleculeComposite.addControlListener(new ControlListener() {
 
 			@Override
 			public void controlResized(ControlEvent e) {
@@ -109,10 +123,69 @@ public class MoleculeView {
 			}
 		});
 		//
-		label = new Label(composite, SWT.CENTER);
-		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_BLACK));
+		label = new Label(moleculeComposite, SWT.CENTER);
+		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		//
 		makeImage();
+		//
+		// handles to configure MoleculeView behaviour
+		Group boxSettings = new Group(iupacComposite, SWT.LEFT);
+		boxSettings.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		boxSettings.setText("Settings");
+		boxSettings.setLayout(new GridLayout());
+		//
+		Button iupacChoice = new Button(boxSettings, SWT.RADIO);
+		iupacChoice.setText("IUPAC");
+		iupacChoice.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				setModus(MODUS_IUPAC);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+
+			}
+		});
+		iupacChoice.setSelection(true);
+		//
+		Button smilesChoice = new Button(boxSettings, SWT.RADIO);
+		smilesChoice.setText("SMILES");
+		smilesChoice.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				setModus(MODUS_SMILES);
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+
+			}
+		});
+		Group boxLookUp = new Group(iupacComposite, SWT.RIGHT);
+		boxLookUp.setText("Look-Up");
+		boxLookUp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		boxLookUp.setLayout(new GridLayout());
+		//
+		final Text text = new Text(boxLookUp, SWT.CENTER);
+		text.setSize(new org.eclipse.swt.graphics.Point(200, 20));
+		text.setText(moleculeString);
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		//
+		// text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
+		text.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+
+				setSmiles(text.getText());
+				makeImage();
+			}
+		});
 	}
 
 	@PreDestroy
