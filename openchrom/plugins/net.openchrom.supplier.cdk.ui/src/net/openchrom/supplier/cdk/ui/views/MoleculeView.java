@@ -66,13 +66,14 @@ public class MoleculeView {
 	private EPartService partService;
 	@Inject
 	private MPart part;
-	@Inject
 	private IEventBroker eventBroker;
-	@Inject
 	private EventHandler eventHandler;
 
-	public MoleculeView() {
+	@Inject
+	public MoleculeView(IEventBroker eventBroker, EventHandler eventHandler) {
 
+		this.eventBroker = eventBroker;
+		this.eventHandler = eventHandler;
 		subscribe();
 	}
 
