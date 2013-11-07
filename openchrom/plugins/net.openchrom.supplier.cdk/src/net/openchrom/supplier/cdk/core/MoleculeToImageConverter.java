@@ -39,8 +39,8 @@ public class MoleculeToImageConverter {
 	// Hold track of one molecule:
 	private IMolecule molecule;
 	// Standard width and height of the molecule image
-	private int width = 200;
-	private int height = 200;
+	private int width = 400;
+	private int height = 400;
 	//
 	/**
 	 * Generate Molecule out of smilesString and
@@ -85,6 +85,41 @@ public class MoleculeToImageConverter {
 		/*
 		 * The renderer needs to have a toolkit-specific font manager
 		 */
+		IRenderer<IAtomContainer> renderer = new AtomContainerRenderer(generators, new AWTFontManager());
+		//
+		renderer.setup(molecule, drawArea);
+		// Paint the background
+		Graphics2D g2 = (Graphics2D)image.getGraphics();
+		g2.setColor(Color.WHITE);
+		g2.fillRect(0, 0, width, height);
+		// The paint method also needs a toolkit-specific renderer
+		renderer.paint(molecule, new AWTDrawVisitor(g2));
+		//
+		return image;
+	}
+
+	public Image moleculeToImage(IMolecule molecule) {
+
+		Image image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		Rectangle drawArea = new Rectangle(width, height);
+		//
+		StructureDiagramGenerator structureDiagramGenerator = new StructureDiagramGenerator();
+		//
+		structureDiagramGenerator.setMolecule(molecule);
+		try {
+			structureDiagramGenerator.generateCoordinates();
+		} catch(Exception e) {
+			// Its not possible to parse the molecule => well-formed smiles?
+			logger.warn("CANNOT INSTANTIATE COORDINATES: " + e);
+			return null;
+		}
+		molecule = structureDiagramGenerator.getMolecule();
+		// Generators make the image elements
+		List<IGenerator<IAtomContainer>> generators = new ArrayList<IGenerator<IAtomContainer>>();
+		generators.add(new BasicSceneGenerator());
+		generators.add(new BasicBondGenerator());
+		generators.add(new BasicAtomGenerator());
+		//
 		IRenderer<IAtomContainer> renderer = new AtomContainerRenderer(generators, new AWTFontManager());
 		//
 		renderer.setup(molecule, drawArea);
