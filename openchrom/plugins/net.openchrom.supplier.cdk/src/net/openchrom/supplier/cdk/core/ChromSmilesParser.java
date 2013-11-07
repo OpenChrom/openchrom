@@ -16,6 +16,8 @@ import org.openscience.cdk.exception.InvalidSmilesException;
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.smiles.SmilesParser;
 
+import net.openchrom.logging.core.Logger;
+
 /**
  * A simple yet useful class for parsing smiles to IMolecules
  * that can then be rendered.
@@ -25,6 +27,7 @@ import org.openscience.cdk.smiles.SmilesParser;
  */
 public class ChromSmilesParser {
 
+	private static final Logger logger = Logger.getLogger(ChromSmilesParser.class);
 	// The actual SmilesParser:
 	private SmilesParser smilesParser;
 
@@ -54,7 +57,7 @@ public class ChromSmilesParser {
 		try {
 			molecule = smilesParser.parseSmiles(smilesString);
 		} catch(InvalidSmilesException e) {
-			System.err.println("Cannot parse input as Smiles String, \n" + "because the following error occured:\n" + e);
+			logger.warn("Cannot parse input as Smiles String, \n" + "because the following error occured:\n" + e);
 		}
 		return molecule;
 	}

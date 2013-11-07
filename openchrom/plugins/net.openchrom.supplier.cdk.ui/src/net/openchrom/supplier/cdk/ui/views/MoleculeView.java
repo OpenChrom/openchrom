@@ -11,15 +11,16 @@
  *******************************************************************************/
 package net.openchrom.supplier.cdk.ui.views;
 
-import java.awt.Color;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -28,7 +29,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -38,10 +38,13 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.openscience.cdk.interfaces.IMolecule;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventHandler;
 
 import net.openchrom.supplier.cdk.core.AwtToSwtImageBridge;
 import net.openchrom.supplier.cdk.core.IUPACtoIMoleculeConverter;
 import net.openchrom.supplier.cdk.core.MoleculeToImageConverter;
+import net.openchrom.support.events.IOpenChromEvents;
 
 public class MoleculeView {
 
@@ -56,6 +59,22 @@ public class MoleculeView {
 	public static final int MODUS_IUPAC = 1;
 	// How to process Input (e.g. SMILES,IUPAC,...)
 	private int convertModus = MODUS_IUPAC;// initially setup to parse IUPAC
+	/*
+	 * 
+	 */
+	@Inject
+	private EPartService partService;
+	@Inject
+	private MPart part;
+	@Inject
+	private IEventBroker eventBroker;
+	@Inject
+	private EventHandler eventHandler;
+
+	public MoleculeView() {
+
+		subscribe();
+	}
 
 	private void makeImage() {
 
@@ -191,6 +210,7 @@ public class MoleculeView {
 	@PreDestroy
 	private void preDestroy() {
 
+		unsubscribe();
 	}
 
 	@Focus
@@ -212,5 +232,40 @@ public class MoleculeView {
 	public void setSmiles(String str) {
 
 		moleculeString = str;
+	}
+
+	private boolean isPartVisible() {
+
+		if(partService != null && partService.isPartVisible(part)) {
+			return true;
+		}
+		return false;
+	}
+
+	private void unsubscribe() {
+
+		if(eventBroker != null && eventHandler != null) {
+			eventBroker.unsubscribe(eventHandler);
+		}
+	}
+
+	private void subscribe() {
+
+		if(eventBroker != null) {
+			/*
+			 * Receives and handles chromatogram selection updates.
+			 */
+			eventHandler = new EventHandler() {
+
+				public void handleEvent(Event event) {
+
+					String name = (String)event.getProperty(IOpenChromEvents.PROPERTY_IDENTIFICATION_ENTRY_NAME);
+					String cas = (String)event.getProperty(IOpenChromEvents.PROPERTY_IDENTIFICATION_ENTRY_CAS_NUMBER);
+					String formula = (String)event.getProperty(IOpenChromEvents.PROPERTY_IDENTIFICATION_ENTRY_FORMULA);
+					System.out.println(name + " " + cas + " " + formula);
+				}
+			};
+			eventBroker.subscribe(IOpenChromEvents.TOPIC_IDENTIFICATION_ENTRY_UPDATE_CDK, eventHandler);
+		}
 	}
 }
