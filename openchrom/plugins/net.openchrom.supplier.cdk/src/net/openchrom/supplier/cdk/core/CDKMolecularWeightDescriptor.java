@@ -12,32 +12,19 @@
 package net.openchrom.supplier.cdk.core;
 
 import org.openscience.cdk.Molecule;
-import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IMolecule;
-import org.openscience.cdk.iupac.parser.*;
+import org.openscience.cdk.qsar.descriptors.molecular.WeightDescriptor;
 
-/**
- * A basic class for converting IUPAC strings to IMolecule instances.
- * The method parse( ) returns null when an incorrect IUPAC name is given.
- * 
- */
-@Deprecated
-public class IUPACtoIMoleculeConverter {
+public class CDKMolecularWeightDescriptor implements IStructureDescriptor {
 
-	public static IMolecule parse(String iupacstr) {
+	@Override
+	public String describe(IMolecule molecule) {
 
-		IMolecule result = new Molecule();
-		try {
-			result = NomParser.generate(iupacstr);
-		} catch(ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(molecule == null)
 			return null;
-		} catch(CDKException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-		return result;
+		double mass = 0.0;
+		WeightDescriptor weightDescriptor = new WeightDescriptor();
+		mass = Double.parseDouble(weightDescriptor.calculate(molecule).getValue().toString());
+		return "" + mass;
 	}
 }

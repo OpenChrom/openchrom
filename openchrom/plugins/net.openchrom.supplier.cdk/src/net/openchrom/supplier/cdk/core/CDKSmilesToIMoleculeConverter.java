@@ -18,45 +18,17 @@ import org.openscience.cdk.smiles.SmilesParser;
 
 import net.openchrom.logging.core.Logger;
 
-/**
- * A simple yet useful class for parsing smiles to IMolecules
- * that can then be rendered.
- * 
- * @author marwin
- * 
- */
-@Deprecated
-public class ChromSmilesParser {
+public class CDKSmilesToIMoleculeConverter implements IStructureGenerator {
 
-	private static final Logger logger = Logger.getLogger(ChromSmilesParser.class);
-	// The actual SmilesParser:
-	private SmilesParser smilesParser;
+	private static final Logger logger = Logger.getLogger(CDKSmilesToIMoleculeConverter.class);
+	SmilesParser parser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
 
-	/**
-	 * This class is used as a Singleton only.
-	 */
-	private ChromSmilesParser() {
-
-	};
-
-	public static ChromSmilesParser getInstance() {
-
-		ChromSmilesParser chromSmilesParser = new ChromSmilesParser();
-		chromSmilesParser.smilesParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
-		return chromSmilesParser;
-	}
-
-	/**
-	 * Class to generate IMolecule out of a smiles String
-	 * 
-	 * @param smilesString
-	 * @return {@link IMolecule}
-	 */
-	public IMolecule generate(String smilesString) {
+	@Override
+	public IMolecule generate(String input) {
 
 		IMolecule molecule = null;
 		try {
-			molecule = smilesParser.parseSmiles(smilesString);
+			molecule = parser.parseSmiles(input);
 		} catch(InvalidSmilesException e) {
 			logger.warn("Cannot parse input as Smiles String, \n" + "because the following error occured:\n" + e);
 		}

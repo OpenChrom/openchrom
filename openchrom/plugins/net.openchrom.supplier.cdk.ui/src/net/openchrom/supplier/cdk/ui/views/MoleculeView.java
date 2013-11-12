@@ -42,17 +42,25 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 import net.openchrom.supplier.cdk.core.AwtToSwtImageBridge;
+import net.openchrom.supplier.cdk.core.CDKIupacToIMoleculeConverter;
+import net.openchrom.supplier.cdk.core.CDKSmilesToIMoleculeConverter;
+import net.openchrom.supplier.cdk.core.IStructureGenerator;
 import net.openchrom.supplier.cdk.core.IUPACtoIMoleculeConverter;
 import net.openchrom.supplier.cdk.core.MoleculeToImageConverter;
+import net.openchrom.supplier.cdk.core.OPSINIupacToIMoleculeConverter;
 import net.openchrom.support.events.IOpenChromEvents;
 
 public class MoleculeView {
 
+	private Text text;
 	private Label label;
 	private Composite moleculeComposite;
+	private Button smilesChoice;
+	private Button iupacChoice;
 	// private String moleculeString = "C(C(CO[N+](=O)[O-])O[N+](=O)[O-])O[N+](=O)[O-]";// example molecule for SMILES
 	private String moleculeString = "hexane"; // example molecule for IUPAC
 	private Image moleculeImage = null;
+	private IStructureGenerator currentStructureGenerator = null;
 	//
 	// Macro Definitions
 	public static final int MODUS_SMILES = 0;
@@ -77,6 +85,18 @@ public class MoleculeView {
 		subscribe();
 	}
 
+	private void convertMoleculeToImage() {
+
+		MoleculeToImageConverter moleculeToImageConverter = MoleculeToImageConverter.getInstance();
+		// process SMILES input
+		IMolecule molecule = currentStructureGenerator.generate(moleculeString);
+		moleculeImage = //
+		new Image(//
+		parent.getDisplay(),//
+		AwtToSwtImageBridge.convertToSWT(//
+		(BufferedImage)moleculeToImageConverter.moleculeToImage(molecule)));
+	}
+
 	private void makeImage() {
 
 		MoleculeToImageConverter moleculeToImageConverter = MoleculeToImageConverter.getInstance();
@@ -86,21 +106,12 @@ public class MoleculeView {
 		if(moleculeComposite.getSize().y != 0)
 			moleculeToImageConverter.setHeight(moleculeComposite.getSize().y);
 		if(convertModus == MODUS_SMILES) {
-			// process SMILES input
-			moleculeImage = //
-			new Image(//
-			parent.getDisplay(),//
-			AwtToSwtImageBridge.convertToSWT(//
-			(BufferedImage)moleculeToImageConverter.smilesToImage(moleculeString)));
+			currentStructureGenerator = new CDKSmilesToIMoleculeConverter();
+			convertMoleculeToImage();
 		}
 		if(convertModus == MODUS_IUPAC) {
-			// process IUPAC input
-			IMolecule molecule = IUPACtoIMoleculeConverter.parse(moleculeString);
-			moleculeImage = //
-			new Image(//
-			parent.getDisplay(),//
-			AwtToSwtImageBridge.convertToSWT(//
-			(BufferedImage)moleculeToImageConverter.moleculeToImage(molecule)));
+			currentStructureGenerator = new OPSINIupacToIMoleculeConverter();
+			convertMoleculeToImage();
 		}
 		if(moleculeImage != null)
 			label.setImage(moleculeImage);
@@ -142,6 +153,7 @@ public class MoleculeView {
 
 			}
 		});
+		// moleculeComposite.addMouseListener(new MoleculeViewPopUpMenu());;
 		//
 		label = new Label(moleculeComposite, SWT.CENTER);
 		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
@@ -154,7 +166,7 @@ public class MoleculeView {
 		boxSettings.setText("Settings");
 		boxSettings.setLayout(new GridLayout());
 		//
-		Button iupacChoice = new Button(boxSettings, SWT.RADIO);
+		iupacChoice = new Button(boxSettings, SWT.RADIO);
 		iupacChoice.setText("IUPAC");
 		iupacChoice.addSelectionListener(new SelectionListener() {
 
@@ -171,7 +183,7 @@ public class MoleculeView {
 		});
 		iupacChoice.setSelection(true);
 		//
-		Button smilesChoice = new Button(boxSettings, SWT.RADIO);
+		smilesChoice = new Button(boxSettings, SWT.RADIO);
 		smilesChoice.setText("SMILES");
 		smilesChoice.addSelectionListener(new SelectionListener() {
 
@@ -191,7 +203,7 @@ public class MoleculeView {
 		boxLookUp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		boxLookUp.setLayout(new GridLayout());
 		//
-		final Text text = new Text(boxLookUp, SWT.CENTER);
+		text = new Text(boxLookUp, SWT.CENTER);
 		text.setSize(new org.eclipse.swt.graphics.Point(200, 20));
 		text.setText(moleculeString);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -264,6 +276,17 @@ public class MoleculeView {
 					String cas = (String)event.getProperty(IOpenChromEvents.PROPERTY_IDENTIFICATION_ENTRY_CAS_NUMBER);
 					String formula = (String)event.getProperty(IOpenChromEvents.PROPERTY_IDENTIFICATION_ENTRY_FORMULA);
 					System.out.println(name + " " + cas + " " + formula);
+					//
+					if(convertModus == MODUS_SMILES) {
+						moleculeString = formula;
+						text.setText(moleculeString);
+					}
+					if(convertModus == MODUS_IUPAC) {
+						moleculeString = name;
+						text.setText(moleculeString);
+					}
+					//
+					makeImage();
 				}
 			};
 			eventBroker.subscribe(IOpenChromEvents.TOPIC_IDENTIFICATION_ENTRY_UPDATE_CDK, eventHandler);

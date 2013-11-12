@@ -14,21 +14,17 @@ package net.openchrom.supplier.cdk.core;
 import org.openscience.cdk.Molecule;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IMolecule;
-import org.openscience.cdk.iupac.parser.*;
+import org.openscience.cdk.iupac.parser.NomParser;
+import org.openscience.cdk.iupac.parser.ParseException;
 
-/**
- * A basic class for converting IUPAC strings to IMolecule instances.
- * The method parse( ) returns null when an incorrect IUPAC name is given.
- * 
- */
-@Deprecated
-public class IUPACtoIMoleculeConverter {
+public class CDKIupacToIMoleculeConverter implements IStructureGenerator {
 
-	public static IMolecule parse(String iupacstr) {
+	@Override
+	public IMolecule generate(String input) {
 
 		IMolecule result = new Molecule();
 		try {
-			result = NomParser.generate(iupacstr);
+			result = NomParser.generate(input);
 		} catch(ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
