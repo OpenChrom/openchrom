@@ -2,8 +2,12 @@
 <fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_F2IcYDzAEeO9Cpf0lomO-Q">
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_BXwhsDzCEeO9Cpf0lomO-Q" featurename="sharedElements" parentElementId="net.openchrom.rcp.app.ui.trimmedwindow.main">
     <elements xsi:type="basic:Part" xmi:id="_FmKb0DzCEeO9Cpf0lomO-Q" elementId="net.openchrom.supplier.cdk.ui.part.moleculeView" contributionURI="bundleclass://net.openchrom.supplier.cdk.ui/net.openchrom.supplier.cdk.ui.views.MoleculeView" label="Molecule View" iconURI="platform:/plugin/net.openchrom.rcp.ui.icons/icons/16x16/denoising.gif">
-      <menus xsi:type="menu:PopupMenu" xmi:id="_FMjIgEuVEeO05Zmz9AbMeQ" elementId="net.openchrom.supplier.cdk.ui.popupmenu.0" label="QSAR Description">
+      <menus xsi:type="menu:PopupMenu" xmi:id="_FMjIgEuVEeO05Zmz9AbMeQ" elementId="net.openchrom.supplier.cdk.ui.popupmenu.qsar" label="QSAR Description">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_qIyVUEuWEeO05Zmz9AbMeQ" elementId="net.openchrom.supplier.cdk.ui.handledmenuitem.0" label="Do QSAR Description" command="_3pDR0EuVEeO05Zmz9AbMeQ"/>
+      </menus>
+      <menus xmi:id="__ONvkEuZEeObU4sRRHzsFQ" elementId="net.openchrom.supplier.cdk.ui.viewmenu.qsar" label="Test2">
+        <tags>ViewMenu</tags>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_BJH9EEuaEeObU4sRRHzsFQ" elementId="net.openchrom.supplier.cdk.ui.handledmenuitem.3" label="Hello Test2" command="_3pDR0EuVEeO05Zmz9AbMeQ"/>
       </menus>
     </elements>
   </fragments>
@@ -18,9 +22,14 @@
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_k_v0YEuVEeO05Zmz9AbMeQ" featurename="commands" parentElementId="net.openchrom.rcp.ide.application">
     <elements xsi:type="commands:Command" xmi:id="_3pDR0EuVEeO05Zmz9AbMeQ" elementId="net.openchrom.supplier.cdk.ui.command.0" commandName="qsardescription"/>
+    <elements xsi:type="commands:Command" xmi:id="_X6kCoEucEeObU4sRRHzsFQ" elementId="net.openchrom.supplier.cdk.ui.command.calculateSmilesFormula" commandName="Calculate SMILES"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_C8TuwEuWEeO05Zmz9AbMeQ" featurename="handlers" parentElementId="net.openchrom.rcp.ide.application">
     <elements xsi:type="commands:Handler" xmi:id="_I1gWwEuWEeO05Zmz9AbMeQ" elementId="net.openchrom.supplier.cdk.ui.handler.0" contributionURI="bundleclass://net.openchrom.supplier.cdk.ui/net.openchrom.supplier.cdk.ui.handlers.QsarHandler" command="_3pDR0EuVEeO05Zmz9AbMeQ"/>
-    <elements xsi:type="commands:Handler" xmi:id="_WBUQwEuWEeO05Zmz9AbMeQ" elementId="net.openchrom.supplier.cdk.ui.handler.1"/>
+    <elements xsi:type="commands:Handler" xmi:id="_fFxFEEucEeObU4sRRHzsFQ" elementId="net.openchrom.supplier.cdk.ui.handler.calculateSmilesFormula" contributionURI="bundleclass://net.openchrom.supplier.cdk.ui/net.openchrom.supplier.cdk.ui.handlers.CalculateSmilesHandler" command="_X6kCoEucEeObU4sRRHzsFQ"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_n7XwoEuYEeObU4sRRHzsFQ" featurename="children" parentElementId="net.openchrom.rcp.extension.chromatogram.ui.menu.process">
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_8bdJgEuYEeObU4sRRHzsFQ" elementId="net.openchrom.supplier.cdk.ui.handledmenuitem.1" label="Hello Marwin" command="_3pDR0EuVEeO05Zmz9AbMeQ"/>
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_zbxU4EucEeObU4sRRHzsFQ" elementId="net.openchrom.supplier.cdk.ui.handledmenuitem.calculateSmilesFormula" label="Calculate SMILES" command="_X6kCoEucEeObU4sRRHzsFQ"/>
   </fragments>
 </fragment:ModelFragments>

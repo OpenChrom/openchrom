@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Dr. Philip Wenig.
+ * Copyright (c) 2013 Dr. Philip Wenig, Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
 package net.openchrom.supplier.cdk.ui.views;
 
@@ -21,6 +22,7 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -123,7 +125,7 @@ public class MoleculeView {
 	private Composite parent;
 
 	@PostConstruct
-	private void createControl2() {
+	private void createControl(EMenuService menuService) {
 
 		parent.setLayout(new GridLayout(1, true));
 		Composite iupacComposite = new Composite(parent, SWT.NONE);
@@ -207,6 +209,7 @@ public class MoleculeView {
 		text.setSize(new org.eclipse.swt.graphics.Point(200, 20));
 		text.setText(moleculeString);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		menuService.registerContextMenu(text, "net.openchrom.supplier.cdk.ui.popupmenu.qsar");
 		//
 		// text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
 		text.addModifyListener(new ModifyListener() {
