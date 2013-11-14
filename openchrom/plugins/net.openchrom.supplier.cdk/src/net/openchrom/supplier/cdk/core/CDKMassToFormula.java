@@ -40,7 +40,7 @@ public class CDKMassToFormula {
 	public static void main(String[] args) {
 
 		CDKMassToFormula massToFormula = new CDKMassToFormula();
-		double mass = 180.06;
+		double mass = 87.104799;
 		massToFormula.generate(mass);
 		for(String formula : massToFormula.resultString) {
 			System.out.println(formula);

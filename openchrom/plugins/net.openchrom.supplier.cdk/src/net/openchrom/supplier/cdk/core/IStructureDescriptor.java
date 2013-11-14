@@ -15,5 +15,5 @@ import org.openscience.cdk.interfaces.IMolecule;
 
 public interface IStructureDescriptor {
 
-	public String describe(IMolecule molecule);
+	String describe(IMolecule molecule);
 }

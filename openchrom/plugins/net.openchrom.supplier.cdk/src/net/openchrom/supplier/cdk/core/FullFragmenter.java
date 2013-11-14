@@ -11,9 +11,28 @@
  *******************************************************************************/
 package net.openchrom.supplier.cdk.core;
 
-import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.fragment.ExhaustiveFragmenter;
+import org.openscience.cdk.fragment.IFragmenter;
+import org.openscience.cdk.interfaces.IAtomContainer;
 
-public interface IStructureGenerator {
+public class FullFragmenter implements IFragmenter {
 
-	IMolecule generate(String input);
+	@Override
+	public void generateFragments(IAtomContainer arg0) throws CDKException {
+
+		// ExhaustiveFragmenter frag = new ExhaustiveFragmenter();
+	}
+
+	@Override
+	public String[] getFragments() {
+
+		return null;
+	}
+
+	@Override
+	public IAtomContainer[] getFragmentsAsContainers() {
+
+		return null;
+	}
 }

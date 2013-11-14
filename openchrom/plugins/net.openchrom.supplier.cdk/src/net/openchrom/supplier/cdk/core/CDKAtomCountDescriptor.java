@@ -12,8 +12,13 @@
 package net.openchrom.supplier.cdk.core;
 
 import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.qsar.descriptors.molecular.AtomCountDescriptor;
 
-public interface IStructureGenerator {
+public class CDKAtomCountDescriptor implements IStructureDescriptor {
 
-	IMolecule generate(String input);
+	@Override
+	public String describe(IMolecule molecule) {
+
+		return "" + new AtomCountDescriptor().calculate(molecule).getValue();
+	}
 }

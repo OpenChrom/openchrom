@@ -44,10 +44,10 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 import net.openchrom.supplier.cdk.core.AwtToSwtImageBridge;
-import net.openchrom.supplier.cdk.core.CDKIupacToIMoleculeConverter;
+
 import net.openchrom.supplier.cdk.core.CDKSmilesToIMoleculeConverter;
 import net.openchrom.supplier.cdk.core.IStructureGenerator;
-import net.openchrom.supplier.cdk.core.IUPACtoIMoleculeConverter;
+
 import net.openchrom.supplier.cdk.core.MoleculeToImageConverter;
 import net.openchrom.supplier.cdk.core.OPSINIupacToIMoleculeConverter;
 import net.openchrom.support.events.IOpenChromEvents;
@@ -210,8 +210,6 @@ public class MoleculeView {
 		text.setText(moleculeString);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		menuService.registerContextMenu(text, "net.openchrom.supplier.cdk.ui.popupmenu.qsar");
-		//
-		// text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
 		text.addModifyListener(new ModifyListener() {
 
 			@Override
