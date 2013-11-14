@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
 <fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_F2IcYDzAEeO9Cpf0lomO-Q">
+  <imports xsi:type="basic:Part" xmi:id="_tNtJoE0cEeO5B_4ZxeFNDw" elementId="net.openchrom.rcp.extension.chromatogram.msd.ui.part.peakListView"/>
+  <imports xsi:type="basic:Part" xmi:id="_vxCpEE0cEeO5B_4ZxeFNDw" elementId="net.openchrom.rcp.extension.chromatogram.msd.ui.part.peakMassSpectrumView"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_BXwhsDzCEeO9Cpf0lomO-Q" featurename="sharedElements" parentElementId="net.openchrom.rcp.app.ui.trimmedwindow.main">
     <elements xsi:type="basic:Part" xmi:id="_FmKb0DzCEeO9Cpf0lomO-Q" elementId="net.openchrom.supplier.cdk.ui.part.moleculeView" contributionURI="bundleclass://net.openchrom.supplier.cdk.ui/net.openchrom.supplier.cdk.ui.views.MoleculeView" label="Molecule View" iconURI="platform:/plugin/net.openchrom.rcp.ui.icons/icons/16x16/denoising.gif">
       <menus xsi:type="menu:PopupMenu" xmi:id="_FMjIgEuVEeO05Zmz9AbMeQ" elementId="net.openchrom.supplier.cdk.ui.popupmenu.qsar" label="QSAR Description">
@@ -10,12 +12,26 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_BJH9EEuaEeObU4sRRHzsFQ" elementId="net.openchrom.supplier.cdk.ui.handledmenuitem.3" label="Hello Test2" command="_3pDR0EuVEeO05Zmz9AbMeQ"/>
       </menus>
     </elements>
+    <elements xsi:type="basic:Part" xmi:id="_ho8-8E0aEeO5B_4ZxeFNDw" elementId="net.openchrom.supplier.cdk.ui.part.formulaCalculatorView" contributionURI="bundleclass://net.openchrom.supplier.cdk.ui/net.openchrom.supplier.cdk.ui.views.FormulaCalculatorView" label="Formula Calculator" iconURI="platform:/plugin/net.openchrom.rcp.ui.icons/icons/16x16/denoising.gif"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_5JGBsDzCEeO9Cpf0lomO-Q" featurename="children" parentElementId="net.openchrom.rcp.app.ui.perspectivestack.main">
     <elements xsi:type="advanced:Perspective" xmi:id="_8LBhoDzCEeO9Cpf0lomO-Q" elementId="net.openchrom.supplier.cdk.ui.perspective" label="CDK Support" iconURI="platform:/plugin/net.openchrom.rcp.ui.icons/icons/16x16/denoising.gif">
       <children xsi:type="basic:PartSashContainer" xmi:id="_D4SvUDzDEeO9Cpf0lomO-Q" elementId="net.openchrom.supplier.cdk.ui.partsashcontainer.0">
-        <children xsi:type="basic:PartStack" xmi:id="_IfF7UDzDEeO9Cpf0lomO-Q" elementId="net.openchrom.supplier.cdk.ui.partstack.0" selectedElement="_E3TVQDzDEeO9Cpf0lomO-Q">
-          <children xsi:type="advanced:Placeholder" xmi:id="_E3TVQDzDEeO9Cpf0lomO-Q" elementId="net.openchrom.supplier.cdk.ui.placeholder.0" ref="_FmKb0DzCEeO9Cpf0lomO-Q"/>
+        <children xsi:type="basic:PartSashContainer" xmi:id="_mhH84E0cEeO5B_4ZxeFNDw" elementId="net.openchrom.supplier.cdk.ui.partsashcontainer.1" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_yLG3wE0cEeO5B_4ZxeFNDw" elementId="net.openchrom.supplier.cdk.ui.partstack.2">
+            <children xsi:type="advanced:Placeholder" xmi:id="_y7GKQE0cEeO5B_4ZxeFNDw" elementId="net.openchrom.supplier.cdk.ui.placeholder.2" ref="_tNtJoE0cEeO5B_4ZxeFNDw"/>
+          </children>
+          <children xsi:type="basic:PartStack" xmi:id="_ydCVQE0cEeO5B_4ZxeFNDw" elementId="net.openchrom.supplier.cdk.ui.partstack.3">
+            <children xsi:type="advanced:Placeholder" xmi:id="_zUMmwE0cEeO5B_4ZxeFNDw" elementId="net.openchrom.supplier.cdk.ui.placeholder.3" ref="_vxCpEE0cEeO5B_4ZxeFNDw"/>
+          </children>
+        </children>
+        <children xsi:type="basic:PartSashContainer" xmi:id="_nHgAYE0cEeO5B_4ZxeFNDw" elementId="net.openchrom.supplier.cdk.ui.partsashcontainer.2" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_sVgBME0aEeO5B_4ZxeFNDw" elementId="net.openchrom.supplier.cdk.ui.partstack.1">
+            <children xsi:type="advanced:Placeholder" xmi:id="_tIFUsE0aEeO5B_4ZxeFNDw" elementId="net.openchrom.supplier.cdk.ui.placeholder.1" ref="_ho8-8E0aEeO5B_4ZxeFNDw"/>
+          </children>
+          <children xsi:type="basic:PartStack" xmi:id="_IfF7UDzDEeO9Cpf0lomO-Q" elementId="net.openchrom.supplier.cdk.ui.partstack.0" selectedElement="_E3TVQDzDEeO9Cpf0lomO-Q">
+            <children xsi:type="advanced:Placeholder" xmi:id="_E3TVQDzDEeO9Cpf0lomO-Q" elementId="net.openchrom.supplier.cdk.ui.placeholder.0" ref="_FmKb0DzCEeO9Cpf0lomO-Q"/>
+          </children>
         </children>
       </children>
     </elements>
@@ -28,7 +44,7 @@
     <elements xsi:type="commands:Handler" xmi:id="_I1gWwEuWEeO05Zmz9AbMeQ" elementId="net.openchrom.supplier.cdk.ui.handler.0" contributionURI="bundleclass://net.openchrom.supplier.cdk.ui/net.openchrom.supplier.cdk.ui.handlers.QsarHandler" command="_3pDR0EuVEeO05Zmz9AbMeQ"/>
     <elements xsi:type="commands:Handler" xmi:id="_fFxFEEucEeObU4sRRHzsFQ" elementId="net.openchrom.supplier.cdk.ui.handler.calculateSmilesFormula" contributionURI="bundleclass://net.openchrom.supplier.cdk.ui/net.openchrom.supplier.cdk.ui.handlers.CalculateSmilesHandler" command="_X6kCoEucEeObU4sRRHzsFQ"/>
   </fragments>
-  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_n7XwoEuYEeObU4sRRHzsFQ" featurename="children" parentElementId="net.openchrom.rcp.extension.chromatogram.ui.menu.process">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_n7XwoEuYEeObU4sRRHzsFQ" featurename="children" parentElementId="net.openchrom.rcp.extension.chromatogram.ui.menu.identifier">
     <elements xsi:type="menu:HandledMenuItem" xmi:id="_8bdJgEuYEeObU4sRRHzsFQ" elementId="net.openchrom.supplier.cdk.ui.handledmenuitem.1" label="Hello Marwin" command="_3pDR0EuVEeO05Zmz9AbMeQ"/>
     <elements xsi:type="menu:HandledMenuItem" xmi:id="_zbxU4EucEeObU4sRRHzsFQ" elementId="net.openchrom.supplier.cdk.ui.handledmenuitem.calculateSmilesFormula" label="Calculate SMILES" command="_X6kCoEucEeObU4sRRHzsFQ"/>
   </fragments>

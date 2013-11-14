@@ -69,8 +69,10 @@ public class MoleculeView {
 	public static final int MODUS_IUPAC = 1;
 	// How to process Input (e.g. SMILES,IUPAC,...)
 	private int convertModus = MODUS_IUPAC;// initially setup to parse IUPAC
+	@Inject
+	private Composite parent;
 	/*
-	 * 
+	 * Event Handler
 	 */
 	@Inject
 	private EPartService partService;
@@ -119,10 +121,6 @@ public class MoleculeView {
 			label.setImage(moleculeImage);
 		moleculeImage.dispose();
 	}
-
-	//
-	@Inject
-	private Composite parent;
 
 	@PostConstruct
 	private void createControl(EMenuService menuService) {
