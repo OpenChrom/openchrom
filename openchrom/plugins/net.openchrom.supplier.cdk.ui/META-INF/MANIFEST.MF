@@ -24,7 +24,8 @@ Require-Bundle: org.eclipse.ui,
  net.openchrom.chromatogram.model;bundle-version="0.9.0",
  net.openchrom.logging,
  net.openchrom.progress,
- net.openchrom.processing.ui
+ net.openchrom.processing.ui,
+ net.openchrom.rcp.ui.icons
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: javax.annotation;version="1.1.0",

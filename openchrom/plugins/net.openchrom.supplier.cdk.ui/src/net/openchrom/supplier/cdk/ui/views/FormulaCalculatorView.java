@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.supplier.cdk.ui.views;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
@@ -19,20 +21,46 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Display;
+
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 import net.openchrom.logging.core.Logger;
+import net.openchrom.supplier.cdk.core.CDKMassToFormula;
+import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListContentProvider;
+import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListLabelProvider;
+import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListTableSorter;
 import net.openchrom.support.events.IOpenChromEvents;
 
 public class FormulaCalculatorView {
 
 	private static final Logger logger = Logger.getLogger(FormulaCalculatorView.class);
-	private Label label;
+	// private Label label;
+	private TableViewer tableViewer;
+	private FormulaListTableSorter formulaListTableSorter;
+	private Clipboard clipboard;
+	private String[] titles = {"Formula", "Ranking"};
+	private int bounds[] = {200, 100};
+	/*
+	 * Unix: \n Windows: \r\n Mac OSX: \r
+	 */
+	private static final String DELIMITER = "\t";
+	private static final String END_OF_LINE = "\r\n";
+	//
 	@Inject
 	private Composite parent;
 	/*
@@ -56,9 +84,19 @@ public class FormulaCalculatorView {
 	@PostConstruct
 	private void createControl() {
 
+		clipboard = new Clipboard(Display.getDefault());
 		parent.setLayout(new FillLayout());
-		label = new Label(parent, SWT.NONE);
-		label.setText("Selected Ion");
+		// label = new Label(parent, SWT.NONE);
+		// label.setText("Selected Ion");
+		tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		createColumns(tableViewer);
+		tableViewer.setContentProvider(new FormulaListContentProvider());
+		tableViewer.setLabelProvider(new FormulaListLabelProvider());
+		/*
+		 * Sorting the table.
+		 */
+		formulaListTableSorter = new FormulaListTableSorter();
+		tableViewer.setSorter(formulaListTableSorter);
 	}
 
 	@PreDestroy
@@ -70,14 +108,18 @@ public class FormulaCalculatorView {
 	@Focus
 	public void setFocus() {
 
-		label.setFocus();
+		tableViewer.getControl().setFocus();
 	}
 
 	private void update(Double ion) {
 
 		if(isPartVisible()) {
 			System.out.println(ion);
-			label.setText(ion.toString());
+			// label.setText(ion.toString());
+			// TODO: Put List View (for showing formula results) here
+			CDKMassToFormula massToFormula = new CDKMassToFormula();
+			List<String> formulas = massToFormula.generate(ion);
+			tableViewer.setInput(formulas);
 		}
 	}
 
@@ -116,5 +158,106 @@ public class FormulaCalculatorView {
 			};
 			eventBroker.subscribe(IOpenChromEvents.TOPIC_CHROMATOGRAM_MSD_UPDATE_ION_SELECTION, eventHandler);
 		}
+	}
+
+	private void createColumns(final TableViewer tableViewer) {
+
+		/*
+		 * SYNCHRONIZE: PeakListLabelProvider PeakListLabelSorter PeakListView
+		 */
+		/*
+		 * Set the titles and bounds.
+		 */
+		for(int i = 0; i < titles.length; i++) {
+			/*
+			 * Column sort.
+			 */
+			final int index = i;
+			final TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+			final TableColumn tableColumn = tableViewerColumn.getColumn();
+			tableColumn.setText(titles[i]);
+			tableColumn.setWidth(bounds[i]);
+			tableColumn.setResizable(true);
+			tableColumn.setMoveable(true);
+			tableColumn.addSelectionListener(new SelectionAdapter() {
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+
+					formulaListTableSorter.setColumn(index);
+					int direction = tableViewer.getTable().getSortDirection();
+					if(tableViewer.getTable().getSortColumn() == tableColumn) {
+						/*
+						 * Toggle the direction
+						 */
+						direction = (direction == SWT.UP) ? SWT.DOWN : SWT.UP;
+					} else {
+						direction = SWT.UP;
+					}
+					tableViewer.getTable().setSortDirection(direction);
+					tableViewer.getTable().setSortColumn(tableColumn);
+					tableViewer.refresh();
+				}
+			});
+		}
+		/*
+		 * Set header and lines visible.
+		 */
+		Table table = tableViewer.getTable();
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+	}
+
+	/**
+	 * Copies the actual selection to the clipboard.
+	 */
+	public void copyToClipboard() {
+
+		/*
+		 * SYNCHRONIZE: PeakListLabelProvider PeakListLabelSorter PeakListView
+		 */
+		StringBuilder builder = new StringBuilder();
+		int size = titles.length;
+		/*
+		 * Header
+		 */
+		for(String title : titles) {
+			builder.append(title);
+			builder.append(DELIMITER);
+		}
+		builder.append(END_OF_LINE);
+		/*
+		 * Copy the selected items.
+		 */
+		TableItem selection;
+		Table table = tableViewer.getTable();
+		for(int index : table.getSelectionIndices()) {
+			/*
+			 * Get the nth selected item.
+			 */
+			selection = table.getItem(index);
+			/*
+			 * Dump all elements of the item, e.g. RT, Abundance, ... .
+			 */
+			for(int columnIndex = 0; columnIndex < size; columnIndex++) {
+				builder.append(selection.getText(columnIndex));
+				builder.append(DELIMITER);
+			}
+			builder.append(END_OF_LINE);
+		}
+		/*
+		 * If the builder is empty, give a note that items needs to be selected.
+		 */
+		if(builder.length() == 0) {
+			builder.append("Please select one or more entries in the list.");
+			builder.append(END_OF_LINE);
+		}
+		/*
+		 * Transfer the selected text (items) to the clipboard.
+		 */
+		TextTransfer textTransfer = TextTransfer.getInstance();
+		Object[] data = new Object[]{builder.toString()};
+		Transfer[] dataTypes = new Transfer[]{textTransfer};
+		clipboard.setContents(data, dataTypes);
 	}
 }

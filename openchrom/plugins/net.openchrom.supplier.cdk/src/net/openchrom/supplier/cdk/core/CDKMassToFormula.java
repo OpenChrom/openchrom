@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.openchrom.supplier.cdk.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.formula.MassToFormulaTool;
 import org.openscience.cdk.interfaces.IIsotope;
@@ -19,13 +22,12 @@ import org.openscience.cdk.interfaces.IMolecularFormulaSet;
 
 public class CDKMassToFormula {
 
-	String[] resultString;
-
-	public void generate(double mass) {
+	// String[] resultString;
+	public List<String> generate(double mass) {
 
 		MassToFormulaTool t = new MassToFormulaTool(DefaultChemObjectBuilder.getInstance());
 		IMolecularFormulaSet result = t.generate(mass);
-		resultString = new String[result.size()];
+		List<String> results = new ArrayList<String>();
 		//
 		for(int i = 0; i < result.size(); i++) {
 			IMolecularFormula iter = result.getMolecularFormula(i);
@@ -33,16 +35,17 @@ public class CDKMassToFormula {
 			for(IIsotope isoIter : iter.isotopes()) {
 				formula += isoIter.getSymbol() + iter.getIsotopeCount(isoIter);
 			}
-			resultString[i] = formula;
+			results.add(formula);
 		}
+		return results;
 	}
 
 	public static void main(String[] args) {
 
 		CDKMassToFormula massToFormula = new CDKMassToFormula();
-		double mass = 87.104799;
+		double mass = 107.957461;
 		massToFormula.generate(mass);
-		for(String formula : massToFormula.resultString) {
+		for(String formula : massToFormula.generate(mass)) {
 			System.out.println(formula);
 		}
 	}
