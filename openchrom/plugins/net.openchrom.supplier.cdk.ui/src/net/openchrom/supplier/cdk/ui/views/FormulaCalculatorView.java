@@ -31,8 +31,11 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -51,7 +54,7 @@ import net.openchrom.support.events.IOpenChromEvents;
 public class FormulaCalculatorView {
 
 	private static final Logger logger = Logger.getLogger(FormulaCalculatorView.class);
-	// private Label label;
+	private Label label;
 	private TableViewer tableViewer;
 	private FormulaListTableSorter formulaListTableSorter;
 	private Clipboard clipboard;
@@ -88,9 +91,18 @@ public class FormulaCalculatorView {
 
 		clipboard = new Clipboard(Display.getDefault());
 		parent.setLayout(new FillLayout());
-		// label = new Label(parent, SWT.NONE);
-		// label.setText("Selected Ion");
-		tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setLayout(new GridLayout(1, true));
+		/*
+		 * Label Ion
+		 */
+		label = new Label(composite, SWT.NONE);
+		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		/*
+		 * Formula table
+		 */
+		tableViewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		tableViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 		createColumns(tableViewer);
 		tableViewer.setContentProvider(new FormulaListContentProvider());
 		tableViewer.setLabelProvider(new FormulaListLabelProvider());
@@ -138,6 +150,7 @@ public class FormulaCalculatorView {
 				NameAndRating nameAndRating = new NameAndRating(formulaName, formulaRating);
 				formulaNamesAndRatings.add(nameAndRating);
 			}
+			label.setText("Selected ion: " + ion);
 			tableViewer.setInput(formulaNamesAndRatings);
 		}
 	}
