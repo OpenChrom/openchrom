@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.supplier.cdk.ui.views;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -32,10 +33,10 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.openscience.cdk.interfaces.IMolecularFormulaSet;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
@@ -44,6 +45,7 @@ import net.openchrom.supplier.cdk.core.CDKMassToFormula;
 import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListContentProvider;
 import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListLabelProvider;
 import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListTableSorter;
+import net.openchrom.supplier.cdk.ui.internal.provider.NameAndRating;
 import net.openchrom.support.events.IOpenChromEvents;
 
 public class FormulaCalculatorView {
@@ -114,12 +116,32 @@ public class FormulaCalculatorView {
 	private void update(Double ion) {
 
 		if(isPartVisible()) {
-			System.out.println(ion);
-			// label.setText(ion.toString());
-			// TODO: Put List View (for showing formula results) here
 			CDKMassToFormula massToFormula = new CDKMassToFormula();
-			List<String> formulas = massToFormula.generate(ion);
-			tableViewer.setInput(formulas);
+			IMolecularFormulaSet formulas;
+			formulas = massToFormula.generate(ion);
+			List<String> formulaNames;
+			if(formulas != null){
+				formulaNames = massToFormula.getNames(formulas);
+			}else{
+				formulaNames = new ArrayList<String>();
+			}
+			List<Double> formulaRatings;
+			if(formulas!=null){
+			formulaRatings = massToFormula.getRatings(ion, formulas);
+			}else{
+				formulaRatings = new ArrayList<Double>();
+			}
+			List<NameAndRating> addToTable = new ArrayList<NameAndRating>();
+			
+			for( int i=0; i< formulaNames.size() && i < formulaRatings.size();i++ )
+			{
+				String formulaName = formulaNames.get(i);
+				Double formulaRating =formulaRatings.get(i);
+				NameAndRating nameAndRating = new NameAndRating(formulaName,formulaRating);
+				addToTable.add(nameAndRating);
+			}
+			
+			tableViewer.setInput(addToTable);
 		}
 	}
 
