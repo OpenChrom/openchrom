@@ -28,18 +28,18 @@ import net.openchrom.progress.core.StatusLineLogger;
 import net.openchrom.supplier.cdk.ui.internal.handlers.SmilesFormulaCalculatorRunnable;
 import net.openchrom.support.events.IOpenChromEvents;
 
-public class CalculateSmilesHandler implements EventHandler {
+public class CalculateSmilesFormulaSelectedPeakHandler implements EventHandler {
 
-	private static final Logger logger = Logger.getLogger(CalculateSmilesHandler.class);
+	private static final Logger logger = Logger.getLogger(CalculateSmilesFormulaSelectedPeakHandler.class);
 	private static IChromatogramSelectionMSD chromatogramSelection;
 
 	@Execute
 	public void execute() {
 
-		if(chromatogramSelection != null) {
+		if(chromatogramSelection != null && chromatogramSelection.getSelectedPeak() != null) {
 			final Display display = Display.getCurrent();
-			StatusLineLogger.setInfo(InfoType.MESSAGE, "Start peak formula calculation.");
-			IRunnableWithProgress runnable = new SmilesFormulaCalculatorRunnable(chromatogramSelection);
+			StatusLineLogger.setInfo(InfoType.MESSAGE, "Start selected peak formula calculation.");
+			IRunnableWithProgress runnable = new SmilesFormulaCalculatorRunnable(chromatogramSelection, true);
 			ProgressMonitorDialog monitor = new ProgressMonitorDialog(display.getActiveShell());
 			try {
 				/*
@@ -52,7 +52,7 @@ public class CalculateSmilesHandler implements EventHandler {
 			} catch(InterruptedException e) {
 				logger.warn(e);
 			}
-			StatusLineLogger.setInfo(InfoType.MESSAGE, "Done: Peak result formulas calculated.");
+			StatusLineLogger.setInfo(InfoType.MESSAGE, "Done: Selected peak result formulas calculated.");
 		}
 	}
 

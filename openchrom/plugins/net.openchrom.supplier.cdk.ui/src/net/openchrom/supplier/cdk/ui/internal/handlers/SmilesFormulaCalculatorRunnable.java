@@ -13,6 +13,7 @@
 package net.openchrom.supplier.cdk.ui.internal.handlers;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.openchrom.chromatogram.model.identifier.ILibraryInformation;
@@ -26,13 +27,24 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 
+import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
+import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
+import uk.ac.cam.ch.wwmm.opsin.OpsinResult;
+
 public class SmilesFormulaCalculatorRunnable implements IRunnableWithProgress {
 
 	private IChromatogramSelectionMSD chromatogramSelection;
+	private boolean useOnlySelectedPeak;
+	private NameToStructure nameStructure;
+	private NameToStructureConfig nameStructureConfig;
 
-	public SmilesFormulaCalculatorRunnable(IChromatogramSelectionMSD chromatogramSelection) {
+	public SmilesFormulaCalculatorRunnable(IChromatogramSelectionMSD chromatogramSelection, boolean useOnlySelectedPeak) {
 
 		this.chromatogramSelection = chromatogramSelection;
+		this.useOnlySelectedPeak = useOnlySelectedPeak;
+		nameStructure = NameToStructure.getInstance();
+		nameStructureConfig = new NameToStructureConfig();
+		nameStructureConfig.setAllowRadicals(true); // TODO settings Preferences
 	}
 
 	@Override
@@ -43,7 +55,22 @@ public class SmilesFormulaCalculatorRunnable implements IRunnableWithProgress {
 			/*
 			 * Get the list of selected peaks.
 			 */
-			List<IChromatogramPeakMSD> peaks = chromatogramSelection.getChromatogramMSD().getPeaks(chromatogramSelection);
+			List<IChromatogramPeakMSD> peaks;
+			if(useOnlySelectedPeak) {
+				/*
+				 * Selected peak.
+				 */
+				peaks = new ArrayList<IChromatogramPeakMSD>();
+				peaks.add(chromatogramSelection.getSelectedPeak());
+			} else {
+				/*
+				 * All peaks
+				 */
+				peaks = chromatogramSelection.getChromatogramMSD().getPeaks(chromatogramSelection);
+			}
+			/*
+			 * Calculate formula for each peak.
+			 */
 			for(IChromatogramPeakMSD peak : peaks) {
 				/*
 				 * Get the targets for each peak.
@@ -56,12 +83,24 @@ public class SmilesFormulaCalculatorRunnable implements IRunnableWithProgress {
 					if(target instanceof IPeakIdentificationEntry) {
 						ILibraryInformation libraryInformation = ((IPeakIdentificationEntry)target).getLibraryInformation();
 						if(libraryInformation.getFormula().equals("")) {
-							System.out.println(libraryInformation.getName() + " > " + libraryInformation.getCasNumber());
 							/*
-							 * TODO Calculate corrected name and formula.
+							 * Calculate SMILES
 							 */
-							// libraryInformation.setName(correctedName);
-							// libraryInformation.setFormula(correctedFormula);
+							String name = libraryInformation.getName();
+							OpsinResult result = nameStructure.parseChemicalName(name, nameStructureConfig);
+							String message = result.getMessage();
+							if(message.equals("")) {
+								/*
+								 * Set the parsed name and smiles formula.
+								 */
+								libraryInformation.setName(result.getChemicalName());
+								libraryInformation.setFormula(result.getSmiles());
+							} else {
+								/*
+								 * The name couldn't be parsed.
+								 */
+								libraryInformation.setComments(message);
+							}
 						}
 					}
 				}
