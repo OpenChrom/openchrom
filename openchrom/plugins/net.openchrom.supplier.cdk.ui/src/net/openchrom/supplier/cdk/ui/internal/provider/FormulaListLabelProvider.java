@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.supplier.cdk.ui.internal.provider;
 
+import java.text.DecimalFormat;
+
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -19,6 +21,13 @@ import net.openchrom.rcp.ui.icons.core.ApplicationImageFactory;
 import net.openchrom.rcp.ui.icons.core.IApplicationImage;
 
 public class FormulaListLabelProvider extends LabelProvider implements ITableLabelProvider {
+
+	private DecimalFormat decimalFormat;
+
+	public FormulaListLabelProvider() {
+
+		decimalFormat = new DecimalFormat("0.000000");
+	}
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) {
@@ -33,17 +42,18 @@ public class FormulaListLabelProvider extends LabelProvider implements ITableLab
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
 
-		if(element instanceof String) {
+		if(element instanceof NameAndRating) {
+			NameAndRating nameAndRating = (NameAndRating)element;
 			String text;
 			switch(columnIndex) {
 				case 0:
-					text = element.toString();
+					text = nameAndRating.getName();
 					break;
 				case 1:
-					text = "Bewertung";
+					text = decimalFormat.format(nameAndRating.getRating());
 					break;
 				default:
-					text = "n/A";
+					text = "n/a";
 			}
 			return text;
 		}

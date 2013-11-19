@@ -45,15 +45,15 @@ public class FormulaListTableSorter extends ViewerSorter {
 		 * SYNCHRONIZE: PeakListLabelProvider PeakListLabelSorter PeakListView
 		 */
 		int sortOrder = 0;
-		if(e1 instanceof String && e2 instanceof String) {
-			String element1 = (String)e1;
-			String element2 = (String)e2;
+		if(e1 instanceof NameAndRating && e2 instanceof NameAndRating) {
+			NameAndRating element1 = (NameAndRating)e1;
+			NameAndRating element2 = (NameAndRating)e2;
 			switch(propertyIndex) {
-				case 0: // RT
-					sortOrder = element2.compareTo(element1);
+				case 0: // Formula
+					sortOrder = (element2.getName().length() > element1.getName().length()) ? 1 : -1;
 					break;
-				case 1: // Area
-					sortOrder = -1;
+				case 1: // Rating
+					sortOrder = (element2.getRating() > element1.getRating()) ? 1 : -1;
 					break;
 				default:
 					sortOrder = 0;

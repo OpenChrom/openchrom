@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2013 Marwin Wollschläger.
- *
+ * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,17 +8,27 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.supplier.cdk.ui.internal.provider;
 
-
 public class NameAndRating {
-	public String name;
-	public Double rating;
-	
-	public NameAndRating(String name,Double rating)
-	{
-		this.name=name;
-		this.rating=rating;
+
+	private String name;
+	private double rating;
+
+	public NameAndRating(String name, double rating) {
+
+		this.name = name;
+		this.rating = rating;
+	}
+
+	public String getName() {
+
+		return name;
+	}
+
+	public double getRating() {
+
+		return rating;
 	}
 }

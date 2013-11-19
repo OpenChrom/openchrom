@@ -120,28 +120,25 @@ public class FormulaCalculatorView {
 			IMolecularFormulaSet formulas;
 			formulas = massToFormula.generate(ion);
 			List<String> formulaNames;
-			if(formulas != null){
+			if(formulas != null) {
 				formulaNames = massToFormula.getNames(formulas);
-			}else{
+			} else {
 				formulaNames = new ArrayList<String>();
 			}
 			List<Double> formulaRatings;
-			if(formulas!=null){
-			formulaRatings = massToFormula.getRatings(ion, formulas);
-			}else{
+			if(formulas != null) {
+				formulaRatings = massToFormula.getRatings(ion, formulas);
+			} else {
 				formulaRatings = new ArrayList<Double>();
 			}
-			List<NameAndRating> addToTable = new ArrayList<NameAndRating>();
-			
-			for( int i=0; i< formulaNames.size() && i < formulaRatings.size();i++ )
-			{
+			List<NameAndRating> formulaNamesAndRatings = new ArrayList<NameAndRating>();
+			for(int i = 0; i < formulaNames.size() && i < formulaRatings.size(); i++) {
 				String formulaName = formulaNames.get(i);
-				Double formulaRating =formulaRatings.get(i);
-				NameAndRating nameAndRating = new NameAndRating(formulaName,formulaRating);
-				addToTable.add(nameAndRating);
+				Double formulaRating = formulaRatings.get(i);
+				NameAndRating nameAndRating = new NameAndRating(formulaName, formulaRating);
+				formulaNamesAndRatings.add(nameAndRating);
 			}
-			
-			tableViewer.setInput(addToTable);
+			tableViewer.setInput(formulaNamesAndRatings);
 		}
 	}
 
