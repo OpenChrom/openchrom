@@ -1,19 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Philip (eselmeister) Wenig.
+ * Copyright (c) 2013 Dr. Philip Wenig.
  * 
- * This library is free
- * software; you can redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation;
- * either version 2.1 of the License, or (at your option) any later version.
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details. You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston MA 02111-1307, USA
+ * All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
- * 
- * Contributors: Philip (eselmeister) Wenig - initial API and implementation
+ * Contributors:
+ * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.converter.supplier.cdf.io;
 
@@ -38,12 +32,7 @@ import net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support.IDataEnt
 import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
 import net.openchrom.logging.core.Logger;
 
-/**
- * Use this class if you want to write a valid cdf chromatogram file.<br/>
- * It will write all kinds of IChromatogram.
- * 
- * @author eselmeister
- */
+@SuppressWarnings("deprecation")
 public class ChromatogramWriter implements IChromatogramMSDWriter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramWriter.class);
@@ -58,7 +47,7 @@ public class ChromatogramWriter implements IChromatogramMSDWriter {
 
 	// ------------------------------------------------------------private
 	// methods
-	private void writeCDFChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) {
+	private void writeCDFChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws IOException {
 
 		NetcdfFileWriteable cdfChromatogram = NetcdfFileWriteable.createNew(file.getAbsolutePath());
 		DimensionSupport dimensionSupport = new DimensionSupport(cdfChromatogram, chromatogram);

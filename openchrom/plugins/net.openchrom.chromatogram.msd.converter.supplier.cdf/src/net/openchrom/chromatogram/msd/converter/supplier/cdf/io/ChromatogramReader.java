@@ -1,19 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Philip (eselmeister) Wenig.
+ * Copyright (c) 2013 Dr. Philip Wenig.
  * 
- * This library is free
- * software; you can redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation;
- * either version 2.1 of the License, or (at your option) any later version.
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details. You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston MA 02111-1307, USA
+ * All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
- * 
- * Contributors: Philip (eselmeister) Wenig - initial API and implementation
+ * Contributors:
+ * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.converter.supplier.cdf.io;
 
@@ -27,7 +21,6 @@ import java.util.Date;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import ucar.nc2.NetcdfFile;
-import ucar.nc2.NetcdfFileCache;
 
 import net.openchrom.chromatogram.converter.exceptions.FileIsEmptyException;
 import net.openchrom.chromatogram.converter.exceptions.FileIsNotReadableException;
@@ -53,13 +46,6 @@ import net.openchrom.chromatogram.msd.model.core.IIon;
 import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
 import net.openchrom.logging.core.Logger;
 
-/**
- * This class reads a valid cdf file.<br/>
- * It is responsible to parse the data structure and it will construct a valid
- * CDFChromatogram.
- * 
- * @author eselmeister
- */
 public class ChromatogramReader extends AbstractChromatogramMSDReader implements IChromatogramMSDReader {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
@@ -143,7 +129,8 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 
 		CDFChromatogram chromatogram;
 		CDFMassSpectrum massSpectrum;
-		NetcdfFile cdfChromatogram = NetcdfFileCache.acquire(file.getAbsolutePath(), null);
+		@SuppressWarnings("deprecation")
+		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
 		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
 		chromatogram = new CDFChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
@@ -181,7 +168,8 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 		CDFChromatogram chromatogram;
 		CDFMassSpectrum massSpectrum;
 		CDFIon ion;
-		NetcdfFile cdfChromatogram = NetcdfFileCache.acquire(file.getAbsolutePath(), null);
+		@SuppressWarnings("deprecation")
+		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
 		CDFChromatogramOverviewArrayReader in = new CDFChromatogramOverviewArrayReader(cdfChromatogram);
 		chromatogram = new CDFChromatogram();
 		setChromatogramEntries(chromatogram, in, file);

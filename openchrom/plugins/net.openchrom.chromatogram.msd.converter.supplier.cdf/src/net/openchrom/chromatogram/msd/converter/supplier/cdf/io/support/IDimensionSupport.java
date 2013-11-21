@@ -1,19 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2013 Philip (eselmeister) Wenig.
+ * Copyright (c) 2013 Dr. Philip Wenig.
  * 
- * This library is free
- * software; you can redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation;
- * either version 2.1 of the License, or (at your option) any later version.
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details. You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston MA 02111-1307, USA
+ * All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
- * 
- * Contributors: Philip (eselmeister) Wenig - initial API and implementation
+ * Contributors:
+ * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.converter.supplier.cdf.io.support;
 
@@ -23,42 +17,42 @@ import ucar.nc2.Dimension;
 
 public interface IDimensionSupport {
 
-	public Dimension getByteString32();
+	Dimension getByteString32();
 
-	public Dimension getByteString64();
+	Dimension getByteString64();
 
-	public Dimension getNumberOfScans();
+	Dimension getNumberOfScans();
 
-	public Dimension getNumberOfScanIons();
+	Dimension getNumberOfScanIons();
 
-	public Dimension getInstrumentNumber();
+	Dimension getInstrumentNumber();
 
-	public Dimension getErrorNumber();
+	Dimension getErrorNumber();
 
-	public void addVariableCharD2(String varName, Dimension firstDimension, Dimension secondDimension, String content);
+	void addVariableCharD2(String varName, Dimension firstDimension, Dimension secondDimension, String content);
 
-	public void addVariableDoubleD1(String varName, Dimension firstDimension, double value);
+	void addVariableDoubleD1(String varName, Dimension firstDimension, double value);
 
-	public void addVariableShortD1(String varName, Dimension firstDimension, short value);
+	void addVariableShortD1(String varName, Dimension firstDimension, short value);
 
-	public void addVariableIntD1(String varName, Dimension firstDimension, int value);
+	void addVariableIntD1(String varName, Dimension firstDimension, int value);
 
 	// Convenience methods
-	public void addVariableScanAcquisitionTime();
+	void addVariableScanAcquisitionTime();
 
-	public void addVariableActualScanNumber();
+	void addVariableActualScanNumber();
 
-	public void addVariableTotalIntensity();
+	void addVariableTotalIntensity();
 
 	void addVariableMassRangeMin();
 
 	void addVariableMassRangeMax();
 
-	public void addVariableScanIndex();
+	void addVariableScanIndex();
 
-	public void addVariablePointCount();
+	void addVariablePointCount();
 
-	public void addVariableScanValues();
+	void addVariableScanValues();
 
 	/**
 	 * In the array list are all data entries stored that are needed to write
@@ -66,5 +60,5 @@ public interface IDimensionSupport {
 	 * 
 	 * @return
 	 */
-	public ArrayList<IDataEntry> getDataEntries();
+	ArrayList<IDataEntry> getDataEntries();
 }
