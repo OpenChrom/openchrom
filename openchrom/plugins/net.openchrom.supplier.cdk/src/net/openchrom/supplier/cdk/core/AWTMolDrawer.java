@@ -18,9 +18,14 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import net.openchrom.logging.core.Logger;
+
 /**
  * A Simple utility class for converting smile Strings to PNG files,
  * where the resultant image file is stored in the specified directory.
+ * Though it is currently not being used because of Input/Output overhead!
+ * => Still it looks like an interesting possibility to be able to export 
+ * 	  molecules as they are represented in the CDK to the PNG file format!
  * 
  * @author administrator_marwin
  * 
@@ -38,6 +43,9 @@ public class AWTMolDrawer {
 	 * 
 	 * @param smilesString
 	 */
+	private static final Logger logger = Logger.getLogger(AWTMolDrawer.class);
+	
+	
 	public AWTMolDrawer(String smilesString, String imageFile) {
 
 		// OpenChromSettings.getSettingsDirectory().getAbsolutePath() + File.separator + "net.openchrom.supplier.cdk" + File.separator + "aTestMolecule.png";
@@ -45,7 +53,7 @@ public class AWTMolDrawer {
 		try {
 			ImageIO.write((RenderedImage)image, "PNG", new File(imageFile));
 		} catch(IOException e) {
-			System.err.println("Some IO Error occured!");
+			logger.warn("Some IO Error occured while instantiating AWTMolDrawer object. Here is more information:\n"+e);
 		}
 	}
 

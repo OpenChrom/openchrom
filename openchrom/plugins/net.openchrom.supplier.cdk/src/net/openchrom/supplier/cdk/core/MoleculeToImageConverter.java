@@ -61,7 +61,7 @@ public class MoleculeToImageConverter {
 
 		Image image;
 		// Generate smiles
-		molecule = ChromSmilesParser.getInstance().generate(smilesString);
+		molecule = new CDKSmilesToIMoleculeConverter().generate(smilesString);
 		// The draw area and the image should be the same size
 		Rectangle drawArea = new Rectangle(width, height);
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);

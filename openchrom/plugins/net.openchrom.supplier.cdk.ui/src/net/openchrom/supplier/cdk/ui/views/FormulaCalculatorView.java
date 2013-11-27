@@ -39,12 +39,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.interfaces.IMolecularFormulaSet;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 import net.openchrom.logging.core.Logger;
 import net.openchrom.supplier.cdk.core.CDKMassToFormula;
+import net.openchrom.supplier.cdk.core.massToFormula.GenericMassToFormulaBridge;
+import net.openchrom.supplier.cdk.core.massToFormula.GenericMassToFormulaTool;
 import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListContentProvider;
 import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListLabelProvider;
 import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListTableSorter;
@@ -128,7 +131,8 @@ public class FormulaCalculatorView {
 	private void update(Double ion) {
 
 		if(isPartVisible()) {
-			CDKMassToFormula massToFormula = new CDKMassToFormula();
+			GenericMassToFormulaBridge massToFormula = 
+					new GenericMassToFormulaBridge();
 			IMolecularFormulaSet formulas;
 			formulas = massToFormula.generate(ion);
 			List<String> formulaNames;

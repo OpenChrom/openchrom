@@ -14,7 +14,12 @@ package net.openchrom.supplier.cdk.core;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IMolecule;
 
-@Deprecated
+/**
+ * A Class that should later be able to convert IMolecule instances to 
+ * the Chemfig format. It is currently not working.
+ * @author administrator_marwin
+ *
+ */
 public class CDKIMoleculeToChemFigConverter implements IStructureGenerator {
 
 	@Override
@@ -26,10 +31,10 @@ public class CDKIMoleculeToChemFigConverter implements IStructureGenerator {
 		}
 		return null;
 	}
+	// An example usage:
+	//public static void main(String[] args) {
 
-	public static void main(String[] args) {
-
-		CDKIMoleculeToChemFigConverter converter = new CDKIMoleculeToChemFigConverter();
-		converter.generate("cccc");
-	}
+		//CDKIMoleculeToChemFigConverter converter = new CDKIMoleculeToChemFigConverter();
+		//converter.generate("cccc");
+	//}
 }
