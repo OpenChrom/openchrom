@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
+ * Dr. Philip Wenig - additional implementations
  *******************************************************************************/
 package net.openchrom.supplier.cdk.core.formula;
 
@@ -15,10 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openscience.cdk.DefaultChemObjectBuilder;
-
+import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.formula.MassToFormulaTool;
+import org.openscience.cdk.formula.MolecularFormulaRange;
+import org.openscience.cdk.formula.rules.ElementRule;
+import org.openscience.cdk.formula.rules.IRule;
 import org.openscience.cdk.interfaces.IIsotope;
 import org.openscience.cdk.interfaces.IMolecularFormula;
 import org.openscience.cdk.interfaces.IMolecularFormulaSet;
+
+import net.openchrom.logging.core.Logger;
 
 /**
  * A Bridge class that should simplify the communication between the
@@ -29,16 +36,45 @@ import org.openscience.cdk.interfaces.IMolecularFormulaSet;
  */
 public class GenericMassToFormulaBridge {
 
-	GenericMassToFormulaTool genericMassToFormula = new GenericMassToFormulaTool(DefaultChemObjectBuilder.getInstance());;
+	private static final Logger logger = Logger.getLogger(GenericMassToFormulaBridge.class);
+	private MassToFormulaTool massToFormula;
+
+	public GenericMassToFormulaBridge() {
+
+		massToFormula = new MassToFormulaTool(DefaultChemObjectBuilder.getInstance());
+	}
 
 	public void setIsotopeDecider(IsotopeDecider isotopeDecider) {
 
-		genericMassToFormula.setIsotopeDecider(isotopeDecider);
+		/*
+		 * Iterate over isotopes.
+		 */
+		MolecularFormulaRange molecularFormulaRange = new MolecularFormulaRange();
+		for(IIsotope isotope : isotopeDecider.getIsotopeSet()) {
+			molecularFormulaRange.addIsotope(isotope, 0, 15);
+		}
+		/*
+		 * Set molecular formular range to params object.
+		 */
+		Object[] params = new Object[1];
+		params[0] = molecularFormulaRange;
+		/*
+		 * Create a new rule and set restrictions.
+		 */
+		List<IRule> rulesNew = new ArrayList<IRule>();
+		IRule rule = new ElementRule();
+		try {
+			rule.setParameters(params);
+			rulesNew.add(rule);
+			massToFormula.setRestrictions(rulesNew);
+		} catch(CDKException e) {
+			logger.warn(e);
+		}
 	}
 
 	public IMolecularFormulaSet generate(double mass) {
 
-		IMolecularFormulaSet result = genericMassToFormula.generate(mass);
+		IMolecularFormulaSet result = massToFormula.generate(mass);
 		return result;
 	}
 
