@@ -23,6 +23,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 
 /**
+ * TODO: How to enable the user to set the configuration of the MassToFormula tool!
+ * TODO: Integrate a similar dialog to eclipse platform ...
  * The GUI Dialog for choosing the settings (e.g. Isotopes and Threshold) of the File GenericMassToFormula.java.
  * The Elements of the PSE should be listed as CheckBoxes after the user choosed to manually configur
  * the Set of Isotopes to include in the calculation.
@@ -56,8 +58,8 @@ public class UIIsotopeDeciderDialog {
 			public void widgetSelected(SelectionEvent e) {
 
 				textEdit.setEnabled(true);
-				manualSelectionMode = true;
-				System.out.println("Komm an!");
+				setManualSelectionMode(true);
+				
 				textEdit.setText("1H, 12C, 13C");
 			}
 
@@ -80,8 +82,15 @@ public class UIIsotopeDeciderDialog {
 		shell.dispose();
 	}
 
-	public static void main(String[] args) {
+	public boolean isManualSelectionMode() {
 
-		UIIsotopeDeciderDialog dialog = new UIIsotopeDeciderDialog();
+		return manualSelectionMode;
 	}
+
+	public void setManualSelectionMode(boolean manualSelectionMode) {
+
+		this.manualSelectionMode = manualSelectionMode;
+	}
+
+	
 }

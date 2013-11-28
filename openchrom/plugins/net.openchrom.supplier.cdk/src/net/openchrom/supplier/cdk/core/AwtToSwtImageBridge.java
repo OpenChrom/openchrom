@@ -15,9 +15,7 @@ package net.openchrom.supplier.cdk.core;
  * For a list of all SWT example snippets see
  * http://www.eclipse.org/swt/snippets/
  */
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Insets;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
@@ -139,72 +137,7 @@ public class AwtToSwtImageBridge {
 		return data;
 	}
 
-	public static void main(String[] args) {
-
-		Display display = new Display();
-		Shell shell = new Shell(display);
-		shell.setText("SWT Image");
-		ImageData data;
-		if(args.length > 0) {
-			String fileName = args[0];
-			data = new ImageData(fileName);
-		} else {
-			data = createSampleImage(display);
-		}
-		final Image swtImage = new Image(display, data);
-		final BufferedImage awtImage = convertToAWT(data);
-		final Image swtImage2 = new Image(display, convertToSWT(awtImage));
-		shell.addListener(SWT.Paint, new Listener() {
-
-			public void handleEvent(Event e) {
-
-				int y = 10;
-				if(swtImage != null) {
-					e.gc.drawImage(swtImage, 10, y);
-					y += swtImage.getBounds().height + 10;
-				}
-				if(swtImage2 != null) {
-					e.gc.drawImage(swtImage2, 10, y);
-				}
-			}
-		});
-		Frame frame = new Frame() {
-
-			public void paint(Graphics g) {
-
-				Insets insets = getInsets();
-				if(awtImage != null) {
-					g.drawImage(awtImage, 10 + insets.left, 10 + insets.top, null);
-				}
-			}
-		};
-		frame.setTitle("AWT Image");
-		shell.setLocation(50, 50);
-		Rectangle bounds = swtImage.getBounds();
-		shell.setSize(bounds.width + 50, bounds.height * 2 + 100);
-		Point size = shell.getSize();
-		Point location = shell.getLocation();
-		Insets insets = frame.getInsets();
-		frame.setLocation(location.x + size.x + 10, location.y);
-		frame.setSize(size.x - (insets.left + insets.right), size.y - (insets.top + insets.bottom));
-		frame.setVisible(true);
-		shell.open();
-		while(!shell.isDisposed()) {
-			if(!display.readAndDispatch())
-				display.sleep();
-		}
-		if(swtImage != null)
-			swtImage.dispose();
-		if(swtImage2 != null)
-			swtImage.dispose();
-		frame.dispose();
-		display.dispose();
-		/*
-		 * Note: If you are using JDK 1.3.x, you need to use System.exit(0) at the end of your program to exit AWT.
-		 * This is because in 1.3.x, AWT does not exit when the frame is disposed, because the AWT thread is not a daemon.
-		 * This was fixed in JDK 1.4.x with the addition of the AWT Shutdown thread.
-		 */
-	}
+	
 }
 // Eclipse Home
 // Privacy Policy

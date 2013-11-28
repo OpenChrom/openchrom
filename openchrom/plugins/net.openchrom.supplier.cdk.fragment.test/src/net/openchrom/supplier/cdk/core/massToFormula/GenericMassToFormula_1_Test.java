@@ -11,12 +11,15 @@
  *******************************************************************************/
 package net.openchrom.supplier.cdk.core.massToFormula;
 
+import junit.framework.TestCase;
+
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
 import org.openscience.cdk.interfaces.IIsotope;
 import org.openscience.cdk.interfaces.IMolecularFormula;
 import org.openscience.cdk.interfaces.IMolecularFormulaSet;
 
+import net.openchrom.logging.core.Logger;
 import net.openchrom.supplier.cdk.core.formula.GenericMassToFormulaTool;
 
 /**
@@ -27,20 +30,30 @@ import net.openchrom.supplier.cdk.core.formula.GenericMassToFormulaTool;
  * @author administrator_marwin
  * 
  */
-public class GenericMassToFormulaTest {
-
+public class GenericMassToFormula_1_Test extends TestCase{
+	private static final Logger logger = Logger.getLogger(GenericMassToFormula_1_Test.class);
 	static IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
+	private IMolecularFormulaSet set; 
+	GenericMassToFormulaTool genericMassToFormula; 
+	@Override
+	protected void setUp()
+	{
+		genericMassToFormula = new GenericMassToFormulaTool(builder);
+		set = genericMassToFormula.generate(107.957461);
+	}
+	@Override
+	protected void tearDown()
+	{
+		genericMassToFormula = null; set = null;
+	}
 
-	public static void main(String[] args) {
-
-		GenericMassToFormulaTool genericMassToFormula = new GenericMassToFormulaTool(builder);
-		IMolecularFormulaSet set = genericMassToFormula.generate(107.957461);
+	public void testMethod_1(){
 		for(int i = 0; i < set.size(); i++) {
 			IMolecularFormula formula = set.getMolecularFormula(i);
 			for(IIsotope iso : formula.isotopes()) {
-				System.out.print(iso.getSymbol() + formula.getIsotopeCount(iso));
+				logger.info(iso.getSymbol() + formula.getIsotopeCount(iso)+"\n");
 			}
-			System.out.println();
+			
 		}
 	}
 }

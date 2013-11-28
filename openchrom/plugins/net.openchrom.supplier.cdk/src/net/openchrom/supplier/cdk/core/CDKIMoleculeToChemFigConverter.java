@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.supplier.cdk.core;
 
-import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IMolecule;
 
 /**
@@ -26,15 +25,8 @@ public class CDKIMoleculeToChemFigConverter implements IStructureGenerator {
 	@Override
 	public IMolecule generate(String input) {
 
-		IMolecule molecule = new CDKSmilesToIMoleculeConverter().generate(input);
-		for(IAtom atom : molecule.atoms()) {
-			System.out.println(atom.getSymbol());
-		}
+		// TODO: to be implemented!
 		return null;
 	}
-	// An example usage:
-	// public static void main(String[] args) {
-	// CDKIMoleculeToChemFigConverter converter = new CDKIMoleculeToChemFigConverter();
-	// converter.generate("cccc");
-	// }
+	
 }

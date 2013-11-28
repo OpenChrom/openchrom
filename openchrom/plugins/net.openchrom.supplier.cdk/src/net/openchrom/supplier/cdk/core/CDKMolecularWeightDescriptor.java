@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.supplier.cdk.core;
 
-import org.openscience.cdk.Molecule;
+
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.qsar.descriptors.molecular.WeightDescriptor;
 

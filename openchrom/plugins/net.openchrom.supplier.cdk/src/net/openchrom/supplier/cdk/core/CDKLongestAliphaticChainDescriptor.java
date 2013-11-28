@@ -28,9 +28,5 @@ public class CDKLongestAliphaticChainDescriptor {
 		return "" + desc.calculate(molecule).getValue();
 	}
 
-	public static void main(String[] args) {
 
-		CDKLongestAliphaticChainDescriptor desc = new CDKLongestAliphaticChainDescriptor();
-		System.out.println(desc.describe(ExampleMolecule.getMolecule()));
-	}
 }

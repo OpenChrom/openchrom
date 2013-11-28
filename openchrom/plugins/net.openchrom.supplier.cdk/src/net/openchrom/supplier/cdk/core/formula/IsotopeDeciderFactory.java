@@ -20,6 +20,8 @@ import org.openscience.cdk.config.IsotopeFactory;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
 import org.openscience.cdk.interfaces.IIsotope;
 
+import net.openchrom.logging.core.Logger;
+
 /**
  * A class for managing simple collections of isotopes that are often in use,
  * e.g., all isotopes of the PSE or only the most abundant isotopes etc ...
@@ -28,7 +30,7 @@ import org.openscience.cdk.interfaces.IIsotope;
  * 
  */
 public class IsotopeDeciderFactory {
-
+	private static final Logger logger = Logger.getLogger(IsotopeDeciderFactory.class);
 	private IsotopeDeciderFactory() {
 
 	};
@@ -60,28 +62,22 @@ public class IsotopeDeciderFactory {
 			isotopeSet.add(o16);
 			isotopeDecider.setIsotopeSet(isotopeSet);
 		} catch(IOException e) {
-			e.printStackTrace();
-			System.out.println("For some Reason i couldnt instantiate an instance of IsotopeFactory.");
+			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory. This is because of the following error:\n" + e);
 		}
 		return isotopeDecider;
 	}
 
 	public IsotopeDecider getIsotopeDeciderFromIsotopeList(List<IIsotope> isotopes) {
 
-		IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
+		//IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
 		IsotopeDecider isotopeDecider = new IsotopeDecider();
-		IsotopeFactory ifac;
-		try {
-			ifac = IsotopeFactory.getInstance(builder);
-			List<IIsotope> isotopeSet = new ArrayList<IIsotope>();
-			for(IIsotope toAdd : isotopes) {
-				isotopeSet.add(toAdd);
-			}
-			isotopeDecider.setIsotopeSet(isotopeSet);
-		} catch(IOException e) {
-			e.printStackTrace();
-			System.out.println("For some Reason i couldnt instantiate an instance of IsotopeFactory.");
+		
+		//IsotopeFactory ifac = IsotopeFactory.getInstance(builder);
+		List<IIsotope> isotopeSet = new ArrayList<IIsotope>();
+		for(IIsotope toAdd : isotopes) {
+			isotopeSet.add(toAdd);
 		}
+		isotopeDecider.setIsotopeSet(isotopeSet);
 		return isotopeDecider;
 	}
 
@@ -94,8 +90,7 @@ public class IsotopeDeciderFactory {
 			ifac = IsotopeFactory.getInstance(builder);
 			result = ifac.getMajorIsotope(nameOfMajorIsotope);
 		} catch(IOException e) {
-			e.printStackTrace();
-			System.out.println("For some Reason i couldnt instantiate an instance of IsotopeFactory.");
+			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n"+e);
 		}
 		return result;
 	}
@@ -109,8 +104,7 @@ public class IsotopeDeciderFactory {
 			ifac = IsotopeFactory.getInstance(builder);
 			result = ifac.getIsotope(str, num);
 		} catch(IOException e) {
-			e.printStackTrace();
-			System.out.println("For some Reason i couldnt instantiate an instance of IsotopeFactory.");
+			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n"+e);
 		}
 		return result;
 	}
@@ -129,8 +123,7 @@ public class IsotopeDeciderFactory {
 			}
 			isotopeDecider.setIsotopeSet(isotopeSet);
 		} catch(IOException e) {
-			e.printStackTrace();
-			System.out.println("For some Reason i couldnt instantiate an instance of IsotopeFactory.");
+			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n"+e);
 		}
 		return isotopeDecider;
 	}
@@ -165,8 +158,7 @@ public class IsotopeDeciderFactory {
 			isotopeSet.add(b);
 			isotopeDecider.setIsotopeSet(isotopeSet);
 		} catch(IOException e) {
-			e.printStackTrace();
-			System.out.println("For some Reason i couldnt instantiate an instance of IsotopeFactory.");
+			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n"+e);
 		}
 		return isotopeDecider;
 	}

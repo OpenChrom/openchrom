@@ -28,7 +28,7 @@ import org.openscience.cdk.interfaces.IMolecularFormulaSet;
  * 
  */
 public class GenericMassToFormulaBridge {
-
+	
 	GenericMassToFormulaTool genericMassToFormula = new GenericMassToFormulaTool(DefaultChemObjectBuilder.getInstance());;
 
 	public void setIsotopeDecider(IsotopeDecider isotopeDecider) {
@@ -51,7 +51,7 @@ public class GenericMassToFormulaBridge {
 			for(IIsotope isotope : formula.isotopes()) {
 				mass += isotope.getExactMass() * formula.getIsotopeCount(isotope);
 			}
-			System.out.println("mass : " + mass + " of formula " + actualMass);
+			// System.out.println("mass : " + mass + " of formula " + actualMass);
 			double deviation = Math.abs(mass - actualMass) / (actualMass);// for example (99-100) = -1 / 100 => 1% deviation
 			ratings.add(1 - deviation);
 		}

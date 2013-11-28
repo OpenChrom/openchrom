@@ -21,6 +21,8 @@ import org.openscience.cdk.formula.MolecularFormulaRange;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
 import org.openscience.cdk.interfaces.IIsotope;
 
+import net.openchrom.logging.core.Logger;
+
 /**
  * A Simple class for handling the settings of the generic mass to formula tool. Using this class,
  * the client can decide on what isotopes to respect in calculating the formula.
@@ -30,7 +32,7 @@ import org.openscience.cdk.interfaces.IIsotope;
  * 
  */
 public class IsotopeDecider {
-
+	private static final Logger logger = Logger.getLogger(IsotopeDecider.class);
 	private List<IIsotope> isotopeSet;
 	private int iterationDepth = 15;
 
@@ -83,8 +85,9 @@ public class IsotopeDecider {
 		try {
 			ifac = IsotopeFactory.getInstance(builder);
 		} catch(IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warn("Something when wrong with your Isotope Selection.\n" + 
+					"Maybe you misspelled some of the element symbols? Anyway,\n"+
+					"Something went wrong because of the following error:\n" + e);
 		}
 	}
 

@@ -42,10 +42,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.openscience.cdk.annotations.TestClass;
-import org.openscience.cdk.annotations.TestMethod;
 import org.openscience.cdk.config.AtomTypeFactory;
-import org.openscience.cdk.config.IsotopeFactory;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.formula.MolecularFormulaRange;
 import org.openscience.cdk.formula.rules.ChargeRule;
@@ -83,7 +80,7 @@ import org.openscience.cdk.tools.manipulator.MolecularFormulaRangeManipulator;
  * @cdk.created 2007-03-01
  * @cdk.githash
  */
-@TestClass("org.openscience.cdk.formula.MassToFormulaToolTest")
+
 public class GenericMassToFormulaTool {
 
 	private ILoggingTool logger = LoggingToolFactory.createLoggingTool(GenericMassToFormulaTool.class);
@@ -97,7 +94,8 @@ public class GenericMassToFormulaTool {
 	/** A List with all rules to be applied. see IRule. */
 	private List<IRule> rules;
 	private MolecularFormulaRange mfRange;
-	private Double charge;
+	@SuppressWarnings("unused")
+	private Double charge;// Maybe Needed Later ... 
 	private Double tolerance;
 	private IsotopeDecider isotopeDecider = IsotopeDeciderFactory.getInstance().getImportantOrganicIsotopes();
 
@@ -131,7 +129,7 @@ public class GenericMassToFormulaTool {
 	 * @see #setDefaultRestrictions()
 	 * @see IRule
 	 */
-	@TestMethod("testSetRestrictions_List")
+	
 	public void setRestrictions(List<IRule> rulesNew) throws CDKException {
 
 		Iterator<IRule> itRules = rulesNew.iterator();
@@ -187,7 +185,7 @@ public class GenericMassToFormulaTool {
 	 * 
 	 * @see #setDefaultRestrictions()
 	 */
-	@TestMethod("testGetRestrictions")
+	
 	public List<IRule> getRestrictions() {
 
 		return this.rules;
@@ -198,7 +196,7 @@ public class GenericMassToFormulaTool {
 	 * 
 	 * @see #getRestrictions()
 	 */
-	@TestMethod("testSetDefaultRestrictions")
+	
 	public void setDefaultRestrictions() {
 
 		try {
@@ -264,7 +262,7 @@ public class GenericMassToFormulaTool {
 	 *            molecular formula to create from the mass
 	 * @return the filled molecular formulas as IMolecularFormulaSet
 	 */
-	@TestMethod("testGenerate_double")
+	
 	public IMolecularFormulaSet generate(double mass) {
 
 		if(mass <= 0.0) {
