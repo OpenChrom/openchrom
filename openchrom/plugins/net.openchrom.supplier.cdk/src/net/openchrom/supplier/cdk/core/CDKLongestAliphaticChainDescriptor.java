@@ -13,10 +13,12 @@ package net.openchrom.supplier.cdk.core;
 
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.qsar.descriptors.molecular.LongestAliphaticChainDescriptor;
+
 /**
  * Another wrapper for a CDK Descriptor class.
+ * 
  * @author administrator_marwin
- *
+ * 
  */
 public class CDKLongestAliphaticChainDescriptor {
 

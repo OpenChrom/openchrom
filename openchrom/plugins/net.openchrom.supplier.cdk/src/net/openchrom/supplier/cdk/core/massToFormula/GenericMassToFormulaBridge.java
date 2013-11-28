@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2013 Marwin Wollschläger.
- *
+ * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,7 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.supplier.cdk.core.massToFormula;
 
 import java.util.ArrayList;
@@ -19,24 +19,25 @@ import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.interfaces.IIsotope;
 import org.openscience.cdk.interfaces.IMolecularFormula;
 import org.openscience.cdk.interfaces.IMolecularFormulaSet;
-/**
- * A Bridge class that should simplify the communication between the 
- * GenericMassToFormula instance and the views that are part of the mass to formula calculations.
- * @author administrator_marwin
- *
- */
 
+/**
+ * A Bridge class that should simplify the communication between the
+ * GenericMassToFormula instance and the views that are part of the mass to formula calculations.
+ * 
+ * @author administrator_marwin
+ * 
+ */
 public class GenericMassToFormulaBridge {
-	GenericMassToFormulaTool genericMassToFormula =
-			new GenericMassToFormulaTool(DefaultChemObjectBuilder.getInstance());;
-	public void setIsotopeDecider(IsotopeDecider isotopeDecider)
-	{
+
+	GenericMassToFormulaTool genericMassToFormula = new GenericMassToFormulaTool(DefaultChemObjectBuilder.getInstance());;
+
+	public void setIsotopeDecider(IsotopeDecider isotopeDecider) {
+
 		genericMassToFormula.setIsotopeDecider(isotopeDecider);
 	}
-	
-	
-	
+
 	public IMolecularFormulaSet generate(double mass) {
+
 		IMolecularFormulaSet result = genericMassToFormula.generate(mass);
 		return result;
 	}

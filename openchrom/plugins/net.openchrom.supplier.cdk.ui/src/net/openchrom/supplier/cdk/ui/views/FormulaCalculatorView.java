@@ -131,8 +131,7 @@ public class FormulaCalculatorView {
 	private void update(Double ion) {
 
 		if(isPartVisible()) {
-			GenericMassToFormulaBridge massToFormula = 
-					new GenericMassToFormulaBridge();
+			GenericMassToFormulaBridge massToFormula = new GenericMassToFormulaBridge();
 			IMolecularFormulaSet formulas;
 			formulas = massToFormula.generate(ion);
 			List<String> formulaNames;

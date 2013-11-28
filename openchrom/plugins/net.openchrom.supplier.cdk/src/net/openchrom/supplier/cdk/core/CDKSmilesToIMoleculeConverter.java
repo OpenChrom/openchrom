@@ -17,10 +17,12 @@ import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.smiles.SmilesParser;
 
 import net.openchrom.logging.core.Logger;
+
 /**
  * Very useful wrapper class, that converts Smiles Strings to IMolecule instances and also does (a little) exception handling.
+ * 
  * @author administrator_marwin
- *
+ * 
  */
 public class CDKSmilesToIMoleculeConverter implements IStructureGenerator {
 

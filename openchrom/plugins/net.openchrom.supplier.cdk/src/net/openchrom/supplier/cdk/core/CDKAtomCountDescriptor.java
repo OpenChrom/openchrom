@@ -16,8 +16,9 @@ import org.openscience.cdk.qsar.descriptors.molecular.AtomCountDescriptor;
 
 /**
  * Another wrapper for a CDK Descriptor, because they are generally easier to use when wrapped.
+ * 
  * @author administrator_marwin
- *
+ * 
  */
 public class CDKAtomCountDescriptor implements IStructureDescriptor {
 

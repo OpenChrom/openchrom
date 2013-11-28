@@ -15,10 +15,11 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IMolecule;
 
 /**
- * A Class that should later be able to convert IMolecule instances to 
+ * A Class that should later be able to convert IMolecule instances to
  * the Chemfig format. It is currently not working.
+ * 
  * @author administrator_marwin
- *
+ * 
  */
 public class CDKIMoleculeToChemFigConverter implements IStructureGenerator {
 
@@ -32,9 +33,8 @@ public class CDKIMoleculeToChemFigConverter implements IStructureGenerator {
 		return null;
 	}
 	// An example usage:
-	//public static void main(String[] args) {
-
-		//CDKIMoleculeToChemFigConverter converter = new CDKIMoleculeToChemFigConverter();
-		//converter.generate("cccc");
-	//}
+	// public static void main(String[] args) {
+	// CDKIMoleculeToChemFigConverter converter = new CDKIMoleculeToChemFigConverter();
+	// converter.generate("cccc");
+	// }
 }

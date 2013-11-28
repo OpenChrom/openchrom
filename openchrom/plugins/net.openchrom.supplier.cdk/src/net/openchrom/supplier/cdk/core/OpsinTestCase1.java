@@ -14,10 +14,12 @@ package net.openchrom.supplier.cdk.core;
 import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
 import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
 import uk.ac.cam.ch.wwmm.opsin.OpsinResult;
+
 /**
  * Old test class for OPSIN functionality. Not in use anymore.
+ * 
  * @author administrator_marwin
- *
+ * 
  */
 @Deprecated
 public class OpsinTestCase1 {

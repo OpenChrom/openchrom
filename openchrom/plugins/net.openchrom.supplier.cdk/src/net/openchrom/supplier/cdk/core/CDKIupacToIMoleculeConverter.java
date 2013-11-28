@@ -23,13 +23,14 @@ import net.openchrom.logging.core.Logger;
  * Wrapper class for using the iupac functionality of the CDK. It should be noted though, that
  * the OPSIN package provides a more convenient way of parsing iupac names.
  * => use OPSIN when possible.
+ * 
  * @author administrator_marwin
- *
+ * 
  */
-
 public class CDKIupacToIMoleculeConverter implements IStructureGenerator {
 
 	private static final Logger logger = Logger.getLogger(CDKIupacToIMoleculeConverter.class);
+
 	@Override
 	public IMolecule generate(String input) {
 
@@ -37,14 +38,10 @@ public class CDKIupacToIMoleculeConverter implements IStructureGenerator {
 		try {
 			result = NomParser.generate(input);
 		} catch(ParseException e) {
-			logger.warn("NomParser.generate() method encountered a ParseException.\n"
-					+	"While this is not a fatal error, results of the class CDKIupacToIMoleculeConverter "
-					+ " \nand thus from the MoleculePanel could differ from your expectation. "+e);
+			logger.warn("NomParser.generate() method encountered a ParseException.\n" + "While this is not a fatal error, results of the class CDKIupacToIMoleculeConverter " + " \nand thus from the MoleculePanel could differ from your expectation. " + e);
 			return null;
 		} catch(CDKException e) {
-			logger.warn("NomParser.generate() method encountered a CDKException.\n"
-					+	"While this is not a fatal error, results of the class CDKIupacToIMoleculeConverter "
-					+ " \nand thus from the MoleculePanel could differ from your expectation. "+e);
+			logger.warn("NomParser.generate() method encountered a CDKException.\n" + "While this is not a fatal error, results of the class CDKIupacToIMoleculeConverter " + " \nand thus from the MoleculePanel could differ from your expectation. " + e);
 			return null;
 		}
 		return result;
