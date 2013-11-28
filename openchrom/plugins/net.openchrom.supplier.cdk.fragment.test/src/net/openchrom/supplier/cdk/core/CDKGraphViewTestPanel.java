@@ -20,7 +20,7 @@ import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.layout.StructureDiagramGenerator;
 
-import net.openchrom.supplier.cdk.core.customizedRenderer.CDKGraphView;
+import net.openchrom.supplier.cdk.core.renderer.CDKGraphView;
 
 /**
  * Utility Class for the Test class CDKGraphViewTest that implements a subclass for JPanel for displaying purposes.

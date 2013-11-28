@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.massToFormula;
+package net.openchrom.supplier.cdk.core.formula;
 
 /**
  * This class is a modified version of Miguel Rojaschs class "MassToFormulaTool" as it is part
@@ -67,6 +67,7 @@ import org.openscience.cdk.tools.manipulator.MolecularFormulaRangeManipulator;
  * Tool to determine molecular formula consistent with a given accurate mass. The molecular formulas are not validate. It only consist in generate combination according object (see MolecularFormulaChecker). The algorithm is published in Rojas-Cherto M. et.al. {@cdk.cite RojasCherto2011}.
  * 
  * <pre>
+ * 
  * 
  * MassToFormulaTool mf = new MassToFormulaTool();
  * double myMass = 133.004242;

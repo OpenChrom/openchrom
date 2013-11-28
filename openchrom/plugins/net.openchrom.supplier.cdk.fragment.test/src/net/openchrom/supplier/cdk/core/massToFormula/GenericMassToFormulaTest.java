@@ -17,6 +17,8 @@ import org.openscience.cdk.interfaces.IIsotope;
 import org.openscience.cdk.interfaces.IMolecularFormula;
 import org.openscience.cdk.interfaces.IMolecularFormulaSet;
 
+import net.openchrom.supplier.cdk.core.formula.GenericMassToFormulaTool;
+
 /**
  * A class for testing the behaviour of the file GenericMassToFormulaTool.java
  * and the file IsotopeDecider.java, that allow the client to choose what isotopes to

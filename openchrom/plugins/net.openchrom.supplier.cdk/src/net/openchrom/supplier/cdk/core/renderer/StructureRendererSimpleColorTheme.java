@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.customizedRenderer;
+package net.openchrom.supplier.cdk.core.renderer;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

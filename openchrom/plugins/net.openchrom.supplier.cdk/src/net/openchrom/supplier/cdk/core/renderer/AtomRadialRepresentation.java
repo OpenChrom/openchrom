@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.customizedRenderer;
+package net.openchrom.supplier.cdk.core.renderer;
 
 import javax.vecmath.Point3d;
 

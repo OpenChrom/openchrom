@@ -9,13 +9,38 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.customizedRenderer;
+package net.openchrom.supplier.cdk.core.renderer;
+
+import java.awt.Color;
+
+import org.openscience.cdk.interfaces.IAtom;
 
 /**
- * Interface for all objects that can be rendered in 3D.
+ * Utility class for defining AtomColors
  * 
  * @author administrator_marwin
  * 
  */
-public interface I3DRenderable {
+public class AtomToColorMapping {
+
+	Color color;
+	IAtom atom;
+
+	// Only allow to instantiate an AtomToColorMapping
+	// with color and atom attributes!
+	public AtomToColorMapping(IAtom atom, Color color) {
+
+		this.color = color;
+		this.atom = atom;
+	}
+
+	public void setAtom(IAtom atom) {
+
+		this.atom = atom;
+	}
+
+	public void setColor(Color color) {
+
+		this.color = color;
+	}
 }

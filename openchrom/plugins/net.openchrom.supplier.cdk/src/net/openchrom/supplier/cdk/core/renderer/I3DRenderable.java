@@ -9,24 +9,13 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.customizedRenderer;
-
-import java.awt.Graphics2D;
-
-import org.openscience.cdk.interfaces.IMolecule;
+package net.openchrom.supplier.cdk.core.renderer;
 
 /**
- * Interface that all Renderers for Molecules must implement.
- * Has a method checkForCoordinates(), that verifies validity and a method for
- * adding missing coordinates...
- * Contains a method renderStructure(Graphics2D,IMolecule) that does the job.
+ * Interface for all objects that can be rendered in 3D.
  * 
  * @author administrator_marwin
  * 
  */
-public interface IStructureRenderer {
-
-	public void renderStructure(Graphics2D g2d, IMolecule moleculeToRender);
-
-	public boolean checkForCoordinates(IMolecule moleculeToRender);
+public interface I3DRenderable {
 }

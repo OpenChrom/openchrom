@@ -9,38 +9,24 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.customizedRenderer;
+package net.openchrom.supplier.cdk.core.renderer;
 
-import java.awt.Color;
+import java.awt.Graphics2D;
 
-import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IMolecule;
 
 /**
- * Utility class for defining AtomColors
+ * Interface that all Renderers for Molecules must implement.
+ * Has a method checkForCoordinates(), that verifies validity and a method for
+ * adding missing coordinates...
+ * Contains a method renderStructure(Graphics2D,IMolecule) that does the job.
  * 
  * @author administrator_marwin
  * 
  */
-public class AtomToColorMapping {
+public interface IStructureRenderer {
 
-	Color color;
-	IAtom atom;
+	public void renderStructure(Graphics2D g2d, IMolecule moleculeToRender);
 
-	// Only allow to instantiate an AtomToColorMapping
-	// with color and atom attributes!
-	public AtomToColorMapping(IAtom atom, Color color) {
-
-		this.color = color;
-		this.atom = atom;
-	}
-
-	public void setAtom(IAtom atom) {
-
-		this.atom = atom;
-	}
-
-	public void setColor(Color color) {
-
-		this.color = color;
-	}
+	public boolean checkForCoordinates(IMolecule moleculeToRender);
 }

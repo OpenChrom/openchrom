@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.massToFormula;
+package net.openchrom.supplier.cdk.core.formula;
 
 import java.util.ArrayList;
 import java.util.List;
