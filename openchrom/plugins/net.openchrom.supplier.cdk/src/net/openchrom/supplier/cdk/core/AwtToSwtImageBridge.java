@@ -15,7 +15,6 @@ package net.openchrom.supplier.cdk.core;
  * For a list of all SWT example snippets see
  * http://www.eclipse.org/swt/snippets/
  */
-
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
@@ -136,8 +135,6 @@ public class AwtToSwtImageBridge {
 		image.dispose();
 		return data;
 	}
-
-	
 }
 // Eclipse Home
 // Privacy Policy

@@ -30,7 +30,9 @@ import junit.framework.TestCase;
  * 
  */
 public class MoleculeToImageConverter_1_ITest extends TestCase {
+
 	private static final Logger logger = Logger.getLogger(MoleculeToImageConverter_1_ITest.class);
+
 	public void tearDown() throws Exception {
 
 		super.tearDown();
@@ -53,7 +55,7 @@ public class MoleculeToImageConverter_1_ITest extends TestCase {
 					new File(//
 					TestPathHelper.getAbsolutePath(TestPathHelper.TEST_DIRECTORY_EXPORT_PNG) + "TEST.png"));
 		} catch(IOException e) {
-			logger.warn("Some IO Error occured while parsing the molecule " + hexane +"\n And this is because the following error occured:\n" + e);
+			logger.warn("Some IO Error occured while parsing the molecule " + hexane + "\n And this is because the following error occured:\n" + e);
 		}
 	}
 }

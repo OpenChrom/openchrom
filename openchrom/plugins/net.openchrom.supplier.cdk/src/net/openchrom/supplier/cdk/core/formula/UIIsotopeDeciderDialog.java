@@ -59,7 +59,6 @@ public class UIIsotopeDeciderDialog {
 
 				textEdit.setEnabled(true);
 				setManualSelectionMode(true);
-				
 				textEdit.setText("1H, 12C, 13C");
 			}
 
@@ -91,6 +90,4 @@ public class UIIsotopeDeciderDialog {
 
 		this.manualSelectionMode = manualSelectionMode;
 	}
-
-	
 }

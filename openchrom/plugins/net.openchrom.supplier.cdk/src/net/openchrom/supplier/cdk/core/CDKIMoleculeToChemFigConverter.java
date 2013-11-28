@@ -28,5 +28,4 @@ public class CDKIMoleculeToChemFigConverter implements IStructureGenerator {
 		// TODO: to be implemented!
 		return null;
 	}
-	
 }

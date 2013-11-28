@@ -30,7 +30,9 @@ import net.openchrom.logging.core.Logger;
  * 
  */
 public class IsotopeDeciderFactory {
+
 	private static final Logger logger = Logger.getLogger(IsotopeDeciderFactory.class);
+
 	private IsotopeDeciderFactory() {
 
 	};
@@ -69,10 +71,9 @@ public class IsotopeDeciderFactory {
 
 	public IsotopeDecider getIsotopeDeciderFromIsotopeList(List<IIsotope> isotopes) {
 
-		//IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
+		// IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
 		IsotopeDecider isotopeDecider = new IsotopeDecider();
-		
-		//IsotopeFactory ifac = IsotopeFactory.getInstance(builder);
+		// IsotopeFactory ifac = IsotopeFactory.getInstance(builder);
 		List<IIsotope> isotopeSet = new ArrayList<IIsotope>();
 		for(IIsotope toAdd : isotopes) {
 			isotopeSet.add(toAdd);
@@ -90,7 +91,7 @@ public class IsotopeDeciderFactory {
 			ifac = IsotopeFactory.getInstance(builder);
 			result = ifac.getMajorIsotope(nameOfMajorIsotope);
 		} catch(IOException e) {
-			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n"+e);
+			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
 		}
 		return result;
 	}
@@ -104,7 +105,7 @@ public class IsotopeDeciderFactory {
 			ifac = IsotopeFactory.getInstance(builder);
 			result = ifac.getIsotope(str, num);
 		} catch(IOException e) {
-			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n"+e);
+			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
 		}
 		return result;
 	}
@@ -123,7 +124,7 @@ public class IsotopeDeciderFactory {
 			}
 			isotopeDecider.setIsotopeSet(isotopeSet);
 		} catch(IOException e) {
-			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n"+e);
+			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
 		}
 		return isotopeDecider;
 	}
@@ -158,7 +159,7 @@ public class IsotopeDeciderFactory {
 			isotopeSet.add(b);
 			isotopeDecider.setIsotopeSet(isotopeSet);
 		} catch(IOException e) {
-			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n"+e);
+			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
 		}
 		return isotopeDecider;
 	}

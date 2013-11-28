@@ -14,12 +14,13 @@ package net.openchrom.supplier.cdk.core;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.fragment.IFragmenter;
 import org.openscience.cdk.interfaces.IAtomContainer;
-/**
- * Base class for use in ms prediction (not implemented yet). 
- * @author administrator_marwin
- *
- */
 
+/**
+ * Base class for use in ms prediction (not implemented yet).
+ * 
+ * @author administrator_marwin
+ * 
+ */
 public class FullFragmenter implements IFragmenter {
 
 	@Override

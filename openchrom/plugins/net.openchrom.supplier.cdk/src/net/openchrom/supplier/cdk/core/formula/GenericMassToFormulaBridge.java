@@ -28,7 +28,7 @@ import org.openscience.cdk.interfaces.IMolecularFormulaSet;
  * 
  */
 public class GenericMassToFormulaBridge {
-	
+
 	GenericMassToFormulaTool genericMassToFormula = new GenericMassToFormulaTool(DefaultChemObjectBuilder.getInstance());;
 
 	public void setIsotopeDecider(IsotopeDecider isotopeDecider) {

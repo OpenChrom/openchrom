@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2013 Marwin Wollschläger.
- *
+ * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,7 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.supplier.cdk.core;
 
 import java.io.IOException;
@@ -23,16 +23,15 @@ import junit.framework.TestCase;
 
 import net.openchrom.logging.core.Logger;
 
+public class CDKPolarizabilityDescriptor_1_Test extends TestCase {
 
-
-public class CDKPolarizabilityDescriptor_1_Test extends TestCase{
 	CDKPolarizabilityDescriptor desc;
-	
 	private static final Logger logger = Logger.getLogger(CDKPolarizabilityDescriptor_1_Test.class);
-	
+
 	@Override
 	protected void setUp() throws Exception {
-			super.setUp();
+
+		super.setUp();
 	}
 
 	@Override
@@ -44,7 +43,6 @@ public class CDKPolarizabilityDescriptor_1_Test extends TestCase{
 
 	public void testMethod_1() {
 
-		
 		desc = new CDKPolarizabilityDescriptor();
 		IMolecule benz = new CDKSmilesToIMoleculeConverter().generate("c1=cc=cc=c1");
 		IMolecule ethane = new CDKSmilesToIMoleculeConverter().generate("cccccc");
@@ -67,29 +65,19 @@ public class CDKPolarizabilityDescriptor_1_Test extends TestCase{
 			charges.calculateCharges(ethanol);
 			ethanol = (IMolecule)charges.assignMMFF94PartialCharges(ethanol);
 		} catch(CDKException e1) {
-			logger.warn("Something went wrong while assigning the polarizability of the molecule " + ethanol
-					+ "\n This is becaus the following error occured " + e1);
-		}
-		catch(IOException e2){
-			logger.warn("Something went wrong while assigning the polarizability of the molecule " + ethanol
-					+ "\n This is becaus the following error occured " +e2);
-		}
-		catch(CloneNotSupportedException e3){
-			logger.warn("Something went wrong while assigning the polarizability of the molecule " + ethanol
-					+ "\n This is becaus the following error occured " +e3);
-		}
-		catch(Exception e4){
-			logger.warn("Something went wrong while assigning the polarizability of the molecule " + ethanol
-					+ "\n This is becaus the following error occured " +e4);
-			
+			logger.warn("Something went wrong while assigning the polarizability of the molecule " + ethanol + "\n This is becaus the following error occured " + e1);
+		} catch(IOException e2) {
+			logger.warn("Something went wrong while assigning the polarizability of the molecule " + ethanol + "\n This is becaus the following error occured " + e2);
+		} catch(CloneNotSupportedException e3) {
+			logger.warn("Something went wrong while assigning the polarizability of the molecule " + ethanol + "\n This is becaus the following error occured " + e3);
+		} catch(Exception e4) {
+			logger.warn("Something went wrong while assigning the polarizability of the molecule " + ethanol + "\n This is becaus the following error occured " + e4);
 		}
 		// double[]ens = charges.getPaulingElectronegativities(ethanol, true);
-		
 		for(IAtom atom : ethanol.atoms()) {
 			logger.info("Atom has a charge of " + (Double)atom.getProperty("MMFF94charge"));
 			logger.info("Atom " + atom.getSymbol() + " has en of "); // + ens[i] );
 			// System.out.println("The softness of Atom is " + charges.getAtomicSoftnessCore(ethanol, i));
 		}
 	}
-	
 }

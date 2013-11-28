@@ -30,30 +30,34 @@ import net.openchrom.supplier.cdk.core.formula.GenericMassToFormulaTool;
  * @author administrator_marwin
  * 
  */
-public class GenericMassToFormula_1_Test extends TestCase{
+public class GenericMassToFormula_1_Test extends TestCase {
+
 	private static final Logger logger = Logger.getLogger(GenericMassToFormula_1_Test.class);
 	static IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
-	private IMolecularFormulaSet set; 
-	GenericMassToFormulaTool genericMassToFormula; 
+	private IMolecularFormulaSet set;
+	GenericMassToFormulaTool genericMassToFormula;
+
 	@Override
-	protected void setUp()
-	{
+	protected void setUp() {
+
 		genericMassToFormula = new GenericMassToFormulaTool(builder);
 		set = genericMassToFormula.generate(107.957461);
 	}
+
 	@Override
-	protected void tearDown()
-	{
-		genericMassToFormula = null; set = null;
+	protected void tearDown() {
+
+		genericMassToFormula = null;
+		set = null;
 	}
 
-	public void testMethod_1(){
+	public void testMethod_1() {
+
 		for(int i = 0; i < set.size(); i++) {
 			IMolecularFormula formula = set.getMolecularFormula(i);
 			for(IIsotope iso : formula.isotopes()) {
-				logger.info(iso.getSymbol() + formula.getIsotopeCount(iso)+"\n");
+				logger.info(iso.getSymbol() + formula.getIsotopeCount(iso) + "\n");
 			}
-			
 		}
 	}
 }

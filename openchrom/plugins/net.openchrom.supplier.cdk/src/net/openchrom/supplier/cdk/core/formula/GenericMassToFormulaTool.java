@@ -66,6 +66,8 @@ import org.openscience.cdk.tools.manipulator.MolecularFormulaRangeManipulator;
  * <pre>
  * 
  * 
+ * 
+ * 
  * MassToFormulaTool mf = new MassToFormulaTool();
  * double myMass = 133.004242;
  * IMolecularFormulaSet mfSet = mf.generate(myMass);
@@ -80,7 +82,6 @@ import org.openscience.cdk.tools.manipulator.MolecularFormulaRangeManipulator;
  * @cdk.created 2007-03-01
  * @cdk.githash
  */
-
 public class GenericMassToFormulaTool {
 
 	private ILoggingTool logger = LoggingToolFactory.createLoggingTool(GenericMassToFormulaTool.class);
@@ -95,7 +96,7 @@ public class GenericMassToFormulaTool {
 	private List<IRule> rules;
 	private MolecularFormulaRange mfRange;
 	@SuppressWarnings("unused")
-	private Double charge;// Maybe Needed Later ... 
+	private Double charge;// Maybe Needed Later ...
 	private Double tolerance;
 	private IsotopeDecider isotopeDecider = IsotopeDeciderFactory.getInstance().getImportantOrganicIsotopes();
 
@@ -129,7 +130,6 @@ public class GenericMassToFormulaTool {
 	 * @see #setDefaultRestrictions()
 	 * @see IRule
 	 */
-	
 	public void setRestrictions(List<IRule> rulesNew) throws CDKException {
 
 		Iterator<IRule> itRules = rulesNew.iterator();
@@ -185,7 +185,6 @@ public class GenericMassToFormulaTool {
 	 * 
 	 * @see #setDefaultRestrictions()
 	 */
-	
 	public List<IRule> getRestrictions() {
 
 		return this.rules;
@@ -196,7 +195,6 @@ public class GenericMassToFormulaTool {
 	 * 
 	 * @see #getRestrictions()
 	 */
-	
 	public void setDefaultRestrictions() {
 
 		try {
@@ -262,7 +260,6 @@ public class GenericMassToFormulaTool {
 	 *            molecular formula to create from the mass
 	 * @return the filled molecular formulas as IMolecularFormulaSet
 	 */
-	
 	public IMolecularFormulaSet generate(double mass) {
 
 		if(mass <= 0.0) {

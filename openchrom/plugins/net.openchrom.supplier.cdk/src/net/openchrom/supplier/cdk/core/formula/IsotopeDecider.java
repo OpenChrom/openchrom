@@ -32,6 +32,7 @@ import net.openchrom.logging.core.Logger;
  * 
  */
 public class IsotopeDecider {
+
 	private static final Logger logger = Logger.getLogger(IsotopeDecider.class);
 	private List<IIsotope> isotopeSet;
 	private int iterationDepth = 15;
@@ -85,9 +86,7 @@ public class IsotopeDecider {
 		try {
 			ifac = IsotopeFactory.getInstance(builder);
 		} catch(IOException e) {
-			logger.warn("Something when wrong with your Isotope Selection.\n" + 
-					"Maybe you misspelled some of the element symbols? Anyway,\n"+
-					"Something went wrong because of the following error:\n" + e);
+			logger.warn("Something when wrong with your Isotope Selection.\n" + "Maybe you misspelled some of the element symbols? Anyway,\n" + "Something went wrong because of the following error:\n" + e);
 		}
 	}
 
