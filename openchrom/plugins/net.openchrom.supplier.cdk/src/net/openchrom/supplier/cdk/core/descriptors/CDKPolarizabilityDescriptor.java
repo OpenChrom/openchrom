@@ -16,7 +16,7 @@ import org.openscience.cdk.interfaces.IMolecule;
 
 public class CDKPolarizabilityDescriptor implements IStructureDescriptor {
 
-	Polarizability polarizability;
+	private Polarizability polarizability;
 
 	public CDKPolarizabilityDescriptor() {
 
