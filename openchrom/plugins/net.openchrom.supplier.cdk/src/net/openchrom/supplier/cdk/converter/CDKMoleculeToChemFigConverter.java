@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
+ * Dr. Philip Wenig - additional API and implementation
  *******************************************************************************/
 package net.openchrom.supplier.cdk.converter;
 

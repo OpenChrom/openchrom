@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
+ * Dr. Philip Wenig - additional API and implementation
  *******************************************************************************/
 package net.openchrom.supplier.cdk.converter;
 
@@ -18,8 +19,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import org.openscience.cdk.interfaces.IMolecule;
+
 import net.openchrom.supplier.cdk.TestPathHelper;
-import net.openchrom.supplier.cdk.converter.MoleculeToImageConverter;
+import net.openchrom.supplier.cdk.converter.ImageConverter;
 
 import junit.framework.TestCase;
 
@@ -29,14 +32,15 @@ import junit.framework.TestCase;
  * @author administrator_marwin
  * 
  */
-public class MoleculeToImageConverter_1_ITest extends TestCase {
+public class ImageConverter_2_ITest extends TestCase {
 
 	private Image imageHexane;
 
 	public void setUp() throws Exception {
 
 		super.setUp();
-		imageHexane = MoleculeToImageConverter.getInstance().smilesToImage("c1=cc=cc=c1");
+		IMolecule molecule = new CDKSmilesToMoleculeConverter().generate("c1=cc=cc=c1");
+		imageHexane = ImageConverter.getInstance().moleculeToImage(molecule, ImageConverter.DEFAULT_WIDTH, ImageConverter.DEFAULT_HEIGHT);
 	}
 
 	public void tearDown() throws Exception {
@@ -49,7 +53,7 @@ public class MoleculeToImageConverter_1_ITest extends TestCase {
 		assertNotNull(imageHexane);
 	}
 
-	public void testMethod_2() {
+	public void testMethod_4() {
 
 		try {
 			boolean success = ImageIO.write((RenderedImage)imageHexane, "PNG", new File(TestPathHelper.getAbsolutePath(TestPathHelper.TEST_DIRECTORY_EXPORT_PNG) + "TEST.png"));

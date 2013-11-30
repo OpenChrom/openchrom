@@ -12,6 +12,7 @@
 package net.openchrom.supplier.cdk.core;
 
 import net.openchrom.supplier.cdk.TestPathHelper;
+import net.openchrom.supplier.cdk.converter.ImageConverter;
 import net.openchrom.supplier.cdk.core.AWTMolDrawer;
 
 import junit.framework.TestCase;
@@ -25,7 +26,7 @@ public class AWTMolDrawer_1_ITest extends TestCase {
 
 		super.setUp();
 		String imageFile = TestPathHelper.getAbsolutePath(TestPathHelper.TEST_DIRECTORY_EXPORT_PNG) + "TEST.png";
-		awtMolDrawer = new AWTMolDrawer("c1(nnc)cccc1c", imageFile);
+		awtMolDrawer = new AWTMolDrawer("c1(nnc)cccc1c", imageFile, ImageConverter.DEFAULT_WIDTH, ImageConverter.DEFAULT_HEIGHT);
 	}
 
 	@Override
@@ -35,8 +36,8 @@ public class AWTMolDrawer_1_ITest extends TestCase {
 		super.tearDown();
 	}
 
-	public void testMethod_1() {
+	public void testDrawer_1() {
 
-		assertEquals(200, awtMolDrawer.getHeight());
+		assertNotNull(awtMolDrawer);
 	}
 }

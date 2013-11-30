@@ -19,7 +19,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import net.openchrom.logging.core.Logger;
-import net.openchrom.supplier.cdk.converter.MoleculeToImageConverter;
+import net.openchrom.supplier.cdk.converter.ImageConverter;
 
 /**
  * A Simple utility class for converting smile Strings to PNG files,
@@ -33,11 +33,6 @@ import net.openchrom.supplier.cdk.converter.MoleculeToImageConverter;
  */
 public class AWTMolDrawer {
 
-	/*
-	 * Standard width and height of the molecule image
-	 */
-	private int width = 200;
-	private int height = 200;
 	/**
 	 * Generate Molecule out of smilesString and render it.
 	 * 
@@ -45,33 +40,13 @@ public class AWTMolDrawer {
 	 */
 	private static final Logger logger = Logger.getLogger(AWTMolDrawer.class);
 
-	public AWTMolDrawer(String smilesString, String imageFile) {
+	public AWTMolDrawer(String smilesString, String imageFile, int width, int height) {
 
-		Image image = MoleculeToImageConverter.getInstance().smilesToImage(smilesString);
+		Image image = ImageConverter.getInstance().smilesToImage(smilesString, width, height);
 		try {
 			ImageIO.write((RenderedImage)image, "PNG", new File(imageFile));
 		} catch(IOException e) {
 			logger.warn("Some IO Error occured while instantiating AWTMolDrawer object. Here is more information:\n" + e);
 		}
-	}
-
-	public void setWidth(int width) {
-
-		this.width = width;
-	}
-
-	public void setHeight(int height) {
-
-		this.height = height;
-	}
-
-	public int getWidth() {
-
-		return width;
-	}
-
-	public int getHeight() {
-
-		return height;
 	}
 }

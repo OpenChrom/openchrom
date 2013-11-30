@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
+ * Dr. Philip Wenig - additional API and implementation
  *******************************************************************************/
 package net.openchrom.supplier.cdk.converter;
 
@@ -27,16 +28,18 @@ import net.openchrom.logging.core.Logger;
 public class CDKSmilesToMoleculeConverter implements IStructureConverter {
 
 	private static final Logger logger = Logger.getLogger(CDKSmilesToMoleculeConverter.class);
-	private SmilesParser parser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
+	private SmilesParser smilesParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
 
 	@Override
 	public IMolecule generate(String input) {
 
 		IMolecule molecule = null;
-		try {
-			molecule = parser.parseSmiles(input);
-		} catch(InvalidSmilesException e) {
-			logger.warn("Cannot parse input as Smiles String, \n" + "because the following error occured:\n" + e);
+		if(input != null) {
+			try {
+				molecule = smilesParser.parseSmiles(input);
+			} catch(InvalidSmilesException e) {
+				logger.warn("Cannot parse input as Smiles String, \n" + "because the following error occured:\n" + e);
+			}
 		}
 		return molecule;
 	}

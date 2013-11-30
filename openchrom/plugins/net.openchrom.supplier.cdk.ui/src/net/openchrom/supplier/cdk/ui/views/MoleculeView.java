@@ -37,7 +37,7 @@ import org.osgi.service.event.EventHandler;
 
 import net.openchrom.supplier.cdk.converter.CDKSmilesToMoleculeConverter;
 import net.openchrom.supplier.cdk.converter.IStructureConverter;
-import net.openchrom.supplier.cdk.converter.MoleculeToImageConverter;
+import net.openchrom.supplier.cdk.converter.ImageConverter;
 import net.openchrom.supplier.cdk.converter.OPSINIupacToMoleculeConverter;
 import net.openchrom.supplier.cdk.core.AwtToSwtImageBridge;
 import net.openchrom.support.events.IOpenChromEvents;
@@ -68,6 +68,11 @@ public class MoleculeView {
 	private MPart part;
 	private IEventBroker eventBroker;
 	private EventHandler eventHandler;
+	/*
+	 * Image width and height
+	 */
+	int width;
+	int height;
 
 	@Inject
 	public MoleculeView(IEventBroker eventBroker, EventHandler eventHandler) {
@@ -79,28 +84,26 @@ public class MoleculeView {
 
 	private void convertMoleculeToImage() {
 
-		MoleculeToImageConverter moleculeToImageConverter = MoleculeToImageConverter.getInstance();
+		ImageConverter moleculeToImageConverter = ImageConverter.getInstance();
 		// process SMILES input
 		IMolecule molecule = currentStructureGenerator.generate(moleculeString);
 		moleculeImage = //
 		new Image(//
 		parent.getDisplay(),//
 		AwtToSwtImageBridge.convertToSWT(//
-		(BufferedImage)moleculeToImageConverter.moleculeToImage(molecule)));
+		(BufferedImage)moleculeToImageConverter.moleculeToImage(molecule, width, height)));
 	}
 
 	private void makeImage() {
 
 		if(isPartVisible()) {
 			/*
-			 * Create the molecule image.
+			 * Calculate the width and height.
 			 */
-			MoleculeToImageConverter moleculeToImageConverter = MoleculeToImageConverter.getInstance();
-			//
 			if(moleculeComposite.getSize().x != 0)
-				moleculeToImageConverter.setWidth(moleculeComposite.getSize().x);
+				width = moleculeComposite.getSize().x;
 			if(moleculeComposite.getSize().y != 0)
-				moleculeToImageConverter.setHeight(moleculeComposite.getSize().y);
+				height = moleculeComposite.getSize().y;
 			switch(convertModus) {
 				case MODUS_IUPAC:
 					/*
