@@ -54,7 +54,7 @@ public class GenericMassToFormulaBridge {
 			molecularFormulaRange.addIsotope(isotope, 0, 15);
 		}
 		/*
-		 * Set molecular formular range to params object.
+		 * Set molecular formula range to params object.
 		 */
 		Object[] params = new Object[1];
 		params[0] = molecularFormulaRange;

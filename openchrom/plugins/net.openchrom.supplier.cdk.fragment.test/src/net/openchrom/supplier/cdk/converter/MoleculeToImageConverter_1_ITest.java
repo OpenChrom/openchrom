@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core;
+package net.openchrom.supplier.cdk.converter;
 
 import java.awt.Image;
 import java.awt.image.RenderedImage;
@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 
 import net.openchrom.logging.core.Logger;
 import net.openchrom.supplier.cdk.TestPathHelper;
+import net.openchrom.supplier.cdk.converter.MoleculeToImageConverter;
 
 import junit.framework.TestCase;
 

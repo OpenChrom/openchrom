@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core;
+package net.openchrom.supplier.cdk.converter;
 
 import org.openscience.cdk.Molecule;
 import org.openscience.cdk.exception.CDKException;
@@ -27,9 +27,9 @@ import net.openchrom.logging.core.Logger;
  * @author administrator_marwin
  * 
  */
-public class CDKIupacToIMoleculeConverter implements IStructureGenerator {
+public class CDKIupacToMoleculeConverter implements IStructureConverter {
 
-	private static final Logger logger = Logger.getLogger(CDKIupacToIMoleculeConverter.class);
+	private static final Logger logger = Logger.getLogger(CDKIupacToMoleculeConverter.class);
 
 	@Override
 	public IMolecule generate(String input) {

@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core;
+package net.openchrom.supplier.cdk.converter;
 
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.InvalidSmilesException;
@@ -24,10 +24,10 @@ import net.openchrom.logging.core.Logger;
  * @author administrator_marwin
  * 
  */
-public class CDKSmilesToIMoleculeConverter implements IStructureGenerator {
+public class CDKSmilesToMoleculeConverter implements IStructureConverter {
 
-	private static final Logger logger = Logger.getLogger(CDKSmilesToIMoleculeConverter.class);
-	SmilesParser parser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
+	private static final Logger logger = Logger.getLogger(CDKSmilesToMoleculeConverter.class);
+	private SmilesParser parser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
 
 	@Override
 	public IMolecule generate(String input) {

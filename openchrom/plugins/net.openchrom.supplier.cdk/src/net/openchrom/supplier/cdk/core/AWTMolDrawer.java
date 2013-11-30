@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import net.openchrom.logging.core.Logger;
+import net.openchrom.supplier.cdk.converter.MoleculeToImageConverter;
 
 /**
  * A Simple utility class for converting smile Strings to PNG files,

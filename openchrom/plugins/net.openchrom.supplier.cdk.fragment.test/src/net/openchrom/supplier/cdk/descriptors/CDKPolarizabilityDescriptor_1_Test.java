@@ -21,23 +21,23 @@ import org.openscience.cdk.modeling.builder3d.ModelBuilder3D;
 
 import junit.framework.TestCase;
 
-import net.openchrom.supplier.cdk.core.CDKSmilesToIMoleculeConverter;
-import net.openchrom.supplier.cdk.core.OPSINIupacToIMoleculeConverter;
+import net.openchrom.supplier.cdk.converter.CDKSmilesToMoleculeConverter;
+import net.openchrom.supplier.cdk.converter.OPSINIupacToMoleculeConverter;
 import net.openchrom.supplier.cdk.descriptors.CDKPolarizabilityDescriptor;
 
 public class CDKPolarizabilityDescriptor_1_Test extends TestCase {
 
 	private CDKPolarizabilityDescriptor descriptor;
-	private CDKSmilesToIMoleculeConverter smilesToIMoleculeConverter;
-	private OPSINIupacToIMoleculeConverter iupacToIMoleculeConverter;
+	private CDKSmilesToMoleculeConverter smilesToIMoleculeConverter;
+	private OPSINIupacToMoleculeConverter iupacToIMoleculeConverter;
 
 	@Override
 	protected void setUp() throws Exception {
 
 		super.setUp();
 		descriptor = new CDKPolarizabilityDescriptor();
-		smilesToIMoleculeConverter = new CDKSmilesToIMoleculeConverter();
-		iupacToIMoleculeConverter = new OPSINIupacToIMoleculeConverter();
+		smilesToIMoleculeConverter = new CDKSmilesToMoleculeConverter();
+		iupacToIMoleculeConverter = new OPSINIupacToMoleculeConverter();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class CDKPolarizabilityDescriptor_1_Test extends TestCase {
 
 	public void testDescribeMethod_1() {
 
-		IMolecule benz = new CDKSmilesToIMoleculeConverter().generate("c1=cc=cc=c1");
+		IMolecule benz = new CDKSmilesToMoleculeConverter().generate("c1=cc=cc=c1");
 		assertEquals(10.542d, descriptor.describe(benz), 0.0001d);
 	}
 

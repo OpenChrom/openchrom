@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core;
+package net.openchrom.supplier.cdk.converter;
 
 import org.openscience.cdk.interfaces.IMolecule;
 
@@ -20,7 +20,7 @@ import org.openscience.cdk.interfaces.IMolecule;
  * @author administrator_marwin
  * 
  */
-public class CDKIMoleculeToChemFigConverter implements IStructureGenerator {
+public class CDKMoleculeToChemFigConverter implements IStructureConverter {
 
 	@Override
 	public IMolecule generate(String input) {

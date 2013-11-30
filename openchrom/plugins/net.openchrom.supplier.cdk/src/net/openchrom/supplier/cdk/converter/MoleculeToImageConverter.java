@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core;
+package net.openchrom.supplier.cdk.converter;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -61,7 +61,7 @@ public class MoleculeToImageConverter {
 
 		Image image;
 		// Generate smiles
-		molecule = new CDKSmilesToIMoleculeConverter().generate(smilesString);
+		molecule = new CDKSmilesToMoleculeConverter().generate(smilesString);
 		// The draw area and the image should be the same size
 		Rectangle drawArea = new Rectangle(width, height);
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);

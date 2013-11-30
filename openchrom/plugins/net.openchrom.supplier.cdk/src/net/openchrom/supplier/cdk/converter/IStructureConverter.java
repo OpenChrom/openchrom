@@ -9,11 +9,11 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core;
+package net.openchrom.supplier.cdk.converter;
 
 import org.openscience.cdk.interfaces.IMolecule;
 
-public interface IStructureGenerator {
+public interface IStructureConverter {
 
 	IMolecule generate(String input);
 }

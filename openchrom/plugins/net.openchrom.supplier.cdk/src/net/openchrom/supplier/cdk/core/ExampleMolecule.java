@@ -15,6 +15,8 @@ import java.util.Random;
 
 import org.openscience.cdk.interfaces.IMolecule;
 
+import net.openchrom.supplier.cdk.converter.CDKSmilesToMoleculeConverter;
+
 public class ExampleMolecule {
 
 	public static IMolecule getMolecule() {
@@ -33,6 +35,6 @@ public class ExampleMolecule {
 		if(randNumber == 2) {
 			output = "c1ccc1c[cl]";
 		}
-		return new CDKSmilesToIMoleculeConverter().generate(output);
+		return new CDKSmilesToMoleculeConverter().generate(output);
 	}
 }

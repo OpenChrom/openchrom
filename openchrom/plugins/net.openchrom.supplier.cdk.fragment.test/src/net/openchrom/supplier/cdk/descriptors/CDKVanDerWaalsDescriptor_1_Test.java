@@ -17,14 +17,14 @@ import org.openscience.cdk.Atom;
 
 import junit.framework.TestCase;
 
-import net.openchrom.supplier.cdk.core.CDKSmilesToIMoleculeConverter;
-import net.openchrom.supplier.cdk.core.OPSINIupacToIMoleculeConverter;
+import net.openchrom.supplier.cdk.converter.CDKSmilesToMoleculeConverter;
+import net.openchrom.supplier.cdk.converter.OPSINIupacToMoleculeConverter;
 
 public class CDKVanDerWaalsDescriptor_1_Test extends TestCase {
 
 	private CDKVanDerWaalsDescriptor descriptor;
-	private CDKSmilesToIMoleculeConverter smilesToIMoleculeConverter;
-	private OPSINIupacToIMoleculeConverter iupacToIMoleculeConverter;
+	private CDKSmilesToMoleculeConverter smilesToIMoleculeConverter;
+	private OPSINIupacToMoleculeConverter iupacToIMoleculeConverter;
 	private IAtom atom;
 
 	@Override
@@ -32,8 +32,8 @@ public class CDKVanDerWaalsDescriptor_1_Test extends TestCase {
 
 		super.setUp();
 		descriptor = new CDKVanDerWaalsDescriptor();
-		smilesToIMoleculeConverter = new CDKSmilesToIMoleculeConverter();
-		iupacToIMoleculeConverter = new OPSINIupacToIMoleculeConverter();
+		smilesToIMoleculeConverter = new CDKSmilesToMoleculeConverter();
+		iupacToIMoleculeConverter = new OPSINIupacToMoleculeConverter();
 		atom = new Atom("C");
 	}
 
@@ -49,7 +49,7 @@ public class CDKVanDerWaalsDescriptor_1_Test extends TestCase {
 
 	public void testDescribeMethod_1() {
 
-		IMolecule benz = new CDKSmilesToIMoleculeConverter().generate("c1=cc=cc=c1");
+		IMolecule benz = new CDKSmilesToMoleculeConverter().generate("c1=cc=cc=c1");
 		assertEquals(1.7d, descriptor.describe(atom, benz));
 	}
 

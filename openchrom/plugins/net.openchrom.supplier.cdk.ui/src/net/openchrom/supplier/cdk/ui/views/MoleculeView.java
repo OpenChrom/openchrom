@@ -35,13 +35,11 @@ import org.openscience.cdk.interfaces.IMolecule;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
+import net.openchrom.supplier.cdk.converter.CDKSmilesToMoleculeConverter;
+import net.openchrom.supplier.cdk.converter.IStructureConverter;
+import net.openchrom.supplier.cdk.converter.MoleculeToImageConverter;
+import net.openchrom.supplier.cdk.converter.OPSINIupacToMoleculeConverter;
 import net.openchrom.supplier.cdk.core.AwtToSwtImageBridge;
-
-import net.openchrom.supplier.cdk.core.CDKSmilesToIMoleculeConverter;
-import net.openchrom.supplier.cdk.core.IStructureGenerator;
-
-import net.openchrom.supplier.cdk.core.MoleculeToImageConverter;
-import net.openchrom.supplier.cdk.core.OPSINIupacToIMoleculeConverter;
 import net.openchrom.support.events.IOpenChromEvents;
 
 public class MoleculeView {
@@ -52,7 +50,7 @@ public class MoleculeView {
 	// private String moleculeString = "C(C(CO[N+](=O)[O-])O[N+](=O)[O-])O[N+](=O)[O-]";// example molecule for SMILES
 	private String moleculeString = "hexane"; // example molecule for IUPAC
 	private Image moleculeImage = null;
-	private IStructureGenerator currentStructureGenerator = null;
+	private IStructureConverter currentStructureGenerator = null;
 	//
 	// Macro Definitions
 	public static final int MODUS_SMILES = 0;
@@ -108,14 +106,14 @@ public class MoleculeView {
 					/*
 					 * Use IUPAC
 					 */
-					currentStructureGenerator = new OPSINIupacToIMoleculeConverter();
+					currentStructureGenerator = new OPSINIupacToMoleculeConverter();
 					convertMoleculeToImage();
 					break;
 				default:
 					/*
 					 * SMILES is the default
 					 */
-					currentStructureGenerator = new CDKSmilesToIMoleculeConverter();
+					currentStructureGenerator = new CDKSmilesToMoleculeConverter();
 					convertMoleculeToImage();
 					break;
 			}
