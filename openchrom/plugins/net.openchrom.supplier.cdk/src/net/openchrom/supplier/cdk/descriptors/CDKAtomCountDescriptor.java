@@ -21,15 +21,15 @@ import org.openscience.cdk.qsar.descriptors.molecular.AtomCountDescriptor;
  * @author administrator_marwin
  * 
  */
-public class CDKAtomCountDescriptor implements IStructureDescriptor {
+public class CDKAtomCountDescriptor extends AbstractStructureDescriptor implements IStructureDescriptor {
 
 	@Override
-	public String describe(IMolecule molecule) {
+	public double describe(IMolecule molecule) {
 
 		if(molecule == null) {
-			return "";
+			return 0;
 		} else {
+			return Double.valueOf(new AtomCountDescriptor().calculate(molecule).getValue().toString());
 		}
-		return new AtomCountDescriptor().calculate(molecule).getValue().toString();
 	}
 }

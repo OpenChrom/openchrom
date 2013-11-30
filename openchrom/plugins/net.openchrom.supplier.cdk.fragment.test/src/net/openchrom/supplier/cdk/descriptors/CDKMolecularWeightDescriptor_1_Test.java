@@ -46,35 +46,35 @@ public class CDKMolecularWeightDescriptor_1_Test extends TestCase {
 	public void testDescribeMethod_1() {
 
 		IMolecule benz = new CDKSmilesToIMoleculeConverter().generate("c1=cc=cc=c1");
-		assertEquals("78.04695024", descriptor.describe(benz));
+		assertEquals(78.04695024d, descriptor.describe(benz));
 	}
 
 	public void testDescribeMethod_2() {
 
 		IMolecule ethane = smilesToIMoleculeConverter.generate("cccccc");
-		assertEquals("80.06260032", descriptor.describe(ethane));
+		assertEquals(80.06260032d, descriptor.describe(ethane));
 	}
 
 	public void testDescribeMethod_3() {
 
 		IMolecule triFluoroEthane = smilesToIMoleculeConverter.generate("c[F]c");
-		assertEquals("47.02970338", descriptor.describe(triFluoroEthane));
+		assertEquals(47.02970338d, descriptor.describe(triFluoroEthane));
 	}
 
 	public void testDescribeMethod_4() {
 
 		IMolecule bromFluorEthane = iupacToIMoleculeConverter.generate("1,1,2-Tribromo-1,2,2-trifluoroethane");
-		assertEquals("317.75022096", descriptor.describe(bromFluorEthane));
+		assertEquals(317.75022096d, descriptor.describe(bromFluorEthane));
 	}
 
 	public void testDescribeMethod_5() {
 
 		IMolecule ethanol = iupacToIMoleculeConverter.generate("2-chloro-3-fluoro(biphenyl)");
-		assertEquals("206.02985622", descriptor.describe(ethanol));
+		assertEquals(206.02985622d, descriptor.describe(ethanol));
 	}
 
 	public void testDescribeMethod_6() {
 
-		assertEquals("", descriptor.describe(null));
+		assertEquals(0.0d, descriptor.describe(null));
 	}
 }

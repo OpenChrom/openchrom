@@ -46,35 +46,35 @@ public class CDKLongestAliphaticChainDescriptor_1_Test extends TestCase {
 	public void testDescribeMethod_1() {
 
 		IMolecule benz = new CDKSmilesToIMoleculeConverter().generate("c1=cc=cc=c1");
-		assertEquals("0", descriptor.describe(benz));
+		assertEquals(0.0d, descriptor.describe(benz));
 	}
 
 	public void testDescribeMethod_2() {
 
 		IMolecule ethane = smilesToIMoleculeConverter.generate("cccccc");
-		assertEquals("6", descriptor.describe(ethane));
+		assertEquals(6.0d, descriptor.describe(ethane));
 	}
 
 	public void testDescribeMethod_3() {
 
 		IMolecule triFluoroEthane = smilesToIMoleculeConverter.generate("c[F]c");
-		assertEquals("0", descriptor.describe(triFluoroEthane));
+		assertEquals(0.0d, descriptor.describe(triFluoroEthane));
 	}
 
 	public void testDescribeMethod_4() {
 
 		IMolecule bromFluorEthane = iupacToIMoleculeConverter.generate("1,1,2-Tribromo-1,2,2-trifluoroethane");
-		assertEquals("2", descriptor.describe(bromFluorEthane));
+		assertEquals(2.0d, descriptor.describe(bromFluorEthane));
 	}
 
 	public void testDescribeMethod_5() {
 
 		IMolecule ethanol = iupacToIMoleculeConverter.generate("2-chloro-3-fluoro(biphenyl)");
-		assertEquals("0", descriptor.describe(ethanol));
+		assertEquals(0.0d, descriptor.describe(ethanol));
 	}
 
 	public void testDescribeMethod_6() {
 
-		assertEquals("", descriptor.describe(null));
+		assertEquals(0.0d, descriptor.describe(null));
 	}
 }

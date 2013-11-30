@@ -11,9 +11,12 @@
  *******************************************************************************/
 package net.openchrom.supplier.cdk.descriptors;
 
+import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IMolecule;
 
 public interface IStructureDescriptor {
 
-	String describe(IMolecule molecule);
+	double describe(IMolecule molecule);
+
+	double describe(IAtom atom, IMolecule molecule);
 }

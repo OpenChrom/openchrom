@@ -14,7 +14,7 @@ package net.openchrom.supplier.cdk.descriptors;
 import org.openscience.cdk.charges.Polarizability;
 import org.openscience.cdk.interfaces.IMolecule;
 
-public class CDKPolarizabilityDescriptor implements IStructureDescriptor {
+public class CDKPolarizabilityDescriptor extends AbstractStructureDescriptor implements IStructureDescriptor {
 
 	private Polarizability polarizability;
 
@@ -24,12 +24,12 @@ public class CDKPolarizabilityDescriptor implements IStructureDescriptor {
 	}
 
 	@Override
-	public String describe(IMolecule molecule) {
+	public double describe(IMolecule molecule) {
 
 		if(molecule == null) {
-			return "";
+			return 0;
 		} else {
-			return Double.valueOf(polarizability.calculateKJMeanMolecularPolarizability(molecule)).toString();
+			return Double.valueOf(polarizability.calculateKJMeanMolecularPolarizability(molecule));
 		}
 	}
 }

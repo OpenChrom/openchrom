@@ -26,10 +26,11 @@ import net.openchrom.logging.core.Logger;
  * @author administrator_marwin
  * 
  */
-public class CDKVanDerWaalsDescriptor {
+public class CDKVanDerWaalsDescriptor extends AbstractStructureDescriptor implements IStructureDescriptor {
 
 	private static final Logger logger = Logger.getLogger(CDKVanDerWaalsDescriptor.class);
 
+	@Override
 	public double describe(IAtom atom, IMolecule molecule) {
 
 		double value = 1.0;

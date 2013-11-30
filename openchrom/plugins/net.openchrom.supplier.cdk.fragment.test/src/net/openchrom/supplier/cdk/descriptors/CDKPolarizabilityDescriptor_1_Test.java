@@ -52,36 +52,36 @@ public class CDKPolarizabilityDescriptor_1_Test extends TestCase {
 	public void testDescribeMethod_1() {
 
 		IMolecule benz = new CDKSmilesToIMoleculeConverter().generate("c1=cc=cc=c1");
-		assertEquals("10.542000000000003", descriptor.describe(benz));
+		assertEquals(10.542d, descriptor.describe(benz), 0.0001d);
 	}
 
 	public void testDescribeMethod_2() {
 
 		IMolecule ethane = smilesToIMoleculeConverter.generate("cccccc");
-		assertEquals("9.480000000000004", descriptor.describe(ethane));
+		assertEquals(9.48d, descriptor.describe(ethane), 0.0001d);
 	}
 
 	public void testDescribeMethod_3() {
 
 		IMolecule triFluoroEthane = smilesToIMoleculeConverter.generate("c[F]c");
-		assertEquals("2.4240000000000004", descriptor.describe(triFluoroEthane));
+		assertEquals(2.424d, descriptor.describe(triFluoroEthane), 0.0001d);
 	}
 
 	public void testDescribeMethod_4() {
 
 		IMolecule bromFluorEthane = iupacToIMoleculeConverter.generate("1,1,2-Tribromo-1,2,2-trifluoroethane");
-		assertEquals("13.516", descriptor.describe(bromFluorEthane));
+		assertEquals(13.516d, descriptor.describe(bromFluorEthane), 0.0001d);
 	}
 
 	public void testDescribeMethod_5() {
 
 		IMolecule ethanol = iupacToIMoleculeConverter.generate("2-chloro-3-fluoro(biphenyl)");
-		assertEquals("22.223000000000006", descriptor.describe(ethanol));
+		assertEquals(22.223d, descriptor.describe(ethanol), 0.0001d);
 	}
 
 	public void testDescribeMethod_6() {
 
-		assertEquals("", descriptor.describe(null));
+		assertEquals(0.0d, descriptor.describe(null));
 	}
 
 	public void testDescribeMethod_7() {

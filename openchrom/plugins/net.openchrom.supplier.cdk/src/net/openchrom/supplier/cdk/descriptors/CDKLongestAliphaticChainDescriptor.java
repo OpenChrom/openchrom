@@ -21,16 +21,16 @@ import org.openscience.cdk.qsar.descriptors.molecular.LongestAliphaticChainDescr
  * @author administrator_marwin
  * 
  */
-public class CDKLongestAliphaticChainDescriptor implements IStructureDescriptor {
+public class CDKLongestAliphaticChainDescriptor extends AbstractStructureDescriptor implements IStructureDescriptor {
 
 	@Override
-	public String describe(IMolecule molecule) {
+	public double describe(IMolecule molecule) {
 
 		if(molecule == null) {
-			return "";
+			return 0;
 		} else {
+			LongestAliphaticChainDescriptor chainDescriptor = new LongestAliphaticChainDescriptor();
+			return Double.valueOf(chainDescriptor.calculate(molecule).getValue().toString());
 		}
-		LongestAliphaticChainDescriptor chainDescriptor = new LongestAliphaticChainDescriptor();
-		return chainDescriptor.calculate(molecule).getValue().toString();
 	}
 }
