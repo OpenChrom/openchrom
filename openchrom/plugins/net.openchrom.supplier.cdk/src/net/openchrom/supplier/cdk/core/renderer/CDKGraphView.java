@@ -34,7 +34,7 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
 import org.openscience.cdk.interfaces.IMolecule;
 
-import net.openchrom.supplier.cdk.core.CDKVanDerWaalsDescriptor;
+import net.openchrom.supplier.cdk.core.descriptors.CDKVanDerWaalsDescriptor;
 
 public class CDKGraphView implements IStructureRenderer {
 

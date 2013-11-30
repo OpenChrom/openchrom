@@ -46,7 +46,6 @@ public class AWTMolDrawer {
 
 	public AWTMolDrawer(String smilesString, String imageFile) {
 
-		// OpenChromSettings.getSettingsDirectory().getAbsolutePath() + File.separator + "net.openchrom.supplier.cdk" + File.separator + "aTestMolecule.png";
 		Image image = MoleculeToImageConverter.getInstance().smilesToImage(smilesString);
 		try {
 			ImageIO.write((RenderedImage)image, "PNG", new File(imageFile));

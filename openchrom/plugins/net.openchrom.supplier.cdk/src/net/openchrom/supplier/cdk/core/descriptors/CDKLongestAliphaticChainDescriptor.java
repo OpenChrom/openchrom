@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core;
+package net.openchrom.supplier.cdk.core.descriptors;
 
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.qsar.descriptors.molecular.LongestAliphaticChainDescriptor;
@@ -20,8 +20,9 @@ import org.openscience.cdk.qsar.descriptors.molecular.LongestAliphaticChainDescr
  * @author administrator_marwin
  * 
  */
-public class CDKLongestAliphaticChainDescriptor {
+public class CDKLongestAliphaticChainDescriptor implements IStructureDescriptor {
 
+	@Override
 	public String describe(IMolecule molecule) {
 
 		LongestAliphaticChainDescriptor desc = new LongestAliphaticChainDescriptor();

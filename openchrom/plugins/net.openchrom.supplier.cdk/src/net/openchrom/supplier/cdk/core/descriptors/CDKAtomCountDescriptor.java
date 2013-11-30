@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core;
+package net.openchrom.supplier.cdk.core.descriptors;
 
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.qsar.descriptors.molecular.AtomCountDescriptor;

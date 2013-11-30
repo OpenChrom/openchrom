@@ -9,24 +9,21 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core;
+package net.openchrom.supplier.cdk.core.descriptors;
 
-import org.openscience.cdk.charges.Polarizability;
 import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.qsar.descriptors.molecular.WeightDescriptor;
 
-public class CDKPolarizabilityDescriptor implements IStructureDescriptor {
-
-	Polarizability polarizability;
-
-	public CDKPolarizabilityDescriptor() {
-
-		polarizability = new Polarizability();
-	}
+public class CDKMolecularWeightDescriptor implements IStructureDescriptor {
 
 	@Override
 	public String describe(IMolecule molecule) {
 
-		double result = polarizability.calculateKJMeanMolecularPolarizability(molecule);
-		return "" + result;
+		if(molecule == null)
+			return null;
+		double mass = 0.0;
+		WeightDescriptor weightDescriptor = new WeightDescriptor();
+		mass = Double.parseDouble(weightDescriptor.calculate(molecule).getValue().toString());
+		return "" + mass;
 	}
 }
