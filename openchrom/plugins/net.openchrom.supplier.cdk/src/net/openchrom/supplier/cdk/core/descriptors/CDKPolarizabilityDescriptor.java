@@ -26,7 +26,6 @@ public class CDKPolarizabilityDescriptor implements IStructureDescriptor {
 	@Override
 	public String describe(IMolecule molecule) {
 
-		double result = polarizability.calculateKJMeanMolecularPolarizability(molecule);
-		return "" + result;
+		return Double.valueOf(polarizability.calculateKJMeanMolecularPolarizability(molecule)).toString();
 	}
 }
