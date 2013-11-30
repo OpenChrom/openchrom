@@ -18,7 +18,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import net.openchrom.logging.core.Logger;
 import net.openchrom.supplier.cdk.TestPathHelper;
 import net.openchrom.supplier.cdk.converter.MoleculeToImageConverter;
 
@@ -32,31 +31,31 @@ import junit.framework.TestCase;
  */
 public class MoleculeToImageConverter_1_ITest extends TestCase {
 
-	private static final Logger logger = Logger.getLogger(MoleculeToImageConverter_1_ITest.class);
+	private Image imageHexane;
+
+	public void setUp() throws Exception {
+
+		super.setUp();
+		imageHexane = MoleculeToImageConverter.getInstance().smilesToImage("c1=cc=cc=c1");
+	}
 
 	public void tearDown() throws Exception {
 
 		super.tearDown();
 	}
 
-	public void setUp() throws Exception {
-
-		super.setUp();
-		testMethod_1();
-	}
-
-	//
 	public void testMethod_1() {
 
-		String smiles = "c1=cc=cc=c1";
-		Image hexane = MoleculeToImageConverter.getInstance().smilesToImage(smiles);
+		assertNotNull(imageHexane);
+	}
+
+	public void testMethod_2() {
+
 		try {
-			ImageIO.write(//
-			(RenderedImage)hexane, "PNG",//
-					new File(//
-					TestPathHelper.getAbsolutePath(TestPathHelper.TEST_DIRECTORY_EXPORT_PNG) + "TEST.png"));
+			boolean success = ImageIO.write((RenderedImage)imageHexane, "PNG", new File(TestPathHelper.getAbsolutePath(TestPathHelper.TEST_DIRECTORY_EXPORT_PNG) + "TEST.png"));
+			assertTrue(success);
 		} catch(IOException e) {
-			logger.warn("Some IO Error occured while parsing the molecule " + hexane + "\n And this is because the following error occured:\n" + e);
+			assertTrue(false);
 		}
 	}
 }

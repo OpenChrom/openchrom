@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.supplier.cdk.converter;
 
-import org.openscience.cdk.Molecule;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.iupac.parser.NomParser;
@@ -34,15 +33,17 @@ public class CDKIupacToMoleculeConverter implements IStructureConverter {
 	@Override
 	public IMolecule generate(String input) {
 
-		IMolecule result = new Molecule();
-		try {
-			result = NomParser.generate(input);
-		} catch(ParseException e) {
-			logger.warn("NomParser.generate() method encountered a ParseException.\n" + "While this is not a fatal error, results of the class CDKIupacToIMoleculeConverter " + " \nand thus from the MoleculePanel could differ from your expectation. " + e);
-			return null;
-		} catch(CDKException e) {
-			logger.warn("NomParser.generate() method encountered a CDKException.\n" + "While this is not a fatal error, results of the class CDKIupacToIMoleculeConverter " + " \nand thus from the MoleculePanel could differ from your expectation. " + e);
-			return null;
+		IMolecule result = null;
+		if(input != null) {
+			try {
+				result = NomParser.generate(input);
+			} catch(ParseException e) {
+				logger.warn("NomParser.generate() method encountered a ParseException.\n" + "While this is not a fatal error, results of the class CDKIupacToIMoleculeConverter " + " \nand thus from the MoleculePanel could differ from your expectation. " + e);
+				return null;
+			} catch(CDKException e) {
+				logger.warn("NomParser.generate() method encountered a CDKException.\n" + "While this is not a fatal error, results of the class CDKIupacToIMoleculeConverter " + " \nand thus from the MoleculePanel could differ from your expectation. " + e);
+				return null;
+			}
 		}
 		return result;
 	}

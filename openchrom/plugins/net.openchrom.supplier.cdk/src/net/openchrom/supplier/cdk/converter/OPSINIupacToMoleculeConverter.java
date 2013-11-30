@@ -24,10 +24,14 @@ public class OPSINIupacToMoleculeConverter implements IStructureConverter {
 	@Override
 	public IMolecule generate(String input) {
 
-		NameToStructure nameStructure = NameToStructure.getInstance();
-		NameToStructureConfig nameStructureConfig = new NameToStructureConfig();
-		nameStructureConfig.setAllowRadicals(true);
-		OpsinResult result = nameStructure.parseChemicalName(input, nameStructureConfig);
-		return smilesToIMolecule.generate(result.getSmiles());
+		IMolecule molecule = null;
+		if(input != null) {
+			NameToStructure nameStructure = NameToStructure.getInstance();
+			NameToStructureConfig nameStructureConfig = new NameToStructureConfig();
+			nameStructureConfig.setAllowRadicals(true);
+			OpsinResult result = nameStructure.parseChemicalName(input, nameStructureConfig);
+			molecule = smilesToIMolecule.generate(result.getSmiles());
+		}
+		return molecule;
 	}
 }

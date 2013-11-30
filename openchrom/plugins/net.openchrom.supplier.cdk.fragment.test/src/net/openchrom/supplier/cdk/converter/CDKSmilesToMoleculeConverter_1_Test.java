@@ -15,15 +15,15 @@ import org.openscience.cdk.interfaces.IMolecule;
 
 import junit.framework.TestCase;
 
-public class OPSINIupacToIMoleculeConverter_1_Test extends TestCase {
+public class CDKSmilesToMoleculeConverter_1_Test extends TestCase {
 
-	private OPSINIupacToMoleculeConverter converter;
+	private CDKSmilesToMoleculeConverter converter;
 
 	@Override
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		converter = new OPSINIupacToMoleculeConverter();
+		converter = new CDKSmilesToMoleculeConverter();
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class OPSINIupacToIMoleculeConverter_1_Test extends TestCase {
 
 	public void testMethod_1() {
 
-		IMolecule molecule = converter.generate("tri -(1-chlorophenyl) ethane");
+		IMolecule molecule = converter.generate("c1=cc=cc=c1");
 		assertNotNull(molecule);
 	}
 
