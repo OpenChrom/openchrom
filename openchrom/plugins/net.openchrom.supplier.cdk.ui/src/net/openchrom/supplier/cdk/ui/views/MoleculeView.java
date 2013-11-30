@@ -69,10 +69,10 @@ public class MoleculeView {
 	private IEventBroker eventBroker;
 	private EventHandler eventHandler;
 	/*
-	 * Image width and height
+	 * Default image width and height
 	 */
-	int width;
-	int height;
+	int width = ImageConverter.DEFAULT_WIDTH;
+	int height = ImageConverter.DEFAULT_HEIGHT;
 
 	@Inject
 	public MoleculeView(IEventBroker eventBroker, EventHandler eventHandler) {
