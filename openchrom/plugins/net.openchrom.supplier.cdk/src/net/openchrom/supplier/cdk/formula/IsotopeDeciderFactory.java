@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.formula;
+package net.openchrom.supplier.cdk.formula;
 
 import java.io.IOException;
 import java.util.ArrayList;

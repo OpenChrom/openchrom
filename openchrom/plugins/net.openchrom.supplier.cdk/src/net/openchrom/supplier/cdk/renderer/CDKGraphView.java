@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.renderer;
+package net.openchrom.supplier.cdk.renderer;
 
 /**
  * Class that gives an alternative implementation for rendering molecular structures.
@@ -34,7 +34,7 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
 import org.openscience.cdk.interfaces.IMolecule;
 
-import net.openchrom.supplier.cdk.core.descriptors.CDKVanDerWaalsDescriptor;
+import net.openchrom.supplier.cdk.descriptors.CDKVanDerWaalsDescriptor;
 
 public class CDKGraphView implements IStructureRenderer {
 

@@ -8,12 +8,23 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
+ * Dr. Philip Wenig - minor improvements
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.descriptors;
+package net.openchrom.supplier.cdk.descriptors;
 
 import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.qsar.descriptors.molecular.WeightDescriptor;
 
-public interface IStructureDescriptor {
+public class CDKMolecularWeightDescriptor implements IStructureDescriptor {
 
-	String describe(IMolecule molecule);
+	@Override
+	public String describe(IMolecule molecule) {
+
+		if(molecule == null) {
+			return "";
+		} else {
+			WeightDescriptor weightDescriptor = new WeightDescriptor();
+			return weightDescriptor.calculate(molecule).getValue().toString();
+		}
+	}
 }

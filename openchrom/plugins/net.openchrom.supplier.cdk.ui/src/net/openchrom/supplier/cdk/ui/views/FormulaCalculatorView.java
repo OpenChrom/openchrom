@@ -44,7 +44,7 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 import net.openchrom.logging.core.Logger;
-import net.openchrom.supplier.cdk.core.formula.GenericMassToFormulaBridge;
+import net.openchrom.supplier.cdk.formula.GenericMassToFormulaBridge;
 import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListContentProvider;
 import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListLabelProvider;
 import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListTableSorter;

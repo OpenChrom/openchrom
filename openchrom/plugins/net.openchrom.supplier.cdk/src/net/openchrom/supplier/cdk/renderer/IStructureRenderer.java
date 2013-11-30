@@ -9,23 +9,24 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.descriptors;
+package net.openchrom.supplier.cdk.renderer;
+
+import java.awt.Graphics2D;
 
 import org.openscience.cdk.interfaces.IMolecule;
-import org.openscience.cdk.qsar.descriptors.molecular.LongestAliphaticChainDescriptor;
 
 /**
- * Another wrapper for a CDK Descriptor class.
+ * Interface that all Renderers for Molecules must implement.
+ * Has a method checkForCoordinates(), that verifies validity and a method for
+ * adding missing coordinates...
+ * Contains a method renderStructure(Graphics2D,IMolecule) that does the job.
  * 
  * @author administrator_marwin
  * 
  */
-public class CDKLongestAliphaticChainDescriptor implements IStructureDescriptor {
+public interface IStructureRenderer {
 
-	@Override
-	public String describe(IMolecule molecule) {
+	public void renderStructure(Graphics2D g2d, IMolecule moleculeToRender);
 
-		LongestAliphaticChainDescriptor desc = new LongestAliphaticChainDescriptor();
-		return "" + desc.calculate(molecule).getValue();
-	}
+	public boolean checkForCoordinates(IMolecule moleculeToRender);
 }

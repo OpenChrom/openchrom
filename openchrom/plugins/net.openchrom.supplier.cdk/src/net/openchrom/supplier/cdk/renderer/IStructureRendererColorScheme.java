@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.renderer;
+package net.openchrom.supplier.cdk.renderer;
 
 /**
  * Interface that makes use of AtomToColorMap but also defines a default color for rendering.

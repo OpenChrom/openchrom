@@ -8,24 +8,28 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
+ * Dr. Philip Wenig - minor improvements
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.descriptors;
+package net.openchrom.supplier.cdk.descriptors;
 
-import org.openscience.cdk.charges.Polarizability;
 import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.qsar.descriptors.molecular.AtomCountDescriptor;
 
-public class CDKPolarizabilityDescriptor implements IStructureDescriptor {
-
-	private Polarizability polarizability;
-
-	public CDKPolarizabilityDescriptor() {
-
-		polarizability = new Polarizability();
-	}
+/**
+ * Another wrapper for a CDK Descriptor, because they are generally easier to use when wrapped.
+ * 
+ * @author administrator_marwin
+ * 
+ */
+public class CDKAtomCountDescriptor implements IStructureDescriptor {
 
 	@Override
 	public String describe(IMolecule molecule) {
 
-		return Double.valueOf(polarizability.calculateKJMeanMolecularPolarizability(molecule)).toString();
+		if(molecule == null) {
+			return "";
+		} else {
+		}
+		return new AtomCountDescriptor().calculate(molecule).getValue().toString();
 	}
 }

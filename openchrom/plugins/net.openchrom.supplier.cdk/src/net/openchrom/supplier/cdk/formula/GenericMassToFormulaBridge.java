@@ -10,7 +10,7 @@
  * Marwin Wollschläger - initial API and implementation
  * Dr. Philip Wenig - additional implementations
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.formula;
+package net.openchrom.supplier.cdk.formula;
 
 import java.util.ArrayList;
 import java.util.List;

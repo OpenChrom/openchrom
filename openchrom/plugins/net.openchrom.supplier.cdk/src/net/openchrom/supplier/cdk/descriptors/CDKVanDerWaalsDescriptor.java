@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.supplier.cdk.core.descriptors;
+package net.openchrom.supplier.cdk.descriptors;
 
 import java.io.IOException;
 
@@ -32,15 +32,17 @@ public class CDKVanDerWaalsDescriptor {
 
 	public double describe(IAtom atom, IMolecule molecule) {
 
-		double val = 1.0;
-		try {
-			VdWRadiusDescriptor desc = new VdWRadiusDescriptor();
-			val = Double.parseDouble(desc.calculate(atom, molecule).getValue().toString());
-		} catch(IOException e) {
-			logger.warn("IOException while trying to describe Van Der Waals radius of molecule instance " + molecule + ". This Error is probably not harmful though.\n But check whether your input Atoms make sense!" + "   Here is more information about the IOException:\n" + e);
-		} catch(ClassNotFoundException e) {
-			logger.warn(e);
+		double value = 1.0;
+		if(atom != null && molecule != null) {
+			try {
+				VdWRadiusDescriptor radiusDescriptor = new VdWRadiusDescriptor();
+				value = Double.parseDouble(radiusDescriptor.calculate(atom, molecule).getValue().toString());
+			} catch(IOException e) {
+				logger.warn("IOException while trying to describe Van Der Waals radius of molecule instance " + molecule + ". This Error is probably not harmful though.\n But check whether your input Atoms make sense!" + "   Here is more information about the IOException:\n" + e);
+			} catch(ClassNotFoundException e) {
+				logger.warn(e);
+			}
 		}
-		return val;
+		return value;
 	}
 }
