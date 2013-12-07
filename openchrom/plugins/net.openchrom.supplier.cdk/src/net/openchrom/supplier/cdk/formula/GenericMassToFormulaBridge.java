@@ -52,12 +52,10 @@ public class GenericMassToFormulaBridge {
 
 		/*
 		 * Set molecular formula range to params object.
+		 * And create a new rule and set restrictions.
 		 */
 		Object[] params = new Object[1];
 		params[0] = isotopeDecider.getMolecularFormulaRange();
-		/*
-		 * Create a new rule and set restrictions.
-		 */
 		List<IRule> rulesNew = new ArrayList<IRule>();
 		IRule rule = new ElementRule();
 		try {
@@ -71,8 +69,7 @@ public class GenericMassToFormulaBridge {
 
 	public IMolecularFormulaSet generate(double mass) {
 
-		IMolecularFormulaSet result = massToFormula.generate(mass);
-		return result;
+		return massToFormula.generate(mass);
 	}
 
 	/**

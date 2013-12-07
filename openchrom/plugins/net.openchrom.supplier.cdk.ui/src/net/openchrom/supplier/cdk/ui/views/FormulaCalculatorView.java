@@ -131,9 +131,10 @@ public class FormulaCalculatorView {
 		if(isPartVisible()) {
 			/*
 			 * Generate formulas.
+			 * The user defined isotope decider will be set dynamically.
 			 */
 			GenericMassToFormulaBridge massToFormulaBridge = new GenericMassToFormulaBridge();
-			massToFormulaBridge.setIsotopeDecider(ChemistryPreferences.getIsotopeDecider()); // Get the user defined isotope decider.
+			massToFormulaBridge.setIsotopeDecider(ChemistryPreferences.getIsotopeDecider());
 			IMolecularFormulaSet formulas = massToFormulaBridge.generate(ion);
 			List<String> formulaNames = new ArrayList<String>();
 			if(formulas != null) {

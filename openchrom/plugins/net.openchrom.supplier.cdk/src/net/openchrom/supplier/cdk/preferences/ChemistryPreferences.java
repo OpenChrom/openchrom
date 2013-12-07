@@ -11,11 +11,15 @@
  *******************************************************************************/
 package net.openchrom.supplier.cdk.preferences;
 
+import java.util.Set;
+
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.openscience.cdk.interfaces.IIsotope;
 import org.osgi.service.prefs.Preferences;
 
 import net.openchrom.supplier.cdk.formula.IsotopeDecider;
 import net.openchrom.supplier.cdk.formula.IsotopeDeciderFactory;
+import net.openchrom.supplier.cdk.formula.IsotopeParser;
 
 public class ChemistryPreferences {
 
@@ -41,8 +45,9 @@ public class ChemistryPreferences {
 				isotopeDecider = IsotopeDeciderFactory.getInstance().getImportantOrganicIsotopes();
 				break;
 			case USER_DEFINED:
-				String isotopes = preferences.get(P_USER_DEFINED_ISOTOPES, DEF_USER_DEFINED_ISOTOPES);
-				isotopeDecider = IsotopeDeciderFactory.getInstance().getBasicIsotopes();
+				IsotopeParser isotopeParser = new IsotopeParser();
+				Set<IIsotope> isotopes = isotopeParser.extract(preferences.get(P_USER_DEFINED_ISOTOPES, DEF_USER_DEFINED_ISOTOPES));
+				isotopeDecider = IsotopeDeciderFactory.getInstance().getIsotopeDeciderFromIsotopeSet(isotopes);
 				break;
 			default: // BASIC
 				isotopeDecider = IsotopeDeciderFactory.getInstance().getBasicIsotopes();

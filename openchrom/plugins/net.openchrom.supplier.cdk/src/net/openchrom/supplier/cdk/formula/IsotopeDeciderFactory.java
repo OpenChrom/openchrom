@@ -101,7 +101,7 @@ public class IsotopeDeciderFactory {
 		return isotopeDecider;
 	}
 
-	public IsotopeDecider getIsotopeDeciderFromIsotopeList(List<IIsotope> isotopes) {
+	public IsotopeDecider getIsotopeDeciderFromIsotopeSet(Set<IIsotope> isotopes) {
 
 		IsotopeDecider isotopeDecider = new IsotopeDecider();
 		List<IIsotope> isotopeSet = new ArrayList<IIsotope>();
@@ -112,28 +112,28 @@ public class IsotopeDeciderFactory {
 		return isotopeDecider;
 	}
 
-	public IIsotope getMajorIsotopeFromString(String nameOfMajorIsotope) {
+	public IIsotope getIsotope(String elementSymbol) {
 
 		IChemObjectBuilder chemObjectBuilder = DefaultChemObjectBuilder.getInstance();
 		IsotopeFactory isotopeFactory;
 		IIsotope result = null;
 		try {
 			isotopeFactory = IsotopeFactory.getInstance(chemObjectBuilder);
-			result = isotopeFactory.getMajorIsotope(nameOfMajorIsotope);
+			result = isotopeFactory.getMajorIsotope(elementSymbol);
 		} catch(IOException e) {
 			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
 		}
 		return result;
 	}
 
-	public IIsotope getIIsotopeFromStringAndInteger(String str, int num) {
+	public IIsotope getIsotope(String elementSymbol, int massNumber) {
 
 		IChemObjectBuilder chemObjectBuilder = DefaultChemObjectBuilder.getInstance();
 		IsotopeFactory isotopeFactory;
 		IIsotope result = null;
 		try {
 			isotopeFactory = IsotopeFactory.getInstance(chemObjectBuilder);
-			result = isotopeFactory.getIsotope(str, num);
+			result = isotopeFactory.getIsotope(elementSymbol, massNumber);
 		} catch(IOException e) {
 			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
 		}

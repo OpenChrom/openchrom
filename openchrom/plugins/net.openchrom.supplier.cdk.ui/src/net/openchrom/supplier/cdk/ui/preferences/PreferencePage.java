@@ -37,7 +37,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 */
 	public void createFieldEditors() {
 
-		addField(new RadioGroupFieldEditor(ChemistryPreferences.DEF_ISOTOPE_SET, "Select an isotope set.", 1, ChemistryPreferences.getIsotopePreferenceOptions(), getFieldEditorParent()));
+		addField(new RadioGroupFieldEditor(ChemistryPreferences.P_ISOTOPE_SET, "Select an isotope set.", 1, ChemistryPreferences.getIsotopePreferenceOptions(), getFieldEditorParent()));
 		IntegerFieldEditor iterationDepthFieldEditor = new IntegerFieldEditor(ChemistryPreferences.P_ISOTOPE_ITERATION_DEPTH, "Set the isotope iteration depth.", getFieldEditorParent());
 		iterationDepthFieldEditor.setValidRange(0, 50);
 		addField(iterationDepthFieldEditor);
