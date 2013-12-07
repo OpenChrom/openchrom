@@ -47,15 +47,18 @@
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_k_v0YEuVEeO05Zmz9AbMeQ" featurename="commands" parentElementId="net.openchrom.rcp.ide.application">
     <elements xsi:type="commands:Command" xmi:id="_X6kCoEucEeObU4sRRHzsFQ" elementId="net.openchrom.supplier.cdk.ui.command.calculateSmilesFormulaPeaks" commandName="Calculate SMILES (Peaks)"/>
     <elements xsi:type="commands:Command" xmi:id="_UeyY4FE6EeONNIp3wMDeNw" elementId="net.openchrom.supplier.cdk.ui.command.calculateSmilesFormulaSelectedPeak" commandName="Calculate SMILES (Selected Peak)"/>
+    <elements xsi:type="commands:Command" xmi:id="_rcLLoF8lEeO0jaPdEWKOew" elementId="net.openchrom.supplier.cdk.ui.command.deleteIdentificationsWithoutFormula" commandName="Delete Identifications Without Formula (Peaks)"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_C8TuwEuWEeO05Zmz9AbMeQ" featurename="handlers" parentElementId="net.openchrom.rcp.ide.application">
     <elements xsi:type="commands:Handler" xmi:id="_fFxFEEucEeObU4sRRHzsFQ" elementId="net.openchrom.supplier.cdk.ui.handler.calculateSmilesFormulaPeaks" contributionURI="bundleclass://net.openchrom.supplier.cdk.ui/net.openchrom.supplier.cdk.ui.handlers.CalculateSmilesFormulaPeaksHandler" command="_X6kCoEucEeObU4sRRHzsFQ"/>
     <elements xsi:type="commands:Handler" xmi:id="_bRvTYFE6EeONNIp3wMDeNw" elementId="net.openchrom.supplier.cdk.ui.handler.calculateSmilesFormulaSelectedPeak" contributionURI="bundleclass://net.openchrom.supplier.cdk.ui/net.openchrom.supplier.cdk.ui.handlers.CalculateSmilesFormulaSelectedPeakHandler" command="_UeyY4FE6EeONNIp3wMDeNw"/>
+    <elements xsi:type="commands:Handler" xmi:id="_0reMwF8lEeO0jaPdEWKOew" elementId="net.openchrom.supplier.cdk.ui.handler.deleteIdentificationsWithoutFormula" contributionURI="bundleclass://net.openchrom.supplier.cdk.ui/net.openchrom.supplier.cdk.ui.handlers.DeleteIdentificationsWithoutFormulaHandler" command="_rcLLoF8lEeO0jaPdEWKOew"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_n7XwoEuYEeObU4sRRHzsFQ" featurename="children" parentElementId="net.openchrom.rcp.extension.chromatogram.ui.menu.identifier">
     <elements xsi:type="menu:Menu" xmi:id="__3jPIFE5EeONNIp3wMDeNw" elementId="net.openchrom.supplier.cdk.ui.menu" label="SMILES">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_zbxU4EucEeObU4sRRHzsFQ" elementId="net.openchrom.supplier.cdk.ui.handledmenuitem.calculateSmilesFormulaPeaks" label="Calculate SMILES (Peaks)" command="_X6kCoEucEeObU4sRRHzsFQ"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_wmuT8FE6EeONNIp3wMDeNw" elementId="net.openchrom.supplier.cdk.ui.handledmenuitem.calculateSmilesFormulaSelectedPeak" label="Calculate SMILES (Selected Peak)" command="_UeyY4FE6EeONNIp3wMDeNw"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_8Ch54F8lEeO0jaPdEWKOew" elementId="net.openchrom.supplier.cdk.ui.handledmenuitem.deleteIdentificationsWithoutFormula" label="Delete Identifications Without Formula (Peaks)" command="_rcLLoF8lEeO0jaPdEWKOew"/>
     </elements>
   </fragments>
 </fragment:ModelFragments>
