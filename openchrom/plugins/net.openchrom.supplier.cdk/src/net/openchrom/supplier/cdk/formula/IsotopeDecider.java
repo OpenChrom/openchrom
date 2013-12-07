@@ -36,20 +36,32 @@ public class IsotopeDecider {
 	private static final Logger logger = Logger.getLogger(IsotopeDecider.class);
 	private List<IIsotope> isotopeSet;
 	private int iterationDepth = 15;
+	private IChemObjectBuilder chemObjectBuilder;
+	private IsotopeFactory isotopeFactory;
+
+	public IsotopeDecider() {
+
+		chemObjectBuilder = DefaultChemObjectBuilder.getInstance();
+		try {
+			isotopeFactory = IsotopeFactory.getInstance(chemObjectBuilder);
+		} catch(IOException e) {
+			logger.warn("Something went wrong with your Isotope Selection.\n" + "Maybe you misspelled some of the element symbols? Anyway,\n" + "Something went wrong because of the following error:\n" + e);
+		}
+	}
 
 	public void setIterationDepth(int iterationDepth) {
 
 		this.iterationDepth = iterationDepth;
 	}
 
-	public List<IIsotope> getIsotopeSet() {
-
-		return isotopeSet;
-	}
-
 	public int getIterationDepth() {
 
 		return iterationDepth;
+	}
+
+	public List<IIsotope> getIsotopeSet() {
+
+		return isotopeSet;
 	}
 
 	public void setIsotopeSet(List<IIsotope> isotopeSet) {
@@ -61,14 +73,14 @@ public class IsotopeDecider {
 
 		List<IIsotope> isotopesToSet = new ArrayList<IIsotope>();
 		for(String name : isotopeNames) {
-			isotopesToSet.add(ifac.getMajorIsotope(name));
+			isotopesToSet.add(isotopeFactory.getMajorIsotope(name));
 		}
 		isotopeSet = isotopesToSet;
 	}
 
 	public void addIsotope(String name) {
 
-		isotopeSet.add(ifac.getMajorIsotope(name));
+		isotopeSet.add(isotopeFactory.getMajorIsotope(name));
 	}
 
 	public void addIsotope(List<IIsotope> isotopesToAdd) {
@@ -78,28 +90,12 @@ public class IsotopeDecider {
 		}
 	}
 
-	IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
-	IsotopeFactory ifac;
+	public MolecularFormulaRange getMolecularFormulaRange() {
 
-	public IsotopeDecider() {
-
-		try {
-			ifac = IsotopeFactory.getInstance(builder);
-		} catch(IOException e) {
-			logger.warn("Something when wrong with your Isotope Selection.\n" + "Maybe you misspelled some of the element symbols? Anyway,\n" + "Something went wrong because of the following error:\n" + e);
-		}
-	}
-
-	public void addIsotopes(MolecularFormulaRange mfRange) {
-
-		/* Example Usage */
-		// mfRange1.addIsotope( ifac.getMajorIsotope("C"), 0, 15);
-		// mfRange1.addIsotope( ifac.getMajorIsotope("H"), 0, 15);
-		// mfRange1.addIsotope( ifac.getMajorIsotope("N"), 0, 15);
-		// mfRange1.addIsotope( ifac.getMajorIsotope("O"), 0, 15);
-		// mfRange1.addIsotope( ifac.getMajorIsotope("Br"), 0, 15);
+		MolecularFormulaRange molecularFormulaRange = new MolecularFormulaRange();
 		for(IIsotope isotope : isotopeSet) {
-			mfRange.addIsotope(isotope, 0, iterationDepth);
+			molecularFormulaRange.addIsotope(isotope, 0, iterationDepth);
 		}
+		return molecularFormulaRange;
 	}
 }

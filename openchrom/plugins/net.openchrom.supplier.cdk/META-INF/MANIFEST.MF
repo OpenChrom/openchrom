@@ -20,4 +20,5 @@ Export-Package: net.openchrom.supplier.cdk.converter,
  net.openchrom.supplier.cdk.core,
  net.openchrom.supplier.cdk.descriptors,
  net.openchrom.supplier.cdk.formula,
+ net.openchrom.supplier.cdk.preferences,
  net.openchrom.supplier.cdk.renderer

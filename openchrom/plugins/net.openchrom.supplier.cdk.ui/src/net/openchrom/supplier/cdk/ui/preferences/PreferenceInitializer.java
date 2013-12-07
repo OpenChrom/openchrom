@@ -12,6 +12,10 @@
 package net.openchrom.supplier.cdk.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.eclipse.jface.preference.IPreferenceStore;
+
+import net.openchrom.supplier.cdk.preferences.ChemistryPreferences;
+import net.openchrom.supplier.cdk.ui.Activator;
 
 /**
  * Class used to initialize default preference values.
@@ -25,5 +29,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	 */
 	public void initializeDefaultPreferences() {
 
+		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+		preferenceStore.setDefault(ChemistryPreferences.P_ISOTOPE_SET, ChemistryPreferences.DEF_ISOTOPE_SET);
+		preferenceStore.setDefault(ChemistryPreferences.P_ISOTOPE_ITERATION_DEPTH, ChemistryPreferences.DEF_ISOTOPE_ITERATION_DEPTH);
+		preferenceStore.setDefault(ChemistryPreferences.P_USER_DEFINED_ISOTOPES, ChemistryPreferences.DEF_USER_DEFINED_ISOTOPES);
 	}
 }

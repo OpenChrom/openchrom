@@ -13,7 +13,9 @@ package net.openchrom.supplier.cdk.formula;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.config.IsotopeFactory;
@@ -32,48 +34,76 @@ import net.openchrom.logging.core.Logger;
 public class IsotopeDeciderFactory {
 
 	private static final Logger logger = Logger.getLogger(IsotopeDeciderFactory.class);
+	private static IsotopeDeciderFactory singleton;
 
 	private IsotopeDeciderFactory() {
 
-	};
-
-	private static IsotopeDeciderFactory singleton;
+	}
 
 	public static IsotopeDeciderFactory getInstance() {
 
-		if(singleton == null)
+		if(singleton == null) {
 			singleton = new IsotopeDeciderFactory();
+		}
 		return singleton;
 	}
 
-	public IsotopeDecider getBasicSet() {
+	/**
+	 * Returns the isotope decider for: C H N O
+	 * 
+	 * @return {@link IsotopeDecider}
+	 */
+	public IsotopeDecider getBasicIsotopes() {
 
-		IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
+		Set<String> isotopes = new HashSet<String>();
+		isotopes.add("C");
+		isotopes.add("H");
+		isotopes.add("N");
+		isotopes.add("O");
+		return getIsotopeDecider(isotopes);
+	}
+
+	/**
+	 * Returns the isotope decider for: C H N O Cl Br S P I B
+	 * 
+	 * @return {@link IsotopeDecider}
+	 */
+	public IsotopeDecider getImportantOrganicIsotopes() {
+
+		Set<String> isotopes = new HashSet<String>();
+		isotopes.add("C");
+		isotopes.add("H");
+		isotopes.add("N");
+		isotopes.add("O");
+		isotopes.add("Cl");
+		isotopes.add("Br");
+		isotopes.add("S");
+		isotopes.add("P");
+		isotopes.add("I");
+		isotopes.add("B");
+		return getIsotopeDecider(isotopes);
+	}
+
+	public IsotopeDecider getIsotopeDecider(Set<String> isotopes) {
+
+		IChemObjectBuilder chemObjectBuilder = DefaultChemObjectBuilder.getInstance();
 		IsotopeDecider isotopeDecider = new IsotopeDecider();
-		IsotopeFactory ifac;
 		try {
-			ifac = IsotopeFactory.getInstance(builder);
+			IsotopeFactory isotopeFactory = IsotopeFactory.getInstance(chemObjectBuilder);
 			List<IIsotope> isotopeSet = new ArrayList<IIsotope>();
-			IIsotope c12 = ifac.getMajorIsotope("C");
-			IIsotope h1 = ifac.getMajorIsotope("H");
-			IIsotope n14 = ifac.getMajorIsotope("N");
-			IIsotope o16 = ifac.getMajorIsotope("O");
-			isotopeSet.add(c12);
-			isotopeSet.add(h1);
-			isotopeSet.add(n14);
-			isotopeSet.add(o16);
+			for(String isotope : isotopes) {
+				isotopeSet.add(isotopeFactory.getMajorIsotope(isotope));
+			}
 			isotopeDecider.setIsotopeSet(isotopeSet);
 		} catch(IOException e) {
-			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory. This is because of the following error:\n" + e);
+			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
 		}
 		return isotopeDecider;
 	}
 
 	public IsotopeDecider getIsotopeDeciderFromIsotopeList(List<IIsotope> isotopes) {
 
-		// IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
 		IsotopeDecider isotopeDecider = new IsotopeDecider();
-		// IsotopeFactory ifac = IsotopeFactory.getInstance(builder);
 		List<IIsotope> isotopeSet = new ArrayList<IIsotope>();
 		for(IIsotope toAdd : isotopes) {
 			isotopeSet.add(toAdd);
@@ -84,12 +114,12 @@ public class IsotopeDeciderFactory {
 
 	public IIsotope getMajorIsotopeFromString(String nameOfMajorIsotope) {
 
-		IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
-		IsotopeFactory ifac;
+		IChemObjectBuilder chemObjectBuilder = DefaultChemObjectBuilder.getInstance();
+		IsotopeFactory isotopeFactory;
 		IIsotope result = null;
 		try {
-			ifac = IsotopeFactory.getInstance(builder);
-			result = ifac.getMajorIsotope(nameOfMajorIsotope);
+			isotopeFactory = IsotopeFactory.getInstance(chemObjectBuilder);
+			result = isotopeFactory.getMajorIsotope(nameOfMajorIsotope);
 		} catch(IOException e) {
 			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
 		}
@@ -98,69 +128,15 @@ public class IsotopeDeciderFactory {
 
 	public IIsotope getIIsotopeFromStringAndInteger(String str, int num) {
 
-		IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
-		IsotopeFactory ifac;
+		IChemObjectBuilder chemObjectBuilder = DefaultChemObjectBuilder.getInstance();
+		IsotopeFactory isotopeFactory;
 		IIsotope result = null;
 		try {
-			ifac = IsotopeFactory.getInstance(builder);
-			result = ifac.getIsotope(str, num);
+			isotopeFactory = IsotopeFactory.getInstance(chemObjectBuilder);
+			result = isotopeFactory.getIsotope(str, num);
 		} catch(IOException e) {
 			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
 		}
 		return result;
-	}
-
-	public IsotopeDecider getIsotopeDeciderFromStringArray(String[] isotopes) {
-
-		IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
-		IsotopeDecider isotopeDecider = new IsotopeDecider();
-		IsotopeFactory ifac;
-		try {
-			ifac = IsotopeFactory.getInstance(builder);
-			List<IIsotope> isotopeSet = new ArrayList<IIsotope>();
-			for(String isotope : isotopes) {
-				IIsotope toAdd = ifac.getMajorIsotope(isotope);
-				isotopeSet.add(toAdd);
-			}
-			isotopeDecider.setIsotopeSet(isotopeSet);
-		} catch(IOException e) {
-			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
-		}
-		return isotopeDecider;
-	}
-
-	public IsotopeDecider getImportantOrganicIsotopes() {
-
-		IChemObjectBuilder builder = DefaultChemObjectBuilder.getInstance();
-		IsotopeDecider isotopeDecider = new IsotopeDecider();
-		IsotopeFactory ifac;
-		try {
-			ifac = IsotopeFactory.getInstance(builder);
-			List<IIsotope> isotopeSet = new ArrayList<IIsotope>();
-			IIsotope c12 = ifac.getMajorIsotope("C");
-			IIsotope h1 = ifac.getMajorIsotope("H");
-			IIsotope n14 = ifac.getMajorIsotope("N");
-			IIsotope o16 = ifac.getMajorIsotope("O");
-			IIsotope cl = ifac.getMajorIsotope("Cl");
-			IIsotope br = ifac.getMajorIsotope("Br");
-			IIsotope s = ifac.getMajorIsotope("S");
-			IIsotope p = ifac.getMajorIsotope("P");
-			IIsotope i = ifac.getMajorIsotope("I");
-			IIsotope b = ifac.getMajorIsotope("B");
-			isotopeSet.add(c12);
-			isotopeSet.add(h1);
-			isotopeSet.add(n14);
-			isotopeSet.add(o16);
-			isotopeSet.add(cl);
-			isotopeSet.add(br);
-			isotopeSet.add(s);
-			isotopeSet.add(p);
-			isotopeSet.add(i);
-			isotopeSet.add(b);
-			isotopeDecider.setIsotopeSet(isotopeSet);
-		} catch(IOException e) {
-			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
-		}
-		return isotopeDecider;
 	}
 }

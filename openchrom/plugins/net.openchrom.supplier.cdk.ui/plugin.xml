@@ -12,7 +12,7 @@
          point="org.eclipse.ui.preferencePages">
       <page
             category="net.openchrom.rcp.ui.preferences.openChromPreferencePage"
-            class="net.openchrom.supplier.cdk.ui.preferences.FilterPreferencePage"
+            class="net.openchrom.supplier.cdk.ui.preferences.PreferencePage"
             id="net.openchrom.supplier.cdk.ui.preferences.preferencePage"
             name="CDK Support">
       </page>

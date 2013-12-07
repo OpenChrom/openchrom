@@ -45,6 +45,7 @@ import org.osgi.service.event.EventHandler;
 
 import net.openchrom.logging.core.Logger;
 import net.openchrom.supplier.cdk.formula.GenericMassToFormulaBridge;
+import net.openchrom.supplier.cdk.preferences.ChemistryPreferences;
 import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListContentProvider;
 import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListLabelProvider;
 import net.openchrom.supplier.cdk.ui.internal.provider.FormulaListTableSorter;
@@ -128,21 +129,26 @@ public class FormulaCalculatorView {
 	private void update(Double ion) {
 
 		if(isPartVisible()) {
-			GenericMassToFormulaBridge massToFormula = new GenericMassToFormulaBridge();
-			IMolecularFormulaSet formulas;
-			formulas = massToFormula.generate(ion);
-			List<String> formulaNames;
+			/*
+			 * Generate formulas.
+			 */
+			GenericMassToFormulaBridge massToFormulaBridge = new GenericMassToFormulaBridge();
+			massToFormulaBridge.setIsotopeDecider(ChemistryPreferences.getIsotopeDecider()); // Get the user defined isotope decider.
+			IMolecularFormulaSet formulas = massToFormulaBridge.generate(ion);
+			List<String> formulaNames = new ArrayList<String>();
 			if(formulas != null) {
-				formulaNames = massToFormula.getNames(formulas);
-			} else {
-				formulaNames = new ArrayList<String>();
+				formulaNames = massToFormulaBridge.getNames(formulas);
 			}
-			List<Double> formulaRatings;
+			/*
+			 * Create ratings.
+			 */
+			List<Double> formulaRatings = new ArrayList<Double>();
 			if(formulas != null) {
-				formulaRatings = massToFormula.getRatings(ion, formulas);
-			} else {
-				formulaRatings = new ArrayList<Double>();
+				formulaRatings = massToFormulaBridge.getRatings(ion, formulas);
 			}
+			/*
+			 * Combine formulas and ratings.
+			 */
 			List<NameAndRating> formulaNamesAndRatings = new ArrayList<NameAndRating>();
 			for(int i = 0; i < formulaNames.size() && i < formulaRatings.size(); i++) {
 				String formulaName = formulaNames.get(i);
@@ -150,6 +156,9 @@ public class FormulaCalculatorView {
 				NameAndRating nameAndRating = new NameAndRating(formulaName, formulaRating);
 				formulaNamesAndRatings.add(nameAndRating);
 			}
+			/*
+			 * Set the results.
+			 */
 			label.setText("Selected ion: " + ion);
 			tableViewer.setInput(formulaNamesAndRatings);
 		}
@@ -194,9 +203,6 @@ public class FormulaCalculatorView {
 
 	private void createColumns(final TableViewer tableViewer) {
 
-		/*
-		 * SYNCHRONIZE: PeakListLabelProvider PeakListLabelSorter PeakListView
-		 */
 		/*
 		 * Set the titles and bounds.
 		 */
@@ -245,9 +251,6 @@ public class FormulaCalculatorView {
 	 */
 	public void copyToClipboard() {
 
-		/*
-		 * SYNCHRONIZE: PeakListLabelProvider PeakListLabelSorter PeakListView
-		 */
 		StringBuilder builder = new StringBuilder();
 		int size = titles.length;
 		/*

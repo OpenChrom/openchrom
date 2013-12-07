@@ -12,14 +12,18 @@
 package net.openchrom.supplier.cdk.ui.preferences;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IntegerFieldEditor;
+import org.eclipse.jface.preference.RadioGroupFieldEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 
+import net.openchrom.supplier.cdk.preferences.ChemistryPreferences;
 import net.openchrom.supplier.cdk.ui.Activator;
 
-public class FilterPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-	public FilterPreferencePage() {
+	public PreferencePage() {
 
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
@@ -33,6 +37,11 @@ public class FilterPreferencePage extends FieldEditorPreferencePage implements I
 	 */
 	public void createFieldEditors() {
 
+		addField(new RadioGroupFieldEditor(ChemistryPreferences.DEF_ISOTOPE_SET, "Select an isotope set.", 1, ChemistryPreferences.getIsotopePreferenceOptions(), getFieldEditorParent()));
+		IntegerFieldEditor iterationDepthFieldEditor = new IntegerFieldEditor(ChemistryPreferences.P_ISOTOPE_ITERATION_DEPTH, "Set the isotope iteration depth.", getFieldEditorParent());
+		iterationDepthFieldEditor.setValidRange(0, 50);
+		addField(iterationDepthFieldEditor);
+		addField(new StringFieldEditor(ChemistryPreferences.P_USER_DEFINED_ISOTOPES, "User defined isotopes", getFieldEditorParent()));
 	}
 
 	/*
