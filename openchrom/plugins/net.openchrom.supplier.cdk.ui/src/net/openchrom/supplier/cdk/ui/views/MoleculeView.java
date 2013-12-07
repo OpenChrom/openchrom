@@ -118,19 +118,20 @@ public class MoleculeView {
 			/*
 			 * Set the molecule image or a notification.
 			 */
+			moleculeInfo.setText(iupacName);
 			if(moleculeImage != null) {
 				/*
 				 * OK
 				 */
-				moleculeInfo.setText(iupacName);
+				moleculeLabel.setText("");
 				moleculeLabel.setImage(moleculeImage);
 				moleculeImage.dispose();
 			} else {
 				/*
 				 * Parser error
 				 */
-				moleculeInfo.setText("There was an error parsing: " + iupacName);
 				moleculeLabel.setImage(null);
+				moleculeLabel.setText("Sorry, it's not possible to parse the molecule.");
 			}
 		}
 	}
