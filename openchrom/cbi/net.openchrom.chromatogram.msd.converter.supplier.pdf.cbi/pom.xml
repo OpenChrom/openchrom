@@ -54,15 +54,6 @@
     <module>../../plugins/net.openchrom.chromatogram.msd.converter.supplier.pdf.ui</module>
     <module>../../features/net.openchrom.chromatogram.msd.converter.supplier.pdf.feature</module>
     <!--<module>../../plugins/net.openchrom.chromatogram.msd.converter.supplier.pdf.fragment.test</module>-->
-    <!--<module>../../plugins/net.openchrom.chromatogram.msd.converter.supplier.pdf.ui.fragment.test</module>-->
     <module>../../sites/net.openchrom.chromatogram.msd.converter.supplier.pdf.updateSite</module>
   </modules>
-  <!--
-	SOURCE CODE MANAGEMENT
-  -->
-  <scm>
-    <connection>scm:git:file:///media/3A132BBA0C9C1015/GIT-REPOSITORIES/www.openchrom.de/pdfconverter</connection>
-    <developerConnection>scm:git:file:///media/3A132BBA0C9C1015/GIT-REPOSITORIES/www.openchrom.de/pdfconverter</developerConnection>
-    <url>file:///media/3A132BBA0C9C1015/GIT-REPOSITORIES/www.openchrom.de/pdfconverter</url>
-  </scm>
 </project>
