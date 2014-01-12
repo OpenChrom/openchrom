@@ -64,15 +64,6 @@
     <module>../../plugins/net.openchrom.supplier.cdk.ui</module>
     <module>../../features/net.openchrom.supplier.cdk.feature</module>
     <!--<module>../../plugins/net.openchrom.supplier.cdk.fragment.test</module>-->
-    <!--<module>../../plugins/net.openchrom.supplier.cdk.ui.fragment.test</module>-->
     <module>../../sites/net.openchrom.supplier.cdk.updateSite</module>
   </modules>
-  <!--
-	SOURCE CODE MANAGEMENT
-  -->
-  <scm>
-    <connection>scm:git:git://git.code.sf.net/p/openchromcdksupport/openchromcdksupport</connection>
-    <developerConnection>scm:git:ssh://git.code.sf.net/p/openchromcdksupport/openchromcdksupport</developerConnection>
-    <url>http://openchromcdksupport.git.sourceforge.net/git/gitweb-index.cgi</url>
-  </scm>
 </project>
