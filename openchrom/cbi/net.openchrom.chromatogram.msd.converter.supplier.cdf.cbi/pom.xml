@@ -55,15 +55,6 @@
     <module>../../plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.ui</module>
     <module>../../features/net.openchrom.chromatogram.msd.converter.supplier.cdf.feature</module>
     <!--<module>../../plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.fragment.test</module>-->
-    <!--<module>../../plugins/net.openchrom.chromatogram.msd.converter.supplier.cdf.ui.fragment.test</module>-->
     <module>../../sites/net.openchrom.chromatogram.msd.converter.supplier.cdf.updateSite</module>
   </modules>
-  <!--
-	SOURCE CODE MANAGEMENT
-  -->
-  <scm>
-    <connection>scm:git:git://netcdfmschrom.git.sourceforge.net/gitroot/netcdfmschrom/netcdfmschrom</connection>
-    <developerConnection>scm:git:ssh://netcdfmschrom.git.sourceforge.net/gitroot/netcdfmschrom/netcdfmschrom</developerConnection>
-    <url>http://netcdfmschrom.git.sourceforge.net/git/gitweb-index.cgi</url>
-  </scm>
 </project>
