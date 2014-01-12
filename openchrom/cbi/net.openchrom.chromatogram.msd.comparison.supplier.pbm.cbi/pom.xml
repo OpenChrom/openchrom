@@ -55,15 +55,6 @@
     <module>../../plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.ui</module>
     <module>../../features/net.openchrom.chromatogram.msd.comparison.supplier.pbm.feature</module>
     <!--<module>../../plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test</module>-->
-    <!--<module>../../plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.ui.fragment.test</module>-->
     <module>../../sites/net.openchrom.chromatogram.msd.comparison.supplier.pbm.updateSite</module>
   </modules>
-  <!--
-	SOURCE CODE MANAGEMENT
-  -->
-  <scm>
-    <connection>http://www.openchrom.net</connection>
-    <developerConnection>http://www.openchrom.net</developerConnection>
-    <url>http://www.openchrom.net</url>
-  </scm>
 </project>
