@@ -45,8 +45,6 @@ public class ChromatogramWriter implements IChromatogramMSDWriter {
 		writeCDFChromatogram(file, chromatogram, monitor);
 	}
 
-	// ------------------------------------------------------------private
-	// methods
 	private void writeCDFChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws IOException {
 
 		NetcdfFileWriteable cdfChromatogram = NetcdfFileWriteable.createNew(file.getAbsolutePath());
@@ -112,6 +110,4 @@ public class ChromatogramWriter implements IChromatogramMSDWriter {
 			}
 		}
 	}
-	// ------------------------------------------------------------private
-	// methods
 }

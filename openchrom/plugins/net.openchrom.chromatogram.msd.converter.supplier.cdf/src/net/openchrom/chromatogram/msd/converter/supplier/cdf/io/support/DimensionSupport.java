@@ -68,7 +68,7 @@ public class DimensionSupport implements IDimensionSupport {
 		cdfChromatogram.addDimension(CDFConstants.DIMENSION_255_BYTE_STRING, 255);
 		cdfChromatogram.addDimension(CDFConstants.DIMENSION_RANGE, 2);
 		// ----------
-		numberOfScanIons = cdfChromatogram.addDimension(CDFConstants.DIMENSION_POINT_NUMBER, chromatogram.getNumberOfScanIons(), true, true, true);
+		numberOfScanIons = cdfChromatogram.addDimension(CDFConstants.DIMENSION_POINT_NUMBER, chromatogram.getNumberOfScanIons());
 		errorNumber = cdfChromatogram.addDimension(CDFConstants.DIMENSION_ERROR_NUMBER, 1);
 		numberOfScans = cdfChromatogram.addDimension(CDFConstants.DIMENSION_SCAN_NUMBER, chromatogram.getNumberOfScans());
 		instrumentNumber = cdfChromatogram.addDimension(CDFConstants.DIMENSION_INSTRUMENT_NUMBER, 1);
