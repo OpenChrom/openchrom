@@ -6,15 +6,15 @@
       provider-name="http://www.openchrom.net">
 
    <description url="http://www.openchrom.net/plugins/converter/netcdf">
-       This is a netCDF chromatogram converter.
+      This is a netCDF chromatogram converter.
    </description>
 
    <copyright url="http://www.openchrom.net/plugins/converter/netcdf">
-	Copyright (c) 2013, 2014 Dr. Philip Wenig.
+      Copyright (c) 2013, 2014 Dr. Philip Wenig.
    </copyright>
 
    <license url="http://www.eclipse.org/legal/epl-v10.html">
-	Copyright (c) 2013, 2014 Dr. Philip Wenig.
+      Copyright (c) 2013, 2014 Dr. Philip Wenig.
 
 All rights reserved.
 This program and the accompanying materials are made available under the
@@ -28,7 +28,7 @@ and is available at http://www.eclipse.org/legal/epl-v10.html
    </url>
 
    <requires>
-      <import feature="net.openchrom.thirdpartylibraries.netcdf.feature" version="4.3.19"/>
+      <import feature="net.openchrom.thirdpartylibraries.netcdf.feature" version="4.3.19.qualifier"/>
    </requires>
 
    <plugin
