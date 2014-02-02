@@ -9,10 +9,10 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.chromatogram.msd.converter;bundle-version="0.9.0",
  net.openchrom.chromatogram.msd.model;bundle-version="0.9.0",
  net.openchrom.logging;bundle-version="0.9.0",
- net.openchrom.thirdpartylibraries.netcdf;bundle-version="4.3.19",
  net.openchrom.processing;bundle-version="0.9.0",
  net.openchrom.chromatogram.converter;bundle-version="0.9.0",
- net.openchrom.chromatogram.model;bundle-version="0.9.0"
+ net.openchrom.chromatogram.model;bundle-version="0.9.0",
+ net.openchrom.thirdpartylibraries.netcdf;bundle-version="4.3.19"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: OpenChrom
