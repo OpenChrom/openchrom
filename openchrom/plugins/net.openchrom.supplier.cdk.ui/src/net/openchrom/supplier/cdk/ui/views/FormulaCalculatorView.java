@@ -102,7 +102,7 @@ public class FormulaCalculatorView {
 		/*
 		 * Formula table
 		 */
-		tableViewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		tableViewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		tableViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 		createColumns(tableViewer);
 		tableViewer.setContentProvider(new FormulaListContentProvider());
