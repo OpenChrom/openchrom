@@ -130,15 +130,9 @@ public class AwtToSwtImageBridge {
 		gc.setForeground(display.getSystemColor(SWT.COLOR_RED));
 		gc.drawLine(0, 0, bounds.width, bounds.height);
 		gc.drawLine(bounds.width, 0, 0, bounds.height);
-		gc.dispose();
 		ImageData data = image.getImageData();
+		gc.dispose();
 		image.dispose();
 		return data;
 	}
 }
-// Eclipse Home
-// Privacy Policy
-// Terms of Use
-// Legal
-// Contact Us
-// Copyright © 2009-2010 The Eclipse Foundation. All Rights Reserved.

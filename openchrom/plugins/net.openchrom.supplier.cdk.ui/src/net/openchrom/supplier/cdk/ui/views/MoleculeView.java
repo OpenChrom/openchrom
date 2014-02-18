@@ -89,7 +89,7 @@ public class MoleculeView {
 			Point point = calculateMoleculeImageSize();
 			ImageConverter moleculeToImageConverter = ImageConverter.getInstance();
 			IMolecule molecule = structureConverter.generate(converterInput);
-			moleculeImage = new Image(parent.getDisplay(), AwtToSwtImageBridge.convertToSWT((BufferedImage)moleculeToImageConverter.moleculeToImage(molecule, point.x, point.y)));
+			moleculeImage = new Image(Display.getDefault(), AwtToSwtImageBridge.convertToSWT((BufferedImage)moleculeToImageConverter.moleculeToImage(molecule, point.x, point.y)));
 		} catch(Exception e) {
 			logger.warn(e);
 		}
