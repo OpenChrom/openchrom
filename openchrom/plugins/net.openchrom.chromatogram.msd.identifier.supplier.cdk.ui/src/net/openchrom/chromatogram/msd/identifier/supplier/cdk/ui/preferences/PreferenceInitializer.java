@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.ChemistryPreferences;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.IdentifierPreferences;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.Activator;
 
 /**
@@ -33,5 +34,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		preferenceStore.setDefault(ChemistryPreferences.P_ISOTOPE_SET, ChemistryPreferences.DEF_ISOTOPE_SET);
 		preferenceStore.setDefault(ChemistryPreferences.P_ISOTOPE_ITERATION_DEPTH, ChemistryPreferences.DEF_ISOTOPE_ITERATION_DEPTH);
 		preferenceStore.setDefault(ChemistryPreferences.P_USER_DEFINED_ISOTOPES, ChemistryPreferences.DEF_USER_DEFINED_ISOTOPES);
+		preferenceStore.setDefault(IdentifierPreferences.P_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA, IdentifierPreferences.DEF_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA);
 	}
 }

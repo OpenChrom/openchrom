@@ -26,7 +26,8 @@ Require-Bundle: org.eclipse.ui,
  net.openchrom.progress,
  net.openchrom.processing.ui,
  net.openchrom.rcp.ui.icons,
- net.openchrom.thirdpartylibraries.opsin
+ net.openchrom.thirdpartylibraries.opsin,
+ net.openchrom.chromatogram.msd.identifier;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: javax.annotation;version="1.1.0",

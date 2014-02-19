@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.chromatogram.msd.identifier.supplier.cdk.core;
+package net.openchrom.chromatogram.msd.identifier.supplier.cdk.support;
 
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.fragment.IFragmenter;

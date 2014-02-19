@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.preferences;
 
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
@@ -19,6 +20,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.ChemistryPreferences;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.IdentifierPreferences;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.Activator;
 
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
@@ -42,6 +44,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		iterationDepthFieldEditor.setValidRange(0, 50);
 		addField(iterationDepthFieldEditor);
 		addField(new StringFieldEditor(ChemistryPreferences.P_USER_DEFINED_ISOTOPES, "User defined isotopes", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(IdentifierPreferences.P_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA, "Delete identifications without formula", getFieldEditorParent()));
 	}
 
 	/*

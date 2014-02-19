@@ -13,7 +13,7 @@ package net.openchrom.chromatogram.msd.identifier.supplier.cdk.core;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.TestPathHelper;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.ImageConverter;
-import net.openchrom.chromatogram.msd.identifier.supplier.cdk.core.AWTMolDrawer;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.support.AWTMolDrawer;
 
 import junit.framework.TestCase;
 

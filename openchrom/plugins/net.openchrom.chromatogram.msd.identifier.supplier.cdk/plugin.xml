@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="net.openchrom.chromatogram.msd.identifier.peakIdentifier">
+      <PeakIdentificationSupplier
+            description="This identifier calculates a SMILES formula for each peak identification entry."
+            id="net.openchrom.chromatogram.msd.identifier.supplier.cdk"
+            identifier="net.openchrom.chromatogram.msd.identifier.supplier.cdk.core.PeakIdentifier"
+            identifierName="SMILES Peak Identifier">
+      </PeakIdentificationSupplier>
+   </extension>
+
+</plugin>

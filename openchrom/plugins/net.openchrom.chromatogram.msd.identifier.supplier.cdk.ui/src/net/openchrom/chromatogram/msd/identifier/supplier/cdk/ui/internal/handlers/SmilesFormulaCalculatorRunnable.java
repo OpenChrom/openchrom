@@ -16,10 +16,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.openchrom.chromatogram.model.identifier.ILibraryInformation;
-import net.openchrom.chromatogram.model.targets.IPeakTarget;
-import net.openchrom.chromatogram.msd.model.core.IChromatogramPeakMSD;
-import net.openchrom.chromatogram.msd.model.core.identifier.peak.IPeakIdentificationEntry;
+import net.openchrom.chromatogram.msd.identifier.peak.PeakIdentifier;
+import net.openchrom.chromatogram.msd.model.core.IPeakMSD;
 import net.openchrom.chromatogram.msd.model.core.selection.ChromatogramSelectionMSD;
 import net.openchrom.chromatogram.msd.model.core.selection.IChromatogramSelectionMSD;
 
@@ -27,24 +25,16 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 
-import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
-import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
-import uk.ac.cam.ch.wwmm.opsin.OpsinResult;
-
 public class SmilesFormulaCalculatorRunnable implements IRunnableWithProgress {
 
+	private static final String IDENTIFIER_ID = "net.openchrom.chromatogram.msd.identifier.supplier.cdk";
 	private IChromatogramSelectionMSD chromatogramSelection;
 	private boolean useOnlySelectedPeak;
-	private NameToStructure nameStructure;
-	private NameToStructureConfig nameStructureConfig;
 
 	public SmilesFormulaCalculatorRunnable(IChromatogramSelectionMSD chromatogramSelection, boolean useOnlySelectedPeak) {
 
 		this.chromatogramSelection = chromatogramSelection;
 		this.useOnlySelectedPeak = useOnlySelectedPeak;
-		nameStructure = NameToStructure.getInstance();
-		nameStructureConfig = new NameToStructureConfig();
-		nameStructureConfig.setAllowRadicals(true); // TODO settings Preferences
 	}
 
 	@Override
@@ -55,56 +45,24 @@ public class SmilesFormulaCalculatorRunnable implements IRunnableWithProgress {
 			/*
 			 * Get the list of selected peaks.
 			 */
-			List<IChromatogramPeakMSD> peaks;
+			List<IPeakMSD> peaks = new ArrayList<IPeakMSD>();
 			if(useOnlySelectedPeak) {
 				/*
 				 * Selected peak.
 				 */
-				peaks = new ArrayList<IChromatogramPeakMSD>();
 				peaks.add(chromatogramSelection.getSelectedPeak());
 			} else {
 				/*
 				 * All peaks
 				 */
-				peaks = chromatogramSelection.getChromatogramMSD().getPeaks(chromatogramSelection);
-			}
-			/*
-			 * Calculate formula for each peak.
-			 */
-			for(IChromatogramPeakMSD peak : peaks) {
-				/*
-				 * Get the targets for each peak.
-				 */
-				List<IPeakTarget> targets = peak.getTargets();
-				for(IPeakTarget target : targets) {
-					/*
-					 * Check if the peak is a peak identification entry.
-					 */
-					if(target instanceof IPeakIdentificationEntry) {
-						ILibraryInformation libraryInformation = ((IPeakIdentificationEntry)target).getLibraryInformation();
-						if(libraryInformation.getFormula().equals("")) {
-							/*
-							 * Calculate SMILES
-							 */
-							String name = libraryInformation.getName();
-							OpsinResult result = nameStructure.parseChemicalName(name, nameStructureConfig);
-							String message = result.getMessage();
-							if(message.equals("")) {
-								/*
-								 * Set the parsed name and smiles formula.
-								 */
-								libraryInformation.setName(result.getChemicalName());
-								libraryInformation.setFormula(result.getSmiles());
-							} else {
-								/*
-								 * The name couldn't be parsed.
-								 */
-								libraryInformation.setComments(message);
-							}
-						}
-					}
+				for(IPeakMSD peakMSD : chromatogramSelection.getChromatogramMSD().getPeaks(chromatogramSelection)) {
+					peaks.add(peakMSD);
 				}
 			}
+			/*
+			 * Run the peak identifier.
+			 */
+			PeakIdentifier.identify(peaks, IDENTIFIER_ID, monitor);
 			/*
 			 * Fire an update.
 			 */

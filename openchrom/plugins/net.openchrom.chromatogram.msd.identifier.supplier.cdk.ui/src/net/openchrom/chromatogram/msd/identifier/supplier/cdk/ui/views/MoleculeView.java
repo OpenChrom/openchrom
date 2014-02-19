@@ -40,7 +40,7 @@ import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.CDKSmile
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.IStructureConverter;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.ImageConverter;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.OPSINIupacToMoleculeConverter;
-import net.openchrom.chromatogram.msd.identifier.supplier.cdk.core.AwtToSwtImageBridge;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.support.AwtToSwtImageBridge;
 import net.openchrom.logging.core.Logger;
 import net.openchrom.support.events.IOpenChromEvents;
 

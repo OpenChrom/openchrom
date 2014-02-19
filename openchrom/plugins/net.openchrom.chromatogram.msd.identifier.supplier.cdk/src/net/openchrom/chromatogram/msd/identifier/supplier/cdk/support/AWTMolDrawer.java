@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.openchrom.chromatogram.msd.identifier.supplier.cdk.core;
+package net.openchrom.chromatogram.msd.identifier.supplier.cdk.support;
 
 import java.awt.Image;
 import java.awt.image.RenderedImage;

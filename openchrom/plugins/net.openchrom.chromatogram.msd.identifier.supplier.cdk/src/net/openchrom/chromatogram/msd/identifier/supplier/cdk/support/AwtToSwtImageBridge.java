@@ -8,7 +8,7 @@
  * Contributors:
  * IBM Corporation - initial API and implementation
  *******************************************************************************/
-package net.openchrom.chromatogram.msd.identifier.supplier.cdk.core;
+package net.openchrom.chromatogram.msd.identifier.supplier.cdk.support;
 
 /*
  * example snippet: convert between SWT Image and AWT BufferedImage

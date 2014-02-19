@@ -11,7 +11,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="net.openchrom.rcp.app.ui.preferences.settingsPreferencePage"
+            category="net.openchrom.chromatogram.msd.identifier.ui.preferences.identifierPreferencePage"
             class="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.preferences.PreferencePage"
             id="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.preferences.preferencePage"
             name="CDK Identifier Support">

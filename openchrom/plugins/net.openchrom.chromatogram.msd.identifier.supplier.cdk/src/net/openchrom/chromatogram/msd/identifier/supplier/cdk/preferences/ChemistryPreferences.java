@@ -30,7 +30,7 @@ public class ChemistryPreferences {
 	public static final String P_USER_DEFINED_ISOTOPES = "userDefinedIsotopes";
 	public static final String DEF_USER_DEFINED_ISOTOPES = "C H N O";
 	//
-	private static final String NODE = "net.openchrom.supplier.cdk.ui";
+	private static final String NODE = "net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui";
 
 	public static IsotopeDecider getIsotopeDecider() {
 
