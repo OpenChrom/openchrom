@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Eclipse-RegisterBuddy: net.openchrom.thirdpartylibraries.junitaddons, net.openchrom.thirdpartylibraries.cdk, net.openchrom.thirdpartylibraries.opsin
+Bundle-ManifestVersion: 2
+Bundle-Name: Cdk
+Bundle-SymbolicName: net.openchrom.chromatogram.msd.identifier.supplier.cdk;singleton:=true
+Bundle-Version: 0.9.0.qualifier
+Bundle-Activator: net.openchrom.chromatogram.msd.identifier.supplier.cdk.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.core.runtime,
+ net.openchrom.chromatogram.model;bundle-version="0.9.0",
+ net.openchrom.chromatogram.msd.model;bundle-version="0.9.0",
+ net.openchrom.logging;bundle-version="0.9.0",
+ net.openchrom.support;bundle-version="0.9.0",
+ net.openchrom.thirdpartylibraries.cdk;bundle-version="1.4.19",
+ org.eclipse.swt;bundle-version="3.102.0",
+ net.openchrom.thirdpartylibraries.opsin;bundle-version="1.5.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter,
+ net.openchrom.chromatogram.msd.identifier.supplier.cdk.core,
+ net.openchrom.chromatogram.msd.identifier.supplier.cdk.descriptors,
+ net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula,
+ net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences,
+ net.openchrom.chromatogram.msd.identifier.supplier.cdk.renderer
