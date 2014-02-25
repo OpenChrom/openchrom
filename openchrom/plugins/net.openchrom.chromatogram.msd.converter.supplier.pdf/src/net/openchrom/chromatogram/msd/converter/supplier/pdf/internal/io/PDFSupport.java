@@ -25,12 +25,12 @@ import com.pdfjet.Point;
 import com.pdfjet.RGB;
 import com.pdfjet.TextLine;
 
-import net.openchrom.chromatogram.model.signals.ITotalScanSignal;
-import net.openchrom.chromatogram.model.signals.ITotalScanSignalExtractor;
-import net.openchrom.chromatogram.model.signals.ITotalScanSignals;
-import net.openchrom.chromatogram.model.signals.TotalScanSignalExtractor;
-import net.openchrom.chromatogram.msd.model.core.AbstractChromatogramMSD;
-import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
+import net.chemclipse.chromatogram.model.signals.ITotalScanSignal;
+import net.chemclipse.chromatogram.model.signals.ITotalScanSignalExtractor;
+import net.chemclipse.chromatogram.model.signals.ITotalScanSignals;
+import net.chemclipse.chromatogram.model.signals.TotalScanSignalExtractor;
+import net.chemclipse.chromatogram.msd.model.core.AbstractChromatogramMSD;
+import net.chemclipse.chromatogram.msd.model.core.IChromatogramMSD;
 
 public class PDFSupport {
 

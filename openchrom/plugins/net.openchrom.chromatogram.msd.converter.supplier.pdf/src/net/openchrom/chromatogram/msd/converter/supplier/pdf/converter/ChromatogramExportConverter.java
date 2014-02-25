@@ -9,17 +9,17 @@ import java.io.File;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.chromatogram.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
-import net.openchrom.chromatogram.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
-import net.openchrom.chromatogram.msd.converter.chromatogram.AbstractChromatogramMSDExportConverter;
+import net.chemclipse.chromatogram.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
+import net.chemclipse.chromatogram.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import net.chemclipse.chromatogram.msd.converter.chromatogram.AbstractChromatogramMSDExportConverter;
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.Activator;
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.internal.converter.SpecificationValidator;
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.internal.support.IConstants;
 import net.openchrom.chromatogram.msd.converter.supplier.pdf.io.ChromatogramWriter;
-import net.openchrom.chromatogram.msd.model.core.IChromatogramMSD;
+import net.chemclipse.chromatogram.msd.model.core.IChromatogramMSD;
 
-import net.openchrom.logging.core.Logger;
-import net.openchrom.processing.core.IProcessingInfo;
+import net.chemclipse.logging.core.Logger;
+import net.chemclipse.processing.core.IProcessingInfo;
 
 public class ChromatogramExportConverter extends AbstractChromatogramMSDExportConverter {
 

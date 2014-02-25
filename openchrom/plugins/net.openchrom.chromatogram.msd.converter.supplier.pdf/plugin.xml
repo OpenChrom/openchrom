@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="net.openchrom.chromatogram.msd.converter.chromatogramSupplier">
+         point="net.chemclipse.chromatogram.msd.converter.chromatogramSupplier">
       <ChromatogramSupplier
             description="Exports Chromatograms to PDF format."
             exportConverter="net.openchrom.chromatogram.msd.converter.supplier.pdf.converter.ChromatogramExportConverter"

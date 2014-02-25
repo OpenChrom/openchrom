@@ -6,13 +6,13 @@
 package net.openchrom.chromatogram.msd.converter.supplier.pdf.internal.support;
 
 import java.io.File;
-import net.openchrom.logging.core.Logger;
-import net.openchrom.support.settings.OpenChromSettings;
+import net.chemclipse.logging.core.Logger;
+import net.chemclipse.support.settings.ChemClipseApplicationSettings;
 
 public class PathHelper {
 
 	private static final Logger logger = Logger.getLogger(PathHelper.class);
-	public static final String PDF_CONVERTER = "net.openchrom.chromatogram.msd.converter.supplier.pdf";
+	public static final String PDF_CONVERTER = "net.chemclipse.chromatogram.msd.converter.supplier.pdf";
 
 	/**
 	 * Returns the file object (directory) where the chromatogram instances can
@@ -22,7 +22,7 @@ public class PathHelper {
 	 */
 	public static File getStoragePath() {
 
-		File file = new File(OpenChromSettings.getSettingsDirectory().getAbsolutePath() + File.separator + PDF_CONVERTER);
+		File file = new File(ChemClipseApplicationSettings.getSettingsDirectory().getAbsolutePath() + File.separator + PDF_CONVERTER);
 		/*
 		 * Create the directory if it not exists.
 		 */

@@ -39,7 +39,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
    <requires>
       <import feature="net.openchrom.keys.feature" version="0.9.0.qualifier"/>
-      <import feature="net.openchrom.thirdpartylibraries.pdfjet.feature" version="2.81.0.qualifier"/>
+      <import feature="net.chemclipse.thirdpartylibraries.pdfjet.feature" version="2.81.0.qualifier"/>
    </requires>
 
    <plugin
