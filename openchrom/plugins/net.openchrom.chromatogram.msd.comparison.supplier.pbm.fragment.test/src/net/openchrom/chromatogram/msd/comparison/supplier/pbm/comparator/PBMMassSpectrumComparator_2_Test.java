@@ -5,12 +5,12 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
-import net.openchrom.chromatogram.msd.comparison.massspectrum.MassSpectrumComparator;
-import net.openchrom.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
-import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
-import net.openchrom.chromatogram.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
-import net.openchrom.chromatogram.msd.model.implementation.DefaultMassSpectrum;
-import net.openchrom.processing.core.exceptions.TypeCastException;
+import net.chemclipse.chromatogram.msd.comparison.massspectrum.MassSpectrumComparator;
+import net.chemclipse.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
+import net.chemclipse.chromatogram.msd.model.core.IMassSpectrum;
+import net.chemclipse.chromatogram.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
+import net.chemclipse.chromatogram.msd.model.implementation.DefaultMassSpectrum;
+import net.chemclipse.processing.core.exceptions.TypeCastException;
 
 import junit.framework.TestCase;
 

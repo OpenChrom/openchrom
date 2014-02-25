@@ -5,23 +5,23 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
-import net.openchrom.chromatogram.model.exceptions.AbundanceLimitExceededException;
-import net.openchrom.chromatogram.msd.comparison.massspectrum.AbstractMassSpectrumComparator;
-import net.openchrom.chromatogram.msd.comparison.massspectrum.IMassSpectrumComparator;
-import net.openchrom.chromatogram.msd.comparison.math.GeometricDistanceCalculator;
-import net.openchrom.chromatogram.msd.comparison.math.IDistanceCalculator;
-import net.openchrom.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
-import net.openchrom.chromatogram.msd.comparison.processing.MassSpectrumComparatorProcessingInfo;
+import net.chemclipse.chromatogram.model.exceptions.AbundanceLimitExceededException;
+import net.chemclipse.chromatogram.msd.comparison.massspectrum.AbstractMassSpectrumComparator;
+import net.chemclipse.chromatogram.msd.comparison.massspectrum.IMassSpectrumComparator;
+import net.chemclipse.chromatogram.msd.comparison.math.GeometricDistanceCalculator;
+import net.chemclipse.chromatogram.msd.comparison.math.IDistanceCalculator;
+import net.chemclipse.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
+import net.chemclipse.chromatogram.msd.comparison.processing.MassSpectrumComparatorProcessingInfo;
 import net.openchrom.chromatogram.msd.comparison.supplier.pbm.results.PBMMassSpectrumComparisonResult;
-import net.openchrom.chromatogram.msd.model.core.IIon;
-import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
-import net.openchrom.chromatogram.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
-import net.openchrom.chromatogram.msd.model.exceptions.IonLimitExceededException;
-import net.openchrom.chromatogram.msd.model.implementation.DefaultIon;
-import net.openchrom.chromatogram.msd.model.implementation.DefaultMassSpectrum;
-import net.openchrom.chromatogram.msd.model.xic.IExtractedIonSignal;
-import net.openchrom.logging.core.Logger;
-import net.openchrom.processing.core.IProcessingInfo;
+import net.chemclipse.chromatogram.msd.model.core.IIon;
+import net.chemclipse.chromatogram.msd.model.core.IMassSpectrum;
+import net.chemclipse.chromatogram.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
+import net.chemclipse.chromatogram.msd.model.exceptions.IonLimitExceededException;
+import net.chemclipse.chromatogram.msd.model.implementation.DefaultIon;
+import net.chemclipse.chromatogram.msd.model.implementation.DefaultMassSpectrum;
+import net.chemclipse.chromatogram.msd.model.xic.IExtractedIonSignal;
+import net.chemclipse.logging.core.Logger;
+import net.chemclipse.processing.core.IProcessingInfo;
 
 /**
  * This class gives back a IMassSpectrumComparisonResult which implements the
@@ -31,7 +31,7 @@ import net.openchrom.processing.core.IProcessingInfo;
  */
 public class PBMMassSpectrumComparator extends AbstractMassSpectrumComparator implements IMassSpectrumComparator {
 
-	public static final String COMPARATOR_ID = "net.openchrom.chromatogram.msd.comparison.supplier.pbm";
+	public static final String COMPARATOR_ID = "net.chemclipse.chromatogram.msd.comparison.supplier.pbm";
 	private static final Logger logger = Logger.getLogger(PBMMassSpectrumComparator.class);
 	private static final int NORMALIZATION_FACTOR = 100;
 

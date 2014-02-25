@@ -2,7 +2,7 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
-         point="net.openchrom.chromatogram.msd.comparison.massSpectrumComparisonSupplier">
+         point="net.chemclipse.chromatogram.msd.comparison.massSpectrumComparisonSupplier">
       <ComparisonSupplier
             comparatorName="PBM"
             description="This comparator calculates the similarity between two mass spectra with the pbm algorithm."

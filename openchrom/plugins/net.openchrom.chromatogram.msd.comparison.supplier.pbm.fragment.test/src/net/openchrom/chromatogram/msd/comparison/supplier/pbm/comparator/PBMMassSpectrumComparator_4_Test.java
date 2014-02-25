@@ -5,14 +5,14 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
-import net.openchrom.chromatogram.msd.comparison.exceptions.ComparisonException;
-import net.openchrom.chromatogram.msd.comparison.massspectrum.MassSpectrumComparator;
-import net.openchrom.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
-import net.openchrom.chromatogram.msd.model.core.IIon;
-import net.openchrom.chromatogram.msd.model.core.IMassSpectrum;
-import net.openchrom.chromatogram.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
-import net.openchrom.chromatogram.msd.model.implementation.DefaultIon;
-import net.openchrom.chromatogram.msd.model.implementation.DefaultMassSpectrum;
+import net.chemclipse.chromatogram.msd.comparison.exceptions.ComparisonException;
+import net.chemclipse.chromatogram.msd.comparison.massspectrum.MassSpectrumComparator;
+import net.chemclipse.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
+import net.chemclipse.chromatogram.msd.model.core.IIon;
+import net.chemclipse.chromatogram.msd.model.core.IMassSpectrum;
+import net.chemclipse.chromatogram.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
+import net.chemclipse.chromatogram.msd.model.implementation.DefaultIon;
+import net.chemclipse.chromatogram.msd.model.implementation.DefaultMassSpectrum;
 import junit.framework.TestCase;
 
 public class PBMMassSpectrumComparator_4_Test extends TestCase {
