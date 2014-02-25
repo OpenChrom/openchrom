@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<component name="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.handlers.CalculateSmilesFormulaPeaksHandler">
+   <implementation class="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.handlers.CalculateSmilesFormulaPeaksHandler" />
+   <property name="event.topics" value="chromatogram/msd/update/chromatogramselection" />
+   <service>
+      <provide interface="org.osgi.service.event.EventHandler" />
+   </service>
+</component>

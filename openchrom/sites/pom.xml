@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>net.openchrom</groupId>
+    <groupId>net.chemclipse</groupId>
     <artifactId>parent</artifactId>
     <version>BUILD-VERSION</version>
-    <relativePath>../cbi/net.openchrom.chromatogram.msd.identifier.supplier.cdk.cbi/pom.xml</relativePath>
+    <relativePath>../cbi/net.chemclipse.chromatogram.msd.identifier.supplier.cdk.cbi/pom.xml</relativePath>
   </parent>
 
-  <artifactId>net.openchrom.sites.parent</artifactId>
+  <artifactId>net.chemclipse.sites.parent</artifactId>
   <packaging>pom</packaging>
   <name>updateSites</name>
 
