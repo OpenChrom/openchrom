@@ -51,10 +51,10 @@
 	MODULES
   -->
   <modules>
-    <module>../../plugins/net.chemclipse.chromatogram.msd.comparison.supplier.pbm</module>
-    <module>../../plugins/net.chemclipse.chromatogram.msd.comparison.supplier.pbm.ui</module>
-    <module>../../features/net.chemclipse.chromatogram.msd.comparison.supplier.pbm.feature</module>
-    <!--<module>../../plugins/net.chemclipse.chromatogram.msd.comparison.supplier.pbm.fragment.test</module>-->
-    <module>../../sites/net.chemclipse.chromatogram.msd.comparison.supplier.pbm.updateSite</module>
+    <module>../../plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm</module>
+    <module>../../plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.ui</module>
+    <module>../../features/net.openchrom.chromatogram.msd.comparison.supplier.pbm.feature</module>
+    <!--<module>../../plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test</module>-->
+    <module>../../sites/net.openchrom.chromatogram.msd.comparison.supplier.pbm.updateSite</module>
   </modules>
 </project>
