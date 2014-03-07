@@ -14,6 +14,8 @@ package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.prov
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula.NameAndRating;
+
 public class FormulaListTableSorter extends ViewerSorter {
 
 	private int propertyIndex;

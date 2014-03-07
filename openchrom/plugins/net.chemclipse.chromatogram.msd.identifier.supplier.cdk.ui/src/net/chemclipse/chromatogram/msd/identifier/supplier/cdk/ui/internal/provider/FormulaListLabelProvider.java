@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula.NameAndRating;
 import net.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import net.chemclipse.rcp.ui.icons.core.IApplicationImage;
 

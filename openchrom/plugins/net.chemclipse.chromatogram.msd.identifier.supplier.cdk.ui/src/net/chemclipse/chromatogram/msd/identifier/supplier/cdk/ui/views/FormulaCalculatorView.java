@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.views;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -39,16 +38,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.openscience.cdk.interfaces.IMolecularFormulaSet;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
-import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula.GenericMassToFormulaBridge;
-import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.preferences.ChemistryPreferences;
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula.NameAndRating;
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.support.FormulaSupport;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider.FormulaListContentProvider;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider.FormulaListLabelProvider;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider.FormulaListTableSorter;
-import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider.NameAndRating;
 import net.chemclipse.logging.core.Logger;
 import net.chemclipse.support.events.IChemClipseEvents;
 
@@ -133,33 +130,7 @@ public class FormulaCalculatorView {
 			 * Generate formulas.
 			 * The user defined isotope decider will be set dynamically.
 			 */
-			GenericMassToFormulaBridge massToFormulaBridge = new GenericMassToFormulaBridge();
-			massToFormulaBridge.setIsotopeDecider(ChemistryPreferences.getIsotopeDecider());
-			IMolecularFormulaSet formulas = massToFormulaBridge.generate(ion);
-			List<String> formulaNames = new ArrayList<String>();
-			if(formulas != null) {
-				formulaNames = massToFormulaBridge.getNames(formulas);
-			}
-			/*
-			 * Create ratings.
-			 */
-			List<Double> formulaRatings = new ArrayList<Double>();
-			if(formulas != null) {
-				formulaRatings = massToFormulaBridge.getRatings(ion, formulas);
-			}
-			/*
-			 * Combine formulas and ratings.
-			 */
-			List<NameAndRating> formulaNamesAndRatings = new ArrayList<NameAndRating>();
-			for(int i = 0; i < formulaNames.size() && i < formulaRatings.size(); i++) {
-				String formulaName = formulaNames.get(i);
-				Double formulaRating = formulaRatings.get(i);
-				NameAndRating nameAndRating = new NameAndRating(formulaName, formulaRating);
-				formulaNamesAndRatings.add(nameAndRating);
-			}
-			/*
-			 * Set the results.
-			 */
+			List<NameAndRating> formulaNamesAndRatings = FormulaSupport.getInstance().getFormulaNamesAndRatings(ion);
 			label.setText("Selected ion: " + ion);
 			tableViewer.setInput(formulaNamesAndRatings);
 		}

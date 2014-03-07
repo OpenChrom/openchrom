@@ -20,6 +20,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Display;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.layout.StructureDiagramGenerator;
@@ -32,6 +34,7 @@ import org.openscience.cdk.renderer.generators.BasicSceneGenerator;
 import org.openscience.cdk.renderer.generators.IGenerator;
 import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
 
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.support.AwtToSwtImageBridge;
 import net.chemclipse.logging.core.Logger;
 
 public class ImageConverter {
@@ -39,6 +42,8 @@ public class ImageConverter {
 	public static final int DEFAULT_WIDTH = 400;
 	public static final int DEFAULT_HEIGHT = 400;
 	private static final Logger logger = Logger.getLogger(ImageConverter.class);
+	private static IStructureConverter cdkSmilesToMoleculeConverter = new CDKSmilesToMoleculeConverter();
+	private static IStructureConverter opsinIupacToMoleculeConverter = new OPSINIupacToMoleculeConverter();
 	/**
 	 * Generate Molecule out of smilesString and
 	 * render.
@@ -63,6 +68,19 @@ public class ImageConverter {
 	public Image moleculeToImage(IMolecule molecule, int width, int height) {
 
 		return createImage(molecule, width, height);
+	}
+
+	public org.eclipse.swt.graphics.Image moleculeToImage(boolean useSmiles, String converterInput, Point point) {
+
+		IStructureConverter structureConverter;
+		if(useSmiles) {
+			structureConverter = cdkSmilesToMoleculeConverter;
+		} else {
+			structureConverter = opsinIupacToMoleculeConverter;
+		}
+		//
+		IMolecule molecule = structureConverter.generate(converterInput);
+		return new org.eclipse.swt.graphics.Image(Display.getDefault(), AwtToSwtImageBridge.convertToSWT((BufferedImage)moleculeToImage(molecule, point.x, point.y)));
 	}
 
 	/**

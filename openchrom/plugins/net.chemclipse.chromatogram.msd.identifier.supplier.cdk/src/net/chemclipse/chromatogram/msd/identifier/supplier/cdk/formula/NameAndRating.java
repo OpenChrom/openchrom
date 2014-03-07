@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider;
+package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula;
 
 public class NameAndRating {
 

@@ -12,8 +12,6 @@
  *******************************************************************************/
 package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.views;
 
-import java.awt.image.BufferedImage;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
@@ -32,15 +30,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.openscience.cdk.interfaces.IMolecule;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
-import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converter.CDKSmilesToMoleculeConverter;
-import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converter.IStructureConverter;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converter.ImageConverter;
-import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converter.OPSINIupacToMoleculeConverter;
-import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.support.AwtToSwtImageBridge;
 import net.chemclipse.logging.core.Logger;
 import net.chemclipse.support.events.IChemClipseEvents;
 
@@ -58,8 +51,6 @@ public class MoleculeView {
 	 */
 	private String iupacName = "Demo";
 	private String smilesFormula = "C(C(CO[N+](=O)[O-])O[N+](=O)[O-])O[N+](=O)[O-]";
-	private IStructureConverter cdkSmilesToMoleculeConverter;
-	private IStructureConverter opsinIupacToMoleculeConverter;
 	@Inject
 	private Composite parent;
 	/*
@@ -77,19 +68,15 @@ public class MoleculeView {
 
 		this.eventBroker = eventBroker;
 		this.eventHandler = eventHandler;
-		cdkSmilesToMoleculeConverter = new CDKSmilesToMoleculeConverter();
-		opsinIupacToMoleculeConverter = new OPSINIupacToMoleculeConverter();
 		subscribe();
 	}
 
-	private Image convertMoleculeToImage(IStructureConverter structureConverter, String converterInput) {
+	private Image convertMoleculeToImage(boolean useSmiles, String converterInput) {
 
 		Image moleculeImage = null;
 		try {
 			Point point = calculateMoleculeImageSize();
-			ImageConverter moleculeToImageConverter = ImageConverter.getInstance();
-			IMolecule molecule = structureConverter.generate(converterInput);
-			moleculeImage = new Image(Display.getDefault(), AwtToSwtImageBridge.convertToSWT((BufferedImage)moleculeToImageConverter.moleculeToImage(molecule, point.x, point.y)));
+			// moleculeImage = ImageConverter.getInstance().moleculeToImage(useSmiles, converterInput, point);
 		} catch(Exception e) {
 			logger.warn(e);
 		}
@@ -108,12 +95,11 @@ public class MoleculeView {
 				/*
 				 * SMILES is the default
 				 */
-				moleculeImage = convertMoleculeToImage(cdkSmilesToMoleculeConverter, smilesFormula);
-			} else {
+				moleculeImage = convertMoleculeToImage(true, smilesFormula);
 				/*
 				 * IUPAC
 				 */
-				moleculeImage = convertMoleculeToImage(opsinIupacToMoleculeConverter, iupacName);
+				moleculeImage = convertMoleculeToImage(false, iupacName);
 			}
 			/*
 			 * Set the molecule image or a notification.
