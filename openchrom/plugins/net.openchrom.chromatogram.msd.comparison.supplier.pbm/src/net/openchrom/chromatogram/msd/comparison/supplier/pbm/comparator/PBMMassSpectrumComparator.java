@@ -31,7 +31,7 @@ import net.chemclipse.processing.core.IProcessingInfo;
  */
 public class PBMMassSpectrumComparator extends AbstractMassSpectrumComparator implements IMassSpectrumComparator {
 
-	public static final String COMPARATOR_ID = "net.chemclipse.chromatogram.msd.comparison.supplier.pbm";
+	public static final String COMPARATOR_ID = "net.openchrom.chromatogram.msd.comparison.supplier.pbm";
 	private static final Logger logger = Logger.getLogger(PBMMassSpectrumComparator.class);
 	private static final int NORMALIZATION_FACTOR = 100;
 
