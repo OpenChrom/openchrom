@@ -76,7 +76,7 @@ public class MoleculeView {
 		Image moleculeImage = null;
 		try {
 			Point point = calculateMoleculeImageSize();
-			// moleculeImage = ImageConverter.getInstance().moleculeToImage(useSmiles, converterInput, point);
+			moleculeImage = ImageConverter.getInstance().moleculeToImage(useSmiles, converterInput, point);
 		} catch(Exception e) {
 			logger.warn(e);
 		}
