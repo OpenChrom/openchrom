@@ -7,7 +7,6 @@ Bundle-Version: 0.9.0.qualifier
 Bundle-Activator: net.chemclipse.chromatogram.msd.identifier.supplier.cdk.Activator
 Bundle-Vendor: ChemClipse
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.ui;bundle-version="3.105.0",
  net.chemclipse.chromatogram.model;bundle-version="0.9.0",
  net.chemclipse.chromatogram.msd.model;bundle-version="0.9.0",
  net.chemclipse.logging;bundle-version="0.9.0",
@@ -24,4 +23,3 @@ Export-Package: net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converte
  net.chemclipse.chromatogram.msd.identifier.supplier.cdk.renderer,
  net.chemclipse.chromatogram.msd.identifier.supplier.cdk.support
 Import-Package: javax.annotation;version="1.1.0"
-Bundle-ClassPath: .

@@ -10,7 +10,7 @@
  * Marwin Wollschläger - initial API and implementation
  * Dr. Philip Wenig - additional API and implementation
  *******************************************************************************/
-package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converter;
+package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.converter;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -34,7 +34,9 @@ import org.openscience.cdk.renderer.generators.BasicSceneGenerator;
 import org.openscience.cdk.renderer.generators.IGenerator;
 import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
 
-import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.support.AwtToSwtImageBridge;
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converter.CDKSmilesToMoleculeConverter;
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converter.IStructureConverter;
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converter.OPSINIupacToMoleculeConverter;
 import net.chemclipse.logging.core.Logger;
 
 public class ImageConverter {

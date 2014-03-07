@@ -8,7 +8,7 @@
  * Contributors:
  * IBM Corporation - initial API and implementation
  *******************************************************************************/
-package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.support;
+package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.converter;
 
 /*
  * example snippet: convert between SWT Image and AWT BufferedImage

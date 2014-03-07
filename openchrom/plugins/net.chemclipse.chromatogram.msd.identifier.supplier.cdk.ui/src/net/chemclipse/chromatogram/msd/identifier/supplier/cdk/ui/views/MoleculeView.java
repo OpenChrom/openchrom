@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Label;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
-import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converter.ImageConverter;
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.converter.ImageConverter;
 import net.chemclipse.logging.core.Logger;
 import net.chemclipse.support.events.IChemClipseEvents;
 
@@ -49,7 +49,7 @@ public class MoleculeView {
 	 * IUPAC example:
 	 * "hexane"
 	 */
-	private String iupacName = "Demo";
+	private String iupacName = "Hexane";
 	private String smilesFormula = "C(C(CO[N+](=O)[O-])O[N+](=O)[O-])O[N+](=O)[O-]";
 	@Inject
 	private Composite parent;
@@ -96,15 +96,16 @@ public class MoleculeView {
 				 * SMILES is the default
 				 */
 				moleculeImage = convertMoleculeToImage(true, smilesFormula);
+			} else {
 				/*
 				 * IUPAC
 				 */
 				moleculeImage = convertMoleculeToImage(false, iupacName);
+				moleculeInfo.setText(iupacName);
 			}
 			/*
 			 * Set the molecule image or a notification.
 			 */
-			moleculeInfo.setText(iupacName);
 			if(moleculeImage != null) {
 				/*
 				 * OK

@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Eclipse-RegisterBuddy: net.chemclipse.thirdpartylibraries.junitaddons, net.chemclipse.thirdpartylibraries.cdk
 Bundle-ManifestVersion: 2
 Bundle-Name: Ui
 Bundle-SymbolicName: net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui;singleton:=true

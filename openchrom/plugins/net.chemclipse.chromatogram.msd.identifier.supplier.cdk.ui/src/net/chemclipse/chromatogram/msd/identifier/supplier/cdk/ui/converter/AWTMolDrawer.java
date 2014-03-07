@@ -9,7 +9,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  *******************************************************************************/
-package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.support;
+package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.converter;
 
 import java.awt.Image;
 import java.awt.image.RenderedImage;
@@ -18,7 +18,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converter.ImageConverter;
 import net.chemclipse.logging.core.Logger;
 
 /**
