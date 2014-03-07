@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Eclipse-RegisterBuddy: net.chemclipse.thirdpartylibraries.junitaddons, net.chemclipse.thirdpartylibraries.opsin
+Eclipse-RegisterBuddy: net.chemclipse.thirdpartylibraries.junitaddons, net.chemclipse.thirdpartylibraries.cdk, net.chemclipse.thirdpartylibraries.opsin
 Bundle-ManifestVersion: 2
 Bundle-Name: Cdk
 Bundle-SymbolicName: net.chemclipse.chromatogram.msd.identifier.supplier.cdk;singleton:=true
@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.core.runtime,
  net.chemclipse.logging;bundle-version="0.9.0",
  net.chemclipse.thirdpartylibraries.opsin;bundle-version="1.5.0",
  net.chemclipse.chromatogram.msd.identifier;bundle-version="0.9.0",
- net.chemclipse.processing;bundle-version="0.9.0"
+ net.chemclipse.processing;bundle-version="0.9.0",
+ net.chemclipse.thirdpartylibraries.cdk;bundle-version="1.4.19"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converter,
@@ -23,5 +24,4 @@ Export-Package: net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converte
  net.chemclipse.chromatogram.msd.identifier.supplier.cdk.renderer,
  net.chemclipse.chromatogram.msd.identifier.supplier.cdk.support
 Import-Package: javax.annotation;version="1.1.0"
-Bundle-ClassPath: .,
- libraries/cdk-1.4.19.jar
+Bundle-ClassPath: .
