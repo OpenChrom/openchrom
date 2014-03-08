@@ -92,17 +92,11 @@ public class MoleculeView {
 			 */
 			Image moleculeImage = null;
 			if(smilesFormula != null && !smilesFormula.equals("")) {
-				/*
-				 * SMILES is the default
-				 */
 				moleculeImage = convertMoleculeToImage(true, smilesFormula);
 			} else {
-				/*
-				 * IUPAC
-				 */
 				moleculeImage = convertMoleculeToImage(false, iupacName);
-				moleculeInfo.setText(iupacName);
 			}
+			moleculeInfo.setText(iupacName + " > " + smilesFormula);
 			/*
 			 * Set the molecule image or a notification.
 			 */
@@ -112,7 +106,6 @@ public class MoleculeView {
 				 */
 				moleculeLabel.setText("");
 				moleculeLabel.setImage(moleculeImage);
-				moleculeImage.dispose();
 			} else {
 				/*
 				 * Parser error
