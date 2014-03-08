@@ -49,8 +49,8 @@ public class MoleculeView {
 	 * IUPAC example:
 	 * "hexane"
 	 */
-	private String iupacName = "Hexane";
-	private String smilesFormula = "C(C(CO[N+](=O)[O-])O[N+](=O)[O-])O[N+](=O)[O-]";
+	private String iupacName = "Thiamin";
+	private String smilesFormula = "OCCc1c(C)[n+](=cs1)Cc2cnc(C)nc(N)2";
 	@Inject
 	private Composite parent;
 	/*
@@ -96,7 +96,7 @@ public class MoleculeView {
 			} else {
 				moleculeImage = convertMoleculeToImage(false, iupacName);
 			}
-			moleculeInfo.setText(iupacName + " > " + smilesFormula);
+			moleculeInfo.setText(iupacName + " | " + smilesFormula);
 			/*
 			 * Set the molecule image or a notification.
 			 */
