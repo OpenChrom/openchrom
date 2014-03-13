@@ -13,13 +13,15 @@ Require-Bundle: org.eclipse.core.runtime,
  net.chemclipse.thirdpartylibraries.opsin;bundle-version="1.5.0",
  net.chemclipse.chromatogram.msd.identifier;bundle-version="0.9.0",
  net.chemclipse.processing;bundle-version="0.9.0",
- net.chemclipse.thirdpartylibraries.cdk;bundle-version="1.4.19"
+ net.chemclipse.thirdpartylibraries.cdk;bundle-version="1.4.19";visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converter,
+ net.chemclipse.chromatogram.msd.identifier.supplier.cdk.core,
  net.chemclipse.chromatogram.msd.identifier.supplier.cdk.descriptors,
  net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula,
  net.chemclipse.chromatogram.msd.identifier.supplier.cdk.preferences,
  net.chemclipse.chromatogram.msd.identifier.supplier.cdk.renderer,
+ net.chemclipse.chromatogram.msd.identifier.supplier.cdk.settings,
  net.chemclipse.chromatogram.msd.identifier.supplier.cdk.support
 Import-Package: javax.annotation;version="1.1.0"
