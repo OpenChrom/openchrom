@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>net.chemclipse</groupId>
+    <artifactId>parent</artifactId>
+    <version>BUILD-VERSION</version>
+    <relativePath>../cbi/net.chemclipse.chromatogram.fid.converter.supplier.cdf.cbi/pom.xml</relativePath>
+  </parent>
+
+  <artifactId>net.chemclipse.sites.parent</artifactId>
+  <packaging>pom</packaging>
+  <name>updateSites</name>
+
+</project>
