@@ -37,7 +37,7 @@ import net.chemclipse.chromatogram.msd.converter.supplier.cdf.io.support.CDFChro
 import net.chemclipse.chromatogram.msd.converter.supplier.cdf.io.support.CDFChromtogramArrayReader;
 import net.chemclipse.chromatogram.msd.converter.supplier.cdf.io.support.DateSupport;
 import net.chemclipse.chromatogram.msd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
-import net.chemclipse.chromatogram.msd.converter.supplier.cdf.model.CDFChromatogram;
+import net.chemclipse.chromatogram.msd.converter.supplier.cdf.model.CDFChromatogramMSD;
 import net.chemclipse.chromatogram.msd.converter.supplier.cdf.model.CDFIon;
 import net.chemclipse.chromatogram.msd.converter.supplier.cdf.model.CDFMassSpectrum;
 import net.chemclipse.chromatogram.msd.converter.supplier.cdf.preferences.ConverterPreferences;
@@ -53,7 +53,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 	@Override
 	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
-		CDFChromatogram chromatogram;
+		CDFChromatogramMSD chromatogram;
 		if(!isValidFileFormat(file)) {
 			return null;
 		}
@@ -71,7 +71,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 	@Override
 	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
-		CDFChromatogram chromatogram;
+		CDFChromatogramMSD chromatogram;
 		if(!isValidFileFormat(file)) {
 			return null;
 		}
@@ -125,14 +125,14 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 		}
 	}
 
-	private CDFChromatogram readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
+	private CDFChromatogramMSD readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
-		CDFChromatogram chromatogram;
+		CDFChromatogramMSD chromatogram;
 		CDFMassSpectrum massSpectrum;
 		@SuppressWarnings("deprecation")
 		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
 		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
-		chromatogram = new CDFChromatogram();
+		chromatogram = new CDFChromatogramMSD();
 		setChromatogramEntries(chromatogram, in, file);
 		//
 		int precision = ConverterPreferences.getPrecision();
@@ -163,15 +163,15 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 	 * @throws IonLimitExceededException
 	 * @throws AbundanceLimitExceededException
 	 */
-	private CDFChromatogram readChromatogramOverview(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored, AbundanceLimitExceededException, IonLimitExceededException {
+	private CDFChromatogramMSD readChromatogramOverview(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored, AbundanceLimitExceededException, IonLimitExceededException {
 
-		CDFChromatogram chromatogram;
+		CDFChromatogramMSD chromatogram;
 		CDFMassSpectrum massSpectrum;
 		CDFIon ion;
 		@SuppressWarnings("deprecation")
 		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
 		CDFChromatogramOverviewArrayReader in = new CDFChromatogramOverviewArrayReader(cdfChromatogram);
-		chromatogram = new CDFChromatogram();
+		chromatogram = new CDFChromatogramMSD();
 		setChromatogramEntries(chromatogram, in, file);
 		monitor.subTask(IConstants.PARSE_SCANS);
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
@@ -196,7 +196,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 	 * @param in
 	 * @param file
 	 */
-	private void setChromatogramEntries(CDFChromatogram chromatogram, IAbstractCDFChromatogramArrayReader in, File file) {
+	private void setChromatogramEntries(CDFChromatogramMSD chromatogram, IAbstractCDFChromatogramArrayReader in, File file) {
 
 		assert chromatogram != null : getClass().getName() + " The chromatogram must not be null";
 		/*

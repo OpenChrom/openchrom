@@ -15,7 +15,7 @@ import java.util.Date;
 
 import net.chemclipse.chromatogram.msd.model.core.IChromatogramMSD;
 
-public interface ICDFChromatogram extends IChromatogramMSD {
+public interface ICDFChromatogramMSD extends IChromatogramMSD {
 
 	public Date getDateOfExperiment();
 
