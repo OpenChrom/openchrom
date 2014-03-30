@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="net.chemclipse.chromatogram.fid.converter.chromatogramSupplier">
+      <ChromatogramSupplier
+            description="Reads an writes ANDI/AIA CDF Chromatograms."
+            exportConverter="net.chemclipse.chromatogram.fid.converter.supplier.cdf.converter.CDFChromatogramExportConverter"
+            fileExtension=".CDF"
+            filterName="ANDI/AIA CDF Chromatogram (*.CDF)"
+            id="net.chemclipse.chromatogram.fid.converter.supplier.cdf"
+            importConverter="net.chemclipse.chromatogram.fid.converter.supplier.cdf.converter.CDFChromatogramImportConverter"
+            isExportable="true"
+            isImportable="true">
+      </ChromatogramSupplier>
+   </extension>
+
+</plugin>
