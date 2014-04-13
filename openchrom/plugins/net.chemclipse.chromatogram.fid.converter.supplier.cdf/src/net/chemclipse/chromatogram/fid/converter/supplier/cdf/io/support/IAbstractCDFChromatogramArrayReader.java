@@ -61,11 +61,5 @@ public interface IAbstractCDFChromatogramArrayReader {
 	 */
 	public NetcdfFile getChromatogram();
 
-	/**
-	 * Returns the retention time in milliseconds for the given scan.
-	 * 
-	 * @param scan
-	 * @return int
-	 */
-	public int getScanAcquisitionTime(int scan);
+	public float getIntensity(int scan);
 }

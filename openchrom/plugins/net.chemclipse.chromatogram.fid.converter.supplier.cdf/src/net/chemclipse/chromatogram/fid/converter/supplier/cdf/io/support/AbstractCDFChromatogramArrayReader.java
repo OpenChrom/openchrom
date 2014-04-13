@@ -17,7 +17,7 @@ import net.chemclipse.chromatogram.fid.converter.supplier.cdf.exceptions.NoCDFAt
 import net.chemclipse.chromatogram.fid.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.chemclipse.chromatogram.fid.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 
-import ucar.ma2.ArrayDouble;
+import ucar.ma2.ArrayFloat;
 import ucar.nc2.Attribute;
 import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFile;
@@ -29,8 +29,8 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	private Attribute operator;
 	private Attribute date;
 	private Dimension scans;
-	private Variable valuesScanAcquisitionTime;
-	private ArrayDouble.D1 valueArrayScanAcquisitionTime;
+	private Variable valuesIntensity;
+	private ArrayFloat.D1 valueArrayIntensity;
 
 	public AbstractCDFChromatogramArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
@@ -40,11 +40,22 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 
 	private void initializeVariables() throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
+		String variable = CDFConstants.VARIABLE_ORDINATE_VALUES;
+		valuesIntensity = chromatogram.findVariable(variable);
+		if(valuesIntensity == null) {
+			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
+		}
+		//
+		String dimension = CDFConstants.DIMENSION_POINT_NUMBER;
+		scans = chromatogram.findDimension(dimension);
+		if(scans == null) {
+			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + dimension);
+		}
 		// Tests if a chromatogram has at least 2 scans.
 		if(scans.getLength() < 2) {
 			throw new NotEnoughScanDataStored();
 		}
-		valueArrayScanAcquisitionTime = (ArrayDouble.D1)valuesScanAcquisitionTime.read();
+		valueArrayIntensity = (ArrayFloat.D1)valuesIntensity.read();
 	}
 
 	// ------------------------------------------------IAbstractCDFChromatogramArrayReader
@@ -57,25 +68,13 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	@Override
 	public int getScanDelay() {
 
-		return (int)(valueArrayScanAcquisitionTime.get(0) * 1000);
+		return 0;
 	}
 
 	@Override
 	public int getScanInterval() {
 
-		double interval = 0;
-		int massSpectra = scans.getLength() / (10 * 4);
-		if(massSpectra < 2) {
-			massSpectra = 2;
-		}
-		/*
-		 * Length is greater than 1.<br/> Otherwise the class couldn't be
-		 * created without throwing an exception.
-		 */
-		for(int i = 0; i < massSpectra - 1; i++) {
-			interval += (valueArrayScanAcquisitionTime.get(i + 1) - valueArrayScanAcquisitionTime.get(i));
-		}
-		return (int)((interval / massSpectra) * 1000);
+		return 500;
 	}
 
 	@Override
@@ -105,9 +104,8 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	}
 
 	@Override
-	public int getScanAcquisitionTime(int scan) {
+	public float getIntensity(int scan) {
 
-		// Decrement scan because the array has another index.
-		return (int)(valueArrayScanAcquisitionTime.get(--scan) * 1000);
+		return valueArrayIntensity.get(scan--);
 	}
 }

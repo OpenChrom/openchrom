@@ -30,7 +30,7 @@ import net.chemclipse.chromatogram.fid.converter.supplier.cdf.exceptions.NoCDFAt
 import net.chemclipse.chromatogram.fid.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.chemclipse.chromatogram.fid.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 import net.chemclipse.chromatogram.fid.converter.supplier.cdf.internal.converter.IConstants;
-import net.chemclipse.chromatogram.fid.converter.supplier.cdf.io.support.CDFChromatogramOverviewArrayReader;
+import net.chemclipse.chromatogram.fid.converter.supplier.cdf.io.support.CDFChromtogramArrayReader;
 import net.chemclipse.chromatogram.fid.converter.supplier.cdf.io.support.DateSupport;
 import net.chemclipse.chromatogram.fid.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
 import net.chemclipse.chromatogram.fid.converter.supplier.cdf.model.CDFChromatogramFID;
@@ -127,14 +127,16 @@ public class ChromatogramReader extends AbstractChromatogramFIDReader implements
 
 		@SuppressWarnings("deprecation")
 		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
-		CDFChromatogramOverviewArrayReader in = new CDFChromatogramOverviewArrayReader(cdfChromatogram);
+		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
 		CDFChromatogramFID chromatogram = new CDFChromatogramFID();
 		setChromatogramEntries(chromatogram, in, file);
 		monitor.subTask(IConstants.PARSE_SCANS);
-		for(int i = 1; i <= in.getNumberOfScans(); i++) {
+		int retentionTime = 0;
+		for(int i = 1; i < in.getNumberOfScans(); i++) {
 			monitor.subTask(IConstants.SCAN + " " + i);
-			CDFSupplierScan scan = new CDFSupplierScan(in.getTotalSignal(i));
-			scan.setRetentionTime(in.getScanAcquisitionTime(i));
+			CDFSupplierScan scan = new CDFSupplierScan(in.getIntensity(i));
+			scan.setRetentionTime(retentionTime);
+			retentionTime += 100;
 			chromatogram.addScan(scan);
 		}
 		// Close the cdf chromatogram.
