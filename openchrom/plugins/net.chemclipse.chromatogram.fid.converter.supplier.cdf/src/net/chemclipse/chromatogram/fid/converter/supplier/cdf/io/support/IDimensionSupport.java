@@ -37,12 +37,7 @@ public interface IDimensionSupport {
 
 	void addVariableIntD1(String varName, Dimension firstDimension, int value);
 
-	// Convenience methods
-	void addVariableScanAcquisitionTime();
-
-	void addVariableActualScanNumber();
-
-	void addVariableTotalIntensity();
+	void addVariableOrdinateValues();
 
 	/**
 	 * In the array list are all data entries stored that are needed to write

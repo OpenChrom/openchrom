@@ -39,14 +39,6 @@ public interface IAbstractCDFChromatogramArrayReader {
 	public int getScanInterval();
 
 	/**
-	 * Returns the miscellaneous information string.
-	 * 
-	 * @throws NoCDFAttributeDataFound
-	 * @return String
-	 */
-	public String getMiscInfo() throws NoCDFAttributeDataFound;
-
-	/**
 	 * Returns the operator string.
 	 * 
 	 * @throws NoCDFAttributeDataFound
@@ -61,14 +53,6 @@ public interface IAbstractCDFChromatogramArrayReader {
 	 * @throws NoCDFAttributeDataFound
 	 */
 	public String getDate() throws NoCDFAttributeDataFound;
-
-	/**
-	 * Returns the time stamp of the experiment creation.
-	 * 
-	 * @return String
-	 * @throws NoCDFAttributeDataFound
-	 */
-	public String getDateOfExperiment() throws NoCDFAttributeDataFound;
 
 	/**
 	 * Returns the net cdf file.

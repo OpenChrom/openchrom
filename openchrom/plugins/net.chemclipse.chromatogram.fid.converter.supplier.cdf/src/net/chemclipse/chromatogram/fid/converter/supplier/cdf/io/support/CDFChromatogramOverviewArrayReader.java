@@ -34,7 +34,7 @@ public class CDFChromatogramOverviewArrayReader extends AbstractCDFChromatogramA
 	private void initializeVariables() throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
 		String variable;
-		variable = CDFConstants.VARIABLE_TOTAL_INTENSITY;
+		variable = CDFConstants.VARIABLE_ORDINATE_VALUES;
 		valuesTotalIntensity = getChromatogram().findVariable(variable);
 		if(valuesTotalIntensity == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);

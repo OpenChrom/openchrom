@@ -60,11 +60,9 @@ public class DimensionSupport implements IDimensionSupport {
 		// ----------
 		cdfChromatogram.addDimension(CDFConstants.DIMENSION_128_BYTE_STRING, 128);
 		cdfChromatogram.addDimension(CDFConstants.DIMENSION_255_BYTE_STRING, 255);
-		cdfChromatogram.addDimension(CDFConstants.DIMENSION_RANGE, 2);
 		// ----------
 		errorNumber = cdfChromatogram.addDimension(CDFConstants.DIMENSION_ERROR_NUMBER, 1);
-		numberOfScans = cdfChromatogram.addDimension(CDFConstants.DIMENSION_SCAN_NUMBER, chromatogram.getNumberOfScans());
-		instrumentNumber = cdfChromatogram.addDimension(CDFConstants.DIMENSION_INSTRUMENT_NUMBER, 1);
+		numberOfScans = cdfChromatogram.addDimension(CDFConstants.DIMENSION_POINT_NUMBER, chromatogram.getNumberOfScans());
 		// ----------
 	}
 
@@ -120,37 +118,9 @@ public class DimensionSupport implements IDimensionSupport {
 	}
 
 	@Override
-	public void addVariableScanAcquisitionTime() {
+	public void addVariableOrdinateValues() {
 
-		String varName = CDFConstants.VARIABLE_SCAN_ACQUISITION_TIME;
-		ArrayList<Dimension> dimension = new ArrayList<Dimension>();
-		dimension.add(numberOfScans);
-		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
-		ArrayDouble.D1 values = new ArrayDouble.D1(numberOfScans.getLength());
-		for(int i = 0; i < numberOfScans.getLength(); i++) {
-			values.set(i, chromatogram.getScan(i + 1).getRetentionTime() / 1000.0d);
-		}
-		dataEntries.add(new DataEntry(varName, values));
-	}
-
-	@Override
-	public void addVariableActualScanNumber() {
-
-		String varName = CDFConstants.VARIABLE_ACTUAL_SCAN_NUMBER;
-		ArrayList<Dimension> dimension = new ArrayList<Dimension>();
-		dimension.add(numberOfScans);
-		cdfChromatogram.addVariable(varName, DataType.INT, dimension);
-		ArrayInt.D1 values = new ArrayInt.D1(numberOfScans.getLength());
-		for(int i = 0; i < numberOfScans.getLength(); i++) {
-			values.set(i, i);
-		}
-		dataEntries.add(new DataEntry(varName, values));
-	}
-
-	@Override
-	public void addVariableTotalIntensity() {
-
-		String varName = CDFConstants.VARIABLE_TOTAL_INTENSITY;
+		String varName = CDFConstants.VARIABLE_ORDINATE_VALUES;
 		ArrayList<Dimension> dimension = new ArrayList<Dimension>();
 		dimension.add(numberOfScans);
 		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
