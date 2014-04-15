@@ -30,8 +30,6 @@ public class CDFConstants {
 	public static final String DIMENSION_ERROR_NUMBER = "error_number";
 	public static final String DIMENSION_POINT_NUMBER = "point_number";
 	//
-	public static final String VARIABLE_ORDINATE_VALUES = "ordinate_values";
-	//
 	public static final String ATTRIBUTE_DATASET_COMPLETENESS = "dataset_completeness";
 	public static final String ATTRIBUTE_AIA_TEMPLATE_REVISION = "aia_template_revision";
 	public static final String ATTRIBUTE_NETCDF_REVISION = "netcdf_revision";
@@ -41,4 +39,11 @@ public class CDFConstants {
 	public static final String ATTRIBUTE_RETENTION_UNIT = "retention_unit";
 	public static final String ATTRIBUTE_INJECTION_DATE_TIME_STAMP = "injection_date_time_stamp";
 	public static final String ATTRIBUTE_OPERATOR_NAME = "operator_name";
+	//
+	public static final String VARIABLE_DETECTOR_MAXIMUM_VALUE = "detector_maximum_value";
+	public static final String VARIABLE_DETECTOR_MINIMUM_VALUE = "detector_minimum_value";
+	public static final String VARIABLE_ACTUAL_RUN_TIME_LEGTH = "actual_run_time_length";
+	public static final String VARIABLE_ACTUAL_SAMPLING_INTERVAL = "actual_sampling_interval";
+	public static final String VARIABLE_ACTUAL_DELAY_TIME = "actual_delay_time";
+	public static final String VARIABLE_ORDINATE_VALUES = "ordinate_values";
 }

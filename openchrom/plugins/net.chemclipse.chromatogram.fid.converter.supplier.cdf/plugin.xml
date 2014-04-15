@@ -10,7 +10,7 @@
             filterName="ANDI/AIA CDF Chromatogram (*.CDF)"
             id="net.chemclipse.chromatogram.fid.converter.supplier.cdf"
             importConverter="net.chemclipse.chromatogram.fid.converter.supplier.cdf.converter.CDFChromatogramImportConverter"
-            isExportable="true"
+            isExportable="false"
             isImportable="true">
       </ChromatogramSupplier>
    </extension>

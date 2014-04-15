@@ -28,9 +28,15 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	private NetcdfFile chromatogram;
 	private Attribute operator;
 	private Attribute date;
+	private Attribute retentionUnit;
 	private Dimension scans;
 	private Variable valuesIntensity;
 	private ArrayFloat.D1 valueArrayIntensity;
+	private Variable valueScanDelayTime;
+	private Variable valueScanInterval;
+	//
+	private int scanDelay;
+	private int scanInterval;
 
 	public AbstractCDFChromatogramArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
@@ -40,7 +46,50 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 
 	private void initializeVariables() throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
-		String variable = CDFConstants.VARIABLE_ORDINATE_VALUES;
+		String variable;
+		//
+		variable = CDFConstants.VARIABLE_ACTUAL_DELAY_TIME;
+		valueScanDelayTime = chromatogram.findVariable(variable);
+		if(valueScanDelayTime == null) {
+			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
+		}
+		//
+		variable = CDFConstants.VARIABLE_ACTUAL_SAMPLING_INTERVAL;
+		valueScanInterval = chromatogram.findVariable(variable);
+		if(valueScanInterval == null) {
+			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
+		}
+		/*
+		 * Calculate the scan delay and interval.
+		 */
+		scanDelay = 0; // milliseconds
+		//
+		retentionUnit = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_RETENTION_UNIT);
+		if(retentionUnit != null) {
+			String unit = retentionUnit.getStringValue().trim();
+			double factor;
+			if(unit.equals("seconds")) {
+				factor = 1000;
+			} else if(unit.equals("minutes")) {
+				factor = 1000 * 60;
+			} else {
+				/*
+				 * Milliseconds
+				 */
+				factor = 0;
+			}
+			//
+			scanDelay = (int)(valueScanDelayTime.readScalarFloat() * factor);
+			scanInterval = (int)(valueScanInterval.readScalarFloat() * factor);
+		}
+		/*
+		 * Add a default scan interval if none has set yet.
+		 */
+		if(scanInterval == 0) {
+			scanInterval = 200; // milliseconds
+		}
+		//
+		variable = CDFConstants.VARIABLE_ORDINATE_VALUES;
 		valuesIntensity = chromatogram.findVariable(variable);
 		if(valuesIntensity == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
@@ -68,13 +117,13 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	@Override
 	public int getScanDelay() {
 
-		return 0;
+		return scanDelay;
 	}
 
 	@Override
 	public int getScanInterval() {
 
-		return 500;
+		return scanInterval;
 	}
 
 	@Override

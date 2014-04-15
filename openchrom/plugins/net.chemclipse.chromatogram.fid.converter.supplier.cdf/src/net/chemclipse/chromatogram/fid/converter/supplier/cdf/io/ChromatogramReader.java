@@ -131,12 +131,12 @@ public class ChromatogramReader extends AbstractChromatogramFIDReader implements
 		CDFChromatogramFID chromatogram = new CDFChromatogramFID();
 		setChromatogramEntries(chromatogram, in, file);
 		monitor.subTask(IConstants.PARSE_SCANS);
-		int retentionTime = 0;
+		int retentionTime = in.getScanDelay();
 		for(int i = 1; i < in.getNumberOfScans(); i++) {
 			monitor.subTask(IConstants.SCAN + " " + i);
 			CDFSupplierScan scan = new CDFSupplierScan(in.getIntensity(i));
 			scan.setRetentionTime(retentionTime);
-			retentionTime += 100;
+			retentionTime += in.getScanInterval();
 			chromatogram.addScan(scan);
 		}
 		// Close the cdf chromatogram.
