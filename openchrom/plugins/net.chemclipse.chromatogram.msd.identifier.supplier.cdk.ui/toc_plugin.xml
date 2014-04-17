@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="CDK Identifier Support" link_to="../net.chemclipse.rcp.ui/toc.xml#identifier">
+<toc label="CDK Identifier Support" link_to="../net.chemclipse.ux.ui/toc.xml#identifier">
 	<topic label="CDK Identifier Support"  href="html/cdksupport/main.html"/>
 </toc>
