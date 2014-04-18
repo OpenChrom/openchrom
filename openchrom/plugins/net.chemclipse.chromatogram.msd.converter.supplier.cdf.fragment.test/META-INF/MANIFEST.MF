@@ -7,4 +7,4 @@ Fragment-Host: net.chemclipse.chromatogram.msd.converter.supplier.cdf;bundle-ver
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.junit;bundle-version="4.10.0",
  net.chemclipse.thirdpartylibraries.junitaddons;bundle-version="1.4.0"
-Bundle-Vendor: ChemClipse
+Bundle-Vendor: OpenChrom
