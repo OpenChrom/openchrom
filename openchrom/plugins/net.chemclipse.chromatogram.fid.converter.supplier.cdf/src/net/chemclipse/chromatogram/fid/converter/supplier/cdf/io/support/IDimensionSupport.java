@@ -23,8 +23,6 @@ public interface IDimensionSupport {
 
 	Dimension getNumberOfScans();
 
-	Dimension getNumberOfScanIons();
-
 	Dimension getInstrumentNumber();
 
 	Dimension getErrorNumber();

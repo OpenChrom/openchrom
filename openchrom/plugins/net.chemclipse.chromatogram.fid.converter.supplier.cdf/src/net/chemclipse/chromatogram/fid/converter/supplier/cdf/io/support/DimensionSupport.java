@@ -36,7 +36,6 @@ public class DimensionSupport implements IDimensionSupport {
 	private Dimension byteString32;
 	private Dimension byteString64;
 	private Dimension numberOfScans;
-	private Dimension numberOfScanIons;
 	private Dimension instrumentNumber;
 	private Dimension errorNumber;
 
@@ -154,12 +153,6 @@ public class DimensionSupport implements IDimensionSupport {
 	public Dimension getNumberOfScans() {
 
 		return numberOfScans;
-	}
-
-	@Override
-	public Dimension getNumberOfScanIons() {
-
-		return numberOfScanIons;
 	}
 
 	@Override

@@ -132,7 +132,8 @@ public class ChromatogramReader extends AbstractChromatogramFIDReader implements
 		setChromatogramEntries(chromatogram, in, file);
 		monitor.subTask(IConstants.PARSE_SCANS);
 		int retentionTime = in.getScanDelay();
-		for(int i = 1; i < in.getNumberOfScans(); i++) {
+		int scans = in.getNumberOfScans();
+		for(int i = 0; i < scans; i++) {
 			monitor.subTask(IConstants.SCAN + " " + i);
 			CDFSupplierScan scan = new CDFSupplierScan(in.getIntensity(i));
 			scan.setRetentionTime(retentionTime);
