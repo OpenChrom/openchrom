@@ -12,29 +12,8 @@
 package net.chemclipse.chromatogram.fid.converter.supplier.cdf.model;
 
 import net.chemclipse.chromatogram.fid.model.core.AbstractChromatogramFID;
-import net.chemclipse.chromatogram.model.noise.ISimpleNoiseFactorCalculator;
-import net.chemclipse.chromatogram.model.noise.SimpleNoiseFactorCalculator;
 
 public class CDFChromatogramFID extends AbstractChromatogramFID implements ICDFChromatogramFID {
-
-	private ISimpleNoiseFactorCalculator noiseFactorCalculator;
-
-	public CDFChromatogramFID() {
-
-		noiseFactorCalculator = new SimpleNoiseFactorCalculator();
-	}
-
-	@Override
-	public void recalculateTheNoiseFactor() {
-
-		noiseFactorCalculator.recalculate();
-	}
-
-	@Override
-	public float getNoiseFactor() {
-
-		return noiseFactorCalculator.getNoiseFactor(this);
-	}
 
 	@Override
 	public String getName() {
