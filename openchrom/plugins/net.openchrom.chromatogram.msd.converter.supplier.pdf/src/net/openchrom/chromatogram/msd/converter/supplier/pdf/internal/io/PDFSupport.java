@@ -265,7 +265,7 @@ public class PDFSupport {
 		 */
 		ITotalScanSignalExtractor totalIonSignalExtractor = new TotalScanSignalExtractor(chromatogram);
 		ITotalScanSignals scans = totalIonSignalExtractor.getTotalScanSignals();
-		for(ITotalScanSignal scan : scans.getTotalIonSignals()) {
+		for(ITotalScanSignal scan : scans.getTotalScanSignals()) {
 			int rt = scan.getRetentionTime();
 			float abundance = scan.getTotalSignal();
 			double x = calculateRetentionTime(rt, width);
