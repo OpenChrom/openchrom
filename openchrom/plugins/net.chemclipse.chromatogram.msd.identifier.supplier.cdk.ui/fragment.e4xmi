@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_F2IcYDzAEeO9Cpf0lomO-Q">
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_F2IcYDzAEeO9Cpf0lomO-Q">
   <imports xsi:type="basic:Part" xmi:id="_tNtJoE0cEeO5B_4ZxeFNDw" elementId="net.chemclipse.ux.extension.chromatogram.msd.ui.part.peakListView"/>
   <imports xsi:type="basic:Part" xmi:id="_vxCpEE0cEeO5B_4ZxeFNDw" elementId="net.chemclipse.ux.extension.chromatogram.msd.ui.part.peakMassSpectrumView"/>
   <imports xsi:type="basic:Part" xmi:id="_V_b-MFE4EeONNIp3wMDeNw" elementId="net.chemclipse.ux.extension.chromatogram.msd.ui.part.peakView"/>
@@ -52,14 +52,21 @@
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_n7XwoEuYEeObU4sRRHzsFQ" featurename="children" parentElementId="net.chemclipse.ux.extension.chromatogram.ui.menu.identifier">
     <elements xsi:type="menu:Menu" xmi:id="__3jPIFE5EeONNIp3wMDeNw" elementId="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.menu" label="SMILES">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="__amMQNHAEeOth5MieMM9oQ" coreExpressionId="net.chemclipse.ux.extension.chromatogram.ui.definition.isChromatogramTypeMSD"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_zbxU4EucEeObU4sRRHzsFQ" elementId="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.handledmenuitem.calculateSmilesFormulaPeaks" label="Calculate SMILES (Peaks)" iconURI="platform:/plugin/net.chemclipse.rcp.ui.icons/icons/16x16/cdkPeaks.gif" command="_X6kCoEucEeObU4sRRHzsFQ"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_wmuT8FE6EeONNIp3wMDeNw" elementId="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.handledmenuitem.calculateSmilesFormulaSelectedPeak" label="Calculate SMILES (Selected Peak)" iconURI="platform:/plugin/net.chemclipse.rcp.ui.icons/icons/16x16/cdkPeak.gif" command="_UeyY4FE6EeONNIp3wMDeNw"/>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_8Ch54F8lEeO0jaPdEWKOew" elementId="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.handledmenuitem.deleteIdentificationsWithoutFormula" label="Delete Identifications Without Formula (Peaks)" iconURI="platform:/plugin/net.chemclipse.rcp.ui.icons/icons/16x16/cdkDelete.gif" command="_rcLLoF8lEeO0jaPdEWKOew"/>
     </elements>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_5Iqa4ItFEeO8CoomAalyqA" featurename="children" parentElementId="net.chemclipse.ux.extension.chromatogram.ui.toolbar.identifier">
-    <elements xsi:type="menu:HandledToolItem" xmi:id="_8_UjYItFEeO8CoomAalyqA" elementId="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.handledtoolitem.calculateSmilesFormulaPeaks" label="Calculate SMILES (Peaks)" iconURI="platform:/plugin/net.chemclipse.rcp.ui.icons/icons/16x16/cdkPeaks.gif" command="_X6kCoEucEeObU4sRRHzsFQ"/>
-    <elements xsi:type="menu:HandledToolItem" xmi:id="_D02QwItGEeO8CoomAalyqA" elementId="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.handledtoolitem.calculateSmilesFormulaSelectedPeak" label="Calculate SMILES (Selected Peak)" iconURI="platform:/plugin/net.chemclipse.rcp.ui.icons/icons/16x16/cdkPeak.gif" command="_UeyY4FE6EeONNIp3wMDeNw"/>
-    <elements xsi:type="menu:HandledToolItem" xmi:id="_EMulQItGEeO8CoomAalyqA" elementId="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.handledtoolitem.deleteIdentificationsWithoutFormula" label="Delete Identifications Without Formula (Peaks)" iconURI="platform:/plugin/net.chemclipse.rcp.ui.icons/icons/16x16/cdkDelete.gif" command="_rcLLoF8lEeO0jaPdEWKOew"/>
+    <elements xsi:type="menu:HandledToolItem" xmi:id="_8_UjYItFEeO8CoomAalyqA" elementId="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.handledtoolitem.calculateSmilesFormulaPeaks" label="Calculate SMILES (Peaks)" iconURI="platform:/plugin/net.chemclipse.rcp.ui.icons/icons/16x16/cdkPeaks.gif" command="_X6kCoEucEeObU4sRRHzsFQ">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="__2SpwNHAEeOth5MieMM9oQ" coreExpressionId="net.chemclipse.ux.extension.chromatogram.ui.definition.isChromatogramTypeMSD"/>
+    </elements>
+    <elements xsi:type="menu:HandledToolItem" xmi:id="_D02QwItGEeO8CoomAalyqA" elementId="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.handledtoolitem.calculateSmilesFormulaSelectedPeak" label="Calculate SMILES (Selected Peak)" iconURI="platform:/plugin/net.chemclipse.rcp.ui.icons/icons/16x16/cdkPeak.gif" command="_UeyY4FE6EeONNIp3wMDeNw">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_APZGQNHBEeOth5MieMM9oQ" coreExpressionId="net.chemclipse.ux.extension.chromatogram.ui.definition.isChromatogramTypeMSD"/>
+    </elements>
+    <elements xsi:type="menu:HandledToolItem" xmi:id="_EMulQItGEeO8CoomAalyqA" elementId="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.handledtoolitem.deleteIdentificationsWithoutFormula" label="Delete Identifications Without Formula (Peaks)" iconURI="platform:/plugin/net.chemclipse.rcp.ui.icons/icons/16x16/cdkDelete.gif" command="_rcLLoF8lEeO0jaPdEWKOew">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_AiAgQNHBEeOth5MieMM9oQ" coreExpressionId="net.chemclipse.ux.extension.chromatogram.ui.definition.isChromatogramTypeMSD"/>
+    </elements>
   </fragments>
 </fragment:ModelFragments>
