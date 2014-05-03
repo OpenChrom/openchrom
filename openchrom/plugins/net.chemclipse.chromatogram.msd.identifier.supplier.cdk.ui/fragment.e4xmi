@@ -2,7 +2,7 @@
 <fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_F2IcYDzAEeO9Cpf0lomO-Q">
   <imports xsi:type="basic:Part" xmi:id="_tNtJoE0cEeO5B_4ZxeFNDw" elementId="net.chemclipse.ux.extension.chromatogram.msd.ui.part.peakListView"/>
   <imports xsi:type="basic:Part" xmi:id="_vxCpEE0cEeO5B_4ZxeFNDw" elementId="net.chemclipse.ux.extension.chromatogram.msd.ui.part.peakMassSpectrumView"/>
-  <imports xsi:type="basic:Part" xmi:id="_V_b-MFE4EeONNIp3wMDeNw" elementId="net.chemclipse.ux.extension.chromatogram.msd.ui.part.peakView"/>
+  <imports xsi:type="basic:Part" xmi:id="_V_b-MFE4EeONNIp3wMDeNw" elementId="net.chemclipse.ux.extension.chromatogram.msd.ui.part.peakMSDView"/>
   <imports xsi:type="basic:Part" xmi:id="_eugnIFE4EeONNIp3wMDeNw" elementId="net.chemclipse.ux.extension.chromatogram.msd.ui.part.peakTargetsView"/>
   <imports xsi:type="advanced:Area" xmi:id="_258_kJiWEeOY7ZqVhGnKxQ" elementId="net.chemclipse.rcp.app.ui.editor"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_BXwhsDzCEeO9Cpf0lomO-Q" featurename="sharedElements" parentElementId="net.chemclipse.rcp.app.ui.trimmedwindow.main">
