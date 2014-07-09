@@ -7,7 +7,7 @@ package net.openchrom.chromatogram.msd.converter.supplier.pdf.internal.support;
 
 import java.io.File;
 import net.chemclipse.logging.core.Logger;
-import net.chemclipse.support.settings.ChemClipseApplicationSettings;
+import net.chemclipse.support.settings.ApplicationSettings;
 
 public class PathHelper {
 
@@ -22,7 +22,7 @@ public class PathHelper {
 	 */
 	public static File getStoragePath() {
 
-		File file = new File(ChemClipseApplicationSettings.getSettingsDirectory().getAbsolutePath() + File.separator + PDF_CONVERTER);
+		File file = new File(ApplicationSettings.getSettingsDirectory().getAbsolutePath() + File.separator + PDF_CONVERTER);
 		/*
 		 * Create the directory if it not exists.
 		 */
