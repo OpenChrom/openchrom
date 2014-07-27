@@ -10,3 +10,6 @@ openchrom/features/net.openchrom.chromatogram.msd.comparison.supplier.pbm.featur
 openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.ui/target/
 openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm/target/
 openchrom/sites/net.openchrom.chromatogram.msd.comparison.supplier.pbm.updateSite/target/
+openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test/Openchrom.log
+openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test/Openchrom.log*
+openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test/*.log
