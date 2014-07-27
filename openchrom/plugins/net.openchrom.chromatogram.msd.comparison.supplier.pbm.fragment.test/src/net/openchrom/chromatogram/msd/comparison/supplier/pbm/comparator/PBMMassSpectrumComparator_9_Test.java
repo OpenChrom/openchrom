@@ -15,7 +15,7 @@ import net.chemclipse.chromatogram.msd.comparison.processing.IMassSpectrumCompar
 import net.chemclipse.chromatogram.msd.model.core.IMassSpectrum;
 import net.chemclipse.chromatogram.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
 
-public class PBMMassSpectrumComparator_2_Test extends MassSpectrumSetTestCase {
+public class PBMMassSpectrumComparator_9_Test extends MassSpectrumSetTestCase {
 
 	private PBMMassSpectrumComparator comparator;
 	private IMassSpectrumComparatorProcessingInfo processingInfo;
@@ -27,7 +27,7 @@ public class PBMMassSpectrumComparator_2_Test extends MassSpectrumSetTestCase {
 		super.setUp();
 		//
 		IMassSpectrum unknown = sinapylAclohol.getMassSpectrum();
-		IMassSpectrum reference = benzenepropanoicAcid.getMassSpectrum();
+		IMassSpectrum reference = sinapylAclohol.getMassSpectrum();
 		//
 		comparator = new PBMMassSpectrumComparator();
 		processingInfo = comparator.compare(unknown, reference);
@@ -47,11 +47,11 @@ public class PBMMassSpectrumComparator_2_Test extends MassSpectrumSetTestCase {
 
 	public void test2() {
 
-		assertEquals(59.59803f, result.getMatchFactor());
+		assertEquals(100.0f, result.getMatchFactor());
 	}
 
 	public void test3() {
 
-		assertEquals(59.59196f, result.getReverseMatchFactor());
+		assertEquals(100.0f, result.getReverseMatchFactor());
 	}
 }

@@ -1,84 +1,57 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2014 Philip (eselmeister) Wenig.
+ * Copyright (c) 2014 Dr. Philip Wenig.
  * 
- * All rights reserved.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
-import net.chemclipse.chromatogram.msd.comparison.exceptions.ComparisonException;
-import net.chemclipse.chromatogram.msd.comparison.massspectrum.MassSpectrumComparator;
 import net.chemclipse.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
-import net.chemclipse.chromatogram.msd.model.core.IIon;
 import net.chemclipse.chromatogram.msd.model.core.IMassSpectrum;
 import net.chemclipse.chromatogram.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
-import net.chemclipse.chromatogram.msd.model.implementation.DefaultIon;
-import net.chemclipse.chromatogram.msd.model.implementation.DefaultMassSpectrum;
-import junit.framework.TestCase;
 
-public class PBMMassSpectrumComparator_5_Test extends TestCase {
+public class PBMMassSpectrumComparator_5_Test extends MassSpectrumSetTestCase {
 
+	private PBMMassSpectrumComparator comparator;
+	private IMassSpectrumComparatorProcessingInfo processingInfo;
 	private IMassSpectrumComparisonResult result;
-	private IMassSpectrum unknown;
-	private IMassSpectrum reference;
-	private IIon ion;
 
 	@Override
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		/*
-		 * Unknown
-		 */
-		unknown = new DefaultMassSpectrum();
-		ion = new DefaultIon(45.5f, 4000.0f);
-		unknown.addIon(ion);
-		ion = new DefaultIon(55.5f, 4000.0f);
-		unknown.addIon(ion);
-		ion = new DefaultIon(85.5f, 4000.0f);
-		unknown.addIon(ion);
-		ion = new DefaultIon(95.5f, 4000.0f);
-		unknown.addIon(ion);
-		ion = new DefaultIon(105.5f, 4000.0f);
-		unknown.addIon(ion);
-		/*
-		 * Reference
-		 */
-		reference = new DefaultMassSpectrum();
-		ion = new DefaultIon(45.5f, 4000.0f);
-		reference.addIon(ion);
-		ion = new DefaultIon(55.5f, 4000.0f);
-		reference.addIon(ion);
-		ion = new DefaultIon(85.5f, 4000.0f);
-		reference.addIon(ion);
-		ion = new DefaultIon(95.5f, 4000.0f);
-		reference.addIon(ion);
-		ion = new DefaultIon(105.5f, 4000.0f);
-		reference.addIon(ion);
-		IMassSpectrumComparatorProcessingInfo processingInfo = MassSpectrumComparator.compare(unknown, reference, PBMMassSpectrumComparator.COMPARATOR_ID);
+		//
+		IMassSpectrum unknown = noMatchA1.getMassSpectrum();
+		IMassSpectrum reference = noMatchA2.getMassSpectrum();
+		//
+		comparator = new PBMMassSpectrumComparator();
+		processingInfo = comparator.compare(unknown, reference);
 		result = processingInfo.getMassSpectrumComparisonResult();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 
-		unknown = null;
-		reference = null;
-		ion = null;
 		super.tearDown();
 	}
 
-	public void testGetMatchFactor_1() throws ComparisonException {
+	public void test1() {
 
-		assertEquals("MatchFactor", 100.0f, result.getMatchFactor());
+		assertFalse(processingInfo.hasErrorMessages());
 	}
 
-	public void testGetReverseMatchFactor_1() throws ComparisonException {
+	public void test2() {
 
-		assertEquals("ReverseMatchFactor", 100.0f, result.getReverseMatchFactor());
+		assertEquals(0.0f, result.getMatchFactor());
 	}
 
-	public void testGetProbability_1() throws ComparisonException {
+	public void test3() {
 
-		assertEquals("Probability", 0.0f, result.getProbability());
+		assertEquals(0.0f, result.getReverseMatchFactor());
 	}
 }
