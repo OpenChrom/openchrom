@@ -9,7 +9,7 @@ import net.chemclipse.chromatogram.model.exceptions.AbundanceLimitExceededExcept
 import net.chemclipse.chromatogram.msd.comparison.massspectrum.AbstractMassSpectrumComparator;
 import net.chemclipse.chromatogram.msd.comparison.massspectrum.IMassSpectrumComparator;
 import net.chemclipse.chromatogram.msd.comparison.math.GeometricDistanceCalculator;
-import net.chemclipse.chromatogram.msd.comparison.math.IDistanceCalculator;
+import net.chemclipse.chromatogram.msd.comparison.math.IMatchCalculator;
 import net.chemclipse.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
 import net.chemclipse.chromatogram.msd.comparison.processing.MassSpectrumComparatorProcessingInfo;
 import net.openchrom.chromatogram.msd.comparison.supplier.pbm.results.PBMMassSpectrumComparisonResult;
@@ -43,20 +43,18 @@ public class PBMMassSpectrumComparator extends AbstractMassSpectrumComparator im
 		if(processingInfoValidate.hasErrorMessages()) {
 			processingInfo.addMessages(processingInfoValidate);
 		} else {
-			IExtractedIonSignal signal;
-			IDistanceCalculator geometricDistanceCalculator = new GeometricDistanceCalculator();
+			IMatchCalculator geometricDistanceCalculator = new GeometricDistanceCalculator();
 			IMassSpectrum unknownAdjusted = adjustMassSpectrum(unknown);
 			IMassSpectrum referenceAdjusted = adjustMassSpectrum(reference);
 			/*
-			 * Match Factor
+			 * Match Factor, Reverse Match Factor
+			 * Internally the match is normalized to 1, but a percentage value is used normally.
 			 */
-			signal = unknownAdjusted.getExtractedIonSignal();
-			float matchFactor = geometricDistanceCalculator.calculate(unknownAdjusted, referenceAdjusted, signal.getIonRange()) * 100; // internally it's normalized to 1, but a percentage value is used normally
-			/*
-			 * Reverse Match Factor
-			 */
-			signal = referenceAdjusted.getExtractedIonSignal();
-			float reverseMatchFactor = geometricDistanceCalculator.calculate(referenceAdjusted, unknownAdjusted, signal.getIonRange()) * 100; // internally it's normalized to 1, but a percentage value is used normally
+			IExtractedIonSignal signalU = unknownAdjusted.getExtractedIonSignal();
+			IExtractedIonSignal signalR = referenceAdjusted.getExtractedIonSignal();
+			//
+			float matchFactor = geometricDistanceCalculator.calculate(unknownAdjusted, referenceAdjusted, signalU.getIonRange()) * 100;
+			float reverseMatchFactor = geometricDistanceCalculator.calculate(referenceAdjusted, unknownAdjusted, signalR.getIonRange()) * 100;
 			/*
 			 * Result
 			 */
