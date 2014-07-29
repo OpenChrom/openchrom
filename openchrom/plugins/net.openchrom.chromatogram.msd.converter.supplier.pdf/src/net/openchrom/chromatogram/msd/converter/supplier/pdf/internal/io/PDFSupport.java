@@ -144,8 +144,6 @@ public class PDFSupport {
 		yPosition += L_5_MM;
 		createUpperBoxText(page, box, "Ions: " + chromatogram.getNumberOfScanIons(), yPosition);
 		yPosition += L_5_MM;
-		createUpperBoxText(page, box, "Noise Factor: " + chromatogram.getNoiseFactor(), yPosition);
-		yPosition += L_5_MM;
 		createUpperBoxText(page, box, "Scan Delay: " + decimalFormat.format(chromatogram.getScanDelay() / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR) + " Minutes = " + chromatogram.getScanDelay() + " Milliseconds", yPosition);
 		yPosition += L_5_MM;
 		createUpperBoxText(page, box, "Scan Interval: " + decimalFormat.format(chromatogram.getScanInterval() / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR) + " Minutes = " + chromatogram.getScanInterval() + " Milliseconds", yPosition);
