@@ -59,10 +59,5 @@ public class CDFChromatogramReader_OP17760_3_ITest extends TestCase {
 		assertEquals("stopRetentionTime", 4439858, chromatogram.getStopRetentionTime());
 		assertEquals("minSignal", 17475.0f, chromatogram.getMinSignal());
 		assertEquals("maxSignal", 9571087.0f, chromatogram.getMaxSignal());
-		assertEquals("noiseFactor", 1.9135344f, chromatogram.getNoiseFactor());
-		/*
-		 * Test it twice to ensure that the buffer mechanism works.
-		 */
-		assertEquals("noiseFactor", 1.9135344f, chromatogram.getNoiseFactor());
 	}
 }
