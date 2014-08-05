@@ -2,20 +2,20 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ui
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.converter.supplier.pdf.ui;singleton:=true
-Bundle-Version: 0.9.0.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.openchrom.chromatogram.msd.converter.supplier.pdf.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- net.openchrom.chromatogram.msd.converter.supplier.pdf;bundle-version="0.9.0",
- net.openchrom.keys;bundle-version="0.9.0",
- net.chemclipse.chromatogram.msd.model;bundle-version="0.9.0",
- net.chemclipse.support.ui;bundle-version="0.9.0",
+ net.openchrom.chromatogram.msd.converter.supplier.pdf;bundle-version="1.0.0",
+ net.openchrom.keys;bundle-version="1.0.0",
+ net.chemclipse.chromatogram.msd.model;bundle-version="1.0.0",
+ net.chemclipse.support.ui;bundle-version="1.0.0",
  org.eclipse.e4.ui.model.workbench;bundle-version="0.10.1",
  org.eclipse.e4.ui.services;bundle-version="0.10.2",
  javax.inject;bundle-version="1.0.0",
  org.eclipse.e4.core.di;bundle-version="1.2.0", 
- net.openchrom.keys.ui;bundle-version="0.9.0"
+ net.openchrom.keys.ui;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.event;version="1.3.0"
