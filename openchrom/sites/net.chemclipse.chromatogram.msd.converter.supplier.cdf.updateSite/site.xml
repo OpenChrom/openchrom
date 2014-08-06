@@ -3,7 +3,7 @@
    <description name="NetCDF Chromatogram Converter" url="http://www.chemclipse.net/plugins/converter/netcdf/update">
       This is a netCDF chromatogram converter.
    </description>
-   <feature url="features/net.chemclipse.chromatogram.msd.converter.supplier.cdf.feature_0.9.0.qualifier.jar" id="net.chemclipse.chromatogram.msd.converter.supplier.cdf.feature" version="0.9.0.qualifier">
+   <feature url="features/net.chemclipse.chromatogram.msd.converter.supplier.cdf.feature_1.0.0.qualifier.jar" id="net.chemclipse.chromatogram.msd.converter.supplier.cdf.feature" version="1.0.0.qualifier">
       <category name="net.chemclipse.chromatogram.msd.plugins.converter"/>
    </feature>
    <category-def name="net.chemclipse.chromatogram.msd.plugins.converter" label="Chromatogram Converter"/>
