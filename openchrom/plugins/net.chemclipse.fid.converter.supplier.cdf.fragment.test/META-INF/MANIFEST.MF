@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test
+Bundle-SymbolicName: net.chemclipse.fid.converter.supplier.cdf.fragment.test
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: OpenChrom
+Fragment-Host: net.chemclipse.fid.converter.supplier.cdf;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit;bundle-version="4.11.0"
