@@ -19,7 +19,7 @@ public class BundleProductPreferences extends AbstractBundleProductPreferences i
 	/*
 	 * FULL VERSION
 	 */
-	private static final String PRODUCT_ID = "net.openchrom.msd.converter.supplier.pdf";
+	private static final String PRODUCT_ID = "net.openchrom.chromatogram.msd.converter.supplier.pdf";
 	public static final String CONVERTER_ID = "net.openchrom.msd.converter.supplier.pdf";
 	private static final int TRIAL_DAYS = 30;
 
