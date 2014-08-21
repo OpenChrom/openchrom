@@ -25,10 +25,10 @@ import com.pdfjet.Point;
 import com.pdfjet.RGB;
 import com.pdfjet.TextLine;
 
-import net.chemclipse.chromatogram.model.signals.ITotalScanSignal;
-import net.chemclipse.chromatogram.model.signals.ITotalScanSignalExtractor;
-import net.chemclipse.chromatogram.model.signals.ITotalScanSignals;
-import net.chemclipse.chromatogram.model.signals.TotalScanSignalExtractor;
+import net.chemclipse.model.signals.ITotalScanSignal;
+import net.chemclipse.model.signals.ITotalScanSignalExtractor;
+import net.chemclipse.model.signals.ITotalScanSignals;
+import net.chemclipse.model.signals.TotalScanSignalExtractor;
 import net.chemclipse.msd.model.core.AbstractChromatogramMSD;
 import net.chemclipse.msd.model.core.IChromatogramMSD;
 
