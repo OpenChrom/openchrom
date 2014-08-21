@@ -36,8 +36,8 @@ import net.chemclipse.fid.converter.supplier.cdf.io.support.IAbstractCDFChromato
 import net.chemclipse.fid.converter.supplier.cdf.model.CDFChromatogramFID;
 import net.chemclipse.fid.converter.supplier.cdf.model.CDFSupplierScan;
 import net.chemclipse.fid.model.core.IChromatogramFID;
-import net.chemclipse.chromatogram.model.core.IChromatogramOverview;
-import net.chemclipse.chromatogram.model.exceptions.AbundanceLimitExceededException;
+import net.chemclipse.model.core.IChromatogramOverview;
+import net.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import net.chemclipse.logging.core.Logger;
 
 public class ChromatogramReader extends AbstractChromatogramFIDReader implements IChromatogramFIDReader {

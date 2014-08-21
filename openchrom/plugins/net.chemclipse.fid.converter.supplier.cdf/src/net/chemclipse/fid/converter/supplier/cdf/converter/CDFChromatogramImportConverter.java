@@ -25,7 +25,7 @@ import net.chemclipse.fid.converter.supplier.cdf.internal.converter.IConstants;
 import net.chemclipse.fid.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.chemclipse.fid.converter.supplier.cdf.io.ChromatogramReader;
 import net.chemclipse.fid.model.core.IChromatogramFID;
-import net.chemclipse.chromatogram.model.core.IChromatogramOverview;
+import net.chemclipse.model.core.IChromatogramOverview;
 import net.chemclipse.logging.core.Logger;
 import net.chemclipse.processing.core.IProcessingInfo;
 
