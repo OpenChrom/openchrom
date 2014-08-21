@@ -15,8 +15,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.chemclipse.chromatogram.model.identifier.ILibraryInformation;
-import net.chemclipse.chromatogram.model.targets.IPeakTarget;
+import net.chemclipse.model.identifier.ILibraryInformation;
+import net.chemclipse.model.targets.IPeakTarget;
 import net.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import net.chemclipse.msd.model.core.identifier.peak.IPeakIdentificationEntry;
 import net.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;

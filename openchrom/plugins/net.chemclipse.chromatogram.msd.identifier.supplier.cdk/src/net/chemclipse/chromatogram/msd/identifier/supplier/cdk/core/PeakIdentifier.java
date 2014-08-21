@@ -20,8 +20,8 @@ import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
 import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
 import uk.ac.cam.ch.wwmm.opsin.OpsinResult;
 
-import net.chemclipse.chromatogram.model.identifier.ILibraryInformation;
-import net.chemclipse.chromatogram.model.targets.IPeakTarget;
+import net.chemclipse.model.identifier.ILibraryInformation;
+import net.chemclipse.model.targets.IPeakTarget;
 import net.chemclipse.chromatogram.msd.identifier.peak.AbstractPeakIdentifier;
 import net.chemclipse.chromatogram.msd.identifier.processing.IPeakIdentifierProcessingInfo;
 import net.chemclipse.chromatogram.msd.identifier.processing.PeakIdentifierProcessingInfo;

@@ -7,8 +7,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.chemclipse.chromatogram.msd.identifier.supplier.cdk.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
- net.chemclipse.chromatogram.model;bundle-version="1.0.0",
- net.chemclipse.chromatogram.msd.model;bundle-version="1.0.0",
+ net.chemclipse.model;bundle-version="1.0.0",
+ net.chemclipse.msd.model;bundle-version="1.0.0",
  net.chemclipse.logging;bundle-version="1.0.0",
  net.chemclipse.thirdpartylibraries.opsin;bundle-version="1.5.0",
  net.chemclipse.chromatogram.msd.identifier;bundle-version="1.0.0",
