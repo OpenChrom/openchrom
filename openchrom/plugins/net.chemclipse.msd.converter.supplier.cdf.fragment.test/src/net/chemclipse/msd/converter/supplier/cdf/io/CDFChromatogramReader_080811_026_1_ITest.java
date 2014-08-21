@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.chemclipse.msd.converter.supplier.cdf.io;
 
-import net.chemclipse.chromatogram.model.signals.ITotalScanSignals;
+import net.chemclipse.model.signals.ITotalScanSignals;
 import net.chemclipse.msd.converter.supplier.cdf.TestPathHelper;
 import net.chemclipse.msd.model.core.IMassSpectrum;
 import net.chemclipse.msd.model.xic.IExtractedIonSignals;

@@ -13,7 +13,7 @@ package net.chemclipse.msd.converter.supplier.cdf.io.support;
 
 import java.io.IOException;
 
-import net.chemclipse.chromatogram.model.exceptions.AbundanceLimitExceededException;
+import net.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import net.chemclipse.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.chemclipse.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
 import net.chemclipse.msd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;

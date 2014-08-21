@@ -16,7 +16,7 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import net.chemclipse.chromatogram.model.exceptions.ChromatogramIsNullException;
+import net.chemclipse.model.exceptions.ChromatogramIsNullException;
 import net.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
 import net.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import net.chemclipse.msd.model.core.IChromatogramMSD;

@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Eclipse-RegisterBuddy: 	net.chemclipse.chromatogram.model, net.chemclipse.chromatogram.msd.model, net.chemclipse.thirdpartylibraries.netcdf, net.chemclipse.thirdpartylibraries.junitaddons
+Eclipse-RegisterBuddy: 	net.chemclipse.model, net.chemclipse.msd.model, net.chemclipse.thirdpartylibraries.netcdf, net.chemclipse.thirdpartylibraries.junitaddons
 Bundle-ManifestVersion: 2
 Bundle-Name: Cdf Plug-in
 Bundle-SymbolicName: net.chemclipse.msd.converter.supplier.cdf;singleton:=true
@@ -7,11 +7,11 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.chemclipse.msd.converter.supplier.cdf.Activator
 Require-Bundle: org.eclipse.core.runtime,
  net.chemclipse.msd.converter;bundle-version="1.0.0",
- net.chemclipse.chromatogram.msd.model;bundle-version="1.0.0",
+ net.chemclipse.msd.model;bundle-version="1.0.0",
  net.chemclipse.logging;bundle-version="1.0.0",
  net.chemclipse.processing;bundle-version="1.0.0",
- net.chemclipse.chromatogram.converter;bundle-version="1.0.0",
- net.chemclipse.chromatogram.model;bundle-version="1.0.0",
+ net.chemclipse.converter;bundle-version="1.0.0",
+ net.chemclipse.model;bundle-version="1.0.0",
  net.chemclipse.thirdpartylibraries.netcdf;bundle-version="4.3.19"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

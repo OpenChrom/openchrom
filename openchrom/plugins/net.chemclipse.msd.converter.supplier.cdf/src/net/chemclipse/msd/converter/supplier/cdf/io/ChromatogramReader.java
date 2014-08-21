@@ -24,8 +24,8 @@ import ucar.nc2.NetcdfFile;
 
 import net.chemclipse.converter.exceptions.FileIsEmptyException;
 import net.chemclipse.converter.exceptions.FileIsNotReadableException;
-import net.chemclipse.chromatogram.model.core.IChromatogramOverview;
-import net.chemclipse.chromatogram.model.exceptions.AbundanceLimitExceededException;
+import net.chemclipse.model.core.IChromatogramOverview;
+import net.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import net.chemclipse.msd.converter.io.AbstractChromatogramMSDReader;
 import net.chemclipse.msd.converter.io.IChromatogramMSDReader;
 import net.chemclipse.msd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;

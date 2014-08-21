@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.chemclipse.converter.processing.chromatogram.ChromatogramOverviewImportConverterProcessingInfo;
 import net.chemclipse.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
-import net.chemclipse.chromatogram.model.core.IChromatogramOverview;
+import net.chemclipse.model.core.IChromatogramOverview;
 import net.chemclipse.msd.converter.chromatogram.AbstractChromatogramMSDImportConverter;
 import net.chemclipse.msd.converter.io.IChromatogramMSDReader;
 import net.chemclipse.msd.converter.processing.chromatogram.ChromatogramMSDImportConverterProcessingInfo;

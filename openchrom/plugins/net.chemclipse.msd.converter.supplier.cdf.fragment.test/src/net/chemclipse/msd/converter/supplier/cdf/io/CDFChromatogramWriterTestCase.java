@@ -16,8 +16,8 @@ import java.io.File;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.chemclipse.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
-import net.chemclipse.chromatogram.model.signals.ITotalScanSignalExtractor;
-import net.chemclipse.chromatogram.model.signals.TotalScanSignalExtractor;
+import net.chemclipse.model.signals.ITotalScanSignalExtractor;
+import net.chemclipse.model.signals.TotalScanSignalExtractor;
 import net.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
 import net.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import net.chemclipse.msd.model.core.IChromatogramMSD;
