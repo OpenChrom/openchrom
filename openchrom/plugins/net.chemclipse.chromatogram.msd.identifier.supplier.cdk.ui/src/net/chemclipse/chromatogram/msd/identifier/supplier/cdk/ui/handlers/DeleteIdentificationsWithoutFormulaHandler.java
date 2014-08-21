@@ -23,7 +23,7 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.handlers.DeleteIdentificationsWithoutFormulaRunnable;
-import net.chemclipse.chromatogram.msd.model.core.selection.IChromatogramSelectionMSD;
+import net.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import net.chemclipse.logging.core.Logger;
 import net.chemclipse.progress.core.InfoType;
 import net.chemclipse.progress.core.StatusLineLogger;

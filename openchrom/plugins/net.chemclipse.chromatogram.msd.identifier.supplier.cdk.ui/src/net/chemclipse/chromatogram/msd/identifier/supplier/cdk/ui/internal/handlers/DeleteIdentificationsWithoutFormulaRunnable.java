@@ -17,10 +17,10 @@ import java.util.List;
 
 import net.chemclipse.chromatogram.model.identifier.ILibraryInformation;
 import net.chemclipse.chromatogram.model.targets.IPeakTarget;
-import net.chemclipse.chromatogram.msd.model.core.IChromatogramPeakMSD;
-import net.chemclipse.chromatogram.msd.model.core.identifier.peak.IPeakIdentificationEntry;
-import net.chemclipse.chromatogram.msd.model.core.selection.ChromatogramSelectionMSD;
-import net.chemclipse.chromatogram.msd.model.core.selection.IChromatogramSelectionMSD;
+import net.chemclipse.msd.model.core.IChromatogramPeakMSD;
+import net.chemclipse.msd.model.core.identifier.peak.IPeakIdentificationEntry;
+import net.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
+import net.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;

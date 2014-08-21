@@ -28,8 +28,8 @@ import net.chemclipse.chromatogram.msd.identifier.processing.PeakIdentifierProce
 import net.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettings;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.preferences.IdentifierPreferences;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.settings.ICdkPeakIdentifierSettings;
-import net.chemclipse.chromatogram.msd.model.core.IPeakMSD;
-import net.chemclipse.chromatogram.msd.model.core.identifier.peak.IPeakIdentificationEntry;
+import net.chemclipse.msd.model.core.IPeakMSD;
+import net.chemclipse.msd.model.core.identifier.peak.IPeakIdentificationEntry;
 import net.chemclipse.processing.core.MessageType;
 import net.chemclipse.processing.core.ProcessingMessage;
 
