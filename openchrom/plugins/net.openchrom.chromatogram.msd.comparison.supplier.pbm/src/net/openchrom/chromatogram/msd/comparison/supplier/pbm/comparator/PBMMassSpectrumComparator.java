@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
-import net.chemclipse.chromatogram.model.exceptions.AbundanceLimitExceededException;
+import net.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import net.chemclipse.chromatogram.msd.comparison.massspectrum.AbstractMassSpectrumComparator;
 import net.chemclipse.chromatogram.msd.comparison.massspectrum.IMassSpectrumComparator;
 import net.chemclipse.chromatogram.msd.comparison.math.GeometricDistanceCalculator;
