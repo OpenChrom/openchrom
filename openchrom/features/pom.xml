@@ -6,7 +6,7 @@
     <groupId>net.openchrom</groupId>
     <artifactId>parent</artifactId>
     <version>BUILD-VERSION</version>
-    <relativePath>../cbi/net.openchrom.chromatogram.msd.converter.supplier.pdf.cbi/pom.xml</relativePath>
+    <relativePath>../cbi/net.openchrom.msd.converter.supplier.pdf.cbi/pom.xml</relativePath>
   </parent>
 
   <artifactId>net.openchrom.features.parent</artifactId>

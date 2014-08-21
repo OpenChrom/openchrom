@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.msd.converter.supplier.pdf.feature"
+      label="PDF Converter"
+      version="1.0.0.qualifier"
+      provider-name="http://www.openchrom.net">
+
+   <description url="http://www.openchrom.net/plugins/converter/pdf/">
+      This is a PDF chromatogram converter.
+   </description>
+
+   <copyright url="http://www.openchrom.net/plugins/converter/pdf/">
+      Copyright (c) 2012, 2014 Philip (eselmeister) Wenig.
+All Rights Reserved.
+   </copyright>
+
+   <license url="http://www.openchrom.net/plugins/converter/pdf/">
+      Copyright (c) 2012, 2014 Philip (eselmeister) Wenig.
+All Rights Reserved.
+This is a 30-days trial version. Afterwards, you need a valid
+serial key.
+You can get a free serial key after registration on http://www.openchrom.net.
+You can use the converter for commercial or non-commercial purposes
+free of charge, but you are not allowed to redistribute this
+software without my permission.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+&quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+   </license>
+
+   <requires>
+      <import feature="net.openchrom.keys.feature" version="1.0.0.qualifier"/>
+      <import feature="net.chemclipse.thirdpartylibraries.pdfjet.feature" version="2.81.0.qualifier"/>
+   </requires>
+
+   <plugin
+         id="net.openchrom.msd.converter.supplier.pdf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msd.converter.supplier.pdf.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

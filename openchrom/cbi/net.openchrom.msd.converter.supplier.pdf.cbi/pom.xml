@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <!--
+	PARENT
+  -->
+  <parent>
+    <groupId>net.openchrom</groupId>
+    <artifactId>master</artifactId>
+    <version>BUILD-VERSION</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <!--
+	ARTIFACT
+  -->
+  <groupId>net.openchrom</groupId>
+  <artifactId>parent</artifactId>
+  <packaging>pom</packaging>
+  <!--
+	DESCRIPTION
+  --> 
+  <name>OpenChrom PDF Converter</name>
+  <description>
+	The OpenChrom PDF converter writes chromatogram files to PDF format. It extends the functionality of the OpenChrom Rich Client Platform (RCP).
+  </description>
+  <url>file:///media/3A132BBA0C9C1015/GIT-REPOSITORIES/www.openchrom.de/pdfconverter</url>
+  <!--
+	LICENSES
+  -->
+  <licenses>
+    <license>
+      <name>Proprietary: Copyright by Philip (eselmeister) Wenig</name>
+    </license> 
+  </licenses>
+  <!--
+	DEVELOPERS
+  -->
+  <developers>
+    <developer>
+      <id>eselmeister</id>
+      <name>Philip Wenig</name>
+      <email>philip.wenig [at] gmx.net</email>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+  <!--
+	MODULES
+  -->
+  <modules>
+    <module>../../plugins/net.openchrom.msd.converter.supplier.pdf</module>
+    <module>../../plugins/net.openchrom.msd.converter.supplier.pdf.ui</module>
+    <module>../../features/net.openchrom.msd.converter.supplier.pdf.feature</module>
+    <!--<module>../../plugins/net.openchrom.msd.converter.supplier.pdf.fragment.test</module>-->
+    <module>../../sites/net.openchrom.msd.converter.supplier.pdf.updateSite</module>
+  </modules>
+</project>

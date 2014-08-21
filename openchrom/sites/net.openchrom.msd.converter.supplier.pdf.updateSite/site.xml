@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/net.openchrom.msd.converter.supplier.pdf.feature_1.0.0.qualifier.jar" id="net.openchrom.msd.converter.supplier.pdf.feature" version="1.0.0.qualifier">
+      <category name="net.openchrom.chromatogram.msd.plugins.converter"/>
+   </feature>
+   <category-def name="net.openchrom.chromatogram.msd.plugins.converter" label="Chromatogram Converter"/>
+</site>

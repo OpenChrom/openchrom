@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="net.chemclipse.msd.converter.ui.converterPreferencePage"
+            class="net.openchrom.msd.converter.supplier.pdf.ui.preferences.ConverterPreferencePage"
+            id="net.openchrom.msd.converter.supplier.pdf.ui.preferences.converterPreferencePage"
+            name="PDF Chromatogram MS Converter">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="net.openchrom.msd.converter.supplier.pdf.ui.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+</plugin>

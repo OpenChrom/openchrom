@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="net.chemclipse.msd.converter.chromatogramSupplier">
+      <ChromatogramSupplier
+            description="Exports Chromatograms to PDF format."
+            exportConverter="net.openchrom.msd.converter.supplier.pdf.converter.ChromatogramExportConverter"
+            fileExtension=".pdf"
+            filterName="PDF Chromatogram (*.pdf)"
+            id="net.openchrom.msd.converter.supplier.pdf"
+            importConverter="net.openchrom.msd.converter.supplier.pdf.converter.ChromatogramImportConverter"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>
+   </extension>
+
+</plugin>
