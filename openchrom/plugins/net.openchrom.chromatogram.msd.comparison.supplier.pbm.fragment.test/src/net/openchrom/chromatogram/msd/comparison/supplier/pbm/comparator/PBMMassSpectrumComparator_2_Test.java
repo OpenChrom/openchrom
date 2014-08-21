@@ -12,8 +12,8 @@
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
 import net.chemclipse.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
-import net.chemclipse.chromatogram.msd.model.core.IMassSpectrum;
-import net.chemclipse.chromatogram.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
+import net.chemclipse.msd.model.core.IMassSpectrum;
+import net.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
 
 public class PBMMassSpectrumComparator_2_Test extends MassSpectrumSetTestCase {
 

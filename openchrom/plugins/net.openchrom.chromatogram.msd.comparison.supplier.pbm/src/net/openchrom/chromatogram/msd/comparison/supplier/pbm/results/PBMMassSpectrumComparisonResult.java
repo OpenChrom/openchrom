@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.results;
 
-import net.chemclipse.chromatogram.msd.model.core.identifier.massspectrum.AbstractMassSpectrumComparisonResult;
+import net.chemclipse.msd.model.core.identifier.massspectrum.AbstractMassSpectrumComparisonResult;
 
 public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumComparisonResult {
 

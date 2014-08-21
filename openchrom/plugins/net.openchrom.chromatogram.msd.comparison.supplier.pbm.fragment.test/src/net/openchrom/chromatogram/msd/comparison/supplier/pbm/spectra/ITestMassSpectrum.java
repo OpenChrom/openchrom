@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra;
 
-import net.chemclipse.chromatogram.msd.model.core.IMassSpectrum;
+import net.chemclipse.msd.model.core.IMassSpectrum;
 
 public interface ITestMassSpectrum {
 

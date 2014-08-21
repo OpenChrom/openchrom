@@ -11,9 +11,9 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra;
 
-import net.chemclipse.chromatogram.msd.model.core.IMassSpectrum;
-import net.chemclipse.chromatogram.msd.model.implementation.DefaultIon;
-import net.chemclipse.chromatogram.msd.model.implementation.DefaultMassSpectrum;
+import net.chemclipse.msd.model.core.IMassSpectrum;
+import net.chemclipse.msd.model.implementation.DefaultIon;
+import net.chemclipse.msd.model.implementation.DefaultMassSpectrum;
 
 /*
  * Name: Sinapylalcohol (cis), BR 109, RT 69:01
