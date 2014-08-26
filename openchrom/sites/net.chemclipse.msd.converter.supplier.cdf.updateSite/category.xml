@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <category-def name="net.chemclipse.chromatogram.msd.plugins.converter" label="Chromatogram Converter"/>
+   <category-def name="net.chemclipse.xxd.plugins.converter" label="Chromatogram Converter"/>
 </site>
