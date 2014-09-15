@@ -5,7 +5,7 @@ Bundle-Name: Cdf
 Bundle-SymbolicName: net.chemclipse.fid.converter.supplier.cdf;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.chemclipse.fid.converter.supplier.cdf.Activator
-Bundle-Vendor: OpenChrom
+Bundle-Vendor: ChemClipse
 Require-Bundle: org.eclipse.core.runtime,
  net.chemclipse.fid.converter;bundle-version="1.0.0",
  net.chemclipse.fid.model;bundle-version="1.0.0",

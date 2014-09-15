@@ -3,7 +3,7 @@
       id="net.chemclipse.fid.converter.supplier.cdf.feature"
       label="Feature"
       version="1.0.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="ChemClipse">
 
    <description url="http://www.chemclipse.net">
       This is the NetCDF FID converter.
