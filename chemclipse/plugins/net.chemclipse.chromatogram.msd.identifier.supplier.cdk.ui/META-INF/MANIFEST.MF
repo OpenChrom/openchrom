@@ -5,7 +5,7 @@ Bundle-Name: Ui
 Bundle-SymbolicName: net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.Activator
-Bundle-Vendor: OpenChrom
+Bundle-Vendor: ChemClipse
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  net.chemclipse.logging;bundle-version="1.0.0",

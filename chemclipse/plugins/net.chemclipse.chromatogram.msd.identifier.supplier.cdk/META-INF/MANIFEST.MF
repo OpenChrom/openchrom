@@ -5,7 +5,7 @@ Bundle-Name: Cdk
 Bundle-SymbolicName: net.chemclipse.chromatogram.msd.identifier.supplier.cdk;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.chemclipse.chromatogram.msd.identifier.supplier.cdk.Activator
-Bundle-Vendor: OpenChrom
+Bundle-Vendor: ChemClipse
 Require-Bundle: org.eclipse.core.runtime,
  net.chemclipse.model;bundle-version="1.0.0",
  net.chemclipse.msd.model;bundle-version="1.0.0",
