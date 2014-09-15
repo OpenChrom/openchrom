@@ -3,7 +3,7 @@
       id="net.chemclipse.msd.converter.supplier.cdf.feature"
       label="NetCDF Converter"
       version="1.0.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="ChemClipse">
 
    <description url="http://www.chemclipse.net/plugins/converter/netcdf">
       This is a netCDF chromatogram converter.
