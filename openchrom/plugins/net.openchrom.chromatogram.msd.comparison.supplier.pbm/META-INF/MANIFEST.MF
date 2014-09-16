@@ -6,11 +6,11 @@ Bundle-SymbolicName: net.openchrom.chromatogram.msd.comparison.supplier.pbm;sing
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.openchrom.chromatogram.msd.comparison.supplier.pbm.Activator
 Require-Bundle: org.eclipse.core.runtime,
- net.chemclipse.chromatogram.msd.comparison;bundle-version="1.0.0",
- net.chemclipse.msd.model;bundle-version="1.0.0",
- net.chemclipse.logging;bundle-version="1.0.0",
- net.chemclipse.processing;bundle-version="1.0.0",
- net.chemclipse.model;bundle-version="1.0.0"
+ net.chemclipse.chromatogram.msd.comparison;bundle-version="0.7.0",
+ net.chemclipse.msd.model;bundle-version="0.7.0",
+ net.chemclipse.logging;bundle-version="0.7.0",
+ net.chemclipse.processing;bundle-version="0.7.0",
+ net.chemclipse.model;bundle-version="0.7.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: OpenChrom
