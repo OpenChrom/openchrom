@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ui
 Bundle-SymbolicName: net.chemclipse.msd.converter.supplier.cdf.ui;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.7.0.qualifier
 Bundle-Activator: net.chemclipse.msd.converter.supplier.cdf.ui.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui;bundle-version="3.5.1",
- net.chemclipse.logging;bundle-version="1.0.0",
- net.chemclipse.msd.converter.supplier.cdf;bundle-version="1.0.0"
+ net.chemclipse.logging;bundle-version="0.7.0",
+ net.chemclipse.msd.converter.supplier.cdf;bundle-version="0.7.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: ChemClipse

@@ -10,6 +10,6 @@
 
   <artifactId>net.chemclipse.msd.converter.supplier.cdf.fragment.test</artifactId>
   <packaging>eclipse-test-plugin</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>0.7.0-SNAPSHOT</version>
   
 </project>
