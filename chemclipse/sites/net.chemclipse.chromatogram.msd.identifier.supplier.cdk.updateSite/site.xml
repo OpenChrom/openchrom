@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/net.chemclipse.chromatogram.msd.identifier.supplier.cdk.feature_1.0.0.qualifier.jar" id="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.feature" version="1.0.0.qualifier">
+   <feature url="features/net.chemclipse.chromatogram.msd.identifier.supplier.cdk.feature_0.7.0.qualifier.jar" id="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.feature" version="0.7.0.qualifier">
       <category name="net.chemclipse.chromatogram.msd.plugins.identifier"/>
    </feature>
    <category-def name="net.chemclipse.chromatogram.msd.plugins.identifier" label="Chromatogram Identifier"/>
