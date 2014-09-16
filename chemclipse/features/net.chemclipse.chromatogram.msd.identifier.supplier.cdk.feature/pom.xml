@@ -10,6 +10,6 @@
 
   <artifactId>net.chemclipse.chromatogram.msd.identifier.supplier.cdk.feature</artifactId>
   <packaging>eclipse-feature</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>0.7.0-SNAPSHOT</version>
   
 </project>
