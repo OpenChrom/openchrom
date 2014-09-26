@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Eclipse-RegisterBuddy: net.chemclipse.thirdpartylibraries.cdk, net.chemclipse.thirdpartylibraries.opsin
+Eclipse-RegisterBuddy: net.openchrom.thirdpartylibraries.cdk.feature, net.openchrom.thirdpartylibraries.opsin
 Bundle-ManifestVersion: 2
 Bundle-Name: Cdk
 Bundle-SymbolicName: net.chemclipse.chromatogram.msd.identifier.supplier.cdk;singleton:=true
@@ -10,10 +10,10 @@ Require-Bundle: org.eclipse.core.runtime,
  net.chemclipse.model;bundle-version="0.7.0",
  net.chemclipse.msd.model;bundle-version="0.7.0",
  net.chemclipse.logging;bundle-version="0.7.0",
- net.chemclipse.thirdpartylibraries.opsin;bundle-version="1.5.0",
+ net.openchrom.thirdpartylibraries.opsin;bundle-version="1.5.0",
  net.chemclipse.chromatogram.msd.identifier;bundle-version="0.7.0",
  net.chemclipse.processing;bundle-version="0.7.0",
- net.chemclipse.thirdpartylibraries.cdk;bundle-version="1.4.19";visibility:=reexport
+ net.openchrom.thirdpartylibraries.cdk;bundle-version="1.4.19";visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: net.chemclipse.chromatogram.msd.identifier.supplier.cdk.converter,
