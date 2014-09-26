@@ -1,5 +1,4 @@
 Manifest-Version: 1.0
-Eclipse-RegisterBuddy: net.chemclipse.thirdpartylibraries.junitaddons
 Bundle-ManifestVersion: 2
 Bundle-Name: Pbm Plug-in
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.comparison.supplier.pbm;singleton:=true
