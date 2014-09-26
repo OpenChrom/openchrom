@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Eclipse-RegisterBuddy: 	net.chemclipse.model, net.chemclipse.msd.model, net.chemclipse.thirdpartylibraries.pdfjet, net.chemclipse.thirdpartylibraries.junitaddons
+Eclipse-RegisterBuddy: 	net.chemclipse.model, net.chemclipse.msd.model, net.chemclipse.thirdpartylibraries.pdfjet
 Bundle-ManifestVersion: 2
 Bundle-Name: Pdf
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.pdf;singleton:=true
