@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Eclipse-RegisterBuddy: 	net.chemclipse.model, net.chemclipse.fid.model, net.chemclipse.thirdpartylibraries.netcdf, net.chemclipse.thirdpartylibraries.junitaddons
+Eclipse-RegisterBuddy: 	net.chemclipse.model, net.chemclipse.fid.model, net.chemclipse.thirdpartylibraries.netcdf
 Bundle-ManifestVersion: 2
 Bundle-Name: Cdf
 Bundle-SymbolicName: net.chemclipse.fid.converter.supplier.cdf;singleton:=true
