@@ -36,12 +36,8 @@ public class CDKMoleculeToChemFigConverter_1_Test extends TestCase {
 
 	public void testMethod_1() {
 
-		IMolecule molecule = converter.generate("c1=cc=cc=c1");
-		assertNotNull(molecule);
-	}
-
-	public void testMethod_2() {
-
+		// IMolecule molecule = converter.generate("c1=cc=cc=c1");
+		// assertNotNull(molecule);
 		IMolecule molecule = converter.generate(null);
 		assertNull(molecule);
 	}
