@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.chemclipse.fid.converter.supplier.cdf.feature"
-      label="Feature"
+      label="FID NetCDF"
       version="0.7.0.qualifier"
       provider-name="ChemClipse">
 
