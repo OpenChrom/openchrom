@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.openchrom.chromatogram.msd.comparison.supplier.pbm.feature"
-      label="Feature"
+      label="PBM Comparison Support"
       version="1.0.0.qualifier">
 
    <description url="http://www.openchrom.net">
