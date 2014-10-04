@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.feature"
-      label="Feature"
+      label="CDK Support"
       version="0.7.0.qualifier"
       provider-name="ChemClipse">
 
