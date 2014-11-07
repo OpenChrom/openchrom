@@ -125,4 +125,11 @@ public class PeakIdentifier extends AbstractPeakIdentifier {
 			}
 		}
 	}
+
+	@Override
+	public IPeakIdentifierProcessingInfo identify(IPeakMSD peak, IProgressMonitor monitor) {
+
+		IPeakIdentifierSettings peakIdentifierSettings = IdentifierPreferences.getPeakIdentifierSettings();
+		return identify(peak, peakIdentifierSettings, monitor);
+	}
 }
