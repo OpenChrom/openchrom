@@ -16,8 +16,6 @@ import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "net.chemclipse.fid.converter.supplier.cdf";
 	private static BundleContext context;
 
 	static BundleContext getContext() {
