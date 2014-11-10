@@ -16,7 +16,7 @@ import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import net.chemclipse.msd.converter.supplier.cdf.preferences.ConverterPreferences;
+import net.chemclipse.msd.converter.supplier.cdf.preferences.PreferenceSupplier;
 import net.chemclipse.msd.converter.supplier.cdf.ui.Activator;
 
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
@@ -36,6 +36,6 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	@Override
 	protected void createFieldEditors() {
 
-		addField(new IntegerFieldEditor(ConverterPreferences.P_PRECISION, "Precision Ions (" + ConverterPreferences.MIN_PRECISION + " - " + ConverterPreferences.MAX_PRECISION + ")", getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_PRECISION, "Precision Ions (" + PreferenceSupplier.MIN_PRECISION + " - " + PreferenceSupplier.MAX_PRECISION + ")", getFieldEditorParent()));
 	}
 }

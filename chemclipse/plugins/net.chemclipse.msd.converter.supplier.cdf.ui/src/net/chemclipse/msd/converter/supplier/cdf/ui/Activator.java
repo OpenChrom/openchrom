@@ -11,39 +11,32 @@
  *******************************************************************************/
 package net.chemclipse.msd.converter.supplier.cdf.ui;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-/**
- * The activator class controls the plug-in life cycle
- */
-public class Activator extends AbstractUIPlugin {
+import net.chemclipse.msd.converter.supplier.cdf.preferences.PreferenceSupplier;
+import net.chemclipse.support.ui.activator.AbstractActivator;
 
-	// The shared instance
-	private static Activator plugin;
+public class Activator extends AbstractActivator {
 
-	/**
-	 * The constructor
+	/*
+	 * Instance
 	 */
-	public Activator() {
-
-	}
+	private static Activator plugin;
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
 
 		super.start(context);
 		plugin = this;
+		initializePreferenceStore(PreferenceSupplier.INSTANCE());
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
 
@@ -56,7 +49,7 @@ public class Activator extends AbstractUIPlugin {
 	 * 
 	 * @return the shared instance
 	 */
-	public static Activator getDefault() {
+	public static AbstractActivator getDefault() {
 
 		return plugin;
 	}

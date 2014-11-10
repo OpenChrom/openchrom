@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.core.runtime,
  net.chemclipse.processing;bundle-version="0.7.0",
  net.chemclipse.converter;bundle-version="0.7.0",
  net.chemclipse.model;bundle-version="0.7.0",
- net.chemclipse.thirdpartylibraries.netcdf;bundle-version="4.3.19"
+ net.chemclipse.thirdpartylibraries.netcdf;bundle-version="4.3.19",
+ net.chemclipse.support;bundle-version="0.7.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: ChemClipse

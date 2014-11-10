@@ -7,7 +7,9 @@ Bundle-Activator: net.chemclipse.msd.converter.supplier.cdf.ui.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui;bundle-version="3.5.1",
  net.chemclipse.logging;bundle-version="0.7.0",
- net.chemclipse.msd.converter.supplier.cdf;bundle-version="0.7.0"
+ net.chemclipse.msd.converter.supplier.cdf;bundle-version="0.7.0",
+ net.chemclipse.support;bundle-version="0.7.0",
+ net.chemclipse.support.ui;bundle-version="0.7.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: ChemClipse

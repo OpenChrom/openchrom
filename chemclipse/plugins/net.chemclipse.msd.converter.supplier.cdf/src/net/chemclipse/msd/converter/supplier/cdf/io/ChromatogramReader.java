@@ -40,7 +40,7 @@ import net.chemclipse.msd.converter.supplier.cdf.io.support.IAbstractCDFChromato
 import net.chemclipse.msd.converter.supplier.cdf.model.CDFChromatogramMSD;
 import net.chemclipse.msd.converter.supplier.cdf.model.CDFIon;
 import net.chemclipse.msd.converter.supplier.cdf.model.CDFMassSpectrum;
-import net.chemclipse.msd.converter.supplier.cdf.preferences.ConverterPreferences;
+import net.chemclipse.msd.converter.supplier.cdf.preferences.PreferenceSupplier;
 import net.chemclipse.msd.model.core.IChromatogramMSD;
 import net.chemclipse.msd.model.core.IIon;
 import net.chemclipse.msd.model.exceptions.IonLimitExceededException;
@@ -135,7 +135,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 		chromatogram = new CDFChromatogramMSD();
 		setChromatogramEntries(chromatogram, in, file);
 		//
-		int precision = ConverterPreferences.getPrecision();
+		int precision = PreferenceSupplier.getPrecision();
 		//
 		monitor.subTask(IConstants.PARSE_SCANS);
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {

@@ -14,5 +14,10 @@
             isImportable="true">
       </ChromatogramSupplier>
    </extension>
-
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="net.chemclipse.msd.converter.supplier.cdf.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
 </plugin>
