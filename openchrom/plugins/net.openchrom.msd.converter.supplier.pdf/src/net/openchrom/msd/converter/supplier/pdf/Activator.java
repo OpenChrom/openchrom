@@ -16,8 +16,6 @@ import net.openchrom.keys.validator.ProductValidator;
 public class Activator implements BundleActivator {
 
 	private static BundleContext context;
-	// The plug-in ID
-	public static final String PLUGIN_ID = "net.openchrom.msd.converter.supplier.pdf";
 
 	static BundleContext getContext() {
 

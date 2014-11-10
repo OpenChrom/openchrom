@@ -18,8 +18,6 @@ import net.openchrom.keys.validator.ProductValidator;
  */
 public class Activator extends AbstractUIPlugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "net.openchrom.msd.converter.supplier.pdf.ui"; //$NON-NLS-1$
 	// The shared instance
 	private static Activator plugin;
 
