@@ -34,7 +34,7 @@ public class PathResolver {
 	 */
 	public static String getAbsolutePath(String string) {
 
-		Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
+		Bundle bundle = Platform.getBundle(Activator.getContext().getBundle().getSymbolicName());
 		IPath path = new Path(string);
 		URL url = FileLocator.find(bundle, path, null);
 		try {
