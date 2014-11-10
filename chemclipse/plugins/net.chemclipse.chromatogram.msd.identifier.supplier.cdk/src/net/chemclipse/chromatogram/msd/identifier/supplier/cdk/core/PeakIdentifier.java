@@ -26,7 +26,7 @@ import net.chemclipse.chromatogram.msd.identifier.peak.AbstractPeakIdentifier;
 import net.chemclipse.chromatogram.msd.identifier.processing.IPeakIdentifierProcessingInfo;
 import net.chemclipse.chromatogram.msd.identifier.processing.PeakIdentifierProcessingInfo;
 import net.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettings;
-import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.preferences.IdentifierPreferences;
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.settings.ICdkPeakIdentifierSettings;
 import net.chemclipse.msd.model.core.IPeakMSD;
 import net.chemclipse.msd.model.core.identifier.peak.IPeakIdentificationEntry;
@@ -62,7 +62,7 @@ public class PeakIdentifier extends AbstractPeakIdentifier {
 		if(peakIdentifierSettings instanceof ICdkPeakIdentifierSettings) {
 			deleteIdentificationsWithoutFormula = ((ICdkPeakIdentifierSettings)peakIdentifierSettings).isDeleteIdentificationsWithoutFormula();
 		} else {
-			deleteIdentificationsWithoutFormula = IdentifierPreferences.isDeleteIdentificationsWithoutFormula();
+			deleteIdentificationsWithoutFormula = PreferenceSupplier.isDeleteIdentificationsWithoutFormula();
 		}
 		//
 		calculateSmilesFormula(peaks, deleteIdentificationsWithoutFormula);
@@ -73,7 +73,7 @@ public class PeakIdentifier extends AbstractPeakIdentifier {
 	@Override
 	public IPeakIdentifierProcessingInfo identify(List<IPeakMSD> peaks, IProgressMonitor monitor) {
 
-		ICdkPeakIdentifierSettings peakIdentifierSettings = IdentifierPreferences.getPeakIdentifierSettings();
+		ICdkPeakIdentifierSettings peakIdentifierSettings = PreferenceSupplier.getPeakIdentifierSettings();
 		return identify(peaks, peakIdentifierSettings, monitor);
 	}
 
@@ -129,7 +129,7 @@ public class PeakIdentifier extends AbstractPeakIdentifier {
 	@Override
 	public IPeakIdentifierProcessingInfo identify(IPeakMSD peak, IProgressMonitor monitor) {
 
-		IPeakIdentifierSettings peakIdentifierSettings = IdentifierPreferences.getPeakIdentifierSettings();
+		IPeakIdentifierSettings peakIdentifierSettings = PreferenceSupplier.getPeakIdentifierSettings();
 		return identify(peak, peakIdentifierSettings, monitor);
 	}
 }

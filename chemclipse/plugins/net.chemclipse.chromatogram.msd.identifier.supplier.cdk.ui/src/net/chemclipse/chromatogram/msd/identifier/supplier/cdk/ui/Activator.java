@@ -12,23 +12,17 @@
  *******************************************************************************/
 package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-/**
- * The activator class controls the plug-in life cycle
- */
-public class Activator extends AbstractUIPlugin {
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
+import net.chemclipse.support.ui.activator.AbstractActivator;
 
-	// The shared instance
-	private static Activator plugin;
+public class Activator extends AbstractActivator {
 
-	/**
-	 * The constructor
+	/*
+	 * Instance
 	 */
-	public Activator() {
-
-	}
+	private static Activator plugin;
 
 	/*
 	 * (non-Javadoc)
@@ -38,6 +32,7 @@ public class Activator extends AbstractUIPlugin {
 
 		super.start(context);
 		plugin = this;
+		initializePreferenceStore(PreferenceSupplier.INSTANCE());
 	}
 
 	/*
@@ -55,7 +50,7 @@ public class Activator extends AbstractUIPlugin {
 	 * 
 	 * @return the shared instance
 	 */
-	public static Activator getDefault() {
+	public static AbstractActivator getDefault() {
 
 		return plugin;
 	}

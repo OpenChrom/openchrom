@@ -18,12 +18,6 @@
       </page>
    </extension>
    <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.preferences.PreferenceInitializer">
-      </initializer>
-   </extension>
-   <extension
          point="org.eclipse.help.toc">
       <toc
             file="toc_plugin.xml">

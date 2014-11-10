@@ -11,17 +11,24 @@
  *******************************************************************************/
 package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.preferences;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.openscience.cdk.interfaces.IIsotope;
-import org.osgi.service.prefs.Preferences;
 
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.Activator;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeDecider;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeDeciderFactory;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeParser;
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.settings.CdkPeakIdentifierSettings;
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.settings.ICdkPeakIdentifierSettings;
+import net.chemclipse.support.preferences.IPreferenceSupplier;
 
-public class ChemistryPreferences {
+public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static final String P_ISOTOPE_SET = "isotopeSet";
 	public static final String DEF_ISOTOPE_SET = IsotopePreference.BASIC.toString();
@@ -29,12 +36,51 @@ public class ChemistryPreferences {
 	public static final int DEF_ISOTOPE_ITERATION_DEPTH = 15;
 	public static final String P_USER_DEFINED_ISOTOPES = "userDefinedIsotopes";
 	public static final String DEF_USER_DEFINED_ISOTOPES = "C H N O";
+	public static final String P_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA = "deleteIdentificationsWithoutFormula";
+	public static final boolean DEF_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA = false;
 	//
-	private static final String NODE = "net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui";
+	private static IPreferenceSupplier preferenceSupplier;
+
+	public static IPreferenceSupplier INSTANCE() {
+
+		if(preferenceSupplier == null) {
+			preferenceSupplier = new PreferenceSupplier();
+		}
+		return preferenceSupplier;
+	}
+
+	@Override
+	public IScopeContext getScopeContext() {
+
+		return InstanceScope.INSTANCE;
+	}
+
+	@Override
+	public String getPreferenceNode() {
+
+		return Activator.getContext().getBundle().getSymbolicName();
+	}
+
+	@Override
+	public Map<String, String> getDefaultValues() {
+
+		Map<String, String> defaultValues = new HashMap<String, String>();
+		defaultValues.put(P_ISOTOPE_ITERATION_DEPTH, Integer.toString(DEF_ISOTOPE_ITERATION_DEPTH));
+		defaultValues.put(P_ISOTOPE_SET, DEF_ISOTOPE_SET);
+		defaultValues.put(P_USER_DEFINED_ISOTOPES, DEF_USER_DEFINED_ISOTOPES);
+		defaultValues.put(P_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA, Boolean.toString(DEF_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA));
+		return defaultValues;
+	}
+
+	@Override
+	public IEclipsePreferences getPreferences() {
+
+		return getScopeContext().getNode(getPreferenceNode());
+	}
 
 	public static IsotopeDecider getIsotopeDecider() {
 
-		Preferences preferences = InstanceScope.INSTANCE.getNode(NODE);
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		IsotopePreference isotopePreference = IsotopePreference.valueOf(preferences.get(P_ISOTOPE_SET, DEF_ISOTOPE_SET));
 		IsotopeDecider isotopeDecider;
 		/*
@@ -65,5 +111,18 @@ public class ChemistryPreferences {
 	public static String[][] getIsotopePreferenceOptions() {
 
 		return new String[][]{{"&Basic Isotope Set (C,H,N,O)", IsotopePreference.BASIC.toString()}, {"&Organic Isotope Set (C,H,N,O,Cl,Br,S,P,I,B)", IsotopePreference.ORGANIC.toString()}, {"&User Defined Isotope Set", IsotopePreference.USER_DEFINED.toString()}};
+	}
+
+	public static ICdkPeakIdentifierSettings getPeakIdentifierSettings() {
+
+		ICdkPeakIdentifierSettings peakIdentifierSettings = new CdkPeakIdentifierSettings();
+		peakIdentifierSettings.setDeleteIdentificationsWithoutFormula(isDeleteIdentificationsWithoutFormula());
+		return peakIdentifierSettings;
+	}
+
+	public static boolean isDeleteIdentificationsWithoutFormula() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA, DEF_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA);
 	}
 }

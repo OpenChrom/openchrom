@@ -18,7 +18,7 @@ import org.openscience.cdk.interfaces.IMolecularFormulaSet;
 
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula.GenericMassToFormulaBridge;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula.NameAndRating;
-import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.preferences.ChemistryPreferences;
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 
 public class FormulaSupport {
 
@@ -39,7 +39,7 @@ public class FormulaSupport {
 
 	public List<NameAndRating> getFormulaNamesAndRatings(Double ion) {
 
-		massToFormulaBridge.setIsotopeDecider(ChemistryPreferences.getIsotopeDecider());
+		massToFormulaBridge.setIsotopeDecider(PreferenceSupplier.getIsotopeDecider());
 		IMolecularFormulaSet formulas = massToFormulaBridge.generate(ion);
 		List<String> formulaNames = new ArrayList<String>();
 		if(formulas != null) {
