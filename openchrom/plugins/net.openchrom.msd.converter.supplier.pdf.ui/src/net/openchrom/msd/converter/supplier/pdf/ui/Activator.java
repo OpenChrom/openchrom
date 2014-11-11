@@ -12,6 +12,7 @@ import net.openchrom.keys.preferences.IBundleProductPreferences;
 import net.openchrom.keys.preferences.IProductPreferences;
 import net.openchrom.keys.validator.ProductValidator;
 import net.openchrom.msd.converter.supplier.pdf.preferences.BundleProductPreferences;
+import net.openchrom.msd.converter.supplier.pdf.preferences.PreferenceSupplier;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -31,6 +32,7 @@ public class Activator extends AbstractActivatorUI {
 
 		super.start(context);
 		plugin = this;
+		initializePreferenceStore(PreferenceSupplier.INSTANCE());
 		/*
 		 * The key will be checked each time the plugin gets activated.<br/> The
 		 * user can select the trial (if not expired) or full option.

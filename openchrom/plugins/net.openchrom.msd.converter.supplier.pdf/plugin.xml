@@ -14,5 +14,10 @@
             isImportable="false">
       </ChromatogramSupplier>
    </extension>
-
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="net.openchrom.msd.converter.supplier.pdf.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
 </plugin>
