@@ -14,9 +14,9 @@ package net.chemclipse.msd.converter.supplier.cdf.ui;
 import org.osgi.framework.BundleContext;
 
 import net.chemclipse.msd.converter.supplier.cdf.preferences.PreferenceSupplier;
-import net.chemclipse.support.ui.activator.AbstractActivator;
+import net.chemclipse.support.ui.activator.AbstractActivatorUI;
 
-public class Activator extends AbstractActivator {
+public class Activator extends AbstractActivatorUI {
 
 	/*
 	 * Instance
@@ -49,7 +49,7 @@ public class Activator extends AbstractActivator {
 	 * 
 	 * @return the shared instance
 	 */
-	public static AbstractActivator getDefault() {
+	public static AbstractActivatorUI getDefault() {
 
 		return plugin;
 	}
