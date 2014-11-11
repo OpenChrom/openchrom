@@ -5,28 +5,23 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.ui;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import net.openchrom.msd.converter.supplier.pdf.preferences.BundleProductPreferences;
+import net.chemclipse.support.ui.activator.AbstractActivatorUI;
 import net.openchrom.keys.preferences.IBundleProductPreferences;
 import net.openchrom.keys.preferences.IProductPreferences;
 import net.openchrom.keys.validator.ProductValidator;
+import net.openchrom.msd.converter.supplier.pdf.preferences.BundleProductPreferences;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends AbstractActivatorUI {
 
-	// The shared instance
-	private static Activator plugin;
-
-	/**
-	 * The constructor
+	/*
+	 * Instance
 	 */
-	public Activator() {
-
-	}
+	private static Activator plugin;
 
 	/*
 	 * (non-Javadoc)
@@ -60,7 +55,7 @@ public class Activator extends AbstractUIPlugin {
 	 * 
 	 * @return the shared instance
 	 */
-	public static Activator getDefault() {
+	public static AbstractActivatorUI getDefault() {
 
 		return plugin;
 	}

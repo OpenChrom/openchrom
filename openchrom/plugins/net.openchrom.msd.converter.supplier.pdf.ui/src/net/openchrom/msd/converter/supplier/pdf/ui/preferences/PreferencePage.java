@@ -10,9 +10,9 @@ import net.openchrom.msd.converter.supplier.pdf.ui.Activator;
 import net.openchrom.keys.ui.preferences.AbstractCustomFieldEditorPreferencePage;
 import net.openchrom.keys.ui.preferences.IKeyPreferencePage;
 
-public class ConverterPreferencePage extends AbstractCustomFieldEditorPreferencePage implements IKeyPreferencePage {
+public class PreferencePage extends AbstractCustomFieldEditorPreferencePage implements IKeyPreferencePage {
 
-	public ConverterPreferencePage() {
+	public PreferencePage() {
 
 		super(Activator.getDefault().getPreferenceStore(), new BundleProductPreferences(), false);
 	}
