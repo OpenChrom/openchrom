@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Dr. Philip Wenig.
+ * Copyright (c) 2014, 2015 Dr. Philip Wenig.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
