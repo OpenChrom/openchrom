@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.thirdpartylibraries.opsin;bundle-version="1.5.0",
  net.chemclipse.chromatogram.msd.identifier;bundle-version="0.7.0",
  net.chemclipse.processing;bundle-version="0.7.0",
- net.openchrom.thirdpartylibraries.cdk;bundle-version="1.4.19";visibility:=reexport,
+ net.openchrom.thirdpartylibraries.cdk;bundle-version="1.4.19",
  net.chemclipse.support;bundle-version="0.7.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
