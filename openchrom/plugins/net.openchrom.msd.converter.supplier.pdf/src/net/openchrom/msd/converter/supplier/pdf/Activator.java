@@ -49,6 +49,6 @@ public class Activator implements BundleActivator {
 
 		IBundleProductPreferences bundleProductPreferences = new BundleProductPreferences();
 		IProductPreferences productPreferences = bundleProductPreferences.getProductPreferences();
-		return ProductValidator.isValidVersion(productPreferences, false, false);
+		return ProductValidator.isValidVersion(productPreferences, false);
 	}
 }

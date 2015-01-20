@@ -10,7 +10,7 @@ import org.osgi.framework.BundleContext;
 import net.chemclipse.support.ui.activator.AbstractActivatorUI;
 import net.openchrom.keys.preferences.IBundleProductPreferences;
 import net.openchrom.keys.preferences.IProductPreferences;
-import net.openchrom.keys.validator.ProductValidator;
+import net.openchrom.keys.ui.validator.ProductValidatorUI;
 import net.openchrom.msd.converter.supplier.pdf.preferences.BundleProductPreferences;
 import net.openchrom.msd.converter.supplier.pdf.preferences.PreferenceSupplier;
 
@@ -39,7 +39,7 @@ public class Activator extends AbstractActivatorUI {
 		 */
 		IBundleProductPreferences bundleProductPreferences = new BundleProductPreferences();
 		IProductPreferences productPreferences = bundleProductPreferences.getProductPreferences();
-		ProductValidator.isValidVersion(productPreferences, true, false);
+		ProductValidatorUI.isValidVersion(productPreferences, false);
 	}
 
 	/*

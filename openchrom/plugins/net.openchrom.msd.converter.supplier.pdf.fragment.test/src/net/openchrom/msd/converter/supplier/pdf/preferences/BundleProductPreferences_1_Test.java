@@ -44,6 +44,6 @@ public class BundleProductPreferences_1_Test extends TestCase {
 
 	public void test1() {
 
-		assertTrue(ProductValidator.isValidVersion(productPreferences, false, false));
+		assertTrue(ProductValidator.isValidVersion(productPreferences, false));
 	}
 }
