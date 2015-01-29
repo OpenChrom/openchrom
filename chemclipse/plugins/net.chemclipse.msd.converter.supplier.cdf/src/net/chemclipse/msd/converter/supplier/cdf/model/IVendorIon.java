@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.chemclipse.msd.converter.supplier.cdf.model;
 
-import net.chemclipse.msd.model.core.ISupplierMassSpectrum;
+import net.chemclipse.msd.model.core.IScanIon;
 
-public interface ICDFMassSpectrum extends ISupplierMassSpectrum {
+public interface IVendorIon extends IScanIon {
 }

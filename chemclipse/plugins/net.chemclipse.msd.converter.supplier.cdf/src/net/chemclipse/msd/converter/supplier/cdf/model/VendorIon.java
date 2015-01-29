@@ -12,10 +12,10 @@
 package net.chemclipse.msd.converter.supplier.cdf.model;
 
 import net.chemclipse.model.exceptions.AbundanceLimitExceededException;
-import net.chemclipse.msd.model.core.AbstractSupplierIon;
+import net.chemclipse.msd.model.core.AbstractScanIon;
 import net.chemclipse.msd.model.exceptions.IonLimitExceededException;
 
-public class CDFIon extends AbstractSupplierIon implements ICDFIon {
+public class VendorIon extends AbstractScanIon implements IVendorIon {
 
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
@@ -29,18 +29,18 @@ public class CDFIon extends AbstractSupplierIon implements ICDFIon {
 	public static final double MIN_ION = 1.0d;
 	public static final double MAX_ION = 65535.0d;
 
-	public CDFIon(float ion) throws IonLimitExceededException {
+	public VendorIon(float ion) throws IonLimitExceededException {
 
 		super(ion);
 	}
 
-	public CDFIon(double ion, boolean ignoreAbundanceLimit) throws IonLimitExceededException {
+	public VendorIon(double ion, boolean ignoreAbundanceLimit) throws IonLimitExceededException {
 
 		super(ion);
 		setIgnoreAbundanceLimit(ignoreAbundanceLimit);
 	}
 
-	public CDFIon(double ion, float abundance) throws AbundanceLimitExceededException, IonLimitExceededException {
+	public VendorIon(double ion, float abundance) throws AbundanceLimitExceededException, IonLimitExceededException {
 
 		super(ion, abundance);
 	}

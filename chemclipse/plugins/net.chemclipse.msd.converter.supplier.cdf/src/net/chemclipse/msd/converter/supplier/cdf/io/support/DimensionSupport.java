@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import net.chemclipse.msd.model.core.AbstractIon;
 import net.chemclipse.msd.model.core.IChromatogramMSD;
 import net.chemclipse.msd.model.core.IIon;
-import net.chemclipse.msd.model.core.ISupplierMassSpectrum;
+import net.chemclipse.msd.model.core.IVendorMassSpectrum;
 
 import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayDouble;
@@ -228,7 +228,7 @@ public class DimensionSupport implements IDimensionSupport {
 	@Override
 	public void addVariableScanValues() {
 
-		ISupplierMassSpectrum scan;
+		IVendorMassSpectrum scan;
 		String varNameMassValues = CDFConstants.VARIABLE_MASS_VALUES;
 		ArrayList<Dimension> dimensionMassValues = new ArrayList<Dimension>();
 		dimensionMassValues.add(numberOfScanIons);

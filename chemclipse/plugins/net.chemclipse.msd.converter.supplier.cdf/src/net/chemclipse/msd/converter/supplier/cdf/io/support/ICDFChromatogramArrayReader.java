@@ -12,7 +12,7 @@
 package net.chemclipse.msd.converter.supplier.cdf.io.support;
 
 import net.chemclipse.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
-import net.chemclipse.msd.converter.supplier.cdf.model.CDFMassSpectrum;
+import net.chemclipse.msd.converter.supplier.cdf.model.VendorScan;
 
 public interface ICDFChromatogramArrayReader extends IAbstractCDFChromatogramArrayReader {
 
@@ -24,5 +24,5 @@ public interface ICDFChromatogramArrayReader extends IAbstractCDFChromatogramArr
 	 * @return CDFMassSpectrum
 	 * @throws NoSuchScanStored
 	 */
-	public CDFMassSpectrum getMassSpectrum(int scan, int precision) throws NoSuchScanStored;
+	public VendorScan getMassSpectrum(int scan, int precision) throws NoSuchScanStored;
 }

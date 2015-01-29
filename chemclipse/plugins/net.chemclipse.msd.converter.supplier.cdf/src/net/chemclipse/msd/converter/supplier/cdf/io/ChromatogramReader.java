@@ -38,8 +38,8 @@ import net.chemclipse.msd.converter.supplier.cdf.io.support.CDFChromtogramArrayR
 import net.chemclipse.msd.converter.supplier.cdf.io.support.DateSupport;
 import net.chemclipse.msd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
 import net.chemclipse.msd.converter.supplier.cdf.model.CDFChromatogramMSD;
-import net.chemclipse.msd.converter.supplier.cdf.model.CDFIon;
-import net.chemclipse.msd.converter.supplier.cdf.model.CDFMassSpectrum;
+import net.chemclipse.msd.converter.supplier.cdf.model.VendorIon;
+import net.chemclipse.msd.converter.supplier.cdf.model.VendorScan;
 import net.chemclipse.msd.converter.supplier.cdf.preferences.PreferenceSupplier;
 import net.chemclipse.msd.model.core.IChromatogramMSD;
 import net.chemclipse.msd.model.core.IIon;
@@ -128,7 +128,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 	private CDFChromatogramMSD readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
 		CDFChromatogramMSD chromatogram;
-		CDFMassSpectrum massSpectrum;
+		VendorScan massSpectrum;
 		@SuppressWarnings("deprecation")
 		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
 		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
@@ -166,8 +166,8 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 	private CDFChromatogramMSD readChromatogramOverview(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored, AbundanceLimitExceededException, IonLimitExceededException {
 
 		CDFChromatogramMSD chromatogram;
-		CDFMassSpectrum massSpectrum;
-		CDFIon ion;
+		VendorScan massSpectrum;
+		VendorIon ion;
 		@SuppressWarnings("deprecation")
 		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
 		CDFChromatogramOverviewArrayReader in = new CDFChromatogramOverviewArrayReader(cdfChromatogram);
@@ -176,9 +176,9 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 		monitor.subTask(IConstants.PARSE_SCANS);
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
 			monitor.subTask(IConstants.SCAN + " " + i);
-			massSpectrum = new CDFMassSpectrum();
+			massSpectrum = new VendorScan();
 			massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
-			ion = new CDFIon(IIon.TIC_ION, true);
+			ion = new VendorIon(IIon.TIC_ION, true);
 			ion.setAbundance(in.getTotalSignal(i));
 			massSpectrum.addIon(ion);
 			chromatogram.addScan(massSpectrum);

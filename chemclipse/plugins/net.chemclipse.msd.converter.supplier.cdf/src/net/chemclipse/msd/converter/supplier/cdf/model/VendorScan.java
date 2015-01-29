@@ -12,19 +12,19 @@
 package net.chemclipse.msd.converter.supplier.cdf.model;
 
 import net.chemclipse.model.exceptions.AbundanceLimitExceededException;
-import net.chemclipse.msd.model.core.AbstractSupplierMassSpectrum;
+import net.chemclipse.msd.model.core.AbstractVendorMassSpectrum;
 import net.chemclipse.msd.model.core.IIon;
 import net.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import net.chemclipse.logging.core.Logger;
 
-public class CDFMassSpectrum extends AbstractSupplierMassSpectrum implements ICDFMassSpectrum {
+public class VendorScan extends AbstractVendorMassSpectrum implements IVendorScan {
 
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
 	 * methods.
 	 */
 	private static final long serialVersionUID = 251851545112617476L;
-	private static final Logger logger = Logger.getLogger(CDFMassSpectrum.class);
+	private static final Logger logger = Logger.getLogger(VendorScan.class);
 	/**
 	 * MAX_IONS The total amount of ions to be stored in the
 	 * cdf chromatogram.<br/>
@@ -35,7 +35,7 @@ public class CDFMassSpectrum extends AbstractSupplierMassSpectrum implements ICD
 	public static final int MIN_RETENTION_TIME = 0;
 	public static final int MAX_RETENTION_TIME = Integer.MAX_VALUE;
 
-	public CDFMassSpectrum() {
+	public VendorScan() {
 
 		super();
 	}
@@ -65,10 +65,10 @@ public class CDFMassSpectrum extends AbstractSupplierMassSpectrum implements ICD
 	 * ISupplierMassSpectrum is a subtype of IMassSpectrum.
 	 */
 	@Override
-	public ICDFMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
+	public IVendorScan makeDeepCopy() throws CloneNotSupportedException {
 
-		ICDFMassSpectrum massSpectrum = (ICDFMassSpectrum)super.clone();
-		ICDFIon cdfIon;
+		IVendorScan massSpectrum = (IVendorScan)super.clone();
+		IVendorIon cdfIon;
 		/*
 		 * The instance variables have been copied by super.clone();.<br/> The
 		 * ions in the ion list need not to be removed via
@@ -79,7 +79,7 @@ public class CDFMassSpectrum extends AbstractSupplierMassSpectrum implements ICD
 		 */
 		for(IIon ion : getIons()) {
 			try {
-				cdfIon = new CDFIon(ion.getIon(), ion.getAbundance());
+				cdfIon = new VendorIon(ion.getIon(), ion.getAbundance());
 				massSpectrum.addIon(cdfIon);
 			} catch(AbundanceLimitExceededException e) {
 				logger.warn(e);

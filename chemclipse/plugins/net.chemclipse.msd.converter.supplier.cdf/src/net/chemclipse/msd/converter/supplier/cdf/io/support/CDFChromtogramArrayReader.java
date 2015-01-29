@@ -17,8 +17,8 @@ import net.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import net.chemclipse.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.chemclipse.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
 import net.chemclipse.msd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
-import net.chemclipse.msd.converter.supplier.cdf.model.CDFIon;
-import net.chemclipse.msd.converter.supplier.cdf.model.CDFMassSpectrum;
+import net.chemclipse.msd.converter.supplier.cdf.model.VendorIon;
+import net.chemclipse.msd.converter.supplier.cdf.model.VendorScan;
 import net.chemclipse.msd.model.core.AbstractIon;
 import net.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import net.chemclipse.logging.core.Logger;
@@ -86,7 +86,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 
 	// ------------------------------------------------ICDFChromatogramArrayReader
 	@Override
-	public CDFMassSpectrum getMassSpectrum(int scan, int precision) throws NoSuchScanStored {
+	public VendorScan getMassSpectrum(int scan, int precision) throws NoSuchScanStored {
 
 		/*
 		 * If the scan is out of a valid range.
@@ -94,8 +94,8 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		if(scan < 1 || scan > getNumberOfScans()) {
 			throw new NoSuchScanStored("The requested scan " + scan + " is not available");
 		}
-		CDFIon ion;
-		CDFMassSpectrum massSpectrum = new CDFMassSpectrum();
+		VendorIon ion;
+		VendorScan massSpectrum = new VendorScan();
 		int peaks;
 		int offset;
 		int position;
@@ -107,7 +107,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 			position = offset + i;
 			try {
 				double mz = AbstractIon.getIon(valueArrayIon[position], precision);
-				ion = new CDFIon(mz, valueArrayAbundance[position]);
+				ion = new VendorIon(mz, valueArrayAbundance[position]);
 				massSpectrum.addIon(ion, false);
 			} catch(AbundanceLimitExceededException e) {
 				logger.warn(e);
