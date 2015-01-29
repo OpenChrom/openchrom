@@ -12,7 +12,7 @@
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
 import net.chemclipse.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
-import net.chemclipse.msd.model.core.IMassSpectrum;
+import net.chemclipse.msd.model.core.IScanMSD;
 import net.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
 
 public class PBMMassSpectrumComparator_1_Test extends MassSpectrumSetTestCase {
@@ -26,8 +26,8 @@ public class PBMMassSpectrumComparator_1_Test extends MassSpectrumSetTestCase {
 
 		super.setUp();
 		//
-		IMassSpectrum unknown = sinapylAclohol.getMassSpectrum();
-		IMassSpectrum reference = sinapylAcloholCis.getMassSpectrum();
+		IScanMSD unknown = sinapylAclohol.getMassSpectrum();
+		IScanMSD reference = sinapylAcloholCis.getMassSpectrum();
 		//
 		comparator = new PBMMassSpectrumComparator();
 		processingInfo = comparator.compare(unknown, reference);

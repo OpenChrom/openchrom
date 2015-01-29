@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra;
 
-import net.chemclipse.msd.model.core.IMassSpectrum;
+import net.chemclipse.msd.model.core.IScanMSD;
 import net.chemclipse.msd.model.implementation.Ion;
 import net.chemclipse.msd.model.implementation.MassSpectrum;
 
@@ -25,7 +25,7 @@ import net.chemclipse.msd.model.implementation.MassSpectrum;
  */
 public class BenzenepropanoicAcid implements ITestMassSpectrum {
 
-	private IMassSpectrum massSpectrum;
+	private IScanMSD massSpectrum;
 
 	public BenzenepropanoicAcid() throws Exception {
 
@@ -144,7 +144,7 @@ public class BenzenepropanoicAcid implements ITestMassSpectrum {
 	}
 
 	@Override
-	public IMassSpectrum getMassSpectrum() {
+	public IScanMSD getMassSpectrum() {
 
 		return massSpectrum;
 	}

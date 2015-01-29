@@ -11,13 +11,13 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra;
 
-import net.chemclipse.msd.model.core.IMassSpectrum;
+import net.chemclipse.msd.model.core.IScanMSD;
 import net.chemclipse.msd.model.implementation.Ion;
 import net.chemclipse.msd.model.implementation.MassSpectrum;
 
 public class ProblemC2 implements ITestMassSpectrum {
 
-	private IMassSpectrum massSpectrum;
+	private IScanMSD massSpectrum;
 
 	public ProblemC2() throws Exception {
 
@@ -72,7 +72,7 @@ public class ProblemC2 implements ITestMassSpectrum {
 	}
 
 	@Override
-	public IMassSpectrum getMassSpectrum() {
+	public IScanMSD getMassSpectrum() {
 
 		return massSpectrum;
 	}

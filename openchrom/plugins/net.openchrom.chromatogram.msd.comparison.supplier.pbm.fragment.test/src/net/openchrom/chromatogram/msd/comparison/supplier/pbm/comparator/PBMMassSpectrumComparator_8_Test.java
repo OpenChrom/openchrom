@@ -12,7 +12,7 @@
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
 import net.chemclipse.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
-import net.chemclipse.msd.model.core.IMassSpectrum;
+import net.chemclipse.msd.model.core.IScanMSD;
 import net.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
 
 public class PBMMassSpectrumComparator_8_Test extends MassSpectrumSetTestCase {
@@ -26,8 +26,8 @@ public class PBMMassSpectrumComparator_8_Test extends MassSpectrumSetTestCase {
 
 		super.setUp();
 		//
-		IMassSpectrum unknown = problemC1.getMassSpectrum();
-		IMassSpectrum reference = problemC2.getMassSpectrum();
+		IScanMSD unknown = problemC1.getMassSpectrum();
+		IScanMSD reference = problemC2.getMassSpectrum();
 		//
 		comparator = new PBMMassSpectrumComparator();
 		processingInfo = comparator.compare(unknown, reference);
