@@ -11,9 +11,9 @@
  *******************************************************************************/
 package net.chemclipse.fid.converter.supplier.cdf.model;
 
-import net.chemclipse.fid.model.core.ISupplierScanFID;
+import net.chemclipse.fid.model.core.IScanFID;
 
-public interface ICDFSupplierScan extends ISupplierScanFID {
+public interface ICDFSupplierScan extends IScanFID {
 
 	/**
 	 * Stores the total signal.

@@ -11,9 +11,9 @@
  *******************************************************************************/
 package net.chemclipse.fid.converter.supplier.cdf.model;
 
-import net.chemclipse.fid.model.core.AbstractSupplierScanFID;
+import net.chemclipse.fid.model.core.AbstractScanFID;
 
-public class CDFSupplierScan extends AbstractSupplierScanFID implements ICDFSupplierScan {
+public class CDFSupplierScan extends AbstractScanFID implements ICDFSupplierScan {
 
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
