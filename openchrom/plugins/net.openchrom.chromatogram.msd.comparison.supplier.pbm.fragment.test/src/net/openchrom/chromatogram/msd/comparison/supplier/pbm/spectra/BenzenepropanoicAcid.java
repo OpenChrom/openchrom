@@ -13,7 +13,7 @@ package net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra;
 
 import net.chemclipse.msd.model.core.IScanMSD;
 import net.chemclipse.msd.model.implementation.Ion;
-import net.chemclipse.msd.model.implementation.MassSpectrum;
+import net.chemclipse.msd.model.implementation.ScanMSD;
 
 /*
  * Name: Benzenepropanoic acid, 2,5-dimethoxy-
@@ -29,7 +29,7 @@ public class BenzenepropanoicAcid implements ITestMassSpectrum {
 
 	public BenzenepropanoicAcid() throws Exception {
 
-		massSpectrum = new MassSpectrum();
+		massSpectrum = new ScanMSD();
 		massSpectrum.addIon(new Ion(14.0d, 31.0f));
 		massSpectrum.addIon(new Ion(15.0d, 297.0f));
 		massSpectrum.addIon(new Ion(16.0d, 6.0f));

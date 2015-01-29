@@ -24,7 +24,7 @@ import net.chemclipse.msd.model.core.IScanMSD;
 import net.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
 import net.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import net.chemclipse.msd.model.implementation.Ion;
-import net.chemclipse.msd.model.implementation.MassSpectrum;
+import net.chemclipse.msd.model.implementation.ScanMSD;
 import net.chemclipse.msd.model.xic.IExtractedIonSignal;
 import net.chemclipse.logging.core.Logger;
 import net.chemclipse.processing.core.IProcessingInfo;
@@ -82,7 +82,7 @@ public class PBMMassSpectrumComparator extends AbstractMassSpectrumComparator im
 	 */
 	private IScanMSD adjustMassSpectrum(IScanMSD massSpectrum) {
 
-		IScanMSD adjustedMassSpectrum = new MassSpectrum();
+		IScanMSD adjustedMassSpectrum = new ScanMSD();
 		IIon adjustedIon;
 		/*
 		 * Normalize the abundance values to a highest value of 100.

@@ -13,7 +13,7 @@ package net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra;
 
 import net.chemclipse.msd.model.core.IScanMSD;
 import net.chemclipse.msd.model.implementation.Ion;
-import net.chemclipse.msd.model.implementation.MassSpectrum;
+import net.chemclipse.msd.model.implementation.ScanMSD;
 
 public class ProblemC2 implements ITestMassSpectrum {
 
@@ -21,7 +21,7 @@ public class ProblemC2 implements ITestMassSpectrum {
 
 	public ProblemC2() throws Exception {
 
-		massSpectrum = new MassSpectrum();
+		massSpectrum = new ScanMSD();
 		massSpectrum.addIon(new Ion(53.0d, 3.1257746f));
 		massSpectrum.addIon(new Ion(71.0d, 8.00E-006f));
 		massSpectrum.addIon(new Ion(81.0d, 1.63E-009f));

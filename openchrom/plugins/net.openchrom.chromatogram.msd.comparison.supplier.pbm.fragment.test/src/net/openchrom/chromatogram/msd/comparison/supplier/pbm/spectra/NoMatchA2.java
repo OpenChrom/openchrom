@@ -13,7 +13,7 @@ package net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra;
 
 import net.chemclipse.msd.model.core.IScanMSD;
 import net.chemclipse.msd.model.implementation.Ion;
-import net.chemclipse.msd.model.implementation.MassSpectrum;
+import net.chemclipse.msd.model.implementation.ScanMSD;
 
 /*
  * No m/z values match between noMatch1 and noMatch2.
@@ -24,7 +24,7 @@ public class NoMatchA2 implements ITestMassSpectrum {
 
 	public NoMatchA2() throws Exception {
 
-		massSpectrum = new MassSpectrum();
+		massSpectrum = new ScanMSD();
 		massSpectrum.addIon(new Ion(65.0d, 1017.0f));
 		massSpectrum.addIon(new Ion(70.0d, 202891.0f));
 		massSpectrum.addIon(new Ion(72.0d, 22.0f));

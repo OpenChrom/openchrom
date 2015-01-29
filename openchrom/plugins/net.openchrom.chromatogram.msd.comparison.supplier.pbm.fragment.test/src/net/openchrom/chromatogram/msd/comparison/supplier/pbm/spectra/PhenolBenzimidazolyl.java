@@ -13,7 +13,7 @@ package net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra;
 
 import net.chemclipse.msd.model.core.IScanMSD;
 import net.chemclipse.msd.model.implementation.Ion;
-import net.chemclipse.msd.model.implementation.MassSpectrum;
+import net.chemclipse.msd.model.implementation.ScanMSD;
 
 /*
  * Name: Phenol, o-2-benzimidazolyl-
@@ -29,7 +29,7 @@ public class PhenolBenzimidazolyl implements ITestMassSpectrum {
 
 	public PhenolBenzimidazolyl() throws Exception {
 
-		massSpectrum = new MassSpectrum();
+		massSpectrum = new ScanMSD();
 		massSpectrum.addIon(new Ion(33.0d, 2.0f));
 		massSpectrum.addIon(new Ion(34.0d, 2.0f));
 		massSpectrum.addIon(new Ion(36.0d, 7.0f));

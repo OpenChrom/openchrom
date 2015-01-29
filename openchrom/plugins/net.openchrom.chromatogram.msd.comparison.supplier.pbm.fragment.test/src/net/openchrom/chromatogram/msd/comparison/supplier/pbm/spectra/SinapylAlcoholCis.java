@@ -13,7 +13,7 @@ package net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra;
 
 import net.chemclipse.msd.model.core.IScanMSD;
 import net.chemclipse.msd.model.implementation.Ion;
-import net.chemclipse.msd.model.implementation.MassSpectrum;
+import net.chemclipse.msd.model.implementation.ScanMSD;
 
 /*
  * Name: Sinapylalcohol (cis), BR 109, RT 69:01
@@ -29,7 +29,7 @@ public class SinapylAlcoholCis implements ITestMassSpectrum {
 
 	public SinapylAlcoholCis() throws Exception {
 
-		massSpectrum = new MassSpectrum();
+		massSpectrum = new ScanMSD();
 		massSpectrum.addIon(new Ion(27.0d, 71.0f));
 		massSpectrum.addIon(new Ion(39.0d, 94.0f));
 		massSpectrum.addIon(new Ion(40.0d, 74.0f));

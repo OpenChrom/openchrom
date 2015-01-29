@@ -13,7 +13,7 @@ package net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra;
 
 import net.chemclipse.msd.model.core.IScanMSD;
 import net.chemclipse.msd.model.implementation.Ion;
-import net.chemclipse.msd.model.implementation.MassSpectrum;
+import net.chemclipse.msd.model.implementation.ScanMSD;
 
 /*
  * Name: Syringylacetone, BR 105, RT 64:04
@@ -29,7 +29,7 @@ public class Syringylacetone implements ITestMassSpectrum {
 
 	public Syringylacetone() throws Exception {
 
-		massSpectrum = new MassSpectrum();
+		massSpectrum = new ScanMSD();
 		massSpectrum.addIon(new Ion(27.0d, 11.0f));
 		massSpectrum.addIon(new Ion(28.0d, 8.0f));
 		massSpectrum.addIon(new Ion(38.0d, 11.0f));
