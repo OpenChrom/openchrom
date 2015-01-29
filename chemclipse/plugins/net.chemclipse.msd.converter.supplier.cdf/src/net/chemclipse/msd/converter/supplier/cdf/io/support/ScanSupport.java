@@ -12,7 +12,7 @@
 package net.chemclipse.msd.converter.supplier.cdf.io.support;
 
 import net.chemclipse.msd.model.core.IChromatogramMSD;
-import net.chemclipse.msd.model.core.IMassSpectrum;
+import net.chemclipse.msd.model.core.IScanMSD;
 
 public class ScanSupport implements IScanSupport {
 
@@ -24,7 +24,7 @@ public class ScanSupport implements IScanSupport {
 
 	public ScanSupport(IChromatogramMSD chromatogram) {
 
-		IMassSpectrum massSpectrum;
+		IScanMSD massSpectrum;
 		int numberOfScans = chromatogram.getNumberOfScans();
 		counter = 0;
 		/*
