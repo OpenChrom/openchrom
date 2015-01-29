@@ -34,7 +34,7 @@ import net.chemclipse.fid.converter.supplier.cdf.io.support.CDFChromtogramArrayR
 import net.chemclipse.fid.converter.supplier.cdf.io.support.DateSupport;
 import net.chemclipse.fid.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
 import net.chemclipse.fid.converter.supplier.cdf.model.CDFChromatogramFID;
-import net.chemclipse.fid.converter.supplier.cdf.model.CDFSupplierScan;
+import net.chemclipse.fid.converter.supplier.cdf.model.VendorScan;
 import net.chemclipse.fid.model.core.IChromatogramFID;
 import net.chemclipse.model.core.IChromatogramOverview;
 import net.chemclipse.model.exceptions.AbundanceLimitExceededException;
@@ -135,7 +135,7 @@ public class ChromatogramReader extends AbstractChromatogramFIDReader implements
 		int scans = in.getNumberOfScans();
 		for(int i = 0; i < scans; i++) {
 			monitor.subTask(IConstants.SCAN + " " + i);
-			CDFSupplierScan scan = new CDFSupplierScan(in.getIntensity(i));
+			VendorScan scan = new VendorScan(in.getIntensity(i));
 			scan.setRetentionTime(retentionTime);
 			retentionTime += in.getScanInterval();
 			chromatogram.addScan(scan);

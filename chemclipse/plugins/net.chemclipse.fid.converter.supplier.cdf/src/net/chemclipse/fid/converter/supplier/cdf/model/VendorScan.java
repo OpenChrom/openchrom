@@ -13,7 +13,7 @@ package net.chemclipse.fid.converter.supplier.cdf.model;
 
 import net.chemclipse.fid.model.core.AbstractScanFID;
 
-public class CDFSupplierScan extends AbstractScanFID implements ICDFSupplierScan {
+public class VendorScan extends AbstractScanFID implements IVendorScan {
 
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
@@ -22,14 +22,14 @@ public class CDFSupplierScan extends AbstractScanFID implements ICDFSupplierScan
 	private static final long serialVersionUID = -503693160228483226L;
 	private float totalSignal = 0.0f;
 
-	public CDFSupplierScan(int retentionTime, float totalSignal) {
+	public VendorScan(int retentionTime, float totalSignal) {
 
 		super();
 		setRetentionTime(retentionTime);
 		setTotalSignal(totalSignal);
 	}
 
-	public CDFSupplierScan(float totalSignal) {
+	public VendorScan(float totalSignal) {
 
 		this.totalSignal = totalSignal;
 	}
