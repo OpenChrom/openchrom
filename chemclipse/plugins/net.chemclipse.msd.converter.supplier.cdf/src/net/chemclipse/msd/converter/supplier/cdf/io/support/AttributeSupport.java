@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.chemclipse.msd.converter.supplier.cdf.io.support;
 
-import net.chemclipse.msd.converter.supplier.cdf.model.CDFChromatogramMSD;
+import net.chemclipse.msd.converter.supplier.cdf.model.VendorChromatogram;
 import net.chemclipse.msd.model.core.IChromatogramMSD;
 
 import ucar.nc2.NetcdfFileWriteable;
@@ -28,8 +28,8 @@ public class AttributeSupport {
 		cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_DATASET_ORIGIN, "Palo Alto, CA");
 		cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_NETCDF_FILE_DATE_TIME_STAMP, DateSupport.getDate(chromatogram.getDate()));
 		cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_TITLE, chromatogram.getMiscInfo());
-		if(chromatogram instanceof CDFChromatogramMSD) {
-			CDFChromatogramMSD chrom = (CDFChromatogramMSD)chromatogram;
+		if(chromatogram instanceof VendorChromatogram) {
+			VendorChromatogram chrom = (VendorChromatogram)chromatogram;
 			cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_DATE_TIME_STAMP, DateSupport.getDate(chrom.getDateOfExperiment()));
 		} else {
 			cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_DATE_TIME_STAMP, DateSupport.getDate(chromatogram.getDate()));

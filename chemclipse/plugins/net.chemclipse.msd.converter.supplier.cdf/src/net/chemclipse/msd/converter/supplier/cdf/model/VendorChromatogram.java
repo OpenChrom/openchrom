@@ -15,11 +15,11 @@ import java.util.Date;
 
 import net.chemclipse.msd.model.core.AbstractChromatogramMSD;
 
-public class CDFChromatogramMSD extends AbstractChromatogramMSD implements ICDFChromatogramMSD {
+public class VendorChromatogram extends AbstractChromatogramMSD implements IVendorChromatogram {
 
 	private Date dateOfExperiment = new Date();
 
-	public CDFChromatogramMSD() {
+	public VendorChromatogram() {
 
 		super();
 	}

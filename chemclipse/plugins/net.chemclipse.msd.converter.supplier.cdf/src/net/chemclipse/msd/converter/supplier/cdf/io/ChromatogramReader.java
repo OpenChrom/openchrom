@@ -37,7 +37,7 @@ import net.chemclipse.msd.converter.supplier.cdf.io.support.CDFChromatogramOverv
 import net.chemclipse.msd.converter.supplier.cdf.io.support.CDFChromtogramArrayReader;
 import net.chemclipse.msd.converter.supplier.cdf.io.support.DateSupport;
 import net.chemclipse.msd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
-import net.chemclipse.msd.converter.supplier.cdf.model.CDFChromatogramMSD;
+import net.chemclipse.msd.converter.supplier.cdf.model.VendorChromatogram;
 import net.chemclipse.msd.converter.supplier.cdf.model.VendorIon;
 import net.chemclipse.msd.converter.supplier.cdf.model.VendorScan;
 import net.chemclipse.msd.converter.supplier.cdf.preferences.PreferenceSupplier;
@@ -53,7 +53,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 	@Override
 	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
-		CDFChromatogramMSD chromatogram;
+		VendorChromatogram chromatogram;
 		if(!isValidFileFormat(file)) {
 			return null;
 		}
@@ -71,7 +71,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 	@Override
 	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
-		CDFChromatogramMSD chromatogram;
+		VendorChromatogram chromatogram;
 		if(!isValidFileFormat(file)) {
 			return null;
 		}
@@ -125,14 +125,14 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 		}
 	}
 
-	private CDFChromatogramMSD readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
+	private VendorChromatogram readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
-		CDFChromatogramMSD chromatogram;
+		VendorChromatogram chromatogram;
 		VendorScan massSpectrum;
 		@SuppressWarnings("deprecation")
 		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
 		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
-		chromatogram = new CDFChromatogramMSD();
+		chromatogram = new VendorChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
 		//
 		int precision = PreferenceSupplier.getPrecision();
@@ -163,15 +163,15 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 	 * @throws IonLimitExceededException
 	 * @throws AbundanceLimitExceededException
 	 */
-	private CDFChromatogramMSD readChromatogramOverview(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored, AbundanceLimitExceededException, IonLimitExceededException {
+	private VendorChromatogram readChromatogramOverview(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored, AbundanceLimitExceededException, IonLimitExceededException {
 
-		CDFChromatogramMSD chromatogram;
+		VendorChromatogram chromatogram;
 		VendorScan massSpectrum;
 		VendorIon ion;
 		@SuppressWarnings("deprecation")
 		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
 		CDFChromatogramOverviewArrayReader in = new CDFChromatogramOverviewArrayReader(cdfChromatogram);
-		chromatogram = new CDFChromatogramMSD();
+		chromatogram = new VendorChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
 		monitor.subTask(IConstants.PARSE_SCANS);
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
@@ -196,7 +196,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 	 * @param in
 	 * @param file
 	 */
-	private void setChromatogramEntries(CDFChromatogramMSD chromatogram, IAbstractCDFChromatogramArrayReader in, File file) {
+	private void setChromatogramEntries(VendorChromatogram chromatogram, IAbstractCDFChromatogramArrayReader in, File file) {
 
 		assert chromatogram != null : getClass().getName() + " The chromatogram must not be null";
 		/*
