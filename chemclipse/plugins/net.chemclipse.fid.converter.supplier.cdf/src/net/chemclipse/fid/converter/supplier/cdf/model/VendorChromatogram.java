@@ -11,7 +11,13 @@
  *******************************************************************************/
 package net.chemclipse.fid.converter.supplier.cdf.model;
 
-import net.chemclipse.fid.model.core.IChromatogramFID;
+import net.chemclipse.fid.model.core.AbstractChromatogramFID;
 
-public interface ICDFChromatogramFID extends IChromatogramFID {
+public class VendorChromatogram extends AbstractChromatogramFID implements IVendorChromatogram {
+
+	@Override
+	public String getName() {
+
+		return extractNameFromFile("XYChromatogramFID");
+	}
 }

@@ -33,7 +33,7 @@ import net.chemclipse.fid.converter.supplier.cdf.internal.converter.IConstants;
 import net.chemclipse.fid.converter.supplier.cdf.io.support.CDFChromtogramArrayReader;
 import net.chemclipse.fid.converter.supplier.cdf.io.support.DateSupport;
 import net.chemclipse.fid.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
-import net.chemclipse.fid.converter.supplier.cdf.model.CDFChromatogramFID;
+import net.chemclipse.fid.converter.supplier.cdf.model.VendorChromatogram;
 import net.chemclipse.fid.converter.supplier.cdf.model.VendorScan;
 import net.chemclipse.fid.model.core.IChromatogramFID;
 import net.chemclipse.model.core.IChromatogramOverview;
@@ -58,7 +58,7 @@ public class ChromatogramReader extends AbstractChromatogramFIDReader implements
 
 	private IChromatogramFID readFile(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
-		CDFChromatogramFID chromatogram;
+		VendorChromatogram chromatogram;
 		if(!isValidFileFormat(file)) {
 			return null;
 		}
@@ -123,12 +123,12 @@ public class ChromatogramReader extends AbstractChromatogramFIDReader implements
 	 * @throws IonLimitExceededException
 	 * @throws AbundanceLimitExceededException
 	 */
-	private CDFChromatogramFID readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored, AbundanceLimitExceededException {
+	private VendorChromatogram readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored, AbundanceLimitExceededException {
 
 		@SuppressWarnings("deprecation")
 		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
 		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
-		CDFChromatogramFID chromatogram = new CDFChromatogramFID();
+		VendorChromatogram chromatogram = new VendorChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
 		monitor.subTask(IConstants.PARSE_SCANS);
 		int retentionTime = in.getScanDelay();
@@ -153,7 +153,7 @@ public class ChromatogramReader extends AbstractChromatogramFIDReader implements
 	 * @param in
 	 * @param file
 	 */
-	private void setChromatogramEntries(CDFChromatogramFID chromatogram, IAbstractCDFChromatogramArrayReader in, File file) {
+	private void setChromatogramEntries(VendorChromatogram chromatogram, IAbstractCDFChromatogramArrayReader in, File file) {
 
 		assert chromatogram != null : getClass().getName() + " The chromatogram must not be null";
 		/*
