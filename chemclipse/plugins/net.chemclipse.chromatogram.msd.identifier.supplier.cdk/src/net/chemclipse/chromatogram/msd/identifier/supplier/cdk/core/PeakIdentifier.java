@@ -29,7 +29,6 @@ import net.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettin
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.settings.ICdkPeakIdentifierSettings;
 import net.chemclipse.msd.model.core.IPeakMSD;
-import net.chemclipse.msd.model.core.identifier.peak.IPeakIdentificationEntry;
 import net.chemclipse.processing.core.MessageType;
 import net.chemclipse.processing.core.ProcessingMessage;
 
@@ -92,8 +91,8 @@ public class PeakIdentifier extends AbstractPeakIdentifier {
 				/*
 				 * Check if the peak is a peak identification entry.
 				 */
-				if(target instanceof IPeakIdentificationEntry) {
-					ILibraryInformation libraryInformation = ((IPeakIdentificationEntry)target).getLibraryInformation();
+				if(target instanceof IPeakTarget) {
+					ILibraryInformation libraryInformation = ((IPeakTarget)target).getLibraryInformation();
 					if(libraryInformation.getFormula().equals("")) {
 						/*
 						 * Calculate SMILES

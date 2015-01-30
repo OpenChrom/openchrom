@@ -18,7 +18,6 @@ import java.util.List;
 import net.chemclipse.model.identifier.ILibraryInformation;
 import net.chemclipse.model.targets.IPeakTarget;
 import net.chemclipse.msd.model.core.IChromatogramPeakMSD;
-import net.chemclipse.msd.model.core.identifier.peak.IPeakIdentificationEntry;
 import net.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
 import net.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 
@@ -57,8 +56,8 @@ public class DeleteIdentificationsWithoutFormulaRunnable implements IRunnableWit
 					/*
 					 * Check if the peak is a peak identification entry.
 					 */
-					if(target instanceof IPeakIdentificationEntry) {
-						ILibraryInformation libraryInformation = ((IPeakIdentificationEntry)target).getLibraryInformation();
+					if(target instanceof IPeakTarget) {
+						ILibraryInformation libraryInformation = ((IPeakTarget)target).getLibraryInformation();
 						if(libraryInformation.getFormula().equals("")) {
 							/*
 							 * Mark the identification entry to be deleted when there is no formula set.
