@@ -151,11 +151,6 @@
               <arch>x86_64</arch>
             </environment>
             <environment>
-              <os>macosx</os>
-              <ws>cocoa</ws>
-              <arch>ppc</arch>
-            </environment>
-            <environment>
               <os>solaris</os>
               <ws>gtk</ws>
               <arch>x86</arch>
