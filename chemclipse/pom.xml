@@ -28,8 +28,8 @@
   --> 
   <properties>
     <!-- VERSIONS -->
-    <tycho.version>0.21.0</tycho.version>
-    <tycho-extras.version>0.21.0</tycho-extras.version>
+    <tycho.version>0.22.0</tycho.version>
+    <tycho-extras.version>0.22.0</tycho-extras.version>
     <pmd.version>2.7.1</pmd.version>
     <checkstyle.version>2.9.1</checkstyle.version>
     <!-- IDS -->
@@ -149,6 +149,11 @@
               <os>macosx</os>
               <ws>cocoa</ws>
               <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>ppc</arch>
             </environment>
             <environment>
               <os>solaris</os>
