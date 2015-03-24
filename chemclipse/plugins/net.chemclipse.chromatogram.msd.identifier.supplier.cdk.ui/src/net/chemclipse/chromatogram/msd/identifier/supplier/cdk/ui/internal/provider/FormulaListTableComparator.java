@@ -12,18 +12,18 @@
 package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider;
 
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula.NameAndRating;
 
-public class FormulaListTableSorter extends ViewerSorter {
+public class FormulaListTableComparator extends ViewerComparator {
 
 	private int propertyIndex;
 	private static final int ASCENDING = 0;
 	// private static final int DESCENDING = -1;
 	private int direction = ASCENDING;
 
-	public FormulaListTableSorter() {
+	public FormulaListTableComparator() {
 
 		propertyIndex = 0;
 		direction = ASCENDING;
@@ -44,7 +44,7 @@ public class FormulaListTableSorter extends ViewerSorter {
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		/*
-		 * SYNCHRONIZE: PeakListLabelProvider PeakListLabelSorter PeakListView
+		 * SYNCHRONIZE: PeakListLabelProvider PeakListLabelComparator PeakListView
 		 */
 		int sortOrder = 0;
 		if(e1 instanceof NameAndRating && e2 instanceof NameAndRating) {

@@ -36,7 +36,7 @@ import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula.NameAndRa
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.support.FormulaSupport;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider.FormulaListContentProvider;
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider.FormulaListLabelProvider;
-import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider.FormulaListTableSorter;
+import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider.FormulaListTableComparator;
 import net.chemclipse.logging.core.Logger;
 import net.chemclipse.support.events.IChemClipseEvents;
 import net.chemclipse.swt.ui.viewers.ExtendedTableViewer;
@@ -46,7 +46,7 @@ public class FormulaCalculatorView {
 	private static final Logger logger = Logger.getLogger(FormulaCalculatorView.class);
 	private Label label;
 	private ExtendedTableViewer tableViewer;
-	private FormulaListTableSorter formulaListTableSorter;
+	private FormulaListTableComparator formulaListTableComparator;
 	private String[] titles = {"Formula", "Ranking"};
 	private int bounds[] = {200, 100};
 	@Inject
@@ -91,8 +91,8 @@ public class FormulaCalculatorView {
 		/*
 		 * Sorting the table.
 		 */
-		formulaListTableSorter = new FormulaListTableSorter();
-		tableViewer.setSorter(formulaListTableSorter);
+		formulaListTableComparator = new FormulaListTableComparator();
+		tableViewer.setComparator(formulaListTableComparator);
 		/*
 		 * Copy and Paste of the table content.
 		 */
