@@ -12,33 +12,12 @@
 package net.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider;
 
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerComparator;
 
 import net.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula.NameAndRating;
+import net.chemclipse.swt.ui.viewers.AbstractRecordTableComparator;
+import net.chemclipse.swt.ui.viewers.IRecordTableComparator;
 
-public class FormulaListTableComparator extends ViewerComparator {
-
-	private int propertyIndex;
-	private static final int ASCENDING = 0;
-	// private static final int DESCENDING = -1;
-	private int direction = ASCENDING;
-
-	public FormulaListTableComparator() {
-
-		propertyIndex = 0;
-		direction = ASCENDING;
-	}
-
-	public void setColumn(int column) {
-
-		if(column == this.propertyIndex) {
-			// Toggle the direction
-			direction = 1 - direction;
-		} else {
-			this.propertyIndex = column;
-			direction = ASCENDING;
-		}
-	}
+public class FormulaListTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
 
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
@@ -50,7 +29,7 @@ public class FormulaListTableComparator extends ViewerComparator {
 		if(e1 instanceof NameAndRating && e2 instanceof NameAndRating) {
 			NameAndRating element1 = (NameAndRating)e1;
 			NameAndRating element2 = (NameAndRating)e2;
-			switch(propertyIndex) {
+			switch(getPropertyIndex()) {
 				case 0: // Formula
 					sortOrder = (element2.getName().length() > element1.getName().length()) ? 1 : -1;
 					break;
@@ -61,7 +40,7 @@ public class FormulaListTableComparator extends ViewerComparator {
 					sortOrder = 0;
 			}
 		}
-		if(direction == ASCENDING) {
+		if(getDirection() == ASCENDING) {
 			sortOrder = -sortOrder;
 		}
 		return sortOrder;
