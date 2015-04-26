@@ -6,7 +6,7 @@
     <groupId>net.chemclipse</groupId>
     <artifactId>parent</artifactId>
     <version>BUILD-VERSION</version>
-    <relativePath>../cbi/net.chemclipse.fid.converter.supplier.cdf.cbi/pom.xml</relativePath>
+    <relativePath>../cbi/net.chemclipse.csd.converter.supplier.cdf.cbi/pom.xml</relativePath>
   </parent>
 
   <artifactId>net.chemclipse.sites.parent</artifactId>

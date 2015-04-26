@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Eclipse-RegisterBuddy: 	net.chemclipse.model, net.chemclipse.csd.model, net.chemclipse.thirdpartylibraries.netcdf
+Bundle-ManifestVersion: 2
+Bundle-Name: Cdf
+Bundle-SymbolicName: net.chemclipse.csd.converter.supplier.cdf;singleton:=true
+Bundle-Version: 0.7.0.qualifier
+Bundle-Activator: net.chemclipse.csd.converter.supplier.cdf.Activator
+Bundle-Vendor: ChemClipse
+Require-Bundle: org.eclipse.core.runtime,
+ net.chemclipse.csd.converter;bundle-version="0.7.0",
+ net.chemclipse.csd.model;bundle-version="0.7.0",
+ net.chemclipse.logging;bundle-version="0.7.0",
+ net.chemclipse.processing;bundle-version="0.7.0",
+ net.chemclipse.converter;bundle-version="0.7.0",
+ net.chemclipse.model;bundle-version="0.7.0",
+ net.chemclipse.thirdpartylibraries.netcdf;bundle-version="4.3.19"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
