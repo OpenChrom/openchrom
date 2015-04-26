@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <feature url="features/net.chemclipse.csd.converter.supplier.cdf.feature_0.7.0.qualifier.jar" id="net.chemclipse.csd.converter.supplier.cdf.feature" version="0.7.0.qualifier">
-      <category name="net.chemclipse.xxd.plugins.converter"/>
-   </feature>
-   <category-def name="net.chemclipse.xxd.plugins.converter" label="Chromatogram Converter"/>
-</site>

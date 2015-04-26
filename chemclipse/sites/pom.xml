@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>net.chemclipse</groupId>
+    <groupId>org.eclipse.chemclipse</groupId>
     <artifactId>parent</artifactId>
     <version>BUILD-VERSION</version>
-    <relativePath>../cbi/net.chemclipse.csd.converter.supplier.cdf.cbi/pom.xml</relativePath>
+    <relativePath>../cbi/org.eclipse.chemclipse.csd.converter.supplier.cdf.cbi/pom.xml</relativePath>
   </parent>
 
-  <artifactId>net.chemclipse.sites.parent</artifactId>
+  <artifactId>org.eclipse.chemclipse.sites.parent</artifactId>
   <packaging>pom</packaging>
   <name>updateSites</name>
 
