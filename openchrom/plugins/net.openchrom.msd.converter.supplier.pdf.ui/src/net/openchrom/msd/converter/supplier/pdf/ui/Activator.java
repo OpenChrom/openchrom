@@ -7,7 +7,7 @@ package net.openchrom.msd.converter.supplier.pdf.ui;
 
 import org.osgi.framework.BundleContext;
 
-import net.chemclipse.support.ui.activator.AbstractActivatorUI;
+import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
 import net.openchrom.keys.preferences.IBundleProductPreferences;
 import net.openchrom.keys.preferences.IProductPreferences;
 import net.openchrom.keys.ui.validator.ProductValidatorUI;

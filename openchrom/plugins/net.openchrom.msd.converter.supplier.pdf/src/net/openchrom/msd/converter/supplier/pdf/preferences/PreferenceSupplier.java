@@ -12,7 +12,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 
-import net.chemclipse.support.preferences.IPreferenceSupplier;
+import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import net.openchrom.msd.converter.supplier.pdf.Activator;
 
 public class PreferenceSupplier implements IPreferenceSupplier {

@@ -6,13 +6,13 @@
 package net.openchrom.msd.converter.supplier.pdf.internal.support;
 
 import java.io.File;
-import net.chemclipse.logging.core.Logger;
-import net.chemclipse.support.settings.ApplicationSettings;
+import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.support.settings.ApplicationSettings;
 
 public class PathHelper {
 
 	private static final Logger logger = Logger.getLogger(PathHelper.class);
-	public static final String PDF_CONVERTER = "net.chemclipse.msd.converter.supplier.pdf";
+	public static final String PDF_CONVERTER = "org.eclipse.chemclipse.msd.converter.supplier.pdf";
 
 	/**
 	 * Returns the file object (directory) where the chromatogram instances can

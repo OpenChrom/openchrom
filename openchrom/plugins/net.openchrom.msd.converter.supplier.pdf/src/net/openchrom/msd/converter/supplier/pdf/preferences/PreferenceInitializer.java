@@ -5,7 +5,7 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.preferences;
 
-import net.chemclipse.support.preferences.AbstractExtendedPreferenceInitializer;
+import org.eclipse.chemclipse.support.preferences.AbstractExtendedPreferenceInitializer;
 
 public class PreferenceInitializer extends AbstractExtendedPreferenceInitializer {
 

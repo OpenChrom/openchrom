@@ -25,12 +25,12 @@ import com.pdfjet.Point;
 import com.pdfjet.RGB;
 import com.pdfjet.TextLine;
 
-import net.chemclipse.model.signals.ITotalScanSignal;
-import net.chemclipse.model.signals.ITotalScanSignalExtractor;
-import net.chemclipse.model.signals.ITotalScanSignals;
-import net.chemclipse.model.signals.TotalScanSignalExtractor;
-import net.chemclipse.msd.model.core.AbstractChromatogramMSD;
-import net.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.model.signals.ITotalScanSignal;
+import org.eclipse.chemclipse.model.signals.ITotalScanSignalExtractor;
+import org.eclipse.chemclipse.model.signals.ITotalScanSignals;
+import org.eclipse.chemclipse.model.signals.TotalScanSignalExtractor;
+import org.eclipse.chemclipse.msd.model.core.AbstractChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 
 public class PDFSupport {
 

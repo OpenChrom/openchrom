@@ -9,11 +9,11 @@ import java.io.File;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.chemclipse.converter.processing.chromatogram.ChromatogramOverviewImportConverterProcessingInfo;
-import net.chemclipse.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
-import net.chemclipse.msd.converter.chromatogram.AbstractChromatogramMSDImportConverter;
-import net.chemclipse.msd.converter.processing.chromatogram.ChromatogramMSDImportConverterProcessingInfo;
-import net.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
+import org.eclipse.chemclipse.converter.processing.chromatogram.ChromatogramOverviewImportConverterProcessingInfo;
+import org.eclipse.chemclipse.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
+import org.eclipse.chemclipse.msd.converter.chromatogram.AbstractChromatogramMSDImportConverter;
+import org.eclipse.chemclipse.msd.converter.processing.chromatogram.ChromatogramMSDImportConverterProcessingInfo;
+import org.eclipse.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import net.openchrom.msd.converter.supplier.pdf.Activator;
 
 public class ChromatogramImportConverter extends AbstractChromatogramMSDImportConverter {

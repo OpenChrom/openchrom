@@ -11,10 +11,10 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.chemclipse.converter.exceptions.FileIsNotWriteableException;
-import net.chemclipse.msd.converter.io.AbstractChromatogramMSDWriter;
+import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
+import org.eclipse.chemclipse.msd.converter.io.AbstractChromatogramMSDWriter;
 import net.openchrom.msd.converter.supplier.pdf.internal.io.PDFSupport;
-import net.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 
 public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 
