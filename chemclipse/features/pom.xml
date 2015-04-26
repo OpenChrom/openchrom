@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>net.chemclipse</groupId>
+    <groupId>org.eclipse.chemclipse</groupId>
     <artifactId>parent</artifactId>
     <version>BUILD-VERSION</version>
-    <relativePath>../cbi/net.chemclipse.chromatogram.msd.identifier.supplier.cdk.cbi/pom.xml</relativePath>
+    <relativePath>../cbi/org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.cdk.cbi/pom.xml</relativePath>
   </parent>
 
-  <artifactId>net.chemclipse.features.parent</artifactId>
+  <artifactId>org.eclipse.chemclipse.features.parent</artifactId>
   <packaging>pom</packaging>
   <name>features</name>
 
