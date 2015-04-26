@@ -5,11 +5,11 @@
 <xsl:for-each select="site">
 	<html>
 	<head>
-	<title>net.chemclipse.thirdpartylibraries</title>
+	<title>org.eclipse.chemclipse.thirdpartylibraries</title>
 	<style>@import url("web/site.css");</style>
 	</head>
 	<body>
-	<h1 class="title">net.chemclipse.thirdpartylibraries</h1>
+	<h1 class="title">org.eclipse.chemclipse.thirdpartylibraries</h1>
 	<p class="bodyText"><xsl:value-of select="description"/></p>
 	<table width="100%" border="0" cellspacing="1" cellpadding="2">
 	<xsl:for-each select="category-def">
