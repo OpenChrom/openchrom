@@ -24,7 +24,7 @@ import net.chemclipse.csd.converter.processing.chromatogram.IChromatogramFIDImpo
 import net.chemclipse.csd.converter.supplier.cdf.internal.converter.IConstants;
 import net.chemclipse.csd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.chemclipse.csd.converter.supplier.cdf.io.ChromatogramReader;
-import net.chemclipse.csd.model.core.IChromatogramFID;
+import net.chemclipse.csd.model.core.IChromatogramCSD;
 import net.chemclipse.model.core.IChromatogramOverview;
 import net.chemclipse.logging.core.Logger;
 import net.chemclipse.processing.core.IProcessingInfo;
@@ -52,7 +52,7 @@ public class CDFChromatogramImportConverter extends AbstractChromatogramFIDImpor
 			IChromatogramFIDReader reader = new ChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM);
 			try {
-				IChromatogramFID chromatogram = reader.read(file, monitor);
+				IChromatogramCSD chromatogram = reader.read(file, monitor);
 				processingInfo.setChromatogram(chromatogram);
 			} catch(Exception e) {
 				logger.warn(e);

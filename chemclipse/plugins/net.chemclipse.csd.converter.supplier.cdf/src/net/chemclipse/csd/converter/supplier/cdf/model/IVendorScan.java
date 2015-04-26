@@ -11,9 +11,9 @@
  *******************************************************************************/
 package net.chemclipse.csd.converter.supplier.cdf.model;
 
-import net.chemclipse.csd.model.core.IScanFID;
+import net.chemclipse.csd.model.core.IScanCSD;
 
-public interface IVendorScan extends IScanFID {
+public interface IVendorScan extends IScanCSD {
 
 	/**
 	 * Stores the total signal.

@@ -11,9 +11,9 @@
  *******************************************************************************/
 package net.chemclipse.csd.converter.supplier.cdf.model;
 
-import net.chemclipse.csd.model.core.AbstractChromatogramFID;
+import net.chemclipse.csd.model.core.AbstractChromatogramCSD;
 
-public class VendorChromatogram extends AbstractChromatogramFID implements IVendorChromatogram {
+public class VendorChromatogram extends AbstractChromatogramCSD implements IVendorChromatogram {
 
 	@Override
 	public String getName() {

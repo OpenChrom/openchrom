@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.chemclipse.csd.converter.supplier.cdf.model;
 
-import net.chemclipse.csd.model.core.IChromatogramFID;
+import net.chemclipse.csd.model.core.IChromatogramCSD;
 
-public interface IVendorChromatogram extends IChromatogramFID {
+public interface IVendorChromatogram extends IChromatogramCSD {
 }

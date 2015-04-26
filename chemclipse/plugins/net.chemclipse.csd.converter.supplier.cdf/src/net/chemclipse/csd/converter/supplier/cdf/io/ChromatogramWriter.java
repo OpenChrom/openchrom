@@ -29,7 +29,7 @@ import net.chemclipse.csd.converter.supplier.cdf.io.support.AttributeSupport;
 import net.chemclipse.csd.converter.supplier.cdf.io.support.CDFConstants;
 import net.chemclipse.csd.converter.supplier.cdf.io.support.DimensionSupport;
 import net.chemclipse.csd.converter.supplier.cdf.io.support.IDataEntry;
-import net.chemclipse.csd.model.core.IChromatogramFID;
+import net.chemclipse.csd.model.core.IChromatogramCSD;
 import net.chemclipse.logging.core.Logger;
 
 @SuppressWarnings("deprecation")
@@ -38,13 +38,13 @@ public class ChromatogramWriter implements IChromatogramFIDWriter {
 	private static final Logger logger = Logger.getLogger(ChromatogramWriter.class);
 
 	@Override
-	public void writeChromatogram(File file, IChromatogramFID chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void writeChromatogram(File file, IChromatogramCSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
 
 		monitor.subTask(IConstants.EXPORT_CDF_CHROMATOGRAM);
 		writeCDFChromatogram(file, chromatogram, monitor);
 	}
 
-	private void writeCDFChromatogram(File file, IChromatogramFID chromatogram, IProgressMonitor monitor) throws IOException {
+	private void writeCDFChromatogram(File file, IChromatogramCSD chromatogram, IProgressMonitor monitor) throws IOException {
 
 		NetcdfFileWriteable cdfChromatogram = NetcdfFileWriteable.createNew(file.getAbsolutePath());
 		DimensionSupport dimensionSupport = new DimensionSupport(cdfChromatogram, chromatogram);

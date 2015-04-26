@@ -11,14 +11,14 @@
  *******************************************************************************/
 package net.chemclipse.csd.converter.supplier.cdf.io.support;
 
-import net.chemclipse.csd.model.core.IChromatogramFID;
+import net.chemclipse.csd.model.core.IChromatogramCSD;
 
 import ucar.nc2.NetcdfFileWriteable;
 
 @SuppressWarnings("deprecation")
 public class AttributeSupport {
 
-	public static void setAttributes(NetcdfFileWriteable cdfChromatogram, IChromatogramFID chromatogram) {
+	public static void setAttributes(NetcdfFileWriteable cdfChromatogram, IChromatogramCSD chromatogram) {
 
 		cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_DATASET_COMPLETENESS, "C1+C2");
 		cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_AIA_TEMPLATE_REVISION, "1.0.1");

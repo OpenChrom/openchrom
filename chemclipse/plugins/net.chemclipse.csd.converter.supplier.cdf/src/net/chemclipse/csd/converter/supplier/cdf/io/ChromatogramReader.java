@@ -35,7 +35,7 @@ import net.chemclipse.csd.converter.supplier.cdf.io.support.DateSupport;
 import net.chemclipse.csd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
 import net.chemclipse.csd.converter.supplier.cdf.model.VendorChromatogram;
 import net.chemclipse.csd.converter.supplier.cdf.model.VendorScan;
-import net.chemclipse.csd.model.core.IChromatogramFID;
+import net.chemclipse.csd.model.core.IChromatogramCSD;
 import net.chemclipse.model.core.IChromatogramOverview;
 import net.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import net.chemclipse.logging.core.Logger;
@@ -45,7 +45,7 @@ public class ChromatogramReader extends AbstractChromatogramFIDReader implements
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 
 	@Override
-	public IChromatogramFID read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramCSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
 		return readFile(file, monitor);
 	}
@@ -56,7 +56,7 @@ public class ChromatogramReader extends AbstractChromatogramFIDReader implements
 		return readFile(file, monitor);
 	}
 
-	private IChromatogramFID readFile(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	private IChromatogramCSD readFile(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
 		VendorChromatogram chromatogram;
 		if(!isValidFileFormat(file)) {

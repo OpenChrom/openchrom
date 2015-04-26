@@ -22,7 +22,7 @@ import net.chemclipse.csd.converter.io.IChromatogramFIDWriter;
 import net.chemclipse.csd.converter.supplier.cdf.internal.converter.IConstants;
 import net.chemclipse.csd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.chemclipse.csd.converter.supplier.cdf.io.ChromatogramWriter;
-import net.chemclipse.csd.model.core.IChromatogramFID;
+import net.chemclipse.csd.model.core.IChromatogramCSD;
 import net.chemclipse.logging.core.Logger;
 import net.chemclipse.processing.core.IProcessingInfo;
 
@@ -32,7 +32,7 @@ public class CDFChromatogramExportConverter extends AbstractChromatogramFIDExpor
 	private static final String DESCRIPTION = "NetCDF Export Converter";
 
 	@Override
-	public IChromatogramExportConverterProcessingInfo convert(File file, IChromatogramFID chromatogram, IProgressMonitor monitor) {
+	public IChromatogramExportConverterProcessingInfo convert(File file, IChromatogramCSD chromatogram, IProgressMonitor monitor) {
 
 		IChromatogramExportConverterProcessingInfo processingInfo = new ChromatogramExportConverterProcessingInfo();
 		/*

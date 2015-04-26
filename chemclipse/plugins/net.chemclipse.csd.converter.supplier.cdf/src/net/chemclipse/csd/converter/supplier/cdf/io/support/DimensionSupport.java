@@ -13,7 +13,7 @@ package net.chemclipse.csd.converter.supplier.cdf.io.support;
 
 import java.util.ArrayList;
 
-import net.chemclipse.csd.model.core.IChromatogramFID;
+import net.chemclipse.csd.model.core.IChromatogramCSD;
 
 import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayDouble;
@@ -32,14 +32,14 @@ public class DimensionSupport implements IDimensionSupport {
 	public final float NULL_VALUE_TIME = 9.96921E36f;
 	private ArrayList<IDataEntry> dataEntries;
 	private NetcdfFileWriteable cdfChromatogram;
-	private IChromatogramFID chromatogram;
+	private IChromatogramCSD chromatogram;
 	private Dimension byteString32;
 	private Dimension byteString64;
 	private Dimension numberOfScans;
 	private Dimension instrumentNumber;
 	private Dimension errorNumber;
 
-	public DimensionSupport(NetcdfFileWriteable cdfChromatogram, IChromatogramFID chromatogram) {
+	public DimensionSupport(NetcdfFileWriteable cdfChromatogram, IChromatogramCSD chromatogram) {
 
 		dataEntries = new ArrayList<IDataEntry>();
 		this.cdfChromatogram = cdfChromatogram;

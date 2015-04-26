@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.chemclipse.csd.converter.chromatogram.ChromatogramConverterFID;
 import net.chemclipse.csd.converter.processing.chromatogram.IChromatogramFIDImportConverterProcessingInfo;
-import net.chemclipse.csd.model.core.IChromatogramFID;
+import net.chemclipse.csd.model.core.IChromatogramCSD;
 
 import junit.framework.TestCase;
 
@@ -28,7 +28,7 @@ import junit.framework.TestCase;
  */
 public class CDFChromatogramReaderTestCase extends TestCase {
 
-	protected IChromatogramFID chromatogram;
+	protected IChromatogramCSD chromatogram;
 	protected String pathImport;
 	protected File fileImport;
 	private final static String EXTENSION_POINT_ID = "net.chemclipse.csd.converter.supplier.cdf";
