@@ -11,23 +11,23 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
-import net.chemclipse.model.exceptions.AbundanceLimitExceededException;
-import net.chemclipse.chromatogram.msd.comparison.massspectrum.AbstractMassSpectrumComparator;
-import net.chemclipse.chromatogram.msd.comparison.massspectrum.IMassSpectrumComparator;
-import net.chemclipse.chromatogram.msd.comparison.math.GeometricDistanceCalculator;
-import net.chemclipse.chromatogram.msd.comparison.math.IMatchCalculator;
-import net.chemclipse.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
-import net.chemclipse.chromatogram.msd.comparison.processing.MassSpectrumComparatorProcessingInfo;
+import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
+import org.eclipse.chemclipse.chromatogram.msd.comparison.massspectrum.AbstractMassSpectrumComparator;
+import org.eclipse.chemclipse.chromatogram.msd.comparison.massspectrum.IMassSpectrumComparator;
+import org.eclipse.chemclipse.chromatogram.msd.comparison.math.GeometricDistanceCalculator;
+import org.eclipse.chemclipse.chromatogram.msd.comparison.math.IMatchCalculator;
+import org.eclipse.chemclipse.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
+import org.eclipse.chemclipse.chromatogram.msd.comparison.processing.MassSpectrumComparatorProcessingInfo;
 import net.openchrom.chromatogram.msd.comparison.supplier.pbm.results.PBMMassSpectrumComparisonResult;
-import net.chemclipse.msd.model.core.IIon;
-import net.chemclipse.msd.model.core.IScanMSD;
-import net.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
-import net.chemclipse.msd.model.exceptions.IonLimitExceededException;
-import net.chemclipse.msd.model.implementation.Ion;
-import net.chemclipse.msd.model.implementation.ScanMSD;
-import net.chemclipse.msd.model.xic.IExtractedIonSignal;
-import net.chemclipse.logging.core.Logger;
-import net.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.msd.model.core.IIon;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
+import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
+import org.eclipse.chemclipse.msd.model.implementation.Ion;
+import org.eclipse.chemclipse.msd.model.implementation.ScanMSD;
+import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
+import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 
 /**
  * This class gives back a IMassSpectrumComparisonResult which implements the

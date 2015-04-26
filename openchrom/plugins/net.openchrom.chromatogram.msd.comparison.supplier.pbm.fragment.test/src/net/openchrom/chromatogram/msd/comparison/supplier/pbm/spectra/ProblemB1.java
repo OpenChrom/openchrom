@@ -11,9 +11,9 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra;
 
-import net.chemclipse.msd.model.core.IScanMSD;
-import net.chemclipse.msd.model.implementation.Ion;
-import net.chemclipse.msd.model.implementation.ScanMSD;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.msd.model.implementation.Ion;
+import org.eclipse.chemclipse.msd.model.implementation.ScanMSD;
 
 public class ProblemB1 implements ITestMassSpectrum {
 

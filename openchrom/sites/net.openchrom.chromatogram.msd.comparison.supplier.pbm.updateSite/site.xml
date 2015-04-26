@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
    <feature url="features/net.openchrom.chromatogram.msd.comparison.supplier.pbm.feature_1.0.0.qualifier.jar" id="net.openchrom.chromatogram.msd.comparison.supplier.pbm.feature" version="1.0.0.qualifier">
-      <category name="net.chemclipse.chromatogram.msd.plugins.comparison"/>
+      <category name="org.eclipse.chemclipse.chromatogram.msd.plugins.comparison"/>
    </feature>
-   <category-def name="net.chemclipse.chromatogram.msd.plugins.comparison" label="MS Comparison"/>
+   <category-def name="org.eclipse.chemclipse.chromatogram.msd.plugins.comparison" label="MS Comparison"/>
 </site>
