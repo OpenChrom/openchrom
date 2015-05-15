@@ -5,5 +5,5 @@ Bundle-SymbolicName: org.eclipse.chemclipse.chromatogram.msd.identifier.supplier
 Bundle-Version: 0.7.0.qualifier
 Bundle-Vendor: ChemClipse
 Fragment-Host: org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.cdk;bundle-version="0.7.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit;bundle-version="4.11.0"

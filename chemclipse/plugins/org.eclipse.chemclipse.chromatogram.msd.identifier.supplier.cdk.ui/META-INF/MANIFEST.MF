@@ -30,7 +30,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.chemclipse.rcp.ui.icons;bundle-version="0.7.0",
  net.openchrom.thirdpartylibraries.cdk;bundle-version="1.4.19",
  org.eclipse.chemclipse.swt.ui;bundle-version="0.7.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.event;version="1.3.0"
 Service-Component: OSGI-INF/calculateSmilesFormulaPeaksHandler.xml,
