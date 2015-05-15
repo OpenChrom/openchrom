@@ -7,5 +7,5 @@ Bundle-Activator: org.eclipse.chemclipse.csd.converter.supplier.cdf.ui.Activator
 Bundle-Vendor: ChemClipse
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
