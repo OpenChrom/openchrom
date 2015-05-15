@@ -13,7 +13,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
   xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.eclipse.chemclipse</groupId>
+  <groupId>org.eclipse.chemclipse./groupId>
   <artifactId>master</artifactId>
   <version>BUILD-VERSION</version>
   <packaging>pom</packaging>
@@ -43,7 +43,7 @@
     <jetty-repo.url>http://download.eclipse.org/jetty/updates/jetty-bundles-8.x</jetty-repo.url>
     <egit-repo.url>http://download.eclipse.org/egit/updates</egit-repo.url>
     <e4-tools.url>http://download.eclipse.org/e4/downloads/drops/S-0.16-201408072200/repository</e4-tools.url>
-    <orbit-repo.url>http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository</orbit-repo.url>
+    <orbit-repo.url>http://download.eclipse.org/tools/orbit/downloads/drops/R20150124073747/repository</orbit-repo.url>
     <ecf-repo.url>http://download.eclipse.org/rt/ecf/3.8.1/site.p2</ecf-repo.url>
     <!-- ENCODING -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
