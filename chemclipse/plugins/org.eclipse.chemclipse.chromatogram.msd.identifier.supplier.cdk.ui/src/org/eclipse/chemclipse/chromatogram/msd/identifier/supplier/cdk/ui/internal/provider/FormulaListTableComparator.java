@@ -11,11 +11,10 @@
  *******************************************************************************/
 package org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider;
 
-import org.eclipse.jface.viewers.Viewer;
-
 import org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.cdk.formula.NameAndRating;
 import org.eclipse.chemclipse.swt.ui.viewers.AbstractRecordTableComparator;
 import org.eclipse.chemclipse.swt.ui.viewers.IRecordTableComparator;
+import org.eclipse.jface.viewers.Viewer;
 
 public class FormulaListTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
 
@@ -31,10 +30,10 @@ public class FormulaListTableComparator extends AbstractRecordTableComparator im
 			NameAndRating element2 = (NameAndRating)e2;
 			switch(getPropertyIndex()) {
 				case 0: // Formula
-					sortOrder = (element2.getName().length() > element1.getName().length()) ? 1 : -1;
+					sortOrder = element2.getName().length() - element1.getName().length();
 					break;
 				case 1: // Rating
-					sortOrder = (element2.getRating() > element1.getRating()) ? 1 : -1;
+					sortOrder = (int)(element2.getRating() - element1.getRating());
 					break;
 				default:
 					sortOrder = 0;
