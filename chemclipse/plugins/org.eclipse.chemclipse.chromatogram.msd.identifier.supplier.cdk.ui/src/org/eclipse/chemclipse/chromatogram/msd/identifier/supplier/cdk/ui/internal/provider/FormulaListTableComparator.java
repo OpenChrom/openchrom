@@ -33,7 +33,7 @@ public class FormulaListTableComparator extends AbstractRecordTableComparator im
 					sortOrder = element2.getName().length() - element1.getName().length();
 					break;
 				case 1: // Rating
-					sortOrder = (int)(element2.getRating() - element1.getRating());
+					sortOrder = Double.compare(element2.getRating(), element1.getRating());
 					break;
 				default:
 					sortOrder = 0;
