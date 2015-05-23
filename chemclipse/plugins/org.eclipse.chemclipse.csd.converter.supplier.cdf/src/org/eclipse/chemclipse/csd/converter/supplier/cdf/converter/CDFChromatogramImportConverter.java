@@ -17,10 +17,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import org.eclipse.chemclipse.converter.processing.chromatogram.ChromatogramOverviewImportConverterProcessingInfo;
 import org.eclipse.chemclipse.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
-import org.eclipse.chemclipse.csd.converter.chromatogram.AbstractChromatogramFIDImportConverter;
-import org.eclipse.chemclipse.csd.converter.io.IChromatogramFIDReader;
-import org.eclipse.chemclipse.csd.converter.processing.chromatogram.ChromatogramFIDImportConverterProcessingInfo;
-import org.eclipse.chemclipse.csd.converter.processing.chromatogram.IChromatogramFIDImportConverterProcessingInfo;
+import org.eclipse.chemclipse.csd.converter.chromatogram.AbstractChromatogramCSDImportConverter;
+import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
+import org.eclipse.chemclipse.csd.converter.processing.chromatogram.ChromatogramCSDImportConverterProcessingInfo;
+import org.eclipse.chemclipse.csd.converter.processing.chromatogram.IChromatogramCSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.csd.converter.supplier.cdf.internal.converter.IConstants;
 import org.eclipse.chemclipse.csd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import org.eclipse.chemclipse.csd.converter.supplier.cdf.io.ChromatogramReader;
@@ -29,15 +29,15 @@ import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 
-public class CDFChromatogramImportConverter extends AbstractChromatogramFIDImportConverter {
+public class CDFChromatogramImportConverter extends AbstractChromatogramCSDImportConverter {
 
 	private static final Logger logger = Logger.getLogger(CDFChromatogramImportConverter.class);
 	private static final String DESCRIPTION = "NetCDF Import Converter";
 
 	@Override
-	public IChromatogramFIDImportConverterProcessingInfo convert(File file, IProgressMonitor monitor) {
+	public IChromatogramCSDImportConverterProcessingInfo convert(File file, IProgressMonitor monitor) {
 
-		IChromatogramFIDImportConverterProcessingInfo processingInfo = new ChromatogramFIDImportConverterProcessingInfo();
+		IChromatogramCSDImportConverterProcessingInfo processingInfo = new ChromatogramCSDImportConverterProcessingInfo();
 		/*
 		 * Validate the file.
 		 */
@@ -49,7 +49,7 @@ public class CDFChromatogramImportConverter extends AbstractChromatogramFIDImpor
 			 * Read the chromatogram.
 			 */
 			file = SpecificationValidator.validateCDFSpecification(file);
-			IChromatogramFIDReader reader = new ChromatogramReader();
+			IChromatogramCSDReader reader = new ChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM);
 			try {
 				IChromatogramCSD chromatogram = reader.read(file, monitor);
@@ -77,7 +77,7 @@ public class CDFChromatogramImportConverter extends AbstractChromatogramFIDImpor
 			 * Read the chromatogram overview.
 			 */
 			file = SpecificationValidator.validateCDFSpecification(file);
-			IChromatogramFIDReader reader = new ChromatogramReader();
+			IChromatogramCSDReader reader = new ChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM_OVERVIEW);
 			try {
 				IChromatogramOverview chromatogramOverview = reader.readOverview(file, monitor);

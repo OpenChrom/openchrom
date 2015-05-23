@@ -17,8 +17,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import org.eclipse.chemclipse.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
 import org.eclipse.chemclipse.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
-import org.eclipse.chemclipse.csd.converter.chromatogram.AbstractChromatogramFIDExportConverter;
-import org.eclipse.chemclipse.csd.converter.io.IChromatogramFIDWriter;
+import org.eclipse.chemclipse.csd.converter.chromatogram.AbstractChromatogramCSDExportConverter;
+import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDWriter;
 import org.eclipse.chemclipse.csd.converter.supplier.cdf.internal.converter.IConstants;
 import org.eclipse.chemclipse.csd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import org.eclipse.chemclipse.csd.converter.supplier.cdf.io.ChromatogramWriter;
@@ -26,7 +26,7 @@ import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 
-public class CDFChromatogramExportConverter extends AbstractChromatogramFIDExportConverter {
+public class CDFChromatogramExportConverter extends AbstractChromatogramCSDExportConverter {
 
 	private static final Logger logger = Logger.getLogger(CDFChromatogramExportConverter.class);
 	private static final String DESCRIPTION = "NetCDF Export Converter";
@@ -47,7 +47,7 @@ public class CDFChromatogramExportConverter extends AbstractChromatogramFIDExpor
 			processingInfo.addMessages(processingInfoValidate);
 		} else {
 			monitor.subTask(IConstants.EXPORT_CDF_CHROMATOGRAM);
-			IChromatogramFIDWriter writer = new ChromatogramWriter();
+			IChromatogramCSDWriter writer = new ChromatogramWriter();
 			try {
 				writer.writeChromatogram(file, chromatogram, monitor);
 			} catch(Exception e) {

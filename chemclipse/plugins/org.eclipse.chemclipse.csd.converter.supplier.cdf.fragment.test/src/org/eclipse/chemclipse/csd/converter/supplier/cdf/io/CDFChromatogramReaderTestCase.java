@@ -15,8 +15,8 @@ import java.io.File;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import org.eclipse.chemclipse.csd.converter.chromatogram.ChromatogramConverterFID;
-import org.eclipse.chemclipse.csd.converter.processing.chromatogram.IChromatogramFIDImportConverterProcessingInfo;
+import org.eclipse.chemclipse.csd.converter.chromatogram.ChromatogramConverterCSD;
+import org.eclipse.chemclipse.csd.converter.processing.chromatogram.IChromatogramCSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 
 import junit.framework.TestCase;
@@ -38,7 +38,7 @@ public class CDFChromatogramReaderTestCase extends TestCase {
 
 		super.setUp();
 		fileImport = new File(this.pathImport);
-		IChromatogramFIDImportConverterProcessingInfo processingInfo = ChromatogramConverterFID.convert(fileImport, EXTENSION_POINT_ID, new NullProgressMonitor());
+		IChromatogramCSDImportConverterProcessingInfo processingInfo = ChromatogramConverterCSD.convert(fileImport, EXTENSION_POINT_ID, new NullProgressMonitor());
 		chromatogram = processingInfo.getChromatogram();
 	}
 

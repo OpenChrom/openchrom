@@ -24,8 +24,8 @@ import ucar.nc2.NetcdfFile;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
-import org.eclipse.chemclipse.csd.converter.io.AbstractChromatogramFIDReader;
-import org.eclipse.chemclipse.csd.converter.io.IChromatogramFIDReader;
+import org.eclipse.chemclipse.csd.converter.io.AbstractChromatogramCSDReader;
+import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import org.eclipse.chemclipse.csd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import org.eclipse.chemclipse.csd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
@@ -40,7 +40,7 @@ import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.logging.core.Logger;
 
-public class ChromatogramReader extends AbstractChromatogramFIDReader implements IChromatogramFIDReader {
+public class ChromatogramReader extends AbstractChromatogramCSDReader implements IChromatogramCSDReader {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 

@@ -23,7 +23,7 @@ import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFileWriteable;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
-import org.eclipse.chemclipse.csd.converter.io.IChromatogramFIDWriter;
+import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDWriter;
 import org.eclipse.chemclipse.csd.converter.supplier.cdf.internal.converter.IConstants;
 import org.eclipse.chemclipse.csd.converter.supplier.cdf.io.support.AttributeSupport;
 import org.eclipse.chemclipse.csd.converter.supplier.cdf.io.support.CDFConstants;
@@ -33,7 +33,7 @@ import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 
 @SuppressWarnings("deprecation")
-public class ChromatogramWriter implements IChromatogramFIDWriter {
+public class ChromatogramWriter implements IChromatogramCSDWriter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramWriter.class);
 
