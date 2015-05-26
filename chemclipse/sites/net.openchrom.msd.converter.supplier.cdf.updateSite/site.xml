@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="NetCDF Chromatogram Converter" url="http://www.chemclipse.net/plugins/converter/netcdf/update">
+      This is a netCDF chromatogram converter.
+   </description>
+   <feature url="features/net.openchrom.msd.converter.supplier.cdf.feature_0.7.0.qualifier.jar" id="net.openchrom.msd.converter.supplier.cdf.feature" version="0.7.0.qualifier">
+      <category name="org.eclipse.chemclipse.xxd.plugins.converter"/>
+   </feature>
+   <category-def name="org.eclipse.chemclipse.xxd.plugins.converter" label="Chromatogram Converter"/>
+</site>

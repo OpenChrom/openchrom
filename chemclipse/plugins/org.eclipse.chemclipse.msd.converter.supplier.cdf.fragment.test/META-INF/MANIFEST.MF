@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Test Fragment
-Bundle-SymbolicName: org.eclipse.chemclipse.msd.converter.supplier.cdf.fragment.test
-Bundle-Version: 0.7.0.qualifier
-Fragment-Host: org.eclipse.chemclipse.msd.converter.supplier.cdf;bundle-version="0.7.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.junit;bundle-version="4.11.0"
-Bundle-Vendor: ChemClipse
