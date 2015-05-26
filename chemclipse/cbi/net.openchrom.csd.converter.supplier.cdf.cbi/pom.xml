@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <!--
+	PARENT
+  -->
+  <parent>
+    <groupId>net.openchrom</groupId>
+    <artifactId>master</artifactId>
+    <version>BUILD-VERSION</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <!--
+	ARTIFACT
+  -->
+  <groupId>net.openchrom</groupId>
+  <artifactId>parent</artifactId>
+  <packaging>pom</packaging>
+  <!--
+	DESCRIPTION
+  --> 
+  <name>ChemClipse CDF Converter</name>
+  <description>
+	The ChemClipse CDF converter reads and writes *.cdf chromatogram files. It extends the functionality of the ChemClipse Rich Client Platform (RCP).
+  </description>
+  <url>http://www.chemclipse.net</url>
+  <!--
+	LICENSES
+  -->
+  <licenses>
+    <license>
+      <name>EPL v1.0</name>
+      <url>http://www.eclipse.org/legal/epl-v10.html</url>
+    </license> 
+  </licenses>
+  <!--
+	DEVELOPERS
+  -->
+  <developers>
+    <developer>
+      <id>eselmeister</id>
+      <name>Philip Wenig</name>
+      <email>philip.wenig [at] openchrom.net</email>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+  <!--
+	MODULES
+  -->
+  <modules>
+    <module>../../plugins/net.openchrom.csd.converter.supplier.cdf</module>
+    <module>../../plugins/net.openchrom.csd.converter.supplier.cdf.ui</module>
+    <module>../../features/net.openchrom.csd.converter.supplier.cdf.feature</module>
+    <!--<module>../../plugins/net.openchrom.csd.converter.supplier.cdf.fragment.test</module>-->
+    <module>../../sites/net.openchrom.csd.converter.supplier.cdf.updateSite</module>
+  </modules>
+</project>
