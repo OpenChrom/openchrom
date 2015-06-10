@@ -16,16 +16,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
+import org.eclipse.chemclipse.converter.io.AbstractChromatogramWriter;
+import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDWriter;
+import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFileWriteable;
-
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
-import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDWriter;
-import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
-import org.eclipse.chemclipse.logging.core.Logger;
 
 import net.openchrom.csd.converter.supplier.cdf.internal.converter.IConstants;
 import net.openchrom.csd.converter.supplier.cdf.io.support.AttributeSupport;
@@ -34,7 +34,7 @@ import net.openchrom.csd.converter.supplier.cdf.io.support.DimensionSupport;
 import net.openchrom.csd.converter.supplier.cdf.io.support.IDataEntry;
 
 @SuppressWarnings("deprecation")
-public class ChromatogramWriter implements IChromatogramCSDWriter {
+public class ChromatogramWriter extends AbstractChromatogramWriter implements IChromatogramCSDWriter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramWriter.class);
 
