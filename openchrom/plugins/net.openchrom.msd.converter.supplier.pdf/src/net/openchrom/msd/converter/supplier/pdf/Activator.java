@@ -2,16 +2,17 @@
  * Copyright (c) 2011, 2015 Philip (eselmeister) Wenig.
  * 
  * All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Philip (eselmeister) Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-
-import net.openchrom.msd.converter.supplier.pdf.preferences.BundleProductPreferences;
-import net.openchrom.keys.preferences.IBundleProductPreferences;
-import net.openchrom.keys.preferences.IProductPreferences;
-import net.openchrom.keys.validator.ProductValidator;
 
 public class Activator implements BundleActivator {
 
@@ -38,17 +39,5 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext bundleContext) throws Exception {
 
 		Activator.context = null;
-	}
-
-	/**
-	 * Returns whether this is a valid version or not.
-	 * 
-	 * @return boolean
-	 */
-	public static boolean isValidVersion() {
-
-		IBundleProductPreferences bundleProductPreferences = new BundleProductPreferences();
-		IProductPreferences productPreferences = bundleProductPreferences.getProductPreferences();
-		return ProductValidator.isValidVersion(productPreferences, false);
 	}
 }

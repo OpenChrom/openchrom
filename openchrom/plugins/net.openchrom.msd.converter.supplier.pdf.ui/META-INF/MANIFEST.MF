@@ -8,14 +8,12 @@ Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  net.openchrom.msd.converter.supplier.pdf;bundle-version="1.0.0",
- net.openchrom.keys;bundle-version="1.0.0",
  org.eclipse.chemclipse.msd.model;bundle-version="0.7.0",
  org.eclipse.chemclipse.support.ui;bundle-version="0.7.0",
  org.eclipse.e4.ui.model.workbench;bundle-version="1.1.0",
  org.eclipse.e4.ui.services;bundle-version="1.1.0",
  javax.inject;bundle-version="1.0.0",
  org.eclipse.e4.core.di;bundle-version="1.2.0",
- net.openchrom.keys.ui;bundle-version="1.0.0",
  org.eclipse.chemclipse.support;bundle-version="0.7.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

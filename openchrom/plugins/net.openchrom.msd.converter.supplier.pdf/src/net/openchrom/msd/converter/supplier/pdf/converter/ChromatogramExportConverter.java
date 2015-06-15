@@ -2,24 +2,28 @@
  * Copyright (c) 2011, 2015 Philip (eselmeister) Wenig.
  * 
  * All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Philip (eselmeister) Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.converter;
 
 import java.io.File;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-
 import org.eclipse.chemclipse.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
 import org.eclipse.chemclipse.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.chromatogram.AbstractChromatogramMSDExportConverter;
-import net.openchrom.msd.converter.supplier.pdf.Activator;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.core.runtime.IProgressMonitor;
+
 import net.openchrom.msd.converter.supplier.pdf.internal.converter.SpecificationValidator;
 import net.openchrom.msd.converter.supplier.pdf.internal.support.IConstants;
 import net.openchrom.msd.converter.supplier.pdf.io.ChromatogramWriter;
-import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-
-import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 
 public class ChromatogramExportConverter extends AbstractChromatogramMSDExportConverter {
 
@@ -30,13 +34,6 @@ public class ChromatogramExportConverter extends AbstractChromatogramMSDExportCo
 	public IChromatogramExportConverterProcessingInfo convert(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) {
 
 		IChromatogramExportConverterProcessingInfo processingInfo = new ChromatogramExportConverterProcessingInfo();
-		/*
-		 * Check the key.
-		 */
-		if(!Activator.isValidVersion()) {
-			processingInfo.addErrorMessage(DESCRIPTION, "The PDF chromatogram export converter has no valid licence.");
-			return processingInfo;
-		}
 		/*
 		 * Validate the file.
 		 */

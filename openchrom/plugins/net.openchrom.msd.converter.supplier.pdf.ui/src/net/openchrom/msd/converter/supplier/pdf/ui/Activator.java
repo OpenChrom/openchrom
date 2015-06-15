@@ -2,16 +2,18 @@
  * Copyright (c) 2011, 2015 Philip (eselmeister) Wenig.
  * 
  * All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Philip (eselmeister) Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.ui;
 
+import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
 import org.osgi.framework.BundleContext;
 
-import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
-import net.openchrom.keys.preferences.IBundleProductPreferences;
-import net.openchrom.keys.preferences.IProductPreferences;
-import net.openchrom.keys.ui.validator.ProductValidatorUI;
-import net.openchrom.msd.converter.supplier.pdf.preferences.BundleProductPreferences;
 import net.openchrom.msd.converter.supplier.pdf.preferences.PreferenceSupplier;
 
 /**
@@ -33,13 +35,6 @@ public class Activator extends AbstractActivatorUI {
 		super.start(context);
 		plugin = this;
 		initializePreferenceStore(PreferenceSupplier.INSTANCE());
-		/*
-		 * The key will be checked each time the plugin gets activated.<br/> The
-		 * user can select the trial (if not expired) or full option.
-		 */
-		IBundleProductPreferences bundleProductPreferences = new BundleProductPreferences();
-		IProductPreferences productPreferences = bundleProductPreferences.getProductPreferences();
-		ProductValidatorUI.isValidVersion(productPreferences, false);
 	}
 
 	/*

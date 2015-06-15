@@ -2,23 +2,37 @@
  * Copyright (c) 2012, 2015 Philip (eselmeister) Wenig.
  * 
  * All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Philip (eselmeister) Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.ui.preferences;
 
-import net.openchrom.msd.converter.supplier.pdf.preferences.BundleProductPreferences;
-import net.openchrom.msd.converter.supplier.pdf.ui.Activator;
-import net.openchrom.keys.ui.preferences.AbstractCustomFieldEditorPreferencePage;
-import net.openchrom.keys.ui.preferences.IKeyPreferencePage;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class PreferencePage extends AbstractCustomFieldEditorPreferencePage implements IKeyPreferencePage {
+import net.openchrom.msd.converter.supplier.pdf.ui.Activator;
+
+public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PreferencePage() {
 
-		super(Activator.getDefault().getPreferenceStore(), new BundleProductPreferences(), false);
+		super(GRID);
+		setPreferenceStore(Activator.getDefault().getPreferenceStore());
+		setDescription("PDF Converter");
 	}
 
 	@Override
-	public void createSettingPages() {
+	public void init(IWorkbench workbench) {
+
+	}
+
+	@Override
+	protected void createFieldEditors() {
 
 	}
 }

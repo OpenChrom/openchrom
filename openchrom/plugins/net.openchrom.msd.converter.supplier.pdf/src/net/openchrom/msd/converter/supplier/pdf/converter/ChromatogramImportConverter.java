@@ -2,19 +2,23 @@
  * Copyright (c) 2011, 2015 Philip (eselmeister) Wenig.
  * 
  * All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Philip (eselmeister) Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.converter;
 
 import java.io.File;
-
-import org.eclipse.core.runtime.IProgressMonitor;
 
 import org.eclipse.chemclipse.converter.processing.chromatogram.ChromatogramOverviewImportConverterProcessingInfo;
 import org.eclipse.chemclipse.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.converter.chromatogram.AbstractChromatogramMSDImportConverter;
 import org.eclipse.chemclipse.msd.converter.processing.chromatogram.ChromatogramMSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
-import net.openchrom.msd.converter.supplier.pdf.Activator;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 public class ChromatogramImportConverter extends AbstractChromatogramMSDImportConverter {
 
@@ -25,13 +29,6 @@ public class ChromatogramImportConverter extends AbstractChromatogramMSDImportCo
 	public IChromatogramMSDImportConverterProcessingInfo convert(File file, IProgressMonitor monitor) {
 
 		IChromatogramMSDImportConverterProcessingInfo processingInfo = new ChromatogramMSDImportConverterProcessingInfo();
-		/*
-		 * Check the key.
-		 */
-		if(!Activator.isValidVersion()) {
-			processingInfo.addErrorMessage(DESCRIPTION, "The PDF chromatogram overview import converter has no valid licence.");
-			return processingInfo;
-		}
 		processingInfo.addErrorMessage(DESCRIPTION, EXPORT_ERROR);
 		return processingInfo;
 	}
@@ -40,13 +37,6 @@ public class ChromatogramImportConverter extends AbstractChromatogramMSDImportCo
 	public IChromatogramOverviewImportConverterProcessingInfo convertOverview(File file, IProgressMonitor monitor) {
 
 		IChromatogramOverviewImportConverterProcessingInfo processingInfo = new ChromatogramOverviewImportConverterProcessingInfo();
-		/*
-		 * Check the key.
-		 */
-		if(!Activator.isValidVersion()) {
-			processingInfo.addErrorMessage(DESCRIPTION, "The PDF chromatogram overview import converter has no valid licence.");
-			return processingInfo;
-		}
 		processingInfo.addErrorMessage(DESCRIPTION, EXPORT_ERROR);
 		return processingInfo;
 	}
