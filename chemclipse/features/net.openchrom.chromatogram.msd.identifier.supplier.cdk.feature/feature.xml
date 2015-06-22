@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.chromatogram.msd.identifier.supplier.cdk.feature"
+      label="CDK Support"
+      version="0.7.0.qualifier"
+      provider-name="OpenChrom">
+
+   <description url="http://www.openchrom.net">
+      This is the CDK feature to display molecules.
+   </description>
+
+   <copyright url="http://www.openchrom.net">
+      Copyright (c) 2014, 2015 Dr. Philip Wenig, Marwin Wollschläger.
+   </copyright>
+
+   <license url="http://www.eclipse.org/legal/epl-v10.html">
+      Copyright (c) 2014, 2015 Dr. Philip Wenig, Marwin Wollschläger.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License
+v1.0 which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+   </license>
+
+   <requires>
+      <import feature="net.openchrom.thirdpartylibraries.cdk.feature" version="1.4.19.qualifier"/>
+      <import feature="net.openchrom.thirdpartylibraries.opsin.feature" version="1.5.0.qualifier"/>
+      <import feature="net.openchrom.thirdpartylibraries.jmol.feature" version="13.2.8.qualifier"/>
+      <import feature="net.openchrom.thirdpartylibraries.biojava.feature" version="3.0.7.qualifier"/>
+   </requires>
+
+   <plugin
+         id="net.openchrom.chromatogram.msd.identifier.supplier.cdk"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

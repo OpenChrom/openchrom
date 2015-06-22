@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.chemclipse</groupId>
+    <groupId>net.openchrom</groupId>
     <artifactId>parent</artifactId>
     <version>BUILD-VERSION</version>
-    <relativePath>../cbi/org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.cdk.cbi/pom.xml</relativePath>
+    <relativePath>../cbi/net.openchrom.chromatogram.msd.identifier.supplier.cdk.cbi/pom.xml</relativePath>
   </parent>
 
-  <artifactId>org.eclipse.chemclipse.plugins.parent</artifactId>
+  <artifactId>net.openchrom.plugins.parent</artifactId>
   <packaging>pom</packaging>
   <name>plugins</name>
 

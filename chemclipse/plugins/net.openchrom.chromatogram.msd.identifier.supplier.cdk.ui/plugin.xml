@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.modelContribution"
+         point="org.eclipse.e4.workbench.model">
+      <fragment
+            uri="fragment.e4xmi">
+      </fragment>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.chemclipse.chromatogram.msd.identifier.ui.preferences.identifierPreferencePage"
+            class="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.preferences.PreferencePage"
+            id="org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.cdk.ui.preferences.preferencePage"
+            name="CDK Identifier Support">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc_plugin.xml">
+      </toc>
+   </extension>   
+
+</plugin>
