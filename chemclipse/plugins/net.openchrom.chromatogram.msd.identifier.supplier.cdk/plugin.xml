@@ -5,7 +5,7 @@
          point="org.eclipse.chemclipse.chromatogram.msd.identifier.peakIdentifier">
       <PeakIdentificationSupplier
             description="This identifier calculates a SMILES formula for each peak identification entry."
-            id="org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.cdk"
+            id="net.openchrom.chromatogram.msd.identifier.supplier.cdk"
             identifier="net.openchrom.chromatogram.msd.identifier.supplier.cdk.core.PeakIdentifier"
             identifierName="SMILES Peak Identifier">
       </PeakIdentificationSupplier>

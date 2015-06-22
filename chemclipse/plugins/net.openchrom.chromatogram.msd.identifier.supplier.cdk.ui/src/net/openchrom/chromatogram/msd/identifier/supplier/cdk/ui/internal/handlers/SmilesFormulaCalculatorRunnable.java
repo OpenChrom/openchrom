@@ -20,14 +20,13 @@ import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.PeakIdentifier;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 
 public class SmilesFormulaCalculatorRunnable implements IRunnableWithProgress {
 
-	private static final String IDENTIFIER_ID = "org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.cdk";
+	private static final String IDENTIFIER_ID = "net.openchrom.chromatogram.msd.identifier.supplier.cdk";
 	private IChromatogramSelectionMSD chromatogramSelection;
 	private boolean useOnlySelectedPeak;
 
