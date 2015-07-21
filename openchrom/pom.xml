@@ -47,6 +47,7 @@
     <orbit-repo.url>http://download.eclipse.org/tools/orbit/downloads/drops/R20150124073747/repository</orbit-repo.url>
     <ecf-repo.url>http://download.eclipse.org/rt/ecf/3.8.1/site.p2</ecf-repo.url>
     <nebula-repo.url>http://download.eclipse.org/technology/nebula/snapshot</nebula-repo.url>
+    <pydev-repo.url>http://pydev.org/updates</pydev-repo.url>
     <!-- ENCODING -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -92,6 +93,11 @@
     <repository>
       <id>nebula</id>
       <url>${nebula-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>pydev</id>
+      <url>${pydev-repo.url}</url>
       <layout>p2</layout>
     </repository>
   </repositories>
