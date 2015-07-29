@@ -123,7 +123,7 @@
       <plugin>
         <groupId>${tycho.groupid}</groupId>
         <artifactId>tycho-packaging-plugin</artifactId>
-        <version>${tycho-version}</version>
+        <version>${tycho.version}</version>
         <configuration>
           <archive>
             <addMavenDescriptor>false</addMavenDescriptor>
