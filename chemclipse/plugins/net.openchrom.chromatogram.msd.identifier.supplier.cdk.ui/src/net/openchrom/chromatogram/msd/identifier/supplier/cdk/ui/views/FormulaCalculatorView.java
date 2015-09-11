@@ -33,7 +33,7 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
-import org.eclipse.chemclipse.support.ui.swt.viewers.ExtendedTableViewer;
+import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.NameAndRating;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.support.FormulaSupport;

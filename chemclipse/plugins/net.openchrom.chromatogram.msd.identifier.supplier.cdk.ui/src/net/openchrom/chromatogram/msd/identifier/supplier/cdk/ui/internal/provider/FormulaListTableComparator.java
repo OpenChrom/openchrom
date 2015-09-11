@@ -11,8 +11,8 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider;
 
-import org.eclipse.chemclipse.support.ui.swt.viewers.AbstractRecordTableComparator;
-import org.eclipse.chemclipse.support.ui.swt.viewers.IRecordTableComparator;
+import org.eclipse.chemclipse.support.ui.swt.AbstractRecordTableComparator;
+import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.Viewer;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.NameAndRating;
