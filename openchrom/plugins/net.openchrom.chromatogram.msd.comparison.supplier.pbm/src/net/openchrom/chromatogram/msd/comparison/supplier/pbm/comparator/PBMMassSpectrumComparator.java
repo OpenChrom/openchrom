@@ -107,7 +107,7 @@ public class PBMMassSpectrumComparator extends AbstractMassSpectrumComparator im
 			int stopIon = signal.getStopIon();
 			for(int ion = startIon; ion <= stopIon; ion++) {
 				abundance = signal.getAbundance(ion);
-				if(abundance > IIon.ABUNDANCE_MUST_BE_GREATER_THAN) {
+				if(abundance > IIon.ZERO_INTENSITY) {
 					/*
 					 * Calculate the new abundance and add the ion to the
 					 * fresh created mass spectrum.
