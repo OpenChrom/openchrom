@@ -13,6 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.processing;bundle-version="0.7.0",
  org.eclipse.chemclipse.converter;bundle-version="0.7.0",
  org.eclipse.chemclipse.model;bundle-version="0.7.0",
- net.openchrom.thirdpartylibraries.netcdf;bundle-version="4.3.19"
+ net.openchrom.thirdpartylibraries.netcdf;bundle-version="4.3.19",
+ org.eclipse.chemclipse.support;bundle-version="0.7.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
