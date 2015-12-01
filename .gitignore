@@ -1,0 +1,16 @@
+openchrom/plugins/net.openchrom.msd.converter.supplier.mgf.fragment.test/Openchrom.log.*
+openchrom/plugins/net.openchrom.msd.converter.supplier.mgf.fragment.test/Openchrom.log
+openchrom/plugins/net.openchrom.msd.converter.supplier.mgf.fragment.test/bin/*
+openchrom/plugins/net.openchrom.msd.converter.supplier.mgf.ui.fragment.test/bin/*
+openchrom/plugins/net.openchrom.msd.converter.supplier.mgf.ui/bin/*
+openchrom/plugins/net.openchrom.msd.converter.supplier.mgf/bin/*
+openchrom/sites/net.openchrom.msd.converter.supplier.mgf.updateSite/artifacts.jar
+openchrom/sites/net.openchrom.msd.converter.supplier.mgf.updateSite/content.jar
+openchrom/sites/net.openchrom.msd.converter.supplier.mgf.updateSite/features/
+openchrom/sites/net.openchrom.msd.converter.supplier.mgf.updateSite/plugins/
+openchrom/features/net.openchrom.msd.converter.supplier.mgf.feature/target/
+openchrom/plugins/net.openchrom.msd.converter.supplier.mgf.ui/target/
+openchrom/plugins/net.openchrom.msd.converter.supplier.mgf/target/
+openchrom/sites/net.openchrom.msd.converter.supplier.mgf.updateSite/target/
+openchrom/plugins/net.openchrom.msd.converter.supplier.mgf.fragment.test/*.log
+

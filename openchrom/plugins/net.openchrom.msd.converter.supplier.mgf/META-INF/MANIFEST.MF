@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mgf
+Bundle-SymbolicName: net.openchrom.msd.converter.supplier.mgf
+Bundle-Version: 1.1.0.qualifier
+Bundle-Activator: net.openchrom.msd.converter.supplier.mgf.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.chemclipse.msd.converter;bundle-version="0.7.0",
+ org.eclipse.chemclipse.msd.model;bundle-version="0.7.0",
+ org.eclipse.chemclipse.logging;bundle-version="0.7.0",
+ org.eclipse.chemclipse.processing;bundle-version="0.7.0",
+ org.eclipse.chemclipse.converter;bundle-version="0.7.0",
+ org.eclipse.chemclipse.model;bundle-version="0.7.0",
+ org.eclipse.chemclipse.support;bundle-version="0.7.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
