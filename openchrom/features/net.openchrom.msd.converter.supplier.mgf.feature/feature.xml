@@ -24,7 +24,7 @@ http://www.eclipse.org/legal/epl-v10.html
    </license>
 
    <includes
-         id="net.openchrom.msqbatlibs.jmgf.feature"
+         id="net.openchrom.msqbatlibs.feature"
          version="0.0.0"/>
 
    <plugin
