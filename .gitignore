@@ -1,0 +1,15 @@
+openchrom/plugins/net.openchrom.msqbatlibs.*.fragment.test/Openchrom.log.*
+openchrom/plugins/net.openchrom.msqbatlibs.*.fragment.test/bin/*
+openchrom/plugins/net.openchrom.msqbatlibs.*.ui.fragment.test/bin/*
+openchrom/plugins/net.openchrom.msqbatlibs.*.ui/bin/*
+openchrom/plugins/net.openchrom.msqbatlibs.*/bin/*
+openchrom/sites/net.openchrom.msqbatlibs.*.updateSite/artifacts.jar
+openchrom/sites/net.openchrom.msqbatlibs.*.updateSite/content.jar
+openchrom/sites/net.openchrom.msqbatlibs.*.updateSite/features/
+openchrom/sites/net.msqbatlibs.*.updateSite/plugins/
+openchrom/features/net.openchrom.msqbatlibs.*.feature/target/
+openchrom/plugins/net.openchrom.msqbatlibs.*.ui/target/
+openchrom/plugins/net.openchrom.msqbatlibs.*./target/
+openchrom/sites/net.openchrom.msqbatlibs.*.updateSite/target/
+openchrom/plugins/net.openchrom.msqbatlibs.*.fragment.test/*.log
+
