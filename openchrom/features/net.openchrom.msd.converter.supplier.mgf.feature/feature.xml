@@ -23,6 +23,10 @@ which accompanies this distribution, and is available at
 http://www.eclipse.org/legal/epl-v10.html
    </license>
 
+   <requires>
+      <import feature="net.sf.bioutils.proteomics.feature" version="1.0.0.qualifier"/>
+   </requires>
+
    <plugin
          id="net.openchrom.msd.converter.supplier.mgf"
          download-size="0"
