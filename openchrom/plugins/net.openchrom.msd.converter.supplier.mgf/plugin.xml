@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.msd.converter.massSpectrumSupplier">
+      <MassSpectrumSupplier
+            description="Reads an writes Mascot Generic Format (mgf) mass spectra."
+            exportConverter="net.openchrom.msd.converter.supplier.mgf.converter.MassSpectrumExportConverter"
+            fileExtension=".mgf"
+            filterName="Mascot Generic Format (*.mgf)"
+            id="org.eclipse.chemclipse.msd.converter.supplier.mgf"
+            importConverter="net.openchrom.msd.converter.supplier.mgf.converter.MassSpectrumImportConverter"
+            isExportable="true"
+            isImportable="true">
+      </MassSpectrumSupplier>
+   </extension>
+</plugin>
