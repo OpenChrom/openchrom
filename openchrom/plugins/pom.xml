@@ -9,8 +9,8 @@
     <relativePath>../cbi/net.openchrom.msqbatlibs.cbi/pom.xml</relativePath>
   </parent>
 
-  <artifactId>net.openchrom.features.parent</artifactId>
+  <artifactId>net.openchrom.plugins.parent</artifactId>
   <packaging>pom</packaging>
-  <name>features</name>
+  <name>plugins</name>
 
 </project>

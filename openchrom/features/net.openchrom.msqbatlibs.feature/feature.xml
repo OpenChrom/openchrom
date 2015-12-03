@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="net.openchrom.msqbatlibs.jmgf.feature"
+      id="net.openchrom.msqbatlibs.feature"
       label="Feature"
       version="1.1.0.qualifier">
 
