@@ -13,12 +13,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.converter;bundle-version="0.7.0",
  org.eclipse.chemclipse.model;bundle-version="0.7.0",
  org.eclipse.chemclipse.support;bundle-version="0.7.0",
- net.sf.bioutils.proteomics;bundle-version="3.1.7",
- net.sf.jmgf;bundle-version="1.2.1",
- net.sf.jranges;bundle-version="0.6.2",
- net.sf.jtables;bundle-version="2.2.5",
- net.sf.kerner-utils;bundle-version="1.2.3",
- net.sf.kerner-utils-collections;bundle-version="1.1.2",
- net.sf.kerner-utils-io;bundle-version="0.5.4"
+ net.openchrom.msqbatlibs.bioutils.proteomics;bundle-version="1.1.0",
+ net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.1.0",
+ net.openchrom.msqbatlibs.jmgf;bundle-version="1.1.0",
+ net.openchrom.msqbatlibs.kerner.utils.io;bundle-version="1.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
