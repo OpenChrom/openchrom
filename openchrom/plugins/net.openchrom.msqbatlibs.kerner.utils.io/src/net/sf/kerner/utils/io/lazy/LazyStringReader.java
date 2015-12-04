@@ -42,6 +42,7 @@ import net.sf.kerner.utils.io.buffered.impl.BufferedStringReader;
  * <pre>
  * 
  * 
+ * 
  * &#064;Test
  * public final void example() throws IOException {
  * 
