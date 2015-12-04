@@ -13,6 +13,7 @@ package net.sf.kerner.utils.concurrent;
  * <pre>
  * 
  * 
+ * 
  * &#064;Override
  * public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
  * 
