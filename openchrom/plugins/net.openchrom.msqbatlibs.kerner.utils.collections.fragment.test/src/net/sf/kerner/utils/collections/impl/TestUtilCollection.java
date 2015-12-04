@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,32 +31,37 @@ import org.junit.Test;
 
 public class TestUtilCollection {
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	}
 
-    @Before
-    public void setUp() throws Exception {
-    }
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	}
 
-    @Test
-    public final void testGetHighest01() {
-        final List<Integer> input = Arrays.asList(1, 2, 1);
-        assertEquals(Integer.valueOf(2), UtilCollection.getHighest(input, new ComparatorIntegerDefault()));
-    }
+	@Before
+	public void setUp() throws Exception {
 
-    @Test
-    public final void testGetHighest02() {
-        final List<Integer> input = Arrays.asList(1, 2, 3);
-        assertEquals(Integer.valueOf(3), UtilCollection.getHighest(input, new ComparatorIntegerDefault()));
-    }
+	}
 
+	@After
+	public void tearDown() throws Exception {
+
+	}
+
+	@Test
+	public final void testGetHighest01() {
+
+		final List<Integer> input = Arrays.asList(1, 2, 1);
+		assertEquals(Integer.valueOf(2), UtilCollection.getHighest(input, new ComparatorIntegerDefault()));
+	}
+
+	@Test
+	public final void testGetHighest02() {
+
+		final List<Integer> input = Arrays.asList(1, 2, 3);
+		assertEquals(Integer.valueOf(3), UtilCollection.getHighest(input, new ComparatorIntegerDefault()));
+	}
 }

@@ -61,20 +61,20 @@
   <modules>
     <module>../../plugins/net.openchrom.msqbatlibs.bioutils.proteomics</module>
     <module>../../plugins/net.openchrom.msqbatlibs.bioutils.proteomics.fragment.test</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.jmgf</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.jmgf.fragment.test</module>
-   	<module>../../features/net.openchrom.msqbatlibs.feature</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.jranges</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.jranges.fragment.test</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.jfasta</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.jfasta.fragment.test</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.jtables</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.jtables.fragment.test</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.kerner.utils</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.kerner.utils.fragment.test</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.kerner.utils.collections</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.kerner.utils.collections.fragment.test</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.kerner.utils.io</module>
-   	<module>../../plugins/net.openchrom.msqbatlibs.kerner.utils.io.fragment.test</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.jmgf</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.jmgf.fragment.test</module>
+    <module>../../features/net.openchrom.msqbatlibs.feature</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.jranges</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.jranges.fragment.test</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.jfasta</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.jfasta.fragment.test</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.jtables</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.jtables.fragment.test</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.kerner.utils</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.kerner.utils.fragment.test</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.kerner.utils.collections</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.kerner.utils.collections.fragment.test</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.kerner.utils.io</module>
+    <module>../../plugins/net.openchrom.msqbatlibs.kerner.utils.io.fragment.test</module>
   </modules>
 </project>

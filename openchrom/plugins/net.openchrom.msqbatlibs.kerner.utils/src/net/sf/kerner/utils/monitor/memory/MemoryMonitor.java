@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,24 +19,23 @@ import net.sf.kerner.utils.math.LongUnit;
 
 public interface MemoryMonitor {
 
-    static LongUnit DEFAULT_UNIT = LongUnit.UNIT;
+	static LongUnit DEFAULT_UNIT = LongUnit.UNIT;
 
-    LongUnit getUnit();
+	LongUnit getUnit();
 
-    long getCurrentUsage();
+	long getCurrentUsage();
 
-    long getCurrentUsage(LongUnit unit);
+	long getCurrentUsage(LongUnit unit);
 
-    long getMaxUsage();
+	long getMaxUsage();
 
-    long getMaxUsage(LongUnit unit);
+	long getMaxUsage(LongUnit unit);
 
-    long getAverageUsage();
+	long getAverageUsage();
 
-    long getAverageUsage(LongUnit unit);
+	long getAverageUsage(LongUnit unit);
 
-    void start();
+	void start();
 
-    long stop();
-
+	long stop();
 }

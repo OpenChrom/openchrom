@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,8 +19,7 @@ import java.util.List;
 
 /**
  * 
- * {@code ObjectPairSame} is an {@link Pair}, where both {@code first} and
- * {@code second} object are of same type.
+ * {@code ObjectPairSame} is an {@link Pair}, where both {@code first} and {@code second} object are of same type.
  * 
  * <p>
  * <b>Example:</b><br>
@@ -45,14 +44,11 @@ import java.util.List;
  */
 public interface PairSame<T> extends Pair<T, T>, Iterable<T> {
 
-    /**
-     * Returns a {@link List}, which contains two elements,
-     * {@link PairSame#getFirst()} and {@link PairSame#getSecond()},
-     * in this order.
-     * 
-     * @return a {@link List}, which contains {@link PairSame#getFirst()}
-     *         and {@link PairSame#getSecond()}
-     */
-    List<T> asList();
-
+	/**
+	 * Returns a {@link List}, which contains two elements, {@link PairSame#getFirst()} and {@link PairSame#getSecond()},
+	 * in this order.
+	 * 
+	 * @return a {@link List}, which contains {@link PairSame#getFirst()} and {@link PairSame#getSecond()}
+	 */
+	List<T> asList();
 }

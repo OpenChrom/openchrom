@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,51 +41,52 @@ import org.junit.Test;
  */
 public class TestRangeCache {
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	}
 
-    RangeCache cache;
-    RangeInteger range1;
-    RangeInteger range2;
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    RangeInteger range3;
+	}
 
-    RangeInteger range4;
+	RangeCache cache;
+	RangeInteger range1;
+	RangeInteger range2;
+	RangeInteger range3;
+	RangeInteger range4;
 
-    @Before
-    public void setUp() throws Exception {
-    }
+	@Before
+	public void setUp() throws Exception {
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	}
 
-    /**
-     * Test method for
-     * {@link net.sf.kerner.commons.range.impl.RangeCache#next()}.
-     */
-    @Test
-    public final void testNext() {
-        final ArrayList<RangeInteger> range = new ArrayList<RangeInteger>();
-        range1 = new RangeIntegerDummy(1, 10);
-        range2 = new RangeIntegerDummy(11, 20);
-        range3 = new RangeIntegerDummy(21, 30);
-        range4 = new RangeIntegerDummy(31, 40);
-        range.add(range1);
-        range.add(range2);
-        range.add(range3);
-        range.add(range4);
-        cache = new RangeCache(range, 2);
-        assertTrue(cache.hasNext());
-        assertEquals(Arrays.asList(range1, range2), cache.next());
-        assertTrue(cache.hasNext());
-        assertEquals(Arrays.asList(range3, range4), cache.next());
-        assertFalse(cache.hasNext());
-    }
+	@After
+	public void tearDown() throws Exception {
 
+	}
+
+	/**
+	 * Test method for {@link net.sf.kerner.commons.range.impl.RangeCache#next()}.
+	 */
+	@Test
+	public final void testNext() {
+
+		final ArrayList<RangeInteger> range = new ArrayList<RangeInteger>();
+		range1 = new RangeIntegerDummy(1, 10);
+		range2 = new RangeIntegerDummy(11, 20);
+		range3 = new RangeIntegerDummy(21, 30);
+		range4 = new RangeIntegerDummy(31, 40);
+		range.add(range1);
+		range.add(range2);
+		range.add(range3);
+		range.add(range4);
+		cache = new RangeCache(range, 2);
+		assertTrue(cache.hasNext());
+		assertEquals(Arrays.asList(range1, range2), cache.next());
+		assertTrue(cache.hasNext());
+		assertEquals(Arrays.asList(range3, range4), cache.next());
+		assertFalse(cache.hasNext());
+	}
 }

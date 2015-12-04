@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,8 +28,7 @@ import net.sf.kerner.utils.io.buffered.AbstractBufferedWriter;
 
 /**
  * 
- * A {@code FASTAFileWriter} writes {@link FASTAElement FASTAElement}s and
- * {@link FASTAFile FASTAFile}s to
+ * A {@code FASTAFileWriter} writes {@link FASTAElement FASTAElement}s and {@link FASTAFile FASTAFile}s to
  * <ul>
  * <li>
  * a {@link java.io.File}</li>
@@ -65,68 +64,72 @@ import net.sf.kerner.utils.io.buffered.AbstractBufferedWriter;
  */
 public class FASTAFileWriter extends AbstractBufferedWriter implements ObjectWriter<FASTAElement> {
 
-    /**
-     * 
-     * Creates a {@code FASTAFileWriter} that writes to a file.
-     * 
-     * @param file
-     *            file to write to
-     * @throws IOException
-     *             if file is not accessible
-     */
-    public FASTAFileWriter(final File file) throws IOException {
-        super(file);
-    }
+	/**
+	 * 
+	 * Creates a {@code FASTAFileWriter} that writes to a file.
+	 * 
+	 * @param file
+	 *            file to write to
+	 * @throws IOException
+	 *             if file is not accessible
+	 */
+	public FASTAFileWriter(final File file) throws IOException {
 
-    /**
-     * 
-     * Creates a {@code FASTAFileWriter} that writes to a stream.
-     * 
-     * @param stream
-     *            output stream to write to
-     */
-    public FASTAFileWriter(final OutputStream stream) {
-        super(stream);
-    }
+		super(file);
+	}
 
-    /**
-     * 
-     * Creates a {@code FASTAFileWriter} that writes to a writer.
-     * 
-     * @param writer
-     *            writer to write to
-     */
-    public FASTAFileWriter(final Writer writer) {
-        super(writer);
-    }
+	/**
+	 * 
+	 * Creates a {@code FASTAFileWriter} that writes to a stream.
+	 * 
+	 * @param stream
+	 *            output stream to write to
+	 */
+	public FASTAFileWriter(final OutputStream stream) {
 
-    /**
-     * Writes a {@link FASTAElement FASTAElement}.
-     * <p>
-     * <b>Note:</b> For big FASTA elements, prepare for equivalent memory usage.
-     * </p>
-     * 
-     */
-    public synchronized void write(final FASTAElement e) throws IOException {
-        super.writer.write(e.toString());
-        super.writer.write(UtilIO.NEW_LINE_STRING);
-    }
+		super(stream);
+	}
 
-    /**
-     * 
-     * Writes a {@link FASTAFile FASTAFile} at once.
-     * <p>
-     * <b> Note:</b> For big FASTA files, use {@link #write(FASTAElement)}
-     * instead and write FASTA file element by element.
-     * </p>
-     * 
-     * @param e
-     *            FASTA file to write
-     * @throws IOException
-     *             if writing fails
-     */
-    public synchronized void write(final FASTAFile e) throws IOException {
-        super.writer.write(e.toString());
-        super.writer.write(UtilIO.NEW_LINE_STRING);
-    }
+	/**
+	 * 
+	 * Creates a {@code FASTAFileWriter} that writes to a writer.
+	 * 
+	 * @param writer
+	 *            writer to write to
+	 */
+	public FASTAFileWriter(final Writer writer) {
+
+		super(writer);
+	}
+
+	/**
+	 * Writes a {@link FASTAElement FASTAElement}.
+	 * <p>
+	 * <b>Note:</b> For big FASTA elements, prepare for equivalent memory usage.
+	 * </p>
+	 * 
+	 */
+	public synchronized void write(final FASTAElement e) throws IOException {
+
+		super.writer.write(e.toString());
+		super.writer.write(UtilIO.NEW_LINE_STRING);
+	}
+
+	/**
+	 * 
+	 * Writes a {@link FASTAFile FASTAFile} at once.
+	 * <p>
+	 * <b> Note:</b> For big FASTA files, use {@link #write(FASTAElement)} instead and write FASTA file element by element.
+	 * </p>
+	 * 
+	 * @param e
+	 *            FASTA file to write
+	 * @throws IOException
+	 *             if writing fails
+	 */
+	public synchronized void write(final FASTAFile e) throws IOException {
+
+		super.writer.write(e.toString());
+		super.writer.write(UtilIO.NEW_LINE_STRING);
+	}
 }

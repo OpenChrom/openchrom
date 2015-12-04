@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,134 +33,152 @@ import org.junit.Test;
  */
 public class TestKeyValue {
 
-    private String key1;
+	private String key1;
+	private String key2;
+	private KeyValue<String, String> k1;
+	private KeyValue<String, String> k2;
 
-    private String key2;
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    private KeyValue<String, String> k1;
+	}
 
-    private KeyValue<String, String> k2;
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	}
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	@Before
+	public void setUp() throws Exception {
 
-    @Before
-    public void setUp() throws Exception {
-        key1 = "key1";
-        key2 = "key2";
-        k1 = new KeyValue<String, String>(key1);
-        k2 = new KeyValue<String, String>(key2);
-    }
+		key1 = "key1";
+		key2 = "key2";
+		k1 = new KeyValue<String, String>(key1);
+		k2 = new KeyValue<String, String>(key2);
+	}
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	@After
+	public void tearDown() throws Exception {
 
-    @Test
-    public final void testHashCode() {
-        assertNotSame(key1.hashCode(), key2.hashCode());
-    }
+	}
 
-    @Test
-    public final void testHashCode01() {
-        k2 = new KeyValue<String, String>(key1);
-        assertEquals(k1.hashCode(), k2.hashCode());
-    }
+	@Test
+	public final void testHashCode() {
 
-    @Test
-    public final void testKeyValueKV() {
-        k1 = new KeyValue<String, String>("key1", "value1");
-    }
+		assertNotSame(key1.hashCode(), key2.hashCode());
+	}
 
-    @Test
-    public final void testKeyValueKV01() {
-        k1 = new KeyValue<String, String>("key1", "value1");
-        assertEquals("key1", k1.getKey());
-    }
+	@Test
+	public final void testHashCode01() {
 
-    @Test
-    public final void testKeyValueKV02() {
-        k1 = new KeyValue<String, String>("key1", "value");
-        assertEquals("value", k1.getValue());
-    }
+		k2 = new KeyValue<String, String>(key1);
+		assertEquals(k1.hashCode(), k2.hashCode());
+	}
 
-    @Test(expected = NullPointerException.class)
-    public final void testKeyValueKV03() {
-        k1 = new KeyValue<String, String>(null, null);
-    }
+	@Test
+	public final void testKeyValueKV() {
 
-    @Test(expected = NullPointerException.class)
-    public final void testKeyValueK() {
-        k1 = new KeyValue<String, String>((KeyValue<String, String>) null);
-    }
+		k1 = new KeyValue<String, String>("key1", "value1");
+	}
 
-    @Test(expected = NullPointerException.class)
-    public final void testKeyValueK01() {
-        k1 = new KeyValue<String, String>((String) null);
-    }
+	@Test
+	public final void testKeyValueKV01() {
 
-    @Test
-    public final void testKeyValueKeyValueOfKV() {
-        k1 = new KeyValue<String, String>(k2);
-        assertEquals(k2.getKey(), k1.getKey());
-    }
+		k1 = new KeyValue<String, String>("key1", "value1");
+		assertEquals("key1", k1.getKey());
+	}
 
-    @Test
-    public final void testKeyValueKeyValueOfKV01() {
-        k1 = new KeyValue<String, String>(k2);
-        assertEquals(k2.getValue(), k1.getValue());
-    }
+	@Test
+	public final void testKeyValueKV02() {
 
-    @Test
-    public final void testEqualsObject() {
-        k1 = new KeyValue<String, String>(k2);
-        assertEquals(k1, k2);
-    }
+		k1 = new KeyValue<String, String>("key1", "value");
+		assertEquals("value", k1.getValue());
+	}
 
-    @Test
-    public final void testEqualsObject01() {
-        assertEquals(k1, k1);
-    }
+	@Test(expected = NullPointerException.class)
+	public final void testKeyValueKV03() {
 
-    @Test
-    public final void testEqualsObject02() {
-        k2 = new KeyValue<String, String>("key1", null);
-        assertEquals(k1, k2);
-    }
+		k1 = new KeyValue<String, String>(null, null);
+	}
 
-    @Test
-    public final void testEqualsObject03() {
-        k1 = new KeyValue<String, String>("key1", "value");
-        k2 = new KeyValue<String, String>("key1", "value");
-        assertEquals(k1, k2);
-    }
+	@Test(expected = NullPointerException.class)
+	public final void testKeyValueK() {
 
-    @Test
-    public final void testEqualsObject04() {
-        assertNotSame(k1, k2);
-    }
+		k1 = new KeyValue<String, String>((KeyValue<String, String>)null);
+	}
 
-    @Test
-    @Ignore
-    public final void testGetKey() {
-        fail("Not yet implemented"); // TODO
-    }
+	@Test(expected = NullPointerException.class)
+	public final void testKeyValueK01() {
 
-    @Test
-    @Ignore
-    public final void testGetValue() {
-        fail("Not yet implemented"); // TODO
-    }
+		k1 = new KeyValue<String, String>((String)null);
+	}
 
-    @Test
-    public final void testSetValue() {
-        k2.setValue("hans");
-        assertEquals("hans", k2.getValue());
-    }
+	@Test
+	public final void testKeyValueKeyValueOfKV() {
 
+		k1 = new KeyValue<String, String>(k2);
+		assertEquals(k2.getKey(), k1.getKey());
+	}
+
+	@Test
+	public final void testKeyValueKeyValueOfKV01() {
+
+		k1 = new KeyValue<String, String>(k2);
+		assertEquals(k2.getValue(), k1.getValue());
+	}
+
+	@Test
+	public final void testEqualsObject() {
+
+		k1 = new KeyValue<String, String>(k2);
+		assertEquals(k1, k2);
+	}
+
+	@Test
+	public final void testEqualsObject01() {
+
+		assertEquals(k1, k1);
+	}
+
+	@Test
+	public final void testEqualsObject02() {
+
+		k2 = new KeyValue<String, String>("key1", null);
+		assertEquals(k1, k2);
+	}
+
+	@Test
+	public final void testEqualsObject03() {
+
+		k1 = new KeyValue<String, String>("key1", "value");
+		k2 = new KeyValue<String, String>("key1", "value");
+		assertEquals(k1, k2);
+	}
+
+	@Test
+	public final void testEqualsObject04() {
+
+		assertNotSame(k1, k2);
+	}
+
+	@Test
+	@Ignore
+	public final void testGetKey() {
+
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	@Ignore
+	public final void testGetValue() {
+
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public final void testSetValue() {
+
+		k2.setValue("hans");
+		assertEquals("hans", k2.getValue());
+	}
 }

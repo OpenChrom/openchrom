@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,28 +17,30 @@ package net.sf.kerner.utils;
 
 public class SetterOnlyOnce<T> {
 
-    private final boolean strict;
+	private final boolean strict;
+	private T t = null;
 
-    private T t = null;
+	public SetterOnlyOnce() {
 
-    public SetterOnlyOnce() {
-        this(false);
-    }
+		this(false);
+	}
 
-    public SetterOnlyOnce(final boolean strict) {
-        this.strict = strict;
-    }
+	public SetterOnlyOnce(final boolean strict) {
 
-    public T get() {
-        return t;
-    }
+		this.strict = strict;
+	}
 
-    public void set(final T t) {
-        if (this.t == null || (!strict && this.t.equals(t))) {
-            this.t = t;
-        } else {
-            throw new IllegalStateException("refuse to override " + this.t + " with " + t);
-        }
-    }
+	public T get() {
 
+		return t;
+	}
+
+	public void set(final T t) {
+
+		if(this.t == null || (!strict && this.t.equals(t))) {
+			this.t = t;
+		} else {
+			throw new IllegalStateException("refuse to override " + this.t + " with " + t);
+		}
+	}
 }

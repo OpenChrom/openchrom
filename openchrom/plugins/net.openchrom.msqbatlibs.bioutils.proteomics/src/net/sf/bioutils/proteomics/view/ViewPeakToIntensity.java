@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,16 +18,16 @@ package net.sf.bioutils.proteomics.view;
 import net.sf.bioutils.proteomics.peak.Peak;
 import net.sf.kerner.utils.pair.KeyValue;
 
-public class ViewPeakToIntensity extends KeyValue<Peak, Double> implements
-        Comparable<ViewPeakToIntensity> {
+public class ViewPeakToIntensity extends KeyValue<Peak, Double> implements Comparable<ViewPeakToIntensity> {
 
-    public ViewPeakToIntensity(final Peak key) {
-        super(key, key.getIntensity());
-    }
+	public ViewPeakToIntensity(final Peak key) {
 
-    @Override
-    public int compareTo(final ViewPeakToIntensity o) {
-        return getValue().compareTo(o.getValue());
-    }
+		super(key, key.getIntensity());
+	}
 
+	@Override
+	public int compareTo(final ViewPeakToIntensity o) {
+
+		return getValue().compareTo(o.getValue());
+	}
 }

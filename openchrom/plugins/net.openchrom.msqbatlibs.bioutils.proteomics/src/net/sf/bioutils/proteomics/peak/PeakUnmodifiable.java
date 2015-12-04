@@ -10,89 +10,104 @@ import net.sf.kerner.utils.Util;
 
 public class PeakUnmodifiable implements PeakAnnotatable {
 
-    protected final PeakAnnotatable delegate;
+	protected final PeakAnnotatable delegate;
 
-    public PeakUnmodifiable(final Peak delegate) {
-        Util.checkForNull(delegate);
-        this.delegate = (PeakAnnotatable) delegate;
-    }
+	public PeakUnmodifiable(final Peak delegate) {
 
-    @Override
-    public PeakUnmodifiable clone() {
-        return new PeakUnmodifiable(delegate.clone());
-    }
+		Util.checkForNull(delegate);
+		this.delegate = (PeakAnnotatable)delegate;
+	}
 
-    @Override
-    public boolean equals(final Object obj) {
-        return delegate.equals(obj);
-    }
+	@Override
+	public PeakUnmodifiable clone() {
 
-    @Override
-    public Collection<AnnotationSerializable> getAnnotation() {
-        if (delegate.getAnnotation() == null) {
-            return null;
-        }
-        return Collections.unmodifiableCollection(delegate.getAnnotation());
-    }
+		return new PeakUnmodifiable(delegate.clone());
+	}
 
-    @Override
-    public int getFractionIndex() {
-        return delegate.getFractionIndex();
-    }
+	@Override
+	public boolean equals(final Object obj) {
 
-    @Override
-    public double getIntensity() {
-        return delegate.getIntensity();
-    }
+		return delegate.equals(obj);
+	}
 
-    @Override
-    public double getIntensityToNoise() {
-        return delegate.getIntensityToNoise();
-    }
+	@Override
+	public Collection<AnnotationSerializable> getAnnotation() {
 
-    @Override
-    public double getMz() {
-        return delegate.getMz();
-    }
+		if(delegate.getAnnotation() == null) {
+			return null;
+		}
+		return Collections.unmodifiableCollection(delegate.getAnnotation());
+	}
 
-    @Override
-    public String getName() {
-        return delegate.getName();
-    }
+	@Override
+	public int getFractionIndex() {
 
-    @Override
-    public Sample getSample() {
-        return new SampleUnmodifiable(delegate.getSample());
-    }
+		return delegate.getFractionIndex();
+	}
 
-    @Override
-    public String getSampleName() {
-        return delegate.getSampleName();
-    }
+	@Override
+	public double getIntensity() {
 
-    @Override
-    public int hashCode() {
-        return delegate.hashCode();
-    }
+		return delegate.getIntensity();
+	}
 
-    @Override
-    public void setAnnotation(final Collection<AnnotationSerializable> annotation) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	public double getIntensityToNoise() {
 
-    @Override
-    public void setFractionIndex(final int index) {
-        throw new UnsupportedOperationException();
-    }
+		return delegate.getIntensityToNoise();
+	}
 
-    @Override
-    public void setSample(final Sample sample) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	public double getMz() {
 
-    @Override
-    public String toString() {
-        return "PeakUnmodifiable:" + delegate;
-    }
+		return delegate.getMz();
+	}
 
+	@Override
+	public String getName() {
+
+		return delegate.getName();
+	}
+
+	@Override
+	public Sample getSample() {
+
+		return new SampleUnmodifiable(delegate.getSample());
+	}
+
+	@Override
+	public String getSampleName() {
+
+		return delegate.getSampleName();
+	}
+
+	@Override
+	public int hashCode() {
+
+		return delegate.hashCode();
+	}
+
+	@Override
+	public void setAnnotation(final Collection<AnnotationSerializable> annotation) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setFractionIndex(final int index) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setSample(final Sample sample) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public String toString() {
+
+		return "PeakUnmodifiable:" + delegate;
+	}
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,30 +20,28 @@ import java.util.List;
 
 public interface Peptide extends Iterable<AminoAcid> {
 
-    public static double MOL_WEIGHT_OXYGEN = 15.9994;
+	public static double MOL_WEIGHT_OXYGEN = 15.9994;
+	public static double MOL_WEIGHT_HYDROGEN = 1.0078;
 
-    public static double MOL_WEIGHT_HYDROGEN = 1.0078;
+	List<AminoAcid> asAminoAcidList();
 
-    List<AminoAcid> asAminoAcidList();
+	List<Character> asCharacterList();
 
-    List<Character> asCharacterList();
+	String asString();
 
-    String asString();
+	List<String> asStringList();
 
-    List<String> asStringList();
+	boolean contains(AminoAcid p);
 
-    boolean contains(AminoAcid p);
+	int getChargeState();
 
-    int getChargeState();
+	Collection<Modification> getModifications();
 
-    Collection<Modification> getModifications();
+	double getMolWeight();
 
-    double getMolWeight();
+	double getMolWeightCTerminal();
 
-    double getMolWeightCTerminal();
+	double getMolWeightNTerminal();
 
-    double getMolWeightNTerminal();
-
-    void setModifications(Collection<Modification> modifications);
-
+	void setModifications(Collection<Modification> modifications);
 }

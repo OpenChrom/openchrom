@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,19 +50,20 @@ public class TestIntegerRangeUtils {
 
 	// private List<IntegerRange> ranges2;
 	// private List<IntegerRange> ranges3;
-
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+
 	}
 
 	@Before
 	public void setUp() throws Exception {
-		ranges = new ArrayList<RangeInteger>();
 
+		ranges = new ArrayList<RangeInteger>();
 		// ranges2 = new ArrayList<IntegerRange>();
 		//
 		// ranges3 = new ArrayList<IntegerRange>();
@@ -70,15 +71,15 @@ public class TestIntegerRangeUtils {
 
 	@After
 	public void tearDown() throws Exception {
+
 	}
 
 	/**
-	 * Test method for
-	 * {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#includedByOne(java.util.List, int)}
-	 * .
+	 * Test method for {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#includedByOne(java.util.List, int)} .
 	 */
 	@Test
 	public final void testIncludedByOne() {
+
 		ranges.add(new RangeIntegerDummy(1, 2));
 		ranges.add(new RangeIntegerDummy(3, 4));
 		ranges.add(new RangeIntegerDummy(5, 6));
@@ -87,12 +88,11 @@ public class TestIntegerRangeUtils {
 	}
 
 	/**
-	 * Test method for
-	 * {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#includedByOne(java.util.List, int)}
-	 * .
+	 * Test method for {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#includedByOne(java.util.List, int)} .
 	 */
 	@Test
 	public final void testIncludedByOne01() {
+
 		ranges.add(new RangeIntegerDummy(1, 2));
 		ranges.add(new RangeIntegerDummy(3, 4));
 		ranges.add(new RangeIntegerDummy(5, 6));
@@ -101,12 +101,11 @@ public class TestIntegerRangeUtils {
 	}
 
 	/**
-	 * Test method for
-	 * {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#includedByOne(java.util.List, int)}
-	 * .
+	 * Test method for {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#includedByOne(java.util.List, int)} .
 	 */
 	@Test
 	public final void testIncludedByOne02() {
+
 		ranges.add(new RangeIntegerDummy(1, 2));
 		ranges.add(new RangeIntegerDummy(3, 4));
 		ranges.add(new RangeIntegerDummy(5, 6));
@@ -115,12 +114,11 @@ public class TestIntegerRangeUtils {
 	}
 
 	/**
-	 * Test method for
-	 * {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#includedByOne(java.util.List, int)}
-	 * .
+	 * Test method for {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#includedByOne(java.util.List, int)} .
 	 */
 	@Test
 	public final void testIncludedByOne03() {
+
 		ranges.add(new RangeIntegerDummy(1, 2));
 		ranges.add(new RangeIntegerDummy(3, 4));
 		ranges.add(new RangeIntegerDummy(5, 6));
@@ -129,12 +127,11 @@ public class TestIntegerRangeUtils {
 	}
 
 	/**
-	 * Test method for
-	 * {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#includedByOne(java.util.List, int)}
-	 * .
+	 * Test method for {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#includedByOne(java.util.List, int)} .
 	 */
 	@Test
 	public final void testIncludedByOne04() {
+
 		ranges.add(new RangeIntegerDummy(1, 2));
 		ranges.add(new RangeIntegerDummy(3, 4));
 		ranges.add(new RangeIntegerDummy(5, 6));
@@ -143,17 +140,15 @@ public class TestIntegerRangeUtils {
 	}
 
 	/**
-	 * Test method for
-	 * {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#merge(java.util.List, net.sf.kerner.commons.range.RangeFactory)}
-	 * .
+	 * Test method for {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#merge(java.util.List, net.sf.kerner.commons.range.RangeFactory)} .
 	 */
 	@Test
 	public final void testMerge() {
+
 		ranges.add(new RangeIntegerDummy(1, 2));
 		ranges.add(new RangeIntegerDummy(3, 4));
 		ranges.add(new RangeIntegerDummy(5, 6));
 		ranges.add(new RangeIntegerDummy(7, 8));
 		assertEquals(new RangeIntegerDummy(1, 8), UtilsRangeInteger.merge(ranges, new FactoryRangeIntegerDummy()));
 	}
-
 }

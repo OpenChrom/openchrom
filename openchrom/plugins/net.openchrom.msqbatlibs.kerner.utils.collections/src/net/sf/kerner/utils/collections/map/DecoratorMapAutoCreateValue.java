@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,83 +42,96 @@ import net.sf.kerner.utils.Factory;
  */
 public class DecoratorMapAutoCreateValue<K, V> implements Map<K, V> {
 
-    private final Map<K, V> decorated;
+	private final Map<K, V> decorated;
+	private final Factory<V> factory;
 
-    private final Factory<V> factory;
+	public DecoratorMapAutoCreateValue(Map<K, V> decorated, Factory<V> factory) {
 
-    public DecoratorMapAutoCreateValue(Map<K, V> decorated, Factory<V> factory) {
-        super();
-        this.decorated = decorated;
-        this.factory = factory;
-    }
+		super();
+		this.decorated = decorated;
+		this.factory = factory;
+	}
 
-    @SuppressWarnings("unchecked")
-    public V get(Object key) {
-        if (decorated.containsKey(key)) {
-            // ok
-        } else {
-            decorated.put((K) key, factory.create());
-        }
-        return decorated.get(key);
-    }
+	@SuppressWarnings("unchecked")
+	public V get(Object key) {
 
-    // Delegate //
+		if(decorated.containsKey(key)) {
+			// ok
+		} else {
+			decorated.put((K)key, factory.create());
+		}
+		return decorated.get(key);
+	}
 
-    @Override
-    public String toString() {
-        return decorated.toString();
-    }
+	// Delegate //
+	@Override
+	public String toString() {
 
-    public int size() {
-        return decorated.size();
-    }
+		return decorated.toString();
+	}
 
-    public boolean isEmpty() {
-        return decorated.isEmpty();
-    }
+	public int size() {
 
-    public boolean containsKey(Object key) {
-        return decorated.containsKey(key);
-    }
+		return decorated.size();
+	}
 
-    public boolean containsValue(Object value) {
-        return decorated.containsValue(value);
-    }
+	public boolean isEmpty() {
 
-    public V put(K key, V value) {
-        return decorated.put(key, value);
-    }
+		return decorated.isEmpty();
+	}
 
-    public V remove(Object key) {
-        return decorated.remove(key);
-    }
+	public boolean containsKey(Object key) {
 
-    public void putAll(Map<? extends K, ? extends V> m) {
-        decorated.putAll(m);
-    }
+		return decorated.containsKey(key);
+	}
 
-    public void clear() {
-        decorated.clear();
-    }
+	public boolean containsValue(Object value) {
 
-    public Set<K> keySet() {
-        return decorated.keySet();
-    }
+		return decorated.containsValue(value);
+	}
 
-    public Collection<V> values() {
-        return decorated.values();
-    }
+	public V put(K key, V value) {
 
-    public Set<java.util.Map.Entry<K, V>> entrySet() {
-        return decorated.entrySet();
-    }
+		return decorated.put(key, value);
+	}
 
-    public boolean equals(Object o) {
-        return decorated.equals(o);
-    }
+	public V remove(Object key) {
 
-    public int hashCode() {
-        return decorated.hashCode();
-    }
+		return decorated.remove(key);
+	}
 
+	public void putAll(Map<? extends K, ? extends V> m) {
+
+		decorated.putAll(m);
+	}
+
+	public void clear() {
+
+		decorated.clear();
+	}
+
+	public Set<K> keySet() {
+
+		return decorated.keySet();
+	}
+
+	public Collection<V> values() {
+
+		return decorated.values();
+	}
+
+	public Set<java.util.Map.Entry<K, V>> entrySet() {
+
+		return decorated.entrySet();
+	}
+
+	public boolean equals(Object o) {
+
+		return decorated.equals(o);
+	}
+
+	public int hashCode() {
+
+		return decorated.hashCode();
+	}
 }

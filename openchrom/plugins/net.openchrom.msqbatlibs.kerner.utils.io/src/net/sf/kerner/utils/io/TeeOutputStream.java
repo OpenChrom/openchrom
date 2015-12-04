@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,64 +25,70 @@ import java.io.OutputStream;
  * @author Sabre150
  */
 public class TeeOutputStream extends OutputStream {
-    // Obvious
-    private final OutputStream[] ostream_;
 
-    /**
-     * Constructs from a varags set of output streams
-     * 
-     * @param ostream
-     *            ... the varags array of OutputStreams
-     */
-    public TeeOutputStream(final OutputStream... ostream) {
-        ostream_ = ostream;
-    }
+	// Obvious
+	private final OutputStream[] ostream_;
 
-    @Override
-    public void close() throws IOException {
-        for (final OutputStream ostream : ostream_) {
-            UtilIO.closeProperly(ostream);
-        }
-    }
+	/**
+	 * Constructs from a varags set of output streams
+	 * 
+	 * @param ostream
+	 *            ... the varags array of OutputStreams
+	 */
+	public TeeOutputStream(final OutputStream... ostream) {
 
-    @Override
-    public void flush() throws IOException {
-        for (final OutputStream ostream : ostream_) {
-            ostream.flush();
-        }
-    }
+		ostream_ = ostream;
+	}
 
-    /**
-     * Writes an array of bytes to all OutputStreams
-     * 
-     * @param b
-     *            the bytes to write
-     * @param off
-     *            the offset to start writing from
-     * @param len
-     *            the number of bytes to write
-     * @throws IOException
-     *             from any of the OutputStreams
-     */
-    @Override
-    public void write(final byte[] b, final int off, final int len) throws IOException {
-        for (final OutputStream ostream : ostream_) {
-            ostream.write(b, off, len);
-        }
-    }
+	@Override
+	public void close() throws IOException {
 
-    /**
-     * Writes a byte to both output streams
-     * 
-     * @param b
-     *            the byte to write
-     * @throws IOException
-     *             from any of the OutputStreams
-     */
-    @Override
-    public void write(final int b) throws IOException {
-        for (final OutputStream ostream : ostream_) {
-            ostream.write(b);
-        }
-    }
+		for(final OutputStream ostream : ostream_) {
+			UtilIO.closeProperly(ostream);
+		}
+	}
+
+	@Override
+	public void flush() throws IOException {
+
+		for(final OutputStream ostream : ostream_) {
+			ostream.flush();
+		}
+	}
+
+	/**
+	 * Writes an array of bytes to all OutputStreams
+	 * 
+	 * @param b
+	 *            the bytes to write
+	 * @param off
+	 *            the offset to start writing from
+	 * @param len
+	 *            the number of bytes to write
+	 * @throws IOException
+	 *             from any of the OutputStreams
+	 */
+	@Override
+	public void write(final byte[] b, final int off, final int len) throws IOException {
+
+		for(final OutputStream ostream : ostream_) {
+			ostream.write(b, off, len);
+		}
+	}
+
+	/**
+	 * Writes a byte to both output streams
+	 * 
+	 * @param b
+	 *            the byte to write
+	 * @throws IOException
+	 *             from any of the OutputStreams
+	 */
+	@Override
+	public void write(final int b) throws IOException {
+
+		for(final OutputStream ostream : ostream_) {
+			ostream.write(b);
+		}
+	}
 }

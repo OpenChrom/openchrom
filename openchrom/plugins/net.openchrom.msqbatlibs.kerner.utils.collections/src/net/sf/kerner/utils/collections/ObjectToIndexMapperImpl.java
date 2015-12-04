@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,94 +34,102 @@ import net.sf.kerner.utils.math.UtilMath;
  */
 public class ObjectToIndexMapperImpl<T> implements ObjectToIndexMapper<T> {
 
-    // Fields //
-
-    /**
+	// Fields //
+	/**
 	 * 
 	 */
-    protected final Map<T, Integer> map = new LinkedHashMap<T, Integer>();
+	protected final Map<T, Integer> map = new LinkedHashMap<T, Integer>();
 
-    public ObjectToIndexMapperImpl(final List<? extends T> keys) {
-        final List<Integer> values = new ArrayList<Integer>();
-        for (int i = 0; i < keys.size(); i++) {
-            values.add(Integer.valueOf(i));
-        }
-        UtilMap.initMapWithValues(map, keys, values);
-    }
+	public ObjectToIndexMapperImpl(final List<? extends T> keys) {
 
-    public ObjectToIndexMapperImpl(final T... keys) {
-        this(Arrays.asList(keys));
-    }
+		final List<Integer> values = new ArrayList<Integer>();
+		for(int i = 0; i < keys.size(); i++) {
+			values.add(Integer.valueOf(i));
+		}
+		UtilMap.initMapWithValues(map, keys, values);
+	}
 
-    // Private //
+	public ObjectToIndexMapperImpl(final T... keys) {
 
-    // Protected //
+		this(Arrays.asList(keys));
+	}
 
-    // Public //
+	// Private //
+	// Protected //
+	// Public //
+	// Override //
+	@Override
+	public String toString() {
 
-    // Override //
+		return map.toString();
+	}
 
-    @Override
-    public String toString() {
-        return map.toString();
-    }
-
-    // Implement //
-
-    /**
+	// Implement //
+	/**
 	 * 
 	 */
-    public int get(final T key) {
-        final Integer result = map.get(key);
-        if (result != null) {
-            return result;
-        } else
-            throw new NoSuchElementException("no such key [" + key + "]");
-    }
+	public int get(final T key) {
 
-    public Object getValue(final int index) {
-        if (index < 0)
-            throw new IllegalArgumentException("index [" + index + "]");
-        for (final Entry<T, Integer> e : map.entrySet()) {
-            if (e.getValue().equals(Integer.valueOf(index)))
-                return e.getKey();
-        }
-        throw new NoSuchElementException("no such index [" + index + "]");
-    }
+		final Integer result = map.get(key);
+		if(result != null) {
+			return result;
+		} else
+			throw new NoSuchElementException("no such key [" + key + "]");
+	}
 
-    public boolean containsKey(final T key) {
-        return map.containsKey(key);
-    }
+	public Object getValue(final int index) {
 
-    public boolean containsValue(final int index) {
-        return map.containsValue(Integer.valueOf(index));
-    }
+		if(index < 0)
+			throw new IllegalArgumentException("index [" + index + "]");
+		for(final Entry<T, Integer> e : map.entrySet()) {
+			if(e.getValue().equals(Integer.valueOf(index)))
+				return e.getKey();
+		}
+		throw new NoSuchElementException("no such index [" + index + "]");
+	}
 
-    public List<Integer> values() {
-        return new ArrayList<Integer>(map.values());
-    }
+	public boolean containsKey(final T key) {
 
-    public List<T> keys() {
-        return new ArrayList<T>(map.keySet());
-    }
+		return map.containsKey(key);
+	}
 
-    public int getMaxIndex() {
-        return (int) UtilMath.getMax(map.values());
-    }
+	public boolean containsValue(final int index) {
 
-    public int getSize() {
-        return map.values().size();
-    }
+		return map.containsValue(Integer.valueOf(index));
+	}
 
-    public boolean isEmpty() {
-        return getSize() == 0;
-    }
+	public List<Integer> values() {
 
-    public void addMapping(final T key, final int value) {
-        map.put(key, value);
-    }
+		return new ArrayList<Integer>(map.values());
+	}
 
-    public void addMapping(final T key) {
-        map.put(key, getMaxIndex() + 1);
-    }
+	public List<T> keys() {
+
+		return new ArrayList<T>(map.keySet());
+	}
+
+	public int getMaxIndex() {
+
+		return (int)UtilMath.getMax(map.values());
+	}
+
+	public int getSize() {
+
+		return map.values().size();
+	}
+
+	public boolean isEmpty() {
+
+		return getSize() == 0;
+	}
+
+	public void addMapping(final T key, final int value) {
+
+		map.put(key, value);
+	}
+
+	public void addMapping(final T key) {
+
+		map.put(key, getMaxIndex() + 1);
+	}
 }

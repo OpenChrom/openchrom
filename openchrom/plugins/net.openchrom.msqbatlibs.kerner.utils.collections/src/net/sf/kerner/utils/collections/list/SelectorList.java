@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,8 +21,7 @@ import net.sf.kerner.utils.collections.Selector;
 
 public interface SelectorList<T> extends Selector<T> {
 
-    T select(List<? extends T> elements);
+	T select(List<? extends T> elements);
 
-    int getIndex();
-
+	int getIndex();
 }

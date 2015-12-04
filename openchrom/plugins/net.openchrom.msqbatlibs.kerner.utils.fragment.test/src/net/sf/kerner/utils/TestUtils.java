@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,66 +37,77 @@ import org.junit.Test;
  */
 public class TestUtils {
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	}
 
-    @Before
-    public void setUp() throws Exception {
-    }
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	}
 
-    @Test
-    public final void testCheckForNull01() {
-        Util.checkForNull(new Object());
-    }
+	@Before
+	public void setUp() throws Exception {
 
-    @Test
-    public final void testCheckForNull02() {
-        Util.checkForNull(new Object(), new Object());
-    }
+	}
 
-    @Test
-    public final void testCheckForNull03() {
-        Util.checkForNull(new Object(), 1);
-    }
+	@After
+	public void tearDown() throws Exception {
 
-    @Test
-    public final void testCheckForNull04() {
-        Util.checkForNull(0);
-    }
+	}
 
-    @Test(expected = NullPointerException.class)
-    public final void testCheckForNull05() {
-        Util.checkForNull((Object[]) null);
-    }
+	@Test
+	public final void testCheckForNull01() {
 
-    @Test(expected = NullPointerException.class)
-    public final void testCheckForNull06() {
-        Util.checkForNull(null, null);
-    }
+		Util.checkForNull(new Object());
+	}
 
-    @Test
-    public final void testDeepHashCode01() {
-        assertEquals(6, UtilHash.getDeepHash(Arrays.asList(1, 2, 3)));
-    }
+	@Test
+	public final void testCheckForNull02() {
 
-    @Test
-    public final void testDeepHashCode02() {
-        assertEquals(7, UtilHash.getDeepHash(Arrays.asList(1, 2, 3, new Integer[] { 1 })));
-    }
+		Util.checkForNull(new Object(), new Object());
+	}
 
-    @Test
-    public final void testDeepHashCode03() {
-        assertEquals(9, UtilHash.getDeepHash(Arrays.asList(1, 2, 3, new Integer[] { 1 },
-                new HashSet<Integer>(Arrays.asList(2)))));
-    }
+	@Test
+	public final void testCheckForNull03() {
 
+		Util.checkForNull(new Object(), 1);
+	}
+
+	@Test
+	public final void testCheckForNull04() {
+
+		Util.checkForNull(0);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public final void testCheckForNull05() {
+
+		Util.checkForNull((Object[])null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public final void testCheckForNull06() {
+
+		Util.checkForNull(null, null);
+	}
+
+	@Test
+	public final void testDeepHashCode01() {
+
+		assertEquals(6, UtilHash.getDeepHash(Arrays.asList(1, 2, 3)));
+	}
+
+	@Test
+	public final void testDeepHashCode02() {
+
+		assertEquals(7, UtilHash.getDeepHash(Arrays.asList(1, 2, 3, new Integer[]{1})));
+	}
+
+	@Test
+	public final void testDeepHashCode03() {
+
+		assertEquals(9, UtilHash.getDeepHash(Arrays.asList(1, 2, 3, new Integer[]{1}, new HashSet<Integer>(Arrays.asList(2)))));
+	}
 }

@@ -6,14 +6,13 @@ import net.sf.jtables.table.Row;
 
 public interface MascotReportRow {
 
-    int getFractionNumber() throws IOException;
+	int getFractionNumber() throws IOException;
 
-    double getPeptideExpMr() throws IOException;
+	double getPeptideExpMr() throws IOException;
 
-    double getPeptideExpMz() throws IOException;
+	double getPeptideExpMz() throws IOException;
 
-    String getProteinAccessionID() throws IOException;
+	String getProteinAccessionID() throws IOException;
 
-    Row<String> toRow();
-
+	Row<String> toRow();
 }

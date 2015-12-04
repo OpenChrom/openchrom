@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,65 +29,68 @@ import javax.swing.SwingConstants;
 
 public class UtilSwing {
 
-    public static JComponent buildInfoPanelEmptyBorderScroll(final JComponent content) {
-        final JPanel result = new JPanel(new BorderLayout());
-        result.setBorder(BorderFactory.createEmptyBorder());
-        final JScrollPane scroll = new JScrollPane(content);
-        result.add(scroll, BorderLayout.CENTER);
-        return result;
-    }
+	public static JComponent buildInfoPanelEmptyBorderScroll(final JComponent content) {
 
-    public static JComponent buildInfoPanelEmptyBorderScroll(final JComponent content,
-            final int top, final int left, final int bottom, final int right) {
-        final JPanel result = new JPanel(new BorderLayout());
-        result.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
-        final JScrollPane scroll = new JScrollPane(content);
-        result.add(scroll, BorderLayout.CENTER);
-        return result;
-    }
+		final JPanel result = new JPanel(new BorderLayout());
+		result.setBorder(BorderFactory.createEmptyBorder());
+		final JScrollPane scroll = new JScrollPane(content);
+		result.add(scroll, BorderLayout.CENTER);
+		return result;
+	}
 
-    public static JComponent buildInfoPanelTextBorder(final JComponent content, final String title) {
-        final JPanel result = new JPanel(new BorderLayout());
-        result.setBorder(BorderFactory.createTitledBorder(title));
-        result.add(content, BorderLayout.CENTER);
-        return result;
-    }
+	public static JComponent buildInfoPanelEmptyBorderScroll(final JComponent content, final int top, final int left, final int bottom, final int right) {
 
-    public static JComponent buildInfoPanelTextBorder(final JLabel content, final String title) {
-        content.setHorizontalAlignment(SwingConstants.CENTER);
-        content.setVerticalAlignment(SwingConstants.CENTER);
-        content.setOpaque(true);
-        return buildInfoPanelTextBorder((JComponent) content, title);
-    }
+		final JPanel result = new JPanel(new BorderLayout());
+		result.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
+		final JScrollPane scroll = new JScrollPane(content);
+		result.add(scroll, BorderLayout.CENTER);
+		return result;
+	}
 
-    public static JComponent buildInfoPanelTextBorderScroll(final JComponent content,
-            final String title) {
-        final JPanel result = new JPanel(new BorderLayout());
-        result.setBorder(BorderFactory.createTitledBorder(title));
-        final JScrollPane scroll = new JScrollPane(content);
-        result.add(scroll, BorderLayout.CENTER);
-        return result;
-    }
+	public static JComponent buildInfoPanelTextBorder(final JComponent content, final String title) {
 
-    public static JComponent buildPanelEmptyBorder(final JComponent content, final int top,
-            final int left, final int bottom, final int right) {
-        final JPanel result = new JPanel(new BorderLayout());
-        result.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
+		final JPanel result = new JPanel(new BorderLayout());
+		result.setBorder(BorderFactory.createTitledBorder(title));
+		result.add(content, BorderLayout.CENTER);
+		return result;
+	}
 
-        result.add(content, BorderLayout.CENTER);
-        return result;
-    }
+	public static JComponent buildInfoPanelTextBorder(final JLabel content, final String title) {
 
-    public static void center(final Component component) {
-        final Toolkit tk = Toolkit.getDefaultToolkit();
-        final Dimension screenSize = tk.getScreenSize();
-        final int screenHeight = screenSize.height;
-        final int screenWidth = screenSize.width;
-        component.setSize(screenWidth / 2, screenHeight / 2);
-        component.setLocation(screenWidth / 4, screenHeight / 4);
-    }
+		content.setHorizontalAlignment(SwingConstants.CENTER);
+		content.setVerticalAlignment(SwingConstants.CENTER);
+		content.setOpaque(true);
+		return buildInfoPanelTextBorder((JComponent)content, title);
+	}
 
-    private UtilSwing() {
-    }
+	public static JComponent buildInfoPanelTextBorderScroll(final JComponent content, final String title) {
 
+		final JPanel result = new JPanel(new BorderLayout());
+		result.setBorder(BorderFactory.createTitledBorder(title));
+		final JScrollPane scroll = new JScrollPane(content);
+		result.add(scroll, BorderLayout.CENTER);
+		return result;
+	}
+
+	public static JComponent buildPanelEmptyBorder(final JComponent content, final int top, final int left, final int bottom, final int right) {
+
+		final JPanel result = new JPanel(new BorderLayout());
+		result.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
+		result.add(content, BorderLayout.CENTER);
+		return result;
+	}
+
+	public static void center(final Component component) {
+
+		final Toolkit tk = Toolkit.getDefaultToolkit();
+		final Dimension screenSize = tk.getScreenSize();
+		final int screenHeight = screenSize.height;
+		final int screenWidth = screenSize.width;
+		component.setSize(screenWidth / 2, screenHeight / 2);
+		component.setLocation(screenWidth / 4, screenHeight / 4);
+	}
+
+	private UtilSwing() {
+
+	}
 }

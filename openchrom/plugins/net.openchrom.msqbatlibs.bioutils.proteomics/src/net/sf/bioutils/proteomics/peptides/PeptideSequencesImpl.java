@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,84 +24,100 @@ import net.sf.kerner.utils.collections.list.TransformerList;
 
 public class PeptideSequencesImpl implements PeptideSequences {
 
-    public final static TransformerList<Peptide, Double> TRANSFORMER_TO_MASS_LIST = new AbstractTransformingListFactory<Peptide, Double>() {
+	public final static TransformerList<Peptide, Double> TRANSFORMER_TO_MASS_LIST = new AbstractTransformingListFactory<Peptide, Double>() {
 
-        public Double transform(final Peptide element) {
-            return element.getMolWeight();
-        }
-    };
+		public Double transform(final Peptide element) {
 
-    private final Collection<Peptide> delegate;
+			return element.getMolWeight();
+		}
+	};
+	private final Collection<Peptide> delegate;
 
-    public PeptideSequencesImpl(final Collection<Peptide> collection) {
-        super();
-        delegate = collection;
-    }
+	public PeptideSequencesImpl(final Collection<Peptide> collection) {
 
-    public boolean add(final Peptide e) {
-        return delegate.add(e);
-    }
+		super();
+		delegate = collection;
+	}
 
-    public boolean addAll(final Collection<? extends Peptide> c) {
-        return delegate.addAll(c);
-    }
+	public boolean add(final Peptide e) {
 
-    public List<Double> asMassList() {
-        return TRANSFORMER_TO_MASS_LIST.transformCollection(delegate);
-    }
+		return delegate.add(e);
+	}
 
-    public void clear() {
-        delegate.clear();
-    }
+	public boolean addAll(final Collection<? extends Peptide> c) {
 
-    public boolean contains(final Object o) {
-        return delegate.contains(o);
-    }
+		return delegate.addAll(c);
+	}
 
-    public boolean containsAll(final Collection<?> c) {
-        return delegate.containsAll(c);
-    }
+	public List<Double> asMassList() {
 
-    @Override
-    public boolean equals(final Object o) {
-        return delegate.equals(o);
-    }
+		return TRANSFORMER_TO_MASS_LIST.transformCollection(delegate);
+	}
 
-    @Override
-    public int hashCode() {
-        return delegate.hashCode();
-    }
+	public void clear() {
 
-    public boolean isEmpty() {
-        return delegate.isEmpty();
-    }
+		delegate.clear();
+	}
 
-    public Iterator<Peptide> iterator() {
-        return delegate.iterator();
-    }
+	public boolean contains(final Object o) {
 
-    public boolean remove(final Object o) {
-        return delegate.remove(o);
-    }
+		return delegate.contains(o);
+	}
 
-    public boolean removeAll(final Collection<?> c) {
-        return delegate.removeAll(c);
-    }
+	public boolean containsAll(final Collection<?> c) {
 
-    public boolean retainAll(final Collection<?> c) {
-        return delegate.retainAll(c);
-    }
+		return delegate.containsAll(c);
+	}
 
-    public int size() {
-        return delegate.size();
-    }
+	@Override
+	public boolean equals(final Object o) {
 
-    public Object[] toArray() {
-        return delegate.toArray();
-    }
+		return delegate.equals(o);
+	}
 
-    public <T> T[] toArray(final T[] a) {
-        return delegate.toArray(a);
-    }
+	@Override
+	public int hashCode() {
 
+		return delegate.hashCode();
+	}
+
+	public boolean isEmpty() {
+
+		return delegate.isEmpty();
+	}
+
+	public Iterator<Peptide> iterator() {
+
+		return delegate.iterator();
+	}
+
+	public boolean remove(final Object o) {
+
+		return delegate.remove(o);
+	}
+
+	public boolean removeAll(final Collection<?> c) {
+
+		return delegate.removeAll(c);
+	}
+
+	public boolean retainAll(final Collection<?> c) {
+
+		return delegate.retainAll(c);
+	}
+
+	public int size() {
+
+		return delegate.size();
+	}
+
+	public Object[] toArray() {
+
+		return delegate.toArray();
+	}
+
+	public <T> T[] toArray(final T[] a) {
+
+		return delegate.toArray(a);
+	}
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,93 +54,101 @@ package net.sf.kerner.utils.pair;
  */
 public class PairImpl<F, S> implements Pair<F, S> {
 
-    private F first;
+	private F first;
+	private S second;
 
-    private S second;
+	public PairImpl() {
 
-    public PairImpl() {
-    }
+	}
 
-    public PairImpl(final F first) {
-        this.first = first;
+	public PairImpl(final F first) {
 
-    }
+		this.first = first;
+	}
 
-    public PairImpl(final F first, final S second) {
-        this.first = first;
-        this.second = second;
-    }
+	public PairImpl(final F first, final S second) {
 
-    public PairImpl(final Pair<? extends F, ? extends S> template) {
-        this(template.getFirst(), template.getSecond());
-    }
+		this.first = first;
+		this.second = second;
+	}
 
-    /**
-     * <b>Note:</b> A new {@code ObjectPairImpl} object is created, but
-     * {@code first} and {@code second} objects are not cloned here. If this is
-     * desired, use {@link PairImpl#ObjectPairImpl(Object, Object)}
-     * constructor to create a new instance and clone {@code first} and
-     * {@code second} here also.
-     */
-    @Override
-    public PairImpl<F, S> clone() {
-        return new PairImpl<F, S>(getFirst(), getSecond());
-    }
+	public PairImpl(final Pair<? extends F, ? extends S> template) {
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Pair))
-            return false;
-        @SuppressWarnings("rawtypes")
-        final PairImpl other = (PairImpl) obj;
-        if (first == null) {
-            if (other.first != null)
-                return false;
-        } else if (!first.equals(other.first) && !first.equals(other.second))
-            return false;
-        if (second == null) {
-            if (other.second != null)
-                return false;
-        } else if (!second.equals(other.second) && !second.equals(other.first))
-            return false;
-        return true;
-    }
+		this(template.getFirst(), template.getSecond());
+	}
 
-    public F getFirst() {
-        return first;
-    }
+	/**
+	 * <b>Note:</b> A new {@code ObjectPairImpl} object is created, but {@code first} and {@code second} objects are not cloned here. If this is
+	 * desired, use {@link PairImpl#ObjectPairImpl(Object, Object)} constructor to create a new instance and clone {@code first} and {@code second} here also.
+	 */
+	@Override
+	public PairImpl<F, S> clone() {
 
-    public S getSecond() {
-        return second;
-    }
+		return new PairImpl<F, S>(getFirst(), getSecond());
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime + result + ((first == null) ? 0 : first.hashCode());
-        result = prime + result + ((second == null) ? 0 : second.hashCode());
-        return result;
-    }
+	@Override
+	public boolean equals(final Object obj) {
 
-    public PairImpl<S, F> invert() {
-        return new PairImpl<S, F>(getSecond(), getFirst());
-    }
+		if(this == obj)
+			return true;
+		if(obj == null)
+			return false;
+		if(!(obj instanceof Pair))
+			return false;
+		@SuppressWarnings("rawtypes")
+		final PairImpl other = (PairImpl)obj;
+		if(first == null) {
+			if(other.first != null)
+				return false;
+		} else if(!first.equals(other.first) && !first.equals(other.second))
+			return false;
+		if(second == null) {
+			if(other.second != null)
+				return false;
+		} else if(!second.equals(other.second) && !second.equals(other.first))
+			return false;
+		return true;
+	}
 
-    public void setFirst(final F first) {
-        this.first = first;
-    }
+	public F getFirst() {
 
-    public void setSecond(final S second) {
-        this.second = second;
-    }
+		return first;
+	}
 
-    @Override
-    public String toString() {
-        return getFirst() + "," + getSecond();
-    }
+	public S getSecond() {
+
+		return second;
+	}
+
+	@Override
+	public int hashCode() {
+
+		final int prime = 31;
+		int result = 1;
+		result = prime + result + ((first == null) ? 0 : first.hashCode());
+		result = prime + result + ((second == null) ? 0 : second.hashCode());
+		return result;
+	}
+
+	public PairImpl<S, F> invert() {
+
+		return new PairImpl<S, F>(getSecond(), getFirst());
+	}
+
+	public void setFirst(final F first) {
+
+		this.first = first;
+	}
+
+	public void setSecond(final S second) {
+
+		this.second = second;
+	}
+
+	@Override
+	public String toString() {
+
+		return getFirst() + "," + getSecond();
+	}
 }

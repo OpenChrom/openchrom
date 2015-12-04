@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,19 +22,20 @@ import net.sf.kerner.utils.transformer.Transformer;
 
 public class ViewPoint3DX implements Transformer<Point3D, Double>, TransformerCollection<Point3D, Double> {
 
-    public Double transform(final Point3D element) {
-        if (element == null) {
-            return null;
-        }
-        return element.getX();
-    }
+	public Double transform(final Point3D element) {
 
-    public Collection<Double> transformCollection(final Collection<? extends Point3D> element) {
-        final Collection<Double> result = UtilCollection.newCollection();
-        for (final Point3D p : element) {
-            result.add(transform(p));
-        }
-        return result;
-    }
+		if(element == null) {
+			return null;
+		}
+		return element.getX();
+	}
 
+	public Collection<Double> transformCollection(final Collection<? extends Point3D> element) {
+
+		final Collection<Double> result = UtilCollection.newCollection();
+		for(final Point3D p : element) {
+			result.add(transform(p));
+		}
+		return result;
+	}
 }

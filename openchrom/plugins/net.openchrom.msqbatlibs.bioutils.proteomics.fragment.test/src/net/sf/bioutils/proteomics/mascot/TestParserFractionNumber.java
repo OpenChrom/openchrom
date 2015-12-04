@@ -12,33 +12,36 @@ import org.junit.Test;
 
 public class TestParserFractionNumber {
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	}
 
-    private ParserFractionNumber parser;
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    private String string;
+	}
 
-    @Before
-    public void setUp() throws Exception {
-        parser = new ParserFractionNumber();
-        string = "Locus:1.4VP_7mu.12.223.17";
-    }
+	private ParserFractionNumber parser;
+	private String string;
 
-    @After
-    public void tearDown() throws Exception {
-        parser = null;
-        string = null;
-    }
+	@Before
+	public void setUp() throws Exception {
 
-    @Test
-    public final void testParseFractionNumber01() throws IOException {
-        assertEquals(223, parser.parseFractionNumber(string));
-    }
+		parser = new ParserFractionNumber();
+		string = "Locus:1.4VP_7mu.12.223.17";
+	}
 
+	@After
+	public void tearDown() throws Exception {
+
+		parser = null;
+		string = null;
+	}
+
+	@Test
+	public final void testParseFractionNumber01() throws IOException {
+
+		assertEquals(223, parser.parseFractionNumber(string));
+	}
 }

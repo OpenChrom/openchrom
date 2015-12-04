@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,26 +19,30 @@ import java.util.List;
 
 public class BIonChargedSingle extends PeptideSequenceChargedSingle {
 
-    public BIonChargedSingle(final List<AminoAcid> peptides) {
-        super(peptides);
-    }
+	public BIonChargedSingle(final List<AminoAcid> peptides) {
 
-    public BIonChargedSingle(final String string) {
-        super(string);
-    }
+		super(peptides);
+	}
 
-    public BIonChargedSingle(final String name, final List<AminoAcid> peptides) {
-        super(name, peptides);
-    }
+	public BIonChargedSingle(final String string) {
 
-    @Override
-    public synchronized double getMolWeightCTerminal() {
-        return 0;
-    }
+		super(string);
+	}
 
-    @Override
-    public synchronized double getMolWeightNTerminal() {
-        return MOL_WEIGHT_HYDROGEN;
-    }
+	public BIonChargedSingle(final String name, final List<AminoAcid> peptides) {
 
+		super(name, peptides);
+	}
+
+	@Override
+	public synchronized double getMolWeightCTerminal() {
+
+		return 0;
+	}
+
+	@Override
+	public synchronized double getMolWeightNTerminal() {
+
+		return MOL_WEIGHT_HYDROGEN;
+	}
 }

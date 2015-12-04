@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,7 +56,6 @@ import net.sf.kerner.utils.transformer.TransformerToStringDefault;
 public class UtilCollection {
 
 	public static String DEFAULT_OBJECT_SEPARATOR = ", ";
-
 	public final static Transformer<?, String> TRANSFORMER_TO_STRING_DEFAULT = new TransformerToStringDefault();
 
 	/**
@@ -75,8 +74,8 @@ public class UtilCollection {
 	 * @throws NullPointerException
 	 *             if one of arguments is {@code null}
 	 */
-	public static <C> Collection<C> append(final Collection<? extends C> c1,
-			final Collection<? extends C> c2) {
+	public static <C> Collection<C> append(final Collection<? extends C> c1, final Collection<? extends C> c2) {
+
 		return append(c1, c2, new ArrayListFactory<C>());
 	}
 
@@ -98,8 +97,8 @@ public class UtilCollection {
 	 * @throws NullPointerException
 	 *             if one of arguments is {@code null}
 	 */
-	public static <C> Collection<C> append(final Collection<? extends C> c1,
-			final Collection<? extends C> c2, final FactoryCollection<C> factory) {
+	public static <C> Collection<C> append(final Collection<? extends C> c1, final Collection<? extends C> c2, final FactoryCollection<C> factory) {
+
 		Util.checkForNull(c1, c2, factory);
 		final Collection<C> result = factory.createCollection(c1);
 		result.addAll(c2);
@@ -107,27 +106,25 @@ public class UtilCollection {
 	}
 
 	public static <T> boolean areAllEqual(final Collection<? extends T> elements) {
+
 		return areAllEqual(elements, new EqualatorDefault<T>());
 	}
 
-	public static <T> boolean areAllEqual(
-			final Collection<? extends T> elements, final Equalator<T> equalator) {
-		T last = null;
+	public static <T> boolean areAllEqual(final Collection<? extends T> elements, final Equalator<T> equalator) {
 
-		for (final Iterator<? extends T> iterator = elements.iterator(); iterator
-				.hasNext();) {
+		T last = null;
+		for(final Iterator<? extends T> iterator = elements.iterator(); iterator.hasNext();) {
 			final T t = iterator.next();
-			if (last == null) {
+			if(last == null) {
 				last = t;
 			} else {
-				if (equalator.areEqual(last, t)) {
+				if(equalator.areEqual(last, t)) {
 					// ok
 				} else {
 					return false;
 				}
 			}
 		}
-
 		return true;
 	}
 
@@ -141,13 +138,14 @@ public class UtilCollection {
 	 *         same hashCode; {@code false} otherwise
 	 */
 	public static boolean containsDuplicates(final Collection<?> c) {
+
 		final Collection<Integer> hashes = UtilList.newList();
-		for (final Object o : c) {
-			if (o == null) {
+		for(final Object o : c) {
+			if(o == null) {
 				continue;
 			}
 			final int hash = o.hashCode();
-			if (hashes.contains(hash)) {
+			if(hashes.contains(hash)) {
 				return true;
 			}
 			hashes.add(hash);
@@ -156,51 +154,50 @@ public class UtilCollection {
 	}
 
 	/**
-	 * @return {@code true}, if any of given collection's elements is
-	 *         {@code null}; {@code false} otherwise
+	 * @return {@code true}, if any of given collection's elements is {@code null}; {@code false} otherwise
 	 */
 	public static boolean containsNull(final Collection<?> c) {
-		synchronized (c) {
-			for (final Object o : c) {
-				if (o == null)
+
+		synchronized(c) {
+			for(final Object o : c) {
+				if(o == null)
 					return true;
 			}
 			return false;
 		}
 	}
 
-	public static <T> boolean containsType(final Collection<?> c1,
-			final Class<?> clazz) {
+	public static <T> boolean containsType(final Collection<?> c1, final Class<?> clazz) {
+
 		final FilterType f = new FilterType(clazz);
-		for (final Object o : c1) {
-			if (f.filter(o)) {
+		for(final Object o : c1) {
+			if(f.filter(o)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public static <T> boolean equalsOne(final T o1,
-			final Collection<? extends T> others) {
-		for (final Object o : others) {
-			if (o.equals(o1)) {
+	public static <T> boolean equalsOne(final T o1, final Collection<? extends T> others) {
+
+		for(final Object o : others) {
+			if(o.equals(o1)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public static <C> Collection<C> filterCollection(
-			final Collection<? extends C> collection, final Filter<C> filter,
-			final boolean isSorted) {
+	public static <C> Collection<C> filterCollection(final Collection<? extends C> collection, final Filter<C> filter, final boolean isSorted) {
+
 		boolean found = false;
 		final Collection<C> result = new ArrayList<C>();
-		for (final C c : collection) {
-			if (filter.filter(c)) {
+		for(final C c : collection) {
+			if(filter.filter(c)) {
 				result.add(c);
 				found = true;
 			} else {
-				if (isSorted && found == true) {
+				if(isSorted && found == true) {
 					return result;
 				}
 				found = true;
@@ -219,12 +216,11 @@ public class UtilCollection {
 	 * @deprecated
 	 */
 	@Deprecated
-	public static <C> void filterCollectionRemove(
-			final Collection<? extends C> collection, final Filter<C> filter) {
-		synchronized (collection) {
-			for (final Iterator<? extends C> i = collection.iterator(); i
-					.hasNext();) {
-				if (filter.filter(i.next())) {
+	public static <C> void filterCollectionRemove(final Collection<? extends C> collection, final Filter<C> filter) {
+
+		synchronized(collection) {
+			for(final Iterator<? extends C> i = collection.iterator(); i.hasNext();) {
+				if(filter.filter(i.next())) {
 					// OK
 				} else {
 					i.remove();
@@ -246,65 +242,63 @@ public class UtilCollection {
 	 * @deprecated
 	 */
 	@Deprecated
-	public static <C> List<C> filterCollectionReturn(
-			final Collection<? extends C> collection, final Filter<C> filter) {
+	public static <C> List<C> filterCollectionReturn(final Collection<? extends C> collection, final Filter<C> filter) {
+
 		final List<C> result = UtilList.newList();
-		if (collection == null) {
+		if(collection == null) {
 			throw new NullPointerException();
 		}
-		synchronized (collection) {
-			for (final Iterator<? extends C> i = collection.iterator(); i
-					.hasNext();) {
+		synchronized(collection) {
+			for(final Iterator<? extends C> i = collection.iterator(); i.hasNext();) {
 				final C next = i.next();
-				if (filter.filter(next)) {
+				if(filter.filter(next)) {
 					result.add(next);
 				}
 			}
 		}
-		if (!result.isEmpty()) {
+		if(!result.isEmpty()) {
 			final int k = 0;
 		}
 		return result;
 	}
 
-	public static <T> Set<T> findDuplicatesByHash(
-			final Collection<? extends T> collection) {
+	public static <T> Set<T> findDuplicatesByHash(final Collection<? extends T> collection) {
+
 		final Set<T> duplicates = new HashSet<T>();
 		final Set<T> uniques = new HashSet<T>();
-		for (final T t : collection) {
-			if (!uniques.add(t)) {
+		for(final T t : collection) {
+			if(!uniques.add(t)) {
 				duplicates.add(t);
 			}
 		}
 		return duplicates;
 	}
 
-	public static <T> Collection<T> findSame(final T key,
-			final Collection<? extends T> collection) {
+	public static <T> Collection<T> findSame(final T key, final Collection<? extends T> collection) {
+
 		return findSame(key, collection, new EqualatorDefault<T>());
 	}
 
-	public static <T> Collection<T> findSame(final T key,
-			final Collection<? extends T> collection,
-			final Equalator<T> equalator) {
+	public static <T> Collection<T> findSame(final T key, final Collection<? extends T> collection, final Equalator<T> equalator) {
+
 		final Collection<T> result = newCollection();
-		for (final T t : collection) {
-			if (equalator.areEqual(key, t)) {
+		for(final T t : collection) {
+			if(equalator.areEqual(key, t)) {
 				result.add(t);
 			}
 		}
 		return result;
 	}
 
-	public static <T> T findSameFirst(final T key,
-			final Collection<T> collection) {
+	public static <T> T findSameFirst(final T key, final Collection<T> collection) {
+
 		return findSameFirst(key, collection, new EqualatorDefault<T>());
 	}
 
-	public static <T> T findSameFirst(final T key,
-			final Collection<T> collection, final Equalator<T> equalator) {
-		for (final T t : collection) {
-			if (equalator.areEqual(key, t)) {
+	public static <T> T findSameFirst(final T key, final Collection<T> collection, final Equalator<T> equalator) {
+
+		for(final T t : collection) {
+			if(equalator.areEqual(key, t)) {
 				return t;
 			}
 		}
@@ -313,16 +307,13 @@ public class UtilCollection {
 
 	/**
 	 *
-	 * @see <a
-	 *      href="http://en.wikipedia.org/wiki/Complement_%28set_theory%29">Set
-	 *      theory</a>
+	 * @see <a href="http://en.wikipedia.org/wiki/Complement_%28set_theory%29">Set theory</a>
 	 */
-	public static <C> Collection<C> getComplementRelativeLeft(
-			final Collection<? extends C> c1, final Collection<? extends C> c2,
-			final FactoryCollection<C> factory) {
+	public static <C> Collection<C> getComplementRelativeLeft(final Collection<? extends C> c1, final Collection<? extends C> c2, final FactoryCollection<C> factory) {
+
 		final Collection<C> result = factory.createCollection();
-		for (final C c : c1) {
-			if (!c2.contains(c)) {
+		for(final C c : c1) {
+			if(!c2.contains(c)) {
 				result.add(c);
 			}
 		}
@@ -331,16 +322,13 @@ public class UtilCollection {
 
 	/**
 	 *
-	 * @see <a
-	 *      href="http://en.wikipedia.org/wiki/Complement_%28set_theory%29">Set
-	 *      theory</a>
+	 * @see <a href="http://en.wikipedia.org/wiki/Complement_%28set_theory%29">Set theory</a>
 	 */
-	public static <C> Collection<C> getComplementRelativeRight(
-			final Collection<? extends C> c1, final Collection<? extends C> c2,
-			final FactoryCollection<C> factory) {
+	public static <C> Collection<C> getComplementRelativeRight(final Collection<? extends C> c1, final Collection<? extends C> c2, final FactoryCollection<C> factory) {
+
 		final Collection<C> result = factory.createCollection();
-		for (final C c : c2) {
-			if (!c1.contains(c)) {
+		for(final C c : c2) {
+			if(!c1.contains(c)) {
 				result.add(c);
 			}
 		}
@@ -349,9 +337,7 @@ public class UtilCollection {
 
 	/**
 	 *
-	 * Returns a index-to-frequency mapping for all elements in given
-	 * {@link Collection}. </p> Key of returned map is element from
-	 * {@code collection}, corresponding value is this element's number of
+	 * Returns a index-to-frequency mapping for all elements in given {@link Collection}. </p> Key of returned map is element from {@code collection}, corresponding value is this element's number of
 	 * occurrences in {@code collection}.
 	 *
 	 * <p>
@@ -361,41 +347,38 @@ public class UtilCollection {
 	 * @param collection
 	 * @return a {@link Map}, containing index-to-frequency mapping
 	 */
-	public static <V> Map<V, Integer> getFrequencies(
-			final Collection<? extends V> collection) {
-		final Map<V, Integer> result = new HashMap<V, Integer>();
+	public static <V> Map<V, Integer> getFrequencies(final Collection<? extends V> collection) {
 
-		for (final V v : collection) {
+		final Map<V, Integer> result = new HashMap<V, Integer>();
+		for(final V v : collection) {
 			final Integer freq = result.get(v);
-			if (freq == null) {
+			if(freq == null) {
 				result.put(v, Integer.valueOf(1));
 			} else {
 				result.put(v, UtilMath.increment(freq));
 			}
 		}
-
 		return result;
 	}
 
-	public static <T> int getFrequency(final T element,
-			final Collection<? extends T> collection) {
+	public static <T> int getFrequency(final T element, final Collection<? extends T> collection) {
+
 		return getFrequency(element, collection, new EqualatorDefault<T>());
 	}
 
-	public static <T> int getFrequency(final T element,
-			final Collection<? extends T> collection,
-			final Equalator<T> equalator) {
+	public static <T> int getFrequency(final T element, final Collection<? extends T> collection, final Equalator<T> equalator) {
+
 		int result = 0;
-		for (final T t : collection) {
-			if (equalator.areEqual(t, element)) {
+		for(final T t : collection) {
+			if(equalator.areEqual(t, element)) {
 				result++;
 			}
 		}
 		return result;
 	}
 
-	public static <T extends Comparable<T>> T getHighest(
-			final Collection<? extends T> elements) {
+	public static <T extends Comparable<T>> T getHighest(final Collection<? extends T> elements) {
+
 		return Collections.max(elements);
 	}
 
@@ -410,41 +393,37 @@ public class UtilCollection {
 	 *            {@link Comparator} to find highest
 	 * @return highest element
 	 */
-	public static <T> T getHighest(final Collection<? extends T> elements,
-			final Comparator<T> c) {
+	public static <T> T getHighest(final Collection<? extends T> elements, final Comparator<T> c) {
+
 		return Collections.max(elements, c);
 	}
 
 	/**
 	 *
-	 * @see <a
-	 *      href="http://en.wikipedia.org/wiki/Intersection_%28set_theory%29">Set
-	 *      theory</a>
+	 * @see <a href="http://en.wikipedia.org/wiki/Intersection_%28set_theory%29">Set theory</a>
 	 */
-	public static <T> Collection<T> getIntersection(final Collection<T> a,
-			final Collection<T> b) {
+	public static <T> Collection<T> getIntersection(final Collection<T> a, final Collection<T> b) {
+
 		return getIntersection(a, b, new ArrayListFactory<T>());
 	}
 
 	/**
 	 *
-	 * @see <a
-	 *      href="http://en.wikipedia.org/wiki/Intersection_%28set_theory%29">Set
-	 *      theory</a>
+	 * @see <a href="http://en.wikipedia.org/wiki/Intersection_%28set_theory%29">Set theory</a>
 	 */
-	public static <T> Collection<T> getIntersection(final Collection<T> a,
-			final Collection<T> b, final FactoryCollection<T> factory) {
+	public static <T> Collection<T> getIntersection(final Collection<T> a, final Collection<T> b, final FactoryCollection<T> factory) {
+
 		final Collection<T> result = factory.createCollection();
-		for (final T t : a) {
-			if (b.contains(t)) {
+		for(final T t : a) {
+			if(b.contains(t)) {
 				result.add(t);
 			}
 		}
 		return result;
 	}
 
-	public static <T extends Comparable<T>> T getLowest(
-			final Collection<? extends T> elements) {
+	public static <T extends Comparable<T>> T getLowest(final Collection<? extends T> elements) {
+
 		return Collections.min(elements);
 	}
 
@@ -459,26 +438,26 @@ public class UtilCollection {
 	 *            {@link Comparator} to find lowest
 	 * @return lowest element
 	 */
-	public static <T> T getLowest(final Collection<? extends T> elements,
-			final Comparator<T> c) {
+	public static <T> T getLowest(final Collection<? extends T> elements, final Comparator<T> c) {
+
 		return Collections.min(elements, c);
 	}
 
-	public static <T> PairSame<T> getNextTwo(
-			final Iterator<? extends T> iterator) {
-		if (iterator == null) {
+	public static <T> PairSame<T> getNextTwo(final Iterator<? extends T> iterator) {
+
+		if(iterator == null) {
 			throw new NullPointerException();
 		}
 		return new PairSameImpl<T>(iterator.next(), iterator.next());
 	}
 
-	public static int getNumberOfNonEmptyElements(
-			final Iterable<Collection<?>> col) {
-		if (col == null)
+	public static int getNumberOfNonEmptyElements(final Iterable<Collection<?>> col) {
+
+		if(col == null)
 			return 0;
 		int result = 0;
-		for (final Collection<?> o : col) {
-			if (o != null && !o.isEmpty()) {
+		for(final Collection<?> o : col) {
+			if(o != null && !o.isEmpty()) {
 				result++;
 			}
 		}
@@ -486,37 +465,38 @@ public class UtilCollection {
 	}
 
 	public static int getNumberOfNonNullElements(final Collection<?> col) {
-		if (col == null)
+
+		if(col == null)
 			return 0;
 		int result = 0;
-		for (final Object o : col) {
-			if (o != null) {
+		for(final Object o : col) {
+			if(o != null) {
 				result++;
 			}
 		}
 		return result;
 	}
 
-	public static <T> Collection<Collection<T>> getSame(
-			final Collection<? extends T> c, final Equalator<T> equalator) {
+	public static <T> Collection<Collection<T>> getSame(final Collection<? extends T> c, final Equalator<T> equalator) {
+
 		final Collection<Collection<T>> result = newCollection();
 		final List<T> listCopy = new ArrayList<T>(c);
 		ListIterator<T> it1 = listCopy.listIterator();
-		while (it1.hasNext()) {
+		while(it1.hasNext()) {
 			final T t1 = it1.next();
 			final int index = it1.nextIndex();
 			final ListIterator<T> it2 = listCopy.listIterator(index);
 			final Collection<T> result2 = newCollection();
 			result2.add(t1);
-			while (it2.hasNext()) {
+			while(it2.hasNext()) {
 				final T t2 = it2.next();
-				if (equalator.areEqual(t1, t2)) {
+				if(equalator.areEqual(t1, t2)) {
 					result2.add(t2);
 					it2.remove();
 					it1 = listCopy.listIterator();
 				}
 			}
-			if (result2.size() > 1) {
+			if(result2.size() > 1) {
 				result.add(result2);
 			}
 		}
@@ -524,42 +504,41 @@ public class UtilCollection {
 	}
 
 	public static <T> Collection<Collection<T>> getSame(final Collection<T> c) {
+
 		return getSame(c, new EqualatorDefault<T>());
 	}
 
 	/**
 	 *
-	 * @see <a href="http://en.wikipedia.org/wiki/Symmetric_difference">Set
-	 *      theory</a>
+	 * @see <a href="http://en.wikipedia.org/wiki/Symmetric_difference">Set theory</a>
 	 */
-	public static <T> Collection<T> getSymmetricDifference(
-			final Collection<? extends T> c1, final Collection<? extends T> c2) {
+	public static <T> Collection<T> getSymmetricDifference(final Collection<? extends T> c1, final Collection<? extends T> c2) {
+
 		final Collection<T> result = UtilCollection.newCollection();
-		for (final T t : c1) {
-			if (!c2.contains(t)) {
+		for(final T t : c1) {
+			if(!c2.contains(t)) {
 				result.add(t);
 			}
 		}
-		for (final T t : c2) {
-			if (!c1.contains(t)) {
+		for(final T t : c2) {
+			if(!c1.contains(t)) {
 				result.add(t);
 			}
 		}
 		return result;
 	}
 
-	public static <C> Collection<C> getUnion(final Collection<? extends C> c1,
-			final Collection<? extends C> c2) {
+	public static <C> Collection<C> getUnion(final Collection<? extends C> c1, final Collection<? extends C> c2) {
+
 		return getUnion(c1, c2, new ArrayListFactory<C>());
 	}
 
 	/**
 	 *
-	 * @see <a href="http://en.wikipedia.org/wiki/Union_%28set_theory%29">Set
-	 *      theory</a>
+	 * @see <a href="http://en.wikipedia.org/wiki/Union_%28set_theory%29">Set theory</a>
 	 */
-	public static <C> Collection<C> getUnion(final Collection<? extends C> c1,
-			final Collection<? extends C> c2, final FactoryCollection<C> factory) {
+	public static <C> Collection<C> getUnion(final Collection<? extends C> c1, final Collection<? extends C> c2, final FactoryCollection<C> factory) {
+
 		final Collection<C> result = factory.createCollection();
 		result.addAll(c1);
 		result.addAll(c2);
@@ -570,8 +549,8 @@ public class UtilCollection {
 	 *
 	 * @Deprecated Use {@link TransformerIteratorToCollection} instead.
 	 */
-	public static <C> Collection<C> iteratorToCollection(
-			final Iterable<? extends C> iterable) {
+	public static <C> Collection<C> iteratorToCollection(final Iterable<? extends C> iterable) {
+
 		return TransformerIteratorToCollection.transform(iterable);
 	}
 
@@ -579,82 +558,86 @@ public class UtilCollection {
 	 *
 	 * @Deprecated Use {@link TransformerIteratorToCollection} instead.
 	 */
-	public static <C> Collection<C> iteratorToCollection(
-			final Iterable<? extends C> iterable,
-			final FactoryCollection<C> factory) {
+	public static <C> Collection<C> iteratorToCollection(final Iterable<? extends C> iterable, final FactoryCollection<C> factory) {
+
 		return TransformerIteratorToCollection.transform(iterable, factory);
 	}
 
 	public static <T> Collection<T> newCollection() {
+
 		return UtilList.newList();
 	}
 
-	public static <T> Collection<T> newCollection(
-			final Collection<? extends T> template) {
+	public static <T> Collection<T> newCollection(final Collection<? extends T> template) {
+
 		return UtilList.newList(template);
 	}
 
 	public static <T> Collection<T> newCollection(final T... template) {
+
 		return UtilList.newList(template);
 	}
 
 	public static boolean notNullNotEmpty(final Collection<?> collection) {
+
 		return collection != null && !collection.isEmpty();
 	}
 
-	public static boolean notNullNotEmpty(
-			final MapCollection<?, ?, ?> collection) {
+	public static boolean notNullNotEmpty(final MapCollection<?, ?, ?> collection) {
+
 		return collection != null && !collection.isEmpty();
 	}
 
 	/**
-	 * Check if a {@link Collection} or all of its elements is/ are {@code null}
-	 * .
+	 * Check if a {@link Collection} or all of its elements is/ are {@code null} .
 	 *
 	 * @param col
 	 *            {@link Collection} to check
-	 * @return true, if given {@link Collection} or all of its elements is/ are
-	 *         {@code null}; {@code false} otherwise
+	 * @return true, if given {@link Collection} or all of its elements is/ are {@code null}; {@code false} otherwise
 	 */
 	public static boolean nullCollection(final Collection<?> col) {
-		if (col == null)
+
+		if(col == null)
 			return true;
-		for (final Object o : col) {
-			if (o != null)
+		for(final Object o : col) {
+			if(o != null)
 				return false;
 		}
 		return true;
 	}
 
 	public static boolean nullOrEmpty(final Collection<?> collection) {
+
 		return !notNullNotEmpty(collection);
 	}
 
 	public static void removeNull(final Collection<?> c) {
-		synchronized (c) {
-			for (final Iterator<?> it = c.iterator(); it.hasNext();) {
+
+		synchronized(c) {
+			for(final Iterator<?> it = c.iterator(); it.hasNext();) {
 				final Object object = it.next();
-				if (object == null) {
+				if(object == null) {
 					it.remove();
 				}
 			}
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public static Collection removeNullReturn(final Collection c) {
+
 		final Collection copy = new ArrayList(c);
-		for (final Iterator it = copy.iterator(); it.hasNext();) {
+		for(final Iterator it = copy.iterator(); it.hasNext();) {
 			final Object object = it.next();
-			if (object == null) {
+			if(object == null) {
 				it.remove();
 			}
 		}
 		return copy;
 	}
 
-	public static <T> T select(final Collection<? extends T> c,
-			final Selector<T> s) {
+	public static <T> T select(final Collection<? extends T> c, final Selector<T> s) {
+
 		return s.select(c);
 	}
 
@@ -663,16 +646,17 @@ public class UtilCollection {
 	 * @Deprecated Use {@link ToString} instead.
 	 */
 	public static String toString(final Iterable<?> elements) {
-		if (elements == null)
+
+		if(elements == null)
 			return UtilString.NEW_LINE_STRING + "null";
-		if (!elements.iterator().hasNext())
+		if(!elements.iterator().hasNext())
 			return UtilString.NEW_LINE_STRING + " ";
 		final StringBuilder b = new StringBuilder();
 		b.append(UtilString.NEW_LINE_STRING);
 		final Iterator<?> i = elements.iterator();
-		while (i.hasNext()) {
+		while(i.hasNext()) {
 			b.append(i.next());
-			if (i.hasNext())
+			if(i.hasNext())
 				b.append(UtilString.NEW_LINE_STRING);
 		}
 		return b.toString();
@@ -682,8 +666,8 @@ public class UtilCollection {
 	 *
 	 * @Deprecated Use {@link ToString} instead.
 	 */
-	public static <T> String toString(final Iterable<T> it,
-			final String objectSeparator) {
+	public static <T> String toString(final Iterable<T> it, final String objectSeparator) {
+
 		return new ToString().setObjectSeparator(objectSeparator).toString(it);
 		// return toString(it,
 		// (Transformer<T, String>) TRANSFORMER_TO_STRING_DEFAULT,
@@ -694,9 +678,9 @@ public class UtilCollection {
 	 *
 	 * @Deprecated Use {@link ToString} instead.
 	 */
-	public static <T> String toString(final Iterable<T> it,
-			final Transformer<T, String> s) {
-		return new ToString().toString(it, (TransformerToString<T>) s);
+	public static <T> String toString(final Iterable<T> it, final Transformer<T, String> s) {
+
+		return new ToString().toString(it, (TransformerToString<T>)s);
 		// return toString(it, s, DEFAULT_OBJECT_SEPARATOR);
 	}
 
@@ -704,19 +688,17 @@ public class UtilCollection {
 	 *
 	 * @Deprecated Use {@link ToString} instead.
 	 */
-	public static <T> String toString(final Iterable<T> iterable,
-			final Transformer<T, String> transformer,
-			final String objectSeparator) {
-		return new ToString().setObjectSeparator(objectSeparator).toString(
-				iterable, (TransformerToString<T>) transformer);
+	public static <T> String toString(final Iterable<T> iterable, final Transformer<T, String> transformer, final String objectSeparator) {
+
+		return new ToString().setObjectSeparator(objectSeparator).toString(iterable, (TransformerToString<T>)transformer);
 	}
 
 	/**
 	 *
 	 * @Deprecated Use {@link ToString} instead.
 	 */
-	public static <T> String toString(final ListIterator<T> it,
-			final VisitorList<String, T> s) {
+	public static <T> String toString(final ListIterator<T> it, final VisitorList<String, T> s) {
+
 		return new ToString().toString(it, s);
 		// return toString(it, s, DEFAULT_OBJECT_SEPARATOR);
 	}
@@ -725,13 +707,13 @@ public class UtilCollection {
 	 *
 	 * @Deprecated Use {@link ToString} instead.
 	 */
-	public static <T> String toString(final ListIterator<T> it,
-			final VisitorList<String, T> visitor, final String objectSeparator) {
-		return new ToString().setObjectSeparator(objectSeparator).toString(it,
-				visitor);
+	public static <T> String toString(final ListIterator<T> it, final VisitorList<String, T> visitor, final String objectSeparator) {
+
+		return new ToString().setObjectSeparator(objectSeparator).toString(it, visitor);
 	}
 
 	private UtilCollection() {
+
 		// Singleton
 	}
 }

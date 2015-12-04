@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,23 +18,25 @@ package net.sf.kerner.utils.collections.list;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class AbstractTransformingListFactory<T, V> extends AbstractListTransformer<T, V>
-        implements FactoryList<V> {
+public abstract class AbstractTransformingListFactory<T, V> extends AbstractListTransformer<T, V> implements FactoryList<V> {
 
-    public AbstractTransformingListFactory() {
-        super();
-    }
+	public AbstractTransformingListFactory() {
 
-    public AbstractTransformingListFactory(final FactoryList<V> factory) {
-        super(factory);
-    }
+		super();
+	}
 
-    public List<V> createCollection() {
-        return factory.createCollection();
-    }
+	public AbstractTransformingListFactory(final FactoryList<V> factory) {
 
-    public List<V> createCollection(final Collection<? extends V> template) {
-        return factory.createCollection(template);
-    }
+		super(factory);
+	}
 
+	public List<V> createCollection() {
+
+		return factory.createCollection();
+	}
+
+	public List<V> createCollection(final Collection<? extends V> template) {
+
+		return factory.createCollection(template);
+	}
 }

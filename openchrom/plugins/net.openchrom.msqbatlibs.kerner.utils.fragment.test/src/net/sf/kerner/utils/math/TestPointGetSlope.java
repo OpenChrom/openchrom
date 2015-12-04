@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,56 +39,51 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class TestPointGetSlope {
 
-    private Point x;
+	private Point x;
+	private Point y;
+	private double result;
 
-    private Point y;
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    private double result;
+	}
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	}
 
-    @Before
-    public void setUp() throws Exception {
-    }
+	@Before
+	public void setUp() throws Exception {
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	}
 
-    @Parameters
-    public static Collection<Object[]> getParams() {
-        return Arrays.asList(new Object[][] {
+	@After
+	public void tearDown() throws Exception {
 
-                // x, y, result
+	}
 
-                { new Point(1, 1), new Point(2, 2), 1 }, { new Point(1, 1), new Point(2, 3), 2 },
-                { new Point(1, 1), new Point(1, 1), 0 }, { new Point(1, 1), new Point(3, 2), 0.5 },
-                { new Point(1, 1), new Point(-1, -1), 1 },
-                { new Point(-1, -1), new Point(-2, -3), 2 },
+	@Parameters
+	public static Collection<Object[]> getParams() {
 
-        });
-    }
+		return Arrays.asList(new Object[][]{
+				// x, y, result
+		{new Point(1, 1), new Point(2, 2), 1}, {new Point(1, 1), new Point(2, 3), 2}, {new Point(1, 1), new Point(1, 1), 0}, {new Point(1, 1), new Point(3, 2), 0.5}, {new Point(1, 1), new Point(-1, -1), 1}, {new Point(-1, -1), new Point(-2, -3), 2},});
+	}
 
-    public TestPointGetSlope(Point x, Point y, double result) {
-        this.x = x;
-        this.y = y;
-        this.result = result;
-    }
+	public TestPointGetSlope(Point x, Point y, double result) {
 
-    /**
-     * Test method for
-     * {@link net.sf.kerner.utils.math.Point#getSlope(net.sf.kerner.utils.math.Point, net.sf.kerner.utils.math.Point)}
-     * .
-     */
-    @Test
-    public final void testGetSlope() {
-        assertEquals(result, Point.getSlope(x, y), 0);
-    }
+		this.x = x;
+		this.y = y;
+		this.result = result;
+	}
 
+	/**
+	 * Test method for {@link net.sf.kerner.utils.math.Point#getSlope(net.sf.kerner.utils.math.Point, net.sf.kerner.utils.math.Point)} .
+	 */
+	@Test
+	public final void testGetSlope() {
+
+		assertEquals(result, Point.getSlope(x, y), 0);
+	}
 }

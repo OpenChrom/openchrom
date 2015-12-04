@@ -11,55 +11,53 @@ package net.sf.kerner.utils.concurrent;
  * <p>
  *
  * <pre>
- * &#64;Override
-	public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
-
-		final ThreadExchangeObject<Integer> eo = new ThreadExchangeObject<>();
-
-		for (final RenamingStrategy s : strategies) {
-
-			final String result = s.offer(file.getFileName().toString());
-
-			Display.getDefault().asyncExec(new Runnable() {
-				&#64;Override
-				public void run() {
-					final MessageBox dialog = new MessageBox(shell, SWT.ICON_QUESTION | SWT.OK | SWT.CANCEL);
-					dialog.setText("My info");
-					dialog.setMessage("Do you really want to do this?");
-					// open dialog and await user selection
-					final int returnCode = dialog.open();
-					if (log.isDebugEnabled()) {
-						log.debug("returnval=" + returnCode);
-					}
-					eo.set(returnCode);
-				}
-			});
-
-			try {
-				final int returnval = eo.get();
-				if (returnval == 1) {
-					return FileVisitResult.TERMINATE;
-				} else if (returnval == 0) {
-					try {
-						s.rename(file, attrs);
-					} catch (final IOException e) {
-						if (log.isErrorEnabled()) {
-							log.error(e.getLocalizedMessage(), e);
-						}
-						return FileVisitResult.TERMINATE;
-					}
-				}
-
-			} catch (final InterruptedException e1) {
-				if (log.isErrorEnabled()) {
-					log.error(e1.getLocalizedMessage(), e1);
-				}
-				return FileVisitResult.TERMINATE;
-			}
-		}
-		return FileVisitResult.CONTINUE;
-
-	}
+ * 
+ * 
+ * &#064;Override
+ * public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+ * 
+ * 	final ThreadExchangeObject&lt;Integer&gt; eo = new ThreadExchangeObject&lt;&gt;();
+ * 	for(final RenamingStrategy s : strategies) {
+ * 		final String result = s.offer(file.getFileName().toString());
+ * 		Display.getDefault().asyncExec(new Runnable() {
+ * 
+ * 			&#064;Override
+ * 			public void run() {
+ * 
+ * 				final MessageBox dialog = new MessageBox(shell, SWT.ICON_QUESTION | SWT.OK | SWT.CANCEL);
+ * 				dialog.setText(&quot;My info&quot;);
+ * 				dialog.setMessage(&quot;Do you really want to do this?&quot;);
+ * 				// open dialog and await user selection
+ * 				final int returnCode = dialog.open();
+ * 				if(log.isDebugEnabled()) {
+ * 					log.debug(&quot;returnval=&quot; + returnCode);
+ * 				}
+ * 				eo.set(returnCode);
+ * 			}
+ * 		});
+ * 		try {
+ * 			final int returnval = eo.get();
+ * 			if(returnval == 1) {
+ * 				return FileVisitResult.TERMINATE;
+ * 			} else if(returnval == 0) {
+ * 				try {
+ * 					s.rename(file, attrs);
+ * 				} catch(final IOException e) {
+ * 					if(log.isErrorEnabled()) {
+ * 						log.error(e.getLocalizedMessage(), e);
+ * 					}
+ * 					return FileVisitResult.TERMINATE;
+ * 				}
+ * 			}
+ * 		} catch(final InterruptedException e1) {
+ * 			if(log.isErrorEnabled()) {
+ * 				log.error(e1.getLocalizedMessage(), e1);
+ * 			}
+ * 			return FileVisitResult.TERMINATE;
+ * 		}
+ * 	}
+ * 	return FileVisitResult.CONTINUE;
+ * }
  * </pre>
  *
  * </p>
@@ -82,16 +80,16 @@ package net.sf.kerner.utils.concurrent;
 public class ThreadExchangeObject<T> {
 
 	private final Object lock;
-
 	private boolean released = false;
-
 	private T t = null;
 
 	public ThreadExchangeObject() {
+
 		this(new Object());
 	}
 
 	public ThreadExchangeObject(final Object lock) {
+
 		this.lock = lock;
 	}
 
@@ -103,8 +101,9 @@ public class ThreadExchangeObject<T> {
 	 * @throws InterruptedException
 	 */
 	public T get() throws InterruptedException {
-		synchronized (lock) {
-			while (t == null && !released) {
+
+		synchronized(lock) {
+			while(t == null && !released) {
 				lock.wait();
 			}
 			return t;
@@ -119,14 +118,16 @@ public class ThreadExchangeObject<T> {
 	 * @see #releaseLock()
 	 */
 	public boolean isAvailable() {
+
 		// Must not block
-		synchronized (lock) {
+		synchronized(lock) {
 			return t != null || released;
 		}
 	}
 
 	public void releaseLock() {
-		synchronized (lock) {
+
+		synchronized(lock) {
 			this.released = true;
 			lock.notifyAll();
 		}
@@ -136,10 +137,11 @@ public class ThreadExchangeObject<T> {
 	 * Does not block.
 	 */
 	public void set(final T t) {
-		if (t == null)
+
+		if(t == null)
 			throw new IllegalArgumentException();
 		// Must not block
-		synchronized (lock) {
+		synchronized(lock) {
 			this.released = false;
 			this.t = t;
 			lock.notifyAll();

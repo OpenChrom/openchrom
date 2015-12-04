@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,51 +43,48 @@ import net.sf.kerner.utils.io.UtilIO;
  */
 public interface FASTAElement {
 
-    /**
-     * 
-     * Retrieves this {@code FASTAElement}'s header string. Meaning string
-     * starting right after {@link FASTAFile#HEADER_IDENT HEADER_IDENT} and
-     * continuing until first subsequent {@link UtilIO#NEW_LINE_STRING
-     * NEW_LINE_STRING}
-     * 
-     * @return this {@code FASTAElement}'s header string
-     */
-    String getHeader();
+	/**
+	 * 
+	 * Retrieves this {@code FASTAElement}'s header string. Meaning string
+	 * starting right after {@link FASTAFile#HEADER_IDENT HEADER_IDENT} and
+	 * continuing until first subsequent {@link UtilIO#NEW_LINE_STRING
+	 * NEW_LINE_STRING}
+	 * 
+	 * @return this {@code FASTAElement}'s header string
+	 */
+	String getHeader();
 
-    /**
-     * 
-     * Retrieves this {@code FASTAElement}'s default line length.
-     * 
-     * @return this {@code FASTAElement}'s default line length
-     */
-    int getLineLength();
+	/**
+	 * 
+	 * Retrieves this {@code FASTAElement}'s default line length.
+	 * 
+	 * @return this {@code FASTAElement}'s default line length
+	 */
+	int getLineLength();
 
-    /**
-     * Gets this {@code FASTAElement}s sequence.
-     * 
-     * @return {@code String} view of this {@code FASTAElement}s sequence
-     */
-    String getSequence();
+	/**
+	 * Gets this {@code FASTAElement}s sequence.
+	 * 
+	 * @return {@code String} view of this {@code FASTAElement}s sequence
+	 */
+	String getSequence();
 
-    /**
-     * 
-     * Retrieves this {@code FASTAElement}'s sequence length.
-     * 
-     * @return this {@code FASTAElement}'s sequence length
-     */
-    int getSequenceLength();
+	/**
+	 * 
+	 * Retrieves this {@code FASTAElement}'s sequence length.
+	 * 
+	 * @return this {@code FASTAElement}'s sequence length
+	 */
+	int getSequenceLength();
 
-    /**
-     * 
-     * Sets this {@code FASTAElement}'s default line length. When invoking
-     * toString() or {@link #toString(boolean)} after {@code length} characters
-     * written to one line, a
-     * {@link net.sf.kerner.utils.io.UtilIO#NEW_LINE_STRING NEW_LINE_STRING}
-     * will be appended.
-     * 
-     * @param length
-     *            the new default line length
-     */
-    void setLineLength(int length);
-
+	/**
+	 * 
+	 * Sets this {@code FASTAElement}'s default line length. When invoking
+	 * toString() or {@link #toString(boolean)} after {@code length} characters
+	 * written to one line, a {@link net.sf.kerner.utils.io.UtilIO#NEW_LINE_STRING NEW_LINE_STRING} will be appended.
+	 * 
+	 * @param length
+	 *            the new default line length
+	 */
+	void setLineLength(int length);
 }

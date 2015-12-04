@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,75 +33,78 @@ import net.sf.kerner.utils.io.UtilIO;
  */
 public abstract class AbstractBufferedReader {
 
-    /**
-     * {@link java.io.Reader} to which reading is delegated.
-     */
-    protected BufferedReader reader;
+	/**
+	 * {@link java.io.Reader} to which reading is delegated.
+	 */
+	protected BufferedReader reader;
 
-    /**
-     * Create a new {@code AbstractBufferedReader} from a {@link java.io.BufferedReader}.
-     * <p>
-     * <b>Note:</b> Passed in {@code java.io.BufferedReader} is kept as a reference. Use this constructor if you want to
-     * work on same {@link java.io.BufferedReader} with more than one reading-proxies.
-     * </p>
-     * 
-     * @param reader
-     *            buffered reader from which is read
-     * @see java.io.BufferedReader
-     */
-    public AbstractBufferedReader(final BufferedReader reader) {
-        synchronized (AbstractBufferedReader.class) {
-            this.reader = reader;
-        }
-    }
+	/**
+	 * Create a new {@code AbstractBufferedReader} from a {@link java.io.BufferedReader}.
+	 * <p>
+	 * <b>Note:</b> Passed in {@code java.io.BufferedReader} is kept as a reference. Use this constructor if you want to work on same {@link java.io.BufferedReader} with more than one reading-proxies.
+	 * </p>
+	 * 
+	 * @param reader
+	 *            buffered reader from which is read
+	 * @see java.io.BufferedReader
+	 */
+	public AbstractBufferedReader(final BufferedReader reader) {
 
-    /**
-     * Create a new {@code AbstractBufferedReader} from a file.
-     * 
-     * @param file
-     *            file from which is read
-     * @throws FileNotFoundException
-     * @see java.io.File
-     */
-    public AbstractBufferedReader(final File file) throws FileNotFoundException {
-        synchronized (AbstractBufferedReader.class) {
-            this.reader = new BufferedReader(UtilIO.inputStreamToReader(new FileInputStream(file)));
-        }
-    }
+		synchronized(AbstractBufferedReader.class) {
+			this.reader = reader;
+		}
+	}
 
-    /**
-     * Create a new {@code AbstractBufferedReader} from a {@link java.io.InputStream} .
-     * 
-     * @param stream
-     *            stream from which is read
-     * @see java.io.InputStream
-     */
-    public AbstractBufferedReader(final InputStream stream) {
-        synchronized (AbstractBufferedReader.class) {
-            this.reader = new BufferedReader(UtilIO.inputStreamToReader(stream));
-        }
-    }
+	/**
+	 * Create a new {@code AbstractBufferedReader} from a file.
+	 * 
+	 * @param file
+	 *            file from which is read
+	 * @throws FileNotFoundException
+	 * @see java.io.File
+	 */
+	public AbstractBufferedReader(final File file) throws FileNotFoundException {
 
-    /**
-     * Create a new {@code AbstractBufferedReader} from a {@link java.io.Reader} .
-     * 
-     * @param reader
-     *            reader from which is read
-     * @see java.io.Reader
-     */
-    public AbstractBufferedReader(final Reader reader) {
-        synchronized (AbstractBufferedReader.class) {
-            this.reader = new BufferedReader(reader);
-        }
-    }
+		synchronized(AbstractBufferedReader.class) {
+			this.reader = new BufferedReader(UtilIO.inputStreamToReader(new FileInputStream(file)));
+		}
+	}
 
-    /**
-     * Close this {@code AbstractBufferedReader}.
-     */
-    public void close() {
-        synchronized (reader) {
-            UtilIO.closeProperly(reader);
-        }
-    }
+	/**
+	 * Create a new {@code AbstractBufferedReader} from a {@link java.io.InputStream} .
+	 * 
+	 * @param stream
+	 *            stream from which is read
+	 * @see java.io.InputStream
+	 */
+	public AbstractBufferedReader(final InputStream stream) {
 
+		synchronized(AbstractBufferedReader.class) {
+			this.reader = new BufferedReader(UtilIO.inputStreamToReader(stream));
+		}
+	}
+
+	/**
+	 * Create a new {@code AbstractBufferedReader} from a {@link java.io.Reader} .
+	 * 
+	 * @param reader
+	 *            reader from which is read
+	 * @see java.io.Reader
+	 */
+	public AbstractBufferedReader(final Reader reader) {
+
+		synchronized(AbstractBufferedReader.class) {
+			this.reader = new BufferedReader(reader);
+		}
+	}
+
+	/**
+	 * Close this {@code AbstractBufferedReader}.
+	 */
+	public void close() {
+
+		synchronized(reader) {
+			UtilIO.closeProperly(reader);
+		}
+	}
 }

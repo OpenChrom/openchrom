@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,8 +22,11 @@ import java.util.Comparator;
  * 
  * <pre>
  * 
+ * 
+ * 
  * public int compare(final Integer o1, final Integer o2) {
- *     return o1.compareTo(o2);
+ * 
+ * 	return o1.compareTo(o2);
  * }
  * 
  * </pre>
@@ -43,11 +46,11 @@ import java.util.Comparator;
  */
 public class ComparatorIntegerDefault implements Comparator<Integer> {
 
-    /**
+	/**
      * 
      */
-    public int compare(final Integer o1, final Integer o2) {
-        return o1.compareTo(o2);
-    }
+	public int compare(final Integer o1, final Integer o2) {
 
+		return o1.compareTo(o2);
+	}
 }

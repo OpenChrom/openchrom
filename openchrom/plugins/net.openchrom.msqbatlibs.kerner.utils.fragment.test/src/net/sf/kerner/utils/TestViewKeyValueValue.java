@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,31 +27,34 @@ import org.junit.Test;
 
 public class TestViewKeyValueValue {
 
-    private KeyValue<String, String> k;
+	private KeyValue<String, String> k;
+	private ViewKeyValueValue<String> v;
 
-    private ViewKeyValueValue<String> v;
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	}
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    @Before
-    public void setUp() throws Exception {
-        v = new ViewKeyValueValue<String>();
-    }
+	}
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	@Before
+	public void setUp() throws Exception {
 
-    @Test
-    public final void testTransform01() {
-        k = new KeyValue<String, String>("key", "value");
-        assertEquals("value", v.transform(k));
-    }
+		v = new ViewKeyValueValue<String>();
+	}
 
+	@After
+	public void tearDown() throws Exception {
+
+	}
+
+	@Test
+	public final void testTransform01() {
+
+		k = new KeyValue<String, String>("key", "value");
+		assertEquals("value", v.transform(k));
+	}
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,24 +47,26 @@ public class TestIntegerRangeUtils2 {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+
 	}
 
 	@Before
 	public void setUp() throws Exception {
+
 	}
 
 	@After
 	public void tearDown() throws Exception {
+
 	}
 
 	/**
-	 * Test method for
-	 * {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#positionFrequencies(java.util.Collection, java.util.Collection)}
-	 * .
+	 * Test method for {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#positionFrequencies(java.util.Collection, java.util.Collection)} .
 	 */
 	@Test
 	public final void testPositionFrequencies() {
@@ -72,58 +74,49 @@ public class TestIntegerRangeUtils2 {
 	}
 
 	/**
-	 * Test method for
-	 * {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#medianPositionFrequencies(java.util.Collection, java.util.Collection)}
-	 * .
+	 * Test method for {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#medianPositionFrequencies(java.util.Collection, java.util.Collection)} .
 	 */
 	@Test
 	public final void testMedianPositionFrequencies() {
+
 		range1 = new RangeIntegerDummy(1, 10000);
 		range2 = range1;
 		assertEquals(1, UtilsRangeInteger.medianPositionFrequencies(Arrays.asList(range1), Arrays.asList(range2)), 0);
 	}
 
 	/**
-	 * Test method for
-	 * {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#medianPositionFrequencies(java.util.Collection, java.util.Collection)}
-	 * .
+	 * Test method for {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#medianPositionFrequencies(java.util.Collection, java.util.Collection)} .
 	 */
 	@Test
 	public final void testMedianPositionFrequencies01() {
+
 		range1 = new RangeIntegerDummy(10001, 20000);
 		range2 = new RangeIntegerDummy(1, 100000);
 		assertEquals(0.1, UtilsRangeInteger.medianPositionFrequencies(Arrays.asList(range1), Arrays.asList(range2)), 0);
 	}
 
 	/**
-	 * Test method for
-	 * {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#medianPositionFrequencies(java.util.Collection, java.util.Collection)}
-	 * .
+	 * Test method for {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#medianPositionFrequencies(java.util.Collection, java.util.Collection)} .
 	 */
 	@Test
 	public final void testMedianPositionFrequencies02() {
+
 		range1 = new RangeIntegerDummy(10001, 20000);
 		range2 = new RangeIntegerDummy(20001, 30000);
 		range3 = new RangeIntegerDummy(1, 100000);
-		assertEquals(0.2,
-				UtilsRangeInteger.medianPositionFrequencies(Arrays.asList(range1, range2), Arrays.asList(range3)), 0);
+		assertEquals(0.2, UtilsRangeInteger.medianPositionFrequencies(Arrays.asList(range1, range2), Arrays.asList(range3)), 0);
 	}
 
 	/**
-	 * Test method for
-	 * {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#medianPositionFrequencies(java.util.Collection, java.util.Collection)}
-	 * .
+	 * Test method for {@link net.sf.jranges.range.integerrange.UtilsRangeInteger.range.impl.UtilRange#medianPositionFrequencies(java.util.Collection, java.util.Collection)} .
 	 */
 	@Test
 	public final void testMedianPositionFrequencies03() {
+
 		range1 = new RangeIntegerDummy(10001, 20000);
 		range2 = new RangeIntegerDummy(20001, 30000);
 		range3 = new RangeIntegerDummy(1, 50000);
 		range4 = new RangeIntegerDummy(50001, 100000);
-		assertEquals(
-				0.2,
-				UtilsRangeInteger.medianPositionFrequencies(Arrays.asList(range1, range2),
-						Arrays.asList(range3, range4)), 0);
+		assertEquals(0.2, UtilsRangeInteger.medianPositionFrequencies(Arrays.asList(range1, range2), Arrays.asList(range3, range4)), 0);
 	}
-
 }

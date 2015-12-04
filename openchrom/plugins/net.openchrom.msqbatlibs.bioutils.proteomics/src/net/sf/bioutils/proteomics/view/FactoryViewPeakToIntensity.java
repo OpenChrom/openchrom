@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,17 +21,19 @@ import net.sf.kerner.utils.collections.list.FactoryList;
 
 public class FactoryViewPeakToIntensity extends AbstractTransformingListFactory<Peak, ViewPeakToIntensity> {
 
-    public FactoryViewPeakToIntensity() {
-        super();
-    }
+	public FactoryViewPeakToIntensity() {
 
-    public FactoryViewPeakToIntensity(final FactoryList<ViewPeakToIntensity> factory) {
-        super(factory);
-    }
+		super();
+	}
 
-    @Override
-    public ViewPeakToIntensity transform(final Peak element) {
-        return new ViewPeakToIntensity(element);
-    }
+	public FactoryViewPeakToIntensity(final FactoryList<ViewPeakToIntensity> factory) {
 
+		super(factory);
+	}
+
+	@Override
+	public ViewPeakToIntensity transform(final Peak element) {
+
+		return new ViewPeakToIntensity(element);
+	}
 }

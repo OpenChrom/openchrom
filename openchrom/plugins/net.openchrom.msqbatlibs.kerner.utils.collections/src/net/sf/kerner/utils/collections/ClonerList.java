@@ -6,6 +6,5 @@ import net.sf.kerner.utils.Cloneable;
 
 public interface ClonerList<T extends Cloneable<T>> {
 
-    List<T> cloneList(List<? extends T> elements);
-
+	List<T> cloneList(List<? extends T> elements);
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,160 +26,188 @@ import net.sf.kerner.utils.collections.list.UtilList;
 
 public class FrequenciesList<T extends Frequency> implements Frequencies<T>, List<T> {
 
-    private final List<T> delegate;
+	private final List<T> delegate;
 
-    public FrequenciesList() {
-        this.delegate = UtilList.newList();
-    }
+	public FrequenciesList() {
 
-    public FrequenciesList(final Collection<T> template) {
-        this.delegate = UtilList.newList();
-        addAll(template);
-    }
+		this.delegate = UtilList.newList();
+	}
 
-    public FrequenciesList(final FactoryList<T> delegateFactory) {
-        this.delegate = delegateFactory.createCollection();
-    }
+	public FrequenciesList(final Collection<T> template) {
 
-    public synchronized void add(final int index, final T element) {
-        setFreq(element);
-        delegate.add(index, element);
-    }
+		this.delegate = UtilList.newList();
+		addAll(template);
+	}
 
-    /**
-     * @return {@code true}
-     */
-    public synchronized boolean add(final T e) {
-        setFreq(e);
-        delegate.add(e);
-        return true;
-    }
+	public FrequenciesList(final FactoryList<T> delegateFactory) {
 
-    /**
-     * @return {@code true}
-     */
-    public synchronized boolean addAll(final Collection<? extends T> c) {
-        for (final T t : c) {
-            add(t);
-        }
-        return true;
-    }
+		this.delegate = delegateFactory.createCollection();
+	}
 
-    /**
-     * 
-     * @return {@code true}
-     */
-    public boolean addAll(final int index, final Collection<? extends T> c) {
-        for (final T t : c) {
-            add(index, t);
-        }
-        return true;
-    }
+	public synchronized void add(final int index, final T element) {
 
-    public void clear() {
-        delegate.clear();
-    }
+		setFreq(element);
+		delegate.add(index, element);
+	}
 
-    public boolean contains(final Object o) {
-        return delegate.contains(o);
-    }
+	/**
+	 * @return {@code true}
+	 */
+	public synchronized boolean add(final T e) {
 
-    public boolean containsAll(final Collection<?> c) {
-        return delegate.containsAll(c);
-    }
+		setFreq(e);
+		delegate.add(e);
+		return true;
+	}
 
-    @Override
-    public boolean equals(final Object o) {
-        return delegate.equals(o);
-    }
+	/**
+	 * @return {@code true}
+	 */
+	public synchronized boolean addAll(final Collection<? extends T> c) {
 
-    public T get(final int index) {
-        return delegate.get(index);
-    }
+		for(final T t : c) {
+			add(t);
+		}
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        return delegate.hashCode();
-    }
+	/**
+	 * 
+	 * @return {@code true}
+	 */
+	public boolean addAll(final int index, final Collection<? extends T> c) {
 
-    public int indexOf(final Object o) {
-        return delegate.indexOf(o);
-    }
+		for(final T t : c) {
+			add(index, t);
+		}
+		return true;
+	}
 
-    public boolean isEmpty() {
-        return delegate.isEmpty();
-    }
+	public void clear() {
 
-    public Iterator<T> iterator() {
-        return delegate.iterator();
-    }
+		delegate.clear();
+	}
 
-    public int lastIndexOf(final Object o) {
-        return delegate.lastIndexOf(o);
-    }
+	public boolean contains(final Object o) {
 
-    public ListIterator<T> listIterator() {
-        return delegate.listIterator();
-    }
+		return delegate.contains(o);
+	}
 
-    public ListIterator<T> listIterator(final int index) {
-        return delegate.listIterator(index);
-    }
+	public boolean containsAll(final Collection<?> c) {
 
-    public T remove(final int index) {
-        throw new RuntimeException("not implemented");
-    }
+		return delegate.containsAll(c);
+	}
 
-    public boolean remove(final Object o) {
-        throw new RuntimeException("not implemented");
-    }
+	@Override
+	public boolean equals(final Object o) {
 
-    public boolean removeAll(final Collection<?> c) {
-        throw new RuntimeException("not implemented");
-    }
+		return delegate.equals(o);
+	}
 
-    public boolean retainAll(final Collection<?> c) {
-        throw new RuntimeException("not implemented");
-    }
+	public T get(final int index) {
 
-    public synchronized T set(final int index, final T element) {
-        setFreq(element);
-        final T result = delegate.set(index, element);
-        return result;
+		return delegate.get(index);
+	}
 
-    }
+	@Override
+	public int hashCode() {
 
-    private void setFreq(final T element) {
-        final Collection<T> same = UtilCollection.findSame(element, this);
-        if (same.isEmpty()) {
-            element.setFrequency(1);
-        } else {
-            element.setFrequency(same.size() + 1);
-        }
-        for (final T t : same) {
-            t.setFrequency(element.getFrequency());
-        }
-    }
+		return delegate.hashCode();
+	}
 
-    public int size() {
-        return delegate.size();
-    }
+	public int indexOf(final Object o) {
 
-    public List<T> subList(final int fromIndex, final int toIndex) {
-        return delegate.subList(fromIndex, toIndex);
-    }
+		return delegate.indexOf(o);
+	}
 
-    public Object[] toArray() {
-        return delegate.toArray();
-    }
+	public boolean isEmpty() {
 
-    public <T> T[] toArray(final T[] a) {
-        return delegate.toArray(a);
-    }
+		return delegate.isEmpty();
+	}
 
-    @Override
-    public String toString() {
-        return delegate.toString();
-    }
+	public Iterator<T> iterator() {
 
+		return delegate.iterator();
+	}
+
+	public int lastIndexOf(final Object o) {
+
+		return delegate.lastIndexOf(o);
+	}
+
+	public ListIterator<T> listIterator() {
+
+		return delegate.listIterator();
+	}
+
+	public ListIterator<T> listIterator(final int index) {
+
+		return delegate.listIterator(index);
+	}
+
+	public T remove(final int index) {
+
+		throw new RuntimeException("not implemented");
+	}
+
+	public boolean remove(final Object o) {
+
+		throw new RuntimeException("not implemented");
+	}
+
+	public boolean removeAll(final Collection<?> c) {
+
+		throw new RuntimeException("not implemented");
+	}
+
+	public boolean retainAll(final Collection<?> c) {
+
+		throw new RuntimeException("not implemented");
+	}
+
+	public synchronized T set(final int index, final T element) {
+
+		setFreq(element);
+		final T result = delegate.set(index, element);
+		return result;
+	}
+
+	private void setFreq(final T element) {
+
+		final Collection<T> same = UtilCollection.findSame(element, this);
+		if(same.isEmpty()) {
+			element.setFrequency(1);
+		} else {
+			element.setFrequency(same.size() + 1);
+		}
+		for(final T t : same) {
+			t.setFrequency(element.getFrequency());
+		}
+	}
+
+	public int size() {
+
+		return delegate.size();
+	}
+
+	public List<T> subList(final int fromIndex, final int toIndex) {
+
+		return delegate.subList(fromIndex, toIndex);
+	}
+
+	public Object[] toArray() {
+
+		return delegate.toArray();
+	}
+
+	public <T> T[] toArray(final T[] a) {
+
+		return delegate.toArray(a);
+	}
+
+	@Override
+	public String toString() {
+
+		return delegate.toString();
+	}
 }

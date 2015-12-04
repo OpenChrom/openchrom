@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,12 +24,13 @@ public class VisitorRememberSeen<T> implements Visitor<T> {
 	private final List<T> allElements = new ArrayList<T>();
 
 	public synchronized List<T> getElementsSeen() {
+
 		return Collections.unmodifiableList(allElements);
 	}
 
 	public synchronized Void transform(final T element) {
+
 		allElements.add(element);
 		return null;
 	}
-
 }

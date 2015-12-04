@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,14 +22,14 @@ import net.sf.bioutils.proteomics.annotation.ComparatorAnnotation;
 
 public class ComparatorPeakByAnnotation implements Comparator<Peak> {
 
-    private final static ComparatorAnnotation COMPARATOR_ANNOTATION = new ComparatorAnnotation();
+	private final static ComparatorAnnotation COMPARATOR_ANNOTATION = new ComparatorAnnotation();
 
-    @Override
-    public int compare(final Peak o1, final Peak o2) {
-        if (o1 instanceof AnnotatableElement && o2 instanceof AnnotatableElement) {
-            return COMPARATOR_ANNOTATION.compare((AnnotatableElement) o1, (AnnotatableElement) o2);
-        }
-        return 0;
-    }
+	@Override
+	public int compare(final Peak o1, final Peak o2) {
 
+		if(o1 instanceof AnnotatableElement && o2 instanceof AnnotatableElement) {
+			return COMPARATOR_ANNOTATION.compare((AnnotatableElement)o1, (AnnotatableElement)o2);
+		}
+		return 0;
+	}
 }

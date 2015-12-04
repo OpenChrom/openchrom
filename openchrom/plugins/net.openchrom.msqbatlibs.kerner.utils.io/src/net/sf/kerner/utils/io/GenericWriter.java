@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,37 +41,36 @@ import java.io.Writer;
  */
 public interface GenericWriter {
 
-    /**
-     * <p>
-     * Write something to a {@link java.io.File File}.
-     * </p>
-     * 
-     * @param file
-     *            file to which is written
-     * @throws IOException
-     */
-    void write(File file) throws IOException;
+	/**
+	 * <p>
+	 * Write something to a {@link java.io.File File}.
+	 * </p>
+	 * 
+	 * @param file
+	 *            file to which is written
+	 * @throws IOException
+	 */
+	void write(File file) throws IOException;
 
-    /**
-     * <p>
-     * Write something to a {@link java.io.Writer Writer}.
-     * </p>
-     * 
-     * @param writer
-     *            writer to which is written
-     * @throws IOException
-     */
-    void write(Writer writer) throws IOException;
+	/**
+	 * <p>
+	 * Write something to a {@link java.io.Writer Writer}.
+	 * </p>
+	 * 
+	 * @param writer
+	 *            writer to which is written
+	 * @throws IOException
+	 */
+	void write(Writer writer) throws IOException;
 
-    /**
-     * <p>
-     * Write something to an {@link java.io.OutputStream OutputStream}.
-     * </p>
-     * 
-     * @param stream
-     *            stream to which is written
-     * @throws IOException
-     */
-    void write(OutputStream stream) throws IOException;
-
+	/**
+	 * <p>
+	 * Write something to an {@link java.io.OutputStream OutputStream}.
+	 * </p>
+	 * 
+	 * @param stream
+	 *            stream to which is written
+	 * @throws IOException
+	 */
+	void write(OutputStream stream) throws IOException;
 }

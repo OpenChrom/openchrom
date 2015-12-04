@@ -20,83 +20,78 @@ import org.slf4j.LoggerFactory;
 
 public class SampleViews {
 
-    private final static Logger log = LoggerFactory.getLogger(SampleViews.class);
+	private final static Logger log = LoggerFactory.getLogger(SampleViews.class);
 
-    public static RangeDouble findRangeMz(final Peak peak,
-            final Collection<? extends RangeDouble> ranges) {
-        for (final RangeDouble r : ranges) {
-            if (r.includes(peak.getMz())) {
-                return r;
-            }
-        }
-        throw new RuntimeException("could not find valid range for " + peak);
-    }
+	public static RangeDouble findRangeMz(final Peak peak, final Collection<? extends RangeDouble> ranges) {
 
-    public static MapList<RangeDouble, Peak> getBinningMz(
-            final Collection<? extends RangeDouble> ranges, final Collection<? extends Peak> peaks) {
-        final MapList<RangeDouble, Peak> result = new MapList<RangeDouble, Peak>();
-        for (final Peak p : peaks) {
-            result.put(findRangeMz(p, ranges), p);
-        }
-        return result;
-    }
+		for(final RangeDouble r : ranges) {
+			if(r.includes(peak.getMz())) {
+				return r;
+			}
+		}
+		throw new RuntimeException("could not find valid range for " + peak);
+	}
 
-    public static List<Peak> getPeaksFromBinForMz(final MapList<RangeDouble, Peak> bins,
-            final double mz) {
-        for (final Entry<RangeDouble, List<Peak>> e : bins.entrySet()) {
-            if (e.getKey().includes(mz)) {
-                return e.getValue();
-            }
-        }
-        return null;
-    }
+	public static MapList<RangeDouble, Peak> getBinningMz(final Collection<? extends RangeDouble> ranges, final Collection<? extends Peak> peaks) {
 
-    public static List<Peak> getPeaksInRange(final MapList<Integer, Peak> bins,
-            final RangeInteger fracRange) {
-        if (bins == null || bins.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
-        final List<Peak> result = new ArrayList<Peak>();
-        UtilRange.doForAllInRange(fracRange, new IntegerRangeTask() {
+		final MapList<RangeDouble, Peak> result = new MapList<RangeDouble, Peak>();
+		for(final Peak p : peaks) {
+			result.put(findRangeMz(p, ranges), p);
+		}
+		return result;
+	}
 
-            @Override
-            public void call(final int i) {
-                if (bins.containsKey(i)) {
-                    result.addAll(bins.get(i));
-                } else {
-                    // if (log.isDebugEnabled()) {
-                    // log.debug("No entry for key " + i);
-                    // }
-                }
-            }
-        });
-        return result;
-    }
+	public static List<Peak> getPeaksFromBinForMz(final MapList<RangeDouble, Peak> bins, final double mz) {
 
-    public static MapList<Integer, Peak> getViewFractions(final Collection<? extends Peak> peaks) {
-        final MapList<Integer, Peak> result = new MapList<Integer, Peak>();
-        for (final Peak p : peaks) {
-            result.put(p.getFractionIndex(), p);
-        }
-        return result;
-    }
+		for(final Entry<RangeDouble, List<Peak>> e : bins.entrySet()) {
+			if(e.getKey().includes(mz)) {
+				return e.getValue();
+			}
+		}
+		return null;
+	}
 
-    public static MapList<RangeDouble, Peak> getViewMassRanges(
-            final Collection<? extends Peak> peaks) {
+	public static List<Peak> getPeaksInRange(final MapList<Integer, Peak> bins, final RangeInteger fracRange) {
 
-        final RangeDouble range = new ZeroPositiveDoubleRange(130.5655, 10254.6250, 1.0005);
+		if(bins == null || bins.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
+		final List<Peak> result = new ArrayList<Peak>();
+		UtilRange.doForAllInRange(fracRange, new IntegerRangeTask() {
 
-        final ArrayList<RangeDouble> split = new ArrayList<RangeDouble>(RangeDoubleUtils.split(
-                range, 6, new FactoryRangeDoubleZeroPositive()));
+			@Override
+			public void call(final int i) {
 
-        final MapList<RangeDouble, Peak> result = getBinningMz(split, peaks);
+				if(bins.containsKey(i)) {
+					result.addAll(bins.get(i));
+				} else {
+					// if (log.isDebugEnabled()) {
+					// log.debug("No entry for key " + i);
+					// }
+				}
+			}
+		});
+		return result;
+	}
 
-        return result;
+	public static MapList<Integer, Peak> getViewFractions(final Collection<? extends Peak> peaks) {
 
-    }
+		final MapList<Integer, Peak> result = new MapList<Integer, Peak>();
+		for(final Peak p : peaks) {
+			result.put(p.getFractionIndex(), p);
+		}
+		return result;
+	}
 
-    private SampleViews() {
+	public static MapList<RangeDouble, Peak> getViewMassRanges(final Collection<? extends Peak> peaks) {
 
-    }
+		final RangeDouble range = new ZeroPositiveDoubleRange(130.5655, 10254.6250, 1.0005);
+		final ArrayList<RangeDouble> split = new ArrayList<RangeDouble>(RangeDoubleUtils.split(range, 6, new FactoryRangeDoubleZeroPositive()));
+		final MapList<RangeDouble, Peak> result = getBinningMz(split, peaks);
+		return result;
+	}
 
+	private SampleViews() {
+
+	}
 }

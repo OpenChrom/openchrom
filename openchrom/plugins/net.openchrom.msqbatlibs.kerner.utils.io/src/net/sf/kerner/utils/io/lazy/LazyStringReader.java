@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,17 +34,19 @@ import net.sf.kerner.utils.io.buffered.impl.BufferedStringReader;
  * </ul>
  * </p>
  * <p>
- * <b>Attention:</b> reading is not buffered! If you want to read large files, consider to use
- * {@link BufferedStringReader} instead.
+ * <b>Attention:</b> reading is not buffered! If you want to read large files, consider to use {@link BufferedStringReader} instead.
  * </p>
  * <p>
  * <b>Example:</b>
  * 
  * <pre>
+ * 
+ * 
  * &#064;Test
  * public final void example() throws IOException {
- *     final java.io.StringReader sr = new java.io.StringReader(&quot;Hallo Welt!&quot;);
- *     assertEquals(&quot;Hallo Welt!&quot;, reader.read(sr));
+ * 
+ * 	final java.io.StringReader sr = new java.io.StringReader(&quot;Hallo Welt!&quot;);
+ * 	assertEquals(&quot;Hallo Welt!&quot;, reader.read(sr));
  * }
  * </pre>
  * 
@@ -56,26 +58,29 @@ import net.sf.kerner.utils.io.buffered.impl.BufferedStringReader;
  */
 public class LazyStringReader implements GenericReader<String> {
 
-    public String read(File file) throws IOException {
-        return read(UtilIO.getInputStreamFromFile(file));
-    }
+	public String read(File file) throws IOException {
 
-    public String read(Reader reader) throws IOException {
-        if (reader == null)
-            throw new NullPointerException();
-        final StringWriter writer = new StringWriter();
-        try {
-            UtilIO.readerToWriter(reader, writer);
-            return writer.toString();
-        } finally {
-            UtilIO.closeProperly(reader);
-            UtilIO.closeProperly(writer);
-        }
-    }
+		return read(UtilIO.getInputStreamFromFile(file));
+	}
 
-    public String read(InputStream stream) throws IOException {
-        if (stream == null)
-            throw new NullPointerException();
-        return read(UtilIO.inputStreamToReader(stream));
-    }
+	public String read(Reader reader) throws IOException {
+
+		if(reader == null)
+			throw new NullPointerException();
+		final StringWriter writer = new StringWriter();
+		try {
+			UtilIO.readerToWriter(reader, writer);
+			return writer.toString();
+		} finally {
+			UtilIO.closeProperly(reader);
+			UtilIO.closeProperly(writer);
+		}
+	}
+
+	public String read(InputStream stream) throws IOException {
+
+		if(stream == null)
+			throw new NullPointerException();
+		return read(UtilIO.inputStreamToReader(stream));
+	}
 }

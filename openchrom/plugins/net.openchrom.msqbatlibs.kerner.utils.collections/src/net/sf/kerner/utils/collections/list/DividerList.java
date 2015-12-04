@@ -7,20 +7,20 @@ import net.sf.kerner.utils.transformer.Transformer;
 
 public class DividerList<T> implements Transformer<List<T>, List<List<T>>> {
 
-    private final int partitionSize;
+	private final int partitionSize;
 
-    public DividerList(int partitionSize) {
-        super();
-        this.partitionSize = partitionSize;
-    }
+	public DividerList(int partitionSize) {
 
-    public List<List<T>> transform(List<T> originalList) {
-        List<List<T>> partitions = new LinkedList<List<T>>();
-        for (int i = 0; i < originalList.size(); i += partitionSize) {
-            partitions
-                    .add(originalList.subList(i, Math.min(i + partitionSize, originalList.size())));
-        }
-        return partitions;
-    }
+		super();
+		this.partitionSize = partitionSize;
+	}
 
+	public List<List<T>> transform(List<T> originalList) {
+
+		List<List<T>> partitions = new LinkedList<List<T>>();
+		for(int i = 0; i < originalList.size(); i += partitionSize) {
+			partitions.add(originalList.subList(i, Math.min(i + partitionSize, originalList.size())));
+		}
+		return partitions;
+	}
 }

@@ -10,66 +10,70 @@ import net.sf.kerner.utils.transformer.Transformer;
 
 public abstract class ToStringStrategyAbstract<T> implements Transformer<T, String> {
 
-    public final static String DEFAULT_DELIMITER = "\t";
+	public final static String DEFAULT_DELIMITER = "\t";
+	public final static String DEFAULT_SEPARATOR = UtilString.NEW_LINE_STRING;
+	protected String separator = DEFAULT_SEPARATOR;
+	protected String delimiter = DEFAULT_DELIMITER;
+	protected List<?> prefix = UtilList.newList();
+	protected List<?> postfix = UtilList.newList();
 
-    public final static String DEFAULT_SEPARATOR = UtilString.NEW_LINE_STRING;
+	/**
+	 * e.g. {@code \t}
+	 *
+	 */
+	public synchronized String getDelimiter() {
 
-    protected String separator = DEFAULT_SEPARATOR;
+		return delimiter;
+	}
 
-    protected String delimiter = DEFAULT_DELIMITER;
+	public abstract String getEmptyRow();
 
-    protected List<?> prefix = UtilList.newList();
+	public synchronized List<?> getPostfix() {
 
-    protected List<?> postfix = UtilList.newList();
+		return postfix;
+	}
 
-    /**
-     * e.g. {@code \t}
-     *
-     */
-    public synchronized String getDelimiter() {
-        return delimiter;
-    }
+	public synchronized List<?> getPrefix() {
 
-    public abstract String getEmptyRow();
+		return prefix;
+	}
 
-    public synchronized List<?> getPostfix() {
-        return postfix;
-    }
+	/**
+	 * e.g. {@code \n}
+	 *
+	 */
+	public synchronized String getSeparator() {
 
-    public synchronized List<?> getPrefix() {
-        return prefix;
-    }
+		return separator;
+	}
 
-    /**
-     * e.g. {@code \n}
-     *
-     */
-    public synchronized String getSeparator() {
-        return separator;
-    }
+	public synchronized void setDelimiter(final String delimiter) {
 
-    public synchronized void setDelimiter(final String delimiter) {
-        this.delimiter = delimiter;
-    }
+		this.delimiter = delimiter;
+	}
 
-    public synchronized void setPostfix(final List<?> postfix) {
-        this.postfix = postfix;
-    }
+	public synchronized void setPostfix(final List<?> postfix) {
 
-    public synchronized void setPrefix(final List<?> prefix) {
-        this.prefix = prefix;
-    }
+		this.postfix = postfix;
+	}
 
-    public synchronized void setSeparator(final String separator) {
-        this.separator = separator;
-    }
+	public synchronized void setPrefix(final List<?> prefix) {
 
-    public String toString(final Collection<? extends T> elements) {
-        return UtilCollection.toString(new ArrayList<T>(elements), this, separator);
-    }
+		this.prefix = prefix;
+	}
 
-    public String toString(final T element) {
-        return transform(element);
-    }
+	public synchronized void setSeparator(final String separator) {
 
+		this.separator = separator;
+	}
+
+	public String toString(final Collection<? extends T> elements) {
+
+		return UtilCollection.toString(new ArrayList<T>(elements), this, separator);
+	}
+
+	public String toString(final T element) {
+
+		return transform(element);
+	}
 }

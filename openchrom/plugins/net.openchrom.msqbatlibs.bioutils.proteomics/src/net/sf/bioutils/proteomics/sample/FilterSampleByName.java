@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,27 +19,31 @@ import net.sf.kerner.utils.collections.filter.Filter;
 
 public class FilterSampleByName implements Filter<Sample> {
 
-    private String name;
+	private String name;
 
-    public FilterSampleByName() {
-        name = null;
-    }
+	public FilterSampleByName() {
 
-    public FilterSampleByName(final String name) {
-        this.name = name;
-    }
+		name = null;
+	}
 
-    @Override
-    public boolean filter(final Sample e) {
-        return e.getName().equals(getName());
-    }
+	public FilterSampleByName(final String name) {
 
-    public synchronized String getName() {
-        return name;
-    }
+		this.name = name;
+	}
 
-    public synchronized void setName(final String name) {
-        this.name = name;
-    }
+	@Override
+	public boolean filter(final Sample e) {
 
+		return e.getName().equals(getName());
+	}
+
+	public synchronized String getName() {
+
+		return name;
+	}
+
+	public synchronized void setName(final String name) {
+
+		this.name = name;
+	}
 }

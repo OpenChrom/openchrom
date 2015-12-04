@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,49 +54,44 @@ package net.sf.kerner.utils.pair;
  */
 public interface Pair<F, S> {
 
-    /**
-     * clones this {@code ObjectPair}.
-     * 
-     * @return a new instance of {@code ObjectPair}, holding same {@code first}
-     *         and {@code second} as this {@code ObjectPair}
-     */
-    Pair<F, S> clone();
+	/**
+	 * clones this {@code ObjectPair}.
+	 * 
+	 * @return a new instance of {@code ObjectPair}, holding same {@code first} and {@code second} as this {@code ObjectPair}
+	 */
+	Pair<F, S> clone();
 
-    /**
-     * In contrast to {@link KeyValue}, {@code ObjectPair(1,2)} equals
-     * {@code ObjectPair(2,1)}.
-     * 
-     */
-    public boolean equals(Object obj);
+	/**
+	 * In contrast to {@link KeyValue}, {@code ObjectPair(1,2)} equals {@code ObjectPair(2,1)}.
+	 * 
+	 */
+	public boolean equals(Object obj);
 
-    /**
-     * Returns first object.
-     * 
-     * @return first object
-     */
-    F getFirst();
+	/**
+	 * Returns first object.
+	 * 
+	 * @return first object
+	 */
+	F getFirst();
 
-    /**
-     * Returns second object.
-     * 
-     * @return second object
-     */
-    S getSecond();
+	/**
+	 * Returns second object.
+	 * 
+	 * @return second object
+	 */
+	S getSecond();
 
-    /**
-     * In contrast to {@link KeyValue}, {@code ObjectPair(1,2).hashCode()}
-     * equals {@code ObjectPair(2,1).hashCode()}.
-     * 
-     */
-    @Override
-    public int hashCode();
+	/**
+	 * In contrast to {@link KeyValue}, {@code ObjectPair(1,2).hashCode()} equals {@code ObjectPair(2,1).hashCode()}.
+	 * 
+	 */
+	@Override
+	public int hashCode();
 
-    /**
-     * Inverts this {@code ObjectPair}, returning a new {@code ObjectPair} where
-     * {@code first} and {@code second} are switched.
-     * 
-     * @return an inverted {@code ObjectPair}
-     */
-    Pair<S, F> invert();
-
+	/**
+	 * Inverts this {@code ObjectPair}, returning a new {@code ObjectPair} where {@code first} and {@code second} are switched.
+	 * 
+	 * @return an inverted {@code ObjectPair}
+	 */
+	Pair<S, F> invert();
 }

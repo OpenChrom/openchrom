@@ -15,19 +15,22 @@ import java.util.Collection;
  */
 public class AnnotatableElementProto implements AnnotatableElement {
 
-    private Collection<AnnotationSerializable> annotation = new ArrayList<AnnotationSerializable>(0);
+	private Collection<AnnotationSerializable> annotation = new ArrayList<AnnotationSerializable>(0);
 
-    @Override
-    public Collection<AnnotationSerializable> getAnnotation() {
-        return annotation;
-    }
+	@Override
+	public Collection<AnnotationSerializable> getAnnotation() {
 
-    public void setAnnotation(final AnnotationSerializable annotation) {
-        this.setAnnotation(Arrays.asList(annotation));
-    }
+		return annotation;
+	}
 
-    @Override
-    public void setAnnotation(final Collection<AnnotationSerializable> annotation) {
-        this.annotation = annotation;
-    }
+	public void setAnnotation(final AnnotationSerializable annotation) {
+
+		this.setAnnotation(Arrays.asList(annotation));
+	}
+
+	@Override
+	public void setAnnotation(final Collection<AnnotationSerializable> annotation) {
+
+		this.annotation = annotation;
+	}
 }

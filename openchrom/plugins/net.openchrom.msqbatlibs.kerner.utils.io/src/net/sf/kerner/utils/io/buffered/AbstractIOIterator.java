@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,93 +42,97 @@ import java.util.NoSuchElementException;
  */
 public abstract class AbstractIOIterator<E> extends AbstractBufferedReader implements IOIterator<E> {
 
-    /**
-     * Peek element.
-     */
-    protected volatile E peek = null;
+	/**
+	 * Peek element.
+	 */
+	protected volatile E peek = null;
+	protected volatile boolean needToPeek = true;
 
-    protected volatile boolean needToPeek = true;
+	/**
+	 * Create a new {@code AbstractIOIterator} that reads from given {@link java.io.BufferedReader BufferedReader}.
+	 * <p>
+	 * <b>Note:</b> Passed in {@code java.io.BufferedReader} is kept as a reference. Use this constructor if you want to work on same {@link java.io.BufferedReader} which more than one reading-proxies.
+	 * </p>
+	 * 
+	 * @param reader
+	 *            {@code BufferedReader} to read from
+	 * @throws IOException
+	 */
+	public AbstractIOIterator(BufferedReader reader) throws IOException {
 
-    /**
-     * Create a new {@code AbstractIOIterator} that reads from given {@link java.io.BufferedReader BufferedReader}.
-     * <p>
-     * <b>Note:</b> Passed in {@code java.io.BufferedReader} is kept as a reference. Use this constructor if you want to
-     * work on same {@link java.io.BufferedReader} which more than one reading-proxies.
-     * </p>
-     * 
-     * @param reader
-     *            {@code BufferedReader} to read from
-     * @throws IOException
-     */
-    public AbstractIOIterator(BufferedReader reader) throws IOException {
-        super(reader);
-    }
+		super(reader);
+	}
 
-    /**
-     * Create a new {@code AbstractIOIterator} that reads from given file.
-     * 
-     * @param file
-     *            file to read from
-     * @throws IOException
-     */
-    public AbstractIOIterator(File file) throws IOException {
-        super(file);
-    }
+	/**
+	 * Create a new {@code AbstractIOIterator} that reads from given file.
+	 * 
+	 * @param file
+	 *            file to read from
+	 * @throws IOException
+	 */
+	public AbstractIOIterator(File file) throws IOException {
 
-    /**
-     * Create a new {@code AbstractIOIterator} that reads from given {@link java.io.InputStream InputStream}.
-     * 
-     * @param stream
-     *            {@code InputStream} to read from
-     * @throws IOException
-     *             if reading fails
-     */
-    public AbstractIOIterator(InputStream stream) throws IOException {
-        super(stream);
-    }
+		super(file);
+	}
 
-    /**
-     * Create a new {@code AbstractIOIterator} that reads from given {@link java.io.Reader Reader}.
-     * 
-     * @param reader
-     *            reader to read from
-     * @throws IOException
-     *             if reading fails
-     */
-    public AbstractIOIterator(Reader reader) throws IOException {
-        super(reader);
-    }
+	/**
+	 * Create a new {@code AbstractIOIterator} that reads from given {@link java.io.InputStream InputStream}.
+	 * 
+	 * @param stream
+	 *            {@code InputStream} to read from
+	 * @throws IOException
+	 *             if reading fails
+	 */
+	public AbstractIOIterator(InputStream stream) throws IOException {
 
-    private synchronized void peek() throws IOException {
-        peek = doRead();
-        needToPeek = false;
-    }
+		super(stream);
+	}
 
-    public synchronized boolean hasNext() throws IOException {
-        if (needToPeek) {
-            peek();
-        }
-        return (peek != null);
-    }
+	/**
+	 * Create a new {@code AbstractIOIterator} that reads from given {@link java.io.Reader Reader}.
+	 * 
+	 * @param reader
+	 *            reader to read from
+	 * @throws IOException
+	 *             if reading fails
+	 */
+	public AbstractIOIterator(Reader reader) throws IOException {
 
-    /**
+		super(reader);
+	}
+
+	private synchronized void peek() throws IOException {
+
+		peek = doRead();
+		needToPeek = false;
+	}
+
+	public synchronized boolean hasNext() throws IOException {
+
+		if(needToPeek) {
+			peek();
+		}
+		return (peek != null);
+	}
+
+	/**
 	 * 
 	 */
-    public synchronized E next() throws IOException {
-        if (hasNext()) {
-            needToPeek = true;
-            return peek;
-        }
-        throw new NoSuchElementException("no more elements");
-    }
+	public synchronized E next() throws IOException {
 
-    /**
-     * Perform the read operation.
-     * 
-     * @return the read element of type {@code E}
-     * @throws IOException
-     *             if reading fails
-     */
-    protected abstract E doRead() throws IOException;
+		if(hasNext()) {
+			needToPeek = true;
+			return peek;
+		}
+		throw new NoSuchElementException("no more elements");
+	}
 
+	/**
+	 * Perform the read operation.
+	 * 
+	 * @return the read element of type {@code E}
+	 * @throws IOException
+	 *             if reading fails
+	 */
+	protected abstract E doRead() throws IOException;
 }

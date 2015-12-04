@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,18 +17,19 @@ package net.sf.kerner.utils.collections.filter;
 
 public class FilterType implements Filter<Object> {
 
-    private final Class<?> clazz;
+	private final Class<?> clazz;
 
-    public FilterType(final Class<?> clazz) {
-        this.clazz = clazz;
-    }
+	public FilterType(final Class<?> clazz) {
 
-    /**
-     * @return {@code true}, if {@code e} is instance of {@code clazz};
-     *         {@code false} otherwise
-     */
-    public boolean filter(final Object e) {
-        final boolean result = clazz.isInstance(e);
-        return result;
-    }
+		this.clazz = clazz;
+	}
+
+	/**
+	 * @return {@code true}, if {@code e} is instance of {@code clazz}; {@code false} otherwise
+	 */
+	public boolean filter(final Object e) {
+
+		final boolean result = clazz.isInstance(e);
+		return result;
+	}
 }

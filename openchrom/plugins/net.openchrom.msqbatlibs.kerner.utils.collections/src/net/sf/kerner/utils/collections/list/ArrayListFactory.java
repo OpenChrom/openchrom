@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,29 +44,33 @@ import java.util.List;
  */
 public class ArrayListFactory<E> implements FactoryList<E> {
 
-    private final int size;
+	private final int size;
 
-    public ArrayListFactory() {
-        this.size = -1;
-    }
+	public ArrayListFactory() {
 
-    public ArrayListFactory(final int size) {
-        this.size = size;
-    }
+		this.size = -1;
+	}
 
-    public synchronized List<E> createCollection() {
-        if (size > -1) {
-            return new ArrayList<E>(size);
-        }
-        return new ArrayList<E>();
-    }
+	public ArrayListFactory(final int size) {
 
-    public synchronized List<E> createCollection(final Collection<? extends E> template) {
-        return new ArrayList<E>(template);
-    }
+		this.size = size;
+	}
 
-    public synchronized int getSize() {
-        return size;
-    }
+	public synchronized List<E> createCollection() {
 
+		if(size > -1) {
+			return new ArrayList<E>(size);
+		}
+		return new ArrayList<E>();
+	}
+
+	public synchronized List<E> createCollection(final Collection<? extends E> template) {
+
+		return new ArrayList<E>(template);
+	}
+
+	public synchronized int getSize() {
+
+		return size;
+	}
 }

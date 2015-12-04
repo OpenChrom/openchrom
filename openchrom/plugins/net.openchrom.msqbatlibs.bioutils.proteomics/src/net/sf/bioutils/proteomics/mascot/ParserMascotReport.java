@@ -11,40 +11,45 @@ import net.sf.kerner.utils.io.buffered.IOIterator;
 
 public class ParserMascotReport implements IOIterator<MascotReportRow>, TransformerRowToObject<String, MascotReportRow> {
 
-    private ReaderTableString reader;
+	private ReaderTableString reader;
 
-    public ParserMascotReport(File file) throws IOException {
-        reader = new ReaderTableString(file, true, false);
-        reader.addVisitorFirstLine(new VisitorFirstLine(FileFormatMascotReport.PROT_HIT_NUM));
-    }
+	public ParserMascotReport(File file) throws IOException {
 
-    @Override
-    public void close() {
-        synchronized (reader) {
-            reader.close();
-        }
-    }
+		reader = new ReaderTableString(file, true, false);
+		reader.addVisitorFirstLine(new VisitorFirstLine(FileFormatMascotReport.PROT_HIT_NUM));
+	}
 
-    @Override
-    public boolean hasNext() throws IOException {
-        synchronized (reader) {
-            return reader.hasNext();
-        }
-    }
+	@Override
+	public void close() {
 
-    @Override
-    public MascotReportRow next() throws IOException {
-        synchronized (reader) {
-            Row<String> nextRow = reader.next();
-            return transform(nextRow);
-        }
-    }
+		synchronized(reader) {
+			reader.close();
+		}
+	}
 
-    @Override
-    public MascotReportRow transform(Row<String> element) {
-        synchronized (reader) {
-            MascotReportRowImpl result = new MascotReportRowImpl(element);
-            return result;
-        }
-    }
+	@Override
+	public boolean hasNext() throws IOException {
+
+		synchronized(reader) {
+			return reader.hasNext();
+		}
+	}
+
+	@Override
+	public MascotReportRow next() throws IOException {
+
+		synchronized(reader) {
+			Row<String> nextRow = reader.next();
+			return transform(nextRow);
+		}
+	}
+
+	@Override
+	public MascotReportRow transform(Row<String> element) {
+
+		synchronized(reader) {
+			MascotReportRowImpl result = new MascotReportRowImpl(element);
+			return result;
+		}
+	}
 }

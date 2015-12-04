@@ -6,7 +6,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,47 +49,46 @@ import net.sf.kerner.utils.collections.map.MapList;
  */
 public interface Sample extends Cloneable<Sample> {
 
-    long getId();
+	long getId();
 
-    /**
-     * Creates a clone of this {@code Sample}.
-     */
-    @Override
-    Sample clone();
+	/**
+	 * Creates a clone of this {@code Sample}.
+	 */
+	@Override
+	Sample clone();
 
-    /**
-     *
-     * Clones sample, using new given name.
-     *
-     * @see #clone()
-     */
-    Sample clone(String newName);
+	/**
+	 *
+	 * Clones sample, using new given name.
+	 *
+	 * @see #clone()
+	 */
+	Sample clone(String newName);
 
-    Sample cloneWOPeaks(String newName);
+	Sample cloneWOPeaks(String newName);
 
-    @Deprecated
-    ReadWriteLock getLock();
+	@Deprecated
+	ReadWriteLock getLock();
 
-    String getName();
+	String getName();
 
-    String getNameBase();
+	String getNameBase();
 
-    List<Peak> getPeaks();
+	List<Peak> getPeaks();
 
-    MapList<String, Object> getProperties();
+	MapList<String, Object> getProperties();
 
-    /**
-     *
-     * @return the number of {@link Peak peaks} in this {@code Sample}.
-     */
-    int getSize();
+	/**
+	 *
+	 * @return the number of {@link Peak peaks} in this {@code Sample}.
+	 */
+	int getSize();
 
-    User getUser();
+	User getUser();
 
-    void setPeaks(List<Peak> peaks);
+	void setPeaks(List<Peak> peaks);
 
-    RawSample getRawSample();
+	RawSample getRawSample();
 
-    void setProperties(MapList<String, Object> properties);
-
+	void setProperties(MapList<String, Object> properties);
 }

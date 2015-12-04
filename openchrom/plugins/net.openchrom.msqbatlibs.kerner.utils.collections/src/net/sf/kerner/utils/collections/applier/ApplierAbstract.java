@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,18 +17,18 @@ package net.sf.kerner.utils.collections.applier;
 
 public abstract class ApplierAbstract implements Applier {
 
-    public static TYPE DEFAULT_FILTER_TYPE = TYPE.AND;
+	public static TYPE DEFAULT_FILTER_TYPE = TYPE.AND;
+	protected TYPE type;
 
-    protected TYPE type;
+	public ApplierAbstract() {
 
-    public ApplierAbstract() {
-        super();
-        type = DEFAULT_FILTER_TYPE;
-    }
+		super();
+		type = DEFAULT_FILTER_TYPE;
+	}
 
-    public ApplierAbstract(final TYPE type) {
-        super();
-        this.type = type;
-    }
+	public ApplierAbstract(final TYPE type) {
 
+		super();
+		this.type = type;
+	}
 }

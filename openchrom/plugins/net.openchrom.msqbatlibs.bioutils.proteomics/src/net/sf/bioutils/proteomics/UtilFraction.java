@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,94 +61,92 @@ import net.sf.kerner.utils.collections.filter.FilterApplierProto;
  */
 public class UtilFraction {
 
-    public static List<Peak> getPeaks(
-            final Collection<? extends Iterable<? extends Fraction>> fractions) {
-        return getPeaks(fractions, new ArrayList<Filter<Peak>>(0));
-    }
+	public static List<Peak> getPeaks(final Collection<? extends Iterable<? extends Fraction>> fractions) {
 
-    public static List<Peak> getPeaks(
-            final Collection<? extends Iterable<? extends Fraction>> fractions,
-            final Collection<? extends Filter<Peak>> filters) {
-        final List<Peak> result = new ArrayList<Peak>();
-        for (final Iterable<? extends Fraction> f : fractions) {
-            result.addAll(getPeaks(f, filters));
-        }
-        return result;
-    }
+		return getPeaks(fractions, new ArrayList<Filter<Peak>>(0));
+	}
 
-    @SuppressWarnings("unchecked")
-    public static List<Peak> getPeaks(
-            final Collection<? extends Iterable<? extends Fraction>> fractions,
-            final Filter<Peak> filter) {
-        return getPeaks(fractions, Arrays.asList(filter));
-    }
+	public static List<Peak> getPeaks(final Collection<? extends Iterable<? extends Fraction>> fractions, final Collection<? extends Filter<Peak>> filters) {
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static List<Peak> getPeaks(final Fraction fraction) {
-        return getPeaks(fraction, new ArrayList());
-    }
+		final List<Peak> result = new ArrayList<Peak>();
+		for(final Iterable<? extends Fraction> f : fractions) {
+			result.addAll(getPeaks(f, filters));
+		}
+		return result;
+	}
 
-    public static List<Peak> getPeaks(final Fraction fraction,
-            final Collection<? extends Filter<Peak>> filters) {
-        final FilterApplierProto<Peak> filter = new FilterApplierProto<Peak>();
-        for (final Filter<Peak> f : filters) {
-            filter.addFilter(f);
-        }
-        final List<Peak> result = new ArrayList<Peak>();
-        for (final Peak p : fraction.getPeaks()) {
-            if (filter.filter(p)) {
-                result.add(p);
-            }
-        }
-        return result;
-    }
+	@SuppressWarnings("unchecked")
+	public static List<Peak> getPeaks(final Collection<? extends Iterable<? extends Fraction>> fractions, final Filter<Peak> filter) {
 
-    @SuppressWarnings("unchecked")
-    public static List<Peak> getPeaks(final Fraction fraction, final Filter<Peak> filter) {
-        return getPeaks(fraction, Arrays.asList(filter));
-    }
+		return getPeaks(fractions, Arrays.asList(filter));
+	}
 
-    public static List<Peak> getPeaks(final Iterable<? extends Fraction> fractions) {
-        return getPeaks(fractions, new ArrayList<Filter<Peak>>(0));
-    }
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	public static List<Peak> getPeaks(final Fraction fraction) {
 
-    /**
-     * Gets all {@link Peak peaks} from all {@link Fraction fractions} which are
-     * provided by given {@link Iterable} {@code fractions}. An array of
-     * {@link Filter Filters} may be provided to <b>exclude non-matching</b>
-     * {@link Peak peaks} from result.</p> Result has the same ordering as given
-     * by
-     * <ol>
-     * <li>{@code fraction's} {@link Iterator} over {@link Peak peaks}</li>
-     * <li>{@link Iterator} of provided {@code fractions}</li>
-     * </ol>
-     *
-     * <p>
-     * last reviewed: 2013-09-13
-     * </p>
-     *
-     * @param filters
-     *            {@link Filter} to filter peaks
-     * @param fractions
-     *            fractions, from which all peaks are returned
-     * @return a {@link List}, which contains all peaks from given fractions
-     */
-    public static List<Peak> getPeaks(final Iterable<? extends Fraction> fractions,
-            final Collection<? extends Filter<Peak>> filters) {
-        final List<Peak> result = new ArrayList<Peak>();
-        if (fractions == null) {
-            return result;
-        }
-        for (final Fraction f : fractions) {
-            result.addAll(getPeaks(f, filters));
-        }
-        return result;
-    }
+		return getPeaks(fraction, new ArrayList());
+	}
 
-    @SuppressWarnings("unchecked")
-    public static List<Peak> getPeaks(final Iterable<? extends Fraction> fractions,
-            final Filter<Peak> filter) {
-        return getPeaks(fractions, Arrays.asList(filter));
-    }
+	public static List<Peak> getPeaks(final Fraction fraction, final Collection<? extends Filter<Peak>> filters) {
 
+		final FilterApplierProto<Peak> filter = new FilterApplierProto<Peak>();
+		for(final Filter<Peak> f : filters) {
+			filter.addFilter(f);
+		}
+		final List<Peak> result = new ArrayList<Peak>();
+		for(final Peak p : fraction.getPeaks()) {
+			if(filter.filter(p)) {
+				result.add(p);
+			}
+		}
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<Peak> getPeaks(final Fraction fraction, final Filter<Peak> filter) {
+
+		return getPeaks(fraction, Arrays.asList(filter));
+	}
+
+	public static List<Peak> getPeaks(final Iterable<? extends Fraction> fractions) {
+
+		return getPeaks(fractions, new ArrayList<Filter<Peak>>(0));
+	}
+
+	/**
+	 * Gets all {@link Peak peaks} from all {@link Fraction fractions} which are
+	 * provided by given {@link Iterable} {@code fractions}. An array of {@link Filter Filters} may be provided to <b>exclude non-matching</b> {@link Peak peaks} from result.</p> Result has the same ordering as given
+	 * by
+	 * <ol>
+	 * <li>{@code fraction's} {@link Iterator} over {@link Peak peaks}</li>
+	 * <li>{@link Iterator} of provided {@code fractions}</li>
+	 * </ol>
+	 *
+	 * <p>
+	 * last reviewed: 2013-09-13
+	 * </p>
+	 *
+	 * @param filters
+	 *            {@link Filter} to filter peaks
+	 * @param fractions
+	 *            fractions, from which all peaks are returned
+	 * @return a {@link List}, which contains all peaks from given fractions
+	 */
+	public static List<Peak> getPeaks(final Iterable<? extends Fraction> fractions, final Collection<? extends Filter<Peak>> filters) {
+
+		final List<Peak> result = new ArrayList<Peak>();
+		if(fractions == null) {
+			return result;
+		}
+		for(final Fraction f : fractions) {
+			result.addAll(getPeaks(f, filters));
+		}
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<Peak> getPeaks(final Iterable<? extends Fraction> fractions, final Filter<Peak> filter) {
+
+		return getPeaks(fractions, Arrays.asList(filter));
+	}
 }

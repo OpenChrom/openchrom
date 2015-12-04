@@ -6,7 +6,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,54 +19,56 @@ package net.sf.kerner.utils.progress;
 
 public class ProgressMonitorAbstract implements ProgressMonitor {
 
-    private boolean cancelled;
+	private boolean cancelled;
+	private String taskName;
+	protected int totalWorkload = UNKNOWN_WORKLOAD;
+	protected int worked;
 
-    private String taskName;
+	public void worked() {
 
-    protected int totalWorkload = UNKNOWN_WORKLOAD;
+		worked(1);
+	}
 
-    protected int worked;
+	public void finished() {
 
-    public void worked() {
-        worked(1);
-    }
+		totalWorkload = UNKNOWN_WORKLOAD;
+	}
 
-    
-    public void finished() {
-        totalWorkload = UNKNOWN_WORKLOAD;
-    }
+	public void notifySubtask(String name) {
 
-    
-    public void notifySubtask(String name) {
+	}
 
-    }
+	public void worked(int i) {
 
-    public void worked(int i) {
-        worked += i;
-    }
+		worked += i;
+	}
 
-    public void started(int totalWorkload) {
-        this.totalWorkload = totalWorkload;
-    }
+	public void started(int totalWorkload) {
 
-    public String getTaskName() {
-        return taskName;
-    }
+		this.totalWorkload = totalWorkload;
+	}
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
+	public String getTaskName() {
 
-    public ProgressMonitorAbstract() {
+		return taskName;
+	}
 
-    }
+	public void setTaskName(String taskName) {
 
-    public synchronized boolean isCancelled() {
-        return cancelled;
-    }
+		this.taskName = taskName;
+	}
 
-    public synchronized void setCancelled(final boolean cancelled) {
-        this.cancelled = cancelled;
-    }
+	public ProgressMonitorAbstract() {
 
+	}
+
+	public synchronized boolean isCancelled() {
+
+		return cancelled;
+	}
+
+	public synchronized void setCancelled(final boolean cancelled) {
+
+		this.cancelled = cancelled;
+	}
 }

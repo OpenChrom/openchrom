@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,39 +43,45 @@ import java.util.List;
  */
 public class PercentDoneCounter extends Counter {
 
-    public static interface Listener {
-        void update(double percentDone);
-    }
+	public static interface Listener {
 
-    private final List<Listener> listeners = new ArrayList<Listener>();
+		void update(double percentDone);
+	}
 
-    /**
-     * Instantiates a new {@code PercentDoneCounter}. Interval is initially set
-     * to 1%.
-     * 
-     * @param totalElements
-     */
-    public PercentDoneCounter(final int totalElements) {
-        if (totalElements <= 100) {
-            setInterval(1);
-        } else {
-            setInterval(totalElements / 100);
-        }
-        addRunnable(new Runnable() {
-            public void run() {
-                final double percent = (double) getCount() / (double) totalElements * 100;
-                for (final Listener l : listeners) {
-                    l.update(percent);
-                }
-            }
-        });
-    }
+	private final List<Listener> listeners = new ArrayList<Listener>();
 
-    public void addListener(final Listener listener) {
-        listeners.add(listener);
-    }
+	/**
+	 * Instantiates a new {@code PercentDoneCounter}. Interval is initially set
+	 * to 1%.
+	 * 
+	 * @param totalElements
+	 */
+	public PercentDoneCounter(final int totalElements) {
 
-    public void clearListners() {
-        listeners.clear();
-    }
+		if(totalElements <= 100) {
+			setInterval(1);
+		} else {
+			setInterval(totalElements / 100);
+		}
+		addRunnable(new Runnable() {
+
+			public void run() {
+
+				final double percent = (double)getCount() / (double)totalElements * 100;
+				for(final Listener l : listeners) {
+					l.update(percent);
+				}
+			}
+		});
+	}
+
+	public void addListener(final Listener listener) {
+
+		listeners.add(listener);
+	}
+
+	public void clearListners() {
+
+		listeners.clear();
+	}
 }

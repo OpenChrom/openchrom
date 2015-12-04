@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,45 +31,53 @@ import org.junit.Test;
  */
 public class TestUtilStrings {
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	}
 
-    @Before
-    public void setUp() throws Exception {
-    }
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	}
 
-    @Test
-    public final void testEmptyString() {
-        assertTrue(UtilString.emptyString(null));
-    }
+	@Before
+	public void setUp() throws Exception {
 
-    @Test
-    public final void testEmptyString01() {
-        assertTrue(UtilString.emptyString(""));
-    }
+	}
 
-    @Test
-    public final void testEmptyString02() {
-        assertTrue(UtilString.emptyString(" "));
-    }
+	@After
+	public void tearDown() throws Exception {
 
-    @Test
-    public final void testEmptyString03() {
-        assertFalse(UtilString.emptyString(" a "));
-    }
+	}
 
-    @Test
-    public final void testGetRandomString01() {
-        assertEquals(16, UtilString.getRandomString().length());
-    }
+	@Test
+	public final void testEmptyString() {
 
+		assertTrue(UtilString.emptyString(null));
+	}
+
+	@Test
+	public final void testEmptyString01() {
+
+		assertTrue(UtilString.emptyString(""));
+	}
+
+	@Test
+	public final void testEmptyString02() {
+
+		assertTrue(UtilString.emptyString(" "));
+	}
+
+	@Test
+	public final void testEmptyString03() {
+
+		assertFalse(UtilString.emptyString(" a "));
+	}
+
+	@Test
+	public final void testGetRandomString01() {
+
+		assertEquals(16, UtilString.getRandomString().length());
+	}
 }

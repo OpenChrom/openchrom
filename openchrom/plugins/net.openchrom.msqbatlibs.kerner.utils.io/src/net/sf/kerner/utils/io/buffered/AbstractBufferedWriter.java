@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,66 +37,70 @@ import net.sf.kerner.utils.io.UtilIO;
  */
 public abstract class AbstractBufferedWriter implements GenericBufferedWriter {
 
-    /**
-     * {@link java.io.Writer} to which writing is delegated.
-     */
-    protected BufferedWriter writer;
+	/**
+	 * {@link java.io.Writer} to which writing is delegated.
+	 */
+	protected BufferedWriter writer;
 
-    /**
-     * Create a new {@code AbstractBufferedWriter} that will write from given file.
-     * 
-     * @param file
-     *            file to write to
-     * @throws IOException
-     *             if opening file for writing fails
-     */
-    public AbstractBufferedWriter(final File file) throws IOException {
-        synchronized (AbstractBufferedWriter.class) {
-            UtilFile.fileCheck(file, true);
-            writer = new BufferedWriter(new FileWriter(file));
-        }
-    }
+	/**
+	 * Create a new {@code AbstractBufferedWriter} that will write from given file.
+	 * 
+	 * @param file
+	 *            file to write to
+	 * @throws IOException
+	 *             if opening file for writing fails
+	 */
+	public AbstractBufferedWriter(final File file) throws IOException {
 
-    /**
-     * Create a new {@code AbstractBufferedWriter} that will write to given OutputStream.
-     * 
-     * @param stream
-     *            OutputStream to write to
-     */
-    public AbstractBufferedWriter(final OutputStream stream) {
-        synchronized (AbstractBufferedWriter.class) {
-            writer = new BufferedWriter(UtilIO.outputStreamToWriter(stream));
-        }
-    }
+		synchronized(AbstractBufferedWriter.class) {
+			UtilFile.fileCheck(file, true);
+			writer = new BufferedWriter(new FileWriter(file));
+		}
+	}
 
-    /**
-     * Create a new {@code AbstractBufferedWriter} that will write to given writer.
-     * 
-     * @param writer
-     *            writer to write to
-     */
-    public AbstractBufferedWriter(final Writer writer) {
-        synchronized (AbstractBufferedWriter.class) {
-            this.writer = new BufferedWriter(writer);
-        }
-    }
+	/**
+	 * Create a new {@code AbstractBufferedWriter} that will write to given OutputStream.
+	 * 
+	 * @param stream
+	 *            OutputStream to write to
+	 */
+	public AbstractBufferedWriter(final OutputStream stream) {
 
-    /**
-     * Close this {@code AbstractBufferedWriter}.
-     */
-    public void close() {
-        synchronized (writer) {
-            UtilIO.closeProperly(writer);
-        }
-    }
+		synchronized(AbstractBufferedWriter.class) {
+			writer = new BufferedWriter(UtilIO.outputStreamToWriter(stream));
+		}
+	}
 
-    /**
-     * Flush this {@code AbstractBufferedWriter}.
-     */
-    public void flush() throws IOException {
-        synchronized (writer) {
-            writer.flush();
-        }
-    }
+	/**
+	 * Create a new {@code AbstractBufferedWriter} that will write to given writer.
+	 * 
+	 * @param writer
+	 *            writer to write to
+	 */
+	public AbstractBufferedWriter(final Writer writer) {
 
+		synchronized(AbstractBufferedWriter.class) {
+			this.writer = new BufferedWriter(writer);
+		}
+	}
+
+	/**
+	 * Close this {@code AbstractBufferedWriter}.
+	 */
+	public void close() {
+
+		synchronized(writer) {
+			UtilIO.closeProperly(writer);
+		}
+	}
+
+	/**
+	 * Flush this {@code AbstractBufferedWriter}.
+	 */
+	public void flush() throws IOException {
+
+		synchronized(writer) {
+			writer.flush();
+		}
+	}
 }

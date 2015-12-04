@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,8 +20,7 @@ import javax.swing.text.View;
 import net.sf.kerner.utils.pair.KeyValue;
 
 /**
- * A {@link View} to a {@link KeyValue}, which returns only the key from this
- * {@link KeyValue}.
+ * A {@link View} to a {@link KeyValue}, which returns only the key from this {@link KeyValue}.
  * <p>
  * <b>Example:</b><br>
  * </p>
@@ -40,11 +39,11 @@ import net.sf.kerner.utils.pair.KeyValue;
  */
 public class ViewKeyValueKey<K> implements Transformer<KeyValue<K, ?>, K> {
 
-    /**
+	/**
 	 * 
 	 */
-    public K transform(final KeyValue<K, ?> element) {
-        return element.getKey();
-    }
+	public K transform(final KeyValue<K, ?> element) {
 
+		return element.getKey();
+	}
 }

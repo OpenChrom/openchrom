@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,8 +16,7 @@
 package net.sf.kerner.utils.transformer;
 
 /**
- * Default implementation for {@link TransformerToString}. It uses
- * {@link Object#toString()} to obtain string representation for each object.
+ * Default implementation for {@link TransformerToString}. It uses {@link Object#toString()} to obtain string representation for each object.
  * </p>
  * <p>
  * <b>Example:</b><br>
@@ -39,10 +38,10 @@ public class TransformerToStringDefault implements TransformerToString<Object> {
 	 * @return {@code element.toString()} or "null" if object is {@code null}
 	 */
 	public String transform(final Object element) {
-		if (element == null) {
+
+		if(element == null) {
 			return "null";
 		}
 		return element.toString();
 	}
-
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,27 +32,26 @@ import net.sf.kerner.utils.io.buffered.IOIterable;
  */
 public interface FASTAFileReader extends IOIterable<FASTAElement> {
 
-    /**
-     * Closes this reader.
-     * 
-     * @see java.io.Reader#close()
-     * 
-     */
-    void close();
+	/**
+	 * Closes this reader.
+	 * 
+	 * @see java.io.Reader#close()
+	 * 
+	 */
+	void close();
 
-    FASTAElementIterator getIterator() throws IOException;
+	FASTAElementIterator getIterator() throws IOException;
 
-    /**
-     * 
-     * Reads all {@link FASTAElement}s at once in one {@link FASTAFile}.
-     * <p>
-     * Use this with care, since FASTA files can be huge!
-     * </p>
-     * 
-     * @return {@link FASTAFile FASTAFile} that has been read
-     * 
-     * @throws IOException
-     */
-    FASTAFile read() throws IOException;
-
+	/**
+	 * 
+	 * Reads all {@link FASTAElement}s at once in one {@link FASTAFile}.
+	 * <p>
+	 * Use this with care, since FASTA files can be huge!
+	 * </p>
+	 * 
+	 * @return {@link FASTAFile FASTAFile} that has been read
+	 * 
+	 * @throws IOException
+	 */
+	FASTAFile read() throws IOException;
 }

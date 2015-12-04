@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,23 +22,26 @@ import net.sf.kerner.utils.transformer.Transformer;
 
 public abstract class TransformerAbstract<T, V> implements Transformer<T, V>, TransformerCollection<T, V> {
 
-    protected final FactoryCollection<V> factoryCollection;
+	protected final FactoryCollection<V> factoryCollection;
 
-    public TransformerAbstract() {
-        super();
-        this.factoryCollection = new ArrayListFactory<V>();
-    }
+	public TransformerAbstract() {
 
-    public TransformerAbstract(final FactoryCollection<V> factoryCollection) {
-        super();
-        this.factoryCollection = factoryCollection;
-    }
+		super();
+		this.factoryCollection = new ArrayListFactory<V>();
+	}
 
-    public Collection<V> transformCollection(final Collection<? extends T> element) {
-        final Collection<V> result = factoryCollection.createCollection();
-        for (final T t : element) {
-            result.add(transform(t));
-        }
-        return result;
-    }
+	public TransformerAbstract(final FactoryCollection<V> factoryCollection) {
+
+		super();
+		this.factoryCollection = factoryCollection;
+	}
+
+	public Collection<V> transformCollection(final Collection<? extends T> element) {
+
+		final Collection<V> result = factoryCollection.createCollection();
+		for(final T t : element) {
+			result.add(transform(t));
+		}
+		return result;
+	}
 }

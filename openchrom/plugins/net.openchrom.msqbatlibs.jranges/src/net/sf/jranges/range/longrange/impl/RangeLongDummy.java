@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,7 +21,6 @@ import net.sf.jranges.range.longrange.RangeLong;
 public class RangeLongDummy extends VeryAbstractLongRange implements RangeLong {
 
 	// Constructor //
-
 	/**
 	 * 
 	 * Construct a new {@code DummyLongRange} with start and stop values
@@ -29,6 +28,7 @@ public class RangeLongDummy extends VeryAbstractLongRange implements RangeLong {
 	 * 
 	 */
 	public RangeLongDummy() {
+
 		this.start = 0;
 		this.stop = 0;
 	}
@@ -39,12 +39,12 @@ public class RangeLongDummy extends VeryAbstractLongRange implements RangeLong {
 	 * 
 	 */
 	public RangeLongDummy(long start, long stop) {
+
 		this.start = start;
 		this.stop = stop;
 	}
 
 	// Public //
-
 	/**
 	 * 
 	 * Set start position for this {@code DummyLongRange}.
@@ -53,6 +53,7 @@ public class RangeLongDummy extends VeryAbstractLongRange implements RangeLong {
 	 *            new start position
 	 */
 	public void setStart(long start) {
+
 		this.start = start;
 	}
 
@@ -64,15 +65,16 @@ public class RangeLongDummy extends VeryAbstractLongRange implements RangeLong {
 	 *            new stop position
 	 */
 	public void setStop(long stop) {
+
 		this.stop = stop;
 	}
 
 	// Implement //
-
 	/**
 	 * 
 	 */
 	public RangeLong shift(long offset) {
+
 		return new RangeLongDummy(getStart() + offset, getStop() + offset);
 	}
 
@@ -80,6 +82,7 @@ public class RangeLongDummy extends VeryAbstractLongRange implements RangeLong {
 	 * 
 	 */
 	public RangeLong expandRange(long offset) throws RangeException {
+
 		return expandRange(offset, false);
 	}
 
@@ -87,9 +90,9 @@ public class RangeLongDummy extends VeryAbstractLongRange implements RangeLong {
 	 * 
 	 */
 	public RangeLong expandRange(long offset, boolean stayWithinLimits) throws RangeException {
+
 		long start = getStart() - offset;
 		long stop = getStop() + offset;
 		return new RangeLongDummy(start, stop);
 	}
-
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,107 +43,109 @@ import org.junit.Test;
  */
 public class TestFASTAElementHeaderReader {
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	}
 
-    private FASTAElementHeaderReader reader;
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    @Before
-    public void setUp() throws Exception {
-        reader = new FASTAElementHeaderReader();
-    }
+	}
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	private FASTAElementHeaderReader reader;
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.BufferedReader)}
-     * .
-     */
-    @Test
-    @Ignore
-    public final void testReadBufferedReader() {
-        fail("Not yet implemented"); // TODO
-    }
+	@Before
+	public void setUp() throws Exception {
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.File)}.
-     */
-    @Test
-    @Ignore
-    public final void testReadFile() {
-        fail("Not yet implemented"); // TODO
-    }
+		reader = new FASTAElementHeaderReader();
+	}
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.InputStream)}
-     * .
-     */
-    @Test
-    @Ignore
-    public final void testReadInputStream() {
-        fail("Not yet implemented"); // TODO
-    }
+	@After
+	public void tearDown() throws Exception {
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.Reader)}.
-     * 
-     * @throws IOException
-     */
-    @Test
-    public final void testReadReader() throws IOException {
-        final String result = reader.read(new StringReader(">bla" + UtilIO.NEW_LINE_STRING));
-        assertEquals("bla", result);
-    }
+	}
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.Reader)}.
-     * 
-     * @throws IOException
-     */
-    @Test
-    public final void testReadReader01() throws IOException {
-        final String result = reader.read(new StringReader(">bla"));
-        assertEquals("bla", result);
-    }
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.BufferedReader)} .
+	 */
+	@Test
+	@Ignore
+	public final void testReadBufferedReader() {
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.Reader)}.
-     * 
-     * @throws IOException
-     */
-    @Test
-    public final void testReadReader02() throws IOException {
-        final String result = reader.read(new StringReader(">bla"));
-        assertEquals("bla", result);
-    }
+		fail("Not yet implemented"); // TODO
+	}
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.Reader)}.
-     * 
-     * @throws IOException
-     */
-    @Test
-    public final void testReadReader03() throws IOException {
-        assertNull(reader.read(new StringReader("")));
-    }
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.File)}.
+	 */
+	@Test
+	@Ignore
+	public final void testReadFile() {
 
-    @Test(expected = ExceptionFileFormat.class)
-    public final void testReadReader04() throws IOException {
-        reader.read(new StringReader("bla"));
-    }
+		fail("Not yet implemented"); // TODO
+	}
 
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.InputStream)} .
+	 */
+	@Test
+	@Ignore
+	public final void testReadInputStream() {
+
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.Reader)}.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public final void testReadReader() throws IOException {
+
+		final String result = reader.read(new StringReader(">bla" + UtilIO.NEW_LINE_STRING));
+		assertEquals("bla", result);
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.Reader)}.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public final void testReadReader01() throws IOException {
+
+		final String result = reader.read(new StringReader(">bla"));
+		assertEquals("bla", result);
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.Reader)}.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public final void testReadReader02() throws IOException {
+
+		final String result = reader.read(new StringReader(">bla"));
+		assertEquals("bla", result);
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementHeaderReader#read(java.io.Reader)}.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public final void testReadReader03() throws IOException {
+
+		assertNull(reader.read(new StringReader("")));
+	}
+
+	@Test(expected = ExceptionFileFormat.class)
+	public final void testReadReader04() throws IOException {
+
+		reader.read(new StringReader("bla"));
+	}
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,39 +24,34 @@ import net.sf.kerner.utils.math.UtilMath;
 
 public class RangeDoubleUtils {
 
-    private static double increment(double number, final double interval, final int accuracy) {
-        return UtilMath.round(number += interval, accuracy);
-    }
+	private static double increment(double number, final double interval, final int accuracy) {
 
-    /**
-     * <pre>
-     * [0.0->1.0, 1.0->2.0, 2.0->3.0, 3.0->4.0, 4.0->5.0, 5.0->6.0, 6.0->7.0, 7.0->8.0, 8.0->9.0, 9.0->10.0]
-     * </pre>
-     */
-    public static <R extends RangeDouble> List<R> split(final RangeDouble range, final int accuracy,
-            final FactoryRangeDouble<R> factory) {
+		return UtilMath.round(number += interval, accuracy);
+	}
 
-        // System.err.println("split range " + range);
+	/**
+	 * <pre>
+	 * [0.0->1.0, 1.0->2.0, 2.0->3.0, 3.0->4.0, 4.0->5.0, 5.0->6.0, 6.0->7.0, 7.0->8.0, 8.0->9.0, 9.0->10.0]
+	 * </pre>
+	 */
+	public static <R extends RangeDouble> List<R> split(final RangeDouble range, final int accuracy, final FactoryRangeDouble<R> factory) {
 
-        final List<R> result = new ArrayList<R>();
+		// System.err.println("split range " + range);
+		final List<R> result = new ArrayList<R>();
+		double last = -1;
+		for(double d = range.getStart(); d <= range.getStop(); d = increment(d, range.getInterval(), accuracy)) {
+			if(last == -1) {
+				// skip first
+			} else {
+				result.add(factory.create(last, d));
+			}
+			last = d;
+		}
+		// System.err.println("splitted " + result);
+		return result;
+	}
 
-        double last = -1;
-        for (double d = range.getStart(); d <= range.getStop(); d = increment(d, range.getInterval(), accuracy)) {
-            if (last == -1) {
-                // skip first
-            } else {
-                result.add(factory.create(last, d));
-            }
-            last = d;
-        }
+	private RangeDoubleUtils() {
 
-        // System.err.println("splitted " + result);
-
-        return result;
-
-    }
-
-    private RangeDoubleUtils() {
-    }
-
+	}
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,53 +20,56 @@ import java.util.NoSuchElementException;
 
 public class IteratorPeek<T> implements Iterator<T> {
 
-    private final Iterator<T> iterator;
+	private final Iterator<T> iterator;
+	private T nextElement = null;
+	private boolean done = false;
 
-    private T nextElement = null;
+	public IteratorPeek(final Iterator<T> iterator) {
 
-    private boolean done = false;
+		super();
+		this.iterator = iterator;
+		performPeak();
+	}
 
-    public IteratorPeek(final Iterator<T> iterator) {
-        super();
-        this.iterator = iterator;
-        performPeak();
-    }
+	public synchronized boolean hasNext() {
 
-    public synchronized boolean hasNext() {
-        if (done) {
-            return false;
-        }
-        return true;
-    }
+		if(done) {
+			return false;
+		}
+		return true;
+	}
 
-    public synchronized T next() {
-        if (done)
-            throw new NoSuchElementException();
-        final T result = nextElement;
-        performPeak();
-        return result;
-    }
+	public synchronized T next() {
 
-    public synchronized T peek() {
-        if (done)
-            throw new NoSuchElementException();
-        return nextElement;
-    }
+		if(done)
+			throw new NoSuchElementException();
+		final T result = nextElement;
+		performPeak();
+		return result;
+	}
 
-    private void performPeak() {
-        if (done) {
-            return;
-        }
-        if (iterator.hasNext()) {
-            nextElement = iterator.next();
-        } else {
-            done = true;
-            nextElement = null;
-        }
-    }
+	public synchronized T peek() {
 
-    public synchronized void remove() {
-        throw new RuntimeException("not implemented yet");
-    }
+		if(done)
+			throw new NoSuchElementException();
+		return nextElement;
+	}
 
+	private void performPeak() {
+
+		if(done) {
+			return;
+		}
+		if(iterator.hasNext()) {
+			nextElement = iterator.next();
+		} else {
+			done = true;
+			nextElement = null;
+		}
+	}
+
+	public synchronized void remove() {
+
+		throw new RuntimeException("not implemented yet");
+	}
 }

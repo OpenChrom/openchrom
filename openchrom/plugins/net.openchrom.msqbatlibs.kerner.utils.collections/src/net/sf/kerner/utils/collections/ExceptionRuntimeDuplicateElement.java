@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,28 +17,27 @@ package net.sf.kerner.utils.collections;
 
 public class ExceptionRuntimeDuplicateElement extends RuntimeException {
 
-    /**
+	/**
      * 
      */
-    private static final long serialVersionUID = -8323720771155415135L;
+	private static final long serialVersionUID = -8323720771155415135L;
 
-    public ExceptionRuntimeDuplicateElement() {
+	public ExceptionRuntimeDuplicateElement() {
 
-    }
+	}
 
-    public ExceptionRuntimeDuplicateElement(final String message) {
-        super(message);
+	public ExceptionRuntimeDuplicateElement(final String message) {
 
-    }
+		super(message);
+	}
 
-    public ExceptionRuntimeDuplicateElement(final String message, final Throwable cause) {
-        super(message, cause);
+	public ExceptionRuntimeDuplicateElement(final String message, final Throwable cause) {
 
-    }
+		super(message, cause);
+	}
 
-    public ExceptionRuntimeDuplicateElement(final Throwable cause) {
-        super(cause);
+	public ExceptionRuntimeDuplicateElement(final Throwable cause) {
 
-    }
-
+		super(cause);
+	}
 }

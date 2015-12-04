@@ -7,22 +7,21 @@ import net.sf.bioutils.proteomics.peak.Peak;
 
 public class SampleGetMaxFrac {
 
-    public int getMaxFrac(final Collection<? extends Sample> samples) {
-        int result = -1;
+	public int getMaxFrac(final Collection<? extends Sample> samples) {
 
-        for (final Sample s : samples) {
-            for (final Peak p : s.getPeaks()) {
-                if (p.getFractionIndex() > result) {
-                    result = p.getFractionIndex();
-                }
-            }
-        }
+		int result = -1;
+		for(final Sample s : samples) {
+			for(final Peak p : s.getPeaks()) {
+				if(p.getFractionIndex() > result) {
+					result = p.getFractionIndex();
+				}
+			}
+		}
+		return result;
+	}
 
-        return result;
-    }
+	public int getMaxFrac(final Sample sample) {
 
-    public int getMaxFrac(final Sample sample) {
-        return getMaxFrac(Arrays.asList(sample));
-    }
-
+		return getMaxFrac(Arrays.asList(sample));
+	}
 }

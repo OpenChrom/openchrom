@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,61 +19,66 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class AbstractAsyncTaskCallableNotifying<R, V> extends
-        AbstractAsyncTaskCallable<R, V> {
+public abstract class AbstractAsyncTaskCallableNotifying<R, V> extends AbstractAsyncTaskCallable<R, V> {
 
-    public static interface Listener {
-        void notify(Object o);
-    }
+	public static interface Listener {
 
-    public static enum State {
-        WAITING, RUNNING, FINISHED_OK, FINISHED_BAD
-    }
+		void notify(Object o);
+	}
 
-    private final List<Listener> listeners = new ArrayList<Listener>();
+	public static enum State {
+		WAITING, RUNNING, FINISHED_OK, FINISHED_BAD
+	}
 
-    private State state = State.WAITING;
+	private final List<Listener> listeners = new ArrayList<Listener>();
+	private State state = State.WAITING;
+	private final String identifier;
 
-    private final String identifier;
+	public AbstractAsyncTaskCallableNotifying(final String identifier) {
 
-    public AbstractAsyncTaskCallableNotifying(final String identifier) {
-        this.identifier = identifier;
-    }
+		this.identifier = identifier;
+	}
 
-    public synchronized void addAllListeners(final Collection<? extends Listener> listeners) {
-        for (final Listener l : listeners) {
-            this.listeners.add(l);
-        }
-    }
+	public synchronized void addAllListeners(final Collection<? extends Listener> listeners) {
 
-    public synchronized void addListener(final Listener listener) {
-        listeners.add(listener);
-    }
+		for(final Listener l : listeners) {
+			this.listeners.add(l);
+		}
+	}
 
-    public void doBefore() {
-        synchronized (state) {
-            state = State.RUNNING;
-            notifyListeners(identifier + " : " + state);
-        }
-    }
+	public synchronized void addListener(final Listener listener) {
 
-    public void doOnFailure(final Exception e) {
-        synchronized (state) {
-            state = State.FINISHED_BAD;
-            notifyListeners(identifier + " : " + state);
-        }
-    }
+		listeners.add(listener);
+	}
 
-    public void doOnSucess(final R result) {
-        synchronized (state) {
-            state = State.FINISHED_OK;
-            notifyListeners(identifier + " : " + state);
-        }
-    }
+	public void doBefore() {
 
-    private void notifyListeners(final Object o) {
-        for (final Listener l : listeners) {
-            l.notify(o);
-        }
-    }
+		synchronized(state) {
+			state = State.RUNNING;
+			notifyListeners(identifier + " : " + state);
+		}
+	}
+
+	public void doOnFailure(final Exception e) {
+
+		synchronized(state) {
+			state = State.FINISHED_BAD;
+			notifyListeners(identifier + " : " + state);
+		}
+	}
+
+	public void doOnSucess(final R result) {
+
+		synchronized(state) {
+			state = State.FINISHED_OK;
+			notifyListeners(identifier + " : " + state);
+		}
+	}
+
+	private void notifyListeners(final Object o) {
+
+		for(final Listener l : listeners) {
+			l.notify(o);
+		}
+	}
 }

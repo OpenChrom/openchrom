@@ -9,49 +9,51 @@ import net.sf.kerner.utils.progress.ProgressMonitor;
 
 public abstract class SampleHandlerAbstract<S extends SampleModifiable> implements SampleHandler<S> {
 
-    private ProgressMonitor monitor;
+	private ProgressMonitor monitor;
 
-    protected abstract S getEmptyResultSample(final Sample input);
+	protected abstract S getEmptyResultSample(final Sample input);
 
-    public synchronized ProgressMonitor getMonitor() {
-        return monitor;
-    }
+	public synchronized ProgressMonitor getMonitor() {
 
-    @Override
-    public List<Peak> handle(final Collection<? extends Peak> peaks) throws Exception {
-        final List<Peak> result = UtilList.newList();
-        for (final Peak p : peaks) {
-            if (monitor != null && monitor.isCancelled()) {
-                return null;
-            }
-            if (monitor != null)
-                monitor.worked();
-            result.add(handlePeak(p));
-        }
-        return result;
-    }
+		return monitor;
+	}
 
-    @Override
-    public synchronized S handle(final Sample sample) throws Exception {
+	@Override
+	public List<Peak> handle(final Collection<? extends Peak> peaks) throws Exception {
 
-        sample.getLock().readLock().lock();
-        if (monitor != null)
-            monitor.started(sample.getSize());
-        try {
-            final S result = getEmptyResultSample(sample);
-            result.setPeaks(handle(sample.getPeaks()));
-            return result;
-        } finally {
-            if (monitor != null)
-                monitor.finished();
-            sample.getLock().readLock().unlock();
-        }
-    }
+		final List<Peak> result = UtilList.newList();
+		for(final Peak p : peaks) {
+			if(monitor != null && monitor.isCancelled()) {
+				return null;
+			}
+			if(monitor != null)
+				monitor.worked();
+			result.add(handlePeak(p));
+		}
+		return result;
+	}
 
-    protected abstract Peak handlePeak(final Peak input);
+	@Override
+	public synchronized S handle(final Sample sample) throws Exception {
 
-    public synchronized void setMonitor(final ProgressMonitor monitor) {
-        this.monitor = monitor;
-    }
+		sample.getLock().readLock().lock();
+		if(monitor != null)
+			monitor.started(sample.getSize());
+		try {
+			final S result = getEmptyResultSample(sample);
+			result.setPeaks(handle(sample.getPeaks()));
+			return result;
+		} finally {
+			if(monitor != null)
+				monitor.finished();
+			sample.getLock().readLock().unlock();
+		}
+	}
 
+	protected abstract Peak handlePeak(final Peak input);
+
+	public synchronized void setMonitor(final ProgressMonitor monitor) {
+
+		this.monitor = monitor;
+	}
 }

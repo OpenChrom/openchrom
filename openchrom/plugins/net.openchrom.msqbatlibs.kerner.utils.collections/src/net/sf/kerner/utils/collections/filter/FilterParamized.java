@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,23 +17,26 @@ package net.sf.kerner.utils.collections.filter;
 
 public abstract class FilterParamized<T, P> implements Filter<T> {
 
-    private P param;
+	private P param;
 
-    public FilterParamized(final P param) {
-        this.param = param;
-    }
+	public FilterParamized(final P param) {
 
-    public synchronized P getParam() {
-        return param;
-    }
+		this.param = param;
+	}
 
-    public synchronized void setParam(final P param) {
-        this.param = param;
-    }
+	public synchronized P getParam() {
 
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + " " + getParam();
-    }
+		return param;
+	}
 
+	public synchronized void setParam(final P param) {
+
+		this.param = param;
+	}
+
+	@Override
+	public String toString() {
+
+		return getClass().getSimpleName() + " " + getParam();
+	}
 }

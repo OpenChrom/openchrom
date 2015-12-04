@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -43,236 +43,233 @@ import org.junit.Test;
  */
 public class TestFASTAElementImpl {
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	}
 
-    private FASTAElementImpl el;
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    @Before
-    public void setUp() throws Exception {
+	}
 
-    }
+	private FASTAElementImpl el;
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	@Before
+	public void setUp() throws Exception {
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#equals(java.lang.Object)}.
-     */
-    @Test
-    public final void testEqualsObject() {
-        el = new FASTAElementImpl("header", "seq");
-        final FASTAElementImpl el2 = new FASTAElementImpl("header", "seq");
-        assertEquals(el, el2);
-    }
+	}
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#FASTAElementImpl(java.lang.String, char[])}
-     * .
-     */
-    @Test
-    public final void testFASTAElementImplStringCharArray() {
-        el = new FASTAElementImpl("header", new char[] { 's', 'e', 'q' });
-        assertEquals("header", el.getHeader());
-        assertEquals("seq", el.getSequence());
-    }
+	@After
+	public void tearDown() throws Exception {
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#FASTAElementImpl(java.lang.String, char[], java.util.Map)}
-     * .
-     */
-    @Test
-    @Ignore
-    public final void testFASTAElementImplStringCharArrayMapOfStringSerializable() {
-        fail("Not yet implemented"); // TODO
-    }
+	}
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#FASTAElementImpl(java.lang.String, java.lang.String)}
-     * .
-     */
-    @Test
-    public final void testFASTAElementImplStringString() {
-        el = new FASTAElementImpl("header", "seq");
-        assertEquals("header", el.getHeader());
-        assertEquals("seq", el.getSequence());
-    }
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#equals(java.lang.Object)}.
+	 */
+	@Test
+	public final void testEqualsObject() {
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#FASTAElementImpl(java.lang.String, java.lang.StringBuilder)}
-     * .
-     */
-    @Test
-    public final void testFASTAElementImplStringStringBuilder() {
-        el = new FASTAElementImpl("header", new StringBuilder("seq"));
-        assertEquals("header", el.getHeader());
-        assertEquals("seq", el.getSequence());
-    }
+		el = new FASTAElementImpl("header", "seq");
+		final FASTAElementImpl el2 = new FASTAElementImpl("header", "seq");
+		assertEquals(el, el2);
+	}
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#FASTAElementImpl(java.lang.String, java.lang.StringBuilder, java.util.Map)}
-     * .
-     */
-    @Test
-    @Ignore
-    public final void testFASTAElementImplStringStringBuilderMapOfStringSerializable() {
-        fail("Not yet implemented"); // TODO
-    }
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#FASTAElementImpl(java.lang.String, char[])} .
+	 */
+	@Test
+	public final void testFASTAElementImplStringCharArray() {
 
-    /**
-     * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#getHeader()}.
-     */
-    @Test
-    @Ignore
-    public final void testGetHeader() {
-        fail("Not yet implemented"); // TODO
-    }
+		el = new FASTAElementImpl("header", new char[]{'s', 'e', 'q'});
+		assertEquals("header", el.getHeader());
+		assertEquals("seq", el.getSequence());
+	}
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#getHeader(boolean)}.
-     */
-    @Test
-    @Ignore
-    public final void testGetHeaderBoolean() {
-        fail("Not yet implemented"); // TODO
-    }
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#FASTAElementImpl(java.lang.String, char[], java.util.Map)} .
+	 */
+	@Test
+	@Ignore
+	public final void testFASTAElementImplStringCharArrayMapOfStringSerializable() {
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#getLineLength()}.
-     */
-    @Test
-    public final void testGetLineLength() {
-        el = new FASTAElementImpl("header", "seq");
-        assertEquals(FASTAFile.DEFAULT_LINE_LENGTH, el.getLineLength());
-    }
+		fail("Not yet implemented"); // TODO
+	}
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#getMethaInfo()}.
-     */
-    @Test
-    public final void testGetMethaInfo() {
-        final Map<String, Serializable> meta = new LinkedHashMap<String, Serializable>();
-        meta.put("meta", "value");
-        el = new FASTAElementImpl("header", "seq", meta);
-        assertEquals(meta, el.getMethaInfo());
-    }
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#FASTAElementImpl(java.lang.String, java.lang.String)} .
+	 */
+	@Test
+	public final void testFASTAElementImplStringString() {
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#getMethaInfo(java.lang.String)}
-     * .
-     */
-    @Test
-    public final void testGetMethaInfoString() {
-        final Map<String, Serializable> meta = new LinkedHashMap<String, Serializable>();
-        meta.put("meta", "value");
-        el = new FASTAElementImpl("header", "seq", meta);
-        assertEquals("value", el.getMethaInfo("meta"));
-    }
+		el = new FASTAElementImpl("header", "seq");
+		assertEquals("header", el.getHeader());
+		assertEquals("seq", el.getSequence());
+	}
 
-    /**
-     * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#getSequence()}
-     * .
-     */
-    @Test
-    @Ignore
-    public final void testGetSequence() {
-        fail("Not yet implemented"); // TODO
-    }
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#FASTAElementImpl(java.lang.String, java.lang.StringBuilder)} .
+	 */
+	@Test
+	public final void testFASTAElementImplStringStringBuilder() {
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#getSequenceLength()}.
-     */
-    @Test
-    @Ignore
-    public final void testGetSequenceLength() {
-        fail("Not yet implemented"); // TODO
-    }
+		el = new FASTAElementImpl("header", new StringBuilder("seq"));
+		assertEquals("header", el.getHeader());
+		assertEquals("seq", el.getSequence());
+	}
 
-    /**
-     * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#hashCode()}.
-     */
-    @Ignore
-    @Test
-    public final void testHashCode() {
-        fail("Not yet implemented"); // TODO
-    }
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#FASTAElementImpl(java.lang.String, java.lang.StringBuilder, java.util.Map)} .
+	 */
+	@Test
+	@Ignore
+	public final void testFASTAElementImplStringStringBuilderMapOfStringSerializable() {
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#setLineLength(int)}.
-     */
-    @Test
-    public final void testSetLineLength() {
-        el = new FASTAElementImpl("header", "seq");
-        el.setLineLength(2);
-        assertEquals(2, el.getLineLength());
-    }
+		fail("Not yet implemented"); // TODO
+	}
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#setLineLength(int)}.
-     */
-    @Test
-    public final void testSetLineLength01() {
-        el = new FASTAElementImpl("header", "seq");
-        el.setLineLength(2);
-        assertEquals(">header" + UtilIO.NEW_LINE_STRING + "se" + UtilIO.NEW_LINE_STRING + "q", el.toString());
-    }
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#getHeader()}.
+	 */
+	@Test
+	@Ignore
+	public final void testGetHeader() {
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#setMethaInfo(java.util.Map)}.
-     */
-    @Test
-    public final void testSetMethaInfoMapOfStringSerializable() {
-        final Map<String, Serializable> meta = new LinkedHashMap<String, Serializable>();
-        meta.put("meta", "value");
-        el = new FASTAElementImpl("header", "seq");
-        el.setMethaInfo(meta);
-        assertEquals(meta, el.getMethaInfo());
-    }
+		fail("Not yet implemented"); // TODO
+	}
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#setMethaInfo(java.lang.String, java.io.Serializable)}
-     * .
-     */
-    @Test
-    public final void testSetMethaInfoStringSerializable() {
-        final Map<String, Serializable> meta = new LinkedHashMap<String, Serializable>();
-        meta.put("meta", "value");
-        el = new FASTAElementImpl("header", "seq");
-        el.setMethaInfo("meta", "value");
-        assertEquals(meta, el.getMethaInfo());
-    }
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#getHeader(boolean)}.
+	 */
+	@Test
+	@Ignore
+	public final void testGetHeaderBoolean() {
 
-    /**
-     * Test method for
-     * {@link net.sf.jfasta.impl.FASTAElementImpl#toString(boolean)}.
-     */
-    @Test
-    public final void testToStringBoolean() {
-        final Map<String, Serializable> meta = new LinkedHashMap<String, Serializable>();
-        meta.put("meta", "value");
-        el = new FASTAElementImpl("header", "seq", meta);
-        assertEquals(">header" + UtilIO.NEW_LINE_STRING + el.getSequence(), el.toString());
-    }
+		fail("Not yet implemented"); // TODO
+	}
 
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#getLineLength()}.
+	 */
+	@Test
+	public final void testGetLineLength() {
+
+		el = new FASTAElementImpl("header", "seq");
+		assertEquals(FASTAFile.DEFAULT_LINE_LENGTH, el.getLineLength());
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#getMethaInfo()}.
+	 */
+	@Test
+	public final void testGetMethaInfo() {
+
+		final Map<String, Serializable> meta = new LinkedHashMap<String, Serializable>();
+		meta.put("meta", "value");
+		el = new FASTAElementImpl("header", "seq", meta);
+		assertEquals(meta, el.getMethaInfo());
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#getMethaInfo(java.lang.String)} .
+	 */
+	@Test
+	public final void testGetMethaInfoString() {
+
+		final Map<String, Serializable> meta = new LinkedHashMap<String, Serializable>();
+		meta.put("meta", "value");
+		el = new FASTAElementImpl("header", "seq", meta);
+		assertEquals("value", el.getMethaInfo("meta"));
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#getSequence()} .
+	 */
+	@Test
+	@Ignore
+	public final void testGetSequence() {
+
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#getSequenceLength()}.
+	 */
+	@Test
+	@Ignore
+	public final void testGetSequenceLength() {
+
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#hashCode()}.
+	 */
+	@Ignore
+	@Test
+	public final void testHashCode() {
+
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#setLineLength(int)}.
+	 */
+	@Test
+	public final void testSetLineLength() {
+
+		el = new FASTAElementImpl("header", "seq");
+		el.setLineLength(2);
+		assertEquals(2, el.getLineLength());
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#setLineLength(int)}.
+	 */
+	@Test
+	public final void testSetLineLength01() {
+
+		el = new FASTAElementImpl("header", "seq");
+		el.setLineLength(2);
+		assertEquals(">header" + UtilIO.NEW_LINE_STRING + "se" + UtilIO.NEW_LINE_STRING + "q", el.toString());
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#setMethaInfo(java.util.Map)}.
+	 */
+	@Test
+	public final void testSetMethaInfoMapOfStringSerializable() {
+
+		final Map<String, Serializable> meta = new LinkedHashMap<String, Serializable>();
+		meta.put("meta", "value");
+		el = new FASTAElementImpl("header", "seq");
+		el.setMethaInfo(meta);
+		assertEquals(meta, el.getMethaInfo());
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#setMethaInfo(java.lang.String, java.io.Serializable)} .
+	 */
+	@Test
+	public final void testSetMethaInfoStringSerializable() {
+
+		final Map<String, Serializable> meta = new LinkedHashMap<String, Serializable>();
+		meta.put("meta", "value");
+		el = new FASTAElementImpl("header", "seq");
+		el.setMethaInfo("meta", "value");
+		assertEquals(meta, el.getMethaInfo());
+	}
+
+	/**
+	 * Test method for {@link net.sf.jfasta.impl.FASTAElementImpl#toString(boolean)}.
+	 */
+	@Test
+	public final void testToStringBoolean() {
+
+		final Map<String, Serializable> meta = new LinkedHashMap<String, Serializable>();
+		meta.put("meta", "value");
+		el = new FASTAElementImpl("header", "seq", meta);
+		assertEquals(">header" + UtilIO.NEW_LINE_STRING + el.getSequence(), el.toString());
+	}
 }

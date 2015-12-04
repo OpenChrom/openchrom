@@ -11,37 +11,37 @@ import net.sf.jtables.table.Row;
 
 public abstract class WriterTableObjectToMultipleRows<T> extends WriterTableObjectToRowsAbstract<T> {
 
-    public WriterTableObjectToMultipleRows(final File file) throws IOException {
-        super(file);
-    }
+	public WriterTableObjectToMultipleRows(final File file) throws IOException {
 
-    public WriterTableObjectToMultipleRows(final OutputStream stream) throws IOException {
-        super(stream);
-    }
+		super(file);
+	}
 
-    public WriterTableObjectToMultipleRows(final Writer writer) throws IOException {
-        super(writer);
-    }
+	public WriterTableObjectToMultipleRows(final OutputStream stream) throws IOException {
 
-    protected abstract TransformerObjectToMultipleRowsString<T> getTransformer();
+		super(stream);
+	}
 
-    @Override
-    public WriterTableObjectToMultipleRows<T> writeElement(final String delimiter, final T element) throws IOException {
-        if (getTransformer() == null) {
-            throw new IllegalStateException("set transformer first");
-        }
+	public WriterTableObjectToMultipleRows(final Writer writer) throws IOException {
 
-        final Iterator<Row<String>> it = getTransformer().transform(element).iterator();
-        while (it.hasNext()) {
-            final Row<String> row = it.next();
+		super(writer);
+	}
 
-            super.write(delimiter, row);
-            if (it.hasNext()) {
-                super.writer.newLine();
-            }
+	protected abstract TransformerObjectToMultipleRowsString<T> getTransformer();
 
-        }
-        return this;
-    }
+	@Override
+	public WriterTableObjectToMultipleRows<T> writeElement(final String delimiter, final T element) throws IOException {
 
+		if(getTransformer() == null) {
+			throw new IllegalStateException("set transformer first");
+		}
+		final Iterator<Row<String>> it = getTransformer().transform(element).iterator();
+		while(it.hasNext()) {
+			final Row<String> row = it.next();
+			super.write(delimiter, row);
+			if(it.hasNext()) {
+				super.writer.newLine();
+			}
+		}
+		return this;
+	}
 }

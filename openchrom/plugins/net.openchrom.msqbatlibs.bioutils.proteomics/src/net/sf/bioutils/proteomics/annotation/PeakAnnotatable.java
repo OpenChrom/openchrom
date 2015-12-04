@@ -16,7 +16,6 @@ import net.sf.bioutils.proteomics.peak.Peak;
  */
 public interface PeakAnnotatable extends Peak, AnnotatableElement {
 
-    @Override
-    PeakAnnotatable clone();
-
+	@Override
+	PeakAnnotatable clone();
 }

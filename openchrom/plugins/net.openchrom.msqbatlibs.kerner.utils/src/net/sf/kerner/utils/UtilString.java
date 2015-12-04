@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,62 +37,69 @@ import java.util.List;
  */
 public class UtilString {
 
-    /**
-     * System dependent new line string.
-     */
-    public final static String NEW_LINE_STRING = System.getProperty("line.separator");
+	/**
+	 * System dependent new line string.
+	 */
+	public final static String NEW_LINE_STRING = System.getProperty("line.separator");
 
-    public static boolean allEmpty(final Collection<? extends String> strings) {
-        for (final String s : strings) {
-            if (!emptyString(s)) {
-                return false;
-            }
-        }
-        return true;
-    }
+	public static boolean allEmpty(final Collection<? extends String> strings) {
 
-    /**
-     * Check if a string is {@code null}, empty or contains only whitespaces.
-     *
-     * @param string
-     *            {@code String} to check
-     * @return true, if this {@code String} is {@code null}, empty or contains
-     *         only whitespaces; false otherwise
-     */
-    public static boolean emptyString(final String string) {
-        if (string == null)
-            return true;
-        if (string.length() < 1)
-            return true;
-        if (string.matches("\\s+"))
-            return true;
-        return false;
-    }
+		for(final String s : strings) {
+			if(!emptyString(s)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
-    /**
-     * @return a random {@code String}
-     */
-    public static String getRandomString() {
-        final String result = Long.toHexString(Double.doubleToLongBits(Math.random()));
-        return result;
-    }
+	/**
+	 * Check if a string is {@code null}, empty or contains only whitespaces.
+	 *
+	 * @param string
+	 *            {@code String} to check
+	 * @return true, if this {@code String} is {@code null}, empty or contains
+	 *         only whitespaces; false otherwise
+	 */
+	public static boolean emptyString(final String string) {
 
-    public static String replaceAllNewLine(final String string, final String replacement) {
-        return string.replaceAll("\\r\\n|\\r|\\n", replacement);
-    }
+		if(string == null)
+			return true;
+		if(string.length() < 1)
+			return true;
+		if(string.matches("\\s+"))
+			return true;
+		return false;
+	}
 
-    public static List<Integer> toLength(final Collection<String> strings) {
-        final List<Integer> lengths = new ArrayList<Integer>();
-        for (final String s : strings) {
-            lengths.add(s.length());
-        }
-        return lengths;
-    }
+	/**
+	 * @return a random {@code String}
+	 */
+	public static String getRandomString() {
 
-    public static String trimAndReduceWhiteSpace(final String string) {
-        return string.trim().replaceAll("\\s+", " ");
-    }
+		final String result = Long.toHexString(Double.doubleToLongBits(Math.random()));
+		return result;
+	}
 
-    private UtilString() {
-    }
+	public static String replaceAllNewLine(final String string, final String replacement) {
+
+		return string.replaceAll("\\r\\n|\\r|\\n", replacement);
+	}
+
+	public static List<Integer> toLength(final Collection<String> strings) {
+
+		final List<Integer> lengths = new ArrayList<Integer>();
+		for(final String s : strings) {
+			lengths.add(s.length());
+		}
+		return lengths;
+	}
+
+	public static String trimAndReduceWhiteSpace(final String string) {
+
+		return string.trim().replaceAll("\\s+", " ");
+	}
+
+	private UtilString() {
+
+	}
 }

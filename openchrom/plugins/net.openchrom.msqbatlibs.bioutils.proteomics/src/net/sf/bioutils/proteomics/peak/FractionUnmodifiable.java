@@ -13,100 +13,114 @@ import net.sf.kerner.utils.Util;
 
 public class FractionUnmodifiable implements Fraction {
 
-    private final Fraction delegate;
+	private final Fraction delegate;
 
-    public FractionUnmodifiable(final Fraction delegate) {
-        Util.checkForNull(delegate);
-        this.delegate = delegate;
-    }
+	public FractionUnmodifiable(final Fraction delegate) {
 
-    @Override
-    public void addPeak(final Peak peak) {
-        throw new UnsupportedOperationException();
+		Util.checkForNull(delegate);
+		this.delegate = delegate;
+	}
 
-    }
+	@Override
+	public void addPeak(final Peak peak) {
 
-    @Override
-    public void addStandard(final Standard standard) {
-        throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException();
+	}
 
-    }
+	@Override
+	public void addStandard(final Standard standard) {
 
-    @Override
-    public FractionUnmodifiable clone() {
-        return new FractionUnmodifiable(delegate.clone());
-    }
+		throw new UnsupportedOperationException();
+	}
 
-    @Override
-    public FractionUnmodifiable cloneWOPeaks() {
-        return new FractionUnmodifiable(delegate.cloneWOPeaks());
-    }
+	@Override
+	public FractionUnmodifiable clone() {
 
-    @Override
-    public boolean equals(final Object obj) {
-        return delegate.equals(obj);
-    }
+		return new FractionUnmodifiable(delegate.clone());
+	}
 
-    @Override
-    public int getIndex() {
-        return delegate.getIndex();
-    }
+	@Override
+	public FractionUnmodifiable cloneWOPeaks() {
 
-    @Override
-    public String getName() {
-        return delegate.getName();
-    }
+		return new FractionUnmodifiable(delegate.cloneWOPeaks());
+	}
 
-    @Override
-    public List<Peak> getPeaks() {
-        final List<Peak> l = new ArrayList<Peak>(
-                new TransformerPeakToUnmodifiable().transformCollection(delegate.getPeaks()));
-        return Collections.unmodifiableList(l);
-    }
+	@Override
+	public boolean equals(final Object obj) {
 
-    @Override
-    public Sample getSample() {
-        return delegate.getSample();
-    }
+		return delegate.equals(obj);
+	}
 
-    @Override
-    public int getSize() {
-        return delegate.getSize();
-    }
+	@Override
+	public int getIndex() {
 
-    @Override
-    public Set<Standard> getStandards() {
-        return Collections.unmodifiableSet(delegate.getStandards());
-    }
+		return delegate.getIndex();
+	}
 
-    @Override
-    public int hashCode() {
-        return delegate.hashCode();
-    }
+	@Override
+	public String getName() {
 
-    @Override
-    public boolean isEmpty() {
-        return delegate.isEmpty();
-    }
+		return delegate.getName();
+	}
 
-    @Override
-    public void setPeaks(final Collection<? extends Peak> peaks) {
-        delegate.setPeaks(peaks);
-    }
+	@Override
+	public List<Peak> getPeaks() {
 
-    @Override
-    public void setSample(final Sample sample) {
-        throw new UnsupportedOperationException();
-    }
+		final List<Peak> l = new ArrayList<Peak>(new TransformerPeakToUnmodifiable().transformCollection(delegate.getPeaks()));
+		return Collections.unmodifiableList(l);
+	}
 
-    @Override
-    public void setStandards(final Collection<? extends Standard> standards) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	public Sample getSample() {
 
-    @Override
-    public String toString() {
-        return "FractionUnmodifiable:" + delegate;
-    }
+		return delegate.getSample();
+	}
 
+	@Override
+	public int getSize() {
+
+		return delegate.getSize();
+	}
+
+	@Override
+	public Set<Standard> getStandards() {
+
+		return Collections.unmodifiableSet(delegate.getStandards());
+	}
+
+	@Override
+	public int hashCode() {
+
+		return delegate.hashCode();
+	}
+
+	@Override
+	public boolean isEmpty() {
+
+		return delegate.isEmpty();
+	}
+
+	@Override
+	public void setPeaks(final Collection<? extends Peak> peaks) {
+
+		delegate.setPeaks(peaks);
+	}
+
+	@Override
+	public void setSample(final Sample sample) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setStandards(final Collection<? extends Standard> standards) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public String toString() {
+
+		return "FractionUnmodifiable:" + delegate;
+	}
 }

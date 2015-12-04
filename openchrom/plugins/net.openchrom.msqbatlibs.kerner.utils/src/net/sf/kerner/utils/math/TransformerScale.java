@@ -4,10 +4,9 @@ import net.sf.kerner.utils.transformer.Transformer;
 
 public interface TransformerScale extends Transformer<Double, Double> {
 
-    double getRatio(double n1, double n2);
+	double getRatio(double n1, double n2);
 
-    double invert(double number);
+	double invert(double number);
 
-    boolean isLog();
-
+	boolean isLog();
 }

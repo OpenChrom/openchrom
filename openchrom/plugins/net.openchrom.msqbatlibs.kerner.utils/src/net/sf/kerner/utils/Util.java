@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,78 +32,81 @@ import org.slf4j.LoggerFactory;
  */
 public class Util {
 
-    private final static Logger logger = LoggerFactory.getLogger(Util.class);
+	private final static Logger logger = LoggerFactory.getLogger(Util.class);
+	/**
+	 * Number of CPUs that are available to this JVM.
+	 */
+	public static final int NUM_CPUS = Runtime.getRuntime().availableProcessors();
+	/**
+	 * {@link Locale} of current user, e.g. "de", "en" or "fr".
+	 */
+	public static final Locale USER_LOCALE = new Locale(System.getProperty("user.language"));
+	/**
+	 * The working directory is the location in the file system from where the
+	 * java command was invoked.
+	 */
+	public static final File WORKING_DIR = new File(System.getProperty("user.dir"));
 
-    /**
-     * Number of CPUs that are available to this JVM.
-     */
-    public static final int NUM_CPUS = Runtime.getRuntime().availableProcessors();
+	public static void checkForNull(final Object... objects) throws NullPointerException {
 
-    /**
-     * {@link Locale} of current user, e.g. "de", "en" or "fr".
-     */
-    public static final Locale USER_LOCALE = new Locale(System.getProperty("user.language"));
+		for(final Object o : objects) {
+			if(o == null) {
+				throw new NullPointerException();
+			}
+		}
+	}
 
-    /**
-     * The working directory is the location in the file system from where the
-     * java command was invoked.
-     */
-    public static final File WORKING_DIR = new File(System.getProperty("user.dir"));
+	public static String getCurrentStackTraceString() {
 
-    public static void checkForNull(final Object... objects) throws NullPointerException {
-        for (final Object o : objects) {
-            if (o == null) {
-                throw new NullPointerException();
-            }
-        }
-    }
+		return getStackTraceString(new Exception());
+	}
 
-    public static String getCurrentStackTraceString() {
-        return getStackTraceString(new Exception());
-    }
+	public static String getStackTraceString(final Throwable t) {
 
-    public static String getStackTraceString(final Throwable t) {
-        final StringWriter sw = new StringWriter();
-        final PrintWriter pw = new PrintWriter(sw);
-        t.printStackTrace(pw);
-        return sw.toString();
-    }
+		final StringWriter sw = new StringWriter();
+		final PrintWriter pw = new PrintWriter(sw);
+		t.printStackTrace(pw);
+		return sw.toString();
+	}
 
-    public static String getToStringDelimiter() {
-        return ":";
-    }
+	public static String getToStringDelimiter() {
 
-    public static String getToStringPostFix(final Class<?> c) {
-        return "";
-    }
+		return ":";
+	}
 
-    public static String getToStringPreFix(final Class<?> c) {
-        return c.getSimpleName() + getToStringDelimiter();
-    }
+	public static String getToStringPostFix(final Class<?> c) {
 
-    /**
-     * Load a property file as a resource stream and return the {@code version}
-     * property.
-     *
-     * @param clazz
-     * @param propertiesFile
-     * @return version string or {@code n/a} if property could not be read
-     */
-    public static String readVersionFromProperties(final Class<?> clazz, final String propertiesFile) {
-        String result = "n/a";
-        try {
-            final Properties props = new Properties();
-            props.load(clazz.getResourceAsStream(propertiesFile));
-            result = props.getProperty("version");
-        } catch (final Exception e) {
-            if (logger.isErrorEnabled()) {
-                logger.error(e.getLocalizedMessage(), e);
-            }
-        }
-        return result;
-    }
+		return "";
+	}
 
-    private Util() {
+	public static String getToStringPreFix(final Class<?> c) {
 
-    }
+		return c.getSimpleName() + getToStringDelimiter();
+	}
+
+	/**
+	 * Load a property file as a resource stream and return the {@code version} property.
+	 *
+	 * @param clazz
+	 * @param propertiesFile
+	 * @return version string or {@code n/a} if property could not be read
+	 */
+	public static String readVersionFromProperties(final Class<?> clazz, final String propertiesFile) {
+
+		String result = "n/a";
+		try {
+			final Properties props = new Properties();
+			props.load(clazz.getResourceAsStream(propertiesFile));
+			result = props.getProperty("version");
+		} catch(final Exception e) {
+			if(logger.isErrorEnabled()) {
+				logger.error(e.getLocalizedMessage(), e);
+			}
+		}
+		return result;
+	}
+
+	private Util() {
+
+	}
 }

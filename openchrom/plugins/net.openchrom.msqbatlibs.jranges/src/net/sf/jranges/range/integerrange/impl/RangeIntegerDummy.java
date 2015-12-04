@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,8 +20,7 @@ import net.sf.jranges.range.integerrange.RangeInteger;
 
 /**
  * 
- * Most simple implementation for
- * {@link net.sf.jranges.range.integerrange.RangeInteger IntegerRange}. Arguments and
+ * Most simple implementation for {@link net.sf.jranges.range.integerrange.RangeInteger IntegerRange}. Arguments and
  * operations are not checked for validity.
  * 
  * <p>
@@ -47,7 +46,6 @@ import net.sf.jranges.range.integerrange.RangeInteger;
 public class RangeIntegerDummy extends VeryAbstractIntegerRange implements RangeInteger {
 
 	// Constructor //
-
 	/**
 	 * 
 	 * Construct a new {@code DummyRange} with start and stop values initiated
@@ -55,6 +53,7 @@ public class RangeIntegerDummy extends VeryAbstractIntegerRange implements Range
 	 * 
 	 */
 	public RangeIntegerDummy() {
+
 		this.start = 0;
 		this.stop = 0;
 	}
@@ -65,12 +64,12 @@ public class RangeIntegerDummy extends VeryAbstractIntegerRange implements Range
 	 * 
 	 */
 	public RangeIntegerDummy(int start, int stop) {
+
 		this.start = start;
 		this.stop = stop;
 	}
 
 	// Public //
-
 	/**
 	 * 
 	 * Set start position for this {@code DummyRange}.
@@ -79,6 +78,7 @@ public class RangeIntegerDummy extends VeryAbstractIntegerRange implements Range
 	 *            new start position
 	 */
 	public void setStart(int start) {
+
 		this.start = start;
 	}
 
@@ -90,15 +90,16 @@ public class RangeIntegerDummy extends VeryAbstractIntegerRange implements Range
 	 *            new stop position
 	 */
 	public void setStop(int stop) {
+
 		this.stop = stop;
 	}
 
 	// Implement //
-
 	/**
 	 * 
 	 */
 	public RangeInteger shift(int offset) {
+
 		return new RangeIntegerDummy(getStart() + offset, getStop() + offset);
 	}
 
@@ -106,6 +107,7 @@ public class RangeIntegerDummy extends VeryAbstractIntegerRange implements Range
 	 * 
 	 */
 	public RangeInteger expandRange(int offset) throws RangeException {
+
 		return expandRange(offset, false);
 	}
 
@@ -113,9 +115,9 @@ public class RangeIntegerDummy extends VeryAbstractIntegerRange implements Range
 	 * 
 	 */
 	public RangeInteger expandRange(int offset, boolean stayWithinLimits) throws RangeException {
+
 		int start = getStart() - offset;
 		int stop = getStop() + offset;
 		return new RangeIntegerDummy(start, stop);
 	}
-
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,96 +52,102 @@ import net.sf.jranges.range.doublerange.RangeDouble;
  */
 public abstract class VeryAbstractDoubleRange implements RangeDouble {
 
-    private volatile int hashCode;
+	private volatile int hashCode;
+	/**
+	 * start position.
+	 */
+	protected double start;
+	/**
+	 * stop position.
+	 */
+	protected double stop;
 
-    /**
-     * start position.
-     */
-    protected double start;
+	/**
+	 * Compares this {@code DoubleRange} to given {@code DoubleRange} by {@link #getStart()} .
+	 */
+	public int compareTo(final RangeDouble o) {
 
-    /**
-     * stop position.
-     */
-    protected double stop;
+		return Double.valueOf(getStart()).compareTo(Double.valueOf(o.getStart()));
+	}
 
-    /**
-     * Compares this {@code DoubleRange} to given {@code DoubleRange} by
-     * {@link #getStart()} .
-     */
-    public int compareTo(final RangeDouble o) {
-        return Double.valueOf(getStart()).compareTo(Double.valueOf(o.getStart()));
-    }
+	@Override
+	public boolean equals(final Object obj) {
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof RangeDouble))
-            return false;
-        final RangeDouble other = (RangeDouble) obj;
-        if (getStart() != other.getStart())
-            return false;
-        if (getStop() != other.getStop())
-            return false;
-        return true;
-    }
+		if(this == obj)
+			return true;
+		if(obj == null)
+			return false;
+		if(!(obj instanceof RangeDouble))
+			return false;
+		final RangeDouble other = (RangeDouble)obj;
+		if(getStart() != other.getStart())
+			return false;
+		if(getStop() != other.getStop())
+			return false;
+		return true;
+	}
 
-    /**
-     * @return 1
-     */
-    public double getInterval() {
-        return 1;
-    }
+	/**
+	 * @return 1
+	 */
+	public double getInterval() {
 
-    public int getLength() {
-        return (int) ((getStop() - getStart()) / getInterval());
-    }
+		return 1;
+	}
 
-    /**
+	public int getLength() {
+
+		return (int)((getStop() - getStart()) / getInterval());
+	}
+
+	/**
 	 * 
 	 */
-    public double getStart() {
-        return start;
-    }
+	public double getStart() {
 
-    /**
+		return start;
+	}
+
+	/**
 	 * 
 	 */
-    public double getStop() {
-        return stop;
-    }
+	public double getStop() {
 
-    @Override
-    public synchronized int hashCode() {
-        double result = hashCode;
-        if (result == 0) {
-            final int prime = 31;
-            result = 1;
-            result = prime * result + getStart();
-            result = prime * result + getStop();
-            hashCode = (int) result;
-        }
-        return (int) result;
-    }
+		return stop;
+	}
 
-    /**
+	@Override
+	public synchronized int hashCode() {
+
+		double result = hashCode;
+		if(result == 0) {
+			final int prime = 31;
+			result = 1;
+			result = prime * result + getStart();
+			result = prime * result + getStop();
+			hashCode = (int)result;
+		}
+		return (int)result;
+	}
+
+	/**
 	 * 
 	 */
-    public boolean includes(final double position) {
-        if (getStart() <= position && getStop() >= position)
-            return true;
-        return false;
-    }
+	public boolean includes(final double position) {
 
-    public boolean sharesPositionsWith(final RangeDouble anotherRange) {
-        return (includes(anotherRange.getStart()) || includes(anotherRange.getStop()));
-    }
+		if(getStart() <= position && getStop() >= position)
+			return true;
+		return false;
+	}
 
-    @Override
-    public String toString() {
-        return getStart() + "->" + getStop();
-    }
+	public boolean sharesPositionsWith(final RangeDouble anotherRange) {
 
+		return (includes(anotherRange.getStart()) || includes(anotherRange.getStop()));
+	}
+
+	@Override
+	public String toString() {
+
+		return getStart() + "->" + getStop();
+	}
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,23 +19,19 @@ import java.util.Map;
 
 /**
  *
- * A collection of additional meta-informations which are assigned to an
- * {@link AnnotatableElement}.
+ * A collection of additional meta-informations which are assigned to an {@link AnnotatableElement}.
  *
  *
  * @author <a href="mailto:alexanderkerner24@gmail.com">Alexander Kerner</a>
  *
  * @param <K>
- *            the type of annotation keys/ identifiers maintained by this
- *            {@code Annotation}
+ *            the type of annotation keys/ identifiers maintained by this {@code Annotation}
  * @param <V>
- *            the type of annotation values maintained by this
- *            {@code Annotation}
+ *            the type of annotation values maintained by this {@code Annotation}
  *
  * @see AnnotatableElement
  * @see AnnotationSerializable
  * @see Map
  */
 public interface Annotation<K, V> extends Map<K, V> {
-
 }

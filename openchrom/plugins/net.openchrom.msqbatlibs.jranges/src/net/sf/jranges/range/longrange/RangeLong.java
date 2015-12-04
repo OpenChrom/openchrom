@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,8 +20,7 @@ import net.sf.jranges.range.RangeException;
 
 /**
  * 
- * A {@code LongRange} is a {@link net.sf.jranges.range.Range Range} based on
- * {@code long} values.
+ * A {@code LongRange} is a {@link net.sf.jranges.range.Range Range} based on {@code long} values.
  * 
  * @author <a href="mailto:alex.kerner.24@googlemail.com">Alexander Kerner</a>
  * @version 2010-11-07
@@ -48,8 +47,7 @@ public interface RangeLong extends Comparable<RangeLong>, Range {
 	/**
 	 * 
 	 * Retrieve the number of positions covered by this {@code LongRange}, what
-	 * will be typically defined as {@code {@link #getStop()} -
-	 * {@link #getStart()} +1}.
+	 * will be typically defined as {@code {@link #getStop()} - {@link #getStart()} +1}.
 	 * 
 	 * @return this {@code LongRange}'s length
 	 */
@@ -68,10 +66,8 @@ public interface RangeLong extends Comparable<RangeLong>, Range {
 	 * 
 	 * Shift this {@code LongRange}.
 	 * <p>
-	 * A shift is defined as the increment of both start and stop by given
-	 * offset. <br>
-	 * If {@code offset} is negative, it will result in an decrement of this
-	 * {@code LongRange}'s start and stop.
+	 * A shift is defined as the increment of both start and stop by given offset. <br>
+	 * If {@code offset} is negative, it will result in an decrement of this {@code LongRange}'s start and stop.
 	 * </p>
 	 * 
 	 * @param offset
@@ -99,10 +95,8 @@ public interface RangeLong extends Comparable<RangeLong>, Range {
 	 * 
 	 * Expand this {@code LongRange}.
 	 * <p>
-	 * An expansion is defined as the increment of this {@code LongRange}'s
-	 * length by {@code offset * 2}. <br>
-	 * If {@code offset} is negative, it will result in an decrement of this
-	 * {@code LongRange}'s length.
+	 * An expansion is defined as the increment of this {@code LongRange}'s length by {@code offset * 2}. <br>
+	 * If {@code offset} is negative, it will result in an decrement of this {@code LongRange}'s length.
 	 * </p>
 	 * 
 	 * @param offset
@@ -124,5 +118,4 @@ public interface RangeLong extends Comparable<RangeLong>, Range {
 	 *         false otherwise
 	 */
 	boolean includes(long position);
-
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,23 +46,21 @@ import net.sf.bioutils.proteomics.peak.Peak;
  */
 public interface Spectrum extends Iterable<Peak> {
 
-    /**
-     * 
-     * @return this {@code Spectrum's} name, if available, or {@code null}
-     *         otherwise
-     */
-    String getName();
+	/**
+	 * 
+	 * @return this {@code Spectrum's} name, if available, or {@code null} otherwise
+	 */
+	String getName();
 
-    /**
-     * 
-     * @return mass of parent ion which was fractionated
-     */
-    double getParentMass();
+	/**
+	 * 
+	 * @return mass of parent ion which was fractionated
+	 */
+	double getParentMass();
 
-    /**
-     * 
-     * @return {@link Peak Peaks} representing this {@code Spectrum}
-     */
-    List<Peak> getPeaks();
-
+	/**
+	 * 
+	 * @return {@link Peak Peaks} representing this {@code Spectrum}
+	 */
+	List<Peak> getPeaks();
 }

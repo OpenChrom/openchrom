@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,16 +21,17 @@ import net.sf.kerner.utils.math.UtilMath;
 
 public class EqualatorPeakMZAbs extends EqualatorAbstract<Peak> {
 
-    private final int accuracy;
+	private final int accuracy;
 
-    public EqualatorPeakMZAbs(final int accuracy) {
-        super();
-        this.accuracy = accuracy;
-    }
+	public EqualatorPeakMZAbs(final int accuracy) {
 
-    @Override
-    public boolean areEqual(final Peak o1, final Object o2) {
-        return Double.valueOf(UtilMath.round(o1.getMz(), accuracy)).equals(
-                Double.valueOf(UtilMath.round(((ProviderMz) o2).getMz(), accuracy)));
-    }
+		super();
+		this.accuracy = accuracy;
+	}
+
+	@Override
+	public boolean areEqual(final Peak o1, final Object o2) {
+
+		return Double.valueOf(UtilMath.round(o1.getMz(), accuracy)).equals(Double.valueOf(UtilMath.round(((ProviderMz)o2).getMz(), accuracy)));
+	}
 }

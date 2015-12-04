@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,55 +24,61 @@ import net.sf.kerner.utils.pair.Pair;
 
 public class EqualatorApplierProto<T> extends ApplierAbstract implements EqualatorApplier<T> {
 
-    private final List<Equalator<T>> equalators = UtilList.newList();
+	private final List<Equalator<T>> equalators = UtilList.newList();
 
-    public EqualatorApplierProto() {
-        super();
-    }
+	public EqualatorApplierProto() {
 
-    public EqualatorApplierProto(final TYPE type) {
-        super(type);
-    }
+		super();
+	}
 
-    public void addEqualator(final Equalator<T> equalator) {
-        this.equalators.add(equalator);
-    }
+	public EqualatorApplierProto(final TYPE type) {
 
-    public boolean areEqual(final T o1, final Object o2) {
-        switch (type) {
-            case AND:
-                for (final Equalator<T> e : equalators) {
-                    if (e.areEqual(o1, o2)) {
-                        // ok
-                    } else {
-                        return false;
-                    }
-                }
-                return true;
-            case OR:
-                for (final Equalator<T> e : equalators) {
-                    if (e.areEqual(o1, o2)) {
-                        return true;
-                    } else {
-                        // see what others say
-                    }
-                }
-                return false;
-            default:
-                throw new RuntimeException("unknown type " + type);
-        }
-    }
+		super(type);
+	}
 
-    public void clear() {
-        this.equalators.clear();
-    }
+	public void addEqualator(final Equalator<T> equalator) {
 
-    public List<Equalator<T>> getEqualators() {
-        return this.equalators;
-    }
+		this.equalators.add(equalator);
+	}
 
-    public Boolean transform(final Pair<T, Object> element) {
-        return Boolean.valueOf(areEqual(element.getFirst(), element.getSecond()));
-    }
+	public boolean areEqual(final T o1, final Object o2) {
 
+		switch(type) {
+			case AND:
+				for(final Equalator<T> e : equalators) {
+					if(e.areEqual(o1, o2)) {
+						// ok
+					} else {
+						return false;
+					}
+				}
+				return true;
+			case OR:
+				for(final Equalator<T> e : equalators) {
+					if(e.areEqual(o1, o2)) {
+						return true;
+					} else {
+						// see what others say
+					}
+				}
+				return false;
+			default:
+				throw new RuntimeException("unknown type " + type);
+		}
+	}
+
+	public void clear() {
+
+		this.equalators.clear();
+	}
+
+	public List<Equalator<T>> getEqualators() {
+
+		return this.equalators;
+	}
+
+	public Boolean transform(final Pair<T, Object> element) {
+
+		return Boolean.valueOf(areEqual(element.getFirst(), element.getSecond()));
+	}
 }

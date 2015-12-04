@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,28 +45,27 @@ import net.sf.bioutils.proteomics.peak.Peak;
  */
 public interface SampleModifiable extends Sample {
 
-    void addPeak(Peak peak);
+	void addPeak(Peak peak);
 
-    void addPeaks(Collection<? extends Peak> peak);
+	void addPeaks(Collection<? extends Peak> peak);
 
-    void removePeak(Peak peak);
+	void removePeak(Peak peak);
 
-    void removePeaks(Collection<? extends Peak> peak);
+	void removePeaks(Collection<? extends Peak> peak);
 
-    /**
-     *
-     * @param name
-     *            new name for this {@code Sample}
-     */
-    void setName(String name);
+	/**
+	 *
+	 * @param name
+	 *            new name for this {@code Sample}
+	 */
+	void setName(String name);
 
-    void setNameBase(String baseName);
+	void setNameBase(String baseName);
 
-    /**
-     *
-     * @param user
-     *            new {@link User} for this {@code Sample}
-     */
-    void setUser(User user);
-
+	/**
+	 *
+	 * @param user
+	 *            new {@link User} for this {@code Sample}
+	 */
+	void setUser(User user);
 }

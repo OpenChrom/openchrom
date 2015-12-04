@@ -15,62 +15,68 @@ import org.junit.Test;
 
 public class TestParserReport {
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	}
 
-    private ParserMascotReport p;
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    @Before
-    public void setUp() throws Exception {
-    }
+	}
 
-    @After
-    public void tearDown() throws Exception {
-        p = null;
-    }
+	private ParserMascotReport p;
 
-    @Test
-    public final void testClose() {
+	@Before
+	public void setUp() throws Exception {
 
-    }
+	}
 
-    @Test
-    public final void testHasNext() {
+	@After
+	public void tearDown() throws Exception {
 
-    }
+		p = null;
+	}
 
-    @Test
-    public final void testNext01() throws IOException {
-        p = new ParserMascotReport(new File("src/test/resources/mascot_report_4VP_OldCol10minDelay_1stRepl2.csv"));
-        assertTrue(p.hasNext());
-    }
+	@Test
+	public final void testClose() {
 
-    @Test
-    public final void testNext02() throws IOException {
-        p = new ParserMascotReport(new File("src/test/resources/mascot_report_4VP_OldCol10minDelay_1stRepl2.csv"));
-        MascotReportRow next = p.next();
-        assertNotNull(next);
-    }
+	}
 
-    @Test
-    public final void testNext03() throws IOException {
-        p = new ParserMascotReport(new File("src/test/resources/mascot_report_4VP_OldCol10minDelay_1stRepl2.csv"));
-        for (int i = 0; i < 4430; i++) {
-            assertTrue(p.hasNext());
-            MascotReportRow next = p.next();
-            assertNotNull(next);
-        }
+	@Test
+	public final void testHasNext() {
 
-    }
+	}
 
-    @Test(expected = FileNotFoundException.class)
-    public final void testParserReport() throws IOException {
-        p = new ParserMascotReport(new File("noSuchFile"));
-    }
+	@Test
+	public final void testNext01() throws IOException {
 
+		p = new ParserMascotReport(new File("src/test/resources/mascot_report_4VP_OldCol10minDelay_1stRepl2.csv"));
+		assertTrue(p.hasNext());
+	}
+
+	@Test
+	public final void testNext02() throws IOException {
+
+		p = new ParserMascotReport(new File("src/test/resources/mascot_report_4VP_OldCol10minDelay_1stRepl2.csv"));
+		MascotReportRow next = p.next();
+		assertNotNull(next);
+	}
+
+	@Test
+	public final void testNext03() throws IOException {
+
+		p = new ParserMascotReport(new File("src/test/resources/mascot_report_4VP_OldCol10minDelay_1stRepl2.csv"));
+		for(int i = 0; i < 4430; i++) {
+			assertTrue(p.hasNext());
+			MascotReportRow next = p.next();
+			assertNotNull(next);
+		}
+	}
+
+	@Test(expected = FileNotFoundException.class)
+	public final void testParserReport() throws IOException {
+
+		p = new ParserMascotReport(new File("noSuchFile"));
+	}
 }

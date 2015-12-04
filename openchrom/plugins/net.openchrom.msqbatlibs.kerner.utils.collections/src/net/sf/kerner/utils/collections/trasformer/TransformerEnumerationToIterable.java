@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,15 +21,14 @@ import java.util.List;
 
 import net.sf.kerner.utils.transformer.Transformer;
 
-public class TransformerEnumerationToIterable<T> implements
-		Transformer<Enumeration<T>, Iterable<T>> {
+public class TransformerEnumerationToIterable<T> implements Transformer<Enumeration<T>, Iterable<T>> {
 
 	public Iterable<T> transform(Enumeration<T> enumeration) {
+
 		final List<T> v = new ArrayList<T>();
-		while (enumeration.hasMoreElements()) {
+		while(enumeration.hasMoreElements()) {
 			v.add(enumeration.nextElement());
 		}
 		return v;
 	}
-
 }

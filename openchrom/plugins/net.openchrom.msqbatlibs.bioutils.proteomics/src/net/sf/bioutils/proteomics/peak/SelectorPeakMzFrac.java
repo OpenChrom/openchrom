@@ -10,57 +10,56 @@ import org.slf4j.LoggerFactory;
 
 public class SelectorPeakMzFrac implements SelectorPeak {
 
-    private final static Logger log = LoggerFactory.getLogger(SelectorPeakMzFrac.class);
+	private final static Logger log = LoggerFactory.getLogger(SelectorPeakMzFrac.class);
+	public static boolean DEFAULT_PPM = true;
+	private final double mz;
+	private final int frac;
+	private boolean ppm = DEFAULT_PPM;
 
-    public static boolean DEFAULT_PPM = true;
+	public SelectorPeakMzFrac(double mz, int frac) {
 
-    private final double mz;
+		this.mz = mz;
+		this.frac = frac;
+	}
 
-    private final int frac;
+	public SelectorPeakMzFrac(Peak peak) {
 
-    private boolean ppm = DEFAULT_PPM;
+		this(peak.getMz(), peak.getFractionIndex());
+	}
 
-    public SelectorPeakMzFrac(double mz, int frac) {
-        this.mz = mz;
-        this.frac = frac;
-    }
+	public synchronized boolean isPpm() {
 
-    public SelectorPeakMzFrac(Peak peak) {
-        this(peak.getMz(), peak.getFractionIndex());
-    }
+		return ppm;
+	}
 
-    public synchronized boolean isPpm() {
-        return ppm;
-    }
+	@Override
+	public Peak select(final Collection<? extends Peak> elements) {
 
-    @Override
-    public Peak select(final Collection<? extends Peak> elements) {
-        if (UtilCollection.nullOrEmpty(elements)) {
-            throw new IllegalArgumentException("Empty param");
-        }
-        final TreeMap<Double, Peak> map = new TreeMap<Double, Peak>();
-        for (final Peak p : elements) {
-            double diffAbsMz = Math.abs(p.getMz() - mz);
-            diffAbsMz = UtilPeak.getDeltaPpm(mz, diffAbsMz);
+		if(UtilCollection.nullOrEmpty(elements)) {
+			throw new IllegalArgumentException("Empty param");
+		}
+		final TreeMap<Double, Peak> map = new TreeMap<Double, Peak>();
+		for(final Peak p : elements) {
+			double diffAbsMz = Math.abs(p.getMz() - mz);
+			diffAbsMz = UtilPeak.getDeltaPpm(mz, diffAbsMz);
+			// TODO: remove magic number
+			diffAbsMz = diffAbsMz / 100;
+			double diffAbsFrac = Math.abs(p.getFractionIndex() - frac);
+			// TODO: delegate this to affinity calculator
+			if(diffAbsFrac == 0) {
+				diffAbsFrac = 1;
+			}
+			if(diffAbsMz == 0) {
+				diffAbsMz = 1;
+			}
+			final double result = diffAbsFrac * diffAbsMz;
+			map.put(result, p);
+		}
+		return map.firstEntry().getValue();
+	}
 
-            // TODO: remove magic number
-            diffAbsMz = diffAbsMz / 100;
-            double diffAbsFrac = Math.abs(p.getFractionIndex() - frac);
+	public synchronized void setPpm(boolean ppm) {
 
-            // TODO: delegate this to affinity calculator
-            if (diffAbsFrac == 0) {
-                diffAbsFrac = 1;
-            }
-            if (diffAbsMz == 0) {
-                diffAbsMz = 1;
-            }
-            final double result = diffAbsFrac * diffAbsMz;
-            map.put(result, p);
-        }
-        return map.firstEntry().getValue();
-    }
-
-    public synchronized void setPpm(boolean ppm) {
-        this.ppm = ppm;
-    }
+		this.ppm = ppm;
+	}
 }

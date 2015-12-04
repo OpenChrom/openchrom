@@ -5,48 +5,54 @@ import java.util.List;
 
 public class Result {
 
-    public static enum Type {
-        DEGEN, PROTEOTYPIC, NOT_FOUND, NOT_SEARCHED
-    }
+	public static enum Type {
+		DEGEN, PROTEOTYPIC, NOT_FOUND, NOT_SEARCHED
+	}
 
-    public static Result buildDegen(final List<String> headers) {
-        return new Result(headers, Type.DEGEN);
-    }
+	public static Result buildDegen(final List<String> headers) {
 
-    public static Result buildNotFound() {
-        return new Result(new ArrayList<String>(0), Type.NOT_FOUND);
-    }
+		return new Result(headers, Type.DEGEN);
+	}
 
-    public static Result buildNotSearched() {
-        return new Result();
-    }
+	public static Result buildNotFound() {
 
-    public static Result buildProteotypic(final List<String> headers) {
-        return new Result(headers, Type.PROTEOTYPIC);
-    }
+		return new Result(new ArrayList<String>(0), Type.NOT_FOUND);
+	}
 
-    public List<String> headers;
+	public static Result buildNotSearched() {
 
-    public final Type type;
+		return new Result();
+	}
 
-    private Result() {
-        this(new ArrayList<String>(0), Type.NOT_SEARCHED);
-    }
+	public static Result buildProteotypic(final List<String> headers) {
 
-    public Result(final List<String> headers, final Type type) {
-        this.headers = headers;
-        this.type = type;
-    }
+		return new Result(headers, Type.PROTEOTYPIC);
+	}
 
-    public synchronized void limitMatches(final int limitMatches) {
-        headers = headers.subList(0, limitMatches);
+	public List<String> headers;
+	public final Type type;
 
-    }
+	private Result() {
 
-    @Override
-    public String toString() {
-        if (!headers.isEmpty())
-            return headers.get(0) + " " + type.toString();
-        return type.toString();
-    }
+		this(new ArrayList<String>(0), Type.NOT_SEARCHED);
+	}
+
+	public Result(final List<String> headers, final Type type) {
+
+		this.headers = headers;
+		this.type = type;
+	}
+
+	public synchronized void limitMatches(final int limitMatches) {
+
+		headers = headers.subList(0, limitMatches);
+	}
+
+	@Override
+	public String toString() {
+
+		if(!headers.isEmpty())
+			return headers.get(0) + " " + type.toString();
+		return type.toString();
+	}
 }

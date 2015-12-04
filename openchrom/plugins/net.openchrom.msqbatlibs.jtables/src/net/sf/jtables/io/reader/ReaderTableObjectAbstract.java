@@ -15,85 +15,77 @@ import org.slf4j.LoggerFactory;
 
 public abstract class ReaderTableObjectAbstract<T> implements IOIterator<T> {
 
-    protected final ReaderTableString reader;
+	protected final ReaderTableString reader;
+	private final static Logger log = LoggerFactory.getLogger(ReaderTableObjectAbstract.class);
 
-    private final static Logger log = LoggerFactory.getLogger(ReaderTableObjectAbstract.class);
+	public ReaderTableObjectAbstract(final BufferedReader reader, final boolean columnIds, final boolean rowIds) throws IOException {
 
-    public ReaderTableObjectAbstract(final BufferedReader reader, final boolean columnIds,
-            final boolean rowIds) throws IOException {
-        this.reader = new ReaderTableString(reader, columnIds, rowIds);
+		this.reader = new ReaderTableString(reader, columnIds, rowIds);
+	}
 
-    }
+	public ReaderTableObjectAbstract(final BufferedReader reader, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
 
-    public ReaderTableObjectAbstract(final BufferedReader reader, final boolean columnIds,
-            final boolean rowIds, final String delim) throws IOException {
-        this.reader = new ReaderTableString(reader, columnIds, rowIds, delim);
+		this.reader = new ReaderTableString(reader, columnIds, rowIds, delim);
+	}
 
-    }
+	public ReaderTableObjectAbstract(final File file) throws IOException {
 
-    public ReaderTableObjectAbstract(final File file) throws IOException {
-        this.reader = new ReaderTableString(file, true, false);
+		this.reader = new ReaderTableString(file, true, false);
+	}
 
-    }
+	public ReaderTableObjectAbstract(final File file, final boolean columnIds, final boolean rowIds) throws IOException {
 
-    public ReaderTableObjectAbstract(final File file, final boolean columnIds, final boolean rowIds)
-            throws IOException {
-        this.reader = new ReaderTableString(file, columnIds, rowIds);
+		this.reader = new ReaderTableString(file, columnIds, rowIds);
+	}
 
-    }
+	public ReaderTableObjectAbstract(final File file, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
 
-    public ReaderTableObjectAbstract(final File file, final boolean columnIds,
-            final boolean rowIds, final String delim) throws IOException {
-        this.reader = new ReaderTableString(file, columnIds, rowIds, delim);
+		this.reader = new ReaderTableString(file, columnIds, rowIds, delim);
+	}
 
-    }
+	public ReaderTableObjectAbstract(final InputStream stream, final boolean columnIds, final boolean rowIds) throws IOException {
 
-    public ReaderTableObjectAbstract(final InputStream stream, final boolean columnIds,
-            final boolean rowIds) throws IOException {
-        this.reader = new ReaderTableString(stream, columnIds, rowIds);
+		this.reader = new ReaderTableString(stream, columnIds, rowIds);
+	}
 
-    }
+	public ReaderTableObjectAbstract(final InputStream stream, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
 
-    public ReaderTableObjectAbstract(final InputStream stream, final boolean columnIds,
-            final boolean rowIds, final String delim) throws IOException {
-        this.reader = new ReaderTableString(stream, columnIds, rowIds, delim);
+		this.reader = new ReaderTableString(stream, columnIds, rowIds, delim);
+	}
 
-    }
+	public ReaderTableObjectAbstract(final Reader reader, final boolean columnIds, final boolean rowIds) throws IOException {
 
-    public ReaderTableObjectAbstract(final Reader reader, final boolean columnIds,
-            final boolean rowIds) throws IOException {
-        this.reader = new ReaderTableString(reader, columnIds, rowIds);
+		this.reader = new ReaderTableString(reader, columnIds, rowIds);
+	}
 
-    }
+	public ReaderTableObjectAbstract(final Reader reader, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
 
-    public ReaderTableObjectAbstract(final Reader reader, final boolean columnIds,
-            final boolean rowIds, final String delim) throws IOException {
-        this.reader = new ReaderTableString(reader, columnIds, rowIds, delim);
+		this.reader = new ReaderTableString(reader, columnIds, rowIds, delim);
+	}
 
-    }
+	public synchronized void close() {
 
-    public synchronized void close() {
-        reader.close();
-    }
+		reader.close();
+	}
 
-    public boolean hasNext() throws IOException {
-        return reader.hasNext();
-    }
+	public boolean hasNext() throws IOException {
 
-    public List<T> readAll() throws IOException {
-        final List<T> result = new ArrayList<T>();
+		return reader.hasNext();
+	}
 
-        while (hasNext()) {
-            final T next = next();
-            if (next == null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("omit null element");
-                }
-            } else {
-                result.add(next);
-            }
-        }
+	public List<T> readAll() throws IOException {
 
-        return result;
-    }
+		final List<T> result = new ArrayList<T>();
+		while(hasNext()) {
+			final T next = next();
+			if(next == null) {
+				if(log.isDebugEnabled()) {
+					log.debug("omit null element");
+				}
+			} else {
+				result.add(next);
+			}
+		}
+		return result;
+	}
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,113 +19,127 @@ import net.sf.kerner.utils.pair.Pair;
 
 public class Point2D implements Pair<Double, Double> {
 
-    final public static double getDeltaX(final Point2D one, final Point2D two) {
-        return two.x - one.x;
-    }
+	final public static double getDeltaX(final Point2D one, final Point2D two) {
 
-    final public static double getDeltaY(final Point2D one, final Point2D two) {
-        return two.y - one.y;
-    }
+		return two.x - one.x;
+	}
 
-    /**
-     * Calculate the slope from one {@code Point2D} to another.
-     *
-     * @param one
-     *            first {@code Point}
-     * @param tow
-     *            second {@code Point}
-     * @return the slope
-     */
-    final public static double getSlope(final Point2D one, final Point2D tow) {
-        final double b = getDeltaX(one, tow);
-        if (b == 0)
-            return 0;
-        return getDeltaY(one, tow) / (b);
-    }
+	final public static double getDeltaY(final Point2D one, final Point2D two) {
 
-    protected final double x;
+		return two.y - one.y;
+	}
 
-    protected final double y;
+	/**
+	 * Calculate the slope from one {@code Point2D} to another.
+	 *
+	 * @param one
+	 *            first {@code Point}
+	 * @param tow
+	 *            second {@code Point}
+	 * @return the slope
+	 */
+	final public static double getSlope(final Point2D one, final Point2D tow) {
 
-    public Point2D(final double x, final double y) {
-        super();
-        this.x = x;
-        this.y = y;
-    }
+		final double b = getDeltaX(one, tow);
+		if(b == 0)
+			return 0;
+		return getDeltaY(one, tow) / (b);
+	}
 
-    public Point2D(final Point2D template) {
-        this(template.getX(), template.getY());
-    }
+	protected final double x;
+	protected final double y;
 
-    @Override
-    public Point2D clone() {
-        return new Point2D(getX(), getY());
-    }
+	public Point2D(final double x, final double y) {
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Point2D)) {
-            return false;
-        }
-        final Point2D other = (Point2D) obj;
-        if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x)) {
-            return false;
-        }
-        if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y)) {
-            return false;
-        }
-        return true;
-    }
+		super();
+		this.x = x;
+		this.y = y;
+	}
 
-    final public double getDistance(final Point2D two) {
-        return Math.sqrt(Math.pow(getDeltaX(this, two), 2) + Math.pow(getDeltaY(this, two), 2));
-    }
+	public Point2D(final Point2D template) {
 
-    public Double getFirst() {
-        return getX();
-    }
+		this(template.getX(), template.getY());
+	}
 
-    public Double getSecond() {
-        return getY();
-    }
+	@Override
+	public Point2D clone() {
 
-    final public double getSlope(final Point2D two) {
-        return getSlope(this, two);
-    }
+		return new Point2D(getX(), getY());
+	}
 
-    public double getX() {
-        return x;
-    }
+	@Override
+	public boolean equals(final Object obj) {
 
-    public double getY() {
-        return y;
-    }
+		if(this == obj) {
+			return true;
+		}
+		if(obj == null) {
+			return false;
+		}
+		if(!(obj instanceof Point2D)) {
+			return false;
+		}
+		final Point2D other = (Point2D)obj;
+		if(Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x)) {
+			return false;
+		}
+		if(Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y)) {
+			return false;
+		}
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        long temp;
-        temp = Double.doubleToLongBits(x);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(y);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        return result;
-    }
+	final public double getDistance(final Point2D two) {
 
-    public Point2D invert() {
-        return new Point2D(getY(), getX());
-    }
+		return Math.sqrt(Math.pow(getDeltaX(this, two), 2) + Math.pow(getDeltaY(this, two), 2));
+	}
 
-    @Override
-    public String toString() {
-        return "x=" + getX() + ",y=" + getY();
-    }
+	public Double getFirst() {
 
+		return getX();
+	}
+
+	public Double getSecond() {
+
+		return getY();
+	}
+
+	final public double getSlope(final Point2D two) {
+
+		return getSlope(this, two);
+	}
+
+	public double getX() {
+
+		return x;
+	}
+
+	public double getY() {
+
+		return y;
+	}
+
+	@Override
+	public int hashCode() {
+
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(x);
+		result = prime * result + (int)(temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(y);
+		result = prime * result + (int)(temp ^ (temp >>> 32));
+		return result;
+	}
+
+	public Point2D invert() {
+
+		return new Point2D(getY(), getX());
+	}
+
+	@Override
+	public String toString() {
+
+		return "x=" + getX() + ",y=" + getY();
+	}
 }

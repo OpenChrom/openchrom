@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,25 +17,24 @@ package net.sf.bioutils.proteomics.exception;
 
 public class ExceptionProteomics extends Exception {
 
-    private static final long serialVersionUID = -1594573737396329206L;
+	private static final long serialVersionUID = -1594573737396329206L;
 
-    public ExceptionProteomics() {
+	public ExceptionProteomics() {
 
-    }
+	}
 
-    public ExceptionProteomics(final String message) {
-        super(message);
+	public ExceptionProteomics(final String message) {
 
-    }
+		super(message);
+	}
 
-    public ExceptionProteomics(final String message, final Throwable cause) {
-        super(message, cause);
+	public ExceptionProteomics(final String message, final Throwable cause) {
 
-    }
+		super(message, cause);
+	}
 
-    public ExceptionProteomics(final Throwable cause) {
-        super(cause);
+	public ExceptionProteomics(final Throwable cause) {
 
-    }
-
+		super(cause);
+	}
 }

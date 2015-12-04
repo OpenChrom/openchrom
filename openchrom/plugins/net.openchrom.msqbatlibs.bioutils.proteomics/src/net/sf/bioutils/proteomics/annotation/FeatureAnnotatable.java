@@ -29,7 +29,6 @@ import net.sf.bioutils.proteomics.feature.Feature;
  */
 public interface FeatureAnnotatable extends Feature, PeakAnnotatable {
 
-    @Override
-    FeatureAnnotatable clone();
-
+	@Override
+	FeatureAnnotatable clone();
 }

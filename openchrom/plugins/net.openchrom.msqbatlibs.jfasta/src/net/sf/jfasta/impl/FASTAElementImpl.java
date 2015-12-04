@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,138 +49,153 @@ import net.sf.kerner.utils.io.UtilIO;
  */
 public class FASTAElementImpl implements FASTAElement {
 
-    /**
-     * This {@code  FASTAElementImpl} header string.
-     */
-    protected final String header;
+	/**
+	 * This {@code  FASTAElementImpl} header string.
+	 */
+	protected final String header;
+	/**
+	 * This {@code FASTAElementImpl} line length.
+	 */
+	protected volatile int lineLength = FASTAFile.DEFAULT_LINE_LENGTH;
+	/**
+	 * This {@code FASTAElementImpl} meta infos.
+	 */
+	protected final Map<String, Serializable> map = new LinkedHashMap<String, Serializable>();
+	protected final StringBuilder sequence;
 
-    /**
-     * This {@code FASTAElementImpl} line length.
-     */
-    protected volatile int lineLength = FASTAFile.DEFAULT_LINE_LENGTH;
+	public FASTAElementImpl(final String header, final char[] sequence) {
 
-    /**
-     * This {@code FASTAElementImpl} meta infos.
-     */
-    protected final Map<String, Serializable> map = new LinkedHashMap<String, Serializable>();
+		this.header = header;
+		this.sequence = new StringBuilder(String.copyValueOf(sequence));
+	}
 
-    protected final StringBuilder sequence;
+	public FASTAElementImpl(final String header, final char[] sequence, final Map<String, Serializable> metainfo) {
 
-    public FASTAElementImpl(final String header, final char[] sequence) {
-        this.header = header;
-        this.sequence = new StringBuilder(String.copyValueOf(sequence));
-    }
+		this.header = header;
+		this.sequence = new StringBuilder(String.copyValueOf(sequence));
+		map.putAll(metainfo);
+	}
 
-    public FASTAElementImpl(final String header, final char[] sequence, final Map<String, Serializable> metainfo) {
-        this.header = header;
-        this.sequence = new StringBuilder(String.copyValueOf(sequence));
-        map.putAll(metainfo);
-    }
+	public FASTAElementImpl(final String header, final String sequence) {
 
-    public FASTAElementImpl(final String header, final String sequence) {
-        this.header = header;
-        this.sequence = new StringBuilder(sequence);
-    }
+		this.header = header;
+		this.sequence = new StringBuilder(sequence);
+	}
 
-    public FASTAElementImpl(final String header, final String sequence, final Map<String, Serializable> metainfo) {
-        this.header = header;
-        this.sequence = new StringBuilder(sequence);
-        map.putAll(metainfo);
-    }
+	public FASTAElementImpl(final String header, final String sequence, final Map<String, Serializable> metainfo) {
 
-    public FASTAElementImpl(final String header, final StringBuilder sequence) {
-        this.header = header;
-        this.sequence = sequence;
-    }
+		this.header = header;
+		this.sequence = new StringBuilder(sequence);
+		map.putAll(metainfo);
+	}
 
-    public FASTAElementImpl(final String header, final StringBuilder sequence, final Map<String, Serializable> metainfo) {
-        this.header = header;
-        this.sequence = sequence;
-        map.putAll(metainfo);
-    }
+	public FASTAElementImpl(final String header, final StringBuilder sequence) {
 
-    public void clearMethaInfo() {
-        map.clear();
-    }
+		this.header = header;
+		this.sequence = sequence;
+	}
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof FASTAElementImpl))
-            return false;
-        final FASTAElementImpl other = (FASTAElementImpl) obj;
-        if (header == null) {
-            if (other.header != null)
-                return false;
-        } else if (!header.equals(other.header))
-            return false;
-        return true;
-    }
+	public FASTAElementImpl(final String header, final StringBuilder sequence, final Map<String, Serializable> metainfo) {
 
-    public String getHeader() {
-        return header;
-    }
+		this.header = header;
+		this.sequence = sequence;
+		map.putAll(metainfo);
+	}
 
-    public int getLineLength() {
-        return lineLength;
-    }
+	public void clearMethaInfo() {
 
-    public Map<String, Serializable> getMethaInfo() {
-        return new LinkedHashMap<String, Serializable>(map);
-    }
+		map.clear();
+	}
 
-    public Serializable getMethaInfo(final String ident) {
-        if (ident == null)
-            throw new NullPointerException();
-        return map.get(ident);
-    }
+	@Override
+	public boolean equals(final Object obj) {
 
-    public String getSequence() {
-        return sequence.toString();
-    }
+		if(this == obj)
+			return true;
+		if(obj == null)
+			return false;
+		if(!(obj instanceof FASTAElementImpl))
+			return false;
+		final FASTAElementImpl other = (FASTAElementImpl)obj;
+		if(header == null) {
+			if(other.header != null)
+				return false;
+		} else if(!header.equals(other.header))
+			return false;
+		return true;
+	}
 
-    public int getSequenceLength() {
-        return sequence.length();
-    }
+	public String getHeader() {
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((header == null) ? 0 : header.hashCode());
-        return result;
-    }
+		return header;
+	}
 
-    public void setLineLength(final int length) {
-        if (length < 1)
-            throw new NumberFormatException();
-        lineLength = length;
-    }
+	public int getLineLength() {
 
-    public void setMethaInfo(final Map<String, Serializable> map) {
-        if (map == null)
-            throw new NullPointerException();
-        this.map.clear();
-        this.map.putAll(map);
-    }
+		return lineLength;
+	}
 
-    public void setMethaInfo(final String ident, final Serializable info) {
-        if (ident == null || info == null)
-            throw new NullPointerException();
-        map.put(ident, info);
-    }
+	public Map<String, Serializable> getMethaInfo() {
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(FASTAFile.HEADER_IDENT);
-        sb.append(getHeader());
-        sb.append(UtilIO.NEW_LINE_STRING);
-        sb.append(Utils.formatStringToMultiLinesStrings(getSequence(), lineLength));
-        return sb.toString();
-    }
+		return new LinkedHashMap<String, Serializable>(map);
+	}
 
+	public Serializable getMethaInfo(final String ident) {
+
+		if(ident == null)
+			throw new NullPointerException();
+		return map.get(ident);
+	}
+
+	public String getSequence() {
+
+		return sequence.toString();
+	}
+
+	public int getSequenceLength() {
+
+		return sequence.length();
+	}
+
+	@Override
+	public int hashCode() {
+
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((header == null) ? 0 : header.hashCode());
+		return result;
+	}
+
+	public void setLineLength(final int length) {
+
+		if(length < 1)
+			throw new NumberFormatException();
+		lineLength = length;
+	}
+
+	public void setMethaInfo(final Map<String, Serializable> map) {
+
+		if(map == null)
+			throw new NullPointerException();
+		this.map.clear();
+		this.map.putAll(map);
+	}
+
+	public void setMethaInfo(final String ident, final Serializable info) {
+
+		if(ident == null || info == null)
+			throw new NullPointerException();
+		map.put(ident, info);
+	}
+
+	@Override
+	public String toString() {
+
+		final StringBuilder sb = new StringBuilder();
+		sb.append(FASTAFile.HEADER_IDENT);
+		sb.append(getHeader());
+		sb.append(UtilIO.NEW_LINE_STRING);
+		sb.append(Utils.formatStringToMultiLinesStrings(getSequence(), lineLength));
+		return sb.toString();
+	}
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,22 +17,21 @@ package net.sf.kerner.utils.math;
 
 public interface PrefixableDouble {
 
-    double toPicos(double units);
+	double toPicos(double units);
 
-    double toNanos(double units);
+	double toNanos(double units);
 
-    double toMicros(double units);
+	double toMicros(double units);
 
-    double toMillis(double units);
+	double toMillis(double units);
 
-    double toUnits(double units);
+	double toUnits(double units);
 
-    double toKilos(double units);
+	double toKilos(double units);
 
-    double toMegas(double units);
+	double toMegas(double units);
 
-    double toGigas(double units);
+	double toGigas(double units);
 
-    double toTeras(double units);
-
+	double toTeras(double units);
 }

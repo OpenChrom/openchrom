@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,55 +39,51 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class TestPointGetDistance {
 
-    private Point x;
+	private Point x;
+	private Point y;
+	private double result;
 
-    private Point y;
+	@Parameters
+	public static Collection<Object[]> getParams() {
 
-    private double result;
+		return Arrays.asList(new Object[][]{
+				// x, y, result
+		{new Point(1, 1), new Point(1, 1), 0}, {new Point(1, 1), new Point(1, 2), 1}, {new Point(1, 1), new Point(2, 1), 1}, {new Point(1, 1), new Point(2, 2), 1.41}, {new Point(0, 0), new Point(2, 2), 2.82}, {new Point(2, 2), new Point(0, 0), 2.82},});
+	}
 
-    @Parameters
-    public static Collection<Object[]> getParams() {
-        return Arrays.asList(new Object[][] {
+	public TestPointGetDistance(Point x, Point y, double result) {
 
-                // x, y, result
+		this.x = x;
+		this.y = y;
+		this.result = result;
+	}
 
-                { new Point(1, 1), new Point(1, 1), 0 }, { new Point(1, 1), new Point(1, 2), 1 },
-                { new Point(1, 1), new Point(2, 1), 1 },
-                { new Point(1, 1), new Point(2, 2), 1.41 },
-                { new Point(0, 0), new Point(2, 2), 2.82 },
-                { new Point(2, 2), new Point(0, 0), 2.82 }, });
-    }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    public TestPointGetDistance(Point x, Point y, double result) {
-        this.x = x;
-        this.y = y;
-        this.result = result;
-    }
+	}
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	}
 
-    @Before
-    public void setUp() throws Exception {
-    }
+	@Before
+	public void setUp() throws Exception {
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	}
 
-    /**
-     * Test method for
-     * {@link net.sf.kerner.utils.math.Point#getDistance(net.sf.kerner.utils.math.Point)}
-     * .
-     */
-    @Test
-    public final void testGetDistance() {
-        assertEquals(result, x.getDistance(y), 0.01);
-    }
+	@After
+	public void tearDown() throws Exception {
 
+	}
+
+	/**
+	 * Test method for {@link net.sf.kerner.utils.math.Point#getDistance(net.sf.kerner.utils.math.Point)} .
+	 */
+	@Test
+	public final void testGetDistance() {
+
+		assertEquals(result, x.getDistance(y), 0.01);
+	}
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,6 +49,7 @@ import java.io.FileNotFoundException;
 public class UtilFileName {
 
 	public static File appendToFileName(File file, String string) {
+
 		final String raw = getRawFileName(file.getName());
 		final String nameNew = new StringBuilder().append(raw).append(string).append(getFileExtension(file)).toString();
 		final File result = new File(file.getParent(), nameNew);
@@ -65,8 +66,9 @@ public class UtilFileName {
 	 */
 	@Deprecated
 	public static String getFileExtension(File file) {
+
 		final int posOfExt = file.getName().lastIndexOf(".");
-		if (posOfExt < 0) {
+		if(posOfExt < 0) {
 			return "";
 		}
 		final String result = file.getName().substring(posOfExt, file.getName().length());
@@ -75,16 +77,13 @@ public class UtilFileName {
 
 	/**
 	 * <p>
-	 * Given a {@code File} named "hans.txt". newName is "peter". Returning
-	 * {@code String} will be "peter.txt".
+	 * Given a {@code File} named "hans.txt". newName is "peter". Returning {@code String} will be "peter.txt".
 	 * </p>
 	 * <p>
-	 * Original name is "hans.txt.tex". newName is "peter". Returning
-	 * {@code String} will be "peter.tex".
+	 * Original name is "hans.txt.tex". newName is "peter". Returning {@code String} will be "peter.tex".
 	 * </p>
 	 * <p>
-	 * Original name is "hans.txt.tex". newName is "peter.txt". Returning
-	 * {@code String} will be "peter.txt.tex".
+	 * Original name is "hans.txt.tex". newName is "peter.txt". Returning {@code String} will be "peter.txt.tex".
 	 * </p>
 	 *
 	 * @param file
@@ -94,9 +93,10 @@ public class UtilFileName {
 	 * @return the new filename including extension.
 	 */
 	public static String getNewFileName(File file, String newName) {
+
 		final String fileName = file.getName();
 		final int posOfExt = fileName.lastIndexOf(".");
-		if (posOfExt < 0) {
+		if(posOfExt < 0) {
 			return newName;
 		}
 		final String ext = fileName.substring(posOfExt, fileName.length());
@@ -111,8 +111,9 @@ public class UtilFileName {
 	 *         extension or the original file name if there is no extension
 	 */
 	public static String getRawFileName(String fileName) {
+
 		final int posOfExt = fileName.lastIndexOf(".");
-		if (posOfExt < 0) {
+		if(posOfExt < 0) {
 			return fileName;
 		}
 		return fileName.substring(0, posOfExt);
@@ -134,15 +135,13 @@ public class UtilFileName {
 	 * @throws FileNotFoundException
 	 */
 	public static boolean renameFile(File file, String newName, boolean keepExtension) throws FileNotFoundException {
-		synchronized (file) {
 
-			if (!file.isFile()) {
+		synchronized(file) {
+			if(!file.isFile()) {
 				throw new FileNotFoundException("cannot access file \"" + file + "\"");
 			}
-
 			final String fileNameExtension = getFileExtension(file);
-
-			if (keepExtension) {
+			if(keepExtension) {
 				return file.renameTo(new File(file.getParentFile(), newName + fileNameExtension));
 			} else {
 				return file.renameTo(new File(file.getParentFile(), newName));
@@ -151,6 +150,6 @@ public class UtilFileName {
 	}
 
 	private UtilFileName() {
-	}
 
+	}
 }

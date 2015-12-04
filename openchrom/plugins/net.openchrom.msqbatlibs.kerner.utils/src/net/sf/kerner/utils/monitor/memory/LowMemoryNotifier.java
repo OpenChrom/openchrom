@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,65 +36,72 @@ import javax.management.NotificationListener;
  */
 public class LowMemoryNotifier {
 
-    public static interface Listener {
-        public void notice(long usedMemory, long maxMemory);
-    }
+	public static interface Listener {
 
-    private static final MemoryPoolMXBean tenuredGenPool = findTenuredGenPool();
+		public void notice(long usedMemory, long maxMemory);
+	}
 
-    private final static LowMemoryNotifier instance = new LowMemoryNotifier();
+	private static final MemoryPoolMXBean tenuredGenPool = findTenuredGenPool();
+	private final static LowMemoryNotifier instance = new LowMemoryNotifier();
+	private final Collection<Listener> listeners = new ArrayList<Listener>();
 
-    private final Collection<Listener> listeners = new ArrayList<Listener>();
+	private LowMemoryNotifier() {
 
-    private LowMemoryNotifier() {
-        final MemoryMXBean mbean = ManagementFactory.getMemoryMXBean();
-        final NotificationEmitter emitter = (NotificationEmitter) mbean;
-        emitter.addNotificationListener(new NotificationListener() {
-            public void handleNotification(Notification n, Object hb) {
-                if (n.getType().equals(MemoryNotificationInfo.MEMORY_THRESHOLD_EXCEEDED)) {
-                    long maxMemory = tenuredGenPool.getUsage().getMax();
-                    long usedMemory = tenuredGenPool.getUsage().getUsed();
-                    for (Listener listener : listeners) {
-                        listener.notice(usedMemory, maxMemory);
-                    }
-                }
-            }
-        }, null, null);
-    }
+		final MemoryMXBean mbean = ManagementFactory.getMemoryMXBean();
+		final NotificationEmitter emitter = (NotificationEmitter)mbean;
+		emitter.addNotificationListener(new NotificationListener() {
 
-    public synchronized boolean addListener(Listener listener) {
-        return listeners.add(listener);
-    }
+			public void handleNotification(Notification n, Object hb) {
 
-    public synchronized boolean removeListener(Listener listener) {
-        return listeners.remove(listener);
-    }
+				if(n.getType().equals(MemoryNotificationInfo.MEMORY_THRESHOLD_EXCEEDED)) {
+					long maxMemory = tenuredGenPool.getUsage().getMax();
+					long usedMemory = tenuredGenPool.getUsage().getUsed();
+					for(Listener listener : listeners) {
+						listener.notice(usedMemory, maxMemory);
+					}
+				}
+			}
+		}, null, null);
+	}
 
-    public static LowMemoryNotifier getInstance() {
-        return instance;
-    }
+	public synchronized boolean addListener(Listener listener) {
 
-    public static void setPercentageUsageThreshold(double percentage) {
-        if (percentage <= 0.0 || percentage > 1.0) {
-            throw new IllegalArgumentException("Percentage not in range");
-        }
-        long maxMemory = tenuredGenPool.getUsage().getMax();
-        long warningThreshold = (long) (maxMemory * percentage);
-        tenuredGenPool.setUsageThreshold(warningThreshold);
-    }
+		return listeners.add(listener);
+	}
 
-    /**
-     * Tenured Space Pool can be determined by it being of type HEAP and by it
-     * being possible to set the usage threshold.
-     */
-    private static MemoryPoolMXBean findTenuredGenPool() {
-        for (MemoryPoolMXBean pool : ManagementFactory.getMemoryPoolMXBeans()) {
-            // I don't know whether this approach is better, or whether
-            // we should rather check for the pool name "Tenured Gen"?
-            if (pool.getType() == MemoryType.HEAP && pool.isUsageThresholdSupported()) {
-                return pool;
-            }
-        }
-        throw new AssertionError("Could not find tenured space");
-    }
+	public synchronized boolean removeListener(Listener listener) {
+
+		return listeners.remove(listener);
+	}
+
+	public static LowMemoryNotifier getInstance() {
+
+		return instance;
+	}
+
+	public static void setPercentageUsageThreshold(double percentage) {
+
+		if(percentage <= 0.0 || percentage > 1.0) {
+			throw new IllegalArgumentException("Percentage not in range");
+		}
+		long maxMemory = tenuredGenPool.getUsage().getMax();
+		long warningThreshold = (long)(maxMemory * percentage);
+		tenuredGenPool.setUsageThreshold(warningThreshold);
+	}
+
+	/**
+	 * Tenured Space Pool can be determined by it being of type HEAP and by it
+	 * being possible to set the usage threshold.
+	 */
+	private static MemoryPoolMXBean findTenuredGenPool() {
+
+		for(MemoryPoolMXBean pool : ManagementFactory.getMemoryPoolMXBeans()) {
+			// I don't know whether this approach is better, or whether
+			// we should rather check for the pool name "Tenured Gen"?
+			if(pool.getType() == MemoryType.HEAP && pool.isUsageThresholdSupported()) {
+				return pool;
+			}
+		}
+		throw new AssertionError("Could not find tenured space");
+	}
 }

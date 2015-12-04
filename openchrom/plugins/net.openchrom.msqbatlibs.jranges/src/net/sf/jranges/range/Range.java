@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,19 +41,15 @@ import net.sf.jranges.range.longrange.RangeLong;
  * <li>
  * {@code start <= position <= stop}</li>
  * <li>
- * {@code (start + (n * interval) == position) && (stop + (n * interval) == position)}
- * </li>
+ * {@code (start + (n * interval) == position) && (stop + (n * interval) == position)}</li>
  * </ol>
  * are also considered to be a member of this {@code Range}.
  * </p>
  * <p>
- * A {@code Range} can be <i>shifted</i>, which will result in an equivalent
- * modification of start and stop position in the <i>same</i> direction.
+ * A {@code Range} can be <i>shifted</i>, which will result in an equivalent modification of start and stop position in the <i>same</i> direction.
  * </p>
  * <p>
- * A {@code Range} can also be <i>expanded</i>, which will result in an
- * equivalent modification of start and stop position in the <i>opposite</i>
- * direction.
+ * A {@code Range} can also be <i>expanded</i>, which will result in an equivalent modification of start and stop position in the <i>opposite</i> direction.
  * </p>
  * <p>
  * Mathematically, a {@code Range} is defined as follows:<br>
@@ -76,5 +72,4 @@ import net.sf.jranges.range.longrange.RangeLong;
  *
  */
 public interface Range {
-
 }

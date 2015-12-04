@@ -6,19 +6,20 @@ import net.sf.kerner.utils.Cloneable;
 import net.sf.kerner.utils.Cloner;
 import net.sf.kerner.utils.collections.list.AbstractTransformingListFactory;
 
-public class ClonerImpl<T extends Cloneable<T>> extends AbstractTransformingListFactory<T, T>
-        implements Cloner<T>, ClonerList<T> {
+public class ClonerImpl<T extends Cloneable<T>> extends AbstractTransformingListFactory<T, T> implements Cloner<T>, ClonerList<T> {
 
-    public T clone(final T element) {
-        return element.clone();
-    }
+	public T clone(final T element) {
 
-    public List<T> cloneList(final List<? extends T> elements) {
-        return transformCollection(elements);
-    }
+		return element.clone();
+	}
 
-    public T transform(final T element) {
-        return clone(element);
-    }
+	public List<T> cloneList(final List<? extends T> elements) {
 
+		return transformCollection(elements);
+	}
+
+	public T transform(final T element) {
+
+		return clone(element);
+	}
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,8 +20,7 @@ import net.sf.jranges.range.RangeException;
 /**
  * 
  * 
- * {@code OnePositiveRange} is an implementation for
- * {@link net.sf.jranges.range.integerrange.RangeInteger IntegerRange}, for which the
+ * {@code OnePositiveRange} is an implementation for {@link net.sf.jranges.range.integerrange.RangeInteger IntegerRange}, for which the
  * following is true:<br>
  * {@code 1 <= start <= stop <= Integer.MAX_VALUE}
  * 
@@ -41,16 +40,18 @@ import net.sf.jranges.range.RangeException;
 public class RangeIntegerOnePositive extends RangeIntegerAbstract {
 
 	public RangeIntegerOnePositive(int start, int stop) throws RangeException {
+
 		super(start, stop, 1, Integer.MAX_VALUE);
 	}
 
 	public RangeIntegerOnePositive(int start, int stop, int interval) throws RangeException {
+
 		super(start, stop, 1, Integer.MAX_VALUE, interval);
 	}
 
 	@Override
 	protected RangeIntegerOnePositive newInstange(int start, int stop, int limit1, int limit2) throws RangeException {
+
 		return new RangeIntegerOnePositive(start, stop, interval);
 	}
-
 }

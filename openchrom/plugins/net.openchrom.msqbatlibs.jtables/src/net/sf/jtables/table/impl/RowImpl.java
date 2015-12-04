@@ -1,18 +1,17 @@
 /**********************************************************************
-Copyright (c) 2011-2012 Alexander Kerner. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+ * Copyright (c) 2011-2012 Alexander Kerner. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  ***********************************************************************/
-
 package net.sf.jtables.table.impl;
 
 import java.util.ArrayList;
@@ -49,180 +48,213 @@ import net.sf.kerner.utils.collections.list.UtilList;
  */
 public class RowImpl<T> implements Row<T> {
 
-    public final static String DEFAULT_DELIMITER = "\t";
+	public final static String DEFAULT_DELIMITER = "\t";
+	protected final List<T> implementation = new ArrayList<T>();
+	protected volatile ObjectToIndexMapper<Object> mapper = new ObjectToIndexMapperImpl<Object>(new ArrayList<Object>());
 
-    protected final List<T> implementation = new ArrayList<T>();
+	public RowImpl() {
 
-    protected volatile ObjectToIndexMapper<Object> mapper = new ObjectToIndexMapperImpl<Object>(new ArrayList<Object>());
+	}
 
-    public RowImpl() {
-    }
+	public RowImpl(final List<T> elements) {
 
-    public RowImpl(final List<T> elements) {
-        implementation.addAll(elements);
-    }
+		implementation.addAll(elements);
+	}
 
-    public RowImpl(final Row<T> template) {
-        implementation.addAll(template);
-        mapper = new ObjectToIndexMapperImpl<Object>(template.getIdentifier());
-    }
+	public RowImpl(final Row<T> template) {
 
-    public RowImpl(final T... elements) {
-        implementation.addAll(Arrays.asList(elements));
-    }
+		implementation.addAll(template);
+		mapper = new ObjectToIndexMapperImpl<Object>(template.getIdentifier());
+	}
 
-    public void add(final int index, final T element) {
-        implementation.add(index, element);
-    }
+	public RowImpl(final T... elements) {
 
-    // Implement //
+		implementation.addAll(Arrays.asList(elements));
+	}
 
-    public boolean add(final T e) {
-        return implementation.add(e);
-    }
+	public void add(final int index, final T element) {
 
-    public boolean addAll(final Collection<? extends T> c) {
-        return implementation.addAll(c);
-    }
+		implementation.add(index, element);
+	}
 
-    public boolean addAll(final int index, final Collection<? extends T> c) {
-        return implementation.addAll(index, c);
-    }
+	// Implement //
+	public boolean add(final T e) {
 
-    public void clear() {
-        implementation.clear();
-    }
+		return implementation.add(e);
+	}
 
-    public boolean contains(final Object o) {
-        return implementation.contains(o);
-    }
+	public boolean addAll(final Collection<? extends T> c) {
 
-    // Delegates //
+		return implementation.addAll(c);
+	}
 
-    public boolean containsAll(final Collection<?> c) {
-        return implementation.containsAll(c);
-    }
+	public boolean addAll(final int index, final Collection<? extends T> c) {
 
-    @Override
-    public boolean equals(final Object o) {
-        return implementation.equals(o);
-    }
+		return implementation.addAll(index, c);
+	}
 
-    public T get(final int index) {
-        if (implementation.size() <= index) {
-            throw new IllegalArgumentException("No index " + index + " in row " + implementation);
-        }
-        return implementation.get(index);
-    }
+	public void clear() {
 
-    public T get(final Object indentifier) {
-        return get(mapper.get(indentifier));
-    }
+		implementation.clear();
+	}
 
-    public List<Object> getIdentifier() {
-        return new ArrayList<Object>(mapper.keys());
-    }
+	public boolean contains(final Object o) {
 
-    public ObjectToIndexMapper<Object> getObjectToIndexMapper() {
-        return new ObjectToIndexMapperImpl<Object>(mapper.keys());
-    }
+		return implementation.contains(o);
+	}
 
-    public boolean hasColumn(final int index) {
-        return index < implementation.size() && index >= 0;
-    }
+	// Delegates //
+	public boolean containsAll(final Collection<?> c) {
 
-    public boolean hasColumn(final Object o) {
-        if (mapper.containsKey(o)) {
-            final int index = mapper.get(o);
-            return hasColumn(index);
-        }
-        return false;
-    }
+		return implementation.containsAll(c);
+	}
 
-    @Override
-    public int hashCode() {
-        return implementation.hashCode();
-    }
+	@Override
+	public boolean equals(final Object o) {
 
-    public int indexOf(final Object o) {
-        return implementation.indexOf(o);
-    }
+		return implementation.equals(o);
+	}
 
-    public boolean isEmpty() {
-        return implementation.isEmpty();
-    }
+	public T get(final int index) {
 
-    public Iterator<T> iterator() {
-        return implementation.iterator();
-    }
+		if(implementation.size() <= index) {
+			throw new IllegalArgumentException("No index " + index + " in row " + implementation);
+		}
+		return implementation.get(index);
+	}
 
-    public int lastIndexOf(final Object o) {
-        return implementation.lastIndexOf(o);
-    }
+	public T get(final Object indentifier) {
 
-    public ListIterator<T> listIterator() {
-        return implementation.listIterator();
-    }
+		return get(mapper.get(indentifier));
+	}
 
-    public ListIterator<T> listIterator(final int index) {
-        return implementation.listIterator(index);
-    }
+	public List<Object> getIdentifier() {
 
-    public T remove(final int index) {
-        return implementation.remove(index);
-    }
+		return new ArrayList<Object>(mapper.keys());
+	}
 
-    public boolean remove(final Object o) {
-        return implementation.remove(o);
-    }
+	public ObjectToIndexMapper<Object> getObjectToIndexMapper() {
 
-    public boolean removeAll(final Collection<?> c) {
-        return implementation.removeAll(c);
-    }
+		return new ObjectToIndexMapperImpl<Object>(mapper.keys());
+	}
 
-    public boolean retainAll(final Collection<?> c) {
-        return implementation.retainAll(c);
-    }
+	public boolean hasColumn(final int index) {
 
-    public T set(final int index, final T element) {
-        return implementation.set(index, element);
-    }
+		return index < implementation.size() && index >= 0;
+	}
 
-    public T set(final Object indentifier, final T newElement) {
-        return set(mapper.get(indentifier), newElement);
-    }
+	public boolean hasColumn(final Object o) {
 
-    public void setIdentifier(final List<? extends Object> ids) {
-        if (UtilString.allEmpty(UtilList.toStringList(ids))) {
-            throw new IllegalArgumentException("Invalid identifier: " + ids);
-        }
-        this.mapper = new ObjectToIndexMapperImpl<Object>(ids);
-    }
+		if(mapper.containsKey(o)) {
+			final int index = mapper.get(o);
+			return hasColumn(index);
+		}
+		return false;
+	}
 
-    public int size() {
-        return implementation.size();
-    }
+	@Override
+	public int hashCode() {
 
-    public List<T> subList(final int fromIndex, final int toIndex) {
-        return implementation.subList(fromIndex, toIndex);
-    }
+		return implementation.hashCode();
+	}
 
-    public Object[] toArray() {
-        return implementation.toArray();
-    }
+	public int indexOf(final Object o) {
 
-    @SuppressWarnings("hiding")
-    public <T> T[] toArray(final T[] a) {
-        return implementation.toArray(a);
-    }
+		return implementation.indexOf(o);
+	}
 
-    @Override
-    public String toString() {
-        return toString(DEFAULT_DELIMITER);
-    }
+	public boolean isEmpty() {
 
-    public String toString(final String delimiter) {
-        return UtilCollection.toString(this, delimiter);
-    }
+		return implementation.isEmpty();
+	}
 
+	public Iterator<T> iterator() {
+
+		return implementation.iterator();
+	}
+
+	public int lastIndexOf(final Object o) {
+
+		return implementation.lastIndexOf(o);
+	}
+
+	public ListIterator<T> listIterator() {
+
+		return implementation.listIterator();
+	}
+
+	public ListIterator<T> listIterator(final int index) {
+
+		return implementation.listIterator(index);
+	}
+
+	public T remove(final int index) {
+
+		return implementation.remove(index);
+	}
+
+	public boolean remove(final Object o) {
+
+		return implementation.remove(o);
+	}
+
+	public boolean removeAll(final Collection<?> c) {
+
+		return implementation.removeAll(c);
+	}
+
+	public boolean retainAll(final Collection<?> c) {
+
+		return implementation.retainAll(c);
+	}
+
+	public T set(final int index, final T element) {
+
+		return implementation.set(index, element);
+	}
+
+	public T set(final Object indentifier, final T newElement) {
+
+		return set(mapper.get(indentifier), newElement);
+	}
+
+	public void setIdentifier(final List<? extends Object> ids) {
+
+		if(UtilString.allEmpty(UtilList.toStringList(ids))) {
+			throw new IllegalArgumentException("Invalid identifier: " + ids);
+		}
+		this.mapper = new ObjectToIndexMapperImpl<Object>(ids);
+	}
+
+	public int size() {
+
+		return implementation.size();
+	}
+
+	public List<T> subList(final int fromIndex, final int toIndex) {
+
+		return implementation.subList(fromIndex, toIndex);
+	}
+
+	public Object[] toArray() {
+
+		return implementation.toArray();
+	}
+
+	@SuppressWarnings("hiding")
+	public <T> T[] toArray(final T[] a) {
+
+		return implementation.toArray(a);
+	}
+
+	@Override
+	public String toString() {
+
+		return toString(DEFAULT_DELIMITER);
+	}
+
+	public String toString(final String delimiter) {
+
+		return UtilCollection.toString(this, delimiter);
+	}
 }

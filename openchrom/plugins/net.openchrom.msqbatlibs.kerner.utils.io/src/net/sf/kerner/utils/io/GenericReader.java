@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,34 +41,33 @@ import java.io.Reader;
  */
 public interface GenericReader<T> {
 
-    /**
-     * Read something from a {@link File}.
-     * 
-     * @param file
-     *            file that is read
-     * @return something that is read from this file
-     * @throws IOException
-     */
-    public T read(File file) throws IOException;
+	/**
+	 * Read something from a {@link File}.
+	 * 
+	 * @param file
+	 *            file that is read
+	 * @return something that is read from this file
+	 * @throws IOException
+	 */
+	public T read(File file) throws IOException;
 
-    /**
-     * Read something from a {@link Reader}.
-     * 
-     * @param reader
-     *            {@link Reader} from which is read
-     * @return something that is read from this {@link Reader}
-     * @throws IOException
-     */
-    public T read(Reader reader) throws IOException;
+	/**
+	 * Read something from a {@link Reader}.
+	 * 
+	 * @param reader
+	 *            {@link Reader} from which is read
+	 * @return something that is read from this {@link Reader}
+	 * @throws IOException
+	 */
+	public T read(Reader reader) throws IOException;
 
-    /**
-     * Read something from an {@link InputStream}.
-     * 
-     * @param stream
-     *            {@link InputStream} from which is read
-     * @return something that is read from this {@link InputStream}
-     * @throws IOException
-     */
-    public T read(InputStream stream) throws IOException;
-
+	/**
+	 * Read something from an {@link InputStream}.
+	 * 
+	 * @param stream
+	 *            {@link InputStream} from which is read
+	 * @return something that is read from this {@link InputStream}
+	 * @throws IOException
+	 */
+	public T read(InputStream stream) throws IOException;
 }

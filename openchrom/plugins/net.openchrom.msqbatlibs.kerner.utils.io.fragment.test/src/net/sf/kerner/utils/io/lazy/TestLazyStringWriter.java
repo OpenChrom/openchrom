@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,91 +33,95 @@ import org.junit.Test;
  */
 public class TestLazyStringWriter {
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	}
 
-    @Before
-    public void setUp() throws Exception {
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    }
+	}
 
-    @After
-    public void tearDown() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-    }
+	}
 
-    /**
-     * Test method for {@link net.sf.kerner.commons.io.lazy.LazyStringWriter#LazyStringWriter(Object)}.
-     */
-    @Test
-    public final void testLazyStringWriterString() {
-        new LazyStringWriter("test");
-    }
+	@After
+	public void tearDown() throws Exception {
 
-    /**
-     * Test method for {@link net.sf.kerner.commons.io.lazy.LazyStringWriter#LazyStringWriter(Object)}.
-     */
-    @Test(expected = NullPointerException.class)
-    public final void testLazyStringWriterString01() {
-        new LazyStringWriter(null);
-    }
+	}
 
-    /**
-     * Test method for {@link net.sf.kerner.commons.io.lazy.LazyStringWriter#write(java.io.Writer)}.
-     * 
-     * @throws IOException
-     */
-    @Test
-    public final void testWriteWriter() throws IOException {
-        final java.io.StringWriter wr = new java.io.StringWriter();
-        new LazyStringWriter("test").write(wr);
-        assertEquals("test", wr.toString());
-    }
+	/**
+	 * Test method for {@link net.sf.kerner.commons.io.lazy.LazyStringWriter#LazyStringWriter(Object)}.
+	 */
+	@Test
+	public final void testLazyStringWriterString() {
 
-    /**
-     * Test method for {@link net.sf.kerner.commons.io.lazy.LazyStringWriter#write(java.io.File)}.
-     * 
-     * @throws IOException
-     */
-    @Test(expected = IOException.class)
-    public final void testWriteFile() throws IOException {
-        // skip this, since this method delegates to write(java.io.Writer) using
-        // new java.io.FileWriter(file).
-        // can only break, if java.io.FileWriter breaks.
+		new LazyStringWriter("test");
+	}
 
-        new LazyStringWriter("test").write(new File("/dieses/file/kann/hoffentlich/nicht/angelegt/werden"));
-    }
+	/**
+	 * Test method for {@link net.sf.kerner.commons.io.lazy.LazyStringWriter#LazyStringWriter(Object)}.
+	 */
+	@Test(expected = NullPointerException.class)
+	public final void testLazyStringWriterString01() {
 
-    /**
-     * Test method for {@link net.sf.kerner.commons.io.lazy.LazyStringWriter#write(java.io.OutputStream)} .
-     * 
-     * @throws IOException
-     */
-    @Test(expected = IOException.class)
-    public final void testWriteOutputStream() throws IOException {
-        // skip this, since this methods delegates to write(java.io.Writer)
-        // using IOUtils.outputStreamToWriter(stream).
-        // can only break, if IOUtils.outputStreamToWriter() breaks.
+		new LazyStringWriter(null);
+	}
 
-        new LazyStringWriter("test").write(new FileOutputStream(new File(
-                "/dieses/file/kann/hoffentlich/nicht/angelegt/werden")));
-    }
+	/**
+	 * Test method for {@link net.sf.kerner.commons.io.lazy.LazyStringWriter#write(java.io.Writer)}.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public final void testWriteWriter() throws IOException {
 
-    /**
-     * Test method for {@link net.sf.kerner.commons.io.lazy.LazyStringWriter#write(java.io.File)}.
-     * 
-     * @throws IOException
-     */
-    @Test
-    public final void example() throws IOException {
-        final java.io.StringWriter wr = new java.io.StringWriter();
-        new LazyStringWriter("Hallo Welt!").write(wr);
-        assertEquals("Hallo Welt!", wr.toString());
-    }
+		final java.io.StringWriter wr = new java.io.StringWriter();
+		new LazyStringWriter("test").write(wr);
+		assertEquals("test", wr.toString());
+	}
 
+	/**
+	 * Test method for {@link net.sf.kerner.commons.io.lazy.LazyStringWriter#write(java.io.File)}.
+	 * 
+	 * @throws IOException
+	 */
+	@Test(expected = IOException.class)
+	public final void testWriteFile() throws IOException {
+
+		// skip this, since this method delegates to write(java.io.Writer) using
+		// new java.io.FileWriter(file).
+		// can only break, if java.io.FileWriter breaks.
+		new LazyStringWriter("test").write(new File("/dieses/file/kann/hoffentlich/nicht/angelegt/werden"));
+	}
+
+	/**
+	 * Test method for {@link net.sf.kerner.commons.io.lazy.LazyStringWriter#write(java.io.OutputStream)} .
+	 * 
+	 * @throws IOException
+	 */
+	@Test(expected = IOException.class)
+	public final void testWriteOutputStream() throws IOException {
+
+		// skip this, since this methods delegates to write(java.io.Writer)
+		// using IOUtils.outputStreamToWriter(stream).
+		// can only break, if IOUtils.outputStreamToWriter() breaks.
+		new LazyStringWriter("test").write(new FileOutputStream(new File("/dieses/file/kann/hoffentlich/nicht/angelegt/werden")));
+	}
+
+	/**
+	 * Test method for {@link net.sf.kerner.commons.io.lazy.LazyStringWriter#write(java.io.File)}.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public final void example() throws IOException {
+
+		final java.io.StringWriter wr = new java.io.StringWriter();
+		new LazyStringWriter("Hallo Welt!").write(wr);
+		assertEquals("Hallo Welt!", wr.toString());
+	}
 }

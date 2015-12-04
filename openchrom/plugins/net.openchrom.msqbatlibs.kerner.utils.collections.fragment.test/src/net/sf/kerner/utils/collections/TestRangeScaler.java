@@ -10,34 +10,39 @@ import org.junit.Test;
 
 public class TestRangeScaler {
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	}
 
-    private RangeScaler rs;
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    @Before
-    public void setUp() throws Exception {
-        rs = new RangeScaler();
-    }
+	}
 
-    @After
-    public void tearDown() throws Exception {
-        rs = null;
-    }
+	private RangeScaler rs;
 
-    @Test
-    public final void testScale01() {
-        final double[] arr = new double[] { 2, 4, 8 };
-        final double[] exp = new double[] { 4, 8, 16 };
-        final double[] result = rs.scale(arr, 16);
-        assertEquals(exp.length, result.length);
-        for (int i = 0; i < exp.length; i++) {
-            assertEquals(exp[i], result[i], 0.0);
-        }
-    }
+	@Before
+	public void setUp() throws Exception {
+
+		rs = new RangeScaler();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+
+		rs = null;
+	}
+
+	@Test
+	public final void testScale01() {
+
+		final double[] arr = new double[]{2, 4, 8};
+		final double[] exp = new double[]{4, 8, 16};
+		final double[] result = rs.scale(arr, 16);
+		assertEquals(exp.length, result.length);
+		for(int i = 0; i < exp.length; i++) {
+			assertEquals(exp[i], result[i], 0.0);
+		}
+	}
 }

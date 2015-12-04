@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,149 +27,166 @@ import net.sf.kerner.utils.collections.list.UtilList;
 
 public abstract class PeptideSequenceAbstract implements Peptide {
 
-    protected final List<AminoAcid> peptides;
+	protected final List<AminoAcid> peptides;
+	protected Collection<Modification> mods = null;
+	protected String name;
 
-    protected Collection<Modification> mods = null;
+	public PeptideSequenceAbstract(final List<AminoAcid> peptides) {
 
-    protected String name;
+		this(null, peptides);
+	}
 
-    public PeptideSequenceAbstract(final List<AminoAcid> peptides) {
-        this(null, peptides);
-    }
+	public PeptideSequenceAbstract(final String string) {
 
-    public PeptideSequenceAbstract(final String string) {
-        peptides = new ArrayList<AminoAcid>(string.length());
-        for (final char c : string.toCharArray()) {
-            peptides.add(AminoAcid.parseSingleChar(c));
-        }
-    }
+		peptides = new ArrayList<AminoAcid>(string.length());
+		for(final char c : string.toCharArray()) {
+			peptides.add(AminoAcid.parseSingleChar(c));
+		}
+	}
 
-    public PeptideSequenceAbstract(final String name, final List<AminoAcid> peptides) {
-        this.name = name;
-        this.peptides = new ArrayList<AminoAcid>(peptides);
-    }
+	public PeptideSequenceAbstract(final String name, final List<AminoAcid> peptides) {
 
-    @Override
-    public synchronized List<AminoAcid> asAminoAcidList() {
-        return Collections.unmodifiableList(peptides);
-    }
+		this.name = name;
+		this.peptides = new ArrayList<AminoAcid>(peptides);
+	}
 
-    @Override
-    public synchronized List<Character> asCharacterList() {
-        final List<Character> result = UtilList.newList();
-        for (final AminoAcid p : peptides) {
-            result.add(p.getSingleCharIdent());
-        }
-        return result;
-    }
+	@Override
+	public synchronized List<AminoAcid> asAminoAcidList() {
 
-    @Override
-    public synchronized String asString() {
-        final StringBuilder sb = new StringBuilder();
-        for (final AminoAcid p : peptides) {
-            sb.append(p);
-        }
-        return sb.toString();
-    }
+		return Collections.unmodifiableList(peptides);
+	}
 
-    @Override
-    public synchronized List<String> asStringList() {
-        return UtilList.toStringList(asCharacterList());
-    }
+	@Override
+	public synchronized List<Character> asCharacterList() {
 
-    @Override
-    public synchronized boolean contains(final AminoAcid p) {
-        return asAminoAcidList().contains(p);
-    }
+		final List<Character> result = UtilList.newList();
+		for(final AminoAcid p : peptides) {
+			result.add(p.getSingleCharIdent());
+		}
+		return result;
+	}
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof PeptideSequenceAbstract))
-            return false;
-        final PeptideSequenceAbstract other = (PeptideSequenceAbstract) obj;
-        if (peptides == null) {
-            if (other.peptides != null)
-                return false;
-        } else if (!peptides.equals(other.peptides))
-            return false;
-        return true;
-    }
+	@Override
+	public synchronized String asString() {
 
-    @Override
-    public synchronized Collection<Modification> getModifications() {
-        if (mods == null) {
-            mods = new LinkedHashSet<Modification>();
-        }
-        return Collections.unmodifiableCollection(mods);
-    }
+		final StringBuilder sb = new StringBuilder();
+		for(final AminoAcid p : peptides) {
+			sb.append(p);
+		}
+		return sb.toString();
+	}
 
-    @Override
-    public synchronized double getMolWeight() {
-        double result = 0;
-        for (final AminoAcid p : peptides) {
-            result += getMolWeight(p);
-        }
-        return result + getMolWeightCTerminal() + getMolWeightNTerminal();
-    }
+	@Override
+	public synchronized List<String> asStringList() {
 
-    protected synchronized double getMolWeight(final AminoAcid p) {
-        for (final Modification m : getModifications()) {
-            if (m.getParent().equals(p)) {
-                return m.getMolWeight();
-            }
-        }
-        return p.getMolWeight();
-    }
+		return UtilList.toStringList(asCharacterList());
+	}
 
-    @Override
-    public synchronized double getMolWeightCTerminal() {
-        return MOL_WEIGHT_OXYGEN;
-    }
+	@Override
+	public synchronized boolean contains(final AminoAcid p) {
 
-    @Override
-    public synchronized double getMolWeightNTerminal() {
-        return (2 * MOL_WEIGHT_HYDROGEN) + (getChargeState() * MOL_WEIGHT_HYDROGEN);
-    }
+		return asAminoAcidList().contains(p);
+	}
 
-    public synchronized String getName() {
-        return name;
-    }
+	@Override
+	public boolean equals(final Object obj) {
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((peptides == null) ? 0 : peptides.hashCode());
-        return result;
-    }
+		if(this == obj)
+			return true;
+		if(obj == null)
+			return false;
+		if(!(obj instanceof PeptideSequenceAbstract))
+			return false;
+		final PeptideSequenceAbstract other = (PeptideSequenceAbstract)obj;
+		if(peptides == null) {
+			if(other.peptides != null)
+				return false;
+		} else if(!peptides.equals(other.peptides))
+			return false;
+		return true;
+	}
 
-    @Override
-    public synchronized Iterator<AminoAcid> iterator() {
-        return asAminoAcidList().iterator();
-    }
+	@Override
+	public synchronized Collection<Modification> getModifications() {
 
-    @Override
-    public synchronized void setModifications(final Collection<Modification> modifications) {
-        mods = new HashSet<Modification>(modifications);
-    }
+		if(mods == null) {
+			mods = new LinkedHashSet<Modification>();
+		}
+		return Collections.unmodifiableCollection(mods);
+	}
 
-    public synchronized void setName(final String name) {
-        this.name = name;
-    }
+	@Override
+	public synchronized double getMolWeight() {
 
-    @Override
-    public synchronized String toString() {
-        final StringBuilder sb = new StringBuilder();
-        for (final AminoAcid p : peptides) {
-            sb.append(p);
-        }
-        sb.append(":");
-        sb.append(String.format("%10.4f", getMolWeight()));
-        return sb.toString();
-    }
+		double result = 0;
+		for(final AminoAcid p : peptides) {
+			result += getMolWeight(p);
+		}
+		return result + getMolWeightCTerminal() + getMolWeightNTerminal();
+	}
 
+	protected synchronized double getMolWeight(final AminoAcid p) {
+
+		for(final Modification m : getModifications()) {
+			if(m.getParent().equals(p)) {
+				return m.getMolWeight();
+			}
+		}
+		return p.getMolWeight();
+	}
+
+	@Override
+	public synchronized double getMolWeightCTerminal() {
+
+		return MOL_WEIGHT_OXYGEN;
+	}
+
+	@Override
+	public synchronized double getMolWeightNTerminal() {
+
+		return (2 * MOL_WEIGHT_HYDROGEN) + (getChargeState() * MOL_WEIGHT_HYDROGEN);
+	}
+
+	public synchronized String getName() {
+
+		return name;
+	}
+
+	@Override
+	public int hashCode() {
+
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((peptides == null) ? 0 : peptides.hashCode());
+		return result;
+	}
+
+	@Override
+	public synchronized Iterator<AminoAcid> iterator() {
+
+		return asAminoAcidList().iterator();
+	}
+
+	@Override
+	public synchronized void setModifications(final Collection<Modification> modifications) {
+
+		mods = new HashSet<Modification>(modifications);
+	}
+
+	public synchronized void setName(final String name) {
+
+		this.name = name;
+	}
+
+	@Override
+	public synchronized String toString() {
+
+		final StringBuilder sb = new StringBuilder();
+		for(final AminoAcid p : peptides) {
+			sb.append(p);
+		}
+		sb.append(":");
+		sb.append(String.format("%10.4f", getMolWeight()));
+		return sb.toString();
+	}
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,164 +64,179 @@ import net.sf.kerner.utils.transformer.Transformer;
  */
 public class UtilPeak {
 
-    public static List<Peak> cast(final Collection<?> peaks) {
-        return UtilList.cast(peaks);
-    }
+	public static List<Peak> cast(final Collection<?> peaks) {
 
-    public static List<Peak> filter(final List<? extends Peak> peaks, final Filter<Peak> filter) {
-        return UtilList.filterList(peaks, filter);
-    }
+		return UtilList.cast(peaks);
+	}
 
-    public static <T extends Peak> T findClosestToMZ(final Iterable<T> peaks, final double mass) {
-        T result = null;
-        for (final T p : peaks) {
-            if (result == null)
-                result = p;
-            else {
-                final double massDiffNew = Math.abs(mass - p.getMz());
+	public static List<Peak> filter(final List<? extends Peak> peaks, final Filter<Peak> filter) {
 
-                // TODO cache this
-                final double massDiffOld = Math.abs(mass - result.getMz());
+		return UtilList.filterList(peaks, filter);
+	}
 
-                if (massDiffNew < massDiffOld) {
-                    result = p;
-                }
-            }
-        }
-        return result;
-    }
+	public static <T extends Peak> T findClosestToMZ(final Iterable<T> peaks, final double mass) {
 
-    /**
+		T result = null;
+		for(final T p : peaks) {
+			if(result == null)
+				result = p;
+			else {
+				final double massDiffNew = Math.abs(mass - p.getMz());
+				// TODO cache this
+				final double massDiffOld = Math.abs(mass - result.getMz());
+				if(massDiffNew < massDiffOld) {
+					result = p;
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 *
+	 * @param peaks
+	 *            {@link Peak Peaks} to find peak with the highest intensity
+	 *            from
+	 * @return {@link Peak} that has the highest intensity of all given {@code peaks}
+	 */
+	public static <T extends Peak> T findHighestIntensity(final Collection<? extends T> peaks) {
+
+		return Collections.max(peaks, new ComparatorPeakByIntensity());
+	}
+
+	/**
+	 *
+	 * @param peaks
+	 *            {@link Peak Peaks} to find peak with the highest mz from
+	 * @return {@link Peak} that has the highest mz of all given {@code peaks}
+	 */
+	public static <T extends Peak> T findHighestMZ(final Collection<? extends T> peaks) {
+
+		return Collections.max(peaks, new ComparatorPeakByMZ());
+	}
+
+	/**
+	 * Converts an PPM delta to according absolute delta.
+	 *
+	 * @param parent
+	 * @param ppmDelta
+	 * @return converted delta
+	 */
+	public static double getAbsDelta(final double parent, final double ppmDelta) {
+
+		return ppmDelta * parent / 1.0E+6;
+	}
+
+	public static double getDeltaMass(final double p1, final double p2, final boolean ppm) {
+
+		double result;
+		result = Math.abs(p1 - p2);
+		if(ppm) {
+			result = getDeltaPpm(p1, result);
+		}
+		return result;
+	}
+
+	/**
+	 * Converts an absolute delta to according PPM delta.
+	 *
+	 * @return converted delta
+	 */
+	public static double getDeltaPpm(final double parent, final double absDelta) {
+
+		return 1.0E+6 * absDelta / parent;
+	}
+
+	/**
+	 * @deprecated use {@link #getDeltaMass(double, boolean)
      *
-     * @param peaks
-     *            {@link Peak Peaks} to find peak with the highest intensity
-     *            from
-     * @return {@link Peak} that has the highest intensity of all given
-     *         {@code peaks}
-     */
-    public static <T extends Peak> T findHighestIntensity(final Collection<? extends T> peaks) {
-        return Collections.max(peaks, new ComparatorPeakByIntensity());
-    }
+	 */
+	@Deprecated
+	public static double getPpmDeltaMz(final Peak p1, final Peak p2) {
 
-    /**
-     *
-     * @param peaks
-     *            {@link Peak Peaks} to find peak with the highest mz from
-     * @return {@link Peak} that has the highest mz of all given {@code peaks}
-     */
-    public static <T extends Peak> T findHighestMZ(final Collection<? extends T> peaks) {
-        return Collections.max(peaks, new ComparatorPeakByMZ());
-    }
+		final double absDiff = Math.abs(p1.getMz() - p2.getMz());
+		return getDeltaPpm(p1.getMz(), absDiff);
+	}
 
-    /**
-     * Converts an PPM delta to according absolute delta.
-     *
-     * @param parent
-     * @param ppmDelta
-     * @return converted delta
-     */
-    public static double getAbsDelta(final double parent, final double ppmDelta) {
-        return ppmDelta * parent / 1.0E+6;
-    }
+	public static TreeMap<Double, Peak> getSortedMapMassShiftAbsSmallestFirst(final double mass, final Collection<? extends Peak> values) {
 
-    public static double getDeltaMass(final double p1, final double p2, final boolean ppm) {
-        double result;
-        result = Math.abs(p1 - p2);
-        if (ppm) {
-            result = getDeltaPpm(p1, result);
-        }
-        return result;
-    }
+		final TreeMap<Double, Peak> result = new TreeMap<Double, Peak>();
+		for(final Peak p : values) {
+			result.put(Math.abs(mass - p.getMz()), p);
+		}
+		return result;
+	}
 
-    /**
-     * Converts an absolute delta to according PPM delta.
-     *
-     * @return converted delta
-     */
-    public static double getDeltaPpm(final double parent, final double absDelta) {
-        return 1.0E+6 * absDelta / parent;
-    }
+	public static TreeMap<Double, Peak> getSortedMapMassShiftAbsSmallestFirst(final Peak key, final Collection<? extends Peak> values) {
 
-    /**
-     * @deprecated use {@link #getDeltaMass(double, boolean)
-     *
-     */
-    @Deprecated
-    public static double getPpmDeltaMz(final Peak p1, final Peak p2) {
-        final double absDiff = Math.abs(p1.getMz() - p2.getMz());
-        return getDeltaPpm(p1.getMz(), absDiff);
-    }
+		return getSortedMapMassShiftAbsSmallestFirst(key.getMz(), values);
+	}
 
-    public static TreeMap<Double, Peak> getSortedMapMassShiftAbsSmallestFirst(final double mass,
-            final Collection<? extends Peak> values) {
-        final TreeMap<Double, Peak> result = new TreeMap<Double, Peak>();
+	public static TreeSet<Peak> getSortedSet(final Collection<? extends Peak> peaks, final Comparator<Peak> comparator) {
 
-        for (final Peak p : values) {
-            result.put(Math.abs(mass - p.getMz()), p);
-        }
-        return result;
-    }
+		final TreeSet<Peak> result = new TreeSet<Peak>(comparator);
+		result.addAll(peaks);
+		return result;
+	}
 
-    public static TreeMap<Double, Peak> getSortedMapMassShiftAbsSmallestFirst(final Peak key,
-            final Collection<? extends Peak> values) {
-        return getSortedMapMassShiftAbsSmallestFirst(key.getMz(), values);
-    }
+	public static TreeSet<Peak> getSortedSetByMzLargestFirst(final Collection<? extends Peak> peaks) {
 
-    public static TreeSet<Peak> getSortedSet(final Collection<? extends Peak> peaks,
-            final Comparator<Peak> comparator) {
-        final TreeSet<Peak> result = new TreeSet<Peak>(comparator);
-        result.addAll(peaks);
-        return result;
-    }
+		return getSortedSet(peaks, new ComparatorInverter<Peak>(new ComparatorPeakByMZ()));
+	}
 
-    public static TreeSet<Peak> getSortedSetByMzLargestFirst(final Collection<? extends Peak> peaks) {
-        return getSortedSet(peaks, new ComparatorInverter<Peak>(new ComparatorPeakByMZ()));
-    }
+	public static TreeSet<Peak> getSortedSetByMzSmallestFirst(final Collection<? extends Peak> peaks) {
 
-    public static TreeSet<Peak> getSortedSetByMzSmallestFirst(final Collection<? extends Peak> peaks) {
-        return getSortedSet(peaks, new ComparatorPeakByMZ());
-    }
+		return getSortedSet(peaks, new ComparatorPeakByMZ());
+	}
 
-    @Deprecated
-    public static String intensityToNoiseToString(final Peak peak) {
-        return String.format("%3.0f", peak.getIntensityToNoise());
-    }
+	@Deprecated
+	public static String intensityToNoiseToString(final Peak peak) {
 
-    @Deprecated
-    public static String intensityToString(final double intensity) {
-        return String.format("%3.0f", intensity);
-    }
+		return String.format("%3.0f", peak.getIntensityToNoise());
+	}
 
-    @Deprecated
-    public static String mzToString(final double mz) {
-        return String.format("%4.4f", mz);
-    }
+	@Deprecated
+	public static String intensityToString(final double intensity) {
 
-    @Deprecated
-    public static String mzToString(final Peak peak) {
-        return mzToString(peak.getMz());
-    }
+		return String.format("%3.0f", intensity);
+	}
 
-    @Deprecated
-    public static String ppmToString(final double ppm) {
-        return String.format("%6.2f", ppm);
-    }
+	@Deprecated
+	public static String mzToString(final double mz) {
 
-    public static String toStringIndices(final Collection<? extends Peak> peaks) {
-        return UtilCollection
-                .toString(new TransformerPeakToFractionNr().transformCollection(peaks));
-    }
+		return String.format("%4.4f", mz);
+	}
 
-    public static String toStringNames(final Collection<? extends Peak> peaks) {
-        return UtilCollection.toString(new ArrayList<Peak>(peaks), new Transformer<Peak, String>() {
-            @Override
-            public String transform(final Peak element) {
-                return element.getName();
-            }
-        });
-    }
+	@Deprecated
+	public static String mzToString(final Peak peak) {
 
-    private UtilPeak() {
-    }
+		return mzToString(peak.getMz());
+	}
 
+	@Deprecated
+	public static String ppmToString(final double ppm) {
+
+		return String.format("%6.2f", ppm);
+	}
+
+	public static String toStringIndices(final Collection<? extends Peak> peaks) {
+
+		return UtilCollection.toString(new TransformerPeakToFractionNr().transformCollection(peaks));
+	}
+
+	public static String toStringNames(final Collection<? extends Peak> peaks) {
+
+		return UtilCollection.toString(new ArrayList<Peak>(peaks), new Transformer<Peak, String>() {
+
+			@Override
+			public String transform(final Peak element) {
+
+				return element.getName();
+			}
+		});
+	}
+
+	private UtilPeak() {
+
+	}
 }

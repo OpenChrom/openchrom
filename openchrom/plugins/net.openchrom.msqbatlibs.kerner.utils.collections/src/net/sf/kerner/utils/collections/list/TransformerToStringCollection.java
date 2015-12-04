@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,28 +23,30 @@ import net.sf.kerner.utils.transformer.TransformerToStringDefault;
 
 public class TransformerToStringCollection<T> extends AbstractTransformingListFactory<T, String> {
 
-    private final TransformerToString<Object> DEFAULT_TRANSFORMER = new TransformerToStringDefault();
+	private final TransformerToString<Object> DEFAULT_TRANSFORMER = new TransformerToStringDefault();
+	private final TransformerToString<T> transformer;
 
-    private final TransformerToString<T> transformer;
+	public TransformerToStringCollection() {
 
-    public TransformerToStringCollection() {
-        this(null);
-    }
+		this(null);
+	}
 
-    public TransformerToStringCollection(final TransformerToString<T> transformer) {
-        this.transformer = transformer;
-    }
+	public TransformerToStringCollection(final TransformerToString<T> transformer) {
 
-    public String transform(final T arg0) {
-        if (transformer == null) {
-            return DEFAULT_TRANSFORMER.transform(arg0);
-        }
-        return transformer.transform(arg0);
-    }
+		this.transformer = transformer;
+	}
 
-    @Override
-    public List<String> transformCollection(final Collection<? extends T> element) {
-        return super.transformCollection(element);
-    }
+	public String transform(final T arg0) {
 
+		if(transformer == null) {
+			return DEFAULT_TRANSFORMER.transform(arg0);
+		}
+		return transformer.transform(arg0);
+	}
+
+	@Override
+	public List<String> transformCollection(final Collection<? extends T> element) {
+
+		return super.transformCollection(element);
+	}
 }

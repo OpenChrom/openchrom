@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -55,13 +55,15 @@ import net.sf.kerner.utils.math.UtilMath;
  */
 public class TransformerPeakToIntensityLog2 extends TransformerPeakToIntensity {
 
-    @Override
-    public TransformerScale getScale() {
-        return new TransformerLog2();
-    }
+	@Override
+	public TransformerScale getScale() {
 
-    @Override
-    public Double transform(final ProviderIntensity element) {
-        return UtilMath.log2(super.transform(element));
-    }
+		return new TransformerLog2();
+	}
+
+	@Override
+	public Double transform(final ProviderIntensity element) {
+
+		return UtilMath.log2(super.transform(element));
+	}
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,125 +26,151 @@ import java.util.TreeMap;
 
 public class PropertiesSorted implements SortedMap<String, Object>, Serializable {
 
-    private static final long serialVersionUID = -7867760517665815796L;
+	private static final long serialVersionUID = -7867760517665815796L;
 
-    public static PropertiesSorted fromProperties(final Properties properties) {
-        final PropertiesSorted result = new PropertiesSorted();
-        for (final java.util.Map.Entry<Object, Object> e : properties.entrySet()) {
-            result.put(e.getKey().toString(), e.getValue());
-        }
-        return result;
-    }
+	public static PropertiesSorted fromProperties(final Properties properties) {
 
-    private final SortedMap<String, Object> delegate;
+		final PropertiesSorted result = new PropertiesSorted();
+		for(final java.util.Map.Entry<Object, Object> e : properties.entrySet()) {
+			result.put(e.getKey().toString(), e.getValue());
+		}
+		return result;
+	}
 
-    public PropertiesSorted() {
-        delegate = new TreeMap<String, Object>();
-    }
+	private final SortedMap<String, Object> delegate;
 
-    public PropertiesSorted(final Comparator<? super String> c) {
-        delegate = new TreeMap<String, Object>(c);
-    }
+	public PropertiesSorted() {
 
-    public PropertiesSorted(final Properties properties) {
-        delegate = fromProperties(properties);
-    }
+		delegate = new TreeMap<String, Object>();
+	}
 
-    public PropertiesSorted(final SortedMap<String, Object> delegate) {
-        this.delegate = delegate;
-    }
+	public PropertiesSorted(final Comparator<? super String> c) {
 
-    public void clear() {
-        delegate.clear();
-    }
+		delegate = new TreeMap<String, Object>(c);
+	}
 
-    public Comparator<? super String> comparator() {
-        return delegate.comparator();
-    }
+	public PropertiesSorted(final Properties properties) {
 
-    public boolean containsKey(final Object key) {
-        return delegate.containsKey(key);
-    }
+		delegate = fromProperties(properties);
+	}
 
-    public boolean containsValue(final Object value) {
-        return delegate.containsValue(value);
-    }
+	public PropertiesSorted(final SortedMap<String, Object> delegate) {
 
-    public Set<java.util.Map.Entry<String, Object>> entrySet() {
-        return delegate.entrySet();
-    }
+		this.delegate = delegate;
+	}
 
-    @Override
-    public boolean equals(final Object o) {
-        return delegate.equals(o);
-    }
+	public void clear() {
 
-    public String firstKey() {
-        return delegate.firstKey();
-    }
+		delegate.clear();
+	}
 
-    public Object get(final Object key) {
-        return delegate.get(key);
-    }
+	public Comparator<? super String> comparator() {
 
-    @Override
-    public int hashCode() {
-        return delegate.hashCode();
-    }
+		return delegate.comparator();
+	}
 
-    public SortedMap<String, Object> headMap(final String toKey) {
-        return delegate.headMap(toKey);
-    }
+	public boolean containsKey(final Object key) {
 
-    public boolean isEmpty() {
-        return delegate.isEmpty();
-    }
+		return delegate.containsKey(key);
+	}
 
-    public Set<String> keySet() {
-        return delegate.keySet();
-    }
+	public boolean containsValue(final Object value) {
 
-    public String lastKey() {
-        return delegate.lastKey();
-    }
+		return delegate.containsValue(value);
+	}
 
-    public Object put(final String key, final Object value) {
-        return delegate.put(key, value);
-    }
+	public Set<java.util.Map.Entry<String, Object>> entrySet() {
 
-    public void putAll(final Map<? extends String, ? extends Object> m) {
-        delegate.putAll(m);
-    }
+		return delegate.entrySet();
+	}
 
-    public Object remove(final Object key) {
-        return delegate.remove(key);
-    }
+	@Override
+	public boolean equals(final Object o) {
 
-    public int size() {
-        return delegate.size();
-    }
+		return delegate.equals(o);
+	}
 
-    public SortedMap<String, Object> subMap(final String fromKey, final String toKey) {
-        return delegate.subMap(fromKey, toKey);
-    }
+	public String firstKey() {
 
-    public SortedMap<String, Object> tailMap(final String fromKey) {
-        return delegate.tailMap(fromKey);
-    }
+		return delegate.firstKey();
+	}
 
-    public Properties toProperties() {
-        final Properties p = new Properties();
-        p.putAll(delegate);
-        return p;
-    }
+	public Object get(final Object key) {
 
-    @Override
-    public String toString() {
-        return UtilCollection.toString(delegate.entrySet());
-    }
+		return delegate.get(key);
+	}
 
-    public Collection<Object> values() {
-        return delegate.values();
-    }
+	@Override
+	public int hashCode() {
 
+		return delegate.hashCode();
+	}
+
+	public SortedMap<String, Object> headMap(final String toKey) {
+
+		return delegate.headMap(toKey);
+	}
+
+	public boolean isEmpty() {
+
+		return delegate.isEmpty();
+	}
+
+	public Set<String> keySet() {
+
+		return delegate.keySet();
+	}
+
+	public String lastKey() {
+
+		return delegate.lastKey();
+	}
+
+	public Object put(final String key, final Object value) {
+
+		return delegate.put(key, value);
+	}
+
+	public void putAll(final Map<? extends String, ? extends Object> m) {
+
+		delegate.putAll(m);
+	}
+
+	public Object remove(final Object key) {
+
+		return delegate.remove(key);
+	}
+
+	public int size() {
+
+		return delegate.size();
+	}
+
+	public SortedMap<String, Object> subMap(final String fromKey, final String toKey) {
+
+		return delegate.subMap(fromKey, toKey);
+	}
+
+	public SortedMap<String, Object> tailMap(final String fromKey) {
+
+		return delegate.tailMap(fromKey);
+	}
+
+	public Properties toProperties() {
+
+		final Properties p = new Properties();
+		p.putAll(delegate);
+		return p;
+	}
+
+	@Override
+	public String toString() {
+
+		return UtilCollection.toString(delegate.entrySet());
+	}
+
+	public Collection<Object> values() {
+
+		return delegate.values();
+	}
 }

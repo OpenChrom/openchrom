@@ -41,5 +41,4 @@ public interface PeakModifiableIntensity {
 	 *            new s/n
 	 */
 	void setIntensityToNoise(double intensityToNoise);
-
 }

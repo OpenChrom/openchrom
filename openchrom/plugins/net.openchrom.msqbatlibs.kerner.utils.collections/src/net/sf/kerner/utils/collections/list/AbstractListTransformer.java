@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,59 +22,64 @@ import java.util.List;
 
 import net.sf.kerner.utils.transformer.Transformer;
 
-public abstract class AbstractListTransformer<T, V> extends ListWalkerDefault<T> implements
-        Transformer<T, V>, TransformerList<T, V> {
+public abstract class AbstractListTransformer<T, V> extends ListWalkerDefault<T> implements Transformer<T, V>, TransformerList<T, V> {
 
-    protected final FactoryList<V> factory;
+	protected final FactoryList<V> factory;
+	protected volatile List<V> result;
+	protected volatile int currentIndex;
 
-    protected volatile List<V> result;
+	public AbstractListTransformer() {
 
-    protected volatile int currentIndex;
+		this(new ArrayListFactory<V>());
+	}
 
-    public AbstractListTransformer() {
-        this(new ArrayListFactory<V>());
-    }
+	public AbstractListTransformer(final FactoryList<V> factory) {
 
-    public AbstractListTransformer(final FactoryList<V> factory) {
-        this.factory = factory;
-        super.addVisitor(new DefaultListVisitorImpl<T>() {
-            @Override
-            public synchronized Void visit(final T element, final int index) {
-                setCurrentIndex(index);
-                result.add(transform(element));
-                return null;
-            }
-        });
-    }
+		this.factory = factory;
+		super.addVisitor(new DefaultListVisitorImpl<T>() {
 
-    @Override
-    public synchronized void beforeWalk() {
-        super.beforeWalk();
-        result = factory.createCollection();
-    }
+			@Override
+			public synchronized Void visit(final T element, final int index) {
 
-    public synchronized List<V> getAgain() {
-        return Collections.unmodifiableList(result);
-    }
+				setCurrentIndex(index);
+				result.add(transform(element));
+				return null;
+			}
+		});
+	}
 
-    protected synchronized int getCurrentIndex() {
-        return currentIndex;
-    }
+	@Override
+	public synchronized void beforeWalk() {
 
-    private synchronized void setCurrentIndex(final int currentIndex) {
-        this.currentIndex = currentIndex;
-    }
+		super.beforeWalk();
+		result = factory.createCollection();
+	}
 
-    /**
-     * if {@code element == null}, empty list is returned.
-     */
-    public synchronized List<V> transformCollection(final Collection<? extends T> element) {
-        if (element != null)
-            if (element instanceof List)
-                walk((List<? extends T>) element);
-            else
-                walk(new ArrayList<T>(element));
-        return result;
-    }
+	public synchronized List<V> getAgain() {
 
+		return Collections.unmodifiableList(result);
+	}
+
+	protected synchronized int getCurrentIndex() {
+
+		return currentIndex;
+	}
+
+	private synchronized void setCurrentIndex(final int currentIndex) {
+
+		this.currentIndex = currentIndex;
+	}
+
+	/**
+	 * if {@code element == null}, empty list is returned.
+	 */
+	public synchronized List<V> transformCollection(final Collection<? extends T> element) {
+
+		if(element != null)
+			if(element instanceof List)
+				walk((List<? extends T>)element);
+			else
+				walk(new ArrayList<T>(element));
+		return result;
+	}
 }

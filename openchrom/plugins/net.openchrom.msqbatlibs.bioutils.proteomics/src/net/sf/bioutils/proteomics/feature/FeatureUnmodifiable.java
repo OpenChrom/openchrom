@@ -12,45 +12,51 @@ import net.sf.bioutils.proteomics.peak.TransformerPeakToUnmodifiable;
 
 public class FeatureUnmodifiable extends PeakUnmodifiable implements FeatureAnnotatable {
 
-    public FeatureUnmodifiable(final Feature delegate) {
-        super(delegate);
-    }
+	public FeatureUnmodifiable(final Feature delegate) {
 
-    @Override
-    public FeatureUnmodifiable clone() {
-        return new FeatureUnmodifiable(((FeatureAnnotatable) delegate).clone());
-    }
+		super(delegate);
+	}
 
-    @Override
-    public int getIndexCenter() {
-        return ((FeatureAnnotatable) delegate).getIndexCenter();
-    }
+	@Override
+	public FeatureUnmodifiable clone() {
 
-    @Override
-    public int getIndexFirst() {
-        return ((FeatureAnnotatable) delegate).getIndexFirst();
-    }
+		return new FeatureUnmodifiable(((FeatureAnnotatable)delegate).clone());
+	}
 
-    @Override
-    public int getIndexLast() {
-        return ((FeatureAnnotatable) delegate).getIndexLast();
-    }
+	@Override
+	public int getIndexCenter() {
 
-    @Override
-    public List<Peak> getMembers() {
-        final List<Peak> l = new ArrayList<Peak>(
-                new TransformerPeakToUnmodifiable()
-                        .transformCollection(((FeatureAnnotatable) delegate).getMembers()));
-        return Collections.unmodifiableList(l);
-    }
+		return ((FeatureAnnotatable)delegate).getIndexCenter();
+	}
 
-    @Override
-    public Iterator<Peak> iterator() {
-        return ((FeatureAnnotatable) delegate).iterator();
-    }
+	@Override
+	public int getIndexFirst() {
 
-    @Override
-    public String toString() {
-        return "FeatureUnmodifiable:" + delegate;
-    }
+		return ((FeatureAnnotatable)delegate).getIndexFirst();
+	}
+
+	@Override
+	public int getIndexLast() {
+
+		return ((FeatureAnnotatable)delegate).getIndexLast();
+	}
+
+	@Override
+	public List<Peak> getMembers() {
+
+		final List<Peak> l = new ArrayList<Peak>(new TransformerPeakToUnmodifiable().transformCollection(((FeatureAnnotatable)delegate).getMembers()));
+		return Collections.unmodifiableList(l);
+	}
+
+	@Override
+	public Iterator<Peak> iterator() {
+
+		return ((FeatureAnnotatable)delegate).iterator();
+	}
+
+	@Override
+	public String toString() {
+
+		return "FeatureUnmodifiable:" + delegate;
+	}
 }

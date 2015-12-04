@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,68 +48,65 @@ import net.sf.kerner.utils.Cloneable;
  */
 public interface Fraction extends Cloneable<Fraction> {
 
-    public void addPeak(Peak peak);
+	public void addPeak(Peak peak);
 
-    void addStandard(Standard standard);
+	void addStandard(Standard standard);
 
-    /**
-     * Creates a clone of this {@code Fraction}. {@link Sample} of the new
-     * {@code Fraction} instance will be {@code null}.
-     */
-    @Override
-    public Fraction clone();
+	/**
+	 * Creates a clone of this {@code Fraction}. {@link Sample} of the new {@code Fraction} instance will be {@code null}.
+	 */
+	@Override
+	public Fraction clone();
 
-    /**
-     *
-     * Clones this {@code Fraction}, dismissing peaks.
-     *
-     * @see #clone()
-     */
-    Fraction cloneWOPeaks();
+	/**
+	 *
+	 * Clones this {@code Fraction}, dismissing peaks.
+	 *
+	 * @see #clone()
+	 */
+	Fraction cloneWOPeaks();
 
-    int getIndex();
+	int getIndex();
 
-    /**
-     * Returns the name of this fraction.
-     *
-     * @return name of this fraction
-     */
-    String getName();
+	/**
+	 * Returns the name of this fraction.
+	 *
+	 * @return name of this fraction
+	 */
+	String getName();
 
-    List<Peak> getPeaks();
+	List<Peak> getPeaks();
 
-    Sample getSample();
+	Sample getSample();
 
-    /**
-     * Sample getSample();
-     *
-     *
-     *
-     * /** Get number of {@link Peak peaks} in this fraction.
-     *
-     * @return number of {@link Peak peaks} in this fraction
-     */
-    int getSize();
+	/**
+	 * Sample getSample();
+	 *
+	 *
+	 *
+	 * /** Get number of {@link Peak peaks} in this fraction.
+	 *
+	 * @return number of {@link Peak peaks} in this fraction
+	 */
+	int getSize();
 
-    /**
-     * Returns this fraction's {@link Standard standards}.
-     *
-     * @return this fraction's {@link Standard standards}
-     */
-    Set<Standard> getStandards();
+	/**
+	 * Returns this fraction's {@link Standard standards}.
+	 *
+	 * @return this fraction's {@link Standard standards}
+	 */
+	Set<Standard> getStandards();
 
-    /**
-     * Checks weather this fraction is empty {@code getSize() == 0}.
-     *
-     * @return {@code true}, if number of {@link Peak peaks} in this fraction is
-     *         {@code 0}; {@code false} otherwise
-     */
-    boolean isEmpty();
+	/**
+	 * Checks weather this fraction is empty {@code getSize() == 0}.
+	 *
+	 * @return {@code true}, if number of {@link Peak peaks} in this fraction is {@code 0}; {@code false} otherwise
+	 */
+	boolean isEmpty();
 
-    void setPeaks(Collection<? extends Peak> peaks);
+	void setPeaks(Collection<? extends Peak> peaks);
 
-    void setSample(Sample sample);
+	void setSample(Sample sample);
 
-    void setStandards(Collection<? extends Standard> standards);
-
+	void setStandards(Collection<? extends Standard> standards);
 }

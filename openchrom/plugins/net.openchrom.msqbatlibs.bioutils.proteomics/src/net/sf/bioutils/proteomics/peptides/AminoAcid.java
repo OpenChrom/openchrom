@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,96 +41,90 @@ import net.sf.bioutils.proteomics.exception.ExceptionUnknownAminoAcid;
  * 
  */
 public enum AminoAcid {
+	/**
+	 * <a href="http://en.wikipedia.org/wiki/Alanine">en.wikipedia.org/wiki/
+	 * Alanine</a>
+	 */
+	A("Ala", 71.03711),
+	/**
+	 * <a href="http://en.wikipedia.org/wiki/Cysteine">en.wikipedia.org/wiki/
+	 * Cysteine</a>
+	 */
+	C("Cys", 103.00919),
+	/**
+	 * <a
+	 * href="http://en.wikipedia.org/wiki/Aspartic_acid">en.wikipedia.org/wiki/
+	 * Aspartic acid</a>
+	 */
+	D("Asp", 115.02694),
+	/**
+	 * <a href="http://en.wikipedia.org/wiki/Glutamic_acid">http://en.wikipedia.
+	 * org/wiki/Glutamic_acid</a>
+	 */
+	E("Glu", 129.04259),
+	/**
+	 * <a href="http://en.wikipedia.org/wiki/Phenylalanine">http://en.wikipedia.
+	 * org/wiki/Phenylalanine</a>
+	 */
+	F("Phe", 147.06841), G("Gly", 57.02146), H("His", 137.05891), I("Ile", 113.08406), K("Lys", 128.09496), L("Leu", 113.08406), M("Met", 131.04049), N("Asn", 114.04293), P("Pro", 97.05276), Q("Gln", 128.05858), R("Arg", 156.10111), S("Ser", 87.03203), T("Thr", 101.04768), V("Val", 99.06841), W("Trp", 186.07931), Y("Tyr", 163.06333), U("Sec", 150.953639), O("Pyl", 237.143012), B("Asx", N.getMolWeight()), Z("Glx", Q.getMolWeight()), J("Xle", L.getMolWeight()), X("Xaa", 0);
 
-    /**
-     * <a href="http://en.wikipedia.org/wiki/Alanine">en.wikipedia.org/wiki/
-     * Alanine</a>
-     */
-    A("Ala", 71.03711),
+	public static AminoAcid parse(final String s) throws ExceptionUnknownAminoAcid {
 
-    /**
-     * <a href="http://en.wikipedia.org/wiki/Cysteine">en.wikipedia.org/wiki/
-     * Cysteine</a>
-     */
-    C("Cys", 103.00919),
+		if(s.length() == 1 || s.length() == 3) {
+			final String s2 = s.toUpperCase();
+			if(s2.length() == 1) {
+				return parseSingleChar(s2.charAt(0));
+			} else if(s2.length() == 3) {
+				return parseTrippleChar(s2);
+			} else {
+				throw new RuntimeException();
+			}
+		} else {
+			throw new IllegalArgumentException("invalid length " + s.length());
+		}
+	}
 
-    /**
-     * <a
-     * href="http://en.wikipedia.org/wiki/Aspartic_acid">en.wikipedia.org/wiki/
-     * Aspartic acid</a>
-     */
-    D("Asp", 115.02694),
+	public static AminoAcid parseSingleChar(final char c) {
 
-    /**
-     * <a href="http://en.wikipedia.org/wiki/Glutamic_acid">http://en.wikipedia.
-     * org/wiki/Glutamic_acid</a>
-     */
-    E("Glu", 129.04259),
+		for(final AminoAcid p : values()) {
+			if(p.getSingleCharIdent() == c) {
+				return p;
+			}
+		}
+		throw new ExceptionUnknownAminoAcid("unknown peptide " + c);
+	}
 
-    /**
-     * <a href="http://en.wikipedia.org/wiki/Phenylalanine">http://en.wikipedia.
-     * org/wiki/Phenylalanine</a>
-     */
-    F("Phe", 147.06841),
+	public static AminoAcid parseTrippleChar(final String s) {
 
-    G("Gly", 57.02146), H("His", 137.05891), I("Ile", 113.08406), K("Lys", 128.09496), L("Leu", 113.08406), M("Met",
-            131.04049), N("Asn", 114.04293), P("Pro", 97.05276), Q("Gln", 128.05858), R("Arg", 156.10111), S("Ser",
-            87.03203), T("Thr", 101.04768), V("Val", 99.06841), W("Trp", 186.07931), Y("Tyr", 163.06333), U("Sec",
-            150.953639), O("Pyl", 237.143012), B("Asx", N.getMolWeight()), Z("Glx", Q.getMolWeight()), J("Xle", L
-            .getMolWeight()), X("Xaa", 0);
+		for(final AminoAcid p : values()) {
+			if(p.getTrippeCharIdent().equals(s)) {
+				return p;
+			}
+		}
+		throw new IllegalArgumentException("unknown peptide " + s);
+	}
 
-    public static AminoAcid parse(final String s) throws ExceptionUnknownAminoAcid {
-        if (s.length() == 1 || s.length() == 3) {
-            final String s2 = s.toUpperCase();
-            if (s2.length() == 1) {
-                return parseSingleChar(s2.charAt(0));
-            } else if (s2.length() == 3) {
-                return parseTrippleChar(s2);
-            } else {
-                throw new RuntimeException();
-            }
-        } else {
-            throw new IllegalArgumentException("invalid length " + s.length());
-        }
-    }
+	private final double molWeight;
+	private final String trippleCharIdent;
 
-    public static AminoAcid parseSingleChar(final char c) {
-        for (final AminoAcid p : values()) {
-            if (p.getSingleCharIdent() == c) {
-                return p;
-            }
-        }
-        throw new ExceptionUnknownAminoAcid("unknown peptide " + c);
-    }
+	private AminoAcid(final String trippleCharIdent, final double molWeight) {
 
-    public static AminoAcid parseTrippleChar(final String s) {
-        for (final AminoAcid p : values()) {
-            if (p.getTrippeCharIdent().equals(s)) {
-                return p;
-            }
-        }
-        throw new IllegalArgumentException("unknown peptide " + s);
-    }
+		this.molWeight = molWeight;
+		this.trippleCharIdent = trippleCharIdent;
+	}
 
-    private final double molWeight;
+	public double getMolWeight() {
 
-    private final String trippleCharIdent;
+		return molWeight;
+	}
 
-    private AminoAcid(final String trippleCharIdent, final double molWeight) {
-        this.molWeight = molWeight;
-        this.trippleCharIdent = trippleCharIdent;
-    }
+	public char getSingleCharIdent() {
 
-    public double getMolWeight() {
-        return molWeight;
-    }
+		return toString().charAt(0);
+	}
 
-    public char getSingleCharIdent() {
-        return toString().charAt(0);
-    }
+	public String getTrippeCharIdent() {
 
-    public String getTrippeCharIdent() {
-        return trippleCharIdent;
-    }
-
+		return trippleCharIdent;
+	}
 }

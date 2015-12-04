@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,73 +49,81 @@ import net.sf.kerner.utils.io.buffered.AbstractIOIterator;
  */
 public class FASTAElementIterator extends AbstractIOIterator<FASTAElement> {
 
-    protected final char[] alphabet;
+	protected final char[] alphabet;
 
-    public FASTAElementIterator(final BufferedReader reader) throws IOException {
-        super(reader);
-        // super.read();
-        alphabet = null;
-    }
+	public FASTAElementIterator(final BufferedReader reader) throws IOException {
 
-    public FASTAElementIterator(final BufferedReader reader, final char[] alphabet) throws IOException {
-        super(reader);
-        // super.read();
-        this.alphabet = alphabet;
-    }
+		super(reader);
+		// super.read();
+		alphabet = null;
+	}
 
-    public FASTAElementIterator(final File file) throws IOException {
-        super(file);
-        // super.read();
-        alphabet = null;
-    }
+	public FASTAElementIterator(final BufferedReader reader, final char[] alphabet) throws IOException {
 
-    public FASTAElementIterator(final File file, final char[] alphabet) throws IOException {
-        super(file);
-        // super.read();
-        this.alphabet = alphabet;
-    }
+		super(reader);
+		// super.read();
+		this.alphabet = alphabet;
+	}
 
-    public FASTAElementIterator(final InputStream stream) throws IOException {
-        super(stream);
-        // super.read();
-        alphabet = null;
-    }
+	public FASTAElementIterator(final File file) throws IOException {
 
-    public FASTAElementIterator(final InputStream stream, final char[] alphabet) throws IOException {
-        super(stream);
-        // super.read();
-        this.alphabet = alphabet;
-    }
+		super(file);
+		// super.read();
+		alphabet = null;
+	}
 
-    public FASTAElementIterator(final Reader reader) throws IOException {
-        super(reader);
-        // super.read();
-        alphabet = null;
-    }
+	public FASTAElementIterator(final File file, final char[] alphabet) throws IOException {
 
-    public FASTAElementIterator(final Reader reader, final char[] alphabet) throws IOException {
-        super(reader);
-        // super.read();
-        this.alphabet = alphabet;
-    }
+		super(file);
+		// super.read();
+		this.alphabet = alphabet;
+	}
 
-    @Override
-    protected FASTAElement doRead() throws IOException {
-        final String header = new FASTAElementHeaderReader().read(super.reader);
-        if (header == null)
-            return null;
+	public FASTAElementIterator(final InputStream stream) throws IOException {
 
-        final StringBuilder seq = getSequence();
-        if (seq == null) {
-            System.err.println("invalid fasta element [" + header + "]");
-            return null;
-        }
-        seq.trimToSize();
+		super(stream);
+		// super.read();
+		alphabet = null;
+	}
 
-        return new FASTAElementImpl(header, seq);
-    }
+	public FASTAElementIterator(final InputStream stream, final char[] alphabet) throws IOException {
 
-    private StringBuilder getSequence() throws IOException {
-        return new FASTASequenceReader(super.reader, alphabet).all();
-    }
+		super(stream);
+		// super.read();
+		this.alphabet = alphabet;
+	}
+
+	public FASTAElementIterator(final Reader reader) throws IOException {
+
+		super(reader);
+		// super.read();
+		alphabet = null;
+	}
+
+	public FASTAElementIterator(final Reader reader, final char[] alphabet) throws IOException {
+
+		super(reader);
+		// super.read();
+		this.alphabet = alphabet;
+	}
+
+	@Override
+	protected FASTAElement doRead() throws IOException {
+
+		final String header = new FASTAElementHeaderReader().read(super.reader);
+		if(header == null)
+			return null;
+		final StringBuilder seq = getSequence();
+		if(seq == null) {
+			System.err.println("invalid fasta element [" + header + "]");
+			return null;
+		}
+		seq.trimToSize();
+		return new FASTAElementImpl(header, seq);
+	}
+
+	private StringBuilder getSequence() throws IOException {
+
+		return new FASTASequenceReader(super.reader, alphabet).all();
+	}
 }

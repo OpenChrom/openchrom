@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,44 +46,49 @@ import java.util.List;
  */
 public class PairSameImpl<T> extends PairImpl<T, T> implements PairSame<T> {
 
-    public PairSameImpl() {
-        super();
-    }
+	public PairSameImpl() {
 
-    public PairSameImpl(final Pair<? extends T, ? extends T> template) {
-        super(template);
-    }
+		super();
+	}
 
-    public PairSameImpl(final T first, final T second) {
-        super(first, second);
+	public PairSameImpl(final Pair<? extends T, ? extends T> template) {
 
-    }
+		super(template);
+	}
 
-    public List<T> asList() {
-        final T f = getFirst();
-        final T s = getSecond();
-        final List<T> result = new ArrayList<T>();
-        if (f != null) {
-            result.add(f);
-        }
-        if (s != null) {
-            result.add(s);
-        }
-        return result;
-    }
+	public PairSameImpl(final T first, final T second) {
 
-    @Override
-    public PairSameImpl<T> clone() {
-        return new PairSameImpl<T>(this);
-    }
+		super(first, second);
+	}
 
-    @Override
-    public PairSameImpl<T> invert() {
-        return new PairSameImpl<T>(getSecond(), getFirst());
-    }
+	public List<T> asList() {
 
-    public Iterator<T> iterator() {
-        return asList().iterator();
-    }
+		final T f = getFirst();
+		final T s = getSecond();
+		final List<T> result = new ArrayList<T>();
+		if(f != null) {
+			result.add(f);
+		}
+		if(s != null) {
+			result.add(s);
+		}
+		return result;
+	}
 
+	@Override
+	public PairSameImpl<T> clone() {
+
+		return new PairSameImpl<T>(this);
+	}
+
+	@Override
+	public PairSameImpl<T> invert() {
+
+		return new PairSameImpl<T>(getSecond(), getFirst());
+	}
+
+	public Iterator<T> iterator() {
+
+		return asList().iterator();
+	}
 }

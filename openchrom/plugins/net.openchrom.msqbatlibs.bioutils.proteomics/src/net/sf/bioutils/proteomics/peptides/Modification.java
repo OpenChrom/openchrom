@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,24 +16,24 @@
 package net.sf.bioutils.proteomics.peptides;
 
 public enum Modification {
+	CARBAMIDOMETHYL(AminoAcid.C, 160.030654);
 
-    CARBAMIDOMETHYL(AminoAcid.C, 160.030654);
+	private final AminoAcid parent;
+	private final double molWeight;
 
-    private final AminoAcid parent;
+	private Modification(final AminoAcid parent, final double molWeight) {
 
-    private final double molWeight;
+		this.molWeight = molWeight;
+		this.parent = parent;
+	}
 
-    private Modification(final AminoAcid parent, final double molWeight) {
-        this.molWeight = molWeight;
-        this.parent = parent;
-    }
+	public double getMolWeight() {
 
-    public double getMolWeight() {
-        return molWeight;
-    }
+		return molWeight;
+	}
 
-    public AminoAcid getParent() {
-        return parent;
-    }
+	public AminoAcid getParent() {
 
+		return parent;
+	}
 }

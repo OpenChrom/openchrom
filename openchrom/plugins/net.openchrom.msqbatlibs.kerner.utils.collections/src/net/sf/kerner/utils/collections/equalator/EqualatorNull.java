@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,34 +20,34 @@ import net.sf.kerner.utils.equal.EqualatorAbstract;
 
 public class EqualatorNull<T> extends EqualatorAbstract<T> {
 
-    private final Equalator<T> delegate;
+	private final Equalator<T> delegate;
 
-    public EqualatorNull() {
-        this(null);
-    }
+	public EqualatorNull() {
 
-    public EqualatorNull(final Equalator<T> delegate) {
-        super();
-        if (delegate == null) {
-            this.delegate = new EqualatorDefault<T>();
-        } else {
-            this.delegate = delegate;
-        }
-    }
+		this(null);
+	}
 
-    public boolean areEqual(final T o1, final Object o2) {
-        if (o1 == null && o2 == null) {
-            return true;
-        }
-        if (o1 == null) {
-            return false;
-        }
-        if (o2 == null) {
-            return false;
-        }
+	public EqualatorNull(final Equalator<T> delegate) {
 
-        return delegate.areEqual(o1, o2);
+		super();
+		if(delegate == null) {
+			this.delegate = new EqualatorDefault<T>();
+		} else {
+			this.delegate = delegate;
+		}
+	}
 
-    }
+	public boolean areEqual(final T o1, final Object o2) {
 
+		if(o1 == null && o2 == null) {
+			return true;
+		}
+		if(o1 == null) {
+			return false;
+		}
+		if(o2 == null) {
+			return false;
+		}
+		return delegate.areEqual(o1, o2);
+	}
 }

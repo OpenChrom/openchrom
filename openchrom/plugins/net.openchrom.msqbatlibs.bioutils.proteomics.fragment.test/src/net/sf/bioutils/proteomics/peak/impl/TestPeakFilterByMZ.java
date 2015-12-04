@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,72 +32,81 @@ import org.junit.Test;
 
 public class TestPeakFilterByMZ {
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
+	}
 
-    private Filter<Peak> filter;
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 
-    private PeakImpl p1;
+	}
 
-    @Before
-    public void setUp() throws Exception {
-    }
+	private Filter<Peak> filter;
+	private PeakImpl p1;
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	@Before
+	public void setUp() throws Exception {
 
-    @Test
-    public final void testVisit01() {
-        filter = new FilterPeakByMZ(0.001);
-        p1 = new PeakImpl(0.001, 1);
-        assertTrue(filter.filter(p1));
-    }
+	}
 
-    @Test(expected = NullPointerException.class)
-    public final void testVisit03() {
-        filter = new FilterPeakByMZ(0.001);
-        filter.filter(null);
-    }
+	@After
+	public void tearDown() throws Exception {
 
-    @Test
-    public final void testVisit04() {
-        filter = new FilterPeakByMzRange(new RangeDoubleDummy(0.001, 0.002));
-        p1 = new PeakImpl(0.001, 1);
-        assertTrue(filter.filter(p1));
-    }
+	}
 
-    @Test
-    public final void testVisit05() {
-        filter = new FilterPeakByMzRange(new RangeDoubleDummy(0.001, 0.002));
-        p1 = new PeakImpl(0.002, 1);
-        assertTrue(filter.filter(p1));
-    }
+	@Test
+	public final void testVisit01() {
 
-    @Test
-    public final void testVisit06() {
-        filter = new FilterPeakByMzRange(new RangeDoubleDummy(0.001, 0.002));
-        p1 = new PeakImpl(0.0015, 1);
-        assertTrue(filter.filter(p1));
-    }
+		filter = new FilterPeakByMZ(0.001);
+		p1 = new PeakImpl(0.001, 1);
+		assertTrue(filter.filter(p1));
+	}
 
-    @Test
-    public final void testVisit07() {
-        filter = new FilterPeakByMzRange(new RangeDoubleDummy(0.001, 0.002));
-        p1 = new PeakImpl(0.0009, 1);
-        assertFalse(filter.filter(p1));
-    }
+	@Test(expected = NullPointerException.class)
+	public final void testVisit03() {
 
-    @Test
-    public final void testVisit08() {
-        filter = new FilterPeakByMzRange(new RangeDoubleDummy(0.001, 0.002));
-        p1 = new PeakImpl(0.0021, 1);
-        assertFalse(filter.filter(p1));
-    }
+		filter = new FilterPeakByMZ(0.001);
+		filter.filter(null);
+	}
 
+	@Test
+	public final void testVisit04() {
+
+		filter = new FilterPeakByMzRange(new RangeDoubleDummy(0.001, 0.002));
+		p1 = new PeakImpl(0.001, 1);
+		assertTrue(filter.filter(p1));
+	}
+
+	@Test
+	public final void testVisit05() {
+
+		filter = new FilterPeakByMzRange(new RangeDoubleDummy(0.001, 0.002));
+		p1 = new PeakImpl(0.002, 1);
+		assertTrue(filter.filter(p1));
+	}
+
+	@Test
+	public final void testVisit06() {
+
+		filter = new FilterPeakByMzRange(new RangeDoubleDummy(0.001, 0.002));
+		p1 = new PeakImpl(0.0015, 1);
+		assertTrue(filter.filter(p1));
+	}
+
+	@Test
+	public final void testVisit07() {
+
+		filter = new FilterPeakByMzRange(new RangeDoubleDummy(0.001, 0.002));
+		p1 = new PeakImpl(0.0009, 1);
+		assertFalse(filter.filter(p1));
+	}
+
+	@Test
+	public final void testVisit08() {
+
+		filter = new FilterPeakByMzRange(new RangeDoubleDummy(0.001, 0.002));
+		p1 = new PeakImpl(0.0021, 1);
+		assertFalse(filter.filter(p1));
+	}
 }

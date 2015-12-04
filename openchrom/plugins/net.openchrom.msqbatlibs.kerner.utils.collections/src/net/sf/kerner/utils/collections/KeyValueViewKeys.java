@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,22 +25,24 @@ import net.sf.kerner.utils.transformer.ViewKeyValueKey;
 
 public class KeyValueViewKeys<K> extends ViewKeyValueKey<K> implements TransformerCollection<KeyValue<K, ?>, K> {
 
-    private final FactoryList<K> factory;
+	private final FactoryList<K> factory;
 
-    public KeyValueViewKeys(FactoryList<K> factory) {
-        this.factory = factory;
-    }
+	public KeyValueViewKeys(FactoryList<K> factory) {
 
-    public KeyValueViewKeys() {
-        this(new ArrayListFactory<K>());
-    }
+		this.factory = factory;
+	}
 
-    public List<K> transformCollection(Collection<? extends KeyValue<K, ?>> element) {
-        List<K> result = factory.createCollection();
-        for (KeyValue<K, ?> e : element) {
-            result.add(transform(e));
-        }
-        return result;
-    }
+	public KeyValueViewKeys() {
 
+		this(new ArrayListFactory<K>());
+	}
+
+	public List<K> transformCollection(Collection<? extends KeyValue<K, ?>> element) {
+
+		List<K> result = factory.createCollection();
+		for(KeyValue<K, ?> e : element) {
+			result.add(transform(e));
+		}
+		return result;
+	}
 }

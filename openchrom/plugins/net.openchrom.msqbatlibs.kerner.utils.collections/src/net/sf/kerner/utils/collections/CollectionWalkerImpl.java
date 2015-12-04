@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,21 +19,23 @@ import java.util.Collection;
 
 import net.sf.kerner.utils.collections.filter.FilterVisitorApplierProto;
 
-public class CollectionWalkerImpl<E> extends FilterVisitorApplierProto<E>
-		implements CollectionWalker<E> {
+public class CollectionWalkerImpl<E> extends FilterVisitorApplierProto<E> implements CollectionWalker<E> {
 
 	public void afterWalk() {
+
 		// do nothing by default
 	}
 
 	public void beforeWalk() {
+
 		// do nothing by default
 	}
 
 	public void walk(final Collection<? extends E> list) {
+
 		beforeWalk();
-		for (final E e : list) {
-			if (filter(e)) {
+		for(final E e : list) {
+			if(filter(e)) {
 				transform(e);
 			}
 		}

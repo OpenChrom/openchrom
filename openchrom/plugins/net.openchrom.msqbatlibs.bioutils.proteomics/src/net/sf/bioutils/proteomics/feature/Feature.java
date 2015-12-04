@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,33 +30,30 @@ import net.sf.bioutils.proteomics.peak.Peak;
  */
 public interface Feature extends ComposableElement<Peak>, Peak, Iterable<Peak> {
 
-    @Override
-    Feature clone();
+	@Override
+	Feature clone();
 
-    /**
-     * Implementation dependent. Typically, it will be the number of the
-     * fraction which contains the {@link Peak} that contributes to this
-     * {@code Feature} and has the highest intensity.
-     *
-     * @return fraction number this {@code Feature} is associated with
-     */
-    int getIndexCenter();
+	/**
+	 * Implementation dependent. Typically, it will be the number of the
+	 * fraction which contains the {@link Peak} that contributes to this {@code Feature} and has the highest intensity.
+	 *
+	 * @return fraction number this {@code Feature} is associated with
+	 */
+	int getIndexCenter();
 
-    /**
-     * First fraction this {@code Feature} occurs in. This is also the number of
-     * the first fraction which contains a {@link Peak} contributing to this
-     * {@code Feature}
-     *
-     * @return index of first {@link Peak} contributing to this {@code Feature}
-     */
-    int getIndexFirst();
+	/**
+	 * First fraction this {@code Feature} occurs in. This is also the number of
+	 * the first fraction which contains a {@link Peak} contributing to this {@code Feature}
+	 *
+	 * @return index of first {@link Peak} contributing to this {@code Feature}
+	 */
+	int getIndexFirst();
 
-    /**
-     * Last fraction this {@code Feature} occurs in. This is also the number of
-     * the last fraction which contains a {@link Peak} contributing to this
-     * {@code Feature}
-     *
-     * @return index of last {@link Peak} contributing to this {@code Feature}
-     */
-    int getIndexLast();
+	/**
+	 * Last fraction this {@code Feature} occurs in. This is also the number of
+	 * the last fraction which contains a {@link Peak} contributing to this {@code Feature}
+	 *
+	 * @return index of last {@link Peak} contributing to this {@code Feature}
+	 */
+	int getIndexLast();
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,18 +23,19 @@ import java.util.Collection;
 
 public abstract class AbstractGenericCollectionReader<T> implements GenericCollectionReader<T> {
 
-    /**
+	/**
 	 * 
 	 */
-    public Collection<T> readAll(File file) throws IOException {
-        return readAll(new FileInputStream(file));
-    }
+	public Collection<T> readAll(File file) throws IOException {
 
-    /**
+		return readAll(new FileInputStream(file));
+	}
+
+	/**
 	 * 
 	 */
-    public Collection<T> readAll(InputStream stream) throws IOException {
-        return readAll(UtilIO.inputStreamToReader(stream));
-    }
+	public Collection<T> readAll(InputStream stream) throws IOException {
 
+		return readAll(UtilIO.inputStreamToReader(stream));
+	}
 }

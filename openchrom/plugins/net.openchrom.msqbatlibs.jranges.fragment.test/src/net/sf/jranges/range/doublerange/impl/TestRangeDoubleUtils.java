@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,22 +32,27 @@ public class TestRangeDoubleUtils {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+
 	}
 
 	@Before
 	public void setUp() throws Exception {
+
 	}
 
 	@After
 	public void tearDown() throws Exception {
+
 	}
 
 	@Test
 	public final void testSplit01() {
+
 		RangeDouble range = new RangeDoubleDummy(0, 10);
 		List<? extends RangeDouble> result = RangeDoubleUtils.split(range, 2, new FactoryRangeDoubleZeroPositive());
 		assertEquals(10, result.size());
@@ -56,9 +61,9 @@ public class TestRangeDoubleUtils {
 	@Ignore
 	@Test
 	public final void testSplit02() {
+
 		RangeDouble range = new ZeroPositiveDoubleRange(0, 10, 0.2);
 		List<? extends RangeDouble> result = RangeDoubleUtils.split(range, 2, new FactoryRangeDoubleZeroPositive());
 		System.out.println(result);
 	}
-
 }

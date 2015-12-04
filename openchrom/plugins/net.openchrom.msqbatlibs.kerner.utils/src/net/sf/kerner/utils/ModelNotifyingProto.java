@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,41 +20,45 @@ import java.util.LinkedHashSet;
 
 public class ModelNotifyingProto {
 
-    public interface Listener {
+	public interface Listener {
 
-        void notifyError(Throwable t);
+		void notifyError(Throwable t);
 
-        void notifyMessage(String msg);
+		void notifyMessage(String msg);
 
-        void notifyObject(Object o);
-    }
+		void notifyObject(Object o);
+	}
 
-    private final Collection<Listener> listeners = new LinkedHashSet<Listener>();
+	private final Collection<Listener> listeners = new LinkedHashSet<Listener>();
 
-    public synchronized void addListener(final Listener listener) {
-        listeners.add(listener);
-    }
+	public synchronized void addListener(final Listener listener) {
 
-    protected void notifyError(final Throwable t) {
-        for (final Listener l : listeners) {
-            l.notifyError(t);
-        }
-    }
+		listeners.add(listener);
+	}
 
-    protected void notifyMessage(final String msg) {
-        for (final Listener l : listeners) {
-            l.notifyMessage(msg);
-        }
-    }
+	protected void notifyError(final Throwable t) {
 
-    protected void notifyObject(final Object o) {
-        for (final Listener l : listeners) {
-            l.notifyObject(o);
-        }
-    }
+		for(final Listener l : listeners) {
+			l.notifyError(t);
+		}
+	}
 
-    public synchronized void removeListener(final Listener listener) {
-        listeners.remove(listener);
-    }
+	protected void notifyMessage(final String msg) {
 
+		for(final Listener l : listeners) {
+			l.notifyMessage(msg);
+		}
+	}
+
+	protected void notifyObject(final Object o) {
+
+		for(final Listener l : listeners) {
+			l.notifyObject(o);
+		}
+	}
+
+	public synchronized void removeListener(final Listener listener) {
+
+		listeners.remove(listener);
+	}
 }

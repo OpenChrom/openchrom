@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,26 +37,28 @@ import net.sf.kerner.utils.collections.filter.Filter;
  */
 public class FilterPeakByFractionIndexRange implements Filter<Peak> {
 
-    private final RangeInteger range;
+	private final RangeInteger range;
 
-    /**
-     * Create a new {@code FilterPeakByMZRange}.
-     *
-     * @param range
-     *            m/z range in which a peak's m/z must be in in order for this
-     *            {@code Filter} t accept this peak
-     */
-    public FilterPeakByFractionIndexRange(final RangeInteger range) {
-        this.range = range;
-    }
+	/**
+	 * Create a new {@code FilterPeakByMZRange}.
+	 *
+	 * @param range
+	 *            m/z range in which a peak's m/z must be in in order for this {@code Filter} t accept this peak
+	 */
+	public FilterPeakByFractionIndexRange(final RangeInteger range) {
 
-    @Override
-    public boolean filter(final Peak element) {
-        return range.includes(element.getFractionIndex());
-    }
+		this.range = range;
+	}
 
-    @Override
-    public String toString() {
-        return "fracRange=" + range;
-    }
+	@Override
+	public boolean filter(final Peak element) {
+
+		return range.includes(element.getFractionIndex());
+	}
+
+	@Override
+	public String toString() {
+
+		return "fracRange=" + range;
+	}
 }

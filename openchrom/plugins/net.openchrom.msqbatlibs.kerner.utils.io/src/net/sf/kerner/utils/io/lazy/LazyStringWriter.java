@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,24 +35,25 @@ import net.sf.kerner.utils.io.buffered.impl.BufferedStringWriter;
  * </ul>
  * </p>
  * <p>
- * <b>Attention:</b> writing is not buffered! If you want to write large files,
- * consider to use {@link BufferedStringWriter} instead.
+ * <b>Attention:</b> writing is not buffered! If you want to write large files, consider to use {@link BufferedStringWriter} instead.
  * </p>
  * <p>
  * <b>Example:</b>
  * </p>
  * 
  * <pre>
+ * 
+ * 
  * &#064;Test
  * public final void example() throws IOException {
- *     final java.io.StringWriter wr = new java.io.StringWriter();
- *     new LazyStringWriter(&quot;Hallo Welt!&quot;).write(wr);
- *     assertEquals(&quot;Hallo Welt!&quot;, wr.toString());
+ * 
+ * 	final java.io.StringWriter wr = new java.io.StringWriter();
+ * 	new LazyStringWriter(&quot;Hallo Welt!&quot;).write(wr);
+ * 	assertEquals(&quot;Hallo Welt!&quot;, wr.toString());
  * }
  * </pre>
  * <p>
- * <b>Note:</b> It is not necessary to close a {@code LazyStringWriter}. This
- * will happen automatically.
+ * <b>Note:</b> It is not necessary to close a {@code LazyStringWriter}. This will happen automatically.
  * </p>
  * 
  * @author Alexander Kerner
@@ -63,39 +64,41 @@ import net.sf.kerner.utils.io.buffered.impl.BufferedStringWriter;
  */
 public class LazyStringWriter implements GenericWriter {
 
-    private final String string;
+	private final String string;
 
-    /**
-     * Creates a new {@code LazyStringWriter}, which will write {@code toString}
-     * .
-     * 
-     * @param toString
-     *            Object which will be written
-     */
-    public LazyStringWriter(final Object toString) {
-        if (toString == null)
-            throw new NullPointerException();
-        string = toString.toString();
-    }
+	/**
+	 * Creates a new {@code LazyStringWriter}, which will write {@code toString} .
+	 * 
+	 * @param toString
+	 *            Object which will be written
+	 */
+	public LazyStringWriter(final Object toString) {
 
-    // Implement //
+		if(toString == null)
+			throw new NullPointerException();
+		string = toString.toString();
+	}
 
-    public void write(final File file) throws IOException {
-        write(new FileWriter(file));
-    }
+	// Implement //
+	public void write(final File file) throws IOException {
 
-    public void write(final OutputStream stream) throws IOException {
-        write(UtilIO.outputStreamToWriter(stream));
-    }
+		write(new FileWriter(file));
+	}
 
-    public void write(final Writer writer) throws IOException {
-        StringReader reader = null;
-        try {
-            reader = new StringReader(string);
-            UtilIO.readerToWriter(reader, writer);
-        } finally {
-            UtilIO.closeProperly(writer);
-            UtilIO.closeProperly(reader);
-        }
-    }
+	public void write(final OutputStream stream) throws IOException {
+
+		write(UtilIO.outputStreamToWriter(stream));
+	}
+
+	public void write(final Writer writer) throws IOException {
+
+		StringReader reader = null;
+		try {
+			reader = new StringReader(string);
+			UtilIO.readerToWriter(reader, writer);
+		} finally {
+			UtilIO.closeProperly(writer);
+			UtilIO.closeProperly(reader);
+		}
+	}
 }

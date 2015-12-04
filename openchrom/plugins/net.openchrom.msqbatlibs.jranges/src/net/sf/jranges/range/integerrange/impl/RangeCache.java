@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,30 +25,29 @@ import net.sf.jranges.range.integerrange.RangeInteger;
 class RangeCache implements Iterable<Collection<? extends RangeInteger>>, Iterator<Collection<? extends RangeInteger>> {
 
 	final static int DEFAULT_ELEMENTS = 10000;
-
 	final int elements;
-
 	private final List<? extends RangeInteger> ranges;
-
 	private volatile Collection<? extends RangeInteger> cache;
-
 	private volatile int index = 0;
 
 	RangeCache(final Collection<? extends RangeInteger> ranges, int elements) {
+
 		this.elements = elements;
 		this.ranges = new ArrayList<RangeInteger>(ranges);
 		fill();
 	}
 
 	RangeCache(final Collection<? extends RangeInteger> ranges) {
+
 		this.elements = DEFAULT_ELEMENTS;
 		this.ranges = new ArrayList<RangeInteger>(ranges);
 		fill();
 	}
 
 	private void fill() {
+
 		int end = index + elements;
-		if (end > ranges.size() - 1)
+		if(end > ranges.size() - 1)
 			end = ranges.size();
 		cache = new ArrayList<RangeInteger>(ranges.subList(index, end));
 		index += elements;
@@ -58,6 +57,7 @@ class RangeCache implements Iterable<Collection<? extends RangeInteger>>, Iterat
 	 * 
 	 */
 	public boolean hasNext() {
+
 		// System.err.println(index);
 		return (index <= ranges.size());
 	}
@@ -66,6 +66,7 @@ class RangeCache implements Iterable<Collection<? extends RangeInteger>>, Iterat
 	 * 
 	 */
 	public synchronized Collection<? extends RangeInteger> next() {
+
 		final Collection<? extends RangeInteger> result = new ArrayList<RangeInteger>(cache);
 		fill();
 		return result;
@@ -75,6 +76,7 @@ class RangeCache implements Iterable<Collection<? extends RangeInteger>>, Iterat
 	 * 
 	 */
 	public void remove() {
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -82,6 +84,7 @@ class RangeCache implements Iterable<Collection<? extends RangeInteger>>, Iterat
 	 * 
 	 */
 	public Iterator<Collection<? extends RangeInteger>> iterator() {
+
 		return this;
 	}
 }
