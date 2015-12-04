@@ -41,6 +41,13 @@ public class MGFReader extends AbstractMassSpectraReader implements IMassSpectra
 		// double q3Resolution = 1.2d;
 		// IIonTransition ionTransition = ionTransitionSettings.getIonTransition(q1MZ, q3MZ, collisionEnergy, q1Resolution, q3Resolution, 0);
 		//
+		// IVendorLibraryMassSpectrum massSpectrum = new VendorLibraryMassSpectrum();
+		// ILibraryInformation libraryInformation = massSpectrum.getLibraryInformation();
+		// libraryInformation.setName("Name");
+		// libraryInformation.setCasNumber("CAS");
+		// libraryInformation.setFormula("CH3OH");
+		// libraryInformation.setComments("COMMENTS");
+		//
 		IMassSpectra massSpectra = new MassSpectra();
 		MGFFileReader mgfFileReader = new MGFFileReaderImpl(file);
 		MGFElementIterator iterator = mgfFileReader.getIterator();
