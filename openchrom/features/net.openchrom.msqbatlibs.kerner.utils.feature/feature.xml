@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.msqbatlibs.kerner.utils.feature"
+      label="Feature"
+      version="1.1.0.qualifier">
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.kerner.utils"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.kerner.utils.collections"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.kerner.utils.io"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
