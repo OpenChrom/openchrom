@@ -22,10 +22,6 @@ terms of the Eclipse Public License v1.0 which accompanies this distribution,
 and is available at http://www.eclipse.org/legal/epl-v10.html
    </license>
 
-   <includes
-         id="net.openchrom.msqbatlibs.kerner.utils.feature"
-         version="0.0.0"/>
-
    <plugin
          id="net.openchrom.msqbatlibs.jtables"
          download-size="0"
@@ -56,6 +52,27 @@ and is available at http://www.eclipse.org/legal/epl-v10.html
 
    <plugin
          id="net.openchrom.msqbatlibs.jranges"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.kerner.utils"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.kerner.utils.collections"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.kerner.utils.io"
          download-size="0"
          install-size="0"
          version="0.0.0"

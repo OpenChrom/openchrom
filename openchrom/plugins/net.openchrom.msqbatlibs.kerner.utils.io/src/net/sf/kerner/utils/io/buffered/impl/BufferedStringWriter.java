@@ -45,6 +45,7 @@ import net.sf.kerner.utils.io.buffered.CharWriter;
  * 
  * 
  * 
+ * 
  * &#064;Test
  * public final void exampleWriteStringToAWriter() throws IOException {
  * 
@@ -64,6 +65,7 @@ import net.sf.kerner.utils.io.buffered.CharWriter;
  * </pre>
  * 
  * <pre>
+ * 
  * 
  * 
  * 
