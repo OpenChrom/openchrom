@@ -23,9 +23,9 @@ which accompanies this distribution, and is available at
 http://www.eclipse.org/legal/epl-v10.html
    </license>
 
-   <includes
-         id="net.openchrom.msqbatlibs.feature"
-         version="0.0.0"/>
+   <requires>
+      <import feature="net.openchrom.msqbatlibs.feature" version="1.1.0.qualifier"/>
+   </requires>
 
    <plugin
          id="net.openchrom.msd.converter.supplier.mgf"
