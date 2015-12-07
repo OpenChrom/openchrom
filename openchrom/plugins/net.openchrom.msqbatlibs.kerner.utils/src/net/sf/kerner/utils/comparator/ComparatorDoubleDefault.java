@@ -25,6 +25,7 @@ import java.util.Comparator;
  * 
  * 
  * 
+ * 
  * public int compare(final Double o1, final Double o2) {
  * 
  * 	return o1.compareTo(o2);
