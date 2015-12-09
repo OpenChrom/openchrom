@@ -8,10 +8,10 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: net.sf.jranges.range,
- net.sf.jranges.range.doublerange,
- net.sf.jranges.range.doublerange.impl,
- net.sf.jranges.range.integerrange,
- net.sf.jranges.range.integerrange.impl,
- net.sf.jranges.range.longrange,
- net.sf.jranges.range.longrange.impl
+Export-Package: net.sf.jranges.range;version="1.1.0.qualifier",
+ net.sf.jranges.range.doublerange;version="1.1.0.qualifier",
+ net.sf.jranges.range.doublerange.impl;version="1.1.0.qualifier",
+ net.sf.jranges.range.integerrange;version="1.1.0.qualifier",
+ net.sf.jranges.range.integerrange.impl;version="1.1.0.qualifier",
+ net.sf.jranges.range.longrange;version="1.1.0.qualifier",
+ net.sf.jranges.range.longrange.impl;version="1.1.0.qualifier"
