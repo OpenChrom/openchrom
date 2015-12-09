@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -33,10 +33,10 @@ public class MassSpectrumImportConverter extends AbstractMassSpectrumImportConve
 	private static final String DESCRIPTION = "MGF MassSpectrum Import";
 
 	@Override
-	public IMassSpectrumImportConverterProcessingInfo convert(File file, IProgressMonitor monitor) {
+	public IMassSpectrumImportConverterProcessingInfo convert(final File file, final IProgressMonitor monitor) {
 
-		IMassSpectrumImportConverterProcessingInfo processingInfo = new MassSpectrumImportConverterProcessingInfo();
-		IProcessingInfo processingInfoValidate = super.validate(file);
+		final IMassSpectrumImportConverterProcessingInfo processingInfo = new MassSpectrumImportConverterProcessingInfo();
+		final IProcessingInfo processingInfoValidate = super.validate(file);
 		/*
 		 * Import
 		 */
@@ -44,28 +44,20 @@ public class MassSpectrumImportConverter extends AbstractMassSpectrumImportConve
 			processingInfo.addMessages(processingInfoValidate);
 		} else {
 			try {
-				MGFReader mgfReader = new MGFReader();
-				IMassSpectra massSpectra = mgfReader.read(file, monitor);
+				final MGFReader mgfReader = new MGFReader();
+				final IMassSpectra massSpectra = mgfReader.read(file, monitor);
 				processingInfo.setMassSpectra(massSpectra);
-			} catch(FileNotFoundException e) {
+			} catch(final FileNotFoundException e) {
 				logger.warn(e);
-				// for testing
-				e.printStackTrace();
 				processingInfo.addErrorMessage(DESCRIPTION, "The file couldn't be found: " + file.getAbsolutePath());
-			} catch(FileIsNotReadableException e) {
+			} catch(final FileIsNotReadableException e) {
 				logger.warn(e);
-				// for testing
-				e.printStackTrace();
 				processingInfo.addErrorMessage(DESCRIPTION, "The file is not readable: " + file.getAbsolutePath());
-			} catch(FileIsEmptyException e) {
+			} catch(final FileIsEmptyException e) {
 				logger.warn(e);
-				// for testing
-				e.printStackTrace();
 				processingInfo.addErrorMessage(DESCRIPTION, "The file is empty: " + file.getAbsolutePath());
-			} catch(IOException e) {
-				logger.warn(e);
-				// for testing
-				e.printStackTrace();
+			} catch(final IOException e) {
+				logger.warn(e.getLocalizedMessage(), e);
 				processingInfo.addErrorMessage(DESCRIPTION, "Something has gone completely wrong: " + file.getAbsolutePath());
 			}
 		}
