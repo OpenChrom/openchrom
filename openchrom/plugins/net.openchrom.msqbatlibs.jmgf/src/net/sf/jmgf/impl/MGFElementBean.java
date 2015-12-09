@@ -11,128 +11,70 @@
  *******************************************************************************/
 package net.sf.jmgf.impl;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import net.sf.bioutils.proteomics.peak.Peak;
 import net.sf.jmgf.MGFElement;
-import net.sf.kerner.utils.collections.UtilCollection;
 
 public class MGFElementBean implements MGFElement {
 
-	private String charge;
 	private List<Peak> peaks;
-	private double pepMass;
-	private int retentionTimeInSeconds;
-	private String title;
+	private Map<String, String> elements = new LinkedHashMap<String, String>();
 
 	public MGFElementBean() {
 
 	}
 
-	public MGFElementBean(final String title, final String charge, final double pepMass, final int retTimeSecs, final List<? extends Peak> peaks) {
+	@Override
+	public String getElement(final Identifier element) {
 
-		this.title = title;
-		this.charge = charge;
-		this.peaks = new ArrayList<Peak>(peaks);
-		retentionTimeInSeconds = retTimeSecs;
-		this.pepMass = pepMass;
+		return getElement(element.toString());
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public String getElement(final String ident) {
 
-		if(this == obj)
-			return true;
-		if(obj == null)
-			return false;
-		if(!(obj instanceof MGFElementBean))
-			return false;
-		final MGFElementBean other = (MGFElementBean)obj;
-		if(charge == null) {
-			if(other.charge != null)
-				return false;
-		} else if(!charge.equals(other.charge))
-			return false;
-		if(peaks == null) {
-			if(other.peaks != null)
-				return false;
-		} else if(!peaks.equals(other.peaks))
-			return false;
-		if(Double.doubleToLongBits(pepMass) != Double.doubleToLongBits(other.pepMass))
-			return false;
-		if(retentionTimeInSeconds != other.retentionTimeInSeconds)
-			return false;
-		return true;
+		for(final Entry<String, String> e : elements.entrySet()) {
+			if(e.getKey().toUpperCase().equals(ident)) {
+				return e.getValue();
+			}
+		}
+		return ELEMENT_NA;
 	}
 
-	public String getCharge() {
+	public synchronized Map<String, String> getElements() {
 
-		return charge;
+		return elements;
 	}
 
-	public List<Peak> getPeaks() {
+	@Override
+	public synchronized List<Peak> getPeaks() {
 
 		return peaks;
 	}
 
-	public double getPepMass() {
-
-		return pepMass;
-	}
-
-	public int getRetentionTimeInSeconds() {
-
-		return retentionTimeInSeconds;
-	}
-
+	@Override
 	public String getTitle() {
 
-		return title;
+		return getElement(MGFElement.Identifier.TITLE);
 	}
 
-	@Override
-	public int hashCode() {
+	public synchronized void setElements(final Map<String, String> elements) {
 
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((charge == null) ? 0 : charge.hashCode());
-		result = prime * result + ((peaks == null) ? 0 : peaks.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(pepMass);
-		result = prime * result + (int)(temp ^ (temp >>> 32));
-		result = prime * result + retentionTimeInSeconds;
-		return result;
+		this.elements = elements;
 	}
 
-	public void setCharge(final String charge) {
-
-		this.charge = charge;
-	}
-
-	public void setPeaks(final List<Peak> peaks) {
+	public synchronized void setPeaks(final List<Peak> peaks) {
 
 		this.peaks = peaks;
-	}
-
-	public void setPepMass(final double pepMass) {
-
-		this.pepMass = pepMass;
-	}
-
-	public void setRetentionTimeInSeconds(final int retentionTimeInSeconds) {
-
-		this.retentionTimeInSeconds = retentionTimeInSeconds;
-	}
-
-	public void setTitle(final String title) {
-
-		this.title = title;
 	}
 
 	@Override
 	public String toString() {
 
-		return getTitle() + UtilCollection.toString(getPeaks());
+		return getTitle();
 	}
 }

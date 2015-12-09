@@ -1,17 +1,14 @@
-/**********************************************************************
- * Copyright (c) 2012-2014 Alexander Kerner. All rights reserved.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ***********************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.jmgf.impl;
 
 import static org.junit.Assert.assertEquals;
@@ -22,7 +19,6 @@ import java.io.File;
 import net.sf.jmgf.MGFElement;
 import net.sf.jmgf.MGFFile;
 import net.sf.jmgf.MGFFileReader;
-import net.sf.jmgf.exception.ExceptionMGFIO;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -61,7 +57,9 @@ public class TestMGFFileReaderImpl {
 		assertNotNull(file);
 		assertEquals(1, file.getElements().size());
 		final MGFElement element = file.getElements().iterator().next();
-		assertEquals("1+", element.getCharge());
+		assertNotNull(element);
+		assertEquals(45, element.getPeaks().size());
+		assertEquals("1+", element.getElement(MGFElement.Identifier.CHARGE));
 	}
 
 	@Test
@@ -74,24 +72,24 @@ public class TestMGFFileReaderImpl {
 		assertEquals(7532, file.getElements().size());
 	}
 
-	@Test(expected = ExceptionMGFIO.class)
+	@Test
 	public void test03() throws Exception {
 
-		final MGFFileReader reader = new MGFFileReaderImpl(new File("src/test/resources/manyElementsUnexpectedEnd.mgf"));
-		reader.read();
+		final MGFFileReader reader = new MGFFileReaderImpl(new File("src/test/resources/unexpectedEnd.mgf"));
+		final MGFFile file = reader.read();
+		reader.close();
+		assertNotNull(file);
+		assertEquals(1, file.getElements().size());
+		assertEquals(3, file.getElements().get(0).getPeaks().size());
 	}
 
-	@Test(expected = ExceptionMGFIO.class)
+	@Test
 	public void test04() throws Exception {
 
-		final MGFFileReader reader = new MGFFileReaderImpl(new File("src/test/resources/manyElementsInvalidPeakLine.mgf"));
-		reader.read();
-	}
-
-	@Test(expected = ExceptionMGFIO.class)
-	public void test05() throws Exception {
-
-		final MGFFileReader reader = new MGFFileReaderImpl(new File("src/test/resources/manyElementsInvalidMissingChargeLine.mgf"));
-		reader.read();
+		final MGFFileReader reader = new MGFFileReaderImpl(new File("src/test/resources/Testgemisch_U_PP_LXQ_20141210.mgf"));
+		final MGFFile file = reader.read();
+		reader.close();
+		assertNotNull(file);
+		assertEquals(2259, file.getElements().size());
 	}
 }

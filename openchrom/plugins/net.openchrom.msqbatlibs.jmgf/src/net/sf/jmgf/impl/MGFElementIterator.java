@@ -17,36 +17,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.bioutils.proteomics.peak.FactoryPeak;
 import net.sf.bioutils.proteomics.peak.FactoryPeakImpl;
 import net.sf.bioutils.proteomics.peak.Peak;
 import net.sf.jmgf.MGFElement;
+import net.sf.jmgf.MGFFile;
 import net.sf.jmgf.exception.ExceptionFileFormat;
 import net.sf.kerner.utils.io.buffered.AbstractIOIterator;
 import net.sf.kerner.utils.progress.ProgressMonitor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 
-	public final static String FIFTH_LINE_START = "RTINSECONDS=";
-	public final static String FIRST_LINE = "BEGIN IONS";
-	public final static String FOURTH_LINE_START = "PEPMASS=";
-	public final static String LAST_LINE = "END IONS";
-	public final static String SECOND_LINE_START = "TITLE=";
-	public final static String THIRD_LINE_START = "CHARGE=";
+	private final static Logger log = LoggerFactory.getLogger(MGFElementIterator.class);
 	private ProgressMonitor monitor;
-
-	public synchronized ProgressMonitor getMonitor() {
-
-		return monitor;
-	}
-
-	public synchronized void setMonitor(ProgressMonitor monitor) {
-
-		this.monitor = monitor;
-	}
-
 	private FactoryPeak factoryPeak;
 
 	public MGFElementIterator(final BufferedReader reader) throws IOException {
@@ -75,69 +65,107 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 		if(monitor != null) {
 			monitor.started(ProgressMonitor.UNKNOWN_WORKLOAD);
 		}
-		final String firstLine = reader.readLine();
-		if(firstLine == null) {
-			// nothing left to read
-			return null;
-		}
-		if(firstLine.equals(FIRST_LINE)) {
-			final String secondLine = reader.readLine();
-			if(secondLine.startsWith(SECOND_LINE_START)) {
-				final String thirdLine = reader.readLine();
-				if(thirdLine.startsWith(THIRD_LINE_START)) {
-					final String fourthLine = reader.readLine();
-					if(fourthLine.startsWith(FOURTH_LINE_START)) {
-						final String fivthLine = reader.readLine();
-						if(fivthLine.startsWith(FIFTH_LINE_START)) {
-							final List<Peak> peaks = readPeaks();
-							if(monitor != null) {
-								monitor.finished();
-							}
-							return getNewElement(secondLine.split("=")[1], thirdLine.split("=")[1], Double.parseDouble(fourthLine.split("=")[1]), Integer.parseInt(fivthLine.split("=")[1]), peaks);
-						}
+		try {
+			String line = reader.readLine();
+			if(line == null) {
+				// nothing left to read
+				return null;
+			}
+			if(line.toUpperCase().trim().equals(MGFFile.FIRST_LINE)) {
+			} else {
+				throw new ExceptionFileFormat("Invalid first line " + line);
+			}
+			final Map<String, String> elements = new LinkedHashMap<String, String>();
+			final List<Peak> peaks = new ArrayList<Peak>();
+			while(line != null) {
+				line = reader.readLine();
+				if(line == null) {
+					if(log.isErrorEnabled()) {
+						log.error("Unexpected end of file");
 					}
+					final MGFElementBean result = new MGFElementBean();
+					result.setPeaks(peaks);
+					result.setElements(elements);
+					return result;
+				}
+				if(line.toUpperCase().trim().equals(MGFFile.LAST_LINE)) {
+					final MGFElementBean result = new MGFElementBean();
+					result.setPeaks(peaks);
+					result.setElements(elements);
+					return result;
+				}
+				// Assume that lines starting numerically always describe an ion
+				if(isIonBlock(line)) {
+					peaks.add(readPeak(line));
+				} else {
+					final String[] arr = line.split("=", 2);
+					if(arr.length != 2) {
+						throw new ExceptionFileFormat("Invalid line " + line);
+					}
+					elements.put(arr[0], arr[1]);
 				}
 			}
+		} finally {
+			if(monitor != null) {
+				monitor.finished();
+			}
 		}
-		throw new ExceptionFileFormat("unexpected line");
+		throw new RuntimeException("Something buggy here..");
 	}
 
 	public synchronized FactoryPeak getFactoryPeak() {
 
+		if(factoryPeak == null) {
+			factoryPeak = new FactoryPeakImpl();
+		}
 		return factoryPeak;
 	}
 
-	protected synchronized MGFElement getNewElement(final String title, final String charge, final double pepMass, final int retTimeSecs, final List<? extends Peak> peaks) {
+	public synchronized ProgressMonitor getMonitor() {
 
-		return new MGFElementBean(title, charge, pepMass, retTimeSecs, peaks);
+		return monitor;
 	}
 
-	private List<Peak> readPeaks() throws IOException {
+	protected synchronized boolean isIonBlock(final String secondLine) {
 
-		if(getFactoryPeak() == null) {
-			setFactoryPeak(new FactoryPeakImpl());
+		try {
+			Double.parseDouble(secondLine.split("\\s")[0]);
+		} catch(final NumberFormatException e) {
+			return false;
 		}
-		final List<Peak> peaks = new ArrayList<Peak>();
-		String nextLine = null;
-		do {
-			nextLine = reader.readLine();
-			if(nextLine == null) {
-				throw new ExceptionFileFormat("unexpected end of file");
-			}
-			if(nextLine.equals(LAST_LINE)) {
-				return peaks;
-			}
-			final String[] arr = nextLine.split("\\s");
-			if(arr.length != 3) {
-				throw new ExceptionFileFormat("invalid peak line " + nextLine);
-			}
-			peaks.add(getFactoryPeak().create(null, Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), -1));
-		} while(!nextLine.equals(LAST_LINE));
-		throw new RuntimeException();
+		return true;
+	}
+
+	protected synchronized Peak readPeak(final String line) throws ExceptionFileFormat {
+
+		final String[] arr = line.split("\\s");
+		if(arr.length < 1) {
+			throw new ExceptionFileFormat("invalid peak line " + line);
+		}
+		final double mz = Double.parseDouble(arr[0]);
+		final double intensity;
+		final double charge;
+		if(arr.length > 1) {
+			intensity = Double.parseDouble(arr[1]);
+		} else {
+			intensity = -1;
+		}
+		if(arr.length > 2) {
+			charge = Double.parseDouble(arr[2]);
+		} else {
+			charge = -1;
+		}
+		// TODO: charge currently not supported
+		return getFactoryPeak().create(null, mz, intensity, -1);
 	}
 
 	public synchronized void setFactoryPeak(final FactoryPeak factoryPeak) {
 
 		this.factoryPeak = factoryPeak;
+	}
+
+	public synchronized void setMonitor(final ProgressMonitor monitor) {
+
+		this.monitor = monitor;
 	}
 }

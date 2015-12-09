@@ -16,5 +16,8 @@ import java.util.List;
 
 public interface MGFFile extends Iterable<MGFElement>, Serializable {
 
+	public final static String FIRST_LINE = "BEGIN IONS";
+	public final static String LAST_LINE = "END IONS";
+
 	List<MGFElement> getElements();
 }

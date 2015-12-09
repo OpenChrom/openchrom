@@ -28,23 +28,11 @@ import net.sf.jmgf.MGFFileReader;
 import net.sf.kerner.utils.io.buffered.AbstractBufferedReader;
 import net.sf.kerner.utils.progress.ProgressMonitor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class MGFFileReaderImpl extends AbstractBufferedReader implements MGFFileReader {
 
 	private FactoryPeak factoryPeak;
-	private final static Logger log = LoggerFactory.getLogger(MGFFileReaderImpl.class);
-
-	public synchronized ProgressMonitor getMonitor() {
-
-		return monitor;
-	}
-
-	public synchronized void setMonitor(ProgressMonitor monitor) {
-
-		this.monitor = monitor;
-	}
+	private ProgressMonitor monitor;
+	protected MGFElementIterator iterator;
 
 	public MGFFileReaderImpl(final BufferedReader reader) {
 
@@ -61,8 +49,6 @@ public class MGFFileReaderImpl extends AbstractBufferedReader implements MGFFile
 		super(stream);
 	}
 
-	private ProgressMonitor monitor;
-
 	public MGFFileReaderImpl(final Reader reader) {
 
 		super(reader);
@@ -73,13 +59,16 @@ public class MGFFileReaderImpl extends AbstractBufferedReader implements MGFFile
 		return new MGFFileBean(elements);
 	}
 
+	@Override
 	public synchronized FactoryPeak getFactoryPeak() {
 
+		if(factoryPeak == null) {
+			factoryPeak = new FactoryPeakImpl();
+		}
 		return factoryPeak;
 	}
 
-	protected MGFElementIterator iterator;
-
+	@Override
 	public synchronized MGFElementIterator getIterator() throws IOException {
 
 		if(iterator == null) {
@@ -89,22 +78,35 @@ public class MGFFileReaderImpl extends AbstractBufferedReader implements MGFFile
 		return iterator;
 	}
 
+	public synchronized ProgressMonitor getMonitor() {
+
+		return monitor;
+	}
+
+	@Override
 	public synchronized MGFFile read() throws IOException {
 
 		final List<MGFElement> result = new ArrayList<MGFElement>();
 		final MGFElementIterator it = getIterator();
-		if(getFactoryPeak() == null) {
-			it.setFactoryPeak(new FactoryPeakImpl());
-		}
+		it.setFactoryPeak(getFactoryPeak());
+		// try {
 		while(it.hasNext()) {
 			result.add(it.next());
 		}
-		it.close();
 		return buildNewMGFFile(result);
+		// } finally {
+		// it.close();
+		// }
 	}
 
+	@Override
 	public synchronized void setFactoryPeak(final FactoryPeak factoryPeak) {
 
 		this.factoryPeak = factoryPeak;
+	}
+
+	public synchronized void setMonitor(final ProgressMonitor monitor) {
+
+		this.monitor = monitor;
 	}
 }
