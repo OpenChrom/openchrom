@@ -57,7 +57,7 @@ public class MassSpectrumImportConverter extends AbstractMassSpectrumImportConve
 				logger.warn(e);
 				processingInfo.addErrorMessage(DESCRIPTION, "The file is empty: " + file.getAbsolutePath());
 			} catch(final IOException e) {
-				logger.warn(e);
+				logger.warn(e.getLocalizedMessage(), e);
 				processingInfo.addErrorMessage(DESCRIPTION, "Something has gone completely wrong: " + file.getAbsolutePath());
 			}
 		}
