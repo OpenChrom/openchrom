@@ -15,6 +15,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import net.sf.jmgf.MGFElement;
+import net.sf.jmgf.MGFFileReader;
+import net.sf.jmgf.impl.MGFElementIterator;
+import net.sf.jmgf.impl.MGFFileReaderImpl;
+
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
@@ -22,11 +27,6 @@ import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
-
-import net.sf.jmgf.MGFElement;
-import net.sf.jmgf.MGFFileReader;
-import net.sf.jmgf.impl.MGFElementIterator;
-import net.sf.jmgf.impl.MGFFileReaderImpl;
 
 public class MGFReader extends AbstractMassSpectraReader implements IMassSpectraReader {
 
