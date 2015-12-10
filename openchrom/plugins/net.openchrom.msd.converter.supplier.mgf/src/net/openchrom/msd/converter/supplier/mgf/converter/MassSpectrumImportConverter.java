@@ -15,8 +15,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import net.openchrom.msd.converter.supplier.mgf.converter.io.MGFReader;
-
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -26,6 +24,8 @@ import org.eclipse.chemclipse.msd.converter.processing.massspectrum.MassSpectrum
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
+
+import net.openchrom.msd.converter.supplier.mgf.converter.io.MGFReader;
 
 public class MassSpectrumImportConverter extends AbstractMassSpectrumImportConverter {
 
