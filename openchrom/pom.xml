@@ -118,6 +118,11 @@
       <url>${easejython-repo.url}</url>
       <layout>p2</layout>
     </repository>
+	<repository>
+      <id>p2-maven</id>
+      <url>http://p2-maven.silico-sciences.com</url>
+      <layout>p2</layout>
+    </repository>
   </repositories>
   <!--
 	PLUGIN REPOSITORIES
