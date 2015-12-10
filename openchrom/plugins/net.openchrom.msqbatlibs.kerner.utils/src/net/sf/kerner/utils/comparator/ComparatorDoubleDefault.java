@@ -17,40 +17,8 @@ package net.sf.kerner.utils.comparator;
 
 import java.util.Comparator;
 
-/**
- * Default comparator for {@link Double}.
- * 
- * <pre>
- * 
- * 
- * 
- * 
- * 
- * public int compare(final Double o1, final Double o2) {
- * 
- * 	return o1.compareTo(o2);
- * }
- * 
- * </pre>
- * <p>
- * <b>Example:</b><br>
- * </p>
- * <p>
- * 
- * <pre>
- * TODO example
- * </pre>
- * 
- * </p>
- * 
- * @author <a href="mailto:alex.kerner.24@googlemail.com">Alexander Kerner</a>
- * @version 2012-06-18
- */
 public class ComparatorDoubleDefault implements Comparator<Double> {
 
-	/**
-     * 
-     */
 	public int compare(final Double o1, final Double o2) {
 
 		return o1.compareTo(o2);

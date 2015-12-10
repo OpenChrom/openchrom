@@ -46,6 +46,8 @@ import net.sf.kerner.utils.math.ArithmeticSavety;
  * 
  * 
  * 
+ * 
+ * 
  * &#064;Test
  * public void testBufferedReadingSpeed() throws IOException {
  * 
@@ -68,6 +70,8 @@ import net.sf.kerner.utils.math.ArithmeticSavety;
  * 
  * 
  * 
+ * 
+ * 
  * &#064;Test
  * public void testBufferedReadingSpeed01() throws IOException {
  * 
@@ -85,6 +89,8 @@ import net.sf.kerner.utils.math.ArithmeticSavety;
  * </pre>
  * 
  * <pre>
+ * 
+ * 
  * 
  * 
  * 

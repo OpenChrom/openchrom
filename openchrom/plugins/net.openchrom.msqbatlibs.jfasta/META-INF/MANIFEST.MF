@@ -7,9 +7,9 @@ Bundle-Activator: net.openchrom.msqbatlibs.jfasta.Activator
 Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.1.0",
  net.openchrom.msqbatlibs.kerner.utils.collections;bundle-version="1.1.0",
- net.openchrom.msqbatlibs.kerner.utils.io;bundle-version="1.1.0"
+ net.openchrom.msqbatlibs.kerner.utils.io;bundle-version="1.1.0",
+ org.slf4j.api;bundle-version="1.7.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: net.sf.jfasta;version="1.1.0.qualifier",
  net.sf.jfasta.impl;version="1.1.0.qualifier"
-Import-Package: org.slf4j;version="1.6.6"
