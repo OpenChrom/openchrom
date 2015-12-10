@@ -5,11 +5,11 @@ Bundle-SymbolicName: net.openchrom.msqbatlibs.kerner.utils.io
 Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: net.openchrom.msqbatlibs.kerner.utils.io.Activator
 Require-Bundle: org.eclipse.core.runtime,
- net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.1.0"
+ net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.1.0",
+ slf4j.api;bundle-version="1.7.7"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: net.sf.kerner.utils.io;version="1.1.0.qualifier",
  net.sf.kerner.utils.io.buffered;version="1.1.0.qualifier",
  net.sf.kerner.utils.io.buffered.impl;version="1.1.0.qualifier",
  net.sf.kerner.utils.io.lazy;version="1.1.0.qualifier"
-Import-Package: org.slf4j;version="1.7.7"

@@ -4,7 +4,8 @@ Bundle-Name: Utils
 Bundle-SymbolicName: net.openchrom.msqbatlibs.kerner.utils
 Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: net.openchrom.msqbatlibs.kerner.utils.Activator
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ slf4j.api;bundle-version="1.7.7"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: net.sf.kerner.utils;version="1.1.0.qualifier",
@@ -25,4 +26,3 @@ Export-Package: net.sf.kerner.utils;version="1.1.0.qualifier",
  net.sf.kerner.utils.time;version="1.1.0.qualifier",
  net.sf.kerner.utils.transformer;version="1.1.0.qualifier",
  net.sf.kerner.utils.visitor;version="1.1.0.qualifier"
-Import-Package: org.slf4j;version="1.7.7"
