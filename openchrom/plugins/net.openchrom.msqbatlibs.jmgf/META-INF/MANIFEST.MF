@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.msqbatlibs.kerner.utils.collections;bundle-version="1.1.0",
  net.openchrom.msqbatlibs.kerner.utils.io;bundle-version="1.1.0",
  org.apache.commons.io;bundle-version="2.2.0",
- slf4j.api;bundle-version="1.7.7"
+ org.eclipse.chemclipse.logging;bundle-version="0.7.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: net.sf.jmgf;version="1.1.0.qualifier",
  net.sf.jmgf.exception;version="1.1.0.qualifier",

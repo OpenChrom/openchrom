@@ -22,17 +22,16 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+
 import net.sf.bioutils.proteomics.peptides.AminoAcid;
 import net.sf.bioutils.proteomics.peptides.Peptide;
 import net.sf.bioutils.proteomics.peptides.PeptideSequenceChargedSingle;
 import net.sf.jranges.range.integerrange.impl.RangeIntegerDummy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class DigesterTrypsin extends DigesterAbstract {
 
-	private final static Logger log = LoggerFactory.getLogger(DigesterTrypsin.class);
+	private final static Logger logger = Logger.getLogger(DigesterTrypsin.class);
 	public final static double DEFAULT_MOL_WEIGHT_MIN = 750;
 	public final static double DEFAULT_MOL_WEIGHT_MAX = 4000;
 	private double molWeightMin = DEFAULT_MOL_WEIGHT_MIN;
@@ -46,9 +45,7 @@ public class DigesterTrypsin extends DigesterAbstract {
 			seq.setModifications(peptides.getModifications());
 			result.add(seq);
 		} else {
-			if(log.isDebugEnabled()) {
-				log.debug("skip invalid range " + new RangeIntegerDummy(indexLow, indexHigh));
-			}
+			logger.debug("skip invalid range " + new RangeIntegerDummy(indexLow, indexHigh));
 		}
 	}
 

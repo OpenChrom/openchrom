@@ -8,15 +8,14 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.kerner.utils.io.buffered.IOIterator;
+import org.eclipse.chemclipse.logging.core.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.sf.kerner.utils.io.buffered.IOIterator;
 
 public abstract class ReaderTableObjectAbstract<T> implements IOIterator<T> {
 
 	protected final ReaderTableString reader;
-	private final static Logger log = LoggerFactory.getLogger(ReaderTableObjectAbstract.class);
+	private final static Logger logger = Logger.getLogger(ReaderTableObjectAbstract.class);
 
 	public ReaderTableObjectAbstract(final BufferedReader reader, final boolean columnIds, final boolean rowIds) throws IOException {
 
@@ -79,9 +78,7 @@ public abstract class ReaderTableObjectAbstract<T> implements IOIterator<T> {
 		while(hasNext()) {
 			final T next = next();
 			if(next == null) {
-				if(log.isDebugEnabled()) {
-					log.debug("omit null element");
-				}
+				logger.debug("omit null element");
 			} else {
 				result.add(next);
 			}

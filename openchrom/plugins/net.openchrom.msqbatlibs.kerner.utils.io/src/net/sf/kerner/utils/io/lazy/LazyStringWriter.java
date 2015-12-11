@@ -48,6 +48,7 @@ import net.sf.kerner.utils.io.buffered.impl.BufferedStringWriter;
  * 
  * 
  * 
+ * 
  * &#064;Test
  * public final void example() throws IOException {
  * 

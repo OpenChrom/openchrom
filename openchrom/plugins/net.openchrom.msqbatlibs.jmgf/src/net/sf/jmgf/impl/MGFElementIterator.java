@@ -21,6 +21,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+
 import net.sf.bioutils.proteomics.peak.FactoryPeak;
 import net.sf.bioutils.proteomics.peak.FactoryPeakImpl;
 import net.sf.bioutils.proteomics.peak.Peak;
@@ -30,12 +32,9 @@ import net.sf.jmgf.exception.ExceptionFileFormat;
 import net.sf.kerner.utils.io.buffered.AbstractIOIterator;
 import net.sf.kerner.utils.progress.ProgressMonitor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 
-	private final static Logger log = LoggerFactory.getLogger(MGFElementIterator.class);
+	private final static Logger logger = Logger.getLogger(MGFElementIterator.class);
 	private ProgressMonitor monitor;
 	private FactoryPeak factoryPeak;
 
@@ -80,9 +79,7 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 			while(line != null) {
 				line = reader.readLine();
 				if(line == null) {
-					if(log.isErrorEnabled()) {
-						log.error("Unexpected end of file");
-					}
+					logger.error("Unexpected end of file");
 					final MGFElementBean result = new MGFElementBean();
 					result.setPeaks(peaks);
 					result.setElements(elements);

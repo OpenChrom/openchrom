@@ -18,16 +18,16 @@ package net.sf.kerner.utils.log;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.slf4j.Logger;
+import org.eclipse.chemclipse.logging.core.Logger;
 
 public class LogOnlyOnce {
 
 	private final Set<String> logged = new HashSet<String>();
-	private final Logger log;
+	private final Logger logger;
 
 	public LogOnlyOnce(final Logger log) {
 
-		this.log = log;
+		this.logger = log;
 	}
 
 	public synchronized void debug(final String msg) {
@@ -35,7 +35,7 @@ public class LogOnlyOnce {
 		if(logged.contains(msg)) {
 			return;
 		}
-		log.debug(msg);
+		logger.debug(msg);
 		logged.add(msg);
 	}
 
@@ -44,7 +44,7 @@ public class LogOnlyOnce {
 		if(logged.contains(msg)) {
 			return;
 		}
-		log.debug(msg, exception);
+		logger.debug(msg, exception);
 		logged.add(msg);
 	}
 
@@ -53,7 +53,7 @@ public class LogOnlyOnce {
 		if(logged.contains(msg)) {
 			return;
 		}
-		log.info(msg);
+		logger.info(msg);
 		logged.add(msg);
 	}
 
@@ -67,7 +67,7 @@ public class LogOnlyOnce {
 		if(logged.contains(msg)) {
 			return;
 		}
-		log.warn(msg);
+		logger.warn(msg);
 		logged.add(msg);
 	}
 }

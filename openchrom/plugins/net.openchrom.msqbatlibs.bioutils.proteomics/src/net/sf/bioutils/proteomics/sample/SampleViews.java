@@ -15,12 +15,7 @@ import net.sf.jranges.range.doublerange.impl.ZeroPositiveDoubleRange;
 import net.sf.jranges.range.integerrange.RangeInteger;
 import net.sf.kerner.utils.collections.map.MapList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class SampleViews {
-
-	private final static Logger log = LoggerFactory.getLogger(SampleViews.class);
 
 	public static RangeDouble findRangeMz(final Peak peak, final Collection<? extends RangeDouble> ranges) {
 
