@@ -5,12 +5,8 @@ import java.util.TreeMap;
 
 import net.sf.kerner.utils.collections.UtilCollection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class SelectorPeakMzFrac implements SelectorPeak {
 
-	private final static Logger log = LoggerFactory.getLogger(SelectorPeakMzFrac.class);
 	public static boolean DEFAULT_PPM = true;
 	private final double mz;
 	private final int frac;

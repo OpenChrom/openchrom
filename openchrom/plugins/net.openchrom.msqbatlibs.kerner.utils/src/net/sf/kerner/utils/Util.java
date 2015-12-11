@@ -21,8 +21,7 @@ import java.io.StringWriter;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.chemclipse.logging.core.Logger;
 
 /**
  * General utility class.
@@ -32,7 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Util {
 
-	private final static Logger logger = LoggerFactory.getLogger(Util.class);
+	private final static Logger logger = Logger.getLogger(Util.class);
 	/**
 	 * Number of CPUs that are available to this JVM.
 	 */
@@ -99,9 +98,7 @@ public class Util {
 			props.load(clazz.getResourceAsStream(propertiesFile));
 			result = props.getProperty("version");
 		} catch(final Exception e) {
-			if(logger.isErrorEnabled()) {
-				logger.error(e.getLocalizedMessage(), e);
-			}
+			logger.error(e.getLocalizedMessage(), e);
 		}
 		return result;
 	}

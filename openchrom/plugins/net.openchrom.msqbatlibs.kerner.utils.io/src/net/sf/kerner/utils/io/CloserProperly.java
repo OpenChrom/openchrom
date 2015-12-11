@@ -16,8 +16,7 @@ package net.sf.kerner.utils.io;
 
 import java.io.Closeable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.chemclipse.logging.core.Logger;
 
 /**
  *
@@ -49,7 +48,7 @@ import org.slf4j.LoggerFactory;
  */
 public class CloserProperly {
 
-	private final static Logger log = LoggerFactory.getLogger(CloserProperly.class);
+	private final static Logger logger = Logger.getLogger(CloserProperly.class);
 
 	/**
 	 * Closes {@code closable} if {@code closable != null} and instanceof {@link Closable}. Exceptions are catched and logged (level WARN).
@@ -64,9 +63,7 @@ public class CloserProperly {
 			try {
 				c.close();
 			} catch(final Exception e) {
-				if(log.isWarnEnabled()) {
-					log.warn(e.getLocalizedMessage(), e);
-				}
+				logger.warn(e.getLocalizedMessage(), e);
 			}
 		}
 	}

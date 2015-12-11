@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+
 import net.sf.jfasta.FASTAElement;
 import net.sf.jfasta.FASTAFile;
 import net.sf.jfasta.FASTAFileReader;
@@ -32,13 +34,10 @@ import net.sf.kerner.utils.Cache;
 import net.sf.kerner.utils.UtilString;
 import net.sf.kerner.utils.collections.list.UtilList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class PeptideSearcher {
 
 	// private final LogOnlyOnce logo = new LogOnlyOnce(log);
-	private final static Logger log = LoggerFactory.getLogger(PeptideSearcher.class);
+	private final static Logger logger = Logger.getLogger(PeptideSearcher.class);
 
 	private static List<String> getList(final FASTAElementIterator it, final String seq) throws IOException {
 
@@ -86,9 +85,7 @@ public class PeptideSearcher {
 
 		this.cache = cache;
 		this.cacheFASTAFileMap = cacheFASTAFileMap;
-		if(log.isInfoEnabled()) {
-			log.info("Initiated with given cache (capacity of " + cache.getCapacity() + ", size of " + cache.getSize() + ", hash " + cache.hashCode() + ")");
-		}
+		logger.info("Initiated with given cache (capacity of " + cache.getCapacity() + ", size of " + cache.getSize() + ", hash " + cache.hashCode() + ")");
 	}
 
 	public PeptideSearcher(final int cacheSize) {

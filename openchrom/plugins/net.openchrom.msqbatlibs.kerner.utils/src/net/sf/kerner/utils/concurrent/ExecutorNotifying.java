@@ -24,14 +24,13 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import net.sf.kerner.utils.concurrent.FutureTaskNotifying.ListenerDone;
+import org.eclipse.chemclipse.logging.core.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.sf.kerner.utils.concurrent.FutureTaskNotifying.ListenerDone;
 
 public class ExecutorNotifying implements ExecutorService {
 
-	private final static Logger log = LoggerFactory.getLogger(ExecutorNotifying.class);
+	private final static Logger log = Logger.getLogger(ExecutorNotifying.class);
 	private ThreadPoolExecutorNotifying delegate;
 	private int numCPUs;
 
@@ -114,9 +113,7 @@ public class ExecutorNotifying implements ExecutorService {
 
 		this.numCPUs = numCPUs;
 		if(delegate != null) {
-			if(log.isInfoEnabled()) {
-				log.info("reinitiate with " + numCPUs + " threads");
-			}
+			log.info("reinitiate with " + numCPUs + " threads");
 			delegate.shutdown();
 		}
 		delegate = ThreadPoolExecutorNotifying.build(numCPUs);

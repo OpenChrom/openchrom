@@ -18,18 +18,17 @@ package net.sf.bioutils.proteomics;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+
 import net.sf.bioutils.proteomics.peak.Peak;
 import net.sf.bioutils.proteomics.peak.PeakFractionated;
 import net.sf.bioutils.proteomics.peptides.AminoAcid;
 import net.sf.bioutils.proteomics.sample.Sample;
 import net.sf.kerner.utils.UtilString;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class UtilProteomics {
 
-	private final static Logger log = LoggerFactory.getLogger(UtilProteomics.class);
+	private final static Logger logger = Logger.getLogger(UtilProteomics.class);
 	private final static Map<Character, AminoAcid> molMassesChar = new HashMap<Character, AminoAcid>();
 	private final static Map<String, AminoAcid> molMassesString = new HashMap<String, AminoAcid>();
 	private final static double terminiWeight = 18.0152;
@@ -58,9 +57,7 @@ public class UtilProteomics {
 		for(final char c : sequence.toCharArray()) {
 			final AminoAcid p = molMassesChar.get(c);
 			if(p == null) {
-				if(log.isWarnEnabled()) {
-					log.warn("ignoring AS " + c);
-				}
+				logger.warn("ignoring AS " + c);
 			} else {
 				result += p.getMolWeight();
 			}

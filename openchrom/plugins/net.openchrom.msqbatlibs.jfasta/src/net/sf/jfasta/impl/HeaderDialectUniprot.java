@@ -14,11 +14,10 @@ package net.sf.jfasta.impl;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+
 import net.sf.jfasta.HeaderDialect;
 import net.sf.kerner.utils.UtilString;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -37,7 +36,8 @@ import org.slf4j.LoggerFactory;
  */
 public class HeaderDialectUniprot implements HeaderDialect {
 
-	private final static Logger log = LoggerFactory.getLogger(HeaderDialectUniprot.class);
+	private final static Logger logger = Logger.getLogger(HeaderDialectUniprot.class);
+	//
 	public final static String REGEX_OS_ONLY = ".*OS=(.+).*";
 	public final static String REGEX_OS_GN = ".*OS=(.+)GN=(.+).*";
 	public final static String REGEX_ACC_ONLY = "[sp\\|]*(.+)\\|.*";
@@ -56,9 +56,7 @@ public class HeaderDialectUniprot implements HeaderDialect {
 		if(b) {
 			return m.group(1).trim();
 		} else {
-			if(log.isInfoEnabled()) {
-				log.info("no accession for " + headerString);
-			}
+			logger.info("no accession for " + headerString);
 			return null;
 		}
 	}
@@ -78,9 +76,7 @@ public class HeaderDialectUniprot implements HeaderDialect {
 
 		final String result = getString(REGEX_ACC_ONLY);
 		if(UtilString.emptyString(result)) {
-			if(log.isInfoEnabled()) {
-				log.info("no accession number for " + headerString);
-			}
+			logger.info("no accession number for " + headerString);
 		}
 		return result;
 	}
@@ -94,9 +90,7 @@ public class HeaderDialectUniprot implements HeaderDialect {
 
 		final String result = getString(REGEX_GN);
 		if(UtilString.emptyString(result)) {
-			if(log.isInfoEnabled()) {
-				log.info("no gene name for " + headerString);
-			}
+			logger.info("no gene name for " + headerString);
 		}
 		return result;
 	}
@@ -110,9 +104,7 @@ public class HeaderDialectUniprot implements HeaderDialect {
 
 		final String result = getString(REGEX_PROTEIN_ONLY);
 		if(UtilString.emptyString(result)) {
-			if(log.isInfoEnabled()) {
-				log.info("no protein name for " + headerString);
-			}
+			logger.info("no protein name for " + headerString);
 		}
 		return result;
 	}
@@ -135,9 +127,7 @@ public class HeaderDialectUniprot implements HeaderDialect {
 				return m.group(1).trim();
 			}
 		}
-		if(log.isInfoEnabled()) {
-			log.info("no species name for " + headerString);
-		}
+		logger.info("no species name for " + headerString);
 		return null;
 	}
 
@@ -150,9 +140,7 @@ public class HeaderDialectUniprot implements HeaderDialect {
 		if(b) {
 			return m.group(1).trim();
 		} else {
-			if(log.isDebugEnabled()) {
-				log.debug("no match (" + regex + ") for " + getHeaderString());
-			}
+			logger.debug("no match (" + regex + ") for " + getHeaderString());
 			return null;
 		}
 	}
