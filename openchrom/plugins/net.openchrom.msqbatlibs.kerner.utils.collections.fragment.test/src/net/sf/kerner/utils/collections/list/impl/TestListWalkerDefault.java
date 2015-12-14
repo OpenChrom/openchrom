@@ -114,7 +114,7 @@ public class TestListWalkerDefault {
 		final Counter c2 = new Counter();
 		v = new DefaultListVisitorImpl<Integer>() {
 
-			@Override
+			
 			public Void visit(final Integer e, final int index) {
 
 				c2.count();
@@ -134,7 +134,7 @@ public class TestListWalkerDefault {
 		final Counter c2 = new Counter();
 		v = new DefaultListVisitorImpl<Integer>() {
 
-			@Override
+			
 			public Void visit(final Integer e, final int index) {
 
 				c2.count();

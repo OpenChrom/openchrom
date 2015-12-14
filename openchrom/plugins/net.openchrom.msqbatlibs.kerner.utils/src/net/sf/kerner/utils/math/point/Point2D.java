@@ -57,13 +57,13 @@ public class Point2D implements Pair<Double, Double> {
 		this(template.getX(), template.getY());
 	}
 
-	@Override
+	
 	public Point2D clone() {
 
 		return new Point2D(getX(), getY());
 	}
 
-	@Override
+	
 	public boolean equals(final Object obj) {
 
 		if(this == obj) {
@@ -115,7 +115,7 @@ public class Point2D implements Pair<Double, Double> {
 		return y;
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -133,7 +133,7 @@ public class Point2D implements Pair<Double, Double> {
 		return new Point2D(getY(), getX());
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return "x=" + getX() + ",y=" + getY();

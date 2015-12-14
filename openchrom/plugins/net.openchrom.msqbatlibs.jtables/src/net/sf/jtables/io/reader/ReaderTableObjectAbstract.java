@@ -73,13 +73,13 @@ public abstract class ReaderTableObjectAbstract<T> implements IOIterator<T> {
 		this.reader = new ReaderTableString(reader, columnIds, rowIds, delim);
 	}
 
-	@Override
+	
 	public synchronized void close() {
 
 		reader.close();
 	}
 
-	@Override
+	
 	public boolean hasNext() throws IOException {
 
 		return reader.hasNext();

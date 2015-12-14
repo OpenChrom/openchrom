@@ -26,13 +26,13 @@ public abstract class VeryAbstractLongRange implements RangeLong {
 	protected long stop;
 
 	// Override //
-	@Override
+	
 	public String toString() {
 
 		return getStart() + "-" + getStop();
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		int result = hashCode;
@@ -46,7 +46,7 @@ public abstract class VeryAbstractLongRange implements RangeLong {
 		return result;
 	}
 
-	@Override
+	
 	public boolean equals(Object obj) {
 
 		if(this == obj)

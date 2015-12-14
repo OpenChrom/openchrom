@@ -77,25 +77,25 @@ public class ReaderTableString extends ReaderTableAbstract<String> {
 		super(reader, columnIds, rowIds, delim);
 	}
 
-	@Override
+	
 	protected TableString getInstance() {
 
 		return new TableString();
 	}
 
-	@Override
+	
 	protected RowImpl<String> getNewRowInstance() {
 
 		return new RowString();
 	}
 
-	@Override
+	
 	protected String parse(final String s) {
 
 		return s;
 	}
 
-	@Override
+	
 	public TableString readTableAtOnce() throws IOException {
 
 		return (TableString)super.readTableAtOnce();

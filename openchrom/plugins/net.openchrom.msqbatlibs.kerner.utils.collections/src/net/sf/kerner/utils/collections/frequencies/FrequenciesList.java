@@ -94,7 +94,7 @@ public class FrequenciesList<T extends Frequency> implements Frequencies<T>, Lis
 		return delegate.containsAll(c);
 	}
 
-	@Override
+	
 	public boolean equals(final Object o) {
 
 		return delegate.equals(o);
@@ -105,7 +105,7 @@ public class FrequenciesList<T extends Frequency> implements Frequencies<T>, Lis
 		return delegate.get(index);
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		return delegate.hashCode();
@@ -201,7 +201,7 @@ public class FrequenciesList<T extends Frequency> implements Frequencies<T>, Lis
 		return delegate.toArray(a);
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return delegate.toString();

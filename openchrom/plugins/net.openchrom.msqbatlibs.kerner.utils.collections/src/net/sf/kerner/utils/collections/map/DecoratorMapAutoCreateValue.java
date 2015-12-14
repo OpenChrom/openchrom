@@ -60,7 +60,7 @@ public class DecoratorMapAutoCreateValue<K, V> implements Map<K, V> {
 	}
 
 	// Delegate //
-	@Override
+	
 	public String toString() {
 
 		return decorated.toString();

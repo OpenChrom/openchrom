@@ -38,7 +38,7 @@ public class RowString extends RowImpl<String> {
 		super(elements);
 	}
 
-	@Override
+	
 	public boolean isEmpty() {
 
 		return UtilString.allEmpty(implementation);

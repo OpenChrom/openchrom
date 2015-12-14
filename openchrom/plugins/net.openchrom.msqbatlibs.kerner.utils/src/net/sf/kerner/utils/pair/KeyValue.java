@@ -110,7 +110,7 @@ public class KeyValue<K, V> implements Entry<K, V>, Pair<K, V> {
 		this(template.getKey(), template.getValue());
 	}
 
-	@Override
+	
 	public KeyValue<K, V> clone() {
 
 		return new KeyValue<K, V>(getKey(), getValue());
@@ -120,7 +120,7 @@ public class KeyValue<K, V> implements Entry<K, V>, Pair<K, V> {
 	 * In contrast to {@link Pair}, {@code KeyValue(1,2)} does not equal {@code KeyValue(2,1)}.
 	 * 
 	 */
-	@Override
+	
 	public boolean equals(final Object obj) {
 
 		if(this == obj)
@@ -181,7 +181,7 @@ public class KeyValue<K, V> implements Entry<K, V>, Pair<K, V> {
 	 * not equal {@code KeyValue(2,1).hashCode()}.
 	 * 
 	 */
-	@Override
+	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -207,7 +207,7 @@ public class KeyValue<K, V> implements Entry<K, V>, Pair<K, V> {
 		return result;
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return key + "=" + value;

@@ -42,7 +42,7 @@ public class ExceptionUnknownType extends RuntimeException {
 		this.unknownType = unknownType;
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return "unknown type: " + unknownType + ", " + super.toString();

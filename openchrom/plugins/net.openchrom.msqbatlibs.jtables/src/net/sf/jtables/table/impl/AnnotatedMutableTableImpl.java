@@ -132,7 +132,7 @@ public class AnnotatedMutableTableImpl<T> extends MutableTableImpl<T> implements
 			throw new NoSuchElementException("no element for row index [" + key + "]");
 	}
 
-	@Override
+	
 	public synchronized Column<T> getColumn(final int index) {
 
 		final ColumnImpl<T> r;
@@ -159,7 +159,7 @@ public class AnnotatedMutableTableImpl<T> extends MutableTableImpl<T> implements
 		return new ArrayList<Object>(colMapper.keys());
 	}
 
-	@Override
+	
 	public Row<T> getRow(final int index) {
 
 		final Row<T> r = super.getRow(index);
@@ -206,7 +206,7 @@ public class AnnotatedMutableTableImpl<T> extends MutableTableImpl<T> implements
 		return result;
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return toString("\t");

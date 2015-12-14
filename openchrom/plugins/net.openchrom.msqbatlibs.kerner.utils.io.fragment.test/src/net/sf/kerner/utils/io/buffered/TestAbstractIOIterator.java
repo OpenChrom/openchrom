@@ -46,7 +46,7 @@ public class TestAbstractIOIterator {
 			super(reader);
 		}
 
-		@Override
+		
 		protected String doRead() throws IOException {
 
 			String s = reader2.nextString();

@@ -105,7 +105,7 @@ public class FASTAFileWriter extends AbstractBufferedWriter implements ObjectWri
 	 * </p>
 	 * 
 	 */
-	@Override
+	
 	public synchronized void write(final FASTAElement e) throws IOException {
 
 		super.writer.write(e.toString());

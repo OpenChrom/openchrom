@@ -134,7 +134,7 @@ public abstract class AbstractDoubleRange extends VeryAbstractDoubleRange implem
 	}
 
 	// Override //
-	@Override
+	
 	public double getInterval() {
 
 		return interval;
@@ -161,7 +161,7 @@ public abstract class AbstractDoubleRange extends VeryAbstractDoubleRange implem
 		return limit2;
 	}
 
-	@Override
+	
 	public boolean includes(final double position) {
 
 		if(interval == 1)

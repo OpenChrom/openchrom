@@ -160,7 +160,7 @@ public class ReaderTableDouble extends ReaderTableAbstract<Double> {
 	/**
 	 * 
 	 */
-	@Override
+	
 	protected TableDouble getInstance() {
 
 		return new TableDouble();
@@ -169,13 +169,13 @@ public class ReaderTableDouble extends ReaderTableAbstract<Double> {
 	/**
 	 * 
 	 */
-	@Override
+	
 	protected Double parse(String s) throws NumberFormatException {
 
 		return Double.parseDouble(s);
 	}
 
-	@Override
+	
 	public TableDouble readTableAtOnce() throws IOException {
 
 		return (TableDouble)super.readTableAtOnce();

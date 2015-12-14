@@ -59,7 +59,7 @@ public class MGFFileReaderImpl extends AbstractBufferedReader implements MGFFile
 		return new MGFFileBean(elements);
 	}
 
-	@Override
+	
 	public synchronized FactoryPeak getFactoryPeak() {
 
 		if(factoryPeak == null) {
@@ -68,7 +68,7 @@ public class MGFFileReaderImpl extends AbstractBufferedReader implements MGFFile
 		return factoryPeak;
 	}
 
-	@Override
+	
 	public synchronized MGFElementIterator getIterator() throws IOException {
 
 		if(iterator == null) {
@@ -83,7 +83,7 @@ public class MGFFileReaderImpl extends AbstractBufferedReader implements MGFFile
 		return monitor;
 	}
 
-	@Override
+	
 	public synchronized MGFFile read() throws IOException {
 
 		final List<MGFElement> result = new ArrayList<MGFElement>();
@@ -99,7 +99,7 @@ public class MGFFileReaderImpl extends AbstractBufferedReader implements MGFFile
 		// }
 	}
 
-	@Override
+	
 	public synchronized void setFactoryPeak(final FactoryPeak factoryPeak) {
 
 		this.factoryPeak = factoryPeak;

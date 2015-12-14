@@ -58,7 +58,7 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 		super(reader);
 	}
 
-	@Override
+	
 	protected synchronized MGFElement doRead() throws IOException {
 
 		if(monitor != null) {

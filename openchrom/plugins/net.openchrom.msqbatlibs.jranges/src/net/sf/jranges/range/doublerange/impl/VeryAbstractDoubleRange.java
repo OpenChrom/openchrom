@@ -66,7 +66,7 @@ public abstract class VeryAbstractDoubleRange implements RangeDouble {
 		return Double.valueOf(getStart()).compareTo(Double.valueOf(o.getStart()));
 	}
 
-	@Override
+	
 	public boolean equals(final Object obj) {
 
 		if(this == obj)
@@ -112,7 +112,7 @@ public abstract class VeryAbstractDoubleRange implements RangeDouble {
 		return stop;
 	}
 
-	@Override
+	
 	public synchronized int hashCode() {
 
 		double result = hashCode;
@@ -141,7 +141,7 @@ public abstract class VeryAbstractDoubleRange implements RangeDouble {
 		return (includes(anotherRange.getStart()) || includes(anotherRange.getStop()));
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return getStart() + "->" + getStop();

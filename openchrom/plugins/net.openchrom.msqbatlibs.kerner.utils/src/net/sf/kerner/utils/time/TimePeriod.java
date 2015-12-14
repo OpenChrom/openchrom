@@ -80,7 +80,7 @@ public class TimePeriod {
 	// Protected //
 	// Public //
 	// Override //
-	@Override
+	
 	public String toString() {
 
 		return Long.toString(getDuration());

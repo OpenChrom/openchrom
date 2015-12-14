@@ -30,7 +30,7 @@ public class ZeroPositiveDoubleRange extends AbstractDoubleRange {
 		this(Double.parseDouble(start.trim()), Double.parseDouble(stop.trim()), Double.parseDouble(interval.trim()));
 	}
 
-	@Override
+	
 	protected ZeroPositiveDoubleRange newInstange(double start, double stop, double limit1, double limit2) throws RangeException {
 
 		return new ZeroPositiveDoubleRange(start, stop, interval);

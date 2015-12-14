@@ -77,13 +77,13 @@ public class PairImpl<F, S> implements Pair<F, S> {
 	 * <b>Note:</b> A new {@code ObjectPairImpl} object is created, but {@code first} and {@code second} objects are not cloned here. If this is
 	 * desired, use {@link PairImpl#ObjectPairImpl(Object, Object)} constructor to create a new instance and clone {@code first} and {@code second} here also.
 	 */
-	@Override
+	
 	public PairImpl<F, S> clone() {
 
 		return new PairImpl<F, S>(getFirst(), getSecond());
 	}
 
-	@Override
+	
 	public boolean equals(final Object obj) {
 
 		if(this == obj)
@@ -117,7 +117,7 @@ public class PairImpl<F, S> implements Pair<F, S> {
 		return second;
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -142,7 +142,7 @@ public class PairImpl<F, S> implements Pair<F, S> {
 		this.second = second;
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return getFirst() + "," + getSecond();

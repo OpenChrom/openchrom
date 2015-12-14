@@ -39,7 +39,7 @@ public abstract class WriterTableObjectToMultipleRows<T> extends WriterTableObje
 
 	protected abstract TransformerObjectToMultipleRowsString<T> getTransformer();
 
-	@Override
+	
 	public WriterTableObjectToMultipleRows<T> writeElement(final String delimiter, final T element) throws IOException {
 
 		if(getTransformer() == null) {

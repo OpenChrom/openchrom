@@ -226,7 +226,7 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	 *
 	 * @return next {@link Row} or {@code null} if nothing left to read
 	 */
-	@Override
+	
 	protected Row<T> doRead() throws IOException {
 
 		String line = reader.readLine();

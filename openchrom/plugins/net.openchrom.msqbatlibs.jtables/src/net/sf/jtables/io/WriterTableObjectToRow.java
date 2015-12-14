@@ -37,7 +37,7 @@ public abstract class WriterTableObjectToRow<T> extends WriterTableObjectToRowsA
 
 	protected abstract TransformerObjectToRowString<T> getTransformer();
 
-	@Override
+	
 	public WriterTableObjectToRow<T> writeElement(final String delimiter, final T element) throws IOException {
 
 		if(getTransformer() == null) {

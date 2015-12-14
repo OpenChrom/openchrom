@@ -37,7 +37,7 @@ public class MapSetObject extends MapSet<Object, Object> {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	
 	public void put(final Object key, final Object value) {
 
 		if(value instanceof Collection) {

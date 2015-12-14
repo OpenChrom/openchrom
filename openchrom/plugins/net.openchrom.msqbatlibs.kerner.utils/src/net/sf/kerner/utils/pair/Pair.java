@@ -81,7 +81,7 @@ public interface Pair<F, S> {
 	 * In contrast to {@link KeyValue}, {@code ObjectPair(1,2).hashCode()} equals {@code ObjectPair(2,1).hashCode()}.
 	 * 
 	 */
-	@Override
+	
 	public int hashCode();
 
 	/**

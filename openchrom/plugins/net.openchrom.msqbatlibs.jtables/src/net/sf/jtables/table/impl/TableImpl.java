@@ -86,7 +86,7 @@ public class TableImpl<T> implements Table<T> {
 		return getAllElements().contains(element);
 	}
 
-	@Override
+	
 	public boolean equals(final Object obj) {
 
 		if(this == obj)
@@ -252,7 +252,7 @@ public class TableImpl<T> implements Table<T> {
 		return getRow(index).size();
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -269,7 +269,7 @@ public class TableImpl<T> implements Table<T> {
 		return getAllElements().iterator();
 	}
 
-	@Override
+	
 	public String toString() {
 
 		final StringBuilder sb = new StringBuilder();

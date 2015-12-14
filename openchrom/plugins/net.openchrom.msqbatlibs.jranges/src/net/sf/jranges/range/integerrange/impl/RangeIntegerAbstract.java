@@ -117,7 +117,7 @@ public abstract class RangeIntegerAbstract extends VeryAbstractIntegerRange impl
 		this.start = start;
 	}
 
-	@Override
+	
 	public List<Integer> asList() {
 
 		// TODO init size
@@ -162,13 +162,13 @@ public abstract class RangeIntegerAbstract extends VeryAbstractIntegerRange impl
 		}
 	}
 
-	@Override
+	
 	public int getInterval() {
 
 		return interval;
 	}
 
-	@Override
+	
 	public int getLength() {
 
 		if(interval == 1)
@@ -200,7 +200,7 @@ public abstract class RangeIntegerAbstract extends VeryAbstractIntegerRange impl
 		return limit2;
 	}
 
-	@Override
+	
 	public boolean includes(final int position) {
 
 		if(interval == 1)

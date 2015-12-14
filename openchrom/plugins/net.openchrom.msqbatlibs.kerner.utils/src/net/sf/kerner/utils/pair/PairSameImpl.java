@@ -71,13 +71,13 @@ public class PairSameImpl<T> extends PairImpl<T, T> implements PairSame<T> {
 		return result;
 	}
 
-	@Override
+	
 	public PairSameImpl<T> clone() {
 
 		return new PairSameImpl<T>(this);
 	}
 
-	@Override
+	
 	public PairSameImpl<T> invert() {
 
 		return new PairSameImpl<T>(getSecond(), getFirst());

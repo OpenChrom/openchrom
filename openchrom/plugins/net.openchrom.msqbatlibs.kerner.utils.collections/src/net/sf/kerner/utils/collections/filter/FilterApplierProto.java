@@ -113,7 +113,7 @@ public class FilterApplierProto<E> extends ApplierAbstract implements FilterAppl
 		super.type = filterType;
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return getFilters().toString();

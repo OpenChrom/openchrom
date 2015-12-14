@@ -360,7 +360,7 @@ public class MultiLineLabelUI extends BasicLabelUI implements ComponentListener 
 	}
 
 	/** {@inheritDoc} */
-	@Override
+	
 	public Dimension getPreferredSize(final JComponent c) {
 
 		final Dimension d = super.getPreferredSize(c);
@@ -408,7 +408,7 @@ public class MultiLineLabelUI extends BasicLabelUI implements ComponentListener 
 	}
 
 	/** {@inheritDoc} */
-	@Override
+	
 	protected void installListeners(final JLabel c) {
 
 		super.installListeners(c);
@@ -416,7 +416,7 @@ public class MultiLineLabelUI extends BasicLabelUI implements ComponentListener 
 	}
 
 	/** {@inheritDoc} */
-	@Override
+	
 	public void paint(final Graphics g, final JComponent c) {
 
 		// parent's update method fills the background
@@ -516,7 +516,7 @@ public class MultiLineLabelUI extends BasicLabelUI implements ComponentListener 
 	}
 
 	/** {@inheritDoc} */
-	@Override
+	
 	public void propertyChange(final PropertyChangeEvent e) {
 
 		super.propertyChange(e);
@@ -527,7 +527,7 @@ public class MultiLineLabelUI extends BasicLabelUI implements ComponentListener 
 	}
 
 	/** {@inheritDoc} */
-	@Override
+	
 	protected void uninstallDefaults(final JLabel c) {
 
 		super.uninstallDefaults(c);
@@ -535,7 +535,7 @@ public class MultiLineLabelUI extends BasicLabelUI implements ComponentListener 
 	}
 
 	/** {@inheritDoc} */
-	@Override
+	
 	protected void uninstallListeners(final JLabel c) {
 
 		super.uninstallListeners(c);

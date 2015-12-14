@@ -34,7 +34,7 @@ public abstract class AbstractListTransformer<T, V> extends ListWalkerDefault<T>
 		this.factory = factory;
 		super.addVisitor(new DefaultListVisitorImpl<T>() {
 
-			@Override
+			
 			public synchronized Void visit(final T element, final int index) {
 
 				setCurrentIndex(index);
@@ -44,7 +44,7 @@ public abstract class AbstractListTransformer<T, V> extends ListWalkerDefault<T>
 		});
 	}
 
-	@Override
+	
 	public synchronized void beforeWalk() {
 
 		super.beforeWalk();

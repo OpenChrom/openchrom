@@ -30,7 +30,7 @@ public abstract class FilterParamized<T, P> implements Filter<T> {
 		this.param = param;
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return getClass().getSimpleName() + " " + getParam();

@@ -59,7 +59,7 @@ public abstract class MapCollectionAbstract<K, V, L extends Collection<V>> imple
 		return map.entrySet();
 	}
 
-	@Override
+	
 	public boolean equals(final Object obj) {
 
 		if(this == obj)
@@ -85,7 +85,7 @@ public abstract class MapCollectionAbstract<K, V, L extends Collection<V>> imple
 
 	protected abstract Factory<L> getFactoryCollection();
 
-	@Override
+	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -185,7 +185,7 @@ public abstract class MapCollectionAbstract<K, V, L extends Collection<V>> imple
 		return 0;
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return map.toString();

@@ -29,7 +29,7 @@ public class TransformerObjectToHashCode extends TransformerAbstract<Object, Int
 		return element.hashCode();
 	}
 
-	@Override
+	
 	public Set<Integer> transformCollection(final Collection<? extends Object> element) {
 
 		return (Set<Integer>)super.transformCollection(element);

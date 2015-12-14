@@ -215,13 +215,13 @@ public class Counter {
 	}
 
 	// Override //
-	@Override
+	
 	public String toString() {
 
 		return Integer.toString(getCount());
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -231,7 +231,7 @@ public class Counter {
 		return result;
 	}
 
-	@Override
+	
 	public boolean equals(Object obj) {
 
 		if(this == obj)

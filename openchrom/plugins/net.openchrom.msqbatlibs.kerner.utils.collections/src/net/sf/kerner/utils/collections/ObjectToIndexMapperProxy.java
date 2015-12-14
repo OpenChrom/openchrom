@@ -44,7 +44,7 @@ public class ObjectToIndexMapperProxy<T> extends ObjectToIndexMapperImpl<T> {
 		this.identToIdent = new LinkedHashMap<T, Object>(identToIdent);
 	}
 
-	@Override
+	
 	public int get(final T key) {
 
 		final List<T> keySet = new ArrayList<T>(identToIdent.keySet());
@@ -56,7 +56,7 @@ public class ObjectToIndexMapperProxy<T> extends ObjectToIndexMapperImpl<T> {
 		throw new NoSuchElementException();
 	}
 
-	@Override
+	
 	public Object getValue(final int index) {
 
 		final Object o = super.getValue(index);
@@ -68,31 +68,31 @@ public class ObjectToIndexMapperProxy<T> extends ObjectToIndexMapperImpl<T> {
 		throw new NoSuchElementException();
 	}
 
-	@Override
+	
 	public boolean containsKey(final T key) {
 
 		return identToIdent.containsKey(key);
 	}
 
-	@Override
+	
 	public boolean containsValue(final int index) {
 
 		return identToIdent.containsValue(super.getValue(index));
 	}
 
-	@Override
+	
 	public List<T> keys() {
 
 		return new ArrayList<T>(identToIdent.keySet());
 	}
 
-	@Override
+	
 	public void addMapping(final T key) {
 
 		throw new IllegalStateException();
 	}
 
-	@Override
+	
 	public void addMapping(final T key, final int index) {
 
 		throw new IllegalStateException();

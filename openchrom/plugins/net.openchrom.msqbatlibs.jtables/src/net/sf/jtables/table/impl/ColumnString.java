@@ -32,7 +32,7 @@ public class ColumnString extends ColumnImpl<String> {
 		super(elements);
 	}
 
-	@Override
+	
 	public boolean isEmpty() {
 
 		return UtilString.allEmpty(implementation);

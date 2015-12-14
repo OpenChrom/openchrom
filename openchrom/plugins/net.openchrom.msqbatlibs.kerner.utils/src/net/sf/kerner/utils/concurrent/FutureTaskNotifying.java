@@ -62,7 +62,7 @@ public class FutureTaskNotifying<V> extends FutureTask<V> {
 		listeners.add(listener);
 	}
 
-	@Override
+	
 	protected synchronized void done() {
 
 		super.done();

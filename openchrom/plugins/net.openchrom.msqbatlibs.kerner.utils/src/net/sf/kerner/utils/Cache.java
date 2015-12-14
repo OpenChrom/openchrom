@@ -26,7 +26,7 @@ public class Cache<K, V> {
 
 			private static final long serialVersionUID = -8152367776854430483L;
 
-			@Override
+			
 			protected boolean removeEldestEntry(final Map.Entry<K, V> eldest) {
 
 				return size() >= capacity;

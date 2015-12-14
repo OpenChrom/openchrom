@@ -55,7 +55,7 @@ public interface MGFElement {
 			this.identifier = identifier;
 		}
 
-		@Override
+		
 		public String toString() {
 
 			if(identifier != null) {

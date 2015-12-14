@@ -54,7 +54,7 @@ public class MapCount<T> implements Map<T, Integer> {
 		return delegate.entrySet();
 	}
 
-	@Override
+	
 	public synchronized boolean equals(final Object o) {
 
 		return delegate.equals(o);
@@ -99,7 +99,7 @@ public class MapCount<T> implements Map<T, Integer> {
 		return result;
 	}
 
-	@Override
+	
 	public synchronized int hashCode() {
 
 		return delegate.hashCode();
@@ -175,7 +175,7 @@ public class MapCount<T> implements Map<T, Integer> {
 		return delegate.size();
 	}
 
-	@Override
+	
 	public synchronized String toString() {
 
 		return delegate.toString();

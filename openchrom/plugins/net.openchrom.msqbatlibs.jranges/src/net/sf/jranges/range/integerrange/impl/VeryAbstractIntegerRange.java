@@ -55,7 +55,7 @@ public abstract class VeryAbstractIntegerRange implements RangeInteger {
 		return Integer.valueOf(getStart()).compareTo(Integer.valueOf(o.getStart()));
 	}
 
-	@Override
+	
 	public boolean equals(final Object obj) {
 
 		if(this == obj)
@@ -100,7 +100,7 @@ public abstract class VeryAbstractIntegerRange implements RangeInteger {
 		return stop;
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		int result = hashCode;
@@ -125,7 +125,7 @@ public abstract class VeryAbstractIntegerRange implements RangeInteger {
 		return false;
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return getStart() + "->" + getStop();

@@ -103,7 +103,7 @@ public class FASTAElementImpl implements FASTAElement {
 		map.clear();
 	}
 
-	@Override
+	
 	public boolean equals(final Object obj) {
 
 		if(this == obj)
@@ -121,13 +121,13 @@ public class FASTAElementImpl implements FASTAElement {
 		return true;
 	}
 
-	@Override
+	
 	public String getHeader() {
 
 		return header;
 	}
 
-	@Override
+	
 	public int getLineLength() {
 
 		return lineLength;
@@ -145,19 +145,19 @@ public class FASTAElementImpl implements FASTAElement {
 		return map.get(ident);
 	}
 
-	@Override
+	
 	public String getSequence() {
 
 		return sequence.toString();
 	}
 
-	@Override
+	
 	public int getSequenceLength() {
 
 		return sequence.length();
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -166,7 +166,7 @@ public class FASTAElementImpl implements FASTAElement {
 		return result;
 	}
 
-	@Override
+	
 	public void setLineLength(final int length) {
 
 		if(length < 1)
@@ -189,7 +189,7 @@ public class FASTAElementImpl implements FASTAElement {
 		map.put(ident, info);
 	}
 
-	@Override
+	
 	public String toString() {
 
 		final StringBuilder sb = new StringBuilder();

@@ -161,13 +161,13 @@ public class FASTAFileReaderImpl extends AbstractBufferedReader implements FASTA
 		this.alphabet = alphabet;
 	}
 
-	@Override
+	
 	public FASTAElementIterator getIterator() throws IOException {
 
 		return new FASTAElementIterator(super.reader, alphabet);
 	}
 
-	@Override
+	
 	public FASTAFile read() throws IOException {
 
 		final Collection<FASTAElement> result = new LinkedHashSet<FASTAElement>();

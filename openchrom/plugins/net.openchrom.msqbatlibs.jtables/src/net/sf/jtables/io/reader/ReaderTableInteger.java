@@ -81,19 +81,19 @@ public class ReaderTableInteger extends ReaderTableAbstract<Integer> {
 		super(reader, columnIds, rowIds);
 	}
 
-	@Override
+	
 	protected TableInteger getInstance() {
 
 		return new TableInteger();
 	}
 
-	@Override
+	
 	protected Integer parse(String s) throws NumberFormatException {
 
 		return Integer.parseInt(s);
 	}
 
-	@Override
+	
 	public TableInteger readTableAtOnce() throws IOException {
 
 		return (TableInteger)super.readTableAtOnce();

@@ -40,7 +40,7 @@ public class TransformerToStringCollection<T> extends AbstractTransformingListFa
 		return transformer.transform(arg0);
 	}
 
-	@Override
+	
 	public List<String> transformCollection(final Collection<? extends T> element) {
 
 		return super.transformCollection(element);

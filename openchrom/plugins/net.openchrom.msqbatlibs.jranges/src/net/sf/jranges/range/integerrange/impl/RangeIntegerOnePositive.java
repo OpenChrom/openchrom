@@ -45,7 +45,7 @@ public class RangeIntegerOnePositive extends RangeIntegerAbstract {
 		super(start, stop, 1, Integer.MAX_VALUE, interval);
 	}
 
-	@Override
+	
 	protected RangeIntegerOnePositive newInstange(int start, int stop, int limit1, int limit2) throws RangeException {
 
 		return new RangeIntegerOnePositive(start, stop, interval);

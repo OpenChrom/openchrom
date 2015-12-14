@@ -103,7 +103,7 @@ public class FASTAElementIterator extends AbstractIOIterator<FASTAElement> {
 		this.alphabet = alphabet;
 	}
 
-	@Override
+	
 	protected FASTAElement doRead() throws IOException {
 
 		final String header = new FASTAElementHeaderReader().read(super.reader);

@@ -45,7 +45,7 @@ public class ZeroPositiveIntegerRange extends RangeIntegerAbstract {
 		super(start, stop, 0, Integer.MAX_VALUE, interval);
 	}
 
-	@Override
+	
 	protected ZeroPositiveIntegerRange newInstange(int start, int stop, int limit1, int limit2) throws RangeException {
 
 		return new ZeroPositiveIntegerRange(start, stop, interval);

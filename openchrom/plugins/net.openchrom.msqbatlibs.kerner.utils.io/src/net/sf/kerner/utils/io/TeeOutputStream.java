@@ -36,7 +36,7 @@ public class TeeOutputStream extends OutputStream {
 		ostream_ = ostream;
 	}
 
-	@Override
+	
 	public void close() throws IOException {
 
 		for(final OutputStream ostream : ostream_) {
@@ -44,7 +44,7 @@ public class TeeOutputStream extends OutputStream {
 		}
 	}
 
-	@Override
+	
 	public void flush() throws IOException {
 
 		for(final OutputStream ostream : ostream_) {
@@ -64,7 +64,7 @@ public class TeeOutputStream extends OutputStream {
 	 * @throws IOException
 	 *             from any of the OutputStreams
 	 */
-	@Override
+	
 	public void write(final byte[] b, final int off, final int len) throws IOException {
 
 		for(final OutputStream ostream : ostream_) {
@@ -80,7 +80,7 @@ public class TeeOutputStream extends OutputStream {
 	 * @throws IOException
 	 *             from any of the OutputStreams
 	 */
-	@Override
+	
 	public void write(final int b) throws IOException {
 
 		for(final OutputStream ostream : ostream_) {

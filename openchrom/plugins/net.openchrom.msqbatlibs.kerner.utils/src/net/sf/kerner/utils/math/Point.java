@@ -105,7 +105,7 @@ public class Point {
 		return y;
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -118,7 +118,7 @@ public class Point {
 		return result;
 	}
 
-	@Override
+	
 	public boolean equals(Object obj) {
 
 		if(this == obj) {
@@ -140,7 +140,7 @@ public class Point {
 		return true;
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return "[x=" + x + ",y=" + y + "]";

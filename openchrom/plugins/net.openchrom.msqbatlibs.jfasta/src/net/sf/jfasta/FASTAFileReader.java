@@ -34,10 +34,10 @@ public interface FASTAFileReader extends IOIterable<FASTAElement> {
 	 * @see java.io.Reader#close()
 	 * 
 	 */
-	@Override
+	
 	void close();
 
-	@Override
+	
 	FASTAElementIterator getIterator() throws IOException;
 
 	/**

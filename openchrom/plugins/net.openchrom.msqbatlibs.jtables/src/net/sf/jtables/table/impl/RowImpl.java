@@ -106,7 +106,7 @@ public class RowImpl<T> implements Row<T> {
 		return implementation.containsAll(c);
 	}
 
-	@Override
+	
 	public boolean equals(final Object o) {
 
 		return implementation.equals(o);
@@ -149,7 +149,7 @@ public class RowImpl<T> implements Row<T> {
 		return false;
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		return implementation.hashCode();
@@ -244,7 +244,7 @@ public class RowImpl<T> implements Row<T> {
 		return implementation.toArray(a);
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return toString(DEFAULT_DELIMITER);

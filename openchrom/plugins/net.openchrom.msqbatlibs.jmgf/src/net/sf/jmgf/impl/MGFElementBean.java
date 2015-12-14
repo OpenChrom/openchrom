@@ -28,13 +28,13 @@ public class MGFElementBean implements MGFElement {
 
 	}
 
-	@Override
+	
 	public String getElement(final Identifier element) {
 
 		return getElement(element.toString());
 	}
 
-	@Override
+	
 	public String getElement(final String ident) {
 
 		for(final Entry<String, String> e : elements.entrySet()) {
@@ -50,13 +50,13 @@ public class MGFElementBean implements MGFElement {
 		return elements;
 	}
 
-	@Override
+	
 	public synchronized List<Peak> getPeaks() {
 
 		return peaks;
 	}
 
-	@Override
+	
 	public String getTitle() {
 
 		return getElement(MGFElement.Identifier.TITLE);
@@ -72,7 +72,7 @@ public class MGFElementBean implements MGFElement {
 		this.peaks = peaks;
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return getTitle();

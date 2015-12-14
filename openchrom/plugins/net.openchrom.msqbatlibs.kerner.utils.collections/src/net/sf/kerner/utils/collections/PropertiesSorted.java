@@ -80,7 +80,7 @@ public class PropertiesSorted implements SortedMap<String, Object>, Serializable
 		return delegate.entrySet();
 	}
 
-	@Override
+	
 	public boolean equals(final Object o) {
 
 		return delegate.equals(o);
@@ -96,7 +96,7 @@ public class PropertiesSorted implements SortedMap<String, Object>, Serializable
 		return delegate.get(key);
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		return delegate.hashCode();
@@ -159,7 +159,7 @@ public class PropertiesSorted implements SortedMap<String, Object>, Serializable
 		return p;
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return UtilCollection.toString(delegate.entrySet());

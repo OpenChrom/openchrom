@@ -73,7 +73,7 @@ public class MapMap<T, K, V> {
 		return map.entrySet();
 	}
 
-	@Override
+	
 	public boolean equals(final Object o) {
 
 		return map.equals(o);
@@ -84,7 +84,7 @@ public class MapMap<T, K, V> {
 		return map.get(key1);
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		return map.hashCode();
@@ -162,7 +162,7 @@ public class MapMap<T, K, V> {
 		return size;
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return map.toString();

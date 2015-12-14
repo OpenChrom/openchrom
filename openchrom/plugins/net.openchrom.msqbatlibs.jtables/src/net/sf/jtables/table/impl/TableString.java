@@ -40,7 +40,7 @@ public class TableString extends AnnotatedMutableTableImpl<String> {
 		super(rows);
 	}
 
-	@Override
+	
 	public TableImpl<String> clone() throws CloneNotSupportedException {
 
 		final List<Row<String>> rows = new ArrayList<Row<String>>();
@@ -76,7 +76,7 @@ public class TableString extends AnnotatedMutableTableImpl<String> {
 		return result;
 	}
 
-	@Override
+	
 	public TableString sortByColumnIds() {
 
 		final List<String> sorted = new ArrayList<String>(UtilList.toStringList(getColumnIdentifier()));

@@ -80,7 +80,7 @@ public class MultiLineLabel extends JLabel {
 	}
 
 	/** {@inheritDoc} */
-	@Override
+	
 	public Rectangle getBounds() {
 
 		if(bounds == null) {

@@ -50,7 +50,7 @@ public class MapList<K, V> extends MapCollectionAbstract<K, V, List<V>> {
 		this.factory = factory;
 	}
 
-	@Override
+	
 	protected Factory<List<V>> getFactoryCollection() {
 
 		return factory;

@@ -51,7 +51,7 @@ public class MapSet<K, V> extends MapCollectionAbstract<K, V, Set<V>> {
 		putAll(template);
 	}
 
-	@Override
+	
 	protected Factory<Set<V>> getFactoryCollection() {
 
 		return factory;

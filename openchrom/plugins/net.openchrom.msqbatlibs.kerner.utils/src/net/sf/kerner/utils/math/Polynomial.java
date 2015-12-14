@@ -79,7 +79,7 @@ public class Polynomial {
 		return result;
 	}
 
-	@Override
+	
 	public synchronized String toString() {
 
 		final StringBuilder sb = new StringBuilder();
