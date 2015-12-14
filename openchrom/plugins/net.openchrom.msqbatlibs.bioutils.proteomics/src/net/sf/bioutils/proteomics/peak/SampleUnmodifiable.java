@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.peak;
 
 import java.util.ArrayList;
@@ -14,7 +25,7 @@ public class SampleUnmodifiable implements Sample {
 
 	private final Sample delegate;
 
-	@Override
+	
 	public long getId() {
 
 		return delegate.getId();
@@ -26,98 +37,98 @@ public class SampleUnmodifiable implements Sample {
 		this.delegate = delegate;
 	}
 
-	@Override
+	
 	public RawSample getRawSample() {
 
 		return delegate.getRawSample();
 	}
 
-	@Override
+	
 	public SampleUnmodifiable clone() {
 
 		return new SampleUnmodifiable(delegate.clone());
 	}
 
-	@Override
+	
 	public Sample clone(final String newName) {
 
 		return new SampleUnmodifiable(delegate.clone(newName));
 	}
 
-	@Override
+	
 	public Sample cloneWOPeaks(final String newName) {
 
 		return delegate.cloneWOPeaks(newName);
 	}
 
-	@Override
+	
 	public boolean equals(final Object obj) {
 
 		return delegate.equals(obj);
 	}
 
-	@Override
+	
 	public ReadWriteLock getLock() {
 
 		return delegate.getLock();
 	}
 
-	@Override
+	
 	public String getName() {
 
 		return delegate.getName();
 	}
 
-	@Override
+	
 	public String getNameBase() {
 
 		return delegate.getNameBase();
 	}
 
-	@Override
+	
 	public List<Peak> getPeaks() {
 
 		final List<Peak> l = new ArrayList<Peak>(new TransformerPeakToUnmodifiable().transformCollection(delegate.getPeaks()));
 		return Collections.unmodifiableList(l);
 	}
 
-	@Override
+	
 	public MapList<String, Object> getProperties() {
 
 		return delegate.getProperties();
 	}
 
-	@Override
+	
 	public int getSize() {
 
 		return delegate.getSize();
 	}
 
-	@Override
+	
 	public User getUser() {
 
 		return delegate.getUser();
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		return delegate.hashCode();
 	}
 
-	@Override
+	
 	public void setPeaks(final List<Peak> peaks) {
 
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
+	
 	public void setProperties(final MapList<String, Object> properties) {
 
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return "SampleUnmodifiable:" + delegate;

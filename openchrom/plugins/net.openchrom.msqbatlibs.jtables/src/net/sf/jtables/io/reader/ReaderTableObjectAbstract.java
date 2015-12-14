@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.jtables.io.reader;
 
 import java.io.BufferedReader;
@@ -8,9 +19,9 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.chemclipse.logging.core.Logger;
-
 import net.sf.kerner.utils.io.buffered.IOIterator;
+
+import org.apache.log4j.Logger;
 
 public abstract class ReaderTableObjectAbstract<T> implements IOIterator<T> {
 
@@ -62,11 +73,13 @@ public abstract class ReaderTableObjectAbstract<T> implements IOIterator<T> {
 		this.reader = new ReaderTableString(reader, columnIds, rowIds, delim);
 	}
 
+	@Override
 	public synchronized void close() {
 
 		reader.close();
 	}
 
+	@Override
 	public boolean hasNext() throws IOException {
 
 		return reader.hasNext();

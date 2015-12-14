@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.sample;
 
 import java.util.ArrayList;
@@ -21,7 +32,7 @@ public class TrasformerSample2Fractions implements Transformer<Sample, List<Frac
 		return result.get(fractionIndex);
 	}
 
-	@Override
+	
 	public List<Fraction> transform(final Sample element) {
 
 		final ArrayList<Fraction> result = new ArrayList<Fraction>();

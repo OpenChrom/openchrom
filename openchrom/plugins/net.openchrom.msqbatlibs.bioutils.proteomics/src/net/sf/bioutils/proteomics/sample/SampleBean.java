@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.sample;
 
 import java.util.ArrayList;
@@ -16,7 +27,7 @@ public class SampleBean implements SampleModifiable {
 	private static long cnt = 0;
 	private final long id;
 
-	@Override
+	
 	public RawSample getRawSample() {
 
 		synchronized(this) {
@@ -96,13 +107,13 @@ public class SampleBean implements SampleModifiable {
 		}
 	}
 
-	@Override
+	
 	public long getId() {
 
 		return id;
 	}
 
-	@Override
+	
 	public void addPeak(final Peak peak) {
 
 		synchronized(this) {
@@ -111,7 +122,7 @@ public class SampleBean implements SampleModifiable {
 		}
 	}
 
-	@Override
+	
 	public void addPeaks(final Collection<? extends Peak> peaks) {
 
 		this.peaks.addAll(peaks);
@@ -120,13 +131,13 @@ public class SampleBean implements SampleModifiable {
 		}
 	}
 
-	@Override
+	
 	public SampleBean clone() {
 
 		return clone(getName());
 	}
 
-	@Override
+	
 	public SampleBean clone(final String newName) {
 
 		final SampleBean result = new SampleBean(newName, getUser(), getNameBase(), null, getProperties());
@@ -145,32 +156,32 @@ public class SampleBean implements SampleModifiable {
 	 *
 	 * @return a clone of this {@code SampleBean}, that contains no peaks
 	 */
-	@Override
+	
 	public SampleBean cloneWOPeaks(final String newName) {
 
 		final SampleBean result = new SampleBean(newName, getUser(), getNameBase(), null, getProperties());
 		return result;
 	}
 
-	@Override
+	
 	public boolean equals(final Object obj) {
 
 		return new EqualatorSample().areEqual(this, obj);
 	}
 
-	@Override
+	
 	public ReadWriteLock getLock() {
 
 		return lock;
 	}
 
-	@Override
+	
 	public String getName() {
 
 		return name;
 	}
 
-	@Override
+	
 	public String getNameBase() {
 
 		if(nameBase == null) {
@@ -179,61 +190,61 @@ public class SampleBean implements SampleModifiable {
 		return nameBase;
 	}
 
-	@Override
+	
 	public List<Peak> getPeaks() {
 
 		return peaks;
 	}
 
-	@Override
+	
 	public MapList<String, Object> getProperties() {
 
 		return properties;
 	}
 
-	@Override
+	
 	public int getSize() {
 
 		return peaks.size();
 	}
 
-	@Override
+	
 	public User getUser() {
 
 		return user;
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		return new HashCalculatorSample().calculateHash(this);
 	}
 
-	@Override
+	
 	public void removePeak(final Peak peak) {
 
 		peaks.remove(peak);
 	}
 
-	@Override
+	
 	public void removePeaks(final Collection<? extends Peak> peaks) {
 
 		this.peaks.removeAll(peaks);
 	}
 
-	@Override
+	
 	public void setName(final String name) {
 
 		this.name = name;
 	}
 
-	@Override
+	
 	public void setNameBase(final String nameBase) {
 
 		this.nameBase = nameBase;
 	}
 
-	@Override
+	
 	public void setPeaks(final List<Peak> peaks) {
 
 		synchronized(this) {
@@ -243,19 +254,19 @@ public class SampleBean implements SampleModifiable {
 		}
 	}
 
-	@Override
+	
 	public void setProperties(final MapList<String, Object> properties) {
 
 		this.properties = properties;
 	}
 
-	@Override
+	
 	public void setUser(final User user) {
 
 		this.user = user;
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return getName() + ", " + getSize();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,7 +14,7 @@ package net.sf.jmgf.impl;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.chemclipse.logging.core.Logger;
+import org.apache.log4j.Logger;
 
 public class MGFDialectProteinPilot {
 

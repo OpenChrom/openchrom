@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.feature;
 
 import java.util.ArrayList;
@@ -17,44 +28,44 @@ public class FeatureUnmodifiable extends PeakUnmodifiable implements FeatureAnno
 		super(delegate);
 	}
 
-	@Override
+	
 	public FeatureUnmodifiable clone() {
 
 		return new FeatureUnmodifiable(((FeatureAnnotatable)delegate).clone());
 	}
 
-	@Override
+	
 	public int getIndexCenter() {
 
 		return ((FeatureAnnotatable)delegate).getIndexCenter();
 	}
 
-	@Override
+	
 	public int getIndexFirst() {
 
 		return ((FeatureAnnotatable)delegate).getIndexFirst();
 	}
 
-	@Override
+	
 	public int getIndexLast() {
 
 		return ((FeatureAnnotatable)delegate).getIndexLast();
 	}
 
-	@Override
+	
 	public List<Peak> getMembers() {
 
 		final List<Peak> l = new ArrayList<Peak>(new TransformerPeakToUnmodifiable().transformCollection(((FeatureAnnotatable)delegate).getMembers()));
 		return Collections.unmodifiableList(l);
 	}
 
-	@Override
+	
 	public Iterator<Peak> iterator() {
 
 		return ((FeatureAnnotatable)delegate).iterator();
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return "FeatureUnmodifiable:" + delegate;

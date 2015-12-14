@@ -1,18 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2010-2014 Alexander Kerner. All rights reserved.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.kerner.utils.concurrent;
 
 import java.util.Collection;
@@ -24,9 +20,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.eclipse.chemclipse.logging.core.Logger;
-
 import net.sf.kerner.utils.concurrent.FutureTaskNotifying.ListenerDone;
+
+import org.apache.log4j.Logger;
 
 public class ExecutorNotifying implements ExecutorService {
 
@@ -49,11 +45,13 @@ public class ExecutorNotifying implements ExecutorService {
 		delegate.addListenerDone(listener);
 	}
 
+	@Override
 	public boolean awaitTermination(final long timeout, final TimeUnit unit) throws InterruptedException {
 
 		return delegate.awaitTermination(timeout, unit);
 	}
 
+	@Override
 	public void execute(final Runnable command) {
 
 		delegate.execute(command);
@@ -74,31 +72,37 @@ public class ExecutorNotifying implements ExecutorService {
 		return numCPUs;
 	}
 
+	@Override
 	public <T> List<Future<T>> invokeAll(final Collection<? extends Callable<T>> tasks) throws InterruptedException {
 
 		return delegate.invokeAll(tasks);
 	}
 
+	@Override
 	public <T> List<Future<T>> invokeAll(final Collection<? extends Callable<T>> tasks, final long timeout, final TimeUnit unit) throws InterruptedException {
 
 		return delegate.invokeAll(tasks, timeout, unit);
 	}
 
+	@Override
 	public <T> T invokeAny(final Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
 
 		return delegate.invokeAny(tasks);
 	}
 
+	@Override
 	public <T> T invokeAny(final Collection<? extends Callable<T>> tasks, final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 
 		return delegate.invokeAny(tasks, timeout, unit);
 	}
 
+	@Override
 	public boolean isShutdown() {
 
 		return delegate.isShutdown();
 	}
 
+	@Override
 	public synchronized boolean isTerminated() {
 
 		return delegate.isTerminated();
@@ -119,26 +123,31 @@ public class ExecutorNotifying implements ExecutorService {
 		delegate = ThreadPoolExecutorNotifying.build(numCPUs);
 	}
 
+	@Override
 	public synchronized void shutdown() {
 
 		delegate.shutdown();
 	}
 
+	@Override
 	public synchronized List<Runnable> shutdownNow() {
 
 		return delegate.shutdownNow();
 	}
 
+	@Override
 	public <T> Future<T> submit(final Callable<T> task) {
 
 		return delegate.submit(task);
 	}
 
+	@Override
 	public Future<?> submit(final Runnable task) {
 
 		return delegate.submit(task);
 	}
 
+	@Override
 	public <T> Future<T> submit(final Runnable task, final T result) {
 
 		return delegate.submit(task, result);

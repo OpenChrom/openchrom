@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,8 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.chemclipse.logging.core.Logger;
-
 import net.sf.bioutils.proteomics.peak.FactoryPeak;
 import net.sf.bioutils.proteomics.peak.FactoryPeakImpl;
 import net.sf.bioutils.proteomics.peak.Peak;
@@ -31,6 +29,8 @@ import net.sf.jmgf.MGFFile;
 import net.sf.jmgf.exception.ExceptionFileFormat;
 import net.sf.kerner.utils.io.buffered.AbstractIOIterator;
 import net.sf.kerner.utils.progress.ProgressMonitor;
+
+import org.apache.log4j.Logger;
 
 public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 

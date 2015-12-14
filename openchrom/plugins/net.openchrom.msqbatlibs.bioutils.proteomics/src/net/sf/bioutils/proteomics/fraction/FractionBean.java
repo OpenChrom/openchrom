@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.fraction;
 
 import java.util.ArrayList;
@@ -43,43 +54,43 @@ public class FractionBean implements Fraction {
 			this.standards = new LinkedHashSet<Standard>(standards);
 	}
 
-	@Override
+	
 	public synchronized void addPeak(final Peak peak) {
 
 		peaks.add(peak);
 	}
 
-	@Override
+	
 	public synchronized void addStandard(final Standard peak) {
 
 		peaks.add(peak);
 	}
 
-	@Override
+	
 	public FractionBean clone() {
 
 		return new FractionBean(name, fractionIndex, peaks, standards);
 	}
 
-	@Override
+	
 	public FractionBean cloneWOPeaks() {
 
 		return new FractionBean(name, fractionIndex, null, null);
 	}
 
-	@Override
+	
 	public synchronized int getIndex() {
 
 		return fractionIndex;
 	}
 
-	@Override
+	
 	public synchronized String getName() {
 
 		return name;
 	}
 
-	@Override
+	
 	public synchronized List<Peak> getPeaks() {
 
 		return peaks;
@@ -90,19 +101,19 @@ public class FractionBean implements Fraction {
 		return sample;
 	}
 
-	@Override
+	
 	public synchronized int getSize() {
 
 		return getPeaks().size();
 	}
 
-	@Override
+	
 	public synchronized Set<Standard> getStandards() {
 
 		return standards;
 	}
 
-	@Override
+	
 	public synchronized boolean isEmpty() {
 
 		return getPeaks().isEmpty();
@@ -137,19 +148,19 @@ public class FractionBean implements Fraction {
 		this.name = name;
 	}
 
-	@Override
+	
 	public synchronized void setPeaks(final Collection<? extends Peak> peaks) {
 
 		this.peaks = new ArrayList<Peak>(peaks);
 	}
 
-	@Override
+	
 	public synchronized void setSample(final Sample sample) {
 
 		this.sample = sample;
 	}
 
-	@Override
+	
 	public synchronized void setStandards(final Collection<? extends Standard> standards) {
 
 		this.standards = new LinkedHashSet<Standard>(standards);

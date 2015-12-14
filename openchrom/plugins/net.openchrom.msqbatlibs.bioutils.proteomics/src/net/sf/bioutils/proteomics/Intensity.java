@@ -1,18 +1,14 @@
 /*******************************************************************************
- * Copyright 2011-2014 Alexander Kerner. All rights reserved.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics;
 
 import java.io.Serializable;
@@ -78,7 +74,7 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 		return new Intensity(delegate.add(augend.delegate));
 	}
 
-	@Override
+	
 	public int compareTo(final Intensity o) {
 
 		return delegate.compareTo(o.delegate);
@@ -99,7 +95,7 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 		return new Intensity(delegate.divide(divisor.delegate, getScale(), RoundingMode.HALF_UP));
 	}
 
-	@Override
+	
 	public synchronized double doubleValue() {
 
 		double result = cacheDouble;
@@ -110,7 +106,7 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 		return result;
 	}
 
-	@Override
+	
 	public float floatValue() {
 
 		return delegate.floatValue();
@@ -121,7 +117,7 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 		return delegate;
 	}
 
-	@Override
+	
 	public int intValue() {
 
 		if(new Intensity(Integer.MAX_VALUE).isLess(this)) {
@@ -150,7 +146,7 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 		return isMore(new Intensity());
 	}
 
-	@Override
+	
 	public long longValue() {
 
 		return delegate.longValue();
@@ -171,7 +167,7 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 		delegate.setScale(getScale(), RoundingMode.HALF_UP);
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return delegate.toString();

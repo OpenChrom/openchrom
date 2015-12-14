@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.sample.stats;
 
 import java.math.BigDecimal;
@@ -19,7 +30,7 @@ public class SampleStatisticsCallable extends ListWalkerDefault<Peak> implements
 		result = new SampleStatistics();
 	}
 
-	@Override
+	
 	public synchronized SampleStatistics call() {
 
 		sample.getLock().readLock().lock();
@@ -31,7 +42,7 @@ public class SampleStatisticsCallable extends ListWalkerDefault<Peak> implements
 		return result;
 	}
 
-	@Override
+	
 	public synchronized void visit(final Peak p, final int index) {
 
 		// PeakBean implements Feature

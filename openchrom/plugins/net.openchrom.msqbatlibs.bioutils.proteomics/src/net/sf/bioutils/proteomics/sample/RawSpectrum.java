@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.sample;
 
 import java.util.Arrays;
@@ -27,13 +38,13 @@ public class RawSpectrum implements Comparable<RawSpectrum> {
 		}
 	}
 
-	@Override
+	
 	public synchronized int compareTo(RawSpectrum o) {
 
 		return Integer.valueOf(getIndex()).compareTo(o.getIndex());
 	}
 
-	@Override
+	
 	public synchronized boolean equals(Object obj) {
 
 		if(this == obj) {
@@ -154,7 +165,7 @@ public class RawSpectrum implements Comparable<RawSpectrum> {
 		this.precursorSpectrum = precursorSpectrum;
 	}
 
-	@Override
+	
 	public synchronized int hashCode() {
 
 		final int prime = 31;
@@ -165,7 +176,7 @@ public class RawSpectrum implements Comparable<RawSpectrum> {
 		return result;
 	}
 
-	@Override
+	
 	public synchronized String toString() {
 
 		int length = 0;

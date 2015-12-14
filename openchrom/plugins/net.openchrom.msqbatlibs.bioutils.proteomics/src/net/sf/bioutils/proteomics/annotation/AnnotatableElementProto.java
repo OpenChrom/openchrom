@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.annotation;
 
 import java.util.ArrayList;
@@ -17,7 +28,7 @@ public class AnnotatableElementProto implements AnnotatableElement {
 
 	private Collection<AnnotationSerializable> annotation = new ArrayList<AnnotationSerializable>(0);
 
-	@Override
+	
 	public Collection<AnnotationSerializable> getAnnotation() {
 
 		return annotation;
@@ -28,7 +39,7 @@ public class AnnotatableElementProto implements AnnotatableElement {
 		this.setAnnotation(Arrays.asList(annotation));
 	}
 
-	@Override
+	
 	public void setAnnotation(final Collection<AnnotationSerializable> annotation) {
 
 		this.annotation = annotation;

@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.mascot;
 
 import java.io.File;
@@ -19,7 +30,7 @@ public class ParserMascotReport implements IOIterator<MascotReportRow>, Transfor
 		reader.addVisitorFirstLine(new VisitorFirstLine(FileFormatMascotReport.PROT_HIT_NUM));
 	}
 
-	@Override
+	
 	public void close() {
 
 		synchronized(reader) {
@@ -27,7 +38,7 @@ public class ParserMascotReport implements IOIterator<MascotReportRow>, Transfor
 		}
 	}
 
-	@Override
+	
 	public boolean hasNext() throws IOException {
 
 		synchronized(reader) {
@@ -35,7 +46,7 @@ public class ParserMascotReport implements IOIterator<MascotReportRow>, Transfor
 		}
 	}
 
-	@Override
+	
 	public MascotReportRow next() throws IOException {
 
 		synchronized(reader) {
@@ -44,7 +55,7 @@ public class ParserMascotReport implements IOIterator<MascotReportRow>, Transfor
 		}
 	}
 
-	@Override
+	
 	public MascotReportRow transform(Row<String> element) {
 
 		synchronized(reader) {

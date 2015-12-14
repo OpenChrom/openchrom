@@ -1,3 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.peak;
 
 import java.util.Collection;
@@ -18,19 +29,19 @@ public class PeakUnmodifiable implements PeakAnnotatable {
 		this.delegate = (PeakAnnotatable)delegate;
 	}
 
-	@Override
+	
 	public PeakUnmodifiable clone() {
 
 		return new PeakUnmodifiable(delegate.clone());
 	}
 
-	@Override
+	
 	public boolean equals(final Object obj) {
 
 		return delegate.equals(obj);
 	}
 
-	@Override
+	
 	public Collection<AnnotationSerializable> getAnnotation() {
 
 		if(delegate.getAnnotation() == null) {
@@ -39,73 +50,73 @@ public class PeakUnmodifiable implements PeakAnnotatable {
 		return Collections.unmodifiableCollection(delegate.getAnnotation());
 	}
 
-	@Override
+	
 	public int getFractionIndex() {
 
 		return delegate.getFractionIndex();
 	}
 
-	@Override
+	
 	public double getIntensity() {
 
 		return delegate.getIntensity();
 	}
 
-	@Override
+	
 	public double getIntensityToNoise() {
 
 		return delegate.getIntensityToNoise();
 	}
 
-	@Override
+	
 	public double getMz() {
 
 		return delegate.getMz();
 	}
 
-	@Override
+	
 	public String getName() {
 
 		return delegate.getName();
 	}
 
-	@Override
+	
 	public Sample getSample() {
 
 		return new SampleUnmodifiable(delegate.getSample());
 	}
 
-	@Override
+	
 	public String getSampleName() {
 
 		return delegate.getSampleName();
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		return delegate.hashCode();
 	}
 
-	@Override
+	
 	public void setAnnotation(final Collection<AnnotationSerializable> annotation) {
 
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
+	
 	public void setFractionIndex(final int index) {
 
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
+	
 	public void setSample(final Sample sample) {
 
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
+	
 	public String toString() {
 
 		return "PeakUnmodifiable:" + delegate;

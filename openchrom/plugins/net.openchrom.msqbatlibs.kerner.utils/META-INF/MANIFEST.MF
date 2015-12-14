@@ -5,8 +5,8 @@ Bundle-SymbolicName: net.openchrom.msqbatlibs.kerner.utils
 Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: net.openchrom.msqbatlibs.kerner.utils.Activator
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.chemclipse.logging;bundle-version="0.7.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+ org.apache.log4j;bundle-version="1.2.15"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: net.sf.kerner.utils;version="1.1.0.qualifier",
  net.sf.kerner.utils.async;version="1.1.0.qualifier",

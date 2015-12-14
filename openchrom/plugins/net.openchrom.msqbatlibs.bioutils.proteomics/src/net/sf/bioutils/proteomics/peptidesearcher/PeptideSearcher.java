@@ -1,18 +1,14 @@
 /*******************************************************************************
- * Copyright 2011-2014 Alexander Kerner. All rights reserved.
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.peptidesearcher;
 
 import java.io.File;
@@ -23,8 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.chemclipse.logging.core.Logger;
-
 import net.sf.jfasta.FASTAElement;
 import net.sf.jfasta.FASTAFile;
 import net.sf.jfasta.FASTAFileReader;
@@ -33,6 +27,8 @@ import net.sf.jfasta.impl.FASTAFileReaderImpl;
 import net.sf.kerner.utils.Cache;
 import net.sf.kerner.utils.UtilString;
 import net.sf.kerner.utils.collections.list.UtilList;
+
+import org.apache.log4j.Logger;
 
 public class PeptideSearcher {
 

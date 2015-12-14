@@ -1,18 +1,14 @@
 /*******************************************************************************
- * Copyright 2011-2014 Alexander Kerner. All rights reserved.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.peptides;
 
 import java.util.ArrayList;
@@ -50,13 +46,13 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		this.peptides = new ArrayList<AminoAcid>(peptides);
 	}
 
-	@Override
+	
 	public synchronized List<AminoAcid> asAminoAcidList() {
 
 		return Collections.unmodifiableList(peptides);
 	}
 
-	@Override
+	
 	public synchronized List<Character> asCharacterList() {
 
 		final List<Character> result = UtilList.newList();
@@ -66,7 +62,7 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return result;
 	}
 
-	@Override
+	
 	public synchronized String asString() {
 
 		final StringBuilder sb = new StringBuilder();
@@ -76,19 +72,19 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return sb.toString();
 	}
 
-	@Override
+	
 	public synchronized List<String> asStringList() {
 
 		return UtilList.toStringList(asCharacterList());
 	}
 
-	@Override
+	
 	public synchronized boolean contains(final AminoAcid p) {
 
 		return asAminoAcidList().contains(p);
 	}
 
-	@Override
+	
 	public boolean equals(final Object obj) {
 
 		if(this == obj)
@@ -106,7 +102,7 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return true;
 	}
 
-	@Override
+	
 	public synchronized Collection<Modification> getModifications() {
 
 		if(mods == null) {
@@ -115,7 +111,7 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return Collections.unmodifiableCollection(mods);
 	}
 
-	@Override
+	
 	public synchronized double getMolWeight() {
 
 		double result = 0;
@@ -135,13 +131,13 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return p.getMolWeight();
 	}
 
-	@Override
+	
 	public synchronized double getMolWeightCTerminal() {
 
 		return MOL_WEIGHT_OXYGEN;
 	}
 
-	@Override
+	
 	public synchronized double getMolWeightNTerminal() {
 
 		return (2 * MOL_WEIGHT_HYDROGEN) + (getChargeState() * MOL_WEIGHT_HYDROGEN);
@@ -152,7 +148,7 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return name;
 	}
 
-	@Override
+	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -161,13 +157,13 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return result;
 	}
 
-	@Override
+	
 	public synchronized Iterator<AminoAcid> iterator() {
 
 		return asAminoAcidList().iterator();
 	}
 
-	@Override
+	
 	public synchronized void setModifications(final Collection<Modification> modifications) {
 
 		mods = new HashSet<Modification>(modifications);
@@ -178,7 +174,7 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		this.name = name;
 	}
 
-	@Override
+	
 	public synchronized String toString() {
 
 		final StringBuilder sb = new StringBuilder();

@@ -1,18 +1,14 @@
 /*******************************************************************************
- * Copyright 2011-2014 Alexander Kerner. All rights reserved.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.digest;
 
 import java.util.ArrayList;
@@ -22,12 +18,12 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.eclipse.chemclipse.logging.core.Logger;
-
 import net.sf.bioutils.proteomics.peptides.AminoAcid;
 import net.sf.bioutils.proteomics.peptides.Peptide;
 import net.sf.bioutils.proteomics.peptides.PeptideSequenceChargedSingle;
 import net.sf.jranges.range.integerrange.impl.RangeIntegerDummy;
+
+import org.apache.log4j.Logger;
 
 public class DigesterTrypsin extends DigesterAbstract {
 
@@ -49,7 +45,7 @@ public class DigesterTrypsin extends DigesterAbstract {
 		}
 	}
 
-	@Override
+	
 	public synchronized List<Peptide> digest(final Peptide peptides, final int numMissCleav) {
 
 		final int len1 = peptides.asAminoAcidList().size();

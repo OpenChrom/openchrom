@@ -1,18 +1,14 @@
 /*******************************************************************************
- * Copyright 2011-2014 Alexander Kerner. All rights reserved.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics;
 
 import net.sf.kerner.utils.math.DoubleUnit;
@@ -21,13 +17,13 @@ import net.sf.kerner.utils.math.PrefixableDouble;
 public enum MassUnit implements PrefixableDouble {
 	NANODALTON {
 
-		@Override
+		
 		protected DoubleUnit getUnit() {
 
 			return DoubleUnit.NANO;
 		}
 
-		@Override
+		
 		public double convert(double mass, MassUnit unit) {
 
 			return unit.toNanos(mass);
@@ -35,13 +31,13 @@ public enum MassUnit implements PrefixableDouble {
 	},
 	MICRODALTON {
 
-		@Override
+		
 		protected DoubleUnit getUnit() {
 
 			return DoubleUnit.MICRO;
 		}
 
-		@Override
+		
 		public double convert(double mass, MassUnit unit) {
 
 			return unit.toMicros(mass);
@@ -49,13 +45,13 @@ public enum MassUnit implements PrefixableDouble {
 	},
 	MILLIDALTON {
 
-		@Override
+		
 		protected DoubleUnit getUnit() {
 
 			return DoubleUnit.MILLI;
 		}
 
-		@Override
+		
 		public double convert(double mass, MassUnit unit) {
 
 			return unit.toMillis(mass);
@@ -63,13 +59,13 @@ public enum MassUnit implements PrefixableDouble {
 	},
 	DALTON {
 
-		@Override
+		
 		protected DoubleUnit getUnit() {
 
 			return DoubleUnit.UNIT;
 		}
 
-		@Override
+		
 		public double convert(double mass, MassUnit unit) {
 
 			return unit.toUnits(mass);
@@ -77,13 +73,13 @@ public enum MassUnit implements PrefixableDouble {
 	},
 	KILODALTON {
 
-		@Override
+		
 		protected DoubleUnit getUnit() {
 
 			return DoubleUnit.KILO;
 		}
 
-		@Override
+		
 		public double convert(double mass, MassUnit unit) {
 
 			return unit.toKilos(mass);

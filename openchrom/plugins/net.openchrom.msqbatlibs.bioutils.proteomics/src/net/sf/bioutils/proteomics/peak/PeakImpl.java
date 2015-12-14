@@ -1,18 +1,14 @@
 /*******************************************************************************
- * Copyright 2011-2014 Alexander Kerner. All rights reserved.
+ *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/
+ * Contributors:
+ * Dr. Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.sf.bioutils.proteomics.peak;
 
 import java.util.Collection;
@@ -81,7 +77,7 @@ public class PeakImpl extends AnnotatableElementProto implements Peak, Standard 
 	/**
 	 * Performs a shallow copy of this {@code Peak}.
 	 */
-	@Override
+	
 	public synchronized PeakImpl clone() {
 
 		final PeakImpl result = new PeakImpl(getName(), getFractionIndex(), getMz(), getIntensity(), getIntensityToNoise(), null);
@@ -89,49 +85,49 @@ public class PeakImpl extends AnnotatableElementProto implements Peak, Standard 
 		return result;
 	}
 
-	@Override
+	
 	public synchronized boolean equals(final Object obj) {
 
 		return EQUALATOR_PEAK.areEqual(this, obj);
 	}
 
-	@Override
+	
 	public synchronized int getFractionIndex() {
 
 		return fractionIndex;
 	}
 
-	@Override
+	
 	public synchronized double getIntensity() {
 
 		return intensity;
 	}
 
-	@Override
+	
 	public synchronized double getIntensityToNoise() {
 
 		return intensityToNoise;
 	}
 
-	@Override
+	
 	public synchronized double getMz() {
 
 		return mz;
 	}
 
-	@Override
+	
 	public synchronized String getName() {
 
 		return name;
 	}
 
-	@Override
+	
 	public synchronized Sample getSample() {
 
 		return sample;
 	}
 
-	@Override
+	
 	public synchronized String getSampleName() {
 
 		if(getSample() == null) {
@@ -140,25 +136,25 @@ public class PeakImpl extends AnnotatableElementProto implements Peak, Standard 
 		return getSample().getName();
 	}
 
-	@Override
+	
 	public synchronized int hashCode() {
 
 		return HASH_CALCULATOR_PEAK.calculateHash(this);
 	}
 
-	@Override
+	
 	public synchronized void setFractionIndex(final int index) {
 
 		fractionIndex = index;
 	}
 
-	@Override
+	
 	public synchronized void setSample(final Sample sample) {
 
 		this.sample = sample;
 	}
 
-	@Override
+	
 	public synchronized String toString() {
 
 		return getClass().getSimpleName() + ":mz:" + mz + ",int:" + intensity;
