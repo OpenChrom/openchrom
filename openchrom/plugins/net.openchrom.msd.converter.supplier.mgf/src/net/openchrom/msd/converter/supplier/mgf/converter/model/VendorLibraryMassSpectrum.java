@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -27,6 +27,12 @@ public class VendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpectru
 	private static final long serialVersionUID = -3213772728386428206L;
 	private static final Logger logger = Logger.getLogger(VendorLibraryMassSpectrum.class);
 
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+
+		return makeDeepCopy();
+	}
+
 	/**
 	 * Keep in mind, it is a covariant return.<br/>
 	 * IMassSpectrum is needed. IAmdisMassSpectrum is a subtype of
@@ -35,7 +41,7 @@ public class VendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpectru
 	@Override
 	public IVendorLibraryMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
 
-		IVendorLibraryMassSpectrum massSpectrum = (IVendorLibraryMassSpectrum)super.clone();
+		final IVendorLibraryMassSpectrum massSpectrum = (IVendorLibraryMassSpectrum)super.clone();
 		IIon mz;
 		/*
 		 * The instance variables have been copied by super.clone();.<br/> The
@@ -45,22 +51,16 @@ public class VendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpectru
 		 * super class does not know each available type of ion.<br/>
 		 * Make a deep copy of all ions.
 		 */
-		for(IIon ion : getIons()) {
+		for(final IIon ion : getIons()) {
 			try {
 				mz = new Ion(ion.getIon(), ion.getAbundance());
 				massSpectrum.addIon(mz);
-			} catch(AbundanceLimitExceededException e) {
-				logger.warn(e);
-			} catch(IonLimitExceededException e) {
-				logger.warn(e);
+			} catch(final AbundanceLimitExceededException e) {
+				logger.warn(e.getLocalizedMessage(), e);
+			} catch(final IonLimitExceededException e) {
+				logger.warn(e.getLocalizedMessage(), e);
 			}
 		}
 		return massSpectrum;
-	}
-
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-
-		return makeDeepCopy();
 	}
 }

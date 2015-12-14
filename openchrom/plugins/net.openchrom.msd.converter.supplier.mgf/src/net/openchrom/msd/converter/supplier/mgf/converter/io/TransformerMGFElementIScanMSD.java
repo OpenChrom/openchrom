@@ -22,29 +22,31 @@ import org.eclipse.chemclipse.msd.model.implementation.ScanMSD;
 
 public class TransformerMGFElementIScanMSD {
 
-	private static final Logger logger = Logger.getLogger(TransformerMGFElementIScanMSD.class);
+	private static final Logger log = Logger.getLogger(TransformerMGFElementIScanMSD.class);
 	private final TransformerPeakIon transformer = new TransformerPeakIon();
 
 	public IScanMSD transform(final MGFElement element) {
 
-		final ScanMSD massSpectrum = new ScanMSD();
-		massSpectrum.setIdentifier(element.getTitle());
+		final ScanMSD result = new ScanMSD();
+		result.setIdentifier(element.getTitle());
 		try {
 			final double retentionTimeInSeconds = Double.parseDouble(element.getElement(MGFElement.Identifier.RTINSECONDS));
 			final double scale = retentionTimeInSeconds * 1000;
-			massSpectrum.setRetentionTime((int)Math.round(scale));
+			result.setRetentionTime((int)Math.round(scale));
 		} catch(final NumberFormatException e) {
-			logger.debug("No retention time available");
+			// if(log.isDebugEnabled()) {
+			log.debug("No retention time available");
+			// }
 		}
 		for(final Peak p : element.getPeaks()) {
 			try {
-				massSpectrum.addIon(transformer.transform(p));
+				result.addIon(transformer.transform(p));
 			} catch(final IonLimitExceededException e) {
-				logger.warn(e);
+				log.warn(e.getLocalizedMessage(), e);
 			} catch(final AbundanceLimitExceededException e) {
-				logger.warn(e);
+				log.warn(e.getLocalizedMessage(), e);
 			}
 		}
-		return massSpectrum;
+		return result;
 	}
 }

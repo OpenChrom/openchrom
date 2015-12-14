@@ -8,7 +8,6 @@ Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.converter;bundle-version="0.7.0",
  org.eclipse.chemclipse.msd.model;bundle-version="0.7.0",
- org.eclipse.chemclipse.logging;bundle-version="0.7.0",
  org.eclipse.chemclipse.processing;bundle-version="0.7.0",
  org.eclipse.chemclipse.converter;bundle-version="0.7.0",
  org.eclipse.chemclipse.model;bundle-version="0.7.0",
@@ -16,6 +15,7 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.msqbatlibs.bioutils.proteomics;bundle-version="1.1.0",
  net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.1.0",
  net.openchrom.msqbatlibs.jmgf;bundle-version="1.1.0",
- net.openchrom.msqbatlibs.kerner.utils.io;bundle-version="1.1.0"
+ net.openchrom.msqbatlibs.kerner.utils.io;bundle-version="1.1.0",
+ org.eclipse.chemclipse.logging;bundle-version="0.7.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
