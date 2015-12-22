@@ -5,4 +5,4 @@ Bundle-SymbolicName: net.openchrom.msd.identifier.supplier.opentyper.fragment.te
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.msd.identifier.supplier.opentyper;bundle-version="1.1.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
