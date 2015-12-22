@@ -17,5 +17,5 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.msqbatlibs.jmgf;bundle-version="1.1.0",
  net.openchrom.msqbatlibs.kerner.utils.io;bundle-version="1.1.0",
  org.eclipse.chemclipse.logging;bundle-version="0.7.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
