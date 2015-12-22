@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -30,19 +30,16 @@ public class PeptideSequenceChargedSingle extends PeptideSequenceAbstract implem
 		super(name, peptides);
 	}
 
-	
 	public synchronized void append(final AminoAcid peptide) {
 
 		peptides.add(peptide);
 	}
 
-	
 	public synchronized int getChargeState() {
 
 		return 1;
 	}
 
-	
 	public synchronized void insert(final AminoAcid peptide, final int index) {
 
 		peptides.add(index, peptide);

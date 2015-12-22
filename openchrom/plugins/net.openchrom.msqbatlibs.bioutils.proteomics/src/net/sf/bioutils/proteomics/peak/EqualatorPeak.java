@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -48,7 +48,6 @@ public class EqualatorPeak implements Equalator<Peak> {
 	 * @param obj
 	 *            any other object
 	 */
-	
 	public boolean areEqual(final Peak peak, final Object obj) {
 
 		if(peak == null && obj != null)
@@ -78,7 +77,6 @@ public class EqualatorPeak implements Equalator<Peak> {
 		return true;
 	}
 
-	
 	public Boolean transform(final Pair<Peak, Object> element) {
 
 		return Boolean.valueOf(areEqual(element.getFirst(), element.getSecond()));

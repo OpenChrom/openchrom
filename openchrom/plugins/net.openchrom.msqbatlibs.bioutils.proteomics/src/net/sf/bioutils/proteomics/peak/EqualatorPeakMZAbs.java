@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,7 +25,6 @@ public class EqualatorPeakMZAbs extends EqualatorAbstract<Peak> {
 		this.accuracy = accuracy;
 	}
 
-	
 	public boolean areEqual(final Peak o1, final Object o2) {
 
 		return Double.valueOf(UtilMath.round(o1.getMz(), accuracy)).equals(Double.valueOf(UtilMath.round(((ProviderMz)o2).getMz(), accuracy)));

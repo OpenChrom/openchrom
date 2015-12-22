@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -28,7 +28,6 @@ public class TransformerPeakToSample extends AbstractTransformingListFactory<Pro
 		super(factory);
 	}
 
-	
 	public Sample transform(final ProviderSample element) {
 
 		return element.getSample();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -59,7 +59,6 @@ public class MGFFileReaderImpl extends AbstractBufferedReader implements MGFFile
 		return new MGFFileBean(elements);
 	}
 
-	
 	public synchronized FactoryPeak getFactoryPeak() {
 
 		if(factoryPeak == null) {
@@ -68,7 +67,6 @@ public class MGFFileReaderImpl extends AbstractBufferedReader implements MGFFile
 		return factoryPeak;
 	}
 
-	
 	public synchronized MGFElementIterator getIterator() throws IOException {
 
 		if(iterator == null) {
@@ -83,7 +81,6 @@ public class MGFFileReaderImpl extends AbstractBufferedReader implements MGFFile
 		return monitor;
 	}
 
-	
 	public synchronized MGFFile read() throws IOException {
 
 		final List<MGFElement> result = new ArrayList<MGFElement>();
@@ -99,7 +96,6 @@ public class MGFFileReaderImpl extends AbstractBufferedReader implements MGFFile
 		// }
 	}
 
-	
 	public synchronized void setFactoryPeak(final FactoryPeak factoryPeak) {
 
 		this.factoryPeak = factoryPeak;

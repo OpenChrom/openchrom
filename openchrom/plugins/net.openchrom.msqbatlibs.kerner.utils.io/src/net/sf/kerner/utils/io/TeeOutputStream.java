@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -36,7 +36,6 @@ public class TeeOutputStream extends OutputStream {
 		ostream_ = ostream;
 	}
 
-	
 	public void close() throws IOException {
 
 		for(final OutputStream ostream : ostream_) {
@@ -44,7 +43,6 @@ public class TeeOutputStream extends OutputStream {
 		}
 	}
 
-	
 	public void flush() throws IOException {
 
 		for(final OutputStream ostream : ostream_) {
@@ -64,7 +62,6 @@ public class TeeOutputStream extends OutputStream {
 	 * @throws IOException
 	 *             from any of the OutputStreams
 	 */
-	
 	public void write(final byte[] b, final int off, final int len) throws IOException {
 
 		for(final OutputStream ostream : ostream_) {
@@ -80,7 +77,6 @@ public class TeeOutputStream extends OutputStream {
 	 * @throws IOException
 	 *             from any of the OutputStreams
 	 */
-	
 	public void write(final int b) throws IOException {
 
 		for(final OutputStream ostream : ostream_) {

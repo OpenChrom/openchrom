@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -55,7 +55,6 @@ public abstract class VeryAbstractIntegerRange implements RangeInteger {
 		return Integer.valueOf(getStart()).compareTo(Integer.valueOf(o.getStart()));
 	}
 
-	
 	public boolean equals(final Object obj) {
 
 		if(this == obj)
@@ -100,7 +99,6 @@ public abstract class VeryAbstractIntegerRange implements RangeInteger {
 		return stop;
 	}
 
-	
 	public int hashCode() {
 
 		int result = hashCode;
@@ -125,7 +123,6 @@ public abstract class VeryAbstractIntegerRange implements RangeInteger {
 		return false;
 	}
 
-	
 	public String toString() {
 
 		return getStart() + "->" + getStop();

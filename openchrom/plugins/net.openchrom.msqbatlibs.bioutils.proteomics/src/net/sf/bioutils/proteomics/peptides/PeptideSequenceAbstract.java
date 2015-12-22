@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -46,13 +46,11 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		this.peptides = new ArrayList<AminoAcid>(peptides);
 	}
 
-	
 	public synchronized List<AminoAcid> asAminoAcidList() {
 
 		return Collections.unmodifiableList(peptides);
 	}
 
-	
 	public synchronized List<Character> asCharacterList() {
 
 		final List<Character> result = UtilList.newList();
@@ -62,7 +60,6 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return result;
 	}
 
-	
 	public synchronized String asString() {
 
 		final StringBuilder sb = new StringBuilder();
@@ -72,19 +69,16 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return sb.toString();
 	}
 
-	
 	public synchronized List<String> asStringList() {
 
 		return UtilList.toStringList(asCharacterList());
 	}
 
-	
 	public synchronized boolean contains(final AminoAcid p) {
 
 		return asAminoAcidList().contains(p);
 	}
 
-	
 	public boolean equals(final Object obj) {
 
 		if(this == obj)
@@ -102,7 +96,6 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return true;
 	}
 
-	
 	public synchronized Collection<Modification> getModifications() {
 
 		if(mods == null) {
@@ -111,7 +104,6 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return Collections.unmodifiableCollection(mods);
 	}
 
-	
 	public synchronized double getMolWeight() {
 
 		double result = 0;
@@ -131,13 +123,11 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return p.getMolWeight();
 	}
 
-	
 	public synchronized double getMolWeightCTerminal() {
 
 		return MOL_WEIGHT_OXYGEN;
 	}
 
-	
 	public synchronized double getMolWeightNTerminal() {
 
 		return (2 * MOL_WEIGHT_HYDROGEN) + (getChargeState() * MOL_WEIGHT_HYDROGEN);
@@ -148,7 +138,6 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return name;
 	}
 
-	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -157,13 +146,11 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		return result;
 	}
 
-	
 	public synchronized Iterator<AminoAcid> iterator() {
 
 		return asAminoAcidList().iterator();
 	}
 
-	
 	public synchronized void setModifications(final Collection<Modification> modifications) {
 
 		mods = new HashSet<Modification>(modifications);
@@ -174,7 +161,6 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 		this.name = name;
 	}
 
-	
 	public synchronized String toString() {
 
 		final StringBuilder sb = new StringBuilder();

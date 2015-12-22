@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -28,13 +28,11 @@ public class MGFElementBean implements MGFElement {
 
 	}
 
-	
 	public String getElement(final Identifier element) {
 
 		return getElement(element.toString());
 	}
 
-	
 	public String getElement(final String ident) {
 
 		for(final Entry<String, String> e : elements.entrySet()) {
@@ -50,13 +48,11 @@ public class MGFElementBean implements MGFElement {
 		return elements;
 	}
 
-	
 	public synchronized List<Peak> getPeaks() {
 
 		return peaks;
 	}
 
-	
 	public String getTitle() {
 
 		return getElement(MGFElement.Identifier.TITLE);
@@ -72,7 +68,6 @@ public class MGFElementBean implements MGFElement {
 		this.peaks = peaks;
 	}
 
-	
 	public String toString() {
 
 		return getTitle();

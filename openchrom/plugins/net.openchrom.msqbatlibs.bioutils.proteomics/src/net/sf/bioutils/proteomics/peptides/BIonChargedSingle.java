@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -30,13 +30,11 @@ public class BIonChargedSingle extends PeptideSequenceChargedSingle {
 		super(name, peptides);
 	}
 
-	
 	public synchronized double getMolWeightCTerminal() {
 
 		return 0;
 	}
 
-	
 	public synchronized double getMolWeightNTerminal() {
 
 		return MOL_WEIGHT_HYDROGEN;

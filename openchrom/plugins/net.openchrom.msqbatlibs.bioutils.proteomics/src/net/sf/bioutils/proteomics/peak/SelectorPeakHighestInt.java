@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,7 +20,6 @@ import net.sf.kerner.utils.collections.Selector;
 
 public class SelectorPeakHighestInt<T extends Peak> implements Selector<T> {
 
-	
 	public T select(final Collection<? extends T> elements) {
 
 		final ArrayList<T> list = new ArrayList<T>(elements);

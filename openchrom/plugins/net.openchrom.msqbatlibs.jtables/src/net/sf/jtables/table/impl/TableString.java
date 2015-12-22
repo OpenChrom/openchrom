@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -40,7 +40,6 @@ public class TableString extends AnnotatedMutableTableImpl<String> {
 		super(rows);
 	}
 
-	
 	public TableImpl<String> clone() throws CloneNotSupportedException {
 
 		final List<Row<String>> rows = new ArrayList<Row<String>>();
@@ -76,7 +75,6 @@ public class TableString extends AnnotatedMutableTableImpl<String> {
 		return result;
 	}
 
-	
 	public TableString sortByColumnIds() {
 
 		final List<String> sorted = new ArrayList<String>(UtilList.toStringList(getColumnIdentifier()));

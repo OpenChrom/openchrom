@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -57,13 +57,11 @@ public class Point2D implements Pair<Double, Double> {
 		this(template.getX(), template.getY());
 	}
 
-	
 	public Point2D clone() {
 
 		return new Point2D(getX(), getY());
 	}
 
-	
 	public boolean equals(final Object obj) {
 
 		if(this == obj) {
@@ -115,7 +113,6 @@ public class Point2D implements Pair<Double, Double> {
 		return y;
 	}
 
-	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -133,7 +130,6 @@ public class Point2D implements Pair<Double, Double> {
 		return new Point2D(getY(), getX());
 	}
 
-	
 	public String toString() {
 
 		return "x=" + getX() + ",y=" + getY();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -66,7 +66,6 @@ public class FASTAFileImpl implements FASTAFile {
 	/**
 	 * 
 	 */
-	
 	public boolean add(final FASTAElement e) {
 
 		synchronized(elements) {
@@ -77,7 +76,6 @@ public class FASTAFileImpl implements FASTAFile {
 	/**
 	 * 
 	 */
-	
 	public boolean addAll(final Collection<? extends FASTAElement> c) {
 
 		synchronized(elements) {
@@ -88,7 +86,6 @@ public class FASTAFileImpl implements FASTAFile {
 	/**
 	 * 
 	 */
-	
 	public void clear() {
 
 		synchronized(elements) {
@@ -99,7 +96,6 @@ public class FASTAFileImpl implements FASTAFile {
 	/**
 	 * 
 	 */
-	
 	public boolean contains(final Object o) {
 
 		synchronized(elements) {
@@ -110,7 +106,6 @@ public class FASTAFileImpl implements FASTAFile {
 	/**
 	 * 
 	 */
-	
 	public boolean containsAll(final Collection<?> c) {
 
 		synchronized(elements) {
@@ -118,7 +113,6 @@ public class FASTAFileImpl implements FASTAFile {
 		}
 	}
 
-	
 	public boolean equals(final Object obj) {
 
 		if(this == obj)
@@ -136,7 +130,6 @@ public class FASTAFileImpl implements FASTAFile {
 		return true;
 	}
 
-	
 	public FASTAElement getElementByHeader(final String header) {
 
 		if(header == null)
@@ -149,7 +142,6 @@ public class FASTAFileImpl implements FASTAFile {
 		throw new NoSuchElementException("no FASTA element with header \"" + header + "\"");
 	}
 
-	
 	public FASTAElement getLargestElement() {
 
 		if(elements.isEmpty())
@@ -163,13 +155,11 @@ public class FASTAFileImpl implements FASTAFile {
 		return result;
 	}
 
-	
 	public int getLineLength() {
 
 		return lineLength;
 	}
 
-	
 	public boolean hasElementByHeader(final String header) {
 
 		for(final FASTAElement e : elements) {
@@ -180,7 +170,6 @@ public class FASTAFileImpl implements FASTAFile {
 		return false;
 	}
 
-	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -192,7 +181,6 @@ public class FASTAFileImpl implements FASTAFile {
 	/**
 	 * 
 	 */
-	
 	public boolean isEmpty() {
 
 		synchronized(elements) {
@@ -200,7 +188,6 @@ public class FASTAFileImpl implements FASTAFile {
 		}
 	}
 
-	
 	public Iterator<FASTAElement> iterator() {
 
 		return elements.iterator();
@@ -209,7 +196,6 @@ public class FASTAFileImpl implements FASTAFile {
 	/**
 	 * 
 	 */
-	
 	public boolean remove(final Object o) {
 
 		synchronized(elements) {
@@ -220,7 +206,6 @@ public class FASTAFileImpl implements FASTAFile {
 	/**
 	 * 
 	 */
-	
 	public boolean removeAll(final Collection<?> c) {
 
 		synchronized(elements) {
@@ -231,7 +216,6 @@ public class FASTAFileImpl implements FASTAFile {
 	/**
 	 * 
 	 */
-	
 	public boolean retainAll(final Collection<?> c) {
 
 		synchronized(elements) {
@@ -239,7 +223,6 @@ public class FASTAFileImpl implements FASTAFile {
 		}
 	}
 
-	
 	public void setLineLength(final int len) {
 
 		lineLength = len;
@@ -248,7 +231,6 @@ public class FASTAFileImpl implements FASTAFile {
 	/**
 	 * 
 	 */
-	
 	public int size() {
 
 		synchronized(elements) {
@@ -259,7 +241,6 @@ public class FASTAFileImpl implements FASTAFile {
 	/**
 	 * 
 	 */
-	
 	public Object[] toArray() {
 
 		synchronized(elements) {
@@ -270,7 +251,6 @@ public class FASTAFileImpl implements FASTAFile {
 	/**
 	 * 
 	 */
-	
 	public <T> T[] toArray(final T[] a) {
 
 		synchronized(elements) {
@@ -278,7 +258,6 @@ public class FASTAFileImpl implements FASTAFile {
 		}
 	}
 
-	
 	public String toString() {
 
 		final StringBuilder sb = new StringBuilder();

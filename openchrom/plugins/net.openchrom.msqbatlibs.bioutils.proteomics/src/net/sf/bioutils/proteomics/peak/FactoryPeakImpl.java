@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,13 +18,11 @@ public class FactoryPeakImpl implements FactoryPeak {
 	private Sample sample;
 	private int fractionIndex;
 
-	
 	public PeakImpl create(final double mz, final double intensity, final double intensityToNoise) {
 
 		return create(null, mz, intensity, intensityToNoise);
 	}
 
-	
 	public PeakImpl create(final String name, final double mz, final double intensity, final double intensityToNoise) {
 
 		return new PeakImpl(name, getFractionIndex(), mz, intensity, intensityToNoise, getSample());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -34,7 +34,6 @@ public abstract class AbstractListTransformer<T, V> extends ListWalkerDefault<T>
 		this.factory = factory;
 		super.addVisitor(new DefaultListVisitorImpl<T>() {
 
-			
 			public synchronized Void visit(final T element, final int index) {
 
 				setCurrentIndex(index);
@@ -44,7 +43,6 @@ public abstract class AbstractListTransformer<T, V> extends ListWalkerDefault<T>
 		});
 	}
 
-	
 	public synchronized void beforeWalk() {
 
 		super.beforeWalk();

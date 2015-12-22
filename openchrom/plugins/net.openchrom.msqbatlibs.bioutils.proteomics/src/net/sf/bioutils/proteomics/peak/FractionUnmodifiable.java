@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -32,104 +32,87 @@ public class FractionUnmodifiable implements Fraction {
 		this.delegate = delegate;
 	}
 
-	
 	public void addPeak(final Peak peak) {
 
 		throw new UnsupportedOperationException();
 	}
 
-	
 	public void addStandard(final Standard standard) {
 
 		throw new UnsupportedOperationException();
 	}
 
-	
 	public FractionUnmodifiable clone() {
 
 		return new FractionUnmodifiable(delegate.clone());
 	}
 
-	
 	public FractionUnmodifiable cloneWOPeaks() {
 
 		return new FractionUnmodifiable(delegate.cloneWOPeaks());
 	}
 
-	
 	public boolean equals(final Object obj) {
 
 		return delegate.equals(obj);
 	}
 
-	
 	public int getIndex() {
 
 		return delegate.getIndex();
 	}
 
-	
 	public String getName() {
 
 		return delegate.getName();
 	}
 
-	
 	public List<Peak> getPeaks() {
 
 		final List<Peak> l = new ArrayList<Peak>(new TransformerPeakToUnmodifiable().transformCollection(delegate.getPeaks()));
 		return Collections.unmodifiableList(l);
 	}
 
-	
 	public Sample getSample() {
 
 		return delegate.getSample();
 	}
 
-	
 	public int getSize() {
 
 		return delegate.getSize();
 	}
 
-	
 	public Set<Standard> getStandards() {
 
 		return Collections.unmodifiableSet(delegate.getStandards());
 	}
 
-	
 	public int hashCode() {
 
 		return delegate.hashCode();
 	}
 
-	
 	public boolean isEmpty() {
 
 		return delegate.isEmpty();
 	}
 
-	
 	public void setPeaks(final Collection<? extends Peak> peaks) {
 
 		delegate.setPeaks(peaks);
 	}
 
-	
 	public void setSample(final Sample sample) {
 
 		throw new UnsupportedOperationException();
 	}
 
-	
 	public void setStandards(final Collection<? extends Standard> standards) {
 
 		throw new UnsupportedOperationException();
 	}
 
-	
 	public String toString() {
 
 		return "FractionUnmodifiable:" + delegate;

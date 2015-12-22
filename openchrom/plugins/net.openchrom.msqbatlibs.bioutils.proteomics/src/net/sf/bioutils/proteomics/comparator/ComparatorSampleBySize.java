@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,7 +17,6 @@ import net.sf.bioutils.proteomics.sample.Sample;
 
 public class ComparatorSampleBySize implements Comparator<Sample> {
 
-	
 	public int compare(final Sample o1, final Sample o2) {
 
 		return Integer.valueOf(o1.getSize()).compareTo(Integer.valueOf(o2.getSize()));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -106,7 +106,6 @@ public class RowImpl<T> implements Row<T> {
 		return implementation.containsAll(c);
 	}
 
-	
 	public boolean equals(final Object o) {
 
 		return implementation.equals(o);
@@ -149,7 +148,6 @@ public class RowImpl<T> implements Row<T> {
 		return false;
 	}
 
-	
 	public int hashCode() {
 
 		return implementation.hashCode();
@@ -244,7 +242,6 @@ public class RowImpl<T> implements Row<T> {
 		return implementation.toArray(a);
 	}
 
-	
 	public String toString() {
 
 		return toString(DEFAULT_DELIMITER);

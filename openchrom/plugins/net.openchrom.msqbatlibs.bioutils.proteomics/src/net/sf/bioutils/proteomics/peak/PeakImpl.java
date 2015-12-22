@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -77,7 +77,6 @@ public class PeakImpl extends AnnotatableElementProto implements Peak, Standard 
 	/**
 	 * Performs a shallow copy of this {@code Peak}.
 	 */
-	
 	public synchronized PeakImpl clone() {
 
 		final PeakImpl result = new PeakImpl(getName(), getFractionIndex(), getMz(), getIntensity(), getIntensityToNoise(), null);
@@ -85,49 +84,41 @@ public class PeakImpl extends AnnotatableElementProto implements Peak, Standard 
 		return result;
 	}
 
-	
 	public synchronized boolean equals(final Object obj) {
 
 		return EQUALATOR_PEAK.areEqual(this, obj);
 	}
 
-	
 	public synchronized int getFractionIndex() {
 
 		return fractionIndex;
 	}
 
-	
 	public synchronized double getIntensity() {
 
 		return intensity;
 	}
 
-	
 	public synchronized double getIntensityToNoise() {
 
 		return intensityToNoise;
 	}
 
-	
 	public synchronized double getMz() {
 
 		return mz;
 	}
 
-	
 	public synchronized String getName() {
 
 		return name;
 	}
 
-	
 	public synchronized Sample getSample() {
 
 		return sample;
 	}
 
-	
 	public synchronized String getSampleName() {
 
 		if(getSample() == null) {
@@ -136,25 +127,21 @@ public class PeakImpl extends AnnotatableElementProto implements Peak, Standard 
 		return getSample().getName();
 	}
 
-	
 	public synchronized int hashCode() {
 
 		return HASH_CALCULATOR_PEAK.calculateHash(this);
 	}
 
-	
 	public synchronized void setFractionIndex(final int index) {
 
 		fractionIndex = index;
 	}
 
-	
 	public synchronized void setSample(final Sample sample) {
 
 		this.sample = sample;
 	}
 
-	
 	public synchronized String toString() {
 
 		return getClass().getSimpleName() + ":mz:" + mz + ",int:" + intensity;

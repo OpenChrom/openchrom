@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -71,13 +71,11 @@ public class PairSameImpl<T> extends PairImpl<T, T> implements PairSame<T> {
 		return result;
 	}
 
-	
 	public PairSameImpl<T> clone() {
 
 		return new PairSameImpl<T>(this);
 	}
 
-	
 	public PairSameImpl<T> invert() {
 
 		return new PairSameImpl<T>(getSecond(), getFirst());

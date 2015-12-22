@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -132,7 +132,6 @@ public class AnnotatedMutableTableImpl<T> extends MutableTableImpl<T> implements
 			throw new NoSuchElementException("no element for row index [" + key + "]");
 	}
 
-	
 	public synchronized Column<T> getColumn(final int index) {
 
 		final ColumnImpl<T> r;
@@ -159,7 +158,6 @@ public class AnnotatedMutableTableImpl<T> extends MutableTableImpl<T> implements
 		return new ArrayList<Object>(colMapper.keys());
 	}
 
-	
 	public Row<T> getRow(final int index) {
 
 		final Row<T> r = super.getRow(index);
@@ -206,7 +204,6 @@ public class AnnotatedMutableTableImpl<T> extends MutableTableImpl<T> implements
 		return result;
 	}
 
-	
 	public String toString() {
 
 		return toString("\t");

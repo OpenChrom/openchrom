@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,7 +18,6 @@ import net.sf.kerner.utils.collections.ComparatorNull;
 
 public class ComparatorIntensity extends ComparatorNull<ProviderIntensity> implements Comparator<ProviderIntensity> {
 
-	
 	public int compareNonNull(final ProviderIntensity o1, final ProviderIntensity o2) {
 
 		return Double.valueOf(o1.getIntensity()).compareTo(o2.getIntensity());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -35,15 +35,12 @@ import net.sf.kerner.utils.Cloneable;
  */
 public interface Peak extends ProviderIntensity, ProviderMz, ProviderFractionIndex, ProviderSample, Cloneable<Peak> {
 
-	
 	Peak clone();
 
-	
 	int getFractionIndex();
 
 	String getName();
 
-	
 	Sample getSample();
 
 	void setFractionIndex(int index);

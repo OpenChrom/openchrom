@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,7 +15,6 @@ import net.sf.kerner.utils.collections.list.AbstractTransformingListFactory;
 
 public class TransformerPeakToUnmodifiable extends AbstractTransformingListFactory<Peak, PeakUnmodifiable> {
 
-	
 	public PeakUnmodifiable transform(final Peak element) {
 
 		return new PeakUnmodifiable(element);

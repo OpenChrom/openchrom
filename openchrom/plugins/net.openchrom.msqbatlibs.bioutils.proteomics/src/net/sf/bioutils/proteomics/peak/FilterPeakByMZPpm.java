@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,7 +25,6 @@ public class FilterPeakByMZPpm implements Filter<Peak> {
 		this.parentMass = parentMass;
 	}
 
-	
 	public boolean filter(final Peak element) {
 
 		final double d = (parentMass - element.getMz()) * 1000000 / parentMass;
@@ -35,7 +34,6 @@ public class FilterPeakByMZPpm implements Filter<Peak> {
 		return Boolean.FALSE;
 	}
 
-	
 	public String toString() {
 
 		return "parentMass=" + parentMass + ",shift=" + massShift;

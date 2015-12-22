@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,7 +33,6 @@ public abstract class AbstractAsyncTaskDelayed<O, I, K> extends AbstractAsyncTas
 	 * @param value
 	 *            parameter for this {@code AbstractAsyncCallBack}
 	 */
-	
 	public final void execute(final I value) {
 
 		try {

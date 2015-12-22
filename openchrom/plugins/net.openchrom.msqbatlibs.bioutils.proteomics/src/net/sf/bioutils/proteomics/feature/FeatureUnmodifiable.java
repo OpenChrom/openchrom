@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -28,44 +28,37 @@ public class FeatureUnmodifiable extends PeakUnmodifiable implements FeatureAnno
 		super(delegate);
 	}
 
-	
 	public FeatureUnmodifiable clone() {
 
 		return new FeatureUnmodifiable(((FeatureAnnotatable)delegate).clone());
 	}
 
-	
 	public int getIndexCenter() {
 
 		return ((FeatureAnnotatable)delegate).getIndexCenter();
 	}
 
-	
 	public int getIndexFirst() {
 
 		return ((FeatureAnnotatable)delegate).getIndexFirst();
 	}
 
-	
 	public int getIndexLast() {
 
 		return ((FeatureAnnotatable)delegate).getIndexLast();
 	}
 
-	
 	public List<Peak> getMembers() {
 
 		final List<Peak> l = new ArrayList<Peak>(new TransformerPeakToUnmodifiable().transformCollection(((FeatureAnnotatable)delegate).getMembers()));
 		return Collections.unmodifiableList(l);
 	}
 
-	
 	public Iterator<Peak> iterator() {
 
 		return ((FeatureAnnotatable)delegate).iterator();
 	}
 
-	
 	public String toString() {
 
 		return "FeatureUnmodifiable:" + delegate;

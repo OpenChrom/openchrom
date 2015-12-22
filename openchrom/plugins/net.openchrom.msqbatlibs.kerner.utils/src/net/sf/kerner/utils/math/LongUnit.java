@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,61 +14,51 @@ package net.sf.kerner.utils.math;
 public enum LongUnit implements PrefixableLong {
 	PICO {
 
-		
 		public long toPicos(long units) {
 
 			return units;
 		}
 
-		
 		public long toNanos(long units) {
 
 			return units / (C1 / C0);
 		}
 
-		
 		public long toMicros(long units) {
 
 			return units / (C2 / C0);
 		}
 
-		
 		public long toMillis(long units) {
 
 			return units / (C3 / C0);
 		}
 
-		
 		public long toUnits(long units) {
 
 			return units / (C4 / C0);
 		}
 
-		
 		public long toKilos(long units) {
 
 			return units / (C5 / C0);
 		}
 
-		
 		public long toMegas(long units) {
 
 			return units / (C6 / C0);
 		}
 
-		
 		public long toGigas(long units) {
 
 			return units / (C7 / C0);
 		}
 
-		
 		public long toTeras(long units) {
 
 			return units / (C8 / C0);
 		}
 
-		
 		public long convert(long units, LongUnit unit) {
 
 			return unit.toPicos(units);
@@ -76,61 +66,51 @@ public enum LongUnit implements PrefixableLong {
 	},
 	NANO {
 
-		
 		public long toPicos(long units) {
 
 			return ArithmeticSavety.multiply(units, C1 / C0);
 		}
 
-		
 		public long toNanos(long units) {
 
 			return units;
 		}
 
-		
 		public long toMicros(long units) {
 
 			return units / (C2 / C1);
 		}
 
-		
 		public long toMillis(long units) {
 
 			return units / (C3 / C1);
 		}
 
-		
 		public long toUnits(long units) {
 
 			return units / (C4 / C1);
 		}
 
-		
 		public long toKilos(long units) {
 
 			return units / (C5 / C1);
 		}
 
-		
 		public long toMegas(long units) {
 
 			return units / (C6 / C1);
 		}
 
-		
 		public long toGigas(long units) {
 
 			return units / (C7 / C1);
 		}
 
-		
 		public long toTeras(long units) {
 
 			return units / (C8 / C1);
 		}
 
-		
 		public long convert(long units, LongUnit unit) {
 
 			return unit.toNanos(units);
@@ -138,61 +118,51 @@ public enum LongUnit implements PrefixableLong {
 	},
 	MICRO {
 
-		
 		public long toPicos(long units) {
 
 			return ArithmeticSavety.multiply(units, C2 / C0);
 		}
 
-		
 		public long toNanos(long units) {
 
 			return ArithmeticSavety.multiply(units, C2 / C1);
 		}
 
-		
 		public long toMicros(long units) {
 
 			return units;
 		}
 
-		
 		public long toMillis(long units) {
 
 			return units / (C3 / C2);
 		}
 
-		
 		public long toUnits(long units) {
 
 			return units / (C4 / C2);
 		}
 
-		
 		public long toKilos(long units) {
 
 			return units / (C5 / C2);
 		}
 
-		
 		public long toMegas(long units) {
 
 			return units / (C6 / C2);
 		}
 
-		
 		public long toGigas(long units) {
 
 			return units / (C7 / C2);
 		}
 
-		
 		public long toTeras(long units) {
 
 			return units / (C8 / C2);
 		}
 
-		
 		public long convert(long units, LongUnit unit) {
 
 			return unit.toMicros(units);
@@ -200,61 +170,51 @@ public enum LongUnit implements PrefixableLong {
 	},
 	MILLI {
 
-		
 		public long toPicos(long units) {
 
 			return ArithmeticSavety.multiply(units, C3 / C0);
 		}
 
-		
 		public long toNanos(long units) {
 
 			return ArithmeticSavety.multiply(units, C3 / C1);
 		}
 
-		
 		public long toMicros(long units) {
 
 			return ArithmeticSavety.multiply(units, C3 / C2);
 		}
 
-		
 		public long toMillis(long units) {
 
 			return units;
 		}
 
-		
 		public long toUnits(long units) {
 
 			return units / (C4 / C3);
 		}
 
-		
 		public long toKilos(long units) {
 
 			return units / (C5 / C3);
 		}
 
-		
 		public long toMegas(long units) {
 
 			return units / (C6 / C3);
 		}
 
-		
 		public long toGigas(long units) {
 
 			return units / (C7 / C3);
 		}
 
-		
 		public long toTeras(long units) {
 
 			return units / (C8 / C3);
 		}
 
-		
 		public long convert(long units, LongUnit unit) {
 
 			return unit.toMillis(units);
@@ -262,61 +222,51 @@ public enum LongUnit implements PrefixableLong {
 	},
 	UNIT {
 
-		
 		public long toPicos(long units) {
 
 			return ArithmeticSavety.multiply(units, C4 / C0);
 		}
 
-		
 		public long toNanos(long units) {
 
 			return ArithmeticSavety.multiply(units, C4 / C1);
 		}
 
-		
 		public long toMicros(long units) {
 
 			return ArithmeticSavety.multiply(units, C4 / C2);
 		}
 
-		
 		public long toMillis(long units) {
 
 			return ArithmeticSavety.multiply(units, C4 / C3);
 		}
 
-		
 		public long toUnits(long units) {
 
 			return units;
 		}
 
-		
 		public long toKilos(long units) {
 
 			return units / (C5 / C4);
 		}
 
-		
 		public long toMegas(long units) {
 
 			return units / (C6 / C4);
 		}
 
-		
 		public long toGigas(long units) {
 
 			return units / (C7 / C4);
 		}
 
-		
 		public long toTeras(long units) {
 
 			return units / (C8 / C4);
 		}
 
-		
 		public long convert(long units, LongUnit unit) {
 
 			return unit.toUnits(units);
@@ -324,61 +274,51 @@ public enum LongUnit implements PrefixableLong {
 	},
 	KILO {
 
-		
 		public long toPicos(long units) {
 
 			return ArithmeticSavety.multiply(units, C5 / C0);
 		}
 
-		
 		public long toNanos(long units) {
 
 			return ArithmeticSavety.multiply(units, C5 / C1);
 		}
 
-		
 		public long toMicros(long units) {
 
 			return ArithmeticSavety.multiply(units, C5 / C2);
 		}
 
-		
 		public long toMillis(long units) {
 
 			return ArithmeticSavety.multiply(units, C5 / C3);
 		}
 
-		
 		public long toUnits(long units) {
 
 			return ArithmeticSavety.multiply(units, C5 / C4);
 		}
 
-		
 		public long toKilos(long units) {
 
 			return units;
 		}
 
-		
 		public long toMegas(long units) {
 
 			return units / (C6 / C5);
 		}
 
-		
 		public long toGigas(long units) {
 
 			return units / (C7 / C5);
 		}
 
-		
 		public long toTeras(long units) {
 
 			return units / (C8 / C5);
 		}
 
-		
 		public long convert(long units, LongUnit unit) {
 
 			return unit.toKilos(units);
@@ -386,61 +326,51 @@ public enum LongUnit implements PrefixableLong {
 	},
 	MEGA {
 
-		
 		public long toPicos(long units) {
 
 			return ArithmeticSavety.multiply(units, C6 / C0);
 		}
 
-		
 		public long toNanos(long units) {
 
 			return ArithmeticSavety.multiply(units, C6 / C1);
 		}
 
-		
 		public long toMicros(long units) {
 
 			return ArithmeticSavety.multiply(units, C6 / C2);
 		}
 
-		
 		public long toMillis(long units) {
 
 			return ArithmeticSavety.multiply(units, C6 / C3);
 		}
 
-		
 		public long toUnits(long units) {
 
 			return ArithmeticSavety.multiply(units, C6 / C4);
 		}
 
-		
 		public long toKilos(long units) {
 
 			return ArithmeticSavety.multiply(units, C6 / C5);
 		}
 
-		
 		public long toMegas(long units) {
 
 			return units;
 		}
 
-		
 		public long toGigas(long units) {
 
 			return units / (C7 / C6);
 		}
 
-		
 		public long toTeras(long units) {
 
 			return units / (C8 / C6);
 		}
 
-		
 		public long convert(long units, LongUnit unit) {
 
 			return unit.toMegas(units);
@@ -448,61 +378,51 @@ public enum LongUnit implements PrefixableLong {
 	},
 	GIGA {
 
-		
 		public long toPicos(long units) {
 
 			return ArithmeticSavety.multiply(units, C7 / C0);
 		}
 
-		
 		public long toNanos(long units) {
 
 			return ArithmeticSavety.multiply(units, C7 / C1);
 		}
 
-		
 		public long toMicros(long units) {
 
 			return ArithmeticSavety.multiply(units, C7 / C2);
 		}
 
-		
 		public long toMillis(long units) {
 
 			return ArithmeticSavety.multiply(units, C7 / C3);
 		}
 
-		
 		public long toUnits(long units) {
 
 			return ArithmeticSavety.multiply(units, C7 / C4);
 		}
 
-		
 		public long toKilos(long units) {
 
 			return ArithmeticSavety.multiply(units, C7 / C5);
 		}
 
-		
 		public long toMegas(long units) {
 
 			return ArithmeticSavety.multiply(units, C7 / C6);
 		}
 
-		
 		public long toGigas(long units) {
 
 			return units;
 		}
 
-		
 		public long toTeras(long units) {
 
 			return units / (C8 / C7);
 		}
 
-		
 		public long convert(long units, LongUnit unit) {
 
 			return unit.toGigas(units);
@@ -510,61 +430,51 @@ public enum LongUnit implements PrefixableLong {
 	},
 	TERA {
 
-		
 		public long toPicos(long units) {
 
 			return ArithmeticSavety.multiply(units, C8 / C0);
 		}
 
-		
 		public long toNanos(long units) {
 
 			return ArithmeticSavety.multiply(units, C8 / C1);
 		}
 
-		
 		public long toMicros(long units) {
 
 			return ArithmeticSavety.multiply(units, C8 / C2);
 		}
 
-		
 		public long toMillis(long units) {
 
 			return ArithmeticSavety.multiply(units, C8 / C3);
 		}
 
-		
 		public long toUnits(long units) {
 
 			return ArithmeticSavety.multiply(units, C8 / C4);
 		}
 
-		
 		public long toKilos(long units) {
 
 			return ArithmeticSavety.multiply(units, C8 / C5);
 		}
 
-		
 		public long toMegas(long units) {
 
 			return ArithmeticSavety.multiply(units, C8 / C6);
 		}
 
-		
 		public long toGigas(long units) {
 
 			return ArithmeticSavety.multiply(units, C8 / C7);
 		}
 
-		
 		public long toTeras(long units) {
 
 			return units;
 		}
 
-		
 		public long convert(long units, LongUnit unit) {
 
 			return unit.toTeras(units);

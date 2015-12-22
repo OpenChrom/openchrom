@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -161,13 +161,11 @@ public class FASTAFileReaderImpl extends AbstractBufferedReader implements FASTA
 		this.alphabet = alphabet;
 	}
 
-	
 	public FASTAElementIterator getIterator() throws IOException {
 
 		return new FASTAElementIterator(super.reader, alphabet);
 	}
 
-	
 	public FASTAFile read() throws IOException {
 
 		final Collection<FASTAElement> result = new LinkedHashSet<FASTAElement>();

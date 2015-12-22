@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,13 +16,11 @@ import net.sf.kerner.utils.hash.UtilHash;
 
 public class HashCalculatorSample implements HashCalculator<Sample> {
 
-	
 	public int calculateHash(final Sample element) {
 
 		return UtilHash.getHash(element.getName(), element.getNameBase(), element.getUser(), element.getProperties(), element.getPeaks());
 	}
 
-	
 	public Integer transform(final Sample element) {
 
 		return calculateHash(element);

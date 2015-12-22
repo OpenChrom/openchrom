@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -81,7 +81,6 @@ public interface Pair<F, S> {
 	 * In contrast to {@link KeyValue}, {@code ObjectPair(1,2).hashCode()} equals {@code ObjectPair(2,1).hashCode()}.
 	 * 
 	 */
-	
 	public int hashCode();
 
 	/**

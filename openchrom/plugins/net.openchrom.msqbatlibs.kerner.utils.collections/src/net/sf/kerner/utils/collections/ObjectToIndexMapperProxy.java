@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -44,7 +44,6 @@ public class ObjectToIndexMapperProxy<T> extends ObjectToIndexMapperImpl<T> {
 		this.identToIdent = new LinkedHashMap<T, Object>(identToIdent);
 	}
 
-	
 	public int get(final T key) {
 
 		final List<T> keySet = new ArrayList<T>(identToIdent.keySet());
@@ -56,7 +55,6 @@ public class ObjectToIndexMapperProxy<T> extends ObjectToIndexMapperImpl<T> {
 		throw new NoSuchElementException();
 	}
 
-	
 	public Object getValue(final int index) {
 
 		final Object o = super.getValue(index);
@@ -68,31 +66,26 @@ public class ObjectToIndexMapperProxy<T> extends ObjectToIndexMapperImpl<T> {
 		throw new NoSuchElementException();
 	}
 
-	
 	public boolean containsKey(final T key) {
 
 		return identToIdent.containsKey(key);
 	}
 
-	
 	public boolean containsValue(final int index) {
 
 		return identToIdent.containsValue(super.getValue(index));
 	}
 
-	
 	public List<T> keys() {
 
 		return new ArrayList<T>(identToIdent.keySet());
 	}
 
-	
 	public void addMapping(final T key) {
 
 		throw new IllegalStateException();
 	}
 
-	
 	public void addMapping(final T key, final int index) {
 
 		throw new IllegalStateException();

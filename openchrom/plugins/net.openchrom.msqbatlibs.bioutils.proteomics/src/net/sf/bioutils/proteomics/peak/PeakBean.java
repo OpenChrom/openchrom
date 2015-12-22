@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -58,32 +58,27 @@ public class PeakBean extends PeakImpl implements FeatureAnnotatable, PeakModifi
 	 * Same as {@code return new PeakBean(this)}.
 	 *
 	 */
-	
 	public synchronized PeakBean clone() {
 
 		final PeakBean result = new PeakBean(this);
 		return result;
 	}
 
-	
 	public synchronized int getIndexCenter() {
 
 		return getFractionIndex();
 	}
 
-	
 	public synchronized int getIndexFirst() {
 
 		return indexFirst;
 	}
 
-	
 	public synchronized int getIndexLast() {
 
 		return indexLast;
 	}
 
-	
 	public synchronized List<Peak> getMembers() {
 
 		final List<Peak> result = new ArrayList<Peak>(1);
@@ -91,7 +86,6 @@ public class PeakBean extends PeakImpl implements FeatureAnnotatable, PeakModifi
 		return result;
 	}
 
-	
 	public synchronized int hashCode() {
 
 		int result = cacheHash;
@@ -102,7 +96,6 @@ public class PeakBean extends PeakImpl implements FeatureAnnotatable, PeakModifi
 		return result;
 	}
 
-	
 	public synchronized Iterator<Peak> iterator() {
 
 		return getMembers().iterator();
@@ -131,13 +124,11 @@ public class PeakBean extends PeakImpl implements FeatureAnnotatable, PeakModifi
 		this.indexLast = indexLast;
 	}
 
-	
 	public synchronized void setIntensity(final double intensity) {
 
 		this.intensity = intensity;
 	}
 
-	
 	public synchronized void setIntensityToNoise(final double intensityToNoise) {
 
 		this.intensityToNoise = intensityToNoise;
@@ -149,19 +140,16 @@ public class PeakBean extends PeakImpl implements FeatureAnnotatable, PeakModifi
 		return this;
 	}
 
-	
 	public synchronized void setName(final String name) {
 
 		this.name = name;
 	}
 
-	
 	public synchronized void setSample(final Sample sample) {
 
 		this.sample = sample;
 	}
 
-	
 	public synchronized String toString() {
 
 		String s = "n/a";

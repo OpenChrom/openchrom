@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -73,13 +73,11 @@ public abstract class ReaderTableObjectAbstract<T> implements IOIterator<T> {
 		this.reader = new ReaderTableString(reader, columnIds, rowIds, delim);
 	}
 
-	
 	public synchronized void close() {
 
 		reader.close();
 	}
 
-	
 	public boolean hasNext() throws IOException {
 
 		return reader.hasNext();

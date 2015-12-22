@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,13 +17,11 @@ import net.sf.kerner.utils.math.UtilMath;
 
 public class HashCalculatorPeak extends HashCalculatorAbstract<Peak> {
 
-	
 	public int calculateHash(final Peak peak) {
 
 		return UtilHash.getHash(peak.getSampleName(), peak.getFractionIndex(), UtilMath.round(peak.getMz(), 4));
 	}
 
-	
 	public Integer transform(final Peak element) {
 
 		return Integer.valueOf(calculateHash(element));

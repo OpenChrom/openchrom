@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -28,7 +28,6 @@ public class AnnotatableElementProto implements AnnotatableElement {
 
 	private Collection<AnnotationSerializable> annotation = new ArrayList<AnnotationSerializable>(0);
 
-	
 	public Collection<AnnotationSerializable> getAnnotation() {
 
 		return annotation;
@@ -39,7 +38,6 @@ public class AnnotatableElementProto implements AnnotatableElement {
 		this.setAnnotation(Arrays.asList(annotation));
 	}
 
-	
 	public void setAnnotation(final Collection<AnnotationSerializable> annotation) {
 
 		this.annotation = annotation;

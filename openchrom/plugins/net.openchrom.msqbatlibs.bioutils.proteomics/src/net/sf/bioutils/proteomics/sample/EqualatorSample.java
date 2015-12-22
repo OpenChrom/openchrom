@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,7 +16,6 @@ import net.sf.kerner.utils.pair.Pair;
 
 public class EqualatorSample implements Equalator<Sample> {
 
-	
 	public boolean areEqual(final Sample element, final Object obj) {
 
 		if(element == obj)
@@ -51,7 +50,6 @@ public class EqualatorSample implements Equalator<Sample> {
 		return true;
 	}
 
-	
 	public Boolean transform(final Pair<Sample, Object> element) {
 
 		return areEqual(element.getFirst(), element.getSecond());

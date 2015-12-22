@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -82,7 +82,6 @@ public class ExceptionRuntimeProperty extends RuntimeException {
 		this.pro = pro;
 	}
 
-	
 	public String toString() {
 
 		final StringBuilder sb = new StringBuilder();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -74,7 +74,6 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 		return new Intensity(delegate.add(augend.delegate));
 	}
 
-	
 	public int compareTo(final Intensity o) {
 
 		return delegate.compareTo(o.delegate);
@@ -95,7 +94,6 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 		return new Intensity(delegate.divide(divisor.delegate, getScale(), RoundingMode.HALF_UP));
 	}
 
-	
 	public synchronized double doubleValue() {
 
 		double result = cacheDouble;
@@ -106,7 +104,6 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 		return result;
 	}
 
-	
 	public float floatValue() {
 
 		return delegate.floatValue();
@@ -117,7 +114,6 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 		return delegate;
 	}
 
-	
 	public int intValue() {
 
 		if(new Intensity(Integer.MAX_VALUE).isLess(this)) {
@@ -146,7 +142,6 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 		return isMore(new Intensity());
 	}
 
-	
 	public long longValue() {
 
 		return delegate.longValue();
@@ -167,7 +162,6 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 		delegate.setScale(getScale(), RoundingMode.HALF_UP);
 	}
 
-	
 	public String toString() {
 
 		return delegate.toString();

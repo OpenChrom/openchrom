@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -160,7 +160,6 @@ public class ReaderTableDouble extends ReaderTableAbstract<Double> {
 	/**
 	 * 
 	 */
-	
 	protected TableDouble getInstance() {
 
 		return new TableDouble();
@@ -169,13 +168,11 @@ public class ReaderTableDouble extends ReaderTableAbstract<Double> {
 	/**
 	 * 
 	 */
-	
 	protected Double parse(String s) throws NumberFormatException {
 
 		return Double.parseDouble(s);
 	}
 
-	
 	public TableDouble readTableAtOnce() throws IOException {
 
 		return (TableDouble)super.readTableAtOnce();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -38,13 +38,11 @@ public class RawSpectrum implements Comparable<RawSpectrum> {
 		}
 	}
 
-	
 	public synchronized int compareTo(RawSpectrum o) {
 
 		return Integer.valueOf(getIndex()).compareTo(o.getIndex());
 	}
 
-	
 	public synchronized boolean equals(Object obj) {
 
 		if(this == obj) {
@@ -165,7 +163,6 @@ public class RawSpectrum implements Comparable<RawSpectrum> {
 		this.precursorSpectrum = precursorSpectrum;
 	}
 
-	
 	public synchronized int hashCode() {
 
 		final int prime = 31;
@@ -176,7 +173,6 @@ public class RawSpectrum implements Comparable<RawSpectrum> {
 		return result;
 	}
 
-	
 	public synchronized String toString() {
 
 		int length = 0;

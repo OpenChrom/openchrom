@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -45,13 +45,11 @@ public class ExecutorNotifying implements ExecutorService {
 		delegate.addListenerDone(listener);
 	}
 
-	
 	public boolean awaitTermination(final long timeout, final TimeUnit unit) throws InterruptedException {
 
 		return delegate.awaitTermination(timeout, unit);
 	}
 
-	
 	public void execute(final Runnable command) {
 
 		delegate.execute(command);
@@ -72,37 +70,31 @@ public class ExecutorNotifying implements ExecutorService {
 		return numCPUs;
 	}
 
-	
 	public <T> List<Future<T>> invokeAll(final Collection<? extends Callable<T>> tasks) throws InterruptedException {
 
 		return delegate.invokeAll(tasks);
 	}
 
-	
 	public <T> List<Future<T>> invokeAll(final Collection<? extends Callable<T>> tasks, final long timeout, final TimeUnit unit) throws InterruptedException {
 
 		return delegate.invokeAll(tasks, timeout, unit);
 	}
 
-	
 	public <T> T invokeAny(final Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
 
 		return delegate.invokeAny(tasks);
 	}
 
-	
 	public <T> T invokeAny(final Collection<? extends Callable<T>> tasks, final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 
 		return delegate.invokeAny(tasks, timeout, unit);
 	}
 
-	
 	public boolean isShutdown() {
 
 		return delegate.isShutdown();
 	}
 
-	
 	public synchronized boolean isTerminated() {
 
 		return delegate.isTerminated();
@@ -123,31 +115,26 @@ public class ExecutorNotifying implements ExecutorService {
 		delegate = ThreadPoolExecutorNotifying.build(numCPUs);
 	}
 
-	
 	public synchronized void shutdown() {
 
 		delegate.shutdown();
 	}
 
-	
 	public synchronized List<Runnable> shutdownNow() {
 
 		return delegate.shutdownNow();
 	}
 
-	
 	public <T> Future<T> submit(final Callable<T> task) {
 
 		return delegate.submit(task);
 	}
 
-	
 	public Future<?> submit(final Runnable task) {
 
 		return delegate.submit(task);
 	}
 
-	
 	public <T> Future<T> submit(final Runnable task, final T result) {
 
 		return delegate.submit(task, result);

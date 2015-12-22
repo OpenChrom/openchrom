@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,7 +29,6 @@ public abstract class SampleHandlerAbstract<S extends SampleModifiable> implemen
 		return monitor;
 	}
 
-	
 	public List<Peak> handle(final Collection<? extends Peak> peaks) throws Exception {
 
 		final List<Peak> result = UtilList.newList();
@@ -44,7 +43,6 @@ public abstract class SampleHandlerAbstract<S extends SampleModifiable> implemen
 		return result;
 	}
 
-	
 	public synchronized S handle(final Sample sample) throws Exception {
 
 		sample.getLock().readLock().lock();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,13 +17,11 @@ import net.sf.kerner.utils.math.PrefixableDouble;
 public enum MassUnit implements PrefixableDouble {
 	NANODALTON {
 
-		
 		protected DoubleUnit getUnit() {
 
 			return DoubleUnit.NANO;
 		}
 
-		
 		public double convert(double mass, MassUnit unit) {
 
 			return unit.toNanos(mass);
@@ -31,13 +29,11 @@ public enum MassUnit implements PrefixableDouble {
 	},
 	MICRODALTON {
 
-		
 		protected DoubleUnit getUnit() {
 
 			return DoubleUnit.MICRO;
 		}
 
-		
 		public double convert(double mass, MassUnit unit) {
 
 			return unit.toMicros(mass);
@@ -45,13 +41,11 @@ public enum MassUnit implements PrefixableDouble {
 	},
 	MILLIDALTON {
 
-		
 		protected DoubleUnit getUnit() {
 
 			return DoubleUnit.MILLI;
 		}
 
-		
 		public double convert(double mass, MassUnit unit) {
 
 			return unit.toMillis(mass);
@@ -59,13 +53,11 @@ public enum MassUnit implements PrefixableDouble {
 	},
 	DALTON {
 
-		
 		protected DoubleUnit getUnit() {
 
 			return DoubleUnit.UNIT;
 		}
 
-		
 		public double convert(double mass, MassUnit unit) {
 
 			return unit.toUnits(mass);
@@ -73,13 +65,11 @@ public enum MassUnit implements PrefixableDouble {
 	},
 	KILODALTON {
 
-		
 		protected DoubleUnit getUnit() {
 
 			return DoubleUnit.KILO;
 		}
 
-		
 		public double convert(double mass, MassUnit unit) {
 
 			return unit.toKilos(mass);

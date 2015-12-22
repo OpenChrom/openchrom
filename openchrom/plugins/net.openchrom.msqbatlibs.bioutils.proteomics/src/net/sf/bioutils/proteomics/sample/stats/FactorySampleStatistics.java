@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,7 +16,6 @@ import net.sf.kerner.utils.collections.list.AbstractTransformingListFactory;
 
 public class FactorySampleStatistics extends AbstractTransformingListFactory<Sample, SampleStatistics> {
 
-	
 	public SampleStatistics transform(final Sample sample) {
 
 		return new SampleStatisticsCallable(sample).call();

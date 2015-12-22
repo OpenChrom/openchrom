@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -73,7 +73,6 @@ public class MapMap<T, K, V> {
 		return map.entrySet();
 	}
 
-	
 	public boolean equals(final Object o) {
 
 		return map.equals(o);
@@ -84,7 +83,6 @@ public class MapMap<T, K, V> {
 		return map.get(key1);
 	}
 
-	
 	public int hashCode() {
 
 		return map.hashCode();
@@ -162,7 +160,6 @@ public class MapMap<T, K, V> {
 		return size;
 	}
 
-	
 	public String toString() {
 
 		return map.toString();

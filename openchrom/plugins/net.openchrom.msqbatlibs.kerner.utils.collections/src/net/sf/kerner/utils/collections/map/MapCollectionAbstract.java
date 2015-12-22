@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -59,7 +59,6 @@ public abstract class MapCollectionAbstract<K, V, L extends Collection<V>> imple
 		return map.entrySet();
 	}
 
-	
 	public boolean equals(final Object obj) {
 
 		if(this == obj)
@@ -85,7 +84,6 @@ public abstract class MapCollectionAbstract<K, V, L extends Collection<V>> imple
 
 	protected abstract Factory<L> getFactoryCollection();
 
-	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -185,7 +183,6 @@ public abstract class MapCollectionAbstract<K, V, L extends Collection<V>> imple
 		return 0;
 	}
 
-	
 	public String toString() {
 
 		return map.toString();

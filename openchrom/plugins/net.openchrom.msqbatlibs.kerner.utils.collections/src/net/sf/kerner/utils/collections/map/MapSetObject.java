@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -37,7 +37,6 @@ public class MapSetObject extends MapSet<Object, Object> {
 	}
 
 	@SuppressWarnings("unchecked")
-	
 	public void put(final Object key, final Object value) {
 
 		if(value instanceof Collection) {

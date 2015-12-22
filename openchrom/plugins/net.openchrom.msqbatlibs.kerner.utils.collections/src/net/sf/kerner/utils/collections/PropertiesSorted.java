@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -80,7 +80,6 @@ public class PropertiesSorted implements SortedMap<String, Object>, Serializable
 		return delegate.entrySet();
 	}
 
-	
 	public boolean equals(final Object o) {
 
 		return delegate.equals(o);
@@ -96,7 +95,6 @@ public class PropertiesSorted implements SortedMap<String, Object>, Serializable
 		return delegate.get(key);
 	}
 
-	
 	public int hashCode() {
 
 		return delegate.hashCode();
@@ -159,7 +157,6 @@ public class PropertiesSorted implements SortedMap<String, Object>, Serializable
 		return p;
 	}
 
-	
 	public String toString() {
 
 		return UtilCollection.toString(delegate.entrySet());

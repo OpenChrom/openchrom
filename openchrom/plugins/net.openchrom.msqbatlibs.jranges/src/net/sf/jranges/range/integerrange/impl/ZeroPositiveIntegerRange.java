@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -45,7 +45,6 @@ public class ZeroPositiveIntegerRange extends RangeIntegerAbstract {
 		super(start, stop, 0, Integer.MAX_VALUE, interval);
 	}
 
-	
 	protected ZeroPositiveIntegerRange newInstange(int start, int stop, int limit1, int limit2) throws RangeException {
 
 		return new ZeroPositiveIntegerRange(start, stop, interval);

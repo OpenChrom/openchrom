@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -103,7 +103,6 @@ public class FASTAElementImpl implements FASTAElement {
 		map.clear();
 	}
 
-	
 	public boolean equals(final Object obj) {
 
 		if(this == obj)
@@ -121,13 +120,11 @@ public class FASTAElementImpl implements FASTAElement {
 		return true;
 	}
 
-	
 	public String getHeader() {
 
 		return header;
 	}
 
-	
 	public int getLineLength() {
 
 		return lineLength;
@@ -145,19 +142,16 @@ public class FASTAElementImpl implements FASTAElement {
 		return map.get(ident);
 	}
 
-	
 	public String getSequence() {
 
 		return sequence.toString();
 	}
 
-	
 	public int getSequenceLength() {
 
 		return sequence.length();
 	}
 
-	
 	public int hashCode() {
 
 		final int prime = 31;
@@ -166,7 +160,6 @@ public class FASTAElementImpl implements FASTAElement {
 		return result;
 	}
 
-	
 	public void setLineLength(final int length) {
 
 		if(length < 1)
@@ -189,7 +182,6 @@ public class FASTAElementImpl implements FASTAElement {
 		map.put(ident, info);
 	}
 
-	
 	public String toString() {
 
 		final StringBuilder sb = new StringBuilder();

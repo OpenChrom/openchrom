@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -54,43 +54,36 @@ public class FractionBean implements Fraction {
 			this.standards = new LinkedHashSet<Standard>(standards);
 	}
 
-	
 	public synchronized void addPeak(final Peak peak) {
 
 		peaks.add(peak);
 	}
 
-	
 	public synchronized void addStandard(final Standard peak) {
 
 		peaks.add(peak);
 	}
 
-	
 	public FractionBean clone() {
 
 		return new FractionBean(name, fractionIndex, peaks, standards);
 	}
 
-	
 	public FractionBean cloneWOPeaks() {
 
 		return new FractionBean(name, fractionIndex, null, null);
 	}
 
-	
 	public synchronized int getIndex() {
 
 		return fractionIndex;
 	}
 
-	
 	public synchronized String getName() {
 
 		return name;
 	}
 
-	
 	public synchronized List<Peak> getPeaks() {
 
 		return peaks;
@@ -101,19 +94,16 @@ public class FractionBean implements Fraction {
 		return sample;
 	}
 
-	
 	public synchronized int getSize() {
 
 		return getPeaks().size();
 	}
 
-	
 	public synchronized Set<Standard> getStandards() {
 
 		return standards;
 	}
 
-	
 	public synchronized boolean isEmpty() {
 
 		return getPeaks().isEmpty();
@@ -148,19 +138,16 @@ public class FractionBean implements Fraction {
 		this.name = name;
 	}
 
-	
 	public synchronized void setPeaks(final Collection<? extends Peak> peaks) {
 
 		this.peaks = new ArrayList<Peak>(peaks);
 	}
 
-	
 	public synchronized void setSample(final Sample sample) {
 
 		this.sample = sample;
 	}
 
-	
 	public synchronized void setStandards(final Collection<? extends Standard> standards) {
 
 		this.standards = new LinkedHashSet<Standard>(standards);

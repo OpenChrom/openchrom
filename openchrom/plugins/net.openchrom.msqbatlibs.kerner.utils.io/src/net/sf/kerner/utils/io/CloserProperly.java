@@ -48,8 +48,7 @@ public class CloserProperly {
 	private final static Logger logger = Logger.getLogger(CloserProperly.class);
 
 	/**
-	 * Closes {@code closable} if {@code closable != null} and instanceof
-	 * {@link Closable}. Exceptions are catched and logged (level WARN).
+	 * Closes {@code closable} if {@code closable != null} and instanceof {@link Closable}. Exceptions are catched and logged (level WARN).
 	 *
 	 * @param closable
 	 *            object to close

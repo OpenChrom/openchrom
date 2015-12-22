@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,7 +20,6 @@ public class ComparatorPeakByAnnotation implements Comparator<Peak> {
 
 	private final static ComparatorAnnotation COMPARATOR_ANNOTATION = new ComparatorAnnotation();
 
-	
 	public int compare(final Peak o1, final Peak o2) {
 
 		if(o1 instanceof AnnotatableElement && o2 instanceof AnnotatableElement) {

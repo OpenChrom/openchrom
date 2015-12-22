@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,7 +27,6 @@ public class SampleBean implements SampleModifiable {
 	private static long cnt = 0;
 	private final long id;
 
-	
 	public RawSample getRawSample() {
 
 		synchronized(this) {
@@ -107,13 +106,11 @@ public class SampleBean implements SampleModifiable {
 		}
 	}
 
-	
 	public long getId() {
 
 		return id;
 	}
 
-	
 	public void addPeak(final Peak peak) {
 
 		synchronized(this) {
@@ -122,7 +119,6 @@ public class SampleBean implements SampleModifiable {
 		}
 	}
 
-	
 	public void addPeaks(final Collection<? extends Peak> peaks) {
 
 		this.peaks.addAll(peaks);
@@ -131,13 +127,11 @@ public class SampleBean implements SampleModifiable {
 		}
 	}
 
-	
 	public SampleBean clone() {
 
 		return clone(getName());
 	}
 
-	
 	public SampleBean clone(final String newName) {
 
 		final SampleBean result = new SampleBean(newName, getUser(), getNameBase(), null, getProperties());
@@ -156,32 +150,27 @@ public class SampleBean implements SampleModifiable {
 	 *
 	 * @return a clone of this {@code SampleBean}, that contains no peaks
 	 */
-	
 	public SampleBean cloneWOPeaks(final String newName) {
 
 		final SampleBean result = new SampleBean(newName, getUser(), getNameBase(), null, getProperties());
 		return result;
 	}
 
-	
 	public boolean equals(final Object obj) {
 
 		return new EqualatorSample().areEqual(this, obj);
 	}
 
-	
 	public ReadWriteLock getLock() {
 
 		return lock;
 	}
 
-	
 	public String getName() {
 
 		return name;
 	}
 
-	
 	public String getNameBase() {
 
 		if(nameBase == null) {
@@ -190,61 +179,51 @@ public class SampleBean implements SampleModifiable {
 		return nameBase;
 	}
 
-	
 	public List<Peak> getPeaks() {
 
 		return peaks;
 	}
 
-	
 	public MapList<String, Object> getProperties() {
 
 		return properties;
 	}
 
-	
 	public int getSize() {
 
 		return peaks.size();
 	}
 
-	
 	public User getUser() {
 
 		return user;
 	}
 
-	
 	public int hashCode() {
 
 		return new HashCalculatorSample().calculateHash(this);
 	}
 
-	
 	public void removePeak(final Peak peak) {
 
 		peaks.remove(peak);
 	}
 
-	
 	public void removePeaks(final Collection<? extends Peak> peaks) {
 
 		this.peaks.removeAll(peaks);
 	}
 
-	
 	public void setName(final String name) {
 
 		this.name = name;
 	}
 
-	
 	public void setNameBase(final String nameBase) {
 
 		this.nameBase = nameBase;
 	}
 
-	
 	public void setPeaks(final List<Peak> peaks) {
 
 		synchronized(this) {
@@ -254,19 +233,16 @@ public class SampleBean implements SampleModifiable {
 		}
 	}
 
-	
 	public void setProperties(final MapList<String, Object> properties) {
 
 		this.properties = properties;
 	}
 
-	
 	public void setUser(final User user) {
 
 		this.user = user;
 	}
 
-	
 	public String toString() {
 
 		return getName() + ", " + getSize();
