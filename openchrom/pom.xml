@@ -51,6 +51,7 @@
     <pydev-repo.url>http://pydev.org/updates</pydev-repo.url>
     <ease-repo.url>http://download.eclipse.org/ease/update/release</ease-repo.url>
     <easejython-repo.url>https://dl.bintray.com/pontesegger/ease-jython</easejython-repo.url>
+    <knime-repo.url>http://update.knime.org/analytics-platform/3.1</knime-repo.url>
     <!-- ENCODING -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -116,6 +117,11 @@
     <repository>
       <id>easejython</id>
       <url>${easejython-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>knime</id>
+      <url>${knime-repo.url}</url>
       <layout>p2</layout>
     </repository>
   </repositories>
