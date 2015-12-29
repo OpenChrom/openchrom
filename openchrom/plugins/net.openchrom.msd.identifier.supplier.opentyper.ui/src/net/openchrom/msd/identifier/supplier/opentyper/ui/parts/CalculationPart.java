@@ -25,7 +25,6 @@ public class CalculationPart {
 
 	@Inject
 	public CalculationPart(Composite composite) {
-
 		composite.setLayout(new FillLayout());
 		Button button = new Button(composite, SWT.PUSH);
 		button.setText("Calculate");
