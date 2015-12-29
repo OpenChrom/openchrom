@@ -16,12 +16,10 @@ public class NoCDFAttributeDataFound extends Exception {
 	private static final long serialVersionUID = 1806618878520349667L;
 
 	public NoCDFAttributeDataFound() {
-
 		super();
 	}
 
 	public NoCDFAttributeDataFound(String message) {
-
 		super(message);
 	}
 }

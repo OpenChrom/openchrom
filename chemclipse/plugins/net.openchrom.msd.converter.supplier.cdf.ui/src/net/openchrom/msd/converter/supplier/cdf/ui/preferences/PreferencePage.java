@@ -22,7 +22,6 @@ import net.openchrom.msd.converter.supplier.cdf.ui.Activator;
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PreferencePage() {
-
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setDescription("Set the NetCDF converter settings.");

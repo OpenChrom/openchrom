@@ -46,7 +46,6 @@ public class DimensionSupport implements IDimensionSupport {
 	private Dimension errorNumber;
 
 	public DimensionSupport(NetcdfFileWriteable cdfChromatogram, IChromatogramMSD chromatogram) {
-
 		dataEntries = new ArrayList<IDataEntry>();
 		this.cdfChromatogram = cdfChromatogram;
 		this.chromatogram = chromatogram;

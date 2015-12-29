@@ -16,12 +16,10 @@ public class NoCDFVariableDataFound extends Exception {
 	private static final long serialVersionUID = 857008084043051875L;
 
 	public NoCDFVariableDataFound() {
-
 		super();
 	}
 
 	public NoCDFVariableDataFound(String message) {
-
 		super(message);
 	}
 }

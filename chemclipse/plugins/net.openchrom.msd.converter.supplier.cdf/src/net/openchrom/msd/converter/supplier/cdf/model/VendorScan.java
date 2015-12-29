@@ -36,7 +36,6 @@ public class VendorScan extends AbstractVendorMassSpectrum implements IVendorSca
 	public static final int MAX_RETENTION_TIME = Integer.MAX_VALUE;
 
 	public VendorScan() {
-
 		super();
 	}
 

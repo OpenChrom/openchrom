@@ -35,7 +35,6 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	private ArrayDouble.D1 valueArrayScanAcquisitionTime;
 
 	public AbstractCDFChromatogramArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
-
 		this.chromatogram = chromatogram;
 		initializeVariables();
 	}

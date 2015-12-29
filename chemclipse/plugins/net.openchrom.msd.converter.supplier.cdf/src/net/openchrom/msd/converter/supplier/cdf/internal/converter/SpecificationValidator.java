@@ -19,7 +19,6 @@ public class SpecificationValidator {
 	 * Use only static methods.
 	 */
 	private SpecificationValidator() {
-
 	}
 
 	/**

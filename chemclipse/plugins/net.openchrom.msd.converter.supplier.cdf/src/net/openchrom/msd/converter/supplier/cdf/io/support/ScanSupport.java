@@ -23,7 +23,6 @@ public class ScanSupport implements IScanSupport {
 	private double[] minIon;
 
 	public ScanSupport(IChromatogramMSD chromatogram) {
-
 		IScanMSD massSpectrum;
 		int numberOfScans = chromatogram.getNumberOfScans();
 		counter = 0;

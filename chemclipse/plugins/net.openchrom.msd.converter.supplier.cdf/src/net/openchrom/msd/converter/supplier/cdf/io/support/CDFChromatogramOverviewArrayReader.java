@@ -26,7 +26,6 @@ public class CDFChromatogramOverviewArrayReader extends AbstractCDFChromatogramA
 	private ArrayDouble.D1 valueArrayTotalIntensity;
 
 	public CDFChromatogramOverviewArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
-
 		super(chromatogram);
 		initializeVariables();
 	}

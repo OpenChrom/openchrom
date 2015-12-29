@@ -16,12 +16,10 @@ public class NotEnoughScanDataStored extends Exception {
 	private static final long serialVersionUID = 3474027294427724564L;
 
 	public NotEnoughScanDataStored() {
-
 		super();
 	}
 
 	public NotEnoughScanDataStored(String message) {
-
 		super(message);
 	}
 }

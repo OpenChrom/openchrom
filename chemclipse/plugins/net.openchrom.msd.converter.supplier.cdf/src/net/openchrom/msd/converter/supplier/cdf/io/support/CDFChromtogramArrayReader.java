@@ -45,7 +45,6 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 	private int[] valueArrayScanIndex;
 
 	public CDFChromtogramArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
-
 		super(chromatogram);
 		initializeVariables();
 	}

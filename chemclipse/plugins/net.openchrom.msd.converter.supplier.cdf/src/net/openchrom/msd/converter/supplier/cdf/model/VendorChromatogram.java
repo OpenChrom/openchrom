@@ -20,7 +20,6 @@ public class VendorChromatogram extends AbstractChromatogramMSD implements IVend
 	private Date dateOfExperiment = new Date();
 
 	public VendorChromatogram() {
-
 		super();
 	}
 
