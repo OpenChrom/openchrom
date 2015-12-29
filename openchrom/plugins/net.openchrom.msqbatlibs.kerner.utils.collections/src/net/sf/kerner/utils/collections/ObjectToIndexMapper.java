@@ -27,13 +27,15 @@ import java.util.NoSuchElementException;
  * {one, two, three, four}
  * </pre>
  * 
- * And a given list with following elements: </p>
+ * And a given list with following elements:
+ * </p>
  * 
  * <pre>
  * {blue, red, black, green}
  * </pre>
  * 
- * Access to this list's elements can be more intuitive accessing the elements by an object-based index: </p>
+ * Access to this list's elements can be more intuitive accessing the elements by an object-based index:
+ * </p>
  * 
  * <pre>
  * List colors = new ArrayList(){{blue, red, black, green}};

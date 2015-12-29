@@ -17,12 +17,10 @@ public class SetterOnlyOnce<T> {
 	private T t = null;
 
 	public SetterOnlyOnce() {
-
 		this(false);
 	}
 
 	public SetterOnlyOnce(final boolean strict) {
-
 		this.strict = strict;
 	}
 

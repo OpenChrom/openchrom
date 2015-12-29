@@ -21,12 +21,10 @@ public class FilterPeakByFracNr implements Filter<Peak> {
 	private final Collection<? extends Number> fracNr;
 
 	public FilterPeakByFracNr(final Collection<? extends Number> fracNr) {
-
 		this.fracNr = fracNr;
 	}
 
 	public FilterPeakByFracNr(final Number fracNr) {
-
 		this.fracNr = Arrays.asList(fracNr);
 	}
 

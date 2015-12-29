@@ -43,17 +43,14 @@ import java.util.List;
 public class PairSameImpl<T> extends PairImpl<T, T> implements PairSame<T> {
 
 	public PairSameImpl() {
-
 		super();
 	}
 
 	public PairSameImpl(final Pair<? extends T, ? extends T> template) {
-
 		super(template);
 	}
 
 	public PairSameImpl(final T first, final T second) {
-
 		super(first, second);
 	}
 

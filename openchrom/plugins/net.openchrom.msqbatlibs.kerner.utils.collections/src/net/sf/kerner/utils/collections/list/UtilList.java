@@ -235,11 +235,17 @@ public class UtilList {
 	}
 
 	/**
-	 * Combine two {@link java.util.List Lists} into one. </p> Elements, that
+	 * Combine two {@link java.util.List Lists} into one.
+	 * </p>
+	 * Elements, that
 	 * have same position in both lists and are equal to each other are filtered
-	 * out. </p> {@code null equals null}. {@code null} is kept in list only, if
+	 * out.
+	 * </p>
+	 * {@code null equals null}. {@code null} is kept in list only, if
 	 * at this position in both list elemnt is {@code null} or other list does
-	 * not have this position. </p> Resulting list size is always equal to size
+	 * not have this position.
+	 * </p>
+	 * Resulting list size is always equal to size
 	 * of longer list.
 	 *
 	 * @param <C>
@@ -464,7 +470,6 @@ public class UtilList {
 	}
 
 	private UtilList() {
-
 		// Singleton
 	}
 }

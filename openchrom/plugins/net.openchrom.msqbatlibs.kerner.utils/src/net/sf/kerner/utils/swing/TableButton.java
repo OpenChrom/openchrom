@@ -38,7 +38,6 @@ public class TableButton extends JButton implements TableCellRenderer, TableCell
 	private int selectedRow;
 
 	public TableButton(final String text) {
-
 		super(text);
 		addActionListener(new ActionListener() {
 

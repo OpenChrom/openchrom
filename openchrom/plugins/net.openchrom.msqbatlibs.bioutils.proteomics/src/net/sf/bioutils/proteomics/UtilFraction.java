@@ -111,7 +111,9 @@ public class UtilFraction {
 
 	/**
 	 * Gets all {@link Peak peaks} from all {@link Fraction fractions} which are
-	 * provided by given {@link Iterable} {@code fractions}. An array of {@link Filter Filters} may be provided to <b>exclude non-matching</b> {@link Peak peaks} from result.</p> Result has the same ordering as given
+	 * provided by given {@link Iterable} {@code fractions}. An array of {@link Filter Filters} may be provided to <b>exclude non-matching</b> {@link Peak peaks} from result.
+	 * </p>
+	 * Result has the same ordering as given
 	 * by
 	 * <ol>
 	 * <li>{@code fraction's} {@link Iterator} over {@link Peak peaks}</li>

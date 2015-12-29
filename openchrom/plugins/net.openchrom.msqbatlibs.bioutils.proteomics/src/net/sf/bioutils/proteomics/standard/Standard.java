@@ -16,7 +16,9 @@ import net.sf.bioutils.proteomics.peak.Peak;
 /**
  *
  * A {@link Standard} is a {@link Peak} that is used to normalize one or more
- * other {@link Peak Peak's} intensities or masses. </p> Its typically spiked
+ * other {@link Peak Peak's} intensities or masses.
+ * </p>
+ * Its typically spiked
  * into a sample during sample preparation or processing.
  *
  * <p>

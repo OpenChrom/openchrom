@@ -49,7 +49,6 @@ public class RangeIntegerDummy extends VeryAbstractIntegerRange implements Range
 	 * 
 	 */
 	public RangeIntegerDummy() {
-
 		this.start = 0;
 		this.stop = 0;
 	}
@@ -60,7 +59,6 @@ public class RangeIntegerDummy extends VeryAbstractIntegerRange implements Range
 	 * 
 	 */
 	public RangeIntegerDummy(int start, int stop) {
-
 		this.start = start;
 		this.stop = stop;
 	}

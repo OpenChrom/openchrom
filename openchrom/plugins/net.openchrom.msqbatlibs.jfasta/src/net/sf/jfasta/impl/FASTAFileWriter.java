@@ -70,7 +70,6 @@ public class FASTAFileWriter extends AbstractBufferedWriter implements ObjectWri
 	 *             if file is not accessible
 	 */
 	public FASTAFileWriter(final File file) throws IOException {
-
 		super(file);
 	}
 
@@ -82,7 +81,6 @@ public class FASTAFileWriter extends AbstractBufferedWriter implements ObjectWri
 	 *            output stream to write to
 	 */
 	public FASTAFileWriter(final OutputStream stream) {
-
 		super(stream);
 	}
 
@@ -94,7 +92,6 @@ public class FASTAFileWriter extends AbstractBufferedWriter implements ObjectWri
 	 *            writer to write to
 	 */
 	public FASTAFileWriter(final Writer writer) {
-
 		super(writer);
 	}
 

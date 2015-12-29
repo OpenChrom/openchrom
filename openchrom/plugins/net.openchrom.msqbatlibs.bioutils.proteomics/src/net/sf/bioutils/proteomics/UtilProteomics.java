@@ -28,6 +28,7 @@ public class UtilProteomics {
 	private final static Map<Character, AminoAcid> molMassesChar = new HashMap<Character, AminoAcid>();
 	private final static Map<String, AminoAcid> molMassesString = new HashMap<String, AminoAcid>();
 	private final static double terminiWeight = 18.0152;
+
 	static {
 		for(final AminoAcid p : AminoAcid.values()) {
 			molMassesChar.put(p.getSingleCharIdent(), p);
@@ -91,6 +92,5 @@ public class UtilProteomics {
 	}
 
 	private UtilProteomics() {
-
 	}
 }

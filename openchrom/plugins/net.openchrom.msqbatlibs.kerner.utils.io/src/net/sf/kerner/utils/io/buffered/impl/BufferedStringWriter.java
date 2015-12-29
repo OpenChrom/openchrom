@@ -111,7 +111,6 @@ public class BufferedStringWriter extends AbstractBufferedWriter implements Char
 	 *             if {@code file} is not accessible
 	 */
 	public BufferedStringWriter(File file) throws IOException {
-
 		super(file);
 	}
 
@@ -124,7 +123,6 @@ public class BufferedStringWriter extends AbstractBufferedWriter implements Char
 	 *            writer to which is written
 	 */
 	public BufferedStringWriter(Writer writer) {
-
 		super(writer);
 	}
 
@@ -139,7 +137,6 @@ public class BufferedStringWriter extends AbstractBufferedWriter implements Char
 	 * @throws IOException
 	 */
 	public BufferedStringWriter(OutputStream stream) {
-
 		super(stream);
 	}
 

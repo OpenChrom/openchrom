@@ -50,22 +50,18 @@ public class SampleBean implements SampleModifiable {
 	private List<Peak> peaks = new ArrayList<Peak>();
 
 	public SampleBean() {
-
 		this(null, null, null, null, null);
 	}
 
 	public SampleBean(final Sample template) {
-
 		this(template.getName(), template.getUser(), template.getNameBase(), template.getPeaks(), template.getProperties());
 	}
 
 	public SampleBean(final Sample template, final String newName) {
-
 		this(newName, template.getUser(), template.getNameBase(), template.getPeaks(), template.getProperties());
 	}
 
 	public SampleBean(final Sample template, final String newName, final boolean empty) {
-
 		this(newName, template.getUser(), template.getNameBase(), null, template.getProperties());
 		if(!empty) {
 			setPeaks(template.getPeaks());
@@ -73,22 +69,18 @@ public class SampleBean implements SampleModifiable {
 	}
 
 	public SampleBean(final String name) {
-
 		this(name, null, null, null, null);
 	}
 
 	public SampleBean(final String name, final Collection<? extends Peak> peaks) {
-
 		this(name, null, null, peaks, null);
 	}
 
 	public SampleBean(final String name, final User user, final String baseName) {
-
 		this(name, user, baseName, null, null);
 	}
 
 	public SampleBean(final String name, final User user, final String baseName, final Collection<? extends Peak> peaks, final MapList<String, Object> properties) {
-
 		this.id = cnt++;
 		if(properties != null) {
 			this.properties.putAll(properties);

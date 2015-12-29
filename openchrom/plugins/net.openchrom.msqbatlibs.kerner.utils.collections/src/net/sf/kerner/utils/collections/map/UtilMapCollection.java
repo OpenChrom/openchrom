@@ -14,6 +14,5 @@ package net.sf.kerner.utils.collections.map;
 public class UtilMapCollection {
 
 	private UtilMapCollection() {
-
 	}
 }

@@ -47,7 +47,6 @@ public abstract class AbstractBufferedWriter implements GenericBufferedWriter {
 	 *             if opening file for writing fails
 	 */
 	public AbstractBufferedWriter(final File file) throws IOException {
-
 		synchronized(AbstractBufferedWriter.class) {
 			UtilFile.fileCheck(file, true);
 			writer = new BufferedWriter(new FileWriter(file));
@@ -61,7 +60,6 @@ public abstract class AbstractBufferedWriter implements GenericBufferedWriter {
 	 *            OutputStream to write to
 	 */
 	public AbstractBufferedWriter(final OutputStream stream) {
-
 		synchronized(AbstractBufferedWriter.class) {
 			writer = new BufferedWriter(UtilIO.outputStreamToWriter(stream));
 		}
@@ -74,7 +72,6 @@ public abstract class AbstractBufferedWriter implements GenericBufferedWriter {
 	 *            writer to write to
 	 */
 	public AbstractBufferedWriter(final Writer writer) {
-
 		synchronized(AbstractBufferedWriter.class) {
 			this.writer = new BufferedWriter(writer);
 		}

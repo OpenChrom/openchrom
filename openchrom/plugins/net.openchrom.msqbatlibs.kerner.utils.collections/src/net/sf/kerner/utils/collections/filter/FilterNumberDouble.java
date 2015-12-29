@@ -24,7 +24,6 @@ public abstract class FilterNumberDouble<T> implements Filter<T> {
 	private final RangeDouble range;
 
 	public FilterNumberDouble(final double value, final TYPE type) {
-
 		switch(type) {
 			case EXACT:
 				range = new RangeDoubleDummy(value, value);
@@ -41,7 +40,6 @@ public abstract class FilterNumberDouble<T> implements Filter<T> {
 	}
 
 	public FilterNumberDouble(final RangeDouble range) {
-
 		this.range = range;
 	}
 

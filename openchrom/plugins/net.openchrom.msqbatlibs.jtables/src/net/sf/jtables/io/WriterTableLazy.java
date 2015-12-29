@@ -40,7 +40,6 @@ public class WriterTableLazy extends LazyStringWriter {
 	 *            {@link net.sf.jtables.table.Table Table} to write
 	 */
 	public WriterTableLazy(Table<?> table) {
-
 		super(table.toString());
 	}
 }

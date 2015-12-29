@@ -55,7 +55,6 @@ public abstract class AbstractIOIterator<E> extends AbstractBufferedReader imple
 	 * @throws IOException
 	 */
 	public AbstractIOIterator(BufferedReader reader) throws IOException {
-
 		super(reader);
 	}
 
@@ -67,7 +66,6 @@ public abstract class AbstractIOIterator<E> extends AbstractBufferedReader imple
 	 * @throws IOException
 	 */
 	public AbstractIOIterator(File file) throws IOException {
-
 		super(file);
 	}
 
@@ -80,7 +78,6 @@ public abstract class AbstractIOIterator<E> extends AbstractBufferedReader imple
 	 *             if reading fails
 	 */
 	public AbstractIOIterator(InputStream stream) throws IOException {
-
 		super(stream);
 	}
 
@@ -93,7 +90,6 @@ public abstract class AbstractIOIterator<E> extends AbstractBufferedReader imple
 	 *             if reading fails
 	 */
 	public AbstractIOIterator(Reader reader) throws IOException {
-
 		super(reader);
 	}
 

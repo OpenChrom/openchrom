@@ -37,7 +37,6 @@ public class ThreadPoolExecutorNotifying extends ThreadPoolExecutor {
 		private String id;
 
 		DefaultThreadFactory() {
-
 			final SecurityManager s = System.getSecurityManager();
 			group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
 		}
@@ -74,12 +73,10 @@ public class ThreadPoolExecutorNotifying extends ThreadPoolExecutor {
 	private final List<FutureTaskNotifying.ListenerDone> listeners = new ArrayList<FutureTaskNotifying.ListenerDone>();
 
 	public ThreadPoolExecutorNotifying(final int corePoolSize, final int maximumPoolSize, final long keepAliveTime, final TimeUnit unit, final BlockingQueue<Runnable> workQueue) {
-
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
 	}
 
 	public ThreadPoolExecutorNotifying(final int corePoolSize, final int maximumPoolSize, final long keepAliveTime, final TimeUnit unit, final BlockingQueue<Runnable> workQueue, final RejectedExecutionHandler handler) {
-
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
 	}
 

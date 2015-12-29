@@ -25,18 +25,15 @@ public class FrequenciesList<T extends Frequency> implements Frequencies<T>, Lis
 	private final List<T> delegate;
 
 	public FrequenciesList() {
-
 		this.delegate = UtilList.newList();
 	}
 
 	public FrequenciesList(final Collection<T> template) {
-
 		this.delegate = UtilList.newList();
 		addAll(template);
 	}
 
 	public FrequenciesList(final FactoryList<T> delegateFactory) {
-
 		this.delegate = delegateFactory.createCollection();
 	}
 

@@ -30,7 +30,6 @@ public class FilterPeakMaxInt implements Filter<ProviderIntensity> {
 	private volatile int cnt;
 
 	public FilterPeakMaxInt(final Collection<? extends ProviderIntensity> peaks, final int numElements) {
-
 		this.numElements = numElements;
 		if(peaks == null || peaks.isEmpty()) {
 			// filter only on numElements

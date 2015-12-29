@@ -471,6 +471,5 @@ public class UtilMap {
 	}
 
 	private UtilMap() {
-
 	}
 }

@@ -73,7 +73,6 @@ public class KeyValue<K, V> implements Entry<K, V>, Pair<K, V> {
 	 *             if given {@code key} is {@code null}
 	 */
 	public KeyValue(final K key) {
-
 		if(key == null)
 			throw new NullPointerException("key must not be null");
 		this.key = key;
@@ -91,7 +90,6 @@ public class KeyValue<K, V> implements Entry<K, V>, Pair<K, V> {
 	 *             if given {@code key} is {@code null}
 	 */
 	public KeyValue(final K key, final V value) {
-
 		if(key == null)
 			throw new NullPointerException("key must not be null");
 		this.key = key;
@@ -106,7 +104,6 @@ public class KeyValue<K, V> implements Entry<K, V>, Pair<K, V> {
 	 *            {@code KeyValue} template
 	 */
 	public KeyValue(final KeyValue<K, V> template) {
-
 		this(template.getKey(), template.getValue());
 	}
 

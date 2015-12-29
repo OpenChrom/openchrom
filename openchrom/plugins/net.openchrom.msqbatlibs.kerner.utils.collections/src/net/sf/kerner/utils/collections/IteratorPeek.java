@@ -21,7 +21,6 @@ public class IteratorPeek<T> implements Iterator<T> {
 	private boolean done = false;
 
 	public IteratorPeek(final Iterator<T> iterator) {
-
 		super();
 		this.iterator = iterator;
 		performPeak();

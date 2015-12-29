@@ -25,7 +25,6 @@ public class ParserMascotReport implements IOIterator<MascotReportRow>, Transfor
 	private ReaderTableString reader;
 
 	public ParserMascotReport(File file) throws IOException {
-
 		reader = new ReaderTableString(file, true, false);
 		reader.addVisitorFirstLine(new VisitorFirstLine(FileFormatMascotReport.PROT_HIT_NUM));
 	}

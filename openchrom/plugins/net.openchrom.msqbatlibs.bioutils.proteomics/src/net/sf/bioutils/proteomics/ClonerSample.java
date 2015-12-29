@@ -20,7 +20,6 @@ public class ClonerSample extends ClonerImpl<Sample> {
 	private final ClonerPeak clonerPeak = new ClonerPeak();
 
 	public ClonerSample(final String newName) {
-
 		this.newName = newName;
 	}
 

@@ -52,7 +52,6 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
 		private final boolean isSelectedColumn;
 
 		public ColumnAction(final boolean isSelectedColumn, final boolean isAdjust) {
-
 			this.isSelectedColumn = isSelectedColumn;
 			this.isAdjust = isAdjust;
 		}
@@ -87,7 +86,6 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
 		private final boolean isToggleLarger;
 
 		public ToggleAction(final boolean isToggleDynamic, final boolean isToggleLarger) {
-
 			this.isToggleDynamic = isToggleDynamic;
 			this.isToggleLarger = isToggleLarger;
 		}
@@ -117,7 +115,6 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
 	 * Specify the table and use default spacing
 	 */
 	public TableColumnAdjuster(final JTable table) {
-
 		this(table, 6);
 	}
 
@@ -125,7 +122,6 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
 	 * Specify the table and spacing
 	 */
 	public TableColumnAdjuster(final JTable table, final int spacing) {
-
 		this.table = table;
 		this.spacing = spacing;
 		setColumnHeaderIncluded(true);

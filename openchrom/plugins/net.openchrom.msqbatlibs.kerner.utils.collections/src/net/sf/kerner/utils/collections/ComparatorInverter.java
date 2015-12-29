@@ -39,7 +39,6 @@ public class ComparatorInverter<T> implements Comparator<T> {
 	protected final Comparator<T> c;
 
 	public ComparatorInverter(final Comparator<T> c) {
-
 		Util.checkForNull(c);
 		this.c = c;
 	}

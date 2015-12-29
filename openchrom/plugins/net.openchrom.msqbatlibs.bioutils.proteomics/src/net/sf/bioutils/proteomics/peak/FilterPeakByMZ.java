@@ -21,12 +21,10 @@ public class FilterPeakByMZ implements Filter<Peak> {
 	private final double mz;
 
 	public FilterPeakByMZ(final double mz) {
-
 		this(mz, DEFAULT_ACCURACY);
 	}
 
 	public FilterPeakByMZ(final double mz, final int accuracy) {
-
 		this.accuracy = accuracy;
 		this.mz = mz;
 	}

@@ -16,7 +16,6 @@ public class TransformerLogImpl extends TransformerLogAbstract {
 	private final double base;
 
 	public TransformerLogImpl(final double base) {
-
 		this.base = base;
 	}
 

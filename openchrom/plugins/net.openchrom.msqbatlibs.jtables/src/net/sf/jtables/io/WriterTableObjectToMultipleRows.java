@@ -23,17 +23,14 @@ import net.sf.jtables.table.Row;
 public abstract class WriterTableObjectToMultipleRows<T> extends WriterTableObjectToRowsAbstract<T> {
 
 	public WriterTableObjectToMultipleRows(final File file) throws IOException {
-
 		super(file);
 	}
 
 	public WriterTableObjectToMultipleRows(final OutputStream stream) throws IOException {
-
 		super(stream);
 	}
 
 	public WriterTableObjectToMultipleRows(final Writer writer) throws IOException {
-
 		super(writer);
 	}
 

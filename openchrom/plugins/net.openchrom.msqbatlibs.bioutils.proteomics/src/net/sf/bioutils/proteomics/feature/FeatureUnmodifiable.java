@@ -24,7 +24,6 @@ import net.sf.bioutils.proteomics.peak.TransformerPeakToUnmodifiable;
 public class FeatureUnmodifiable extends PeakUnmodifiable implements FeatureAnnotatable {
 
 	public FeatureUnmodifiable(final Feature delegate) {
-
 		super(delegate);
 	}
 

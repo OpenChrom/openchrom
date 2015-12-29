@@ -22,7 +22,6 @@ public class MascotReportRowImpl implements MascotReportRow {
 	private final ParserFractionNumber parser = new ParserFractionNumber();
 
 	public MascotReportRowImpl(Row<String> element) {
-
 		this.row = element;
 	}
 

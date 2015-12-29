@@ -29,47 +29,38 @@ public abstract class ReaderTableObjectAbstract<T> implements IOIterator<T> {
 	private final static Logger logger = Logger.getLogger(ReaderTableObjectAbstract.class);
 
 	public ReaderTableObjectAbstract(final BufferedReader reader, final boolean columnIds, final boolean rowIds) throws IOException {
-
 		this.reader = new ReaderTableString(reader, columnIds, rowIds);
 	}
 
 	public ReaderTableObjectAbstract(final BufferedReader reader, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
-
 		this.reader = new ReaderTableString(reader, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableObjectAbstract(final File file) throws IOException {
-
 		this.reader = new ReaderTableString(file, true, false);
 	}
 
 	public ReaderTableObjectAbstract(final File file, final boolean columnIds, final boolean rowIds) throws IOException {
-
 		this.reader = new ReaderTableString(file, columnIds, rowIds);
 	}
 
 	public ReaderTableObjectAbstract(final File file, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
-
 		this.reader = new ReaderTableString(file, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableObjectAbstract(final InputStream stream, final boolean columnIds, final boolean rowIds) throws IOException {
-
 		this.reader = new ReaderTableString(stream, columnIds, rowIds);
 	}
 
 	public ReaderTableObjectAbstract(final InputStream stream, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
-
 		this.reader = new ReaderTableString(stream, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableObjectAbstract(final Reader reader, final boolean columnIds, final boolean rowIds) throws IOException {
-
 		this.reader = new ReaderTableString(reader, columnIds, rowIds);
 	}
 
 	public ReaderTableObjectAbstract(final Reader reader, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
-
 		this.reader = new ReaderTableString(reader, columnIds, rowIds, delim);
 	}
 

@@ -22,12 +22,10 @@ public class VisitorFirstLine implements Filter<String> {
 	private final Collection<String> needsToMatch;
 
 	public VisitorFirstLine(Collection<String> needsToMatch) {
-
 		this.needsToMatch = new HashSet<String>(needsToMatch);
 	}
 
 	public VisitorFirstLine(String needsToMatch) {
-
 		this(Arrays.asList(needsToMatch));
 	}
 

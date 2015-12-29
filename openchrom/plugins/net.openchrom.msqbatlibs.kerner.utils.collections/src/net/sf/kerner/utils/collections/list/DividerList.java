@@ -21,7 +21,6 @@ public class DividerList<T> implements Transformer<List<T>, List<List<T>>> {
 	private final int partitionSize;
 
 	public DividerList(int partitionSize) {
-
 		super();
 		this.partitionSize = partitionSize;
 	}

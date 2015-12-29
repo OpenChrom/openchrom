@@ -21,17 +21,14 @@ import java.util.Iterator;
 public abstract class WriterTableObjectToRowsAbstract<T> extends WriterTableString {
 
 	public WriterTableObjectToRowsAbstract(final File file) throws IOException {
-
 		super(file);
 	}
 
 	public WriterTableObjectToRowsAbstract(final OutputStream stream) throws IOException {
-
 		super(stream);
 	}
 
 	public WriterTableObjectToRowsAbstract(final Writer writer) throws IOException {
-
 		super(writer);
 	}
 

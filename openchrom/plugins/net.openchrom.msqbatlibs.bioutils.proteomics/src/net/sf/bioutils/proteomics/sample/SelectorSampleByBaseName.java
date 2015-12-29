@@ -20,7 +20,6 @@ public class SelectorSampleByBaseName<T extends Sample> implements Selector<T> {
 	private final String name;
 
 	public SelectorSampleByBaseName(final String name) {
-
 		this.name = name;
 	}
 

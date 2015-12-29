@@ -24,12 +24,10 @@ public class KeyValueViewValues<V> extends ViewKeyValueValue<V> implements Trans
 	private final FactoryList<V> factory;
 
 	public KeyValueViewValues(FactoryList<V> factory) {
-
 		this.factory = factory;
 	}
 
 	public KeyValueViewValues() {
-
 		this(new ArrayListFactory<V>());
 	}
 

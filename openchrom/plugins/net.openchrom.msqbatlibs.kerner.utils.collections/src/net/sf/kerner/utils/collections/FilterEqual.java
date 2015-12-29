@@ -22,7 +22,6 @@ public class FilterEqual<T> implements Filter<T> {
 	private final Equalator<T> equalator;
 
 	public FilterEqual(final Collection<? extends T> elements, final Equalator<T> equalator) {
-
 		super();
 		this.elements = elements;
 		this.equalator = equalator;

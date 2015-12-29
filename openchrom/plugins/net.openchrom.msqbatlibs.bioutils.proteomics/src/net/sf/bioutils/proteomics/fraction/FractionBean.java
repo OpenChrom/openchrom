@@ -30,22 +30,18 @@ public class FractionBean implements Fraction {
 	private Set<Standard> standards = new LinkedHashSet<Standard>(0);
 
 	public FractionBean() {
-
 	}
 
 	public FractionBean(final int fractionIndex) {
-
 		this.fractionIndex = fractionIndex;
 	}
 
 	public FractionBean(final Sample sample, final int fractionIndex) {
-
 		this.fractionIndex = fractionIndex;
 		this.sample = sample;
 	}
 
 	public FractionBean(final String name, final int fractionIndex, final Collection<? extends Peak> peaks, final Collection<? extends Standard> standards) {
-
 		this.name = name;
 		this.fractionIndex = fractionIndex;
 		if(peaks != null)

@@ -48,6 +48,5 @@ public class RangeDoubleUtils {
 	}
 
 	private RangeDoubleUtils() {
-
 	}
 }

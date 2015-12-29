@@ -42,7 +42,6 @@ public class Point {
 	 *            Y-Coordinate
 	 */
 	public Point(double x, double y) {
-
 		this.y = y;
 		this.x = x;
 	}
@@ -54,7 +53,6 @@ public class Point {
 	 *            {@code Point} to copy
 	 */
 	public Point(Point template) {
-
 		this(template.x, template.y);
 	}
 

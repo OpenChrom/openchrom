@@ -23,11 +23,9 @@ public class MGFDialectProteinPilot {
 	public final static String REGEX_SPECTRUM = ".*Locus:([^\\s]+)[\\s].*";
 
 	public MGFDialectProteinPilot() {
-
 	}
 
 	public MGFDialectProteinPilot(final String title) {
-
 		this.title = title;
 	}
 

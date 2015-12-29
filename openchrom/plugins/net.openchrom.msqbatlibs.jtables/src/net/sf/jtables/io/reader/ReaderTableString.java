@@ -33,47 +33,38 @@ import net.sf.jtables.table.impl.TableString;
 public class ReaderTableString extends ReaderTableAbstract<String> {
 
 	public ReaderTableString(final BufferedReader reader, final boolean columnIds, final boolean rowIds) throws IOException {
-
 		super(reader, columnIds, rowIds);
 	}
 
 	public ReaderTableString(final BufferedReader reader, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
-
 		super(reader, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableString(final File file) throws IOException {
-
 		super(file);
 	}
 
 	public ReaderTableString(final File file, final boolean columnIds, final boolean rowIds) throws IOException {
-
 		super(file, columnIds, rowIds);
 	}
 
 	public ReaderTableString(final File file, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
-
 		super(file, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableString(final InputStream stream, final boolean columnIds, final boolean rowIds) throws IOException {
-
 		super(stream, columnIds, rowIds);
 	}
 
 	public ReaderTableString(final InputStream stream, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
-
 		super(stream, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableString(final Reader reader, final boolean columnIds, final boolean rowIds) throws IOException {
-
 		super(reader, columnIds, rowIds);
 	}
 
 	public ReaderTableString(final Reader reader, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
-
 		super(reader, columnIds, rowIds, delim);
 	}
 

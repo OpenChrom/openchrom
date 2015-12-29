@@ -41,19 +41,16 @@ public class SimpleMemoryMonitor implements MemoryMonitor {
 	};
 
 	public SimpleMemoryMonitor(LongUnit unit, long interval) {
-
 		super();
 		this.unit = unit;
 		this.interval = interval;
 	}
 
 	public SimpleMemoryMonitor(long interval) {
-
 		this(DEFAULT_UNIT, interval);
 	}
 
 	public SimpleMemoryMonitor() {
-
 		this(DEFAULT_UNIT, 2000);
 	}
 

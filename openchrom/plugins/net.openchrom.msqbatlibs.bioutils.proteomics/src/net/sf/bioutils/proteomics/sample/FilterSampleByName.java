@@ -18,12 +18,10 @@ public class FilterSampleByName implements Filter<Sample> {
 	private String name;
 
 	public FilterSampleByName() {
-
 		name = null;
 	}
 
 	public FilterSampleByName(final String name) {
-
 		this.name = name;
 	}
 

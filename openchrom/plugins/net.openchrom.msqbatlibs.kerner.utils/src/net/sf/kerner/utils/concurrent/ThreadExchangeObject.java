@@ -101,12 +101,10 @@ public class ThreadExchangeObject<T> {
 	private T t = null;
 
 	public ThreadExchangeObject() {
-
 		this(new Object());
 	}
 
 	public ThreadExchangeObject(final Object lock) {
-
 		this.lock = lock;
 	}
 

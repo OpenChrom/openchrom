@@ -66,26 +66,22 @@ public class PeptideSearcher {
 	public final static int DEFAULT_CACHE_SIZE = 10000;
 
 	public PeptideSearcher() {
-
 		cache = new Cache<String, List<String>>(DEFAULT_CACHE_SIZE);
 		cacheFASTAFileMap = new HashMap<File, FASTAFile>();
 	}
 
 	public PeptideSearcher(final Cache<String, List<String>> cache) {
-
 		this.cache = cache;
 		cacheFASTAFileMap = new HashMap<File, FASTAFile>();
 	}
 
 	public PeptideSearcher(final Cache<String, List<String>> cache, final Map<File, FASTAFile> cacheFASTAFileMap) {
-
 		this.cache = cache;
 		this.cacheFASTAFileMap = cacheFASTAFileMap;
 		logger.info("Initiated with given cache (capacity of " + cache.getCapacity() + ", size of " + cache.getSize() + ", hash " + cache.hashCode() + ")");
 	}
 
 	public PeptideSearcher(final int cacheSize) {
-
 		cache = new Cache<String, List<String>>(cacheSize);
 		cacheFASTAFileMap = new HashMap<File, FASTAFile>();
 	}

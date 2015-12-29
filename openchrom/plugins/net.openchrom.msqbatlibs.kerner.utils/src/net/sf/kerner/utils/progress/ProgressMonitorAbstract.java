@@ -53,7 +53,6 @@ public class ProgressMonitorAbstract implements ProgressMonitor {
 	}
 
 	public ProgressMonitorAbstract() {
-
 	}
 
 	public synchronized boolean isCancelled() {

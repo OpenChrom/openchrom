@@ -96,6 +96,5 @@ public class UtilString {
 	}
 
 	private UtilString() {
-
 	}
 }

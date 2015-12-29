@@ -42,42 +42,34 @@ import net.sf.jtables.table.impl.TableInteger;
 public class ReaderTableInteger extends ReaderTableAbstract<Integer> {
 
 	public ReaderTableInteger(BufferedReader reader, boolean columnIds, boolean rowIds, String delim) throws IOException {
-
 		super(reader, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableInteger(BufferedReader reader, boolean columnIds, boolean rowIds) throws IOException {
-
 		super(reader, columnIds, rowIds);
 	}
 
 	public ReaderTableInteger(File file, boolean columnIds, boolean rowIds, String delim) throws IOException {
-
 		super(file, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableInteger(File file, boolean columnIds, boolean rowIds) throws IOException {
-
 		super(file, columnIds, rowIds);
 	}
 
 	public ReaderTableInteger(InputStream stream, boolean columnIds, boolean rowIds, String delim) throws IOException {
-
 		super(stream, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableInteger(InputStream stream, boolean columnIds, boolean rowIds) throws IOException {
-
 		super(stream, columnIds, rowIds);
 	}
 
 	public ReaderTableInteger(Reader reader, boolean columnIds, boolean rowIds, String delim) throws IOException {
-
 		super(reader, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableInteger(Reader reader, boolean columnIds, boolean rowIds) throws IOException {
-
 		super(reader, columnIds, rowIds);
 	}
 

@@ -20,7 +20,6 @@ import net.sf.kerner.utils.collections.set.TransformerSet;
 public class TransformerObjectToHashCode extends TransformerAbstract<Object, Integer> implements TransformerSet<Object, Integer> {
 
 	public TransformerObjectToHashCode() {
-
 		super(new FactoryLinkedHashSet<Integer>());
 	}
 

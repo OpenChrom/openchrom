@@ -18,21 +18,17 @@ import java.util.Set;
 public class MapSetObject extends MapSet<Object, Object> {
 
 	public MapSetObject() {
-
 	}
 
 	public MapSetObject(final Map<Object, Set<Object>> map) {
-
 		super(map);
 	}
 
 	public MapSetObject(final Map<Object, Set<Object>> map, final MapCollectionAbstract<Object, Object, Set<Object>> template) {
-
 		super(map, template);
 	}
 
 	public MapSetObject(final MapCollectionAbstract<Object, Object, Set<Object>> template) {
-
 		super(template);
 	}
 

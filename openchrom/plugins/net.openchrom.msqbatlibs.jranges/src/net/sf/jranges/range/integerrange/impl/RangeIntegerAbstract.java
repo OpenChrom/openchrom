@@ -74,7 +74,6 @@ public abstract class RangeIntegerAbstract extends VeryAbstractIntegerRange impl
 	 *             if {@code limit1 > start || limit2 < stop || start > stop}
 	 */
 	public RangeIntegerAbstract(final int start, final int stop, final int limit1, final int limit2) throws RangeException {
-
 		if(limit1 > start || limit2 < stop || start > stop)
 			throw new RangeException("invalid range" + " start=" + start + " stop=" + stop + " limit1=" + limit1 + " limit2=" + limit2);
 		interval = 1;
@@ -107,7 +106,6 @@ public abstract class RangeIntegerAbstract extends VeryAbstractIntegerRange impl
 	 *             if {@code limit1 > start || limit2 < stop || start > stop || (((stop - start) % interval) != 0)}
 	 */
 	public RangeIntegerAbstract(final int start, final int stop, final int limit1, final int limit2, final int interval) throws RangeException {
-
 		if(limit1 > start || limit2 < stop || start > stop || (((stop - start) % interval) != 0))
 			throw new RangeException("invalid range" + " start=" + start + " stop=" + stop + " limit1=" + limit1 + " limit2=" + limit2 + "interval=" + interval);
 		this.limit1 = limit1;

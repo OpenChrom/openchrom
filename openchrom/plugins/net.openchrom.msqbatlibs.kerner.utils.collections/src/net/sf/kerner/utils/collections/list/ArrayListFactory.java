@@ -43,12 +43,10 @@ public class ArrayListFactory<E> implements FactoryList<E> {
 	private final int size;
 
 	public ArrayListFactory() {
-
 		this.size = -1;
 	}
 
 	public ArrayListFactory(final int size) {
-
 		this.size = size;
 	}
 

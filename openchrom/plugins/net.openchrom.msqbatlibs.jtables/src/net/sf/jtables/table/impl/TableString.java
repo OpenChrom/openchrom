@@ -31,12 +31,10 @@ import net.sf.kerner.utils.collections.list.UtilList;
 public class TableString extends AnnotatedMutableTableImpl<String> {
 
 	public TableString() {
-
 		super();
 	}
 
 	public TableString(final List<Row<String>> rows) {
-
 		super(rows);
 	}
 

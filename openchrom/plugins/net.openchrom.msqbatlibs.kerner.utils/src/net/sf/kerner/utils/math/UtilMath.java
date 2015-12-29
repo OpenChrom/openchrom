@@ -383,7 +383,6 @@ public class UtilMath {
 	}
 
 	private UtilMath() {
-
 	}
 
 	public int getIndexOfMax(final List<? extends Number> values) {

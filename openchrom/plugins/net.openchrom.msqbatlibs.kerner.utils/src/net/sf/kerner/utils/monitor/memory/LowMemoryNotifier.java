@@ -42,7 +42,6 @@ public class LowMemoryNotifier {
 	private final Collection<Listener> listeners = new ArrayList<Listener>();
 
 	private LowMemoryNotifier() {
-
 		final MemoryMXBean mbean = ManagementFactory.getMemoryMXBean();
 		final NotificationEmitter emitter = (NotificationEmitter)mbean;
 		emitter.addNotificationListener(new NotificationListener() {

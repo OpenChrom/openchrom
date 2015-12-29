@@ -51,49 +51,41 @@ class FASTASequenceReader extends AbstractBufferedReader {
 	protected final char[] alphabet;
 
 	public FASTASequenceReader(final BufferedReader reader) throws IOException {
-
 		super(reader);
 		alphabet = null;
 	}
 
 	public FASTASequenceReader(final BufferedReader reader, final char[] alphabet) throws IOException {
-
 		super(reader);
 		this.alphabet = alphabet;
 	}
 
 	public FASTASequenceReader(final File file) throws IOException {
-
 		super(file);
 		alphabet = null;
 	}
 
 	public FASTASequenceReader(final File file, final char[] alphabet) throws IOException {
-
 		super(file);
 		this.alphabet = alphabet;
 	}
 
 	public FASTASequenceReader(final InputStream stream) throws IOException {
-
 		super(stream);
 		alphabet = null;
 	}
 
 	public FASTASequenceReader(final InputStream stream, final char[] alphabet) throws IOException {
-
 		super(stream);
 		this.alphabet = alphabet;
 	}
 
 	public FASTASequenceReader(final Reader reader) throws IOException {
-
 		super(reader);
 		alphabet = null;
 	}
 
 	public FASTASequenceReader(final Reader reader, final char[] alphabet) throws IOException {
-
 		super(reader);
 		this.alphabet = alphabet;
 	}

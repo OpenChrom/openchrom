@@ -62,7 +62,6 @@ public class MultiLineLabel extends JLabel {
 	 * Creates a new empty label.
 	 */
 	public MultiLineLabel() {
-
 		super();
 		setUI(MultiLineLabelUI.labelUI);
 	}
@@ -74,7 +73,6 @@ public class MultiLineLabel extends JLabel {
 	 *            the value of the label
 	 */
 	public MultiLineLabel(final String text) {
-
 		this();
 		setText(text);
 	}

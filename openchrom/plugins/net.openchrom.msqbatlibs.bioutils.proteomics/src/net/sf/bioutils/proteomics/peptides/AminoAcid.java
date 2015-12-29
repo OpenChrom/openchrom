@@ -15,7 +15,8 @@ import net.sf.bioutils.proteomics.exception.ExceptionUnknownAminoAcid;
 
 /**
  * 
- * </p> <b>Note:</b> masses are monoisotopic.
+ * </p>
+ * <b>Note:</b> masses are monoisotopic.
  * 
  * <p>
  * <b>Example:</b><br>
@@ -104,7 +105,6 @@ public enum AminoAcid {
 	private final String trippleCharIdent;
 
 	private AminoAcid(final String trippleCharIdent, final double molWeight) {
-
 		this.molWeight = molWeight;
 		this.trippleCharIdent = trippleCharIdent;
 	}

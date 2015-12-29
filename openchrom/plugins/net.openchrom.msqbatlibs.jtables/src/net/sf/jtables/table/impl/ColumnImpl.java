@@ -40,18 +40,15 @@ import net.sf.jtables.table.Column;
 public class ColumnImpl<T> extends RowImpl<T> implements Column<T> {
 
 	public ColumnImpl() {
-
 		// TODO Auto-generated constructor stub
 	}
 
 	public ColumnImpl(List<T> elements) {
-
 		super(elements);
 		// TODO Auto-generated constructor stub
 	}
 
 	public ColumnImpl(T... elements) {
-
 		super(elements);
 		// TODO Auto-generated constructor stub
 	}

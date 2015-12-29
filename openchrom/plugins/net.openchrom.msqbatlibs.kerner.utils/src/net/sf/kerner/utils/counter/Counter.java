@@ -56,7 +56,6 @@ public class Counter {
 	 * will do nothing on call of {@link Counter#perform()}.
 	 */
 	public Counter() {
-
 		// all zero
 		initCnt = 0;
 	}
@@ -66,7 +65,6 @@ public class Counter {
 	 * will execute [@code runner} on call of {@link Counter#perform()}.
 	 */
 	public Counter(Runnable runner) {
-
 		// all zero
 		initCnt = 0;
 		this.runner.add(runner);
@@ -81,7 +79,6 @@ public class Counter {
 	 *            Initial counting for this {@code Counter}.
 	 */
 	public Counter(int count) {
-
 		synchronized(Counter.class) {
 			this.cnt = count;
 			this.initCnt = count;
@@ -97,7 +94,6 @@ public class Counter {
 	 *            Initial counting for this {@code Counter}.
 	 */
 	public Counter(int count, Runnable runner) {
-
 		synchronized(Counter.class) {
 			this.cnt = count;
 			this.initCnt = count;

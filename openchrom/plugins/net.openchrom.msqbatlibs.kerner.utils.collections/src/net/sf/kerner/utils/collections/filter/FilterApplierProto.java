@@ -24,22 +24,18 @@ public class FilterApplierProto<E> extends ApplierAbstract implements FilterAppl
 	private List<Filter<E>> filters = UtilList.newList();
 
 	public FilterApplierProto() {
-
 		this(DEFAULT_FILTER_TYPE);
 	}
 
 	public FilterApplierProto(final Filter<E>... filters) {
-
 		this(DEFAULT_FILTER_TYPE, filters);
 	}
 
 	public FilterApplierProto(final TYPE type) {
-
 		super(type);
 	}
 
 	public FilterApplierProto(final TYPE type, final Filter<E>... filters) {
-
 		super(type);
 		for(final Filter<E> f : filters) {
 			this.filters.add(f);

@@ -18,7 +18,6 @@ public enum Modification {
 	private final double molWeight;
 
 	private Modification(final AminoAcid parent, final double molWeight) {
-
 		this.molWeight = molWeight;
 		this.parent = parent;
 	}

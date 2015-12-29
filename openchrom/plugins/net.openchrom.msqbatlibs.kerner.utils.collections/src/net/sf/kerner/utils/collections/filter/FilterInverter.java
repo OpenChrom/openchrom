@@ -37,7 +37,6 @@ public class FilterInverter<E> implements Filter<E> {
 	protected final Filter<E> filter;
 
 	public FilterInverter(final Filter<E> filter) {
-
 		Util.checkForNull(filter);
 		this.filter = filter;
 	}

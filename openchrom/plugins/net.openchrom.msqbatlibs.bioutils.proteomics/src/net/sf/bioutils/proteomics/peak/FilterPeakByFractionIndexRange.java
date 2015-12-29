@@ -42,7 +42,6 @@ public class FilterPeakByFractionIndexRange implements Filter<Peak> {
 	 *            m/z range in which a peak's m/z must be in in order for this {@code Filter} t accept this peak
 	 */
 	public FilterPeakByFractionIndexRange(final RangeInteger range) {
-
 		this.range = range;
 	}
 

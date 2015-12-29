@@ -27,7 +27,6 @@ public class RawSpectrum implements Comparable<RawSpectrum> {
 	private RawSpectrum precursorSpectrum;
 
 	public RawSpectrum(String id, int index, Number[] numbersMz, Number[] numbersInt) {
-
 		super();
 		this.id = id;
 		this.index = index;

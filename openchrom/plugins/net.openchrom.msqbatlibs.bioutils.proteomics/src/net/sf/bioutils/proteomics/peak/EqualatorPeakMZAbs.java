@@ -20,7 +20,6 @@ public class EqualatorPeakMZAbs extends EqualatorAbstract<Peak> {
 	private final int accuracy;
 
 	public EqualatorPeakMZAbs(final int accuracy) {
-
 		super();
 		this.accuracy = accuracy;
 	}

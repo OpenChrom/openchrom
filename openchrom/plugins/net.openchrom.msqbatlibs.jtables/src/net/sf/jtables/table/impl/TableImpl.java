@@ -42,18 +42,15 @@ public class TableImpl<T> implements Table<T> {
 
 	// Constructor //
 	public TableImpl() {
-
 	}
 
 	public TableImpl(final List<Row<T>> rows) {
-
 		synchronized(rows) {
 			this.rows.addAll(rows);
 		}
 	}
 
 	public TableImpl(final Table<T> template) {
-
 		this(template.getRows());
 	}
 

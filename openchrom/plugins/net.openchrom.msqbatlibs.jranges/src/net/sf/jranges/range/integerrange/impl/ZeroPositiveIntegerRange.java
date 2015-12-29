@@ -36,12 +36,10 @@ import net.sf.jranges.range.RangeException;
 public class ZeroPositiveIntegerRange extends RangeIntegerAbstract {
 
 	public ZeroPositiveIntegerRange(int start, int stop) throws RangeException {
-
 		super(start, stop, 0, Integer.MAX_VALUE);
 	}
 
 	public ZeroPositiveIntegerRange(int start, int stop, int interval) throws RangeException {
-
 		super(start, stop, 0, Integer.MAX_VALUE, interval);
 	}
 

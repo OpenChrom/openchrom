@@ -53,7 +53,6 @@ public class PercentDoneCounter extends Counter {
 	 * @param totalElements
 	 */
 	public PercentDoneCounter(final int totalElements) {
-
 		if(totalElements <= 100) {
 			setInterval(1);
 		} else {

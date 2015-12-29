@@ -18,12 +18,10 @@ import net.sf.kerner.utils.collections.list.FactoryList;
 public class TransformerPeakToSampleName extends AbstractTransformingListFactory<ProviderSampleName, String> {
 
 	public TransformerPeakToSampleName() {
-
 		super();
 	}
 
 	public TransformerPeakToSampleName(final FactoryList<String> factory) {
-
 		super(factory);
 	}
 

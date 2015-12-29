@@ -19,22 +19,18 @@ public class TransformerSampleToName extends AbstractTransformingListFactory<Sam
 	private final boolean baseName;
 
 	public TransformerSampleToName() {
-
 		this(false);
 	}
 
 	public TransformerSampleToName(final boolean baseName) {
-
 		this.baseName = baseName;
 	}
 
 	public TransformerSampleToName(final FactoryList<String> factory) {
-
 		this(factory, false);
 	}
 
 	public TransformerSampleToName(final FactoryList<String> factory, final boolean baseName) {
-
 		super(factory);
 		this.baseName = baseName;
 	}

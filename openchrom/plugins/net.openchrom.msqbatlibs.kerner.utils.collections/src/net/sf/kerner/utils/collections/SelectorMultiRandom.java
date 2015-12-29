@@ -23,11 +23,9 @@ public class SelectorMultiRandom<T> implements SelectorMulti<T> {
 	private double prop = DEFAULT_PROP;
 
 	public SelectorMultiRandom() {
-
 	}
 
 	public SelectorMultiRandom(double prop) {
-
 		this.prop = prop;
 	}
 

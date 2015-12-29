@@ -31,11 +31,9 @@ public class ExecutorNotifying implements ExecutorService {
 	private int numCPUs;
 
 	public ExecutorNotifying() {
-
 	}
 
 	public ExecutorNotifying(final int numCPUs) {
-
 		this.numCPUs = numCPUs;
 		delegate = ThreadPoolExecutorNotifying.build(numCPUs);
 	}

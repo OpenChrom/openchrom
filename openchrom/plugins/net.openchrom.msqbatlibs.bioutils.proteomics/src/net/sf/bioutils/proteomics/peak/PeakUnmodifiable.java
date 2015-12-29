@@ -24,7 +24,6 @@ public class PeakUnmodifiable implements PeakAnnotatable {
 	protected final PeakAnnotatable delegate;
 
 	public PeakUnmodifiable(final Peak delegate) {
-
 		Util.checkForNull(delegate);
 		this.delegate = (PeakAnnotatable)delegate;
 	}

@@ -18,12 +18,10 @@ import net.sf.kerner.utils.collections.list.FactoryList;
 public class FactoryViewPeakToIntensity extends AbstractTransformingListFactory<Peak, ViewPeakToIntensity> {
 
 	public FactoryViewPeakToIntensity() {
-
 		super();
 	}
 
 	public FactoryViewPeakToIntensity(final FactoryList<ViewPeakToIntensity> factory) {
-
 		super(factory);
 	}
 

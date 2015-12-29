@@ -24,13 +24,11 @@ public class SelectorPeakMzFrac implements SelectorPeak {
 	private boolean ppm = DEFAULT_PPM;
 
 	public SelectorPeakMzFrac(double mz, int frac) {
-
 		this.mz = mz;
 		this.frac = frac;
 	}
 
 	public SelectorPeakMzFrac(Peak peak) {
-
 		this(peak.getMz(), peak.getFractionIndex());
 	}
 

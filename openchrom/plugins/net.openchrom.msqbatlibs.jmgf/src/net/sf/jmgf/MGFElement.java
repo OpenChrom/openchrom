@@ -46,12 +46,10 @@ public interface MGFElement {
 		private final String identifier;
 
 		private Identifier() {
-
 			this(null);
 		}
 
 		private Identifier(final String identifier) {
-
 			this.identifier = identifier;
 		}
 

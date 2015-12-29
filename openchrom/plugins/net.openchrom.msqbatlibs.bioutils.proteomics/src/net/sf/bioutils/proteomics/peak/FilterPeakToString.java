@@ -18,7 +18,6 @@ public class FilterPeakToString implements Filter<Peak> {
 	private final String text;
 
 	public FilterPeakToString(final String text) {
-
 		this.text = text;
 	}
 

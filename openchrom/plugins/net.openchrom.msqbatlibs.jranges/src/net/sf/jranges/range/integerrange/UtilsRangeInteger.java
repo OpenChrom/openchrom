@@ -27,7 +27,6 @@ import net.sf.kerner.utils.math.ArithmeticSavety;
 public class UtilsRangeInteger {
 
 	private UtilsRangeInteger() {
-
 		// singleton
 	}
 

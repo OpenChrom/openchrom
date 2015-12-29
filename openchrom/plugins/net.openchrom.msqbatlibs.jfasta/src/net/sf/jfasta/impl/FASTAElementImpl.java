@@ -60,39 +60,33 @@ public class FASTAElementImpl implements FASTAElement {
 	protected final StringBuilder sequence;
 
 	public FASTAElementImpl(final String header, final char[] sequence) {
-
 		this.header = header;
 		this.sequence = new StringBuilder(String.copyValueOf(sequence));
 	}
 
 	public FASTAElementImpl(final String header, final char[] sequence, final Map<String, Serializable> metainfo) {
-
 		this.header = header;
 		this.sequence = new StringBuilder(String.copyValueOf(sequence));
 		map.putAll(metainfo);
 	}
 
 	public FASTAElementImpl(final String header, final String sequence) {
-
 		this.header = header;
 		this.sequence = new StringBuilder(sequence);
 	}
 
 	public FASTAElementImpl(final String header, final String sequence, final Map<String, Serializable> metainfo) {
-
 		this.header = header;
 		this.sequence = new StringBuilder(sequence);
 		map.putAll(metainfo);
 	}
 
 	public FASTAElementImpl(final String header, final StringBuilder sequence) {
-
 		this.header = header;
 		this.sequence = sequence;
 	}
 
 	public FASTAElementImpl(final String header, final StringBuilder sequence, final Map<String, Serializable> metainfo) {
-
 		this.header = header;
 		this.sequence = sequence;
 		map.putAll(metainfo);

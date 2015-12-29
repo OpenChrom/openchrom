@@ -16,17 +16,14 @@ import net.sf.jranges.range.RangeException;
 public class ZeroPositiveDoubleRange extends AbstractDoubleRange {
 
 	public ZeroPositiveDoubleRange(double start, double stop) throws RangeException {
-
 		super(start, stop, 0, Double.MAX_VALUE);
 	}
 
 	public ZeroPositiveDoubleRange(double start, double stop, double interval) throws RangeException {
-
 		super(start, stop, 0, Double.MAX_VALUE, interval);
 	}
 
 	public ZeroPositiveDoubleRange(String start, String stop, String interval) throws RangeException, NumberFormatException {
-
 		this(Double.parseDouble(start.trim()), Double.parseDouble(stop.trim()), Double.parseDouble(interval.trim()));
 	}
 

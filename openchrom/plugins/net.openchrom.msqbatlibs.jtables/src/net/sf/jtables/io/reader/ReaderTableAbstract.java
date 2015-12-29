@@ -87,7 +87,6 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	private List<VisitorFirstLine> visitors = new ArrayList<VisitorFirstLine>();
 
 	public ReaderTableAbstract(final File file) throws IOException {
-
 		this(file, false, false, null);
 	}
 
@@ -104,7 +103,6 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	 *             if anything goes wrong
 	 */
 	public ReaderTableAbstract(final File file, final boolean columnIds, final boolean rowIds) throws IOException {
-
 		this(file, columnIds, rowIds, null);
 	}
 
@@ -123,7 +121,6 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	 *             if anything goes wrong
 	 */
 	public ReaderTableAbstract(final File file, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
-
 		this(new FileInputStream(file), columnIds, rowIds, delim);
 	}
 
@@ -140,7 +137,6 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	 *             if anything goes wrong
 	 */
 	public ReaderTableAbstract(final InputStream stream, final boolean columnIds, final boolean rowIds) throws IOException {
-
 		this(stream, columnIds, rowIds, null);
 	}
 
@@ -159,7 +155,6 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	 *             if anything goes wrong
 	 */
 	public ReaderTableAbstract(final InputStream stream, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
-
 		super(stream);
 		this.colsB = columnIds;
 		this.rowsB = rowIds;
@@ -182,7 +177,6 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	 *             if anything goes wrong
 	 */
 	public ReaderTableAbstract(final Reader reader, final boolean columnIds, final boolean rowIds) throws IOException {
-
 		this(reader, columnIds, rowIds, null);
 	}
 
@@ -201,7 +195,6 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	 *             if anything goes wrong
 	 */
 	public ReaderTableAbstract(final Reader reader, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
-
 		super(reader);
 		this.colsB = columnIds;
 		this.rowsB = rowIds;
@@ -336,8 +329,8 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	}
 
 	/**
-     *
-     */
+	 *
+	 */
 	protected abstract TableMutableAnnotated<T> getInstance();
 
 	public synchronized String getInTextDelim() {
@@ -346,8 +339,8 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	}
 
 	/**
-     *
-     */
+	 *
+	 */
 	public IOIterator<Row<T>> getIterator() throws IOException {
 
 		return this;

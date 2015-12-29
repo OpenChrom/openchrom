@@ -51,16 +51,16 @@ public class UtilIO {
 	 */
 	public static final int DEFAULT_BUFFER = 8192;
 	/**
-     *
-     */
+	 *
+	 */
 	public final static char NEW_LINE_CHAR = UtilString.NEW_LINE_STRING.charAt(0);
 	/**
-     *
-     */
+	 *
+	 */
 	public final static String NEW_LINE_STRING = UtilString.NEW_LINE_STRING;
 	/**
-     *
-     */
+	 *
+	 */
 	public final static char NULL_CHAR = '\u0000';
 
 	/**
@@ -432,6 +432,5 @@ public class UtilIO {
 	 * TODO description
 	 */
 	private UtilIO() {
-
 	}
 }

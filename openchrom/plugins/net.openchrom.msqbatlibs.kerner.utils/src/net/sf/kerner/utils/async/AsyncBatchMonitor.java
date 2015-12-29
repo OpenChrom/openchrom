@@ -26,21 +26,17 @@ public class AsyncBatchMonitor<I, R> {
 		private static final long serialVersionUID = -3723305005162834457L;
 
 		public AlreadyRegisteredException() {
-
 		}
 
 		public AlreadyRegisteredException(String arg0, Throwable arg1) {
-
 			super(arg0, arg1);
 		}
 
 		public AlreadyRegisteredException(String arg0) {
-
 			super(arg0);
 		}
 
 		public AlreadyRegisteredException(Throwable arg0) {
-
 			super(arg0);
 		}
 	}
@@ -50,21 +46,17 @@ public class AsyncBatchMonitor<I, R> {
 		private static final long serialVersionUID = 9099067750620713811L;
 
 		public NotRegisteredException() {
-
 		}
 
 		public NotRegisteredException(String message, Throwable cause) {
-
 			super(message, cause);
 		}
 
 		public NotRegisteredException(String message) {
-
 			super(message);
 		}
 
 		public NotRegisteredException(Throwable cause) {
-
 			super(cause);
 		}
 	}
@@ -74,7 +66,6 @@ public class AsyncBatchMonitor<I, R> {
 	private final Collection<BatchListener<I>> listeners = new ArrayList<BatchListener<I>>();
 
 	public AsyncBatchMonitor(List<? extends I> identifiers) {
-
 		init(identifiers);
 	}
 

@@ -30,16 +30,13 @@ import net.sf.kerner.utils.collections.list.UtilList;
 public class MutableTableImpl<T> extends TableImpl<T> implements TableMutable<T> {
 
 	public MutableTableImpl() {
-
 	}
 
 	public MutableTableImpl(final List<Row<T>> rows) {
-
 		super(rows);
 	}
 
 	public MutableTableImpl(final Table<T> template) {
-
 		super(template);
 	}
 
@@ -121,6 +118,7 @@ public class MutableTableImpl<T> extends TableImpl<T> implements TableMutable<T>
 			addRow(new RowImpl<T>() {
 
 				private static final long serialVersionUID = 3543285099623756394L;
+
 				{
 					add(element);
 				}
@@ -142,6 +140,7 @@ public class MutableTableImpl<T> extends TableImpl<T> implements TableMutable<T>
 			addRow(new RowImpl<T>() {
 
 				private static final long serialVersionUID = 8771525210955142646L;
+
 				{
 					add(element);
 				}

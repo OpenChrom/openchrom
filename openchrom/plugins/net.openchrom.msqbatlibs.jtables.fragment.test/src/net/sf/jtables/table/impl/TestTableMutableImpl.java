@@ -29,7 +29,7 @@ import org.junit.Test;
  * 
  * @author <a href="mailto:alex.kerner.24@googlemail.com">Alexander Kerner</a>
  * @version 2010-09-20
- * @SuppressWarnings("serial")
+ * 			@SuppressWarnings("serial")
  * 
  */
 public class TestTableMutableImpl {

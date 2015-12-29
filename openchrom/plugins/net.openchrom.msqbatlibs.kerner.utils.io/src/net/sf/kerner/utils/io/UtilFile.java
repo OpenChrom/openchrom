@@ -66,19 +66,19 @@ public class UtilFile {
 		return true;
 	}
 
-/**
-     * Extended accessibility test, if a directory is available for reading. <br>
-     * it consists of following tests:
-     * <p>
-     * {@code dir.exists() && dir.canRead() && dir.isDirectory()
-     * <p>
-     *
-     * @param dir
-     *            directory, that is checked.
-     * @param createIfAbsend
-     *            if {@code !dir.exists()}, it will be created.
-     * @return true, if dir is accessible, false otherwise.
-     */
+	/**
+	 * Extended accessibility test, if a directory is available for reading. <br>
+	 * it consists of following tests:
+	 * <p>
+	 * {@code dir.exists() && dir.canRead() && dir.isDirectory()
+	 * <p>
+	 *
+	 * @param dir
+	 *            directory, that is checked.
+	 * @param createIfAbsend
+	 *            if {@code !dir.exists()}, it will be created.
+	 * @return true, if dir is accessible, false otherwise.
+	 */
 	public static boolean dirCheck(final File dir, final boolean createIfAbsend) {
 
 		if(createIfAbsend) {
@@ -158,6 +158,5 @@ public class UtilFile {
 	}
 
 	private UtilFile() {
-
 	}
 }

@@ -157,7 +157,6 @@ public class BufferedStringReader implements Closeable, CharReader {
 	 * @param reader
 	 */
 	public BufferedStringReader(final BufferedReader reader) {
-
 		synchronized(BufferedStringReader.class) {
 			this.reader = reader;
 		}
@@ -174,7 +173,6 @@ public class BufferedStringReader implements Closeable, CharReader {
 	 *             if {@code file} is not accessible
 	 */
 	public BufferedStringReader(final File file) throws IOException {
-
 		synchronized(BufferedStringReader.class) {
 			this.reader = new BufferedReader(UtilIO.inputStreamToReader(new FileInputStream(file)));
 		}
@@ -189,7 +187,6 @@ public class BufferedStringReader implements Closeable, CharReader {
 	 *            stream that is read
 	 */
 	public BufferedStringReader(final InputStream stream) {
-
 		synchronized(BufferedStringReader.class) {
 			this.reader = new BufferedReader(UtilIO.inputStreamToReader(stream));
 		}
@@ -204,7 +201,6 @@ public class BufferedStringReader implements Closeable, CharReader {
 	 *            reader that is read
 	 */
 	public BufferedStringReader(final Reader reader) {
-
 		synchronized(BufferedStringReader.class) {
 			this.reader = new BufferedReader(reader, UtilIO.DEFAULT_BUFFER);
 		}

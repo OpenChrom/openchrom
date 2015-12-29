@@ -23,7 +23,6 @@ import net.sf.kerner.utils.collections.list.UtilList;
 public class FragmentatorImpl implements Fragmentator {
 
 	public FragmentatorImpl() {
-
 	}
 
 	public List<Peptide> fractionate(final Peptide peptide) {

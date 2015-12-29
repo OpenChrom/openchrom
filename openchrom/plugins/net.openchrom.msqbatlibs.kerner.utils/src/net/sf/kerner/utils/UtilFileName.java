@@ -146,6 +146,5 @@ public class UtilFileName {
 	}
 
 	private UtilFileName() {
-
 	}
 }

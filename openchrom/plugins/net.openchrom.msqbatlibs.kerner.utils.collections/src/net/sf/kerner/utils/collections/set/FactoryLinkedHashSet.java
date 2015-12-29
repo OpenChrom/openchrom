@@ -44,8 +44,8 @@ import net.sf.kerner.utils.Factory;
 public class FactoryLinkedHashSet<E> implements FactorySet<E>, Factory<Set<E>> {
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public Set<E> create() {
 
 		return createCollection();

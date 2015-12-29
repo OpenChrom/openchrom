@@ -26,12 +26,10 @@ public abstract class MapCollectionAbstract<K, V, L extends Collection<V>> imple
 	protected final Map<K, L> map;
 
 	public MapCollectionAbstract() {
-
 		this(new LinkedHashMap<K, L>());
 	}
 
 	public MapCollectionAbstract(final Map<K, L> map) {
-
 		this.map = map;
 	}
 

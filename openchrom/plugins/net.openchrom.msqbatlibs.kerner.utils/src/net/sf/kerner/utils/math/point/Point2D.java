@@ -46,14 +46,12 @@ public class Point2D implements Pair<Double, Double> {
 	protected final double y;
 
 	public Point2D(final double x, final double y) {
-
 		super();
 		this.x = x;
 		this.y = y;
 	}
 
 	public Point2D(final Point2D template) {
-
 		this(template.getX(), template.getY());
 	}
 

@@ -54,22 +54,18 @@ public class PairImpl<F, S> implements Pair<F, S> {
 	private S second;
 
 	public PairImpl() {
-
 	}
 
 	public PairImpl(final F first) {
-
 		this.first = first;
 	}
 
 	public PairImpl(final F first, final S second) {
-
 		this.first = first;
 		this.second = second;
 	}
 
 	public PairImpl(final Pair<? extends F, ? extends S> template) {
-
 		this(template.getFirst(), template.getSecond());
 	}
 

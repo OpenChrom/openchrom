@@ -25,12 +25,10 @@ public class MapCount<T> implements Map<T, Integer> {
 	private T cacheMin;
 
 	public MapCount() {
-
 		this.delegate = new HashMap<T, Integer>();
 	}
 
 	public MapCount(final Map<T, Integer> delegate) {
-
 		this.delegate = delegate;
 	}
 

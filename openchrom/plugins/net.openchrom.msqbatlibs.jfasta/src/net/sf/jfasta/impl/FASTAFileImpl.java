@@ -50,16 +50,13 @@ public class FASTAFileImpl implements FASTAFile {
 	protected final Collection<FASTAElement> elements = new LinkedHashSet<FASTAElement>();
 
 	public FASTAFileImpl() {
-
 	}
 
 	public FASTAFileImpl(final Collection<? extends FASTAElement> elements) {
-
 		this.elements.addAll(elements);
 	}
 
 	public FASTAFileImpl(final FASTAElement element) {
-
 		elements.add(element);
 	}
 

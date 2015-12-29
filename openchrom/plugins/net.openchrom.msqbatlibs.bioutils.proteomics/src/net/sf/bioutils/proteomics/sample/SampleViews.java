@@ -97,6 +97,5 @@ public class SampleViews {
 	}
 
 	private SampleViews() {
-
 	}
 }

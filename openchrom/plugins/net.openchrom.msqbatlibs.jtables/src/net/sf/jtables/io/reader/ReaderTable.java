@@ -28,8 +28,11 @@ import net.sf.kerner.utils.pair.Pair;
 /**
  * 
  * A {@code TableReader} reads an {@link TableAnnotated} from an input source.
- * </p> It does so by extending {@link IOIterable} in oder to provide
- * possibility to iterate over a table's rows. </p> Via {@link ReaderTable#readTableAtOnce()} it is also possible to read in a whole
+ * </p>
+ * It does so by extending {@link IOIterable} in oder to provide
+ * possibility to iterate over a table's rows.
+ * </p>
+ * Via {@link ReaderTable#readTableAtOnce()} it is also possible to read in a whole
  * table at once.
  * 
  * @see IOIterable

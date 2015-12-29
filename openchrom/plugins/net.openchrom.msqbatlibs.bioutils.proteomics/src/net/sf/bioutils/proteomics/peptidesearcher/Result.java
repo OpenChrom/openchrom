@@ -44,12 +44,10 @@ public class Result {
 	public final Type type;
 
 	private Result() {
-
 		this(new ArrayList<String>(0), Type.NOT_SEARCHED);
 	}
 
 	public Result(final List<String> headers, final Type type) {
-
 		this.headers = headers;
 		this.type = type;
 	}

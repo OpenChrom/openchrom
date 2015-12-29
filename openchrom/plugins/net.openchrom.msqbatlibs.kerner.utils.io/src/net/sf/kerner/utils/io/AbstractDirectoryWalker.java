@@ -26,7 +26,8 @@ import java.util.Stack;
  * </p>
  * {@code AbstractDirectoryWalker} will start at a given starting depth
  * relatively to the given directory and walk recursively through the directory
- * hierarchy until stopping depth is reached. </br> On its way, it will call {@link AbstractDirectoryWalker#handleFile(File)} and {@link AbstractDirectoryWalker#handleDir(File)} for every file and directory,
+ * hierarchy until stopping depth is reached. </br>
+ * On its way, it will call {@link AbstractDirectoryWalker#handleFile(File)} and {@link AbstractDirectoryWalker#handleDir(File)} for every file and directory,
  * that is not filtered out by any of the filters set for this {@code AbstractDirectoryWalker}.
  * 
  * @author <a href="mailto:alex.kerner.24@googlemail.com">Alexander Kerner</a>
@@ -40,7 +41,6 @@ public abstract class AbstractDirectoryWalker {
 		final Long depth;
 
 		FileObject(final File file, final Long depth) {
-
 			this.file = file;
 			this.depth = depth;
 		}
@@ -133,7 +133,8 @@ public abstract class AbstractDirectoryWalker {
 	}
 
 	/**
-	 * This method is called, when access to a file was denied.</br> Default
+	 * This method is called, when access to a file was denied.</br>
+	 * Default
 	 * implementation will rise a <code>IOException</code> instead of <code>SecurityException</code>. Maybe overridden by extending classes to
 	 * do something else.
 	 * 
@@ -153,7 +154,8 @@ public abstract class AbstractDirectoryWalker {
 	}
 
 	/**
-	 * This method is called, when walking is about to start.</br> By default,
+	 * This method is called, when walking is about to start.</br>
+	 * By default,
 	 * it does nothing. Maybe overridden by extending classes to do something
 	 * else.
 	 * 

@@ -25,7 +25,6 @@ public class SampleStatisticsCallable extends ListWalkerDefault<Peak> implements
 	protected SampleStatistics result;
 
 	public SampleStatisticsCallable(final Sample sample) {
-
 		this.sample = sample;
 		result = new SampleStatistics();
 	}

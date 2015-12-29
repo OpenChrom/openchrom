@@ -93,13 +93,11 @@ public class FASTAFileReaderImpl extends AbstractBufferedReader implements FASTA
 	 *            reader from which stream is read
 	 */
 	public FASTAFileReaderImpl(final BufferedReader reader) {
-
 		super(reader);
 		alphabet = null;
 	}
 
 	public FASTAFileReaderImpl(final BufferedReader reader, final char[] alphabet) {
-
 		super(reader);
 		this.alphabet = alphabet;
 	}
@@ -112,13 +110,11 @@ public class FASTAFileReaderImpl extends AbstractBufferedReader implements FASTA
 	 *            file from which stream is read
 	 */
 	public FASTAFileReaderImpl(final File file) throws IOException {
-
 		super(file);
 		alphabet = null;
 	}
 
 	public FASTAFileReaderImpl(final File file, final char[] alphabet) throws IOException {
-
 		super(file);
 		this.alphabet = alphabet;
 	}
@@ -131,13 +127,11 @@ public class FASTAFileReaderImpl extends AbstractBufferedReader implements FASTA
 	 *            stream from which is read
 	 */
 	public FASTAFileReaderImpl(final InputStream stream) {
-
 		super(stream);
 		alphabet = null;
 	}
 
 	public FASTAFileReaderImpl(final InputStream stream, final char[] alphabet) {
-
 		super(stream);
 		this.alphabet = alphabet;
 	}
@@ -150,13 +144,11 @@ public class FASTAFileReaderImpl extends AbstractBufferedReader implements FASTA
 	 *            reader from which stream is read
 	 */
 	public FASTAFileReaderImpl(final Reader reader) {
-
 		super(reader);
 		alphabet = null;
 	}
 
 	public FASTAFileReaderImpl(final Reader reader, final char[] alphabet) {
-
 		super(reader);
 		this.alphabet = alphabet;
 	}

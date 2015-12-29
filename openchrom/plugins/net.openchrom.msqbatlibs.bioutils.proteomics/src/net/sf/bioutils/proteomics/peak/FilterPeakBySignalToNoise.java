@@ -24,7 +24,6 @@ public class FilterPeakBySignalToNoise implements Filter<Peak> {
 	private final RangeDouble range;
 
 	public FilterPeakBySignalToNoise(final double intensity, final TYPE type) {
-
 		switch(type) {
 			case EXACT:
 				range = new RangeDoubleDummy(intensity, intensity);
@@ -41,7 +40,6 @@ public class FilterPeakBySignalToNoise implements Filter<Peak> {
 	}
 
 	public FilterPeakBySignalToNoise(final RangeDouble range) {
-
 		this.range = range;
 	}
 

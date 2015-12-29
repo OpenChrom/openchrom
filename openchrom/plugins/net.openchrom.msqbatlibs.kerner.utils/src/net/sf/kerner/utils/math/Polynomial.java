@@ -19,12 +19,10 @@ public class Polynomial {
 	private final List<Double> elements;
 
 	public Polynomial(int size) {
-
 		elements = new ArrayList<Double>(size);
 	}
 
 	public Polynomial() {
-
 		this(10);
 	}
 

@@ -156,6 +156,5 @@ public class UtilFeature {
 	}
 
 	private UtilFeature() {
-
 	}
 }

@@ -17,7 +17,6 @@ import net.sf.kerner.utils.pair.KeyValue;
 public class ViewPeakToIntensity extends KeyValue<Peak, Double> implements Comparable<ViewPeakToIntensity> {
 
 	public ViewPeakToIntensity(final Peak key) {
-
 		super(key, key.getIntensity());
 	}
 

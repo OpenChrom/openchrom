@@ -20,12 +20,10 @@ public class ComparatorMulti<T> implements Comparator<T> {
 	private final List<Comparator<T>> cs;
 
 	public ComparatorMulti(final Comparator<T>... cs) {
-
 		this.cs = Arrays.asList(cs);
 	}
 
 	public ComparatorMulti(final List<Comparator<T>> cs) {
-
 		this.cs = cs;
 	}
 

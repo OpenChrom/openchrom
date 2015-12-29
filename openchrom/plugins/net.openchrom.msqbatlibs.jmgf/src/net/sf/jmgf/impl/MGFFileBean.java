@@ -24,12 +24,10 @@ public class MGFFileBean implements MGFFile {
 	private List<MGFElement> elements;
 
 	public MGFFileBean() {
-
 		this(new ArrayList<MGFElement>());
 	}
 
 	public MGFFileBean(final List<? extends MGFElement> elements) {
-
 		this.elements = new ArrayList<MGFElement>(elements);
 	}
 

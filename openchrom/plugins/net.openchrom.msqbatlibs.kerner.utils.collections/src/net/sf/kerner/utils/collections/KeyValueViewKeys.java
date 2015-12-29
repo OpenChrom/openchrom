@@ -24,12 +24,10 @@ public class KeyValueViewKeys<K> extends ViewKeyValueKey<K> implements Transform
 	private final FactoryList<K> factory;
 
 	public KeyValueViewKeys(FactoryList<K> factory) {
-
 		this.factory = factory;
 	}
 
 	public KeyValueViewKeys() {
-
 		this(new ArrayListFactory<K>());
 	}
 

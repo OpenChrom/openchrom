@@ -18,7 +18,6 @@ public class SelectorPeakMz implements SelectorPeak {
 	private final Peak peak;
 
 	public SelectorPeakMz(Peak peak) {
-
 		super();
 		this.peak = peak;
 	}

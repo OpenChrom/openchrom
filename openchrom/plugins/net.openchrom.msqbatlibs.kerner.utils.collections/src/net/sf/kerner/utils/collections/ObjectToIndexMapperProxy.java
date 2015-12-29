@@ -39,7 +39,6 @@ public class ObjectToIndexMapperProxy<T> extends ObjectToIndexMapperImpl<T> {
 	protected Map<T, Object> identToIdent;
 
 	public ObjectToIndexMapperProxy(final Map<T, Object> identToIdent) {
-
 		super(new ArrayList<T>(identToIdent.keySet()));
 		this.identToIdent = new LinkedHashMap<T, Object>(identToIdent);
 	}

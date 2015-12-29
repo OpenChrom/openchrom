@@ -19,7 +19,6 @@ public class FilterPeakByMZPpm implements Filter<Peak> {
 	protected final double parentMass;
 
 	public FilterPeakByMZPpm(final double massShift, final double parentMass) {
-
 		super();
 		this.massShift = massShift;
 		this.parentMass = parentMass;

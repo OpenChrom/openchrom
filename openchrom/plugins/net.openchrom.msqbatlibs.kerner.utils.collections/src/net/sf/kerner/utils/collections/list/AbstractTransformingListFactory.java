@@ -17,12 +17,10 @@ import java.util.List;
 public abstract class AbstractTransformingListFactory<T, V> extends AbstractListTransformer<T, V> implements FactoryList<V> {
 
 	public AbstractTransformingListFactory() {
-
 		super();
 	}
 
 	public AbstractTransformingListFactory(final FactoryList<V> factory) {
-
 		super(factory);
 	}
 

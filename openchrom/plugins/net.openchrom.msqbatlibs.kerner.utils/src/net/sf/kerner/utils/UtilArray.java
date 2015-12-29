@@ -197,7 +197,9 @@ public class UtilArray {
 
 	/**
 	 *
-	 * Returns a {@code double} array containing the {@code double} representation of given {@link Double} array. </p> Note: {@code null values} in {@code arr} are ignored! Length of returned array
+	 * Returns a {@code double} array containing the {@code double} representation of given {@link Double} array.
+	 * </p>
+	 * Note: {@code null values} in {@code arr} are ignored! Length of returned array
 	 * may be less than length of input array therefore.
 	 *
 	 * @param arr
@@ -215,7 +217,9 @@ public class UtilArray {
 	/**
 	 *
 	 * Returns a {@code int} array containing the {@code int} representation of
-	 * given {@link Integer} array. </p> Note: {@code null values} in {@code arr} are ignored! Length of returned array may be less than length
+	 * given {@link Integer} array.
+	 * </p>
+	 * Note: {@code null values} in {@code arr} are ignored! Length of returned array may be less than length
 	 * of input array therefore.
 	 *
 	 * @param arr
@@ -235,7 +239,9 @@ public class UtilArray {
 
 	/**
 	 *
-	 * Returns a {@code double} array containing the {@code double} representation of given {@link Number} array. </p> Note: {@code null values} in {@code arr} are ignored! Length of returned array
+	 * Returns a {@code double} array containing the {@code double} representation of given {@link Number} array.
+	 * </p>
+	 * Note: {@code null values} in {@code arr} are ignored! Length of returned array
 	 * may be less than length of input array therefore.
 	 *
 	 * @param arr
@@ -320,6 +326,5 @@ public class UtilArray {
 	}
 
 	private UtilArray() {
-
 	}
 }

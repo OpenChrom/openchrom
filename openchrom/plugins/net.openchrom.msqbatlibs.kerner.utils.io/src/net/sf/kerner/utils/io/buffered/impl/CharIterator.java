@@ -163,7 +163,6 @@ public class CharIterator extends AbstractBufferedReader implements GeneralIOIte
 	 *             if anything goes wrong
 	 */
 	public CharIterator(BufferedReader reader) throws IOException {
-
 		super(reader);
 		this.checkIndexOverflow = false;
 	}
@@ -177,7 +176,6 @@ public class CharIterator extends AbstractBufferedReader implements GeneralIOIte
 	 *             if anything goes wrong
 	 */
 	public CharIterator(File file) throws IOException {
-
 		super(file);
 		this.checkIndexOverflow = false;
 	}
@@ -191,7 +189,6 @@ public class CharIterator extends AbstractBufferedReader implements GeneralIOIte
 	 *             if anything goes wrong
 	 */
 	public CharIterator(InputStream stream) throws IOException {
-
 		super(stream);
 		this.checkIndexOverflow = false;
 	}
@@ -203,7 +200,6 @@ public class CharIterator extends AbstractBufferedReader implements GeneralIOIte
 	 * @throws IOException
 	 */
 	public CharIterator(Reader reader) throws IOException {
-
 		super(reader);
 		this.checkIndexOverflow = false;
 	}
@@ -216,7 +212,6 @@ public class CharIterator extends AbstractBufferedReader implements GeneralIOIte
 	 * @throws IOException
 	 */
 	public CharIterator(Reader reader, boolean checkIndexOverflow) throws IOException {
-
 		super(reader);
 		this.checkIndexOverflow = checkIndexOverflow;
 	}
@@ -229,7 +224,6 @@ public class CharIterator extends AbstractBufferedReader implements GeneralIOIte
 	 * @throws IOException
 	 */
 	public CharIterator(BufferedReader reader, boolean checkIndexOverflow) throws IOException {
-
 		super(reader);
 		this.checkIndexOverflow = checkIndexOverflow;
 	}
@@ -242,7 +236,6 @@ public class CharIterator extends AbstractBufferedReader implements GeneralIOIte
 	 * @throws IOException
 	 */
 	public CharIterator(File file, boolean checkIndexOverflow) throws IOException {
-
 		super(file);
 		this.checkIndexOverflow = checkIndexOverflow;
 	}
@@ -255,7 +248,6 @@ public class CharIterator extends AbstractBufferedReader implements GeneralIOIte
 	 * @throws IOException
 	 */
 	public CharIterator(InputStream stream, boolean checkIndexOverflow) throws IOException {
-
 		super(stream);
 		this.checkIndexOverflow = checkIndexOverflow;
 	}

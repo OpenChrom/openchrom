@@ -25,17 +25,14 @@ public class MapMap<T, K, V> {
 	private final FactoryMap<K, V> factory;
 
 	public MapMap() {
-
 		this(new LinkedHashMap<T, Map<K, V>>(), new FactoryLinkedHashMap<K, V>());
 	}
 
 	public MapMap(final Map<T, Map<K, V>> map) {
-
 		this(map, new FactoryLinkedHashMap<K, V>());
 	}
 
 	public MapMap(final Map<T, Map<K, V>> map, final FactoryMap<K, V> factory) {
-
 		this.map = map;
 		this.factory = factory;
 	}

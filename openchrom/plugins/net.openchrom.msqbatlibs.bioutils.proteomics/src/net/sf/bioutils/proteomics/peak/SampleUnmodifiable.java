@@ -31,7 +31,6 @@ public class SampleUnmodifiable implements Sample {
 	}
 
 	public SampleUnmodifiable(final Sample delegate) {
-
 		Util.checkForNull(delegate);
 		this.delegate = delegate;
 	}

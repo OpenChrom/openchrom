@@ -53,7 +53,6 @@ public class TimePeriod {
 	 * @see java.util.concurrent.TimeUnit
 	 */
 	public TimePeriod(long start, long stop, TimeUnit timeUnit) {
-
 		this.start = start;
 		this.stop = stop;
 		this.timeUnit = timeUnit;
@@ -70,7 +69,6 @@ public class TimePeriod {
 	 *            stop point of this {@code TimePeriod}
 	 */
 	public TimePeriod(long start, long stop) {
-
 		this.start = start;
 		this.stop = stop;
 		this.timeUnit = DEFAULT_TIME_UNIT;

@@ -36,22 +36,18 @@ public class PropertiesSorted implements SortedMap<String, Object>, Serializable
 	private final SortedMap<String, Object> delegate;
 
 	public PropertiesSorted() {
-
 		delegate = new TreeMap<String, Object>();
 	}
 
 	public PropertiesSorted(final Comparator<? super String> c) {
-
 		delegate = new TreeMap<String, Object>(c);
 	}
 
 	public PropertiesSorted(final Properties properties) {
-
 		delegate = fromProperties(properties);
 	}
 
 	public PropertiesSorted(final SortedMap<String, Object> delegate) {
-
 		this.delegate = delegate;
 	}
 

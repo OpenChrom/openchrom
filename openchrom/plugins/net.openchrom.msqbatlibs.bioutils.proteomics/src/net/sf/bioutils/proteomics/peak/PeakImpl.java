@@ -39,22 +39,18 @@ public class PeakImpl extends AnnotatableElementProto implements Peak, Standard 
 	private int fractionIndex;
 
 	public PeakImpl() {
-
 		this(-1, -1);
 	}
 
 	public PeakImpl(final double mz, final double intensity) {
-
 		this(mz, intensity, -1);
 	}
 
 	public PeakImpl(final double mz, final double intensity, final int fractionIndex) {
-
 		this(null, fractionIndex, mz, intensity, -1, null);
 	}
 
 	public PeakImpl(final Peak template) {
-
 		this(template.getName(), template.getFractionIndex(), template.getMz(), template.getIntensity(), template.getIntensityToNoise(), template.getSample());
 		if(template instanceof PeakAnnotatable) {
 			final Collection<AnnotationSerializable> annos = ((PeakAnnotatable)template).getAnnotation();
@@ -64,7 +60,6 @@ public class PeakImpl extends AnnotatableElementProto implements Peak, Standard 
 	}
 
 	public PeakImpl(final String name, final int fractionIndex, final double mz, final double intensity, final double intensityToNoise, final Sample sample) {
-
 		super();
 		this.intensity = intensity;
 		this.intensityToNoise = intensityToNoise;

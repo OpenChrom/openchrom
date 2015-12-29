@@ -37,7 +37,6 @@ public class ObjectToIndexMapperImpl<T> implements ObjectToIndexMapper<T> {
 	protected final Map<T, Integer> map = new LinkedHashMap<T, Integer>();
 
 	public ObjectToIndexMapperImpl(final List<? extends T> keys) {
-
 		final List<Integer> values = new ArrayList<Integer>();
 		for(int i = 0; i < keys.size(); i++) {
 			values.add(Integer.valueOf(i));
@@ -46,7 +45,6 @@ public class ObjectToIndexMapperImpl<T> implements ObjectToIndexMapper<T> {
 	}
 
 	public ObjectToIndexMapperImpl(final T... keys) {
-
 		this(Arrays.asList(keys));
 	}
 

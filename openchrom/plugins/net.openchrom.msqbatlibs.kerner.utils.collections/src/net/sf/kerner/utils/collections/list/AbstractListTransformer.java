@@ -25,12 +25,10 @@ public abstract class AbstractListTransformer<T, V> extends ListWalkerDefault<T>
 	protected volatile int currentIndex;
 
 	public AbstractListTransformer() {
-
 		this(new ArrayListFactory<V>());
 	}
 
 	public AbstractListTransformer(final FactoryList<V> factory) {
-
 		this.factory = factory;
 		super.addVisitor(new DefaultListVisitorImpl<T>() {
 

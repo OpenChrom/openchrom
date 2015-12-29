@@ -16,17 +16,14 @@ import java.util.List;
 public class PeptideSequenceChargedSingle extends PeptideSequenceAbstract implements PeptideSequenceModifiable {
 
 	public PeptideSequenceChargedSingle(final List<AminoAcid> peptides) {
-
 		super(peptides);
 	}
 
 	public PeptideSequenceChargedSingle(final String string) {
-
 		super(string);
 	}
 
 	public PeptideSequenceChargedSingle(final String name, final List<AminoAcid> peptides) {
-
 		super(name, peptides);
 	}
 

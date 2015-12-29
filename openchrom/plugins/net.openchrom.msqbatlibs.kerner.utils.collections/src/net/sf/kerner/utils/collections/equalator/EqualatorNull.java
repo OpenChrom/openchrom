@@ -19,12 +19,10 @@ public class EqualatorNull<T> extends EqualatorAbstract<T> {
 	private final Equalator<T> delegate;
 
 	public EqualatorNull() {
-
 		this(null);
 	}
 
 	public EqualatorNull(final Equalator<T> delegate) {
-
 		super();
 		if(delegate == null) {
 			this.delegate = new EqualatorDefault<T>();

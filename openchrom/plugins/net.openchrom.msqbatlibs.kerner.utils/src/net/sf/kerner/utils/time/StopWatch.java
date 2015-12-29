@@ -52,21 +52,17 @@ public class StopWatch {
 		private static final long serialVersionUID = -8543832250156761882L;
 
 		public AlreadyRunningException() {
-
 		}
 
 		public AlreadyRunningException(String arg0, Throwable arg1) {
-
 			super(arg0, arg1);
 		}
 
 		public AlreadyRunningException(String arg0) {
-
 			super(arg0);
 		}
 
 		public AlreadyRunningException(Throwable arg0) {
-
 			super(arg0);
 		}
 	}
@@ -94,21 +90,17 @@ public class StopWatch {
 		private static final long serialVersionUID = 2016104424322122373L;
 
 		public NotRunningException() {
-
 		}
 
 		public NotRunningException(String message, Throwable cause) {
-
 			super(message, cause);
 		}
 
 		public NotRunningException(String message) {
-
 			super(message);
 		}
 
 		public NotRunningException(Throwable cause) {
-
 			super(cause);
 		}
 	}

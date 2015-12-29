@@ -27,7 +27,6 @@ public class FractionUnmodifiable implements Fraction {
 	private final Fraction delegate;
 
 	public FractionUnmodifiable(final Fraction delegate) {
-
 		Util.checkForNull(delegate);
 		this.delegate = delegate;
 	}

@@ -35,22 +35,18 @@ public class MGFFileReaderImpl extends AbstractBufferedReader implements MGFFile
 	protected MGFElementIterator iterator;
 
 	public MGFFileReaderImpl(final BufferedReader reader) {
-
 		super(reader);
 	}
 
 	public MGFFileReaderImpl(final File file) throws FileNotFoundException {
-
 		super(file);
 	}
 
 	public MGFFileReaderImpl(final InputStream stream) {
-
 		super(stream);
 	}
 
 	public MGFFileReaderImpl(final Reader reader) {
-
 		super(reader);
 	}
 

@@ -33,7 +33,6 @@ public class TableInteger extends AnnotatedMutableTableImpl<Integer> {
 	 * 
 	 */
 	public TableInteger() {
-
 		super();
 	}
 
@@ -45,7 +44,6 @@ public class TableInteger extends AnnotatedMutableTableImpl<Integer> {
 	 *            rows that are initially contained by this {@code Table}
 	 */
 	public TableInteger(List<Row<Integer>> rows) {
-
 		super(rows);
 	}
 }

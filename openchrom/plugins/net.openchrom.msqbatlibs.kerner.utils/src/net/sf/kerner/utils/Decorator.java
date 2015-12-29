@@ -16,7 +16,9 @@ import net.sf.kerner.utils.transformer.Transformer;
 /**
  * 
  * In contrast to a {{@link Transformer}, a {@code Decorator} returns another
- * view of the same object instead of creating a new one. </p> In other words, {@code I == O} should always return {@code true}.
+ * view of the same object instead of creating a new one.
+ * </p>
+ * In other words, {@code I == O} should always return {@code true}.
  * 
  * <p>
  * <b>Example:</b><br>

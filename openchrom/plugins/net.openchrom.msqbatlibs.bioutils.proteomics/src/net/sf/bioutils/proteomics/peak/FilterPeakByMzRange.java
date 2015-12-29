@@ -42,7 +42,6 @@ public class FilterPeakByMzRange implements Filter<Peak> {
 	 *            m/z range in which a peak's m/z must be in in order for this {@code Filter} t accept this peak
 	 */
 	public FilterPeakByMzRange(final RangeDouble range) {
-
 		this.range = range;
 	}
 

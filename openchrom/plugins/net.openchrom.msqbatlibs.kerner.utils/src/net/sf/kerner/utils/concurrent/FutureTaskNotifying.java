@@ -27,25 +27,21 @@ public class FutureTaskNotifying<V> extends FutureTask<V> {
 	private final List<ListenerDone> listeners = new ArrayList<ListenerDone>();
 
 	public FutureTaskNotifying(final Callable<V> callable) {
-
 		super(callable);
 		this.identifier = null;
 	}
 
 	public FutureTaskNotifying(final Callable<V> callable, final String identifier) {
-
 		super(callable);
 		this.identifier = identifier;
 	}
 
 	public FutureTaskNotifying(final Runnable runnable, final V result) {
-
 		super(runnable, result);
 		this.identifier = null;
 	}
 
 	public FutureTaskNotifying(final Runnable runnable, final V result, final String identifier) {
-
 		super(runnable, result);
 		this.identifier = identifier;
 	}

@@ -16,7 +16,6 @@ public class FilterType implements Filter<Object> {
 	private final Class<?> clazz;
 
 	public FilterType(final Class<?> clazz) {
-
 		this.clazz = clazz;
 	}
 

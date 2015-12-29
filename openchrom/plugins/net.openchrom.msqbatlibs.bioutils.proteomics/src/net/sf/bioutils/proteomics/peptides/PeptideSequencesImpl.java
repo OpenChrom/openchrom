@@ -30,7 +30,6 @@ public class PeptideSequencesImpl implements PeptideSequences {
 	private final Collection<Peptide> delegate;
 
 	public PeptideSequencesImpl(final Collection<Peptide> collection) {
-
 		super();
 		delegate = collection;
 	}

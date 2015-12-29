@@ -21,7 +21,8 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * TODO description </p>
+ * TODO description
+ * </p>
  *
  * <a href="http://www.uniprot.org/help/fasta-headers">See definition at
  * uniprot.org</a>
@@ -64,11 +65,9 @@ public class HeaderDialectUniprot implements HeaderDialect {
 	private String headerString;
 
 	public HeaderDialectUniprot() {
-
 	}
 
 	public HeaderDialectUniprot(final String header) {
-
 		setHeaderString(header);
 	}
 

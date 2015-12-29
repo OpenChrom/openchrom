@@ -28,12 +28,10 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 	protected String name;
 
 	public PeptideSequenceAbstract(final List<AminoAcid> peptides) {
-
 		this(null, peptides);
 	}
 
 	public PeptideSequenceAbstract(final String string) {
-
 		peptides = new ArrayList<AminoAcid>(string.length());
 		for(final char c : string.toCharArray()) {
 			peptides.add(AminoAcid.parseSingleChar(c));
@@ -41,7 +39,6 @@ public abstract class PeptideSequenceAbstract implements Peptide {
 	}
 
 	public PeptideSequenceAbstract(final String name, final List<AminoAcid> peptides) {
-
 		this.name = name;
 		this.peptides = new ArrayList<AminoAcid>(peptides);
 	}

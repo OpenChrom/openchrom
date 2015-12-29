@@ -75,7 +75,6 @@ public class LazyStringWriter implements GenericWriter {
 	 *            Object which will be written
 	 */
 	public LazyStringWriter(final Object toString) {
-
 		if(toString == null)
 			throw new NullPointerException();
 		string = toString.toString();

@@ -55,7 +55,6 @@ public class ComposableObject<T> implements ComposableElement<T> {
 	protected List<T> members;
 
 	public ComposableObject(final List<? extends T> members) {
-
 		if(members == null || members.isEmpty()) {
 			throw new IllegalArgumentException();
 		}

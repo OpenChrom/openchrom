@@ -35,31 +35,26 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 	}
 
 	public Intensity() {
-
 		delegate = BigDecimal.ZERO;
 		setScale();
 	}
 
 	public Intensity(final BigDecimal delegate) {
-
 		this.delegate = delegate;
 		setScale();
 	}
 
 	public Intensity(final double doubleValue) {
-
 		delegate = new BigDecimal(doubleValue);
 		setScale();
 	}
 
 	public Intensity(final Intensity template) {
-
 		delegate = template.delegate;
 		setScale();
 	}
 
 	public Intensity(final String s) {
-
 		delegate = new BigDecimal(s);
 		setScale();
 	}

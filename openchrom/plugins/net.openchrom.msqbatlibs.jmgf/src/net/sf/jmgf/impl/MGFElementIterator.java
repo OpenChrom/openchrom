@@ -39,22 +39,18 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 	private FactoryPeak factoryPeak;
 
 	public MGFElementIterator(final BufferedReader reader) throws IOException {
-
 		super(reader);
 	}
 
 	public MGFElementIterator(final File file) throws IOException {
-
 		super(file);
 	}
 
 	public MGFElementIterator(final InputStream stream) throws IOException {
-
 		super(stream);
 	}
 
 	public MGFElementIterator(final Reader reader) throws IOException {
-
 		super(reader);
 	}
 

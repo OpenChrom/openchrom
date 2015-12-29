@@ -145,7 +145,7 @@ public class UtilPeak {
 
 	/**
 	 * @deprecated use {@link #getDeltaMass(double, boolean)
-     *
+	 *
 	 */
 	@Deprecated
 	public static double getPpmDeltaMz(final Peak p1, final Peak p2) {
@@ -232,6 +232,5 @@ public class UtilPeak {
 	}
 
 	private UtilPeak() {
-
 	}
 }

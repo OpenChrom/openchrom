@@ -29,7 +29,6 @@ public class PercentDoneCounterWatch extends PercentDoneCounter implements Perce
 	private final StopWatch watch = new StopWatch();
 
 	public PercentDoneCounterWatch(final int totalElements) {
-
 		super(totalElements);
 		addListener(this);
 		addRunnable(new Runnable() {

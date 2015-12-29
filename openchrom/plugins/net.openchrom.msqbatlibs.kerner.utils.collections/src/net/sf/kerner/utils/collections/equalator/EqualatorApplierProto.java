@@ -23,12 +23,10 @@ public class EqualatorApplierProto<T> extends ApplierAbstract implements Equalat
 	private final List<Equalator<T>> equalators = UtilList.newList();
 
 	public EqualatorApplierProto() {
-
 		super();
 	}
 
 	public EqualatorApplierProto(final TYPE type) {
-
 		super(type);
 	}
 

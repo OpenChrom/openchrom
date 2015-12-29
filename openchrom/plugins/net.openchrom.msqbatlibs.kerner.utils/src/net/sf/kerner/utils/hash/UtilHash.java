@@ -117,6 +117,5 @@ public class UtilHash {
 	}
 
 	private UtilHash() {
-
 	}
 }

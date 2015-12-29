@@ -18,12 +18,10 @@ import net.sf.kerner.utils.math.UtilMath;
 public class TransformerToLog2 extends AbstractTransformingListFactory<Double, Double> {
 
 	public TransformerToLog2() {
-
 		super();
 	}
 
 	public TransformerToLog2(final FactoryList<Double> factory) {
-
 		super(factory);
 	}
 

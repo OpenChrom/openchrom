@@ -69,7 +69,6 @@ public class WriterTableBufferedImpl extends AbstractBufferedWriter implements W
 	 *             if file is not accessible for writing
 	 */
 	public WriterTableBufferedImpl(final File file) throws IOException {
-
 		super(file);
 	}
 
@@ -82,7 +81,6 @@ public class WriterTableBufferedImpl extends AbstractBufferedWriter implements W
 	 *             if stream is not accessible for writing
 	 */
 	public WriterTableBufferedImpl(final OutputStream stream) throws IOException {
-
 		super(stream);
 	}
 
@@ -95,7 +93,6 @@ public class WriterTableBufferedImpl extends AbstractBufferedWriter implements W
 	 *             if writer is not accessible for writing
 	 */
 	public WriterTableBufferedImpl(final Writer writer) throws IOException {
-
 		super(writer);
 	}
 

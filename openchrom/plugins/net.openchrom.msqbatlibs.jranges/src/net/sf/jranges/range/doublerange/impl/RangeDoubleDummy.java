@@ -48,7 +48,6 @@ public class RangeDoubleDummy extends VeryAbstractDoubleRange {
 	 * 
 	 */
 	public RangeDoubleDummy() {
-
 		this.start = 0;
 		this.stop = 0;
 	}
@@ -60,7 +59,6 @@ public class RangeDoubleDummy extends VeryAbstractDoubleRange {
 	 * 
 	 */
 	public RangeDoubleDummy(double start, double stop) {
-
 		this.start = start;
 		this.stop = stop;
 	}

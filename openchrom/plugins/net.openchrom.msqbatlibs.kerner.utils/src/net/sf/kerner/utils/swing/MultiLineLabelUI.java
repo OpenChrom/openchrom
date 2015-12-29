@@ -126,7 +126,6 @@ public class MultiLineLabelUI extends BasicLabelUI implements ComponentListener 
 
 		/** Private constructor. */
 		private SegmentCache() {
-
 		}
 	}
 

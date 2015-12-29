@@ -59,6 +59,5 @@ public class UtilRange {
 	}
 
 	private UtilRange() {
-
 	}
 }

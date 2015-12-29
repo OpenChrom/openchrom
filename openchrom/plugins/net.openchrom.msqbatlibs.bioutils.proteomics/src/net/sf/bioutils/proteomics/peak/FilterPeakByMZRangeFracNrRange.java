@@ -20,7 +20,6 @@ public class FilterPeakByMZRangeFracNrRange implements Filter<Peak> {
 	private final RangeDouble mzRange;
 
 	public FilterPeakByMZRangeFracNrRange(final RangeDouble fracRange, final RangeDouble mzRange) {
-
 		this.fracRange = fracRange;
 		this.mzRange = mzRange;
 	}

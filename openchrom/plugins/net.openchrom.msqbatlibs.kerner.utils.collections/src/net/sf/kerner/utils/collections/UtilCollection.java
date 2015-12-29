@@ -333,7 +333,9 @@ public class UtilCollection {
 
 	/**
 	 *
-	 * Returns a index-to-frequency mapping for all elements in given {@link Collection}. </p> Key of returned map is element from {@code collection}, corresponding value is this element's number of
+	 * Returns a index-to-frequency mapping for all elements in given {@link Collection}.
+	 * </p>
+	 * Key of returned map is element from {@code collection}, corresponding value is this element's number of
 	 * occurrences in {@code collection}.
 	 *
 	 * <p>
@@ -709,7 +711,6 @@ public class UtilCollection {
 	}
 
 	private UtilCollection() {
-
 		// Singleton
 	}
 }

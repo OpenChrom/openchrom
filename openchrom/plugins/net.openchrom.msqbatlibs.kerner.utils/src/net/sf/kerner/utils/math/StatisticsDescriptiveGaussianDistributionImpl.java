@@ -40,7 +40,6 @@ public class StatisticsDescriptiveGaussianDistributionImpl implements Statistics
 	private double cacheMedian = Double.NaN;
 
 	public StatisticsDescriptiveGaussianDistributionImpl(final double[] values) {
-
 		if(values == null || values.length < 1)
 			throw new IllegalArgumentException();
 		final double[] b = new double[values.length];

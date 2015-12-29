@@ -20,7 +20,6 @@ public class Cache<K, V> {
 	private final int capacity;
 
 	public Cache(final int capacity) {
-
 		this.capacity = capacity;
 		map = new LinkedHashMap<K, V>(capacity + 1, 1.1f, true) {
 

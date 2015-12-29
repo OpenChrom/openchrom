@@ -16,7 +16,6 @@ import net.sf.kerner.utils.io.UtilIO;
 public class Utils {
 
 	private Utils() {
-
 	}
 
 	public static String formatStringToMultiLinesStrings(String string, int length) {

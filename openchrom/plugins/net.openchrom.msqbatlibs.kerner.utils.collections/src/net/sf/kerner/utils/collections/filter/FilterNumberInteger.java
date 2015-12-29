@@ -24,7 +24,6 @@ public abstract class FilterNumberInteger<T> implements Filter<T> {
 	private final RangeInteger range;
 
 	public FilterNumberInteger(final int value, final TYPE type) {
-
 		switch(type) {
 			case EXACT:
 				range = new RangeIntegerDummy(value, value);
@@ -41,7 +40,6 @@ public abstract class FilterNumberInteger<T> implements Filter<T> {
 	}
 
 	public FilterNumberInteger(final RangeInteger range) {
-
 		this.range = range;
 	}
 

@@ -77,8 +77,8 @@ public class FileDrop {
 	public static class Event extends java.util.EventObject {
 
 		/**
-         *
-         */
+		 *
+		 */
 		private static final long serialVersionUID = 4348449855640173673L;
 		private final java.io.File[] files;
 
@@ -92,7 +92,6 @@ public class FileDrop {
 		 * @since 1.1
 		 */
 		public Event(final java.io.File[] files, final Object source) {
-
 			super(source);
 			this.files = files;
 		} // end constructor
@@ -236,7 +235,6 @@ public class FileDrop {
 		 * @since 1.1
 		 */
 		public TransferableObject(final Class dataClass, final Fetcher fetcher) {
-
 			this.fetcher = fetcher;
 			customFlavor = new java.awt.datatransfer.DataFlavor(dataClass, MIME_TYPE);
 		} // end constructor
@@ -252,7 +250,6 @@ public class FileDrop {
 		 * @since 1.1
 		 */
 		public TransferableObject(final Fetcher fetcher) {
-
 			this.fetcher = fetcher;
 		} // end constructor
 
@@ -267,7 +264,6 @@ public class FileDrop {
 		 * @since 1.1
 		 */
 		public TransferableObject(final Object data) {
-
 			this.data = data;
 			customFlavor = new java.awt.datatransfer.DataFlavor(data.getClass(), MIME_TYPE);
 		} // end constructor
@@ -473,7 +469,6 @@ public class FileDrop {
 	 * @since 1.0
 	 */
 	public FileDrop(final java.awt.Component c, final boolean recursive, final Listener listener) {
-
 		this(null, // Logging stream
 		c, // Drop target
 		javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), // Drag
@@ -499,7 +494,6 @@ public class FileDrop {
 	 * @since 1.0
 	 */
 	public FileDrop(final java.awt.Component c, final javax.swing.border.Border dragBorder, final boolean recursive, final Listener listener) {
-
 		this(null, c, dragBorder, recursive, listener);
 	} // end constructor
 
@@ -516,7 +510,6 @@ public class FileDrop {
 	 * @since 1.0
 	 */
 	public FileDrop(final java.awt.Component c, final javax.swing.border.Border dragBorder, final Listener listener) {
-
 		this(null, // Logging stream
 		c, // Drop target
 		dragBorder, // Drag border
@@ -537,7 +530,6 @@ public class FileDrop {
 	 * @since 1.0
 	 */
 	public FileDrop(final java.awt.Component c, final Listener listener) {
-
 		this(null, // Logging stream
 		c, // Drop target
 		javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), // Drag
@@ -565,7 +557,6 @@ public class FileDrop {
 	 * @since 1.0
 	 */
 	public FileDrop(final java.io.PrintStream out, final java.awt.Component c, final boolean recursive, final Listener listener) {
-
 		this(out, // Logging stream
 		c, // Drop target
 		javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), // Drag
@@ -592,7 +583,6 @@ public class FileDrop {
 	 * @since 1.0
 	 */
 	public FileDrop(final java.io.PrintStream out, final java.awt.Component c, final javax.swing.border.Border dragBorder, final boolean recursive, final Listener listener) {
-
 		if(supportsDnD()) { // Make a drop listener
 			dropListener = new java.awt.dnd.DropTargetListener() {
 
@@ -769,7 +759,6 @@ public class FileDrop {
 	 * @since 1.0
 	 */
 	public FileDrop(final java.io.PrintStream out, final java.awt.Component c, final javax.swing.border.Border dragBorder, final Listener listener) {
-
 		this(out, // Logging stream
 		c, // Drop target
 		dragBorder, // Drag border
@@ -793,7 +782,6 @@ public class FileDrop {
 	 * @since 1.0
 	 */
 	public FileDrop(final java.io.PrintStream out, final java.awt.Component c, final Listener listener) {
-
 		this(out, // Logging stream
 		c, // Drop target
 		javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), false, // Recursive

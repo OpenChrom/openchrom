@@ -25,7 +25,6 @@ public class MGFElementBean implements MGFElement {
 	private Map<String, String> elements = new LinkedHashMap<String, String>();
 
 	public MGFElementBean() {
-
 	}
 
 	public String getElement(final Identifier element) {

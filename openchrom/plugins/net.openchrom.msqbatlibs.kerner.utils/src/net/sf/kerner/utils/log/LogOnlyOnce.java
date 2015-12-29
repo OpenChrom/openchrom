@@ -22,7 +22,6 @@ public class LogOnlyOnce {
 	private final Logger logger;
 
 	public LogOnlyOnce(final Logger log) {
-
 		this.logger = log;
 	}
 

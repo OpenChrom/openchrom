@@ -27,14 +27,12 @@ class RangeCache implements Iterable<Collection<? extends RangeInteger>>, Iterat
 	private volatile int index = 0;
 
 	RangeCache(final Collection<? extends RangeInteger> ranges, int elements) {
-
 		this.elements = elements;
 		this.ranges = new ArrayList<RangeInteger>(ranges);
 		fill();
 	}
 
 	RangeCache(final Collection<? extends RangeInteger> ranges) {
-
 		this.elements = DEFAULT_ELEMENTS;
 		this.ranges = new ArrayList<RangeInteger>(ranges);
 		fill();

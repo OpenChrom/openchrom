@@ -39,45 +39,37 @@ public class ExceptionRuntimeProperty extends RuntimeException {
 	private final Properties pro;
 
 	public ExceptionRuntimeProperty() {
-
 		this.pro = new Properties();
 	}
 
 	public ExceptionRuntimeProperty(String arg0) {
-
 		this(arg0, new Properties());
 	}
 
 	public ExceptionRuntimeProperty(Properties pro) {
-
 		super();
 		this.pro = pro;
 	}
 
 	public ExceptionRuntimeProperty(String arg0, Properties pro) {
-
 		super(arg0);
 		this.pro = pro;
 	}
 
 	public ExceptionRuntimeProperty(Throwable arg0) {
-
 		this(arg0, new Properties());
 	}
 
 	public ExceptionRuntimeProperty(Throwable arg0, Properties pro) {
-
 		super(arg0);
 		this.pro = pro;
 	}
 
 	public ExceptionRuntimeProperty(String arg0, Throwable arg1) {
-
 		this(arg0, arg1, new Properties());
 	}
 
 	public ExceptionRuntimeProperty(String arg0, Throwable arg1, Properties pro) {
-
 		super(arg0, arg1);
 		this.pro = pro;
 	}

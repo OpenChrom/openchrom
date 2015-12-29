@@ -42,7 +42,6 @@ public class TestAbstractIOIterator {
 		protected final BufferedStringReader reader2 = new BufferedStringReader(super.reader);
 
 		public My(Reader reader) throws IOException {
-
 			super(reader);
 		}
 

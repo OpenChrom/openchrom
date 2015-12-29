@@ -26,7 +26,6 @@ public class FileCopier {
 	private final File outFile;
 
 	public FileCopier(File in, File out) throws IOException {
-
 		if(!UtilFile.fileCheck(in, false))
 			throw new FileNotFoundException("cannot read " + in);
 		this.inStream = UtilIO.getInputStreamFromFile(in);
@@ -34,7 +33,6 @@ public class FileCopier {
 	}
 
 	public FileCopier(String inFilePath, String outFilePath) throws IOException {
-
 		final File in = new File(inFilePath);
 		if(!UtilFile.fileCheck(in, false))
 			throw new FileNotFoundException("cannot read " + in);
@@ -43,7 +41,6 @@ public class FileCopier {
 	}
 
 	public FileCopier(File inFile, File outDir, String outFileName) throws IOException {
-
 		if(!UtilFile.fileCheck(inFile, false))
 			throw new FileNotFoundException("cannot read " + inFile);
 		this.inStream = UtilIO.getInputStreamFromFile(inFile);

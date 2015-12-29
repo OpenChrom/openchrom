@@ -16,7 +16,6 @@ public abstract class FilterParamized<T, P> implements Filter<T> {
 	private P param;
 
 	public FilterParamized(final P param) {
-
 		this.param = param;
 	}
 

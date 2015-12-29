@@ -67,15 +67,15 @@ public interface RangeInteger extends Range, Comparable<RangeInteger> {
 	 */
 	int getInterval();
 
-/**
-     * 
-     * Retrieve the number of positions covered by this {@code IntegerRange}. <br>
-     * If {@code interval == 1}, that will be typically defined as {@code
-     * 
-     * @link #getStop()} - {@link #getStart()} +1}.
-     * 
-     * @return this {@code IntegerRange}'s length
-     */
+	/**
+	 * 
+	 * Retrieve the number of positions covered by this {@code IntegerRange}. <br>
+	 * If {@code interval == 1}, that will be typically defined as {@code
+	 * 
+	 * @link #getStop()} - {@link #getStart()} +1}.
+	 * 
+	 * @return this {@code IntegerRange}'s length
+	 */
 	int getLength();
 
 	/**

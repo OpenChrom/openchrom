@@ -23,12 +23,10 @@ public class TransformerToStringCollection<T> extends AbstractTransformingListFa
 	private final TransformerToString<T> transformer;
 
 	public TransformerToStringCollection() {
-
 		this(null);
 	}
 
 	public TransformerToStringCollection(final TransformerToString<T> transformer) {
-
 		this.transformer = transformer;
 	}
 

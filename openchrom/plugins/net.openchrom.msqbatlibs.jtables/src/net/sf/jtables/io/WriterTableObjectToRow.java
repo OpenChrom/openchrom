@@ -21,17 +21,14 @@ import net.sf.jtables.io.transformer.TransformerObjectToRowString;
 public abstract class WriterTableObjectToRow<T> extends WriterTableObjectToRowsAbstract<T> {
 
 	public WriterTableObjectToRow(final File file) throws IOException {
-
 		super(file);
 	}
 
 	public WriterTableObjectToRow(final OutputStream stream) throws IOException {
-
 		super(stream);
 	}
 
 	public WriterTableObjectToRow(final Writer writer) throws IOException {
-
 		super(writer);
 	}
 

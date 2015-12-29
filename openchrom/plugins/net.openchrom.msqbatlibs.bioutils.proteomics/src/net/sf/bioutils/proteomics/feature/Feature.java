@@ -18,7 +18,8 @@ import net.sf.bioutils.proteomics.peak.Peak;
  *
  * A {@code Feature} is a {@link ComposableElement} of {@link Peak Peaks}. It
  * represents one single peptide that was detected. One peptide is composed of
- * multiple signals (peaks). </p>
+ * multiple signals (peaks).
+ * </p>
  *
  *
  * @author <a href="mailto:alexanderkerner24@gmail.com">Alexander Kerner</a>

@@ -34,11 +34,12 @@ public class UtilRandom {
 	private final static Random R = new Random();
 
 	private UtilRandom() {
-
 	}
 
 	/**
-	 * Generate a random {@code double} for which the following is true: </p> {@code random = value +- delta}.
+	 * Generate a random {@code double} for which the following is true:
+	 * </p>
+	 * {@code random = value +- delta}.
 	 * 
 	 * @param value
 	 * @param delta
@@ -52,7 +53,9 @@ public class UtilRandom {
 	}
 
 	/**
-	 * Generate a random {@code double} for which the following is true: </p> {@code low <= random <= high}.
+	 * Generate a random {@code double} for which the following is true:
+	 * </p>
+	 * {@code low <= random <= high}.
 	 * 
 	 * @param low
 	 *            lower boundary, inclusive
@@ -66,7 +69,9 @@ public class UtilRandom {
 	}
 
 	/**
-	 * Generate a random {@code int} for which the following is true: </p> {@code random = value +- delta}.
+	 * Generate a random {@code int} for which the following is true:
+	 * </p>
+	 * {@code random = value +- delta}.
 	 * 
 	 * @param value
 	 * @param delta
@@ -80,7 +85,9 @@ public class UtilRandom {
 	}
 
 	/**
-	 * Generate a random {@code int} for which the following is true: </p> {@code low <= random <= high}.
+	 * Generate a random {@code int} for which the following is true:
+	 * </p>
+	 * {@code low <= random <= high}.
 	 * 
 	 * @param low
 	 *            lower boundary, inclusive

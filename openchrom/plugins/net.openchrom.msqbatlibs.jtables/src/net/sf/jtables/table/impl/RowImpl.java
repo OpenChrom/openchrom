@@ -50,22 +50,18 @@ public class RowImpl<T> implements Row<T> {
 	protected volatile ObjectToIndexMapper<Object> mapper = new ObjectToIndexMapperImpl<Object>(new ArrayList<Object>());
 
 	public RowImpl() {
-
 	}
 
 	public RowImpl(final List<T> elements) {
-
 		implementation.addAll(elements);
 	}
 
 	public RowImpl(final Row<T> template) {
-
 		implementation.addAll(template);
 		mapper = new ObjectToIndexMapperImpl<Object>(template.getIdentifier());
 	}
 
 	public RowImpl(final T... elements) {
-
 		implementation.addAll(Arrays.asList(elements));
 	}
 

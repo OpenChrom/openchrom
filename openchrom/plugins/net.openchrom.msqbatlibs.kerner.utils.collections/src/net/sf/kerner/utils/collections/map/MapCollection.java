@@ -99,26 +99,36 @@ public interface MapCollection<K, V, L extends Collection<? extends V>> {
 	Set<K> keySet();
 
 	/**
-	 * Add another key value mapping to this {@code MapCollection}. </p> If this {@code MapCollection} already contains this key, The value is added to
-	 * the {@code Collection} that is mapped by this key.</p> If the {@code MapCollection} does not contain this key, a new {@code Collection} is created, which will be associated by given key and holds initially
+	 * Add another key value mapping to this {@code MapCollection}.
+	 * </p>
+	 * If this {@code MapCollection} already contains this key, The value is added to
+	 * the {@code Collection} that is mapped by this key.
+	 * </p>
+	 * If the {@code MapCollection} does not contain this key, a new {@code Collection} is created, which will be associated by given key and holds initially
 	 * given value.
 	 */
 	void put(K k, V v);
 
 	/**
-	 * Add all key value mappings to this {@code MapCollection}. </p> If this {@code MapCollection} already contains this key, All values are added to
+	 * Add all key value mappings to this {@code MapCollection}.
+	 * </p>
+	 * If this {@code MapCollection} already contains this key, All values are added to
 	 * the {@code Collection} that is mapped by this key.
 	 */
 	void putAll(K k, Collection<? extends V> values);
 
 	/**
-	 * Add all key value mappings to this {@code MapCollection}. </p> If this {@code MapCollection} already contains any of given keys, All values are
+	 * Add all key value mappings to this {@code MapCollection}.
+	 * </p>
+	 * If this {@code MapCollection} already contains any of given keys, All values are
 	 * added to the {@code Collection} that are mapped by this key.
 	 */
 	void putAll(Map<? extends K, ? extends V> values);
 
 	/**
-	 * Add all key value mappings to this {@code MapCollection}. </p> If this {@code MapCollection} already contains any of given keys, All values are
+	 * Add all key value mappings to this {@code MapCollection}.
+	 * </p>
+	 * If this {@code MapCollection} already contains any of given keys, All values are
 	 * added to the {@code Collection} that are mapped by this key.
 	 */
 	void putAll(MapCollection<? extends K, ? extends V, L> values);

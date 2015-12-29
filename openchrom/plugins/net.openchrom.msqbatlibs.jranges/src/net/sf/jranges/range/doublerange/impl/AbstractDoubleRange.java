@@ -65,7 +65,6 @@ public abstract class AbstractDoubleRange extends VeryAbstractDoubleRange implem
 	 *             if {@code limit1 > start || limit2 < stop || start > stop}
 	 */
 	public AbstractDoubleRange(final double start, final double stop, final double limit1, final double limit2) throws RangeException {
-
 		if(limit1 > start || limit2 < stop || start > stop)
 			throw new RangeException("invalid range" + " start=" + start + " stop=" + stop + " limit1=" + limit1 + " limit2=" + limit2);
 		this.interval = 1;
@@ -96,7 +95,6 @@ public abstract class AbstractDoubleRange extends VeryAbstractDoubleRange implem
 	 *             if {@code limit1 > start || limit2 < stop || start > stop || (((stop - start) % interval) != 0)}
 	 */
 	public AbstractDoubleRange(final double start, final double stop, final double limit1, final double limit2, final double interval) throws RangeException {
-
 		if(limit1 > start || limit2 < stop || start > stop || (inValid(start, stop, interval)))
 			throw new RangeException("invalid range" + " start=" + start + " stop=" + stop + " limit1=" + limit1 + " limit2=" + limit2 + "interval=" + interval);
 		this.limit1 = limit1;

@@ -42,7 +42,6 @@ public class DecoratorMapAutoCreateValue<K, V> implements Map<K, V> {
 	private final Factory<V> factory;
 
 	public DecoratorMapAutoCreateValue(Map<K, V> decorated, Factory<V> factory) {
-
 		super();
 		this.decorated = decorated;
 		this.factory = factory;

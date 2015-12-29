@@ -54,6 +54,5 @@ public class UtilEqual {
 	}
 
 	private UtilEqual() {
-
 	}
 }

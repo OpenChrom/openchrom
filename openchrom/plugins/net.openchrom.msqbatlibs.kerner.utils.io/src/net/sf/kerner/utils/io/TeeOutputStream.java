@@ -32,7 +32,6 @@ public class TeeOutputStream extends OutputStream {
 	 *            ... the varags array of OutputStreams
 	 */
 	public TeeOutputStream(final OutputStream... ostream) {
-
 		ostream_ = ostream;
 	}
 

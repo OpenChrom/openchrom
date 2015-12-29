@@ -56,11 +56,9 @@ public class SampleStatistics {
 	private double medianPeakSn;
 
 	public SampleStatistics() {
-
 	}
 
 	public SampleStatistics(final SampleStatistics s) {
-
 		setMaxPeakInt(s.getMaxPeakInt());
 		setTotalIntensityToNoise(s.getTotalIntensityToNoise());
 		setTotalIntensity(s.getTotalIntensity());

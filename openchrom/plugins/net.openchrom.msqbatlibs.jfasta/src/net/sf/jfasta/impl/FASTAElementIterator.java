@@ -48,56 +48,48 @@ public class FASTAElementIterator extends AbstractIOIterator<FASTAElement> {
 	protected final char[] alphabet;
 
 	public FASTAElementIterator(final BufferedReader reader) throws IOException {
-
 		super(reader);
 		// super.read();
 		alphabet = null;
 	}
 
 	public FASTAElementIterator(final BufferedReader reader, final char[] alphabet) throws IOException {
-
 		super(reader);
 		// super.read();
 		this.alphabet = alphabet;
 	}
 
 	public FASTAElementIterator(final File file) throws IOException {
-
 		super(file);
 		// super.read();
 		alphabet = null;
 	}
 
 	public FASTAElementIterator(final File file, final char[] alphabet) throws IOException {
-
 		super(file);
 		// super.read();
 		this.alphabet = alphabet;
 	}
 
 	public FASTAElementIterator(final InputStream stream) throws IOException {
-
 		super(stream);
 		// super.read();
 		alphabet = null;
 	}
 
 	public FASTAElementIterator(final InputStream stream, final char[] alphabet) throws IOException {
-
 		super(stream);
 		// super.read();
 		this.alphabet = alphabet;
 	}
 
 	public FASTAElementIterator(final Reader reader) throws IOException {
-
 		super(reader);
 		// super.read();
 		alphabet = null;
 	}
 
 	public FASTAElementIterator(final Reader reader, final char[] alphabet) throws IOException {
-
 		super(reader);
 		// super.read();
 		this.alphabet = alphabet;

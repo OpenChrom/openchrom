@@ -25,22 +25,18 @@ public class PeakBean extends PeakImpl implements FeatureAnnotatable, PeakModifi
 	private int cacheHash;
 
 	public PeakBean() {
-
 		super();
 	}
 
 	public PeakBean(final double mz, final double intensity) {
-
 		super(mz, intensity);
 	}
 
 	public PeakBean(final double mz, final double intensity, final int fractionIndex) {
-
 		super(mz, intensity, fractionIndex);
 	}
 
 	public PeakBean(final Peak template) {
-
 		super(template);
 		if(template instanceof Feature) {
 			final Feature f = (Feature)template;
@@ -50,7 +46,6 @@ public class PeakBean extends PeakImpl implements FeatureAnnotatable, PeakModifi
 	}
 
 	public PeakBean(final String name, final int fractionIndex, final double mz, final double intensity, final double intensityToNoise, final Sample sample) {
-
 		super(name, fractionIndex, mz, intensity, intensityToNoise, sample);
 	}
 

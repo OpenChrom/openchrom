@@ -24,7 +24,6 @@ public class RangeLongDummy extends VeryAbstractLongRange implements RangeLong {
 	 * 
 	 */
 	public RangeLongDummy() {
-
 		this.start = 0;
 		this.stop = 0;
 	}
@@ -35,7 +34,6 @@ public class RangeLongDummy extends VeryAbstractLongRange implements RangeLong {
 	 * 
 	 */
 	public RangeLongDummy(long start, long stop) {
-
 		this.start = start;
 		this.stop = stop;
 	}

@@ -50,7 +50,6 @@ public class WriterTableString extends WriterTableBufferedImpl {
 	 *             if file is not accessible for writing
 	 */
 	public WriterTableString(final File file) throws IOException {
-
 		super(file);
 	}
 
@@ -63,7 +62,6 @@ public class WriterTableString extends WriterTableBufferedImpl {
 	 *             if stream is not accessible for writing
 	 */
 	public WriterTableString(final OutputStream stream) throws IOException {
-
 		super(stream);
 	}
 
@@ -76,7 +74,6 @@ public class WriterTableString extends WriterTableBufferedImpl {
 	 *             if writer is not accessible for writing
 	 */
 	public WriterTableString(final Writer writer) throws IOException {
-
 		super(writer);
 	}
 }
