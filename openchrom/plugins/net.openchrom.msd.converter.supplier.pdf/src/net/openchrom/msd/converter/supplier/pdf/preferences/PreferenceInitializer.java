@@ -10,7 +10,6 @@ import org.eclipse.chemclipse.support.preferences.AbstractExtendedPreferenceInit
 public class PreferenceInitializer extends AbstractExtendedPreferenceInitializer {
 
 	public PreferenceInitializer() {
-
 		super(PreferenceSupplier.INSTANCE());
 	}
 }

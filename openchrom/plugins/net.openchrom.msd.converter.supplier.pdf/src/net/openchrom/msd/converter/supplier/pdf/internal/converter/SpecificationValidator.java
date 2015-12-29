@@ -19,7 +19,6 @@ public class SpecificationValidator {
 	 * Use only static methods.
 	 */
 	private SpecificationValidator() {
-
 	}
 
 	public static File validateSpecification(File file) {

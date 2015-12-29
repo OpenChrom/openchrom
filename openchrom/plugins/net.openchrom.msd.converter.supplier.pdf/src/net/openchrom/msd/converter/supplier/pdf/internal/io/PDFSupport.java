@@ -64,7 +64,6 @@ public class PDFSupport {
 	private IChromatogramMSD chromatogram;
 
 	public PDFSupport() {
-
 		decimalFormat = new DecimalFormat("0.00");
 		abundanceFormat = new DecimalFormat("0");
 	}
