@@ -29,7 +29,6 @@ public class AtomToColorMapping {
 	// Only allow to instantiate an AtomToColorMapping
 	// with color and atom attributes!
 	public AtomToColorMapping(IAtom atom, Color color) {
-
 		this.color = color;
 		this.atom = atom;
 	}

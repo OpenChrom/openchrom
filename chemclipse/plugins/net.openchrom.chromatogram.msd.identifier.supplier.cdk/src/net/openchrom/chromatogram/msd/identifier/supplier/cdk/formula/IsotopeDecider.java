@@ -40,7 +40,6 @@ public class IsotopeDecider {
 	private IsotopeFactory isotopeFactory;
 
 	public IsotopeDecider() {
-
 		chemObjectBuilder = DefaultChemObjectBuilder.getInstance();
 		try {
 			isotopeFactory = IsotopeFactory.getInstance(chemObjectBuilder);

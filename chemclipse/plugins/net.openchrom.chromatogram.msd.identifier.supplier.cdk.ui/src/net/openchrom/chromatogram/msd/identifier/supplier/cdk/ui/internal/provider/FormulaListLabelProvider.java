@@ -26,7 +26,6 @@ public class FormulaListLabelProvider extends LabelProvider implements ITableLab
 	private DecimalFormat decimalFormat;
 
 	public FormulaListLabelProvider() {
-
 		decimalFormat = new DecimalFormat("0.000000");
 	}
 

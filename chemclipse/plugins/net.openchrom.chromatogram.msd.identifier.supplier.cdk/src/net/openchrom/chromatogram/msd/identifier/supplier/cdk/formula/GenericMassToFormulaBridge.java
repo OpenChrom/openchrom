@@ -39,7 +39,6 @@ public class GenericMassToFormulaBridge {
 	private MassToFormulaTool massToFormula;
 
 	public GenericMassToFormulaBridge() {
-
 		massToFormula = new MassToFormulaTool(DefaultChemObjectBuilder.getInstance());
 	}
 

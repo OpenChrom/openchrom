@@ -30,7 +30,6 @@ public class DeleteIdentificationsWithoutFormulaRunnable implements IRunnableWit
 	private IChromatogramSelectionMSD chromatogramSelection;
 
 	public DeleteIdentificationsWithoutFormulaRunnable(IChromatogramSelectionMSD chromatogramSelection) {
-
 		this.chromatogramSelection = chromatogramSelection;
 	}
 

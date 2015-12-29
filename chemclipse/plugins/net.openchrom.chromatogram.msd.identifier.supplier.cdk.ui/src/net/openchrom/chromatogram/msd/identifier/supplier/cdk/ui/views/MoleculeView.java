@@ -65,7 +65,6 @@ public class MoleculeView {
 
 	@Inject
 	public MoleculeView(IEventBroker eventBroker, EventHandler eventHandler) {
-
 		this.eventBroker = eventBroker;
 		this.eventHandler = eventHandler;
 		subscribe();

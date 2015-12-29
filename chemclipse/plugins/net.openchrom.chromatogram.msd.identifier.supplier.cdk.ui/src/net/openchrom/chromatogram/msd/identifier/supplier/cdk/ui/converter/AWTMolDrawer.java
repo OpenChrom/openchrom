@@ -40,7 +40,6 @@ public class AWTMolDrawer {
 	private static final Logger logger = Logger.getLogger(AWTMolDrawer.class);
 
 	public AWTMolDrawer(String smilesString, String imageFile, int width, int height) {
-
 		Image image = ImageConverter.getInstance().smilesToImage(smilesString, width, height);
 		try {
 			ImageIO.write((RenderedImage)image, "PNG", new File(imageFile));

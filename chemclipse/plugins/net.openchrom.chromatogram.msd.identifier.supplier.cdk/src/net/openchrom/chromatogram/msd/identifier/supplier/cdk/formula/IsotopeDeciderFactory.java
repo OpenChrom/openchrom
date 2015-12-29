@@ -37,7 +37,6 @@ public class IsotopeDeciderFactory {
 	private static IsotopeDeciderFactory singleton;
 
 	private IsotopeDeciderFactory() {
-
 	}
 
 	public static IsotopeDeciderFactory getInstance() {

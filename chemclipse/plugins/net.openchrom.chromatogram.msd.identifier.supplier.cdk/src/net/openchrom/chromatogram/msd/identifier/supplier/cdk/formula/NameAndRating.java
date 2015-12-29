@@ -17,7 +17,6 @@ public class NameAndRating {
 	private double rating;
 
 	public NameAndRating(String name, double rating) {
-
 		this.name = name;
 		this.rating = rating;
 	}

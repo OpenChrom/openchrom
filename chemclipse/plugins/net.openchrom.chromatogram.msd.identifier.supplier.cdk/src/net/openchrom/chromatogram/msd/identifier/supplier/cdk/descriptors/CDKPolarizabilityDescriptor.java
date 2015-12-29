@@ -19,7 +19,6 @@ public class CDKPolarizabilityDescriptor extends AbstractStructureDescriptor imp
 	private Polarizability polarizability;
 
 	public CDKPolarizabilityDescriptor() {
-
 		polarizability = new Polarizability();
 	}
 

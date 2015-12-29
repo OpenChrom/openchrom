@@ -31,7 +31,6 @@ public class SmilesFormulaCalculatorRunnable implements IRunnableWithProgress {
 	private boolean useOnlySelectedPeak;
 
 	public SmilesFormulaCalculatorRunnable(IChromatogramSelectionMSD chromatogramSelection, boolean useOnlySelectedPeak) {
-
 		this.chromatogramSelection = chromatogramSelection;
 		this.useOnlySelectedPeak = useOnlySelectedPeak;
 	}

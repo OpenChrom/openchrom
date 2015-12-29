@@ -17,7 +17,6 @@ public enum IsotopePreference {
 	private int isotopePreference;
 
 	private IsotopePreference(int isotopePreference) {
-
 		this.isotopePreference = isotopePreference;
 	}
 

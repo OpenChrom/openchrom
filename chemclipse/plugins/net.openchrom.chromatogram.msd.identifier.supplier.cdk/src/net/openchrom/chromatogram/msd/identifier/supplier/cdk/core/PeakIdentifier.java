@@ -39,7 +39,6 @@ public class PeakIdentifier extends AbstractPeakIdentifier {
 	private NameToStructureConfig nameStructureConfig;
 
 	public PeakIdentifier() {
-
 		nameStructure = NameToStructure.getInstance();
 		nameStructureConfig = new NameToStructureConfig();
 		nameStructureConfig.setAllowRadicals(true); // TODO settings Preferences

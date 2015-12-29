@@ -38,7 +38,6 @@ public class IsotopeParser {
 	private Pattern isotopePattern;
 
 	public IsotopeParser() {
-
 		isotopePattern = Pattern.compile("([0-9]*)([A-Z][a-z]*)");
 	}
 

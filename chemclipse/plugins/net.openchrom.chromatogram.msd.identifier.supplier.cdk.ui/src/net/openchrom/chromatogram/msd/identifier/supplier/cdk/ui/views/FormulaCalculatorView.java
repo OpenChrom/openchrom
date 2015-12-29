@@ -63,7 +63,6 @@ public class FormulaCalculatorView {
 
 	@Inject
 	public FormulaCalculatorView(IEventBroker eventBroker, EventHandler eventHandler) {
-
 		this.eventBroker = eventBroker;
 		this.eventHandler = eventHandler;
 		subscribe();

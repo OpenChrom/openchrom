@@ -25,7 +25,6 @@ import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.Activator;
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PreferencePage() {
-
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setDescription("CDK settings.");

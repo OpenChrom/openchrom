@@ -27,7 +27,6 @@ public class AtomRadialRepresentation {
 	// Only allow the creation of AtomRadialRepresentation objects
 	// with defined properties, so hide default constructor
 	public AtomRadialRepresentation(Point3d centerOfAtom, double radiusOfAtom) {
-
 		this.radiusOfAtom = radiusOfAtom;
 		this.centerOfAtom = centerOfAtom;
 	}

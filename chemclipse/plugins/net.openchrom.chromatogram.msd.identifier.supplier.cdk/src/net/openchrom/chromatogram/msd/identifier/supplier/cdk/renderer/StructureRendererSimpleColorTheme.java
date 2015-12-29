@@ -35,7 +35,6 @@ public class StructureRendererSimpleColorTheme implements IStructureRendererColo
 	List<IAtom> symbolicAtoms;
 
 	public StructureRendererSimpleColorTheme() {
-
 		atomToColorMap = new ArrayList<AtomToColorMapping>();
 		symbolicAtoms = new ArrayList<IAtom>();
 		AtomToColorMapping cToBlue = new AtomToColorMapping(new Atom("C"), Color.BLUE);

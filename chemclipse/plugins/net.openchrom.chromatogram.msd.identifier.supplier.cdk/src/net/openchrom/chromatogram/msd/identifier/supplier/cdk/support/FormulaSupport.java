@@ -26,7 +26,6 @@ public class FormulaSupport {
 	private GenericMassToFormulaBridge massToFormulaBridge = new GenericMassToFormulaBridge();
 
 	private FormulaSupport() {
-
 	}
 
 	public static FormulaSupport getInstance() {
