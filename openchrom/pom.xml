@@ -52,6 +52,7 @@
     <ease-repo.url>http://download.eclipse.org/ease/update/release</ease-repo.url>
     <easejython-repo.url>https://dl.bintray.com/pontesegger/ease-jython</easejython-repo.url>
     <knime-repo.url>http://update.knime.org/analytics-platform/3.1</knime-repo.url>
+    <efxclipse-repo.url>http://download.eclipse.org/efxclipse/updates-released/2.1.0/site</efxclipse-repo.url>
     <!-- ENCODING -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -122,6 +123,11 @@
     <repository>
       <id>knime</id>
       <url>${knime-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>efxclipse</id>
+      <url>${efxclipse-repo.url}</url>
       <layout>p2</layout>
     </repository>
   </repositories>
