@@ -21,7 +21,6 @@ import ucar.nc2.NetcdfFile;
 public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReader implements ICDFChromatogramArrayReader {
 
 	public CDFChromtogramArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
-
 		super(chromatogram);
 	}
 }

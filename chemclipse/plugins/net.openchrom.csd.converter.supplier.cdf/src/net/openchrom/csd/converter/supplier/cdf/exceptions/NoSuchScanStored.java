@@ -16,12 +16,10 @@ public class NoSuchScanStored extends Exception {
 	private static final long serialVersionUID = 1494271997895128977L;
 
 	public NoSuchScanStored() {
-
 		super();
 	}
 
 	public NoSuchScanStored(String message) {
-
 		super(message);
 	}
 }

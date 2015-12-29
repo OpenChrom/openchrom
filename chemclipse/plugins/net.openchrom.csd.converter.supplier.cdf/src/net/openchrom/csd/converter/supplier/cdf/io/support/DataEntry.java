@@ -19,7 +19,6 @@ public class DataEntry implements IDataEntry {
 	private Array values;
 
 	public DataEntry(String varName, Array values) {
-
 		this.varName = varName;
 		this.values = values;
 	}

@@ -23,14 +23,12 @@ public class VendorScan extends AbstractScanCSD implements IVendorScan {
 	private float totalSignal = 0.0f;
 
 	public VendorScan(int retentionTime, float totalSignal) {
-
 		super();
 		setRetentionTime(retentionTime);
 		setTotalSignal(totalSignal);
 	}
 
 	public VendorScan(float totalSignal) {
-
 		this.totalSignal = totalSignal;
 	}
 
