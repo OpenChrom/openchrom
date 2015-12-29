@@ -23,7 +23,6 @@ public class NoMatchA2 implements ITestMassSpectrum {
 	private IScanMSD massSpectrum;
 
 	public NoMatchA2() throws Exception {
-
 		massSpectrum = new ScanMSD();
 		massSpectrum.addIon(new Ion(65.0d, 1017.0f));
 		massSpectrum.addIon(new Ion(70.0d, 202891.0f));

@@ -28,7 +28,6 @@ public class BenzenepropanoicAcid implements ITestMassSpectrum {
 	private IScanMSD massSpectrum;
 
 	public BenzenepropanoicAcid() throws Exception {
-
 		massSpectrum = new ScanMSD();
 		massSpectrum.addIon(new Ion(14.0d, 31.0f));
 		massSpectrum.addIon(new Ion(15.0d, 297.0f));

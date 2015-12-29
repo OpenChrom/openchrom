@@ -28,7 +28,6 @@ public class PhenolBenzimidazolyl implements ITestMassSpectrum {
 	private IScanMSD massSpectrum;
 
 	public PhenolBenzimidazolyl() throws Exception {
-
 		massSpectrum = new ScanMSD();
 		massSpectrum.addIon(new Ion(33.0d, 2.0f));
 		massSpectrum.addIon(new Ion(34.0d, 2.0f));

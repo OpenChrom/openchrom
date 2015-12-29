@@ -28,7 +28,6 @@ public class Syringylacetone implements ITestMassSpectrum {
 	private IScanMSD massSpectrum;
 
 	public Syringylacetone() throws Exception {
-
 		massSpectrum = new ScanMSD();
 		massSpectrum.addIon(new Ion(27.0d, 11.0f));
 		massSpectrum.addIon(new Ion(28.0d, 8.0f));

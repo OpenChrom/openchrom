@@ -16,7 +16,6 @@ import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.AbstractMas
 public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumComparisonResult {
 
 	public PBMMassSpectrumComparisonResult(float matchFactor, float reverseMatchFactor) {
-
 		super(matchFactor, reverseMatchFactor);
 	}
 }

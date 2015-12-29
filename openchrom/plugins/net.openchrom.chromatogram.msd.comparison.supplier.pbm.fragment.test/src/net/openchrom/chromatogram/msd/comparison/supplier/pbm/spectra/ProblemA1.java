@@ -20,7 +20,6 @@ public class ProblemA1 implements ITestMassSpectrum {
 	private IScanMSD massSpectrum;
 
 	public ProblemA1() throws Exception {
-
 		massSpectrum = new ScanMSD();
 		massSpectrum.addIon(new Ion(36.0d, 152.46007f));
 		massSpectrum.addIon(new Ion(37.0d, 304.92014f));
