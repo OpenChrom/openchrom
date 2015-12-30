@@ -29,8 +29,8 @@
   --> 
   <properties>
     <!-- VERSIONS -->
-    <tycho.version>0.22.0</tycho.version>
-    <tycho-extras.version>0.22.0</tycho-extras.version>
+    <tycho.version>0.24.0</tycho.version>
+    <tycho-extras.version>0.24.0</tycho-extras.version>
     <pmd.version>2.7.1</pmd.version>
     <checkstyle.version>2.9.1</checkstyle.version>
     <!-- IDS -->
@@ -39,18 +39,20 @@
     <maven.groupid>org.apache.maven.plugins</maven.groupid>
     <!-- REPOSITORY URLS -->
     <tycho-repo.url>https://oss.sonatype.org/content/groups/public</tycho-repo.url>
-    <luna-repo.url>http://download.eclipse.org/releases/luna</luna-repo.url>
-    <luna-updates-repo.url>http://download.eclipse.org/eclipse/updates/4.4</luna-updates-repo.url>
+    <mars-repo.url>http://download.eclipse.org/releases/mars</mars-repo.url>
+    <mars-updates-repo.url>http://download.eclipse.org/eclipse/updates/4.5</mars-updates-repo.url>
     <jetty-repo.url>http://download.eclipse.org/jetty/updates/jetty-bundles-8.x</jetty-repo.url>
     <egit-repo.url>http://download.eclipse.org/egit/updates</egit-repo.url>
-    <e4-tools.url>http://download.eclipse.org/e4/downloads/drops/S-0.16-201408072200/repository</e4-tools.url>
-    <orbit-repo.url>http://download.eclipse.org/tools/orbit/downloads/drops/R20150124073747/repository</orbit-repo.url>
-    <ecf-repo.url>http://download.eclipse.org/rt/ecf/3.8.1/site.p2</ecf-repo.url>
+    <e4-tools.url>http://download.eclipse.org/e4/downloads/drops/S-0.17-201501051100/repository</e4-tools.url>
+    <orbit-repo.url>http://download.eclipse.org/tools/orbit/downloads/drops/R20151118145958/repository</orbit-repo.url>
+    <ecf-repo.url>http://download.eclipse.org/rt/ecf/3.12.0/site.p2</ecf-repo.url>
     <nebula-repo.url>http://download.eclipse.org/technology/nebula/snapshot</nebula-repo.url>
     <nattable-repo.url>http://download.eclipse.org/nattable/releases/1.3.0/repository</nattable-repo.url>
     <pydev-repo.url>http://pydev.org/updates</pydev-repo.url>
     <ease-repo.url>http://download.eclipse.org/ease/update/release</ease-repo.url>
     <easejython-repo.url>https://dl.bintray.com/pontesegger/ease-jython</easejython-repo.url>
+    <knime-repo.url>http://update.knime.org/analytics-platform/3.1</knime-repo.url>
+    <efxclipse-repo.url>http://download.eclipse.org/efxclipse/updates-released/2.1.0/site</efxclipse-repo.url>
     <!-- ENCODING -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -59,13 +61,13 @@
   -->
   <repositories>
     <repository>
-      <id>luna</id>
-      <url>${luna-repo.url}</url>
+      <id>mars</id>
+      <url>${mars-repo.url}</url>
       <layout>p2</layout>
     </repository>
     <repository>
-      <id>luna-updates</id>
-      <url>${luna-updates-repo.url}</url>
+      <id>mars-updates</id>
+      <url>${mars-updates-repo.url}</url>
       <layout>p2</layout>
     </repository>
     <repository>
@@ -118,6 +120,16 @@
       <url>${easejython-repo.url}</url>
       <layout>p2</layout>
     </repository>
+    <repository>
+      <id>knime</id>
+      <url>${knime-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>efxclipse</id>
+      <url>${efxclipse-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
   </repositories>
   <!--
 	PLUGIN REPOSITORIES
@@ -164,7 +176,7 @@
             <type>eclipse-plugin</type>
             <id>org.eclipse.jdt.core</id>
             <restrictTo>
-              <version>3.10.2.v20150120-1634</version>
+              <version>3.11.1.v20150902-1521</version>
             </restrictTo>
             </filter>
           </filters>
@@ -219,11 +231,18 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-compiler-plugin</artifactId>
         <version>${tycho.version}</version>
-          <configuration>
-            <compilerArguments>
-              <encoding>${project.build.sourceEncoding}</encoding>
-            </compilerArguments>
-          </configuration>
+        <configuration>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <extraClasspathElements>
+            <extraClasspathElement>
+              <groupId>com.oracle</groupId>
+              <artifactId>javafx</artifactId>
+              <version>8.0.0-SNAPSHOT</version>
+              <systemPath>${java.home}/lib/jfxswt.jar</systemPath>
+              <scope>system</scope>
+            </extraClasspathElement>
+          </extraClasspathElements>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>${tycho.groupid}</groupId>
