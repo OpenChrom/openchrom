@@ -51,7 +51,7 @@ public class MGFReader extends AbstractMassSpectraReader implements IMassSpectra
 		IMassSpectra massSpectra = new MassSpectra();
 		MGFFileReader mgfFileReader = new MGFFileReaderImpl(file);
 		MGFElementIterator iterator = mgfFileReader.getIterator();
-		TransformerMGFElementIScanMSD transformer = new TransformerMGFElementIScanMSD();
+		TransformerMGFElementIVendorLibraryMassSpectrum transformer = new TransformerMGFElementIVendorLibraryMassSpectrum();
 		while(iterator.hasNext()) {
 			MGFElement next = iterator.next();
 			massSpectra.setName(next.getTitle());
