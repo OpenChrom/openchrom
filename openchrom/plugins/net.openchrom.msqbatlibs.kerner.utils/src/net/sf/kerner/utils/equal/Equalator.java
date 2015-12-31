@@ -14,7 +14,26 @@ package net.sf.kerner.utils.equal;
 import net.sf.kerner.utils.pair.Pair;
 import net.sf.kerner.utils.transformer.Transformer;
 
+/**
+ * An Equalator checks if two objects are equal.
+ *
+ * @author <a href="mailto:alexander.kerner@silico-sciences.com">Alexander
+ *         Kerner</a>
+ *
+ * @param <T>
+ *            type of object that is checked for equality
+ */
 public interface Equalator<T> extends Transformer<Pair<T, Object>, Boolean> {
 
-	boolean areEqual(final T element, Object obj);
+	/**
+	 * Checks if two provided objects are equal.
+	 * 
+	 * @param obj1
+	 *            first object
+	 * @param obj2
+	 *            second object
+	 * @return {@code true} if {@code obj1} and {@code obj2} are equal;
+	 *         {@code false} otherwise
+	 */
+	boolean areEqual(final T obj1, Object obj2);
 }

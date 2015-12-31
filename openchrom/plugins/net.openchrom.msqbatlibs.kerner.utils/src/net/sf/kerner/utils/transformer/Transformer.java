@@ -14,19 +14,10 @@ package net.sf.kerner.utils.transformer;
 /**
  * A {@code Transformer} converts one object of type {@code T} to another object
  * of type {@code V}.
- * <p>
- * <b>Example:</b><br>
- * </p>
- * <p>
- *
- * <pre>
- * TODO example
- * </pre>
- *
- * </p>
- *
+ * 
  * @author <a href="mailto:ak@silico-sciences.com">Alexander Kerner</a>
  * @version 2015-09-05
+ * 
  * @param <T>
  *            type of input element
  * @param <V>
