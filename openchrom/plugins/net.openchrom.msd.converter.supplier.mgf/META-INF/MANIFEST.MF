@@ -23,5 +23,4 @@ Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.msd.converter.supplier.mgf,
  net.openchrom.msd.converter.supplier.mgf.converter,
  net.openchrom.msd.converter.supplier.mgf.converter.internal.io,
- net.openchrom.msd.converter.supplier.mgf.converter.io,
- net.openchrom.msd.converter.supplier.mgf.converter.model
+ net.openchrom.msd.converter.supplier.mgf.converter.io

@@ -5,13 +5,13 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.converter.supplier.mgf.converter.model;
+package net.openchrom.msd.converter.supplier.mgf;
 
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 
-public interface IVendorLibraryMassSpectrum extends IRegularLibraryMassSpectrum {
+public interface IMGFVendorLibraryMassSpectrum extends IRegularLibraryMassSpectrum {
 }

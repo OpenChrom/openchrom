@@ -11,24 +11,25 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mgf.converter.io;
 
-import net.openchrom.msd.converter.supplier.mgf.converter.model.IVendorLibraryMassSpectrum;
-import net.openchrom.msd.converter.supplier.mgf.converter.model.VendorLibraryMassSpectrum;
-import net.sf.bioutils.proteomics.peak.Peak;
-import net.sf.jmgf.MGFElement;
-import net.sf.kerner.utils.collections.list.AbstractTransformingListFactory;
-
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 
-public class TransformerMGFElementIVendorLibraryMassSpectrum extends AbstractTransformingListFactory<MGFElement, IVendorLibraryMassSpectrum> {
+import net.openchrom.msd.converter.supplier.mgf.IMGFVendorLibraryMassSpectrum;
+import net.openchrom.msd.converter.supplier.mgf.MGFVendorLibraryMassSpectrum;
+import net.sf.bioutils.proteomics.peak.Peak;
+import net.sf.jmgf.MGFElement;
+import net.sf.kerner.utils.collections.list.AbstractTransformingListFactory;
+
+public class TransformerMGFElementIVendorLibraryMassSpectrum extends AbstractTransformingListFactory<MGFElement, IMGFVendorLibraryMassSpectrum> {
 
 	private static final Logger log = Logger.getLogger(TransformerMGFElementIVendorLibraryMassSpectrum.class);
 	private final TransformerPeakIon transformer = new TransformerPeakIon();
 
-	public IVendorLibraryMassSpectrum transform(final MGFElement element) {
+	@Override
+	public IMGFVendorLibraryMassSpectrum transform(final MGFElement element) {
 
-		final IVendorLibraryMassSpectrum result = new VendorLibraryMassSpectrum();
+		final IMGFVendorLibraryMassSpectrum result = new MGFVendorLibraryMassSpectrum();
 		result.setIdentifier(element.getTitle());
 		try {
 			final double retentionTimeInSeconds = Double.parseDouble(element.getElement(MGFElement.Identifier.RTINSECONDS));

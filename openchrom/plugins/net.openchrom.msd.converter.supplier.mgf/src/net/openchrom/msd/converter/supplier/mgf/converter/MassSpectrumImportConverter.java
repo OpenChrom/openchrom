@@ -29,8 +29,8 @@ import net.openchrom.msd.converter.supplier.mgf.converter.io.MGFReader;
 
 public class MassSpectrumImportConverter extends AbstractMassSpectrumImportConverter {
 
-	private static final Logger logger = Logger.getLogger(MassSpectrumImportConverter.class);
 	private static final String DESCRIPTION = "MGF MassSpectrum Import";
+	private static final Logger logger = Logger.getLogger(MassSpectrumImportConverter.class);
 
 	@Override
 	public IMassSpectrumImportConverterProcessingInfo convert(final File file, final IProgressMonitor monitor) {

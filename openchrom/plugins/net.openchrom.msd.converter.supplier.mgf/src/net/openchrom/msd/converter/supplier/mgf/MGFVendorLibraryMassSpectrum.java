@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.converter.supplier.mgf.converter.model;
+package net.openchrom.msd.converter.supplier.mgf;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
@@ -18,14 +18,13 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 
-public class VendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpectrum implements IVendorLibraryMassSpectrum {
+public class MGFVendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpectrum implements IMGFVendorLibraryMassSpectrum {
 
+	private static final Logger logger = Logger.getLogger(MGFVendorLibraryMassSpectrum.class);
 	/**
-	 * Renew the serialVersionUID any time you have changed some fields or
-	 * methods.
+	 *
 	 */
-	private static final long serialVersionUID = -3213772728386428206L;
-	private static final Logger logger = Logger.getLogger(VendorLibraryMassSpectrum.class);
+	private static final long serialVersionUID = -1796453432354210076L;
 
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
@@ -39,9 +38,9 @@ public class VendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpectru
 	 * ILibraryMassSpectrum is a subtype of IMassSpectrum.
 	 */
 	@Override
-	public IVendorLibraryMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
+	public MGFVendorLibraryMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
 
-		final IVendorLibraryMassSpectrum massSpectrum = (IVendorLibraryMassSpectrum)super.clone();
+		final MGFVendorLibraryMassSpectrum massSpectrum = (MGFVendorLibraryMassSpectrum)super.clone();
 		IIon mz;
 		/*
 		 * The instance variables have been copied by super.clone();.<br/> The

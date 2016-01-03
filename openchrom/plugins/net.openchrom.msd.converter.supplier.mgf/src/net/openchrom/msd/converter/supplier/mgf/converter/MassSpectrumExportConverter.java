@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -33,8 +33,8 @@ import net.openchrom.msd.converter.supplier.mgf.converter.io.MGFWriter;
 
 public class MassSpectrumExportConverter extends AbstractMassSpectrumExportConverter {
 
-	private static final Logger logger = Logger.getLogger(MassSpectrumExportConverter.class);
 	private static final String DESCRIPTION = "MGF MassSpectrum Export";
+	private static final Logger logger = Logger.getLogger(MassSpectrumExportConverter.class);
 
 	@Override
 	public IMassSpectrumExportConverterProcessingInfo convert(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) {
