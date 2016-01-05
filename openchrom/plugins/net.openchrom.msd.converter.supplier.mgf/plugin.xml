@@ -14,4 +14,17 @@
             isImportable="true">
       </MassSpectrumSupplier>
    </extension>
+   <extension
+         point="org.eclipse.chemclipse.msd.converter.chromatogramSupplier">
+      <ChromatogramSupplier
+            description="Exports Chromatograms to MGF format."
+            exportConverter="net.openchrom.msd.converter.supplier.mgf.converter.ChromatogramExportConverter"
+            fileExtension=".mgf"
+            filterName="MGF Chromatogram (*.mgf)"
+            id="net.openchrom.msd.converter.supplier.mgf"
+            importConverter="net.openchrom.msd.converter.supplier.mgf.converter.ChromatogramImportConverter"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>
+   </extension>   
 </plugin>
