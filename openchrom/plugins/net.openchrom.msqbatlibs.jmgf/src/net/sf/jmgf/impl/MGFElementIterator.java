@@ -21,6 +21,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import net.sf.bioutils.proteomics.peak.FactoryPeak;
 import net.sf.bioutils.proteomics.peak.FactoryPeakImpl;
 import net.sf.bioutils.proteomics.peak.Peak;
@@ -30,13 +32,11 @@ import net.sf.jmgf.exception.ExceptionFileFormat;
 import net.sf.kerner.utils.io.buffered.AbstractIOIterator;
 import net.sf.kerner.utils.progress.ProgressMonitor;
 
-import org.apache.log4j.Logger;
-
 public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 
 	private final static Logger logger = Logger.getLogger(MGFElementIterator.class);
-	private ProgressMonitor monitor;
 	private FactoryPeak factoryPeak;
+	private ProgressMonitor monitor;
 
 	public MGFElementIterator(final BufferedReader reader) throws IOException {
 		super(reader);
@@ -54,6 +54,7 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 		super(reader);
 	}
 
+	@Override
 	protected synchronized MGFElement doRead() throws IOException {
 
 		if(monitor != null) {
@@ -65,7 +66,7 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 				// nothing left to read
 				return null;
 			}
-			if(line.toUpperCase().trim().equals(MGFFile.FIRST_LINE)) {
+			if(line.toUpperCase().trim().equals(MGFFile.Format.FIRST_LINE)) {
 			} else {
 				throw new ExceptionFileFormat("Invalid first line " + line);
 			}
@@ -80,17 +81,17 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 					result.setElements(elements);
 					return result;
 				}
-				if(line.toUpperCase().trim().equals(MGFFile.LAST_LINE)) {
+				if(line.toUpperCase().trim().equals(MGFFile.Format.LAST_LINE)) {
 					final MGFElementBean result = new MGFElementBean();
 					result.setPeaks(peaks);
 					result.setElements(elements);
 					return result;
 				}
 				// Assume that lines starting numerically always describe an ion
-				if(isIonBlock(line)) {
+				if(isIonBlock(line.trim())) {
 					peaks.add(readPeak(line));
 				} else {
-					final String[] arr = line.split("=", 2);
+					final String[] arr = line.split(MGFFile.Format.KEY_VALUE_SEPARATOR, 2);
 					if(arr.length != 2) {
 						throw new ExceptionFileFormat("Invalid line " + line);
 					}
@@ -130,22 +131,20 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 
 	protected synchronized Peak readPeak(final String line) throws ExceptionFileFormat {
 
-		final String[] arr = line.split("\\s");
+		final String[] arr = line.trim().split("\\s++");
 		if(arr.length < 1) {
 			throw new ExceptionFileFormat("invalid peak line " + line);
 		}
 		final double mz = Double.parseDouble(arr[0]);
 		final double intensity;
-		final double charge;
 		if(arr.length > 1) {
 			intensity = Double.parseDouble(arr[1]);
 		} else {
 			intensity = -1;
 		}
 		if(arr.length > 2) {
-			charge = Double.parseDouble(arr[2]);
+			Double.parseDouble(arr[2]);
 		} else {
-			charge = -1;
 		}
 		// TODO: charge currently not supported
 		return getFactoryPeak().create(null, mz, intensity, -1);

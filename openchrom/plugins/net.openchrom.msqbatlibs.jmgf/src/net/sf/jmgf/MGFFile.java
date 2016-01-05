@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2016 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,8 +16,13 @@ import java.util.List;
 
 public interface MGFFile extends Iterable<MGFElement>, Serializable {
 
-	public final static String FIRST_LINE = "BEGIN IONS";
-	public final static String LAST_LINE = "END IONS";
+	public static class Format {
+
+		public final static String FIRST_LINE = "BEGIN IONS";
+		public final static String KEY_VALUE_SEPARATOR = "=";
+		public final static String LAST_LINE = "END IONS";
+		public final static String PEAK_PROPERTIES_SEPARATOR = "=";
+	}
 
 	List<MGFElement> getElements();
 }

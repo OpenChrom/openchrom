@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2016 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,27 +12,11 @@
 package net.sf.jmgf;
 
 import java.util.List;
+import java.util.Map;
 
 import net.sf.bioutils.proteomics.peak.Peak;
 
 /**
- *
- * TODO description
- *
- * <p>
- * <b>Example:</b><br>
- *
- * </p>
- * <p>
- *
- * <pre>
- * TODO example
- * </pre>
- *
- * </p>
- * <p>
- * last reviewed: 2015-12-09
- * </p>
  *
  * @author <a href="mailto:alexanderkerner24@gmail.com">Alexander Kerner</a>
  * @version 2015-12-09
@@ -41,7 +25,7 @@ import net.sf.bioutils.proteomics.peak.Peak;
 public interface MGFElement {
 
 	public static enum Identifier {
-		TITLE, CHARGE, PEPMASS, RTINSECONDS;
+		CHARGE, PEPMASS, RTINSECONDS, SCANS, TITLE;
 
 		private final String identifier;
 
@@ -53,6 +37,7 @@ public interface MGFElement {
 			this.identifier = identifier;
 		}
 
+		@Override
 		public String toString() {
 
 			if(identifier != null) {
@@ -67,6 +52,8 @@ public interface MGFElement {
 	String getElement(Identifier element);
 
 	String getElement(String element);
+
+	Map<String, String> getElements();
 
 	List<Peak> getPeaks();
 
