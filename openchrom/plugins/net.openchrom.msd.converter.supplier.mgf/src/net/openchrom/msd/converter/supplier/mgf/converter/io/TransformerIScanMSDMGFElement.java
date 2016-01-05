@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mgf.converter.io;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IIonTransition;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -20,29 +23,37 @@ import net.sf.jmgf.MGFElement;
 import net.sf.jmgf.impl.MGFElementBean;
 import net.sf.kerner.utils.collections.list.AbstractTransformingListFactory;
 
-public class TransformerIScanMSDMGFElement extends AbstractTransformingListFactory<IScanMSD, MGFElement> {
+public class TransformerIScanMSDMGFElement extends AbstractTransformingListFactory<IScanMSD, List<MGFElement>> {
 
 	private final static TransformerIonPeak TRANSFORMER = new TransformerIonPeak();
 
-	static IIon getPrecursorIon(IScanMSD element) {
+	@Override
+	public List<MGFElement> transform(IScanMSD element) {
 
-		return null;
+		List<MGFElement> result = new ArrayList<>();
+		MGFElementBean mgfElement = new MGFElementBean();
+		mgfElement.addElement(MGFElement.Identifier.TITLE.toString(), element.getIdentifier());
+		mgfElement.addElement(MGFElement.Identifier.SCANS.toString(), Integer.toString(element.getScanNumber()));
+		mgfElement.addElement(MGFElement.Identifier.RTINSECONDS.toString(), Integer.toString(element.getRetentionTime() / 1000));
+		mgfElement.setPeaks(TRANSFORMER.transformCollection(element.getIons()));
+		result.add(mgfElement);
+		for(IIon ion : element.getIons()) {
+			result.addAll(processTransitions(element, ion));
+		}
+		return result;
 	}
 
-	@Override
-	public MGFElement transform(IScanMSD element) {
+	List<MGFElement> processTransitions(IScanMSD element, IIon ion) {
 
-		MGFElementBean result = new MGFElementBean();
-		getPrecursorIon(element);
-		for(IIon ion : element.getIons()) {
-			IIonTransition transition = ion.getIonTransition();
-			if(transition != null) {
-			}
+		List<MGFElement> result = new ArrayList<>();
+		IIonTransition ionTransition = ion.getIonTransition();
+		if(ionTransition != null) {
+			MGFElementBean mgfElement = new MGFElementBean();
+			mgfElement.addElement(MGFElement.Identifier.TITLE.toString(), element.getIdentifier() + " transition");
+			mgfElement.addElement(MGFElement.Identifier.SCANS.toString(), Integer.toString(element.getScanNumber()));
+			mgfElement.addElement(MGFElement.Identifier.PRECURSOR.toString(), Double.toString(ion.getIon()));
+			result.add(mgfElement);
 		}
-		result.addElement(MGFElement.Identifier.TITLE.toString(), element.getIdentifier());
-		result.addElement(MGFElement.Identifier.SCANS.toString(), Integer.toString(element.getScanNumber()));
-		result.addElement(MGFElement.Identifier.RTINSECONDS.toString(), Integer.toString(element.getRetentionTime() / 1000));
-		result.setPeaks(TRANSFORMER.transformCollection(element.getIons()));
 		return result;
 	}
 }

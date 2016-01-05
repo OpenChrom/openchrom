@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Dr. Alexander Kerner - implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mgf.converter;
 
@@ -51,7 +52,7 @@ public class ChromatogramExportConverter extends AbstractChromatogramMSDExportCo
 				writer.writeChromatogram(file, chromatogram, monitor);
 				processingInfo.setFile(file);
 			} catch(Exception e) {
-				logger.warn(e);
+				logger.warn(e.getLocalizedMessage(), e);
 				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
 			}
 		}

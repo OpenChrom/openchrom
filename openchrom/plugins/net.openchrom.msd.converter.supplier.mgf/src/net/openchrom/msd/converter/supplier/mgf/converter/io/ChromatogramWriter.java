@@ -20,8 +20,6 @@ import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.msd.converter.io.AbstractChromatogramMSDWriter;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.core.IIon;
-import org.eclipse.chemclipse.msd.model.core.IIonTransition;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -30,17 +28,12 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 	@Override
 	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
 
+		file.createNewFile();
+		MGFWriter mgfWriter = new MGFWriter();
 		for(IScan scan : chromatogram.getScans()) {
 			if(scan instanceof IScanMSD) {
 				IScanMSD scanMSD = (IScanMSD)scan;
-				for(IIon ion : scanMSD.getIons()) {
-					IIonTransition ionTransition = ion.getIonTransition();
-					if(ionTransition != null) {
-						// TODO
-					} else {
-						// TODO
-					}
-				}
+				mgfWriter.write(file, scanMSD, true);
 			}
 		}
 	}

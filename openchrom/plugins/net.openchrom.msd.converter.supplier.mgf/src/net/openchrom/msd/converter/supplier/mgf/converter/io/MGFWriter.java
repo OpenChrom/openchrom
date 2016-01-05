@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2016 Lablicate UG (haftungsbeschränkt).
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Dr. Alexander Kerner - implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mgf.converter.io;
 
@@ -15,6 +16,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
@@ -31,15 +34,21 @@ import net.sf.kerner.utils.io.UtilIO;
 
 public class MGFWriter extends AbstractMassSpectraWriter implements IMassSpectraWriter {
 
-	public final static String PEAK_LINE_FORMAT_MZ = "%10.4f";
-	public final static String PEAK_LINE_FORMAT_MZ_INT = "%10.4f %10.4f";
-	public final static String PEAK_LINE_FORMAT_MZ_INT_CHARGE = "%10.4f %10.4f %1d";
+	// public final static String PEAK_LINE_FORMAT_MZ = "%10.4f";
+	// public final static String PEAK_LINE_FORMAT_MZ_INT = "%10.4f %10.0f";
+	// public final static String PEAK_LINE_FORMAT_MZ_INT_CHARGE = "%10.4f
+	// %10.0f %1d";
 	private final static TransformerIScanMSDMGFElement TRANSFORMER_ISCANMSD_MGFELEMENT = new TransformerIScanMSDMGFElement();
 
 	@Override
 	public void write(File file, IMassSpectra massSpectra, boolean append) throws FileNotFoundException, FileIsNotWriteableException, IOException {
 
-		for(IScanMSD scan : massSpectra.getList()) {
+		write(file, massSpectra.getList(), append);
+	}
+
+	public void write(File file, Collection<? extends IScanMSD> scans, boolean append) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+
+		for(IScanMSD scan : scans) {
 			write(file, scan, append);
 		}
 	}
@@ -66,19 +75,24 @@ public class MGFWriter extends AbstractMassSpectraWriter implements IMassSpectra
 	@Override
 	public void writeMassSpectrum(FileWriter fileWriter, IScanMSD massSpectrum) throws IOException {
 
-		MGFElement mgfElement = TRANSFORMER_ISCANMSD_MGFELEMENT.transform(massSpectrum);
-		fileWriter.write(MGFFile.Format.FIRST_LINE);
-		fileWriter.write(UtilIO.NEW_LINE_STRING);
-		for(Entry<String, String> entry : mgfElement.getElements().entrySet()) {
-			fileWriter.write(entry.getKey());
-			fileWriter.write(MGFFile.Format.KEY_VALUE_SEPARATOR);
-			fileWriter.write(entry.getValue());
+		List<MGFElement> mgfElements = TRANSFORMER_ISCANMSD_MGFELEMENT.transform(massSpectrum);
+		for(MGFElement element : mgfElements) {
+			fileWriter.write(MGFFile.Format.FIRST_LINE);
+			fileWriter.write(UtilIO.NEW_LINE_STRING);
+			for(Entry<String, String> entry : element.getElements().entrySet()) {
+				fileWriter.write(entry.getKey());
+				fileWriter.write(MGFFile.Format.KEY_VALUE_SEPARATOR);
+				fileWriter.write(entry.getValue());
+				fileWriter.write(UtilIO.NEW_LINE_STRING);
+			}
+			for(Peak ion : element.getPeaks()) {
+				fileWriter.write(Double.toString(ion.getMz()));
+				fileWriter.write(MGFFile.Format.PEAK_PROPERTIES_SEPARATOR);
+				fileWriter.write(Double.toString(ion.getIntensity()));
+				fileWriter.write(UtilIO.NEW_LINE_STRING);
+			}
+			fileWriter.write(MGFFile.Format.LAST_LINE);
 			fileWriter.write(UtilIO.NEW_LINE_STRING);
 		}
-		for(Peak ion : mgfElement.getPeaks()) {
-			fileWriter.write(String.format(PEAK_LINE_FORMAT_MZ_INT, ion.getMz(), ion.getIntensity()));
-			fileWriter.write(UtilIO.NEW_LINE_STRING);
-		}
-		fileWriter.write(MGFFile.Format.LAST_LINE);
 	}
 }
