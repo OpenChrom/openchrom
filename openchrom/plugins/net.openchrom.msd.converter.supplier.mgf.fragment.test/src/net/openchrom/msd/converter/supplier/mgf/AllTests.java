@@ -5,17 +5,17 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  * Dr. Alexander Kerner - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mgf;
 
+import org.eclipse.chemclipse.rcp.app.test.TestAssembler;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
-import org.eclipse.chemclipse.rcp.app.test.TestAssembler;
 
 public class AllTests {
 

@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  * Dr. Alexander Kerner - initial API and implementation
@@ -27,7 +27,7 @@ public class PathResolver {
 	 * Returns a absolute path of the specified Folder. For example
 	 * TESTDATA_IMPORT_EMPTY as an absolute Path:
 	 * $PluginPath$/testData/files/EMPTY.D/DATA.MS
-	 * 
+	 *
 	 * @param string
 	 * @return String absolutePath
 	 */
