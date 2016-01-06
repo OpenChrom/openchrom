@@ -25,7 +25,7 @@ import net.sf.bioutils.proteomics.peak.Peak;
 public interface MGFElement {
 
 	public static enum Identifier {
-		CHARGE, PEPMASS, RTINSECONDS, SCANS, TITLE;
+		CHARGE, PEPMASS, RTINSECONDS, SCANS, TITLE, PRECURSOR;
 
 		private final String identifier;
 

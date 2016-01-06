@@ -21,7 +21,7 @@ public interface MGFFile extends Iterable<MGFElement>, Serializable {
 		public final static String FIRST_LINE = "BEGIN IONS";
 		public final static String KEY_VALUE_SEPARATOR = "=";
 		public final static String LAST_LINE = "END IONS";
-		public final static String PEAK_PROPERTIES_SEPARATOR = "=";
+		public final static String PEAK_PROPERTIES_SEPARATOR = " ";
 	}
 
 	List<MGFElement> getElements();

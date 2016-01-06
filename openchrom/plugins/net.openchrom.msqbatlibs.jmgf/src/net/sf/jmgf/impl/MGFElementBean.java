@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.sf.jmgf.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ import net.sf.jmgf.MGFElement;
 public class MGFElementBean implements MGFElement {
 
 	private Map<String, String> elements = new LinkedHashMap<String, String>();
-	private List<Peak> peaks;
+	private List<Peak> peaks = new ArrayList<>();
 
 	public MGFElementBean() {
 	}
@@ -114,7 +115,8 @@ public class MGFElementBean implements MGFElement {
 
 	public synchronized void setPeaks(final List<Peak> peaks) {
 
-		this.peaks = peaks;
+		if(peaks != null && peaks.size() > 0)
+			this.peaks = peaks;
 	}
 
 	@Override
