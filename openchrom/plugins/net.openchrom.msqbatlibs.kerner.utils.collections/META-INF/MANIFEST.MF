@@ -7,7 +7,7 @@ Bundle-Activator: net.openchrom.msqbatlibs.kerner.utils.collections.Activator
 Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.1.0",
  net.openchrom.msqbatlibs.jranges;bundle-version="1.1.0"
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: net.sf.kerner.utils.collections;version="1.1.0.qualifier",
  net.sf.kerner.utils.collections.applier;version="1.1.0.qualifier",

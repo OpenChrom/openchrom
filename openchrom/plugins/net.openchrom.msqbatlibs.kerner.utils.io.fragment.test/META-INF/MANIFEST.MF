@@ -4,5 +4,5 @@ Bundle-Name: Test
 Bundle-SymbolicName: net.openchrom.msqbatlibs.kerner.utils.io.fragment.test
 Bundle-Version: 1.1.0.qualifier
 Fragment-Host: net.openchrom.msqbatlibs.kerner.utils.io;bundle-version="1.1.0"
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit;bundle-version="4.11.0"
