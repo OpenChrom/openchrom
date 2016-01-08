@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.converter.supplier.mgf.converter;
+package net.openchrom.msd.converter.supplier.mgf.converter.model;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;

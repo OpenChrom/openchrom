@@ -9,14 +9,11 @@
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.converter.supplier.mgf.converter.io;
+package net.openchrom.msd.converter.supplier.mgf.converter.model;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 
-import net.openchrom.msd.converter.supplier.mgf.IMGFVendorLibraryMassSpectrum;
-import net.openchrom.msd.converter.supplier.mgf.MGFVendorLibraryMassSpectrum;
-import net.openchrom.msd.converter.supplier.mgf.converter.TransformerPeakIon;
 import net.sf.bioutils.proteomics.peak.Peak;
 import net.sf.jmgf.MGFElement;
 import net.sf.kerner.utils.collections.list.AbstractTransformingListFactory;

@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.converter.supplier.mgf.converter.io;
+package net.openchrom.msd.converter.supplier.mgf.converter.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,6 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IIonTransition;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
-import net.openchrom.msd.converter.supplier.mgf.converter.TransformerIonPeak;
 import net.sf.jmgf.MGFElement;
 import net.sf.jmgf.impl.MGFElementBean;
 import net.sf.kerner.utils.collections.list.AbstractTransformingListFactory;

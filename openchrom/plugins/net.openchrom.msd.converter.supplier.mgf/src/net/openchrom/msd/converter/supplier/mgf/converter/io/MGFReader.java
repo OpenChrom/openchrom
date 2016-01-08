@@ -23,6 +23,7 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.msd.converter.supplier.mgf.converter.model.TransformerMGFElementIMGFVendorLibraryMassSpectrum;
 import net.sf.jmgf.MGFElement;
 import net.sf.jmgf.MGFFileReader;
 import net.sf.jmgf.impl.MGFElementIterator;

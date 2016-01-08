@@ -26,6 +26,7 @@ import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
+import net.openchrom.msd.converter.supplier.mgf.converter.model.TransformerIScanMSDMGFElement;
 import net.sf.bioutils.proteomics.peak.Peak;
 import net.sf.jmgf.MGFElement;
 import net.sf.jmgf.MGFFile;

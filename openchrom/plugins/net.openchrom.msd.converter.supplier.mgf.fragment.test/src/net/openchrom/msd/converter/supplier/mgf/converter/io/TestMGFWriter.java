@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import net.openchrom.msd.converter.supplier.mgf.converter.model.TransformerMGFElementIMGFVendorLibraryMassSpectrum;
 import net.sf.jmgf.MGFElement;
 import net.sf.jmgf.MGFFile;
 import net.sf.jmgf.MGFFileReader;
