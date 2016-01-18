@@ -28,7 +28,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 	@Override
 	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
 
-		file.createNewFile();
+		// file.createNewFile();
 		MGFWriter mgfWriter = new MGFWriter();
 		for(IScan scan : chromatogram.getScans()) {
 			if(scan instanceof IScanMSD) {

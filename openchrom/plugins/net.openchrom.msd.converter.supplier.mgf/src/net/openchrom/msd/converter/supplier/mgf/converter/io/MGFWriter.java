@@ -57,16 +57,9 @@ public class MGFWriter extends AbstractMassSpectraWriter implements IMassSpectra
 	@Override
 	public void write(File file, IScanMSD massSpectrum, boolean append) throws FileNotFoundException, FileIsNotWriteableException, IOException {
 
-		if(file.exists() && !file.canWrite()) {
-			throw new FileIsNotWriteableException();
-		}
 		FileWriter fileWriter = null;
 		try {
-			fileWriter = new FileWriter(file);
-			if(append) {
-			} else {
-				file.createNewFile();
-			}
+			fileWriter = new FileWriter(file, append);
 			writeMassSpectrum(fileWriter, massSpectrum);
 		} finally {
 			new CloserProperly().closeProperly(fileWriter);
