@@ -53,7 +53,7 @@ public class MassSpectrumExportConverter extends AbstractMassSpectrumExportConve
 				 * Convert the mass spectra.
 				 */
 				IMassSpectraWriter massSpectraWriter = new MGFWriter();
-				massSpectraWriter.write(file, massSpectra, append);
+				massSpectraWriter.write(file, massSpectra, append, monitor);
 				processingInfo.setFile(file);
 			} catch(FileNotFoundException e) {
 				logger.warn(e);

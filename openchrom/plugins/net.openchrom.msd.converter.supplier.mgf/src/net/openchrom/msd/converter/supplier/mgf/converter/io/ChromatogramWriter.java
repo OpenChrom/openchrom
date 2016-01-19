@@ -33,7 +33,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		for(IScan scan : chromatogram.getScans()) {
 			if(scan instanceof IScanMSD) {
 				IScanMSD scanMSD = (IScanMSD)scan;
-				mgfWriter.write(file, scanMSD, true);
+				mgfWriter.write(file, scanMSD, true, monitor);
 			}
 		}
 	}

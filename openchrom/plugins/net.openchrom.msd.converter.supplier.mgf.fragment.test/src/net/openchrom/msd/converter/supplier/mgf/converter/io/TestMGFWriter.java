@@ -19,6 +19,7 @@ import java.io.IOException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -93,7 +94,7 @@ public class TestMGFWriter {
 
 		MGFElement element = getMGFFileSingleElement().getElements().get(0);
 		IScanMSD scan = TRANSFORMER_MGFELEMENT_IMGFVENDORLIBRARYMASSSPECTRUM.transform(element);
-		writer.write(outSingleElement, scan, false);
+		writer.write(outSingleElement, scan, false, new NullProgressMonitor());
 		MGFFile writtenFile = getMGFFile(outSingleElement);
 		assertEquals(1, writtenFile.getElements().size());
 		// elements differ, e.g.: CHARGE or PEPMASS

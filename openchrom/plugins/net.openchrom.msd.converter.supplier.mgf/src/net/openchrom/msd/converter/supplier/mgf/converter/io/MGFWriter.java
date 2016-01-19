@@ -25,6 +25,7 @@ import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraWriter;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mgf.converter.model.TransformerIScanMSDMGFElement;
 import net.sf.bioutils.proteomics.peak.Peak;
@@ -42,32 +43,32 @@ public class MGFWriter extends AbstractMassSpectraWriter implements IMassSpectra
 	private final static TransformerIScanMSDMGFElement TRANSFORMER_ISCANMSD_MGFELEMENT = new TransformerIScanMSDMGFElement();
 
 	@Override
-	public void write(File file, IMassSpectra massSpectra, boolean append) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void write(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
 
-		write(file, massSpectra.getList(), append);
+		write(file, massSpectra.getList(), append, monitor);
 	}
 
-	public void write(File file, Collection<? extends IScanMSD> scans, boolean append) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void write(File file, Collection<? extends IScanMSD> scans, boolean append, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
 
 		for(IScanMSD scan : scans) {
-			write(file, scan, append);
+			write(file, scan, append, monitor);
 		}
 	}
 
 	@Override
-	public void write(File file, IScanMSD massSpectrum, boolean append) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void write(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
 
 		FileWriter fileWriter = null;
 		try {
 			fileWriter = new FileWriter(file, append);
-			writeMassSpectrum(fileWriter, massSpectrum);
+			writeMassSpectrum(fileWriter, massSpectrum, monitor);
 		} finally {
 			new CloserProperly().closeProperly(fileWriter);
 		}
 	}
 
 	@Override
-	public void writeMassSpectrum(FileWriter fileWriter, IScanMSD massSpectrum) throws IOException {
+	public void writeMassSpectrum(FileWriter fileWriter, IScanMSD massSpectrum, IProgressMonitor monitor) throws IOException {
 
 		List<MGFElement> mgfElements = TRANSFORMER_ISCANMSD_MGFELEMENT.transform(massSpectrum);
 		for(MGFElement element : mgfElements) {
