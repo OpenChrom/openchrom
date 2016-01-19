@@ -18,11 +18,12 @@ package net.openchrom.msd.converter.supplier.mgf;
  */
 public class TestPathHelper extends PathResolver {
 
+	public static final String CONVERTER_ID = "org.eclipse.chemclipse.msd.converter.supplier.mgf";
 	/*
 	 * EXPORT
 	 */
 	public static final String TESTDIR_EXPORT = "testData/files/export";
-	public static final String TESTFILE_EXPORT_MS_1 = TESTDIR_EXPORT + "/MS1.mgf";
+	public static final String TESTFILE_EXPORT_MS_1 = "MS1.mgf";
 	/*
 	 * IMPORT
 	 */
