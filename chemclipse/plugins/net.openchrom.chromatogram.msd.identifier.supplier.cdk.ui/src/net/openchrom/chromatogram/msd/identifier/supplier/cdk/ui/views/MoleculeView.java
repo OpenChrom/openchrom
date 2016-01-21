@@ -16,6 +16,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -32,8 +36,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
-import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.converter.ImageConverter;
 
@@ -215,13 +217,15 @@ public class MoleculeView {
 					/*
 					 * Receive name and formula.
 					 */
-					iupacName = (String)event.getProperty(IChemClipseEvents.PROPERTY_IDENTIFICATION_ENTRY_NAME);
-					smilesFormula = (String)event.getProperty(IChemClipseEvents.PROPERTY_IDENTIFICATION_ENTRY_FORMULA);
+					IIdentificationTarget identificationTarget = (IIdentificationTarget)event.getProperty(IChemClipseEvents.PROPERTY_IDENTIFICATION_TARGET);
+					ILibraryInformation libraryInformation = identificationTarget.getLibraryInformation();
+					iupacName = libraryInformation.getName();
+					smilesFormula = libraryInformation.getFormula();
 					//
 					makeImage();
 				}
 			};
-			eventBroker.subscribe(IChemClipseEvents.TOPIC_IDENTIFICATION_ENTRY_UPDATE_CDK, eventHandler);
+			eventBroker.subscribe(IChemClipseEvents.TOPIC_IDENTIFICATION_TARGET_UPDATE, eventHandler);
 		}
 	}
 }
