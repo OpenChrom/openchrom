@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (c) 2012, 2015 Dr. Philip Wenig.
+  Copyright (c) 2012, 2016 Dr. Philip Wenig.
 
   All rights reserved.
   This program and the accompanying materials are made available under the
@@ -176,7 +176,7 @@
             <type>eclipse-plugin</type>
             <id>org.eclipse.jdt.core</id>
             <restrictTo>
-              <version>3.11.1.v20150902-1521</version>
+              <version>3.11.2.v20160128-0629</version>
             </restrictTo>
             </filter>
           </filters>
