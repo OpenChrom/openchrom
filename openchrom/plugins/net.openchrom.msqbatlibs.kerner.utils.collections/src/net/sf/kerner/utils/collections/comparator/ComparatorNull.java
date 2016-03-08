@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
  *******************************************************************************/
-package net.sf.kerner.utils.collections;
+package net.sf.kerner.utils.collections.comparator;
 
 import java.util.Comparator;
 
