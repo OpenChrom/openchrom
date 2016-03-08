@@ -20,7 +20,7 @@ import java.util.TreeSet;
 
 import net.sf.bioutils.proteomics.comparator.ComparatorIntensity;
 import net.sf.bioutils.proteomics.provider.ProviderIntensity;
-import net.sf.kerner.utils.collections.ComparatorInverter;
+import net.sf.kerner.utils.collections.comparator.ComparatorInverter;
 import net.sf.kerner.utils.collections.filter.Filter;
 
 public class FilterPeakMaxInt implements Filter<ProviderIntensity> {

@@ -14,7 +14,7 @@ package net.sf.bioutils.proteomics.comparator;
 import java.util.Comparator;
 
 import net.sf.bioutils.proteomics.provider.ProviderIntensity;
-import net.sf.kerner.utils.collections.ComparatorNull;
+import net.sf.kerner.utils.collections.comparator.ComparatorNull;
 
 public class ComparatorIntensity extends ComparatorNull<ProviderIntensity> implements Comparator<ProviderIntensity> {
 

@@ -13,7 +13,7 @@ package net.sf.bioutils.proteomics.annotation;
 
 import java.util.Comparator;
 
-import net.sf.kerner.utils.collections.ComparatorNull;
+import net.sf.kerner.utils.collections.comparator.ComparatorNull;
 
 public class ComparatorAnnotation extends ComparatorNull<AnnotatableElement> implements Comparator<AnnotatableElement> {
 

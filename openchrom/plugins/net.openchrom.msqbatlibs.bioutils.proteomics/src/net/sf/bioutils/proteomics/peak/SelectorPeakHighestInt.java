@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import net.sf.kerner.utils.collections.ComparatorInverter;
 import net.sf.kerner.utils.collections.Selector;
+import net.sf.kerner.utils.collections.comparator.ComparatorInverter;
 
 public class SelectorPeakHighestInt<T extends Peak> implements Selector<T> {
 
