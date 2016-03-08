@@ -12,13 +12,14 @@
 package net.sf.kerner.utils.collections.impl;
 
 import static org.junit.Assert.assertEquals;
-import net.sf.kerner.utils.collections.ComparatorNull;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import net.sf.kerner.utils.collections.comparator.ComparatorNull;
 
 public class TestComparatorNull {
 
