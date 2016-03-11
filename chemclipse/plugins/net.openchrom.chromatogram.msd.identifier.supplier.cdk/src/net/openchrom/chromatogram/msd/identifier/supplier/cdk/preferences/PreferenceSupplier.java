@@ -25,8 +25,8 @@ import net.openchrom.chromatogram.msd.identifier.supplier.cdk.Activator;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeDecider;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeDeciderFactory;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeParser;
-import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.CdkPeakIdentifierSettings;
-import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.ICdkPeakIdentifierSettings;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.VendorPeakIdentifierSettings;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IVendorPeakIdentifierSettings;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
@@ -113,9 +113,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return new String[][]{{"&Basic Isotope Set (C,H,N,O)", IsotopePreference.BASIC.toString()}, {"&Organic Isotope Set (C,H,N,O,Cl,Br,S,P,I,B)", IsotopePreference.ORGANIC.toString()}, {"&User Defined Isotope Set", IsotopePreference.USER_DEFINED.toString()}};
 	}
 
-	public static ICdkPeakIdentifierSettings getPeakIdentifierSettings() {
+	public static IVendorPeakIdentifierSettings getPeakIdentifierSettings() {
 
-		ICdkPeakIdentifierSettings peakIdentifierSettings = new CdkPeakIdentifierSettings();
+		IVendorPeakIdentifierSettings peakIdentifierSettings = new VendorPeakIdentifierSettings();
 		peakIdentifierSettings.setDeleteIdentificationsWithoutFormula(isDeleteIdentificationsWithoutFormula());
 		return peakIdentifierSettings;
 	}

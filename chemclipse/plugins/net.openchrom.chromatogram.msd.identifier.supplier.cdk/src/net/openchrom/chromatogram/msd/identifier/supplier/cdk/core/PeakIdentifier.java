@@ -31,7 +31,7 @@ import org.eclipse.chemclipse.processing.core.MessageType;
 import org.eclipse.chemclipse.processing.core.ProcessingMessage;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
-import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.ICdkPeakIdentifierSettings;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IVendorPeakIdentifierSettings;
 
 public class PeakIdentifier extends AbstractPeakIdentifier {
 
@@ -58,8 +58,8 @@ public class PeakIdentifier extends AbstractPeakIdentifier {
 		IPeakIdentifierProcessingInfo processingInfo = new PeakIdentifierProcessingInfo();
 		//
 		boolean deleteIdentificationsWithoutFormula;
-		if(peakIdentifierSettings instanceof ICdkPeakIdentifierSettings) {
-			deleteIdentificationsWithoutFormula = ((ICdkPeakIdentifierSettings)peakIdentifierSettings).isDeleteIdentificationsWithoutFormula();
+		if(peakIdentifierSettings instanceof IVendorPeakIdentifierSettings) {
+			deleteIdentificationsWithoutFormula = ((IVendorPeakIdentifierSettings)peakIdentifierSettings).isDeleteIdentificationsWithoutFormula();
 		} else {
 			deleteIdentificationsWithoutFormula = PreferenceSupplier.isDeleteIdentificationsWithoutFormula();
 		}
@@ -72,7 +72,7 @@ public class PeakIdentifier extends AbstractPeakIdentifier {
 	@Override
 	public IPeakIdentifierProcessingInfo identify(List<IPeakMSD> peaks, IProgressMonitor monitor) {
 
-		ICdkPeakIdentifierSettings peakIdentifierSettings = PreferenceSupplier.getPeakIdentifierSettings();
+		IVendorPeakIdentifierSettings peakIdentifierSettings = PreferenceSupplier.getPeakIdentifierSettings();
 		return identify(peaks, peakIdentifierSettings, monitor);
 	}
 
