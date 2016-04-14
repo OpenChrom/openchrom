@@ -18,9 +18,9 @@ public interface MGFFile extends Iterable<MGFElement>, Serializable {
 
 	public static class Format {
 
-		public final static String FIRST_LINE = "BEGIN IONS";
+		public final static String FIRST_LINE_MS2 = "BEGIN IONS";
 		public final static String KEY_VALUE_SEPARATOR = "=";
-		public final static String LAST_LINE = "END IONS";
+		public final static String LAST_LINE_MS2 = "END IONS";
 		public final static String PEAK_PROPERTIES_SEPARATOR = " ";
 	}
 

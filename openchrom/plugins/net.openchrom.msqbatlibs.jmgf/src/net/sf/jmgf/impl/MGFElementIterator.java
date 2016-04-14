@@ -38,6 +38,12 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 	private FactoryPeak factoryPeak;
 	private ProgressMonitor monitor;
 
+	private enum ReadState {
+		MS1, MS2
+	}
+
+	private ReadState readState = ReadState.MS1;
+
 	public MGFElementIterator(final BufferedReader reader) throws IOException {
 		super(reader);
 	}
@@ -61,31 +67,28 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 			monitor.started(ProgressMonitor.UNKNOWN_WORKLOAD);
 		}
 		try {
-			String line = reader.readLine();
-			if(line == null) {
-				// nothing left to read
-				return null;
-			}
-			if(line.toUpperCase().trim().equals(MGFFile.Format.FIRST_LINE)) {
-			} else {
-				throw new ExceptionFileFormat("Invalid first line " + line);
-			}
-			final Map<String, String> elements = new LinkedHashMap<String, String>();
+			String line;
+			final Map<String, String> tags = new LinkedHashMap<String, String>();
 			final List<Peak> peaks = new ArrayList<Peak>();
-			while(line != null) {
-				line = reader.readLine();
-				if(line == null) {
-					logger.error("Unexpected end of file");
-					final MGFElementBean result = new MGFElementBean();
-					result.setPeaks(peaks);
-					result.setElements(elements);
-					return result;
+			while((line = reader.readLine()) != null) {
+				final String lineUpperTrim = line.toUpperCase().trim();
+				if(lineUpperTrim.equals(MGFFile.Format.FIRST_LINE_MS2)) {
+					// Switching from ReadState.MS1 to ReadState.MS2 or continuing in MS2 mode
+					if(peaks.isEmpty()) {
+						// continuing in MS2 mode
+						readState = ReadState.MS2;
+						continue;
+					} else {
+						// first build new element, then switch state
+						MGFElement result = newMGFElement(tags, peaks, readState);
+						readState = ReadState.MS2;
+						return result;
+					}
 				}
-				if(line.toUpperCase().trim().equals(MGFFile.Format.LAST_LINE)) {
-					final MGFElementBean result = new MGFElementBean();
-					result.setPeaks(peaks);
-					result.setElements(elements);
-					return result;
+				// Switching from ReadState.MS2 to ReadState.MS1 is not intended, instead a new MGFElement is created
+				if(lineUpperTrim.equals(MGFFile.Format.LAST_LINE_MS2) && readState.equals(ReadState.MS2)) {
+					// Finish ReadState.MS2
+					return newMGFElement(tags, peaks, readState);
 				}
 				// Assume that lines starting numerically always describe an ion
 				if(isIonBlock(line.trim())) {
@@ -95,7 +98,7 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 					if(arr.length != 2) {
 						throw new ExceptionFileFormat("Invalid line " + line);
 					}
-					elements.put(arr[0], arr[1]);
+					tags.put(arr[0], arr[1]);
 				}
 			}
 		} finally {
@@ -103,7 +106,32 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 				monitor.finished();
 			}
 		}
-		throw new RuntimeException("Something buggy here..");
+		// nothing left to read
+		return null;
+	}
+
+	private MGFElement newMGFElement(Map<String, String> tags, List<Peak> peaks, ReadState readState) {
+
+		if(peaks == null || peaks.isEmpty()) {
+			throw new IllegalArgumentException("peaks must not be empty");
+		}
+		final MGFElementBean result = new MGFElementBean();
+		switch(readState) {
+			case MS1:
+				result.setMSLevel((short)1);
+				break;
+			case MS2:
+				result.setMSLevel((short)2);
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown read state " + readState);
+		}
+		result.setPeaks(new ArrayList<>(peaks));
+		result.setTags(new LinkedHashMap<>(tags));
+		peaks.clear();
+		// Do not clear tags, use them for all MGFElements that come from the same file
+		tags.clear();
+		return result;
 	}
 
 	public synchronized FactoryPeak getFactoryPeak() {
@@ -121,6 +149,7 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 
 	protected synchronized boolean isIonBlock(final String secondLine) {
 
+		// TODO: not optimal in terms of performance and elegance
 		try {
 			Double.parseDouble(secondLine.split("\\s")[0]);
 		} catch(final NumberFormatException e) {

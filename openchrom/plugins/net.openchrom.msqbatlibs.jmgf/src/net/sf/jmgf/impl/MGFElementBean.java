@@ -22,68 +22,23 @@ import net.sf.jmgf.MGFElement;
 
 public class MGFElementBean implements MGFElement {
 
-	private Map<String, String> elements = new LinkedHashMap<String, String>();
+	public final static short MS_LEVEL_UNKNOWN = 0;
+	private Map<String, String> tags = new LinkedHashMap<>();
 	private List<Peak> peaks = new ArrayList<>();
+	private short msLevel = MS_LEVEL_UNKNOWN;
 
 	public MGFElementBean() {
 	}
 
-	public synchronized void addElement(String identifier, String value) {
+	@Override
+	public short getMSLevel() {
 
-		elements.put(identifier, value);
+		return msLevel;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
+	public synchronized void addTags(String identifier, String value) {
 
-		if(this == obj) {
-			return true;
-		}
-		if(obj == null) {
-			return false;
-		}
-		if(!(obj instanceof MGFElement)) {
-			return false;
-		}
-		MGFElementBean other = (MGFElementBean)obj;
-		if(elements == null) {
-			if(other.elements != null) {
-				return false;
-			}
-		} else if(!elements.equals(other.elements)) {
-			return false;
-		}
-		if(peaks == null) {
-			if(other.peaks != null) {
-				return false;
-			}
-		} else if(!peaks.equals(other.peaks)) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public synchronized String getElement(final Identifier element) {
-
-		return getElement(element.toString());
-	}
-
-	@Override
-	public synchronized String getElement(final String ident) {
-
-		for(final Entry<String, String> e : elements.entrySet()) {
-			if(e.getKey().toUpperCase().equals(ident)) {
-				return e.getValue();
-			}
-		}
-		return ELEMENT_NA;
-	}
-
-	@Override
-	public synchronized Map<String, String> getElements() {
-
-		return elements;
+		tags.put(identifier, value);
 	}
 
 	@Override
@@ -93,30 +48,48 @@ public class MGFElementBean implements MGFElement {
 	}
 
 	@Override
-	public String getTitle() {
+	public synchronized String getTag(final String ident) {
 
-		return getElement(MGFElement.Identifier.TITLE);
+		for(final Entry<String, String> e : tags.entrySet()) {
+			if(e.getKey().toUpperCase().equals(ident)) {
+				return e.getValue();
+			}
+		}
+		return TAG_NA;
 	}
 
 	@Override
-	public int hashCode() {
+	public synchronized Map<String, String> getTags() {
 
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((elements == null) ? 0 : elements.hashCode());
-		result = prime * result + ((peaks == null) ? 0 : peaks.hashCode());
-		return result;
+		return tags;
 	}
 
-	public synchronized void setElements(final Map<String, String> elements) {
+	@Override
+	public synchronized String getTags(final Identifier element) {
 
-		this.elements = elements;
+		return getTag(element.toString());
 	}
 
-	public synchronized void setPeaks(final List<Peak> peaks) {
+	@Override
+	public synchronized String getTitle() {
 
-		if(peaks != null && peaks.size() > 0)
-			this.peaks = peaks;
+		return getTags(MGFElement.Identifier.TITLE);
+	}
+
+	public void setMSLevel(short msLevel) {
+
+		this.msLevel = msLevel;
+	}
+
+	public synchronized MGFElementBean setPeaks(List<Peak> peaks) {
+
+		this.peaks = peaks;
+		return this;
+	}
+
+	public synchronized void setTags(final Map<String, String> tags) {
+
+		this.tags = tags;
 	}
 
 	@Override
