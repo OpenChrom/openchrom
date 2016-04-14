@@ -23,7 +23,7 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.mgf.converter.model.TransformerMGFElementIMGFVendorLibraryMassSpectrum;
+import net.openchrom.msd.converter.supplier.mgf.converter.model.TransformerMGFElementIScan;
 import net.sf.jmgf.MGFElement;
 import net.sf.jmgf.MGFFileReader;
 import net.sf.jmgf.impl.MGFElementIterator;
@@ -57,7 +57,7 @@ public class MGFReader extends AbstractMassSpectraReader implements IMassSpectra
 		IMassSpectra massSpectra = new MassSpectra();
 		MGFFileReader mgfFileReader = new MGFFileReaderImpl(file);
 		MGFElementIterator iterator = mgfFileReader.getIterator();
-		TransformerMGFElementIMGFVendorLibraryMassSpectrum transformer = new TransformerMGFElementIMGFVendorLibraryMassSpectrum();
+		TransformerMGFElementIScan transformer = new TransformerMGFElementIScan();
 		while(iterator.hasNext()) {
 			MGFElement next = iterator.next();
 			massSpectra.setName(next.getTitle());

@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IIonTransition;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
+import net.openchrom.msqbatlibs.bridge.TransformerIonPeak;
 import net.sf.jmgf.MGFElement;
 import net.sf.jmgf.impl.MGFElementBean;
 import net.sf.kerner.utils.collections.list.AbstractTransformingListFactory;

@@ -18,9 +18,9 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 
-public class MGFVendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpectrum implements IMGFVendorLibraryMassSpectrum {
+public class MGFMassSpectrum extends AbstractRegularLibraryMassSpectrum implements IMGFMassSpectrum {
 
-	private static final Logger logger = Logger.getLogger(MGFVendorLibraryMassSpectrum.class);
+	private static final Logger logger = Logger.getLogger(MGFMassSpectrum.class);
 	/**
 	 *
 	 */
@@ -38,9 +38,9 @@ public class MGFVendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpec
 	 * ILibraryMassSpectrum is a subtype of IMassSpectrum.
 	 */
 	@Override
-	public MGFVendorLibraryMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
+	public MGFMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
 
-		final MGFVendorLibraryMassSpectrum massSpectrum = (MGFVendorLibraryMassSpectrum)super.clone();
+		final MGFMassSpectrum massSpectrum = (MGFMassSpectrum)super.clone();
 		IIon mz;
 		/*
 		 * The instance variables have been copied by super.clone();.<br/> The

@@ -16,8 +16,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.After;
@@ -26,7 +26,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import net.openchrom.msd.converter.supplier.mgf.converter.model.TransformerMGFElementIMGFVendorLibraryMassSpectrum;
+import net.openchrom.msd.converter.supplier.mgf.converter.model.TransformerMGFElementIScan;
 import net.sf.jmgf.MGFElement;
 import net.sf.jmgf.MGFFile;
 import net.sf.jmgf.MGFFileReader;
@@ -36,7 +36,7 @@ import net.sf.kerner.utils.io.CloserProperly;
 public class TestMGFWriter {
 
 	private final static Logger logger = Logger.getLogger(TestMGFWriter.class);
-	private final static TransformerMGFElementIMGFVendorLibraryMassSpectrum TRANSFORMER_MGFELEMENT_IMGFVENDORLIBRARYMASSSPECTRUM = new TransformerMGFElementIMGFVendorLibraryMassSpectrum();
+	private final static TransformerMGFElementIScan TRANSFORMER_MGFELEMENT_IMGFVENDORLIBRARYMASSSPECTRUM = new TransformerMGFElementIScan();
 
 	private static MGFFile getMGFFile(File file) throws IOException {
 
@@ -52,7 +52,7 @@ public class TestMGFWriter {
 
 	private static MGFFile getMGFFileSingleElement() throws IOException {
 
-		return getMGFFile(new File("testData/files/export/singleElement.mgf"));
+		return getMGFFile(new File("testData/files/import/proteinpilot/singleElement.mgf"));
 	}
 
 	@BeforeClass
@@ -65,7 +65,7 @@ public class TestMGFWriter {
 
 	}
 
-	private File outSingleElement = new File("testData/files/export/outSingleElement.mgf");
+	private File outSingleElement = new File("testData/files/import/proteinpilot/outSingleElement.mgf");
 	private MGFWriter writer;
 
 	@Before

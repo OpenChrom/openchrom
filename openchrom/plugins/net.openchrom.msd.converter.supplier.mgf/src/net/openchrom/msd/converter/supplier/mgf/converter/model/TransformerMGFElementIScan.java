@@ -12,21 +12,36 @@
 package net.openchrom.msd.converter.supplier.mgf.converter.model;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.msd.model.core.IIon;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
 import net.sf.bioutils.proteomics.peak.Peak;
 import net.sf.jmgf.MGFElement;
 import net.sf.kerner.utils.collections.list.AbstractTransformingListFactory;
 
-public class TransformerMGFElementIMGFVendorLibraryMassSpectrum extends AbstractTransformingListFactory<MGFElement, IMGFVendorLibraryMassSpectrum> {
+public class TransformerMGFElementIScan extends AbstractTransformingListFactory<MGFElement, IScan> {
 
-	private static final Logger log = Logger.getLogger(TransformerMGFElementIMGFVendorLibraryMassSpectrum.class);
+	private static final Logger log = Logger.getLogger(TransformerMGFElementIScan.class);
 	private final TransformerPeakIon transformer = new TransformerPeakIon();
+	private final static IScanMSDFactory DEFAULT_SCAN_FACTORY = new IMGFMassSpectrumFactory();
+	private IScanMSDFactory scanFactory = DEFAULT_SCAN_FACTORY;
+
+	public synchronized IScanMSDFactory getScanFactory() {
+
+		return scanFactory;
+	}
+
+	public synchronized TransformerMGFElementIScan setScanFactory(IScanMSDFactory scanFactory) {
+
+		this.scanFactory = scanFactory;
+		return this;
+	}
 
 	@Override
-	public IMGFVendorLibraryMassSpectrum transform(final MGFElement element) {
+	public IScanMSD transform(final MGFElement element) {
 
-		final IMGFVendorLibraryMassSpectrum result = new MGFVendorLibraryMassSpectrum();
+		final IScanMSD result = getScanFactory().build();
 		result.setIdentifier(element.getTitle());
 		try {
 			final double retentionTimeInSeconds = Double.parseDouble(element.getElement(MGFElement.Identifier.RTINSECONDS));

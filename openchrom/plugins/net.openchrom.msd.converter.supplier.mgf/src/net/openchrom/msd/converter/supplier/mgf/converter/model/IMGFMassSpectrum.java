@@ -13,5 +13,5 @@ package net.openchrom.msd.converter.supplier.mgf.converter.model;
 
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 
-public interface IMGFVendorLibraryMassSpectrum extends IRegularLibraryMassSpectrum {
+public interface IMGFMassSpectrum extends IRegularLibraryMassSpectrum {
 }
