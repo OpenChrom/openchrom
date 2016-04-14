@@ -4,6 +4,10 @@ Bundle-Name: MSqBAT OpenChrom Bridge
 Bundle-SymbolicName: net.openchrom.msqbatlibs.bridge
 Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: net.openchrom.msqbatlibs.bridge.Activator
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ net.openchrom.msqbatlibs.bioutils.proteomics,
+ org.eclipse.chemclipse.msd.model,
+ net.openchrom.msqbatlibs.kerner.utils.collections,
+ net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
