@@ -65,5 +65,6 @@
 		<module>../../plugins/net.openchrom.msqbatlibs.kerner.utils.collections.fragment.test</module>
 		<module>../../plugins/net.openchrom.msqbatlibs.kerner.utils.io</module>
 		<module>../../plugins/net.openchrom.msqbatlibs.kerner.utils.io.fragment.test</module>
+		<module>../../plugins/net.openchrom.msqbatlibs.bridge</module>
 	</modules>
 </project>

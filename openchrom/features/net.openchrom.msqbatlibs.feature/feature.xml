@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.openchrom.msqbatlibs.feature"
-      label="Feature"
+      label="MSqBAT Libraries Feature"
       version="1.1.0.qualifier"
       provider-name="OpenChrom">
 
@@ -73,6 +73,13 @@ and is available at http://www.eclipse.org/legal/epl-v10.html
 
    <plugin
          id="net.openchrom.msqbatlibs.kerner.utils.io"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.bridge"
          download-size="0"
          install-size="0"
          version="0.0.0"

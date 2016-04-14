@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MSqBAT OpenChrom Bridge
+Bundle-SymbolicName: net.openchrom.msqbatlibs.bridge
+Bundle-Version: 1.1.0.qualifier
+Bundle-Activator: net.openchrom.msqbatlibs.bridge.Activator
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
