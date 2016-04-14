@@ -12,6 +12,7 @@
 package net.openchrom.msd.converter.supplier.mgf.converter.io;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,6 +65,19 @@ public class TestMGFReader {
 		assertEquals(1, result.getElements().get(0).getMSLevel());
 		for(int i = 1; i < result.getElements().size(); i++) {
 			assertEquals(2, result.getElements().get(i).getMSLevel());
+		}
+		// all elements should have the 'COM' tag
+		for(int i = 0; i < result.getElements().size(); i++) {
+			assertNotNull(result.getElements().get(i).getTag("COM"));
+		}
+		// all MS2 elements should have a valid PEPMASS tag
+		for(int i = 0; i < result.getElements().size(); i++) {
+			if(result.getElements().get(i).getMSLevel() == 2) {
+				String o = result.getElements().get(i).getTag("PEPMASS");
+				assertNotNull(o);
+				// should be a number
+				Double.parseDouble(o);
+			}
 		}
 	}
 }
