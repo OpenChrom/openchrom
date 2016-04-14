@@ -32,9 +32,9 @@ public class TransformerIScanMSDMGFElement extends AbstractTransformingListFacto
 
 		List<MGFElement> result = new ArrayList<>();
 		MGFElementBean mgfElement = new MGFElementBean();
-		mgfElement.addElement(MGFElement.Identifier.TITLE.toString(), element.getIdentifier());
-		mgfElement.addElement(MGFElement.Identifier.SCANS.toString(), Integer.toString(element.getScanNumber()));
-		mgfElement.addElement(MGFElement.Identifier.RTINSECONDS.toString(), Integer.toString(element.getRetentionTime() / 1000));
+		mgfElement.addTags(MGFElement.Identifier.TITLE.toString(), element.getIdentifier());
+		mgfElement.addTags(MGFElement.Identifier.SCANS.toString(), Integer.toString(element.getScanNumber()));
+		mgfElement.addTags(MGFElement.Identifier.RTINSECONDS.toString(), Integer.toString(element.getRetentionTime() / 1000));
 		mgfElement.setPeaks(TRANSFORMER.transformCollection(element.getIons()));
 		result.add(mgfElement);
 		for(IIon ion : element.getIons()) {
@@ -49,9 +49,9 @@ public class TransformerIScanMSDMGFElement extends AbstractTransformingListFacto
 		IIonTransition ionTransition = ion.getIonTransition();
 		if(ionTransition != null) {
 			MGFElementBean mgfElement = new MGFElementBean();
-			mgfElement.addElement(MGFElement.Identifier.TITLE.toString(), element.getIdentifier() + " transition");
-			mgfElement.addElement(MGFElement.Identifier.SCANS.toString(), Integer.toString(element.getScanNumber()));
-			mgfElement.addElement(MGFElement.Identifier.PRECURSOR.toString(), Double.toString(ion.getIon()));
+			mgfElement.addTags(MGFElement.Identifier.TITLE.toString(), element.getIdentifier() + " transition");
+			mgfElement.addTags(MGFElement.Identifier.SCANS.toString(), Integer.toString(element.getScanNumber()));
+			mgfElement.addTags(MGFElement.Identifier.PRECURSOR.toString(), Double.toString(ion.getIon()));
 			result.add(mgfElement);
 		}
 		return result;

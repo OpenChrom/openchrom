@@ -44,7 +44,7 @@ public class TransformerMGFElementIScan extends AbstractTransformingListFactory<
 		final IScanMSD result = getScanFactory().build();
 		result.setIdentifier(element.getTitle());
 		try {
-			final double retentionTimeInSeconds = Double.parseDouble(element.getElement(MGFElement.Identifier.RTINSECONDS));
+			final double retentionTimeInSeconds = Double.parseDouble(element.getTags(MGFElement.Identifier.RTINSECONDS));
 			final double scale = retentionTimeInSeconds * 1000;
 			result.setRetentionTime((int)Math.round(scale));
 		} catch(final NumberFormatException e) {

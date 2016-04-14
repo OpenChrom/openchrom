@@ -72,9 +72,9 @@ public class MGFWriter extends AbstractMassSpectraWriter implements IMassSpectra
 
 		List<MGFElement> mgfElements = TRANSFORMER_ISCANMSD_MGFELEMENT.transform(massSpectrum);
 		for(MGFElement element : mgfElements) {
-			fileWriter.write(MGFFile.Format.FIRST_LINE);
+			fileWriter.write(MGFFile.Format.FIRST_LINE_MS2);
 			fileWriter.write(UtilIO.NEW_LINE_STRING);
-			for(Entry<String, String> entry : element.getElements().entrySet()) {
+			for(Entry<String, String> entry : element.getTags().entrySet()) {
 				fileWriter.write(entry.getKey());
 				fileWriter.write(MGFFile.Format.KEY_VALUE_SEPARATOR);
 				fileWriter.write(entry.getValue());
@@ -86,7 +86,7 @@ public class MGFWriter extends AbstractMassSpectraWriter implements IMassSpectra
 				fileWriter.write(Double.toString(ion.getIntensity()));
 				fileWriter.write(UtilIO.NEW_LINE_STRING);
 			}
-			fileWriter.write(MGFFile.Format.LAST_LINE);
+			fileWriter.write(MGFFile.Format.LAST_LINE_MS2);
 			fileWriter.write(UtilIO.NEW_LINE_STRING);
 		}
 	}

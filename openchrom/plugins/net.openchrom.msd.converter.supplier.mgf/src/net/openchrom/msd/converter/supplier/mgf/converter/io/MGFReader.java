@@ -20,9 +20,12 @@ import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.msd.converter.supplier.mgf.converter.model.IScanMSDFactory;
+import net.openchrom.msd.converter.supplier.mgf.converter.model.MGFMassSpectrum;
 import net.openchrom.msd.converter.supplier.mgf.converter.model.TransformerMGFElementIScan;
 import net.sf.jmgf.MGFElement;
 import net.sf.jmgf.MGFFileReader;
@@ -61,9 +64,24 @@ public class MGFReader extends AbstractMassSpectraReader implements IMassSpectra
 		while(iterator.hasNext()) {
 			MGFElement next = iterator.next();
 			massSpectra.setName(next.getTitle());
+			transformer.setScanFactory(getFactory(next.getMSLevel()));
 			massSpectra.addMassSpectrum(transformer.transform(next));
 		}
 		mgfFileReader.close();
 		return massSpectra;
+	}
+
+	private IScanMSDFactory getFactory(short msLevel) {
+
+		return new IScanMSDFactory() {
+
+			@Override
+			public IScanMSD build() {
+
+				MGFMassSpectrum result = new MGFMassSpectrum();
+				result.setMassSpectrometer(msLevel);
+				return result;
+			}
+		};
 	}
 }
