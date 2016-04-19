@@ -16,15 +16,15 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 
-import net.sf.jmgf.MGFElement;
-import net.sf.jmgf.MGFFile;
-import net.sf.jmgf.MGFFileReader;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import net.sf.jmgf.MGFElement;
+import net.sf.jmgf.MGFFile;
+import net.sf.jmgf.MGFFileReader;
 
 public class TestMGFFileReaderImpl {
 
@@ -85,6 +85,20 @@ public class TestMGFFileReaderImpl {
 
 	@Test
 	public void test04() throws Exception {
+
+		final MGFFileReader reader = new MGFFileReaderImpl(new File("src/test/resources/emptyIons.mgf"));
+		final MGFFile file = reader.read();
+		reader.close();
+		assertNotNull(file);
+		assertEquals(1, file.getElements().size());
+		MGFElement mgfElement = file.getElements().get(0);
+		assertNotNull(mgfElement);
+		assertEquals("14.467", mgfElement.getTag("RTINSECONDS"));
+		assertEquals("114.37 149.086318969727", mgfElement.getTag("PEPMASS"));
+	}
+
+	@Test
+	public void test05() throws Exception {
 
 		final MGFFileReader reader = new MGFFileReaderImpl(new File("src/test/resources/Testgemisch_U_PP_LXQ_20141210.mgf"));
 		final MGFFile file = reader.read();

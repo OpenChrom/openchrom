@@ -20,15 +20,15 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Arrays;
 
-import net.sf.jtables.io.reader.ReaderTableString;
-import net.sf.kerner.utils.io.UtilIO;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import net.sf.jtables.io.reader.ReaderTableString;
+import net.sf.kerner.utils.io.UtilIO;
 
 public class TestStringTable {
 
@@ -260,6 +260,7 @@ public class TestStringTable {
 		fail("Not yet implemented"); // TODO
 	}
 
+	@Ignore
 	@Test
 	public final void testGetColumnObject01() throws IOException {
 

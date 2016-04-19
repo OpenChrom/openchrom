@@ -37,6 +37,7 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 	private final static Logger logger = Logger.getLogger(MGFElementIterator.class);
 	private FactoryPeak factoryPeak;
 	private ProgressMonitor monitor;
+	private long lineCnt = 0;
 
 	private enum ReadState {
 		MS1, MS2
@@ -71,6 +72,7 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 			final Map<String, String> tags = new LinkedHashMap<String, String>();
 			final List<Peak> peaks = new ArrayList<Peak>();
 			while((line = reader.readLine()) != null) {
+				lineCnt++;
 				final String lineUpperTrim = line.toUpperCase().trim();
 				if(lineUpperTrim.equals(MGFFile.Format.FIRST_LINE_MS2)) {
 					// Switching from ReadState.MS1 to ReadState.MS2 or continuing in MS2 mode
@@ -101,6 +103,9 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 					tags.put(arr[0], arr[1]);
 				}
 			}
+			if(tags != null && !tags.isEmpty()) {
+				return newMGFElement(tags, peaks, readState);
+			}
 		} finally {
 			if(monitor != null) {
 				monitor.finished();
@@ -112,8 +117,8 @@ public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 
 	private MGFElement newMGFElement(Map<String, String> tags, List<Peak> peaks, ReadState readState) {
 
-		if(peaks == null || peaks.isEmpty()) {
-			throw new IllegalArgumentException("peaks must not be empty");
+		if(peaks == null) {
+			throw new IllegalArgumentException("peaks must not be null (line " + lineCnt + ")");
 		}
 		final MGFElementBean result = new MGFElementBean();
 		switch(readState) {

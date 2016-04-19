@@ -17,15 +17,15 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 
-import net.sf.jtables.io.reader.ReaderTableString;
-import net.sf.jtables.table.Row;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import net.sf.jtables.io.reader.ReaderTableString;
+import net.sf.jtables.table.Row;
 
 public class TestRowImpl {
 
@@ -66,6 +66,7 @@ public class TestRowImpl {
 		fail("Not yet implemented"); // TODO
 	}
 
+	@Ignore
 	@Test
 	public final void testGetObject01() throws IOException {
 
