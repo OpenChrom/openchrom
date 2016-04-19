@@ -56,9 +56,4 @@ public class MassSpectrumExportConverter_1_ITest extends TestCase {
 		file = null;
 		super.tearDown();
 	}
-
-	public void testExceptions_1() {
-
-		assertTrue(file.exists());
-	}
 }
