@@ -20,6 +20,7 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
 import net.openchrom.msqbatlibs.bridge.TransformerIonPeak;
 import net.sf.jmgf.MGFElement;
+import net.sf.jmgf.MGFFile;
 import net.sf.jmgf.impl.MGFElementBean;
 import net.sf.kerner.utils.collections.list.AbstractTransformingListFactory;
 
@@ -51,7 +52,7 @@ public class TransformerIScanMSDMGFElement extends AbstractTransformingListFacto
 			MGFElementBean mgfElement = new MGFElementBean();
 			mgfElement.addTags(MGFElement.Identifier.TITLE.toString(), element.getIdentifier() + " transition");
 			mgfElement.addTags(MGFElement.Identifier.SCANS.toString(), Integer.toString(element.getScanNumber()));
-			mgfElement.addTags(MGFElement.Identifier.PRECURSOR.toString(), Double.toString(ion.getIon()));
+			mgfElement.addTags(MGFElement.Identifier.PEPMASS.toString(), Double.toString(ion.getIon()) + MGFFile.Format.PEAK_PROPERTIES_SEPARATOR + Double.toString(ion.getAbundance()));
 			result.add(mgfElement);
 		}
 		return result;

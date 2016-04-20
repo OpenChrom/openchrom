@@ -22,8 +22,10 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import net.sf.jmgf.MGFElement;
 import net.sf.jmgf.MGFFile;
 import net.sf.jmgf.MGFFileReader;
 import net.sf.jmgf.impl.MGFFileReaderImpl;
@@ -56,7 +58,7 @@ public class TestMGFReader {
 	}
 
 	@Test
-	public final void testMS101() throws IOException {
+	public final void testJanko01() throws IOException {
 
 		reader = new MGFFileReaderImpl(new File("testData/files/import/janko/ppw_L10_142651860914.txt"));
 		MGFFile result = reader.read();
@@ -77,6 +79,20 @@ public class TestMGFReader {
 				assertNotNull(o);
 				// should be a number
 				Double.parseDouble(o);
+			}
+		}
+	}
+
+	@Ignore
+	@Test
+	public final void testJanko02() throws IOException {
+
+		reader = new MGFFileReaderImpl(new File("testData/files/import/janko/ppw_L3_142651860914.txt"));
+		MGFFile result = reader.read();
+		for(int i = 0; i < result.getElements().size(); i++) {
+			MGFElement nextElement = result.getElements().get(i);
+			if(nextElement.getMSLevel() == 2) {
+				//
 			}
 		}
 	}

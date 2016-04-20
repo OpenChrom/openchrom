@@ -13,6 +13,7 @@ package net.openchrom.msd.converter.supplier.mgf.converter.model;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.msd.model.core.IFragmentedIonScan;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
@@ -43,15 +44,8 @@ public class TransformerMGFElementIScan extends AbstractTransformingListFactory<
 
 		final IScanMSD result = getScanFactory().build();
 		result.setIdentifier(element.getTitle());
-		try {
-			final double retentionTimeInSeconds = Double.parseDouble(element.getTags(MGFElement.Identifier.RTINSECONDS));
-			final double scale = retentionTimeInSeconds * 1000;
-			result.setRetentionTime((int)Math.round(scale));
-		} catch(final NumberFormatException e) {
-			// if(log.isDebugEnabled()) {
-			log.debug("No retention time available");
-			// }
-		}
+		setRetentionTime(element, result);
+		setPrecursorIon(element, result);
 		for(final Peak p : element.getPeaks()) {
 			IIon ion = transformer.transform(p);
 			if(ion != null) {
@@ -59,5 +53,26 @@ public class TransformerMGFElementIScan extends AbstractTransformingListFactory<
 			}
 		}
 		return result;
+	}
+
+	private void setPrecursorIon(MGFElement element, IScanMSD scan) {
+
+		String precursorIonTag = element.getTag(MGFElement.Identifier.PEPMASS);
+		if(precursorIonTag != null && !precursorIonTag.equals(MGFElement.TAG_NA)) {
+			double precursorIon = Double.parseDouble(precursorIonTag);
+			if(scan instanceof IFragmentedIonScan) {
+				((IFragmentedIonScan)scan).setPrecursorIon(precursorIon);
+			}
+		}
+	}
+
+	private void setRetentionTime(final MGFElement element, IScanMSD scan) {
+
+		String retentionTimeInSecondsTag = element.getTag(MGFElement.Identifier.RTINSECONDS);
+		if(retentionTimeInSecondsTag != null && !retentionTimeInSecondsTag.equals(MGFElement.TAG_NA)) {
+			double retentionTimeInSeconds = Double.parseDouble(retentionTimeInSecondsTag);
+			final double scale = retentionTimeInSeconds * 1000;
+			scan.setRetentionTime((int)Math.round(scale));
+		}
 	}
 }
