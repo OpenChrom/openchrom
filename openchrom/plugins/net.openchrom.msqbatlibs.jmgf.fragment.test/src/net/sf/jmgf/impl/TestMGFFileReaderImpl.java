@@ -59,7 +59,7 @@ public class TestMGFFileReaderImpl {
 		final MGFElement element = file.getElements().iterator().next();
 		assertNotNull(element);
 		assertEquals(45, element.getPeaks().size());
-		assertEquals("1+", element.getTags(MGFElement.Identifier.CHARGE));
+		assertEquals("1+", element.getTag(MGFElement.Identifier.CHARGE));
 	}
 
 	@Test

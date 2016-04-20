@@ -65,7 +65,7 @@ public class MGFElementBean implements MGFElement {
 	}
 
 	@Override
-	public synchronized String getTags(final Identifier element) {
+	public synchronized String getTag(final Identifier element) {
 
 		return getTag(element.toString());
 	}
@@ -73,7 +73,7 @@ public class MGFElementBean implements MGFElement {
 	@Override
 	public synchronized String getTitle() {
 
-		return getTags(MGFElement.Identifier.TITLE);
+		return getTag(MGFElement.Identifier.TITLE);
 	}
 
 	public void setMSLevel(short msLevel) {
