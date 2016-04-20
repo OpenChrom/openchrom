@@ -11,7 +11,6 @@
         <children xsi:type="basic:PartSashContainer" xmi:id="_A0XsMJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partsashcontainer.1" containerData="1500" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_FMIWoJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partstack.0">
             <children xsi:type="advanced:Placeholder" xmi:id="_l-L3cJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.placeholder.0" ref="_ixIsoJRlEeW3h-K0O5zQFg"/>
-            <children xsi:type="advanced:Placeholder" xmi:id="_mPvhgJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.placeholder.1" ref="_kDhhkJRlEeW3h-K0O5zQFg"/>
           </children>
         </children>
         <children xsi:type="basic:PartSashContainer" xmi:id="_DIrRIJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partsashcontainer.2" horizontal="true">
