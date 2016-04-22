@@ -28,7 +28,4 @@
       </children>
     </elements>
   </fragments>
-  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_bMfaAJRmEeW3h-K0O5zQFg" featurename="sharedElements" parentElementId="org.eclipse.chemclipse.rcp.app.ui.trimmedwindow.main">
-    <elements xsi:type="basic:Part" xmi:id="_c3wpAJRmEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.part.calculation" contributionURI="bundleclass://net.openchrom.msd.identifier.supplier.opentyper.ui/net.openchrom.msd.identifier.supplier.opentyper.ui.parts.CalculationPart" label="Calculation" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/selectedScan.gif"/>
-  </fragments>
 </fragment:ModelFragments>
