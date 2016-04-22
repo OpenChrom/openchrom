@@ -2,9 +2,7 @@
 <fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_i7rlMJRkEeW3h-K0O5zQFg">
   <imports xsi:type="advanced:Area" xmi:id="_OzAxUJRlEeW3h-K0O5zQFg" elementId="org.eclipse.chemclipse.rcp.app.ui.editor"/>
   <imports xsi:type="basic:Part" xmi:id="_ixIsoJRlEeW3h-K0O5zQFg" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.massSpectrumFileExplorerView"/>
-  <imports xsi:type="basic:Part" xmi:id="_kDhhkJRlEeW3h-K0O5zQFg" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.massSpectrumLibraryExplorerView"/>
   <imports xsi:type="basic:Part" xmi:id="_tiIKAJRlEeW3h-K0O5zQFg" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.simpleNominalMassSpectrumIonListView"/>
-  <imports xsi:type="basic:Part" xmi:id="_xYA2cJRlEeW3h-K0O5zQFg" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.simpleNominalMassSpectrumView"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_mj3M0JRkEeW3h-K0O5zQFg" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.perspectivestack.main">
     <elements xsi:type="advanced:Perspective" xmi:id="_z7ANEJRkEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.perspective.opentyper" selectedElement="_9PaXsJRkEeW3h-K0O5zQFg" label="OpenTyper" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/chromatogram.gif">
       <children xsi:type="basic:PartSashContainer" xmi:id="_9PaXsJRkEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partsashcontainer.0" horizontal="true">
@@ -16,10 +14,6 @@
         <children xsi:type="basic:PartSashContainer" xmi:id="_DIrRIJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partsashcontainer.2" horizontal="true">
           <children xsi:type="basic:PartSashContainer" xmi:id="_zXuEYJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partsashcontainer.3">
             <children xsi:type="advanced:Placeholder" xmi:id="_SDGpEJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.placeholder.editorss" ref="_OzAxUJRlEeW3h-K0O5zQFg"/>
-            <children xsi:type="basic:PartStack" xmi:id="_0zL80JRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partstack.2">
-              <children xsi:type="advanced:Placeholder" xmi:id="_1XWZ0JRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.placeholder.2" ref="_xYA2cJRlEeW3h-K0O5zQFg"/>
-              <children xsi:type="advanced:Placeholder" xmi:id="_jeZl0JRmEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.placeholder.4" ref="_c3wpAJRmEeW3h-K0O5zQFg"/>
-            </children>
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_F-avMJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partstack.1" containerData="2500">
             <children xsi:type="advanced:Placeholder" xmi:id="_2ovwQJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.placeholder.3" ref="_tiIKAJRlEeW3h-K0O5zQFg"/>
