@@ -17,6 +17,7 @@ import java.io.File;
 
 import org.eclipse.chemclipse.msd.converter.processing.massspectrum.IMassSpectrumImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -25,8 +26,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import net.openchrom.msd.converter.supplier.mgf.converter.model.MGFMassSpectrum;
 
 public class TestMassSpectrumImportConverter {
 
@@ -64,7 +63,7 @@ public class TestMassSpectrumImportConverter {
 		assertEquals(expectedPepMasses.length, massSpectra.getList().size());
 		for(int i = 1; i < massSpectra.getList().size(); i++) {
 			IScanMSD nextScan = massSpectra.getList().get(i);
-			MGFMassSpectrum nextMGFMassSpectrum = (MGFMassSpectrum)nextScan;
+			IRegularMassSpectrum nextMGFMassSpectrum = (IRegularMassSpectrum)nextScan;
 			assertEquals(Double.parseDouble(expectedPepMasses[i]), nextMGFMassSpectrum.getPrecursorIon(), 0.0001);
 		}
 	}
