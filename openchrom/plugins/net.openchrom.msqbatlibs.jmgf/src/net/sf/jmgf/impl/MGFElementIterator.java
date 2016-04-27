@@ -21,8 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import net.sf.bioutils.proteomics.peak.FactoryPeak;
 import net.sf.bioutils.proteomics.peak.FactoryPeakImpl;
 import net.sf.bioutils.proteomics.peak.Peak;
@@ -34,7 +32,6 @@ import net.sf.kerner.utils.progress.ProgressMonitor;
 
 public class MGFElementIterator extends AbstractIOIterator<MGFElement> {
 
-	private final static Logger logger = Logger.getLogger(MGFElementIterator.class);
 	private FactoryPeak factoryPeak;
 	private ProgressMonitor monitor;
 	private long lineCnt = 0;
