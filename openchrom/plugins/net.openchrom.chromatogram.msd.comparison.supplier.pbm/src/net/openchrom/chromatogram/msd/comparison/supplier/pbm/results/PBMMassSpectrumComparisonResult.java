@@ -15,6 +15,11 @@ import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.AbstractMas
 
 public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumComparisonResult {
 
+	/**
+	 * Renew the UUID on change.
+	 */
+	private static final long serialVersionUID = -7219390056175582476L;
+
 	public PBMMassSpectrumComparisonResult(float matchFactor, float reverseMatchFactor) {
 		super(matchFactor, reverseMatchFactor);
 	}
