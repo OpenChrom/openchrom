@@ -17,7 +17,6 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -33,7 +32,6 @@ import net.sf.kerner.utils.io.CloserProperly;
 
 public class TestMGFReader {
 
-	private final static Logger logger = Logger.getLogger(TestMGFReader.class);
 	private MGFFileReader reader;
 
 	@BeforeClass

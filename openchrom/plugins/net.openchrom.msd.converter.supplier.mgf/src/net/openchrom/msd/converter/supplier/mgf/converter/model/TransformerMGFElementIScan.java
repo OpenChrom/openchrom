@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mgf.converter.model;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.msd.model.core.IFragmentedIonScan;
 import org.eclipse.chemclipse.msd.model.core.IIon;
@@ -23,7 +22,6 @@ import net.sf.kerner.utils.collections.list.AbstractTransformingListFactory;
 
 public class TransformerMGFElementIScan extends AbstractTransformingListFactory<MGFElement, IScan> {
 
-	private static final Logger log = Logger.getLogger(TransformerMGFElementIScan.class);
 	private final TransformerPeakIon transformer = new TransformerPeakIon();
 	private final static IScanMSDFactory DEFAULT_SCAN_FACTORY = new IMGFMassSpectrumFactory();
 	private IScanMSDFactory scanFactory = DEFAULT_SCAN_FACTORY;
