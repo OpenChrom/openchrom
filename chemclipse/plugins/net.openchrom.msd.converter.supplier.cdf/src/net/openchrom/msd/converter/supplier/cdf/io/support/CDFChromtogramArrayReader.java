@@ -13,17 +13,16 @@ package net.openchrom.msd.converter.supplier.cdf.io.support;
 
 import java.io.IOException;
 
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
-import org.eclipse.chemclipse.logging.core.Logger;
 
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorIon;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorScan;
-
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
@@ -107,8 +106,10 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 			position = offset + i;
 			try {
 				double mz = AbstractIon.getIon(valueArrayIon[position], precision);
-				ion = new VendorIon(mz, valueArrayAbundance[position]);
-				massSpectrum.addIon(ion, false);
+				if(valueArrayAbundance[position] > 0) {
+					ion = new VendorIon(mz, valueArrayAbundance[position]);
+					massSpectrum.addIon(ion, false);
+				}
 			} catch(AbundanceLimitExceededException e) {
 				logger.warn(e);
 			} catch(IonLimitExceededException e) {
