@@ -18,12 +18,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-
-import ucar.nc2.NetcdfFile;
-
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.io.AbstractChromatogramMSDReader;
@@ -31,7 +28,7 @@ import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
-import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
@@ -46,6 +43,7 @@ import net.openchrom.msd.converter.supplier.cdf.model.VendorChromatogram;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorIon;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorScan;
 import net.openchrom.msd.converter.supplier.cdf.preferences.PreferenceSupplier;
+import ucar.nc2.NetcdfFile;
 
 public class ChromatogramReader extends AbstractChromatogramMSDReader implements IChromatogramMSDReader {
 
@@ -221,7 +219,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 			date = in.getDate();
 			dateOfExperiment = in.getDateOfExperiment();
 		} catch(NoCDFAttributeDataFound e1) {
-			logger.warn(e1);
+			// logger.warn(e1);
 		}
 		/*
 		 * Set the file name to the chromatogram.
