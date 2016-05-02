@@ -28,7 +28,7 @@ import org.eclipse.chemclipse.msd.model.implementation.ScanMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 
-import net.openchrom.chromatogram.msd.comparison.supplier.pbm.results.PBMMassSpectrumComparisonResult;
+import net.openchrom.chromatogram.msd.comparison.supplier.pbm.results.MassSpectrumComparisonResult;
 
 /**
  * This class gives back a IMassSpectrumComparisonResult which implements the
@@ -36,10 +36,10 @@ import net.openchrom.chromatogram.msd.comparison.supplier.pbm.results.PBMMassSpe
  * 
  * @author eselmeister
  */
-public class PBMMassSpectrumComparator extends AbstractMassSpectrumComparator implements IMassSpectrumComparator {
+public class MassSpectrumComparator extends AbstractMassSpectrumComparator implements IMassSpectrumComparator {
 
 	public static final String COMPARATOR_ID = "net.openchrom.chromatogram.msd.comparison.supplier.pbm";
-	private static final Logger logger = Logger.getLogger(PBMMassSpectrumComparator.class);
+	private static final Logger logger = Logger.getLogger(MassSpectrumComparator.class);
 	private static final int NORMALIZATION_FACTOR = 100;
 
 	@Override
@@ -62,10 +62,12 @@ public class PBMMassSpectrumComparator extends AbstractMassSpectrumComparator im
 			//
 			float matchFactor = geometricDistanceCalculator.calculate(unknownAdjusted, referenceAdjusted, signalU.getIonRange()) * 100;
 			float reverseMatchFactor = geometricDistanceCalculator.calculate(referenceAdjusted, unknownAdjusted, signalR.getIonRange()) * 100;
+			float matchFactorDirect = geometricDistanceCalculator.calculate(unknownAdjusted, referenceAdjusted) * 100;
+			float reverseMatchFactorDirect = geometricDistanceCalculator.calculate(referenceAdjusted, unknownAdjusted) * 100;
 			/*
 			 * Result
 			 */
-			IMassSpectrumComparisonResult massSpectrumComparisonResult = new PBMMassSpectrumComparisonResult(matchFactor, reverseMatchFactor);
+			IMassSpectrumComparisonResult massSpectrumComparisonResult = new MassSpectrumComparisonResult(matchFactor, reverseMatchFactor, matchFactorDirect, reverseMatchFactorDirect);
 			processingInfo.setMassSpectrumComparisonResult(massSpectrumComparisonResult);
 		}
 		return processingInfo;

@@ -17,7 +17,7 @@ import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectr
 
 public class PBMMassSpectrumComparator_5_Test extends MassSpectrumSetTestCase {
 
-	private PBMMassSpectrumComparator comparator;
+	private MassSpectrumComparator comparator;
 	private IMassSpectrumComparatorProcessingInfo processingInfo;
 	private IMassSpectrumComparisonResult result;
 
@@ -29,7 +29,7 @@ public class PBMMassSpectrumComparator_5_Test extends MassSpectrumSetTestCase {
 		IScanMSD unknown = noMatchA1.getMassSpectrum();
 		IScanMSD reference = noMatchA2.getMassSpectrum();
 		//
-		comparator = new PBMMassSpectrumComparator();
+		comparator = new MassSpectrumComparator();
 		processingInfo = comparator.compare(unknown, reference);
 		result = processingInfo.getMassSpectrumComparisonResult();
 	}

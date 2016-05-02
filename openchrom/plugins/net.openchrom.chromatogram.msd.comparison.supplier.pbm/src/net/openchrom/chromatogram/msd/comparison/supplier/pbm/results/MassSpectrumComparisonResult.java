@@ -13,14 +13,14 @@ package net.openchrom.chromatogram.msd.comparison.supplier.pbm.results;
 
 import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.AbstractMassSpectrumComparisonResult;
 
-public class PBMMassSpectrumComparisonResult extends AbstractMassSpectrumComparisonResult {
+public class MassSpectrumComparisonResult extends AbstractMassSpectrumComparisonResult {
 
 	/**
 	 * Renew the UUID on change.
 	 */
 	private static final long serialVersionUID = -7219390056175582476L;
 
-	public PBMMassSpectrumComparisonResult(float matchFactor, float reverseMatchFactor) {
-		super(matchFactor, reverseMatchFactor);
+	public MassSpectrumComparisonResult(float matchFactor, float reverseMatchFactor, float matchFactorDirect, float reverseMatchFactorDirect) {
+		super(matchFactor, reverseMatchFactor, matchFactorDirect, reverseMatchFactorDirect);
 	}
 }

@@ -7,7 +7,7 @@
             comparatorName="PBM"
             description="This comparator calculates the similarity between two mass spectra with the pbm algorithm."
             id="net.openchrom.chromatogram.msd.comparison.supplier.pbm"
-            massSpectrumComparator="net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator.PBMMassSpectrumComparator">
+            massSpectrumComparator="net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator.MassSpectrumComparator">
       </ComparisonSupplier>
    </extension>
 
