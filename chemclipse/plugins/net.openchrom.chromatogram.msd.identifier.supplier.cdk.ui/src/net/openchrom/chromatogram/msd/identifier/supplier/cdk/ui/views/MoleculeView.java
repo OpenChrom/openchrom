@@ -220,7 +220,7 @@ public class MoleculeView {
 					IIdentificationTarget identificationTarget = (IIdentificationTarget)event.getProperty(IChemClipseEvents.PROPERTY_IDENTIFICATION_TARGET);
 					ILibraryInformation libraryInformation = identificationTarget.getLibraryInformation();
 					iupacName = libraryInformation.getName();
-					smilesFormula = libraryInformation.getFormula();
+					smilesFormula = libraryInformation.getSmiles();
 					//
 					makeImage();
 				}

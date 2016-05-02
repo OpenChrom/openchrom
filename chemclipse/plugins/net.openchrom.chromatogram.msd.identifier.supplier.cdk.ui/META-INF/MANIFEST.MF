@@ -36,4 +36,4 @@ Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.event;version="1.3.0"
 Service-Component: OSGI-INF/calculateSmilesFormulaPeaksHandler.xml,
  OSGI-INF/calculateSmilesFormulaSelectedPeakHandler.xml,
- OSGI-INF/deleteIdentificationsWithoutFormulaHandler.xml
+ OSGI-INF/deleteIdentificationsWithoutSMILESHandler.xml

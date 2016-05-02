@@ -14,24 +14,23 @@ package net.openchrom.chromatogram.msd.identifier.supplier.cdk.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-
-import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
-import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
-import uk.ac.cam.ch.wwmm.opsin.OpsinResult;
-
-import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
-import org.eclipse.chemclipse.model.targets.IPeakTarget;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.AbstractPeakIdentifier;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.processing.IPeakIdentifierProcessingInfo;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.processing.PeakIdentifierProcessingInfo;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettings;
+import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.targets.IPeakTarget;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.processing.core.MessageType;
 import org.eclipse.chemclipse.processing.core.ProcessingMessage;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IVendorPeakIdentifierSettings;
+
+import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
+import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
+import uk.ac.cam.ch.wwmm.opsin.OpsinResult;
 
 public class PeakIdentifier extends AbstractPeakIdentifier {
 
@@ -93,7 +92,7 @@ public class PeakIdentifier extends AbstractPeakIdentifier {
 				 */
 				if(target instanceof IPeakTarget) {
 					ILibraryInformation libraryInformation = ((IPeakTarget)target).getLibraryInformation();
-					if(libraryInformation.getFormula().equals("")) {
+					if(libraryInformation.getSmiles().equals("")) {
 						/*
 						 * Calculate SMILES
 						 */
@@ -105,7 +104,7 @@ public class PeakIdentifier extends AbstractPeakIdentifier {
 							 * Set the parsed name and smiles formula.
 							 */
 							libraryInformation.setName(result.getChemicalName());
-							libraryInformation.setFormula(result.getSmiles());
+							libraryInformation.setSmiles(result.getSmiles());
 						} else {
 							/*
 							 * The name couldn't be parsed.

@@ -20,16 +20,15 @@ import org.eclipse.chemclipse.model.targets.IPeakTarget;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 
-public class DeleteIdentificationsWithoutFormulaRunnable implements IRunnableWithProgress {
+public class DeleteIdentificationsWithoutSmilesRunnable implements IRunnableWithProgress {
 
 	private IChromatogramSelectionMSD chromatogramSelection;
 
-	public DeleteIdentificationsWithoutFormulaRunnable(IChromatogramSelectionMSD chromatogramSelection) {
+	public DeleteIdentificationsWithoutSmilesRunnable(IChromatogramSelectionMSD chromatogramSelection) {
 		this.chromatogramSelection = chromatogramSelection;
 	}
 
@@ -57,7 +56,7 @@ public class DeleteIdentificationsWithoutFormulaRunnable implements IRunnableWit
 					 */
 					if(target instanceof IPeakTarget) {
 						ILibraryInformation libraryInformation = ((IPeakTarget)target).getLibraryInformation();
-						if(libraryInformation.getFormula().equals("")) {
+						if(libraryInformation.getSmiles().equals("")) {
 							/*
 							 * Mark the identification entry to be deleted when there is no formula set.
 							 */
