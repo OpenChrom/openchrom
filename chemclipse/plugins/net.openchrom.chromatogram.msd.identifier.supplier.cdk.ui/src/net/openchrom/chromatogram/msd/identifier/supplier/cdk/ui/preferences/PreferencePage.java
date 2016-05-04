@@ -16,8 +16,8 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.Activator;
@@ -27,7 +27,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	public PreferencePage() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("CDK settings.");
+		setDescription("CDK settings");
 	}
 
 	/**

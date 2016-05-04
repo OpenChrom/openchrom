@@ -13,54 +13,30 @@
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.internal.handlers;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.PeakIdentifier;
-import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.chromatogram.ChromatogramIdentifier;
 import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 
-public class SmilesFormulaCalculatorRunnable implements IRunnableWithProgress {
+public class CalculateSmilesRunnable implements IRunnableWithProgress {
 
 	private static final String IDENTIFIER_ID = "net.openchrom.chromatogram.msd.identifier.supplier.cdk";
+	//
 	private IChromatogramSelectionMSD chromatogramSelection;
-	private boolean useOnlySelectedPeak;
 
-	public SmilesFormulaCalculatorRunnable(IChromatogramSelectionMSD chromatogramSelection, boolean useOnlySelectedPeak) {
+	public CalculateSmilesRunnable(IChromatogramSelectionMSD chromatogramSelection) {
 		this.chromatogramSelection = chromatogramSelection;
-		this.useOnlySelectedPeak = useOnlySelectedPeak;
 	}
 
 	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
 		try {
-			monitor.beginTask("Peak result formula calculator", IProgressMonitor.UNKNOWN);
-			/*
-			 * Get the list of selected peaks.
-			 */
-			List<IPeakMSD> peaks = new ArrayList<IPeakMSD>();
-			if(useOnlySelectedPeak) {
-				/*
-				 * Selected peak.
-				 */
-				peaks.add(chromatogramSelection.getSelectedPeak());
-			} else {
-				/*
-				 * All peaks
-				 */
-				for(IPeakMSD peakMSD : chromatogramSelection.getChromatogramMSD().getPeaks(chromatogramSelection)) {
-					peaks.add(peakMSD);
-				}
-			}
-			/*
-			 * Run the peak identifier.
-			 */
-			PeakIdentifier.identify(peaks, IDENTIFIER_ID, monitor);
+			monitor.beginTask("SMILES calculator", IProgressMonitor.UNKNOWN);
+			ChromatogramIdentifier.identify(chromatogramSelection, IDENTIFIER_ID, monitor);
 			/*
 			 * Fire an update.
 			 */

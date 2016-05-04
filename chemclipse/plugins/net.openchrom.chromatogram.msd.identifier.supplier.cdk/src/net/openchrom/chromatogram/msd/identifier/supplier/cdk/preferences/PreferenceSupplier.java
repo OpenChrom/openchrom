@@ -15,18 +15,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.openscience.cdk.interfaces.IIsotope;
-import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.Activator;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeDecider;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeDeciderFactory;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeParser;
-import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.VendorPeakIdentifierSettings;
-import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IVendorPeakIdentifierSettings;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IVendorIdentifierSettings;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.VendorIdentifierSettings;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
@@ -113,11 +113,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return new String[][]{{"&Basic Isotope Set (C,H,N,O)", IsotopePreference.BASIC.toString()}, {"&Organic Isotope Set (C,H,N,O,Cl,Br,S,P,I,B)", IsotopePreference.ORGANIC.toString()}, {"&User Defined Isotope Set", IsotopePreference.USER_DEFINED.toString()}};
 	}
 
-	public static IVendorPeakIdentifierSettings getPeakIdentifierSettings() {
+	public static IVendorIdentifierSettings getIdentifierSettings() {
 
-		IVendorPeakIdentifierSettings peakIdentifierSettings = new VendorPeakIdentifierSettings();
-		peakIdentifierSettings.setDeleteIdentificationsWithoutFormula(isDeleteIdentificationsWithoutFormula());
-		return peakIdentifierSettings;
+		IVendorIdentifierSettings identifierSettings = new VendorIdentifierSettings();
+		identifierSettings.setDeleteIdentificationsWithoutFormula(isDeleteIdentificationsWithoutFormula());
+		return identifierSettings;
 	}
 
 	public static boolean isDeleteIdentificationsWithoutFormula() {

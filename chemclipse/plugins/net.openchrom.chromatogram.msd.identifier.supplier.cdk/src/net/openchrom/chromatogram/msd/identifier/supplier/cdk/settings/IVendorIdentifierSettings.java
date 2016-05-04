@@ -11,21 +11,11 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.AbstractPeakIdentifierSettings;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IChromatogramIdentifierSettings;
 
-public class VendorPeakIdentifierSettings extends AbstractPeakIdentifierSettings implements IVendorPeakIdentifierSettings {
+public interface IVendorIdentifierSettings extends IChromatogramIdentifierSettings {
 
-	private boolean deleteIdentificationsWithoutFormula;
+	boolean isDeleteIdentificationsWithoutFormula();
 
-	@Override
-	public boolean isDeleteIdentificationsWithoutFormula() {
-
-		return deleteIdentificationsWithoutFormula;
-	}
-
-	@Override
-	public void setDeleteIdentificationsWithoutFormula(boolean deleteIdentificationsWithoutFormula) {
-
-		this.deleteIdentificationsWithoutFormula = deleteIdentificationsWithoutFormula;
-	}
+	void setDeleteIdentificationsWithoutFormula(boolean deleteIdentificationsWithoutFormula);
 }
