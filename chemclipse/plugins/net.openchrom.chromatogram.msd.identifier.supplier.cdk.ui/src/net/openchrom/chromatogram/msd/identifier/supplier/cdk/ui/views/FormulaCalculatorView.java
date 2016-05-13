@@ -17,6 +17,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.support.events.IChemClipseEvents;
+import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
+import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -31,13 +35,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
-import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.support.events.IChemClipseEvents;
-import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.NameAndRating;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.support.FormulaSupport;
-import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider.FormulaListContentProvider;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider.FormulaListLabelProvider;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.internal.provider.FormulaListTableComparator;
 
@@ -85,7 +85,7 @@ public class FormulaCalculatorView {
 		tableViewer = new ExtendedTableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		tableViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 		tableViewer.createColumns(titles, bounds);
-		tableViewer.setContentProvider(new FormulaListContentProvider());
+		tableViewer.setContentProvider(new ListContentProvider());
 		tableViewer.setLabelProvider(new FormulaListLabelProvider());
 		/*
 		 * Sorting the table.
