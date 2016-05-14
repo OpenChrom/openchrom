@@ -17,7 +17,7 @@
             <children xsi:type="basic:PartStack" xmi:id="_yLG3wE0cEeO5B_4ZxeFNDw" elementId="net.openchrom.supplier.cdk.ui.partstack.2">
               <children xsi:type="advanced:Placeholder" xmi:id="_y7GKQE0cEeO5B_4ZxeFNDw" elementId="net.openchrom.supplier.cdk.ui.placeholder.2" ref="_tNtJoE0cEeO5B_4ZxeFNDw"/>
             </children>
-            <children xsi:type="advanced:Placeholder" xmi:id="_EzSG4JiXEeOY7ZqVhGnKxQ" elementId="net.openchrom.supplier.cdk.ui.placeholder.6" ref="_258_kJiWEeOY7ZqVhGnKxQ"/>
+            <children xsi:type="advanced:Placeholder" xmi:id="_EzSG4JiXEeOY7ZqVhGnKxQ" elementId="org.eclipse.ui.editorss" ref="_258_kJiWEeOY7ZqVhGnKxQ"/>
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_1RBnQFE3EeONNIp3wMDeNw" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.partstack.4">
             <children xsi:type="advanced:Placeholder" xmi:id="_zUMmwE0cEeO5B_4ZxeFNDw" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.placeholder.3" ref="_FmKb0DzCEeO9Cpf0lomO-Q"/>
