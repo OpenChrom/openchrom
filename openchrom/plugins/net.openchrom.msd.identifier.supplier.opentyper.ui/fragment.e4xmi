@@ -13,7 +13,7 @@
         </children>
         <children xsi:type="basic:PartSashContainer" xmi:id="_DIrRIJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partsashcontainer.2" horizontal="true">
           <children xsi:type="basic:PartSashContainer" xmi:id="_zXuEYJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partsashcontainer.3">
-            <children xsi:type="advanced:Placeholder" xmi:id="_SDGpEJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.placeholder.editorss" ref="_OzAxUJRlEeW3h-K0O5zQFg"/>
+            <children xsi:type="advanced:Placeholder" xmi:id="_SDGpEJRlEeW3h-K0O5zQFg" elementId="org.eclipse.ui.editorss" ref="_OzAxUJRlEeW3h-K0O5zQFg"/>
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_F-avMJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partstack.1" containerData="2500">
             <children xsi:type="advanced:Placeholder" xmi:id="_2ovwQJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.placeholder.3" ref="_tiIKAJRlEeW3h-K0O5zQFg"/>
