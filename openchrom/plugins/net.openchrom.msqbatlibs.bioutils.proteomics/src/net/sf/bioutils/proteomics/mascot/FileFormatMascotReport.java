@@ -51,7 +51,6 @@ public class FileFormatMascotReport {
 	public final static String ZF_NA = "pep_summed_mod_pos";
 	public final static String PEP_SCAN_TITLE = "pep_scan_title";
 	private static List<String> ids = new ArrayList<String>();
-
 	static {
 		ids.add(PROT_HIT_NUM);
 		ids.add(PROT_ACC);
