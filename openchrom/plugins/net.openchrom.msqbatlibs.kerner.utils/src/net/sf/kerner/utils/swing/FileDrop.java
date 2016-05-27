@@ -470,11 +470,11 @@ public class FileDrop {
 	 */
 	public FileDrop(final java.awt.Component c, final boolean recursive, final Listener listener) {
 		this(null, // Logging stream
-				c, // Drop target
-				javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), // Drag
-																								// border
-				recursive, // Recursive
-				listener);
+		c, // Drop target
+		javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), // Drag
+																						// border
+		recursive, // Recursive
+		listener);
 	} // end constructor
 
 	/**
@@ -511,10 +511,10 @@ public class FileDrop {
 	 */
 	public FileDrop(final java.awt.Component c, final javax.swing.border.Border dragBorder, final Listener listener) {
 		this(null, // Logging stream
-				c, // Drop target
-				dragBorder, // Drag border
-				false, // Recursive
-				listener);
+		c, // Drop target
+		dragBorder, // Drag border
+		false, // Recursive
+		listener);
 	} // end constructor
 
 	/**
@@ -531,11 +531,11 @@ public class FileDrop {
 	 */
 	public FileDrop(final java.awt.Component c, final Listener listener) {
 		this(null, // Logging stream
-				c, // Drop target
-				javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), // Drag
-																								// border
-				true, // Recursive
-				listener);
+		c, // Drop target
+		javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), // Drag
+																						// border
+		true, // Recursive
+		listener);
 	} // end constructor
 
 	/**
@@ -558,11 +558,11 @@ public class FileDrop {
 	 */
 	public FileDrop(final java.io.PrintStream out, final java.awt.Component c, final boolean recursive, final Listener listener) {
 		this(out, // Logging stream
-				c, // Drop target
-				javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), // Drag
-																								// border
-				recursive, // Recursive
-				listener);
+		c, // Drop target
+		javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), // Drag
+																						// border
+		recursive, // Recursive
+		listener);
 	} // end constructor
 
 	/**
@@ -760,10 +760,10 @@ public class FileDrop {
 	 */
 	public FileDrop(final java.io.PrintStream out, final java.awt.Component c, final javax.swing.border.Border dragBorder, final Listener listener) {
 		this(out, // Logging stream
-				c, // Drop target
-				dragBorder, // Drag border
-				false, // Recursive
-				listener);
+		c, // Drop target
+		dragBorder, // Drag border
+		false, // Recursive
+		listener);
 	} // end constructor
 
 	/* ******** I N N E R I N T E R F A C E L I S T E N E R ******** */
@@ -783,9 +783,9 @@ public class FileDrop {
 	 */
 	public FileDrop(final java.io.PrintStream out, final java.awt.Component c, final Listener listener) {
 		this(out, // Logging stream
-				c, // Drop target
-				javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), false, // Recursive
-				listener);
+		c, // Drop target
+		javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, defaultBorderColor), false, // Recursive
+		listener);
 	} // end constructor
 
 	/* ******** I N N E R C L A S S ******** */

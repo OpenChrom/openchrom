@@ -28,8 +28,8 @@ public abstract class AbstractDoubleRange extends VeryAbstractDoubleRange implem
 		// System.out.println("return:" + (UtilMath.round((UtilMath.round(stop
 		// - start, ACCURACY)) % interval, ACCURACY) == 0));
 		return (UtilMath.round((UtilMath.round(stop - start, ACCURACY)) % interval, ACCURACY) != 0
-				// double accuracy workaround
-				&& UtilMath.round((UtilMath.round(stop - start, ACCURACY)) % interval, ACCURACY) != interval);
+		// double accuracy workaround
+		&& UtilMath.round((UtilMath.round(stop - start, ACCURACY)) % interval, ACCURACY) != interval);
 	}
 
 	/**
