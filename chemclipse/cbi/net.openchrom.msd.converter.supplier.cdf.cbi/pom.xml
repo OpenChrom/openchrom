@@ -55,6 +55,5 @@
     <module>../../plugins/net.openchrom.msd.converter.supplier.cdf.ui</module>
     <module>../../features/net.openchrom.msd.converter.supplier.cdf.feature</module>
     <!--<module>../../plugins/net.openchrom.msd.converter.supplier.cdf.fragment.test</module>-->
-    <module>../../sites/net.openchrom.msd.converter.supplier.cdf.updateSite</module>
   </modules>
 </project>
