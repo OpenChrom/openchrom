@@ -13,11 +13,12 @@ package net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.internal.provi
 
 import java.text.DecimalFormat;
 
+import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
-import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.NameAndRating;
 
@@ -26,7 +27,7 @@ public class FormulaListLabelProvider extends LabelProvider implements ITableLab
 	private DecimalFormat decimalFormat;
 
 	public FormulaListLabelProvider() {
-		decimalFormat = new DecimalFormat("0.000000");
+		decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000000");
 	}
 
 	@Override
