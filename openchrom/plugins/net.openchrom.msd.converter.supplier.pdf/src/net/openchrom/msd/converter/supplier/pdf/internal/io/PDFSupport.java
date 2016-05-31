@@ -10,27 +10,27 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-
-import com.pdfjet.Box;
-import com.pdfjet.Font;
-import com.pdfjet.Image;
-import com.pdfjet.ImageType;
-import com.pdfjet.Line;
-import com.pdfjet.A4;
-import com.pdfjet.PDF;
-import com.pdfjet.Page;
-import com.pdfjet.Path;
-import com.pdfjet.Point;
-import com.pdfjet.RGB;
-import com.pdfjet.TextLine;
-
 import org.eclipse.chemclipse.model.signals.ITotalScanSignal;
 import org.eclipse.chemclipse.model.signals.ITotalScanSignalExtractor;
 import org.eclipse.chemclipse.model.signals.ITotalScanSignals;
 import org.eclipse.chemclipse.model.signals.TotalScanSignalExtractor;
 import org.eclipse.chemclipse.msd.model.core.AbstractChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.support.text.ValueFormat;
+import org.eclipse.core.runtime.IProgressMonitor;
+
+import com.pdfjet.A4;
+import com.pdfjet.Box;
+import com.pdfjet.Font;
+import com.pdfjet.Image;
+import com.pdfjet.ImageType;
+import com.pdfjet.Line;
+import com.pdfjet.PDF;
+import com.pdfjet.Page;
+import com.pdfjet.Path;
+import com.pdfjet.Point;
+import com.pdfjet.RGB;
+import com.pdfjet.TextLine;
 
 public class PDFSupport {
 
@@ -64,8 +64,8 @@ public class PDFSupport {
 	private IChromatogramMSD chromatogram;
 
 	public PDFSupport() {
-		decimalFormat = new DecimalFormat("0.00");
-		abundanceFormat = new DecimalFormat("0");
+		decimalFormat = ValueFormat.getDecimalFormatEnglish("0.00");
+		abundanceFormat = ValueFormat.getDecimalFormatEnglish("0");
 	}
 
 	public void exportChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws Exception {
