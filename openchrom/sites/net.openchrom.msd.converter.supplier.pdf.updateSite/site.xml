@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <feature url="features/net.openchrom.msd.converter.supplier.pdf.feature_1.1.0.qualifier.jar" id="net.openchrom.msd.converter.supplier.pdf.feature" version="1.1.0.qualifier">
-      <category name="org.eclipse.chemclipse.xxd.plugins.converter"/>
-   </feature>
-   <category-def name="org.eclipse.chemclipse.xxd.plugins.converter" label="Chromatogram Converter"/>
-</site>

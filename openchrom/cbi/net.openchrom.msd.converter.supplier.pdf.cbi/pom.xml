@@ -54,6 +54,5 @@
     <module>../../plugins/net.openchrom.msd.converter.supplier.pdf.ui</module>
     <module>../../features/net.openchrom.msd.converter.supplier.pdf.feature</module>
     <!--<module>../../plugins/net.openchrom.msd.converter.supplier.pdf.fragment.test</module>-->
-    <module>../../sites/net.openchrom.msd.converter.supplier.pdf.updateSite</module>
   </modules>
 </project>
