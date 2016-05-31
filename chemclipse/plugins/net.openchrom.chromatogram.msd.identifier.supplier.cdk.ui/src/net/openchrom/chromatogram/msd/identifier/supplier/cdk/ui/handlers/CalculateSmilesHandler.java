@@ -61,6 +61,8 @@ public class CalculateSmilesHandler implements EventHandler {
 
 		if(event.getTopic().equals(IChemClipseEvents.TOPIC_CHROMATOGRAM_MSD_UPDATE_CHROMATOGRAM_SELECTION)) {
 			chromatogramSelection = (IChromatogramSelectionMSD)event.getProperty(IChemClipseEvents.PROPERTY_CHROMATOGRAM_SELECTION);
+		} else {
+			chromatogramSelection = null;
 		}
 	}
 }
