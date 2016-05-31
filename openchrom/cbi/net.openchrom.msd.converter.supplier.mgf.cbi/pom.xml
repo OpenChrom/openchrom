@@ -63,6 +63,5 @@
     <module>../../plugins/net.openchrom.msd.converter.supplier.mgf.ui</module>
     <module>../../features/net.openchrom.msd.converter.supplier.mgf.feature</module>
     <!--<module>../../plugins/net.openchrom.msd.converter.supplier.mgf.fragment.test</module>-->
-    <module>../../sites/net.openchrom.msd.converter.supplier.mgf.updateSite</module>
   </modules>
 </project>
