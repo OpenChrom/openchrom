@@ -150,7 +150,8 @@ public class UtilCollection {
 	}
 
 	/**
-	 * @return {@code true}, if any of given collection's elements is {@code null}; {@code false} otherwise
+	 * @return {@code true}, if any of given collection's elements is {@code null}; {@code false}
+	 *         otherwise
 	 */
 	public static boolean containsNull(final Collection<?> c) {
 
@@ -335,7 +336,8 @@ public class UtilCollection {
 	 *
 	 * Returns a index-to-frequency mapping for all elements in given {@link Collection}.
 	 * </p>
-	 * Key of returned map is element from {@code collection}, corresponding value is this element's number of
+	 * Key of returned map is element from {@code collection}, corresponding value is this element's
+	 * number of
 	 * occurrences in {@code collection}.
 	 *
 	 * <p>
@@ -591,7 +593,8 @@ public class UtilCollection {
 	 *
 	 * @param col
 	 *            {@link Collection} to check
-	 * @return true, if given {@link Collection} or all of its elements is/ are {@code null}; {@code false} otherwise
+	 * @return true, if given {@link Collection} or all of its elements is/ are {@code null};
+	 *         {@code false} otherwise
 	 */
 	public static boolean nullCollection(final Collection<?> col) {
 
@@ -643,6 +646,7 @@ public class UtilCollection {
 	 *
 	 * @Deprecated Use {@link ToString} instead.
 	 */
+	@Deprecated
 	public static String toString(final Iterable<?> elements) {
 
 		if(elements == null)
