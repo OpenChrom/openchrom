@@ -5,11 +5,12 @@
          point="org.eclipse.chemclipse.msd.converter.chromatogramSupplier">
       <ChromatogramSupplier
             description="Reads an writes ANDI/AIA CDF Chromatograms."
-            exportConverter="net.openchrom.msd.converter.supplier.cdf.converter.CDFChromatogramExportConverter"
+            exportConverter="net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramExportConverter"
             fileExtension=".CDF"
             filterName="ANDI/AIA CDF Chromatogram (*.CDF)"
             id="net.openchrom.msd.converter.supplier.cdf"
-            importConverter="net.openchrom.msd.converter.supplier.cdf.converter.CDFChromatogramImportConverter"
+            importConverter="net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramImportConverter"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.cdf.converter.MagicNumberMatcher"
             isExportable="true"
             isImportable="true">
       </ChromatogramSupplier>

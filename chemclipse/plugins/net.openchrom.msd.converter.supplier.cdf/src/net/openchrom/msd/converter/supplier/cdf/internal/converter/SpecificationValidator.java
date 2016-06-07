@@ -29,7 +29,7 @@ public class SpecificationValidator {
 	 * 
 	 * @param file
 	 */
-	public static File validateCDFSpecification(File file) {
+	public static File validateSpecification(File file) {
 
 		if(file == null) {
 			return null;

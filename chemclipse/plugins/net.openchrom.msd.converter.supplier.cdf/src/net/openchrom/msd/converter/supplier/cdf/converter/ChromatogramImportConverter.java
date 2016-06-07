@@ -13,25 +13,26 @@ package net.openchrom.msd.converter.supplier.cdf.converter;
 
 import java.io.File;
 
-import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.chemclipse.converter.chromatogram.IChromatogramImportConverter;
 import org.eclipse.chemclipse.converter.processing.chromatogram.ChromatogramOverviewImportConverterProcessingInfo;
 import org.eclipse.chemclipse.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.chromatogram.AbstractChromatogramMSDImportConverter;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.converter.processing.chromatogram.ChromatogramMSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.openchrom.msd.converter.supplier.cdf.internal.support.IConstants;
 import net.openchrom.msd.converter.supplier.cdf.io.ChromatogramReader;
 
-public class CDFChromatogramImportConverter extends AbstractChromatogramMSDImportConverter {
+public class ChromatogramImportConverter extends AbstractChromatogramMSDImportConverter implements IChromatogramImportConverter {
 
-	private static final Logger logger = Logger.getLogger(CDFChromatogramImportConverter.class);
+	private static final Logger logger = Logger.getLogger(ChromatogramImportConverter.class);
 	private static final String DESCRIPTION = "NetCDF Import Converter";
 
 	@Override
@@ -48,7 +49,7 @@ public class CDFChromatogramImportConverter extends AbstractChromatogramMSDImpor
 			/*
 			 * Read the chromatogram.
 			 */
-			file = SpecificationValidator.validateCDFSpecification(file);
+			file = SpecificationValidator.validateSpecification(file);
 			IChromatogramMSDReader reader = new ChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM);
 			try {
@@ -76,7 +77,7 @@ public class CDFChromatogramImportConverter extends AbstractChromatogramMSDImpor
 			/*
 			 * Read the chromatogram overview.
 			 */
-			file = SpecificationValidator.validateCDFSpecification(file);
+			file = SpecificationValidator.validateSpecification(file);
 			IChromatogramMSDReader reader = new ChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM_OVERVIEW);
 			try {
