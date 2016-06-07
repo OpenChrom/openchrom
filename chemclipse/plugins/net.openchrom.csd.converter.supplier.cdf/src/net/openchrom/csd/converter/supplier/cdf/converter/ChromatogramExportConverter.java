@@ -13,7 +13,7 @@ package net.openchrom.csd.converter.supplier.cdf.converter;
 
 import java.io.File;
 
-import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
 import org.eclipse.chemclipse.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
 import org.eclipse.chemclipse.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
 import org.eclipse.chemclipse.csd.converter.chromatogram.AbstractChromatogramCSDExportConverter;
@@ -21,14 +21,15 @@ import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDWriter;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.csd.converter.supplier.cdf.internal.converter.IConstants;
 import net.openchrom.csd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.openchrom.csd.converter.supplier.cdf.io.ChromatogramWriter;
 
-public class CDFChromatogramExportConverter extends AbstractChromatogramCSDExportConverter {
+public class ChromatogramExportConverter extends AbstractChromatogramCSDExportConverter implements IChromatogramExportConverter {
 
-	private static final Logger logger = Logger.getLogger(CDFChromatogramExportConverter.class);
+	private static final Logger logger = Logger.getLogger(ChromatogramExportConverter.class);
 	private static final String DESCRIPTION = "NetCDF Export Converter";
 
 	@Override
@@ -38,7 +39,7 @@ public class CDFChromatogramExportConverter extends AbstractChromatogramCSDExpor
 		/*
 		 * Validate the file.
 		 */
-		file = SpecificationValidator.validateCDFSpecification(file);
+		file = SpecificationValidator.validateSpecification(file);
 		IProcessingInfo processingInfoValidate = super.validate(file);
 		/*
 		 * Don't process if errors have occurred.
