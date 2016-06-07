@@ -14,6 +14,7 @@ package net.openchrom.msd.converter.supplier.mgf.converter;
 
 import java.io.File;
 
+import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
 import org.eclipse.chemclipse.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
 import org.eclipse.chemclipse.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
 import org.eclipse.chemclipse.converter.support.IConstants;
@@ -26,7 +27,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.msd.converter.supplier.mgf.converter.internal.io.SpecificationValidator;
 import net.openchrom.msd.converter.supplier.mgf.converter.io.ChromatogramWriter;
 
-public class ChromatogramExportConverter extends AbstractChromatogramMSDExportConverter {
+public class ChromatogramExportConverter extends AbstractChromatogramMSDExportConverter implements IChromatogramExportConverter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramExportConverter.class);
 	private static final String DESCRIPTION = "MGF Export Converter";
