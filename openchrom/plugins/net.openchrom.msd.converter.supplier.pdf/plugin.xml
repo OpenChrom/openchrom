@@ -10,6 +10,7 @@
             filterName="PDF Chromatogram (*.pdf)"
             id="net.openchrom.msd.converter.supplier.pdf"
             importConverter="net.openchrom.msd.converter.supplier.pdf.converter.ChromatogramImportConverter"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.pdf.converter.MagicNumberMatcher"
             isExportable="true"
             isImportable="false">
       </ChromatogramSupplier>
