@@ -29,11 +29,14 @@ public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IM
 
 		boolean isValidFormat = false;
 		try {
-			file = SpecificationValidator.validateSpecification(file);
-			IChromatogramMSDReader reader = new ChromatogramReader();
-			IChromatogramOverview chromatogramOverview = reader.readOverview(file, new NullProgressMonitor());
-			if(chromatogramOverview != null) {
-				isValidFormat = true;
+			String fileName = file.getName().toLowerCase();
+			if(fileName.endsWith("cdf")) {
+				file = SpecificationValidator.validateSpecification(file);
+				IChromatogramMSDReader reader = new ChromatogramReader();
+				IChromatogramOverview chromatogramOverview = reader.readOverview(file, new NullProgressMonitor());
+				if(chromatogramOverview != null) {
+					isValidFormat = true;
+				}
 			}
 		} catch(Exception e) {
 			// Print no exception.
