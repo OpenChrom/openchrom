@@ -43,6 +43,7 @@ import net.openchrom.msd.converter.supplier.cdf.model.VendorChromatogram;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorIon;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorScan;
 import net.openchrom.msd.converter.supplier.cdf.preferences.PreferenceSupplier;
+
 import ucar.nc2.NetcdfFile;
 
 public class ChromatogramReader extends AbstractChromatogramMSDReader implements IChromatogramMSDReader {
@@ -164,23 +165,24 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 	 */
 	private VendorChromatogram readChromatogramOverview(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored, AbundanceLimitExceededException, IonLimitExceededException {
 
-		VendorChromatogram chromatogram;
-		VendorScan massSpectrum;
-		VendorIon ion;
 		@SuppressWarnings("deprecation")
 		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
 		CDFChromatogramOverviewArrayReader in = new CDFChromatogramOverviewArrayReader(cdfChromatogram);
-		chromatogram = new VendorChromatogram();
+		VendorChromatogram chromatogram = new VendorChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
 		monitor.subTask(IConstants.PARSE_SCANS);
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
-			monitor.subTask(IConstants.SCAN + " " + i);
-			massSpectrum = new VendorScan();
-			massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
-			ion = new VendorIon(IIon.TIC_ION, true);
-			ion.setAbundance(in.getTotalSignal(i));
-			massSpectrum.addIon(ion);
-			chromatogram.addScan(massSpectrum);
+			try {
+				monitor.subTask(IConstants.SCAN + " " + i);
+				VendorScan massSpectrum = new VendorScan();
+				massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
+				VendorIon ion = new VendorIon(IIon.TIC_ION, true);
+				ion.setAbundance(in.getTotalSignal(i));
+				massSpectrum.addIon(ion);
+				chromatogram.addScan(massSpectrum);
+			} catch(Exception e) {
+				//
+			}
 		}
 		// Close the cdf chromatogram.
 		cdfChromatogram.close();
