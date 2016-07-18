@@ -28,11 +28,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 
-public class DeleteIdentificationsRunnable implements IRunnableWithProgress {
+public class DeleteIdentificationsChromatogramRunnable implements IRunnableWithProgress {
 
 	private IChromatogramSelectionMSD chromatogramSelection;
 
-	public DeleteIdentificationsRunnable(IChromatogramSelectionMSD chromatogramSelection) {
+	public DeleteIdentificationsChromatogramRunnable(IChromatogramSelectionMSD chromatogramSelection) {
 		this.chromatogramSelection = chromatogramSelection;
 	}
 

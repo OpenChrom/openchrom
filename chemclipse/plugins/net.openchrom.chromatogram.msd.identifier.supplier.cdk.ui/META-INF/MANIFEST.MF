@@ -35,4 +35,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.event;version="1.3.0"
 Service-Component: OSGI-INF/calculateSmilesHandler.xml,
- OSGI-INF/deleteIdentificationsHandler.xml
+ OSGI-INF/deleteIdentificationsHandler.xml,
+ OSGI-INF/calculateSmilesLibraryHandler.xml

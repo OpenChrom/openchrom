@@ -15,7 +15,7 @@ package net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.handlers;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.progress.core.InfoType;
 import org.eclipse.chemclipse.progress.core.StatusLineLogger;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
@@ -26,20 +26,20 @@ import org.eclipse.swt.widgets.Display;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
-import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.internal.handlers.CalculateSmilesRunnable;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.internal.handlers.CalculateSmilesLibraryRunnable;
 
-public class CalculateSmilesHandler implements EventHandler {
+public class CalculateSmilesLibraryHandler implements EventHandler {
 
-	private static final Logger logger = Logger.getLogger(CalculateSmilesHandler.class);
-	private static IChromatogramSelectionMSD chromatogramSelection;
+	private static final Logger logger = Logger.getLogger(CalculateSmilesLibraryHandler.class);
+	private static IMassSpectra massSpectra;
 
 	@Execute
 	public void execute() {
 
-		if(chromatogramSelection != null) {
+		if(massSpectra != null) {
 			final Display display = Display.getCurrent();
 			StatusLineLogger.setInfo(InfoType.MESSAGE, "Start SMILES calculation.");
-			IRunnableWithProgress runnable = new CalculateSmilesRunnable(chromatogramSelection);
+			IRunnableWithProgress runnable = new CalculateSmilesLibraryRunnable(massSpectra);
 			ProgressMonitorDialog monitor = new ProgressMonitorDialog(display.getActiveShell());
 			try {
 				/*
@@ -52,17 +52,17 @@ public class CalculateSmilesHandler implements EventHandler {
 			} catch(InterruptedException e) {
 				logger.warn(e);
 			}
-			StatusLineLogger.setInfo(InfoType.MESSAGE, "Done: Peak result formulas calculated.");
+			StatusLineLogger.setInfo(InfoType.MESSAGE, "Done: SMILES calculated.");
 		}
 	}
 
 	@Override
 	public void handleEvent(Event event) {
 
-		if(event.getTopic().equals(IChemClipseEvents.TOPIC_CHROMATOGRAM_MSD_UPDATE_CHROMATOGRAM_SELECTION)) {
-			chromatogramSelection = (IChromatogramSelectionMSD)event.getProperty(IChemClipseEvents.PROPERTY_CHROMATOGRAM_SELECTION);
+		if(event.getTopic().equals(IChemClipseEvents.TOPIC_LIBRARY_MSD_UPDATE_SELECTION)) {
+			massSpectra = (IMassSpectra)event.getProperty(IChemClipseEvents.PROPERTY_LIBRARY_SELECTION);
 		} else {
-			chromatogramSelection = null;
+			massSpectra = null;
 		}
 	}
 }

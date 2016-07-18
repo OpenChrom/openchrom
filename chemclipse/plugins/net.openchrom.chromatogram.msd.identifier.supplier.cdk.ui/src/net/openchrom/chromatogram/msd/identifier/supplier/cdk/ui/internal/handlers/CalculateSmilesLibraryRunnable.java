@@ -14,21 +14,19 @@ package net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.internal.handl
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.chromatogram.ChromatogramIdentifier;
-import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 
-public class CalculateSmilesRunnable implements IRunnableWithProgress {
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.core.SmilesCalculator;
 
-	private static final String IDENTIFIER_ID = "net.openchrom.chromatogram.msd.identifier.supplier.cdk";
-	//
-	private IChromatogramSelectionMSD chromatogramSelection;
+public class CalculateSmilesLibraryRunnable implements IRunnableWithProgress {
 
-	public CalculateSmilesRunnable(IChromatogramSelectionMSD chromatogramSelection) {
-		this.chromatogramSelection = chromatogramSelection;
+	private IMassSpectra massSpectra;
+
+	public CalculateSmilesLibraryRunnable(IMassSpectra massSpectra) {
+		this.massSpectra = massSpectra;
 	}
 
 	@Override
@@ -36,17 +34,14 @@ public class CalculateSmilesRunnable implements IRunnableWithProgress {
 
 		try {
 			monitor.beginTask("SMILES calculator", IProgressMonitor.UNKNOWN);
-			ChromatogramIdentifier.identify(chromatogramSelection, IDENTIFIER_ID, monitor);
-			/*
-			 * Fire an update.
-			 */
+			SmilesCalculator smilesCalculator = new SmilesCalculator();
+			smilesCalculator.calculate(massSpectra);
 			updateSelection();
 		} finally {
 			monitor.done();
 		}
 	}
 
-	// ---------------------------------------------------------private methods
 	/*
 	 * Updates the selection using the GUI thread.
 	 */
@@ -57,11 +52,8 @@ public class CalculateSmilesRunnable implements IRunnableWithProgress {
 			@Override
 			public void run() {
 
-				if(chromatogramSelection instanceof ChromatogramSelectionMSD) {
-					((ChromatogramSelectionMSD)chromatogramSelection).update(false);
-				}
+				// TODO
 			}
 		});
 	}
-	// ---------------------------------------------------------private methods
 }
