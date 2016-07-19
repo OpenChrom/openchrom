@@ -35,7 +35,7 @@ public class CalculateSmilesLibraryRunnable implements IRunnableWithProgress {
 		try {
 			monitor.beginTask("SMILES calculator", IProgressMonitor.UNKNOWN);
 			SmilesCalculator smilesCalculator = new SmilesCalculator();
-			smilesCalculator.calculate(massSpectra);
+			smilesCalculator.calculate(massSpectra, monitor);
 			updateSelection();
 		} finally {
 			monitor.done();
@@ -52,7 +52,7 @@ public class CalculateSmilesLibraryRunnable implements IRunnableWithProgress {
 			@Override
 			public void run() {
 
-				// TODO
+				massSpectra.update();
 			}
 		});
 	}

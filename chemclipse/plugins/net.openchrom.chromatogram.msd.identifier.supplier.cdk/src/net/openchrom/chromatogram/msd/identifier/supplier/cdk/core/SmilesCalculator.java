@@ -21,6 +21,7 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumTarget;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
 import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
@@ -39,12 +40,19 @@ public class SmilesCalculator {
 		targetExtendedComparator = new TargetExtendedComparator(SortOrder.DESC);
 	}
 
-	public void calculate(IMassSpectra massSpectra) {
+	public void calculate(IMassSpectra massSpectra, IProgressMonitor monitor) {
 
+		int i = 1;
+		exitloop:
 		for(IScanMSD scanMSD : massSpectra.getList()) {
 			/*
 			 * Get library information.
 			 */
+			monitor.subTask("Calculate SMILES Scan#" + i++);
+			if(monitor.isCanceled()) {
+				break exitloop;
+			}
+			//
 			ILibraryInformation libraryInformation = null;
 			if(scanMSD instanceof IRegularLibraryMassSpectrum) {
 				IRegularLibraryMassSpectrum libraryMassSpectrum = (IRegularLibraryMassSpectrum)scanMSD;
