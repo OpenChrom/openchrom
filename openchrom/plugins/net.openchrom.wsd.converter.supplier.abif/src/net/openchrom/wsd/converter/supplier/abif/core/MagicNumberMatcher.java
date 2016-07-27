@@ -16,12 +16,10 @@ import java.io.File;
 
 import org.eclipse.chemclipse.converter.core.AbstractMagicNumberMatcher;
 import org.eclipse.chemclipse.converter.core.IMagicNumberMatcher;
-import org.eclipse.chemclipse.model.core.IChromatogramOverview;
-import org.eclipse.chemclipse.wsd.converter.io.IChromatogramWSDReader;
-import org.eclipse.core.runtime.NullProgressMonitor;
 
+import net.openchrom.wsd.converter.supplier.abif.internal.support.ChromatogramArrayReader;
+import net.openchrom.wsd.converter.supplier.abif.internal.support.IChromatogramArrayReader;
 import net.openchrom.wsd.converter.supplier.abif.internal.support.SpecificationValidator;
-import net.openchrom.wsd.converter.supplier.abif.io.ChromatogramReader;
 
 public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
 
@@ -31,9 +29,11 @@ public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IM
 		boolean isValidFormat = false;
 		try {
 			file = SpecificationValidator.validateSpecification(file);
-			IChromatogramWSDReader reader = new ChromatogramReader();
-			IChromatogramOverview chromatogramOverview = reader.readOverview(file, new NullProgressMonitor());
-			if(chromatogramOverview != null) {
+			IChromatogramArrayReader in = new ChromatogramArrayReader(file);
+			in.resetPosition();
+			String fileSignature = in.readBytesAsString(4);
+			// Magic byte abbreviation stands for Applied Biosystems, Inc. Format.
+			if(fileSignature.equals("ABIF")) {
 				isValidFormat = true;
 			}
 		} catch(Exception e) {

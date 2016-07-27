@@ -15,4 +15,8 @@ package net.openchrom.wsd.converter.supplier.abif.model;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 
 public interface IVendorChromatogram extends IChromatogramWSD {
+
+	short getVersion();
+
+	void setVersion(short version);
 }

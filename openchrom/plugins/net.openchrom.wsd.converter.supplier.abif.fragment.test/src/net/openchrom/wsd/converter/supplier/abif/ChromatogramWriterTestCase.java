@@ -20,9 +20,11 @@ import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWS
 import org.eclipse.chemclipse.wsd.converter.processing.chromatogram.IChromatogramWSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Ignore;
 
 import junit.framework.TestCase;
 
+@Ignore("Not a test case. Just a template to avoid boiler plate code.")
 public class ChromatogramWriterTestCase extends TestCase {
 
 	protected IChromatogramWSD chromatogram;

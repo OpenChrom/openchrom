@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Matthias Mailänder, Dr. Philip Wenig.
+ * Copyright (c) 2016 Matthias Mailänder.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,23 +8,21 @@
  * 
  * Contributors:
  * Matthias Mailänder - initial API and implementation
- * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.wsd.converter.supplier.abif;
+package net.openchrom.wsd.converter.supplier.abif.io;
 
 import java.io.File;
 
-import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
 import org.eclipse.chemclipse.wsd.converter.processing.chromatogram.IChromatogramWSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.Ignore;
+
+import net.openchrom.wsd.converter.supplier.abif.ABIF;
 
 import junit.framework.TestCase;
 
-@Ignore("Not a test case. Just a template to avoid boiler plate code.")
-public class ChromatogramReaderTestCase extends TestCase {
+public class InvalidData_ITest extends TestCase {
 
 	protected IChromatogramWSD chromatogram;
 	protected String extensionPointId;
@@ -35,12 +33,14 @@ public class ChromatogramReaderTestCase extends TestCase {
 	protected void setUp() throws Exception {
 
 		super.setUp();
+		extensionPointId = ABIF.EXTENSION_POINT_ID;
+		pathImport = ABIF.getAbsolutePath(ABIF.TESTFILE_IMPORT_FAKE_AB1);
 		fileImport = new File(this.pathImport);
 		IChromatogramWSDImportConverterProcessingInfo processingInfo = ChromatogramConverterWSD.convert(fileImport, extensionPointId, new NullProgressMonitor());
 		try {
 			chromatogram = processingInfo.getChromatogram();
-		} catch(TypeCastException e) {
-			chromatogram = null;
+		} catch(Exception e) {
+			// Test succeeded. Invalid data should throw an exception.
 		}
 	}
 
@@ -54,5 +54,9 @@ public class ChromatogramReaderTestCase extends TestCase {
 		System.gc();
 		//
 		super.tearDown();
+	}
+
+	public void testInvalidFile() {
+
 	}
 }

@@ -16,9 +16,23 @@ import org.eclipse.chemclipse.wsd.model.core.AbstractChromatogramWSD;
 
 public class VendorChromatogram extends AbstractChromatogramWSD implements IVendorChromatogram {
 
+	private short version;
+
 	@Override
 	public double getPeakIntegratedArea() {
 
 		return 0;
+	}
+
+	@Override
+	public short getVersion() {
+
+		return version;
+	}
+
+	@Override
+	public void setVersion(short version) {
+
+		this.version = version;
 	}
 }
