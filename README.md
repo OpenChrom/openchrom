@@ -1,0 +1,2 @@
+# Applied Biosystem's, Inc. Format (ABIF) Import Converter
+A plugin that reads Applied Biosystem's, Inc. (ABI) [Sanger sequencing](https://en.wikipedia.org/wiki/Sanger_sequencing) *.ab1 trace files as a wave length specific detector (WSD) type. The [official ABIF file format specification](http://www.appliedbiosystems.com/support/software_community/ABIF_File_Format.pdf) released by Applied Biosystems September 2009 was taken as a reference. The files contain fluorescence chromatograms for each nucleotide and the resulting DNA gene sequence including quality metrics.
