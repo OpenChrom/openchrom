@@ -26,7 +26,7 @@ public class PathResolver {
 	/**
 	 * Returns a absolute path of the specified Folder. For example
 	 * TESTDATA_IMPORT_EMPTY as an absolute Path:
-	 * $PluginPath$/testData/files/EMPTY.D/DATA.MS
+	 * $PluginPath$/testData/files/import/310.ab1
 	 * 
 	 * @param string
 	 * @return String absolutePath

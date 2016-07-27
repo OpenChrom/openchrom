@@ -23,4 +23,8 @@ public class ABIF extends PathResolver {
 	 * IMPORT
 	 */
 	public static final String TESTFILE_IMPORT_310_AB1 = "testdata/files/import/310.ab1";
+	public static final String TESTFILE_IMPORT_3100_AB1 = "testdata/files/import/3100.ab1";
+	public static final String TESTFILE_IMPORT_3730_AB1 = "testdata/files/import/3730.ab1";
+	public static final String TESTFILE_IMPORT_EMPTY_AB1 = "testdata/files/import/empty.ab1";
+	public static final String TESTFILE_IMPORT_FAKE_AB1 = "testdata/files/import/fake.ab1";
 }
