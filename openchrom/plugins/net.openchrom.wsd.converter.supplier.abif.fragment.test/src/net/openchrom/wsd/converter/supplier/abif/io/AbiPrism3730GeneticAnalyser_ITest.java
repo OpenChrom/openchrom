@@ -12,18 +12,16 @@
  *******************************************************************************/
 package net.openchrom.wsd.converter.supplier.abif.io;
 
-import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
-
 import net.openchrom.wsd.converter.supplier.abif.ABIF;
 import net.openchrom.wsd.converter.supplier.abif.ChromatogramReaderTestCase;
 
-public class AbiPrism3100GeneticAnalyser_ITest extends ChromatogramReaderTestCase {
+public class AbiPrism3730GeneticAnalyser_ITest extends ChromatogramReaderTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
 
 		extensionPointId = ABIF.EXTENSION_POINT_ID;
-		pathImport = ABIF.getAbsolutePath(ABIF.TESTFILE_IMPORT_3100_AB1);
+		pathImport = ABIF.getAbsolutePath(ABIF.TESTFILE_IMPORT_3730_AB1);
 		super.setUp();
 	}
 
@@ -33,9 +31,8 @@ public class AbiPrism3100GeneticAnalyser_ITest extends ChromatogramReaderTestCas
 		super.tearDown();
 	}
 
-	public void testWavelengths() {
+	public void testScans() {
 
-		IScanWSD scan = (IScanWSD)chromatogram.getScan(1);
-		assertEquals(540, scan.getScanSignal(0).getWavelength());
+		assertEquals(16961, chromatogram.getNumberOfScans());
 	}
 }
