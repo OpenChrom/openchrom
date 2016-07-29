@@ -148,6 +148,24 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 					chromatogram.setScanInterval(injectionTime);
 					break;
 				/*
+				 * Read Array of the pre-evaluated gene sequence characters.
+				 */
+				case "PBAS":
+					// skip the user edited sequence
+					if(tagNumber != 2) {
+						in.skipBytes(4);
+						continue;
+					}
+					position = in.getPosition();
+					in.resetPosition();
+					in.seek(dataOffset);
+					// C-style string (null terminated).
+					String uneditedSequenceCharacters = in.readBytesAsString(dataSize);
+					chromatogram.setMiscInfo(uneditedSequenceCharacters);
+					in.resetPosition();
+					in.seek(position);
+					break;
+				/*
 				 * Sample name
 				 */
 				case "SMPL":
