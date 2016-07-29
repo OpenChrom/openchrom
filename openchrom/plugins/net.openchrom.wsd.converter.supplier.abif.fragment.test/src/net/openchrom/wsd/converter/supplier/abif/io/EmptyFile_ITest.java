@@ -34,4 +34,9 @@ public class EmptyFile_ITest extends ChromatogramReaderTestCase {
 
 		assertNotNull(chromatogram);
 	}
+
+	public void testSampleName() {
+
+		assertEquals("226041_C-ME-19_pCAGseqF", chromatogram.getDataName());
+	}
 }

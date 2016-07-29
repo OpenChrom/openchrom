@@ -147,6 +147,23 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 					long injectionTime = in.read4BLongBE();
 					chromatogram.setScanInterval(injectionTime);
 					break;
+				/*
+				 * Sample name
+				 */
+				case "SMPL":
+					position = in.getPosition();
+					in.resetPosition();
+					in.seek(dataOffset);
+					// Pascal style string (length is stored in first byte)
+					int length = in.read1BShortBE();
+					String sampleName = in.readBytesAsString(length);
+					chromatogram.setDataName(sampleName);
+					in.resetPosition();
+					in.seek(position);
+					break;
+				/*
+				 * raw data
+				 */
 				case "DSam":
 					downSamplingFactor = in.read2BShortBE();
 					in.skipBytes(2);
