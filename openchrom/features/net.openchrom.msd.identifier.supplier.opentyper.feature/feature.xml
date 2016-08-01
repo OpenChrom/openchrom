@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.msd.identifier.supplier.opentyper.feature"
       label="Feature"
-      version="1.1.0.qualifier"
+      version="1.2.0.qualifier"
       provider-name="OpenChrom">
 
    <description url="http://www.openchrom.net">
