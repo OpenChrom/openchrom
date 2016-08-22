@@ -180,6 +180,19 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 					in.seek(position);
 					break;
 				/*
+				 * Container identifier
+				 */
+				case "CTID":
+					position = in.getPosition();
+					in.resetPosition();
+					in.seek(dataOffset);
+					// C-style string (null terminated).
+					String containerId = in.readBytesAsString(dataSize);
+					chromatogram.setSampleGroup(containerId);
+					in.resetPosition();
+					in.seek(position);
+					break;
+				/*
 				 * raw data
 				 */
 				case "DSam":
