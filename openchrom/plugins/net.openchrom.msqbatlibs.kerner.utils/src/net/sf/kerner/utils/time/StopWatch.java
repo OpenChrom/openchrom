@@ -137,6 +137,14 @@ public class StopWatch {
 		return new TimePeriod(time, System.currentTimeMillis());
 	}
 
+	public synchronized TimePeriod current() throws NotRunningException {
+
+		final long result = time;
+		if(result < 0)
+			throw new NotRunningException();
+		return new TimePeriod(result, System.currentTimeMillis());
+	}
+
 	/**
 	 * Stop this {@code StopWatch}.
 	 * 
@@ -146,11 +154,9 @@ public class StopWatch {
 	 */
 	public synchronized TimePeriod stop() throws NotRunningException {
 
-		final long result = time;
-		if(result < 0)
-			throw new NotRunningException();
+		final TimePeriod result = current();
 		// reset
 		time = -1;
-		return new TimePeriod(result, System.currentTimeMillis());
+		return result;
 	}
 }
