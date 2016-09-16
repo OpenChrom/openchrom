@@ -34,6 +34,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	private ArrayFloat.D1 valueArrayIntensity;
 	private Variable valueScanDelayTime;
 	private Variable valueScanInterval;
+	private Variable valueRunTimeLength;
 	//
 	private int scanDelay;
 	private int scanInterval;
@@ -46,6 +47,16 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	private void initializeVariables() throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
 		String variable;
+		//
+		String dimension = CDFConstants.DIMENSION_POINT_NUMBER;
+		scans = chromatogram.findDimension(dimension);
+		if(scans == null) {
+			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + dimension);
+		}
+		// Tests if a chromatogram has at least 2 scans.
+		if(scans.getLength() < 2) {
+			throw new NotEnoughScanDataStored();
+		}
 		//
 		variable = CDFConstants.VARIABLE_ACTUAL_DELAY_TIME;
 		valueScanDelayTime = chromatogram.findVariable(variable);
@@ -62,24 +73,42 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		 * Calculate the scan delay and interval.
 		 */
 		scanDelay = 0; // milliseconds
+		scanInterval = 0; // milliseconds
 		//
+		double retentionTimeScaleFactor;
 		retentionUnit = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_RETENTION_UNIT);
 		if(retentionUnit != null) {
 			String unit = retentionUnit.getStringValue().trim();
-			double factor;
-			if(unit.equals("seconds")) {
-				factor = 1000;
-			} else if(unit.equals("minutes")) {
-				factor = 1000 * 60;
+			if(unit.equals("seconds") || unit.equals("Seconds")) {
+				retentionTimeScaleFactor = 1000;
+			} else if(unit.equals("minutes") || unit.equals("Minutes")) {
+				retentionTimeScaleFactor = 1000 * 60;
 			} else {
 				/*
 				 * Milliseconds
 				 */
-				factor = 0;
+				retentionTimeScaleFactor = 1;
 			}
-			//
-			scanDelay = (int)(valueScanDelayTime.readScalarFloat() * factor);
-			scanInterval = (int)(valueScanInterval.readScalarFloat() * factor);
+		} else {
+			retentionTimeScaleFactor = 1;
+		}
+		/*
+		 * Not all supplier store a run time lenght.
+		 */
+		variable = CDFConstants.VARIABLE_ACTUAL_RUN_TIME_LENGTH;
+		valueRunTimeLength = chromatogram.findVariable(variable);
+		if(valueRunTimeLength == null) {
+			/*
+			 * Normal
+			 */
+			scanDelay = (int)(valueScanDelayTime.readScalarFloat() * retentionTimeScaleFactor);
+			scanInterval = (int)(valueScanInterval.readScalarFloat() * retentionTimeScaleFactor);
+		} else {
+			/*
+			 * DataApex
+			 */
+			scanDelay = (int)(valueScanDelayTime.readScalarFloat() * retentionTimeScaleFactor);
+			scanInterval = (int)(((valueRunTimeLength.readScalarFloat() - valueScanDelayTime.readScalarFloat()) * retentionTimeScaleFactor) / (scans.getLength() - 1));
 		}
 		/*
 		 * Add a default scan interval if none has set yet.
@@ -94,15 +123,6 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
 		//
-		String dimension = CDFConstants.DIMENSION_POINT_NUMBER;
-		scans = chromatogram.findDimension(dimension);
-		if(scans == null) {
-			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + dimension);
-		}
-		// Tests if a chromatogram has at least 2 scans.
-		if(scans.getLength() < 2) {
-			throw new NotEnoughScanDataStored();
-		}
 		valueArrayIntensity = (ArrayFloat.D1)valuesIntensity.read();
 	}
 

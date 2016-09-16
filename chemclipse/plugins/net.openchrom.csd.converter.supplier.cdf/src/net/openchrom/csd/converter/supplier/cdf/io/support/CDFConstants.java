@@ -42,7 +42,7 @@ public class CDFConstants {
 	//
 	public static final String VARIABLE_DETECTOR_MAXIMUM_VALUE = "detector_maximum_value";
 	public static final String VARIABLE_DETECTOR_MINIMUM_VALUE = "detector_minimum_value";
-	public static final String VARIABLE_ACTUAL_RUN_TIME_LEGTH = "actual_run_time_length";
+	public static final String VARIABLE_ACTUAL_RUN_TIME_LENGTH = "actual_run_time_length";
 	public static final String VARIABLE_ACTUAL_SAMPLING_INTERVAL = "actual_sampling_interval";
 	public static final String VARIABLE_ACTUAL_DELAY_TIME = "actual_delay_time";
 	public static final String VARIABLE_ORDINATE_VALUES = "ordinate_values";
