@@ -27,6 +27,8 @@ public interface ProgressMonitor {
 
 	void started(int totalWorkload);
 
+	void started(String taskName, int totalWorkload);
+
 	/**
 	 * Same as {@link #worked(1)}.
 	 */

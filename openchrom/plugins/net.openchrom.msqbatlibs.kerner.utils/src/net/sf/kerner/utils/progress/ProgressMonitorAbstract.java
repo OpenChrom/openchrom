@@ -18,25 +18,30 @@ public class ProgressMonitorAbstract implements ProgressMonitor {
 	protected int totalWorkload = UNKNOWN_WORKLOAD;
 	protected int worked;
 
+	@Override
 	public void worked() {
 
 		worked(1);
 	}
 
+	@Override
 	public void finished() {
 
 		totalWorkload = UNKNOWN_WORKLOAD;
 	}
 
+	@Override
 	public void notifySubtask(String name) {
 
 	}
 
+	@Override
 	public void worked(int i) {
 
 		worked += i;
 	}
 
+	@Override
 	public void started(int totalWorkload) {
 
 		this.totalWorkload = totalWorkload;
@@ -47,6 +52,7 @@ public class ProgressMonitorAbstract implements ProgressMonitor {
 		return taskName;
 	}
 
+	@Override
 	public void setTaskName(String taskName) {
 
 		this.taskName = taskName;
@@ -55,13 +61,22 @@ public class ProgressMonitorAbstract implements ProgressMonitor {
 	public ProgressMonitorAbstract() {
 	}
 
+	@Override
 	public synchronized boolean isCancelled() {
 
 		return cancelled;
 	}
 
+	@Override
 	public synchronized void setCancelled(final boolean cancelled) {
 
 		this.cancelled = cancelled;
+	}
+
+	@Override
+	public synchronized void started(String taskName, int totalWorkload) {
+
+		setTaskName(taskName);
+		started(totalWorkload);
 	}
 }
