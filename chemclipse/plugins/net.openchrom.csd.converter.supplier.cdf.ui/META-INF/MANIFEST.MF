@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ui
 Bundle-SymbolicName: net.openchrom.csd.converter.supplier.cdf.ui
-Bundle-Version: 0.7.0.qualifier
+Bundle-Version: 0.8.0.qualifier
 Bundle-Activator: net.openchrom.csd.converter.supplier.cdf.ui.Activator
 Bundle-Vendor: ChemClipse
 Require-Bundle: org.eclipse.ui,
