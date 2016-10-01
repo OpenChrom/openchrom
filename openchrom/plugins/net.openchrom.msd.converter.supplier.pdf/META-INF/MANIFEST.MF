@@ -7,14 +7,14 @@ Bundle-Version: 1.2.0.qualifier
 Bundle-Activator: net.openchrom.msd.converter.supplier.pdf.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.chemclipse.msd.converter;bundle-version="0.7.0",
- org.eclipse.chemclipse.msd.model;bundle-version="0.7.0",
- org.eclipse.chemclipse.logging;bundle-version="0.7.0",
- org.eclipse.chemclipse.support;bundle-version="0.7.0",
- org.eclipse.chemclipse.processing;bundle-version="0.7.0",
+ org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",
+ org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
+ org.eclipse.chemclipse.logging;bundle-version="0.8.0",
+ org.eclipse.chemclipse.support;bundle-version="0.8.0",
+ org.eclipse.chemclipse.processing;bundle-version="0.8.0",
  net.openchrom.thirdpartylibraries.pdfjet;bundle-version="2.81.0",
- org.eclipse.chemclipse.converter;bundle-version="0.7.0",
- org.eclipse.chemclipse.model;bundle-version="0.7.0"
+ org.eclipse.chemclipse.converter;bundle-version="0.8.0",
+ org.eclipse.chemclipse.model;bundle-version="0.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.msd.converter.supplier.pdf.converter,
