@@ -179,6 +179,13 @@
               <version>3.11.2.v20160128-0629</version>
             </restrictTo>
             </filter>
+            <filter>
+            <type>eclipse-plugin</type>
+            <id>com.ibm.icu</id>
+            <restrictTo>
+              <version>54.1.1.v201501272100</version>
+            </restrictTo>
+            </filter>
           </filters>
           <environments>
             <environment>
