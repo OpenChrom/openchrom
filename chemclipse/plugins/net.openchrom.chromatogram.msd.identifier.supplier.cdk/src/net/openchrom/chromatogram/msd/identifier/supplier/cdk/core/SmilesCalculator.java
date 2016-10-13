@@ -14,13 +14,13 @@ package net.openchrom.chromatogram.msd.identifier.supplier.cdk.core;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.chemclipse.model.comparator.SortOrder;
 import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumTarget;
+import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
