@@ -1,0 +1,14 @@
+openchrom/plugins/net.openchrom.msd.process.supplier.cms.fragment.test/Openchrom.log.*
+openchrom/plugins/net.openchrom.msd.process.supplier.cms.fragment.test/Openchrom.log
+openchrom/plugins/net.openchrom.msd.process.supplier.cms.fragment.test/bin/*
+openchrom/plugins/net.openchrom.msd.process.supplier.cms.ui.fragment.test/bin/*
+openchrom/plugins/net.openchrom.msd.process.supplier.cms.ui/bin/*
+openchrom/plugins/net.openchrom.msd.process.supplier.cms/bin/*
+openchrom/sites/net.openchrom.msd.process.supplier.cms.updateSite/artifacts.jar
+openchrom/sites/net.openchrom.msd.process.supplier.cms.updateSite/content.jar
+openchrom/sites/net.openchrom.msd.process.supplier.cms.updateSite/features/
+openchrom/sites/net.openchrom.msd.process.supplier.cms.updateSite/plugins/
+openchrom/features/net.openchrom.msd.process.supplier.cms.feature/target/
+openchrom/plugins/net.openchrom.msd.process.supplier.cms.ui/target/
+openchrom/plugins/net.openchrom.msd.process.supplier.cms/target/
+openchrom/sites/net.openchrom.msd.process.supplier.cms.updateSite/target/
