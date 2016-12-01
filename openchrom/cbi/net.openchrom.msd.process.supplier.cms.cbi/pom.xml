@@ -63,6 +63,5 @@
     <module>../../plugins/net.openchrom.msd.process.supplier.cms.ui</module>
     <module>../../features/net.openchrom.msd.process.supplier.cms.feature</module>
     <!--<module>../../plugins/net.openchrom.msd.process.supplier.cms.fragment.test</module>-->
-    <module>../../sites/net.openchrom.msd.process.supplier.cms.updateSite</module>
   </modules>
 </project>
