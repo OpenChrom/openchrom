@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <!--
+	PARENT
+  -->
+  <parent>
+    <groupId>net.openchrom</groupId>
+    <artifactId>master</artifactId>
+    <version>BUILD-VERSION</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <!--
+	ARTIFACT
+  -->
+  <groupId>net.openchrom</groupId>
+  <artifactId>parent</artifactId>
+  <packaging>pom</packaging>
+  <!--
+	DESCRIPTION
+  --> 
+  <name>OpenChrom CMS Converter</name>
+  <description>
+	The OpenChrom CMS converter reads mass spectrum library files. It extends the functionality of the OpenChrom Rich Client Platform (RCP).
+  </description>
+  <!--
+	LICENSES
+  -->
+  <licenses>
+    <license>
+      <name>EPL v1.0</name>
+      <url>http://www.eclipse.org/legal/epl-v10.html</url>
+    </license> 
+  </licenses>
+  <!--
+	DEVELOPERS
+  -->
+  <developers>
+    <developer>
+      <id>whitlock</id>
+      <name>Walter Whitlock</name>
+      <email>wwmail5001 [at] gmail.com</email>
+      <timezone>-5</timezone>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>eselmeister</id>
+      <name>Philip Wenig</name>
+      <email>philip.wenig [at] openchrom.net</email>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+  <!--
+	MODULES
+  -->
+  <modules>
+    <module>../../plugins/net.openchrom.msd.converter.supplier.cms</module>
+    <module>../../plugins/net.openchrom.msd.converter.supplier.cms.ui</module>
+    <module>../../features/net.openchrom.msd.converter.supplier.cms.feature</module>
+    <!--<module>../../plugins/net.openchrom.msd.converter.supplier.cms.ui.fragment.test</module>-->
+  </modules>
+</project>
