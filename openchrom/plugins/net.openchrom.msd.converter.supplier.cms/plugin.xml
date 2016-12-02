@@ -6,7 +6,7 @@
       <MassSpectrumSupplier
             description="Reads an writes CMS mass spectra."
             exportConverter="net.openchrom.msd.converter.supplier.cms.converter.MassSpectrumExportConverter"
-            fileExtension=".msl"
+            fileExtension=".CMS"
             filterName="Calibrated Mass Spectra (*.CMS)"
             id="net.openchrom.msd.process.supplier.cms"
             importConverter="net.openchrom.msd.converter.supplier.cms.converter.MassSpectrumImportConverter"
