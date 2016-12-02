@@ -2,6 +2,19 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         point="org.eclipse.chemclipse.msd.converter.massSpectrumSupplier">
+      <MassSpectrumSupplier
+            description="Reads an writes CMS mass spectra."
+            exportConverter="net.openchrom.msd.converter.supplier.cms.converter.MassSpectrumExportConverter"
+            fileExtension=".msl"
+            filterName="Calibrated Mass Spectra (*.CMS)"
+            id="net.openchrom.msd.process.supplier.cms"
+            importConverter="net.openchrom.msd.converter.supplier.cms.converter.MassSpectrumImportConverter"
+            isExportable="true"
+            isImportable="true">
+      </MassSpectrumSupplier>
+   </extension>
+   <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
             class="net.openchrom.msd.converter.supplier.cms.preferences.PreferenceInitializer">
