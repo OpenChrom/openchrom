@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ui
-Bundle-SymbolicName: net.openchrom.msd.process.supplier.cms.ui
+Bundle-SymbolicName: net.openchrom.msd.process.supplier.cms.ui;singleton:=true
 Bundle-Version: 1.2.0.qualifier
 Bundle-Activator: net.openchrom.msd.process.supplier.cms.ui.Activator
 Bundle-Vendor: OpenChrom

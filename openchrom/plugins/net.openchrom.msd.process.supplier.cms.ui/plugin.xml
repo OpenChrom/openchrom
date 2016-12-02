@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+      		category="org.eclipse.chemclipse.chromatogram.msd.process.ui.preferences.processPreferencePage"
+            class="net.openchrom.msd.process.supplier.cms.ui.preferences.PreferencePage"
+            id="net.openchrom.msd.process.supplier.cms.ui.preferences.preferencePage"
+            name="CMS Process">
+      </page>          
+   </extension> 
+</plugin>
