@@ -26,28 +26,18 @@ import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
-import org.eclipse.chemclipse.converter.io.AbstractFileHelper;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
-import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.preferences.PreferenceSupplier;
-import org.eclipse.chemclipse.msd.model.core.AbstractMassSpectra;
-import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
-import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
-
 import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
-//import net.openchrom.msd.converter.supplier.cms.model.IMsdScanMeasurement;
-//import net.openchrom.msd.converter.supplier.cms.model.IMsdScansMeasurement;
 import net.openchrom.msd.converter.supplier.cms.model.MsdPeakMeasurement;
-//import net.openchrom.msd.converter.supplier.cms.model.MsdScanMeasurement;
-//import net.openchrom.msd.converter.supplier.cms.model.MsdScansMeasurement;
 
 //public class CMSreader {
 public class CMSreader extends AbstractMassSpectraReader implements IMassSpectraReader {
