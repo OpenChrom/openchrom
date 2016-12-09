@@ -14,11 +14,8 @@ package net.openchrom.msd.converter.supplier.cms.model;
 
 import java.util.List;
 
-import org.eclipse.chemclipse.msd.model.core.AbstractScanMSD;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-
-import net.openchrom.msd.converter.supplier.cms.model.CMSion;
 
 public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectrum, IScanMSD {
 	/*

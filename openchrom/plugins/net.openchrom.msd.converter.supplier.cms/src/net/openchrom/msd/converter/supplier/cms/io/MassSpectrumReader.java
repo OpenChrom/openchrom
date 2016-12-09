@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
+import org.eclipse.chemclipse.converter.io.AbstractFileHelper;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
@@ -36,8 +37,10 @@ import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.preferences.PreferenceSupplier;
+import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
@@ -45,293 +48,260 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
+import net.openchrom.msd.converter.supplier.cms.model.MsdPeakMeasurement;
 
-public class MassSpectrumReader extends AbstractMassSpectraReader implements IMassSpectraReader {
-
+//public class MassSpectrumReader<T> extends AbstractMassSpectraReader implements IMassSpectraReader {
+public class MassSpectrumReader extends AbstractMassSpectraReader {
+//public class MassSpectrumReader extends AbstractFileHelper implements IMassSpectraReader {
+	
 	private static final Logger logger = Logger.getLogger(MassSpectrumReader.class);
 	/**
 	 * Pre-compile all patterns to be a little bit faster.
 	 */
 	private static final String LINE_END = "\n";
-	private static final Pattern namePattern = Pattern.compile("(NAME:)(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern nameRetentionTimePattern = Pattern.compile("(rt:\\s*)(\\d+\\.?\\d*([eE][+-]?\\d+)?)(\\s*min)", Pattern.CASE_INSENSITIVE); // (rt: 10.818 min)
-	private static final Pattern formulaPattern = Pattern.compile("(FORMULA:)(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern molweightPattern = Pattern.compile("(MW:)(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern synonymPattern = Pattern.compile("(Synon:)(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern commentsPattern = Pattern.compile("(COMMENTS:)(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern commentPattern = Pattern.compile("(COMMENT:)(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern casNumberPattern = Pattern.compile("(CAS(NO|#)?:[ ]+)([0-9-]*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern databaseNamePattern = Pattern.compile("(DB(NO|#)?:)(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern referenceIdentifierPattern = Pattern.compile("(REFID:)(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern smilesPattern = Pattern.compile("(SMILES:)(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern retentionTimePattern = Pattern.compile("(RT:)(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern relativeRetentionTimePattern = Pattern.compile("(RRT:)(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern retentionIndexPattern = Pattern.compile("(RI:)(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern ionPattern = Pattern.compile("([+]?\\d+\\.?\\d*)([\t ,;:]+)([+-]?\\d+\\.?\\d*([eE][+-]?\\d+)?)");
+	private static final Pattern namePattern = Pattern.compile("^NAME:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern scanPattern = Pattern.compile("^SCAN:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern nameRetentionTimePattern = 
+			Pattern.compile("^RT:\\s*([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)(\\s*min)", Pattern.CASE_INSENSITIVE); // (rt: 10.818 min)
+	private static final Pattern formulaPattern = Pattern.compile("^FORMULA:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern molweightPattern = Pattern.compile("^MW:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern sourcepPattern = Pattern.compile("^SOURCEP:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern spunitsPattern = Pattern.compile("^SPUNITS:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern sigunitsPattern = Pattern.compile("^SIGUNITS:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern synonymPattern = Pattern.compile("^SYNON(?:[YM]*)?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	//private static final Pattern commentsPattern = Pattern.compile("(COMMENTS:)(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern commentPattern = Pattern.compile("^COMMENTS?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern casNumberPattern = Pattern.compile("^CAS(?:NO|#)?:\\s*([0-9-]*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern databaseNamePattern = Pattern.compile("^DB(?:NO|#)?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern referenceIdentifierPattern = Pattern.compile("^REFID:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern smilesPattern = Pattern.compile("^SMILES:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern retentionTimePattern = Pattern.compile("^RT:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern relativeRetentionTimePattern = Pattern.compile("^RRT:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern retentionIndexPattern = Pattern.compile("^RI:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern numPeaksPattern = Pattern.compile("^NUM PEAKS:\\s*([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern ionPattern = Pattern.compile("([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)[\\s,]+([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)");
 	//
 	private static final String RETENTION_INDICES_DELIMITER = ", ";
 
 	@Override
 	public IMassSpectra read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
-		List<String> massSpectraData = getMassSpectraData(file);
-		IMassSpectra massSpectra = extractMassSpectra(massSpectraData);
-		massSpectra.setConverterId("org.eclipse.chemclipse.msd.converter.supplier.amdis.massspectrum.msp");
-		massSpectra.setName(file.getName());
+		//List<String> massSpectraData = getMassSpectraData(file);
+		//IMassSpectra massSpectra = extractMassSpectra(massSpectraData);
+		IMassSpectra massSpectra = parseCMSfile(file);
+		((AbstractChromatogram)massSpectra).setConverterId("org.eclipse.chemclipse.msd.converter.supplier.amdis.massspectrum.msp");
+		((IMassSpectra)massSpectra).setName(file.getName());
 		return massSpectra;
 	}
-
+	
 	/**
-	 * Returns a list of mass spectral data.
+	 * Returns a mass spectra object or null, if something has gone wrong.
 	 * 
+	 * @return IMassSpectra
 	 * @throws IOException
 	 */
-	private List<String> getMassSpectraData(File file) throws IOException {
-
+	private IMassSpectra parseCMSfile(File file) throws IOException {
 		Charset charSet = Charset.forName("US-ASCII");
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
 		InputStreamReader inputStreamReader = new InputStreamReader(bufferedInputStream, charSet);
 		BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-		List<String> massSpectraData = new ArrayList<String>();
-		StringBuilder builder = new StringBuilder();
+		//List<String> massSpectraData = new ArrayList<String>();
+		//StringBuilder builder = new StringBuilder();
 		String line;
-		while((line = bufferedReader.readLine()) != null) {
-			/*
-			 * The mass spectra are divided by empty lines. If the builder has
-			 * at least 1 char, then add a new potential mass spectrum to the
-			 * mass spectra data list. Don't forget to build a new
-			 * StringBuilder. In all other cases append the found lines to the
-			 * StringBuilder.
-			 */
-			if(line.length() == 0) {
-				addMassSpectrumData(builder, massSpectraData);
-				builder = new StringBuilder();
-			} else {
-				builder.append(line);
-				builder.append(LINE_END);
-			}
-		}
-		/*
-		 * Don't forget to add the last mass spectrum.
-		 */
-		addMassSpectrumData(builder, massSpectraData);
-		/*
-		 * Close the streams.
-		 */
-		bufferedReader.close();
-		inputStreamReader.close();
-		bufferedInputStream.close();
-		return massSpectraData;
-	}
-
-	/**
-	 * Adds the content from the StringBuilder to the mass spectra data list, if
-	 * the length is > 0.
-	 * 
-	 * @param builder
-	 * @param massSpectraData
-	 */
-	private void addMassSpectrumData(StringBuilder builder, List<String> massSpectraData) {
-
-		String massSpectrumData;
-		if(builder.length() > 0) {
-			massSpectrumData = builder.toString();
-			massSpectraData.add(massSpectrumData);
-		}
-	}
-
-	/**
-	 * Returns a mass spectra object or null, if something has gone wrong.
-	 * 
-	 * @param massSpectraData
-	 * @return IMassSpectra
-	 */
-	private IMassSpectra extractMassSpectra(List<String> massSpectraData) {
-
+		int parseState = 0; //0==searching for NAME or SCAN, 1==adding parameters & searching for NUM_PEAKS, 2==adding mass/signal pairs
 		IMassSpectra massSpectra = new MassSpectra();
 		String referenceIdentifierMarker = PreferenceSupplier.getReferenceIdentifierMarker();
 		String referenceIdentifierPrefix = PreferenceSupplier.getReferenceIdentifierPrefix();
-		//
-		if(massSpectraData.size() > 1) {
-			/*
-			 * Iterates through the saved mass spectrum text data and converts it to
-			 * a mass spectrum.
-			 */
-			for(String massSpectrumData : massSpectraData) {
-				addMassSpectrum(massSpectra, massSpectrumData, referenceIdentifierMarker, referenceIdentifierPrefix);
-			}
-		} else if(massSpectraData.size() == 1) {
-			/*
-			 * Sometimes, mass spectra are not separated by an empty line.
-			 * Hence, check if several name patterns can be detected in the text.
-			 */
-			String[] splittedMassSpectra = massSpectraData.get(0).split("(NAME:|name:)");
-			for(String splittedMassSpectrum : splittedMassSpectra) {
-				if(!splittedMassSpectrum.equals("")) {
-					if(splittedMassSpectra.length == 1) {
-						addMassSpectrum(massSpectra, splittedMassSpectrum, referenceIdentifierMarker, referenceIdentifierPrefix);
-					} else {
-						addMassSpectrum(massSpectra, "NAME:" + splittedMassSpectrum, referenceIdentifierMarker, referenceIdentifierPrefix);
-					}
-				}
-			}
-		}
-		return massSpectra;
-	}
-
-	/**
-	 * Detect a mass spectrum and add it to the given mass spectra.
-	 * 
-	 * @param massSpectra
-	 * @param massSpectrumData
-	 */
-	private void addMassSpectrum(IMassSpectra massSpectra, String massSpectrumData, String referenceIdentifierMarker, String referenceIdentifierPrefix) {
-
+		
+		Matcher fieldMatcher;
 		ICalibratedVendorMassSpectrum massSpectrum = new CalibratedVendorMassSpectrum();
 		ILibraryInformation libraryInformation = massSpectrum.getLibraryInformation();
-		//
-		String name = extractContentAsString(massSpectrumData, namePattern, 2);
-		extractNameAndReferenceIdentifier(massSpectrum, name, referenceIdentifierMarker, referenceIdentifierPrefix);
-		String formula = extractContentAsString(massSpectrumData, formulaPattern, 2);
-		libraryInformation.setFormula(formula);
-		double molWeight = extractContentAsDouble(massSpectrumData, molweightPattern);
-		libraryInformation.setMolWeight(molWeight);
-		Set<String> synonyms = extractSynonyms(massSpectrumData, synonymPattern);
-		massSpectrum.getLibraryInformation().setSynonyms(synonyms);
-		String comments = extractContentAsString(massSpectrumData, commentsPattern, 2);
-		String comment = extractContentAsString(massSpectrumData, commentPattern, 2);
-		String commentData = comments + comment;
-		libraryInformation.setComments(commentData.trim());
-		String casNumber = extractContentAsString(massSpectrumData, casNumberPattern, 3);
-		libraryInformation.setCasNumber(casNumber);
-		String database = extractContentAsString(massSpectrumData, databaseNamePattern, 3);
-		libraryInformation.setDatabase(database);
-		String referenceIdentifier = extractContentAsString(massSpectrumData, referenceIdentifierPattern, 2);
-		massSpectrum.getLibraryInformation().setReferenceIdentifier(referenceIdentifier);
-		String smiles = extractContentAsString(massSpectrumData, smilesPattern, 2);
-		libraryInformation.setSmiles(smiles);
-		int retentionTime = extractContentAsInt(massSpectrumData, retentionTimePattern, 2);
-		if(retentionTime == 0) {
-			retentionTime = extractContentAsInt(massSpectrumData, nameRetentionTimePattern, 2);
-		}
-		massSpectrum.setRetentionTime(retentionTime);
-		int relativeRetentionTime = extractContentAsInt(massSpectrumData, relativeRetentionTimePattern, 2);
-		massSpectrum.setRelativeRetentionTime(relativeRetentionTime);
-		String retentionIndices = extractContentAsString(massSpectrumData, retentionIndexPattern, 2);
-		extractRetentionIndices(massSpectrum, retentionIndices, RETENTION_INDICES_DELIMITER);
-		/*
-		 * Extracts all ions and stored them.
-		 */
-		extractIons(massSpectrum, massSpectrumData);
-		/*
-		 * Store the mass spectrum in mass spectra if there is at least 1 mass
-		 * fragment.
-		 */
-		if(massSpectrum.getNumberOfIons() > 0) {
-			massSpectra.addMassSpectrum(massSpectrum);
-		}
-	}
+		int peakCount = 0, numPeaks = 0;
+		boolean nameFile = false, scanFile = false;
+		while((line = bufferedReader.readLine()) != null) {
+			if ((fieldMatcher = namePattern.matcher(line)).lookingAt()) { //found NAME record
+				if (!scanFile) {
+					nameFile = true;
+				}
+				else {
+					System.out.println("got NAME record in a SCAN file");
+					parseState = 0;
+					continue; //while
+				}
+				if (2==parseState) {
+					if (0 < peakCount) { //got peaks, add spectrum
+						massSpectra.addMassSpectrum(massSpectrum);
+					}
+					else { //got no peaks for the current spectrum, discard incomplete spectrum
+						System.out.println("got no peaks from NAME: " + massSpectrum.getLibraryInformation().getName());
+						parseState = 1;
+					}
+					parseState = 1;
+				}
+				else if (1==parseState) { //got no peaks, discard incomplete spectrum
+					System.out.println("got no NUM_PEAKS from \"NAME: " + massSpectrum.getLibraryInformation().getName() + "\"");
+					parseState = 1;	
+				}
+				else if (0==parseState){
+					parseState = 1;
+				}
+				massSpectrum = new CalibratedVendorMassSpectrum();
+				massSpectrum.getLibraryInformation().setName(fieldMatcher.group(1).trim());
+			} //if found NAME record
+			
+			else if ((fieldMatcher = scanPattern.matcher(line)).lookingAt()) { //found SCAN record
+				if (!nameFile) {
+					scanFile = true;
+				}
+				else {
+					System.out.println("got SCAN record in a NAME file");
+					parseState = 0;
+					continue; //while
+				}
+				if (2==parseState) {
+					if (0 >= peakCount) { //got no peaks for the current spectrum, discard incomplete spectrum
+						System.out.println("got no peaks from \"SCAN: " + massSpectrum.getLibraryInformation().getName() + "\"");
+						parseState = 1;
+					}
+					else { //got peaks, add spectrum
+						massSpectra.addMassSpectrum(massSpectrum);
+						parseState = 1;
+					}
+				}
+				else if (1==parseState) { //got no peaks, discard incomplete spectrum
+					System.out.println("got no NUM_PEAKS from SCAN: " + massSpectrum.getLibraryInformation().getName());
+					parseState = 1;	
+				}
+				else if (0==parseState){
+					parseState = 1;
+				}
+				massSpectrum = new CalibratedVendorMassSpectrum();
+				massSpectrum.getLibraryInformation().setName(fieldMatcher.group(1).trim());
+			} //else if found SCAN record
 
-	/**
-	 * Extracts all ion from the given mass spectrum data and stores
-	 * them in the given mass spectrum.
-	 * 
-	 * @param massSpectrum
-	 * @param massSpectrumData
-	 */
-	private void extractIons(ICalibratedVendorMassSpectrum massSpectrum, String massSpectrumData) {
-
-		IIon amdisIon = null;
-		double ion;
-		float abundance;
-		Matcher ions = ionPattern.matcher(massSpectrumData);
-		while(ions.find()) {
-			try {
-				/*
-				 * Get the ion and abundance values.
-				 */
-				ion = Double.parseDouble(ions.group(1));
-				abundance = Float.parseFloat(ions.group(3));
-				/*
-				 * Create the ion and store it in mass spectrum.
-				 */
-				amdisIon = new Ion(ion, abundance);
-				massSpectrum.addIon(amdisIon);
-			} catch(AbundanceLimitExceededException e) {
-				logger.warn(e);
-			} catch(IonLimitExceededException e) {
-				logger.warn(e);
+			else if (1==parseState) {
+				if ((fieldMatcher = numPeaksPattern.matcher(line)).lookingAt()) { //found NUM PEAKS record
+					peakCount = 0;
+					numPeaks = (int)Double.parseDouble(fieldMatcher.group(1).trim());
+					if (0 >= numPeaks) { //can't have negative or zero
+						System.out.println("got illegal NUM PEAKS from \""
+								+ (nameFile?"NAME: ":
+									(scanFile?"SCAN: ":"UNKNOWN: "))
+								+ massSpectrum.getLibraryInformation().getName()
+								+ "\" = " + numPeaks);
+						parseState = 0;
+					}
+					else parseState = 2;
+				} //if
+				else if ((fieldMatcher = formulaPattern.matcher(line)).lookingAt()) { //found FORMULA record
+					massSpectrum.getLibraryInformation().setFormula(fieldMatcher.group(1).trim());
+				} //else if FORMULA 
+				else if ((fieldMatcher = sourcepPattern.matcher(line)).lookingAt()) { //found SOURCEP record
+					double sourcep;
+					sourcep = Double.parseDouble(fieldMatcher.group(1).trim());
+					if (0.0 < sourcep)
+						massSpectrum.setSourcep(sourcep);
+					else
+						System.out.println("got negative or zero SOURCEP from \""
+								+ (nameFile?"NAME: ":
+									(scanFile?"SCAN: ":"UNKNOWN: "))
+								+ massSpectrum.getLibraryInformation().getName()
+								+ "\" = " + sourcep);
+				} //else if SOURCEP
+				else if ((fieldMatcher = spunitsPattern.matcher(line)).lookingAt()) { //found SPUNITS record
+					massSpectrum.setSPunits(fieldMatcher.group(1).trim());
+				} //else if SPUNITS 
+				else if ((fieldMatcher = sigunitsPattern.matcher(line)).lookingAt()) { //found SIGUNITS record
+					massSpectrum.setSigunits(fieldMatcher.group(1).trim());
+				} //else if SIGUNITS 
+				else if ((fieldMatcher = casNumberPattern.matcher(line)).lookingAt()) { //found CAS record
+					massSpectrum.getLibraryInformation().setCasNumber(fieldMatcher.group(1).trim());
+				} //else if CAS
+				else if ((fieldMatcher = molweightPattern.matcher(line)).lookingAt()) { //found MW record
+					double mweight;
+					mweight = Double.parseDouble(fieldMatcher.group(1).trim());
+					if (0.0 < mweight)
+						massSpectrum.getLibraryInformation().setMolWeight(mweight);
+					else
+						System.out.println("got negative or zero molecular weight from \""
+								+ (nameFile?"NAME: ":
+									(scanFile?"SCAN: ":"UNKNOWN: "))
+								+ massSpectrum.getLibraryInformation().getName()
+								+ "\" = " + mweight);
+				} //else if MW
+				else if ((fieldMatcher = synonymPattern.matcher(line)).lookingAt()) { //found SYNONYM record
+					Set<String> synonyms = massSpectrum.getLibraryInformation().getSynonyms();
+					if (null == synonyms) {
+						synonyms = new HashSet<String>();
+						synonyms.add(fieldMatcher.group(1).trim());
+						massSpectrum.getLibraryInformation().setSynonyms(synonyms);
+					}
+					else {
+						synonyms.add(fieldMatcher.group(1).trim());
+					}
+				} //else if SYNONYM
+				else if ((fieldMatcher = smilesPattern.matcher(line)).lookingAt()) { //found SMILES record
+					massSpectrum.getLibraryInformation().setSmiles(fieldMatcher.group(1).trim());
+				} //else if SMILES
+				else if ((fieldMatcher = databaseNamePattern.matcher(line)).lookingAt()) { //found DATABASE NAME record
+					massSpectrum.getLibraryInformation().setDatabase(fieldMatcher.group(1).trim());
+				} //else if DATABASE NAME
+				else if ((fieldMatcher = referenceIdentifierPattern.matcher(line)).lookingAt()) { //found REF ID record
+					massSpectrum.getLibraryInformation().setReferenceIdentifier(fieldMatcher.group(1).trim());
+				} //else if  REF ID
+				else if ((fieldMatcher = retentionTimePattern.matcher(line)).lookingAt()) { //found RT record
+					double retTime = Double.parseDouble(fieldMatcher.group(1).trim());
+					if (0 < retTime) massSpectrum.setRetentionTime((int)(retTime * AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+				} //else if RT
+				else if ((fieldMatcher = nameRetentionTimePattern.matcher(line)).lookingAt()) { //found NAME RTD record
+					double retTime = (int)Double.parseDouble(fieldMatcher.group(1).trim());
+					if (0 < retTime) massSpectrum.setRetentionTime((int)(retTime * AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+				} //else if NAME RT
+				else if ((fieldMatcher = relativeRetentionTimePattern.matcher(line)).lookingAt()) { //found REL RT record
+					double retTime = (int)Double.parseDouble(fieldMatcher.group(1).trim());
+					if (0 < retTime) massSpectrum.setRelativeRetentionTime((int)(retTime * AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+				} //else if REL RT
+				else if ((fieldMatcher = retentionIndexPattern.matcher(line)).lookingAt()) { //found RT INDEX record
+					String retentionIndices = fieldMatcher.group(1).trim();
+					//extractRetentionIndices(massSpectrum, retentionIndices, RETENTION_INDICES_DELIMITER);
+				} //else if RT INDEX
+				
+			} // else if (1==parseState)
+			
+			else if (2==parseState){
+				double mass;
+				float signal;
+				if ((fieldMatcher = ionPattern.matcher(line)).find()) { //found mass/signal pair
+					do {
+						//Create the ion or peak and store it in mass spectrum.
+						mass = Double.parseDouble(fieldMatcher.group(1));
+						signal = Float.parseFloat(fieldMatcher.group(2));
+						massSpectrum.addPeak(mass, signal);
+						peakCount++;
+					} while(fieldMatcher.find());
+				}
+			}
+			
+		}//while
+		
+		if (2==parseState) {
+			if (0 >= peakCount) { //got no peaks for the current spectrum, discard incomplete spectrum
+				System.out.println("got no peaks from "
+						+ (nameFile?"NAME: ":
+							(scanFile?"SCAN: ":"UNKNOWN: "))
+						+ massSpectrum.getLibraryInformation().getName());
+			}
+			else { //got peaks, add spectrum
+				massSpectra.addMassSpectrum(massSpectrum);
 			}
 		}
-	}
-
-	/**
-	 * Extracts the content from the given mass spectrum string defined by the
-	 * given pattern.
-	 * 
-	 * @param massSpectrumData
-	 * @return String
-	 */
-	private String extractContentAsString(String massSpectrumData, Pattern pattern, int group) {
-
-		String content = "";
-		Matcher matcher = pattern.matcher(massSpectrumData);
-		if(matcher.find()) {
-			content = matcher.group(group).trim();
+		else if (1==parseState) { //got no peaks, discard incomplete spectrum
+			System.out.println("got no NUM_PEAKS: from "
+					+ (nameFile?"NAME: ":
+						(scanFile?"SCAN: ":"UNKNOWN: "))
+					+ massSpectrum.getLibraryInformation().getName());
 		}
-		return content;
-	}
-
-	/**
-	 * Extracts the synonyms from the mass spectrum.
-	 * 
-	 * @param massSpectrumData
-	 * @param pattern
-	 * @return {@link Set}
-	 */
-	private Set<String> extractSynonyms(String massSpectrumData, Pattern pattern) {
-
-		Set<String> synonyms = new HashSet<String>();
-		Matcher matcher = pattern.matcher(massSpectrumData);
-		while(matcher.find()) {
-			String synonym = matcher.group(2).trim();
-			synonyms.add(synonym);
-		}
-		return synonyms;
-	}
-
-	/**
-	 * Extracts the content from the given mass spectrum string defined by the
-	 * given pattern.
-	 * 
-	 * @param massSpectrumData
-	 * @return int
-	 */
-	private int extractContentAsInt(String massSpectrumData, Pattern pattern, int group) {
-
-		int content = 0;
-		try {
-			Matcher matcher = pattern.matcher(massSpectrumData);
-			if(matcher.find()) {
-				content = (int)(Double.parseDouble(matcher.group(group).trim()) * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-			}
-		} catch(Exception e) {
-			logger.warn(e);
-		}
-		return content;
-	}
-
-	private double extractContentAsDouble(String massSpectrumData, Pattern pattern) {
-
-		double content = 0.0f;
-		try {
-			Matcher matcher = pattern.matcher(massSpectrumData);
-			if(matcher.find()) {
-				content = Double.parseDouble(matcher.group(2));
-			}
-		} catch(Exception e) {
-			logger.warn(e);
-		}
-		return content;
+		
+		return massSpectra;
 	}
 }
