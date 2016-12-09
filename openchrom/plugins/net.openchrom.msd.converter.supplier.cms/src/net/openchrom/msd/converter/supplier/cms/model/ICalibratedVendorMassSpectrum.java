@@ -12,14 +12,36 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cms.model;
 
+import java.util.List;
+
+import org.eclipse.chemclipse.msd.model.core.AbstractScanMSD;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
-public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectrum {
+import net.openchrom.msd.converter.supplier.cms.model.CMSion;
 
+public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectrum, IScanMSD {
 	/*
 	 * TODO WALTER
-	 * Add the CMS specific field here.
+	 * Add the CMS specific fields here.
 	 */
+	public List<MsdPeakMeasurement> getPeaks();
+	public boolean addPeak(MsdPeakMeasurement peak);
+	public boolean addPeak(double mz, float signal);
+	public boolean scale();
+	public boolean unscale();
+	//public int getNumberOfIons();
+	public double getSourcep();
+	public String getSPunits();
+	public String getSigunits();
+	public String getScanName();
+	public void setSourcep(double sourcep);
+	public void setSPunits(String spunits);
+	public void setSigunits(String sigunits);
+	public void setScanName(String name);
+	public boolean updateIons();
+	public ICalibratedVendorMassSpectrum makeNoiseyCopy(long l, double relativeError) throws CloneNotSupportedException;
+	
 	/**
 	 * Returns the source.
 	 * 
@@ -33,4 +55,5 @@ public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectr
 	 * @param source
 	 */
 	void setSource(String source);
+	//String getName();
 }
