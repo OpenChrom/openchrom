@@ -21,13 +21,13 @@ class GenIon implements Comparable<GenIon> {
 	double ionMass;
 	double ionAbundance;
 	int ionMassIndex;
-	int ionCompIndex;
+	int ionCompSequence;
 	boolean mark;
 	
 	GenIon(double mass, double abundance) {
 		mark = false;
 		ionMassIndex = -1;
-		ionCompIndex = -1;
+		ionCompSequence = -1;
 		ionMass = mass;
 		ionAbundance = abundance;
 	}
@@ -35,8 +35,8 @@ class GenIon implements Comparable<GenIon> {
 	public int compareTo(GenIon ion) {
 		if (this.ionMass < ion.ionMass) return -1;
 		else if (this.ionMass > ion.ionMass) return 1;
-		else if (this.ionCompIndex < ion.ionCompIndex) return -1;
-		else if (this.ionCompIndex > ion.ionCompIndex) return 1;
+		else if (this.ionCompSequence < ion.ionCompSequence) return -1;
+		else if (this.ionCompSequence > ion.ionCompSequence) return 1;
 		return 0;
 	}
 	

@@ -21,24 +21,24 @@ import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpect
 class Dataset {
 	LibIon libions[];
 	private int libIonsCount; // counts # ions read from library file, then holds # library ions that matched with scan ions
-	private int compIndex; // 1 less than the number of components contained in the library file
+	private int libCompCount; // 1 less than the number of components contained in the library file
 	private int usedCompCount; // how many components are used in the LS fit
 	ScanIon scanions[];
 	private int scanIonsCount; // counts # ions read from scan file
 	private int scanIonsUsed; // hold # ions from scan file that matched with library ions
-	IRegularLibraryMassSpectrum comps[];
+	LibComponent libComps[]; // keep track of library component information
 	private SortedSet<String> compNameSet; // used to help ensure no duplicate library components
 	private boolean matched; // false and then set true after executing matchIons() 
 	
 Dataset() {
 	libions = new LibIon[10];
-	libIonsCount = 0;
 	scanions = new ScanIon[10];
+	libComps = new LibComponent[10];
+	libIonsCount = 0;
 	scanIonsCount = 0;
+	libCompCount = 0;
 	scanIonsUsed = -1;
-	comps = null;
 	compNameSet = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
-	compIndex = -1;
 	matched = false;
 }
 
@@ -52,29 +52,41 @@ int getUsedScanIonCount() throws InvalidScanIonCountException {
 	return scanIonsUsed;
 }
 
-void addLibIon(double mass, double abundance, IRegularLibraryMassSpectrum libRef) throws InvalidComponentIndex{
-	if (libions.length <= libIonsCount) {
-		libions = Arrays.copyOf(libions, 2*libions.length);
-	}
+void addLibIon(double mass, double abundance, int compIndex) throws InvalidComponentIndex{
 	if (0 > compIndex) {
 		throw new InvalidComponentIndex(compIndex);
 	}
-	libions[libIonsCount] = new LibIon(mass, abundance, compIndex, libRef);
+	if (libions.length <= libIonsCount) {
+		libions = Arrays.copyOf(libions, 2*libions.length);
+	}
+	libions[libIonsCount] = new LibIon(mass, abundance, compIndex, libComps[compIndex]);
 	libIonsCount++;
+}
+
+int addNewComponent(IRegularLibraryMassSpectrum compLib) throws DuplicateCompNameException {
+	String compName = compLib.getLibraryInformation().getName();
+	if (!compNameSet.add(compName)) {
+		throw new DuplicateCompNameException(compName);
+	}
+	if (libComps.length <= libCompCount) {
+		libComps = Arrays.copyOf(libComps, 2*libComps.length);
+	}
+	libComps[libCompCount] = new LibComponent(compLib);
+	return libCompCount++;
 }
 
 boolean addComponent(String compName) {
 	if (!compNameSet.add(compName)) {
 		return false;
 	}
-	compIndex++;
+	libCompCount++;
 	return true;
 }
 
 int getCompCount() throws InvalidGetCompCountException {
-	if (0 > compIndex)
-		throw new InvalidGetCompCountException(compIndex+1);
-	return compIndex+1;
+	if (0 > libCompCount)
+		throw new InvalidGetCompCountException(libCompCount+1);
+	return libCompCount;
 }
 
 int getUsedCompCount() throws InvalidGetCompCountException {
@@ -144,9 +156,16 @@ void matchIons(double massTol) throws NoLibIonsException, NoScanIonsException{
 			libions[j] = libions[i];
 			j++;
 		}
+		//else {
+		//	System.out.println("eliminating ion ("
+		//			+ libions[i].ionMass +"," 
+		//			+ libions[i].ionAbundance +"), component "
+		//			+ libions[i].componentRef.libraryRef.getLibraryInformation().getName());
+		//}
 	}
 	libIonsCount = j;
 	libions = Arrays.copyOf(libions, libIonsCount);
+	
 	j = 0;
 	for (i = 0; i<scanIonsCount; i++) { // save only marked scan ions
 		if (scanions[i].mark) {
@@ -156,19 +175,26 @@ void matchIons(double massTol) throws NoLibIonsException, NoScanIonsException{
 	}
 	scanIonsUsed = j;
 	scanions = Arrays.copyOf(scanions, scanIonsUsed);
-	comps = new IRegularLibraryMassSpectrum[libIonsCount];
+	
 	for (i = 0; i<libIonsCount; i++) { // identify library components we actually use
-		comps[libions[i].ionCompIndex] = libions[i].libraryRef;
+		//libComps[libions[i].ionCompIndex].mark = true;
+		libions[i].componentRef.mark = true;
 	}
 	j = 0;
-	for (i = 0; i<libIonsCount; i++) { // consolidate library components we actually use
-		if (null != comps[i]) {
-			comps[j] = comps[i];
+	for (i = 0; i<libCompCount; i++) { // consolidate library components we actually use
+		if (libComps[i].mark) {
+			libComps[j] = libComps[i];
+			libComps[j].componentIndex = j;
 			j++;
+		}
+		else {
+			System.out.println("Eliminating library component \""
+					+ libComps[i].libraryRef.getLibraryInformation().getName() 
+					+ "\", no ions are present in the scan");
 		}
 	}
 	usedCompCount = j;
-	comps = Arrays.copyOf(comps, usedCompCount);
+	libComps = Arrays.copyOf(libComps, usedCompCount);
 	matched = true;
 }
 

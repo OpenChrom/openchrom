@@ -12,6 +12,8 @@
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
+import java.util.Arrays;
+
 import org.eclipse.chemclipse.logging.core.Logger;
 //import org.eclipse.chemclipse.msd.model.core.ICombinedLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IIon;
@@ -21,6 +23,9 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.ejml.data.DenseMatrix64F;
 import org.ejml.factory.LinearSolverFactory;
+import org.ejml.interfaces.decomposition.DecompositionInterface;
+import org.ejml.interfaces.decomposition.QRDecomposition;
+import org.ejml.interfaces.decomposition.QRPDecomposition;
 import org.ejml.interfaces.linsol.LinearSolver;
 import org.ejml.ops.CommonOps;
 import org.ejml.ops.SpecializedOps;
@@ -62,7 +67,7 @@ public class MassSpectraDecomposition {
 
 			// replace with a noisy spectrum
 			try {
-				IScanMSD newscan = ((ICalibratedVendorMassSpectrum)scan).makeNoiseyCopy((long)22345, 0.1);
+				IScanMSD newscan = ((ICalibratedVendorMassSpectrum)scan).makeNoisyCopy((long)22345, 0.001);
 				scan = newscan;
 			} catch(CloneNotSupportedException e) {
 				logger.warn(e);
@@ -77,26 +82,28 @@ public class MassSpectraDecomposition {
 				// first (re)read the library and save a reference to each library component
 				if(libSpectrum instanceof IRegularLibraryMassSpectrum) {
 					IRegularLibraryMassSpectrum libraryMassSpectrum = (IRegularLibraryMassSpectrum)libSpectrum;
-					System.out.println("LIB: libName: " + libMassSpectra.getName()
-						+ ", Component Name: " + libraryMassSpectrum.getLibraryInformation().getName()
-						+ ", #ions: " + libraryMassSpectrum.getNumberOfIons());
-					if (!fitDataset.addComponent(libraryMassSpectrum.getLibraryInformation().getName())) {
-						System.out.println("Duplicate library component having name: \"" 
-								+ libraryMassSpectrum.getLibraryInformation().getName() + "\" will be ignored");
+					int componentIndex;
+					try {
+						componentIndex = fitDataset.addNewComponent(libraryMassSpectrum);
+					} catch(DuplicateCompNameException e1) {
+						logger.warn(e1);
 						continue; //for
 					}
-					else {
-						System.out.print("\t");
-						for (IIon myIon: libSpectrum.getIons()) {
-							try {
-								fitDataset.addLibIon(myIon.getIon(), myIon.getAbundance(), libraryMassSpectrum);
-							} catch(InvalidComponentIndex e) {
-								logger.warn(e);
-							}
-							System.out.print("(" + myIon.getIon() + ", " + myIon.getAbundance() + ")");
-						} //for
-						System.out.println();
-					} //else
+					System.out.println("LIB: libName: " + libMassSpectra.getName()
+					+ ", Component Name: " + libraryMassSpectrum.getLibraryInformation().getName()
+					+ ", Component Index: " + componentIndex
+					+ ", #ions: " + libraryMassSpectrum.getNumberOfIons());
+					
+					System.out.print("\t");
+					for (IIon myIon: libSpectrum.getIons()) {
+						try {
+							fitDataset.addLibIon(myIon.getIon(), myIon.getAbundance(), componentIndex);
+						} catch(InvalidComponentIndex e) {
+							logger.warn(e);
+						}
+						System.out.print("(" + myIon.getIon() + ", " + myIon.getAbundance() + ")");
+					} //for
+					System.out.println();
 				} //if
 			} //for
 			
@@ -131,23 +138,23 @@ public class MassSpectraDecomposition {
 				System.out.println("\t# ions in scan that match library ions = " + fitDataset.getUsedScanIonCount());
 				System.out.println("\t# ions in library that match scan ions = " + fitDataset.getUsedLibIonCount());
 			
-				if (fitDataset.getCompCount() > fitDataset.getUsedScanIonCount()) {
-					System.out.println("\tcomponents in library > matching ions in scan, it is not possible to find a solution");
-					continue; //for
-				} //if
+				//if (fitDataset.getCompCount() > fitDataset.getUsedScanIonCount()) {
+				//	System.out.println("\tcomponents in library > matching ions in scan, it is not possible to find a solution");
+				//	continue; //for
+				//} //if
 				// set up matrix A, P, stA, and vectors y & wty
-				A.reshape(fitDataset.getUsedScanIonCount(), fitDataset.getCompCount()); // holds coefficients from library
+				A.reshape(fitDataset.getUsedScanIonCount(), fitDataset.getUsedCompCount()); // holds coefficients from library
 				P.reshape(fitDataset.getUsedScanIonCount(), fitDataset.getUsedScanIonCount()); // used to apply weights to sum of squares error
-				wtA.reshape(fitDataset.getUsedScanIonCount(), fitDataset.getCompCount()); // weighted library coefficients
+				wtA.reshape(fitDataset.getUsedScanIonCount(), fitDataset.getUsedCompCount()); // weighted library coefficients
 				y.reshape(fitDataset.getUsedScanIonCount(), 1); //measurement vector
 				wty.reshape(fitDataset.getUsedScanIonCount(), 1); //weighted measurement vector
-				x.reshape(fitDataset.getCompCount(), 1); //unknown vector
+				x.reshape(fitDataset.getUsedCompCount(), 1); //unknown vector
 				ynew.reshape(fitDataset.getUsedScanIonCount(), 1); //unknown vector
 				yerr.reshape(fitDataset.getUsedScanIonCount(), 1); //error vector
 				wtyerr.reshape(fitDataset.getUsedScanIonCount(), 1); //weighted error vector
 			
 				for (LibIon i : fitDataset.libions) {
-					A.set(i.ionMassIndex, i.ionCompIndex, i.ionAbundance);
+					A.set(i.ionMassIndex, i.componentRef.componentIndex, i.ionAbundance);
 				}
 				for (ScanIon i : fitDataset.scanions) {
 					y.set(i.ionMassIndex, 0, i.ionAbundance);
@@ -159,19 +166,38 @@ public class MassSpectraDecomposition {
 					CommonOps.mult(P, A, wtA);
 					CommonOps.mult(P, y, wty);
 			
-				// solve the linear system Ax=y for x
-				LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.leastSquares(fitDataset.getUsedScanIonCount(), fitDataset.getCompCount());
+				// solve the linear system Ax=y for x using a solver that tolerates a singular A matrix
+				LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.leastSquaresQrPivot(false, false);
+				QRPDecomposition<DenseMatrix64F> decomp = solver.getDecomposition();
+				//decomp.setSingularThreshold(1e-2); // used to test if a higher threshold for detecting a singular condition is useful
 				solverRetVal = solver.setA(wtA);
-				System.out.println("the solver used the \"" + solver.getDecomposition() + "\" class");
+
+				int pivots[] = decomp.getPivots();
+				int rank = decomp.getRank();
+				System.out.println("Solver = " + solver);
+				System.out.println("Decomposition = " + decomp);
+				if (fitDataset.getCompCount() > rank) {
+					int ignored[] = Arrays.copyOfRange(pivots, rank, pivots.length);
+					Arrays.sort(ignored);
+					System.out.println("Final rank = " + rank + ", Initial rank = " + fitDataset.getUsedCompCount());
+					System.out.println("\tThe following components were set to 0.0 because they are not sufficiently different from other library components to resolve");
+					for (int i=0; i<ignored.length; i++) {
+						System.out.println("\t" + fitDataset.libComps[ignored[i]].libraryRef.getLibraryInformation().getName());
+					}
+				}
 				if (!solverRetVal) {
 					throw new LibIonsMatrixSingularException("Solver.setA() returned FALSE, library matrix is singular");
 				}
-				libMatrixQuality = solver.quality();
-				if ( 1e-9 > libMatrixQuality) {
-					throw new LibIonsMatrixSingularException("Solver.quality() value of " + 
-						libMatrixQuality + " indicates library matrix is nearly singular");
+				if (true) {
+					libMatrixQuality = solver.quality();
+					if ( 0 > libMatrixQuality) {
+						throw new LibIonsMatrixSingularException("Solver.quality() value of " + 
+							libMatrixQuality + " indicates library matrix is nearly singular");
+					}
+					System.out.print("Solver.quality() = " + libMatrixQuality);
+					if (1e-8 > libMatrixQuality) System.out.print(", Library matrix is nearly singular");
+					System.out.println("");
 				}
-				System.out.println("Solver.quality() = " + libMatrixQuality);
 				// solve
 				solver.solve(wty, x);
 			
@@ -180,7 +206,7 @@ public class MassSpectraDecomposition {
 				System.out.print("\t");
 				for(int ii = 0; ii < x.numRows; ii++) {
 					if (0 != ii) System.out.print(", ");
-					System.out.print(fitDataset.comps[ii].getLibraryInformation().getName() +  ": x[" + ii + "]=" + x.get(ii));
+					System.out.print(fitDataset.libComps[ii].libraryRef.getLibraryInformation().getName() +  ": x[" + ii + "]=" + x.get(ii));
 				}
 				System.out.println("");
 				// compute sum of squares error and residuals vector
@@ -212,7 +238,7 @@ public class MassSpectraDecomposition {
 			
 			// generate a residuals mass spectrum by replacing abundance values for ions that were fit to library components with residuals
 			try {
-				scanResidual = ((ICalibratedVendorMassSpectrum)scan).makeNoiseyCopy((long)12345, 0.01);
+				scanResidual = ((ICalibratedVendorMassSpectrum)scan).makeDeepCopy();
 			} catch(CloneNotSupportedException e) {
 				logger.warn(e);
 			}

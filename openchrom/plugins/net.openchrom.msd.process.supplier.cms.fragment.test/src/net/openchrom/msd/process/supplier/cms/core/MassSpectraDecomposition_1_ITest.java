@@ -83,7 +83,8 @@ public class MassSpectraDecomposition_1_ITest extends TestCase {
 		CMSreader cmsreader = new CMSreader();
 		IMassSpectra scanSpectra = cmsreader.read(scanfile, new NullProgressMonitor());
 		
-		File libfile = new File("G:/_CDS/svn/rivisc2h2/data/cracking patterns/_cmslib-1_mbar.cms"); // argon, nitrogen, oxygen, ethane, ethylene
+		File libfile = new File("G:/_CDS/svn/rivisc2h2/data/cracking patterns/_cmslib-some_mbar.cms"); // all
+		//File libfile = new File("G:/_CDS/svn/rivisc2h2/data/cracking patterns/_cmslib-1_mbar.cms"); // argon, nitrogen, oxygen, ethane, ethylene _cmslib-all_mbar.cms
 		//File libfile = new File("G:/_CDS/svn/rivisc2h2/data/cracking patterns/_cmslib-1.cms"); // argon, nitrogen, oxygen, ethane, ethylene
 		//File libfile = new File("G:/_CDS/svn/rivisc2h2/data/cracking patterns/_cmslib_mbar.cms"); // cylinder, hydrogen, methane, ethane, ethylene, propane, butane, acetylene
         //IMassSpectrumImportConverterProcessingInfo processingInfo = MassSpectrumConverter.convert(libfile, new NullProgressMonitor());
