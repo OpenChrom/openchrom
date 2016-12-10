@@ -69,7 +69,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		peaksList = new ArrayList<MsdPeakMeasurement>(200);
 	}
 	
-	public ICalibratedVendorMassSpectrum makeNoiseyCopy(long seed, double relativeError) throws CloneNotSupportedException {
+	public ICalibratedVendorMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException {
 		Random random = new Random(seed);
 
 		CalibratedVendorMassSpectrum massSpectrum = (CalibratedVendorMassSpectrum)super.clone();

@@ -37,7 +37,8 @@ public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectr
 	public void setSigunits(String sigunits);
 	public void setScanName(String name);
 	public boolean updateIons();
-	public ICalibratedVendorMassSpectrum makeNoiseyCopy(long l, double relativeError) throws CloneNotSupportedException;
+	public ICalibratedVendorMassSpectrum makeNoisyCopy(long l, double relativeError) throws CloneNotSupportedException;
+	public ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException;
 	
 	/**
 	 * Returns the source.
