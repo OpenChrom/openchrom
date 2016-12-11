@@ -19,14 +19,15 @@ import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
 class Dataset {
-	LibIon libions[];
-	private int libIonsCount; // counts # ions read from library file, then holds # library ions that matched with scan ions
-	private int libCompCount; // 1 less than the number of components contained in the library file
-	private int usedCompCount; // how many components are used in the LS fit
-	ScanIon scanions[];
-	private int scanIonsCount; // counts # ions read from scan file
-	private int scanIonsUsed; // hold # ions from scan file that matched with library ions
-	LibComponent libComps[]; // keep track of library component information
+	private LibIon libions[];
+	private int libIonsCount; // # ions read from library file
+	private int libIonsUsed; // # library ions that matched with scan ions, <= libIonsCount
+	private ScanIon scanions[];
+	private int scanIonsCount; // # ions read from scan file
+	private int scanIonsUsed; // # ions from scan file that matched with library ions, <= scanIonsCount
+	private LibComponent libComps[]; // keep track of library component information
+	private int libCompsCount; // the number of components found in the library file
+	private int libCompsUsed; // how many components are used in the LS fit, <= libCompsCount
 	private SortedSet<String> compNameSet; // used to help ensure no duplicate library components
 	private boolean matched; // false and then set true after executing matchIons() 
 	
@@ -36,25 +37,50 @@ Dataset() {
 	libComps = new LibComponent[10];
 	libIonsCount = 0;
 	scanIonsCount = 0;
-	libCompCount = 0;
+	libCompsCount = 0;
+	libIonsUsed = -1;
 	scanIonsUsed = -1;
+	libCompsUsed = -1;
 	compNameSet = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 	matched = false;
 }
 
+String getLibCompName(int i) {
+	return libComps[i].libraryRef.getLibraryInformation().getName();
+}
+
+LibIon[] getLibIons() {
+	return libions;
+}
+
+ScanIon[] getScanIons() {
+	return scanions;
+}
+
 int getUsedLibIonCount() throws InvalidLibIonCountException {
 	if (!matched) throw new InvalidLibIonCountException();
-	return libIonsCount;
+	if (0 >= libIonsUsed)
+		throw new InvalidLibIonCountException();
+	return libIonsUsed;
 }
 
 int getUsedScanIonCount() throws InvalidScanIonCountException {
 	if (!matched) throw new InvalidScanIonCountException();
+	if (0 >= scanIonsUsed)
+		throw new InvalidScanIonCountException();
 	return scanIonsUsed;
 }
 
-void addLibIon(double mass, double abundance, int compIndex) throws InvalidComponentIndex{
+int getUsedCompCount() throws InvalidGetCompCountException {
+	if (!matched) throw new InvalidGetCompCountException(libCompsUsed);
+	if (0 >= libCompsUsed)
+		throw new InvalidGetCompCountException(libCompsUsed);
+	return libCompsUsed;
+}
+
+void addLibIon(double mass, double abundance, int compIndex) throws InvalidComponentIndexException{
 	if (0 > compIndex) {
-		throw new InvalidComponentIndex(compIndex);
+		throw new InvalidComponentIndexException(compIndex);
 	}
 	if (libions.length <= libIonsCount) {
 		libions = Arrays.copyOf(libions, 2*libions.length);
@@ -68,36 +94,21 @@ int addNewComponent(IRegularLibraryMassSpectrum compLib) throws DuplicateCompNam
 	if (!compNameSet.add(compName)) {
 		throw new DuplicateCompNameException(compName);
 	}
-	if (libComps.length <= libCompCount) {
+	if (libComps.length <= libCompsCount) {
 		libComps = Arrays.copyOf(libComps, 2*libComps.length);
 	}
-	libComps[libCompCount] = new LibComponent(compLib);
-	return libCompCount++;
+	libComps[libCompsCount] = new LibComponent(compLib);
+	return libCompsCount++;
 }
 
-boolean addComponent(String compName) {
-	if (!compNameSet.add(compName)) {
-		return false;
-	}
-	libCompCount++;
-	return true;
-}
-
-int getCompCount() throws InvalidGetCompCountException {
-	if (0 > libCompCount)
-		throw new InvalidGetCompCountException(libCompCount+1);
-	return libCompCount;
-}
-
-int getUsedCompCount() throws InvalidGetCompCountException {
-	if (0 >= usedCompCount)
-		throw new InvalidGetCompCountException(usedCompCount);
-	return usedCompCount;
+int getCompCount() {
+	return libCompsCount;
 }
 
 int getIonsInScan() {
 	return scanIonsCount;
 }
+
 //LibIon getLibIon(int index) {
 //	if (!matched)
 //		throw new InvalidGetLibIonException(index);
@@ -124,7 +135,7 @@ void matchIons(double massTol) throws NoLibIonsException, NoScanIonsException{
 	if (0 >= libIonsCount)
 		throw new NoLibIonsException(libIonsCount);
 	if (0 >= scanIonsCount)
-		throw new NoScanIonsException(libIonsCount);
+		throw new NoScanIonsException(scanIonsCount);
 	
 	Arrays.sort(this.libions, 0, libIonsCount);
 	Arrays.sort(this.scanions, 0, scanIonsCount);
@@ -163,8 +174,8 @@ void matchIons(double massTol) throws NoLibIonsException, NoScanIonsException{
 		//			+ libions[i].componentRef.libraryRef.getLibraryInformation().getName());
 		//}
 	}
-	libIonsCount = j;
-	libions = Arrays.copyOf(libions, libIonsCount);
+	libIonsUsed = j;
+	libions = Arrays.copyOf(libions, libIonsUsed);
 	
 	j = 0;
 	for (i = 0; i<scanIonsCount; i++) { // save only marked scan ions
@@ -176,12 +187,12 @@ void matchIons(double massTol) throws NoLibIonsException, NoScanIonsException{
 	scanIonsUsed = j;
 	scanions = Arrays.copyOf(scanions, scanIonsUsed);
 	
-	for (i = 0; i<libIonsCount; i++) { // identify library components we actually use
+	for (i = 0; i<libIonsUsed; i++) { // identify library components we actually use
 		//libComps[libions[i].ionCompIndex].mark = true;
 		libions[i].componentRef.mark = true;
 	}
 	j = 0;
-	for (i = 0; i<libCompCount; i++) { // consolidate library components we actually use
+	for (i = 0; i<libCompsCount; i++) { // consolidate library components we actually use
 		if (libComps[i].mark) {
 			libComps[j] = libComps[i];
 			libComps[j].componentIndex = j;
@@ -193,8 +204,8 @@ void matchIons(double massTol) throws NoLibIonsException, NoScanIonsException{
 					+ "\", no ions are present in the scan");
 		}
 	}
-	usedCompCount = j;
-	libComps = Arrays.copyOf(libComps, usedCompCount);
+	libCompsUsed = j;
+	libComps = Arrays.copyOf(libComps, libCompsUsed);
 	matched = true;
 }
 

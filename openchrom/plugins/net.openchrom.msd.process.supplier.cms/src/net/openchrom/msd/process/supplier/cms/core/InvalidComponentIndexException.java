@@ -12,9 +12,9 @@
 package net.openchrom.msd.process.supplier.cms.core;
 
 
-class InvalidComponentIndex extends Exception {
+class InvalidComponentIndexException extends Exception {
 	int ii;
-	InvalidComponentIndex(int i) {	ii = i;	}
+	InvalidComponentIndexException(int i) {	ii = i;	}
 	public String toString() {
 		return "Need to addComponent() before addLibIon(), component index = " + ii + ".";
 	}

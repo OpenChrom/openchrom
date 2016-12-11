@@ -15,7 +15,6 @@ package net.openchrom.msd.process.supplier.cms.core;
 import java.util.Arrays;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-//import org.eclipse.chemclipse.msd.model.core.ICombinedLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
@@ -82,26 +81,26 @@ public class MassSpectraDecomposition {
 				// first (re)read the library and save a reference to each library component
 				if(libSpectrum instanceof IRegularLibraryMassSpectrum) {
 					IRegularLibraryMassSpectrum libraryMassSpectrum = (IRegularLibraryMassSpectrum)libSpectrum;
-					int componentIndex;
+					int componentSequence;
 					try {
-						componentIndex = fitDataset.addNewComponent(libraryMassSpectrum);
+						componentSequence = fitDataset.addNewComponent(libraryMassSpectrum);
 					} catch(DuplicateCompNameException e1) {
 						logger.warn(e1);
 						continue; //for
 					}
 					System.out.println("LIB: libName: " + libMassSpectra.getName()
 					+ ", Component Name: " + libraryMassSpectrum.getLibraryInformation().getName()
-					+ ", Component Index: " + componentIndex
+					+ ", Component Index: " + componentSequence
 					+ ", #ions: " + libraryMassSpectrum.getNumberOfIons());
 					
 					System.out.print("\t");
-					for (IIon myIon: libSpectrum.getIons()) {
+					for (IIon libion: libSpectrum.getIons()) {
 						try {
-							fitDataset.addLibIon(myIon.getIon(), myIon.getAbundance(), componentIndex);
-						} catch(InvalidComponentIndex e) {
+							fitDataset.addLibIon(libion.getIon(), libion.getAbundance(), componentSequence);
+						} catch(InvalidComponentIndexException e) {
 							logger.warn(e);
 						}
-						System.out.print("(" + myIon.getIon() + ", " + myIon.getAbundance() + ")");
+						System.out.print("(" + libion.getIon() + ", " + libion.getAbundance() + ")");
 					} //for
 					System.out.println();
 				} //if
@@ -110,9 +109,9 @@ public class MassSpectraDecomposition {
 			// then read ions present in the unknown scan
 			System.out.println("SCAN: \"" + ((CalibratedVendorMassSpectrum)scan).getScanName() + "\"");
 			System.out.print("\t");
-			for (MsdPeakMeasurement myIon: ((CalibratedVendorMassSpectrum)scan).getPeaks()) {
-				System.out.print("(" + myIon.getMZ() + ", " + myIon.getSignal() + ")");
-				fitDataset.addScanIon(myIon.getMZ(), myIon.getSignal(), (ICalibratedVendorMassSpectrum)scan);
+			for (MsdPeakMeasurement sigpeak: ((CalibratedVendorMassSpectrum)scan).getPeaks()) {
+				System.out.print("(" + sigpeak.getMZ() + ", " + sigpeak.getSignal() + ")");
+				fitDataset.addScanIon(sigpeak.getMZ(), sigpeak.getSignal(), (ICalibratedVendorMassSpectrum)scan);
 			} //for
 			System.out.println();
 			
@@ -153,10 +152,10 @@ public class MassSpectraDecomposition {
 				yerr.reshape(fitDataset.getUsedScanIonCount(), 1); //error vector
 				wtyerr.reshape(fitDataset.getUsedScanIonCount(), 1); //weighted error vector
 			
-				for (LibIon i : fitDataset.libions) {
+				for (LibIon i : fitDataset.getLibIons()) {
 					A.set(i.ionMassIndex, i.componentRef.componentIndex, i.ionAbundance);
 				}
-				for (ScanIon i : fitDataset.scanions) {
+				for (ScanIon i : fitDataset.getScanIons()) {
 					y.set(i.ionMassIndex, 0, i.ionAbundance);
 					P.set(i.ionMassIndex, i.ionMassIndex,
 						//1); // for testing without error weights
@@ -176,13 +175,13 @@ public class MassSpectraDecomposition {
 				int rank = decomp.getRank();
 				System.out.println("Solver = " + solver);
 				System.out.println("Decomposition = " + decomp);
-				if (fitDataset.getCompCount() > rank) {
+				if (fitDataset.getUsedCompCount() > rank) {
 					int ignored[] = Arrays.copyOfRange(pivots, rank, pivots.length);
 					Arrays.sort(ignored);
 					System.out.println("Final rank = " + rank + ", Initial rank = " + fitDataset.getUsedCompCount());
 					System.out.println("\tThe following components were set to 0.0 because they are not sufficiently different from other library components to resolve");
 					for (int i=0; i<ignored.length; i++) {
-						System.out.println("\t" + fitDataset.libComps[ignored[i]].libraryRef.getLibraryInformation().getName());
+						System.out.println("\t" + fitDataset.getLibCompName(ignored[i]));
 					}
 				}
 				if (!solverRetVal) {
@@ -206,7 +205,7 @@ public class MassSpectraDecomposition {
 				System.out.print("\t");
 				for(int ii = 0; ii < x.numRows; ii++) {
 					if (0 != ii) System.out.print(", ");
-					System.out.print(fitDataset.libComps[ii].libraryRef.getLibraryInformation().getName() +  ": x[" + ii + "]=" + x.get(ii));
+					System.out.print(fitDataset.getLibCompName(ii) +  ": x[" + ii + "]=" + x.get(ii));
 				}
 				System.out.println("");
 				// compute sum of squares error and residuals vector
