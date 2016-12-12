@@ -17,26 +17,11 @@ import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
-import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.core.IScan;
-import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
-import org.eclipse.chemclipse.msd.converter.massspectrum.MassSpectrumConverter;
-import org.eclipse.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
-import org.eclipse.chemclipse.msd.converter.processing.massspectrum.IMassSpectrumImportConverterProcessingInfo;
-//import org.eclipse.chemclipse.msd.converter.supplier.amdis.io.AmdisMSPReader;
-import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
-import org.eclipse.chemclipse.msd.model.core.IMassSpectrumNormalizable;
-import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cms.io.CMSreader;
-import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
-import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
-import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
-//import net.openchrom.msd.converter.supplier.cms.model.MsdScansMeasurement;
 
 import junit.framework.TestCase;
 
@@ -76,9 +61,8 @@ public class MassSpectraDecomposition_1_ITest extends TestCase {
 		//	}
 		//}
 		
-		File scanfile = new File("G:/_CDS/svn/rivisc2h2/data/openchrom_test/testscan.cms"); // 
+		File scanfile = new File("G:/_CDS/svn/rivisc2h2/data/openchrom_test/testscan.cms"); // argon, nitrogen, oxygen, ethane, ethylene
 		//File scanfile = new File("G:/_CDS/svn/rivisc2h2/data/openchrom_test/test2.cms"); // _mar_07_2016__12-14-36_am_3
-		//File scanfile = new File("G:/_CDS/svn/rivisc2h2/data/openchrom_test/test1.cms"); // argon, nitrogen, oxygen, ethane, ethylene
 		//File scanfile = new File("G:/_CDS/svn/rivisc2h2/data/rga2_Mar_07_2016_12-14-09_AM/_mar_07_2016__12-14-36_am_466.cms");
 		CMSreader cmsreader = new CMSreader();
 		IMassSpectra scanSpectra = cmsreader.read(scanfile, new NullProgressMonitor());

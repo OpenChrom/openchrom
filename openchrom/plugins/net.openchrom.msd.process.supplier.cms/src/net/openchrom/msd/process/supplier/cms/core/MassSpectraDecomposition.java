@@ -19,6 +19,7 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.ejml.data.DenseMatrix64F;
 import org.ejml.factory.LinearSolverFactory;
@@ -31,6 +32,7 @@ import org.ejml.ops.SpecializedOps;
 
 import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
+import net.openchrom.msd.converter.supplier.cms.model.IMsdPeakMeasurement;
 import net.openchrom.msd.converter.supplier.cms.model.MsdPeakMeasurement;
 
 public class MassSpectraDecomposition {
@@ -42,7 +44,7 @@ public class MassSpectraDecomposition {
 	private DenseMatrix64F wtA = new DenseMatrix64F(1,1); //error weighted A matrix used and possibly modified by linear solver
 	private DenseMatrix64F wty = new DenseMatrix64F(1,1); //error weighted y matrix used by linear solver and to compute weighted sum of squares error
 	private DenseMatrix64F ynew = new DenseMatrix64F(1,1); //calculated y after solving for x
-	private DenseMatrix64F yerr = new DenseMatrix64F(1,1); //(ynew-y)
+	private DenseMatrix64F yResid = new DenseMatrix64F(1,1); //(ynew-y)
 	private DenseMatrix64F wtyerr = new DenseMatrix64F(1,1); //P*yerr
 	private double ssError; //sum of squares error
 	private double wtssError; //weighted sum of squares error
@@ -61,12 +63,15 @@ public class MassSpectraDecomposition {
 		// generates a list of ions from the unknown mass spectrum (scanIons) having mass ~= at least one library component ion mass
 		// and then generates a new, smaller, list of library ions (usedLibIons) having mass ~= at least one ion in the unknown mass spectrum
 		double massTol = 0.2;
+		IMassSpectra residualSpectra = new MassSpectra();
+		residualSpectra.setName(scanSpectra.getName());
+		
 		for(IScanMSD scan : scanSpectra.getList()) {
 			// iterate over the unknown scan spectra
 
 			// replace with a noisy spectrum
 			try {
-				IScanMSD newscan = ((ICalibratedVendorMassSpectrum)scan).makeNoisyCopy((long)22345, 0.001);
+				IScanMSD newscan = ((ICalibratedVendorMassSpectrum)scan).makeNoisyCopy((long)22345, 0.0);
 				scan = newscan;
 			} catch(CloneNotSupportedException e) {
 				logger.warn(e);
@@ -109,7 +114,7 @@ public class MassSpectraDecomposition {
 			// then read ions present in the unknown scan
 			System.out.println("SCAN: \"" + ((CalibratedVendorMassSpectrum)scan).getScanName() + "\"");
 			System.out.print("\t");
-			for (MsdPeakMeasurement sigpeak: ((CalibratedVendorMassSpectrum)scan).getPeaks()) {
+			for (IMsdPeakMeasurement sigpeak: ((ICalibratedVendorMassSpectrum)scan).getPeaks()) {
 				System.out.print("(" + sigpeak.getMZ() + ", " + sigpeak.getSignal() + ")");
 				fitDataset.addScanIon(sigpeak.getMZ(), sigpeak.getSignal(), (ICalibratedVendorMassSpectrum)scan);
 			} //for
@@ -149,15 +154,15 @@ public class MassSpectraDecomposition {
 				wty.reshape(fitDataset.getUsedScanIonCount(), 1); //weighted measurement vector
 				x.reshape(fitDataset.getUsedCompCount(), 1); //unknown vector
 				ynew.reshape(fitDataset.getUsedScanIonCount(), 1); //unknown vector
-				yerr.reshape(fitDataset.getUsedScanIonCount(), 1); //error vector
+				yResid.reshape(fitDataset.getUsedScanIonCount(), 1); //residual vector
 				wtyerr.reshape(fitDataset.getUsedScanIonCount(), 1); //weighted error vector
 			
 				for (LibIon i : fitDataset.getLibIons()) {
-					A.set(i.ionMassIndex, i.componentRef.componentIndex, i.ionAbundance);
+					A.set(i.ionRowIndex, i.componentRef.componentIndex, i.ionAbundance);
 				}
 				for (ScanIon i : fitDataset.getScanIons()) {
-					y.set(i.ionMassIndex, 0, i.ionAbundance);
-					P.set(i.ionMassIndex, i.ionMassIndex,
+					y.set(i.ionRowIndex, 0, i.ionAbundance);
+					P.set(i.ionRowIndex, i.ionRowIndex,
 						//1); // for testing without error weights
 						java.lang.StrictMath.sqrt(1.0/java.lang.StrictMath.abs(i.ionAbundance)));
 				}//for
@@ -210,9 +215,9 @@ public class MassSpectraDecomposition {
 				System.out.println("");
 				// compute sum of squares error and residuals vector
 				CommonOps.mult(A, x, ynew);
-				CommonOps.subtract(ynew, y, yerr);
-				ssError = SpecializedOps.elementSumSq(yerr);
-				CommonOps.mult(P, yerr, wtyerr);
+				CommonOps.subtract(ynew, y, yResid);
+				ssError = SpecializedOps.elementSumSq(yResid);
+				CommonOps.mult(P, yResid, wtyerr);
 				wtssError = SpecializedOps.elementSumSq(wtyerr);
 				System.out.println("\tSS error = " + ssError + ", weighted SS error = " + wtssError);
 			} //try
@@ -241,9 +246,37 @@ public class MassSpectraDecomposition {
 			} catch(CloneNotSupportedException e) {
 				logger.warn(e);
 			}
+			// Overwrite the peak.signal values for residuals
+			float datasetIonSignal, residIonSignal, newSignal;
+			double datasetIonMass, residIonMass;
+			ScanIon datasetIon;
+			IMsdPeakMeasurement scanPeak;
+			int residIonIndex;
+			try {
+				for (int irow=0; irow<yResid.numRows; irow++) {
+					newSignal = (float)yResid.get(irow, 0);
+					datasetIon = fitDataset.scanions[irow];
+					datasetIonMass = datasetIon.ionMass;
+					datasetIonSignal = (float)datasetIon.ionAbundance;
+					residIonIndex = fitDataset.getScanPeakIndex(irow);
+					scanPeak = scanResidual.getPeak(residIonIndex);
+					residIonMass = scanPeak.getMZ();
+					residIonSignal = scanPeak.getSignal();
+					// test to verify that the correct peak measurement will be replaced
+					assert((datasetIonMass == residIonMass) && (datasetIonSignal == residIonSignal));
+					scanResidual.getPeak(residIonIndex).setSignal(newSignal);
+				}
+			} catch(InvalidScanIonCountException e) {
+				logger.warn(e);
+			}
+			scanResidual.updateSignalLimits();
+			
+			residualSpectra.addMassSpectrum(scanResidual);
+			
+			for(IScanMSD scan1 : residualSpectra.getList()) {
+				((ICalibratedVendorMassSpectrum)scan1).updateIons();
+			}
 
-			// Overwrite the abundance values for residuals
-			// I need some help figuring out how to do this
 			System.out.println();
 			
 			// allow user to add and/or delete components from selected library components list

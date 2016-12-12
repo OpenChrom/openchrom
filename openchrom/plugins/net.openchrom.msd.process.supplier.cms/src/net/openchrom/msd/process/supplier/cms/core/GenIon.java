@@ -20,13 +20,13 @@ package net.openchrom.msd.process.supplier.cms.core;
 class GenIon implements Comparable<GenIon> {
 	double ionMass;
 	double ionAbundance;
-	int ionMassIndex;
+	int ionRowIndex;
 	int ionCompSequence;
 	boolean mark;
 	
 	GenIon(double mass, double abundance) {
 		mark = false;
-		ionMassIndex = -1;
+		ionRowIndex = -1;
 		ionCompSequence = -1;
 		ionMass = mass;
 		ionAbundance = abundance;

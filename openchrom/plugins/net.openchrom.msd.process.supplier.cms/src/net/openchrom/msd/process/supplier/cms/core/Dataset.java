@@ -22,7 +22,7 @@ class Dataset {
 	private LibIon libions[];
 	private int libIonsCount; // # ions read from library file
 	private int libIonsUsed; // # library ions that matched with scan ions, <= libIonsCount
-	private ScanIon scanions[];
+	public ScanIon scanions[];
 	private int scanIonsCount; // # ions read from scan file
 	private int scanIonsUsed; // # ions from scan file that matched with library ions, <= scanIonsCount
 	private LibComponent libComps[]; // keep track of library component information
@@ -151,9 +151,9 @@ void matchIons(double massTol) throws NoLibIonsException, NoScanIonsException{
 				&& (libions[i].massEqual(scanions[j].ionMass, massTol))) { // test if library ion mass == current scan ion mass
 			do { // mark ions having equal masses
 				libions[i].setMark();
-				libions[i].ionMassIndex = rowCount;
+				libions[i].ionRowIndex = rowCount;
 				scanions[j].setMark();
-				scanions[j].ionMassIndex = rowCount;
+				scanions[j].ionRowIndex = rowCount;
 				i++;
 			} while ((i < libIonsCount)
 				&& (libions[i].massEqual(scanions[j].ionMass, massTol)));
@@ -207,6 +207,13 @@ void matchIons(double massTol) throws NoLibIonsException, NoScanIonsException{
 	libCompsUsed = j;
 	libComps = Arrays.copyOf(libComps, libCompsUsed);
 	matched = true;
+}
+
+public int getScanPeakIndex(int i) throws InvalidScanIonCountException {
+	if (!matched) throw new InvalidScanIonCountException();
+	if ((0 > i) || (scanIonsUsed <= i))
+		throw new InvalidScanIonCountException();
+	return scanions[i].ionIndex;
 }
 
 } //class
