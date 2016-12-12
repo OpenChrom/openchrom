@@ -75,9 +75,9 @@ public class CMSreader extends AbstractMassSpectraReader implements IMassSpectra
 		IMassSpectra massSpectra;
 		massSpectra = parseCMSfile(file);
 		massSpectra.setName(file.getName());
-		for (IScanMSD scan : massSpectra.getList()) {
-			((ICalibratedVendorMassSpectrum)scan).updateIons();
-		}
+		//for (IScanMSD scan : massSpectra.getList()) {
+		//	((ICalibratedVendorMassSpectrum)scan).updateIons();
+		//}
 		return massSpectra;
 	}
 	

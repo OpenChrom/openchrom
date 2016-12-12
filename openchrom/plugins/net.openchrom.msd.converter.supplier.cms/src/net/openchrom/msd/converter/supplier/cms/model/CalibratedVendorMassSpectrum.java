@@ -35,6 +35,8 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	private double maxSignal = 0;
 	private double minSignal = 0;
 	private double minAbsSignal = 0;
+	private boolean peaksMinMaxSet = false;
+	private boolean ionsListSet = false;
 	private String source = "";
 	double sourceP = 0.0;
 	private String sPunits = "";
@@ -43,8 +45,16 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	private float scaleOffset=0, scaleSlope=0;
 	private List<IMsdPeakMeasurement> peaksList;
 	
+	public List<IIon> getIons() {
+		if (!peaksMinMaxSet) {
+			updateIons();
+		}
+		return super.getIons();
+	}
+	
 	public CalibratedVendorMassSpectrum() {
-		peaksList = new ArrayList<IMsdPeakMeasurement>(200);
+		peaksList = new ArrayList<IMsdPeakMeasurement>(10);
+		peaksMinMaxSet = false;
 	}
 	
 	public void updateIons() {
@@ -65,7 +75,8 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	
 
 	private void createNewPeakList() {
-		peaksList = new ArrayList<IMsdPeakMeasurement>(200);
+		peaksList = new ArrayList<IMsdPeakMeasurement>(10);
+		peaksMinMaxSet = false;
 	}
 	
 	public ICalibratedVendorMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException {
@@ -126,6 +137,9 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	}
 	
 	public List<IMsdPeakMeasurement> getPeaks() {
+		if (!peaksMinMaxSet) {
+			updateSignalLimits();
+		}
 		return peaksList;
 	}
 
@@ -152,6 +166,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 			}
 		}
 		peaksList.add(peak);
+		peaksMinMaxSet = false;
 		return true;
 	}
 	
@@ -175,6 +190,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 				}
 			}
 		} //for
+		peaksMinMaxSet = true;
 	}
 	
 	public boolean addPeak(double mz, float signal) {
@@ -271,7 +287,10 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 
 	@Override
 	public IMsdPeakMeasurement getPeak(int scanPeakIndex) {
-
+		
+		if (!peaksMinMaxSet) {
+			updateSignalLimits();
+		}
 		return peaksList.get(scanPeakIndex);
 	}
 }

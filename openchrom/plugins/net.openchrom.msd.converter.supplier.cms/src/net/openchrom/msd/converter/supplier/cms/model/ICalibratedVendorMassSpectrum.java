@@ -15,6 +15,7 @@ package net.openchrom.msd.converter.supplier.cms.model;
 import java.util.List;
 
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
+import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
@@ -41,6 +42,7 @@ public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectr
 	public void updateSignalLimits();
 	public ICalibratedVendorMassSpectrum makeNoisyCopy(long l, double relativeError) throws CloneNotSupportedException;
 	public ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException;
+	public List<IIon> getIons();
 	
 	/**
 	 * Returns the source.
