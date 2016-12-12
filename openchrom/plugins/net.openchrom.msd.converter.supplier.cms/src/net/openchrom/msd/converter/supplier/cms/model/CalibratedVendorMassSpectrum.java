@@ -41,15 +41,15 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	private String sigUnits = "";
 	private String scanName = "";
 	private float scaleOffset=0, scaleSlope=0;
-	private List<MsdPeakMeasurement> peaksList;
+	private List<IMsdPeakMeasurement> peaksList;
 	
 	public CalibratedVendorMassSpectrum() {
-		peaksList = new ArrayList<MsdPeakMeasurement>(200);
+		peaksList = new ArrayList<IMsdPeakMeasurement>(200);
 	}
 	
-	public boolean updateIons() {
+	public void updateIons() {
 		this.removeAllIons();
-		for (MsdPeakMeasurement peak : getPeaks()) {
+		for (IMsdPeakMeasurement peak : getPeaks()) {
 			try {
 				this.addIon(new Ion(peak.getMZ(), peak.getSignal()));
 			}
@@ -61,12 +61,11 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 				System.out.println("CalibratedVendorMassSpectrum.updateRegularLibraryMassSpectrum(): " + e); 
 			}
 		}
-		return true;
 	}
 	
 
 	private void createNewPeakList() {
-		peaksList = new ArrayList<MsdPeakMeasurement>(200);
+		peaksList = new ArrayList<IMsdPeakMeasurement>(200);
 	}
 	
 	public ICalibratedVendorMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException {
@@ -83,7 +82,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		 * super class does not know each available type of ion.<br/>
 		 * Make a deep copy of all ions.
 		 */
-		for (MsdPeakMeasurement peak : this.getPeaks()) {
+		for (IMsdPeakMeasurement peak : this.getPeaks()) {
 			signal = peak.getSignal();
 			noise = (float)(relativeError * signal * random.nextGaussian());
 			massSpectrum.addPeak(peak.getMZ(), signal + noise);
@@ -97,7 +96,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		scaleOffset = (float)(minAbsSignal - minSignal);
 		scaleSlope = 1/(float)(maxSignal + scaleOffset);
 		if (0.0 == scaleSlope) return false; // can't have zero slope
-		for (MsdPeakMeasurement peak : getPeaks()) {
+		for (IMsdPeakMeasurement peak : getPeaks()) {
 			peak.setSignal(scaleSlope*(peak.getSignal() + scaleOffset) );
 		}
 		for (IIon ion : getIons()) {
@@ -112,7 +111,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	
 	public boolean unscale() {
 		if (0.0 == scaleSlope) return false;
-		for (MsdPeakMeasurement peak : getPeaks()) {
+		for (IMsdPeakMeasurement peak : getPeaks()) {
 			peak.setSignal((peak.getSignal() / scaleSlope) - scaleOffset);
 		}
 		for (IIon ion : getIons()) {
@@ -126,11 +125,11 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		return true;
 	}
 	
-	public List<MsdPeakMeasurement> getPeaks() {
+	public List<IMsdPeakMeasurement> getPeaks() {
 		return peaksList;
 	}
 
-	public boolean addPeak(MsdPeakMeasurement peak) {
+	public boolean addPeak(IMsdPeakMeasurement peak) {
 		if(peak == null) {
 			System.out.println("MsdScanMeasurement addPeak(peak): peak must be not null.");
 			return false;
@@ -156,8 +155,30 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		return true;
 	}
 	
+	public void updateSignalLimits() {
+		maxSignal = 0;
+		minSignal = 0;
+		minAbsSignal = 0;
+		float signal;
+		for (IMsdPeakMeasurement peak : peaksList) {
+			signal = peak.getSignal();
+			if ((0.0 == maxSignal) && (0.0 == minSignal)) {
+				maxSignal = minSignal = minAbsSignal = signal;
+			}
+			else {
+				if (maxSignal < signal) maxSignal = signal;
+				else if (minSignal > signal) minSignal = signal;
+				if (0.0 != signal) {
+					signal = java.lang.StrictMath.abs(signal);
+					if ((0.0 == minAbsSignal) || (minAbsSignal > signal))
+						minAbsSignal = signal;
+				}
+			}
+		} //for
+	}
+	
 	public boolean addPeak(double mz, float signal) {
-		MsdPeakMeasurement peak = new MsdPeakMeasurement(mz, signal);
+		IMsdPeakMeasurement peak = new MsdPeakMeasurement(mz, signal);
 		return addPeak(peak);
 	}
 
@@ -235,7 +256,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 				logger.warn(e);
 			}
 		}
-		for (MsdPeakMeasurement peak : getPeaks()) {
+		for (IMsdPeakMeasurement peak : getPeaks()) {
 			massSpectrum.addPeak(peak);
 		}
 		return massSpectrum;
@@ -247,4 +268,10 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		return makeDeepCopy();
 	}
 	// -------------------------------IMassSpectrumCloneable
+
+	@Override
+	public IMsdPeakMeasurement getPeak(int scanPeakIndex) {
+
+		return peaksList.get(scanPeakIndex);
+	}
 }

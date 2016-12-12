@@ -14,6 +14,7 @@ package net.openchrom.msd.converter.supplier.cms.model;
 
 import java.util.List;
 
+import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
@@ -22,12 +23,12 @@ public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectr
 	 * TODO WALTER
 	 * Add the CMS specific fields here.
 	 */
-	public List<MsdPeakMeasurement> getPeaks();
-	public boolean addPeak(MsdPeakMeasurement peak);
+	public List<IMsdPeakMeasurement> getPeaks();
+	public boolean addPeak(IMsdPeakMeasurement peak);
 	public boolean addPeak(double mz, float signal);
 	public boolean scale();
 	public boolean unscale();
-	//public int getNumberOfIons();
+	public IMsdPeakMeasurement getPeak(int scanPeakIndex);
 	public double getSourcep();
 	public String getSPunits();
 	public String getSigunits();
@@ -36,7 +37,8 @@ public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectr
 	public void setSPunits(String spunits);
 	public void setSigunits(String sigunits);
 	public void setScanName(String name);
-	public boolean updateIons();
+	public void updateIons();
+	public void updateSignalLimits();
 	public ICalibratedVendorMassSpectrum makeNoisyCopy(long l, double relativeError) throws CloneNotSupportedException;
 	public ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException;
 	
