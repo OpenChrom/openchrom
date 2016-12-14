@@ -46,7 +46,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	private List<IMsdPeakMeasurement> peaksList;
 	
 	public List<IIon> getIons() {
-		if (!peaksMinMaxSet) {
+		if (!ionsListSet) {
 			updateIons();
 		}
 		return super.getIons();
@@ -55,22 +55,27 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	public CalibratedVendorMassSpectrum() {
 		peaksList = new ArrayList<IMsdPeakMeasurement>(10);
 		peaksMinMaxSet = false;
+		ionsListSet = false;
 	}
 	
 	public void updateIons() {
+		float signal;
 		this.removeAllIons();
 		for (IMsdPeakMeasurement peak : getPeaks()) {
-			try {
-				this.addIon(new Ion(peak.getMZ(), peak.getSignal()));
-			}
-
-			catch(AbundanceLimitExceededException e) {
-				System.out.println("CalibratedVendorMassSpectrum.updateRegularLibraryMassSpectrum(): " + e); 
-			}
-			catch(IonLimitExceededException e) {
-				System.out.println("CalibratedVendorMassSpectrum.updateRegularLibraryMassSpectrum(): " + e); 
+			signal = peak.getSignal();
+			if (0.0 < signal) {
+				try {
+					this.addIon(new Ion(peak.getMZ(), signal));
+				}
+				catch(AbundanceLimitExceededException e) {
+					System.out.println("CalibratedVendorMassSpectrum.updateRegularLibraryMassSpectrum(): " + e); 
+				}
+				catch(IonLimitExceededException e) {
+					System.out.println("CalibratedVendorMassSpectrum.updateRegularLibraryMassSpectrum(): " + e); 
+				}
 			}
 		}
+		ionsListSet = true;
 	}
 	
 
@@ -82,9 +87,6 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	public ICalibratedVendorMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException {
 		Random random = new Random(seed);
 
-		CalibratedVendorMassSpectrum massSpectrum = (CalibratedVendorMassSpectrum)super.clone();
-		massSpectrum.createNewPeakList();
-		float signal, noise;
 		/*
 		 * The instance variables have been copied by super.clone();.<br/> The
 		 * ions in the ion list need not to be removed via
@@ -93,6 +95,10 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		 * super class does not know each available type of ion.<br/>
 		 * Make a deep copy of all ions.
 		 */
+		CalibratedVendorMassSpectrum massSpectrum = (CalibratedVendorMassSpectrum)super.clone();
+		float signal, noise;
+		
+		massSpectrum.createNewPeakList();
 		for (IMsdPeakMeasurement peak : this.getPeaks()) {
 			signal = peak.getSignal();
 			noise = (float)(relativeError * signal * random.nextGaussian());
@@ -102,8 +108,11 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		return massSpectrum;
 	}
 	
-	public boolean scale() {
+	public boolean scale() { // make suitable for log scale plotting
 		if (0.0 != scaleSlope) return false; // must unscale() first
+		if (!peaksMinMaxSet) {
+			updateSignalLimits();
+		}
 		scaleOffset = (float)(minAbsSignal - minSignal);
 		scaleSlope = 1/(float)(maxSignal + scaleOffset);
 		if (0.0 == scaleSlope) return false; // can't have zero slope
@@ -151,19 +160,6 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		if (0.0 >= peak.getMZ()) {
 			System.out.println("MsdScanMeasurement addPeak(peak): peak.getMZ() must be > 0.");
 			return false;
-		}
-		float signal = peak.getSignal();
-		if ((0.0 == maxSignal) && (0.0 == minSignal)) {
-			maxSignal = minSignal = minAbsSignal = signal;
-		}
-		else {
-			if (maxSignal < signal) maxSignal = signal;
-			else if (minSignal > signal) minSignal = signal;
-			if (0.0 != signal) {
-				signal = java.lang.StrictMath.abs(signal);
-				if ((0.0 == minAbsSignal) || (minAbsSignal > signal))
-					minAbsSignal = signal;
-			}
 		}
 		peaksList.add(peak);
 		peaksMinMaxSet = false;
@@ -252,7 +248,6 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	public ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
 
 		CalibratedVendorMassSpectrum massSpectrum = (CalibratedVendorMassSpectrum)super.clone();
-		massSpectrum.createNewPeakList();
 		IIon amdisIon;
 		/*
 		 * The instance variables have been copied by super.clone();.<br/> The
@@ -272,6 +267,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 				logger.warn(e);
 			}
 		}
+		massSpectrum.createNewPeakList();
 		for (IMsdPeakMeasurement peak : getPeaks()) {
 			massSpectrum.addPeak(peak);
 		}
