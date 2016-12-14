@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
+import org.eclipse.chemclipse.converter.io.AbstractFileHelper;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
@@ -47,13 +48,14 @@ public class CMSreader extends AbstractMassSpectraReader implements IMassSpectra
 	 * Pre-compile all patterns to be a little bit faster.
 	 */
 	private static final String LINE_END = "\n";
+	private static final String SNUM = "([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)"; // matches any valid string representation of a number
 	private static final Pattern namePattern = Pattern.compile("^NAME:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern scanPattern = Pattern.compile("^SCAN:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern nameRetentionTimePattern = 
-			Pattern.compile("^RT:\\s*([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)(\\s*min)", Pattern.CASE_INSENSITIVE); // (rt: 10.818 min)
+			Pattern.compile("^RT:\\s*" + SNUM + "(\\s*min)", Pattern.CASE_INSENSITIVE); // (rt: 10.818 min)
 	private static final Pattern formulaPattern = Pattern.compile("^FORMULA:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern molweightPattern = Pattern.compile("^MW:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern sourcepPattern = Pattern.compile("^SOURCEP:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern molweightPattern = Pattern.compile("^MW:\\s*" + SNUM, Pattern.CASE_INSENSITIVE);
+	private static final Pattern sourcepPattern = Pattern.compile("^SOURCEP:\\s*" + SNUM, Pattern.CASE_INSENSITIVE);
 	private static final Pattern spunitsPattern = Pattern.compile("^SPUNITS:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern sigunitsPattern = Pattern.compile("^SIGUNITS:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern synonymPattern = Pattern.compile("^SYNON(?:[YM]*)?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
@@ -66,8 +68,8 @@ public class CMSreader extends AbstractMassSpectraReader implements IMassSpectra
 	private static final Pattern retentionTimePattern = Pattern.compile("^RT:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern relativeRetentionTimePattern = Pattern.compile("^RRT:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern retentionIndexPattern = Pattern.compile("^RI:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern numPeaksPattern = Pattern.compile("^NUM PEAKS:\\s*([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern ionPattern = Pattern.compile("([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)[\\s,]+([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)");
+	private static final Pattern numPeaksPattern = Pattern.compile("^NUM PEAKS:\\s*" + SNUM, Pattern.CASE_INSENSITIVE);
+	private static final Pattern ionPattern = Pattern.compile(SNUM + "[\\s,]+" + SNUM);
 	//
 	private static final String RETENTION_INDICES_DELIMITER = ", ";
 	
@@ -86,8 +88,6 @@ public class CMSreader extends AbstractMassSpectraReader implements IMassSpectra
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
 		InputStreamReader inputStreamReader = new InputStreamReader(bufferedInputStream, charSet);
 		BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-		//List<String> massSpectraData = new ArrayList<String>();
-		//StringBuilder builder = new StringBuilder();
 		String line;
 		int parseState = 0; //0==searching for NAME or SCAN, 1==adding parameters & searching for NUM_PEAKS, 2==adding mass/signal pairs
 		IMassSpectra massSpectra = new MassSpectra();
@@ -96,7 +96,6 @@ public class CMSreader extends AbstractMassSpectraReader implements IMassSpectra
 		
 		Matcher fieldMatcher;
 		ICalibratedVendorMassSpectrum massSpectrum = new CalibratedVendorMassSpectrum();
-		//ILibraryInformation libraryInformation = massSpectrum.getLibraryInformation();
 		
 		int peakCount = 0, numPeaks = 0;
 		boolean nameFile = false, scanFile = false;
@@ -175,7 +174,7 @@ public class CMSreader extends AbstractMassSpectraReader implements IMassSpectra
 								+ (nameFile?"NAME: ":
 									(scanFile?"SCAN: ":"UNKNOWN: "))
 								+ massSpectrum.getScanName()
-								+ "\" = " + numPeaks);
+								+ "\" = " + numPeaks + "\"");
 						parseState = 0;
 					}
 					else parseState = 2;
@@ -193,7 +192,7 @@ public class CMSreader extends AbstractMassSpectraReader implements IMassSpectra
 								+ (nameFile?"NAME: ":
 									(scanFile?"SCAN: ":"UNKNOWN: "))
 								+ massSpectrum.getScanName()
-								+ "\" = " + sourcep);
+								+ "\" = " + sourcep + "\"");
 				} //else if SOURCEP
 				else if ((fieldMatcher = spunitsPattern.matcher(line)).lookingAt()) { //found SPUNITS record
 					massSpectrum.setSPunits(fieldMatcher.group(1).trim());
@@ -214,7 +213,7 @@ public class CMSreader extends AbstractMassSpectraReader implements IMassSpectra
 								+ (nameFile?"NAME: ":
 									(scanFile?"SCAN: ":"UNKNOWN: "))
 								+ massSpectrum.getScanName()
-								+ "\" = " + mweight);
+								+ "\" = " + mweight + "\"");
 				} //else if MW
 				else if ((fieldMatcher = synonymPattern.matcher(line)).lookingAt()) { //found SYNONYM record
 					Set<String> synonyms = massSpectrum.getLibraryInformation().getSynonyms();
@@ -269,6 +268,10 @@ public class CMSreader extends AbstractMassSpectraReader implements IMassSpectra
 				}
 			}
 			
+			else {
+				System.out.println("Unrecognize line ignored: \"" + line + "\"");
+			}
+			
 		}//while
 		
 		if (2==parseState) {
@@ -289,6 +292,7 @@ public class CMSreader extends AbstractMassSpectraReader implements IMassSpectra
 					+ massSpectrum.getScanName());
 		}
 		
+		bufferedReader.close();
 		return massSpectra;
 	}
 	
