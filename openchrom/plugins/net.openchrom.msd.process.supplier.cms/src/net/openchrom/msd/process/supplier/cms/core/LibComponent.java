@@ -13,12 +13,14 @@ package net.openchrom.msd.process.supplier.cms.core;
 
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
+
 public class LibComponent {
-	IRegularLibraryMassSpectrum libraryRef; // this ion was found in this library
+	ICalibratedVendorMassSpectrum libraryRef; // this ion was found in this library
 	boolean mark; // used to identify if this library component is actually used
 	int componentIndex;
 	
-	LibComponent(IRegularLibraryMassSpectrum libRef) {
+	LibComponent(ICalibratedVendorMassSpectrum libRef) {
 		libraryRef = libRef;
 		mark = false;
 	}

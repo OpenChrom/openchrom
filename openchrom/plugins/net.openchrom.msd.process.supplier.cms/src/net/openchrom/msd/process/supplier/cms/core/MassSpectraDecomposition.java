@@ -79,13 +79,14 @@ public class MassSpectraDecomposition {
 
 			//scan.scale();
 			
-			Dataset fitDataset = new Dataset();
+			DecompositionDataset fitDataset = new DecompositionDataset();
+			DecompositionResult result;
 			double libMatrixQuality;
 			
 			for(IScanMSD libSpectrum : libMassSpectra.getList()) {
 				// first (re)read the library and save a reference to each library component
 				if(libSpectrum instanceof IRegularLibraryMassSpectrum) {
-					IRegularLibraryMassSpectrum libraryMassSpectrum = (IRegularLibraryMassSpectrum)libSpectrum;
+					ICalibratedVendorMassSpectrum libraryMassSpectrum = (ICalibratedVendorMassSpectrum)libSpectrum;
 					int componentSequence;
 					try {
 						componentSequence = fitDataset.addNewComponent(libraryMassSpectrum);
@@ -204,21 +205,23 @@ public class MassSpectraDecomposition {
 				}
 				// solve
 				solver.solve(wty, x);
-			
-				// display the result
-				System.out.println("SOLVED");
-				System.out.print("\t");
-				for(int ii = 0; ii < x.numRows; ii++) {
-					if (0 != ii) System.out.print(", ");
-					System.out.print(fitDataset.getLibCompName(ii) +  ": x[" + ii + "]=" + x.get(ii));
-				}
-				System.out.println("");
 				// compute sum of squares error and residuals vector
 				CommonOps.mult(A, x, ynew);
 				CommonOps.subtract(ynew, y, yResid);
 				ssError = SpecializedOps.elementSumSq(yResid);
 				CommonOps.mult(P, yResid, wtyerr);
 				wtssError = SpecializedOps.elementSumSq(wtyerr);
+				result = new DecompositionResult(ssError, wtssError);
+			
+				// display the result
+				System.out.println("SOLVED");
+				System.out.print("\t");
+				for(int ii = 0; ii < x.numRows; ii++) {
+					result.addComponent(x.get(ii), fitDataset.getLibRef(ii));
+					if (0 != ii) System.out.print(", ");
+					System.out.print(fitDataset.getLibCompName(ii) +  ": x[" + ii + "]=" + x.get(ii));
+				}
+				System.out.println("");
 				System.out.println("\tSS error = " + ssError + ", weighted SS error = " + wtssError);
 			} //try
 			
@@ -270,12 +273,13 @@ public class MassSpectraDecomposition {
 				logger.warn(e);
 			}
 			scanResidual.updateSignalLimits();
+			result.setResidualSpectrum(scanResidual);
 			
 			residualSpectra.addMassSpectrum(scanResidual);
-			
 			for(IScanMSD scan1 : residualSpectra.getList()) {
 				((ICalibratedVendorMassSpectrum)scan1).updateIons();
 			}
+			
 
 			System.out.println();
 			

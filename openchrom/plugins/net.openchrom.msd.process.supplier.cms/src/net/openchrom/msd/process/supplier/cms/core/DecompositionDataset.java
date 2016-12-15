@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
-class Dataset {
+class DecompositionDataset {
 	private LibIon libions[];
 	private int libIonsCount; // # ions read from library file
 	private int libIonsUsed; // # library ions that matched with scan ions, <= libIonsCount
@@ -31,7 +31,7 @@ class Dataset {
 	private SortedSet<String> compNameSet; // used to help ensure no duplicate library components
 	private boolean matched; // false and then set true after executing matchIons() 
 	
-Dataset() {
+DecompositionDataset() {
 	libions = new LibIon[10];
 	scanions = new ScanIon[10];
 	libComps = new LibComponent[10];
@@ -47,6 +47,10 @@ Dataset() {
 
 String getLibCompName(int i) {
 	return libComps[i].libraryRef.getLibraryInformation().getName();
+}
+
+ICalibratedVendorMassSpectrum getLibRef(int i) {
+	return libComps[i].libraryRef;
 }
 
 LibIon[] getLibIons() {
@@ -89,7 +93,7 @@ void addLibIon(double mass, double abundance, int compIndex) throws InvalidCompo
 	libIonsCount++;
 }
 
-int addNewComponent(IRegularLibraryMassSpectrum compLib) throws DuplicateCompNameException {
+int addNewComponent(ICalibratedVendorMassSpectrum compLib) throws DuplicateCompNameException {
 	String compName = compLib.getLibraryInformation().getName();
 	if (!compNameSet.add(compName)) {
 		throw new DuplicateCompNameException(compName);
