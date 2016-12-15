@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -70,6 +71,16 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 	private static final String MW = "MW: ";
 	private static final String DB = "DB: ";
 	private static final String REFID = "REFID: ";
+	// list CMS format specific fields
+	private static final String SOURCEP = "SOURCEP: ";
+	private static final String SPUNITS = "SPUNITS: ";
+	private static final String SIGUNITS = "SIGUNITS: ";
+	private static final String TSTAMP = "TSTAMP: ";
+	private static final String ETIMES = "ETIMES: ";
+	private static final String EENERGYV = "EENERGYV: ";
+	private static final String IENERGYV = "IENERGYV: ";
+	private static final String INAME = "INAME: ";
+	
 	//
 	private DecimalFormat decimalFormat;
 	private TargetExtendedComparator targetExtendedComparator;
@@ -116,9 +127,9 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 		fileWriter.write(getMWField(optimizedMassSpectrum) + CRLF);
 		fileWriter.write(getCasNumberField(identificationTarget) + CRLF);
 		fileWriter.write(getSmilesField(identificationTarget) + CRLF);
-		fileWriter.write(getNumberOfPeaks(optimizedMassSpectrum) + CRLF);
 		fileWriter.write(getDBField(identificationTarget) + CRLF);
 		fileWriter.write(getReferenceIdentifierField(identificationTarget) + CRLF);
+		fileWriter.write(getNumberOfPeaks(optimizedMassSpectrum) + CRLF);
 		fileWriter.write(getIons(optimizedMassSpectrum));
 		/*
 		 * To separate the mass spectra correctly.
