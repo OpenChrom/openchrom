@@ -42,6 +42,11 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	private String sPunits = "";
 	private String sigUnits = "";
 	private String scanName = "";
+	private String tStamp = "";
+	private String iName = "";
+	private double eEnergyV = 0;
+	private double iEnergyV = 0;
+	private double eTimeS = 0;
 	private float scaleOffset=0, scaleSlope=0;
 	private List<IMsdPeakMeasurement> peaksList;
 	
@@ -225,13 +230,11 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	// -------------------------------------------IAmdisMassSpectrum
 	@Override
 	public String getSource() {
-
 		return source;
 	}
 
 	@Override
 	public void setSource(String source) {
-
 		if(source != null) {
 			this.source = source;
 		}
@@ -276,17 +279,65 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-
 		return makeDeepCopy();
 	}
 	// -------------------------------IMassSpectrumCloneable
 
 	@Override
 	public IMsdPeakMeasurement getPeak(int scanPeakIndex) {
-		
 		if (!peaksMinMaxSet) {
 			updateSignalLimits();
 		}
 		return peaksList.get(scanPeakIndex);
+	}
+
+	@Override
+	public String getTstamp() {
+		return tStamp;
+	}
+
+	@Override
+	public double getEtimes() {
+		return eTimeS;
+	}
+
+	@Override
+	public double getEenergy() {
+		return eEnergyV;
+	}
+
+	@Override
+	public double getIenergy() {
+		return iEnergyV;
+	}
+
+	@Override
+	public String getIname(String iname) {
+		return iName;
+	}
+
+	@Override
+	public void setTstamp(String tstamp) {
+		tStamp = tstamp;
+	}
+
+	@Override
+	public void setEtimes(double etimes) {
+		eTimeS = etimes;
+	}
+
+	@Override
+	public void setEenergy(double eenergy) {
+		eEnergyV = eenergy;
+	}
+
+	@Override
+	public void setIenergy(double ienergy) {
+		iEnergyV = ienergy;
+	}
+
+	@Override
+	public void setIname(String iname) {
+		iName = iname;
 	}
 }
