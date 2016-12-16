@@ -169,15 +169,15 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 					double sourcep;
 					sourcep = Double.parseDouble(fieldMatcher.group(1).trim());
 					if(0.0 < sourcep)
-						massSpectrum.setSourcep(sourcep);
+						massSpectrum.setSourcePressure(sourcep);
 					else
 						System.out.println("got negative or zero SOURCEP from \"" + (nameFile ? "NAME: " : (scanFile ? "SCAN: " : "UNKNOWN: ")) + massSpectrum.getLibraryInformation().getName() + "\" = " + sourcep);
 				} // else if SOURCEP
 				else if((fieldMatcher = spunitsPattern.matcher(line)).lookingAt()) { // found SPUNITS record
-					massSpectrum.setSPunits(fieldMatcher.group(1).trim());
+					massSpectrum.setSourcePressureUnits(fieldMatcher.group(1).trim());
 				} // else if SPUNITS
 				else if((fieldMatcher = sigunitsPattern.matcher(line)).lookingAt()) { // found SIGUNITS record
-					massSpectrum.setSigunits(fieldMatcher.group(1).trim());
+					massSpectrum.setSignalUnits(fieldMatcher.group(1).trim());
 				} // else if SIGUNITS
 				else if((fieldMatcher = casNumberPattern.matcher(line)).lookingAt()) { // found CAS record
 					massSpectrum.getLibraryInformation().setCasNumber(fieldMatcher.group(1).trim());
@@ -237,7 +237,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 						// Create the ion or peak and store it in mass spectrum.
 						mass = Double.parseDouble(fieldMatcher.group(1));
 						signal = Float.parseFloat(fieldMatcher.group(2));
-						massSpectrum.addPeak(mass, signal);
+						massSpectrum.addIonMeasurement(mass, signal);
 						peakCount++;
 					} while(fieldMatcher.find());
 				}

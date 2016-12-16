@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cms.model;
 
-public interface IMsdPeakMeasurement {
+public interface IIonMeasurement {
 
 	double getMZ();
 

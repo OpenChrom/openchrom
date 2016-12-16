@@ -11,28 +11,28 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cms.model;
 
-public class MsdPeakMeasurement implements IMsdPeakMeasurement {
+public class IonMeasurement implements IIonMeasurement {
 
-	private double peakmz;
-	private float peaksignal;
+	private double mz;
+	private float signal;
 
-	public MsdPeakMeasurement(double mz, float signal) {
-		peakmz = mz;
-		peaksignal = signal;
+	public IonMeasurement(double mz, float signal) {
+		this.mz = mz;
+		this.signal = signal;
 	}
 
 	public double getMZ() {
 
-		return peakmz;
+		return mz;
 	}
 
 	public float getSignal() {
 
-		return peaksignal;
+		return signal;
 	}
 
-	public void setSignal(float sig) {
+	public void setSignal(float signal) {
 
-		peaksignal = sig;
+		this.signal = signal;
 	}
 }

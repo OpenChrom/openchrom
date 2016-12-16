@@ -47,7 +47,6 @@ import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.preferences.PreferenceSupplier;
 
 public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMassSpectraWriter {
@@ -64,7 +63,6 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 	private static final String CASNO = "CASNO: ";
 	private static final String SMILES = "SMILES: ";
 	private static final String COMMENTS = "COMMENTS: ";
-	private static final String SOURCE = "SOURCE: ";
 	private static final String NUM_PEAKS = "NUM PEAKS: ";
 	private static final String FORMULA = "FORMULA: ";
 	private static final String MW = "MW: ";
@@ -317,26 +315,6 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 		if(massSpectrum instanceof IRegularLibraryMassSpectrum) {
 			IRegularLibraryMassSpectrum regularMassSpectrum = (IRegularLibraryMassSpectrum)massSpectrum;
 			field += regularMassSpectrum.getLibraryInformation().getComments();
-		}
-		return field;
-	}
-
-	/**
-	 * Returns the source information from the mass spectrum.
-	 * 
-	 * @param massSpectrum
-	 * @return String
-	 */
-	protected String getSourceField(IScanMSD massSpectrum, IIdentificationTarget identificationTarget) {
-
-		String field = SOURCE;
-		if(massSpectrum instanceof ICalibratedVendorMassSpectrum) {
-			ICalibratedVendorMassSpectrum vendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
-			field += vendorMassSpectrum.getSource();
-		} else {
-			if(identificationTarget != null) {
-				field += identificationTarget.getIdentifier();
-			}
 		}
 		return field;
 	}

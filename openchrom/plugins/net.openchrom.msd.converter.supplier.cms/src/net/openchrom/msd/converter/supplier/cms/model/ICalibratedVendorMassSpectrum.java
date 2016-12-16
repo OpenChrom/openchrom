@@ -14,33 +14,54 @@ package net.openchrom.msd.converter.supplier.cms.model;
 
 import java.util.List;
 
-import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
 public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectrum, IScanMSD {
 
-	List<IMsdPeakMeasurement> getPeaks();
+	boolean addIonMeasurement(IIonMeasurement ionMeasurement);
 
-	boolean addPeak(IMsdPeakMeasurement peak);
+	boolean addIonMeasurement(double mz, float signal);
 
-	boolean addPeak(double mz, float signal);
+	void updateIons();
 
 	boolean scale();
 
 	boolean unscale();
 
-	IMsdPeakMeasurement getPeak(int scanPeakIndex);
+	List<IIonMeasurement> getIonMeasurements();
 
-	double getSourcep();
+	/**
+	 * This method may return null.
+	 * 
+	 * @param scanIndex
+	 * @return {@link IIonMeasurement}
+	 */
+	IIonMeasurement getIonMeasurement(int scanIndex);
 
-	String getSPunits();
+	double getSourcePressure();
 
-	String getSigunits();
+	void setSourcePressure(double sourcePressure);
+
+	String getSourcePressureUnits();
+
+	void setSourcePressureUnits(String sourcePressureUnits);
+
+	String getSignalUnits();
+
+	void setSignalUnits(String signalUnits);
 
 	String getScanName();
 
-	String getTstamp();
+	void setScanName(String scanName);
+
+	String getTimeStamp();
+
+	void setTimeStamp(String timeStamp);
+
+	String getInstrumentName();
+
+	void setInstrumentName(String instrumentName);
 
 	double getEtimes();
 
@@ -48,37 +69,13 @@ public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectr
 
 	double getIenergy();
 
-	String getIname(String iname);
-
-	void setSourcep(double sourcep);
-
-	void setSPunits(String spunits);
-
-	void setSigunits(String sigunits);
-
-	void setTstamp(String tstamp);
-
 	void setEtimes(double etimes);
 
 	void setEenergy(double eenergy);
 
 	void setIenergy(double ienergy);
 
-	void setIname(String iname);
-
-	void setScanName(String name);
-
-	void updateIons();
-
 	void updateSignalLimits();
 
-	ICalibratedVendorMassSpectrum makeNoisyCopy(long l, double relativeError) throws CloneNotSupportedException;
-
-	List<IIon> getIons();
-
-	String getSource();
-
-	void setSource(String source);
-
-	ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException;
+	ICalibratedVendorMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException;
 }
