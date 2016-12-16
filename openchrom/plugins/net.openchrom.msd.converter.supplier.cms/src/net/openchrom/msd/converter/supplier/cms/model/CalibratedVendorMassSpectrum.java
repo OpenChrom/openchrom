@@ -35,20 +35,22 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	private double maxSignal = 0;
 	private double minSignal = 0;
 	private double minAbsSignal = 0;
+	private float scaleOffset=0, scaleSlope=0;
 	private boolean peaksMinMaxSet = false;
 	private boolean ionsListSet = false;
 	private String source = "";
+	private String scanName = "";
+	private double eTimeS = 0;
+	
+// relevant for both library and measurement scans
+	private List<IMsdPeakMeasurement> peaksList;
 	double sourceP = 0.0;
 	private String sPunits = "";
 	private String sigUnits = "";
-	private String scanName = "";
 	private String tStamp = "";
 	private String iName = "";
 	private double eEnergyV = 0;
 	private double iEnergyV = 0;
-	private double eTimeS = 0;
-	private float scaleOffset=0, scaleSlope=0;
-	private List<IMsdPeakMeasurement> peaksList;
 	
 	public List<IIon> getIons() {
 		if (!ionsListSet) {
