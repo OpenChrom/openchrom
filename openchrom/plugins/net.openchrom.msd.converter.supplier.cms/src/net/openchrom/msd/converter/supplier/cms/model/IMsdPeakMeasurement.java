@@ -13,9 +13,9 @@ package net.openchrom.msd.converter.supplier.cms.model;
 
 public interface IMsdPeakMeasurement {
 
-	public double getMZ();
+	double getMZ();
 
-	public float getSignal();
+	float getSignal();
 
-	void setSignal(float sig);
+	void setSignal(float signal);
 }

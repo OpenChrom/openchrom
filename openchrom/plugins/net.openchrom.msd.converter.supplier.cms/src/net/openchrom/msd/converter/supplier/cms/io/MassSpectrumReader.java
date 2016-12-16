@@ -20,45 +20,35 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
-import org.eclipse.chemclipse.converter.io.AbstractFileHelper;
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.preferences.PreferenceSupplier;
-import org.eclipse.chemclipse.msd.model.core.AbstractIon;
-import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
-import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
-import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
-import net.openchrom.msd.converter.supplier.cms.model.MsdPeakMeasurement;
 
-// public class MassSpectrumReader<T> extends AbstractMassSpectraReader implements IMassSpectraReader {
-public class MassSpectrumReader extends AbstractMassSpectraReader {
-	// public class MassSpectrumReader extends AbstractFileHelper implements IMassSpectraReader {
+public class MassSpectrumReader extends AbstractMassSpectraReader implements IMassSpectraReader {
 
-	private static final Logger logger = Logger.getLogger(MassSpectrumReader.class);
+	/**
+	 * The converter id is used in the extension point mechanism.
+	 * See <extension point="org.eclipse.chemclipse.msd.converter.massSpectrumSupplier"> in plugin.xml.
+	 */
+	private static final String CONVERTER_ID = "net.openchrom.msd.process.supplier.cms";
 	/**
 	 * Pre-compile all patterns to be a little bit faster.
 	 */
-	private static final String LINE_END = "\n";
 	private static final Pattern namePattern = Pattern.compile("^NAME:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern scanPattern = Pattern.compile("^SCAN:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern nameRetentionTimePattern = Pattern.compile("^RT:\\s*([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)(\\s*min)", Pattern.CASE_INSENSITIVE); // (rt: 10.818 min)
@@ -68,8 +58,6 @@ public class MassSpectrumReader extends AbstractMassSpectraReader {
 	private static final Pattern spunitsPattern = Pattern.compile("^SPUNITS:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern sigunitsPattern = Pattern.compile("^SIGUNITS:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern synonymPattern = Pattern.compile("^SYNON(?:[YM]*)?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	// private static final Pattern commentsPattern = Pattern.compile("(COMMENTS:)(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern commentPattern = Pattern.compile("^COMMENTS?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern casNumberPattern = Pattern.compile("^CAS(?:NO|#)?:\\s*([0-9-]*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern databaseNamePattern = Pattern.compile("^DB(?:NO|#)?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern referenceIdentifierPattern = Pattern.compile("^REFID:\\s*(.*)", Pattern.CASE_INSENSITIVE);
@@ -79,17 +67,13 @@ public class MassSpectrumReader extends AbstractMassSpectraReader {
 	private static final Pattern retentionIndexPattern = Pattern.compile("^RI:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern numPeaksPattern = Pattern.compile("^NUM PEAKS:\\s*([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern ionPattern = Pattern.compile("([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)[\\s,]+([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)");
-	//
-	private static final String RETENTION_INDICES_DELIMITER = ", ";
 
 	@Override
 	public IMassSpectra read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
-		// List<String> massSpectraData = getMassSpectraData(file);
-		// IMassSpectra massSpectra = extractMassSpectra(massSpectraData);
 		IMassSpectra massSpectra = parseCMSfile(file);
-		((AbstractChromatogram)massSpectra).setConverterId("org.eclipse.chemclipse.msd.converter.supplier.amdis.massspectrum.msp");
-		((IMassSpectra)massSpectra).setName(file.getName());
+		massSpectra.setConverterId(CONVERTER_ID);
+		massSpectra.setName(file.getName());
 		return massSpectra;
 	}
 

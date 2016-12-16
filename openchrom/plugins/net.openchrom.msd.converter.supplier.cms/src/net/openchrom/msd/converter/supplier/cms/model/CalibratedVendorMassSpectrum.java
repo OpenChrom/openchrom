@@ -31,13 +31,14 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	 */
 	private static final long serialVersionUID = 788113431263082687L;
 	private static final Logger logger = Logger.getLogger(CalibratedVendorMassSpectrum.class);
+	//
 	private double maxSignal = 0;
 	private double minSignal = 0;
 	private double minAbsSignal = 0;
 	private boolean peaksMinMaxSet = false;
 	private boolean ionsListSet = false;
 	private String source = "";
-	double sourceP = 0.0;
+	private double sourceP = 0.0;
 	private String sPunits = "";
 	private String sigUnits = "";
 	private String scanName = "";
@@ -49,6 +50,13 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	private float scaleOffset = 0, scaleSlope = 0;
 	private List<IMsdPeakMeasurement> peaksList;
 
+	public CalibratedVendorMassSpectrum() {
+		peaksList = new ArrayList<IMsdPeakMeasurement>(10);
+		peaksMinMaxSet = false;
+		ionsListSet = false;
+	}
+
+	@Override
 	public List<IIon> getIons() {
 
 		if(!ionsListSet) {
@@ -57,12 +65,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		return super.getIons();
 	}
 
-	public CalibratedVendorMassSpectrum() {
-		peaksList = new ArrayList<IMsdPeakMeasurement>(10);
-		peaksMinMaxSet = false;
-		ionsListSet = false;
-	}
-
+	@Override
 	public void updateIons() {
 
 		float signal;
@@ -82,12 +85,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		ionsListSet = true;
 	}
 
-	private void createNewPeakList() {
-
-		peaksList = new ArrayList<IMsdPeakMeasurement>(10);
-		peaksMinMaxSet = false;
-	}
-
+	@Override
 	public ICalibratedVendorMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException {
 
 		Random random = new Random(seed);
@@ -111,6 +109,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		return massSpectrum;
 	}
 
+	@Override
 	public boolean scale() { // make suitable for log scale plotting
 
 		if(0.0 != scaleSlope)
@@ -135,6 +134,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		return true;
 	}
 
+	@Override
 	public boolean unscale() {
 
 		if(0.0 == scaleSlope)
@@ -153,6 +153,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		return true;
 	}
 
+	@Override
 	public List<IMsdPeakMeasurement> getPeaks() {
 
 		if(!peaksMinMaxSet) {
@@ -161,6 +162,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		return peaksList;
 	}
 
+	@Override
 	public boolean addPeak(IMsdPeakMeasurement peak) {
 
 		if(peak == null) {
@@ -176,6 +178,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		return true;
 	}
 
+	@Override
 	public void updateSignalLimits() {
 
 		maxSignal = 0;
@@ -201,54 +204,62 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		peaksMinMaxSet = true;
 	}
 
+	@Override
 	public boolean addPeak(double mz, float signal) {
 
 		IMsdPeakMeasurement peak = new MsdPeakMeasurement(mz, signal);
 		return addPeak(peak);
 	}
 
+	@Override
 	public double getSourcep() {
 
 		return sourceP;
 	}
 
+	@Override
 	public String getSPunits() {
 
 		return sPunits;
 	}
 
+	@Override
 	public String getSigunits() {
 
 		return sigUnits;
 	}
 
+	@Override
 	public void setSourcep(double sourcep) {
 
 		sourceP = sourcep;
 	}
 
+	@Override
 	public void setSPunits(String spunits) {
 
 		sPunits = spunits;
 	}
 
+	@Override
 	public void setSigunits(String sigunits) {
 
 		sigUnits = sigunits;
 	}
 
+	@Override
 	public String getScanName() {
 
 		return scanName;
 	}
 
+	@Override
 	public void setScanName(String name) {
 
 		if(null != name)
 			scanName = name;
 	}
 
-	// -------------------------------------------IAmdisMassSpectrum
 	@Override
 	public String getSource() {
 
@@ -261,59 +272,6 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		if(source != null) {
 			this.source = source;
 		}
-	}
-
-	// -------------------------------------------IAmdisMassSpectrum
-	// -------------------------------IMassSpectrumCloneable
-	/**
-	 * Keep in mind, it is a covariant return.<br/>
-	 * IMassSpectrum is needed. IAmdisMassSpectrum is a subtype of
-	 * ILibraryMassSpectrum is a subtype of IMassSpectrum.
-	 */
-	@Override
-	public ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
-
-		CalibratedVendorMassSpectrum massSpectrum = (CalibratedVendorMassSpectrum)super.clone();
-		IIon amdisIon;
-		/*
-		 * The instance variables have been copied by super.clone();.<br/> The
-		 * ions in the ion list need not to be removed via
-		 * removeAllIons as the method super.clone() has created a new
-		 * list.<br/> It is necessary to fill the list again, as the abstract
-		 * super class does not know each available type of ion.<br/>
-		 * Make a deep copy of all ions.
-		 */
-		for(IIon ion : getIons()) {
-			try {
-				amdisIon = new Ion(ion.getIon(), ion.getAbundance());
-				massSpectrum.addIon(amdisIon);
-			} catch(AbundanceLimitExceededException e) {
-				logger.warn(e);
-			} catch(IonLimitExceededException e) {
-				logger.warn(e);
-			}
-		}
-		massSpectrum.createNewPeakList();
-		for(IMsdPeakMeasurement peak : getPeaks()) {
-			massSpectrum.addPeak(peak);
-		}
-		return massSpectrum;
-	}
-
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-
-		return makeDeepCopy();
-	}
-	// -------------------------------IMassSpectrumCloneable
-
-	@Override
-	public IMsdPeakMeasurement getPeak(int scanPeakIndex) {
-
-		if(!peaksMinMaxSet) {
-			updateSignalLimits();
-		}
-		return peaksList.get(scanPeakIndex);
 	}
 
 	@Override
@@ -374,5 +332,61 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	public void setIname(String iname) {
 
 		iName = iname;
+	}
+
+	@Override
+	public IMsdPeakMeasurement getPeak(int scanPeakIndex) {
+
+		if(!peaksMinMaxSet) {
+			updateSignalLimits();
+		}
+		return peaksList.get(scanPeakIndex);
+	}
+
+	/**
+	 * Keep in mind, it is a covariant return.<br/>
+	 * IMassSpectrum is needed. IAmdisMassSpectrum is a subtype of
+	 * ILibraryMassSpectrum is a subtype of IMassSpectrum.
+	 */
+	@Override
+	public ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
+
+		CalibratedVendorMassSpectrum massSpectrum = (CalibratedVendorMassSpectrum)super.clone();
+		IIon amdisIon;
+		/*
+		 * The instance variables have been copied by super.clone();.<br/> The
+		 * ions in the ion list need not to be removed via
+		 * removeAllIons as the method super.clone() has created a new
+		 * list.<br/> It is necessary to fill the list again, as the abstract
+		 * super class does not know each available type of ion.<br/>
+		 * Make a deep copy of all ions.
+		 */
+		for(IIon ion : getIons()) {
+			try {
+				amdisIon = new Ion(ion.getIon(), ion.getAbundance());
+				massSpectrum.addIon(amdisIon);
+			} catch(AbundanceLimitExceededException e) {
+				logger.warn(e);
+			} catch(IonLimitExceededException e) {
+				logger.warn(e);
+			}
+		}
+		massSpectrum.createNewPeakList();
+		for(IMsdPeakMeasurement peak : getPeaks()) {
+			massSpectrum.addPeak(peak);
+		}
+		return massSpectrum;
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+
+		return makeDeepCopy();
+	}
+
+	private void createNewPeakList() {
+
+		peaksList = new ArrayList<IMsdPeakMeasurement>(10);
+		peaksMinMaxSet = false;
 	}
 }
