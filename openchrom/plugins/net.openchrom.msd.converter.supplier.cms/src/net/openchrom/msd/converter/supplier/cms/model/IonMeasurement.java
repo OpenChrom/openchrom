@@ -8,28 +8,31 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cms.model;
 
-public class MsdPeakMeasurement implements IMsdPeakMeasurement {
-	private double peakmz;
-	private float peaksignal;
+public class IonMeasurement implements IIonMeasurement {
 
-	public MsdPeakMeasurement(double mz, float signal) {
-		peakmz = mz;
-		peaksignal = signal;
+	private double mz;
+	private float signal;
+
+	public IonMeasurement(double mz, float signal) {
+		this.mz = mz;
+		this.signal = signal;
 	}
-	
-	public double  getMZ() {
-		return peakmz;
+
+	public double getMZ() {
+
+		return mz;
 	}
-	
+
 	public float getSignal() {
-		return peaksignal;
+
+		return signal;
 	}
-	
-	public void setSignal(float sig) {
-		peaksignal = sig;
+
+	public void setSignal(float signal) {
+
+		this.signal = signal;
 	}
-	
 }

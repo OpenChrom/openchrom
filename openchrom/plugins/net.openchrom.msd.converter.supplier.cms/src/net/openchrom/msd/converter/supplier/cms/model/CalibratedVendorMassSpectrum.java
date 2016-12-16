@@ -17,10 +17,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.model.core.AbstractRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IIon;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 
 public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpectrum implements ICalibratedVendorMassSpectrum {
@@ -31,315 +29,354 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	 */
 	private static final long serialVersionUID = 788113431263082687L;
 	private static final Logger logger = Logger.getLogger(CalibratedVendorMassSpectrum.class);
-	
-	private double maxSignal = 0;
+	//
+	private List<IIonMeasurement> ionMeasurements;
 	private double minSignal = 0;
 	private double minAbsSignal = 0;
-	private float scaleOffset=0, scaleSlope=0;
-	private boolean peaksMinMaxSet = false;
-	private boolean ionsListSet = false;
-	private String source = "";
+	private double maxSignal = 0;
+	private float scaleOffset = 0;
+	private float scaleSlope = 0;
+	//
+	private double sourcePressure = 0.0;
+	private String sourcePressureUnits = "";
+	private String signalUnits = "";
 	private String scanName = "";
-	private double eTimeS = 0;
-	
-// relevant for both library and measurement scans
-	private List<IMsdPeakMeasurement> peaksList;
-	double sourceP = 0.0;
-	private String sPunits = "";
-	private String sigUnits = "";
-	private String tStamp = "";
-	private String iName = "";
+	private String timeStamp = "";
+	private String instrumentName = "";
 	private double eEnergyV = 0;
 	private double iEnergyV = 0;
-	
+	private double eTimeS = 0;
+
+	public CalibratedVendorMassSpectrum() {
+		/*
+		 * Initialize the values.
+		 */
+		ionMeasurements = new ArrayList<IIonMeasurement>(10);
+	}
+
+	@Override
 	public List<IIon> getIons() {
-		if (!ionsListSet) {
+
+		/*
+		 * Initialization is a bit more elegant now.
+		 */
+		if(getNumberOfIons() == 0) {
 			updateIons();
 		}
 		return super.getIons();
 	}
-	
-	public CalibratedVendorMassSpectrum() {
-		peaksList = new ArrayList<IMsdPeakMeasurement>(10);
-		peaksMinMaxSet = false;
-		ionsListSet = false;
-	}
-	
-	public void updateIons() {
-		float signal;
-		this.removeAllIons();
-		for (IMsdPeakMeasurement peak : getPeaks()) {
-			signal = peak.getSignal();
-			if (0.0 < signal) {
-				try {
-					this.addIon(new Ion(peak.getMZ(), signal));
-				}
-				catch(AbundanceLimitExceededException e) {
-					System.out.println("CalibratedVendorMassSpectrum.updateRegularLibraryMassSpectrum(): " + e); 
-				}
-				catch(IonLimitExceededException e) {
-					System.out.println("CalibratedVendorMassSpectrum.updateRegularLibraryMassSpectrum(): " + e); 
-				}
-			}
-		}
-		ionsListSet = true;
-	}
-	
 
-	private void createNewPeakList() {
-		peaksList = new ArrayList<IMsdPeakMeasurement>(10);
-		peaksMinMaxSet = false;
-	}
-	
-	public ICalibratedVendorMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException {
-		Random random = new Random(seed);
+	@Override
+	public void updateIons() {
 
 		/*
-		 * The instance variables have been copied by super.clone();.<br/> The
-		 * ions in the ion list need not to be removed via
-		 * removeAllIons as the method super.clone() has created a new
-		 * list.<br/> It is necessary to fill the list again, as the abstract
-		 * super class does not know each available type of ion.<br/>
-		 * Make a deep copy of all ions.
+		 * Remove the currently used ions.
 		 */
-		CalibratedVendorMassSpectrum massSpectrum = (CalibratedVendorMassSpectrum)super.clone();
-		float signal, noise;
-		
-		massSpectrum.createNewPeakList();
-		for (IMsdPeakMeasurement peak : this.getPeaks()) {
-			signal = peak.getSignal();
-			noise = (float)(relativeError * signal * random.nextGaussian());
-			massSpectrum.addPeak(peak.getMZ(), signal + noise);
+		removeAllIons();
+		/*
+		 * Set the scaled ions.
+		 */
+		for(IIonMeasurement ionMeasurement : getIonMeasurements()) {
+			float signal = ionMeasurement.getSignal();
+			double mz = ionMeasurement.getMZ();
+			if(signal > 0.0f && mz > 0.0d) {
+				try {
+					addIon(new Ion(mz, signal));
+				} catch(Exception e) {
+					logger.warn(e);
+				}
+			}
 		}
-		massSpectrum.updateIons();
-		return massSpectrum;
 	}
-	
-	public boolean scale() { // make suitable for log scale plotting
-		if (0.0 != scaleSlope) return false; // must unscale() first
-		if (!peaksMinMaxSet) {
+
+	@Override
+	public boolean scale() {
+
+		/*
+		 * Make suitable for log scale plotting
+		 */
+		if(0.0 != scaleSlope) {
+			boolean isUnscalable = unscale();
+			if(!isUnscalable) {
+				return false;
+			}
+		}
+		/*
+		 * Calculate the limits on demand.
+		 */
+		if(!isMinMaxSignalCalculated()) {
 			updateSignalLimits();
 		}
+		//
 		scaleOffset = (float)(minAbsSignal - minSignal);
-		scaleSlope = 1/(float)(maxSignal + scaleOffset);
-		if (0.0 == scaleSlope) return false; // can't have zero slope
-		for (IMsdPeakMeasurement peak : getPeaks()) {
-			peak.setSignal(scaleSlope*(peak.getSignal() + scaleOffset) );
-		}
-		for (IIon ion : getIons()) {
-			try {
-				ion.setAbundance(scaleSlope*(ion.getAbundance() + scaleOffset) );
-			} catch(AbundanceLimitExceededException e) {
-				logger.warn(e);
+		scaleSlope = 1.0f / (float)(maxSignal + scaleOffset);
+		/*
+		 * Can't have zero slope
+		 */
+		if(0.0 == scaleSlope) {
+			return false;
+		} else {
+			/*
+			 * Adjust the ion measurements.
+			 */
+			for(IIonMeasurement ionMeasurement : ionMeasurements) {
+				ionMeasurement.setSignal(scaleSlope * (ionMeasurement.getSignal() + scaleOffset));
 			}
+			/*
+			 * Update the ions and finish the method.
+			 */
+			updateIons();
+			return true;
 		}
-		return true;
 	}
-	
+
+	@Override
 	public boolean unscale() {
-		if (0.0 == scaleSlope) return false;
-		for (IMsdPeakMeasurement peak : getPeaks()) {
-			peak.setSignal((peak.getSignal() / scaleSlope) - scaleOffset);
+
+		if(0.0 == scaleSlope) {
+			return false;
 		}
-		for (IIon ion : getIons()) {
-			try {
-				ion.setAbundance((ion.getAbundance() / scaleSlope) - scaleOffset);
-			} catch(AbundanceLimitExceededException e) {
-				logger.warn(e);
-			}
+		/*
+		 * Adjust the ion measurements.
+		 */
+		for(IIonMeasurement ionMeasurement : ionMeasurements) {
+			ionMeasurement.setSignal((ionMeasurement.getSignal() / scaleSlope) - scaleOffset);
 		}
+		/*
+		 * Update the ions and finish the method.
+		 */
+		updateIons();
 		scaleSlope = 0;
 		return true;
 	}
-	
-	public List<IMsdPeakMeasurement> getPeaks() {
-		if (!peaksMinMaxSet) {
+
+	@Override
+	public List<IIonMeasurement> getIonMeasurements() {
+
+		if(!isMinMaxSignalCalculated()) {
 			updateSignalLimits();
 		}
-		return peaksList;
+		return ionMeasurements;
 	}
 
-	public boolean addPeak(IMsdPeakMeasurement peak) {
-		if(peak == null) {
-			System.out.println("MsdScanMeasurement addPeak(peak): peak must be not null.");
-			return false;
+	@Override
+	public IIonMeasurement getIonMeasurement(int scanIndex) {
+
+		if(!isMinMaxSignalCalculated()) {
+			updateSignalLimits();
 		}
-		if (0.0 >= peak.getMZ()) {
-			System.out.println("MsdScanMeasurement addPeak(peak): peak.getMZ() must be > 0.");
-			return false;
+		//
+		if(scanIndex > 0 && scanIndex < ionMeasurements.size()) {
+			return ionMeasurements.get(scanIndex);
+		} else {
+			return null;
 		}
-		peaksList.add(peak);
-		peaksMinMaxSet = false;
-		return true;
 	}
-	
+
+	@Override
 	public void updateSignalLimits() {
-		maxSignal = 0;
-		minSignal = 0;
-		minAbsSignal = 0;
-		float signal;
-		for (IMsdPeakMeasurement peak : peaksList) {
-			signal = peak.getSignal();
-			if ((0.0 == maxSignal) && (0.0 == minSignal)) {
+
+		for(IIonMeasurement peak : ionMeasurements) {
+			float signal = peak.getSignal();
+			if(maxSignal == 0 && minSignal == 0) {
 				maxSignal = minSignal = minAbsSignal = signal;
-			}
-			else {
-				if (maxSignal < signal) maxSignal = signal;
-				else if (minSignal > signal) minSignal = signal;
-				if (0.0 != signal) {
+			} else {
+				/*
+				 * Validations
+				 */
+				if(maxSignal < signal) {
+					maxSignal = signal;
+				}
+				//
+				if(minSignal > signal) {
+					minSignal = signal;
+				}
+				//
+				if(signal != 0) {
 					signal = java.lang.StrictMath.abs(signal);
-					if ((0.0 == minAbsSignal) || (minAbsSignal > signal))
+					if(minAbsSignal == 0 || minAbsSignal > signal) {
 						minAbsSignal = signal;
+					}
 				}
 			}
-		} //for
-		peaksMinMaxSet = true;
-	}
-	
-	public boolean addPeak(double mz, float signal) {
-		IMsdPeakMeasurement peak = new MsdPeakMeasurement(mz, signal);
-		return addPeak(peak);
+		}
 	}
 
-	public double getSourcep() {
-		return sourceP;
+	@Override
+	public boolean addIonMeasurement(double mz, float signal) {
+
+		return addIonMeasurement(new IonMeasurement(mz, signal));
 	}
-	
-	public String getSPunits() {
-		return sPunits;
+
+	@Override
+	public boolean addIonMeasurement(IIonMeasurement ionMeasurement) {
+
+		if(ionMeasurement == null || ionMeasurement.getMZ() <= 0) {
+			return false;
+		}
+		//
+		ionMeasurements.add(ionMeasurement);
+		return true;
 	}
-	
-	public String getSigunits() {
-		return sigUnits;
+
+	@Override
+	public double getSourcePressure() {
+
+		return sourcePressure;
 	}
-	
-	public void setSourcep(double sourcep) {
-		sourceP = sourcep;
+
+	@Override
+	public void setSourcePressure(double sourcePressure) {
+
+		this.sourcePressure = sourcePressure;
 	}
-	public void setSPunits(String spunits) {
-		sPunits = spunits;
+
+	@Override
+	public String getSourcePressureUnits() {
+
+		return sourcePressureUnits;
 	}
-	public void setSigunits(String sigunits) {
-		sigUnits = sigunits;
+
+	@Override
+	public void setSourcePressureUnits(String spunits) {
+
+		sourcePressureUnits = spunits;
 	}
+
+	@Override
+	public String getSignalUnits() {
+
+		return signalUnits;
+	}
+
+	@Override
+	public void setSignalUnits(String sigunits) {
+
+		signalUnits = sigunits;
+	}
+
+	@Override
 	public String getScanName() {
+
 		return scanName;
 	}
-	public void setScanName(String name) {
-		if (null != name) scanName = name;
-	}
-
-	// -------------------------------------------IAmdisMassSpectrum
-	@Override
-	public String getSource() {
-		return source;
-	}
 
 	@Override
-	public void setSource(String source) {
-		if(source != null) {
-			this.source = source;
-		}
-	}
+	public void setScanName(String scanName) {
 
-	// -------------------------------------------IAmdisMassSpectrum
-	// -------------------------------IMassSpectrumCloneable
-	/**
-	 * Keep in mind, it is a covariant return.<br/>
-	 * IMassSpectrum is needed. IAmdisMassSpectrum is a subtype of
-	 * ILibraryMassSpectrum is a subtype of IMassSpectrum.
-	 */
-	@Override
-	public ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
-
-		CalibratedVendorMassSpectrum massSpectrum = (CalibratedVendorMassSpectrum)super.clone();
-		IIon amdisIon;
-		/*
-		 * The instance variables have been copied by super.clone();.<br/> The
-		 * ions in the ion list need not to be removed via
-		 * removeAllIons as the method super.clone() has created a new
-		 * list.<br/> It is necessary to fill the list again, as the abstract
-		 * super class does not know each available type of ion.<br/>
-		 * Make a deep copy of all ions.
-		 */
-		for(IIon ion : getIons()) {
-			try {
-				amdisIon = new Ion(ion.getIon(), ion.getAbundance());
-				massSpectrum.addIon(amdisIon);
-			} catch(AbundanceLimitExceededException e) {
-				logger.warn(e);
-			} catch(IonLimitExceededException e) {
-				logger.warn(e);
-			}
-		}
-		massSpectrum.createNewPeakList();
-		for (IMsdPeakMeasurement peak : getPeaks()) {
-			massSpectrum.addPeak(peak);
-		}
-		return massSpectrum;
+		if(null != scanName)
+			this.scanName = scanName;
 	}
 
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		return makeDeepCopy();
-	}
-	// -------------------------------IMassSpectrumCloneable
+	public String getTimeStamp() {
 
-	@Override
-	public IMsdPeakMeasurement getPeak(int scanPeakIndex) {
-		if (!peaksMinMaxSet) {
-			updateSignalLimits();
-		}
-		return peaksList.get(scanPeakIndex);
+		return timeStamp;
 	}
 
 	@Override
-	public String getTstamp() {
-		return tStamp;
+	public void setTimeStamp(String tstamp) {
+
+		timeStamp = tstamp;
+	}
+
+	@Override
+	public String getInstrumentName() {
+
+		return instrumentName;
+	}
+
+	@Override
+	public void setInstrumentName(String iname) {
+
+		instrumentName = iname;
 	}
 
 	@Override
 	public double getEtimes() {
+
 		return eTimeS;
 	}
 
 	@Override
 	public double getEenergy() {
+
 		return eEnergyV;
 	}
 
 	@Override
 	public double getIenergy() {
+
 		return iEnergyV;
 	}
 
 	@Override
-	public String getIname(String iname) {
-		return iName;
-	}
-
-	@Override
-	public void setTstamp(String tstamp) {
-		tStamp = tstamp;
-	}
-
-	@Override
 	public void setEtimes(double etimes) {
+
 		eTimeS = etimes;
 	}
 
 	@Override
 	public void setEenergy(double eenergy) {
+
 		eEnergyV = eenergy;
 	}
 
 	@Override
 	public void setIenergy(double ienergy) {
+
 		iEnergyV = ienergy;
 	}
 
 	@Override
-	public void setIname(String iname) {
-		iName = iname;
+	public ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
+
+		CalibratedVendorMassSpectrum vendorMassSpectrum = (CalibratedVendorMassSpectrum)super.clone();
+		vendorMassSpectrum.resetMinMaxSignal();
+		//
+		for(IIonMeasurement ionMeasurement : this.getIonMeasurements()) {
+			float signal = ionMeasurement.getSignal();
+			vendorMassSpectrum.addIonMeasurement(ionMeasurement.getMZ(), signal);
+		}
+		vendorMassSpectrum.updateIons();
+		return vendorMassSpectrum;
+	}
+
+	@Override
+	public ICalibratedVendorMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException {
+
+		Random random = new Random(seed);
+		CalibratedVendorMassSpectrum vendorMassSpectrum = (CalibratedVendorMassSpectrum)super.clone();
+		vendorMassSpectrum.resetMinMaxSignal();
+		//
+		for(IIonMeasurement ionMeasurement : this.getIonMeasurements()) {
+			float signal = ionMeasurement.getSignal();
+			float noise = (float)(relativeError * signal * random.nextGaussian());
+			vendorMassSpectrum.addIonMeasurement(ionMeasurement.getMZ(), signal + noise);
+		}
+		vendorMassSpectrum.updateIons();
+		return vendorMassSpectrum;
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+
+		return makeDeepCopy();
+	}
+
+	private boolean isMinMaxSignalCalculated() {
+
+		if(minSignal == 0 && minAbsSignal == 0 && maxSignal == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	private void resetMinMaxSignal() {
+
+		minSignal = 0;
+		minAbsSignal = 0;
+		maxSignal = 0;
 	}
 }

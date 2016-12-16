@@ -24,10 +24,11 @@ import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
 import junit.framework.TestCase;
 
-public class ImportConverter_1_ITest extends TestCase {
+public class ImportConverter_2_ITest extends TestCase {
 
 	private IMassSpectra massSpectra;
 
@@ -35,7 +36,7 @@ public class ImportConverter_1_ITest extends TestCase {
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		File importFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_1));
+		File importFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_2));
 		IMassSpectrumImportConverter importConverter = new MassSpectrumImportConverter();
 		IMassSpectrumImportConverterProcessingInfo processingInfo = importConverter.convert(importFile, new NullProgressMonitor());
 		massSpectra = processingInfo.getMassSpectra();
@@ -57,42 +58,52 @@ public class ImportConverter_1_ITest extends TestCase {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(1);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
+		ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
 		assertEquals("Argon", libraryMassSpectrum.getLibraryInformation().getName());
 		assertEquals("7440-37-1", libraryMassSpectrum.getLibraryInformation().getCasNumber());
-		assertEquals(0, massSpectrum.getNumberOfIons());
+		assertEquals(4, massSpectrum.getNumberOfIons());
 		assertEquals(1.46215e-01f, massSpectrum.getIon(20).getAbundance());
 		assertEquals(3.00030e-03f, massSpectrum.getIon(36).getAbundance());
 		assertEquals(5.00050e-04f, massSpectrum.getIon(38).getAbundance());
 		assertEquals(1.00000e+00f, massSpectrum.getIon(40).getAbundance());
+		assertEquals("amp", calibratedVendorMassSpectrum.getSignalUnits());
+		// ...
 	}
 
 	public void test_3() throws AbundanceLimitExceededException, IonLimitExceededException {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(2);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
+		ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
 		assertEquals("Nitrogen", libraryMassSpectrum.getLibraryInformation().getName());
 		assertEquals("7727-37-9", libraryMassSpectrum.getLibraryInformation().getCasNumber());
 		assertEquals(3, massSpectrum.getNumberOfIons());
 		assertEquals(1.37914e-01f, massSpectrum.getIon(14).getAbundance());
 		assertEquals(1.00000e+00f, massSpectrum.getIon(28).getAbundance());
 		assertEquals(7.40074e-03f, massSpectrum.getIon(29).getAbundance());
+		assertEquals("amp", calibratedVendorMassSpectrum.getSignalUnits());
+		// ...
 	}
 
 	public void test_4() throws AbundanceLimitExceededException, IonLimitExceededException {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(3);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
+		ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
 		assertEquals("Oxygen", libraryMassSpectrum.getLibraryInformation().getName());
 		assertEquals("7782-44-7", libraryMassSpectrum.getLibraryInformation().getCasNumber());
 		assertEquals(2, massSpectrum.getNumberOfIons());
 		assertEquals(2.18022e-01f, massSpectrum.getIon(16).getAbundance());
 		assertEquals(1.00000e+00f, massSpectrum.getIon(32).getAbundance());
+		assertEquals("amp", calibratedVendorMassSpectrum.getSignalUnits());
+		// ...
 	}
 
 	public void test_5() throws AbundanceLimitExceededException, IonLimitExceededException {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(4);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
+		ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
 		assertEquals("Ethane", libraryMassSpectrum.getLibraryInformation().getName());
 		assertEquals("74-84-0", libraryMassSpectrum.getLibraryInformation().getCasNumber());
 		assertEquals(14, massSpectrum.getNumberOfIons());
@@ -110,12 +121,15 @@ public class ImportConverter_1_ITest extends TestCase {
 		assertEquals(2.15222e-01f, massSpectrum.getIon(29).getAbundance());
 		assertEquals(2.62226e-01f, massSpectrum.getIon(30).getAbundance());
 		assertEquals(5.00050e-03f, massSpectrum.getIon(31).getAbundance());
+		assertEquals("amp", calibratedVendorMassSpectrum.getSignalUnits());
+		// ...
 	}
 
 	public void test_6() throws AbundanceLimitExceededException, IonLimitExceededException {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(5);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
+		ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
 		assertEquals("Ethylene", libraryMassSpectrum.getLibraryInformation().getName());
 		assertEquals("74-85-1", libraryMassSpectrum.getLibraryInformation().getCasNumber());
 		assertEquals(12, massSpectrum.getNumberOfIons());
@@ -131,5 +145,7 @@ public class ImportConverter_1_ITest extends TestCase {
 		assertEquals(1.00000e+00f, massSpectrum.getIon(28).getAbundance());
 		assertEquals(2.30023e-02f, massSpectrum.getIon(29).getAbundance());
 		assertEquals(1.00010e-03f, massSpectrum.getIon(30).getAbundance());
+		assertEquals("amp", calibratedVendorMassSpectrum.getSignalUnits());
+		// ...
 	}
 }
