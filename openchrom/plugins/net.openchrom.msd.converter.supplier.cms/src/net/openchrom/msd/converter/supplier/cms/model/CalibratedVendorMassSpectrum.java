@@ -166,7 +166,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 			updateSignalLimits();
 		}
 		//
-		if(scanIndex > 0 && scanIndex < ionMeasurements.size()) {
+		if(scanIndex >= 0 && scanIndex < ionMeasurements.size()) {
 			return ionMeasurements.get(scanIndex);
 		} else {
 			return null;
@@ -328,16 +328,29 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		iEnergyV = ienergy;
 	}
 
+	/**
+	 * This method is used only to create a new IIonMeasurement list 
+	 * after cloning. Otherwise, the old list is re-used.  The list has 
+	 * to be filled by the implementation specific ions of each 
+	 * implementing class.
+	 */
+	private void createNewIonMeasurementList() {
+
+		ionMeasurements = new ArrayList<IIonMeasurement>(200);
+	}
+
 	@Override
 	public ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
 
 		CalibratedVendorMassSpectrum vendorMassSpectrum = (CalibratedVendorMassSpectrum)super.clone();
 		vendorMassSpectrum.resetMinMaxSignal();
+		vendorMassSpectrum.createNewIonMeasurementList();
 		//
 		for(IIonMeasurement ionMeasurement : this.getIonMeasurements()) {
 			float signal = ionMeasurement.getSignal();
 			vendorMassSpectrum.addIonMeasurement(ionMeasurement.getMZ(), signal);
 		}
+		vendorMassSpectrum.updateSignalLimits();
 		vendorMassSpectrum.updateIons();
 		return vendorMassSpectrum;
 	}
@@ -348,12 +361,14 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		Random random = new Random(seed);
 		CalibratedVendorMassSpectrum vendorMassSpectrum = (CalibratedVendorMassSpectrum)super.clone();
 		vendorMassSpectrum.resetMinMaxSignal();
+		vendorMassSpectrum.createNewIonMeasurementList();
 		//
 		for(IIonMeasurement ionMeasurement : this.getIonMeasurements()) {
 			float signal = ionMeasurement.getSignal();
 			float noise = (float)(relativeError * signal * random.nextGaussian());
 			vendorMassSpectrum.addIonMeasurement(ionMeasurement.getMZ(), signal + noise);
 		}
+		vendorMassSpectrum.updateSignalLimits();
 		vendorMassSpectrum.updateIons();
 		return vendorMassSpectrum;
 	}
