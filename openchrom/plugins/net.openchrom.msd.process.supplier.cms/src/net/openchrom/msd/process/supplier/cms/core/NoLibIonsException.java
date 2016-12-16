@@ -8,15 +8,19 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
-
 class NoLibIonsException extends Exception {
+
 	int ii;
-	NoLibIonsException(int i) {	ii = i;	}
+
+	NoLibIonsException(int i) {
+		ii = i;
+	}
+
 	public String toString() {
+
 		return "Need at least 1 library ion, have " + ii + ".";
 	}
 }
-

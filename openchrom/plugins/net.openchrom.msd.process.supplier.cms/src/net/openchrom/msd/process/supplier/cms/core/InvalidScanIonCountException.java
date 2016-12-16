@@ -8,13 +8,16 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
-
 class InvalidScanIonCountException extends Exception {
-	InvalidScanIonCountException() { }
+
+	InvalidScanIonCountException() {
+	}
+
 	public String toString() {
+
 		return "Attempt to get getUsedScanIonCount before executing DataSet.match()";
 	}
 }

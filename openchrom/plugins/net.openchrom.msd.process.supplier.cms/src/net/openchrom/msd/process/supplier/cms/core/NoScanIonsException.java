@@ -8,16 +8,19 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
-
 class NoScanIonsException extends Exception {
+
 	int j;
-	NoScanIonsException(int i) { j = i; }
+
+	NoScanIonsException(int i) {
+		j = i;
+	}
+
 	public String toString() {
+
 		return "Need at least 1 Scan ion, have " + j + ".";
 	}
 }
-
-

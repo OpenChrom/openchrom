@@ -8,14 +8,16 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
-
 class InvalidLibIonCountException extends Exception {
-	InvalidLibIonCountException() {	}
+
+	InvalidLibIonCountException() {
+	}
+
 	public String toString() {
+
 		return "Attempt to getUsedLibIonCount() before executing DataSet.match()";
 	}
 }
-

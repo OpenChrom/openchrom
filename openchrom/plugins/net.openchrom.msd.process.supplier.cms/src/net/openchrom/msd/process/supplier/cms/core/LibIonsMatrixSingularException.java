@@ -8,16 +8,19 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
-
 class LibIonsMatrixSingularException extends Exception {
+
 	String s;
-	LibIonsMatrixSingularException(String ss) { s = ss; }
+
+	LibIonsMatrixSingularException(String ss) {
+		s = ss;
+	}
+
 	public String toString() {
+
 		return s;
 	}
 }
-
-

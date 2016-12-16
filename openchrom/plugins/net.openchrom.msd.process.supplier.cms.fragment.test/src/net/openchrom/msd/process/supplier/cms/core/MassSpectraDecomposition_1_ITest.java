@@ -49,37 +49,33 @@ public class MassSpectraDecomposition_1_ITest extends TestCase {
 		// IMassSpectra massSpectra = processingInfo.getMassSpectra();
 		// massSpectraDecomposition.decompose(massSpectra, new NullProgressMonitor());
 		//
-		//File file = new File("G:/_CDS/svn/rivisc2h2/data/openchrom_test/test1_csv.csv");
-		////File file = new File("G:/_CDS/svn/rivisc2h2/data/rga2_Mar_07_2016_12-14-09_AM/_mar_07_2016__12-14-36_am_466.csv");
-		//IChromatogramMSDImportConverterProcessingInfo proccesingInfo = ChromatogramConverterMSD.convert(file, new NullProgressMonitor());
-		//IChromatogramMSD chromatogramMSD = proccesingInfo.getChromatogram();
+		// File file = new File("G:/_CDS/svn/rivisc2h2/data/openchrom_test/test1_csv.csv");
+		//// File file = new File("G:/_CDS/svn/rivisc2h2/data/rga2_Mar_07_2016_12-14-09_AM/_mar_07_2016__12-14-36_am_466.csv");
+		// IChromatogramMSDImportConverterProcessingInfo proccesingInfo = ChromatogramConverterMSD.convert(file, new NullProgressMonitor());
+		// IChromatogramMSD chromatogramMSD = proccesingInfo.getChromatogram();
 		IMassSpectra massSpectra = new MassSpectra();
-		//for(IScan scan : chromatogramMSD.getScans()) {
-		//	if(scan instanceof IScanMSD) {
-		//		IScanMSD massSpectrum = (IScanMSD)scan;
-		//		massSpectra.addMassSpectrum(massSpectrum);
-		//	}
-		//}
-		
+		// for(IScan scan : chromatogramMSD.getScans()) {
+		// if(scan instanceof IScanMSD) {
+		// IScanMSD massSpectrum = (IScanMSD)scan;
+		// massSpectra.addMassSpectrum(massSpectrum);
+		// }
+		// }
 		File scanfile = new File("G:/_CDS/svn/rivisc2h2/data/openchrom_test/testscan.cms"); // argon, nitrogen, oxygen, ethane, ethylene
-		//File scanfile = new File("G:/_CDS/svn/rivisc2h2/data/openchrom_test/test2.cms"); // _mar_07_2016__12-14-36_am_3
-		//File scanfile = new File("G:/_CDS/svn/rivisc2h2/data/rga2_Mar_07_2016_12-14-09_AM/_mar_07_2016__12-14-36_am_466.cms");
+		// File scanfile = new File("G:/_CDS/svn/rivisc2h2/data/openchrom_test/test2.cms"); // _mar_07_2016__12-14-36_am_3
+		// File scanfile = new File("G:/_CDS/svn/rivisc2h2/data/rga2_Mar_07_2016_12-14-09_AM/_mar_07_2016__12-14-36_am_466.cms");
 		CMSreader cmsreader = new CMSreader();
 		IMassSpectra scanSpectra = cmsreader.read(scanfile, new NullProgressMonitor());
-		
-		//File libfile = new File("G:/_CDS/svn/rivisc2h2/data/cracking patterns/_cmslib-all_mbar.cms"); // all
+		// File libfile = new File("G:/_CDS/svn/rivisc2h2/data/cracking patterns/_cmslib-all_mbar.cms"); // all
 		File libfile = new File("G:/_CDS/svn/rivisc2h2/data/cracking patterns/_cmslib-1_mbar.cms"); // argon, nitrogen, oxygen, ethane, ethylene
-		//File libfile = new File("G:/_CDS/svn/rivisc2h2/data/cracking patterns/_cmslib-edit_mbar.cms"); // cylinder, hydrogen, methane, ethane, ethylene, propane, butane, acetylene
-        //IMassSpectrumImportConverterProcessingInfo processingInfo = MassSpectrumConverter.convert(libfile, new NullProgressMonitor());
-        //IMassSpectra libmassSpectra = processingInfo.getMassSpectra();
-		//MassSpectrumReader libReader = new MassSpectrumReader();
+		// File libfile = new File("G:/_CDS/svn/rivisc2h2/data/cracking patterns/_cmslib-edit_mbar.cms"); // cylinder, hydrogen, methane, ethane, ethylene, propane, butane, acetylene
+		// IMassSpectrumImportConverterProcessingInfo processingInfo = MassSpectrumConverter.convert(libfile, new NullProgressMonitor());
+		// IMassSpectra libmassSpectra = processingInfo.getMassSpectra();
+		// MassSpectrumReader libReader = new MassSpectrumReader();
 		IMassSpectra libSpectra = cmsreader.read(libfile, new NullProgressMonitor());
-		//CalibratedVendorMassSpectrum libSpectra = libReader.read(libfile, new NullProgressMonitor());
-		
+		// CalibratedVendorMassSpectrum libSpectra = libReader.read(libfile, new NullProgressMonitor());
 		try {
 			massSpectraDecomposition.decompose(scanSpectra, libSpectra, new NullProgressMonitor());
-		}
-		catch (InvalidScanException exc) {
+		} catch(InvalidScanException exc) {
 			System.out.println(exc);
 		}
 		//

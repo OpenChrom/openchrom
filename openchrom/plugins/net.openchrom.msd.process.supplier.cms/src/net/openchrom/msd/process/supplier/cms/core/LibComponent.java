@@ -8,7 +8,7 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
@@ -16,10 +16,11 @@ import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
 public class LibComponent {
+
 	ICalibratedVendorMassSpectrum libraryRef; // this ion was found in this library
 	boolean mark; // used to identify if this library component is actually used
 	int componentIndex;
-	
+
 	LibComponent(ICalibratedVendorMassSpectrum libRef) {
 		libraryRef = libRef;
 		mark = false;

@@ -8,14 +8,19 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
-
 class DuplicateCompNameException extends Exception {
+
 	String ii;
-	DuplicateCompNameException(String i) {	ii = i;	}
+
+	DuplicateCompNameException(String i) {
+		ii = i;
+	}
+
 	public String toString() {
+
 		return "Duplicate library component name: " + ii + ".";
 	}
 }

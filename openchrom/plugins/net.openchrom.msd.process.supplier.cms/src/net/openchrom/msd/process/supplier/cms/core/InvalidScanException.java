@@ -8,17 +8,21 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
 class InvalidScanException extends Exception {
+
 	IScanMSD j;
-	InvalidScanException(IScanMSD scan) { j = scan; }
+
+	InvalidScanException(IScanMSD scan) {
+		j = scan;
+	}
+
 	public String toString() {
+
 		return "An unrecoverable error occurred when processing this mass spec scan " + j + ".";
 	}
 }
-
-

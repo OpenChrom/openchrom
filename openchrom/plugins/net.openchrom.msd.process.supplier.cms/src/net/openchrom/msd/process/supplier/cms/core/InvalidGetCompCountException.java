@@ -8,16 +8,19 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
-
 class InvalidGetCompCountException extends Exception {
+
 	int j;
-	InvalidGetCompCountException(int i) { j = i; }
+
+	InvalidGetCompCountException(int i) {
+		j = i;
+	}
+
 	public String toString() {
+
 		return "component count is invalid, value = " + j + ".";
 	}
 }
-
-

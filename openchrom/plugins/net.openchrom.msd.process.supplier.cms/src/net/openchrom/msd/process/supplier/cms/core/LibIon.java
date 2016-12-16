@@ -8,15 +8,16 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 
 class LibIon extends GenIon {
-	//IRegularLibraryMassSpectrum libraryRef; // this ion was found in this library
+
+	// IRegularLibraryMassSpectrum libraryRef; // this ion was found in this library
 	LibComponent componentRef; // this ion came from this library component
-	
+
 	LibIon(double mass, double abundance, int compSequence, LibComponent ref) {
 		super(mass, abundance);
 		ionCompSequence = compSequence;
