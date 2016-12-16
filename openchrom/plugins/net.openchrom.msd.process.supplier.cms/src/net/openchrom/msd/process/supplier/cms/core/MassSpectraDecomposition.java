@@ -23,8 +23,6 @@ import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.ejml.data.DenseMatrix64F;
 import org.ejml.factory.LinearSolverFactory;
-import org.ejml.interfaces.decomposition.DecompositionInterface;
-import org.ejml.interfaces.decomposition.QRDecomposition;
 import org.ejml.interfaces.decomposition.QRPDecomposition;
 import org.ejml.interfaces.linsol.LinearSolver;
 import org.ejml.ops.CommonOps;
@@ -32,8 +30,7 @@ import org.ejml.ops.SpecializedOps;
 
 import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
-import net.openchrom.msd.converter.supplier.cms.model.IMsdPeakMeasurement;
-import net.openchrom.msd.converter.supplier.cms.model.MsdPeakMeasurement;
+import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
 
 public class MassSpectraDecomposition {
 
@@ -99,10 +96,10 @@ public class MassSpectraDecomposition {
 					System.out.println();
 				} // if
 			} // for
-			// then read ions present in the unknown scan
+				// then read ions present in the unknown scan
 			System.out.println("SCAN: \"" + ((CalibratedVendorMassSpectrum)scan).getScanName() + "\"");
 			System.out.print("\t");
-			for(IMsdPeakMeasurement sigpeak : ((ICalibratedVendorMassSpectrum)scan).getPeaks()) {
+			for(IIonMeasurement sigpeak : ((ICalibratedVendorMassSpectrum)scan).getIonMeasurements()) {
 				System.out.print("(" + sigpeak.getMZ() + ", " + sigpeak.getSignal() + ")");
 				fitDataset.addScanIon(sigpeak.getMZ(), sigpeak.getSignal(), (ICalibratedVendorMassSpectrum)scan);
 			} // for
@@ -218,7 +215,7 @@ public class MassSpectraDecomposition {
 			}
 			// generate a residuals mass spectrum by replacing abundance values for ions that were fit to library components with residuals
 			try {
-				scanResidual = ((ICalibratedVendorMassSpectrum)scan).makeDeepCopy();
+				scanResidual = (ICalibratedVendorMassSpectrum)scan.makeDeepCopy();
 			} catch(CloneNotSupportedException e) {
 				logger.warn(e);
 			}
@@ -226,7 +223,7 @@ public class MassSpectraDecomposition {
 			float datasetIonSignal, residIonSignal, newSignal;
 			double datasetIonMass, residIonMass;
 			ScanIon datasetIon;
-			IMsdPeakMeasurement scanPeak;
+			IIonMeasurement scanPeak;
 			int residIonIndex;
 			try {
 				for(int irow = 0; irow < yResid.numRows; irow++) {
@@ -235,12 +232,12 @@ public class MassSpectraDecomposition {
 					datasetIonMass = datasetIon.ionMass;
 					datasetIonSignal = (float)datasetIon.ionAbundance;
 					residIonIndex = fitDataset.getScanPeakIndex(irow);
-					scanPeak = scanResidual.getPeak(residIonIndex);
+					scanPeak = scanResidual.getIonMeasurement(residIonIndex);
 					residIonMass = scanPeak.getMZ();
 					residIonSignal = scanPeak.getSignal();
 					// test to verify that the correct peak measurement will be replaced
 					assert ((datasetIonMass == residIonMass) && (datasetIonSignal == residIonSignal));
-					scanResidual.getPeak(residIonIndex).setSignal(newSignal);
+					scanResidual.getIonMeasurement(residIonIndex).setSignal(newSignal);
 				}
 			} catch(InvalidScanIonCountException e) {
 				logger.warn(e);

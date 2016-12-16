@@ -21,7 +21,7 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.cms.io.CMSreader;
+import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 
 import junit.framework.TestCase;
 
@@ -63,7 +63,7 @@ public class MassSpectraDecomposition_1_ITest extends TestCase {
 		File scanfile = new File("G:/_CDS/svn/rivisc2h2/data/openchrom_test/testscan.cms"); // argon, nitrogen, oxygen, ethane, ethylene
 		// File scanfile = new File("G:/_CDS/svn/rivisc2h2/data/openchrom_test/test2.cms"); // _mar_07_2016__12-14-36_am_3
 		// File scanfile = new File("G:/_CDS/svn/rivisc2h2/data/rga2_Mar_07_2016_12-14-09_AM/_mar_07_2016__12-14-36_am_466.cms");
-		CMSreader cmsreader = new CMSreader();
+		MassSpectrumReader cmsreader = new MassSpectrumReader();
 		IMassSpectra scanSpectra = cmsreader.read(scanfile, new NullProgressMonitor());
 		// File libfile = new File("G:/_CDS/svn/rivisc2h2/data/cracking patterns/_cmslib-all_mbar.cms"); // all
 		File libfile = new File("G:/_CDS/svn/rivisc2h2/data/cracking patterns/_cmslib-1_mbar.cms"); // argon, nitrogen, oxygen, ethane, ethylene
