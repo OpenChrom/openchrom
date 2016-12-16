@@ -80,7 +80,6 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 	private static final String EENERGYV = "EENERGYV: ";
 	private static final String IENERGYV = "IENERGYV: ";
 	private static final String INAME = "INAME: ";
-	
 	//
 	private DecimalFormat decimalFormat;
 	private TargetExtendedComparator targetExtendedComparator;

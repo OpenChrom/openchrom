@@ -20,40 +20,69 @@ import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
 public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectrum, IScanMSD {
+
 	/*
 	 * TODO WALTER
 	 * Add the CMS specific fields here.
 	 */
 	public List<IMsdPeakMeasurement> getPeaks();
+
 	public boolean addPeak(IMsdPeakMeasurement peak);
+
 	public boolean addPeak(double mz, float signal);
+
 	public boolean scale();
+
 	public boolean unscale();
+
 	public IMsdPeakMeasurement getPeak(int scanPeakIndex);
+
 	public double getSourcep();
+
 	public String getSPunits();
+
 	public String getSigunits();
+
 	public String getScanName();
+
 	public String getTstamp();
+
 	public double getEtimes();
+
 	public double getEenergy();
+
 	public double getIenergy();
+
 	public String getIname(String iname);
+
 	public void setSourcep(double sourcep);
+
 	public void setSPunits(String spunits);
+
 	public void setSigunits(String sigunits);
+
 	public void setTstamp(String tstamp);
+
 	public void setEtimes(double etimes);
+
 	public void setEenergy(double eenergy);
+
 	public void setIenergy(double ienergy);
+
 	public void setIname(String iname);
+
 	public void setScanName(String name);
+
 	public void updateIons();
+
 	public void updateSignalLimits();
+
 	public ICalibratedVendorMassSpectrum makeNoisyCopy(long l, double relativeError) throws CloneNotSupportedException;
+
 	public ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException;
+
 	public List<IIon> getIons();
-	
+
 	/**
 	 * Returns the source.
 	 * 
@@ -67,5 +96,5 @@ public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectr
 	 * @param source
 	 */
 	void setSource(String source);
-	//String getName();
+	// String getName();
 }

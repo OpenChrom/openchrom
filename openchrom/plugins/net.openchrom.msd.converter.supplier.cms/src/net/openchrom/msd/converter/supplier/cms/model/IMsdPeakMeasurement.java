@@ -8,13 +8,14 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cms.model;
-
 
 public interface IMsdPeakMeasurement {
 
-	public double  getMZ();
+	public double getMZ();
+
 	public float getSignal();
+
 	void setSignal(float sig);
 }
