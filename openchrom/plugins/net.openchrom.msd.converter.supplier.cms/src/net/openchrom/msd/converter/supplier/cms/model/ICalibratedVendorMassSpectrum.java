@@ -78,4 +78,6 @@ public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectr
 	void updateSignalLimits();
 
 	ICalibratedVendorMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException;
+
+	ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException;
 }
