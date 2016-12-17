@@ -18,18 +18,19 @@ import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
 public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectrum, IScanMSD {
+	boolean addIonMeasurement(double mz, float signal);
 
 	boolean addIonMeasurement(IIonMeasurement ionMeasurement);
 
-	boolean addIonMeasurement(double mz, float signal);
+	List<String> getComments();
 
-	void updateIons();
+	double getEenergy();
 
-	boolean scale();
+	double getEtimes();
 
-	boolean unscale();
+	double getIenergy();
 
-	List<IIonMeasurement> getIonMeasurements();
+	String getInstrumentName();
 
 	/**
 	 * This method may return null.
@@ -39,45 +40,48 @@ public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectr
 	 */
 	IIonMeasurement getIonMeasurement(int scanIndex);
 
-	double getSourcePressure();
-
-	void setSourcePressure(double sourcePressure);
-
-	String getSourcePressureUnits();
-
-	void setSourcePressureUnits(String sourcePressureUnits);
-
-	String getSignalUnits();
-
-	void setSignalUnits(String signalUnits);
+	List<IIonMeasurement> getIonMeasurements();
 
 	String getScanName();
 
-	void setScanName(String scanName);
+	String getSignalUnits();
+
+	double getSourcePressure();
+
+	String getSourcePressureUnits();
 
 	String getTimeStamp();
 
-	void setTimeStamp(String timeStamp);
-
-	String getInstrumentName();
-
-	void setInstrumentName(String instrumentName);
-
-	double getEtimes();
-
-	double getEenergy();
-
-	double getIenergy();
-
-	void setEtimes(double etimes);
-
-	void setEenergy(double eenergy);
-
-	void setIenergy(double ienergy);
-
-	void updateSignalLimits();
+	ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException;
 
 	ICalibratedVendorMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException;
 
-	ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException;
+	boolean scale();
+
+	void setComments(List<String> comments);
+
+	void setEenergy(double eenergy);
+
+	void setEtimes(double etimes);
+
+	void setIenergy(double ienergy);
+
+	void setInstrumentName(String instrumentName);
+
+	void setScanName(String scanName);
+
+	void setSignalUnits(String signalUnits);
+
+	void setSourcePressure(double sourcePressure);
+
+	void setSourcePressureUnits(String sourcePressureUnits);
+
+	void setTimeStamp(String timeStamp);
+
+	boolean unscale();
+
+	void updateIons();
+
+	void updateSignalLimits();
+
 }

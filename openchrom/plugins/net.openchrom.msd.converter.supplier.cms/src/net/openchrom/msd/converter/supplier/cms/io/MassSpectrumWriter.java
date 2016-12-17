@@ -17,36 +17,23 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
-import org.eclipse.chemclipse.model.exceptions.ReferenceMustNotBeNullException;
-import org.eclipse.chemclipse.model.identifier.ComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraWriter;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
-import org.eclipse.chemclipse.msd.model.core.IIon;
-import org.eclipse.chemclipse.msd.model.core.ILibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
-import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
-import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumTarget;
-import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.MassSpectrumTarget;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
-import org.eclipse.chemclipse.msd.model.implementation.Ion;
-import org.eclipse.chemclipse.msd.model.implementation.RegularLibraryMassSpectrum;
-import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
+import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
 import net.openchrom.msd.converter.supplier.cms.preferences.PreferenceSupplier;
 
 public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMassSpectraWriter {
@@ -56,26 +43,28 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 	//
 	private static final Logger logger = Logger.getLogger(MassSpectrumWriter.class);
 	//
-	private static final String RT = "RT: ";
-	private static final String RRT = "RRT: ";
-	private static final String RI = "RI: ";
+	// private static final String RT = "RT: ";
+	// private static final String RRT = "RRT: ";
+	// private static final String RI = "RI: ";
 	private static final String NAME = "NAME: ";
+	private static final String SCAN = "SCAN: ";
 	private static final String CASNO = "CASNO: ";
-	private static final String SMILES = "SMILES: ";
-	private static final String COMMENTS = "COMMENTS: ";
+	// private static final String SMILES = "SMILES: ";
+	private static final String COMMENT = "COMMENT: ";
 	private static final String NUM_PEAKS = "NUM PEAKS: ";
 	private static final String FORMULA = "FORMULA: ";
 	private static final String MW = "MW: ";
-	private static final String DB = "DB: ";
-	private static final String REFID = "REFID: ";
-	// private static final String SOURCEP = "SOURCEP: ";
-	// private static final String SPUNITS = "SPUNITS: ";
-	// private static final String SIGUNITS = "SIGUNITS: ";
-	// private static final String TSTAMP = "TSTAMP: ";
-	// private static final String ETIMES = "ETIMES: ";
-	// private static final String EENERGYV = "EENERGYV: ";
-	// private static final String IENERGYV = "IENERGYV: ";
-	// private static final String INAME = "INAME: ";
+	// private static final String DB = "DB: ";
+	// private static final String REFID = "REFID: ";
+	//
+	private static final String SOURCEP = "SOURCEP: ";
+	private static final String SPUNITS = "SPUNITS: ";
+	private static final String SIGUNITS = "SIGUNITS: ";
+	private static final String TSTAMP = "TSTAMP: ";
+	private static final String ETIMES = "ETIMES: ";
+	private static final String EENERGYV = "EENERGYV: ";
+	private static final String IENERGYV = "IENERGYV: ";
+	private static final String INAME = "INAME: ";
 	//
 	private DecimalFormat decimalFormat;
 	private TargetExtendedComparator targetExtendedComparator;
@@ -103,29 +92,60 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	@Override
 	public void writeMassSpectrum(FileWriter fileWriter, IScanMSD massSpectrum, IProgressMonitor monitor) throws IOException {
+		try {
+			writeCMS(fileWriter, massSpectrum, monitor);
+		} catch(NotCalibratedVendorMassSpectrumException e) {
+			logger.warn(e);
+		}
+	}
 
-		IScanMSD optimizedMassSpectrum = getOptimizedMassSpectrum(massSpectrum);
-		IIdentificationTarget identificationTarget = getIdentificationTarget(optimizedMassSpectrum);
+	private void writeCMS(FileWriter fileWriter, IScanMSD massSpectrum, IProgressMonitor monitor) throws IOException, NotCalibratedVendorMassSpectrumException {
+		
+		if(!(massSpectrum instanceof ICalibratedVendorMassSpectrum)) {
+			throw new NotCalibratedVendorMassSpectrumException(); 
+		}
+		
+		ICalibratedVendorMassSpectrum cvmSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
+		
+		String name, scan;
+		name = cvmSpectrum.getLibraryInformation().getName();
+		scan = cvmSpectrum.getScanName();
+		if ((null != name) && (name.length() > 0)) {
+			fileWriter.write(NAME + name + CRLF);
+		}
+		else if ((null != scan) && (scan.length() > 0)) {
+			fileWriter.write(SCAN + scan + CRLF);
+		}
+		else {
+			fileWriter.write(SCAN + "UNKNOWN" + CRLF);
+		}
 		/*
 		 * Write the fields
+		 * If the field value does not exist, write an empty string
 		 */
-		fileWriter.write(getNameField(massSpectrum, identificationTarget) + CRLF);
-		String synonyms = getSynonyms(optimizedMassSpectrum);
+		String synonyms = getSynonyms(cvmSpectrum);
 		if(synonyms != null && !synonyms.equals("")) {
 			fileWriter.write(synonyms);
 		}
-		fileWriter.write(getCommentsField(optimizedMassSpectrum) + CRLF);
-		fileWriter.write(getRetentionTimeField(optimizedMassSpectrum) + CRLF);
-		fileWriter.write(getRelativeRetentionTimeField(optimizedMassSpectrum) + CRLF);
-		fileWriter.write(getRetentionIndexField(optimizedMassSpectrum) + CRLF);
-		fileWriter.write(getFormulaField(optimizedMassSpectrum) + CRLF);
-		fileWriter.write(getMWField(optimizedMassSpectrum) + CRLF);
-		fileWriter.write(getCasNumberField(identificationTarget) + CRLF);
-		fileWriter.write(getSmilesField(identificationTarget) + CRLF);
-		fileWriter.write(getDBField(identificationTarget) + CRLF);
-		fileWriter.write(getReferenceIdentifierField(identificationTarget) + CRLF);
-		fileWriter.write(getNumberOfPeaks(optimizedMassSpectrum) + CRLF);
-		fileWriter.write(getIons(optimizedMassSpectrum));
+		String comments = getComments(cvmSpectrum);
+		if(comments != null && !comments.equals("")) {
+			fileWriter.write(comments);
+		}
+		fileWriter.write(getFormulaField(cvmSpectrum));
+		fileWriter.write(getMWField(cvmSpectrum));
+		fileWriter.write(getCasNumberField(cvmSpectrum));
+		//
+		fileWriter.write(getSourcePressureField(cvmSpectrum));
+		fileWriter.write(getSourcePressureUnitsField(cvmSpectrum));
+		fileWriter.write(getSignalUnitsField(cvmSpectrum));
+		fileWriter.write(getTimeStampField(cvmSpectrum));
+		fileWriter.write(getEtimesField(cvmSpectrum));
+		fileWriter.write(getEenergyField(cvmSpectrum));
+		fileWriter.write(getIenergyField(cvmSpectrum));
+		fileWriter.write(getInstrumentNameField(cvmSpectrum));
+		//
+		fileWriter.write(getNumberOfPeaks(cvmSpectrum) + CRLF);
+		fileWriter.write(getMeasurements(cvmSpectrum));
 		/*
 		 * To separate the mass spectra correctly.
 		 */
@@ -133,21 +153,154 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 		fileWriter.flush();
 	}
 
-	private String getSynonyms(IScanMSD massSpectrum) {
+	/**
+	 * Returns the instrument name from the mass spectrum.
+	 * 
+	 * @param massSpectrum
+	 * @return String
+	 */
+	private String getInstrumentNameField(ICalibratedVendorMassSpectrum massSpectrum) {
+
+		String field = "";
+		String iname = massSpectrum.getInstrumentName();
+		//
+		if ("" !=  iname) {
+			field = INAME + iname + CRLF;
+		}
+		return field;
+	}
+
+	/**
+	 * Returns the ion energy in Volts from the mass spectrum.
+	 * 
+	 * @param massSpectrum
+	 * @return String
+	 */
+	private String getIenergyField(ICalibratedVendorMassSpectrum massSpectrum) {
+
+		String field = "";
+		double ienergy = massSpectrum.getIenergy();
+		//
+		if (0d > ienergy) {
+			field = IENERGYV + ienergy + CRLF;
+		}
+		return field;
+	}
+
+	/**
+	 * Returns the electron energy in Volts from the mass spectrum.
+	 * 
+	 * @param massSpectrum
+	 * @return String
+	 */
+	private String getEenergyField(ICalibratedVendorMassSpectrum massSpectrum) {
+
+		String field = "";
+		double eenergy = massSpectrum.getEenergy();
+		//
+		if (0d > eenergy) {
+			field = EENERGYV + eenergy + CRLF;
+		}
+		return field;
+	}
+
+	/**
+	 * Returns the elapsed time in seconds from the mass spectrum.
+	 * 
+	 * @param massSpectrum
+	 * @return String
+	 */
+	private String getEtimesField(ICalibratedVendorMassSpectrum massSpectrum) {
+
+		String field = "";
+		double etimes = massSpectrum.getEtimes();
+		//
+		if (0d > etimes) {
+			field = ETIMES + etimes + CRLF;
+		}
+		return field;
+	}
+
+	/**
+	 * Returns the timestamp from the mass spectrum.
+	 * 
+	 * @param massSpectrum
+	 * @return String
+	 */
+	private String getTimeStampField(ICalibratedVendorMassSpectrum massSpectrum) {
+
+		String field = "";
+		String tstamp = massSpectrum.getTimeStamp();
+		//
+		if ("" != tstamp) {
+			field = TSTAMP + tstamp + CRLF;
+		}
+		return field;
+	}
+
+	/**
+	 * Returns the signal units from the mass spectrum.
+	 * 
+	 * @param massSpectrum
+	 * @return String
+	 */
+	private String getSignalUnitsField(ICalibratedVendorMassSpectrum massSpectrum) {
+
+		String field = "";
+		String units = massSpectrum.getSignalUnits();
+		//
+		if ("" != units) {
+			field = SIGUNITS + units + CRLF;
+		}
+		return field;
+	}
+
+	/**
+	 * Returns the source pressure units from the mass spectrum.
+	 * 
+	 * @param massSpectrum
+	 * @return String
+	 */
+	private String getSourcePressureUnitsField(ICalibratedVendorMassSpectrum massSpectrum) {
+
+		String field = "";
+		String units = massSpectrum.getSourcePressureUnits();
+		//
+		if ("" != units) {
+			field = SPUNITS + units + CRLF;
+		}
+		return field;
+	}
+
+	/**
+	 * Returns the source pressure from the mass spectrum.
+	 * 
+	 * @param massSpectrum
+	 * @return String
+	 */
+	private String getSourcePressureField(ICalibratedVendorMassSpectrum massSpectrum) {
+
+		String field = "";
+		double pressure = massSpectrum.getSourcePressure();
+		//
+		if (0d != pressure) {
+			field = SOURCEP + pressure + CRLF;
+		}
+		return field;
+	}
+
+	private String getSynonyms(ICalibratedVendorMassSpectrum massSpectrum) {
 
 		StringBuilder builder = new StringBuilder();
-		if(massSpectrum instanceof ILibraryMassSpectrum) {
-			ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
-			Set<String> synonyms = libraryMassSpectrum.getLibraryInformation().getSynonyms();
-			if(synonyms.size() > 0) {
-				for(String synonym : synonyms) {
-					/*
-					 * Set the synonym.
-					 */
-					builder.append("Synon: ");
-					builder.append(synonym);
-					builder.append(CRLF);
-				}
+		Set<String> synonyms = massSpectrum.getLibraryInformation().getSynonyms();
+		if(synonyms.size() > 0) {
+			for(String synonym : synonyms) {
+				/*
+				 * Set the synonym.
+				 */
+				builder.append("Synon: ");
+				builder.append(synonym);
+				builder.append(CRLF);
 			}
 		}
 		//
@@ -155,60 +308,50 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 	}
 
 	/**
-	 * Returns the mass spectra in the convenient AMDIS format.
+	 * Returns the comments information from the mass spectrum.
 	 * 
 	 * @param massSpectrum
 	 * @return String
 	 */
-	private String getIons(IScanMSD massSpectrum) {
-
+	private String getComments(ICalibratedVendorMassSpectrum massSpectrum) {
 		StringBuilder builder = new StringBuilder();
-		List<IIon> ions = massSpectrum.getIons();
-		for(IIon ion : ions) {
-			/*
-			 * Add each ion.
-			 */
-			builder.append(ion.getIon());
-			builder.append(" ");
-			builder.append(ion.getAbundance());
-			builder.append(";");
-			builder.append(CRLF);
+		
+		List<String> comments = massSpectrum.getComments();
+		if((null != comments) && (comments.size() > 0)) {
+			for(String comment : comments) {
+				builder.append(COMMENT + comment + CRLF);
+			}
 		}
 		return builder.toString();
 	}
 
 	/**
-	 * Makes a deep copy of the mass spectrum, normalizes it and removes too low abundances.
+	 * Returns the measurements in the convenient AMDIS format.
 	 * 
 	 * @param massSpectrum
-	 * @return {@link IScanMSD}
+	 * @return String
 	 */
-	protected IScanMSD getOptimizedMassSpectrum(IScanMSD massSpectrum) {
-
-		IScanMSD optimizedMassSpectrum = getUnitOrHighMassResolutionCopy(massSpectrum);
-		normalizeMassSpectrumOnDemand(optimizedMassSpectrum);
-		removeLowIntensityIonsOnDemand(optimizedMassSpectrum);
-		return optimizedMassSpectrum;
-	}
-
-	/**
-	 * Removes the ions below the given minimum abundance.
-	 * 
-	 * @param normalizedMassSpectrum
-	 * @param minimumAbundance
-	 */
-	protected void removeIonsWithAnTooLowAbundance(IScanMSD normalizedMassSpectrum, float minimumAbundance) {
-
-		List<IIon> ionsToRemove = new ArrayList<IIon>();
-		for(IIon ion : normalizedMassSpectrum.getIons()) {
-			if(ion.getAbundance() < minimumAbundance) {
-				ionsToRemove.add(ion);
+	private String getMeasurements(ICalibratedVendorMassSpectrum massSpectrum) {
+		StringBuilder builder = new StringBuilder();
+		StringBuilder line = new StringBuilder(80);
+		String strPeak;
+		//
+		List<IIonMeasurement> peaks = massSpectrum.getIonMeasurements();
+		for(IIonMeasurement peak : peaks) {
+			/*
+			 * Add each peak measurement.
+			 */
+			strPeak = peak.getMZ() + " " + peak.getSignal() + ";";
+			if (line.length()+strPeak.length() > 78) {
+				builder.append(line);
+				builder.append(CRLF);
+				line = new StringBuilder(80);
 			}
+			line.append(strPeak);
 		}
-		// Remove the selected ions.
-		for(IIon ion : ionsToRemove) {
-			normalizedMassSpectrum.removeIon(ion);
-		}
+		builder.append(line);
+		builder.append(CRLF);
+		return builder.toString();
 	}
 
 	/**
@@ -242,139 +385,24 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 	}
 
 	/**
-	 * This method returns the identification target or null if there is none.
-	 * 
-	 * @param massSpectrum
-	 * @return
-	 */
-	protected IIdentificationTarget getIdentificationTarget(IScanMSD massSpectrum) {
-
-		IIdentificationTarget identificationTarget = null;
-		if(massSpectrum instanceof IRegularLibraryMassSpectrum) {
-			/*
-			 * Library MS
-			 */
-			IRegularLibraryMassSpectrum libraryMassSpectrum = (IRegularLibraryMassSpectrum)massSpectrum;
-			try {
-				identificationTarget = new MassSpectrumTarget(libraryMassSpectrum.getLibraryInformation(), ComparisonResult.createNoMatchComparisonResult());
-			} catch(ReferenceMustNotBeNullException e) {
-				logger.warn(e);
-			}
-		} else if(massSpectrum instanceof IRegularMassSpectrum) {
-			/*
-			 * Scan/Chromatogram MS
-			 */
-			List<IMassSpectrumTarget> targets = massSpectrum.getTargets();
-			Collections.sort(targets, targetExtendedComparator);
-			if(targets.size() >= 1) {
-				identificationTarget = targets.get(0);
-			}
-		}
-		return identificationTarget;
-	}
-
-	/**
 	 * Returns the CAS number information from the mass spectrum.
 	 * 
 	 * @param massSpectrum
 	 * @return String
 	 */
-	protected String getCasNumberField(IIdentificationTarget identificationTarget) {
+	protected String getCasNumberField(ICalibratedVendorMassSpectrum massSpectrum) {
 
-		String field = CASNO;
-		if(identificationTarget != null) {
-			field += identificationTarget.getLibraryInformation().getCasNumber();
+		String field = "";
+		String cas = massSpectrum.getLibraryInformation().getCasNumber();
+		//
+		if ("" != cas) {
+			field = CASNO + cas + CRLF;
 		}
 		return field;
 	}
 
 	/**
-	 * Returns the CAS number information from the mass spectrum.
-	 * 
-	 * @param massSpectrum
-	 * @return String
-	 */
-	protected String getSmilesField(IIdentificationTarget identificationTarget) {
-
-		String field = SMILES;
-		if(identificationTarget != null) {
-			field += identificationTarget.getLibraryInformation().getSmiles();
-		}
-		return field;
-	}
-
-	/**
-	 * Returns the comments information from the mass spectrum.
-	 * 
-	 * @param massSpectrum
-	 * @return String
-	 */
-	protected String getCommentsField(IScanMSD massSpectrum) {
-
-		String field = COMMENTS;
-		if(massSpectrum instanceof IRegularLibraryMassSpectrum) {
-			IRegularLibraryMassSpectrum regularMassSpectrum = (IRegularLibraryMassSpectrum)massSpectrum;
-			field += regularMassSpectrum.getLibraryInformation().getComments();
-		}
-		return field;
-	}
-
-	/**
-	 * Returns the retention time information from the mass spectrum.
-	 * 
-	 * @param massSpectrum
-	 * @return String
-	 */
-	protected String getRetentionTimeField(IScanMSD massSpectrum) {
-
-		String field = RT;
-		if(massSpectrum instanceof IRegularMassSpectrum) {
-			IRegularMassSpectrum regularMassSpectrum = (IRegularMassSpectrum)massSpectrum;
-			field += decimalFormat.format(regularMassSpectrum.getRetentionTime() / (1000.0d * 60.0d)); // RT in minutes
-		} else {
-			field += decimalFormat.format(0.0d);
-		}
-		return field;
-	}
-
-	/**
-	 * Returns the retention time information from the mass spectrum.
-	 * 
-	 * @param massSpectrum
-	 * @return String
-	 */
-	protected String getRelativeRetentionTimeField(IScanMSD massSpectrum) {
-
-		String field = RRT;
-		if(massSpectrum instanceof IRegularMassSpectrum) {
-			IRegularMassSpectrum regularMassSpectrum = (IRegularMassSpectrum)massSpectrum;
-			field += decimalFormat.format(regularMassSpectrum.getRelativeRetentionTime() / (1000.0d * 60.0d)); // RRT in minutes
-		} else {
-			field += decimalFormat.format(0.0d);
-		}
-		return field;
-	}
-
-	/**
-	 * Returns the retention index information from the mass spectrum.
-	 * 
-	 * @param massSpectrum
-	 * @return String
-	 */
-	protected String getRetentionIndexField(IScanMSD massSpectrum) {
-
-		String field = RI;
-		if(massSpectrum instanceof IRegularMassSpectrum) {
-			IRegularMassSpectrum regularMassSpectrum = (IRegularMassSpectrum)massSpectrum;
-			field += decimalFormat.format(regularMassSpectrum.getRetentionIndex());
-		} else {
-			field += decimalFormat.format(0.0d);
-		}
-		return field;
-	}
-
-	/**
-	 * Returns the name information from the mass spectrum.
+	 * Returns the number of peaks information from the mass spectrum.
 	 * 
 	 * @param massSpectrum
 	 * @return String
@@ -392,12 +420,13 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 	 * @param massSpectrum
 	 * @return String
 	 */
-	protected String getFormulaField(IScanMSD massSpectrum) {
+	protected String getFormulaField(ICalibratedVendorMassSpectrum massSpectrum) {
 
-		String field = FORMULA;
-		if(massSpectrum instanceof IRegularLibraryMassSpectrum) {
-			IRegularLibraryMassSpectrum regularMassSpectrum = (IRegularLibraryMassSpectrum)massSpectrum;
-			field += regularMassSpectrum.getLibraryInformation().getFormula();
+		String field = "";
+		String form = massSpectrum.getLibraryInformation().getFormula();
+		//
+		if ("" != form) {
+			field = FORMULA + form + CRLF;
 		}
 		return field;
 	}
@@ -408,30 +437,13 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 	 * @param massSpectrum
 	 * @return String
 	 */
-	protected String getMWField(IScanMSD massSpectrum) {
+	protected String getMWField(ICalibratedVendorMassSpectrum massSpectrum) {
 
-		String field = MW;
-		if(massSpectrum instanceof IRegularLibraryMassSpectrum) {
-			IRegularLibraryMassSpectrum regularMassSpectrum = (IRegularLibraryMassSpectrum)massSpectrum;
-			field += regularMassSpectrum.getLibraryInformation().getMolWeight();
-		}
-		return field;
-	}
-
-	protected String getDBField(IIdentificationTarget identificationTarget) {
-
-		String field = DB;
-		if(identificationTarget != null) {
-			field += identificationTarget.getLibraryInformation().getDatabase();
-		}
-		return field;
-	}
-
-	protected String getReferenceIdentifierField(IIdentificationTarget identificationTarget) {
-
-		String field = REFID;
-		if(identificationTarget != null) {
-			field += identificationTarget.getLibraryInformation().getReferenceIdentifier();
+		String field = "";
+		double mw = massSpectrum.getLibraryInformation().getMolWeight();
+		//
+		if (0d < mw) {
+			field = MW + mw + CRLF;
 		}
 		return field;
 	}
@@ -456,75 +468,5 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 				writeMassSpectrum(fileWriter, massSpectrum, monitor);
 			}
 		}
-	}
-
-	private IScanMSD getUnitOrHighMassResolutionCopy(IScanMSD massSpectrum) {
-
-		IScanMSD optimizedMassSpectrum;
-		if(PreferenceSupplier.isUseUnitMassResolution()) {
-			/*
-			 * Unit Mass Resolution
-			 */
-			IExtractedIonSignal extractedIonSignal = massSpectrum.getExtractedIonSignal();
-			optimizedMassSpectrum = getMassSpectrumCopy(massSpectrum, false);
-			int startIon = extractedIonSignal.getStartIon();
-			int stopIon = extractedIonSignal.getStopIon();
-			for(int ion = startIon; ion <= stopIon; ion++) {
-				try {
-					optimizedMassSpectrum.addIon(new Ion(ion, extractedIonSignal.getAbundance(ion)));
-				} catch(AbundanceLimitExceededException e) {
-					logger.warn(e);
-				} catch(IonLimitExceededException e) {
-					logger.warn(e);
-				}
-			}
-		} else {
-			/*
-			 * High Mass Resolution
-			 */
-			optimizedMassSpectrum = getMassSpectrumCopy(massSpectrum, true);
-		}
-		return optimizedMassSpectrum;
-	}
-
-	private void normalizeMassSpectrumOnDemand(IScanMSD massSpectrum) {
-
-		if(PreferenceSupplier.isNormalizeIntensities()) {
-			massSpectrum.normalize(NORMALIZATION_BASE);
-		}
-	}
-
-	private void removeLowIntensityIonsOnDemand(IScanMSD massSpectrum) {
-
-		if(PreferenceSupplier.isRemoveIntensitiesLowerThanOne()) {
-			removeIonsWithAnTooLowAbundance(massSpectrum, 1.0f);
-		}
-	}
-
-	private IScanMSD getMassSpectrumCopy(IScanMSD massSpectrum, boolean copyIons) {
-
-		IRegularLibraryMassSpectrum massSpectrumCopy = new RegularLibraryMassSpectrum();
-		massSpectrumCopy.setRetentionTime(massSpectrum.getRetentionTime());
-		massSpectrumCopy.setRelativeRetentionTime(massSpectrum.getRelativeRetentionTime());
-		massSpectrumCopy.setRetentionIndex(massSpectrum.getRetentionIndex());
-		if(massSpectrum instanceof IRegularLibraryMassSpectrum) {
-			IRegularLibraryMassSpectrum regularMassSpectrum = (IRegularLibraryMassSpectrum)massSpectrum;
-			massSpectrumCopy.setLibraryInformation(regularMassSpectrum.getLibraryInformation());
-		}
-		massSpectrumCopy.getTargets().addAll(massSpectrum.getTargets());
-		//
-		if(copyIons) {
-			for(IIon ion : massSpectrum.getIons()) {
-				try {
-					massSpectrumCopy.addIon(new Ion(ion.getIon(), ion.getAbundance()));
-				} catch(AbundanceLimitExceededException e) {
-					logger.warn(e);
-				} catch(IonLimitExceededException e) {
-					logger.warn(e);
-				}
-			}
-		}
-		//
-		return massSpectrumCopy;
 	}
 }

@@ -21,6 +21,7 @@ import org.eclipse.chemclipse.msd.model.core.AbstractRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 
+//public class CalibratedVendorMassSpectrum implements ICalibratedVendorMassSpectrum {
 public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpectrum implements ICalibratedVendorMassSpectrum {
 
 	/**
@@ -31,27 +32,40 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	private static final Logger logger = Logger.getLogger(CalibratedVendorMassSpectrum.class);
 	//
 	private List<IIonMeasurement> ionMeasurements;
+	private List<String> comments; // this implementation preserves the order in which the comments were first read
 	private double minSignal = 0;
 	private double minAbsSignal = 0;
 	private double maxSignal = 0;
 	private float scaleOffset = 0;
 	private float scaleSlope = 0;
 	//
-	private double sourcePressure = 0.0;
+	private double sourcePressure = -1d;
 	private String sourcePressureUnits = "";
 	private String signalUnits = "";
 	private String scanName = "";
 	private String timeStamp = "";
 	private String instrumentName = "";
-	private double eEnergyV = 0;
-	private double iEnergyV = 0;
-	private double eTimeS = 0;
+	private double eEnergyV = -1d;
+	private double iEnergyV = -1d;
+	private double eTimeS = -1d;
 
 	public CalibratedVendorMassSpectrum() {
 		/*
 		 * Initialize the values.
 		 */
-		ionMeasurements = new ArrayList<IIonMeasurement>(10);
+		ionMeasurements = new ArrayList<IIonMeasurement>(100);
+		comments = null;
+		this.getLibraryInformation().setMolWeight(-1d);
+	}
+	
+	public List<String> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<String> comments) {
+		if(comments != null) {
+			this.comments = comments;
+		}
 	}
 
 	@Override

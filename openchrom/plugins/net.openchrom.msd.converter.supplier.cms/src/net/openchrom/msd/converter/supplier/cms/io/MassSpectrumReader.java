@@ -20,7 +20,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,9 +54,10 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 	//
 	private static final Pattern namePattern = Pattern.compile("^NAME:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern scanPattern = Pattern.compile("^SCAN:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern nameRetentionTimePattern = Pattern.compile("^RT:\\s*([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)(\\s*min)", Pattern.CASE_INSENSITIVE); // (rt: 10.818 min)
+	private static final Pattern nameRetentionTimePattern = Pattern.compile("^RT:\\s*" + SNUM + "(\\s*min)", Pattern.CASE_INSENSITIVE); // (rt: 10.818 min)
 	private static final Pattern formulaPattern = Pattern.compile("^FORMULA:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern molweightPattern = Pattern.compile("^MW:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern commentPattern = Pattern.compile("^COMMENTS?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern molweightPattern = Pattern.compile("^MW:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
 	private static final Pattern synonymPattern = Pattern.compile("^SYNON(?:[YM]*)?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern casNumberPattern = Pattern.compile("^CAS(?:NO|#)?:\\s*([0-9-]*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern databaseNamePattern = Pattern.compile("^DB(?:NO|#)?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
@@ -63,15 +66,15 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 	private static final Pattern retentionTimePattern = Pattern.compile("^RT:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern relativeRetentionTimePattern = Pattern.compile("^RRT:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern retentionIndexPattern = Pattern.compile("^RI:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern numPeaksPattern = Pattern.compile("^NUM PEAKS:\\s*([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern ionPattern = Pattern.compile("([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)[\\s,]+([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)");
-	private static final Pattern sourcepPattern = Pattern.compile("^SOURCEP:\\s*" + SNUM, Pattern.CASE_INSENSITIVE);
+	private static final Pattern numPeaksPattern = Pattern.compile("^NUM PEAKS:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
+	private static final Pattern ionPattern = Pattern.compile(SNUM + "[\\s,]+" + SNUM);
+	private static final Pattern sourcepPattern = Pattern.compile("^SOURCEP:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
 	private static final Pattern spunitsPattern = Pattern.compile("^SPUNITS:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern sigunitsPattern = Pattern.compile("^SIGUNITS:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern tstampPattern = Pattern.compile("^TSTAMP:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern etimesPattern = Pattern.compile("^ETIMES:\\s*" + SNUM, Pattern.CASE_INSENSITIVE);
-	private static final Pattern eenergyvPattern = Pattern.compile("^EENERGYV:\\s*" + SNUM, Pattern.CASE_INSENSITIVE);
-	private static final Pattern ienergyvPattern = Pattern.compile("^IENERGYV:\\s*" + SNUM, Pattern.CASE_INSENSITIVE);
+	private static final Pattern etimesPattern = Pattern.compile("^ETIMES:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
+	private static final Pattern eenergyvPattern = Pattern.compile("^EENERGYV:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
+	private static final Pattern ienergyvPattern = Pattern.compile("^IENERGYV:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
 	private static final Pattern inamePattern = Pattern.compile("^INAME:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 
 	@Override
@@ -219,6 +222,16 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 					else
 						System.out.println("got negative or zero molecular weight from \"" + (nameFile ? "NAME: " : (scanFile ? "SCAN: " : "UNKNOWN: ")) + massSpectrum.getScanName() + "\" = " + mweight + "\"");
 				} // else if MW
+				else if((fieldMatcher = commentPattern.matcher(line)).lookingAt()) { // found COMMENT record
+					List<String> comments = massSpectrum.getComments();
+					if(null == comments) {
+						comments = new ArrayList<String>();
+						comments.add(fieldMatcher.group(1).trim());
+						massSpectrum.setComments(comments);
+					} else {
+						comments.add(fieldMatcher.group(1).trim());
+					}
+				} // else if COMMENT
 				else if((fieldMatcher = synonymPattern.matcher(line)).lookingAt()) { // found SYNONYM record
 					Set<String> synonyms = massSpectrum.getLibraryInformation().getSynonyms();
 					if(null == synonyms) {
