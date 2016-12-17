@@ -2,9 +2,11 @@ NAME: Argon
 FORMULA: Ar
 MW: 40
 CAS: 7440-37-1
+COMMENT: testing comment field for Argon in state 1, comment 1
 SIGUNITS: amp
 SOURCEP: 1
 SPUNITS: mbar
+COMMENT: testing comment field for Argon in state 1, comment 2
 TSTAMP: 2016-12-12_14:22:00_EDT
 ETIMES: 0.0e0
 EENERGYV: 70
@@ -41,6 +43,7 @@ INAME: VG 14-80
 Num Peaks: 2
 16 4.36044e-06; 32 2e-05; 
 NAME: Ethane
+SYNONYM: Methylmethane
 FORMULA: C2H6
 MW: 30
 CAS: 74-84-0
@@ -58,6 +61,7 @@ Num Peaks: 14
 30 5.24452e-06; 31 1.0001e-07; 
 NAME: Ethylene
 FORMULA: C2H4
+SYNONYM: Ethene
 MW: 28
 CAS: 74-85-1
 SIGUNITS: amp
