@@ -17,7 +17,6 @@ import java.util.Arrays;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
-import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -29,6 +28,7 @@ import org.ejml.ops.CommonOps;
 import org.ejml.ops.SpecializedOps;
 
 import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
 
@@ -74,8 +74,8 @@ public class MassSpectraDecomposition {
 			double libMatrixQuality;
 			for(IScanMSD libSpectrum : libMassSpectra.getList()) {
 				// first (re)read the library and save a reference to each library component
-				if(libSpectrum instanceof IRegularLibraryMassSpectrum) {
-					ICalibratedVendorMassSpectrum libraryMassSpectrum = (ICalibratedVendorMassSpectrum)libSpectrum;
+				if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
+					ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)libSpectrum;
 					int componentSequence;
 					try {
 						componentSequence = fitDataset.addNewComponent(libraryMassSpectrum);
@@ -83,7 +83,9 @@ public class MassSpectraDecomposition {
 						logger.warn(e1);
 						continue; // for
 					}
-					System.out.println("LIB: libName: " + libMassSpectra.getName() + ", Component Name: " + libraryMassSpectrum.getLibraryInformation().getName() + ", Component Index: " + componentSequence + ", #ions: " + libraryMassSpectrum.getNumberOfIons());
+					System.out.println("LIB: libName: " + libMassSpectra.getName() + ", Component Name: " 
+							+ libraryMassSpectrum.getLibraryInformation().getName() + ", Component Index: " 
+							+ componentSequence + ", #ions: " + libraryMassSpectrum.getNumberOfIons());
 					System.out.print("\t");
 					for(IIon libion : libSpectrum.getIons()) {
 						try {
@@ -139,7 +141,7 @@ public class MassSpectraDecomposition {
 				for(LibIon i : fitDataset.getLibIons()) {
 					A.set(i.ionRowIndex, i.componentRef.componentIndex, i.ionAbundance);
 				}
-				for(ScanIon i : fitDataset.getScanIons()) {
+				for(ScanIonMeasurement i : fitDataset.getScanIons()) {
 					y.set(i.ionRowIndex, 0, i.ionAbundance);
 					P.set(i.ionRowIndex, i.ionRowIndex,
 							// 1); // for testing without error weights
@@ -222,7 +224,7 @@ public class MassSpectraDecomposition {
 			// Overwrite the peak.signal values for residuals
 			float datasetIonSignal, residIonSignal, newSignal;
 			double datasetIonMass, residIonMass;
-			ScanIon datasetIon;
+			ScanIonMeasurement datasetIon;
 			IIonMeasurement scanPeak;
 			int residIonIndex;
 			try {
@@ -243,11 +245,12 @@ public class MassSpectraDecomposition {
 				logger.warn(e);
 			}
 			scanResidual.updateSignalLimits();
+			//
 			result.setResidualSpectrum(scanResidual);
 			residualSpectra.addMassSpectrum(scanResidual);
-			for(IScanMSD scan1 : residualSpectra.getList()) {
-				((ICalibratedVendorMassSpectrum)scan1).updateIons();
-			}
+			// for(IScanMSD scan1 : residualSpectra.getList()) {
+			// 	((ICalibratedVendorMassSpectrum)scan1).updateIons();
+			// }
 			System.out.println();
 			// allow user to add and/or delete components from selected library components list
 			// then repeat decomposition using new library component selection

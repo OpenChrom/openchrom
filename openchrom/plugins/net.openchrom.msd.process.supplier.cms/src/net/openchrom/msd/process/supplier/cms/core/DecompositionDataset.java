@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
 class DecompositionDataset {
@@ -23,7 +23,7 @@ class DecompositionDataset {
 	private LibIon libions[];
 	private int libIonsCount; // # ions read from library file
 	private int libIonsUsed; // # library ions that matched with scan ions, <= libIonsCount
-	public ScanIon scanions[];
+	public ScanIonMeasurement scanions[];
 	private int scanIonsCount; // # ions read from scan file
 	private int scanIonsUsed; // # ions from scan file that matched with library ions, <= scanIonsCount
 	private LibComponent libComps[]; // keep track of library component information
@@ -34,7 +34,7 @@ class DecompositionDataset {
 
 	DecompositionDataset() {
 		libions = new LibIon[10];
-		scanions = new ScanIon[10];
+		scanions = new ScanIonMeasurement[10];
 		libComps = new LibComponent[10];
 		libIonsCount = 0;
 		scanIonsCount = 0;
@@ -45,13 +45,13 @@ class DecompositionDataset {
 		compNameSet = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 		matched = false;
 	}
-
+	
 	String getLibCompName(int i) {
 
 		return libComps[i].libraryRef.getLibraryInformation().getName();
 	}
 
-	ICalibratedVendorMassSpectrum getLibRef(int i) {
+	ICalibratedVendorLibraryMassSpectrum getLibRef(int i) {
 
 		return libComps[i].libraryRef;
 	}
@@ -61,7 +61,7 @@ class DecompositionDataset {
 		return libions;
 	}
 
-	ScanIon[] getScanIons() {
+	ScanIonMeasurement[] getScanIons() {
 
 		return scanions;
 	}
@@ -105,16 +105,16 @@ class DecompositionDataset {
 		libIonsCount++;
 	}
 
-	int addNewComponent(ICalibratedVendorMassSpectrum compLib) throws DuplicateCompNameException {
+	int addNewComponent(ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum) throws DuplicateCompNameException {
 
-		String compName = compLib.getLibraryInformation().getName();
+		String compName = libraryMassSpectrum.getLibraryInformation().getName();
 		if(!compNameSet.add(compName)) {
 			throw new DuplicateCompNameException(compName);
 		}
 		if(libComps.length <= libCompsCount) {
 			libComps = Arrays.copyOf(libComps, 2 * libComps.length);
 		}
-		libComps[libCompsCount] = new LibComponent(compLib);
+		libComps[libCompsCount] = new LibComponent(libraryMassSpectrum);
 		return libCompsCount++;
 	}
 
@@ -143,7 +143,7 @@ class DecompositionDataset {
 		if(scanions.length <= scanIonsCount) {
 			scanions = Arrays.copyOf(scanions, 2 * scanions.length);
 		}
-		scanions[scanIonsCount] = new ScanIon(mass, abundance, scan, scanIonsCount);
+		scanions[scanIonsCount] = new ScanIonMeasurement(mass, abundance, scan, scanIonsCount);
 		scanIonsCount++;
 	}
 

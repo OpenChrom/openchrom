@@ -13,12 +13,12 @@ package net.openchrom.msd.process.supplier.cms.core;
 
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
-class ScanIon extends GenIon {
+class ScanIonMeasurement extends GenIon {
 
 	ICalibratedVendorMassSpectrum scanRef; // this ion was found in this mass spectrum scan
 	int ionIndex; // marks the position of this ion in the scan mass spectrum
 
-	ScanIon(double mass, double abundance, ICalibratedVendorMassSpectrum scan, int index) {
+	ScanIonMeasurement(double mass, double abundance, ICalibratedVendorMassSpectrum scan, int index) {
 		super(mass, abundance);
 		scanRef = scan;
 		ionIndex = index;

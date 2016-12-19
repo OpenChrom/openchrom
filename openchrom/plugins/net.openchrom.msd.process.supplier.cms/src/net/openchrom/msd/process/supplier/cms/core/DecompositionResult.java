@@ -13,22 +13,25 @@ package net.openchrom.msd.process.supplier.cms.core;
 
 import java.util.ArrayList;
 
-import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
+import org.eclipse.chemclipse.logging.core.Logger;
+
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
 public class DecompositionResult {
 
+	private static final Logger logger = Logger.getLogger(MassSpectraDecomposition.class);
 	private ICalibratedVendorMassSpectrum residualSpectrum;
-	private ArrayList<ICalibratedVendorMassSpectrum> libraryComponents; // only need some of the info in CalibratedVendorMassSpectrum, but take it all for now
-	private ArrayList<Double> xComp; // for library component i = (partial pressure of i in decomposed scan) / (total pressure of decomposed scan)
+	private ArrayList<ICalibratedVendorLibraryMassSpectrum> libraryComponents; // only need some of the info in CalibratedVendorLibraryMassSpectrum, but take it all for now
+	private ArrayList<Double> xComp; // for library component i = fraction of library ion current spectrum which was found in scan ion current spectrum
 	private double sumOfSquaresError;
 	private double weightedSumOfSquaresError;
 
 	public DecompositionResult(double ssErr, double wssErr) {
-		libraryComponents = new ArrayList<ICalibratedVendorMassSpectrum>();
-		xComp = new ArrayList<Double>();
 		sumOfSquaresError = ssErr;
 		weightedSumOfSquaresError = wssErr;
+		libraryComponents = new ArrayList<ICalibratedVendorLibraryMassSpectrum>();
+		xComp = new ArrayList<Double>();
 	}
 
 	public void setResidualSpectrum(ICalibratedVendorMassSpectrum spec) {
@@ -37,11 +40,19 @@ public class DecompositionResult {
 			residualSpectrum = spec;
 	}
 
-	public void addComponent(double x, ICalibratedVendorMassSpectrum spec) {
+	public void addComponent(double x, ICalibratedVendorLibraryMassSpectrum iCalibratedVendorLibraryMassSpectrum) {
 
 		if((null != xComp) && (null != libraryComponents)) {
 			xComp.add(x);
-			libraryComponents.add(spec);
+			libraryComponents.add(iCalibratedVendorLibraryMassSpectrum);
 		}
+	}
+	
+	public double getSumOfSquaresError() {
+		return sumOfSquaresError;
+	}
+	
+	public double getWeightedSumOfSquaresError() {
+		return weightedSumOfSquaresError;
 	}
 }
