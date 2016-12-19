@@ -29,17 +29,27 @@ import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
+import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
+import org.eclipse.chemclipse.msd.model.core.AbstractRegularMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
+import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
 public class MassSpectrumReader extends AbstractMassSpectraReader implements IMassSpectraReader {
+
+	private static final Logger logger = Logger.getLogger(AbstractMassSpectraReader.class);
 
 	/**
 	 * The converter id is used in the extension point mechanism.
@@ -96,13 +106,13 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 		int parseState = 0; // 0==searching for NAME or SCAN, 1==adding parameters & searching for NUM_PEAKS, 2==adding mass/signal pairs
 		IMassSpectra massSpectra = new MassSpectra();
 		Matcher fieldMatcher;
-		ICalibratedVendorMassSpectrum massSpectrum = new CalibratedVendorMassSpectrum();
+		AbstractRegularMassSpectrum massSpectrum = null;
 		int peakCount = 0, numPeaks = 0;
-		boolean nameFile = false, scanFile = false;
+		boolean libFile = false, scanFile = false;
 		while((line = bufferedReader.readLine()) != null) {
 			if((fieldMatcher = namePattern.matcher(line)).lookingAt()) { // found NAME record
 				if(!scanFile) {
-					nameFile = true;
+					libFile = true;
 				} else {
 					System.out.println("got NAME record in a SCAN file");
 					parseState = 0;
@@ -112,23 +122,26 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 					if(0 < peakCount) { // got peaks, add spectrum
 						massSpectra.addMassSpectrum(massSpectrum);
 					} else { // got no peaks for the current spectrum, discard incomplete spectrum
-						System.out.println("got no peaks from \"NAME: " + massSpectrum.getScanName() + "\"");
+						System.out.println("got no peaks from \"" + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) 
+								? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName()
+								: "NAME: " + ((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().getName()));
 						parseState = 1;
 					}
 					parseState = 1;
 				} else if(1 == parseState) { // got no peaks, discard incomplete spectrum
-					System.out.println("got no NUM_PEAKS from \"NAME: " + massSpectrum.getScanName() + "\"");
+					System.out.println("got no NUM_PEAKS from \"" + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) 
+							? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName()
+							: "NAME: " + ((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().getName()));
 					parseState = 1;
 				} else if(0 == parseState) {
 					parseState = 1;
 				}
-				massSpectrum = new CalibratedVendorMassSpectrum();
+				massSpectrum = new CalibratedVendorLibraryMassSpectrum();
 				String name = fieldMatcher.group(1).trim();
-				massSpectrum.setScanName(name);
-				massSpectrum.getLibraryInformation().setName(name);
+				((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().setName(name);
 			} // if found NAME record
 			else if((fieldMatcher = scanPattern.matcher(line)).lookingAt()) { // found SCAN record
-				if(!nameFile) {
+				if(!libFile) {
 					scanFile = true;
 				} else {
 					System.out.println("got SCAN record in a NAME file");
@@ -137,139 +150,156 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 				}
 				if(2 == parseState) {
 					if(0 >= peakCount) { // got no peaks for the current spectrum, discard incomplete spectrum
-						System.out.println("got no peaks from \"SCAN: " + massSpectrum.getScanName() + "\"");
+						System.out.println("got no peaks from \"SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName() + "\"");
 						parseState = 1;
 					} else { // got peaks, add spectrum
 						massSpectra.addMassSpectrum(massSpectrum);
 						parseState = 1;
 					}
 				} else if(1 == parseState) { // got no peaks, discard incomplete spectrum
-					System.out.println("got no NUM_PEAKS from SCAN: " + massSpectrum.getScanName());
+					System.out.println("got no NUM_PEAKS from SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName());
 					parseState = 1;
 				} else if(0 == parseState) {
 					parseState = 1;
 				}
 				massSpectrum = new CalibratedVendorMassSpectrum();
 				String name = fieldMatcher.group(1).trim();
-				massSpectrum.setScanName(name);
-				massSpectrum.getLibraryInformation().setName(name);
+				((ICalibratedVendorMassSpectrum)massSpectrum).setScanName(name);
 			} // else if found SCAN record
 			else if(1 == parseState) {
 				if((fieldMatcher = numPeaksPattern.matcher(line)).lookingAt()) { // found NUM PEAKS record
 					peakCount = 0;
 					numPeaks = (int)Double.parseDouble(fieldMatcher.group(1).trim());
 					if(0 >= numPeaks) { // can't have negative or zero
-						System.out.println("got illegal NUM PEAKS from \"" + (nameFile ? "NAME: " : (scanFile ? "SCAN: " : "UNKNOWN: ")) + massSpectrum.getScanName() + "\" = " + numPeaks + "\"");
+						System.out.println("got illegal NUM PEAKS from \"" + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) 
+								? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName()
+								: "NAME: " + ((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().getName())
+								+ "\" = " + numPeaks + "\"");
 						parseState = 0;
 					} else
 						parseState = 2;
 				} // if
-				else if((fieldMatcher = formulaPattern.matcher(line)).lookingAt()) { // found FORMULA record
-					massSpectrum.getLibraryInformation().setFormula(fieldMatcher.group(1).trim());
-				} // else if FORMULA
 				else if((fieldMatcher = sourcepPattern.matcher(line)).lookingAt()) { // found SOURCEP record
 					double sourcep;
 					sourcep = Double.parseDouble(fieldMatcher.group(1).trim());
 					if(0.0 < sourcep)
-						massSpectrum.setSourcePressure(sourcep);
+						((ICalibratedVendorLibraryMassSpectrum)massSpectrum).setSourcePressure(sourcep);
 					else
-						System.out.println("got negative or zero SOURCEP from \"" + (nameFile ? "NAME: " : (scanFile ? "SCAN: " : "UNKNOWN: ")) + massSpectrum.getScanName() + "\" = " + sourcep + "\"");
+						System.out.println("got negative or zero SOURCEP from \"" + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) 
+								? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName()
+								: "NAME: " + ((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().getName())
+								+ "\" = " + sourcep + "\"");
 				} // else if SOURCEP
 				else if((fieldMatcher = spunitsPattern.matcher(line)).lookingAt()) { // found SPUNITS record
-					massSpectrum.setSourcePressureUnits(fieldMatcher.group(1).trim());
+					((ICalibratedVendorLibraryMassSpectrum)massSpectrum).setSourcePressureUnits(fieldMatcher.group(1).trim());
 				} // else if SPUNITS
 				else if((fieldMatcher = sigunitsPattern.matcher(line)).lookingAt()) { // found SIGUNITS record
-					massSpectrum.setSignalUnits(fieldMatcher.group(1).trim());
+					((ICalibratedVendorLibraryMassSpectrum)massSpectrum).setSignalUnits(fieldMatcher.group(1).trim());
 				} // else if SIGUNITS
-				else if((fieldMatcher = casNumberPattern.matcher(line)).lookingAt()) { // found CAS record
-					massSpectrum.getLibraryInformation().setCasNumber(fieldMatcher.group(1).trim());
-				} // else if CAS
 				else if((fieldMatcher = tstampPattern.matcher(line)).lookingAt()) { // found TSTAMP record
-					massSpectrum.setTimeStamp(fieldMatcher.group(1).trim());
+					((ICalibratedVendorLibraryMassSpectrum)massSpectrum).setTimeStamp(fieldMatcher.group(1).trim());
 				} // else if TSTAMP
 				else if((fieldMatcher = etimesPattern.matcher(line)).lookingAt()) { // found ETIMES record
 					double etimes;
 					etimes = Double.parseDouble(fieldMatcher.group(1).trim());
 					if(0.0 <= etimes)
-						massSpectrum.setEtimes(etimes);
+						((ICalibratedVendorLibraryMassSpectrum)massSpectrum).setEtimes(etimes);
 					else
-						System.out.println("got negative or zero ETIMES from \"" + (nameFile ? "NAME: " : (scanFile ? "SCAN: " : "UNKNOWN: ")) + massSpectrum.getScanName() + "\" = " + etimes + "\"");
+						System.out.println("got negative or zero ETIMES from \"" + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) 
+								? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName()
+								: "NAME: " + ((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().getName())
+								+ "\" = " + etimes + "\"");
 				} // else if ETIMES
 				else if((fieldMatcher = eenergyvPattern.matcher(line)).lookingAt()) { // found EENERGYV record
 					double eenergy;
 					eenergy = Double.parseDouble(fieldMatcher.group(1).trim());
 					if(0.0 < eenergy)
-						massSpectrum.setEenergy(eenergy);
+						((ICalibratedVendorLibraryMassSpectrum)massSpectrum).setEenergy(eenergy);
 					else
-						System.out.println("got negative or zero EENERGYV from \"" + (nameFile ? "NAME: " : (scanFile ? "SCAN: " : "UNKNOWN: ")) + massSpectrum.getScanName() + "\" = " + eenergy + "\"");
+						System.out.println("got negative or zero EENERGYV from \"" 
+								+ (libFile ? "NAME: " : (scanFile ? "SCAN: " : "UNKNOWN: ")) 
+								+ ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName() + "\" = " + eenergy + "\"");
 				} // else if EENERGYV
 				else if((fieldMatcher = ienergyvPattern.matcher(line)).lookingAt()) { // found IENERGYV record
 					double ienergy;
 					ienergy = Double.parseDouble(fieldMatcher.group(1).trim());
 					if(0.0 < ienergy)
-						massSpectrum.setIenergy(ienergy);
+						((ICalibratedVendorLibraryMassSpectrum)massSpectrum).setIenergy(ienergy);
 					else
-						System.out.println("got negative or zero IENERGYV from \"" + (nameFile ? "NAME: " : (scanFile ? "SCAN: " : "UNKNOWN: ")) + massSpectrum.getScanName() + "\" = " + ienergy + "\"");
+						System.out.println("got negative or zero IENERGYV from \"" + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) 
+								? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName()
+								: "NAME: " + ((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().getName())
+								+ "\" = " + ienergy + "\"");
 				} // else if IENERGYV
 				else if((fieldMatcher = inamePattern.matcher(line)).lookingAt()) { // found INAME record
-					massSpectrum.setInstrumentName(fieldMatcher.group(1).trim());
+					((ICalibratedVendorLibraryMassSpectrum)massSpectrum).setInstrumentName(fieldMatcher.group(1).trim());
 				} // else if INAME
-				else if((fieldMatcher = molweightPattern.matcher(line)).lookingAt()) { // found MW record
-					double mweight;
-					mweight = Double.parseDouble(fieldMatcher.group(1).trim());
-					if(0.0 < mweight)
-						massSpectrum.getLibraryInformation().setMolWeight(mweight);
-					else
-						System.out.println("got negative or zero molecular weight from \"" + (nameFile ? "NAME: " : (scanFile ? "SCAN: " : "UNKNOWN: ")) + massSpectrum.getScanName() + "\" = " + mweight + "\"");
-				} // else if MW
 				else if((fieldMatcher = commentPattern.matcher(line)).lookingAt()) { // found COMMENT record
-					List<String> comments = massSpectrum.getComments();
+					List<String> comments = ((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getComments();
 					if(null == comments) {
 						comments = new ArrayList<String>();
 						comments.add(fieldMatcher.group(1).trim());
-						massSpectrum.setComments(comments);
+						((ICalibratedVendorLibraryMassSpectrum)massSpectrum).setComments(comments);
 					} else {
 						comments.add(fieldMatcher.group(1).trim());
 					}
 				} // else if COMMENT
-				else if((fieldMatcher = synonymPattern.matcher(line)).lookingAt()) { // found SYNONYM record
-					Set<String> synonyms = massSpectrum.getLibraryInformation().getSynonyms();
-					if(null == synonyms) {
-						synonyms = new HashSet<String>();
-						synonyms.add(fieldMatcher.group(1).trim());
-						massSpectrum.getLibraryInformation().setSynonyms(synonyms);
-					} else {
-						synonyms.add(fieldMatcher.group(1).trim());
-					}
-				} // else if SYNONYM
-				else if((fieldMatcher = smilesPattern.matcher(line)).lookingAt()) { // found SMILES record
-					massSpectrum.getLibraryInformation().setSmiles(fieldMatcher.group(1).trim());
-				} // else if SMILES
-				else if((fieldMatcher = databaseNamePattern.matcher(line)).lookingAt()) { // found DATABASE NAME record
-					massSpectrum.getLibraryInformation().setDatabase(fieldMatcher.group(1).trim());
-				} // else if DATABASE NAME
-				else if((fieldMatcher = referenceIdentifierPattern.matcher(line)).lookingAt()) { // found REF ID record
-					massSpectrum.getLibraryInformation().setReferenceIdentifier(fieldMatcher.group(1).trim());
-				} // else if REF ID
-				else if((fieldMatcher = retentionTimePattern.matcher(line)).lookingAt()) { // found RT record
-					double retTime = Double.parseDouble(fieldMatcher.group(1).trim());
-					if(0 < retTime)
-						massSpectrum.setRetentionTime((int)(retTime * AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
-				} // else if RT
-				else if((fieldMatcher = nameRetentionTimePattern.matcher(line)).lookingAt()) { // found NAME RTD record
-					double retTime = (int)Double.parseDouble(fieldMatcher.group(1).trim());
-					if(0 < retTime)
-						massSpectrum.setRetentionTime((int)(retTime * AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
-				} // else if NAME RT
-				else if((fieldMatcher = relativeRetentionTimePattern.matcher(line)).lookingAt()) { // found REL RT record
-					double retTime = (int)Double.parseDouble(fieldMatcher.group(1).trim());
-					if(0 < retTime)
-						massSpectrum.setRelativeRetentionTime((int)(retTime * AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
-				} // else if REL RT
-				else if((fieldMatcher = retentionIndexPattern.matcher(line)).lookingAt()) { // found RT INDEX record
-					String retentionIndices = fieldMatcher.group(1).trim();
-					extractRetentionIndices(massSpectrum, retentionIndices, RETENTION_INDICES_DELIMITER);
-				} // else if RT INDEX
+				// the following fields do not apply to CalibratedVendorMassSpectrum
+				else if (!(massSpectrum instanceof ICalibratedVendorMassSpectrum)) {
+					if((fieldMatcher = formulaPattern.matcher(line)).lookingAt()) { // found FORMULA record
+						((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().setFormula(fieldMatcher.group(1).trim());
+					} // else if FORMULA
+					else if((fieldMatcher = casNumberPattern.matcher(line)).lookingAt()) { // found CAS record
+						((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().setCasNumber(fieldMatcher.group(1).trim());
+					} // else if CAS
+					else if((fieldMatcher = molweightPattern.matcher(line)).lookingAt()) { // found MW record
+						double mweight;
+						mweight = Double.parseDouble(fieldMatcher.group(1).trim());
+						if(0.0 < mweight)
+							((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().setMolWeight(mweight);
+						else
+							System.out.println("got negative or zero molecular weight from \"NAME: "
+								+ ((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().getName() + "\" = " + mweight + "\"");
+					} // else if MW
+					else if((fieldMatcher = synonymPattern.matcher(line)).lookingAt()) { // found SYNONYM record
+						Set<String> synonyms = ((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().getSynonyms();
+						if(null == synonyms) {
+							synonyms = new HashSet<String>();
+							synonyms.add(fieldMatcher.group(1).trim());
+							((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().setSynonyms(synonyms);
+						} else {
+							synonyms.add(fieldMatcher.group(1).trim());
+						}
+					} // else if SYNONYM
+					else if((fieldMatcher = smilesPattern.matcher(line)).lookingAt()) { // found SMILES record
+						((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().setSmiles(fieldMatcher.group(1).trim());
+					} // else if SMILES
+					else if((fieldMatcher = databaseNamePattern.matcher(line)).lookingAt()) { // found DATABASE NAME record
+						((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().setDatabase(fieldMatcher.group(1).trim());
+					} // else if DATABASE NAME
+					else if((fieldMatcher = referenceIdentifierPattern.matcher(line)).lookingAt()) { // found REF ID record
+						((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().setReferenceIdentifier(fieldMatcher.group(1).trim());
+					} // else if REF ID
+					else if((fieldMatcher = retentionTimePattern.matcher(line)).lookingAt()) { // found RT record
+						double retTime = Double.parseDouble(fieldMatcher.group(1).trim());
+						if(0 < retTime)
+							massSpectrum.setRetentionTime((int)(retTime * AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+					} // else if RT
+					else if((fieldMatcher = nameRetentionTimePattern.matcher(line)).lookingAt()) { // found NAME RTD record
+						double retTime = (int)Double.parseDouble(fieldMatcher.group(1).trim());
+						if(0 < retTime)
+							massSpectrum.setRetentionTime((int)(retTime * AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+					} // else if NAME RT
+					else if((fieldMatcher = relativeRetentionTimePattern.matcher(line)).lookingAt()) { // found REL RT record
+						double retTime = (int)Double.parseDouble(fieldMatcher.group(1).trim());
+						if(0 < retTime)
+							massSpectrum.setRelativeRetentionTime((int)(retTime * AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+					} // else if REL RT
+					else if((fieldMatcher = retentionIndexPattern.matcher(line)).lookingAt()) { // found RT INDEX record
+						String retentionIndices = fieldMatcher.group(1).trim();
+						extractRetentionIndices(((ICalibratedVendorLibraryMassSpectrum)massSpectrum), retentionIndices, RETENTION_INDICES_DELIMITER);
+					} // else if RT INDEX
+				} //else if (libFile)
 				else {
 					System.out.println("Unrecognize line in file \"" + file.getName() + "\"");
 					System.out.println("\tstate = " + parseState + ", ignored: \"" + line + "\"");
@@ -279,13 +309,30 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 				double mass;
 				float signal;
 				if((fieldMatcher = ionPattern.matcher(line)).find()) { // found mass/signal pair
-					do {
-						// Create the ion or peak and store it in mass spectrum.
-						mass = Double.parseDouble(fieldMatcher.group(1));
-						signal = Float.parseFloat(fieldMatcher.group(2));
-						massSpectrum.addIonMeasurement(mass, signal);
-						peakCount++;
-					} while(fieldMatcher.find());
+					if (massSpectrum instanceof ICalibratedVendorMassSpectrum) {
+						do { // Create IonMeasurements and store them in mass spectrum
+							mass = Double.parseDouble(fieldMatcher.group(1));
+							signal = Float.parseFloat(fieldMatcher.group(2));
+							((ICalibratedVendorMassSpectrum)massSpectrum).addIonMeasurement(mass, signal);
+							peakCount++;
+						} while(fieldMatcher.find());
+					}
+					else {
+						do { // Create Ions and store them in mass spectrum
+							mass = Double.parseDouble(fieldMatcher.group(1));
+							signal = Float.parseFloat(fieldMatcher.group(2));
+							IIon ion;
+							try {
+								ion = new Ion(mass, signal);
+								massSpectrum.addIon(ion);
+							} catch(AbundanceLimitExceededException e) {
+								logger.warn(e);
+							} catch(IonLimitExceededException e) {
+								logger.warn(e);
+							}
+							peakCount++;
+						} while(fieldMatcher.find());
+					}
 				} else {
 					System.out.println("Unrecognize line in file \"" + file.getName() + "\"");
 					System.out.println("\tstate = " + parseState + ", ignored: \"" + line + "\"");
@@ -298,12 +345,16 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 		} // while
 		if(2 == parseState) {
 			if(0 >= peakCount) { // got no peaks for the current spectrum, discard incomplete spectrum
-				System.out.println("got no peaks from " + (nameFile ? "NAME: " : (scanFile ? "SCAN: " : "UNKNOWN: ")) + massSpectrum.getScanName());
+				System.out.println("got no peaks from " + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) 
+					? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName()
+					: "NAME: " + ((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().getName()));
 			} else { // got peaks, add spectrum
 				massSpectra.addMassSpectrum(massSpectrum);
 			}
 		} else if(1 == parseState) { // got no peaks, discard incomplete spectrum
-			System.out.println("got no NUM_PEAKS: from " + (nameFile ? "NAME: " : (scanFile ? "SCAN: " : "UNKNOWN: ")) + massSpectrum.getScanName());
+			System.out.println("got no NUM_PEAKS: from " + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) 
+				? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName()
+				: "NAME: " + ((ICalibratedVendorLibraryMassSpectrum)massSpectrum).getLibraryInformation().getName()));
 		}
 		bufferedReader.close();
 		return massSpectra;

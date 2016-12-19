@@ -14,16 +14,29 @@ package net.openchrom.msd.converter.supplier.cms.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.msd.model.core.AbstractRegularLibraryMassSpectrum;
+import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.RetentionIndexType;
+import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
+import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.msd.model.core.AbstractRegularMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.AbstractScanMSD;
+import org.eclipse.chemclipse.msd.model.core.IFragmentedIonScan;
 import org.eclipse.chemclipse.msd.model.core.IIon;
-import org.eclipse.chemclipse.msd.model.implementation.Ion;
+import org.eclipse.chemclipse.msd.model.core.IIonBounds;
+import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumTarget;
+import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
+import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
+import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 
-//public class CalibratedVendorMassSpectrum implements ICalibratedVendorMassSpectrum {
-public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpectrum implements ICalibratedVendorMassSpectrum {
-
+//public class CalibratedVendorMassSpectrum implements IRegularLibraryMassSpectrum {
+public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpectrum implements ICalibratedVendorMassSpectrum {
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
 	 * methods.
@@ -32,78 +45,20 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	private static final Logger logger = Logger.getLogger(CalibratedVendorMassSpectrum.class);
 	//
 	private List<IIonMeasurement> ionMeasurements;
-	private List<String> comments; // this implementation preserves the order in which the comments were first read
+	private String scanName = "";
 	private double minSignal = 0;
 	private double minAbsSignal = 0;
 	private double maxSignal = 0;
 	private float scaleOffset = 0;
 	private float scaleSlope = 0;
-	//
-	private double sourcePressure = -1d;
-	private String sourcePressureUnits = "";
-	private String signalUnits = "";
-	private String scanName = "";
-	private String timeStamp = "";
-	private String instrumentName = "";
-	private double eEnergyV = -1d;
-	private double iEnergyV = -1d;
-	private double eTimeS = -1d;
 
 	public CalibratedVendorMassSpectrum() {
 		/*
 		 * Initialize the values.
 		 */
 		ionMeasurements = new ArrayList<IIonMeasurement>(100);
-		comments = null;
-		this.getLibraryInformation().setMolWeight(-1d);
-	}
-	
-	public List<String> getComments() {
-		return comments;
 	}
 
-	public void setComments(List<String> comments) {
-		if(comments != null) {
-			this.comments = comments;
-		}
-	}
-
-	@Override
-	public List<IIon> getIons() {
-
-		/*
-		 * Initialization is a bit more elegant now.
-		 */
-		if(getNumberOfIons() == 0) {
-			updateIons();
-		}
-		return super.getIons();
-	}
-
-	@Override
-	public void updateIons() {
-
-		/*
-		 * Remove the currently used ions.
-		 */
-		removeAllIons();
-		/*
-		 * Set the scaled ions.
-		 */
-		for(IIonMeasurement ionMeasurement : getIonMeasurements()) {
-			float signal = ionMeasurement.getSignal();
-			double mz = ionMeasurement.getMZ();
-			if(signal > 0.0f && mz > 0.0d) {
-				try {
-					addIon(new Ion(mz, signal));
-				} catch(Exception e) {
-					logger.warn(e);
-				}
-			}
-		}
-	}
-
-	@Override
 	public boolean scale() {
 
 		/*
@@ -136,15 +91,10 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 			for(IIonMeasurement ionMeasurement : ionMeasurements) {
 				ionMeasurement.setSignal(scaleSlope * (ionMeasurement.getSignal() + scaleOffset));
 			}
-			/*
-			 * Update the ions and finish the method.
-			 */
-			updateIons();
 			return true;
 		}
 	}
 
-	@Override
 	public boolean unscale() {
 
 		if(0.0 == scaleSlope) {
@@ -156,15 +106,10 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		for(IIonMeasurement ionMeasurement : ionMeasurements) {
 			ionMeasurement.setSignal((ionMeasurement.getSignal() / scaleSlope) - scaleOffset);
 		}
-		/*
-		 * Update the ions and finish the method.
-		 */
-		updateIons();
 		scaleSlope = 0;
 		return true;
 	}
 
-	@Override
 	public List<IIonMeasurement> getIonMeasurements() {
 
 		if(!isMinMaxSignalCalculated()) {
@@ -173,7 +118,6 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		return ionMeasurements;
 	}
 
-	@Override
 	public IIonMeasurement getIonMeasurement(int scanIndex) {
 
 		if(!isMinMaxSignalCalculated()) {
@@ -187,7 +131,6 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		}
 	}
 
-	@Override
 	public void updateSignalLimits() {
 
 		for(IIonMeasurement peak : ionMeasurements) {
@@ -216,13 +159,11 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		}
 	}
 
-	@Override
 	public boolean addIonMeasurement(double mz, float signal) {
 
 		return addIonMeasurement(new IonMeasurement(mz, signal));
 	}
 
-	@Override
 	public boolean addIonMeasurement(IIonMeasurement ionMeasurement) {
 
 		if(ionMeasurement == null || ionMeasurement.getMZ() <= 0) {
@@ -233,113 +174,15 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		return true;
 	}
 
-	@Override
-	public double getSourcePressure() {
-
-		return sourcePressure;
-	}
-
-	@Override
-	public void setSourcePressure(double sourcePressure) {
-
-		this.sourcePressure = sourcePressure;
-	}
-
-	@Override
-	public String getSourcePressureUnits() {
-
-		return sourcePressureUnits;
-	}
-
-	@Override
-	public void setSourcePressureUnits(String spunits) {
-
-		sourcePressureUnits = spunits;
-	}
-
-	@Override
-	public String getSignalUnits() {
-
-		return signalUnits;
-	}
-
-	@Override
-	public void setSignalUnits(String sigunits) {
-
-		signalUnits = sigunits;
-	}
-
-	@Override
 	public String getScanName() {
 
 		return scanName;
 	}
 
-	@Override
 	public void setScanName(String scanName) {
 
 		if(null != scanName)
 			this.scanName = scanName;
-	}
-
-	@Override
-	public String getTimeStamp() {
-
-		return timeStamp;
-	}
-
-	@Override
-	public void setTimeStamp(String tstamp) {
-
-		timeStamp = tstamp;
-	}
-
-	@Override
-	public String getInstrumentName() {
-
-		return instrumentName;
-	}
-
-	@Override
-	public void setInstrumentName(String iname) {
-
-		instrumentName = iname;
-	}
-
-	@Override
-	public double getEtimes() {
-
-		return eTimeS;
-	}
-
-	@Override
-	public double getEenergy() {
-
-		return eEnergyV;
-	}
-
-	@Override
-	public double getIenergy() {
-
-		return iEnergyV;
-	}
-
-	@Override
-	public void setEtimes(double etimes) {
-
-		eTimeS = etimes;
-	}
-
-	@Override
-	public void setEenergy(double eenergy) {
-
-		eEnergyV = eenergy;
-	}
-
-	@Override
-	public void setIenergy(double ienergy) {
-
-		iEnergyV = ienergy;
 	}
 
 	/**
@@ -348,7 +191,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	 * to be filled by the implementation specific ions of each 
 	 * implementing class.
 	 */
-	private void createNewIonMeasurementList() {
+	public void createNewIonMeasurementList() {
 
 		ionMeasurements = new ArrayList<IIonMeasurement>(200);
 	}
@@ -356,7 +199,7 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 	@Override
 	public ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
 
-		CalibratedVendorMassSpectrum vendorMassSpectrum = (CalibratedVendorMassSpectrum)super.clone();
+		ICalibratedVendorMassSpectrum vendorMassSpectrum = (ICalibratedVendorMassSpectrum)super.clone();
 		vendorMassSpectrum.resetMinMaxSignal();
 		vendorMassSpectrum.createNewIonMeasurementList();
 		//
@@ -365,15 +208,13 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 			vendorMassSpectrum.addIonMeasurement(ionMeasurement.getMZ(), signal);
 		}
 		vendorMassSpectrum.updateSignalLimits();
-		vendorMassSpectrum.updateIons();
 		return vendorMassSpectrum;
 	}
 
-	@Override
 	public ICalibratedVendorMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException {
 
 		Random random = new Random(seed);
-		CalibratedVendorMassSpectrum vendorMassSpectrum = (CalibratedVendorMassSpectrum)super.clone();
+		ICalibratedVendorMassSpectrum vendorMassSpectrum = (ICalibratedVendorMassSpectrum)super.clone();
 		vendorMassSpectrum.resetMinMaxSignal();
 		vendorMassSpectrum.createNewIonMeasurementList();
 		//
@@ -383,7 +224,6 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 			vendorMassSpectrum.addIonMeasurement(ionMeasurement.getMZ(), signal + noise);
 		}
 		vendorMassSpectrum.updateSignalLimits();
-		vendorMassSpectrum.updateIons();
 		return vendorMassSpectrum;
 	}
 
@@ -402,10 +242,454 @@ public class CalibratedVendorMassSpectrum extends AbstractRegularLibraryMassSpec
 		}
 	}
 
-	private void resetMinMaxSignal() {
+	public void resetMinMaxSignal() {
 
 		minSignal = 0;
 		minAbsSignal = 0;
 		maxSignal = 0;
 	}
+	
+	/*
+	 * override methods from super that are not used (there are lots of them) 
+	 */
+
+	@Override
+	public short getMassSpectrometer() {
+
+		return 0;
+	}
+
+	@Override
+	public void setMassSpectrometer(short massSpectrometer) {
+
+	}
+
+	@Override
+	public short getMassSpectrumType() {
+
+		return 0;
+	}
+
+	@Override
+	public String getMassSpectrumTypeDescription() {
+
+		return null;
+	}
+
+	@Override
+	public void setMassSpectrumType(short massSpectrumType) {
+
+	}
+
+	@Override
+	public double getPrecursorIon() {
+
+		return 0;
+	}
+
+	@Override
+	public AbstractRegularMassSpectrum setPrecursorIon(double precursorIon) {
+
+		return null;
+	}
+
+	@Override
+	public float getTotalSignal(IMarkedIons excludedIons) {
+
+		return 0;
+	}
+
+	@Override
+	public IExtractedIonSignal getExtractedIonSignal() {
+
+		return null;
+	}
+
+	@Override
+	public IExtractedIonSignal getExtractedIonSignal(double startIon, double stopIon) {
+
+		return null;
+	}
+
+	@Override
+	public double getBasePeak() {
+
+		return 0;
+	}
+
+	@Override
+	public float getBasePeakAbundance() {
+
+		return 0;
+	}
+
+	@Override
+	public IIon getLowestIon() {
+
+		return null;
+	}
+
+	@Override
+	public IIon getLowestAbundance() {
+
+		return null;
+	}
+
+	@Override
+	public IIon getHighestIon() {
+
+		return null;
+	}
+
+	@Override
+	public IIon getHighestAbundance() {
+
+		return null;
+	}
+
+	@Override
+	public IIonBounds getIonBounds() {
+
+		return null;
+	}
+
+	@Override
+	public AbstractScanMSD addIons(List<IIon> ions, boolean addIntensities) {
+
+		return null;
+	}
+
+	@Override
+	public AbstractScanMSD addIon(IIon ion, boolean checked) {
+
+		return null;
+	}
+
+	@Override
+	public AbstractScanMSD addIon(IIon ion) {
+
+		return null;
+	}
+
+	@Override
+	public AbstractScanMSD addIon(boolean addIntensity, IIon ion) {
+
+		return null;
+	}
+
+	@Override
+	public AbstractScanMSD removeIon(IIon ion) {
+
+		return null;
+	}
+
+	@Override
+	public AbstractScanMSD removeAllIons() {
+
+		return null;
+	}
+
+	@Override
+	public AbstractScanMSD removeIons(IMarkedIons excludedIons) {
+
+		return null;
+	}
+
+	@Override
+	public AbstractScanMSD removeIon(int ion) {
+
+		return null;
+	}
+
+	@Override
+	public AbstractScanMSD removeIons(Set<Integer> ions) {
+
+		return null;
+	}
+
+	@Override
+	public IIon getIon(int ion) throws AbundanceLimitExceededException, IonLimitExceededException {
+
+		return null;
+	}
+
+	@Override
+	public IIon getIon(double ion) throws AbundanceLimitExceededException, IonLimitExceededException {
+
+		return null;
+	}
+
+	@Override
+	public IIon getIon(double ion, int precision) throws AbundanceLimitExceededException, IonLimitExceededException {
+
+		return null;
+	}
+
+	@Override
+	public void adjustIons(float percentage) {
+
+	}
+
+	@Override
+	public IScanMSD getMassSpectrum(IMarkedIons excludedIons) {
+
+		return null;
+	}
+
+	@Override
+	public boolean hasIons() {
+
+		return false;
+	}
+
+	@Override
+	public void enforceLoadScanProxy() {
+
+	}
+
+	@Override
+	public void setOptimizedMassSpectrum(IScanMSD optimizedMassSpectrum) {
+
+	}
+
+	@Override
+	public IScanMSD getOptimizedMassSpectrum() {
+
+		return null;
+	}
+
+	@Override
+	public IChromatogram getParentChromatogram() {
+
+		return null;
+	}
+
+	@Override
+	public void setParentChromatogram(IChromatogram parentChromatogram) {
+
+	}
+
+	@Override
+	public int getScanNumber() {
+
+		return 0;
+	}
+
+	@Override
+	public void setScanNumber(int scanNumber) {
+
+	}
+
+	@Override
+	public int getRetentionTime() {
+
+		return 0;
+	}
+
+	@Override
+	public void setRetentionTime(int retentionTime) {
+
+	}
+
+	@Override
+	public int getRetentionTimeColumn1() {
+
+		return 0;
+	}
+
+	@Override
+	public void setRetentionTimeColumn1(int retentionTimeColumn1) {
+
+	}
+
+	@Override
+	public int getRetentionTimeColumn2() {
+
+		return 0;
+	}
+
+	@Override
+	public void setRetentionTimeColumn2(int retentionTimeColumn2) {
+
+	}
+
+	@Override
+	public int getRelativeRetentionTime() {
+
+		return 0;
+	}
+
+	@Override
+	public void setRelativeRetentionTime(int relativeRetentionTime) {
+
+	}
+
+	@Override
+	public float getRetentionIndex() {
+
+		return 0;
+	}
+
+	@Override
+	public void setRetentionIndex(float retentionIndex) {
+
+	}
+
+	@Override
+	public boolean hasAdditionalRetentionIndices() {
+
+		return false;
+	}
+
+	@Override
+	public float getRetentionIndex(RetentionIndexType retentionIndexType) {
+
+		return 0;
+	}
+
+	@Override
+	public Map<RetentionIndexType, Float> getRetentionIndicesTyped() {
+
+		return null;
+	}
+
+	@Override
+	public void setRetentionIndex(RetentionIndexType retentionIndexType, float retentionIndex) {
+
+	}
+
+	@Override
+	public float getTotalSignal() {
+
+		return 0;
+	}
+
+	@Override
+	public int getTimeSegmentId() {
+
+		return 0;
+	}
+
+	@Override
+	public void setTimeSegmentId(int timeSegmentId) {
+
+	}
+
+	@Override
+	public int getCycleNumber() {
+
+		return 0;
+	}
+
+	@Override
+	public void setCycleNumber(int cycleNumber) {
+
+	}
+
+	@Override
+	public boolean isDirty() {
+
+		return false;
+	}
+
+	@Override
+	public void setDirty(boolean isDirty) {
+
+	}
+
+	@Override
+	public String getIdentifier() {
+
+		return null;
+	}
+
+	@Override
+	public void setIdentifier(String identifier) {
+
+	}
+
+	@Override
+	public void adjustTotalSignal(float totalSignal) {
+
+	}
+
+	//@Override
+	//public <T> T getAdapter(Class<T> adapter) {
+	//
+	//	return null;
+	//}
+
+	@Override
+	public IScanMSD normalize() {
+
+		return null;
+	}
+
+	@Override
+	public IScanMSD normalize(float base) {
+
+		return null;
+	}
+
+	@Override
+	public boolean isNormalized() {
+
+		return false;
+	}
+
+	@Override
+	public float getNormalizationBase() {
+
+		return 0;
+	}
+
+	@Override
+	public void addTarget(IMassSpectrumTarget massSpectrumTarget) {
+
+	}
+
+	@Override
+	public void removeTarget(IMassSpectrumTarget massSpectrumTarget) {
+
+	}
+
+	@Override
+	public void removeTargets(List<IMassSpectrumTarget> targetsToDelete) {
+
+	}
+
+	@Override
+	public void removeAllTargets() {
+
+	}
+
+	@Override
+	public List<IMassSpectrumTarget> getTargets() {
+
+		return null;
+	}
+
+	@Override
+	public List<IIon> getIons() {
+
+		return null;
+	}
+
+	@Override
+	public int getNumberOfIons() {
+
+		return 0;
+	}
+
+	//@Override
+	//public ILibraryInformation getLibraryInformation() {
+	//
+	//	return null;
+	//}
+
+	@Override
+	public void setLibraryInformation(ILibraryInformation libraryInformation) {
+
+	}
+
 }

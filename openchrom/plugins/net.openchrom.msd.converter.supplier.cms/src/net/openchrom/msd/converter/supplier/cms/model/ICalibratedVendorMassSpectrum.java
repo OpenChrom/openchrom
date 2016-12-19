@@ -14,23 +14,13 @@ package net.openchrom.msd.converter.supplier.cms.model;
 
 import java.util.List;
 
-import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
-import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-
-public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectrum, IScanMSD {
+public interface ICalibratedVendorMassSpectrum extends ICalibratedVendorLibraryMassSpectrum {
+	
 	boolean addIonMeasurement(double mz, float signal);
 
 	boolean addIonMeasurement(IIonMeasurement ionMeasurement);
-
-	List<String> getComments();
-
-	double getEenergy();
-
-	double getEtimes();
-
-	double getIenergy();
-
-	String getInstrumentName();
+	
+	void createNewIonMeasurementList();
 
 	/**
 	 * This method may return null.
@@ -44,43 +34,19 @@ public interface ICalibratedVendorMassSpectrum extends IRegularLibraryMassSpectr
 
 	String getScanName();
 
-	String getSignalUnits();
-
-	double getSourcePressure();
-
-	String getSourcePressureUnits();
-
-	String getTimeStamp();
-
 	ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException;
 
-	ICalibratedVendorMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException;
+	ICalibratedVendorLibraryMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException;
+	
+	void resetMinMaxSignal();
 
 	boolean scale();
 
-	void setComments(List<String> comments);
-
-	void setEenergy(double eenergy);
-
-	void setEtimes(double etimes);
-
-	void setIenergy(double ienergy);
-
-	void setInstrumentName(String instrumentName);
-
 	void setScanName(String scanName);
-
-	void setSignalUnits(String signalUnits);
-
-	void setSourcePressure(double sourcePressure);
-
-	void setSourcePressureUnits(String sourcePressureUnits);
-
-	void setTimeStamp(String timeStamp);
 
 	boolean unscale();
 
-	void updateIons();
+	// void updateIons();
 
 	void updateSignalLimits();
 
