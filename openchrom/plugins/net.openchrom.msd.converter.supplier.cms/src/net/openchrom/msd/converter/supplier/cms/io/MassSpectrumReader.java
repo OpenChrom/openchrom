@@ -63,6 +63,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 	//
 	private static final Pattern namePattern = Pattern.compile("^NAME:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern scanPattern = Pattern.compile("^SCAN:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern emptyLinePattern = Pattern.compile("^$", Pattern.CASE_INSENSITIVE);
 	private static final Pattern nameRetentionTimePattern = Pattern.compile("^RT:\\s*" + SNUM + "(\\s*min)", Pattern.CASE_INSENSITIVE); // (rt: 10.818 min)
 	private static final Pattern formulaPattern = Pattern.compile("^FORMULA:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern commentPattern = Pattern.compile("^COMMENTS?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
@@ -109,7 +110,10 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 		int peakCount = 0, numPeaks = 0;
 		boolean libFile = false, scanFile = false;
 		while((line = bufferedReader.readLine()) != null) {
-			if((fieldMatcher = namePattern.matcher(line)).lookingAt()) { // found NAME record
+			if((fieldMatcher = emptyLinePattern.matcher(line)).lookingAt()) { // found empty line
+				continue; // while
+			}
+			else if((fieldMatcher = namePattern.matcher(line)).lookingAt()) { // found NAME record
 				if(!scanFile) {
 					libFile = true;
 				} else {

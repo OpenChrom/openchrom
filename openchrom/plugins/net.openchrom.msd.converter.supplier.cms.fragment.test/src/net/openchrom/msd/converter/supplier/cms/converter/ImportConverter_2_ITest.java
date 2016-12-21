@@ -24,7 +24,7 @@ import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
-import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 
 import junit.framework.TestCase;
 
@@ -58,15 +58,22 @@ public class ImportConverter_2_ITest extends TestCase {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(1);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
-		ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
+		ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
 		assertEquals("Argon", libraryMassSpectrum.getLibraryInformation().getName());
 		assertEquals("7440-37-1", libraryMassSpectrum.getLibraryInformation().getCasNumber());
 		assertEquals(4, massSpectrum.getNumberOfIons());
-		assertEquals(1.46215e-01f, massSpectrum.getIon(20).getAbundance());
-		assertEquals(3.00030e-03f, massSpectrum.getIon(36).getAbundance());
-		assertEquals(5.00050e-04f, massSpectrum.getIon(38).getAbundance());
-		assertEquals(1.00000e+00f, massSpectrum.getIon(40).getAbundance());
-		assertEquals("amp", calibratedVendorMassSpectrum.getSignalUnits());
+		assertEquals(2.92429e-06f, massSpectrum.getIon(20).getAbundance());
+		assertEquals(6.0006e-08f, massSpectrum.getIon(36).getAbundance());
+		assertEquals(1.0001e-08f, massSpectrum.getIon(38).getAbundance());
+		assertEquals(2e-05f, massSpectrum.getIon(40).getAbundance());
+		assertEquals("amp", calibratedVendorLibraryMassSpectrum.getSignalUnits());
+		assertEquals(1.0d, calibratedVendorLibraryMassSpectrum.getSourcePressure());
+		assertEquals("mbar", calibratedVendorLibraryMassSpectrum.getSourcePressureUnits());
+		assertEquals("2016-12-12_14:22:00_EDT", calibratedVendorLibraryMassSpectrum.getTimeStamp());
+		assertEquals(0d, calibratedVendorLibraryMassSpectrum.getEtimes());
+		assertEquals(70d, calibratedVendorLibraryMassSpectrum.getEenergy());
+		assertEquals(3000d, calibratedVendorLibraryMassSpectrum.getIenergy());
+		assertEquals("VG 14-80", calibratedVendorLibraryMassSpectrum.getInstrumentName());
 		// ...
 	}
 
@@ -74,14 +81,14 @@ public class ImportConverter_2_ITest extends TestCase {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(2);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
-		ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
+		ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
 		assertEquals("Nitrogen", libraryMassSpectrum.getLibraryInformation().getName());
 		assertEquals("7727-37-9", libraryMassSpectrum.getLibraryInformation().getCasNumber());
 		assertEquals(3, massSpectrum.getNumberOfIons());
-		assertEquals(1.37914e-01f, massSpectrum.getIon(14).getAbundance());
-		assertEquals(1.00000e+00f, massSpectrum.getIon(28).getAbundance());
-		assertEquals(7.40074e-03f, massSpectrum.getIon(29).getAbundance());
-		assertEquals("amp", calibratedVendorMassSpectrum.getSignalUnits());
+		assertEquals(2.75828e-06f, massSpectrum.getIon(14).getAbundance());
+		assertEquals(2e-05f, massSpectrum.getIon(28).getAbundance());
+		assertEquals(1.48015e-07f, massSpectrum.getIon(29).getAbundance());
+		assertEquals("amp", calibratedVendorLibraryMassSpectrum.getSignalUnits());
 		// ...
 	}
 
@@ -89,13 +96,13 @@ public class ImportConverter_2_ITest extends TestCase {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(3);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
-		ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
+		ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
 		assertEquals("Oxygen", libraryMassSpectrum.getLibraryInformation().getName());
 		assertEquals("7782-44-7", libraryMassSpectrum.getLibraryInformation().getCasNumber());
 		assertEquals(2, massSpectrum.getNumberOfIons());
-		assertEquals(2.18022e-01f, massSpectrum.getIon(16).getAbundance());
-		assertEquals(1.00000e+00f, massSpectrum.getIon(32).getAbundance());
-		assertEquals("amp", calibratedVendorMassSpectrum.getSignalUnits());
+		assertEquals(4.36044e-06f, massSpectrum.getIon(16).getAbundance());
+		assertEquals(2e-05f, massSpectrum.getIon(32).getAbundance());
+		assertEquals("amp", calibratedVendorLibraryMassSpectrum.getSignalUnits());
 		// ...
 	}
 
@@ -103,25 +110,25 @@ public class ImportConverter_2_ITest extends TestCase {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(4);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
-		ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
+		ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
 		assertEquals("Ethane", libraryMassSpectrum.getLibraryInformation().getName());
 		assertEquals("74-84-0", libraryMassSpectrum.getLibraryInformation().getCasNumber());
 		assertEquals(14, massSpectrum.getNumberOfIons());
-		assertEquals(2.00020e-03f, massSpectrum.getIon(2).getAbundance());
-		assertEquals(4.00040e-03f, massSpectrum.getIon(12).getAbundance());
-		assertEquals(1.00010e-02f, massSpectrum.getIon(13).getAbundance());
-		assertEquals(3.00030e-02f, massSpectrum.getIon(14).getAbundance());
-		assertEquals(4.40044e-02f, massSpectrum.getIon(15).getAbundance());
-		assertEquals(1.00010e-03f, massSpectrum.getIon(16).getAbundance());
-		assertEquals(5.00050e-03f, massSpectrum.getIon(24).getAbundance());
-		assertEquals(3.50035e-02f, massSpectrum.getIon(25).getAbundance());
-		assertEquals(2.32223e-01f, massSpectrum.getIon(26).getAbundance());
-		assertEquals(3.32333e-01f, massSpectrum.getIon(27).getAbundance());
-		assertEquals(1.00000e+00f, massSpectrum.getIon(28).getAbundance());
-		assertEquals(2.15222e-01f, massSpectrum.getIon(29).getAbundance());
-		assertEquals(2.62226e-01f, massSpectrum.getIon(30).getAbundance());
-		assertEquals(5.00050e-03f, massSpectrum.getIon(31).getAbundance());
-		assertEquals("amp", calibratedVendorMassSpectrum.getSignalUnits());
+		assertEquals(4.0004e-08f, massSpectrum.getIon(2).getAbundance());
+		assertEquals(8.0008e-08f, massSpectrum.getIon(12).getAbundance());
+		assertEquals(2.0002e-07f, massSpectrum.getIon(13).getAbundance());
+		assertEquals(6.0006e-07f, massSpectrum.getIon(14).getAbundance());
+		assertEquals(8.80088e-07f, massSpectrum.getIon(15).getAbundance());
+		assertEquals(2.0002e-08f, massSpectrum.getIon(16).getAbundance());
+		assertEquals(1.0001e-07f, massSpectrum.getIon(24).getAbundance());
+		assertEquals(7.0007e-07f, massSpectrum.getIon(25).getAbundance());
+		assertEquals(4.64446e-06f, massSpectrum.getIon(26).getAbundance());
+		assertEquals(6.64666e-06f, massSpectrum.getIon(27).getAbundance());
+		assertEquals(2e-05f, massSpectrum.getIon(28).getAbundance());
+		assertEquals(4.30443e-06f, massSpectrum.getIon(29).getAbundance());
+		assertEquals(5.24452e-06f, massSpectrum.getIon(30).getAbundance());
+		assertEquals(1.0001e-07f, massSpectrum.getIon(31).getAbundance());
+		assertEquals("amp", calibratedVendorLibraryMassSpectrum.getSignalUnits());
 		// ...
 	}
 
@@ -129,23 +136,23 @@ public class ImportConverter_2_ITest extends TestCase {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(5);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
-		ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
+		ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
 		assertEquals("Ethylene", libraryMassSpectrum.getLibraryInformation().getName());
 		assertEquals("74-85-1", libraryMassSpectrum.getLibraryInformation().getCasNumber());
 		assertEquals(12, massSpectrum.getNumberOfIons());
-		assertEquals(1.00010e-03f, massSpectrum.getIon(2).getAbundance());
-		assertEquals(5.00050e-03f, massSpectrum.getIon(12).getAbundance());
-		assertEquals(9.00090e-03f, massSpectrum.getIon(13).getAbundance());
-		assertEquals(2.10021e-02f, massSpectrum.getIon(14).getAbundance());
-		assertEquals(3.00030e-03f, massSpectrum.getIon(15).getAbundance());
-		assertEquals(2.30023e-02f, massSpectrum.getIon(24).getAbundance());
-		assertEquals(7.81078e-02f, massSpectrum.getIon(25).getAbundance());
-		assertEquals(5.29553e-01f, massSpectrum.getIon(26).getAbundance());
-		assertEquals(6.23662e-01f, massSpectrum.getIon(27).getAbundance());
-		assertEquals(1.00000e+00f, massSpectrum.getIon(28).getAbundance());
-		assertEquals(2.30023e-02f, massSpectrum.getIon(29).getAbundance());
-		assertEquals(1.00010e-03f, massSpectrum.getIon(30).getAbundance());
-		assertEquals("amp", calibratedVendorMassSpectrum.getSignalUnits());
+		assertEquals(2.0002e-08f, massSpectrum.getIon(2).getAbundance());
+		assertEquals(1.0001e-07f, massSpectrum.getIon(12).getAbundance());
+		assertEquals(1.80018e-07f, massSpectrum.getIon(13).getAbundance());
+		assertEquals(4.20042e-07f, massSpectrum.getIon(14).getAbundance());
+		assertEquals(6.0006e-08f, massSpectrum.getIon(15).getAbundance());
+		assertEquals(4.60046e-07f, massSpectrum.getIon(24).getAbundance());
+		assertEquals(1.56216e-06f, massSpectrum.getIon(25).getAbundance());
+		assertEquals(1.05911e-05f, massSpectrum.getIon(26).getAbundance());
+		assertEquals(1.24732e-05f, massSpectrum.getIon(27).getAbundance());
+		assertEquals(2e-05f, massSpectrum.getIon(28).getAbundance());
+		assertEquals(4.60046e-07f, massSpectrum.getIon(29).getAbundance());
+		assertEquals(2.0002e-08f, massSpectrum.getIon(30).getAbundance());
+		assertEquals("amp", calibratedVendorLibraryMassSpectrum.getSignalUnits());
 		// ...
 	}
 }

@@ -25,6 +25,7 @@ import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
 
@@ -60,12 +61,13 @@ public class ImportConverter_3_ITest extends TestCase {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(1);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
-		ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
-		assertEquals("Argon=0.5, Nitrogen=0.3, Oxygen=0.2, Ethane=0.2, Ethylene=0.2", libraryMassSpectrum.getLibraryInformation().getName());
-		assertEquals("", libraryMassSpectrum.getLibraryInformation().getCasNumber());
+		ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
+		ICalibratedVendorMassSpectrum cvmSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
+		assertEquals("Argon=0.5, Nitrogen=0.3, Oxygen=0.2, Ethane=0.2, Ethylene=0.2", cvmSpectrum.getScanName());
+		assertEquals("", cvmSpectrum.getLibraryInformation().getCasNumber());
 		//
-		assertEquals(0, massSpectrum.getNumberOfIons());
-		List<IIonMeasurement> ionMeasurements = calibratedVendorMassSpectrum.getIonMeasurements();
+		assertEquals(0, cvmSpectrum.getNumberOfIons());
+		List<IIonMeasurement> ionMeasurements = cvmSpectrum.getIonMeasurements();
 		assertEquals(15, ionMeasurements.size());
 		//
 		assertEquals(1.0315e-06f, ionMeasurements.get(0).getSignal());
@@ -82,7 +84,7 @@ public class ImportConverter_3_ITest extends TestCase {
 		assertEquals(31.0d, ionMeasurements.get(10).getMZ());
 		assertEquals(40.0d, ionMeasurements.get(14).getMZ());
 		//
-		assertEquals("Amp", calibratedVendorMassSpectrum.getSignalUnits());
+		assertEquals("Amp", cvmSpectrum.getSignalUnits());
 		// ...
 	}
 }
