@@ -33,12 +33,16 @@ public interface ICalibratedVendorMassSpectrum extends ICalibratedVendorLibraryM
 	List<IIonMeasurement> getIonMeasurements();
 
 	String getScanName();
+	
+	double getSumSignal();
 
 	ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException;
 
 	ICalibratedVendorLibraryMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException;
 	
 	void resetMinMaxSignal();
+	
+	void resetSumSignal();
 
 	boolean scale();
 

@@ -25,10 +25,8 @@ import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.msd.model.core.AbstractRegularMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.AbstractScanMSD;
-import org.eclipse.chemclipse.msd.model.core.IFragmentedIonScan;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IIonBounds;
-import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumTarget;
 import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
@@ -49,6 +47,9 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	private double minSignal = 0;
 	private double minAbsSignal = 0;
 	private double maxSignal = 0;
+	private boolean sumSignalCalculated = false;
+	private boolean minMaxSignalCalculated = false;
+	private double sumSignal = 0;
 	private float scaleOffset = 0;
 	private float scaleSlope = 0;
 
@@ -64,16 +65,14 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		/*
 		 * Make suitable for log scale plotting
 		 */
-		if(0.0 != scaleSlope) {
-			boolean isUnscalable = unscale();
-			if(!isUnscalable) {
-				return false;
-			}
+		boolean isUnscalable = unscale();
+		if(!isUnscalable) {
+			return false;
 		}
 		/*
 		 * Calculate the limits on demand.
 		 */
-		if(!isMinMaxSignalCalculated()) {
+		if(!minMaxSignalCalculated) {
 			updateSignalLimits();
 		}
 		//
@@ -91,6 +90,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 			for(IIonMeasurement ionMeasurement : ionMeasurements) {
 				ionMeasurement.setSignal(scaleSlope * (ionMeasurement.getSignal() + scaleOffset));
 			}
+			sumSignalCalculated = false;
 			return true;
 		}
 	}
@@ -107,36 +107,57 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 			ionMeasurement.setSignal((ionMeasurement.getSignal() / scaleSlope) - scaleOffset);
 		}
 		scaleSlope = 0;
+		sumSignalCalculated = false;
 		return true;
 	}
 
 	public List<IIonMeasurement> getIonMeasurements() {
 
-		if(!isMinMaxSignalCalculated()) {
-			updateSignalLimits();
-		}
 		return ionMeasurements;
 	}
 
-	public IIonMeasurement getIonMeasurement(int scanIndex) {
+	/**
+	 * The getIonMeasurement() method may return null.
+	 * 
+	 * @param peakIndex
+	 * @return {@link IIonMeasurement}
+	 */
+	public IIonMeasurement getIonMeasurement(int peakIndex) {
 
-		if(!isMinMaxSignalCalculated()) {
-			updateSignalLimits();
-		}
-		//
-		if(scanIndex >= 0 && scanIndex < ionMeasurements.size()) {
-			return ionMeasurements.get(scanIndex);
+		if(peakIndex >= 0 && peakIndex < ionMeasurements.size()) {
+			return ionMeasurements.get(peakIndex);
 		} else {
 			return null;
 		}
 	}
 
+	public void resetSumSignal() {
+
+		sumSignalCalculated = false;
+	}
+
+	public double getSumSignal() {
+
+		if (!sumSignalCalculated) {
+			sumSignal = 0;
+			for(IIonMeasurement peak : ionMeasurements) {
+				sumSignal += peak.getSignal();
+			}
+			sumSignalCalculated = true;
+		}
+		return sumSignal;
+	}
+
 	public void updateSignalLimits() {
 
+		minSignal = 0;
+		minAbsSignal = 0;
+		maxSignal = 0;
 		for(IIonMeasurement peak : ionMeasurements) {
 			float signal = peak.getSignal();
 			if(maxSignal == 0 && minSignal == 0) {
-				maxSignal = minSignal = minAbsSignal = signal;
+				maxSignal = minSignal = signal;
+				minAbsSignal  = java.lang.StrictMath.abs(signal);
 			} else {
 				/*
 				 * Validations
@@ -157,6 +178,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 				}
 			}
 		}
+		minMaxSignalCalculated = true;
 	}
 
 	public boolean addIonMeasurement(double mz, float signal) {
@@ -171,6 +193,8 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		}
 		//
 		ionMeasurements.add(ionMeasurement);
+		resetSumSignal();
+		resetMinMaxSignal();
 		return true;
 	}
 
@@ -200,14 +224,14 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	public ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
 
 		ICalibratedVendorMassSpectrum vendorMassSpectrum = (ICalibratedVendorMassSpectrum)super.clone();
-		vendorMassSpectrum.resetMinMaxSignal();
 		vendorMassSpectrum.createNewIonMeasurementList();
 		//
 		for(IIonMeasurement ionMeasurement : this.getIonMeasurements()) {
 			float signal = ionMeasurement.getSignal();
 			vendorMassSpectrum.addIonMeasurement(ionMeasurement.getMZ(), signal);
 		}
-		vendorMassSpectrum.updateSignalLimits();
+		vendorMassSpectrum.resetSumSignal();
+		vendorMassSpectrum.resetMinMaxSignal();
 		return vendorMassSpectrum;
 	}
 
@@ -215,7 +239,6 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 
 		Random random = new Random(seed);
 		ICalibratedVendorMassSpectrum vendorMassSpectrum = (ICalibratedVendorMassSpectrum)super.clone();
-		vendorMassSpectrum.resetMinMaxSignal();
 		vendorMassSpectrum.createNewIonMeasurementList();
 		//
 		for(IIonMeasurement ionMeasurement : this.getIonMeasurements()) {
@@ -223,7 +246,8 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 			float noise = (float)(relativeError * signal * random.nextGaussian());
 			vendorMassSpectrum.addIonMeasurement(ionMeasurement.getMZ(), signal + noise);
 		}
-		vendorMassSpectrum.updateSignalLimits();
+		vendorMassSpectrum.resetSumSignal();
+		vendorMassSpectrum.resetMinMaxSignal();
 		return vendorMassSpectrum;
 	}
 
@@ -233,20 +257,9 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		return makeDeepCopy();
 	}
 
-	private boolean isMinMaxSignalCalculated() {
-
-		if(minSignal == 0 && minAbsSignal == 0 && maxSignal == 0) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
 	public void resetMinMaxSignal() {
 
-		minSignal = 0;
-		minAbsSignal = 0;
-		maxSignal = 0;
+		minMaxSignalCalculated = false;
 	}
 	
 	/*

@@ -109,6 +109,9 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 		if (massSpectrum instanceof ICalibratedVendorMassSpectrum) {
 			cvmSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
 		}
+		else if (massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
+			cvmSpectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
+		}
 		else {
 			throw new NotCalibratedVendorMassSpectrumException(); 
 		}
