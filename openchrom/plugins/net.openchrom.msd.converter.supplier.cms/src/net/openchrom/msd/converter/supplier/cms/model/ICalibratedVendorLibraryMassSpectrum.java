@@ -34,6 +34,8 @@ public interface ICalibratedVendorLibraryMassSpectrum  extends IRegularLibraryMa
 
 	double getSourcePressure();
 
+	double getSourcePressure(String ppUnits);
+
 	String getSourcePressureUnits();
 
 	String getTimeStamp();
@@ -55,7 +57,5 @@ public interface ICalibratedVendorLibraryMassSpectrum  extends IRegularLibraryMa
 	void setSourcePressureUnits(String sourcePressureUnits);
 
 	void setTimeStamp(String timeStamp);
-
-	double getSourcePressure(String ppUnits);
 
 }
