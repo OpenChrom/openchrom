@@ -31,6 +31,7 @@ class DecompositionDataset {
 	private int libCompsUsed; // how many components are used in the LS fit, <= libCompsCount
 	private SortedSet<String> compNameSet; // used to help ensure no duplicate library components
 	private boolean matched; // false and then set true after executing matchIons()
+	private boolean canDoQuantitative; // set true if can do quantitative result
 	private ICalibratedVendorMassSpectrum scanRef;
 
 	DecompositionDataset() {
@@ -45,7 +46,13 @@ class DecompositionDataset {
 		libCompsUsed = -1;
 		compNameSet = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 		matched = false;
+		canDoQuantitative = false;
 		scanRef = null;
+	}
+	
+	boolean canDoQuantitative() {
+		if (!matched) return false;
+		return canDoQuantitative;
 	}
 	
 	ICalibratedVendorMassSpectrum getScanRef() {
@@ -223,6 +230,28 @@ class DecompositionDataset {
 		}
 		libCompsUsed = j;
 		libComps = Arrays.copyOf(libComps, libCompsUsed);
+		// check if can do quantitative result
+		canDoQuantitative = true;
+		//String scanPressureUnits, scanSignalUnits, libSignalUnits;
+		//double libPressure;
+		for (LibComponent libComp : libComps) {
+			//scanPressureUnits = scanRef.getSourcePressureUnits();
+			//scanSignalUnits = scanRef.getSignalUnits();
+			//libSignalUnits = libComp.libraryRef.getSignalUnits();
+			//libPressure = libComp.libraryRef.getSourcePressure(scanRef.getSourcePressureUnits());
+			if (canDoQuantitative) {
+				if (0 == libComp.libraryRef.getSourcePressure(scanRef.getSourcePressureUnits())) {
+						System.out.println("Library file pressure units (" + libComp.libraryRef.getSourcePressureUnits()
+							+ ") cannot be converted to scan file pressure units (" + scanRef.getSourcePressureUnits() + ")");
+						canDoQuantitative = false;
+				}
+				if (!libComp.libraryRef.getSignalUnits().equalsIgnoreCase(scanRef.getSignalUnits())) {
+						System.out.println("Library file signal units (" + libComp.libraryRef.getSignalUnits()
+							+ ") != (" + scanRef.getSignalUnits() + ")");
+						canDoQuantitative = false;
+				}
+			}
+		}
 		matched = true;
 	}
 

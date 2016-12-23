@@ -202,11 +202,23 @@ public class MassSpectraDecomposition {
 					
 					result.addComponent(x.get(ii), fitDataset.getLibRef(ii));
 					
-					System.out.println("\t" + fitDataset.getLibCompName(ii) 
-						+ ":\tx[" + ii + "]=" + x.get(ii)
-						+ ",\tpp(" + fitDataset.getScanRef().getSourcePressureUnits() + ")=" 
-						+ x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits)
-						+ ",\tmf=" + x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());
+					System.out.printf("%24s: x[%d]=\t%.13f",
+						fitDataset.getLibCompName(ii), ii, x.get(ii),
+						fitDataset.getScanRef().getSourcePressureUnits());
+					if (fitDataset.canDoQuantitative()) {
+						System.out.printf("\tppress(%6s)=\t%.13f\tmolfrc=\t%.13f%n",
+							fitDataset.getScanRef().getSourcePressureUnits(), 
+							x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits),
+							x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());
+					}
+					else System.out.println(" uncalibrated");
+					
+					
+					//System.out.println("\t" + fitDataset.getLibCompName(ii) 
+					//	+ ":\tx[" + ii + "]=" + x.get(ii)
+					//	+ ",\tpp(" + fitDataset.getScanRef().getSourcePressureUnits() + ")=" 
+					//	+ x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits)
+					//	+ ",\tmf=" + x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());
 				}
 				System.out.println("");
 				System.out.println("\tSS error = " + ssError + ", weighted SS error = " + wtssError);
