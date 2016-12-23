@@ -101,6 +101,7 @@ public class MassSpectraDecomposition {
 				// then read ions present in the unknown scan
 			System.out.println("SCAN: \"" + ((CalibratedVendorMassSpectrum)scan).getScanName() + "\"");
 			System.out.print("\t");
+			fitDataset.setScanRef((ICalibratedVendorMassSpectrum)scan);
 			for(IIonMeasurement sigpeak : ((ICalibratedVendorMassSpectrum)scan).getIonMeasurements()) {
 				System.out.print("(" + sigpeak.getMZ() + ", " + sigpeak.getSignal() + ")");
 				fitDataset.addScanIon(sigpeak.getMZ(), sigpeak.getSignal(), (ICalibratedVendorMassSpectrum)scan);
@@ -191,12 +192,21 @@ public class MassSpectraDecomposition {
 				result = new DecompositionResult(ssError, wtssError);
 				// display the result
 				System.out.println("SOLVED");
-				System.out.print("\t");
 				for(int ii = 0; ii < x.numRows; ii++) {
+					ICalibratedVendorLibraryMassSpectrum libRef = fitDataset.getLibRef(ii);
+					ICalibratedVendorMassSpectrum scanRef = fitDataset.getScanRef();
+					double ionFraction = x.get(ii);
+					String ppUnits = scanRef.getSourcePressureUnits();
+					double pp = x.get(ii) * libRef.getSourcePressure(ppUnits);
+					double mf = x.get(ii) * libRef.getSourcePressure(ppUnits) / scanRef.getSourcePressure();
+					
 					result.addComponent(x.get(ii), fitDataset.getLibRef(ii));
-					if(0 != ii)
-						System.out.print(", ");
-					System.out.print(fitDataset.getLibCompName(ii) + ": x[" + ii + "]=" + x.get(ii));
+					
+					System.out.println("\t" + fitDataset.getLibCompName(ii) 
+						+ ":\tx[" + ii + "]=" + x.get(ii)
+						+ ",\tpp(" + fitDataset.getScanRef().getSourcePressureUnits() + ")=" 
+						+ x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits)
+						+ ",\tmf=" + x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());
 				}
 				System.out.println("");
 				System.out.println("\tSS error = " + ssError + ", weighted SS error = " + wtssError);
@@ -244,13 +254,9 @@ public class MassSpectraDecomposition {
 			} catch(InvalidScanIonCountException e) {
 				logger.warn(e);
 			}
-			scanResidual.updateSignalLimits();
 			//
 			result.setResidualSpectrum(scanResidual);
 			residualSpectra.addMassSpectrum(scanResidual);
-			// for(IScanMSD scan1 : residualSpectra.getList()) {
-			// 	((ICalibratedVendorMassSpectrum)scan1).updateIons();
-			// }
 			System.out.println();
 			// allow user to add and/or delete components from selected library components list
 			// then repeat decomposition using new library component selection

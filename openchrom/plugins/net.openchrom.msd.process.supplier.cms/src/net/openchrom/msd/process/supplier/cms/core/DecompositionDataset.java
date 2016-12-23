@@ -31,6 +31,7 @@ class DecompositionDataset {
 	private int libCompsUsed; // how many components are used in the LS fit, <= libCompsCount
 	private SortedSet<String> compNameSet; // used to help ensure no duplicate library components
 	private boolean matched; // false and then set true after executing matchIons()
+	private ICalibratedVendorMassSpectrum scanRef;
 
 	DecompositionDataset() {
 		libions = new LibIon[10];
@@ -44,6 +45,15 @@ class DecompositionDataset {
 		libCompsUsed = -1;
 		compNameSet = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 		matched = false;
+		scanRef = null;
+	}
+	
+	ICalibratedVendorMassSpectrum getScanRef() {
+		return scanRef;
+	}
+	
+	 void setScanRef(ICalibratedVendorMassSpectrum scan) {
+		scanRef = scan;
 	}
 	
 	String getLibCompName(int i) {

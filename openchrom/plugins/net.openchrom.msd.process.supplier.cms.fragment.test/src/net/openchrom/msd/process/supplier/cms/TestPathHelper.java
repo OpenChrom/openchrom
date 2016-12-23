@@ -21,4 +21,5 @@ public class TestPathHelper extends PathResolver {
 	public static final String TESTFILE_IMPORT_SCANS_1 = "testData/files/import/scans.CMS";
 	public static final String TESTFILE_IMPORT_TEST_1_SCAN_SPECTRA = "testData/files/import/test1/ScanSpectra.cms";
 	public static final String TESTFILE_IMPORT_TEST_1_LIBRARY_SPECTRA = "testData/files/import/test1/LibrarySpectra.cms";
+	public static final String TESTFILE_IMPORT_TEST_2_SCAN_SPECTRA = "testData/files/import/test1/scan_42211.cms";
 }

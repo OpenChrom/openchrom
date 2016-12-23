@@ -47,7 +47,7 @@ public class MassSpectraDecomposition_1_ITest extends TestCase {
 		/*
 		 * argon, nitrogen, oxygen, ethane, ethylene
 		 */
-		File scanFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_TEST_1_SCAN_SPECTRA));
+		File scanFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_TEST_2_SCAN_SPECTRA));
 		MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 		IMassSpectra scanSpectra = massSpectrumReader.read(scanFile, new NullProgressMonitor());
 		/*
