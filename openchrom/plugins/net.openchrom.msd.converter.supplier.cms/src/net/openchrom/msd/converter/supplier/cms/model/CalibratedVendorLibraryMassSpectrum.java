@@ -31,10 +31,10 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	//
 	private List<String> comments; // this implementation preserves the order in which the comments were first read
 	private double sourcePressure = -1d;
-	private String sourcePressureUnits = "";
-	private String signalUnits = "";
-	private String timeStamp = "";
-	private String instrumentName = "";
+	private String sourcePressureUnits;
+	private String signalUnits;
+	private String timeStamp;
+	private String instrumentName;
 	private double eEnergyV = -1d;
 	private double iEnergyV = -1d;
 	private double eTimeS = -1d;
@@ -50,6 +50,19 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	public double getSourcePressure() {
 
 		return sourcePressure;
+	}
+
+	public double getSourcePressure(String units) {
+
+		units = units.toLowerCase();
+		if (units.equals(sourcePressureUnits.toLowerCase())) return sourcePressure;
+		else if ("torr".equals(units) & "mbar".equals(sourcePressureUnits.toLowerCase())) {
+			return sourcePressure * 0.75006167382;
+		}
+		else if ("mbar".equals(units) & "torr".equals(sourcePressureUnits.toLowerCase())) {
+			return sourcePressure * 1.3332237;
+		}
+		else return 0d;
 	}
 
 	public void setSourcePressure(double pressure) {
