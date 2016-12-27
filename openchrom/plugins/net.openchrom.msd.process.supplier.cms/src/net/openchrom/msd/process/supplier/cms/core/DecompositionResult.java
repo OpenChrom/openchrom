@@ -47,12 +47,14 @@ public class DecompositionResult {
 			libraryComponents.add(iCalibratedVendorLibraryMassSpectrum);
 		}
 	}
-	
+
 	public double getSumOfSquaresError() {
+
 		return sumOfSquaresError;
 	}
-	
+
 	public double getWeightedSumOfSquaresError() {
+
 		return weightedSumOfSquaresError;
 	}
 }

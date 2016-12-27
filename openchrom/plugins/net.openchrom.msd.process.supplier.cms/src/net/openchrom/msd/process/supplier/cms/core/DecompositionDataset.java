@@ -49,20 +49,24 @@ class DecompositionDataset {
 		canDoQuantitative = false;
 		scanRef = null;
 	}
-	
+
 	boolean canDoQuantitative() {
-		if (!matched) return false;
+
+		if(!matched)
+			return false;
 		return canDoQuantitative;
 	}
-	
+
 	ICalibratedVendorMassSpectrum getScanRef() {
+
 		return scanRef;
 	}
-	
-	 void setScanRef(ICalibratedVendorMassSpectrum scan) {
+
+	void setScanRef(ICalibratedVendorMassSpectrum scan) {
+
 		scanRef = scan;
 	}
-	
+
 	String getLibCompName(int i) {
 
 		return libComps[i].libraryRef.getLibraryInformation().getName();
@@ -232,23 +236,21 @@ class DecompositionDataset {
 		libComps = Arrays.copyOf(libComps, libCompsUsed);
 		// check if can do quantitative result
 		canDoQuantitative = true;
-		//String scanPressureUnits, scanSignalUnits, libSignalUnits;
-		//double libPressure;
-		for (LibComponent libComp : libComps) {
-			//scanPressureUnits = scanRef.getSourcePressureUnits();
-			//scanSignalUnits = scanRef.getSignalUnits();
-			//libSignalUnits = libComp.libraryRef.getSignalUnits();
-			//libPressure = libComp.libraryRef.getSourcePressure(scanRef.getSourcePressureUnits());
-			if (canDoQuantitative) {
-				if (0 == libComp.libraryRef.getSourcePressure(scanRef.getSourcePressureUnits())) {
-						System.out.println("Library file pressure units (" + libComp.libraryRef.getSourcePressureUnits()
-							+ ") cannot be converted to scan file pressure units (" + scanRef.getSourcePressureUnits() + ")");
-						canDoQuantitative = false;
+		// String scanPressureUnits, scanSignalUnits, libSignalUnits;
+		// double libPressure;
+		for(LibComponent libComp : libComps) {
+			// scanPressureUnits = scanRef.getSourcePressureUnits();
+			// scanSignalUnits = scanRef.getSignalUnits();
+			// libSignalUnits = libComp.libraryRef.getSignalUnits();
+			// libPressure = libComp.libraryRef.getSourcePressure(scanRef.getSourcePressureUnits());
+			if(canDoQuantitative) {
+				if(0 == libComp.libraryRef.getSourcePressure(scanRef.getSourcePressureUnits())) {
+					System.out.println("Library file pressure units (" + libComp.libraryRef.getSourcePressureUnits() + ") cannot be converted to scan file pressure units (" + scanRef.getSourcePressureUnits() + ")");
+					canDoQuantitative = false;
 				}
-				if (!libComp.libraryRef.getSignalUnits().equalsIgnoreCase(scanRef.getSignalUnits())) {
-						System.out.println("Library file signal units (" + libComp.libraryRef.getSignalUnits()
-							+ ") != (" + scanRef.getSignalUnits() + ")");
-						canDoQuantitative = false;
+				if(!libComp.libraryRef.getSignalUnits().equalsIgnoreCase(scanRef.getSignalUnits())) {
+					System.out.println("Library file signal units (" + libComp.libraryRef.getSignalUnits() + ") != (" + scanRef.getSignalUnits() + ")");
+					canDoQuantitative = false;
 				}
 			}
 		}
