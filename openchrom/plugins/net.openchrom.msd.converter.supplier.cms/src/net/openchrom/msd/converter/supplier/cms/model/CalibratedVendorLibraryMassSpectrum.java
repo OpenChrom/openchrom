@@ -8,7 +8,7 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cms.model;
 
 import java.util.List;
@@ -20,8 +20,8 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 
-public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpectrum 
-	implements ICalibratedVendorLibraryMassSpectrum{
+public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpectrum implements ICalibratedVendorLibraryMassSpectrum {
+
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
 	 * methods.
@@ -55,14 +55,14 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	public double getSourcePressure(String units) {
 
 		units = units.toLowerCase();
-		if (units.equals(sourcePressureUnits.toLowerCase())) return sourcePressure;
-		else if ("torr".equals(units) & "mbar".equals(sourcePressureUnits.toLowerCase())) {
+		if(units.equals(sourcePressureUnits.toLowerCase()))
+			return sourcePressure;
+		else if("torr".equals(units) & "mbar".equals(sourcePressureUnits.toLowerCase())) {
 			return sourcePressure * 0.75006167382;
-		}
-		else if ("mbar".equals(units) & "torr".equals(sourcePressureUnits.toLowerCase())) {
+		} else if("mbar".equals(units) & "torr".equals(sourcePressureUnits.toLowerCase())) {
 			return sourcePressure * 1.3332237;
-		}
-		else return 0d;
+		} else
+			return 0d;
 	}
 
 	public void setSourcePressure(double pressure) {
@@ -141,15 +141,17 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	}
 
 	public List<String> getComments() {
+
 		return comments;
 	}
 
 	public void setComments(List<String> comments) {
+
 		if(comments != null) {
 			this.comments = comments;
 		}
 	}
-	
+
 	@Override
 	public ICalibratedVendorLibraryMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
 

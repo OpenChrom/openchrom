@@ -33,8 +33,9 @@ import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 
-//public class CalibratedVendorMassSpectrum implements IRegularLibraryMassSpectrum {
+// public class CalibratedVendorMassSpectrum implements IRegularLibraryMassSpectrum {
 public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpectrum implements ICalibratedVendorMassSpectrum {
+
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
 	 * methods.
@@ -138,7 +139,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 
 	public double getSumSignal() {
 
-		if (!sumSignalCalculated) {
+		if(!sumSignalCalculated) {
 			sumSignal = 0;
 			for(IIonMeasurement peak : ionMeasurements) {
 				sumSignal += peak.getSignal();
@@ -157,7 +158,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 			float signal = peak.getSignal();
 			if(maxSignal == 0 && minSignal == 0) {
 				maxSignal = minSignal = signal;
-				minAbsSignal  = java.lang.StrictMath.abs(signal);
+				minAbsSignal = java.lang.StrictMath.abs(signal);
 			} else {
 				/*
 				 * Validations
@@ -210,9 +211,9 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	/**
-	 * This method is used only to create a new IIonMeasurement list 
-	 * after cloning. Otherwise, the old list is re-used.  The list has 
-	 * to be filled by the implementation specific ions of each 
+	 * This method is used only to create a new IIonMeasurement list
+	 * after cloning. Otherwise, the old list is re-used. The list has
+	 * to be filled by the implementation specific ions of each
 	 * implementing class.
 	 */
 	public void createNewIonMeasurementList() {
@@ -261,11 +262,10 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 
 		minMaxSignalCalculated = false;
 	}
-	
-	/*
-	 * override methods from super that are not used (there are lots of them) 
-	 */
 
+	/*
+	 * override methods from super that are not used (there are lots of them)
+	 */
 	@Override
 	public short getMassSpectrometer() {
 
@@ -626,12 +626,11 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 
 	}
 
-	//@Override
-	//public <T> T getAdapter(Class<T> adapter) {
+	// @Override
+	// public <T> T getAdapter(Class<T> adapter) {
 	//
-	//	return null;
-	//}
-
+	// return null;
+	// }
 	@Override
 	public IScanMSD normalize() {
 
@@ -694,15 +693,13 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		return 0;
 	}
 
-	//@Override
-	//public ILibraryInformation getLibraryInformation() {
+	// @Override
+	// public ILibraryInformation getLibraryInformation() {
 	//
-	//	return null;
-	//}
-
+	// return null;
+	// }
 	@Override
 	public void setLibraryInformation(ILibraryInformation libraryInformation) {
 
 	}
-
 }

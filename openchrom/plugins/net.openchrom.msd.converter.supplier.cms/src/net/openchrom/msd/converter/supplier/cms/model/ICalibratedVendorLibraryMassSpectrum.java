@@ -17,8 +17,8 @@ import java.util.List;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
-//public interface ICalibratedVendorLibraryMassSpectrum  extends IRegularLibraryMassSpectrum {
-public interface ICalibratedVendorLibraryMassSpectrum  extends IRegularLibraryMassSpectrum, IScanMSD {
+// public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMassSpectrum {
+public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMassSpectrum, IScanMSD {
 
 	List<String> getComments();
 
@@ -57,5 +57,4 @@ public interface ICalibratedVendorLibraryMassSpectrum  extends IRegularLibraryMa
 	void setSourcePressureUnits(String sourcePressureUnits);
 
 	void setTimeStamp(String timeStamp);
-
 }

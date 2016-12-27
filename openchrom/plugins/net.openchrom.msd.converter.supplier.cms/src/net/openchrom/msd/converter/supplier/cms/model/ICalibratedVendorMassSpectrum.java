@@ -15,11 +15,11 @@ package net.openchrom.msd.converter.supplier.cms.model;
 import java.util.List;
 
 public interface ICalibratedVendorMassSpectrum extends ICalibratedVendorLibraryMassSpectrum {
-	
+
 	boolean addIonMeasurement(double mz, float signal);
 
 	boolean addIonMeasurement(IIonMeasurement ionMeasurement);
-	
+
 	void createNewIonMeasurementList();
 
 	/**
@@ -33,15 +33,15 @@ public interface ICalibratedVendorMassSpectrum extends ICalibratedVendorLibraryM
 	List<IIonMeasurement> getIonMeasurements();
 
 	String getScanName();
-	
+
 	double getSumSignal();
 
 	ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException;
 
 	ICalibratedVendorLibraryMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException;
-	
+
 	void resetMinMaxSignal();
-	
+
 	void resetSumSignal();
 
 	boolean scale();
@@ -51,7 +51,5 @@ public interface ICalibratedVendorMassSpectrum extends ICalibratedVendorLibraryM
 	boolean unscale();
 
 	// void updateIons();
-
 	void updateSignalLimits();
-
 }

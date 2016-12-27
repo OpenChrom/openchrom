@@ -8,14 +8,16 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cms.io;
 
-
 public class NotCalibratedVendorMassSpectrumException extends Exception {
+
 	NotCalibratedVendorMassSpectrumException() {
 	}
+
 	public String toString() {
+
 		return "Mass spectrum must be of type ICalibratedVendorMassSpectrum";
 	}
 }
