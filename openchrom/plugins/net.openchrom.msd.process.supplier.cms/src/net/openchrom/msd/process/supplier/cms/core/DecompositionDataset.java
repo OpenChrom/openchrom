@@ -50,9 +50,9 @@ class DecompositionDataset {
 		scanRef = null;
 	}
 	
-	boolean canDoQuantitative() {
+	boolean canDoQuantitative(int libIndex) {
 		if (!matched) return false;
-		return canDoQuantitative;
+		return libComps[libIndex].isQuantitative;
 	}
 	
 	ICalibratedVendorMassSpectrum getScanRef() {
@@ -239,16 +239,17 @@ class DecompositionDataset {
 			//scanSignalUnits = scanRef.getSignalUnits();
 			//libSignalUnits = libComp.libraryRef.getSignalUnits();
 			//libPressure = libComp.libraryRef.getSourcePressure(scanRef.getSourcePressureUnits());
-			if (canDoQuantitative) {
+			libComp.isQuantitative = true;
+			if (libComp.isQuantitative) {
 				if (0 == libComp.libraryRef.getSourcePressure(scanRef.getSourcePressureUnits())) {
 						System.out.println("Library file pressure units (" + libComp.libraryRef.getSourcePressureUnits()
 							+ ") cannot be converted to scan file pressure units (" + scanRef.getSourcePressureUnits() + ")");
-						canDoQuantitative = false;
+						libComp.isQuantitative = false;
 				}
-				if (!libComp.libraryRef.getSignalUnits().equalsIgnoreCase(scanRef.getSignalUnits())) {
+				else if (!libComp.libraryRef.getSignalUnits().equalsIgnoreCase(scanRef.getSignalUnits())) {
 						System.out.println("Library file signal units (" + libComp.libraryRef.getSignalUnits()
 							+ ") != (" + scanRef.getSignalUnits() + ")");
-						canDoQuantitative = false;
+						libComp.isQuantitative = false;
 				}
 			}
 		}

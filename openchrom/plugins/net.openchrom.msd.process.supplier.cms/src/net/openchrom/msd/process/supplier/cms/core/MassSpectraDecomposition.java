@@ -205,7 +205,7 @@ public class MassSpectraDecomposition {
 					System.out.printf("%24s: x[%d]=\t%.13f",
 						fitDataset.getLibCompName(ii), ii, x.get(ii),
 						fitDataset.getScanRef().getSourcePressureUnits());
-					if (fitDataset.canDoQuantitative()) {
+					if (fitDataset.canDoQuantitative(ii)) {
 						System.out.printf("\tppress(%6s)=\t%.13f\tmolfrc=\t%.13f%n",
 							fitDataset.getScanRef().getSourcePressureUnits(), 
 							x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits),

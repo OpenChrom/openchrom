@@ -17,10 +17,12 @@ public class LibComponent {
 
 	ICalibratedVendorLibraryMassSpectrum libraryRef; // this ion was found in this library
 	boolean mark; // used to identify if this library component is actually used
+	boolean isQuantitative;
 	int componentIndex;
 
 	LibComponent(ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum) {
 		libraryRef = libraryMassSpectrum;
 		mark = false;
+		isQuantitative = false;
 	}
 }
