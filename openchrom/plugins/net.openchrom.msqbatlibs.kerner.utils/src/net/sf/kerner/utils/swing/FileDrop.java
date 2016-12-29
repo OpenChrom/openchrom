@@ -1,6 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2010-2014 Alexander Kerner. All rights reserved.
- *
+ * Copyright (c) 2010-2014 Alexander Kerner.
+ * 
+ * All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,6 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
+
+import net.sf.kerner.utils.swing.FileDrop.TransferableObject;
 
 /**
  * This class makes it easy to drag and drop files from the operating system to
