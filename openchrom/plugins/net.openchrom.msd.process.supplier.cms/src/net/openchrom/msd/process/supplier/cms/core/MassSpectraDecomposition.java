@@ -83,9 +83,7 @@ public class MassSpectraDecomposition {
 						logger.warn(e1);
 						continue; // for
 					}
-					System.out.println("LIB: libName: " + libMassSpectra.getName() + ", Component Name: " 
-							+ libraryMassSpectrum.getLibraryInformation().getName() + ", Component Index: " 
-							+ componentSequence + ", #ions: " + libraryMassSpectrum.getNumberOfIons());
+					System.out.println("LIB: libName: " + libMassSpectra.getName() + ", Component Name: " + libraryMassSpectrum.getLibraryInformation().getName() + ", Component Index: " + componentSequence + ", #ions: " + libraryMassSpectrum.getNumberOfIons());
 					System.out.print("\t");
 					for(IIon libion : libSpectrum.getIons()) {
 						try {
@@ -199,7 +197,6 @@ public class MassSpectraDecomposition {
 					String ppUnits = scanRef.getSourcePressureUnits();
 					double pp = x.get(ii) * libRef.getSourcePressure(ppUnits);
 					double mf = x.get(ii) * libRef.getSourcePressure(ppUnits) / scanRef.getSourcePressure();
-					
 					result.addComponent(x.get(ii), fitDataset.getLibRef(ii));
 					
 					System.out.printf("%24s: x[%d]=\t%.13f",

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 whitlow.
+ * Copyright (c) 2016 Walter Whitlock.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * whitlow - initial API and implementation
+ * Walter Whitlock - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
@@ -49,20 +49,24 @@ class DecompositionDataset {
 		canDoQuantitative = false;
 		scanRef = null;
 	}
-	
+
 	boolean canDoQuantitative(int libIndex) {
-		if (!matched) return false;
+
+		if(!matched)
+			return false;
 		return libComps[libIndex].isQuantitative;
 	}
-	
+
 	ICalibratedVendorMassSpectrum getScanRef() {
+
 		return scanRef;
 	}
-	
-	 void setScanRef(ICalibratedVendorMassSpectrum scan) {
+
+	void setScanRef(ICalibratedVendorMassSpectrum scan) {
+
 		scanRef = scan;
 	}
-	
+
 	String getLibCompName(int i) {
 
 		return libComps[i].libraryRef.getLibraryInformation().getName();

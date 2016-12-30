@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 whitlow.
+ * Copyright (c) 2016 Walter Whitlock.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * whitlow - initial API and implementation
+ * Walter Whitlock - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
@@ -47,12 +47,14 @@ public class DecompositionResult {
 			libraryComponents.add(iCalibratedVendorLibraryMassSpectrum);
 		}
 	}
-	
+
 	public double getSumOfSquaresError() {
+
 		return sumOfSquaresError;
 	}
-	
+
 	public double getWeightedSumOfSquaresError() {
+
 		return weightedSumOfSquaresError;
 	}
 }
