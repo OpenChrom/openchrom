@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Lablicate GmbH.
+ * Copyright (c) 2016, 2017 Lablicate GmbH.
  *
  * All rights reserved.
  *
