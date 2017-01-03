@@ -9,20 +9,17 @@
  * Contributors:
  * Walter Whitlock - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.process.supplier.cms.core;
+package net.openchrom.msd.process.supplier.cms.exceptions;
 
-import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+public class InvalidLibIonCountException extends Exception {
 
-class InvalidScanException extends Exception {
+	/**
+	 * Renew the serialVersionUID any time you have changed some fields or
+	 * methods.
+	 */
+	private static final long serialVersionUID = 5032358108155945622L;
 
-	IScanMSD j;
-
-	InvalidScanException(IScanMSD scan) {
-		j = scan;
-	}
-
-	public String toString() {
-
-		return "An unrecoverable error occurred when processing this mass spec scan " + j + ".";
+	public InvalidLibIonCountException() {
+		super("Attempt to getUsedLibIonCount() before executing DataSet.match()");
 	}
 }

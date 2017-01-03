@@ -9,18 +9,17 @@
  * Contributors:
  * Walter Whitlock - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.process.supplier.cms.core;
+package net.openchrom.msd.process.supplier.cms.exceptions;
 
-class DuplicateCompNameException extends Exception {
+public class InvalidComponentIndexException extends Exception {
 
-	String ii;
+	/**
+	 * Renew the serialVersionUID any time you have changed some fields or
+	 * methods.
+	 */
+	private static final long serialVersionUID = 2708340520924939095L;
 
-	DuplicateCompNameException(String i) {
-		ii = i;
-	}
-
-	public String toString() {
-
-		return "Duplicate library component name: " + ii + ".";
+	public InvalidComponentIndexException(int i) {
+		super("Need to addComponent() before addLibIon(), component index = " + i + ".");
 	}
 }

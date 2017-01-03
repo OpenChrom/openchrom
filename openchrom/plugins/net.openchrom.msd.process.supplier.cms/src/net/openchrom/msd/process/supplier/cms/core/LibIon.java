@@ -11,16 +11,24 @@
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
-import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
-
-class LibIon extends GenIon {
+public class LibIon extends GenIon {
 
 	// IRegularLibraryMassSpectrum libraryRef; // this ion was found in this library
-	LibComponent componentRef; // this ion came from this library component
+	private LibComponent componentRef; // this ion came from this library component
 
-	LibIon(double mass, double abundance, int compSequence, LibComponent ref) {
+	public LibIon(double mass, double abundance, int compSequence, LibComponent ref) {
 		super(mass, abundance);
-		ionCompSequence = compSequence;
+		setIonCompSequence(compSequence);
 		componentRef = ref;
+	}
+
+	public LibComponent getComponentRef() {
+
+		return componentRef;
+	}
+
+	public void setComponentRef(LibComponent componentRef) {
+
+		this.componentRef = componentRef;
 	}
 }

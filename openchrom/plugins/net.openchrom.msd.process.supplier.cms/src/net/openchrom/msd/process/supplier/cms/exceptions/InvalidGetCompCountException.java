@@ -9,15 +9,17 @@
  * Contributors:
  * Walter Whitlock - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.process.supplier.cms.core;
+package net.openchrom.msd.process.supplier.cms.exceptions;
 
-class InvalidLibIonCountException extends Exception {
+public class InvalidGetCompCountException extends Exception {
 
-	InvalidLibIonCountException() {
-	}
+	/**
+	 * Renew the serialVersionUID any time you have changed some fields or
+	 * methods.
+	 */
+	private static final long serialVersionUID = 2062976813264402607L;
 
-	public String toString() {
-
-		return "Attempt to getUsedLibIonCount() before executing DataSet.match()";
+	public InvalidGetCompCountException(int i) {
+		super("component count is invalid, value = " + i + ".");
 	}
 }

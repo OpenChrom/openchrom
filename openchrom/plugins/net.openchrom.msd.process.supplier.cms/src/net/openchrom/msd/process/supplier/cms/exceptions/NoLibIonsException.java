@@ -9,18 +9,17 @@
  * Contributors:
  * Walter Whitlock - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.process.supplier.cms.core;
+package net.openchrom.msd.process.supplier.cms.exceptions;
 
-class NoScanIonsException extends Exception {
+public class NoLibIonsException extends Exception {
 
-	int j;
+	/**
+	 * Renew the serialVersionUID any time you have changed some fields or
+	 * methods.
+	 */
+	private static final long serialVersionUID = -8724796524064746882L;
 
-	NoScanIonsException(int i) {
-		j = i;
-	}
-
-	public String toString() {
-
-		return "Need at least 1 Scan ion, have " + j + ".";
+	public NoLibIonsException(int i) {
+		super("Need at least 1 library ion, have " + i + ".");
 	}
 }

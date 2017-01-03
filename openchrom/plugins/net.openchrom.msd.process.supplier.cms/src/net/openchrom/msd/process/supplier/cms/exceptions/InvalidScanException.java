@@ -9,18 +9,19 @@
  * Contributors:
  * Walter Whitlock - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.process.supplier.cms.core;
+package net.openchrom.msd.process.supplier.cms.exceptions;
 
-class InvalidComponentIndexException extends Exception {
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
-	int ii;
+public class InvalidScanException extends Exception {
 
-	InvalidComponentIndexException(int i) {
-		ii = i;
-	}
+	/**
+	 * Renew the serialVersionUID any time you have changed some fields or
+	 * methods.
+	 */
+	private static final long serialVersionUID = -3947508833918904114L;
 
-	public String toString() {
-
-		return "Need to addComponent() before addLibIon(), component index = " + ii + ".";
+	public InvalidScanException(IScanMSD scan) {
+		super("An unrecoverable error occurred when processing this mass spec scan " + scan + ".");
 	}
 }

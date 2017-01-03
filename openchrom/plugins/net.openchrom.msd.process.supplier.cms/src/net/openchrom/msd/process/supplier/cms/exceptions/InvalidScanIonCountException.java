@@ -9,18 +9,17 @@
  * Contributors:
  * Walter Whitlock - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.process.supplier.cms.core;
+package net.openchrom.msd.process.supplier.cms.exceptions;
 
-class LibIonsMatrixSingularException extends Exception {
+public class InvalidScanIonCountException extends Exception {
 
-	String s;
+	/**
+	 * Renew the serialVersionUID any time you have changed some fields or
+	 * methods.
+	 */
+	private static final long serialVersionUID = 7701038343549722086L;
 
-	LibIonsMatrixSingularException(String ss) {
-		s = ss;
-	}
-
-	public String toString() {
-
-		return s;
+	public InvalidScanIonCountException() {
+		super("Attempt to get getUsedScanIonCount before executing DataSet.match()");
 	}
 }

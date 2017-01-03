@@ -17,13 +17,20 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
+import net.openchrom.msd.process.supplier.cms.exceptions.DuplicateCompNameException;
+import net.openchrom.msd.process.supplier.cms.exceptions.InvalidComponentIndexException;
+import net.openchrom.msd.process.supplier.cms.exceptions.InvalidGetCompCountException;
+import net.openchrom.msd.process.supplier.cms.exceptions.InvalidLibIonCountException;
+import net.openchrom.msd.process.supplier.cms.exceptions.InvalidScanIonCountException;
+import net.openchrom.msd.process.supplier.cms.exceptions.NoLibIonsException;
+import net.openchrom.msd.process.supplier.cms.exceptions.NoScanIonsException;
 
-class DecompositionDataset {
+public class DecompositionDataset {
 
 	private LibIon libions[];
 	private int libIonsCount; // # ions read from library file
 	private int libIonsUsed; // # library ions that matched with scan ions, <= libIonsCount
-	public ScanIonMeasurement scanions[];
+	private ScanIonMeasurement scanions[];
 	private int scanIonsCount; // # ions read from scan file
 	private int scanIonsUsed; // # ions from scan file that matched with library ions, <= scanIonsCount
 	private LibComponent libComps[]; // keep track of library component information
@@ -34,7 +41,7 @@ class DecompositionDataset {
 	private boolean canDoQuantitative; // set true if can do quantitative result
 	private ICalibratedVendorMassSpectrum scanRef;
 
-	DecompositionDataset() {
+	public DecompositionDataset() {
 		libions = new LibIon[10];
 		scanions = new ScanIonMeasurement[10];
 		libComps = new LibComponent[10];
@@ -50,53 +57,57 @@ class DecompositionDataset {
 		scanRef = null;
 	}
 
-	boolean canDoQuantitative(int libIndex) {
+	public boolean canDoQuantitative(int libIndex) {
 
-		if(!matched)
+		if(!matched) {
 			return false;
-		return libComps[libIndex].isQuantitative;
+		}
+		return libComps[libIndex].isQuantitative();
 	}
 
-	ICalibratedVendorMassSpectrum getScanRef() {
+	public ICalibratedVendorMassSpectrum getScanRef() {
 
 		return scanRef;
 	}
 
-	void setScanRef(ICalibratedVendorMassSpectrum scan) {
+	public void setScanRef(ICalibratedVendorMassSpectrum scan) {
 
 		scanRef = scan;
 	}
 
-	String getLibCompName(int i) {
+	public String getLibCompName(int i) {
 
-		return libComps[i].libraryRef.getLibraryInformation().getName();
+		return libComps[i].getLibraryRef().getLibraryInformation().getName();
 	}
 
-	ICalibratedVendorLibraryMassSpectrum getLibRef(int i) {
+	public ICalibratedVendorLibraryMassSpectrum getLibRef(int i) {
 
-		return libComps[i].libraryRef;
+		return libComps[i].getLibraryRef();
 	}
 
-	LibIon[] getLibIons() {
+	public LibIon[] getLibIons() {
 
 		return libions;
 	}
 
-	ScanIonMeasurement[] getScanIons() {
+	public ScanIonMeasurement[] getScanIons() {
 
 		return scanions;
 	}
 
-	int getUsedLibIonCount() throws InvalidLibIonCountException {
+	public int getUsedLibIonCount() throws InvalidLibIonCountException {
 
-		if(!matched)
+		if(!matched) {
 			throw new InvalidLibIonCountException();
-		if(0 >= libIonsUsed)
+		}
+		//
+		if(0 >= libIonsUsed) {
 			throw new InvalidLibIonCountException();
+		}
 		return libIonsUsed;
 	}
 
-	int getUsedScanIonCount() throws InvalidScanIonCountException {
+	public int getUsedScanIonCount() throws InvalidScanIonCountException {
 
 		if(!matched)
 			throw new InvalidScanIonCountException();
@@ -105,16 +116,19 @@ class DecompositionDataset {
 		return scanIonsUsed;
 	}
 
-	int getUsedCompCount() throws InvalidGetCompCountException {
+	public int getUsedCompCount() throws InvalidGetCompCountException {
 
-		if(!matched)
+		if(!matched) {
 			throw new InvalidGetCompCountException(libCompsUsed);
-		if(0 >= libCompsUsed)
+		}
+		//
+		if(0 >= libCompsUsed) {
 			throw new InvalidGetCompCountException(libCompsUsed);
+		}
 		return libCompsUsed;
 	}
 
-	void addLibIon(double mass, double abundance, int compIndex) throws InvalidComponentIndexException {
+	public void addLibIon(double mass, double abundance, int compIndex) throws InvalidComponentIndexException {
 
 		if(0 > compIndex) {
 			throw new InvalidComponentIndexException(compIndex);
@@ -126,7 +140,7 @@ class DecompositionDataset {
 		libIonsCount++;
 	}
 
-	int addNewComponent(ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum) throws DuplicateCompNameException {
+	public int addNewComponent(ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum) throws DuplicateCompNameException {
 
 		String compName = libraryMassSpectrum.getLibraryInformation().getName();
 		if(!compNameSet.add(compName)) {
@@ -139,12 +153,12 @@ class DecompositionDataset {
 		return libCompsCount++;
 	}
 
-	int getCompCount() {
+	public int getCompCount() {
 
 		return libCompsCount;
 	}
 
-	int getIonsInScan() {
+	public int getIonsInScan() {
 
 		return scanIonsCount;
 	}
@@ -159,7 +173,7 @@ class DecompositionDataset {
 	// throw new InvalidGetScanIonException(index);
 	// return scanions[index];
 	// }
-	void addScanIon(double mass, double abundance, ICalibratedVendorMassSpectrum scan) {
+	public void addScanIon(double mass, double abundance, ICalibratedVendorMassSpectrum scan) {
 
 		if(scanions.length <= scanIonsCount) {
 			scanions = Arrays.copyOf(scanions, 2 * scanions.length);
@@ -168,7 +182,7 @@ class DecompositionDataset {
 		scanIonsCount++;
 	}
 
-	void matchIons(double massTol) throws NoLibIonsException, NoScanIonsException {
+	public void matchIons(double massTol) throws NoLibIonsException, NoScanIonsException {
 
 		int i, j, rowCount;
 		if(0 >= libIonsCount)
@@ -180,23 +194,23 @@ class DecompositionDataset {
 		i = 0; // index into libIOns[]
 		rowCount = 0;
 		for(j = 0; j < scanIonsCount; j++) {
-			while((i < libIonsCount) && (libions[i].massLess(scanions[j].ionMass, massTol))) { // skip over library ion masses that are less than current scan ion mass
+			while((i < libIonsCount) && (libions[i].massLess(scanions[j].getIonMass(), massTol))) { // skip over library ion masses that are less than current scan ion mass
 				i++;
 			}
-			if((i < libIonsCount) && (libions[i].massEqual(scanions[j].ionMass, massTol))) { // test if library ion mass == current scan ion mass
+			if((i < libIonsCount) && (libions[i].massEqual(scanions[j].getIonMass(), massTol))) { // test if library ion mass == current scan ion mass
 				do { // mark ions having equal masses
 					libions[i].setMark();
-					libions[i].ionRowIndex = rowCount;
+					libions[i].setIonRowIndex(rowCount);
 					scanions[j].setMark();
-					scanions[j].ionRowIndex = rowCount;
+					scanions[j].setIonRowIndex(rowCount);
 					i++;
-				} while((i < libIonsCount) && (libions[i].massEqual(scanions[j].ionMass, massTol)));
+				} while((i < libIonsCount) && (libions[i].massEqual(scanions[j].getIonMass(), massTol)));
 				rowCount++;
 			} // if
 		} // for
 		j = 0;
 		for(i = 0; i < libIonsCount; i++) { // save only marked library ions
-			if(libions[i].mark) {
+			if(libions[i].isMark()) {
 				libions[j] = libions[i];
 				j++;
 			}
@@ -211,7 +225,7 @@ class DecompositionDataset {
 		libions = Arrays.copyOf(libions, libIonsUsed);
 		j = 0;
 		for(i = 0; i < scanIonsCount; i++) { // save only marked scan ions
-			if(scanions[i].mark) {
+			if(scanions[i].isMark()) {
 				scanions[j] = scanions[i];
 				j++;
 			}
@@ -220,16 +234,16 @@ class DecompositionDataset {
 		scanions = Arrays.copyOf(scanions, scanIonsUsed);
 		for(i = 0; i < libIonsUsed; i++) { // identify library components we actually use
 			// libComps[libions[i].ionCompIndex].mark = true;
-			libions[i].componentRef.mark = true;
+			libions[i].getComponentRef().setMark(true);
 		}
 		j = 0;
 		for(i = 0; i < libCompsCount; i++) { // consolidate library components we actually use
-			if(libComps[i].mark) {
+			if(libComps[i].isMark()) {
 				libComps[j] = libComps[i];
-				libComps[j].componentIndex = j;
+				libComps[j].setComponentIndex(j);
 				j++;
 			} else {
-				System.out.println("Eliminating library component \"" + libComps[i].libraryRef.getLibraryInformation().getName() + "\", no ions are present in the scan");
+				System.out.println("Eliminating library component \"" + libComps[i].getLibraryRef().getLibraryInformation().getName() + "\", no ions are present in the scan");
 			}
 		}
 		libCompsUsed = j;
@@ -243,14 +257,15 @@ class DecompositionDataset {
 			// scanSignalUnits = scanRef.getSignalUnits();
 			// libSignalUnits = libComp.libraryRef.getSignalUnits();
 			// libPressure = libComp.libraryRef.getSourcePressure(scanRef.getSourcePressureUnits());
-			libComp.isQuantitative = true;
-			if(libComp.isQuantitative) {
-				if(0 == libComp.libraryRef.getSourcePressure(scanRef.getSourcePressureUnits())) {
-					System.out.println("Library file pressure units (" + libComp.libraryRef.getSourcePressureUnits() + ") cannot be converted to scan file pressure units (" + scanRef.getSourcePressureUnits() + ")");
-					libComp.isQuantitative = false;
-				} else if(!libComp.libraryRef.getSignalUnits().equalsIgnoreCase(scanRef.getSignalUnits())) {
-					System.out.println("Library file signal units (" + libComp.libraryRef.getSignalUnits() + ") != (" + scanRef.getSignalUnits() + ")");
-					libComp.isQuantitative = false;
+			libComp.setQuantitative(true);
+			if(libComp.isQuantitative()) {
+				ICalibratedVendorLibraryMassSpectrum libraryRef = libComp.getLibraryRef();
+				if(0 == libraryRef.getSourcePressure(scanRef.getSourcePressureUnits())) {
+					System.out.println("Library file pressure units (" + libraryRef.getSourcePressureUnits() + ") cannot be converted to scan file pressure units (" + scanRef.getSourcePressureUnits() + ")");
+					libComp.setQuantitative(false);
+				} else if(!libraryRef.getSignalUnits().equalsIgnoreCase(scanRef.getSignalUnits())) {
+					System.out.println("Library file signal units (" + libraryRef.getSignalUnits() + ") != (" + scanRef.getSignalUnits() + ")");
+					libComp.setQuantitative(false);
 				}
 			}
 		}
@@ -263,6 +278,6 @@ class DecompositionDataset {
 			throw new InvalidScanIonCountException();
 		if((0 > i) || (scanIonsUsed <= i))
 			throw new InvalidScanIonCountException();
-		return scanions[i].ionIndex;
+		return scanions[i].getIonIndex();
 	}
 } // class

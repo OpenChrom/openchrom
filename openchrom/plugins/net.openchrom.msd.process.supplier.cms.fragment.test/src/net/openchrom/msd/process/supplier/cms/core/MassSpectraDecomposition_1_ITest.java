@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.process.supplier.cms.TestPathHelper;
+import net.openchrom.msd.process.supplier.cms.exceptions.InvalidScanException;
 
 import junit.framework.TestCase;
 

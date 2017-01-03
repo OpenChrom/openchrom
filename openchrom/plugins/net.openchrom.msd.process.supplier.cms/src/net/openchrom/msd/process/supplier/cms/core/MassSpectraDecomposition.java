@@ -31,10 +31,22 @@ import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectr
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
+import net.openchrom.msd.process.supplier.cms.exceptions.DuplicateCompNameException;
+import net.openchrom.msd.process.supplier.cms.exceptions.InvalidComponentIndexException;
+import net.openchrom.msd.process.supplier.cms.exceptions.InvalidGetCompCountException;
+import net.openchrom.msd.process.supplier.cms.exceptions.InvalidLibIonCountException;
+import net.openchrom.msd.process.supplier.cms.exceptions.InvalidScanException;
+import net.openchrom.msd.process.supplier.cms.exceptions.InvalidScanIonCountException;
+import net.openchrom.msd.process.supplier.cms.exceptions.LibIonsMatrixSingularException;
+import net.openchrom.msd.process.supplier.cms.exceptions.NoLibIonsException;
+import net.openchrom.msd.process.supplier.cms.exceptions.NoScanIonsException;
 
 public class MassSpectraDecomposition {
 
 	private static final Logger logger = Logger.getLogger(MassSpectraDecomposition.class);
+	//
+	private static final String MS_IDENTIFIER_ID = "org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.file.massSpectrum";
+	//
 	private DenseMatrix64F y = new DenseMatrix64F(1, 1); // unknown mass spectrum measurements matrix
 	private DenseMatrix64F x = new DenseMatrix64F(1, 1); // matrix containing computed component fractions
 	private DenseMatrix64F A = new DenseMatrix64F(1, 1); // mass spectrum library components matrix
@@ -47,8 +59,7 @@ public class MassSpectraDecomposition {
 	private double ssError; // sum of squares error
 	private double wtssError; // weighted sum of squares error
 	private boolean solverRetVal;
-	ICalibratedVendorMassSpectrum scanResidual; // residual mass spectrum after subtracting calculated ion signals
-	private static final String MS_IDENTIFIER_ID = "org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.file.massSpectrum";
+	private ICalibratedVendorMassSpectrum scanResidual; // residual mass spectrum after subtracting calculated ion signals
 
 	public void decompose(IMassSpectra scanSpectra, IMassSpectra libMassSpectra, IProgressMonitor monitor) throws InvalidScanException {
 
@@ -138,13 +149,13 @@ public class MassSpectraDecomposition {
 				yResid.reshape(fitDataset.getUsedScanIonCount(), 1); // residual vector
 				wtyerr.reshape(fitDataset.getUsedScanIonCount(), 1); // weighted error vector
 				for(LibIon i : fitDataset.getLibIons()) {
-					A.set(i.ionRowIndex, i.componentRef.componentIndex, i.ionAbundance);
+					A.set(i.getIonRowIndex(), i.getComponentRef().getComponentIndex(), i.getIonAbundance());
 				}
 				for(ScanIonMeasurement i : fitDataset.getScanIons()) {
-					y.set(i.ionRowIndex, 0, i.ionAbundance);
-					P.set(i.ionRowIndex, i.ionRowIndex,
+					y.set(i.getIonRowIndex(), 0, i.getIonAbundance());
+					P.set(i.getIonRowIndex(), i.getIonRowIndex(),
 							// 1); // for testing without error weights
-							java.lang.StrictMath.sqrt(1.0 / java.lang.StrictMath.abs(i.ionAbundance)));
+							java.lang.StrictMath.sqrt(1.0 / java.lang.StrictMath.abs(i.getIonAbundance())));
 				} // for
 				CommonOps.mult(P, A, wtA);
 				CommonOps.mult(P, y, wty);
@@ -241,9 +252,9 @@ public class MassSpectraDecomposition {
 			try {
 				for(int irow = 0; irow < yResid.numRows; irow++) {
 					newSignal = (float)yResid.get(irow, 0);
-					datasetIon = fitDataset.scanions[irow];
-					datasetIonMass = datasetIon.ionMass;
-					datasetIonSignal = (float)datasetIon.ionAbundance;
+					datasetIon = fitDataset.getScanIons()[irow];
+					datasetIonMass = datasetIon.getIonMass();
+					datasetIonSignal = (float)datasetIon.getIonAbundance();
 					residIonIndex = fitDataset.getScanPeakIndex(irow);
 					scanPeak = scanResidual.getIonMeasurement(residIonIndex);
 					residIonMass = scanPeak.getMZ();

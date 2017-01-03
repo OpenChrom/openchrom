@@ -15,15 +15,15 @@ package net.openchrom.msd.process.supplier.cms.core;
 // import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 // import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 // import net.openchrom.msd.converter.supplier.cms.model.MsdScanMeasurement;
-class GenIon implements Comparable<GenIon> {
+public class GenIon implements Comparable<GenIon> {
 
-	double ionMass;
-	double ionAbundance;
-	int ionRowIndex;
-	int ionCompSequence;
-	boolean mark;
+	private double ionMass;
+	private double ionAbundance;
+	private int ionRowIndex;
+	private int ionCompSequence;
+	private boolean mark;
 
-	GenIon(double mass, double abundance) {
+	public GenIon(double mass, double abundance) {
 		mark = false;
 		ionRowIndex = -1;
 		ionCompSequence = -1;
@@ -44,7 +44,7 @@ class GenIon implements Comparable<GenIon> {
 		return 0;
 	}
 
-	boolean massEqual(double mass, double tol) {
+	public boolean massEqual(double mass, double tol) {
 
 		double diff;
 		diff = this.ionMass - mass;
@@ -53,7 +53,7 @@ class GenIon implements Comparable<GenIon> {
 		return false;
 	}
 
-	boolean massLess(double mass, double tol) {
+	public boolean massLess(double mass, double tol) {
 
 		double diff;
 		diff = this.ionMass - mass;
@@ -62,8 +62,58 @@ class GenIon implements Comparable<GenIon> {
 		return false;
 	}
 
-	void setMark() {
+	public void setMark() {
 
 		this.mark = true;
+	}
+
+	public double getIonMass() {
+
+		return ionMass;
+	}
+
+	public void setIonMass(double ionMass) {
+
+		this.ionMass = ionMass;
+	}
+
+	public double getIonAbundance() {
+
+		return ionAbundance;
+	}
+
+	public void setIonAbundance(double ionAbundance) {
+
+		this.ionAbundance = ionAbundance;
+	}
+
+	public int getIonRowIndex() {
+
+		return ionRowIndex;
+	}
+
+	public void setIonRowIndex(int ionRowIndex) {
+
+		this.ionRowIndex = ionRowIndex;
+	}
+
+	public int getIonCompSequence() {
+
+		return ionCompSequence;
+	}
+
+	public void setIonCompSequence(int ionCompSequence) {
+
+		this.ionCompSequence = ionCompSequence;
+	}
+
+	public boolean isMark() {
+
+		return mark;
+	}
+
+	public void setMark(boolean mark) {
+
+		this.mark = mark;
 	}
 }

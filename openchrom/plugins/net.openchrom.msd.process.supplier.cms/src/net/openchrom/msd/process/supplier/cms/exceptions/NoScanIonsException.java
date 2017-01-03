@@ -9,18 +9,17 @@
  * Contributors:
  * Walter Whitlock - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.process.supplier.cms.core;
+package net.openchrom.msd.process.supplier.cms.exceptions;
 
-class InvalidGetCompCountException extends Exception {
+public class NoScanIonsException extends Exception {
 
-	int j;
+	/**
+	 * Renew the serialVersionUID any time you have changed some fields or
+	 * methods.
+	 */
+	private static final long serialVersionUID = -8168561133868619635L;
 
-	InvalidGetCompCountException(int i) {
-		j = i;
-	}
-
-	public String toString() {
-
-		return "component count is invalid, value = " + j + ".";
+	public NoScanIonsException(int i) {
+		super("Need at least 1 Scan ion, have " + i + ".");
 	}
 }
