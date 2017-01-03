@@ -33,6 +33,7 @@ import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.msd.converter.supplier.cms.exceptions.NotCalibratedVendorMassSpectrumException;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;

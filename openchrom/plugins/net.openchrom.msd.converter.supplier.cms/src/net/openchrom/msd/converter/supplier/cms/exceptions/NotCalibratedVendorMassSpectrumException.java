@@ -9,15 +9,17 @@
  * Contributors:
  * Walter Whitlock - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.converter.supplier.cms.io;
+package net.openchrom.msd.converter.supplier.cms.exceptions;
 
 public class NotCalibratedVendorMassSpectrumException extends Exception {
 
-	NotCalibratedVendorMassSpectrumException() {
-	}
+	/**
+	 * Renew the serialVersionUID any time you have changed some fields or
+	 * methods.
+	 */
+	private static final long serialVersionUID = -6601698689069415800L;
 
-	public String toString() {
-
-		return "Mass spectrum must be of type ICalibratedVendorMassSpectrum";
+	public NotCalibratedVendorMassSpectrumException() {
+		super("Mass spectrum must be of type ICalibratedVendorMassSpectrum");
 	}
 }
