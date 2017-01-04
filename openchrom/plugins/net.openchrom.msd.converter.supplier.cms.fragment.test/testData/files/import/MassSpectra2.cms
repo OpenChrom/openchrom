@@ -7,9 +7,12 @@ SOURCEP: 1
 SPUNITS: mbar
 TSTAMP: 2016-12-12_14:22:00_EDT
 ETIMES: 0.0e0
+COMMENT: comment 1 in Argon
 EENERGYV: 70
 IENERGYV: 3000
+SYNONYM: synonym 1 in Argon
 INAME: VG 14-80
+COMMENT: comment 2 in Argon
 Num Peaks: 4
 20 2.92429e-06; 36 6.0006e-08; 38 1.0001e-08; 40 2e-05;
 
@@ -17,6 +20,7 @@ NAME: Nitrogen
 FORMULA: N2
 MW: 28
 CAS: 7727-37-9
+COMMENT: comment 1 in Nitrogen
 SIGUNITS: amp
 SOURCEP: 1
 SPUNITS: mbar
@@ -33,9 +37,12 @@ FORMULA: O2
 MW: 32
 CAS: 7782-44-7
 SIGUNITS: amp
+SYNONYM: synonym 1 in Oxygen
+COMMENT: comment 1 in Oxygen
 SOURCEP: 1
 SPUNITS: mbar
 TSTAMP: 2016-12-12_14:22:02_EDT
+SYNONYM: synonym 2 in Oxygen
 ETIMES: 2.0e0
 EENERGYV: 72
 IENERGYV: 3002
@@ -47,10 +54,15 @@ NAME: Ethane
 FORMULA: C2H6
 MW: 30
 CAS: 74-84-0
+SYNONYM: synonym 1 in Ethane
+SYNONYM: synonym 2 in Ethane
+SYNONYM: synonym 3 in Ethane
 SIGUNITS: amp
 SOURCEP: 1
 SPUNITS: mbar
 TSTAMP: 2016-12-12_14:22:03_EDT
+COMMENT: comment 1 in Ethane
+COMMENT: comment 2 in Ethane
 ETIMES: 3.0e0
 EENERGYV: 73
 IENERGYV: 3003
@@ -66,12 +78,16 @@ MW: 28
 CAS: 74-85-1
 SIGUNITS: amp
 SOURCEP: 1
+COMMENT: comment 1 in Ethylene
 SPUNITS: mbar
 TSTAMP: 2016-12-12_14:22:04_EDT
 ETIMES: 4.0e0
+SYNONYM: synonym 1 in Ethylene
+COMMENT: comment 2 in Ethylene
 EENERGYV: 74
 IENERGYV: 3004
 INAME: VG 14-80
+COMMENT: comment 3 in Ethylene
 Num Peaks: 12
 2 2.0002e-08; 12 1.0001e-07; 13 1.80018e-07; 14 4.20042e-07; 15 6.0006e-08; 24 4.60046e-07; 
 25 1.56216e-06; 26 1.05911e-05; 27 1.24732e-05; 28 2e-05; 29 4.60046e-07; 30 2.0002e-08; 

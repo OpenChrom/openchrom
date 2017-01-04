@@ -25,12 +25,14 @@ import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
 import junit.framework.TestCase;
 
 public class ReImportConverter_1_ITest extends TestCase {
 
-	private IMassSpectra massSpectra;
+	private IMassSpectra massSpectra1, massSpectra2;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -41,115 +43,50 @@ public class ReImportConverter_1_ITest extends TestCase {
 		/*
 		 * Import
 		 */
-		File importFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_1));
+		File importFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_2));
 		IMassSpectrumImportConverterProcessingInfo processingInfoImport = importConverter.convert(importFile, new NullProgressMonitor());
-		IMassSpectra massSpectraExport = processingInfoImport.getMassSpectra();
+		massSpectra1 = processingInfoImport.getMassSpectra();
 		/*
 		 * Export
 		 */
 		File exportFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_EXPORT_MASS_SPECTRA_1));
-		exportConverter.convert(exportFile, massSpectraExport, true, new NullProgressMonitor());
+		exportConverter.convert(exportFile, massSpectra1, false, new NullProgressMonitor());
 		/*
 		 * Re-Import
 		 */
 		File reImportFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_EXPORT_MASS_SPECTRA_1));
 		IMassSpectrumImportConverterProcessingInfo processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
-		massSpectra = processingInfoReImport.getMassSpectra();
+		massSpectra2 = processingInfoReImport.getMassSpectra();
 		/*
 		 * Delete the export file.
 		 */
-		exportFile.delete();
+		//exportFile.delete();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 
-		massSpectra = null;
+		massSpectra1 = null;
+		massSpectra2 = null;
 		super.tearDown();
 	}
 
 	public void test_1() {
 
-		assertEquals(5, massSpectra.size());
+		assertEquals(massSpectra1.size(), massSpectra2.size());
 	}
 
 	public void test_2() throws AbundanceLimitExceededException, IonLimitExceededException {
-
-		IScanMSD massSpectrum = massSpectra.getMassSpectrum(1);
-		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
-		assertEquals("Argon", libraryMassSpectrum.getLibraryInformation().getName());
-		assertEquals("7440-37-1", libraryMassSpectrum.getLibraryInformation().getCasNumber());
-		assertEquals(4, massSpectrum.getNumberOfIons());
-		assertEquals(1.46215e-01f, massSpectrum.getIon(20).getAbundance());
-		assertEquals(3.00030e-03f, massSpectrum.getIon(36).getAbundance());
-		assertEquals(5.00050e-04f, massSpectrum.getIon(38).getAbundance());
-		assertEquals(1.00000e+00f, massSpectrum.getIon(40).getAbundance());
-	}
-
-	public void test_3() throws AbundanceLimitExceededException, IonLimitExceededException {
-
-		IScanMSD massSpectrum = massSpectra.getMassSpectrum(2);
-		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
-		assertEquals("Nitrogen", libraryMassSpectrum.getLibraryInformation().getName());
-		assertEquals("7727-37-9", libraryMassSpectrum.getLibraryInformation().getCasNumber());
-		assertEquals(3, massSpectrum.getNumberOfIons());
-		assertEquals(1.37914e-01f, massSpectrum.getIon(14).getAbundance());
-		assertEquals(1.00000e+00f, massSpectrum.getIon(28).getAbundance());
-		assertEquals(7.40074e-03f, massSpectrum.getIon(29).getAbundance());
-	}
-
-	public void test_4() throws AbundanceLimitExceededException, IonLimitExceededException {
-
-		IScanMSD massSpectrum = massSpectra.getMassSpectrum(3);
-		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
-		assertEquals("Oxygen", libraryMassSpectrum.getLibraryInformation().getName());
-		assertEquals("7782-44-7", libraryMassSpectrum.getLibraryInformation().getCasNumber());
-		assertEquals(2, massSpectrum.getNumberOfIons());
-		assertEquals(2.18022e-01f, massSpectrum.getIon(16).getAbundance());
-		assertEquals(1.00000e+00f, massSpectrum.getIon(32).getAbundance());
-	}
-
-	public void test_5() throws AbundanceLimitExceededException, IonLimitExceededException {
-
-		IScanMSD massSpectrum = massSpectra.getMassSpectrum(4);
-		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
-		assertEquals("Ethane", libraryMassSpectrum.getLibraryInformation().getName());
-		assertEquals("74-84-0", libraryMassSpectrum.getLibraryInformation().getCasNumber());
-		assertEquals(14, massSpectrum.getNumberOfIons());
-		assertEquals(2.00020e-03f, massSpectrum.getIon(2).getAbundance());
-		assertEquals(4.00040e-03f, massSpectrum.getIon(12).getAbundance());
-		assertEquals(1.00010e-02f, massSpectrum.getIon(13).getAbundance());
-		assertEquals(3.00030e-02f, massSpectrum.getIon(14).getAbundance());
-		assertEquals(4.40044e-02f, massSpectrum.getIon(15).getAbundance());
-		assertEquals(1.00010e-03f, massSpectrum.getIon(16).getAbundance());
-		assertEquals(5.00050e-03f, massSpectrum.getIon(24).getAbundance());
-		assertEquals(3.50035e-02f, massSpectrum.getIon(25).getAbundance());
-		assertEquals(2.32223e-01f, massSpectrum.getIon(26).getAbundance());
-		assertEquals(3.32333e-01f, massSpectrum.getIon(27).getAbundance());
-		assertEquals(1.00000e+00f, massSpectrum.getIon(28).getAbundance());
-		assertEquals(2.15222e-01f, massSpectrum.getIon(29).getAbundance());
-		assertEquals(2.62226e-01f, massSpectrum.getIon(30).getAbundance());
-		assertEquals(5.00050e-03f, massSpectrum.getIon(31).getAbundance());
-	}
-
-	public void test_6() throws AbundanceLimitExceededException, IonLimitExceededException {
-
-		IScanMSD massSpectrum = massSpectra.getMassSpectrum(5);
-		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
-		assertEquals("Ethylene", libraryMassSpectrum.getLibraryInformation().getName());
-		assertEquals("74-85-1", libraryMassSpectrum.getLibraryInformation().getCasNumber());
-		assertEquals(12, massSpectrum.getNumberOfIons());
-		assertEquals(1.00010e-03f, massSpectrum.getIon(2).getAbundance());
-		assertEquals(5.00050e-03f, massSpectrum.getIon(12).getAbundance());
-		assertEquals(9.00090e-03f, massSpectrum.getIon(13).getAbundance());
-		assertEquals(2.10021e-02f, massSpectrum.getIon(14).getAbundance());
-		assertEquals(3.00030e-03f, massSpectrum.getIon(15).getAbundance());
-		assertEquals(2.30023e-02f, massSpectrum.getIon(24).getAbundance());
-		assertEquals(7.81078e-02f, massSpectrum.getIon(25).getAbundance());
-		assertEquals(5.29553e-01f, massSpectrum.getIon(26).getAbundance());
-		assertEquals(6.23662e-01f, massSpectrum.getIon(27).getAbundance());
-		assertEquals(1.00000e+00f, massSpectrum.getIon(28).getAbundance());
-		assertEquals(2.30023e-02f, massSpectrum.getIon(29).getAbundance());
-		assertEquals(1.00010e-03f, massSpectrum.getIon(30).getAbundance());
+		
+		for (int i = 1; i <= massSpectra1.size(); i++) {
+			IScanMSD massSpectrum1 = massSpectra1.getMassSpectrum(i);
+			IScanMSD massSpectrum2 = massSpectra2.getMassSpectrum(i);
+			if (massSpectrum1 instanceof ICalibratedVendorMassSpectrum) {
+				assertEquals(0, ((ICalibratedVendorMassSpectrum)massSpectrum1).compareTo((ICalibratedVendorMassSpectrum)massSpectrum2));
+			}
+			else {
+				assertEquals(0, ((ICalibratedVendorLibraryMassSpectrum)massSpectrum1).compareTo((ICalibratedVendorLibraryMassSpectrum)massSpectrum2));
+			}
+		}
 	}
 }

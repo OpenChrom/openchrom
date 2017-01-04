@@ -16,6 +16,8 @@ import java.util.List;
 
 public interface ICalibratedVendorMassSpectrum extends ICalibratedVendorLibraryMassSpectrum {
 
+	public int compareTo(ICalibratedVendorMassSpectrum spectrum);
+
 	boolean addIonMeasurement(double mz, float signal);
 
 	boolean addIonMeasurement(IIonMeasurement ionMeasurement);

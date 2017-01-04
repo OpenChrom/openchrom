@@ -13,6 +13,7 @@
 package net.openchrom.msd.converter.supplier.cms.model;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -20,6 +21,13 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 // public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMassSpectrum {
 public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMassSpectrum, IScanMSD {
 
+	public int compareTo(ICalibratedVendorLibraryMassSpectrum spectrum);
+	
+	/**
+	 * Returns the list of comments or an empty list.
+	 * 
+	 * @return {@link Set}
+	 */
 	List<String> getComments();
 
 	double getEenergy();
