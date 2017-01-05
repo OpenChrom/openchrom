@@ -59,82 +59,96 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 
 	@Override
 	public int compareTo(ICalibratedVendorLibraryMassSpectrum spectrum) {
+
 		int result;
-		
-		if (!(spectrum instanceof ICalibratedVendorMassSpectrum)) { // fields for CalibratedVendorLibraryMassSpectrum only
+		if(!(spectrum instanceof ICalibratedVendorMassSpectrum)) { // fields for CalibratedVendorLibraryMassSpectrum only
 			// is library file
 			result = this.getLibraryInformation().getName().compareTo(spectrum.getLibraryInformation().getName());
-			if (0 != result) return result;
+			if(0 != result)
+				return result;
 			result = this.getLibraryInformation().getCasNumber().compareTo(spectrum.getLibraryInformation().getCasNumber());
-			if (0 != result) return result;
+			if(0 != result)
+				return result;
 			result = this.getLibraryInformation().getFormula().compareTo(spectrum.getLibraryInformation().getFormula());
-			if (0 != result) return result;
+			if(0 != result)
+				return result;
 			result = (int)java.lang.StrictMath.signum(this.getLibraryInformation().getMolWeight() - spectrum.getLibraryInformation().getMolWeight());
-			if (0 != result) return result;
+			if(0 != result)
+				return result;
 			result = this.getLibraryInformation().getSynonyms().size() - spectrum.getLibraryInformation().getSynonyms().size();
-			if (0 != result) return result;
-			if (0 < this.getLibraryInformation().getSynonyms().size()) {
+			if(0 != result)
+				return result;
+			if(0 < this.getLibraryInformation().getSynonyms().size()) {
 				String set1[] = new String[0];
 				String set2[] = new String[0];
-				
 				set1 = this.getLibraryInformation().getSynonyms().toArray(set1);
 				set2 = spectrum.getLibraryInformation().getSynonyms().toArray(set2);
-				for (int i = 0; i < this.getLibraryInformation().getSynonyms().size(); i++) {
+				for(int i = 0; i < this.getLibraryInformation().getSynonyms().size(); i++) {
 					result = set1[i].compareTo(set2[i]);
-					if (0 != result) return result;
+					if(0 != result)
+						return result;
 				}
 			}
 			result = this.getNumberOfIons() - spectrum.getNumberOfIons();
-			if (0 != result) return result;
-			if (0 < this.getNumberOfIons()) {
+			if(0 != result)
+				return result;
+			if(0 < this.getNumberOfIons()) {
 				IIon set1[] = new IIon[this.getNumberOfIons()];
 				IIon set2[] = new IIon[this.getNumberOfIons()];
-				
 				set1 = this.getIons().toArray(set1);
 				set2 = spectrum.getIons().toArray(set2);
-				for (int i = 0; i < this.getNumberOfIons(); i++) {
+				for(int i = 0; i < this.getNumberOfIons(); i++) {
 					result = (int)java.lang.StrictMath.signum(set1[i].getIon() - set2[i].getIon());
-					if (0 != result) return result;
+					if(0 != result)
+						return result;
 					result = (int)java.lang.StrictMath.signum(set1[i].getAbundance() - set2[i].getAbundance());
-					if (0 != result) return result;
+					if(0 != result)
+						return result;
 				}
 			}
 		}
-		
 		// fields for both CalibratedVendorLibraryMassSpectrum and CalibratedVendorMassSpectrum
 		result = this.comments.size() - spectrum.getComments().size();
-		if (0 != result) return result;
-		if (0 < this.comments.size()) {
+		if(0 != result)
+			return result;
+		if(0 < this.comments.size()) {
 			String set1[] = new String[0];
 			String set2[] = new String[0];
-			
 			set1 = this.getComments().toArray(set1);
 			set2 = spectrum.getComments().toArray(set2);
-			for (int i = 0; i < this.getComments().size(); i++) {
+			for(int i = 0; i < this.getComments().size(); i++) {
 				result = set1[i].compareTo(set2[i]);
-				if (0 != result) return result;
+				if(0 != result)
+					return result;
 			}
 		}
 		result = (int)java.lang.StrictMath.signum(this.getEenergy() - spectrum.getEenergy());
-		if (0 != result) return result;
+		if(0 != result)
+			return result;
 		result = (int)java.lang.StrictMath.signum(this.getIenergy() - spectrum.getIenergy());
-		if (0 != result) return result;
+		if(0 != result)
+			return result;
 		result = (int)java.lang.StrictMath.signum(this.getEtimes() - spectrum.getEtimes());
-		if (0 != result) return result;
+		if(0 != result)
+			return result;
 		result = (int)java.lang.StrictMath.signum(this.getSourcePressure() - spectrum.getSourcePressure());
-		if (0 != result) return result;
+		if(0 != result)
+			return result;
 		result = this.getInstrumentName().compareTo(spectrum.getInstrumentName());
-		if (0 != result) return result;
+		if(0 != result)
+			return result;
 		result = this.getSignalUnits().compareTo(spectrum.getSignalUnits());
-		if (0 != result) return result;
+		if(0 != result)
+			return result;
 		result = this.getSourcePressureUnits().compareTo(spectrum.getSourcePressureUnits());
-		if (0 != result) return result;
+		if(0 != result)
+			return result;
 		result = this.getTimeStamp().compareTo(spectrum.getTimeStamp());
-		if (0 != result) return result;
-		
+		if(0 != result)
+			return result;
 		return 0;
 	}
-	
+
 	public double getSourcePressure() {
 
 		return sourcePressure;

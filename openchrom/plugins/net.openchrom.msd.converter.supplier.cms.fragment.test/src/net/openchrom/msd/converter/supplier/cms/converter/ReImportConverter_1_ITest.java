@@ -60,7 +60,7 @@ public class ReImportConverter_1_ITest extends TestCase {
 		/*
 		 * Delete the export file.
 		 */
-		//exportFile.delete();
+		// exportFile.delete();
 	}
 
 	@Override
@@ -77,14 +77,13 @@ public class ReImportConverter_1_ITest extends TestCase {
 	}
 
 	public void test_2() throws AbundanceLimitExceededException, IonLimitExceededException {
-		
-		for (int i = 1; i <= massSpectra1.size(); i++) {
+
+		for(int i = 1; i <= massSpectra1.size(); i++) {
 			IScanMSD massSpectrum1 = massSpectra1.getMassSpectrum(i);
 			IScanMSD massSpectrum2 = massSpectra2.getMassSpectrum(i);
-			if (massSpectrum1 instanceof ICalibratedVendorMassSpectrum) {
+			if(massSpectrum1 instanceof ICalibratedVendorMassSpectrum) {
 				assertEquals(0, ((ICalibratedVendorMassSpectrum)massSpectrum1).compareTo((ICalibratedVendorMassSpectrum)massSpectrum2));
-			}
-			else {
+			} else {
 				assertEquals(0, ((ICalibratedVendorLibraryMassSpectrum)massSpectrum1).compareTo((ICalibratedVendorLibraryMassSpectrum)massSpectrum2));
 			}
 		}

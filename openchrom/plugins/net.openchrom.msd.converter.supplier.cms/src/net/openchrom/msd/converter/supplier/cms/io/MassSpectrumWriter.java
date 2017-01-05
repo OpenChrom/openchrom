@@ -108,7 +108,6 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 		ICalibratedVendorLibraryMassSpectrum cvmSpectrum = null;
 		String line;
-		
 		if(massSpectrum instanceof ICalibratedVendorMassSpectrum) {
 			cvmSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
 		} else if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
@@ -132,51 +131,51 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 				fileWriter.write(line);
 			}
 			line = getFormulaField(cvmSpectrum);
-			if ("" != line)  {
+			if("" != line) {
 				fileWriter.write(line);
 			}
 			line = getMWField(cvmSpectrum);
-			if ("" != line)  {
+			if("" != line) {
 				fileWriter.write(line);
 			}
 			line = getCasNumberField(cvmSpectrum);
-			if ("" != line)  {
+			if("" != line) {
 				fileWriter.write(line);
 			}
 		}
-		for (String comment : cvmSpectrum.getComments()) {
+		for(String comment : cvmSpectrum.getComments()) {
 			fileWriter.write(COMMENT + comment + CRLF);
 		}
 		line = getSourcePressureField(cvmSpectrum);
-		if ("" != line)  {
+		if("" != line) {
 			fileWriter.write(line);
 		}
 		line = getSourcePressureUnitsField(cvmSpectrum);
-		if ("" != line)  {
+		if("" != line) {
 			fileWriter.write(line);
 		}
 		line = getSignalUnitsField(cvmSpectrum);
-		if ("" != line)  {
+		if("" != line) {
 			fileWriter.write(line);
 		}
 		line = getTimeStampField(cvmSpectrum);
-		if ("" != line)  {
+		if("" != line) {
 			fileWriter.write(line);
 		}
 		line = getEtimesField(cvmSpectrum);
-		if ("" != line)  {
+		if("" != line) {
 			fileWriter.write(line);
 		}
 		line = getEenergyField(cvmSpectrum);
-		if ("" != line)  {
+		if("" != line) {
 			fileWriter.write(line);
 		}
 		line = getIenergyField(cvmSpectrum);
-		if ("" != line)  {
+		if("" != line) {
 			fileWriter.write(line);
 		}
 		line = getInstrumentNameField(cvmSpectrum);
-		if ("" != line)  {
+		if("" != line) {
 			fileWriter.write(line);
 		}
 		//
@@ -382,10 +381,9 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 			/*
 			 * Add each peak measurement.
 			 */
-			if (0 == (ion.getIon()%1)) {
+			if(0 == (ion.getIon() % 1)) {
 				lineStr = (int)ion.getIon() + " " + ion.getAbundance() + "; ";
-			}
-			else {
+			} else {
 				lineStr = ion.getIon() + " " + ion.getAbundance() + "; ";
 			}
 			if(line.length() + lineStr.length() > 78) {
@@ -419,10 +417,9 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 			/*
 			 * Add each peak measurement.
 			 */
-			if (0 == (peak.getMZ()%1)) {
+			if(0 == (peak.getMZ() % 1)) {
 				lineStr = (int)peak.getMZ() + " " + peak.getSignal() + "; ";
-			}
-			else {
+			} else {
 				lineStr = peak.getMZ() + " " + peak.getSignal() + "; ";
 			}
 			if(line.length() + lineStr.length() > 78) {

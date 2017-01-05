@@ -22,7 +22,7 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMassSpectrum, IScanMSD {
 
 	public int compareTo(ICalibratedVendorLibraryMassSpectrum spectrum);
-	
+
 	/**
 	 * Returns the list of comments or an empty list.
 	 * 

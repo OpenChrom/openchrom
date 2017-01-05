@@ -60,32 +60,36 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		 */
 		ionMeasurements = new ArrayList<IIonMeasurement>(100);
 	}
+
 	@Override
 	public int compareTo(ICalibratedVendorMassSpectrum spectrum) {
+
 		int result;
-	
 		result = super.compareTo(spectrum);
-		if (0 != result) return result;
+		if(0 != result)
+			return result;
 		result = this.getScanName().compareTo(spectrum.getScanName());
-		if (0 != result) return result;
+		if(0 != result)
+			return result;
 		result = this.getNumberOfIons() - spectrum.getNumberOfIons();
-		if (0 != result) return result;
-		if (0 < this.getNumberOfIons()) {
+		if(0 != result)
+			return result;
+		if(0 < this.getNumberOfIons()) {
 			IIonMeasurement set1[] = new IIonMeasurement[this.getNumberOfIons()];
 			IIonMeasurement set2[] = new IIonMeasurement[this.getNumberOfIons()];
-			
 			set1 = ((ICalibratedVendorMassSpectrum)this).getIonMeasurements().toArray(set1);
 			set2 = ((ICalibratedVendorMassSpectrum)spectrum).getIonMeasurements().toArray(set2);
-			for (int i = 0; i < this.getNumberOfIons(); i++) {
+			for(int i = 0; i < this.getNumberOfIons(); i++) {
 				result = (int)java.lang.StrictMath.signum(set1[i].getMZ() - set2[i].getMZ());
-				if (0 != result) return result;
+				if(0 != result)
+					return result;
 				result = (int)java.lang.StrictMath.signum(set1[i].getSignal() - set2[i].getSignal());
-				if (0 != result) return result;
+				if(0 != result)
+					return result;
 			}
 		}
 		return 0;
 	}
-	
 
 	public boolean scale() {
 
