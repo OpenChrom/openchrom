@@ -45,6 +45,7 @@ import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorLibraryMas
 import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
+import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
 
 public class MassSpectrumReader extends AbstractMassSpectraReader implements IMassSpectraReader {
 
@@ -60,31 +61,32 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 	private static final String RETENTION_INDICES_DELIMITER = ", ";
 	private static final String SNUM = "([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)"; // matches any valid string representation of a number
 	//
-	private static final Pattern namePattern = Pattern.compile("^NAME:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern scanPattern = Pattern.compile("^SCAN:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern emptyLinePattern = Pattern.compile("^$", Pattern.CASE_INSENSITIVE);
-	private static final Pattern nameRetentionTimePattern = Pattern.compile("^RT:\\s*" + SNUM + "(\\s*min)", Pattern.CASE_INSENSITIVE); // (rt: 10.818 min)
-	private static final Pattern formulaPattern = Pattern.compile("^FORMULA:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern commentPattern = Pattern.compile("^COMMENTS?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern molweightPattern = Pattern.compile("^MW:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
-	private static final Pattern synonymPattern = Pattern.compile("^SYNON(?:[YM]*)?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern casNumberPattern = Pattern.compile("^CAS(?:NO|#)?:\\s*([0-9-]*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern commentPattern = Pattern.compile("^COMMENTS?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern databaseNamePattern = Pattern.compile("^DB(?:NO|#)?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern referenceIdentifierPattern = Pattern.compile("^REFID:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern smilesPattern = Pattern.compile("^SMILES:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern retentionTimePattern = Pattern.compile("^RT:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern relativeRetentionTimePattern = Pattern.compile("^RRT:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern retentionIndexPattern = Pattern.compile("^RI:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern numPeaksPattern = Pattern.compile("^NUM PEAKS:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
-	private static final Pattern ionPattern = Pattern.compile(SNUM + "[\\s,]+" + SNUM);
-	private static final Pattern sourcepPattern = Pattern.compile("^SOURCEP:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
-	private static final Pattern spunitsPattern = Pattern.compile("^SPUNITS:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern sigunitsPattern = Pattern.compile("^SIGUNITS:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern tstampPattern = Pattern.compile("^TSTAMP:\\s*(.*)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern etimesPattern = Pattern.compile("^ETIMES:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
 	private static final Pattern eenergyvPattern = Pattern.compile("^EENERGYV:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
+	private static final Pattern emptyLinePattern = Pattern.compile("^$", Pattern.CASE_INSENSITIVE);
+	private static final Pattern etimesPattern = Pattern.compile("^ETIMES:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
+	private static final Pattern formulaPattern = Pattern.compile("^FORMULA:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern ienergyvPattern = Pattern.compile("^IENERGYV:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
 	private static final Pattern inamePattern = Pattern.compile("^INAME:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern ionPattern = Pattern.compile(SNUM + "[\\s,]+" + SNUM);
+	private static final Pattern molweightPattern = Pattern.compile("^MW:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
+	private static final Pattern namePattern = Pattern.compile("^NAME:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern nameRetentionTimePattern = Pattern.compile("^RT:\\s*" + SNUM + "(\\s*min)", Pattern.CASE_INSENSITIVE); // (rt: 10.818 min)
+	private static final Pattern numPeaksPattern = Pattern.compile("^NUM PEAKS:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
+	private static final Pattern rescalePattern = Pattern.compile("^RESCALE:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
+	private static final Pattern referenceIdentifierPattern = Pattern.compile("^REFID:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern relativeRetentionTimePattern = Pattern.compile("^RRT:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern retentionIndexPattern = Pattern.compile("^RI:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern retentionTimePattern = Pattern.compile("^RT:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern scanPattern = Pattern.compile("^SCAN:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern sigunitsPattern = Pattern.compile("^SIGUNITS:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern smilesPattern = Pattern.compile("^SMILES:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern sourcepPattern = Pattern.compile("^SOURCEP:\\s*" + SNUM + ".*", Pattern.CASE_INSENSITIVE); // allow ignored trailing comment
+	private static final Pattern spunitsPattern = Pattern.compile("^SPUNITS:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern synonymPattern = Pattern.compile("^SYNON(?:[YM]*)?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern tstampPattern = Pattern.compile("^TSTAMP:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 
 	@Override
 	public IMassSpectra read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
@@ -106,6 +108,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 		IMassSpectra massSpectra = new MassSpectra();
 		Matcher fieldMatcher;
 		ICalibratedVendorLibraryMassSpectrum massSpectrum = null;
+		float rescaleValue = 0;
 		int peakCount = 0, numPeaks = 0;
 		boolean libFile = false, scanFile = false;
 		while((line = bufferedReader.readLine()) != null) {
@@ -121,6 +124,8 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 				}
 				if(2 == parseState) {
 					if(0 < peakCount) { // got peaks, add spectrum
+						if (0 != rescaleValue) 
+							rescale(massSpectrum, rescaleValue);
 						massSpectra.addMassSpectrum(massSpectrum);
 					} else { // got no peaks for the current spectrum, discard incomplete spectrum
 						System.out.println("got no peaks from \"" + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) ? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName() : "NAME: " + massSpectrum.getLibraryInformation().getName()));
@@ -134,6 +139,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 					parseState = 1;
 				}
 				massSpectrum = new CalibratedVendorLibraryMassSpectrum();
+				rescaleValue = 0;
 				String name = fieldMatcher.group(1).trim();
 				massSpectrum.getLibraryInformation().setName(name);
 			} // if found NAME record
@@ -150,6 +156,8 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 						System.out.println("got no peaks from \"SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName() + "\"");
 						parseState = 1;
 					} else { // got peaks, add spectrum
+						if (0 != rescaleValue) 
+							rescale(massSpectrum, rescaleValue);
 						massSpectra.addMassSpectrum(massSpectrum);
 						parseState = 1;
 					}
@@ -160,6 +168,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 					parseState = 1;
 				}
 				massSpectrum = new CalibratedVendorMassSpectrum();
+				rescaleValue = 0;
 				String name = fieldMatcher.group(1).trim();
 				((ICalibratedVendorMassSpectrum)massSpectrum).setScanName(name);
 			} // else if found SCAN record
@@ -173,6 +182,13 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 					} else
 						parseState = 2;
 				} // if
+				else if((fieldMatcher = rescalePattern.matcher(line)).lookingAt()) { // found RESCALE record
+					float temp = Float.parseFloat(fieldMatcher.group(1).trim());
+					if(0.0 != temp)
+						rescaleValue = temp;
+					else
+						System.out.println("got negative or zero RESCALE from \"" + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) ? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName() : "NAME: " + massSpectrum.getLibraryInformation().getName()) + "\" = " + temp + "\"");
+				} // else if RESCALE
 				else if((fieldMatcher = sourcepPattern.matcher(line)).lookingAt()) { // found SOURCEP record
 					double sourcep;
 					sourcep = Double.parseDouble(fieldMatcher.group(1).trim());
@@ -328,6 +344,8 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 			if(0 >= peakCount) { // got no peaks for the current spectrum, discard incomplete spectrum
 				System.out.println("got no peaks from " + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) ? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName() : "NAME: " + massSpectrum.getLibraryInformation().getName()));
 			} else { // got peaks, add spectrum
+				if(0 != rescaleValue) 
+					rescale(massSpectrum, rescaleValue);
 				massSpectra.addMassSpectrum(massSpectrum);
 			}
 		} else if(1 == parseState) { // got no peaks, discard incomplete spectrum
@@ -335,5 +353,44 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 		}
 		bufferedReader.close();
 		return massSpectra;
+	}
+	
+	private void rescale(ICalibratedVendorLibraryMassSpectrum cvmSpectrum, float maxSig) {
+		boolean maxIsInitialized = false;
+		float maxSignal = -1;
+		
+		if(!(cvmSpectrum instanceof ICalibratedVendorMassSpectrum)) {
+			for(IIon ion : cvmSpectrum.getIons()) {
+				if(!maxIsInitialized) {
+					maxSignal = ion.getAbundance();
+					maxIsInitialized = true;
+				}
+				else {
+					if (maxSignal < ion.getAbundance())
+						maxSignal = ion.getAbundance();
+				}
+			}
+			for(IIon ion : cvmSpectrum.getIons()) {
+				try {
+					ion.setAbundance(maxSig/maxSignal*ion.getAbundance());
+				} catch(AbundanceLimitExceededException e) {
+					logger.warn(e);
+				}
+			}
+		} else {
+			for(IIonMeasurement peak : ((ICalibratedVendorMassSpectrum)cvmSpectrum).getIonMeasurements()) {
+				if(!maxIsInitialized) {
+					maxSignal = peak.getSignal();
+					maxIsInitialized = true;
+				}
+				else {
+					if (maxSignal < peak.getSignal())
+						maxSignal = peak.getSignal();
+				}
+			}
+			for(IIonMeasurement peak : ((ICalibratedVendorMassSpectrum)cvmSpectrum).getIonMeasurements()) {
+				peak.setSignal(maxSig/maxSignal*peak.getSignal());
+			}
+		}
 	}
 }
