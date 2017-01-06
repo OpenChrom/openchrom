@@ -18,7 +18,6 @@ import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.massspectrum.IMassSpectrumExportConverter;
 import org.eclipse.chemclipse.msd.converter.massspectrum.IMassSpectrumImportConverter;
 import org.eclipse.chemclipse.msd.converter.processing.massspectrum.IMassSpectrumImportConverterProcessingInfo;
-import org.eclipse.chemclipse.msd.model.core.ILibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
@@ -49,12 +48,12 @@ public class ReImportConverter_1_ITest extends TestCase {
 		/*
 		 * Export
 		 */
-		File exportFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_EXPORT_MASS_SPECTRA_1));
+		File exportFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_DIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_1);
 		exportConverter.convert(exportFile, massSpectra1, false, new NullProgressMonitor());
 		/*
 		 * Re-Import
 		 */
-		File reImportFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_EXPORT_MASS_SPECTRA_1));
+		File reImportFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_DIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_1);
 		IMassSpectrumImportConverterProcessingInfo processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
 		massSpectra2 = processingInfoReImport.getMassSpectra();
 		/*

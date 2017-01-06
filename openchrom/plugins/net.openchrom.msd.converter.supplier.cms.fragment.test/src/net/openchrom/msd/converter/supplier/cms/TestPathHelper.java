@@ -23,5 +23,6 @@ public class TestPathHelper extends PathResolver {
 	public static final String TESTFILE_IMPORT_MASS_SPECTRA_3 = "testData/files/import/MassSpectra3.cms";
 	public static final String TESTFILE_IMPORT_MASS_SPECTRA_4 = "testData/files/import/MassSpectra4.cms";
 	//
-	public static final String TESTFILE_EXPORT_MASS_SPECTRA_1 = "testData/files/export/MassSpectra1.CMS";
+	public static final String TESTFILE_DIR_EXPORT = "testData/files/export";
+	public static final String TESTFILE_MASS_SPECTRA_1 = "MassSpectra1.CMS";
 }
