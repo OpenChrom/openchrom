@@ -15,18 +15,21 @@ package net.openchrom.msd.process.supplier.cms.preferences;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.msd.process.supplier.cms.Activator;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
-	public static final String P_TEST = "test";
-	public static final String DEF_TEST = "";
+	public static final String P_PATH_CMS_SPECTRA = "pathCmsSpectra";
+	public static final String DEF_PATH_CMS_SPECTRA = "";
 	//
+	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
 	private static IPreferenceSupplier preferenceSupplier;
 
 	public static IPreferenceSupplier INSTANCE() {
@@ -54,7 +57,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		Map<String, String> defaultValues = new HashMap<String, String>();
 		//
-		defaultValues.put(P_TEST, DEF_TEST);
+		defaultValues.put(P_PATH_CMS_SPECTRA, DEF_PATH_CMS_SPECTRA);
 		//
 		return defaultValues;
 	}
@@ -65,9 +68,20 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return getScopeContext().getNode(getPreferenceNode());
 	}
 
-	public static String getTest() {
+	public static String getPathCmsSpectra() {
 
-		IEclipsePreferences preferences = PreferenceSupplier.INSTANCE().getPreferences();
-		return preferences.get(P_TEST, DEF_TEST);
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_PATH_CMS_SPECTRA, DEF_PATH_CMS_SPECTRA);
+	}
+
+	public static void setPathCmsSpectra(String pathCmsSpectra) {
+
+		try {
+			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+			eclipsePreferences.put(P_PATH_CMS_SPECTRA, pathCmsSpectra);
+			eclipsePreferences.flush();
+		} catch(BackingStoreException e) {
+			logger.warn(e);
+		}
 	}
 }

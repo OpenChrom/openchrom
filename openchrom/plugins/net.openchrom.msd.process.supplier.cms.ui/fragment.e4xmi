@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_1-uEYNRPEeaaPePRBRrPAg">
+  <imports xsi:type="basic:Part" xmi:id="_CVfz0NRQEeaaPePRBRrPAg" elementId="org.eclipse.ui.navigator.ProjectExplorer"/>
+  <imports xsi:type="advanced:Area" xmi:id="_Dxge0NRQEeaaPePRBRrPAg" elementId="org.eclipse.chemclipse.rcp.app.ui.editor"/>
+  <imports xsi:type="basic:Part" xmi:id="_PhozENRSEeaaPePRBRrPAg" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.massSpectrumLibraryExplorerView"/>
+  <imports xsi:type="basic:Part" xmi:id="_zoE1wNRSEeaaPePRBRrPAg" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.simpleNominalMassSpectrumView"/>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_LM7ukNRQEeaaPePRBRrPAg" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.perspectivestack.main">
+    <elements xsi:type="advanced:Perspective" xmi:id="_PfAAsNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.perspective.cmsworkflow" label="CMS Workflow" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif">
+      <children xsi:type="basic:PartSashContainer" xmi:id="_YU3OINRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.0">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_bcE2sNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.1" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_dr4WINRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.0" containerData="2500">
+            <children xsi:type="advanced:Placeholder" xmi:id="_RF7QUNRSEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.2" ref="_PhozENRSEeaaPePRBRrPAg"/>
+            <children xsi:type="advanced:Placeholder" xmi:id="_fwBYINRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.placeholder.1" ref="_CVfz0NRQEeaaPePRBRrPAg"/>
+          </children>
+          <children xsi:type="advanced:Placeholder" xmi:id="_eIG_INRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.placeholder.0" ref="_Dxge0NRQEeaaPePRBRrPAg"/>
+        </children>
+        <children xsi:type="basic:PartSashContainer" xmi:id="_cGVUoNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.2" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_0qkNgNRSEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.partstack.0">
+            <children xsi:type="advanced:Placeholder" xmi:id="_1vToANRSEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.3" ref="_zoE1wNRSEeaaPePRBRrPAg"/>
+          </children>
+          <children xsi:type="basic:PartStack" xmi:id="_jSZSsNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.1">
+            <children xsi:type="advanced:Placeholder" xmi:id="_gRmlwNRREeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.0" ref="_1x_agNRQEeaaPePRBRrPAg"/>
+          </children>
+          <children xsi:type="basic:PartStack" xmi:id="_jlspMNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.2">
+            <children xsi:type="advanced:Placeholder" xmi:id="_hcnnYNRREeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.1" ref="_aPiVoNRREeaaPePRBRrPAg"/>
+          </children>
+        </children>
+      </children>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_zkF_kNRQEeaaPePRBRrPAg" featurename="sharedElements" parentElementId="org.eclipse.chemclipse.rcp.app.ui.trimmedwindow.main">
+    <elements xsi:type="basic:Part" xmi:id="_1x_agNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.part.decompositionResult" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.DecompositionResultPart" label="Decomposition Result" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
+    <elements xsi:type="basic:Part" xmi:id="_aPiVoNRREeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.part.ionCurrent" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.IonCurrentPart" label="Ion Current" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
+  </fragments>
+</fragment:ModelFragments>

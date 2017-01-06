@@ -35,7 +35,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 */
 	public void createFieldEditors() {
 
-		addField(new StringFieldEditor(PreferenceSupplier.P_TEST, "Test", getFieldEditorParent()));
+		addField(new StringFieldEditor(PreferenceSupplier.P_PATH_CMS_SPECTRA, "Path CMS Spectra", getFieldEditorParent()));
 	}
 
 	/*

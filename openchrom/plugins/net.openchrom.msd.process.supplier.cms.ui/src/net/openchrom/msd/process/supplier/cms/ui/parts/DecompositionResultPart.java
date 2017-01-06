@@ -11,13 +11,41 @@
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui.parts;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+
+import net.openchrom.msd.process.supplier.cms.ui.parts.swt.DecompositionResultUI;
 
 public class DecompositionResultPart {
 
 	@Inject
-	public DecompositionResultPart(Composite composite) {
+	private Composite parent;
+	private DecompositionResultUI decompositionResultUI;
+
+	public DecompositionResultPart() {
+	}
+
+	@PostConstruct
+	private void createControl() {
+
+		parent.setLayout(new FillLayout());
+		decompositionResultUI = new DecompositionResultUI(parent, SWT.NONE);
+	}
+
+	@PreDestroy
+	private void preDestroy() {
+
+	}
+
+	@Focus
+	public void setFocus() {
+
+		decompositionResultUI.setFocus();
 	}
 }
