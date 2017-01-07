@@ -50,10 +50,10 @@ public class DecompositionResultUI extends Composite {
 
 	public DecompositionResultUI(Composite parent, int style) {
 		super(parent, style);
-		initialize(parent);
+		initialize();
 	}
 
-	private void initialize(Composite parent) {
+	private void initialize() {
 
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.NONE);

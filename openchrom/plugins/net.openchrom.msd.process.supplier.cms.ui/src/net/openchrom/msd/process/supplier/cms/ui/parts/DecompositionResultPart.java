@@ -28,9 +28,6 @@ public class DecompositionResultPart {
 	private Composite parent;
 	private DecompositionResultUI decompositionResultUI;
 
-	public DecompositionResultPart() {
-	}
-
 	@PostConstruct
 	private void createControl() {
 
