@@ -124,7 +124,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 				}
 				if(2 == parseState) {
 					if(0 < peakCount) { // got peaks, add spectrum
-						if (0 != rescaleValue) 
+						if(0 != rescaleValue)
 							rescale(massSpectrum, rescaleValue);
 						massSpectra.addMassSpectrum(massSpectrum);
 					} else { // got no peaks for the current spectrum, discard incomplete spectrum
@@ -156,7 +156,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 						System.out.println("got no peaks from \"SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName() + "\"");
 						parseState = 1;
 					} else { // got peaks, add spectrum
-						if (0 != rescaleValue) 
+						if(0 != rescaleValue)
 							rescale(massSpectrum, rescaleValue);
 						massSpectra.addMassSpectrum(massSpectrum);
 						parseState = 1;
@@ -344,7 +344,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 			if(0 >= peakCount) { // got no peaks for the current spectrum, discard incomplete spectrum
 				System.out.println("got no peaks from " + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) ? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName() : "NAME: " + massSpectrum.getLibraryInformation().getName()));
 			} else { // got peaks, add spectrum
-				if(0 != rescaleValue) 
+				if(0 != rescaleValue)
 					rescale(massSpectrum, rescaleValue);
 				massSpectra.addMassSpectrum(massSpectrum);
 			}
@@ -354,25 +354,24 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 		bufferedReader.close();
 		return massSpectra;
 	}
-	
+
 	private void rescale(ICalibratedVendorLibraryMassSpectrum cvmSpectrum, float maxSig) {
+
 		boolean maxIsInitialized = false;
 		float maxSignal = -1;
-		
 		if(!(cvmSpectrum instanceof ICalibratedVendorMassSpectrum)) {
 			for(IIon ion : cvmSpectrum.getIons()) {
 				if(!maxIsInitialized) {
 					maxSignal = ion.getAbundance();
 					maxIsInitialized = true;
-				}
-				else {
-					if (maxSignal < ion.getAbundance())
+				} else {
+					if(maxSignal < ion.getAbundance())
 						maxSignal = ion.getAbundance();
 				}
 			}
 			for(IIon ion : cvmSpectrum.getIons()) {
 				try {
-					ion.setAbundance(maxSig/maxSignal*ion.getAbundance());
+					ion.setAbundance(maxSig / maxSignal * ion.getAbundance());
 				} catch(AbundanceLimitExceededException e) {
 					logger.warn(e);
 				}
@@ -382,14 +381,13 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 				if(!maxIsInitialized) {
 					maxSignal = peak.getSignal();
 					maxIsInitialized = true;
-				}
-				else {
-					if (maxSignal < peak.getSignal())
+				} else {
+					if(maxSignal < peak.getSignal())
 						maxSignal = peak.getSignal();
 				}
 			}
 			for(IIonMeasurement peak : ((ICalibratedVendorMassSpectrum)cvmSpectrum).getIonMeasurements()) {
-				peak.setSignal(maxSig/maxSignal*peak.getSignal());
+				peak.setSignal(maxSig / maxSignal * peak.getSignal());
 			}
 		}
 	}
