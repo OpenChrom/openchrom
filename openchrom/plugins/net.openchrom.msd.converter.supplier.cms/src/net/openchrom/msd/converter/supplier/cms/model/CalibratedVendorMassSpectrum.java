@@ -13,6 +13,7 @@
 package net.openchrom.msd.converter.supplier.cms.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -48,9 +49,9 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	private double minSignal = 0;
 	private double minAbsSignal = 0;
 	private double maxSignal = 0;
-	private boolean sumSignalCalculated = false;
-	private boolean minMaxSignalCalculated = false;
-	private double sumSignal = 0;
+	private boolean minMaxSignalIsValid = false;
+	private float sumSignal = 0f;
+	private boolean sumSignalIsValid = false;
 	private float scaleOffset = 0;
 	private float scaleSlope = 0;
 
@@ -103,7 +104,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		/*
 		 * Calculate the limits on demand.
 		 */
-		if(!minMaxSignalCalculated) {
+		if(!minMaxSignalIsValid) {
 			updateSignalLimits();
 		}
 		//
@@ -121,7 +122,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 			for(IIonMeasurement ionMeasurement : ionMeasurements) {
 				ionMeasurement.setSignal(scaleSlope * (ionMeasurement.getSignal() + scaleOffset));
 			}
-			sumSignalCalculated = false;
+			sumSignalIsValid = false;
 			return true;
 		}
 	}
@@ -138,7 +139,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 			ionMeasurement.setSignal((ionMeasurement.getSignal() / scaleSlope) - scaleOffset);
 		}
 		scaleSlope = 0;
-		sumSignalCalculated = false;
+		sumSignalIsValid = false;
 		return true;
 	}
 
@@ -164,18 +165,18 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 
 	public void resetSumSignal() {
 
-		sumSignalCalculated = false;
+		sumSignalIsValid = false;
 	}
 
-	public double getSumSignal() {
+	public float getSumSignal() {
 
-		if(!sumSignalCalculated) {
-			sumSignal = 0;
-			for(IIonMeasurement peak : ionMeasurements) {
-				sumSignal += peak.getSignal();
-			}
-			sumSignalCalculated = true;
+		if(sumSignalIsValid) 
+			return sumSignal;
+		sumSignal = 0;
+		for(IIonMeasurement peak : ionMeasurements) {
+			sumSignal += peak.getSignal();
 		}
+		sumSignalIsValid = true;
 		return sumSignal;
 	}
 
@@ -209,7 +210,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 				}
 			}
 		}
-		minMaxSignalCalculated = true;
+		minMaxSignalIsValid = true;
 	}
 
 	public boolean addIonMeasurement(double mz, float signal) {
@@ -290,7 +291,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 
 	public void resetMinMaxSignal() {
 
-		minMaxSignalCalculated = false;
+		minMaxSignalIsValid = false;
 	}
 
 	/*
@@ -604,7 +605,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	@Override
 	public float getTotalSignal() {
 
-		return 0;
+		return this.getSumSignal();
 	}
 
 	@Override

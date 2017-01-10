@@ -36,7 +36,7 @@ public interface ICalibratedVendorMassSpectrum extends ICalibratedVendorLibraryM
 
 	String getScanName();
 
-	double getSumSignal();
+	float getSumSignal();
 
 	ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException;
 
