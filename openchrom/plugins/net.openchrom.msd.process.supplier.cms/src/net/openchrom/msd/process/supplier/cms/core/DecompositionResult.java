@@ -21,40 +21,109 @@ import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpect
 public class DecompositionResult {
 
 	private static final Logger logger = Logger.getLogger(MassSpectraDecomposition.class);
-	private ICalibratedVendorMassSpectrum residualSpectrum;
 	private ArrayList<ICalibratedVendorLibraryMassSpectrum> libraryComponents; // only need some of the info in CalibratedVendorLibraryMassSpectrum, but take it all for now
 	private ArrayList<Double> xComp; // for library component i = fraction of library ion current spectrum which was found in scan ion current spectrum
+	private ArrayList<Boolean> isQuantitative;
+	private ICalibratedVendorMassSpectrum residualSpectrum;
 	private double sumOfSquaresError;
 	private double weightedSumOfSquaresError;
+	private double sourcePressure; // source pressure, from scan record
+	private String sourcePressureUnits; // source pressure units, from scan record
+	private String signalUnits;
+	private double eTimeS; // elapsed time in seconds, from scan record
+	int componentCount;
 
-	public DecompositionResult(double ssErr, double wssErr) {
+	public DecompositionResult(double ssErr, double wssErr, double sourcePressure, String sourcePressureUnits, double eTimeS, String sigUnits) {
 		sumOfSquaresError = ssErr;
 		weightedSumOfSquaresError = wssErr;
+		componentCount = 0;
+		this.sourcePressure = sourcePressure;
+		this.sourcePressureUnits = sourcePressureUnits;
+		this.eTimeS = eTimeS;
+		this.signalUnits = sigUnits;
 		libraryComponents = new ArrayList<ICalibratedVendorLibraryMassSpectrum>();
 		xComp = new ArrayList<Double>();
+		isQuantitative = new ArrayList<Boolean>();
+	}
+	
+	public void addComponent(double x, ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum, boolean isQuantitative) {
+
+		if((null != xComp) && (null != libraryComponents)) {
+			xComp.add(x);
+			libraryComponents.add(libraryMassSpectrum);
+			this.isQuantitative.add(isQuantitative);
+			componentCount++;
+			assert(componentCount == this.xComp.size());
+			assert(componentCount == this.libraryComponents.size());
+			assert(componentCount == this.isQuantitative.size());
+		}
+	}
+
+
+	public double getETimeS() {
+	
+		return eTimeS;
+	}
+	
+	public String getLibCompName(int i) {
+
+		return libraryComponents.get(i).getLibraryInformation().getName();
+	}
+	
+	int getNumberOfComponents() {
+		return componentCount;
+	}
+	
+	public Double getPartialPressure(int index) {
+	
+		if (isQuantitative.get(index)) {
+			return this.xComp.get(index) * this.libraryComponents.get(index).getSourcePressure(this.sourcePressureUnits);
+		} else 
+			return 0d;
+	}
+
+	
+	public ICalibratedVendorMassSpectrum getResidualSpectrum() {
+	
+		return residualSpectrum;
+	}
+
+	
+	public String getSignalUnits() {
+	
+		return signalUnits;
+	}
+
+	
+	public double getSourcePressure() {
+	
+		return sourcePressure;
+	}
+
+	public String getSourcePressureUnits() {
+	
+		return sourcePressureUnits;
+	}
+	
+	public double getSumOfSquaresError() {
+
+		return sumOfSquaresError;
+	}
+
+
+	public double getWeightedSumOfSquaresError() {
+
+		return weightedSumOfSquaresError;
+	}
+
+	public boolean isQuantitative(int index) {
+	
+		return isQuantitative.get(index);
 	}
 
 	public void setResidualSpectrum(ICalibratedVendorMassSpectrum spec) {
 
 		if(null != spec)
 			residualSpectrum = spec;
-	}
-
-	public void addComponent(double x, ICalibratedVendorLibraryMassSpectrum iCalibratedVendorLibraryMassSpectrum) {
-
-		if((null != xComp) && (null != libraryComponents)) {
-			xComp.add(x);
-			libraryComponents.add(iCalibratedVendorLibraryMassSpectrum);
-		}
-	}
-
-	public double getSumOfSquaresError() {
-
-		return sumOfSquaresError;
-	}
-
-	public double getWeightedSumOfSquaresError() {
-
-		return weightedSumOfSquaresError;
 	}
 }

@@ -69,6 +69,7 @@ public class MassSpectraDecomposition {
 		// and then generates a new, smaller, list of library ions (usedLibIons) having mass ~= at least one ion in the unknown mass spectrum
 		double massTol = 0.2;
 		IMassSpectra residualSpectra = new MassSpectra();
+		DecompositionResults results = new DecompositionResults();
 		residualSpectra.setName(scanSpectra.getName());
 		for(IScanMSD scan : scanSpectra.getList()) {
 			// iterate over the unknown scan spectra
@@ -198,7 +199,7 @@ public class MassSpectraDecomposition {
 				ssError = SpecializedOps.elementSumSq(yResid);
 				CommonOps.mult(P, yResid, wtyerr);
 				wtssError = SpecializedOps.elementSumSq(wtyerr);
-				result = new DecompositionResult(ssError, wtssError);
+				result = new DecompositionResult(ssError, wtssError, fitDataset.getScanRef().getSourcePressure(), fitDataset.getScanRef().getSourcePressureUnits(), fitDataset.getScanRef().getEtimes(), fitDataset.getScanRef().getSignalUnits());
 				// display the result
 				System.out.println("SOLVED");
 				for(int ii = 0; ii < x.numRows; ii++) {
@@ -208,10 +209,12 @@ public class MassSpectraDecomposition {
 					String ppUnits = scanRef.getSourcePressureUnits();
 					double pp = x.get(ii) * libRef.getSourcePressure(ppUnits);
 					double mf = x.get(ii) * libRef.getSourcePressure(ppUnits) / scanRef.getSourcePressure();
-					result.addComponent(x.get(ii), fitDataset.getLibRef(ii));
+					
+					result.addComponent(x.get(ii), fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
+					
 					System.out.printf("%24s: x[%d]=\t%.13f", fitDataset.getLibCompName(ii), ii, x.get(ii), fitDataset.getScanRef().getSourcePressureUnits());
 					if(fitDataset.canDoQuantitative(ii)) {
-						System.out.printf("\tppress(%6s)=\t%.13f\tmolfrc=\t%.13f%n", fitDataset.getScanRef().getSourcePressureUnits(), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());
+						System.out.printf("\tppress(%6s)=\t%.13f\tmolfrc=\t%.13f%n", scanRef.getSourcePressureUnits(), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());
 					} else
 						System.out.println(" uncalibrated");
 					// System.out.println("\t" + fitDataset.getLibCompName(ii)
@@ -268,6 +271,7 @@ public class MassSpectraDecomposition {
 			}
 			//
 			result.setResidualSpectrum(scanResidual);
+			results.addResult(result);
 			residualSpectra.addMassSpectrum(scanResidual);
 			System.out.println();
 			// allow user to add and/or delete components from selected library components list
@@ -282,5 +286,8 @@ public class MassSpectraDecomposition {
 			// System.out.println("\t" + massSpectrumTarget.getLibraryInformation().getName());
 			// }
 		}
+	// print results
+	System.out.println(results.getCompositionResultsTable());
+	System.out.println(results.getResidualSpectraTable());
 	}
 }
