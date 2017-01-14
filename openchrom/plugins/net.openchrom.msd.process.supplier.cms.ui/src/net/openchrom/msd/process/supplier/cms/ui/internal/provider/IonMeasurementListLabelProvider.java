@@ -43,12 +43,17 @@ public class IonMeasurementListLabelProvider extends AbstractChemClipseLabelProv
 		String text = "";
 		if(element instanceof IonMeasurement) {
 			IonMeasurement ionMeasurement = (IonMeasurement)element;
+			//String.format("ETime,s\tPtotal,%s",ppUnits)
 			switch(columnIndex) {
 				case 0:
-					text = decimalFormat.format(ionMeasurement.getMZ());
+					//decimalFormat.applyPattern("0.0###");
+					//text = decimalFormat.format(ionMeasurement.getMZ());
+					text = String.format("%.4f", ionMeasurement.getMZ());
 					break;
 				case 1:
-					text = decimalFormat.format(ionMeasurement.getSignal());
+					//decimalFormat.applyPattern("0.0###E00");
+					//text = decimalFormat.format(ionMeasurement.getSignal());
+					text = String.format("% .4g", ionMeasurement.getSignal());
 					break;
 			}
 		}

@@ -13,10 +13,12 @@ package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 
 import org.eclipse.chemclipse.msd.swt.ui.components.massspectrum.AbstractExtendedMassSpectrumUI;
 import org.eclipse.chemclipse.msd.swt.ui.components.massspectrum.MassValueDisplayPrecision;
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.swt.ui.series.ISeries;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.swt.ui.support.Sign;
 import org.eclipse.swt.widgets.Composite;
+import org.swtchart.IAxisSet;
 import org.swtchart.IBarSeries;
 import org.swtchart.IBarSeries.BarWidthStyle;
 import org.swtchart.ISeries.SeriesType;
@@ -42,5 +44,24 @@ public class IonMeasurementSpectrumUI extends AbstractExtendedMassSpectrumUI {
 			barSeriesPositive.setBarWidth(1);
 			barSeriesPositive.setBarColor(Colors.RED);
 		}
+	}
+
+	/**
+	 * Creates the primary axes abundance and milliseconds.
+	 */
+	private void createPrimaryAxes() {
+
+		/*
+		 * Main Axes.
+		 */
+		IAxisSet axisSet = getAxisSet();
+		xAxisBottom = axisSet.getXAxis(0);
+		yAxisLeft = axisSet.getYAxis(0);
+		yAxisLeft.getTitle().setText("abundance");
+		//yAxisLeft.getTick().setFormat(ValueFormat.getDecimalFormatEnglish("0.0###"));
+		yAxisLeft.getTick().setFormat(ValueFormat.getDecimalFormatEnglish("0.0###E00"));
+		//
+		xAxisBottom.getTitle().setText("m/z");
+		xAxisBottom.getTick().setFormat(ValueFormat.getDecimalFormatEnglish("0.0###"));
 	}
 }
