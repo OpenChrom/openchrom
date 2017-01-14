@@ -46,14 +46,16 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	//
 	private List<IIonMeasurement> ionMeasurements;
 	private String scanName = "";
-	private double minSignal = 0;
-	private double minAbsSignal = 0;
-	private double maxSignal = 0;
+	private float minSignal = 0;
+	private float minAbsSignal = 0;
+	private float maxSignal = 0;
 	private boolean minMaxSignalIsValid = false;
 	private float sumSignal = 0f;
 	private boolean sumSignalIsValid = false;
 	private float scaleOffset = 0;
 	private float scaleSlope = 0;
+	private double baseMZ = 0;
+	private float baseSignal = 0f;
 
 	public CalibratedVendorMassSpectrum() {
 		/*
@@ -196,6 +198,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 				 */
 				if(maxSignal < signal) {
 					maxSignal = signal;
+					baseMZ = peak.getMZ();
 				}
 				//
 				if(minSignal > signal) {
@@ -358,13 +361,27 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	@Override
 	public double getBasePeak() {
 
-		return 0;
+		if(hasIons()) {
+			if(!minMaxSignalIsValid) {
+				updateSignalLimits();
+			}
+			return baseMZ;
+		} else {
+			return 0.0f;
+		}
 	}
 
 	@Override
 	public float getBasePeakAbundance() {
 
-		return 0;
+		if(hasIons()) {
+			if(!minMaxSignalIsValid) {
+				updateSignalLimits();
+			}
+			return maxSignal;
+		} else {
+			return 0.0f;
+		}
 	}
 
 	@Override
@@ -483,7 +500,10 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	@Override
 	public boolean hasIons() {
 
-		return false;
+		if(ionMeasurements.size() == 0) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
