@@ -49,10 +49,10 @@ public class DecompositionResults {
 			ppUnits = result.getSourcePressureUnits();
 			// make column heading string for this result
 			headingBuilder.setLength(0);
-			headingBuilder.append("ETime,s");
+			headingBuilder.append(String.format("ETime,s\tPtotal,%s",ppUnits));
 			for (int i = 0; i<result.getNumberOfComponents(); i++) {
 				if (result.isQuantitative(i))
-					headingBuilder.append(String.format("\t%s,%s", result.getLibCompName(i), ppUnits));
+					headingBuilder.append(String.format("\t%s", result.getLibCompName(i)));
 				else
 					headingBuilder.append(String.format("\t%s,uncalibrated", result.getLibCompName(i)));
 			}
