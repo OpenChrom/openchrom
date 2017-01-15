@@ -25,6 +25,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.IonMeasurementListUI;
 
@@ -61,9 +62,9 @@ public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
 	public void update(IScanMSD massSpectrum, boolean forceReload) {
 
 		if(isPartVisible()) {
-			if(massSpectrum instanceof ICalibratedVendorMassSpectrum) {
-				ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
-				ionMeasurementListUI.update(calibratedVendorMassSpectrum);
+			if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
+				ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
+				ionMeasurementListUI.update(spectrum);
 			} else {
 				ionMeasurementListUI.update(null);
 			}

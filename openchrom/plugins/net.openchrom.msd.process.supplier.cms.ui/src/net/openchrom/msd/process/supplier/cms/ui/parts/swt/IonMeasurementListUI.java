@@ -14,6 +14,7 @@ package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.swt.widgets.Composite;
 
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.ui.internal.provider.IonMeasurementListContentProvider;
 import net.openchrom.msd.process.supplier.cms.ui.internal.provider.IonMeasurementListLabelProvider;
@@ -30,10 +31,10 @@ public class IonMeasurementListUI extends ExtendedTableViewer {
 		addCopyToClipboardListener(titles);
 	}
 
-	public void update(ICalibratedVendorMassSpectrum massSpectrum) {
+	public void update(ICalibratedVendorLibraryMassSpectrum spectrum) {
 
-		if(massSpectrum != null) {
-			setInput(massSpectrum);
+		if(spectrum != null) {
+			setInput(spectrum);
 		} else {
 			setInput(null);
 		}
