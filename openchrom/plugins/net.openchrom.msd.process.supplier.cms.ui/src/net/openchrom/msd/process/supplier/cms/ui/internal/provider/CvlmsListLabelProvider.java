@@ -18,34 +18,49 @@ import java.util.List;
 import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
-import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
-import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumTarget;
+import org.eclipse.chemclipse.swt.ui.preferences.PreferenceSupplier;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
-import org.eclipse.chemclipse.swt.ui.preferences.PreferenceSupplier;
-import org.eclipse.swt.graphics.Image;
-
-import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
-import org.eclipse.chemclipse.msd.swt.ui.internal.provider.MassSpectrumListLabelProvider;
 
 import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 
-public class CvlmsListLabelProvider extends MassSpectrumListLabelProvider {
+public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
+	
+	private TargetExtendedComparator targetExtendedComparator;
 
-	private String getText(IScanMSD massSpectrum, ILibraryInformation libraryInformation, int columnIndex) {
+	public CvlmsListLabelProvider() {
+		targetExtendedComparator = new TargetExtendedComparator(SortOrder.DESC);
+	}
+
+	@Override
+	public String getColumnText(Object element, int columnIndex) {
+
+		if(element instanceof ICalibratedVendorLibraryMassSpectrum) {
+			
+			return getText((ICalibratedVendorLibraryMassSpectrum)element, columnIndex);
+		} else {
+			return "n.a.";
+		}
+	}
+	
+	private String getText(ICalibratedVendorLibraryMassSpectrum massSpectrum, int columnIndex) {
 
 		DecimalFormat decimalFormat = getDecimalFormat();
 		String text = "";
+		ILibraryInformation libInfo;
+		libInfo = massSpectrum.getLibraryInformation();
 		switch(columnIndex) {
 			case 0: // Name
 				if(massSpectrum instanceof CalibratedVendorMassSpectrum) {
 					text = "SCAN: " + ((CalibratedVendorMassSpectrum)massSpectrum).getScanName();
 				} else {
-					if(libraryInformation != null) {
-						text = "LIB: " + libraryInformation.getName();
+					if(libInfo != null) {
+						text = "LIB: " + libInfo.getName();
 					}
 				}
 				break;
@@ -96,21 +111,21 @@ public class CvlmsListLabelProvider extends MassSpectrumListLabelProvider {
 				text = Integer.toString(massSpectrum.getNumberOfIons());
 				break;
 			case 7: // CAS
-				if(libraryInformation != null) {
-					text = libraryInformation.getCasNumber();
+				if(libInfo != null) {
+					text = libInfo.getCasNumber();
 				}
 				break;
 			case 8: // MW
 				if(massSpectrum instanceof CalibratedVendorMassSpectrum) {
 					text = "";
 				} else {
-					if(libraryInformation != null) {
-						int molWeightNoPrecision = (int)libraryInformation.getMolWeight();
+					if(libInfo != null) {
+						int molWeightNoPrecision = (int)libInfo.getMolWeight();
 						if (0 < molWeightNoPrecision) {
-							if(molWeightNoPrecision == libraryInformation.getMolWeight()) {
+							if(molWeightNoPrecision == libInfo.getMolWeight()) {
 								text = Integer.toString(molWeightNoPrecision);
 							} else {
-								text = decimalFormat.format(libraryInformation.getMolWeight());
+								text = decimalFormat.format(libInfo.getMolWeight());
 							}
 						} else
 							text = "";
@@ -118,33 +133,60 @@ public class CvlmsListLabelProvider extends MassSpectrumListLabelProvider {
 				}
 				break;
 			case 9: // Formula
-				if(libraryInformation != null) {
-					text = libraryInformation.getFormula();
+				if(libInfo != null) {
+					text = libInfo.getFormula();
 				}
 				break;
 			case 10:
-				if(libraryInformation != null) {
-					text = libraryInformation.getSmiles();
+				if(libInfo != null) {
+					text = libInfo.getSmiles();
 				}
 				break;
 			case 11:
-				if(libraryInformation != null) {
-					text = libraryInformation.getInChI();
+				if(libInfo != null) {
+					text = libInfo.getInChI();
 				}
 				break;
 			case 12: // Reference Identifier
-				if(libraryInformation != null) {
-					text = libraryInformation.getReferenceIdentifier();
+				if(libInfo != null) {
+					text = libInfo.getReferenceIdentifier();
 				}
 				break;
 			case 13:
-				if(libraryInformation != null) {
-					text = libraryInformation.getComments();
+				if(libInfo != null) {
+					text = libInfo.getComments();
 				}
 				break;
 			default:
 				text = "n.v.";
 		}
 		return text;
-	}	
+	} //whw
+
+	@Override
+	public Image getColumnImage(Object element, int columnIndex) {
+
+		if(columnIndex == 0) {
+			return getImage(element);
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public Image getImage(Object element) {
+
+		Image image = ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_MASS_SPECTRUM, IApplicationImage.SIZE_16x16);
+		return image;
+	}
+
+	private ILibraryInformation getLibraryInformation(List<IMassSpectrumTarget> targets) {
+
+		ILibraryInformation libraryInformation = null;
+		Collections.sort(targets, targetExtendedComparator);
+		if(targets.size() >= 1) {
+			libraryInformation = targets.get(0).getLibraryInformation();
+		}
+		return libraryInformation;
+	}
 }
