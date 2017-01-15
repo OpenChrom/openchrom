@@ -15,6 +15,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
 public class IonMeasurementChartUI extends Composite {
@@ -32,10 +33,10 @@ public class IonMeasurementChartUI extends Composite {
 		ionMeasurementSpectrumUI = new IonMeasurementSpectrumUI(this, SWT.NONE);
 	}
 
-	public void update(ICalibratedVendorMassSpectrum massSpectrum) {
+	public void update(ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum) {
 
-		if(massSpectrum != null) {
-			ionMeasurementSpectrumUI.update(massSpectrum, true);
+		if(calibratedVendorLibraryMassSpectrum != null) {
+			ionMeasurementSpectrumUI.update(calibratedVendorLibraryMassSpectrum, true);
 		}
 	}
 }

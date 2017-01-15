@@ -17,12 +17,15 @@ import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.swt.ui.series.ISeries;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.swt.ui.support.Sign;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.swtchart.IAxisSet;
 import org.swtchart.IBarSeries;
 import org.swtchart.IBarSeries.BarWidthStyle;
 import org.swtchart.ISeries.SeriesType;
 
+import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorLibraryMassSpectrum;
+import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.ui.internal.provider.SeriesConverterIonMeasurement;
 
 public class IonMeasurementSpectrumUI extends AbstractExtendedMassSpectrumUI {
@@ -35,6 +38,8 @@ public class IonMeasurementSpectrumUI extends AbstractExtendedMassSpectrumUI {
 	public void setViewSeries() {
 
 		if(this.massSpectrum != null) {
+			String xAxisTitle;
+
 			ISeries series = SeriesConverterIonMeasurement.convertNominalIonMeasurement(this.massSpectrum, Sign.POSITIVE);
 			multipleLineSeries.add(series);
 			barSeriesPositive = (IBarSeries)getSeriesSet().createSeries(SeriesType.BAR, series.getId());
@@ -43,25 +48,19 @@ public class IonMeasurementSpectrumUI extends AbstractExtendedMassSpectrumUI {
 			barSeriesPositive.setBarWidthStyle(BarWidthStyle.FIXED);
 			barSeriesPositive.setBarWidth(1);
 			barSeriesPositive.setBarColor(Colors.RED);
+			if (this.massSpectrum instanceof CalibratedVendorMassSpectrum) {
+				xAxisTitle = "signal";
+			} else {
+				xAxisTitle = "abundance";
+			}
+			if (this.massSpectrum instanceof CalibratedVendorLibraryMassSpectrum) {
+				String signalUnits = ((CalibratedVendorLibraryMassSpectrum)this.massSpectrum).getSignalUnits();
+				if((null != signalUnits) && (0 < signalUnits.length())) {
+					xAxisTitle = xAxisTitle + ", " + signalUnits;
+				}
+			}
+			this.getAxisSet().getYAxis(0).getTick().setFormat(ValueFormat.getDecimalFormatEnglish("0.0###E00"));
+			this.setAxisTitle(SWT.LEFT, xAxisTitle);
 		}
-	}
-
-	/**
-	 * Creates the primary axes abundance and milliseconds.
-	 */
-	private void createPrimaryAxes() {
-
-		/*
-		 * Main Axes.
-		 */
-		IAxisSet axisSet = getAxisSet();
-		xAxisBottom = axisSet.getXAxis(0);
-		yAxisLeft = axisSet.getYAxis(0);
-		yAxisLeft.getTitle().setText("abundance");
-		//yAxisLeft.getTick().setFormat(ValueFormat.getDecimalFormatEnglish("0.0###"));
-		yAxisLeft.getTick().setFormat(ValueFormat.getDecimalFormatEnglish("0.0###E00"));
-		//
-		xAxisBottom.getTitle().setText("m/z");
-		xAxisBottom.getTick().setFormat(ValueFormat.getDecimalFormatEnglish("0.0###"));
 	}
 }
