@@ -95,6 +95,12 @@ public class DecompositionResultUI extends Composite {
 		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(compositeGraph, SWT.NONE));
 		xyGraph = new XYGraph();
 		xyGraph.setTitle("CMS (Calibrated Mass Spectra)");
+		xyGraph.getPrimaryXAxis().setAutoScale(true);
+		xyGraph.getPrimaryXAxis().setShowMajorGrid(true);
+		xyGraph.getPrimaryYAxis().setAutoScale(true);
+		xyGraph.getPrimaryYAxis().setShowMajorGrid(true);
+		xyGraph.getPrimaryYAxis().setFormatPattern("0.0##E00");
+		xyGraph.getPrimaryYAxis().setAutoScaleThreshold(0);
 		lightweightSystem.setContents(xyGraph);
 	}
 
@@ -192,55 +198,49 @@ public class DecompositionResultUI extends Composite {
 		});
 	}
 
-	private void updateXYGraph(IMassSpectra cmsSpectra) {
+	private void updateXYGraph(IMassSpectra spectra) {
 		int numberOfPoints;
+		String signalUnits;
 
 		System.out.println("Update XYGraph");
 		
 		// create a trace data provider, which will provide the data to the
 		// trace.
 		CircularBufferDataProvider traceDataProvider = new CircularBufferDataProvider(false);
-		numberOfPoints = cmsSpectra.getList().size();
+		numberOfPoints = spectra.getList().size();
 		traceDataProvider.setBufferSize(numberOfPoints);
 		xdata = new double[numberOfPoints];
 		ydata = new double[numberOfPoints];
 		CalibratedVendorMassSpectrum spectrum;
-		for (int i = 1; i <= cmsSpectra.getList().size(); i++) {
-			spectrum = (CalibratedVendorMassSpectrum)cmsSpectra.getMassSpectrum(i);
-			xdata[i-1] = spectrum.getEtimes();
-			ydata[i-1] = spectrum.getTotalSignal();
+		spectrum = (CalibratedVendorMassSpectrum)spectra.getMassSpectrum(1);
+		signalUnits = spectrum.getSignalUnits();
+		for (int i = spectra.getList().size(); i > 0; ) {
+			spectrum = (CalibratedVendorMassSpectrum)spectra.getMassSpectrum(i);
+			i--;
+			xdata[i] = spectrum.getEtimes();
+			ydata[i] = spectrum.getTotalSignal();
+			// am I being too clever?
 		}
 		traceDataProvider.setCurrentXDataArray(xdata);
 		traceDataProvider.setCurrentYDataArray(ydata);
-		
-		//traceDataProvider.clearTrace();
-		//traceDataProvider.setCurrentXDataArray(new double[] { 10, 23, 34, 45, 56, 78, 88, 99 });
-		//traceDataProvider.setCurrentYDataArray(new double[] { 11, 44, 55, 45, 88, 98, 52, 23 });
-		
-		//need to figure out where and how to scale the x and y axes
 
 		// create the trace
 		if (null != trace01) {
 			xyGraph.removeTrace(trace01);
 		}
-		trace01 = new Trace("Trace1-XY Plot", xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), traceDataProvider);
+		trace01 = new Trace("sum(Signal)", xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), traceDataProvider);
 
 		// set trace property
-		trace01.setPointStyle(PointStyle.XCROSS);
+		//trace01.setPointStyle(PointStyle.XCROSS);
 		
 		String newTitle = textCmsSpectraPath.getText();
 		int index = newTitle.lastIndexOf(File.separator);
 		if (0 < index)
 			newTitle = newTitle.substring(1+index);
+		xyGraph.getPrimaryXAxis().setTitle("Elapsed Time, s");
+		xyGraph.getPrimaryYAxis().setTitle("Signal, " + signalUnits);
 		xyGraph.setTitle(newTitle);
 		
-		Axis primaryYAxis = xyGraph.getPrimaryYAxis();
-		//primaryYAxis.format("0.0###E00", false);
-		
-		//xyGraph.getYAxisList().get(0).getTickLabelSide().Primary.values()..  cmsSpectra
-		//.get getAxisSet().getYAxis(0).getTick().setFormat(ValueFormat.getDecimalFormatEnglish("0.0###E00"));
-
-
 		// add the trace to xyGraph
 		xyGraph.addTrace(trace01);
 
