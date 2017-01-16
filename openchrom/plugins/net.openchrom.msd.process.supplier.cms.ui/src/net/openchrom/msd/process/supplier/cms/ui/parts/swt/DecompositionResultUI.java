@@ -15,8 +15,10 @@ import java.io.File;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -24,7 +26,12 @@ import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
+import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataProvider;
+import org.eclipse.nebula.visualization.xygraph.figures.Axis;
+import org.eclipse.nebula.visualization.xygraph.figures.Trace;
+import org.eclipse.nebula.visualization.xygraph.figures.Trace.PointStyle;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
+import org.eclipse.nebula.visualization.xygraph.linearscale.LinearScaleTickLabels;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -39,6 +46,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
+import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
 import net.openchrom.msd.process.supplier.cms.ui.preferences.PreferencePage;
 
@@ -47,6 +55,9 @@ public class DecompositionResultUI extends Composite {
 	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
 	private Text textCmsSpectraPath;
 	private XYGraph xyGraph;
+	private double xdata[];
+	private double ydata[];
+	private Trace trace01;
 
 	public DecompositionResultUI(Composite parent, int style) {
 		super(parent, style);
@@ -100,7 +111,7 @@ public class DecompositionResultUI extends Composite {
 
 				String pathCmsSpectra = PreferenceSupplier.getPathCmsSpectra();
 				FileDialog fileDialog = new FileDialog(Display.getCurrent().getActiveShell(), SWT.READ_ONLY);
-				fileDialog.setText("Select the CMS spectra.");
+				fileDialog.setText("Select the CMS spectra file.");
 				fileDialog.setFilterExtensions(new String[]{"*.cms", "*.CMS"});
 				fileDialog.setFilterNames(new String[]{"Calibrated Spectra (*.cms)", "Calibrated Spectra (*.CMS)"});
 				fileDialog.setFilterPath(pathCmsSpectra);
@@ -128,7 +139,7 @@ public class DecompositionResultUI extends Composite {
 
 		Button buttonLoad = new Button(parent, SWT.NONE);
 		buttonLoad.setText("");
-		buttonLoad.setToolTipText("Load the *.cms spectra.");
+		buttonLoad.setToolTipText("Decompose the selected CMS spectra.");
 		buttonLoad.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
 		buttonLoad.addSelectionListener(new SelectionAdapter() {
 
@@ -140,7 +151,12 @@ public class DecompositionResultUI extends Composite {
 					if(file.exists()) {
 						MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 						IMassSpectra cmsSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
-						updateXYGraph(cmsSpectra);
+						IScanMSD spectrum = cmsSpectra.getMassSpectrum(1);
+						if ((null != spectrum) && !(spectrum instanceof CalibratedVendorMassSpectrum)) {
+							MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "This is a CMS library file.");
+						} else {
+							updateXYGraph(cmsSpectra);
+						}
 					} else {
 						MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "Please select a *.cms file first.");
 					}
@@ -177,7 +193,57 @@ public class DecompositionResultUI extends Composite {
 	}
 
 	private void updateXYGraph(IMassSpectra cmsSpectra) {
+		int numberOfPoints;
 
 		System.out.println("Update XYGraph");
+		
+		// create a trace data provider, which will provide the data to the
+		// trace.
+		CircularBufferDataProvider traceDataProvider = new CircularBufferDataProvider(false);
+		numberOfPoints = cmsSpectra.getList().size();
+		traceDataProvider.setBufferSize(numberOfPoints);
+		xdata = new double[numberOfPoints];
+		ydata = new double[numberOfPoints];
+		CalibratedVendorMassSpectrum spectrum;
+		for (int i = 1; i <= cmsSpectra.getList().size(); i++) {
+			spectrum = (CalibratedVendorMassSpectrum)cmsSpectra.getMassSpectrum(i);
+			xdata[i-1] = spectrum.getEtimes();
+			ydata[i-1] = spectrum.getTotalSignal();
+		}
+		traceDataProvider.setCurrentXDataArray(xdata);
+		traceDataProvider.setCurrentYDataArray(ydata);
+		
+		//traceDataProvider.clearTrace();
+		//traceDataProvider.setCurrentXDataArray(new double[] { 10, 23, 34, 45, 56, 78, 88, 99 });
+		//traceDataProvider.setCurrentYDataArray(new double[] { 11, 44, 55, 45, 88, 98, 52, 23 });
+		
+		//need to figure out where and how to scale the x and y axes
+
+		// create the trace
+		if (null != trace01) {
+			xyGraph.removeTrace(trace01);
+		}
+		trace01 = new Trace("Trace1-XY Plot", xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), traceDataProvider);
+
+		// set trace property
+		trace01.setPointStyle(PointStyle.XCROSS);
+		
+		String newTitle = textCmsSpectraPath.getText();
+		int index = newTitle.lastIndexOf(File.separator);
+		if (0 < index)
+			newTitle = newTitle.substring(1+index);
+		xyGraph.setTitle(newTitle);
+		
+		Axis primaryYAxis = xyGraph.getPrimaryYAxis();
+		//primaryYAxis.format("0.0###E00", false);
+		
+		//xyGraph.getYAxisList().get(0).getTickLabelSide().Primary.values()..  cmsSpectra
+		//.get getAxisSet().getYAxis(0).getTick().setFormat(ValueFormat.getDecimalFormatEnglish("0.0###E00"));
+
+
+		// add the trace to xyGraph
+		xyGraph.addTrace(trace01);
+
+		//Display display = Display.getDefault();
 	}
 }
