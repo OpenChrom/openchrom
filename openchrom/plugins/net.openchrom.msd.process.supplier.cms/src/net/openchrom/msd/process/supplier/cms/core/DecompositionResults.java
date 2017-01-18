@@ -21,49 +21,51 @@ import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpect
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
 
 public class DecompositionResults {
+
 	private static final Logger logger = Logger.getLogger(MassSpectraDecomposition.class);
 	private ArrayList<DecompositionResult> results;
-	
+
 	DecompositionResults() {
 		results = new ArrayList<DecompositionResult>();
 	}
-	
+
 	public void addResult(DecompositionResult result) {
+
 		if(null != this.results) {
 			this.results.add(result);
 		}
 	}
-	
+
 	public ArrayList<DecompositionResult> getResults() {
+
 		return results;
 	}
-	
+
 	String getCompositionResultsTable() {
+
 		String ppUnits = "";
 		String columnHeading = "";
 		StringBuilder headingBuilder = new StringBuilder();
 		StringBuilder output = new StringBuilder();
-
 		output.append(String.format("\t\tComponent Partial Pressures Table%n"));
-		for (DecompositionResult result : this.getResults()) {
+		for(DecompositionResult result : this.getResults()) {
 			ppUnits = result.getSourcePressureUnits();
 			// make column heading string for this result
 			headingBuilder.setLength(0);
-			headingBuilder.append(String.format("ETime,s\tPtotal,%s",ppUnits));
-			for (int i = 0; i<result.getNumberOfComponents(); i++) {
-				if (result.isQuantitative(i))
+			headingBuilder.append(String.format("ETime,s\tPtotal,%s", ppUnits));
+			for(int i = 0; i < result.getNumberOfComponents(); i++) {
+				if(result.isQuantitative(i))
 					headingBuilder.append(String.format("\t%s", result.getLibCompName(i)));
 				else
 					headingBuilder.append(String.format("\t%s,uncalibrated", result.getLibCompName(i)));
 			}
 			headingBuilder.append(String.format("%n"));
-			
-			if (!columnHeading.equalsIgnoreCase(headingBuilder.toString())) {
+			if(!columnHeading.equalsIgnoreCase(headingBuilder.toString())) {
 				columnHeading = headingBuilder.toString();
 				output.append(columnHeading);
 			}
 			output.append(String.format("%g\t%g", result.getETimeS(), result.getSourcePressure()));
-			for (int i = 0; i<result.getNumberOfComponents(); i++) {
+			for(int i = 0; i < result.getNumberOfComponents(); i++) {
 				output.append(String.format("\t%g", result.getPartialPressure(i)));
 			}
 			output.append(String.format("%n"));
@@ -72,18 +74,18 @@ public class DecompositionResults {
 	}
 
 	String getResidualSpectraTable() {
+
 		String sigUnits = "";
 		String columHeading = "";
 		StringBuilder headingBuilder = new StringBuilder();
 		StringBuilder output = new StringBuilder();
-
 		output.append(String.format("\t\tResidual Spectrum Table%n"));
-		for (DecompositionResult result : this.getResults()) {
+		for(DecompositionResult result : this.getResults()) {
 			sigUnits = result.getSignalUnits();
 			// make column heading string for this result
 			headingBuilder.setLength(0);
 			headingBuilder.append("ETime,s");
-			for (IIonMeasurement peak : result.getResidualSpectrum().getIonMeasurements()) {
+			for(IIonMeasurement peak : result.getResidualSpectrum().getIonMeasurements()) {
 				if(0 == (peak.getMZ() % 1)) {
 					headingBuilder.append("\t" + (int)peak.getMZ());
 				} else {
@@ -92,13 +94,12 @@ public class DecompositionResults {
 				headingBuilder.append("(" + sigUnits + ")");
 			}
 			headingBuilder.append(String.format("%n"));
-			
-			if (!columHeading.equalsIgnoreCase(headingBuilder.toString())) {
+			if(!columHeading.equalsIgnoreCase(headingBuilder.toString())) {
 				columHeading = headingBuilder.toString();
 				output.append(columHeading);
 			}
 			output.append(String.format("%g", result.getETimeS()));
-			for (IIonMeasurement peak : result.getResidualSpectrum().getIonMeasurements()) {
+			for(IIonMeasurement peak : result.getResidualSpectrum().getIonMeasurements()) {
 				output.append(String.format("\t%g", peak.getSignal()));
 			}
 			output.append(String.format("%n"));

@@ -209,9 +209,7 @@ public class MassSpectraDecomposition {
 					String ppUnits = scanRef.getSourcePressureUnits();
 					double pp = x.get(ii) * libRef.getSourcePressure(ppUnits);
 					double mf = x.get(ii) * libRef.getSourcePressure(ppUnits) / scanRef.getSourcePressure();
-					
 					result.addComponent(x.get(ii), fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
-					
 					System.out.printf("%24s: x[%d]=\t%.13f", fitDataset.getLibCompName(ii), ii, x.get(ii), fitDataset.getScanRef().getSourcePressureUnits());
 					if(fitDataset.canDoQuantitative(ii)) {
 						System.out.printf("\tppress(%6s)=\t%.13f\tmolfrc=\t%.13f%n", scanRef.getSourcePressureUnits(), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());
@@ -286,8 +284,8 @@ public class MassSpectraDecomposition {
 			// System.out.println("\t" + massSpectrumTarget.getLibraryInformation().getName());
 			// }
 		}
-	// print results
-	System.out.println(results.getCompositionResultsTable());
-	System.out.println(results.getResidualSpectraTable());
+		// print results
+		System.out.println(results.getCompositionResultsTable());
+		System.out.println(results.getResidualSpectraTable());
 	}
 }

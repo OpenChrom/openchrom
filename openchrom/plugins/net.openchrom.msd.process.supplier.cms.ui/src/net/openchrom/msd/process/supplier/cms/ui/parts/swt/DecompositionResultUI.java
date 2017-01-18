@@ -158,7 +158,7 @@ public class DecompositionResultUI extends Composite {
 						MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 						IMassSpectra cmsSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
 						IScanMSD spectrum = cmsSpectra.getMassSpectrum(1);
-						if ((null != spectrum) && !(spectrum instanceof CalibratedVendorMassSpectrum)) {
+						if((null != spectrum) && !(spectrum instanceof CalibratedVendorMassSpectrum)) {
 							MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "This is a CMS library file.");
 						} else {
 							updateXYGraph(cmsSpectra);
@@ -199,11 +199,10 @@ public class DecompositionResultUI extends Composite {
 	}
 
 	private void updateXYGraph(IMassSpectra spectra) {
+
 		int numberOfPoints;
 		String signalUnits;
-
 		System.out.println("Update XYGraph");
-		
 		// create a trace data provider, which will provide the data to the
 		// trace.
 		CircularBufferDataProvider traceDataProvider = new CircularBufferDataProvider(false);
@@ -214,7 +213,7 @@ public class DecompositionResultUI extends Composite {
 		CalibratedVendorMassSpectrum spectrum;
 		spectrum = (CalibratedVendorMassSpectrum)spectra.getMassSpectrum(1);
 		signalUnits = spectrum.getSignalUnits();
-		for (int i = spectra.getList().size(); i > 0; ) {
+		for(int i = spectra.getList().size(); i > 0;) {
 			spectrum = (CalibratedVendorMassSpectrum)spectra.getMassSpectrum(i);
 			i--;
 			xdata[i] = spectrum.getEtimes();
@@ -223,27 +222,22 @@ public class DecompositionResultUI extends Composite {
 		}
 		traceDataProvider.setCurrentXDataArray(xdata);
 		traceDataProvider.setCurrentYDataArray(ydata);
-
 		// create the trace
-		if (null != trace01) {
+		if(null != trace01) {
 			xyGraph.removeTrace(trace01);
 		}
 		trace01 = new Trace("sum(Signal)", xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), traceDataProvider);
-
 		// set trace property
-		//trace01.setPointStyle(PointStyle.XCROSS);
-		
+		// trace01.setPointStyle(PointStyle.XCROSS);
 		String newTitle = textCmsSpectraPath.getText();
 		int index = newTitle.lastIndexOf(File.separator);
-		if (0 < index)
-			newTitle = newTitle.substring(1+index);
+		if(0 < index)
+			newTitle = newTitle.substring(1 + index);
 		xyGraph.getPrimaryXAxis().setTitle("Elapsed Time, s");
 		xyGraph.getPrimaryYAxis().setTitle("Signal, " + signalUnits);
 		xyGraph.setTitle(newTitle);
-		
 		// add the trace to xyGraph
 		xyGraph.addTrace(trace01);
-
-		//Display display = Display.getDefault();
+		// Display display = Display.getDefault();
 	}
 }

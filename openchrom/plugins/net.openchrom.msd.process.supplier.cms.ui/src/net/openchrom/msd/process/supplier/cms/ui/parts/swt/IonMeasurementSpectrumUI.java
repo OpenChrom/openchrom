@@ -19,7 +19,6 @@ import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.swt.ui.support.Sign;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.swtchart.IAxisSet;
 import org.swtchart.IBarSeries;
 import org.swtchart.IBarSeries.BarWidthStyle;
 import org.swtchart.ISeries.SeriesType;
@@ -39,7 +38,6 @@ public class IonMeasurementSpectrumUI extends AbstractExtendedMassSpectrumUI {
 
 		if(this.massSpectrum != null) {
 			String xAxisTitle;
-
 			ISeries series = SeriesConverterIonMeasurement.convertNominalIonMeasurement(this.massSpectrum, Sign.POSITIVE);
 			multipleLineSeries.add(series);
 			barSeriesPositive = (IBarSeries)getSeriesSet().createSeries(SeriesType.BAR, series.getId());
@@ -48,12 +46,12 @@ public class IonMeasurementSpectrumUI extends AbstractExtendedMassSpectrumUI {
 			barSeriesPositive.setBarWidthStyle(BarWidthStyle.FIXED);
 			barSeriesPositive.setBarWidth(1);
 			barSeriesPositive.setBarColor(Colors.RED);
-			if (this.massSpectrum instanceof CalibratedVendorMassSpectrum) {
+			if(this.massSpectrum instanceof CalibratedVendorMassSpectrum) {
 				xAxisTitle = "signal";
 			} else {
 				xAxisTitle = "abundance";
 			}
-			if (this.massSpectrum instanceof CalibratedVendorLibraryMassSpectrum) {
+			if(this.massSpectrum instanceof CalibratedVendorLibraryMassSpectrum) {
 				String signalUnits = ((CalibratedVendorLibraryMassSpectrum)this.massSpectrum).getSignalUnits();
 				if((null != signalUnits) && (0 < signalUnits.length())) {
 					xAxisTitle = xAxisTitle + ", " + signalUnits;
