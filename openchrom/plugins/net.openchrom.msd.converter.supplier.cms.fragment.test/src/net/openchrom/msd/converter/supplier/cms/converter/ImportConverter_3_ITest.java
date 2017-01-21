@@ -66,7 +66,7 @@ public class ImportConverter_3_ITest extends TestCase {
 		assertEquals("Argon=0.5, Nitrogen=0.3, Oxygen=0.2, Ethane=0.2, Ethylene=0.2", cvmSpectrum.getScanName());
 		assertEquals("", cvmSpectrum.getLibraryInformation().getCasNumber());
 		//
-		assertEquals(0, cvmSpectrum.getNumberOfIons());
+		assertEquals(15, cvmSpectrum.getNumberOfIons());
 		List<IIonMeasurement> ionMeasurements = cvmSpectrum.getIonMeasurements();
 		assertEquals(15, ionMeasurements.size());
 		//
