@@ -8,7 +8,7 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui.internal.provider;
 
 import java.text.DecimalFormat;
@@ -30,7 +30,7 @@ import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectr
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 
 public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
-	
+
 	private TargetExtendedComparator targetExtendedComparator;
 
 	public CvlmsListLabelProvider() {
@@ -41,13 +41,12 @@ public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
 	public String getColumnText(Object element, int columnIndex) {
 
 		if(element instanceof ICalibratedVendorLibraryMassSpectrum) {
-			
 			return getText((ICalibratedVendorLibraryMassSpectrum)element, columnIndex);
 		} else {
 			return "n.a.";
 		}
 	}
-	
+
 	private String getText(ICalibratedVendorLibraryMassSpectrum massSpectrum, int columnIndex) {
 
 		DecimalFormat decimalFormat = getDecimalFormat();
@@ -103,7 +102,7 @@ public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
 				if(basePeakAbundanceNoPrecision == massSpectrum.getBasePeakAbundance()) {
 					text = Integer.toString(basePeakAbundanceNoPrecision);
 				} else {
-					//text = decimalFormat.format(massSpectrum.getBasePeakAbundance());
+					// text = decimalFormat.format(massSpectrum.getBasePeakAbundance());
 					text = String.format("% .4g", massSpectrum.getBasePeakAbundance());
 				}
 				break;
@@ -121,7 +120,7 @@ public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
 				} else {
 					if(libInfo != null) {
 						int molWeightNoPrecision = (int)libInfo.getMolWeight();
-						if (0 < molWeightNoPrecision) {
+						if(0 < molWeightNoPrecision) {
 							if(molWeightNoPrecision == libInfo.getMolWeight()) {
 								text = Integer.toString(molWeightNoPrecision);
 							} else {
@@ -161,7 +160,7 @@ public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
 				text = "n.v.";
 		}
 		return text;
-	} //whw
+	} // whw
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) {

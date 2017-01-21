@@ -68,7 +68,7 @@ public class IonMeasurementChartPart extends AbstractMassSpectrumSelectionView {
 			} else if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
 				ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
 				ionMeasurementChartUI.update(calibratedVendorLibraryMassSpectrum);
-			}else {
+			} else {
 				ionMeasurementChartUI.update(null);
 			}
 		}

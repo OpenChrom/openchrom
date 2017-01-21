@@ -16,6 +16,7 @@ import java.text.DecimalFormat;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
@@ -23,8 +24,10 @@ import net.openchrom.msd.converter.supplier.cms.model.IonMeasurement;
 
 public class IonMeasurementListLabelProvider extends AbstractChemClipseLabelProvider {
 
+	private DecimalFormat decimalFormatMZ = ValueFormat.getDecimalFormatEnglish("0.0000");
+	private DecimalFormat decimalFormatSignal = ValueFormat.getDecimalFormatEnglish("0.0000E00");
+
 	public IonMeasurementListLabelProvider() {
-		super("0.0###");
 	}
 
 	@Override
@@ -40,36 +43,31 @@ public class IonMeasurementListLabelProvider extends AbstractChemClipseLabelProv
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
 
-		DecimalFormat decimalFormat = getDecimalFormat();
 		String text = "";
 		if(element instanceof IonMeasurement) {
 			IonMeasurement ionMeasurement = (IonMeasurement)element;
-			//String.format("ETime,s\tPtotal,%s",ppUnits)
+			// String.format("ETime,s\tPtotal,%s",ppUnits)
 			switch(columnIndex) {
 				case 0:
-					//decimalFormat.applyPattern("0.0###");
-					//text = decimalFormat.format(ionMeasurement.getMZ());
-					text = String.format("%.4f", ionMeasurement.getMZ());
+					text = decimalFormatMZ.format(ionMeasurement.getMZ());
+					// text = String.format("%.4f", ionMeasurement.getMZ());
 					break;
 				case 1:
-					//decimalFormat.applyPattern("0.0###E00");
-					//text = decimalFormat.format(ionMeasurement.getSignal());
-					text = String.format("% .4g", ionMeasurement.getSignal());
+					text = decimalFormatSignal.format(ionMeasurement.getSignal());
+					// text = String.format("% .4g", ionMeasurement.getSignal());
 					break;
 			}
 		} else if(element instanceof Ion) {
 			Ion ion = (Ion)element;
-			//String.format("ETime,s\tPtotal,%s",ppUnits)
+			// String.format("ETime,s\tPtotal,%s",ppUnits)
 			switch(columnIndex) {
 				case 0:
-					//decimalFormat.applyPattern("0.0###");
-					//text = decimalFormat.format(ionMeasurement.getMZ());
-					text = String.format("%.4f", ion.getIon());
+					text = decimalFormatMZ.format(ion.getIon());
+					// text = String.format("%.4f", ion.getIon());
 					break;
 				case 1:
-					//decimalFormat.applyPattern("0.0###E00");
-					//text = decimalFormat.format(ionMeasurement.getSignal());
-					text = String.format("% .4g", ion.getAbundance());
+					text = decimalFormatSignal.format(ion.getAbundance());
+					// text = String.format("% .4g", ion.getAbundance());
 					break;
 			}
 		}

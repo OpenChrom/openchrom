@@ -45,7 +45,7 @@ public class DecompositionResult {
 		xComp = new ArrayList<Double>();
 		isQuantitative = new ArrayList<Boolean>();
 	}
-	
+
 	public void addComponent(double x, ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum, boolean isQuantitative) {
 
 		if((null != xComp) && (null != libraryComponents)) {
@@ -53,63 +53,59 @@ public class DecompositionResult {
 			libraryComponents.add(libraryMassSpectrum);
 			this.isQuantitative.add(isQuantitative);
 			componentCount++;
-			assert(componentCount == this.xComp.size());
-			assert(componentCount == this.libraryComponents.size());
-			assert(componentCount == this.isQuantitative.size());
+			assert (componentCount == this.xComp.size());
+			assert (componentCount == this.libraryComponents.size());
+			assert (componentCount == this.isQuantitative.size());
 		}
 	}
 
-
 	public double getETimeS() {
-	
+
 		return eTimeS;
 	}
-	
+
 	public String getLibCompName(int i) {
 
 		return libraryComponents.get(i).getLibraryInformation().getName();
 	}
-	
+
 	int getNumberOfComponents() {
+
 		return componentCount;
 	}
-	
+
 	public Double getPartialPressure(int index) {
-	
-		if (isQuantitative.get(index)) {
+
+		if(isQuantitative.get(index)) {
 			return this.xComp.get(index) * this.libraryComponents.get(index).getSourcePressure(this.sourcePressureUnits);
-		} else 
+		} else
 			return 0d;
 	}
 
-	
 	public ICalibratedVendorMassSpectrum getResidualSpectrum() {
-	
+
 		return residualSpectrum;
 	}
 
-	
 	public String getSignalUnits() {
-	
+
 		return signalUnits;
 	}
 
-	
 	public double getSourcePressure() {
-	
+
 		return sourcePressure;
 	}
 
 	public String getSourcePressureUnits() {
-	
+
 		return sourcePressureUnits;
 	}
-	
+
 	public double getSumOfSquaresError() {
 
 		return sumOfSquaresError;
 	}
-
 
 	public double getWeightedSumOfSquaresError() {
 
@@ -117,7 +113,7 @@ public class DecompositionResult {
 	}
 
 	public boolean isQuantitative(int index) {
-	
+
 		return isQuantitative.get(index);
 	}
 

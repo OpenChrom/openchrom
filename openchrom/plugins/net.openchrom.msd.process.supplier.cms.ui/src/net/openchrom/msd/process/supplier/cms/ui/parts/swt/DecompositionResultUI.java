@@ -294,7 +294,7 @@ public class DecompositionResultUI extends Composite {
 				MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 				IMassSpectra cmsSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
 				IScanMSD spectrum = cmsSpectra.getMassSpectrum(1);
-				if ((null != spectrum) && !(spectrum instanceof ICalibratedVendorMassSpectrum)) {
+				if((null != spectrum) && !(spectrum instanceof ICalibratedVendorMassSpectrum)) {
 					MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "This is a CMS library file.");
 				} else {
 					spinnerLowerScanNumber.setMinimum(1);
@@ -302,7 +302,7 @@ public class DecompositionResultUI extends Composite {
 				    spinnerLowerScanNumber.setSelection(1);
 				    //spinnerLowerScanNumber.layout();
 				    //compositeLowerRangeSelect.layout();
-				    if (0d <= ((ICalibratedVendorMassSpectrum)spectrum).getEtimes()) {
+				    if(0d <= ((ICalibratedVendorMassSpectrum)spectrum).getEtimes()) {
 					    textLowerETimes.setText("testing textLowerETimes");
 				    }
 				    else
@@ -313,7 +313,7 @@ public class DecompositionResultUI extends Composite {
 					spinnerUpperScanNumber.setSelection(cmsSpectra.getList().size());
 					//spinnerUpperScanNumber.layout();
 				    //compositeUpperRangeSelect.layout();
-				    if (0d <= ((ICalibratedVendorMassSpectrum)spectrum).getEtimes()) {
+				    if(0d <= ((ICalibratedVendorMassSpectrum)spectrum).getEtimes()) {
 					    textUpperETimes.setText("testing textUpperETimes");
 				    }
 				    else
@@ -351,7 +351,7 @@ public class DecompositionResultUI extends Composite {
 						MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 						IMassSpectra cmsSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
 						IScanMSD spectrum = cmsSpectra.getMassSpectrum(1);
-						if ((null != spectrum) && !(spectrum instanceof ICalibratedVendorMassSpectrum)) {
+						if((null != spectrum) && !(spectrum instanceof ICalibratedVendorMassSpectrum)) {
 							MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "This is a CMS library file.");
 						} else {
 							updateXYGraph(cmsSpectra);
@@ -395,9 +395,7 @@ public class DecompositionResultUI extends Composite {
 		int numberOfPoints;
 		String signalUnits;
 		ICalibratedVendorMassSpectrum spectrum;
-
 		System.out.println("Update XYGraph");
-		
 		// create a trace data provider, which will provide the data to the
 		// trace.
 		CircularBufferDataProvider traceDataProvider = new CircularBufferDataProvider(false);
@@ -407,12 +405,12 @@ public class DecompositionResultUI extends Composite {
 		ydata = new double[numberOfPoints];
 		spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(1);
 		signalUnits = spectrum.getSignalUnits();
-		if (0d <= spectrum.getEtimes())
-			hasETimes = true;
 		hasETimes = false;
+		if(0d <= spectrum.getEtimes())
+			hasETimes = true;
 		for (int i = spectra.getList().size(); i > 0; ) {
 			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(i);
-			if (!hasETimes)
+			if(!hasETimes)
 				xdata[--i] = (double)i;
 			else {
 				--i;
@@ -423,27 +421,24 @@ public class DecompositionResultUI extends Composite {
 		}
 		traceDataProvider.setCurrentXDataArray(xdata);
 		traceDataProvider.setCurrentYDataArray(ydata);
-
 		// create the trace
-		if (null != trace01) {
+		if(null != trace01) {
 			xyGraph.removeTrace(trace01);
 		}
 		trace01 = new Trace("sum(Signal)", xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), traceDataProvider);
-
 		// set trace property
-		//trace01.setPointStyle(PointStyle.XCROSS);
-		
+		// trace01.setPointStyle(PointStyle.XCROSS);
 		String newTitle = textCmsSpectraPath.getText();
 		int index = newTitle.lastIndexOf(File.separator);
-		if (0 < index)
+		if(0 < index)
 			newTitle = newTitle.substring(1+index);
-		if (hasETimes)
+		if(hasETimes)
 			xyGraph.getPrimaryXAxis().setTitle("Elapsed Time, s");
 		else
 			xyGraph.getPrimaryXAxis().setTitle("Scan Number");
 		xyGraph.getPrimaryYAxis().setTitle("Signal, " + signalUnits);
 		xyGraph.setTitle(newTitle);
-		if (hasETimes) {
+		if(hasETimes) {
 			double xygraphMinETimes, xygraphMaxETimes;
 			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(spinnerLowerScanNumber.getSelection());
 			xygraphMinETimes = spectrum.getEtimes();
@@ -458,7 +453,6 @@ public class DecompositionResultUI extends Composite {
 		
 		// add the trace to xyGraph
 		xyGraph.addTrace(trace01);
-
-		//Display display = Display.getDefault();
+		// Display display = Display.getDefault();
 	}
 }

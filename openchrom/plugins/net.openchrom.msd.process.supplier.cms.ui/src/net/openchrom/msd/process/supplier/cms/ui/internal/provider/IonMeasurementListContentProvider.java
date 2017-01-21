@@ -43,9 +43,9 @@ public class IonMeasurementListContentProvider implements IStructuredContentProv
 
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+
 		Object ob;
 		String column1Header;
-		
 		if(newInput instanceof CalibratedVendorMassSpectrum) {
 			column1Header = "signal";
 		} else {
