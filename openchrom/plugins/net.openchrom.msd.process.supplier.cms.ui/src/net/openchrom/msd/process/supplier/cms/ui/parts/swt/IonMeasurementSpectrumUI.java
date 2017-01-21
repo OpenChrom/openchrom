@@ -38,7 +38,7 @@ public class IonMeasurementSpectrumUI extends AbstractExtendedMassSpectrumUI {
 	public void setViewSeries() {
 
 		if(this.massSpectrum != null) {
-			String xAxisTitle;
+			String yAxisTitle;
 
 			ISeries series = SeriesConverterIonMeasurement.convertNominalIonMeasurement(this.massSpectrum, Sign.POSITIVE);
 			multipleLineSeries.add(series);
@@ -49,18 +49,18 @@ public class IonMeasurementSpectrumUI extends AbstractExtendedMassSpectrumUI {
 			barSeriesPositive.setBarWidth(1);
 			barSeriesPositive.setBarColor(Colors.RED);
 			if (this.massSpectrum instanceof CalibratedVendorMassSpectrum) {
-				xAxisTitle = "signal";
+				yAxisTitle = "signal";
 			} else {
-				xAxisTitle = "abundance";
+				yAxisTitle = "abundance";
 			}
 			if (this.massSpectrum instanceof CalibratedVendorLibraryMassSpectrum) {
 				String signalUnits = ((CalibratedVendorLibraryMassSpectrum)this.massSpectrum).getSignalUnits();
 				if((null != signalUnits) && (0 < signalUnits.length())) {
-					xAxisTitle = xAxisTitle + ", " + signalUnits;
+					yAxisTitle = yAxisTitle + ", " + signalUnits;
 				}
 			}
 			this.getAxisSet().getYAxis(0).getTick().setFormat(ValueFormat.getDecimalFormatEnglish("0.0###E00"));
-			this.setAxisTitle(SWT.LEFT, xAxisTitle);
+			this.setAxisTitle(SWT.LEFT, yAxisTitle);
 		}
 	}
 }
