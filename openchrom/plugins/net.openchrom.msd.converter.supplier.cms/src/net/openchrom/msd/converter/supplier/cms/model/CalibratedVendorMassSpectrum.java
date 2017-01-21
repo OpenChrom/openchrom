@@ -172,7 +172,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 
 	public float getSumSignal() {
 
-		if(sumSignalIsValid) 
+		if(sumSignalIsValid)
 			return sumSignal;
 		sumSignal = 0;
 		for(IIonMeasurement peak : ionMeasurements) {
