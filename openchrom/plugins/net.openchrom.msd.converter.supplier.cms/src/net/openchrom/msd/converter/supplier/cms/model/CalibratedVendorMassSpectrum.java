@@ -298,8 +298,60 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	/*
+	 * Override methods from class CalibratedVendorLibraryMassSpectrum that can be implemented without using Class IIon
+	 */
+
+	@Override
+	public boolean hasIons() {
+
+		if(ionMeasurements.size() == 0) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public double getBasePeak() {
+
+		if(hasIons()) {
+			if(!minMaxSignalIsValid) {
+				updateSignalLimits();
+			}
+			return baseMZ;
+		} else {
+			return 0.0f;
+		}
+	}
+
+	@Override
+	public float getBasePeakAbundance() {
+
+		if(hasIons()) {
+			if(!minMaxSignalIsValid) {
+				updateSignalLimits();
+			}
+			return maxSignal;
+		} else {
+			return 0.0f;
+		}
+	}
+
+	@Override
+	public float getTotalSignal() {
+
+		return this.getSumSignal();
+	}
+
+	@Override
+	public int getNumberOfIons() {
+
+		return ionMeasurements.size();
+	}
+
+	/*
 	 * override methods from super that are not used (there are lots of them)
 	 */
+	
 	@Override
 	public short getMassSpectrometer() {
 
@@ -356,32 +408,6 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	public IExtractedIonSignal getExtractedIonSignal(double startIon, double stopIon) {
 
 		return null;
-	}
-
-	@Override
-	public double getBasePeak() {
-
-		if(hasIons()) {
-			if(!minMaxSignalIsValid) {
-				updateSignalLimits();
-			}
-			return baseMZ;
-		} else {
-			return 0.0f;
-		}
-	}
-
-	@Override
-	public float getBasePeakAbundance() {
-
-		if(hasIons()) {
-			if(!minMaxSignalIsValid) {
-				updateSignalLimits();
-			}
-			return maxSignal;
-		} else {
-			return 0.0f;
-		}
 	}
 
 	@Override
@@ -495,15 +521,6 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	public IScanMSD getMassSpectrum(IMarkedIons excludedIons) {
 
 		return null;
-	}
-
-	@Override
-	public boolean hasIons() {
-
-		if(ionMeasurements.size() == 0) {
-			return false;
-		}
-		return true;
 	}
 
 	@Override
@@ -623,12 +640,6 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	@Override
-	public float getTotalSignal() {
-
-		return this.getSumSignal();
-	}
-
-	@Override
 	public int getTimeSegmentId() {
 
 		return 0;
@@ -736,12 +747,6 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	public List<IIon> getIons() {
 
 		return null;
-	}
-
-	@Override
-	public int getNumberOfIons() {
-
-		return ionMeasurements.size();
 	}
 
 	// @Override
