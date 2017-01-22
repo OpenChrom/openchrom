@@ -174,6 +174,13 @@
               <version>56.1.0.v201601250100</version>
             </restrictTo>
             </filter>
+            <filter>
+            <type>eclipse-plugin</type>
+            <id>org.eclipse.ecf.filetransfer</id>
+            <restrictTo>
+              <version>5.0.0.v20160817-1024</version>
+            </restrictTo>
+            </filter>
           </filters>
           <environments>
             <environment>
