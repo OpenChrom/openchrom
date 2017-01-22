@@ -178,7 +178,7 @@
             <type>eclipse-plugin</type>
             <id>org.eclipse.ecf.filetransfer</id>
             <restrictTo>
-              <version>5.0.0.v20160817-1024</version>
+              <version>5.0.0.v20160823-2221</version>
             </restrictTo>
             </filter>
           </filters>
