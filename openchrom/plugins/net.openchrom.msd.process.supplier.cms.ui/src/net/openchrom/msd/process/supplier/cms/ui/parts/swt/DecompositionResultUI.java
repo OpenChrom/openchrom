@@ -96,16 +96,15 @@ public class DecompositionResultUI extends Composite {
 	}
 
 	private void initialize() {
+
 		FormLayout formLayout;
 		FormData formData;
-		
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.NONE);
 		formLayout = new FormLayout();
-        formLayout.marginWidth = 3;
-        formLayout.marginHeight = 3;
+		formLayout.marginWidth = 3;
+		formLayout.marginHeight = 3;
 		composite.setLayout(formLayout);
-		
 		topRowComposite = new Composite(composite, SWT.NONE);
 		GridLayout topRowCompositeGridLayout = new GridLayout(2, false);
 		topRowCompositeGridLayout.marginHeight = 0;
@@ -119,55 +118,54 @@ public class DecompositionResultUI extends Composite {
 		// CMS Path and Buttons
 		textCmsSpectraPath = new Text(topRowComposite, SWT.BORDER);
 		textCmsSpectraPath.setText("");
-		//GridData textCmsSpectraPathGridData = new GridData(GridData.FILL_HORIZONTAL); // not recommended
+		// GridData textCmsSpectraPathGridData = new GridData(GridData.FILL_HORIZONTAL); // not recommended
 		GridData textCmsSpectraPathGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
-		//GridData textCmsSpectraPathGridData = new GridData (SWT.LEFT, SWT.TOP, true, true);
-		//textCmsSpectraPathGridData.horizontalAlignment = SWT.LEFT;
-		//textCmsSpectraPathGridData.grabExcessHorizontalSpace = true;
+		// GridData textCmsSpectraPathGridData = new GridData (SWT.LEFT, SWT.TOP, true, true);
+		// textCmsSpectraPathGridData.horizontalAlignment = SWT.LEFT;
+		// textCmsSpectraPathGridData.grabExcessHorizontalSpace = true;
 		textCmsSpectraPath.setLayoutData(textCmsSpectraPathGridData);
-		//textCmsSpectraPath.setLayoutData(formData);
-		//formData = new FormData();
-		//formData.left = new FormAttachment(0, 0);
-		//formData.top = new FormAttachment(0, 0);
-		//formData.right = new FormAttachment(compositeButtons, 0, SWT.LEFT);
-		//formData.right = new FormAttachment(85, 0);
-		//textCmsSpectraPath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//textCmsSpectraPath.setLayoutData(formData);
+		// textCmsSpectraPath.setLayoutData(formData);
+		// formData = new FormData();
+		// formData.left = new FormAttachment(0, 0);
+		// formData.top = new FormAttachment(0, 0);
+		// formData.right = new FormAttachment(compositeButtons, 0, SWT.LEFT);
+		// formData.right = new FormAttachment(85, 0);
+		// textCmsSpectraPath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		// textCmsSpectraPath.setLayoutData(formData);
 		//
-		//compositeButtons.setLayout(new GridLayout(3, true));
-		//GridData gridDataCompositeButtons = new GridData();
-		//gridDataCompositeButtons.horizontalAlignment = SWT.RIGHT;
+		// compositeButtons.setLayout(new GridLayout(3, true));
+		// GridData gridDataCompositeButtons = new GridData();
+		// gridDataCompositeButtons.horizontalAlignment = SWT.RIGHT;
 		compositeButtons = new Composite(topRowComposite, SWT.NONE);
 		compositeButtons.setLayout(new GridLayout(3, true));
-		GridData gridDataCompositeButtons = new GridData (SWT.RIGHT, SWT.TOP, false, true);
-		//GridData gridDataCompositeButtons = new GridData (GridData.FILL_HORIZONTAL);
-		//GridData gridDataCompositeButtons = new GridData();
-		//gridDataCompositeButtons.horizontalAlignment = SWT.RIGHT;
+		GridData gridDataCompositeButtons = new GridData(SWT.RIGHT, SWT.TOP, false, true);
+		// GridData gridDataCompositeButtons = new GridData (GridData.FILL_HORIZONTAL);
+		// GridData gridDataCompositeButtons = new GridData();
+		// gridDataCompositeButtons.horizontalAlignment = SWT.RIGHT;
 		compositeButtons.setLayoutData(gridDataCompositeButtons);
-		//compositeButtons.setLayout(new FormLayout());
-		//formData = new FormData();
-		//formData.left = new FormAttachment(textCmsSpectraPath);
-		//formData.top = new FormAttachment(0, 0);
-		//formData.right = new FormAttachment(100, 0);
-		//compositeButtons.setLayoutData(formData);
+		// compositeButtons.setLayout(new FormLayout());
+		// formData = new FormData();
+		// formData.left = new FormAttachment(textCmsSpectraPath);
+		// formData.top = new FormAttachment(0, 0);
+		// formData.right = new FormAttachment(100, 0);
+		// compositeButtons.setLayoutData(formData);
 		//
 		addButtonSelect(compositeButtons);
 		addButtonLoad(compositeButtons);
 		addButtonSettings(compositeButtons);
-		//compositeButtons.pack();
-		//textCmsSpectraPath.setLayoutData(formData);
+		// compositeButtons.pack();
+		// textCmsSpectraPath.setLayoutData(formData);
 		//
-		//Composite compositeRangeSelect = new Composite(composite, SWT.NONE);
-		//compositeRangeSelect.setLayout(new GridLayout(1, true));
-		//GridData gridDataRangeSelect = new GridData();
-		//gridDataRangeSelect.horizontalSpan = 2;
-		//compositeRangeSelect.setLayoutData(gridDataRangeSelect);
-		
-		//compositeRangeSelect.setLayout(new RowLayout());
-        //FormLayout formLayoutRangeSelect = new FormLayout();
-        //formLayoutRangeSelect.marginWidth = 3;
-        //formLayoutRangeSelect.marginHeight = 3;
-		//compositeRangeSelect.setLayout(formLayoutRangeSelect);
+		// Composite compositeRangeSelect = new Composite(composite, SWT.NONE);
+		// compositeRangeSelect.setLayout(new GridLayout(1, true));
+		// GridData gridDataRangeSelect = new GridData();
+		// gridDataRangeSelect.horizontalSpan = 2;
+		// compositeRangeSelect.setLayoutData(gridDataRangeSelect);
+		// compositeRangeSelect.setLayout(new RowLayout());
+		// FormLayout formLayoutRangeSelect = new FormLayout();
+		// formLayoutRangeSelect.marginWidth = 3;
+		// formLayoutRangeSelect.marginHeight = 3;
+		// compositeRangeSelect.setLayout(formLayoutRangeSelect);
 		//
 		addSelectLowerSpectrum(composite);
 		addSelectUpperSpectrum(composite);
@@ -175,13 +173,13 @@ public class DecompositionResultUI extends Composite {
 		 * XY Graph
 		 */
 		Composite compositeGraph = new Composite(composite, SWT.NONE);
-		//GridData gridData = new GridData(GridData.FILL_BOTH);
-		///GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		///gridData.horizontalSpan = 2;
-		///compositeGraph.setLayoutData(gridData);
+		// GridData gridData = new GridData(GridData.FILL_BOTH);
+		/// GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		/// gridData.horizontalSpan = 2;
+		/// compositeGraph.setLayoutData(gridData);
 		compositeGraph.setLayout(new FillLayout());
 		formData = new FormData();
-		formData.left = new FormAttachment(0,0);
+		formData.left = new FormAttachment(0, 0);
 		formData.top = new FormAttachment(compositeUpperRangeSelect);
 		formData.right = new FormAttachment(100, 0);
 		formData.bottom = new FormAttachment(100, 0);
@@ -196,13 +194,12 @@ public class DecompositionResultUI extends Composite {
 		xyGraph.getPrimaryYAxis().setShowMajorGrid(true);
 		xyGraph.getPrimaryYAxis().setFormatPattern("0.0##E00");
 		xyGraph.getPrimaryYAxis().setAutoScaleThreshold(0);
-		
 		lightweightSystem.setContents(xyGraph);
-
-		//composite.layout();
+		// composite.layout();
 	}
-	
+
 	private void addSelectLowerSpectrum(Composite parent) {
+
 		compositeLowerRangeSelect = new Composite(parent, SWT.NONE);
 		GridLayout layoutCompositeLowerRangeSelect = new GridLayout(4, false);
 		layoutCompositeLowerRangeSelect.marginHeight = 0;
@@ -225,7 +222,7 @@ public class DecompositionResultUI extends Composite {
 		textLowerETimes.setLayoutData(textLowerETimesGridData);
 		//
 		new Label(compositeLowerRangeSelect, SWT.RIGHT).setText("Scan #:");
-        //
+		//
 		spinnerLowerScanNumber = new Spinner(compositeLowerRangeSelect, SWT.RIGHT | SWT.BORDER | SWT.READ_ONLY);
 		spinnerLowerScanNumber.setMinimum(1);
 		spinnerLowerScanNumber.setMaximum(1);
@@ -259,6 +256,7 @@ public class DecompositionResultUI extends Composite {
 	}
 
 	private void addSelectUpperSpectrum(Composite parent) {
+
 		compositeUpperRangeSelect = new Composite(parent, SWT.NONE);
 		GridLayout layoutCompositeUpperRangeSelect = new GridLayout(4, false);
 		layoutCompositeUpperRangeSelect.marginHeight = 0;
@@ -304,6 +302,7 @@ public class DecompositionResultUI extends Composite {
 	}
 
 	private void addButtonSelect(Composite parent) {
+
 		buttonSelect = new Button(parent, SWT.NONE);
 		buttonSelect.setText("");
 		buttonSelect.setToolTipText("Select the *.cms spectra.");
@@ -334,7 +333,7 @@ public class DecompositionResultUI extends Composite {
 	}
 
 	private void readAndPlotCMSscanFile() {
-		
+
 		try {
 			File file = new File(textCmsSpectraPath.getText().trim());
 			if(file.exists()) {
@@ -387,7 +386,7 @@ public class DecompositionResultUI extends Composite {
 			logger.warn(e1);
 		}
 	}
-	
+
 	private void updateTextETimes(IMassSpectra cmsSpectra) {
 	    if((null != cmsSpectra) && (hasETimes)) {
 	    	int spinnerValue;
@@ -419,6 +418,7 @@ public class DecompositionResultUI extends Composite {
 	}
 
 	private void addButtonLoad(Composite parent) {
+
 		buttonLoad = new Button(parent, SWT.NONE);
 		buttonLoad.setText("");
 		buttonLoad.setToolTipText("Decompose the selected CMS spectra.");
@@ -437,8 +437,9 @@ public class DecompositionResultUI extends Composite {
 			}
 		});
 	}
-	
+
 	private void addButtonSettings(Composite parent) {
+
 		buttonSettings = new Button(parent, SWT.NONE);
 		buttonSettings.setText("");
 		buttonSettings.setToolTipText("Edit the CMS settings.");
@@ -463,6 +464,7 @@ public class DecompositionResultUI extends Composite {
 	}
 
 	private void updateXYGraph(IMassSpectra spectra) {
+
 		int numberOfPoints;
 		String signalUnits;
 		ICalibratedVendorMassSpectrum spectrum;
@@ -480,7 +482,7 @@ public class DecompositionResultUI extends Composite {
 		ydata = new double[numberOfPoints];
 		spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(1);
 		signalUnits = spectrum.getSignalUnits();
-		for (int i = spectra.getList().size(); i > 0; ) {
+		for(int i = spectra.getList().size(); i > 0;) {
 			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(i);
 			if(!hasETimes)
 				xdata[--i] = (double)i;
@@ -503,7 +505,7 @@ public class DecompositionResultUI extends Composite {
 		String newTitle = textCmsSpectraPath.getText();
 		int index = newTitle.lastIndexOf(File.separator);
 		if(0 < index)
-			newTitle = newTitle.substring(1+index);
+			newTitle = newTitle.substring(1 + index);
 		xyGraph.setTitle(newTitle);
 		if(hasETimes)
 			xyGraph.getPrimaryXAxis().setTitle("Elapsed Time, s");
@@ -522,7 +524,6 @@ public class DecompositionResultUI extends Composite {
 			xyGraph.getPrimaryXAxis().setAutoScale(false);
 			xyGraph.getPrimaryXAxis().setRange(new Range(spinnerLowerScanNumber.getSelection(), spinnerUpperScanNumber.getSelection()));
 		}
-		
 		// add the trace to xyGraph
 		xyGraph.addTrace(trace01);
 		// Display display = Display.getDefault();
