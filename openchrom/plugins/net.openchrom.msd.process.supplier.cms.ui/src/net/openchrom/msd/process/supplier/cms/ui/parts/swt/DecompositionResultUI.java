@@ -12,6 +12,7 @@
 package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 
 import java.io.File;
+import java.text.DecimalFormat;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
@@ -52,6 +53,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
@@ -63,6 +65,7 @@ import net.openchrom.msd.process.supplier.cms.ui.preferences.PreferencePage;
 public class DecompositionResultUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
+	// these are the interface objects
 	private Text textCmsSpectraPath;
 	private Button buttonSelect;
 	private Button buttonLoad;
@@ -71,11 +74,18 @@ public class DecompositionResultUI extends Composite {
 	private Composite compositeButtons;
 	private Composite compositeLowerRangeSelect;
 	private Composite compositeUpperRangeSelect;
+	private Label labelTextLowerETimes;
 	private Text textLowerETimes;
 	private Text textUpperETimes;
+	private DecimalFormat decimalFormatTextETimes = ValueFormat.getDecimalFormatEnglish("0.0");
 	private Spinner spinnerLowerScanNumber;
 	private Spinner spinnerUpperScanNumber;
 	private XYGraph xyGraph;
+	// these variables are set when the CMS file is read
+	private IMassSpectra cmsSpectra; // if == null, the other variables are invalid
+	private boolean hasETimes; // set true if all scans have valid ETimes
+	int numberOfScans;
+	
 	private double xdata[];
 	private double ydata[];
 	private Trace trace01;
@@ -194,7 +204,7 @@ public class DecompositionResultUI extends Composite {
 	
 	private void addSelectLowerSpectrum(Composite parent) {
 		compositeLowerRangeSelect = new Composite(parent, SWT.NONE);
-		GridLayout layoutCompositeLowerRangeSelect = new GridLayout(2, false);
+		GridLayout layoutCompositeLowerRangeSelect = new GridLayout(4, false);
 		layoutCompositeLowerRangeSelect.marginHeight = 0;
 		layoutCompositeLowerRangeSelect.marginWidth = 0;
 		compositeLowerRangeSelect.setLayout(layoutCompositeLowerRangeSelect);
@@ -204,15 +214,22 @@ public class DecompositionResultUI extends Composite {
 		formData.right = new FormAttachment(100, 0);
 		compositeLowerRangeSelect.setLayoutData(formData);
 		//
-        textLowerETimes = new Text(compositeLowerRangeSelect, SWT.BORDER);
+		labelTextLowerETimes = new Label(compositeLowerRangeSelect, SWT.RIGHT);
+		labelTextLowerETimes.setText("Start Time, s:");
+		GridData labelGridData = new GridData(SWT.LEFT, SWT.CENTER, false, true);
+		labelTextLowerETimes.setLayoutData(labelGridData);
+		//
+        textLowerETimes = new Text(compositeLowerRangeSelect, SWT.RIGHT | SWT.BORDER);
         textLowerETimes.setText("");
 		GridData textLowerETimesGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
 		textLowerETimes.setLayoutData(textLowerETimesGridData);
+		//
+		new Label(compositeLowerRangeSelect, SWT.RIGHT).setText("Scan #:");
         //
-		spinnerLowerScanNumber = new Spinner(compositeLowerRangeSelect, SWT.READ_ONLY);
-		spinnerLowerScanNumber.setMinimum(0);
-		spinnerLowerScanNumber.setMaximum(0);
-		spinnerLowerScanNumber.setSelection(0);
+		spinnerLowerScanNumber = new Spinner(compositeLowerRangeSelect, SWT.RIGHT | SWT.BORDER | SWT.READ_ONLY);
+		spinnerLowerScanNumber.setMinimum(1);
+		spinnerLowerScanNumber.setMaximum(1);
+		spinnerLowerScanNumber.setSelection(1);
 		spinnerLowerScanNumber.setIncrement(1);
 		spinnerLowerScanNumber.setPageIncrement(10);
 		spinnerLowerScanNumber.setToolTipText("increment or decrement starting scan number");
@@ -222,14 +239,28 @@ public class DecompositionResultUI extends Composite {
 		spinnerLowerScanNumber.addModifyListener(new ModifyListener() {
 	        @Override
 	        public void modifyText(ModifyEvent e) {
-	        	
+		    	if (!(e.widget instanceof Spinner)) return;
+		    	int i = spinnerLowerScanNumber.getSelection();
+		    	int j = spinnerLowerScanNumber.getMinimum();
+		    	if (spinnerLowerScanNumber.getSelection() < spinnerLowerScanNumber.getMinimum()) return;
+		    	i = spinnerLowerScanNumber.getSelection();
+		    	j = spinnerLowerScanNumber.getMaximum();
+		    	if (spinnerLowerScanNumber.getSelection() > spinnerLowerScanNumber.getMaximum()) return;
+		    	i = spinnerUpperScanNumber.getSelection();
+		    	j = spinnerUpperScanNumber.getMinimum();
+		    	if (spinnerUpperScanNumber.getSelection() < spinnerUpperScanNumber.getMinimum()) return;
+		    	i = spinnerUpperScanNumber.getSelection();
+		    	j = spinnerUpperScanNumber.getMaximum();
+		    	if (spinnerUpperScanNumber.getSelection() > spinnerUpperScanNumber.getMaximum()) return;
+				updateTextETimes(cmsSpectra);
+				updateXYGraph(cmsSpectra);
 	        }
 	    });
 	}
 
 	private void addSelectUpperSpectrum(Composite parent) {
 		compositeUpperRangeSelect = new Composite(parent, SWT.NONE);
-		GridLayout layoutCompositeUpperRangeSelect = new GridLayout(2, false);
+		GridLayout layoutCompositeUpperRangeSelect = new GridLayout(4, false);
 		layoutCompositeUpperRangeSelect.marginHeight = 0;
 		layoutCompositeUpperRangeSelect.marginWidth = 0;
 		compositeUpperRangeSelect.setLayout(layoutCompositeUpperRangeSelect);
@@ -239,21 +270,37 @@ public class DecompositionResultUI extends Composite {
 		formData.right = new FormAttachment(100, 0);
 		compositeUpperRangeSelect.setLayoutData(formData);
 		//
-        textUpperETimes = new Text(compositeUpperRangeSelect, SWT.BORDER);
+		Label labelTextUpperETimes = new Label(compositeUpperRangeSelect, SWT.RIGHT);
+		labelTextUpperETimes.setText("End Time, s:");
+		GridData labelGridData = new GridData(SWT.LEFT, SWT.CENTER, false, true);
+		int width = labelTextLowerETimes.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
+		labelGridData.widthHint = width;
+		labelTextUpperETimes.setLayoutData(labelGridData);
+		//
+        textUpperETimes = new Text(compositeUpperRangeSelect, SWT.RIGHT | SWT.BORDER);
         textUpperETimes.setText("");
 		GridData textUpperETimesGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
 		textUpperETimes.setLayoutData(textUpperETimesGridData);
-       //
-		spinnerUpperScanNumber = new Spinner(compositeUpperRangeSelect, SWT.READ_ONLY);
-		spinnerUpperScanNumber.setMinimum(0);
-		spinnerUpperScanNumber.setMaximum(0);
-		spinnerUpperScanNumber.setSelection(0);
+		//
+		new Label(compositeUpperRangeSelect, SWT.NONE).setText("Scan #:");
+		//
+		spinnerUpperScanNumber = new Spinner(compositeUpperRangeSelect, SWT.RIGHT | SWT.BORDER | SWT.READ_ONLY);
+		spinnerUpperScanNumber.setMinimum(1);
+		spinnerUpperScanNumber.setMaximum(1);
+		spinnerUpperScanNumber.setSelection(1);
 		spinnerUpperScanNumber.setIncrement(1);
 		spinnerUpperScanNumber.setPageIncrement(10);
 		spinnerUpperScanNumber.setToolTipText("increment or decrement ending scan number");
 		GridData spinnerUpperScanNumberGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, true);
 		spinnerUpperScanNumberGridData.widthHint = 32;
 		spinnerUpperScanNumber.setLayoutData(spinnerUpperScanNumberGridData);
+		spinnerUpperScanNumber.addModifyListener(new ModifyListener() {
+	        @Override
+	        public void modifyText(ModifyEvent e) {
+				updateTextETimes(cmsSpectra);
+				updateXYGraph(cmsSpectra);
+	        }
+	    });
 	}
 
 	private void addButtonSelect(Composite parent) {
@@ -292,40 +339,76 @@ public class DecompositionResultUI extends Composite {
 			File file = new File(textCmsSpectraPath.getText().trim());
 			if(file.exists()) {
 				MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
-				IMassSpectra cmsSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
-				IScanMSD spectrum = cmsSpectra.getMassSpectrum(1);
-				if((null != spectrum) && !(spectrum instanceof ICalibratedVendorMassSpectrum)) {
-					MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "This is a CMS library file.");
+				cmsSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
+				if (null != cmsSpectra) {
+					hasETimes = true;
+					for (IScanMSD spectrum : cmsSpectra.getList()) {
+						if((null != spectrum) && (spectrum instanceof ICalibratedVendorMassSpectrum)) {
+							if (0 > ((ICalibratedVendorMassSpectrum)spectrum).getEtimes()) {
+								hasETimes = false;
+							}
+						} else {
+							String fileName = textCmsSpectraPath.getText().trim();
+							int index = fileName.lastIndexOf(File.separator);
+							if(0 < index)
+								fileName = fileName.substring(1+index);
+							MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "\"" + fileName + "\" is a CMS library file\nPlease select a CMS scan file");
+							cmsSpectra = null;
+							textCmsSpectraPath.setText("");
+							break; //for
+						}
+					}
 				} else {
+					MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "Please select a *.cms file first.");
+				}
+				if (null != cmsSpectra) {
+					ICalibratedVendorMassSpectrum spectrum = (ICalibratedVendorMassSpectrum)cmsSpectra.getMassSpectrum(1);
 					spinnerLowerScanNumber.setMinimum(1);
 				    spinnerLowerScanNumber.setMaximum(cmsSpectra.getList().size());
+					spinnerLowerScanNumber.setEnabled(false); // does this prevent a ModifyEvent?
 				    spinnerLowerScanNumber.setSelection(1);
-				    //spinnerLowerScanNumber.layout();
-				    //compositeLowerRangeSelect.layout();
-				    if(0d <= ((ICalibratedVendorMassSpectrum)spectrum).getEtimes()) {
-					    textLowerETimes.setText("testing textLowerETimes");
-				    }
-				    else
-					    textLowerETimes.setText("Elapsed Time is not present in this file");
-					spectrum = cmsSpectra.getMassSpectrum(cmsSpectra.getList().size());
+					spinnerLowerScanNumber.setEnabled(true);
+					spectrum = (ICalibratedVendorMassSpectrum)cmsSpectra.getMassSpectrum(cmsSpectra.getList().size());
 					spinnerUpperScanNumber.setMinimum(1);
 					spinnerUpperScanNumber.setMaximum(cmsSpectra.getList().size());
 					spinnerUpperScanNumber.setSelection(cmsSpectra.getList().size());
-					//spinnerUpperScanNumber.layout();
-				    //compositeUpperRangeSelect.layout();
-				    if(0d <= ((ICalibratedVendorMassSpectrum)spectrum).getEtimes()) {
-					    textUpperETimes.setText("testing textUpperETimes");
-				    }
-				    else
-					    textLowerETimes.setText("Elapsed Time is not present in this file");
-					updateXYGraph(cmsSpectra);
+					//updateTextETimes(cmsSpectra);
+					//updateXYGraph(cmsSpectra);
+				} else {
+					spinnerLowerScanNumber.setMinimum(1);
+				    spinnerLowerScanNumber.setMaximum(1);
+				    spinnerLowerScanNumber.setSelection(1);
+					spinnerUpperScanNumber.setMinimum(1);
+					spinnerUpperScanNumber.setMaximum(1);
+					spinnerUpperScanNumber.setSelection(1);
 				}
-			} else {
-				MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "Please select a *.cms file first.");
 			}
 		} catch(Exception e1) {
 			logger.warn(e1);
 		}
+	}
+	
+	private void updateTextETimes(IMassSpectra cmsSpectra) {
+	    if((null != cmsSpectra) && (hasETimes)) {
+	    	int spinnerValue;
+	    	double eTimes;
+	    	ICalibratedVendorMassSpectrum spectrum;
+	    	spinnerValue = spinnerLowerScanNumber.getSelection();
+	    	if (spinnerValue < spinnerLowerScanNumber.getMinimum()) return;
+	    	if (spinnerValue > spinnerLowerScanNumber.getMaximum()) return;
+			spectrum = (ICalibratedVendorMassSpectrum)cmsSpectra.getMassSpectrum(spinnerValue);
+			eTimes = spectrum.getEtimes();
+		    textLowerETimes.setText(decimalFormatTextETimes.format(eTimes));
+	    	spinnerValue = spinnerUpperScanNumber.getSelection();
+	    	if (spinnerValue < spinnerLowerScanNumber.getMinimum()) return;
+	    	if (spinnerValue > spinnerLowerScanNumber.getMaximum()) return;
+			spectrum = (ICalibratedVendorMassSpectrum)cmsSpectra.getMassSpectrum(spinnerValue);
+			eTimes = spectrum.getEtimes();
+		    textUpperETimes.setText(decimalFormatTextETimes.format(eTimes));
+	    } else {
+		    textLowerETimes.setText("Elapsed Time is not present in this file");
+		    textUpperETimes.setText("Elapsed Time is not present in this file");
+	    }		
 	}
 	
 	private void addTextCmsSpectraPath(Composite parent) {
@@ -346,19 +429,8 @@ public class DecompositionResultUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				try {
-					File file = new File(textCmsSpectraPath.getText().trim());
-					if(file.exists()) {
-						MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
-						IMassSpectra cmsSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
-						IScanMSD spectrum = cmsSpectra.getMassSpectrum(1);
-						if((null != spectrum) && !(spectrum instanceof ICalibratedVendorMassSpectrum)) {
-							MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "This is a CMS library file.");
-						} else {
-							updateXYGraph(cmsSpectra);
-						}
-					} else {
-						MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "Please select a *.cms file first.");
-					}
+					updateTextETimes(cmsSpectra);
+					updateXYGraph(cmsSpectra);
 				} catch(Exception e1) {
 					logger.warn(e1);
 				}
@@ -391,13 +463,16 @@ public class DecompositionResultUI extends Composite {
 	}
 
 	private void updateXYGraph(IMassSpectra spectra) {
-		boolean hasETimes = false;
 		int numberOfPoints;
 		String signalUnits;
 		ICalibratedVendorMassSpectrum spectrum;
+		
+		//hasETimes = !hasETimes; // whw, for testing
 		System.out.println("Update XYGraph");
 		// create a trace data provider, which will provide the data to the
 		// trace.
+		if (spinnerLowerScanNumber.getSelection() >= spinnerUpperScanNumber.getSelection()) 
+			return;
 		CircularBufferDataProvider traceDataProvider = new CircularBufferDataProvider(false);
 		numberOfPoints = spectra.getList().size();
 		traceDataProvider.setBufferSize(numberOfPoints);
@@ -405,9 +480,6 @@ public class DecompositionResultUI extends Composite {
 		ydata = new double[numberOfPoints];
 		spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(1);
 		signalUnits = spectrum.getSignalUnits();
-		hasETimes = false;
-		if(0d <= spectrum.getEtimes())
-			hasETimes = true;
 		for (int i = spectra.getList().size(); i > 0; ) {
 			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(i);
 			if(!hasETimes)
@@ -432,12 +504,12 @@ public class DecompositionResultUI extends Composite {
 		int index = newTitle.lastIndexOf(File.separator);
 		if(0 < index)
 			newTitle = newTitle.substring(1+index);
+		xyGraph.setTitle(newTitle);
 		if(hasETimes)
 			xyGraph.getPrimaryXAxis().setTitle("Elapsed Time, s");
 		else
 			xyGraph.getPrimaryXAxis().setTitle("Scan Number");
 		xyGraph.getPrimaryYAxis().setTitle("Signal, " + signalUnits);
-		xyGraph.setTitle(newTitle);
 		if(hasETimes) {
 			double xygraphMinETimes, xygraphMaxETimes;
 			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(spinnerLowerScanNumber.getSelection());
