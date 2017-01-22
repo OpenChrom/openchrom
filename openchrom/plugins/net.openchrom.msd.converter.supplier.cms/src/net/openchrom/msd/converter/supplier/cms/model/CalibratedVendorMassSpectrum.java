@@ -300,7 +300,6 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	/*
 	 * Override methods from class CalibratedVendorLibraryMassSpectrum that can be implemented without using Class IIon
 	 */
-
 	@Override
 	public boolean hasIons() {
 
@@ -351,7 +350,6 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	/*
 	 * override methods from super that are not used (there are lots of them)
 	 */
-	
 	@Override
 	public short getMassSpectrometer() {
 
