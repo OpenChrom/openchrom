@@ -42,7 +42,6 @@
     <neon-repo.url>http://download.eclipse.org/releases/neon</neon-repo.url>
     <neon-updates-repo.url>http://download.eclipse.org/eclipse/updates/4.6</neon-updates-repo.url>
     <jetty-repo.url>http://download.eclipse.org/jetty/updates/jetty-bundles-8.x</jetty-repo.url>
-    <ecf-repo.url>http://download.eclipse.org/rt/ecf/3.13.4/site.p2</ecf-repo.url>
     <orbit-repo.url>http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository</orbit-repo.url>
     <nebula-repo.url>http://download.eclipse.org/technology/nebula/snapshot</nebula-repo.url>
     <pydev-repo.url>http://pydev.org/updates</pydev-repo.url>
@@ -71,11 +70,6 @@
     <repository>
       <id>jetty</id>
       <url>${jetty-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-    <repository>
-      <id>ecf</id>
-      <url>${ecf-repo.url}</url>
       <layout>p2</layout>
     </repository>
     <repository>
