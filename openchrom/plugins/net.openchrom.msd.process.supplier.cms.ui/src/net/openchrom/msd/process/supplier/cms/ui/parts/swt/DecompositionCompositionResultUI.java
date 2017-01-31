@@ -307,7 +307,7 @@ public class DecompositionCompositionResultUI extends Composite {
 		//
 		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(compositeGraph, SWT.NONE));
 		xyGraph = new XYGraph();
-		xyGraph.setTitle("CMS (Calibrated Mass Spectra)");
+		xyGraph.setTitle("Composition");
 		xyGraph.getPrimaryXAxis().setAutoScale(true);
 		xyGraph.getPrimaryXAxis().setShowMajorGrid(true);
 		xyGraph.getPrimaryYAxis().setAutoScale(true);
@@ -419,6 +419,7 @@ public class DecompositionCompositionResultUI extends Composite {
 			if(0 < index) {
 				newTitle = newTitle.substring(1 + index);
 			}
+			newTitle = "Composition: " + newTitle;
 			xyGraph.setTitle(newTitle);
 			if(hasETimes) {
 				xyGraph.getPrimaryXAxis().setTitle("Elapsed Time, s");

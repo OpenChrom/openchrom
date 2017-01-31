@@ -18,10 +18,11 @@
           </children>
         </children>
         <children xsi:type="basic:PartSashContainer" xmi:id="_cGVUoNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.2" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_jSZSsNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.1" containerData="8000">
+          <children xsi:type="basic:PartStack" xmi:id="_jSZSsNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.1" containerData="8000" selectedElement="_gRmlwNRREeaaPePRBRrPAg">
             <children xsi:type="advanced:Placeholder" xmi:id="_gRmlwNRREeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.0" ref="_1x_agNRQEeaaPePRBRrPAg"/>
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_jlspMNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.2" containerData="8000">
+            <children xsi:type="advanced:Placeholder" xmi:id="_U_DhAOe5EeaSD5RKhuQ86A" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.3" ref="_1d61gOe4EeaSD5RKhuQ86A"/>
             <children xsi:type="advanced:Placeholder" xmi:id="_hcnnYNRREeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.1" ref="_aPiVoNRREeaaPePRBRrPAg"/>
           </children>
         </children>
@@ -33,5 +34,6 @@
     <elements xsi:type="basic:Part" xmi:id="_aPiVoNRREeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.part.ionCurrent" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.IonCurrentPart" label="Ion Current" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
     <elements xsi:type="basic:Part" xmi:id="_LWKm0NTDEeaud4VQr1xS9g" elementId="net.openchrom.msd.process.supplier.cms.ui.part.ionMeasurementList" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.IonMeasurementListPart" label="Ion Measurement List" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
     <elements xsi:type="basic:Part" xmi:id="_uBA4cNTHEeaud4VQr1xS9g" elementId="net.openchrom.msd.process.supplier.cms.ui.part.ionMeasurementChart" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.IonMeasurementChartPart" label="Ion Measurement Chart" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
+    <elements xsi:type="basic:Part" xmi:id="_1d61gOe4EeaSD5RKhuQ86A" elementId="net.openchrom.msd.process.supplier.cms.ui.part.decompositioncompositionresult" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.DecompositionCompositionResultPart" label="Decomposition Composition Result" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
   </fragments>
 </fragment:ModelFragments>
