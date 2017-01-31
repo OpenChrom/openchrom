@@ -61,7 +61,7 @@ public class IonMeasurementChartPart extends AbstractMassSpectrumSelectionView {
 	@Override
 	public void update(IScanMSD massSpectrum, boolean forceReload) {
 
-		if(isPartVisible()) {
+		// if(isPartVisible()) { // whw, update even if hidden
 			if(massSpectrum instanceof ICalibratedVendorMassSpectrum) {
 				ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
 				ionMeasurementChartUI.update(calibratedVendorMassSpectrum);
@@ -71,6 +71,6 @@ public class IonMeasurementChartPart extends AbstractMassSpectrumSelectionView {
 			} else {
 				ionMeasurementChartUI.update(null);
 			}
-		}
+		// }
 	}
 }

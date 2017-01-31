@@ -7,21 +7,21 @@
     <elements xsi:type="advanced:Perspective" xmi:id="_PfAAsNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.perspective.cmsworkflow" label="CMS Workflow" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif">
       <children xsi:type="basic:PartSashContainer" xmi:id="_YU3OINRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.0">
         <children xsi:type="basic:PartSashContainer" xmi:id="_bcE2sNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.1" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_dr4WINRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.0" containerData="2500">
+          <children xsi:type="basic:PartStack" xmi:id="_dr4WINRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.0" containerData="3200">
             <children xsi:type="advanced:Placeholder" xmi:id="_RF7QUNRSEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.2" ref="_PhozENRSEeaaPePRBRrPAg"/>
             <children xsi:type="advanced:Placeholder" xmi:id="_fwBYINRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.placeholder.1" ref="_CVfz0NRQEeaaPePRBRrPAg"/>
           </children>
-          <children xsi:type="advanced:Placeholder" xmi:id="_eIG_INRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.placeholder.0" ref="_Dxge0NRQEeaaPePRBRrPAg"/>
+          <children xsi:type="advanced:Placeholder" xmi:id="_eIG_INRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.placeholder.0" containerData="8300" ref="_Dxge0NRQEeaaPePRBRrPAg"/>
+          <children xsi:type="basic:PartStack" xmi:id="_m6z1AOdCEeaD9L2tBPYUFw" elementId="net.openchrom.msd.process.supplier.cms.ui.partstack.1" containerData="4500">
+            <children xsi:type="advanced:Placeholder" xmi:id="_pDhN8OdCEeaD9L2tBPYUFw" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.4" ref="_uBA4cNTHEeaud4VQr1xS9g"/>
+            <children xsi:type="advanced:Placeholder" xmi:id="_sGTCcOdCEeaD9L2tBPYUFw" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.6" ref="_LWKm0NTDEeaud4VQr1xS9g"/>
+          </children>
         </children>
         <children xsi:type="basic:PartSashContainer" xmi:id="_cGVUoNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.2" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_0qkNgNRSEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.partstack.0">
-            <children xsi:type="advanced:Placeholder" xmi:id="_1vToANRSEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.3" ref="_uBA4cNTHEeaud4VQr1xS9g"/>
-          </children>
-          <children xsi:type="basic:PartStack" xmi:id="_jSZSsNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.1">
+          <children xsi:type="basic:PartStack" xmi:id="_jSZSsNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.1" containerData="8000">
             <children xsi:type="advanced:Placeholder" xmi:id="_gRmlwNRREeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.0" ref="_1x_agNRQEeaaPePRBRrPAg"/>
           </children>
-          <children xsi:type="basic:PartStack" xmi:id="_jlspMNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.2">
-            <children xsi:type="advanced:Placeholder" xmi:id="_l9CXwNTDEeaud4VQr1xS9g" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.4" ref="_LWKm0NTDEeaud4VQr1xS9g"/>
+          <children xsi:type="basic:PartStack" xmi:id="_jlspMNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.2" containerData="8000">
             <children xsi:type="advanced:Placeholder" xmi:id="_hcnnYNRREeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.1" ref="_aPiVoNRREeaaPePRBRrPAg"/>
           </children>
         </children>
