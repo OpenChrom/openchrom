@@ -12,11 +12,16 @@
 package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.DecimalFormat;
 
+import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
+import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
@@ -51,6 +56,8 @@ import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
+import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
+import net.openchrom.msd.process.supplier.cms.core.MassSpectraDecomposition;
 import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
 import net.openchrom.msd.process.supplier.cms.ui.preferences.PreferencePage;
 
@@ -58,6 +65,7 @@ public class DecompositionResultUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
 	private IMassSpectra cmsSpectra; // if cmsSpectra == null, then XYGraph data items are invalid
+	private DecompositionResults results = null;
 	private boolean hasETimes; // true if all scans have valid ETimes, set when the CMS file is read
 	private Label labelTextLowerETimes;
 	private String signalUnits;
@@ -72,14 +80,18 @@ public class DecompositionResultUI extends Composite {
 	private Trace traceLeftMarker;
 	private Trace traceRightMarker;
 	private CircularBufferDataProvider dataProviderTraceSignalSum; // XYGraph data item
+	private CircularBufferDataProvider dataProviderTraceResidualSignalSum; // XYGraph data item
 	private CircularBufferDataProvider dataProviderLeftMarker;
 	private CircularBufferDataProvider dataProviderRightMarker;
 	private double xDataTraceLeftMarker[];
 	private double xDataTraceRightMarker[];
 	private double xDataTraceScanSignalSum[]; // XYGraph data item
+	private double xDataTraceResidualSignalSum[]; // XYGraph data item
 	private XYGraph xyGraph;
-	private int xyGraphNumberOfPoints = 0; // if xyNumberOfPoints > 0, then remainder of XYGraph data items are valid
+	private int xyGraphNumberOfScanPoints = 0; // if xyGraphNumberOfScanPoints > 0, then remainder of XYGraph scan data items are valid
+	private int xyGraphNumberOfResidualPoints = 0; // if xyGraphNumberOfResidualPoints > 0, then remainder of XYGraph residual data items are valid
 	private double yDataTraceScanSignalSum[]; // XYGraph data item
+	private double yDataTraceResidualSignalSum[]; // XYGraph data item
 	private double yDataTraceLeftMarker[];
 	private double yDataTraceRightMarker[];
 
@@ -101,13 +113,55 @@ public class DecompositionResultUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				try {
-					updateTextETimes(cmsSpectra);
-					updateXYGraph(cmsSpectra);
+					System.out.println("Decompose button clicked");
+					decomposeSpectra();
 				} catch(Exception e1) {
 					logger.warn(e1);
 				}
 			}
 		});
+	}
+	
+	private void decomposeSpectra() {
+		
+		// check if valid scan spectra are available
+		if (null == cmsSpectra) return;
+		if (null == spinnerLowerScanNumber) return;
+		if (null == spinnerUpperScanNumber) return;
+		if (spinnerLowerScanNumber.getSelection() < 1) return;
+		if (spinnerLowerScanNumber.getSelection() > cmsSpectra.getList().size()) return;
+		if (spinnerUpperScanNumber.getSelection() < 1) return;
+		if (spinnerUpperScanNumber.getSelection() > cmsSpectra.getList().size()) return;
+		if (spinnerUpperScanNumber.getSelection() <= spinnerLowerScanNumber.getSelection()) return;
+		
+		IMassSpectra scanSpectra = new MassSpectra();
+		scanSpectra.setName(cmsSpectra.getName());
+		for (int i = spinnerLowerScanNumber.getSelection(); i <= spinnerUpperScanNumber.getSelection(); i++) {
+			scanSpectra.addMassSpectrum(cmsSpectra.getList().get(i-1)); // make shallow copy of spectra we want
+		}
+		/*
+		 * argon, nitrogen, oxygen, ethane, ethylene
+		 */
+		try {
+			File libraryFile = new File("C:/Users/whitlow/git/cmsworkflow/openchrom/plugins/net.openchrom.msd.process.supplier.cms.fragment.test/testData/files/import/test1/LibrarySpectra.cms");
+			MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
+			IMassSpectra libMassSpectra = massSpectrumReader.read(libraryFile, new NullProgressMonitor());
+			MassSpectraDecomposition decomposer = new MassSpectraDecomposition();
+			results = decomposer.decompose(scanSpectra, libMassSpectra, new NullProgressMonitor());
+		} catch(FileNotFoundException e) {
+			System.out.println(e);
+		} catch(FileIsNotReadableException e) {
+			System.out.println(e);
+		} catch(FileIsEmptyException e) {
+			System.out.println(e);
+		} catch(IOException e) {
+			System.out.println(e);
+		}
+		
+		if(null == results) return;
+		xyGraphNumberOfResidualPoints = 0;
+		updateXYGraph(cmsSpectra);
+		return;
 	}
 
 	private void addButtonSelect(Composite parent) {
@@ -322,7 +376,7 @@ public class DecompositionResultUI extends Composite {
 		try {
 			File file = new File(textCmsSpectraPath.getText().trim());
 			if(file.exists()) {
-				xyGraphNumberOfPoints = 0; // invalidate current XYGraph data
+				xyGraphNumberOfScanPoints = 0; // invalidate current XYGraph data
 				MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 				cmsSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
 				if(null != cmsSpectra) {
@@ -413,7 +467,7 @@ public class DecompositionResultUI extends Composite {
 		if(spinnerLowerScanNumber.getSelection() >= spinnerUpperScanNumber.getSelection()) {
 			return;
 		}
-		if(0 == xyGraphNumberOfPoints) {
+		if(0 == xyGraphNumberOfScanPoints) {
 			String newTitle = textCmsSpectraPath.getText();
 			int index = newTitle.lastIndexOf(File.separator);
 			if(0 < index) {
@@ -429,10 +483,10 @@ public class DecompositionResultUI extends Composite {
 			xyGraph.getPrimaryYAxis().setTitle("Signal, " + signalUnits);
 			// create a trace data provider, which will provide the data to the trace.
 			dataProviderTraceSignalSum = new CircularBufferDataProvider(false);
-			xyGraphNumberOfPoints = spectra.getList().size();
-			dataProviderTraceSignalSum.setBufferSize(xyGraphNumberOfPoints);
-			xDataTraceScanSignalSum = new double[xyGraphNumberOfPoints];
-			yDataTraceScanSignalSum = new double[xyGraphNumberOfPoints];
+			xyGraphNumberOfScanPoints = spectra.getList().size();
+			dataProviderTraceSignalSum.setBufferSize(xyGraphNumberOfScanPoints);
+			xDataTraceScanSignalSum = new double[xyGraphNumberOfScanPoints];
+			yDataTraceScanSignalSum = new double[xyGraphNumberOfScanPoints];
 			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(1);
 			signalUnits = spectrum.getSignalUnits();
 			for(int i = spectra.getList().size(); i > 0;) {
@@ -480,6 +534,33 @@ public class DecompositionResultUI extends Composite {
 			traceRightMarker = new Trace("", xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), dataProviderRightMarker);
 			traceRightMarker.setTraceColor(XYGraphMediaFactory.getInstance().getColor(XYGraphMediaFactory.COLOR_RED));
 			xyGraph.addTrace(traceRightMarker);
+		}
+		if(0 == xyGraphNumberOfResidualPoints) {
+			if (null != results) {
+				dataProviderTraceResidualSignalSum = new CircularBufferDataProvider(false);
+				xyGraphNumberOfResidualPoints = results.getResults().size();
+				dataProviderTraceResidualSignalSum.setBufferSize(xyGraphNumberOfResidualPoints);
+				xDataTraceResidualSignalSum = new double[xyGraphNumberOfResidualPoints];
+				yDataTraceResidualSignalSum = new double[xyGraphNumberOfResidualPoints];
+				for(int i = 0; i < results.getResults().size(); i++) {
+					spectrum = (ICalibratedVendorMassSpectrum)results.getResults().get(i).getResidualSpectrum();
+					if(!hasETimes) {
+						xDataTraceResidualSignalSum[i] = i+1;
+					} else {
+						xDataTraceResidualSignalSum[i] = spectrum.getEtimes();
+					}
+					yDataTraceResidualSignalSum[i] = spectrum.getTotalSignal();
+				}
+				dataProviderTraceResidualSignalSum.setCurrentXDataArray(xDataTraceResidualSignalSum);
+				dataProviderTraceResidualSignalSum.setCurrentYDataArray(yDataTraceResidualSignalSum);
+				if(null != traceResidualSignalSum) {
+					xyGraph.removeTrace(traceResidualSignalSum);
+				}
+				traceResidualSignalSum = new Trace("sum(Residual)", xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), dataProviderTraceResidualSignalSum);
+				traceResidualSignalSum.setTraceColor(XYGraphMediaFactory.getInstance().getColor(XYGraphMediaFactory.COLOR_PURPLE));
+				// traceScanSignalSum.setPointStyle(PointStyle.XCROSS);
+				xyGraph.addTrace(traceResidualSignalSum);
+			}
 		}
 		if(hasETimes) {
 			double xygraphMinETimes, xygraphMaxETimes;

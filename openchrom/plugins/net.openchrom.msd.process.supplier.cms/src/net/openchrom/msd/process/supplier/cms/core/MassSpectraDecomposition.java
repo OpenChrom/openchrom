@@ -35,7 +35,6 @@ import net.openchrom.msd.process.supplier.cms.exceptions.DuplicateCompNameExcept
 import net.openchrom.msd.process.supplier.cms.exceptions.InvalidComponentIndexException;
 import net.openchrom.msd.process.supplier.cms.exceptions.InvalidGetCompCountException;
 import net.openchrom.msd.process.supplier.cms.exceptions.InvalidLibIonCountException;
-import net.openchrom.msd.process.supplier.cms.exceptions.InvalidScanException;
 import net.openchrom.msd.process.supplier.cms.exceptions.InvalidScanIonCountException;
 import net.openchrom.msd.process.supplier.cms.exceptions.LibIonsMatrixSingularException;
 import net.openchrom.msd.process.supplier.cms.exceptions.NoLibIonsException;
@@ -61,7 +60,7 @@ public class MassSpectraDecomposition {
 	private boolean solverRetVal;
 	private ICalibratedVendorMassSpectrum scanResidual; // residual mass spectrum after subtracting calculated ion signals
 
-	public void decompose(IMassSpectra scanSpectra, IMassSpectra libMassSpectra, IProgressMonitor monitor) throws InvalidScanException {
+	public DecompositionResults decompose(IMassSpectra scanSpectra, IMassSpectra libMassSpectra, IProgressMonitor monitor) {
 
 		// parameter scanSpectra has all the scans we wish to decompose, 1 by 1, into components
 		// parameter libMassSpectra has the set of library component cracking patterns we want to fit to
@@ -73,14 +72,12 @@ public class MassSpectraDecomposition {
 		residualSpectra.setName(scanSpectra.getName());
 		for(IScanMSD scan : scanSpectra.getList()) {
 			// iterate over the unknown scan spectra
-			// replace with a noisy spectrum
-			try {
-				IScanMSD newscan = ((ICalibratedVendorMassSpectrum)scan).makeNoisyCopy((long)22345, 0.0);
-				scan = newscan;
-			} catch(CloneNotSupportedException e) {
-				logger.warn(e);
-			}
-			// scan.scale();
+			//try { // replace with a noisy spectrum
+			//	IScanMSD newscan = ((ICalibratedVendorMassSpectrum)scan).makeNoisyCopy((long)22345, 0.0);
+			//	scan = newscan;
+			//} catch(CloneNotSupportedException e) {
+			//	logger.warn(e);
+			//}
 			DecompositionDataset fitDataset = new DecompositionDataset();
 			DecompositionResult result;
 			double libMatrixQuality;
@@ -124,10 +121,10 @@ public class MassSpectraDecomposition {
 				fitDataset.matchIons(massTol);
 			} catch(NoLibIonsException exc) {
 				System.out.println(exc);
-				throw new InvalidScanException(scan);
+				return((DecompositionResults)null);
 			} catch(NoScanIonsException exc) {
 				System.out.println(exc);
-				throw new InvalidScanException(scan);
+				return((DecompositionResults)null);
 			}
 			try {
 				System.out.println("\t# total components in library " + fitDataset.getCompCount());
@@ -226,7 +223,7 @@ public class MassSpectraDecomposition {
 			} // try
 			catch(InvalidGetCompCountException exc) {
 				System.out.println(exc);
-				throw new InvalidScanException(scan);
+				return((DecompositionResults)null);
 			} catch(LibIonsMatrixSingularException exc) {
 				System.out.println(exc);
 				System.out.println("\tTwo or more library components are nearly identical, it is not possible to find a solution");
@@ -287,5 +284,7 @@ public class MassSpectraDecomposition {
 		// print results
 		System.out.println(results.getCompositionResultsTable());
 		System.out.println(results.getResidualSpectraTable());
+		
+		return results;
 	}
 }

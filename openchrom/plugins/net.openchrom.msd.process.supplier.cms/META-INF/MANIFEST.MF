@@ -5,7 +5,8 @@ Bundle-SymbolicName: net.openchrom.msd.process.supplier.cms;singleton:=true
 Bundle-Version: 1.2.0.qualifier
 Bundle-Activator: net.openchrom.msd.process.supplier.cms.Activator
 Bundle-Vendor: OpenChrom
-Export-Package: net.openchrom.msd.process.supplier.cms.preferences
+Export-Package: net.openchrom.msd.process.supplier.cms.core,
+ net.openchrom.msd.process.supplier.cms.preferences
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",
