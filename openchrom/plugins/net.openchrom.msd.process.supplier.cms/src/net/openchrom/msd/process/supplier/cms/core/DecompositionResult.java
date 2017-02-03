@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Walter Whitlock - initial API and implementation
  *******************************************************************************/
@@ -32,7 +32,7 @@ public class DecompositionResult {
 	private String signalUnits;
 	private double eTimeS; // elapsed time in seconds, from scan record
 	private int componentCount;
-	private boolean isCalibrated;  // set false if at least one componen result not quantitative
+	private boolean isCalibrated; // set false if at least one componen result not quantitative
 
 	public DecompositionResult(double ssErr, double wssErr, double sourcePressure, String sourcePressureUnits, double eTimeS, String sigUnits) {
 		sumOfSquaresError = ssErr;
@@ -49,6 +49,7 @@ public class DecompositionResult {
 	}
 
 	public boolean isCalibrated() {
+
 		return isCalibrated;
 	}
 
@@ -58,8 +59,9 @@ public class DecompositionResult {
 			xComp.add(x);
 			libraryComponents.add(libraryMassSpectrum);
 			this.isQuantitative.add(isQuantitative);
-			if (isCalibrated)
+			if(isCalibrated) {
 				isCalibrated = isQuantitative;
+			}
 			componentCount++;
 			assert (componentCount == this.xComp.size());
 			assert (componentCount == this.libraryComponents.size());
@@ -86,8 +88,9 @@ public class DecompositionResult {
 
 		if(isQuantitative.get(index)) {
 			return this.xComp.get(index) * this.libraryComponents.get(index).getSourcePressure(this.sourcePressureUnits);
-		} else
+		} else {
 			return 0d;
+		}
 	}
 
 	public ICalibratedVendorMassSpectrum getResidualSpectrum() {
@@ -127,7 +130,8 @@ public class DecompositionResult {
 
 	public void setResidualSpectrum(ICalibratedVendorMassSpectrum spec) {
 
-		if(null != spec)
+		if(null != spec) {
 			residualSpectrum = spec;
+		}
 	}
 }

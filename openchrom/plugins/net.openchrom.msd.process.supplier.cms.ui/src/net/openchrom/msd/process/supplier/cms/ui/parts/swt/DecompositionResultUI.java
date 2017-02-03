@@ -121,23 +121,38 @@ public class DecompositionResultUI extends Composite {
 			}
 		});
 	}
-	
+
 	private void decomposeSpectra() {
-		
+
 		// check if valid scan spectra are available
-		if (null == cmsSpectra) return;
-		if (null == spinnerLowerScanNumber) return;
-		if (null == spinnerUpperScanNumber) return;
-		if (spinnerLowerScanNumber.getSelection() < 1) return;
-		if (spinnerLowerScanNumber.getSelection() > cmsSpectra.getList().size()) return;
-		if (spinnerUpperScanNumber.getSelection() < 1) return;
-		if (spinnerUpperScanNumber.getSelection() > cmsSpectra.getList().size()) return;
-		if (spinnerUpperScanNumber.getSelection() <= spinnerLowerScanNumber.getSelection()) return;
-		
+		if(null == cmsSpectra) {
+			return;
+		}
+		if(null == spinnerLowerScanNumber) {
+			return;
+		}
+		if(null == spinnerUpperScanNumber) {
+			return;
+		}
+		if(spinnerLowerScanNumber.getSelection() < 1) {
+			return;
+		}
+		if(spinnerLowerScanNumber.getSelection() > cmsSpectra.getList().size()) {
+			return;
+		}
+		if(spinnerUpperScanNumber.getSelection() < 1) {
+			return;
+		}
+		if(spinnerUpperScanNumber.getSelection() > cmsSpectra.getList().size()) {
+			return;
+		}
+		if(spinnerUpperScanNumber.getSelection() <= spinnerLowerScanNumber.getSelection()) {
+			return;
+		}
 		IMassSpectra scanSpectra = new MassSpectra();
 		scanSpectra.setName(cmsSpectra.getName());
-		for (int i = spinnerLowerScanNumber.getSelection(); i <= spinnerUpperScanNumber.getSelection(); i++) {
-			scanSpectra.addMassSpectrum(cmsSpectra.getList().get(i-1)); // make shallow copy of spectra we want
+		for(int i = spinnerLowerScanNumber.getSelection(); i <= spinnerUpperScanNumber.getSelection(); i++) {
+			scanSpectra.addMassSpectrum(cmsSpectra.getList().get(i - 1)); // make shallow copy of spectra we want
 		}
 		/*
 		 * argon, nitrogen, oxygen, ethane, ethylene
@@ -157,8 +172,9 @@ public class DecompositionResultUI extends Composite {
 		} catch(IOException e) {
 			System.out.println(e);
 		}
-		
-		if(null == results) return;
+		if(null == results) {
+			return;
+		}
 		xyGraphNumberOfResidualPoints = 0;
 		updateXYGraph(cmsSpectra);
 		return;
@@ -536,14 +552,14 @@ public class DecompositionResultUI extends Composite {
 			xyGraph.addTrace(traceRightMarker);
 		}
 		if(0 == xyGraphNumberOfResidualPoints) {
-			if (null != results) {
+			if(null != results) {
 				dataProviderTraceResidualSignalSum = new CircularBufferDataProvider(false);
 				xyGraphNumberOfResidualPoints = results.getResults().size();
 				dataProviderTraceResidualSignalSum.setBufferSize(xyGraphNumberOfResidualPoints);
 				xDataTraceResidualSignalSum = new double[xyGraphNumberOfResidualPoints];
 				yDataTraceResidualSignalSum = new double[xyGraphNumberOfResidualPoints];
 				for(int i = 0; i < results.getResults().size(); i++) {
-					spectrum = (ICalibratedVendorMassSpectrum)results.getResults().get(i).getResidualSpectrum();
+					spectrum = results.getResults().get(i).getResidualSpectrum();
 					if(!hasETimes) {
 						xDataTraceResidualSignalSum[i] = spectrum.getSpectrumNumber();
 					} else {
@@ -553,8 +569,8 @@ public class DecompositionResultUI extends Composite {
 				}
 				dataProviderTraceResidualSignalSum.setCurrentXDataArray(xDataTraceResidualSignalSum);
 				dataProviderTraceResidualSignalSum.setCurrentYDataArray(yDataTraceResidualSignalSum);
-				if(null != traceResidualSignalSum) { 
-					xyGraph.removeTrace(traceResidualSignalSum); 
+				if(null != traceResidualSignalSum) {
+					xyGraph.removeTrace(traceResidualSignalSum);
 				}
 				traceResidualSignalSum = new Trace("sum(Residual)", xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), dataProviderTraceResidualSignalSum);
 				traceResidualSignalSum.setTraceColor(XYGraphMediaFactory.getInstance().getColor(XYGraphMediaFactory.COLOR_PURPLE));

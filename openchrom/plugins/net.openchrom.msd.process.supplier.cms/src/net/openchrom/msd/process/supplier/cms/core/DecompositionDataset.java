@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Walter Whitlock - initial API and implementation
  *******************************************************************************/
@@ -38,7 +38,6 @@ public class DecompositionDataset {
 	private int libCompsUsed; // how many components are used in the LS fit, <= libCompsCount
 	private SortedSet<String> compNameSet; // used to help ensure no duplicate library components
 	private boolean matched; // false and then set true after executing matchIons()
-	private boolean canDoQuantitative; // set true if can do quantitative result
 	private ICalibratedVendorMassSpectrum scanRef;
 
 	public DecompositionDataset() {
@@ -53,7 +52,6 @@ public class DecompositionDataset {
 		libCompsUsed = -1;
 		compNameSet = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 		matched = false;
-		canDoQuantitative = false;
 		scanRef = null;
 	}
 
@@ -109,10 +107,12 @@ public class DecompositionDataset {
 
 	public int getUsedScanIonCount() throws InvalidScanIonCountException {
 
-		if(!matched)
+		if(!matched) {
 			throw new InvalidScanIonCountException();
-		if(0 >= scanIonsUsed)
+		}
+		if(0 >= scanIonsUsed) {
 			throw new InvalidScanIonCountException();
+		}
 		return scanIonsUsed;
 	}
 
@@ -185,10 +185,12 @@ public class DecompositionDataset {
 	public void matchIons(double massTol) throws NoLibIonsException, NoScanIonsException {
 
 		int i, j, rowCount;
-		if(0 >= libIonsCount)
+		if(0 >= libIonsCount) {
 			throw new NoLibIonsException(libIonsCount);
-		if(0 >= scanIonsCount)
+		}
+		if(0 >= scanIonsCount) {
 			throw new NoScanIonsException(scanIonsCount);
+		}
 		Arrays.sort(this.libions, 0, libIonsCount);
 		Arrays.sort(this.scanions, 0, scanIonsCount);
 		i = 0; // index into libIOns[]
@@ -248,8 +250,6 @@ public class DecompositionDataset {
 		}
 		libCompsUsed = j;
 		libComps = Arrays.copyOf(libComps, libCompsUsed);
-		// check if can do quantitative result
-		canDoQuantitative = true;
 		// String scanPressureUnits, scanSignalUnits, libSignalUnits;
 		// double libPressure;
 		for(LibComponent libComp : libComps) {
@@ -274,10 +274,12 @@ public class DecompositionDataset {
 
 	public int getScanPeakIndex(int i) throws InvalidScanIonCountException {
 
-		if(!matched)
+		if(!matched) {
 			throw new InvalidScanIonCountException();
-		if((0 > i) || (scanIonsUsed <= i))
+		}
+		if((0 > i) || (scanIonsUsed <= i)) {
 			throw new InvalidScanIonCountException();
+		}
 		return scanions[i].getIonIndex();
 	}
 } // class

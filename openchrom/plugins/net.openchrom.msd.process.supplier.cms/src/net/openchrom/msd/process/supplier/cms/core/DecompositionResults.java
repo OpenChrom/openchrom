@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Walter Whitlock - initial API and implementation
  *******************************************************************************/
@@ -15,9 +15,6 @@ import java.util.ArrayList;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 
-import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
-import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
-import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
 
 public class DecompositionResults {
@@ -39,10 +36,12 @@ public class DecompositionResults {
 
 		if(null != this.results) {
 			this.results.add(result);
-			if (isCalibrated)
+			if(isCalibrated) {
 				isCalibrated = result.isCalibrated();
-			if (hasETimes)
-				hasETimes = ( 0 <= result.getResidualSpectrum().getEtimes());
+			}
+			if(hasETimes) {
+				hasETimes = (0 <= result.getResidualSpectrum().getEtimes());
+			}
 		}
 	}
 
@@ -64,10 +63,11 @@ public class DecompositionResults {
 			headingBuilder.setLength(0);
 			headingBuilder.append(String.format("ETime,s\tPtotal,%s", ppUnits));
 			for(int i = 0; i < result.getNumberOfComponents(); i++) {
-				if(result.isQuantitative(i))
+				if(result.isQuantitative(i)) {
 					headingBuilder.append(String.format("\t%s", result.getLibCompName(i)));
-				else
+				} else {
 					headingBuilder.append(String.format("\t%s,uncalibrated", result.getLibCompName(i)));
+				}
 			}
 			headingBuilder.append(String.format("%n"));
 			if(!columnHeading.equalsIgnoreCase(headingBuilder.toString())) {
@@ -82,13 +82,14 @@ public class DecompositionResults {
 		}
 		return output.toString();
 	}
-	
+
 	public boolean hasETimes() {
+
 		return hasETimes;
 	}
 
-
 	public String getName() {
+
 		return name;
 	}
 
@@ -127,6 +128,7 @@ public class DecompositionResults {
 	}
 
 	public boolean isCalibrated() {
+
 		return isCalibrated;
 	}
 }

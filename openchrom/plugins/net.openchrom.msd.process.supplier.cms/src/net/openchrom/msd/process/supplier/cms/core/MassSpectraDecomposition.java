@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Walter Whitlock - initial API and implementation
  * Philip Wenig - initial API and implementation
@@ -44,8 +44,6 @@ public class MassSpectraDecomposition {
 
 	private static final Logger logger = Logger.getLogger(MassSpectraDecomposition.class);
 	//
-	private static final String MS_IDENTIFIER_ID = "org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.file.massSpectrum";
-	//
 	private DenseMatrix64F y = new DenseMatrix64F(1, 1); // unknown mass spectrum measurements matrix
 	private DenseMatrix64F x = new DenseMatrix64F(1, 1); // matrix containing computed component fractions
 	private DenseMatrix64F A = new DenseMatrix64F(1, 1); // mass spectrum library components matrix
@@ -72,12 +70,12 @@ public class MassSpectraDecomposition {
 		residualSpectra.setName(scanSpectra.getName());
 		for(IScanMSD scan : scanSpectra.getList()) {
 			// iterate over the unknown scan spectra
-			//try { // replace with a noisy spectrum
-			//	IScanMSD newscan = ((ICalibratedVendorMassSpectrum)scan).makeNoisyCopy((long)22345, 0.0);
-			//	scan = newscan;
-			//} catch(CloneNotSupportedException e) {
-			//	logger.warn(e);
-			//}
+			// try { // replace with a noisy spectrum
+			// IScanMSD newscan = ((ICalibratedVendorMassSpectrum)scan).makeNoisyCopy((long)22345, 0.0);
+			// scan = newscan;
+			// } catch(CloneNotSupportedException e) {
+			// logger.warn(e);
+			// }
 			DecompositionDataset fitDataset = new DecompositionDataset();
 			DecompositionResult result;
 			double libMatrixQuality;
@@ -121,10 +119,10 @@ public class MassSpectraDecomposition {
 				fitDataset.matchIons(massTol);
 			} catch(NoLibIonsException exc) {
 				System.out.println(exc);
-				return((DecompositionResults)null);
+				return (null);
 			} catch(NoScanIonsException exc) {
 				System.out.println(exc);
-				return((DecompositionResults)null);
+				return (null);
 			}
 			try {
 				System.out.println("\t# total components in library " + fitDataset.getCompCount());
@@ -184,8 +182,9 @@ public class MassSpectraDecomposition {
 						throw new LibIonsMatrixSingularException("Solver.quality() value of " + libMatrixQuality + " indicates library matrix is nearly singular");
 					}
 					System.out.print("Solver.quality() = " + libMatrixQuality);
-					if(1e-8 > libMatrixQuality)
+					if(1e-8 > libMatrixQuality) {
 						System.out.print(", Library matrix is nearly singular");
+					}
 					System.out.println("");
 				}
 				// solve
@@ -202,28 +201,32 @@ public class MassSpectraDecomposition {
 				for(int ii = 0; ii < x.numRows; ii++) {
 					ICalibratedVendorLibraryMassSpectrum libRef = fitDataset.getLibRef(ii);
 					ICalibratedVendorMassSpectrum scanRef = fitDataset.getScanRef();
-					double ionFraction = x.get(ii);
+					x.get(ii);
 					String ppUnits = scanRef.getSourcePressureUnits();
-					double pp = x.get(ii) * libRef.getSourcePressure(ppUnits);
-					double mf = x.get(ii) * libRef.getSourcePressure(ppUnits) / scanRef.getSourcePressure();
+					x.get(ii);
+					libRef.getSourcePressure(ppUnits);
+					x.get(ii);
+					libRef.getSourcePressure(ppUnits);
+					scanRef.getSourcePressure();
 					result.addComponent(x.get(ii), fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
 					System.out.printf("%24s: x[%d]=\t%.13f", fitDataset.getLibCompName(ii), ii, x.get(ii), fitDataset.getScanRef().getSourcePressureUnits());
 					if(fitDataset.canDoQuantitative(ii)) {
 						System.out.printf("\tppress(%6s)=\t%.13f\tmolfrc=\t%.13f%n", scanRef.getSourcePressureUnits(), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());
-					} else
+					} else {
 						System.out.println(" uncalibrated");
-					// System.out.println("\t" + fitDataset.getLibCompName(ii)
-					// + ":\tx[" + ii + "]=" + x.get(ii)
-					// + ",\tpp(" + fitDataset.getScanRef().getSourcePressureUnits() + ")="
-					// + x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits)
-					// + ",\tmf=" + x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());
+						// System.out.println("\t" + fitDataset.getLibCompName(ii)
+						// + ":\tx[" + ii + "]=" + x.get(ii)
+						// + ",\tpp(" + fitDataset.getScanRef().getSourcePressureUnits() + ")="
+						// + x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits)
+						// + ",\tmf=" + x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());
+					}
 				}
 				System.out.println("");
 				System.out.println("\tSS error = " + ssError + ", weighted SS error = " + wtssError);
 			} // try
 			catch(InvalidGetCompCountException exc) {
 				System.out.println(exc);
-				return((DecompositionResults)null);
+				return (null);
 			} catch(LibIonsMatrixSingularException exc) {
 				System.out.println(exc);
 				System.out.println("\tTwo or more library components are nearly identical, it is not possible to find a solution");
@@ -284,7 +287,6 @@ public class MassSpectraDecomposition {
 		// print results
 		System.out.println(results.getCompositionResultsTable());
 		System.out.println(results.getResidualSpectraTable());
-		
 		return results;
 	}
 }

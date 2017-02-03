@@ -5,59 +5,29 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 
-import java.io.File;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.TreeMap;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
-import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
-import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
-import org.eclipse.chemclipse.support.text.ValueFormat;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.draw2d.LightweightSystem;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.IPreferencePage;
-import org.eclipse.jface.preference.PreferenceDialog;
-import org.eclipse.jface.preference.PreferenceManager;
-import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataProvider;
 import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
-import org.eclipse.nebula.visualization.xygraph.util.XYGraphMediaFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Spinner;
-import org.eclipse.swt.widgets.Text;
 
-import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
-import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResult;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
-import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
-import net.openchrom.msd.process.supplier.cms.ui.preferences.PreferencePage;
 
 public class DecompositionCompositionResultUI extends Composite {
 
@@ -99,76 +69,72 @@ public class DecompositionCompositionResultUI extends Composite {
 	}
 
 	public void updateXYGraph(DecompositionResults results) {
-		if (null != results) {			
+
+		if(null != results) {
 			hasETimes = results.hasETimes();
 			hasETimes = false; // whw, for testing
 			System.out.println("Update Composition XYGraph for " + results.getName());
-			//if(0 == xyGraphNumberOfPoints) {
-				String newTitle = results.getName();
-				String ppUnits = results.getResults().get(0).getSourcePressureUnits();
-				newTitle = "Composition: " + newTitle;
-				xyGraph.setTitle(newTitle);
-				if(hasETimes) {
-					xyGraph.getPrimaryXAxis().setTitle("Elapsed Time, s");
-				} else {
-					xyGraph.getPrimaryXAxis().setTitle("Scan Number");
-				}
-				
-				TreeMap<String, ArrayList<Double> > lookup = new TreeMap<String, ArrayList<Double>>();
-				
-				if (results.isCalibrated()) {
-					xyGraph.getPrimaryYAxis().setTitle("Partial Pressure, " + ppUnits);
-					xyGraphNumberOfPoints = results.getResults().size();
-					
-					double[] xDataTraceComposition = new double[xyGraphNumberOfPoints];
-					String componentName;
-					DecompositionResult result;
-					
-					for(int i = 0; i < xyGraphNumberOfPoints; i++) {
-						result = results.getResults().get(i);
-						for (int j = 0; j < result.getNumberOfComponents(); j++) {
-							componentName = result.getLibCompName(j);
-							if (null == lookup.get(componentName)) {
-								lookup.put(componentName, new ArrayList<Double>());
-							}
-							lookup.get(componentName).add(i, result.getPartialPressure(j));
+			// if(0 == xyGraphNumberOfPoints) {
+			String newTitle = results.getName();
+			String ppUnits = results.getResults().get(0).getSourcePressureUnits();
+			newTitle = "Composition: " + newTitle;
+			xyGraph.setTitle(newTitle);
+			if(hasETimes) {
+				xyGraph.getPrimaryXAxis().setTitle("Elapsed Time, s");
+			} else {
+				xyGraph.getPrimaryXAxis().setTitle("Scan Number");
+			}
+			TreeMap<String, ArrayList<Double>> lookup = new TreeMap<String, ArrayList<Double>>();
+			if(results.isCalibrated()) {
+				xyGraph.getPrimaryYAxis().setTitle("Partial Pressure, " + ppUnits);
+				xyGraphNumberOfPoints = results.getResults().size();
+				double[] xDataTraceComposition = new double[xyGraphNumberOfPoints];
+				String componentName;
+				DecompositionResult result;
+				for(int i = 0; i < xyGraphNumberOfPoints; i++) {
+					result = results.getResults().get(i);
+					for(int j = 0; j < result.getNumberOfComponents(); j++) {
+						componentName = result.getLibCompName(j);
+						if(null == lookup.get(componentName)) {
+							lookup.put(componentName, new ArrayList<Double>());
 						}
-						if (hasETimes) {
-							xDataTraceComposition[i] = result.getETimeS();
-						} else {
-							xDataTraceComposition[i] = result.getResidualSpectrum().getSpectrumNumber();
-						}
+						lookup.get(componentName).add(i, result.getPartialPressure(j));
 					}
-					
-					if (0 >= lookup.size()) return;
-					for (String name : lookup.keySet()) {
-						Double[] tempdata = null;
-						tempdata = lookup.get(name).toArray(tempdata);
-						double[] ydata = new double[tempdata.length];
-						for (int ii = 0; ii < tempdata.length; ii++) 
-							ydata[ii] = tempdata[ii].doubleValue();
-
-						// create a trace data provider, which will provide the data to the trace.
-						CircularBufferDataProvider dataProviderTraceComposition = new CircularBufferDataProvider(false); // XYGraph data item
-						dataProviderTraceComposition.setCurrentXDataArray(xDataTraceComposition);
-						dataProviderTraceComposition.setCurrentYDataArray(ydata);
-						// if(null != traceComposition) {
-						// 	xyGraph.removeTrace(traceComposition);
-						// }
-						// if(null != traceComposition) {
-						// 	xyGraph.removeTrace(traceComposition);
-						// }
-						Trace traceComposition = new Trace(name, xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), dataProviderTraceComposition);
-						// traceComposition.setTraceColor(XYGraphMediaFactory.getInstance().getColor(XYGraphMediaFactory.COLOR_BLUE));
-						// traceScanSignalSum.setPointStyle(PointStyle.XCROSS);
-						xyGraph.addTrace(traceComposition);
+					if(hasETimes) {
+						xDataTraceComposition[i] = result.getETimeS();
+					} else {
+						xDataTraceComposition[i] = result.getResidualSpectrum().getSpectrumNumber();
 					}
 				}
-					
-			//}
+				if(0 >= lookup.size()) {
+					return;
+				}
+				for(String name : lookup.keySet()) {
+					Double[] tempdata = null;
+					tempdata = lookup.get(name).toArray(tempdata);
+					double[] ydata = new double[tempdata.length];
+					for(int ii = 0; ii < tempdata.length; ii++) {
+						ydata[ii] = tempdata[ii].doubleValue();
+					}
+					// create a trace data provider, which will provide the data to the trace.
+					CircularBufferDataProvider dataProviderTraceComposition = new CircularBufferDataProvider(false); // XYGraph data item
+					dataProviderTraceComposition.setCurrentXDataArray(xDataTraceComposition);
+					dataProviderTraceComposition.setCurrentYDataArray(ydata);
+					// if(null != traceComposition) {
+					// xyGraph.removeTrace(traceComposition);
+					// }
+					// if(null != traceComposition) {
+					// xyGraph.removeTrace(traceComposition);
+					// }
+					Trace traceComposition = new Trace(name, xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), dataProviderTraceComposition);
+					// traceComposition.setTraceColor(XYGraphMediaFactory.getInstance().getColor(XYGraphMediaFactory.COLOR_BLUE));
+					// traceScanSignalSum.setPointStyle(PointStyle.XCROSS);
+					xyGraph.addTrace(traceComposition);
+				}
+			}
+			// }
 			// xyGraph.setShowLegend(!xyGraph.isShowLegend());
 			// Display display = Display.getDefault();
 		}
-		
 	}
 }
