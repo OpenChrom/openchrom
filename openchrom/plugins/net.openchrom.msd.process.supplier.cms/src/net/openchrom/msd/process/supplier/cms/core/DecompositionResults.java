@@ -24,15 +24,19 @@ public class DecompositionResults {
 
 	private static final Logger logger = Logger.getLogger(MassSpectraDecomposition.class);
 	private ArrayList<DecompositionResult> results;
+	private boolean isCalibrated; // set false if at least one result in results list is uncalibrated
 
 	DecompositionResults() {
 		results = new ArrayList<DecompositionResult>();
+		isCalibrated = true;
 	}
 
 	public void addResult(DecompositionResult result) {
 
 		if(null != this.results) {
 			this.results.add(result);
+			if (isCalibrated)
+				isCalibrated = result.isCalibrated();
 		}
 	}
 
@@ -71,6 +75,10 @@ public class DecompositionResults {
 			output.append(String.format("%n"));
 		}
 		return output.toString();
+	}
+
+	public boolean isCalibrated() {
+		return isCalibrated;
 	}
 
 	String getResidualSpectraTable() {

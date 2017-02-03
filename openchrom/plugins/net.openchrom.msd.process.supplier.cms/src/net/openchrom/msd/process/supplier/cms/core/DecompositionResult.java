@@ -31,7 +31,8 @@ public class DecompositionResult {
 	private String sourcePressureUnits; // source pressure units, from scan record
 	private String signalUnits;
 	private double eTimeS; // elapsed time in seconds, from scan record
-	int componentCount;
+	private int componentCount;
+	private boolean isCalibrated;  // set false if at least one componen result not quantitative
 
 	public DecompositionResult(double ssErr, double wssErr, double sourcePressure, String sourcePressureUnits, double eTimeS, String sigUnits) {
 		sumOfSquaresError = ssErr;
@@ -43,7 +44,12 @@ public class DecompositionResult {
 		this.signalUnits = sigUnits;
 		libraryComponents = new ArrayList<ICalibratedVendorLibraryMassSpectrum>();
 		xComp = new ArrayList<Double>();
-		isQuantitative = new ArrayList<Boolean>();
+		isQuantitative = new ArrayList<Boolean>(); // it is possible to have a mix of quantitative and non-quantitative component results
+		isCalibrated = true;
+	}
+
+	public boolean isCalibrated() {
+		return isCalibrated;
 	}
 
 	public void addComponent(double x, ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum, boolean isQuantitative) {
@@ -52,6 +58,8 @@ public class DecompositionResult {
 			xComp.add(x);
 			libraryComponents.add(libraryMassSpectrum);
 			this.isQuantitative.add(isQuantitative);
+			if (isCalibrated)
+				isCalibrated = isQuantitative;
 			componentCount++;
 			assert (componentCount == this.xComp.size());
 			assert (componentCount == this.libraryComponents.size());
