@@ -77,7 +77,7 @@ public class DecompositionResult {
 		return libraryComponents.get(i).getLibraryInformation().getName();
 	}
 
-	int getNumberOfComponents() {
+	public int getNumberOfComponents() {
 
 		return componentCount;
 	}

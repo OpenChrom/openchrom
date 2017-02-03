@@ -25,9 +25,11 @@ public class DecompositionResults {
 	private static final Logger logger = Logger.getLogger(MassSpectraDecomposition.class);
 	private ArrayList<DecompositionResult> results;
 	private boolean isCalibrated; // set false if at least one result in results list is uncalibrated
+	private String name;
 
-	DecompositionResults() {
+	DecompositionResults(String nameString) {
 		results = new ArrayList<DecompositionResult>();
+		name = nameString;
 		isCalibrated = true;
 	}
 
@@ -77,8 +79,8 @@ public class DecompositionResults {
 		return output.toString();
 	}
 
-	public boolean isCalibrated() {
-		return isCalibrated;
+	public String getName() {
+		return name;
 	}
 
 	String getResidualSpectraTable() {
@@ -113,5 +115,9 @@ public class DecompositionResults {
 			output.append(String.format("%n"));
 		}
 		return output.toString();
+	}
+
+	public boolean isCalibrated() {
+		return isCalibrated;
 	}
 }

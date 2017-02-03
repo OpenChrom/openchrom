@@ -68,7 +68,7 @@ public class MassSpectraDecomposition {
 		// and then generates a new, smaller, list of library ions (usedLibIons) having mass ~= at least one ion in the unknown mass spectrum
 		double massTol = 0.2;
 		IMassSpectra residualSpectra = new MassSpectra();
-		DecompositionResults results = new DecompositionResults();
+		DecompositionResults results = new DecompositionResults(scanSpectra.getName());
 		residualSpectra.setName(scanSpectra.getName());
 		for(IScanMSD scan : scanSpectra.getList()) {
 			// iterate over the unknown scan spectra
