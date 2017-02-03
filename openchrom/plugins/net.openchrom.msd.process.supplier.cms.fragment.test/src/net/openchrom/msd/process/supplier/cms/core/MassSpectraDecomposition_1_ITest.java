@@ -56,11 +56,11 @@ public class MassSpectraDecomposition_1_ITest extends TestCase {
 		 */
 		File libraryFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_TEST_1_LIBRARY_SPECTRA));
 		IMassSpectra librarySpectra = massSpectrumReader.read(libraryFile, new NullProgressMonitor());
-		try {
+		//try {
 			massSpectraDecomposition.decompose(scanSpectra, librarySpectra, new NullProgressMonitor());
-		} catch(InvalidScanException e) {
-			System.out.println(e);
-		}
+		//} catch(InvalidScanException e) {
+		//	System.out.println(e);
+		//}
 		//
 		assertTrue(true); // ;-)
 	}
