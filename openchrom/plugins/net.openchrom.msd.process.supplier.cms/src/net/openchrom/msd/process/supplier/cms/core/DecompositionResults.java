@@ -25,12 +25,14 @@ public class DecompositionResults {
 	private static final Logger logger = Logger.getLogger(MassSpectraDecomposition.class);
 	private ArrayList<DecompositionResult> results;
 	private boolean isCalibrated; // set false if at least one result in results list is uncalibrated
+	private boolean hasETimes; // set false if at least one result does not have an ETIMES field
 	private String name;
 
 	DecompositionResults(String nameString) {
 		results = new ArrayList<DecompositionResult>();
 		name = nameString;
 		isCalibrated = true;
+		hasETimes = true;
 	}
 
 	public void addResult(DecompositionResult result) {
@@ -39,6 +41,8 @@ public class DecompositionResults {
 			this.results.add(result);
 			if (isCalibrated)
 				isCalibrated = result.isCalibrated();
+			if (hasETimes)
+				hasETimes = ( 0 <= result.getResidualSpectrum().getEtimes());
 		}
 	}
 
@@ -78,6 +82,11 @@ public class DecompositionResults {
 		}
 		return output.toString();
 	}
+	
+	public boolean hasETimes() {
+		return hasETimes;
+	}
+
 
 	public String getName() {
 		return name;

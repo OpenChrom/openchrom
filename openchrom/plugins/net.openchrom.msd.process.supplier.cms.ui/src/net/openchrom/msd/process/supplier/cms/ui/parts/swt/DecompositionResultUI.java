@@ -463,7 +463,7 @@ public class DecompositionResultUI extends Composite {
 
 		ICalibratedVendorMassSpectrum spectrum;
 		// hasETimes = !hasETimes; // whw, for testing
-		System.out.println("Update XYGraph");
+		System.out.println("Update Signal XYGraph for " + spectra.getName());
 		if(spinnerLowerScanNumber.getSelection() >= spinnerUpperScanNumber.getSelection()) {
 			return;
 		}
@@ -491,10 +491,10 @@ public class DecompositionResultUI extends Composite {
 			signalUnits = spectrum.getSignalUnits();
 			for(int i = spectra.getList().size(); i > 0;) {
 				spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(i);
+				--i;
 				if(!hasETimes) {
-					xDataTraceScanSignalSum[--i] = i;
+					xDataTraceScanSignalSum[i] = spectrum.getSpectrumNumber();
 				} else {
-					--i;
 					xDataTraceScanSignalSum[i] = spectrum.getEtimes();
 				}
 				yDataTraceScanSignalSum[i] = spectrum.getTotalSignal();
@@ -545,7 +545,7 @@ public class DecompositionResultUI extends Composite {
 				for(int i = 0; i < results.getResults().size(); i++) {
 					spectrum = (ICalibratedVendorMassSpectrum)results.getResults().get(i).getResidualSpectrum();
 					if(!hasETimes) {
-						xDataTraceResidualSignalSum[i] = i+1;
+						xDataTraceResidualSignalSum[i] = spectrum.getSpectrumNumber();
 					} else {
 						xDataTraceResidualSignalSum[i] = spectrum.getEtimes();
 					}
@@ -553,13 +553,16 @@ public class DecompositionResultUI extends Composite {
 				}
 				dataProviderTraceResidualSignalSum.setCurrentXDataArray(xDataTraceResidualSignalSum);
 				dataProviderTraceResidualSignalSum.setCurrentYDataArray(yDataTraceResidualSignalSum);
-				if(null != traceResidualSignalSum) {
-					xyGraph.removeTrace(traceResidualSignalSum);
+				if(null != traceResidualSignalSum) { 
+					xyGraph.removeTrace(traceResidualSignalSum); 
 				}
 				traceResidualSignalSum = new Trace("sum(Residual)", xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), dataProviderTraceResidualSignalSum);
 				traceResidualSignalSum.setTraceColor(XYGraphMediaFactory.getInstance().getColor(XYGraphMediaFactory.COLOR_PURPLE));
 				// traceScanSignalSum.setPointStyle(PointStyle.XCROSS);
 				xyGraph.addTrace(traceResidualSignalSum);
+				// now I want to call the updateXYGraph(DecompositionResults results) method for the
+				// instance of DecompositionCompositionResultUI in this perspective but I don't know how to do it
+				DecompositionCompositionResultUI.updateXYGraph(results);
 			}
 		}
 		if(hasETimes) {
