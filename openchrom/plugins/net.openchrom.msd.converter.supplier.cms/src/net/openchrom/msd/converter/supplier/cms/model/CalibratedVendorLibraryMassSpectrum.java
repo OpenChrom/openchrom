@@ -32,6 +32,7 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	private static final Logger logger = Logger.getLogger(CalibratedVendorLibraryMassSpectrum.class);
 	//
 	private List<String> comments; // this implementation preserves the order in which the comments were first read
+	private int spectrumNumber; // starts at 1 and increments in the order in which spectra are read
 	private double sourcePressure;
 	private String sourcePressureUnits;
 	private String signalUnits;
@@ -55,6 +56,14 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 		this.eEnergyV = -1d;
 		this.iEnergyV = -1d;
 		this.eTimeS = -1d;
+	}
+	
+	public int getSpectrumNumber() {
+		return spectrumNumber;
+	}
+
+	public void setSpectrumNumber(int spectrumNumber) {
+		this.spectrumNumber = spectrumNumber;
 	}
 
 	@Override
