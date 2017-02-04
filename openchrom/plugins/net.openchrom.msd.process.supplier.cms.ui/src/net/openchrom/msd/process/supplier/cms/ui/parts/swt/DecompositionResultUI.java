@@ -67,47 +67,48 @@ public class DecompositionResultUI extends Composite {
 	private IMassSpectra cmsSpectra; // if cmsSpectra == null, then XYGraph data items are invalid
 	private DecompositionResults results = null;
 	private boolean hasETimes; // true if all scans have valid ETimes, set when the CMS file is read
-	private Label labelTextLowerETimes;
+	private Label labelTextLeftETimes;
 	private String signalUnits;
-	private Spinner spinnerLowerScanNumber;
+	private Spinner spinnerLeftScanNumber;
 	private boolean spinnersIgnoreChange = false;
-	private Spinner spinnerUpperScanNumber;
+	private Spinner spinnerRightScanNumber;
 	private Text textCmsSpectraPath;
-	private Text textLowerETimes;
-	private Text textUpperETimes;
-	private Trace traceScanSignalSum; // XYGraph data item
-	private Trace traceResidualSignalSum; // XYGraph data item
-	private Trace traceLeftMarker;
-	private Trace traceRightMarker;
-	private CircularBufferDataProvider dataProviderTraceSignalSum; // XYGraph data item
-	private CircularBufferDataProvider dataProviderTraceResidualSignalSum; // XYGraph data item
-	private CircularBufferDataProvider dataProviderLeftMarker;
-	private CircularBufferDataProvider dataProviderRightMarker;
-	private double xDataTraceLeftMarker[];
-	private double xDataTraceRightMarker[];
-	private double xDataTraceScanSignalSum[]; // XYGraph data item
-	private double xDataTraceResidualSignalSum[]; // XYGraph data item
-	private XYGraph xyGraph;
-	private int xyGraphNumberOfScanPoints = 0; // if xyGraphNumberOfScanPoints > 0, then remainder of XYGraph scan data items are valid
-	private int xyGraphNumberOfResidualPoints = 0; // if xyGraphNumberOfResidualPoints > 0, then remainder of XYGraph residual data items are valid
-	private double yDataTraceScanSignalSum[]; // XYGraph data item
-	private double yDataTraceResidualSignalSum[]; // XYGraph data item
-	private double yDataTraceLeftMarker[];
-	private double yDataTraceRightMarker[];
+	private Text textLeftETimes;
+	private Text textRightETimes;
+	private Trace traceScanSignalSum; // xyGraphSignal scan data item
+	private Trace traceResidualSignalSum; // xyGraphSignal scan data item
+	private Trace traceLeftMarker; // xyGraphSignal scan data item
+	private Trace traceRightMarker; // xyGraphSignal scan data item
+	private CircularBufferDataProvider dataProviderTraceSignalSum; // xyGraphSignal scan data item
+	private CircularBufferDataProvider dataProviderTraceResidualSignalSum; // xyGraphSignal scan data item
+	private CircularBufferDataProvider dataProviderTraceLeftMarker; // xyGraphSignal scan data item
+	private CircularBufferDataProvider dataProviderTraceRightMarker; // xyGraphSignal scan data item
+	private double xDataTraceLeftMarker[]; // xyGraphSignal scan data item
+	private double xDataTraceRightMarker[]; // xyGraphSignal scan data item
+	private double xDataTraceScanSignalSum[]; // xyGraphSignal scan data item
+	private double xDataTraceResidualSignalSum[]; // xyGraphSignal scan data item
+	private XYGraph xyGraphComposition;
+	private XYGraph xyGraphSignal;
+	private int xyGraphSignalNumberOfScanPoints = 0; // if xyGraphSignalNumberOfScanPoints > 0, then remainder of xyGraphSignal scan data items are valid
+	private int xyGraphSignalNumberOfResidualPoints = 0; // if xyGraphSignalNumberOfResidualPoints > 0, then remainder of xyGraphSignal residual data items are valid
+	private double yDataTraceScanSignalSum[]; // xyGraphSignal scan data item
+	private double yDataTraceResidualSignalSum[]; // xyGraphSignal scan data item
+	private double yDataTraceLeftMarker[]; // xyGraphSignal scan data item
+	private double yDataTraceRightMarker[]; // xyGraphSignal scan data item
 
 	public DecompositionResultUI(Composite parent, int style) {
 		super(parent, style);
 		initialize();
 	}
 
-	private void addButtonLoad(Composite parent) {
+	private void addButtonDecompose(Composite parent) {
 
-		Button buttonLoad;
-		buttonLoad = new Button(parent, SWT.NONE);
-		buttonLoad.setText("");
-		buttonLoad.setToolTipText("Decompose the selected CMS spectra.");
-		buttonLoad.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
-		buttonLoad.addSelectionListener(new SelectionAdapter() {
+		Button buttonDecompose;
+		buttonDecompose = new Button(parent, SWT.NONE);
+		buttonDecompose.setText("");
+		buttonDecompose.setToolTipText("Decompose the selected CMS spectra.");
+		buttonDecompose.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
+		buttonDecompose.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -128,30 +129,30 @@ public class DecompositionResultUI extends Composite {
 		if(null == cmsSpectra) {
 			return;
 		}
-		if(null == spinnerLowerScanNumber) {
+		if(null == spinnerLeftScanNumber) {
 			return;
 		}
-		if(null == spinnerUpperScanNumber) {
+		if(null == spinnerRightScanNumber) {
 			return;
 		}
-		if(spinnerLowerScanNumber.getSelection() < 1) {
+		if(spinnerLeftScanNumber.getSelection() < 1) {
 			return;
 		}
-		if(spinnerLowerScanNumber.getSelection() > cmsSpectra.getList().size()) {
+		if(spinnerLeftScanNumber.getSelection() > cmsSpectra.getList().size()) {
 			return;
 		}
-		if(spinnerUpperScanNumber.getSelection() < 1) {
+		if(spinnerRightScanNumber.getSelection() < 1) {
 			return;
 		}
-		if(spinnerUpperScanNumber.getSelection() > cmsSpectra.getList().size()) {
+		if(spinnerRightScanNumber.getSelection() > cmsSpectra.getList().size()) {
 			return;
 		}
-		if(spinnerUpperScanNumber.getSelection() <= spinnerLowerScanNumber.getSelection()) {
+		if(spinnerRightScanNumber.getSelection() <= spinnerLeftScanNumber.getSelection()) {
 			return;
 		}
 		IMassSpectra scanSpectra = new MassSpectra();
 		scanSpectra.setName(cmsSpectra.getName());
-		for(int i = spinnerLowerScanNumber.getSelection(); i <= spinnerUpperScanNumber.getSelection(); i++) {
+		for(int i = spinnerLeftScanNumber.getSelection(); i <= spinnerRightScanNumber.getSelection(); i++) {
 			scanSpectra.addMassSpectrum(cmsSpectra.getList().get(i - 1)); // make shallow copy of spectra we want
 		}
 		/*
@@ -175,7 +176,7 @@ public class DecompositionResultUI extends Composite {
 		if(null == results) {
 			return;
 		}
-		xyGraphNumberOfResidualPoints = 0;
+		xyGraphSignalNumberOfResidualPoints = 0;
 		updateXYGraph(cmsSpectra);
 		return;
 	}
@@ -238,39 +239,39 @@ public class DecompositionResultUI extends Composite {
 		});
 	}
 
-	private void addSelectLowerSpectrum(Composite parent) {
+	private void addSelectLeftSpectrum(Composite parent) {
 
-		Composite compositeLowerRangeSelect = new Composite(parent, SWT.NONE);
-		GridLayout layoutCompositeLowerRangeSelect = new GridLayout(4, false);
-		layoutCompositeLowerRangeSelect.marginHeight = 0;
-		layoutCompositeLowerRangeSelect.marginWidth = 0;
-		compositeLowerRangeSelect.setLayout(layoutCompositeLowerRangeSelect);
-		GridData compositeLowerRangeSelectGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
-		compositeLowerRangeSelect.setLayoutData(compositeLowerRangeSelectGridData);
+		Composite compositeLeftRangeSelect = new Composite(parent, SWT.NONE);
+		GridLayout layoutCompositeLeftRangeSelect = new GridLayout(4, false);
+		layoutCompositeLeftRangeSelect.marginHeight = 0;
+		layoutCompositeLeftRangeSelect.marginWidth = 0;
+		compositeLeftRangeSelect.setLayout(layoutCompositeLeftRangeSelect);
+		GridData compositeLeftRangeSelectGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
+		compositeLeftRangeSelect.setLayoutData(compositeLeftRangeSelectGridData);
 		//
-		labelTextLowerETimes = new Label(compositeLowerRangeSelect, SWT.RIGHT);
-		labelTextLowerETimes.setText("Start Time, s:");
+		labelTextLeftETimes = new Label(compositeLeftRangeSelect, SWT.RIGHT);
+		labelTextLeftETimes.setText("Start Time, s:");
 		GridData labelGridData = new GridData(SWT.LEFT, SWT.CENTER, false, true);
-		labelTextLowerETimes.setLayoutData(labelGridData);
+		labelTextLeftETimes.setLayoutData(labelGridData);
 		//
-		textLowerETimes = new Text(compositeLowerRangeSelect, SWT.RIGHT | SWT.BORDER);
-		textLowerETimes.setText("");
-		GridData textLowerETimesGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
-		textLowerETimes.setLayoutData(textLowerETimesGridData);
+		textLeftETimes = new Text(compositeLeftRangeSelect, SWT.RIGHT | SWT.BORDER);
+		textLeftETimes.setText("");
+		GridData textLeftETimesGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
+		textLeftETimes.setLayoutData(textLeftETimesGridData);
 		//
-		new Label(compositeLowerRangeSelect, SWT.RIGHT).setText("Scan #:");
+		new Label(compositeLeftRangeSelect, SWT.RIGHT).setText("Scan #:");
 		//
-		spinnerLowerScanNumber = new Spinner(compositeLowerRangeSelect, SWT.RIGHT | SWT.BORDER | SWT.READ_ONLY);
-		spinnerLowerScanNumber.setMinimum(1);
-		spinnerLowerScanNumber.setMaximum(1);
-		spinnerLowerScanNumber.setSelection(1);
-		spinnerLowerScanNumber.setIncrement(1);
-		spinnerLowerScanNumber.setPageIncrement(10);
-		spinnerLowerScanNumber.setToolTipText("increment or decrement starting scan number");
-		GridData spinnerLowerScanNumberGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, true);
-		spinnerLowerScanNumberGridData.widthHint = 32;
-		spinnerLowerScanNumber.setLayoutData(spinnerLowerScanNumberGridData);
-		spinnerLowerScanNumber.addModifyListener(new ModifyListener() {
+		spinnerLeftScanNumber = new Spinner(compositeLeftRangeSelect, SWT.RIGHT | SWT.BORDER | SWT.READ_ONLY);
+		spinnerLeftScanNumber.setMinimum(1);
+		spinnerLeftScanNumber.setMaximum(1);
+		spinnerLeftScanNumber.setSelection(1);
+		spinnerLeftScanNumber.setIncrement(1);
+		spinnerLeftScanNumber.setPageIncrement(10);
+		spinnerLeftScanNumber.setToolTipText("increment or decrement starting scan number");
+		GridData spinnerLeftScanNumberGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, true);
+		spinnerLeftScanNumberGridData.widthHint = 32;
+		spinnerLeftScanNumber.setLayoutData(spinnerLeftScanNumberGridData);
+		spinnerLeftScanNumber.addModifyListener(new ModifyListener() {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -278,8 +279,8 @@ public class DecompositionResultUI extends Composite {
 				if(spinnersIgnoreChange) {
 					return;
 				}
-				if(spinnerLowerScanNumber.getSelection() >= spinnerUpperScanNumber.getSelection()) {
-					spinnerLowerScanNumber.setSelection(spinnerUpperScanNumber.getSelection() - 1);
+				if(spinnerLeftScanNumber.getSelection() >= spinnerRightScanNumber.getSelection()) {
+					spinnerLeftScanNumber.setSelection(spinnerRightScanNumber.getSelection() - 1);
 				}
 				updateTextETimes(cmsSpectra);
 				updateXYGraph(cmsSpectra);
@@ -287,41 +288,41 @@ public class DecompositionResultUI extends Composite {
 		});
 	}
 
-	private void addSelectUpperSpectrum(Composite parent) {
+	private void addSelectRightSpectrum(Composite parent) {
 
-		Composite compositeUpperRangeSelect = new Composite(parent, SWT.NONE);
-		GridLayout layoutCompositeUpperRangeSelect = new GridLayout(4, false);
-		layoutCompositeUpperRangeSelect.marginHeight = 0;
-		layoutCompositeUpperRangeSelect.marginWidth = 0;
-		compositeUpperRangeSelect.setLayout(layoutCompositeUpperRangeSelect);
-		GridData compositeUpperRangeSelectGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
-		compositeUpperRangeSelect.setLayoutData(compositeUpperRangeSelectGridData);
+		Composite compositeRightRangeSelect = new Composite(parent, SWT.NONE);
+		GridLayout layoutCompositeRightRangeSelect = new GridLayout(4, false);
+		layoutCompositeRightRangeSelect.marginHeight = 0;
+		layoutCompositeRightRangeSelect.marginWidth = 0;
+		compositeRightRangeSelect.setLayout(layoutCompositeRightRangeSelect);
+		GridData compositeRightRangeSelectGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
+		compositeRightRangeSelect.setLayoutData(compositeRightRangeSelectGridData);
 		//
-		Label labelTextUpperETimes = new Label(compositeUpperRangeSelect, SWT.RIGHT);
-		labelTextUpperETimes.setText("End Time, s:");
+		Label labelTextRightETimes = new Label(compositeRightRangeSelect, SWT.RIGHT);
+		labelTextRightETimes.setText("End Time, s:");
 		GridData labelGridData = new GridData(SWT.LEFT, SWT.CENTER, false, true);
-		int width = labelTextLowerETimes.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
+		int width = labelTextLeftETimes.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
 		labelGridData.widthHint = width;
-		labelTextUpperETimes.setLayoutData(labelGridData);
+		labelTextRightETimes.setLayoutData(labelGridData);
 		//
-		textUpperETimes = new Text(compositeUpperRangeSelect, SWT.RIGHT | SWT.BORDER);
-		textUpperETimes.setText("");
-		GridData textUpperETimesGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
-		textUpperETimes.setLayoutData(textUpperETimesGridData);
+		textRightETimes = new Text(compositeRightRangeSelect, SWT.RIGHT | SWT.BORDER);
+		textRightETimes.setText("");
+		GridData textRightETimesGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
+		textRightETimes.setLayoutData(textRightETimesGridData);
 		//
-		new Label(compositeUpperRangeSelect, SWT.NONE).setText("Scan #:");
+		new Label(compositeRightRangeSelect, SWT.NONE).setText("Scan #:");
 		//
-		spinnerUpperScanNumber = new Spinner(compositeUpperRangeSelect, SWT.RIGHT | SWT.BORDER | SWT.READ_ONLY);
-		spinnerUpperScanNumber.setMinimum(1);
-		spinnerUpperScanNumber.setMaximum(1);
-		spinnerUpperScanNumber.setSelection(1);
-		spinnerUpperScanNumber.setIncrement(1);
-		spinnerUpperScanNumber.setPageIncrement(10);
-		spinnerUpperScanNumber.setToolTipText("increment or decrement ending scan number");
-		GridData spinnerUpperScanNumberGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, true);
-		spinnerUpperScanNumberGridData.widthHint = 32;
-		spinnerUpperScanNumber.setLayoutData(spinnerUpperScanNumberGridData);
-		spinnerUpperScanNumber.addModifyListener(new ModifyListener() {
+		spinnerRightScanNumber = new Spinner(compositeRightRangeSelect, SWT.RIGHT | SWT.BORDER | SWT.READ_ONLY);
+		spinnerRightScanNumber.setMinimum(1);
+		spinnerRightScanNumber.setMaximum(1);
+		spinnerRightScanNumber.setSelection(1);
+		spinnerRightScanNumber.setIncrement(1);
+		spinnerRightScanNumber.setPageIncrement(10);
+		spinnerRightScanNumber.setToolTipText("increment or decrement ending scan number");
+		GridData spinnerRightScanNumberGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, true);
+		spinnerRightScanNumberGridData.widthHint = 32;
+		spinnerRightScanNumber.setLayoutData(spinnerRightScanNumberGridData);
+		spinnerRightScanNumber.addModifyListener(new ModifyListener() {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -329,23 +330,59 @@ public class DecompositionResultUI extends Composite {
 				if(spinnersIgnoreChange) {
 					return;
 				}
-				if(spinnerUpperScanNumber.getSelection() <= spinnerLowerScanNumber.getSelection()) {
-					spinnerUpperScanNumber.setSelection(spinnerLowerScanNumber.getSelection() + 1);
+				if(spinnerRightScanNumber.getSelection() <= spinnerLeftScanNumber.getSelection()) {
+					spinnerRightScanNumber.setSelection(spinnerLeftScanNumber.getSelection() + 1);
 				}
 				updateTextETimes(cmsSpectra);
 				updateXYGraph(cmsSpectra);
 			}
 		});
 	}
-
+	
 	private void initialize() {
 
-		setLayout(new FillLayout());
+		this.setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.NONE);
-		GridLayout compositeGridLayout = new GridLayout(1, false);
+		GridLayout compositeGridLayout = new GridLayout(2, true);
+		compositeGridLayout.marginHeight = 0;
+		compositeGridLayout.marginWidth = 0;
 		composite.setLayout(compositeGridLayout);
+		this.initializeSignalsComposite(composite);
+		this.initializeCompositionsComposite(composite);
+	}
+	
+	private void initializeCompositionsComposite(Composite parent) {
+		
+		/*
+		 * XY Graph
+		 */
+		Composite compositeGraph = new Composite(parent, SWT.NONE);
+		compositeGraph.setLayout(new FillLayout());
+		GridData compositeGraphGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		compositeGraph.setLayoutData(compositeGraphGridData);
 		//
-		Composite compositeTopRow = new Composite(composite, SWT.NONE);
+		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(compositeGraph, SWT.NONE));
+		xyGraphComposition = new XYGraph();
+		xyGraphComposition.setTitle("Composition");
+		xyGraphComposition.getPrimaryXAxis().setAutoScale(true);
+		xyGraphComposition.getPrimaryXAxis().setShowMajorGrid(true);
+		xyGraphComposition.getPrimaryYAxis().setAutoScale(true);
+		xyGraphComposition.getPrimaryYAxis().setShowMajorGrid(true);
+		xyGraphComposition.getPrimaryYAxis().setFormatPattern("0.0##E00");
+		xyGraphComposition.getPrimaryYAxis().setAutoScaleThreshold(0);
+		lightweightSystem.setContents(xyGraphComposition);
+	}
+
+	private void initializeSignalsComposite(Composite parent) {
+		Composite compositeSignals = new Composite(parent, SWT.NONE);
+		GridLayout compositeSignalsGridLayout = new GridLayout(1, true);
+		compositeSignalsGridLayout.marginHeight = 0;
+		compositeSignalsGridLayout.marginWidth = 0;
+		compositeSignals.setLayout(compositeSignalsGridLayout);
+		GridData compositeSignalsGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		compositeSignals.setLayoutData(compositeSignalsGridData);
+		//
+		Composite compositeTopRow = new Composite(compositeSignals, SWT.NONE);
 		GridLayout topRowCompositeGridLayout = new GridLayout(2, false);
 		topRowCompositeGridLayout.marginHeight = 0;
 		topRowCompositeGridLayout.marginWidth = 0;
@@ -362,29 +399,29 @@ public class DecompositionResultUI extends Composite {
 		GridData compositeButtonsGridData = new GridData(SWT.RIGHT, SWT.TOP, false, true);
 		compositeButtons.setLayoutData(compositeButtonsGridData);
 		addButtonSelect(compositeButtons);
-		addButtonLoad(compositeButtons);
+		addButtonDecompose(compositeButtons);
 		addButtonSettings(compositeButtons);
 		// ETimes Text and scan # Spinners
-		addSelectLowerSpectrum(composite);
-		addSelectUpperSpectrum(composite);
+		addSelectLeftSpectrum(compositeSignals);
+		addSelectRightSpectrum(compositeSignals);
 		/*
 		 * XY Graph
 		 */
-		Composite compositeGraph = new Composite(composite, SWT.NONE);
+		Composite compositeGraph = new Composite(compositeSignals, SWT.NONE);
 		compositeGraph.setLayout(new FillLayout());
 		GridData compositeGraphGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		compositeGraph.setLayoutData(compositeGraphGridData);
 		//
 		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(compositeGraph, SWT.NONE));
-		xyGraph = new XYGraph();
-		xyGraph.setTitle("Signal");
-		xyGraph.getPrimaryXAxis().setAutoScale(true);
-		xyGraph.getPrimaryXAxis().setShowMajorGrid(true);
-		xyGraph.getPrimaryYAxis().setAutoScale(true);
-		xyGraph.getPrimaryYAxis().setShowMajorGrid(true);
-		xyGraph.getPrimaryYAxis().setFormatPattern("0.0##E00");
-		xyGraph.getPrimaryYAxis().setAutoScaleThreshold(0);
-		lightweightSystem.setContents(xyGraph);
+		xyGraphSignal = new XYGraph();
+		xyGraphSignal.setTitle("Signal");
+		xyGraphSignal.getPrimaryXAxis().setAutoScale(true);
+		xyGraphSignal.getPrimaryXAxis().setShowMajorGrid(true);
+		xyGraphSignal.getPrimaryYAxis().setAutoScale(true);
+		xyGraphSignal.getPrimaryYAxis().setShowMajorGrid(true);
+		xyGraphSignal.getPrimaryYAxis().setFormatPattern("0.0##E00");
+		xyGraphSignal.getPrimaryYAxis().setAutoScaleThreshold(0);
+		lightweightSystem.setContents(xyGraphSignal);
 	}
 
 	private void readAndPlotCMSscanFile() {
@@ -392,7 +429,7 @@ public class DecompositionResultUI extends Composite {
 		try {
 			File file = new File(textCmsSpectraPath.getText().trim());
 			if(file.exists()) {
-				xyGraphNumberOfScanPoints = 0; // invalidate current XYGraph data
+				xyGraphSignalNumberOfScanPoints = 0; // invalidate current XYGraph data
 				MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 				cmsSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
 				if(null != cmsSpectra) {
@@ -419,26 +456,26 @@ public class DecompositionResultUI extends Composite {
 				}
 				if(null != cmsSpectra) {
 					spinnersIgnoreChange = true;
-					spinnerLowerScanNumber.setMinimum(1);
-					spinnerLowerScanNumber.setMaximum(cmsSpectra.getList().size());
-					spinnerLowerScanNumber.setEnabled(false); // does this prevent a ModifyEvent?
-					spinnerLowerScanNumber.setSelection(1);
-					spinnerLowerScanNumber.setEnabled(true);
-					spinnerUpperScanNumber.setMinimum(1);
-					spinnerUpperScanNumber.setMaximum(cmsSpectra.getList().size());
+					spinnerLeftScanNumber.setMinimum(1);
+					spinnerLeftScanNumber.setMaximum(cmsSpectra.getList().size());
+					spinnerLeftScanNumber.setEnabled(false); // does this prevent a ModifyEvent?
+					spinnerLeftScanNumber.setSelection(1);
+					spinnerLeftScanNumber.setEnabled(true);
+					spinnerRightScanNumber.setMinimum(1);
+					spinnerRightScanNumber.setMaximum(cmsSpectra.getList().size());
 					spinnersIgnoreChange = false;
-					spinnerUpperScanNumber.setSelection(cmsSpectra.getList().size());
+					spinnerRightScanNumber.setSelection(cmsSpectra.getList().size());
 					// updateTextETimes(cmsSpectra); // not needed
 					// updateXYGraph(cmsSpectra); // not needed
 				} else {
 					spinnersIgnoreChange = true;
-					spinnerLowerScanNumber.setMinimum(1);
-					spinnerLowerScanNumber.setMaximum(1);
-					spinnerLowerScanNumber.setSelection(1);
-					spinnerUpperScanNumber.setMinimum(1);
-					spinnerUpperScanNumber.setMaximum(1);
+					spinnerLeftScanNumber.setMinimum(1);
+					spinnerLeftScanNumber.setMaximum(1);
+					spinnerLeftScanNumber.setSelection(1);
+					spinnerRightScanNumber.setMinimum(1);
+					spinnerRightScanNumber.setMaximum(1);
 					spinnersIgnoreChange = false;
-					spinnerUpperScanNumber.setSelection(1);
+					spinnerRightScanNumber.setSelection(1);
 				}
 			} // if(file.exists())
 		} catch(Exception e1) {
@@ -453,25 +490,25 @@ public class DecompositionResultUI extends Composite {
 			int spinnerValue;
 			double eTimes;
 			ICalibratedVendorMassSpectrum spectrum;
-			spinnerValue = spinnerLowerScanNumber.getSelection();
+			spinnerValue = spinnerLeftScanNumber.getSelection();
 			if((spinnerValue >= 1) && (spinnerValue <= cmsSpectra.getList().size())) {
 				spectrum = (ICalibratedVendorMassSpectrum)cmsSpectra.getMassSpectrum(spinnerValue);
 				eTimes = spectrum.getEtimes();
-				textLowerETimes.setText(decimalFormatTextETimes.format(eTimes));
+				textLeftETimes.setText(decimalFormatTextETimes.format(eTimes));
 			} else {
-				textLowerETimes.setText("Error, spinner value " + spinnerValue + " is out of range");
+				textLeftETimes.setText("Error, spinner value " + spinnerValue + " is out of range");
 			}
-			spinnerValue = spinnerUpperScanNumber.getSelection();
+			spinnerValue = spinnerRightScanNumber.getSelection();
 			if((spinnerValue >= 1) && (spinnerValue <= cmsSpectra.getList().size())) {
 				spectrum = (ICalibratedVendorMassSpectrum)cmsSpectra.getMassSpectrum(spinnerValue);
 				eTimes = spectrum.getEtimes();
-				textUpperETimes.setText(decimalFormatTextETimes.format(eTimes));
+				textRightETimes.setText(decimalFormatTextETimes.format(eTimes));
 			} else {
-				textUpperETimes.setText("Error, spinner value " + spinnerValue + " is out of range");
+				textRightETimes.setText("Error, spinner value " + spinnerValue + " is out of range");
 			}
 		} else {
-			textLowerETimes.setText("Elapsed Time is not present in this file");
-			textUpperETimes.setText("Elapsed Time is not present in this file");
+			textLeftETimes.setText("Elapsed Time is not present in this file");
+			textRightETimes.setText("Elapsed Time is not present in this file");
 		}
 	}
 
@@ -480,29 +517,29 @@ public class DecompositionResultUI extends Composite {
 		ICalibratedVendorMassSpectrum spectrum;
 		// hasETimes = !hasETimes; // whw, for testing
 		System.out.println("Update Signal XYGraph for " + spectra.getName());
-		if(spinnerLowerScanNumber.getSelection() >= spinnerUpperScanNumber.getSelection()) {
+		if(spinnerLeftScanNumber.getSelection() >= spinnerRightScanNumber.getSelection()) {
 			return;
 		}
-		if(0 == xyGraphNumberOfScanPoints) {
+		if(0 == xyGraphSignalNumberOfScanPoints) {
 			String newTitle = textCmsSpectraPath.getText();
 			int index = newTitle.lastIndexOf(File.separator);
 			if(0 < index) {
 				newTitle = newTitle.substring(1 + index);
 			}
 			newTitle = "Signal: " + newTitle;
-			xyGraph.setTitle(newTitle);
+			xyGraphSignal.setTitle(newTitle);
 			if(hasETimes) {
-				xyGraph.getPrimaryXAxis().setTitle("Elapsed Time, s");
+				xyGraphSignal.getPrimaryXAxis().setTitle("Elapsed Time, s");
 			} else {
-				xyGraph.getPrimaryXAxis().setTitle("Scan Number");
+				xyGraphSignal.getPrimaryXAxis().setTitle("Scan Number");
 			}
-			xyGraph.getPrimaryYAxis().setTitle("Signal, " + signalUnits);
+			xyGraphSignal.getPrimaryYAxis().setTitle("Signal, " + signalUnits);
 			// create a trace data provider, which will provide the data to the trace.
 			dataProviderTraceSignalSum = new CircularBufferDataProvider(false);
-			xyGraphNumberOfScanPoints = spectra.getList().size();
-			dataProviderTraceSignalSum.setBufferSize(xyGraphNumberOfScanPoints);
-			xDataTraceScanSignalSum = new double[xyGraphNumberOfScanPoints];
-			yDataTraceScanSignalSum = new double[xyGraphNumberOfScanPoints];
+			xyGraphSignalNumberOfScanPoints = spectra.getList().size();
+			dataProviderTraceSignalSum.setBufferSize(xyGraphSignalNumberOfScanPoints);
+			xDataTraceScanSignalSum = new double[xyGraphSignalNumberOfScanPoints];
+			yDataTraceScanSignalSum = new double[xyGraphSignalNumberOfScanPoints];
 			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(1);
 			signalUnits = spectrum.getSignalUnits();
 			for(int i = spectra.getList().size(); i > 0;) {
@@ -519,45 +556,45 @@ public class DecompositionResultUI extends Composite {
 			dataProviderTraceSignalSum.setCurrentXDataArray(xDataTraceScanSignalSum);
 			dataProviderTraceSignalSum.setCurrentYDataArray(yDataTraceScanSignalSum);
 			if(null != traceScanSignalSum) {
-				xyGraph.removeTrace(traceScanSignalSum);
+				xyGraphSignal.removeTrace(traceScanSignalSum);
 			}
 			if(null != traceResidualSignalSum) {
-				xyGraph.removeTrace(traceResidualSignalSum);
+				xyGraphSignal.removeTrace(traceResidualSignalSum);
 			}
-			traceScanSignalSum = new Trace("sum(Signal)", xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), dataProviderTraceSignalSum);
+			traceScanSignalSum = new Trace("sum(Signal)", xyGraphSignal.getPrimaryXAxis(), xyGraphSignal.getPrimaryYAxis(), dataProviderTraceSignalSum);
 			traceScanSignalSum.setTraceColor(XYGraphMediaFactory.getInstance().getColor(XYGraphMediaFactory.COLOR_BLUE));
 			// traceScanSignalSum.setPointStyle(PointStyle.XCROSS);
-			xyGraph.addTrace(traceScanSignalSum);
+			xyGraphSignal.addTrace(traceScanSignalSum);
 			//
-			dataProviderLeftMarker = new CircularBufferDataProvider(false);
-			dataProviderLeftMarker.setBufferSize(2);
+			dataProviderTraceLeftMarker = new CircularBufferDataProvider(false);
+			dataProviderTraceLeftMarker.setBufferSize(2);
 			xDataTraceLeftMarker = new double[2];
 			yDataTraceLeftMarker = new double[2];
 			if(null != traceLeftMarker) {
-				xyGraph.removeTrace(traceLeftMarker);
+				xyGraphSignal.removeTrace(traceLeftMarker);
 			}
-			traceLeftMarker = new Trace("", xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), dataProviderLeftMarker);
+			traceLeftMarker = new Trace("", xyGraphSignal.getPrimaryXAxis(), xyGraphSignal.getPrimaryYAxis(), dataProviderTraceLeftMarker);
 			traceLeftMarker.setTraceColor(XYGraphMediaFactory.getInstance().getColor(XYGraphMediaFactory.COLOR_RED));
-			xyGraph.addTrace(traceLeftMarker);
+			xyGraphSignal.addTrace(traceLeftMarker);
 			//
-			dataProviderRightMarker = new CircularBufferDataProvider(false);
-			dataProviderRightMarker.setBufferSize(2);
+			dataProviderTraceRightMarker = new CircularBufferDataProvider(false);
+			dataProviderTraceRightMarker.setBufferSize(2);
 			xDataTraceRightMarker = new double[2];
 			yDataTraceRightMarker = new double[2];
 			if(null != traceRightMarker) {
-				xyGraph.removeTrace(traceRightMarker);
+				xyGraphSignal.removeTrace(traceRightMarker);
 			}
-			traceRightMarker = new Trace("", xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), dataProviderRightMarker);
+			traceRightMarker = new Trace("", xyGraphSignal.getPrimaryXAxis(), xyGraphSignal.getPrimaryYAxis(), dataProviderTraceRightMarker);
 			traceRightMarker.setTraceColor(XYGraphMediaFactory.getInstance().getColor(XYGraphMediaFactory.COLOR_RED));
-			xyGraph.addTrace(traceRightMarker);
+			xyGraphSignal.addTrace(traceRightMarker);
 		}
-		if(0 == xyGraphNumberOfResidualPoints) {
+		if(0 == xyGraphSignalNumberOfResidualPoints) {
 			if(null != results) {
 				dataProviderTraceResidualSignalSum = new CircularBufferDataProvider(false);
-				xyGraphNumberOfResidualPoints = results.getResults().size();
-				dataProviderTraceResidualSignalSum.setBufferSize(xyGraphNumberOfResidualPoints);
-				xDataTraceResidualSignalSum = new double[xyGraphNumberOfResidualPoints];
-				yDataTraceResidualSignalSum = new double[xyGraphNumberOfResidualPoints];
+				xyGraphSignalNumberOfResidualPoints = results.getResults().size();
+				dataProviderTraceResidualSignalSum.setBufferSize(xyGraphSignalNumberOfResidualPoints);
+				xDataTraceResidualSignalSum = new double[xyGraphSignalNumberOfResidualPoints];
+				yDataTraceResidualSignalSum = new double[xyGraphSignalNumberOfResidualPoints];
 				for(int i = 0; i < results.getResults().size(); i++) {
 					spectrum = results.getResults().get(i).getResidualSpectrum();
 					if(!hasETimes) {
@@ -570,45 +607,45 @@ public class DecompositionResultUI extends Composite {
 				dataProviderTraceResidualSignalSum.setCurrentXDataArray(xDataTraceResidualSignalSum);
 				dataProviderTraceResidualSignalSum.setCurrentYDataArray(yDataTraceResidualSignalSum);
 				if(null != traceResidualSignalSum) {
-					xyGraph.removeTrace(traceResidualSignalSum);
+					xyGraphSignal.removeTrace(traceResidualSignalSum);
 				}
-				traceResidualSignalSum = new Trace("sum(Residual)", xyGraph.getPrimaryXAxis(), xyGraph.getPrimaryYAxis(), dataProviderTraceResidualSignalSum);
+				traceResidualSignalSum = new Trace("sum(Residual)", xyGraphSignal.getPrimaryXAxis(), xyGraphSignal.getPrimaryYAxis(), dataProviderTraceResidualSignalSum);
 				traceResidualSignalSum.setTraceColor(XYGraphMediaFactory.getInstance().getColor(XYGraphMediaFactory.COLOR_PURPLE));
 				// traceScanSignalSum.setPointStyle(PointStyle.XCROSS);
-				xyGraph.addTrace(traceResidualSignalSum);
+				xyGraphSignal.addTrace(traceResidualSignalSum);
 				// now I want to call the updateXYGraph(DecompositionResults results) method for the
 				// instance of DecompositionCompositionResultUI in this perspective but I don't know how to do it
-				DecompositionCompositionResultUI.updateXYGraph(results);
+				//DecompositionCompositionResultUI.updateXYGraph(results);
 			}
 		}
 		if(hasETimes) {
 			double xygraphMinETimes, xygraphMaxETimes;
-			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(spinnerLowerScanNumber.getSelection());
+			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(spinnerLeftScanNumber.getSelection());
 			xygraphMinETimes = spectrum.getEtimes();
-			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(spinnerUpperScanNumber.getSelection());
+			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(spinnerRightScanNumber.getSelection());
 			xygraphMaxETimes = spectrum.getEtimes();
 			xDataTraceLeftMarker[0] = xygraphMinETimes;
 			xDataTraceLeftMarker[1] = xygraphMinETimes;
 			xDataTraceRightMarker[0] = xygraphMaxETimes;
 			xDataTraceRightMarker[1] = xygraphMaxETimes;
-			xyGraph.getPrimaryXAxis().setAutoScale(true);
+			xyGraphSignal.getPrimaryXAxis().setAutoScale(true);
 			// xyGraph.getPrimaryXAxis().setRange(new Range(xygraphMinETimes, xygraphMaxETimes));
 		} else {
-			xDataTraceLeftMarker[0] = spinnerLowerScanNumber.getSelection();
-			xDataTraceLeftMarker[1] = spinnerLowerScanNumber.getSelection();
-			xDataTraceRightMarker[0] = spinnerUpperScanNumber.getSelection();
-			xDataTraceRightMarker[1] = spinnerUpperScanNumber.getSelection();
-			xyGraph.getPrimaryXAxis().setAutoScale(true);
-			// xyGraph.getPrimaryXAxis().setRange(new Range(spinnerLowerScanNumber.getSelection(), spinnerUpperScanNumber.getSelection()));
+			xDataTraceLeftMarker[0] = spinnerLeftScanNumber.getSelection();
+			xDataTraceLeftMarker[1] = spinnerLeftScanNumber.getSelection();
+			xDataTraceRightMarker[0] = spinnerRightScanNumber.getSelection();
+			xDataTraceRightMarker[1] = spinnerRightScanNumber.getSelection();
+			xyGraphSignal.getPrimaryXAxis().setAutoScale(true);
+			// xyGraph.getPrimaryXAxis().setRange(new Range(spinnerLeftScanNumber.getSelection(), spinnerRightScanNumber.getSelection()));
 		}
-		yDataTraceLeftMarker[0] = xyGraph.getPrimaryYAxis().getRange().getLower();
-		yDataTraceLeftMarker[1] = xyGraph.getPrimaryYAxis().getRange().getUpper();
-		yDataTraceRightMarker[0] = xyGraph.getPrimaryYAxis().getRange().getLower();
-		yDataTraceRightMarker[1] = xyGraph.getPrimaryYAxis().getRange().getUpper();
-		dataProviderRightMarker.setCurrentXDataArray(xDataTraceRightMarker);
-		dataProviderRightMarker.setCurrentYDataArray(yDataTraceRightMarker);
-		dataProviderLeftMarker.setCurrentXDataArray(xDataTraceLeftMarker);
-		dataProviderLeftMarker.setCurrentYDataArray(yDataTraceLeftMarker);
+		yDataTraceLeftMarker[0] = xyGraphSignal.getPrimaryYAxis().getRange().getLower();
+		yDataTraceLeftMarker[1] = xyGraphSignal.getPrimaryYAxis().getRange().getUpper();
+		yDataTraceRightMarker[0] = xyGraphSignal.getPrimaryYAxis().getRange().getLower();
+		yDataTraceRightMarker[1] = xyGraphSignal.getPrimaryYAxis().getRange().getUpper();
+		dataProviderTraceRightMarker.setCurrentXDataArray(xDataTraceRightMarker);
+		dataProviderTraceRightMarker.setCurrentYDataArray(yDataTraceRightMarker);
+		dataProviderTraceLeftMarker.setCurrentXDataArray(xDataTraceLeftMarker);
+		dataProviderTraceLeftMarker.setCurrentYDataArray(yDataTraceLeftMarker);
 		// xyGraph.setShowLegend(!xyGraph.isShowLegend());
 		// Display display = Display.getDefault();
 	}

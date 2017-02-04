@@ -15,15 +15,12 @@
           <children xsi:type="basic:PartStack" xmi:id="_m6z1AOdCEeaD9L2tBPYUFw" elementId="net.openchrom.msd.process.supplier.cms.ui.partstack.1" containerData="4500">
             <children xsi:type="advanced:Placeholder" xmi:id="_pDhN8OdCEeaD9L2tBPYUFw" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.4" ref="_uBA4cNTHEeaud4VQr1xS9g"/>
             <children xsi:type="advanced:Placeholder" xmi:id="_sGTCcOdCEeaD9L2tBPYUFw" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.6" ref="_LWKm0NTDEeaud4VQr1xS9g"/>
+            <children xsi:type="advanced:Placeholder" xmi:id="_PQcMwOr4Eea2Cahk5zjT8w" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.5" ref="_aPiVoNRREeaaPePRBRrPAg"/>
           </children>
         </children>
         <children xsi:type="basic:PartSashContainer" xmi:id="_cGVUoNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.2" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_jSZSsNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.1" containerData="8000" selectedElement="_gRmlwNRREeaaPePRBRrPAg">
+          <children xsi:type="basic:PartStack" xmi:id="_jSZSsNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.1" containerData="16000" selectedElement="_gRmlwNRREeaaPePRBRrPAg">
             <children xsi:type="advanced:Placeholder" xmi:id="_gRmlwNRREeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.0" ref="_1x_agNRQEeaaPePRBRrPAg"/>
-          </children>
-          <children xsi:type="basic:PartStack" xmi:id="_jlspMNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.2" containerData="8000">
-            <children xsi:type="advanced:Placeholder" xmi:id="_U_DhAOe5EeaSD5RKhuQ86A" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.3" ref="_1d61gOe4EeaSD5RKhuQ86A"/>
-            <children xsi:type="advanced:Placeholder" xmi:id="_hcnnYNRREeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.1" ref="_aPiVoNRREeaaPePRBRrPAg"/>
           </children>
         </children>
       </children>
