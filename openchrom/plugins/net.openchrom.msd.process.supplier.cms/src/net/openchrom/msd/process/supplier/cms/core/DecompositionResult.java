@@ -93,6 +93,15 @@ public class DecompositionResult {
 		}
 	}
 
+	public Double getPartialPressure(int index, String units) {
+
+		if(isQuantitative.get(index)) {
+			return this.xComp.get(index) * this.libraryComponents.get(index).getSourcePressure(units);
+		} else {
+			return 0d;
+		}
+	}
+
 	public ICalibratedVendorMassSpectrum getResidualSpectrum() {
 
 		return residualSpectrum;

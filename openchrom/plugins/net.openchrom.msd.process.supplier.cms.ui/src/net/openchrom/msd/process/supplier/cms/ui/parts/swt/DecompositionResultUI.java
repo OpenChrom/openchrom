@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.TreeMap;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
@@ -36,12 +38,14 @@ import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataProvider;
 import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
+import org.eclipse.nebula.visualization.xygraph.linearscale.Range;
 import org.eclipse.nebula.visualization.xygraph.util.XYGraphMediaFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -56,6 +60,7 @@ import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
+import net.openchrom.msd.process.supplier.cms.core.DecompositionResult;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
 import net.openchrom.msd.process.supplier.cms.core.MassSpectraDecomposition;
 import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
@@ -79,6 +84,7 @@ public class DecompositionResultUI extends Composite {
 	private Trace traceResidualSignalSum; // xyGraphSignal scan data item
 	private Trace traceLeftMarker; // xyGraphSignal scan data item
 	private Trace traceRightMarker; // xyGraphSignal scan data item
+	private TreeMap<String, Trace> traceCompositionsMap; // key is composition name string, value is Trace for that composition, needed so trace can be removed
 	private CircularBufferDataProvider dataProviderTraceSignalSum; // xyGraphSignal scan data item
 	private CircularBufferDataProvider dataProviderTraceResidualSignalSum; // xyGraphSignal scan data item
 	private CircularBufferDataProvider dataProviderTraceLeftMarker; // xyGraphSignal scan data item
@@ -91,6 +97,7 @@ public class DecompositionResultUI extends Composite {
 	private XYGraph xyGraphSignal;
 	private int xyGraphSignalNumberOfScanPoints = 0; // if xyGraphSignalNumberOfScanPoints > 0, then remainder of xyGraphSignal scan data items are valid
 	private int xyGraphSignalNumberOfResidualPoints = 0; // if xyGraphSignalNumberOfResidualPoints > 0, then remainder of xyGraphSignal residual data items are valid
+	private int xyGraphCompositionNumberOfPoints = 0; // if xyGraphCompositionNumberOfPoints > 0, then remainder of xyGraphComposition data items are valid
 	private double yDataTraceScanSignalSum[]; // xyGraphSignal scan data item
 	private double yDataTraceResidualSignalSum[]; // xyGraphSignal scan data item
 	private double yDataTraceLeftMarker[]; // xyGraphSignal scan data item
@@ -177,7 +184,7 @@ public class DecompositionResultUI extends Composite {
 			return;
 		}
 		xyGraphSignalNumberOfResidualPoints = 0;
-		updateXYGraph(cmsSpectra);
+		updateXYGraphSignals(cmsSpectra);
 		return;
 	}
 
@@ -283,7 +290,7 @@ public class DecompositionResultUI extends Composite {
 					spinnerLeftScanNumber.setSelection(spinnerRightScanNumber.getSelection() - 1);
 				}
 				updateTextETimes(cmsSpectra);
-				updateXYGraph(cmsSpectra);
+				updateXYGraphSignals(cmsSpectra);
 			}
 		});
 	}
@@ -334,25 +341,25 @@ public class DecompositionResultUI extends Composite {
 					spinnerRightScanNumber.setSelection(spinnerLeftScanNumber.getSelection() + 1);
 				}
 				updateTextETimes(cmsSpectra);
-				updateXYGraph(cmsSpectra);
+				updateXYGraphSignals(cmsSpectra);
 			}
 		});
 	}
-	
+
 	private void initialize() {
 
 		this.setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.NONE);
 		GridLayout compositeGridLayout = new GridLayout(2, true);
-		compositeGridLayout.marginHeight = 0;
-		compositeGridLayout.marginWidth = 0;
+		// compositeGridLayout.marginHeight = 0;
+		// compositeGridLayout.marginWidth = 0;
 		composite.setLayout(compositeGridLayout);
 		this.initializeSignalsComposite(composite);
 		this.initializeCompositionsComposite(composite);
 	}
-	
+
 	private void initializeCompositionsComposite(Composite parent) {
-		
+
 		/*
 		 * XY Graph
 		 */
@@ -363,6 +370,7 @@ public class DecompositionResultUI extends Composite {
 		//
 		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(compositeGraph, SWT.NONE));
 		xyGraphComposition = new XYGraph();
+		traceCompositionsMap = new TreeMap<String, Trace>();
 		xyGraphComposition.setTitle("Composition");
 		xyGraphComposition.getPrimaryXAxis().setAutoScale(true);
 		xyGraphComposition.getPrimaryXAxis().setShowMajorGrid(true);
@@ -374,6 +382,7 @@ public class DecompositionResultUI extends Composite {
 	}
 
 	private void initializeSignalsComposite(Composite parent) {
+
 		Composite compositeSignals = new Composite(parent, SWT.NONE);
 		GridLayout compositeSignalsGridLayout = new GridLayout(1, true);
 		compositeSignalsGridLayout.marginHeight = 0;
@@ -512,7 +521,7 @@ public class DecompositionResultUI extends Composite {
 		}
 	}
 
-	private void updateXYGraph(IMassSpectra spectra) {
+	private void updateXYGraphSignals(IMassSpectra spectra) {
 
 		ICalibratedVendorMassSpectrum spectrum;
 		// hasETimes = !hasETimes; // whw, for testing
@@ -533,7 +542,6 @@ public class DecompositionResultUI extends Composite {
 			} else {
 				xyGraphSignal.getPrimaryXAxis().setTitle("Scan Number");
 			}
-			xyGraphSignal.getPrimaryYAxis().setTitle("Signal, " + signalUnits);
 			// create a trace data provider, which will provide the data to the trace.
 			dataProviderTraceSignalSum = new CircularBufferDataProvider(false);
 			xyGraphSignalNumberOfScanPoints = spectra.getList().size();
@@ -542,6 +550,7 @@ public class DecompositionResultUI extends Composite {
 			yDataTraceScanSignalSum = new double[xyGraphSignalNumberOfScanPoints];
 			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(1);
 			signalUnits = spectrum.getSignalUnits();
+			xyGraphSignal.getPrimaryYAxis().setTitle("Signal, " + signalUnits);
 			for(int i = spectra.getList().size(); i > 0;) {
 				spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(i);
 				--i;
@@ -613,9 +622,8 @@ public class DecompositionResultUI extends Composite {
 				traceResidualSignalSum.setTraceColor(XYGraphMediaFactory.getInstance().getColor(XYGraphMediaFactory.COLOR_PURPLE));
 				// traceScanSignalSum.setPointStyle(PointStyle.XCROSS);
 				xyGraphSignal.addTrace(traceResidualSignalSum);
-				// now I want to call the updateXYGraph(DecompositionResults results) method for the
-				// instance of DecompositionCompositionResultUI in this perspective but I don't know how to do it
-				//DecompositionCompositionResultUI.updateXYGraph(results);
+				//
+				updateXYGraphCompositions(results);
 			}
 		}
 		if(hasETimes) {
@@ -648,5 +656,95 @@ public class DecompositionResultUI extends Composite {
 		dataProviderTraceLeftMarker.setCurrentYDataArray(yDataTraceLeftMarker);
 		// xyGraph.setShowLegend(!xyGraph.isShowLegend());
 		// Display display = Display.getDefault();
+	}
+
+	public void updateXYGraphCompositions(DecompositionResults results) {
+
+		if(null != results) {
+			hasETimes = results.hasETimes();
+			System.out.println("Update Composition XYGraph for " + results.getName());
+			// if(0 == xyGraphNumberOfPoints) {
+			String newTitle = results.getName();
+			String ppUnits = results.getResults().get(0).getSourcePressureUnits();
+			newTitle = "Composition: " + newTitle;
+			xyGraphComposition.setTitle(newTitle);
+			if(hasETimes) {
+				xyGraphComposition.getPrimaryXAxis().setTitle("Elapsed Time, s");
+			} else {
+				xyGraphComposition.getPrimaryXAxis().setTitle("Scan Number");
+			}
+			xyGraphComposition.erase();
+			TreeMap<String, ArrayList<Double>> lookup = new TreeMap<String, ArrayList<Double>>();
+			if(results.isCalibrated()) {
+				xyGraphComposition.getPrimaryYAxis().setTitle("Partial Pressure, " + ppUnits);
+				xyGraphCompositionNumberOfPoints = results.getResults().size();
+				double[] xDataTraceComposition = new double[xyGraphCompositionNumberOfPoints];
+				String componentName;
+				DecompositionResult result;
+				for(int i = 0; i < xyGraphCompositionNumberOfPoints; i++) {
+					result = results.getResults().get(i);
+					for(int j = 0; j < result.getNumberOfComponents(); j++) {
+						componentName = result.getLibCompName(j);
+						if(null == lookup.get(componentName)) {
+							lookup.put(componentName, new ArrayList<Double>());
+						}
+						lookup.get(componentName).add(i, result.getPartialPressure(j, ppUnits));
+					}
+					if(hasETimes) {
+						xDataTraceComposition[i] = result.getETimeS();
+					} else {
+						xDataTraceComposition[i] = result.getResidualSpectrum().getSpectrumNumber();
+					}
+				}
+				if(0 >= lookup.size()) {
+					return;
+				}
+				double minY = 0;
+				for(String strName : lookup.keySet()) {
+					ArrayList<Double> templist;
+					Color traceColor;
+					templist = lookup.get(strName);
+					Double[] tempdata = new Double[1];
+					;
+					tempdata = templist.toArray(tempdata);
+					double[] ydata = new double[tempdata.length];
+					for(int ii = 0; ii < tempdata.length; ii++) {
+						ydata[ii] = tempdata[ii].doubleValue();
+						if(minY > ydata[ii]) {
+							minY = ydata[ii];
+						}
+					}
+					// create a trace data provider, which will provide the data to the trace.
+					CircularBufferDataProvider dataProviderTraceComposition = new CircularBufferDataProvider(false); // XYGraph data item
+					dataProviderTraceComposition.setCurrentXDataArray(xDataTraceComposition);
+					dataProviderTraceComposition.setCurrentYDataArray(ydata);
+					Trace traceTemp = traceCompositionsMap.get(strName);
+					traceColor = null;
+					if(null != traceTemp) {
+						traceColor = traceTemp.getTraceColor();
+						xyGraphComposition.removeTrace(traceTemp);
+					}
+					Trace traceComposition = new Trace(strName, xyGraphComposition.getPrimaryXAxis(), xyGraphComposition.getPrimaryYAxis(), dataProviderTraceComposition);
+					traceCompositionsMap.put(strName, traceComposition);
+					if(null != traceColor) {
+						traceComposition.setTraceColor(traceColor);
+					}
+					// traceScanSignalSum.setPointStyle(PointStyle.XCROSS);
+					xyGraphComposition.addTrace(traceComposition);
+				}
+				if(0 > minY) {
+					xyGraphComposition.getPrimaryYAxis().setAutoScale(true);
+				} else {
+					Range range;
+					xyGraphComposition.getPrimaryYAxis().setAutoScale(false);
+					range = xyGraphComposition.getPrimaryYAxis().getRange();
+					xyGraphComposition.getPrimaryYAxis().setRange(minY, range.getUpper());
+					;
+				}
+			}
+			// }
+			// xyGraph.setShowLegend(!xyGraph.isShowLegend());
+			// Display display = Display.getDefault();
+		}
 	}
 }
