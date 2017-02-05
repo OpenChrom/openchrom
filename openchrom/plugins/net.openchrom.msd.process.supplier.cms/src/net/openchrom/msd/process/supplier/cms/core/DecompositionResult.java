@@ -84,6 +84,11 @@ public class DecompositionResult {
 		return componentCount;
 	}
 
+	public Double getFraction(int libIndex) {
+
+		return this.xComp.get(libIndex);
+	}
+
 	public Double getPartialPressure(int index) {
 
 		if(isQuantitative.get(index)) {
