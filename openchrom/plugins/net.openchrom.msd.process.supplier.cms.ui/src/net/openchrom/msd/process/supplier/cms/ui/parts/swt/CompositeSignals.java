@@ -145,7 +145,7 @@ public class CompositeSignals extends Composite {
 				double signalSum;
 				spectrum = results.getResults().get(i).getResidualSpectrum();
 				if(!usingETimes) {
-					xDataTraceResidualSignalSum[i] = spectrum.getSpectrumNumber();
+					xDataTraceResidualSignalSum[i] = spectrum.getScanNumber();
 				} else {
 					xDataTraceResidualSignalSum[i] = spectrum.getEtimes();
 				}
@@ -223,7 +223,7 @@ public class CompositeSignals extends Composite {
 				spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(i);
 				--i;
 				if(!usingETimes) {
-					xDataTraceScanSignalSum[i] = spectrum.getSpectrumNumber();
+					xDataTraceScanSignalSum[i] = spectrum.getScanNumber();
 				} else {
 					xDataTraceScanSignalSum[i] = spectrum.getEtimes();
 				}

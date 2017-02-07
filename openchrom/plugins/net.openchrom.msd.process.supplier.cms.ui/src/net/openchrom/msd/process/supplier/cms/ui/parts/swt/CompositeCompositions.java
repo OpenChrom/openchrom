@@ -114,7 +114,7 @@ public class CompositeCompositions extends Composite {
 				if(usingETimes) {
 					xDataTraceComposition[i] = result.getETimeS();
 				} else {
-					xDataTraceComposition[i] = result.getResidualSpectrum().getSpectrumNumber();
+					xDataTraceComposition[i] = result.getResidualSpectrum().getScanNumber();
 				}
 			}
 			if(results.isCalibrated()) {

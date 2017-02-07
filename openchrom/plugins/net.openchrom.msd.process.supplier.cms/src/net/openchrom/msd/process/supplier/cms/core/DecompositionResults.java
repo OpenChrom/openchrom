@@ -61,7 +61,7 @@ public class DecompositionResults {
 			ppUnits = result.getSourcePressureUnits();
 			// make column heading string for this result
 			headingBuilder.setLength(0);
-			headingBuilder.append(String.format("ETime,s\tPtotal,%s", ppUnits));
+			headingBuilder.append(String.format("Scan #\tETime,s\tPtotal,%s", ppUnits));
 			for(int i = 0; i < result.getNumberOfComponents(); i++) {
 				if(result.isQuantitative(i)) {
 					headingBuilder.append(String.format("\t%s", result.getLibCompName(i)));
@@ -74,9 +74,13 @@ public class DecompositionResults {
 				columnHeading = headingBuilder.toString();
 				output.append(columnHeading);
 			}
-			output.append(String.format("%g\t%g", result.getETimeS(), result.getSourcePressure()));
+			output.append(String.format("%d\t%g\t%g", result.getResidualSpectrum().getScanNumber(), result.getETimeS(), result.getSourcePressure()));
 			for(int i = 0; i < result.getNumberOfComponents(); i++) {
-				output.append(String.format("\t%g", result.getPartialPressure(i)));
+				if(result.isQuantitative(i)) {
+					output.append(String.format("\t%g", result.getPartialPressure(i)));
+				} else {
+					output.append(String.format("\t%g", result.getFraction(i)));
+				}
 			}
 			output.append(String.format("%n"));
 		}
@@ -104,7 +108,7 @@ public class DecompositionResults {
 			sigUnits = result.getSignalUnits();
 			// make column heading string for this result
 			headingBuilder.setLength(0);
-			headingBuilder.append("ETime,s");
+			headingBuilder.append("Scan #\tETime,s");
 			for(IIonMeasurement peak : result.getResidualSpectrum().getIonMeasurements()) {
 				if(0 == (peak.getMZ() % 1)) {
 					headingBuilder.append("\t" + (int)peak.getMZ());
@@ -118,7 +122,7 @@ public class DecompositionResults {
 				columHeading = headingBuilder.toString();
 				output.append(columHeading);
 			}
-			output.append(String.format("%g", result.getETimeS()));
+			output.append(String.format("%d\t%g", result.getResidualSpectrum().getScanNumber(), result.getETimeS()));
 			for(IIonMeasurement peak : result.getResidualSpectrum().getIonMeasurements()) {
 				output.append(String.format("\t%g", peak.getSignal()));
 			}
