@@ -58,14 +58,6 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 		this.eTimeS = -1d;
 	}
 	
-	public int getSpectrumNumber() {
-		return spectrumNumber;
-	}
-
-	public void setSpectrumNumber(int spectrumNumber) {
-		this.spectrumNumber = spectrumNumber;
-	}
-
 	@Override
 	public int compareTo(ICalibratedVendorLibraryMassSpectrum spectrum) {
 

@@ -549,17 +549,6 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	@Override
-	public int getScanNumber() {
-
-		return 0;
-	}
-
-	@Override
-	public void setScanNumber(int scanNumber) {
-
-	}
-
-	@Override
 	public int getRetentionTime() {
 
 		return 0;

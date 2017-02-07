@@ -128,7 +128,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 						if(0 != rescaleValue)
 							rescale(massSpectrum, rescaleValue);
 						spectrumCount++;
-						massSpectrum.setSpectrumNumber(spectrumCount);
+						massSpectrum.setScanNumber(spectrumCount);
 						massSpectra.addMassSpectrum(massSpectrum);
 					} else { // got no peaks for the current spectrum, discard incomplete spectrum
 						System.out.println("got no peaks from \"" + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) ? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName() : "NAME: " + massSpectrum.getLibraryInformation().getName()));
@@ -162,7 +162,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 						if(0 != rescaleValue)
 							rescale(massSpectrum, rescaleValue);
 						spectrumCount++;
-						massSpectrum.setSpectrumNumber(spectrumCount);
+						massSpectrum.setScanNumber(spectrumCount);
 						massSpectra.addMassSpectrum(massSpectrum);
 						parseState = 1;
 					}
@@ -352,7 +352,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 				if(0 != rescaleValue)
 					rescale(massSpectrum, rescaleValue);
 				spectrumCount++;
-				massSpectrum.setSpectrumNumber(spectrumCount);
+				massSpectrum.setScanNumber(spectrumCount);
 				massSpectra.addMassSpectrum(massSpectrum);
 			}
 		} else if(1 == parseState) { // got no peaks, discard incomplete spectrum
