@@ -150,7 +150,6 @@ public class DecompositionResultUI extends Composite {
 			return;
 		}
 		compositeSignalsGraph.clearResiduals();
-		compositeSignalsGraph.updateResiduals(results, usingETimes);
 		compositeSignalsGraph.updateXYGraph(scanSpectra, results, usingETimes);
 		compositeCompositions.clearXYGraph();
 		compositeCompositions.updateXYGraph(results, usingETimes);
@@ -169,7 +168,7 @@ public class DecompositionResultUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				String pathCmsSpectra = PreferenceSupplier.getPathCmsSpectra();
+				String pathCmsSpectra = PreferenceSupplier.getPathCmsScanSpectra();
 				FileDialog fileDialog = new FileDialog(Display.getCurrent().getActiveShell(), SWT.READ_ONLY);
 				fileDialog.setText("Select the CMS spectra file.");
 				fileDialog.setFilterExtensions(new String[]{"*.cms", "*.CMS"});
@@ -181,7 +180,7 @@ public class DecompositionResultUI extends Composite {
 					 * Remember the path.
 					 */
 					pathCmsSpectra = fileDialog.getFilterPath();
-					PreferenceSupplier.setPathCmsSpectra(pathCmsSpectra);
+					PreferenceSupplier.setPathCmsScanSpectra(pathCmsSpectra);
 					textCmsSpectraPath.setText(pathname);
 					readAndPlotCMSscanFile();
 				}

@@ -131,7 +131,7 @@ public class CompositeSignals extends Composite {
 		xyGraphSignalNumberOfResidualPoints = 0; // invalidate current XYGraph residual plot
 	}
 
-	public void updateResiduals(DecompositionResults results, boolean usingETimes) {
+	private void updateResiduals(DecompositionResults results, boolean usingETimes) {
 
 		ICalibratedVendorMassSpectrum spectrum;
 		if((null != results) && updateNeededResiduals) {
