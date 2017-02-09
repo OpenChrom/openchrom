@@ -26,7 +26,8 @@ import net.openchrom.msd.process.supplier.cms.Activator;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
-	public static final String P_PATH_CMS_SPECTRA = "pathCmsSpectra";
+	public static final String P_PATH_CMS_SCAN_SPECTRA = "pathCmsScanSpectra";
+	public static final String P_PATH_CMS_LIB_SPECTRA = "pathCmsLibSpectra";
 	public static final String DEF_PATH_CMS_SPECTRA = "";
 	//
 	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
@@ -57,7 +58,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		Map<String, String> defaultValues = new HashMap<String, String>();
 		//
-		defaultValues.put(P_PATH_CMS_SPECTRA, DEF_PATH_CMS_SPECTRA);
+		defaultValues.put(P_PATH_CMS_SCAN_SPECTRA, DEF_PATH_CMS_SPECTRA);
+		defaultValues.put(P_PATH_CMS_LIB_SPECTRA, DEF_PATH_CMS_SPECTRA);
 		//
 		return defaultValues;
 	}
@@ -68,17 +70,34 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return getScopeContext().getNode(getPreferenceNode());
 	}
 
-	public static String getPathCmsSpectra() {
+	public static String getPathCmsLibSpectra() {
 
 		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_PATH_CMS_SPECTRA, DEF_PATH_CMS_SPECTRA);
+		return eclipsePreferences.get(P_PATH_CMS_LIB_SPECTRA, DEF_PATH_CMS_SPECTRA);
 	}
 
-	public static void setPathCmsSpectra(String pathCmsSpectra) {
+	public static String getPathCmsScanSpectra() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_PATH_CMS_SCAN_SPECTRA, DEF_PATH_CMS_SPECTRA);
+	}
+
+	public static void setPathCmsLibSpectra(String pathCmsSpectra) {
 
 		try {
 			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-			eclipsePreferences.put(P_PATH_CMS_SPECTRA, pathCmsSpectra);
+			eclipsePreferences.put(P_PATH_CMS_LIB_SPECTRA, pathCmsSpectra);
+			eclipsePreferences.flush();
+		} catch(BackingStoreException e) {
+			logger.warn(e);
+		}
+	}
+
+	public static void setPathCmsScanSpectra(String pathCmsSpectra) {
+
+		try {
+			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+			eclipsePreferences.put(P_PATH_CMS_SCAN_SPECTRA, pathCmsSpectra);
 			eclipsePreferences.flush();
 		} catch(BackingStoreException e) {
 			logger.warn(e);
