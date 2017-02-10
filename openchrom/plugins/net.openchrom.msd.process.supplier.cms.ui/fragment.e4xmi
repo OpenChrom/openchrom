@@ -6,7 +6,7 @@
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_LM7ukNRQEeaaPePRBRrPAg" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.perspectivestack.main">
     <elements xsi:type="advanced:Perspective" xmi:id="_PfAAsNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.perspective.cmsworkflow" label="CMS Workflow" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif">
       <children xsi:type="basic:PartSashContainer" xmi:id="_YU3OINRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.0">
-        <children xsi:type="basic:PartSashContainer" xmi:id="_bcE2sNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.1" horizontal="true">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_bcE2sNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.1" containerData="1000" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_dr4WINRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.0" containerData="3200">
             <children xsi:type="advanced:Placeholder" xmi:id="_RF7QUNRSEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.2" ref="_PhozENRSEeaaPePRBRrPAg"/>
             <children xsi:type="advanced:Placeholder" xmi:id="_fwBYINRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.placeholder.1" ref="_CVfz0NRQEeaaPePRBRrPAg"/>
@@ -18,7 +18,7 @@
             <children xsi:type="advanced:Placeholder" xmi:id="_PQcMwOr4Eea2Cahk5zjT8w" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.5" ref="_aPiVoNRREeaaPePRBRrPAg"/>
           </children>
         </children>
-        <children xsi:type="basic:PartSashContainer" xmi:id="_cGVUoNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.2" horizontal="true">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_cGVUoNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.2" containerData="8000" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_jSZSsNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.1" containerData="16000" selectedElement="_gRmlwNRREeaaPePRBRrPAg">
             <children xsi:type="advanced:Placeholder" xmi:id="_gRmlwNRREeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.0" ref="_1x_agNRQEeaaPePRBRrPAg"/>
           </children>
