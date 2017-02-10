@@ -70,7 +70,7 @@ public class MassSpectraDecomposition {
 		residualSpectra.setName(scanSpectra.getName());
 		for(IScanMSD scan : scanSpectra.getList()) {
 			// iterate over the unknown scan spectra
-			// try { // replace with a noisy spectrum
+			// try { // replace with a noisy spectrum for testing
 			// IScanMSD newscan = ((ICalibratedVendorMassSpectrum)scan).makeNoisyCopy((long)22345, 0.0);
 			// scan = newscan;
 			// } catch(CloneNotSupportedException e) {
@@ -191,7 +191,7 @@ public class MassSpectraDecomposition {
 				solver.solve(wty, x);
 				// compute sum of squares error and residuals vector
 				CommonOps.mult(A, x, ynew);
-				CommonOps.subtract(ynew, y, yResid);
+				CommonOps.subtract(y, ynew, yResid);
 				ssError = SpecializedOps.elementSumSq(yResid);
 				CommonOps.mult(P, yResid, wtyerr);
 				wtssError = SpecializedOps.elementSumSq(wtyerr);
@@ -214,11 +214,6 @@ public class MassSpectraDecomposition {
 						System.out.printf("\tppress(%6s)=\t%.13f\tmolfrc=\t%.13f%n", scanRef.getSourcePressureUnits(), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());
 					} else {
 						System.out.println(" uncalibrated");
-						// System.out.println("\t" + fitDataset.getLibCompName(ii)
-						// + ":\tx[" + ii + "]=" + x.get(ii)
-						// + ",\tpp(" + fitDataset.getScanRef().getSourcePressureUnits() + ")="
-						// + x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits)
-						// + ",\tmf=" + x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());
 					}
 				}
 				System.out.println("");
@@ -272,19 +267,8 @@ public class MassSpectraDecomposition {
 			results.addResult(result);
 			residualSpectra.addMassSpectrum(scanResidual);
 			System.out.println();
-			// allow user to add and/or delete components from selected library components list
-			// then repeat decomposition using new library component selection
-			/*
-			 * Use the scan identifier:
-			 * org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.file
-			 * Works only properly if a library has been set.
-			 */
-			// MassSpectrumIdentifier.identify(scan, MS_IDENTIFIER_ID, monitor);
-			// for(IMassSpectrumTarget massSpectrumTarget : scan.getTargets()) {
-			// System.out.println("\t" + massSpectrumTarget.getLibraryInformation().getName());
-			// }
 		}
-		// print results
+		// print results to console
 		System.out.println(results.getCompositionResultsTable());
 		System.out.println(results.getResidualSpectraTable());
 		return results;
