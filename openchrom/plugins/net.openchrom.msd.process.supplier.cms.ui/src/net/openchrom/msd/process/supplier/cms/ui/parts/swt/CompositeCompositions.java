@@ -14,26 +14,57 @@ package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataProvider;
 import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
 import org.eclipse.nebula.visualization.xygraph.linearscale.Range;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResult;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
 
 public class CompositeCompositions extends Composite {
 
+	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
 	private TreeMap<String, Trace> traceCompositionsMap; // key is composition name string, value is Trace for that composition, needed so trace can be removed
 	private XYGraph xyGraphComposition;
 	private int xyGraphCompositionNumberOfPoints = 0; // if xyGraphCompositionNumberOfPoints > 0, then remainder of xyGraphComposition data items are valid
+	private Button buttonPP; // select partial pressures
+	private Button buttonMF; // select mol fraction
+	private Button buttonLF; // select library fraction
+	private DecompositionResults results = null;
+	private boolean usingETimes;
+
+	private enum Yunits {
+		PP, MF, LF
+	}; // Partial Pressure, Mol Fraction, Library Fraction
+
+	private Yunits yUnits = Yunits.PP;
+
+	private void setyUnits(Yunits yUnits) {
+
+		if((null != results) && !results.isCalibrated()) {
+			yUnits = Yunits.LF;
+			buttonPP.setSelection(false);
+			buttonMF.setSelection(false);
+			buttonLF.setSelection(true);
+		} else {
+			this.yUnits = yUnits;
+		}
+		updateXYGraph();
+	}
 
 	public CompositeCompositions(Composite parent, int style) {
 		super(parent, style);
@@ -45,11 +76,94 @@ public class CompositeCompositions extends Composite {
 		/*
 		 * XY Graph
 		 */
-		this.setLayout(new FillLayout());
-		GridData compositeGraphGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		this.setLayoutData(compositeGraphGridData);
+		GridLayout thisGridLayout = new GridLayout(1, false);
+		this.setLayout(thisGridLayout);
+		GridData thisGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		this.setLayoutData(thisGridData);
 		//
-		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(this, SWT.NONE));
+		Composite compositeTopRow = new Composite(this, SWT.BORDER);
+		GridLayout topRowCompositeGridLayout = new GridLayout(4, false);
+		// topRowCompositeGridLayout.marginHeight = 0;
+		// topRowCompositeGridLayout.marginWidth = 0;
+		compositeTopRow.setLayout(topRowCompositeGridLayout);
+		GridData topRowCompositeGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
+		compositeTopRow.setLayoutData(topRowCompositeGridData);
+		// display units Buttons
+		Label label = new Label(compositeTopRow, SWT.NONE);
+		label.setText("Display Units:");
+		//
+		buttonPP = new Button(compositeTopRow, SWT.RADIO);
+		buttonPP.setText("Partial Pressure");
+		buttonPP.setSelection(true);
+		buttonPP.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				try {
+					if(buttonPP.getSelection()) {
+						// System.out.println("buttonPP selection event, selected");
+						setyUnits(Yunits.PP);
+					} else {
+						// System.out.println("buttonPP selection event, not selected");
+					}
+					// decomposeSpectra();
+				} catch(Exception e1) {
+					logger.warn(e1);
+				}
+			}
+		});
+		//
+		buttonMF = new Button(compositeTopRow, SWT.RADIO);
+		buttonMF.setText("Mol Fraction");
+		buttonMF.setSelection(false);
+		buttonMF.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				try {
+					if(buttonMF.getSelection()) {
+						// System.out.println("buttonMF selection event, selected");
+						setyUnits(Yunits.MF);
+					} else {
+						// System.out.println("buttonMF selection event, not selected");
+					}
+					// decomposeSpectra();
+				} catch(Exception e1) {
+					logger.warn(e1);
+				}
+			}
+		});
+		//
+		buttonLF = new Button(compositeTopRow, SWT.RADIO);
+		buttonLF.setText("Library Fraction");
+		buttonLF.setSelection(false);
+		buttonLF.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				try {
+					if(buttonLF.getSelection()) {
+						// System.out.println("buttonLF selection event, selected");
+						setyUnits(Yunits.LF);
+					} else {
+						// System.out.println("buttonLF selection event, not selected");
+					}
+					// decomposeSpectra();
+				} catch(Exception e1) {
+					logger.warn(e1);
+				}
+			}
+		});
+		//
+		Composite compositeGraph = new Composite(this, SWT.NONE);
+		GridData compositeGraphGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		compositeGraph.setLayout(new FillLayout());
+		compositeGraph.setLayoutData(compositeGraphGridData);
+		//
+		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(compositeGraph, SWT.NONE));
 		xyGraphComposition = new XYGraph();
 		traceCompositionsMap = new TreeMap<String, Trace>();
 		xyGraphComposition.setTitle("Composition");
@@ -81,6 +195,19 @@ public class CompositeCompositions extends Composite {
 
 	public void updateXYGraph(DecompositionResults results, boolean usingETimes) {
 
+		this.results = results;
+		this.usingETimes = usingETimes;
+		if((null != results) && !results.isCalibrated()) {
+			yUnits = Yunits.LF;
+			buttonPP.setSelection(false);
+			buttonMF.setSelection(false);
+			buttonLF.setSelection(true);
+		}
+		updateXYGraph();
+	}
+
+	private void updateXYGraph() {
+
 		if(null != results) {
 			System.out.println("Update Composition XYGraph for " + results.getName());
 			// if(0 == xyGraphNumberOfPoints) {
@@ -92,6 +219,15 @@ public class CompositeCompositions extends Composite {
 				xyGraphComposition.getPrimaryXAxis().setTitle("Elapsed Time, s");
 			} else {
 				xyGraphComposition.getPrimaryXAxis().setTitle("Scan Number");
+			}
+			if(results.isCalibrated() && !(Yunits.LF == yUnits)) {
+				if(Yunits.PP == yUnits) {
+					xyGraphComposition.getPrimaryYAxis().setTitle("Partial Pressure, " + ppUnits);
+				} else if(Yunits.MF == yUnits) {
+					xyGraphComposition.getPrimaryYAxis().setTitle("Mol Fraction, dimensionless");
+				}
+			} else {
+				xyGraphComposition.getPrimaryYAxis().setTitle("Library Contribution, uncalibrated");
 			}
 			TreeMap<String, ArrayList<Double>> lookup = new TreeMap<String, ArrayList<Double>>();
 			xyGraphCompositionNumberOfPoints = results.getResults().size();
@@ -105,10 +241,14 @@ public class CompositeCompositions extends Composite {
 					if(null == lookup.get(componentName)) {
 						lookup.put(componentName, new ArrayList<Double>());
 					}
-					if(results.isCalibrated()) {
-						lookup.get(componentName).add(i, result.getPartialPressure(j, ppUnits));
+					if(results.isCalibrated() && !(Yunits.LF == yUnits)) {
+						if(Yunits.PP == yUnits) {
+							lookup.get(componentName).add(i, result.getPartialPressure(j, ppUnits));
+						} else if(Yunits.MF == yUnits) {
+							lookup.get(componentName).add(i, result.getMolFraction(j)); // MF units
+						}
 					} else {
-						lookup.get(componentName).add(i, result.getFraction(j));
+						lookup.get(componentName).add(i, result.getLibraryFraction(j));
 					}
 				}
 				if(usingETimes) {
@@ -116,11 +256,6 @@ public class CompositeCompositions extends Composite {
 				} else {
 					xDataTraceComposition[i] = result.getResidualSpectrum().getScanNumber();
 				}
-			}
-			if(results.isCalibrated()) {
-				xyGraphComposition.getPrimaryYAxis().setTitle("Partial Pressure, " + ppUnits);
-			} else {
-				xyGraphComposition.getPrimaryYAxis().setTitle("Library Contribution, uncalibrated");
 			}
 			if(0 >= lookup.size()) {
 				return; // no composition results

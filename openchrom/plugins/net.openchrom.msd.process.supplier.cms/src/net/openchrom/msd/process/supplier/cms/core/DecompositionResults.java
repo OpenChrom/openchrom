@@ -77,9 +77,9 @@ public class DecompositionResults {
 			output.append(String.format("%d\t%g\t%g", result.getResidualSpectrum().getScanNumber(), result.getETimeS(), result.getSourcePressure()));
 			for(int i = 0; i < result.getNumberOfComponents(); i++) {
 				if(result.isQuantitative(i)) {
-					output.append(String.format("\t%g", result.getPartialPressure(i)));
+					output.append(String.format("\t%g", result.getPartialPressure(i, result.getSourcePressureUnits())));
 				} else {
-					output.append(String.format("\t%g", result.getFraction(i)));
+					output.append(String.format("\t%g", result.getLibraryFraction(i)));
 				}
 			}
 			output.append(String.format("%n"));

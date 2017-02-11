@@ -84,24 +84,24 @@ public class DecompositionResult {
 		return componentCount;
 	}
 
-	public Double getFraction(int libIndex) {
+	public double getLibraryFraction(int libIndex) {
 
 		return this.xComp.get(libIndex);
 	}
 
-	public Double getPartialPressure(int index) {
+	public double getMolFraction(int libIndex) {
 
-		if(isQuantitative.get(index)) {
-			return this.xComp.get(index) * this.libraryComponents.get(index).getSourcePressure(this.sourcePressureUnits);
+		if(isQuantitative.get(libIndex)) {
+			return this.getPartialPressure(libIndex, this.sourcePressureUnits) / this.getSourcePressure();
 		} else {
 			return 0d;
 		}
 	}
 
-	public Double getPartialPressure(int index, String units) {
+	public double getPartialPressure(int libIndex, String units) {
 
-		if(isQuantitative.get(index)) {
-			return this.xComp.get(index) * this.libraryComponents.get(index).getSourcePressure(units);
+		if(isQuantitative.get(libIndex)) {
+			return this.xComp.get(libIndex) * this.libraryComponents.get(libIndex).getSourcePressure(units);
 		} else {
 			return 0d;
 		}
