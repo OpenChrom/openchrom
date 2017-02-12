@@ -49,7 +49,7 @@ public class CompositeCompositions extends Composite {
 	private Button buttonPP; // select partial pressures
 	private Button buttonMF; // select mol fraction
 	private Button buttonLF; // select library fraction
-	private Button buttonLogScale; //  if checked, use offset log scale, otherwise use linear scale
+	private Button buttonLogScale; // if checked, use offset log scale, otherwise use linear scale
 	private DecompositionResults results = null;
 	private boolean usingETimes = false;
 	private boolean usingOffsetLogScale = false;
@@ -82,6 +82,7 @@ public class CompositeCompositions extends Composite {
 	}
 
 	private void initialize() {
+
 		GridLayout thisGridLayout = new GridLayout(1, false);
 		this.setLayout(thisGridLayout);
 		GridData thisGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -266,9 +267,7 @@ public class CompositeCompositions extends Composite {
 			} else {
 				xyGraphComposition.getPrimaryYAxis().setTitle("Library Contribution, uncalibrated");
 			}
-			
 			xyGraphComposition.getPrimaryYAxis().setLogScale(usingOffsetLogScale);
-			
 			TreeMap<String, ArrayList<Double>> lookup = new TreeMap<String, ArrayList<Double>>();
 			xyGraphCompositionNumberOfPoints = results.getResults().size();
 			double[] xDataTraceComposition = new double[xyGraphCompositionNumberOfPoints];
@@ -339,7 +338,7 @@ public class CompositeCompositions extends Composite {
 				Double[] tempdata = new Double[1];
 				tempdata = templist.toArray(tempdata);
 				double[] ydata = new double[tempdata.length];
-				if (usingOffsetLogScale) {
+				if(usingOffsetLogScale) {
 					for(int ii = 0; ii < tempdata.length; ii++) {
 						ydata[ii] = tempdata[ii].doubleValue() + scaleOffset;
 					}
@@ -367,7 +366,6 @@ public class CompositeCompositions extends Composite {
 				// traceComposition.setPointStyle(PointStyle.XCROSS);
 				xyGraphComposition.addTrace(traceComposition);
 			}
-			
 			if(0 > minY) {
 				xyGraphComposition.getPrimaryYAxis().setAutoScale(true);
 			} else {
@@ -376,11 +374,10 @@ public class CompositeCompositions extends Composite {
 				range = xyGraphComposition.getPrimaryYAxis().getRange();
 				xyGraphComposition.getPrimaryYAxis().setRange(0, range.getUpper());
 			}
-
 			if(null != traceScaleOffset) {
 				xyGraphComposition.removeTrace(traceScaleOffset);
 			}
-			if (usingOffsetLogScale) {
+			if(usingOffsetLogScale) {
 				CircularBufferDataProvider dataProviderTraceScaleOffset = new CircularBufferDataProvider(false); // XYGraph data item
 				dataProviderTraceScaleOffset.setBufferSize(2);
 				double[] ydata = new double[2];
