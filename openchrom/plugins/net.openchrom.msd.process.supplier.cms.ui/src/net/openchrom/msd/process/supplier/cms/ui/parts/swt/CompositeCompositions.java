@@ -21,7 +21,6 @@ import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataProvider;
 import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
-import org.eclipse.nebula.visualization.xygraph.linearscale.Range;
 import org.eclipse.nebula.visualization.xygraph.util.XYGraphMediaFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -53,15 +52,13 @@ public class CompositeCompositions extends Composite {
 	private DecompositionResults results = null;
 	private boolean usingETimes = false;
 	private boolean usingOffsetLogScale = false;
-	double scaleOffset;
-	double scaleSlope;
-	Trace traceScaleOffset = null;
+	private double scaleOffset;
+	private Trace traceScaleOffset = null;
+	private Yunits yUnits = Yunits.PP;
 
 	private enum Yunits {
 		PP, MF, LF // Partial Pressure, Mol Fraction, Library Fraction
 	};
-
-	private Yunits yUnits = Yunits.PP;
 
 	private void setyUnits(Yunits yUnits) {
 
@@ -214,7 +211,7 @@ public class CompositeCompositions extends Composite {
 		lightweightSystem.setContents(xyGraphComposition);
 	}
 
-	public void clearXYGraph() {
+	private void clearXYGraph() {
 
 		if(null != traceCompositionsMap) {
 			for(Trace traceTemp : traceCompositionsMap.values()) {
@@ -231,16 +228,19 @@ public class CompositeCompositions extends Composite {
 		xyGraphCompositionNumberOfPoints = 0; // invalidate current XYGraph composition plots
 	}
 
-	public void updateXYGraph(DecompositionResults results, boolean usingETimes) {
+	public void updateXYGraph(DecompositionResults results) {
 
 		this.results = results;
-		this.usingETimes = usingETimes;
-		if((null != results) && !results.isCalibrated()) {
+		if(null == results) {
+			clearXYGraph();
+			return;
+		} else if(!results.isCalibrated()) {
 			yUnits = Yunits.LF;
 			buttonPP.setSelection(false);
 			buttonMF.setSelection(false);
 			buttonLF.setSelection(true);
 		}
+		this.usingETimes = results.isUsingETimes();
 		updateXYGraph();
 	}
 
@@ -330,7 +330,6 @@ public class CompositeCompositions extends Composite {
 				}
 			}
 			scaleOffset = minAbsY - minY;
-			scaleSlope = 1.0d / (maxY + scaleOffset);
 			for(String strName : lookup.keySet()) {
 				ArrayList<Double> templist;
 				Color traceColor;
@@ -366,18 +365,18 @@ public class CompositeCompositions extends Composite {
 				// traceComposition.setPointStyle(PointStyle.XCROSS);
 				xyGraphComposition.addTrace(traceComposition);
 			}
-			if(0 > minY) {
-				xyGraphComposition.getPrimaryYAxis().setAutoScale(true);
-			} else {
-				Range range;
-				xyGraphComposition.getPrimaryYAxis().setAutoScale(false);
-				range = xyGraphComposition.getPrimaryYAxis().getRange();
-				xyGraphComposition.getPrimaryYAxis().setRange(0, range.getUpper());
-			}
 			if(null != traceScaleOffset) {
 				xyGraphComposition.removeTrace(traceScaleOffset);
 			}
-			if(usingOffsetLogScale) {
+			xyGraphComposition.getPrimaryYAxis().setAutoScale(false);
+			if(!usingOffsetLogScale) {
+				if(0 < minY) {
+					xyGraphComposition.getPrimaryYAxis().setRange(0, 1.05 * maxY);
+				} else {
+					xyGraphComposition.getPrimaryYAxis().setRange(1.05 * minY, 1.05 * maxY);
+				}
+			} else {
+				xyGraphComposition.getPrimaryYAxis().setRange(0.95 * minAbsY, 1.05 * maxY);
 				CircularBufferDataProvider dataProviderTraceScaleOffset = new CircularBufferDataProvider(false); // XYGraph data item
 				dataProviderTraceScaleOffset.setBufferSize(2);
 				double[] ydata = new double[2];

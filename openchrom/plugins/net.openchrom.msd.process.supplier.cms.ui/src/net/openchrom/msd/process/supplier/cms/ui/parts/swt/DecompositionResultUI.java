@@ -12,12 +12,8 @@
 package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.text.DecimalFormat;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -135,30 +131,29 @@ public class DecompositionResultUI extends Composite {
 		MassSpectraDecomposition decomposer = new MassSpectraDecomposition();
 		IMassSpectra libMassSpectra = compositeLibrarys.getLibSpectra();
 		results = decomposer.decompose(scanSpectra, libMassSpectra, new NullProgressMonitor());
-		
-		//try {
-		//	File libraryFile = new File("C:/Users/whitlow/git/cmsworkflow/openchrom/plugins/net.openchrom.msd.process.supplier.cms.fragment.test/testData/files/import/test1/LibrarySpectra.cms");
-		//	MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
-		//	IMassSpectra libMassSpectra = massSpectrumReader.read(libraryFile, new NullProgressMonitor());
-		//	MassSpectraDecomposition decomposer = new MassSpectraDecomposition();
-		//	results = decomposer.decompose(scanSpectra, libMassSpectra, new NullProgressMonitor());
-		//} catch(FileNotFoundException e) {
-		//	System.out.println(e);
-		//} catch(FileIsNotReadableException e) {
-		//	System.out.println(e);
-		//} catch(FileIsEmptyException e) {
-		//	System.out.println(e);
-		//} catch(IOException e) {
-		//	System.out.println(e);
-		//}
-		
+		// try {
+		// File libraryFile = new File("C:/Users/whitlow/git/cmsworkflow/openchrom/plugins/net.openchrom.msd.process.supplier.cms.fragment.test/testData/files/import/test1/LibrarySpectra.cms");
+		// MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
+		// IMassSpectra libMassSpectra = massSpectrumReader.read(libraryFile, new NullProgressMonitor());
+		// MassSpectraDecomposition decomposer = new MassSpectraDecomposition();
+		// results = decomposer.decompose(scanSpectra, libMassSpectra, new NullProgressMonitor());
+		// } catch(FileNotFoundException e) {
+		// System.out.println(e);
+		// } catch(FileIsNotReadableException e) {
+		// System.out.println(e);
+		// } catch(FileIsEmptyException e) {
+		// System.out.println(e);
+		// } catch(IOException e) {
+		// System.out.println(e);
+		// }
 		if(null == results) {
 			return;
 		}
 		compositeSignalsGraph.clearResiduals();
 		compositeSignalsGraph.updateXYGraph(scanSpectra, results, usingETimes);
-		compositeCompositions.clearXYGraph();
-		compositeCompositions.updateXYGraph(results, usingETimes);
+		compositeCompositions.updateXYGraph(null); // send null to clear graph
+		results.setUsingETimes(usingETimes);
+		compositeCompositions.updateXYGraph(results);
 		return;
 	}
 
@@ -371,7 +366,7 @@ public class DecompositionResultUI extends Composite {
 			if(file.exists()) {
 				compositeSignalsGraph.clearXYGraph();
 				results = null; // invalidate current decomposition results
-				compositeCompositions.clearXYGraph();
+				compositeCompositions.updateXYGraph(null); // clear xyGraph
 				MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 				cmsSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
 				if(null != cmsSpectra) {
