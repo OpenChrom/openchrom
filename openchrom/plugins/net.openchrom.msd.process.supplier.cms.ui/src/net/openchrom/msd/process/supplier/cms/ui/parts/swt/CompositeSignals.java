@@ -182,6 +182,7 @@ public class CompositeSignals extends Composite {
 		this.setLayout(new FillLayout());
 		// compositeGraph.setLayout(new FillLayout());
 		GridData compositeGraphGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		compositeGraphGridData.horizontalSpan = 2;
 		this.setLayoutData(compositeGraphGridData);
 		//
 		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(this, SWT.NONE));
@@ -249,7 +250,7 @@ public class CompositeSignals extends Composite {
 		}
 	}
 
-	public void updateXYGraph(IMassSpectra spectra, DecompositionResults results, boolean usingETimes) {
+	public void updateXYGraph(IMassSpectra spectra, DecompositionResults results, boolean usingETimes, boolean usingOffsetLogScale) {
 
 		System.out.println("Update Signal XYGraph for " + spectra.getName());
 		updateSignalSum(spectra, usingETimes);

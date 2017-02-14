@@ -5,14 +5,13 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * whitlow - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 
 import java.io.File;
-import java.util.TreeMap;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
@@ -22,19 +21,14 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.nebula.visualization.xygraph.figures.Trace;
-import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
@@ -42,38 +36,44 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
-import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
-import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
 
 public class CompositeLibrarySpectra extends Composite {
-	
+
 	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
 	private Text textCmsLibraryFilePath;
 	private List listCmsComponents;
 	private IMassSpectra cmsLibSpectra;
 	private boolean isSelected[];
-	
+
 	public CompositeLibrarySpectra(Composite parent, int style) {
 		super(parent, style);
 		this.initialize();
 	}
-	
+
 	public IMassSpectra getLibSpectra() {
+
 		IMassSpectra spectra = new MassSpectra();
-		
-		spectra.setName(cmsLibSpectra.getName());
-		for (int i = 0; i < cmsLibSpectra.getList().size(); i++) {
-			if (isSelected[i]) {
+		if(null == cmsLibSpectra) {
+			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "Please select a CMS library file");
+			return (null);
+		}
+		for(int i = 0; i < cmsLibSpectra.getList().size(); i++) {
+			if(isSelected[i]) {
 				spectra.addMassSpectrum(cmsLibSpectra.getList().get(i));
 			}
 		}
+		if(0 >= spectra.getList().size()) {
+			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "Please select library components");
+			return (null);
+		}
+		spectra.setName(cmsLibSpectra.getName());
 		return spectra;
 	}
 
 	private void initialize() {
-		
+
 		GridLayout thisGridLayout = new GridLayout(2, false);
 		thisGridLayout.marginHeight = 0;
 		thisGridLayout.marginWidth = 0;
@@ -91,38 +91,39 @@ public class CompositeLibrarySpectra extends Composite {
 		addButtonSelect(this);
 		// Component List
 		listCmsComponents = new List(this, SWT.SINGLE | SWT.V_SCROLL);
+		listCmsComponents.addSelectionListener(new SelectionListener() {
 
-		listCmsComponents.addSelectionListener( new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
+
 				String newString;
-		        int selection = listCmsComponents.getSelectionIndex();
+				int selection = listCmsComponents.getSelectionIndex();
 				if(null != cmsLibSpectra) {
 					ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)cmsLibSpectra.getList().get(selection);
 					isSelected[selection] = !isSelected[selection];
 					newString = spectrum.getLibraryInformation().getName();
-					if (isSelected[selection]) {
+					if(isSelected[selection]) {
 						newString = " *     " + newString;
 					} else {
 						newString = "       " + newString;
 					}
 					listCmsComponents.setItem(selection, newString);
 				}
-		        //String outString = "";
-		        //for (int loopIndex = 0; loopIndex < selectedItems.length; loopIndex++)
-		        //  outString += selectedItems[loopIndex] + " ";
-		        return;
-		    }
-	
+				// String outString = "";
+				// for (int loopIndex = 0; loopIndex < selectedItems.length; loopIndex++)
+				// outString += selectedItems[loopIndex] + " ";
+				return;
+			}
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-		        int[] selectedItems = listCmsComponents.getSelectionIndices();
-		        String outString = "";
-		        for (int loopIndex = 0; loopIndex < selectedItems.length; loopIndex++)
-		          outString += selectedItems[loopIndex] + " ";
-		        return;
-	        }
+
+				int[] selectedItems = listCmsComponents.getSelectionIndices();
+				for(int loopIndex = 0; loopIndex < selectedItems.length; loopIndex++) {
+				}
+				return;
+			}
 		});
-		
 		GridData listCmsComponentsGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		listCmsComponentsGridData.horizontalSpan = 2;
 		listCmsComponents.setLayoutData(listCmsComponentsGridData);
@@ -159,7 +160,7 @@ public class CompositeLibrarySpectra extends Composite {
 			}
 		});
 	}
-	
+
 	private void readAndLoadCMSlibraryFile() {
 
 		try {
@@ -196,7 +197,5 @@ public class CompositeLibrarySpectra extends Composite {
 		} catch(Exception e1) {
 			logger.warn(e1);
 		}
-		
 	}
-
-	}
+}
