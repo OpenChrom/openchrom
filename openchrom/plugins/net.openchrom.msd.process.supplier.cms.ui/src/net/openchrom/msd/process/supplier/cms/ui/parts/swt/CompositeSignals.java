@@ -11,7 +11,10 @@
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 
+import java.text.DecimalFormat;
+
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataProvider;
 import org.eclipse.nebula.visualization.xygraph.figures.Trace;
@@ -24,16 +27,19 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
+import net.openchrom.msd.process.supplier.cms.core.DecompositionResult;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
 
 public class CompositeSignals extends Composite {
 
+	private DecimalFormat decimalFormatscaleOffset = ValueFormat.getDecimalFormatEnglish("0.0##E00");
 	private int xyGraphSignalNumberOfResidualPoints = 0; // if xyGraphSignalNumberOfResidualPoints > 0, then remainder of xyGraphSignal residual data items are valid
 	private XYGraph xyGraphSignals;
 	private Trace traceScanSignalSum; // xyGraphSignal scan data item
 	private Trace traceResidualSignalSum; // xyGraphSignal scan data item
 	private Trace traceLeftMarker; // xyGraphSignal scan data item
 	private Trace traceRightMarker; // xyGraphSignal scan data item
+	private Trace traceScaleOffset = null;
 	private CircularBufferDataProvider dataProviderTraceSignalSum; // xyGraphSignal scan data item
 	private CircularBufferDataProvider dataProviderTraceResidualSignalSum; // xyGraphSignal scan data item
 	private CircularBufferDataProvider dataProviderTraceLeftMarker; // xyGraphSignal scan data item
@@ -56,7 +62,10 @@ public class CompositeSignals extends Composite {
 	private double positionLeftMarker;
 	private double positionRightMarker;
 	private double signalMinY;
+	private double signalMinAbsY;
 	private double signalMaxY;
+	private double scaleOffset;
+	private boolean usingOffsetLogScale;
 
 	public CompositeSignals(Composite parent, int style) {
 		super(parent, style);
@@ -79,6 +88,63 @@ public class CompositeSignals extends Composite {
 		}
 		positionRightMarker = xPosition;
 		updateNeededRightMarker = true;
+	}
+
+	private void updateSignalMinMax(IMassSpectra spectra, DecompositionResults results) {
+
+		double signalSum;
+		if(null != spectra) {
+			ICalibratedVendorMassSpectrum spectrum;
+			signalMinY = 0;
+			signalMinAbsY = 0;
+			signalMaxY = 0;
+			for(int i = 1; i <= spectra.getList().size(); i++) {
+				spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(i);
+				signalSum = spectrum.getTotalSignal();
+				if(signalMaxY == 0 && signalMinY == 0) {
+					signalMaxY = signalMinY = signalSum;
+					signalMinAbsY = java.lang.StrictMath.abs(signalSum);
+				} else {
+					if(signalMaxY < signalSum) {
+						signalMaxY = signalSum;
+					}
+					if(signalMinY > signalSum) {
+						signalMinY = signalSum;
+					}
+					if(signalSum != 0) {
+						signalSum = java.lang.StrictMath.abs(signalSum);
+						if(signalMinAbsY == 0 || signalMinAbsY > signalSum) {
+							signalMinAbsY = signalSum;
+						}
+					}
+				}
+			}
+		}
+		if(null != results) {
+			DecompositionResult result;
+			for(int i = 0; i < results.getResults().size(); i++) {
+				result = results.getResults().get(i);
+				signalSum = result.getResidualSpectrum().getSumSignal();
+				if(signalMaxY == 0 && signalMinY == 0) {
+					signalMaxY = signalMinY = signalSum;
+					signalMinAbsY = java.lang.StrictMath.abs(signalSum);
+				} else {
+					if(signalMaxY < signalSum) {
+						signalMaxY = signalSum;
+					}
+					if(signalMinY > signalSum) {
+						signalMinY = signalSum;
+					}
+					if(signalSum != 0) {
+						signalSum = java.lang.StrictMath.abs(signalSum);
+						if(signalMinAbsY == 0 || signalMinAbsY > signalSum) {
+							signalMinAbsY = signalSum;
+						}
+					}
+				}
+			}
+		}
+		scaleOffset = signalMinAbsY - signalMinY;
 	}
 
 	private void updateLeftMarker() {
@@ -150,13 +216,10 @@ public class CompositeSignals extends Composite {
 					xDataTraceResidualSignalSum[i] = spectrum.getEtimes();
 				}
 				signalSum = spectrum.getTotalSignal();
+				if(usingOffsetLogScale) {
+					signalSum += scaleOffset;
+				}
 				yDataTraceResidualSignalSum[i] = signalSum;
-				if(signalMinY > signalSum) {
-					signalMinY = signalSum;
-				}
-				if(signalMaxY < signalSum) {
-					signalMaxY = signalSum;
-				}
 			}
 			dataProviderTraceResidualSignalSum.setCurrentXDataArray(xDataTraceResidualSignalSum);
 			dataProviderTraceResidualSignalSum.setCurrentYDataArray(yDataTraceResidualSignalSum);
@@ -199,10 +262,8 @@ public class CompositeSignals extends Composite {
 
 	private void updateSignalSum(IMassSpectra spectra, boolean usingETimes) {
 
-		ICalibratedVendorMassSpectrum spectrum;
 		if(updateNeededSignalSum) {
-			signalMinY = 0;
-			signalMaxY = 0;
+			ICalibratedVendorMassSpectrum spectrum;
 			xyGraphSignals.getPrimaryYAxis().setAutoScale(true);
 			xyGraphSignals.setTitle("Signal: " + spectra.getName());
 			if(usingETimes) {
@@ -219,6 +280,7 @@ public class CompositeSignals extends Composite {
 			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(1);
 			signalUnits = spectrum.getSignalUnits();
 			xyGraphSignals.getPrimaryYAxis().setTitle("Signal, " + signalUnits);
+			//
 			for(int i = spectra.getList().size(); i > 0;) {
 				double signalSum;
 				spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(i);
@@ -229,13 +291,10 @@ public class CompositeSignals extends Composite {
 					xDataTraceScanSignalSum[i] = spectrum.getEtimes();
 				}
 				signalSum = spectrum.getTotalSignal();
+				if(usingOffsetLogScale) {
+					signalSum += scaleOffset;
+				}
 				yDataTraceScanSignalSum[i] = signalSum;
-				if(signalMinY > yDataTraceScanSignalSum[i]) {
-					signalMinY = yDataTraceScanSignalSum[i];
-				}
-				if(signalMaxY < signalSum) {
-					signalMaxY = signalSum;
-				}
 			}
 			dataProviderTraceSignalSum.setCurrentXDataArray(xDataTraceScanSignalSum);
 			dataProviderTraceSignalSum.setCurrentYDataArray(yDataTraceScanSignalSum);
@@ -253,14 +312,48 @@ public class CompositeSignals extends Composite {
 	public void updateXYGraph(IMassSpectra spectra, DecompositionResults results, boolean usingETimes, boolean usingOffsetLogScale) {
 
 		System.out.println("Update Signal XYGraph for " + spectra.getName());
-		updateSignalSum(spectra, usingETimes);
-		updateResiduals(results, usingETimes);
+		this.usingOffsetLogScale = usingOffsetLogScale;
+		if(updateNeededSignalSum || updateNeededResiduals) {
+			updateSignalMinMax(spectra, results);
+		}
+		if(updateNeededSignalSum) {
+			updateSignalSum(spectra, usingETimes);
+		}
+		if(updateNeededResiduals) {
+			updateResiduals(results, usingETimes);
+		}
 		if((null != yDataTraceLeftMarker) && (signalMinY < yDataTraceLeftMarker[0])) {
 			setLeftMarker(positionLeftMarker);
 			setRightMarker(positionRightMarker);
 		}
 		xyGraphSignals.getPrimaryYAxis().setAutoScale(false);
-		xyGraphSignals.getPrimaryYAxis().setRange(signalMinY, signalMaxY);
+		xyGraphSignals.getPrimaryYAxis().setLogScale(usingOffsetLogScale);
+		if(null != traceScaleOffset) {
+			xyGraphSignals.removeTrace(traceScaleOffset);
+			traceScaleOffset = null;
+		}
+		if(!usingOffsetLogScale) {
+			if(0 < signalMinY) {
+				xyGraphSignals.getPrimaryYAxis().setRange(0, 1.05 * signalMaxY);
+			} else {
+				xyGraphSignals.getPrimaryYAxis().setRange(1.05 * signalMinY, 1.05 * signalMaxY);
+			}
+		} else {
+			xyGraphSignals.getPrimaryYAxis().setRange(0.95 * signalMinAbsY, 1.05 * signalMaxY);
+			CircularBufferDataProvider dataProviderTraceScaleOffset = new CircularBufferDataProvider(false); // XYGraph data item
+			dataProviderTraceScaleOffset.setBufferSize(2);
+			double[] ydata = new double[2];
+			double[] xdata = new double[2];
+			ydata[0] = ydata[1] = scaleOffset;
+			xdata[0] = xyGraphSignals.getPrimaryXAxis().getRange().getLower();
+			xdata[1] = xyGraphSignals.getPrimaryXAxis().getRange().getUpper();
+			dataProviderTraceScaleOffset.setCurrentXDataArray(xdata);
+			dataProviderTraceScaleOffset.setCurrentYDataArray(ydata);
+			traceScaleOffset = new Trace("Zero(" + decimalFormatscaleOffset.format(scaleOffset) + ")", xyGraphSignals.getPrimaryXAxis(), xyGraphSignals.getPrimaryYAxis(), dataProviderTraceScaleOffset);
+			traceScaleOffset.setTraceColor(XYGraphMediaFactory.getInstance().getColor(XYGraphMediaFactory.COLOR_RED));
+			// traceScanSignalSum.setPointStyle(PointStyle.XCROSS);
+			xyGraphSignals.addTrace(traceScaleOffset);
+		}
 		updateLeftMarker();
 		updateRightMarker();
 		// xyGraph.setShowLegend(!xyGraph.isShowLegend());

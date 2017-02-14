@@ -398,14 +398,10 @@ public class DecompositionResultUI extends Composite {
 				try {
 					if(buttonLogScale.getSelection()) {
 						// System.out.println("buttonLogScale selection event, selected");
-						if(null != cmsSpectra) {
-							usingOffsetLogScale = true;
-						}
+						usingOffsetLogScale = true;
 					} else {
 						// System.out.println("buttonLogScale selection event, not selected");
-						if(null != cmsSpectra) {
-							usingOffsetLogScale = false;
-						}
+						usingOffsetLogScale = false;
 					}
 					compositeSignalsGraph.updateXYGraph(cmsSpectra, results, usingETimes, usingOffsetLogScale);
 				} catch(Exception e1) {
@@ -425,7 +421,7 @@ public class DecompositionResultUI extends Composite {
 
 				try {
 					if(buttonEtimes.getSelection()) {
-						// System.out.println("buttonLogScale selection event, selected");
+						// System.out.println("buttonEtimes selection event, selected");
 						if(usingETimes != hasETimes) {
 							usingETimes = hasETimes;
 							compositeSignalsGraph.clearXYGraph();
@@ -434,7 +430,7 @@ public class DecompositionResultUI extends Composite {
 						}
 						buttonEtimes.setSelection(usingETimes);
 					} else {
-						// System.out.println("buttonLogScale selection event, not selected");
+						// System.out.println("buttonEtimes selection event, not selected");
 						if(usingETimes) {
 							usingETimes = false;
 							buttonEtimes.setSelection(usingETimes);

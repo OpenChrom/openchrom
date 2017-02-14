@@ -367,6 +367,7 @@ public class CompositeCompositions extends Composite {
 			}
 			if(null != traceScaleOffset) {
 				xyGraphComposition.removeTrace(traceScaleOffset);
+				traceScaleOffset = null;
 			}
 			xyGraphComposition.getPrimaryYAxis().setAutoScale(false);
 			if(!usingOffsetLogScale) {
