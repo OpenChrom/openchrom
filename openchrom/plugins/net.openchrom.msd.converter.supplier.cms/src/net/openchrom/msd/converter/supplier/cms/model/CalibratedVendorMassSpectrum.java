@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Walter Whitlock - initial API and implementation
  * Philip Wenig - initial API and implementation
@@ -13,7 +13,7 @@
 package net.openchrom.msd.converter.supplier.cms.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -63,14 +63,24 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		ionMeasurements = new ArrayList<IIonMeasurement>(100);
 	}
 
+	/**
+	 * sorts the measurement list into increasing MZ order
+	 */
+	@Override
+	public void sortMZ() {
+
+		Collections.sort(this.getIonMeasurements()); // uses IonMeasurement.compareTo(IIonMeasurement)
+	}
+
 	@Override
 	/**
 	 * calculates 2-norm of signals
 	 */
 	public double get2Norm() {
-		if (!valid2Norm) {
+
+		if(!valid2Norm) {
 			value2Norm = 0;
-			for (IIonMeasurement ion : this.getIonMeasurements()) {
+			for(IIonMeasurement ion : this.getIonMeasurements()) {
 				value2Norm += ion.getSignal() * ion.getSignal();
 			}
 			value2Norm = java.lang.StrictMath.sqrt(value2Norm);
@@ -84,31 +94,37 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 
 		int result;
 		result = super.compareTo(spectrum);
-		if(0 != result)
+		if(0 != result) {
 			return result;
+		}
 		result = this.getScanName().compareTo(spectrum.getScanName());
-		if(0 != result)
+		if(0 != result) {
 			return result;
+		}
 		result = this.getNumberOfIons() - spectrum.getNumberOfIons();
-		if(0 != result)
+		if(0 != result) {
 			return result;
+		}
 		if(0 < this.getNumberOfIons()) {
 			IIonMeasurement set1[] = new IIonMeasurement[this.getNumberOfIons()];
 			IIonMeasurement set2[] = new IIonMeasurement[this.getNumberOfIons()];
 			set1 = ((ICalibratedVendorMassSpectrum)this).getIonMeasurements().toArray(set1);
-			set2 = ((ICalibratedVendorMassSpectrum)spectrum).getIonMeasurements().toArray(set2);
+			set2 = spectrum.getIonMeasurements().toArray(set2);
 			for(int i = 0; i < this.getNumberOfIons(); i++) {
 				result = (int)java.lang.StrictMath.signum(set1[i].getMZ() - set2[i].getMZ());
-				if(0 != result)
+				if(0 != result) {
 					return result;
+				}
 				result = (int)java.lang.StrictMath.signum(set1[i].getSignal() - set2[i].getSignal());
-				if(0 != result)
+				if(0 != result) {
 					return result;
+				}
 			}
 		}
 		return 0;
 	}
 
+	@Override
 	public boolean scale() {
 
 		/*
@@ -125,8 +141,8 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 			updateSignalLimits();
 		}
 		//
-		scaleOffset = (float)(minAbsSignal - minSignal);
-		scaleSlope = 1.0f / (float)(maxSignal + scaleOffset);
+		scaleOffset = minAbsSignal - minSignal;
+		scaleSlope = 1.0f / (maxSignal + scaleOffset);
 		/*
 		 * Can't have zero slope
 		 */
@@ -144,6 +160,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		}
 	}
 
+	@Override
 	public boolean unscale() {
 
 		if(0.0 == scaleSlope) {
@@ -160,6 +177,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		return true;
 	}
 
+	@Override
 	public List<IIonMeasurement> getIonMeasurements() {
 
 		return ionMeasurements;
@@ -167,10 +185,11 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 
 	/**
 	 * The getIonMeasurement() method may return null.
-	 * 
+	 *
 	 * @param peakIndex
 	 * @return {@link IIonMeasurement}
 	 */
+	@Override
 	public IIonMeasurement getIonMeasurement(int peakIndex) {
 
 		if(peakIndex >= 0 && peakIndex < ionMeasurements.size()) {
@@ -180,15 +199,18 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		}
 	}
 
+	@Override
 	public void resetSumSignal() {
 
 		sumSignalIsValid = false;
 	}
 
+	@Override
 	public float getSumSignal() {
 
-		if(sumSignalIsValid)
+		if(sumSignalIsValid) {
 			return sumSignal;
+		}
 		sumSignal = 0;
 		for(IIonMeasurement peak : ionMeasurements) {
 			sumSignal += peak.getSignal();
@@ -197,6 +219,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		return sumSignal;
 	}
 
+	@Override
 	public void updateSignalLimits() {
 
 		minSignal = 0;
@@ -231,11 +254,13 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		minMaxSignalIsValid = true;
 	}
 
+	@Override
 	public boolean addIonMeasurement(double mz, float signal) {
 
 		return addIonMeasurement(new IonMeasurement(mz, signal));
 	}
 
+	@Override
 	public boolean addIonMeasurement(IIonMeasurement ionMeasurement) {
 
 		if(ionMeasurement == null || ionMeasurement.getMZ() <= 0) {
@@ -248,15 +273,18 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		return true;
 	}
 
+	@Override
 	public String getScanName() {
 
 		return scanName;
 	}
 
+	@Override
 	public void setScanName(String scanName) {
 
-		if(null != scanName)
+		if(null != scanName) {
 			this.scanName = scanName;
+		}
 	}
 
 	/**
@@ -265,6 +293,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	 * to be filled by the implementation specific ions of each
 	 * implementing class.
 	 */
+	@Override
 	public void createNewIonMeasurementList() {
 
 		ionMeasurements = new ArrayList<IIonMeasurement>(200);
@@ -285,6 +314,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		return vendorMassSpectrum;
 	}
 
+	@Override
 	public ICalibratedVendorMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException {
 
 		Random random = new Random(seed);
@@ -307,6 +337,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		return makeDeepCopy();
 	}
 
+	@Override
 	public void resetMinMaxSignal() {
 
 		minMaxSignalIsValid = false;

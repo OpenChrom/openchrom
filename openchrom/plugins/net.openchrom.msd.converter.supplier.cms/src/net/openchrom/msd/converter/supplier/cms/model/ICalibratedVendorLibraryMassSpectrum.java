@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Walter Whitlock - initial API and implementation
  * Philip Wenig - initial API and implementation
@@ -25,7 +25,7 @@ public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMas
 
 	/**
 	 * Returns the list of comments or an empty list.
-	 * 
+	 *
 	 * @return {@link Set}
 	 */
 	List<String> getComments();
@@ -67,4 +67,6 @@ public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMas
 	void setSourcePressureUnits(String sourcePressureUnits);
 
 	void setTimeStamp(String timeStamp);
+
+	void sortMZ();
 }
