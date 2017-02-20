@@ -41,6 +41,8 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	private double eEnergyV;
 	private double iEnergyV;
 	private double eTimeS;
+	protected double value2Norm;
+	protected boolean valid2Norm;
 
 	public CalibratedVendorLibraryMassSpectrum() {
 		/*
@@ -56,6 +58,23 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 		this.eEnergyV = -1d;
 		this.iEnergyV = -1d;
 		this.eTimeS = -1d;
+		this.valid2Norm = false;
+	}
+
+	@Override
+	/**
+	 * calculates 2-norm of abundance
+	 */
+	public double get2Norm() {
+		if (!valid2Norm) {
+			value2Norm = 0;
+			for (IIon ion : this.getIons()) {
+				value2Norm += ion.getAbundance() * ion.getAbundance();
+			}
+			value2Norm = java.lang.StrictMath.sqrt(value2Norm);
+			valid2Norm = true;
+		}
+		return value2Norm;
 	}
 	
 	@Override

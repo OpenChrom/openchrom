@@ -30,6 +30,8 @@ public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMas
 	 */
 	List<String> getComments();
 
+	double get2Norm();
+
 	double getEenergy();
 
 	double getEtimes();

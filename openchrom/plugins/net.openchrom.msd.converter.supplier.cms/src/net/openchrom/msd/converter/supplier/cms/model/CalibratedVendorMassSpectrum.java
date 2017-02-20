@@ -55,13 +55,28 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	private float scaleOffset = 0;
 	private float scaleSlope = 0;
 	private double baseMZ = 0;
-	private float baseSignal = 0f;
 
 	public CalibratedVendorMassSpectrum() {
 		/*
 		 * Initialize the values.
 		 */
 		ionMeasurements = new ArrayList<IIonMeasurement>(100);
+	}
+
+	@Override
+	/**
+	 * calculates 2-norm of signals
+	 */
+	public double get2Norm() {
+		if (!valid2Norm) {
+			value2Norm = 0;
+			for (IIonMeasurement ion : this.getIonMeasurements()) {
+				value2Norm += ion.getSignal() * ion.getSignal();
+			}
+			value2Norm = java.lang.StrictMath.sqrt(value2Norm);
+			valid2Norm = true;
+		}
+		return value2Norm;
 	}
 
 	@Override
