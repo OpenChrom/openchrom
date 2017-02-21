@@ -129,9 +129,6 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 				}
 				if(2 == parseState) {
 					if(0 < peakCount) { // got peaks, add spectrum
-						if(0 != rescaleValue) {
-							rescale(massSpectrum, rescaleValue);
-						}
 						spectrumCount++;
 						massSpectrum.setScanNumber(spectrumCount);
 						if(libFile) {
@@ -139,11 +136,17 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 							for(IIon ion : tempIIonList) {
 								massSpectrum.addIon(ion);
 							}
+							if(0 != rescaleValue) {
+								rescale(massSpectrum, rescaleValue);
+							}
 							massSpectra.addMassSpectrum(massSpectrum);
 						} else if(scanFile) {
 							Collections.sort(tempIIonMeasurementList);
 							for(IIonMeasurement ion : tempIIonMeasurementList) {
 								((ICalibratedVendorMassSpectrum)massSpectrum).addIonMeasurement(ion.getMZ(), ion.getSignal());
+							}
+							if(0 != rescaleValue) {
+								rescale(massSpectrum, rescaleValue);
 							}
 							massSpectra.addMassSpectrum(massSpectrum);
 						} else { // got no peaks for the current spectrum, discard incomplete spectrum
@@ -181,9 +184,6 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 						System.out.println("182, got no peaks from \"SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName() + "\"");
 						parseState = 1;
 					} else { // got peaks, add spectrum
-						if(0 != rescaleValue) {
-							rescale(massSpectrum, rescaleValue);
-						}
 						spectrumCount++;
 						massSpectrum.setScanNumber(spectrumCount);
 						if(libFile) {
@@ -191,11 +191,17 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 							for(IIon ion : tempIIonList) {
 								massSpectrum.addIon(ion);
 							}
+							if(0 != rescaleValue) {
+								rescale(massSpectrum, rescaleValue);
+							}
 							massSpectra.addMassSpectrum(massSpectrum);
 						} else if(scanFile) {
 							Collections.sort(tempIIonMeasurementList);
 							for(IIonMeasurement ion : tempIIonMeasurementList) {
 								((ICalibratedVendorMassSpectrum)massSpectrum).addIonMeasurement(ion.getMZ(), ion.getSignal());
+							}
+							if(0 != rescaleValue) {
+								rescale(massSpectrum, rescaleValue);
 							}
 							massSpectra.addMassSpectrum(massSpectrum);
 						} else { // got no peaks for the current spectrum, discard incomplete spectrum
@@ -400,9 +406,6 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 			if(0 >= peakCount) { // got no peaks for the current spectrum, discard incomplete spectrum
 				System.out.println("390, got no peaks from " + ((massSpectrum instanceof ICalibratedVendorMassSpectrum) ? "SCAN: " + ((ICalibratedVendorMassSpectrum)massSpectrum).getScanName() : "NAME: " + massSpectrum.getLibraryInformation().getName()));
 			} else { // got peaks, add spectrum
-				if(0 != rescaleValue) {
-					rescale(massSpectrum, rescaleValue);
-				}
 				spectrumCount++;
 				massSpectrum.setScanNumber(spectrumCount);
 				if(libFile) {
@@ -410,11 +413,17 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 					for(IIon ion : tempIIonList) {
 						massSpectrum.addIon(ion);
 					}
+					if(0 != rescaleValue) {
+						rescale(massSpectrum, rescaleValue);
+					}
 					massSpectra.addMassSpectrum(massSpectrum);
 				} else if(scanFile) {
 					Collections.sort(tempIIonMeasurementList);
 					for(IIonMeasurement ion : tempIIonMeasurementList) {
 						((ICalibratedVendorMassSpectrum)massSpectrum).addIonMeasurement(ion.getMZ(), ion.getSignal());
+					}
+					if(0 != rescaleValue) {
+						rescale(massSpectrum, rescaleValue);
 					}
 					massSpectra.addMassSpectrum(massSpectrum);
 				} else { // got no peaks for the current spectrum, discard incomplete spectrum
@@ -444,6 +453,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 					}
 				}
 			}
+			// System.out.println("rescaling library " + cvmSpectrum.getLibraryInformation().getName() + ", " + maxSignal + "-->" + maxSig);
 			for(IIon ion : cvmSpectrum.getIons()) {
 				try {
 					ion.setAbundance(maxSig / maxSignal * ion.getAbundance());
@@ -462,6 +472,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 					}
 				}
 			}
+			// System.out.println("rescaling scan " + ((ICalibratedVendorMassSpectrum)cvmSpectrum).getScanName() + ", " + maxSignal + "-->" + maxSig);
 			for(IIonMeasurement peak : ((ICalibratedVendorMassSpectrum)cvmSpectrum).getIonMeasurements()) {
 				peak.setSignal(maxSig / maxSignal * peak.getSignal());
 			}
