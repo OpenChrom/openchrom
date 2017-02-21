@@ -13,8 +13,10 @@ IENERGYV: 3000
 SYNONYM: synonym 1 in Argon
 INAME: VG 14-80
 COMMENT: comment 2 in Argon
+COMMENT: test if RESCALE works correctly
+RESCALE: 2e-05
 Num Peaks: 4
-20 2.92429e-06; 36 6.0006e-08; 38 1.0001e-08; 40 2e-05;
+20 1462; 36 30; 38 5; 40 9999;
 
 NAME: Nitrogen
 FORMULA: N2

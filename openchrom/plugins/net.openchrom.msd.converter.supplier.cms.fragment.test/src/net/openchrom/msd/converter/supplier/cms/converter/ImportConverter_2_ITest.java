@@ -62,7 +62,7 @@ public class ImportConverter_2_ITest extends TestCase {
 		assertEquals("Argon", libraryMassSpectrum.getLibraryInformation().getName());
 		assertEquals("7440-37-1", libraryMassSpectrum.getLibraryInformation().getCasNumber());
 		assertEquals(4, massSpectrum.getNumberOfIons());
-		assertEquals(2.92429e-06f, massSpectrum.getIon(20).getAbundance());
+		assertEquals(2.9242924e-06f, massSpectrum.getIon(20).getAbundance());
 		assertEquals(6.0006e-08f, massSpectrum.getIon(36).getAbundance());
 		assertEquals(1.0001e-08f, massSpectrum.getIon(38).getAbundance());
 		assertEquals(2e-05f, massSpectrum.getIon(40).getAbundance());
