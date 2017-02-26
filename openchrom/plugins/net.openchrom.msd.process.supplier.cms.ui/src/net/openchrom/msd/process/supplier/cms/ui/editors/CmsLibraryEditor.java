@@ -30,10 +30,10 @@ import org.eclipse.chemclipse.msd.converter.exceptions.NoMassSpectrumConverterAv
 import org.eclipse.chemclipse.msd.converter.massspectrum.MassSpectrumConverter;
 import org.eclipse.chemclipse.msd.converter.processing.massspectrum.IMassSpectrumExportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
-import org.eclipse.chemclipse.msd.swt.ui.components.massspectrum.MassSpectrumLibraryUI;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.msd.model.notifier.MassSpectrumSelectionUpdateNotifier;
 import org.eclipse.chemclipse.msd.swt.ui.support.MassSpectraFileSupport;
 import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
-import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.support.events.IPerspectiveAndViewIds;
 import org.eclipse.chemclipse.ux.extension.msd.ui.internal.support.MassSpectrumImportRunnable;
 import org.eclipse.chemclipse.ux.extension.ui.editors.IChemClipseEditor;
@@ -48,6 +48,8 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -56,6 +58,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+
+import net.openchrom.msd.process.supplier.cms.ui.parts.swt.CmsLibraryUI;
 
 public class CmsLibraryEditor implements IChemClipseEditor {
 
@@ -81,7 +85,7 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 	/*
 	 * Mass spectrum selection and the GUI element.
 	 */
-	private MassSpectrumLibraryUI massSpectrumLibraryUI;
+	private CmsLibraryUI cmsLibraryUI;
 	private File massSpectrumFile;
 	private IMassSpectra massSpectra;
 	/*
@@ -99,7 +103,6 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 	@Focus
 	public void setFocus() {
 
-		eventBroker.post(IChemClipseEvents.TOPIC_LIBRARY_MSD_UPDATE_SELECTION, massSpectra);
 	}
 
 	@PreDestroy
@@ -108,8 +111,6 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 		/*
 		 * Remove the editor from the listed parts.
 		 */
-		eventBroker.post(IChemClipseEvents.TOPIC_LIBRARY_MSD_UNLOAD_SELECTION, null);
-		//
 		if(modelService != null) {
 			MPartStack partStack = (MPartStack)modelService.find(IPerspectiveAndViewIds.EDITOR_PART_STACK_ID, application);
 			part.setToBeRendered(false);
@@ -277,10 +278,23 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 		 * Create the mass spectrum UI.
 		 */
 		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-		tabItem.setText("Mass Spectra");
-		massSpectrumLibraryUI = new MassSpectrumLibraryUI(tabFolder, SWT.NONE);
-		massSpectrumLibraryUI.update(massSpectra, true);
-		tabItem.setControl(massSpectrumLibraryUI);
+		tabItem.setText("CMS (Calibrated Mass Spectra)");
+		cmsLibraryUI = new CmsLibraryUI(tabFolder, SWT.NONE);
+		cmsLibraryUI.setInput(massSpectra);
+		cmsLibraryUI.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+
+				Object object = cmsLibraryUI.getStructuredSelection().getFirstElement();
+				if(object instanceof IScanMSD) {
+					IScanMSD massSpectrum = (IScanMSD)object;
+					MassSpectrumSelectionUpdateNotifier.fireUpdateChange(massSpectrum, true);
+				}
+			}
+		});
+		//
+		tabItem.setControl(cmsLibraryUI.getControl());
 	}
 
 	private void createErrorMessagePage(Composite parent) {
@@ -293,6 +307,6 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 
 	private void updateMassSpectrumListUI() {
 
-		massSpectrumLibraryUI.update(massSpectra, true);
+		cmsLibraryUI.setInput(massSpectra);
 	}
 }
