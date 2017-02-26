@@ -38,7 +38,6 @@ import org.eclipse.chemclipse.support.events.IPerspectiveAndViewIds;
 import org.eclipse.chemclipse.ux.extension.msd.ui.internal.support.MassSpectrumImportRunnable;
 import org.eclipse.chemclipse.ux.extension.ui.editors.IChemClipseEditor;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.MApplication;
@@ -80,8 +79,6 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 	private MApplication application;
 	@Inject
 	private EModelService modelService;
-	@Inject
-	private IEventBroker eventBroker;
 	/*
 	 * Mass spectrum selection and the GUI element.
 	 */

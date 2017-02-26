@@ -39,20 +39,25 @@ import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
 
-public class CompositeLibrarySpectra extends Composite {
+public class CompositeLibrarySpectraUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
+	//
+	private static IMassSpectra cmsLibSpectra;
+	private static boolean isSelected[];
+	//
 	private Text textCmsLibraryFilePath;
 	private List listCmsComponents;
-	private IMassSpectra cmsLibSpectra;
-	private boolean isSelected[];
 
-	public CompositeLibrarySpectra(Composite parent, int style) {
+	public CompositeLibrarySpectraUI(Composite parent, int style) {
 		super(parent, style);
 		this.initialize();
 	}
 
-	public IMassSpectra getLibSpectra() {
+	/*
+	 * A static method is not optimal, but works in this case.
+	 */
+	public static IMassSpectra getLibSpectra() {
 
 		IMassSpectra spectra = new MassSpectra();
 		if(null == cmsLibSpectra) {

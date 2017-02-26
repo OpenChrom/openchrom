@@ -38,9 +38,10 @@ import org.eclipse.swt.widgets.Label;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResult;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
 
-public class CompositeCompositions extends Composite {
+public class CompositeCompositionsUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
+	//
 	private DecimalFormat decimalFormatscaleOffset = ValueFormat.getDecimalFormatEnglish("0.0##E00");
 	private TreeMap<String, Trace> traceCompositionsMap; // key is composition name string, value is Trace for that composition, needed so trace can be removed
 	private XYGraph xyGraphComposition;
@@ -55,6 +56,11 @@ public class CompositeCompositions extends Composite {
 	private double scaleOffset;
 	private Trace traceScaleOffset = null;
 	private Yunits yUnits = Yunits.PP;
+
+	public CompositeCompositionsUI(Composite parent, int style) {
+		super(parent, style);
+		this.initialize();
+	}
 
 	private enum Yunits {
 		PP, MF, LF // Partial Pressure, Mol Fraction, Library Fraction
@@ -71,11 +77,6 @@ public class CompositeCompositions extends Composite {
 			this.yUnits = yUnits;
 		}
 		updateXYGraph();
-	}
-
-	public CompositeCompositions(Composite parent, int style) {
-		super(parent, style);
-		this.initialize();
 	}
 
 	private void initialize() {

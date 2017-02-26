@@ -20,19 +20,19 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.msd.process.supplier.cms.ui.parts.swt.CmsLibraryListUI;
+import net.openchrom.msd.process.supplier.cms.ui.parts.swt.CompositeLibrarySpectraUI;
 
-public class CmsLibraryListPart {
+public class CompositeLibrarySpectraPart {
 
 	@Inject
 	private Composite parent;
-	private CmsLibraryListUI cmsLibraryListUI;
+	private CompositeLibrarySpectraUI compositeLibrarySpectraUI;
 
 	@PostConstruct
 	private void createControl() {
 
 		parent.setLayout(new FillLayout());
-		cmsLibraryListUI = new CmsLibraryListUI(parent, SWT.NONE);
+		compositeLibrarySpectraUI = new CompositeLibrarySpectraUI(parent, SWT.NONE);
 	}
 
 	@PreDestroy
@@ -43,6 +43,6 @@ public class CmsLibraryListPart {
 	@Focus
 	public void setFocus() {
 
-		cmsLibraryListUI.setFocus();
+		compositeLibrarySpectraUI.setFocus();
 	}
 }

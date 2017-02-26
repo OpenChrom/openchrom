@@ -14,6 +14,8 @@ package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 import java.io.File;
 import java.io.PrintStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
@@ -59,9 +61,8 @@ import net.openchrom.msd.process.supplier.cms.ui.preferences.PreferencePage;
 public class DecompositionResultUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
+	//
 	private DecimalFormat decimalFormatTextETimes = ValueFormat.getDecimalFormatEnglish("0.0");
-	private CompositeLibrarySpectra compositeLibrarys;
-	private CompositeCompositions compositeCompositions;
 	private CompositeSignals compositeSignalsGraph;
 	private IMassSpectra cmsSpectra; // if cmsSpectra == null, then XYGraph data items are invalid
 	private DecompositionResults results = null;
@@ -77,11 +78,42 @@ public class DecompositionResultUI extends Composite {
 	private Text textRightETimes;
 	private Button buttonLogScale;
 	private Button buttonEtimes;
+	//
+	private List<IDecompositionResultsListener> resultsListener;
 
 	public DecompositionResultUI(Composite parent, int style) {
 		super(parent, style);
+		resultsListener = new ArrayList<IDecompositionResultsListener>();
 		initialize();
-		//
+	}
+
+	/**
+	 * Adds a results listener.
+	 * 
+	 * @param decompositionResultsListener
+	 * @return boolean
+	 */
+	public boolean addResultListener(IDecompositionResultsListener decompositionResultsListener) {
+
+		return resultsListener.add(decompositionResultsListener);
+	}
+
+	/**
+	 * Adds a results listener.
+	 * 
+	 * @param decompositionResultsListener
+	 * @return boolean
+	 */
+	public boolean removeListener(IDecompositionResultsListener decompositionResultsListener) {
+
+		return resultsListener.remove(decompositionResultsListener);
+	}
+
+	private void fireUpdateDecompositionResults(DecompositionResults decompositionResults) {
+
+		for(IDecompositionResultsListener resultListener : resultsListener) {
+			resultListener.update(decompositionResults);
+		}
 	}
 
 	private void addButtonDecompose(Composite parent) {
@@ -123,7 +155,7 @@ public class DecompositionResultUI extends Composite {
 			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "Please select a *.cms file to decompose.");
 			return;
 		}
-		IMassSpectra libMassSpectra = compositeLibrarys.getLibSpectra();
+		IMassSpectra libMassSpectra = CompositeLibrarySpectraUI.getLibSpectra();
 		if(null == libMassSpectra) {
 			return;
 		}
@@ -175,9 +207,9 @@ public class DecompositionResultUI extends Composite {
 		}
 		compositeSignalsGraph.clearResiduals();
 		compositeSignalsGraph.updateXYGraph(scanSpectra, results, usingETimes, usingOffsetLogScale);
-		compositeCompositions.updateXYGraph(null); // send null to clear graph
+		fireUpdateDecompositionResults(null); // send null to clear graph
 		results.setUsingETimes(usingETimes);
-		compositeCompositions.updateXYGraph(results);
+		fireUpdateDecompositionResults(results);
 		return;
 	}
 
@@ -340,17 +372,8 @@ public class DecompositionResultUI extends Composite {
 	private void initialize() {
 
 		this.setLayout(new FillLayout());
-		Composite composite = new Composite(this, SWT.NONE);
-		GridLayout compositeGridLayout = new GridLayout(2, true);
-		composite.setLayout(compositeGridLayout);
-		compositeLibrarys = new CompositeLibrarySpectra(composite, SWT.NONE);
-		this.initializeSignalsComposite(composite);
-		compositeCompositions = new CompositeCompositions(composite, SWT.NONE);
-	}
-
-	private void initializeSignalsComposite(Composite parent) {
-
-		Composite compositeSignals = new Composite(parent, SWT.NONE);
+		//
+		Composite compositeSignals = new Composite(this, SWT.NONE);
 		GridLayout compositeSignalsGridLayout = new GridLayout(2, false);
 		compositeSignalsGridLayout.marginHeight = 0;
 		compositeSignalsGridLayout.marginWidth = 0;
@@ -469,7 +492,7 @@ public class DecompositionResultUI extends Composite {
 			if(file.exists()) {
 				compositeSignalsGraph.clearXYGraph();
 				results = null; // invalidate current decomposition results
-				compositeCompositions.updateXYGraph(null); // clear xyGraph
+				fireUpdateDecompositionResults(null); // clear xyGraph
 				MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 				cmsSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
 				if(null != cmsSpectra) {

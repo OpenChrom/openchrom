@@ -23,14 +23,14 @@
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_n4DjQPwxEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.partsashcontainer.0">
             <children xsi:type="basic:PartStack" xmi:id="_jSZSsNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.1" containerData="7000" selectedElement="_gRmlwNRREeaaPePRBRrPAg">
-              <children xsi:type="advanced:Placeholder" xmi:id="_gRmlwNRREeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.0" ref="_VNRpsPwyEeaJ4tYSMuRBIw"/>
+              <children xsi:type="advanced:Placeholder" xmi:id="_gRmlwNRREeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.0" ref="_1x_agNRQEeaaPePRBRrPAg"/>
             </children>
             <children xsi:type="basic:PartStack" xmi:id="_NCuDEPwyEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.partstack.3" containerData="3000">
               <children xsi:type="advanced:Placeholder" xmi:id="_Wi2VUPwNEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.1" ref="_QHn-UPwNEeaJ4tYSMuRBIw"/>
             </children>
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_atfw0PwNEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.partstack.2">
-            <children xsi:type="advanced:Placeholder" xmi:id="_ZW5xgPwyEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.2" ref="_1x_agNRQEeaaPePRBRrPAg"/>
+            <children xsi:type="advanced:Placeholder" xmi:id="_ZW5xgPwyEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.2" ref="_1d61gOe4EeaSD5RKhuQ86A"/>
           </children>
         </children>
       </children>
@@ -40,9 +40,8 @@
     <elements xsi:type="basic:Part" xmi:id="_1x_agNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.part.decompositionResult" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.DecompositionResultPart" label="Decomposition Result" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
     <elements xsi:type="basic:Part" xmi:id="_LWKm0NTDEeaud4VQr1xS9g" elementId="net.openchrom.msd.process.supplier.cms.ui.part.ionMeasurementList" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.IonMeasurementListPart" label="Ion Measurement List" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
     <elements xsi:type="basic:Part" xmi:id="_uBA4cNTHEeaud4VQr1xS9g" elementId="net.openchrom.msd.process.supplier.cms.ui.part.ionMeasurementChart" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.IonMeasurementChartPart" label="Ion Measurement Chart" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
-    <elements xsi:type="basic:Part" xmi:id="_1d61gOe4EeaSD5RKhuQ86A" elementId="net.openchrom.msd.process.supplier.cms.ui.part.compositeCompositions" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.DecompositionCompositionResultPart" label="Composite Compositions" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
+    <elements xsi:type="basic:Part" xmi:id="_1d61gOe4EeaSD5RKhuQ86A" elementId="net.openchrom.msd.process.supplier.cms.ui.part.compositeCompositions" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.CompositeCompositionsPart" label="Composite Compositions" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
     <elements xsi:type="basic:Part" xmi:id="_Jdi5sPwSEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.part.cmslibraryexplorer" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.CmsLibraryExplorerPart" label="CMS Library Explorer" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
-    <elements xsi:type="basic:Part" xmi:id="_Q0iH0PwyEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.part.cmslibrarylist" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.CmsLibraryListPart" label="CMS Library List" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
-    <elements xsi:type="basic:Part" xmi:id="_VNRpsPwyEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.part.decompositionlibrary" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.DecompositionLibraryPart" label="Decomposition Library" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
+    <elements xsi:type="basic:Part" xmi:id="_Q0iH0PwyEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.part.compositelibraryspectra" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.CompositeLibrarySpectraPart" label="Composite Library Spectra" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
   </fragments>
 </fragment:ModelFragments>
