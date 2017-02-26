@@ -141,7 +141,7 @@ public class CompositeLibrarySpectra extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				String pathCmsLibrarySpectra = PreferenceSupplier.getPathCmsLibSpectra();
+				String pathCmsLibrarySpectra = PreferenceSupplier.getPathCmsLibrarySpectra();
 				FileDialog fileDialog = new FileDialog(Display.getCurrent().getActiveShell(), SWT.READ_ONLY);
 				fileDialog.setText("Select the CMS library file.");
 				fileDialog.setFilterExtensions(new String[]{"*.cms", "*.CMS"});
@@ -153,7 +153,7 @@ public class CompositeLibrarySpectra extends Composite {
 					 * Remember the path.
 					 */
 					pathCmsLibrarySpectra = fileDialog.getFilterPath();
-					PreferenceSupplier.setPathCmsLibSpectra(pathCmsLibrarySpectra);
+					PreferenceSupplier.setPathCmsLibrarySpectra(pathCmsLibrarySpectra);
 					textCmsLibraryFilePath.setText(pathname);
 					readAndLoadCMSlibraryFile();
 				}

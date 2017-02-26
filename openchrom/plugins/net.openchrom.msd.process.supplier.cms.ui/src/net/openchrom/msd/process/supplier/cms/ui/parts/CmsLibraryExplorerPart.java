@@ -16,7 +16,7 @@ import java.io.File;
 import javax.inject.Inject;
 
 import org.eclipse.chemclipse.support.events.IPerspectiveAndViewIds;
-import org.eclipse.chemclipse.support.ui.wizards.TreeViewerFilesystemSupport;
+import org.eclipse.core.filesystem.EFS;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MBasicFactory;
@@ -32,13 +32,14 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
 import net.openchrom.msd.process.supplier.cms.ui.editors.CmsLibraryEditor;
 import net.openchrom.msd.process.supplier.cms.ui.internal.provider.CmsFileExplorerContentProvider;
 import net.openchrom.msd.process.supplier.cms.ui.internal.provider.CmsFileExplorerLabelProvider;
 
-public class CmsLibraryExplorer {
+public class CmsLibraryExplorerPart {
 
 	private TreeViewer treeViewer;
 	@Inject
@@ -49,15 +50,11 @@ public class CmsLibraryExplorer {
 	private MApplication application;
 
 	@Inject
-	public CmsLibraryExplorer(Composite parent) {
+	public CmsLibraryExplorerPart(Composite parent) {
 		treeViewer = new TreeViewer(parent);
 		treeViewer.setContentProvider(new CmsFileExplorerContentProvider());
 		treeViewer.setLabelProvider(new CmsFileExplorerLabelProvider());
-		TreeViewerFilesystemSupport.retrieveAndSetLocalFileSystem(treeViewer);
-		File elementOrTreePath = new File(PreferenceSupplier.getPathLibraryExplorer());
-		if(elementOrTreePath.exists()) {
-			treeViewer.expandToLevel(elementOrTreePath, 1);
-		}
+		setTreeViewerContent(treeViewer, EFS.getLocalFileSystem());
 		/*
 		 * Register single (selection changed)/double click listener here.<br/>
 		 * OK, it's not the best way, but it still works at beginning.
@@ -104,7 +101,22 @@ public class CmsLibraryExplorer {
 		treeViewer.getTree().setFocus();
 	}
 
-	// --------------------------------------------private methods
+	private void setTreeViewerContent(TreeViewer treeViewer, Object input) {
+
+		Display.getCurrent().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+
+				treeViewer.setInput(input);
+				File elementOrTreePath = new File(PreferenceSupplier.getPathLibraryExplorer());
+				if(elementOrTreePath.exists()) {
+					treeViewer.expandToLevel(elementOrTreePath, 1);
+				}
+			}
+		});
+	}
+
 	private void openCmsLibraryEditor(final File file) {
 
 		/*
@@ -112,9 +124,9 @@ public class CmsLibraryExplorer {
 		 */
 		if(CmsFileExplorerContentProvider.isLibraryFile(file)) {
 			/*
-			 * Save the path.
+			 * Save the path of the parent directory.
 			 */
-			PreferenceSupplier.setPathLibraryExplorer(file.getAbsolutePath());
+			PreferenceSupplier.setPathLibraryExplorer(file.getParentFile().getAbsolutePath());
 			/*
 			 * Get the editor part stack.
 			 */
@@ -137,5 +149,4 @@ public class CmsLibraryExplorer {
 			partService.showPart(part, PartState.ACTIVATE);
 		}
 	}
-	// --------------------------------------------private methods
 }

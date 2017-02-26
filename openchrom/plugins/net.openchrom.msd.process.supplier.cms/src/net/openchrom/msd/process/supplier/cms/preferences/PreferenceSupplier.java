@@ -28,10 +28,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static final String P_PATH_LIBRARY_EXPLORER = "pathLibraryExplorer";
 	public static final String DEF_PATH_LIBRARY_EXPLORER = "";
-	//
 	public static final String P_PATH_CMS_SCAN_SPECTRA = "pathCmsScanSpectra";
-	public static final String P_PATH_CMS_LIB_SPECTRA = "pathCmsLibSpectra";
-	public static final String DEF_PATH_CMS_SPECTRA = "";
+	public static final String DEF_PATH_CMS_SCAN_SPECTRA = "";
+	public static final String P_PATH_CMS_LIBRARY_SPECTRA = "pathCmsLibrarySpectra";
+	public static final String DEF_PATH_CMS_LIBRARY_SPECTRA = "";
 	//
 	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
 	private static IPreferenceSupplier preferenceSupplier;
@@ -62,8 +62,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		Map<String, String> defaultValues = new HashMap<String, String>();
 		//
 		defaultValues.put(P_PATH_LIBRARY_EXPLORER, DEF_PATH_LIBRARY_EXPLORER);
-		defaultValues.put(P_PATH_CMS_SCAN_SPECTRA, DEF_PATH_CMS_SPECTRA);
-		defaultValues.put(P_PATH_CMS_LIB_SPECTRA, DEF_PATH_CMS_SPECTRA);
+		defaultValues.put(P_PATH_CMS_SCAN_SPECTRA, DEF_PATH_CMS_SCAN_SPECTRA);
+		defaultValues.put(P_PATH_CMS_LIBRARY_SPECTRA, DEF_PATH_CMS_LIBRARY_SPECTRA);
 		//
 		return defaultValues;
 	}
@@ -80,45 +80,45 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return eclipsePreferences.get(P_PATH_LIBRARY_EXPLORER, DEF_PATH_LIBRARY_EXPLORER);
 	}
 
-	public static String getPathCmsLibSpectra() {
+	public static String getPathCmsLibrarySpectra() {
 
 		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_PATH_CMS_LIB_SPECTRA, DEF_PATH_CMS_SPECTRA);
+		return eclipsePreferences.get(P_PATH_CMS_LIBRARY_SPECTRA, DEF_PATH_CMS_LIBRARY_SPECTRA);
 	}
 
 	public static String getPathCmsScanSpectra() {
 
 		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_PATH_CMS_SCAN_SPECTRA, DEF_PATH_CMS_SPECTRA);
+		return eclipsePreferences.get(P_PATH_CMS_SCAN_SPECTRA, DEF_PATH_CMS_SCAN_SPECTRA);
 	}
 
-	public static void setPathLibraryExplorer(String pathLibraryExplorer) {
+	public static void setPathLibraryExplorer(String path) {
 
 		try {
 			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-			eclipsePreferences.put(P_PATH_LIBRARY_EXPLORER, pathLibraryExplorer);
+			eclipsePreferences.put(P_PATH_LIBRARY_EXPLORER, path);
 			eclipsePreferences.flush();
 		} catch(BackingStoreException e) {
 			logger.warn(e);
 		}
 	}
 
-	public static void setPathCmsLibSpectra(String pathCmsSpectra) {
+	public static void setPathCmsLibrarySpectra(String path) {
 
 		try {
 			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-			eclipsePreferences.put(P_PATH_CMS_LIB_SPECTRA, pathCmsSpectra);
+			eclipsePreferences.put(P_PATH_CMS_LIBRARY_SPECTRA, path);
 			eclipsePreferences.flush();
 		} catch(BackingStoreException e) {
 			logger.warn(e);
 		}
 	}
 
-	public static void setPathCmsScanSpectra(String pathCmsSpectra) {
+	public static void setPathCmsScanSpectra(String path) {
 
 		try {
 			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-			eclipsePreferences.put(P_PATH_CMS_SCAN_SPECTRA, pathCmsSpectra);
+			eclipsePreferences.put(P_PATH_CMS_SCAN_SPECTRA, path);
 			eclipsePreferences.flush();
 		} catch(BackingStoreException e) {
 			logger.warn(e);

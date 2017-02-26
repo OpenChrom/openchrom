@@ -71,7 +71,11 @@ public class CmsFileExplorerContentProvider extends FileExplorerContentProvider 
 	@Override
 	public boolean hasChildren(File parentFile) {
 
-		return true;
+		if(parentFile.isDirectory()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
