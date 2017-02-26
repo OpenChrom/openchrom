@@ -26,6 +26,9 @@ import net.openchrom.msd.process.supplier.cms.Activator;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
+	public static final String P_PATH_LIBRARY_EXPLORER = "pathLibraryExplorer";
+	public static final String DEF_PATH_LIBRARY_EXPLORER = "";
+	//
 	public static final String P_PATH_CMS_SCAN_SPECTRA = "pathCmsScanSpectra";
 	public static final String P_PATH_CMS_LIB_SPECTRA = "pathCmsLibSpectra";
 	public static final String DEF_PATH_CMS_SPECTRA = "";
@@ -58,6 +61,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		Map<String, String> defaultValues = new HashMap<String, String>();
 		//
+		defaultValues.put(P_PATH_LIBRARY_EXPLORER, DEF_PATH_LIBRARY_EXPLORER);
 		defaultValues.put(P_PATH_CMS_SCAN_SPECTRA, DEF_PATH_CMS_SPECTRA);
 		defaultValues.put(P_PATH_CMS_LIB_SPECTRA, DEF_PATH_CMS_SPECTRA);
 		//
@@ -70,6 +74,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return getScopeContext().getNode(getPreferenceNode());
 	}
 
+	public static String getPathLibraryExplorer() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_PATH_LIBRARY_EXPLORER, DEF_PATH_LIBRARY_EXPLORER);
+	}
+
 	public static String getPathCmsLibSpectra() {
 
 		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
@@ -80,6 +90,17 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
 		return eclipsePreferences.get(P_PATH_CMS_SCAN_SPECTRA, DEF_PATH_CMS_SPECTRA);
+	}
+
+	public static void setPathLibraryExplorer(String pathLibraryExplorer) {
+
+		try {
+			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+			eclipsePreferences.put(P_PATH_LIBRARY_EXPLORER, pathLibraryExplorer);
+			eclipsePreferences.flush();
+		} catch(BackingStoreException e) {
+			logger.warn(e);
+		}
 	}
 
 	public static void setPathCmsLibSpectra(String pathCmsSpectra) {

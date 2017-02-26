@@ -2,14 +2,13 @@
 <fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_1-uEYNRPEeaaPePRBRrPAg">
   <imports xsi:type="basic:Part" xmi:id="_CVfz0NRQEeaaPePRBRrPAg" elementId="org.eclipse.ui.navigator.ProjectExplorer"/>
   <imports xsi:type="advanced:Area" xmi:id="_Dxge0NRQEeaaPePRBRrPAg" elementId="org.eclipse.chemclipse.rcp.app.ui.editor"/>
-  <imports xsi:type="basic:Part" xmi:id="_PhozENRSEeaaPePRBRrPAg" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.massSpectrumLibraryExplorerView"/>
   <imports xsi:type="basic:Part" xmi:id="_QHn-UPwNEeaJ4tYSMuRBIw" elementId="org.eclipse.ui.console.ConsoleView"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_LM7ukNRQEeaaPePRBRrPAg" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.perspectivestack.main">
     <elements xsi:type="advanced:Perspective" xmi:id="_PfAAsNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.perspective.cmsworkflow" label="CMS Workflow" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif">
       <children xsi:type="basic:PartSashContainer" xmi:id="_YU3OINRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.0">
         <children xsi:type="basic:PartSashContainer" xmi:id="_bcE2sNRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partsashcontainer.1" containerData="1000" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_dr4WINRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.partstack.0" containerData="3200">
-            <children xsi:type="advanced:Placeholder" xmi:id="_RF7QUNRSEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.2" ref="_PhozENRSEeaaPePRBRrPAg"/>
+            <children xsi:type="advanced:Placeholder" xmi:id="_duJsIPwSEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.3" ref="_Jdi5sPwSEeaJ4tYSMuRBIw"/>
             <children xsi:type="advanced:Placeholder" xmi:id="_fwBYINRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.placeholder.1" ref="_CVfz0NRQEeaaPePRBRrPAg"/>
           </children>
           <children xsi:type="advanced:Placeholder" xmi:id="_eIG_INRQEeaaPePRBRrPAg" elementId="net.openchrom.msd.process.supplier.cms.placeholder.0" containerData="8300" ref="_Dxge0NRQEeaaPePRBRrPAg"/>
@@ -38,5 +37,6 @@
     <elements xsi:type="basic:Part" xmi:id="_LWKm0NTDEeaud4VQr1xS9g" elementId="net.openchrom.msd.process.supplier.cms.ui.part.ionMeasurementList" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.IonMeasurementListPart" label="Ion Measurement List" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
     <elements xsi:type="basic:Part" xmi:id="_uBA4cNTHEeaud4VQr1xS9g" elementId="net.openchrom.msd.process.supplier.cms.ui.part.ionMeasurementChart" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.IonMeasurementChartPart" label="Ion Measurement Chart" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
     <elements xsi:type="basic:Part" xmi:id="_1d61gOe4EeaSD5RKhuQ86A" elementId="net.openchrom.msd.process.supplier.cms.ui.part.decompositioncompositionresult" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.DecompositionCompositionResultPart" label="Decomposition Composition Result" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
+    <elements xsi:type="basic:Part" xmi:id="_Jdi5sPwSEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.part.cmslibraryexplorer" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.CmsLibraryExplorer" label="CMS Library Explorer" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
   </fragments>
 </fragment:ModelFragments>
