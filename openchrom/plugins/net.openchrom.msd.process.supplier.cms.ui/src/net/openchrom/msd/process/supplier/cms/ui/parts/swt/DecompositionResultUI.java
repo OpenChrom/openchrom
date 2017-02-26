@@ -12,6 +12,7 @@
 package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.text.DecimalFormat;
 
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -44,12 +45,15 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.MessageConsoleStream;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
 import net.openchrom.msd.process.supplier.cms.core.MassSpectraDecomposition;
 import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
+import net.openchrom.msd.process.supplier.cms.ui.Activator;
 import net.openchrom.msd.process.supplier.cms.ui.preferences.PreferencePage;
 
 public class DecompositionResultUI extends Composite {
@@ -77,6 +81,7 @@ public class DecompositionResultUI extends Composite {
 	public DecompositionResultUI(Composite parent, int style) {
 		super(parent, style);
 		initialize();
+		//
 	}
 
 	private void addButtonDecompose(Composite parent) {
@@ -91,11 +96,21 @@ public class DecompositionResultUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
+				PrintStream out = System.out;
+				PrintStream err = System.err;
 				try {
+					MessageConsole messageConsole = Activator.getMessageConsole();
+					MessageConsoleStream messageConsoleStream = messageConsole.newMessageStream();
+					System.setOut(new PrintStream(messageConsoleStream));
+					System.setErr(new PrintStream(messageConsoleStream));
+					//
 					System.out.println("Decompose button clicked");
 					decomposeSpectra();
 				} catch(Exception e1) {
 					logger.warn(e1);
+				} finally {
+					System.setOut(out);
+					System.setErr(err);
 				}
 			}
 		});

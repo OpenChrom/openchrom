@@ -13,6 +13,10 @@
 package net.openchrom.msd.process.supplier.cms.ui;
 
 import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleManager;
+import org.eclipse.ui.console.MessageConsole;
 import org.osgi.framework.BundleContext;
 
 import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
@@ -26,6 +30,7 @@ public class Activator extends AbstractActivatorUI {
 	 * Instance
 	 */
 	private static Activator plugin;
+	private static final String SYSTEM_CONSOLE_NAME = "CMS-Process";
 
 	/*
 	 * (non-Javadoc)
@@ -56,5 +61,28 @@ public class Activator extends AbstractActivatorUI {
 	public static AbstractActivatorUI getDefault() {
 
 		return plugin;
+	}
+
+	public static MessageConsole getMessageConsole() {
+
+		ConsolePlugin consolePlugin = ConsolePlugin.getDefault();
+		IConsoleManager consoleManager = consolePlugin.getConsoleManager();
+		IConsole[] existing = consoleManager.getConsoles();
+		for(int i = 0; i < existing.length; i++) {
+			if(SYSTEM_CONSOLE_NAME.equals(existing[i].getName())) {
+				/*
+				 * Activate the console.
+				 */
+				((MessageConsole)existing[i]).activate();
+				return (MessageConsole)existing[i];
+			}
+		}
+		/*
+		 * Create a new console if it not exists.
+		 */
+		MessageConsole messageConsole = new MessageConsole(SYSTEM_CONSOLE_NAME, null);
+		IConsole[] consoles = new IConsole[]{messageConsole};
+		consoleManager.addConsoles(consoles);
+		return messageConsole;
 	}
 }

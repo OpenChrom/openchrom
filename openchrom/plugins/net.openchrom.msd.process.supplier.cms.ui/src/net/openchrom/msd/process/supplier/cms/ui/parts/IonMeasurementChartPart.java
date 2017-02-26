@@ -62,15 +62,15 @@ public class IonMeasurementChartPart extends AbstractMassSpectrumSelectionView {
 	public void update(IScanMSD massSpectrum, boolean forceReload) {
 
 		// if(isPartVisible()) { // whw, update even if hidden
-			if(massSpectrum instanceof ICalibratedVendorMassSpectrum) {
-				ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
-				ionMeasurementChartUI.update(calibratedVendorMassSpectrum);
-			} else if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
-				ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
-				ionMeasurementChartUI.update(calibratedVendorLibraryMassSpectrum);
-			} else {
-				ionMeasurementChartUI.update(null);
-			}
+		if(massSpectrum instanceof ICalibratedVendorMassSpectrum) {
+			ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
+			ionMeasurementChartUI.update(calibratedVendorMassSpectrum);
+		} else if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
+			ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
+			ionMeasurementChartUI.update(calibratedVendorLibraryMassSpectrum);
+		} else {
+			ionMeasurementChartUI.update(null);
+		}
 		// }
 	}
 }

@@ -61,13 +61,13 @@ public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
 	@Override
 	public void update(IScanMSD massSpectrum, boolean forceReload) {
 
-		//if(isPartVisible()) { // whw, update even if hidden
-			if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
-				ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
-				ionMeasurementListUI.update(spectrum);
-			} else {
-				ionMeasurementListUI.update(null);
-			}
-		//}
+		// if(isPartVisible()) { // whw, update even if hidden
+		if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
+			ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
+			ionMeasurementListUI.update(spectrum);
+		} else {
+			ionMeasurementListUI.update(null);
+		}
+		// }
 	}
 }
