@@ -360,7 +360,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 					} // else if RT INDEX
 				} // else if (libFile)
 				else {
-					System.out.println("347, Unrecognize line in file \"" + file.getName() + "\"");
+					System.out.println("Unrecognized line in file \"" + file.getName() + "\"");
 					System.out.println("\tstate = " + parseState + ", ignored: \"" + line + "\"");
 				}
 			} // else if (1==parseState)
@@ -393,13 +393,17 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 						} while(fieldMatcher.find());
 					}
 				} else {
-					System.out.println("379, Unrecognize line in file \"" + file.getName() + "\"");
+					System.out.println("379, Unrecognized line in file \"" + file.getName() + "\"");
 					System.out.println("\tstate == 2," + parseState + ", ignored: \"" + line + "\"");
 				}
 			} // else if (2==parseState)
 			else {
-				System.out.println("384, Unrecognize line in file \"" + file.getName() + "\"");
-				System.out.println("\tstate == " + parseState + ", ignored: \"" + line + "\"");
+				if((fieldMatcher = commentPattern.matcher(line)).lookingAt()) { // found COMMENT record
+					// comments are OK anywhere, this one does not get imported or saved
+				} else {
+					System.out.println("Unrecognized line in file \"" + file.getName() + "\"");
+					System.out.println("\tstate == " + parseState + ", ignored: \"" + line + "\"");
+				}
 			}
 		} // while
 		if(2 == parseState) {
