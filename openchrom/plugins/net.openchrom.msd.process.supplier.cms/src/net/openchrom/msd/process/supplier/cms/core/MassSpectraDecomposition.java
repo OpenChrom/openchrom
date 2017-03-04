@@ -176,17 +176,17 @@ public class MassSpectraDecomposition {
 				if(!solverRetVal) {
 					throw new LibIonsMatrixSingularException("Solver.setA() returned FALSE, library matrix is singular");
 				}
-				if(true) {
-					libMatrixQuality = solver.quality();
-					if(0 > libMatrixQuality) {
-						throw new LibIonsMatrixSingularException("Solver.quality() value of " + libMatrixQuality + " indicates library matrix is nearly singular");
-					}
-					System.out.print("Solver.quality() = " + libMatrixQuality);
-					if(1e-8 > libMatrixQuality) {
-						System.out.print(", Library matrix is nearly singular");
-					}
-					System.out.println("");
+				
+				libMatrixQuality = solver.quality();
+				if(0 > libMatrixQuality) {
+					throw new LibIonsMatrixSingularException("Solver.quality() value of " + libMatrixQuality + " indicates library matrix is nearly singular");
 				}
+				System.out.print("Solver.quality() = " + libMatrixQuality);
+				if(1e-8 > libMatrixQuality) {
+					System.out.print(", Library matrix is nearly singular");
+				}
+				
+				System.out.println("");
 				// solve
 				solver.solve(wty, x);
 				// compute sum of squares error and residuals vector
@@ -198,17 +198,22 @@ public class MassSpectraDecomposition {
 				result = new DecompositionResult(ssError, wtssError, fitDataset.getScanRef().getSourcePressure(), fitDataset.getScanRef().getSourcePressureUnits(), fitDataset.getScanRef().getEtimes(), fitDataset.getScanRef().getSignalUnits());
 				// display the result
 				System.out.println("SOLVED");
+				result.setSolutionQuality(libMatrixQuality);
 				for(int ii = 0; ii < x.numRows; ii++) {
 					ICalibratedVendorLibraryMassSpectrum libRef = fitDataset.getLibRef(ii);
 					ICalibratedVendorMassSpectrum scanRef = fitDataset.getScanRef();
-					x.get(ii);
+					//x.get(ii);
 					String ppUnits = scanRef.getSourcePressureUnits();
-					x.get(ii);
-					libRef.getSourcePressure(ppUnits);
-					x.get(ii);
-					libRef.getSourcePressure(ppUnits);
-					scanRef.getSourcePressure();
-					result.addComponent(x.get(ii), fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
+					//x.get(ii);
+					//libRef.getSourcePressure(ppUnits);
+					//x.get(ii);
+					//libRef.getSourcePressure(ppUnits);
+					//scanRef.getSourcePressure();
+					if (0 >= libMatrixQuality) {
+						result.addComponent(Double.NaN, fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
+					} else {
+						result.addComponent(x.get(ii), fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
+					}
 					System.out.printf("%24s: x[%d]=\t%.13f", fitDataset.getLibCompName(ii), ii, x.get(ii), fitDataset.getScanRef().getSourcePressureUnits());
 					if(fitDataset.canDoQuantitative(ii)) {
 						System.out.printf("\tppress(%6s)=\t%.13f\tmolfrc=\t%.13f%n", scanRef.getSourcePressureUnits(), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());

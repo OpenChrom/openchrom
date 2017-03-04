@@ -27,6 +27,7 @@ public class DecompositionResult {
 	private ICalibratedVendorMassSpectrum residualSpectrum;
 	private double sumOfSquaresError;
 	private double weightedSumOfSquaresError;
+	private double solutionQuality;
 	private double sourcePressure; // source pressure, from scan record
 	private String sourcePressureUnits; // source pressure units, from scan record
 	private String signalUnits;
@@ -94,7 +95,7 @@ public class DecompositionResult {
 		if(isQuantitative.get(libIndex)) {
 			return this.getPartialPressure(libIndex, this.sourcePressureUnits) / this.getSourcePressure();
 		} else {
-			return 0d;
+			return Double.NaN;
 		}
 	}
 
@@ -103,8 +104,13 @@ public class DecompositionResult {
 		if(isQuantitative.get(libIndex)) {
 			return this.xComp.get(libIndex) * this.libraryComponents.get(libIndex).getSourcePressure(units);
 		} else {
-			return 0d;
+			return Double.NaN;
 		}
+	}
+	
+	public double getSolutionQuality() {
+	
+		return solutionQuality;
 	}
 
 	public ICalibratedVendorMassSpectrum getResidualSpectrum() {
@@ -147,5 +153,11 @@ public class DecompositionResult {
 		if(null != spec) {
 			residualSpectrum = spec;
 		}
+	}
+
+	
+	public void setSolutionQuality(double solutionQuality) {
+	
+		this.solutionQuality = solutionQuality;
 	}
 }

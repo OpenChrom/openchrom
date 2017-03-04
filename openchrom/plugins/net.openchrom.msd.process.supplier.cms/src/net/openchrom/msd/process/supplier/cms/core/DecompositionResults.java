@@ -62,7 +62,7 @@ public class DecompositionResults {
 			ppUnits = result.getSourcePressureUnits();
 			// make column heading string for this result
 			headingBuilder.setLength(0);
-			headingBuilder.append(String.format("Scan #\tETime,s\tPtotal,%s", ppUnits));
+			headingBuilder.append(String.format("Quality\tScan #\tETime,s\tPtotal,%s", ppUnits));
 			for(int i = 0; i < result.getNumberOfComponents(); i++) {
 				if(result.isQuantitative(i)) {
 					headingBuilder.append(String.format("\t%s", result.getLibCompName(i)));
@@ -75,7 +75,7 @@ public class DecompositionResults {
 				columnHeading = headingBuilder.toString();
 				output.append(columnHeading);
 			}
-			output.append(String.format("%d\t%g\t%g", result.getResidualSpectrum().getScanNumber(), result.getETimeS(), result.getSourcePressure()));
+			output.append(String.format("%g\t%d\t%g\t%g", result.getSolutionQuality(), result.getResidualSpectrum().getScanNumber(), result.getETimeS(), result.getSourcePressure()));
 			for(int i = 0; i < result.getNumberOfComponents(); i++) {
 				if(result.isQuantitative(i)) {
 					output.append(String.format("\t%g", result.getPartialPressure(i, result.getSourcePressureUnits())));
