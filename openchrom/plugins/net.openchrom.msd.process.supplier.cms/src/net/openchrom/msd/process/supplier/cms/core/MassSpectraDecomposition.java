@@ -202,13 +202,7 @@ public class MassSpectraDecomposition {
 				for(int ii = 0; ii < x.numRows; ii++) {
 					ICalibratedVendorLibraryMassSpectrum libRef = fitDataset.getLibRef(ii);
 					ICalibratedVendorMassSpectrum scanRef = fitDataset.getScanRef();
-					//x.get(ii);
 					String ppUnits = scanRef.getSourcePressureUnits();
-					//x.get(ii);
-					//libRef.getSourcePressure(ppUnits);
-					//x.get(ii);
-					//libRef.getSourcePressure(ppUnits);
-					//scanRef.getSourcePressure();
 					if (0 >= libMatrixQuality) {
 						result.addComponent(Double.NaN, fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
 					} else {
