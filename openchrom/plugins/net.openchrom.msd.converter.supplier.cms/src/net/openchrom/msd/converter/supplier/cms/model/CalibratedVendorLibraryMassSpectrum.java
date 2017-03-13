@@ -21,6 +21,7 @@ import org.eclipse.chemclipse.msd.model.core.AbstractRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
+import org.eclipse.chemclipse.msd.model.notifier.IonSelectionUpdateNotifier;
 
 public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpectrum implements ICalibratedVendorLibraryMassSpectrum, Comparable<ICalibratedVendorLibraryMassSpectrum> {
 
@@ -66,7 +67,10 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	@Override
 	public void sortMZ() {
 
-		Collections.sort(this.getIons()); // uses AbstractIon.compareTo(IIon)
+		List<IIon> sortedList = new ArrayList<>(getIons());
+		Collections.sort(sortedList); // uses AbstractIon.compareTo(IIon)
+		setIons(sortedList);
+		
 	}
 
 	@Override
