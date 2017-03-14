@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.core;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -89,6 +90,7 @@ public class SmilesCalculator {
 	private ILibraryInformation getLibraryInformation(List<IMassSpectrumTarget> targets) {
 
 		ILibraryInformation libraryInformation = null;
+		targets = new ArrayList<>(targets);
 		Collections.sort(targets, targetExtendedComparator);
 		if(targets.size() >= 1) {
 			libraryInformation = targets.get(0).getLibraryInformation();
