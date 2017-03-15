@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <!--
+	PARENT
+  -->
+  <parent>
+    <groupId>net.openchrom</groupId>
+    <artifactId>master</artifactId>
+    <version>BUILD-VERSION</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <!--
+	ARTIFACT
+  -->
+  <groupId>net.openchrom</groupId>
+  <artifactId>parent</artifactId>
+  <packaging>pom</packaging>
+  <!--
+	DESCRIPTION
+  --> 
+  <name>massshiftdetector</name>
+  <description>
+	This processor helps to detect mass shifts.
+  </description>
+  <!--
+	MODULES
+  -->
+  <modules>
+    <module>../../plugins/net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector</module>
+    <module>../../plugins/net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui</module>
+    <module>../../features/net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.feature</module>
+    <!--<module>../../plugins/net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.fragment.test</module>-->
+  </modules>
+</project>

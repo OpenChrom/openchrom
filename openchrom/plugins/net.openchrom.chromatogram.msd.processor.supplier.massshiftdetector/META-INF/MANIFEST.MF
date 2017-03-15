@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mass Shift Detector (Model)
+Bundle-SymbolicName: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector;singleton:=true
+Bundle-Version: 1.2.0.qualifier
+Bundle-Activator: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",
+ org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
+ org.eclipse.chemclipse.logging;bundle-version="0.8.0",
+ org.eclipse.chemclipse.processing;bundle-version="0.8.0",
+ org.eclipse.chemclipse.converter;bundle-version="0.8.0",
+ org.eclipse.chemclipse.model;bundle-version="0.8.0",
+ org.eclipse.chemclipse.support;bundle-version="0.8.0",
+ org.eclipse.chemclipse.chromatogram.msd.process;bundle-version="0.8.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core,
+ net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model,
+ net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io, 
+ net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.preferences
