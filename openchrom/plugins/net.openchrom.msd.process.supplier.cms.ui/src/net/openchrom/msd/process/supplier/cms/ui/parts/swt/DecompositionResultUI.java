@@ -78,6 +78,7 @@ public class DecompositionResultUI extends Composite {
 	private Text textRightETimes;
 	private Button buttonLogScale;
 	private Button buttonEtimes;
+	private Button buttonUseRelError;
 	//
 	private List<IDecompositionResultsListener> resultsListener;
 
@@ -186,7 +187,7 @@ public class DecompositionResultUI extends Composite {
 			scanSpectra.addMassSpectrum(cmsSpectra.getList().get(i - 1)); // make shallow copy of spectra we want
 		}
 		MassSpectraDecomposition decomposer = new MassSpectraDecomposition();
-		results = decomposer.decompose(scanSpectra, libMassSpectra, new NullProgressMonitor());
+		results = decomposer.decompose(scanSpectra, libMassSpectra, buttonUseRelError.getSelection(), new NullProgressMonitor());
 		// try {
 		// File libraryFile = new File("C:/Users/whitlow/git/cmsworkflow/openchrom/plugins/net.openchrom.msd.process.supplier.cms.fragment.test/testData/files/import/test1/LibrarySpectra.cms");
 		// MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
@@ -404,7 +405,7 @@ public class DecompositionResultUI extends Composite {
 		addButtonSettings(compositeButtons);
 		//
 		Group compositCheckboxGroup = new Group(compositeSignals, SWT.NONE);
-		GridLayout compositCheckboxGroupGridLayout = new GridLayout(1, false);
+		GridLayout compositCheckboxGroupGridLayout = new GridLayout(2, false);
 		compositCheckboxGroup.setLayout(compositCheckboxGroupGridLayout);
 		GridData compositCheckboxGroupGridData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		compositCheckboxGroup.setLayoutData(compositCheckboxGroupGridData);
@@ -483,6 +484,44 @@ public class DecompositionResultUI extends Composite {
 				}
 			}
 		});
+		//
+		buttonUseRelError = new Button(parent, SWT.CHECK);
+		buttonUseRelError.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		buttonUseRelError.setText("Use Weighted Error");
+		buttonUseRelError.setSelection(true);
+		/* doesn't need a listener
+		buttonRelError.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				try {
+					if(buttonRelError.getSelection()) {
+						// System.out.println("buttonEtimes selection event, selected");
+						if(usingETimes != hasETimes) {
+							usingETimes = hasETimes;
+							compositeSignalsGraph.clearXYGraph();
+							updateTextLeftETimes(cmsSpectra);
+							updateTextRightETimes(cmsSpectra);
+						}
+						buttonRelError.setSelection(usingETimes);
+					} else {
+						// System.out.println("buttonEtimes selection event, not selected");
+						if(usingETimes) {
+							usingETimes = false;
+							buttonEtimes.setSelection(usingETimes);
+							compositeSignalsGraph.clearXYGraph();
+							updateTextLeftETimes(cmsSpectra);
+							updateTextRightETimes(cmsSpectra);
+						}
+					}
+					// compositeSignalsGraph.updateXYGraph(cmsSpectra, results, usingETimes, usingOffsetLogScale); // not needed, done by updateText...ETimes()
+				} catch(Exception e1) {
+					logger.warn(e1);
+				}
+			}
+		});
+		*/
 	}
 
 	private void readAndPlotCMSscanFile() {

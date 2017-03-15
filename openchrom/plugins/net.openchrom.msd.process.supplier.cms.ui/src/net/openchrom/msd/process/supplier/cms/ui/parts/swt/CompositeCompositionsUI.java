@@ -23,6 +23,8 @@ import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
 import org.eclipse.nebula.visualization.xygraph.util.XYGraphMediaFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -34,6 +36,7 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResult;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
@@ -54,6 +57,8 @@ public class CompositeCompositionsUI extends Composite {
 	private boolean usingETimes = false;
 	private boolean usingOffsetLogScale = false;
 	private double scaleOffset;
+	private Text textLogScaleOffset;
+	private boolean txtLogScaleOffsetIgnoreEvent = false;
 	private Trace traceScaleOffset = null;
 	private Yunits yUnits = Yunits.PP;
 
@@ -181,16 +186,32 @@ public class CompositeCompositionsUI extends Composite {
 
 				try {
 					if(buttonLogScale.getSelection()) {
-						// System.out.println("buttonLogScale selection event, selected");
+						// System.out.println("buttonLogScale selection event, checked");
 						usingOffsetLogScale = true;
 					} else {
-						// System.out.println("buttonLogScale selection event, not selected");
+						// System.out.println("buttonLogScale selection event, not checked");
 						usingOffsetLogScale = false;
 					}
+					txtLogScaleOffsetIgnoreEvent = true;
+					textLogScaleOffset.setText("");
+					txtLogScaleOffsetIgnoreEvent = false;
 					updateXYGraph();
 				} catch(Exception e1) {
 					logger.warn(e1);
 				}
+			}
+		});
+		//
+		textLogScaleOffset = new Text(compositGroup2, SWT.RIGHT | SWT.BORDER);
+		textLogScaleOffset.setText("");
+		GridData textLogScaleOffsetGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
+		textLogScaleOffset.setLayoutData(textLogScaleOffsetGridData);
+		textLogScaleOffset.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+
+				if (!txtLogScaleOffsetIgnoreEvent && usingOffsetLogScale) updateXYGraph();
 			}
 		});
 		//
@@ -330,8 +351,19 @@ public class CompositeCompositionsUI extends Composite {
 					}
 				}
 			}
-			scaleOffset = minAbsY - minY;
+			if (usingOffsetLogScale) {
+				if ("".equals(textLogScaleOffset.getText())) {
+					scaleOffset = minAbsY - minY;
+					txtLogScaleOffsetIgnoreEvent = true;
+					textLogScaleOffset.setText(String.valueOf(scaleOffset));
+					txtLogScaleOffsetIgnoreEvent = false;
+				} else {
+					scaleOffset = Double.parseDouble(textLogScaleOffset.getText());
+					minAbsY = java.lang.StrictMath.abs(scaleOffset + minY); // compute new minAbsY for Y-axis limits
+				}
+			}
 			for(String strName : lookup.keySet()) {
+				double temp;
 				ArrayList<Double> templist;
 				Color traceColor;
 				templist = lookup.get(strName);
@@ -340,7 +372,11 @@ public class CompositeCompositionsUI extends Composite {
 				double[] ydata = new double[tempdata.length];
 				if(usingOffsetLogScale) {
 					for(int ii = 0; ii < tempdata.length; ii++) {
-						ydata[ii] = tempdata[ii].doubleValue() + scaleOffset;
+						temp = tempdata[ii].doubleValue() + scaleOffset;
+						if (0d >= temp) {
+							temp = minAbsY;
+						}
+						ydata[ii] = temp;
 					}
 				} else {
 					for(int ii = 0; ii < tempdata.length; ii++) {

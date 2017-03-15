@@ -58,7 +58,7 @@ public class MassSpectraDecomposition {
 	private boolean solverRetVal;
 	private ICalibratedVendorMassSpectrum scanResidual; // residual mass spectrum after subtracting calculated ion signals
 
-	public DecompositionResults decompose(IMassSpectra scanSpectra, IMassSpectra libMassSpectra, IProgressMonitor monitor) {
+	public DecompositionResults decompose(IMassSpectra scanSpectra, IMassSpectra libMassSpectra, boolean useWeightedError, IProgressMonitor monitor) {
 
 		// parameter scanSpectra has all the scans we wish to decompose, 1 by 1, into components
 		// parameter libMassSpectra has the set of library component cracking patterns we want to fit to
@@ -153,8 +153,13 @@ public class MassSpectraDecomposition {
 							// 1); // for testing without error weights
 							java.lang.StrictMath.sqrt(1.0 / java.lang.StrictMath.abs(i.getIonAbundance())));
 				} // for
-				CommonOps.mult(P, A, wtA);
-				CommonOps.mult(P, y, wty);
+				if (useWeightedError) {
+					CommonOps.mult(P, A, wtA);
+					CommonOps.mult(P, y, wty);
+				} else {
+					wtA.set(A);
+					wty.set(y);
+				}
 				// solve the linear system Ax=y for x using a solver that tolerates a singular A matrix
 				LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.leastSquaresQrPivot(false, false);
 				QRPDecomposition<DenseMatrix64F> decomp = solver.getDecomposition();
