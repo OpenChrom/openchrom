@@ -19,10 +19,15 @@ import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 public class CmsLibraryListLabelProvider extends AbstractChemClipseLabelProvider {
+
+	private DecimalFormat decimalFormatMZ = ValueFormat.getDecimalFormatEnglish("0.0000");
+	private DecimalFormat decimalFormatMW = ValueFormat.getDecimalFormatEnglish("0.0000");
+	private DecimalFormat decimalFormatSignal = ValueFormat.getDecimalFormatEnglish("0.0000E00");
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) {
@@ -66,20 +71,29 @@ public class CmsLibraryListLabelProvider extends AbstractChemClipseLabelProvider
 					text = libraryInformation.getName();
 				}
 				break;
-			case 1: // RT
-				text = decimalFormat.format(massSpectrum.getRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+			case 1: // CAS Number
+				if(libraryInformation != null) {
+					text = libraryInformation.getCasNumber();
+				}
 				break;
-			case 2: // RI
-				decimalFormat.format(massSpectrum.getRetentionIndex());
+			case 2: // Molecular Weight
+				if(libraryInformation != null) {
+					text = decimalFormatMW.format(libraryInformation.getMolWeight());
+				}
 				break;
 			case 3: // Base Peak
-				text = decimalFormat.format(massSpectrum.getBasePeak());
+				text = decimalFormatMZ.format(massSpectrum.getBasePeak());
 				break;
 			case 4: // Base Peak Abundance
-				text = decimalFormat.format(massSpectrum.getBasePeakAbundance());
+				text = decimalFormatSignal.format(massSpectrum.getBasePeakAbundance());
 				break;
 			case 5: // Number of Ions
 				text = Integer.toString(massSpectrum.getNumberOfIons());
+				break;
+			case 6: // Formula
+				if(libraryInformation != null) {
+					text = libraryInformation.getFormula();
+				}
 				break;
 			default:
 				text = "n.v.";

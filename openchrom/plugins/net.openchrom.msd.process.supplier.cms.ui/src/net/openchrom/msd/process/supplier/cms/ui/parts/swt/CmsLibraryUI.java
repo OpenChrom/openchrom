@@ -21,24 +21,27 @@ import net.openchrom.msd.process.supplier.cms.ui.internal.provider.CmsLibraryLis
 public class CmsLibraryUI extends ExtendedTableViewer {
 
 	public static final String NAME = "Name";
-	public static final String RETENTION_TIME = "Retention Time";
-	public static final String RETENTION_INDEX = "Retention Index";
+	public static final String CAS_NUMBER = "CAS Number";
+	public static final String MOL_WEIGHT = "Mol Weight";
 	public static final String BASE_PEAK = "Base Peak";
 	public static final String BASE_PEAK_ABUNDANCE = "Base Peak Abundance";
 	public static final String NUMBER_OF_IONS = "Number of Ions";
+	public static final String FORMULA = "Formula";
 	//
 	private String[] titles = {//
 			NAME, //
-			RETENTION_TIME, //
-			RETENTION_INDEX, //
+			CAS_NUMBER, //
+			MOL_WEIGHT, //
 			BASE_PEAK, //
 			BASE_PEAK_ABUNDANCE, //
-			NUMBER_OF_IONS};
+			NUMBER_OF_IONS, //
+			FORMULA};
 	//
 	private int bounds[] = {//
-			300, //
+			250, //
 			100, //
-			100, //
+			80, //
+			80, //
 			100, //
 			100, //
 			100};
