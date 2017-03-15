@@ -107,9 +107,9 @@ public class DecompositionResult {
 			return Double.NaN;
 		}
 	}
-	
+
 	public double getSolutionQuality() {
-	
+
 		return solutionQuality;
 	}
 
@@ -155,9 +155,8 @@ public class DecompositionResult {
 		}
 	}
 
-	
 	public void setSolutionQuality(double solutionQuality) {
-	
+
 		this.solutionQuality = solutionQuality;
 	}
 }

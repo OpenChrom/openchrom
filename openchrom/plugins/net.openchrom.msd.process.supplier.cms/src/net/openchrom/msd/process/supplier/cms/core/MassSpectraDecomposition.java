@@ -176,7 +176,6 @@ public class MassSpectraDecomposition {
 				if(!solverRetVal) {
 					throw new LibIonsMatrixSingularException("Solver.setA() returned FALSE, library matrix is singular");
 				}
-				
 				libMatrixQuality = solver.quality();
 				if(0 > libMatrixQuality) {
 					throw new LibIonsMatrixSingularException("Solver.quality() value of " + libMatrixQuality + " indicates library matrix is nearly singular");
@@ -185,7 +184,6 @@ public class MassSpectraDecomposition {
 				if(1e-8 > libMatrixQuality) {
 					System.out.print(", Library matrix is nearly singular");
 				}
-				
 				System.out.println("");
 				// solve
 				solver.solve(wty, x);
@@ -203,7 +201,7 @@ public class MassSpectraDecomposition {
 					ICalibratedVendorLibraryMassSpectrum libRef = fitDataset.getLibRef(ii);
 					ICalibratedVendorMassSpectrum scanRef = fitDataset.getScanRef();
 					String ppUnits = scanRef.getSourcePressureUnits();
-					if (0 >= libMatrixQuality) {
+					if(0 >= libMatrixQuality) {
 						result.addComponent(Double.NaN, fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
 					} else {
 						result.addComponent(x.get(ii), fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
