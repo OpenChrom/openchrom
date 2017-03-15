@@ -5,6 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -29,7 +30,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
-public class PageProcessor extends AbstractExtendedEditorPage implements IExtendedEditorPage {
+public class PageSettings extends AbstractExtendedEditorPage implements IExtendedEditorPage {
 
 	private Text c12ChromatogramText;
 	private Text c13ChromatogramText;
@@ -38,7 +39,7 @@ public class PageProcessor extends AbstractExtendedEditorPage implements IExtend
 	//
 	private ImageHyperlink hyperlinkProcess;
 
-	public PageProcessor(Composite container) {
+	public PageSettings(Composite container) {
 		super("Mass Shift Detector", container, true);
 	}
 

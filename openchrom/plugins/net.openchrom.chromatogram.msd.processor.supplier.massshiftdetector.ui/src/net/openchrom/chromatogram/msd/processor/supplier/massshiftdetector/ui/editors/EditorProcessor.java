@@ -5,6 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -29,14 +30,21 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model
 public class EditorProcessor extends MultiPageEditorPart {
 
 	private static final Logger logger = Logger.getLogger(EditorProcessor.class);
-	private PageProcessor pageProcessor;
+	private PageSettings pageSettings;
+	private PageShiftHeatmap pageShiftHeatmap;
+	private PageShiftTable pageShiftTable;
 
 	@Override
 	protected void createPages() {
 
-		pageProcessor = new PageProcessor(getContainer());
-		int pageIndex = addPage(pageProcessor.getControl());
-		setPageText(pageIndex, "Mass Shift Detector");
+		pageSettings = new PageSettings(getContainer());
+		setPageText(addPage(pageSettings.getControl()), "Settings");
+		//
+		pageShiftHeatmap = new PageShiftHeatmap(getContainer());
+		setPageText(addPage(pageShiftHeatmap.getControl()), "Shift Heatmap");
+		//
+		pageShiftTable = new PageShiftTable(getContainer());
+		setPageText(addPage(pageShiftTable.getControl()), "Shift Table");
 	}
 
 	@Override
@@ -86,7 +94,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 	@Override
 	public void dispose() {
 
-		pageProcessor.dispose();
+		pageSettings.dispose();
 		super.dispose();
 	}
 }
