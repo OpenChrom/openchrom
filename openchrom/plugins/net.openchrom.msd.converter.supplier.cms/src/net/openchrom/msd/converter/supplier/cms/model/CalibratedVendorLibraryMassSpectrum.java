@@ -70,7 +70,6 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 		List<IIon> sortedList = new ArrayList<>(getIons());
 		Collections.sort(sortedList); // uses AbstractIon.compareTo(IIon)
 		setIons(sortedList);
-		
 	}
 
 	@Override
