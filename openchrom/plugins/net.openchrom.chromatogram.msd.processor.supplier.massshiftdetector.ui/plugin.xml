@@ -20,7 +20,7 @@
          point="org.eclipse.ui.editors">
       <editor
             class="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors.EditorProcessor"
-            extensions="mpe"
+            extensions="mdp"
             icon="icons/16x16/chromatogram.gif"
             id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors.editorProcessor"
             name="Mass Shift Detector">
