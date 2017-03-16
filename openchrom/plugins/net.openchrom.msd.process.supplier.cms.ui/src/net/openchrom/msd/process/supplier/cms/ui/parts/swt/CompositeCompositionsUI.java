@@ -414,7 +414,7 @@ public class CompositeCompositionsUI extends Composite {
 					xyGraphComposition.getPrimaryYAxis().setRange(1.05 * minY, 1.05 * maxY);
 				}
 			} else {
-				xyGraphComposition.getPrimaryYAxis().setRange(0.95 * minAbsY, 1.05 * maxY);
+				xyGraphComposition.getPrimaryYAxis().setRange(0.95 * minAbsY, 1.05 * (maxY+scaleOffset));
 				CircularBufferDataProvider dataProviderTraceScaleOffset = new CircularBufferDataProvider(false); // XYGraph data item
 				dataProviderTraceScaleOffset.setBufferSize(2);
 				double[] ydata = new double[2];
