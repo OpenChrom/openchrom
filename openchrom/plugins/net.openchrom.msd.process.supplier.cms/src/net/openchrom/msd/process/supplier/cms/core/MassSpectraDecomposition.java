@@ -271,8 +271,8 @@ public class MassSpectraDecomposition {
 			System.out.println();
 		}
 		// print results to console
-		System.out.println(results.getCompositionResultsTable());
 		System.out.println(results.getResidualSpectraTable());
+		System.out.println(results.getCompositionResultsTable());
 		return results;
 	}
 }
