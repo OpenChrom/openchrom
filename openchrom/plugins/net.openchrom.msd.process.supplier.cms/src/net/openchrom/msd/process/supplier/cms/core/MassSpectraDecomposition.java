@@ -153,7 +153,7 @@ public class MassSpectraDecomposition {
 							// 1); // for testing without error weights
 							java.lang.StrictMath.sqrt(1.0 / java.lang.StrictMath.abs(i.getIonAbundance())));
 				} // for
-				if (useWeightedError) {
+				if(useWeightedError) {
 					CommonOps.mult(P, A, wtA);
 					CommonOps.mult(P, y, wty);
 				} else {

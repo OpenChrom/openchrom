@@ -489,39 +489,38 @@ public class DecompositionResultUI extends Composite {
 		buttonUseRelError.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		buttonUseRelError.setText("Use Weighted Error");
 		buttonUseRelError.setSelection(true);
-		/* doesn't need a listener
-		buttonRelError.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				try {
-					if(buttonRelError.getSelection()) {
-						// System.out.println("buttonEtimes selection event, selected");
-						if(usingETimes != hasETimes) {
-							usingETimes = hasETimes;
-							compositeSignalsGraph.clearXYGraph();
-							updateTextLeftETimes(cmsSpectra);
-							updateTextRightETimes(cmsSpectra);
-						}
-						buttonRelError.setSelection(usingETimes);
-					} else {
-						// System.out.println("buttonEtimes selection event, not selected");
-						if(usingETimes) {
-							usingETimes = false;
-							buttonEtimes.setSelection(usingETimes);
-							compositeSignalsGraph.clearXYGraph();
-							updateTextLeftETimes(cmsSpectra);
-							updateTextRightETimes(cmsSpectra);
-						}
-					}
-					// compositeSignalsGraph.updateXYGraph(cmsSpectra, results, usingETimes, usingOffsetLogScale); // not needed, done by updateText...ETimes()
-				} catch(Exception e1) {
-					logger.warn(e1);
-				}
-			}
-		});
-		*/
+		/*
+		 * doesn't need a listener
+		 * buttonRelError.addSelectionListener(new SelectionAdapter() {
+		 * @Override
+		 * public void widgetSelected(SelectionEvent e) {
+		 * try {
+		 * if(buttonRelError.getSelection()) {
+		 * // System.out.println("buttonEtimes selection event, selected");
+		 * if(usingETimes != hasETimes) {
+		 * usingETimes = hasETimes;
+		 * compositeSignalsGraph.clearXYGraph();
+		 * updateTextLeftETimes(cmsSpectra);
+		 * updateTextRightETimes(cmsSpectra);
+		 * }
+		 * buttonRelError.setSelection(usingETimes);
+		 * } else {
+		 * // System.out.println("buttonEtimes selection event, not selected");
+		 * if(usingETimes) {
+		 * usingETimes = false;
+		 * buttonEtimes.setSelection(usingETimes);
+		 * compositeSignalsGraph.clearXYGraph();
+		 * updateTextLeftETimes(cmsSpectra);
+		 * updateTextRightETimes(cmsSpectra);
+		 * }
+		 * }
+		 * // compositeSignalsGraph.updateXYGraph(cmsSpectra, results, usingETimes, usingOffsetLogScale); // not needed, done by updateText...ETimes()
+		 * } catch(Exception e1) {
+		 * logger.warn(e1);
+		 * }
+		 * }
+		 * });
+		 */
 	}
 
 	private void readAndPlotCMSscanFile() {
