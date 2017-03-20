@@ -14,19 +14,23 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.pref
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.Activator;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
-	public static final String P_MY_SETTING = "mySetting";
-	public static final double DEF_MY_SETTING = 42.0d;
-	public static final double MY_SETTING_MIN = 1.0d;
-	public static final double MY_SETTING_MAX = 100.0d;
+	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
+	//
+	public static final String P_FILTER_PATH_C12_CHROMATOGRAM = "filterPathC12Chromatogram";
+	public static final String DEF_FILTER_PATH_C12_CHROMATOGRAM = "";
+	public static final String P_FILTER_PATH_C13_CHROMATOGRAM = "filterPathC13Chromatogram";
+	public static final String DEF_FILTER_PATH_C13_CHROMATOGRAM = "";
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -54,7 +58,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public Map<String, String> getDefaultValues() {
 
 		Map<String, String> defaultValues = new HashMap<String, String>();
-		defaultValues.put(P_MY_SETTING, Double.toString(DEF_MY_SETTING));
+		defaultValues.put(P_FILTER_PATH_C12_CHROMATOGRAM, DEF_FILTER_PATH_C12_CHROMATOGRAM);
+		defaultValues.put(P_FILTER_PATH_C13_CHROMATOGRAM, DEF_FILTER_PATH_C13_CHROMATOGRAM);
 		return defaultValues;
 	}
 
@@ -62,5 +67,42 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public IEclipsePreferences getPreferences() {
 
 		return getScopeContext().getNode(getPreferenceNode());
+	}
+
+	public static String getFilterPathC12Chromatogram() {
+
+		return getFilterPath(P_FILTER_PATH_C12_CHROMATOGRAM, DEF_FILTER_PATH_C12_CHROMATOGRAM);
+	}
+
+	public static void setFilterPathC12Chromatogram(String filterPath) {
+
+		setFilterPath(P_FILTER_PATH_C12_CHROMATOGRAM, filterPath);
+	}
+
+	public static String getFilterPathC13Chromatogram() {
+
+		return getFilterPath(P_FILTER_PATH_C13_CHROMATOGRAM, DEF_FILTER_PATH_C13_CHROMATOGRAM);
+	}
+
+	public static void setFilterPathC13Chromatogram(String filterPath) {
+
+		setFilterPath(P_FILTER_PATH_C13_CHROMATOGRAM, filterPath);
+	}
+
+	private static String getFilterPath(String key, String def) {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(key, def);
+	}
+
+	private static void setFilterPath(String key, String filterPath) {
+
+		try {
+			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+			eclipsePreferences.put(key, filterPath);
+			eclipsePreferences.flush();
+		} catch(BackingStoreException e) {
+			logger.warn(e);
+		}
 	}
 }

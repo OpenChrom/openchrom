@@ -30,7 +30,11 @@ Require-Bundle: org.eclipse.ui,
  net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector;bundle-version="1.2.0",
  org.eclipse.draw2d;bundle-version="3.10.100",
  org.eclipse.nebula.visualization.widgets;bundle-version="1.0.0",
- org.eclipse.nebula.visualization.xygraph;bundle-version="2.1.0"
+ org.eclipse.nebula.visualization.xygraph;bundle-version="2.1.0",
+ org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
+ org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",
+ org.eclipse.chemclipse.converter;bundle-version="0.8.0",
+ org.eclipse.chemclipse.processing;bundle-version="0.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: javax.annotation;version="1.2.0",
  org.osgi.service.event;version="1.3.0"

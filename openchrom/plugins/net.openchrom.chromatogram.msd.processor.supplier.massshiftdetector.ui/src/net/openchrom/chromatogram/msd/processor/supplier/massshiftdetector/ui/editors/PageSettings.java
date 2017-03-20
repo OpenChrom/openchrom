@@ -11,16 +11,35 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.editors.AbstractExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.editors.IExtendedEditorPage;
+import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
+import org.eclipse.chemclipse.support.ui.wizards.IChromatogramWizardElements;
+import org.eclipse.chemclipse.swt.ui.components.chromatogram.MultipleChromatogramOffsetUI;
+import org.eclipse.chemclipse.swt.ui.support.AxisTitlesIntensityScale;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
+import org.eclipse.chemclipse.ux.extension.msd.ui.wizards.ChromatogramInputEntriesWizard;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
@@ -30,17 +49,24 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.preferences.PreferenceSupplier;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.ChromatogramImportRunnable;
+
 public class PageSettings extends AbstractExtendedEditorPage implements IExtendedEditorPage {
 
+	private static final Logger logger = Logger.getLogger(PageSettings.class);
+	//
+	private EditorProcessor editorProcessor;
+	//
 	private Text c12ChromatogramText;
 	private Text c13ChromatogramText;
 	private Spinner shiftsSpinner;
 	private Label labelNotes;
-	//
-	private ImageHyperlink hyperlinkProcess;
+	private MultipleChromatogramOffsetUI chromatogramOverlay;
 
-	public PageSettings(Composite container) {
-		super("Mass Shift Detector", container, true);
+	public PageSettings(EditorProcessor editorProcessor, Composite container) {
+		super("Settings", container, true);
+		this.editorProcessor = editorProcessor;
 	}
 
 	@Override
@@ -54,6 +80,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		 */
 		createPropertiesSection(body);
 		createProcessSection(body);
+		createChromatogramSection(body);
 	}
 
 	private void createPropertiesSection(Composite parent) {
@@ -80,6 +107,33 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		//
 		Button button = new Button(client, SWT.PUSH);
 		button.setText("Select Chromatogram");
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
+				// PreferenceSupplier.getFilterPathC12Chromatogram()
+				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "C12 - Chromatogram", "Select the C12 chromatogram.");
+				WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), inputWizard);
+				wizardDialog.create();
+				//
+				String selectedChromatogram = "";
+				//
+				if(wizardDialog.open() == WizardDialog.OK) {
+					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
+					if(selectedChromatograms.size() > 0) {
+						selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
+						File file = new File(selectedChromatogram);
+						if(file.exists()) {
+							PreferenceSupplier.setFilterPathC12Chromatogram(file.getParentFile().toString());
+						}
+					}
+				}
+				//
+				c12ChromatogramText.setText(selectedChromatogram);
+			}
+		});
 	}
 
 	private void createC13ChromatogramText(Composite client) {
@@ -91,13 +145,40 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		//
 		Button button = new Button(client, SWT.PUSH);
 		button.setText("Select Chromatogram");
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
+				// PreferenceSupplier.getFilterPathC13Chromatogram()
+				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "C13 - Chromatogram", "Select the C13 chromatogram.");
+				WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), inputWizard);
+				wizardDialog.create();
+				//
+				String selectedChromatogram = "";
+				//
+				if(wizardDialog.open() == WizardDialog.OK) {
+					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
+					if(selectedChromatograms.size() > 0) {
+						selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
+						File file = new File(selectedChromatogram);
+						if(file.exists()) {
+							PreferenceSupplier.setFilterPathC13Chromatogram(file.getParentFile().toString());
+						}
+					}
+				}
+				//
+				c13ChromatogramText.setText(selectedChromatogram);
+			}
+		});
 	}
 
 	private void createShiftsSpinner(Composite client) {
 
 		createLabel(client, "Number of shifts");
 		//
-		shiftsSpinner = new Spinner(client, SWT.NONE);
+		shiftsSpinner = new Spinner(client, SWT.BORDER);
 		shiftsSpinner.setMinimum(1);
 		shiftsSpinner.setMaximum(5);
 		shiftsSpinner.setIncrement(1);
@@ -118,26 +199,37 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		labelNotes.setLayoutData(gridData);
 	}
 
+	private void createChromatogramOverlay(Composite client) {
+
+		Composite compositeRawData = new Composite(client, SWT.BORDER);
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		gridData.heightHint = 300;
+		compositeRawData.setLayoutData(gridData);
+		compositeRawData.setLayout(new FillLayout());
+		chromatogramOverlay = new MultipleChromatogramOffsetUI(compositeRawData, SWT.NONE, new AxisTitlesIntensityScale());
+	}
+
 	private void createProcessSection(Composite parent) {
 
 		Section section = createSection(parent, 3, "Process", "The selected chromatograms are processed with the given settings to detect mass shifts.");
 		Composite client = createClient(section);
 		/*
-		 * Edit
+		 * Process
 		 */
-		hyperlinkProcess = createProcessHyperlink(client);
-		hyperlinkProcess.setText("Process Chromatograms");
+		createOverlayHyperlink(client, "Overlay Selected Chromatograms");
+		createCalculateHyperlink(client, "Calculate Mass Shifts");
 		/*
 		 * Add the client to the section.
 		 */
 		section.setClient(client);
 	}
 
-	private ImageHyperlink createProcessHyperlink(Composite client) {
+	private ImageHyperlink createOverlayHyperlink(Composite client, String text) {
 
+		Shell shell = Display.getCurrent().getActiveShell();
 		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
 		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXECUTE, IApplicationImage.SIZE_16x16));
-		imageHyperlink.setText("");
+		imageHyperlink.setText(text);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalIndent = HORIZONTAL_INDENT;
 		imageHyperlink.setLayoutData(gridData);
@@ -145,8 +237,54 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 			public void linkActivated(HyperlinkEvent e) {
 
+				List<IChromatogramSelection> chromatogramSelections = new ArrayList<IChromatogramSelection>();
+				String pathChromatogramC12 = c12ChromatogramText.getText().trim();
+				String pathChromatogramC13 = c13ChromatogramText.getText().trim();
+				ChromatogramImportRunnable runnable = new ChromatogramImportRunnable(pathChromatogramC12, pathChromatogramC13);
+				ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
+				//
+				try {
+					monitor.run(true, true, runnable);
+					chromatogramSelections = runnable.getChromatogramSelections();
+				} catch(InterruptedException e1) {
+					logger.warn(e);
+				} catch(InvocationTargetException e1) {
+					logger.warn(e);
+				}
+				//
+				chromatogramOverlay.updateSelection(chromatogramSelections, true);
 			}
 		});
 		return imageHyperlink;
+	}
+
+	private ImageHyperlink createCalculateHyperlink(Composite client, String text) {
+
+		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
+		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXECUTE, IApplicationImage.SIZE_16x16));
+		imageHyperlink.setText(text);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalIndent = HORIZONTAL_INDENT;
+		imageHyperlink.setLayoutData(gridData);
+		imageHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
+
+			public void linkActivated(HyperlinkEvent e) {
+
+				editorProcessor.focusPage(EditorProcessor.PAGE_INDEX_SHIFT_HEATMAP);
+			}
+		});
+		return imageHyperlink;
+	}
+
+	private void createChromatogramSection(Composite parent) {
+
+		Section section = createSection(parent, 3, "Overlay", "The selected chromatogram are displayed here in overlay modus.");
+		Composite client = createClient(section, 1);
+		//
+		createChromatogramOverlay(client);
+		/*
+		 * Add the client to the section.
+		 */
+		section.setClient(client);
 	}
 }

@@ -22,11 +22,14 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.sw
 
 public class PageShiftTable {
 
+	private EditorProcessor editorProcessor;
+	//
 	private Composite control;
 	private EnhancedShiftListEditor enhancedShiftListEditor;
 
-	public PageShiftTable(Composite container) {
+	public PageShiftTable(EditorProcessor editorProcessor, Composite container) {
 		initialize(container);
+		this.editorProcessor = editorProcessor;
 	}
 
 	public void initialize(Composite parent) {

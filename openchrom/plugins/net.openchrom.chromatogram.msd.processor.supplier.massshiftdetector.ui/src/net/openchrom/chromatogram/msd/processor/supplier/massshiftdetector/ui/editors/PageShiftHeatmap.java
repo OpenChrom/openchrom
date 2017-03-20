@@ -21,11 +21,14 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.sw
 
 public class PageShiftHeatmap {
 
+	private EditorProcessor editorProcessor;
+	//
 	private Composite control;
 	private EnhancedShiftHeatmapEditor enhancedShiftHeatmapEditor;
 
-	public PageShiftHeatmap(Composite container) {
+	public PageShiftHeatmap(EditorProcessor editorProcessor, Composite container) {
 		initialize(container);
+		this.editorProcessor = editorProcessor;
 	}
 
 	public void initialize(Composite parent) {

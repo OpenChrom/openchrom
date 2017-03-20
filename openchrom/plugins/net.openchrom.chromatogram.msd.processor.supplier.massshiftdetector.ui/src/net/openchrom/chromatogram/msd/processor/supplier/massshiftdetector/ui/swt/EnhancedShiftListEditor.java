@@ -30,6 +30,7 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 	private Button buttonReset;
 	private Button buttonPrevious;
 	private Button buttonCheck;
+	private Button buttonExport;
 	private List<Button> buttons;
 	//
 	private ShiftListUI shiftListUI;
@@ -60,6 +61,7 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 			buttonReset.setEnabled(true);
 			buttonPrevious.setEnabled(true);
 			buttonCheck.setEnabled(true);
+			buttonExport.setEnabled(true);
 		}
 	}
 
@@ -102,6 +104,8 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 		buttons.add(buttonReset = createResetButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonCheck = createCheckButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonPrevious = createPreviousButton(compositeButtons, gridDataButtons));
+		buttons.add(createSaveButton(compositeButtons, gridDataButtons));
+		buttons.add(buttonExport = createExportButton(compositeButtons, gridDataButtons));
 	}
 
 	private Button createResetButton(Composite parent, GridData gridData) {
@@ -151,29 +155,11 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 		return button;
 	}
 
-	private Button createNextButton(Composite parent, GridData gridData) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("Next");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_FORWARD, IApplicationImage.SIZE_16x16));
-		button.setLayoutData(gridData);
-		button.setEnabled(false);
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				fireUpdateNext();
-			}
-		});
-		return button;
-	}
-
 	private Button createPreviousButton(Composite parent, GridData gridData) {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Previous");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_BACKWARD, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_BACKWARD, IApplicationImage.SIZE_16x16));
 		button.setLayoutData(gridData);
 		button.addSelectionListener(new SelectionAdapter() {
 
@@ -181,6 +167,40 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 			public void widgetSelected(SelectionEvent e) {
 
 				fireUpdatePrevious();
+			}
+		});
+		return button;
+	}
+
+	private Button createSaveButton(Composite parent, GridData gridData) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("Save");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SAVE, IApplicationImage.SIZE_16x16));
+		button.setLayoutData(gridData);
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				System.out.println("TODO");
+			}
+		});
+		return button;
+	}
+
+	private Button createExportButton(Composite parent, GridData gridData) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("Export");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImage.SIZE_16x16));
+		button.setLayoutData(gridData);
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				System.out.println("TODO");
 			}
 		});
 		return button;

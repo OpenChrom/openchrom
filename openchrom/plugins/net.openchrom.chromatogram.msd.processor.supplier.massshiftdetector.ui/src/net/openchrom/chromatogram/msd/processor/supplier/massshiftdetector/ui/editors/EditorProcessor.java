@@ -30,6 +30,11 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model
 public class EditorProcessor extends MultiPageEditorPart {
 
 	private static final Logger logger = Logger.getLogger(EditorProcessor.class);
+	//
+	public static int PAGE_INDEX_SETTINGS;
+	public static int PAGE_INDEX_SHIFT_HEATMAP;
+	public static int PAGE_INDEX_SHIFT_TABLE;
+	//
 	private PageSettings pageSettings;
 	private PageShiftHeatmap pageShiftHeatmap;
 	private PageShiftTable pageShiftTable;
@@ -37,14 +42,22 @@ public class EditorProcessor extends MultiPageEditorPart {
 	@Override
 	protected void createPages() {
 
-		pageSettings = new PageSettings(getContainer());
-		setPageText(addPage(pageSettings.getControl()), "Settings");
+		pageSettings = new PageSettings(this, getContainer());
+		PAGE_INDEX_SETTINGS = addPage(pageSettings.getControl());
+		setPageText(PAGE_INDEX_SETTINGS, "Settings");
 		//
-		pageShiftHeatmap = new PageShiftHeatmap(getContainer());
-		setPageText(addPage(pageShiftHeatmap.getControl()), "Shift Heatmap");
+		pageShiftHeatmap = new PageShiftHeatmap(this, getContainer());
+		PAGE_INDEX_SHIFT_HEATMAP = addPage(pageShiftHeatmap.getControl());
+		setPageText(PAGE_INDEX_SHIFT_HEATMAP, "Shift Heatmap");
 		//
-		pageShiftTable = new PageShiftTable(getContainer());
-		setPageText(addPage(pageShiftTable.getControl()), "Shift Table");
+		pageShiftTable = new PageShiftTable(this, getContainer());
+		PAGE_INDEX_SHIFT_TABLE = addPage(pageShiftTable.getControl());
+		setPageText(PAGE_INDEX_SHIFT_TABLE, "Shift Table");
+	}
+
+	public void focusPage(int pageIndex) {
+
+		setActivePage(pageIndex);
 	}
 
 	@Override

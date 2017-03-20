@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Composite;
 
 public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 
+	private Button buttonCalculate;
 	private Button buttonReset;
 	private Button buttonPrevious;
 	private Button buttonCheck;
@@ -58,6 +59,7 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 		 * Defaults when editable.
 		 */
 		if(!readOnly) {
+			buttonCalculate.setEnabled(true);
 			buttonReset.setEnabled(true);
 			buttonPrevious.setEnabled(true);
 			buttonCheck.setEnabled(true);
@@ -105,10 +107,35 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 		GridData gridDataButtons = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataButtons.minimumWidth = 150;
 		//
+		buttons.add(buttonCalculate = createCalculateButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonReset = createResetButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonCheck = createCheckButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonPrevious = createPreviousButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonNext = createNextButton(compositeButtons, gridDataButtons));
+	}
+
+	private Button createCalculateButton(Composite parent, GridData gridData) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("Calculate");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CALCULATE, IApplicationImage.SIZE_16x16));
+		button.setLayoutData(gridData);
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				System.out.println("TODO");
+				boolean error = false;
+				if(error) {
+					buttonNext.setEnabled(false);
+				} else {
+					buttonNext.setEnabled(true);
+					plotData();
+				}
+			}
+		});
+		return button;
 	}
 
 	private Button createResetButton(Composite parent, GridData gridData) {
@@ -165,7 +192,7 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Next");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_FORWARD, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_FORWARD, IApplicationImage.SIZE_16x16));
 		button.setLayoutData(gridData);
 		button.setEnabled(false);
 		button.addSelectionListener(new SelectionAdapter() {
@@ -183,7 +210,7 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Previous");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_BACKWARD, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_BACKWARD, IApplicationImage.SIZE_16x16));
 		button.setLayoutData(gridData);
 		button.addSelectionListener(new SelectionAdapter() {
 
