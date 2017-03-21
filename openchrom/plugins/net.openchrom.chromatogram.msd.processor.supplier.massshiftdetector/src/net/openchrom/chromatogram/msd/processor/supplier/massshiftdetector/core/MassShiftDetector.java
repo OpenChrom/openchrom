@@ -44,7 +44,7 @@ public class MassShiftDetector {
 	 * @return Map<Integer, Map<Integer, Map<Integer, Double>>>
 	 * @throws IllegalArgumentException
 	 */
-	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD chromatogramReference, IChromatogramMSD chromatogramShifted, int level, boolean useAbsValues) throws ChromatogramIsNullException, IllegalArgumentException {
+	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD chromatogramReference, IChromatogramMSD chromatogramShifted, int level, boolean useAbsoluteValues) throws ChromatogramIsNullException, IllegalArgumentException {
 
 		if(level < MIN_LEVEL || level > MAX_LEVEL) {
 			throw new IllegalArgumentException("The level is not valid.");
@@ -90,7 +90,7 @@ public class MassShiftDetector {
 						double intensityReference = extractedIonSignalReference.getAbundance(ion);
 						double intensityShifted = extractedIonSignalShifted.getAbundance(ion + shiftLevel);
 						double intensityDifference;
-						if(useAbsValues) {
+						if(useAbsoluteValues) {
 							intensityDifference = Math.abs(intensityReference - intensityShifted);
 						} else {
 							intensityDifference = intensityReference - intensityShifted;

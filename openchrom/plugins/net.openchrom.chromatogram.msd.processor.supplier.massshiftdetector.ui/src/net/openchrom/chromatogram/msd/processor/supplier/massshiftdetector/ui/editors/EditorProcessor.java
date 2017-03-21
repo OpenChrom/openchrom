@@ -26,6 +26,7 @@ import org.eclipse.ui.part.MultiPageEditorPart;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelReader;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 
 public class EditorProcessor extends MultiPageEditorPart {
 
@@ -39,7 +40,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 	private PageShiftHeatmap pageShiftHeatmap;
 	private PageShiftTable pageShiftTable;
 	//
-	private ProcessorModel processorModel;
+	private ProcessorData processorData;
 
 	@Override
 	protected void createPages() {
@@ -83,9 +84,9 @@ public class EditorProcessor extends MultiPageEditorPart {
 
 	}
 
-	public ProcessorModel getProcessorModel() {
+	public ProcessorData getProcessorData() {
 
-		return processorModel;
+		return processorData;
 	}
 
 	@Override
@@ -102,7 +103,8 @@ public class EditorProcessor extends MultiPageEditorPart {
 				IFileEditorInput fileEditorInput = (IFileEditorInput)input;
 				File file = fileEditorInput.getFile().getLocation().toFile();
 				ProcessorModelReader processorModelReader = new ProcessorModelReader();
-				processorModel = processorModelReader.read(file, new NullProgressMonitor());
+				ProcessorModel processorModel = processorModelReader.read(file, new NullProgressMonitor());
+				processorData = new ProcessorData();
 			} catch(JAXBException e) {
 				logger.warn(e);
 			}

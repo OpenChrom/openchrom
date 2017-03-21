@@ -30,6 +30,7 @@ import org.eclipse.chemclipse.swt.ui.components.chromatogram.MultipleChromatogra
 import org.eclipse.chemclipse.swt.ui.support.AxisTitlesIntensityScale;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.ux.extension.msd.ui.wizards.ChromatogramInputEntriesWizard;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -52,7 +53,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.preferences.PreferenceSupplier;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.ChromatogramImportRunnable;
 
@@ -65,6 +66,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private Text c12ChromatogramText;
 	private Text c13ChromatogramText;
 	private Spinner shiftLevelSpinner;
+	private Button useAbsoluteValuesCheckBox;
 	private Label labelNotes;
 	private Label labelChromatogramInfo;
 	private MultipleChromatogramOffsetUI chromatogramOverlay;
@@ -96,6 +98,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		createC12ChromatogramText(client);
 		createC13ChromatogramText(client);
 		createShiftsSpinner(client);
+		createUseAbsoluteValuesCheckBox(client);
 		createNotesLabel(client);
 		/*
 		 * Add the client to the section.
@@ -187,6 +190,32 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		gridData.widthHint = 50;
 		gridData.heightHint = 20;
 		shiftLevelSpinner.setLayoutData(gridData);
+		shiftLevelSpinner.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				ProcessorData processorRawData = editorProcessor.getProcessorData();
+				processorRawData.setLevel(shiftLevelSpinner.getSelection());
+			}
+		});
+	}
+
+	private void createUseAbsoluteValuesCheckBox(Composite client) {
+
+		useAbsoluteValuesCheckBox = new Button(client, SWT.CHECK);
+		useAbsoluteValuesCheckBox.setText("Use absolute values");
+		useAbsoluteValuesCheckBox.setSelection(true);
+		useAbsoluteValuesCheckBox.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		useAbsoluteValuesCheckBox.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				ProcessorData processorRawData = editorProcessor.getProcessorData();
+				processorRawData.setUseAbsoluteValues(useAbsoluteValuesCheckBox.getSelection());
+			}
+		});
 	}
 
 	private void createNotesLabel(Composite client) {
@@ -265,6 +294,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 	private ImageHyperlink createCalculateHyperlink(Composite client, String text) {
 
+		Shell shell = Display.getCurrent().getActiveShell();
 		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
 		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXECUTE, IApplicationImage.SIZE_16x16));
 		imageHyperlink.setText(text);
@@ -275,7 +305,12 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 			public void linkActivated(HyperlinkEvent e) {
 
-				editorProcessor.focusPage(EditorProcessor.PAGE_INDEX_SHIFT_HEATMAP);
+				ProcessorData processorRawData = editorProcessor.getProcessorData();
+				if(processorRawData.getChromatogramReference() != null && processorRawData.getChromatogramShifted() != null) {
+					editorProcessor.focusPage(EditorProcessor.PAGE_INDEX_SHIFT_HEATMAP);
+				} else {
+					MessageDialog.openWarning(shell, "Chromatogram Selection", "Please select a reference and a shifted chromatogram.");
+				}
 			}
 		});
 		return imageHyperlink;
@@ -306,9 +341,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			int numberOfScans1 = chromatogram1.getNumberOfScans();
 			int numberOfScans2 = chromatogram2.getNumberOfScans();
 			//
-			ProcessorModel processorModel = editorProcessor.getProcessorModel();
-			processorModel.setChromatogramReference((IChromatogramMSD)chromatogram1);
-			processorModel.setChromatogramShifted((IChromatogramMSD)chromatogram2);
+			ProcessorData processorRawData = editorProcessor.getProcessorData();
+			processorRawData.setChromatogramReference((IChromatogramMSD)chromatogram1);
+			processorRawData.setChromatogramShifted((IChromatogramMSD)chromatogram2);
 			//
 			if(numberOfScans1 != numberOfScans2) {
 				labelChromatogramInfo.setText("The selected chromatograms have a different number of scans (" + numberOfScans1 + " vs. " + numberOfScans2 + ").");

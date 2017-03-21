@@ -13,7 +13,6 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.s
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -26,6 +25,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
+
 public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 
 	private Button buttonCalculate;
@@ -36,7 +37,7 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 	private List<Button> buttons;
 	//
 	private ShiftHeatmapUI shiftHeatmapUI;
-	private Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts;
+	private ProcessorData processorData;
 
 	public EnhancedShiftHeatmapEditor(Composite parent, int style) {
 		super(parent, style);
@@ -78,13 +79,21 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 	 * 
 	 * @param input
 	 */
-	@SuppressWarnings("unchecked")
 	public void setInput(Object input) {
 
-		if(input instanceof Map) {
-			massShifts = (Map<Integer, Map<Integer, Map<Integer, Double>>>)input;
-			plotData();
+		if(input instanceof ProcessorData) {
+			this.processorData = (ProcessorData)input;
+		} else {
+			processorData = null;
 		}
+	}
+
+	/*
+	 * Plot the data if there is no validation error.
+	 */
+	private void plotData() {
+
+		shiftHeatmapUI.update(processorData);
 	}
 
 	private void createControl() {
@@ -131,6 +140,8 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
+				processAction();
+				//
 				boolean error = false;
 				if(error) {
 					buttonNext.setEnabled(false);
@@ -165,14 +176,6 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 			}
 		});
 		return button;
-	}
-
-	/*
-	 * Plot the data if there is no validation error.
-	 */
-	private void plotData() {
-
-		shiftHeatmapUI.update(massShifts);
 	}
 
 	private Button createCheckButton(Composite parent, GridData gridData) {

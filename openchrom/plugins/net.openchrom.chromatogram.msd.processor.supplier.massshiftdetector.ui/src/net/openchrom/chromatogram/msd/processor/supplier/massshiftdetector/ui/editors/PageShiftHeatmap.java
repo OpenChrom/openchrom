@@ -11,8 +11,6 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors;
 
-import java.util.Map;
-
 import org.eclipse.chemclipse.support.ui.listener.INextListener;
 import org.eclipse.chemclipse.support.ui.listener.IPreviousListener;
 import org.eclipse.chemclipse.support.ui.listener.IProcessListener;
@@ -22,8 +20,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt.EnhancedShiftHeatmapEditor;
 
 public class PageShiftHeatmap {
@@ -71,12 +68,8 @@ public class PageShiftHeatmap {
 			@Override
 			public void processAction() {
 
-				ProcessorModel processorModel = editorProcessor.getProcessorModel();
-				if(processorModel != null) {
-					MassShiftDetector massShiftDetector = new MassShiftDetector();
-					Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts = massShiftDetector.detectMassShifts(processorModel.getChromatogramReference(), processorModel.getChromatogramShifted(), 3, false);
-					enhancedShiftHeatmapEditor.setInput(massShifts);
-				}
+				ProcessorData processorData = editorProcessor.getProcessorData();
+				enhancedShiftHeatmapEditor.setInput(processorData);
 			}
 		});
 	}
