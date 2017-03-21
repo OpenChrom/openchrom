@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.process.supplier.cms.TestPathHelper;
-import net.openchrom.msd.process.supplier.cms.exceptions.InvalidScanException;
 
 import junit.framework.TestCase;
 
@@ -57,7 +56,7 @@ public class MassSpectraDecomposition_1_ITest extends TestCase {
 		File libraryFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_TEST_1_LIBRARY_SPECTRA));
 		IMassSpectra librarySpectra = massSpectrumReader.read(libraryFile, new NullProgressMonitor());
 		// try {
-		massSpectraDecomposition.decompose(scanSpectra, librarySpectra, new NullProgressMonitor());
+		massSpectraDecomposition.decompose(scanSpectra, librarySpectra, false, new NullProgressMonitor());
 		// } catch(InvalidScanException e) {
 		// System.out.println(e);
 		// }
