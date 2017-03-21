@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.editors.AbstractExtendedEditorPage;
@@ -49,6 +51,8 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.preferences.PreferenceSupplier;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.ChromatogramImportRunnable;
 
@@ -60,8 +64,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	//
 	private Text c12ChromatogramText;
 	private Text c13ChromatogramText;
-	private Spinner shiftsSpinner;
+	private Spinner shiftLevelSpinner;
 	private Label labelNotes;
+	private Label labelChromatogramInfo;
 	private MultipleChromatogramOffsetUI chromatogramOverlay;
 
 	public PageSettings(EditorProcessor editorProcessor, Composite container) {
@@ -172,16 +177,16 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 		createLabel(client, "Number of shifts");
 		//
-		shiftsSpinner = new Spinner(client, SWT.BORDER);
-		shiftsSpinner.setMinimum(0);
-		shiftsSpinner.setMaximum(3);
-		shiftsSpinner.setIncrement(1);
+		shiftLevelSpinner = new Spinner(client, SWT.BORDER);
+		shiftLevelSpinner.setMinimum(MassShiftDetector.MIN_LEVEL);
+		shiftLevelSpinner.setMaximum(MassShiftDetector.MAX_LEVEL);
+		shiftLevelSpinner.setIncrement(MassShiftDetector.INCREMENT_LEVEL);
 		//
 		GridData gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		gridData.widthHint = 50;
 		gridData.heightHint = 20;
-		shiftsSpinner.setLayoutData(gridData);
+		shiftLevelSpinner.setLayoutData(gridData);
 	}
 
 	private void createNotesLabel(Composite client) {
@@ -191,6 +196,12 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 3;
 		labelNotes.setLayoutData(gridData);
+	}
+
+	private void createChromatogramInfo(Composite client) {
+
+		labelChromatogramInfo = createLabel(client, "");
+		labelChromatogramInfo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 
 	private void createChromatogramOverlay(Composite client) {
@@ -246,7 +257,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 					logger.warn(e);
 				}
 				//
-				chromatogramOverlay.updateSelection(chromatogramSelections, true);
+				updateChromatogramSelections(chromatogramSelections);
 			}
 		});
 		return imageHyperlink;
@@ -275,10 +286,41 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		Section section = createSection(parent, 3, "Overlay", "The selected chromatogram are displayed here in overlay modus.");
 		Composite client = createClient(section, 1);
 		//
+		createChromatogramInfo(client);
 		createChromatogramOverlay(client);
 		/*
 		 * Add the client to the section.
 		 */
 		section.setClient(client);
+	}
+
+	private void updateChromatogramSelections(List<IChromatogramSelection> chromatogramSelections) {
+
+		if(chromatogramSelections.size() != 2) {
+			labelChromatogramInfo.setText("Please select two reference chromatograms.");
+			labelChromatogramInfo.setForeground(Colors.WHITE);
+			labelChromatogramInfo.setBackground(Colors.RED);
+		} else {
+			IChromatogram chromatogram1 = chromatogramSelections.get(0).getChromatogram();
+			IChromatogram chromatogram2 = chromatogramSelections.get(1).getChromatogram();
+			int numberOfScans1 = chromatogram1.getNumberOfScans();
+			int numberOfScans2 = chromatogram2.getNumberOfScans();
+			//
+			ProcessorModel processorModel = editorProcessor.getProcessorModel();
+			processorModel.setChromatogramReference((IChromatogramMSD)chromatogram1);
+			processorModel.setChromatogramShifted((IChromatogramMSD)chromatogram2);
+			//
+			if(numberOfScans1 != numberOfScans2) {
+				labelChromatogramInfo.setText("The selected chromatograms have a different number of scans (" + numberOfScans1 + " vs. " + numberOfScans2 + ").");
+				labelChromatogramInfo.setForeground(Colors.BLACK);
+				labelChromatogramInfo.setBackground(Colors.YELLOW);
+			} else {
+				labelChromatogramInfo.setText("The selected chromatograms are valid.");
+				labelChromatogramInfo.setForeground(Colors.BLACK);
+				labelChromatogramInfo.setBackground(Colors.GREEN);
+			}
+		}
+		//
+		chromatogramOverlay.updateSelection(chromatogramSelections, true);
 	}
 }

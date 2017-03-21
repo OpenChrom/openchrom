@@ -25,6 +25,7 @@ public class MassShiftDetector {
 
 	public static final int MIN_LEVEL = 0;
 	public static final int MAX_LEVEL = 3;
+	public static final int INCREMENT_LEVEL = 1;
 	private static final float NORMALIZATION_BASE = 100.0f;
 
 	/**

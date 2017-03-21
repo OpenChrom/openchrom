@@ -13,6 +13,7 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.s
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -35,6 +36,7 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 	private List<Button> buttons;
 	//
 	private ShiftHeatmapUI shiftHeatmapUI;
+	private Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts;
 
 	public EnhancedShiftHeatmapEditor(Composite parent, int style) {
 		super(parent, style);
@@ -76,9 +78,13 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 	 * 
 	 * @param input
 	 */
+	@SuppressWarnings("unchecked")
 	public void setInput(Object input) {
 
-		System.out.println("TODO");
+		if(input instanceof Map) {
+			massShifts = (Map<Integer, Map<Integer, Map<Integer, Double>>>)input;
+			plotData();
+		}
 	}
 
 	private void createControl() {
@@ -108,8 +114,8 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 		gridDataButtons.minimumWidth = 150;
 		//
 		buttons.add(buttonCalculate = createCalculateButton(compositeButtons, gridDataButtons));
-		buttons.add(buttonReset = createResetButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonCheck = createCheckButton(compositeButtons, gridDataButtons));
+		buttons.add(buttonReset = createResetButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonPrevious = createPreviousButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonNext = createNextButton(compositeButtons, gridDataButtons));
 	}
@@ -125,7 +131,6 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				System.out.println("TODO");
 				boolean error = false;
 				if(error) {
 					buttonNext.setEnabled(false);
@@ -167,7 +172,7 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 	 */
 	private void plotData() {
 
-		System.out.println("TODO");
+		shiftHeatmapUI.update(massShifts);
 	}
 
 	private Button createCheckButton(Composite parent, GridData gridData) {

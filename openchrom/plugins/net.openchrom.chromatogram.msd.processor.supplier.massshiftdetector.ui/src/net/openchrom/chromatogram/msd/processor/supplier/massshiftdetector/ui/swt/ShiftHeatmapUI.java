@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt;
 
+import java.util.Map;
+
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.nebula.visualization.widgets.figures.IntensityGraphFigure;
@@ -34,10 +36,11 @@ public class ShiftHeatmapUI extends Composite {
 		initialize(parent);
 	}
 
-	public void update() {
+	public void update(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts) {
 
-		logger.info("Update the Mass Shift Map");
-		System.out.println("TODO");
+		//
+		// Map<Integer, Map<Integer, Map<Integer, Double>>>: ShiftLevel, Scan, m/z, Intensity
+		//
 	}
 
 	private void initialize(Composite parent) {

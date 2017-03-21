@@ -15,15 +15,46 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+
 @XmlRootElement(name = "massshiftdetector")
 public class ProcessorModel {
 
+	@XmlTransient
+	private IChromatogramMSD chromatogramReference;
+	@XmlTransient
+	private IChromatogramMSD chromatogramShifted;
+	//
 	@XmlElement(name = "ChromatogramName")
 	private String chromatogramName;
 	@XmlElement(name = "ChromatogramPath")
 	private String chromatogramPath;
 	@XmlElement(name = "Notes")
 	private String notes;
+
+	@XmlTransient
+	public IChromatogramMSD getChromatogramReference() {
+
+		return chromatogramReference;
+	}
+
+	@XmlTransient
+	public void setChromatogramReference(IChromatogramMSD chromatogramReference) {
+
+		this.chromatogramReference = chromatogramReference;
+	}
+
+	@XmlTransient
+	public IChromatogramMSD getChromatogramShifted() {
+
+		return chromatogramShifted;
+	}
+
+	@XmlTransient
+	public void setChromatogramShifted(IChromatogramMSD chromatogramShifted) {
+
+		this.chromatogramShifted = chromatogramShifted;
+	}
 
 	@XmlTransient
 	public String getChromatogramName() {

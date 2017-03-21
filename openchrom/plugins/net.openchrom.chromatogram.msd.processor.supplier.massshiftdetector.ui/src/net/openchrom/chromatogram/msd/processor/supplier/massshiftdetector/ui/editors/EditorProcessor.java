@@ -38,6 +38,8 @@ public class EditorProcessor extends MultiPageEditorPart {
 	private PageSettings pageSettings;
 	private PageShiftHeatmap pageShiftHeatmap;
 	private PageShiftTable pageShiftTable;
+	//
+	private ProcessorModel processorModel;
 
 	@Override
 	protected void createPages() {
@@ -81,6 +83,11 @@ public class EditorProcessor extends MultiPageEditorPart {
 
 	}
 
+	public ProcessorModel getProcessorModel() {
+
+		return processorModel;
+	}
+
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 
@@ -95,7 +102,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 				IFileEditorInput fileEditorInput = (IFileEditorInput)input;
 				File file = fileEditorInput.getFile().getLocation().toFile();
 				ProcessorModelReader processorModelReader = new ProcessorModelReader();
-				ProcessorModel processorModel = processorModelReader.read(file, new NullProgressMonitor());
+				processorModel = processorModelReader.read(file, new NullProgressMonitor());
 			} catch(JAXBException e) {
 				logger.warn(e);
 			}

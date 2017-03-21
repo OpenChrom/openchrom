@@ -101,8 +101,8 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 		GridData gridDataButtons = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataButtons.minimumWidth = 150;
 		//
-		buttons.add(buttonReset = createResetButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonCheck = createCheckButton(compositeButtons, gridDataButtons));
+		buttons.add(buttonReset = createResetButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonPrevious = createPreviousButton(compositeButtons, gridDataButtons));
 		buttons.add(createSaveButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonExport = createExportButton(compositeButtons, gridDataButtons));
