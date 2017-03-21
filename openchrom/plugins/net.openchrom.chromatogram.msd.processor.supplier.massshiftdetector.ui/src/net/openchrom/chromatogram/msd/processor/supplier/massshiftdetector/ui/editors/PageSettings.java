@@ -106,32 +106,29 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		c12ChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		//
 		Button button = new Button(client, SWT.PUSH);
-		button.setText("Select Chromatogram");
+		button.setText("Select");
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
 				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				// PreferenceSupplier.getFilterPathC12Chromatogram()
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "C12 - Chromatogram", "Select the C12 chromatogram.");
+				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "C12 - Chromatogram", "Select the C12 chromatogram.", PreferenceSupplier.getFilterPathC12Chromatogram());
 				WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), inputWizard);
 				wizardDialog.create();
-				//
-				String selectedChromatogram = "";
 				//
 				if(wizardDialog.open() == WizardDialog.OK) {
 					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
 					if(selectedChromatograms.size() > 0) {
-						selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
+						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
+						c12ChromatogramText.setText(selectedChromatogram);
+						//
 						File file = new File(selectedChromatogram);
 						if(file.exists()) {
 							PreferenceSupplier.setFilterPathC12Chromatogram(file.getParentFile().toString());
 						}
 					}
 				}
-				//
-				c12ChromatogramText.setText(selectedChromatogram);
 			}
 		});
 	}
@@ -144,32 +141,29 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		c13ChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		//
 		Button button = new Button(client, SWT.PUSH);
-		button.setText("Select Chromatogram");
+		button.setText("Select");
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
 				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				// PreferenceSupplier.getFilterPathC13Chromatogram()
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "C13 - Chromatogram", "Select the C13 chromatogram.");
+				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "C13 - Chromatogram", "Select the C13 chromatogram.", PreferenceSupplier.getFilterPathC13Chromatogram());
 				WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), inputWizard);
 				wizardDialog.create();
-				//
-				String selectedChromatogram = "";
 				//
 				if(wizardDialog.open() == WizardDialog.OK) {
 					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
 					if(selectedChromatograms.size() > 0) {
-						selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
+						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
+						c13ChromatogramText.setText(selectedChromatogram);
+						//
 						File file = new File(selectedChromatogram);
 						if(file.exists()) {
 							PreferenceSupplier.setFilterPathC13Chromatogram(file.getParentFile().toString());
 						}
 					}
 				}
-				//
-				c13ChromatogramText.setText(selectedChromatogram);
 			}
 		});
 	}
@@ -179,8 +173,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		createLabel(client, "Number of shifts");
 		//
 		shiftsSpinner = new Spinner(client, SWT.BORDER);
-		shiftsSpinner.setMinimum(1);
-		shiftsSpinner.setMaximum(5);
+		shiftsSpinner.setMinimum(0);
+		shiftsSpinner.setMaximum(3);
 		shiftsSpinner.setIncrement(1);
 		//
 		GridData gridData = new GridData();

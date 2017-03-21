@@ -54,7 +54,7 @@ public class ShiftHeatmapUI extends Composite {
 		GridData gridDataCombo = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataCombo.horizontalSpan = 3;
 		comboMassShift.setLayoutData(gridDataCombo);
-		comboMassShift.setItems(new String[]{"Mass Shift (+1)", "Mass Shift (+2)", "Mass Shift (+3)"});
+		comboMassShift.setItems(new String[]{"Mass Shift (0)", "Mass Shift (+1)", "Mass Shift (+2)", "Mass Shift (+3)"});
 		comboMassShift.select(0);
 		/*
 		 * Heatmap
@@ -76,7 +76,7 @@ public class ShiftHeatmapUI extends Composite {
 		 * Footer
 		 */
 		Label labelSlider = new Label(composite, SWT.NONE);
-		labelSlider.setText("Threshold to detect mass shifts");
+		labelSlider.setText("Set the threshold to detect mass shifts.");
 		GridData gridDataLabelSlider = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataLabelSlider.horizontalSpan = 3;
 		gridDataLabelSlider.horizontalAlignment = SWT.CENTER;
