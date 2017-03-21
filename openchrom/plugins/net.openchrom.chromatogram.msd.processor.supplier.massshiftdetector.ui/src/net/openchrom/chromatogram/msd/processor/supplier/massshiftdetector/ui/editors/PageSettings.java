@@ -281,9 +281,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 					monitor.run(true, true, runnable);
 					chromatogramSelections = runnable.getChromatogramSelections();
 				} catch(InterruptedException e1) {
-					logger.warn(e);
+					logger.warn(e1);
 				} catch(InvocationTargetException e1) {
-					logger.warn(e);
+					logger.warn(e1);
 				}
 				//
 				updateChromatogramSelections(chromatogramSelections);

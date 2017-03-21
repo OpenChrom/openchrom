@@ -20,6 +20,7 @@ import org.eclipse.chemclipse.msd.model.exceptions.NoExtractedIonSignalStoredExc
 import org.eclipse.chemclipse.msd.model.xic.ExtractedIonSignalExtractor;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignals;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 public class MassShiftDetector {
 
@@ -44,7 +45,7 @@ public class MassShiftDetector {
 	 * @return Map<Integer, Map<Integer, Map<Integer, Double>>>
 	 * @throws IllegalArgumentException
 	 */
-	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD chromatogramReference, IChromatogramMSD chromatogramShifted, int level, boolean useAbsoluteValues) throws ChromatogramIsNullException, IllegalArgumentException {
+	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD chromatogramReference, IChromatogramMSD chromatogramShifted, int level, boolean useAbsoluteValues, IProgressMonitor monitor) throws ChromatogramIsNullException, IllegalArgumentException {
 
 		if(level < MIN_LEVEL || level > MAX_LEVEL) {
 			throw new IllegalArgumentException("The level is not valid.");
@@ -78,6 +79,8 @@ public class MassShiftDetector {
 					/*
 					 * Get the scan.
 					 */
+					monitor.subTask("Calculate Level: " + shiftLevel + " -> Scan: " + scan);
+					//
 					IExtractedIonSignal extractedIonSignalReference = extractedIonSignalsReference.getExtractedIonSignal(scan);
 					IExtractedIonSignal extractedIonSignalShifted = extractedIonSignalsShifted.getExtractedIonSignal(scan);
 					Map<Integer, Double> extractedIonSignalDifference = new HashMap<Integer, Double>();

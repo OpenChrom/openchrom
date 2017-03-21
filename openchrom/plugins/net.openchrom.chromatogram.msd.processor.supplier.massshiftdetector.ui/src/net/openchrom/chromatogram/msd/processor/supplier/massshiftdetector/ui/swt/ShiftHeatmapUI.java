@@ -11,11 +11,13 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.Map;
 
-import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.draw2d.LightweightSystem;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.nebula.visualization.widgets.datadefinition.ColorMap;
 import org.eclipse.nebula.visualization.widgets.datadefinition.ColorMap.PredefinedColorMap;
 import org.eclipse.nebula.visualization.widgets.figures.IntensityGraphFigure;
@@ -33,12 +35,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Shell;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.MassShiftDetectorRunnable;
 
 public class ShiftHeatmapUI extends Composite {
 
+	private static final Logger logger = Logger.getLogger(ShiftHeatmapUI.class);
+	//
 	private static final int SCALE_MIN = 0; // 0
 	private static final int SCALE_MAX = 1000; // 1
 	private static final int SCALE_INCREMENT = 1; // 0.001
@@ -74,13 +79,18 @@ public class ShiftHeatmapUI extends Composite {
 			 * Calculate the shifts.
 			 */
 			if(this.massShifts == null) {
-				MassShiftDetector massShiftDetector = new MassShiftDetector();
-				IChromatogramMSD reference = processorData.getChromatogramReference();
-				IChromatogramMSD shifted = processorData.getChromatogramShifted();
-				int level = processorData.getLevel();
-				boolean useAbsoluteValues = processorData.isUseAbsoluteValues();
-				Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts = massShiftDetector.detectMassShifts(reference, shifted, level, useAbsoluteValues);
-				this.massShifts = massShifts;
+				Shell shell = Display.getCurrent().getActiveShell();
+				MassShiftDetectorRunnable runnable = new MassShiftDetectorRunnable(processorData);
+				ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
+				//
+				try {
+					monitor.run(true, true, runnable);
+					this.massShifts = runnable.getMassShifts();
+				} catch(InterruptedException e) {
+					logger.warn(e);
+				} catch(InvocationTargetException e) {
+					logger.warn(e);
+				}
 			}
 			/*
 			 * Adjust the scale.
@@ -164,6 +174,8 @@ public class ShiftHeatmapUI extends Composite {
 
 				double minIntensity = minValue / SCALE_MAX * scale.getSelection();
 				double maxIntensity = maxValue / SCALE_MAX * scale.getSelection();
+				//
+				// System.out.println(minIntensity + " - " + maxIntensity + "(" + minValue + " - " + maxValue + ")");
 				//
 				intensityGraphFigure.setMin(minIntensity);
 				intensityGraphFigure.setMax(maxIntensity);
