@@ -20,9 +20,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.Processor;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelWriter;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel_v1000;
 
 public class WizardProcessor extends AbstractFileWizard {
 
@@ -30,7 +30,7 @@ public class WizardProcessor extends AbstractFileWizard {
 	private PageSettings pageSettings;
 
 	public WizardProcessor() {
-		super("MassShiftDetector" + new Date().getTime(), Processor.PROCESSOR_FILE_EXTENSION);
+		super("MassShiftDetector" + new Date().getTime(), MassShiftDetector.PROCESSOR_FILE_EXTENSION);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class WizardProcessor extends AbstractFileWizard {
 		monitor.beginTask("MassShiftDetector", IProgressMonitor.UNKNOWN);
 		final IFile file = super.prepareProject(monitor);
 		//
-		ProcessorModel processorModel = new ProcessorModel();
+		ProcessorModel_v1000 processorModel = new ProcessorModel_v1000();
 		processorModel.setC12ChromatogramPath(wizardElements.getC12ChromatogramPath());
 		processorModel.setC13ChromatogramPath(wizardElements.getC13ChromatogramPath());
 		processorModel.setLevel(wizardElements.getLevel());

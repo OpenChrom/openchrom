@@ -63,7 +63,7 @@ public class MassShiftDetector_1_ITest extends TestCase {
 		int maxShiftLevel = 3;
 		IChromatogramMSD chromatogramReference = getChromatogram(fileReference);
 		IChromatogramMSD chromatogramShifted = getChromatogram(fileShifted);
-		Map<Integer, Map<Integer, Map<Integer, Double>>> differenceIonSignalsMap = massShiftDetector.detectMassShifts(chromatogramReference, chromatogramShifted, maxShiftLevel, useAbsValues, new NullProgressMonitor());
+		Map<Integer, Map<Integer, Map<Integer, Double>>> differenceIonSignalsMap = massShiftDetector.detectMassShifts(chromatogramReference, chromatogramShifted, maxShiftLevel, new NullProgressMonitor());
 		//
 		for(int shiftLevel = 0; shiftLevel <= maxShiftLevel; shiftLevel++) {
 			PrintWriter printWriter = new PrintWriter(new File(exportPath + shiftLevel + ".txt"));

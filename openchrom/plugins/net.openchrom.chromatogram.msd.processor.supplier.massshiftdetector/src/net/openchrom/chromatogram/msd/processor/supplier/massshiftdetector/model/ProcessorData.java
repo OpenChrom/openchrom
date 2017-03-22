@@ -15,17 +15,17 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 
 public class ProcessorData {
 
-	private ProcessorModel processorModel;
+	private ProcessorModel_v1000 processorModel;
 	//
 	private IChromatogramMSD chromatogramReference;
 	private IChromatogramMSD chromatogramShifted;
 
-	public ProcessorModel getProcessorModel() {
+	public ProcessorModel_v1000 getProcessorModel() {
 
 		return processorModel;
 	}
 
-	public void setProcessorModel(ProcessorModel processorModel) {
+	public void setProcessorModel(ProcessorModel_v1000 processorModel) {
 
 		this.processorModel = processorModel;
 	}

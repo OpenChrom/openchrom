@@ -16,8 +16,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "MassShiftDetector")
-public class ProcessorModel {
+public class ProcessorModel_v1000 {
 
+	@XmlElement(name = "Version")
+	private String version = "1.0.0.0";
+	//
 	@XmlElement(name = "C12ChromatogramPath")
 	private String c12ChromatogramPath;
 	@XmlElement(name = "C13ChromatogramPath")
@@ -28,6 +31,17 @@ public class ProcessorModel {
 	private String notes;
 	@XmlElement(name = "Description")
 	private String description;
+
+	@XmlTransient
+	public String getVersion() {
+
+		return version;
+	}
+
+	public void setVersion(String version) {
+
+		this.version = version;
+	}
 
 	@XmlTransient
 	public String getC12ChromatogramPath() {

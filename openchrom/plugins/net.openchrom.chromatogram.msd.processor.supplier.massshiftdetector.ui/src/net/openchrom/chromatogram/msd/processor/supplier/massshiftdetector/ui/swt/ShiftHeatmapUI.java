@@ -38,17 +38,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.MassShiftDetectorRunnable;
 
 public class ShiftHeatmapUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(ShiftHeatmapUI.class);
-	//
-	private static final int SCALE_MIN = 0; // 0
-	private static final int SCALE_MAX = 1000; // 1
-	private static final int SCALE_INCREMENT = 1; // 0.001
-	private static final int SCALE_SELECTION = 1000;
 	//
 	private static final String DEFAULT_COLOR_MAP = PredefinedColorMap.JET.toString();
 	//
@@ -60,10 +56,7 @@ public class ShiftHeatmapUI extends Composite {
 	private IntensityGraphFigure intensityGraphFigure;
 	//
 	private Map<String, ColorMap.PredefinedColorMap> colorMaps;
-	//
 	private Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts;
-	private double minValue;
-	private double maxValue;
 
 	public ShiftHeatmapUI(Composite parent, int style) {
 		super(parent, style);
@@ -103,7 +96,8 @@ public class ShiftHeatmapUI extends Composite {
 			/*
 			 * Adjust the scale.
 			 */
-			scaleNegativeDelta.setSelection(SCALE_SELECTION);
+			scaleNegativeDelta.setSelection(MassShiftDetector.SCALE_SELECTION);
+			scalePositiveDelta.setSelection(MassShiftDetector.SCALE_SELECTION);
 			showData(0);
 		} else {
 			/*
@@ -189,10 +183,10 @@ public class ShiftHeatmapUI extends Composite {
 		//
 		intensityGraphFigure = new IntensityGraphFigure();
 		intensityGraphFigure.setForegroundColor(display.getSystemColor(SWT.COLOR_BLACK));
-		intensityGraphFigure.getXAxis().setTitle("Scans");
+		intensityGraphFigure.getXAxis().setTitle("Scan Number");
 		intensityGraphFigure.getXAxis().setFormatPattern("0");
-		intensityGraphFigure.getYAxis().setTitle("Delta (m/z)");
-		intensityGraphFigure.getYAxis().setFormatPattern("0.000");
+		intensityGraphFigure.getYAxis().setTitle("m/z");
+		intensityGraphFigure.getYAxis().setFormatPattern("0");
 		intensityGraphFigure.setColorMap(new ColorMap(PredefinedColorMap.JET, true, true)); // Default
 	}
 
@@ -223,22 +217,17 @@ public class ShiftHeatmapUI extends Composite {
 		scaleNegativeDelta = new Scale(parent, SWT.BORDER);
 		scaleNegativeDelta.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		scaleNegativeDelta.setOrientation(SWT.RIGHT_TO_LEFT);
-		scaleNegativeDelta.setMinimum(SCALE_MIN);
-		scaleNegativeDelta.setMaximum(SCALE_MAX);
-		scaleNegativeDelta.setPageIncrement(SCALE_INCREMENT);
-		scaleNegativeDelta.setSelection(SCALE_SELECTION);
+		scaleNegativeDelta.setMinimum(MassShiftDetector.SCALE_MIN);
+		scaleNegativeDelta.setMaximum(MassShiftDetector.SCALE_MAX);
+		scaleNegativeDelta.setPageIncrement(MassShiftDetector.SCALE_INCREMENT);
+		scaleNegativeDelta.setSelection(MassShiftDetector.SCALE_SELECTION);
 		scaleNegativeDelta.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				// double minIntensity = minValue / SCALE_MAX * scaleNegativeDelta.getSelection();
-				// double maxIntensity = maxValue / SCALE_MAX * scaleNegativeDelta.getSelection();
-				// intensityGraphFigure.setMin(minIntensity);
-				// intensityGraphFigure.setMax(maxIntensity);
-				// intensityGraphFigure.getGraphArea().getUpdateManager().performUpdate();
-				//
-				// System.out.println(scaleNegativeDelta.getSelection());
+				intensityGraphFigure.setMin(-scaleNegativeDelta.getSelection());
+				intensityGraphFigure.getGraphArea().getUpdateManager().performUpdate();
 			}
 		});
 	}
@@ -248,16 +237,17 @@ public class ShiftHeatmapUI extends Composite {
 		scalePositiveDelta = new Scale(parent, SWT.BORDER);
 		scalePositiveDelta.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		scalePositiveDelta.setOrientation(SWT.LEFT_TO_RIGHT);
-		scalePositiveDelta.setMinimum(SCALE_MIN);
-		scalePositiveDelta.setMaximum(SCALE_MAX);
-		scalePositiveDelta.setPageIncrement(SCALE_INCREMENT);
-		scalePositiveDelta.setSelection(SCALE_SELECTION);
+		scalePositiveDelta.setMinimum(MassShiftDetector.SCALE_MIN);
+		scalePositiveDelta.setMaximum(MassShiftDetector.SCALE_MAX);
+		scalePositiveDelta.setPageIncrement(MassShiftDetector.SCALE_INCREMENT);
+		scalePositiveDelta.setSelection(MassShiftDetector.SCALE_SELECTION);
 		scalePositiveDelta.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				// System.out.println(scalePositiveDelta.getSelection() + ": " + minIntensity + " - " + maxIntensity + "(" + minValue + " - " + maxValue + ")");
+				intensityGraphFigure.setMax(scalePositiveDelta.getSelection());
+				intensityGraphFigure.getGraphArea().getUpdateManager().performUpdate();
 			}
 		});
 	}
@@ -287,8 +277,6 @@ public class ShiftHeatmapUI extends Composite {
 			/*
 			 * Parse the heatmap data
 			 */
-			double minIntensity = Double.MAX_VALUE;
-			double maxIntensity = Double.MIN_VALUE;
 			double[] heatmapData = new double[dataWidth * dataHeight * 2];
 			/*
 			 * Y-Axis: Scans
@@ -296,11 +284,6 @@ public class ShiftHeatmapUI extends Composite {
 			for(int scan = startScan; scan <= stopScan; scan++) {
 				int xScan = scan - startScan; // xScan as zero based heatmap scan array index
 				Map<Integer, Double> values = shiftLevelData.get(scan);
-				//
-				double min = Collections.min(values.values());
-				double max = Collections.min(values.values());
-				minIntensity = (min < minIntensity) ? min : minIntensity;
-				maxIntensity = (max > maxIntensity) ? max : maxIntensity;
 				//
 				if(values != null) {
 					for(int ion = startIon; ion <= stopIon; ion++) {
@@ -323,20 +306,14 @@ public class ShiftHeatmapUI extends Composite {
 			}
 			/*
 			 * Set the range and min/max values.
+			 * Set the heatmap data
 			 */
 			intensityGraphFigure.getXAxis().setRange(new Range(startScan, stopScan));
 			intensityGraphFigure.getYAxis().setRange(new Range(stopIon, startIon));
-			//
-			minValue = minIntensity;
-			maxValue = maxIntensity;
-			intensityGraphFigure.setMin(minValue);
-			intensityGraphFigure.setMax(maxValue);
-			//
 			intensityGraphFigure.setDataHeight(dataHeight);
 			intensityGraphFigure.setDataWidth(dataWidth);
-			/*
-			 * Set the heatmap data
-			 */
+			intensityGraphFigure.setMin(MassShiftDetector.MIN_VALUE);
+			intensityGraphFigure.setMax(MassShiftDetector.MAX_VALUE);
 			lightweightSystem.setContents(intensityGraphFigure);
 			intensityGraphFigure.setDataArray(heatmapData);
 		} else {

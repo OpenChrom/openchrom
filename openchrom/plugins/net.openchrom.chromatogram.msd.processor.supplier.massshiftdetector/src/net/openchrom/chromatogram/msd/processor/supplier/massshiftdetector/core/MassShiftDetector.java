@@ -24,10 +24,23 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 public class MassShiftDetector {
 
+	public static final String PROCESSOR_FILE_EXTENSION = ".mdp";
+	//
 	public static final int MIN_LEVEL = 0;
 	public static final int MAX_LEVEL = 3;
 	public static final int INCREMENT_LEVEL = 1;
-	private static final float NORMALIZATION_BASE = 100.0f;
+	//
+	public static final int SCALE_MIN = 0; // 0
+	public static final int SCALE_MAX = 1000; // 1
+	public static final int SCALE_INCREMENT = 1; // 0.001
+	public static final int SCALE_SELECTION = SCALE_MAX;
+	/*
+	 * MIN and MAX are used to display the range in the heatmap.
+	 */
+	public static final int MIN_VALUE = -SCALE_MAX;
+	public static final int MAX_VALUE = SCALE_MAX;
+	//
+	private static final float NORMALIZATION_BASE = SCALE_MAX;
 
 	/**
 	 * Detect the mass shift. The level defines which shifts shall be detected.
@@ -47,8 +60,6 @@ public class MassShiftDetector {
 	 */
 	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD chromatogramReference, IChromatogramMSD chromatogramShifted, int level, IProgressMonitor monitor) throws ChromatogramIsNullException, IllegalArgumentException {
 
-		boolean useAbsoluteValues = false;
-		//
 		if(level < MIN_LEVEL || level > MAX_LEVEL) {
 			throw new IllegalArgumentException("The level is not valid.");
 		}
@@ -94,11 +105,16 @@ public class MassShiftDetector {
 						 */
 						double intensityReference = extractedIonSignalReference.getAbundance(ion);
 						double intensityShifted = extractedIonSignalShifted.getAbundance(ion + shiftLevel);
-						double intensityDifference;
-						if(useAbsoluteValues) {
-							intensityDifference = Math.abs(intensityReference - intensityShifted);
-						} else {
-							intensityDifference = intensityReference - intensityShifted;
+						double intensityDifference = intensityReference - intensityShifted;
+						/*
+						 * The 0 level is handled differently.
+						 */
+						if(shiftLevel == 0) {
+							if(intensityDifference < 0) {
+								intensityDifference = -NORMALIZATION_BASE + intensityDifference;
+							} else {
+								intensityDifference = NORMALIZATION_BASE - intensityDifference;
+							}
 						}
 						extractedIonSignalDifference.put(ion, intensityDifference);
 					}

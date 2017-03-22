@@ -19,13 +19,13 @@ import javax.xml.bind.Marshaller;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel_v1000;
 
 public class ProcessorModelWriter {
 
-	public void write(File file, ProcessorModel processorModel, IProgressMonitor monitor) throws JAXBException {
+	public void write(File file, ProcessorModel_v1000 processorModel, IProgressMonitor monitor) throws JAXBException {
 
-		JAXBContext jaxbContext = JAXBContext.newInstance(new Class[]{ProcessorModel.class});
+		JAXBContext jaxbContext = JAXBContext.newInstance(new Class[]{ProcessorModel_v1000.class});
 		Marshaller marshaller = jaxbContext.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		marshaller.marshal(processorModel, file);

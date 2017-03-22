@@ -40,6 +40,7 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 	//
 	private EditorProcessor editorProcessor;
 	//
+	private Button buttonCalculate;
 	private Button buttonReset;
 	private Button buttonPrevious;
 	private Button buttonCheck;
@@ -76,6 +77,7 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 		 * Defaults when editable.
 		 */
 		if(!readOnly) {
+			buttonCalculate.setEnabled(true);
 			buttonReset.setEnabled(true);
 			buttonPrevious.setEnabled(true);
 			buttonCheck.setEnabled(true);
@@ -119,11 +121,28 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 		GridData gridDataButtons = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataButtons.minimumWidth = 150;
 		//
+		buttons.add(buttonCalculate = createCalculateButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonCheck = createCheckButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonReset = createResetButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonPrevious = createPreviousButton(compositeButtons, gridDataButtons));
 		buttons.add(createSaveButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonExport = createExportButton(compositeButtons, gridDataButtons));
+	}
+
+	private Button createCalculateButton(Composite parent, GridData gridData) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("Calculate");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CALCULATE, IApplicationImage.SIZE_16x16));
+		button.setLayoutData(gridData);
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+			}
+		});
+		return button;
 	}
 
 	private Button createResetButton(Composite parent, GridData gridData) {
