@@ -15,36 +15,51 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-@XmlRootElement(name = "massshiftdetector")
+@XmlRootElement(name = "MassShiftDetector")
 public class ProcessorModel {
 
-	@XmlElement(name = "ChromatogramName")
-	private String chromatogramName;
-	@XmlElement(name = "ChromatogramPath")
-	private String chromatogramPath;
+	@XmlElement(name = "C12ChromatogramPath")
+	private String c12ChromatogramPath;
+	@XmlElement(name = "C13ChromatogramPath")
+	private String c13ChromatogramPath;
+	@XmlElement(name = "Level")
+	private int level;
 	@XmlElement(name = "Notes")
 	private String notes;
+	@XmlElement(name = "Description")
+	private String description;
 
 	@XmlTransient
-	public String getChromatogramName() {
+	public String getC12ChromatogramPath() {
 
-		return chromatogramName;
+		return c12ChromatogramPath;
 	}
 
-	public void setChromatogramName(String chromatogramName) {
+	public void setC12ChromatogramPath(String c12ChromatogramPath) {
 
-		this.chromatogramName = chromatogramName;
+		this.c12ChromatogramPath = c12ChromatogramPath;
 	}
 
 	@XmlTransient
-	public String getChromatogramPath() {
+	public String getC13ChromatogramPath() {
 
-		return chromatogramPath;
+		return c13ChromatogramPath;
 	}
 
-	public void setChromatogramPath(String chromatogramPath) {
+	public void setC13ChromatogramPath(String c13ChromatogramPath) {
 
-		this.chromatogramPath = chromatogramPath;
+		this.c13ChromatogramPath = c13ChromatogramPath;
+	}
+
+	@XmlTransient
+	public int getLevel() {
+
+		return level;
+	}
+
+	public void setLevel(int level) {
+
+		this.level = level;
 	}
 
 	@XmlTransient
@@ -56,5 +71,16 @@ public class ProcessorModel {
 	public void setNotes(String notes) {
 
 		this.notes = notes;
+	}
+
+	@XmlTransient
+	public String getDescription() {
+
+		return description;
+	}
+
+	public void setDescription(String description) {
+
+		this.description = description;
 	}
 }

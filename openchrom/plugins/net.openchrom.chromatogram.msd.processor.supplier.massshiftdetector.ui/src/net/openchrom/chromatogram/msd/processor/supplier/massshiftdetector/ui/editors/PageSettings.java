@@ -34,6 +34,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -65,9 +67,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	//
 	private Text c12ChromatogramText;
 	private Text c13ChromatogramText;
-	private Spinner shiftLevelSpinner;
-	private Button useAbsoluteValuesCheckBox;
+	private Spinner levelSpinner;
 	private Label labelNotes;
+	private Text descriptionText;
 	private Label labelChromatogramInfo;
 	private MultipleChromatogramOffsetUI chromatogramOverlay;
 
@@ -86,8 +88,20 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		 * 3 column layout
 		 */
 		createPropertiesSection(body);
+		createDescriptionSection(body);
 		createProcessSection(body);
 		createChromatogramSection(body);
+	}
+
+	public void setFocus() {
+
+		if(editorProcessor != null && editorProcessor.getProcessorData().getProcessorModel() != null) {
+			c12ChromatogramText.setText(editorProcessor.getProcessorData().getProcessorModel().getC12ChromatogramPath());
+			c13ChromatogramText.setText(editorProcessor.getProcessorData().getProcessorModel().getC13ChromatogramPath());
+			levelSpinner.setSelection(editorProcessor.getProcessorData().getProcessorModel().getLevel());
+			labelNotes.setText(editorProcessor.getProcessorData().getProcessorModel().getNotes());
+			descriptionText.setText(editorProcessor.getProcessorData().getProcessorModel().getDescription());
+		}
 	}
 
 	private void createPropertiesSection(Composite parent) {
@@ -97,8 +111,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		//
 		createC12ChromatogramText(client);
 		createC13ChromatogramText(client);
-		createShiftsSpinner(client);
-		createUseAbsoluteValuesCheckBox(client);
+		createLevelSpinner(client);
 		createNotesLabel(client);
 		/*
 		 * Add the client to the section.
@@ -108,7 +121,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 	private void createC12ChromatogramText(Composite client) {
 
-		createLabel(client, "C12 - Chromatogram");
+		createLabel(client, "C12 - Chromatogram:");
 		//
 		c12ChromatogramText = createText(client, SWT.BORDER, "");
 		c12ChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -130,6 +143,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 					if(selectedChromatograms.size() > 0) {
 						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
 						c12ChromatogramText.setText(selectedChromatogram);
+						ProcessorData processorData = editorProcessor.getProcessorData();
+						processorData.getProcessorModel().setC12ChromatogramPath(selectedChromatogram);
 						//
 						File file = new File(selectedChromatogram);
 						if(file.exists()) {
@@ -143,7 +158,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 	private void createC13ChromatogramText(Composite client) {
 
-		createLabel(client, "C13 - Chromatogram");
+		createLabel(client, "C13 - Chromatogram:");
 		//
 		c13ChromatogramText = createText(client, SWT.BORDER, "");
 		c13ChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -165,6 +180,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 					if(selectedChromatograms.size() > 0) {
 						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
 						c13ChromatogramText.setText(selectedChromatogram);
+						ProcessorData processorData = editorProcessor.getProcessorData();
+						processorData.getProcessorModel().setC13ChromatogramPath(selectedChromatogram);
 						//
 						File file = new File(selectedChromatogram);
 						if(file.exists()) {
@@ -176,55 +193,62 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		});
 	}
 
-	private void createShiftsSpinner(Composite client) {
+	private void createLevelSpinner(Composite client) {
 
-		createLabel(client, "Number of shifts");
+		createLabel(client, "Number of shifts:");
 		//
-		shiftLevelSpinner = new Spinner(client, SWT.BORDER);
-		shiftLevelSpinner.setMinimum(MassShiftDetector.MIN_LEVEL);
-		shiftLevelSpinner.setMaximum(MassShiftDetector.MAX_LEVEL);
-		shiftLevelSpinner.setIncrement(MassShiftDetector.INCREMENT_LEVEL);
+		levelSpinner = new Spinner(client, SWT.BORDER);
+		levelSpinner.setMinimum(MassShiftDetector.MIN_LEVEL);
+		levelSpinner.setMaximum(MassShiftDetector.MAX_LEVEL);
+		levelSpinner.setIncrement(MassShiftDetector.INCREMENT_LEVEL);
 		//
 		GridData gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		gridData.widthHint = 50;
 		gridData.heightHint = 20;
-		shiftLevelSpinner.setLayoutData(gridData);
-		shiftLevelSpinner.addSelectionListener(new SelectionAdapter() {
+		levelSpinner.setLayoutData(gridData);
+		levelSpinner.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				ProcessorData processorRawData = editorProcessor.getProcessorData();
-				processorRawData.setLevel(shiftLevelSpinner.getSelection());
-			}
-		});
-	}
-
-	private void createUseAbsoluteValuesCheckBox(Composite client) {
-
-		useAbsoluteValuesCheckBox = new Button(client, SWT.CHECK);
-		useAbsoluteValuesCheckBox.setText("Use absolute values");
-		useAbsoluteValuesCheckBox.setSelection(true);
-		useAbsoluteValuesCheckBox.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		useAbsoluteValuesCheckBox.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				ProcessorData processorRawData = editorProcessor.getProcessorData();
-				processorRawData.setUseAbsoluteValues(useAbsoluteValuesCheckBox.getSelection());
+				ProcessorData processorData = editorProcessor.getProcessorData();
+				processorData.getProcessorModel().setLevel(levelSpinner.getSelection());
 			}
 		});
 	}
 
 	private void createNotesLabel(Composite client) {
 
-		labelNotes = createLabel(client, "Please have a look at the retention time range 5 - 10 minutes.");
+		labelNotes = createLabel(client, "");
 		labelNotes.setBackground(Colors.YELLOW);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 3;
 		labelNotes.setLayoutData(gridData);
+	}
+
+	private void createDescriptionSection(Composite parent) {
+
+		Section section = createSection(parent, 3, "Description", "A description of the current project is listed.");
+		section.setExpanded(false);
+		Composite client = createClient(section);
+		/*
+		 * Description
+		 */
+		descriptionText = createText(client, SWT.BORDER, "");
+		descriptionText.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+
+				ProcessorData processorData = editorProcessor.getProcessorData();
+				processorData.getProcessorModel().setDescription(descriptionText.getText().trim());
+			}
+		});
+		/*
+		 * Add the client to the section.
+		 */
+		section.setClient(client);
 	}
 
 	private void createChromatogramInfo(Composite client) {

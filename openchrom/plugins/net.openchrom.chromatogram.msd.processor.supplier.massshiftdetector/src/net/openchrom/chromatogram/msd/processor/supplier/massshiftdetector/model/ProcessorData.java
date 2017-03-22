@@ -15,10 +15,20 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 
 public class ProcessorData {
 
+	private ProcessorModel processorModel;
+	//
 	private IChromatogramMSD chromatogramReference;
 	private IChromatogramMSD chromatogramShifted;
-	private int level;
-	private boolean useAbsoluteValues;
+
+	public ProcessorModel getProcessorModel() {
+
+		return processorModel;
+	}
+
+	public void setProcessorModel(ProcessorModel processorModel) {
+
+		this.processorModel = processorModel;
+	}
 
 	public IChromatogramMSD getChromatogramReference() {
 
@@ -38,25 +48,5 @@ public class ProcessorData {
 	public void setChromatogramShifted(IChromatogramMSD chromatogramShifted) {
 
 		this.chromatogramShifted = chromatogramShifted;
-	}
-
-	public int getLevel() {
-
-		return level;
-	}
-
-	public void setLevel(int level) {
-
-		this.level = level;
-	}
-
-	public boolean isUseAbsoluteValues() {
-
-		return useAbsoluteValues;
-	}
-
-	public void setUseAbsoluteValues(boolean useAbsoluteValues) {
-
-		this.useAbsoluteValues = useAbsoluteValues;
 	}
 }

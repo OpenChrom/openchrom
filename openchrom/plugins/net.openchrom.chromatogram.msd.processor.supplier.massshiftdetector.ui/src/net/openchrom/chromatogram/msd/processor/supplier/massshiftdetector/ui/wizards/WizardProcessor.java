@@ -27,10 +27,10 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model
 public class WizardProcessor extends AbstractFileWizard {
 
 	private IProcessorWizardElements wizardElements = new ProcessorWizardElements();
-	private PageDescription pageDescription;
+	private PageSettings pageSettings;
 
 	public WizardProcessor() {
-		super("massshiftdetector" + new Date().getTime(), Processor.PROCESSOR_FILE_EXTENSION);
+		super("MassShiftDetector" + new Date().getTime(), Processor.PROCESSOR_FILE_EXTENSION);
 	}
 
 	@Override
@@ -40,28 +40,29 @@ public class WizardProcessor extends AbstractFileWizard {
 		/*
 		 * Pages must implement IExtendedWizardPage / extend AbstractExtendedWizardPage
 		 */
-		pageDescription = new PageDescription(wizardElements);
-		//
-		addPage(pageDescription);
+		pageSettings = new PageSettings(wizardElements);
+		addPage(pageSettings);
 	}
 
 	@Override
 	public boolean canFinish() {
 
-		boolean canFinish = pageDescription.canFinish();
+		boolean canFinish = pageSettings.canFinish();
 		return canFinish;
 	}
 
 	@Override
 	public void doFinish(IProgressMonitor monitor) throws CoreException {
 
-		monitor.beginTask("massshiftdetector", IProgressMonitor.UNKNOWN);
+		monitor.beginTask("MassShiftDetector", IProgressMonitor.UNKNOWN);
 		final IFile file = super.prepareProject(monitor);
 		//
 		ProcessorModel processorModel = new ProcessorModel();
-		processorModel.setChromatogramName("chromatogramName");
-		processorModel.setChromatogramPath("chromatogramPath");
-		processorModel.setNotes("Implement");
+		processorModel.setC12ChromatogramPath(wizardElements.getC12ChromatogramPath());
+		processorModel.setC13ChromatogramPath(wizardElements.getC13ChromatogramPath());
+		processorModel.setLevel(wizardElements.getLevel());
+		processorModel.setNotes(wizardElements.getNotes());
+		processorModel.setDescription(wizardElements.getDescription());
 		//
 		try {
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();

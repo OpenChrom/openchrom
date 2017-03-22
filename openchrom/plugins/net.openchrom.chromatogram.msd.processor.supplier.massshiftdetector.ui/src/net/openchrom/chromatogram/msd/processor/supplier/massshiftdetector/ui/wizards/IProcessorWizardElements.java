@@ -13,6 +13,22 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.w
 
 public interface IProcessorWizardElements {
 
+	String getC12ChromatogramPath();
+
+	void setC12ChromatogramPath(String c12ChromatogramPath);
+
+	String getC13ChromatogramPath();
+
+	void setC13ChromatogramPath(String c13ChromatogramPath);
+
+	int getLevel();
+
+	void setLevel(int level);
+
+	String getNotes();
+
+	void setNotes(String notes);
+
 	String getDescription();
 
 	void setDescription(String evaluationDescription);

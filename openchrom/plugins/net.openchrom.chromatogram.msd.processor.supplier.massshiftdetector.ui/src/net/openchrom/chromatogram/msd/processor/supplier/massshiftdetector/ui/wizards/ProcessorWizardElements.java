@@ -15,7 +15,59 @@ import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
 
 public class ProcessorWizardElements extends ChromatogramWizardElements implements IProcessorWizardElements {
 
+	private String c12ChromatogramPath = "";
+	private String c13ChromatogramPath = "";
+	private int level = 1;
+	private String notes = ""; // Could be ""
 	private String description = ""; // Could be ""
+
+	@Override
+	public String getC12ChromatogramPath() {
+
+		return c12ChromatogramPath;
+	}
+
+	@Override
+	public void setC12ChromatogramPath(String c12ChromatogramPath) {
+
+		this.c12ChromatogramPath = c12ChromatogramPath;
+	}
+
+	@Override
+	public String getC13ChromatogramPath() {
+
+		return c13ChromatogramPath;
+	}
+
+	@Override
+	public void setC13ChromatogramPath(String c13ChromatogramPath) {
+
+		this.c13ChromatogramPath = c13ChromatogramPath;
+	}
+
+	@Override
+	public int getLevel() {
+
+		return level;
+	}
+
+	@Override
+	public void setLevel(int level) {
+
+		this.level = level;
+	}
+
+	@Override
+	public String getNotes() {
+
+		return notes;
+	}
+
+	@Override
+	public void setNotes(String notes) {
+
+		this.notes = notes;
+	}
 
 	@Override
 	public String getDescription() {

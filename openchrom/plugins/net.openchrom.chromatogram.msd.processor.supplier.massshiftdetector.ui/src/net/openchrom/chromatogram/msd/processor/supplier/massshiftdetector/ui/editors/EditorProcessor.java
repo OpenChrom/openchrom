@@ -25,12 +25,14 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.MultiPageEditorPart;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelReader;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelWriter;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 
 public class EditorProcessor extends MultiPageEditorPart {
 
 	private static final Logger logger = Logger.getLogger(EditorProcessor.class);
+	//
+	private File file; // This report file.
 	//
 	public static int PAGE_INDEX_SETTINGS;
 	public static int PAGE_INDEX_SHIFT_HEATMAP;
@@ -66,22 +68,30 @@ public class EditorProcessor extends MultiPageEditorPart {
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 
+		try {
+			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
+			processorModelWriter.write(file, processorData.getProcessorModel(), monitor);
+		} catch(JAXBException e) {
+			logger.warn(e);
+		}
 	}
 
 	@Override
 	public void doSaveAs() {
 
+		System.out.println("Implement Save As...");
 	}
 
 	@Override
 	public boolean isSaveAsAllowed() {
 
-		return false;
+		return true;
 	}
 
 	@Override
 	public void setFocus() {
 
+		pageSettings.setFocus();
 	}
 
 	public ProcessorData getProcessorData() {
@@ -101,10 +111,11 @@ public class EditorProcessor extends MultiPageEditorPart {
 			//
 			try {
 				IFileEditorInput fileEditorInput = (IFileEditorInput)input;
-				File file = fileEditorInput.getFile().getLocation().toFile();
+				file = fileEditorInput.getFile().getLocation().toFile();
 				ProcessorModelReader processorModelReader = new ProcessorModelReader();
-				ProcessorModel processorModel = processorModelReader.read(file, new NullProgressMonitor());
 				processorData = new ProcessorData();
+				processorData.setProcessorModel(processorModelReader.read(file, new NullProgressMonitor()));
+				//
 			} catch(JAXBException e) {
 				logger.warn(e);
 			}

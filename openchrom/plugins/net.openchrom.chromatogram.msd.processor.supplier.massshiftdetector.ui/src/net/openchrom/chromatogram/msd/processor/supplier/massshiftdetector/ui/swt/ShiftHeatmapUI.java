@@ -13,6 +13,7 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.s
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -49,10 +50,16 @@ public class ShiftHeatmapUI extends Composite {
 	private static final int SCALE_INCREMENT = 1; // 0.001
 	private static final int SCALE_SELECTION = 1000;
 	//
+	private static final String DEFAULT_COLOR_MAP = PredefinedColorMap.JET.toString();
+	//
 	private Combo comboMassShift;
-	private Scale scale;
+	private Combo comboColorMap;
+	private Scale scaleNegativeDelta;
+	private Scale scalePositiveDelta;
 	private LightweightSystem lightweightSystem;
 	private IntensityGraphFigure intensityGraphFigure;
+	//
+	private Map<String, ColorMap.PredefinedColorMap> colorMaps;
 	//
 	private Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts;
 	private double minValue;
@@ -69,8 +76,9 @@ public class ShiftHeatmapUI extends Composite {
 			/*
 			 * Set the combo items.
 			 */
-			String[] items = new String[processorData.getLevel() + 1];
-			for(int i = 0; i <= processorData.getLevel(); i++) {
+			int level = processorData.getProcessorModel().getLevel();
+			String[] items = new String[level + 1];
+			for(int i = 0; i <= level; i++) {
 				items[i] = "Mass Shift (+" + i + ")";
 			}
 			comboMassShift.setItems(items);
@@ -95,7 +103,7 @@ public class ShiftHeatmapUI extends Composite {
 			/*
 			 * Adjust the scale.
 			 */
-			scale.setSelection(SCALE_SELECTION);
+			scaleNegativeDelta.setSelection(SCALE_SELECTION);
 			showData(0);
 		} else {
 			/*
@@ -110,17 +118,33 @@ public class ShiftHeatmapUI extends Composite {
 
 	private void initialize(Composite parent) {
 
-		Display display = Display.getCurrent();
-		//
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.FILL);
-		composite.setLayout(new GridLayout(3, false));
+		composite.setLayout(new GridLayout(5, false));
 		/*
-		 * Header
+		 * Color Map
 		 */
-		comboMassShift = new Combo(composite, SWT.READ_ONLY);
+		colorMaps = new HashMap<String, ColorMap.PredefinedColorMap>();
+		colorMaps.put(PredefinedColorMap.ColorSpectrum.toString(), PredefinedColorMap.ColorSpectrum);
+		colorMaps.put(PredefinedColorMap.Cool.toString(), PredefinedColorMap.Cool);
+		colorMaps.put(PredefinedColorMap.GrayScale.toString(), PredefinedColorMap.GrayScale);
+		colorMaps.put(PredefinedColorMap.Hot.toString(), PredefinedColorMap.Hot);
+		colorMaps.put(PredefinedColorMap.JET.toString(), PredefinedColorMap.JET);
+		colorMaps.put(PredefinedColorMap.Shaded.toString(), PredefinedColorMap.Shaded);
+		/*
+		 * Elements
+		 */
+		createMassShiftCombo(composite);
+		createColorMapCombo(composite);
+		createHeatmapComposite(composite);
+		createThresholdSlider(composite);
+	}
+
+	private void createMassShiftCombo(Composite parent) {
+
+		comboMassShift = new Combo(parent, SWT.READ_ONLY);
 		GridData gridDataCombo = new GridData(GridData.FILL_HORIZONTAL);
-		gridDataCombo.horizontalSpan = 3;
+		gridDataCombo.horizontalSpan = 5;
 		comboMassShift.setLayoutData(gridDataCombo);
 		comboMassShift.addSelectionListener(new SelectionAdapter() {
 
@@ -130,12 +154,33 @@ public class ShiftHeatmapUI extends Composite {
 				showData(comboMassShift.getSelectionIndex());
 			}
 		});
-		/*
-		 * Heatmap
-		 */
-		Canvas canvas = new Canvas(composite, SWT.FILL | SWT.BORDER);
+	}
+
+	private void createColorMapCombo(Composite parent) {
+
+		comboColorMap = new Combo(parent, SWT.READ_ONLY);
+		GridData gridDataCombo = new GridData(GridData.FILL_HORIZONTAL);
+		gridDataCombo.horizontalSpan = 5;
+		comboColorMap.setLayoutData(gridDataCombo);
+		comboColorMap.setItems(colorMaps.keySet().toArray(new String[colorMaps.size()]));
+		comboColorMap.setText(DEFAULT_COLOR_MAP);
+		comboColorMap.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				intensityGraphFigure.setColorMap(new ColorMap(colorMaps.get(comboColorMap.getText()), true, true));
+			}
+		});
+	}
+
+	private void createHeatmapComposite(Composite parent) {
+
+		Display display = Display.getCurrent();
+		//
+		Canvas canvas = new Canvas(parent, SWT.FILL | SWT.BORDER);
 		GridData gridDataCanvas = new GridData(GridData.FILL_BOTH);
-		gridDataCanvas.horizontalSpan = 3;
+		gridDataCanvas.horizontalSpan = 5;
 		canvas.setLayoutData(gridDataCanvas);
 		canvas.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 		//
@@ -147,44 +192,74 @@ public class ShiftHeatmapUI extends Composite {
 		intensityGraphFigure.getXAxis().setTitle("Scans");
 		intensityGraphFigure.getXAxis().setFormatPattern("0");
 		intensityGraphFigure.getYAxis().setTitle("Delta (m/z)");
-		intensityGraphFigure.getYAxis().setFormatPattern("0.0E0");
-		/*
-		 * Footer
-		 */
-		Label labelSlider = new Label(composite, SWT.NONE);
-		labelSlider.setText("Set the threshold to detect mass shifts.");
+		intensityGraphFigure.getYAxis().setFormatPattern("0.000");
+		intensityGraphFigure.setColorMap(new ColorMap(PredefinedColorMap.JET, true, true)); // Default
+	}
+
+	private void createThresholdSlider(Composite parent) {
+
+		Label labelSlider = new Label(parent, SWT.NONE);
+		labelSlider.setText("Set the threshold to detect mass shifts. 'LESS' means, that the most important ones and 'MORE' that less important shifts are selected.");
 		GridData gridDataLabelSlider = new GridData(GridData.FILL_HORIZONTAL);
-		gridDataLabelSlider.horizontalSpan = 3;
+		gridDataLabelSlider.horizontalSpan = 5;
 		gridDataLabelSlider.horizontalAlignment = SWT.CENTER;
 		labelSlider.setLayoutData(gridDataLabelSlider);
 		//
-		Label labelLeft = new Label(composite, SWT.NONE);
-		labelLeft.setText("LESS");
-		//
-		scale = new Scale(composite, SWT.BORDER);
-		scale.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		scale.setMinimum(SCALE_MIN);
-		scale.setMaximum(SCALE_MAX);
-		scale.setPageIncrement(SCALE_INCREMENT);
-		scale.setSelection(SCALE_SELECTION);
-		scale.addSelectionListener(new SelectionAdapter() {
+		createSliderLabel(parent, "MORE");
+		createSliderNegativeDelta(parent);
+		createSliderLabel(parent, "LESS");
+		createSliderPositiveDelta(parent);
+		createSliderLabel(parent, "MORE");
+	}
+
+	private void createSliderLabel(Composite parent, String text) {
+
+		Label label = new Label(parent, SWT.NONE);
+		label.setText(text);
+	}
+
+	private void createSliderNegativeDelta(Composite parent) {
+
+		scaleNegativeDelta = new Scale(parent, SWT.BORDER);
+		scaleNegativeDelta.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		scaleNegativeDelta.setOrientation(SWT.RIGHT_TO_LEFT);
+		scaleNegativeDelta.setMinimum(SCALE_MIN);
+		scaleNegativeDelta.setMaximum(SCALE_MAX);
+		scaleNegativeDelta.setPageIncrement(SCALE_INCREMENT);
+		scaleNegativeDelta.setSelection(SCALE_SELECTION);
+		scaleNegativeDelta.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				double minIntensity = minValue / SCALE_MAX * scale.getSelection();
-				double maxIntensity = maxValue / SCALE_MAX * scale.getSelection();
+				// double minIntensity = minValue / SCALE_MAX * scaleNegativeDelta.getSelection();
+				// double maxIntensity = maxValue / SCALE_MAX * scaleNegativeDelta.getSelection();
+				// intensityGraphFigure.setMin(minIntensity);
+				// intensityGraphFigure.setMax(maxIntensity);
+				// intensityGraphFigure.getGraphArea().getUpdateManager().performUpdate();
 				//
-				// System.out.println(minIntensity + " - " + maxIntensity + "(" + minValue + " - " + maxValue + ")");
-				//
-				intensityGraphFigure.setMin(minIntensity);
-				intensityGraphFigure.setMax(maxIntensity);
-				intensityGraphFigure.getGraphArea().getUpdateManager().performUpdate();
+				// System.out.println(scaleNegativeDelta.getSelection());
 			}
 		});
-		//
-		Label labelRight = new Label(composite, SWT.NONE);
-		labelRight.setText("MORE");
+	}
+
+	private void createSliderPositiveDelta(Composite parent) {
+
+		scalePositiveDelta = new Scale(parent, SWT.BORDER);
+		scalePositiveDelta.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		scalePositiveDelta.setOrientation(SWT.LEFT_TO_RIGHT);
+		scalePositiveDelta.setMinimum(SCALE_MIN);
+		scalePositiveDelta.setMaximum(SCALE_MAX);
+		scalePositiveDelta.setPageIncrement(SCALE_INCREMENT);
+		scalePositiveDelta.setSelection(SCALE_SELECTION);
+		scalePositiveDelta.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				// System.out.println(scalePositiveDelta.getSelection() + ": " + minIntensity + " - " + maxIntensity + "(" + minValue + " - " + maxValue + ")");
+			}
+		});
 	}
 
 	private void showData(int shiftLevel) {
@@ -259,8 +334,6 @@ public class ShiftHeatmapUI extends Composite {
 			//
 			intensityGraphFigure.setDataHeight(dataHeight);
 			intensityGraphFigure.setDataWidth(dataWidth);
-			//
-			intensityGraphFigure.setColorMap(new ColorMap(PredefinedColorMap.JET, true, true));
 			/*
 			 * Set the heatmap data
 			 */

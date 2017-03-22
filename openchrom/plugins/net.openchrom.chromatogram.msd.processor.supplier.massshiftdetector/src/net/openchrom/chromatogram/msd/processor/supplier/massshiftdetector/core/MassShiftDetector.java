@@ -45,8 +45,10 @@ public class MassShiftDetector {
 	 * @return Map<Integer, Map<Integer, Map<Integer, Double>>>
 	 * @throws IllegalArgumentException
 	 */
-	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD chromatogramReference, IChromatogramMSD chromatogramShifted, int level, boolean useAbsoluteValues, IProgressMonitor monitor) throws ChromatogramIsNullException, IllegalArgumentException {
+	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD chromatogramReference, IChromatogramMSD chromatogramShifted, int level, IProgressMonitor monitor) throws ChromatogramIsNullException, IllegalArgumentException {
 
+		boolean useAbsoluteValues = false;
+		//
 		if(level < MIN_LEVEL || level > MAX_LEVEL) {
 			throw new IllegalArgumentException("The level is not valid.");
 		}

@@ -11,12 +11,17 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.listener.AbstractControllerComposite;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -24,9 +29,17 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors.EditorProcessor;
 
 public class EnhancedShiftListEditor extends AbstractControllerComposite {
 
+	private static final Logger logger = Logger.getLogger(EnhancedShiftListEditor.class);
+	//
+	private EditorProcessor editorProcessor;
+	//
 	private Button buttonReset;
 	private Button buttonPrevious;
 	private Button buttonCheck;
@@ -39,6 +52,11 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 		super(parent, style);
 		buttons = new ArrayList<Button>();
 		createControl();
+	}
+
+	public void setEditorProcessor(EditorProcessor editorProcessor) {
+
+		this.editorProcessor = editorProcessor;
 	}
 
 	@Override
@@ -166,7 +184,7 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				fireUpdatePrevious();
+				editorProcessor.focusPage(EditorProcessor.PAGE_INDEX_SHIFT_HEATMAP);
 			}
 		});
 		return button;
@@ -174,6 +192,8 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 
 	private Button createSaveButton(Composite parent, GridData gridData) {
 
+		Shell shell = Display.getCurrent().getActiveShell();
+		//
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Save");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SAVE, IApplicationImage.SIZE_16x16));
@@ -183,7 +203,21 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				System.out.println("TODO");
+				ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
+				try {
+					monitor.run(true, true, new IRunnableWithProgress() {
+
+						@Override
+						public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+
+							editorProcessor.doSave(monitor);
+						}
+					});
+				} catch(InvocationTargetException e1) {
+					logger.warn(e1);
+				} catch(InterruptedException e1) {
+					logger.warn(e1);
+				}
 			}
 		});
 		return button;
@@ -200,7 +234,7 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				System.out.println("TODO");
+				editorProcessor.doSaveAs();
 			}
 		});
 		return button;
