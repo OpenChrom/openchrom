@@ -19,12 +19,13 @@ import org.eclipse.chemclipse.support.ui.wizards.AbstractFileWizard;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.ui.INewWizard;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelWriter;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel_v1000;
 
-public class WizardProcessor extends AbstractFileWizard {
+public class WizardProcessor extends AbstractFileWizard implements INewWizard {
 
 	private IProcessorWizardElements wizardElements = new ProcessorWizardElements();
 	private PageSettings pageSettings;

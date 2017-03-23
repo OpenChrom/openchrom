@@ -26,4 +26,18 @@
             name="Mass Shift Detector">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="OpenChrom"
+            id="net.openchrom.ui">
+      </category>
+      <wizard
+            name="Mass Shift Detector"
+            icon="icons/16x16/chromatogram.gif"
+            category="net.openchrom.ui"
+            class="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.wizards.WizardProcessor"
+            id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.wizards.WizardProcessor">
+      </wizard>
+   </extension>   
 </plugin>

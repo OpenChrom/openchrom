@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 
 public class ProcessorData {
@@ -19,6 +22,17 @@ public class ProcessorData {
 	//
 	private IChromatogramMSD chromatogramReference;
 	private IChromatogramMSD chromatogramShifted;
+	//
+	private Map<Integer, ValueRange> levelGranularity;
+
+	public ProcessorData() {
+		levelGranularity = new HashMap<Integer, ValueRange>();
+	}
+
+	public Map<Integer, ValueRange> getLevelGranularity() {
+
+		return levelGranularity;
+	}
 
 	public ProcessorModel_v1000 getProcessorModel() {
 
