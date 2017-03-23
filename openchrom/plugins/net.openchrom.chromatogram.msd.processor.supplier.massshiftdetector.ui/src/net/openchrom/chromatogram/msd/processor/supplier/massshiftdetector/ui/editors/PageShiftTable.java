@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors;
 
+import org.eclipse.chemclipse.support.ui.listener.IProcessListener;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -41,7 +42,15 @@ public class PageShiftTable {
 		enhancedShiftListEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
 		enhancedShiftListEditor.setLayout(new GridLayout(1, true));
 		enhancedShiftListEditor.setBackground(Colors.WHITE);
-		enhancedShiftListEditor.setEditorProcessor(editorProcessor);
+		//
+		enhancedShiftListEditor.addProcessListener(new IProcessListener() {
+
+			@Override
+			public void processAction() {
+
+				enhancedShiftListEditor.setEditorProcessor(editorProcessor);
+			}
+		});
 	}
 
 	public Composite getControl() {

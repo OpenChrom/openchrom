@@ -16,6 +16,8 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShiftMarker;
+
 public class ShiftListLabelProvider extends AbstractChemClipseLabelProvider {
 
 	public ShiftListLabelProvider() {
@@ -34,7 +36,17 @@ public class ShiftListLabelProvider extends AbstractChemClipseLabelProvider {
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
 
-		String text = "demo";
+		String text = "";
+		if(element instanceof MassShiftMarker) {
+			MassShiftMarker massShiftMarker = (MassShiftMarker)element;
+			switch(columnIndex) {
+				case 0:
+					text = Integer.toString(massShiftMarker.getScan());
+					break;
+				default:
+					break;
+			}
+		}
 		return text;
 	}
 

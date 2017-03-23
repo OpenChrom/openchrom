@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.provider;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -19,6 +21,10 @@ public class ShifttListContentProvider implements IStructuredContentProvider {
 	@Override
 	public Object[] getElements(Object inputElement) {
 
+		if(inputElement instanceof List<?>) {
+			List<?> list = (List<?>)inputElement;
+			return list.toArray();
+		}
 		return null;
 	}
 

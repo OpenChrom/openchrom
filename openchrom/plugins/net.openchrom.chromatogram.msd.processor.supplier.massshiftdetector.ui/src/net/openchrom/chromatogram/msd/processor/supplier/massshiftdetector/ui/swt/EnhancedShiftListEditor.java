@@ -32,6 +32,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShiftMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors.EditorProcessor;
 
 public class EnhancedShiftListEditor extends AbstractControllerComposite {
@@ -140,6 +143,11 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
+				processAction();
+				ProcessorData processorData = editorProcessor.getProcessorData();
+				MassShiftDetector massShiftDetector = new MassShiftDetector();
+				List<MassShiftMarker> massShiftMarker = massShiftDetector.extractMassShiftMarker(processorData.getMassShifts(), processorData.getLevelGranularity());
+				shiftListUI.setInput(massShiftMarker);
 			}
 		});
 		return button;

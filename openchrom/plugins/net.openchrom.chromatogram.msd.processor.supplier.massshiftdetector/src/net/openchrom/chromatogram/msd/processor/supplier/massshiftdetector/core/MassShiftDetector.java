@@ -11,7 +11,9 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.chemclipse.model.exceptions.ChromatogramIsNullException;
@@ -22,6 +24,9 @@ import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignals;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShiftMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ValueRange;
+
 public class MassShiftDetector {
 
 	public static final String PROCESSOR_FILE_EXTENSION = ".mdp";
@@ -30,15 +35,19 @@ public class MassShiftDetector {
 	public static final int MAX_LEVEL = 3;
 	public static final int INCREMENT_LEVEL = 1;
 	//
-	public static final int SCALE_MIN = 0; // 0
-	public static final int SCALE_MAX = 1000; // 1
+	public static final int SCALE_MIN = 0; // 0%
+	public static final int SCALE_MAX = 1000; // 100%
 	public static final int SCALE_INCREMENT = 1; // 0.001
 	public static final int SCALE_SELECTION = SCALE_MAX;
 	/*
 	 * MIN and MAX are used to display the range in the heatmap.
+	 * SCALE_MAX = 100% in range but 60% in the heatmap.
 	 */
-	public static final int MIN_VALUE = -SCALE_MAX;
-	public static final int MAX_VALUE = SCALE_MAX;
+	private static final double MAX_PERCENTAGE_HIT = 60.0d;
+	//
+	public static final int SCALE_OFFSET = (int)(SCALE_MAX / MAX_PERCENTAGE_HIT * 100.0d) - SCALE_MAX;
+	public static final int MIN_VALUE = -SCALE_MAX - SCALE_OFFSET;
+	public static final int MAX_VALUE = SCALE_MAX + SCALE_OFFSET;
 	//
 	private static final float NORMALIZATION_BASE = SCALE_MAX;
 
@@ -107,15 +116,14 @@ public class MassShiftDetector {
 						double intensityShifted = extractedIonSignalShifted.getAbundance(ion + shiftLevel);
 						double intensityDifference = intensityReference - intensityShifted;
 						/*
-						 * The 0 level is handled differently.
+						 * 0 is the most likely value.
 						 */
-						if(shiftLevel == 0) {
-							if(intensityDifference < 0) {
-								intensityDifference = -NORMALIZATION_BASE + intensityDifference;
-							} else {
-								intensityDifference = NORMALIZATION_BASE - intensityDifference;
-							}
+						if(intensityDifference < 0) {
+							intensityDifference = -NORMALIZATION_BASE + intensityDifference;
+						} else {
+							intensityDifference = NORMALIZATION_BASE - intensityDifference;
 						}
+						//
 						extractedIonSignalDifference.put(ion, intensityDifference);
 					}
 				} catch(NoExtractedIonSignalStoredException e) {
@@ -124,6 +132,50 @@ public class MassShiftDetector {
 			}
 		}
 		return differenceIonSignalsMap;
+	}
+
+	public List<MassShiftMarker> extractMassShiftMarker(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts, Map<Integer, ValueRange> levelGranularity) {
+
+		Map<Integer, MassShiftMarker> massShiftMarkerMap = new HashMap<Integer, MassShiftMarker>();
+		/*
+		 * Default min/max ranges.
+		 */
+		double defaultMax = SCALE_MAX * MAX_PERCENTAGE_HIT / 100.0d;
+		double defaultMin = -defaultMax;
+		//
+		for(Map.Entry<Integer, Map<Integer, Map<Integer, Double>>> massShift : massShifts.entrySet()) {
+			//
+			int level = massShift.getKey();
+			double min;
+			double max;
+			//
+			ValueRange valueRange = levelGranularity.get(level);
+			if(valueRange != null) {
+				min = valueRange.getMin();
+				max = valueRange.getMax();
+			} else {
+				min = defaultMin;
+				max = defaultMax;
+			}
+			//
+			for(Map.Entry<Integer, Map<Integer, Double>> scanElement : massShift.getValue().entrySet()) {
+				int scan = scanElement.getKey();
+				for(Map.Entry<Integer, Double> mzElement : scanElement.getValue().entrySet()) {
+					double mz = mzElement.getKey();
+					double deltaIntensity = mzElement.getValue();
+					if(deltaIntensity >= min && deltaIntensity <= max) {
+						MassShiftMarker massShiftMarker = massShiftMarkerMap.get(scan);
+						if(massShiftMarker == null) {
+							massShiftMarker = new MassShiftMarker(scan);
+							massShiftMarkerMap.put(scan, massShiftMarker);
+						}
+						// TODO add more infos
+					}
+				}
+			}
+		}
+		//
+		return new ArrayList<MassShiftMarker>(massShiftMarkerMap.values());
 	}
 
 	private IExtractedIonSignals extractAndNormalizeIonSignals(IChromatogramMSD chromatogram, int startScan, int stopScan, float normalizationBase) throws ChromatogramIsNullException {

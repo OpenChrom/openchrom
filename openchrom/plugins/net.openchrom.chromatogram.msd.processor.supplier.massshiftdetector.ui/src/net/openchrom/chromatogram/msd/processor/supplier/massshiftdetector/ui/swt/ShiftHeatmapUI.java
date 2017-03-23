@@ -50,7 +50,7 @@ public class ShiftHeatmapUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(ShiftHeatmapUI.class);
 	//
-	private static final String MASSSHIFT_COLOR_MAP = "Mass Shift";
+	private static final String MASSSHIFT_COLOR_MAP = "Mass Shift Spectrum";
 	private static final String DEFAULT_COLOR_MAP = MASSSHIFT_COLOR_MAP;
 	//
 	private Combo comboMassShift;
@@ -63,9 +63,7 @@ public class ShiftHeatmapUI extends Composite {
 	private IntensityGraphFigure intensityGraphFigure;
 	//
 	private ProcessorData processorData;
-	//
 	private Map<String, ColorMap> colorMaps;
-	private Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts;
 
 	public ShiftHeatmapUI(Composite parent, int style) {
 		super(parent, style);
@@ -89,14 +87,14 @@ public class ShiftHeatmapUI extends Composite {
 			/*
 			 * Calculate the shifts.
 			 */
-			if(this.massShifts == null) {
+			if(processorData.getMassShifts() == null) {
 				Shell shell = Display.getCurrent().getActiveShell();
 				MassShiftDetectorRunnable runnable = new MassShiftDetectorRunnable(processorData);
 				ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
 				//
 				try {
 					monitor.run(true, true, runnable);
-					this.massShifts = runnable.getMassShifts();
+					processorData.setMassShifts(runnable.getMassShifts());
 				} catch(InterruptedException e) {
 					logger.warn(e);
 				} catch(InvocationTargetException e) {
@@ -124,13 +122,19 @@ public class ShiftHeatmapUI extends Composite {
 		 * Color Map
 		 */
 		ColorMap colorMap = new ColorMap();
-		colorMap.getMap().put(0.0d, new RGB(255, 255, 255));
-		colorMap.getMap().put(0.2d, new RGB(255, 255, 255));
-		colorMap.getMap().put(0.4d, new RGB(255, 255, 0));
-		colorMap.getMap().put(0.5d, new RGB(0, 255, 0));
-		colorMap.getMap().put(0.6d, new RGB(255, 255, 0));
-		colorMap.getMap().put(0.8d, new RGB(255, 255, 255));
-		colorMap.getMap().put(1.0d, new RGB(255, 255, 255));
+		colorMap.getMap().put(0.0d, new RGB(255, 255, 255)); // - 100%
+		colorMap.getMap().put(0.2d, new RGB(255, 255, 255)); // - 60%
+		colorMap.getMap().put(0.3d, new RGB(255, 255, 0)); // - 40%
+		colorMap.getMap().put(0.4d, new RGB(0, 255, 0)); // - 20%
+		colorMap.getMap().put(0.4874d, new RGB(0, 255, 0)); // 0
+		colorMap.getMap().put(0.4875d, new RGB(0, 255, 0)); // - 2.5%
+		colorMap.getMap().put(0.5d, new RGB(0, 0, 255)); // 0%
+		colorMap.getMap().put(0.5125d, new RGB(0, 255, 0)); // + 2.5%
+		colorMap.getMap().put(0.5126d, new RGB(0, 255, 0)); // 0
+		colorMap.getMap().put(0.6d, new RGB(0, 255, 0)); // + 20%
+		colorMap.getMap().put(0.7d, new RGB(255, 255, 0)); // + 40%
+		colorMap.getMap().put(0.8d, new RGB(255, 255, 255)); // + 60%
+		colorMap.getMap().put(1.0d, new RGB(255, 255, 255)); // + 100%
 		//
 		colorMaps = new HashMap<String, ColorMap>();
 		colorMaps.put(MASSSHIFT_COLOR_MAP, colorMap);
@@ -332,11 +336,11 @@ public class ShiftHeatmapUI extends Composite {
 
 	private void showData(int level) {
 
-		if(massShifts != null && massShifts.get(level) != null) {
+		if(processorData.getMassShifts() != null && processorData.getMassShifts().get(level) != null) {
 			//
 			// Map<Integer, Map<Integer, Map<Integer, Double>>>: ShiftLevel, Scan, m/z, Intensity
 			//
-			Map<Integer, Map<Integer, Double>> shiftLevelData = massShifts.get(level);
+			Map<Integer, Map<Integer, Double>> shiftLevelData = processorData.getMassShifts().get(level);
 			int startScan = Collections.min(shiftLevelData.keySet());
 			int stopScan = Collections.max(shiftLevelData.keySet());
 			//
@@ -425,7 +429,7 @@ public class ShiftHeatmapUI extends Composite {
 
 		String[] items = new String[]{};
 		comboMassShift.setItems(items);
-		this.massShifts = null;
+		// processorData.setMassShifts(null);
 		intensityGraphFigure.getGraphArea().erase();
 		textNegativeDelta.setText(Integer.toString(-MassShiftDetector.SCALE_SELECTION));
 		textPositiveDelta.setText(Integer.toString(MassShiftDetector.SCALE_SELECTION));
@@ -457,8 +461,8 @@ public class ShiftHeatmapUI extends Composite {
 
 	private void setMinValue(double min) {
 
-		// intensityGraphFigure.setMin(min);
-		// intensityGraphFigure.getGraphArea().getUpdateManager().performUpdate();
+		intensityGraphFigure.setMin(min - MassShiftDetector.SCALE_OFFSET);
+		intensityGraphFigure.getGraphArea().getUpdateManager().performUpdate();
 		//
 		if(processorData != null) {
 			Map<Integer, ValueRange> levelGranularity = processorData.getLevelGranularity();
@@ -474,8 +478,8 @@ public class ShiftHeatmapUI extends Composite {
 
 	private void setMaxValue(double max) {
 
-		// intensityGraphFigure.setMax(max);
-		// intensityGraphFigure.getGraphArea().getUpdateManager().performUpdate();
+		intensityGraphFigure.setMax(max + MassShiftDetector.SCALE_OFFSET);
+		intensityGraphFigure.getGraphArea().getUpdateManager().performUpdate();
 		//
 		if(processorData != null) {
 			Map<Integer, ValueRange> levelGranularity = processorData.getLevelGranularity();

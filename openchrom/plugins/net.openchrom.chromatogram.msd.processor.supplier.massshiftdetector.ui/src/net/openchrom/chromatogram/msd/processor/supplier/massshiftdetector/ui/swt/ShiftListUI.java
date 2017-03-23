@@ -20,7 +20,7 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.pr
 
 public class ShiftListUI extends ExtendedTableViewer {
 
-	private String[] titles = {"m/z", "shift", "start retention time", "stop retention time", "validated"};
+	private String[] titles = {"scan", "m/z", "shifts", "probability", "validated"};
 	private int bounds[] = {200, 100, 300, 300, 100};
 
 	public ShiftListUI(Composite parent, int style) {

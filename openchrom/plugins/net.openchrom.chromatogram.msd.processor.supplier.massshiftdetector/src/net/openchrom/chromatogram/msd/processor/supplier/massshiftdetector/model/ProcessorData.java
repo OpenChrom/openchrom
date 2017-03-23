@@ -23,6 +23,7 @@ public class ProcessorData {
 	private IChromatogramMSD chromatogramReference;
 	private IChromatogramMSD chromatogramShifted;
 	//
+	private Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts;
 	private Map<Integer, ValueRange> levelGranularity;
 
 	public ProcessorData() {
@@ -32,6 +33,16 @@ public class ProcessorData {
 	public Map<Integer, ValueRange> getLevelGranularity() {
 
 		return levelGranularity;
+	}
+
+	public Map<Integer, Map<Integer, Map<Integer, Double>>> getMassShifts() {
+
+		return massShifts;
+	}
+
+	public void setMassShifts(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts) {
+
+		this.massShifts = massShifts;
 	}
 
 	public ProcessorModel_v1000 getProcessorModel() {
