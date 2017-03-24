@@ -158,7 +158,7 @@
             <type>eclipse-plugin</type>
             <id>org.eclipse.jdt.core</id>
             <restrictTo>
-              <version>3.12.2.v20161117-1814</version>
+              <version>3.12.3.v20170228-1205</version>
             </restrictTo>
             </filter>
             <filter>
