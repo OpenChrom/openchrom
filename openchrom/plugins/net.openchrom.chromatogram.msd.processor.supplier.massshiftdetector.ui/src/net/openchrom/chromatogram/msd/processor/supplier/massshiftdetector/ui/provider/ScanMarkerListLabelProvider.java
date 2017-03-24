@@ -16,32 +16,43 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShiftMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker;
 
-public class ShiftListLabelProvider extends AbstractChemClipseLabelProvider {
+public class ScanMarkerListLabelProvider extends AbstractChemClipseLabelProvider {
 
-	public ShiftListLabelProvider() {
+	public ScanMarkerListLabelProvider() {
 	}
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) {
 
 		if(columnIndex == 0) {
-			return getImage(element);
-		} else {
-			return null;
+			return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SELECTED_SCAN, IApplicationImage.SIZE_16x16);
+		} else if(columnIndex == 1) {
+			if(element instanceof ScanMarker) {
+				ScanMarker scanMarker = (ScanMarker)element;
+				if(scanMarker.isValidated()) {
+					return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SELECTED, IApplicationImage.SIZE_16x16);
+				} else {
+					return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DESELECTED, IApplicationImage.SIZE_16x16);
+				}
+			}
 		}
+		return null;
 	}
 
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof MassShiftMarker) {
-			MassShiftMarker massShiftMarker = (MassShiftMarker)element;
+		if(element instanceof ScanMarker) {
+			ScanMarker scanMarker = (ScanMarker)element;
 			switch(columnIndex) {
 				case 0:
-					text = Integer.toString(massShiftMarker.getScan());
+					text = Integer.toString(scanMarker.getScan());
+					break;
+				case 1: // Validated
+					text = "";
 					break;
 				default:
 					break;

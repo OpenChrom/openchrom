@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 
-public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
+public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 
 	private Button buttonCalculate;
 	private Button buttonReset;
@@ -36,10 +36,10 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 	private Button buttonNext;
 	private List<Button> buttons;
 	//
-	private ShiftHeatmapUI shiftHeatmapUI;
+	private IsotopeHeatmapUI shiftHeatmapUI;
 	private ProcessorData processorData;
 
-	public EnhancedShiftHeatmapEditor(Composite parent, int style) {
+	public EnhancedIsotopeHeatmapEditor(Composite parent, int style) {
 		super(parent, style);
 		buttons = new ArrayList<Button>();
 		createControl();
@@ -110,7 +110,7 @@ public class EnhancedShiftHeatmapEditor extends AbstractControllerComposite {
 		/*
 		 * Heatmap
 		 */
-		shiftHeatmapUI = new ShiftHeatmapUI(chartComposite, SWT.NONE);
+		shiftHeatmapUI = new IsotopeHeatmapUI(chartComposite, SWT.NONE);
 		shiftHeatmapUI.setLayoutData(new GridData(GridData.FILL_BOTH));
 		/*
 		 * Button Bar

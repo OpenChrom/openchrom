@@ -21,10 +21,10 @@ public class ProcessorModel_v1000 {
 	@XmlElement(name = "Version")
 	private String version = "1.0.0.0";
 	//
-	@XmlElement(name = "C12ChromatogramPath")
-	private String c12ChromatogramPath;
-	@XmlElement(name = "C13ChromatogramPath")
-	private String c13ChromatogramPath;
+	@XmlElement(name = "ReferenceChromatogramPath")
+	private String referenceChromatogramPath;
+	@XmlElement(name = "IsotopeChromatogramPath")
+	private String isotopeChromatogramPath;
 	@XmlElement(name = "Level")
 	private int level;
 	@XmlElement(name = "Notes")
@@ -44,25 +44,25 @@ public class ProcessorModel_v1000 {
 	}
 
 	@XmlTransient
-	public String getC12ChromatogramPath() {
+	public String getReferenceChromatogramPath() {
 
-		return c12ChromatogramPath;
+		return referenceChromatogramPath;
 	}
 
-	public void setC12ChromatogramPath(String c12ChromatogramPath) {
+	public void setReferenceChromatogramPath(String referenceChromatogramPath) {
 
-		this.c12ChromatogramPath = c12ChromatogramPath;
+		this.referenceChromatogramPath = referenceChromatogramPath;
 	}
 
 	@XmlTransient
-	public String getC13ChromatogramPath() {
+	public String getIsotopeChromatogramPath() {
 
-		return c13ChromatogramPath;
+		return isotopeChromatogramPath;
 	}
 
-	public void setC13ChromatogramPath(String c13ChromatogramPath) {
+	public void setIsotopeChromatogramPath(String isotopeChromatogramPath) {
 
-		this.c13ChromatogramPath = c13ChromatogramPath;
+		this.isotopeChromatogramPath = isotopeChromatogramPath;
 	}
 
 	@XmlTransient

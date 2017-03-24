@@ -34,8 +34,8 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 */
 	public void createFieldEditors() {
 
-		addField(new StringFieldEditor(PreferenceSupplier.P_FILTER_PATH_C12_CHROMATOGRAM, "Path C12 Chromatogram", getFieldEditorParent()));
-		addField(new StringFieldEditor(PreferenceSupplier.P_FILTER_PATH_C13_CHROMATOGRAM, "Path C13 Chromatogram", getFieldEditorParent()));
+		addField(new StringFieldEditor(PreferenceSupplier.P_FILTER_PATH_REFERENCE_CHROMATOGRAM, "Path Reference Chromatogram", getFieldEditorParent()));
+		addField(new StringFieldEditor(PreferenceSupplier.P_FILTER_PATH_ISOTOPE_CHROMATOGRAM, "Path Istope Chromatogram", getFieldEditorParent()));
 	}
 
 	/*

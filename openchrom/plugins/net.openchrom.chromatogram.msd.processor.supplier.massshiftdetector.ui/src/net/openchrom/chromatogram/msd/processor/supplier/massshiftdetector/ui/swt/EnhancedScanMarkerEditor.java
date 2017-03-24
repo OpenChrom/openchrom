@@ -16,12 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.msd.swt.ui.components.massspectrum.MassValueDisplayPrecision;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.listener.AbstractControllerComposite;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -33,13 +37,13 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShiftMarker;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors.EditorProcessor;
 
-public class EnhancedShiftListEditor extends AbstractControllerComposite {
+public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
-	private static final Logger logger = Logger.getLogger(EnhancedShiftListEditor.class);
+	private static final Logger logger = Logger.getLogger(EnhancedScanMarkerEditor.class);
 	//
 	private EditorProcessor editorProcessor;
 	//
@@ -50,9 +54,11 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 	private Button buttonExport;
 	private List<Button> buttons;
 	//
-	private ShiftListUI shiftListUI;
+	private ScanMarkerListUI scanMarkerListUI;
+	private MassShiftListUI massShiftListUI;
+	private MassSpectrumComparisonUI massSpectrumComparisonUI;
 
-	public EnhancedShiftListEditor(Composite parent, int style) {
+	public EnhancedScanMarkerEditor(Composite parent, int style) {
 		super(parent, style);
 		buttons = new ArrayList<Button>();
 		createControl();
@@ -103,17 +109,15 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 		Composite composite = new Composite(this, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		/*
-		 * Standards Table
-		 */
-		Composite chartComposite = new Composite(composite, SWT.NONE);
-		chartComposite.setLayout(new GridLayout(1, true));
-		chartComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		/*
-		 * List
-		 */
-		shiftListUI = new ShiftListUI(chartComposite, SWT.BORDER);
-		shiftListUI.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
+		//
+		Composite mainComposite = new Composite(composite, SWT.NONE);
+		mainComposite.setLayout(new GridLayout(1, true));
+		mainComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		//
+		createListComposite(mainComposite);
+		//
+		massSpectrumComparisonUI = new MassSpectrumComparisonUI(mainComposite, SWT.BORDER, MassValueDisplayPrecision.NOMINAL);
+		massSpectrumComparisonUI.setLayoutData(new GridData(GridData.FILL_BOTH));
 		/*
 		 * Button Bar
 		 */
@@ -132,6 +136,43 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 		buttons.add(buttonExport = createExportButton(compositeButtons, gridDataButtons));
 	}
 
+	private void createListComposite(Composite parent) {
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setLayout(new GridLayout(2, true));
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		/*
+		 * Lists
+		 */
+		scanMarkerListUI = new ScanMarkerListUI(composite, SWT.BORDER);
+		scanMarkerListUI.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
+		scanMarkerListUI.getTable().addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				IStructuredSelection selection = scanMarkerListUI.getStructuredSelection();
+				Object object = selection.getFirstElement();
+				if(object instanceof ScanMarker) {
+					//
+					ScanMarker scanMarker = (ScanMarker)object;
+					int scan = scanMarker.getScan();
+					IChromatogramMSD referenceChromatogram = editorProcessor.getProcessorData().getReferenceChromatogram();
+					IChromatogramMSD isotopeChromatogram = editorProcessor.getProcessorData().getIsotopeChromatogram();
+					//
+					massShiftListUI.setInput(scanMarker.getMassShifts());
+					//
+					IScanMSD referenceMassSpectrum = (IScanMSD)referenceChromatogram.getScan(scan);
+					IScanMSD isotopeMassSpectrum = (IScanMSD)isotopeChromatogram.getScan(scan);
+					massSpectrumComparisonUI.update(referenceMassSpectrum, isotopeMassSpectrum, true);
+				}
+			}
+		});
+		//
+		massShiftListUI = new MassShiftListUI(composite, SWT.BORDER);
+		massShiftListUI.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
+	}
+
 	private Button createCalculateButton(Composite parent, GridData gridData) {
 
 		Button button = new Button(parent, SWT.PUSH);
@@ -146,8 +187,8 @@ public class EnhancedShiftListEditor extends AbstractControllerComposite {
 				processAction();
 				ProcessorData processorData = editorProcessor.getProcessorData();
 				MassShiftDetector massShiftDetector = new MassShiftDetector();
-				List<MassShiftMarker> massShiftMarker = massShiftDetector.extractMassShiftMarker(processorData.getMassShifts(), processorData.getLevelGranularity());
-				shiftListUI.setInput(massShiftMarker);
+				List<ScanMarker> massShiftMarker = massShiftDetector.extractMassShiftMarker(processorData.getMassShifts(), processorData.getLevelGranularity());
+				scanMarkerListUI.setInput(massShiftMarker);
 			}
 		});
 		return button;

@@ -15,46 +15,46 @@ import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
 
 public class ProcessorWizardElements extends ChromatogramWizardElements implements IProcessorWizardElements {
 
-	private String c12ChromatogramPath = "";
-	private String c13ChromatogramPath = "";
-	private int level = 1;
+	private String referenceChromatogramPath = "";
+	private String isotopeChromatogramPath = "";
+	private int isotopeLevel = 1;
 	private String notes = ""; // Could be ""
 	private String description = ""; // Could be ""
 
 	@Override
-	public String getC12ChromatogramPath() {
+	public String getReferenceChromatogramPath() {
 
-		return c12ChromatogramPath;
+		return referenceChromatogramPath;
 	}
 
 	@Override
-	public void setC12ChromatogramPath(String c12ChromatogramPath) {
+	public void setReferenceChromatogramPath(String referenceChromatogramPath) {
 
-		this.c12ChromatogramPath = c12ChromatogramPath;
+		this.referenceChromatogramPath = referenceChromatogramPath;
 	}
 
 	@Override
-	public String getC13ChromatogramPath() {
+	public String getIsotopeChromatogramPath() {
 
-		return c13ChromatogramPath;
+		return isotopeChromatogramPath;
 	}
 
 	@Override
-	public void setC13ChromatogramPath(String c13ChromatogramPath) {
+	public void setIsotopeChromatogramPath(String isotopeChromatogramPath) {
 
-		this.c13ChromatogramPath = c13ChromatogramPath;
+		this.isotopeChromatogramPath = isotopeChromatogramPath;
 	}
 
 	@Override
-	public int getLevel() {
+	public int getIsotopeLevel() {
 
-		return level;
+		return isotopeLevel;
 	}
 
 	@Override
-	public void setLevel(int level) {
+	public void setIsotopeLevel(int isotopeLevel) {
 
-		this.level = level;
+		this.isotopeLevel = isotopeLevel;
 	}
 
 	@Override

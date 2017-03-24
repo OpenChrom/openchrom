@@ -39,8 +39,8 @@ public class EditorProcessor extends MultiPageEditorPart {
 	public static int PAGE_INDEX_SHIFT_TABLE;
 	//
 	private PageSettings pageSettings;
-	private PageShiftHeatmap pageShiftHeatmap;
-	private PageShiftTable pageShiftTable;
+	private PageIsotopeHeatmap pageIsotopeHeatmap;
+	private PageScanMarkerTable pageScanMarkerTable;
 	//
 	private ProcessorData processorData;
 
@@ -51,12 +51,12 @@ public class EditorProcessor extends MultiPageEditorPart {
 		PAGE_INDEX_SETTINGS = addPage(pageSettings.getControl());
 		setPageText(PAGE_INDEX_SETTINGS, "Settings");
 		//
-		pageShiftHeatmap = new PageShiftHeatmap(this, getContainer());
-		PAGE_INDEX_SHIFT_HEATMAP = addPage(pageShiftHeatmap.getControl());
+		pageIsotopeHeatmap = new PageIsotopeHeatmap(this, getContainer());
+		PAGE_INDEX_SHIFT_HEATMAP = addPage(pageIsotopeHeatmap.getControl());
 		setPageText(PAGE_INDEX_SHIFT_HEATMAP, "Shift Heatmap");
 		//
-		pageShiftTable = new PageShiftTable(this, getContainer());
-		PAGE_INDEX_SHIFT_TABLE = addPage(pageShiftTable.getControl());
+		pageScanMarkerTable = new PageScanMarkerTable(this, getContainer());
+		PAGE_INDEX_SHIFT_TABLE = addPage(pageScanMarkerTable.getControl());
 		setPageText(PAGE_INDEX_SHIFT_TABLE, "Shift Table");
 	}
 

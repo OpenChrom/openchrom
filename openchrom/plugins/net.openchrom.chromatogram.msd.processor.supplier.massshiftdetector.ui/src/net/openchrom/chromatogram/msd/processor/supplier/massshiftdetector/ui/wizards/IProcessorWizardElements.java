@@ -13,17 +13,17 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.w
 
 public interface IProcessorWizardElements {
 
-	String getC12ChromatogramPath();
+	String getReferenceChromatogramPath();
 
-	void setC12ChromatogramPath(String c12ChromatogramPath);
+	void setReferenceChromatogramPath(String referenceChromatogramPath);
 
-	String getC13ChromatogramPath();
+	String getIsotopeChromatogramPath();
 
-	void setC13ChromatogramPath(String c13ChromatogramPath);
+	void setIsotopeChromatogramPath(String isotopeChromatogramPath);
 
-	int getLevel();
+	int getIsotopeLevel();
 
-	void setLevel(int level);
+	void setIsotopeLevel(int isotopeLevel);
 
 	String getNotes();
 

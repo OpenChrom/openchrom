@@ -20,8 +20,8 @@ public class ProcessorData {
 
 	private ProcessorModel_v1000 processorModel;
 	//
-	private IChromatogramMSD chromatogramReference;
-	private IChromatogramMSD chromatogramShifted;
+	private IChromatogramMSD referenceChromatogram;
+	private IChromatogramMSD isotopeChromatogram;
 	//
 	private Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts;
 	private Map<Integer, ValueRange> levelGranularity;
@@ -55,23 +55,23 @@ public class ProcessorData {
 		this.processorModel = processorModel;
 	}
 
-	public IChromatogramMSD getChromatogramReference() {
+	public IChromatogramMSD getReferenceChromatogram() {
 
-		return chromatogramReference;
+		return referenceChromatogram;
 	}
 
-	public void setChromatogramReference(IChromatogramMSD chromatogramReference) {
+	public void setReferenceChromatogram(IChromatogramMSD referenceChromatogram) {
 
-		this.chromatogramReference = chromatogramReference;
+		this.referenceChromatogram = referenceChromatogram;
 	}
 
-	public IChromatogramMSD getChromatogramShifted() {
+	public IChromatogramMSD getIsotopeChromatogram() {
 
-		return chromatogramShifted;
+		return isotopeChromatogram;
 	}
 
-	public void setChromatogramShifted(IChromatogramMSD chromatogramShifted) {
+	public void setIsotopeChromatogram(IChromatogramMSD isotopeChromatogram) {
 
-		this.chromatogramShifted = chromatogramShifted;
+		this.isotopeChromatogram = isotopeChromatogram;
 	}
 }

@@ -27,10 +27,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
 	//
-	public static final String P_FILTER_PATH_C12_CHROMATOGRAM = "filterPathC12Chromatogram";
-	public static final String DEF_FILTER_PATH_C12_CHROMATOGRAM = "";
-	public static final String P_FILTER_PATH_C13_CHROMATOGRAM = "filterPathC13Chromatogram";
-	public static final String DEF_FILTER_PATH_C13_CHROMATOGRAM = "";
+	public static final String P_FILTER_PATH_REFERENCE_CHROMATOGRAM = "filterPathReferenceChromatogram";
+	public static final String DEF_FILTER_PATH_REFERENCE_CHROMATOGRAM = "";
+	public static final String P_FILTER_PATH_ISOTOPE_CHROMATOGRAM = "filterPathIsotopeChromatogram";
+	public static final String DEF_FILTER_PATH_ISOTOPE_CHROMATOGRAM = "";
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -58,8 +58,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public Map<String, String> getDefaultValues() {
 
 		Map<String, String> defaultValues = new HashMap<String, String>();
-		defaultValues.put(P_FILTER_PATH_C12_CHROMATOGRAM, DEF_FILTER_PATH_C12_CHROMATOGRAM);
-		defaultValues.put(P_FILTER_PATH_C13_CHROMATOGRAM, DEF_FILTER_PATH_C13_CHROMATOGRAM);
+		defaultValues.put(P_FILTER_PATH_REFERENCE_CHROMATOGRAM, DEF_FILTER_PATH_REFERENCE_CHROMATOGRAM);
+		defaultValues.put(P_FILTER_PATH_ISOTOPE_CHROMATOGRAM, DEF_FILTER_PATH_ISOTOPE_CHROMATOGRAM);
 		return defaultValues;
 	}
 
@@ -69,24 +69,24 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return getScopeContext().getNode(getPreferenceNode());
 	}
 
-	public static String getFilterPathC12Chromatogram() {
+	public static String getFilterPathReferenceChromatogram() {
 
-		return getFilterPath(P_FILTER_PATH_C12_CHROMATOGRAM, DEF_FILTER_PATH_C12_CHROMATOGRAM);
+		return getFilterPath(P_FILTER_PATH_REFERENCE_CHROMATOGRAM, DEF_FILTER_PATH_REFERENCE_CHROMATOGRAM);
 	}
 
-	public static void setFilterPathC12Chromatogram(String filterPath) {
+	public static void setFilterPathReferenceChromatogram(String filterPath) {
 
-		setFilterPath(P_FILTER_PATH_C12_CHROMATOGRAM, filterPath);
+		setFilterPath(P_FILTER_PATH_REFERENCE_CHROMATOGRAM, filterPath);
 	}
 
-	public static String getFilterPathC13Chromatogram() {
+	public static String getFilterPathIsotopeChromatogram() {
 
-		return getFilterPath(P_FILTER_PATH_C13_CHROMATOGRAM, DEF_FILTER_PATH_C13_CHROMATOGRAM);
+		return getFilterPath(P_FILTER_PATH_ISOTOPE_CHROMATOGRAM, DEF_FILTER_PATH_ISOTOPE_CHROMATOGRAM);
 	}
 
-	public static void setFilterPathC13Chromatogram(String filterPath) {
+	public static void setFilterPathIsotopeChromatogram(String filterPath) {
 
-		setFilterPath(P_FILTER_PATH_C13_CHROMATOGRAM, filterPath);
+		setFilterPath(P_FILTER_PATH_ISOTOPE_CHROMATOGRAM, filterPath);
 	}
 
 	private static String getFilterPath(String key, String def) {

@@ -40,8 +40,8 @@ public class PageSettings extends AbstractExtendedWizardPage {
 
 	private IProcessorWizardElements wizardElements;
 	//
-	private Text c12ChromatogramText;
-	private Text c13ChromatogramText;
+	private Text referenceChromatogramText;
+	private Text isotopeChromatogramText;
 	private Spinner levelSpinner;
 	private Text notesText;
 	private Text descriptionText;
@@ -88,8 +88,8 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
 		//
-		createC12ChromatogramSection(composite);
-		createC13ChromatogramSection(composite);
+		createReferenceChromatogramSection(composite);
+		createIstopeChromatogramSection(composite);
 		createLevelSection(composite);
 		createNoteSection(composite);
 		createDescriptionSection(composite);
@@ -99,17 +99,17 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		setControl(composite);
 	}
 
-	private void createC12ChromatogramSection(Composite parent) {
+	private void createReferenceChromatogramSection(Composite parent) {
 
 		Label label = new Label(parent, SWT.NONE);
-		label.setText("C12 - Chromatogram");
+		label.setText("Reference - Chromatogram");
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataLabel.horizontalSpan = 2;
 		label.setLayoutData(gridDataLabel);
 		//
-		c12ChromatogramText = new Text(parent, SWT.BORDER);
-		c12ChromatogramText.setText("");
-		c12ChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		referenceChromatogramText = new Text(parent, SWT.BORDER);
+		referenceChromatogramText.setText("");
+		referenceChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		//
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Select");
@@ -119,7 +119,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 			public void widgetSelected(SelectionEvent e) {
 
 				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "C12 - Chromatogram", "Select the C12 chromatogram.", PreferenceSupplier.getFilterPathC12Chromatogram());
+				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Reference - Chromatogram", "Select the reference chromatogram.", PreferenceSupplier.getFilterPathReferenceChromatogram());
 				WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), inputWizard);
 				wizardDialog.create();
 				//
@@ -127,12 +127,12 @@ public class PageSettings extends AbstractExtendedWizardPage {
 					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
 					if(selectedChromatograms.size() > 0) {
 						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
-						c12ChromatogramText.setText(selectedChromatogram);
+						referenceChromatogramText.setText(selectedChromatogram);
 						validateData();
 						//
 						File file = new File(selectedChromatogram);
 						if(file.exists()) {
-							PreferenceSupplier.setFilterPathC12Chromatogram(file.getParentFile().toString());
+							PreferenceSupplier.setFilterPathReferenceChromatogram(file.getParentFile().toString());
 						}
 					}
 				}
@@ -140,17 +140,17 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		});
 	}
 
-	private void createC13ChromatogramSection(Composite parent) {
+	private void createIstopeChromatogramSection(Composite parent) {
 
 		Label label = new Label(parent, SWT.NONE);
-		label.setText("C13 - Chromatogram");
+		label.setText("Isotope - Chromatogram");
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataLabel.horizontalSpan = 2;
 		label.setLayoutData(gridDataLabel);
 		//
-		c13ChromatogramText = new Text(parent, SWT.BORDER);
-		c13ChromatogramText.setText("");
-		c13ChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		isotopeChromatogramText = new Text(parent, SWT.BORDER);
+		isotopeChromatogramText.setText("");
+		isotopeChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		//
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Select");
@@ -160,7 +160,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 			public void widgetSelected(SelectionEvent e) {
 
 				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "C13 - Chromatogram", "Select the C13 chromatogram.", PreferenceSupplier.getFilterPathC13Chromatogram());
+				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Isotope - Chromatogram", "Select the isotope chromatogram.", PreferenceSupplier.getFilterPathIsotopeChromatogram());
 				WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), inputWizard);
 				wizardDialog.create();
 				//
@@ -168,12 +168,12 @@ public class PageSettings extends AbstractExtendedWizardPage {
 					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
 					if(selectedChromatograms.size() > 0) {
 						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
-						c13ChromatogramText.setText(selectedChromatogram);
+						isotopeChromatogramText.setText(selectedChromatogram);
 						validateData();
 						//
 						File file = new File(selectedChromatogram);
 						if(file.exists()) {
-							PreferenceSupplier.setFilterPathC13Chromatogram(file.getParentFile().toString());
+							PreferenceSupplier.setFilterPathIsotopeChromatogram(file.getParentFile().toString());
 						}
 					}
 				}
@@ -193,9 +193,9 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		GridData gridDataSpinner = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataSpinner.horizontalSpan = 2;
 		levelSpinner.setLayoutData(gridDataSpinner);
-		levelSpinner.setMinimum(MassShiftDetector.MIN_LEVEL);
-		levelSpinner.setMaximum(MassShiftDetector.MAX_LEVEL);
-		levelSpinner.setIncrement(MassShiftDetector.INCREMENT_LEVEL);
+		levelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
+		levelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
+		levelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
 		levelSpinner.addModifyListener(new ModifyListener() {
 
 			public void modifyText(ModifyEvent e) {
@@ -239,21 +239,21 @@ public class PageSettings extends AbstractExtendedWizardPage {
 
 		String message = null;
 		//
-		String c12ChromatogramPath = c12ChromatogramText.getText().trim();
-		if(!new File(c12ChromatogramPath).exists()) {
-			message = "Please select the C12 chromatogram.";
+		String referenceChromatogramPath = referenceChromatogramText.getText().trim();
+		if(!new File(referenceChromatogramPath).exists()) {
+			message = "Please select the reference chromatogram.";
 		} else {
-			wizardElements.setC12ChromatogramPath(c12ChromatogramPath);
+			wizardElements.setReferenceChromatogramPath(referenceChromatogramPath);
 		}
 		//
-		String c13ChromatogramPath = c13ChromatogramText.getText().trim();
-		if(!new File(c13ChromatogramPath).exists()) {
-			message = "Please select the C13 chromatogram.";
+		String isotopeChromatogramPath = isotopeChromatogramText.getText().trim();
+		if(!new File(isotopeChromatogramPath).exists()) {
+			message = "Please select the isotope chromatogram.";
 		} else {
-			wizardElements.setC13ChromatogramPath(c13ChromatogramPath);
+			wizardElements.setIsotopeChromatogramPath(isotopeChromatogramPath);
 		}
 		//
-		wizardElements.setLevel(levelSpinner.getSelection());
+		wizardElements.setIsotopeLevel(levelSpinner.getSelection());
 		wizardElements.setNotes(notesText.getText().trim());
 		wizardElements.setDescription(descriptionText.getText().trim());
 		/*

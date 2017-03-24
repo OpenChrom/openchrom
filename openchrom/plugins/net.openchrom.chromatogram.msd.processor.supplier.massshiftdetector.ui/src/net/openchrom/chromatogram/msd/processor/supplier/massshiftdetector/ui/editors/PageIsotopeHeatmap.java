@@ -21,16 +21,16 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt.EnhancedShiftHeatmapEditor;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt.EnhancedIsotopeHeatmapEditor;
 
-public class PageShiftHeatmap {
+public class PageIsotopeHeatmap {
 
 	private EditorProcessor editorProcessor;
 	//
 	private Composite control;
-	private EnhancedShiftHeatmapEditor enhancedShiftHeatmapEditor;
+	private EnhancedIsotopeHeatmapEditor enhancedIsotopeHeatmapEditor;
 
-	public PageShiftHeatmap(EditorProcessor editorProcessor, Composite container) {
+	public PageIsotopeHeatmap(EditorProcessor editorProcessor, Composite container) {
 		initialize(container);
 		this.editorProcessor = editorProcessor;
 	}
@@ -40,12 +40,12 @@ public class PageShiftHeatmap {
 		control = new Composite(parent, SWT.NONE);
 		control.setLayout(new GridLayout());
 		//
-		enhancedShiftHeatmapEditor = new EnhancedShiftHeatmapEditor(control, SWT.NONE);
-		enhancedShiftHeatmapEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
-		enhancedShiftHeatmapEditor.setLayout(new GridLayout(1, true));
-		enhancedShiftHeatmapEditor.setBackground(Colors.WHITE);
+		enhancedIsotopeHeatmapEditor = new EnhancedIsotopeHeatmapEditor(control, SWT.NONE);
+		enhancedIsotopeHeatmapEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
+		enhancedIsotopeHeatmapEditor.setLayout(new GridLayout(1, true));
+		enhancedIsotopeHeatmapEditor.setBackground(Colors.WHITE);
 		//
-		enhancedShiftHeatmapEditor.addPreviousListener(new IPreviousListener() {
+		enhancedIsotopeHeatmapEditor.addPreviousListener(new IPreviousListener() {
 
 			@Override
 			public void previousAction() {
@@ -54,7 +54,7 @@ public class PageShiftHeatmap {
 			}
 		});
 		//
-		enhancedShiftHeatmapEditor.addNextListener(new INextListener() {
+		enhancedIsotopeHeatmapEditor.addNextListener(new INextListener() {
 
 			@Override
 			public void nextAction() {
@@ -63,13 +63,13 @@ public class PageShiftHeatmap {
 			}
 		});
 		//
-		enhancedShiftHeatmapEditor.addProcessListener(new IProcessListener() {
+		enhancedIsotopeHeatmapEditor.addProcessListener(new IProcessListener() {
 
 			@Override
 			public void processAction() {
 
 				ProcessorData processorData = editorProcessor.getProcessorData();
-				enhancedShiftHeatmapEditor.setInput(processorData);
+				enhancedIsotopeHeatmapEditor.setInput(processorData);
 			}
 		});
 	}

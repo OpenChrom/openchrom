@@ -65,8 +65,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	//
 	private EditorProcessor editorProcessor;
 	//
-	private Text c12ChromatogramText;
-	private Text c13ChromatogramText;
+	private Text referenceChromatogramText;
+	private Text isotopeChromatogramText;
 	private Spinner levelSpinner;
 	private Label labelNotes;
 	private Text descriptionText;
@@ -96,8 +96,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	public void setFocus() {
 
 		if(editorProcessor != null && editorProcessor.getProcessorData().getProcessorModel() != null) {
-			c12ChromatogramText.setText(editorProcessor.getProcessorData().getProcessorModel().getC12ChromatogramPath());
-			c13ChromatogramText.setText(editorProcessor.getProcessorData().getProcessorModel().getC13ChromatogramPath());
+			referenceChromatogramText.setText(editorProcessor.getProcessorData().getProcessorModel().getReferenceChromatogramPath());
+			isotopeChromatogramText.setText(editorProcessor.getProcessorData().getProcessorModel().getIsotopeChromatogramPath());
 			levelSpinner.setSelection(editorProcessor.getProcessorData().getProcessorModel().getLevel());
 			labelNotes.setText(editorProcessor.getProcessorData().getProcessorModel().getNotes());
 			descriptionText.setText(editorProcessor.getProcessorData().getProcessorModel().getDescription());
@@ -109,8 +109,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		Section section = createSection(parent, 3, "Settings", "The selected settings will be used for the current analysis.");
 		Composite client = createClient(section, 3);
 		//
-		createC12ChromatogramText(client);
-		createC13ChromatogramText(client);
+		createReferenceChromatogramText(client);
+		createIsotopeChromatogramText(client);
 		createLevelSpinner(client);
 		createNotesLabel(client);
 		/*
@@ -119,12 +119,12 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		section.setClient(client);
 	}
 
-	private void createC12ChromatogramText(Composite client) {
+	private void createReferenceChromatogramText(Composite client) {
 
-		createLabel(client, "C12 - Chromatogram:");
+		createLabel(client, "Reference - Chromatogram:");
 		//
-		c12ChromatogramText = createText(client, SWT.BORDER, "");
-		c12ChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		referenceChromatogramText = createText(client, SWT.BORDER, "");
+		referenceChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		//
 		Button button = new Button(client, SWT.PUSH);
 		button.setText("Select");
@@ -134,7 +134,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			public void widgetSelected(SelectionEvent e) {
 
 				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "C12 - Chromatogram", "Select the C12 chromatogram.", PreferenceSupplier.getFilterPathC12Chromatogram());
+				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Reference - Chromatogram", "Select the reference chromatogram.", PreferenceSupplier.getFilterPathReferenceChromatogram());
 				WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), inputWizard);
 				wizardDialog.create();
 				//
@@ -142,13 +142,13 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
 					if(selectedChromatograms.size() > 0) {
 						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
-						c12ChromatogramText.setText(selectedChromatogram);
+						referenceChromatogramText.setText(selectedChromatogram);
 						ProcessorData processorData = editorProcessor.getProcessorData();
-						processorData.getProcessorModel().setC12ChromatogramPath(selectedChromatogram);
+						processorData.getProcessorModel().setReferenceChromatogramPath(selectedChromatogram);
 						//
 						File file = new File(selectedChromatogram);
 						if(file.exists()) {
-							PreferenceSupplier.setFilterPathC12Chromatogram(file.getParentFile().toString());
+							PreferenceSupplier.setFilterPathReferenceChromatogram(file.getParentFile().toString());
 						}
 					}
 				}
@@ -156,12 +156,12 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		});
 	}
 
-	private void createC13ChromatogramText(Composite client) {
+	private void createIsotopeChromatogramText(Composite client) {
 
-		createLabel(client, "C13 - Chromatogram:");
+		createLabel(client, "Isotope - Chromatogram:");
 		//
-		c13ChromatogramText = createText(client, SWT.BORDER, "");
-		c13ChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		isotopeChromatogramText = createText(client, SWT.BORDER, "");
+		isotopeChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		//
 		Button button = new Button(client, SWT.PUSH);
 		button.setText("Select");
@@ -171,7 +171,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			public void widgetSelected(SelectionEvent e) {
 
 				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "C13 - Chromatogram", "Select the C13 chromatogram.", PreferenceSupplier.getFilterPathC13Chromatogram());
+				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Isotope - Chromatogram", "Select the isotope chromatogram.", PreferenceSupplier.getFilterPathIsotopeChromatogram());
 				WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), inputWizard);
 				wizardDialog.create();
 				//
@@ -179,13 +179,13 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
 					if(selectedChromatograms.size() > 0) {
 						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
-						c13ChromatogramText.setText(selectedChromatogram);
+						isotopeChromatogramText.setText(selectedChromatogram);
 						ProcessorData processorData = editorProcessor.getProcessorData();
-						processorData.getProcessorModel().setC13ChromatogramPath(selectedChromatogram);
+						processorData.getProcessorModel().setIsotopeChromatogramPath(selectedChromatogram);
 						//
 						File file = new File(selectedChromatogram);
 						if(file.exists()) {
-							PreferenceSupplier.setFilterPathC13Chromatogram(file.getParentFile().toString());
+							PreferenceSupplier.setFilterPathIsotopeChromatogram(file.getParentFile().toString());
 						}
 					}
 				}
@@ -198,9 +198,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		createLabel(client, "Number of shifts:");
 		//
 		levelSpinner = new Spinner(client, SWT.BORDER);
-		levelSpinner.setMinimum(MassShiftDetector.MIN_LEVEL);
-		levelSpinner.setMaximum(MassShiftDetector.MAX_LEVEL);
-		levelSpinner.setIncrement(MassShiftDetector.INCREMENT_LEVEL);
+		levelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
+		levelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
+		levelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
 		//
 		GridData gridData = new GridData();
 		gridData.horizontalSpan = 2;
@@ -296,9 +296,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			public void linkActivated(HyperlinkEvent e) {
 
 				List<IChromatogramSelection> chromatogramSelections = new ArrayList<IChromatogramSelection>();
-				String pathChromatogramC12 = c12ChromatogramText.getText().trim();
-				String pathChromatogramC13 = c13ChromatogramText.getText().trim();
-				ChromatogramImportRunnable runnable = new ChromatogramImportRunnable(pathChromatogramC12, pathChromatogramC13);
+				String pathChromatogramReference = referenceChromatogramText.getText().trim();
+				String pathChromatogramIsotope = isotopeChromatogramText.getText().trim();
+				ChromatogramImportRunnable runnable = new ChromatogramImportRunnable(pathChromatogramReference, pathChromatogramIsotope);
 				ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
 				//
 				try {
@@ -330,7 +330,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			public void linkActivated(HyperlinkEvent e) {
 
 				ProcessorData processorRawData = editorProcessor.getProcessorData();
-				if(processorRawData.getChromatogramReference() != null && processorRawData.getChromatogramShifted() != null) {
+				if(processorRawData.getReferenceChromatogram() != null && processorRawData.getIsotopeChromatogram() != null) {
 					editorProcessor.focusPage(EditorProcessor.PAGE_INDEX_SHIFT_HEATMAP);
 				} else {
 					MessageDialog.openWarning(shell, "Chromatogram Selection", "Please select a reference and a shifted chromatogram.");
@@ -366,8 +366,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			int numberOfScans2 = chromatogram2.getNumberOfScans();
 			//
 			ProcessorData processorRawData = editorProcessor.getProcessorData();
-			processorRawData.setChromatogramReference((IChromatogramMSD)chromatogram1);
-			processorRawData.setChromatogramShifted((IChromatogramMSD)chromatogram2);
+			processorRawData.setReferenceChromatogram((IChromatogramMSD)chromatogram1);
+			processorRawData.setIsotopeChromatogram((IChromatogramMSD)chromatogram2);
 			//
 			if(numberOfScans1 != numberOfScans2) {
 				labelChromatogramInfo.setText("The selected chromatograms have a different number of scans (" + numberOfScans1 + " vs. " + numberOfScans2 + ").");

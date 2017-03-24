@@ -39,8 +39,8 @@ public class MassShiftDetectorRunnable implements IRunnableWithProgress {
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
 		if(processorData != null) {
-			IChromatogramMSD reference = processorData.getChromatogramReference();
-			IChromatogramMSD shifted = processorData.getChromatogramShifted();
+			IChromatogramMSD reference = processorData.getReferenceChromatogram();
+			IChromatogramMSD shifted = processorData.getIsotopeChromatogram();
 			int level = processorData.getProcessorModel().getLevel();
 			//
 			MassShiftDetector massShiftDetector = new MassShiftDetector();

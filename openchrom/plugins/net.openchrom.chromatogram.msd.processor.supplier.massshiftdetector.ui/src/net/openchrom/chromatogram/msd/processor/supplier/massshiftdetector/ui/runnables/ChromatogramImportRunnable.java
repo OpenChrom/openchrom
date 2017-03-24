@@ -31,13 +31,13 @@ public class ChromatogramImportRunnable implements IRunnableWithProgress {
 	private static final Logger logger = Logger.getLogger(ChromatogramImportRunnable.class);
 	//
 	private List<IChromatogramSelection> chromatogramSelections;
-	private String pathChromatogramC12;
-	private String pathChromatogramC13;
+	private String pathChromatogramReference;
+	private String pathChromatogramIsotope;
 
-	public ChromatogramImportRunnable(String pathChromatogramC12, String pathChromatogramC13) {
+	public ChromatogramImportRunnable(String pathChromatogramReference, String pathChromatogramIsotope) {
 		chromatogramSelections = new ArrayList<IChromatogramSelection>();
-		this.pathChromatogramC12 = pathChromatogramC12;
-		this.pathChromatogramC13 = pathChromatogramC13;
+		this.pathChromatogramReference = pathChromatogramReference;
+		this.pathChromatogramIsotope = pathChromatogramIsotope;
 	}
 
 	public List<IChromatogramSelection> getChromatogramSelections() {
@@ -48,14 +48,14 @@ public class ChromatogramImportRunnable implements IRunnableWithProgress {
 	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
-		IChromatogramSelectionMSD chromatogramSelectionC12 = importChromatogram(pathChromatogramC12, monitor);
-		if(chromatogramSelectionC12 != null) {
-			chromatogramSelections.add(chromatogramSelectionC12);
+		IChromatogramSelectionMSD chromatogramSelectionReference = importChromatogram(pathChromatogramReference, monitor);
+		if(chromatogramSelectionReference != null) {
+			chromatogramSelections.add(chromatogramSelectionReference);
 		}
 		//
-		IChromatogramSelectionMSD chromatogramSelectionC13 = importChromatogram(pathChromatogramC13, monitor);
-		if(chromatogramSelectionC13 != null) {
-			chromatogramSelections.add(chromatogramSelectionC13);
+		IChromatogramSelectionMSD chromatogramSelectionIsotope = importChromatogram(pathChromatogramIsotope, monitor);
+		if(chromatogramSelectionIsotope != null) {
+			chromatogramSelections.add(chromatogramSelectionIsotope);
 		}
 	}
 

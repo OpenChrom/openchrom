@@ -19,16 +19,16 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt.EnhancedShiftListEditor;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt.EnhancedScanMarkerEditor;
 
-public class PageShiftTable {
+public class PageScanMarkerTable {
 
 	private EditorProcessor editorProcessor;
 	//
 	private Composite control;
-	private EnhancedShiftListEditor enhancedShiftListEditor;
+	private EnhancedScanMarkerEditor enhancedScanMarkerEditor;
 
-	public PageShiftTable(EditorProcessor editorProcessor, Composite container) {
+	public PageScanMarkerTable(EditorProcessor editorProcessor, Composite container) {
 		initialize(container);
 		this.editorProcessor = editorProcessor;
 	}
@@ -38,17 +38,17 @@ public class PageShiftTable {
 		control = new Composite(parent, SWT.NONE);
 		control.setLayout(new FillLayout());
 		//
-		enhancedShiftListEditor = new EnhancedShiftListEditor(control, SWT.NONE);
-		enhancedShiftListEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
-		enhancedShiftListEditor.setLayout(new GridLayout(1, true));
-		enhancedShiftListEditor.setBackground(Colors.WHITE);
+		enhancedScanMarkerEditor = new EnhancedScanMarkerEditor(control, SWT.NONE);
+		enhancedScanMarkerEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
+		enhancedScanMarkerEditor.setLayout(new GridLayout(1, true));
+		enhancedScanMarkerEditor.setBackground(Colors.WHITE);
 		//
-		enhancedShiftListEditor.addProcessListener(new IProcessListener() {
+		enhancedScanMarkerEditor.addProcessListener(new IProcessListener() {
 
 			@Override
 			public void processAction() {
 
-				enhancedShiftListEditor.setEditorProcessor(editorProcessor);
+				enhancedScanMarkerEditor.setEditorProcessor(editorProcessor);
 			}
 		});
 	}

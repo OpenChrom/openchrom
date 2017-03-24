@@ -12,6 +12,7 @@
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,16 +25,18 @@ import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignals;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShiftMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.comparators.ScanMarkerComparator;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShift;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ValueRange;
 
 public class MassShiftDetector {
 
 	public static final String PROCESSOR_FILE_EXTENSION = ".mdp";
 	//
-	public static final int MIN_LEVEL = 0;
-	public static final int MAX_LEVEL = 3;
-	public static final int INCREMENT_LEVEL = 1;
+	public static final int MIN_ISOTOPE_LEVEL = 0;
+	public static final int MAX_ISOTOPE_LEVEL = 3;
+	public static final int INCREMENT_ISOTOPE_LEVEL = 1;
 	//
 	public static final int SCALE_MIN = 0; // 0%
 	public static final int SCALE_MAX = 1000; // 100%
@@ -63,13 +66,13 @@ public class MassShiftDetector {
 	 * @param chromatogramReference
 	 * @param chromatogramShifted
 	 * @param useAbsDifference
-	 * @param level
+	 * @param isotopeLevel
 	 * @return Map<Integer, Map<Integer, Map<Integer, Double>>>
 	 * @throws IllegalArgumentException
 	 */
-	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD chromatogramReference, IChromatogramMSD chromatogramShifted, int level, IProgressMonitor monitor) throws ChromatogramIsNullException, IllegalArgumentException {
+	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD chromatogramReference, IChromatogramMSD chromatogramShifted, int isotopeLevel, IProgressMonitor monitor) throws ChromatogramIsNullException, IllegalArgumentException {
 
-		if(level < MIN_LEVEL || level > MAX_LEVEL) {
+		if(isotopeLevel < MIN_ISOTOPE_LEVEL || isotopeLevel > MAX_ISOTOPE_LEVEL) {
 			throw new IllegalArgumentException("The level is not valid.");
 		}
 		/*
@@ -83,7 +86,7 @@ public class MassShiftDetector {
 		/*
 		 * Do the calculation.
 		 */
-		for(int shiftLevel = 0; shiftLevel <= level; shiftLevel++) {
+		for(int shiftLevel = 0; shiftLevel <= isotopeLevel; shiftLevel++) {
 			/*
 			 * Get the m/z range.
 			 * The last m/z values are skipped, dependent on the selected level.
@@ -118,10 +121,12 @@ public class MassShiftDetector {
 						/*
 						 * 0 is the most likely value.
 						 */
-						if(intensityDifference < 0) {
-							intensityDifference = -NORMALIZATION_BASE + intensityDifference;
-						} else {
-							intensityDifference = NORMALIZATION_BASE - intensityDifference;
+						if(isotopeLevel == 0) {
+							if(intensityDifference < 0) {
+								intensityDifference = -NORMALIZATION_BASE + intensityDifference;
+							} else {
+								intensityDifference = NORMALIZATION_BASE - intensityDifference;
+							}
 						}
 						//
 						extractedIonSignalDifference.put(ion, intensityDifference);
@@ -134,9 +139,9 @@ public class MassShiftDetector {
 		return differenceIonSignalsMap;
 	}
 
-	public List<MassShiftMarker> extractMassShiftMarker(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts, Map<Integer, ValueRange> levelGranularity) {
+	public List<ScanMarker> extractMassShiftMarker(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts, Map<Integer, ValueRange> levelGranularity) {
 
-		Map<Integer, MassShiftMarker> massShiftMarkerMap = new HashMap<Integer, MassShiftMarker>();
+		Map<Integer, ScanMarker> scanMarkerMap = new HashMap<Integer, ScanMarker>();
 		/*
 		 * Default min/max ranges.
 		 */
@@ -145,11 +150,14 @@ public class MassShiftDetector {
 		//
 		for(Map.Entry<Integer, Map<Integer, Map<Integer, Double>>> massShift : massShifts.entrySet()) {
 			//
-			int level = massShift.getKey();
+			int isotopeLevel = massShift.getKey();
+			if(isotopeLevel == 0) {
+				continue;
+			}
 			double min;
 			double max;
 			//
-			ValueRange valueRange = levelGranularity.get(level);
+			ValueRange valueRange = levelGranularity.get(isotopeLevel);
 			if(valueRange != null) {
 				min = valueRange.getMin();
 				max = valueRange.getMax();
@@ -157,6 +165,9 @@ public class MassShiftDetector {
 				min = defaultMin;
 				max = defaultMax;
 			}
+			// TODO improve
+			min = -3.0d;
+			max = 3.0d;
 			//
 			for(Map.Entry<Integer, Map<Integer, Double>> scanElement : massShift.getValue().entrySet()) {
 				int scan = scanElement.getKey();
@@ -164,18 +175,28 @@ public class MassShiftDetector {
 					double mz = mzElement.getKey();
 					double deltaIntensity = mzElement.getValue();
 					if(deltaIntensity >= min && deltaIntensity <= max) {
-						MassShiftMarker massShiftMarker = massShiftMarkerMap.get(scan);
-						if(massShiftMarker == null) {
-							massShiftMarker = new MassShiftMarker(scan);
-							massShiftMarkerMap.put(scan, massShiftMarker);
+						/*
+						 * Create a mass shift marker if not already available.
+						 */
+						ScanMarker scanMarker = scanMarkerMap.get(scan);
+						if(scanMarker == null) {
+							scanMarker = new ScanMarker(scan);
+							scanMarkerMap.put(scan, scanMarker);
 						}
-						// TODO add more infos
+						/*
+						 * Add the mass shift information.
+						 */
+						scanMarker.getMassShifts().add(new MassShift(mz, isotopeLevel, deltaIntensity));
 					}
 				}
 			}
 		}
-		//
-		return new ArrayList<MassShiftMarker>(massShiftMarkerMap.values());
+		/*
+		 * Extract and sort the list.
+		 */
+		List<ScanMarker> scanMarkerList = new ArrayList<ScanMarker>(scanMarkerMap.values());
+		Collections.sort(scanMarkerList, new ScanMarkerComparator());
+		return scanMarkerList;
 	}
 
 	private IExtractedIonSignals extractAndNormalizeIonSignals(IChromatogramMSD chromatogram, int startScan, int stopScan, float normalizationBase) throws ChromatogramIsNullException {

@@ -46,9 +46,9 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ValueRange;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.MassShiftDetectorRunnable;
 
-public class ShiftHeatmapUI extends Composite {
+public class IsotopeHeatmapUI extends Composite {
 
-	private static final Logger logger = Logger.getLogger(ShiftHeatmapUI.class);
+	private static final Logger logger = Logger.getLogger(IsotopeHeatmapUI.class);
 	//
 	private static final String MASSSHIFT_COLOR_MAP = "Mass Shift Spectrum";
 	private static final String DEFAULT_COLOR_MAP = MASSSHIFT_COLOR_MAP;
@@ -65,7 +65,7 @@ public class ShiftHeatmapUI extends Composite {
 	private ProcessorData processorData;
 	private Map<String, ColorMap> colorMaps;
 
-	public ShiftHeatmapUI(Composite parent, int style) {
+	public IsotopeHeatmapUI(Composite parent, int style) {
 		super(parent, style);
 		initialize(parent);
 	}

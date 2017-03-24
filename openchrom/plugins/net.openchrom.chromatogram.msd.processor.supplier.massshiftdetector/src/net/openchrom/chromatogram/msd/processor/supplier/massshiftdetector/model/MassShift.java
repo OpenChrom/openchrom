@@ -11,37 +11,69 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class MassShift {
 
-	private int mz;
-	private Set<Integer> shifts;
-	private double probability;
+	private double mz;
+	private int isotopeLevel;
+	private double deltaIntensity;
 
-	public MassShift(int mz) {
+	public MassShift(double mz, int isotopeLevel, double deltaIntensity) {
 		this.mz = mz;
-		shifts = new HashSet<Integer>();
+		this.isotopeLevel = isotopeLevel;
+		this.deltaIntensity = deltaIntensity;
 	}
 
-	public int getMz() {
+	public double getMz() {
 
 		return mz;
 	}
 
-	public Set<Integer> getShifts() {
+	public int getIsotopeLevel() {
 
-		return shifts;
+		return isotopeLevel;
 	}
 
-	public double getProbability() {
+	public double getDeltaIntensity() {
 
-		return probability;
+		return deltaIntensity;
 	}
 
-	public void setProbability(double probability) {
+	@Override
+	public int hashCode() {
 
-		this.probability = probability;
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(deltaIntensity);
+		result = prime * result + (int)(temp ^ (temp >>> 32));
+		result = prime * result + isotopeLevel;
+		temp = Double.doubleToLongBits(mz);
+		result = prime * result + (int)(temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if(this == obj)
+			return true;
+		if(obj == null)
+			return false;
+		if(getClass() != obj.getClass())
+			return false;
+		MassShift other = (MassShift)obj;
+		if(Double.doubleToLongBits(deltaIntensity) != Double.doubleToLongBits(other.deltaIntensity))
+			return false;
+		if(isotopeLevel != other.isotopeLevel)
+			return false;
+		if(Double.doubleToLongBits(mz) != Double.doubleToLongBits(other.mz))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+
+		return "MassShift [mz=" + mz + ", isotopeLevel=" + isotopeLevel + ", deltaIntensity=" + deltaIntensity + "]";
 	}
 }

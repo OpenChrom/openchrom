@@ -59,9 +59,9 @@ public class WizardProcessor extends AbstractFileWizard implements INewWizard {
 		final IFile file = super.prepareProject(monitor);
 		//
 		ProcessorModel_v1000 processorModel = new ProcessorModel_v1000();
-		processorModel.setC12ChromatogramPath(wizardElements.getC12ChromatogramPath());
-		processorModel.setC13ChromatogramPath(wizardElements.getC13ChromatogramPath());
-		processorModel.setLevel(wizardElements.getLevel());
+		processorModel.setReferenceChromatogramPath(wizardElements.getReferenceChromatogramPath());
+		processorModel.setIsotopeChromatogramPath(wizardElements.getIsotopeChromatogramPath());
+		processorModel.setLevel(wizardElements.getIsotopeLevel());
 		processorModel.setNotes(wizardElements.getNotes());
 		processorModel.setDescription(wizardElements.getDescription());
 		//
