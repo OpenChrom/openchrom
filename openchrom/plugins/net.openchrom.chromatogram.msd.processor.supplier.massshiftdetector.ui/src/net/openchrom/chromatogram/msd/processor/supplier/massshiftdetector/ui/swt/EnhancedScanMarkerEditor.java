@@ -187,7 +187,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 				processAction();
 				ProcessorData processorData = editorProcessor.getProcessorData();
 				MassShiftDetector massShiftDetector = new MassShiftDetector();
-				List<ScanMarker> massShiftMarker = massShiftDetector.extractMassShiftMarker(processorData.getMassShifts(), processorData.getLevelGranularity());
+				List<ScanMarker> massShiftMarker = massShiftDetector.extractMassShiftMarker(processorData.getMassShifts(), processorData.getLevelUncertainty());
 				scanMarkerListUI.setInput(massShiftMarker);
 			}
 		});

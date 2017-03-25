@@ -15,12 +15,12 @@ public class MassShift {
 
 	private double mz;
 	private int isotopeLevel;
-	private double deltaIntensity;
+	private double uncertainty;
 
-	public MassShift(double mz, int isotopeLevel, double deltaIntensity) {
+	public MassShift(double mz, int isotopeLevel, double uncertainty) {
 		this.mz = mz;
 		this.isotopeLevel = isotopeLevel;
-		this.deltaIntensity = deltaIntensity;
+		this.uncertainty = uncertainty;
 	}
 
 	public double getMz() {
@@ -33,9 +33,9 @@ public class MassShift {
 		return isotopeLevel;
 	}
 
-	public double getDeltaIntensity() {
+	public double getUncertainty() {
 
-		return deltaIntensity;
+		return uncertainty;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class MassShift {
 		final int prime = 31;
 		int result = 1;
 		long temp;
-		temp = Double.doubleToLongBits(deltaIntensity);
+		temp = Double.doubleToLongBits(uncertainty);
 		result = prime * result + (int)(temp ^ (temp >>> 32));
 		result = prime * result + isotopeLevel;
 		temp = Double.doubleToLongBits(mz);
@@ -62,7 +62,7 @@ public class MassShift {
 		if(getClass() != obj.getClass())
 			return false;
 		MassShift other = (MassShift)obj;
-		if(Double.doubleToLongBits(deltaIntensity) != Double.doubleToLongBits(other.deltaIntensity))
+		if(Double.doubleToLongBits(uncertainty) != Double.doubleToLongBits(other.uncertainty))
 			return false;
 		if(isotopeLevel != other.isotopeLevel)
 			return false;
@@ -74,6 +74,6 @@ public class MassShift {
 	@Override
 	public String toString() {
 
-		return "MassShift [mz=" + mz + ", isotopeLevel=" + isotopeLevel + ", deltaIntensity=" + deltaIntensity + "]";
+		return "MassShift [mz=" + mz + ", isotopeLevel=" + isotopeLevel + ", uncertainty=" + uncertainty + "]";
 	}
 }

@@ -26,8 +26,6 @@ import org.eclipse.chemclipse.support.ui.editors.AbstractExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.editors.IExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
 import org.eclipse.chemclipse.support.ui.wizards.IChromatogramWizardElements;
-import org.eclipse.chemclipse.swt.ui.components.chromatogram.MultipleChromatogramOffsetUI;
-import org.eclipse.chemclipse.swt.ui.support.AxisTitlesIntensityScale;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.ux.extension.msd.ui.wizards.ChromatogramInputEntriesWizard;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -38,7 +36,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -70,8 +67,6 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private Spinner levelSpinner;
 	private Label labelNotes;
 	private Text descriptionText;
-	private Label labelChromatogramInfo;
-	private MultipleChromatogramOffsetUI chromatogramOverlay;
 
 	public PageSettings(EditorProcessor editorProcessor, Composite container) {
 		super("Settings", container, true);
@@ -90,7 +85,6 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		createPropertiesSection(body);
 		createDescriptionSection(body);
 		createProcessSection(body);
-		createChromatogramSection(body);
 	}
 
 	public void setFocus() {
@@ -98,7 +92,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		if(editorProcessor != null && editorProcessor.getProcessorData().getProcessorModel() != null) {
 			referenceChromatogramText.setText(editorProcessor.getProcessorData().getProcessorModel().getReferenceChromatogramPath());
 			isotopeChromatogramText.setText(editorProcessor.getProcessorData().getProcessorModel().getIsotopeChromatogramPath());
-			levelSpinner.setSelection(editorProcessor.getProcessorData().getProcessorModel().getLevel());
+			levelSpinner.setSelection(editorProcessor.getProcessorData().getProcessorModel().getIsotopeLevel());
 			labelNotes.setText(editorProcessor.getProcessorData().getProcessorModel().getNotes());
 			descriptionText.setText(editorProcessor.getProcessorData().getProcessorModel().getDescription());
 		}
@@ -235,7 +229,10 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		/*
 		 * Description
 		 */
-		descriptionText = createText(client, SWT.BORDER, "");
+		descriptionText = createText(client, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL, "");
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		gridData.heightHint = 300;
+		descriptionText.setLayoutData(gridData);
 		descriptionText.addModifyListener(new ModifyListener() {
 
 			@Override
@@ -251,22 +248,6 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		section.setClient(client);
 	}
 
-	private void createChromatogramInfo(Composite client) {
-
-		labelChromatogramInfo = createLabel(client, "");
-		labelChromatogramInfo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-	}
-
-	private void createChromatogramOverlay(Composite client) {
-
-		Composite compositeRawData = new Composite(client, SWT.BORDER);
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		gridData.heightHint = 300;
-		compositeRawData.setLayoutData(gridData);
-		compositeRawData.setLayout(new FillLayout());
-		chromatogramOverlay = new MultipleChromatogramOffsetUI(compositeRawData, SWT.NONE, new AxisTitlesIntensityScale());
-	}
-
 	private void createProcessSection(Composite parent) {
 
 		Section section = createSection(parent, 3, "Process", "The selected chromatograms are processed with the given settings to detect mass shifts.");
@@ -274,7 +255,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		/*
 		 * Process
 		 */
-		createOverlayHyperlink(client, "Overlay Selected Chromatograms");
+		createCheckHyperlink(client, "Check Selected Chromatograms");
+		createOpenReferenceHyperlink(client, "Open Reference Chromatogram");
+		createOpenIsotopeHyperlink(client, "Open Isotope Chromatogram");
 		createCalculateHyperlink(client, "Calculate Mass Shifts");
 		/*
 		 * Add the client to the section.
@@ -282,11 +265,11 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		section.setClient(client);
 	}
 
-	private ImageHyperlink createOverlayHyperlink(Composite client, String text) {
+	private ImageHyperlink createCheckHyperlink(Composite client, String text) {
 
 		Shell shell = Display.getCurrent().getActiveShell();
 		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
-		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXECUTE, IApplicationImage.SIZE_16x16));
+		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHECK, IApplicationImage.SIZE_16x16));
 		imageHyperlink.setText(text);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalIndent = HORIZONTAL_INDENT;
@@ -316,6 +299,44 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		return imageHyperlink;
 	}
 
+	private ImageHyperlink createOpenReferenceHyperlink(Composite client, String text) {
+
+		Shell shell = Display.getCurrent().getActiveShell();
+		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
+		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
+		imageHyperlink.setText(text);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalIndent = HORIZONTAL_INDENT;
+		imageHyperlink.setLayoutData(gridData);
+		imageHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
+
+			public void linkActivated(HyperlinkEvent e) {
+
+				// TODO open
+			}
+		});
+		return imageHyperlink;
+	}
+
+	private ImageHyperlink createOpenIsotopeHyperlink(Composite client, String text) {
+
+		Shell shell = Display.getCurrent().getActiveShell();
+		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
+		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
+		imageHyperlink.setText(text);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalIndent = HORIZONTAL_INDENT;
+		imageHyperlink.setLayoutData(gridData);
+		imageHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
+
+			public void linkActivated(HyperlinkEvent e) {
+
+				// TODO open
+			}
+		});
+		return imageHyperlink;
+	}
+
 	private ImageHyperlink createCalculateHyperlink(Composite client, String text) {
 
 		Shell shell = Display.getCurrent().getActiveShell();
@@ -340,25 +361,13 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		return imageHyperlink;
 	}
 
-	private void createChromatogramSection(Composite parent) {
-
-		Section section = createSection(parent, 3, "Overlay", "The selected chromatogram are displayed here in overlay modus.");
-		Composite client = createClient(section, 1);
-		//
-		createChromatogramInfo(client);
-		createChromatogramOverlay(client);
-		/*
-		 * Add the client to the section.
-		 */
-		section.setClient(client);
-	}
-
 	private void updateChromatogramSelections(List<IChromatogramSelection> chromatogramSelections) {
 
 		if(chromatogramSelections.size() != 2) {
-			labelChromatogramInfo.setText("Please select two reference chromatograms.");
-			labelChromatogramInfo.setForeground(Colors.WHITE);
-			labelChromatogramInfo.setBackground(Colors.RED);
+			// Feedback
+			// labelChromatogramInfo.setText("Please select two reference chromatograms.");
+			// labelChromatogramInfo.setForeground(Colors.WHITE);
+			// labelChromatogramInfo.setBackground(Colors.RED);
 		} else {
 			IChromatogram chromatogram1 = chromatogramSelections.get(0).getChromatogram();
 			IChromatogram chromatogram2 = chromatogramSelections.get(1).getChromatogram();
@@ -370,16 +379,17 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			processorRawData.setIsotopeChromatogram((IChromatogramMSD)chromatogram2);
 			//
 			if(numberOfScans1 != numberOfScans2) {
-				labelChromatogramInfo.setText("The selected chromatograms have a different number of scans (" + numberOfScans1 + " vs. " + numberOfScans2 + ").");
-				labelChromatogramInfo.setForeground(Colors.BLACK);
-				labelChromatogramInfo.setBackground(Colors.YELLOW);
+				// Feedback
+				// labelChromatogramInfo.setText("The selected chromatograms have a different number of scans (" + numberOfScans1 + " vs. " + numberOfScans2 + ").");
+				// labelChromatogramInfo.setForeground(Colors.BLACK);
+				// labelChromatogramInfo.setBackground(Colors.YELLOW);
 			} else {
-				labelChromatogramInfo.setText("The selected chromatograms are valid.");
-				labelChromatogramInfo.setForeground(Colors.BLACK);
-				labelChromatogramInfo.setBackground(Colors.GREEN);
+				// Feedback
+				// labelChromatogramInfo.setText("The selected chromatograms are valid.");
+				// labelChromatogramInfo.setForeground(Colors.BLACK);
+				// labelChromatogramInfo.setBackground(Colors.GREEN);
 			}
 		}
-		//
-		chromatogramOverlay.updateSelection(chromatogramSelections, true);
+		// Update Overlay?
 	}
 }

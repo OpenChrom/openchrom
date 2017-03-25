@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.comparators.ScanMarkerComparator;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShift;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ValueRange;
 
 public class MassShiftDetector {
 
@@ -38,21 +37,12 @@ public class MassShiftDetector {
 	public static final int MAX_ISOTOPE_LEVEL = 3;
 	public static final int INCREMENT_ISOTOPE_LEVEL = 1;
 	//
-	public static final int SCALE_MIN = 0; // 0%
-	public static final int SCALE_MAX = 1000; // 100%
-	public static final int SCALE_INCREMENT = 1; // 0.001
-	public static final int SCALE_SELECTION = SCALE_MAX;
-	/*
-	 * MIN and MAX are used to display the range in the heatmap.
-	 * SCALE_MAX = 100% in range but 60% in the heatmap.
-	 */
-	private static final double MAX_PERCENTAGE_HIT = 60.0d;
+	public static final int SCALE_UNCERTAINTY_MIN = 0; // 0%
+	public static final int SCALE_UNCERTAINTY_MAX = 100; // 100%
+	public static final int SCALE_UNCERTAINTY_INCREMENT = 1; // 1%
+	public static final int SCALE_UNCERTAINTY_SELECTION = SCALE_UNCERTAINTY_MAX;
 	//
-	public static final int SCALE_OFFSET = (int)(SCALE_MAX / MAX_PERCENTAGE_HIT * 100.0d) - SCALE_MAX;
-	public static final int MIN_VALUE = -SCALE_MAX - SCALE_OFFSET;
-	public static final int MAX_VALUE = SCALE_MAX + SCALE_OFFSET;
-	//
-	private static final float NORMALIZATION_BASE = SCALE_MAX;
+	private static final float NORMALIZATION_BASE = SCALE_UNCERTAINTY_MAX;
 
 	/**
 	 * Detect the mass shift. The level defines which shifts shall be detected.
@@ -63,14 +53,14 @@ public class MassShiftDetector {
 	 * 
 	 * Map<Integer, Map<Integer, Map<Integer, Double>>>: ShiftLevel, Scan, m/z, Intensity
 	 * 
-	 * @param chromatogramReference
-	 * @param chromatogramShifted
+	 * @param referenceChromatogram
+	 * @param isotopeChromatogram
 	 * @param useAbsDifference
 	 * @param isotopeLevel
 	 * @return Map<Integer, Map<Integer, Map<Integer, Double>>>
 	 * @throws IllegalArgumentException
 	 */
-	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD chromatogramReference, IChromatogramMSD chromatogramShifted, int isotopeLevel, IProgressMonitor monitor) throws ChromatogramIsNullException, IllegalArgumentException {
+	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD referenceChromatogram, IChromatogramMSD isotopeChromatogram, int isotopeLevel, IProgressMonitor monitor) throws ChromatogramIsNullException, IllegalArgumentException {
 
 		if(isotopeLevel < MIN_ISOTOPE_LEVEL || isotopeLevel > MAX_ISOTOPE_LEVEL) {
 			throw new IllegalArgumentException("The level is not valid.");
@@ -78,24 +68,24 @@ public class MassShiftDetector {
 		/*
 		 * Extract the m/z values.
 		 */
-		Map<Integer, Map<Integer, Map<Integer, Double>>> differenceIonSignalsMap = new HashMap<Integer, Map<Integer, Map<Integer, Double>>>();
+		Map<Integer, Map<Integer, Map<Integer, Double>>> uncertaintyIonSignalsMap = new HashMap<Integer, Map<Integer, Map<Integer, Double>>>();
 		int startScan = 1;
-		int stopScan = Math.min(chromatogramReference.getNumberOfScans(), chromatogramShifted.getNumberOfScans());
-		IExtractedIonSignals extractedIonSignalsReference = extractAndNormalizeIonSignals(chromatogramReference, startScan, stopScan, NORMALIZATION_BASE);
-		IExtractedIonSignals extractedIonSignalsShifted = extractAndNormalizeIonSignals(chromatogramShifted, startScan, stopScan, NORMALIZATION_BASE);
+		int stopScan = Math.min(referenceChromatogram.getNumberOfScans(), isotopeChromatogram.getNumberOfScans());
+		IExtractedIonSignals referenceIonSignals = extractAndNormalizeIonSignals(referenceChromatogram, startScan, stopScan, NORMALIZATION_BASE);
+		IExtractedIonSignals isotopeIonSignals = extractAndNormalizeIonSignals(isotopeChromatogram, startScan, stopScan, NORMALIZATION_BASE);
 		/*
 		 * Do the calculation.
 		 */
-		for(int shiftLevel = 0; shiftLevel <= isotopeLevel; shiftLevel++) {
+		for(int isotope = 0; isotope <= isotopeLevel; isotope++) {
 			/*
 			 * Get the m/z range.
 			 * The last m/z values are skipped, dependent on the selected level.
 			 * Create a new difference signals instance.
 			 */
-			int startIon = extractedIonSignalsReference.getStartIon();
-			int stopIon = extractedIonSignalsReference.getStopIon() - shiftLevel;
+			int startIon = referenceIonSignals.getStartIon();
+			int stopIon = referenceIonSignals.getStopIon() - isotope;
 			Map<Integer, Map<Integer, Double>> extractedIonSignalsDifference = new HashMap<Integer, Map<Integer, Double>>();
-			differenceIonSignalsMap.put(shiftLevel, extractedIonSignalsDifference);
+			uncertaintyIonSignalsMap.put(isotope, extractedIonSignalsDifference);
 			/*
 			 * Make the difference calculation.
 			 */
@@ -104,49 +94,53 @@ public class MassShiftDetector {
 					/*
 					 * Get the scan.
 					 */
-					monitor.subTask("Calculate Level: " + shiftLevel + " -> Scan: " + scan);
+					monitor.subTask("Calculate Level: " + isotope + " -> Scan: " + scan);
 					//
-					IExtractedIonSignal extractedIonSignalReference = extractedIonSignalsReference.getExtractedIonSignal(scan);
-					IExtractedIonSignal extractedIonSignalShifted = extractedIonSignalsShifted.getExtractedIonSignal(scan);
-					Map<Integer, Double> extractedIonSignalDifference = new HashMap<Integer, Double>();
-					extractedIonSignalsDifference.put(scan, extractedIonSignalDifference);
+					IExtractedIonSignal referenceIonSignal = referenceIonSignals.getExtractedIonSignal(scan);
+					IExtractedIonSignal isotopeIonSignal = isotopeIonSignals.getExtractedIonSignal(scan);
+					Map<Integer, Double> extractedIonSignalUncertainty = new HashMap<Integer, Double>();
+					extractedIonSignalsDifference.put(scan, extractedIonSignalUncertainty);
 					//
 					for(int ion = startIon; ion <= stopIon; ion++) {
 						/*
 						 * Calculate the m/z difference.
 						 */
-						double intensityReference = extractedIonSignalReference.getAbundance(ion);
-						double intensityShifted = extractedIonSignalShifted.getAbundance(ion + shiftLevel);
-						double intensityDifference = intensityReference - intensityShifted;
+						monitor.subTask("Scan: " + scan + " -> m/z: " + ion);
+						//
+						double intensityReference = referenceIonSignal.getAbundance(ion);
+						double intensityIsotope = isotopeIonSignal.getAbundance(ion + isotope);
+						double intensityMax = Math.max(intensityReference, intensityIsotope);
+						double intensityDelta = Math.abs(intensityReference - intensityIsotope);
 						/*
-						 * 0 is the most likely value.
+						 * Calculate the uncertainty.
 						 */
-						if(isotopeLevel == 0) {
-							if(intensityDifference < 0) {
-								intensityDifference = -NORMALIZATION_BASE + intensityDifference;
-							} else {
-								intensityDifference = NORMALIZATION_BASE - intensityDifference;
+						double uncertainty;
+						if(intensityMax != 0) {
+							uncertainty = NORMALIZATION_BASE / intensityMax * intensityDelta;
+							/*
+							 * Note that the uncertainty scale is switched when using the
+							 * isotopeLevel 0, hence adjust it.
+							 */
+							if(isotopeLevel == 0) {
+								uncertainty = NORMALIZATION_BASE - uncertainty;
 							}
+						} else {
+							uncertainty = NORMALIZATION_BASE;
 						}
 						//
-						extractedIonSignalDifference.put(ion, intensityDifference);
+						extractedIonSignalUncertainty.put(ion, uncertainty);
 					}
 				} catch(NoExtractedIonSignalStoredException e) {
 					//
 				}
 			}
 		}
-		return differenceIonSignalsMap;
+		return uncertaintyIonSignalsMap;
 	}
 
-	public List<ScanMarker> extractMassShiftMarker(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts, Map<Integer, ValueRange> levelGranularity) {
+	public List<ScanMarker> extractMassShiftMarker(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts, Map<Integer, Integer> levelUncertainty) {
 
 		Map<Integer, ScanMarker> scanMarkerMap = new HashMap<Integer, ScanMarker>();
-		/*
-		 * Default min/max ranges.
-		 */
-		double defaultMax = SCALE_MAX * MAX_PERCENTAGE_HIT / 100.0d;
-		double defaultMin = -defaultMax;
 		//
 		for(Map.Entry<Integer, Map<Integer, Map<Integer, Double>>> massShift : massShifts.entrySet()) {
 			//
@@ -154,27 +148,20 @@ public class MassShiftDetector {
 			if(isotopeLevel == 0) {
 				continue;
 			}
-			double min;
-			double max;
 			//
-			ValueRange valueRange = levelGranularity.get(isotopeLevel);
-			if(valueRange != null) {
-				min = valueRange.getMin();
-				max = valueRange.getMax();
+			double threshold;
+			if(levelUncertainty.get(isotopeLevel) != null) {
+				threshold = levelUncertainty.get(isotopeLevel);
 			} else {
-				min = defaultMin;
-				max = defaultMax;
+				threshold = SCALE_UNCERTAINTY_SELECTION;
 			}
-			// TODO improve
-			min = -3.0d;
-			max = 3.0d;
 			//
 			for(Map.Entry<Integer, Map<Integer, Double>> scanElement : massShift.getValue().entrySet()) {
 				int scan = scanElement.getKey();
 				for(Map.Entry<Integer, Double> mzElement : scanElement.getValue().entrySet()) {
 					double mz = mzElement.getKey();
-					double deltaIntensity = mzElement.getValue();
-					if(deltaIntensity >= min && deltaIntensity <= max) {
+					double uncertainty = mzElement.getValue();
+					if(uncertainty <= threshold) {
 						/*
 						 * Create a mass shift marker if not already available.
 						 */
@@ -186,7 +173,7 @@ public class MassShiftDetector {
 						/*
 						 * Add the mass shift information.
 						 */
-						scanMarker.getMassShifts().add(new MassShift(mz, isotopeLevel, deltaIntensity));
+						scanMarker.getMassShifts().add(new MassShift(mz, isotopeLevel, uncertainty));
 					}
 				}
 			}

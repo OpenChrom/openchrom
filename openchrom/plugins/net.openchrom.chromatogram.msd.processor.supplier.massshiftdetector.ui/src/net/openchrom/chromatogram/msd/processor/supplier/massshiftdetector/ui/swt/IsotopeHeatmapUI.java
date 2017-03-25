@@ -17,21 +17,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.nebula.visualization.widgets.datadefinition.ColorMap;
-import org.eclipse.nebula.visualization.widgets.datadefinition.ColorMap.PredefinedColorMap;
 import org.eclipse.nebula.visualization.widgets.figures.IntensityGraphFigure;
 import org.eclipse.nebula.visualization.xygraph.linearscale.Range;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -50,20 +52,16 @@ public class IsotopeHeatmapUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(IsotopeHeatmapUI.class);
 	//
-	private static final String MASSSHIFT_COLOR_MAP = "Mass Shift Spectrum";
-	private static final String DEFAULT_COLOR_MAP = MASSSHIFT_COLOR_MAP;
-	//
-	private Combo comboMassShift;
-	private Combo comboColorMap;
-	private Text textNegativeDelta;
-	private Text textPositiveDelta;
-	private Scale scaleNegativeDelta;
-	private Scale scalePositiveDelta;
+	private Combo comboIsotopeLevel;
+	private Button buttonDecreaseThreshold;
+	private Button buttonIncreaseThreshold;
+	private Scale scaleThreshold;
+	private Text textThreshold;
 	private LightweightSystem lightweightSystem;
 	private IntensityGraphFigure intensityGraphFigure;
 	//
 	private ProcessorData processorData;
-	private Map<String, ColorMap> colorMaps;
+	private Map<Integer, ColorMap> colorMaps;
 
 	public IsotopeHeatmapUI(Composite parent, int style) {
 		super(parent, style);
@@ -77,13 +75,13 @@ public class IsotopeHeatmapUI extends Composite {
 			/*
 			 * Set the combo items.
 			 */
-			int level = processorData.getProcessorModel().getLevel();
+			int level = processorData.getProcessorModel().getIsotopeLevel();
 			String[] items = new String[level + 1];
 			for(int i = 0; i <= level; i++) {
 				items[i] = "Mass Shift (+" + i + ")";
 			}
-			comboMassShift.setItems(items);
-			comboMassShift.select(0);
+			comboIsotopeLevel.setItems(items);
+			comboIsotopeLevel.select(0);
 			/*
 			 * Calculate the shifts.
 			 */
@@ -117,72 +115,38 @@ public class IsotopeHeatmapUI extends Composite {
 
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.FILL);
-		composite.setLayout(new GridLayout(5, false));
-		/*
-		 * Color Map
-		 */
-		ColorMap colorMap = new ColorMap();
-		colorMap.getMap().put(0.0d, new RGB(255, 255, 255)); // - 100%
-		colorMap.getMap().put(0.2d, new RGB(255, 255, 255)); // - 60%
-		colorMap.getMap().put(0.3d, new RGB(255, 255, 0)); // - 40%
-		colorMap.getMap().put(0.4d, new RGB(0, 255, 0)); // - 20%
-		colorMap.getMap().put(0.4874d, new RGB(0, 255, 0)); // 0
-		colorMap.getMap().put(0.4875d, new RGB(0, 255, 0)); // - 2.5%
-		colorMap.getMap().put(0.5d, new RGB(0, 0, 255)); // 0%
-		colorMap.getMap().put(0.5125d, new RGB(0, 255, 0)); // + 2.5%
-		colorMap.getMap().put(0.5126d, new RGB(0, 255, 0)); // 0
-		colorMap.getMap().put(0.6d, new RGB(0, 255, 0)); // + 20%
-		colorMap.getMap().put(0.7d, new RGB(255, 255, 0)); // + 40%
-		colorMap.getMap().put(0.8d, new RGB(255, 255, 255)); // + 60%
-		colorMap.getMap().put(1.0d, new RGB(255, 255, 255)); // + 100%
+		composite.setLayout(new GridLayout(6, false));
 		//
-		colorMaps = new HashMap<String, ColorMap>();
-		colorMaps.put(MASSSHIFT_COLOR_MAP, colorMap);
-		colorMaps.put(PredefinedColorMap.ColorSpectrum.toString(), new ColorMap(PredefinedColorMap.ColorSpectrum, true, true));
-		colorMaps.put(PredefinedColorMap.Cool.toString(), new ColorMap(PredefinedColorMap.Cool, true, true));
-		colorMaps.put(PredefinedColorMap.GrayScale.toString(), new ColorMap(PredefinedColorMap.GrayScale, true, true));
-		colorMaps.put(PredefinedColorMap.Hot.toString(), new ColorMap(PredefinedColorMap.Hot, true, true));
-		colorMaps.put(PredefinedColorMap.JET.toString(), new ColorMap(PredefinedColorMap.JET, true, true));
-		colorMaps.put(PredefinedColorMap.Shaded.toString(), new ColorMap(PredefinedColorMap.Shaded, true, true));
+		colorMaps = new HashMap<Integer, ColorMap>();
+		for(int i = MassShiftDetector.SCALE_UNCERTAINTY_MIN; i <= MassShiftDetector.SCALE_UNCERTAINTY_MAX; i++) {
+			ColorMap colorMap = new ColorMap();
+			double threshold = 1.0d / MassShiftDetector.SCALE_UNCERTAINTY_MAX * i;
+			colorMap.getMap().put(threshold, new RGB(255, 0, 0));
+			if(threshold != 1.0d) {
+				colorMap.getMap().put(threshold + 0.01d, new RGB(255, 255, 255));
+			}
+			colorMaps.put(i, colorMap);
+		}
 		/*
 		 * Elements
 		 */
 		createMassShiftCombo(composite);
-		createColorMapCombo(composite);
 		createHeatmapComposite(composite);
 		createThresholdSlider(composite);
 	}
 
 	private void createMassShiftCombo(Composite parent) {
 
-		comboMassShift = new Combo(parent, SWT.READ_ONLY);
+		comboIsotopeLevel = new Combo(parent, SWT.READ_ONLY);
 		GridData gridDataCombo = new GridData(GridData.FILL_HORIZONTAL);
-		gridDataCombo.horizontalSpan = 5;
-		comboMassShift.setLayoutData(gridDataCombo);
-		comboMassShift.addSelectionListener(new SelectionAdapter() {
+		gridDataCombo.horizontalSpan = 6;
+		comboIsotopeLevel.setLayoutData(gridDataCombo);
+		comboIsotopeLevel.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				showData(comboMassShift.getSelectionIndex());
-			}
-		});
-	}
-
-	private void createColorMapCombo(Composite parent) {
-
-		comboColorMap = new Combo(parent, SWT.READ_ONLY);
-		GridData gridDataCombo = new GridData(GridData.FILL_HORIZONTAL);
-		gridDataCombo.horizontalSpan = 5;
-		comboColorMap.setLayoutData(gridDataCombo);
-		comboColorMap.setItems(colorMaps.keySet().toArray(new String[colorMaps.size()]));
-		comboColorMap.setText(DEFAULT_COLOR_MAP);
-		comboColorMap.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				intensityGraphFigure.setColorMap(colorMaps.get(comboColorMap.getText()));
+				showData(comboIsotopeLevel.getSelectionIndex());
 			}
 		});
 	}
@@ -193,7 +157,7 @@ public class IsotopeHeatmapUI extends Composite {
 		//
 		Canvas canvas = new Canvas(parent, SWT.FILL | SWT.BORDER);
 		GridData gridDataCanvas = new GridData(GridData.FILL_BOTH);
-		gridDataCanvas.horizontalSpan = 5;
+		gridDataCanvas.horizontalSpan = 6;
 		canvas.setLayoutData(gridDataCanvas);
 		canvas.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 		//
@@ -206,20 +170,17 @@ public class IsotopeHeatmapUI extends Composite {
 		intensityGraphFigure.getXAxis().setFormatPattern("0");
 		intensityGraphFigure.getYAxis().setTitle("m/z");
 		intensityGraphFigure.getYAxis().setFormatPattern("0");
-		intensityGraphFigure.setColorMap(colorMaps.get(DEFAULT_COLOR_MAP));
+		intensityGraphFigure.setColorMap(colorMaps.get(MassShiftDetector.SCALE_UNCERTAINTY_SELECTION));
 	}
 
 	private void createThresholdSlider(Composite parent) {
 
-		createTextNegativeDelta(parent);
-		createSliderInfo(parent);
-		createTextPositiveDelta(parent);
-		//
-		createSliderLabel(parent, "UNSPECIFIC");
-		createSliderNegativeDelta(parent);
-		createSliderLabel(parent, "SPECIFIC");
-		createSliderPositiveDelta(parent);
-		createSliderLabel(parent, "UNSPECIFIC");
+		createSliderLabel(parent, "CERTAIN");
+		createButtonDecreaseThreshold(parent);
+		createSliderUncertainty(parent);
+		createButtonIncreaseThreshold(parent);
+		createSliderLabel(parent, "UNCERTAIN");
+		createTextThreshold(parent);
 	}
 
 	private void createSliderLabel(Composite parent, String text) {
@@ -228,108 +189,83 @@ public class IsotopeHeatmapUI extends Composite {
 		label.setText(text);
 	}
 
-	private void createTextNegativeDelta(Composite parent) {
+	private void createButtonDecreaseThreshold(Composite parent) {
 
-		textNegativeDelta = new Text(parent, SWT.BORDER);
-		GridData gridData = new GridData();
-		gridData.widthHint = 100;
-		textNegativeDelta.setText(Integer.toString(-MassShiftDetector.SCALE_SELECTION));
-		textNegativeDelta.addModifyListener(new ModifyListener() {
-
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				try {
-					double min = Double.valueOf(textNegativeDelta.getText().trim());
-					if(min >= -MassShiftDetector.SCALE_MAX && min <= MassShiftDetector.SCALE_MIN) {
-						scaleNegativeDelta.setSelection((int)Math.abs(min));
-						setMinValue(min);
-					} else {
-						textNegativeDelta.setText(Integer.toString(-scaleNegativeDelta.getSelection()));
-					}
-				} catch(NumberFormatException e1) {
-					logger.warn(e1);
-					textNegativeDelta.setText(Integer.toString(-scaleNegativeDelta.getSelection()));
-				}
-			}
-		});
-	}
-
-	private void createSliderInfo(Composite parent) {
-
-		Label label = new Label(parent, SWT.NONE);
-		label.setText("Define the granularity of the mass shift detection algorithm.");
-		GridData gridDataLabelSlider = new GridData(GridData.FILL_HORIZONTAL);
-		gridDataLabelSlider.horizontalSpan = 3;
-		gridDataLabelSlider.horizontalAlignment = SWT.CENTER;
-		label.setLayoutData(gridDataLabelSlider);
-	}
-
-	private void createTextPositiveDelta(Composite parent) {
-
-		textPositiveDelta = new Text(parent, SWT.BORDER);
-		GridData gridData = new GridData();
-		gridData.widthHint = 100;
-		textPositiveDelta.setText(Integer.toString(MassShiftDetector.SCALE_SELECTION));
-		textPositiveDelta.addModifyListener(new ModifyListener() {
-
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				try {
-					double max = Double.valueOf(textPositiveDelta.getText().trim());
-					if(max >= MassShiftDetector.SCALE_MIN && max <= MassShiftDetector.SCALE_MAX) {
-						scalePositiveDelta.setSelection((int)Math.abs(max));
-						setMaxValue(max);
-					} else {
-						textPositiveDelta.setText(Integer.toString(scalePositiveDelta.getSelection()));
-					}
-				} catch(NumberFormatException e1) {
-					logger.warn(e1);
-					textPositiveDelta.setText(Integer.toString(scalePositiveDelta.getSelection()));
-				}
-			}
-		});
-	}
-
-	private void createSliderNegativeDelta(Composite parent) {
-
-		scaleNegativeDelta = new Scale(parent, SWT.BORDER);
-		scaleNegativeDelta.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		scaleNegativeDelta.setOrientation(SWT.RIGHT_TO_LEFT);
-		scaleNegativeDelta.setMinimum(MassShiftDetector.SCALE_MIN);
-		scaleNegativeDelta.setMaximum(MassShiftDetector.SCALE_MAX);
-		scaleNegativeDelta.setPageIncrement(MassShiftDetector.SCALE_INCREMENT);
-		scaleNegativeDelta.setSelection(MassShiftDetector.SCALE_SELECTION);
-		scaleNegativeDelta.addSelectionListener(new SelectionAdapter() {
+		buttonDecreaseThreshold = new Button(parent, SWT.PUSH);
+		buttonDecreaseThreshold.setText("");
+		buttonDecreaseThreshold.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
+		buttonDecreaseThreshold.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				double min = -scaleNegativeDelta.getSelection();
-				textNegativeDelta.setText(Integer.toString((int)min));
-				setMinValue(min);
+				int threshold = scaleThreshold.getSelection() - MassShiftDetector.SCALE_UNCERTAINTY_INCREMENT;
+				threshold = (threshold < MassShiftDetector.SCALE_UNCERTAINTY_MIN) ? MassShiftDetector.SCALE_UNCERTAINTY_MIN : threshold;
+				scaleThreshold.setSelection(threshold);
+				setThreshold();
 			}
 		});
 	}
 
-	private void createSliderPositiveDelta(Composite parent) {
+	private void createSliderUncertainty(Composite parent) {
 
-		scalePositiveDelta = new Scale(parent, SWT.BORDER);
-		scalePositiveDelta.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		scalePositiveDelta.setOrientation(SWT.LEFT_TO_RIGHT);
-		scalePositiveDelta.setMinimum(MassShiftDetector.SCALE_MIN);
-		scalePositiveDelta.setMaximum(MassShiftDetector.SCALE_MAX);
-		scalePositiveDelta.setPageIncrement(MassShiftDetector.SCALE_INCREMENT);
-		scalePositiveDelta.setSelection(MassShiftDetector.SCALE_SELECTION);
-		scalePositiveDelta.addSelectionListener(new SelectionAdapter() {
+		scaleThreshold = new Scale(parent, SWT.BORDER);
+		scaleThreshold.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		scaleThreshold.setOrientation(SWT.LEFT_TO_RIGHT);
+		scaleThreshold.setMinimum(MassShiftDetector.SCALE_UNCERTAINTY_MIN);
+		scaleThreshold.setMaximum(MassShiftDetector.SCALE_UNCERTAINTY_MAX);
+		scaleThreshold.setPageIncrement(MassShiftDetector.SCALE_UNCERTAINTY_INCREMENT);
+		scaleThreshold.setSelection(MassShiftDetector.SCALE_UNCERTAINTY_SELECTION);
+		scaleThreshold.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				double max = scalePositiveDelta.getSelection();
-				textPositiveDelta.setText(Integer.toString((int)max));
-				setMaxValue(max);
+				setThreshold();
+			}
+		});
+	}
+
+	private void createButtonIncreaseThreshold(Composite parent) {
+
+		buttonIncreaseThreshold = new Button(parent, SWT.PUSH);
+		buttonIncreaseThreshold.setText("");
+		buttonIncreaseThreshold.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
+		buttonIncreaseThreshold.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				int threshold = scaleThreshold.getSelection() + MassShiftDetector.SCALE_UNCERTAINTY_INCREMENT;
+				threshold = (threshold > MassShiftDetector.SCALE_UNCERTAINTY_MAX) ? MassShiftDetector.SCALE_UNCERTAINTY_MAX : threshold;
+				scaleThreshold.setSelection(threshold);
+				setThreshold();
+			}
+		});
+	}
+
+	private void createTextThreshold(Composite parent) {
+
+		textThreshold = new Text(parent, SWT.BORDER);
+		GridData gridData = new GridData();
+		gridData.widthHint = 100;
+		textThreshold.setLayoutData(gridData);
+		textThreshold.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				try {
+					int threshold = Integer.parseInt(textThreshold.getText().trim());
+					if(threshold > MassShiftDetector.SCALE_UNCERTAINTY_MIN && threshold <= MassShiftDetector.SCALE_UNCERTAINTY_MAX) {
+						scaleThreshold.setSelection(threshold);
+						setThreshold();
+					} else {
+						textThreshold.setText(Integer.toString(scaleThreshold.getSelection()));
+					}
+				} catch(NumberFormatException e1) {
+					textThreshold.setText(Integer.toString(scaleThreshold.getSelection()));
+				}
 			}
 		});
 	}
@@ -393,8 +329,8 @@ public class IsotopeHeatmapUI extends Composite {
 			intensityGraphFigure.getYAxis().setRange(new Range(stopIon, startIon));
 			intensityGraphFigure.setDataHeight(dataHeight);
 			intensityGraphFigure.setDataWidth(dataWidth);
-			intensityGraphFigure.setMin(MassShiftDetector.MIN_VALUE);
-			intensityGraphFigure.setMax(MassShiftDetector.MAX_VALUE);
+			intensityGraphFigure.setMin(MassShiftDetector.SCALE_UNCERTAINTY_MIN);
+			intensityGraphFigure.setMax(MassShiftDetector.SCALE_UNCERTAINTY_MAX);
 			lightweightSystem.setContents(intensityGraphFigure);
 			intensityGraphFigure.setDataArray(heatmapData);
 			//
@@ -428,68 +364,32 @@ public class IsotopeHeatmapUI extends Composite {
 	private void clearRange() {
 
 		String[] items = new String[]{};
-		comboMassShift.setItems(items);
+		comboIsotopeLevel.setItems(items);
 		// processorData.setMassShifts(null);
 		intensityGraphFigure.getGraphArea().erase();
-		textNegativeDelta.setText(Integer.toString(-MassShiftDetector.SCALE_SELECTION));
-		textPositiveDelta.setText(Integer.toString(MassShiftDetector.SCALE_SELECTION));
-		scaleNegativeDelta.setSelection(MassShiftDetector.SCALE_SELECTION);
-		scalePositiveDelta.setSelection(MassShiftDetector.SCALE_SELECTION);
+		scaleThreshold.setSelection(MassShiftDetector.SCALE_UNCERTAINTY_SELECTION);
+		textThreshold.setText(Integer.toString(MassShiftDetector.SCALE_UNCERTAINTY_SELECTION));
 	}
 
 	private void adjustRange(int level) {
 
-		Map<Integer, ValueRange> levelGranularity = processorData.getLevelGranularity();
-		ValueRange valueRange = levelGranularity.get(level);
-		if(valueRange != null) {
-			int min = (int)valueRange.getMin();
-			textNegativeDelta.setText(Integer.toString(min));
-			scaleNegativeDelta.setSelection(Math.abs(min));
-			setMinValue(min);
-			//
-			int max = (int)valueRange.getMax();
-			textPositiveDelta.setText(Integer.toString(max));
-			scalePositiveDelta.setSelection(Math.abs(max));
-			setMaxValue(max);
+		Map<Integer, Integer> levelUncertainty = processorData.getLevelUncertainty();
+		Integer threshold = levelUncertainty.get(level);
+		if(threshold != null) {
+			scaleThreshold.setSelection(threshold);
+			textThreshold.setText(Integer.toString(threshold));
 		} else {
-			textNegativeDelta.setText(Integer.toString(-MassShiftDetector.SCALE_SELECTION));
-			textPositiveDelta.setText(Integer.toString(MassShiftDetector.SCALE_SELECTION));
-			scaleNegativeDelta.setSelection(MassShiftDetector.SCALE_SELECTION);
-			scalePositiveDelta.setSelection(MassShiftDetector.SCALE_SELECTION);
+			scaleThreshold.setSelection(MassShiftDetector.SCALE_UNCERTAINTY_SELECTION);
+			textThreshold.setText(Integer.toString(MassShiftDetector.SCALE_UNCERTAINTY_SELECTION));
 		}
 	}
 
-	private void setMinValue(double min) {
+	private void setThreshold() {
 
-		intensityGraphFigure.setMin(min - MassShiftDetector.SCALE_OFFSET);
-		intensityGraphFigure.getGraphArea().getUpdateManager().performUpdate();
-		//
-		if(processorData != null) {
-			Map<Integer, ValueRange> levelGranularity = processorData.getLevelGranularity();
-			int level = comboMassShift.getSelectionIndex();
-			ValueRange valueRange = levelGranularity.get(level);
-			if(valueRange == null) {
-				valueRange = new ValueRange(0.0d, 0.0d);
-			}
-			valueRange.setMin(min);
-			levelGranularity.put(level, valueRange);
-		}
-	}
-
-	private void setMaxValue(double max) {
-
-		intensityGraphFigure.setMax(max + MassShiftDetector.SCALE_OFFSET);
-		intensityGraphFigure.getGraphArea().getUpdateManager().performUpdate();
-		//
-		if(processorData != null) {
-			Map<Integer, ValueRange> levelGranularity = processorData.getLevelGranularity();
-			int level = comboMassShift.getSelectionIndex();
-			ValueRange valueRange = levelGranularity.get(level);
-			if(valueRange == null) {
-				valueRange = new ValueRange(0.0d, 0.0d);
-			}
-			valueRange.setMax(max);
-			levelGranularity.put(level, valueRange);
-		}
+		int isotopeLevel = comboIsotopeLevel.getSelectionIndex();
+		int threshold = scaleThreshold.getSelection();
+		Map<Integer, Integer> levelUncertainty = processorData.getLevelUncertainty();
+		levelUncertainty.put(isotopeLevel, threshold);
+		intensityGraphFigure.setColorMap(colorMaps.get(threshold));
 	}
 }

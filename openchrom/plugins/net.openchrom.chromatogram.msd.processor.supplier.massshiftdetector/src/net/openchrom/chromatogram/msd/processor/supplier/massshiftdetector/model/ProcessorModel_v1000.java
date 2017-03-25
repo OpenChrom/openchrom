@@ -25,8 +25,8 @@ public class ProcessorModel_v1000 {
 	private String referenceChromatogramPath;
 	@XmlElement(name = "IsotopeChromatogramPath")
 	private String isotopeChromatogramPath;
-	@XmlElement(name = "Level")
-	private int level;
+	@XmlElement(name = "IsotopeLevel")
+	private int isotopeLevel;
 	@XmlElement(name = "Notes")
 	private String notes;
 	@XmlElement(name = "Description")
@@ -66,14 +66,14 @@ public class ProcessorModel_v1000 {
 	}
 
 	@XmlTransient
-	public int getLevel() {
+	public int getIsotopeLevel() {
 
-		return level;
+		return isotopeLevel;
 	}
 
-	public void setLevel(int level) {
+	public void setLevel(int isotopeLevel) {
 
-		this.level = level;
+		this.isotopeLevel = isotopeLevel;
 	}
 
 	@XmlTransient

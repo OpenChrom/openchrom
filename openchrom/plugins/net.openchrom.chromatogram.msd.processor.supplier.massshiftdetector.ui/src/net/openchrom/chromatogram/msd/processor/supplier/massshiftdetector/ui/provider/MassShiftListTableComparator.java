@@ -36,7 +36,7 @@ public class MassShiftListTableComparator extends AbstractRecordTableComparator 
 					sortOrder = Integer.compare(massShift2.getIsotopeLevel(), massShift1.getIsotopeLevel());
 					break;
 				case 2:
-					sortOrder = Double.compare(massShift2.getDeltaIntensity(), massShift1.getDeltaIntensity());
+					sortOrder = Double.compare(massShift2.getUncertainty(), massShift1.getUncertainty());
 					break;
 			}
 		}

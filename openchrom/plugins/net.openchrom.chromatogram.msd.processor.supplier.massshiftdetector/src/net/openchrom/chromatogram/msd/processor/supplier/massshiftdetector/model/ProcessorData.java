@@ -24,15 +24,15 @@ public class ProcessorData {
 	private IChromatogramMSD isotopeChromatogram;
 	//
 	private Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts;
-	private Map<Integer, ValueRange> levelGranularity;
+	private Map<Integer, Integer> levelUncertainty;
 
 	public ProcessorData() {
-		levelGranularity = new HashMap<Integer, ValueRange>();
+		levelUncertainty = new HashMap<Integer, Integer>();
 	}
 
-	public Map<Integer, ValueRange> getLevelGranularity() {
+	public Map<Integer, Integer> getLevelUncertainty() {
 
-		return levelGranularity;
+		return levelUncertainty;
 	}
 
 	public Map<Integer, Map<Integer, Map<Integer, Double>>> getMassShifts() {
