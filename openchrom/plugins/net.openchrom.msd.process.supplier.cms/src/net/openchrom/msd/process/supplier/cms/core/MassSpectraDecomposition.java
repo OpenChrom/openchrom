@@ -147,11 +147,16 @@ public class MassSpectraDecomposition {
 				for(LibIon i : fitDataset.getLibIons()) {
 					A.set(i.getIonRowIndex(), i.getComponentRef().getComponentIndex(), i.getIonAbundance());
 				}
+				double testing;
 				for(ScanIonMeasurement i : fitDataset.getScanIons()) {
 					y.set(i.getIonRowIndex(), 0, i.getIonAbundance());
-					P.set(i.getIonRowIndex(), i.getIonRowIndex(),
-							// 1); // for testing without error weights
-							java.lang.StrictMath.sqrt(1.0 / java.lang.StrictMath.abs(i.getIonAbundance())));
+					testing = i.getIonAbundance();
+					if(0 == testing) {
+						testing = i.getScanRef().getMinAbsSignal();
+					}
+					testing = java.lang.StrictMath.sqrt(1.0 / java.lang.StrictMath.abs(testing));
+					P.set(i.getIonRowIndex(), i.getIonRowIndex(), testing);
+					// 1); // for testing without error weights
 				} // for
 				if(useWeightedError) {
 					CommonOps.mult(P, A, wtA);
@@ -203,14 +208,14 @@ public class MassSpectraDecomposition {
 				System.out.println("SOLVED");
 				result.setSolutionQuality(libMatrixQuality);
 				for(int ii = 0; ii < x.numRows; ii++) {
-					ICalibratedVendorLibraryMassSpectrum libRef = fitDataset.getLibRef(ii);
+					// ICalibratedVendorLibraryMassSpectrum libRef = fitDataset.getLibRef(ii);
 					ICalibratedVendorMassSpectrum scanRef = fitDataset.getScanRef();
 					String ppUnits = scanRef.getSourcePressureUnits();
-					if(0 >= libMatrixQuality) {
-						result.addComponent(Double.NaN, fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
-					} else {
-						result.addComponent(x.get(ii), fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
-					}
+					// if(0 >= libMatrixQuality) {
+					// result.addComponent(Double.NaN, fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
+					// } else {
+					result.addComponent(x.get(ii), fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
+					// }
 					System.out.printf("%24s: x[%d]=\t%.13f", fitDataset.getLibCompName(ii), ii, x.get(ii), fitDataset.getScanRef().getSourcePressureUnits());
 					if(fitDataset.canDoQuantitative(ii)) {
 						System.out.printf("\tppress(%6s)=\t%.13f\tmolfrc=\t%.13f%n", scanRef.getSourcePressureUnits(), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits), x.get(ii) * fitDataset.getLibRef(ii).getSourcePressure(ppUnits) / scanRef.getSourcePressure());
