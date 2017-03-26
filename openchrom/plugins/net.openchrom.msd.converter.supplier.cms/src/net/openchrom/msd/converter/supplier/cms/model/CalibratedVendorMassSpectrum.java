@@ -90,6 +90,15 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	@Override
+	public float getMinAbsSignal() {
+
+		if(!minMaxSignalIsValid) {
+			updateSignalLimits();
+		}
+		return minAbsSignal;
+	}
+
+	@Override
 	public int compareTo(ICalibratedVendorMassSpectrum spectrum) {
 
 		int result;

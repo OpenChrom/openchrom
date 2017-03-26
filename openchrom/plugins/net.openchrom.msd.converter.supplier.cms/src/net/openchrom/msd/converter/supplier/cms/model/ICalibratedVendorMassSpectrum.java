@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Walter Whitlock - initial API and implementation
  * Philip Wenig - initial API and implementation
@@ -26,7 +26,7 @@ public interface ICalibratedVendorMassSpectrum extends ICalibratedVendorLibraryM
 
 	/**
 	 * This method may return null.
-	 * 
+	 *
 	 * @param scanIndex
 	 * @return {@link IIonMeasurement}
 	 */
@@ -34,10 +34,13 @@ public interface ICalibratedVendorMassSpectrum extends ICalibratedVendorLibraryM
 
 	List<IIonMeasurement> getIonMeasurements();
 
+	float getMinAbsSignal();
+
 	String getScanName();
 
 	float getSumSignal();
 
+	@Override
 	ICalibratedVendorMassSpectrum makeDeepCopy() throws CloneNotSupportedException;
 
 	ICalibratedVendorLibraryMassSpectrum makeNoisyCopy(long seed, double relativeError) throws CloneNotSupportedException;
