@@ -11,15 +11,20 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt;
 
+import java.util.List;
+
 import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.widgets.Composite;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editingsupport.ScanMarkerCheckBoxEditingSupport;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.provider.ScanMarkerListLabelProvider;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.provider.ScanMarkerListTableComparator;
 
 public class ScanMarkerListUI extends ExtendedTableViewer {
 
+	public static final int INDEX_VALIDATED = 1;
 	private String[] titles = {"scan", "validated"};
 	private int bounds[] = {200, 60};
 
@@ -36,5 +41,16 @@ public class ScanMarkerListUI extends ExtendedTableViewer {
 		setLabelProvider(new ScanMarkerListLabelProvider());
 		setContentProvider(new ListContentProvider());
 		setComparator(new ScanMarkerListTableComparator());
+		//
+		setEditingSupport();
+	}
+
+	private void setEditingSupport() {
+
+		TableViewerColumn tableViewerColumn;
+		List<TableViewerColumn> tableViewerColumns = getTableViewerColumns();
+		//
+		tableViewerColumn = tableViewerColumns.get(INDEX_VALIDATED);
+		tableViewerColumn.setEditingSupport(new ScanMarkerCheckBoxEditingSupport(this));
 	}
 }

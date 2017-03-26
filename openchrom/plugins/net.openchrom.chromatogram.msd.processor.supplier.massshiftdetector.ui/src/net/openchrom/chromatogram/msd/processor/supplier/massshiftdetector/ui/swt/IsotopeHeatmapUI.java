@@ -53,10 +53,10 @@ public class IsotopeHeatmapUI extends Composite {
 	private static final Logger logger = Logger.getLogger(IsotopeHeatmapUI.class);
 	//
 	private Combo comboIsotopeLevel;
+	private Text textThreshold;
 	private Button buttonDecreaseThreshold;
 	private Button buttonIncreaseThreshold;
 	private Scale scaleThreshold;
-	private Text textThreshold;
 	private LightweightSystem lightweightSystem;
 	private IntensityGraphFigure intensityGraphFigure;
 	//
@@ -115,16 +115,17 @@ public class IsotopeHeatmapUI extends Composite {
 
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.FILL);
-		composite.setLayout(new GridLayout(6, false));
+		composite.setLayout(new GridLayout(5, false));
 		//
 		colorMaps = new HashMap<Integer, ColorMap>();
 		for(int i = MassShiftDetector.SCALE_UNCERTAINTY_MIN; i <= MassShiftDetector.SCALE_UNCERTAINTY_MAX; i++) {
 			ColorMap colorMap = new ColorMap();
 			double threshold = 1.0d / MassShiftDetector.SCALE_UNCERTAINTY_MAX * i;
-			colorMap.getMap().put(threshold, new RGB(255, 0, 0));
-			if(threshold != 1.0d) {
-				colorMap.getMap().put(threshold + 0.01d, new RGB(255, 255, 255));
-			}
+			colorMap.getMap().put(threshold * 0.25d, new RGB(255, 0, 0));
+			colorMap.getMap().put(threshold * 0.5d, new RGB(0, 255, 255));
+			colorMap.getMap().put(threshold * 0.75d, new RGB(0, 255, 0));
+			colorMap.getMap().put(threshold, new RGB(255, 255, 255));
+			colorMap.getMap().put(1.0d, new RGB(255, 255, 255));
 			colorMaps.put(i, colorMap);
 		}
 		/*
@@ -139,7 +140,7 @@ public class IsotopeHeatmapUI extends Composite {
 
 		comboIsotopeLevel = new Combo(parent, SWT.READ_ONLY);
 		GridData gridDataCombo = new GridData(GridData.FILL_HORIZONTAL);
-		gridDataCombo.horizontalSpan = 6;
+		gridDataCombo.horizontalSpan = 3;
 		comboIsotopeLevel.setLayoutData(gridDataCombo);
 		comboIsotopeLevel.addSelectionListener(new SelectionAdapter() {
 
@@ -147,6 +148,37 @@ public class IsotopeHeatmapUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				showData(comboIsotopeLevel.getSelectionIndex());
+			}
+		});
+		//
+		Label label = new Label(parent, SWT.NONE);
+		label.setText("Threshold");
+		//
+		createTextThreshold(parent);
+	}
+
+	private void createTextThreshold(Composite parent) {
+
+		textThreshold = new Text(parent, SWT.BORDER);
+		GridData gridData = new GridData();
+		gridData.widthHint = 100;
+		textThreshold.setLayoutData(gridData);
+		textThreshold.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				try {
+					int threshold = Integer.parseInt(textThreshold.getText().trim());
+					if(threshold > MassShiftDetector.SCALE_UNCERTAINTY_MIN && threshold <= MassShiftDetector.SCALE_UNCERTAINTY_MAX) {
+						scaleThreshold.setSelection(threshold);
+						setThreshold(threshold);
+					} else {
+						textThreshold.setText(Integer.toString(scaleThreshold.getSelection()));
+					}
+				} catch(NumberFormatException e1) {
+					textThreshold.setText(Integer.toString(scaleThreshold.getSelection()));
+				}
 			}
 		});
 	}
@@ -157,7 +189,7 @@ public class IsotopeHeatmapUI extends Composite {
 		//
 		Canvas canvas = new Canvas(parent, SWT.FILL | SWT.BORDER);
 		GridData gridDataCanvas = new GridData(GridData.FILL_BOTH);
-		gridDataCanvas.horizontalSpan = 6;
+		gridDataCanvas.horizontalSpan = 5;
 		canvas.setLayoutData(gridDataCanvas);
 		canvas.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 		//
@@ -180,7 +212,6 @@ public class IsotopeHeatmapUI extends Composite {
 		createSliderUncertainty(parent);
 		createButtonIncreaseThreshold(parent);
 		createSliderLabel(parent, "UNCERTAIN");
-		createTextThreshold(parent);
 	}
 
 	private void createSliderLabel(Composite parent, String text) {
@@ -201,8 +232,8 @@ public class IsotopeHeatmapUI extends Composite {
 
 				int threshold = scaleThreshold.getSelection() - MassShiftDetector.SCALE_UNCERTAINTY_INCREMENT;
 				threshold = (threshold < MassShiftDetector.SCALE_UNCERTAINTY_MIN) ? MassShiftDetector.SCALE_UNCERTAINTY_MIN : threshold;
-				scaleThreshold.setSelection(threshold);
-				setThreshold();
+				//
+				setThreshold(threshold);
 			}
 		});
 	}
@@ -221,7 +252,7 @@ public class IsotopeHeatmapUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				setThreshold();
+				setThreshold(scaleThreshold.getSelection());
 			}
 		});
 	}
@@ -238,34 +269,8 @@ public class IsotopeHeatmapUI extends Composite {
 
 				int threshold = scaleThreshold.getSelection() + MassShiftDetector.SCALE_UNCERTAINTY_INCREMENT;
 				threshold = (threshold > MassShiftDetector.SCALE_UNCERTAINTY_MAX) ? MassShiftDetector.SCALE_UNCERTAINTY_MAX : threshold;
-				scaleThreshold.setSelection(threshold);
-				setThreshold();
-			}
-		});
-	}
-
-	private void createTextThreshold(Composite parent) {
-
-		textThreshold = new Text(parent, SWT.BORDER);
-		GridData gridData = new GridData();
-		gridData.widthHint = 100;
-		textThreshold.setLayoutData(gridData);
-		textThreshold.addKeyListener(new KeyAdapter() {
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-
-				try {
-					int threshold = Integer.parseInt(textThreshold.getText().trim());
-					if(threshold > MassShiftDetector.SCALE_UNCERTAINTY_MIN && threshold <= MassShiftDetector.SCALE_UNCERTAINTY_MAX) {
-						scaleThreshold.setSelection(threshold);
-						setThreshold();
-					} else {
-						textThreshold.setText(Integer.toString(scaleThreshold.getSelection()));
-					}
-				} catch(NumberFormatException e1) {
-					textThreshold.setText(Integer.toString(scaleThreshold.getSelection()));
-				}
+				//
+				setThreshold(threshold);
 			}
 		});
 	}
@@ -365,7 +370,9 @@ public class IsotopeHeatmapUI extends Composite {
 
 		String[] items = new String[]{};
 		comboIsotopeLevel.setItems(items);
-		// processorData.setMassShifts(null);
+		if(processorData != null) {
+			processorData.setMassShifts(null);
+		}
 		intensityGraphFigure.getGraphArea().erase();
 		scaleThreshold.setSelection(MassShiftDetector.SCALE_UNCERTAINTY_SELECTION);
 		textThreshold.setText(Integer.toString(MassShiftDetector.SCALE_UNCERTAINTY_SELECTION));
@@ -384,12 +391,18 @@ public class IsotopeHeatmapUI extends Composite {
 		}
 	}
 
-	private void setThreshold() {
+	private void setThreshold(int threshold) {
 
+		scaleThreshold.setSelection(threshold);
+		textThreshold.setText(Integer.toString(threshold));
+		//
 		int isotopeLevel = comboIsotopeLevel.getSelectionIndex();
-		int threshold = scaleThreshold.getSelection();
 		Map<Integer, Integer> levelUncertainty = processorData.getLevelUncertainty();
 		levelUncertainty.put(isotopeLevel, threshold);
-		intensityGraphFigure.setColorMap(colorMaps.get(threshold));
+		/*
+		 * Set the color map.
+		 */
+		ColorMap colorMap = colorMaps.get(threshold);
+		intensityGraphFigure.setColorMap(colorMap);
 	}
 }

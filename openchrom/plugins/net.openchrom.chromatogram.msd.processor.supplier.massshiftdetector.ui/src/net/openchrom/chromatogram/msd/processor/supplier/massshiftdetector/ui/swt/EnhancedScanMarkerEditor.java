@@ -36,10 +36,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors.EditorProcessor;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.ScanMarkerDetectorRunnable;
 
 public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
@@ -175,6 +175,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
 	private Button createCalculateButton(Composite parent, GridData gridData) {
 
+		Shell shell = Display.getCurrent().getActiveShell();
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Calculate");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CALCULATE, IApplicationImage.SIZE_16x16));
@@ -186,9 +187,20 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
 				processAction();
 				ProcessorData processorData = editorProcessor.getProcessorData();
-				MassShiftDetector massShiftDetector = new MassShiftDetector();
-				List<ScanMarker> massShiftMarker = massShiftDetector.extractMassShiftMarker(processorData.getMassShifts(), processorData.getLevelUncertainty());
-				scanMarkerListUI.setInput(massShiftMarker);
+				//
+				List<ScanMarker> scanMarker = null;
+				ScanMarkerDetectorRunnable runnable = new ScanMarkerDetectorRunnable(processorData);
+				ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
+				//
+				try {
+					monitor.run(true, true, runnable);
+					scanMarker = runnable.getScanMarker();
+				} catch(InterruptedException e1) {
+					logger.warn(e1);
+				} catch(InvocationTargetException e1) {
+					logger.warn(e1);
+				}
+				scanMarkerListUI.setInput(scanMarker);
 			}
 		});
 		return button;

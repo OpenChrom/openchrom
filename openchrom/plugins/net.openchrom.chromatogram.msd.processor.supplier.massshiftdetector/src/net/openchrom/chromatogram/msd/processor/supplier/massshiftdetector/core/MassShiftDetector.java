@@ -94,40 +94,45 @@ public class MassShiftDetector {
 					/*
 					 * Get the scan.
 					 */
-					monitor.subTask("Calculate Level: " + isotope + " -> Scan: " + scan);
-					//
 					IExtractedIonSignal referenceIonSignal = referenceIonSignals.getExtractedIonSignal(scan);
 					IExtractedIonSignal isotopeIonSignal = isotopeIonSignals.getExtractedIonSignal(scan);
 					Map<Integer, Double> extractedIonSignalUncertainty = new HashMap<Integer, Double>();
 					extractedIonSignalsDifference.put(scan, extractedIonSignalUncertainty);
 					//
+					float intensityReferenceMedian = referenceIonSignal.getMedianIntensity();
+					//
 					for(int ion = startIon; ion <= stopIon; ion++) {
 						/*
 						 * Calculate the m/z difference.
 						 */
-						monitor.subTask("Scan: " + scan + " -> m/z: " + ion);
+						monitor.subTask("Calculate Level: " + isotope + " -> Scan: " + scan + " -> m/z: " + ion);
 						//
 						double intensityReference = referenceIonSignal.getAbundance(ion);
-						double intensityIsotope = isotopeIonSignal.getAbundance(ion + isotope);
-						double intensityMax = Math.max(intensityReference, intensityIsotope);
-						double intensityDelta = Math.abs(intensityReference - intensityIsotope);
-						/*
-						 * Calculate the uncertainty.
-						 */
-						double uncertainty;
-						if(intensityMax != 0) {
-							uncertainty = NORMALIZATION_BASE / intensityMax * intensityDelta;
+						double uncertainty = NORMALIZATION_BASE; // 100 == uncertain -> no match
+						if(intensityReference >= intensityReferenceMedian) {
 							/*
-							 * Note that the uncertainty scale is switched when using the
-							 * isotopeLevel 0, hence adjust it.
+							 * Only calculate the value if it's above the median intensity.
 							 */
-							if(isotopeLevel == 0) {
-								uncertainty = NORMALIZATION_BASE - uncertainty;
+							double intensityIsotope = isotopeIonSignal.getAbundance(ion + isotope);
+							double intensityMax = Math.max(intensityReference, intensityIsotope);
+							double intensityDelta = Math.abs(intensityReference - intensityIsotope);
+							/*
+							 * Calculate the uncertainty.
+							 */
+							if(intensityMax != 0) {
+								uncertainty = NORMALIZATION_BASE / intensityMax * intensityDelta;
+								/*
+								 * Note that the uncertainty scale is switched when using the
+								 * isotopeLevel 0, hence adjust it.
+								 */
+								if(isotopeLevel == 0) {
+									uncertainty = NORMALIZATION_BASE - uncertainty;
+								}
 							}
-						} else {
-							uncertainty = NORMALIZATION_BASE;
 						}
-						//
+						/*
+						 * Set the uncertainty.
+						 */
 						extractedIonSignalUncertainty.put(ion, uncertainty);
 					}
 				} catch(NoExtractedIonSignalStoredException e) {
@@ -138,7 +143,7 @@ public class MassShiftDetector {
 		return uncertaintyIonSignalsMap;
 	}
 
-	public List<ScanMarker> extractMassShiftMarker(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts, Map<Integer, Integer> levelUncertainty) {
+	public List<ScanMarker> extractMassShiftMarker(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts, Map<Integer, Integer> levelUncertainty, IProgressMonitor monitor) {
 
 		Map<Integer, ScanMarker> scanMarkerMap = new HashMap<Integer, ScanMarker>();
 		//
@@ -155,6 +160,10 @@ public class MassShiftDetector {
 			} else {
 				threshold = SCALE_UNCERTAINTY_SELECTION;
 			}
+			// TODO
+			threshold = 5.0d;
+			//
+			monitor.subTask("Calculate Marker: " + isotopeLevel + " -> Threshold: " + threshold);
 			//
 			for(Map.Entry<Integer, Map<Integer, Double>> scanElement : massShift.getValue().entrySet()) {
 				int scan = scanElement.getKey();
