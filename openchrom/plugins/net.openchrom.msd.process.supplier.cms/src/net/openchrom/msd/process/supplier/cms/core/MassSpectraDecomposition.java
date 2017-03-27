@@ -12,6 +12,7 @@
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
+import java.io.PrintStream;
 import java.util.Arrays;
 
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -58,10 +59,12 @@ public class MassSpectraDecomposition {
 	private boolean solverRetVal;
 	private ICalibratedVendorMassSpectrum scanResidual; // residual mass spectrum after subtracting calculated ion signals
 
-	public DecompositionResults decompose(IMassSpectra scanSpectra, IMassSpectra libMassSpectra, boolean useWeightedError, IProgressMonitor monitor) {
+	public DecompositionResults decompose(IMassSpectra scanSpectra, IMassSpectra libMassSpectra, boolean useWeightedError, PrintStream printStreamTables, IProgressMonitor monitor) {
 
 		// parameter scanSpectra has all the scans we wish to decompose, 1 by 1, into components
 		// parameter libMassSpectra has the set of library component cracking patterns we want to fit to
+		// parameter useWeightedError, if true then used estimated error weights for computing sum of squares error
+		// parameter printStreamTables is the PrintStream where text format result tables should be printed
 		// generates a list of ions from the unknown mass spectrum (scanIons) having mass ~= at least one library component ion mass
 		// and then generates a new, smaller, list of library ions (usedLibIons) having mass ~= at least one ion in the unknown mass spectrum
 		double massTol = 0.2;
@@ -275,9 +278,9 @@ public class MassSpectraDecomposition {
 			residualSpectra.addMassSpectrum(scanResidual);
 			System.out.println();
 		}
-		// print results to console
-		System.out.println(results.getResidualSpectraTable());
-		System.out.println(results.getCompositionResultsTable());
+		// print results to console window
+		printStreamTables.println(results.getResidualSpectraTable());
+		printStreamTables.println(results.getCompositionResultsTable());
 		return results;
 	}
 }

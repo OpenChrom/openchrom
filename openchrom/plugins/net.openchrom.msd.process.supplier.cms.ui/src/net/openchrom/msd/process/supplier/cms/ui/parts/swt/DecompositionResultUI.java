@@ -90,7 +90,7 @@ public class DecompositionResultUI extends Composite {
 
 	/**
 	 * Adds a results listener.
-	 * 
+	 *
 	 * @param decompositionResultsListener
 	 * @return boolean
 	 */
@@ -101,7 +101,7 @@ public class DecompositionResultUI extends Composite {
 
 	/**
 	 * Adds a results listener.
-	 * 
+	 *
 	 * @param decompositionResultsListener
 	 * @return boolean
 	 */
@@ -129,22 +129,23 @@ public class DecompositionResultUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				PrintStream out = System.out;
-				PrintStream err = System.err;
-				try {
-					MessageConsole messageConsole = Activator.getMessageConsole();
-					MessageConsoleStream messageConsoleStream = messageConsole.newMessageStream();
-					System.setOut(new PrintStream(messageConsoleStream));
-					System.setErr(new PrintStream(messageConsoleStream));
-					//
-					System.out.println("Decompose button clicked");
-					decomposeSpectra();
-				} catch(Exception e1) {
-					logger.warn(e1);
-				} finally {
-					System.setOut(out);
-					System.setErr(err);
-				}
+				// leave commented code for now to show how to change system printstreams
+				// PrintStream out = System.out;
+				// PrintStream err = System.err;
+				// try {
+				// MessageConsole messageConsole = Activator.getMessageConsole();
+				// MessageConsoleStream messageConsoleStream = messageConsole.newMessageStream();
+				// System.setOut(new PrintStream(messageConsoleStream));
+				// System.setErr(new PrintStream(messageConsoleStream));
+				//
+				System.out.println("Decompose button clicked");
+				decomposeSpectra();
+				// } catch(Exception e1) {
+				// logger.warn(e1);
+				// } finally {
+				// System.setOut(out);
+				// System.setErr(err);
+				// }
 			}
 		});
 	}
@@ -186,23 +187,18 @@ public class DecompositionResultUI extends Composite {
 		for(int i = spinnerLeftScanNumber.getSelection(); i <= spinnerRightScanNumber.getSelection(); i++) {
 			scanSpectra.addMassSpectrum(cmsSpectra.getList().get(i - 1)); // make shallow copy of spectra we want
 		}
-		MassSpectraDecomposition decomposer = new MassSpectraDecomposition();
-		results = decomposer.decompose(scanSpectra, libMassSpectra, buttonUseRelError.getSelection(), new NullProgressMonitor());
-		// try {
-		// File libraryFile = new File("C:/Users/whitlow/git/cmsworkflow/openchrom/plugins/net.openchrom.msd.process.supplier.cms.fragment.test/testData/files/import/test1/LibrarySpectra.cms");
-		// MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
-		// IMassSpectra libMassSpectra = massSpectrumReader.read(libraryFile, new NullProgressMonitor());
-		// MassSpectraDecomposition decomposer = new MassSpectraDecomposition();
-		// results = decomposer.decompose(scanSpectra, libMassSpectra, new NullProgressMonitor());
-		// } catch(FileNotFoundException e) {
-		// System.out.println(e);
-		// } catch(FileIsNotReadableException e) {
-		// System.out.println(e);
-		// } catch(FileIsEmptyException e) {
-		// System.out.println(e);
-		// } catch(IOException e) {
-		// System.out.println(e);
-		// }
+		PrintStream tables = null;
+		try {
+			MessageConsole messageConsole = Activator.getMessageConsole();
+			MessageConsoleStream messageConsoleStream = messageConsole.newMessageStream();
+			tables = new PrintStream(messageConsoleStream);
+			messageConsoleStream.setActivateOnWrite(false);
+			MassSpectraDecomposition decomposer = new MassSpectraDecomposition();
+			results = decomposer.decompose(scanSpectra, libMassSpectra, buttonUseRelError.getSelection(), tables, new NullProgressMonitor());
+		} catch(Exception e1) {
+			logger.warn(e1);
+		} finally {
+		}
 		if(null == results) {
 			return;
 		}
