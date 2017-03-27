@@ -12,7 +12,6 @@
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
@@ -27,17 +26,9 @@ public class ProcessorData {
 	//
 	private Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts;
 	private Map<Integer, Integer> thresholdMassShiftLevel;
-	//
-	private List<ScanMarker> scanMarker;
 
 	public ProcessorData() {
 		thresholdMassShiftLevel = new HashMap<Integer, Integer>();
-	}
-
-	public void resetResults() {
-
-		massShifts = null;
-		scanMarker = null;
 	}
 
 	public IProcessorModel getProcessorModel() {
@@ -101,15 +92,5 @@ public class ProcessorData {
 	public Map<Integer, Integer> getLevelUncertainty() {
 
 		return thresholdMassShiftLevel;
-	}
-
-	public List<ScanMarker> getScanMarker() {
-
-		return scanMarker;
-	}
-
-	public void setScanMarker(List<ScanMarker> scanMarker) {
-
-		this.scanMarker = scanMarker;
 	}
 }

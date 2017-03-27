@@ -15,7 +15,8 @@ import org.eclipse.chemclipse.support.ui.swt.AbstractRecordTableComparator;
 import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.Viewer;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShift;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IMassShift;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShift_v1000;
 
 public class MassShiftListTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
 
@@ -24,9 +25,9 @@ public class MassShiftListTableComparator extends AbstractRecordTableComparator 
 
 		int sortOrder = 0;
 		//
-		if(e1 instanceof MassShift && e2 instanceof MassShift) {
-			MassShift massShift1 = (MassShift)e1;
-			MassShift massShift2 = (MassShift)e2;
+		if(e1 instanceof MassShift_v1000 && e2 instanceof MassShift_v1000) {
+			IMassShift massShift1 = (IMassShift)e1;
+			IMassShift massShift2 = (IMassShift)e2;
 			//
 			switch(getPropertyIndex()) {
 				case 0:

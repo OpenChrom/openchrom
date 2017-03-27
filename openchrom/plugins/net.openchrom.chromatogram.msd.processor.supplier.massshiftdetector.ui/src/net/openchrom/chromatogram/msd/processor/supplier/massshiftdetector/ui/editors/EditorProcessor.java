@@ -12,6 +12,7 @@
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import javax.xml.bind.JAXBException;
 
@@ -19,7 +20,12 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.IPageChangedListener;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.PageChangedEvent;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -27,6 +33,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.MultiPageEditorPart;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.CSVExportWriter;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelReader;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelWriter;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
@@ -111,7 +118,24 @@ public class EditorProcessor extends MultiPageEditorPart {
 	@Override
 	public void doSaveAs() {
 
-		System.out.println("Implement Save As...");
+		Shell shell = Display.getDefault().getActiveShell();
+		FileDialog fileDialog = new FileDialog(shell, SWT.SAVE);
+		fileDialog.setOverwrite(true);
+		fileDialog.setText("Save results as *.csv file.");
+		fileDialog.setFilterExtensions(new String[]{"*.csv"});
+		fileDialog.setFilterNames(new String[]{"Mass Shift Report (*.csv)"});
+		String pathname = fileDialog.open();
+		if(pathname != null) {
+			File file = new File(pathname);
+			CSVExportWriter csvExportWriter = new CSVExportWriter();
+			try {
+				csvExportWriter.write(file, processorData, new NullProgressMonitor());
+				MessageDialog.openInformation(shell, "Mass Shift Export", "The results have been exported successfully.");
+			} catch(FileNotFoundException e) {
+				logger.warn(e);
+				MessageDialog.openInformation(shell, "Mass Shift Export", "Something has gone wrong to export the results.");
+			}
+		}
 	}
 
 	@Override

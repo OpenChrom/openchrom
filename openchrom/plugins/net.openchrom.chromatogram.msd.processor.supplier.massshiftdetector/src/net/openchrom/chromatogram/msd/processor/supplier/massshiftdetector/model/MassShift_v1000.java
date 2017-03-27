@@ -11,31 +11,64 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
 
-public class MassShift {
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+public class MassShift_v1000 implements IMassShift {
+
+	@XmlElement(name = "MZ")
 	private double mz;
+	@XmlElement(name = "MassShiftLevel")
 	private int massShiftLevel;
+	@XmlElement(name = "Uncertainty")
 	private double uncertainty;
 
-	public MassShift(double mz, int massShiftLevel, double uncertainty) {
+	public MassShift_v1000() {
+	}
+
+	public MassShift_v1000(double mz, int massShiftLevel, double uncertainty) {
 		this.mz = mz;
 		this.massShiftLevel = massShiftLevel;
 		this.uncertainty = uncertainty;
 	}
 
+	@Override
+	@XmlTransient
 	public double getMz() {
 
 		return mz;
 	}
 
+	@Override
+	public void setMz(double mz) {
+
+		this.mz = mz;
+	}
+
+	@Override
+	@XmlTransient
 	public int getMassShiftLevel() {
 
 		return massShiftLevel;
 	}
 
+	@Override
+	public void setMassShiftLevel(int massShiftLevel) {
+
+		this.massShiftLevel = massShiftLevel;
+	}
+
+	@Override
+	@XmlTransient
 	public double getUncertainty() {
 
 		return uncertainty;
+	}
+
+	@Override
+	public void setUncertainty(double uncertainty) {
+
+		this.uncertainty = uncertainty;
 	}
 
 	@Override
@@ -61,7 +94,7 @@ public class MassShift {
 			return false;
 		if(getClass() != obj.getClass())
 			return false;
-		MassShift other = (MassShift)obj;
+		MassShift_v1000 other = (MassShift_v1000)obj;
 		if(Double.doubleToLongBits(uncertainty) != Double.doubleToLongBits(other.uncertainty))
 			return false;
 		if(massShiftLevel != other.massShiftLevel)

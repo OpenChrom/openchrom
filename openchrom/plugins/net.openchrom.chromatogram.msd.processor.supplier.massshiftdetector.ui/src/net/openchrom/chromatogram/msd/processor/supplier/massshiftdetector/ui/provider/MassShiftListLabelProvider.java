@@ -16,7 +16,8 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShift;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IMassShift;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShift_v1000;
 
 public class MassShiftListLabelProvider extends AbstractChemClipseLabelProvider {
 
@@ -36,8 +37,8 @@ public class MassShiftListLabelProvider extends AbstractChemClipseLabelProvider 
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof MassShift) {
-			MassShift massShift = (MassShift)element;
+		if(element instanceof MassShift_v1000) {
+			IMassShift massShift = (IMassShift)element;
 			switch(columnIndex) {
 				case 0:
 					text = Double.toString(massShift.getMz());

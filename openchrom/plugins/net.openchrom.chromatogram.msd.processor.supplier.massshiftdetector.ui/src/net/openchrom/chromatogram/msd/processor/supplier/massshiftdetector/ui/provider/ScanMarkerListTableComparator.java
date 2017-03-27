@@ -15,7 +15,8 @@ import org.eclipse.chemclipse.support.ui.swt.AbstractRecordTableComparator;
 import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.Viewer;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
 
 public class ScanMarkerListTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
 
@@ -24,13 +25,13 @@ public class ScanMarkerListTableComparator extends AbstractRecordTableComparator
 
 		int sortOrder = 0;
 		//
-		if(e1 instanceof ScanMarker && e2 instanceof ScanMarker) {
-			ScanMarker scanMarker1 = (ScanMarker)e1;
-			ScanMarker scanMarker2 = (ScanMarker)e2;
+		if(e1 instanceof ScanMarker_v1000 && e2 instanceof ScanMarker_v1000) {
+			IScanMarker scanMarker1 = (IScanMarker)e1;
+			IScanMarker scanMarker2 = (IScanMarker)e2;
 			//
 			switch(getPropertyIndex()) {
 				case 0:
-					sortOrder = Double.compare(scanMarker2.getScan(), scanMarker1.getScan());
+					sortOrder = Double.compare(scanMarker2.getScanNumber(), scanMarker1.getScanNumber());
 					break;
 				case 1:
 					sortOrder = Boolean.compare(scanMarker2.isValidated(), scanMarker1.isValidated());

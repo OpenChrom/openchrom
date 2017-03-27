@@ -11,37 +11,17 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
 
-import java.util.HashSet;
-import java.util.Set;
+public interface IMassShift {
 
-public class ScanMarker {
+	double getMz();
 
-	private int scan;
-	private Set<MassShift> massShifts;
-	private boolean validated;
+	void setMz(double mz);
 
-	public ScanMarker(int scan) {
-		this.scan = scan;
-		this.massShifts = new HashSet<MassShift>();
-	}
+	int getMassShiftLevel();
 
-	public int getScan() {
+	void setMassShiftLevel(int massShiftLevel);
 
-		return scan;
-	}
+	double getUncertainty();
 
-	public Set<MassShift> getMassShifts() {
-
-		return massShifts;
-	}
-
-	public boolean isValidated() {
-
-		return validated;
-	}
-
-	public void setValidated(boolean validated) {
-
-		this.validated = validated;
-	}
+	void setUncertainty(double uncertainty);
 }

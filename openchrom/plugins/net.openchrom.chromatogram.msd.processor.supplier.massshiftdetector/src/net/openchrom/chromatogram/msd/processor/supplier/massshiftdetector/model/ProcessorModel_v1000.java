@@ -11,7 +11,10 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -33,6 +36,9 @@ public class ProcessorModel_v1000 implements IProcessorModel {
 	private String notes;
 	@XmlElement(name = "Description")
 	private String description;
+	@XmlElementWrapper(name = "ScanMarkers")
+	@XmlElement(name = "ScanMarker", type = ScanMarker_v1000.class)
+	private List<ScanMarker_v1000> scanMarker;
 
 	@Override
 	@XmlTransient
@@ -123,5 +129,18 @@ public class ProcessorModel_v1000 implements IProcessorModel {
 	public void setDescription(String description) {
 
 		this.description = description;
+	}
+
+	@Override
+	@XmlTransient
+	public List<ScanMarker_v1000> getScanMarker() {
+
+		return scanMarker;
+	}
+
+	@Override
+	public void setScanMarker(List<ScanMarker_v1000> scanMarker) {
+
+		this.scanMarker = scanMarker;
 	}
 }

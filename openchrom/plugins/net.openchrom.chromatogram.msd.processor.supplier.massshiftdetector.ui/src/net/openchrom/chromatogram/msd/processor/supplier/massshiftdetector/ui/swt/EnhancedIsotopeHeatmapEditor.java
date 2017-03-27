@@ -157,7 +157,8 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 			public void widgetSelected(SelectionEvent e) {
 
 				if(processorData != null) {
-					processorData.resetResults();
+					processorData.setMassShifts(null);
+					processorData.getProcessorModel().setScanMarker(null);
 					processAction();
 					plotData();
 				}

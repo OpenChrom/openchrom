@@ -26,8 +26,8 @@ import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignals;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.comparators.ScanMarkerComparator;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShift;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShift_v1000;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
 
 public class MassShiftDetector {
 
@@ -144,9 +144,9 @@ public class MassShiftDetector {
 		return uncertaintyIonSignalsMap;
 	}
 
-	public List<ScanMarker> extractMassShiftMarker(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts, Map<Integer, Integer> levelUncertainty, IProgressMonitor monitor) {
+	public List<ScanMarker_v1000> extractMassShiftMarker(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts, Map<Integer, Integer> levelUncertainty, IProgressMonitor monitor) {
 
-		Map<Integer, ScanMarker> scanMarkerMap = new HashMap<Integer, ScanMarker>();
+		Map<Integer, ScanMarker_v1000> scanMarkerMap = new HashMap<Integer, ScanMarker_v1000>();
 		//
 		for(Map.Entry<Integer, Map<Integer, Map<Integer, Double>>> massShift : massShifts.entrySet()) {
 			//
@@ -164,15 +164,15 @@ public class MassShiftDetector {
 						/*
 						 * Create a mass shift marker if not already available.
 						 */
-						ScanMarker scanMarker = scanMarkerMap.get(scan);
+						ScanMarker_v1000 scanMarker = scanMarkerMap.get(scan);
 						if(scanMarker == null) {
-							scanMarker = new ScanMarker(scan);
+							scanMarker = new ScanMarker_v1000(scan);
 							scanMarkerMap.put(scan, scanMarker);
 						}
 						/*
 						 * Add the mass shift information.
 						 */
-						scanMarker.getMassShifts().add(new MassShift(mz, isotopeLevel, uncertainty));
+						scanMarker.getMassShifts().add(new MassShift_v1000(mz, isotopeLevel, uncertainty));
 					}
 				}
 			}
@@ -180,7 +180,7 @@ public class MassShiftDetector {
 		/*
 		 * Extract and sort the list.
 		 */
-		List<ScanMarker> scanMarkerList = new ArrayList<ScanMarker>(scanMarkerMap.values());
+		List<ScanMarker_v1000> scanMarkerList = new ArrayList<ScanMarker_v1000>(scanMarkerMap.values());
 		Collections.sort(scanMarkerList, new ScanMarkerComparator());
 		return scanMarkerList;
 	}

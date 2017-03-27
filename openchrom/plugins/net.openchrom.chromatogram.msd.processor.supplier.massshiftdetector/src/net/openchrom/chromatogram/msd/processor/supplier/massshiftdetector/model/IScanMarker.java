@@ -9,20 +9,21 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.comparators;
+package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
 
-import java.util.Comparator;
+import java.util.Set;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
+public interface IScanMarker {
 
-public class ScanMarkerComparator implements Comparator<ScanMarker_v1000> {
+	int getScanNumber();
 
-	@Override
-	public int compare(ScanMarker_v1000 o1, ScanMarker_v1000 o2) {
+	void setScanNumber(int scanNumber);
 
-		if(o1 != null && o2 != null) {
-			return Integer.compare(o2.getScanNumber(), o1.getScanNumber());
-		}
-		return 0;
-	}
+	Set<MassShift_v1000> getMassShifts();
+
+	void setMassShifts(Set<MassShift_v1000> massShifts);
+
+	boolean isValidated();
+
+	void setValidated(boolean validated);
 }

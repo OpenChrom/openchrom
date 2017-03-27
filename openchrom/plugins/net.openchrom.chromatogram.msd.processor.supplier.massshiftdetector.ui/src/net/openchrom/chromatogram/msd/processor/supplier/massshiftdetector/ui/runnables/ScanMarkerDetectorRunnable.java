@@ -19,18 +19,18 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
 
 public class ScanMarkerDetectorRunnable implements IRunnableWithProgress {
 
 	private ProcessorData processorData;
-	private List<ScanMarker> scanMarker;
+	private List<ScanMarker_v1000> scanMarker;
 
 	public ScanMarkerDetectorRunnable(ProcessorData processorData) {
 		this.processorData = processorData;
 	}
 
-	public List<ScanMarker> getScanMarker() {
+	public List<ScanMarker_v1000> getScanMarker() {
 
 		return scanMarker;
 	}

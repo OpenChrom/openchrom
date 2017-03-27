@@ -348,7 +348,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 	private ImageHyperlink createCheckHyperlink(Composite client, String text) {
 
-		Shell shell = Display.getCurrent().getActiveShell();
+		Display display = Display.getDefault();
 		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
 		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHECK, IApplicationImage.SIZE_16x16));
 		imageHyperlink.setText(text);
@@ -362,7 +362,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				String pathChromatogramReference = referenceChromatogramText.getText().trim();
 				String pathChromatogramIsotope = isotopeChromatogramText.getText().trim();
 				ChromatogramImportRunnable runnable = new ChromatogramImportRunnable(pathChromatogramReference, pathChromatogramIsotope);
-				ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
+				ProgressMonitorDialog monitor = new ProgressMonitorDialog(display.getActiveShell());
 				//
 				try {
 					monitor.run(true, true, runnable);
@@ -376,7 +376,14 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 					logger.warn(e1);
 				}
 				//
-				updateChromatogramSelections();
+				display.asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+
+						updateChromatogramSelections();
+					}
+				});
 			}
 		});
 		return imageHyperlink;
@@ -467,6 +474,11 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 	private void updateChromatogramSelections() {
 
+		/*
+		 * Display display = Display.getDefault();
+		 * instead of
+		 * Display display = Display.getCurrent();
+		 */
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		ProcessorData processorRawData = editorProcessor.getProcessorData();
 		//

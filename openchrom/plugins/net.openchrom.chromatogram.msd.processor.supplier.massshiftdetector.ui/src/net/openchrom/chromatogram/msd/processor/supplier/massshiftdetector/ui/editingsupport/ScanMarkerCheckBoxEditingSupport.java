@@ -16,7 +16,8 @@ import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
 
 public class ScanMarkerCheckBoxEditingSupport extends EditingSupport {
 
@@ -44,8 +45,8 @@ public class ScanMarkerCheckBoxEditingSupport extends EditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof ScanMarker) {
-			ScanMarker scanMarker = (ScanMarker)element;
+		if(element instanceof ScanMarker_v1000) {
+			IScanMarker scanMarker = (IScanMarker)element;
 			return scanMarker.isValidated();
 		}
 		return false;
@@ -54,8 +55,8 @@ public class ScanMarkerCheckBoxEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof ScanMarker) {
-			ScanMarker scanMarker = (ScanMarker)element;
+		if(element instanceof ScanMarker_v1000) {
+			IScanMarker scanMarker = (IScanMarker)element;
 			scanMarker.setValidated(Boolean.valueOf(value.toString()));
 			tableViewer.refresh();
 		}

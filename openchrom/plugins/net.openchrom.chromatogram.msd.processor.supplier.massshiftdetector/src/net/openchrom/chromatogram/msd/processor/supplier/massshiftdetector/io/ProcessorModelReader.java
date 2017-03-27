@@ -20,13 +20,15 @@ import javax.xml.bind.Unmarshaller;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShift_v1000;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel_v1000;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
 
 public class ProcessorModelReader {
 
 	public IProcessorModel read(File file, IProgressMonitor monitor) throws JAXBException {
 
-		JAXBContext jaxbContext = JAXBContext.newInstance(new Class[]{ProcessorModel_v1000.class});
+		JAXBContext jaxbContext = JAXBContext.newInstance(new Class[]{ProcessorModel_v1000.class, ScanMarker_v1000.class, MassShift_v1000.class});
 		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 		return (IProcessorModel)unmarshaller.unmarshal(file);
 	}

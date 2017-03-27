@@ -16,7 +16,8 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
 
 public class ScanMarkerListLabelProvider extends AbstractChemClipseLabelProvider {
 
@@ -29,8 +30,8 @@ public class ScanMarkerListLabelProvider extends AbstractChemClipseLabelProvider
 		if(columnIndex == 0) {
 			return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SELECTED_SCAN, IApplicationImage.SIZE_16x16);
 		} else if(columnIndex == 1) {
-			if(element instanceof ScanMarker) {
-				ScanMarker scanMarker = (ScanMarker)element;
+			if(element instanceof ScanMarker_v1000) {
+				IScanMarker scanMarker = (IScanMarker)element;
 				if(scanMarker.isValidated()) {
 					return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SELECTED, IApplicationImage.SIZE_16x16);
 				} else {
@@ -45,11 +46,11 @@ public class ScanMarkerListLabelProvider extends AbstractChemClipseLabelProvider
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof ScanMarker) {
-			ScanMarker scanMarker = (ScanMarker)element;
+		if(element instanceof ScanMarker_v1000) {
+			IScanMarker scanMarker = (IScanMarker)element;
 			switch(columnIndex) {
 				case 0:
-					text = Integer.toString(scanMarker.getScan());
+					text = Integer.toString(scanMarker.getScanNumber());
 					break;
 				case 1: // Validated
 					text = "";

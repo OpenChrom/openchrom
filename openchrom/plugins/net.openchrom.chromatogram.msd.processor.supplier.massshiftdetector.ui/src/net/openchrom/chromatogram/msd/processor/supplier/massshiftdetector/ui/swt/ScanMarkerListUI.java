@@ -21,7 +21,8 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editingsupport.ScanMarkerCheckBoxEditingSupport;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.provider.ScanMarkerListLabelProvider;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.provider.ScanMarkerListTableComparator;
@@ -56,8 +57,8 @@ public class ScanMarkerListUI extends ExtendedTableViewer {
 				if(e.stateMask == 262144 && e.keyCode == 32) {
 					IStructuredSelection structuredSelection = getStructuredSelection();
 					Object object = structuredSelection.getFirstElement();
-					if(object instanceof ScanMarker) {
-						ScanMarker scanMarker = (ScanMarker)object;
+					if(object instanceof ScanMarker_v1000) {
+						IScanMarker scanMarker = (IScanMarker)object;
 						scanMarker.setValidated(!scanMarker.isValidated());
 						refresh();
 					}

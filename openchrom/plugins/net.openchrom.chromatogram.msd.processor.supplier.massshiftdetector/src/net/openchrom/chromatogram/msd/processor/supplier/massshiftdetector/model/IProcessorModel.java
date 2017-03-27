@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
 
+import java.util.List;
+
 public interface IProcessorModel {
 
 	String getVersion();
@@ -40,4 +42,8 @@ public interface IProcessorModel {
 	String getDescription();
 
 	void setDescription(String description);
+
+	List<ScanMarker_v1000> getScanMarker();
+
+	void setScanMarker(List<ScanMarker_v1000> scanMarker);
 }
