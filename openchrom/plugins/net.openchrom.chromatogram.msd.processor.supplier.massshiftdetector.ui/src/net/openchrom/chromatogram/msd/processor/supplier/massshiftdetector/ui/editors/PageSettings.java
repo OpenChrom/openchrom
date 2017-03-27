@@ -68,7 +68,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	//
 	private Text referenceChromatogramText;
 	private Text isotopeChromatogramText;
-	private Spinner levelSpinner;
+	private Spinner startShiftLevelSpinner;
+	private Spinner stopShiftLevelSpinner;
 	private Label labelNotes;
 	private Text descriptionText;
 	//
@@ -103,7 +104,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			//
 			referenceChromatogramText.setText(processorModel.getReferenceChromatogramPath());
 			isotopeChromatogramText.setText(processorModel.getIsotopeChromatogramPath());
-			levelSpinner.setSelection(processorModel.getIsotopeLevel());
+			startShiftLevelSpinner.setSelection(processorModel.getStartShiftLevel());
+			stopShiftLevelSpinner.setSelection(processorModel.getStopShiftLevel());
 			labelNotes.setText(processorModel.getNotes());
 			descriptionText.setText(processorModel.getDescription());
 			//
@@ -124,7 +126,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		} else {
 			referenceChromatogramText.setText("");
 			isotopeChromatogramText.setText("");
-			levelSpinner.setSelection(0);
+			startShiftLevelSpinner.setSelection(0);
+			stopShiftLevelSpinner.setSelection(0);
 			labelNotes.setText("");
 			descriptionText.setText("");
 			referenceChromatogramHyperlink.setEnabled(false);
@@ -140,7 +143,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		//
 		createReferenceChromatogramText(client);
 		createIsotopeChromatogramText(client);
-		createLevelSpinner(client);
+		createStartShiftLevelSpinner(client);
+		createStopShiftLevelSpinner(client);
 		createNotesLabel(client);
 		/*
 		 * Add the client to the section.
@@ -222,27 +226,60 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		});
 	}
 
-	private void createLevelSpinner(Composite client) {
+	private void createStartShiftLevelSpinner(Composite client) {
 
-		createLabel(client, "Number of shifts:");
+		createLabel(client, "Start Shift Level:");
 		//
-		levelSpinner = new Spinner(client, SWT.BORDER);
-		levelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
-		levelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
-		levelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
+		startShiftLevelSpinner = new Spinner(client, SWT.BORDER);
+		startShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
+		startShiftLevelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
+		startShiftLevelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
 		//
 		GridData gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		gridData.widthHint = 50;
 		gridData.heightHint = 20;
-		levelSpinner.setLayoutData(gridData);
-		levelSpinner.addSelectionListener(new SelectionAdapter() {
+		startShiftLevelSpinner.setLayoutData(gridData);
+		startShiftLevelSpinner.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				ProcessorData processorData = editorProcessor.getProcessorData();
-				processorData.getProcessorModel().setLevel(levelSpinner.getSelection());
+				if(startShiftLevelSpinner.getSelection() <= stopShiftLevelSpinner.getSelection()) {
+					ProcessorData processorData = editorProcessor.getProcessorData();
+					processorData.getProcessorModel().setStartShiftLevel(startShiftLevelSpinner.getSelection());
+				} else {
+					startShiftLevelSpinner.setSelection(startShiftLevelSpinner.getSelection() - 1);
+				}
+			}
+		});
+	}
+
+	private void createStopShiftLevelSpinner(Composite client) {
+
+		createLabel(client, "Stop Shift Level:");
+		//
+		stopShiftLevelSpinner = new Spinner(client, SWT.BORDER);
+		stopShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
+		stopShiftLevelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
+		stopShiftLevelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
+		//
+		GridData gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		gridData.widthHint = 50;
+		gridData.heightHint = 20;
+		stopShiftLevelSpinner.setLayoutData(gridData);
+		stopShiftLevelSpinner.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				if(stopShiftLevelSpinner.getSelection() >= startShiftLevelSpinner.getSelection()) {
+					ProcessorData processorData = editorProcessor.getProcessorData();
+					processorData.getProcessorModel().setStopShiftLevel(stopShiftLevelSpinner.getSelection());
+				} else {
+					stopShiftLevelSpinner.setSelection(stopShiftLevelSpinner.getSelection() + 1);
+				}
 			}
 		});
 	}

@@ -11,20 +11,29 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.ui.listener.INextListener;
 import org.eclipse.chemclipse.support.ui.listener.IPreviousListener;
 import org.eclipse.chemclipse.support.ui.listener.IProcessListener;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.MassShiftDetectorRunnable;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt.EnhancedIsotopeHeatmapEditor;
 
 public class PageIsotopeHeatmap {
 
+	private static final Logger logger = Logger.getLogger(PageIsotopeHeatmap.class);
+	//
 	private EditorProcessor editorProcessor;
 	//
 	private Composite control;
@@ -68,7 +77,25 @@ public class PageIsotopeHeatmap {
 			@Override
 			public void processAction() {
 
+				/*
+				 * Calculate the shifts.
+				 */
 				ProcessorData processorData = editorProcessor.getProcessorData();
+				if(processorData != null && processorData.getMassShifts() == null) {
+					Shell shell = Display.getCurrent().getActiveShell();
+					MassShiftDetectorRunnable runnable = new MassShiftDetectorRunnable(processorData);
+					ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
+					//
+					try {
+						monitor.run(true, true, runnable);
+						processorData.setMassShifts(runnable.getMassShifts());
+					} catch(InterruptedException e1) {
+						logger.warn(e1);
+					} catch(InvocationTargetException e1) {
+						logger.warn(e1);
+					}
+				}
+				//
 				enhancedIsotopeHeatmapEditor.setInput(processorData);
 			}
 		});

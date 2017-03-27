@@ -43,7 +43,7 @@ public class MassShiftListLabelProvider extends AbstractChemClipseLabelProvider 
 					text = Double.toString(massShift.getMz());
 					break;
 				case 1:
-					text = Integer.toString(massShift.getIsotopeLevel());
+					text = Integer.toString(massShift.getMassShiftLevel());
 					break;
 				case 2:
 					text = Double.toString(massShift.getUncertainty());

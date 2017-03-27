@@ -17,7 +17,8 @@ public class ProcessorWizardElements extends ChromatogramWizardElements implemen
 
 	private String referenceChromatogramPath = "";
 	private String isotopeChromatogramPath = "";
-	private int isotopeLevel = 1;
+	private int startShiftLevel = 0;
+	private int stopShiftLevel = 0;
 	private String notes = ""; // Could be ""
 	private String description = ""; // Could be ""
 
@@ -46,15 +47,27 @@ public class ProcessorWizardElements extends ChromatogramWizardElements implemen
 	}
 
 	@Override
-	public int getIsotopeLevel() {
+	public int getStartShiftLevel() {
 
-		return isotopeLevel;
+		return startShiftLevel;
 	}
 
 	@Override
-	public void setIsotopeLevel(int isotopeLevel) {
+	public void setStartShiftLevel(int startShiftLevel) {
 
-		this.isotopeLevel = isotopeLevel;
+		this.startShiftLevel = startShiftLevel;
+	}
+
+	@Override
+	public int getStopShiftLevel() {
+
+		return stopShiftLevel;
+	}
+
+	@Override
+	public void setStopShiftLevel(int stopShiftLevel) {
+
+		this.stopShiftLevel = stopShiftLevel;
 	}
 
 	@Override

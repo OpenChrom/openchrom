@@ -165,7 +165,11 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				System.out.println("TODO");
+				if(processorData != null) {
+					processorData.resetResults();
+					shiftHeatmapUI.update(processorData);
+				}
+				//
 				boolean error = false;
 				if(error) {
 					buttonNext.setEnabled(false);

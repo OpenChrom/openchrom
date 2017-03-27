@@ -42,7 +42,8 @@ public class PageSettings extends AbstractExtendedWizardPage {
 	//
 	private Text referenceChromatogramText;
 	private Text isotopeChromatogramText;
-	private Spinner levelSpinner;
+	private Spinner startShiftLevelSpinner;
+	private Spinner stopShiftLevelSpinner;
 	private Text notesText;
 	private Text descriptionText;
 
@@ -90,7 +91,8 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		//
 		createReferenceChromatogramSection(composite);
 		createIstopeChromatogramSection(composite);
-		createLevelSection(composite);
+		createStartShiftLevelSection(composite);
+		createStopShiftLevelSection(composite);
 		createNoteSection(composite);
 		createDescriptionSection(composite);
 		//
@@ -181,22 +183,46 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		});
 	}
 
-	private void createLevelSection(Composite parent) {
+	private void createStartShiftLevelSection(Composite parent) {
 
 		Label label = new Label(parent, SWT.NONE);
-		label.setText("Number of shifts:");
+		label.setText("Start Shift Level:");
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataLabel.horizontalSpan = 2;
 		label.setLayoutData(gridDataLabel);
 		//
-		levelSpinner = new Spinner(parent, SWT.BORDER);
+		startShiftLevelSpinner = new Spinner(parent, SWT.BORDER);
 		GridData gridDataSpinner = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataSpinner.horizontalSpan = 2;
-		levelSpinner.setLayoutData(gridDataSpinner);
-		levelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
-		levelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
-		levelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
-		levelSpinner.addModifyListener(new ModifyListener() {
+		startShiftLevelSpinner.setLayoutData(gridDataSpinner);
+		startShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
+		startShiftLevelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
+		startShiftLevelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
+		startShiftLevelSpinner.addModifyListener(new ModifyListener() {
+
+			public void modifyText(ModifyEvent e) {
+
+				validateData();
+			}
+		});
+	}
+
+	private void createStopShiftLevelSection(Composite parent) {
+
+		Label label = new Label(parent, SWT.NONE);
+		label.setText("Stop Shift Level:");
+		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
+		gridDataLabel.horizontalSpan = 2;
+		label.setLayoutData(gridDataLabel);
+		//
+		stopShiftLevelSpinner = new Spinner(parent, SWT.BORDER);
+		GridData gridDataSpinner = new GridData(GridData.FILL_HORIZONTAL);
+		gridDataSpinner.horizontalSpan = 2;
+		stopShiftLevelSpinner.setLayoutData(gridDataSpinner);
+		stopShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
+		stopShiftLevelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
+		stopShiftLevelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
+		stopShiftLevelSpinner.addModifyListener(new ModifyListener() {
 
 			public void modifyText(ModifyEvent e) {
 
@@ -253,7 +279,13 @@ public class PageSettings extends AbstractExtendedWizardPage {
 			wizardElements.setIsotopeChromatogramPath(isotopeChromatogramPath);
 		}
 		//
-		wizardElements.setIsotopeLevel(levelSpinner.getSelection());
+		if(startShiftLevelSpinner.getSelection() > stopShiftLevelSpinner.getSelection()) {
+			message = "The start shift level must be <= stop shift level.";
+		} else {
+			wizardElements.setStartShiftLevel(startShiftLevelSpinner.getSelection());
+			wizardElements.setStopShiftLevel(stopShiftLevelSpinner.getSelection());
+		}
+		//
 		wizardElements.setNotes(notesText.getText().trim());
 		wizardElements.setDescription(descriptionText.getText().trim());
 		/*

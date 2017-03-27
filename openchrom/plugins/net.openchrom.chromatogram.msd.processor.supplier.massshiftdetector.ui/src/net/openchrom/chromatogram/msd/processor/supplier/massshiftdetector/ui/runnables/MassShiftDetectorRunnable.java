@@ -41,10 +41,11 @@ public class MassShiftDetectorRunnable implements IRunnableWithProgress {
 		if(processorData != null) {
 			IChromatogramMSD reference = processorData.getReferenceChromatogram();
 			IChromatogramMSD shifted = processorData.getIsotopeChromatogram();
-			int level = processorData.getProcessorModel().getIsotopeLevel();
+			int startShiftLevel = processorData.getProcessorModel().getStartShiftLevel();
+			int stopShiftLevel = processorData.getProcessorModel().getStopShiftLevel();
 			//
 			MassShiftDetector massShiftDetector = new MassShiftDetector();
-			massShifts = massShiftDetector.detectMassShifts(reference, shifted, level, monitor);
+			massShifts = massShiftDetector.detectMassShifts(reference, shifted, startShiftLevel, stopShiftLevel, monitor);
 		}
 	}
 }

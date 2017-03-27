@@ -14,12 +14,12 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.mode
 public class MassShift {
 
 	private double mz;
-	private int isotopeLevel;
+	private int massShiftLevel;
 	private double uncertainty;
 
-	public MassShift(double mz, int isotopeLevel, double uncertainty) {
+	public MassShift(double mz, int massShiftLevel, double uncertainty) {
 		this.mz = mz;
-		this.isotopeLevel = isotopeLevel;
+		this.massShiftLevel = massShiftLevel;
 		this.uncertainty = uncertainty;
 	}
 
@@ -28,9 +28,9 @@ public class MassShift {
 		return mz;
 	}
 
-	public int getIsotopeLevel() {
+	public int getMassShiftLevel() {
 
-		return isotopeLevel;
+		return massShiftLevel;
 	}
 
 	public double getUncertainty() {
@@ -46,7 +46,7 @@ public class MassShift {
 		long temp;
 		temp = Double.doubleToLongBits(uncertainty);
 		result = prime * result + (int)(temp ^ (temp >>> 32));
-		result = prime * result + isotopeLevel;
+		result = prime * result + massShiftLevel;
 		temp = Double.doubleToLongBits(mz);
 		result = prime * result + (int)(temp ^ (temp >>> 32));
 		return result;
@@ -64,7 +64,7 @@ public class MassShift {
 		MassShift other = (MassShift)obj;
 		if(Double.doubleToLongBits(uncertainty) != Double.doubleToLongBits(other.uncertainty))
 			return false;
-		if(isotopeLevel != other.isotopeLevel)
+		if(massShiftLevel != other.massShiftLevel)
 			return false;
 		if(Double.doubleToLongBits(mz) != Double.doubleToLongBits(other.mz))
 			return false;
@@ -74,6 +74,6 @@ public class MassShift {
 	@Override
 	public String toString() {
 
-		return "MassShift [mz=" + mz + ", isotopeLevel=" + isotopeLevel + ", uncertainty=" + uncertainty + "]";
+		return "MassShift [mz=" + mz + ", massShiftLevel=" + massShiftLevel + ", uncertainty=" + uncertainty + "]";
 	}
 }

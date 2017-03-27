@@ -25,8 +25,10 @@ public class ProcessorModel_v1000 {
 	private String referenceChromatogramPath;
 	@XmlElement(name = "IsotopeChromatogramPath")
 	private String isotopeChromatogramPath;
-	@XmlElement(name = "IsotopeLevel")
-	private int isotopeLevel;
+	@XmlElement(name = "StartShiftLevel")
+	private int startShiftLevel;
+	@XmlElement(name = "StopShiftLevel")
+	private int stopShiftLevel;
 	@XmlElement(name = "Notes")
 	private String notes;
 	@XmlElement(name = "Description")
@@ -66,14 +68,25 @@ public class ProcessorModel_v1000 {
 	}
 
 	@XmlTransient
-	public int getIsotopeLevel() {
+	public int getStartShiftLevel() {
 
-		return isotopeLevel;
+		return startShiftLevel;
 	}
 
-	public void setLevel(int isotopeLevel) {
+	public void setStartShiftLevel(int startShiftLevel) {
 
-		this.isotopeLevel = isotopeLevel;
+		this.startShiftLevel = startShiftLevel;
+	}
+
+	@XmlTransient
+	public int getStopShiftLevel() {
+
+		return stopShiftLevel;
+	}
+
+	public void setStopShiftLevel(int stopShiftLevel) {
+
+		this.stopShiftLevel = stopShiftLevel;
 	}
 
 	@XmlTransient

@@ -33,6 +33,12 @@ public class ProcessorData {
 		levelUncertainty = new HashMap<Integer, Integer>();
 	}
 
+	public void resetResults() {
+
+		massShifts = null;
+		scanMarker = null;
+	}
+
 	public ProcessorModel_v1000 getProcessorModel() {
 
 		return processorModel;

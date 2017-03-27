@@ -11,16 +11,13 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.draw2d.LightweightSystem;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.nebula.visualization.widgets.datadefinition.ColorMap;
 import org.eclipse.nebula.visualization.widgets.figures.IntensityGraphFigure;
 import org.eclipse.nebula.visualization.xygraph.linearscale.Range;
@@ -40,18 +37,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ValueRange;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.MassShiftDetectorRunnable;
 
 public class IsotopeHeatmapUI extends Composite {
 
-	private static final Logger logger = Logger.getLogger(IsotopeHeatmapUI.class);
-	//
 	private Combo comboIsotopeLevel;
 	private Text textThreshold;
 	private Button buttonDecreaseThreshold;
@@ -75,34 +68,17 @@ public class IsotopeHeatmapUI extends Composite {
 			/*
 			 * Set the combo items.
 			 */
-			int level = processorData.getProcessorModel().getIsotopeLevel();
-			String[] items = new String[level + 1];
-			for(int i = 0; i <= level; i++) {
-				items[i] = "Mass Shift (+" + i + ")";
+			int startShiftLevel = processorData.getProcessorModel().getStartShiftLevel();
+			int stopShiftLevel = processorData.getProcessorModel().getStopShiftLevel();
+			//
+			int size = stopShiftLevel - startShiftLevel + 1;
+			String[] items = new String[size];
+			for(int i = 0; i < size; i++) {
+				items[i] = "Mass Shift (+" + (i + startShiftLevel) + ")";
 			}
 			comboIsotopeLevel.setItems(items);
 			comboIsotopeLevel.select(0);
-			/*
-			 * Calculate the shifts.
-			 */
-			if(processorData.getMassShifts() == null) {
-				Shell shell = Display.getCurrent().getActiveShell();
-				MassShiftDetectorRunnable runnable = new MassShiftDetectorRunnable(processorData);
-				ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
-				//
-				try {
-					monitor.run(true, true, runnable);
-					processorData.setMassShifts(runnable.getMassShifts());
-				} catch(InterruptedException e) {
-					logger.warn(e);
-				} catch(InvocationTargetException e) {
-					logger.warn(e);
-				}
-			}
-			/*
-			 * Adjust the scale.
-			 */
-			showData(0);
+			showData();
 		} else {
 			/*
 			 * Clear the items.
@@ -115,7 +91,7 @@ public class IsotopeHeatmapUI extends Composite {
 
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.FILL);
-		composite.setLayout(new GridLayout(5, false));
+		composite.setLayout(new GridLayout(3, false));
 		//
 		colorMaps = new HashMap<Integer, ColorMap>();
 		for(int i = MassShiftDetector.SCALE_UNCERTAINTY_MIN; i <= MassShiftDetector.SCALE_UNCERTAINTY_MAX; i++) {
@@ -137,21 +113,25 @@ public class IsotopeHeatmapUI extends Composite {
 		 */
 		createMassShiftCombo(composite);
 		createHeatmapComposite(composite);
-		createThresholdSlider(composite);
+		//
+		Composite compositeThreshold = new Composite(composite, SWT.NONE);
+		GridData gridDataThreshold = new GridData(GridData.FILL_HORIZONTAL);
+		gridDataThreshold.horizontalSpan = 3;
+		compositeThreshold.setLayoutData(gridDataThreshold);
+		compositeThreshold.setLayout(new GridLayout(5, false));
+		createThresholdSlider(compositeThreshold);
 	}
 
 	private void createMassShiftCombo(Composite parent) {
 
 		comboIsotopeLevel = new Combo(parent, SWT.READ_ONLY);
-		GridData gridDataCombo = new GridData(GridData.FILL_HORIZONTAL);
-		gridDataCombo.horizontalSpan = 3;
-		comboIsotopeLevel.setLayoutData(gridDataCombo);
+		comboIsotopeLevel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		comboIsotopeLevel.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				showData(comboIsotopeLevel.getSelectionIndex());
+				showData();
 			}
 		});
 		//
@@ -193,7 +173,7 @@ public class IsotopeHeatmapUI extends Composite {
 		//
 		Canvas canvas = new Canvas(parent, SWT.FILL | SWT.BORDER);
 		GridData gridDataCanvas = new GridData(GridData.FILL_BOTH);
-		gridDataCanvas.horizontalSpan = 5;
+		gridDataCanvas.horizontalSpan = 3;
 		canvas.setLayoutData(gridDataCanvas);
 		canvas.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 		//
@@ -279,13 +259,14 @@ public class IsotopeHeatmapUI extends Composite {
 		});
 	}
 
-	private void showData(int level) {
+	private void showData() {
 
-		if(processorData.getMassShifts() != null && processorData.getMassShifts().get(level) != null) {
+		int massShiftLevel = getMassShiftLevel();
+		if(processorData.getMassShifts() != null && processorData.getMassShifts().get(massShiftLevel) != null) {
 			//
 			// Map<Integer, Map<Integer, Map<Integer, Double>>>: ShiftLevel, Scan, m/z, Intensity
 			//
-			Map<Integer, Map<Integer, Double>> shiftLevelData = processorData.getMassShifts().get(level);
+			Map<Integer, Map<Integer, Double>> shiftLevelData = processorData.getMassShifts().get(massShiftLevel);
 			int startScan = Collections.min(shiftLevelData.keySet());
 			int stopScan = Collections.max(shiftLevelData.keySet());
 			//
@@ -342,8 +323,8 @@ public class IsotopeHeatmapUI extends Composite {
 			intensityGraphFigure.setMax(MassShiftDetector.SCALE_UNCERTAINTY_MAX);
 			lightweightSystem.setContents(intensityGraphFigure);
 			intensityGraphFigure.setDataArray(heatmapData);
-			//
-			adjustRange(level);
+			intensityGraphFigure.getUpdateManager().performUpdate();
+			adjustRange(massShiftLevel);
 		} else {
 			clearRange();
 		}
@@ -374,18 +355,23 @@ public class IsotopeHeatmapUI extends Composite {
 
 		String[] items = new String[]{};
 		comboIsotopeLevel.setItems(items);
-		if(processorData != null) {
-			processorData.setMassShifts(null);
-		}
-		intensityGraphFigure.getGraphArea().erase();
+		/*
+		 * Clear the heatmap.
+		 */
+		intensityGraphFigure.setDataHeight(0);
+		intensityGraphFigure.setDataWidth(0);
+		intensityGraphFigure.setDataArray(new double[]{});
+		intensityGraphFigure.setMin(0);
+		intensityGraphFigure.setMax(0);
+		//
 		scaleThreshold.setSelection(MassShiftDetector.SCALE_UNCERTAINTY_SELECTION);
 		textThreshold.setText(Integer.toString(MassShiftDetector.SCALE_UNCERTAINTY_SELECTION));
 	}
 
-	private void adjustRange(int level) {
+	private void adjustRange(int massShiftLevel) {
 
 		Map<Integer, Integer> levelUncertainty = processorData.getLevelUncertainty();
-		Integer threshold = levelUncertainty.get(level);
+		Integer threshold = levelUncertainty.get(massShiftLevel);
 		if(threshold != null) {
 			scaleThreshold.setSelection(threshold);
 			textThreshold.setText(Integer.toString(threshold));
@@ -400,13 +386,23 @@ public class IsotopeHeatmapUI extends Composite {
 		scaleThreshold.setSelection(threshold);
 		textThreshold.setText(Integer.toString(threshold));
 		//
-		int isotopeLevel = comboIsotopeLevel.getSelectionIndex();
+		int massShiftLevel = getMassShiftLevel();
 		Map<Integer, Integer> levelUncertainty = processorData.getLevelUncertainty();
-		levelUncertainty.put(isotopeLevel, threshold);
+		levelUncertainty.put(massShiftLevel, threshold);
 		/*
 		 * Set the color map.
 		 */
 		ColorMap colorMap = colorMaps.get(threshold);
 		intensityGraphFigure.setColorMap(colorMap);
+	}
+
+	private int getMassShiftLevel() {
+
+		int selection = comboIsotopeLevel.getSelectionIndex();
+		int massShiftLevel = 0;
+		if(processorData != null) {
+			massShiftLevel = selection + processorData.getProcessorModel().getStartShiftLevel();
+		}
+		return massShiftLevel;
 	}
 }

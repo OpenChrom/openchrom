@@ -60,12 +60,13 @@ public class MassShiftDetector_1_ITest extends TestCase {
 
 	private void extractAndPrintResults(File fileReference, File fileShifted, String exportPath, boolean useAbsValues) throws IllegalArgumentException, ChromatogramIsNullException, NoExtractedIonSignalStoredException, FileNotFoundException {
 
-		int maxShiftLevel = 3;
+		int startShiftLevel = 0;
+		int stopShiftLevel = 3;
 		IChromatogramMSD chromatogramReference = getChromatogram(fileReference);
 		IChromatogramMSD chromatogramShifted = getChromatogram(fileShifted);
-		Map<Integer, Map<Integer, Map<Integer, Double>>> differenceIonSignalsMap = massShiftDetector.detectMassShifts(chromatogramReference, chromatogramShifted, maxShiftLevel, new NullProgressMonitor());
+		Map<Integer, Map<Integer, Map<Integer, Double>>> differenceIonSignalsMap = massShiftDetector.detectMassShifts(chromatogramReference, chromatogramShifted, startShiftLevel, stopShiftLevel, new NullProgressMonitor());
 		//
-		for(int shiftLevel = 0; shiftLevel <= maxShiftLevel; shiftLevel++) {
+		for(int shiftLevel = startShiftLevel; shiftLevel <= stopShiftLevel; shiftLevel++) {
 			PrintWriter printWriter = new PrintWriter(new File(exportPath + shiftLevel + ".txt"));
 			Map<Integer, Map<Integer, Double>> extractedIonSignalsDifference = differenceIonSignalsMap.get(shiftLevel);
 			int startScan = Collections.min(extractedIonSignalsDifference.keySet());

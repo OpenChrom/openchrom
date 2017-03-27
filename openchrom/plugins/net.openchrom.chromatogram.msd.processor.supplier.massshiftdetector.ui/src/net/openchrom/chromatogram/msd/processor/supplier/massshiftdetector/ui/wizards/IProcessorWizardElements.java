@@ -21,9 +21,13 @@ public interface IProcessorWizardElements {
 
 	void setIsotopeChromatogramPath(String isotopeChromatogramPath);
 
-	int getIsotopeLevel();
+	int getStartShiftLevel();
 
-	void setIsotopeLevel(int isotopeLevel);
+	void setStartShiftLevel(int startShiftLevel);
+
+	int getStopShiftLevel();
+
+	void setStopShiftLevel(int startShiftLevel);
 
 	String getNotes();
 

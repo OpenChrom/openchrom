@@ -60,10 +60,18 @@ public class MassShiftDetector {
 	 * @return Map<Integer, Map<Integer, Map<Integer, Double>>>
 	 * @throws IllegalArgumentException
 	 */
-	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD referenceChromatogram, IChromatogramMSD isotopeChromatogram, int isotopeLevel, IProgressMonitor monitor) throws ChromatogramIsNullException, IllegalArgumentException {
+	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD referenceChromatogram, IChromatogramMSD isotopeChromatogram, int startShiftLevel, int stopShiftLevel, IProgressMonitor monitor) throws ChromatogramIsNullException, IllegalArgumentException {
 
-		if(isotopeLevel < MIN_ISOTOPE_LEVEL || isotopeLevel > MAX_ISOTOPE_LEVEL) {
-			throw new IllegalArgumentException("The level is not valid.");
+		if(startShiftLevel < MIN_ISOTOPE_LEVEL || startShiftLevel > MAX_ISOTOPE_LEVEL) {
+			throw new IllegalArgumentException("The start shift level is not valid.");
+		}
+		//
+		if(stopShiftLevel < MIN_ISOTOPE_LEVEL || stopShiftLevel > MAX_ISOTOPE_LEVEL) {
+			throw new IllegalArgumentException("The stop shift level is not valid.");
+		}
+		//
+		if(stopShiftLevel < startShiftLevel) {
+			throw new IllegalArgumentException("The stop shift level must be >= start shift level.");
 		}
 		/*
 		 * Extract the m/z values.
@@ -76,16 +84,16 @@ public class MassShiftDetector {
 		/*
 		 * Do the calculation.
 		 */
-		for(int isotope = 0; isotope <= isotopeLevel; isotope++) {
+		for(int shiftLevel = startShiftLevel; shiftLevel <= stopShiftLevel; shiftLevel++) {
 			/*
 			 * Get the m/z range.
 			 * The last m/z values are skipped, dependent on the selected level.
 			 * Create a new difference signals instance.
 			 */
 			int startIon = referenceIonSignals.getStartIon();
-			int stopIon = referenceIonSignals.getStopIon() - isotope;
+			int stopIon = referenceIonSignals.getStopIon() - shiftLevel;
 			Map<Integer, Map<Integer, Double>> extractedIonSignalsDifference = new HashMap<Integer, Map<Integer, Double>>();
-			uncertaintyIonSignalsMap.put(isotope, extractedIonSignalsDifference);
+			uncertaintyIonSignalsMap.put(shiftLevel, extractedIonSignalsDifference);
 			/*
 			 * Make the difference calculation.
 			 */
@@ -99,35 +107,31 @@ public class MassShiftDetector {
 					Map<Integer, Double> extractedIonSignalUncertainty = new HashMap<Integer, Double>();
 					extractedIonSignalsDifference.put(scan, extractedIonSignalUncertainty);
 					//
-					float intensityReferenceMedian = referenceIonSignal.getMedianIntensity();
-					//
 					for(int ion = startIon; ion <= stopIon; ion++) {
 						/*
 						 * Calculate the m/z difference.
 						 */
-						monitor.subTask("Calculate Level: " + isotope + " -> Scan: " + scan + " -> m/z: " + ion);
+						monitor.subTask("Calculate Level: " + shiftLevel + " -> Scan: " + scan + " -> m/z: " + ion);
 						//
 						double intensityReference = referenceIonSignal.getAbundance(ion);
 						double uncertainty = NORMALIZATION_BASE; // 100 == uncertain -> no match
-						if(intensityReference >= intensityReferenceMedian) {
+						/*
+						 * Only calculate the value if it's above the median intensity.
+						 */
+						double intensityIsotope = isotopeIonSignal.getAbundance(ion + shiftLevel);
+						double intensityMax = Math.max(intensityReference, intensityIsotope);
+						double intensityDelta = Math.abs(intensityReference - intensityIsotope);
+						/*
+						 * Calculate the uncertainty.
+						 */
+						if(intensityMax != 0) {
+							uncertainty = NORMALIZATION_BASE / intensityMax * intensityDelta;
 							/*
-							 * Only calculate the value if it's above the median intensity.
+							 * Note that the uncertainty scale is switched when using the
+							 * isotopeLevel 0, hence adjust it.
 							 */
-							double intensityIsotope = isotopeIonSignal.getAbundance(ion + isotope);
-							double intensityMax = Math.max(intensityReference, intensityIsotope);
-							double intensityDelta = Math.abs(intensityReference - intensityIsotope);
-							/*
-							 * Calculate the uncertainty.
-							 */
-							if(intensityMax != 0) {
-								uncertainty = NORMALIZATION_BASE / intensityMax * intensityDelta;
-								/*
-								 * Note that the uncertainty scale is switched when using the
-								 * isotopeLevel 0, hence adjust it.
-								 */
-								if(isotopeLevel == 0) {
-									uncertainty = NORMALIZATION_BASE - uncertainty;
-								}
+							if(shiftLevel == 0) {
+								uncertainty = NORMALIZATION_BASE - uncertainty;
 							}
 						}
 						/*
