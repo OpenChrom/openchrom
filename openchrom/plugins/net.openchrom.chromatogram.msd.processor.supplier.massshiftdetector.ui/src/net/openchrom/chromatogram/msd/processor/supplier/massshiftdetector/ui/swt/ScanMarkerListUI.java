@@ -25,7 +25,7 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.pr
 public class ScanMarkerListUI extends ExtendedTableViewer {
 
 	public static final int INDEX_VALIDATED = 1;
-	private String[] titles = {"scan", "validated"};
+	private String[] titles = {"Scan #", "Validated"};
 	private int bounds[] = {200, 60};
 
 	public ScanMarkerListUI(Composite parent, int style) {

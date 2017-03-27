@@ -12,6 +12,7 @@
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
@@ -25,24 +26,11 @@ public class ProcessorData {
 	//
 	private Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts;
 	private Map<Integer, Integer> levelUncertainty;
+	//
+	private List<ScanMarker> scanMarker;
 
 	public ProcessorData() {
 		levelUncertainty = new HashMap<Integer, Integer>();
-	}
-
-	public Map<Integer, Integer> getLevelUncertainty() {
-
-		return levelUncertainty;
-	}
-
-	public Map<Integer, Map<Integer, Map<Integer, Double>>> getMassShifts() {
-
-		return massShifts;
-	}
-
-	public void setMassShifts(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts) {
-
-		this.massShifts = massShifts;
 	}
 
 	public ProcessorModel_v1000 getProcessorModel() {
@@ -73,5 +61,30 @@ public class ProcessorData {
 	public void setIsotopeChromatogram(IChromatogramMSD isotopeChromatogram) {
 
 		this.isotopeChromatogram = isotopeChromatogram;
+	}
+
+	public Map<Integer, Map<Integer, Map<Integer, Double>>> getMassShifts() {
+
+		return massShifts;
+	}
+
+	public void setMassShifts(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts) {
+
+		this.massShifts = massShifts;
+	}
+
+	public Map<Integer, Integer> getLevelUncertainty() {
+
+		return levelUncertainty;
+	}
+
+	public List<ScanMarker> getScanMarker() {
+
+		return scanMarker;
+	}
+
+	public void setScanMarker(List<ScanMarker> scanMarker) {
+
+		this.scanMarker = scanMarker;
 	}
 }

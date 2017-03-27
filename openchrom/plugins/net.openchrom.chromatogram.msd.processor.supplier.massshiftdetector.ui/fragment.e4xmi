@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_X4Y-EATjEeeTJNNUrNvi1w">
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_X4Y-EATjEeeTJNNUrNvi1w">
+  <imports xsi:type="advanced:Area" xmi:id="_Ze5ikBK9EeeX1JgCll1fBQ" elementId="org.eclipse.chemclipse.rcp.app.ui.editor"/>
+  <imports xsi:type="basic:Part" xmi:id="_csbOgBK9EeeX1JgCll1fBQ" elementId="org.eclipse.ui.navigator.ProjectExplorer"/>
+  <imports xsi:type="basic:Part" xmi:id="_wyx4wBK9EeeX1JgCll1fBQ" elementId="org.eclipse.chemclipse.processing.ui.parts.ProcessingInfoPart"/>
+  <imports xsi:type="basic:Part" xmi:id="_-xNigBK9EeeX1JgCll1fBQ" elementId="org.eclipse.chemclipse.ux.extension.xxd.ui.part.chromatogramOverlayMirrored"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_V8IlYATmEeeTJNNUrNvi1w" featurename="commands" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
     <elements xsi:type="commands:Command" xmi:id="_aMrNgATmEeeTJNNUrNvi1w" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.command.processor" commandName="Mass Shift Detector"/>
   </fragments>
@@ -8,5 +12,31 @@
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_jS7AUATmEeeTJNNUrNvi1w" featurename="children" parentElementId="org.eclipse.chemclipse.ux.extension.ui.menu.process">
     <elements xsi:type="menu:HandledMenuItem" xmi:id="_l_NAYATmEeeTJNNUrNvi1w" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.handledmenuitem.processor" label="Mass Shift Detector" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/peak.gif" command="_aMrNgATmEeeTJNNUrNvi1w"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_XxNm0BK_EeeX1JgCll1fBQ" featurename="sharedElements" parentElementId="org.eclipse.chemclipse.rcp.app.ui.trimmedwindow.main">
+    <elements xsi:type="basic:Part" xmi:id="_aI5P4BK_EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.part.isotopemscomparison" contributionURI="bundleclass://net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui/net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.parts.MassSpectrumComparisonPart" label="Isotope MS Comparison" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_C79hIBK9EeeX1JgCll1fBQ" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.perspectivestack.main">
+    <elements xsi:type="advanced:Perspective" xmi:id="_Fp6VIBK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.perspective.massshiftdetector" label="Mass Shift Detector" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif">
+      <children xsi:type="basic:PartSashContainer" xmi:id="_d314wBK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.partsashcontainer.0">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_gAV2UBK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.partsashcontainer.1" containerData="5500" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_k45gsBK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.partstack.0" containerData="1500">
+            <children xsi:type="advanced:Placeholder" xmi:id="_paNIsBK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.placeholder.0" ref="_csbOgBK9EeeX1JgCll1fBQ"/>
+          </children>
+          <children xsi:type="advanced:Placeholder" xmi:id="_lWMgsBK9EeeX1JgCll1fBQ" elementId="org.eclipse.ui.editorss" ref="_Ze5ikBK9EeeX1JgCll1fBQ"/>
+        </children>
+        <children xsi:type="basic:PartSashContainer" xmi:id="_gSzfUBK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.partsashcontainer.2" containerData="4500" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_qcCZIBK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.partstack.1">
+            <children xsi:type="advanced:Placeholder" xmi:id="_DpYLUBK-EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.placeholder.2" ref="_-xNigBK9EeeX1JgCll1fBQ"/>
+          </children>
+          <children xsi:type="basic:PartStack" xmi:id="_qt92oBK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.partstack.2">
+            <children xsi:type="advanced:Placeholder" xmi:id="_jt9FoBK_EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.placeholder.3" ref="_aI5P4BK_EeeX1JgCll1fBQ"/>
+          </children>
+          <children xsi:type="basic:PartStack" xmi:id="_rAz6IBK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.partstack.3">
+            <children xsi:type="advanced:Placeholder" xmi:id="_676r8BK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.placeholder.1" ref="_wyx4wBK9EeeX1JgCll1fBQ"/>
+          </children>
+        </children>
+      </children>
+    </elements>
   </fragments>
 </fragment:ModelFragments>

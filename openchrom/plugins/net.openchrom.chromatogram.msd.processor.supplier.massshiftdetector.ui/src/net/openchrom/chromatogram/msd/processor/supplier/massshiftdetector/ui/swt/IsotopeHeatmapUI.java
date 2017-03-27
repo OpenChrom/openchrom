@@ -121,11 +121,15 @@ public class IsotopeHeatmapUI extends Composite {
 		for(int i = MassShiftDetector.SCALE_UNCERTAINTY_MIN; i <= MassShiftDetector.SCALE_UNCERTAINTY_MAX; i++) {
 			ColorMap colorMap = new ColorMap();
 			double threshold = 1.0d / MassShiftDetector.SCALE_UNCERTAINTY_MAX * i;
-			colorMap.getMap().put(threshold * 0.25d, new RGB(255, 0, 0));
-			colorMap.getMap().put(threshold * 0.5d, new RGB(0, 255, 255));
-			colorMap.getMap().put(threshold * 0.75d, new RGB(0, 255, 0));
-			colorMap.getMap().put(threshold, new RGB(255, 255, 255));
-			colorMap.getMap().put(1.0d, new RGB(255, 255, 255));
+			colorMap.getMap().put(0.0d, new RGB(0, 0, 143));
+			colorMap.getMap().put(threshold * 0.2d, new RGB(0, 0, 255));
+			colorMap.getMap().put(threshold * 0.4d, new RGB(0, 255, 255));
+			colorMap.getMap().put(threshold * 0.6d, new RGB(255, 255, 0));
+			colorMap.getMap().put(threshold * 0.8d, new RGB(255, 0, 0));
+			colorMap.getMap().put(threshold, new RGB(128, 0, 0));
+			if(threshold < 1.0d) {
+				colorMap.getMap().put(1.0d, new RGB(128, 0, 0));
+			}
 			colorMaps.put(i, colorMap);
 		}
 		/*
@@ -152,7 +156,7 @@ public class IsotopeHeatmapUI extends Composite {
 		});
 		//
 		Label label = new Label(parent, SWT.NONE);
-		label.setText("Threshold");
+		label.setText("Threshold:");
 		//
 		createTextThreshold(parent);
 	}

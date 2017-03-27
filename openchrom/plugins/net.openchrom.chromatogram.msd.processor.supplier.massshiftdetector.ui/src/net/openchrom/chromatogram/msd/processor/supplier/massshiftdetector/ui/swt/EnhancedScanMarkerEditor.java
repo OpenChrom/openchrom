@@ -13,16 +13,20 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.s
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.swt.ui.components.massspectrum.MassValueDisplayPrecision;
+import org.eclipse.chemclipse.rcp.app.ui.addons.ModelSupportAddon;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.support.ui.listener.AbstractControllerComposite;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -34,6 +38,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
@@ -56,7 +61,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 	//
 	private ScanMarkerListUI scanMarkerListUI;
 	private MassShiftListUI massShiftListUI;
-	private MassSpectrumComparisonUI massSpectrumComparisonUI;
+	private Label scanMarkerInfoLabel;
 
 	public EnhancedScanMarkerEditor(Composite parent, int style) {
 		super(parent, style);
@@ -72,7 +77,6 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 	@Override
 	public boolean setFocus() {
 
-		plotData();
 		return super.setFocus();
 	}
 
@@ -110,14 +114,10 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 		composite.setLayout(new GridLayout(2, false));
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		//
-		Composite mainComposite = new Composite(composite, SWT.NONE);
-		mainComposite.setLayout(new GridLayout(1, true));
-		mainComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		//
-		createListComposite(mainComposite);
-		//
-		massSpectrumComparisonUI = new MassSpectrumComparisonUI(mainComposite, SWT.BORDER, MassValueDisplayPrecision.NOMINAL);
-		massSpectrumComparisonUI.setLayoutData(new GridData(GridData.FILL_BOTH));
+		Composite compositeMain = new Composite(composite, SWT.NONE);
+		compositeMain.setLayout(new GridLayout(2, true));
+		compositeMain.setLayoutData(new GridData(GridData.FILL_BOTH));
+		createListComposite(compositeMain);
 		/*
 		 * Button Bar
 		 */
@@ -138,13 +138,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
 	private void createListComposite(Composite parent) {
 
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(2, true));
-		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		/*
-		 * Lists
-		 */
-		scanMarkerListUI = new ScanMarkerListUI(composite, SWT.BORDER);
+		scanMarkerListUI = new ScanMarkerListUI(parent, SWT.BORDER);
 		scanMarkerListUI.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
 		scanMarkerListUI.getTable().addSelectionListener(new SelectionAdapter() {
 
@@ -154,23 +148,36 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 				IStructuredSelection selection = scanMarkerListUI.getStructuredSelection();
 				Object object = selection.getFirstElement();
 				if(object instanceof ScanMarker) {
-					//
+					/*
+					 * Display the mass shifts
+					 */
 					ScanMarker scanMarker = (ScanMarker)object;
+					massShiftListUI.setInput(scanMarker.getMassShifts());
+					/*
+					 * Update the comparison UI.
+					 */
 					int scan = scanMarker.getScan();
 					IChromatogramMSD referenceChromatogram = editorProcessor.getProcessorData().getReferenceChromatogram();
 					IChromatogramMSD isotopeChromatogram = editorProcessor.getProcessorData().getIsotopeChromatogram();
-					//
-					massShiftListUI.setInput(scanMarker.getMassShifts());
-					//
 					IScanMSD referenceMassSpectrum = (IScanMSD)referenceChromatogram.getScan(scan);
 					IScanMSD isotopeMassSpectrum = (IScanMSD)isotopeChromatogram.getScan(scan);
-					massSpectrumComparisonUI.update(referenceMassSpectrum, isotopeMassSpectrum, true);
+					//
+					IEventBroker eventBroker = ModelSupportAddon.getEventBroker();
+					Map<String, IScanMSD> data = new HashMap<String, IScanMSD>();
+					data.put(IChemClipseEvents.PROPERTY_REFERENCE_MS, referenceMassSpectrum);
+					data.put(IChemClipseEvents.PROPERTY_COMPARISON_MS, isotopeMassSpectrum);
+					eventBroker.post(IChemClipseEvents.TOPIC_SCAN_MSD_UPDATE_COMPARISON, data);
 				}
 			}
 		});
 		//
-		massShiftListUI = new MassShiftListUI(composite, SWT.BORDER);
+		massShiftListUI = new MassShiftListUI(parent, SWT.BORDER);
 		massShiftListUI.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
+		//
+		scanMarkerInfoLabel = new Label(parent, SWT.NONE);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		scanMarkerInfoLabel.setLayoutData(gridData);
 	}
 
 	private Button createCalculateButton(Composite parent, GridData gridData) {
@@ -187,20 +194,20 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
 				processAction();
 				ProcessorData processorData = editorProcessor.getProcessorData();
-				//
-				List<ScanMarker> scanMarker = null;
 				ScanMarkerDetectorRunnable runnable = new ScanMarkerDetectorRunnable(processorData);
 				ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
 				//
 				try {
 					monitor.run(true, true, runnable);
-					scanMarker = runnable.getScanMarker();
+					List<ScanMarker> scanMarker = runnable.getScanMarker();
+					processorData.setScanMarker(scanMarker);
+					scanMarkerListUI.setInput(scanMarker);
+					scanMarkerInfoLabel.setText("In summary: " + scanMarker.size() + " possible scan(s) containing isotope shifts have been identified.");
 				} catch(InterruptedException e1) {
 					logger.warn(e1);
 				} catch(InvocationTargetException e1) {
 					logger.warn(e1);
 				}
-				scanMarkerListUI.setInput(scanMarker);
 			}
 		});
 		return button;
@@ -218,21 +225,9 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 			public void widgetSelected(SelectionEvent e) {
 
 				System.out.println("TODO");
-				boolean error = false;
-				if(!error) {
-					plotData();
-				}
 			}
 		});
 		return button;
-	}
-
-	/*
-	 * Plot the data if there is no validation error.
-	 */
-	private void plotData() {
-
-		System.out.println("TODO");
 	}
 
 	private Button createCheckButton(Composite parent, GridData gridData) {

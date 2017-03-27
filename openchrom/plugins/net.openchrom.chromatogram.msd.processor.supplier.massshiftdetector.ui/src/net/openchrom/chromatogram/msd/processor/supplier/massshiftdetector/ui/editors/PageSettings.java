@@ -17,9 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.rcp.app.ui.addons.ModelSupportAddon;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.editors.AbstractExtendedEditorPage;
@@ -27,7 +26,11 @@ import org.eclipse.chemclipse.support.ui.editors.IExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
 import org.eclipse.chemclipse.support.ui.wizards.IChromatogramWizardElements;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
+import org.eclipse.chemclipse.ux.extension.msd.ui.support.ChromatogramSupport;
 import org.eclipse.chemclipse.ux.extension.msd.ui.wizards.ChromatogramInputEntriesWizard;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -53,6 +56,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel_v1000;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.preferences.PreferenceSupplier;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.ChromatogramImportRunnable;
 
@@ -67,6 +71,10 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private Spinner levelSpinner;
 	private Label labelNotes;
 	private Text descriptionText;
+	//
+	private ImageHyperlink referenceChromatogramHyperlink;
+	private ImageHyperlink isotopeChromatogramHyperlink;
+	private ImageHyperlink calculateHyperlink;
 
 	public PageSettings(EditorProcessor editorProcessor, Composite container) {
 		super("Settings", container, true);
@@ -90,11 +98,38 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	public void setFocus() {
 
 		if(editorProcessor != null && editorProcessor.getProcessorData().getProcessorModel() != null) {
-			referenceChromatogramText.setText(editorProcessor.getProcessorData().getProcessorModel().getReferenceChromatogramPath());
-			isotopeChromatogramText.setText(editorProcessor.getProcessorData().getProcessorModel().getIsotopeChromatogramPath());
-			levelSpinner.setSelection(editorProcessor.getProcessorData().getProcessorModel().getIsotopeLevel());
-			labelNotes.setText(editorProcessor.getProcessorData().getProcessorModel().getNotes());
-			descriptionText.setText(editorProcessor.getProcessorData().getProcessorModel().getDescription());
+			ProcessorData processorData = editorProcessor.getProcessorData();
+			ProcessorModel_v1000 processorModel = processorData.getProcessorModel();
+			//
+			referenceChromatogramText.setText(processorModel.getReferenceChromatogramPath());
+			isotopeChromatogramText.setText(processorModel.getIsotopeChromatogramPath());
+			levelSpinner.setSelection(processorModel.getIsotopeLevel());
+			labelNotes.setText(processorModel.getNotes());
+			descriptionText.setText(processorModel.getDescription());
+			//
+			IChromatogramMSD referenceChromatogram = processorData.getReferenceChromatogram();
+			IChromatogramMSD isotopeChromatogram = processorData.getIsotopeChromatogram();
+			//
+			if(referenceChromatogram != null) {
+				referenceChromatogramHyperlink.setEnabled(true);
+			}
+			//
+			if(isotopeChromatogram != null) {
+				isotopeChromatogramHyperlink.setEnabled(true);
+			}
+			//
+			if(referenceChromatogram != null && isotopeChromatogram != null) {
+				calculateHyperlink.setEnabled(true);
+			}
+		} else {
+			referenceChromatogramText.setText("");
+			isotopeChromatogramText.setText("");
+			levelSpinner.setSelection(0);
+			labelNotes.setText("");
+			descriptionText.setText("");
+			referenceChromatogramHyperlink.setEnabled(false);
+			isotopeChromatogramHyperlink.setEnabled(false);
+			calculateHyperlink.setEnabled(false);
 		}
 	}
 
@@ -256,9 +291,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		 * Process
 		 */
 		createCheckHyperlink(client, "Check Selected Chromatograms");
-		createOpenReferenceHyperlink(client, "Open Reference Chromatogram");
-		createOpenIsotopeHyperlink(client, "Open Isotope Chromatogram");
-		createCalculateHyperlink(client, "Calculate Mass Shifts");
+		referenceChromatogramHyperlink = createReferenceChromatogramHyperlink(client, "Open Reference Chromatogram");
+		isotopeChromatogramHyperlink = createIsotopeChromatogramHyperlink(client, "Open Isotope Chromatogram");
+		calculateHyperlink = createCalculateHyperlink(client, "Calculate Mass Shifts");
 		/*
 		 * Add the client to the section.
 		 */
@@ -278,7 +313,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 			public void linkActivated(HyperlinkEvent e) {
 
-				List<IChromatogramSelection> chromatogramSelections = new ArrayList<IChromatogramSelection>();
+				List<IChromatogramMSD> chromatograms = new ArrayList<IChromatogramMSD>();
 				String pathChromatogramReference = referenceChromatogramText.getText().trim();
 				String pathChromatogramIsotope = isotopeChromatogramText.getText().trim();
 				ChromatogramImportRunnable runnable = new ChromatogramImportRunnable(pathChromatogramReference, pathChromatogramIsotope);
@@ -286,25 +321,25 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				//
 				try {
 					monitor.run(true, true, runnable);
-					chromatogramSelections = runnable.getChromatogramSelections();
+					chromatograms = runnable.getChromatograms();
 				} catch(InterruptedException e1) {
 					logger.warn(e1);
 				} catch(InvocationTargetException e1) {
 					logger.warn(e1);
 				}
 				//
-				updateChromatogramSelections(chromatogramSelections);
+				updateChromatogramSelections(chromatograms);
 			}
 		});
 		return imageHyperlink;
 	}
 
-	private ImageHyperlink createOpenReferenceHyperlink(Composite client, String text) {
+	private ImageHyperlink createReferenceChromatogramHyperlink(Composite client, String text) {
 
-		Shell shell = Display.getCurrent().getActiveShell();
 		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
 		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
 		imageHyperlink.setText(text);
+		imageHyperlink.setEnabled(false); // Default disabled
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalIndent = HORIZONTAL_INDENT;
 		imageHyperlink.setLayoutData(gridData);
@@ -312,18 +347,28 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 			public void linkActivated(HyperlinkEvent e) {
 
-				// TODO open
+				/*
+				 * Opens the editor.
+				 */
+				ProcessorData processorData = editorProcessor.getProcessorData();
+				if(processorData.getReferenceChromatogram() != null) {
+					IChromatogramMSD chromatogram = processorData.getReferenceChromatogram();
+					EModelService modelService = ModelSupportAddon.getModelService();
+					MApplication application = ModelSupportAddon.getApplication();
+					EPartService partService = ModelSupportAddon.getPartService();
+					ChromatogramSupport.getInstanceEditorSupport().openEditor(chromatogram, modelService, application, partService);
+				}
 			}
 		});
 		return imageHyperlink;
 	}
 
-	private ImageHyperlink createOpenIsotopeHyperlink(Composite client, String text) {
+	private ImageHyperlink createIsotopeChromatogramHyperlink(Composite client, String text) {
 
-		Shell shell = Display.getCurrent().getActiveShell();
 		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
 		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
 		imageHyperlink.setText(text);
+		imageHyperlink.setEnabled(false); // Default disabled
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalIndent = HORIZONTAL_INDENT;
 		imageHyperlink.setLayoutData(gridData);
@@ -331,7 +376,17 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 			public void linkActivated(HyperlinkEvent e) {
 
-				// TODO open
+				/*
+				 * Opens the editor.
+				 */
+				ProcessorData processorData = editorProcessor.getProcessorData();
+				if(processorData.getIsotopeChromatogram() != null) {
+					IChromatogramMSD chromatogram = processorData.getIsotopeChromatogram();
+					EModelService modelService = ModelSupportAddon.getModelService();
+					MApplication application = ModelSupportAddon.getApplication();
+					EPartService partService = ModelSupportAddon.getPartService();
+					ChromatogramSupport.getInstanceEditorSupport().openEditor(chromatogram, modelService, application, partService);
+				}
 			}
 		});
 		return imageHyperlink;
@@ -343,6 +398,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
 		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXECUTE, IApplicationImage.SIZE_16x16));
 		imageHyperlink.setText(text);
+		imageHyperlink.setEnabled(false); // Default disabled
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalIndent = HORIZONTAL_INDENT;
 		imageHyperlink.setLayoutData(gridData);
@@ -361,22 +417,26 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		return imageHyperlink;
 	}
 
-	private void updateChromatogramSelections(List<IChromatogramSelection> chromatogramSelections) {
+	private void updateChromatogramSelections(List<IChromatogramMSD> chromatograms) {
 
-		if(chromatogramSelections.size() != 2) {
+		if(chromatograms.size() != 2) {
 			// Feedback
 			// labelChromatogramInfo.setText("Please select two reference chromatograms.");
 			// labelChromatogramInfo.setForeground(Colors.WHITE);
 			// labelChromatogramInfo.setBackground(Colors.RED);
 		} else {
-			IChromatogram chromatogram1 = chromatogramSelections.get(0).getChromatogram();
-			IChromatogram chromatogram2 = chromatogramSelections.get(1).getChromatogram();
-			int numberOfScans1 = chromatogram1.getNumberOfScans();
-			int numberOfScans2 = chromatogram2.getNumberOfScans();
+			IChromatogramMSD referenceChromatogram = chromatograms.get(0);
+			IChromatogramMSD isotopeChromatogram = chromatograms.get(1);
+			int numberOfScans1 = referenceChromatogram.getNumberOfScans();
+			int numberOfScans2 = isotopeChromatogram.getNumberOfScans();
 			//
 			ProcessorData processorRawData = editorProcessor.getProcessorData();
-			processorRawData.setReferenceChromatogram((IChromatogramMSD)chromatogram1);
-			processorRawData.setIsotopeChromatogram((IChromatogramMSD)chromatogram2);
+			processorRawData.setReferenceChromatogram(referenceChromatogram);
+			processorRawData.setIsotopeChromatogram(isotopeChromatogram);
+			//
+			referenceChromatogramHyperlink.setEnabled(true);
+			isotopeChromatogramHyperlink.setEnabled(true);
+			calculateHyperlink.setEnabled(true);
 			//
 			if(numberOfScans1 != numberOfScans2) {
 				// Feedback

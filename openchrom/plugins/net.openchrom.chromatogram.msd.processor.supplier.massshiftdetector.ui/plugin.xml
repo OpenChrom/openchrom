@@ -29,13 +29,13 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            name="OpenChrom"
-            id="net.openchrom.ui">
+            name="Mass Spectrometry"
+            id="org.eclipse.chemclipse.msd">
       </category>
       <wizard
             name="Mass Shift Detector"
             icon="icons/16x16/chromatogram.gif"
-            category="net.openchrom.ui"
+            category="org.eclipse.chemclipse.msd"
             class="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.wizards.WizardProcessor"
             id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.wizards.WizardProcessor">
       </wizard>

@@ -150,18 +150,7 @@ public class MassShiftDetector {
 		for(Map.Entry<Integer, Map<Integer, Map<Integer, Double>>> massShift : massShifts.entrySet()) {
 			//
 			int isotopeLevel = massShift.getKey();
-			if(isotopeLevel == 0) {
-				continue;
-			}
-			//
-			double threshold;
-			if(levelUncertainty.get(isotopeLevel) != null) {
-				threshold = levelUncertainty.get(isotopeLevel);
-			} else {
-				threshold = SCALE_UNCERTAINTY_SELECTION;
-			}
-			// TODO
-			threshold = 5.0d;
+			double threshold = (levelUncertainty.get(isotopeLevel) != null) ? levelUncertainty.get(isotopeLevel) : SCALE_UNCERTAINTY_SELECTION;
 			//
 			monitor.subTask("Calculate Marker: " + isotopeLevel + " -> Threshold: " + threshold);
 			//

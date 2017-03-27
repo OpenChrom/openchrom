@@ -17,12 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
 import org.eclipse.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
@@ -30,49 +27,48 @@ public class ChromatogramImportRunnable implements IRunnableWithProgress {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramImportRunnable.class);
 	//
-	private List<IChromatogramSelection> chromatogramSelections;
+	private List<IChromatogramMSD> chromatograms;
 	private String pathChromatogramReference;
 	private String pathChromatogramIsotope;
 
 	public ChromatogramImportRunnable(String pathChromatogramReference, String pathChromatogramIsotope) {
-		chromatogramSelections = new ArrayList<IChromatogramSelection>();
+		chromatograms = new ArrayList<IChromatogramMSD>();
 		this.pathChromatogramReference = pathChromatogramReference;
 		this.pathChromatogramIsotope = pathChromatogramIsotope;
 	}
 
-	public List<IChromatogramSelection> getChromatogramSelections() {
+	public List<IChromatogramMSD> getChromatograms() {
 
-		return chromatogramSelections;
+		return chromatograms;
 	}
 
 	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
-		IChromatogramSelectionMSD chromatogramSelectionReference = importChromatogram(pathChromatogramReference, monitor);
-		if(chromatogramSelectionReference != null) {
-			chromatogramSelections.add(chromatogramSelectionReference);
+		IChromatogramMSD referenceChromatogram = importChromatogram(pathChromatogramReference, monitor);
+		if(referenceChromatogram != null) {
+			chromatograms.add(referenceChromatogram);
 		}
 		//
-		IChromatogramSelectionMSD chromatogramSelectionIsotope = importChromatogram(pathChromatogramIsotope, monitor);
-		if(chromatogramSelectionIsotope != null) {
-			chromatogramSelections.add(chromatogramSelectionIsotope);
+		IChromatogramMSD isotopeChromatogram = importChromatogram(pathChromatogramIsotope, monitor);
+		if(isotopeChromatogram != null) {
+			chromatograms.add(isotopeChromatogram);
 		}
 	}
 
-	public IChromatogramSelectionMSD importChromatogram(String chromatogramPath, IProgressMonitor monitor) {
+	public IChromatogramMSD importChromatogram(String chromatogramPath, IProgressMonitor monitor) {
 
-		IChromatogramSelectionMSD chromatogramSelectionMSD = null;
+		IChromatogramMSD chromatogramMSD = null;
 		try {
 			/*
 			 * Import the chromatogram.
 			 */
 			File file = new File(chromatogramPath);
 			IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(file, monitor);
-			IChromatogramMSD chromatogramMSD = processingInfo.getChromatogram();
-			chromatogramSelectionMSD = new ChromatogramSelectionMSD(chromatogramMSD);
+			chromatogramMSD = processingInfo.getChromatogram();
 		} catch(Exception e) {
 			logger.warn(e);
 		}
-		return chromatogramSelectionMSD;
+		return chromatogramMSD;
 	}
 }
