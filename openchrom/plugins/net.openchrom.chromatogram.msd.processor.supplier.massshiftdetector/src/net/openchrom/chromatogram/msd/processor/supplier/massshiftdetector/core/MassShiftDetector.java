@@ -79,8 +79,8 @@ public class MassShiftDetector {
 		Map<Integer, Map<Integer, Map<Integer, Double>>> uncertaintyIonSignalsMap = new HashMap<Integer, Map<Integer, Map<Integer, Double>>>();
 		int startScan = 1;
 		int stopScan = Math.min(referenceChromatogram.getNumberOfScans(), isotopeChromatogram.getNumberOfScans());
-		IExtractedIonSignals referenceIonSignals = extractAndNormalizeIonSignals(referenceChromatogram, startScan, stopScan, NORMALIZATION_BASE);
-		IExtractedIonSignals isotopeIonSignals = extractAndNormalizeIonSignals(isotopeChromatogram, startScan, stopScan, NORMALIZATION_BASE);
+		IExtractedIonSignals referenceIonSignals = extractIonSignals(referenceChromatogram, startScan, stopScan);
+		IExtractedIonSignals isotopeIonSignals = extractIonSignals(isotopeChromatogram, startScan, stopScan);
 		/*
 		 * Do the calculation.
 		 */
@@ -113,11 +113,8 @@ public class MassShiftDetector {
 						 */
 						monitor.subTask("Calculate Level: " + shiftLevel + " -> Scan: " + scan + " -> m/z: " + ion);
 						//
-						double intensityReference = referenceIonSignal.getAbundance(ion);
 						double uncertainty = NORMALIZATION_BASE; // 100 == uncertain -> no match
-						/*
-						 * Only calculate the value if it's above the median intensity.
-						 */
+						double intensityReference = referenceIonSignal.getAbundance(ion);
 						double intensityIsotope = isotopeIonSignal.getAbundance(ion + shiftLevel);
 						double intensityMax = Math.max(intensityReference, intensityIsotope);
 						double intensityDelta = Math.abs(intensityReference - intensityIsotope);
@@ -188,18 +185,9 @@ public class MassShiftDetector {
 		return scanMarkerList;
 	}
 
-	private IExtractedIonSignals extractAndNormalizeIonSignals(IChromatogramMSD chromatogram, int startScan, int stopScan, float normalizationBase) throws ChromatogramIsNullException {
+	private IExtractedIonSignals extractIonSignals(IChromatogramMSD chromatogram, int startScan, int stopScan) throws ChromatogramIsNullException {
 
 		ExtractedIonSignalExtractor extractedIonSignalExtractor = new ExtractedIonSignalExtractor(chromatogram);
-		IExtractedIonSignals extractedIonSignals = extractedIonSignalExtractor.getExtractedIonSignals(startScan, stopScan);
-		for(int i = startScan; i <= stopScan; i++) {
-			try {
-				IExtractedIonSignal extractedIonSignal = extractedIonSignals.getExtractedIonSignal(i);
-				extractedIonSignal.normalize(normalizationBase);
-			} catch(NoExtractedIonSignalStoredException e) {
-				//
-			}
-		}
-		return extractedIonSignals;
+		return extractedIonSignalExtractor.getExtractedIonSignals(startScan, stopScan);
 	}
 }

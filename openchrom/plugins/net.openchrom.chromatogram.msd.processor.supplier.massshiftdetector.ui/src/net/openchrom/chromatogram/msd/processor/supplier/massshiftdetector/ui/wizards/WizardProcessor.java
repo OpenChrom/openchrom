@@ -23,6 +23,7 @@ import org.eclipse.ui.INewWizard;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelWriter;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel_v1000;
 
 public class WizardProcessor extends AbstractFileWizard implements INewWizard {
@@ -58,7 +59,7 @@ public class WizardProcessor extends AbstractFileWizard implements INewWizard {
 		monitor.beginTask("MassShiftDetector", IProgressMonitor.UNKNOWN);
 		final IFile file = super.prepareProject(monitor);
 		//
-		ProcessorModel_v1000 processorModel = new ProcessorModel_v1000();
+		IProcessorModel processorModel = new ProcessorModel_v1000();
 		processorModel.setReferenceChromatogramPath(wizardElements.getReferenceChromatogramPath());
 		processorModel.setIsotopeChromatogramPath(wizardElements.getIsotopeChromatogramPath());
 		processorModel.setStartShiftLevel(wizardElements.getStartShiftLevel());

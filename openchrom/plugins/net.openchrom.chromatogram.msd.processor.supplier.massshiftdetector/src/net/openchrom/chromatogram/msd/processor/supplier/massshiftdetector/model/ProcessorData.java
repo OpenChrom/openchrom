@@ -16,21 +16,22 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 
 public class ProcessorData {
 
-	private ProcessorModel_v1000 processorModel;
+	private IProcessorModel processorModel;
 	//
-	private IChromatogramMSD referenceChromatogram;
-	private IChromatogramMSD isotopeChromatogram;
+	private IChromatogramSelectionMSD referenceChromatogramSelection;
+	private IChromatogramSelectionMSD isotopeChromatogramSelection;
 	//
 	private Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts;
-	private Map<Integer, Integer> levelUncertainty;
+	private Map<Integer, Integer> thresholdMassShiftLevel;
 	//
 	private List<ScanMarker> scanMarker;
 
 	public ProcessorData() {
-		levelUncertainty = new HashMap<Integer, Integer>();
+		thresholdMassShiftLevel = new HashMap<Integer, Integer>();
 	}
 
 	public void resetResults() {
@@ -39,34 +40,52 @@ public class ProcessorData {
 		scanMarker = null;
 	}
 
-	public ProcessorModel_v1000 getProcessorModel() {
+	public IProcessorModel getProcessorModel() {
 
 		return processorModel;
 	}
 
-	public void setProcessorModel(ProcessorModel_v1000 processorModel) {
+	public void setProcessorModel(IProcessorModel processorModel) {
 
 		this.processorModel = processorModel;
 	}
 
-	public IChromatogramMSD getReferenceChromatogram() {
+	public IChromatogramSelectionMSD getReferenceChromatogramSelection() {
 
-		return referenceChromatogram;
+		return referenceChromatogramSelection;
 	}
 
-	public void setReferenceChromatogram(IChromatogramMSD referenceChromatogram) {
+	public void setReferenceChromatogramSelection(IChromatogramSelectionMSD referenceChromatogramSelection) {
 
-		this.referenceChromatogram = referenceChromatogram;
+		this.referenceChromatogramSelection = referenceChromatogramSelection;
+	}
+
+	public IChromatogramMSD getReferenceChromatogram() {
+
+		if(referenceChromatogramSelection != null) {
+			return referenceChromatogramSelection.getChromatogramMSD();
+		} else {
+			return null;
+		}
+	}
+
+	public IChromatogramSelectionMSD getIsotopeChromatogramSelection() {
+
+		return isotopeChromatogramSelection;
+	}
+
+	public void setIsotopeChromatogramSelection(IChromatogramSelectionMSD isotopeChromatogramSelection) {
+
+		this.isotopeChromatogramSelection = isotopeChromatogramSelection;
 	}
 
 	public IChromatogramMSD getIsotopeChromatogram() {
 
-		return isotopeChromatogram;
-	}
-
-	public void setIsotopeChromatogram(IChromatogramMSD isotopeChromatogram) {
-
-		this.isotopeChromatogram = isotopeChromatogram;
+		if(isotopeChromatogramSelection != null) {
+			return isotopeChromatogramSelection.getChromatogramMSD();
+		} else {
+			return null;
+		}
 	}
 
 	public Map<Integer, Map<Integer, Map<Integer, Double>>> getMassShifts() {
@@ -81,7 +100,7 @@ public class ProcessorData {
 
 	public Map<Integer, Integer> getLevelUncertainty() {
 
-		return levelUncertainty;
+		return thresholdMassShiftLevel;
 	}
 
 	public List<ScanMarker> getScanMarker() {

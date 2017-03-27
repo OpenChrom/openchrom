@@ -39,8 +39,12 @@ public class PageIsotopeHeatmap {
 	private Composite control;
 	private EnhancedIsotopeHeatmapEditor enhancedIsotopeHeatmapEditor;
 
-	public PageIsotopeHeatmap(EditorProcessor editorProcessor, Composite container) {
+	public PageIsotopeHeatmap(Composite container) {
 		initialize(container);
+	}
+
+	public void setEditorProcessor(EditorProcessor editorProcessor) {
+
 		this.editorProcessor = editorProcessor;
 	}
 
@@ -59,7 +63,7 @@ public class PageIsotopeHeatmap {
 			@Override
 			public void previousAction() {
 
-				editorProcessor.focusPage(EditorProcessor.PAGE_INDEX_SETTINGS);
+				editorProcessor.setActivePage(EditorProcessor.PAGE_INDEX_SETTINGS);
 			}
 		});
 		//
@@ -68,7 +72,7 @@ public class PageIsotopeHeatmap {
 			@Override
 			public void nextAction() {
 
-				editorProcessor.focusPage(EditorProcessor.PAGE_INDEX_SHIFT_TABLE);
+				editorProcessor.setActivePage(EditorProcessor.PAGE_INDEX_SHIFT_TABLE);
 			}
 		});
 		//

@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors;
 
-import org.eclipse.chemclipse.support.ui.listener.IProcessListener;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -28,9 +27,14 @@ public class PageScanMarkerTable {
 	private Composite control;
 	private EnhancedScanMarkerEditor enhancedScanMarkerEditor;
 
-	public PageScanMarkerTable(EditorProcessor editorProcessor, Composite container) {
+	public PageScanMarkerTable(Composite container) {
 		initialize(container);
+	}
+
+	public void setEditorProcessor(EditorProcessor editorProcessor) {
+
 		this.editorProcessor = editorProcessor;
+		enhancedScanMarkerEditor.setEditorProcessor(this.editorProcessor);
 	}
 
 	public void initialize(Composite parent) {
@@ -42,15 +46,6 @@ public class PageScanMarkerTable {
 		enhancedScanMarkerEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
 		enhancedScanMarkerEditor.setLayout(new GridLayout(1, true));
 		enhancedScanMarkerEditor.setBackground(Colors.WHITE);
-		//
-		enhancedScanMarkerEditor.addProcessListener(new IProcessListener() {
-
-			@Override
-			public void processAction() {
-
-				enhancedScanMarkerEditor.setEditorProcessor(editorProcessor);
-			}
-		});
 	}
 
 	public Composite getControl() {

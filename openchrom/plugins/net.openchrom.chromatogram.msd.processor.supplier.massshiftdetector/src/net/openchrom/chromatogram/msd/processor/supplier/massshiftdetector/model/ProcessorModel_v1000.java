@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "MassShiftDetector")
-public class ProcessorModel_v1000 {
+public class ProcessorModel_v1000 implements IProcessorModel {
 
 	@XmlElement(name = "Version")
 	private String version = "1.0.0.0";
@@ -34,78 +34,92 @@ public class ProcessorModel_v1000 {
 	@XmlElement(name = "Description")
 	private String description;
 
+	@Override
 	@XmlTransient
 	public String getVersion() {
 
 		return version;
 	}
 
+	@Override
 	public void setVersion(String version) {
 
 		this.version = version;
 	}
 
+	@Override
 	@XmlTransient
 	public String getReferenceChromatogramPath() {
 
 		return referenceChromatogramPath;
 	}
 
+	@Override
 	public void setReferenceChromatogramPath(String referenceChromatogramPath) {
 
 		this.referenceChromatogramPath = referenceChromatogramPath;
 	}
 
+	@Override
 	@XmlTransient
 	public String getIsotopeChromatogramPath() {
 
 		return isotopeChromatogramPath;
 	}
 
+	@Override
 	public void setIsotopeChromatogramPath(String isotopeChromatogramPath) {
 
 		this.isotopeChromatogramPath = isotopeChromatogramPath;
 	}
 
+	@Override
 	@XmlTransient
 	public int getStartShiftLevel() {
 
 		return startShiftLevel;
 	}
 
+	@Override
 	public void setStartShiftLevel(int startShiftLevel) {
 
 		this.startShiftLevel = startShiftLevel;
 	}
 
+	@Override
 	@XmlTransient
 	public int getStopShiftLevel() {
 
 		return stopShiftLevel;
 	}
 
+	@Override
 	public void setStopShiftLevel(int stopShiftLevel) {
 
 		this.stopShiftLevel = stopShiftLevel;
 	}
 
+	@Override
 	@XmlTransient
 	public String getNotes() {
 
 		return notes;
 	}
 
+	@Override
 	public void setNotes(String notes) {
 
 		this.notes = notes;
 	}
 
+	@Override
 	@XmlTransient
 	public String getDescription() {
 
 		return description;
 	}
 
+	@Override
 	public void setDescription(String description) {
 
 		this.description = description;

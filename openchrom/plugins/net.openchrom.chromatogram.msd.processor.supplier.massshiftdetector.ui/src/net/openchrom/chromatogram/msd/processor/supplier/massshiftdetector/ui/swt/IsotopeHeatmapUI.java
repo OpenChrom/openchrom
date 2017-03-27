@@ -358,9 +358,9 @@ public class IsotopeHeatmapUI extends Composite {
 		/*
 		 * Clear the heatmap.
 		 */
-		intensityGraphFigure.setDataHeight(0);
-		intensityGraphFigure.setDataWidth(0);
-		intensityGraphFigure.setDataArray(new double[]{});
+		intensityGraphFigure.setDataHeight(2);
+		intensityGraphFigure.setDataWidth(2);
+		intensityGraphFigure.setDataArray(new double[]{0, 0, 0, 0});
 		intensityGraphFigure.setMin(0);
 		intensityGraphFigure.setMax(0);
 		//

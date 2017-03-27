@@ -13,11 +13,14 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.e
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.processing.core.ProcessingInfo;
+import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.chemclipse.rcp.app.ui.addons.ModelSupportAddon;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -55,14 +58,16 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel_v1000;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.preferences.PreferenceSupplier;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.ChromatogramImportRunnable;
 
 public class PageSettings extends AbstractExtendedEditorPage implements IExtendedEditorPage {
 
 	private static final Logger logger = Logger.getLogger(PageSettings.class);
+	//
+	private static final String DESCRIPTION = "MASS SHIFT DETECTOR";
 	//
 	private EditorProcessor editorProcessor;
 	//
@@ -77,8 +82,12 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private ImageHyperlink isotopeChromatogramHyperlink;
 	private ImageHyperlink calculateHyperlink;
 
-	public PageSettings(EditorProcessor editorProcessor, Composite container) {
+	public PageSettings(Composite container) {
 		super("Settings", container, true);
+	}
+
+	public void setEditorProcessor(EditorProcessor editorProcessor) {
+
 		this.editorProcessor = editorProcessor;
 	}
 
@@ -100,7 +109,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 		if(editorProcessor != null && editorProcessor.getProcessorData().getProcessorModel() != null) {
 			ProcessorData processorData = editorProcessor.getProcessorData();
-			ProcessorModel_v1000 processorModel = processorData.getProcessorModel();
+			IProcessorModel processorModel = processorData.getProcessorModel();
 			//
 			referenceChromatogramText.setText(processorModel.getReferenceChromatogramPath());
 			isotopeChromatogramText.setText(processorModel.getIsotopeChromatogramPath());
@@ -350,7 +359,6 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 			public void linkActivated(HyperlinkEvent e) {
 
-				List<IChromatogramMSD> chromatograms = new ArrayList<IChromatogramMSD>();
 				String pathChromatogramReference = referenceChromatogramText.getText().trim();
 				String pathChromatogramIsotope = isotopeChromatogramText.getText().trim();
 				ChromatogramImportRunnable runnable = new ChromatogramImportRunnable(pathChromatogramReference, pathChromatogramIsotope);
@@ -358,14 +366,17 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				//
 				try {
 					monitor.run(true, true, runnable);
-					chromatograms = runnable.getChromatograms();
+					List<IChromatogramSelectionMSD> chromatogramSelections = runnable.getChromatogramSelections();
+					ProcessorData processorRawData = editorProcessor.getProcessorData();
+					processorRawData.setReferenceChromatogramSelection(chromatogramSelections.get(0));
+					processorRawData.setIsotopeChromatogramSelection(chromatogramSelections.get(1));
 				} catch(InterruptedException e1) {
 					logger.warn(e1);
 				} catch(InvocationTargetException e1) {
 					logger.warn(e1);
 				}
 				//
-				updateChromatogramSelections(chromatograms);
+				updateChromatogramSelections();
 			}
 		});
 		return imageHyperlink;
@@ -445,7 +456,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 				ProcessorData processorRawData = editorProcessor.getProcessorData();
 				if(processorRawData.getReferenceChromatogram() != null && processorRawData.getIsotopeChromatogram() != null) {
-					editorProcessor.focusPage(EditorProcessor.PAGE_INDEX_SHIFT_HEATMAP);
+					editorProcessor.setActivePage(EditorProcessor.PAGE_INDEX_SHIFT_HEATMAP);
 				} else {
 					MessageDialog.openWarning(shell, "Chromatogram Selection", "Please select a reference and a shifted chromatogram.");
 				}
@@ -454,39 +465,28 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		return imageHyperlink;
 	}
 
-	private void updateChromatogramSelections(List<IChromatogramMSD> chromatograms) {
+	private void updateChromatogramSelections() {
 
-		if(chromatograms.size() != 2) {
-			// Feedback
-			// labelChromatogramInfo.setText("Please select two reference chromatograms.");
-			// labelChromatogramInfo.setForeground(Colors.WHITE);
-			// labelChromatogramInfo.setBackground(Colors.RED);
+		IProcessingInfo processingInfo = new ProcessingInfo();
+		ProcessorData processorRawData = editorProcessor.getProcessorData();
+		//
+		if(processorRawData.getReferenceChromatogram() == null || processorRawData.getIsotopeChromatogram() == null) {
+			processingInfo.addErrorMessage(DESCRIPTION, "Please select a reference and an isotope chromatogram.");
 		} else {
-			IChromatogramMSD referenceChromatogram = chromatograms.get(0);
-			IChromatogramMSD isotopeChromatogram = chromatograms.get(1);
-			int numberOfScans1 = referenceChromatogram.getNumberOfScans();
-			int numberOfScans2 = isotopeChromatogram.getNumberOfScans();
-			//
-			ProcessorData processorRawData = editorProcessor.getProcessorData();
-			processorRawData.setReferenceChromatogram(referenceChromatogram);
-			processorRawData.setIsotopeChromatogram(isotopeChromatogram);
+			int numberOfScans1 = processorRawData.getReferenceChromatogram().getNumberOfScans();
+			int numberOfScans2 = processorRawData.getIsotopeChromatogram().getNumberOfScans();
 			//
 			referenceChromatogramHyperlink.setEnabled(true);
 			isotopeChromatogramHyperlink.setEnabled(true);
 			calculateHyperlink.setEnabled(true);
 			//
 			if(numberOfScans1 != numberOfScans2) {
-				// Feedback
-				// labelChromatogramInfo.setText("The selected chromatograms have a different number of scans (" + numberOfScans1 + " vs. " + numberOfScans2 + ").");
-				// labelChromatogramInfo.setForeground(Colors.BLACK);
-				// labelChromatogramInfo.setBackground(Colors.YELLOW);
+				processingInfo.addWarnMessage(DESCRIPTION, "The selected chromatograms have a different number of scans (" + numberOfScans1 + " vs. " + numberOfScans2 + ").");
 			} else {
-				// Feedback
-				// labelChromatogramInfo.setText("The selected chromatograms are valid.");
-				// labelChromatogramInfo.setForeground(Colors.BLACK);
-				// labelChromatogramInfo.setBackground(Colors.GREEN);
+				processingInfo.addInfoMessage(DESCRIPTION, "The selected chromatograms are valid.");
 			}
 		}
-		// Update Overlay?
+		//
+		ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
 	}
 }

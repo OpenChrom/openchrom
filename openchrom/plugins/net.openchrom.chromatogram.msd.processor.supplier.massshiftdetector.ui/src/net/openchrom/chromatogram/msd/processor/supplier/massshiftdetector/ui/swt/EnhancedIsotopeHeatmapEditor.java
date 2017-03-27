@@ -32,7 +32,6 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 	private Button buttonCalculate;
 	private Button buttonReset;
 	private Button buttonPrevious;
-	private Button buttonCheck;
 	private Button buttonNext;
 	private List<Button> buttons;
 	//
@@ -65,7 +64,6 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 			buttonCalculate.setEnabled(true);
 			buttonReset.setEnabled(true);
 			buttonPrevious.setEnabled(true);
-			buttonCheck.setEnabled(true);
 		} else {
 			/*
 			 * If the project is read only, next shall be enabled.
@@ -94,6 +92,7 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 	private void plotData() {
 
 		shiftHeatmapUI.update(processorData);
+		buttonNext.setEnabled(true);
 	}
 
 	private void createControl() {
@@ -123,7 +122,6 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 		gridDataButtons.minimumWidth = 150;
 		//
 		buttons.add(buttonCalculate = createCalculateButton(compositeButtons, gridDataButtons));
-		buttons.add(buttonCheck = createCheckButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonReset = createResetButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonPrevious = createPreviousButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonNext = createNextButton(compositeButtons, gridDataButtons));
@@ -141,14 +139,7 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 			public void widgetSelected(SelectionEvent e) {
 
 				processAction();
-				//
-				boolean error = false;
-				if(error) {
-					buttonNext.setEnabled(false);
-				} else {
-					buttonNext.setEnabled(true);
-					plotData();
-				}
+				plotData();
 			}
 		});
 		return button;
@@ -167,34 +158,9 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 
 				if(processorData != null) {
 					processorData.resetResults();
-					shiftHeatmapUI.update(processorData);
-				}
-				//
-				boolean error = false;
-				if(error) {
-					buttonNext.setEnabled(false);
-				} else {
-					buttonNext.setEnabled(true);
+					processAction();
 					plotData();
 				}
-			}
-		});
-		return button;
-	}
-
-	private Button createCheckButton(Composite parent, GridData gridData) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("Check");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHECK, IApplicationImage.SIZE_16x16));
-		button.setLayoutData(gridData);
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				System.out.println("TODO");
-				processAction();
 			}
 		});
 		return button;

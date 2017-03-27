@@ -18,7 +18,10 @@ import javax.xml.bind.JAXBException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.dialogs.IPageChangedListener;
+import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
@@ -34,9 +37,9 @@ public class EditorProcessor extends MultiPageEditorPart {
 	//
 	private File file; // This report file.
 	//
-	public static int PAGE_INDEX_SETTINGS;
-	public static int PAGE_INDEX_SHIFT_HEATMAP;
-	public static int PAGE_INDEX_SHIFT_TABLE;
+	public static final int PAGE_INDEX_SETTINGS = 0;
+	public static final int PAGE_INDEX_SHIFT_HEATMAP = 1;
+	public static final int PAGE_INDEX_SHIFT_TABLE = 2;
 	//
 	private PageSettings pageSettings;
 	private PageIsotopeHeatmap pageIsotopeHeatmap;
@@ -44,25 +47,53 @@ public class EditorProcessor extends MultiPageEditorPart {
 	//
 	private ProcessorData processorData;
 
+	public EditorProcessor() {
+		/*
+		 * Update the pages.
+		 */
+		final EditorProcessor editorProcessor = this;
+		addPageChangedListener(new IPageChangedListener() {
+
+			@Override
+			public void pageChanged(PageChangedEvent event) {
+
+				switch(getActivePage()) {
+					case PAGE_INDEX_SETTINGS:
+						pageSettings.setEditorProcessor(editorProcessor);
+						break;
+					case PAGE_INDEX_SHIFT_HEATMAP:
+						pageIsotopeHeatmap.setEditorProcessor(editorProcessor);
+						break;
+					case PAGE_INDEX_SHIFT_TABLE:
+						pageScanMarkerTable.setEditorProcessor(editorProcessor);
+						break;
+				}
+			}
+		});
+	}
+
 	@Override
 	protected void createPages() {
 
-		pageSettings = new PageSettings(this, getContainer());
-		PAGE_INDEX_SETTINGS = addPage(pageSettings.getControl());
+		pageSettings = new PageSettings(getContainer());
+		addPage(pageSettings.getControl());
 		setPageText(PAGE_INDEX_SETTINGS, "Settings");
 		//
-		pageIsotopeHeatmap = new PageIsotopeHeatmap(this, getContainer());
-		PAGE_INDEX_SHIFT_HEATMAP = addPage(pageIsotopeHeatmap.getControl());
+		pageIsotopeHeatmap = new PageIsotopeHeatmap(getContainer());
+		addPage(pageIsotopeHeatmap.getControl());
 		setPageText(PAGE_INDEX_SHIFT_HEATMAP, "Shift Heatmap");
 		//
-		pageScanMarkerTable = new PageScanMarkerTable(this, getContainer());
-		PAGE_INDEX_SHIFT_TABLE = addPage(pageScanMarkerTable.getControl());
+		pageScanMarkerTable = new PageScanMarkerTable(getContainer());
+		addPage(pageScanMarkerTable.getControl());
 		setPageText(PAGE_INDEX_SHIFT_TABLE, "Shift Table");
+		//
+		setDirty(true);
 	}
 
-	public void focusPage(int pageIndex) {
+	@Override
+	public void setActivePage(int pageIndex) {
 
-		setActivePage(pageIndex);
+		super.setActivePage(pageIndex);
 	}
 
 	@Override
@@ -71,6 +102,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 		try {
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
 			processorModelWriter.write(file, processorData.getProcessorModel(), monitor);
+			setDirty(false);
 		} catch(JAXBException e) {
 			logger.warn(e);
 		}
@@ -91,6 +123,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 	@Override
 	public void setFocus() {
 
+		pageSettings.setEditorProcessor(this);
 		pageSettings.setFocus();
 	}
 
@@ -129,5 +162,10 @@ public class EditorProcessor extends MultiPageEditorPart {
 
 		pageSettings.dispose();
 		super.dispose();
+	}
+
+	public void setDirty(boolean isDirty) {
+
+		firePropertyChange(IEditorPart.PROP_DIRTY);
 	}
 }

@@ -20,6 +20,8 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
 import org.eclipse.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
+import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
@@ -27,19 +29,19 @@ public class ChromatogramImportRunnable implements IRunnableWithProgress {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramImportRunnable.class);
 	//
-	private List<IChromatogramMSD> chromatograms;
+	private List<IChromatogramSelectionMSD> chromatogramSelections;
 	private String pathChromatogramReference;
 	private String pathChromatogramIsotope;
 
 	public ChromatogramImportRunnable(String pathChromatogramReference, String pathChromatogramIsotope) {
-		chromatograms = new ArrayList<IChromatogramMSD>();
+		chromatogramSelections = new ArrayList<IChromatogramSelectionMSD>();
 		this.pathChromatogramReference = pathChromatogramReference;
 		this.pathChromatogramIsotope = pathChromatogramIsotope;
 	}
 
-	public List<IChromatogramMSD> getChromatograms() {
+	public List<IChromatogramSelectionMSD> getChromatogramSelections() {
 
-		return chromatograms;
+		return chromatogramSelections;
 	}
 
 	@Override
@@ -47,12 +49,12 @@ public class ChromatogramImportRunnable implements IRunnableWithProgress {
 
 		IChromatogramMSD referenceChromatogram = importChromatogram(pathChromatogramReference, monitor);
 		if(referenceChromatogram != null) {
-			chromatograms.add(referenceChromatogram);
+			chromatogramSelections.add(new ChromatogramSelectionMSD(referenceChromatogram));
 		}
 		//
 		IChromatogramMSD isotopeChromatogram = importChromatogram(pathChromatogramIsotope, monitor);
 		if(isotopeChromatogram != null) {
-			chromatograms.add(isotopeChromatogram);
+			chromatogramSelections.add(new ChromatogramSelectionMSD(isotopeChromatogram));
 		}
 	}
 
@@ -60,9 +62,6 @@ public class ChromatogramImportRunnable implements IRunnableWithProgress {
 
 		IChromatogramMSD chromatogramMSD = null;
 		try {
-			/*
-			 * Import the chromatogram.
-			 */
 			File file = new File(chromatogramPath);
 			IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(file, monitor);
 			chromatogramMSD = processingInfo.getChromatogram();

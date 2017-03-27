@@ -1,0 +1,43 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Lablicate GmbH.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Dr. Philip Wenig - initial API and implementation
+ *******************************************************************************/
+package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
+
+public interface IProcessorModel {
+
+	String getVersion();
+
+	void setVersion(String version);
+
+	String getReferenceChromatogramPath();
+
+	void setReferenceChromatogramPath(String referenceChromatogramPath);
+
+	String getIsotopeChromatogramPath();
+
+	void setIsotopeChromatogramPath(String isotopeChromatogramPath);
+
+	int getStartShiftLevel();
+
+	void setStartShiftLevel(int startShiftLevel);
+
+	int getStopShiftLevel();
+
+	void setStopShiftLevel(int stopShiftLevel);
+
+	String getNotes();
+
+	void setNotes(String notes);
+
+	String getDescription();
+
+	void setDescription(String description);
+}
