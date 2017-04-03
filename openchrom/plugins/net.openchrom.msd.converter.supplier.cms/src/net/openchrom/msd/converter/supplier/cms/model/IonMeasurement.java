@@ -46,6 +46,34 @@ public class IonMeasurement implements IIonMeasurement {
 	}
 
 	@Override
+	/**
+	 * returns true if mass is within +/- tol of mz value
+	 */
+	public boolean massEqual(double mass, double tol) {
+
+		double diff;
+		diff = this.mz - mass;
+		if(tol > java.lang.StrictMath.abs(diff)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	/**
+	 * returns true if mass is less than (mz-tol)
+	 */
+	public boolean massLess(double mass, double tol) {
+
+		double diff;
+		diff = this.mz - mass;
+		if(-tol > diff) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public void setSignal(float signal) {
 
 		this.signal = signal;

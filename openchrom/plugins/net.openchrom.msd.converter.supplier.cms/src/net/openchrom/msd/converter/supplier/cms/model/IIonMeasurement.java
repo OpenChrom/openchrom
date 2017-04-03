@@ -20,5 +20,15 @@ public interface IIonMeasurement extends Comparable<IIonMeasurement> {
 
 	float getSignal();
 
+	/**
+	 * returns true if mass is within +/- tol of mz value
+	 */
+	boolean massEqual(double mass, double tol);
+
+	/**
+	 * returns true if mass is less than (mz-tol)
+	 */
+	boolean massLess(double mass, double tol);
+
 	void setSignal(float signal);
 }
