@@ -23,14 +23,14 @@ public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMas
 
 	public int compareTo(ICalibratedVendorLibraryMassSpectrum spectrum);
 
+	double get2Norm();
+
 	/**
 	 * Returns the list of comments or an empty list.
 	 *
 	 * @return {@link Set}
 	 */
 	List<String> getComments();
-
-	double get2Norm();
 
 	double getEenergy();
 
@@ -50,6 +50,8 @@ public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMas
 
 	String getTimeStamp();
 
+	boolean isSelected();
+
 	void setComments(List<String> comments);
 
 	void setEenergy(double eenergy);
@@ -59,6 +61,8 @@ public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMas
 	void setIenergy(double ienergy);
 
 	void setInstrumentName(String instrumentName);
+
+	void setSelected(boolean isSelected);
 
 	void setSignalUnits(String signalUnits);
 

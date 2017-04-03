@@ -21,7 +21,6 @@ import org.eclipse.chemclipse.msd.model.core.AbstractRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
-import org.eclipse.chemclipse.msd.model.notifier.IonSelectionUpdateNotifier;
 
 public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpectrum implements ICalibratedVendorLibraryMassSpectrum, Comparable<ICalibratedVendorLibraryMassSpectrum> {
 
@@ -43,6 +42,7 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	private double eTimeS;
 	protected double value2Norm;
 	protected boolean valid2Norm;
+	private boolean isSelected; // true if this spectrum is selected for some purpose
 
 	public CalibratedVendorLibraryMassSpectrum() {
 		/*
@@ -59,6 +59,7 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 		this.iEnergyV = -1d;
 		this.eTimeS = -1d;
 		this.valid2Norm = false;
+		this.isSelected = false;
 	}
 
 	/**
@@ -204,6 +205,18 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	public double getSourcePressure() {
 
 		return sourcePressure;
+	}
+
+	@Override
+	public boolean isSelected() {
+
+		return isSelected;
+	}
+
+	@Override
+	public void setSelected(boolean isSelected) {
+
+		this.isSelected = isSelected;
 	}
 
 	@Override
