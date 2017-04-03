@@ -19,7 +19,6 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.ejml.data.DenseMatrix64F;
 import org.ejml.factory.LinearSolverFactory;
@@ -58,19 +57,20 @@ public class MassSpectraDecomposition {
 	private double wtssError; // weighted sum of squares error
 	private boolean solverRetVal;
 	private ICalibratedVendorMassSpectrum scanResidual; // residual mass spectrum after subtracting calculated ion signals
+	private MassSpectraCorrelation massSpectraCorrelator = new MassSpectraCorrelation();
 
 	public DecompositionResults decompose(IMassSpectra scanSpectra, IMassSpectra libMassSpectra, boolean useWeightedError, PrintStream printStreamTables, IProgressMonitor monitor) {
 
 		// parameter scanSpectra has all the scans we wish to decompose, 1 by 1, into components
-		// parameter libMassSpectra has the set of library component cracking patterns we want to fit to
+		// parameter libMassSpectra has a set of library component cracking patterns, the ones we want to fit to have true == isSelected()
 		// parameter useWeightedError, if true then used estimated error weights for computing sum of squares error
 		// parameter printStreamTables is the PrintStream where text format result tables should be printed
 		// generates a list of ions from the unknown mass spectrum (scanIons) having mass ~= at least one library component ion mass
 		// and then generates a new, smaller, list of library ions (usedLibIons) having mass ~= at least one ion in the unknown mass spectrum
 		double massTol = 0.2;
-		IMassSpectra residualSpectra = new MassSpectra();
+		// IMassSpectra residualSpectra = new MassSpectra();
 		DecompositionResults results = new DecompositionResults(scanSpectra.getName());
-		residualSpectra.setName(scanSpectra.getName());
+		// residualSpectra.setName(scanSpectra.getName());
 		for(IScanMSD scan : scanSpectra.getList()) {
 			// iterate over the unknown scan spectra
 			// try { // replace with a noisy spectrum for testing
@@ -80,11 +80,12 @@ public class MassSpectraDecomposition {
 			// logger.warn(e);
 			// }
 			DecompositionDataset fitDataset = new DecompositionDataset();
-			DecompositionResult result;
+			DecompositionResult decompositionResult;
+			CorrelationResult correlationResult;
 			double libMatrixQuality;
 			for(IScanMSD libSpectrum : libMassSpectra.getList()) {
 				// first (re)read the library and save a reference to each library component
-				if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
+				if((libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) && (((ICalibratedVendorLibraryMassSpectrum)libSpectrum).isSelected())) {
 					ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)libSpectrum;
 					int componentSequence;
 					try {
@@ -206,10 +207,10 @@ public class MassSpectraDecomposition {
 				ssError = SpecializedOps.elementSumSq(yResid);
 				CommonOps.mult(P, yResid, wtyerr);
 				wtssError = SpecializedOps.elementSumSq(wtyerr);
-				result = new DecompositionResult(ssError, wtssError, fitDataset.getScanRef().getSourcePressure(), fitDataset.getScanRef().getSourcePressureUnits(), fitDataset.getScanRef().getEtimes(), fitDataset.getScanRef().getSignalUnits());
+				decompositionResult = new DecompositionResult(ssError, wtssError, fitDataset.getScanRef().getSourcePressure(), fitDataset.getScanRef().getSourcePressureUnits(), fitDataset.getScanRef().getEtimes(), fitDataset.getScanRef().getSignalUnits());
 				// display the result
 				System.out.println("SOLVED");
-				result.setSolutionQuality(libMatrixQuality);
+				decompositionResult.setSolutionQuality(libMatrixQuality);
 				for(int ii = 0; ii < x.numRows; ii++) {
 					// ICalibratedVendorLibraryMassSpectrum libRef = fitDataset.getLibRef(ii);
 					ICalibratedVendorMassSpectrum scanRef = fitDataset.getScanRef();
@@ -217,7 +218,7 @@ public class MassSpectraDecomposition {
 					// if(0 >= libMatrixQuality) {
 					// result.addComponent(Double.NaN, fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
 					// } else {
-					result.addComponent(x.get(ii), fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
+					decompositionResult.addComponent(x.get(ii), fitDataset.getLibRef(ii), fitDataset.canDoQuantitative(ii));
 					// }
 					System.out.printf("%24s: x[%d]=\t%.13f", fitDataset.getLibCompName(ii), ii, x.get(ii), fitDataset.getScanRef().getSourcePressureUnits());
 					if(fitDataset.canDoQuantitative(ii)) {
@@ -273,9 +274,11 @@ public class MassSpectraDecomposition {
 				logger.warn(e);
 			}
 			//
-			result.setResidualSpectrum(scanResidual);
-			results.addResult(result);
-			residualSpectra.addMassSpectrum(scanResidual);
+			decompositionResult.setResidualSpectrum(scanResidual);
+			correlationResult = massSpectraCorrelator.correlate(scanResidual, libMassSpectra, massTol, monitor);
+			decompositionResult.setCorrelationResult(correlationResult);
+			results.addDecompositionResult(decompositionResult);
+			// residualSpectra.addMassSpectrum(scanResidual);
 			System.out.println();
 		}
 		// print results to console window

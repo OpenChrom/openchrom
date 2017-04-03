@@ -122,8 +122,8 @@ public class CompositeSignals extends Composite {
 		}
 		if(null != results) {
 			DecompositionResult result;
-			for(int i = 0; i < results.getResults().size(); i++) {
-				result = results.getResults().get(i);
+			for(int i = 0; i < results.getDecompositionResultsList().size(); i++) {
+				result = results.getDecompositionResultsList().get(i);
 				signalSum = result.getResidualSpectrum().getSumSignal();
 				if(signalMaxY == 0 && signalMinY == 0) {
 					signalMaxY = signalMinY = signalSum;
@@ -203,13 +203,13 @@ public class CompositeSignals extends Composite {
 		if((null != results) && updateNeededResiduals) {
 			xyGraphSignals.getPrimaryYAxis().setAutoScale(true);
 			dataProviderTraceResidualSignalSum = new CircularBufferDataProvider(false);
-			xyGraphSignalNumberOfResidualPoints = results.getResults().size();
+			xyGraphSignalNumberOfResidualPoints = results.getDecompositionResultsList().size();
 			dataProviderTraceResidualSignalSum.setBufferSize(xyGraphSignalNumberOfResidualPoints);
 			xDataTraceResidualSignalSum = new double[xyGraphSignalNumberOfResidualPoints];
 			yDataTraceResidualSignalSum = new double[xyGraphSignalNumberOfResidualPoints];
-			for(int i = 0; i < results.getResults().size(); i++) {
+			for(int i = 0; i < results.getDecompositionResultsList().size(); i++) {
 				double signalSum;
-				spectrum = results.getResults().get(i).getResidualSpectrum();
+				spectrum = results.getDecompositionResultsList().get(i).getResidualSpectrum();
 				if(!usingETimes) {
 					xDataTraceResidualSignalSum[i] = spectrum.getScanNumber();
 				} else {

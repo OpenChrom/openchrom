@@ -27,6 +27,7 @@
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_atfw0PwNEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.partstack.2" containerData="5000">
             <children xsi:type="advanced:Placeholder" xmi:id="_ZW5xgPwyEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.2" ref="_1d61gOe4EeaSD5RKhuQ86A"/>
+            <children xsi:type="advanced:Placeholder" xmi:id="_cOiVkBiEEeexWITGtEia1g" elementId="net.openchrom.msd.process.supplier.cms.ui.placeholder.5" ref="_v7_NEBiDEeexWITGtEia1g"/>
           </children>
         </children>
       </children>
@@ -39,5 +40,6 @@
     <elements xsi:type="basic:Part" xmi:id="_1d61gOe4EeaSD5RKhuQ86A" elementId="net.openchrom.msd.process.supplier.cms.ui.part.compositeCompositions" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.CompositeCompositionsPart" label="Compositions" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
     <elements xsi:type="basic:Part" xmi:id="_Jdi5sPwSEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.part.cmslibraryexplorer" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.CmsLibraryExplorerPart" label="CMS Library Explorer" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
     <elements xsi:type="basic:Part" xmi:id="_Q0iH0PwyEeaJ4tYSMuRBIw" elementId="net.openchrom.msd.process.supplier.cms.ui.part.compositelibraryspectra" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.CompositeLibrarySpectraPart" label="Library Spectra" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
+    <elements xsi:type="basic:Part" xmi:id="_v7_NEBiDEeexWITGtEia1g" elementId="net.openchrom.msd.process.supplier.cms.ui.part.part.compositeCorrelations" contributionURI="bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.parts.CompositeCorrelationsPart" label="Residual Correlations" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
   </fragments>
 </fragment:ModelFragments>

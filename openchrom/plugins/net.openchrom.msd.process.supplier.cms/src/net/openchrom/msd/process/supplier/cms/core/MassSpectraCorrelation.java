@@ -53,6 +53,20 @@ public class MassSpectraCorrelation {
 		return correlation;
 	}
 
+	public CorrelationResult correlate(ICalibratedVendorMassSpectrum scanSpectrum, IMassSpectra libSpectra, double massTol, IProgressMonitor monitor) {
+
+		CorrelationResult result = new CorrelationResult(libSpectra.getList().size(), scanSpectrum);
+		for(IScanMSD libSpectrum : libSpectra.getList()) {
+			if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
+				ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)libSpectrum;
+				double correlation = getCorrelation(scanSpectrum, libraryMassSpectrum, massTol);
+				result.addResult(correlation, libraryMassSpectrum);
+			} // if
+		} // for
+		result.reverseSort();
+		return result;
+	}
+
 	public CorrelationResults correlate(IMassSpectra testSpectra, IMassSpectra libSpectra, IProgressMonitor monitor) {
 
 		// parameter testSpectra has all the scans we wish to correlate with library component spectra
@@ -64,16 +78,19 @@ public class MassSpectraCorrelation {
 		for(IScanMSD scan : testSpectra.getList()) {
 			if(scan instanceof ICalibratedVendorMassSpectrum) {
 				ICalibratedVendorMassSpectrum scanSpectrum = (ICalibratedVendorMassSpectrum)scan;
-				CorrelationResult result = new CorrelationResult(libSpectra.getList().size(), scanSpectrum);
-				for(IScanMSD libSpectrum : libSpectra.getList()) {
-					if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
-						ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)libSpectrum;
-						double correlation = getCorrelation(scanSpectrum, libraryMassSpectrum, massTol);
-						result.addResult(correlation, libraryMassSpectrum);
-					} // if
-					System.out.println();
-				} // for
-				results.addResult(result);
+				//
+				// CorrelationResult result = new CorrelationResult(libSpectra.getList().size(), scanSpectrum);
+				// for(IScanMSD libSpectrum : libSpectra.getList()) {
+				// if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
+				// ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)libSpectrum;
+				// double correlation = getCorrelation(scanSpectrum, libraryMassSpectrum, massTol);
+				// result.addResult(correlation, libraryMassSpectrum);
+				// } // if
+				// System.out.println();
+				// } // for
+				//
+				// results.addCorrelationResult(result);
+				results.addCorrelationResult(correlate(scanSpectrum, libSpectra, massTol, monitor));
 			} // if
 		} // for
 		return results;

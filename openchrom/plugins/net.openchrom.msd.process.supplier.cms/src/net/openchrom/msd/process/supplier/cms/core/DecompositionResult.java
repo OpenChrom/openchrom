@@ -25,6 +25,7 @@ public class DecompositionResult {
 	private ArrayList<Double> xComp; // for library component i = fraction of library ion current spectrum which was found in scan ion current spectrum
 	private ArrayList<Boolean> isQuantitative;
 	private ICalibratedVendorMassSpectrum residualSpectrum;
+	private CorrelationResult correlationResult;
 	private double sumOfSquaresError;
 	private double weightedSumOfSquaresError;
 	private double solutionQuality;
@@ -47,6 +48,8 @@ public class DecompositionResult {
 		xComp = new ArrayList<Double>();
 		isQuantitative = new ArrayList<Boolean>(); // it is possible to have a mix of quantitative and non-quantitative component results
 		isCalibrated = true;
+		residualSpectrum = null;
+		correlationResult = null;
 	}
 
 	public boolean isCalibrated() {
@@ -68,6 +71,11 @@ public class DecompositionResult {
 			assert (componentCount == this.libraryComponents.size());
 			assert (componentCount == this.isQuantitative.size());
 		}
+	}
+
+	public CorrelationResult getCorrelationResult() {
+
+		return correlationResult;
 	}
 
 	public double getETimeS() {
@@ -146,6 +154,13 @@ public class DecompositionResult {
 	public boolean isQuantitative(int index) {
 
 		return isQuantitative.get(index);
+	}
+
+	public void setCorrelationResult(CorrelationResult correlationResult) {
+
+		if(null != correlationResult) {
+			this.correlationResult = correlationResult;
+		}
 	}
 
 	public void setResidualSpectrum(ICalibratedVendorMassSpectrum spec) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 whitlow.
+ * Copyright (c) 2017 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * whitlow - initial API and implementation
+ * Walter Whitlock - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 
@@ -42,10 +43,10 @@ import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
 public class CompositeLibrarySpectraUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
+	private static final String SHOW_SELECTED = "  *     ";
+	private static final String SHOW_NOT_SELECTED = "        ";
 	//
 	private static IMassSpectra cmsLibSpectra;
-	private static boolean isSelected[];
-	//
 	private Text textCmsLibraryFilePath;
 	private List listCmsComponents;
 
@@ -59,22 +60,27 @@ public class CompositeLibrarySpectraUI extends Composite {
 	 */
 	public static IMassSpectra getLibSpectra() {
 
-		IMassSpectra spectra = new MassSpectra();
 		if(null == cmsLibSpectra) {
 			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "Please select a CMS library file");
 			return (null);
 		}
+		boolean selectionOK = false;
 		for(int i = 0; i < cmsLibSpectra.getList().size(); i++) {
-			if(isSelected[i]) {
-				spectra.addMassSpectrum(cmsLibSpectra.getList().get(i));
+			IScanMSD libSpec = cmsLibSpectra.getList().get(i);
+			if(libSpec instanceof ICalibratedVendorLibraryMassSpectrum) {
+				if (((ICalibratedVendorLibraryMassSpectrum)libSpec).isSelected()) {
+					selectionOK = true;
+				}
+			} else {
+				MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "This is not a CMS library file");
+				return (null);
 			}
 		}
-		if(0 >= spectra.getList().size()) {
+		if(!selectionOK) {
 			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "Please select library components");
 			return (null);
 		}
-		spectra.setName(cmsLibSpectra.getName());
-		return spectra;
+		return cmsLibSpectra; // whw testing
 	}
 
 	private void initialize() {
@@ -96,6 +102,9 @@ public class CompositeLibrarySpectraUI extends Composite {
 		addButtonSelect(this);
 		// Component List
 		listCmsComponents = new List(this, SWT.SINGLE | SWT.V_SCROLL);
+		GridData listCmsComponentsGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		listCmsComponentsGridData.horizontalSpan = 2;
+		listCmsComponents.setLayoutData(listCmsComponentsGridData);
 		listCmsComponents.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -105,18 +114,17 @@ public class CompositeLibrarySpectraUI extends Composite {
 				int selection = listCmsComponents.getSelectionIndex();
 				if(null != cmsLibSpectra) {
 					ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)cmsLibSpectra.getList().get(selection);
-					isSelected[selection] = !isSelected[selection];
+					//isSelected[selection] = !isSelected[selection];
+					spectrum.setSelected(!spectrum.isSelected());
 					newString = spectrum.getLibraryInformation().getName();
-					if(isSelected[selection]) {
-						newString = " *     " + newString;
+					if(spectrum.isSelected()) {
+					//if(isSelected[selection]) {
+						newString = SHOW_SELECTED + newString;
 					} else {
-						newString = "       " + newString;
+						newString = SHOW_NOT_SELECTED + newString;
 					}
 					listCmsComponents.setItem(selection, newString);
 				}
-				// String outString = "";
-				// for (int loopIndex = 0; loopIndex < selectedItems.length; loopIndex++)
-				// outString += selectedItems[loopIndex] + " ";
 				return;
 			}
 
@@ -129,9 +137,6 @@ public class CompositeLibrarySpectraUI extends Composite {
 				return;
 			}
 		});
-		GridData listCmsComponentsGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		listCmsComponentsGridData.horizontalSpan = 2;
-		listCmsComponents.setLayoutData(listCmsComponentsGridData);
 	}
 
 	private void addButtonSelect(Composite parent) {
@@ -174,7 +179,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 				MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 				cmsLibSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
 				if(null != cmsLibSpectra) {
-					isSelected = new boolean[cmsLibSpectra.getList().size()];
+					//isSelected = new boolean[cmsLibSpectra.getList().size()];
 					listCmsComponents.removeAll();
 					StringBuilder stringBuilder = new StringBuilder();
 					for(IScanMSD spectrum : cmsLibSpectra.getList()) {

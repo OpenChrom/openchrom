@@ -15,6 +15,7 @@ package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.text.ValueFormat;
@@ -24,65 +25,34 @@ import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
 import org.eclipse.nebula.visualization.xygraph.util.XYGraphMediaFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 
-import net.openchrom.msd.process.supplier.cms.core.DecompositionResult;
+import net.openchrom.msd.process.supplier.cms.core.CorrelationResult;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
 
-public class CompositeCompositionsUI extends Composite {
+public class CompositeCorrelationsUI extends Composite {
 
-	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
+	private static final Logger logger = Logger.getLogger(CompositeCorrelationsUI.class);
 	//
 	private DecimalFormat decimalFormatscaleOffset = ValueFormat.getDecimalFormatEnglish("0.0##E00");
 	private TreeMap<String, Trace> traceCompositionsMap; // key is composition name string, value is Trace for that composition, needed so trace can be removed
 	private XYGraph xyGraphComposition;
 	private int xyGraphCompositionNumberOfPoints = 0; // if xyGraphCompositionNumberOfPoints > 0, then remainder of xyGraphComposition data items are valid
-	private Button buttonPP; // select partial pressures
-	private Button buttonMF; // select mol fraction
-	private Button buttonLF; // select library fraction
-	private Button buttonLogScale; // if checked, use offset log scale, otherwise use linear scale
 	private DecompositionResults results = null;
 	private boolean usingETimes = false;
 	private boolean usingOffsetLogScale = false;
 	private double scaleOffset;
-	private Text textLogScaleOffset;
-	private boolean txtLogScaleOffsetIgnoreEvent = false;
 	private Trace traceScaleOffset = null;
-	private Yunits yUnits = Yunits.PP;
 
-	public CompositeCompositionsUI(Composite parent, int style) {
+	public CompositeCorrelationsUI(Composite parent, int style) {
 		super(parent, style);
 		this.initialize();
-	}
-
-	private enum Yunits {
-		PP, MF, LF // Partial Pressure, Mol Fraction, Library Fraction
-	};
-
-	private void setyUnits(Yunits yUnits) {
-
-		if((null != results) && !results.isCalibrated()) {
-			yUnits = Yunits.LF;
-			buttonPP.setSelection(false);
-			buttonMF.setSelection(false);
-			buttonLF.setSelection(true);
-		} else {
-			this.yUnits = yUnits;
-		}
-		updateXYGraph();
 	}
 
 	private void initialize() {
@@ -103,120 +73,6 @@ public class CompositeCompositionsUI extends Composite {
 		compositGroup.setLayout(compositGroupGridLayout);
 		GridData compositGroupGridData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		compositGroup.setLayoutData(compositGroupGridData);
-		// display units Buttons
-		Label label = new Label(compositGroup, SWT.NONE);
-		label.setText("Display Units:");
-		//
-		buttonPP = new Button(compositGroup, SWT.RADIO);
-		buttonPP.setText("Partial Pressure");
-		buttonPP.setSelection(true);
-		buttonPP.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				try {
-					if(buttonPP.getSelection()) {
-						// System.out.println("buttonPP selection event, selected");
-						setyUnits(Yunits.PP);
-					} else {
-						// System.out.println("buttonPP selection event, not selected");
-					}
-				} catch(Exception e1) {
-					logger.warn(e1);
-				}
-			}
-		});
-		//
-		buttonMF = new Button(compositGroup, SWT.RADIO);
-		buttonMF.setText("Mol Fraction");
-		buttonMF.setSelection(false);
-		buttonMF.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				try {
-					if(buttonMF.getSelection()) {
-						// System.out.println("buttonMF selection event, selected");
-						setyUnits(Yunits.MF);
-					} else {
-						// System.out.println("buttonMF selection event, not selected");
-					}
-				} catch(Exception e1) {
-					logger.warn(e1);
-				}
-			}
-		});
-		//
-		buttonLF = new Button(compositGroup, SWT.RADIO);
-		buttonLF.setText("Library Fraction");
-		buttonLF.setSelection(false);
-		buttonLF.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				try {
-					if(buttonLF.getSelection()) {
-						// System.out.println("buttonLF selection event, selected");
-						setyUnits(Yunits.LF);
-					} else {
-						// System.out.println("buttonLF selection event, not selected");
-					}
-				} catch(Exception e1) {
-					logger.warn(e1);
-				}
-			}
-		});
-		//
-		Group compositGroup2 = new Group(compositeTopRow, SWT.NONE);
-		GridLayout compositGroup2GridLayout = new GridLayout(1, false);
-		compositGroup2.setLayout(compositGroup2GridLayout);
-		GridData compositGroup2GridData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
-		compositGroup2.setLayoutData(compositGroup2GridData);
-		//
-		buttonLogScale = new Button(compositGroup2, SWT.CHECK);
-		buttonLogScale.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-		buttonLogScale.setText("Use Offset Log Scale");
-		buttonLogScale.setSelection(false);
-		buttonLogScale.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				try {
-					if(buttonLogScale.getSelection()) {
-						// System.out.println("buttonLogScale selection event, checked");
-						usingOffsetLogScale = true;
-					} else {
-						// System.out.println("buttonLogScale selection event, not checked");
-						usingOffsetLogScale = false;
-					}
-					txtLogScaleOffsetIgnoreEvent = true;
-					textLogScaleOffset.setText("");
-					txtLogScaleOffsetIgnoreEvent = false;
-					updateXYGraph();
-				} catch(Exception e1) {
-					logger.warn(e1);
-				}
-			}
-		});
-		//
-		textLogScaleOffset = new Text(compositGroup2, SWT.RIGHT | SWT.BORDER);
-		textLogScaleOffset.setText("");
-		GridData textLogScaleOffsetGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
-		textLogScaleOffset.setLayoutData(textLogScaleOffsetGridData);
-		textLogScaleOffset.addModifyListener(new ModifyListener() {
-
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				if(!txtLogScaleOffsetIgnoreEvent && usingOffsetLogScale) {
-					updateXYGraph();
-				}
-			}
-		});
 		//
 		Composite compositeGraph = new Composite(this, SWT.NONE);
 		GridData compositeGraphGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -259,11 +115,6 @@ public class CompositeCompositionsUI extends Composite {
 		if(null == results) {
 			clearXYGraph();
 			return;
-		} else if(!results.isCalibrated()) {
-			yUnits = Yunits.LF;
-			buttonPP.setSelection(false);
-			buttonMF.setSelection(false);
-			buttonLF.setSelection(true);
 		}
 		this.usingETimes = results.isUsingETimes();
 		updateXYGraph();
@@ -272,57 +123,46 @@ public class CompositeCompositionsUI extends Composite {
 	private void updateXYGraph() {
 
 		if(null != results) {
-			System.out.println("Update Composition XYGraph for " + results.getName());
-			// if(0 == xyGraphNumberOfPoints) {
+			System.out.println("Update Correlation XYGraph for " + results.getName());
 			String newTitle = results.getName();
-			String ppUnits = results.getDecompositionResultsList().get(0).getSourcePressureUnits();
-			newTitle = "Composition: " + newTitle;
+			results.getDecompositionResultsList().get(0).getSourcePressureUnits();
+			newTitle = "Correlation: " + newTitle;
 			xyGraphComposition.setTitle(newTitle);
 			if(usingETimes) {
 				xyGraphComposition.getPrimaryXAxis().setTitle("Elapsed Time, s");
 			} else {
 				xyGraphComposition.getPrimaryXAxis().setTitle("Scan Number");
 			}
-			if(results.isCalibrated() && !(Yunits.LF == yUnits)) {
-				if(Yunits.PP == yUnits) {
-					xyGraphComposition.getPrimaryYAxis().setTitle("Partial Pressure, " + ppUnits);
-				} else if(Yunits.MF == yUnits) {
-					xyGraphComposition.getPrimaryYAxis().setTitle("Mol Fraction, dimensionless");
-				}
-			} else {
-				xyGraphComposition.getPrimaryYAxis().setTitle("Library Contribution, uncalibrated");
-			}
-			xyGraphComposition.getPrimaryYAxis().setLogScale(usingOffsetLogScale);
-			TreeMap<String, ArrayList<Double>> lookup = new TreeMap<String, ArrayList<Double>>();
+			xyGraphComposition.getPrimaryYAxis().setTitle("Correlation Value");
 			xyGraphCompositionNumberOfPoints = results.getDecompositionResultsList().size();
+			//
 			double[] xDataTraceComposition = new double[xyGraphCompositionNumberOfPoints];
-			String componentName;
-			DecompositionResult result;
+			TreeMap<String, ArrayList<Double>> lookup = new TreeMap<String, ArrayList<Double>>();
+			ConcurrentSkipListSet<String> topNamesList = new ConcurrentSkipListSet<String>();
+			//
+			String libraryName;
+			CorrelationResult correlationResult;
+			int maxTop = 1; // whw
 			for(int i = 0; i < xyGraphCompositionNumberOfPoints; i++) {
-				result = results.getDecompositionResultsList().get(i);
-				for(int j = 0; j < result.getNumberOfComponents(); j++) {
-					componentName = result.getLibCompName(j);
-					if(null == lookup.get(componentName)) {
-						lookup.put(componentName, new ArrayList<Double>());
+				correlationResult = results.getDecompositionResultsList().get(i).getCorrelationResult();
+				for(int j = 0; j < correlationResult.getResultsCount() && j < maxTop; j++) {
+					topNamesList.add(correlationResult.getCorrelationLibName(j));
+				}
+				for(int j = 0; j < correlationResult.getResultsCount(); j++) {
+					libraryName = correlationResult.getCorrelationLibName(j);
+					if(null == lookup.get(libraryName)) {
+						lookup.put(libraryName, new ArrayList<Double>());
 					}
-					if(results.isCalibrated() && !(Yunits.LF == yUnits)) {
-						if(Yunits.PP == yUnits) {
-							lookup.get(componentName).add(i, result.getPartialPressure(j, ppUnits));
-						} else if(Yunits.MF == yUnits) {
-							lookup.get(componentName).add(i, result.getMolFraction(j)); // MF units
-						}
-					} else {
-						lookup.get(componentName).add(i, result.getLibraryFraction(j));
-					}
+					lookup.get(libraryName).add(i, correlationResult.getCorrelationValue(j));
 				}
 				if(usingETimes) {
-					xDataTraceComposition[i] = result.getETimeS();
+					xDataTraceComposition[i] = results.getDecompositionResultsList().get(i).getETimeS();
 				} else {
-					xDataTraceComposition[i] = result.getResidualSpectrum().getScanNumber();
+					xDataTraceComposition[i] = results.getDecompositionResultsList().get(i).getResidualSpectrum().getScanNumber();
 				}
 			}
 			if(0 >= lookup.size()) {
-				return; // no composition results
+				return; // no correlation results
 			}
 			double minY = 0, minAbsY = 0, maxY = 0;
 			for(String strName : lookup.keySet()) {
@@ -352,17 +192,6 @@ public class CompositeCompositionsUI extends Composite {
 							}
 						}
 					}
-				}
-			}
-			if(usingOffsetLogScale) {
-				if("".equals(textLogScaleOffset.getText())) {
-					scaleOffset = minAbsY - minY;
-					txtLogScaleOffsetIgnoreEvent = true;
-					textLogScaleOffset.setText(String.valueOf(scaleOffset));
-					txtLogScaleOffsetIgnoreEvent = false;
-				} else {
-					scaleOffset = Double.parseDouble(textLogScaleOffset.getText());
-					minAbsY = java.lang.StrictMath.abs(scaleOffset + minY); // compute new minAbsY for Y-axis limits
 				}
 			}
 			for(String strName : lookup.keySet()) {

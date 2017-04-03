@@ -20,23 +20,24 @@ import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
 public class DecompositionResults {
 
 	private static final Logger logger = Logger.getLogger(MassSpectraDecomposition.class);
-	private ArrayList<DecompositionResult> results;
+	//
+	private ArrayList<DecompositionResult> decompositionResults = null;
 	private boolean isCalibrated; // true if all results in results list are calibrated
 	private boolean hasETimes; // true if all results have a valid ETIMES field
 	private boolean usingETimes; // if true, use etimes for x-axis
 	private String name;
 
 	DecompositionResults(String nameString) {
-		results = new ArrayList<DecompositionResult>();
+		decompositionResults = new ArrayList<DecompositionResult>();
 		name = nameString;
 		isCalibrated = true;
 		hasETimes = true;
 	}
 
-	public void addResult(DecompositionResult result) {
+	public void addDecompositionResult(DecompositionResult result) {
 
-		if(null != this.results) {
-			this.results.add(result);
+		if(null != this.decompositionResults) {
+			this.decompositionResults.add(result);
 			if(isCalibrated) {
 				isCalibrated = result.isCalibrated();
 			}
@@ -46,9 +47,9 @@ public class DecompositionResults {
 		}
 	}
 
-	public ArrayList<DecompositionResult> getResults() {
+	public ArrayList<DecompositionResult> getDecompositionResultsList() {
 
-		return results;
+		return decompositionResults;
 	}
 
 	String getCompositionResultsTable() {
@@ -58,7 +59,7 @@ public class DecompositionResults {
 		StringBuilder headingBuilder = new StringBuilder();
 		StringBuilder output = new StringBuilder();
 		output.append(String.format("\t\tComponent Partial Pressures Table%n"));
-		for(DecompositionResult result : this.getResults()) {
+		for(DecompositionResult result : this.getDecompositionResultsList()) {
 			ppUnits = result.getSourcePressureUnits();
 			// make column heading string for this result
 			headingBuilder.setLength(0);
@@ -115,7 +116,7 @@ public class DecompositionResults {
 		StringBuilder headingBuilder = new StringBuilder();
 		StringBuilder output = new StringBuilder();
 		output.append(String.format("\t\tResidual Spectrum Table%n"));
-		for(DecompositionResult result : this.getResults()) {
+		for(DecompositionResult result : this.getDecompositionResultsList()) {
 			sigUnits = result.getSignalUnits();
 			// make column heading string for this result
 			headingBuilder.setLength(0);

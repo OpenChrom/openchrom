@@ -18,9 +18,11 @@ import java.io.IOException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.TestPathHelper;
 
 import junit.framework.TestCase;
@@ -55,6 +57,11 @@ public class MassSpectraDecomposition_1_ITest extends TestCase {
 		 */
 		File libraryFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_TEST_1_LIBRARY_SPECTRA));
 		IMassSpectra librarySpectra = massSpectrumReader.read(libraryFile, new NullProgressMonitor());
+		for(IScanMSD libSpectrum : librarySpectra.getList()) {
+			if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
+				((ICalibratedVendorLibraryMassSpectrum)libSpectrum).setSelected(true);
+			}
+		}
 		// try {
 		massSpectraDecomposition.decompose(scanSpectra, librarySpectra, true, System.out, new NullProgressMonitor());
 		// } catch(InvalidScanException e) {
