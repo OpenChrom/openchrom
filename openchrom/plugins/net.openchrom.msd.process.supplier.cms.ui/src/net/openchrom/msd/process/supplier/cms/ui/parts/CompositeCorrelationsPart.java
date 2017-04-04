@@ -47,13 +47,13 @@ public class CompositeCorrelationsPart {
 	@Inject
 	private EPartService partService;
 	//
-	private CompositeCorrelationsUI compositeCorrelationssUI;
+	private CompositeCorrelationsUI compositeCorrelationsUI;
 
 	@PostConstruct
 	private void createControl() {
 
 		parent.setLayout(new FillLayout());
-		compositeCorrelationssUI = new CompositeCorrelationsUI(parent, SWT.NONE);
+		compositeCorrelationsUI = new CompositeCorrelationsUI(parent, SWT.NONE);
 		subscribe();
 	}
 
@@ -67,14 +67,14 @@ public class CompositeCorrelationsPart {
 	public void setFocus() {
 
 		update(decompositionResults);
-		compositeCorrelationssUI.setFocus();
+		compositeCorrelationsUI.setFocus();
 	}
 
 	private void update(DecompositionResults decompositionResults) {
 
-		if(isPartVisible()) {
-			compositeCorrelationssUI.updateXYGraph(decompositionResults);
-		}
+		//if(isPartVisible()) {
+			compositeCorrelationsUI.updateXYGraph(decompositionResults);
+		//}
 	}
 
 	/**
