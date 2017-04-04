@@ -12,19 +12,18 @@
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataProvider;
 import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
-import org.eclipse.nebula.visualization.xygraph.util.XYGraphMediaFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -32,6 +31,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Spinner;
 
 import net.openchrom.msd.process.supplier.cms.core.CorrelationResult;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
@@ -40,15 +41,14 @@ public class CompositeCorrelationsUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(CompositeCorrelationsUI.class);
 	//
-	private DecimalFormat decimalFormatscaleOffset = ValueFormat.getDecimalFormatEnglish("0.0##E00");
-	private TreeMap<String, Trace> traceCompositionsMap; // key is composition name string, value is Trace for that composition, needed so trace can be removed
-	private XYGraph xyGraphComposition;
-	private int xyGraphCompositionNumberOfPoints = 0; // if xyGraphCompositionNumberOfPoints > 0, then remainder of xyGraphComposition data items are valid
+	private TreeMap<String, Trace> traceCorrelationsMap; // key is correlation name string, value is Trace for that correlation, needed so trace can be removed
+	private XYGraph xyGraphCorrelation;
+	private int xyGraphCorrelationNumberOfPoints = 0; // if xyGraphCorrelationNumberOfPoints > 0, then remainder of xyGraphCorrelation data items are valid
 	private DecompositionResults results = null;
+	private Spinner spinnerTopSelect;
+	private Label spinnerTopSelectLabel;
 	private boolean usingETimes = false;
-	private boolean usingOffsetLogScale = false;
-	private double scaleOffset;
-	private Trace traceScaleOffset = null;
+	private int maxTop = 1;
 
 	public CompositeCorrelationsUI(Composite parent, int style) {
 		super(parent, style);
@@ -74,39 +74,64 @@ public class CompositeCorrelationsUI extends Composite {
 		GridData compositGroupGridData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		compositGroup.setLayoutData(compositGroupGridData);
 		//
+		spinnerTopSelectLabel = new Label(compositGroup, SWT.RIGHT);
+		spinnerTopSelectLabel.setText("Show Top:");
+		GridData labelGridData = new GridData(SWT.LEFT, SWT.CENTER, false, true);
+		spinnerTopSelectLabel.setLayoutData(labelGridData);
+		//
+		spinnerTopSelect = new Spinner(compositGroup, SWT.RIGHT | SWT.BORDER | SWT.READ_ONLY);
+		spinnerTopSelect.setMinimum(1);
+		spinnerTopSelect.setMaximum(10);
+		spinnerTopSelect.setSelection(1);
+		spinnerTopSelect.setIncrement(1);
+		spinnerTopSelect.setPageIncrement(10);
+		spinnerTopSelect.setToolTipText("increment or decrement top N select");
+		GridData spinnerLeftScanNumberGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, true);
+		spinnerLeftScanNumberGridData.widthHint = 32;
+		spinnerTopSelect.setLayoutData(spinnerLeftScanNumberGridData);
+		spinnerTopSelect.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+
+				maxTop = spinnerTopSelect.getSelection();
+				updateXYGraph();
+			}
+		});
+		//
 		Composite compositeGraph = new Composite(this, SWT.NONE);
 		GridData compositeGraphGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		compositeGraph.setLayout(new FillLayout());
 		compositeGraph.setLayoutData(compositeGraphGridData);
 		//
 		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(compositeGraph, SWT.NONE));
-		xyGraphComposition = new XYGraph();
-		traceCompositionsMap = new TreeMap<String, Trace>();
-		xyGraphComposition.setTitle("Composition");
-		xyGraphComposition.getPrimaryXAxis().setAutoScale(true);
-		xyGraphComposition.getPrimaryXAxis().setShowMajorGrid(true);
-		xyGraphComposition.getPrimaryYAxis().setAutoScale(true);
-		xyGraphComposition.getPrimaryYAxis().setShowMajorGrid(true);
-		xyGraphComposition.getPrimaryYAxis().setFormatPattern("0.0##E00");
-		xyGraphComposition.getPrimaryYAxis().setAutoScaleThreshold(0);
-		lightweightSystem.setContents(xyGraphComposition);
+		xyGraphCorrelation = new XYGraph();
+		traceCorrelationsMap = new TreeMap<String, Trace>();
+		xyGraphCorrelation.setTitle("Correlation");
+		xyGraphCorrelation.getPrimaryXAxis().setAutoScale(true);
+		xyGraphCorrelation.getPrimaryXAxis().setShowMajorGrid(true);
+		xyGraphCorrelation.getPrimaryYAxis().setAutoScale(true);
+		xyGraphCorrelation.getPrimaryYAxis().setShowMajorGrid(true);
+		xyGraphCorrelation.getPrimaryYAxis().setFormatPattern("0.0");
+		xyGraphCorrelation.getPrimaryYAxis().setAutoScaleThreshold(0);
+		lightweightSystem.setContents(xyGraphCorrelation);
 	}
 
 	private void clearXYGraph() {
 
-		if(null != traceCompositionsMap) {
-			for(Trace traceTemp : traceCompositionsMap.values()) {
-				xyGraphComposition.removeTrace(traceTemp);
+		if(null != traceCorrelationsMap) {
+			for(Trace traceTemp : traceCorrelationsMap.values()) {
+				xyGraphCorrelation.removeTrace(traceTemp);
 			}
 		}
-		xyGraphComposition.setTitle("Composition");
-		xyGraphComposition.getPrimaryXAxis().setAutoScale(true);
-		xyGraphComposition.getPrimaryXAxis().setShowMajorGrid(true);
-		xyGraphComposition.getPrimaryYAxis().setAutoScale(true);
-		xyGraphComposition.getPrimaryYAxis().setShowMajorGrid(true);
-		xyGraphComposition.getPrimaryYAxis().setFormatPattern("0.0##E00");
-		xyGraphComposition.getPrimaryYAxis().setAutoScaleThreshold(0);
-		xyGraphCompositionNumberOfPoints = 0; // invalidate current XYGraph composition plots
+		xyGraphCorrelation.setTitle("Correlation");
+		xyGraphCorrelation.getPrimaryXAxis().setAutoScale(true);
+		xyGraphCorrelation.getPrimaryXAxis().setShowMajorGrid(true);
+		xyGraphCorrelation.getPrimaryYAxis().setAutoScale(true);
+		xyGraphCorrelation.getPrimaryYAxis().setShowMajorGrid(true);
+		xyGraphCorrelation.getPrimaryYAxis().setFormatPattern("0.0");
+		xyGraphCorrelation.getPrimaryYAxis().setAutoScaleThreshold(0);
+		xyGraphCorrelationNumberOfPoints = 0; // invalidate current XYGraph correlation plots
 	}
 
 	public void updateXYGraph(DecompositionResults results) {
@@ -116,37 +141,43 @@ public class CompositeCorrelationsUI extends Composite {
 			clearXYGraph();
 			return;
 		}
-		this.usingETimes = results.isUsingETimes();
 		updateXYGraph();
 	}
 
 	private void updateXYGraph() {
 
 		if(null != results) {
+			this.usingETimes = results.isUsingETimes();
 			System.out.println("Update Correlation XYGraph for " + results.getName());
 			String newTitle = results.getName();
-			results.getDecompositionResultsList().get(0).getSourcePressureUnits();
 			newTitle = "Correlation: " + newTitle;
-			xyGraphComposition.setTitle(newTitle);
+			xyGraphCorrelation.setTitle(newTitle);
 			if(usingETimes) {
-				xyGraphComposition.getPrimaryXAxis().setTitle("Elapsed Time, s");
+				xyGraphCorrelation.getPrimaryXAxis().setTitle("Elapsed Time, s");
 			} else {
-				xyGraphComposition.getPrimaryXAxis().setTitle("Scan Number");
+				xyGraphCorrelation.getPrimaryXAxis().setTitle("Scan Number");
 			}
-			xyGraphComposition.getPrimaryYAxis().setTitle("Correlation Value");
-			xyGraphCompositionNumberOfPoints = results.getDecompositionResultsList().size();
+			xyGraphCorrelation.getPrimaryYAxis().setTitle("Correlation Value");
+			xyGraphCorrelationNumberOfPoints = results.getDecompositionResultsList().size();
 			//
-			double[] xDataTraceComposition = new double[xyGraphCompositionNumberOfPoints];
+			double[] xDataTraceCorrelation = new double[xyGraphCorrelationNumberOfPoints];
 			TreeMap<String, ArrayList<Double>> lookup = new TreeMap<String, ArrayList<Double>>();
 			ConcurrentSkipListSet<String> topNamesList = new ConcurrentSkipListSet<String>();
 			//
 			String libraryName;
 			CorrelationResult correlationResult;
-			int maxTop = 1; // whw
-			for(int i = 0; i < xyGraphCompositionNumberOfPoints; i++) {
+			int selectCount;
+			for(int i = 0; i < xyGraphCorrelationNumberOfPoints; i++) {
 				correlationResult = results.getDecompositionResultsList().get(i).getCorrelationResult();
-				for(int j = 0; j < correlationResult.getResultsCount() && j < maxTop; j++) {
-					topNamesList.add(correlationResult.getCorrelationLibName(j));
+				selectCount = 0;
+				for(int j = 0; j < correlationResult.getResultsCount(); j++) {
+					if(!correlationResult.libraryIsSelected(j)) {
+						topNamesList.add(correlationResult.getCorrelationLibName(j));
+						selectCount++;
+						if(maxTop <= selectCount) {
+							break; // for
+						}
+					}
 				}
 				for(int j = 0; j < correlationResult.getResultsCount(); j++) {
 					libraryName = correlationResult.getCorrelationLibName(j);
@@ -156,112 +187,45 @@ public class CompositeCorrelationsUI extends Composite {
 					lookup.get(libraryName).add(i, correlationResult.getCorrelationValue(j));
 				}
 				if(usingETimes) {
-					xDataTraceComposition[i] = results.getDecompositionResultsList().get(i).getETimeS();
+					xDataTraceCorrelation[i] = results.getDecompositionResultsList().get(i).getETimeS();
 				} else {
-					xDataTraceComposition[i] = results.getDecompositionResultsList().get(i).getResidualSpectrum().getScanNumber();
+					xDataTraceCorrelation[i] = results.getDecompositionResultsList().get(i).getResidualSpectrum().getScanNumber();
 				}
 			}
 			if(0 >= lookup.size()) {
 				return; // no correlation results
 			}
-			double minY = 0, minAbsY = 0, maxY = 0;
-			for(String strName : lookup.keySet()) {
-				ArrayList<Double> templist;
-				templist = lookup.get(strName);
-				Double[] tempdata = new Double[1];
-				tempdata = templist.toArray(tempdata);
-				for(int ii = 0; ii < tempdata.length; ii++) {
-					double signal;
-					signal = tempdata[ii];
-					if(maxY == 0 && minY == 0) {
-						maxY = minY = signal;
-						minAbsY = java.lang.StrictMath.abs(signal);
-					} else {
-						if(maxY < signal) {
-							maxY = signal;
-						}
-						//
-						if(minY > signal) {
-							minY = signal;
-						}
-						//
-						if(signal != 0) {
-							signal = java.lang.StrictMath.abs(signal);
-							if(minAbsY == 0 || minAbsY > signal) {
-								minAbsY = signal;
-							}
-						}
-					}
-				}
-			}
-			for(String strName : lookup.keySet()) {
-				double temp;
+			//
+			for(String strName : topNamesList) {
 				ArrayList<Double> templist;
 				Color traceColor;
 				templist = lookup.get(strName);
 				Double[] tempdata = new Double[1];
 				tempdata = templist.toArray(tempdata);
 				double[] ydata = new double[tempdata.length];
-				if(usingOffsetLogScale) {
-					for(int ii = 0; ii < tempdata.length; ii++) {
-						temp = tempdata[ii].doubleValue() + scaleOffset;
-						if(0d >= temp) {
-							temp = minAbsY;
-						}
-						ydata[ii] = temp;
-					}
-				} else {
-					for(int ii = 0; ii < tempdata.length; ii++) {
-						ydata[ii] = tempdata[ii].doubleValue();
-					}
+				for(int ii = 0; ii < tempdata.length; ii++) {
+					ydata[ii] = tempdata[ii].doubleValue();
 				}
 				// create a trace data provider
-				CircularBufferDataProvider dataProviderTraceComposition = new CircularBufferDataProvider(false); // XYGraph data item
-				dataProviderTraceComposition.setBufferSize(xyGraphCompositionNumberOfPoints);
-				dataProviderTraceComposition.setCurrentXDataArray(xDataTraceComposition);
-				dataProviderTraceComposition.setCurrentYDataArray(ydata);
-				Trace traceTemp = traceCompositionsMap.get(strName);
+				CircularBufferDataProvider dataProviderTraceCorrelation = new CircularBufferDataProvider(false); // XYGraph data item
+				dataProviderTraceCorrelation.setBufferSize(xyGraphCorrelationNumberOfPoints);
+				dataProviderTraceCorrelation.setCurrentXDataArray(xDataTraceCorrelation);
+				dataProviderTraceCorrelation.setCurrentYDataArray(ydata);
+				Trace traceTemp = traceCorrelationsMap.get(strName);
 				traceColor = null;
 				if(null != traceTemp) {
 					traceColor = traceTemp.getTraceColor();
-					xyGraphComposition.removeTrace(traceTemp);
+					xyGraphCorrelation.removeTrace(traceTemp);
 				}
-				Trace traceComposition = new Trace(strName, xyGraphComposition.getPrimaryXAxis(), xyGraphComposition.getPrimaryYAxis(), dataProviderTraceComposition);
-				traceCompositionsMap.put(strName, traceComposition);
+				Trace traceCorrelation = new Trace(strName, xyGraphCorrelation.getPrimaryXAxis(), xyGraphCorrelation.getPrimaryYAxis(), dataProviderTraceCorrelation);
+				traceCorrelationsMap.put(strName, traceCorrelation);
 				if(null != traceColor) {
-					traceComposition.setTraceColor(traceColor);
+					traceCorrelation.setTraceColor(traceColor);
 				}
-				// traceComposition.setPointStyle(PointStyle.XCROSS);
-				xyGraphComposition.addTrace(traceComposition);
+				// traceCorrelation.setPointStyle(PointStyle.XCROSS);
+				xyGraphCorrelation.addTrace(traceCorrelation);
 			}
-			if(null != traceScaleOffset) {
-				xyGraphComposition.removeTrace(traceScaleOffset);
-				traceScaleOffset = null;
-			}
-			xyGraphComposition.getPrimaryYAxis().setAutoScale(false);
-			if(!usingOffsetLogScale) {
-				if(0 < minY) {
-					xyGraphComposition.getPrimaryYAxis().setRange(0, 1.05 * maxY);
-				} else {
-					xyGraphComposition.getPrimaryYAxis().setRange(1.05 * minY, 1.05 * maxY);
-				}
-			} else {
-				xyGraphComposition.getPrimaryYAxis().setRange(0.95 * minAbsY, 1.05 * (maxY + scaleOffset));
-				CircularBufferDataProvider dataProviderTraceScaleOffset = new CircularBufferDataProvider(false); // XYGraph data item
-				dataProviderTraceScaleOffset.setBufferSize(2);
-				double[] ydata = new double[2];
-				double[] xdata = new double[2];
-				ydata[0] = ydata[1] = scaleOffset;
-				xdata[0] = xyGraphComposition.getPrimaryXAxis().getRange().getLower();
-				xdata[1] = xyGraphComposition.getPrimaryXAxis().getRange().getUpper();
-				dataProviderTraceScaleOffset.setCurrentXDataArray(xdata);
-				dataProviderTraceScaleOffset.setCurrentYDataArray(ydata);
-				traceScaleOffset = new Trace("Zero(" + decimalFormatscaleOffset.format(scaleOffset) + ")", xyGraphComposition.getPrimaryXAxis(), xyGraphComposition.getPrimaryYAxis(), dataProviderTraceScaleOffset);
-				traceScaleOffset.setTraceColor(XYGraphMediaFactory.getInstance().getColor(XYGraphMediaFactory.COLOR_RED));
-				// traceScanSignalSum.setPointStyle(PointStyle.XCROSS);
-				xyGraphComposition.addTrace(traceScaleOffset);
-			}
+			xyGraphCorrelation.getPrimaryYAxis().setAutoScale(true);
 		}
-		// xyGraph.setShowLegend(!xyGraph.isShowLegend());
 	}
 }

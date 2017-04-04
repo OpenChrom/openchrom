@@ -71,6 +71,15 @@ public class CorrelationResult {
 		}
 	}
 
+	public boolean libraryIsSelected(int index) {
+
+		if((null != results) && (null != results[index]) && (null != results[index].library)) {
+			return results[index].library.isSelected();
+		} else {
+			return false;
+		}
+	}
+
 	public String getCorrelationLibName(int index) {
 
 		if((null != results) && (null != results[index]) && (null != results[index].library) && (null != results[index].library.getLibraryInformation()) && (null != results[index].library.getLibraryInformation().getName())) {
