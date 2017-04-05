@@ -13,12 +13,12 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.comp
 
 import java.util.Comparator;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
 
-public class ScanMarkerComparator implements Comparator<ScanMarker_v1000> {
+public class ScanMarkerComparator implements Comparator<IScanMarker> {
 
 	@Override
-	public int compare(ScanMarker_v1000 o1, ScanMarker_v1000 o2) {
+	public int compare(IScanMarker o1, IScanMarker o2) {
 
 		if(o1 != null && o2 != null) {
 			return Integer.compare(o2.getScanNumber(), o1.getScanNumber());

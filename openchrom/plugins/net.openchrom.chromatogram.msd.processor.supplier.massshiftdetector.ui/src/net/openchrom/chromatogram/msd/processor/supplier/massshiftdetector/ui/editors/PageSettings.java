@@ -59,6 +59,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorSettings;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.preferences.PreferenceSupplier;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.ChromatogramImportRunnable;
@@ -110,11 +111,12 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		if(editorProcessor != null && editorProcessor.getProcessorData().getProcessorModel() != null) {
 			ProcessorData processorData = editorProcessor.getProcessorData();
 			IProcessorModel processorModel = processorData.getProcessorModel();
+			IProcessorSettings processorSettings = processorModel.getProcessorSettings();
 			//
 			referenceChromatogramText.setText(processorModel.getReferenceChromatogramPath());
 			isotopeChromatogramText.setText(processorModel.getIsotopeChromatogramPath());
-			startShiftLevelSpinner.setSelection(processorModel.getStartShiftLevel());
-			stopShiftLevelSpinner.setSelection(processorModel.getStopShiftLevel());
+			startShiftLevelSpinner.setSelection(processorSettings.getStartShiftLevel());
+			stopShiftLevelSpinner.setSelection(processorSettings.getStopShiftLevel());
 			labelNotes.setText(processorModel.getNotes());
 			descriptionText.setText(processorModel.getDescription());
 			//
@@ -256,7 +258,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 				if(startShiftLevelSpinner.getSelection() <= stopShiftLevelSpinner.getSelection()) {
 					ProcessorData processorData = editorProcessor.getProcessorData();
-					processorData.getProcessorModel().setStartShiftLevel(startShiftLevelSpinner.getSelection());
+					IProcessorModel processorModel = processorData.getProcessorModel();
+					IProcessorSettings processorSettings = processorModel.getProcessorSettings();
+					processorSettings.setStartShiftLevel(startShiftLevelSpinner.getSelection());
 				} else {
 					startShiftLevelSpinner.setSelection(startShiftLevelSpinner.getSelection() - 1);
 				}
@@ -285,7 +289,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 				if(stopShiftLevelSpinner.getSelection() >= startShiftLevelSpinner.getSelection()) {
 					ProcessorData processorData = editorProcessor.getProcessorData();
-					processorData.getProcessorModel().setStopShiftLevel(stopShiftLevelSpinner.getSelection());
+					IProcessorModel processorModel = processorData.getProcessorModel();
+					IProcessorSettings processorSettings = processorModel.getProcessorSettings();
+					processorSettings.setStopShiftLevel(stopShiftLevelSpinner.getSelection());
 				} else {
 					stopShiftLevelSpinner.setSelection(stopShiftLevelSpinner.getSelection() + 1);
 				}

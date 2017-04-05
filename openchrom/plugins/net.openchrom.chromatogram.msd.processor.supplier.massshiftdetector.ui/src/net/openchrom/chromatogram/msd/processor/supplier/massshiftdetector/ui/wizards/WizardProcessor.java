@@ -24,11 +24,12 @@ import org.eclipse.ui.INewWizard;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelWriter;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel_v1000;
 
 public class WizardProcessor extends AbstractFileWizard implements INewWizard {
 
 	private IProcessorWizardElements wizardElements = new ProcessorWizardElements();
+	//
+	private PageFileSelection pageFileSelection;
 	private PageSettings pageSettings;
 
 	public WizardProcessor() {
@@ -42,14 +43,20 @@ public class WizardProcessor extends AbstractFileWizard implements INewWizard {
 		/*
 		 * Pages must implement IExtendedWizardPage / extend AbstractExtendedWizardPage
 		 */
+		pageFileSelection = new PageFileSelection(wizardElements);
 		pageSettings = new PageSettings(wizardElements);
+		//
+		addPage(pageFileSelection);
 		addPage(pageSettings);
 	}
 
 	@Override
 	public boolean canFinish() {
 
-		boolean canFinish = pageSettings.canFinish();
+		boolean canFinish = pageFileSelection.canFinish();
+		if(canFinish) {
+			canFinish = pageSettings.canFinish();
+		}
 		return canFinish;
 	}
 
@@ -59,15 +66,8 @@ public class WizardProcessor extends AbstractFileWizard implements INewWizard {
 		monitor.beginTask("MassShiftDetector", IProgressMonitor.UNKNOWN);
 		final IFile file = super.prepareProject(monitor);
 		//
-		IProcessorModel processorModel = new ProcessorModel_v1000();
-		processorModel.setReferenceChromatogramPath(wizardElements.getReferenceChromatogramPath());
-		processorModel.setIsotopeChromatogramPath(wizardElements.getIsotopeChromatogramPath());
-		processorModel.setStartShiftLevel(wizardElements.getStartShiftLevel());
-		processorModel.setStopShiftLevel(wizardElements.getStopShiftLevel());
-		processorModel.setNotes(wizardElements.getNotes());
-		processorModel.setDescription(wizardElements.getDescription());
-		//
 		try {
+			IProcessorModel processorModel = wizardElements.getProcessorModel();
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
 			processorModelWriter.write(file.getLocation().toFile(), processorModel, monitor);
 		} catch(JAXBException e) {

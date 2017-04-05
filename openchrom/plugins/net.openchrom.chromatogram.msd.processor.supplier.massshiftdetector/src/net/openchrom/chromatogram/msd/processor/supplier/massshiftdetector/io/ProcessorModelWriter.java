@@ -22,13 +22,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShift_v1000;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel_v1000;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorSettings_v1000;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
 
 public class ProcessorModelWriter {
 
 	public void write(File file, IProcessorModel processorModel, IProgressMonitor monitor) throws JAXBException {
 
-		JAXBContext jaxbContext = JAXBContext.newInstance(new Class[]{ProcessorModel_v1000.class, ScanMarker_v1000.class, MassShift_v1000.class});
+		JAXBContext jaxbContext = JAXBContext.newInstance(new Class[]{ProcessorModel_v1000.class, ScanMarker_v1000.class, MassShift_v1000.class, ProcessorSettings_v1000.class});
 		Marshaller marshaller = jaxbContext.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		marshaller.marshal(processorModel, file);

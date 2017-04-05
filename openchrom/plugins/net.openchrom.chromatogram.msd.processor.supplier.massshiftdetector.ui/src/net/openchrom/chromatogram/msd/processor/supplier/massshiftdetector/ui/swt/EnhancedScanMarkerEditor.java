@@ -82,7 +82,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 		 */
 		try {
 			if(scanMarkerListUI.getTable().getItemCount() == 0) {
-				List<ScanMarker_v1000> scanMarker = editorProcessor.getProcessorData().getProcessorModel().getScanMarker();
+				List<IScanMarker> scanMarker = editorProcessor.getProcessorData().getProcessorModel().getScanMarker();
 				scanMarkerListUI.setInput(scanMarker);
 				if(scanMarker.size() > 0) {
 					scanMarkerListUI.getTable().select(0);
@@ -249,7 +249,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 		//
 		try {
 			monitor.run(true, true, runnable);
-			List<ScanMarker_v1000> scanMarker = runnable.getScanMarker();
+			List<IScanMarker> scanMarker = runnable.getScanMarker();
 			processorData.getProcessorModel().setScanMarker(scanMarker);
 			scanMarkerListUI.setInput(scanMarker);
 			setScanMarkerInfoLabel(scanMarker.size());

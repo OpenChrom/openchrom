@@ -19,6 +19,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorSettings;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 
 public class MassShiftDetectorRunnable implements IRunnableWithProgress {
@@ -41,8 +43,11 @@ public class MassShiftDetectorRunnable implements IRunnableWithProgress {
 		if(processorData != null) {
 			IChromatogramMSD reference = processorData.getReferenceChromatogram();
 			IChromatogramMSD shifted = processorData.getIsotopeChromatogram();
-			int startShiftLevel = processorData.getProcessorModel().getStartShiftLevel();
-			int stopShiftLevel = processorData.getProcessorModel().getStopShiftLevel();
+			//
+			IProcessorModel processorModel = processorData.getProcessorModel();
+			IProcessorSettings processorSettings = processorModel.getProcessorSettings();
+			int startShiftLevel = processorSettings.getStartShiftLevel();
+			int stopShiftLevel = processorSettings.getStopShiftLevel();
 			//
 			MassShiftDetector massShiftDetector = new MassShiftDetector();
 			massShifts = massShiftDetector.detectMassShifts(reference, shifted, startShiftLevel, stopShiftLevel, monitor);

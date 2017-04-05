@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -25,20 +26,18 @@ public class ProcessorModel_v1000 implements IProcessorModel {
 	private String version = "1.0.0.0";
 	//
 	@XmlElement(name = "ReferenceChromatogramPath")
-	private String referenceChromatogramPath;
+	private String referenceChromatogramPath = "";
 	@XmlElement(name = "IsotopeChromatogramPath")
-	private String isotopeChromatogramPath;
-	@XmlElement(name = "StartShiftLevel")
-	private int startShiftLevel;
-	@XmlElement(name = "StopShiftLevel")
-	private int stopShiftLevel;
+	private String isotopeChromatogramPath = "";
+	@XmlElement(name = "Settings", type = ProcessorSettings_v1000.class)
+	private IProcessorSettings processorSettings = new ProcessorSettings_v1000();
 	@XmlElement(name = "Notes")
-	private String notes;
+	private String notes = "";
 	@XmlElement(name = "Description")
-	private String description;
+	private String description = "";
 	@XmlElementWrapper(name = "ScanMarkers")
 	@XmlElement(name = "ScanMarker", type = ScanMarker_v1000.class)
-	private List<ScanMarker_v1000> scanMarker;
+	private List<IScanMarker> scanMarker = new ArrayList<IScanMarker>();
 
 	@Override
 	@XmlTransient
@@ -81,28 +80,15 @@ public class ProcessorModel_v1000 implements IProcessorModel {
 
 	@Override
 	@XmlTransient
-	public int getStartShiftLevel() {
+	public IProcessorSettings getProcessorSettings() {
 
-		return startShiftLevel;
+		return processorSettings;
 	}
 
 	@Override
-	public void setStartShiftLevel(int startShiftLevel) {
+	public void setProcessorSettings(IProcessorSettings processorSettings) {
 
-		this.startShiftLevel = startShiftLevel;
-	}
-
-	@Override
-	@XmlTransient
-	public int getStopShiftLevel() {
-
-		return stopShiftLevel;
-	}
-
-	@Override
-	public void setStopShiftLevel(int stopShiftLevel) {
-
-		this.stopShiftLevel = stopShiftLevel;
+		this.processorSettings = processorSettings;
 	}
 
 	@Override
@@ -133,13 +119,13 @@ public class ProcessorModel_v1000 implements IProcessorModel {
 
 	@Override
 	@XmlTransient
-	public List<ScanMarker_v1000> getScanMarker() {
+	public List<IScanMarker> getScanMarker() {
 
 		return scanMarker;
 	}
 
 	@Override
-	public void setScanMarker(List<ScanMarker_v1000> scanMarker) {
+	public void setScanMarker(List<IScanMarker> scanMarker) {
 
 		this.scanMarker = scanMarker;
 	}

@@ -27,13 +27,9 @@ public interface IProcessorModel {
 
 	void setIsotopeChromatogramPath(String isotopeChromatogramPath);
 
-	int getStartShiftLevel();
+	IProcessorSettings getProcessorSettings();
 
-	void setStartShiftLevel(int startShiftLevel);
-
-	int getStopShiftLevel();
-
-	void setStopShiftLevel(int stopShiftLevel);
+	void setProcessorSettings(IProcessorSettings processorSettings);
 
 	String getNotes();
 
@@ -43,7 +39,7 @@ public interface IProcessorModel {
 
 	void setDescription(String description);
 
-	List<ScanMarker_v1000> getScanMarker();
+	List<IScanMarker> getScanMarker();
 
-	void setScanMarker(List<ScanMarker_v1000> scanMarker);
+	void setScanMarker(List<IScanMarker> scanMarker);
 }

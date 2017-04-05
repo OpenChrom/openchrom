@@ -13,84 +13,20 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.w
 
 import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel_v1000;
+
 public class ProcessorWizardElements extends ChromatogramWizardElements implements IProcessorWizardElements {
 
-	private String referenceChromatogramPath = "";
-	private String isotopeChromatogramPath = "";
-	private int startShiftLevel = 0;
-	private int stopShiftLevel = 0;
-	private String notes = ""; // Could be ""
-	private String description = ""; // Could be ""
+	private IProcessorModel processorModel;
 
-	@Override
-	public String getReferenceChromatogramPath() {
-
-		return referenceChromatogramPath;
+	public ProcessorWizardElements() {
+		processorModel = new ProcessorModel_v1000();
 	}
 
 	@Override
-	public void setReferenceChromatogramPath(String referenceChromatogramPath) {
+	public IProcessorModel getProcessorModel() {
 
-		this.referenceChromatogramPath = referenceChromatogramPath;
-	}
-
-	@Override
-	public String getIsotopeChromatogramPath() {
-
-		return isotopeChromatogramPath;
-	}
-
-	@Override
-	public void setIsotopeChromatogramPath(String isotopeChromatogramPath) {
-
-		this.isotopeChromatogramPath = isotopeChromatogramPath;
-	}
-
-	@Override
-	public int getStartShiftLevel() {
-
-		return startShiftLevel;
-	}
-
-	@Override
-	public void setStartShiftLevel(int startShiftLevel) {
-
-		this.startShiftLevel = startShiftLevel;
-	}
-
-	@Override
-	public int getStopShiftLevel() {
-
-		return stopShiftLevel;
-	}
-
-	@Override
-	public void setStopShiftLevel(int stopShiftLevel) {
-
-		this.stopShiftLevel = stopShiftLevel;
-	}
-
-	@Override
-	public String getNotes() {
-
-		return notes;
-	}
-
-	@Override
-	public void setNotes(String notes) {
-
-		this.notes = notes;
-	}
-
-	@Override
-	public String getDescription() {
-
-		return description;
-	}
-
-	@Override
-	public void setDescription(String description) {
-
-		this.description = description;
+		return processorModel;
 	}
 }

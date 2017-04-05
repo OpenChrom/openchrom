@@ -26,6 +26,7 @@ import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignals;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.comparators.ScanMarkerComparator;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShift_v1000;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
 
@@ -144,9 +145,9 @@ public class MassShiftDetector {
 		return uncertaintyIonSignalsMap;
 	}
 
-	public List<ScanMarker_v1000> extractMassShiftMarker(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts, Map<Integer, Integer> levelUncertainty, IProgressMonitor monitor) {
+	public List<IScanMarker> extractMassShiftMarker(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts, Map<Integer, Integer> levelUncertainty, IProgressMonitor monitor) {
 
-		Map<Integer, ScanMarker_v1000> scanMarkerMap = new HashMap<Integer, ScanMarker_v1000>();
+		Map<Integer, IScanMarker> scanMarkerMap = new HashMap<Integer, IScanMarker>();
 		//
 		for(Map.Entry<Integer, Map<Integer, Map<Integer, Double>>> massShift : massShifts.entrySet()) {
 			//
@@ -164,7 +165,7 @@ public class MassShiftDetector {
 						/*
 						 * Create a mass shift marker if not already available.
 						 */
-						ScanMarker_v1000 scanMarker = scanMarkerMap.get(scan);
+						IScanMarker scanMarker = scanMarkerMap.get(scan);
 						if(scanMarker == null) {
 							scanMarker = new ScanMarker_v1000(scan);
 							scanMarkerMap.put(scan, scanMarker);
@@ -180,7 +181,7 @@ public class MassShiftDetector {
 		/*
 		 * Extract and sort the list.
 		 */
-		List<ScanMarker_v1000> scanMarkerList = new ArrayList<ScanMarker_v1000>(scanMarkerMap.values());
+		List<IScanMarker> scanMarkerList = new ArrayList<IScanMarker>(scanMarkerMap.values());
 		Collections.sort(scanMarkerList, new ScanMarkerComparator());
 		return scanMarkerList;
 	}

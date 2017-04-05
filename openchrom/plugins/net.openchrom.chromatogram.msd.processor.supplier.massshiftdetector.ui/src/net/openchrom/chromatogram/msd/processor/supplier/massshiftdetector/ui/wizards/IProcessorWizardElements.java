@@ -11,29 +11,9 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.wizards;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
+
 public interface IProcessorWizardElements {
 
-	String getReferenceChromatogramPath();
-
-	void setReferenceChromatogramPath(String referenceChromatogramPath);
-
-	String getIsotopeChromatogramPath();
-
-	void setIsotopeChromatogramPath(String isotopeChromatogramPath);
-
-	int getStartShiftLevel();
-
-	void setStartShiftLevel(int startShiftLevel);
-
-	int getStopShiftLevel();
-
-	void setStopShiftLevel(int startShiftLevel);
-
-	String getNotes();
-
-	void setNotes(String notes);
-
-	String getDescription();
-
-	void setDescription(String evaluationDescription);
+	IProcessorModel getProcessorModel();
 }

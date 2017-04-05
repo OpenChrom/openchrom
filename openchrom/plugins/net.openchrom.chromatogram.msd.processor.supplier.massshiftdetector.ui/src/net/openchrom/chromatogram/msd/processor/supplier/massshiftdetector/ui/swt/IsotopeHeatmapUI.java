@@ -40,6 +40,8 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorSettings;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ValueRange;
 
@@ -68,8 +70,11 @@ public class IsotopeHeatmapUI extends Composite {
 			/*
 			 * Set the combo items.
 			 */
-			int startShiftLevel = processorData.getProcessorModel().getStartShiftLevel();
-			int stopShiftLevel = processorData.getProcessorModel().getStopShiftLevel();
+			IProcessorModel processorModel = processorData.getProcessorModel();
+			IProcessorSettings processorSettings = processorModel.getProcessorSettings();
+			//
+			int startShiftLevel = processorSettings.getStartShiftLevel();
+			int stopShiftLevel = processorSettings.getStopShiftLevel();
 			//
 			int size = stopShiftLevel - startShiftLevel + 1;
 			String[] items = new String[size];
@@ -401,7 +406,9 @@ public class IsotopeHeatmapUI extends Composite {
 		int selection = comboIsotopeLevel.getSelectionIndex();
 		int massShiftLevel = 0;
 		if(processorData != null) {
-			massShiftLevel = selection + processorData.getProcessorModel().getStartShiftLevel();
+			IProcessorModel processorModel = processorData.getProcessorModel();
+			IProcessorSettings processorSettings = processorModel.getProcessorSettings();
+			massShiftLevel = selection + processorSettings.getStartShiftLevel();
 		}
 		return massShiftLevel;
 	}
