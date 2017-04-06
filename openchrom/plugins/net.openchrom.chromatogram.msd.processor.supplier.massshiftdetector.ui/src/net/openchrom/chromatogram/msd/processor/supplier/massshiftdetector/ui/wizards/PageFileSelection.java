@@ -56,18 +56,27 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 	public boolean canFinish() {
 
 		IProcessorModel processorModel = wizardElements.getProcessorModel();
+		//
+		if(getErrorMessage() != null) {
+			return false;
+		}
+		//
 		if(processorModel.getReferenceChromatogramPath() == null || "".equals(processorModel.getReferenceChromatogramPath())) {
 			return false;
 		}
+		//
 		if(processorModel.getIsotopeChromatogramPath() == null || "".equals(processorModel.getIsotopeChromatogramPath())) {
 			return false;
 		}
+		//
 		if(processorModel.getNotes() == null) {
 			return false;
 		}
+		//
 		if(processorModel.getDescription() == null) {
 			return false;
 		}
+		//
 		return true;
 	}
 

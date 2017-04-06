@@ -57,6 +57,10 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		IProcessorModel processorModel = wizardElements.getProcessorModel();
 		IProcessorSettings processorSettings = processorModel.getProcessorSettings();
 		//
+		if(getErrorMessage() != null) {
+			return false;
+		}
+		//
 		if(processorSettings.getStartShiftLevel() < MassShiftDetector.MIN_ISOTOPE_LEVEL || processorSettings.getStartShiftLevel() > MassShiftDetector.MAX_ISOTOPE_LEVEL) {
 			return false;
 		}
@@ -272,7 +276,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 			try {
 				int numberHighestIntensityMZ = Integer.parseInt(numberHighestIntensityMZText.getText().trim());
 				if(numberHighestIntensityMZ < IProcessorSettings.MIN_N_HIGHEST_INTENSITY || numberHighestIntensityMZ > IProcessorSettings.MAX_N_HIGHEST_INTENSITY) {
-					message = "Please select a valid number of n highest intensity m/z values (" + IProcessorSettings.MIN_N_HIGHEST_INTENSITY + " - " + IProcessorSettings.MAX_N_HIGHEST_INTENSITY + ").";
+					message = "Allowed range highest intensity m/z values (" + IProcessorSettings.MIN_N_HIGHEST_INTENSITY + " - " + IProcessorSettings.MAX_N_HIGHEST_INTENSITY + ").";
 				} else {
 					processorSettings.setNumberHighestIntensityMZ(numberHighestIntensityMZ);
 				}
