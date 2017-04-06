@@ -20,6 +20,7 @@ public interface IProcessorSettings {
 	//
 	int MIN_N_HIGHEST_INTENSITY = 1;
 	int MAX_N_HIGHEST_INTENSITY = 10;
+	int DEF_N_HIGHEST_INTENSITY = 5;
 
 	int getStartShiftLevel();
 

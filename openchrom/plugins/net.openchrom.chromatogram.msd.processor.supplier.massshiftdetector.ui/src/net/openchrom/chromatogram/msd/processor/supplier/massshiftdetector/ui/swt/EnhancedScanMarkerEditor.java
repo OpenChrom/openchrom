@@ -214,6 +214,9 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 		List<IScanMarker> scanMarker = runnable.getScanMarker();
 		processorData.getProcessorModel().setScanMarker(scanMarker);
 		scanMarkerListUI.setInput(scanMarker);
+		if(scanMarker.size() > 0) {
+			scanMarkerListUI.getTable().select(0);
+		}
 		updateMassShiftList();
 		updateComparisonViews();
 		setScanMarkerInfoLabel(scanMarker.size());

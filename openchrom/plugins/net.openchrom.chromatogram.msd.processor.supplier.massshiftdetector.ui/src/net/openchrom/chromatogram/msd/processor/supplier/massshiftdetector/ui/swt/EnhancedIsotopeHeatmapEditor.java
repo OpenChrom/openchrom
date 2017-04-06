@@ -24,13 +24,15 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 
 public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 
 	private Button buttonCalculate;
-	private Button buttonReset;
 	private Button buttonPrevious;
 	private Button buttonNext;
 	private List<Button> buttons;
@@ -62,7 +64,6 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 		 */
 		if(!readOnly) {
 			buttonCalculate.setEnabled(true);
-			buttonReset.setEnabled(true);
 			buttonPrevious.setEnabled(true);
 		} else {
 			/*
@@ -122,13 +123,13 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 		gridDataButtons.minimumWidth = 150;
 		//
 		buttons.add(buttonCalculate = createCalculateButton(compositeButtons, gridDataButtons));
-		buttons.add(buttonReset = createResetButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonPrevious = createPreviousButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonNext = createNextButton(compositeButtons, gridDataButtons));
 	}
 
 	private Button createCalculateButton(Composite parent, GridData gridData) {
 
+		Shell shell = Display.getDefault().getActiveShell();
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Calculate");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CALCULATE, IApplicationImage.SIZE_16x16));
@@ -138,27 +139,15 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				processAction();
-				plotData();
-			}
-		});
-		return button;
-	}
-
-	private Button createResetButton(Composite parent, GridData gridData) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("Reset");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_RESET, IApplicationImage.SIZE_16x16));
-		button.setLayoutData(gridData);
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				if(processorData != null) {
-					processorData.setMassShifts(null);
-					processorData.getProcessorModel().setScanMarker(null);
+				if(processorData != null && processorData.getMassShifts() != null) {
+					MessageBox messageBox = new MessageBox(shell, SWT.YES | SWT.NO | SWT.CANCEL);
+					messageBox.setText("Calculate Heatmap");
+					messageBox.setMessage("Current results are overwritten when doing a new calculation.");
+					if(messageBox.open() == SWT.YES) {
+						processAction();
+						plotData();
+					}
+				} else {
 					processAction();
 					plotData();
 				}

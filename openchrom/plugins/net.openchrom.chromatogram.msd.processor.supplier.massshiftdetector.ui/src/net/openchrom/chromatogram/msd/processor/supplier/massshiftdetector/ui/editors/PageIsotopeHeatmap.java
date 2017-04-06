@@ -12,6 +12,7 @@
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.ui.listener.INextListener;
@@ -26,6 +27,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.MassShiftDetectorRunnable;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt.EnhancedIsotopeHeatmapEditor;
@@ -86,21 +88,22 @@ public class PageIsotopeHeatmap {
 				 */
 				editorProcessor.setDirty(true);
 				ProcessorData processorData = editorProcessor.getProcessorData();
-				if(processorData != null && processorData.getMassShifts() == null) {
-					Shell shell = Display.getCurrent().getActiveShell();
+				if(processorData != null) {
+					Shell shell = Display.getDefault().getActiveShell();
 					MassShiftDetectorRunnable runnable = new MassShiftDetectorRunnable(processorData);
 					ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
 					//
 					try {
 						monitor.run(true, true, runnable);
-						processorData.setMassShifts(runnable.getMassShifts());
 					} catch(InterruptedException e1) {
 						logger.warn(e1);
 					} catch(InvocationTargetException e1) {
 						logger.warn(e1);
 					}
+					//
+					processorData.setMassShifts(runnable.getMassShifts());
+					processorData.getProcessorModel().setScanMarker(new ArrayList<IScanMarker>());
 				}
-				//
 				enhancedIsotopeHeatmapEditor.setInput(processorData);
 			}
 		});

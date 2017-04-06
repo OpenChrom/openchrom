@@ -27,7 +27,7 @@ public class ProcessorSettings_v1000 implements IProcessorSettings {
 	@XmlElement(name = "IonSelectionStrategy")
 	private String ionSelectionStrategy = STRATEGY_ABOVE_MEDIAN;
 	@XmlElement(name = "NumberHighestIntensityMZ")
-	private int numberHighestIntensityMZ = 5;
+	private int numberHighestIntensityMZ = DEF_N_HIGHEST_INTENSITY;
 	@XmlElement(name = "UsePeaks")
 	private boolean usePeaks = false; // If no, then scans.
 

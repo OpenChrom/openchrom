@@ -38,6 +38,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -132,26 +134,18 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			labelNotes.setText(processorModel.getNotes());
 			descriptionText.setText(processorModel.getDescription());
 			//
-			IChromatogramMSD referenceChromatogram = processorData.getReferenceChromatogram();
-			IChromatogramMSD isotopeChromatogram = processorData.getIsotopeChromatogram();
-			//
-			if(referenceChromatogram != null) {
-				referenceChromatogramHyperlink.setEnabled(true);
-			}
-			//
-			if(isotopeChromatogram != null) {
-				isotopeChromatogramHyperlink.setEnabled(true);
-			}
-			//
 			if(processorSettings.getIonSelectionStrategy().equals(IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY)) {
 				numberHighestIntensityMZText.setEnabled(true);
 			} else {
 				numberHighestIntensityMZText.setEnabled(false);
 			}
 			//
-			if(referenceChromatogram != null && isotopeChromatogram != null) {
-				calculateHyperlink.setEnabled(true);
-			}
+			IProcessingInfo processingInfo = validateSettings();
+			boolean hasErrorMessage = processingInfo.hasErrorMessages();
+			referenceChromatogramHyperlink.setEnabled(!hasErrorMessage);
+			isotopeChromatogramHyperlink.setEnabled(!hasErrorMessage);
+			calculateHyperlink.setEnabled(!hasErrorMessage);
+			//
 		} else {
 			referenceChromatogramText.setText("");
 			isotopeChromatogramText.setText("");
@@ -391,9 +385,10 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		numberHighestIntensityMZText = new Text(client, SWT.BORDER);
 		numberHighestIntensityMZText.setText("");
 		numberHighestIntensityMZText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		numberHighestIntensityMZText.addModifyListener(new ModifyListener() {
+		numberHighestIntensityMZText.addKeyListener(new KeyAdapter() {
 
-			public void modifyText(ModifyEvent e) {
+			@Override
+			public void keyReleased(KeyEvent e) {
 
 				ProcessorData processorData = editorProcessor.getProcessorData();
 				IProcessorModel processorModel = processorData.getProcessorModel();
@@ -402,11 +397,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				if(processorSettings.getIonSelectionStrategy().equals(IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY)) {
 					try {
 						int numberHighestIntensityMZ = Integer.parseInt(numberHighestIntensityMZText.getText().trim());
-						if(numberHighestIntensityMZ >= IProcessorSettings.MIN_N_HIGHEST_INTENSITY && numberHighestIntensityMZ <= IProcessorSettings.MAX_N_HIGHEST_INTENSITY) {
-							processorSettings.setNumberHighestIntensityMZ(numberHighestIntensityMZ);
-						}
+						processorSettings.setNumberHighestIntensityMZ(numberHighestIntensityMZ);
 					} catch(NumberFormatException e1) {
-						numberHighestIntensityMZText.setText("1");
+						//
 					}
 				}
 			}
@@ -620,31 +613,52 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		 * instead of
 		 * Display display = Display.getCurrent();
 		 */
-		//
 		editorProcessor.setDirty(true);
-		System.out.println("Validate Settings");
-		//
+		IProcessingInfo processingInfo = validateSettings();
+		boolean hasErrorMessage = processingInfo.hasErrorMessages();
+		referenceChromatogramHyperlink.setEnabled(!hasErrorMessage);
+		isotopeChromatogramHyperlink.setEnabled(!hasErrorMessage);
+		calculateHyperlink.setEnabled(!hasErrorMessage);
+		ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
+	}
+
+	private IProcessingInfo validateSettings() {
+
 		IProcessingInfo processingInfo = new ProcessingInfo();
-		ProcessorData processorRawData = editorProcessor.getProcessorData();
+		ProcessorData processorData = editorProcessor.getProcessorData();
+		IProcessorModel processorModel = processorData.getProcessorModel();
+		IProcessorSettings processorSettings = processorModel.getProcessorSettings();
 		//
-		if(processorRawData.getReferenceChromatogram() == null || processorRawData.getIsotopeChromatogram() == null) {
+		if(processorData.getReferenceChromatogram() == null || processorData.getIsotopeChromatogram() == null) {
 			processingInfo.addErrorMessage(DESCRIPTION, "Please select a reference and an isotope chromatogram.");
 		} else {
-			int numberOfScans1 = processorRawData.getReferenceChromatogram().getNumberOfScans();
-			int numberOfScans2 = processorRawData.getIsotopeChromatogram().getNumberOfScans();
-			//
-			referenceChromatogramHyperlink.setEnabled(true);
-			isotopeChromatogramHyperlink.setEnabled(true);
-			calculateHyperlink.setEnabled(true);
+			int numberOfScans1 = processorData.getReferenceChromatogram().getNumberOfScans();
+			int numberOfScans2 = processorData.getIsotopeChromatogram().getNumberOfScans();
 			//
 			if(numberOfScans1 != numberOfScans2) {
 				processingInfo.addWarnMessage(DESCRIPTION, "The selected chromatograms have a different number of scans (" + numberOfScans1 + " vs. " + numberOfScans2 + ").");
 			} else {
 				processingInfo.addInfoMessage(DESCRIPTION, "The selected chromatograms are valid.");
 			}
+			//
+			if(processorSettings.getStartShiftLevel() > processorSettings.getStopShiftLevel()) {
+				processingInfo.addErrorMessage(DESCRIPTION, "The start shift level must be <= stop shift level.");
+			}
+			//
+			String ionSelectionStrategy = processorSettings.getIonSelectionStrategy();
+			if(!isValidStrategy(ionSelectionStrategy)) {
+				processingInfo.addErrorMessage(DESCRIPTION, "Please select a valid ion selection strategy.");
+			}
+			//
+			if(ionSelectionStrategy.equals(IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY)) {
+				int numberHighestIntensityMZ = processorSettings.getNumberHighestIntensityMZ();
+				if(numberHighestIntensityMZ < IProcessorSettings.MIN_N_HIGHEST_INTENSITY || numberHighestIntensityMZ > IProcessorSettings.MAX_N_HIGHEST_INTENSITY) {
+					processingInfo.addErrorMessage(DESCRIPTION, "Allowed range highest intensity m/z values (" + IProcessorSettings.MIN_N_HIGHEST_INTENSITY + " - " + IProcessorSettings.MAX_N_HIGHEST_INTENSITY + ").");
+				}
+			}
 		}
 		//
-		ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
+		return processingInfo;
 	}
 
 	private boolean isValidStrategy(String ionSelectionStrategy) {

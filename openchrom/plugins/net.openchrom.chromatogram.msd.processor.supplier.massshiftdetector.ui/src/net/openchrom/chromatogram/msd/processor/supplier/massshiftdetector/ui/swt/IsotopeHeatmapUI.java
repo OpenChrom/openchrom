@@ -267,7 +267,7 @@ public class IsotopeHeatmapUI extends Composite {
 	private void showData() {
 
 		int massShiftLevel = getMassShiftLevel();
-		if(processorData.getMassShifts() != null && processorData.getMassShifts().get(massShiftLevel) != null) {
+		if(processorData != null && processorData.getMassShifts() != null && processorData.getMassShifts().get(massShiftLevel) != null) {
 			//
 			// Map<Integer, Map<Integer, Map<Integer, Double>>>: ShiftLevel, Scan, m/z, Intensity
 			//
@@ -384,6 +384,11 @@ public class IsotopeHeatmapUI extends Composite {
 			scaleThreshold.setSelection(MassShiftDetector.SCALE_UNCERTAINTY_SELECTION);
 			textThreshold.setText(Integer.toString(MassShiftDetector.SCALE_UNCERTAINTY_SELECTION));
 		}
+		/*
+		 * Set the color map.
+		 */
+		ColorMap colorMap = colorMaps.get(threshold);
+		intensityGraphFigure.setColorMap(colorMap);
 	}
 
 	private void setThreshold(int threshold) {
