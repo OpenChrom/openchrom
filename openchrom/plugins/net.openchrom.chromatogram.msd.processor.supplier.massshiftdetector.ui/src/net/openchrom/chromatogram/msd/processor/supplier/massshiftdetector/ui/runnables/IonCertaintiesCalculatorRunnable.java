@@ -12,29 +12,29 @@
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.CalculatedIonCertainties;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorSettings;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 
-public class MassShiftDetectorRunnable implements IRunnableWithProgress {
+public class IonCertaintiesCalculatorRunnable implements IRunnableWithProgress {
 
 	private ProcessorData processorData;
-	private Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts;
+	private CalculatedIonCertainties calculatedIonCertainties;
 
-	public MassShiftDetectorRunnable(ProcessorData processorData) {
+	public IonCertaintiesCalculatorRunnable(ProcessorData processorData) {
 		this.processorData = processorData;
 	}
 
-	public Map<Integer, Map<Integer, Map<Integer, Double>>> getMassShifts() {
+	public CalculatedIonCertainties getCalculatedIonCertainties() {
 
-		return massShifts;
+		return calculatedIonCertainties;
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class MassShiftDetectorRunnable implements IRunnableWithProgress {
 			IProcessorSettings processorSettings = processorModel.getProcessorSettings();
 			//
 			MassShiftDetector massShiftDetector = new MassShiftDetector();
-			massShifts = massShiftDetector.detectMassShifts(referenceChromatogram, isotopeChromatogram, processorSettings, monitor);
+			calculatedIonCertainties = massShiftDetector.calculateIonCertainties(referenceChromatogram, isotopeChromatogram, processorSettings, monitor);
 		}
 	}
 }

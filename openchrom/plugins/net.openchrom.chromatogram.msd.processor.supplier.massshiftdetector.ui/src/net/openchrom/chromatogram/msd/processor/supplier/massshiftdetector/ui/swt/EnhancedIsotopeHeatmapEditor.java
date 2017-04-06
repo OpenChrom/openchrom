@@ -139,7 +139,7 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if(processorData != null && processorData.getMassShifts() != null) {
+				if(processorData != null && processorData.getCalculatedIonCertainties() != null) {
 					MessageBox messageBox = new MessageBox(shell, SWT.YES | SWT.NO | SWT.CANCEL);
 					messageBox.setText("Calculate Heatmap");
 					messageBox.setMessage("Current results are overwritten when doing a new calculation.");

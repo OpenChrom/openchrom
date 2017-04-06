@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.MassShiftDetectorRunnable;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.IonCertaintiesCalculatorRunnable;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt.EnhancedIsotopeHeatmapEditor;
 
 public class PageIsotopeHeatmap {
@@ -90,7 +90,7 @@ public class PageIsotopeHeatmap {
 				ProcessorData processorData = editorProcessor.getProcessorData();
 				if(processorData != null) {
 					Shell shell = Display.getDefault().getActiveShell();
-					MassShiftDetectorRunnable runnable = new MassShiftDetectorRunnable(processorData);
+					IonCertaintiesCalculatorRunnable runnable = new IonCertaintiesCalculatorRunnable(processorData);
 					ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
 					//
 					try {
@@ -101,7 +101,7 @@ public class PageIsotopeHeatmap {
 						logger.warn(e1);
 					}
 					//
-					processorData.setMassShifts(runnable.getMassShifts());
+					processorData.setCacluatedIonCertainties(runnable.getCalculatedIonCertainties());
 					processorData.getProcessorModel().setScanMarker(new ArrayList<IScanMarker>());
 				}
 				enhancedIsotopeHeatmapEditor.setInput(processorData);

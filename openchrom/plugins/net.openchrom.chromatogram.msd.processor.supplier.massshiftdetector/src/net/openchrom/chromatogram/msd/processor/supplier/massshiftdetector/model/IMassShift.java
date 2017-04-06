@@ -29,7 +29,7 @@ public interface IMassShift {
 
 	void setMassShiftLevel(int massShiftLevel);
 
-	double getUncertainty();
+	double getCertainty();
 
-	void setUncertainty(double uncertainty);
+	void setCertainty(double certainty);
 }

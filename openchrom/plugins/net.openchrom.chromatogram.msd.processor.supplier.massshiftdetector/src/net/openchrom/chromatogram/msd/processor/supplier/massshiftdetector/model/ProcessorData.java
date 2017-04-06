@@ -24,11 +24,11 @@ public class ProcessorData {
 	private IChromatogramSelectionMSD referenceChromatogramSelection;
 	private IChromatogramSelectionMSD isotopeChromatogramSelection;
 	//
-	private Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts;
-	private Map<Integer, Integer> thresholdMassShiftLevel;
+	private CalculatedIonCertainties calculatedIonCertainties;
+	private Map<Integer, Integer> levelCertainty;
 
 	public ProcessorData() {
-		thresholdMassShiftLevel = new HashMap<Integer, Integer>();
+		levelCertainty = new HashMap<Integer, Integer>();
 	}
 
 	public IProcessorModel getProcessorModel() {
@@ -79,18 +79,18 @@ public class ProcessorData {
 		}
 	}
 
-	public Map<Integer, Map<Integer, Map<Integer, Double>>> getMassShifts() {
+	public CalculatedIonCertainties getCalculatedIonCertainties() {
 
-		return massShifts;
+		return calculatedIonCertainties;
 	}
 
-	public void setMassShifts(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts) {
+	public void setCacluatedIonCertainties(CalculatedIonCertainties calculatedIonCertainties) {
 
-		this.massShifts = massShifts;
+		this.calculatedIonCertainties = calculatedIonCertainties;
 	}
 
-	public Map<Integer, Integer> getLevelUncertainty() {
+	public Map<Integer, Integer> getLevelCertainty() {
 
-		return thresholdMassShiftLevel;
+		return levelCertainty;
 	}
 }

@@ -26,16 +26,16 @@ public class MassShift_v1000 implements IMassShift {
 	private int retentionTimeIsotope;
 	@XmlElement(name = "MassShiftLevel")
 	private int massShiftLevel;
-	@XmlElement(name = "Uncertainty")
-	private double uncertainty;
+	@XmlElement(name = "Certainty")
+	private double certainty;
 
 	public MassShift_v1000() {
 	}
 
-	public MassShift_v1000(double mz, int massShiftLevel, double uncertainty) {
+	public MassShift_v1000(double mz, int massShiftLevel, double certainty) {
 		this.mz = mz;
 		this.massShiftLevel = massShiftLevel;
-		this.uncertainty = uncertainty;
+		this.certainty = certainty;
 	}
 
 	@Override
@@ -92,15 +92,15 @@ public class MassShift_v1000 implements IMassShift {
 
 	@Override
 	@XmlTransient
-	public double getUncertainty() {
+	public double getCertainty() {
 
-		return uncertainty;
+		return certainty;
 	}
 
 	@Override
-	public void setUncertainty(double uncertainty) {
+	public void setCertainty(double certainty) {
 
-		this.uncertainty = uncertainty;
+		this.certainty = certainty;
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class MassShift_v1000 implements IMassShift {
 		final int prime = 31;
 		int result = 1;
 		long temp;
-		temp = Double.doubleToLongBits(uncertainty);
+		temp = Double.doubleToLongBits(certainty);
 		result = prime * result + (int)(temp ^ (temp >>> 32));
 		result = prime * result + massShiftLevel;
 		temp = Double.doubleToLongBits(mz);
@@ -127,7 +127,7 @@ public class MassShift_v1000 implements IMassShift {
 		if(getClass() != obj.getClass())
 			return false;
 		MassShift_v1000 other = (MassShift_v1000)obj;
-		if(Double.doubleToLongBits(uncertainty) != Double.doubleToLongBits(other.uncertainty))
+		if(Double.doubleToLongBits(certainty) != Double.doubleToLongBits(other.certainty))
 			return false;
 		if(massShiftLevel != other.massShiftLevel)
 			return false;
@@ -139,6 +139,6 @@ public class MassShift_v1000 implements IMassShift {
 	@Override
 	public String toString() {
 
-		return "MassShift [mz=" + mz + ", massShiftLevel=" + massShiftLevel + ", uncertainty=" + uncertainty + "]";
+		return "MassShift [mz=" + mz + ", massShiftLevel=" + massShiftLevel + ", certainty=" + certainty + "]";
 	}
 }

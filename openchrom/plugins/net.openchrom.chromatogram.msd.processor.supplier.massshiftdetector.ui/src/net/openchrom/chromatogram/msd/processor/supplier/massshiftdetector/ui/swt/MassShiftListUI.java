@@ -20,7 +20,7 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.pr
 
 public class MassShiftListUI extends ExtendedTableViewer {
 
-	private String[] titles = {"m/z", "RT (Minutes) - Reference", "RT (Minutes) - Isotope", "Mass Shift Level", "Uncertainty"};
+	private String[] titles = {"m/z", "RT (Minutes) - Reference", "RT (Minutes) - Isotope", "Mass Shift Level", "Certainty"};
 	private int bounds[] = {100, 100, 100, 100, 100};
 
 	public MassShiftListUI(Composite parent, int style) {
