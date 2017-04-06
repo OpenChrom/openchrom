@@ -67,35 +67,12 @@ public class MassShiftDetector {
 	 */
 	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD referenceChromatogram, IChromatogramMSD isotopeChromatogram, IProcessorSettings processorSettings, IProgressMonitor monitor) throws ChromatogramIsNullException, IllegalArgumentException {
 
-		if(referenceChromatogram == null) {
-			throw new IllegalArgumentException("The reference chromatogram must be not null.");
-		}
-		//
-		if(isotopeChromatogram == null) {
-			throw new IllegalArgumentException("The isotope chromatogram must be not null.");
-		}
-		//
-		if(processorSettings == null) {
-			throw new IllegalArgumentException("The processor settings must be not null.");
-		}
-		//
-		int startShiftLevel = processorSettings.getStartShiftLevel();
-		int stopShiftLevel = processorSettings.getStopShiftLevel();
-		//
-		if(startShiftLevel < MIN_ISOTOPE_LEVEL || startShiftLevel > MAX_ISOTOPE_LEVEL) {
-			throw new IllegalArgumentException("The start shift level is not valid.");
-		}
-		//
-		if(stopShiftLevel < MIN_ISOTOPE_LEVEL || stopShiftLevel > MAX_ISOTOPE_LEVEL) {
-			throw new IllegalArgumentException("The stop shift level is not valid.");
-		}
-		//
-		if(stopShiftLevel < startShiftLevel) {
-			throw new IllegalArgumentException("The stop shift level must be >= start shift level.");
-		}
+		validateArguments(referenceChromatogram, isotopeChromatogram, processorSettings);
 		/*
 		 * Extract the m/z values.
 		 */
+		int startShiftLevel = processorSettings.getStartShiftLevel();
+		int stopShiftLevel = processorSettings.getStopShiftLevel();
 		Map<Integer, Map<Integer, Map<Integer, Double>>> uncertaintyIonSignalsMap = new HashMap<Integer, Map<Integer, Map<Integer, Double>>>();
 		int startScan = 1;
 		int stopScan = Math.min(referenceChromatogram.getNumberOfScans(), isotopeChromatogram.getNumberOfScans());
@@ -124,31 +101,65 @@ public class MassShiftDetector {
 					 */
 					IExtractedIonSignal referenceIonSignal = referenceIonSignals.getExtractedIonSignal(scan);
 					IExtractedIonSignal isotopeIonSignal = isotopeIonSignals.getExtractedIonSignal(scan);
+					/*
+					 * Normalize the data on demand.
+					 */
+					if(processorSettings.isNormalizeData()) {
+						referenceIonSignal.normalize(NORMALIZATION_BASE);
+						isotopeIonSignal.normalize(NORMALIZATION_BASE);
+					}
+					/*
+					 * Select the threshold strategy.
+					 */
+					float thresholdIntensity;
+					switch(processorSettings.getIonSelectionStrategy()) {
+						case IProcessorSettings.STRATEGY_SELECT_ALL:
+							thresholdIntensity = 0.0f;
+							break;
+						case IProcessorSettings.STRATEGY_ABOVE_MEAN:
+							thresholdIntensity = referenceIonSignal.getMeanIntensity();
+							break;
+						case IProcessorSettings.STRATEGY_ABOVE_MEDIAN:
+							thresholdIntensity = referenceIonSignal.getMedianIntensity();
+							break;
+						case IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY:
+							thresholdIntensity = referenceIonSignal.getNthHighestIntensity(processorSettings.getNumberHighestIntensityMZ());
+							break;
+						default:
+							thresholdIntensity = 0.0f;
+					}
+					/*
+					 * Calculate the uncertainty.
+					 */
 					Map<Integer, Double> extractedIonSignalUncertainty = new HashMap<Integer, Double>();
 					extractedIonSignalsDifference.put(scan, extractedIonSignalUncertainty);
 					//
 					for(int ion = startIon; ion <= stopIon; ion++) {
-						/*
-						 * Calculate the m/z difference.
-						 */
-						monitor.subTask("Calculate Level: " + shiftLevel + " -> Scan: " + scan + " -> m/z: " + ion);
 						//
 						double uncertainty = NORMALIZATION_BASE; // 100 == uncertain -> no match
 						double intensityReference = referenceIonSignal.getAbundance(ion);
-						double intensityIsotope = isotopeIonSignal.getAbundance(ion + shiftLevel);
-						double intensityMax = Math.max(intensityReference, intensityIsotope);
-						double intensityDelta = Math.abs(intensityReference - intensityIsotope);
 						/*
-						 * Calculate the uncertainty.
+						 * Filter ions.
 						 */
-						if(intensityMax != 0) {
-							uncertainty = NORMALIZATION_BASE / intensityMax * intensityDelta;
+						if(intensityReference >= thresholdIntensity) {
 							/*
-							 * Note that the uncertainty scale is switched when using the
-							 * isotopeLevel 0, hence adjust it.
+							 * Calculate the m/z difference.
 							 */
-							if(shiftLevel == 0) {
-								uncertainty = NORMALIZATION_BASE - uncertainty;
+							monitor.subTask("Calculate Level: " + shiftLevel + " -> Scan: " + scan + " -> m/z: " + ion);
+							//
+							double intensityIsotope = isotopeIonSignal.getAbundance(ion + shiftLevel);
+							double intensityMax = Math.max(intensityReference, intensityIsotope);
+							double intensityDelta = Math.abs(intensityReference - intensityIsotope);
+							//
+							if(intensityMax != 0) {
+								uncertainty = NORMALIZATION_BASE / intensityMax * intensityDelta;
+								/*
+								 * Note that the uncertainty scale is switched when using the
+								 * isotopeLevel 0, hence adjust it.
+								 */
+								if(shiftLevel == 0) {
+									uncertainty = NORMALIZATION_BASE - uncertainty;
+								}
 							}
 						}
 						/*
@@ -228,6 +239,36 @@ public class MassShiftDetector {
 		List<IScanMarker> scanMarkerList = new ArrayList<IScanMarker>(scanMarkerMap.values());
 		Collections.sort(scanMarkerList, new ScanMarkerComparator());
 		return scanMarkerList;
+	}
+
+	private void validateArguments(IChromatogramMSD referenceChromatogram, IChromatogramMSD isotopeChromatogram, IProcessorSettings processorSettings) throws IllegalArgumentException {
+
+		if(referenceChromatogram == null) {
+			throw new IllegalArgumentException("The reference chromatogram must be not null.");
+		}
+		//
+		if(isotopeChromatogram == null) {
+			throw new IllegalArgumentException("The isotope chromatogram must be not null.");
+		}
+		//
+		if(processorSettings == null) {
+			throw new IllegalArgumentException("The processor settings must be not null.");
+		}
+		//
+		int startShiftLevel = processorSettings.getStartShiftLevel();
+		int stopShiftLevel = processorSettings.getStopShiftLevel();
+		//
+		if(startShiftLevel < MIN_ISOTOPE_LEVEL || startShiftLevel > MAX_ISOTOPE_LEVEL) {
+			throw new IllegalArgumentException("The start shift level is not valid.");
+		}
+		//
+		if(stopShiftLevel < MIN_ISOTOPE_LEVEL || stopShiftLevel > MAX_ISOTOPE_LEVEL) {
+			throw new IllegalArgumentException("The stop shift level is not valid.");
+		}
+		//
+		if(stopShiftLevel < startShiftLevel) {
+			throw new IllegalArgumentException("The stop shift level must be >= start shift level.");
+		}
 	}
 
 	private IExtractedIonSignals extractIonSignals(IChromatogramMSD chromatogram, int startScan, int stopScan) throws ChromatogramIsNullException {
