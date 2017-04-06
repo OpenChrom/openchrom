@@ -84,6 +84,7 @@ public class PageIsotopeHeatmap {
 				/*
 				 * Calculate the shifts.
 				 */
+				editorProcessor.setDirty(true);
 				ProcessorData processorData = editorProcessor.getProcessorData();
 				if(processorData != null && processorData.getMassShifts() == null) {
 					Shell shell = Display.getCurrent().getActiveShell();

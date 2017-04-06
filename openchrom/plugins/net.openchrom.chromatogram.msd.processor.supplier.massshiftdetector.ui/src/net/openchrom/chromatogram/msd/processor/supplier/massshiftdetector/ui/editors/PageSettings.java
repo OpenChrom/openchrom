@@ -621,6 +621,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		 * Display display = Display.getCurrent();
 		 */
 		//
+		editorProcessor.setDirty(true);
 		System.out.println("Validate Settings");
 		//
 		IProcessingInfo processingInfo = new ProcessingInfo();

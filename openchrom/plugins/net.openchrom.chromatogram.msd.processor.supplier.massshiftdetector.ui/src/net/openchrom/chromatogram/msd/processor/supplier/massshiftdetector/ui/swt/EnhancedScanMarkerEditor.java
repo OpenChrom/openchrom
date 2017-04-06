@@ -76,6 +76,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 	public void setEditorProcessor(EditorProcessor editorProcessor) {
 
 		this.editorProcessor = editorProcessor;
+		editorProcessor.setDirty(true);
 		/*
 		 * Try to set the loaded list.
 		 */
@@ -180,6 +181,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
+				editorProcessor.setDirty(true);
 				if(scanMarkerListUI.getTable().getItemCount() == 0) {
 					calculateScanMarker(shell);
 				} else {

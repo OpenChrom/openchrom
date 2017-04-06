@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
@@ -52,6 +53,8 @@ public class EditorProcessor extends MultiPageEditorPart {
 	private PageScanMarkerTable pageScanMarkerTable;
 	//
 	private ProcessorData processorData;
+	//
+	private boolean isDirty = false;
 
 	public EditorProcessor() {
 		/*
@@ -106,6 +109,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 		try {
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
 			processorModelWriter.write(file, processorData.getProcessorModel(), monitor);
+			setDirty(false);
 		} catch(JAXBException e) {
 			logger.warn(e);
 		}
@@ -182,5 +186,16 @@ public class EditorProcessor extends MultiPageEditorPart {
 
 		pageSettings.dispose();
 		super.dispose();
+	}
+
+	public boolean isDirty() {
+
+		return isDirty;
+	}
+
+	public void setDirty(boolean isDirty) {
+
+		this.isDirty = isDirty;
+		firePropertyChange(IEditorPart.PROP_DIRTY);
 	}
 }
