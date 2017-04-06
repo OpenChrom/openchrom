@@ -203,18 +203,18 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 		//
 		try {
 			monitor.run(true, true, runnable);
-			List<IScanMarker> scanMarker = runnable.getScanMarker();
-			processorData.getProcessorModel().setScanMarker(scanMarker);
-			scanMarkerListUI.setInput(scanMarker);
-			//
-			updateMassShiftList();
-			updateComparisonViews();
-			setScanMarkerInfoLabel(scanMarker.size());
 		} catch(InterruptedException e1) {
 			logger.warn(e1);
 		} catch(InvocationTargetException e1) {
 			logger.warn(e1);
 		}
+		//
+		List<IScanMarker> scanMarker = runnable.getScanMarker();
+		processorData.getProcessorModel().setScanMarker(scanMarker);
+		scanMarkerListUI.setInput(scanMarker);
+		updateMassShiftList();
+		updateComparisonViews();
+		setScanMarkerInfoLabel(scanMarker.size());
 	}
 
 	private Button createPreviousButton(Composite parent, GridData gridData) {
@@ -236,7 +236,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
 	private Button createSaveButton(Composite parent, GridData gridData) {
 
-		Shell shell = Display.getCurrent().getActiveShell();
+		Shell shell = Display.getDefault().getActiveShell();
 		//
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Save");

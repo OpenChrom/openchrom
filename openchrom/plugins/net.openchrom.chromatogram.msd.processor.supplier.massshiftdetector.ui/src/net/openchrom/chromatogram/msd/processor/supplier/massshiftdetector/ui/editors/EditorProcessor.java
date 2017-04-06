@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
@@ -93,8 +92,6 @@ public class EditorProcessor extends MultiPageEditorPart {
 		pageScanMarkerTable = new PageScanMarkerTable(getContainer());
 		addPage(pageScanMarkerTable.getControl());
 		setPageText(PAGE_INDEX_SHIFT_TABLE, "Shift Table");
-		//
-		setDirty(true);
 	}
 
 	@Override
@@ -109,7 +106,6 @@ public class EditorProcessor extends MultiPageEditorPart {
 		try {
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
 			processorModelWriter.write(file, processorData.getProcessorModel(), monitor);
-			setDirty(false);
 		} catch(JAXBException e) {
 			logger.warn(e);
 		}
@@ -186,10 +182,5 @@ public class EditorProcessor extends MultiPageEditorPart {
 
 		pageSettings.dispose();
 		super.dispose();
-	}
-
-	public void setDirty(boolean isDirty) {
-
-		firePropertyChange(IEditorPart.PROP_DIRTY);
 	}
 }

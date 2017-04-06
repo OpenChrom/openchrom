@@ -506,15 +506,16 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				//
 				try {
 					monitor.run(true, true, runnable);
-					List<IChromatogramSelectionMSD> chromatogramSelections = runnable.getChromatogramSelections();
-					ProcessorData processorRawData = editorProcessor.getProcessorData();
-					processorRawData.setReferenceChromatogramSelection(chromatogramSelections.get(0));
-					processorRawData.setIsotopeChromatogramSelection(chromatogramSelections.get(1));
 				} catch(InterruptedException e1) {
 					logger.warn(e1);
 				} catch(InvocationTargetException e1) {
 					logger.warn(e1);
 				}
+				//
+				List<IChromatogramSelectionMSD> chromatogramSelections = runnable.getChromatogramSelections();
+				ProcessorData processorRawData = editorProcessor.getProcessorData();
+				processorRawData.setReferenceChromatogramSelection(chromatogramSelections.get(0));
+				processorRawData.setIsotopeChromatogramSelection(chromatogramSelections.get(1));
 				//
 				display.asyncExec(new Runnable() {
 
