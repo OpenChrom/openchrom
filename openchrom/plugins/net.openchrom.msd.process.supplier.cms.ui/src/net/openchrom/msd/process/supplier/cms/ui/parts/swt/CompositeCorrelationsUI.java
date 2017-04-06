@@ -13,6 +13,7 @@
 package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -112,7 +113,7 @@ public class CompositeCorrelationsUI extends Composite {
 		xyGraphCorrelation.getPrimaryXAxis().setShowMajorGrid(true);
 		xyGraphCorrelation.getPrimaryYAxis().setAutoScale(true);
 		xyGraphCorrelation.getPrimaryYAxis().setShowMajorGrid(true);
-		xyGraphCorrelation.getPrimaryYAxis().setFormatPattern("0.0");
+		xyGraphCorrelation.getPrimaryYAxis().setFormatPattern("0.00");
 		xyGraphCorrelation.getPrimaryYAxis().setAutoScaleThreshold(0);
 		lightweightSystem.setContents(xyGraphCorrelation);
 	}
@@ -129,7 +130,7 @@ public class CompositeCorrelationsUI extends Composite {
 		xyGraphCorrelation.getPrimaryXAxis().setShowMajorGrid(true);
 		xyGraphCorrelation.getPrimaryYAxis().setAutoScale(true);
 		xyGraphCorrelation.getPrimaryYAxis().setShowMajorGrid(true);
-		xyGraphCorrelation.getPrimaryYAxis().setFormatPattern("0.0");
+		xyGraphCorrelation.getPrimaryYAxis().setFormatPattern("0.00");
 		xyGraphCorrelation.getPrimaryYAxis().setAutoScaleThreshold(0);
 		xyGraphCorrelationNumberOfPoints = 0; // invalidate current XYGraph correlation plots
 	}
@@ -194,6 +195,16 @@ public class CompositeCorrelationsUI extends Composite {
 			}
 			if(0 >= lookup.size()) {
 				return; // no correlation results
+			}
+			//
+			Iterator<String> itr = traceCorrelationsMap.keySet().iterator();
+			while(itr.hasNext()) {
+				String strName = itr.next();
+				if(!topNamesList.contains(strName)) {
+					Trace traceTemp = traceCorrelationsMap.get(strName);
+					xyGraphCorrelation.removeTrace(traceTemp);
+					itr.remove();
+				}
 			}
 			//
 			for(String strName : topNamesList) {
