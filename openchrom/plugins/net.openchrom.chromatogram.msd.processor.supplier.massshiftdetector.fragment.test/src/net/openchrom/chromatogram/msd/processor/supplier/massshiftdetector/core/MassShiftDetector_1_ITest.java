@@ -26,6 +26,9 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.exceptions.NoExtractedIonSignalStoredException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorSettings;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000.ProcessorSettings_v1000;
+
 import junit.framework.TestCase;
 
 public class MassShiftDetector_1_ITest extends TestCase {
@@ -61,10 +64,13 @@ public class MassShiftDetector_1_ITest extends TestCase {
 	private void extractAndPrintResults(File fileReference, File fileShifted, String exportPath, boolean useAbsValues) throws IllegalArgumentException, ChromatogramIsNullException, NoExtractedIonSignalStoredException, FileNotFoundException {
 
 		int startShiftLevel = 0;
-		int stopShiftLevel = 3;
+		int stopShiftLevel = 0;
 		IChromatogramMSD chromatogramReference = getChromatogram(fileReference);
 		IChromatogramMSD chromatogramShifted = getChromatogram(fileShifted);
-		Map<Integer, Map<Integer, Map<Integer, Double>>> differenceIonSignalsMap = massShiftDetector.detectMassShifts(chromatogramReference, chromatogramShifted, startShiftLevel, stopShiftLevel, new NullProgressMonitor());
+		IProcessorSettings processorSettings = new ProcessorSettings_v1000();
+		processorSettings.setStartShiftLevel(startShiftLevel);
+		processorSettings.setStopShiftLevel(stopShiftLevel);
+		Map<Integer, Map<Integer, Map<Integer, Double>>> differenceIonSignalsMap = massShiftDetector.detectMassShifts(chromatogramReference, chromatogramShifted, processorSettings, new NullProgressMonitor());
 		//
 		for(int shiftLevel = startShiftLevel; shiftLevel <= stopShiftLevel; shiftLevel++) {
 			PrintWriter printWriter = new PrintWriter(new File(exportPath + shiftLevel + ".txt"));

@@ -19,9 +19,9 @@ public interface IScanMarker {
 
 	void setScanNumber(int scanNumber);
 
-	Set<MassShift_v1000> getMassShifts();
+	Set<IMassShift> getMassShifts();
 
-	void setMassShifts(Set<MassShift_v1000> massShifts);
+	void setMassShifts(Set<IMassShift> massShifts);
 
 	boolean isValidated();
 

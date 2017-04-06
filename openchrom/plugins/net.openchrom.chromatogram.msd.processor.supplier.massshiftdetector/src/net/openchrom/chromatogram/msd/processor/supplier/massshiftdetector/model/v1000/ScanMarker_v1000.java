@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
+package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,23 +18,26 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IMassShift;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
+
 public class ScanMarker_v1000 implements IScanMarker {
 
 	@XmlElement(name = "ScanNumber")
 	private int scanNumber;
 	@XmlElementWrapper(name = "MassShifts")
 	@XmlElement(name = "MassShift", type = MassShift_v1000.class)
-	private Set<MassShift_v1000> massShifts;
+	private Set<IMassShift> massShifts;
 	@XmlElement(name = "Validated")
 	private boolean validated;
 
 	public ScanMarker_v1000() {
-		this.massShifts = new HashSet<MassShift_v1000>();
+		this.massShifts = new HashSet<IMassShift>();
 	}
 
 	public ScanMarker_v1000(int scan) {
 		this.scanNumber = scan;
-		this.massShifts = new HashSet<MassShift_v1000>();
+		this.massShifts = new HashSet<IMassShift>();
 	}
 
 	@Override
@@ -52,13 +55,13 @@ public class ScanMarker_v1000 implements IScanMarker {
 
 	@Override
 	@XmlTransient
-	public Set<MassShift_v1000> getMassShifts() {
+	public Set<IMassShift> getMassShifts() {
 
 		return massShifts;
 	}
 
 	@Override
-	public void setMassShifts(Set<MassShift_v1000> massShifts) {
+	public void setMassShifts(Set<IMassShift> massShifts) {
 
 		this.massShifts = massShifts;
 	}

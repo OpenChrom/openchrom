@@ -9,15 +9,21 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
+package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IMassShift;
 
 public class MassShift_v1000 implements IMassShift {
 
 	@XmlElement(name = "MZ")
 	private double mz;
+	@XmlElement(name = "RetentionTimeReference")
+	private int retentionTimeReference;
+	@XmlElement(name = "RetentionTimeIsotope")
+	private int retentionTimeIsotope;
 	@XmlElement(name = "MassShiftLevel")
 	private int massShiftLevel;
 	@XmlElement(name = "Uncertainty")
@@ -43,6 +49,32 @@ public class MassShift_v1000 implements IMassShift {
 	public void setMz(double mz) {
 
 		this.mz = mz;
+	}
+
+	@Override
+	@XmlTransient
+	public int getRetentionTimeReference() {
+
+		return retentionTimeReference;
+	}
+
+	@Override
+	public void setRetentionTimeReference(int retentionTimeReference) {
+
+		this.retentionTimeReference = retentionTimeReference;
+	}
+
+	@Override
+	@XmlTransient
+	public int getRetentionTimeIsotope() {
+
+		return retentionTimeIsotope;
+	}
+
+	@Override
+	public void setRetentionTimeIsotope(int retentionTimeIsotope) {
+
+		this.retentionTimeIsotope = retentionTimeIsotope;
 	}
 
 	@Override

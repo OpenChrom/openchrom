@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
+package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorSettings;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
 
 @XmlRootElement(name = "MassShiftDetector")
 public class ProcessorModel_v1000 implements IProcessorModel {

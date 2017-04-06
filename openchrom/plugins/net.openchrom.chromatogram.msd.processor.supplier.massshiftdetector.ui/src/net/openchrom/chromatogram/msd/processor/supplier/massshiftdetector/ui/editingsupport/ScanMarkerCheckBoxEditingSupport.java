@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000.ScanMarker_v1000;
 
 public class ScanMarkerCheckBoxEditingSupport extends EditingSupport {
 

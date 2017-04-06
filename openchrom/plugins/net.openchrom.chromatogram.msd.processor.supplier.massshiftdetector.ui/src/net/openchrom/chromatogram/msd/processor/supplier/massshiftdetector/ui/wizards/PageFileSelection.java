@@ -190,6 +190,12 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 
 	private void createNoteSection(Composite parent) {
 
+		Label label = new Label(parent, SWT.NONE);
+		label.setText("Notes");
+		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
+		gridDataLabel.horizontalSpan = 2;
+		label.setLayoutData(gridDataLabel);
+		//
 		notesText = new Text(parent, SWT.BORDER);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
@@ -205,6 +211,12 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 
 	private void createDescriptionSection(Composite parent) {
 
+		Label label = new Label(parent, SWT.NONE);
+		label.setText("Description");
+		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
+		gridDataLabel.horizontalSpan = 2;
+		label.setLayoutData(gridDataLabel);
+		//
 		descriptionText = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL | SWT.WRAP);
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = 2;

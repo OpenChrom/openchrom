@@ -44,6 +44,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -76,12 +77,18 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private Text isotopeChromatogramText;
 	private Spinner startShiftLevelSpinner;
 	private Spinner stopShiftLevelSpinner;
+	private Button normalizeDataCheckBox;
+	private Combo ionSelectionStrategyCombo;
+	private Text numberHighestIntensityMZText;
+	private Button usePeaksCheckBox;
 	private Label labelNotes;
 	private Text descriptionText;
 	//
 	private ImageHyperlink referenceChromatogramHyperlink;
 	private ImageHyperlink isotopeChromatogramHyperlink;
 	private ImageHyperlink calculateHyperlink;
+	//
+	private String[] ionSelectionStrategies;
 
 	public PageSettings(Composite container) {
 		super("Settings", container, true);
@@ -101,7 +108,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		/*
 		 * 3 column layout
 		 */
-		createPropertiesSection(body);
+		createFileSelectionSection(body);
+		createSettingsSection(body);
 		createDescriptionSection(body);
 		createProcessSection(body);
 	}
@@ -117,6 +125,10 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			isotopeChromatogramText.setText(processorModel.getIsotopeChromatogramPath());
 			startShiftLevelSpinner.setSelection(processorSettings.getStartShiftLevel());
 			stopShiftLevelSpinner.setSelection(processorSettings.getStopShiftLevel());
+			normalizeDataCheckBox.setSelection(processorSettings.isNormalizeData());
+			ionSelectionStrategyCombo.setText(processorSettings.getIonSelectionStrategy());
+			numberHighestIntensityMZText.setText(Integer.toString(processorSettings.getNumberHighestIntensityMZ()));
+			usePeaksCheckBox.setSelection(processorSettings.isUsePeaks());
 			labelNotes.setText(processorModel.getNotes());
 			descriptionText.setText(processorModel.getDescription());
 			//
@@ -131,6 +143,12 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				isotopeChromatogramHyperlink.setEnabled(true);
 			}
 			//
+			if(processorSettings.getIonSelectionStrategy().equals(IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY)) {
+				numberHighestIntensityMZText.setEnabled(true);
+			} else {
+				numberHighestIntensityMZText.setEnabled(false);
+			}
+			//
 			if(referenceChromatogram != null && isotopeChromatogram != null) {
 				calculateHyperlink.setEnabled(true);
 			}
@@ -139,6 +157,10 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			isotopeChromatogramText.setText("");
 			startShiftLevelSpinner.setSelection(0);
 			stopShiftLevelSpinner.setSelection(0);
+			normalizeDataCheckBox.setSelection(false);
+			ionSelectionStrategyCombo.setText(IProcessorSettings.STRATEGY_SELECT_ALL);
+			numberHighestIntensityMZText.setText("1");
+			usePeaksCheckBox.setSelection(false);
 			labelNotes.setText("");
 			descriptionText.setText("");
 			referenceChromatogramHyperlink.setEnabled(false);
@@ -147,16 +169,32 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		}
 	}
 
-	private void createPropertiesSection(Composite parent) {
+	private void createFileSelectionSection(Composite parent) {
 
-		Section section = createSection(parent, 3, "Settings", "The selected settings will be used for the current analysis.");
+		Section section = createSection(parent, 3, "File Selection", "The selected files are used for the current analysis.");
 		Composite client = createClient(section, 3);
 		//
 		createReferenceChromatogramText(client);
 		createIsotopeChromatogramText(client);
+		createNotesLabel(client);
+		/*
+		 * Add the client to the section.
+		 */
+		section.setClient(client);
+	}
+
+	private void createSettingsSection(Composite parent) {
+
+		Section section = createSection(parent, 3, "Settings", "The selected settings are used for the current analysis.");
+		section.setExpanded(false);
+		Composite client = createClient(section, 2);
+		//
 		createStartShiftLevelSpinner(client);
 		createStopShiftLevelSpinner(client);
-		createNotesLabel(client);
+		createNormalizeDataCheckBox(client);
+		createIonSelectionStrategyCombo(client);
+		createNumberHighestIntensityText(client);
+		createUsePeaksCheckBox(client);
 		/*
 		 * Add the client to the section.
 		 */
@@ -245,9 +283,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		startShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
 		startShiftLevelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
 		startShiftLevelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
-		//
 		GridData gridData = new GridData();
-		gridData.horizontalSpan = 2;
 		gridData.widthHint = 50;
 		gridData.heightHint = 20;
 		startShiftLevelSpinner.setLayoutData(gridData);
@@ -276,9 +312,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		stopShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
 		stopShiftLevelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
 		stopShiftLevelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
-		//
 		GridData gridData = new GridData();
-		gridData.horizontalSpan = 2;
 		gridData.widthHint = 50;
 		gridData.heightHint = 20;
 		stopShiftLevelSpinner.setLayoutData(gridData);
@@ -295,6 +329,106 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				} else {
 					stopShiftLevelSpinner.setSelection(stopShiftLevelSpinner.getSelection() + 1);
 				}
+			}
+		});
+	}
+
+	private void createNormalizeDataCheckBox(Composite client) {
+
+		normalizeDataCheckBox = new Button(client, SWT.CHECK);
+		normalizeDataCheckBox.setText("Normalize Data");
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		normalizeDataCheckBox.setLayoutData(gridData);
+		normalizeDataCheckBox.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				ProcessorData processorData = editorProcessor.getProcessorData();
+				IProcessorModel processorModel = processorData.getProcessorModel();
+				IProcessorSettings processorSettings = processorModel.getProcessorSettings();
+				processorSettings.setNormalizeData(normalizeDataCheckBox.getSelection());
+			}
+		});
+	}
+
+	private void createIonSelectionStrategyCombo(Composite client) {
+
+		createLabel(client, "Ion Selection Strategy:");
+		//
+		ionSelectionStrategies = new String[]{IProcessorSettings.STRATEGY_SELECT_ALL, IProcessorSettings.STRATEGY_ABOVE_MEAN, IProcessorSettings.STRATEGY_ABOVE_MEDIAN, IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY};
+		ionSelectionStrategyCombo = new Combo(client, SWT.READ_ONLY);
+		ionSelectionStrategyCombo.setItems(ionSelectionStrategies);
+		ionSelectionStrategyCombo.select(0);
+		ionSelectionStrategyCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		ionSelectionStrategyCombo.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				String ionSelectionStrategy = ionSelectionStrategyCombo.getText().trim();
+				if(isValidStrategy(ionSelectionStrategy)) {
+					ProcessorData processorData = editorProcessor.getProcessorData();
+					IProcessorModel processorModel = processorData.getProcessorModel();
+					IProcessorSettings processorSettings = processorModel.getProcessorSettings();
+					processorSettings.setIonSelectionStrategy(ionSelectionStrategy);
+				}
+				//
+				if(ionSelectionStrategy.equals(IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY)) {
+					numberHighestIntensityMZText.setEnabled(true);
+				} else {
+					numberHighestIntensityMZText.setEnabled(false);
+				}
+			}
+		});
+	}
+
+	private void createNumberHighestIntensityText(Composite client) {
+
+		createLabel(client, "Number n Highest Intesity m/z:");
+		//
+		numberHighestIntensityMZText = new Text(client, SWT.BORDER);
+		numberHighestIntensityMZText.setText("");
+		numberHighestIntensityMZText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		numberHighestIntensityMZText.addModifyListener(new ModifyListener() {
+
+			public void modifyText(ModifyEvent e) {
+
+				ProcessorData processorData = editorProcessor.getProcessorData();
+				IProcessorModel processorModel = processorData.getProcessorModel();
+				IProcessorSettings processorSettings = processorModel.getProcessorSettings();
+				//
+				if(processorSettings.getIonSelectionStrategy().equals(IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY)) {
+					try {
+						int numberHighestIntensityMZ = Integer.parseInt(numberHighestIntensityMZText.getText().trim());
+						if(numberHighestIntensityMZ >= IProcessorSettings.MIN_N_HIGHEST_INTENSITY && numberHighestIntensityMZ <= IProcessorSettings.MAX_N_HIGHEST_INTENSITY) {
+							processorSettings.setNumberHighestIntensityMZ(numberHighestIntensityMZ);
+						}
+					} catch(NumberFormatException e1) {
+						numberHighestIntensityMZText.setText("1");
+					}
+				}
+			}
+		});
+	}
+
+	private void createUsePeaksCheckBox(Composite client) {
+
+		usePeaksCheckBox = new Button(client, SWT.CHECK);
+		usePeaksCheckBox.setText("Use Peaks");
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		usePeaksCheckBox.setLayoutData(gridData);
+		usePeaksCheckBox.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				ProcessorData processorData = editorProcessor.getProcessorData();
+				IProcessorModel processorModel = processorData.getProcessorModel();
+				IProcessorSettings processorSettings = processorModel.getProcessorSettings();
+				processorSettings.setUsePeaks(usePeaksCheckBox.getSelection());
 			}
 		});
 	}
@@ -342,7 +476,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		/*
 		 * Process
 		 */
-		createCheckHyperlink(client, "Check Selected Chromatograms");
+		createCheckHyperlink(client, "Check Selected Chromatograms and Settings");
 		referenceChromatogramHyperlink = createReferenceChromatogramHyperlink(client, "Open Reference Chromatogram");
 		isotopeChromatogramHyperlink = createIsotopeChromatogramHyperlink(client, "Open Isotope Chromatogram");
 		calculateHyperlink = createCalculateHyperlink(client, "Calculate Mass Shifts");
@@ -485,6 +619,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		 * instead of
 		 * Display display = Display.getCurrent();
 		 */
+		//
+		System.out.println("Validate Settings");
+		//
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		ProcessorData processorRawData = editorProcessor.getProcessorData();
 		//
@@ -506,5 +643,15 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		}
 		//
 		ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
+	}
+
+	private boolean isValidStrategy(String ionSelectionStrategy) {
+
+		for(String strategy : ionSelectionStrategies) {
+			if(strategy.equals(ionSelectionStrategy)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

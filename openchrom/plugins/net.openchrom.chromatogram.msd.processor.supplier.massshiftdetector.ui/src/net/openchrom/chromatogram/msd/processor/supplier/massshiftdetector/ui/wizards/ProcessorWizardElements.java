@@ -14,7 +14,7 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.w
 import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorModel_v1000;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000.ProcessorModel_v1000;
 
 public class ProcessorWizardElements extends ChromatogramWizardElements implements IProcessorWizardElements {
 

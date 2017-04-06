@@ -49,7 +49,6 @@ import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors.EditorProcessor;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.ScanMarkerDetectorRunnable;
 
@@ -82,11 +81,13 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 		 */
 		try {
 			if(scanMarkerListUI.getTable().getItemCount() == 0) {
-				List<IScanMarker> scanMarker = editorProcessor.getProcessorData().getProcessorModel().getScanMarker();
-				scanMarkerListUI.setInput(scanMarker);
-				if(scanMarker.size() > 0) {
+				List<IScanMarker> scanMarkerList = editorProcessor.getProcessorData().getProcessorModel().getScanMarker();
+				scanMarkerListUI.setInput(scanMarkerList);
+				if(scanMarkerList.size() > 0) {
 					scanMarkerListUI.getTable().select(0);
-					setScanMarkerInfoLabel(scanMarker.size());
+					updateMassShiftList();
+					updateComparisonViews();
+					setScanMarkerInfoLabel(scanMarkerList.size());
 				}
 			}
 		} catch(Exception e) {
@@ -153,55 +154,8 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				IStructuredSelection selection = scanMarkerListUI.getStructuredSelection();
-				Object object = selection.getFirstElement();
-				if(object instanceof ScanMarker_v1000) {
-					/*
-					 * Display the mass shifts
-					 */
-					IScanMarker scanMarker = (IScanMarker)object;
-					massShiftListUI.setInput(scanMarker.getMassShifts());
-					/*
-					 * Update the comparison UI.
-					 */
-					ProcessorData processorData = editorProcessor.getProcessorData();
-					int scan = scanMarker.getScanNumber();
-					IChromatogramMSD referenceChromatogram = processorData.getReferenceChromatogram();
-					IChromatogramMSD isotopeChromatogram = processorData.getIsotopeChromatogram();
-					if(referenceChromatogram != null && isotopeChromatogram != null) {
-						IScanMSD referenceMassSpectrum = (IScanMSD)referenceChromatogram.getScan(scan);
-						IScanMSD isotopeMassSpectrum = (IScanMSD)isotopeChromatogram.getScan(scan);
-						//
-						IEventBroker eventBroker = ModelSupportAddon.getEventBroker();
-						Map<String, IScanMSD> data = new HashMap<String, IScanMSD>();
-						data.put(IChemClipseEvents.PROPERTY_REFERENCE_MS, referenceMassSpectrum);
-						data.put(IChemClipseEvents.PROPERTY_COMPARISON_MS, isotopeMassSpectrum);
-						eventBroker.post(IChemClipseEvents.TOPIC_SCAN_MSD_UPDATE_COMPARISON, data);
-						/*
-						 * Update the chromatogram selection.
-						 */
-						try {
-							EPartService partService = ModelSupportAddon.getPartService();
-							Collection<MPart> parts = partService.getParts();
-							for(MPart part : parts) {
-								if(part.getObject() instanceof IChromatogramEditorMSD) {
-									IChromatogramEditorMSD chromatogramEditorMSD = (IChromatogramEditorMSD)part.getObject();
-									IChromatogramSelectionMSD chromatogramSelectionMSD = chromatogramEditorMSD.getChromatogramSelection();
-									if(chromatogramSelectionMSD.getChromatogramMSD().getName().equals(referenceChromatogram.getName())) {
-										chromatogramSelectionMSD.setSelectedScan(referenceMassSpectrum);
-										int startRetentionTime = referenceMassSpectrum.getRetentionTime() - 5000; // -5 seconds
-										int stopRetentionTime = referenceMassSpectrum.getRetentionTime() + 5000; // +5 seconds
-										chromatogramSelectionMSD.setStopRetentionTime(stopRetentionTime);
-										chromatogramSelectionMSD.setStartRetentionTime(startRetentionTime);
-										chromatogramSelectionMSD.fireUpdateChange(true);
-									}
-								}
-							}
-						} catch(Exception e1) {
-							//
-						}
-					}
-				}
+				updateMassShiftList();
+				updateComparisonViews();
 			}
 		});
 		//
@@ -252,17 +206,15 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 			List<IScanMarker> scanMarker = runnable.getScanMarker();
 			processorData.getProcessorModel().setScanMarker(scanMarker);
 			scanMarkerListUI.setInput(scanMarker);
+			//
+			updateMassShiftList();
+			updateComparisonViews();
 			setScanMarkerInfoLabel(scanMarker.size());
 		} catch(InterruptedException e1) {
 			logger.warn(e1);
 		} catch(InvocationTargetException e1) {
 			logger.warn(e1);
 		}
-	}
-
-	private void setScanMarkerInfoLabel(int scanMarkerSize) {
-
-		scanMarkerInfoLabel.setText("In summary: " + scanMarkerSize + " possible scan(s) containing isotope shifts have been identified.");
 	}
 
 	private Button createPreviousButton(Composite parent, GridData gridData) {
@@ -336,5 +288,72 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
 		Label label = new Label(parent, SWT.NONE);
 		label.setText("\nValidate Scans:\nCTRL + Space");
+	}
+
+	private void updateMassShiftList() {
+
+		IStructuredSelection selection = scanMarkerListUI.getStructuredSelection();
+		Object object = selection.getFirstElement();
+		if(object instanceof IScanMarker) {
+			/*
+			 * Display the mass shifts
+			 */
+			IScanMarker scanMarker = (IScanMarker)object;
+			massShiftListUI.setInput(scanMarker.getMassShifts());
+		}
+	}
+
+	private void updateComparisonViews() {
+
+		IStructuredSelection selection = scanMarkerListUI.getStructuredSelection();
+		Object object = selection.getFirstElement();
+		if(object instanceof IScanMarker) {
+			/*
+			 * Update the comparison UI.
+			 */
+			IScanMarker scanMarker = (IScanMarker)object;
+			ProcessorData processorData = editorProcessor.getProcessorData();
+			int scan = scanMarker.getScanNumber();
+			IChromatogramMSD referenceChromatogram = processorData.getReferenceChromatogram();
+			IChromatogramMSD isotopeChromatogram = processorData.getIsotopeChromatogram();
+			if(referenceChromatogram != null && isotopeChromatogram != null) {
+				IScanMSD referenceMassSpectrum = (IScanMSD)referenceChromatogram.getScan(scan);
+				IScanMSD isotopeMassSpectrum = (IScanMSD)isotopeChromatogram.getScan(scan);
+				//
+				IEventBroker eventBroker = ModelSupportAddon.getEventBroker();
+				Map<String, IScanMSD> data = new HashMap<String, IScanMSD>();
+				data.put(IChemClipseEvents.PROPERTY_REFERENCE_MS, referenceMassSpectrum);
+				data.put(IChemClipseEvents.PROPERTY_COMPARISON_MS, isotopeMassSpectrum);
+				eventBroker.post(IChemClipseEvents.TOPIC_SCAN_MSD_UPDATE_COMPARISON, data);
+				/*
+				 * Update the chromatogram selection.
+				 */
+				try {
+					EPartService partService = ModelSupportAddon.getPartService();
+					Collection<MPart> parts = partService.getParts();
+					for(MPart part : parts) {
+						if(part.getObject() instanceof IChromatogramEditorMSD) {
+							IChromatogramEditorMSD chromatogramEditorMSD = (IChromatogramEditorMSD)part.getObject();
+							IChromatogramSelectionMSD chromatogramSelectionMSD = chromatogramEditorMSD.getChromatogramSelection();
+							if(chromatogramSelectionMSD.getChromatogramMSD().getName().equals(referenceChromatogram.getName())) {
+								chromatogramSelectionMSD.setSelectedScan(referenceMassSpectrum);
+								int startRetentionTime = referenceMassSpectrum.getRetentionTime() - 5000; // -5 seconds
+								int stopRetentionTime = referenceMassSpectrum.getRetentionTime() + 5000; // +5 seconds
+								chromatogramSelectionMSD.setStopRetentionTime(stopRetentionTime);
+								chromatogramSelectionMSD.setStartRetentionTime(startRetentionTime);
+								chromatogramSelectionMSD.fireUpdateChange(true);
+							}
+						}
+					}
+				} catch(Exception e1) {
+					//
+				}
+			}
+		}
+	}
+
+	private void setScanMarkerInfoLabel(int scanMarkerSize) {
+
+		scanMarkerInfoLabel.setText("In summary: " + scanMarkerSize + " possible scan(s) containing isotope shifts have been identified.");
 	}
 }

@@ -17,6 +17,14 @@ public interface IMassShift {
 
 	void setMz(double mz);
 
+	int getRetentionTimeReference();
+
+	void setRetentionTimeReference(int retentionTimeReference);
+
+	int getRetentionTimeIsotope();
+
+	void setRetentionTimeIsotope(int retentionTimeIsotope);
+
 	int getMassShiftLevel();
 
 	void setMassShiftLevel(int massShiftLevel);

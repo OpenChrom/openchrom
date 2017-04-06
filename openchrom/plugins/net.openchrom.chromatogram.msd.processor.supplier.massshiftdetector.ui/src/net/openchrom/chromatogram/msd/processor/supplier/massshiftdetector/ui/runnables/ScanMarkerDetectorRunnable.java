@@ -40,7 +40,7 @@ public class ScanMarkerDetectorRunnable implements IRunnableWithProgress {
 
 		if(processorData != null) {
 			MassShiftDetector massShiftDetector = new MassShiftDetector();
-			scanMarker = massShiftDetector.extractMassShiftMarker(processorData.getMassShifts(), processorData.getLevelUncertainty(), monitor);
+			scanMarker = massShiftDetector.extractMassShiftMarker(processorData, monitor);
 		}
 	}
 }

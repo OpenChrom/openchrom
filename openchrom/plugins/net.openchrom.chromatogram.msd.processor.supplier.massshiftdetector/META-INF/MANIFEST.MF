@@ -16,7 +16,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.chromatogram.msd.process;bundle-version="0.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core,
+Export-Package: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.comparators,
+ net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core,
+ net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io,
  net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model,
- net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io, 
+ net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000,
  net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.preferences

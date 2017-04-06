@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.exceptions.ChromatogramIsNullException;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.exceptions.NoExtractedIonSignalStoredException;
@@ -26,9 +27,12 @@ import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignals;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.comparators.ScanMarkerComparator;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IMassShift;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorSettings;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShift_v1000;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000.MassShift_v1000;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000.ScanMarker_v1000;
 
 public class MassShiftDetector {
 
@@ -61,8 +65,23 @@ public class MassShiftDetector {
 	 * @return Map<Integer, Map<Integer, Map<Integer, Double>>>
 	 * @throws IllegalArgumentException
 	 */
-	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD referenceChromatogram, IChromatogramMSD isotopeChromatogram, int startShiftLevel, int stopShiftLevel, IProgressMonitor monitor) throws ChromatogramIsNullException, IllegalArgumentException {
+	public Map<Integer, Map<Integer, Map<Integer, Double>>> detectMassShifts(IChromatogramMSD referenceChromatogram, IChromatogramMSD isotopeChromatogram, IProcessorSettings processorSettings, IProgressMonitor monitor) throws ChromatogramIsNullException, IllegalArgumentException {
 
+		if(referenceChromatogram == null) {
+			throw new IllegalArgumentException("The reference chromatogram must be not null.");
+		}
+		//
+		if(isotopeChromatogram == null) {
+			throw new IllegalArgumentException("The isotope chromatogram must be not null.");
+		}
+		//
+		if(processorSettings == null) {
+			throw new IllegalArgumentException("The processor settings must be not null.");
+		}
+		//
+		int startShiftLevel = processorSettings.getStartShiftLevel();
+		int stopShiftLevel = processorSettings.getStopShiftLevel();
+		//
 		if(startShiftLevel < MIN_ISOTOPE_LEVEL || startShiftLevel > MAX_ISOTOPE_LEVEL) {
 			throw new IllegalArgumentException("The start shift level is not valid.");
 		}
@@ -145,19 +164,24 @@ public class MassShiftDetector {
 		return uncertaintyIonSignalsMap;
 	}
 
-	public List<IScanMarker> extractMassShiftMarker(Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts, Map<Integer, Integer> levelUncertainty, IProgressMonitor monitor) {
+	public List<IScanMarker> extractMassShiftMarker(ProcessorData processorData, IProgressMonitor monitor) {
 
+		Map<Integer, Map<Integer, Map<Integer, Double>>> massShifts = processorData.getMassShifts();
+		Map<Integer, Integer> levelUncertainty = processorData.getLevelUncertainty();
+		IChromatogramMSD referenceChromatogram = processorData.getReferenceChromatogram();
+		IChromatogramMSD isotopeChromatogram = processorData.getIsotopeChromatogram();
+		//
 		Map<Integer, IScanMarker> scanMarkerMap = new HashMap<Integer, IScanMarker>();
 		//
-		for(Map.Entry<Integer, Map<Integer, Map<Integer, Double>>> massShift : massShifts.entrySet()) {
+		for(Map.Entry<Integer, Map<Integer, Map<Integer, Double>>> massShiftEntry : massShifts.entrySet()) {
 			//
-			int isotopeLevel = massShift.getKey();
+			int isotopeLevel = massShiftEntry.getKey();
 			double threshold = (levelUncertainty.get(isotopeLevel) != null) ? levelUncertainty.get(isotopeLevel) : SCALE_UNCERTAINTY_SELECTION;
 			//
 			monitor.subTask("Calculate Marker: " + isotopeLevel + " -> Threshold: " + threshold);
 			//
-			for(Map.Entry<Integer, Map<Integer, Double>> scanElement : massShift.getValue().entrySet()) {
-				int scan = scanElement.getKey();
+			for(Map.Entry<Integer, Map<Integer, Double>> scanElement : massShiftEntry.getValue().entrySet()) {
+				int scanNumber = scanElement.getKey();
 				for(Map.Entry<Integer, Double> mzElement : scanElement.getValue().entrySet()) {
 					double mz = mzElement.getKey();
 					double uncertainty = mzElement.getValue();
@@ -165,15 +189,35 @@ public class MassShiftDetector {
 						/*
 						 * Create a mass shift marker if not already available.
 						 */
-						IScanMarker scanMarker = scanMarkerMap.get(scan);
+						IScanMarker scanMarker = scanMarkerMap.get(scanNumber);
 						if(scanMarker == null) {
-							scanMarker = new ScanMarker_v1000(scan);
-							scanMarkerMap.put(scan, scanMarker);
+							scanMarker = new ScanMarker_v1000(scanNumber);
+							scanMarkerMap.put(scanNumber, scanMarker);
 						}
 						/*
 						 * Add the mass shift information.
 						 */
-						scanMarker.getMassShifts().add(new MassShift_v1000(mz, isotopeLevel, uncertainty));
+						IMassShift massShift = new MassShift_v1000(mz, isotopeLevel, uncertainty);
+						/*
+						 * Retention time of the reference.
+						 */
+						if(referenceChromatogram != null) {
+							IScan scan = referenceChromatogram.getScan(scanNumber);
+							if(scan != null) {
+								massShift.setRetentionTimeReference(scan.getRetentionTime());
+							}
+						}
+						/*
+						 * Retention time of the isotope.
+						 */
+						if(isotopeChromatogram != null) {
+							IScan scan = isotopeChromatogram.getScan(scanNumber);
+							if(scan != null) {
+								massShift.setRetentionTimeIsotope(scan.getRetentionTime());
+							}
+						}
+						//
+						scanMarker.getMassShifts().add(massShift);
 					}
 				}
 			}

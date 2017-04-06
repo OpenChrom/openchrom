@@ -22,7 +22,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ScanMarker_v1000;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000.ScanMarker_v1000;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editingsupport.ScanMarkerCheckBoxEditingSupport;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.provider.ScanMarkerListLabelProvider;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.provider.ScanMarkerListTableComparator;

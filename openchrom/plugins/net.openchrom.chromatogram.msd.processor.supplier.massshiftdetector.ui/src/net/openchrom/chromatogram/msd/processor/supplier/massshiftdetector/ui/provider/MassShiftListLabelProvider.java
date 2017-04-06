@@ -11,17 +11,23 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.provider;
 
+import java.text.DecimalFormat;
+
+import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IMassShift;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.MassShift_v1000;
 
 public class MassShiftListLabelProvider extends AbstractChemClipseLabelProvider {
 
+	private DecimalFormat decimalFormat;
+
 	public MassShiftListLabelProvider() {
+		decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
 	}
 
 	@Override
@@ -37,16 +43,22 @@ public class MassShiftListLabelProvider extends AbstractChemClipseLabelProvider 
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof MassShift_v1000) {
+		if(element instanceof IMassShift) {
 			IMassShift massShift = (IMassShift)element;
 			switch(columnIndex) {
 				case 0:
 					text = Double.toString(massShift.getMz());
 					break;
 				case 1:
-					text = Integer.toString(massShift.getMassShiftLevel());
+					text = decimalFormat.format(massShift.getRetentionTimeReference() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
 					break;
 				case 2:
+					text = decimalFormat.format(massShift.getRetentionTimeIsotope() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+					break;
+				case 3:
+					text = Integer.toString(massShift.getMassShiftLevel());
+					break;
+				case 4:
 					text = Double.toString(massShift.getUncertainty());
 					break;
 				default:
