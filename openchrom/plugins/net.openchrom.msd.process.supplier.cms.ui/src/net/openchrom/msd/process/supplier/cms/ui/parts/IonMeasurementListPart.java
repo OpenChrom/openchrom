@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -26,7 +26,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
-import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
+import net.openchrom.msd.process.supplier.cms.core.MassSpectraHolder;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.IonMeasurementListUI;
 
 public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
@@ -45,6 +45,7 @@ public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
 
 		parent.setLayout(new FillLayout());
 		ionMeasurementListUI = new IonMeasurementListUI(parent, SWT.NONE);
+		update(MassSpectraHolder.getLatestResults(), true);
 	}
 
 	@PreDestroy
@@ -61,13 +62,13 @@ public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
 	@Override
 	public void update(IScanMSD massSpectrum, boolean forceReload) {
 
-		// if(isPartVisible()) { // whw, update even if hidden
-		if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
-			ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
-			ionMeasurementListUI.update(spectrum);
-		} else {
-			ionMeasurementListUI.update(null);
+		if(isPartVisible()) {
+			if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
+				ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
+				ionMeasurementListUI.update(spectrum);
+			} else {
+				ionMeasurementListUI.update(null);
+			}
 		}
-		// }
 	}
 }

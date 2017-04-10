@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -26,6 +26,7 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
+import net.openchrom.msd.process.supplier.cms.core.DecompositionResultsHolder;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.CompositeCompositionsUI;
 
 public class CompositeCompositionsPart {
@@ -53,7 +54,9 @@ public class CompositeCompositionsPart {
 
 		parent.setLayout(new FillLayout());
 		compositeCompositionsUI = new CompositeCompositionsUI(parent, SWT.NONE);
+		decompositionResults = DecompositionResultsHolder.getLatestResults();
 		subscribe();
+		update(decompositionResults);
 	}
 
 	@PreDestroy
@@ -71,9 +74,9 @@ public class CompositeCompositionsPart {
 
 	private void update(DecompositionResults decompositionResults) {
 
-		//if(isPartVisible()) {
+		if(isPartVisible()) {
 			compositeCompositionsUI.updateXYGraph(decompositionResults);
-		//}
+		}
 	}
 
 	/**
@@ -84,6 +87,7 @@ public class CompositeCompositionsPart {
 		if(eventBroker != null) {
 			eventHandler = new EventHandler() {
 
+				@Override
 				public void handleEvent(Event event) {
 
 					decompositionResults = (DecompositionResults)event.getProperty(PROPERTY_RESULT);

@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -58,6 +58,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
+import net.openchrom.msd.process.supplier.cms.core.MassSpectraHolder;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.CmsLibraryUI;
 
 public class CmsLibraryEditor implements IChemClipseEditor {
@@ -286,6 +287,7 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 				Object object = cmsLibraryUI.getStructuredSelection().getFirstElement();
 				if(object instanceof IScanMSD) {
 					IScanMSD massSpectrum = (IScanMSD)object;
+					MassSpectraHolder.setLatestResults(massSpectrum);
 					MassSpectrumSelectionUpdateNotifier.fireUpdateChange(massSpectrum, true);
 				}
 			}
