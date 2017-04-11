@@ -27,7 +27,7 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
-import net.openchrom.msd.process.supplier.cms.core.DecompositionResultsHolder;
+import net.openchrom.msd.process.supplier.cms.ui.EventDataHolder;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.CompositeCorrelationsUI;
 
 public class CompositeCorrelationsPart {
@@ -50,12 +50,16 @@ public class CompositeCorrelationsPart {
 	//
 	private CompositeCorrelationsUI compositeCorrelationsUI;
 
+	CompositeCorrelationsPart() {
+		subscribe();
+	}
+
 	@PostConstruct
 	private void createControl() {
 
 		parent.setLayout(new FillLayout());
 		compositeCorrelationsUI = new CompositeCorrelationsUI(parent, SWT.NONE);
-		decompositionResults = DecompositionResultsHolder.getLatestResults();
+		decompositionResults = (DecompositionResults)EventDataHolder.getData(TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT);
 		subscribe();
 		update(decompositionResults);
 	}

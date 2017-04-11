@@ -53,7 +53,6 @@ import org.eclipse.ui.console.MessageConsoleStream;
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
-import net.openchrom.msd.process.supplier.cms.core.DecompositionResultsHolder;
 import net.openchrom.msd.process.supplier.cms.core.MassSpectraDecomposition;
 import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
 import net.openchrom.msd.process.supplier.cms.ui.Activator;
@@ -209,7 +208,6 @@ public class DecompositionResultUI extends Composite {
 		compositeSignalsGraph.updateXYGraph(scanSpectra, results, usingETimes, usingOffsetLogScale);
 		fireUpdateDecompositionResults(null); // send null to clear graph
 		results.setUsingETimes(usingETimes);
-		DecompositionResultsHolder.setLatestResults(results);
 		fireUpdateDecompositionResults(results);
 		return;
 	}

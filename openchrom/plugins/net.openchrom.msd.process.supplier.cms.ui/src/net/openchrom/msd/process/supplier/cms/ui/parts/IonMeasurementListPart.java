@@ -26,11 +26,12 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
-import net.openchrom.msd.process.supplier.cms.core.MassSpectraHolder;
+import net.openchrom.msd.process.supplier.cms.ui.EventDataHolder;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.IonMeasurementListUI;
 
 public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
 
+	public static final String TOPIC_ION_MEASUREMENT_LIST_SELECT_SPECTRUM = "process/supplier/cms/select/spectrum";
 	@Inject
 	private Composite parent;
 	private IonMeasurementListUI ionMeasurementListUI;
@@ -45,7 +46,7 @@ public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
 
 		parent.setLayout(new FillLayout());
 		ionMeasurementListUI = new IonMeasurementListUI(parent, SWT.NONE);
-		update(MassSpectraHolder.getLatestResults(), true);
+		update((IScanMSD)EventDataHolder.getData(TOPIC_ION_MEASUREMENT_LIST_SELECT_SPECTRUM), true);
 	}
 
 	@PreDestroy
@@ -62,13 +63,13 @@ public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
 	@Override
 	public void update(IScanMSD massSpectrum, boolean forceReload) {
 
-		if(isPartVisible()) {
-			if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
-				ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
-				ionMeasurementListUI.update(spectrum);
-			} else {
-				ionMeasurementListUI.update(null);
-			}
+		// if(isPartVisible()) { // need to update even when not visible otherwise incorrect result is shown
+		if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
+			ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
+			ionMeasurementListUI.update(spectrum);
+		} else {
+			ionMeasurementListUI.update(null);
 		}
+		// }
 	}
 }

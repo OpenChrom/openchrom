@@ -22,6 +22,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
+import net.openchrom.msd.process.supplier.cms.ui.EventDataHolder;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.DecompositionResultUI;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.IDecompositionResultsListener;
 
@@ -44,6 +45,7 @@ public class DecompositionResultPart {
 			@Override
 			public void update(DecompositionResults decompositionResults) {
 
+				EventDataHolder.setData(CompositeCompositionsPart.TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT, decompositionResults);
 				eventBroker.send(CompositeCompositionsPart.TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT, decompositionResults);
 			}
 		});

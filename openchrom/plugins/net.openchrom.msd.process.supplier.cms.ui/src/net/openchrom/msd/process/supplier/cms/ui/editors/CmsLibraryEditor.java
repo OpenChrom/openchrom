@@ -58,7 +58,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
-import net.openchrom.msd.process.supplier.cms.core.MassSpectraHolder;
+import net.openchrom.msd.process.supplier.cms.ui.EventDataHolder;
+import net.openchrom.msd.process.supplier.cms.ui.parts.IonMeasurementListPart;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.CmsLibraryUI;
 
 public class CmsLibraryEditor implements IChemClipseEditor {
@@ -287,7 +288,7 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 				Object object = cmsLibraryUI.getStructuredSelection().getFirstElement();
 				if(object instanceof IScanMSD) {
 					IScanMSD massSpectrum = (IScanMSD)object;
-					MassSpectraHolder.setLatestResults(massSpectrum);
+					EventDataHolder.setData(IonMeasurementListPart.TOPIC_ION_MEASUREMENT_LIST_SELECT_SPECTRUM, massSpectrum);
 					MassSpectrumSelectionUpdateNotifier.fireUpdateChange(massSpectrum, true);
 				}
 			}
