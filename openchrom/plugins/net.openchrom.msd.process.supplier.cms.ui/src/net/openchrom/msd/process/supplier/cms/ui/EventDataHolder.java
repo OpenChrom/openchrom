@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 whitlow.
+ * Copyright (c) 2017 Walter Whitlock.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,26 +7,36 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * whitlow - initial API and implementation
+ * Walter Whitlock - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class EventDataHolder {
 
-	private static HashMap<String, Object> eventDataMap; // key is topic name string, value is data object for that event
+	private static final Object NULL = new Object();
+	private static ConcurrentHashMap<String, Object> eventDataMap; // key is topic name string, value is data object for that event
 	static {
-		eventDataMap = new HashMap<String, Object>();
+		eventDataMap = new ConcurrentHashMap<String, Object>();
 	}
 
 	public static void setData(String topic, Object data) {
 
-		eventDataMap.put(topic, data);
+		if(null == data) {
+			eventDataMap.put(topic, NULL);
+		} else {
+			eventDataMap.put(topic, data);
+		}
 	}
 
 	public static Object getData(String topic) {
 
-		return eventDataMap.get(topic);
+		Object ob = eventDataMap.get(topic);
+		if(NULL == ob) {
+			return null;
+		} else {
+			return ob;
+		}
 	}
 }
