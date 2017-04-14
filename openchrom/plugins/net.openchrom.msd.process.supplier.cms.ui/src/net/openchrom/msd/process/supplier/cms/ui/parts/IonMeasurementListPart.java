@@ -27,11 +27,11 @@ import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.ui.EventDataHolder;
+import net.openchrom.msd.process.supplier.cms.ui.editors.CmsLibraryEditor;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.IonMeasurementListUI;
 
 public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
 
-	public static final String TOPIC_ION_MEASUREMENT_LIST_SELECT_SPECTRUM = "process/supplier/cms/select/spectrum";
 	@Inject
 	private Composite parent;
 	private IonMeasurementListUI ionMeasurementListUI;
@@ -46,7 +46,7 @@ public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
 
 		parent.setLayout(new FillLayout());
 		ionMeasurementListUI = new IonMeasurementListUI(parent, SWT.NONE);
-		update((IScanMSD)EventDataHolder.getData(TOPIC_ION_MEASUREMENT_LIST_SELECT_SPECTRUM), true);
+		update((IScanMSD)EventDataHolder.getData(CmsLibraryEditor.TOPIC_ION_MEASUREMENT_LIST_SELECT_SPECTRUM), true);
 	}
 
 	@PreDestroy

@@ -32,9 +32,6 @@ import net.openchrom.msd.process.supplier.cms.ui.parts.swt.CompositeCorrelations
 
 public class CompositeCorrelationsPart {
 
-	public static final String TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT = "process/supplier/cms/update/result";
-	public static final String PROPERTY_RESULT = IEventBroker.DATA; // DecompositionResults or null
-	//
 	private DecompositionResults decompositionResults = null;
 	//
 	@Inject
@@ -59,7 +56,7 @@ public class CompositeCorrelationsPart {
 
 		parent.setLayout(new FillLayout());
 		compositeCorrelationsUI = new CompositeCorrelationsUI(parent, SWT.NONE);
-		decompositionResults = (DecompositionResults)EventDataHolder.getData(TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT);
+		decompositionResults = (DecompositionResults)EventDataHolder.getData(DecompositionResultPart.TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT);
 		subscribe();
 		update(decompositionResults);
 	}
@@ -95,11 +92,11 @@ public class CompositeCorrelationsPart {
 				@Override
 				public void handleEvent(Event event) {
 
-					decompositionResults = (DecompositionResults)event.getProperty(PROPERTY_RESULT);
+					decompositionResults = (DecompositionResults)event.getProperty(DecompositionResultPart.PROPERTY_RESULT);
 					update(decompositionResults);
 				}
 			};
-			eventBroker.subscribe(TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT, eventHandler);
+			eventBroker.subscribe(DecompositionResultPart.TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT, eventHandler);
 		}
 	}
 

@@ -28,6 +28,8 @@ import net.openchrom.msd.process.supplier.cms.ui.parts.swt.IDecompositionResults
 
 public class DecompositionResultPart {
 
+	public static final String TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT = "process/supplier/cms/update/result";
+	public static final String PROPERTY_RESULT = IEventBroker.DATA; // DecompositionResults or null
 	@Inject
 	private Composite parent;
 	@Inject
@@ -45,8 +47,8 @@ public class DecompositionResultPart {
 			@Override
 			public void update(DecompositionResults decompositionResults) {
 
-				EventDataHolder.setData(CompositeCompositionsPart.TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT, decompositionResults);
-				eventBroker.send(CompositeCompositionsPart.TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT, decompositionResults);
+				EventDataHolder.setData(TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT, decompositionResults);
+				eventBroker.send(TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT, decompositionResults);
 			}
 		});
 	}
