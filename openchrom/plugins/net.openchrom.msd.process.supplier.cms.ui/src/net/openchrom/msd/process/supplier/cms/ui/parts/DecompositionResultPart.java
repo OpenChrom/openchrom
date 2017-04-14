@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
 import net.openchrom.msd.process.supplier.cms.ui.EventDataHolder;
+import net.openchrom.msd.process.supplier.cms.ui.EventDataListener;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.DecompositionResultUI;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.IDecompositionResultsListener;
 
@@ -36,6 +37,7 @@ public class DecompositionResultPart {
 	private IEventBroker eventBroker;
 	//
 	private DecompositionResultUI decompositionResultUI;
+	private EventDataListener eventDataListener;
 
 	@PostConstruct
 	private void createControl() {
@@ -47,15 +49,20 @@ public class DecompositionResultPart {
 			@Override
 			public void update(DecompositionResults decompositionResults) {
 
-				EventDataHolder.setData(TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT, decompositionResults);
+				EventDataHolder.setData(TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT, decompositionResults); // whw, remove
 				eventBroker.send(TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT, decompositionResults);
 			}
 		});
+		eventDataListener = new EventDataListener(); // whw, add
+		eventDataListener.subscribeMe(TOPIC_PROCESS_SUPPLIER_CMS_UPDATE_RESULT, PROPERTY_RESULT); // whw, add
 	}
 
 	@PreDestroy
 	private void preDestroy() {
-
+		
+		if (null != eventDataListener) {
+			eventDataListener.unsubscribeMe();
+		}
 	}
 
 	@Focus
