@@ -34,6 +34,7 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.notifier.MassSpectrumSelectionUpdateNotifier;
 import org.eclipse.chemclipse.msd.swt.ui.support.MassSpectraFileSupport;
 import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
+import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.support.events.IPerspectiveAndViewIds;
 import org.eclipse.chemclipse.ux.extension.msd.ui.internal.support.MassSpectrumImportRunnable;
 import org.eclipse.chemclipse.ux.extension.ui.editors.IChemClipseEditor;
@@ -67,8 +68,6 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 	public static final String CONTRIBUTION_URI = "bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.editors.CmsLibraryEditor";
 	public static final String ICON_URI = "platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif";
 	public static final String TOOLTIP = "CMS Library (Calibrated Mass Spectra)";
-	// event topic strings
-	public static final String TOPIC_ION_MEASUREMENT_LIST_SELECT_SPECTRUM = "process/supplier/cms/select/spectrum";
 	//
 	private static final Logger logger = Logger.getLogger(CmsLibraryEditor.class);
 	/*
@@ -289,11 +288,11 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 				Object object = cmsLibraryUI.getStructuredSelection().getFirstElement();
 				if(object instanceof IScanMSD) {
 					IScanMSD massSpectrum = (IScanMSD)object;
-					EventDataHolder.setData(TOPIC_ION_MEASUREMENT_LIST_SELECT_SPECTRUM, massSpectrum);
 					MassSpectrumSelectionUpdateNotifier.fireUpdateChange(massSpectrum, true);
 				}
 			}
 		});
+		EventDataHolder.addSubscriber(IChemClipseEvents.TOPIC_CHROMATOGRAM_MSD_UPDATE_MASSSPECTRUM);
 		//
 		tabItem.setControl(cmsLibraryUI.getControl());
 	}

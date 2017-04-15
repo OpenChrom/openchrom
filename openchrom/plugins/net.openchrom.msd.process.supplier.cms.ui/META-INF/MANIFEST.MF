@@ -37,4 +37,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.filesystem;bundle-version="1.6.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Import-Package: org.osgi.service.event;version="1.3.0"
+Import-Package: org.eclipse.e4.core.contexts,
+ org.osgi.service.event;version="1.3.0"

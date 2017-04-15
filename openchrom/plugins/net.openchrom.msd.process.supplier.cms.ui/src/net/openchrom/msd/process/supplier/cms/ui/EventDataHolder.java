@@ -11,17 +11,40 @@
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui;
 
+import java.util.Dictionary;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.ui.PlatformUI;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventHandler;
 
 public class EventDataHolder {
 
 	private static final Object NULL = new Object();
 	private static ConcurrentHashMap<String, Object> eventDataMap; // key is topic name string, value is data object for that event
+	private static IEventBroker eventBroker;
 	static {
 		eventDataMap = new ConcurrentHashMap<String, Object>();
+		eventBroker = PlatformUI.getWorkbench().getService(IEventBroker.class);
 	}
 
-	public static void setData(String topic, Object data) {
+	public static void addSubscriber(String topic) {
+
+		eventBroker.subscribe(topic, eventHandler);
+	}
+
+	private static EventHandler eventHandler = new EventHandler() {
+
+		@Override
+		public void handleEvent(Event event) {
+
+			setData(event.getTopic(), event.getProperty(IEventBroker.DATA));
+		}
+	};
+
+	private static void setData(String topic, Object data) {
 
 		if(null == data) {
 			eventDataMap.put(topic, NULL);
@@ -35,6 +58,18 @@ public class EventDataHolder {
 		Object ob = eventDataMap.get(topic);
 		if(NULL == ob) {
 			return null;
+		} else {
+			return ob;
+		}
+	}
+
+	public static Object getData(String topic, String property) {
+
+		Object ob = getData(topic);
+		if(ob instanceof Map<?, ?>) {
+			return ((Map<String, Object>)ob).get(property);
+		} else if(ob instanceof Dictionary<?, ?>) {
+			return ((Dictionary<String, Object>)ob).get(property);
 		} else {
 			return ob;
 		}

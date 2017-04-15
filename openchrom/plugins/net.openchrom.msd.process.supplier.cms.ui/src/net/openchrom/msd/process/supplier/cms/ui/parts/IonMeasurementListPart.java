@@ -16,6 +16,7 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.ux.extension.msd.ui.views.AbstractMassSpectrumSelectionView;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
@@ -27,7 +28,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.ui.EventDataHolder;
-import net.openchrom.msd.process.supplier.cms.ui.editors.CmsLibraryEditor;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.IonMeasurementListUI;
 
 public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
@@ -46,7 +46,7 @@ public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
 
 		parent.setLayout(new FillLayout());
 		ionMeasurementListUI = new IonMeasurementListUI(parent, SWT.NONE);
-		update((IScanMSD)EventDataHolder.getData(CmsLibraryEditor.TOPIC_ION_MEASUREMENT_LIST_SELECT_SPECTRUM), true);
+		update((IScanMSD)EventDataHolder.getData(IChemClipseEvents.TOPIC_CHROMATOGRAM_MSD_UPDATE_MASSSPECTRUM, IChemClipseEvents.PROPERTY_MASSPECTRUM), true);
 	}
 
 	@PreDestroy
@@ -63,7 +63,7 @@ public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
 	@Override
 	public void update(IScanMSD massSpectrum, boolean forceReload) {
 
-		// if(isPartVisible()) { // need to update even when not visible otherwise incorrect result is shown
+		// if(isPartVisible()) { // need to update even when not visible otherwise incorrect result is shown when view is made visible
 		if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
 			ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
 			ionMeasurementListUI.update(spectrum);
