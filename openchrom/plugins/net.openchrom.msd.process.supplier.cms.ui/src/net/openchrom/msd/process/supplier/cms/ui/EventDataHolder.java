@@ -22,7 +22,6 @@ import org.osgi.service.event.EventHandler;
 
 public class EventDataHolder {
 
-	private static final Object NULL = new Object();
 	private static ConcurrentHashMap<String, Object> eventDataMap; // key is topic name string, value is data object for that event
 	private static IEventBroker eventBroker;
 	static {
@@ -47,7 +46,7 @@ public class EventDataHolder {
 	private static void setData(String topic, Object data) {
 
 		if(null == data) {
-			eventDataMap.put(topic, NULL);
+			eventDataMap.remove(topic);
 		} else {
 			eventDataMap.put(topic, data);
 		}
@@ -55,12 +54,7 @@ public class EventDataHolder {
 
 	public static Object getData(String topic) {
 
-		Object ob = eventDataMap.get(topic);
-		if(NULL == ob) {
-			return null;
-		} else {
-			return ob;
-		}
+		return eventDataMap.get(topic);
 	}
 
 	public static Object getData(String topic, String property) {
