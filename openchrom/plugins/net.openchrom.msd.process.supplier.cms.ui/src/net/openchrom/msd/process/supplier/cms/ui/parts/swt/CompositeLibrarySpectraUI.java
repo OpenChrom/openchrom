@@ -17,7 +17,6 @@ import java.io.File;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
@@ -68,7 +67,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 		for(int i = 0; i < cmsLibSpectra.getList().size(); i++) {
 			IScanMSD libSpec = cmsLibSpectra.getList().get(i);
 			if(libSpec instanceof ICalibratedVendorLibraryMassSpectrum) {
-				if (((ICalibratedVendorLibraryMassSpectrum)libSpec).isSelected()) {
+				if(((ICalibratedVendorLibraryMassSpectrum)libSpec).isSelected()) {
 					selectionOK = true;
 				}
 			} else {
@@ -110,20 +109,11 @@ public class CompositeLibrarySpectraUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 
-				String newString;
 				int selection = listCmsComponents.getSelectionIndex();
 				if(null != cmsLibSpectra) {
 					ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)cmsLibSpectra.getList().get(selection);
-					//isSelected[selection] = !isSelected[selection];
 					spectrum.setSelected(!spectrum.isSelected());
-					newString = spectrum.getLibraryInformation().getName();
-					if(spectrum.isSelected()) {
-					//if(isSelected[selection]) {
-						newString = SHOW_SELECTED + newString;
-					} else {
-						newString = SHOW_NOT_SELECTED + newString;
-					}
-					listCmsComponents.setItem(selection, newString);
+					listCmsComponents.setItem(selection, makeListLine(spectrum, spectrum.isSelected()));
 				}
 				return;
 			}
@@ -171,6 +161,18 @@ public class CompositeLibrarySpectraUI extends Composite {
 		});
 	}
 
+	private String makeListLine(ICalibratedVendorLibraryMassSpectrum libSpectrum, boolean isSelected) {
+
+		StringBuilder strLine = new StringBuilder(libSpectrum.getLibraryInformation().getName());
+		strLine.append(", ");
+		strLine.append(libSpectrum.getLibraryInformation().getFormula());
+		if(isSelected) {
+			return SHOW_SELECTED + strLine.toString();
+		} else {
+			return SHOW_NOT_SELECTED + strLine.toString();
+		}
+	}
+
 	private void readAndLoadCMSlibraryFile() {
 
 		try {
@@ -179,14 +181,11 @@ public class CompositeLibrarySpectraUI extends Composite {
 				MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 				cmsLibSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
 				if(null != cmsLibSpectra) {
-					//isSelected = new boolean[cmsLibSpectra.getList().size()];
 					listCmsComponents.removeAll();
-					StringBuilder stringBuilder = new StringBuilder();
+					new StringBuilder();
 					for(IScanMSD spectrum : cmsLibSpectra.getList()) {
 						if((null != spectrum) && (spectrum instanceof ICalibratedVendorLibraryMassSpectrum)) {
-							stringBuilder.setLength(0);
-							stringBuilder.append(((ICalibratedVendorLibraryMassSpectrum)spectrum).getLibraryInformation().getName());
-							listCmsComponents.add("        " + stringBuilder.toString());
+							listCmsComponents.add(makeListLine((ICalibratedVendorLibraryMassSpectrum)spectrum, false));
 						} else {
 							String fileName = textCmsLibraryFilePath.getText().trim();
 							int index = fileName.lastIndexOf(File.separator);
