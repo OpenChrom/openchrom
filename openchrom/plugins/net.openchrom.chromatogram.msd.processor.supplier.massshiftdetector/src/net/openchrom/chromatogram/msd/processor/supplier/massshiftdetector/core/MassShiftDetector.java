@@ -83,6 +83,8 @@ public class MassShiftDetector {
 		CalculatedIonCertainties calculatedIonCertainties = new CalculatedIonCertainties();
 		calculatedIonCertainties.setStartScan(startScan);
 		calculatedIonCertainties.setStopScan(stopScan);
+		calculatedIonCertainties.setStartRetentionTime(getRetentionTime(referenceChromatogram, startScan));
+		calculatedIonCertainties.setStopRetentionTime(getRetentionTime(referenceChromatogram, stopScan));
 		//
 		IExtractedIonSignals referenceIonSignals = extractIonSignals(referenceChromatogram, processorSettings, startScan, stopScan);
 		IExtractedIonSignals isotopeIonSignals = extractIonSignals(isotopeChromatogram, processorSettings, startScan, stopScan);

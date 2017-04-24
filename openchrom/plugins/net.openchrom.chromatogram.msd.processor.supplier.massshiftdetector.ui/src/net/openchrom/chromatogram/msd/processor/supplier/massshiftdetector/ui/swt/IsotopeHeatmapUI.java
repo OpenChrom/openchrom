@@ -14,6 +14,7 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.s
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.draw2d.LightweightSystem;
@@ -173,7 +174,7 @@ public class IsotopeHeatmapUI extends Composite {
 
 	private void createHeatmapComposite(Composite parent) {
 
-		Display display = Display.getCurrent();
+		Display display = Display.getDefault();
 		//
 		Canvas canvas = new Canvas(parent, SWT.FILL | SWT.BORDER);
 		GridData gridDataCanvas = new GridData(GridData.FILL_BOTH);
@@ -186,7 +187,7 @@ public class IsotopeHeatmapUI extends Composite {
 		//
 		intensityGraphFigure = new IntensityGraphFigure();
 		intensityGraphFigure.setForegroundColor(display.getSystemColor(SWT.COLOR_BLACK));
-		intensityGraphFigure.getXAxis().setTitle("Scan Number");
+		intensityGraphFigure.getXAxis().setTitle("Retention Time (Minutes)");
 		intensityGraphFigure.getXAxis().setFormatPattern("0");
 		intensityGraphFigure.getYAxis().setTitle("m/z");
 		intensityGraphFigure.getYAxis().setFormatPattern("0");
@@ -275,6 +276,8 @@ public class IsotopeHeatmapUI extends Composite {
 				//
 				int startScan = calculatedIonCertainties.getStartScan();
 				int stopScan = calculatedIonCertainties.getStopScan();
+				double startRetentionTimeMinutes = calculatedIonCertainties.getStartRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR;
+				double stopRetentionTimeMinutes = calculatedIonCertainties.getStopRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR;
 				//
 				int startIon = calculatedIonCertainties.getShiftLevelStartIonMap().get(massShiftLevel);
 				int stopIon = calculatedIonCertainties.getShiftLevelStopIonMap().get(massShiftLevel);
@@ -321,7 +324,7 @@ public class IsotopeHeatmapUI extends Composite {
 				/*
 				 * Set the range and min/max values and the heatmap data.
 				 */
-				intensityGraphFigure.getXAxis().setRange(new Range(startScan, stopScan));
+				intensityGraphFigure.getXAxis().setRange(new Range(startRetentionTimeMinutes, stopRetentionTimeMinutes));
 				intensityGraphFigure.getYAxis().setRange(new Range(stopIon, startIon));
 				intensityGraphFigure.setDataHeight(dataHeight);
 				intensityGraphFigure.setDataWidth(dataWidth);

@@ -171,7 +171,9 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
 	private Button createCalculateButton(Composite parent, GridData gridData) {
 
-		Shell shell = Display.getCurrent().getActiveShell();
+		Display display = Display.getDefault();
+		Shell shell = display.getActiveShell();
+		//
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Calculate");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CALCULATE, IApplicationImage.SIZE_16x16));

@@ -197,6 +197,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 	private void createReferenceChromatogramText(Composite client) {
 
+		Display display = Display.getDefault();
+		Shell shell = display.getActiveShell();
+		//
 		createLabel(client, "Reference - Chromatogram:");
 		//
 		referenceChromatogramText = createText(client, SWT.BORDER, "");
@@ -211,7 +214,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
 				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Reference - Chromatogram", "Select the reference chromatogram.", PreferenceSupplier.getFilterPathReferenceChromatogram());
-				WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), inputWizard);
+				WizardDialog wizardDialog = new WizardDialog(shell, inputWizard);
 				wizardDialog.create();
 				//
 				if(wizardDialog.open() == WizardDialog.OK) {
@@ -234,6 +237,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 	private void createIsotopeChromatogramText(Composite client) {
 
+		Display display = Display.getDefault();
+		Shell shell = display.getActiveShell();
+		//
 		createLabel(client, "Isotope - Chromatogram:");
 		//
 		isotopeChromatogramText = createText(client, SWT.BORDER, "");
@@ -248,7 +254,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
 				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Isotope - Chromatogram", "Select the isotope chromatogram.", PreferenceSupplier.getFilterPathIsotopeChromatogram());
-				WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), inputWizard);
+				WizardDialog wizardDialog = new WizardDialog(shell, inputWizard);
 				wizardDialog.create();
 				//
 				if(wizardDialog.open() == WizardDialog.OK) {
@@ -583,7 +589,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 	private ImageHyperlink createCalculateHyperlink(Composite client, String text) {
 
-		Shell shell = Display.getCurrent().getActiveShell();
+		Display display = Display.getDefault();
+		Shell shell = display.getActiveShell();
+		//
 		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
 		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXECUTE, IApplicationImage.SIZE_16x16));
 		imageHyperlink.setText(text);

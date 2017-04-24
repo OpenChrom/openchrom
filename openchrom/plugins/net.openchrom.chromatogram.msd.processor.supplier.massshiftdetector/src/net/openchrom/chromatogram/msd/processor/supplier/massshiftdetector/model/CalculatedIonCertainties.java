@@ -18,6 +18,8 @@ public class CalculatedIonCertainties {
 
 	private int startScan;
 	private int stopScan;
+	private int startRetentionTime;
+	private int stopRetentionTime;
 	//
 	private Map<Integer, Integer> shiftLevelStartIonMap;
 	private Map<Integer, Integer> shiftLevelStopIonMap;
@@ -55,6 +57,26 @@ public class CalculatedIonCertainties {
 	public void setStopScan(int stopScan) {
 
 		this.stopScan = stopScan;
+	}
+
+	public int getStartRetentionTime() {
+
+		return startRetentionTime;
+	}
+
+	public void setStartRetentionTime(int startRetentionTime) {
+
+		this.startRetentionTime = startRetentionTime;
+	}
+
+	public int getStopRetentionTime() {
+
+		return stopRetentionTime;
+	}
+
+	public void setStopRetentionTime(int stopRetentionTime) {
+
+		this.stopRetentionTime = stopRetentionTime;
 	}
 
 	/**

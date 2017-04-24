@@ -14,6 +14,7 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.h
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.wizards.WizardProcessor;
 
@@ -22,7 +23,10 @@ public class ProcessorWizardHandler {
 	@Execute
 	public void execute() {
 
-		WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), new WizardProcessor());
+		Display display = Display.getDefault();
+		Shell shell = display.getActiveShell();
+		//
+		WizardDialog wizardDialog = new WizardDialog(shell, new WizardProcessor());
 		wizardDialog.open();
 	}
 }

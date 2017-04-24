@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
@@ -117,6 +118,9 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 
 	private void createReferenceChromatogramSection(Composite parent) {
 
+		Display display = Display.getDefault();
+		Shell shell = display.getActiveShell();
+		//
 		Label label = new Label(parent, SWT.NONE);
 		label.setText("Reference - Chromatogram");
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
@@ -136,7 +140,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 
 				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
 				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Reference - Chromatogram", "Select the reference chromatogram.", PreferenceSupplier.getFilterPathReferenceChromatogram());
-				WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), inputWizard);
+				WizardDialog wizardDialog = new WizardDialog(shell, inputWizard);
 				wizardDialog.create();
 				//
 				if(wizardDialog.open() == WizardDialog.OK) {
@@ -158,6 +162,9 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 
 	private void createIstopeChromatogramSection(Composite parent) {
 
+		Display display = Display.getDefault();
+		Shell shell = display.getActiveShell();
+		//
 		Label label = new Label(parent, SWT.NONE);
 		label.setText("Isotope - Chromatogram");
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
@@ -177,7 +184,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 
 				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
 				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Isotope - Chromatogram", "Select the isotope chromatogram.", PreferenceSupplier.getFilterPathIsotopeChromatogram());
-				WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), inputWizard);
+				WizardDialog wizardDialog = new WizardDialog(shell, inputWizard);
 				wizardDialog.create();
 				//
 				if(wizardDialog.open() == WizardDialog.OK) {
