@@ -25,6 +25,10 @@ public class ScanMarker_v1000 implements IScanMarker {
 
 	@XmlElement(name = "ScanNumber")
 	private int scanNumber;
+	@XmlElement(name = "RetentionTimeReference")
+	private int retentionTimeReference;
+	@XmlElement(name = "RetentionTimeIsotope")
+	private int retentionTimeIsotope;
 	@XmlElementWrapper(name = "MassShifts")
 	@XmlElement(name = "MassShift", type = MassShift_v1000.class)
 	private Set<IMassShift> massShifts;
@@ -51,6 +55,32 @@ public class ScanMarker_v1000 implements IScanMarker {
 	public void setScanNumber(int scanNumber) {
 
 		this.scanNumber = scanNumber;
+	}
+
+	@Override
+	@XmlTransient
+	public int getRetentionTimeReference() {
+
+		return retentionTimeReference;
+	}
+
+	@Override
+	public void setRetentionTimeReference(int retentionTimeReference) {
+
+		this.retentionTimeReference = retentionTimeReference;
+	}
+
+	@Override
+	@XmlTransient
+	public int getRetentionTimeIsotope() {
+
+		return retentionTimeIsotope;
+	}
+
+	@Override
+	public void setRetentionTimeIsotope(int retentionTimeIsotope) {
+
+		this.retentionTimeIsotope = retentionTimeIsotope;
 	}
 
 	@Override

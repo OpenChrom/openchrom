@@ -161,7 +161,13 @@ public class MassShiftDetector {
 			monitor.subTask("Calculate Marker: " + isotopeLevel + " -> Certainty: " + certaintyThreshold);
 			//
 			for(Map.Entry<Integer, Map<Integer, Double>> scanElement : massShiftEntry.getValue().entrySet()) {
+				/*
+				 * Scan
+				 */
 				int scanNumber = scanElement.getKey();
+				int retentionTimeReference = getRetentionTime(referenceChromatogram, scanNumber);
+				int retentionTimeIsotope = getRetentionTime(isotopeChromatogram, scanNumber);
+				//
 				for(Map.Entry<Integer, Double> ionSignalCertainty : scanElement.getValue().entrySet()) {
 					double mz = ionSignalCertainty.getKey();
 					double certainty = ionSignalCertainty.getValue();
@@ -172,12 +178,16 @@ public class MassShiftDetector {
 						IScanMarker scanMarker = scanMarkerMap.get(scanNumber);
 						if(scanMarker == null) {
 							scanMarker = new ScanMarker_v1000(scanNumber);
+							scanMarker.setRetentionTimeReference(retentionTimeReference);
+							scanMarker.setRetentionTimeIsotope(retentionTimeIsotope);
 							scanMarkerMap.put(scanNumber, scanMarker);
 						}
 						/*
 						 * Add the mass shift information.
 						 */
-						IMassShift massShift = createMassShiftMarker(mz, isotopeLevel, certainty, scanNumber, referenceChromatogram, isotopeChromatogram);
+						IMassShift massShift = new MassShift_v1000(mz, isotopeLevel, certainty);
+						massShift.setRetentionTimeReference(retentionTimeReference);
+						massShift.setRetentionTimeIsotope(retentionTimeIsotope);
 						scanMarker.getMassShifts().add(massShift);
 					}
 				}
@@ -191,29 +201,15 @@ public class MassShiftDetector {
 		return scanMarkerList;
 	}
 
-	private IMassShift createMassShiftMarker(double mz, int isotopeLevel, double certainty, int scanNumber, IChromatogramMSD referenceChromatogram, IChromatogramMSD isotopeChromatogram) {
+	private int getRetentionTime(IChromatogramMSD chromatogram, int scanNumber) {
 
-		IMassShift massShift = new MassShift_v1000(mz, isotopeLevel, certainty);
-		/*
-		 * Retention time of the reference.
-		 */
-		if(referenceChromatogram != null) {
-			IScan scan = referenceChromatogram.getScan(scanNumber);
+		if(chromatogram != null) {
+			IScan scan = chromatogram.getScan(scanNumber);
 			if(scan != null) {
-				massShift.setRetentionTimeReference(scan.getRetentionTime());
+				return scan.getRetentionTime();
 			}
 		}
-		/*
-		 * Retention time of the isotope.
-		 */
-		if(isotopeChromatogram != null) {
-			IScan scan = isotopeChromatogram.getScan(scanNumber);
-			if(scan != null) {
-				massShift.setRetentionTimeIsotope(scan.getRetentionTime());
-			}
-		}
-		//
-		return massShift;
+		return 0;
 	}
 
 	private Map<Integer, Double> calculateIonSignalCertainty(IProcessorSettings processorSettings, IExtractedIonSignal referenceIonSignal, IExtractedIonSignal isotopeIonSignal, int scan, int shiftLevel, int startIon, int stopIon, IProgressMonitor monitor) {

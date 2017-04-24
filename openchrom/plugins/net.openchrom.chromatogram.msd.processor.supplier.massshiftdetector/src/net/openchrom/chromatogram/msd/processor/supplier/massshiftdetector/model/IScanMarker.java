@@ -19,6 +19,14 @@ public interface IScanMarker {
 
 	void setScanNumber(int scanNumber);
 
+	int getRetentionTimeReference();
+
+	void setRetentionTimeReference(int retentionTimeReference);
+
+	int getRetentionTimeIsotope();
+
+	void setRetentionTimeIsotope(int retentionTimeIsotope);
+
 	Set<IMassShift> getMassShifts();
 
 	void setMassShifts(Set<IMassShift> massShifts);

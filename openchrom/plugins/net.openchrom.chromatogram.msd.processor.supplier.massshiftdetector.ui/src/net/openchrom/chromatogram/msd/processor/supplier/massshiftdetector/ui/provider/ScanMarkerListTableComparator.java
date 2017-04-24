@@ -33,6 +33,12 @@ public class ScanMarkerListTableComparator extends AbstractRecordTableComparator
 					sortOrder = Double.compare(scanMarker2.getScanNumber(), scanMarker1.getScanNumber());
 					break;
 				case 1:
+					sortOrder = Integer.compare(scanMarker2.getRetentionTimeReference(), scanMarker1.getRetentionTimeReference());
+					break;
+				case 2:
+					sortOrder = Integer.compare(scanMarker2.getRetentionTimeIsotope(), scanMarker1.getRetentionTimeIsotope());
+					break;
+				case 3:
 					sortOrder = Boolean.compare(scanMarker2.isValidated(), scanMarker1.isValidated());
 					break;
 			}
