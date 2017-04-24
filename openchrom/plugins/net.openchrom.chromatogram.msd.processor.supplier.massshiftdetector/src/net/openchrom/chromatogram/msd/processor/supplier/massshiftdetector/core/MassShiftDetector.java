@@ -16,6 +16,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.exceptions.ChromatogramIsNullException;
@@ -263,18 +265,23 @@ public class MassShiftDetector {
 		/*
 		 * Extract the peaks on demand.
 		 */
-		List<Integer> peakScanNumbers = new ArrayList<Integer>();
+		SortedSet<Integer> sortedScanNumbers = new TreeSet<Integer>();
 		if(processorSettings.isUsePeaks()) {
 			/*
-			 * Try to extract the peak numbers.
+			 * Reference
 			 */
 			if(referenceChromatogram.getNumberOfPeaks() > 0) {
-				peakScanNumbers = extractPeakScanNumbers(referenceChromatogram);
-			} else if(isotopeChromatogram.getNumberOfPeaks() > 0) {
-				peakScanNumbers = extractPeakScanNumbers(isotopeChromatogram);
+				sortedScanNumbers.addAll(extractPeakScanNumbers(referenceChromatogram));
+			}
+			/*
+			 * Isotope
+			 */
+			if(isotopeChromatogram.getNumberOfPeaks() > 0) {
+				sortedScanNumbers.addAll(extractPeakScanNumbers(isotopeChromatogram));
 			}
 		}
-		return peakScanNumbers;
+		//
+		return new ArrayList<Integer>(sortedScanNumbers);
 	}
 
 	private List<Integer> extractPeakScanNumbers(IChromatogramMSD chromatogram) {
