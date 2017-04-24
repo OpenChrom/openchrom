@@ -85,6 +85,8 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 		} else {
 			processorData = null;
 		}
+		//
+		plotData();
 	}
 
 	/*
@@ -145,11 +147,9 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 					messageBox.setMessage("Current results are overwritten when doing a new calculation.");
 					if(messageBox.open() == SWT.YES) {
 						processAction();
-						plotData();
 					}
 				} else {
 					processAction();
-					plotData();
 				}
 			}
 		});
