@@ -31,7 +31,9 @@ public class EventDataHolder {
 
 	public static void addSubscriber(String topic) {
 
-		eventBroker.subscribe(topic, eventHandler);
+		if(eventBroker instanceof IEventBroker) {
+			eventBroker.subscribe(topic, eventHandler);
+		}
 	}
 
 	private static EventHandler eventHandler = new EventHandler() {
