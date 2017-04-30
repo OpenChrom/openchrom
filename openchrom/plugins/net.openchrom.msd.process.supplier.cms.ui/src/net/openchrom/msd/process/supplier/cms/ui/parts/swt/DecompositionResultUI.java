@@ -179,7 +179,7 @@ public class DecompositionResultUI extends Composite {
 		if(spinnerRightScanNumber.getSelection() > cmsSpectra.getList().size()) {
 			return;
 		}
-		if(spinnerRightScanNumber.getSelection() <= spinnerLeftScanNumber.getSelection()) {
+		if(spinnerRightScanNumber.getSelection() < spinnerLeftScanNumber.getSelection()) {
 			return;
 		}
 		IMassSpectra scanSpectra = new MassSpectra();
@@ -463,8 +463,10 @@ public class DecompositionResultUI extends Composite {
 							compositeSignalsGraph.clearXYGraph();
 							updateTextLeftETimes(cmsSpectra);
 							updateTextRightETimes(cmsSpectra);
-							results.setUsingETimes(usingETimes);
-							fireUpdateDecompositionResults(results);
+							if(null != results){
+								results.setUsingETimes(usingETimes);
+								fireUpdateDecompositionResults(results);
+							}
 						}
 						buttonEtimes.setSelection(usingETimes);
 					} else { // don't want to use ETimes
@@ -474,8 +476,10 @@ public class DecompositionResultUI extends Composite {
 							compositeSignalsGraph.clearXYGraph();
 							updateTextLeftETimes(cmsSpectra);
 							updateTextRightETimes(cmsSpectra);
-							results.setUsingETimes(usingETimes);
-							fireUpdateDecompositionResults(results);
+							if(null != results){
+								results.setUsingETimes(usingETimes);
+								fireUpdateDecompositionResults(results);
+							}
 						}
 					}
 				} catch(Exception e1) {
