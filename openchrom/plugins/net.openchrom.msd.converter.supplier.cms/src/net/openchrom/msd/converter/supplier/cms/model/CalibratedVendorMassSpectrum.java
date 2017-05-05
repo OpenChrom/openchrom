@@ -167,12 +167,8 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	public void subtractSignalOffset(float offsetValue) {
 
 		if(0f != offsetValue) {
-			for(IIonMeasurement ion : ionMeasurements) {
-				ion.setSignal(ion.getSignal() - offsetValue);
-			}
 			signalOffset = offsetValue;
-			minMaxSignalIsValid = false;
-			sumSignalIsValid = false;
+			subtractSignalOffset();
 		}
 	}
 
@@ -187,6 +183,8 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 				ion.setSignal(signalOffset + ion.getSignal());
 			}
 			signalOffset = 0f;
+			minMaxSignalIsValid = false;
+			sumSignalIsValid = false;
 		}
 	}
 
