@@ -16,11 +16,13 @@ import java.util.List;
 
 public interface ICalibratedVendorMassSpectrum extends ICalibratedVendorLibraryMassSpectrum {
 
-	public int compareTo(ICalibratedVendorMassSpectrum spectrum);
+	int compareTo(ICalibratedVendorMassSpectrum spectrum);
 
 	boolean addIonMeasurement(double mz, float signal);
 
 	boolean addIonMeasurement(IIonMeasurement ionMeasurement);
+
+	boolean calculateSignalOffset();
 
 	void createNewIonMeasurementList();
 
@@ -38,6 +40,8 @@ public interface ICalibratedVendorMassSpectrum extends ICalibratedVendorLibraryM
 
 	String getScanName();
 
+	float getSignalOffset();
+
 	float getSumSignal();
 
 	@Override
@@ -47,11 +51,19 @@ public interface ICalibratedVendorMassSpectrum extends ICalibratedVendorLibraryM
 
 	void resetMinMaxSignal();
 
+	void resetSignalOffset();
+
 	void resetSumSignal();
 
 	boolean scale();
 
 	void setScanName(String scanName);
+
+	void setSignalOffset(float signalOffset);
+
+	void subtractSignalOffset();
+
+	void subtractSignalOffset(float offsetValue);
 
 	boolean unscale();
 

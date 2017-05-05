@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Walter Whitlock - initial API and implementation
  * Philip Wenig - initial API and implementation
@@ -18,7 +18,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -37,7 +36,6 @@ import net.openchrom.msd.converter.supplier.cms.exceptions.NotCalibratedVendorMa
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
-import net.openchrom.msd.converter.supplier.cms.preferences.PreferenceSupplier;
 
 public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMassSpectraWriter {
 
@@ -194,7 +192,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the instrument name from the mass spectrum.
-	 * 
+	 *
 	 * @param cvmSpectrum
 	 * @return String
 	 */
@@ -211,7 +209,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the ion energy in Volts from the mass spectrum.
-	 * 
+	 *
 	 * @param cvmSpectrum
 	 * @return String
 	 */
@@ -228,7 +226,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the electron energy in Volts from the mass spectrum.
-	 * 
+	 *
 	 * @param cvmSpectrum
 	 * @return String
 	 */
@@ -245,7 +243,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the elapsed time in seconds from the mass spectrum.
-	 * 
+	 *
 	 * @param cvmSpectrum
 	 * @return String
 	 */
@@ -262,7 +260,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the timestamp from the mass spectrum.
-	 * 
+	 *
 	 * @param cvmSpectrum
 	 * @return String
 	 */
@@ -279,7 +277,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the signal units from the mass spectrum.
-	 * 
+	 *
 	 * @param cvmSpectrum
 	 * @return String
 	 */
@@ -296,7 +294,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the source pressure units from the mass spectrum.
-	 * 
+	 *
 	 * @param cvmSpectrum
 	 * @return String
 	 */
@@ -313,7 +311,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the source pressure from the mass spectrum.
-	 * 
+	 *
 	 * @param cvmSpectrum
 	 * @return String
 	 */
@@ -328,45 +326,9 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 		return field;
 	}
 
-	private String getSynonyms(ICalibratedVendorMassSpectrum massSpectrum) {
-
-		StringBuilder builder = new StringBuilder();
-		Set<String> synonyms = massSpectrum.getLibraryInformation().getSynonyms();
-		if(synonyms.size() > 0) {
-			for(String synonym : synonyms) {
-				/*
-				 * Set the synonym.
-				 */
-				builder.append("Synon: ");
-				builder.append(synonym);
-				builder.append(CRLF);
-			}
-		}
-		//
-		return builder.toString();
-	}
-
-	/**
-	 * Returns the comments information from the mass spectrum.
-	 * 
-	 * @param massSpectrum
-	 * @return String
-	 */
-	private String getComments(ICalibratedVendorMassSpectrum massSpectrum) {
-
-		StringBuilder builder = new StringBuilder();
-		List<String> comments = massSpectrum.getComments();
-		if((null != comments) && (comments.size() > 0)) {
-			for(String comment : comments) {
-				builder.append(COMMENT + comment + CRLF);
-			}
-		}
-		return builder.toString();
-	}
-
 	/**
 	 * Returns the ions in the convenient AMDIS format.
-	 * 
+	 *
 	 * @param massSpectrum
 	 * @return String
 	 */
@@ -400,7 +362,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the measurements in the convenient AMDIS format.
-	 * 
+	 *
 	 * @param massSpectrum
 	 * @return String
 	 */
@@ -409,18 +371,17 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 		StringBuilder builder = new StringBuilder();
 		StringBuilder line = new StringBuilder(80);
 		String lineStr;
-		String format1 = "%.0f ";
-		String format2 = "%g ";
 		//
 		List<IIonMeasurement> peaks = massSpectrum.getIonMeasurements();
+		float signalOffset = massSpectrum.getSignalOffset();
 		for(IIonMeasurement peak : peaks) {
 			/*
 			 * Add each peak measurement.
 			 */
 			if(0 == (peak.getMZ() % 1)) {
-				lineStr = (int)peak.getMZ() + " " + peak.getSignal() + "; ";
+				lineStr = (int)peak.getMZ() + " " + (peak.getSignal() + signalOffset) + "; ";
 			} else {
-				lineStr = peak.getMZ() + " " + peak.getSignal() + "; ";
+				lineStr = peak.getMZ() + " " + (peak.getSignal() + signalOffset) + "; ";
 			}
 			if(line.length() + lineStr.length() > 78) {
 				builder.append(line);
@@ -436,7 +397,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the name information from the mass spectrum.
-	 * 
+	 *
 	 * @param massSpectrum
 	 * @return String
 	 */
@@ -466,7 +427,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the CAS number information from the mass spectrum.
-	 * 
+	 *
 	 * @param massSpectrum
 	 * @return String
 	 */
@@ -483,7 +444,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the number of peaks information from the mass spectrum.
-	 * 
+	 *
 	 * @param massSpectrum
 	 * @return String
 	 */
@@ -494,7 +455,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the formula information from the mass spectrum.
-	 * 
+	 *
 	 * @param massSpectrum
 	 * @return String
 	 */
@@ -511,7 +472,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Returns the MW information from the mass spectrum.
-	 * 
+	 *
 	 * @param massSpectrum
 	 * @return String
 	 */
@@ -528,7 +489,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	/**
 	 * Writes the mass spectra with the given file writer.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	private void writeMassSpectra(FileWriter fileWriter, IMassSpectra massSpectra, IProgressMonitor monitor) throws IOException {

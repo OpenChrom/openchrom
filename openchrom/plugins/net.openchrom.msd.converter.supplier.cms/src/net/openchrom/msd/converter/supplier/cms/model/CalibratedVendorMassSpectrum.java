@@ -55,6 +55,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	private float scaleOffset = 0;
 	private float scaleSlope = 0;
 	private double baseMZ = 0;
+	private float signalOffset = 0f;
 
 	public CalibratedVendorMassSpectrum() {
 		/*
@@ -70,6 +71,123 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	public void sortMZ() {
 
 		Collections.sort(this.getIonMeasurements()); // uses IonMeasurement.compareTo(IIonMeasurement)
+	}
+
+	@Override
+	public float getSignalOffset() {
+
+		return signalOffset;
+	}
+
+	@Override
+	public void setSignalOffset(float signalOffset) {
+
+		this.signalOffset = signalOffset;
+	}
+
+	/**
+	 * subtracts the offsetValue from the signal for each ionMeasurement
+	 * calculates the zero offsetValue by taking middle value of signal found at m/z 5, 6, and 7
+	 * returns true if offsetValue was calculated
+	 */
+	@Override
+	public boolean calculateSignalOffset() {
+
+		float sig1 = 0f;
+		float sig2 = 0f;
+		float sig3 = 0f;
+		float temp;
+		int count = 0;
+		double massTol = 0.2;
+		for(IIonMeasurement ion : ionMeasurements) {
+			if(ion.massLess(5, massTol)) {
+				continue;
+			}
+			if(ion.massEqual(5, massTol)) {
+				sig1 = ion.getSignal();
+				count++;
+			}
+			if(ion.massLess(6, massTol)) {
+				continue;
+			}
+			if(ion.massEqual(6, massTol)) {
+				sig2 = ion.getSignal();
+				count++;
+			}
+			if(ion.massLess(7, massTol)) {
+				continue;
+			}
+			if(ion.massEqual(7, massTol)) {
+				sig3 = ion.getSignal();
+				count++;
+			}
+			break;
+		}
+		if(3 != count) {
+			return false;
+		}
+		if(sig1 > sig2) {
+			temp = sig1;
+			sig1 = sig2;
+			sig2 = temp;
+		}
+		if(sig2 > sig3) {
+			temp = sig2;
+			sig2 = sig3;
+			sig3 = temp;
+		}
+		if(sig1 > sig2) {
+			temp = sig1;
+			sig1 = sig2;
+			sig2 = temp;
+		}
+		signalOffset = sig2;
+		return true;
+	}
+
+	/**
+	 * subtracts signalOffset from the signal for each ionMeasurement
+	 */
+	@Override
+	public void subtractSignalOffset() {
+
+		if(0f != signalOffset) {
+			for(IIonMeasurement ion : ionMeasurements) {
+				ion.setSignal(ion.getSignal() - signalOffset);
+			}
+			minMaxSignalIsValid = false;
+			sumSignalIsValid = false;
+		}
+	}
+
+	/**
+	 * subtracts the offsetValue from the signal for each ionMeasurement
+	 */
+	@Override
+	public void subtractSignalOffset(float offsetValue) {
+
+		if(0f != offsetValue) {
+			for(IIonMeasurement ion : ionMeasurements) {
+				ion.setSignal(ion.getSignal() - offsetValue);
+			}
+			signalOffset = offsetValue;
+			minMaxSignalIsValid = false;
+			sumSignalIsValid = false;
+		}
+	}
+
+	/**
+	 * removes the offset for each ionMeasurement and sets signalOffset to 0f;
+	 */
+	@Override
+	public void resetSignalOffset() {
+
+		if(0f != signalOffset) {
+			for(IIonMeasurement ion : ionMeasurements) {
+				ion.setSignal(signalOffset + ion.getSignal());
+			}
+			signalOffset = 0f;
+		}
 	}
 
 	@Override
