@@ -79,6 +79,7 @@ public class DecompositionResultUI extends Composite {
 	private Button buttonLogScale;
 	private Button buttonEtimes;
 	private Button buttonUseRelError;
+	private Button buttonApplyZeroCorrection;
 	//
 	private List<IDecompositionResultsListener> resultsListener;
 
@@ -463,7 +464,7 @@ public class DecompositionResultUI extends Composite {
 							compositeSignalsGraph.clearXYGraph();
 							updateTextLeftETimes(cmsSpectra);
 							updateTextRightETimes(cmsSpectra);
-							if(null != results){
+							if(null != results) {
 								results.setUsingETimes(usingETimes);
 								fireUpdateDecompositionResults(results);
 							}
@@ -476,7 +477,7 @@ public class DecompositionResultUI extends Composite {
 							compositeSignalsGraph.clearXYGraph();
 							updateTextLeftETimes(cmsSpectra);
 							updateTextRightETimes(cmsSpectra);
-							if(null != results){
+							if(null != results) {
 								results.setUsingETimes(usingETimes);
 								fireUpdateDecompositionResults(results);
 							}
@@ -492,6 +493,54 @@ public class DecompositionResultUI extends Composite {
 		buttonUseRelError.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		buttonUseRelError.setText("Use Weighted Error");
 		buttonUseRelError.setSelection(true);
+		//
+		buttonApplyZeroCorrection = new Button(parent, SWT.CHECK);
+		buttonApplyZeroCorrection.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		buttonApplyZeroCorrection.setText("Apply Zero Correction");
+		buttonApplyZeroCorrection.setSelection(false);
+		buttonApplyZeroCorrection.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				try {
+					if(buttonApplyZeroCorrection.getSelection()) { // want to use zero correction
+						boolean isOK = false;
+						if(null != cmsSpectra) {
+							for(IScanMSD spectrum : cmsSpectra.getList()) {
+								if(spectrum instanceof ICalibratedVendorMassSpectrum) {
+									isOK = ((ICalibratedVendorMassSpectrum)spectrum).calculateSignalOffset();
+									if(!isOK) {
+										break; // for
+									}
+									((ICalibratedVendorMassSpectrum)spectrum).subtractSignalOffset();
+								} else {
+									isOK = false;
+									break; // for
+								}
+							}
+							if(!isOK) { // back our of zero offset adjustment
+								for(IScanMSD spectrum : cmsSpectra.getList()) {
+									if(spectrum instanceof ICalibratedVendorMassSpectrum) {
+										((ICalibratedVendorMassSpectrum)spectrum).resetSignalOffset();
+									}
+								}
+							}
+							buttonApplyZeroCorrection.setSelection(isOK);
+						}
+					} else { // don't want to use zero correction
+						for(IScanMSD spectrum : cmsSpectra.getList()) {
+							if(spectrum instanceof ICalibratedVendorMassSpectrum) {
+								((ICalibratedVendorMassSpectrum)spectrum).resetSignalOffset();
+							}
+						}
+						buttonApplyZeroCorrection.setSelection(false);
+					}
+				} catch(Exception e1) {
+					logger.warn(e1);
+				}
+			}
+		});
 	}
 
 	private void readAndPlotCMSscanFile() {
