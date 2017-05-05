@@ -40,9 +40,9 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	private double eEnergyV;
 	private double iEnergyV;
 	private double eTimeS;
-	protected double value2Norm;
-	protected boolean valid2Norm;
-	private boolean isSelected; // true if this spectrum is selected for some purpose
+	protected double value2Norm; // ignored in compareTo()
+	protected boolean valid2Norm; // ignored in compareTo()
+	private boolean isSelected; // true if this spectrum is selected for some purpose, ignored in compareTo()
 
 	public CalibratedVendorLibraryMassSpectrum() {
 		/*

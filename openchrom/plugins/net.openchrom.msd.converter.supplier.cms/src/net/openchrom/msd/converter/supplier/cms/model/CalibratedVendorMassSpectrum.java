@@ -46,16 +46,16 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	//
 	private List<IIonMeasurement> ionMeasurements;
 	private String scanName = "";
-	private float minSignal = 0;
-	private float minAbsSignal = 0;
-	private float maxSignal = 0;
-	private boolean minMaxSignalIsValid = false;
-	private float sumSignal = 0f;
-	private boolean sumSignalIsValid = false;
-	private float scaleOffset = 0;
-	private float scaleSlope = 0;
-	private double baseMZ = 0;
-	private float signalOffset = 0f;
+	private float minSignal = 0; // ignored in compareTo()
+	private float minAbsSignal = 0; // ignored in compareTo()
+	private float maxSignal = 0; // ignored in compareTo()
+	private boolean minMaxSignalIsValid = false; // ignored in compareTo()
+	private float sumSignal = 0f; // ignored in compareTo()
+	private boolean sumSignalIsValid = false; // ignored in compareTo()
+	private float scaleOffset = 0; // ignored in compareTo()
+	private float scaleSlope = 0; // ignored in compareTo()
+	private double baseMZ = 0; // ignored in compareTo()
+	private float signalOffset = 0f; // ignored in compareTo()
 
 	public CalibratedVendorMassSpectrum() {
 		/*
