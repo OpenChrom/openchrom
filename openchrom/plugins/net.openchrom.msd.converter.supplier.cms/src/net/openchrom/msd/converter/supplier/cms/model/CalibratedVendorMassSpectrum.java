@@ -13,7 +13,6 @@
 package net.openchrom.msd.converter.supplier.cms.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -67,12 +66,11 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	/**
 	 * sorts the measurement list into increasing MZ order
 	 */
-	@Override
-	public void sortMZ() {
-
-		Collections.sort(this.getIonMeasurements()); // uses IonMeasurement.compareTo(IIonMeasurement)
-	}
-
+	// @Override
+	// public void sortMZ() {
+	//
+	// Collections.sort(this.getIonMeasurements()); // uses IonMeasurement.compareTo(IIonMeasurement)
+	// }
 	@Override
 	public float getSignalOffset() {
 

@@ -12,7 +12,6 @@
 package net.openchrom.msd.converter.supplier.cms.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -65,14 +64,13 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	/**
 	 * sorts the ion list or measurement list into increasing MZ order
 	 */
-	@Override
-	public void sortMZ() {
-
-		List<IIon> sortedList = new ArrayList<>(getIons());
-		Collections.sort(sortedList); // uses AbstractIon.compareTo(IIon)
-		setIons(sortedList);
-	}
-
+	// @Override
+	// public void sortMZ() {
+	//
+	// List<IIon> sortedList = new ArrayList<>(getIons());
+	// Collections.sort(sortedList); // uses AbstractIon.compareTo(IIon)
+	// setIons(sortedList);
+	// }
 	@Override
 	/**
 	 * calculates 2-norm of abundance

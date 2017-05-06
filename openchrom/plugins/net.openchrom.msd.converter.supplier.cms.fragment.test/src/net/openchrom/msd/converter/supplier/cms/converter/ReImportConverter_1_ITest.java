@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Walter Whitlock - initial API and implementation
  * Philip Wenig - initial API and implementation
@@ -23,6 +23,7 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import net.openchrom.msd.converter.supplier.cms.PathResolver;
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
@@ -42,18 +43,18 @@ public class ReImportConverter_1_ITest extends TestCase {
 		/*
 		 * Import
 		 */
-		File importFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_2));
+		File importFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_2));
 		IMassSpectrumImportConverterProcessingInfo processingInfoImport = importConverter.convert(importFile, new NullProgressMonitor());
 		massSpectra1 = processingInfoImport.getMassSpectra();
 		/*
 		 * Export
 		 */
-		File exportFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_DIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_1);
+		File exportFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_DIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_1);
 		exportConverter.convert(exportFile, massSpectra1, false, new NullProgressMonitor());
 		/*
 		 * Re-Import
 		 */
-		File reImportFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_DIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_1);
+		File reImportFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_DIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_1);
 		IMassSpectrumImportConverterProcessingInfo processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
 		massSpectra2 = processingInfoReImport.getMassSpectra();
 		/*
@@ -70,13 +71,9 @@ public class ReImportConverter_1_ITest extends TestCase {
 		super.tearDown();
 	}
 
-	public void test_1() {
+	public void test_1() throws AbundanceLimitExceededException, IonLimitExceededException {
 
 		assertEquals(massSpectra1.size(), massSpectra2.size());
-	}
-
-	public void test_2() throws AbundanceLimitExceededException, IonLimitExceededException {
-
 		for(int i = 1; i <= massSpectra1.size(); i++) {
 			IScanMSD massSpectrum1 = massSpectra1.getMassSpectrum(i);
 			IScanMSD massSpectrum2 = massSpectra2.getMassSpectrum(i);

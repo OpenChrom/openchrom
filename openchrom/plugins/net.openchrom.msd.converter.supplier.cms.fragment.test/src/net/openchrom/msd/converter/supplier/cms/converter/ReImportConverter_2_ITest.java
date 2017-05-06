@@ -80,13 +80,9 @@ public class ReImportConverter_2_ITest extends TestCase {
 		super.tearDown();
 	}
 
-	public void test_1() {
+	public void test_1() throws AbundanceLimitExceededException, IonLimitExceededException {
 
 		assertEquals(massSpectra1.size(), massSpectra2.size());
-	}
-
-	public void test_2() throws AbundanceLimitExceededException, IonLimitExceededException {
-
 		for(int i = 1; i <= massSpectra1.size(); i++) {
 			IScanMSD massSpectrum1 = massSpectra1.getMassSpectrum(i);
 			IScanMSD massSpectrum2 = massSpectra2.getMassSpectrum(i);

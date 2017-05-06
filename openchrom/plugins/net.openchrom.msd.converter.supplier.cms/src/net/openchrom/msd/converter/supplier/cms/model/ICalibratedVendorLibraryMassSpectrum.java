@@ -71,6 +71,5 @@ public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMas
 	void setSourcePressureUnits(String sourcePressureUnits);
 
 	void setTimeStamp(String timeStamp);
-
-	void sortMZ();
+	// void sortMZ();
 }
