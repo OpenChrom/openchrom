@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -44,11 +44,15 @@ public class CmsLibraryListTableComparator extends AbstractRecordTableComparator
 					sortOrder = libraryInformation2.getName().compareTo(libraryInformation1.getName());
 				}
 				break;
-			case 1: // RT
-				sortOrder = Integer.compare(massSpectrum2.getRetentionTime(), massSpectrum1.getRetentionTime());
+			case 1: // CAS Number
+				if(libraryInformation1 != null && libraryInformation2 != null) {
+					sortOrder = libraryInformation2.getCasNumber().compareTo(libraryInformation1.getCasNumber());
+				}
 				break;
-			case 2: // RI
-				sortOrder = Float.compare(massSpectrum2.getRetentionIndex(), massSpectrum1.getRetentionIndex());
+			case 2: // Mol Weight
+				if(libraryInformation1 != null && libraryInformation2 != null) {
+					sortOrder = Double.compare(libraryInformation2.getMolWeight(), libraryInformation1.getMolWeight());
+				}
 				break;
 			case 3: // Base Peak
 				sortOrder = Double.compare(massSpectrum2.getBasePeak(), massSpectrum1.getBasePeak());
@@ -58,6 +62,11 @@ public class CmsLibraryListTableComparator extends AbstractRecordTableComparator
 				break;
 			case 5: // Number of Ions
 				sortOrder = Integer.compare(massSpectrum2.getNumberOfIons(), massSpectrum1.getNumberOfIons());
+				break;
+			case 6: // Formula
+				if(libraryInformation1 != null && libraryInformation2 != null) {
+					sortOrder = libraryInformation2.getFormula().compareTo(libraryInformation1.getFormula());
+				}
 				break;
 			default:
 				sortOrder = 0;
