@@ -76,9 +76,9 @@ public class CompositeCorrelationsPart {
 
 	private void update(DecompositionResults decompositionResults) {
 
-		if(isPartVisible()) {
+		//if(isPartVisible()) { // whw, update even if hidden
 			compositeCorrelationsUI.updateXYGraph(decompositionResults);
-		}
+		//}
 	}
 
 	/**
