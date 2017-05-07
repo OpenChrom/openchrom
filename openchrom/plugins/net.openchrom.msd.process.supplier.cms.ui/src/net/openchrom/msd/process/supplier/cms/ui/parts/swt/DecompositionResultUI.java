@@ -101,7 +101,7 @@ public class DecompositionResultUI extends Composite {
 	}
 
 	/**
-	 * Adds a results listener.
+	 * Removes a results listener.
 	 *
 	 * @param decompositionResultsListener
 	 * @return boolean
@@ -519,7 +519,7 @@ public class DecompositionResultUI extends Composite {
 									break; // for
 								}
 							}
-							if(!isOK) { // back our of zero offset adjustment
+							if(!isOK) { // back out of zero offset adjustment
 								for(IScanMSD spectrum : cmsSpectra.getList()) {
 									if(spectrum instanceof ICalibratedVendorMassSpectrum) {
 										((ICalibratedVendorMassSpectrum)spectrum).resetSignalOffset();
