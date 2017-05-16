@@ -71,9 +71,9 @@ public class CompositeCompositionsPart {
 
 	private void update(DecompositionResults decompositionResults) {
 
-		//if(isPartVisible()) { // whw, update even if hidden
-			compositeCompositionsUI.updateXYGraph(decompositionResults);
-		//}
+		// if(isPartVisible()) { // whw, update even if hidden
+		compositeCompositionsUI.updateXYGraph(decompositionResults);
+		// }
 	}
 
 	/**
