@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+   <extension
+         id="net.openchrom.xxd.processor.supplier.tracecompare.ui.fragment"
+         point="org.eclipse.e4.workbench.model">
+      <fragment
+            uri="fragment.e4xmi">
+      </fragment>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="Trace Compare Settings"
+            category="org.eclipse.chemclipse.chromatogram.msd.process.ui.preferences.processPreferencePage"
+            class="net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences.PreferencePage"
+            id="net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences.preferencePage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor"
+            extensions="otc"
+            icon="icons/16x16/chromatogram.gif"
+            id="net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.editorProcessor"
+            name="Trace Compare">
+      </editor>
+   </extension>
+</plugin>
