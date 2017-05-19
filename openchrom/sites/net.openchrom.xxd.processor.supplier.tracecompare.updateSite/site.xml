@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <feature url="features/net.openchrom.xxd.processor.supplier.tracecompare.feature_1.2.0.qualifier.jar" id="net.openchrom.xxd.processor.supplier.tracecompare.feature" version="1.2.0.qualifier">
-      <category name="org.eclipse.chemclipse.xxd.process.supplier"/>
-   </feature>
-   <category-def name="org.eclipse.chemclipse.xxd.process.supplier" label="Process Supplier"/>
-</site>
