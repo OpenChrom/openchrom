@@ -86,7 +86,7 @@ public class TraceCompareEditorUI extends Composite {
 		for(int i = 200; i <= 205; i++) {
 			Button checkBoxSelectedSignal = new Button(compositeTraces, SWT.CHECK);
 			checkBoxSelectedSignal.setText(i + " nm");
-			checkBoxSelectedSignal.setSelection(false);
+			checkBoxSelectedSignal.setSelection(true);
 		}
 		//
 		Button buttonTraces = new Button(composite, SWT.PUSH);
@@ -96,9 +96,19 @@ public class TraceCompareEditorUI extends Composite {
 		/*
 		 * Comparison
 		 */
-		Composite compositeComparison = new Composite(composite, SWT.BORDER);
-		compositeComparison.setLayoutData(getGridData(3, GridData.FILL_BOTH));
-		compositeComparison.setBackground(Colors.MAGENTA);
+		Composite compositeTraceData = new Composite(composite, SWT.BORDER);
+		compositeTraceData.setLayoutData(getGridData(3, GridData.FILL_BOTH));
+		compositeTraceData.setLayout(new FillLayout());
+		//
+		TraceDataComparisonUI traceDataTotalSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
+		traceDataTotalSignal.setTrace("Total Signal");
+		traceDataTotalSignal.setBackground(Colors.GRAY);
+		//
+		for(int i = 200; i <= 205; i++) {
+			TraceDataComparisonUI traceDataSelectedSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
+			traceDataSelectedSignal.setTrace(i + " nm");
+			traceDataSelectedSignal.setBackground(Colors.WHITE);
+		}
 	}
 
 	private GridData getGridData(int horizontalSpan, int style) {
