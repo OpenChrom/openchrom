@@ -13,7 +13,6 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -50,7 +49,7 @@ public class TraceCompareEditorUI extends Composite {
 		 * DropDown References
 		 */
 		Combo comboReferences = new Combo(composite, SWT.READ_ONLY);
-		comboReferences.setItems(new String[]{"Sample 7873", "Sample 7373", "Sample 733", "Sample 3473"});
+		comboReferences.setItems(new String[]{"Reference A_2017002", "Reference A_2016004", "Reference B_2017002", "Reference C_2017002"});
 		comboReferences.setLayoutData(getGridData(2, GridData.FILL_HORIZONTAL));
 		/*
 		 * Settings
@@ -102,12 +101,10 @@ public class TraceCompareEditorUI extends Composite {
 		//
 		TraceDataComparisonUI traceDataTotalSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
 		traceDataTotalSignal.setTrace("Total Signal");
-		traceDataTotalSignal.setBackground(Colors.GRAY);
 		//
 		for(int i = 200; i <= 205; i++) {
 			TraceDataComparisonUI traceDataSelectedSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
 			traceDataSelectedSignal.setTrace(i + " nm");
-			traceDataSelectedSignal.setBackground(Colors.WHITE);
 		}
 	}
 
