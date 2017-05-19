@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-@XmlRootElement(name = "tracecompare")
+@XmlRootElement(name = "TraceCompare")
 public class ProcessorModel {
 
 	@XmlElement(name = "ChromatogramName")

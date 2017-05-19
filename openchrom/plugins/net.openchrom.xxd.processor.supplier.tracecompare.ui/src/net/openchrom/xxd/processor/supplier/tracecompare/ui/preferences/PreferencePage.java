@@ -11,8 +11,10 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences;
 
-import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.DoubleFieldEditor;
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
+import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -34,7 +36,11 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 */
 	public void createFieldEditors() {
 
-		addField(new DoubleFieldEditor(PreferenceSupplier.P_MY_SETTING, "My Setting", PreferenceSupplier.MY_SETTING_MIN, PreferenceSupplier.MY_SETTING_MAX, getFieldEditorParent()));
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new ComboFieldEditor(PreferenceSupplier.P_DETECTOR_TYPE, "Detector Type:", PreferenceSupplier.getDetectorTypes(), getFieldEditorParent()));
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new StringFieldEditor(PreferenceSupplier.P_FILTER_PATH_SAMPLE, "Path Sample", getFieldEditorParent()));
+		addField(new StringFieldEditor(PreferenceSupplier.P_FILTER_PATH_REFERNCES, "Path References", getFieldEditorParent()));
 	}
 
 	/*

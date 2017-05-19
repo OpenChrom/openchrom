@@ -15,6 +15,7 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -72,11 +73,32 @@ public class TraceCompareEditorUI extends Composite {
 		buttonSave.setLayoutData(getGridDataButton());
 		buttonSave.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SAVE, IApplicationImage.SIZE_16x16));
 		/*
+		 * Traces
+		 */
+		Composite compositeTraces = new Composite(composite, SWT.NONE);
+		compositeTraces.setLayoutData(getGridData(2, GridData.FILL_HORIZONTAL));
+		compositeTraces.setLayout(new FillLayout());
+		//
+		Button checkBoxTotalSignal = new Button(compositeTraces, SWT.CHECK);
+		checkBoxTotalSignal.setText("Total Signal");
+		checkBoxTotalSignal.setSelection(true);
+		//
+		for(int i = 200; i <= 205; i++) {
+			Button checkBoxSelectedSignal = new Button(compositeTraces, SWT.CHECK);
+			checkBoxSelectedSignal.setText(i + " nm");
+			checkBoxSelectedSignal.setSelection(false);
+		}
+		//
+		Button buttonTraces = new Button(composite, SWT.PUSH);
+		buttonTraces.setText("Traces");
+		buttonTraces.setLayoutData(getGridDataButton());
+		buttonTraces.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImage.SIZE_16x16));
+		/*
 		 * Comparison
 		 */
-		Composite comparisonComposite = new Composite(composite, SWT.BORDER);
-		comparisonComposite.setLayoutData(getGridData(3, GridData.FILL_BOTH));
-		comparisonComposite.setBackground(Colors.MAGENTA);
+		Composite compositeComparison = new Composite(composite, SWT.BORDER);
+		compositeComparison.setLayoutData(getGridData(3, GridData.FILL_BOTH));
+		compositeComparison.setBackground(Colors.MAGENTA);
 	}
 
 	private GridData getGridData(int horizontalSpan, int style) {
