@@ -48,7 +48,7 @@ public class TraceDataUI extends LineChart implements IChart {
 
 		IChartSettings chartSettings = getChartSettings();
 		chartSettings.setOrientation(SWT.HORIZONTAL);
-		chartSettings.setHorizontalSliderVisible(false);
+		chartSettings.setHorizontalSliderVisible(true);
 		chartSettings.setVerticalSliderVisible(false);
 		chartSettings.setUseZeroX(true);
 		chartSettings.setUseZeroY(true);

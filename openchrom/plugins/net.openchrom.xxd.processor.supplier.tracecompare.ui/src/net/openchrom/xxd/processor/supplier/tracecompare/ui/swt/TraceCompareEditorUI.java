@@ -82,7 +82,7 @@ public class TraceCompareEditorUI extends Composite {
 		checkBoxTotalSignal.setText("Total Signal");
 		checkBoxTotalSignal.setSelection(true);
 		//
-		for(int i = 200; i <= 205; i++) {
+		for(int i = 200; i <= 202; i++) {
 			Button checkBoxSelectedSignal = new Button(compositeTraces, SWT.CHECK);
 			checkBoxSelectedSignal.setText(i + " nm");
 			checkBoxSelectedSignal.setSelection(true);
@@ -102,7 +102,7 @@ public class TraceCompareEditorUI extends Composite {
 		TraceDataComparisonUI traceDataTotalSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
 		traceDataTotalSignal.setTrace("Total Signal");
 		//
-		for(int i = 200; i <= 205; i++) {
+		for(int i = 200; i <= 202; i++) {
 			TraceDataComparisonUI traceDataSelectedSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
 			traceDataSelectedSignal.setTrace(i + " nm");
 		}

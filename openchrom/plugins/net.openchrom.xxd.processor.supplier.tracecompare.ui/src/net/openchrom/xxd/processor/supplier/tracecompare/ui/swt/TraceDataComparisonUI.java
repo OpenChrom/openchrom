@@ -13,6 +13,7 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
 import org.eclipse.eavp.service.swtchart.core.BaseChart;
 import org.eclipse.eavp.service.swtchart.core.ICustomSelectionHandler;
+import org.eclipse.eavp.service.swtchart.core.IExtendedChart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -65,7 +66,12 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void handleUserSelection(Event event) {
 
-				setSelection(baseChartSample, baseChartReference);
+				IAxis xAxis = baseChartSample.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
+				IAxis yAxis = baseChartSample.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+				//
+				referenceDataUI.setRange(IExtendedChart.X_AXIS, xAxis.getRange());
+				referenceDataUI.setRange(IExtendedChart.Y_AXIS, yAxis.getRange());
+				referenceDataUI.redraw();
 			}
 		});
 		//
@@ -74,7 +80,12 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void handleUserSelection(Event event) {
 
-				setSelection(baseChartReference, baseChartSample);
+				IAxis xAxis = baseChartReference.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
+				IAxis yAxis = baseChartReference.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+				//
+				sampleDataUI.setRange(IExtendedChart.X_AXIS, xAxis.getRange());
+				sampleDataUI.setRange(IExtendedChart.Y_AXIS, yAxis.getRange());
+				sampleDataUI.redraw();
 			}
 		});
 	}
@@ -84,20 +95,5 @@ public class TraceDataComparisonUI extends Composite {
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalAlignment = SWT.CENTER;
 		return gridData;
-	}
-
-	private void setSelection(BaseChart baseChartMaster, BaseChart baseChartListener) {
-
-		IAxis xAxisMaster = baseChartMaster.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
-		IAxis yAxisMaster = baseChartMaster.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
-		IAxis xAxisListener = baseChartListener.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
-		IAxis yAxisListener = baseChartListener.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
-		//
-		if(xAxisMaster != null && yAxisMaster != null && xAxisListener != null && yAxisListener != null) {
-			//
-			xAxisListener.setRange(xAxisMaster.getRange());
-			yAxisListener.setRange(yAxisMaster.getRange());
-			baseChartListener.redraw();
-		}
 	}
 }
