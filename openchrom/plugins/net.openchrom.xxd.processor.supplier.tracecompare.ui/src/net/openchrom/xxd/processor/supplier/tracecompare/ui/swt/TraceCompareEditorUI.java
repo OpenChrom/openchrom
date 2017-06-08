@@ -102,10 +102,10 @@ public class TraceCompareEditorUI extends Composite {
 		TraceDataComparisonUI traceDataTotalSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
 		traceDataTotalSignal.setTrace("Total Signal");
 		//
-		for(int i = 200; i <= 200; i++) {
-			TraceDataComparisonUI traceDataSelectedSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
-			traceDataSelectedSignal.setTrace(i + " nm");
-		}
+		// for(int i = 200; i <= 200; i++) {
+		// TraceDataComparisonUI traceDataSelectedSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
+		// traceDataSelectedSignal.setTrace(i + " nm");
+		// }
 	}
 
 	private GridData getGridData(int horizontalSpan, int style) {

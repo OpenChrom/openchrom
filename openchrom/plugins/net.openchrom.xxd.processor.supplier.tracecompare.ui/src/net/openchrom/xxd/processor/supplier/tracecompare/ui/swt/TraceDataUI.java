@@ -17,7 +17,7 @@ import java.util.List;
 import org.eclipse.eavp.service.swtchart.converter.MillisecondsToMinuteConverter;
 import org.eclipse.eavp.service.swtchart.converter.MillisecondsToScanNumberConverter;
 import org.eclipse.eavp.service.swtchart.converter.RelativeIntensityConverter;
-import org.eclipse.eavp.service.swtchart.core.ColorFormatSupport;
+import org.eclipse.eavp.service.swtchart.core.ColorAndFormatSupport;
 import org.eclipse.eavp.service.swtchart.core.IChartSettings;
 import org.eclipse.eavp.service.swtchart.core.IPrimaryAxisSettings;
 import org.eclipse.eavp.service.swtchart.core.ISecondaryAxisSettings;
@@ -59,33 +59,33 @@ public class TraceDataUI extends LineChart implements IChart {
 			//
 			IPrimaryAxisSettings primaryAxisSettingsX = chartSettings.getPrimaryAxisSettingsX();
 			primaryAxisSettingsX.setTitle("Retention Time (milliseconds)");
-			primaryAxisSettingsX.setDecimalFormat(ColorFormatSupport.decimalFormatVariable);
-			primaryAxisSettingsX.setColor(ColorFormatSupport.COLOR_BLACK);
+			primaryAxisSettingsX.setDecimalFormat(ColorAndFormatSupport.decimalFormatVariable);
+			primaryAxisSettingsX.setColor(ColorAndFormatSupport.COLOR_BLACK);
 			primaryAxisSettingsX.setPosition(Position.Secondary);
 			primaryAxisSettingsX.setVisible(false);
 			//
 			IPrimaryAxisSettings primaryAxisSettingsY = chartSettings.getPrimaryAxisSettingsY();
 			primaryAxisSettingsY.setTitle("Intensity");
-			primaryAxisSettingsY.setDecimalFormat(ColorFormatSupport.decimalFormatScientific);
-			primaryAxisSettingsY.setColor(ColorFormatSupport.COLOR_BLACK);
-			primaryAxisSettingsY.setVisible(false);
+			primaryAxisSettingsY.setDecimalFormat(ColorAndFormatSupport.decimalFormatScientific);
+			primaryAxisSettingsY.setColor(ColorAndFormatSupport.COLOR_BLACK);
+			primaryAxisSettingsY.setVisible(true);
 			//
 			ISecondaryAxisSettings secondaryAxisSettingsX1 = new SecondaryAxisSettings("Scan Number", new MillisecondsToScanNumberConverter(50, 50));
 			secondaryAxisSettingsX1.setPosition(Position.Primary);
-			secondaryAxisSettingsX1.setDecimalFormat(ColorFormatSupport.decimalFormatInteger);
-			secondaryAxisSettingsX1.setColor(ColorFormatSupport.COLOR_BLACK);
+			secondaryAxisSettingsX1.setDecimalFormat(ColorAndFormatSupport.decimalFormatInteger);
+			secondaryAxisSettingsX1.setColor(ColorAndFormatSupport.COLOR_BLACK);
 			chartSettings.getSecondaryAxisSettingsListX().add(secondaryAxisSettingsX1);
 			//
-			ISecondaryAxisSettings secondaryAxisSettingsX2 = new SecondaryAxisSettings("", new MillisecondsToMinuteConverter()); // Minutes
+			ISecondaryAxisSettings secondaryAxisSettingsX2 = new SecondaryAxisSettings("", "Minutes", new MillisecondsToMinuteConverter());
 			secondaryAxisSettingsX2.setPosition(Position.Primary);
-			secondaryAxisSettingsX2.setDecimalFormat(ColorFormatSupport.decimalFormatFixed);
-			secondaryAxisSettingsX2.setColor(ColorFormatSupport.COLOR_BLACK);
+			secondaryAxisSettingsX2.setDecimalFormat(ColorAndFormatSupport.decimalFormatFixed);
+			secondaryAxisSettingsX2.setColor(ColorAndFormatSupport.COLOR_BLACK);
 			chartSettings.getSecondaryAxisSettingsListX().add(secondaryAxisSettingsX2);
 			//
-			ISecondaryAxisSettings secondaryAxisSettingsY1 = new SecondaryAxisSettings("Relative Intensity [%]", new RelativeIntensityConverter(SWT.VERTICAL));
+			ISecondaryAxisSettings secondaryAxisSettingsY1 = new SecondaryAxisSettings("[%]", "Relative Intensity [%]", new RelativeIntensityConverter(SWT.VERTICAL));
 			secondaryAxisSettingsY1.setPosition(Position.Secondary);
-			secondaryAxisSettingsY1.setDecimalFormat(ColorFormatSupport.decimalFormatFixed);
-			secondaryAxisSettingsY1.setColor(ColorFormatSupport.COLOR_BLACK);
+			secondaryAxisSettingsY1.setDecimalFormat(ColorAndFormatSupport.decimalFormatFixed);
+			secondaryAxisSettingsY1.setColor(ColorAndFormatSupport.COLOR_BLACK);
 			chartSettings.getSecondaryAxisSettingsListY().add(secondaryAxisSettingsY1);
 			//
 			applySettings(chartSettings);
