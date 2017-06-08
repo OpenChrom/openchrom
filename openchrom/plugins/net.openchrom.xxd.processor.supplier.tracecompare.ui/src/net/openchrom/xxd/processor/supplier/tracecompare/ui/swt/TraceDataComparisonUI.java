@@ -11,17 +11,12 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
-import org.eclipse.eavp.service.swtchart.core.BaseChart;
-import org.eclipse.eavp.service.swtchart.core.ICustomSelectionHandler;
-import org.eclipse.eavp.service.swtchart.core.IExtendedChart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.swtchart.IAxis;
 
 public class TraceDataComparisonUI extends Composite {
 
@@ -55,39 +50,14 @@ public class TraceDataComparisonUI extends Composite {
 		//
 		sampleDataUI = new TraceDataUI(this, SWT.NONE);
 		sampleDataUI.setLayoutData(new GridData(GridData.FILL_BOTH));
-		BaseChart baseChartSample = sampleDataUI.getBaseChart();
 		//
 		referenceDataUI = new TraceDataUI(this, SWT.NONE);
 		referenceDataUI.setLayoutData(new GridData(GridData.FILL_BOTH));
-		BaseChart baseChartReference = referenceDataUI.getBaseChart();
-		//
-		baseChartSample.addCustomSelectionHandler(new ICustomSelectionHandler() {
-
-			@Override
-			public void handleUserSelection(Event event) {
-
-				IAxis xAxis = baseChartSample.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
-				IAxis yAxis = baseChartSample.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
-				//
-				referenceDataUI.setRange(IExtendedChart.X_AXIS, xAxis.getRange());
-				referenceDataUI.setRange(IExtendedChart.Y_AXIS, yAxis.getRange());
-				referenceDataUI.redraw();
-			}
-		});
-		//
-		baseChartReference.addCustomSelectionHandler(new ICustomSelectionHandler() {
-
-			@Override
-			public void handleUserSelection(Event event) {
-
-				IAxis xAxis = baseChartReference.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
-				IAxis yAxis = baseChartReference.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
-				//
-				sampleDataUI.setRange(IExtendedChart.X_AXIS, xAxis.getRange());
-				sampleDataUI.setRange(IExtendedChart.Y_AXIS, yAxis.getRange());
-				sampleDataUI.redraw();
-			}
-		});
+		/*
+		 * Link both charts.
+		 */
+		sampleDataUI.addLinkedScrollableChart(referenceDataUI);
+		referenceDataUI.addLinkedScrollableChart(sampleDataUI);
 	}
 
 	private GridData getGridData() {
