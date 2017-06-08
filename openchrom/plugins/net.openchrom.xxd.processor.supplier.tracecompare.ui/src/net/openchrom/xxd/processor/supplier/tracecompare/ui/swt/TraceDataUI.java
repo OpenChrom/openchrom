@@ -82,7 +82,7 @@ public class TraceDataUI extends LineChart implements IChart {
 			secondaryAxisSettingsX2.setColor(ColorAndFormatSupport.COLOR_BLACK);
 			chartSettings.getSecondaryAxisSettingsListX().add(secondaryAxisSettingsX2);
 			//
-			ISecondaryAxisSettings secondaryAxisSettingsY1 = new SecondaryAxisSettings("[%]", "Relative Intensity [%]", new RelativeIntensityConverter(SWT.VERTICAL));
+			ISecondaryAxisSettings secondaryAxisSettingsY1 = new SecondaryAxisSettings("[%]", "Relative Intensity [%]", new RelativeIntensityConverter(SWT.VERTICAL, true));
 			secondaryAxisSettingsY1.setPosition(Position.Secondary);
 			secondaryAxisSettingsY1.setDecimalFormat(ColorAndFormatSupport.decimalFormatFixed);
 			secondaryAxisSettingsY1.setColor(ColorAndFormatSupport.COLOR_BLACK);
