@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.eavp.service.swtchart.converter.MillisecondsToMinuteConverter;
-import org.eclipse.eavp.service.swtchart.converter.MillisecondsToScanNumberConverter;
-import org.eclipse.eavp.service.swtchart.converter.RelativeIntensityConverter;
 import org.eclipse.eavp.service.swtchart.core.ColorAndFormatSupport;
 import org.eclipse.eavp.service.swtchart.core.IChartSettings;
 import org.eclipse.eavp.service.swtchart.core.IPrimaryAxisSettings;
@@ -35,8 +33,15 @@ import org.swtchart.IAxis.Position;
 
 public class TraceDataUI extends LineChart implements IChart {
 
-	public TraceDataUI(Composite parent, int style) {
+	private boolean enableRangeInfo;
+	private boolean showAxisTitle;
+	private boolean enableHorizontalSlider;
+
+	public TraceDataUI(Composite parent, int style, boolean enableRangeInfo, boolean showAxisTitle, boolean enableHorizontalSlider) {
 		super(parent, style);
+		this.enableRangeInfo = enableRangeInfo;
+		this.showAxisTitle = showAxisTitle;
+		this.enableHorizontalSlider = enableHorizontalSlider;
 		createControl();
 	}
 
@@ -51,8 +56,8 @@ public class TraceDataUI extends LineChart implements IChart {
 		try {
 			IChartSettings chartSettings = getChartSettings();
 			chartSettings.setOrientation(SWT.HORIZONTAL);
-			chartSettings.setEnableRangeInfo(true);
-			chartSettings.setHorizontalSliderVisible(true);
+			chartSettings.setEnableRangeInfo(enableRangeInfo);
+			chartSettings.setHorizontalSliderVisible(enableHorizontalSlider);
 			chartSettings.setVerticalSliderVisible(false);
 			chartSettings.setUseZeroX(true);
 			chartSettings.setUseZeroY(true);
@@ -68,25 +73,18 @@ public class TraceDataUI extends LineChart implements IChart {
 			primaryAxisSettingsY.setTitle("Intensity");
 			primaryAxisSettingsY.setDecimalFormat(ColorAndFormatSupport.decimalFormatScientific);
 			primaryAxisSettingsY.setColor(ColorAndFormatSupport.COLOR_BLACK);
-			primaryAxisSettingsY.setVisible(true);
+			primaryAxisSettingsY.setVisible(false);
 			//
-			ISecondaryAxisSettings secondaryAxisSettingsX1 = new SecondaryAxisSettings("Scan Number", new MillisecondsToScanNumberConverter(50, 50));
-			secondaryAxisSettingsX1.setPosition(Position.Primary);
-			secondaryAxisSettingsX1.setDecimalFormat(ColorAndFormatSupport.decimalFormatInteger);
-			secondaryAxisSettingsX1.setColor(ColorAndFormatSupport.COLOR_BLACK);
-			chartSettings.getSecondaryAxisSettingsListX().add(secondaryAxisSettingsX1);
+			String axisTitle = "";
+			if(showAxisTitle) {
+				axisTitle = "Minutes";
+			}
 			//
-			ISecondaryAxisSettings secondaryAxisSettingsX2 = new SecondaryAxisSettings("", "Minutes", new MillisecondsToMinuteConverter());
-			secondaryAxisSettingsX2.setPosition(Position.Primary);
-			secondaryAxisSettingsX2.setDecimalFormat(ColorAndFormatSupport.decimalFormatFixed);
-			secondaryAxisSettingsX2.setColor(ColorAndFormatSupport.COLOR_BLACK);
-			chartSettings.getSecondaryAxisSettingsListX().add(secondaryAxisSettingsX2);
-			//
-			ISecondaryAxisSettings secondaryAxisSettingsY1 = new SecondaryAxisSettings("[%]", "Relative Intensity [%]", new RelativeIntensityConverter(SWT.VERTICAL, true));
-			secondaryAxisSettingsY1.setPosition(Position.Secondary);
-			secondaryAxisSettingsY1.setDecimalFormat(ColorAndFormatSupport.decimalFormatFixed);
-			secondaryAxisSettingsY1.setColor(ColorAndFormatSupport.COLOR_BLACK);
-			chartSettings.getSecondaryAxisSettingsListY().add(secondaryAxisSettingsY1);
+			ISecondaryAxisSettings secondaryAxisSettingsMinutes = new SecondaryAxisSettings(axisTitle, "Minutes", new MillisecondsToMinuteConverter());
+			secondaryAxisSettingsMinutes.setPosition(Position.Primary);
+			secondaryAxisSettingsMinutes.setDecimalFormat(ColorAndFormatSupport.decimalFormatFixed);
+			secondaryAxisSettingsMinutes.setColor(ColorAndFormatSupport.COLOR_BLACK);
+			chartSettings.getSecondaryAxisSettingsListX().add(secondaryAxisSettingsMinutes);
 			//
 			applySettings(chartSettings);
 		} catch(Exception e) {

@@ -62,10 +62,10 @@ public class TraceCompareEditorUI extends Composite {
 		 * Identification
 		 */
 		Label label = new Label(composite, SWT.NONE);
-		label.setText("Identification Notes:");
+		label.setText("General Notes:");
 		//
-		Text textSampleIdentification = new Text(composite, SWT.BORDER);
-		textSampleIdentification.setLayoutData(getGridData(1, GridData.FILL_HORIZONTAL));
+		Text textGeneralNotes = new Text(composite, SWT.BORDER);
+		textGeneralNotes.setLayoutData(getGridData(1, GridData.FILL_HORIZONTAL));
 		//
 		Button buttonSave = new Button(composite, SWT.PUSH);
 		buttonSave.setText("Save");
@@ -82,7 +82,7 @@ public class TraceCompareEditorUI extends Composite {
 		checkBoxTotalSignal.setText("Total Signal");
 		checkBoxTotalSignal.setSelection(true);
 		//
-		for(int i = 200; i <= 200; i++) {
+		for(int i = 200; i <= 208; i++) {
 			Button checkBoxSelectedSignal = new Button(compositeTraces, SWT.CHECK);
 			checkBoxSelectedSignal.setText(i + " nm");
 			checkBoxSelectedSignal.setSelection(true);
@@ -99,13 +99,16 @@ public class TraceCompareEditorUI extends Composite {
 		compositeTraceData.setLayoutData(getGridData(3, GridData.FILL_BOTH));
 		compositeTraceData.setLayout(new FillLayout());
 		//
-		TraceDataComparisonUI traceDataTotalSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
-		traceDataTotalSignal.setTrace("Total Signal");
+		String sample = "M_20170609";
+		String reference = "B_2017002";
 		//
-		// for(int i = 200; i <= 200; i++) {
-		// TraceDataComparisonUI traceDataSelectedSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
-		// traceDataSelectedSignal.setTrace(i + " nm");
-		// }
+		TraceDataComparisonUI traceDataTotalSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
+		traceDataTotalSignal.setTrace("Total Signal", sample, reference);
+		//
+		for(int i = 203; i <= 204; i++) {
+			TraceDataComparisonUI traceDataSelectedSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
+			traceDataSelectedSignal.setTrace(i + " nm", sample, reference);
+		}
 	}
 
 	private GridData getGridData(int horizontalSpan, int style) {
