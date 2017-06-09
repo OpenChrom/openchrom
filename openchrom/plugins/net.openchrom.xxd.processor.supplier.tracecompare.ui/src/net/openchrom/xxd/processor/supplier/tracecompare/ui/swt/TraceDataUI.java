@@ -106,6 +106,6 @@ public class TraceDataUI extends LineChart implements IChart {
 		/*
 		 * Set series.
 		 */
-		addSeriesData(lineSeriesDataList);
+		addSeriesData(lineSeriesDataList, true);
 	}
 }
