@@ -105,7 +105,7 @@ public class TraceCompareEditorUI extends Composite {
 		TraceDataComparisonUI traceDataTotalSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
 		traceDataTotalSignal.setTrace("Total Signal", sample, reference);
 		//
-		for(int i = 203; i <= 204; i++) {
+		for(int i = 203; i <= 203; i++) {
 			TraceDataComparisonUI traceDataSelectedSignal = new TraceDataComparisonUI(compositeTraceData, SWT.NONE);
 			traceDataSelectedSignal.setTrace(i + " nm", sample, reference);
 		}

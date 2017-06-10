@@ -11,17 +11,24 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
+import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.swtchart.ITitle;
 
 public class TraceDataComparisonUI extends Composite {
 
-	private Button identificationButton;
+	private static final String FLAG_MATCHED = "FlagMatched";
+	//
+	private Button buttonIsMatched;
 	private TraceDataUI sampleDataUI;
 	private TraceDataUI referenceDataUI;
 	private Text commentsText;
@@ -33,32 +40,106 @@ public class TraceDataComparisonUI extends Composite {
 
 	public void setTrace(String trace, String sample, String reference) {
 
-		identificationButton.setText("Trace to match: " + trace + " (" + sample + " vs. " + reference + ")");
+		ITitle title;
+		//
+		title = sampleDataUI.getBaseChart().getTitle();
+		title.setText(sample + " (" + trace + ")");
+		title.setForeground(Colors.BLACK);
+		//
+		title = referenceDataUI.getBaseChart().getTitle();
+		title.setText(reference + " (" + trace + ")");
+		title.setForeground(Colors.BLACK);
 	}
 
 	private void createControl() {
 
 		setLayout(new GridLayout(1, true));
 		//
-		identificationButton = new Button(this, SWT.CHECK);
-		identificationButton.setText("matched");
-		identificationButton.setSelection(false);
-		identificationButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		identificationButton.setBackground(Colors.YELLOW);
+		createButtonSection(this);
+		createCommentsSection(this);
+		createTraceDataSection(this);
 		//
-		sampleDataUI = new TraceDataUI(this, SWT.NONE, true, false, false);
+		showComments(false);
+	}
+
+	private void createButtonSection(Composite parent) {
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
+		gridDataComposite.horizontalAlignment = SWT.END;
+		composite.setLayoutData(gridDataComposite);
+		composite.setLayout(new GridLayout(2, false));
+		//
+		buttonIsMatched = new Button(composite, SWT.PUSH);
+		buttonIsMatched.setText("");
+		buttonIsMatched.setToolTipText("Flag as matched");
+		buttonIsMatched.setData(FLAG_MATCHED, false);
+		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DESELECTED, IApplicationImage.SIZE_16x16));
+		buttonIsMatched.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				boolean isMatched = (boolean)buttonIsMatched.getData(FLAG_MATCHED);
+				if(isMatched) {
+					buttonIsMatched.setData(FLAG_MATCHED, false);
+					buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DESELECTED, IApplicationImage.SIZE_16x16));
+				} else {
+					buttonIsMatched.setData(FLAG_MATCHED, true);
+					buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SELECTED, IApplicationImage.SIZE_16x16));
+				}
+			}
+		});
+		//
+		Button buttonFlipComments = new Button(composite, SWT.PUSH);
+		buttonFlipComments.setText("");
+		buttonFlipComments.setToolTipText("Show/Hide Comments");
+		buttonFlipComments.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
+		buttonFlipComments.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				boolean isVisible = !commentsText.isVisible();
+				showComments(isVisible);
+				//
+				if(isVisible) {
+					buttonFlipComments.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_COLLAPSE_ALL, IApplicationImage.SIZE_16x16));
+				} else {
+					buttonFlipComments.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
+				}
+			}
+		});
+	}
+
+	private void createCommentsSection(Composite parent) {
+
+		commentsText = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.H_SCROLL);
+		commentsText.setText("");
+		commentsText.setLayoutData(new GridData(GridData.FILL_BOTH));
+	}
+
+	private void createTraceDataSection(Composite parent) {
+
+		sampleDataUI = new TraceDataUI(parent, SWT.NONE, true, false, false);
 		sampleDataUI.setLayoutData(new GridData(GridData.FILL_BOTH));
 		//
-		referenceDataUI = new TraceDataUI(this, SWT.NONE, false, true, true);
+		referenceDataUI = new TraceDataUI(parent, SWT.NONE, false, true, true);
 		referenceDataUI.setLayoutData(new GridData(GridData.FILL_BOTH));
 		/*
 		 * Link both charts.
 		 */
 		sampleDataUI.addLinkedScrollableChart(referenceDataUI);
 		referenceDataUI.addLinkedScrollableChart(sampleDataUI);
-		//
-		commentsText = new Text(this, SWT.BORDER | SWT.MULTI);
-		commentsText.setText("");
-		commentsText.setLayoutData(new GridData(GridData.FILL_BOTH));
+	}
+
+	private void showComments(boolean isVisible) {
+
+		GridData gridData = (GridData)commentsText.getLayoutData();
+		gridData.exclude = !isVisible;
+		commentsText.setVisible(isVisible);
+		Composite parent = commentsText.getParent();
+		parent.layout(false);
+		parent.redraw();
 	}
 }
