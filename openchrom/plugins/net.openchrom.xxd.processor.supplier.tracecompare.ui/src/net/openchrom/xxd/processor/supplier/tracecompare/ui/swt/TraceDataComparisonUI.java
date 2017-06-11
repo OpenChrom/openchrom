@@ -21,6 +21,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.swtchart.ITitle;
 
@@ -28,6 +29,7 @@ public class TraceDataComparisonUI extends Composite {
 
 	private static final String FLAG_MATCHED = "FlagMatched";
 	//
+	private Label labelTrace;
 	private Button buttonIsMatched;
 	private TraceDataUI sampleDataUI;
 	private TraceDataUI referenceDataUI;
@@ -40,6 +42,8 @@ public class TraceDataComparisonUI extends Composite {
 
 	public void setTrace(String trace, String sample, String reference) {
 
+		labelTrace.setText("Selected trace: " + trace);
+		//
 		ITitle title;
 		//
 		title = sampleDataUI.getBaseChart().getTitle();
@@ -53,7 +57,7 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void createControl() {
 
-		setLayout(new GridLayout(1, true));
+		setLayout(new GridLayout(2, true));
 		//
 		createButtonSection(this);
 		createCommentsSection(this);
@@ -64,6 +68,10 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void createButtonSection(Composite parent) {
 
+		labelTrace = new Label(parent, SWT.NONE);
+		labelTrace.setText("");
+		labelTrace.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		//
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataComposite.horizontalAlignment = SWT.END;
@@ -116,21 +124,28 @@ public class TraceDataComparisonUI extends Composite {
 
 		commentsText = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.H_SCROLL);
 		commentsText.setText("");
-		commentsText.setLayoutData(new GridData(GridData.FILL_BOTH));
+		commentsText.setLayoutData(getGridData());
 	}
 
 	private void createTraceDataSection(Composite parent) {
 
 		sampleDataUI = new TraceDataUI(parent, SWT.NONE, true, false, false);
-		sampleDataUI.setLayoutData(new GridData(GridData.FILL_BOTH));
+		sampleDataUI.setLayoutData(getGridData());
 		//
 		referenceDataUI = new TraceDataUI(parent, SWT.NONE, false, true, true);
-		referenceDataUI.setLayoutData(new GridData(GridData.FILL_BOTH));
+		referenceDataUI.setLayoutData(getGridData());
 		/*
 		 * Link both charts.
 		 */
 		sampleDataUI.addLinkedScrollableChart(referenceDataUI);
 		referenceDataUI.addLinkedScrollableChart(sampleDataUI);
+	}
+
+	private GridData getGridData() {
+
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		gridData.horizontalSpan = 2;
+		return gridData;
 	}
 
 	private void showComments(boolean isVisible) {
