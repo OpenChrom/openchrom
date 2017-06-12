@@ -21,8 +21,6 @@ import org.eclipse.eavp.service.swtchart.core.IPrimaryAxisSettings;
 import org.eclipse.eavp.service.swtchart.core.ISecondaryAxisSettings;
 import org.eclipse.eavp.service.swtchart.core.ISeriesData;
 import org.eclipse.eavp.service.swtchart.core.SecondaryAxisSettings;
-import org.eclipse.eavp.service.swtchart.impl.IChart;
-import org.eclipse.eavp.service.swtchart.impl.SeriesConverter;
 import org.eclipse.eavp.service.swtchart.linecharts.ILineSeriesData;
 import org.eclipse.eavp.service.swtchart.linecharts.ILineSeriesSettings;
 import org.eclipse.eavp.service.swtchart.linecharts.LineChart;
@@ -31,7 +29,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.swtchart.IAxis.Position;
 
-public class TraceDataUI extends LineChart implements IChart {
+public class TraceDataUI extends LineChart {
 
 	private boolean enableRangeInfo;
 	private boolean showAxisTitle;
