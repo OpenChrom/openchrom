@@ -56,7 +56,7 @@ public class TraceDataUI extends LineChart {
 		try {
 			IChartSettings chartSettings = getChartSettings();
 			chartSettings.setOrientation(SWT.HORIZONTAL);
-			chartSettings.setEnableRangeInfo(enableRangeInfo);
+			chartSettings.setEnableRangeUI(enableRangeInfo);
 			chartSettings.setHorizontalSliderVisible(enableHorizontalSlider);
 			chartSettings.setVerticalSliderVisible(false);
 			chartSettings.setUseZeroX(true);
