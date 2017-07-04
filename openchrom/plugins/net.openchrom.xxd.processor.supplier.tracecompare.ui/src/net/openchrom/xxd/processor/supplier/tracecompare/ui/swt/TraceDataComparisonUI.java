@@ -17,10 +17,12 @@ import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.swtchart.ITitle;
@@ -30,28 +32,36 @@ public class TraceDataComparisonUI extends Composite {
 	private static final String FLAG_MATCHED = "FlagMatched";
 	//
 	private Label labelTrace;
+	private Button buttonHide;
 	private Button buttonIsMatched;
 	private TraceDataUI sampleDataUI;
 	private TraceDataUI referenceDataUI;
 	private Text commentsText;
+	//
+	private Composite comp;
 
 	public TraceDataComparisonUI(Composite parent, int style) {
 		super(parent, style);
+		comp = this;
 		createControl();
 	}
 
 	public void setTrace(String trace, String sample, String reference) {
 
-		labelTrace.setText("Selected trace: " + trace);
+		Display display = Display.getDefault();
+		Font font = new Font(display, "Arial", 14, SWT.BOLD);
+		labelTrace.setFont(font);
+		labelTrace.setText("Trace: " + trace);
+		font.dispose();
 		//
 		ITitle title;
 		//
 		title = sampleDataUI.getBaseChart().getTitle();
-		title.setText(sample + " (" + trace + ")");
+		title.setText(sample);
 		title.setForeground(Colors.BLACK);
 		//
 		title = referenceDataUI.getBaseChart().getTitle();
-		title.setText(reference + " (" + trace + ")");
+		title.setText(reference);
 		title.setForeground(Colors.BLACK);
 	}
 
@@ -76,7 +86,21 @@ public class TraceDataComparisonUI extends Composite {
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataComposite.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridDataComposite);
-		composite.setLayout(new GridLayout(2, false));
+		composite.setLayout(new GridLayout(3, false));
+		//
+		buttonHide = new Button(composite, SWT.PUSH);
+		buttonHide.setText("");
+		buttonHide.setToolTipText("Hide this comparison view.");
+		buttonHide.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImage.SIZE_16x16));
+		buttonHide.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				comp.setVisible(false);
+				// TODO pack
+			}
+		});
 		//
 		buttonIsMatched = new Button(composite, SWT.PUSH);
 		buttonIsMatched.setText("");

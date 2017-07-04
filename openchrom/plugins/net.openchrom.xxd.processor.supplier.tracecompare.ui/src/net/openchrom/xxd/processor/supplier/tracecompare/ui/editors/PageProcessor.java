@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.editors;
 
-import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -47,7 +46,6 @@ public class PageProcessor {
 		traceCompareEditorUI = new TraceCompareEditorUI(control, SWT.NONE);
 		traceCompareEditorUI.setLayoutData(new GridData(GridData.FILL_BOTH));
 		traceCompareEditorUI.setLayout(new GridLayout(1, true));
-		traceCompareEditorUI.setBackground(Colors.WHITE);
 	}
 
 	public Composite getControl() {
