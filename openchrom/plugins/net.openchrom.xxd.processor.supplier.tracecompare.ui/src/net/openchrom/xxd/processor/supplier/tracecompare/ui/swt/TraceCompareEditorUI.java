@@ -14,8 +14,15 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferencePage;
+import org.eclipse.jface.preference.PreferenceDialog;
+import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -25,6 +32,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
+
+import net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences.PreferencePage;
 
 public class TraceCompareEditorUI extends Composite {
 
@@ -61,6 +70,24 @@ public class TraceCompareEditorUI extends Composite {
 		buttonSettings.setText("Settings");
 		buttonSettings.setLayoutData(getGridDataButton(-1));
 		buttonSettings.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImage.SIZE_16x16));
+		buttonSettings.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				IPreferencePage preferencePage = new PreferencePage();
+				preferencePage.setTitle("TraceCompare Preferences");
+				PreferenceManager preferenceManager = new PreferenceManager();
+				preferenceManager.addToRoot(new PreferenceNode("1", preferencePage));
+				//
+				PreferenceDialog preferenceDialog = new PreferenceDialog(Display.getCurrent().getActiveShell(), preferenceManager);
+				preferenceDialog.create();
+				preferenceDialog.setMessage("Settings");
+				if(preferenceDialog.open() == PreferenceDialog.OK) {
+					MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Settings", "The settings have been updated.");
+				}
+			}
+		});
 		/*
 		 * Comparison
 		 */
