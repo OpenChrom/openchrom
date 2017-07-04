@@ -17,15 +17,13 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.ui.swt.TraceCompareEditorUI;
-
-public class PageProcessor {
+public class PageResults {
 
 	private EditorProcessor editorProcessor;
 	private Composite control;
-	private TraceCompareEditorUI traceCompareEditorUI;
+	private Composite composite;
 
-	public PageProcessor(Composite container) {
+	public PageResults(Composite container) {
 		initialize(container);
 	}
 
@@ -43,9 +41,9 @@ public class PageProcessor {
 		control = new Composite(parent, SWT.NONE);
 		control.setLayout(new FillLayout());
 		//
-		traceCompareEditorUI = new TraceCompareEditorUI(control, SWT.NONE);
-		traceCompareEditorUI.setLayoutData(new GridData(GridData.FILL_BOTH));
-		traceCompareEditorUI.setLayout(new GridLayout(1, true));
+		composite = new Composite(control, SWT.NONE);
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		composite.setLayout(new GridLayout(1, true));
 	}
 
 	public Composite getControl() {
