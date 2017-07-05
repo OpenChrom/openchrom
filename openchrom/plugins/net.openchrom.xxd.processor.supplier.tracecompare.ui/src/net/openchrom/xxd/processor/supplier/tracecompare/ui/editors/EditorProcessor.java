@@ -33,11 +33,12 @@ import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
 public class EditorProcessor extends MultiPageEditorPart {
 
 	private static final Logger logger = Logger.getLogger(EditorProcessor.class);
-	private PageComparison pageComparison;
+	//
+	private PageTraceComparison pageTraceComparison;
 	private PageResults pageResults;
 	private boolean isDirty = false;
 	//
-	public static final int PAGE_INDEX_COMPARISON = 0;
+	public static final int PAGE_INDEX_TRACE_COMPARISON = 0;
 	public static final int PAGE_INDEX_RESULTS = 1;
 
 	public EditorProcessor() {
@@ -51,8 +52,8 @@ public class EditorProcessor extends MultiPageEditorPart {
 			public void pageChanged(PageChangedEvent event) {
 
 				switch(getActivePage()) {
-					case PAGE_INDEX_COMPARISON:
-						pageComparison.setEditorProcessor(editorProcessor);
+					case PAGE_INDEX_TRACE_COMPARISON:
+						pageTraceComparison.setEditorProcessor(editorProcessor);
 						break;
 					case PAGE_INDEX_RESULTS:
 						pageResults.setEditorProcessor(editorProcessor);
@@ -65,8 +66,8 @@ public class EditorProcessor extends MultiPageEditorPart {
 	@Override
 	protected void createPages() {
 
-		pageComparison = new PageComparison(getContainer());
-		int pageIndexCompare = addPage(pageComparison.getControl());
+		pageTraceComparison = new PageTraceComparison(getContainer());
+		int pageIndexCompare = addPage(pageTraceComparison.getControl());
 		setPageText(pageIndexCompare, "Trace Compare");
 		//
 		pageResults = new PageResults(getContainer());
@@ -147,8 +148,8 @@ public class EditorProcessor extends MultiPageEditorPart {
 	@Override
 	public void setFocus() {
 
-		pageComparison.setEditorProcessor(this);
-		pageComparison.setFocus();
+		pageTraceComparison.setEditorProcessor(this);
+		pageTraceComparison.setFocus();
 	}
 
 	@Override

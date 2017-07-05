@@ -30,19 +30,17 @@ import org.swtchart.ITitle;
 public class TraceDataComparisonUI extends Composite {
 
 	private static final String FLAG_MATCHED = "FlagMatched";
+	private static final int HORIZONTAL_INDENT = 15;
 	//
 	private Label labelTrace;
-	private Button buttonHide;
+	private Button buttonEvaluated;
 	private Button buttonIsMatched;
 	private TraceDataUI sampleDataUI;
 	private TraceDataUI referenceDataUI;
 	private Text commentsText;
-	//
-	private Composite comp;
 
 	public TraceDataComparisonUI(Composite parent, int style) {
 		super(parent, style);
-		comp = this;
 		createControl();
 	}
 
@@ -57,11 +55,11 @@ public class TraceDataComparisonUI extends Composite {
 		ITitle title;
 		//
 		title = sampleDataUI.getBaseChart().getTitle();
-		title.setText(sample);
+		title.setText(sample + " (" + trace + ")");
 		title.setForeground(Colors.BLACK);
 		//
 		title = referenceDataUI.getBaseChart().getTitle();
-		title.setText(reference);
+		title.setText(reference + " (" + trace + ")");
 		title.setForeground(Colors.BLACK);
 	}
 
@@ -80,7 +78,9 @@ public class TraceDataComparisonUI extends Composite {
 
 		labelTrace = new Label(parent, SWT.NONE);
 		labelTrace.setText("");
-		labelTrace.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
+		gridDataLabel.horizontalIndent = HORIZONTAL_INDENT;
+		labelTrace.setLayoutData(gridDataLabel);
 		//
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
@@ -88,17 +88,15 @@ public class TraceDataComparisonUI extends Composite {
 		composite.setLayoutData(gridDataComposite);
 		composite.setLayout(new GridLayout(3, false));
 		//
-		buttonHide = new Button(composite, SWT.PUSH);
-		buttonHide.setText("");
-		buttonHide.setToolTipText("Hide this comparison view.");
-		buttonHide.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImage.SIZE_16x16));
-		buttonHide.addSelectionListener(new SelectionAdapter() {
+		buttonEvaluated = new Button(composite, SWT.PUSH);
+		buttonEvaluated.setText("");
+		buttonEvaluated.setToolTipText("Mark this view as evaluated.");
+		buttonEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_REPORT, IApplicationImage.SIZE_16x16));
+		buttonEvaluated.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				comp.setVisible(false);
-				// TODO pack
 			}
 		});
 		//
@@ -148,7 +146,9 @@ public class TraceDataComparisonUI extends Composite {
 
 		commentsText = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.H_SCROLL);
 		commentsText.setText("");
-		commentsText.setLayoutData(getGridData());
+		GridData gridData = getGridData();
+		gridData.horizontalIndent = HORIZONTAL_INDENT;
+		commentsText.setLayoutData(gridData);
 	}
 
 	private void createTraceDataSection(Composite parent) {

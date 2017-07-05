@@ -11,27 +11,30 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.editors;
 
+import org.eclipse.chemclipse.support.ui.listener.INextListener;
+import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.ui.swt.TraceCompareEditorUI;
+import net.openchrom.xxd.processor.supplier.tracecompare.ui.swt.EnhancedTraceCompareEditor;
 
-public class PageComparison {
+public class PageTraceComparison {
 
 	private EditorProcessor editorProcessor;
 	private Composite control;
-	private TraceCompareEditorUI traceCompareEditorUI;
+	private EnhancedTraceCompareEditor enhancedTraceCompareEditor;
 
-	public PageComparison(Composite container) {
+	public PageTraceComparison(Composite container) {
 		initialize(container);
 	}
 
 	public void setEditorProcessor(EditorProcessor editorProcessor) {
 
 		this.editorProcessor = editorProcessor;
+		enhancedTraceCompareEditor.setEditorProcessor(editorProcessor);
 	}
 
 	public void setFocus() {
@@ -43,9 +46,19 @@ public class PageComparison {
 		control = new Composite(parent, SWT.NONE);
 		control.setLayout(new FillLayout());
 		//
-		traceCompareEditorUI = new TraceCompareEditorUI(control, SWT.NONE);
-		traceCompareEditorUI.setLayoutData(new GridData(GridData.FILL_BOTH));
-		traceCompareEditorUI.setLayout(new GridLayout(1, true));
+		enhancedTraceCompareEditor = new EnhancedTraceCompareEditor(control, SWT.NONE);
+		enhancedTraceCompareEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
+		enhancedTraceCompareEditor.setLayout(new GridLayout(1, true));
+		enhancedTraceCompareEditor.setBackground(Colors.WHITE);
+		//
+		enhancedTraceCompareEditor.addNextListener(new INextListener() {
+
+			@Override
+			public void nextAction() {
+
+				editorProcessor.setActivePage(EditorProcessor.PAGE_INDEX_RESULTS);
+			}
+		});
 	}
 
 	public Composite getControl() {

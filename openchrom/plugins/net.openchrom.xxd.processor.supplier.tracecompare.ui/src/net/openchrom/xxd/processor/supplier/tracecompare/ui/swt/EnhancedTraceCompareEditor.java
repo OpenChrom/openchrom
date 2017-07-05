@@ -20,8 +20,13 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.listener.AbstractControllerComposite;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.preference.IPreferencePage;
+import org.eclipse.jface.preference.PreferenceDialog;
+import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -34,21 +39,22 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
+import net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences.PreferencePage;
 
-public class EnhancedResultsEditor extends AbstractControllerComposite {
+public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 
-	private static final Logger logger = Logger.getLogger(EnhancedResultsEditor.class);
+	private static final Logger logger = Logger.getLogger(EnhancedTraceCompareEditor.class);
 	//
 	private EditorProcessor editorProcessor;
 	//
 	private Button buttonCalculate;
-	private Button buttonPrevious;
-	private Button buttonExport;
+	private Button buttonSettings;
+	private Button buttonNext;
 	private List<Button> buttons;
 	//
-	private ResultsEditorUI resultsEditorUI;
+	private TraceCompareEditorUI traceCompareEditorUI;
 
-	public EnhancedResultsEditor(Composite parent, int style) {
+	public EnhancedTraceCompareEditor(Composite parent, int style) {
 		super(parent, style);
 		buttons = new ArrayList<Button>();
 		createControl();
@@ -78,9 +84,8 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 		 */
 		if(!readOnly) {
 			buttonCalculate.setEnabled(true);
-			buttonPrevious.setEnabled(true);
+			buttonNext.setEnabled(true);
 		}
-		buttonExport.setEnabled(true);
 	}
 
 	/**
@@ -115,10 +120,10 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 		chartComposite.setLayout(new GridLayout(1, true));
 		chartComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		/*
-		 * Results
+		 * Trace Compare
 		 */
-		resultsEditorUI = new ResultsEditorUI(chartComposite, SWT.NONE);
-		resultsEditorUI.setLayoutData(new GridData(GridData.FILL_BOTH));
+		traceCompareEditorUI = new TraceCompareEditorUI(chartComposite, SWT.NONE);
+		traceCompareEditorUI.setLayoutData(new GridData(GridData.FILL_BOTH));
 		/*
 		 * Button Bar
 		 */
@@ -130,9 +135,9 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 		gridDataButtons.minimumWidth = 150;
 		//
 		buttons.add(buttonCalculate = createCalculateButton(compositeButtons, gridDataButtons));
-		buttons.add(buttonPrevious = createPreviousButton(compositeButtons, gridDataButtons));
+		buttons.add(buttonSettings = createSettingsButton(compositeButtons, gridDataButtons));
+		buttons.add(buttonNext = createNextButton(compositeButtons, gridDataButtons));
 		buttons.add(createSaveButton(compositeButtons, gridDataButtons));
-		buttons.add(buttonExport = createExportButton(compositeButtons, gridDataButtons));
 	}
 
 	private Button createCalculateButton(Composite parent, GridData gridData) {
@@ -164,18 +169,45 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 		return button;
 	}
 
-	private Button createPreviousButton(Composite parent, GridData gridData) {
+	private Button createSettingsButton(Composite parent, GridData gridData) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("Previous");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_BACKWARD, IApplicationImage.SIZE_16x16));
+		button.setText("Settings");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImage.SIZE_16x16));
 		button.setLayoutData(gridData);
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				fireUpdatePrevious();
+				IPreferencePage preferencePage = new PreferencePage();
+				preferencePage.setTitle("TraceCompare Preferences");
+				PreferenceManager preferenceManager = new PreferenceManager();
+				preferenceManager.addToRoot(new PreferenceNode("1", preferencePage));
+				//
+				PreferenceDialog preferenceDialog = new PreferenceDialog(Display.getCurrent().getActiveShell(), preferenceManager);
+				preferenceDialog.create();
+				preferenceDialog.setMessage("Settings");
+				if(preferenceDialog.open() == PreferenceDialog.OK) {
+					MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Settings", "The settings have been updated.");
+				}
+			}
+		});
+		return button;
+	}
+
+	private Button createNextButton(Composite parent, GridData gridData) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("Next");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_FORWARD, IApplicationImage.SIZE_16x16));
+		button.setLayoutData(gridData);
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				fireUpdateNext();
 			}
 		});
 		return button;
@@ -209,23 +241,6 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 				} catch(InterruptedException e1) {
 					logger.warn(e1);
 				}
-			}
-		});
-		return button;
-	}
-
-	private Button createExportButton(Composite parent, GridData gridData) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("Export");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImage.SIZE_16x16));
-		button.setLayoutData(gridData);
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				editorProcessor.doSaveAs();
 			}
 		});
 		return button;

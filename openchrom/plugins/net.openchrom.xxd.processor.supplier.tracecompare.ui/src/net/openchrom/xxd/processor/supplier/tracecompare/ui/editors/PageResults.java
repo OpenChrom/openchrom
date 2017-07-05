@@ -57,7 +57,7 @@ public class PageResults {
 			@Override
 			public void previousAction() {
 
-				editorProcessor.setActivePage(EditorProcessor.PAGE_INDEX_COMPARISON);
+				editorProcessor.setActivePage(EditorProcessor.PAGE_INDEX_TRACE_COMPARISON);
 			}
 		});
 		//
