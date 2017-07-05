@@ -13,8 +13,8 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences;
 
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
+import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -39,8 +39,8 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new ComboFieldEditor(PreferenceSupplier.P_DETECTOR_TYPE, "Detector Type:", PreferenceSupplier.getDetectorTypes(), getFieldEditorParent()));
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
-		addField(new StringFieldEditor(PreferenceSupplier.P_FILTER_PATH_SAMPLE, "Path Sample", getFieldEditorParent()));
-		addField(new StringFieldEditor(PreferenceSupplier.P_FILTER_PATH_REFERNCES, "Path References", getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(PreferenceSupplier.P_FILTER_PATH_SAMPLE, "Path Sample", getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(PreferenceSupplier.P_FILTER_PATH_REFERNCES, "Path References", getFieldEditorParent()));
 	}
 
 	/*

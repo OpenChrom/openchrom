@@ -63,10 +63,10 @@ public class ResultsEditorUI extends Composite {
 		 * Elements
 		 */
 		createLabelSample(composite);
-		createSearchField(composite);
-		createGeneralNotes(composite);
-		createResultsList(composite);
 		createCalculatedResultField(composite);
+		createGeneralNotes(composite);
+		createSearchField(composite);
+		createResultsList(composite);
 	}
 
 	private void createLabelSample(Composite parent) {
@@ -159,8 +159,12 @@ public class ResultsEditorUI extends Composite {
 
 	private void createGeneralNotes(Composite parent) {
 
+		Label label = new Label(parent, SWT.NONE);
+		label.setText("General notes:");
+		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		//
 		textGeneralNotes = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		textGeneralNotes.setText("General notes ...");
+		textGeneralNotes.setText("");
 		GridData gridData = getGridData(GridData.FILL_HORIZONTAL);
 		gridData.heightHint = 100;
 		textGeneralNotes.setLayoutData(gridData);
@@ -175,8 +179,12 @@ public class ResultsEditorUI extends Composite {
 
 	private void createCalculatedResultField(Composite parent) {
 
+		Label label = new Label(parent, SWT.NONE);
+		label.setText("Calculated result:");
+		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		//
 		textCalculatedResult = new Text(parent, SWT.BORDER);
-		textCalculatedResult.setText("Calculated result ...");
+		textCalculatedResult.setText("");
 		textCalculatedResult.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
 	}
 
