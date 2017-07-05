@@ -11,20 +11,38 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
+import org.osgi.service.prefs.BackingStoreException;
+
+import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 
 public class ResultsEditorUI extends Composite {
 
-	private Combo referenceCombo;
-	private Composite compositeMain;
+	private static final Logger logger = Logger.getLogger(ResultsEditorUI.class);
+	//
+	private Label labelSample;
+	private Text textSearch;
+	private Text textGeneralNotes;
+	private ResultsTreeViewerUI resultsTreeViewerUI;
+	private Text textCalculatedResult;
 
 	public ResultsEditorUI(Composite parent, int style) {
 		super(parent, style);
@@ -40,32 +58,138 @@ public class ResultsEditorUI extends Composite {
 
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.FILL);
-		composite.setLayout(new GridLayout(1, false));
+		composite.setLayout(new GridLayout(5, false));
 		/*
 		 * Elements
 		 */
-		createReferenceCombo(composite);
+		createLabelSample(composite);
+		createSearchField(composite);
+		createGeneralNotes(composite);
 		createResultsList(composite);
+		createCalculatedResultField(composite);
 	}
 
-	private void createReferenceCombo(Composite parent) {
+	private void createLabelSample(Composite parent) {
 
-		referenceCombo = new Combo(parent, SWT.READ_ONLY);
-		referenceCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		referenceCombo.addSelectionListener(new SelectionAdapter() {
+		String sample = "M_20170609";
+		labelSample = new Label(parent, SWT.NONE);
+		Display display = Display.getDefault();
+		Font font = new Font(display, "Arial", 14, SWT.BOLD);
+		labelSample.setFont(font);
+		labelSample.setText("Unknown Sample: " + sample);
+		labelSample.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
+		font.dispose();
+	}
+
+	private void createSearchField(Composite parent) {
+
+		textSearch = new Text(parent, SWT.BORDER);
+		textSearch.setText("Stichworte...");
+		textSearch.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		textSearch.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				/*
+				 * Use the enter button.
+				 */
+				if(e.stateMask == 0) {
+					if(e.keyCode == SWT.KEYPAD_CR || e.keyCode == 13) {
+						search();
+					}
+				}
+			}
+		});
+		//
+		Button buttonSearch = new Button(parent, SWT.PUSH);
+		buttonSearch.setText("Suchen");
+		buttonSearch.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+		buttonSearch.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				// TODO
+				search();
+			}
+		});
+		//
+		Button buttonExpandAll = new Button(parent, SWT.PUSH);
+		buttonExpandAll.setText("");
+		buttonExpandAll.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPAND_ALL, IApplicationImage.SIZE_16x16));
+		buttonExpandAll.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				resultsTreeViewerUI.getTreeViewer().expandAll();
+			}
+		});
+		//
+		Button buttonCollapseAll = new Button(parent, SWT.PUSH);
+		buttonCollapseAll.setText("");
+		buttonCollapseAll.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_COLLAPSE_ALL, IApplicationImage.SIZE_16x16));
+		buttonCollapseAll.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				resultsTreeViewerUI.getTreeViewer().collapseAll();
+			}
+		});
+		//
+		final IEclipsePreferences preferences = PreferenceSupplier.INSTANCE().getPreferences();
+		final Button buttonCaseSensitive = new Button(parent, SWT.CHECK);
+		buttonCaseSensitive.setText("Case sensitive");
+		buttonCaseSensitive.setSelection(preferences.getBoolean(PreferenceSupplier.P_SEARCH_CASE_SENSITIVE, PreferenceSupplier.DEF_SEARCH_CASE_SENSITIVE));
+		buttonCaseSensitive.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				try {
+					preferences.put(PreferenceSupplier.P_SEARCH_CASE_SENSITIVE, Boolean.toString(buttonCaseSensitive.getSelection()));
+					preferences.flush();
+				} catch(BackingStoreException e1) {
+					logger.warn(e1);
+				}
 			}
 		});
 	}
 
+	private void createGeneralNotes(Composite parent) {
+
+		textGeneralNotes = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		textGeneralNotes.setText("General notes ...");
+		GridData gridData = getGridData(GridData.FILL_HORIZONTAL);
+		gridData.heightHint = 100;
+		textGeneralNotes.setLayoutData(gridData);
+	}
+
 	private void createResultsList(Composite parent) {
 
-		compositeMain = new Composite(parent, SWT.NONE);
-		compositeMain.setLayoutData(new GridData(GridData.FILL_BOTH));
-		compositeMain.setBackground(Colors.DARK_CYAN);
+		resultsTreeViewerUI = new ResultsTreeViewerUI(parent, SWT.NONE);
+		resultsTreeViewerUI.setLayoutData(getGridData(GridData.FILL_BOTH));
+		resultsTreeViewerUI.setBackground(Colors.DARK_CYAN);
+	}
+
+	private void createCalculatedResultField(Composite parent) {
+
+		textCalculatedResult = new Text(parent, SWT.BORDER);
+		textCalculatedResult.setText("Calculated result ...");
+		textCalculatedResult.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
+	}
+
+	private void search() {
+
+		String content = textSearch.getText().trim();
+		// TODO
+	}
+
+	private GridData getGridData(int style) {
+
+		GridData gridData = new GridData(style);
+		gridData.horizontalSpan = 5;
+		return gridData;
 	}
 }

@@ -38,6 +38,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_FILTER_PATH_REFERNCES = "filterPathReferences";
 	public static final String DEF_FILTER_PATH_REFERNCES = "";
 	//
+	public static final String P_SEARCH_CASE_SENSITIVE = "searchCaseSensitive"; // $NON-NLS-1$
+	public static final boolean DEF_SEARCH_CASE_SENSITIVE = false; // $NON-NLS-1$
+	//
 	private static IPreferenceSupplier preferenceSupplier;
 
 	public static IPreferenceSupplier INSTANCE() {
@@ -67,6 +70,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_DETECTOR_TYPE, DEF_DETECTOR_TYPE);
 		defaultValues.put(P_FILTER_PATH_SAMPLE, DEF_FILTER_PATH_SAMPLE);
 		defaultValues.put(P_FILTER_PATH_REFERNCES, DEF_FILTER_PATH_REFERNCES);
+		defaultValues.put(P_SEARCH_CASE_SENSITIVE, Boolean.toString(DEF_SEARCH_CASE_SENSITIVE));
 		return defaultValues;
 	}
 
