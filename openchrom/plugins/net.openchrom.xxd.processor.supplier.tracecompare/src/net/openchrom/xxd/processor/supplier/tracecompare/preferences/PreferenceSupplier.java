@@ -33,8 +33,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_DETECTOR_TYPE = "detectorType";
 	public static final String DEF_DETECTOR_TYPE = DETECTOR_WSD;
 	//
-	public static final String P_FILTER_PATH_SAMPLE = "filterPathSample";
-	public static final String DEF_FILTER_PATH_SAMPLE = "";
+	public static final String P_FILTER_PATH_SAMPLES = "filterPathSamples";
+	public static final String DEF_FILTER_PATH_SAMPLES = "";
 	public static final String P_FILTER_PATH_REFERNCES = "filterPathReferences";
 	public static final String DEF_FILTER_PATH_REFERNCES = "";
 	//
@@ -68,7 +68,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		Map<String, String> defaultValues = new HashMap<String, String>();
 		defaultValues.put(P_DETECTOR_TYPE, DEF_DETECTOR_TYPE);
-		defaultValues.put(P_FILTER_PATH_SAMPLE, DEF_FILTER_PATH_SAMPLE);
+		defaultValues.put(P_FILTER_PATH_SAMPLES, DEF_FILTER_PATH_SAMPLES);
 		defaultValues.put(P_FILTER_PATH_REFERNCES, DEF_FILTER_PATH_REFERNCES);
 		defaultValues.put(P_SEARCH_CASE_SENSITIVE, Boolean.toString(DEF_SEARCH_CASE_SENSITIVE));
 		return defaultValues;
@@ -98,14 +98,14 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return elements;
 	}
 
-	public static String getFilterPathSample() {
+	public static String getFilterPathSamples() {
 
-		return getFilterPath(P_FILTER_PATH_SAMPLE, DEF_FILTER_PATH_SAMPLE);
+		return getFilterPath(P_FILTER_PATH_SAMPLES, DEF_FILTER_PATH_SAMPLES);
 	}
 
-	public static void setFilterPathSample(String filterPath) {
+	public static void setFilterPathSamples(String filterPath) {
 
-		setFilterPath(P_FILTER_PATH_SAMPLE, filterPath);
+		setFilterPath(P_FILTER_PATH_SAMPLES, filterPath);
 	}
 
 	public static String getFilterPathReferences() {

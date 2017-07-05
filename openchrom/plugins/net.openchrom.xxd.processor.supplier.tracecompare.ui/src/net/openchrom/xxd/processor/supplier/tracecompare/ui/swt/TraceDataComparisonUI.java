@@ -11,9 +11,21 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
+import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
+import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
+import org.eclipse.eavp.service.swtchart.core.ISeriesData;
+import org.eclipse.eavp.service.swtchart.core.SeriesData;
+import org.eclipse.eavp.service.swtchart.linecharts.ILineSeriesData;
+import org.eclipse.eavp.service.swtchart.linecharts.ILineSeriesSettings;
+import org.eclipse.eavp.service.swtchart.linecharts.LineChart;
+import org.eclipse.eavp.service.swtchart.linecharts.LineSeriesData;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -44,7 +56,18 @@ public class TraceDataComparisonUI extends Composite {
 		createControl();
 	}
 
-	public void setTrace(String trace, String sample, String reference) {
+	public void setData(String trace, IChromatogramSelectionWSD sampleChromatogramSelectionWSD, IChromatogramSelectionWSD referenceChromatogramSelectionWSD) {
+
+		IChromatogramWSD sampleChromatogramWSD = sampleChromatogramSelectionWSD.getChromatogramWSD();
+		sampleDataUI.addSeriesData(getLineSeriesDataList(sampleChromatogramWSD), LineChart.MEDIUM_COMPRESSION);
+		//
+		IChromatogramWSD referenceChromatogramWSD = referenceChromatogramSelectionWSD.getChromatogramWSD();
+		referenceDataUI.addSeriesData(getLineSeriesDataList(referenceChromatogramWSD), LineChart.MEDIUM_COMPRESSION);
+		//
+		setTrace(trace, sampleChromatogramWSD.getName(), referenceChromatogramWSD.getName());
+	}
+
+	private void setTrace(String trace, String sample, String reference) {
 
 		Display display = Display.getDefault();
 		Font font = new Font(display, "Arial", 14, SWT.BOLD);
@@ -61,6 +84,36 @@ public class TraceDataComparisonUI extends Composite {
 		title = referenceDataUI.getBaseChart().getTitle();
 		title.setText(reference + " (" + trace + ")");
 		title.setForeground(Colors.BLACK);
+	}
+
+	private List<ILineSeriesData> getLineSeriesDataList(IChromatogramWSD chromatogramWSD) {
+
+		List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
+		ISeriesData seriesData = getSeriesXY(chromatogramWSD);
+		//
+		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
+		ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
+		lineSerieSettings.setEnableArea(true);
+		lineSeriesDataList.add(lineSeriesData);
+		//
+		return lineSeriesDataList;
+	}
+
+	private ISeriesData getSeriesXY(IChromatogramWSD chromatogramWSD) {
+
+		int size = chromatogramWSD.getNumberOfScans();
+		double[] xSeries = new double[size];
+		double[] ySeries = new double[size];
+		//
+		int i = 0;
+		for(IScan scan : chromatogramWSD.getScans()) {
+			xSeries[i] = scan.getRetentionTime();
+			ySeries[i] = scan.getTotalSignal();
+			i++;
+		}
+		//
+		ISeriesData seriesData = new SeriesData(xSeries, ySeries, chromatogramWSD.getName());
+		return seriesData;
 	}
 
 	private void createControl() {

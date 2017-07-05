@@ -12,15 +12,22 @@
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.processing.core.ProcessingInfo;
+import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
 import org.eclipse.chemclipse.support.ui.wizards.IChromatogramWizardElements;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.ux.extension.wsd.ui.wizards.ChromatogramInputEntriesWizard;
+import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -39,9 +46,14 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
+import net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.runnables.ChromatogramImportRunnable;
 
 public class TraceCompareEditorUI extends Composite {
 
+	private static final Logger logger = Logger.getLogger(TraceCompareEditorUI.class);
+	//
+	private static final String DESCRIPTION = "Trace Compare";
+	//
 	private Text textSamplePath;
 	private Combo comboReferences;
 	private TabFolder tabFolder;
@@ -85,8 +97,8 @@ public class TraceCompareEditorUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				System.out.println(PreferenceSupplier.getFilterPathSample());
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Sample", "Select the sample.", PreferenceSupplier.getFilterPathSample());
+				System.out.println(PreferenceSupplier.getFilterPathSamples());
+				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Sample", "Select the sample.", PreferenceSupplier.getFilterPathSamples());
 				WizardDialog wizardDialog = new WizardDialog(Display.getDefault().getActiveShell(), inputWizard);
 				wizardDialog.create();
 				//
@@ -98,7 +110,7 @@ public class TraceCompareEditorUI extends Composite {
 						//
 						File file = new File(selectedChromatogram);
 						if(file.exists()) {
-							PreferenceSupplier.setFilterPathSample(file.getParentFile().toString());
+							PreferenceSupplier.setFilterPathSamples(file.getParent());
 							initializeTraceComparators();
 						}
 					}
@@ -168,23 +180,54 @@ public class TraceCompareEditorUI extends Composite {
 		}
 		//
 		if(fileSample.exists() && fileReference.exists()) {
-			//
-			String sample = fileSample.getName();
-			String reference = fileReference.getName();
-			//
-			for(int i = 203; i <= 210; i++) {
-				TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-				tabItem.setText(i + " nm");
-				Composite composite = new Composite(tabFolder, SWT.NONE);
-				composite.setLayout(new FillLayout());
-				//
-				TraceDataComparisonUI traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
-				traceDataSelectedSignal.setBackground(Colors.WHITE);
-				traceDataSelectedSignal.setTrace(i + " nm", sample, reference);
-				//
-				tabItem.setControl(composite);
+			/*
+			 * Get the chromatograms.
+			 */
+			ChromatogramImportRunnable runnable = new ChromatogramImportRunnable(fileSample.getAbsolutePath(), fileReference.getAbsolutePath());
+			ProgressMonitorDialog monitor = new ProgressMonitorDialog(Display.getDefault().getActiveShell());
+			try {
+				monitor.run(true, true, runnable);
+			} catch(InterruptedException e1) {
+				logger.warn(e1);
+			} catch(InvocationTargetException e1) {
+				logger.warn(e1);
 			}
+			List<IChromatogramSelectionWSD> chromatogramSelections = runnable.getChromatogramSelections();
+			IChromatogramSelectionWSD sampleChromatogramSelectionWSD = chromatogramSelections.get(0);
+			IChromatogramSelectionWSD referenceChromatogramSelectionWSD = chromatogramSelections.get(1);
+			//
+			/*
+			 * Item TIC
+			 */
+			String trace = "TIC";
+			TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+			tabItem.setText(trace);
+			Composite composite = new Composite(tabFolder, SWT.NONE);
+			composite.setLayout(new FillLayout());
+			TraceDataComparisonUI traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
+			traceDataSelectedSignal.setBackground(Colors.WHITE);
+			traceDataSelectedSignal.setData(trace, sampleChromatogramSelectionWSD, referenceChromatogramSelectionWSD);
+			//
+			tabItem.setControl(composite);
+			// for(int i = 203; i <= 210; i++) {
+			// /*
+			// * Item XIC
+			// */
+			// TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+			// tabItem.setText(i + " nm");
+			// Composite composite = new Composite(tabFolder, SWT.NONE);
+			// composite.setLayout(new FillLayout());
+			// //
+			// TraceDataComparisonUI traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
+			// traceDataSelectedSignal.setBackground(Colors.WHITE);
+			// traceDataSelectedSignal.setTrace(i + " nm", sample, reference);
+			// //
+			// tabItem.setControl(composite);
+			// }
 		} else {
+			/*
+			 * No Data
+			 */
 			TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
 			tabItem.setText("Message");
 			//
@@ -206,6 +249,9 @@ public class TraceCompareEditorUI extends Composite {
 			font.dispose();
 			//
 			tabItem.setControl(composite);
+			//
+			IProcessingInfo processingInfo = validateSettings();
+			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
 		}
 	}
 
@@ -227,5 +273,26 @@ public class TraceCompareEditorUI extends Composite {
 		GridData gridData = new GridData(style);
 		gridData.horizontalSpan = 2;
 		return gridData;
+	}
+
+	private IProcessingInfo validateSettings() {
+
+		IProcessingInfo processingInfo = new ProcessingInfo();
+		//
+		File fileSample = new File(textSamplePath.getText().trim());
+		if(fileSample.exists()) {
+			processingInfo.addInfoMessage(DESCRIPTION, "The sample file exists.");
+		} else {
+			processingInfo.addErrorMessage(DESCRIPTION, "The sample file doesn't exist.");
+		}
+		//
+		File fileReference = new File(PreferenceSupplier.getFilterPathReferences() + File.separator + comboReferences.getText());
+		if(fileReference.exists()) {
+			processingInfo.addInfoMessage(DESCRIPTION, "The reference file exists.");
+		} else {
+			processingInfo.addErrorMessage(DESCRIPTION, "The reference file doesn't exist.");
+		}
+		//
+		return processingInfo;
 	}
 }

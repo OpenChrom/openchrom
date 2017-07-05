@@ -86,6 +86,7 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 			buttonCalculate.setEnabled(true);
 			buttonNext.setEnabled(true);
 		}
+		buttonSettings.setEnabled(true);
 	}
 
 	/**
