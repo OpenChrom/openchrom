@@ -63,24 +63,24 @@ public class ResultsEditorUI extends Composite {
 			EditorProcessor editorProcessor = (EditorProcessor)object;
 			processorModel = editorProcessor.getProcessorModel();
 			//
-			labelSample.setText(processorModel.getSampleName());
+			labelSample.setText("Unknown Sample: " + processorModel.getSampleName());
 			textGeneralNotes.setText(processorModel.getGeneralNotes());
 			textCalculatedResult.setText(processorModel.getCalculatedResult());
 			//
 			StringBuilder builder = new StringBuilder();
 			for(ReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
-				builder.append(referenceModel.getReferenceName());
+				builder.append("Reference: " + referenceModel.getReferenceName());
 				builder.append("\n");
-				builder.append(referenceModel.getReferencePath());
+				builder.append("Path: " + referenceModel.getReferencePath());
 				builder.append("\n");
 				for(TraceModel traceModel : referenceModel.getTraceModels().values()) {
-					builder.append("\t" + traceModel.getTrace());
+					builder.append("\tTrace: " + traceModel.getTrace());
 					builder.append("\n");
-					builder.append("\t" + traceModel.getNotes());
+					builder.append("\tNotes: " + traceModel.getNotes());
 					builder.append("\n");
-					builder.append("\t" + traceModel.isEvaluated());
+					builder.append("\tEvaluated: " + traceModel.isEvaluated());
 					builder.append("\n");
-					builder.append("\t" + traceModel.isMatched());
+					builder.append("\tMatched: " + traceModel.isMatched());
 					builder.append("\n");
 					builder.append("\n");
 				}
@@ -107,12 +107,11 @@ public class ResultsEditorUI extends Composite {
 
 	private void createLabelSample(Composite parent) {
 
-		String sample = "M_20170609";
 		labelSample = new Label(parent, SWT.NONE);
 		Display display = Display.getDefault();
 		Font font = new Font(display, "Arial", 14, SWT.BOLD);
 		labelSample.setFont(font);
-		labelSample.setText("Unknown Sample: " + sample);
+		labelSample.setText("Unknown Sample:");
 		labelSample.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
 		font.dispose();
 	}

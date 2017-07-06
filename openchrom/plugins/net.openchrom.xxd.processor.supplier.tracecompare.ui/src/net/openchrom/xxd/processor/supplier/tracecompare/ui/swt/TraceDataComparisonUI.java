@@ -74,6 +74,7 @@ public class TraceDataComparisonUI extends Composite {
 		sampleDataUI.addSeriesData(getLineSeriesDataList(wavelength, extractedWavelengthSignalsSample), LineChart.MEDIUM_COMPRESSION);
 		referenceDataUI.addSeriesData(getLineSeriesDataList(wavelength, extractedWavelengthSignalsReference), LineChart.MEDIUM_COMPRESSION);
 		//
+		this.processorModel = processorModel;
 		this.traceModel = traceModel;
 		notesText.setText(traceModel.getNotes());
 		this.sample = extractedWavelengthSignalsSample.getChromatogram().getName();
@@ -229,12 +230,12 @@ public class TraceDataComparisonUI extends Composite {
 
 				ImageSupplier imageSupplier = new ImageSupplier();
 				//
-				String fileNameSample = processorModel.getImageDirectory() + File.separator + "Sample_" + sample + "_vs_" + reference + "_" + (int)traceModel.getTrace() + ".png";
+				String fileNameSample = processorModel.getImageDirectory() + File.separator + "Sample_" + sample + "_vs_" + reference + "_" + (int)traceModel.getTrace() + "nm.png";
 				ImageData imageDataSample = imageSupplier.getImageData(sampleDataUI.getBaseChart());
 				imageSupplier.saveImage(imageDataSample, fileNameSample, SWT.IMAGE_PNG);
 				traceModel.setPathSnapshotSample(fileNameSample);
 				//
-				String fileNameReference = processorModel.getImageDirectory() + File.separator + "Reference_" + sample + "_vs_" + reference + "_" + (int)traceModel.getTrace() + ".png";
+				String fileNameReference = processorModel.getImageDirectory() + File.separator + "Reference_" + sample + "_vs_" + reference + "_" + (int)traceModel.getTrace() + "nm.png";
 				ImageData imageDataReference = imageSupplier.getImageData(referenceDataUI.getBaseChart());
 				imageSupplier.saveImage(imageDataReference, fileNameReference, SWT.IMAGE_PNG);
 				traceModel.setPathSnapshotReference(fileNameReference);
