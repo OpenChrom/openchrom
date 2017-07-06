@@ -67,11 +67,12 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void setTrace(int wavelength, String sample, String reference) {
 
-		String trace = Integer.toString(wavelength);
+		String trace;
 		if(wavelength == (int)IScanSignalWSD.TIC_SIGNAL) {
 			trace = "TIC";
+		} else {
+			trace = Integer.toString(wavelength) + " nm";
 		}
-		//
 		Display display = Display.getDefault();
 		Font font = new Font(display, "Arial", 14, SWT.BOLD);
 		labelTrace.setFont(font);

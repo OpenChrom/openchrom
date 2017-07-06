@@ -15,6 +15,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -114,7 +115,7 @@ public class TraceCompareEditorUI extends Composite {
 						File file = new File(selectedChromatogram);
 						if(file.exists()) {
 							PreferenceSupplier.setFilterPathSamples(file.getParent());
-							initializeTraceComparators();
+							initializeTraceComparators(true);
 						}
 					}
 				}
@@ -132,7 +133,7 @@ public class TraceCompareEditorUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				initializeTraceComparators();
+				initializeTraceComparators(true);
 			}
 		});
 	}
@@ -142,7 +143,7 @@ public class TraceCompareEditorUI extends Composite {
 		tabFolder = new TabFolder(parent, SWT.BOTTOM);
 		tabFolder.setLayoutData(getGridData(GridData.FILL_BOTH));
 		//
-		initializeTraceComparators();
+		initializeTraceComparators(false);
 	}
 
 	private void initializeReferencesComboItems() {
@@ -168,8 +169,12 @@ public class TraceCompareEditorUI extends Composite {
 		}
 	}
 
-	private void initializeTraceComparators() {
+	private void initializeTraceComparators(boolean validate) {
 
+		if(validate) {
+			IProcessingInfo processingInfo = validateSettings();
+			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
+		}
 		/*
 		 * Get the sample and reference.
 		 */
@@ -221,17 +226,18 @@ public class TraceCompareEditorUI extends Composite {
 			traceDataSelectedSignal.setData((int)IScanSignalWSD.TIC_SIGNAL, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference);
 			tabItem.setControl(composite);
 			//
-			for(int i = 420; i <= 432; i++) {
+			Set<Integer> usedWavelenghts = extractedWavelengthSignalsSample.getUsedWavelenghts();
+			for(int wavelength : usedWavelenghts) {
 				/*
 				 * Item XIC
 				 */
 				tabItem = new TabItem(tabFolder, SWT.NONE);
-				tabItem.setText(i + " nm");
+				tabItem.setText(wavelength + " nm");
 				composite = new Composite(tabFolder, SWT.NONE);
 				composite.setLayout(new FillLayout());
 				traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
 				traceDataSelectedSignal.setBackground(Colors.WHITE);
-				traceDataSelectedSignal.setData(i, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference);
+				traceDataSelectedSignal.setData(wavelength, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference);
 				tabItem.setControl(composite);
 			}
 		} else {
@@ -259,9 +265,6 @@ public class TraceCompareEditorUI extends Composite {
 			font.dispose();
 			//
 			tabItem.setControl(composite);
-			//
-			IProcessingInfo processingInfo = validateSettings();
-			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
 		}
 	}
 
