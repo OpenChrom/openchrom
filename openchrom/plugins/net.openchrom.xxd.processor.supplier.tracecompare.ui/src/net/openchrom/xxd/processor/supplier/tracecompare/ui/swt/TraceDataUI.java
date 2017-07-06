@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
-import org.eclipse.eavp.service.swtchart.converter.MillisecondsToMinuteConverter;
 import org.eclipse.eavp.service.swtchart.core.ColorAndFormatSupport;
 import org.eclipse.eavp.service.swtchart.core.IChartSettings;
 import org.eclipse.eavp.service.swtchart.core.IPrimaryAxisSettings;
@@ -21,6 +20,8 @@ import org.eclipse.eavp.service.swtchart.linecharts.LineChart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.swtchart.IAxis.Position;
+
+import net.openchrom.xxd.processor.supplier.tracecompare.ui.converter.MillisecondsToCentimeterConverter;
 
 public class TraceDataUI extends LineChart {
 
@@ -67,14 +68,14 @@ public class TraceDataUI extends LineChart {
 			//
 			String axisTitle = "";
 			if(showAxisTitle) {
-				axisTitle = "Minutes";
+				axisTitle = "Distance [cm]";
 			}
 			//
-			ISecondaryAxisSettings secondaryAxisSettingsMinutes = new SecondaryAxisSettings(axisTitle, "Minutes", new MillisecondsToMinuteConverter());
-			secondaryAxisSettingsMinutes.setPosition(Position.Primary);
-			secondaryAxisSettingsMinutes.setDecimalFormat(ColorAndFormatSupport.decimalFormatFixed);
-			secondaryAxisSettingsMinutes.setColor(ColorAndFormatSupport.COLOR_BLACK);
-			chartSettings.getSecondaryAxisSettingsListX().add(secondaryAxisSettingsMinutes);
+			ISecondaryAxisSettings secondaryAxisSettingsX = new SecondaryAxisSettings(axisTitle, "cm", new MillisecondsToCentimeterConverter());
+			secondaryAxisSettingsX.setPosition(Position.Primary);
+			secondaryAxisSettingsX.setDecimalFormat(ColorAndFormatSupport.decimalFormatFixed);
+			secondaryAxisSettingsX.setColor(ColorAndFormatSupport.COLOR_BLACK);
+			chartSettings.getSecondaryAxisSettingsListX().add(secondaryAxisSettingsX);
 			//
 			applySettings(chartSettings);
 		} catch(Exception e) {

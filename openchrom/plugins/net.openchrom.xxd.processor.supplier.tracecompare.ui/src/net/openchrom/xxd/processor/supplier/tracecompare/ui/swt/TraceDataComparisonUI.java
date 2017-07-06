@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
 import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
@@ -38,15 +37,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.swtchart.ITitle;
 
 public class TraceDataComparisonUI extends Composite {
 
-	private static final String FLAG_MATCHED = "FlagMatched";
+	private static final String FLAG_IS_EVALUATED = "FlagIsEvaluated";
+	private static final String FLAG_IS_MATCHED = "FlagIsMatched";
 	private static final int HORIZONTAL_INDENT = 15;
 	//
 	private Label labelTrace;
-	private Button buttonEvaluated;
+	private Button buttonIsEvaluated;
 	private Button buttonIsMatched;
 	private TraceDataUI sampleDataUI;
 	private TraceDataUI referenceDataUI;
@@ -67,27 +66,15 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void setTrace(int wavelength, String sample, String reference) {
 
-		String trace;
-		if(wavelength == (int)IScanSignalWSD.TIC_SIGNAL) {
-			trace = "TIC";
-		} else {
-			trace = Integer.toString(wavelength) + " nm";
-		}
 		Display display = Display.getDefault();
 		Font font = new Font(display, "Arial", 14, SWT.BOLD);
 		labelTrace.setFont(font);
-		labelTrace.setText("Trace: " + trace);
+		if(wavelength == (int)IScanSignalWSD.TIC_SIGNAL) {
+			labelTrace.setText("Trace: TIC (" + sample + " vs. " + reference + ")");
+		} else {
+			labelTrace.setText("Trace: " + Integer.toString(wavelength) + " nm (" + sample + " vs. " + reference + ")");
+		}
 		font.dispose();
-		//
-		ITitle title;
-		//
-		title = sampleDataUI.getBaseChart().getTitle();
-		title.setText(sample + " (" + trace + ")");
-		title.setForeground(Colors.BLACK);
-		//
-		title = referenceDataUI.getBaseChart().getTitle();
-		title.setText(reference + " (" + trace + ")");
-		title.setForeground(Colors.BLACK);
 	}
 
 	private List<ILineSeriesData> getLineSeriesDataList(int trace, IExtractedWavelengthSignals extractedWavelengthSignals) {
@@ -150,34 +137,43 @@ public class TraceDataComparisonUI extends Composite {
 		composite.setLayoutData(gridDataComposite);
 		composite.setLayout(new GridLayout(3, false));
 		//
-		buttonEvaluated = new Button(composite, SWT.PUSH);
-		buttonEvaluated.setText("");
-		buttonEvaluated.setToolTipText("Mark this view as evaluated.");
-		buttonEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_REPORT, IApplicationImage.SIZE_16x16));
-		buttonEvaluated.addSelectionListener(new SelectionAdapter() {
+		buttonIsEvaluated = new Button(composite, SWT.PUSH);
+		buttonIsEvaluated.setText("");
+		buttonIsEvaluated.setToolTipText("Flag as evaluated.");
+		buttonIsEvaluated.setData(FLAG_IS_EVALUATED, false);
+		buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EVALUATE, IApplicationImage.SIZE_16x16));
+		buttonIsEvaluated.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
+				boolean isEvaluated = (boolean)buttonIsEvaluated.getData(FLAG_IS_EVALUATED);
+				if(isEvaluated) {
+					buttonIsEvaluated.setData(FLAG_IS_EVALUATED, false);
+					buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EVALUATE, IApplicationImage.SIZE_16x16));
+				} else {
+					buttonIsEvaluated.setData(FLAG_IS_EVALUATED, true);
+					buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EVALUATED, IApplicationImage.SIZE_16x16));
+				}
 			}
 		});
 		//
 		buttonIsMatched = new Button(composite, SWT.PUSH);
 		buttonIsMatched.setText("");
 		buttonIsMatched.setToolTipText("Flag as matched");
-		buttonIsMatched.setData(FLAG_MATCHED, false);
+		buttonIsMatched.setData(FLAG_IS_MATCHED, false);
 		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DESELECTED, IApplicationImage.SIZE_16x16));
 		buttonIsMatched.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				boolean isMatched = (boolean)buttonIsMatched.getData(FLAG_MATCHED);
+				boolean isMatched = (boolean)buttonIsMatched.getData(FLAG_IS_MATCHED);
 				if(isMatched) {
-					buttonIsMatched.setData(FLAG_MATCHED, false);
+					buttonIsMatched.setData(FLAG_IS_MATCHED, false);
 					buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DESELECTED, IApplicationImage.SIZE_16x16));
 				} else {
-					buttonIsMatched.setData(FLAG_MATCHED, true);
+					buttonIsMatched.setData(FLAG_IS_MATCHED, true);
 					buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SELECTED, IApplicationImage.SIZE_16x16));
 				}
 			}

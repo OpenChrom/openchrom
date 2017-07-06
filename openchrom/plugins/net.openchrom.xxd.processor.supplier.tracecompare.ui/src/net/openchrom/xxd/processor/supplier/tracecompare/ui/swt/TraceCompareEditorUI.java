@@ -173,7 +173,14 @@ public class TraceCompareEditorUI extends Composite {
 
 		if(validate) {
 			IProcessingInfo processingInfo = validateSettings();
-			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
+			Display.getDefault().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+
+					ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
+				}
+			});
 		}
 		/*
 		 * Get the sample and reference.
