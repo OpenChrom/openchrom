@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Lablicate GmbH.
+ * < * Copyright (c) 2017 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
 import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignals;
 import org.eclipse.eavp.service.swtchart.core.ISeriesData;
 import org.eclipse.eavp.service.swtchart.core.SeriesData;
+import org.eclipse.eavp.service.swtchart.export.ImageSupplier;
 import org.eclipse.eavp.service.swtchart.linecharts.ILineSeriesData;
 import org.eclipse.eavp.service.swtchart.linecharts.ILineSeriesSettings;
 import org.eclipse.eavp.service.swtchart.linecharts.LineChart;
@@ -30,6 +31,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -50,6 +52,7 @@ public class TraceDataComparisonUI extends Composite {
 	private TraceDataUI sampleDataUI;
 	private TraceDataUI referenceDataUI;
 	private Text commentsText;
+	private Button buttonCreateSnapshot;
 
 	public TraceDataComparisonUI(Composite parent, int style) {
 		super(parent, style);
@@ -135,7 +138,7 @@ public class TraceDataComparisonUI extends Composite {
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataComposite.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridDataComposite);
-		composite.setLayout(new GridLayout(3, false));
+		composite.setLayout(new GridLayout(4, false));
 		//
 		buttonIsEvaluated = new Button(composite, SWT.PUSH);
 		buttonIsEvaluated.setText("");
@@ -198,6 +201,27 @@ public class TraceDataComparisonUI extends Composite {
 				}
 			}
 		});
+		//
+		buttonCreateSnapshot = new Button(composite, SWT.PUSH);
+		buttonCreateSnapshot.setText("");
+		buttonCreateSnapshot.setToolTipText("Create a snapshot.");
+		buttonCreateSnapshot.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CREATE_SNAPSHOT, IApplicationImage.SIZE_16x16));
+		buttonCreateSnapshot.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				ImageSupplier imageSupplier = new ImageSupplier();
+				//
+				String fileNameSample = "";
+				ImageData imageDataSample = imageSupplier.getImageData(sampleDataUI.getBaseChart());
+				// imageSupplier.saveImage(imageDataSample, fileNameSample, SWT.IMAGE_PNG);
+				//
+				String fileNameReference = "";
+				ImageData imageDataReference = imageSupplier.getImageData(referenceDataUI.getBaseChart());
+				// imageSupplier.saveImage(imageDataReference, fileNameReference, SWT.IMAGE_PNG);
+			}
+		});
 	}
 
 	private void createCommentsSection(Composite parent) {
@@ -211,10 +235,20 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void createTraceDataSection(Composite parent) {
 
-		sampleDataUI = new TraceDataUI(parent, SWT.NONE, true, false, false);
+		TraceDataSettings traceDataSettingsSample = new TraceDataSettings();
+		traceDataSettingsSample.setEnableRangeInfo(true);
+		traceDataSettingsSample.setShowAxisTitle(false);
+		traceDataSettingsSample.setEnableHorizontalSlider(false);
+		traceDataSettingsSample.setCreateMenu(true);
+		sampleDataUI = new TraceDataUI(parent, SWT.NONE, traceDataSettingsSample);
 		sampleDataUI.setLayoutData(getGridData());
 		//
-		referenceDataUI = new TraceDataUI(parent, SWT.NONE, false, true, true);
+		TraceDataSettings traceDataSettingsReference = new TraceDataSettings();
+		traceDataSettingsReference.setEnableRangeInfo(false);
+		traceDataSettingsReference.setShowAxisTitle(true);
+		traceDataSettingsReference.setEnableHorizontalSlider(true);
+		traceDataSettingsReference.setCreateMenu(false);
+		referenceDataUI = new TraceDataUI(parent, SWT.NONE, traceDataSettingsReference);
 		referenceDataUI.setLayoutData(getGridData());
 		/*
 		 * Link both charts.

@@ -20,20 +20,17 @@ import org.eclipse.eavp.service.swtchart.linecharts.LineChart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.swtchart.IAxis.Position;
+import org.swtchart.LineStyle;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.converter.MillisecondsToCentimeterConverter;
 
 public class TraceDataUI extends LineChart {
 
-	private boolean enableRangeInfo;
-	private boolean showAxisTitle;
-	private boolean enableHorizontalSlider;
+	private TraceDataSettings traceDataSettings;
 
-	public TraceDataUI(Composite parent, int style, boolean enableRangeInfo, boolean showAxisTitle, boolean enableHorizontalSlider) {
+	public TraceDataUI(Composite parent, int style, TraceDataSettings traceDataSettings) {
 		super(parent, style);
-		this.enableRangeInfo = enableRangeInfo;
-		this.showAxisTitle = showAxisTitle;
-		this.enableHorizontalSlider = enableHorizontalSlider;
+		this.traceDataSettings = traceDataSettings;
 		createControl();
 	}
 
@@ -47,11 +44,12 @@ public class TraceDataUI extends LineChart {
 		try {
 			IChartSettings chartSettings = getChartSettings();
 			chartSettings.setOrientation(SWT.HORIZONTAL);
-			chartSettings.setEnableRangeUI(enableRangeInfo);
-			chartSettings.setHorizontalSliderVisible(enableHorizontalSlider);
+			chartSettings.setEnableRangeUI(traceDataSettings.isEnableRangeInfo());
+			chartSettings.setHorizontalSliderVisible(traceDataSettings.isEnableHorizontalSlider());
 			chartSettings.setVerticalSliderVisible(false);
 			chartSettings.setUseZeroX(true);
 			chartSettings.setUseZeroY(true);
+			chartSettings.setCreateMenu(traceDataSettings.isCreateMenu());
 			//
 			IPrimaryAxisSettings primaryAxisSettingsX = chartSettings.getPrimaryAxisSettingsX();
 			primaryAxisSettingsX.setTitle("Retention Time (milliseconds)");
@@ -59,6 +57,7 @@ public class TraceDataUI extends LineChart {
 			primaryAxisSettingsX.setColor(ColorAndFormatSupport.COLOR_BLACK);
 			primaryAxisSettingsX.setPosition(Position.Secondary);
 			primaryAxisSettingsX.setVisible(false);
+			primaryAxisSettingsX.setGridLineStyle(LineStyle.NONE);
 			//
 			IPrimaryAxisSettings primaryAxisSettingsY = chartSettings.getPrimaryAxisSettingsY();
 			primaryAxisSettingsY.setTitle("Intensity");
@@ -67,7 +66,7 @@ public class TraceDataUI extends LineChart {
 			primaryAxisSettingsY.setVisible(false);
 			//
 			String axisTitle = "";
-			if(showAxisTitle) {
+			if(traceDataSettings.isShowAxisTitle()) {
 				axisTitle = "Distance [cm]";
 			}
 			//

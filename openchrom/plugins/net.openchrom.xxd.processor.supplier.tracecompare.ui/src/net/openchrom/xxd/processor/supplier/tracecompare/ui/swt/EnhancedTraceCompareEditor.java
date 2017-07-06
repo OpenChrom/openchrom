@@ -35,7 +35,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
@@ -47,9 +46,9 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 	//
 	private EditorProcessor editorProcessor;
 	//
-	private Button buttonCalculate;
-	private Button buttonSettings;
+	private Button buttonValidate;
 	private Button buttonNext;
+	private Button buttonSettings;
 	private List<Button> buttons;
 	//
 	private TraceCompareEditorUI traceCompareEditorUI;
@@ -83,7 +82,7 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 		 * Defaults when editable.
 		 */
 		if(!readOnly) {
-			buttonCalculate.setEnabled(true);
+			buttonValidate.setEnabled(true);
 			buttonNext.setEnabled(true);
 		}
 		buttonSettings.setEnabled(true);
@@ -135,18 +134,17 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 		GridData gridDataButtons = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataButtons.minimumWidth = 150;
 		//
-		buttons.add(buttonCalculate = createCalculateButton(compositeButtons, gridDataButtons));
-		buttons.add(buttonSettings = createSettingsButton(compositeButtons, gridDataButtons));
+		buttons.add(buttonValidate = createValidateButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonNext = createNextButton(compositeButtons, gridDataButtons));
+		buttons.add(buttonSettings = createSettingsButton(compositeButtons, gridDataButtons));
 		buttons.add(createSaveButton(compositeButtons, gridDataButtons));
 	}
 
-	private Button createCalculateButton(Composite parent, GridData gridData) {
+	private Button createValidateButton(Composite parent, GridData gridData) {
 
-		Shell shell = Display.getDefault().getActiveShell();
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("Calculate");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CALCULATE, IApplicationImage.SIZE_16x16));
+		button.setText("Validate");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHECK, IApplicationImage.SIZE_16x16));
 		button.setLayoutData(gridData);
 		button.addSelectionListener(new SelectionAdapter() {
 
@@ -154,17 +152,6 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 			public void widgetSelected(SelectionEvent e) {
 
 				// TODO
-				boolean checkTrue = true;
-				if(checkTrue) {
-					MessageBox messageBox = new MessageBox(shell, SWT.YES | SWT.NO | SWT.CANCEL);
-					messageBox.setText("Calculate Identification");
-					messageBox.setMessage("Current results are overwritten when doing a new calculation.");
-					if(messageBox.open() == SWT.YES) {
-						processAction();
-					}
-				} else {
-					processAction();
-				}
 			}
 		});
 		return button;
