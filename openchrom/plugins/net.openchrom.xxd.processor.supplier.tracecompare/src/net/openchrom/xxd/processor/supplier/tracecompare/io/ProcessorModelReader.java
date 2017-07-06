@@ -20,12 +20,14 @@ import javax.xml.bind.Unmarshaller;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.TraceModel;
 
 public class ProcessorModelReader {
 
 	public ProcessorModel read(File file, IProgressMonitor monitor) throws JAXBException {
 
-		JAXBContext jaxbContext = JAXBContext.newInstance(new Class[]{ProcessorModel.class});
+		JAXBContext jaxbContext = JAXBContext.newInstance(new Class[]{ProcessorModel.class, ReferenceModel.class, TraceModel.class});
 		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 		return (ProcessorModel)unmarshaller.unmarshal(file);
 	}

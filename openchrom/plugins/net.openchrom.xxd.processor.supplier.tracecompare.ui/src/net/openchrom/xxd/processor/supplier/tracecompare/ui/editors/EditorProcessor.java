@@ -28,11 +28,15 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.MultiPageEditorPart;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelReader;
+import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelWriter;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
 
 public class EditorProcessor extends MultiPageEditorPart {
 
 	private static final Logger logger = Logger.getLogger(EditorProcessor.class);
+	//
+	private File file;
+	private ProcessorModel processorModel;
 	//
 	private PageTraceComparison pageTraceComparison;
 	private PageResults pageResults;
@@ -84,13 +88,13 @@ public class EditorProcessor extends MultiPageEditorPart {
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 
-		// try {
-		// ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
-		// processorModelWriter.write(file, processorData.getProcessorModel(), monitor);
-		// setDirty(false);
-		// } catch(JAXBException e) {
-		// logger.warn(e);
-		// }
+		try {
+			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
+			processorModelWriter.write(file, processorModel, monitor);
+			setDirty(false);
+		} catch(JAXBException e) {
+			logger.warn(e);
+		}
 	}
 
 	@Override
@@ -134,9 +138,9 @@ public class EditorProcessor extends MultiPageEditorPart {
 			//
 			try {
 				IFileEditorInput fileEditorInput = (IFileEditorInput)input;
-				File file = fileEditorInput.getFile().getLocation().toFile();
+				file = fileEditorInput.getFile().getLocation().toFile();
 				ProcessorModelReader processorModelReader = new ProcessorModelReader();
-				ProcessorModel processorModel = processorModelReader.read(file, new NullProgressMonitor());
+				processorModel = processorModelReader.read(file, new NullProgressMonitor());
 			} catch(JAXBException e) {
 				logger.warn(e);
 			}

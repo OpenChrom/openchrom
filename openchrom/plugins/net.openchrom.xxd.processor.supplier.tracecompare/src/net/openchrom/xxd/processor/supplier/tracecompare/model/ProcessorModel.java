@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -18,43 +21,109 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement(name = "TraceCompare")
 public class ProcessorModel {
 
-	@XmlElement(name = "ChromatogramName")
-	private String chromatogramName;
-	@XmlElement(name = "ChromatogramPath")
-	private String chromatogramPath;
-	@XmlElement(name = "Notes")
-	private String notes;
+	@XmlElement(name = "Version")
+	private String version = "1.0.0.0";
+	//
+	@XmlElement(name = "DetectorType")
+	private String detectorType;
+	@XmlElement(name = "SampleName")
+	private String sampleName;
+	@XmlElement(name = "SamplePath")
+	private String samplePath;
+	@XmlElement(name = "ReferencesPath")
+	private String referencesPath;
+	@XmlElement(name = "CalculatedResult")
+	private String calculatedResult;
+	@XmlElement(name = "GeneralNotes")
+	private String generalNotes;
+	@XmlElement(name = "ReferenceModels", type = ReferenceModel.class)
+	private Map<String, ReferenceModel> referenceModels = new HashMap<String, ReferenceModel>();
 
 	@XmlTransient
-	public String getChromatogramName() {
+	public String getVersion() {
 
-		return chromatogramName;
+		return version;
 	}
 
-	public void setChromatogramName(String chromatogramName) {
+	public void setVersion(String version) {
 
-		this.chromatogramName = chromatogramName;
-	}
-
-	@XmlTransient
-	public String getChromatogramPath() {
-
-		return chromatogramPath;
-	}
-
-	public void setChromatogramPath(String chromatogramPath) {
-
-		this.chromatogramPath = chromatogramPath;
+		this.version = version;
 	}
 
 	@XmlTransient
-	public String getNotes() {
+	public String getDetectorType() {
 
-		return notes;
+		return detectorType;
 	}
 
-	public void setNotes(String notes) {
+	public void setDetectorType(String detectorType) {
 
-		this.notes = notes;
+		this.detectorType = detectorType;
+	}
+
+	@XmlTransient
+	public String getSampleName() {
+
+		return sampleName;
+	}
+
+	public void setSampleName(String sampleName) {
+
+		this.sampleName = sampleName;
+	}
+
+	@XmlTransient
+	public String getSamplePath() {
+
+		return samplePath;
+	}
+
+	public void setSamplePath(String samplePath) {
+
+		this.samplePath = samplePath;
+	}
+
+	@XmlTransient
+	public String getReferencesPath() {
+
+		return referencesPath;
+	}
+
+	public void setReferencesPath(String referencesPath) {
+
+		this.referencesPath = referencesPath;
+	}
+
+	@XmlTransient
+	public String getCalculatedResult() {
+
+		return calculatedResult;
+	}
+
+	public void setCalculatedResult(String calculatedResult) {
+
+		this.calculatedResult = calculatedResult;
+	}
+
+	@XmlTransient
+	public String getGeneralNotes() {
+
+		return generalNotes;
+	}
+
+	public void setGeneralNotes(String generalNotes) {
+
+		this.generalNotes = generalNotes;
+	}
+
+	@XmlTransient
+	public Map<String, ReferenceModel> getReferenceModels() {
+
+		return referenceModels;
+	}
+
+	public void setReferenceModels(Map<String, ReferenceModel> referenceModels) {
+
+		this.referenceModels = referenceModels;
 	}
 }

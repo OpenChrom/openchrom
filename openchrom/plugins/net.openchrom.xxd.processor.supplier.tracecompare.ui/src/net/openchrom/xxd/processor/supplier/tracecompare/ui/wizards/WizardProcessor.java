@@ -30,7 +30,7 @@ public class WizardProcessor extends AbstractFileWizard {
 	private PageDescription pageDescription;
 
 	public WizardProcessor() {
-		super("tracecompare" + new Date().getTime(), Processor.PROCESSOR_FILE_EXTENSION);
+		super("TraceCompare_" + new Date().getTime(), Processor.PROCESSOR_FILE_EXTENSION);
 	}
 
 	@Override
@@ -55,13 +55,10 @@ public class WizardProcessor extends AbstractFileWizard {
 	@Override
 	public void doFinish(IProgressMonitor monitor) throws CoreException {
 
-		monitor.beginTask("tracecompare", IProgressMonitor.UNKNOWN);
+		monitor.beginTask("TraceCompare", IProgressMonitor.UNKNOWN);
 		final IFile file = super.prepareProject(monitor);
 		//
 		ProcessorModel processorModel = new ProcessorModel();
-		processorModel.setChromatogramName("chromatogramName");
-		processorModel.setChromatogramPath("chromatogramPath");
-		processorModel.setNotes("Implement");
 		//
 		try {
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
