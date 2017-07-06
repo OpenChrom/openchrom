@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.wizards;
 
+import java.io.File;
 import java.util.Date;
 
 import javax.xml.bind.JAXBException;
@@ -27,7 +28,7 @@ import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
 public class WizardProcessor extends AbstractFileWizard {
 
 	private IProcessorWizardElements wizardElements = new ProcessorWizardElements();
-	private PageDescription pageDescription;
+	private PageFileSelection pageFileSelection;
 
 	public WizardProcessor() {
 		super("TraceCompare_" + new Date().getTime(), Processor.PROCESSOR_FILE_EXTENSION);
@@ -40,15 +41,14 @@ public class WizardProcessor extends AbstractFileWizard {
 		/*
 		 * Pages must implement IExtendedWizardPage / extend AbstractExtendedWizardPage
 		 */
-		pageDescription = new PageDescription(wizardElements);
-		//
-		addPage(pageDescription);
+		pageFileSelection = new PageFileSelection(wizardElements);
+		addPage(pageFileSelection);
 	}
 
 	@Override
 	public boolean canFinish() {
 
-		boolean canFinish = pageDescription.canFinish();
+		boolean canFinish = pageFileSelection.canFinish();
 		return canFinish;
 	}
 
@@ -58,9 +58,14 @@ public class WizardProcessor extends AbstractFileWizard {
 		monitor.beginTask("TraceCompare", IProgressMonitor.UNKNOWN);
 		final IFile file = super.prepareProject(monitor);
 		//
-		ProcessorModel processorModel = new ProcessorModel();
-		//
 		try {
+			File projectFile = file.getLocation().toFile();
+			String projectName = projectFile.getName();
+			String imageDirectory = projectFile.getParentFile().toString() + File.separator + projectName.substring(0, projectName.length() - Processor.PROCESSOR_FILE_EXTENSION.length()) + "_Images";
+			File images = new File(imageDirectory);
+			images.mkdirs();
+			ProcessorModel processorModel = wizardElements.getProcessorModel();
+			processorModel.setImageDirectory(imageDirectory);
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
 			processorModelWriter.write(file.getLocation().toFile(), processorModel, monitor);
 		} catch(JAXBException e) {

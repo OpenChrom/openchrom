@@ -35,15 +35,17 @@ public class EditorProcessor extends MultiPageEditorPart {
 
 	private static final Logger logger = Logger.getLogger(EditorProcessor.class);
 	//
-	private File file;
-	private ProcessorModel processorModel;
-	//
-	private PageTraceComparison pageTraceComparison;
-	private PageResults pageResults;
-	private boolean isDirty = false;
+	private File file; // This report file.
 	//
 	public static final int PAGE_INDEX_TRACE_COMPARISON = 0;
 	public static final int PAGE_INDEX_RESULTS = 1;
+	//
+	private PageTraceComparison pageTraceComparison;
+	private PageResults pageResults;
+	//
+	private ProcessorModel processorModel;
+	//
+	private boolean isDirty = false;
 
 	public EditorProcessor() {
 		/*
@@ -154,6 +156,11 @@ public class EditorProcessor extends MultiPageEditorPart {
 
 		pageTraceComparison.setEditorProcessor(this);
 		pageTraceComparison.setFocus();
+	}
+
+	public ProcessorModel getProcessorModel() {
+
+		return processorModel;
 	}
 
 	@Override

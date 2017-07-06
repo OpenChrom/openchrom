@@ -13,19 +13,19 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.wizards;
 
 import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
 
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
+
 public class ProcessorWizardElements extends ChromatogramWizardElements implements IProcessorWizardElements {
 
-	private String description = ""; // Could be ""
+	private ProcessorModel processorModel;
 
-	@Override
-	public String getDescription() {
-
-		return description;
+	public ProcessorWizardElements() {
+		processorModel = new ProcessorModel();
 	}
 
 	@Override
-	public void setDescription(String description) {
+	public ProcessorModel getProcessorModel() {
 
-		this.description = description;
+		return processorModel;
 	}
 }

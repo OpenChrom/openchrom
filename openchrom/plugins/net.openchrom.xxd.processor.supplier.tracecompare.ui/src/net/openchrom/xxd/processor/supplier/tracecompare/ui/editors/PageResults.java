@@ -12,7 +12,6 @@
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.editors;
 
 import org.eclipse.chemclipse.support.ui.listener.IPreviousListener;
-import org.eclipse.chemclipse.support.ui.listener.IProcessListener;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -38,10 +37,6 @@ public class PageResults {
 		enhancedResultsEditor.setEditorProcessor(editorProcessor);
 	}
 
-	public void setFocus() {
-
-	}
-
 	public void initialize(Composite parent) {
 
 		control = new Composite(parent, SWT.NONE);
@@ -58,19 +53,6 @@ public class PageResults {
 			public void previousAction() {
 
 				editorProcessor.setActivePage(EditorProcessor.PAGE_INDEX_TRACE_COMPARISON);
-			}
-		});
-		//
-		enhancedResultsEditor.addProcessListener(new IProcessListener() {
-
-			@Override
-			public void processAction() {
-
-				/*
-				 * Calculate the shifts.
-				 */
-				editorProcessor.setDirty(true);
-				// TODO
 			}
 		});
 	}

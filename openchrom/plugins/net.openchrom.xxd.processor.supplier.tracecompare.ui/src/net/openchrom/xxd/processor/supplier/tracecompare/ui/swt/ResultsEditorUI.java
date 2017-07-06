@@ -14,11 +14,12 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
@@ -32,7 +33,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
 
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.TraceModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
+import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 
 public class ResultsEditorUI extends Composite {
 
@@ -41,8 +46,11 @@ public class ResultsEditorUI extends Composite {
 	private Label labelSample;
 	private Text textSearch;
 	private Text textGeneralNotes;
-	private ResultsTreeViewerUI resultsTreeViewerUI;
+	// private ResultsTreeViewerUI resultsTreeViewerUI;
+	private Text resultsText;
 	private Text textCalculatedResult;
+	//
+	private ProcessorModel processorModel;
 
 	public ResultsEditorUI(Composite parent, int style) {
 		super(parent, style);
@@ -51,7 +59,35 @@ public class ResultsEditorUI extends Composite {
 
 	public void update(Object object) {
 
-		// TODO
+		if(object instanceof EditorProcessor) {
+			EditorProcessor editorProcessor = (EditorProcessor)object;
+			processorModel = editorProcessor.getProcessorModel();
+			//
+			labelSample.setText(processorModel.getSampleName());
+			textGeneralNotes.setText(processorModel.getGeneralNotes());
+			textCalculatedResult.setText(processorModel.getCalculatedResult());
+			//
+			StringBuilder builder = new StringBuilder();
+			for(ReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
+				builder.append(referenceModel.getReferenceName());
+				builder.append("\n");
+				builder.append(referenceModel.getReferencePath());
+				builder.append("\n");
+				for(TraceModel traceModel : referenceModel.getTraceModels().values()) {
+					builder.append("\t" + traceModel.getTrace());
+					builder.append("\n");
+					builder.append("\t" + traceModel.getNotes());
+					builder.append("\n");
+					builder.append("\t" + traceModel.isEvaluated());
+					builder.append("\n");
+					builder.append("\t" + traceModel.isMatched());
+					builder.append("\n");
+					builder.append("\n");
+				}
+				builder.append("\n");
+			}
+			resultsText.setText(builder.toString());
+		}
 	}
 
 	private void initialize(Composite parent) {
@@ -122,7 +158,7 @@ public class ResultsEditorUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				resultsTreeViewerUI.getTreeViewer().expandAll();
+				// resultsTreeViewerUI.getTreeViewer().expandAll();
 			}
 		});
 		//
@@ -134,7 +170,7 @@ public class ResultsEditorUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				resultsTreeViewerUI.getTreeViewer().collapseAll();
+				// resultsTreeViewerUI.getTreeViewer().collapseAll();
 			}
 		});
 		//
@@ -168,13 +204,23 @@ public class ResultsEditorUI extends Composite {
 		GridData gridData = getGridData(GridData.FILL_HORIZONTAL);
 		gridData.heightHint = 100;
 		textGeneralNotes.setLayoutData(gridData);
+		textGeneralNotes.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+
+				processorModel.setGeneralNotes(textGeneralNotes.getText().trim());
+			}
+		});
 	}
 
 	private void createResultsList(Composite parent) {
 
-		resultsTreeViewerUI = new ResultsTreeViewerUI(parent, SWT.NONE);
-		resultsTreeViewerUI.setLayoutData(getGridData(GridData.FILL_BOTH));
-		resultsTreeViewerUI.setBackground(Colors.DARK_CYAN);
+		// resultsTreeViewerUI = new ResultsTreeViewerUI(parent, SWT.NONE);
+		// resultsTreeViewerUI.setLayoutData(getGridData(GridData.FILL_BOTH));
+		resultsText = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		resultsText.setText("");
+		resultsText.setLayoutData(getGridData(GridData.FILL_BOTH));
 	}
 
 	private void createCalculatedResultField(Composite parent) {
@@ -186,12 +232,19 @@ public class ResultsEditorUI extends Composite {
 		textCalculatedResult = new Text(parent, SWT.BORDER);
 		textCalculatedResult.setText("");
 		textCalculatedResult.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
+		textCalculatedResult.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+
+				processorModel.setCalculatedResult(textCalculatedResult.getText().trim());
+			}
+		});
 	}
 
 	private void search() {
 
 		String content = textSearch.getText().trim();
-		// TODO
 	}
 
 	private GridData getGridData(int style) {

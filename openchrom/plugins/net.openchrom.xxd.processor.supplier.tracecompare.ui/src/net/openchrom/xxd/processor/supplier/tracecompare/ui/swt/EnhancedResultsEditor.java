@@ -58,12 +58,12 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 
 		this.editorProcessor = editorProcessor;
 		editorProcessor.setDirty(true);
+		resultsEditorUI.update(editorProcessor);
 	}
 
 	@Override
 	public boolean setFocus() {
 
-		plotData();
 		return super.setFocus();
 	}
 
@@ -81,26 +81,6 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 			buttonPrevious.setEnabled(true);
 		}
 		buttonExport.setEnabled(true);
-	}
-
-	/**
-	 * Sets the table viewer input.
-	 * 
-	 * @param input
-	 */
-	public void setInput(Object input) {
-
-		// TODO
-		//
-		plotData();
-	}
-
-	/*
-	 * Plot the data if there is no validation error.
-	 */
-	private void plotData() {
-
-		// TODO
 	}
 
 	private void createControl() {

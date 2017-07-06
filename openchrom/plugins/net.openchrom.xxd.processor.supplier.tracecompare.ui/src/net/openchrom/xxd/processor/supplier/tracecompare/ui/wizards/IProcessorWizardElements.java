@@ -11,9 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.wizards;
 
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
+
 public interface IProcessorWizardElements {
 
-	String getDescription();
-
-	void setDescription(String evaluationDescription);
+	ProcessorModel getProcessorModel();
 }

@@ -63,12 +63,12 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 
 		this.editorProcessor = editorProcessor;
 		editorProcessor.setDirty(true);
+		traceCompareEditorUI.update(editorProcessor);
 	}
 
 	@Override
 	public boolean setFocus() {
 
-		plotData();
 		return super.setFocus();
 	}
 
@@ -86,26 +86,6 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 			buttonNext.setEnabled(true);
 		}
 		buttonSettings.setEnabled(true);
-	}
-
-	/**
-	 * Sets the table viewer input.
-	 * 
-	 * @param input
-	 */
-	public void setInput(Object input) {
-
-		// TODO
-		//
-		plotData();
-	}
-
-	/*
-	 * Plot the data if there is no validation error.
-	 */
-	private void plotData() {
-
-		// TODO
 	}
 
 	private void createControl() {

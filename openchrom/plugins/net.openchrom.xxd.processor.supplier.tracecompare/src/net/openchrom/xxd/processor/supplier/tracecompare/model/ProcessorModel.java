@@ -25,17 +25,19 @@ public class ProcessorModel {
 	private String version = "1.0.0.0";
 	//
 	@XmlElement(name = "DetectorType")
-	private String detectorType;
+	private String detectorType = "";
+	@XmlElement(name = "ImageDirectory")
+	private String imageDirectory = "";
 	@XmlElement(name = "SampleName")
-	private String sampleName;
+	private String sampleName = "";
 	@XmlElement(name = "SamplePath")
-	private String samplePath;
+	private String samplePath = "";
 	@XmlElement(name = "ReferencesPath")
-	private String referencesPath;
+	private String referencesPath = "";
 	@XmlElement(name = "CalculatedResult")
-	private String calculatedResult;
+	private String calculatedResult = "";
 	@XmlElement(name = "GeneralNotes")
-	private String generalNotes;
+	private String generalNotes = "";
 	@XmlElement(name = "ReferenceModels", type = ReferenceModel.class)
 	private Map<String, ReferenceModel> referenceModels = new HashMap<String, ReferenceModel>();
 
@@ -59,6 +61,17 @@ public class ProcessorModel {
 	public void setDetectorType(String detectorType) {
 
 		this.detectorType = detectorType;
+	}
+
+	@XmlTransient
+	public String getImageDirectory() {
+
+		return imageDirectory;
+	}
+
+	public void setImageDirectory(String imageDirectory) {
+
+		this.imageDirectory = imageDirectory;
 	}
 
 	@XmlTransient

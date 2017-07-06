@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TraceModel {
 
 	@XmlElement(name = "Trace")
-	private double trace;
+	private double trace = 0;
 	@XmlElement(name = "Start Retention Time")
 	private double startRetentionTime;
 	@XmlElement(name = "Stop Retention Time")
@@ -27,15 +27,15 @@ public class TraceModel {
 	@XmlElement(name = "Stop Intensity")
 	private double stopIntensity;
 	@XmlElement(name = "Evaluated")
-	private boolean isEvaluated;
+	private boolean isEvaluated = false;
 	@XmlElement(name = "Matched")
-	private boolean isMatched;
+	private boolean isMatched = false;
 	@XmlElement(name = "Notes")
-	private String notes;
+	private String notes = "";
 	@XmlElement(name = "Path Snapshot Sample")
-	private String pathSnapshotSample;
+	private String pathSnapshotSample = "";
 	@XmlElement(name = "Path Snapshot Reference")
-	private String pathSnapshotReference;
+	private String pathSnapshotReference = "";
 
 	@XmlTransient
 	public double getTrace() {

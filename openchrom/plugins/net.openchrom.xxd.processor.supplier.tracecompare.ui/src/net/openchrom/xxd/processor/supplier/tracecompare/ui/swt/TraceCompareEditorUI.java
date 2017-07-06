@@ -50,7 +50,11 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.TraceModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
+import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.runnables.ChromatogramImportRunnable;
 
 public class TraceCompareEditorUI extends Composite {
@@ -59,10 +63,12 @@ public class TraceCompareEditorUI extends Composite {
 	//
 	private static final String DESCRIPTION = "Trace Compare";
 	//
-	private Text textSamplePath;
+	private Text samplePathText;
 	private Combo comboReferences;
 	private TabFolder tabFolder;
 	private Text textGeneralNotes;
+	//
+	private ProcessorModel processorModel;
 
 	public TraceCompareEditorUI(Composite parent, int style) {
 		super(parent, style);
@@ -71,7 +77,26 @@ public class TraceCompareEditorUI extends Composite {
 
 	public void update(Object object) {
 
-		// TODO
+		if(object instanceof EditorProcessor) {
+			EditorProcessor editorProcessor = (EditorProcessor)object;
+			boolean initialize = false;
+			if(processorModel == null) {
+				initialize = true;
+				processorModel = editorProcessor.getProcessorModel();
+			} else {
+				if(!processorModel.getSampleName().equals(editorProcessor.getProcessorModel().getSampleName())) {
+					initialize = true;
+					processorModel = editorProcessor.getProcessorModel();
+				}
+			}
+			//
+			samplePathText.setText(processorModel.getSamplePath());
+			textGeneralNotes.setText(processorModel.getGeneralNotes());
+			if(initialize) {
+				initializeReferencesComboItems();
+				initializeTraceComparators(false);
+			}
+		}
 	}
 
 	private void initialize(Composite parent) {
@@ -90,8 +115,8 @@ public class TraceCompareEditorUI extends Composite {
 
 	private void createLabelSample(Composite parent) {
 
-		textSamplePath = new Text(parent, SWT.BORDER);
-		textSamplePath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		samplePathText = new Text(parent, SWT.BORDER);
+		samplePathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		//
 		Button buttonSample = new Button(parent, SWT.PUSH);
 		buttonSample.setText("Select");
@@ -110,7 +135,7 @@ public class TraceCompareEditorUI extends Composite {
 					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
 					if(selectedChromatograms.size() > 0) {
 						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
-						textSamplePath.setText(selectedChromatogram);
+						samplePathText.setText(selectedChromatogram);
 						//
 						File file = new File(selectedChromatogram);
 						if(file.exists()) {
@@ -148,6 +173,8 @@ public class TraceCompareEditorUI extends Composite {
 
 	private void initializeReferencesComboItems() {
 
+		comboReferences.removeAll();
+		//
 		File directory = new File(PreferenceSupplier.getFilterPathReferences());
 		if(directory.exists() && directory.isDirectory()) {
 			List<String> references = new ArrayList<String>();
@@ -185,7 +212,7 @@ public class TraceCompareEditorUI extends Composite {
 		/*
 		 * Get the sample and reference.
 		 */
-		File fileSample = new File(textSamplePath.getText().trim());
+		File fileSample = new File(samplePathText.getText().trim());
 		File fileReference = new File(PreferenceSupplier.getFilterPathReferences() + File.separator + comboReferences.getText());
 		/*
 		 * Clear the tab folder.
@@ -207,72 +234,109 @@ public class TraceCompareEditorUI extends Composite {
 			} catch(InvocationTargetException e1) {
 				logger.warn(e1);
 			}
+			//
 			List<IChromatogramSelectionWSD> chromatogramSelections = runnable.getChromatogramSelections();
-			IChromatogramSelectionWSD sampleChromatogramSelectionWSD = chromatogramSelections.get(0);
-			IChromatogramWSD sampleChromatogramWSD = sampleChromatogramSelectionWSD.getChromatogramWSD();
-			IChromatogramSelectionWSD referenceChromatogramSelectionWSD = chromatogramSelections.get(1);
-			IChromatogramWSD referenceChromatogramWSD = referenceChromatogramSelectionWSD.getChromatogramWSD();
+			IExtractedWavelengthSignals extractedWavelengthSignalsSample = getExtractedWavelengthSignals(chromatogramSelections.get(0));
+			IExtractedWavelengthSignals extractedWavelengthSignalsReference = getExtractedWavelengthSignals(chromatogramSelections.get(1));
 			//
-			ExtractedWavelengthSignalExtractor extractedWavelengthSignalExtractorSample = new ExtractedWavelengthSignalExtractor(sampleChromatogramWSD);
-			IExtractedWavelengthSignals extractedWavelengthSignalsSample = extractedWavelengthSignalExtractorSample.getExtractedWavelengthSignals(sampleChromatogramSelectionWSD);
-			ExtractedWavelengthSignalExtractor extractedWavelengthSignalExtractorReference = new ExtractedWavelengthSignalExtractor(referenceChromatogramWSD);
-			IExtractedWavelengthSignals extractedWavelengthSignalsReference = extractedWavelengthSignalExtractorReference.getExtractedWavelengthSignals(referenceChromatogramSelectionWSD);
-			//
-			TabItem tabItem;
-			Composite composite;
-			TraceDataComparisonUI traceDataSelectedSignal;
+			createXWCTabItems(extractedWavelengthSignalsSample, extractedWavelengthSignalsReference);
+		} else {
+			createEmptyTabItem();
+		}
+	}
+
+	private IExtractedWavelengthSignals getExtractedWavelengthSignals(IChromatogramSelectionWSD chromatogramSelectionWSD) {
+
+		IChromatogramWSD chromatogramWSD = chromatogramSelectionWSD.getChromatogramWSD();
+		ExtractedWavelengthSignalExtractor extractedWavelengthSignalExtractor = new ExtractedWavelengthSignalExtractor(chromatogramWSD);
+		return extractedWavelengthSignalExtractor.getExtractedWavelengthSignals(chromatogramSelectionWSD);
+	}
+
+	private void createXWCTabItems(IExtractedWavelengthSignals extractedWavelengthSignalsSample, IExtractedWavelengthSignals extractedWavelengthSignalsReference) {
+
+		TabItem tabItem;
+		Composite composite;
+		TraceDataComparisonUI traceDataSelectedSignal;
+		TraceModel traceModel;
+		/*
+		 * Get the model.
+		 */
+		String reference = comboReferences.getText().trim();
+		ReferenceModel referenceModel = processorModel.getReferenceModels().get(reference);
+		if(referenceModel == null) {
+			referenceModel = new ReferenceModel();
+			referenceModel.setReferenceName(reference);
+			referenceModel.setReferencePath(PreferenceSupplier.getFilterPathReferences() + File.separator + reference);
+			processorModel.getReferenceModels().put(reference, referenceModel);
+		}
+		/*
+		 * Item TIC
+		 */
+		traceModel = referenceModel.getTraceModels().get(IScanSignalWSD.TIC_SIGNAL);
+		if(traceModel == null) {
+			traceModel = new TraceModel();
+			traceModel.setTrace(IScanSignalWSD.TIC_SIGNAL);
+			referenceModel.getTraceModels().put(IScanSignalWSD.TIC_SIGNAL, traceModel);
+		}
+		//
+		tabItem = new TabItem(tabFolder, SWT.NONE);
+		tabItem.setText("TIC");
+		composite = new Composite(tabFolder, SWT.NONE);
+		composite.setLayout(new FillLayout());
+		traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
+		traceDataSelectedSignal.setBackground(Colors.WHITE);
+		traceDataSelectedSignal.setData((int)IScanSignalWSD.TIC_SIGNAL, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference, processorModel, traceModel);
+		tabItem.setControl(composite);
+		//
+		Set<Integer> usedWavelenghts = extractedWavelengthSignalsSample.getUsedWavelenghts();
+		for(int wavelength : usedWavelenghts) {
 			/*
-			 * Item TIC
+			 * Item XWC
 			 */
+			traceModel = referenceModel.getTraceModels().get(wavelength);
+			if(traceModel == null) {
+				traceModel = new TraceModel();
+				traceModel.setTrace(wavelength);
+				referenceModel.getTraceModels().put((double)wavelength, traceModel);
+			}
+			//
 			tabItem = new TabItem(tabFolder, SWT.NONE);
-			tabItem.setText("TIC");
+			tabItem.setText(wavelength + " nm");
 			composite = new Composite(tabFolder, SWT.NONE);
 			composite.setLayout(new FillLayout());
 			traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
 			traceDataSelectedSignal.setBackground(Colors.WHITE);
-			traceDataSelectedSignal.setData((int)IScanSignalWSD.TIC_SIGNAL, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference);
-			tabItem.setControl(composite);
-			//
-			Set<Integer> usedWavelenghts = extractedWavelengthSignalsSample.getUsedWavelenghts();
-			for(int wavelength : usedWavelenghts) {
-				/*
-				 * Item XIC
-				 */
-				tabItem = new TabItem(tabFolder, SWT.NONE);
-				tabItem.setText(wavelength + " nm");
-				composite = new Composite(tabFolder, SWT.NONE);
-				composite.setLayout(new FillLayout());
-				traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
-				traceDataSelectedSignal.setBackground(Colors.WHITE);
-				traceDataSelectedSignal.setData(wavelength, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference);
-				tabItem.setControl(composite);
-			}
-		} else {
-			/*
-			 * No Data
-			 */
-			TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-			tabItem.setText("Message");
-			//
-			Composite composite = new Composite(tabFolder, SWT.NONE);
-			composite.setLayout(new GridLayout(1, true));
-			composite.setBackground(Colors.GRAY);
-			//
-			Label label = new Label(composite, SWT.NONE);
-			Display display = Display.getDefault();
-			Font font = new Font(display, "Arial", 14, SWT.BOLD);
-			label.setFont(font);
-			label.setBackground(Colors.GRAY);
-			label.setText("No data has been selected yet.");
-			//
-			GridData gridData = new GridData(GridData.FILL_BOTH);
-			gridData.horizontalAlignment = SWT.CENTER;
-			gridData.verticalAlignment = SWT.CENTER;
-			label.setLayoutData(gridData);
-			font.dispose();
-			//
+			traceDataSelectedSignal.setData(wavelength, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference, processorModel, traceModel);
 			tabItem.setControl(composite);
 		}
+	}
+
+	private void createEmptyTabItem() {
+
+		/*
+		 * No Data
+		 */
+		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+		tabItem.setText("Message");
+		//
+		Composite composite = new Composite(tabFolder, SWT.NONE);
+		composite.setLayout(new GridLayout(1, true));
+		composite.setBackground(Colors.GRAY);
+		//
+		Label label = new Label(composite, SWT.NONE);
+		Display display = Display.getDefault();
+		Font font = new Font(display, "Arial", 14, SWT.BOLD);
+		label.setFont(font);
+		label.setBackground(Colors.GRAY);
+		label.setText("No data has been selected yet.");
+		//
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		gridData.horizontalAlignment = SWT.CENTER;
+		gridData.verticalAlignment = SWT.CENTER;
+		label.setLayoutData(gridData);
+		font.dispose();
+		//
+		tabItem.setControl(composite);
 	}
 
 	private void createGeneralNotes(Composite parent) {
@@ -299,7 +363,7 @@ public class TraceCompareEditorUI extends Composite {
 
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		//
-		File fileSample = new File(textSamplePath.getText().trim());
+		File fileSample = new File(samplePathText.getText().trim());
 		if(fileSample.exists()) {
 			processingInfo.addInfoMessage(DESCRIPTION, "The sample file exists.");
 		} else {

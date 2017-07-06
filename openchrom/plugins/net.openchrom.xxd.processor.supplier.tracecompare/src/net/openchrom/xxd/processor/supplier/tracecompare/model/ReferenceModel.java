@@ -20,11 +20,11 @@ import javax.xml.bind.annotation.XmlTransient;
 public class ReferenceModel {
 
 	@XmlElement(name = "ReferenceName")
-	private String referenceName;
+	private String referenceName = "";
 	@XmlElement(name = "ReferencePath")
-	private String referencePath;
+	private String referencePath = "";
 	@XmlElement(name = "TraceModels", type = TraceModel.class)
-	private Map<Double, TraceModel> referenceModels = new HashMap<Double, TraceModel>();
+	private Map<Double, TraceModel> traceModels = new HashMap<Double, TraceModel>();
 
 	@XmlTransient
 	public String getReferenceName() {
@@ -49,13 +49,13 @@ public class ReferenceModel {
 	}
 
 	@XmlTransient
-	public Map<Double, TraceModel> getReferenceModels() {
+	public Map<Double, TraceModel> getTraceModels() {
 
-		return referenceModels;
+		return traceModels;
 	}
 
-	public void setReferenceModels(Map<Double, TraceModel> referenceModels) {
+	public void setTraceModels(Map<Double, TraceModel> traceModels) {
 
-		this.referenceModels = referenceModels;
+		this.traceModels = traceModels;
 	}
 }
