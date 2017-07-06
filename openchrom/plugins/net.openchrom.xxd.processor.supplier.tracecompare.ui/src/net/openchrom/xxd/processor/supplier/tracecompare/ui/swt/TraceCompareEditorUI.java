@@ -26,7 +26,11 @@ import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
 import org.eclipse.chemclipse.support.ui.wizards.IChromatogramWizardElements;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.ux.extension.wsd.ui.wizards.ChromatogramInputEntriesWizard;
+import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
+import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
 import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
+import org.eclipse.chemclipse.wsd.model.xwc.ExtractedWavelengthSignalExtractor;
+import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignals;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -97,7 +101,6 @@ public class TraceCompareEditorUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				System.out.println(PreferenceSupplier.getFilterPathSamples());
 				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Sample", "Select the sample.", PreferenceSupplier.getFilterPathSamples());
 				WizardDialog wizardDialog = new WizardDialog(Display.getDefault().getActiveShell(), inputWizard);
 				wizardDialog.create();
@@ -194,36 +197,43 @@ public class TraceCompareEditorUI extends Composite {
 			}
 			List<IChromatogramSelectionWSD> chromatogramSelections = runnable.getChromatogramSelections();
 			IChromatogramSelectionWSD sampleChromatogramSelectionWSD = chromatogramSelections.get(0);
+			IChromatogramWSD sampleChromatogramWSD = sampleChromatogramSelectionWSD.getChromatogramWSD();
 			IChromatogramSelectionWSD referenceChromatogramSelectionWSD = chromatogramSelections.get(1);
+			IChromatogramWSD referenceChromatogramWSD = referenceChromatogramSelectionWSD.getChromatogramWSD();
 			//
+			ExtractedWavelengthSignalExtractor extractedWavelengthSignalExtractorSample = new ExtractedWavelengthSignalExtractor(sampleChromatogramWSD);
+			IExtractedWavelengthSignals extractedWavelengthSignalsSample = extractedWavelengthSignalExtractorSample.getExtractedWavelengthSignals(sampleChromatogramSelectionWSD);
+			ExtractedWavelengthSignalExtractor extractedWavelengthSignalExtractorReference = new ExtractedWavelengthSignalExtractor(referenceChromatogramWSD);
+			IExtractedWavelengthSignals extractedWavelengthSignalsReference = extractedWavelengthSignalExtractorReference.getExtractedWavelengthSignals(referenceChromatogramSelectionWSD);
+			//
+			TabItem tabItem;
+			Composite composite;
+			TraceDataComparisonUI traceDataSelectedSignal;
 			/*
 			 * Item TIC
 			 */
-			String trace = "TIC";
-			TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-			tabItem.setText(trace);
-			Composite composite = new Composite(tabFolder, SWT.NONE);
+			tabItem = new TabItem(tabFolder, SWT.NONE);
+			tabItem.setText("TIC");
+			composite = new Composite(tabFolder, SWT.NONE);
 			composite.setLayout(new FillLayout());
-			TraceDataComparisonUI traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
+			traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
 			traceDataSelectedSignal.setBackground(Colors.WHITE);
-			traceDataSelectedSignal.setData(trace, sampleChromatogramSelectionWSD, referenceChromatogramSelectionWSD);
-			//
+			traceDataSelectedSignal.setData((int)IScanSignalWSD.TIC_SIGNAL, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference);
 			tabItem.setControl(composite);
-			// for(int i = 203; i <= 210; i++) {
-			// /*
-			// * Item XIC
-			// */
-			// TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-			// tabItem.setText(i + " nm");
-			// Composite composite = new Composite(tabFolder, SWT.NONE);
-			// composite.setLayout(new FillLayout());
-			// //
-			// TraceDataComparisonUI traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
-			// traceDataSelectedSignal.setBackground(Colors.WHITE);
-			// traceDataSelectedSignal.setTrace(i + " nm", sample, reference);
-			// //
-			// tabItem.setControl(composite);
-			// }
+			//
+			for(int i = 420; i <= 432; i++) {
+				/*
+				 * Item XIC
+				 */
+				tabItem = new TabItem(tabFolder, SWT.NONE);
+				tabItem.setText(i + " nm");
+				composite = new Composite(tabFolder, SWT.NONE);
+				composite.setLayout(new FillLayout());
+				traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
+				traceDataSelectedSignal.setBackground(Colors.WHITE);
+				traceDataSelectedSignal.setData(i, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference);
+				tabItem.setControl(composite);
+			}
 		} else {
 			/*
 			 * No Data

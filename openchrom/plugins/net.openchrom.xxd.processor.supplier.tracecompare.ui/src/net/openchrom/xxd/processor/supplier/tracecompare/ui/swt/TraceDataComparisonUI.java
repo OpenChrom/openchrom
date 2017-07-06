@@ -14,12 +14,13 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
-import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
+import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
+import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
+import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignals;
 import org.eclipse.eavp.service.swtchart.core.ISeriesData;
 import org.eclipse.eavp.service.swtchart.core.SeriesData;
 import org.eclipse.eavp.service.swtchart.linecharts.ILineSeriesData;
@@ -56,19 +57,21 @@ public class TraceDataComparisonUI extends Composite {
 		createControl();
 	}
 
-	public void setData(String trace, IChromatogramSelectionWSD sampleChromatogramSelectionWSD, IChromatogramSelectionWSD referenceChromatogramSelectionWSD) {
+	public void setData(int wavelength, IExtractedWavelengthSignals extractedWavelengthSignalsSample, IExtractedWavelengthSignals extractedWavelengthSignalsReference) {
 
-		IChromatogramWSD sampleChromatogramWSD = sampleChromatogramSelectionWSD.getChromatogramWSD();
-		sampleDataUI.addSeriesData(getLineSeriesDataList(sampleChromatogramWSD), LineChart.MEDIUM_COMPRESSION);
+		sampleDataUI.addSeriesData(getLineSeriesDataList(wavelength, extractedWavelengthSignalsSample), LineChart.MEDIUM_COMPRESSION);
+		referenceDataUI.addSeriesData(getLineSeriesDataList(wavelength, extractedWavelengthSignalsReference), LineChart.MEDIUM_COMPRESSION);
 		//
-		IChromatogramWSD referenceChromatogramWSD = referenceChromatogramSelectionWSD.getChromatogramWSD();
-		referenceDataUI.addSeriesData(getLineSeriesDataList(referenceChromatogramWSD), LineChart.MEDIUM_COMPRESSION);
-		//
-		setTrace(trace, sampleChromatogramWSD.getName(), referenceChromatogramWSD.getName());
+		setTrace(wavelength, extractedWavelengthSignalsSample.getChromatogram().getName(), extractedWavelengthSignalsReference.getChromatogram().getName());
 	}
 
-	private void setTrace(String trace, String sample, String reference) {
+	private void setTrace(int wavelength, String sample, String reference) {
 
+		String trace = Integer.toString(wavelength);
+		if(wavelength == (int)IScanSignalWSD.TIC_SIGNAL) {
+			trace = "TIC";
+		}
+		//
 		Display display = Display.getDefault();
 		Font font = new Font(display, "Arial", 14, SWT.BOLD);
 		labelTrace.setFont(font);
@@ -86,10 +89,10 @@ public class TraceDataComparisonUI extends Composite {
 		title.setForeground(Colors.BLACK);
 	}
 
-	private List<ILineSeriesData> getLineSeriesDataList(IChromatogramWSD chromatogramWSD) {
+	private List<ILineSeriesData> getLineSeriesDataList(int trace, IExtractedWavelengthSignals extractedWavelengthSignals) {
 
 		List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
-		ISeriesData seriesData = getSeriesXY(chromatogramWSD);
+		ISeriesData seriesData = getSeriesXY(trace, extractedWavelengthSignals);
 		//
 		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
 		ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
@@ -99,16 +102,21 @@ public class TraceDataComparisonUI extends Composite {
 		return lineSeriesDataList;
 	}
 
-	private ISeriesData getSeriesXY(IChromatogramWSD chromatogramWSD) {
+	private ISeriesData getSeriesXY(int wavelength, IExtractedWavelengthSignals extractedWavelengthSignals) {
 
-		int size = chromatogramWSD.getNumberOfScans();
-		double[] xSeries = new double[size];
-		double[] ySeries = new double[size];
+		IChromatogramWSD chromatogramWSD = extractedWavelengthSignals.getChromatogram();
+		List<IExtractedWavelengthSignal> wavelengthSignals = extractedWavelengthSignals.getExtractedWavelengthSignals();
+		double[] xSeries = new double[wavelengthSignals.size()];
+		double[] ySeries = new double[wavelengthSignals.size()];
 		//
 		int i = 0;
-		for(IScan scan : chromatogramWSD.getScans()) {
-			xSeries[i] = scan.getRetentionTime();
-			ySeries[i] = scan.getTotalSignal();
+		for(IExtractedWavelengthSignal wavelengthSignal : wavelengthSignals) {
+			xSeries[i] = wavelengthSignal.getRetentionTime();
+			if(wavelength == (int)IScanSignalWSD.TIC_SIGNAL) {
+				ySeries[i] = wavelengthSignal.getTotalSignal();
+			} else {
+				ySeries[i] = wavelengthSignal.getAbundance(wavelength);
+			}
 			i++;
 		}
 		//
