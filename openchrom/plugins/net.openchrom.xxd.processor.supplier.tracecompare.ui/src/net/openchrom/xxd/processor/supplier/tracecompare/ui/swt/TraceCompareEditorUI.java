@@ -14,7 +14,9 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -31,6 +33,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -62,9 +65,21 @@ public class TraceCompareEditorUI extends Composite {
 	private Text textGeneralNotes;
 	//
 	private ProcessorModel processorModel;
+	//
+	private Map<Integer, Color> colorMap;
 
 	public TraceCompareEditorUI(Composite parent, int style) {
 		super(parent, style);
+		//
+		colorMap = new HashMap<Integer, Color>();
+		colorMap.put(190, Colors.YELLOW);
+		colorMap.put(200, Colors.BLUE);
+		colorMap.put(220, Colors.CYAN);
+		colorMap.put(240, Colors.GREEN);
+		colorMap.put(260, Colors.BLACK);
+		colorMap.put(280, Colors.RED);
+		colorMap.put(300, Colors.DARK_RED);
+		//
 		initialize(parent);
 	}
 
