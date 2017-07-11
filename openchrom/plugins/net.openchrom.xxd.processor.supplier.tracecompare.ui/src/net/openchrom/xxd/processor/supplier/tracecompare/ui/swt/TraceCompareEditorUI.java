@@ -21,19 +21,13 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
-import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
-import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
-import org.eclipse.chemclipse.support.ui.wizards.IChromatogramWizardElements;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
-import org.eclipse.chemclipse.ux.extension.wsd.ui.wizards.ChromatogramInputEntriesWizard;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
 import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
 import org.eclipse.chemclipse.wsd.model.xwc.ExtractedWavelengthSignalExtractor;
 import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignals;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -41,7 +35,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -63,7 +56,7 @@ public class TraceCompareEditorUI extends Composite {
 	//
 	private static final String DESCRIPTION = "Trace Compare";
 	//
-	private Text samplePathText;
+	private Label labelSample;
 	private Combo comboReferences;
 	private TabFolder tabFolder;
 	private Text textGeneralNotes;
@@ -90,7 +83,7 @@ public class TraceCompareEditorUI extends Composite {
 				}
 			}
 			//
-			samplePathText.setText(processorModel.getSamplePath());
+			labelSample.setText(processorModel.getSamplePath());
 			textGeneralNotes.setText(processorModel.getGeneralNotes());
 			if(initialize) {
 				initializeReferencesComboItems();
@@ -115,37 +108,8 @@ public class TraceCompareEditorUI extends Composite {
 
 	private void createLabelSample(Composite parent) {
 
-		samplePathText = new Text(parent, SWT.BORDER);
-		samplePathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
-		Button buttonSample = new Button(parent, SWT.PUSH);
-		buttonSample.setText("Select");
-		buttonSample.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHROMATOGRAM, IApplicationImage.SIZE_16x16));
-		buttonSample.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Sample", "Select the sample.", PreferenceSupplier.getFilterPathSamples());
-				WizardDialog wizardDialog = new WizardDialog(Display.getDefault().getActiveShell(), inputWizard);
-				wizardDialog.create();
-				//
-				if(wizardDialog.open() == WizardDialog.OK) {
-					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
-					if(selectedChromatograms.size() > 0) {
-						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
-						samplePathText.setText(selectedChromatogram);
-						//
-						File file = new File(selectedChromatogram);
-						if(file.exists()) {
-							PreferenceSupplier.setFilterPathSamples(file.getParent());
-							initializeTraceComparators(true);
-						}
-					}
-				}
-			}
-		});
+		labelSample = new Label(parent, SWT.NONE);
+		labelSample.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 
 	private void createReferenceCombo(Composite parent) {
@@ -212,7 +176,7 @@ public class TraceCompareEditorUI extends Composite {
 		/*
 		 * Get the sample and reference.
 		 */
-		File fileSample = new File(samplePathText.getText().trim());
+		File fileSample = new File(labelSample.getText().trim());
 		File fileReference = new File(PreferenceSupplier.getFilterPathReferences() + File.separator + comboReferences.getText());
 		/*
 		 * Clear the tab folder.
@@ -362,13 +326,6 @@ public class TraceCompareEditorUI extends Composite {
 	private IProcessingInfo validateSettings() {
 
 		IProcessingInfo processingInfo = new ProcessingInfo();
-		//
-		File fileSample = new File(samplePathText.getText().trim());
-		if(fileSample.exists()) {
-			processingInfo.addInfoMessage(DESCRIPTION, "The sample file exists.");
-		} else {
-			processingInfo.addErrorMessage(DESCRIPTION, "The sample file doesn't exist.");
-		}
 		//
 		File fileReference = new File(PreferenceSupplier.getFilterPathReferences() + File.separator + comboReferences.getText());
 		if(fileReference.exists()) {

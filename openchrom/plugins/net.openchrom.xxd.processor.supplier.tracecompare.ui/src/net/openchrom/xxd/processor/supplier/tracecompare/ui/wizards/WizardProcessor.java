@@ -61,9 +61,12 @@ public class WizardProcessor extends AbstractFileWizard {
 		try {
 			File projectFile = file.getLocation().toFile();
 			String projectName = projectFile.getName();
-			String imageDirectory = projectFile.getParentFile().toString() + File.separator + projectName.substring(0, projectName.length() - Processor.PROCESSOR_FILE_EXTENSION.length()) + "_Images";
+			//
+			String projectDirectory = projectFile.getParentFile().toString() + File.separator + projectName.substring(0, projectName.length() - Processor.PROCESSOR_FILE_EXTENSION.length());
+			String imageDirectory = projectDirectory + File.separator + "Images";
 			File images = new File(imageDirectory);
 			images.mkdirs();
+			//
 			ProcessorModel processorModel = wizardElements.getProcessorModel();
 			processorModel.setImageDirectory(imageDirectory);
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
