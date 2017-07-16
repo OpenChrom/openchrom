@@ -22,7 +22,7 @@ public class ProcessorWizardHandler {
 	@Execute
 	public void execute() {
 
-		WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), new WizardProcessor());
+		WizardDialog wizardDialog = new WizardDialog(Display.getDefault().getActiveShell(), new WizardProcessor());
 		wizardDialog.open();
 	}
 }

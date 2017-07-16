@@ -19,6 +19,7 @@ import org.eclipse.eavp.service.swtchart.core.SecondaryAxisSettings;
 import org.eclipse.eavp.service.swtchart.linecharts.LineChart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.swtchart.IAxis.Position;
 import org.swtchart.LineStyle;
 
@@ -54,7 +55,7 @@ public class TraceDataUI extends LineChart {
 			IPrimaryAxisSettings primaryAxisSettingsX = chartSettings.getPrimaryAxisSettingsX();
 			primaryAxisSettingsX.setTitle("Retention Time (milliseconds)");
 			primaryAxisSettingsX.setDecimalFormat(ColorAndFormatSupport.decimalFormatVariable);
-			primaryAxisSettingsX.setColor(ColorAndFormatSupport.COLOR_BLACK);
+			primaryAxisSettingsX.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 			primaryAxisSettingsX.setPosition(Position.Secondary);
 			primaryAxisSettingsX.setVisible(false);
 			primaryAxisSettingsX.setGridLineStyle(LineStyle.NONE);
@@ -62,7 +63,7 @@ public class TraceDataUI extends LineChart {
 			IPrimaryAxisSettings primaryAxisSettingsY = chartSettings.getPrimaryAxisSettingsY();
 			primaryAxisSettingsY.setTitle("Intensity");
 			primaryAxisSettingsY.setDecimalFormat(ColorAndFormatSupport.decimalFormatScientific);
-			primaryAxisSettingsY.setColor(ColorAndFormatSupport.COLOR_BLACK);
+			primaryAxisSettingsY.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 			primaryAxisSettingsY.setVisible(false);
 			//
 			String axisTitle = "";
@@ -73,7 +74,7 @@ public class TraceDataUI extends LineChart {
 			ISecondaryAxisSettings secondaryAxisSettingsX = new SecondaryAxisSettings(axisTitle, "cm", new MillisecondsToCentimeterConverter());
 			secondaryAxisSettingsX.setPosition(Position.Primary);
 			secondaryAxisSettingsX.setDecimalFormat(ColorAndFormatSupport.decimalFormatFixed);
-			secondaryAxisSettingsX.setColor(ColorAndFormatSupport.COLOR_BLACK);
+			secondaryAxisSettingsX.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 			chartSettings.getSecondaryAxisSettingsListX().add(secondaryAxisSettingsX);
 			//
 			applySettings(chartSettings);

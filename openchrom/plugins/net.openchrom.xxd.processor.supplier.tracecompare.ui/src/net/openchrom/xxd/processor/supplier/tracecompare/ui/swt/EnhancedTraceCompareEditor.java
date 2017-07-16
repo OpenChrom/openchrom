@@ -153,7 +153,7 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 				PreferenceManager preferenceManager = new PreferenceManager();
 				preferenceManager.addToRoot(new PreferenceNode("1", preferencePage));
 				//
-				PreferenceDialog preferenceDialog = new PreferenceDialog(Display.getCurrent().getActiveShell(), preferenceManager);
+				PreferenceDialog preferenceDialog = new PreferenceDialog(Display.getDefault().getActiveShell(), preferenceManager);
 				preferenceDialog.create();
 				preferenceDialog.setMessage("Settings");
 				if(preferenceDialog.open() == PreferenceDialog.OK) {
