@@ -51,8 +51,8 @@ public class TraceDataUI extends LineChart {
 			chartSettings.setEnableRangeUI(traceDataSettings.isEnableRangeInfo());
 			chartSettings.setHorizontalSliderVisible(traceDataSettings.isEnableHorizontalSlider());
 			chartSettings.setVerticalSliderVisible(false);
-			chartSettings.setUseZeroX(true);
-			chartSettings.setUseZeroY(true);
+			chartSettings.getRangeRestriction().setZeroX(true);
+			chartSettings.getRangeRestriction().setZeroY(true);
 			chartSettings.setCreateMenu(traceDataSettings.isCreateMenu());
 			//
 			IPrimaryAxisSettings primaryAxisSettingsX = chartSettings.getPrimaryAxisSettingsX();
