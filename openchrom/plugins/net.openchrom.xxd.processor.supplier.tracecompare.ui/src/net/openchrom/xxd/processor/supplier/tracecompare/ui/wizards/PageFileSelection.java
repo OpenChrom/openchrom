@@ -12,13 +12,8 @@
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.wizards;
 
 import java.io.File;
-import java.util.List;
 
 import org.eclipse.chemclipse.support.ui.wizards.AbstractExtendedWizardPage;
-import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
-import org.eclipse.chemclipse.support.ui.wizards.IChromatogramWizardElements;
-import org.eclipse.chemclipse.ux.extension.wsd.ui.wizards.ChromatogramInputEntriesWizard;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -29,9 +24,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import net.openchrom.xxd.processor.supplier.tracecompare.core.Processor;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 
@@ -39,8 +37,8 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 
 	private IProcessorWizardElements wizardElements;
 	//
-	private Text samplePathText;
-	private Text referencePathText;
+	private Text samplePatternText;
+	private Text referencePatternText;
 	private Text generalNotesText;
 
 	public PageFileSelection(IProcessorWizardElements wizardElements) {
@@ -64,7 +62,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 			return false;
 		}
 		//
-		if(processorModel.getReferencesPath() == null || "".equals(processorModel.getReferencesPath())) {
+		if(processorModel.getReferencePath() == null || "".equals(processorModel.getReferencePath())) {
 			return false;
 		}
 		//
@@ -86,8 +84,8 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		super.setVisible(visible);
 		if(visible) {
 			ProcessorModel processorModel = wizardElements.getProcessorModel();
-			samplePathText.setText((processorModel.getSamplePath() != null) ? processorModel.getSamplePath() : "");
-			referencePathText.setText((processorModel.getReferencesPath() != null) ? processorModel.getReferencesPath() : "");
+			samplePatternText.setText((processorModel.getSamplePath() != null) ? processorModel.getSamplePath() : "");
+			referencePatternText.setText((processorModel.getReferencePath() != null) ? processorModel.getReferencePath() : "");
 			generalNotesText.setText((processorModel.getGeneralNotes() != null) ? processorModel.getGeneralNotes() : "");
 			validateData();
 		}
@@ -99,25 +97,28 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
 		//
-		createSamplePathSection(composite);
-		createReferencePathSection(composite);
+		createSamplePatternSection(composite);
+		createReferencePatternSection(composite);
 		createGeneralNotesSection(composite);
 		//
 		validateData();
 		setControl(composite);
 	}
 
-	private void createSamplePathSection(Composite parent) {
+	private void createSamplePatternSection(Composite parent) {
 
+		Shell shell = Display.getDefault().getActiveShell();
+		String fileExtension = PreferenceSupplier.getFileExtension();
+		//
 		Label label = new Label(parent, SWT.NONE);
-		label.setText("Sample Chromatogram");
+		label.setText("Sample Measurement(s)");
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataLabel.horizontalSpan = 2;
 		label.setLayoutData(gridDataLabel);
 		//
-		samplePathText = new Text(parent, SWT.BORDER);
-		samplePathText.setText("");
-		samplePathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		samplePatternText = new Text(parent, SWT.BORDER);
+		samplePatternText.setText("");
+		samplePatternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		//
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Select");
@@ -126,38 +127,39 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Sample", "Select the sample.", PreferenceSupplier.getFilterPathSamples());
-				WizardDialog wizardDialog = new WizardDialog(Display.getDefault().getActiveShell(), inputWizard);
-				wizardDialog.create();
-				//
-				if(wizardDialog.open() == WizardDialog.OK) {
-					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
-					if(selectedChromatograms.size() > 0) {
-						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
-						samplePathText.setText(selectedChromatogram);
-						//
-						File file = new File(selectedChromatogram);
-						if(file.exists()) {
-							PreferenceSupplier.setFilterPathSamples(file.getParent());
-						}
+				FileDialog fileDialog = new FileDialog(shell, SWT.READ_ONLY | SWT.MULTI);
+				fileDialog.setText("Measurement (*" + fileExtension + ")");
+				fileDialog.setFilterExtensions(new String[]{"*" + fileExtension});
+				fileDialog.setFilterNames(new String[]{"Data *" + fileExtension});
+				fileDialog.setFilterPath(PreferenceSupplier.getFilterPathSamples());
+				String pathname = fileDialog.open();
+				if(pathname != null) {
+					File file = new File(pathname);
+					if(file.exists()) {
+						samplePatternText.setText(Processor.getSamplePattern(file.getName()));
+						PreferenceSupplier.setFilterPathSamples(file.getParent());
+					} else {
+						samplePatternText.setText("File doesn't exist.");
 					}
 				}
 			}
 		});
 	}
 
-	private void createReferencePathSection(Composite parent) {
+	private void createReferencePatternSection(Composite parent) {
 
+		Shell shell = Display.getDefault().getActiveShell();
+		String fileExtension = PreferenceSupplier.getFileExtension();
+		//
 		Label label = new Label(parent, SWT.NONE);
-		label.setText("Reference Chromatogram");
+		label.setText("Reference Measurement(s)");
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataLabel.horizontalSpan = 2;
 		label.setLayoutData(gridDataLabel);
 		//
-		referencePathText = new Text(parent, SWT.BORDER);
-		referencePathText.setText("");
-		referencePathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		referencePatternText = new Text(parent, SWT.BORDER);
+		referencePatternText.setText("");
+		referencePatternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		//
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Select");
@@ -166,21 +168,19 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Reference", "Select the reference.", PreferenceSupplier.getFilterPathReferences());
-				WizardDialog wizardDialog = new WizardDialog(Display.getDefault().getActiveShell(), inputWizard);
-				wizardDialog.create();
-				//
-				if(wizardDialog.open() == WizardDialog.OK) {
-					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
-					if(selectedChromatograms.size() > 0) {
-						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
-						referencePathText.setText(selectedChromatogram);
-						//
-						File file = new File(selectedChromatogram);
-						if(file.exists()) {
-							PreferenceSupplier.setFilterPathReferences(file.getParent());
-						}
+				FileDialog fileDialog = new FileDialog(shell, SWT.READ_ONLY | SWT.MULTI);
+				fileDialog.setText("Measurement (*" + fileExtension + ")");
+				fileDialog.setFilterExtensions(new String[]{"*" + fileExtension});
+				fileDialog.setFilterNames(new String[]{"Data *" + fileExtension});
+				fileDialog.setFilterPath(PreferenceSupplier.getFilterPathReferences());
+				String pathname = fileDialog.open();
+				if(pathname != null) {
+					File file = new File(pathname);
+					if(file.exists()) {
+						referencePatternText.setText(Processor.getSamplePattern(file.getName()));
+						PreferenceSupplier.setFilterPathReferences(file.getParent());
+					} else {
+						referencePatternText.setText("File doesn't exist.");
 					}
 				}
 			}
@@ -213,21 +213,21 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		String message = null;
 		ProcessorModel processorModel = wizardElements.getProcessorModel();
 		//
-		String samplePath = samplePathText.getText().trim();
+		String samplePath = samplePatternText.getText().trim();
 		File sample = new File(samplePath);
 		if(!sample.exists()) {
 			message = "Please select the sample chromatogram.";
 		} else {
-			processorModel.setSampleName(sample.getName());
+			processorModel.setSamplePattern(sample.getName());
 			processorModel.setSamplePath(samplePath);
 		}
 		//
-		String referencePath = referencePathText.getText().trim();
+		String referencePath = referencePatternText.getText().trim();
 		File reference = new File(referencePath);
 		if(!reference.exists()) {
 			message = "Please select the reference chromatogram.";
 		} else {
-			processorModel.setReferencesPath(reference.getParentFile().getAbsolutePath());
+			processorModel.setReferencePath(reference.getParentFile().getAbsolutePath());
 		}
 		//
 		processorModel.setGeneralNotes(generalNotesText.getText().trim());

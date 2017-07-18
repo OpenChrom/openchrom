@@ -63,7 +63,7 @@ public class ResultsEditorUI extends Composite {
 			EditorProcessor editorProcessor = (EditorProcessor)object;
 			processorModel = editorProcessor.getProcessorModel();
 			//
-			labelSample.setText("Unknown Sample: " + processorModel.getSampleName());
+			labelSample.setText("Unknown Sample: " + processorModel.getSamplePattern());
 			textGeneralNotes.setText(processorModel.getGeneralNotes());
 			textCalculatedResult.setText(processorModel.getCalculatedResult());
 			//

@@ -28,12 +28,14 @@ public class ProcessorModel {
 	private String detectorType = "";
 	@XmlElement(name = "ImageDirectory")
 	private String imageDirectory = "";
-	@XmlElement(name = "SampleName")
-	private String sampleName = "";
+	@XmlElement(name = "SamplePattern")
+	private String samplePattern = "";
 	@XmlElement(name = "SamplePath")
 	private String samplePath = "";
-	@XmlElement(name = "ReferencesPath")
-	private String referencesPath = "";
+	@XmlElement(name = "ReferencePattern")
+	private String referencePattern = "";
+	@XmlElement(name = "ReferencePath")
+	private String referencePath = "";
 	@XmlElement(name = "CalculatedResult")
 	private String calculatedResult = "";
 	@XmlElement(name = "GeneralNotes")
@@ -75,14 +77,14 @@ public class ProcessorModel {
 	}
 
 	@XmlTransient
-	public String getSampleName() {
+	public String getSamplePattern() {
 
-		return sampleName;
+		return samplePattern;
 	}
 
-	public void setSampleName(String sampleName) {
+	public void setSamplePattern(String samplePattern) {
 
-		this.sampleName = sampleName;
+		this.samplePattern = samplePattern;
 	}
 
 	@XmlTransient
@@ -97,14 +99,25 @@ public class ProcessorModel {
 	}
 
 	@XmlTransient
-	public String getReferencesPath() {
+	public String getReferencePattern() {
 
-		return referencesPath;
+		return referencePattern;
 	}
 
-	public void setReferencesPath(String referencesPath) {
+	public void setReferencePattern(String referencePattern) {
 
-		this.referencesPath = referencesPath;
+		this.referencePattern = referencePattern;
+	}
+
+	@XmlTransient
+	public String getReferencePath() {
+
+		return referencePath;
+	}
+
+	public void setReferencePath(String referencePath) {
+
+		this.referencePath = referencePath;
 	}
 
 	@XmlTransient

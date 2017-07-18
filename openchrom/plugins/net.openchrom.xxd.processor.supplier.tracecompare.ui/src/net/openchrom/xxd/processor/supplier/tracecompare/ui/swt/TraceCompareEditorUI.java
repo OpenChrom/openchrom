@@ -15,8 +15,6 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -55,7 +53,6 @@ public class TraceCompareEditorUI extends Composite {
 	private static final Logger logger = Logger.getLogger(TraceCompareEditorUI.class);
 	//
 	private static final String DESCRIPTION = "Trace Compare";
-	private static final Pattern SAMPLE_PATTERN = Pattern.compile("(.*)(A)(\\d+)(\\.)(DFM)");
 	private static final String FILE_EXTENSION = ".DFM";
 	//
 	private Label labelSample;
@@ -79,7 +76,7 @@ public class TraceCompareEditorUI extends Composite {
 				initialize = true;
 				processorModel = editorProcessor.getProcessorModel();
 			} else {
-				if(!processorModel.getSampleName().equals(editorProcessor.getProcessorModel().getSampleName())) {
+				if(!processorModel.getSamplePattern().equals(editorProcessor.getProcessorModel().getSamplePattern())) {
 					initialize = true;
 					processorModel = editorProcessor.getProcessorModel();
 				}
@@ -87,16 +84,7 @@ public class TraceCompareEditorUI extends Composite {
 			/*
 			 * Get the sample group.
 			 */
-			String fileName = new File(processorModel.getSamplePath()).getName();
-			Matcher matcher = SAMPLE_PATTERN.matcher(fileName);
-			String sampleGroup;
-			if(matcher.find()) {
-				sampleGroup = "Unknown Sample: " + matcher.group(1) + " (Wavelengths and Measurements)";
-			} else {
-				sampleGroup = "No sample group selected.";
-			}
-			//
-			labelSample.setText(sampleGroup);
+			labelSample.setText(processorModel.getSamplePattern());
 			textGeneralNotes.setText(processorModel.getGeneralNotes());
 			if(initialize) {
 				initializeReferencesComboItems();
