@@ -39,6 +39,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -52,6 +53,7 @@ public class TraceDataComparisonUI extends Composite {
 	private static final int HORIZONTAL_INDENT = 15;
 	//
 	private Label labelTrace;
+	private Combo comboSampleLanes;
 	private Button buttonIsEvaluated;
 	private Button buttonIsMatched;
 	private TraceDataUI sampleDataUI;
@@ -157,7 +159,7 @@ public class TraceDataComparisonUI extends Composite {
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataComposite.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridDataComposite);
-		composite.setLayout(new GridLayout(4, false));
+		composite.setLayout(new GridLayout(6, false));
 		//
 		buttonIsEvaluated = new Button(composite, SWT.PUSH);
 		buttonIsEvaluated.setText("");
@@ -176,6 +178,20 @@ public class TraceDataComparisonUI extends Composite {
 					traceModel.setEvaluated(true);
 					buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EVALUATED, IApplicationImage.SIZE_16x16));
 				}
+			}
+		});
+		//
+		Label label = new Label(composite, SWT.NONE);
+		label.setText("Sample Lane 1 vs. ");
+		//
+		comboSampleLanes = new Combo(composite, SWT.READ_ONLY);
+		initializeSampleLaneComboItems(18);
+		comboSampleLanes.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				// TODO Set SampleLane
 			}
 		});
 		//
@@ -301,5 +317,20 @@ public class TraceDataComparisonUI extends Composite {
 		Composite parent = notesText.getParent();
 		parent.layout(false);
 		parent.redraw();
+	}
+
+	private void initializeSampleLaneComboItems(int numberOfSampleLanes) {
+
+		comboSampleLanes.removeAll();
+		//
+		List<String> sampleLanes = new ArrayList<String>();
+		for(int i = 1; i <= numberOfSampleLanes; i++) {
+			sampleLanes.add("Sample Lane " + i);
+		}
+		comboSampleLanes.setItems(sampleLanes.toArray(new String[sampleLanes.size()]));
+		//
+		if(comboSampleLanes.getItemCount() > 0) {
+			comboSampleLanes.select(0);
+		}
 	}
 }

@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -58,9 +59,12 @@ public class TraceCompareEditorUI extends Composite {
 	private static final Logger logger = Logger.getLogger(TraceCompareEditorUI.class);
 	//
 	private static final String DESCRIPTION = "Trace Compare";
+	private static final Pattern SAMPLE_PATTERN = Pattern.compile("(.*)(A)(\\d+)(\\.)(DFM)");
+	private static final String FILE_EXTENSION = ".DFM";
 	//
 	private Label labelSample;
 	private Combo comboReferences;
+	private Combo comboSampleLanes;
 	private TabFolder tabFolder;
 	private Text textGeneralNotes;
 	//
@@ -97,8 +101,19 @@ public class TraceCompareEditorUI extends Composite {
 					processorModel = editorProcessor.getProcessorModel();
 				}
 			}
+			/*
+			 * Get the sample group.
+			 */
+			String fileName = new File(processorModel.getSamplePath()).getName();
+			Matcher matcher = SAMPLE_PATTERN.matcher(fileName);
+			String sampleGroup;
+			if(matcher.find()) {
+				sampleGroup = "Unknown Sample: " + matcher.group(1) + " (Wavelengths and Measurements)";
+			} else {
+				sampleGroup = "No sample group selected.";
+			}
 			//
-			labelSample.setText(processorModel.getSamplePath());
+			labelSample.setText(sampleGroup);
 			textGeneralNotes.setText(processorModel.getGeneralNotes());
 			if(initialize) {
 				initializeReferencesComboItems();
@@ -117,14 +132,21 @@ public class TraceCompareEditorUI extends Composite {
 		 */
 		createLabelSample(composite);
 		createReferenceCombo(composite);
+		createSampleLanesCombo(composite);
 		createTraceComparators(composite);
 		createGeneralNotes(composite);
 	}
 
 	private void createLabelSample(Composite parent) {
 
+		Display display = Display.getDefault();
+		Font font = new Font(display, "Arial", 14, SWT.BOLD);
+		//
 		labelSample = new Label(parent, SWT.NONE);
+		labelSample.setFont(font);
 		labelSample.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		//
+		font.dispose();
 	}
 
 	private void createReferenceCombo(Composite parent) {
@@ -133,6 +155,21 @@ public class TraceCompareEditorUI extends Composite {
 		initializeReferencesComboItems();
 		comboReferences.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
 		comboReferences.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				initializeTraceComparators(true);
+			}
+		});
+	}
+
+	private void createSampleLanesCombo(Composite parent) {
+
+		comboSampleLanes = new Combo(parent, SWT.READ_ONLY);
+		initializeSampleLaneComboItems(0);
+		comboSampleLanes.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
+		comboSampleLanes.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -160,7 +197,7 @@ public class TraceCompareEditorUI extends Composite {
 			for(File file : directory.listFiles()) {
 				if(file.isFile()) {
 					String name = file.getName();
-					if(name.endsWith(".DFM")) {
+					if(name.endsWith(FILE_EXTENSION)) {
 						references.add(name);
 					}
 				}
@@ -172,6 +209,21 @@ public class TraceCompareEditorUI extends Composite {
 		//
 		if(comboReferences.getItemCount() > 0) {
 			comboReferences.select(0);
+		}
+	}
+
+	private void initializeSampleLaneComboItems(int numberOfSampleLanes) {
+
+		comboSampleLanes.removeAll();
+		//
+		List<String> sampleLanes = new ArrayList<String>();
+		for(int i = 1; i <= numberOfSampleLanes; i++) {
+			sampleLanes.add("Sample Lane " + i);
+		}
+		comboSampleLanes.setItems(sampleLanes.toArray(new String[sampleLanes.size()]));
+		//
+		if(comboSampleLanes.getItemCount() > 0) {
+			comboSampleLanes.select(0);
 		}
 	}
 
@@ -191,7 +243,12 @@ public class TraceCompareEditorUI extends Composite {
 		/*
 		 * Get the sample and reference.
 		 */
-		File fileSample = new File(labelSample.getText().trim());
+		File fileSample;
+		if(processorModel != null) {
+			fileSample = new File(processorModel.getSamplePath().trim());
+		} else {
+			fileSample = new File("");
+		}
 		File fileReference = new File(PreferenceSupplier.getFilterPathReferences() + File.separator + comboReferences.getText());
 		/*
 		 * Clear the tab folder.
@@ -215,10 +272,13 @@ public class TraceCompareEditorUI extends Composite {
 			}
 			//
 			List<IChromatogramSelectionWSD> chromatogramSelections = runnable.getChromatogramSelections();
-			IExtractedWavelengthSignals extractedWavelengthSignalsSample = getExtractedWavelengthSignals(chromatogramSelections.get(0));
-			IExtractedWavelengthSignals extractedWavelengthSignalsReference = getExtractedWavelengthSignals(chromatogramSelections.get(1));
+			IChromatogramSelectionWSD sampleChromatogramSelection = chromatogramSelections.get(0);
+			IChromatogramSelectionWSD referenceChromatogramSelection = chromatogramSelections.get(1);
+			initializeSampleLaneComboItems(sampleChromatogramSelection.getChromatogramWSD().getReferencedChromatograms().size());
+			IExtractedWavelengthSignals extractedWavelengthSignalsSample = getExtractedWavelengthSignals(sampleChromatogramSelection);
+			IExtractedWavelengthSignals extractedWavelengthSignalsReference = getExtractedWavelengthSignals(referenceChromatogramSelection);
 			//
-			createXWCTabItems(extractedWavelengthSignalsSample, extractedWavelengthSignalsReference);
+			createWavelengthTabItems(extractedWavelengthSignalsSample, extractedWavelengthSignalsReference);
 		} else {
 			createEmptyTabItem();
 		}
@@ -231,7 +291,7 @@ public class TraceCompareEditorUI extends Composite {
 		return extractedWavelengthSignalExtractor.getExtractedWavelengthSignals(chromatogramSelectionWSD);
 	}
 
-	private void createXWCTabItems(IExtractedWavelengthSignals extractedWavelengthSignalsSample, IExtractedWavelengthSignals extractedWavelengthSignalsReference) {
+	private void createWavelengthTabItems(IExtractedWavelengthSignals extractedWavelengthSignalsSample, IExtractedWavelengthSignals extractedWavelengthSignalsReference) {
 
 		TabItem tabItem;
 		Composite composite;
@@ -248,26 +308,17 @@ public class TraceCompareEditorUI extends Composite {
 			referenceModel.setReferencePath(PreferenceSupplier.getFilterPathReferences() + File.separator + reference);
 			processorModel.getReferenceModels().put(reference, referenceModel);
 		}
-		/*
-		 * Item TIC
-		 */
-		traceModel = referenceModel.getTraceModels().get(IScanSignalWSD.TIC_SIGNAL);
-		if(traceModel == null) {
-			traceModel = new TraceModel();
-			traceModel.setTrace(IScanSignalWSD.TIC_SIGNAL);
-			referenceModel.getTraceModels().put(IScanSignalWSD.TIC_SIGNAL, traceModel);
-		}
 		//
-		tabItem = new TabItem(tabFolder, SWT.NONE);
-		tabItem.setText("TIC");
-		composite = new Composite(tabFolder, SWT.NONE);
-		composite.setLayout(new FillLayout());
-		traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
-		traceDataSelectedSignal.setBackground(Colors.WHITE);
-		traceDataSelectedSignal.setData((int)IScanSignalWSD.TIC_SIGNAL, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference, processorModel, traceModel);
-		tabItem.setControl(composite);
+		// extractedWavelengthSignalsSample.getUsedWavelenghts();
+		List<Integer> usedWavelenghts = new ArrayList<Integer>();
+		usedWavelenghts.add(190);
+		usedWavelenghts.add(200);
+		usedWavelenghts.add(220);
+		usedWavelenghts.add(240);
+		usedWavelenghts.add(260);
+		usedWavelenghts.add(280);
+		usedWavelenghts.add(300);
 		//
-		Set<Integer> usedWavelenghts = extractedWavelengthSignalsSample.getUsedWavelenghts();
 		for(int wavelength : usedWavelenghts) {
 			/*
 			 * Item XWC
@@ -285,7 +336,7 @@ public class TraceCompareEditorUI extends Composite {
 			composite.setLayout(new FillLayout());
 			traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
 			traceDataSelectedSignal.setBackground(Colors.WHITE);
-			traceDataSelectedSignal.setData(wavelength, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference, processorModel, traceModel);
+			traceDataSelectedSignal.setData((int)IScanSignalWSD.TIC_SIGNAL, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference, processorModel, traceModel);
 			tabItem.setControl(composite);
 		}
 	}
