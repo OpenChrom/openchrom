@@ -12,9 +12,11 @@
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences;
 
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -36,11 +38,16 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 */
 	public void createFieldEditors() {
 
+		IntegerFieldEditor scanVelocityFieldEditor = new IntegerFieldEditor(PreferenceSupplier.P_SCAN_VELOCITY, "Scan velocity [mm/s]:", getFieldEditorParent());
+		scanVelocityFieldEditor.setValidRange(PreferenceSupplier.MIN_SCAN_VELOCITY, PreferenceSupplier.MAX_SCAN_VELOCITY);
+		//
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new ComboFieldEditor(PreferenceSupplier.P_DETECTOR_TYPE, "Detector Type:", PreferenceSupplier.getDetectorTypes(), getFieldEditorParent()));
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_FILTER_PATH_SAMPLES, "Path Samples", getFieldEditorParent()));
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_FILTER_PATH_REFERNCES, "Path References", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_SEARCH_CASE_SENSITIVE, "Search case sensitive", getFieldEditorParent()));
+		addField(scanVelocityFieldEditor);
 	}
 
 	/*

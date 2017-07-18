@@ -41,6 +41,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_SEARCH_CASE_SENSITIVE = "searchCaseSensitive"; // $NON-NLS-1$
 	public static final boolean DEF_SEARCH_CASE_SENSITIVE = false; // $NON-NLS-1$
 	//
+	public static final int MIN_SCAN_VELOCITY = 0;
+	public static final int MAX_SCAN_VELOCITY = Integer.MAX_VALUE;
+	public static final String P_SCAN_VELOCITY = "scanVelocity"; // mm/s
+	public static final int DEF_SCAN_VELOCITY = 20;
+	//
 	private static IPreferenceSupplier preferenceSupplier;
 
 	public static IPreferenceSupplier INSTANCE() {
@@ -71,6 +76,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_FILTER_PATH_SAMPLES, DEF_FILTER_PATH_SAMPLES);
 		defaultValues.put(P_FILTER_PATH_REFERNCES, DEF_FILTER_PATH_REFERNCES);
 		defaultValues.put(P_SEARCH_CASE_SENSITIVE, Boolean.toString(DEF_SEARCH_CASE_SENSITIVE));
+		defaultValues.put(P_SCAN_VELOCITY, Integer.toString(DEF_SCAN_VELOCITY));
 		return defaultValues;
 	}
 
@@ -116,6 +122,29 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void setFilterPathReferences(String filterPath) {
 
 		setFilterPath(P_FILTER_PATH_REFERNCES, filterPath);
+	}
+
+	public static boolean isSearchCaseSensitive() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.getBoolean(P_SEARCH_CASE_SENSITIVE, DEF_SEARCH_CASE_SENSITIVE);
+	}
+
+	public static void setSearchCaseSensitive(boolean searchCaseSensitive) {
+
+		try {
+			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+			eclipsePreferences.putBoolean(P_SEARCH_CASE_SENSITIVE, searchCaseSensitive);
+			eclipsePreferences.flush();
+		} catch(BackingStoreException e) {
+			logger.warn(e);
+		}
+	}
+
+	public static int getScanVelocity() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.getInt(P_SCAN_VELOCITY, DEF_SCAN_VELOCITY);
 	}
 
 	private static String getFilterPath(String key, String def) {

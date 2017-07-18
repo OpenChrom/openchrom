@@ -23,8 +23,8 @@ public class ReferenceModel {
 	private String referenceName = "";
 	@XmlElement(name = "ReferencePath")
 	private String referencePath = "";
-	@XmlElement(name = "TraceModels", type = TraceModel.class)
-	private Map<Double, TraceModel> traceModels = new HashMap<Double, TraceModel>();
+	@XmlElement(name = "SampleLaneModels", type = SampleLaneModel.class)
+	private Map<Integer, SampleLaneModel> sampleLaneModels = new HashMap<Integer, SampleLaneModel>();
 
 	@XmlTransient
 	public String getReferenceName() {
@@ -49,13 +49,13 @@ public class ReferenceModel {
 	}
 
 	@XmlTransient
-	public Map<Double, TraceModel> getTraceModels() {
+	public Map<Integer, SampleLaneModel> getSampleLaneModels() {
 
-		return traceModels;
+		return sampleLaneModels;
 	}
 
-	public void setTraceModels(Map<Double, TraceModel> traceModels) {
+	public void setSampleLaneModels(Map<Integer, SampleLaneModel> sampleLaneModels) {
 
-		this.traceModels = traceModels;
+		this.sampleLaneModels = sampleLaneModels;
 	}
 }

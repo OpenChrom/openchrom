@@ -14,10 +14,12 @@ package net.openchrom.xxd.processor.supplier.tracecompare.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-public class TraceModel {
+public class SampleLaneModel {
 
-	@XmlElement(name = "Trace")
-	private double trace = 0;
+	@XmlElement(name = "SampleLane")
+	private int sampleLane = 0;
+	@XmlElement(name = "ReferenceSampleLane")
+	private int referenceSampleLane = 0;
 	@XmlElement(name = "Start Retention Time")
 	private double startRetentionTime;
 	@XmlElement(name = "Stop Retention Time")
@@ -38,14 +40,25 @@ public class TraceModel {
 	private String pathSnapshotReference = "";
 
 	@XmlTransient
-	public double getTrace() {
+	public int getSampleLane() {
 
-		return trace;
+		return sampleLane;
 	}
 
-	public void setTrace(double trace) {
+	public void setSampleLane(int sampleLane) {
 
-		this.trace = trace;
+		this.sampleLane = sampleLane;
+	}
+
+	@XmlTransient
+	public int getReferenceSampleLane() {
+
+		return referenceSampleLane;
+	}
+
+	public void setReferenceSampleLane(int referenceSampleLane) {
+
+		this.referenceSampleLane = referenceSampleLane;
 	}
 
 	@XmlTransient

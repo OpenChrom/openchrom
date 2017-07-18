@@ -15,6 +15,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import org.eclipse.eavp.service.swtchart.converter.RelativeIntensityConverter;
 import org.eclipse.eavp.service.swtchart.core.IChartSettings;
 import org.eclipse.eavp.service.swtchart.core.IPrimaryAxisSettings;
 import org.eclipse.eavp.service.swtchart.core.ISecondaryAxisSettings;
@@ -26,7 +27,7 @@ import org.eclipse.swt.widgets.Display;
 import org.swtchart.IAxis.Position;
 import org.swtchart.LineStyle;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.ui.converter.MillisecondsToCentimeterConverter;
+import net.openchrom.xxd.processor.supplier.tracecompare.ui.converter.MillisecondsToMillimeterConverter;
 
 public class TraceDataUI extends LineChart {
 
@@ -48,7 +49,11 @@ public class TraceDataUI extends LineChart {
 		try {
 			IChartSettings chartSettings = getChartSettings();
 			chartSettings.setOrientation(SWT.HORIZONTAL);
-			chartSettings.setEnableRangeUI(traceDataSettings.isEnableRangeInfo());
+			chartSettings.setEnableRangeSelector(traceDataSettings.isEnableRangeSelector());
+			if(traceDataSettings.isEnableRangeSelector()) {
+				chartSettings.setRangeSelectorDefaultAxisX(1); // Distance [mm]
+				chartSettings.setRangeSelectorDefaultAxisY(1); // Relative Intensity [%]
+			}
 			chartSettings.setHorizontalSliderVisible(traceDataSettings.isEnableHorizontalSlider());
 			chartSettings.setVerticalSliderVisible(false);
 			chartSettings.getRangeRestriction().setZeroX(true);
@@ -60,25 +65,34 @@ public class TraceDataUI extends LineChart {
 			primaryAxisSettingsX.setDecimalFormat(new DecimalFormat(("0.0##"), new DecimalFormatSymbols(Locale.ENGLISH)));
 			primaryAxisSettingsX.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 			primaryAxisSettingsX.setPosition(Position.Secondary);
-			primaryAxisSettingsX.setVisible(false);
 			primaryAxisSettingsX.setGridLineStyle(LineStyle.NONE);
+			primaryAxisSettingsX.setVisible(false);
 			//
 			IPrimaryAxisSettings primaryAxisSettingsY = chartSettings.getPrimaryAxisSettingsY();
 			primaryAxisSettingsY.setTitle("Intensity");
 			primaryAxisSettingsY.setDecimalFormat(new DecimalFormat(("0.0#E0"), new DecimalFormatSymbols(Locale.ENGLISH)));
 			primaryAxisSettingsY.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
+			primaryAxisSettingsY.setGridLineStyle(LineStyle.NONE);
 			primaryAxisSettingsY.setVisible(false);
 			//
 			String axisTitle = "";
 			if(traceDataSettings.isShowAxisTitle()) {
-				axisTitle = "Distance [cm]";
+				axisTitle = "Distance [mm]";
 			}
 			//
-			ISecondaryAxisSettings secondaryAxisSettingsX = new SecondaryAxisSettings(axisTitle, "cm", new MillisecondsToCentimeterConverter());
+			ISecondaryAxisSettings secondaryAxisSettingsX = new SecondaryAxisSettings(axisTitle, "mm", new MillisecondsToMillimeterConverter());
 			secondaryAxisSettingsX.setPosition(Position.Primary);
 			secondaryAxisSettingsX.setDecimalFormat(new DecimalFormat(("0.00"), new DecimalFormatSymbols(Locale.ENGLISH)));
 			secondaryAxisSettingsX.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
+			secondaryAxisSettingsX.setVisible(true);
 			chartSettings.getSecondaryAxisSettingsListX().add(secondaryAxisSettingsX);
+			//
+			ISecondaryAxisSettings secondaryAxisSettingsY = new SecondaryAxisSettings("Int [%]", "Relative Intensity [%]", new RelativeIntensityConverter(SWT.VERTICAL, true));
+			secondaryAxisSettingsY.setPosition(Position.Secondary);
+			secondaryAxisSettingsY.setDecimalFormat(new DecimalFormat(("0.00"), new DecimalFormatSymbols(Locale.ENGLISH)));
+			secondaryAxisSettingsY.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
+			secondaryAxisSettingsY.setVisible(false);
+			chartSettings.getSecondaryAxisSettingsListY().add(secondaryAxisSettingsY);
 			//
 			applySettings(chartSettings);
 		} catch(Exception e) {

@@ -14,9 +14,7 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +24,6 @@ import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
-import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
 import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
 import org.eclipse.chemclipse.wsd.model.xwc.ExtractedWavelengthSignalExtractor;
 import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignals;
@@ -34,7 +31,6 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -49,7 +45,7 @@ import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.TraceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.SampleLaneModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.runnables.ChromatogramImportRunnable;
@@ -64,26 +60,13 @@ public class TraceCompareEditorUI extends Composite {
 	//
 	private Label labelSample;
 	private Combo comboReferences;
-	private Combo comboSampleLanes;
 	private TabFolder tabFolder;
 	private Text textGeneralNotes;
 	//
 	private ProcessorModel processorModel;
-	//
-	private Map<Integer, Color> colorMap;
 
 	public TraceCompareEditorUI(Composite parent, int style) {
 		super(parent, style);
-		//
-		colorMap = new HashMap<Integer, Color>();
-		colorMap.put(190, Colors.YELLOW);
-		colorMap.put(200, Colors.BLUE);
-		colorMap.put(220, Colors.CYAN);
-		colorMap.put(240, Colors.GREEN);
-		colorMap.put(260, Colors.BLACK);
-		colorMap.put(280, Colors.RED);
-		colorMap.put(300, Colors.DARK_RED);
-		//
 		initialize(parent);
 	}
 
@@ -132,7 +115,6 @@ public class TraceCompareEditorUI extends Composite {
 		 */
 		createLabelSample(composite);
 		createReferenceCombo(composite);
-		createSampleLanesCombo(composite);
 		createTraceComparators(composite);
 		createGeneralNotes(composite);
 	}
@@ -155,21 +137,6 @@ public class TraceCompareEditorUI extends Composite {
 		initializeReferencesComboItems();
 		comboReferences.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
 		comboReferences.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				initializeTraceComparators(true);
-			}
-		});
-	}
-
-	private void createSampleLanesCombo(Composite parent) {
-
-		comboSampleLanes = new Combo(parent, SWT.READ_ONLY);
-		initializeSampleLaneComboItems(0);
-		comboSampleLanes.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
-		comboSampleLanes.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -209,21 +176,6 @@ public class TraceCompareEditorUI extends Composite {
 		//
 		if(comboReferences.getItemCount() > 0) {
 			comboReferences.select(0);
-		}
-	}
-
-	private void initializeSampleLaneComboItems(int numberOfSampleLanes) {
-
-		comboSampleLanes.removeAll();
-		//
-		List<String> sampleLanes = new ArrayList<String>();
-		for(int i = 1; i <= numberOfSampleLanes; i++) {
-			sampleLanes.add("Sample Lane " + i);
-		}
-		comboSampleLanes.setItems(sampleLanes.toArray(new String[sampleLanes.size()]));
-		//
-		if(comboSampleLanes.getItemCount() > 0) {
-			comboSampleLanes.select(0);
 		}
 	}
 
@@ -272,13 +224,7 @@ public class TraceCompareEditorUI extends Composite {
 			}
 			//
 			List<IChromatogramSelectionWSD> chromatogramSelections = runnable.getChromatogramSelections();
-			IChromatogramSelectionWSD sampleChromatogramSelection = chromatogramSelections.get(0);
-			IChromatogramSelectionWSD referenceChromatogramSelection = chromatogramSelections.get(1);
-			initializeSampleLaneComboItems(sampleChromatogramSelection.getChromatogramWSD().getReferencedChromatograms().size());
-			IExtractedWavelengthSignals extractedWavelengthSignalsSample = getExtractedWavelengthSignals(sampleChromatogramSelection);
-			IExtractedWavelengthSignals extractedWavelengthSignalsReference = getExtractedWavelengthSignals(referenceChromatogramSelection);
-			//
-			createWavelengthTabItems(extractedWavelengthSignalsSample, extractedWavelengthSignalsReference);
+			createSampleLaneTabItems(chromatogramSelections);
 		} else {
 			createEmptyTabItem();
 		}
@@ -291,12 +237,12 @@ public class TraceCompareEditorUI extends Composite {
 		return extractedWavelengthSignalExtractor.getExtractedWavelengthSignals(chromatogramSelectionWSD);
 	}
 
-	private void createWavelengthTabItems(IExtractedWavelengthSignals extractedWavelengthSignalsSample, IExtractedWavelengthSignals extractedWavelengthSignalsReference) {
+	private void createSampleLaneTabItems(List<IChromatogramSelectionWSD> chromatogramSelections) {
 
 		TabItem tabItem;
 		Composite composite;
 		TraceDataComparisonUI traceDataSelectedSignal;
-		TraceModel traceModel;
+		SampleLaneModel sampleLaneModel;
 		/*
 		 * Get the model.
 		 */
@@ -309,34 +255,32 @@ public class TraceCompareEditorUI extends Composite {
 			processorModel.getReferenceModels().put(reference, referenceModel);
 		}
 		//
-		// extractedWavelengthSignalsSample.getUsedWavelenghts();
-		List<Integer> usedWavelenghts = new ArrayList<Integer>();
-		usedWavelenghts.add(190);
-		usedWavelenghts.add(200);
-		usedWavelenghts.add(220);
-		usedWavelenghts.add(240);
-		usedWavelenghts.add(260);
-		usedWavelenghts.add(280);
-		usedWavelenghts.add(300);
-		//
-		for(int wavelength : usedWavelenghts) {
+		IChromatogramSelectionWSD sampleChromatogramSelection = chromatogramSelections.get(0);
+		IChromatogramSelectionWSD referenceChromatogramSelection = chromatogramSelections.get(1);
+		IExtractedWavelengthSignals extractedWavelengthSignalsSample = getExtractedWavelengthSignals(sampleChromatogramSelection);
+		IExtractedWavelengthSignals extractedWavelengthSignalsReference = getExtractedWavelengthSignals(referenceChromatogramSelection);
+		/*
+		 * Chromatogram + references chromatograms.
+		 */
+		int sampleLanes = sampleChromatogramSelection.getChromatogramWSD().getReferencedChromatograms().size() + 1;
+		for(int sampleLane = 1; sampleLane <= sampleLanes; sampleLane++) {
 			/*
 			 * Item XWC
 			 */
-			traceModel = referenceModel.getTraceModels().get(wavelength);
-			if(traceModel == null) {
-				traceModel = new TraceModel();
-				traceModel.setTrace(wavelength);
-				referenceModel.getTraceModels().put((double)wavelength, traceModel);
+			sampleLaneModel = referenceModel.getSampleLaneModels().get(sampleLane);
+			if(sampleLaneModel == null) {
+				sampleLaneModel = new SampleLaneModel();
+				sampleLaneModel.setSampleLane(sampleLane);
+				referenceModel.getSampleLaneModels().put(sampleLane, sampleLaneModel);
 			}
 			//
 			tabItem = new TabItem(tabFolder, SWT.NONE);
-			tabItem.setText(wavelength + " nm");
+			tabItem.setText("Lane " + sampleLane);
 			composite = new Composite(tabFolder, SWT.NONE);
 			composite.setLayout(new FillLayout());
 			traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
 			traceDataSelectedSignal.setBackground(Colors.WHITE);
-			traceDataSelectedSignal.setData((int)IScanSignalWSD.TIC_SIGNAL, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference, processorModel, traceModel);
+			traceDataSelectedSignal.setData(processorModel, sampleLaneModel, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference);
 			tabItem.setControl(composite);
 		}
 	}

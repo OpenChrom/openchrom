@@ -14,19 +14,26 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.converter;
 import org.eclipse.eavp.service.swtchart.core.AbstractAxisScaleConverter;
 import org.eclipse.eavp.service.swtchart.core.IAxisScaleConverter;
 
-public class MillisecondsToCentimeterConverter extends AbstractAxisScaleConverter implements IAxisScaleConverter {
+import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 
-	private static final double CENTIMETER_CORRELATION_FACTOR = 50000.0d;
+public class MillisecondsToMillimeterConverter extends AbstractAxisScaleConverter implements IAxisScaleConverter {
+
+	/**
+	 * 20 mm/s
+	 * 1000.0d -> 0.02 mm/ms
+	 * 10.0d -> 0.002 cm/ms
+	 */
+	private static final double CENTIMETER_CORRELATION_FACTOR = PreferenceSupplier.getScanVelocity() / 1000.0d;
 
 	@Override
 	public double convertToSecondaryUnit(double primaryValue) {
 
-		return primaryValue / CENTIMETER_CORRELATION_FACTOR;
+		return primaryValue * CENTIMETER_CORRELATION_FACTOR;
 	}
 
 	@Override
 	public double convertToPrimaryUnit(double secondaryValue) {
 
-		return secondaryValue * CENTIMETER_CORRELATION_FACTOR;
+		return secondaryValue / CENTIMETER_CORRELATION_FACTOR;
 	}
 }

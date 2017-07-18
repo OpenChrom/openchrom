@@ -47,8 +47,8 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 	private EditorProcessor editorProcessor;
 	//
 	private Button buttonValidate;
-	private Button buttonNext;
 	private Button buttonSettings;
+	private Button buttonNext;
 	private List<Button> buttons;
 	//
 	private TraceCompareEditorUI traceCompareEditorUI;
@@ -115,8 +115,8 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 		gridDataButtons.minimumWidth = 150;
 		//
 		buttons.add(buttonValidate = createValidateButton(compositeButtons, gridDataButtons));
-		buttons.add(buttonNext = createNextButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonSettings = createSettingsButton(compositeButtons, gridDataButtons));
+		buttons.add(buttonNext = createNextButton(compositeButtons, gridDataButtons));
 		buttons.add(createSaveButton(compositeButtons, gridDataButtons));
 	}
 
@@ -124,7 +124,7 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Validate");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHECK, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_VALIDATE, IApplicationImage.SIZE_16x16));
 		button.setLayoutData(gridData);
 		button.addSelectionListener(new SelectionAdapter() {
 

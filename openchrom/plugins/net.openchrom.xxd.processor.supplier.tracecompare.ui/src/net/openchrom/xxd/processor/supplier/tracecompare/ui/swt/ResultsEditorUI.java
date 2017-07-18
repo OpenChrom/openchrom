@@ -35,7 +35,7 @@ import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.TraceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.SampleLaneModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 
@@ -73,8 +73,8 @@ public class ResultsEditorUI extends Composite {
 				builder.append("\n");
 				builder.append("Path: " + referenceModel.getReferencePath());
 				builder.append("\n");
-				for(TraceModel traceModel : referenceModel.getTraceModels().values()) {
-					builder.append("\tTrace: " + traceModel.getTrace());
+				for(SampleLaneModel traceModel : referenceModel.getSampleLaneModels().values()) {
+					builder.append("\tTrace: " + traceModel.getSampleLane());
 					builder.append("\n");
 					builder.append("\tNotes: " + traceModel.getNotes());
 					builder.append("\n");
