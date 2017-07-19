@@ -13,17 +13,26 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
-import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
+import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
+import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.chemclipse.wsd.model.xwc.ExtractedWavelengthSignalExtractor;
+import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
 import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignals;
+import org.eclipse.eavp.service.swtchart.core.ISeriesData;
+import org.eclipse.eavp.service.swtchart.core.SeriesData;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -46,7 +55,7 @@ import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.SampleLaneModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
-import net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.runnables.ChromatogramImportRunnable;
+import net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.runnables.MeasurementImportRunnable;
 
 public class TraceCompareEditorUI extends Composite {
 
@@ -60,9 +69,11 @@ public class TraceCompareEditorUI extends Composite {
 	private Text textGeneralNotes;
 	//
 	private ProcessorModel processorModel;
+	Map<String, Map<Integer, Map<String, ISeriesData>>> modelData = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
 
 	public TraceCompareEditorUI(Composite parent, int style) {
 		super(parent, style);
+		modelData = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
 		initialize(parent);
 	}
 
@@ -108,6 +119,9 @@ public class TraceCompareEditorUI extends Composite {
 
 	private void createLabelSample(Composite parent) {
 
+		Label label = new Label(parent, SWT.NONE);
+		label.setText("Sample:");
+		//
 		Display display = Display.getDefault();
 		Font font = new Font(display, "Arial", 14, SWT.BOLD);
 		//
@@ -120,9 +134,12 @@ public class TraceCompareEditorUI extends Composite {
 
 	private void createReferenceCombo(Composite parent) {
 
+		Label label = new Label(parent, SWT.NONE);
+		label.setText("Reference:");
+		//
 		comboReferences = new Combo(parent, SWT.READ_ONLY);
 		initializeReferencesComboItems();
-		comboReferences.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
+		comboReferences.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		comboReferences.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -150,7 +167,17 @@ public class TraceCompareEditorUI extends Composite {
 		comboReferences.setItems(references.toArray(new String[references.size()]));
 		//
 		if(comboReferences.getItemCount() > 0) {
-			comboReferences.select(0);
+			if(processorModel != null) {
+				String referencePattern = processorModel.getReferencePattern();
+				int index = comboReferences.indexOf(referencePattern);
+				if(index >= 0) {
+					comboReferences.select(index);
+				} else {
+					comboReferences.select(0);
+				}
+			} else {
+				comboReferences.select(0);
+			}
 		}
 	}
 
@@ -170,8 +197,8 @@ public class TraceCompareEditorUI extends Composite {
 		/*
 		 * Get the sample and reference.
 		 */
-		File fileSample = new File("");
-		File fileReference = new File("");
+		List<File> sampleFiles = new ArrayList<File>();
+		List<File> referenceFiles = new ArrayList<File>();
 		//
 		if(processorModel != null) {
 			//
@@ -179,17 +206,11 @@ public class TraceCompareEditorUI extends Composite {
 			//
 			String samplePathDirectory = PreferenceSupplier.getFilterPathSamples();
 			String samplePattern = processorModel.getSamplePattern();
-			List<File> sampleFiles = Processor.getMeasurementFiles(samplePathDirectory, fileExtension, samplePattern);
-			if(sampleFiles.size() > 0) {
-				fileSample = sampleFiles.get(0);
-			}
+			sampleFiles = Processor.getMeasurementFiles(samplePathDirectory, fileExtension, samplePattern);
 			//
 			String referencePathDirectory = PreferenceSupplier.getFilterPathReferences();
 			String referencePattern = comboReferences.getText().trim();
-			List<File> referenceFiles = Processor.getMeasurementFiles(referencePathDirectory, fileExtension, referencePattern);
-			if(referenceFiles.size() > 0) {
-				fileReference = referenceFiles.get(0);
-			}
+			referenceFiles = Processor.getMeasurementFiles(referencePathDirectory, fileExtension, referencePattern);
 		}
 		/*
 		 * Clear the tab folder.
@@ -197,36 +218,17 @@ public class TraceCompareEditorUI extends Composite {
 		for(TabItem tabItem : tabFolder.getItems()) {
 			tabItem.dispose();
 		}
-		//
-		if(fileSample.exists() && fileReference.exists()) {
-			/*
-			 * Get the chromatograms.
-			 */
-			ChromatogramImportRunnable runnable = new ChromatogramImportRunnable(fileSample.getAbsolutePath(), fileReference.getAbsolutePath());
-			ProgressMonitorDialog monitor = new ProgressMonitorDialog(Display.getDefault().getActiveShell());
-			try {
-				monitor.run(true, true, runnable);
-			} catch(InterruptedException e1) {
-				logger.warn(e1);
-			} catch(InvocationTargetException e1) {
-				logger.warn(e1);
-			}
-			//
-			List<IChromatogramSelectionWSD> chromatogramSelections = runnable.getChromatogramSelections();
-			createSampleLaneTabItems(chromatogramSelections);
+		/*
+		 * Validate that files have been selected.
+		 */
+		if(sampleFiles.size() > 0 && referenceFiles.size() > 0) {
+			createSampleLaneTabItems(sampleFiles, referenceFiles);
 		} else {
 			createEmptyTabItem();
 		}
 	}
 
-	private IExtractedWavelengthSignals getExtractedWavelengthSignals(IChromatogramSelectionWSD chromatogramSelectionWSD) {
-
-		IChromatogramWSD chromatogramWSD = chromatogramSelectionWSD.getChromatogramWSD();
-		ExtractedWavelengthSignalExtractor extractedWavelengthSignalExtractor = new ExtractedWavelengthSignalExtractor(chromatogramWSD);
-		return extractedWavelengthSignalExtractor.getExtractedWavelengthSignals(chromatogramSelectionWSD);
-	}
-
-	private void createSampleLaneTabItems(List<IChromatogramSelectionWSD> chromatogramSelections) {
+	private void createSampleLaneTabItems(List<File> sampleFiles, List<File> referenceFiles) {
 
 		TabItem tabItem;
 		Composite composite;
@@ -235,26 +237,49 @@ public class TraceCompareEditorUI extends Composite {
 		/*
 		 * Get the model.
 		 */
-		String reference = comboReferences.getText().trim();
-		ReferenceModel referenceModel = processorModel.getReferenceModels().get(reference);
+		String samplePattern = processorModel.getSamplePattern();
+		String referencePattern = comboReferences.getText().trim();
+		//
+		ReferenceModel referenceModel = processorModel.getReferenceModels().get(referencePattern);
 		if(referenceModel == null) {
 			referenceModel = new ReferenceModel();
-			referenceModel.setReferenceName(reference);
-			referenceModel.setReferencePath(PreferenceSupplier.getFilterPathReferences() + File.separator + reference);
-			processorModel.getReferenceModels().put(reference, referenceModel);
+			referenceModel.setReferencePattern(referencePattern);
+			referenceModel.setReferencePath(PreferenceSupplier.getFilterPathReferences());
+			processorModel.getReferenceModels().put(referencePattern, referenceModel);
+		}
+		/*
+		 * Extract the data.
+		 * 0196 [Group]
+		 * -> 1 [Sample Lane] -> 190 [nm], ISeriesData
+		 * -> 1 [Sample Lane] -> 200 [nm], ISeriesData
+		 * ...
+		 * -> 18 [Sample Lane] -> 190 [nm], ISeriesData
+		 * -> 18 [Sample Lane] -> 200 [nm], ISeriesData
+		 * 0197 [Group]
+		 * -> 1 [Sample Lane] -> 190 [nm], ISeriesData
+		 * -> 1 [Sample Lane] -> 200 [nm], ISeriesData
+		 * ...
+		 * -> 18 [Sample Lane] -> 190 [nm], ISeriesData
+		 * -> 18 [Sample Lane] -> 200 [nm], ISeriesData
+		 */
+		Map<Integer, Map<String, ISeriesData>> sampleMeasurementsData = modelData.get(samplePattern);
+		if(sampleMeasurementsData == null) {
+			sampleMeasurementsData = extractMeasurementsData(sampleFiles);
+			modelData.put(samplePattern, sampleMeasurementsData);
 		}
 		//
-		IChromatogramSelectionWSD sampleChromatogramSelection = chromatogramSelections.get(0);
-		IChromatogramSelectionWSD referenceChromatogramSelection = chromatogramSelections.get(1);
-		IExtractedWavelengthSignals extractedWavelengthSignalsSample = getExtractedWavelengthSignals(sampleChromatogramSelection);
-		IExtractedWavelengthSignals extractedWavelengthSignalsReference = getExtractedWavelengthSignals(referenceChromatogramSelection);
+		Map<Integer, Map<String, ISeriesData>> referenceMeasurementsData = modelData.get(referencePattern);
+		if(referenceMeasurementsData == null) {
+			referenceMeasurementsData = extractMeasurementsData(referenceFiles);
+			modelData.put(referencePattern, referenceMeasurementsData);
+		}
 		/*
-		 * Chromatogram + references chromatograms.
+		 * Sample Lanes
 		 */
-		int sampleLanes = sampleChromatogramSelection.getChromatogramWSD().getReferencedChromatograms().size() + 1;
+		int sampleLanes = sampleMeasurementsData.keySet().size();
 		for(int sampleLane = 1; sampleLane <= sampleLanes; sampleLane++) {
 			/*
-			 * Item XWC
+			 * Sample Lane
 			 */
 			sampleLaneModel = referenceModel.getSampleLaneModels().get(sampleLane);
 			if(sampleLaneModel == null) {
@@ -264,14 +289,94 @@ public class TraceCompareEditorUI extends Composite {
 			}
 			//
 			tabItem = new TabItem(tabFolder, SWT.NONE);
-			tabItem.setText("Lane " + sampleLane);
+			tabItem.setText("SL " + sampleLane);
 			composite = new Composite(tabFolder, SWT.NONE);
 			composite.setLayout(new FillLayout());
 			traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
 			traceDataSelectedSignal.setBackground(Colors.WHITE);
-			traceDataSelectedSignal.setData(processorModel, sampleLaneModel, extractedWavelengthSignalsSample, extractedWavelengthSignalsReference);
+			traceDataSelectedSignal.setData(processorModel, sampleLaneModel, referencePattern, sampleMeasurementsData, referenceMeasurementsData);
 			tabItem.setControl(composite);
 		}
+	}
+
+	private Map<Integer, Map<String, ISeriesData>> extractMeasurementsData(List<File> measurementFiles) {
+
+		Map<Integer, Map<String, ISeriesData>> measurementsData = new HashMap<Integer, Map<String, ISeriesData>>();
+		//
+		MeasurementImportRunnable runnable = new MeasurementImportRunnable(measurementFiles);
+		ProgressMonitorDialog monitor = new ProgressMonitorDialog(Display.getDefault().getActiveShell());
+		try {
+			monitor.run(true, true, runnable);
+		} catch(InterruptedException e1) {
+			logger.warn(e1);
+		} catch(InvocationTargetException e1) {
+			logger.warn(e1);
+		}
+		//
+		ISeriesData seriesData;
+		//
+		List<IChromatogramWSD> measurements = runnable.getMeasurements();
+		for(IChromatogram measurement : measurements) {
+			/*
+			 * Sample Lane 1
+			 */
+			int index = 1;
+			seriesData = extractMeasurement(measurement);
+			addMeasurementData(measurementsData, seriesData, index++);
+			/*
+			 * Sample Lane 2 ... n
+			 */
+			for(IChromatogram additionalMeasurement : measurement.getReferencedChromatograms()) {
+				seriesData = extractMeasurement(additionalMeasurement);
+				addMeasurementData(measurementsData, seriesData, index++);
+			}
+		}
+		//
+		return measurementsData;
+	}
+
+	private void addMeasurementData(Map<Integer, Map<String, ISeriesData>> measurementsData, ISeriesData seriesData, int index) {
+
+		Map<String, ISeriesData> wavelengthData = measurementsData.get(index);
+		if(wavelengthData == null) {
+			wavelengthData = new HashMap<String, ISeriesData>();
+			measurementsData.put(index, wavelengthData);
+		}
+		wavelengthData.put(seriesData.getId(), seriesData);
+	}
+
+	private ISeriesData extractMeasurement(IChromatogram measurement) {
+
+		List<IScan> scans = measurement.getScans();
+		double[] xSeries = new double[scans.size()];
+		double[] ySeries = new double[scans.size()];
+		int wavelength = getWavelength(measurement);
+		//
+		int index = 0;
+		ExtractedWavelengthSignalExtractor signalExtractor = new ExtractedWavelengthSignalExtractor((IChromatogramWSD)measurement);
+		IExtractedWavelengthSignals extractedWavelengthSignals = signalExtractor.getExtractedWavelengthSignals();
+		for(IExtractedWavelengthSignal extractedWavelengthSignal : extractedWavelengthSignals.getExtractedWavelengthSignals()) {
+			xSeries[index] = extractedWavelengthSignal.getRetentionTime();
+			ySeries[index] = extractedWavelengthSignal.getAbundance(wavelength);
+			index++;
+		}
+		//
+		return new SeriesData(xSeries, ySeries, Integer.toString(wavelength));
+	}
+
+	private int getWavelength(IChromatogram measurement) {
+
+		for(IScan scan : measurement.getScans()) {
+			if(scan instanceof IScanWSD) {
+				IScanWSD scanWSD = (IScanWSD)scan;
+				for(IScanSignalWSD signal : scanWSD.getScanSignals()) {
+					int wavelength = (int)signal.getWavelength();
+					return wavelength;
+				}
+			}
+		}
+		//
+		return 0;
 	}
 
 	private void createEmptyTabItem() {

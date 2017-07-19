@@ -69,7 +69,7 @@ public class ResultsEditorUI extends Composite {
 			//
 			StringBuilder builder = new StringBuilder();
 			for(ReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
-				builder.append("Reference: " + referenceModel.getReferenceName());
+				builder.append("Reference: " + referenceModel.getReferencePattern());
 				builder.append("\n");
 				builder.append("Path: " + referenceModel.getReferencePath());
 				builder.append("\n");

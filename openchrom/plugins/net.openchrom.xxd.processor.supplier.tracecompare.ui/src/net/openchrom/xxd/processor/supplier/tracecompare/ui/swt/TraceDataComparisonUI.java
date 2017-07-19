@@ -20,10 +20,6 @@ import java.util.Map;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
-import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
-import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
-import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
-import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignals;
 import org.eclipse.eavp.service.swtchart.core.ISeriesData;
 import org.eclipse.eavp.service.swtchart.core.SeriesData;
 import org.eclipse.eavp.service.swtchart.export.ImageSupplier;
@@ -69,42 +65,44 @@ public class TraceDataComparisonUI extends Composite {
 	//
 	private ProcessorModel processorModel;
 	private SampleLaneModel sampleLaneModel;
-	private String sample;
-	private String reference;
+	private String samplePattern;
+	private String referencePattern;
 	//
-	private Map<Integer, Color> colorMap;
+	private Color colorDefault = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
+	private Map<String, Color> colorMap;
 
 	public TraceDataComparisonUI(Composite parent, int style) {
 		super(parent, style);
 		//
-		colorMap = new HashMap<Integer, Color>();
-		colorMap.put(190, Colors.YELLOW);
-		colorMap.put(200, Colors.BLUE);
-		colorMap.put(220, Colors.CYAN);
-		colorMap.put(240, Colors.GREEN);
-		colorMap.put(260, Colors.BLACK);
-		colorMap.put(280, Colors.RED);
-		colorMap.put(300, Colors.DARK_RED);
+		colorMap = new HashMap<String, Color>();
+		colorMap.put("190", Colors.YELLOW);
+		colorMap.put("200", Colors.BLUE);
+		colorMap.put("220", Colors.CYAN);
+		colorMap.put("240", Colors.GREEN);
+		colorMap.put("260", Colors.BLACK);
+		colorMap.put("280", Colors.RED);
+		colorMap.put("300", Colors.DARK_RED);
 		//
 		createControl();
 	}
 
-	public void setData(ProcessorModel processorModel, SampleLaneModel sampleLaneModel, IExtractedWavelengthSignals extractedWavelengthSignalsSample, IExtractedWavelengthSignals extractedWavelengthSignalsReference) {
+	public void setData(ProcessorModel processorModel, SampleLaneModel sampleLaneModel, String referencePattern, Map<Integer, Map<String, ISeriesData>> sampleMeasurementsData, Map<Integer, Map<String, ISeriesData>> referenceMeasurementsData) {
 
-		int wavelength = 190;
-		sampleDataUI.addSeriesData(getLineSeriesDataList(wavelength, extractedWavelengthSignalsSample), LineChart.MEDIUM_COMPRESSION);
-		referenceDataUI.addSeriesData(getLineSeriesDataList(wavelength, extractedWavelengthSignalsReference), LineChart.MEDIUM_COMPRESSION);
+		int sampleLane = sampleLaneModel.getSampleLane();
+		sampleDataUI.addSeriesData(getLineSeriesDataList(sampleMeasurementsData.get(sampleLane)), LineChart.MEDIUM_COMPRESSION);
+		referenceDataUI.addSeriesData(getLineSeriesDataList(referenceMeasurementsData.get(sampleLane)), LineChart.MEDIUM_COMPRESSION);
 		//
 		this.processorModel = processorModel;
 		this.sampleLaneModel = sampleLaneModel;
 		notesText.setText(sampleLaneModel.getNotes());
-		this.sample = extractedWavelengthSignalsSample.getChromatogram().getName();
-		this.reference = extractedWavelengthSignalsReference.getChromatogram().getName();
-		setSampleLane(sampleLaneModel.getSampleLane(), sample, reference);
+		this.samplePattern = processorModel.getSamplePattern();
+		this.referencePattern = referencePattern;
+		setSampleLane(sampleLaneModel.getSampleLane(), samplePattern, referencePattern);
 		String imageEvaluated = (sampleLaneModel.isEvaluated()) ? IApplicationImage.IMAGE_EVALUATED : IApplicationImage.IMAGE_EVALUATE;
 		buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(imageEvaluated, IApplicationImage.SIZE_16x16));
 		String imageMatched = (sampleLaneModel.isMatched()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
 		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImage.SIZE_16x16));
+		// buttonIsSkipped.setImage(sampleLaneModel.isSkipped()) ? IApplicationImage.IMAGE_SKIPPED : IApplicationImage.IMAGE_SKIP);
 	}
 
 	private void setSampleLane(int sampleLane, String sample, String reference) {
@@ -117,41 +115,33 @@ public class TraceDataComparisonUI extends Composite {
 		font.dispose();
 	}
 
-	private List<ILineSeriesData> getLineSeriesDataList(int wavelength, IExtractedWavelengthSignals extractedWavelengthSignals) {
+	private List<ILineSeriesData> getLineSeriesDataList(Map<String, ISeriesData> wavelengthData) {
 
 		List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
-		ISeriesData seriesData = getSeriesXY(wavelength, extractedWavelengthSignals);
 		//
-		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
-		ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
-		lineSerieSettings.setDescription(Integer.toString(wavelength) + " nm");
-		lineSerieSettings.setEnableArea(false);
-		lineSerieSettings.setLineColor(colorMap.get(wavelength));
-		lineSeriesDataList.add(lineSeriesData);
-		//
-		return lineSeriesDataList;
-	}
-
-	private ISeriesData getSeriesXY(int wavelength, IExtractedWavelengthSignals extractedWavelengthSignals) {
-
-		IChromatogramWSD chromatogramWSD = extractedWavelengthSignals.getChromatogram();
-		List<IExtractedWavelengthSignal> wavelengthSignals = extractedWavelengthSignals.getExtractedWavelengthSignals();
-		double[] xSeries = new double[wavelengthSignals.size()];
-		double[] ySeries = new double[wavelengthSignals.size()];
-		//
-		int i = 0;
-		for(IExtractedWavelengthSignal wavelengthSignal : wavelengthSignals) {
-			xSeries[i] = wavelengthSignal.getRetentionTime();
-			if(wavelength == (int)IScanSignalWSD.TIC_SIGNAL) {
-				ySeries[i] = wavelengthSignal.getTotalSignal();
-			} else {
-				ySeries[i] = wavelengthSignal.getAbundance(wavelength);
+		if(wavelengthData != null) {
+			for(String wavelength : wavelengthData.keySet()) {
+				ISeriesData seriesData = wavelengthData.get(wavelength);
+				ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
+				ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
+				lineSerieSettings.setDescription(wavelength + " nm");
+				lineSerieSettings.setEnableArea(false);
+				lineSerieSettings.setLineColor((colorMap.containsKey(wavelength)) ? colorMap.get(wavelength) : colorDefault);
+				lineSeriesDataList.add(lineSeriesData);
 			}
-			i++;
+		} else {
+			double[] xSeries = new double[]{0, 1000};
+			double[] ySeries = new double[]{0, 1000};
+			ISeriesData seriesData = new SeriesData(xSeries, ySeries, "0");
+			ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
+			ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
+			lineSerieSettings.setDescription("0 nm");
+			lineSerieSettings.setEnableArea(false);
+			lineSerieSettings.setLineColor(colorDefault);
+			lineSeriesDataList.add(lineSeriesData);
 		}
 		//
-		ISeriesData seriesData = new SeriesData(xSeries, ySeries, chromatogramWSD.getName());
-		return seriesData;
+		return lineSeriesDataList;
 	}
 
 	private void createControl() {
@@ -225,12 +215,12 @@ public class TraceDataComparisonUI extends Composite {
 
 				ImageSupplier imageSupplier = new ImageSupplier();
 				//
-				String fileNameSample = processorModel.getImageDirectory() + File.separator + "Sample_" + sample + "_vs_" + reference + "_" + sampleLaneModel.getSampleLane() + ".png";
+				String fileNameSample = processorModel.getImageDirectory() + File.separator + "Sample_" + samplePattern + "_vs_" + referencePattern + "_" + sampleLaneModel.getSampleLane() + ".png";
 				ImageData imageDataSample = imageSupplier.getImageData(sampleDataUI.getBaseChart());
 				imageSupplier.saveImage(imageDataSample, fileNameSample, SWT.IMAGE_PNG);
 				sampleLaneModel.setPathSnapshotSample(fileNameSample);
 				//
-				String fileNameReference = processorModel.getImageDirectory() + File.separator + "Reference_" + sample + "_vs_" + reference + "_" + sampleLaneModel.getSampleLane() + ".png";
+				String fileNameReference = processorModel.getImageDirectory() + File.separator + "Reference_" + samplePattern + "_vs_" + referencePattern + "_" + sampleLaneModel.getSampleLane() + ".png";
 				ImageData imageDataReference = imageSupplier.getImageData(referenceDataUI.getBaseChart());
 				imageSupplier.saveImage(imageDataReference, fileNameReference, SWT.IMAGE_PNG);
 				sampleLaneModel.setPathSnapshotReference(fileNameReference);

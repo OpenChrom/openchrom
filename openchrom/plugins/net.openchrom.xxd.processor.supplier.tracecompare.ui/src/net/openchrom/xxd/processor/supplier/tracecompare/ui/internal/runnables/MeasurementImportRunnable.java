@@ -20,41 +20,34 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
 import org.eclipse.chemclipse.wsd.converter.processing.chromatogram.IChromatogramWSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
-import org.eclipse.chemclipse.wsd.model.core.selection.ChromatogramSelectionWSD;
-import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
-public class ChromatogramImportRunnable implements IRunnableWithProgress {
+public class MeasurementImportRunnable implements IRunnableWithProgress {
 
-	private static final Logger logger = Logger.getLogger(ChromatogramImportRunnable.class);
+	private static final Logger logger = Logger.getLogger(MeasurementImportRunnable.class);
 	//
-	private List<IChromatogramSelectionWSD> chromatogramSelections;
-	private String pathChromatogramSample;
-	private String pathChromatogramReference;
+	private List<IChromatogramWSD> measurements;
+	private List<File> measurementFiles;
 
-	public ChromatogramImportRunnable(String pathChromatogramSample, String pathChromatogramReference) {
-		chromatogramSelections = new ArrayList<IChromatogramSelectionWSD>();
-		this.pathChromatogramSample = pathChromatogramSample;
-		this.pathChromatogramReference = pathChromatogramReference;
+	public MeasurementImportRunnable(List<File> measurementFiles) {
+		measurements = new ArrayList<IChromatogramWSD>();
+		this.measurementFiles = measurementFiles;
 	}
 
-	public List<IChromatogramSelectionWSD> getChromatogramSelections() {
+	public List<IChromatogramWSD> getMeasurements() {
 
-		return chromatogramSelections;
+		return measurements;
 	}
 
 	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
-		IChromatogramWSD referenceChromatogram = importChromatogram(pathChromatogramSample, monitor);
-		if(referenceChromatogram != null) {
-			chromatogramSelections.add(new ChromatogramSelectionWSD(referenceChromatogram));
-		}
-		//
-		IChromatogramWSD isotopeChromatogram = importChromatogram(pathChromatogramReference, monitor);
-		if(isotopeChromatogram != null) {
-			chromatogramSelections.add(new ChromatogramSelectionWSD(isotopeChromatogram));
+		for(File file : measurementFiles) {
+			IChromatogramWSD measurement = importChromatogram(file.getAbsolutePath(), monitor);
+			if(measurement != null) {
+				measurements.add(measurement);
+			}
 		}
 	}
 
