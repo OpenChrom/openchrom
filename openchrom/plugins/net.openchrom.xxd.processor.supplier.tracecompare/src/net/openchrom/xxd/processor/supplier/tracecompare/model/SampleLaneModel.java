@@ -28,6 +28,8 @@ public class SampleLaneModel {
 	private double startIntensity;
 	@XmlElement(name = "Stop Intensity")
 	private double stopIntensity;
+	@XmlElement(name = "Skipped")
+	private boolean isSkipped = false;
 	@XmlElement(name = "Evaluated")
 	private boolean isEvaluated = false;
 	@XmlElement(name = "Matched")
@@ -103,6 +105,17 @@ public class SampleLaneModel {
 	public void setStopIntensity(double stopIntensity) {
 
 		this.stopIntensity = stopIntensity;
+	}
+
+	@XmlTransient
+	public boolean isSkipped() {
+
+		return isSkipped;
+	}
+
+	public void setSkipped(boolean isSkipped) {
+
+		this.isSkipped = isSkipped;
 	}
 
 	@XmlTransient

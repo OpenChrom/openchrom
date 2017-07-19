@@ -61,6 +61,7 @@ public class TraceDataComparisonUI extends Composite {
 	private Combo comboSampleLanes;
 	private Button buttonIsEvaluated;
 	private Button buttonIsMatched;
+	private Button buttonIsSkipped;
 	private TraceDataUI sampleDataUI;
 	private TraceDataUI referenceDataUI;
 	private Text notesText;
@@ -176,7 +177,7 @@ public class TraceDataComparisonUI extends Composite {
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataComposite.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridDataComposite);
-		composite.setLayout(new GridLayout(6, false));
+		composite.setLayout(new GridLayout(7, false));
 		//
 		labelSampleLane = new Label(composite, SWT.NONE);
 		labelSampleLane.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -254,6 +255,26 @@ public class TraceDataComparisonUI extends Composite {
 				} else {
 					sampleLaneModel.setMatched(true);
 					buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SELECTED, IApplicationImage.SIZE_16x16));
+				}
+			}
+		});
+		//
+		buttonIsSkipped = new Button(composite, SWT.PUSH);
+		buttonIsSkipped.setText("");
+		buttonIsSkipped.setToolTipText("Flag as skipped.");
+		buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SKIP, IApplicationImage.SIZE_16x16));
+		buttonIsSkipped.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				boolean isSkipped = sampleLaneModel.isSkipped();
+				if(isSkipped) {
+					sampleLaneModel.setSkipped(false);
+					buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SKIP, IApplicationImage.SIZE_16x16));
+				} else {
+					sampleLaneModel.setSkipped(true);
+					buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SKIPPED, IApplicationImage.SIZE_16x16));
 				}
 			}
 		});

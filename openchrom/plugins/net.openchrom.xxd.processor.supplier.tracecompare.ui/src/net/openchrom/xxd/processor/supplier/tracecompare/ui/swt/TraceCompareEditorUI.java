@@ -13,7 +13,6 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -41,6 +40,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 
+import net.openchrom.xxd.processor.supplier.tracecompare.core.Processor;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.SampleLaneModel;
@@ -53,7 +53,6 @@ public class TraceCompareEditorUI extends Composite {
 	private static final Logger logger = Logger.getLogger(TraceCompareEditorUI.class);
 	//
 	private static final String DESCRIPTION = "Trace Compare";
-	private static final String FILE_EXTENSION = ".DFM";
 	//
 	private Label labelSample;
 	private Combo comboReferences;
@@ -145,22 +144,10 @@ public class TraceCompareEditorUI extends Composite {
 	private void initializeReferencesComboItems() {
 
 		comboReferences.removeAll();
-		//
-		File directory = new File(PreferenceSupplier.getFilterPathReferences());
-		if(directory.exists() && directory.isDirectory()) {
-			List<String> references = new ArrayList<String>();
-			for(File file : directory.listFiles()) {
-				if(file.isFile()) {
-					String name = file.getName();
-					if(name.endsWith(FILE_EXTENSION)) {
-						references.add(name);
-					}
-				}
-			}
-			comboReferences.setItems(references.toArray(new String[references.size()]));
-		} else {
-			comboReferences.setItems(new String[]{});
-		}
+		String pathDirectory = PreferenceSupplier.getFilterPathReferences();
+		String fileExtension = PreferenceSupplier.getFileExtension();
+		List<String> references = Processor.getMeasurementPatterns(pathDirectory, fileExtension);
+		comboReferences.setItems(references.toArray(new String[references.size()]));
 		//
 		if(comboReferences.getItemCount() > 0) {
 			comboReferences.select(0);
@@ -183,13 +170,27 @@ public class TraceCompareEditorUI extends Composite {
 		/*
 		 * Get the sample and reference.
 		 */
-		File fileSample;
+		File fileSample = new File("");
+		File fileReference = new File("");
+		//
 		if(processorModel != null) {
-			fileSample = new File(processorModel.getSamplePath().trim());
-		} else {
-			fileSample = new File("");
+			//
+			String fileExtension = PreferenceSupplier.getFileExtension();
+			//
+			String samplePathDirectory = PreferenceSupplier.getFilterPathSamples();
+			String samplePattern = processorModel.getSamplePattern();
+			List<File> sampleFiles = Processor.getMeasurementFiles(samplePathDirectory, fileExtension, samplePattern);
+			if(sampleFiles.size() > 0) {
+				fileSample = sampleFiles.get(0);
+			}
+			//
+			String referencePathDirectory = PreferenceSupplier.getFilterPathReferences();
+			String referencePattern = comboReferences.getText().trim();
+			List<File> referenceFiles = Processor.getMeasurementFiles(referencePathDirectory, fileExtension, referencePattern);
+			if(referenceFiles.size() > 0) {
+				fileReference = referenceFiles.get(0);
+			}
 		}
-		File fileReference = new File(PreferenceSupplier.getFilterPathReferences() + File.separator + comboReferences.getText());
 		/*
 		 * Clear the tab folder.
 		 */
