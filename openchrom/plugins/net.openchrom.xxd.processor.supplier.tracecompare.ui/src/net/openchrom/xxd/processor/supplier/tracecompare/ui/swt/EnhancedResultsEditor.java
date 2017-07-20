@@ -124,17 +124,11 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				// TODO
-				boolean checkTrue = true;
-				if(checkTrue) {
-					MessageBox messageBox = new MessageBox(shell, SWT.YES | SWT.NO | SWT.CANCEL);
-					messageBox.setText("Calculate Identification");
-					messageBox.setMessage("Current results are overwritten when doing a new calculation.");
-					if(messageBox.open() == SWT.YES) {
-						processAction();
-					}
-				} else {
-					processAction();
+				MessageBox messageBox = new MessageBox(shell, SWT.YES | SWT.NO | SWT.CANCEL);
+				messageBox.setText("Calculate Identification");
+				messageBox.setMessage("Current results are overwritten when doing a new calculation.");
+				if(messageBox.open() == SWT.YES) {
+					// TODO
 				}
 			}
 		});
