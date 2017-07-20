@@ -14,23 +14,30 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.provider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.SampleLaneModel;
+
 public class ResultsTreeViewerLabelProvider extends LabelProvider {
 
 	@Override
 	public Image getImage(Object element) {
 
-		// TODO
 		return null;
 	}
 
 	@Override
 	public String getText(Object element) {
 
-		// TODO
-		if(element instanceof String) {
-			return (String)element;
+		String text;
+		if(element instanceof ReferenceModel) {
+			ReferenceModel referenceModel = (ReferenceModel)element;
+			text = referenceModel.toString();
+		} else if(element instanceof SampleLaneModel) {
+			SampleLaneModel sampleLaneModel = (SampleLaneModel)element;
+			text = sampleLaneModel.toString();
 		} else {
-			return "n.v.";
+			text = "n.a.";
 		}
+		return text;
 	}
 }

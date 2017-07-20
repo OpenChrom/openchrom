@@ -11,8 +11,14 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.model;
 
+import java.text.DecimalFormat;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.eclipse.chemclipse.support.text.ValueFormat;
+
+import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 
 public class SampleLaneModel {
 
@@ -171,5 +177,39 @@ public class SampleLaneModel {
 	public void setPathSnapshotReference(String pathSnapshotReference) {
 
 		this.pathSnapshotReference = pathSnapshotReference;
+	}
+
+	@Override
+	public String toString() {
+
+		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.00");
+		double factor = PreferenceSupplier.getScanVelocity() / 1000.0d;
+		StringBuilder builder = new StringBuilder();
+		builder.append("Lane Results");
+		builder.append("\n");
+		builder.append("\tSample Lane: " + sampleLane);
+		builder.append("\n");
+		builder.append("\tReference Lane: " + referenceLane);
+		builder.append("\n");
+		builder.append("\tDistance Start [mm]: " + decimalFormat.format(startRetentionTime * factor));
+		builder.append("\n");
+		builder.append("\tDistance Stop [mm]: " + decimalFormat.format(stopRetentionTime * factor));
+		builder.append("\n");
+		builder.append("\tStart Intensity: " + decimalFormat.format(startIntensity));
+		builder.append("\n");
+		builder.append("\tStop Intensity: " + decimalFormat.format(stopIntensity));
+		builder.append("\n");
+		builder.append("\tSkipped: " + isSkipped);
+		builder.append("\n");
+		builder.append("\tEvaluated: " + isEvaluated);
+		builder.append("\n");
+		builder.append("\tMatched: " + isMatched);
+		builder.append("\n");
+		builder.append("\tSnapshot Sample: " + pathSnapshotSample);
+		builder.append("\n");
+		builder.append("\tSnapshot Reference: " + pathSnapshotReference);
+		builder.append("\n");
+		builder.append("\tNotes: " + notes);
+		return builder.toString();
 	}
 }

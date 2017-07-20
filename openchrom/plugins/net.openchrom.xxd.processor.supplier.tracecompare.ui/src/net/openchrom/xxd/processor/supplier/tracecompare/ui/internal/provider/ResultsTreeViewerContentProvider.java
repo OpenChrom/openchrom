@@ -11,10 +11,13 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.provider;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
+
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
 
 public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 
@@ -34,15 +37,28 @@ public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 
 		if(inputElement instanceof List) {
 			return ((List)inputElement).toArray();
+		} else if(inputElement instanceof Collection) {
+			return ((Collection)inputElement).toArray();
+		} else if(inputElement instanceof ReferenceModel) {
+			ReferenceModel referenceModel = (ReferenceModel)inputElement;
+			referenceModel.getSampleLaneModels().values();
 		}
 		//
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object[] getChildren(Object parentElement) {
 
-		// TODO
+		if(parentElement instanceof List) {
+			return ((List)parentElement).toArray();
+		} else if(parentElement instanceof Collection) {
+			return ((Collection)parentElement).toArray();
+		} else if(parentElement instanceof ReferenceModel) {
+			ReferenceModel referenceModel = (ReferenceModel)parentElement;
+			referenceModel.getSampleLaneModels().values();
+		}
 		//
 		return null;
 	}
@@ -50,15 +66,19 @@ public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 	@Override
 	public Object getParent(Object element) {
 
-		// TODO
-		//
 		return null;
 	}
 
 	@Override
 	public boolean hasChildren(Object element) {
 
-		// TODO
+		if(element instanceof List) {
+			return true;
+		} else if(element instanceof Collection) {
+			return true;
+		} else if(element instanceof ReferenceModel) {
+			return true;
+		}
 		return false;
 	}
 }

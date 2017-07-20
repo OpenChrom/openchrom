@@ -178,7 +178,14 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 						@Override
 						public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
-							editorProcessor.doSave(monitor);
+							Display.getDefault().asyncExec(new Runnable() {
+
+								@Override
+								public void run() {
+
+									editorProcessor.doSave(monitor);
+								}
+							});
 						}
 					});
 				} catch(InvocationTargetException e1) {

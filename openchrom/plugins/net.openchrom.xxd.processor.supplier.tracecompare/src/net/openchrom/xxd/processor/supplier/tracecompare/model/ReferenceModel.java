@@ -58,4 +58,16 @@ public class ReferenceModel {
 
 		this.sampleLaneModels = sampleLaneModels;
 	}
+
+	@Override
+	public String toString() {
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("Reference");
+		builder.append("\n");
+		builder.append("\tReference Group: " + referenceGroup);
+		builder.append("\n");
+		builder.append("\tReference Path: " + referencePath);
+		return builder.toString();
+	}
 }

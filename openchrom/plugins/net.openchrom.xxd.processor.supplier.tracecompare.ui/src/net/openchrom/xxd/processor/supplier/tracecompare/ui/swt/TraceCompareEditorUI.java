@@ -82,8 +82,10 @@ public class TraceCompareEditorUI extends Composite {
 			processorModel = editorProcessor.getProcessorModel();
 			labelSampleGroup.setText(processorModel.getSampleGroup());
 			textGeneralNotes.setText(processorModel.getGeneralNotes());
-			initializeReferencesComboItems();
-			initializeTraceComparators();
+			if(tabFolder.getItems().length <= 1) {
+				initializeReferencesComboItems();
+				initializeTraceComparators();
+			}
 		}
 	}
 

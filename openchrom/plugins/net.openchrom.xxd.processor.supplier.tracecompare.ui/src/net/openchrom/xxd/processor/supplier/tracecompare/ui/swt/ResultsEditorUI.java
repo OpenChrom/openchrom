@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -46,8 +49,7 @@ public class ResultsEditorUI extends Composite {
 	private Label labelSample;
 	private Text textSearch;
 	private Text textGeneralNotes;
-	// private ResultsTreeViewerUI resultsTreeViewerUI;
-	private Text resultsText;
+	private ResultsTreeViewerUI resultsTreeViewerUI;
 	private Text textCalculatedResult;
 	//
 	private ProcessorModel processorModel;
@@ -66,27 +68,7 @@ public class ResultsEditorUI extends Composite {
 			labelSample.setText("Unknown Sample: " + processorModel.getSampleGroup());
 			textGeneralNotes.setText(processorModel.getGeneralNotes());
 			textCalculatedResult.setText(processorModel.getCalculatedResult());
-			//
-			StringBuilder builder = new StringBuilder();
-			for(ReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
-				builder.append("Reference: " + referenceModel.getReferenceGroup());
-				builder.append("\n");
-				builder.append("Path: " + referenceModel.getReferencePath());
-				builder.append("\n");
-				for(SampleLaneModel traceModel : referenceModel.getSampleLaneModels().values()) {
-					builder.append("\tTrace: " + traceModel.getSampleLane());
-					builder.append("\n");
-					builder.append("\tNotes: " + traceModel.getNotes());
-					builder.append("\n");
-					builder.append("\tEvaluated: " + traceModel.isEvaluated());
-					builder.append("\n");
-					builder.append("\tMatched: " + traceModel.isMatched());
-					builder.append("\n");
-					builder.append("\n");
-				}
-				builder.append("\n");
-			}
-			resultsText.setText(builder.toString());
+			resultsTreeViewerUI.setInput(processorModel.getReferenceModels().values());
 		}
 	}
 
@@ -215,11 +197,8 @@ public class ResultsEditorUI extends Composite {
 
 	private void createResultsList(Composite parent) {
 
-		// resultsTreeViewerUI = new ResultsTreeViewerUI(parent, SWT.NONE);
-		// resultsTreeViewerUI.setLayoutData(getGridData(GridData.FILL_BOTH));
-		resultsText = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		resultsText.setText("");
-		resultsText.setLayoutData(getGridData(GridData.FILL_BOTH));
+		resultsTreeViewerUI = new ResultsTreeViewerUI(parent, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		resultsTreeViewerUI.setLayoutData(getGridData(GridData.FILL_BOTH));
 	}
 
 	private void createCalculatedResultField(Composite parent) {
@@ -243,7 +222,41 @@ public class ResultsEditorUI extends Composite {
 
 	private void search() {
 
-		String content = textSearch.getText().trim();
+		String searchText = textSearch.getText().trim();
+		boolean searchCaseSensitive = PreferenceSupplier.isSearchCaseSensitive();
+		if(!searchCaseSensitive) {
+			searchText = searchText.toLowerCase();
+		}
+		//
+		if(searchText.equals("")) {
+			/*
+			 * Default
+			 */
+			resultsTreeViewerUI.setInput(processorModel.getReferenceModels().values());
+		} else {
+			/*
+			 * Search
+			 */
+			List<SampleLaneModel> sampleLaneModels = new ArrayList<SampleLaneModel>();
+			for(ReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
+				for(SampleLaneModel sampleLaneModel : referenceModel.getSampleLaneModels().values()) {
+					/*
+					 * Prepare
+					 */
+					String content = sampleLaneModel.toString();
+					if(!searchCaseSensitive) {
+						content = content.toLowerCase();
+					}
+					/*
+					 * Search
+					 */
+					if(content.contains(searchText)) {
+						sampleLaneModels.add(sampleLaneModel);
+					}
+				}
+			}
+			resultsTreeViewerUI.setInput(sampleLaneModels);
+		}
 	}
 
 	private GridData getGridData(int style) {
