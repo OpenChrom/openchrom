@@ -139,7 +139,7 @@ public class ResultsEditorUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				// resultsTreeViewerUI.getTreeViewer().expandAll();
+				resultsTreeViewerUI.getTreeViewer().expandAll();
 			}
 		});
 		//
@@ -151,7 +151,7 @@ public class ResultsEditorUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				// resultsTreeViewerUI.getTreeViewer().collapseAll();
+				resultsTreeViewerUI.getTreeViewer().collapseAll();
 			}
 		});
 		//
@@ -197,7 +197,7 @@ public class ResultsEditorUI extends Composite {
 
 	private void createResultsList(Composite parent) {
 
-		resultsTreeViewerUI = new ResultsTreeViewerUI(parent, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		resultsTreeViewerUI = new ResultsTreeViewerUI(parent, SWT.BORDER);
 		resultsTreeViewerUI.setLayoutData(getGridData(GridData.FILL_BOTH));
 	}
 

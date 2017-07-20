@@ -41,7 +41,7 @@ public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 			return ((Collection)inputElement).toArray();
 		} else if(inputElement instanceof ReferenceModel) {
 			ReferenceModel referenceModel = (ReferenceModel)inputElement;
-			referenceModel.getSampleLaneModels().values();
+			return referenceModel.getSampleLaneModels().values().toArray();
 		}
 		//
 		return null;
@@ -57,7 +57,7 @@ public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 			return ((Collection)parentElement).toArray();
 		} else if(parentElement instanceof ReferenceModel) {
 			ReferenceModel referenceModel = (ReferenceModel)parentElement;
-			referenceModel.getSampleLaneModels().values();
+			return referenceModel.getSampleLaneModels().values().toArray();
 		}
 		//
 		return null;
