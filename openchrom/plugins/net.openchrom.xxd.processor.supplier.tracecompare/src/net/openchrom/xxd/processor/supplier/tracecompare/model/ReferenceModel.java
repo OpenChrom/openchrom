@@ -19,22 +19,22 @@ import javax.xml.bind.annotation.XmlTransient;
 
 public class ReferenceModel {
 
-	@XmlElement(name = "ReferencePattern")
-	private String referencePattern = "";
+	@XmlElement(name = "ReferenceGroup")
+	private String referenceGroup = "";
 	@XmlElement(name = "ReferencePath")
 	private String referencePath = "";
 	@XmlElement(name = "SampleLaneModels", type = SampleLaneModel.class)
 	private Map<Integer, SampleLaneModel> sampleLaneModels = new HashMap<Integer, SampleLaneModel>();
 
 	@XmlTransient
-	public String getReferencePattern() {
+	public String getReferenceGroup() {
 
-		return referencePattern;
+		return referenceGroup;
 	}
 
-	public void setReferencePattern(String referencePattern) {
+	public void setReferenceGroup(String referenceGroup) {
 
-		this.referencePattern = referencePattern;
+		this.referenceGroup = referenceGroup;
 	}
 
 	@XmlTransient

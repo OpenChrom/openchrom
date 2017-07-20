@@ -63,13 +63,13 @@ public class ResultsEditorUI extends Composite {
 			EditorProcessor editorProcessor = (EditorProcessor)object;
 			processorModel = editorProcessor.getProcessorModel();
 			//
-			labelSample.setText("Unknown Sample: " + processorModel.getSamplePattern());
+			labelSample.setText("Unknown Sample: " + processorModel.getSampleGroup());
 			textGeneralNotes.setText(processorModel.getGeneralNotes());
 			textCalculatedResult.setText(processorModel.getCalculatedResult());
 			//
 			StringBuilder builder = new StringBuilder();
 			for(ReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
-				builder.append("Reference: " + referenceModel.getReferencePattern());
+				builder.append("Reference: " + referenceModel.getReferenceGroup());
 				builder.append("\n");
 				builder.append("Path: " + referenceModel.getReferencePath());
 				builder.append("\n");

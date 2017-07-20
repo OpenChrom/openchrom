@@ -43,7 +43,6 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 	//
 	private Button buttonCalculate;
 	private Button buttonPrevious;
-	private Button buttonExport;
 	private List<Button> buttons;
 	//
 	private ResultsEditorUI resultsEditorUI;
@@ -80,7 +79,6 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 			buttonCalculate.setEnabled(true);
 			buttonPrevious.setEnabled(true);
 		}
-		buttonExport.setEnabled(true);
 	}
 
 	private void createControl() {
@@ -112,7 +110,6 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 		buttons.add(buttonCalculate = createCalculateButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonPrevious = createPreviousButton(compositeButtons, gridDataButtons));
 		buttons.add(createSaveButton(compositeButtons, gridDataButtons));
-		buttons.add(buttonExport = createExportButton(compositeButtons, gridDataButtons));
 	}
 
 	private Button createCalculateButton(Composite parent, GridData gridData) {
@@ -189,23 +186,6 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 				} catch(InterruptedException e1) {
 					logger.warn(e1);
 				}
-			}
-		});
-		return button;
-	}
-
-	private Button createExportButton(Composite parent, GridData gridData) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("Export");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImage.SIZE_16x16));
-		button.setLayoutData(gridData);
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				editorProcessor.doSaveAs();
 			}
 		});
 		return button;

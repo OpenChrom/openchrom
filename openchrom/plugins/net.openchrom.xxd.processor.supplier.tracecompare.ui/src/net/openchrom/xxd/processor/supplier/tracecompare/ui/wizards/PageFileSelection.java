@@ -40,9 +40,9 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 	private IProcessorWizardElements wizardElements;
 	//
 	private Label labelSampleDirectory;
-	private Text samplePatternText;
+	private Text sampleGroupText;
 	private Label labelReferenceDirectory;
-	private Text referencePatternText;
+	private Text referenceGroupText;
 	private Text generalNotesText;
 
 	public PageFileSelection(IProcessorWizardElements wizardElements) {
@@ -66,7 +66,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 			return false;
 		}
 		//
-		if(processorModel.getSamplePattern() == null || "".equals(processorModel.getSamplePattern())) {
+		if(processorModel.getSampleGroup() == null || "".equals(processorModel.getSampleGroup())) {
 			return false;
 		}
 		//
@@ -74,7 +74,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 			return false;
 		}
 		//
-		if(processorModel.getReferencePattern() == null || "".equals(processorModel.getReferencePattern())) {
+		if(processorModel.getReferenceGroup() == null || "".equals(processorModel.getReferenceGroup())) {
 			return false;
 		}
 		//
@@ -111,9 +111,9 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 			}
 			//
 			labelSampleDirectory.setText((processorModel.getSamplePath() != null) ? processorModel.getSamplePath() : "");
-			samplePatternText.setText((processorModel.getSamplePattern() != null) ? processorModel.getSamplePattern() : "");
+			sampleGroupText.setText((processorModel.getSampleGroup() != null) ? processorModel.getSampleGroup() : "");
 			labelReferenceDirectory.setText((processorModel.getReferencePath() != null) ? processorModel.getReferencePath() : "");
-			referencePatternText.setText((processorModel.getReferencePattern() != null) ? processorModel.getReferencePattern() : "");
+			referenceGroupText.setText((processorModel.getReferenceGroup() != null) ? processorModel.getReferenceGroup() : "");
 			generalNotesText.setText((processorModel.getGeneralNotes() != null) ? processorModel.getGeneralNotes() : "");
 			validateData();
 		}
@@ -126,9 +126,9 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		composite.setLayout(new GridLayout(2, false));
 		//
 		createLabelSampleDirectorySection(composite);
-		createSamplePatternSection(composite);
+		createSampleGroupSection(composite);
 		createLabelReferenceDirectorySection(composite);
-		createReferencePatternSection(composite);
+		createReferenceGroupSection(composite);
 		createGeneralNotesSection(composite);
 		//
 		validateData();
@@ -150,15 +150,15 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		labelSampleDirectory.setLayoutData(gridDataLabelPath);
 	}
 
-	private void createSamplePatternSection(Composite parent) {
+	private void createSampleGroupSection(Composite parent) {
 
 		Shell shell = Display.getDefault().getActiveShell();
 		String fileExtension = PreferenceSupplier.getFileExtension();
 		//
-		samplePatternText = new Text(parent, SWT.BORDER);
-		samplePatternText.setText("");
-		samplePatternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		samplePatternText.addModifyListener(new ModifyListener() {
+		sampleGroupText = new Text(parent, SWT.BORDER);
+		sampleGroupText.setText("");
+		sampleGroupText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		sampleGroupText.addModifyListener(new ModifyListener() {
 
 			public void modifyText(ModifyEvent e) {
 
@@ -182,11 +182,11 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 				if(pathname != null) {
 					File file = new File(pathname);
 					if(file.exists()) {
-						samplePatternText.setText(Processor.getSamplePattern(file.getName()));
+						sampleGroupText.setText(Processor.getSampleGroup(file.getName()));
 						PreferenceSupplier.setFilterPathSamples(file.getParent());
 						labelSampleDirectory.setText(PreferenceSupplier.getFilterPathSamples());
 					} else {
-						samplePatternText.setText("File doesn't exist.");
+						sampleGroupText.setText("File doesn't exist.");
 					}
 				}
 				//
@@ -211,15 +211,15 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		labelReferenceDirectory.setLayoutData(gridDataLabelPath);
 	}
 
-	private void createReferencePatternSection(Composite parent) {
+	private void createReferenceGroupSection(Composite parent) {
 
 		Shell shell = Display.getDefault().getActiveShell();
 		String fileExtension = PreferenceSupplier.getFileExtension();
 		//
-		referencePatternText = new Text(parent, SWT.BORDER);
-		referencePatternText.setText("");
-		referencePatternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		referencePatternText.addModifyListener(new ModifyListener() {
+		referenceGroupText = new Text(parent, SWT.BORDER);
+		referenceGroupText.setText("");
+		referenceGroupText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		referenceGroupText.addModifyListener(new ModifyListener() {
 
 			public void modifyText(ModifyEvent e) {
 
@@ -243,11 +243,11 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 				if(pathname != null) {
 					File file = new File(pathname);
 					if(file.exists()) {
-						referencePatternText.setText(Processor.getSamplePattern(file.getName()));
+						referenceGroupText.setText(Processor.getSampleGroup(file.getName()));
 						PreferenceSupplier.setFilterPathReferences(file.getParent());
 						labelReferenceDirectory.setText(PreferenceSupplier.getFilterPathReferences());
 					} else {
-						referencePatternText.setText("File doesn't exist.");
+						referenceGroupText.setText("File doesn't exist.");
 					}
 				}
 				//
@@ -285,22 +285,22 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		String fileExtension = PreferenceSupplier.getFileExtension();
 		//
 		String samplePathDirectory = PreferenceSupplier.getFilterPathSamples();
-		String samplePattern = samplePatternText.getText().trim();
-		if(!Processor.measurementExists(samplePathDirectory, fileExtension, samplePattern)) {
+		String sampleGroup = sampleGroupText.getText().trim();
+		if(!Processor.measurementExists(samplePathDirectory, fileExtension, sampleGroup)) {
 			message = "Please select the sample measurement(s).";
 		} else {
 			processorModel.setSamplePath(samplePathDirectory);
-			processorModel.setSamplePattern(samplePattern);
+			processorModel.setSampleGroup(sampleGroup);
 		}
 		//
 		if(message == null) {
 			String referencePathDirectory = PreferenceSupplier.getFilterPathReferences();
-			String referencePattern = referencePatternText.getText().trim();
-			if(!Processor.measurementExists(referencePathDirectory, fileExtension, referencePattern)) {
+			String referenceGroup = referenceGroupText.getText().trim();
+			if(!Processor.measurementExists(referencePathDirectory, fileExtension, referenceGroup)) {
 				message = "Please select the reference measurement(s).";
 			} else {
 				processorModel.setReferencePath(referencePathDirectory);
-				processorModel.setReferencePattern(referencePattern);
+				processorModel.setReferenceGroup(referenceGroup);
 			}
 		}
 		//

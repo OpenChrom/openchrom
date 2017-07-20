@@ -28,12 +28,12 @@ public class ProcessorModel {
 	private String detectorType = "";
 	@XmlElement(name = "ImageDirectory")
 	private String imageDirectory = "";
-	@XmlElement(name = "SamplePattern")
-	private String samplePattern = "";
+	@XmlElement(name = "SampleGroup")
+	private String sampleGroup = "";
 	@XmlElement(name = "SamplePath")
 	private String samplePath = "";
-	@XmlElement(name = "ReferencePattern")
-	private String referencePattern = "";
+	@XmlElement(name = "ReferenceGroup")
+	private String referenceGroup = "";
 	@XmlElement(name = "ReferencePath")
 	private String referencePath = "";
 	@XmlElement(name = "CalculatedResult")
@@ -77,14 +77,14 @@ public class ProcessorModel {
 	}
 
 	@XmlTransient
-	public String getSamplePattern() {
+	public String getSampleGroup() {
 
-		return samplePattern;
+		return sampleGroup;
 	}
 
-	public void setSamplePattern(String samplePattern) {
+	public void setSampleGroup(String sampleGroup) {
 
-		this.samplePattern = samplePattern;
+		this.sampleGroup = sampleGroup;
 	}
 
 	@XmlTransient
@@ -99,14 +99,14 @@ public class ProcessorModel {
 	}
 
 	@XmlTransient
-	public String getReferencePattern() {
+	public String getReferenceGroup() {
 
-		return referencePattern;
+		return referenceGroup;
 	}
 
-	public void setReferencePattern(String referencePattern) {
+	public void setReferenceGroup(String referenceGroup) {
 
-		this.referencePattern = referencePattern;
+		this.referenceGroup = referenceGroup;
 	}
 
 	@XmlTransient

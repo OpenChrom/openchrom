@@ -18,16 +18,16 @@ public class SampleLaneModel {
 
 	@XmlElement(name = "SampleLane")
 	private int sampleLane = 0;
-	@XmlElement(name = "ReferenceSampleLane")
-	private int referenceSampleLane = 0;
-	@XmlElement(name = "Start Retention Time")
-	private double startRetentionTime;
-	@XmlElement(name = "Stop Retention Time")
-	private double stopRetentionTime;
-	@XmlElement(name = "Start Intensity")
-	private double startIntensity;
-	@XmlElement(name = "Stop Intensity")
-	private double stopIntensity;
+	@XmlElement(name = "ReferenceLane")
+	private int referenceLane = 0;
+	@XmlElement(name = "ValuesSampleX")
+	private double[] valuesSampleX = new double[0];
+	@XmlElement(name = "ValuesSampleY")
+	private double[] valuesSampleY = new double[0];
+	@XmlElement(name = "ValuesReferenceX")
+	private double[] valuesReferenceX = new double[0];
+	@XmlElement(name = "ValuesReferenceY")
+	private double[] valuesReferenceY = new double[0];
 	@XmlElement(name = "Skipped")
 	private boolean isSkipped = false;
 	@XmlElement(name = "Evaluated")
@@ -36,9 +36,9 @@ public class SampleLaneModel {
 	private boolean isMatched = false;
 	@XmlElement(name = "Notes")
 	private String notes = "";
-	@XmlElement(name = "Path Snapshot Sample")
+	@XmlElement(name = "PathSnapshotSample")
 	private String pathSnapshotSample = "";
-	@XmlElement(name = "Path Snapshot Reference")
+	@XmlElement(name = "PathSnapshotReference")
 	private String pathSnapshotReference = "";
 
 	@XmlTransient
@@ -53,58 +53,58 @@ public class SampleLaneModel {
 	}
 
 	@XmlTransient
-	public int getReferenceSampleLane() {
+	public int getReferenceLane() {
 
-		return referenceSampleLane;
+		return referenceLane;
 	}
 
-	public void setReferenceSampleLane(int referenceSampleLane) {
+	public void setReferenceLane(int referenceLane) {
 
-		this.referenceSampleLane = referenceSampleLane;
-	}
-
-	@XmlTransient
-	public double getStartRetentionTime() {
-
-		return startRetentionTime;
-	}
-
-	public void setStartRetentionTime(double startRetentionTime) {
-
-		this.startRetentionTime = startRetentionTime;
+		this.referenceLane = referenceLane;
 	}
 
 	@XmlTransient
-	public double getStopRetentionTime() {
+	public double[] getValuesSampleX() {
 
-		return stopRetentionTime;
+		return valuesSampleX;
 	}
 
-	public void setStopRetentionTime(double stopRetentionTime) {
+	public void setValuesSampleX(double[] valuesSampleX) {
 
-		this.stopRetentionTime = stopRetentionTime;
-	}
-
-	@XmlTransient
-	public double getStartIntensity() {
-
-		return startIntensity;
-	}
-
-	public void setStartIntensity(double startIntensity) {
-
-		this.startIntensity = startIntensity;
+		this.valuesSampleX = valuesSampleX;
 	}
 
 	@XmlTransient
-	public double getStopIntensity() {
+	public double[] getValuesSampleY() {
 
-		return stopIntensity;
+		return valuesSampleY;
 	}
 
-	public void setStopIntensity(double stopIntensity) {
+	public void setValuesSampleY(double[] valuesSampleY) {
 
-		this.stopIntensity = stopIntensity;
+		this.valuesSampleY = valuesSampleY;
+	}
+
+	@XmlTransient
+	public double[] getValuesReferenceX() {
+
+		return valuesReferenceX;
+	}
+
+	public void setValuesReferenceX(double[] valuesReferenceX) {
+
+		this.valuesReferenceX = valuesReferenceX;
+	}
+
+	@XmlTransient
+	public double[] getValuesReferenceY() {
+
+		return valuesReferenceY;
+	}
+
+	public void setValuesReferenceY(double[] valuesReferenceY) {
+
+		this.valuesReferenceY = valuesReferenceY;
 	}
 
 	@XmlTransient

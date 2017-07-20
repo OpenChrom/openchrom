@@ -52,24 +52,26 @@ public class TraceDataComparisonUI extends Composite {
 
 	private static final int HORIZONTAL_INDENT = 15;
 	//
-	private Label labelSample;
 	private Label labelSampleLane;
-	private Combo comboSampleLanes;
+	private Combo comboReferenceSampleLanes;
 	private Button buttonIsEvaluated;
 	private Button buttonIsMatched;
 	private Button buttonIsSkipped;
+	private Button buttonCreateSnapshot;
+	private Text notesText;
+	//
 	private TraceDataUI sampleDataUI;
 	private TraceDataUI referenceDataUI;
-	private Text notesText;
-	private Button buttonCreateSnapshot;
 	//
 	private ProcessorModel processorModel;
 	private SampleLaneModel sampleLaneModel;
-	private String samplePattern;
-	private String referencePattern;
+	private String sampleGroup;
+	private String referenceGroup;
+	private Map<Integer, Map<String, ISeriesData>> sampleMeasurementsData;
+	private Map<Integer, Map<String, ISeriesData>> referenceMeasurementsData;
 	//
-	private Color colorDefault = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
 	private Map<String, Color> colorMap;
+	private Color colorDefault;
 
 	public TraceDataComparisonUI(Composite parent, int style) {
 		super(parent, style);
@@ -82,66 +84,109 @@ public class TraceDataComparisonUI extends Composite {
 		colorMap.put("260", Colors.BLACK);
 		colorMap.put("280", Colors.RED);
 		colorMap.put("300", Colors.DARK_RED);
+		colorDefault = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
 		//
 		createControl();
 	}
 
-	public void setData(ProcessorModel processorModel, SampleLaneModel sampleLaneModel, String referencePattern, Map<Integer, Map<String, ISeriesData>> sampleMeasurementsData, Map<Integer, Map<String, ISeriesData>> referenceMeasurementsData) {
+	public void setData(ProcessorModel processorModel, SampleLaneModel sampleLaneModel, String referenceGroup, Map<Integer, Map<String, ISeriesData>> sampleMeasurementsData, Map<Integer, Map<String, ISeriesData>> referenceMeasurementsData) {
 
-		int sampleLane = sampleLaneModel.getSampleLane();
-		sampleDataUI.addSeriesData(getLineSeriesDataList(sampleMeasurementsData.get(sampleLane)), LineChart.MEDIUM_COMPRESSION);
-		referenceDataUI.addSeriesData(getLineSeriesDataList(referenceMeasurementsData.get(sampleLane)), LineChart.MEDIUM_COMPRESSION);
-		//
 		this.processorModel = processorModel;
 		this.sampleLaneModel = sampleLaneModel;
+		this.sampleGroup = processorModel.getSampleGroup();
+		this.referenceGroup = referenceGroup;
+		this.sampleMeasurementsData = sampleMeasurementsData;
+		this.referenceMeasurementsData = referenceMeasurementsData;
+		//
+		int sampleLane = sampleLaneModel.getSampleLane();
+		setSampleData(sampleLane);
+		setReferenceData(sampleLane);
+		sampleLaneModel.setReferenceLane(sampleLane);
+		initializeReferenceSampleLaneComboItems(sampleLane, referenceMeasurementsData.keySet().size());
+		//
 		notesText.setText(sampleLaneModel.getNotes());
-		this.samplePattern = processorModel.getSamplePattern();
-		this.referencePattern = referencePattern;
-		setSampleLane(sampleLaneModel.getSampleLane(), samplePattern, referencePattern);
+		setSampleLane(sampleLaneModel.getSampleLane(), sampleGroup);
+		//
 		String imageEvaluated = (sampleLaneModel.isEvaluated()) ? IApplicationImage.IMAGE_EVALUATED : IApplicationImage.IMAGE_EVALUATE;
 		buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(imageEvaluated, IApplicationImage.SIZE_16x16));
 		String imageMatched = (sampleLaneModel.isMatched()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
 		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImage.SIZE_16x16));
-		// buttonIsSkipped.setImage(sampleLaneModel.isSkipped()) ? IApplicationImage.IMAGE_SKIPPED : IApplicationImage.IMAGE_SKIP);
+		String imageSkipped = (sampleLaneModel.isSkipped()) ? IApplicationImage.IMAGE_SKIPPED : IApplicationImage.IMAGE_SKIP;
+		buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(imageSkipped, IApplicationImage.SIZE_16x16));
+		//
+		setElementStatus(sampleLaneModel);
 	}
 
-	private void setSampleLane(int sampleLane, String sample, String reference) {
+	private void setSampleData(int sampleLane) {
+
+		if(sampleMeasurementsData != null) {
+			sampleDataUI.addSeriesData(getLineSeriesDataList(sampleMeasurementsData, sampleLane), LineChart.MEDIUM_COMPRESSION);
+		}
+	}
+
+	private void setReferenceData(int sampleLane) {
+
+		if(referenceMeasurementsData != null) {
+			referenceDataUI.addSeriesData(getLineSeriesDataList(referenceMeasurementsData, sampleLane), LineChart.MEDIUM_COMPRESSION);
+		}
+	}
+
+	private void setSampleLane(int sampleLane, String sample) {
 
 		Display display = Display.getDefault();
 		Font font = new Font(display, "Arial", 14, SWT.BOLD);
-		labelSample.setFont(font);
-		labelSample.setText(sample + " vs. " + reference);
-		labelSampleLane.setText("Sample Lane " + Integer.toString(sampleLane) + " vs. ");
+		labelSampleLane.setFont(font);
+		labelSampleLane.setText(sample + " > Sample Lane " + Integer.toString(sampleLane));
 		font.dispose();
 	}
 
-	private List<ILineSeriesData> getLineSeriesDataList(Map<String, ISeriesData> wavelengthData) {
+	private List<ILineSeriesData> getLineSeriesDataList(Map<Integer, Map<String, ISeriesData>> measurementsData, int sampleLane) {
 
 		List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
 		//
-		if(wavelengthData != null) {
-			for(String wavelength : wavelengthData.keySet()) {
-				ISeriesData seriesData = wavelengthData.get(wavelength);
-				ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
-				ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
-				lineSerieSettings.setDescription(wavelength + " nm");
-				lineSerieSettings.setEnableArea(false);
-				lineSerieSettings.setLineColor((colorMap.containsKey(wavelength)) ? colorMap.get(wavelength) : colorDefault);
+		if(measurementsData != null) {
+			if(measurementsData.containsKey(sampleLane)) {
+				Map<String, ISeriesData> wavelengthData = measurementsData.get(sampleLane);
+				addLineSeriesData(lineSeriesDataList, wavelengthData);
+			} else if(measurementsData.containsKey(1)) {
+				Map<String, ISeriesData> wavelengthData = measurementsData.get(1);
+				addLineSeriesData(lineSeriesDataList, wavelengthData);
+			} else {
+				ILineSeriesData lineSeriesData = createEmptyLineSeriesData();
 				lineSeriesDataList.add(lineSeriesData);
 			}
 		} else {
-			double[] xSeries = new double[]{0, 1000};
-			double[] ySeries = new double[]{0, 1000};
-			ISeriesData seriesData = new SeriesData(xSeries, ySeries, "0");
-			ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
-			ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
-			lineSerieSettings.setDescription("0 nm");
-			lineSerieSettings.setEnableArea(false);
-			lineSerieSettings.setLineColor(colorDefault);
+			ILineSeriesData lineSeriesData = createEmptyLineSeriesData();
 			lineSeriesDataList.add(lineSeriesData);
 		}
 		//
 		return lineSeriesDataList;
+	}
+
+	private void addLineSeriesData(List<ILineSeriesData> lineSeriesDataList, Map<String, ISeriesData> wavelengthData) {
+
+		for(String wavelength : wavelengthData.keySet()) {
+			ISeriesData seriesData = wavelengthData.get(wavelength);
+			ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
+			ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
+			lineSerieSettings.setDescription(wavelength + " nm");
+			lineSerieSettings.setEnableArea(false);
+			lineSerieSettings.setLineColor((colorMap.containsKey(wavelength)) ? colorMap.get(wavelength) : colorDefault);
+			lineSeriesDataList.add(lineSeriesData);
+		}
+	}
+
+	private ILineSeriesData createEmptyLineSeriesData() {
+
+		double[] xSeries = new double[]{0, 1000};
+		double[] ySeries = new double[]{0, 1000};
+		ISeriesData seriesData = new SeriesData(xSeries, ySeries, "0");
+		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
+		ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
+		lineSerieSettings.setDescription("0 nm");
+		lineSerieSettings.setEnableArea(false);
+		lineSerieSettings.setLineColor(colorDefault);
+		return lineSeriesData;
 	}
 
 	private void createControl() {
@@ -152,39 +197,59 @@ public class TraceDataComparisonUI extends Composite {
 		createCommentsSection(this);
 		createTraceDataSection(this);
 		//
+		setElementStatus(sampleLaneModel);
 		showComments(false);
 	}
 
 	private void createButtonSection(Composite parent) {
 
-		labelSample = new Label(parent, SWT.NONE);
-		labelSample.setText("");
+		labelSampleLane = new Label(parent, SWT.NONE);
+		labelSampleLane.setText("");
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataLabel.horizontalIndent = HORIZONTAL_INDENT;
-		labelSample.setLayoutData(gridDataLabel);
+		labelSampleLane.setLayoutData(gridDataLabel);
 		//
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataComposite.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridDataComposite);
-		composite.setLayout(new GridLayout(7, false));
+		composite.setLayout(new GridLayout(6, false));
 		//
-		labelSampleLane = new Label(composite, SWT.NONE);
-		labelSampleLane.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		labelSampleLane.setText("");
-		//
-		comboSampleLanes = new Combo(composite, SWT.READ_ONLY);
-		initializeSampleLaneComboItems(18);
-		comboSampleLanes.addSelectionListener(new SelectionAdapter() {
+		createButtons(composite);
+	}
+
+	private void createButtons(Composite parent) {
+
+		createComboReferenceSampleLanes(parent);
+		createButtonFlipComments(parent);
+		createButtonCreateSnapshot(parent);
+		createButtonIsMatched(parent);
+		createButtonIsSkipped(parent);
+		createButtonIsEvaluated(parent);
+	}
+
+	private void createComboReferenceSampleLanes(Composite parent) {
+
+		comboReferenceSampleLanes = new Combo(parent, SWT.READ_ONLY);
+		GridData gridData = new GridData();
+		gridData.widthHint = 220;
+		comboReferenceSampleLanes.setLayoutData(gridData);
+		initializeReferenceSampleLaneComboItems(-1, 0);
+		comboReferenceSampleLanes.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				// TODO Set SampleLane
+				int sampleLane = comboReferenceSampleLanes.getSelectionIndex() + 1;
+				sampleLaneModel.setReferenceLane(sampleLane);
+				setReferenceData(sampleLane);
 			}
 		});
-		//
-		Button buttonFlipComments = new Button(composite, SWT.PUSH);
+	}
+
+	private void createButtonFlipComments(Composite parent) {
+
+		Button buttonFlipComments = new Button(parent, SWT.PUSH);
 		buttonFlipComments.setText("");
 		buttonFlipComments.setToolTipText("Show/Hide Comments");
 		buttonFlipComments.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
@@ -203,8 +268,11 @@ public class TraceDataComparisonUI extends Composite {
 				}
 			}
 		});
-		//
-		buttonCreateSnapshot = new Button(composite, SWT.PUSH);
+	}
+
+	private void createButtonCreateSnapshot(Composite parent) {
+
+		buttonCreateSnapshot = new Button(parent, SWT.PUSH);
 		buttonCreateSnapshot.setText("");
 		buttonCreateSnapshot.setToolTipText("Create a snapshot.");
 		buttonCreateSnapshot.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CREATE_SNAPSHOT, IApplicationImage.SIZE_16x16));
@@ -215,12 +283,12 @@ public class TraceDataComparisonUI extends Composite {
 
 				ImageSupplier imageSupplier = new ImageSupplier();
 				//
-				String fileNameSample = processorModel.getImageDirectory() + File.separator + "Sample_" + samplePattern + "_vs_" + referencePattern + "_" + sampleLaneModel.getSampleLane() + ".png";
+				String fileNameSample = getImageName("Sample");
 				ImageData imageDataSample = imageSupplier.getImageData(sampleDataUI.getBaseChart());
 				imageSupplier.saveImage(imageDataSample, fileNameSample, SWT.IMAGE_PNG);
 				sampleLaneModel.setPathSnapshotSample(fileNameSample);
 				//
-				String fileNameReference = processorModel.getImageDirectory() + File.separator + "Reference_" + samplePattern + "_vs_" + referencePattern + "_" + sampleLaneModel.getSampleLane() + ".png";
+				String fileNameReference = getImageName("Reference");
 				ImageData imageDataReference = imageSupplier.getImageData(referenceDataUI.getBaseChart());
 				imageSupplier.saveImage(imageDataReference, fileNameReference, SWT.IMAGE_PNG);
 				sampleLaneModel.setPathSnapshotReference(fileNameReference);
@@ -228,8 +296,11 @@ public class TraceDataComparisonUI extends Composite {
 				MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Save Image", "A screenshot of the sample and reference has been saved.");
 			}
 		});
-		//
-		buttonIsMatched = new Button(composite, SWT.PUSH);
+	}
+
+	private void createButtonIsMatched(Composite parent) {
+
+		buttonIsMatched = new Button(parent, SWT.PUSH);
 		buttonIsMatched.setText("");
 		buttonIsMatched.setToolTipText("Flag as matched");
 		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DESELECTED, IApplicationImage.SIZE_16x16));
@@ -246,10 +317,15 @@ public class TraceDataComparisonUI extends Composite {
 					sampleLaneModel.setMatched(true);
 					buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SELECTED, IApplicationImage.SIZE_16x16));
 				}
+				//
+				setElementStatus(sampleLaneModel);
 			}
 		});
-		//
-		buttonIsSkipped = new Button(composite, SWT.PUSH);
+	}
+
+	private void createButtonIsSkipped(Composite parent) {
+
+		buttonIsSkipped = new Button(parent, SWT.PUSH);
 		buttonIsSkipped.setText("");
 		buttonIsSkipped.setToolTipText("Flag as skipped.");
 		buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SKIP, IApplicationImage.SIZE_16x16));
@@ -266,10 +342,15 @@ public class TraceDataComparisonUI extends Composite {
 					sampleLaneModel.setSkipped(true);
 					buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SKIPPED, IApplicationImage.SIZE_16x16));
 				}
+				//
+				setElementStatus(sampleLaneModel);
 			}
 		});
-		//
-		buttonIsEvaluated = new Button(composite, SWT.PUSH);
+	}
+
+	private void createButtonIsEvaluated(Composite parent) {
+
+		buttonIsEvaluated = new Button(parent, SWT.PUSH);
 		buttonIsEvaluated.setText("");
 		buttonIsEvaluated.setToolTipText("Flag as evaluated.");
 		buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EVALUATE, IApplicationImage.SIZE_16x16));
@@ -286,6 +367,8 @@ public class TraceDataComparisonUI extends Composite {
 					sampleLaneModel.setEvaluated(true);
 					buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EVALUATED, IApplicationImage.SIZE_16x16));
 				}
+				//
+				setElementStatus(sampleLaneModel);
 			}
 		});
 	}
@@ -348,18 +431,58 @@ public class TraceDataComparisonUI extends Composite {
 		parent.redraw();
 	}
 
-	private void initializeSampleLaneComboItems(int numberOfSampleLanes) {
+	private void setElementStatus(SampleLaneModel sampleLaneModel) {
 
-		comboSampleLanes.removeAll();
+		if(sampleLaneModel == null) {
+			comboReferenceSampleLanes.setEnabled(true);
+			buttonCreateSnapshot.setEnabled(true);
+			buttonIsMatched.setEnabled(true);
+			buttonIsSkipped.setEnabled(true);
+			buttonIsEvaluated.setEnabled(true);
+		} else {
+			boolean isEvaluated = sampleLaneModel.isEvaluated();
+			boolean isSkipped = sampleLaneModel.isSkipped();
+			//
+			if(isEvaluated) {
+				//
+				comboReferenceSampleLanes.setEnabled(false);
+				buttonCreateSnapshot.setEnabled(false);
+				buttonIsMatched.setEnabled(false);
+				buttonIsSkipped.setEnabled(false);
+				buttonIsEvaluated.setEnabled(true);
+			} else if(isSkipped) {
+				//
+				comboReferenceSampleLanes.setEnabled((isSkipped) ? false : true);
+				buttonCreateSnapshot.setEnabled((isSkipped) ? false : true);
+				buttonIsMatched.setEnabled((isSkipped) ? false : true);
+				buttonIsSkipped.setEnabled(true);
+				buttonIsEvaluated.setEnabled((isSkipped) ? false : true);
+			}
+		}
+	}
+
+	private String getImageName(String type) {
+
+		return processorModel.getImageDirectory() + File.separator + type + "_" + sampleGroup + "_vs_" + referenceGroup + "_" + sampleLaneModel.getSampleLane() + "vs" + sampleLaneModel.getReferenceLane() + ".png";
+	}
+
+	private void initializeReferenceSampleLaneComboItems(int sampleLane, int numberOfSampleLanes) {
+
+		comboReferenceSampleLanes.removeAll();
 		//
 		List<String> sampleLanes = new ArrayList<String>();
 		for(int i = 1; i <= numberOfSampleLanes; i++) {
-			sampleLanes.add("Sample Lane " + i);
+			sampleLanes.add("Reference Sample Lane " + i);
 		}
-		comboSampleLanes.setItems(sampleLanes.toArray(new String[sampleLanes.size()]));
+		comboReferenceSampleLanes.setItems(sampleLanes.toArray(new String[sampleLanes.size()]));
 		//
-		if(comboSampleLanes.getItemCount() > 0) {
-			comboSampleLanes.select(0);
+		int size = comboReferenceSampleLanes.getItemCount();
+		if(size > 0) {
+			if(sampleLane > 0 && sampleLane <= size) {
+				comboReferenceSampleLanes.select(sampleLane - 1);
+			} else {
+				comboReferenceSampleLanes.select(0);
+			}
 		}
 	}
 }

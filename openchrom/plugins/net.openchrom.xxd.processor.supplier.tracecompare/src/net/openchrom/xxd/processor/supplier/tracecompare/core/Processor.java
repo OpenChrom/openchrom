@@ -28,9 +28,9 @@ public class Processor {
 
 	public static final String PROCESSOR_FILE_EXTENSION = ".otc";
 	//
-	private static Map<String, Pattern> samplePatterns = new HashMap<String, Pattern>();
+	private static Map<String, Pattern> sampleMatchPatterns = new HashMap<String, Pattern>();
 
-	public static String getSamplePattern(String fileName) {
+	public static String getSampleGroup(String fileName) {
 
 		Pattern pattern = getPattern();
 		Matcher matcher = pattern.matcher(fileName);
@@ -116,10 +116,10 @@ public class Processor {
 	private static Pattern getPattern() {
 
 		String filePattern = PreferenceSupplier.getFilePattern();
-		Pattern pattern = samplePatterns.get(filePattern);
+		Pattern pattern = sampleMatchPatterns.get(filePattern);
 		if(pattern == null) {
 			pattern = Pattern.compile(filePattern);
-			samplePatterns.put(filePattern, pattern);
+			sampleMatchPatterns.put(filePattern, pattern);
 		}
 		//
 		return pattern;
