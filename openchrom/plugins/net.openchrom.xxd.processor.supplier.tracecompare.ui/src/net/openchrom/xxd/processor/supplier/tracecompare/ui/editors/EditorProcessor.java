@@ -143,6 +143,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 				file = fileEditorInput.getFile().getLocation().toFile();
 				ProcessorModelReader processorModelReader = new ProcessorModelReader();
 				processorModel = processorModelReader.read(file, new NullProgressMonitor());
+				System.out.println(processorModel);
 			} catch(JAXBException e) {
 				logger.warn(e);
 			}

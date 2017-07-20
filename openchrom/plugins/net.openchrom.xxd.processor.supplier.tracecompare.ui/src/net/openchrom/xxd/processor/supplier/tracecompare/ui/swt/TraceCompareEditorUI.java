@@ -66,7 +66,7 @@ public class TraceCompareEditorUI extends Composite {
 	private Text textGeneralNotes;
 	//
 	private ProcessorModel processorModel;
-	Map<String, Map<Integer, Map<String, ISeriesData>>> modelData = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
+	private Map<String, Map<Integer, Map<String, ISeriesData>>> modelData = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
 
 	public TraceCompareEditorUI(Composite parent, int style) {
 		super(parent, style);
@@ -78,26 +78,12 @@ public class TraceCompareEditorUI extends Composite {
 
 		if(object instanceof EditorProcessor) {
 			//
-			this.editorProcessor = (EditorProcessor)object;
-			boolean initialize = false;
-			if(processorModel == null) {
-				initialize = true;
-				processorModel = editorProcessor.getProcessorModel();
-			} else {
-				if(!processorModel.getSampleGroup().equals(editorProcessor.getProcessorModel().getSampleGroup())) {
-					initialize = true;
-					processorModel = editorProcessor.getProcessorModel();
-				}
-			}
-			/*
-			 * Get the sample group.
-			 */
+			editorProcessor = (EditorProcessor)object;
+			processorModel = editorProcessor.getProcessorModel();
 			labelSampleGroup.setText(processorModel.getSampleGroup());
 			textGeneralNotes.setText(processorModel.getGeneralNotes());
-			if(initialize) {
-				initializeReferencesComboItems();
-				initializeTraceComparators();
-			}
+			initializeReferencesComboItems();
+			initializeTraceComparators();
 		}
 	}
 

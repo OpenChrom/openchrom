@@ -20,13 +20,13 @@ public class SampleLaneModel {
 	private int sampleLane = 0;
 	@XmlElement(name = "ReferenceLane")
 	private int referenceLane = 0;
-	@XmlElement(name = "Start Retention Time")
+	@XmlElement(name = "StartRetentionTime")
 	private double startRetentionTime;
-	@XmlElement(name = "Stop Retention Time")
+	@XmlElement(name = "StopRetentionTime")
 	private double stopRetentionTime;
-	@XmlElement(name = "Start Intensity")
+	@XmlElement(name = "StartIntensity")
 	private double startIntensity;
-	@XmlElement(name = "Stop Intensity")
+	@XmlElement(name = "StopIntensity")
 	private double stopIntensity;
 	@XmlElement(name = "Skipped")
 	private boolean isSkipped = false;

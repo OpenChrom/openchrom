@@ -14,8 +14,12 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.processing.core.ProcessingInfo;
+import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.listener.AbstractControllerComposite;
@@ -37,12 +41,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.SampleLaneModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences.PreferencePage;
 
 public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 
 	private static final Logger logger = Logger.getLogger(EnhancedTraceCompareEditor.class);
+	private static final String DESCRIPTION = "Trace Compare";
+	private static final String EVALUATE_REFERENCE = "Evaluate Reference";
 	//
 	private EditorProcessor editorProcessor;
 	//
@@ -131,7 +140,44 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				// TODO
+				if(editorProcessor != null) {
+					IProcessingInfo processingInfo = new ProcessingInfo();
+					//
+					ProcessorModel processorModel = editorProcessor.getProcessorModel();
+					Set<String> references = processorModel.getReferenceModels().keySet();
+					for(String reference : references) {
+						ReferenceModel referenceModel = processorModel.getReferenceModels().get(reference);
+						Set<Integer> sampleLanes = referenceModel.getSampleLaneModels().keySet();
+						for(Integer sampleLane : sampleLanes) {
+							/*
+							 * Check each model.
+							 */
+							SampleLaneModel sampleLaneModel = referenceModel.getSampleLaneModels().get(sampleLane);
+							if(sampleLaneModel.isSkipped()) {
+								continue;
+							}
+							/*
+							 * Mark non-evaluated samples.
+							 */
+							if(!sampleLaneModel.isEvaluated()) {
+								processingInfo.addWarnMessage(EVALUATE_REFERENCE, reference + " > SL " + sampleLane);
+							}
+						}
+					}
+					//
+					if(!processingInfo.hasWarnMessages() && !processingInfo.hasErrorMessages()) {
+						processingInfo.addInfoMessage(DESCRIPTION, "All traces have been evaluated successfully.");
+					}
+					//
+					Display.getDefault().asyncExec(new Runnable() {
+
+						@Override
+						public void run() {
+
+							ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
+						}
+					});
+				}
 			}
 		});
 		return button;
