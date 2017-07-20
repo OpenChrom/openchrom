@@ -21,9 +21,6 @@ import java.util.Map;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IScan;
-import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.chemclipse.processing.core.ProcessingInfo;
-import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
@@ -61,7 +58,7 @@ public class TraceCompareEditorUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(TraceCompareEditorUI.class);
 	//
-	private static final String DESCRIPTION = "Trace Compare";
+	private EditorProcessor editorProcessor;
 	//
 	private Label labelSampleGroup;
 	private Combo comboReferenceGroups;
@@ -80,7 +77,8 @@ public class TraceCompareEditorUI extends Composite {
 	public void update(Object object) {
 
 		if(object instanceof EditorProcessor) {
-			EditorProcessor editorProcessor = (EditorProcessor)object;
+			//
+			this.editorProcessor = (EditorProcessor)object;
 			boolean initialize = false;
 			if(processorModel == null) {
 				initialize = true;
@@ -98,7 +96,7 @@ public class TraceCompareEditorUI extends Composite {
 			textGeneralNotes.setText(processorModel.getGeneralNotes());
 			if(initialize) {
 				initializeReferencesComboItems();
-				initializeTraceComparators(false);
+				initializeTraceComparators();
 			}
 		}
 	}
@@ -139,7 +137,7 @@ public class TraceCompareEditorUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				initializeTraceComparators(true);
+				initializeTraceComparators();
 			}
 		});
 	}
@@ -149,7 +147,7 @@ public class TraceCompareEditorUI extends Composite {
 		tabFolder = new TabFolder(parent, SWT.BOTTOM);
 		tabFolder.setLayoutData(getGridData(GridData.FILL_BOTH));
 		//
-		initializeTraceComparators(false);
+		initializeTraceComparators();
 	}
 
 	private void initializeReferencesComboItems() {
@@ -175,19 +173,8 @@ public class TraceCompareEditorUI extends Composite {
 		}
 	}
 
-	private void initializeTraceComparators(boolean validate) {
+	private void initializeTraceComparators() {
 
-		if(validate) {
-			IProcessingInfo processingInfo = validateSettings();
-			Display.getDefault().asyncExec(new Runnable() {
-
-				@Override
-				public void run() {
-
-					ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
-				}
-			});
-		}
 		/*
 		 * Get the sample and reference.
 		 */
@@ -226,7 +213,6 @@ public class TraceCompareEditorUI extends Composite {
 
 		TabItem tabItem;
 		Composite composite;
-		TraceDataComparisonUI traceDataSelectedSignal;
 		SampleLaneModel sampleLaneModel;
 		/*
 		 * Get the model.
@@ -286,9 +272,9 @@ public class TraceCompareEditorUI extends Composite {
 			tabItem.setText("SL " + sampleLane);
 			composite = new Composite(tabFolder, SWT.NONE);
 			composite.setLayout(new FillLayout());
-			traceDataSelectedSignal = new TraceDataComparisonUI(composite, SWT.BORDER);
-			traceDataSelectedSignal.setBackground(Colors.WHITE);
-			traceDataSelectedSignal.setData(processorModel, sampleLaneModel, referenceGroup, sampleMeasurementsData, referenceMeasurementsData);
+			TraceDataComparisonUI traceDataComparisonUI = new TraceDataComparisonUI(composite, SWT.BORDER);
+			traceDataComparisonUI.setBackground(Colors.WHITE);
+			traceDataComparisonUI.setData(editorProcessor, processorModel, sampleLaneModel, referenceGroup, sampleMeasurementsData, referenceMeasurementsData);
 			tabItem.setControl(composite);
 		}
 	}
@@ -419,19 +405,5 @@ public class TraceCompareEditorUI extends Composite {
 		GridData gridData = new GridData(style);
 		gridData.horizontalSpan = 2;
 		return gridData;
-	}
-
-	private IProcessingInfo validateSettings() {
-
-		IProcessingInfo processingInfo = new ProcessingInfo();
-		//
-		File fileReference = new File(PreferenceSupplier.getFilterPathReferences() + File.separator + comboReferenceGroups.getText());
-		if(fileReference.exists()) {
-			processingInfo.addInfoMessage(DESCRIPTION, "The reference file exists.");
-		} else {
-			processingInfo.addErrorMessage(DESCRIPTION, "The reference file doesn't exist.");
-		}
-		//
-		return processingInfo;
 	}
 }

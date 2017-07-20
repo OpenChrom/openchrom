@@ -20,14 +20,14 @@ public class SampleLaneModel {
 	private int sampleLane = 0;
 	@XmlElement(name = "ReferenceLane")
 	private int referenceLane = 0;
-	@XmlElement(name = "ValuesSampleX")
-	private double[] valuesSampleX = new double[0];
-	@XmlElement(name = "ValuesSampleY")
-	private double[] valuesSampleY = new double[0];
-	@XmlElement(name = "ValuesReferenceX")
-	private double[] valuesReferenceX = new double[0];
-	@XmlElement(name = "ValuesReferenceY")
-	private double[] valuesReferenceY = new double[0];
+	@XmlElement(name = "Start Retention Time")
+	private double startRetentionTime;
+	@XmlElement(name = "Stop Retention Time")
+	private double stopRetentionTime;
+	@XmlElement(name = "Start Intensity")
+	private double startIntensity;
+	@XmlElement(name = "Stop Intensity")
+	private double stopIntensity;
 	@XmlElement(name = "Skipped")
 	private boolean isSkipped = false;
 	@XmlElement(name = "Evaluated")
@@ -64,47 +64,47 @@ public class SampleLaneModel {
 	}
 
 	@XmlTransient
-	public double[] getValuesSampleX() {
+	public double getStartRetentionTime() {
 
-		return valuesSampleX;
+		return startRetentionTime;
 	}
 
-	public void setValuesSampleX(double[] valuesSampleX) {
+	public void setStartRetentionTime(double startRetentionTime) {
 
-		this.valuesSampleX = valuesSampleX;
-	}
-
-	@XmlTransient
-	public double[] getValuesSampleY() {
-
-		return valuesSampleY;
-	}
-
-	public void setValuesSampleY(double[] valuesSampleY) {
-
-		this.valuesSampleY = valuesSampleY;
+		this.startRetentionTime = startRetentionTime;
 	}
 
 	@XmlTransient
-	public double[] getValuesReferenceX() {
+	public double getStopRetentionTime() {
 
-		return valuesReferenceX;
+		return stopRetentionTime;
 	}
 
-	public void setValuesReferenceX(double[] valuesReferenceX) {
+	public void setStopRetentionTime(double stopRetentionTime) {
 
-		this.valuesReferenceX = valuesReferenceX;
+		this.stopRetentionTime = stopRetentionTime;
 	}
 
 	@XmlTransient
-	public double[] getValuesReferenceY() {
+	public double getStartIntensity() {
 
-		return valuesReferenceY;
+		return startIntensity;
 	}
 
-	public void setValuesReferenceY(double[] valuesReferenceY) {
+	public void setStartIntensity(double startIntensity) {
 
-		this.valuesReferenceY = valuesReferenceY;
+		this.startIntensity = startIntensity;
+	}
+
+	@XmlTransient
+	public double getStopIntensity() {
+
+		return stopIntensity;
+	}
+
+	public void setStopIntensity(double stopIntensity) {
+
+		this.stopIntensity = stopIntensity;
 	}
 
 	@XmlTransient
