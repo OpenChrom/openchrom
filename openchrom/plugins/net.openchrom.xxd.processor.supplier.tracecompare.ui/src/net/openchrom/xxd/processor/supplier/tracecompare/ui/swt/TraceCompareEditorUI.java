@@ -271,9 +271,15 @@ public class TraceCompareEditorUI extends Composite {
 				trackModel.setSampleTrack(track);
 				referenceModel.getTrackModels().put(track, trackModel);
 			}
-			//
+			/*
+			 * Set the current velocity and the reference track.
+			 * Set the reference track only if it is 0.
+			 * The user may have selected another reference track.
+			 */
 			trackModel.setScanVelocity(PreferenceSupplier.getScanVelocity());
-			trackModel.setReferenceTrack(track);
+			if(trackModel.getReferenceTrack() == 0) {
+				trackModel.setReferenceTrack(track);
+			}
 			//
 			tabItem = new TabItem(tabFolder, SWT.NONE);
 			tabItem.setText("Track " + track);
