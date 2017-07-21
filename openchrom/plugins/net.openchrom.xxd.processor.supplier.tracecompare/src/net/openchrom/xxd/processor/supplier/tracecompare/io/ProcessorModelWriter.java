@@ -21,13 +21,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.SampleLaneModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackModel;
 
 public class ProcessorModelWriter {
 
 	public void write(File file, ProcessorModel processorModel, IProgressMonitor monitor) throws JAXBException {
 
-		JAXBContext jaxbContext = JAXBContext.newInstance(new Class[]{ProcessorModel.class, ReferenceModel.class, SampleLaneModel.class});
+		JAXBContext jaxbContext = JAXBContext.newInstance(new Class[]{ProcessorModel.class, ReferenceModel.class, TrackModel.class});
 		Marshaller marshaller = jaxbContext.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		marshaller.marshal(processorModel, file);

@@ -22,9 +22,15 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.chemclipse.support.comparator.SortOrder;
+
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackStatistics;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 
-public class Processor {
+public class DataProcessor {
 
 	public static final String PROCESSOR_FILE_EXTENSION = ".otc";
 	//
@@ -111,6 +117,30 @@ public class Processor {
 		}
 		//
 		return measurementFiles;
+	}
+
+	public static List<TrackStatistics> getTrackStatistics(ProcessorModel processorModel) {
+
+		List<TrackStatistics> trackStatistics = new ArrayList<TrackStatistics>();
+		if(processorModel != null) {
+			for(ReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
+				trackStatistics.add(getTrackStatistics(referenceModel));
+			}
+			Collections.sort(trackStatistics, new TrackStatisticComparator(SortOrder.DESC));
+		}
+		return trackStatistics;
+	}
+
+	public static TrackStatistics getTrackStatistics(ReferenceModel referenceModel) {
+
+		TrackStatistics trackStatistics = new TrackStatistics();
+		if(referenceModel != null) {
+			trackStatistics.setReferenceGroup(referenceModel.getReferenceGroup());
+			for(TrackModel trackModel : referenceModel.getTrackModels().values()) {
+				trackStatistics.addTrackModel(trackModel);
+			}
+		}
+		return trackStatistics;
 	}
 
 	private static Pattern getPattern() {

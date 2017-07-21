@@ -12,12 +12,15 @@
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.listener.AbstractControllerComposite;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -33,6 +36,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
+import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackStatistics;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 
 public class EnhancedResultsEditor extends AbstractControllerComposite {
@@ -114,7 +120,6 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 
 	private Button createCalculateButton(Composite parent, GridData gridData) {
 
-		Shell shell = Display.getDefault().getActiveShell();
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Calculate");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CALCULATE, IApplicationImage.SIZE_16x16));
@@ -124,11 +129,34 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				MessageBox messageBox = new MessageBox(shell, SWT.YES | SWT.NO | SWT.CANCEL);
+				MessageBox messageBox = new MessageBox(Display.getDefault().getActiveShell(), SWT.YES | SWT.NO | SWT.CANCEL);
 				messageBox.setText("Calculate Identification");
-				messageBox.setMessage("Current results are overwritten when doing a new calculation.");
+				messageBox.setMessage("Overwrite the current calculation result?.");
 				if(messageBox.open() == SWT.YES) {
-					// TODO
+					/*
+					 * Calculate
+					 */
+					ProcessorModel processorModel = editorProcessor.getProcessorModel();
+					if(processorModel != null) {
+						DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
+						List<TrackStatistics> trackStatisticsList = DataProcessor.getTrackStatistics(processorModel);
+						StringBuilder builder = new StringBuilder();
+						Iterator<TrackStatistics> iterator = trackStatisticsList.iterator();
+						while(iterator.hasNext()) {
+							TrackStatistics trackStatistics = iterator.next();
+							builder.append("Reference: ");
+							builder.append(trackStatistics.getReferenceGroup());
+							builder.append(" (");
+							builder.append(decimalFormat.format(trackStatistics.getMatchProbability()));
+							builder.append("%)");
+							if(iterator.hasNext()) {
+								builder.append(" | ");
+							}
+						}
+						String calculatedResult = builder.toString();
+						processorModel.setCalculatedResult(calculatedResult);
+						resultsEditorUI.update(editorProcessor);
+					}
 				}
 			}
 		});

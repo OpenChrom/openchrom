@@ -15,7 +15,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.SampleLaneModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackModel;
 
 public class ResultsTreeViewerLabelProvider extends LabelProvider {
 
@@ -32,9 +32,9 @@ public class ResultsTreeViewerLabelProvider extends LabelProvider {
 		if(element instanceof ReferenceModel) {
 			ReferenceModel referenceModel = (ReferenceModel)element;
 			text = referenceModel.toString();
-		} else if(element instanceof SampleLaneModel) {
-			SampleLaneModel sampleLaneModel = (SampleLaneModel)element;
-			text = sampleLaneModel.toString();
+		} else if(element instanceof TrackModel) {
+			TrackModel trackModel = (TrackModel)element;
+			text = trackModel.toString();
 		} else {
 			text = "n.a.";
 		}

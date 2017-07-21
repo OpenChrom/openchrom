@@ -38,7 +38,7 @@ import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.SampleLaneModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 
@@ -197,7 +197,7 @@ public class ResultsEditorUI extends Composite {
 
 	private void createResultsList(Composite parent) {
 
-		resultsTreeViewerUI = new ResultsTreeViewerUI(parent, SWT.BORDER);
+		resultsTreeViewerUI = new ResultsTreeViewerUI(parent, SWT.NONE);
 		resultsTreeViewerUI.setLayoutData(getGridData(GridData.FILL_BOTH));
 	}
 
@@ -237,13 +237,13 @@ public class ResultsEditorUI extends Composite {
 			/*
 			 * Search
 			 */
-			List<SampleLaneModel> sampleLaneModels = new ArrayList<SampleLaneModel>();
+			List<TrackModel> trackModels = new ArrayList<TrackModel>();
 			for(ReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
-				for(SampleLaneModel sampleLaneModel : referenceModel.getSampleLaneModels().values()) {
+				for(TrackModel trackModel : referenceModel.getTrackModels().values()) {
 					/*
 					 * Prepare
 					 */
-					String content = sampleLaneModel.toString();
+					String content = trackModel.toString();
 					if(!searchCaseSensitive) {
 						content = content.toLowerCase();
 					}
@@ -251,11 +251,11 @@ public class ResultsEditorUI extends Composite {
 					 * Search
 					 */
 					if(content.contains(searchText)) {
-						sampleLaneModels.add(sampleLaneModel);
+						trackModels.add(trackModel);
 					}
 				}
 			}
-			resultsTreeViewerUI.setInput(sampleLaneModels);
+			resultsTreeViewerUI.setInput(trackModels);
 		}
 	}
 

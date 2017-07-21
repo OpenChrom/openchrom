@@ -18,14 +18,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.eclipse.chemclipse.support.text.ValueFormat;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
+public class TrackModel {
 
-public class SampleLaneModel {
-
-	@XmlElement(name = "SampleLane")
-	private int sampleLane = 0;
-	@XmlElement(name = "ReferenceLane")
-	private int referenceLane = 0;
+	@XmlElement(name = "SampleTrack")
+	private int sampleTrack = 0;
+	@XmlElement(name = "ReferenceTrack")
+	private int referenceTrack = 0;
+	@XmlElement(name = "ScanVelocity")
+	private int scanVelocity = 0;
 	@XmlElement(name = "StartRetentionTime")
 	private double startRetentionTime;
 	@XmlElement(name = "StopRetentionTime")
@@ -48,25 +48,36 @@ public class SampleLaneModel {
 	private String pathSnapshotReference = "";
 
 	@XmlTransient
-	public int getSampleLane() {
+	public int getSampleTrack() {
 
-		return sampleLane;
+		return sampleTrack;
 	}
 
-	public void setSampleLane(int sampleLane) {
+	public void setSampleTrack(int sampleTrack) {
 
-		this.sampleLane = sampleLane;
+		this.sampleTrack = sampleTrack;
 	}
 
 	@XmlTransient
-	public int getReferenceLane() {
+	public int getReferenceTrack() {
 
-		return referenceLane;
+		return referenceTrack;
 	}
 
-	public void setReferenceLane(int referenceLane) {
+	public void setReferenceTrack(int referenceTrack) {
 
-		this.referenceLane = referenceLane;
+		this.referenceTrack = referenceTrack;
+	}
+
+	@XmlTransient
+	public int getScanVelocity() {
+
+		return scanVelocity;
+	}
+
+	public void setScanVelocity(int scanVelocity) {
+
+		this.scanVelocity = scanVelocity;
 	}
 
 	@XmlTransient
@@ -183,33 +194,38 @@ public class SampleLaneModel {
 	public String toString() {
 
 		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.00");
-		double factor = PreferenceSupplier.getScanVelocity() / 1000.0d;
+		double factor = scanVelocity / 1000.0d;
+		//
 		StringBuilder builder = new StringBuilder();
-		builder.append("Lane Results");
+		builder.append("Sample Track: " + sampleTrack);
 		builder.append("\n");
-		builder.append("\tSample Lane: " + sampleLane);
+		builder.append("\tReference Track: " + referenceTrack);
 		builder.append("\n");
-		builder.append("\tReference Lane: " + referenceLane);
+		builder.append("\t\tScan Velocity [mm/s]: " + scanVelocity);
 		builder.append("\n");
-		builder.append("\tDistance Start [mm]: " + decimalFormat.format(startRetentionTime * factor));
+		builder.append("\t\tStart Retention Time [ms]: " + (int)startRetentionTime);
 		builder.append("\n");
-		builder.append("\tDistance Stop [mm]: " + decimalFormat.format(stopRetentionTime * factor));
+		builder.append("\t\tStop Retention Time [ms]: " + (int)stopRetentionTime);
 		builder.append("\n");
-		builder.append("\tStart Intensity: " + decimalFormat.format(startIntensity));
+		builder.append("\t\tStart Intensity: " + decimalFormat.format(startIntensity));
 		builder.append("\n");
-		builder.append("\tStop Intensity: " + decimalFormat.format(stopIntensity));
+		builder.append("\t\tStop Intensity: " + decimalFormat.format(stopIntensity));
 		builder.append("\n");
-		builder.append("\tSkipped: " + isSkipped);
+		builder.append("\t\tDistance Start [mm]: " + decimalFormat.format(startRetentionTime * factor));
 		builder.append("\n");
-		builder.append("\tEvaluated: " + isEvaluated);
+		builder.append("\t\tDistance Stop [mm]: " + decimalFormat.format(stopRetentionTime * factor));
 		builder.append("\n");
-		builder.append("\tMatched: " + isMatched);
+		builder.append("\t\tSkipped: " + isSkipped);
 		builder.append("\n");
-		builder.append("\tSnapshot Sample: " + pathSnapshotSample);
+		builder.append("\t\tEvaluated: " + isEvaluated);
 		builder.append("\n");
-		builder.append("\tSnapshot Reference: " + pathSnapshotReference);
+		builder.append("\t\tMatched: " + isMatched);
 		builder.append("\n");
-		builder.append("\tNotes: " + notes);
+		builder.append("\t\tSnapshot Sample: " + pathSnapshotSample);
+		builder.append("\n");
+		builder.append("\t\tSnapshot Reference: " + pathSnapshotReference);
+		builder.append("\n");
+		builder.append("\t\tNotes: " + notes);
 		return builder.toString();
 	}
 }

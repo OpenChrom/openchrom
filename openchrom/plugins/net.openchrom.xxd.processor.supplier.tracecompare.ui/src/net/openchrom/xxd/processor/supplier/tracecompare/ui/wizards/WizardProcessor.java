@@ -21,10 +21,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.core.Processor;
+import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelWriter;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 
 public class WizardProcessor extends AbstractFileWizard {
 
@@ -32,7 +31,7 @@ public class WizardProcessor extends AbstractFileWizard {
 	private PageFileSelection pageFileSelection;
 
 	public WizardProcessor() {
-		super("TraceCompare_" + new Date().getTime(), Processor.PROCESSOR_FILE_EXTENSION);
+		super("TraceCompare_" + new Date().getTime(), DataProcessor.PROCESSOR_FILE_EXTENSION);
 	}
 
 	@Override
@@ -65,7 +64,7 @@ public class WizardProcessor extends AbstractFileWizard {
 			/*
 			 * Images
 			 */
-			String projectDirectory = projectFile.getParentFile().toString() + File.separator + projectName.substring(0, projectName.length() - Processor.PROCESSOR_FILE_EXTENSION.length());
+			String projectDirectory = projectFile.getParentFile().toString() + File.separator + projectName.substring(0, projectName.length() - DataProcessor.PROCESSOR_FILE_EXTENSION.length());
 			String imageDirectory = projectDirectory + File.separator + "Images";
 			File images = new File(imageDirectory);
 			images.mkdirs();
@@ -73,7 +72,6 @@ public class WizardProcessor extends AbstractFileWizard {
 			 * Write the model
 			 */
 			ProcessorModel processorModel = wizardElements.getProcessorModel();
-			processorModel.setScanVelocity(PreferenceSupplier.getScanVelocity());
 			processorModel.setImageDirectory(imageDirectory);
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
 			processorModelWriter.write(file.getLocation().toFile(), processorModel, monitor);

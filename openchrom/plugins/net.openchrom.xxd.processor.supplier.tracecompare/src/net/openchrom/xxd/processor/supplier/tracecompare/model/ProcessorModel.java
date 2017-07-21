@@ -40,8 +40,6 @@ public class ProcessorModel {
 	private String calculatedResult = "";
 	@XmlElement(name = "GeneralNotes")
 	private String generalNotes = "";
-	@XmlElement(name = "ScanVelocity")
-	private int scanVelocity = 0;
 	@XmlElement(name = "ReferenceModels", type = ReferenceModel.class)
 	private Map<String, ReferenceModel> referenceModels = new HashMap<String, ReferenceModel>();
 
@@ -142,17 +140,6 @@ public class ProcessorModel {
 	public void setGeneralNotes(String generalNotes) {
 
 		this.generalNotes = generalNotes;
-	}
-
-	@XmlTransient
-	public int getScanVelocity() {
-
-		return scanVelocity;
-	}
-
-	public void setScanVelocity(int scanVelocity) {
-
-		this.scanVelocity = scanVelocity;
 	}
 
 	@XmlTransient

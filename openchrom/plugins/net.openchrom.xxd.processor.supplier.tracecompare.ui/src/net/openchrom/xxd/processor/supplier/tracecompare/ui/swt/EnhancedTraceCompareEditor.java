@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.SampleLaneModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences.PreferencePage;
 
@@ -147,20 +147,20 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 					Set<String> references = processorModel.getReferenceModels().keySet();
 					for(String reference : references) {
 						ReferenceModel referenceModel = processorModel.getReferenceModels().get(reference);
-						Set<Integer> sampleLanes = referenceModel.getSampleLaneModels().keySet();
-						for(Integer sampleLane : sampleLanes) {
+						Set<Integer> tracks = referenceModel.getTrackModels().keySet();
+						for(Integer track : tracks) {
 							/*
 							 * Check each model.
 							 */
-							SampleLaneModel sampleLaneModel = referenceModel.getSampleLaneModels().get(sampleLane);
-							if(sampleLaneModel.isSkipped()) {
+							TrackModel trackModel = referenceModel.getTrackModels().get(track);
+							if(trackModel.isSkipped()) {
 								continue;
 							}
 							/*
 							 * Mark non-evaluated samples.
 							 */
-							if(!sampleLaneModel.isEvaluated()) {
-								processingInfo.addWarnMessage(EVALUATE_REFERENCE, reference + " > SL " + sampleLane);
+							if(!trackModel.isEvaluated()) {
+								processingInfo.addWarnMessage(EVALUATE_REFERENCE, reference + " > Track " + track);
 							}
 						}
 					}

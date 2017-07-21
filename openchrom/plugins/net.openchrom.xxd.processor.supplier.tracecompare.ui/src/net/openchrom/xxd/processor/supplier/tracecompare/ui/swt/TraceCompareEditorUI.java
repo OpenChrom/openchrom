@@ -46,10 +46,10 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.core.Processor;
+import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.SampleLaneModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.runnables.MeasurementImportRunnable;
@@ -141,8 +141,8 @@ public class TraceCompareEditorUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				int sampleLane = tabFolder.getSelectionIndex() + 1;
-				Object object = traceData.get(sampleLane);
+				int track = tabFolder.getSelectionIndex() + 1;
+				Object object = traceData.get(track);
 				if(object instanceof TraceDataComparisonUI) {
 					TraceDataComparisonUI traceDataComparisonUI = (TraceDataComparisonUI)object;
 					traceDataComparisonUI.loadData();
@@ -158,7 +158,7 @@ public class TraceCompareEditorUI extends Composite {
 		comboReferenceGroups.removeAll();
 		String pathDirectory = PreferenceSupplier.getFilterPathReferences();
 		String fileExtension = PreferenceSupplier.getFileExtension();
-		List<String> references = Processor.getMeasurementPatterns(pathDirectory, fileExtension);
+		List<String> references = DataProcessor.getMeasurementPatterns(pathDirectory, fileExtension);
 		comboReferenceGroups.setItems(references.toArray(new String[references.size()]));
 		//
 		if(comboReferenceGroups.getItemCount() > 0) {
@@ -190,11 +190,11 @@ public class TraceCompareEditorUI extends Composite {
 			//
 			String samplePathDirectory = PreferenceSupplier.getFilterPathSamples();
 			String sampleGroup = processorModel.getSampleGroup();
-			sampleFiles = Processor.getMeasurementFiles(samplePathDirectory, fileExtension, sampleGroup);
+			sampleFiles = DataProcessor.getMeasurementFiles(samplePathDirectory, fileExtension, sampleGroup);
 			//
 			String referencePathDirectory = PreferenceSupplier.getFilterPathReferences();
 			String referenceGroup = comboReferenceGroups.getText().trim();
-			referenceFiles = Processor.getMeasurementFiles(referencePathDirectory, fileExtension, referenceGroup);
+			referenceFiles = DataProcessor.getMeasurementFiles(referencePathDirectory, fileExtension, referenceGroup);
 		}
 		/*
 		 * Clear the tab folder.
@@ -207,17 +207,17 @@ public class TraceCompareEditorUI extends Composite {
 		 * Validate that files have been selected.
 		 */
 		if(sampleFiles.size() > 0 && referenceFiles.size() > 0) {
-			createSampleLaneTabItems(sampleFiles, referenceFiles);
+			createTrackTabItems(sampleFiles, referenceFiles);
 		} else {
 			createEmptyTabItem();
 		}
 	}
 
-	private void createSampleLaneTabItems(List<File> sampleFiles, List<File> referenceFiles) {
+	private void createTrackTabItems(List<File> sampleFiles, List<File> referenceFiles) {
 
 		TabItem tabItem;
 		Composite composite;
-		SampleLaneModel sampleLaneModel;
+		TrackModel trackModel;
 		/*
 		 * Get the model.
 		 */
@@ -234,17 +234,17 @@ public class TraceCompareEditorUI extends Composite {
 		/*
 		 * Extract the data.
 		 * 0196 [Group]
-		 * -> 1 [Sample Lane] -> 190 [nm], ISeriesData
-		 * -> 1 [Sample Lane] -> 200 [nm], ISeriesData
+		 * -> 1 [Track] -> 190 [nm], ISeriesData
+		 * -> 1 [Track] -> 200 [nm], ISeriesData
 		 * ...
-		 * -> 18 [Sample Lane] -> 190 [nm], ISeriesData
-		 * -> 18 [Sample Lane] -> 200 [nm], ISeriesData
+		 * -> 18 [Track] -> 190 [nm], ISeriesData
+		 * -> 18 [Track] -> 200 [nm], ISeriesData
 		 * 0197 [Group]
-		 * -> 1 [Sample Lane] -> 190 [nm], ISeriesData
-		 * -> 1 [Sample Lane] -> 200 [nm], ISeriesData
+		 * -> 1 [Track] -> 190 [nm], ISeriesData
+		 * -> 1 [Track] -> 200 [nm], ISeriesData
 		 * ...
-		 * -> 18 [Sample Lane] -> 190 [nm], ISeriesData
-		 * -> 18 [Sample Lane] -> 200 [nm], ISeriesData
+		 * -> 18 [Track] -> 190 [nm], ISeriesData
+		 * -> 18 [Track] -> 200 [nm], ISeriesData
 		 */
 		Map<Integer, Map<String, ISeriesData>> sampleMeasurementsData = modelData.get(sampleGroup);
 		if(sampleMeasurementsData == null) {
@@ -258,30 +258,33 @@ public class TraceCompareEditorUI extends Composite {
 			modelData.put(referenceGroup, referenceMeasurementsData);
 		}
 		/*
-		 * Sample Lanes
+		 * Tracks
 		 */
-		int sampleLanes = sampleMeasurementsData.keySet().size();
-		for(int sampleLane = 1; sampleLane <= sampleLanes; sampleLane++) {
+		int tracks = sampleMeasurementsData.keySet().size();
+		for(int track = 1; track <= tracks; track++) {
 			/*
-			 * Sample Lane
+			 * Track #
 			 */
-			sampleLaneModel = referenceModel.getSampleLaneModels().get(sampleLane);
-			if(sampleLaneModel == null) {
-				sampleLaneModel = new SampleLaneModel();
-				sampleLaneModel.setSampleLane(sampleLane);
-				referenceModel.getSampleLaneModels().put(sampleLane, sampleLaneModel);
+			trackModel = referenceModel.getTrackModels().get(track);
+			if(trackModel == null) {
+				trackModel = new TrackModel();
+				trackModel.setSampleTrack(track);
+				referenceModel.getTrackModels().put(track, trackModel);
 			}
 			//
+			trackModel.setScanVelocity(PreferenceSupplier.getScanVelocity());
+			trackModel.setReferenceTrack(track);
+			//
 			tabItem = new TabItem(tabFolder, SWT.NONE);
-			tabItem.setText("SL " + sampleLane);
+			tabItem.setText("Track " + track);
 			composite = new Composite(tabFolder, SWT.NONE);
 			composite.setLayout(new FillLayout());
 			TraceDataComparisonUI traceDataComparisonUI = new TraceDataComparisonUI(composite, SWT.BORDER);
 			traceDataComparisonUI.setBackground(Colors.WHITE);
-			traceDataComparisonUI.setData(editorProcessor, processorModel, sampleLaneModel, referenceGroup, sampleMeasurementsData, referenceMeasurementsData);
+			traceDataComparisonUI.setData(editorProcessor, processorModel, trackModel, referenceGroup, sampleMeasurementsData, referenceMeasurementsData);
 			tabItem.setControl(composite);
 			//
-			traceData.put(sampleLane, traceDataComparisonUI);
+			traceData.put(track, traceDataComparisonUI);
 		}
 	}
 
@@ -304,13 +307,13 @@ public class TraceCompareEditorUI extends Composite {
 		List<IChromatogramWSD> measurements = runnable.getMeasurements();
 		for(IChromatogram measurement : measurements) {
 			/*
-			 * Sample Lane 1
+			 * Track 1
 			 */
 			int index = 1;
 			seriesData = extractMeasurement(measurement);
 			addMeasurementData(measurementsData, seriesData, index++);
 			/*
-			 * Sample Lane 2 ... n
+			 * Track 2 ... n
 			 */
 			for(IChromatogram additionalMeasurement : measurement.getReferencedChromatograms()) {
 				seriesData = extractMeasurement(additionalMeasurement);

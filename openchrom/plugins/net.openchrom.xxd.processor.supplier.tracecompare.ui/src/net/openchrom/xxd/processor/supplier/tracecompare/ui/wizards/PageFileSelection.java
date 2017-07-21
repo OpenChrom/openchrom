@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.core.Processor;
+import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 
@@ -182,7 +182,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 				if(pathname != null) {
 					File file = new File(pathname);
 					if(file.exists()) {
-						sampleGroupText.setText(Processor.getSampleGroup(file.getName()));
+						sampleGroupText.setText(DataProcessor.getSampleGroup(file.getName()));
 						PreferenceSupplier.setFilterPathSamples(file.getParent());
 						labelSampleDirectory.setText(PreferenceSupplier.getFilterPathSamples());
 					} else {
@@ -243,7 +243,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 				if(pathname != null) {
 					File file = new File(pathname);
 					if(file.exists()) {
-						referenceGroupText.setText(Processor.getSampleGroup(file.getName()));
+						referenceGroupText.setText(DataProcessor.getSampleGroup(file.getName()));
 						PreferenceSupplier.setFilterPathReferences(file.getParent());
 						labelReferenceDirectory.setText(PreferenceSupplier.getFilterPathReferences());
 					} else {
@@ -286,7 +286,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		//
 		String samplePathDirectory = PreferenceSupplier.getFilterPathSamples();
 		String sampleGroup = sampleGroupText.getText().trim();
-		if(!Processor.measurementExists(samplePathDirectory, fileExtension, sampleGroup)) {
+		if(!DataProcessor.measurementExists(samplePathDirectory, fileExtension, sampleGroup)) {
 			message = "Please select the sample measurement(s).";
 		} else {
 			processorModel.setSamplePath(samplePathDirectory);
@@ -296,7 +296,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		if(message == null) {
 			String referencePathDirectory = PreferenceSupplier.getFilterPathReferences();
 			String referenceGroup = referenceGroupText.getText().trim();
-			if(!Processor.measurementExists(referencePathDirectory, fileExtension, referenceGroup)) {
+			if(!DataProcessor.measurementExists(referencePathDirectory, fileExtension, referenceGroup)) {
 				message = "Please select the reference measurement(s).";
 			} else {
 				processorModel.setReferencePath(referencePathDirectory);
