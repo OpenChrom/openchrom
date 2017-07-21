@@ -104,7 +104,10 @@ public class TraceDataComparisonUI extends Composite {
 		this.referenceGroup = referenceGroup;
 		this.sampleMeasurementsData = sampleMeasurementsData;
 		this.referenceMeasurementsData = referenceMeasurementsData;
-		//
+	}
+
+	public void loadData() {
+
 		int sampleLane = sampleLaneModel.getSampleLane();
 		setSampleData(sampleLane);
 		setReferenceData(sampleLane);
@@ -440,7 +443,7 @@ public class TraceDataComparisonUI extends Composite {
 		traceDataSettingsReference.setEnableRangeSelector(false);
 		traceDataSettingsReference.setShowAxisTitle(true);
 		traceDataSettingsReference.setEnableHorizontalSlider(true);
-		traceDataSettingsReference.setCreateMenu(false);
+		traceDataSettingsReference.setCreateMenu(true);
 		referenceDataUI = new TraceDataUI(parent, SWT.NONE, traceDataSettingsReference);
 		referenceDataUI.setLayoutData(getGridData());
 		/*

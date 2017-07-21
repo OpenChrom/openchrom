@@ -65,11 +65,13 @@ public class TraceCompareEditorUI extends Composite {
 	private TabFolder tabFolder;
 	private Text textGeneralNotes;
 	//
+	private Map<Integer, TraceDataComparisonUI> traceData;
 	private ProcessorModel processorModel;
 	private Map<String, Map<Integer, Map<String, ISeriesData>>> modelData = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
 
 	public TraceCompareEditorUI(Composite parent, int style) {
 		super(parent, style);
+		traceData = new HashMap<Integer, TraceDataComparisonUI>();
 		modelData = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
 		initialize(parent);
 	}
@@ -134,6 +136,19 @@ public class TraceCompareEditorUI extends Composite {
 
 		tabFolder = new TabFolder(parent, SWT.BOTTOM);
 		tabFolder.setLayoutData(getGridData(GridData.FILL_BOTH));
+		tabFolder.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				int sampleLane = tabFolder.getSelectionIndex() + 1;
+				Object object = traceData.get(sampleLane);
+				if(object instanceof TraceDataComparisonUI) {
+					TraceDataComparisonUI traceDataComparisonUI = (TraceDataComparisonUI)object;
+					traceDataComparisonUI.loadData();
+				}
+			}
+		});
 		//
 		initializeTraceComparators();
 	}
@@ -187,6 +202,7 @@ public class TraceCompareEditorUI extends Composite {
 		for(TabItem tabItem : tabFolder.getItems()) {
 			tabItem.dispose();
 		}
+		traceData.clear();
 		/*
 		 * Validate that files have been selected.
 		 */
@@ -264,6 +280,8 @@ public class TraceCompareEditorUI extends Composite {
 			traceDataComparisonUI.setBackground(Colors.WHITE);
 			traceDataComparisonUI.setData(editorProcessor, processorModel, sampleLaneModel, referenceGroup, sampleMeasurementsData, referenceMeasurementsData);
 			tabItem.setControl(composite);
+			//
+			traceData.put(sampleLane, traceDataComparisonUI);
 		}
 	}
 
