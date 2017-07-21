@@ -48,8 +48,8 @@ import org.eclipse.swt.widgets.Text;
 import org.swtchart.IAxis;
 import org.swtchart.Range;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 
 public class TraceDataComparisonUI extends Composite {
@@ -69,8 +69,8 @@ public class TraceDataComparisonUI extends Composite {
 	private TraceDataUI sampleDataUI;
 	private TraceDataUI referenceDataUI;
 	//
-	private ProcessorModel processorModel;
-	private TrackModel trackModel;
+	private IProcessorModel processorModel;
+	private ITrackModel trackModel;
 	private String sampleGroup;
 	private String referenceGroup;
 	private Map<Integer, Map<String, ISeriesData>> sampleMeasurementsData;
@@ -95,7 +95,7 @@ public class TraceDataComparisonUI extends Composite {
 		initialize();
 	}
 
-	public void setData(EditorProcessor editorProcessor, ProcessorModel processorModel, TrackModel trackModel, String referenceGroup, Map<Integer, Map<String, ISeriesData>> sampleMeasurementsData, Map<Integer, Map<String, ISeriesData>> referenceMeasurementsData) {
+	public void setData(EditorProcessor editorProcessor, IProcessorModel processorModel, ITrackModel trackModel, String referenceGroup, Map<Integer, Map<String, ISeriesData>> sampleMeasurementsData, Map<Integer, Map<String, ISeriesData>> referenceMeasurementsData) {
 
 		this.editorProcessor = editorProcessor;
 		this.processorModel = processorModel;
@@ -488,7 +488,7 @@ public class TraceDataComparisonUI extends Composite {
 		return builder.toString();
 	}
 
-	private void setElementStatus(TrackModel trackModel) {
+	private void setElementStatus(ITrackModel trackModel) {
 
 		if(trackModel.isEvaluated() || trackModel.isSkipped()) {
 			if(trackModel.isEvaluated()) {

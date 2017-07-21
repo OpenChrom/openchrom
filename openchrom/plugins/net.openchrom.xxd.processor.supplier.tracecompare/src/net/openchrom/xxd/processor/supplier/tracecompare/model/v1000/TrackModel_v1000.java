@@ -9,7 +9,7 @@
  *
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.processor.supplier.tracecompare.model;
+package net.openchrom.xxd.processor.supplier.tracecompare.model.v1000;
 
 import java.text.DecimalFormat;
 
@@ -18,7 +18,9 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.eclipse.chemclipse.support.text.ValueFormat;
 
-public class TrackModel {
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
+
+public class TrackModel_v1000 implements ITrackModel {
 
 	@XmlElement(name = "SampleTrack")
 	private int sampleTrack = 0;
@@ -47,144 +49,170 @@ public class TrackModel {
 	@XmlElement(name = "PathSnapshotReference")
 	private String pathSnapshotReference = "";
 
+	@Override
 	@XmlTransient
 	public int getSampleTrack() {
 
 		return sampleTrack;
 	}
 
+	@Override
 	public void setSampleTrack(int sampleTrack) {
 
 		this.sampleTrack = sampleTrack;
 	}
 
+	@Override
 	@XmlTransient
 	public int getReferenceTrack() {
 
 		return referenceTrack;
 	}
 
+	@Override
 	public void setReferenceTrack(int referenceTrack) {
 
 		this.referenceTrack = referenceTrack;
 	}
 
+	@Override
 	@XmlTransient
 	public int getScanVelocity() {
 
 		return scanVelocity;
 	}
 
+	@Override
 	public void setScanVelocity(int scanVelocity) {
 
 		this.scanVelocity = scanVelocity;
 	}
 
+	@Override
 	@XmlTransient
 	public double getStartRetentionTime() {
 
 		return startRetentionTime;
 	}
 
+	@Override
 	public void setStartRetentionTime(double startRetentionTime) {
 
 		this.startRetentionTime = startRetentionTime;
 	}
 
+	@Override
 	@XmlTransient
 	public double getStopRetentionTime() {
 
 		return stopRetentionTime;
 	}
 
+	@Override
 	public void setStopRetentionTime(double stopRetentionTime) {
 
 		this.stopRetentionTime = stopRetentionTime;
 	}
 
+	@Override
 	@XmlTransient
 	public double getStartIntensity() {
 
 		return startIntensity;
 	}
 
+	@Override
 	public void setStartIntensity(double startIntensity) {
 
 		this.startIntensity = startIntensity;
 	}
 
+	@Override
 	@XmlTransient
 	public double getStopIntensity() {
 
 		return stopIntensity;
 	}
 
+	@Override
 	public void setStopIntensity(double stopIntensity) {
 
 		this.stopIntensity = stopIntensity;
 	}
 
+	@Override
 	@XmlTransient
 	public boolean isSkipped() {
 
 		return isSkipped;
 	}
 
+	@Override
 	public void setSkipped(boolean isSkipped) {
 
 		this.isSkipped = isSkipped;
 	}
 
+	@Override
 	@XmlTransient
 	public boolean isEvaluated() {
 
 		return isEvaluated;
 	}
 
+	@Override
 	public void setEvaluated(boolean isEvaluated) {
 
 		this.isEvaluated = isEvaluated;
 	}
 
+	@Override
 	@XmlTransient
 	public boolean isMatched() {
 
 		return isMatched;
 	}
 
+	@Override
 	public void setMatched(boolean isMatched) {
 
 		this.isMatched = isMatched;
 	}
 
+	@Override
 	@XmlTransient
 	public String getNotes() {
 
 		return notes;
 	}
 
+	@Override
 	public void setNotes(String notes) {
 
 		this.notes = notes;
 	}
 
+	@Override
 	@XmlTransient
 	public String getPathSnapshotSample() {
 
 		return pathSnapshotSample;
 	}
 
+	@Override
 	public void setPathSnapshotSample(String pathSnapshotSample) {
 
 		this.pathSnapshotSample = pathSnapshotSample;
 	}
 
+	@Override
 	@XmlTransient
 	public String getPathSnapshotReference() {
 
 		return pathSnapshotReference;
 	}
 
+	@Override
 	public void setPathSnapshotReference(String pathSnapshotReference) {
 
 		this.pathSnapshotReference = pathSnapshotReference;

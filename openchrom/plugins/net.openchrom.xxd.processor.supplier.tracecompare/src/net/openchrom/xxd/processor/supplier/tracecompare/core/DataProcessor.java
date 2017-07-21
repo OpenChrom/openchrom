@@ -24,9 +24,9 @@ import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackStatistics;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 
@@ -119,11 +119,11 @@ public class DataProcessor {
 		return measurementFiles;
 	}
 
-	public static List<TrackStatistics> getTrackStatistics(ProcessorModel processorModel) {
+	public static List<TrackStatistics> getTrackStatistics(IProcessorModel processorModel) {
 
 		List<TrackStatistics> trackStatistics = new ArrayList<TrackStatistics>();
 		if(processorModel != null) {
-			for(ReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
+			for(IReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
 				trackStatistics.add(getTrackStatistics(referenceModel));
 			}
 			Collections.sort(trackStatistics, new TrackStatisticComparator(SortOrder.DESC));
@@ -131,12 +131,12 @@ public class DataProcessor {
 		return trackStatistics;
 	}
 
-	public static TrackStatistics getTrackStatistics(ReferenceModel referenceModel) {
+	public static TrackStatistics getTrackStatistics(IReferenceModel referenceModel) {
 
 		TrackStatistics trackStatistics = new TrackStatistics();
 		if(referenceModel != null) {
 			trackStatistics.setReferenceGroup(referenceModel.getReferenceGroup());
-			for(TrackModel trackModel : referenceModel.getTrackModels().values()) {
+			for(ITrackModel trackModel : referenceModel.getTrackModels().values()) {
 				trackStatistics.addTrackModel(trackModel);
 			}
 		}

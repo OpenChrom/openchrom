@@ -17,7 +17,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
 
 public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 
@@ -39,8 +39,8 @@ public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 			return ((List)inputElement).toArray();
 		} else if(inputElement instanceof Collection) {
 			return ((Collection)inputElement).toArray();
-		} else if(inputElement instanceof ReferenceModel) {
-			ReferenceModel referenceModel = (ReferenceModel)inputElement;
+		} else if(inputElement instanceof IReferenceModel) {
+			IReferenceModel referenceModel = (IReferenceModel)inputElement;
 			return referenceModel.getTrackModels().values().toArray();
 		}
 		//
@@ -55,8 +55,8 @@ public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 			return ((List)parentElement).toArray();
 		} else if(parentElement instanceof Collection) {
 			return ((Collection)parentElement).toArray();
-		} else if(parentElement instanceof ReferenceModel) {
-			ReferenceModel referenceModel = (ReferenceModel)parentElement;
+		} else if(parentElement instanceof IReferenceModel) {
+			IReferenceModel referenceModel = (IReferenceModel)parentElement;
 			return referenceModel.getTrackModels().values().toArray();
 		}
 		//
@@ -76,7 +76,7 @@ public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 			return true;
 		} else if(element instanceof Collection) {
 			return true;
-		} else if(element instanceof ReferenceModel) {
+		} else if(element instanceof IReferenceModel) {
 			return true;
 		}
 		return false;

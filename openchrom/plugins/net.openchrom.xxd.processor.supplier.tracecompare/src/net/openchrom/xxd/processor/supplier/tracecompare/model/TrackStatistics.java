@@ -38,7 +38,7 @@ public class TrackStatistics {
 		return matchProbability;
 	}
 
-	public void addTrackModel(TrackModel trackModel) {
+	public void addTrackModel(ITrackModel trackModel) {
 
 		if(trackModel != null) {
 			tracks++;

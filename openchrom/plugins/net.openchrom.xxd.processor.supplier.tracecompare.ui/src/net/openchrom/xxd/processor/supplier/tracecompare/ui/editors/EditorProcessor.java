@@ -29,7 +29,7 @@ import org.eclipse.ui.part.MultiPageEditorPart;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelReader;
 import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelWriter;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 
 public class EditorProcessor extends MultiPageEditorPart {
 
@@ -43,7 +43,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 	private PageTraceComparison pageTraceComparison;
 	private PageResults pageResults;
 	//
-	private ProcessorModel processorModel;
+	private IProcessorModel processorModel;
 	//
 	private boolean isDirty = false;
 
@@ -159,7 +159,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 		pageTraceComparison.setFocus();
 	}
 
-	public ProcessorModel getProcessorModel() {
+	public IProcessorModel getProcessorModel() {
 
 		return processorModel;
 	}

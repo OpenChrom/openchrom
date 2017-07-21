@@ -41,9 +41,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences.PreferencePage;
 
@@ -143,16 +143,16 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 				if(editorProcessor != null) {
 					IProcessingInfo processingInfo = new ProcessingInfo();
 					//
-					ProcessorModel processorModel = editorProcessor.getProcessorModel();
+					IProcessorModel processorModel = editorProcessor.getProcessorModel();
 					Set<String> references = processorModel.getReferenceModels().keySet();
 					for(String reference : references) {
-						ReferenceModel referenceModel = processorModel.getReferenceModels().get(reference);
+						IReferenceModel referenceModel = processorModel.getReferenceModels().get(reference);
 						Set<Integer> tracks = referenceModel.getTrackModels().keySet();
 						for(Integer track : tracks) {
 							/*
 							 * Check each model.
 							 */
-							TrackModel trackModel = referenceModel.getTrackModels().get(track);
+							ITrackModel trackModel = referenceModel.getTrackModels().get(track);
 							if(trackModel.isSkipped()) {
 								continue;
 							}

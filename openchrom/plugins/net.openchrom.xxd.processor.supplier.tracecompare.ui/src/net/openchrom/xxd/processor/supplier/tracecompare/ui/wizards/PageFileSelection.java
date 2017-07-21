@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 
 public class PageFileSelection extends AbstractExtendedWizardPage {
@@ -56,7 +56,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 	@Override
 	public boolean canFinish() {
 
-		ProcessorModel processorModel = wizardElements.getProcessorModel();
+		IProcessorModel processorModel = wizardElements.getProcessorModel();
 		//
 		if(getErrorMessage() != null) {
 			return false;
@@ -95,7 +95,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 
 		super.setVisible(visible);
 		if(visible) {
-			ProcessorModel processorModel = wizardElements.getProcessorModel();
+			IProcessorModel processorModel = wizardElements.getProcessorModel();
 			//
 			if(processorModel != null) {
 				/*
@@ -281,7 +281,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 	private void validateData() {
 
 		String message = null;
-		ProcessorModel processorModel = wizardElements.getProcessorModel();
+		IProcessorModel processorModel = wizardElements.getProcessorModel();
 		String fileExtension = PreferenceSupplier.getFileExtension();
 		//
 		String samplePathDirectory = PreferenceSupplier.getFilterPathSamples();

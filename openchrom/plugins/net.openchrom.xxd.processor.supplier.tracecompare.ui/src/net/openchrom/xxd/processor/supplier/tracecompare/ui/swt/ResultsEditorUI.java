@@ -36,9 +36,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.service.prefs.BackingStoreException;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 
@@ -52,7 +52,7 @@ public class ResultsEditorUI extends Composite {
 	private ResultsTreeViewerUI resultsTreeViewerUI;
 	private Text textCalculatedResult;
 	//
-	private ProcessorModel processorModel;
+	private IProcessorModel processorModel;
 
 	public ResultsEditorUI(Composite parent, int style) {
 		super(parent, style);
@@ -237,9 +237,9 @@ public class ResultsEditorUI extends Composite {
 			/*
 			 * Search
 			 */
-			List<TrackModel> trackModels = new ArrayList<TrackModel>();
-			for(ReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
-				for(TrackModel trackModel : referenceModel.getTrackModels().values()) {
+			List<ITrackModel> trackModels = new ArrayList<ITrackModel>();
+			for(IReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
+				for(ITrackModel trackModel : referenceModel.getTrackModels().values()) {
 					/*
 					 * Prepare
 					 */

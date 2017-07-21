@@ -14,8 +14,8 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.provider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
 
 public class ResultsTreeViewerLabelProvider extends LabelProvider {
 
@@ -29,11 +29,11 @@ public class ResultsTreeViewerLabelProvider extends LabelProvider {
 	public String getText(Object element) {
 
 		String text;
-		if(element instanceof ReferenceModel) {
-			ReferenceModel referenceModel = (ReferenceModel)element;
+		if(element instanceof IReferenceModel) {
+			IReferenceModel referenceModel = (IReferenceModel)element;
 			text = referenceModel.toString();
-		} else if(element instanceof TrackModel) {
-			TrackModel trackModel = (TrackModel)element;
+		} else if(element instanceof ITrackModel) {
+			ITrackModel trackModel = (ITrackModel)element;
 			text = trackModel.toString();
 		} else {
 			text = "n.a.";

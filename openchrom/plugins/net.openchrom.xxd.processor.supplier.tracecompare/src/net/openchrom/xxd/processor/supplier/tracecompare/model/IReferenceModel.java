@@ -9,11 +9,23 @@
  *
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.processor.supplier.tracecompare.ui.wizards;
+package net.openchrom.xxd.processor.supplier.tracecompare.model;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
+import java.util.Map;
 
-public interface IProcessorWizardElements {
+import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.TrackModel_v1000;
 
-	IProcessorModel getProcessorModel();
+public interface IReferenceModel {
+
+	String getReferenceGroup();
+
+	void setReferenceGroup(String referenceGroup);
+
+	String getReferencePath();
+
+	void setReferencePath(String referencePath);
+
+	Map<Integer, TrackModel_v1000> getTrackModels();
+
+	void setTrackModels(Map<Integer, TrackModel_v1000> trackModels);
 }

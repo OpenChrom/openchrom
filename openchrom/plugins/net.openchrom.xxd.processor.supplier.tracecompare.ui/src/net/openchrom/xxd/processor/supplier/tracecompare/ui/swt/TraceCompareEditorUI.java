@@ -47,9 +47,9 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ReferenceModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.ReferenceModel_v1000;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.TrackModel_v1000;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.runnables.MeasurementImportRunnable;
@@ -66,7 +66,7 @@ public class TraceCompareEditorUI extends Composite {
 	private Text textGeneralNotes;
 	//
 	private Map<Integer, TraceDataComparisonUI> traceData;
-	private ProcessorModel processorModel;
+	private IProcessorModel processorModel;
 	private Map<String, Map<Integer, Map<String, ISeriesData>>> modelData = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
 
 	public TraceCompareEditorUI(Composite parent, int style) {
@@ -217,16 +217,16 @@ public class TraceCompareEditorUI extends Composite {
 
 		TabItem tabItem;
 		Composite composite;
-		TrackModel trackModel;
+		TrackModel_v1000 trackModel;
 		/*
 		 * Get the model.
 		 */
 		String sampleGroup = processorModel.getSampleGroup();
 		String referenceGroup = comboReferenceGroups.getText().trim();
 		//
-		ReferenceModel referenceModel = processorModel.getReferenceModels().get(referenceGroup);
+		ReferenceModel_v1000 referenceModel = processorModel.getReferenceModels().get(referenceGroup);
 		if(referenceModel == null) {
-			referenceModel = new ReferenceModel();
+			referenceModel = new ReferenceModel_v1000();
 			referenceModel.setReferenceGroup(referenceGroup);
 			referenceModel.setReferencePath(PreferenceSupplier.getFilterPathReferences());
 			processorModel.getReferenceModels().put(referenceGroup, referenceModel);
@@ -267,7 +267,7 @@ public class TraceCompareEditorUI extends Composite {
 			 */
 			trackModel = referenceModel.getTrackModels().get(track);
 			if(trackModel == null) {
-				trackModel = new TrackModel();
+				trackModel = new TrackModel_v1000();
 				trackModel.setSampleTrack(track);
 				referenceModel.getTrackModels().put(track, trackModel);
 			}

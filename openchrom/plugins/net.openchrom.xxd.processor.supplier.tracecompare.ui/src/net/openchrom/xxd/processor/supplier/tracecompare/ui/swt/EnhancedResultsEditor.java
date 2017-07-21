@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackStatistics;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 
@@ -136,7 +136,7 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 					/*
 					 * Calculate
 					 */
-					ProcessorModel processorModel = editorProcessor.getProcessorModel();
+					IProcessorModel processorModel = editorProcessor.getProcessorModel();
 					if(processorModel != null) {
 						DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
 						List<TrackStatistics> trackStatisticsList = DataProcessor.getTrackStatistics(processorModel);

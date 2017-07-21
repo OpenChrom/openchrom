@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelWriter;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 
 public class WizardProcessor extends AbstractFileWizard {
 
@@ -71,7 +71,7 @@ public class WizardProcessor extends AbstractFileWizard {
 			/*
 			 * Write the model
 			 */
-			ProcessorModel processorModel = wizardElements.getProcessorModel();
+			IProcessorModel processorModel = wizardElements.getProcessorModel();
 			processorModel.setImageDirectory(imageDirectory);
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
 			processorModelWriter.write(file.getLocation().toFile(), processorModel, monitor);
