@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="ASCII"?>
 <fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_i7rlMJRkEeW3h-K0O5zQFg">
   <imports xsi:type="advanced:Area" xmi:id="_OzAxUJRlEeW3h-K0O5zQFg" elementId="org.eclipse.chemclipse.rcp.app.ui.editor"/>
-  <imports xsi:type="basic:Part" xmi:id="_ixIsoJRlEeW3h-K0O5zQFg" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.massSpectrumFileExplorerView"/>
   <imports xsi:type="basic:Part" xmi:id="_tiIKAJRlEeW3h-K0O5zQFg" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.massSpectrumEditListView"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_mj3M0JRkEeW3h-K0O5zQFg" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.perspectivestack.main">
     <elements xsi:type="advanced:Perspective" xmi:id="_z7ANEJRkEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.perspective.opentyper" selectedElement="_9PaXsJRkEeW3h-K0O5zQFg" label="OpenTyper" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/chromatogram.gif">
       <children xsi:type="basic:PartSashContainer" xmi:id="_9PaXsJRkEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partsashcontainer.0" horizontal="true">
         <children xsi:type="basic:PartSashContainer" xmi:id="_A0XsMJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partsashcontainer.1" containerData="1500" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_FMIWoJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partstack.0">
-            <children xsi:type="advanced:Placeholder" xmi:id="_l-L3cJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.placeholder.0" ref="_ixIsoJRlEeW3h-K0O5zQFg"/>
+            <children xsi:type="basic:Part" xmi:id="_3h5WAIdGEeepUP_iBlDE9w" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.part.MassSpectrumFileExplorer" contributionURI="bundleclass://net.openchrom.msd.identifier.supplier.opentyper.ui/net.openchrom.msd.identifier.supplier.opentyper.ui.views.MassSpectrumFileExplorer" label="Mass Spectrum File Explorer" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
           </children>
         </children>
         <children xsi:type="basic:PartSashContainer" xmi:id="_DIrRIJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partsashcontainer.2" horizontal="true">
