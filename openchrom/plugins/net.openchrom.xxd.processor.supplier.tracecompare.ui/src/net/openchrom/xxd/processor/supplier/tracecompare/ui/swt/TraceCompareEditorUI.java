@@ -132,6 +132,15 @@ public class TraceCompareEditorUI extends Composite {
 		});
 	}
 
+	public void selectTrack(int track) {
+
+		int size = tabFolder.getItemCount();
+		if(track > 0 && track <= size) {
+			loadTrack(track);
+			tabFolder.setSelection(track - 1);
+		}
+	}
+
 	private void createTraceComparators(Composite parent) {
 
 		tabFolder = new TabFolder(parent, SWT.BOTTOM);
@@ -142,15 +151,23 @@ public class TraceCompareEditorUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				int track = tabFolder.getSelectionIndex() + 1;
-				Object object = traceData.get(track);
-				if(object instanceof TraceDataComparisonUI) {
-					TraceDataComparisonUI traceDataComparisonUI = (TraceDataComparisonUI)object;
-					traceDataComparisonUI.loadData();
-				}
+				loadTrack(track);
 			}
 		});
 		//
 		initializeTraceComparators();
+	}
+
+	private void loadTrack(int track) {
+
+		int tracksSize = traceData.keySet().size();
+		if(track > 0 && track < tracksSize) {
+			Object object = traceData.get(track);
+			if(object instanceof TraceDataComparisonUI) {
+				TraceDataComparisonUI traceDataComparisonUI = (TraceDataComparisonUI)object;
+				traceDataComparisonUI.loadData();
+			}
+		}
 	}
 
 	private void initializeReferencesComboItems() {
@@ -288,6 +305,9 @@ public class TraceCompareEditorUI extends Composite {
 			TraceDataComparisonUI traceDataComparisonUI = new TraceDataComparisonUI(composite, SWT.BORDER);
 			traceDataComparisonUI.setBackground(Colors.WHITE);
 			traceDataComparisonUI.setData(editorProcessor, processorModel, trackModel, referenceGroup, sampleMeasurementsData, referenceMeasurementsData);
+			int previousTrack = (track > 1) ? track - 1 : track;
+			int nextTrack = (track < tracks) ? track + 1 : track;
+			traceDataComparisonUI.setTrackInformation(this, previousTrack, nextTrack);
 			tabItem.setControl(composite);
 			//
 			traceData.put(track, traceDataComparisonUI);

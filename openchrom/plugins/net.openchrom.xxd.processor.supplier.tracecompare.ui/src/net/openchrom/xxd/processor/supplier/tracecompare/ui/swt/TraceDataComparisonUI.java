@@ -57,6 +57,9 @@ public class TraceDataComparisonUI extends Composite {
 	private static final int HORIZONTAL_INDENT = 15;
 	//
 	private EditorProcessor editorProcessor;
+	private TraceCompareEditorUI traceCompareEditorUI;
+	private int previousTrack;
+	private int nextTrack;
 	//
 	private Label labelTrack;
 	private Combo comboReferenceTracks;
@@ -104,6 +107,13 @@ public class TraceDataComparisonUI extends Composite {
 		this.referenceGroup = referenceGroup;
 		this.sampleMeasurementsData = sampleMeasurementsData;
 		this.referenceMeasurementsData = referenceMeasurementsData;
+	}
+
+	public void setTrackInformation(TraceCompareEditorUI traceCompareEditorUI, int previousTrack, int nextTrack) {
+
+		this.traceCompareEditorUI = traceCompareEditorUI;
+		this.previousTrack = previousTrack;
+		this.nextTrack = nextTrack;
 	}
 
 	public void loadData() {
@@ -227,19 +237,21 @@ public class TraceDataComparisonUI extends Composite {
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataComposite.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridDataComposite);
-		composite.setLayout(new GridLayout(6, false));
+		composite.setLayout(new GridLayout(8, false));
 		//
 		createButtons(composite);
 	}
 
 	private void createButtons(Composite parent) {
 
+		createButtonPreviousTrack(parent);
 		createComboReferenceTracks(parent);
 		createButtonFlipComments(parent);
 		createButtonCreateSnapshot(parent);
 		createButtonIsMatched(parent);
 		createButtonIsSkipped(parent);
 		createButtonIsEvaluated(parent);
+		createButtonNextTrack(parent);
 	}
 
 	private void createComboReferenceTracks(Composite parent) {
@@ -360,6 +372,42 @@ public class TraceDataComparisonUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				setEvaluated(!trackModel.isEvaluated());
+			}
+		});
+	}
+
+	private void createButtonPreviousTrack(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		button.setToolTipText("Select the previous track.");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PREVIOUS_YELLOW, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				if(traceCompareEditorUI != null) {
+					traceCompareEditorUI.selectTrack(previousTrack);
+				}
+			}
+		});
+	}
+
+	private void createButtonNextTrack(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		button.setToolTipText("Select the next track.");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_NEXT_YELLOW, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				if(traceCompareEditorUI != null) {
+					traceCompareEditorUI.selectTrack(nextTrack);
+				}
 			}
 		});
 	}
