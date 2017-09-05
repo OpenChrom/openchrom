@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ui
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.pdf.ui;singleton:=true
-Bundle-Version: 1.2.0.qualifier
+Bundle-Version: 1.3.0.qualifier
 Bundle-Activator: net.openchrom.msd.converter.supplier.pdf.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- net.openchrom.msd.converter.supplier.pdf;bundle-version="1.2.0",
+ net.openchrom.msd.converter.supplier.pdf;bundle-version="1.3.0",
  org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.support.ui;bundle-version="0.8.0",
  org.eclipse.e4.ui.model.workbench;bundle-version="1.1.0",
