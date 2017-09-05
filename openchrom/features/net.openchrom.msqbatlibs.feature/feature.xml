@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.msqbatlibs.feature"
       label="MSqBAT Libraries Feature"
-      version="1.2.0.qualifier"
+      version="1.3.0.qualifier"
       provider-name="OpenChrom">
 
    <description url="http://www.openchrom.net">

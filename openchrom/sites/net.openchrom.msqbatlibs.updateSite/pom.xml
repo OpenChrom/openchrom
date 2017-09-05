@@ -9,6 +9,6 @@
   </parent>
   <artifactId>net.openchrom.msqbatlibs.updateSite</artifactId>
   <packaging>eclipse-update-site</packaging>
-  <version>1.2.0-SNAPSHOT</version>
+  <version>1.3.0-SNAPSHOT</version>
   
 </project>
