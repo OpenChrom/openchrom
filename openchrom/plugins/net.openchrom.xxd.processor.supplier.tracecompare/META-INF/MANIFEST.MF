@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Trace Compare (Model)
 Bundle-SymbolicName: net.openchrom.xxd.processor.supplier.tracecompare;singleton:=true
-Bundle-Version: 1.2.0.qualifier
+Bundle-Version: 1.3.0.qualifier
 Bundle-Activator: net.openchrom.xxd.processor.supplier.tracecompare.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
