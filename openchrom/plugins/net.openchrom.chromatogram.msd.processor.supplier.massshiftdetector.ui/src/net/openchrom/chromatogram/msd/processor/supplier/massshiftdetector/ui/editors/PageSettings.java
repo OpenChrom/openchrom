@@ -23,7 +23,6 @@ import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.support.ui.addons.ModelSupportAddon;
 import org.eclipse.chemclipse.support.ui.editors.AbstractExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.editors.IExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
@@ -31,9 +30,6 @@ import org.eclipse.chemclipse.support.ui.wizards.IChromatogramWizardElements;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.ux.extension.msd.ui.support.ChromatogramSupport;
 import org.eclipse.chemclipse.ux.extension.msd.ui.wizards.ChromatogramInputEntriesWizard;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -548,10 +544,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				ProcessorData processorData = editorProcessor.getProcessorData();
 				if(processorData.getReferenceChromatogram() != null) {
 					IChromatogramMSD chromatogram = processorData.getReferenceChromatogram();
-					EModelService modelService = ModelSupportAddon.getModelService();
-					MApplication application = ModelSupportAddon.getApplication();
-					EPartService partService = ModelSupportAddon.getPartService();
-					ChromatogramSupport.getInstanceEditorSupport().openEditor(chromatogram, modelService, application, partService);
+					ChromatogramSupport.getInstanceEditorSupport().openEditor(chromatogram);
 				}
 			}
 		});
@@ -577,10 +570,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				ProcessorData processorData = editorProcessor.getProcessorData();
 				if(processorData.getIsotopeChromatogram() != null) {
 					IChromatogramMSD chromatogram = processorData.getIsotopeChromatogram();
-					EModelService modelService = ModelSupportAddon.getModelService();
-					MApplication application = ModelSupportAddon.getApplication();
-					EPartService partService = ModelSupportAddon.getPartService();
-					ChromatogramSupport.getInstanceEditorSupport().openEditor(chromatogram, modelService, application, partService);
+					ChromatogramSupport.getInstanceEditorSupport().openEditor(chromatogram);
 				}
 			}
 		});
