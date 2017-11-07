@@ -36,7 +36,6 @@ public class ScanMarkerListUI extends ExtendedTableViewer {
 	public ScanMarkerListUI(Composite parent, int style) {
 		super(parent, style);
 		createColumns();
-		addCopyToClipboardListener(titles);
 	}
 
 	private void createColumns() {

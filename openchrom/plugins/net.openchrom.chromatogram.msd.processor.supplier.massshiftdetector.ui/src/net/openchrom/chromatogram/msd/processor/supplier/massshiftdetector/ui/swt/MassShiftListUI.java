@@ -26,7 +26,6 @@ public class MassShiftListUI extends ExtendedTableViewer {
 	public MassShiftListUI(Composite parent, int style) {
 		super(parent, style);
 		createColumns();
-		addCopyToClipboardListener(titles);
 	}
 
 	private void createColumns() {
