@@ -26,8 +26,6 @@ import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -92,24 +90,6 @@ public class FormulaCalculatorView {
 		 */
 		formulaListTableComparator = new FormulaListTableComparator();
 		tableViewer.setComparator(formulaListTableComparator);
-		/*
-		 * Copy and Paste of the table content.
-		 */
-		tableViewer.getTable().addKeyListener(new KeyAdapter() {
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-
-				/*
-				 * The selected content will be placed to the clipboard if the
-				 * user is using "Function + c". "Function-Key" 262144
-				 * (stateMask) + "c" 99 (keyCode)
-				 */
-				if(e.keyCode == 99 && e.stateMask == 262144) {
-					tableViewer.copyToClipboard(titles);
-				}
-			}
-		});
 	}
 
 	@PreDestroy
