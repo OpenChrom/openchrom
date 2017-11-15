@@ -19,7 +19,7 @@ import java.util.List;
 import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
-import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumTarget;
+import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IScanTargetMSD;
 import org.eclipse.chemclipse.swt.ui.preferences.PreferenceSupplier;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
@@ -180,7 +180,7 @@ public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
 		return image;
 	}
 
-	private ILibraryInformation getLibraryInformation(List<IMassSpectrumTarget> targets) {
+	private ILibraryInformation getLibraryInformation(List<IScanTargetMSD> targets) {
 
 		ILibraryInformation libraryInformation = null;
 		targets = new ArrayList<>(targets);
