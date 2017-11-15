@@ -24,7 +24,7 @@ import org.eclipse.chemclipse.model.targets.IPeakTarget;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumTarget;
+import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IScanTargetMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -114,14 +114,14 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 		/*
 		 * Get the targets for each peak.
 		 */
-		List<IMassSpectrumTarget> targets = scanMSD.getTargets();
-		List<IMassSpectrumTarget> targetsToDelete = new ArrayList<IMassSpectrumTarget>();
-		for(IMassSpectrumTarget target : targets) {
+		List<IScanTargetMSD> targets = scanMSD.getTargets();
+		List<IScanTargetMSD> targetsToDelete = new ArrayList<IScanTargetMSD>();
+		for(IScanTargetMSD target : targets) {
 			/*
 			 * Check if the peak is a peak identification entry.
 			 */
-			if(target instanceof IMassSpectrumTarget) {
-				ILibraryInformation libraryInformation = ((IMassSpectrumTarget)target).getLibraryInformation();
+			if(target instanceof IScanTargetMSD) {
+				ILibraryInformation libraryInformation = ((IScanTargetMSD)target).getLibraryInformation();
 				if(libraryInformation.getSmiles().equals("")) {
 					/*
 					 * Calculate SMILES
