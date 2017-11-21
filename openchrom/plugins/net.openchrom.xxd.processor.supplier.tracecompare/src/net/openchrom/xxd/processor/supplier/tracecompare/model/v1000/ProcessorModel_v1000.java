@@ -30,14 +30,10 @@ public class ProcessorModel_v1000 implements IProcessorModel {
 	private String detectorType = "";
 	@XmlElement(name = "ImageDirectory")
 	private String imageDirectory = "";
-	@XmlElement(name = "SampleGroup")
-	private String sampleGroup = "";
-	@XmlElement(name = "SamplePath")
-	private String samplePath = "";
-	@XmlElement(name = "ReferenceGroup")
-	private String referenceGroup = "";
-	@XmlElement(name = "ReferencePath")
-	private String referencePath = "";
+	@XmlElement(name = "SampleDirectory")
+	private String sampleDirectory = "";
+	@XmlElement(name = "ReferenceDirectory")
+	private String referenceDirectory = "";
 	@XmlElement(name = "CalculatedResult")
 	private String calculatedResult = "";
 	@XmlElement(name = "GeneralNotes")
@@ -86,54 +82,28 @@ public class ProcessorModel_v1000 implements IProcessorModel {
 
 	@Override
 	@XmlTransient
-	public String getSampleGroup() {
+	public String getSampleDirectory() {
 
-		return sampleGroup;
+		return sampleDirectory;
 	}
 
 	@Override
-	public void setSampleGroup(String sampleGroup) {
+	public void setSampleDirectory(String sampleDirectory) {
 
-		this.sampleGroup = sampleGroup;
-	}
-
-	@Override
-	@XmlTransient
-	public String getSamplePath() {
-
-		return samplePath;
-	}
-
-	@Override
-	public void setSamplePath(String samplePath) {
-
-		this.samplePath = samplePath;
+		this.sampleDirectory = sampleDirectory;
 	}
 
 	@Override
 	@XmlTransient
-	public String getReferenceGroup() {
+	public String getReferenceDirectory() {
 
-		return referenceGroup;
+		return referenceDirectory;
 	}
 
 	@Override
-	public void setReferenceGroup(String referenceGroup) {
+	public void setReferenceDirectory(String referenceDirectory) {
 
-		this.referenceGroup = referenceGroup;
-	}
-
-	@Override
-	@XmlTransient
-	public String getReferencePath() {
-
-		return referencePath;
-	}
-
-	@Override
-	public void setReferencePath(String referencePath) {
-
-		this.referencePath = referencePath;
+		this.referenceDirectory = referenceDirectory;
 	}
 
 	@Override

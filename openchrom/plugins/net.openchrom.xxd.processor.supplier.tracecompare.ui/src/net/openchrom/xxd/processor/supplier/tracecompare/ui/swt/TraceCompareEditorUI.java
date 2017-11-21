@@ -38,13 +38,11 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
@@ -60,14 +58,14 @@ public class TraceCompareEditorUI extends Composite {
 	//
 	private EditorProcessor editorProcessor;
 	//
-	private Label labelSampleGroup;
-	private Combo comboReferenceGroups;
 	private TabFolder tabFolder;
-	private Text textGeneralNotes;
 	//
 	private Map<Integer, TraceDataComparisonUI> traceData;
 	private IProcessorModel processorModel;
 	private Map<String, Map<Integer, Map<String, ISeriesData>>> modelData = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
+	//
+	private String sampleGroup = "0196"; // TODO
+	private String referenceGroup = "0236"; // TODO
 
 	public TraceCompareEditorUI(Composite parent, int style) {
 		super(parent, style);
@@ -82,10 +80,7 @@ public class TraceCompareEditorUI extends Composite {
 			//
 			editorProcessor = (EditorProcessor)object;
 			processorModel = editorProcessor.getProcessorModel();
-			labelSampleGroup.setText(processorModel.getSampleGroup());
-			textGeneralNotes.setText(processorModel.getGeneralNotes());
 			if(tabFolder.getItems().length <= 1) {
-				initializeReferencesComboItems();
 				initializeTraceComparators();
 			}
 		}
@@ -95,41 +90,11 @@ public class TraceCompareEditorUI extends Composite {
 
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.NONE);
-		composite.setLayout(new GridLayout(2, false));
+		composite.setLayout(new GridLayout(1, false));
 		/*
 		 * Elements
 		 */
-		createLabelSampleGroup(composite);
-		createReferenceGroupsCombo(composite);
 		createTraceComparators(composite);
-		createGeneralNotes(composite);
-	}
-
-	private void createLabelSampleGroup(Composite parent) {
-
-		Label label = new Label(parent, SWT.NONE);
-		label.setText("Sample Group:");
-		//
-		labelSampleGroup = new Label(parent, SWT.NONE);
-		labelSampleGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-	}
-
-	private void createReferenceGroupsCombo(Composite parent) {
-
-		Label label = new Label(parent, SWT.NONE);
-		label.setText("Reference Group:");
-		//
-		comboReferenceGroups = new Combo(parent, SWT.READ_ONLY);
-		initializeReferencesComboItems();
-		comboReferenceGroups.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		comboReferenceGroups.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				initializeTraceComparators();
-			}
-		});
 	}
 
 	public void selectTrack(int track) {
@@ -144,7 +109,7 @@ public class TraceCompareEditorUI extends Composite {
 	private void createTraceComparators(Composite parent) {
 
 		tabFolder = new TabFolder(parent, SWT.BOTTOM);
-		tabFolder.setLayoutData(getGridData(GridData.FILL_BOTH));
+		tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
 		tabFolder.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -170,31 +135,9 @@ public class TraceCompareEditorUI extends Composite {
 		}
 	}
 
-	private void initializeReferencesComboItems() {
-
-		comboReferenceGroups.removeAll();
-		String pathDirectory = PreferenceSupplier.getFilterPathReferences();
-		String fileExtension = PreferenceSupplier.getFileExtension();
-		List<String> references = DataProcessor.getMeasurementPatterns(pathDirectory, fileExtension);
-		comboReferenceGroups.setItems(references.toArray(new String[references.size()]));
-		//
-		if(comboReferenceGroups.getItemCount() > 0) {
-			if(processorModel != null) {
-				String referenceGroup = processorModel.getReferenceGroup();
-				int index = comboReferenceGroups.indexOf(referenceGroup);
-				if(index >= 0) {
-					comboReferenceGroups.select(index);
-				} else {
-					comboReferenceGroups.select(0);
-				}
-			} else {
-				comboReferenceGroups.select(0);
-			}
-		}
-	}
-
 	private void initializeTraceComparators() {
 
+		String fileExtension = PreferenceSupplier.getFileExtension();
 		/*
 		 * Get the sample and reference.
 		 */
@@ -202,16 +145,14 @@ public class TraceCompareEditorUI extends Composite {
 		List<File> referenceFiles = new ArrayList<File>();
 		//
 		if(processorModel != null) {
+			/*
+			 * Sample and reference files.
+			 */
+			String sampleDirectory = PreferenceSupplier.getSampleDirectory();
+			sampleFiles = DataProcessor.getMeasurementFiles(sampleDirectory, fileExtension, sampleGroup);
 			//
-			String fileExtension = PreferenceSupplier.getFileExtension();
-			//
-			String samplePathDirectory = PreferenceSupplier.getFilterPathSamples();
-			String sampleGroup = processorModel.getSampleGroup();
-			sampleFiles = DataProcessor.getMeasurementFiles(samplePathDirectory, fileExtension, sampleGroup);
-			//
-			String referencePathDirectory = PreferenceSupplier.getFilterPathReferences();
-			String referenceGroup = comboReferenceGroups.getText().trim();
-			referenceFiles = DataProcessor.getMeasurementFiles(referencePathDirectory, fileExtension, referenceGroup);
+			String referenceDirectory = PreferenceSupplier.getReferenceDirectory();
+			referenceFiles = DataProcessor.getMeasurementFiles(referenceDirectory, fileExtension, referenceGroup);
 		}
 		/*
 		 * Clear the tab folder.
@@ -238,14 +179,11 @@ public class TraceCompareEditorUI extends Composite {
 		/*
 		 * Get the model.
 		 */
-		String sampleGroup = processorModel.getSampleGroup();
-		String referenceGroup = comboReferenceGroups.getText().trim();
-		//
 		ReferenceModel_v1000 referenceModel = processorModel.getReferenceModels().get(referenceGroup);
 		if(referenceModel == null) {
 			referenceModel = new ReferenceModel_v1000();
 			referenceModel.setReferenceGroup(referenceGroup);
-			referenceModel.setReferencePath(PreferenceSupplier.getFilterPathReferences());
+			referenceModel.setReferencePath(PreferenceSupplier.getReferenceDirectory());
 			processorModel.getReferenceModels().put(referenceGroup, referenceModel);
 		}
 		/*
@@ -420,25 +358,5 @@ public class TraceCompareEditorUI extends Composite {
 		font.dispose();
 		//
 		tabItem.setControl(composite);
-	}
-
-	private void createGeneralNotes(Composite parent) {
-
-		Label label = new Label(parent, SWT.NONE);
-		label.setText("General notes:");
-		label.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
-		//
-		textGeneralNotes = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		textGeneralNotes.setText("");
-		GridData gridData = getGridData(GridData.FILL_HORIZONTAL);
-		gridData.heightHint = 100;
-		textGeneralNotes.setLayoutData(gridData);
-	}
-
-	private GridData getGridData(int style) {
-
-		GridData gridData = new GridData(style);
-		gridData.horizontalSpan = 2;
-		return gridData;
 	}
 }

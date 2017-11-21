@@ -29,21 +29,13 @@ public interface IProcessorModel {
 
 	void setImageDirectory(String imageDirectory);
 
-	String getSampleGroup();
+	String getSampleDirectory();
 
-	void setSampleGroup(String sampleGroup);
+	void setSampleDirectory(String sampleDirectory);
 
-	String getSamplePath();
+	String getReferenceDirectory();
 
-	void setSamplePath(String samplePath);
-
-	String getReferenceGroup();
-
-	void setReferenceGroup(String referenceGroup);
-
-	String getReferencePath();
-
-	void setReferencePath(String referencePath);
+	void setReferenceDirectory(String referenceDirectory);
 
 	String getCalculatedResult();
 

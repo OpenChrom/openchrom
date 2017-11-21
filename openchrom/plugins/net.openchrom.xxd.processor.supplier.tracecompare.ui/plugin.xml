@@ -26,4 +26,18 @@
             name="Trace Compare">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="Processors"
+            id="org.eclipse.chemclipse.processors">
+      </category>
+      <wizard
+            name="TraceCompare Report"
+            icon="icons/16x16/chromatogram.gif"
+            category="org.eclipse.chemclipse.processors"
+            class="net.openchrom.xxd.processor.supplier.tracecompare.ui.wizards.WizardProcessor"
+            id="net.openchrom.xxd.processor.supplier.tracecompare.ui.wizards.WizardProcessor">
+      </wizard>
+   </extension>       
 </plugin>

@@ -103,7 +103,7 @@ public class TraceDataComparisonUI extends Composite {
 		this.editorProcessor = editorProcessor;
 		this.processorModel = processorModel;
 		this.trackModel = trackModel;
-		this.sampleGroup = processorModel.getSampleGroup();
+		this.sampleGroup = "..."; // TODO processorModel.getSampleGroup();
 		this.referenceGroup = referenceGroup;
 		this.sampleMeasurementsData = sampleMeasurementsData;
 		this.referenceMeasurementsData = referenceMeasurementsData;

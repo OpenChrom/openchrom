@@ -14,6 +14,7 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 public class TraceDataSettings {
 
 	private boolean enableRangeSelector = false;
+	private boolean showRangeSelectorInitially = false;
 	private boolean showAxisTitle = false;
 	private boolean enableHorizontalSlider = false;
 	private boolean createMenu = false;
@@ -26,6 +27,16 @@ public class TraceDataSettings {
 	public void setEnableRangeSelector(boolean enableRangeSelector) {
 
 		this.enableRangeSelector = enableRangeSelector;
+	}
+
+	public boolean isShowRangeSelectorInitially() {
+
+		return showRangeSelectorInitially;
+	}
+
+	public void setShowRangeSelectorInitially(boolean showRangeSelectorInitially) {
+
+		this.showRangeSelectorInitially = showRangeSelectorInitially;
 	}
 
 	public boolean isShowAxisTitle() {

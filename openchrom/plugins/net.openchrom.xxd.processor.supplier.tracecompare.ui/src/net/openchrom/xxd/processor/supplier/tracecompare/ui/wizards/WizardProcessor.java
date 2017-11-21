@@ -16,6 +16,7 @@ import java.util.Date;
 
 import javax.xml.bind.JAXBException;
 
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.ui.wizards.AbstractFileWizard;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -27,8 +28,10 @@ import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 
 public class WizardProcessor extends AbstractFileWizard {
 
+	private static final Logger logger = Logger.getLogger(WizardProcessor.class);
+	//
 	private IProcessorWizardElements wizardElements = new ProcessorWizardElements();
-	private PageFileSelection pageFileSelection;
+	private PageDirectorySelection pageDirectorySelection;
 
 	public WizardProcessor() {
 		super("TraceCompare_" + new Date().getTime(), DataProcessor.PROCESSOR_FILE_EXTENSION);
@@ -41,14 +44,14 @@ public class WizardProcessor extends AbstractFileWizard {
 		/*
 		 * Pages must implement IExtendedWizardPage / extend AbstractExtendedWizardPage
 		 */
-		pageFileSelection = new PageFileSelection(wizardElements);
-		addPage(pageFileSelection);
+		pageDirectorySelection = new PageDirectorySelection(wizardElements);
+		addPage(pageDirectorySelection);
 	}
 
 	@Override
 	public boolean canFinish() {
 
-		boolean canFinish = pageFileSelection.canFinish();
+		boolean canFinish = pageDirectorySelection.canFinish();
 		return canFinish;
 	}
 
@@ -76,7 +79,7 @@ public class WizardProcessor extends AbstractFileWizard {
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
 			processorModelWriter.write(file.getLocation().toFile(), processorModel, monitor);
 		} catch(JAXBException e) {
-			System.out.println(e);
+			logger.warn(e);
 		}
 		/*
 		 * Refresh

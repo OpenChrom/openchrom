@@ -50,6 +50,7 @@ public class TraceDataUI extends LineChart {
 			IChartSettings chartSettings = getChartSettings();
 			chartSettings.setOrientation(SWT.HORIZONTAL);
 			chartSettings.setEnableRangeSelector(traceDataSettings.isEnableRangeSelector());
+			chartSettings.setShowRangeSelectorInitially(traceDataSettings.isShowRangeSelectorInitially());
 			if(traceDataSettings.isEnableRangeSelector()) {
 				chartSettings.setRangeSelectorDefaultAxisX(1); // Distance [mm]
 				chartSettings.setRangeSelectorDefaultAxisY(1); // Relative Intensity [%]

@@ -40,10 +40,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_FILE_PATTERN = "filePattern";
 	public static final String DEF_FILE_PATTERN = "(.*)(A)(\\d+)(\\.)(DFM)";
 	//
-	public static final String P_FILTER_PATH_SAMPLES = "filterPathSamples";
-	public static final String DEF_FILTER_PATH_SAMPLES = "";
-	public static final String P_FILTER_PATH_REFERNCES = "filterPathReferences";
-	public static final String DEF_FILTER_PATH_REFERNCES = "";
+	public static final String P_SAMPLE_DIRECTORY = "sampleDirectory";
+	public static final String DEF_SAMPLE_DIRECTORY = "";
+	public static final String P_REFERNCE_DIRECTORY = "referenceDirectory";
+	public static final String DEF_REFERNCE_DIRECTORY = "";
 	//
 	public static final String P_SEARCH_CASE_SENSITIVE = "searchCaseSensitive"; // $NON-NLS-1$
 	public static final boolean DEF_SEARCH_CASE_SENSITIVE = false; // $NON-NLS-1$
@@ -82,8 +82,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_DETECTOR_TYPE, DEF_DETECTOR_TYPE);
 		defaultValues.put(P_FILE_EXTENSION, DEF_FILE_EXTENSION);
 		defaultValues.put(P_FILE_PATTERN, DEF_FILE_PATTERN);
-		defaultValues.put(P_FILTER_PATH_SAMPLES, DEF_FILTER_PATH_SAMPLES);
-		defaultValues.put(P_FILTER_PATH_REFERNCES, DEF_FILTER_PATH_REFERNCES);
+		defaultValues.put(P_SAMPLE_DIRECTORY, DEF_SAMPLE_DIRECTORY);
+		defaultValues.put(P_REFERNCE_DIRECTORY, DEF_REFERNCE_DIRECTORY);
 		defaultValues.put(P_SEARCH_CASE_SENSITIVE, Boolean.toString(DEF_SEARCH_CASE_SENSITIVE));
 		defaultValues.put(P_SCAN_VELOCITY, Integer.toString(DEF_SCAN_VELOCITY));
 		return defaultValues;
@@ -136,24 +136,24 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return eclipsePreferences.get(P_FILE_PATTERN, DEF_FILE_PATTERN);
 	}
 
-	public static String getFilterPathSamples() {
+	public static String getSampleDirectory() {
 
-		return getFilterPath(P_FILTER_PATH_SAMPLES, DEF_FILTER_PATH_SAMPLES);
+		return getDirectoryPath(P_SAMPLE_DIRECTORY, DEF_SAMPLE_DIRECTORY);
 	}
 
-	public static void setFilterPathSamples(String filterPath) {
+	public static void setSampleDirectory(String filterPath) {
 
-		setFilterPath(P_FILTER_PATH_SAMPLES, filterPath);
+		setFilterPath(P_SAMPLE_DIRECTORY, filterPath);
 	}
 
-	public static String getFilterPathReferences() {
+	public static String getReferenceDirectory() {
 
-		return getFilterPath(P_FILTER_PATH_REFERNCES, DEF_FILTER_PATH_REFERNCES);
+		return getDirectoryPath(P_REFERNCE_DIRECTORY, DEF_REFERNCE_DIRECTORY);
 	}
 
-	public static void setFilterPathReferences(String filterPath) {
+	public static void setReferenceDirectory(String filterPath) {
 
-		setFilterPath(P_FILTER_PATH_REFERNCES, filterPath);
+		setFilterPath(P_REFERNCE_DIRECTORY, filterPath);
 	}
 
 	public static boolean isSearchCaseSensitive() {
@@ -179,7 +179,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return eclipsePreferences.getInt(P_SCAN_VELOCITY, DEF_SCAN_VELOCITY);
 	}
 
-	private static String getFilterPath(String key, String def) {
+	private static String getDirectoryPath(String key, String def) {
 
 		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
 		return eclipsePreferences.get(key, def);

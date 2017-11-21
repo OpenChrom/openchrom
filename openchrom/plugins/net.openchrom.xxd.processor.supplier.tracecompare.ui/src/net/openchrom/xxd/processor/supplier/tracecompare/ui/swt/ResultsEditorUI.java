@@ -65,7 +65,7 @@ public class ResultsEditorUI extends Composite {
 			EditorProcessor editorProcessor = (EditorProcessor)object;
 			processorModel = editorProcessor.getProcessorModel();
 			//
-			labelSample.setText("Unknown Sample: " + processorModel.getSampleGroup());
+			labelSample.setText("Unknown Sample: ..."); // TODO processorModel.getSampleGroup()
 			textGeneralNotes.setText(processorModel.getGeneralNotes());
 			textCalculatedResult.setText(processorModel.getCalculatedResult());
 			resultsTreeViewerUI.setInput(processorModel.getReferenceModels().values());
