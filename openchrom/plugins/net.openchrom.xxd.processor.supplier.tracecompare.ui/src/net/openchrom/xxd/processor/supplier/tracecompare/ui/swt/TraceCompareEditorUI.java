@@ -215,7 +215,7 @@ public class TraceCompareEditorUI extends Composite {
 		/*
 		 * Tracks
 		 */
-		int tracks = sampleMeasurementsData.keySet().size();
+		int tracks = 2; // TODO sampleMeasurementsData.keySet().size();
 		for(int track = 1; track <= tracks; track++) {
 			/*
 			 * Track #
