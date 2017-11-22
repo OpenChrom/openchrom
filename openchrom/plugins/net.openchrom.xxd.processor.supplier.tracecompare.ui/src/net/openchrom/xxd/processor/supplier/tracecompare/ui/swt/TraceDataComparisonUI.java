@@ -353,16 +353,18 @@ public class TraceDataComparisonUI extends Composite {
 		ISeriesData seriesData = wavelengthData.get(wavelength);
 		boolean isReference = seriesData.getId().startsWith(REFERENCE);
 		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
-		ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
-		lineSerieSettings.setEnableArea(false);
+		ILineSeriesSettings lineSeriesSettings = lineSeriesData.getLineSeriesSettings();
+		lineSeriesSettings.setEnableArea(false);
 		if(isReference) {
-			lineSerieSettings.setLineStyle(LineStyle.DASH);
-			lineSerieSettings.setLineWidth(2);
+			lineSeriesSettings.setLineStyle(LineStyle.DASH);
+			lineSeriesSettings.setLineWidth(2);
 		} else {
-			lineSerieSettings.setLineStyle(LineStyle.SOLID);
-			lineSerieSettings.setLineWidth(1);
+			lineSeriesSettings.setLineStyle(LineStyle.SOLID);
+			lineSeriesSettings.setLineWidth(1);
 		}
-		lineSerieSettings.setLineColor((colorMap.containsKey(wavelength)) ? colorMap.get(wavelength) : colorDefault);
+		lineSeriesSettings.setLineColor((colorMap.containsKey(wavelength)) ? colorMap.get(wavelength) : colorDefault);
+		ILineSeriesSettings lineSeriesSettingsHighlight = (ILineSeriesSettings)lineSeriesSettings.getSeriesSettingsHighlight();
+		lineSeriesSettingsHighlight.setLineWidth(3);
 		lineSeriesDataList.add(lineSeriesData);
 	}
 
@@ -754,6 +756,7 @@ public class TraceDataComparisonUI extends Composite {
 		chartSettings.setVerticalSliderVisible(false);
 		chartSettings.getRangeRestriction().setZeroX(true);
 		chartSettings.getRangeRestriction().setZeroY(true);
+		chartSettings.setSupportDataShift(true);
 		chartSettings.setCreateMenu(true);
 		traceDataUI.applySettings(chartSettings);
 	}
