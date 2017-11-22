@@ -51,7 +51,8 @@ public class TraceCompareEditorUI extends Composite {
 	private static final Logger logger = Logger.getLogger(TraceCompareEditorUI.class);
 	//
 	private EditorProcessor editorProcessor;
-	private TraceDataComparisonUI traceDataComparisonUI;
+	private TraceDataComparisonUI traceComparatorSample;
+	private TraceDataComparisonUI traceComparatorValidation;
 	//
 	private IProcessorModel processorModel;
 	private Map<String, Map<Integer, Map<String, ISeriesData>>> modelData = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
@@ -79,18 +80,26 @@ public class TraceCompareEditorUI extends Composite {
 
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.NONE);
-		composite.setLayout(new GridLayout(1, false));
+		composite.setLayout(new GridLayout(2, true));
 		/*
 		 * Elements
 		 */
-		createTraceComparators(composite);
+		createTraceComparatorSample(composite);
+		createTraceComparatorValidation(composite);
 	}
 
-	private void createTraceComparators(Composite parent) {
+	private void createTraceComparatorSample(Composite parent) {
 
-		traceDataComparisonUI = new TraceDataComparisonUI(parent, SWT.BORDER);
-		traceDataComparisonUI.setLayoutData(new GridData(GridData.FILL_BOTH));
-		traceDataComparisonUI.setBackground(Colors.WHITE);
+		traceComparatorSample = new TraceDataComparisonUI(parent, SWT.BORDER);
+		traceComparatorSample.setLayoutData(new GridData(GridData.FILL_BOTH));
+		traceComparatorSample.setBackground(Colors.WHITE);
+	}
+
+	private void createTraceComparatorValidation(Composite parent) {
+
+		traceComparatorValidation = new TraceDataComparisonUI(parent, SWT.BORDER);
+		traceComparatorValidation.setLayoutData(new GridData(GridData.FILL_BOTH));
+		traceComparatorValidation.setBackground(Colors.WHITE);
 	}
 
 	private void initializeData() {
@@ -168,11 +177,16 @@ public class TraceCompareEditorUI extends Composite {
 			trackModel.setReferenceTrack(track);
 		}
 		//
-		traceDataComparisonUI.setData(editorProcessor, processorModel, trackModel, referenceGroup, sampleMeasurementsData, referenceMeasurementsData);
 		int previousTrack = (track > 1) ? track - 1 : track;
 		int nextTrack = (track < 2) ? track + 1 : track;
-		traceDataComparisonUI.setTrackInformation(this, previousTrack, nextTrack);
-		traceDataComparisonUI.loadData();
+		//
+		traceComparatorSample.setData(editorProcessor, processorModel, trackModel, referenceGroup, sampleMeasurementsData, referenceMeasurementsData);
+		traceComparatorSample.setTrackInformation(previousTrack, nextTrack);
+		traceComparatorSample.loadData("Sample", sampleGroup);
+		//
+		traceComparatorValidation.setData(editorProcessor, processorModel, trackModel, referenceGroup, sampleMeasurementsData, referenceMeasurementsData);
+		traceComparatorValidation.setTrackInformation(previousTrack, nextTrack);
+		traceComparatorValidation.loadData("Validation", sampleGroup);
 	}
 
 	private Map<Integer, Map<String, ISeriesData>> extractMeasurementsData(List<File> measurementFiles) {

@@ -57,7 +57,6 @@ public class TraceDataComparisonUI extends Composite {
 	private static final int HORIZONTAL_INDENT = 15;
 	//
 	private EditorProcessor editorProcessor;
-	private TraceCompareEditorUI traceCompareEditorUI;
 	private int previousTrack;
 	private int nextTrack;
 	//
@@ -103,21 +102,20 @@ public class TraceDataComparisonUI extends Composite {
 		this.editorProcessor = editorProcessor;
 		this.processorModel = processorModel;
 		this.trackModel = trackModel;
-		this.sampleGroup = "..."; // TODO processorModel.getSampleGroup();
 		this.referenceGroup = referenceGroup;
 		this.sampleMeasurementsData = sampleMeasurementsData;
 		this.referenceMeasurementsData = referenceMeasurementsData;
 	}
 
-	public void setTrackInformation(TraceCompareEditorUI traceCompareEditorUI, int previousTrack, int nextTrack) {
+	public void setTrackInformation(int previousTrack, int nextTrack) {
 
-		this.traceCompareEditorUI = traceCompareEditorUI;
 		this.previousTrack = previousTrack;
 		this.nextTrack = nextTrack;
 	}
 
-	public void loadData() {
+	public void loadData(String type, String sampleGroup) {
 
+		this.sampleGroup = sampleGroup;
 		sampleDataUI.getBaseChart().suspendUpdate(true);
 		referenceDataUI.getBaseChart().suspendUpdate(true);
 		int sampleTrack = trackModel.getSampleTrack();
@@ -129,7 +127,7 @@ public class TraceDataComparisonUI extends Composite {
 		referenceDataUI.getBaseChart().suspendUpdate(false);
 		//
 		notesText.setText(trackModel.getNotes());
-		setSampleTrack(trackModel.getSampleTrack(), sampleGroup);
+		setSampleTrack(type, sampleGroup, trackModel.getSampleTrack());
 		//
 		String imageMatched = (trackModel.isMatched()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
 		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImage.SIZE_16x16));
@@ -156,12 +154,12 @@ public class TraceDataComparisonUI extends Composite {
 		}
 	}
 
-	private void setSampleTrack(int track, String sample) {
+	private void setSampleTrack(String type, String sample, int track) {
 
 		Display display = Display.getDefault();
 		Font font = new Font(display, "Arial", 14, SWT.BOLD);
 		labelTrack.setFont(font);
-		labelTrack.setText(sample + " > Track " + Integer.toString(track));
+		labelTrack.setText(type + ": " + sample + " > Track " + Integer.toString(track));
 		font.dispose();
 	}
 
@@ -216,8 +214,9 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void initialize() {
 
-		setLayout(new GridLayout(2, true));
+		setLayout(new GridLayout(1, true));
 		//
+		createLabelSection(this);
 		createButtonSection(this);
 		createCommentsSection(this);
 		createTraceDataSection(this);
@@ -225,14 +224,17 @@ public class TraceDataComparisonUI extends Composite {
 		showComments(false);
 	}
 
-	private void createButtonSection(Composite parent) {
+	private void createLabelSection(Composite parent) {
 
 		labelTrack = new Label(parent, SWT.NONE);
 		labelTrack.setText("");
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataLabel.horizontalIndent = HORIZONTAL_INDENT;
 		labelTrack.setLayoutData(gridDataLabel);
-		//
+	}
+
+	private void createButtonSection(Composite parent) {
+
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataComposite.horizontalAlignment = SWT.END;
@@ -464,7 +466,7 @@ public class TraceDataComparisonUI extends Composite {
 
 		notesText = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.H_SCROLL);
 		notesText.setText("");
-		GridData gridData = getGridData();
+		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalIndent = HORIZONTAL_INDENT;
 		notesText.setLayoutData(gridData);
 		notesText.addModifyListener(new ModifyListener() {
@@ -485,7 +487,7 @@ public class TraceDataComparisonUI extends Composite {
 		traceDataSettingsSample.setEnableHorizontalSlider(false);
 		traceDataSettingsSample.setCreateMenu(true);
 		sampleDataUI = new TraceDataUI(parent, SWT.NONE, traceDataSettingsSample);
-		sampleDataUI.setLayoutData(getGridData());
+		sampleDataUI.setLayoutData(new GridData(GridData.FILL_BOTH));
 		//
 		TraceDataSettings traceDataSettingsReference = new TraceDataSettings();
 		traceDataSettingsReference.setEnableRangeSelector(false);
@@ -493,19 +495,12 @@ public class TraceDataComparisonUI extends Composite {
 		traceDataSettingsReference.setEnableHorizontalSlider(true);
 		traceDataSettingsReference.setCreateMenu(true);
 		referenceDataUI = new TraceDataUI(parent, SWT.NONE, traceDataSettingsReference);
-		referenceDataUI.setLayoutData(getGridData());
+		referenceDataUI.setLayoutData(new GridData(GridData.FILL_BOTH));
 		/*
 		 * Link both charts.
 		 */
 		sampleDataUI.addLinkedScrollableChart(referenceDataUI);
 		referenceDataUI.addLinkedScrollableChart(sampleDataUI);
-	}
-
-	private GridData getGridData() {
-
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		gridData.horizontalSpan = 2;
-		return gridData;
 	}
 
 	private void showComments(boolean isVisible) {
