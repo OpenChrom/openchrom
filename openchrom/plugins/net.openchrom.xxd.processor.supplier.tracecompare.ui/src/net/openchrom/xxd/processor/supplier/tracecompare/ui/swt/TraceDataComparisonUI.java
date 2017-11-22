@@ -13,6 +13,7 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.eavp.service.swtchart.core.BaseChart;
+import org.eclipse.eavp.service.swtchart.core.IChartSettings;
 import org.eclipse.eavp.service.swtchart.core.ISeriesData;
 import org.eclipse.eavp.service.swtchart.core.SeriesData;
 import org.eclipse.eavp.service.swtchart.images.ImageSupplier;
@@ -46,6 +48,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.swtchart.IAxis;
+import org.swtchart.LineStyle;
 import org.swtchart.Range;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
@@ -54,7 +57,11 @@ import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProces
 
 public class TraceDataComparisonUI extends Composite {
 
+	public static final String SAMPLE = "Sample";
+	public static final String REFERENCE = "Reference";
+	//
 	private static final int HORIZONTAL_INDENT = 15;
+	private static final String SHOW_ALL_WAVELENGTHS = "Show All";
 	//
 	private EditorProcessor editorProcessor;
 	private int previousTrack;
@@ -62,17 +69,18 @@ public class TraceDataComparisonUI extends Composite {
 	//
 	private Label labelTrack;
 	private Combo comboReferenceTracks;
+	private Combo comboWavelengths;
 	private Button buttonIsEvaluated;
 	private Button buttonIsMatched;
 	private Button buttonIsSkipped;
 	private Button buttonCreateSnapshot;
 	private Text notesText;
 	//
-	private TraceDataUI sampleDataUI;
-	private TraceDataUI referenceDataUI;
+	private TraceDataUI traceDataUI;
 	//
 	private IProcessorModel processorModel;
 	private ITrackModel trackModel;
+	private String type;
 	private String sampleGroup;
 	private String referenceGroup;
 	private Map<Integer, Map<String, ISeriesData>> sampleMeasurementsData;
@@ -85,13 +93,13 @@ public class TraceDataComparisonUI extends Composite {
 		super(parent, style);
 		//
 		colorMap = new HashMap<String, Color>();
-		colorMap.put("190", Colors.YELLOW);
-		colorMap.put("200", Colors.BLUE);
-		colorMap.put("220", Colors.CYAN);
-		colorMap.put("240", Colors.GREEN);
-		colorMap.put("260", Colors.BLACK);
-		colorMap.put("280", Colors.RED);
-		colorMap.put("300", Colors.DARK_RED);
+		colorMap.put("190", Colors.getColor(255, 255, 0));
+		colorMap.put("200", Colors.getColor(0, 0, 255));
+		colorMap.put("220", Colors.getColor(0, 255, 255));
+		colorMap.put("240", Colors.getColor(0, 255, 0));
+		colorMap.put("260", Colors.getColor(0, 0, 0));
+		colorMap.put("280", Colors.getColor(255, 0, 0));
+		colorMap.put("300", Colors.getColor(185, 0, 127));
 		colorDefault = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
 		//
 		initialize();
@@ -115,20 +123,36 @@ public class TraceDataComparisonUI extends Composite {
 
 	public void loadData(String type, String sampleGroup) {
 
+		this.type = type;
 		this.sampleGroup = sampleGroup;
-		sampleDataUI.getBaseChart().suspendUpdate(true);
-		referenceDataUI.getBaseChart().suspendUpdate(true);
+		//
 		int sampleTrack = trackModel.getSampleTrack();
+		initializeWavelengthsComboItems(sampleMeasurementsData.get(sampleTrack));
+		//
+		reloadData();
+	}
+
+	public void reloadData() {
+
+		/*
+		 * Update the chart and combo boxes.
+		 */
+		traceDataUI.getBaseChart().suspendUpdate(true);
+		traceDataUI.deleteSeries();
+		int sampleTrack = trackModel.getSampleTrack();
+		initializeReferenceTrackComboItems(sampleTrack, referenceMeasurementsData.keySet().size());
 		setSampleData(sampleTrack);
 		setReferenceData(sampleTrack);
 		trackModel.setReferenceTrack(sampleTrack);
-		initializeReferenceTrackComboItems(sampleTrack, referenceMeasurementsData.keySet().size());
-		sampleDataUI.getBaseChart().suspendUpdate(false);
-		referenceDataUI.getBaseChart().suspendUpdate(false);
-		//
+		traceDataUI.getBaseChart().suspendUpdate(false);
+		/*
+		 * Update the notes.
+		 */
 		notesText.setText(trackModel.getNotes());
-		setSampleTrack(type, sampleGroup, trackModel.getSampleTrack());
-		//
+		setSampleTrack(type, sampleGroup, sampleTrack);
+		/*
+		 * Update the buttons.
+		 */
 		String imageMatched = (trackModel.isMatched()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
 		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImage.SIZE_16x16));
 		String imageSkipped = (trackModel.isSkipped()) ? IApplicationImage.IMAGE_SKIPPED : IApplicationImage.IMAGE_SKIP;
@@ -143,14 +167,14 @@ public class TraceDataComparisonUI extends Composite {
 	private void setSampleData(int track) {
 
 		if(sampleMeasurementsData != null) {
-			sampleDataUI.addSeriesData(getLineSeriesDataList(sampleMeasurementsData, track), LineChart.MEDIUM_COMPRESSION);
+			traceDataUI.addSeriesData(getLineSeriesDataList(sampleMeasurementsData, track), LineChart.MEDIUM_COMPRESSION);
 		}
 	}
 
 	private void setReferenceData(int track) {
 
 		if(referenceMeasurementsData != null) {
-			referenceDataUI.addSeriesData(getLineSeriesDataList(referenceMeasurementsData, track), LineChart.MEDIUM_COMPRESSION);
+			traceDataUI.addSeriesData(getLineSeriesDataList(referenceMeasurementsData, track), LineChart.MEDIUM_COMPRESSION);
 		}
 	}
 
@@ -188,15 +212,32 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void addLineSeriesData(List<ILineSeriesData> lineSeriesDataList, Map<String, ISeriesData> wavelengthData) {
 
-		for(String wavelength : wavelengthData.keySet()) {
-			ISeriesData seriesData = wavelengthData.get(wavelength);
-			ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
-			ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
-			lineSerieSettings.setDescription(wavelength + " nm");
-			lineSerieSettings.setEnableArea(false);
-			lineSerieSettings.setLineColor((colorMap.containsKey(wavelength)) ? colorMap.get(wavelength) : colorDefault);
-			lineSeriesDataList.add(lineSeriesData);
+		String wavelengthSelection = comboWavelengths.getText();
+		if(wavelengthSelection.equals(SHOW_ALL_WAVELENGTHS)) {
+			for(String wavelength : wavelengthData.keySet()) {
+				addWavelengthData(lineSeriesDataList, wavelengthData, wavelength);
+			}
+		} else {
+			addWavelengthData(lineSeriesDataList, wavelengthData, wavelengthSelection);
 		}
+	}
+
+	private void addWavelengthData(List<ILineSeriesData> lineSeriesDataList, Map<String, ISeriesData> wavelengthData, String wavelength) {
+
+		ISeriesData seriesData = wavelengthData.get(wavelength);
+		boolean isReference = seriesData.getId().startsWith(REFERENCE);
+		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
+		ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
+		lineSerieSettings.setEnableArea(false);
+		if(isReference) {
+			lineSerieSettings.setLineStyle(LineStyle.DASH);
+			lineSerieSettings.setLineWidth(2);
+		} else {
+			lineSerieSettings.setLineStyle(LineStyle.SOLID);
+			lineSerieSettings.setLineWidth(1);
+		}
+		lineSerieSettings.setLineColor((colorMap.containsKey(wavelength)) ? colorMap.get(wavelength) : colorDefault);
+		lineSeriesDataList.add(lineSeriesData);
 	}
 
 	private ILineSeriesData createEmptyLineSeriesData() {
@@ -239,21 +280,34 @@ public class TraceDataComparisonUI extends Composite {
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataComposite.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridDataComposite);
-		composite.setLayout(new GridLayout(8, false));
+		composite.setLayout(new GridLayout(10, false));
 		//
-		createButtons(composite);
+		createButtonPreviousTrack(composite);
+		createComboReferenceTracks(composite);
+		createComboWavelengths(composite);
+		createButtonFlipComments(composite);
+		createButtonCreateSnapshot(composite);
+		createButtonIsMatched(composite);
+		createButtonIsSkipped(composite);
+		createButtonIsEvaluated(composite);
+		createButtonToggleLegend(composite);
+		createButtonNextTrack(composite);
 	}
 
-	private void createButtons(Composite parent) {
+	private void createButtonPreviousTrack(Composite parent) {
 
-		createButtonPreviousTrack(parent);
-		createComboReferenceTracks(parent);
-		createButtonFlipComments(parent);
-		createButtonCreateSnapshot(parent);
-		createButtonIsMatched(parent);
-		createButtonIsSkipped(parent);
-		createButtonIsEvaluated(parent);
-		createButtonNextTrack(parent);
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		button.setToolTipText("Select the previous track.");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PREVIOUS_YELLOW, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				System.out.println("Previous Track: " + previousTrack);
+			}
+		});
 	}
 
 	private void createComboReferenceTracks(Composite parent) {
@@ -272,6 +326,23 @@ public class TraceDataComparisonUI extends Composite {
 				trackModel.setReferenceTrack(track);
 				setReferenceData(track);
 				setEvaluated(false);
+			}
+		});
+	}
+
+	private void createComboWavelengths(Composite parent) {
+
+		comboWavelengths = new Combo(parent, SWT.READ_ONLY);
+		GridData gridData = new GridData();
+		gridData.widthHint = 100;
+		comboWavelengths.setLayoutData(gridData);
+		initializeWavelengthsComboItems(null);
+		comboWavelengths.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				reloadData();
 			}
 		});
 	}
@@ -314,15 +385,10 @@ public class TraceDataComparisonUI extends Composite {
 
 				ImageSupplier imageSupplier = new ImageSupplier();
 				//
-				String fileNameSample = getImageName("Sample", sampleGroup, trackModel.getSampleTrack());
-				ImageData imageDataSample = imageSupplier.getImageData(sampleDataUI.getBaseChart());
+				String fileNameSample = getImageName("Sample+Reference", sampleGroup + "+" + referenceGroup, trackModel.getSampleTrack());
+				ImageData imageDataSample = imageSupplier.getImageData(traceDataUI.getBaseChart());
 				imageSupplier.saveImage(imageDataSample, fileNameSample, SWT.IMAGE_PNG);
 				trackModel.setPathSnapshotSample(fileNameSample);
-				//
-				String fileNameReference = getImageName("Reference", referenceGroup, trackModel.getReferenceTrack());
-				ImageData imageDataReference = imageSupplier.getImageData(referenceDataUI.getBaseChart());
-				imageSupplier.saveImage(imageDataReference, fileNameReference, SWT.IMAGE_PNG);
-				trackModel.setPathSnapshotReference(fileNameReference);
 				//
 				MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Save Image", "A screenshot of the sample and reference has been saved.");
 				editorProcessor.setDirty(true);
@@ -378,18 +444,17 @@ public class TraceDataComparisonUI extends Composite {
 		});
 	}
 
-	private void createButtonPreviousTrack(Composite parent) {
+	private void createButtonToggleLegend(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
-		button.setToolTipText("Select the previous track.");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PREVIOUS_YELLOW, IApplicationImage.SIZE_16x16));
+		button.setToolTipText("Toggle the chart legend");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_TAG, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				System.out.println("Previous Track: " + previousTrack);
+				traceDataUI.toggleSeriesLegendVisibility();
 			}
 		});
 	}
@@ -440,7 +505,7 @@ public class TraceDataComparisonUI extends Composite {
 		//
 		if(isEvaluated) {
 			setSkipped(false);
-			BaseChart baseChart = sampleDataUI.getBaseChart();
+			BaseChart baseChart = traceDataUI.getBaseChart();
 			IAxis xAxis = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
 			IAxis yAxis = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
 			Range rangeX = xAxis.getRange();
@@ -481,26 +546,20 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void createTraceDataSection(Composite parent) {
 
-		TraceDataSettings traceDataSettingsSample = new TraceDataSettings();
-		traceDataSettingsSample.setEnableRangeSelector(true);
-		traceDataSettingsSample.setShowAxisTitle(false);
-		traceDataSettingsSample.setEnableHorizontalSlider(false);
-		traceDataSettingsSample.setCreateMenu(true);
-		sampleDataUI = new TraceDataUI(parent, SWT.NONE, traceDataSettingsSample);
-		sampleDataUI.setLayoutData(new GridData(GridData.FILL_BOTH));
+		traceDataUI = new TraceDataUI(parent, SWT.NONE);
+		traceDataUI.setLayoutData(new GridData(GridData.FILL_BOTH));
 		//
-		TraceDataSettings traceDataSettingsReference = new TraceDataSettings();
-		traceDataSettingsReference.setEnableRangeSelector(false);
-		traceDataSettingsReference.setShowAxisTitle(true);
-		traceDataSettingsReference.setEnableHorizontalSlider(true);
-		traceDataSettingsReference.setCreateMenu(true);
-		referenceDataUI = new TraceDataUI(parent, SWT.NONE, traceDataSettingsReference);
-		referenceDataUI.setLayoutData(new GridData(GridData.FILL_BOTH));
-		/*
-		 * Link both charts.
-		 */
-		sampleDataUI.addLinkedScrollableChart(referenceDataUI);
-		referenceDataUI.addLinkedScrollableChart(sampleDataUI);
+		IChartSettings chartSettings = traceDataUI.getChartSettings();
+		chartSettings.setEnableRangeSelector(true);
+		chartSettings.setShowRangeSelectorInitially(false);
+		chartSettings.setRangeSelectorDefaultAxisX(1); // Distance [mm]
+		chartSettings.setRangeSelectorDefaultAxisY(1); // Relative Intensity [%]
+		chartSettings.setHorizontalSliderVisible(true);
+		chartSettings.setVerticalSliderVisible(false);
+		chartSettings.getRangeRestriction().setZeroX(true);
+		chartSettings.getRangeRestriction().setZeroY(true);
+		chartSettings.setCreateMenu(true);
+		traceDataUI.applySettings(chartSettings);
 	}
 
 	private void showComments(boolean isVisible) {
@@ -562,6 +621,7 @@ public class TraceDataComparisonUI extends Composite {
 		for(int i = 1; i <= numberTracks; i++) {
 			tracks.add("Reference Track " + i);
 		}
+		//
 		comboReferenceTracks.setItems(tracks.toArray(new String[tracks.size()]));
 		//
 		int size = comboReferenceTracks.getItemCount();
@@ -571,6 +631,29 @@ public class TraceDataComparisonUI extends Composite {
 			} else {
 				comboReferenceTracks.select(0);
 			}
+		}
+	}
+
+	private void initializeWavelengthsComboItems(Map<String, ISeriesData> wavelengthData) {
+
+		comboWavelengths.removeAll();
+		//
+		List<String> wavelenghts = new ArrayList<String>();
+		wavelenghts.add(SHOW_ALL_WAVELENGTHS);
+		//
+		if(wavelengthData != null) {
+			List<String> wavelengthList = new ArrayList<>(wavelengthData.keySet());
+			Collections.sort(wavelengthList);
+			for(String wavelength : wavelengthList) {
+				wavelenghts.add(wavelength);
+			}
+		}
+		//
+		comboWavelengths.setItems(wavelenghts.toArray(new String[wavelenghts.size()]));
+		//
+		int size = comboWavelengths.getItemCount();
+		if(size > 0 && comboWavelengths.getSelectionIndex() == -1) {
+			comboWavelengths.select(0);
 		}
 	}
 }

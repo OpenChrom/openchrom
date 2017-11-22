@@ -31,11 +31,8 @@ import net.openchrom.xxd.processor.supplier.tracecompare.ui.converter.Millisecon
 
 public class TraceDataUI extends LineChart {
 
-	private TraceDataSettings traceDataSettings;
-
-	public TraceDataUI(Composite parent, int style, TraceDataSettings traceDataSettings) {
+	public TraceDataUI(Composite parent, int style) {
 		super(parent, style);
-		this.traceDataSettings = traceDataSettings;
 		createControl();
 	}
 
@@ -48,18 +45,6 @@ public class TraceDataUI extends LineChart {
 
 		try {
 			IChartSettings chartSettings = getChartSettings();
-			chartSettings.setOrientation(SWT.HORIZONTAL);
-			chartSettings.setEnableRangeSelector(traceDataSettings.isEnableRangeSelector());
-			chartSettings.setShowRangeSelectorInitially(traceDataSettings.isShowRangeSelectorInitially());
-			if(traceDataSettings.isEnableRangeSelector()) {
-				chartSettings.setRangeSelectorDefaultAxisX(1); // Distance [mm]
-				chartSettings.setRangeSelectorDefaultAxisY(1); // Relative Intensity [%]
-			}
-			chartSettings.setHorizontalSliderVisible(traceDataSettings.isEnableHorizontalSlider());
-			chartSettings.setVerticalSliderVisible(false);
-			chartSettings.getRangeRestriction().setZeroX(true);
-			chartSettings.getRangeRestriction().setZeroY(true);
-			chartSettings.setCreateMenu(traceDataSettings.isCreateMenu());
 			//
 			IPrimaryAxisSettings primaryAxisSettingsX = chartSettings.getPrimaryAxisSettingsX();
 			primaryAxisSettingsX.setTitle("Retention Time (milliseconds)");
@@ -76,12 +61,7 @@ public class TraceDataUI extends LineChart {
 			primaryAxisSettingsY.setGridLineStyle(LineStyle.NONE);
 			primaryAxisSettingsY.setVisible(false);
 			//
-			String axisTitle = "";
-			if(traceDataSettings.isShowAxisTitle()) {
-				axisTitle = "Distance [mm]";
-			}
-			//
-			ISecondaryAxisSettings secondaryAxisSettingsX = new SecondaryAxisSettings(axisTitle, "mm", new MillisecondsToMillimeterConverter());
+			ISecondaryAxisSettings secondaryAxisSettingsX = new SecondaryAxisSettings("Distance [mm]", "mm", new MillisecondsToMillimeterConverter());
 			secondaryAxisSettingsX.setPosition(Position.Primary);
 			secondaryAxisSettingsX.setDecimalFormat(new DecimalFormat(("0.00"), new DecimalFormatSymbols(Locale.ENGLISH)));
 			secondaryAxisSettingsX.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));

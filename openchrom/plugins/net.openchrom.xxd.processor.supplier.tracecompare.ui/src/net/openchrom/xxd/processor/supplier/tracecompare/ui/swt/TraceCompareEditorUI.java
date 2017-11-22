@@ -148,13 +148,13 @@ public class TraceCompareEditorUI extends Composite {
 		 */
 		Map<Integer, Map<String, ISeriesData>> sampleMeasurementsData = modelData.get(sampleGroup);
 		if(sampleMeasurementsData == null) {
-			sampleMeasurementsData = extractMeasurementsData(sampleFiles);
+			sampleMeasurementsData = extractMeasurementsData(sampleFiles, TraceDataComparisonUI.SAMPLE);
 			modelData.put(sampleGroup, sampleMeasurementsData);
 		}
 		//
 		Map<Integer, Map<String, ISeriesData>> referenceMeasurementsData = modelData.get(referenceGroup);
 		if(referenceMeasurementsData == null) {
-			referenceMeasurementsData = extractMeasurementsData(referenceFiles);
+			referenceMeasurementsData = extractMeasurementsData(referenceFiles, TraceDataComparisonUI.REFERENCE);
 			modelData.put(referenceGroup, referenceMeasurementsData);
 		}
 		/*
@@ -189,7 +189,7 @@ public class TraceCompareEditorUI extends Composite {
 		traceComparatorValidation.loadData("Validation", sampleGroup);
 	}
 
-	private Map<Integer, Map<String, ISeriesData>> extractMeasurementsData(List<File> measurementFiles) {
+	private Map<Integer, Map<String, ISeriesData>> extractMeasurementsData(List<File> measurementFiles, String type) {
 
 		Map<Integer, Map<String, ISeriesData>> measurementsData = new HashMap<Integer, Map<String, ISeriesData>>();
 		//
@@ -204,6 +204,7 @@ public class TraceCompareEditorUI extends Composite {
 		}
 		//
 		ISeriesData seriesData;
+		String wavelength;
 		//
 		List<IChromatogramWSD> measurements = runnable.getMeasurements();
 		for(IChromatogram measurement : measurements) {
@@ -211,31 +212,33 @@ public class TraceCompareEditorUI extends Composite {
 			 * Track 1
 			 */
 			int index = 1;
-			seriesData = extractMeasurement(measurement);
-			addMeasurementData(measurementsData, seriesData, index++);
+			seriesData = extractMeasurement(measurement, type);
+			wavelength = Integer.toString(getWavelength(measurement));
+			addMeasurementData(measurementsData, wavelength, seriesData, index++);
 			/*
 			 * Track 2 ... n
 			 */
 			for(IChromatogram additionalMeasurement : measurement.getReferencedChromatograms()) {
-				seriesData = extractMeasurement(additionalMeasurement);
-				addMeasurementData(measurementsData, seriesData, index++);
+				seriesData = extractMeasurement(additionalMeasurement, type);
+				wavelength = Integer.toString(getWavelength(additionalMeasurement));
+				addMeasurementData(measurementsData, wavelength, seriesData, index++);
 			}
 		}
 		//
 		return measurementsData;
 	}
 
-	private void addMeasurementData(Map<Integer, Map<String, ISeriesData>> measurementsData, ISeriesData seriesData, int index) {
+	private void addMeasurementData(Map<Integer, Map<String, ISeriesData>> measurementsData, String wavelength, ISeriesData seriesData, int index) {
 
 		Map<String, ISeriesData> wavelengthData = measurementsData.get(index);
 		if(wavelengthData == null) {
 			wavelengthData = new HashMap<String, ISeriesData>();
 			measurementsData.put(index, wavelengthData);
 		}
-		wavelengthData.put(seriesData.getId(), seriesData);
+		wavelengthData.put(wavelength, seriesData);
 	}
 
-	private ISeriesData extractMeasurement(IChromatogram measurement) {
+	private ISeriesData extractMeasurement(IChromatogram measurement, String type) {
 
 		List<IScan> scans = measurement.getScans();
 		double[] xSeries = new double[scans.size()];
@@ -250,8 +253,11 @@ public class TraceCompareEditorUI extends Composite {
 			ySeries[index] = extractedWavelengthSignal.getAbundance(wavelength);
 			index++;
 		}
-		//
-		return new SeriesData(xSeries, ySeries, Integer.toString(wavelength));
+		/*
+		 * Sample 210 nm
+		 * ...
+		 */
+		return new SeriesData(xSeries, ySeries, type + " " + Integer.toString(wavelength) + " nm");
 	}
 
 	private int getWavelength(IChromatogram measurement) {
