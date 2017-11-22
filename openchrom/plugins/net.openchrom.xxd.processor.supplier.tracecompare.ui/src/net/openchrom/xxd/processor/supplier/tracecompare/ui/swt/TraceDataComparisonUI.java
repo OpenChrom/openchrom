@@ -64,10 +64,9 @@ public class TraceDataComparisonUI extends Composite {
 	private static final String SHOW_ALL_WAVELENGTHS = "Show All";
 	//
 	private EditorProcessor editorProcessor;
-	private int previousTrack;
-	private int nextTrack;
 	//
 	private Label labelTrack;
+	private Combo comboSampleTracks;
 	private Combo comboReferenceTracks;
 	private Combo comboWavelengths;
 	private Button buttonIsEvaluated;
@@ -115,12 +114,6 @@ public class TraceDataComparisonUI extends Composite {
 		this.referenceMeasurementsData = referenceMeasurementsData;
 	}
 
-	public void setTrackInformation(int previousTrack, int nextTrack) {
-
-		this.previousTrack = previousTrack;
-		this.nextTrack = nextTrack;
-	}
-
 	public void loadData(String type, String sampleGroup) {
 
 		this.type = type;
@@ -139,11 +132,17 @@ public class TraceDataComparisonUI extends Composite {
 		 */
 		traceDataUI.getBaseChart().suspendUpdate(true);
 		traceDataUI.deleteSeries();
+		//
 		int sampleTrack = trackModel.getSampleTrack();
-		initializeReferenceTrackComboItems(sampleTrack, referenceMeasurementsData.keySet().size());
+		initializeSampleTrackComboItems(sampleTrack, sampleMeasurementsData.keySet().size());
 		setSampleData(sampleTrack);
+		trackModel.setSampleTrack(sampleTrack);
+		//
+		int referenceTrack = trackModel.getReferenceTrack();
+		initializeReferenceTrackComboItems(referenceTrack, referenceMeasurementsData.keySet().size());
 		setReferenceData(sampleTrack);
-		trackModel.setReferenceTrack(sampleTrack);
+		trackModel.setReferenceTrack(referenceTrack);
+		//
 		traceDataUI.getBaseChart().suspendUpdate(false);
 		/*
 		 * Update the notes.
@@ -162,6 +161,12 @@ public class TraceDataComparisonUI extends Composite {
 		//
 		setElementStatus(trackModel);
 		editorProcessor.setDirty(true);
+	}
+
+	private void setTrackData(int track) {
+
+		setSampleData(track);
+		setReferenceData(track);
 	}
 
 	private void setSampleData(int track) {
@@ -258,7 +263,8 @@ public class TraceDataComparisonUI extends Composite {
 		setLayout(new GridLayout(1, true));
 		//
 		createLabelSection(this);
-		createButtonSection(this);
+		createButtonSectionTracks(this);
+		createButtonSectionIdentify(this);
 		createCommentsSection(this);
 		createTraceDataSection(this);
 		//
@@ -274,23 +280,18 @@ public class TraceDataComparisonUI extends Composite {
 		labelTrack.setLayoutData(gridDataLabel);
 	}
 
-	private void createButtonSection(Composite parent) {
+	private void createButtonSectionTracks(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataComposite.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridDataComposite);
-		composite.setLayout(new GridLayout(10, false));
+		composite.setLayout(new GridLayout(5, false));
 		//
 		createButtonPreviousTrack(composite);
+		createComboSampleTracks(composite);
 		createComboReferenceTracks(composite);
 		createComboWavelengths(composite);
-		createButtonFlipComments(composite);
-		createButtonCreateSnapshot(composite);
-		createButtonIsMatched(composite);
-		createButtonIsSkipped(composite);
-		createButtonIsEvaluated(composite);
-		createButtonToggleLegend(composite);
 		createButtonNextTrack(composite);
 	}
 
@@ -305,7 +306,34 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				System.out.println("Previous Track: " + previousTrack);
+				int track = comboSampleTracks.getSelectionIndex(); // no -1 as the index is 0 based
+				track = (track <= 0) ? 1 : track;
+				trackModel.setSampleTrack(track);
+				int selection = track - 1;
+				comboSampleTracks.select(selection);
+				comboReferenceTracks.select(selection);
+				setTrackData(track);
+			}
+		});
+	}
+
+	private void createComboSampleTracks(Composite parent) {
+
+		comboSampleTracks = new Combo(parent, SWT.READ_ONLY);
+		GridData gridData = new GridData();
+		gridData.widthHint = 220;
+		comboSampleTracks.setToolTipText("Sample Track");
+		comboSampleTracks.setLayoutData(gridData);
+		initializeSampleTrackComboItems(-1, 0);
+		comboSampleTracks.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				int track = comboSampleTracks.getSelectionIndex() + 1;
+				trackModel.setSampleTrack(track);
+				setSampleData(track);
+				setEvaluated(false);
 			}
 		});
 	}
@@ -315,6 +343,7 @@ public class TraceDataComparisonUI extends Composite {
 		comboReferenceTracks = new Combo(parent, SWT.READ_ONLY);
 		GridData gridData = new GridData();
 		gridData.widthHint = 220;
+		comboReferenceTracks.setToolTipText("Reference Track");
 		comboReferenceTracks.setLayoutData(gridData);
 		initializeReferenceTrackComboItems(-1, 0);
 		comboReferenceTracks.addSelectionListener(new SelectionAdapter() {
@@ -335,6 +364,7 @@ public class TraceDataComparisonUI extends Composite {
 		comboWavelengths = new Combo(parent, SWT.READ_ONLY);
 		GridData gridData = new GridData();
 		gridData.widthHint = 100;
+		comboWavelengths.setToolTipText("Selected Wavelength");
 		comboWavelengths.setLayoutData(gridData);
 		initializeWavelengthsComboItems(null);
 		comboWavelengths.addSelectionListener(new SelectionAdapter() {
@@ -345,6 +375,45 @@ public class TraceDataComparisonUI extends Composite {
 				reloadData();
 			}
 		});
+	}
+
+	private void createButtonNextTrack(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		button.setToolTipText("Select the next track.");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_NEXT_YELLOW, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				int sizeTracks = sampleMeasurementsData.keySet().size();
+				int track = comboSampleTracks.getSelectionIndex() + 2;
+				track = (track > sizeTracks) ? sizeTracks : track;
+				trackModel.setSampleTrack(track);
+				int selection = track - 1;
+				comboSampleTracks.select(selection);
+				comboReferenceTracks.select(selection);
+				setTrackData(track);
+			}
+		});
+	}
+
+	private void createButtonSectionIdentify(Composite parent) {
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
+		gridDataComposite.horizontalAlignment = SWT.END;
+		composite.setLayoutData(gridDataComposite);
+		composite.setLayout(new GridLayout(6, false));
+		//
+		createButtonFlipComments(composite);
+		createButtonCreateSnapshot(composite);
+		createButtonIsMatched(composite);
+		createButtonIsSkipped(composite);
+		createButtonIsEvaluated(composite);
+		createButtonToggleLegend(composite);
 	}
 
 	private void createButtonFlipComments(Composite parent) {
@@ -455,22 +524,6 @@ public class TraceDataComparisonUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				traceDataUI.toggleSeriesLegendVisibility();
-			}
-		});
-	}
-
-	private void createButtonNextTrack(Composite parent) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
-		button.setToolTipText("Select the next track.");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_NEXT_YELLOW, IApplicationImage.SIZE_16x16));
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				System.out.println("Next Track: " + nextTrack);
 			}
 		});
 	}
@@ -610,6 +663,27 @@ public class TraceDataComparisonUI extends Composite {
 			buttonIsMatched.setEnabled(true);
 			buttonIsSkipped.setEnabled(true);
 			buttonIsEvaluated.setEnabled(true);
+		}
+	}
+
+	private void initializeSampleTrackComboItems(int selectedTrack, int numberTracks) {
+
+		comboSampleTracks.removeAll();
+		//
+		List<String> tracks = new ArrayList<String>();
+		for(int i = 1; i <= numberTracks; i++) {
+			tracks.add("Sample Track " + i);
+		}
+		//
+		comboSampleTracks.setItems(tracks.toArray(new String[tracks.size()]));
+		//
+		int size = comboSampleTracks.getItemCount();
+		if(size > 0) {
+			if(selectedTrack > 0 && selectedTrack <= size) {
+				comboSampleTracks.select(selectedTrack - 1);
+			} else {
+				comboSampleTracks.select(0);
+			}
 		}
 	}
 

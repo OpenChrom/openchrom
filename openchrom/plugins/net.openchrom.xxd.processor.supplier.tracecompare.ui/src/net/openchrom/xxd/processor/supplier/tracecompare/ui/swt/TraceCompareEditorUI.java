@@ -177,15 +177,10 @@ public class TraceCompareEditorUI extends Composite {
 			trackModel.setReferenceTrack(track);
 		}
 		//
-		int previousTrack = (track > 1) ? track - 1 : track;
-		int nextTrack = (track < 2) ? track + 1 : track;
-		//
 		traceComparatorSample.setData(editorProcessor, processorModel, trackModel, referenceGroup, sampleMeasurementsData, referenceMeasurementsData);
-		traceComparatorSample.setTrackInformation(previousTrack, nextTrack);
 		traceComparatorSample.loadData("Sample", sampleGroup);
 		//
 		traceComparatorValidation.setData(editorProcessor, processorModel, trackModel, referenceGroup, sampleMeasurementsData, referenceMeasurementsData);
-		traceComparatorValidation.setTrackInformation(previousTrack, nextTrack);
 		traceComparatorValidation.loadData("Validation", sampleGroup);
 	}
 
