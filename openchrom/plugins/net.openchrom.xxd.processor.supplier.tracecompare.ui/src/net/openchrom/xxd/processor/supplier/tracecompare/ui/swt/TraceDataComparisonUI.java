@@ -387,9 +387,7 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if(traceCompareEditorUI != null) {
-					traceCompareEditorUI.selectTrack(previousTrack);
-				}
+				System.out.println("Previous Track: " + previousTrack);
 			}
 		});
 	}
@@ -405,9 +403,7 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if(traceCompareEditorUI != null) {
-					traceCompareEditorUI.selectTrack(nextTrack);
-				}
+				System.out.println("Next Track: " + nextTrack);
 			}
 		});
 	}

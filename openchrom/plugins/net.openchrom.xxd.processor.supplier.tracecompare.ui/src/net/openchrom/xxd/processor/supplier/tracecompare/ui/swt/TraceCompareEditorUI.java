@@ -32,17 +32,11 @@ import org.eclipse.eavp.service.swtchart.core.ISeriesData;
 import org.eclipse.eavp.service.swtchart.core.SeriesData;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
@@ -57,10 +51,8 @@ public class TraceCompareEditorUI extends Composite {
 	private static final Logger logger = Logger.getLogger(TraceCompareEditorUI.class);
 	//
 	private EditorProcessor editorProcessor;
+	private TraceDataComparisonUI traceDataComparisonUI;
 	//
-	private TabFolder tabFolder;
-	//
-	private Map<Integer, TraceDataComparisonUI> traceData;
 	private IProcessorModel processorModel;
 	private Map<String, Map<Integer, Map<String, ISeriesData>>> modelData = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
 	//
@@ -69,7 +61,6 @@ public class TraceCompareEditorUI extends Composite {
 
 	public TraceCompareEditorUI(Composite parent, int style) {
 		super(parent, style);
-		traceData = new HashMap<Integer, TraceDataComparisonUI>();
 		modelData = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
 		initialize(parent);
 	}
@@ -80,9 +71,7 @@ public class TraceCompareEditorUI extends Composite {
 			//
 			editorProcessor = (EditorProcessor)object;
 			processorModel = editorProcessor.getProcessorModel();
-			if(tabFolder.getItems().length <= 1) {
-				initializeTraceComparators();
-			}
+			initializeData();
 		}
 	}
 
@@ -97,45 +86,14 @@ public class TraceCompareEditorUI extends Composite {
 		createTraceComparators(composite);
 	}
 
-	public void selectTrack(int track) {
-
-		int size = tabFolder.getItemCount();
-		if(track > 0 && track <= size) {
-			loadTrack(track);
-			tabFolder.setSelection(track - 1);
-		}
-	}
-
 	private void createTraceComparators(Composite parent) {
 
-		tabFolder = new TabFolder(parent, SWT.BOTTOM);
-		tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
-		tabFolder.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				int track = tabFolder.getSelectionIndex() + 1;
-				loadTrack(track);
-			}
-		});
-		//
-		initializeTraceComparators();
+		traceDataComparisonUI = new TraceDataComparisonUI(parent, SWT.BORDER);
+		traceDataComparisonUI.setLayoutData(new GridData(GridData.FILL_BOTH));
+		traceDataComparisonUI.setBackground(Colors.WHITE);
 	}
 
-	private void loadTrack(int track) {
-
-		int tracksSize = traceData.keySet().size();
-		if(track > 0 && track < tracksSize) {
-			Object object = traceData.get(track);
-			if(object instanceof TraceDataComparisonUI) {
-				TraceDataComparisonUI traceDataComparisonUI = (TraceDataComparisonUI)object;
-				traceDataComparisonUI.loadData();
-			}
-		}
-	}
-
-	private void initializeTraceComparators() {
+	private void initializeData() {
 
 		String fileExtension = PreferenceSupplier.getFileExtension();
 		/*
@@ -154,28 +112,6 @@ public class TraceCompareEditorUI extends Composite {
 			String referenceDirectory = PreferenceSupplier.getReferenceDirectory();
 			referenceFiles = DataProcessor.getMeasurementFiles(referenceDirectory, fileExtension, referenceGroup);
 		}
-		/*
-		 * Clear the tab folder.
-		 */
-		for(TabItem tabItem : tabFolder.getItems()) {
-			tabItem.dispose();
-		}
-		traceData.clear();
-		/*
-		 * Validate that files have been selected.
-		 */
-		if(sampleFiles.size() > 0 && referenceFiles.size() > 0) {
-			createTrackTabItems(sampleFiles, referenceFiles);
-		} else {
-			createEmptyTabItem();
-		}
-	}
-
-	private void createTrackTabItems(List<File> sampleFiles, List<File> referenceFiles) {
-
-		TabItem tabItem;
-		Composite composite;
-		TrackModel_v1000 trackModel;
 		/*
 		 * Get the model.
 		 */
@@ -213,43 +149,30 @@ public class TraceCompareEditorUI extends Composite {
 			modelData.put(referenceGroup, referenceMeasurementsData);
 		}
 		/*
-		 * Tracks
+		 * Track #
 		 */
-		int tracks = 2; // TODO sampleMeasurementsData.keySet().size();
-		for(int track = 1; track <= tracks; track++) {
-			/*
-			 * Track #
-			 */
-			trackModel = referenceModel.getTrackModels().get(track);
-			if(trackModel == null) {
-				trackModel = new TrackModel_v1000();
-				trackModel.setSampleTrack(track);
-				referenceModel.getTrackModels().put(track, trackModel);
-			}
-			/*
-			 * Set the current velocity and the reference track.
-			 * Set the reference track only if it is 0.
-			 * The user may have selected another reference track.
-			 */
-			trackModel.setScanVelocity(PreferenceSupplier.getScanVelocity());
-			if(trackModel.getReferenceTrack() == 0) {
-				trackModel.setReferenceTrack(track);
-			}
-			//
-			tabItem = new TabItem(tabFolder, SWT.NONE);
-			tabItem.setText("Track " + track);
-			composite = new Composite(tabFolder, SWT.NONE);
-			composite.setLayout(new FillLayout());
-			TraceDataComparisonUI traceDataComparisonUI = new TraceDataComparisonUI(composite, SWT.BORDER);
-			traceDataComparisonUI.setBackground(Colors.WHITE);
-			traceDataComparisonUI.setData(editorProcessor, processorModel, trackModel, referenceGroup, sampleMeasurementsData, referenceMeasurementsData);
-			int previousTrack = (track > 1) ? track - 1 : track;
-			int nextTrack = (track < tracks) ? track + 1 : track;
-			traceDataComparisonUI.setTrackInformation(this, previousTrack, nextTrack);
-			tabItem.setControl(composite);
-			//
-			traceData.put(track, traceDataComparisonUI);
+		int track = 1;
+		TrackModel_v1000 trackModel = referenceModel.getTrackModels().get(track);
+		if(trackModel == null) {
+			trackModel = new TrackModel_v1000();
+			trackModel.setSampleTrack(track);
+			referenceModel.getTrackModels().put(track, trackModel);
 		}
+		/*
+		 * Set the current velocity and the reference track.
+		 * Set the reference track only if it is 0.
+		 * The user may have selected another reference track.
+		 */
+		trackModel.setScanVelocity(PreferenceSupplier.getScanVelocity());
+		if(trackModel.getReferenceTrack() == 0) {
+			trackModel.setReferenceTrack(track);
+		}
+		//
+		traceDataComparisonUI.setData(editorProcessor, processorModel, trackModel, referenceGroup, sampleMeasurementsData, referenceMeasurementsData);
+		int previousTrack = (track > 1) ? track - 1 : track;
+		int nextTrack = (track < 2) ? track + 1 : track;
+		traceDataComparisonUI.setTrackInformation(this, previousTrack, nextTrack);
+		traceDataComparisonUI.loadData();
 	}
 
 	private Map<Integer, Map<String, ISeriesData>> extractMeasurementsData(List<File> measurementFiles) {
@@ -330,33 +253,5 @@ public class TraceCompareEditorUI extends Composite {
 		}
 		//
 		return 0;
-	}
-
-	private void createEmptyTabItem() {
-
-		/*
-		 * No Data
-		 */
-		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-		tabItem.setText("Message");
-		//
-		Composite composite = new Composite(tabFolder, SWT.NONE);
-		composite.setLayout(new GridLayout(1, true));
-		composite.setBackground(Colors.GRAY);
-		//
-		Label label = new Label(composite, SWT.NONE);
-		Display display = Display.getDefault();
-		Font font = new Font(display, "Arial", 14, SWT.BOLD);
-		label.setFont(font);
-		label.setBackground(Colors.GRAY);
-		label.setText("No data has been selected yet.");
-		//
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		gridData.horizontalAlignment = SWT.CENTER;
-		gridData.verticalAlignment = SWT.CENTER;
-		label.setLayoutData(gridData);
-		font.dispose();
-		//
-		tabItem.setControl(composite);
 	}
 }
