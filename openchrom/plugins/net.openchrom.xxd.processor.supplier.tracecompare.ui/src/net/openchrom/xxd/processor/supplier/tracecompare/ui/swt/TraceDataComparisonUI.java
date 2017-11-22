@@ -84,6 +84,8 @@ public class TraceDataComparisonUI extends Composite {
 	private EditorProcessor editorProcessor;
 	//
 	private Label labelTrack;
+	private Combo comboSampleMeasurements;
+	private Combo comboReferenceMeasurements;
 	private Combo comboSampleTracks;
 	private Combo comboReferenceTracks;
 	private Combo comboWavelengths;
@@ -98,8 +100,8 @@ public class TraceDataComparisonUI extends Composite {
 	private IProcessorModel processorModel;
 	private ITrackModel trackModel;
 	private String type;
-	private String sampleGroup = "0196"; // TODO
-	private String referenceGroup = "0236"; // TODO
+	private String sampleGroup = ""; // "0196"
+	private String referenceGroup = ""; // "0236"
 	private Map<Integer, Map<String, ISeriesData>> sampleMeasurementsData;
 	private Map<Integer, Map<String, ISeriesData>> referenceMeasurementsData;
 	private Map<String, Map<Integer, Map<String, ISeriesData>>> modelData = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
@@ -118,7 +120,7 @@ public class TraceDataComparisonUI extends Composite {
 		colorMap.put("260", Colors.getColor(0, 0, 0));
 		colorMap.put("280", Colors.getColor(255, 0, 0));
 		colorMap.put("300", Colors.getColor(185, 0, 127));
-		colorDefault = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
+		colorDefault = Display.getDefault().getSystemColor(SWT.COLOR_GRAY);
 		//
 		initialize();
 	}
@@ -140,9 +142,15 @@ public class TraceDataComparisonUI extends Composite {
 			 * Sample and reference files.
 			 */
 			String sampleDirectory = PreferenceSupplier.getSampleDirectory();
+			List<String> samplePatterns = DataProcessor.getMeasurementPatterns(sampleDirectory, fileExtension);
+			setMeasurementComboItems(comboSampleMeasurements, samplePatterns);
+			sampleGroup = comboSampleMeasurements.getText();
 			sampleFiles = DataProcessor.getMeasurementFiles(sampleDirectory, fileExtension, sampleGroup);
 			//
 			String referenceDirectory = PreferenceSupplier.getReferenceDirectory();
+			List<String> referencePatterns = DataProcessor.getMeasurementPatterns(referenceDirectory, fileExtension);
+			setMeasurementComboItems(comboReferenceMeasurements, referencePatterns);
+			referenceGroup = comboReferenceMeasurements.getText();
 			referenceFiles = DataProcessor.getMeasurementFiles(referenceDirectory, fileExtension, referenceGroup);
 		}
 		/*
@@ -221,12 +229,12 @@ public class TraceDataComparisonUI extends Composite {
 		traceDataUI.deleteSeries();
 		//
 		int sampleTrack = trackModel.getSampleTrack();
-		initializeSampleTrackComboItems(sampleTrack, sampleMeasurementsData.keySet().size());
+		setTrackComboItems(comboSampleTracks, sampleTrack, sampleMeasurementsData.keySet().size());
 		setSampleData(sampleTrack);
 		trackModel.setSampleTrack(sampleTrack);
 		//
 		int referenceTrack = trackModel.getReferenceTrack();
-		initializeReferenceTrackComboItems(referenceTrack, referenceMeasurementsData.keySet().size());
+		setTrackComboItems(comboReferenceTracks, referenceTrack, referenceMeasurementsData.keySet().size());
 		setReferenceData(sampleTrack);
 		trackModel.setReferenceTrack(referenceTrack);
 		//
@@ -373,12 +381,13 @@ public class TraceDataComparisonUI extends Composite {
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataComposite.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridDataComposite);
-		composite.setLayout(new GridLayout(5, false));
+		composite.setLayout(new GridLayout(6, false));
 		//
 		createButtonPreviousTrack(composite);
+		createComboSampleMeasurements(composite);
 		createComboSampleTracks(composite);
+		createComboReferenceMeasurements(composite);
 		createComboReferenceTracks(composite);
-		createComboWavelengths(composite);
 		createButtonNextTrack(composite);
 	}
 
@@ -404,14 +413,29 @@ public class TraceDataComparisonUI extends Composite {
 		});
 	}
 
+	private void createComboSampleMeasurements(Composite parent) {
+
+		comboSampleMeasurements = new Combo(parent, SWT.READ_ONLY);
+		comboSampleMeasurements.setToolTipText("Samples");
+		comboSampleMeasurements.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		comboSampleMeasurements.setItems(new String[]{});
+		comboSampleMeasurements.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				sampleGroup = comboSampleMeasurements.getText();
+				reloadData();
+			}
+		});
+	}
+
 	private void createComboSampleTracks(Composite parent) {
 
 		comboSampleTracks = new Combo(parent, SWT.READ_ONLY);
-		GridData gridData = new GridData();
-		gridData.widthHint = 220;
 		comboSampleTracks.setToolTipText("Sample Track");
-		comboSampleTracks.setLayoutData(gridData);
-		initializeSampleTrackComboItems(-1, 0);
+		comboSampleTracks.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		setTrackComboItems(comboSampleTracks, -1, 0);
 		comboSampleTracks.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -425,14 +449,29 @@ public class TraceDataComparisonUI extends Composite {
 		});
 	}
 
+	private void createComboReferenceMeasurements(Composite parent) {
+
+		comboReferenceMeasurements = new Combo(parent, SWT.READ_ONLY);
+		comboReferenceMeasurements.setToolTipText("References");
+		comboReferenceMeasurements.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		comboReferenceMeasurements.setItems(new String[]{});
+		comboReferenceMeasurements.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				referenceGroup = comboReferenceMeasurements.getText();
+				reloadData();
+			}
+		});
+	}
+
 	private void createComboReferenceTracks(Composite parent) {
 
 		comboReferenceTracks = new Combo(parent, SWT.READ_ONLY);
-		GridData gridData = new GridData();
-		gridData.widthHint = 220;
 		comboReferenceTracks.setToolTipText("Reference Track");
-		comboReferenceTracks.setLayoutData(gridData);
-		initializeReferenceTrackComboItems(-1, 0);
+		comboReferenceTracks.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		setTrackComboItems(comboReferenceTracks, -1, 0);
 		comboReferenceTracks.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -442,24 +481,6 @@ public class TraceDataComparisonUI extends Composite {
 				trackModel.setReferenceTrack(track);
 				setReferenceData(track);
 				setEvaluated(false);
-			}
-		});
-	}
-
-	private void createComboWavelengths(Composite parent) {
-
-		comboWavelengths = new Combo(parent, SWT.READ_ONLY);
-		GridData gridData = new GridData();
-		gridData.widthHint = 100;
-		comboWavelengths.setToolTipText("Selected Wavelength");
-		comboWavelengths.setLayoutData(gridData);
-		initializeWavelengthsComboItems(null);
-		comboWavelengths.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				reloadData();
 			}
 		});
 	}
@@ -493,14 +514,33 @@ public class TraceDataComparisonUI extends Composite {
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataComposite.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridDataComposite);
-		composite.setLayout(new GridLayout(6, false));
+		composite.setLayout(new GridLayout(7, false));
 		//
+		createComboWavelengths(composite);
 		createButtonFlipComments(composite);
 		createButtonCreateSnapshot(composite);
 		createButtonIsMatched(composite);
 		createButtonIsSkipped(composite);
 		createButtonIsEvaluated(composite);
 		createButtonToggleLegend(composite);
+	}
+
+	private void createComboWavelengths(Composite parent) {
+
+		comboWavelengths = new Combo(parent, SWT.READ_ONLY);
+		comboWavelengths.setToolTipText("Selected Wavelength");
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.widthHint = 150;
+		comboWavelengths.setLayoutData(gridData);
+		initializeWavelengthsComboItems(null);
+		comboWavelengths.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				reloadData();
+			}
+		});
 	}
 
 	private void createButtonFlipComments(Composite parent) {
@@ -753,45 +793,35 @@ public class TraceDataComparisonUI extends Composite {
 		}
 	}
 
-	private void initializeSampleTrackComboItems(int selectedTrack, int numberTracks) {
+	private void setTrackComboItems(Combo combo, int selectedTrack, int numberTracks) {
 
-		comboSampleTracks.removeAll();
-		//
+		/*
+		 * Remove and set the items.
+		 */
+		combo.removeAll();
 		List<String> tracks = new ArrayList<String>();
 		for(int i = 1; i <= numberTracks; i++) {
-			tracks.add("Sample Track " + i);
+			tracks.add("Track " + i);
 		}
-		//
-		comboSampleTracks.setItems(tracks.toArray(new String[tracks.size()]));
-		//
-		int size = comboSampleTracks.getItemCount();
+		combo.setItems(tracks.toArray(new String[tracks.size()]));
+		/*
+		 * Select the default item.
+		 */
+		int size = combo.getItemCount();
 		if(size > 0) {
 			if(selectedTrack > 0 && selectedTrack <= size) {
-				comboSampleTracks.select(selectedTrack - 1);
+				combo.select(selectedTrack - 1);
 			} else {
-				comboSampleTracks.select(0);
+				combo.select(0);
 			}
 		}
 	}
 
-	private void initializeReferenceTrackComboItems(int selectedTrack, int numberTracks) {
+	private void setMeasurementComboItems(Combo combo, List<String> samplePatterns) {
 
-		comboReferenceTracks.removeAll();
-		//
-		List<String> tracks = new ArrayList<String>();
-		for(int i = 1; i <= numberTracks; i++) {
-			tracks.add("Reference Track " + i);
-		}
-		//
-		comboReferenceTracks.setItems(tracks.toArray(new String[tracks.size()]));
-		//
-		int size = comboReferenceTracks.getItemCount();
-		if(size > 0) {
-			if(selectedTrack > 0 && selectedTrack <= size) {
-				comboReferenceTracks.select(selectedTrack - 1);
-			} else {
-				comboReferenceTracks.select(0);
-			}
+		combo.setItems(samplePatterns.toArray(new String[samplePatterns.size()]));
+		if(combo.getItemCount() > 0) {
+			combo.select(0);
 		}
 	}
 
@@ -803,7 +833,7 @@ public class TraceDataComparisonUI extends Composite {
 		wavelenghts.add(SHOW_ALL_WAVELENGTHS);
 		//
 		if(wavelengthData != null) {
-			List<String> wavelengthList = new ArrayList<>(wavelengthData.keySet());
+			List<String> wavelengthList = new ArrayList<String>(wavelengthData.keySet());
 			Collections.sort(wavelengthList);
 			for(String wavelength : wavelengthList) {
 				wavelenghts.add(wavelength);

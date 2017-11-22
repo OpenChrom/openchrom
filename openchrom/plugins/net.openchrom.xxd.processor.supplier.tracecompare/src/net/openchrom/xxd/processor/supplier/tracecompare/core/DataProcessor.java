@@ -98,17 +98,17 @@ public class DataProcessor {
 		return patterns;
 	}
 
-	public static List<File> getMeasurementFiles(String pathDirectory, String fileExtension, String pattern) {
+	public static List<File> getMeasurementFiles(String pathDirectory, String fileExtension, String measurementPattern) {
 
 		List<File> measurementFiles = new ArrayList<File>();
 		//
-		if(!pathDirectory.equals("") && !fileExtension.equals("") && !pattern.equals("")) {
+		if(!pathDirectory.equals("") && !fileExtension.equals("") && !measurementPattern.equals("")) {
 			File directory = new File(pathDirectory);
 			for(File file : directory.listFiles()) {
 				if(file.isFile()) {
 					String fileName = file.getName();
 					if(fileName.endsWith(fileExtension)) {
-						if(fileName.startsWith(pattern)) {
+						if(fileName.startsWith(measurementPattern)) {
 							measurementFiles.add(file);
 						}
 					}
