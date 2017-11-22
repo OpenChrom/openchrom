@@ -11,18 +11,13 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.model.v1000;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.eclipse.chemclipse.support.text.ValueFormat;
-
-import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackStatistics;
 
 public class ReferenceModel_v1000 implements IReferenceModel {
 
@@ -75,23 +70,6 @@ public class ReferenceModel_v1000 implements IReferenceModel {
 	@Override
 	public String toString() {
 
-		TrackStatistics trackStatistics = DataProcessor.getTrackStatistics(this);
-		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
-		//
-		StringBuilder builder = new StringBuilder();
-		builder.append("Reference Group: " + referenceGroup);
-		builder.append("\n");
-		builder.append("\tReference Path: " + referencePath);
-		builder.append("\n");
-		builder.append("\tMatch Probability [%]: " + decimalFormat.format(trackStatistics.getMatchProbability()));
-		builder.append("\n");
-		builder.append("\tTracks: " + trackStatistics.getTracks());
-		builder.append("\n");
-		builder.append("\tEvaluated Tracks: " + trackStatistics.getEvaluated());
-		builder.append("\n");
-		builder.append("\tSkipped Tracks: " + trackStatistics.getSkipped());
-		builder.append("\n");
-		builder.append("\tMatched Tracks: " + trackStatistics.getMatched());
-		return builder.toString();
+		return "ReferenceModel_v1000 [referenceGroup=" + referenceGroup + ", referencePath=" + referencePath + ", trackModels=" + trackModels + "]";
 	}
 }

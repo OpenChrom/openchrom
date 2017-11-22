@@ -36,7 +36,7 @@ public class DataProcessor {
 	//
 	private static Map<String, Pattern> sampleMatchPatterns = new HashMap<String, Pattern>();
 
-	public static String getSampleGroup(String fileName) {
+	public String getSampleGroup(String fileName) {
 
 		Pattern pattern = getPattern();
 		Matcher matcher = pattern.matcher(fileName);
@@ -47,7 +47,7 @@ public class DataProcessor {
 		}
 	}
 
-	public static boolean measurementExists(String pathDirectory, String fileExtension, String pattern) {
+	public boolean measurementExists(String pathDirectory, String fileExtension, String pattern) {
 
 		if(pathDirectory.equals("") || fileExtension.equals("") || pattern.equals("")) {
 			return false;
@@ -68,7 +68,7 @@ public class DataProcessor {
 		return false;
 	}
 
-	public static List<String> getMeasurementPatterns(String pathDirectory, String fileExtension) {
+	public List<String> getMeasurementPatterns(String pathDirectory, String fileExtension) {
 
 		List<String> patterns = new ArrayList<String>();
 		//
@@ -98,7 +98,7 @@ public class DataProcessor {
 		return patterns;
 	}
 
-	public static List<File> getMeasurementFiles(String pathDirectory, String fileExtension, String measurementPattern) {
+	public List<File> getMeasurementFiles(String pathDirectory, String fileExtension, String measurementPattern) {
 
 		List<File> measurementFiles = new ArrayList<File>();
 		//
@@ -119,7 +119,7 @@ public class DataProcessor {
 		return measurementFiles;
 	}
 
-	public static List<TrackStatistics> getTrackStatistics(IProcessorModel processorModel) {
+	public List<TrackStatistics> getTrackStatistics(IProcessorModel processorModel) {
 
 		List<TrackStatistics> trackStatistics = new ArrayList<TrackStatistics>();
 		if(processorModel != null) {
@@ -131,7 +131,7 @@ public class DataProcessor {
 		return trackStatistics;
 	}
 
-	public static TrackStatistics getTrackStatistics(IReferenceModel referenceModel) {
+	public TrackStatistics getTrackStatistics(IReferenceModel referenceModel) {
 
 		TrackStatistics trackStatistics = new TrackStatistics();
 		if(referenceModel != null) {
@@ -143,7 +143,7 @@ public class DataProcessor {
 		return trackStatistics;
 	}
 
-	private static Pattern getPattern() {
+	private Pattern getPattern() {
 
 		String filePattern = PreferenceSupplier.getFilePattern();
 		Pattern pattern = sampleMatchPatterns.get(filePattern);

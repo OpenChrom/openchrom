@@ -11,12 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.model.v1000;
 
-import java.text.DecimalFormat;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import org.eclipse.chemclipse.support.text.ValueFormat;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
 
@@ -44,10 +40,8 @@ public class TrackModel_v1000 implements ITrackModel {
 	private boolean isMatched = false;
 	@XmlElement(name = "Notes")
 	private String notes = "";
-	@XmlElement(name = "PathSnapshotSample")
-	private String pathSnapshotSample = "";
-	@XmlElement(name = "PathSnapshotReference")
-	private String pathSnapshotReference = "";
+	@XmlElement(name = "PathSnapshots")
+	private String pathSnapshots = "";
 
 	@Override
 	@XmlTransient
@@ -194,66 +188,20 @@ public class TrackModel_v1000 implements ITrackModel {
 
 	@Override
 	@XmlTransient
-	public String getPathSnapshotSample() {
+	public String getPathSnapshots() {
 
-		return pathSnapshotSample;
+		return pathSnapshots;
 	}
 
 	@Override
-	public void setPathSnapshotSample(String pathSnapshotSample) {
+	public void setPathSnapshots(String pathSnapshots) {
 
-		this.pathSnapshotSample = pathSnapshotSample;
-	}
-
-	@Override
-	@XmlTransient
-	public String getPathSnapshotReference() {
-
-		return pathSnapshotReference;
-	}
-
-	@Override
-	public void setPathSnapshotReference(String pathSnapshotReference) {
-
-		this.pathSnapshotReference = pathSnapshotReference;
+		this.pathSnapshots = pathSnapshots;
 	}
 
 	@Override
 	public String toString() {
 
-		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.00");
-		double factor = scanVelocity / 1000.0d;
-		//
-		StringBuilder builder = new StringBuilder();
-		builder.append("Sample Track: " + sampleTrack);
-		builder.append("\n");
-		builder.append("\tReference Track: " + referenceTrack);
-		builder.append("\n");
-		builder.append("\t\tScan Velocity [mm/s]: " + scanVelocity);
-		builder.append("\n");
-		builder.append("\t\tStart Retention Time [ms]: " + (int)startRetentionTime);
-		builder.append("\n");
-		builder.append("\t\tStop Retention Time [ms]: " + (int)stopRetentionTime);
-		builder.append("\n");
-		builder.append("\t\tStart Intensity: " + decimalFormat.format(startIntensity));
-		builder.append("\n");
-		builder.append("\t\tStop Intensity: " + decimalFormat.format(stopIntensity));
-		builder.append("\n");
-		builder.append("\t\tDistance Start [mm]: " + decimalFormat.format(startRetentionTime * factor));
-		builder.append("\n");
-		builder.append("\t\tDistance Stop [mm]: " + decimalFormat.format(stopRetentionTime * factor));
-		builder.append("\n");
-		builder.append("\t\tSkipped: " + isSkipped);
-		builder.append("\n");
-		builder.append("\t\tEvaluated: " + isEvaluated);
-		builder.append("\n");
-		builder.append("\t\tMatched: " + isMatched);
-		builder.append("\n");
-		builder.append("\t\tSnapshot Sample: " + pathSnapshotSample);
-		builder.append("\n");
-		builder.append("\t\tSnapshot Reference: " + pathSnapshotReference);
-		builder.append("\n");
-		builder.append("\t\tNotes: " + notes);
-		return builder.toString();
+		return "TrackModel_v1000 [sampleTrack=" + sampleTrack + ", referenceTrack=" + referenceTrack + "]";
 	}
 }

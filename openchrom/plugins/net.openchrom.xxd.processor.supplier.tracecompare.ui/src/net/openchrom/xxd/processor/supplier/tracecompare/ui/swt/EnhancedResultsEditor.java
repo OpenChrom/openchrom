@@ -52,10 +52,13 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 	private List<Button> buttons;
 	//
 	private ResultsEditorUI resultsEditorUI;
+	//
+	private DataProcessor dataProcessor;
 
 	public EnhancedResultsEditor(Composite parent, int style) {
 		super(parent, style);
 		buttons = new ArrayList<Button>();
+		dataProcessor = new DataProcessor();
 		createControl();
 	}
 
@@ -139,7 +142,7 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 					IProcessorModel processorModel = editorProcessor.getProcessorModel();
 					if(processorModel != null) {
 						DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
-						List<TrackStatistics> trackStatisticsList = DataProcessor.getTrackStatistics(processorModel);
+						List<TrackStatistics> trackStatisticsList = dataProcessor.getTrackStatistics(processorModel);
 						StringBuilder builder = new StringBuilder();
 						Iterator<TrackStatistics> iterator = trackStatisticsList.iterator();
 						while(iterator.hasNext()) {

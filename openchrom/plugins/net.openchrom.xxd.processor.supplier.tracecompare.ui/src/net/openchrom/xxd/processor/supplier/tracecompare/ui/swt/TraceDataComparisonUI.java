@@ -48,7 +48,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -56,7 +55,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.swtchart.IAxis;
 import org.swtchart.LineStyle;
@@ -76,6 +74,9 @@ public class TraceDataComparisonUI extends Composite {
 	public static final String SAMPLE = "Sample";
 	public static final String REFERENCE = "Reference";
 	//
+	public static final String TYPE_QUALIFICATION = "Qualification";
+	public static final String TYPE_VALIDATION = "Validation";
+	//
 	private static final Logger logger = Logger.getLogger(TraceDataComparisonUI.class);
 	//
 	private static final int HORIZONTAL_INDENT = 15;
@@ -83,7 +84,6 @@ public class TraceDataComparisonUI extends Composite {
 	//
 	private EditorProcessor editorProcessor;
 	//
-	private Label labelTrack;
 	private Combo comboSampleMeasurements;
 	private Combo comboReferenceMeasurements;
 	private Combo comboSampleTracks;
@@ -108,8 +108,10 @@ public class TraceDataComparisonUI extends Composite {
 	//
 	private Map<String, Color> colorMap;
 	private Color colorDefault;
+	//
+	private DataProcessor dataProcessor;
 
-	public TraceDataComparisonUI(Composite parent, int style) {
+	public TraceDataComparisonUI(Composite parent, int style, String type) {
 		super(parent, style);
 		//
 		colorMap = new HashMap<String, Color>();
@@ -122,6 +124,8 @@ public class TraceDataComparisonUI extends Composite {
 		colorMap.put("300", Colors.getColor(185, 0, 127));
 		colorDefault = Display.getDefault().getSystemColor(SWT.COLOR_GRAY);
 		//
+		this.type = type;
+		dataProcessor = new DataProcessor();
 		initialize();
 	}
 
@@ -130,29 +134,16 @@ public class TraceDataComparisonUI extends Composite {
 		this.editorProcessor = editorProcessor;
 		this.processorModel = editorProcessor.getProcessorModel();
 		//
-		String fileExtension = PreferenceSupplier.getFileExtension();
+		initializeModelData();
+	}
+
+	private void initializeModelData() {
+
 		/*
 		 * Get the sample and reference.
 		 */
-		List<File> sampleFiles = new ArrayList<File>();
-		List<File> referenceFiles = new ArrayList<File>();
-		//
-		if(processorModel != null) {
-			/*
-			 * Sample and reference files.
-			 */
-			String sampleDirectory = PreferenceSupplier.getSampleDirectory();
-			List<String> samplePatterns = DataProcessor.getMeasurementPatterns(sampleDirectory, fileExtension);
-			setMeasurementComboItems(comboSampleMeasurements, samplePatterns);
-			sampleGroup = comboSampleMeasurements.getText();
-			sampleFiles = DataProcessor.getMeasurementFiles(sampleDirectory, fileExtension, sampleGroup);
-			//
-			String referenceDirectory = PreferenceSupplier.getReferenceDirectory();
-			List<String> referencePatterns = DataProcessor.getMeasurementPatterns(referenceDirectory, fileExtension);
-			setMeasurementComboItems(comboReferenceMeasurements, referencePatterns);
-			referenceGroup = comboReferenceMeasurements.getText();
-			referenceFiles = DataProcessor.getMeasurementFiles(referenceDirectory, fileExtension, referenceGroup);
-		}
+		List<File> sampleFiles = getSampleFiles();
+		List<File> referenceFiles = getReferenceFiles();
 		/*
 		 * Get the model.
 		 */
@@ -163,6 +154,9 @@ public class TraceDataComparisonUI extends Composite {
 			referenceModel.setReferencePath(PreferenceSupplier.getReferenceDirectory());
 			processorModel.getReferenceModels().put(referenceGroup, referenceModel);
 		}
+		//
+		sampleGroup = comboSampleMeasurements.getText();
+		referenceGroup = comboReferenceMeasurements.getText();
 		/*
 		 * Extract the data.
 		 * 0196 [Group]
@@ -180,13 +174,13 @@ public class TraceDataComparisonUI extends Composite {
 		 */
 		sampleMeasurementsData = modelData.get(sampleGroup);
 		if(sampleMeasurementsData == null) {
-			sampleMeasurementsData = extractMeasurementsData(sampleFiles, TraceDataComparisonUI.SAMPLE);
+			sampleMeasurementsData = extractMeasurementsData(sampleFiles, SAMPLE);
 			modelData.put(sampleGroup, sampleMeasurementsData);
 		}
 		//
 		referenceMeasurementsData = modelData.get(referenceGroup);
 		if(referenceMeasurementsData == null) {
-			referenceMeasurementsData = extractMeasurementsData(referenceFiles, TraceDataComparisonUI.REFERENCE);
+			referenceMeasurementsData = extractMeasurementsData(referenceFiles, REFERENCE);
 			modelData.put(referenceGroup, referenceMeasurementsData);
 		}
 		/*
@@ -210,40 +204,81 @@ public class TraceDataComparisonUI extends Composite {
 		}
 	}
 
-	public void loadData(String type) {
+	private List<File> getSampleFiles() {
 
-		this.type = type;
+		List<File> sampleFiles = new ArrayList<File>();
+		if(processorModel != null) {
+			/*
+			 * Sample files.
+			 */
+			if("".equals(sampleGroup) || !sampleGroup.equals(comboSampleMeasurements.getText())) {
+				String fileExtension = PreferenceSupplier.getFileExtension();
+				String sampleDirectory = PreferenceSupplier.getSampleDirectory();
+				List<String> samplePatterns = dataProcessor.getMeasurementPatterns(sampleDirectory, fileExtension);
+				setMeasurementComboItems(comboSampleMeasurements, samplePatterns);
+				sampleGroup = comboSampleMeasurements.getText();
+				sampleFiles = dataProcessor.getMeasurementFiles(sampleDirectory, fileExtension, sampleGroup);
+			}
+		}
 		//
+		return sampleFiles;
+	}
+
+	private List<File> getReferenceFiles() {
+
+		List<File> referenceFiles = new ArrayList<File>();
+		if(processorModel != null) {
+			/*
+			 * Reference files.
+			 */
+			if("".equals(referenceGroup) || !referenceGroup.equals(comboReferenceMeasurements.getText())) {
+				String fileExtension = PreferenceSupplier.getFileExtension();
+				String referenceDirectory = PreferenceSupplier.getReferenceDirectory();
+				List<String> referencePatterns = dataProcessor.getMeasurementPatterns(referenceDirectory, fileExtension);
+				setMeasurementComboItems(comboReferenceMeasurements, referencePatterns);
+				referenceGroup = comboReferenceMeasurements.getText();
+				referenceFiles = dataProcessor.getMeasurementFiles(referenceDirectory, fileExtension, referenceGroup);
+			}
+		}
+		//
+		return referenceFiles;
+	}
+
+	public void loadData() {
+
 		int sampleTrack = trackModel.getSampleTrack();
 		initializeWavelengthsComboItems(sampleMeasurementsData.get(sampleTrack));
-		//
 		reloadData();
 	}
 
 	public void reloadData() {
 
+		initializeModelData();
 		/*
 		 * Update the chart and combo boxes.
 		 */
 		traceDataUI.getBaseChart().suspendUpdate(true);
 		traceDataUI.deleteSeries();
-		//
 		int sampleTrack = trackModel.getSampleTrack();
 		setTrackComboItems(comboSampleTracks, sampleTrack, sampleMeasurementsData.keySet().size());
 		setSampleData(sampleTrack);
 		trackModel.setSampleTrack(sampleTrack);
-		//
 		int referenceTrack = trackModel.getReferenceTrack();
 		setTrackComboItems(comboReferenceTracks, referenceTrack, referenceMeasurementsData.keySet().size());
 		setReferenceData(sampleTrack);
 		trackModel.setReferenceTrack(referenceTrack);
-		//
 		traceDataUI.getBaseChart().suspendUpdate(false);
 		/*
-		 * Update the notes.
+		 * Update the label and notes.
 		 */
 		notesText.setText(trackModel.getNotes());
-		setSampleTrack(type, sampleGroup, sampleTrack);
+		String title = type + ": " + sampleGroup;
+		IChartSettings chartSettings = traceDataUI.getChartSettings();
+		chartSettings.setTitle(title);
+		chartSettings.setTitleVisible(true);
+		chartSettings.setTitleColor(Colors.BLACK);
+		traceDataUI.applySettings(chartSettings);
+		traceDataUI.redraw();
 		/*
 		 * Update the buttons.
 		 */
@@ -276,15 +311,6 @@ public class TraceDataComparisonUI extends Composite {
 		if(referenceMeasurementsData != null) {
 			traceDataUI.addSeriesData(getLineSeriesDataList(referenceMeasurementsData, track), LineChart.MEDIUM_COMPRESSION);
 		}
-	}
-
-	private void setSampleTrack(String type, String sample, int track) {
-
-		Display display = Display.getDefault();
-		Font font = new Font(display, "Arial", 14, SWT.BOLD);
-		labelTrack.setFont(font);
-		labelTrack.setText(type + ": " + sample + " > Track " + Integer.toString(track));
-		font.dispose();
 	}
 
 	private List<ILineSeriesData> getLineSeriesDataList(Map<Integer, Map<String, ISeriesData>> measurementsData, int track) {
@@ -357,7 +383,6 @@ public class TraceDataComparisonUI extends Composite {
 
 		setLayout(new GridLayout(1, true));
 		//
-		createLabelSection(this);
 		createButtonSectionTracks(this);
 		createButtonSectionIdentify(this);
 		createCommentsSection(this);
@@ -366,20 +391,10 @@ public class TraceDataComparisonUI extends Composite {
 		showComments(false);
 	}
 
-	private void createLabelSection(Composite parent) {
-
-		labelTrack = new Label(parent, SWT.NONE);
-		labelTrack.setText("");
-		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
-		gridDataLabel.horizontalIndent = HORIZONTAL_INDENT;
-		labelTrack.setLayoutData(gridDataLabel);
-	}
-
 	private void createButtonSectionTracks(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
-		gridDataComposite.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridDataComposite);
 		composite.setLayout(new GridLayout(6, false));
 		//
@@ -416,7 +431,7 @@ public class TraceDataComparisonUI extends Composite {
 	private void createComboSampleMeasurements(Composite parent) {
 
 		comboSampleMeasurements = new Combo(parent, SWT.READ_ONLY);
-		comboSampleMeasurements.setToolTipText("Samples");
+		comboSampleMeasurements.setToolTipText("Sample Measurements");
 		comboSampleMeasurements.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		comboSampleMeasurements.setItems(new String[]{});
 		comboSampleMeasurements.addSelectionListener(new SelectionAdapter() {
@@ -452,7 +467,7 @@ public class TraceDataComparisonUI extends Composite {
 	private void createComboReferenceMeasurements(Composite parent) {
 
 		comboReferenceMeasurements = new Combo(parent, SWT.READ_ONLY);
-		comboReferenceMeasurements.setToolTipText("References");
+		comboReferenceMeasurements.setToolTipText("Reference Measurements");
 		comboReferenceMeasurements.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		comboReferenceMeasurements.setItems(new String[]{});
 		comboReferenceMeasurements.addSelectionListener(new SelectionAdapter() {
@@ -584,7 +599,7 @@ public class TraceDataComparisonUI extends Composite {
 				String fileNameSample = getImageName("Sample+Reference", sampleGroup + "+" + referenceGroup, trackModel.getSampleTrack());
 				ImageData imageDataSample = imageSupplier.getImageData(traceDataUI.getBaseChart());
 				imageSupplier.saveImage(imageDataSample, fileNameSample, SWT.IMAGE_PNG);
-				trackModel.setPathSnapshotSample(fileNameSample);
+				trackModel.setPathSnapshots(fileNameSample);
 				//
 				MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Save Image", "A screenshot of the sample and reference has been saved.");
 				editorProcessor.setDirty(true);
@@ -711,7 +726,8 @@ public class TraceDataComparisonUI extends Composite {
 
 		notesText = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.H_SCROLL);
 		notesText.setText("");
-		GridData gridData = new GridData(GridData.FILL_BOTH);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.heightHint = 150;
 		gridData.horizontalIndent = HORIZONTAL_INDENT;
 		notesText.setLayoutData(gridData);
 		notesText.addModifyListener(new ModifyListener() {
@@ -820,7 +836,7 @@ public class TraceDataComparisonUI extends Composite {
 	private void setMeasurementComboItems(Combo combo, List<String> samplePatterns) {
 
 		combo.setItems(samplePatterns.toArray(new String[samplePatterns.size()]));
-		if(combo.getItemCount() > 0) {
+		if(combo.getItemCount() > 0 && combo.getSelectionIndex() == -1) {
 			combo.select(0);
 		}
 	}

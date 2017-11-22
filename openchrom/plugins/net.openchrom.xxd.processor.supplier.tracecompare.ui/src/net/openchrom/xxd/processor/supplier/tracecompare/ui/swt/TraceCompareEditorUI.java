@@ -48,20 +48,20 @@ public class TraceCompareEditorUI extends Composite {
 		/*
 		 * Elements
 		 */
-		createTraceComparatorSample(composite);
+		createTraceComparatorQualification(composite);
 		createTraceComparatorValidation(composite);
 	}
 
-	private void createTraceComparatorSample(Composite parent) {
+	private void createTraceComparatorQualification(Composite parent) {
 
-		traceComparatorSample = new TraceDataComparisonUI(parent, SWT.BORDER);
+		traceComparatorSample = new TraceDataComparisonUI(parent, SWT.BORDER, TraceDataComparisonUI.TYPE_QUALIFICATION);
 		traceComparatorSample.setLayoutData(new GridData(GridData.FILL_BOTH));
 		traceComparatorSample.setBackground(Colors.WHITE);
 	}
 
 	private void createTraceComparatorValidation(Composite parent) {
 
-		traceComparatorValidation = new TraceDataComparisonUI(parent, SWT.BORDER);
+		traceComparatorValidation = new TraceDataComparisonUI(parent, SWT.BORDER, TraceDataComparisonUI.TYPE_VALIDATION);
 		traceComparatorValidation.setLayoutData(new GridData(GridData.FILL_BOTH));
 		traceComparatorValidation.setBackground(Colors.WHITE);
 	}
@@ -69,9 +69,9 @@ public class TraceCompareEditorUI extends Composite {
 	private void initializeData() {
 
 		traceComparatorSample.setData(editorProcessor);
-		traceComparatorSample.loadData("Sample");
+		traceComparatorSample.loadData();
 		//
 		traceComparatorValidation.setData(editorProcessor);
-		traceComparatorValidation.loadData("Validation");
+		traceComparatorValidation.loadData();
 	}
 }
