@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Display;
 import org.swtchart.LineStyle;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.runnables.MeasurementImportRunnable;
 
@@ -249,5 +250,17 @@ public class DataProcessorUI extends DataProcessor {
 		} else {
 			lineSeriesDataList.add(getWavelengthData(wavelengthData, wavelengthSelection));
 		}
+	}
+
+	public List<File> getMeasurementFileList(IProcessorModel processorModel, String fileExtension, String directory, String currentGroup, String groupSelection) {
+
+		List<File> referenceFiles = new ArrayList<File>();
+		if(processorModel != null) {
+			if(!"".equals(groupSelection) || !currentGroup.equals(groupSelection)) {
+				referenceFiles = getMeasurementFiles(directory, fileExtension, groupSelection);
+			}
+		}
+		//
+		return referenceFiles;
 	}
 }

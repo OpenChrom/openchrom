@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Text;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 
-public class PageDirectorySelection extends AbstractExtendedWizardPage {
+public class PageSettingsSelection extends AbstractExtendedWizardPage {
 
 	private static final int VERTIAL_INDENT = 10;
 	//
@@ -40,13 +40,14 @@ public class PageDirectorySelection extends AbstractExtendedWizardPage {
 	//
 	private Text textSampleDirectory;
 	private Text textReferenceDirectory;
+	private Button buttonUseValidation;
 	private Text textGeneralNotes;
 
-	public PageDirectorySelection(IProcessorWizardElements wizardElements) {
+	public PageSettingsSelection(IProcessorWizardElements wizardElements) {
 		//
-		super(PageDirectorySelection.class.getName());
-		setTitle("TraceCompare Setup");
-		setDescription("Select the sample and reference directories.");
+		super(PageSettingsSelection.class.getName());
+		setTitle("Trace Compare Setup");
+		setDescription("Select the sample and reference directories and set the preferences.");
 		this.wizardElements = wizardElements;
 	}
 
@@ -60,6 +61,10 @@ public class PageDirectorySelection extends AbstractExtendedWizardPage {
 		}
 		//
 		if(processorModel.getSampleDirectory() == null || "".equals(processorModel.getSampleDirectory())) {
+			return false;
+		}
+		//
+		if(processorModel.getReferenceDirectory() == null || "".equals(processorModel.getReferenceDirectory())) {
 			return false;
 		}
 		//
@@ -113,6 +118,7 @@ public class PageDirectorySelection extends AbstractExtendedWizardPage {
 		createSampleGroupSection(composite);
 		createLabelReferenceSection(composite);
 		createReferenceGroupSection(composite);
+		createUseValidationSection(composite);
 		createGeneralNotesSection(composite);
 		//
 		validateData();
@@ -174,10 +180,10 @@ public class PageDirectorySelection extends AbstractExtendedWizardPage {
 
 		Label label = new Label(parent, SWT.NONE);
 		label.setText("Reference Directory");
-		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
-		gridDataLabel.horizontalSpan = 2;
-		gridDataLabel.verticalIndent = VERTIAL_INDENT;
-		label.setLayoutData(gridDataLabel);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 2;
+		gridData.verticalIndent = VERTIAL_INDENT;
+		label.setLayoutData(gridData);
 	}
 
 	private void createReferenceGroupSection(Composite parent) {
@@ -222,6 +228,25 @@ public class PageDirectorySelection extends AbstractExtendedWizardPage {
 		});
 	}
 
+	private void createUseValidationSection(Composite parent) {
+
+		buttonUseValidation = new Button(parent, SWT.CHECK);
+		buttonUseValidation.setText("Perform an additional data validation");
+		buttonUseValidation.setToolTipText("A separate validation comparison element will be displayed.");
+		buttonUseValidation.setSelection(PreferenceSupplier.isUseDataValidation());
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		gridData.horizontalSpan = 2;
+		buttonUseValidation.setLayoutData(gridData);
+		buttonUseValidation.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				validateData();
+			}
+		});
+	}
+
 	private void createGeneralNotesSection(Composite parent) {
 
 		Label label = new Label(parent, SWT.NONE);
@@ -248,6 +273,9 @@ public class PageDirectorySelection extends AbstractExtendedWizardPage {
 
 		String message = null;
 		IProcessorModel processorModel = wizardElements.getProcessorModel();
+		//
+		boolean useDataValidation = buttonUseValidation.getSelection();
+		PreferenceSupplier.setUseDataValidation(useDataValidation);
 		//
 		String sampleDirectory = PreferenceSupplier.getSampleDirectory();
 		if(!new File(sampleDirectory).exists()) {

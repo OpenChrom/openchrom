@@ -72,6 +72,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	//
 	public static final String P_MIRROR_REFERENCE_DATA = "mirrorReferenceData"; // $NON-NLS-1$
 	public static final boolean DEF_MIRROR_REFERENCE_DATA = true; // $NON-NLS-1$
+	public static final String P_USE_DATA_VALIDATION = "useDataValidation"; // $NON-NLS-1$
+	public static final boolean DEF_USE_DATA_VALIDATION = true; // $NON-NLS-1$
 	//
 	public static final String P_LINE_STYLE_SAMPLE = "lineStyleSample";
 	public static final String DEF_LINE_STYLE_SAMPLE = "SOLID";
@@ -126,6 +128,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_COLOR_DATA_300, DEF_COLOR_DATA_300);
 		defaultValues.put(P_COLOR_DATA_DEFAULT, DEF_COLOR_DATA_DEFAULT);
 		defaultValues.put(P_MIRROR_REFERENCE_DATA, Boolean.toString(DEF_MIRROR_REFERENCE_DATA));
+		defaultValues.put(P_USE_DATA_VALIDATION, Boolean.toString(DEF_USE_DATA_VALIDATION));
 		defaultValues.put(P_LINE_STYLE_SAMPLE, DEF_LINE_STYLE_SAMPLE);
 		defaultValues.put(P_LINE_WIDTH_SAMPLE, Integer.toString(DEF_LINE_WIDTH_SAMPLE));
 		defaultValues.put(P_LINE_STYLE_REFERENCE, DEF_LINE_STYLE_REFERENCE);
@@ -228,6 +231,23 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
 		return eclipsePreferences.getBoolean(P_MIRROR_REFERENCE_DATA, DEF_MIRROR_REFERENCE_DATA);
+	}
+
+	public static boolean isUseDataValidation() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.getBoolean(P_USE_DATA_VALIDATION, DEF_USE_DATA_VALIDATION);
+	}
+
+	public static void setUseDataValidation(boolean useDataValidation) {
+
+		try {
+			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+			eclipsePreferences.putBoolean(P_USE_DATA_VALIDATION, useDataValidation);
+			eclipsePreferences.flush();
+		} catch(BackingStoreException e) {
+			logger.warn(e);
+		}
 	}
 
 	public static String getLineStyleSample() {

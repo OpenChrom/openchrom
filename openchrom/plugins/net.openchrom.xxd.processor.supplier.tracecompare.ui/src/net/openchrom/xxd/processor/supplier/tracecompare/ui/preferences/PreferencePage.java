@@ -65,6 +65,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		//
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_MIRROR_REFERENCE_DATA, "Mirror reference data (editor reload needed)", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_USE_DATA_VALIDATION, "Use data validation (editor reload needed)", getFieldEditorParent()));
 		//
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new ComboFieldEditor(PreferenceSupplier.P_LINE_STYLE_SAMPLE, "Line Style Sample:", PreferenceSupport.LINE_STYLES, getFieldEditorParent()));

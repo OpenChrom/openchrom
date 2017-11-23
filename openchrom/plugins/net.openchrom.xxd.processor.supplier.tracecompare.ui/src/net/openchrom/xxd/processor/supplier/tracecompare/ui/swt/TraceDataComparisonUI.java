@@ -77,8 +77,10 @@ public class TraceDataComparisonUI extends Composite {
 	private TraceDataUI traceDataUI;
 	//
 	private String analysisType = "";
-	private String sampleGroup = ""; // "0196"
-	private String referenceGroup = ""; // "0236"
+	private String sampleGroup = ""; // e.g. "0196"
+	private String referenceGroup = ""; // e.g. "0236"
+	private String sampleGroupSelection = "";
+	private String referenceGroupSelection = "";
 	//
 	private IProcessorModel processorModel;
 	private ITrackModel trackModel;
@@ -97,71 +99,41 @@ public class TraceDataComparisonUI extends Composite {
 
 		this.editorProcessor = editorProcessor;
 		this.processorModel = editorProcessor.getProcessorModel();
-		loadModelData();
-	}
-
-	private List<File> getSampleFiles() {
-
-		List<File> sampleFiles = new ArrayList<File>();
-		if(processorModel != null) {
-			/*
-			 * Sample files.
-			 */
-			if("".equals(sampleGroup) || !sampleGroup.equals(comboSampleMeasurements.getText())) {
-				//
-				String fileExtension = PreferenceSupplier.getFileExtension();
-				String sampleDirectory = PreferenceSupplier.getSampleDirectory();
-				List<String> samplePatterns = dataProcessorUI.getMeasurementPatterns(sampleDirectory, fileExtension);
-				//
-				setMeasurementComboItems(comboSampleMeasurements, samplePatterns);
-				sampleGroup = comboSampleMeasurements.getText();
-				sampleFiles = dataProcessorUI.getMeasurementFiles(sampleDirectory, fileExtension, sampleGroup);
-			}
-		}
+		/*
+		 * Refresh the combo items
+		 */
+		setSampleMeasurementComboBoxItems();
+		setReferenceMeasurementComboBoxItems();
 		//
-		return sampleFiles;
+		initializeSampleAndReferenceModelData();
 	}
 
-	private List<File> getReferenceFiles() {
-
-		List<File> referenceFiles = new ArrayList<File>();
-		if(processorModel != null) {
-			/*
-			 * Reference files.
-			 */
-			if("".equals(referenceGroup) || !referenceGroup.equals(comboReferenceMeasurements.getText())) {
-				//
-				String fileExtension = PreferenceSupplier.getFileExtension();
-				String referenceDirectory = PreferenceSupplier.getReferenceDirectory();
-				List<String> referencePatterns = dataProcessorUI.getMeasurementPatterns(referenceDirectory, fileExtension);
-				//
-				setMeasurementComboItems(comboReferenceMeasurements, referencePatterns);
-				referenceGroup = comboReferenceMeasurements.getText();
-				referenceFiles = dataProcessorUI.getMeasurementFiles(referenceDirectory, fileExtension, referenceGroup);
-			}
-		}
-		//
-		return referenceFiles;
-	}
-
-	private void loadModelData() {
+	private void initializeSampleAndReferenceModelData() {
 
 		/*
 		 * Get the sample and reference.
 		 */
-		List<File> sampleFiles = getSampleFiles();
-		List<File> referenceFiles = getReferenceFiles();
+		String fileExtension = PreferenceSupplier.getFileExtension();
+		String sampleDirectory = processorModel.getSampleDirectory();
+		String referenceDirectory = processorModel.getReferenceDirectory();
 		//
-		sampleGroup = comboSampleMeasurements.getText();
-		referenceGroup = comboReferenceMeasurements.getText();
-		//
+		List<File> sampleFiles = dataProcessorUI.getMeasurementFileList(processorModel, fileExtension, sampleDirectory, sampleGroup, sampleGroupSelection);
+		List<File> referenceFiles = dataProcessorUI.getMeasurementFileList(processorModel, fileExtension, referenceDirectory, referenceGroup, referenceGroupSelection);
+		/*
+		 * Refresh the combo items
+		 */
+		setSampleMeasurementComboBoxItems();
+		setReferenceMeasurementComboBoxItems();
+		/*
+		 * Track Model
+		 */
 		IReferenceModel referenceModel = measurementModelData.loadModelData(processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
 		trackModel = measurementModelData.loadTrackModel(referenceModel);
 	}
 
-	public void loadData() {
+	public void loadSampleAndReferenceModelData() {
 
-		loadModelData();
+		initializeSampleAndReferenceModelData();
 		//
 		setTrackComboItems(comboSampleTracks, trackModel.getSampleTrack(), measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_SAMPLE));
 		setTrackComboItems(comboReferenceTracks, trackModel.getReferenceTrack(), measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_REFERENCE));
@@ -272,8 +244,8 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				sampleGroup = comboSampleMeasurements.getText();
-				loadData();
+				sampleGroupSelection = comboSampleMeasurements.getText();
+				loadSampleAndReferenceModelData();
 			}
 		});
 	}
@@ -308,8 +280,8 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				referenceGroup = comboReferenceMeasurements.getText();
-				loadData();
+				referenceGroupSelection = comboReferenceMeasurements.getText();
+				loadSampleAndReferenceModelData();
 			}
 		});
 	}
@@ -408,7 +380,7 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				loadData();
+				loadSampleAndReferenceModelData();
 			}
 		});
 	}
@@ -547,7 +519,7 @@ public class TraceDataComparisonUI extends Composite {
 				if(preferenceDialog.open() == PreferenceDialog.OK) {
 					try {
 						dataProcessorUI.reloadColors();
-						loadData();
+						loadSampleAndReferenceModelData();
 					} catch(Exception e1) {
 						MessageDialog.openError(Display.getDefault().getActiveShell(), "Settings", "Something has gone wrong to apply the chart settings.");
 					}
@@ -567,7 +539,7 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				loadData();
+				loadSampleAndReferenceModelData();
 			}
 		});
 	}
@@ -749,11 +721,37 @@ public class TraceDataComparisonUI extends Composite {
 		}
 	}
 
-	private void setMeasurementComboItems(Combo combo, List<String> samplePatterns) {
+	private void setSampleMeasurementComboBoxItems() {
 
-		combo.setItems(samplePatterns.toArray(new String[samplePatterns.size()]));
-		if(combo.getItemCount() > 0 && combo.getSelectionIndex() == -1) {
+		String fileExtension = PreferenceSupplier.getFileExtension();
+		String sampleDirectory = processorModel.getSampleDirectory();
+		//
+		List<String> samplePatterns = dataProcessorUI.getMeasurementPatterns(sampleDirectory, fileExtension);
+		setMeasurementComboItems(comboSampleMeasurements, samplePatterns, sampleGroupSelection);
+		sampleGroup = comboSampleMeasurements.getText();
+	}
+
+	private void setReferenceMeasurementComboBoxItems() {
+
+		String fileExtension = PreferenceSupplier.getFileExtension();
+		String referenceDirectory = processorModel.getReferenceDirectory();
+		//
+		List<String> referencePatterns = dataProcessorUI.getMeasurementPatterns(referenceDirectory, fileExtension);
+		setMeasurementComboItems(comboReferenceMeasurements, referencePatterns, referenceGroupSelection);
+		referenceGroup = comboReferenceMeasurements.getText();
+	}
+
+	private void setMeasurementComboItems(Combo combo, List<String> patterns, String selectedGroup) {
+
+		combo.setItems(patterns.toArray(new String[patterns.size()]));
+		if(combo.getItemCount() > 0 && "".equals(selectedGroup)) {
 			combo.select(0);
+		} else {
+			if(patterns.contains(selectedGroup)) {
+				combo.setText(selectedGroup);
+			} else {
+				combo.select(0);
+			}
 		}
 	}
 }

@@ -31,7 +31,7 @@ public class WizardProcessor extends AbstractFileWizard {
 	private static final Logger logger = Logger.getLogger(WizardProcessor.class);
 	//
 	private IProcessorWizardElements wizardElements = new ProcessorWizardElements();
-	private PageDirectorySelection pageDirectorySelection;
+	private PageSettingsSelection pageSettingsSelection;
 
 	public WizardProcessor() {
 		super("TraceCompare_" + new Date().getTime(), DataProcessor.PROCESSOR_FILE_EXTENSION);
@@ -44,14 +44,14 @@ public class WizardProcessor extends AbstractFileWizard {
 		/*
 		 * Pages must implement IExtendedWizardPage / extend AbstractExtendedWizardPage
 		 */
-		pageDirectorySelection = new PageDirectorySelection(wizardElements);
-		addPage(pageDirectorySelection);
+		pageSettingsSelection = new PageSettingsSelection(wizardElements);
+		addPage(pageSettingsSelection);
 	}
 
 	@Override
 	public boolean canFinish() {
 
-		boolean canFinish = pageDirectorySelection.canFinish();
+		boolean canFinish = pageSettingsSelection.canFinish();
 		return canFinish;
 	}
 
