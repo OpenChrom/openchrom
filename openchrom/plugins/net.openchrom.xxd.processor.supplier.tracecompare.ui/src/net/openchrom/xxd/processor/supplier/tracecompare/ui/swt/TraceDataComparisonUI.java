@@ -113,8 +113,8 @@ public class TraceDataComparisonUI extends Composite {
 			/*
 			 * Set the data.
 			 */
-			setTrackComboItems(comboSampleTracks, trackModel.getSampleTrack(), measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_SAMPLE));
-			setTrackComboItems(comboReferenceTracks, trackModel.getReferenceTrack(), measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_REFERENCE));
+			setTrackComboItems(comboSampleTracks, trackModel.getSampleTrack(), measurementModelData.getMeasurementDataSize(analysisType, DataProcessorUI.MEASUREMENT_SAMPLE));
+			setTrackComboItems(comboReferenceTracks, trackModel.getReferenceTrack(), measurementModelData.getMeasurementDataSize(analysisType, DataProcessorUI.MEASUREMENT_REFERENCE));
 			/*
 			 * Update the chart and combo boxes.
 			 */
@@ -157,7 +157,7 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void setTrackData(int track, String type) {
 
-		Map<Integer, Map<String, ISeriesData>> measurementsData = measurementModelData.getMeasurementData(type);
+		Map<Integer, Map<String, ISeriesData>> measurementsData = measurementModelData.getMeasurementData(analysisType, type);
 		if(measurementsData != null) {
 			String wavelengthSelection = comboWavelengths.getText();
 			traceDataUI.addSeriesData(dataProcessorUI.getLineSeriesDataList(measurementsData, wavelengthSelection, track), LineChart.MEDIUM_COMPRESSION);
@@ -613,7 +613,7 @@ public class TraceDataComparisonUI extends Composite {
 			/*
 			 * Track Model
 			 */
-			IReferenceModel referenceModel = measurementModelData.loadModelData(processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
+			IReferenceModel referenceModel = measurementModelData.loadModelData(analysisType, processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
 			trackModel = measurementModelData.loadTrackModel(referenceModel, track);
 		}
 		return trackModel;
@@ -649,7 +649,7 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void loadNextTrack() {
 
-		int sizeTracks = measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_SAMPLE);
+		int sizeTracks = measurementModelData.getMeasurementDataSize(analysisType, DataProcessorUI.MEASUREMENT_SAMPLE);
 		int track = comboSampleTracks.getSelectionIndex() + 2;
 		track = (track > sizeTracks) ? sizeTracks : track;
 		updateTrackModels(track);
