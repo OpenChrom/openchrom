@@ -79,8 +79,6 @@ public class TraceDataComparisonUI extends Composite {
 	private String analysisType = "";
 	private String sampleGroup = ""; // e.g. "0196"
 	private String referenceGroup = ""; // e.g. "0236"
-	private String sampleGroupSelection = "";
-	private String referenceGroupSelection = "";
 	//
 	private IProcessorModel processorModel;
 	private ITrackModel trackModel;
@@ -104,75 +102,57 @@ public class TraceDataComparisonUI extends Composite {
 		 */
 		setSampleMeasurementComboBoxItems();
 		setReferenceMeasurementComboBoxItems();
-		//
-		initializeSampleAndReferenceModelData();
-	}
-
-	private void initializeSampleAndReferenceModelData() {
-
-		/*
-		 * Get the sample and reference.
-		 */
-		String fileExtension = PreferenceSupplier.getFileExtension();
-		String sampleDirectory = processorModel.getSampleDirectory();
-		String referenceDirectory = processorModel.getReferenceDirectory();
-		//
-		List<File> sampleFiles = dataProcessorUI.getMeasurementFileList(processorModel, fileExtension, sampleDirectory, sampleGroup, sampleGroupSelection);
-		List<File> referenceFiles = dataProcessorUI.getMeasurementFileList(processorModel, fileExtension, referenceDirectory, referenceGroup, referenceGroupSelection);
-		/*
-		 * Refresh the combo items
-		 */
-		setSampleMeasurementComboBoxItems();
-		setReferenceMeasurementComboBoxItems();
-		/*
-		 * Track Model
-		 */
-		IReferenceModel referenceModel = measurementModelData.loadModelData(processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
-		trackModel = measurementModelData.loadTrackModel(referenceModel);
 	}
 
 	public void loadSampleAndReferenceModelData() {
 
-		initializeSampleAndReferenceModelData();
+		int track = getTrack();
+		trackModel = retrieveTrackModel(track);
 		//
-		setTrackComboItems(comboSampleTracks, trackModel.getSampleTrack(), measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_SAMPLE));
-		setTrackComboItems(comboReferenceTracks, trackModel.getReferenceTrack(), measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_REFERENCE));
-		/*
-		 * Update the chart and combo boxes.
-		 */
-		traceDataUI.getBaseChart().suspendUpdate(true);
-		traceDataUI.deleteSeries();
-		setTrackData(trackModel.getSampleTrack(), DataProcessorUI.MEASUREMENT_SAMPLE);
-		setTrackData(trackModel.getReferenceTrack(), DataProcessorUI.MEASUREMENT_REFERENCE);
-		traceDataUI.getBaseChart().suspendUpdate(false);
-		/*
-		 * Update the label and notes.
-		 */
-		notesText.setText(trackModel.getNotes());
-		String title = analysisType + ": " + sampleGroup + " vs. " + referenceGroup;
-		IChartSettings chartSettings = traceDataUI.getChartSettings();
-		chartSettings.setTitle(title);
-		traceDataUI.applySettings(chartSettings);
-		traceDataUI.redraw();
-		/*
-		 * Update the buttons.
-		 */
-		String imageMatched = (trackModel.isMatched()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
-		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImage.SIZE_16x16));
-		String imageSkipped = (trackModel.isSkipped()) ? IApplicationImage.IMAGE_SKIPPED : IApplicationImage.IMAGE_SKIP;
-		buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(imageSkipped, IApplicationImage.SIZE_16x16));
-		String imageEvaluated = (trackModel.isEvaluated()) ? IApplicationImage.IMAGE_EVALUATED : IApplicationImage.IMAGE_EVALUATE;
-		buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(imageEvaluated, IApplicationImage.SIZE_16x16));
-		//
-		setElementStatus(trackModel);
-		editorProcessor.setDirty(true);
-		modifyDataStatusLabel();
+		if(trackModel != null) {
+			/*
+			 * Set the data.
+			 */
+			setTrackComboItems(comboSampleTracks, trackModel.getSampleTrack(), measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_SAMPLE));
+			setTrackComboItems(comboReferenceTracks, trackModel.getReferenceTrack(), measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_REFERENCE));
+			/*
+			 * Update the chart and combo boxes.
+			 */
+			traceDataUI.getBaseChart().suspendUpdate(true);
+			traceDataUI.deleteSeries();
+			setTrackData(trackModel.getSampleTrack(), DataProcessorUI.MEASUREMENT_SAMPLE);
+			setTrackData(trackModel.getReferenceTrack(), DataProcessorUI.MEASUREMENT_REFERENCE);
+			traceDataUI.getBaseChart().suspendUpdate(false);
+			/*
+			 * Update the label and notes.
+			 */
+			String title = analysisType + ": " + sampleGroup + " vs. " + referenceGroup;
+			IChartSettings chartSettings = traceDataUI.getChartSettings();
+			chartSettings.setTitle(title);
+			traceDataUI.applySettings(chartSettings);
+			traceDataUI.redraw();
+			/*
+			 * Update the buttons.
+			 */
+			setElementStatusAndValues();
+			editorProcessor.setDirty(true);
+			modifyDataStatusLabel();
+		}
 	}
 
-	private void setTrackData(int track) {
+	private int getTrack() {
 
-		setTrackData(track, DataProcessorUI.MEASUREMENT_SAMPLE);
-		setTrackData(track, DataProcessorUI.MEASUREMENT_REFERENCE);
+		if(comboSampleTracks.getSelectionIndex() == -1) {
+			/*
+			 * Initialize
+			 */
+			return 1;
+		} else {
+			/*
+			 * Selection
+			 */
+			return comboSampleTracks.getSelectionIndex() + 1;
+		}
 	}
 
 	private void setTrackData(int track, String type) {
@@ -222,13 +202,7 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				int track = comboSampleTracks.getSelectionIndex(); // no -1 as the index is 0 based
-				track = (track <= 0) ? 1 : track;
-				trackModel.setSampleTrack(track);
-				int selection = track - 1;
-				comboSampleTracks.select(selection);
-				comboReferenceTracks.select(selection);
-				setTrackData(track);
+				loadPreviousTrack();
 			}
 		});
 	}
@@ -244,8 +218,12 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				sampleGroupSelection = comboSampleMeasurements.getText();
-				loadSampleAndReferenceModelData();
+				sampleGroup = comboSampleMeasurements.getText();
+				if(comboReferenceMeasurements.getSelectionIndex() == -1) {
+					MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Trace Compare", "Please select next a reference to analyze.");
+				} else {
+					loadSampleAndReferenceModelData();
+				}
 			}
 		});
 	}
@@ -261,10 +239,7 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				int track = comboSampleTracks.getSelectionIndex() + 1;
-				trackModel.setSampleTrack(track);
-				setTrackData(track, DataProcessorUI.MEASUREMENT_SAMPLE);
-				setEvaluated(false);
+				loadSampleTrack();
 			}
 		});
 	}
@@ -280,8 +255,12 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				referenceGroupSelection = comboReferenceMeasurements.getText();
-				loadSampleAndReferenceModelData();
+				referenceGroup = comboReferenceMeasurements.getText();
+				if(comboSampleMeasurements.getSelectionIndex() == -1) {
+					MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Trace Compare", "Please select next a sample to analyze.");
+				} else {
+					loadSampleAndReferenceModelData();
+				}
 			}
 		});
 	}
@@ -297,10 +276,7 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				int track = comboReferenceTracks.getSelectionIndex() + 1;
-				trackModel.setReferenceTrack(track);
-				setTrackData(track, DataProcessorUI.MEASUREMENT_REFERENCE);
-				setEvaluated(false);
+				loadReferenceTrack();
 			}
 		});
 	}
@@ -316,14 +292,7 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				int sizeTracks = measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_SAMPLE);
-				int track = comboSampleTracks.getSelectionIndex() + 2;
-				track = (track > sizeTracks) ? sizeTracks : track;
-				trackModel.setSampleTrack(track);
-				int selection = track - 1;
-				comboSampleTracks.select(selection);
-				comboReferenceTracks.select(selection);
-				setTrackData(track);
+				loadNextTrack();
 			}
 		});
 	}
@@ -387,11 +356,11 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void createButtonFlipComments(Composite parent) {
 
-		Button buttonFlipComments = new Button(parent, SWT.PUSH);
-		buttonFlipComments.setText("");
-		buttonFlipComments.setToolTipText("Show/Hide Comments");
-		buttonFlipComments.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
-		buttonFlipComments.addSelectionListener(new SelectionAdapter() {
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		button.setToolTipText("Show/Hide Comments");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -400,9 +369,9 @@ public class TraceDataComparisonUI extends Composite {
 				showComments(isVisible);
 				//
 				if(isVisible) {
-					buttonFlipComments.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_COLLAPSE_ALL, IApplicationImage.SIZE_16x16));
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_COLLAPSE_ALL, IApplicationImage.SIZE_16x16));
 				} else {
-					buttonFlipComments.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
 				}
 				//
 				editorProcessor.setDirty(true);
@@ -423,7 +392,7 @@ public class TraceDataComparisonUI extends Composite {
 
 				ImageSupplier imageSupplier = new ImageSupplier();
 				//
-				String fileNameSample = getImageName("Sample+Reference", sampleGroup + "+" + referenceGroup, trackModel.getSampleTrack());
+				String fileNameSample = dataProcessorUI.getImageName(processorModel, "Sample+Reference", sampleGroup + "+" + referenceGroup, trackModel.getSampleTrack());
 				ImageData imageDataSample = imageSupplier.getImageData(traceDataUI.getBaseChart());
 				imageSupplier.saveImage(imageDataSample, fileNameSample, SWT.IMAGE_PNG);
 				trackModel.setPathSnapshots(fileNameSample);
@@ -544,58 +513,6 @@ public class TraceDataComparisonUI extends Composite {
 		});
 	}
 
-	private void setMatched(boolean isMatched) {
-
-		trackModel.setMatched(isMatched);
-		String imageMatched = (trackModel.isMatched()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
-		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImage.SIZE_16x16));
-		editorProcessor.setDirty(true);
-	}
-
-	private void setSkipped(boolean isSkipped) {
-
-		trackModel.setSkipped(isSkipped);
-		String imageSkipped = (trackModel.isSkipped()) ? IApplicationImage.IMAGE_SKIPPED : IApplicationImage.IMAGE_SKIP;
-		buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(imageSkipped, IApplicationImage.SIZE_16x16));
-		//
-		if(isSkipped) {
-			setEvaluated(false);
-		}
-		//
-		setElementStatus(trackModel);
-		editorProcessor.setDirty(true);
-	}
-
-	private void setEvaluated(boolean isEvaluated) {
-
-		trackModel.setEvaluated(isEvaluated);
-		String imageEvaluated = (trackModel.isEvaluated()) ? IApplicationImage.IMAGE_EVALUATED : IApplicationImage.IMAGE_EVALUATE;
-		buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(imageEvaluated, IApplicationImage.SIZE_16x16));
-		//
-		if(isEvaluated) {
-			setSkipped(false);
-			BaseChart baseChart = traceDataUI.getBaseChart();
-			IAxis xAxis = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
-			IAxis yAxis = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
-			Range rangeX = xAxis.getRange();
-			Range rangeY = yAxis.getRange();
-			setSelectedRange(rangeX, rangeY);
-		} else {
-			setSelectedRange(null, null);
-		}
-		//
-		setElementStatus(trackModel);
-		editorProcessor.setDirty(true);
-	}
-
-	private void setSelectedRange(Range rangeX, Range rangeY) {
-
-		trackModel.setStartRetentionTime((rangeX != null) ? rangeX.lower : 0.0d);
-		trackModel.setStopRetentionTime((rangeX != null) ? rangeX.upper : 0.0d);
-		trackModel.setStartIntensity((rangeY != null) ? rangeY.lower : 0.0d);
-		trackModel.setStopIntensity((rangeY != null) ? rangeY.upper : 0.0d);
-	}
-
 	private void createCommentsSection(Composite parent) {
 
 		notesText = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.H_SCROLL);
@@ -656,47 +573,6 @@ public class TraceDataComparisonUI extends Composite {
 		parent.redraw();
 	}
 
-	private String getImageName(String type, String group, int track) {
-
-		StringBuilder builder = new StringBuilder();
-		builder.append(processorModel.getImageDirectory());
-		builder.append(File.separator);
-		builder.append(type);
-		builder.append("_");
-		builder.append(group);
-		builder.append("_");
-		builder.append(track);
-		builder.append(".png");
-		return builder.toString();
-	}
-
-	private void setElementStatus(ITrackModel trackModel) {
-
-		if(trackModel.isEvaluated() || trackModel.isSkipped()) {
-			if(trackModel.isEvaluated()) {
-				trackModel.setSkipped(false);
-				comboReferenceTracks.setEnabled(false);
-				buttonCreateSnapshot.setEnabled(false);
-				buttonIsMatched.setEnabled(false);
-				buttonIsSkipped.setEnabled(false);
-				buttonIsEvaluated.setEnabled(true);
-			} else {
-				trackModel.setEvaluated(false);
-				comboReferenceTracks.setEnabled(false);
-				buttonCreateSnapshot.setEnabled(false);
-				buttonIsMatched.setEnabled(false);
-				buttonIsSkipped.setEnabled(true);
-				buttonIsEvaluated.setEnabled(false);
-			}
-		} else {
-			comboReferenceTracks.setEnabled(true);
-			buttonCreateSnapshot.setEnabled(true);
-			buttonIsMatched.setEnabled(true);
-			buttonIsSkipped.setEnabled(true);
-			buttonIsEvaluated.setEnabled(true);
-		}
-	}
-
 	private void setTrackComboItems(Combo combo, int selectedTrack, int numberTracks) {
 
 		/*
@@ -721,13 +597,201 @@ public class TraceDataComparisonUI extends Composite {
 		}
 	}
 
+	private ITrackModel retrieveTrackModel(int track) {
+
+		/*
+		 * Get the sample and reference.
+		 */
+		ITrackModel trackModel = null;
+		if(sampleGroup != null && !"".equals(sampleGroup) && referenceGroup != null && !"".equals(referenceGroup)) {
+			String fileExtension = PreferenceSupplier.getFileExtension();
+			String sampleDirectory = processorModel.getSampleDirectory();
+			String referenceDirectory = processorModel.getReferenceDirectory();
+			//
+			List<File> sampleFiles = dataProcessorUI.getMeasurementFileList(processorModel, fileExtension, sampleDirectory, sampleGroup);
+			List<File> referenceFiles = dataProcessorUI.getMeasurementFileList(processorModel, fileExtension, referenceDirectory, referenceGroup);
+			/*
+			 * Track Model
+			 */
+			IReferenceModel referenceModel = measurementModelData.loadModelData(processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
+			trackModel = measurementModelData.loadTrackModel(referenceModel, track);
+		}
+		return trackModel;
+	}
+
+	private void loadPreviousTrack() {
+
+		int track = comboSampleTracks.getSelectionIndex(); // no -1 as the index is 0 based
+		track = (track <= 0) ? 1 : track;
+		trackModel = retrieveTrackModel(track);
+		updateTrackModels(track);
+	}
+
+	private void loadSampleTrack() {
+
+		if(trackModel != null) {
+		}
+		int track = comboSampleTracks.getSelectionIndex() + 1;
+		trackModel.setSampleTrack(track);
+		setTrackData(track, DataProcessorUI.MEASUREMENT_SAMPLE);
+		setEvaluated(false);
+	}
+
+	private void loadReferenceTrack() {
+
+		if(trackModel != null) {
+			int track = comboReferenceTracks.getSelectionIndex() + 1;
+			trackModel.setReferenceTrack(track);
+			setTrackData(track, DataProcessorUI.MEASUREMENT_REFERENCE);
+			setEvaluated(false);
+		}
+	}
+
+	private void loadNextTrack() {
+
+		int sizeTracks = measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_SAMPLE);
+		int track = comboSampleTracks.getSelectionIndex() + 2;
+		track = (track > sizeTracks) ? sizeTracks : track;
+		updateTrackModels(track);
+	}
+
+	private void updateTrackModels(int track) {
+
+		if(trackModel != null) {
+			/*
+			 * Sample Track
+			 */
+			int selection = track - 1;
+			comboSampleTracks.select(selection);
+			setTrackData(track, DataProcessorUI.MEASUREMENT_SAMPLE);
+			/*
+			 * Reference Track
+			 */
+			int referenceTrack = trackModel.getReferenceTrack();
+			if(referenceTrack > 0) {
+				comboReferenceTracks.select(referenceTrack - 1);
+			} else {
+				referenceTrack = track;
+				comboReferenceTracks.select(selection);
+			}
+			setTrackData(referenceTrack, DataProcessorUI.MEASUREMENT_REFERENCE);
+			setElementStatusAndValues();
+		}
+	}
+
+	private void setElementStatusAndValues() {
+
+		/*
+		 * Button images.
+		 */
+		if(trackModel != null) {
+			//
+			notesText.setText(trackModel.getNotes());
+			//
+			String imageMatched = (trackModel.isMatched()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
+			buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImage.SIZE_16x16));
+			String imageSkipped = (trackModel.isSkipped()) ? IApplicationImage.IMAGE_SKIPPED : IApplicationImage.IMAGE_SKIP;
+			buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(imageSkipped, IApplicationImage.SIZE_16x16));
+			String imageEvaluated = (trackModel.isEvaluated()) ? IApplicationImage.IMAGE_EVALUATED : IApplicationImage.IMAGE_EVALUATE;
+			buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(imageEvaluated, IApplicationImage.SIZE_16x16));
+			/*
+			 * Enable/Disable buttons
+			 */
+			if(trackModel.isEvaluated() || trackModel.isSkipped()) {
+				if(trackModel.isEvaluated()) {
+					trackModel.setSkipped(false);
+					comboReferenceTracks.setEnabled(false);
+					buttonCreateSnapshot.setEnabled(false);
+					buttonIsMatched.setEnabled(false);
+					buttonIsSkipped.setEnabled(false);
+					buttonIsEvaluated.setEnabled(true);
+				} else {
+					trackModel.setEvaluated(false);
+					comboReferenceTracks.setEnabled(false);
+					buttonCreateSnapshot.setEnabled(false);
+					buttonIsMatched.setEnabled(false);
+					buttonIsSkipped.setEnabled(true);
+					buttonIsEvaluated.setEnabled(false);
+				}
+			} else {
+				comboReferenceTracks.setEnabled(true);
+				buttonCreateSnapshot.setEnabled(true);
+				buttonIsMatched.setEnabled(true);
+				buttonIsSkipped.setEnabled(true);
+				buttonIsEvaluated.setEnabled(true);
+			}
+		} else {
+			notesText.setText("");
+		}
+	}
+
+	private void setMatched(boolean isMatched) {
+
+		if(trackModel != null) {
+			trackModel.setMatched(isMatched);
+			String imageMatched = (trackModel.isMatched()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
+			buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImage.SIZE_16x16));
+			editorProcessor.setDirty(true);
+		}
+	}
+
+	private void setSkipped(boolean isSkipped) {
+
+		if(trackModel != null) {
+			trackModel.setSkipped(isSkipped);
+			String imageSkipped = (trackModel.isSkipped()) ? IApplicationImage.IMAGE_SKIPPED : IApplicationImage.IMAGE_SKIP;
+			buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(imageSkipped, IApplicationImage.SIZE_16x16));
+			//
+			if(isSkipped) {
+				setEvaluated(false);
+			}
+			//
+			setElementStatusAndValues();
+			editorProcessor.setDirty(true);
+		}
+	}
+
+	private void setEvaluated(boolean isEvaluated) {
+
+		if(trackModel != null) {
+			trackModel.setEvaluated(isEvaluated);
+			String imageEvaluated = (trackModel.isEvaluated()) ? IApplicationImage.IMAGE_EVALUATED : IApplicationImage.IMAGE_EVALUATE;
+			buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(imageEvaluated, IApplicationImage.SIZE_16x16));
+			//
+			if(isEvaluated) {
+				setSkipped(false);
+				BaseChart baseChart = traceDataUI.getBaseChart();
+				IAxis xAxis = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
+				IAxis yAxis = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+				Range rangeX = xAxis.getRange();
+				Range rangeY = yAxis.getRange();
+				setSelectedRange(rangeX, rangeY);
+			} else {
+				setSelectedRange(null, null);
+			}
+			//
+			setElementStatusAndValues();
+			editorProcessor.setDirty(true);
+		}
+	}
+
+	private void setSelectedRange(Range rangeX, Range rangeY) {
+
+		if(trackModel != null) {
+			trackModel.setStartRetentionTime((rangeX != null) ? rangeX.lower : 0.0d);
+			trackModel.setStopRetentionTime((rangeX != null) ? rangeX.upper : 0.0d);
+			trackModel.setStartIntensity((rangeY != null) ? rangeY.lower : 0.0d);
+			trackModel.setStopIntensity((rangeY != null) ? rangeY.upper : 0.0d);
+		}
+	}
+
 	private void setSampleMeasurementComboBoxItems() {
 
 		String fileExtension = PreferenceSupplier.getFileExtension();
 		String sampleDirectory = processorModel.getSampleDirectory();
 		//
 		List<String> samplePatterns = dataProcessorUI.getMeasurementPatterns(sampleDirectory, fileExtension);
-		setMeasurementComboItems(comboSampleMeasurements, samplePatterns, sampleGroupSelection);
+		setMeasurementComboItems(comboSampleMeasurements, samplePatterns, sampleGroup);
 		sampleGroup = comboSampleMeasurements.getText();
 	}
 
@@ -737,21 +801,12 @@ public class TraceDataComparisonUI extends Composite {
 		String referenceDirectory = processorModel.getReferenceDirectory();
 		//
 		List<String> referencePatterns = dataProcessorUI.getMeasurementPatterns(referenceDirectory, fileExtension);
-		setMeasurementComboItems(comboReferenceMeasurements, referencePatterns, referenceGroupSelection);
+		setMeasurementComboItems(comboReferenceMeasurements, referencePatterns, referenceGroup);
 		referenceGroup = comboReferenceMeasurements.getText();
 	}
 
 	private void setMeasurementComboItems(Combo combo, List<String> patterns, String selectedGroup) {
 
 		combo.setItems(patterns.toArray(new String[patterns.size()]));
-		if(combo.getItemCount() > 0 && "".equals(selectedGroup)) {
-			combo.select(0);
-		} else {
-			if(patterns.contains(selectedGroup)) {
-				combo.setText(selectedGroup);
-			} else {
-				combo.select(0);
-			}
-		}
 	}
 }

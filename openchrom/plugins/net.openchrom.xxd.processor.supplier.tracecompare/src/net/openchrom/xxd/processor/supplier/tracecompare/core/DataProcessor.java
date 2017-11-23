@@ -173,4 +173,20 @@ public class DataProcessor {
 		//
 		return 0;
 	}
+
+	public String getImageName(IProcessorModel processorModel, String type, String group, int track) {
+
+		StringBuilder builder = new StringBuilder();
+		if(processorModel != null) {
+			builder.append(processorModel.getImageDirectory());
+			builder.append(File.separator);
+			builder.append(type);
+			builder.append("_");
+			builder.append(group);
+			builder.append("_");
+			builder.append(track);
+			builder.append(".png");
+		}
+		return builder.toString();
+	}
 }

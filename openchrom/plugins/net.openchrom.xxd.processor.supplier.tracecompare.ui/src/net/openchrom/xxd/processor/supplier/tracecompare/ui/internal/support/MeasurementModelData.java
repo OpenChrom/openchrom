@@ -81,12 +81,8 @@ public class MeasurementModelData {
 		return referenceModel;
 	}
 
-	public ITrackModel loadTrackModel(IReferenceModel referenceModel) {
+	public ITrackModel loadTrackModel(IReferenceModel referenceModel, int track) {
 
-		/*
-		 * Track #
-		 */
-		int track = 1;
 		ITrackModel trackModel = referenceModel.getTrackModels().get(track);
 		if(trackModel == null) {
 			trackModel = new TrackModel_v1000();
