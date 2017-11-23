@@ -12,42 +12,29 @@
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.swt;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
-import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
-import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
-import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
-import org.eclipse.chemclipse.wsd.model.xwc.ExtractedWavelengthSignalExtractor;
-import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
-import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignals;
 import org.eclipse.eavp.service.swtchart.core.BaseChart;
 import org.eclipse.eavp.service.swtchart.core.IChartSettings;
 import org.eclipse.eavp.service.swtchart.core.ISeriesData;
-import org.eclipse.eavp.service.swtchart.core.SeriesData;
+import org.eclipse.eavp.service.swtchart.core.ISeriesModificationListener;
 import org.eclipse.eavp.service.swtchart.images.ImageSupplier;
-import org.eclipse.eavp.service.swtchart.linecharts.ILineSeriesData;
-import org.eclipse.eavp.service.swtchart.linecharts.ILineSeriesSettings;
 import org.eclipse.eavp.service.swtchart.linecharts.LineChart;
-import org.eclipse.eavp.service.swtchart.linecharts.LineSeriesData;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.preference.IPreferencePage;
+import org.eclipse.jface.preference.PreferenceDialog;
+import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -55,32 +42,23 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.swtchart.IAxis;
-import org.swtchart.LineStyle;
 import org.swtchart.Range;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.ReferenceModel_v1000;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.TrackModel_v1000;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
-import net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.runnables.MeasurementImportRunnable;
+import net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.support.DataProcessorUI;
+import net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.support.MeasurementModelData;
+import net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences.PreferencePage;
 
 public class TraceDataComparisonUI extends Composite {
 
-	public static final String SAMPLE = "Sample";
-	public static final String REFERENCE = "Reference";
-	//
-	public static final String TYPE_QUALIFICATION = "Qualification";
-	public static final String TYPE_VALIDATION = "Validation";
-	//
-	private static final Logger logger = Logger.getLogger(TraceDataComparisonUI.class);
-	//
 	private static final int HORIZONTAL_INDENT = 15;
-	private static final String SHOW_ALL_WAVELENGTHS = "Show All";
 	//
 	private EditorProcessor editorProcessor;
 	//
@@ -94,38 +72,24 @@ public class TraceDataComparisonUI extends Composite {
 	private Button buttonIsSkipped;
 	private Button buttonCreateSnapshot;
 	private Text notesText;
+	private Label labelDataStatus;
 	//
 	private TraceDataUI traceDataUI;
 	//
-	private IProcessorModel processorModel;
-	private ITrackModel trackModel;
-	private String type;
+	private String analysisType = "";
 	private String sampleGroup = ""; // "0196"
 	private String referenceGroup = ""; // "0236"
-	private Map<Integer, Map<String, ISeriesData>> sampleMeasurementsData;
-	private Map<Integer, Map<String, ISeriesData>> referenceMeasurementsData;
-	private Map<String, Map<Integer, Map<String, ISeriesData>>> modelData = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
 	//
-	private Map<String, Color> colorMap;
-	private Color colorDefault;
-	//
-	private DataProcessor dataProcessor;
+	private IProcessorModel processorModel;
+	private ITrackModel trackModel;
+	private DataProcessorUI dataProcessorUI;
+	private MeasurementModelData measurementModelData;
 
-	public TraceDataComparisonUI(Composite parent, int style, String type) {
+	public TraceDataComparisonUI(Composite parent, int style, String analysisType) {
 		super(parent, style);
-		//
-		colorMap = new HashMap<String, Color>();
-		colorMap.put("190", Colors.getColor(255, 255, 0));
-		colorMap.put("200", Colors.getColor(0, 0, 255));
-		colorMap.put("220", Colors.getColor(0, 255, 255));
-		colorMap.put("240", Colors.getColor(0, 255, 0));
-		colorMap.put("260", Colors.getColor(0, 0, 0));
-		colorMap.put("280", Colors.getColor(255, 0, 0));
-		colorMap.put("300", Colors.getColor(185, 0, 127));
-		colorDefault = Display.getDefault().getSystemColor(SWT.COLOR_GRAY);
-		//
-		this.type = type;
-		dataProcessor = new DataProcessor();
+		this.analysisType = analysisType;
+		dataProcessorUI = new DataProcessorUI();
+		measurementModelData = new MeasurementModelData();
 		initialize();
 	}
 
@@ -133,75 +97,7 @@ public class TraceDataComparisonUI extends Composite {
 
 		this.editorProcessor = editorProcessor;
 		this.processorModel = editorProcessor.getProcessorModel();
-		//
-		initializeModelData();
-	}
-
-	private void initializeModelData() {
-
-		/*
-		 * Get the sample and reference.
-		 */
-		List<File> sampleFiles = getSampleFiles();
-		List<File> referenceFiles = getReferenceFiles();
-		/*
-		 * Get the model.
-		 */
-		ReferenceModel_v1000 referenceModel = processorModel.getReferenceModels().get(referenceGroup);
-		if(referenceModel == null) {
-			referenceModel = new ReferenceModel_v1000();
-			referenceModel.setReferenceGroup(referenceGroup);
-			referenceModel.setReferencePath(PreferenceSupplier.getReferenceDirectory());
-			processorModel.getReferenceModels().put(referenceGroup, referenceModel);
-		}
-		//
-		sampleGroup = comboSampleMeasurements.getText();
-		referenceGroup = comboReferenceMeasurements.getText();
-		/*
-		 * Extract the data.
-		 * 0196 [Group]
-		 * -> 1 [Track] -> 190 [nm], ISeriesData
-		 * -> 1 [Track] -> 200 [nm], ISeriesData
-		 * ...
-		 * -> 18 [Track] -> 190 [nm], ISeriesData
-		 * -> 18 [Track] -> 200 [nm], ISeriesData
-		 * 0197 [Group]
-		 * -> 1 [Track] -> 190 [nm], ISeriesData
-		 * -> 1 [Track] -> 200 [nm], ISeriesData
-		 * ...
-		 * -> 18 [Track] -> 190 [nm], ISeriesData
-		 * -> 18 [Track] -> 200 [nm], ISeriesData
-		 */
-		sampleMeasurementsData = modelData.get(sampleGroup);
-		if(sampleMeasurementsData == null) {
-			sampleMeasurementsData = extractMeasurementsData(sampleFiles, SAMPLE);
-			modelData.put(sampleGroup, sampleMeasurementsData);
-		}
-		//
-		referenceMeasurementsData = modelData.get(referenceGroup);
-		if(referenceMeasurementsData == null) {
-			referenceMeasurementsData = extractMeasurementsData(referenceFiles, REFERENCE);
-			modelData.put(referenceGroup, referenceMeasurementsData);
-		}
-		/*
-		 * Track #
-		 */
-		int track = 1;
-		trackModel = referenceModel.getTrackModels().get(track);
-		if(trackModel == null) {
-			trackModel = new TrackModel_v1000();
-			trackModel.setSampleTrack(track);
-			referenceModel.getTrackModels().put(track, (TrackModel_v1000)trackModel);
-		}
-		/*
-		 * Set the current velocity and the reference track.
-		 * Set the reference track only if it is 0.
-		 * The user may have selected another reference track.
-		 */
-		trackModel.setScanVelocity(PreferenceSupplier.getScanVelocity());
-		if(trackModel.getReferenceTrack() == 0) {
-			trackModel.setReferenceTrack(track);
-		}
+		loadModelData();
 	}
 
 	private List<File> getSampleFiles() {
@@ -212,12 +108,14 @@ public class TraceDataComparisonUI extends Composite {
 			 * Sample files.
 			 */
 			if("".equals(sampleGroup) || !sampleGroup.equals(comboSampleMeasurements.getText())) {
+				//
 				String fileExtension = PreferenceSupplier.getFileExtension();
 				String sampleDirectory = PreferenceSupplier.getSampleDirectory();
-				List<String> samplePatterns = dataProcessor.getMeasurementPatterns(sampleDirectory, fileExtension);
+				List<String> samplePatterns = dataProcessorUI.getMeasurementPatterns(sampleDirectory, fileExtension);
+				//
 				setMeasurementComboItems(comboSampleMeasurements, samplePatterns);
 				sampleGroup = comboSampleMeasurements.getText();
-				sampleFiles = dataProcessor.getMeasurementFiles(sampleDirectory, fileExtension, sampleGroup);
+				sampleFiles = dataProcessorUI.getMeasurementFiles(sampleDirectory, fileExtension, sampleGroup);
 			}
 		}
 		//
@@ -232,51 +130,56 @@ public class TraceDataComparisonUI extends Composite {
 			 * Reference files.
 			 */
 			if("".equals(referenceGroup) || !referenceGroup.equals(comboReferenceMeasurements.getText())) {
+				//
 				String fileExtension = PreferenceSupplier.getFileExtension();
 				String referenceDirectory = PreferenceSupplier.getReferenceDirectory();
-				List<String> referencePatterns = dataProcessor.getMeasurementPatterns(referenceDirectory, fileExtension);
+				List<String> referencePatterns = dataProcessorUI.getMeasurementPatterns(referenceDirectory, fileExtension);
+				//
 				setMeasurementComboItems(comboReferenceMeasurements, referencePatterns);
 				referenceGroup = comboReferenceMeasurements.getText();
-				referenceFiles = dataProcessor.getMeasurementFiles(referenceDirectory, fileExtension, referenceGroup);
+				referenceFiles = dataProcessorUI.getMeasurementFiles(referenceDirectory, fileExtension, referenceGroup);
 			}
 		}
 		//
 		return referenceFiles;
 	}
 
-	public void loadData() {
+	private void loadModelData() {
 
-		int sampleTrack = trackModel.getSampleTrack();
-		initializeWavelengthsComboItems(sampleMeasurementsData.get(sampleTrack));
-		reloadData();
+		/*
+		 * Get the sample and reference.
+		 */
+		List<File> sampleFiles = getSampleFiles();
+		List<File> referenceFiles = getReferenceFiles();
+		//
+		sampleGroup = comboSampleMeasurements.getText();
+		referenceGroup = comboReferenceMeasurements.getText();
+		//
+		IReferenceModel referenceModel = measurementModelData.loadModelData(processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
+		trackModel = measurementModelData.loadTrackModel(referenceModel);
 	}
 
-	public void reloadData() {
+	public void loadData() {
 
-		initializeModelData();
+		loadModelData();
+		//
+		setTrackComboItems(comboSampleTracks, trackModel.getSampleTrack(), measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_SAMPLE));
+		setTrackComboItems(comboReferenceTracks, trackModel.getReferenceTrack(), measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_REFERENCE));
 		/*
 		 * Update the chart and combo boxes.
 		 */
 		traceDataUI.getBaseChart().suspendUpdate(true);
 		traceDataUI.deleteSeries();
-		int sampleTrack = trackModel.getSampleTrack();
-		setTrackComboItems(comboSampleTracks, sampleTrack, sampleMeasurementsData.keySet().size());
-		setSampleData(sampleTrack);
-		trackModel.setSampleTrack(sampleTrack);
-		int referenceTrack = trackModel.getReferenceTrack();
-		setTrackComboItems(comboReferenceTracks, referenceTrack, referenceMeasurementsData.keySet().size());
-		setReferenceData(sampleTrack);
-		trackModel.setReferenceTrack(referenceTrack);
+		setTrackData(trackModel.getSampleTrack(), DataProcessorUI.MEASUREMENT_SAMPLE);
+		setTrackData(trackModel.getReferenceTrack(), DataProcessorUI.MEASUREMENT_REFERENCE);
 		traceDataUI.getBaseChart().suspendUpdate(false);
 		/*
 		 * Update the label and notes.
 		 */
 		notesText.setText(trackModel.getNotes());
-		String title = type + ": " + sampleGroup;
+		String title = analysisType + ": " + sampleGroup + " vs. " + referenceGroup;
 		IChartSettings chartSettings = traceDataUI.getChartSettings();
 		chartSettings.setTitle(title);
-		chartSettings.setTitleVisible(true);
-		chartSettings.setTitleColor(Colors.BLACK);
 		traceDataUI.applySettings(chartSettings);
 		traceDataUI.redraw();
 		/*
@@ -291,94 +194,22 @@ public class TraceDataComparisonUI extends Composite {
 		//
 		setElementStatus(trackModel);
 		editorProcessor.setDirty(true);
+		modifyDataStatusLabel();
 	}
 
 	private void setTrackData(int track) {
 
-		setSampleData(track);
-		setReferenceData(track);
+		setTrackData(track, DataProcessorUI.MEASUREMENT_SAMPLE);
+		setTrackData(track, DataProcessorUI.MEASUREMENT_REFERENCE);
 	}
 
-	private void setSampleData(int track) {
+	private void setTrackData(int track, String type) {
 
-		if(sampleMeasurementsData != null) {
-			traceDataUI.addSeriesData(getLineSeriesDataList(sampleMeasurementsData, track), LineChart.MEDIUM_COMPRESSION);
-		}
-	}
-
-	private void setReferenceData(int track) {
-
-		if(referenceMeasurementsData != null) {
-			traceDataUI.addSeriesData(getLineSeriesDataList(referenceMeasurementsData, track), LineChart.MEDIUM_COMPRESSION);
-		}
-	}
-
-	private List<ILineSeriesData> getLineSeriesDataList(Map<Integer, Map<String, ISeriesData>> measurementsData, int track) {
-
-		List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
-		//
+		Map<Integer, Map<String, ISeriesData>> measurementsData = measurementModelData.getMeasurementData(type);
 		if(measurementsData != null) {
-			if(measurementsData.containsKey(track)) {
-				Map<String, ISeriesData> wavelengthData = measurementsData.get(track);
-				addLineSeriesData(lineSeriesDataList, wavelengthData);
-			} else if(measurementsData.containsKey(1)) {
-				Map<String, ISeriesData> wavelengthData = measurementsData.get(1);
-				addLineSeriesData(lineSeriesDataList, wavelengthData);
-			} else {
-				ILineSeriesData lineSeriesData = createEmptyLineSeriesData();
-				lineSeriesDataList.add(lineSeriesData);
-			}
-		} else {
-			ILineSeriesData lineSeriesData = createEmptyLineSeriesData();
-			lineSeriesDataList.add(lineSeriesData);
+			String wavelengthSelection = comboWavelengths.getText();
+			traceDataUI.addSeriesData(dataProcessorUI.getLineSeriesDataList(measurementsData, wavelengthSelection, track), LineChart.MEDIUM_COMPRESSION);
 		}
-		//
-		return lineSeriesDataList;
-	}
-
-	private void addLineSeriesData(List<ILineSeriesData> lineSeriesDataList, Map<String, ISeriesData> wavelengthData) {
-
-		String wavelengthSelection = comboWavelengths.getText();
-		if(wavelengthSelection.equals(SHOW_ALL_WAVELENGTHS)) {
-			for(String wavelength : wavelengthData.keySet()) {
-				addWavelengthData(lineSeriesDataList, wavelengthData, wavelength);
-			}
-		} else {
-			addWavelengthData(lineSeriesDataList, wavelengthData, wavelengthSelection);
-		}
-	}
-
-	private void addWavelengthData(List<ILineSeriesData> lineSeriesDataList, Map<String, ISeriesData> wavelengthData, String wavelength) {
-
-		ISeriesData seriesData = wavelengthData.get(wavelength);
-		boolean isReference = seriesData.getId().startsWith(REFERENCE);
-		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
-		ILineSeriesSettings lineSeriesSettings = lineSeriesData.getLineSeriesSettings();
-		lineSeriesSettings.setEnableArea(false);
-		if(isReference) {
-			lineSeriesSettings.setLineStyle(LineStyle.DASH);
-			lineSeriesSettings.setLineWidth(2);
-		} else {
-			lineSeriesSettings.setLineStyle(LineStyle.SOLID);
-			lineSeriesSettings.setLineWidth(1);
-		}
-		lineSeriesSettings.setLineColor((colorMap.containsKey(wavelength)) ? colorMap.get(wavelength) : colorDefault);
-		ILineSeriesSettings lineSeriesSettingsHighlight = (ILineSeriesSettings)lineSeriesSettings.getSeriesSettingsHighlight();
-		lineSeriesSettingsHighlight.setLineWidth(3);
-		lineSeriesDataList.add(lineSeriesData);
-	}
-
-	private ILineSeriesData createEmptyLineSeriesData() {
-
-		double[] xSeries = new double[]{0, 1000};
-		double[] ySeries = new double[]{0, 1000};
-		ISeriesData seriesData = new SeriesData(xSeries, ySeries, "0");
-		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
-		ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
-		lineSerieSettings.setDescription("0 nm");
-		lineSerieSettings.setEnableArea(false);
-		lineSerieSettings.setLineColor(colorDefault);
-		return lineSeriesData;
 	}
 
 	private void initialize() {
@@ -442,7 +273,7 @@ public class TraceDataComparisonUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				sampleGroup = comboSampleMeasurements.getText();
-				reloadData();
+				loadData();
 			}
 		});
 	}
@@ -460,7 +291,7 @@ public class TraceDataComparisonUI extends Composite {
 
 				int track = comboSampleTracks.getSelectionIndex() + 1;
 				trackModel.setSampleTrack(track);
-				setSampleData(track);
+				setTrackData(track, DataProcessorUI.MEASUREMENT_SAMPLE);
 				setEvaluated(false);
 			}
 		});
@@ -478,7 +309,7 @@ public class TraceDataComparisonUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				referenceGroup = comboReferenceMeasurements.getText();
-				reloadData();
+				loadData();
 			}
 		});
 	}
@@ -496,7 +327,7 @@ public class TraceDataComparisonUI extends Composite {
 
 				int track = comboReferenceTracks.getSelectionIndex() + 1;
 				trackModel.setReferenceTrack(track);
-				setReferenceData(track);
+				setTrackData(track, DataProcessorUI.MEASUREMENT_REFERENCE);
 				setEvaluated(false);
 			}
 		});
@@ -513,7 +344,7 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				int sizeTracks = sampleMeasurementsData.keySet().size();
+				int sizeTracks = measurementModelData.getMeasurementDataSize(DataProcessorUI.MEASUREMENT_SAMPLE);
 				int track = comboSampleTracks.getSelectionIndex() + 2;
 				track = (track > sizeTracks) ? sizeTracks : track;
 				trackModel.setSampleTrack(track);
@@ -529,10 +360,10 @@ public class TraceDataComparisonUI extends Composite {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
-		gridDataComposite.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridDataComposite);
-		composite.setLayout(new GridLayout(7, false));
+		composite.setLayout(new GridLayout(10, false));
 		//
+		createDataStatusLabel(composite);
 		createComboWavelengths(composite);
 		createButtonFlipComments(composite);
 		createButtonCreateSnapshot(composite);
@@ -540,22 +371,44 @@ public class TraceDataComparisonUI extends Composite {
 		createButtonIsSkipped(composite);
 		createButtonIsEvaluated(composite);
 		createButtonToggleLegend(composite);
+		createButtonSettings(composite);
+		createButtonReset(composite);
+	}
+
+	private void createDataStatusLabel(Composite parent) {
+
+		labelDataStatus = new Label(parent, SWT.NONE);
+		labelDataStatus.setToolTipText("Indicates whether the data has been modified or not.");
+		labelDataStatus.setText("");
+		labelDataStatus.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	}
+
+	private void modifyDataStatusLabel() {
+
+		if(traceDataUI.getBaseChart().isDataShifted()) {
+			labelDataStatus.setText("Shifted Data");
+			labelDataStatus.setBackground(Colors.YELLOW);
+		} else {
+			labelDataStatus.setText("");
+			labelDataStatus.setBackground(null);
+		}
 	}
 
 	private void createComboWavelengths(Composite parent) {
 
 		comboWavelengths = new Combo(parent, SWT.READ_ONLY);
 		comboWavelengths.setToolTipText("Selected Wavelength");
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		GridData gridData = new GridData();
 		gridData.widthHint = 150;
 		comboWavelengths.setLayoutData(gridData);
-		initializeWavelengthsComboItems(null);
+		comboWavelengths.setItems(dataProcessorUI.getWavelengthItems());
+		comboWavelengths.select(0);
 		comboWavelengths.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				reloadData();
+				loadData();
 			}
 		});
 	}
@@ -672,6 +525,53 @@ public class TraceDataComparisonUI extends Composite {
 		});
 	}
 
+	private void createButtonSettings(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setToolTipText("Open the Settings");
+		button.setText("");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				IPreferencePage preferencePage = new PreferencePage();
+				preferencePage.setTitle("Trace Compare");
+				PreferenceManager preferenceManager = new PreferenceManager();
+				preferenceManager.addToRoot(new PreferenceNode("1", preferencePage));
+				//
+				PreferenceDialog preferenceDialog = new PreferenceDialog(Display.getDefault().getActiveShell(), preferenceManager);
+				preferenceDialog.create();
+				preferenceDialog.setMessage("Settings");
+				if(preferenceDialog.open() == PreferenceDialog.OK) {
+					try {
+						dataProcessorUI.reloadColors();
+						loadData();
+					} catch(Exception e1) {
+						MessageDialog.openError(Display.getDefault().getActiveShell(), "Settings", "Something has gone wrong to apply the chart settings.");
+					}
+				}
+			}
+		});
+	}
+
+	private void createButtonReset(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setToolTipText("Reset the chart");
+		button.setText("");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_RESET, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				loadData();
+			}
+		});
+	}
+
 	private void setMatched(boolean isMatched) {
 
 		trackModel.setMatched(isMatched);
@@ -755,10 +655,23 @@ public class TraceDataComparisonUI extends Composite {
 		chartSettings.setHorizontalSliderVisible(true);
 		chartSettings.setVerticalSliderVisible(false);
 		chartSettings.getRangeRestriction().setZeroX(true);
-		chartSettings.getRangeRestriction().setZeroY(true);
+		chartSettings.getRangeRestriction().setZeroY(false);
 		chartSettings.setSupportDataShift(true);
+		chartSettings.setTitle("");
+		chartSettings.setTitleVisible(true);
+		chartSettings.setTitleColor(Colors.BLACK);
 		chartSettings.setCreateMenu(true);
 		traceDataUI.applySettings(chartSettings);
+		//
+		BaseChart baseChart = traceDataUI.getBaseChart();
+		baseChart.addSeriesModificationListener(new ISeriesModificationListener() {
+
+			@Override
+			public void handleSeriesModificationEvent() {
+
+				modifyDataStatusLabel();
+			}
+		});
 	}
 
 	private void showComments(boolean isVisible) {
@@ -842,115 +755,5 @@ public class TraceDataComparisonUI extends Composite {
 		if(combo.getItemCount() > 0 && combo.getSelectionIndex() == -1) {
 			combo.select(0);
 		}
-	}
-
-	private void initializeWavelengthsComboItems(Map<String, ISeriesData> wavelengthData) {
-
-		comboWavelengths.removeAll();
-		//
-		List<String> wavelenghts = new ArrayList<String>();
-		wavelenghts.add(SHOW_ALL_WAVELENGTHS);
-		//
-		if(wavelengthData != null) {
-			List<String> wavelengthList = new ArrayList<String>(wavelengthData.keySet());
-			Collections.sort(wavelengthList);
-			for(String wavelength : wavelengthList) {
-				wavelenghts.add(wavelength);
-			}
-		}
-		//
-		comboWavelengths.setItems(wavelenghts.toArray(new String[wavelenghts.size()]));
-		//
-		int size = comboWavelengths.getItemCount();
-		if(size > 0 && comboWavelengths.getSelectionIndex() == -1) {
-			comboWavelengths.select(0);
-		}
-	}
-
-	// ----------------------------------------------------------------------------------------------
-	private Map<Integer, Map<String, ISeriesData>> extractMeasurementsData(List<File> measurementFiles, String type) {
-
-		Map<Integer, Map<String, ISeriesData>> measurementsData = new HashMap<Integer, Map<String, ISeriesData>>();
-		//
-		MeasurementImportRunnable runnable = new MeasurementImportRunnable(measurementFiles);
-		ProgressMonitorDialog monitor = new ProgressMonitorDialog(Display.getDefault().getActiveShell());
-		try {
-			monitor.run(true, true, runnable);
-		} catch(InterruptedException e1) {
-			logger.warn(e1);
-		} catch(InvocationTargetException e1) {
-			logger.warn(e1);
-		}
-		//
-		ISeriesData seriesData;
-		String wavelength;
-		//
-		List<IChromatogramWSD> measurements = runnable.getMeasurements();
-		for(IChromatogram measurement : measurements) {
-			/*
-			 * Track 1
-			 */
-			int index = 1;
-			seriesData = extractMeasurement(measurement, type);
-			wavelength = Integer.toString(getWavelength(measurement));
-			addMeasurementData(measurementsData, wavelength, seriesData, index++);
-			/*
-			 * Track 2 ... n
-			 */
-			for(IChromatogram additionalMeasurement : measurement.getReferencedChromatograms()) {
-				seriesData = extractMeasurement(additionalMeasurement, type);
-				wavelength = Integer.toString(getWavelength(additionalMeasurement));
-				addMeasurementData(measurementsData, wavelength, seriesData, index++);
-			}
-		}
-		//
-		return measurementsData;
-	}
-
-	private void addMeasurementData(Map<Integer, Map<String, ISeriesData>> measurementsData, String wavelength, ISeriesData seriesData, int index) {
-
-		Map<String, ISeriesData> wavelengthData = measurementsData.get(index);
-		if(wavelengthData == null) {
-			wavelengthData = new HashMap<String, ISeriesData>();
-			measurementsData.put(index, wavelengthData);
-		}
-		wavelengthData.put(wavelength, seriesData);
-	}
-
-	private ISeriesData extractMeasurement(IChromatogram measurement, String type) {
-
-		List<IScan> scans = measurement.getScans();
-		double[] xSeries = new double[scans.size()];
-		double[] ySeries = new double[scans.size()];
-		int wavelength = getWavelength(measurement);
-		//
-		int index = 0;
-		ExtractedWavelengthSignalExtractor signalExtractor = new ExtractedWavelengthSignalExtractor((IChromatogramWSD)measurement);
-		IExtractedWavelengthSignals extractedWavelengthSignals = signalExtractor.getExtractedWavelengthSignals();
-		for(IExtractedWavelengthSignal extractedWavelengthSignal : extractedWavelengthSignals.getExtractedWavelengthSignals()) {
-			xSeries[index] = extractedWavelengthSignal.getRetentionTime();
-			ySeries[index] = extractedWavelengthSignal.getAbundance(wavelength);
-			index++;
-		}
-		/*
-		 * Sample 210 nm
-		 * ...
-		 */
-		return new SeriesData(xSeries, ySeries, type + " " + Integer.toString(wavelength) + " nm");
-	}
-
-	private int getWavelength(IChromatogram measurement) {
-
-		for(IScan scan : measurement.getScans()) {
-			if(scan instanceof IScanWSD) {
-				IScanWSD scanWSD = (IScanWSD)scan;
-				for(IScanSignalWSD signal : scanWSD.getScanSignals()) {
-					int wavelength = (int)signal.getWavelength();
-					return wavelength;
-				}
-			}
-		}
-		//
-		return 0;
 	}
 }

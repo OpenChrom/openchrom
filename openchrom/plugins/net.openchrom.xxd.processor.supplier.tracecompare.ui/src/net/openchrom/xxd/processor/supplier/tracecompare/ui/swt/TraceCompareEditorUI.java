@@ -19,6 +19,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
+import net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.support.DataProcessorUI;
 
 public class TraceCompareEditorUI extends Composite {
 
@@ -54,14 +55,14 @@ public class TraceCompareEditorUI extends Composite {
 
 	private void createTraceComparatorQualification(Composite parent) {
 
-		traceComparatorSample = new TraceDataComparisonUI(parent, SWT.BORDER, TraceDataComparisonUI.TYPE_QUALIFICATION);
+		traceComparatorSample = new TraceDataComparisonUI(parent, SWT.BORDER, DataProcessorUI.ANALYSIS_TYPE_QUALIFICATION);
 		traceComparatorSample.setLayoutData(new GridData(GridData.FILL_BOTH));
 		traceComparatorSample.setBackground(Colors.WHITE);
 	}
 
 	private void createTraceComparatorValidation(Composite parent) {
 
-		traceComparatorValidation = new TraceDataComparisonUI(parent, SWT.BORDER, TraceDataComparisonUI.TYPE_VALIDATION);
+		traceComparatorValidation = new TraceDataComparisonUI(parent, SWT.BORDER, DataProcessorUI.ANALYSIS_TYPE_VALIDATION);
 		traceComparatorValidation.setLayoutData(new GridData(GridData.FILL_BOTH));
 		traceComparatorValidation.setBackground(Colors.WHITE);
 	}

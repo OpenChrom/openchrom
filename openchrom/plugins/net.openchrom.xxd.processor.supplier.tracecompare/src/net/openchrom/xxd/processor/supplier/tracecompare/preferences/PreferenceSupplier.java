@@ -53,6 +53,37 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_SCAN_VELOCITY = "scanVelocity"; // mm/s
 	public static final int DEF_SCAN_VELOCITY = 20;
 	//
+	public static final String P_COLOR_DATA_190 = "colorData190";
+	public static final String DEF_COLOR_DATA_190 = "255,255,0";
+	public static final String P_COLOR_DATA_200 = "colorData200";
+	public static final String DEF_COLOR_DATA_200 = "0,0,255";
+	public static final String P_COLOR_DATA_220 = "colorData220";
+	public static final String DEF_COLOR_DATA_220 = "0,255,255";
+	public static final String P_COLOR_DATA_240 = "colorData240";
+	public static final String DEF_COLOR_DATA_240 = "0,255,0";
+	public static final String P_COLOR_DATA_260 = "colorData260";
+	public static final String DEF_COLOR_DATA_260 = "0,0,0";
+	public static final String P_COLOR_DATA_280 = "colorData280";
+	public static final String DEF_COLOR_DATA_280 = "255,0,0";
+	public static final String P_COLOR_DATA_300 = "colorData300";
+	public static final String DEF_COLOR_DATA_300 = "185,0,127";
+	public static final String P_COLOR_DATA_DEFAULT = "colorDataDefault";
+	public static final String DEF_COLOR_DATA_DEFAULT = "125,125,125";
+	//
+	public static final String P_MIRROR_REFERENCE_DATA = "mirrorReferenceData"; // $NON-NLS-1$
+	public static final boolean DEF_MIRROR_REFERENCE_DATA = true; // $NON-NLS-1$
+	//
+	public static final String P_LINE_STYLE_SAMPLE = "lineStyleSample";
+	public static final String DEF_LINE_STYLE_SAMPLE = "SOLID";
+	public static final String P_LINE_WIDTH_SAMPLE = "lineWidthSample";
+	public static final int DEF_LINE_WIDTH_SAMPLE = 1;
+	public static final String P_LINE_STYLE_REFERENCE = "lineStyleReference";
+	public static final String DEF_LINE_STYLE_REFERENCE = "SOLID";
+	public static final String P_LINE_WIDTH_REFERENCE = "lineWidthReference";
+	public static final int DEF_LINE_WIDTH_REFERENCE = 1;
+	public static final String P_LINE_WIDTH_HIGHLIGHT = "lineWidthHighlight";
+	public static final int DEF_LINE_WIDTH_HIGHLIGHT = 2;
+	//
 	private static IPreferenceSupplier preferenceSupplier;
 
 	public static IPreferenceSupplier INSTANCE() {
@@ -86,6 +117,20 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_REFERNCE_DIRECTORY, DEF_REFERNCE_DIRECTORY);
 		defaultValues.put(P_SEARCH_CASE_SENSITIVE, Boolean.toString(DEF_SEARCH_CASE_SENSITIVE));
 		defaultValues.put(P_SCAN_VELOCITY, Integer.toString(DEF_SCAN_VELOCITY));
+		defaultValues.put(P_COLOR_DATA_190, DEF_COLOR_DATA_190);
+		defaultValues.put(P_COLOR_DATA_200, DEF_COLOR_DATA_200);
+		defaultValues.put(P_COLOR_DATA_220, DEF_COLOR_DATA_220);
+		defaultValues.put(P_COLOR_DATA_240, DEF_COLOR_DATA_240);
+		defaultValues.put(P_COLOR_DATA_260, DEF_COLOR_DATA_260);
+		defaultValues.put(P_COLOR_DATA_280, DEF_COLOR_DATA_280);
+		defaultValues.put(P_COLOR_DATA_300, DEF_COLOR_DATA_300);
+		defaultValues.put(P_COLOR_DATA_DEFAULT, DEF_COLOR_DATA_DEFAULT);
+		defaultValues.put(P_MIRROR_REFERENCE_DATA, Boolean.toString(DEF_MIRROR_REFERENCE_DATA));
+		defaultValues.put(P_LINE_STYLE_SAMPLE, DEF_LINE_STYLE_SAMPLE);
+		defaultValues.put(P_LINE_WIDTH_SAMPLE, Integer.toString(DEF_LINE_WIDTH_SAMPLE));
+		defaultValues.put(P_LINE_STYLE_REFERENCE, DEF_LINE_STYLE_REFERENCE);
+		defaultValues.put(P_LINE_WIDTH_REFERENCE, Integer.toString(DEF_LINE_WIDTH_REFERENCE));
+		defaultValues.put(P_LINE_WIDTH_HIGHLIGHT, Integer.toString(DEF_LINE_WIDTH_HIGHLIGHT));
 		return defaultValues;
 	}
 
@@ -177,6 +222,90 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
 		return eclipsePreferences.getInt(P_SCAN_VELOCITY, DEF_SCAN_VELOCITY);
+	}
+
+	public static boolean isMirrorReferenceData() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.getBoolean(P_MIRROR_REFERENCE_DATA, DEF_MIRROR_REFERENCE_DATA);
+	}
+
+	public static String getLineStyleSample() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_LINE_STYLE_SAMPLE, DEF_LINE_STYLE_SAMPLE);
+	}
+
+	public static int getLineWidthSample() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.getInt(P_LINE_WIDTH_SAMPLE, DEF_LINE_WIDTH_SAMPLE);
+	}
+
+	public static String getLineStyleReference() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_LINE_STYLE_REFERENCE, DEF_LINE_STYLE_REFERENCE);
+	}
+
+	public static int getLineWidthReference() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.getInt(P_LINE_WIDTH_REFERENCE, DEF_LINE_WIDTH_REFERENCE);
+	}
+
+	public static int getLineWidthHighlight() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.getInt(P_LINE_WIDTH_HIGHLIGHT, DEF_LINE_WIDTH_HIGHLIGHT);
+	}
+
+	public static String getColorData190() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_COLOR_DATA_190, DEF_COLOR_DATA_190);
+	}
+
+	public static String getColorData200() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_COLOR_DATA_200, DEF_COLOR_DATA_200);
+	}
+
+	public static String getColorData220() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_COLOR_DATA_220, DEF_COLOR_DATA_220);
+	}
+
+	public static String getColorData240() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_COLOR_DATA_240, DEF_COLOR_DATA_240);
+	}
+
+	public static String getColorData260() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_COLOR_DATA_260, DEF_COLOR_DATA_260);
+	}
+
+	public static String getColorData280() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_COLOR_DATA_280, DEF_COLOR_DATA_280);
+	}
+
+	public static String getColorData300() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_COLOR_DATA_300, DEF_COLOR_DATA_300);
+	}
+
+	public static String getColorDataDefault() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_COLOR_DATA_DEFAULT, DEF_COLOR_DATA_DEFAULT);
 	}
 
 	private static String getDirectoryPath(String key, String def) {

@@ -12,7 +12,9 @@
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences;
 
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
+import org.eclipse.eavp.service.swtchart.preferences.PreferenceSupport;
 import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -46,8 +48,30 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_SAMPLE_DIRECTORY, "Sample Directory:", getFieldEditorParent()));
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_REFERNCE_DIRECTORY, "Reference Directory:", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_SEARCH_CASE_SENSITIVE, "Search case sensitive", getFieldEditorParent()));
 		addField(scanVelocityFieldEditor);
+		//
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_SEARCH_CASE_SENSITIVE, "Search case sensitive", getFieldEditorParent()));
+		//
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new ColorFieldEditor(PreferenceSupplier.P_COLOR_DATA_190, "Color 190 nm:", getFieldEditorParent()));
+		addField(new ColorFieldEditor(PreferenceSupplier.P_COLOR_DATA_200, "Color 200 nm:", getFieldEditorParent()));
+		addField(new ColorFieldEditor(PreferenceSupplier.P_COLOR_DATA_220, "Color 220 nm:", getFieldEditorParent()));
+		addField(new ColorFieldEditor(PreferenceSupplier.P_COLOR_DATA_240, "Color 240 nm:", getFieldEditorParent()));
+		addField(new ColorFieldEditor(PreferenceSupplier.P_COLOR_DATA_260, "Color 260 nm:", getFieldEditorParent()));
+		addField(new ColorFieldEditor(PreferenceSupplier.P_COLOR_DATA_280, "Color 280 nm:", getFieldEditorParent()));
+		addField(new ColorFieldEditor(PreferenceSupplier.P_COLOR_DATA_300, "Color 300 nm:", getFieldEditorParent()));
+		addField(new ColorFieldEditor(PreferenceSupplier.P_COLOR_DATA_DEFAULT, "Color Data Default:", getFieldEditorParent()));
+		//
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_MIRROR_REFERENCE_DATA, "Mirror reference data (editor reload needed)", getFieldEditorParent()));
+		//
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new ComboFieldEditor(PreferenceSupplier.P_LINE_STYLE_SAMPLE, "Line Style Sample:", PreferenceSupport.LINE_STYLES, getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_LINE_WIDTH_SAMPLE, "Line Width Sample:", getFieldEditorParent()));
+		addField(new ComboFieldEditor(PreferenceSupplier.P_LINE_STYLE_REFERENCE, "Line Style Reference:", PreferenceSupport.LINE_STYLES, getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_LINE_WIDTH_REFERENCE, "Line Width Reference:", getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_LINE_WIDTH_HIGHLIGHT, "Line Width Highlight:", getFieldEditorParent()));
 	}
 
 	/*

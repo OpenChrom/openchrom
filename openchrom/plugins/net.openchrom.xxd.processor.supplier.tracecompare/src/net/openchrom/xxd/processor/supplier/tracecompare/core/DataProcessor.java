@@ -22,7 +22,11 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
+import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
+import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
@@ -153,5 +157,20 @@ public class DataProcessor {
 		}
 		//
 		return pattern;
+	}
+
+	public int getWavelength(IChromatogram measurement) {
+
+		for(IScan scan : measurement.getScans()) {
+			if(scan instanceof IScanWSD) {
+				IScanWSD scanWSD = (IScanWSD)scan;
+				for(IScanSignalWSD signal : scanWSD.getScanSignals()) {
+					int wavelength = (int)signal.getWavelength();
+					return wavelength;
+				}
+			}
+		}
+		//
+		return 0;
 	}
 }
