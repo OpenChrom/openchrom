@@ -27,6 +27,8 @@ public class TraceCompareEditorUI extends Composite {
 	private EditorProcessor editorProcessor;
 	private TraceDataComparisonUI traceComparatorSample;
 	private TraceDataComparisonUI traceComparatorValidation;
+	//
+	private boolean initialize = true;
 
 	public TraceCompareEditorUI(Composite parent, int style) {
 		super(parent, style);
@@ -38,7 +40,10 @@ public class TraceCompareEditorUI extends Composite {
 		if(object instanceof EditorProcessor) {
 			//
 			editorProcessor = (EditorProcessor)object;
-			initializeData();
+			if(initialize) {
+				initializeData();
+				initialize = false;
+			}
 		}
 	}
 

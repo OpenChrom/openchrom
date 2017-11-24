@@ -85,6 +85,8 @@ public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 			return true;
 		} else if(element instanceof IReferenceModel) {
 			return true;
+		} else if(element instanceof ISampleModel) {
+			return true;
 		}
 		return false;
 	}

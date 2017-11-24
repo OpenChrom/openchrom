@@ -178,17 +178,19 @@ public class DataProcessor {
 		return 0;
 	}
 
-	public String getImageName(IProcessorModel processorModel, String type, String group, int track) {
+	public String getImageName(IProcessorModel processorModel, String sampleGroup, String referenceGroup, int sampleTrack, int referenceTrack) {
 
 		StringBuilder builder = new StringBuilder();
 		if(processorModel != null) {
 			builder.append(processorModel.getImageDirectory());
 			builder.append(File.separator);
-			builder.append(type);
-			builder.append("_");
-			builder.append(group);
-			builder.append("_");
-			builder.append(track);
+			builder.append(sampleGroup);
+			builder.append("-");
+			builder.append(referenceTrack);
+			builder.append("_vs_");
+			builder.append(referenceGroup);
+			builder.append("-");
+			builder.append(referenceTrack);
 			builder.append(".png");
 		}
 		return builder.toString();

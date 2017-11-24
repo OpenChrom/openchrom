@@ -160,13 +160,10 @@ public class TraceDataComparisonUI extends Composite {
 	private ITrackModel retrieveTrackModel(int track) {
 
 		/*
-		 * Get the sample and reference.
+		 * Get the track model.
 		 */
 		ITrackModel trackModel = null;
 		if(sampleGroup != null && !"".equals(sampleGroup) && referenceGroup != null && !"".equals(referenceGroup)) {
-			/*
-			 * Track Model
-			 */
 			trackModel = measurementModelData.loadTrackModel(processorModel, track, analysisType, sampleGroup, referenceGroup);
 		}
 		return trackModel;
@@ -332,7 +329,7 @@ public class TraceDataComparisonUI extends Composite {
 		//
 		createDataStatusLabel(composite);
 		createComboWavelengths(composite);
-		createButtonFlipComments(composite);
+		createButtonToggleComments(composite);
 		createButtonCreateSnapshot(composite);
 		createButtonIsMatched(composite);
 		createButtonIsSkipped(composite);
@@ -380,7 +377,7 @@ public class TraceDataComparisonUI extends Composite {
 		});
 	}
 
-	private void createButtonFlipComments(Composite parent) {
+	private void createButtonToggleComments(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
@@ -421,7 +418,7 @@ public class TraceDataComparisonUI extends Composite {
 					 * Create a chart image.
 					 */
 					ImageSupplier imageSupplier = new ImageSupplier();
-					String imagePath = dataProcessorUI.getImageName(processorModel, "Sample+Reference", sampleGroup + "+" + referenceGroup, trackModel.getSampleTrack());
+					String imagePath = dataProcessorUI.getImageName(processorModel, sampleGroup, referenceGroup, trackModel.getSampleTrack(), trackModel.getReferenceTrack());
 					ImageData imageDataSample = imageSupplier.getImageData(traceDataUI.getBaseChart());
 					imageSupplier.saveImage(imageDataSample, imagePath, SWT.IMAGE_PNG);
 					trackModel.setPathSnapshot(imagePath);
@@ -435,7 +432,7 @@ public class TraceDataComparisonUI extends Composite {
 						IWorkspaceRoot workspaceRoot = workspace.getRoot();
 						IFolder folder = workspaceRoot.getFolder(path);
 						try {
-							folder.refreshLocal(1, new NullProgressMonitor());
+							folder.refreshLocal(3, new NullProgressMonitor());
 						} catch(CoreException e1) {
 							logger.warn(e1);
 						}
@@ -461,6 +458,9 @@ public class TraceDataComparisonUI extends Composite {
 
 				if(trackModel != null) {
 					setMatched(!trackModel.isMatched());
+					if(trackModel.isMatched()) {
+						setEvaluated(true);
+					}
 				}
 			}
 		});
@@ -659,6 +659,7 @@ public class TraceDataComparisonUI extends Composite {
 		int sizeTracks = measurementModelData.getMeasurementDataSize(analysisType, DataProcessorUI.MEASUREMENT_SAMPLE);
 		int track = comboSampleTracks.getSelectionIndex() + 2;
 		track = (track > sizeTracks) ? sizeTracks : track;
+		trackModel = retrieveTrackModel(track);
 		updateTrackModels(track);
 	}
 
@@ -694,42 +695,49 @@ public class TraceDataComparisonUI extends Composite {
 		if(trackModel != null) {
 			//
 			notesText.setText(trackModel.getNotes());
-			//
-			String imageMatched = (trackModel.isMatched()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
-			buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImage.SIZE_16x16));
-			String imageSkipped = (trackModel.isSkipped()) ? IApplicationImage.IMAGE_SKIPPED : IApplicationImage.IMAGE_SKIP;
-			buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(imageSkipped, IApplicationImage.SIZE_16x16));
-			String imageEvaluated = (trackModel.isEvaluated()) ? IApplicationImage.IMAGE_EVALUATED : IApplicationImage.IMAGE_EVALUATE;
-			buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(imageEvaluated, IApplicationImage.SIZE_16x16));
+			setButtonIcons();
 			/*
 			 * Enable/Disable buttons
 			 */
 			if(trackModel.isEvaluated() || trackModel.isSkipped()) {
+				enableWidgets(false);
 				if(trackModel.isEvaluated()) {
-					trackModel.setSkipped(false);
-					comboReferenceTracks.setEnabled(false);
-					buttonCreateSnapshot.setEnabled(false);
-					buttonIsMatched.setEnabled(false);
-					buttonIsSkipped.setEnabled(false);
 					buttonIsEvaluated.setEnabled(true);
 				} else {
-					trackModel.setEvaluated(false);
-					comboReferenceTracks.setEnabled(false);
-					buttonCreateSnapshot.setEnabled(false);
-					buttonIsMatched.setEnabled(false);
 					buttonIsSkipped.setEnabled(true);
-					buttonIsEvaluated.setEnabled(false);
 				}
 			} else {
-				comboReferenceTracks.setEnabled(true);
-				buttonCreateSnapshot.setEnabled(true);
-				buttonIsMatched.setEnabled(true);
-				buttonIsSkipped.setEnabled(true);
-				buttonIsEvaluated.setEnabled(true);
+				enableWidgets(true);
 			}
 		} else {
+			enableWidgets(false);
+			comboSampleMeasurements.setEnabled(true);
+			comboReferenceMeasurements.setEnabled(true);
 			notesText.setText("");
 		}
+	}
+
+	private void setButtonIcons() {
+
+		String imageMatched = (trackModel.isMatched()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
+		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImage.SIZE_16x16));
+		String imageSkipped = (trackModel.isSkipped()) ? IApplicationImage.IMAGE_SKIPPED : IApplicationImage.IMAGE_SKIP;
+		buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(imageSkipped, IApplicationImage.SIZE_16x16));
+		String imageEvaluated = (trackModel.isEvaluated()) ? IApplicationImage.IMAGE_EVALUATED : IApplicationImage.IMAGE_EVALUATE;
+		buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(imageEvaluated, IApplicationImage.SIZE_16x16));
+	}
+
+	private void enableWidgets(boolean enabled) {
+
+		comboSampleMeasurements.setEnabled(enabled);
+		comboReferenceMeasurements.setEnabled(enabled);
+		comboSampleTracks.setEnabled(enabled);
+		comboReferenceTracks.setEnabled(enabled);
+		comboWavelengths.setEnabled(enabled);
+		buttonCreateSnapshot.setEnabled(enabled);
+		buttonIsMatched.setEnabled(enabled);
+		buttonIsSkipped.setEnabled(enabled);
+		buttonIsEvaluated.setEnabled(enabled);
 	}
 
 	private void setMatched(boolean isMatched) {

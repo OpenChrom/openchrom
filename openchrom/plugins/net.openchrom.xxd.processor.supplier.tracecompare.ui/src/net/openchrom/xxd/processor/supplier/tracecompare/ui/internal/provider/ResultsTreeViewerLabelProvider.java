@@ -81,6 +81,8 @@ public class ResultsTreeViewerLabelProvider extends LabelProvider {
 		builder.append("\n");
 		builder.append("\tSample Path: " + sampleModel.getSamplePath());
 		builder.append("\n");
+		builder.append("\tTrack Models: " + sampleModel.getTrackModels().size());
+		builder.append("\n");
 		return builder.toString();
 	}
 
