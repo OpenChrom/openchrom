@@ -13,19 +13,19 @@ package net.openchrom.xxd.processor.supplier.tracecompare.model;
 
 import java.util.Map;
 
-import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.SampleModel_v1000;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.TrackModel_v1000;
 
-public interface IReferenceModel {
+public interface ISampleModel {
 
-	String getReferenceGroup();
+	String getSampleGroup();
 
-	void setReferenceGroup(String referenceGroup);
+	void setSampleGroup(String sampleGroup);
 
-	String getReferencePath();
+	String getSamplePath();
 
-	void setReferencePath(String referencePath);
+	void setSamplePath(String samplePath);
 
-	Map<String, SampleModel_v1000> getSampleModels();
+	Map<Integer, TrackModel_v1000> getTrackModels();
 
-	void setSampleModels(Map<String, SampleModel_v1000> sampleModels);
+	void setTrackModels(Map<Integer, TrackModel_v1000> trackModels);
 }

@@ -22,13 +22,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.ProcessorModel_v1000;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.ReferenceModel_v1000;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.SampleModel_v1000;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.TrackModel_v1000;
 
 public class ProcessorModelReader {
 
 	public IProcessorModel read(File file, IProgressMonitor monitor) throws JAXBException {
 
-		JAXBContext jaxbContext = JAXBContext.newInstance(new Class[]{ProcessorModel_v1000.class, ReferenceModel_v1000.class, TrackModel_v1000.class});
+		JAXBContext jaxbContext = JAXBContext.newInstance(new Class[]{ProcessorModel_v1000.class, ReferenceModel_v1000.class, SampleModel_v1000.class, TrackModel_v1000.class});
 		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 		return (IProcessorModel)unmarshaller.unmarshal(file);
 	}

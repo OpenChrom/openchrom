@@ -16,9 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.eavp.service.swtchart.core.BaseChart;
 import org.eclipse.eavp.service.swtchart.core.IChartSettings;
 import org.eclipse.eavp.service.swtchart.core.ISeriesData;
@@ -58,6 +67,7 @@ import net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences.Preferen
 
 public class TraceDataComparisonUI extends Composite {
 
+	private static final Logger logger = Logger.getLogger(TraceDataComparisonUI.class);
 	private static final int HORIZONTAL_INDENT = 15;
 	//
 	private EditorProcessor editorProcessor;
@@ -76,7 +86,7 @@ public class TraceDataComparisonUI extends Composite {
 	//
 	private TraceDataUI traceDataUI;
 	//
-	private String analysisType = "";
+	private String analysisType = ""; // Qualification, Validation
 	private String sampleGroup = ""; // e.g. "0196"
 	private String referenceGroup = ""; // e.g. "0236"
 	//
@@ -91,6 +101,14 @@ public class TraceDataComparisonUI extends Composite {
 		dataProcessorUI = new DataProcessorUI();
 		measurementModelData = new MeasurementModelData();
 		initialize();
+	}
+
+	@Override
+	public boolean setFocus() {
+
+		boolean focus = super.setFocus();
+		// loadSampleAndReferenceModelData();
+		return focus;
 	}
 
 	public void setData(EditorProcessor editorProcessor) {
@@ -143,14 +161,8 @@ public class TraceDataComparisonUI extends Composite {
 	private int getTrack() {
 
 		if(comboSampleTracks.getSelectionIndex() == -1) {
-			/*
-			 * Initialize
-			 */
-			return 1;
+			return 1; // Initialize
 		} else {
-			/*
-			 * Selection
-			 */
 			return comboSampleTracks.getSelectionIndex() + 1;
 		}
 	}
@@ -390,15 +402,34 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				ImageSupplier imageSupplier = new ImageSupplier();
-				//
-				String fileNameSample = dataProcessorUI.getImageName(processorModel, "Sample+Reference", sampleGroup + "+" + referenceGroup, trackModel.getSampleTrack());
-				ImageData imageDataSample = imageSupplier.getImageData(traceDataUI.getBaseChart());
-				imageSupplier.saveImage(imageDataSample, fileNameSample, SWT.IMAGE_PNG);
-				trackModel.setPathSnapshots(fileNameSample);
-				//
-				MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Save Image", "A screenshot of the sample and reference has been saved.");
-				editorProcessor.setDirty(true);
+				if(trackModel != null) {
+					/*
+					 * Create a chart image.
+					 */
+					ImageSupplier imageSupplier = new ImageSupplier();
+					String imagePath = dataProcessorUI.getImageName(processorModel, "Sample+Reference", sampleGroup + "+" + referenceGroup, trackModel.getSampleTrack());
+					ImageData imageDataSample = imageSupplier.getImageData(traceDataUI.getBaseChart());
+					imageSupplier.saveImage(imageDataSample, imagePath, SWT.IMAGE_PNG);
+					trackModel.setPathSnapshot(imagePath);
+					File parentDirectory = new File(imagePath).getParentFile();
+					if(parentDirectory.exists()) {
+						/*
+						 * Refresh the workspace folder.
+						 */
+						IWorkspace workspace = ResourcesPlugin.getWorkspace();
+						IPath path = Path.fromOSString(parentDirectory.getAbsolutePath());
+						IWorkspaceRoot workspaceRoot = workspace.getRoot();
+						IFolder folder = workspaceRoot.getFolder(path);
+						try {
+							folder.refreshLocal(1, new NullProgressMonitor());
+						} catch(CoreException e1) {
+							logger.warn(e1);
+						}
+						//
+						MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Save Image", "A screenshot of the sample and reference has been saved.");
+						editorProcessor.setDirty(true);
+					}
+				}
 			}
 		});
 	}
@@ -414,7 +445,9 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				setMatched(!trackModel.isMatched());
+				if(trackModel != null) {
+					setMatched(!trackModel.isMatched());
+				}
 			}
 		});
 	}
@@ -430,7 +463,9 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				setSkipped(!trackModel.isSkipped());
+				if(trackModel != null) {
+					setSkipped(!trackModel.isSkipped());
+				}
 			}
 		});
 	}
@@ -446,7 +481,9 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				setEvaluated(!trackModel.isEvaluated());
+				if(trackModel != null) {
+					setEvaluated(!trackModel.isEvaluated());
+				}
 			}
 		});
 	}
@@ -518,7 +555,7 @@ public class TraceDataComparisonUI extends Composite {
 		notesText = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.H_SCROLL);
 		notesText.setText("");
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.heightHint = 150;
+		gridData.heightHint = 80;
 		gridData.horizontalIndent = HORIZONTAL_INDENT;
 		notesText.setLayoutData(gridData);
 		notesText.addModifyListener(new ModifyListener() {
@@ -526,7 +563,9 @@ public class TraceDataComparisonUI extends Composite {
 			@Override
 			public void modifyText(ModifyEvent e) {
 
-				trackModel.setNotes(notesText.getText().trim());
+				if(trackModel != null) {
+					trackModel.setNotes(notesText.getText().trim());
+				}
 			}
 		});
 	}
@@ -614,7 +653,7 @@ public class TraceDataComparisonUI extends Composite {
 			 * Track Model
 			 */
 			IReferenceModel referenceModel = measurementModelData.loadModelData(analysisType, processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
-			trackModel = measurementModelData.loadTrackModel(referenceModel, track);
+			trackModel = measurementModelData.loadTrackModel(referenceModel, track, sampleGroup);
 		}
 		return trackModel;
 	}
@@ -630,11 +669,11 @@ public class TraceDataComparisonUI extends Composite {
 	private void loadSampleTrack() {
 
 		if(trackModel != null) {
+			int track = comboSampleTracks.getSelectionIndex() + 1;
+			trackModel.setSampleTrack(track);
+			setTrackData(track, DataProcessorUI.MEASUREMENT_SAMPLE);
+			setEvaluated(false);
 		}
-		int track = comboSampleTracks.getSelectionIndex() + 1;
-		trackModel.setSampleTrack(track);
-		setTrackData(track, DataProcessorUI.MEASUREMENT_SAMPLE);
-		setEvaluated(false);
 	}
 
 	private void loadReferenceTrack() {

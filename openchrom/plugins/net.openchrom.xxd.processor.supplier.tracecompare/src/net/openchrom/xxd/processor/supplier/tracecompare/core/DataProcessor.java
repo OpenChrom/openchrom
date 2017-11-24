@@ -30,6 +30,7 @@ import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ISampleModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackStatistics;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
@@ -140,8 +141,10 @@ public class DataProcessor {
 		TrackStatistics trackStatistics = new TrackStatistics();
 		if(referenceModel != null) {
 			trackStatistics.setReferenceGroup(referenceModel.getReferenceGroup());
-			for(ITrackModel trackModel : referenceModel.getTrackModels().values()) {
-				trackStatistics.addTrackModel(trackModel);
+			for(ISampleModel sampleModel : referenceModel.getSampleModels().values()) {
+				for(ITrackModel trackModel : sampleModel.getTrackModels().values()) {
+					trackStatistics.addTrackModel(trackModel);
+				}
 			}
 		}
 		return trackStatistics;

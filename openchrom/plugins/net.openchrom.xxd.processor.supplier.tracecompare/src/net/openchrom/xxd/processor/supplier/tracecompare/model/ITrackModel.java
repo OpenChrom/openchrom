@@ -57,7 +57,7 @@ public interface ITrackModel {
 
 	void setNotes(String notes);
 
-	String getPathSnapshots();
+	String getPathSnapshot();
 
-	void setPathSnapshots(String pathSnapshots);
+	void setPathSnapshot(String pathSnapshot);
 }

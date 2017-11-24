@@ -40,8 +40,8 @@ public class TrackModel_v1000 implements ITrackModel {
 	private boolean isMatched = false;
 	@XmlElement(name = "Notes")
 	private String notes = "";
-	@XmlElement(name = "PathSnapshots")
-	private String pathSnapshots = "";
+	@XmlElement(name = "PathSnapshot")
+	private String pathSnapshot = "";
 
 	@Override
 	@XmlTransient
@@ -188,15 +188,15 @@ public class TrackModel_v1000 implements ITrackModel {
 
 	@Override
 	@XmlTransient
-	public String getPathSnapshots() {
+	public String getPathSnapshot() {
 
-		return pathSnapshots;
+		return pathSnapshot;
 	}
 
 	@Override
-	public void setPathSnapshots(String pathSnapshots) {
+	public void setPathSnapshot(String pathSnapshot) {
 
-		this.pathSnapshots = pathSnapshots;
+		this.pathSnapshot = pathSnapshot;
 	}
 
 	@Override

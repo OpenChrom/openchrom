@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ISampleModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.TrackStatistics;
 
@@ -40,9 +41,12 @@ public class ResultsTreeViewerLabelProvider extends LabelProvider {
 		if(element instanceof IReferenceModel) {
 			IReferenceModel referenceModel = (IReferenceModel)element;
 			text = getReferenceModelData(referenceModel);
+		} else if(element instanceof ISampleModel) {
+			ISampleModel sampleModel = (ISampleModel)element;
+			text = getSampleModelData(sampleModel);
 		} else if(element instanceof ITrackModel) {
 			ITrackModel trackModel = (ITrackModel)element;
-			text = trackModel.toString();
+			text = getTrackModelData(trackModel);
 		} else {
 			text = "n.a.";
 		}
@@ -67,6 +71,16 @@ public class ResultsTreeViewerLabelProvider extends LabelProvider {
 		builder.append("\tSkipped Tracks: " + trackStatistics.getSkipped());
 		builder.append("\n");
 		builder.append("\tMatched Tracks: " + trackStatistics.getMatched());
+		return builder.toString();
+	}
+
+	private String getSampleModelData(ISampleModel sampleModel) {
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("Sample Group: " + sampleModel.getSampleGroup());
+		builder.append("\n");
+		builder.append("\tSample Path: " + sampleModel.getSamplePath());
+		builder.append("\n");
 		return builder.toString();
 	}
 
@@ -99,7 +113,7 @@ public class ResultsTreeViewerLabelProvider extends LabelProvider {
 		builder.append("\n");
 		builder.append("\t\tMatched: " + trackModel.isMatched());
 		builder.append("\n");
-		builder.append("\t\tSnapshots: " + trackModel.getPathSnapshots());
+		builder.append("\t\tSnapshots: " + trackModel.getPathSnapshot());
 		builder.append("\n");
 		builder.append("\t\tNotes: " + trackModel.getNotes());
 		return builder.toString();

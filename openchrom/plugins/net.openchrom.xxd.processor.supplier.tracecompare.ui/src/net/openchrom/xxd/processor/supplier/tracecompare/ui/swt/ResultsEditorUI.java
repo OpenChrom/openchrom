@@ -38,6 +38,7 @@ import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ISampleModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
@@ -65,7 +66,7 @@ public class ResultsEditorUI extends Composite {
 			EditorProcessor editorProcessor = (EditorProcessor)object;
 			processorModel = editorProcessor.getProcessorModel();
 			//
-			labelSample.setText("Unknown Sample: ..."); // TODO processorModel.getSampleGroup()
+			labelSample.setText("Sample Evaluation Overview");
 			textGeneralNotes.setText(processorModel.getGeneralNotes());
 			textCalculatedResult.setText(processorModel.getCalculatedResult());
 			resultsTreeViewerUI.setInput(processorModel.getReferenceModels().values());
@@ -93,9 +94,28 @@ public class ResultsEditorUI extends Composite {
 		Display display = Display.getDefault();
 		Font font = new Font(display, "Arial", 14, SWT.BOLD);
 		labelSample.setFont(font);
-		labelSample.setText("Unknown Sample:");
+		labelSample.setText("Results");
 		labelSample.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
 		font.dispose();
+	}
+
+	private void createCalculatedResultField(Composite parent) {
+
+		Label label = new Label(parent, SWT.NONE);
+		label.setText("Calculated result:");
+		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		//
+		textCalculatedResult = new Text(parent, SWT.BORDER);
+		textCalculatedResult.setText("");
+		textCalculatedResult.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
+		textCalculatedResult.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+
+				processorModel.setCalculatedResult(textCalculatedResult.getText().trim());
+			}
+		});
 	}
 
 	private void createSearchField(Composite parent) {
@@ -201,25 +221,6 @@ public class ResultsEditorUI extends Composite {
 		resultsTreeViewerUI.setLayoutData(getGridData(GridData.FILL_BOTH));
 	}
 
-	private void createCalculatedResultField(Composite parent) {
-
-		Label label = new Label(parent, SWT.NONE);
-		label.setText("Calculated result:");
-		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
-		textCalculatedResult = new Text(parent, SWT.BORDER);
-		textCalculatedResult.setText("");
-		textCalculatedResult.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
-		textCalculatedResult.addModifyListener(new ModifyListener() {
-
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				processorModel.setCalculatedResult(textCalculatedResult.getText().trim());
-			}
-		});
-	}
-
 	private void search() {
 
 		String searchText = textSearch.getText().trim();
@@ -239,19 +240,21 @@ public class ResultsEditorUI extends Composite {
 			 */
 			List<ITrackModel> trackModels = new ArrayList<ITrackModel>();
 			for(IReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
-				for(ITrackModel trackModel : referenceModel.getTrackModels().values()) {
-					/*
-					 * Prepare
-					 */
-					String content = trackModel.toString();
-					if(!searchCaseSensitive) {
-						content = content.toLowerCase();
-					}
-					/*
-					 * Search
-					 */
-					if(content.contains(searchText)) {
-						trackModels.add(trackModel);
+				for(ISampleModel sampleModel : referenceModel.getSampleModels().values()) {
+					for(ITrackModel trackModel : sampleModel.getTrackModels().values()) {
+						/*
+						 * Prepare
+						 */
+						String content = trackModel.toString();
+						if(!searchCaseSensitive) {
+							content = content.toLowerCase();
+						}
+						/*
+						 * Search
+						 */
+						if(content.contains(searchText)) {
+							trackModels.add(trackModel);
+						}
 					}
 				}
 			}

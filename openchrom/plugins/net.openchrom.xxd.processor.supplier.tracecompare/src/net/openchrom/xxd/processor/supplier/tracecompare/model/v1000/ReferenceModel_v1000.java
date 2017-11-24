@@ -25,8 +25,8 @@ public class ReferenceModel_v1000 implements IReferenceModel {
 	private String referenceGroup = "";
 	@XmlElement(name = "ReferencePath")
 	private String referencePath = "";
-	@XmlElement(name = "TrackModels", type = TrackModel_v1000.class)
-	private Map<Integer, TrackModel_v1000> trackModels = new HashMap<Integer, TrackModel_v1000>();
+	@XmlElement(name = "SampleModels", type = SampleModel_v1000.class)
+	private Map<String, SampleModel_v1000> sampleModels = new HashMap<String, SampleModel_v1000>();
 
 	@Override
 	@XmlTransient
@@ -56,20 +56,20 @@ public class ReferenceModel_v1000 implements IReferenceModel {
 
 	@Override
 	@XmlTransient
-	public Map<Integer, TrackModel_v1000> getTrackModels() {
+	public Map<String, SampleModel_v1000> getSampleModels() {
 
-		return trackModels;
+		return sampleModels;
 	}
 
 	@Override
-	public void setTrackModels(Map<Integer, TrackModel_v1000> trackModels) {
+	public void setSampleModels(Map<String, SampleModel_v1000> sampleModels) {
 
-		this.trackModels = trackModels;
+		this.sampleModels = sampleModels;
 	}
 
 	@Override
 	public String toString() {
 
-		return "ReferenceModel_v1000 [referenceGroup=" + referenceGroup + ", referencePath=" + referencePath + ", trackModels=" + trackModels + "]";
+		return "ReferenceModel_v1000 [referenceGroup=" + referenceGroup + ", referencePath=" + referencePath + ", sampleModels=" + sampleModels + "]";
 	}
 }

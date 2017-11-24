@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ISampleModel;
 
 public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 
@@ -41,7 +42,10 @@ public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 			return ((Collection)inputElement).toArray();
 		} else if(inputElement instanceof IReferenceModel) {
 			IReferenceModel referenceModel = (IReferenceModel)inputElement;
-			return referenceModel.getTrackModels().values().toArray();
+			return referenceModel.getSampleModels().values().toArray();
+		} else if(inputElement instanceof ISampleModel) {
+			ISampleModel sampleModel = (ISampleModel)inputElement;
+			return sampleModel.getTrackModels().values().toArray();
 		}
 		//
 		return null;
@@ -57,7 +61,10 @@ public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 			return ((Collection)parentElement).toArray();
 		} else if(parentElement instanceof IReferenceModel) {
 			IReferenceModel referenceModel = (IReferenceModel)parentElement;
-			return referenceModel.getTrackModels().values().toArray();
+			return referenceModel.getSampleModels().values().toArray();
+		} else if(parentElement instanceof ISampleModel) {
+			ISampleModel sampleModel = (ISampleModel)parentElement;
+			return sampleModel.getTrackModels().values().toArray();
 		}
 		//
 		return null;

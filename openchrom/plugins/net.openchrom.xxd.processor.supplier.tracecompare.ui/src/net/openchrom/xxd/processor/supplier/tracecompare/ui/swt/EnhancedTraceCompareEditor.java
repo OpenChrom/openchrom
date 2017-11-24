@@ -43,6 +43,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ISampleModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences.PreferencePage;
@@ -147,20 +148,22 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 					Set<String> references = processorModel.getReferenceModels().keySet();
 					for(String reference : references) {
 						IReferenceModel referenceModel = processorModel.getReferenceModels().get(reference);
-						Set<Integer> tracks = referenceModel.getTrackModels().keySet();
-						for(Integer track : tracks) {
-							/*
-							 * Check each model.
-							 */
-							ITrackModel trackModel = referenceModel.getTrackModels().get(track);
-							if(trackModel.isSkipped()) {
-								continue;
-							}
-							/*
-							 * Mark non-evaluated samples.
-							 */
-							if(!trackModel.isEvaluated()) {
-								processingInfo.addWarnMessage(EVALUATE_REFERENCE, reference + " > Track " + track);
+						for(ISampleModel sampleModel : referenceModel.getSampleModels().values()) {
+							Set<Integer> tracks = sampleModel.getTrackModels().keySet();
+							for(Integer track : tracks) {
+								/*
+								 * Check each model.
+								 */
+								ITrackModel trackModel = sampleModel.getTrackModels().get(track);
+								if(trackModel.isSkipped()) {
+									continue;
+								}
+								/*
+								 * Mark non-evaluated samples.
+								 */
+								if(!trackModel.isEvaluated()) {
+									processingInfo.addWarnMessage(EVALUATE_REFERENCE, reference + " > Track " + track);
+								}
 							}
 						}
 					}
