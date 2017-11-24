@@ -157,6 +157,21 @@ public class TraceDataComparisonUI extends Composite {
 		}
 	}
 
+	private ITrackModel retrieveTrackModel(int track) {
+
+		/*
+		 * Get the sample and reference.
+		 */
+		ITrackModel trackModel = null;
+		if(sampleGroup != null && !"".equals(sampleGroup) && referenceGroup != null && !"".equals(referenceGroup)) {
+			/*
+			 * Track Model
+			 */
+			trackModel = measurementModelData.loadTrackModel(processorModel, track, analysisType, sampleGroup, referenceGroup);
+		}
+		return trackModel;
+	}
+
 	private int getTrack() {
 
 		if(comboSampleTracks.getSelectionIndex() == -1) {
@@ -244,7 +259,7 @@ public class TraceDataComparisonUI extends Composite {
 		comboSampleTracks = new Combo(parent, SWT.READ_ONLY);
 		comboSampleTracks.setToolTipText("Sample Track");
 		comboSampleTracks.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		setTrackComboItems(comboSampleTracks, -1, 0);
+		comboSampleTracks.setItems(new String[]{});
 		comboSampleTracks.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -281,7 +296,7 @@ public class TraceDataComparisonUI extends Composite {
 		comboReferenceTracks = new Combo(parent, SWT.READ_ONLY);
 		comboReferenceTracks.setToolTipText("Reference Track");
 		comboReferenceTracks.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		setTrackComboItems(comboReferenceTracks, -1, 0);
+		comboReferenceTracks.setItems(new String[]{});
 		comboReferenceTracks.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -611,45 +626,6 @@ public class TraceDataComparisonUI extends Composite {
 		parent.redraw();
 	}
 
-	private void setTrackComboItems(Combo combo, int selectedTrack, int numberTracks) {
-
-		/*
-		 * Remove and set the items.
-		 */
-		combo.removeAll();
-		List<String> tracks = new ArrayList<String>();
-		for(int i = 1; i <= numberTracks; i++) {
-			tracks.add("Track " + i);
-		}
-		combo.setItems(tracks.toArray(new String[tracks.size()]));
-		/*
-		 * Select the default item.
-		 */
-		int size = combo.getItemCount();
-		if(size > 0) {
-			if(selectedTrack > 0 && selectedTrack <= size) {
-				combo.select(selectedTrack - 1);
-			} else {
-				combo.select(0);
-			}
-		}
-	}
-
-	private ITrackModel retrieveTrackModel(int track) {
-
-		/*
-		 * Get the sample and reference.
-		 */
-		ITrackModel trackModel = null;
-		if(sampleGroup != null && !"".equals(sampleGroup) && referenceGroup != null && !"".equals(referenceGroup)) {
-			/*
-			 * Track Model
-			 */
-			trackModel = measurementModelData.loadTrackModel(processorModel, track, analysisType, sampleGroup, referenceGroup);
-		}
-		return trackModel;
-	}
-
 	private void loadPreviousTrack() {
 
 		int track = comboSampleTracks.getSelectionIndex(); // no -1 as the index is 0 based
@@ -813,6 +789,30 @@ public class TraceDataComparisonUI extends Composite {
 			trackModel.setStopRetentionTime((rangeX != null) ? rangeX.upper : 0.0d);
 			trackModel.setStartIntensity((rangeY != null) ? rangeY.lower : 0.0d);
 			trackModel.setStopIntensity((rangeY != null) ? rangeY.upper : 0.0d);
+		}
+	}
+
+	private void setTrackComboItems(Combo combo, int selectedTrack, int numberTracks) {
+
+		/*
+		 * Remove and set the items.
+		 */
+		combo.removeAll();
+		List<String> tracks = new ArrayList<String>();
+		for(int i = 1; i <= numberTracks; i++) {
+			tracks.add("Track " + i);
+		}
+		combo.setItems(tracks.toArray(new String[tracks.size()]));
+		/*
+		 * Select the default item.
+		 */
+		int size = combo.getItemCount();
+		if(size > 0) {
+			if(selectedTrack > 0 && selectedTrack <= size) {
+				combo.select(selectedTrack - 1);
+			} else {
+				combo.select(0);
+			}
 		}
 	}
 

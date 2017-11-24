@@ -117,14 +117,14 @@ public class MeasurementModelData {
 	private ReferenceModel_v1000 loadModelDataQualification(IProcessorModel processorModel, List<File> sampleFiles, List<File> referenceFiles, String sampleGroup, String referenceGroup) {
 
 		ReferenceModel_v1000 referenceModel = getReferenceModel(processorModel, referenceGroup);
-		extractMeasurementQualification(sampleFiles, referenceFiles, sampleGroup, referenceGroup);
+		extractMeasurementQualification(processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
 		return referenceModel;
 	}
 
 	private ReferenceModel_v1000 loadModelDataValidation(IProcessorModel processorModel, List<File> sampleFiles, List<File> referenceFiles, String sampleGroup, String referenceGroup) {
 
 		ReferenceModel_v1000 referenceModel = getReferenceModel(processorModel, referenceGroup);
-		extractMeasurementValidation(sampleFiles, referenceFiles, sampleGroup, referenceGroup);
+		extractMeasurementValidation(processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
 		return referenceModel;
 	}
 
@@ -172,7 +172,7 @@ public class MeasurementModelData {
 		return trackModel;
 	}
 
-	private void extractMeasurementQualification(List<File> sampleFiles, List<File> referenceFiles, String sampleGroup, String referenceGroup) {
+	private void extractMeasurementQualification(IProcessorModel processorModel, List<File> sampleFiles, List<File> referenceFiles, String sampleGroup, String referenceGroup) {
 
 		samplesQualification = mapQualification.get(sampleGroup);
 		if(samplesQualification == null) {
@@ -184,10 +184,13 @@ public class MeasurementModelData {
 		if(referencesQualification == null) {
 			referencesQualification = dataProcessorUI.extractMeasurementsData(referenceFiles, DataProcessorUI.MEASUREMENT_REFERENCE);
 			mapQualification.put(referenceGroup, referencesQualification);
+			for(int track : referencesQualification.keySet()) {
+				loadTrackModel(processorModel, track, DataProcessorUI.ANALYSIS_TYPE_QUALIFICATION, sampleGroup, referenceGroup);
+			}
 		}
 	}
 
-	private void extractMeasurementValidation(List<File> sampleFiles, List<File> referenceFiles, String sampleGroup, String referenceGroup) {
+	private void extractMeasurementValidation(IProcessorModel processorModel, List<File> sampleFiles, List<File> referenceFiles, String sampleGroup, String referenceGroup) {
 
 		samplesValidation = mapValidation.get(sampleGroup);
 		if(samplesValidation == null) {
@@ -199,6 +202,9 @@ public class MeasurementModelData {
 		if(referencesValidation == null) {
 			referencesValidation = dataProcessorUI.extractMeasurementsData(referenceFiles, DataProcessorUI.MEASUREMENT_REFERENCE);
 			mapValidation.put(referenceGroup, referencesValidation);
+			for(int track : referencesQualification.keySet()) {
+				loadTrackModel(processorModel, track, DataProcessorUI.ANALYSIS_TYPE_QUALIFICATION, sampleGroup, referenceGroup);
+			}
 		}
 	}
 
