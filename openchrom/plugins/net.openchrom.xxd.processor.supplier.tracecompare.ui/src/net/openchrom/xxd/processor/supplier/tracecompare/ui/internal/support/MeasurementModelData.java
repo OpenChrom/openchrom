@@ -202,7 +202,7 @@ public class MeasurementModelData {
 		if(referencesValidation == null) {
 			referencesValidation = dataProcessorUI.extractMeasurementsData(referenceFiles, DataProcessorUI.MEASUREMENT_REFERENCE);
 			mapValidation.put(referenceGroup, referencesValidation);
-			for(int track : referencesQualification.keySet()) {
+			for(int track : referencesValidation.keySet()) {
 				loadTrackModel(processorModel, track, DataProcessorUI.ANALYSIS_TYPE_QUALIFICATION, sampleGroup, referenceGroup);
 			}
 		}

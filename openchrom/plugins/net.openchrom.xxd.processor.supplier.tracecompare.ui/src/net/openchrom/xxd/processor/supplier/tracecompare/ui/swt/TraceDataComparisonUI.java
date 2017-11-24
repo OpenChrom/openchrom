@@ -20,13 +20,12 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
-import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.eavp.service.swtchart.core.BaseChart;
 import org.eclipse.eavp.service.swtchart.core.IChartSettings;
@@ -141,16 +140,9 @@ public class TraceDataComparisonUI extends Composite {
 			setTrackData(trackModel.getReferenceTrack(), DataProcessorUI.MEASUREMENT_REFERENCE);
 			traceDataUI.getBaseChart().suspendUpdate(false);
 			/*
-			 * Update the label and notes.
+			 * Update the widgets.
 			 */
-			String title = analysisType + ": " + sampleGroup + " vs. " + referenceGroup;
-			IChartSettings chartSettings = traceDataUI.getChartSettings();
-			chartSettings.setTitle(title);
-			traceDataUI.applySettings(chartSettings);
-			traceDataUI.redraw();
-			/*
-			 * Update the buttons.
-			 */
+			updateChartTitle();
 			setElementStatusAndValues();
 			editorProcessor.setDirty(true);
 			modifyDataStatusLabel();
@@ -184,6 +176,7 @@ public class TraceDataComparisonUI extends Composite {
 		if(measurementsData != null) {
 			String wavelengthSelection = comboWavelengths.getText();
 			traceDataUI.addSeriesData(dataProcessorUI.getLineSeriesDataList(measurementsData, wavelengthSelection, track), LineChart.MEDIUM_COMPRESSION);
+			updateChartTitle();
 		}
 	}
 
@@ -422,17 +415,16 @@ public class TraceDataComparisonUI extends Composite {
 					ImageData imageDataSample = imageSupplier.getImageData(traceDataUI.getBaseChart());
 					imageSupplier.saveImage(imageDataSample, imagePath, SWT.IMAGE_PNG);
 					trackModel.setPathSnapshot(imagePath);
-					File parentDirectory = new File(imagePath).getParentFile();
-					if(parentDirectory.exists()) {
+					File imageFile = new File(imagePath);
+					if(imageFile.exists()) {
 						/*
 						 * Refresh the workspace folder.
 						 */
 						IWorkspace workspace = ResourcesPlugin.getWorkspace();
-						IPath path = Path.fromOSString(parentDirectory.getAbsolutePath());
-						IWorkspaceRoot workspaceRoot = workspace.getRoot();
-						IFolder folder = workspaceRoot.getFolder(path);
+						IPath location = Path.fromOSString(imageFile.getAbsolutePath());
+						IFile file = workspace.getRoot().getFileForLocation(location);
 						try {
-							folder.refreshLocal(3, new NullProgressMonitor());
+							file.refreshLocal(IResource.DEPTH_ZERO, null);
 						} catch(CoreException e1) {
 							logger.warn(e1);
 						}
@@ -847,5 +839,29 @@ public class TraceDataComparisonUI extends Composite {
 	private void setMeasurementComboItems(Combo combo, List<String> patterns, String selectedGroup) {
 
 		combo.setItems(patterns.toArray(new String[patterns.size()]));
+	}
+
+	private void updateChartTitle() {
+
+		StringBuilder builder = new StringBuilder();
+		if(trackModel != null) {
+			builder.append(analysisType);
+			builder.append(": ");
+			builder.append(sampleGroup);
+			builder.append("-");
+			builder.append(trackModel.getSampleTrack());
+			builder.append(" vs. ");
+			builder.append(referenceGroup);
+			builder.append("-");
+			builder.append(trackModel.getReferenceTrack());
+		} else {
+			builder.append(analysisType);
+		}
+		//
+		String title = builder.toString();
+		IChartSettings chartSettings = traceDataUI.getChartSettings();
+		chartSettings.setTitle(title);
+		traceDataUI.applySettings(chartSettings);
+		traceDataUI.redraw();
 	}
 }

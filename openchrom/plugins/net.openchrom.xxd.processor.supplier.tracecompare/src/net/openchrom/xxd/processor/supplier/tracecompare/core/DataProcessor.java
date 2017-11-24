@@ -186,7 +186,7 @@ public class DataProcessor {
 			builder.append(File.separator);
 			builder.append(sampleGroup);
 			builder.append("-");
-			builder.append(referenceTrack);
+			builder.append(sampleTrack);
 			builder.append("_vs_");
 			builder.append(referenceGroup);
 			builder.append("-");
