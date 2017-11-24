@@ -98,13 +98,13 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 		/*
 		 * Standards Table
 		 */
-		Composite chartComposite = new Composite(composite, SWT.NONE);
-		chartComposite.setLayout(new GridLayout(1, true));
-		chartComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		Composite compositeMain = new Composite(composite, SWT.NONE);
+		compositeMain.setLayout(new GridLayout(1, true));
+		compositeMain.setLayoutData(new GridData(GridData.FILL_BOTH));
 		/*
 		 * Results
 		 */
-		resultsEditorUI = new ResultsEditorUI(chartComposite, SWT.NONE);
+		resultsEditorUI = new ResultsEditorUI(compositeMain, SWT.NONE);
 		resultsEditorUI.setLayoutData(new GridData(GridData.FILL_BOTH));
 		/*
 		 * Button Bar
@@ -147,13 +147,16 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 						Iterator<TrackStatistics> iterator = trackStatisticsList.iterator();
 						while(iterator.hasNext()) {
 							TrackStatistics trackStatistics = iterator.next();
+							builder.append("Sample: ");
+							builder.append(trackStatistics.getSampleGroup());
+							builder.append(" > ");
 							builder.append("Reference: ");
 							builder.append(trackStatistics.getReferenceGroup());
 							builder.append(" (");
 							builder.append(decimalFormat.format(trackStatistics.getMatchProbability()));
 							builder.append("%)");
 							if(iterator.hasNext()) {
-								builder.append(" | ");
+								builder.append("\n");
 							}
 						}
 						String calculatedResult = builder.toString();

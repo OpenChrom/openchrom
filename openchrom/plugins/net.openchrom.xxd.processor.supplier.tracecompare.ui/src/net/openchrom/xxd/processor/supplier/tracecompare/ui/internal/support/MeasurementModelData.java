@@ -60,24 +60,25 @@ public class MeasurementModelData {
 		mapValidation = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
 	}
 
-	public IReferenceModel loadModelData(String analysisType, IProcessorModel processorModel, List<File> sampleFiles, List<File> referenceFiles, String sampleGroup, String referenceGroup) {
-
-		if(analysisType.equals(DataProcessorUI.ANALYSIS_TYPE_VALIDATION)) {
-			return loadModelDataValidation(processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
-		} else {
-			return loadModelDataQualification(processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
-		}
-	}
-
-	public ITrackModel loadTrackModel(IReferenceModel referenceModel, int track, String sampleGroup) {
+	public ITrackModel loadTrackModel(IProcessorModel processorModel, int track, String analysisType, String sampleGroup, String referenceGroup) {
 
 		ITrackModel trackModel = null;
-		if(referenceModel != null) {
+		if(processorModel != null) {
 			/*
-			 * Load the sample and track model.
+			 * Retrieve the reference model.
 			 */
-			ISampleModel sampleModel = loadSampleModel(referenceModel, sampleGroup);
-			trackModel = loadTrackModel(sampleModel, track);
+			ReferenceModel_v1000 referenceModel = loadModelData(processorModel, analysisType, sampleGroup, referenceGroup);
+			if(referenceModel != null) {
+				/*
+				 * Load the sample and track model.
+				 */
+				processorModel.getReferenceModels().put(referenceGroup, referenceModel);
+				SampleModel_v1000 sampleModel = loadSampleModel(processorModel, referenceModel, sampleGroup);
+				if(sampleModel != null) {
+					referenceModel.getSampleModels().put(sampleGroup, sampleModel);
+					trackModel = loadTrackModel(sampleModel, track);
+				}
+			}
 		}
 		//
 		return trackModel;
@@ -101,39 +102,51 @@ public class MeasurementModelData {
 		}
 	}
 
-	private IReferenceModel loadModelDataQualification(IProcessorModel processorModel, List<File> sampleFiles, List<File> referenceFiles, String sampleGroup, String referenceGroup) {
+	private ReferenceModel_v1000 loadModelData(IProcessorModel processorModel, String analysisType, String sampleGroup, String referenceGroup) {
 
-		IReferenceModel referenceModel = getReferenceModel(processorModel, referenceGroup);
+		List<File> sampleFiles = dataProcessorUI.getMeasurementFileList(processorModel, DataProcessorUI.MEASUREMENT_SAMPLE, sampleGroup);
+		List<File> referenceFiles = dataProcessorUI.getMeasurementFileList(processorModel, DataProcessorUI.MEASUREMENT_REFERENCE, referenceGroup);
+		//
+		if(analysisType.equals(DataProcessorUI.ANALYSIS_TYPE_VALIDATION)) {
+			return loadModelDataValidation(processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
+		} else {
+			return loadModelDataQualification(processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
+		}
+	}
+
+	private ReferenceModel_v1000 loadModelDataQualification(IProcessorModel processorModel, List<File> sampleFiles, List<File> referenceFiles, String sampleGroup, String referenceGroup) {
+
+		ReferenceModel_v1000 referenceModel = getReferenceModel(processorModel, referenceGroup);
 		extractMeasurementQualification(sampleFiles, referenceFiles, sampleGroup, referenceGroup);
 		return referenceModel;
 	}
 
-	private IReferenceModel loadModelDataValidation(IProcessorModel processorModel, List<File> sampleFiles, List<File> referenceFiles, String sampleGroup, String referenceGroup) {
+	private ReferenceModel_v1000 loadModelDataValidation(IProcessorModel processorModel, List<File> sampleFiles, List<File> referenceFiles, String sampleGroup, String referenceGroup) {
 
-		IReferenceModel referenceModel = getReferenceModel(processorModel, referenceGroup);
+		ReferenceModel_v1000 referenceModel = getReferenceModel(processorModel, referenceGroup);
 		extractMeasurementValidation(sampleFiles, referenceFiles, sampleGroup, referenceGroup);
 		return referenceModel;
 	}
 
-	private IReferenceModel getReferenceModel(IProcessorModel processorModel, String referenceGroup) {
+	private ReferenceModel_v1000 getReferenceModel(IProcessorModel processorModel, String referenceGroup) {
 
 		ReferenceModel_v1000 referenceModel = processorModel.getReferenceModels().get(referenceGroup);
 		if(referenceModel == null) {
 			referenceModel = new ReferenceModel_v1000();
 			referenceModel.setReferenceGroup(referenceGroup);
-			referenceModel.setReferencePath(PreferenceSupplier.getReferenceDirectory());
+			referenceModel.setReferencePath(processorModel.getReferenceDirectory());
 			processorModel.getReferenceModels().put(referenceGroup, referenceModel);
 		}
 		return referenceModel;
 	}
 
-	private ISampleModel loadSampleModel(IReferenceModel referenceModel, String sampleGroup) {
+	private SampleModel_v1000 loadSampleModel(IProcessorModel processorModel, IReferenceModel referenceModel, String sampleGroup) {
 
-		ISampleModel sampleModel = referenceModel.getSampleModels().get(sampleGroup);
+		SampleModel_v1000 sampleModel = referenceModel.getSampleModels().get(sampleGroup);
 		if(sampleModel == null) {
 			sampleModel = new SampleModel_v1000();
 			sampleModel.setSampleGroup(sampleGroup);
-			sampleModel.setSamplePath(PreferenceSupplier.getSampleDirectory());
+			sampleModel.setSamplePath(processorModel.getSampleDirectory());
 		}
 		return sampleModel;
 	}

@@ -252,12 +252,20 @@ public class DataProcessorUI extends DataProcessor {
 		}
 	}
 
-	public List<File> getMeasurementFileList(IProcessorModel processorModel, String fileExtension, String directory, String groupSelection) {
+	public List<File> getMeasurementFileList(IProcessorModel processorModel, String meausurementType, String groupSelection) {
 
 		List<File> referenceFiles = new ArrayList<File>();
 		if(processorModel != null) {
-			if(!"".equals(groupSelection)) {
-				referenceFiles = getMeasurementFiles(directory, fileExtension, groupSelection);
+			/*
+			 * Get the file list
+			 */
+			String fileExtension = PreferenceSupplier.getFileExtension();
+			String directory = (meausurementType.equals(MEASUREMENT_SAMPLE)) ? processorModel.getSampleDirectory() : processorModel.getReferenceDirectory();
+			//
+			if(processorModel != null) {
+				if(!"".equals(groupSelection)) {
+					referenceFiles = getMeasurementFiles(directory, fileExtension, groupSelection);
+				}
 			}
 		}
 		//

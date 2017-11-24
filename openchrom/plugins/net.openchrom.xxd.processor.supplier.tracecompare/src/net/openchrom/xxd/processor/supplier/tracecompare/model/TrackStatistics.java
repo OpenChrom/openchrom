@@ -13,11 +13,22 @@ package net.openchrom.xxd.processor.supplier.tracecompare.model;
 
 public class TrackStatistics {
 
+	private String sampleGroup;
 	private String referenceGroup;
 	private int tracks;
 	private int evaluated;
 	private int skipped;
 	private int matched;
+
+	public String getSampleGroup() {
+
+		return sampleGroup;
+	}
+
+	public void setSampleGroup(String sampleGroup) {
+
+		this.sampleGroup = sampleGroup;
+	}
 
 	public String getReferenceGroup() {
 

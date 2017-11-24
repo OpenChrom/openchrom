@@ -142,6 +142,7 @@ public class DataProcessor {
 		if(referenceModel != null) {
 			trackStatistics.setReferenceGroup(referenceModel.getReferenceGroup());
 			for(ISampleModel sampleModel : referenceModel.getSampleModels().values()) {
+				trackStatistics.setSampleGroup(sampleModel.getSampleGroup());
 				for(ITrackModel trackModel : sampleModel.getTrackModels().values()) {
 					trackStatistics.addTrackModel(trackModel);
 				}

@@ -47,11 +47,11 @@ public class ResultsEditorUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(ResultsEditorUI.class);
 	//
-	private Label labelSample;
+	private Text textResults;
+	private Text textNotes;
 	private Text textSearch;
-	private Text textGeneralNotes;
+	//
 	private ResultsTreeViewerUI resultsTreeViewerUI;
-	private Text textCalculatedResult;
 	//
 	private IProcessorModel processorModel;
 
@@ -66,9 +66,8 @@ public class ResultsEditorUI extends Composite {
 			EditorProcessor editorProcessor = (EditorProcessor)object;
 			processorModel = editorProcessor.getProcessorModel();
 			//
-			labelSample.setText("Sample Evaluation Overview");
-			textGeneralNotes.setText(processorModel.getGeneralNotes());
-			textCalculatedResult.setText(processorModel.getCalculatedResult());
+			textResults.setText(processorModel.getCalculatedResult());
+			textNotes.setText(processorModel.getGeneralNotes());
 			resultsTreeViewerUI.setInput(processorModel.getReferenceModels().values());
 		}
 	}
@@ -77,43 +76,70 @@ public class ResultsEditorUI extends Composite {
 
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.FILL);
-		composite.setLayout(new GridLayout(5, false));
+		composite.setLayout(new GridLayout(6, false));
 		/*
 		 * Elements
 		 */
-		createLabelSample(composite);
-		createCalculatedResultField(composite);
-		createGeneralNotes(composite);
+		createResultsLabel(composite);
+		createNotesLabel(composite);
+		createResultsText(composite);
+		createNotesText(composite);
 		createSearchField(composite);
 		createResultsList(composite);
 	}
 
-	private void createLabelSample(Composite parent) {
+	private void createResultsLabel(Composite parent) {
 
-		labelSample = new Label(parent, SWT.NONE);
+		Label label = new Label(parent, SWT.NONE);
 		Display display = Display.getDefault();
 		Font font = new Font(display, "Arial", 14, SWT.BOLD);
-		labelSample.setFont(font);
-		labelSample.setText("Results");
-		labelSample.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
+		label.setFont(font);
+		label.setText("Calculated result:");
+		label.setLayoutData(getGridData(GridData.FILL_HORIZONTAL, 3));
 		font.dispose();
 	}
 
-	private void createCalculatedResultField(Composite parent) {
+	private void createNotesLabel(Composite parent) {
 
 		Label label = new Label(parent, SWT.NONE);
-		label.setText("Calculated result:");
-		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
-		textCalculatedResult = new Text(parent, SWT.BORDER);
-		textCalculatedResult.setText("");
-		textCalculatedResult.setLayoutData(getGridData(GridData.FILL_HORIZONTAL));
-		textCalculatedResult.addModifyListener(new ModifyListener() {
+		Display display = Display.getDefault();
+		Font font = new Font(display, "Arial", 14, SWT.BOLD);
+		label.setFont(font);
+		label.setText("General notes:");
+		label.setLayoutData(getGridData(GridData.FILL_HORIZONTAL, 3));
+		font.dispose();
+	}
+
+	private void createResultsText(Composite parent) {
+
+		textResults = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		textResults.setText("");
+		GridData gridData = getGridData(GridData.FILL_HORIZONTAL, 3);
+		gridData.heightHint = 100;
+		textResults.setLayoutData(gridData);
+		textResults.addModifyListener(new ModifyListener() {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
 
-				processorModel.setCalculatedResult(textCalculatedResult.getText().trim());
+				processorModel.setCalculatedResult(textResults.getText().trim());
+			}
+		});
+	}
+
+	private void createNotesText(Composite parent) {
+
+		textNotes = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		textNotes.setText("");
+		GridData gridData = getGridData(GridData.FILL_HORIZONTAL, 3);
+		gridData.heightHint = 100;
+		textNotes.setLayoutData(gridData);
+		textNotes.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+
+				processorModel.setGeneralNotes(textNotes.getText().trim());
 			}
 		});
 	}
@@ -121,8 +147,8 @@ public class ResultsEditorUI extends Composite {
 	private void createSearchField(Composite parent) {
 
 		textSearch = new Text(parent, SWT.BORDER);
-		textSearch.setText("Stichworte...");
-		textSearch.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		textSearch.setText("Keywords...");
+		textSearch.setLayoutData(getGridData(GridData.FILL_HORIZONTAL, 2));
 		textSearch.addKeyListener(new KeyAdapter() {
 
 			@Override
@@ -194,31 +220,10 @@ public class ResultsEditorUI extends Composite {
 		});
 	}
 
-	private void createGeneralNotes(Composite parent) {
-
-		Label label = new Label(parent, SWT.NONE);
-		label.setText("General notes:");
-		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
-		textGeneralNotes = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		textGeneralNotes.setText("");
-		GridData gridData = getGridData(GridData.FILL_HORIZONTAL);
-		gridData.heightHint = 100;
-		textGeneralNotes.setLayoutData(gridData);
-		textGeneralNotes.addModifyListener(new ModifyListener() {
-
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				processorModel.setGeneralNotes(textGeneralNotes.getText().trim());
-			}
-		});
-	}
-
 	private void createResultsList(Composite parent) {
 
 		resultsTreeViewerUI = new ResultsTreeViewerUI(parent, SWT.NONE);
-		resultsTreeViewerUI.setLayoutData(getGridData(GridData.FILL_BOTH));
+		resultsTreeViewerUI.setLayoutData(getGridData(GridData.FILL_BOTH, 6));
 	}
 
 	private void search() {
@@ -262,10 +267,10 @@ public class ResultsEditorUI extends Composite {
 		}
 	}
 
-	private GridData getGridData(int style) {
+	private GridData getGridData(int style, int horizontalSpan) {
 
 		GridData gridData = new GridData(style);
-		gridData.horizontalSpan = 5;
+		gridData.horizontalSpan = horizontalSpan;
 		return gridData;
 	}
 }

@@ -57,7 +57,6 @@ import org.swtchart.IAxis;
 import org.swtchart.Range;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
-import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProcessor;
@@ -107,7 +106,7 @@ public class TraceDataComparisonUI extends Composite {
 	public boolean setFocus() {
 
 		boolean focus = super.setFocus();
-		// loadSampleAndReferenceModelData();
+		loadSampleAndReferenceModelData();
 		return focus;
 	}
 
@@ -643,17 +642,10 @@ public class TraceDataComparisonUI extends Composite {
 		 */
 		ITrackModel trackModel = null;
 		if(sampleGroup != null && !"".equals(sampleGroup) && referenceGroup != null && !"".equals(referenceGroup)) {
-			String fileExtension = PreferenceSupplier.getFileExtension();
-			String sampleDirectory = processorModel.getSampleDirectory();
-			String referenceDirectory = processorModel.getReferenceDirectory();
-			//
-			List<File> sampleFiles = dataProcessorUI.getMeasurementFileList(processorModel, fileExtension, sampleDirectory, sampleGroup);
-			List<File> referenceFiles = dataProcessorUI.getMeasurementFileList(processorModel, fileExtension, referenceDirectory, referenceGroup);
 			/*
 			 * Track Model
 			 */
-			IReferenceModel referenceModel = measurementModelData.loadModelData(analysisType, processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
-			trackModel = measurementModelData.loadTrackModel(referenceModel, track, sampleGroup);
+			trackModel = measurementModelData.loadTrackModel(processorModel, track, analysisType, sampleGroup, referenceGroup);
 		}
 		return trackModel;
 	}
