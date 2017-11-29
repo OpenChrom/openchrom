@@ -46,7 +46,11 @@ public class MassSpectrumImportConverter extends AbstractMassSpectrumImportConve
 			try {
 				final MGFReader mgfReader = new MGFReader();
 				final IMassSpectra massSpectra = mgfReader.read(file, monitor);
-				processingInfo.setMassSpectra(massSpectra);
+				if(massSpectra != null && massSpectra.size() > 0) {
+					processingInfo.setMassSpectra(massSpectra);
+				} else {
+					processingInfo.addErrorMessage(DESCRIPTION, "No mass spectra are stored." + file.getAbsolutePath());
+				}
 			} catch(final FileNotFoundException e) {
 				logger.warn(e);
 				processingInfo.addErrorMessage(DESCRIPTION, "The file couldn't be found: " + file.getAbsolutePath());
