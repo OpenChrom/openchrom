@@ -50,7 +50,11 @@ public class MassSpectrumImportConverter extends AbstractMassSpectrumImportConve
 				file = SpecificationValidator.validateSpecification(file);
 				IMassSpectraReader massSpectraReader = new MassSpectrumReader();
 				IMassSpectra massSpectra = massSpectraReader.read(file, monitor);
-				processingInfo.setMassSpectra(massSpectra);
+				if(massSpectra != null && massSpectra.size() > 0) {
+					processingInfo.setMassSpectra(massSpectra);
+				} else {
+					processingInfo.addErrorMessage(DESCRIPTION, "No mass spectra are stored." + file.getAbsolutePath());
+				}
 			} catch(FileNotFoundException e) {
 				logger.warn(e);
 				processingInfo.addErrorMessage(DESCRIPTION, "The file couldn't be found: " + file.getAbsolutePath());
