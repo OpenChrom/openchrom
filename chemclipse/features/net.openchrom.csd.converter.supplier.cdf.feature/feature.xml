@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.openchrom.csd.converter.supplier.cdf.feature"
-      label="FID NetCDF"
+      label="NetCDF FID (*.cdf)"
       version="0.8.0.qualifier"
       provider-name="ChemClipse">
 
