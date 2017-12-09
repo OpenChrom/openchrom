@@ -110,6 +110,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 			public void widgetSelected(SelectionEvent event) {
 
 				int selection = listCmsComponents.getSelectionIndex();
+				listCmsComponents.deselect(selection);
 				if(null != cmsLibSpectra) {
 					ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)cmsLibSpectra.getList().get(selection);
 					spectrum.setSelected(!spectrum.isSelected());
