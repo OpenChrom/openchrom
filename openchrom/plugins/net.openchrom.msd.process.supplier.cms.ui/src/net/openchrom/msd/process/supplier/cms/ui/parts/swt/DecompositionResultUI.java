@@ -536,6 +536,10 @@ public class DecompositionResultUI extends Composite {
 						}
 						buttonApplyZeroCorrection.setSelection(false);
 					}
+					compositeSignalsGraph.clearXYGraph();
+					results = null;
+					fireUpdateDecompositionResults(results);
+					compositeSignalsGraph.updateXYGraph(cmsSpectra, results, usingETimes, usingOffsetLogScale);
 				} catch(Exception e1) {
 					logger.warn(e1);
 				}
