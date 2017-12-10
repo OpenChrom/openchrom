@@ -84,9 +84,8 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	/**
-	 * subtracts the offsetValue from the signal for each ionMeasurement
-	 * calculates the zero offsetValue by taking middle value of signal found at m/z 5, 6, and 7
-	 * returns true if offsetValue was calculated
+	 * calculates the zero signalOffset by taking median value of signals found at m/z 5, 6, and 7
+	 * returns true if signalOffset was calculated
 	 */
 	@Override
 	public boolean calculateSignalOffset() {
