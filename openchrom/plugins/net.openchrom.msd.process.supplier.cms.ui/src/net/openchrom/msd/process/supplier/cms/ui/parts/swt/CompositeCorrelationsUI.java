@@ -162,7 +162,7 @@ public class CompositeCorrelationsUI extends Composite {
 			xyGraphCorrelationNumberOfPoints = results.getDecompositionResultsList().size();
 			//
 			double[] xDataTraceCorrelation = new double[xyGraphCorrelationNumberOfPoints];
-			TreeMap<String, ArrayList<Double>> lookup = new TreeMap<String, ArrayList<Double>>();
+			TreeMap<String, ArrayList<Double>> yDataLookupMap = new TreeMap<String, ArrayList<Double>>();
 			ConcurrentSkipListSet<String> topNamesList = new ConcurrentSkipListSet<String>();
 			//
 			String libraryName;
@@ -182,10 +182,10 @@ public class CompositeCorrelationsUI extends Composite {
 				}
 				for(int j = 0; j < correlationResult.getResultsCount(); j++) {
 					libraryName = correlationResult.getCorrelationLibName(j);
-					if(null == lookup.get(libraryName)) {
-						lookup.put(libraryName, new ArrayList<Double>());
+					if(null == yDataLookupMap.get(libraryName)) {
+						yDataLookupMap.put(libraryName, new ArrayList<Double>());
 					}
-					lookup.get(libraryName).add(i, correlationResult.getCorrelationValue(j));
+					yDataLookupMap.get(libraryName).add(i, correlationResult.getCorrelationValue(j));
 				}
 				if(usingETimes) {
 					xDataTraceCorrelation[i] = results.getDecompositionResultsList().get(i).getETimeS();
@@ -193,7 +193,7 @@ public class CompositeCorrelationsUI extends Composite {
 					xDataTraceCorrelation[i] = results.getDecompositionResultsList().get(i).getResidualSpectrum().getScanNumber();
 				}
 			}
-			if(0 >= lookup.size()) {
+			if(0 >= yDataLookupMap.size()) {
 				return; // no correlation results
 			}
 			//
@@ -210,7 +210,7 @@ public class CompositeCorrelationsUI extends Composite {
 			for(String strName : topNamesList) {
 				ArrayList<Double> templist;
 				Color traceColor;
-				templist = lookup.get(strName);
+				templist = yDataLookupMap.get(strName);
 				Double[] tempdata = new Double[1];
 				tempdata = templist.toArray(tempdata);
 				double[] ydata = new double[tempdata.length];
