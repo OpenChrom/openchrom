@@ -6,7 +6,7 @@
       <children xsi:type="basic:PartSashContainer" xmi:id="_9PaXsJRkEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partsashcontainer.0" horizontal="true">
         <children xsi:type="basic:PartSashContainer" xmi:id="_A0XsMJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partsashcontainer.1" containerData="1500" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_FMIWoJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partstack.0">
-            <children xsi:type="basic:Part" xmi:id="_3h5WAIdGEeepUP_iBlDE9w" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.part.MassSpectrumFileExplorer" contributionURI="bundleclass://net.openchrom.msd.identifier.supplier.opentyper.ui/net.openchrom.msd.identifier.supplier.opentyper.ui.views.MassSpectrumFileExplorer" label="Mass Spectrum File Explorer" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
+            <children xsi:type="basic:Part" xmi:id="_3h5WAIdGEeepUP_iBlDE9w" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.part.MassSpectrumFileExplorer" contributionURI="bundleclass://net.openchrom.msd.identifier.supplier.opentyper.ui/net.openchrom.msd.identifier.supplier.opentyper.ui.views.MassSpectrumFileExplorer" label="Mass Spectrum File Explorer" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrumFileExplorer.gif"/>
           </children>
         </children>
         <children xsi:type="basic:PartSashContainer" xmi:id="_DIrRIJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partsashcontainer.2" horizontal="true">
@@ -14,7 +14,7 @@
             <children xsi:type="advanced:Placeholder" xmi:id="_SDGpEJRlEeW3h-K0O5zQFg" elementId="org.eclipse.ui.editorss" ref="_OzAxUJRlEeW3h-K0O5zQFg"/>
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_F-avMJRlEeW3h-K0O5zQFg" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.partstack.1" containerData="2500">
-            <children xsi:type="basic:Part" xmi:id="_OTuAUOMCEeeFk6MNh27L1g" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.part.massspectrumpeaklist" contributionURI="bundleclass://net.openchrom.msd.identifier.supplier.opentyper.ui/net.openchrom.msd.identifier.supplier.opentyper.ui.views.MassSpectrumPeakListView" label="Mass Spectrum Peak List" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif"/>
+            <children xsi:type="basic:Part" xmi:id="_OTuAUOMCEeeFk6MNh27L1g" elementId="net.openchrom.msd.identifier.supplier.opentyper.ui.part.massspectrumpeaklist" contributionURI="bundleclass://net.openchrom.msd.identifier.supplier.opentyper.ui/net.openchrom.msd.identifier.supplier.opentyper.ui.views.MassSpectrumPeakListView" label="Mass Spectrum Peak List" iconURI="platform:/plugin/org.eclipse.chemclipse.support.ui/icons/16x16/file.gif"/>
           </children>
         </children>
       </children>
