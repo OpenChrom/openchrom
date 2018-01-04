@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2017 Dr. Philip Wenig, Matthias Mailänder.
+ * Copyright (c) 2014, 2018 Dr. Philip Wenig, Matthias Mailänder.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
