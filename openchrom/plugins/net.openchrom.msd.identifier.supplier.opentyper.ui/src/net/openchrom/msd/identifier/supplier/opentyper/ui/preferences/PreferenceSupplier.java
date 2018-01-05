@@ -1,6 +1,6 @@
 package net.openchrom.msd.identifier.supplier.opentyper.ui.preferences;
 /*******************************************************************************
- * Copyright (c) 2017 Lablicate GmbH.
+ * Copyright (c) 2017, 2018 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
