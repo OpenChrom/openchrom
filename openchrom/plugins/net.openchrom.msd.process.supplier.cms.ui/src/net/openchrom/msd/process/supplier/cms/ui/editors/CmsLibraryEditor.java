@@ -232,7 +232,7 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 		 * as it must be initialized first.
 		 */
 		ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
-		MassSpectrumImportRunnable runnable = new MassSpectrumImportRunnable(file, massSpectra);
+		MassSpectrumImportRunnable runnable = new MassSpectrumImportRunnable(file);
 		try {
 			/*
 			 * True to show the moving progress bar. False, a chromatogram
