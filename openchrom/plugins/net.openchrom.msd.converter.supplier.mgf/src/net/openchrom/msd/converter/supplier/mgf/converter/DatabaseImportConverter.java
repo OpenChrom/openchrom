@@ -18,24 +18,24 @@ import java.io.IOException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.msd.converter.massspectrum.AbstractMassSpectrumImportConverter;
-import org.eclipse.chemclipse.msd.converter.processing.massspectrum.IMassSpectrumImportConverterProcessingInfo;
-import org.eclipse.chemclipse.msd.converter.processing.massspectrum.MassSpectrumImportConverterProcessingInfo;
+import org.eclipse.chemclipse.msd.converter.database.AbstractDatabaseImportConverter;
+import org.eclipse.chemclipse.msd.converter.processing.database.DatabaseImportConverterProcessingInfo;
+import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mgf.converter.io.MGFReader;
 
-public class MassSpectrumImportConverter extends AbstractMassSpectrumImportConverter {
+public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 
 	private static final String DESCRIPTION = "MGF MassSpectrum Import";
-	private static final Logger logger = Logger.getLogger(MassSpectrumImportConverter.class);
+	private static final Logger logger = Logger.getLogger(DatabaseImportConverter.class);
 
 	@Override
-	public IMassSpectrumImportConverterProcessingInfo convert(final File file, final IProgressMonitor monitor) {
+	public IDatabaseImportConverterProcessingInfo convert(final File file, final IProgressMonitor monitor) {
 
-		final IMassSpectrumImportConverterProcessingInfo processingInfo = new MassSpectrumImportConverterProcessingInfo();
+		final IDatabaseImportConverterProcessingInfo processingInfo = new DatabaseImportConverterProcessingInfo();
 		final IProcessingInfo processingInfoValidate = super.validate(file);
 		/*
 		 * Import

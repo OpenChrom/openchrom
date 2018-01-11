@@ -14,7 +14,7 @@ package net.openchrom.msd.converter.supplier.mgf.converter;
 
 import java.io.File;
 
-import org.eclipse.chemclipse.msd.converter.processing.massspectrum.IMassSpectrumExportConverterProcessingInfo;
+import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseExportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
@@ -22,9 +22,10 @@ import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.chemclipse.msd.model.implementation.ScanMSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import junit.framework.TestCase;
 import net.openchrom.msd.converter.supplier.mgf.PathResolver;
 import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
+
+import junit.framework.TestCase;
 
 public class MassSpectrumExportConverter_1_ITest extends TestCase {
 
@@ -35,7 +36,7 @@ public class MassSpectrumExportConverter_1_ITest extends TestCase {
 
 		super.setUp();
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MS_1));
-		MassSpectrumExportConverter exportConverter = new MassSpectrumExportConverter();
+		DatabaseExportConverter exportConverter = new DatabaseExportConverter();
 		//
 		IMassSpectra massSpectra = new MassSpectra();
 		IScanMSD massSpectrum = new ScanMSD();
@@ -45,7 +46,7 @@ public class MassSpectrumExportConverter_1_ITest extends TestCase {
 		massSpectra = new MassSpectra();
 		massSpectra.addMassSpectrum(massSpectrum);
 		//
-		IMassSpectrumExportConverterProcessingInfo processingInfo = exportConverter.convert(file, massSpectra, true, new NullProgressMonitor());
+		IDatabaseExportConverterProcessingInfo processingInfo = exportConverter.convert(file, massSpectra, true, new NullProgressMonitor());
 		file = processingInfo.getFile();
 	}
 

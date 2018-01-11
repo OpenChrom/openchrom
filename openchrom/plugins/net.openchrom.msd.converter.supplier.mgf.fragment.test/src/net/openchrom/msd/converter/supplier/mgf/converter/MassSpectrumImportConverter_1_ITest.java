@@ -14,13 +14,14 @@ package net.openchrom.msd.converter.supplier.mgf.converter;
 
 import java.io.File;
 
-import org.eclipse.chemclipse.msd.converter.processing.massspectrum.IMassSpectrumImportConverterProcessingInfo;
+import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import junit.framework.TestCase;
 import net.openchrom.msd.converter.supplier.mgf.PathResolver;
 import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
+
+import junit.framework.TestCase;
 
 public class MassSpectrumImportConverter_1_ITest extends TestCase {
 
@@ -31,8 +32,8 @@ public class MassSpectrumImportConverter_1_ITest extends TestCase {
 
 		super.setUp();
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MS_1));
-		MassSpectrumImportConverter importConverter = new MassSpectrumImportConverter();
-		IMassSpectrumImportConverterProcessingInfo processingInfo = importConverter.convert(file, new NullProgressMonitor());
+		DatabaseImportConverter importConverter = new DatabaseImportConverter();
+		IDatabaseImportConverterProcessingInfo processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getMassSpectra();
 	}
 

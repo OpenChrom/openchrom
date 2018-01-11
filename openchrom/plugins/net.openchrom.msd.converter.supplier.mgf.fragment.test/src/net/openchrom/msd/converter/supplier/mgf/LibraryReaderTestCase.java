@@ -13,8 +13,8 @@ package net.openchrom.msd.converter.supplier.mgf;
 
 import java.io.File;
 
-import org.eclipse.chemclipse.msd.converter.massspectrum.MassSpectrumConverter;
-import org.eclipse.chemclipse.msd.converter.processing.massspectrum.IMassSpectrumImportConverterProcessingInfo;
+import org.eclipse.chemclipse.msd.converter.database.DatabaseConverter;
+import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -33,7 +33,7 @@ public class LibraryReaderTestCase extends TestCase {
 
 		super.setUp();
 		fileImport = new File(this.pathImport);
-		IMassSpectrumImportConverterProcessingInfo processingInfo = MassSpectrumConverter.convert(fileImport, extensionPointId, new NullProgressMonitor());
+		IDatabaseImportConverterProcessingInfo processingInfo = DatabaseConverter.convert(fileImport, extensionPointId, new NullProgressMonitor());
 		try {
 			massSpectra = processingInfo.getMassSpectra();
 		} catch(TypeCastException e) {
