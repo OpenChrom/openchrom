@@ -14,9 +14,9 @@ package net.openchrom.msd.converter.supplier.cms.converter;
 import java.io.File;
 
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
-import org.eclipse.chemclipse.msd.converter.massspectrum.IMassSpectrumExportConverter;
-import org.eclipse.chemclipse.msd.converter.massspectrum.IMassSpectrumImportConverter;
-import org.eclipse.chemclipse.msd.converter.processing.massspectrum.IMassSpectrumImportConverterProcessingInfo;
+import org.eclipse.chemclipse.msd.converter.database.IDatabaseExportConverter;
+import org.eclipse.chemclipse.msd.converter.database.IDatabaseImportConverter;
+import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
@@ -37,13 +37,13 @@ public class ReImportConverter_2_ITest extends TestCase {
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		IMassSpectrumImportConverter importConverter = new MassSpectrumImportConverter();
-		IMassSpectrumExportConverter exportConverter = new MassSpectrumExportConverter();
+		IDatabaseImportConverter importConverter = new DatabaseImportConverter();
+		IDatabaseExportConverter exportConverter = new DatabaseExportConverter();
 		/*
 		 * Import
 		 */
 		File importFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_5));
-		IMassSpectrumImportConverterProcessingInfo processingInfoImport = importConverter.convert(importFile, new NullProgressMonitor());
+		IDatabaseImportConverterProcessingInfo processingInfoImport = importConverter.convert(importFile, new NullProgressMonitor());
 		massSpectra1 = processingInfoImport.getMassSpectra();
 		// calculate and subtract signal zero offset
 		for(IScanMSD spectrum : massSpectra1.getList()) {
@@ -64,7 +64,7 @@ public class ReImportConverter_2_ITest extends TestCase {
 		 * Re-Import
 		 */
 		File reImportFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_DIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_2);
-		IMassSpectrumImportConverterProcessingInfo processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
+		IDatabaseImportConverterProcessingInfo processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
 		massSpectra2 = processingInfoReImport.getMassSpectra();
 		/*
 		 * Delete the export file.

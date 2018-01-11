@@ -19,10 +19,10 @@ import java.io.IOException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.msd.converter.database.AbstractDatabaseImportConverter;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
-import org.eclipse.chemclipse.msd.converter.massspectrum.AbstractMassSpectrumImportConverter;
-import org.eclipse.chemclipse.msd.converter.processing.massspectrum.IMassSpectrumImportConverterProcessingInfo;
-import org.eclipse.chemclipse.msd.converter.processing.massspectrum.MassSpectrumImportConverterProcessingInfo;
+import org.eclipse.chemclipse.msd.converter.processing.database.DatabaseImportConverterProcessingInfo;
+import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -30,15 +30,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.io.SpecificationValidator;
 
-public class MassSpectrumImportConverter extends AbstractMassSpectrumImportConverter {
+public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 
-	private static final Logger logger = Logger.getLogger(MassSpectrumImportConverter.class);
+	private static final Logger logger = Logger.getLogger(DatabaseImportConverter.class);
 	private static final String DESCRIPTION = "CMS MassSpectrum Import";
 
 	@Override
-	public IMassSpectrumImportConverterProcessingInfo convert(File file, IProgressMonitor monitor) {
+	public IDatabaseImportConverterProcessingInfo convert(File file, IProgressMonitor monitor) {
 
-		IMassSpectrumImportConverterProcessingInfo processingInfo = new MassSpectrumImportConverterProcessingInfo();
+		IDatabaseImportConverterProcessingInfo processingInfo = new DatabaseImportConverterProcessingInfo();
 		/*
 		 * Checks if the file is null or empty ...
 		 */

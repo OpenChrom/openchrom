@@ -2,18 +2,18 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.chemclipse.msd.converter.massSpectrumSupplier">
-      <MassSpectrumSupplier
+         point="org.eclipse.chemclipse.msd.converter.databaseSupplier">
+      <DatabaseSupplier
             description="Reads an writes CMS mass spectra."
-            exportConverter="net.openchrom.msd.converter.supplier.cms.converter.MassSpectrumExportConverter"
+            exportConverter="net.openchrom.msd.converter.supplier.cms.converter.DatabaseExportConverter"
             fileExtension=".CMS"
             filterName="Calibrated Mass Spectra (*.CMS)"
             id="net.openchrom.msd.process.supplier.cms"
-            importConverter="net.openchrom.msd.converter.supplier.cms.converter.MassSpectrumImportConverter"
-            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.cms.converter.MagicNumberMatcherMassSpectrum"
+            importConverter="net.openchrom.msd.converter.supplier.cms.converter.DatabaseImportConverter"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.cms.converter.MagicNumberMatcherDatabase"
             isExportable="true"
             isImportable="true">
-      </MassSpectrumSupplier>
+      </DatabaseSupplier>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

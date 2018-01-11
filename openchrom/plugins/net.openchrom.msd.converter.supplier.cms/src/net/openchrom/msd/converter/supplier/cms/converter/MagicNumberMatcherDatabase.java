@@ -16,7 +16,7 @@ import java.io.File;
 import org.eclipse.chemclipse.converter.core.AbstractMagicNumberMatcher;
 import org.eclipse.chemclipse.converter.core.IMagicNumberMatcher;
 
-public class MagicNumberMatcherMassSpectrum extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
+public class MagicNumberMatcherDatabase extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
 
 	@Override
 	public boolean checkFileFormat(File file) {

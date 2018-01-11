@@ -15,8 +15,8 @@ package net.openchrom.msd.converter.supplier.cms.converter;
 import java.io.File;
 
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
-import org.eclipse.chemclipse.msd.converter.massspectrum.IMassSpectrumImportConverter;
-import org.eclipse.chemclipse.msd.converter.processing.massspectrum.IMassSpectrumImportConverterProcessingInfo;
+import org.eclipse.chemclipse.msd.converter.database.IDatabaseImportConverter;
+import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.ILibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -37,8 +37,8 @@ public class ImportConverter_2_ITest extends TestCase {
 
 		super.setUp();
 		File importFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_2));
-		IMassSpectrumImportConverter importConverter = new MassSpectrumImportConverter();
-		IMassSpectrumImportConverterProcessingInfo processingInfo = importConverter.convert(importFile, new NullProgressMonitor());
+		IDatabaseImportConverter importConverter = new DatabaseImportConverter();
+		IDatabaseImportConverterProcessingInfo processingInfo = importConverter.convert(importFile, new NullProgressMonitor());
 		massSpectra = processingInfo.getMassSpectra();
 	}
 

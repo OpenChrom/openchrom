@@ -18,10 +18,10 @@ import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.msd.converter.database.AbstractDatabaseExportConverter;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
-import org.eclipse.chemclipse.msd.converter.massspectrum.AbstractMassSpectrumExportConverter;
-import org.eclipse.chemclipse.msd.converter.processing.massspectrum.IMassSpectrumExportConverterProcessingInfo;
-import org.eclipse.chemclipse.msd.converter.processing.massspectrum.MassSpectrumExportConverterProcessingInfo;
+import org.eclipse.chemclipse.msd.converter.processing.database.DatabaseExportConverterProcessingInfo;
+import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseExportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -31,15 +31,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumWriter;
 import net.openchrom.msd.converter.supplier.cms.io.SpecificationValidator;
 
-public class MassSpectrumExportConverter extends AbstractMassSpectrumExportConverter {
+public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 
-	private static final Logger logger = Logger.getLogger(MassSpectrumExportConverter.class);
+	private static final Logger logger = Logger.getLogger(DatabaseExportConverter.class);
 	private static final String DESCRIPTION = "CMS MassSpectrum Export";
 
 	@Override
-	public IMassSpectrumExportConverterProcessingInfo convert(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) {
+	public IDatabaseExportConverterProcessingInfo convert(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) {
 
-		IMassSpectrumExportConverterProcessingInfo processingInfo = new MassSpectrumExportConverterProcessingInfo();
+		IDatabaseExportConverterProcessingInfo processingInfo = new DatabaseExportConverterProcessingInfo();
 		/*
 		 * Checks that file and mass spectrum are not null.
 		 */
@@ -70,9 +70,9 @@ public class MassSpectrumExportConverter extends AbstractMassSpectrumExportConve
 	}
 
 	@Override
-	public IMassSpectrumExportConverterProcessingInfo convert(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) {
+	public IDatabaseExportConverterProcessingInfo convert(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) {
 
-		IMassSpectrumExportConverterProcessingInfo processingInfo = new MassSpectrumExportConverterProcessingInfo();
+		IDatabaseExportConverterProcessingInfo processingInfo = new DatabaseExportConverterProcessingInfo();
 		/*
 		 * Checks that file and mass spectra are not null.
 		 */
