@@ -3,7 +3,6 @@
   <imports xsi:type="basic:Part" xmi:id="_tNtJoE0cEeO5B_4ZxeFNDw" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.peakListView"/>
   <imports xsi:type="basic:Part" xmi:id="_vxCpEE0cEeO5B_4ZxeFNDw" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.peakMassSpectrumView"/>
   <imports xsi:type="basic:Part" xmi:id="_V_b-MFE4EeONNIp3wMDeNw" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.peakMSDView"/>
-  <imports xsi:type="basic:Part" xmi:id="_eugnIFE4EeONNIp3wMDeNw" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.peakTargetsView"/>
   <imports xsi:type="advanced:Area" xmi:id="_258_kJiWEeOY7ZqVhGnKxQ" elementId="org.eclipse.chemclipse.rcp.app.ui.editor"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_BXwhsDzCEeO9Cpf0lomO-Q" featurename="sharedElements" parentElementId="org.eclipse.chemclipse.rcp.app.ui.trimmedwindow.main">
     <elements xsi:type="basic:Part" xmi:id="_FmKb0DzCEeO9Cpf0lomO-Q" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.part.moleculeView" contributionURI="bundleclass://net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui/net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.views.MoleculeView" label="Molecule View" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/denoising.gif"/>
@@ -21,9 +20,6 @@
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_1RBnQFE3EeONNIp3wMDeNw" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.partstack.4">
             <children xsi:type="advanced:Placeholder" xmi:id="_zUMmwE0cEeO5B_4ZxeFNDw" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.placeholder.3" ref="_FmKb0DzCEeO9Cpf0lomO-Q"/>
-          </children>
-          <children xsi:type="basic:PartStack" xmi:id="_ydCVQE0cEeO5B_4ZxeFNDw" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.partstack.3">
-            <children xsi:type="advanced:Placeholder" xmi:id="_5jh-QFE3EeONNIp3wMDeNw" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.placeholder.4" ref="_eugnIFE4EeONNIp3wMDeNw"/>
           </children>
         </children>
         <children xsi:type="basic:PartSashContainer" xmi:id="_nHgAYE0cEeO5B_4ZxeFNDw" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.partsashcontainer.2" containerData="3500" horizontal="true">
