@@ -20,7 +20,10 @@ import java.util.regex.Pattern;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.draw2d.LightweightSystem;
+import org.eclipse.draw2d.MouseEvent;
+import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataProvider;
+import org.eclipse.nebula.visualization.xygraph.figures.Annotation;
 import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
 import org.eclipse.nebula.visualization.xygraph.util.XYGraphMediaFactory;
@@ -60,9 +63,12 @@ public class CompositeCompositionsUI extends Composite {
 	private boolean usingOffsetLogScale = false;
 	private double scaleOffset;
 	private Text textLogScaleOffset;
+	private Text textMouseOut;
 	private boolean txtLogScaleOffsetIgnoreEvent = false;
 	private Trace traceScaleOffset = null;
 	private Yunits yUnits = Yunits.PP;
+	private TreeMap<String, ArrayList<Double>> lookup;
+	private Annotation pointAnnotation = null;
 
 	public CompositeCompositionsUI(Composite parent, int style) {
 		super(parent, style);
@@ -171,7 +177,7 @@ public class CompositeCompositionsUI extends Composite {
 			}
 		});
 		//
-		Group compositGroup2 = new Group(compositeTopRow, SWT.NONE);
+		Group compositGroup2 = new Group(compositeTopRow, SWT.NONE); // place for log scale controls
 		GridLayout compositGroup2GridLayout = new GridLayout(1, false);
 		compositGroup2.setLayout(compositGroup2GridLayout);
 		GridData compositGroup2GridData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
@@ -218,7 +224,12 @@ public class CompositeCompositionsUI extends Composite {
 				}
 			}
 		});
-		//
+		// www
+		textMouseOut = new Text(this, SWT.BORDER);
+		textMouseOut.setText("empty");
+		GridData textMouseOutGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
+		textMouseOut.setLayoutData(textMouseOutGridData);
+		// www
 		Composite compositeGraph = new Composite(this, SWT.NONE);
 		GridData compositeGraphGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		compositeGraph.setLayout(new FillLayout());
@@ -234,6 +245,39 @@ public class CompositeCompositionsUI extends Composite {
 		xyGraphComposition.getPrimaryYAxis().setShowMajorGrid(true);
 		xyGraphComposition.getPrimaryYAxis().setFormatPattern("0.0##E00");
 		xyGraphComposition.getPrimaryYAxis().setAutoScaleThreshold(0);
+		xyGraphComposition.getPlotArea().addMouseMotionListener(new MouseMotionListener() {
+
+			@Override
+			public void mouseDragged(MouseEvent me) {
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent me) {
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent me) {
+
+				textMouseOut.setText("");
+			}
+
+			@Override
+			public void mouseHover(MouseEvent me) {
+
+				String txt = new String("mouseHover, ");
+				txt = txt + me.x + ":" + xyGraphComposition.getPrimaryXAxis().getPositionValue(me.x, false);
+				txt = txt + ", ";
+				txt = txt + me.y + ":" + xyGraphComposition.getPrimaryYAxis().getPositionValue(me.y, false);
+				textMouseOut.setText(txt);
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent me) {
+
+			}
+		});
 		lightweightSystem.setContents(xyGraphComposition);
 	}
 
@@ -271,6 +315,22 @@ public class CompositeCompositionsUI extends Composite {
 			return true; // Will not throw NumberFormatException
 		else {
 			return false;
+		}
+	}
+
+	private void findClosestPoint(int x, int y) { // www
+
+		int closestX, closestY;
+		boolean isSet = false;
+		for(String strName : lookup.keySet()) {
+			Trace traceTemp = traceCompositionsMap.get(strName);
+			if(null != traceTemp) {
+				// closestX = traceTemp.nearBinarySearchX()
+				if(null != pointAnnotation)
+					xyGraphComposition.removeAnnotation(pointAnnotation);
+				// pointAnnotation = new Annotation();
+				// xyGraphComposition.addAnnotation(pointAnnotation)
+			}
 		}
 	}
 
@@ -331,7 +391,7 @@ public class CompositeCompositionsUI extends Composite {
 				xyGraphComposition.getPrimaryYAxis().setTitle("Library Contribution, uncalibrated");
 			}
 			xyGraphComposition.getPrimaryYAxis().setLogScale(usingOffsetLogScale);
-			TreeMap<String, ArrayList<Double>> lookup = new TreeMap<String, ArrayList<Double>>();
+			lookup = new TreeMap<String, ArrayList<Double>>();
 			xyGraphCompositionNumberOfPoints = results.getDecompositionResultsList().size();
 			double[] xDataTraceComposition = new double[xyGraphCompositionNumberOfPoints];
 			String componentName;
