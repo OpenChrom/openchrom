@@ -32,7 +32,7 @@ import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseExportC
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.notifier.MassSpectrumSelectionUpdateNotifier;
-import org.eclipse.chemclipse.msd.swt.ui.support.MassSpectraFileSupport;
+import org.eclipse.chemclipse.msd.swt.ui.support.DatabaseFileSupport;
 import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.support.events.IPerspectiveAndViewIds;
@@ -199,7 +199,7 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 		boolean saveSuccessful = false;
 		if(massSpectra != null) {
 			try {
-				saveSuccessful = MassSpectraFileSupport.saveMassSpectra(massSpectra);
+				saveSuccessful = DatabaseFileSupport.saveMassSpectra(massSpectra);
 				dirtyable.setDirty(!saveSuccessful);
 			} catch(NoConverterAvailableException e) {
 				logger.warn(e);
