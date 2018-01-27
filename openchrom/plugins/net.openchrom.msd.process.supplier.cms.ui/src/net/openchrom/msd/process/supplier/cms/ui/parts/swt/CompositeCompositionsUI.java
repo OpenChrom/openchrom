@@ -14,15 +14,21 @@ package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.text.ValueFormat;
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.MouseEvent;
 import org.eclipse.draw2d.MouseMotionListener;
+import org.eclipse.draw2d.Polyline;
+import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataProvider;
+import org.eclipse.nebula.visualization.xygraph.dataprovider.ISample;
+import org.eclipse.nebula.visualization.xygraph.dataprovider.Sample;
 import org.eclipse.nebula.visualization.xygraph.figures.Annotation;
 import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
@@ -43,6 +49,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResult;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
 
@@ -68,7 +75,7 @@ public class CompositeCompositionsUI extends Composite {
 	private Trace traceScaleOffset = null;
 	private Yunits yUnits = Yunits.PP;
 	private TreeMap<String, ArrayList<Double>> lookup;
-	private Annotation pointAnnotation = null;
+	private Polyline pLine;
 
 	public CompositeCompositionsUI(Composite parent, int style) {
 		super(parent, style);
@@ -177,6 +184,7 @@ public class CompositeCompositionsUI extends Composite {
 			}
 		});
 		//
+		//
 		Group compositGroup2 = new Group(compositeTopRow, SWT.NONE); // place for log scale controls
 		GridLayout compositGroup2GridLayout = new GridLayout(1, false);
 		compositGroup2.setLayout(compositGroup2GridLayout);
@@ -224,7 +232,8 @@ public class CompositeCompositionsUI extends Composite {
 				}
 			}
 		});
-		// www
+		// www mouse hover text was here
+		// place mouse hover text here
 		textMouseOut = new Text(this, SWT.BORDER);
 		textMouseOut.setText("empty");
 		GridData textMouseOutGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
@@ -260,17 +269,44 @@ public class CompositeCompositionsUI extends Composite {
 			@Override
 			public void mouseExited(MouseEvent me) {
 
-				textMouseOut.setText("");
+				// textMouseOut.setText("");
+				if(pLine != null) {
+					xyGraphComposition.getPlotArea().remove(pLine);
+					pLine = null;
+				}
 			}
 
 			@Override
 			public void mouseHover(MouseEvent me) {
 
-				String txt = new String("mouseHover, ");
-				txt = txt + me.x + ":" + xyGraphComposition.getPrimaryXAxis().getPositionValue(me.x, false);
-				txt = txt + ", ";
-				txt = txt + me.y + ":" + xyGraphComposition.getPrimaryYAxis().getPositionValue(me.y, false);
+				/// double xValue, yValue;
+				int xPos, yPos;
+				ISample sample;
+				if(0 == xyGraphComposition.getPlotArea().getTraceList().size())
+					return;
+				/// xValue = xyGraphComposition.getPrimaryXAxis().getPositionValue(me.x, false);
+				/// yValue = xyGraphComposition.getPrimaryYAxis().getPositionValue(me.y, false);
+				String txt = new String();
+				sample = findClosestPoint(me.x, me.y);
+				xPos = xyGraphComposition.getPrimaryXAxis().getValuePosition(sample.getXValue(), false);
+				yPos = xyGraphComposition.getPrimaryYAxis().getValuePosition(sample.getYValue(), false);
+				// txt = txt + "(";
+				// txt = txt + me.x + "," + me.y;
+				// txt = txt + ")@(";
+				// txt = txt + xValue + "," + yValue;
+				// txt = txt + ")->(";
+				// txt = txt + xPos + "," + yPos;
+				// txt = txt + ")@(";
+				txt = txt + sample.getXValue() + ", " + sample.getYValue();
+				// txt = txt + ")";
 				textMouseOut.setText(txt);
+				if(null == pLine) {
+					pLine = new Polyline();
+					pLine.setLineWidthFloat(2.0f);
+					pLine.setForegroundColor(ColorConstants.red);
+					xyGraphComposition.getPlotArea().add(pLine, 0);
+				}
+				pLine.setPoints(new PointList(new int[]{me.x, me.y, xPos, yPos}));
 			}
 
 			@Override
@@ -318,20 +354,45 @@ public class CompositeCompositionsUI extends Composite {
 		}
 	}
 
-	private void findClosestPoint(int x, int y) { // www
+	private ISample findClosestPoint(int x, int y) { // x and y are cursor position in pixels, returns x & y value for closest point
 
-		int closestX, closestY;
-		boolean isSet = false;
-		for(String strName : lookup.keySet()) {
-			Trace traceTemp = traceCompositionsMap.get(strName);
+		int testXposition, testYposition;
+		double minDist, testDist, closestXvalue, closestYvalue, testXvalue,
+				testYvalue;
+		boolean initialized = false;
+		List<Trace> traceList = new ArrayList<Trace>();
+		CircularBufferDataProvider tempDataProvider = new CircularBufferDataProvider(false);
+		traceList = xyGraphComposition.getPlotArea().getTraceList();
+		minDist = 0.0;
+		closestXvalue = 0.0;
+		closestYvalue = 0.0;
+		for(Trace traceTemp : traceList) {
 			if(null != traceTemp) {
-				// closestX = traceTemp.nearBinarySearchX()
-				if(null != pointAnnotation)
-					xyGraphComposition.removeAnnotation(pointAnnotation);
-				// pointAnnotation = new Annotation();
-				// xyGraphComposition.addAnnotation(pointAnnotation)
+				if(!(traceTemp.getDataProvider() instanceof CircularBufferDataProvider))
+					continue;
+				else {
+					tempDataProvider = (CircularBufferDataProvider)traceTemp.getDataProvider();
+					for(int i = 0; i < tempDataProvider.getSize(); i++) { // search over values
+						testXvalue = tempDataProvider.getSample(i).getXValue();
+						testYvalue = tempDataProvider.getSample(i).getYValue();
+						testXposition = xyGraphComposition.getPrimaryXAxis().getValuePosition(testXvalue, false); // x position
+						testYposition = xyGraphComposition.getPrimaryYAxis().getValuePosition(testYvalue, false); // y position
+						testDist = Math.pow(x - testXposition, 2) + Math.pow(y - testYposition, 2); // distance in position units
+						if(!initialized) {
+							initialized = true;
+							minDist = testDist;
+							closestXvalue = testXvalue;
+							closestYvalue = testYvalue;
+						} else if(testDist < minDist) {
+							minDist = testDist;
+							closestXvalue = testXvalue;
+							closestYvalue = testYvalue;
+						}
+					}
+				}
 			}
 		}
+		return new Sample(closestXvalue, closestYvalue);
 	}
 
 	private void clearXYGraph() {
