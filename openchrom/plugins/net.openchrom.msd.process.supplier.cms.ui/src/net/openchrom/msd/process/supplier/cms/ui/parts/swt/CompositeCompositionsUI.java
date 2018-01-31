@@ -59,6 +59,7 @@ public class CompositeCompositionsUI extends Composite {
 	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
 	//
 	private DecimalFormat decimalFormatscaleOffset = ValueFormat.getDecimalFormatEnglish("0.0##E00");
+	private DecimalFormat decimalFormatMouseHover = ValueFormat.getDecimalFormatEnglish("0.0##E00");
 	private TreeMap<String, Trace> traceCompositionsMap; // key is composition name string, value is Trace for that composition, needed so trace can be removed
 	private XYGraph xyGraphComposition;
 	private int xyGraphCompositionNumberOfPoints = 0; // if xyGraphCompositionNumberOfPoints > 0, then remainder of xyGraphComposition data items are valid
@@ -298,8 +299,11 @@ public class CompositeCompositionsUI extends Composite {
 				// txt = txt + ")->(";
 				// txt = txt + xPos + "," + yPos;
 				// txt = txt + ")@(";
-				txt = txt + sample.getXValue() + ", " + sample.getYValue();
 				// txt = txt + ")";
+				txt = txt + "(";
+				txt = txt + sample.getXValue() + ", ";
+				txt = txt + decimalFormatMouseHover.format(sample.getYValue()) + ")";
+				txt = txt + ": " + sample.getInfo();
 				textMouseOut.setText(txt);
 				if(null == pLine) {
 					pLine = new Polyline();
@@ -364,6 +368,7 @@ public class CompositeCompositionsUI extends Composite {
 		List<Trace> traceList = new ArrayList<Trace>();
 		CircularBufferDataProvider tempDataProvider = new CircularBufferDataProvider(false);
 		traceList = xyGraphComposition.getPlotArea().getTraceList();
+		String traceName = new String("no name");
 		minDist = 0.0;
 		closestXvalue = 0.0;
 		closestYvalue = 0.0;
@@ -384,16 +389,18 @@ public class CompositeCompositionsUI extends Composite {
 							minDist = testDist;
 							closestXvalue = testXvalue;
 							closestYvalue = testYvalue;
+							traceName = traceTemp.getName();
 						} else if(testDist < minDist) {
 							minDist = testDist;
 							closestXvalue = testXvalue;
 							closestYvalue = testYvalue;
+							traceName = traceTemp.getName();
 						}
 					}
 				}
 			}
 		}
-		return new Sample(closestXvalue, closestYvalue);
+		return new Sample(closestXvalue, closestYvalue, 0, 0, 0, 0, traceName);
 	}
 
 	// Returns the index of the closest left (if left is true) or right of the key value
