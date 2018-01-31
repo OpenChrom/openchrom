@@ -27,6 +27,7 @@ import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.Polyline;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataProvider;
+import org.eclipse.nebula.visualization.xygraph.dataprovider.IDataProvider;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.ISample;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.Sample;
 import org.eclipse.nebula.visualization.xygraph.figures.Annotation;
@@ -372,7 +373,7 @@ public class CompositeCompositionsUI extends Composite {
 					continue;
 				else {
 					tempDataProvider = (CircularBufferDataProvider)traceTemp.getDataProvider();
-					for(int i = 0; i < tempDataProvider.getSize(); i++) { // search over values
+					for(int i = 0; i < tempDataProvider.getSize(); i++) { // linear search over values
 						testXvalue = tempDataProvider.getSample(i).getXValue();
 						testYvalue = tempDataProvider.getSample(i).getYValue();
 						testXposition = xyGraphComposition.getPrimaryXAxis().getValuePosition(testXvalue, false); // x position
@@ -393,6 +394,50 @@ public class CompositeCompositionsUI extends Composite {
 			}
 		}
 		return new Sample(closestXvalue, closestYvalue);
+	}
+
+	// Returns the index of the closest left (if left is true) or right of the key value
+	// assumes values in trace are sorted increase with index
+	// Copied from Class Trace, not sure if it is useful for findClosesPoint()
+	private int nearBinarySearchX(Trace trace, double key, boolean left) {
+
+		IDataProvider traceDataProvider = trace.getDataProvider();
+		int low = 0;
+		int high = traceDataProvider.getSize() - 1;
+		while(low <= high) {
+			int mid = (low + high) >>> 1;
+			double midVal = traceDataProvider.getSample(mid).getXValue();
+			int cmp;
+			if(midVal < key) {
+				cmp = -1; // Neither val is NaN, thisVal is smaller
+			} else if(midVal > key) {
+				cmp = 1; // Neither val is NaN, thisVal is larger
+			} else {
+				long midBits = Double.doubleToLongBits(midVal);
+				long keyBits = Double.doubleToLongBits(key);
+				cmp = (midBits == keyBits ? 0 : // Values are equal
+						(midBits < keyBits ? -1 : // (-0.0, 0.0) or (!NaN, NaN)
+								1)); // (0.0, -0.0) or (NaN, !NaN)
+			}
+			if(cmp < 0) {
+				if(mid < traceDataProvider.getSize() - 1 && key < traceDataProvider.getSample(mid + 1).getXValue()) {
+					if(left)
+						return mid;
+					else
+						return mid + 1;
+				}
+				low = mid + 1;
+			} else if(cmp > 0) {
+				if(mid > 0 && key > traceDataProvider.getSample(mid - 1).getXValue())
+					if(left)
+						return mid - 1;
+					else
+						return mid;
+				high = mid - 1;
+			} else
+				return mid; // key found
+		}
+		return -(low + 1); // key not found.
 	}
 
 	private void clearXYGraph() {
