@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
+import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
 
 public class CompositeLibrarySpectraUI extends Composite {
@@ -48,6 +49,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 	private static IMassSpectra cmsLibSpectra;
 	private Text textCmsLibraryFilePath;
 	private List listCmsComponents;
+	private Button buttonLibFileSelect;
 
 	public CompositeLibrarySpectraUI(Composite parent, int style) {
 		super(parent, style);
@@ -132,12 +134,11 @@ public class CompositeLibrarySpectraUI extends Composite {
 
 	private void addButtonSelect(Composite parent) {
 
-		Button buttonSelect;
-		buttonSelect = new Button(parent, SWT.NONE);
-		buttonSelect.setText("");
-		buttonSelect.setToolTipText("Select the *.cms library file.");
-		buttonSelect.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_FILE, IApplicationImageProvider.SIZE_16x16));
-		buttonSelect.addSelectionListener(new SelectionAdapter() {
+		buttonLibFileSelect = new Button(parent, SWT.NONE);
+		buttonLibFileSelect.setText("");
+		buttonLibFileSelect.setToolTipText("Select the *.cms library file.");
+		buttonLibFileSelect.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_FILE, IApplicationImageProvider.SIZE_16x16));
+		buttonLibFileSelect.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -185,7 +186,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 					listCmsComponents.removeAll();
 					new StringBuilder();
 					for(IScanMSD spectrum : cmsLibSpectra.getList()) {
-						if((null != spectrum) && (spectrum instanceof ICalibratedVendorLibraryMassSpectrum)) {
+						if((null != spectrum) && (spectrum instanceof ICalibratedVendorLibraryMassSpectrum) && !(spectrum instanceof ICalibratedVendorMassSpectrum)) {
 							listCmsComponents.add(makeListLine((ICalibratedVendorLibraryMassSpectrum)spectrum, false));
 						} else {
 							String fileName = textCmsLibraryFilePath.getText().trim();
