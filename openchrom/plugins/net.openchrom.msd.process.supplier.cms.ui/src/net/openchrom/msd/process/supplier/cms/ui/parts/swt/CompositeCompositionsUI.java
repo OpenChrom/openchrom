@@ -234,13 +234,12 @@ public class CompositeCompositionsUI extends Composite {
 				}
 			}
 		});
-		// www mouse hover text was here
 		// place mouse hover text here
 		textMouseOut = new Text(this, SWT.BORDER);
 		textMouseOut.setText("empty");
 		GridData textMouseOutGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
 		textMouseOut.setLayoutData(textMouseOutGridData);
-		// www
+		// xygraph goes here
 		Composite compositeGraph = new Composite(this, SWT.NONE);
 		GridData compositeGraphGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		compositeGraph.setLayout(new FillLayout());
@@ -271,7 +270,6 @@ public class CompositeCompositionsUI extends Composite {
 			@Override
 			public void mouseExited(MouseEvent me) {
 
-				// textMouseOut.setText("");
 				if(pLine != null) {
 					xyGraphComposition.getPlotArea().remove(pLine);
 					pLine = null;
@@ -281,29 +279,17 @@ public class CompositeCompositionsUI extends Composite {
 			@Override
 			public void mouseHover(MouseEvent me) {
 
-				/// double xValue, yValue;
 				int xPos, yPos;
 				ISample sample;
 				if(0 == xyGraphComposition.getPlotArea().getTraceList().size())
 					return;
-				/// xValue = xyGraphComposition.getPrimaryXAxis().getPositionValue(me.x, false);
-				/// yValue = xyGraphComposition.getPrimaryYAxis().getPositionValue(me.y, false);
 				String txt = new String();
 				sample = findClosestPoint(me.x, me.y);
 				xPos = xyGraphComposition.getPrimaryXAxis().getValuePosition(sample.getXValue(), false);
 				yPos = xyGraphComposition.getPrimaryYAxis().getValuePosition(sample.getYValue(), false);
-				// txt = txt + "(";
-				// txt = txt + me.x + "," + me.y;
-				// txt = txt + ")@(";
-				// txt = txt + xValue + "," + yValue;
-				// txt = txt + ")->(";
-				// txt = txt + xPos + "," + yPos;
-				// txt = txt + ")@(";
-				// txt = txt + ")";
-				txt = txt + "(";
-				txt = txt + sample.getXValue() + ", ";
-				txt = txt + decimalFormatMouseHover.format(sample.getYValue()) + ")";
-				txt = txt + ": " + sample.getInfo();
+				txt = txt + sample.getXValue() + "\t";
+				txt = txt + decimalFormatMouseHover.format(sample.getYValue()) + "\t";
+				txt = txt + sample.getInfo();
 				textMouseOut.setText(txt);
 				if(null == pLine) {
 					pLine = new Polyline();
@@ -401,50 +387,6 @@ public class CompositeCompositionsUI extends Composite {
 			}
 		}
 		return new Sample(closestXvalue, closestYvalue, 0, 0, 0, 0, traceName);
-	}
-
-	// Returns the index of the closest left (if left is true) or right of the key value
-	// assumes values in trace are sorted increase with index
-	// Copied from Class Trace, not sure if it is useful for findClosesPoint()
-	private int nearBinarySearchX(Trace trace, double key, boolean left) {
-
-		IDataProvider traceDataProvider = trace.getDataProvider();
-		int low = 0;
-		int high = traceDataProvider.getSize() - 1;
-		while(low <= high) {
-			int mid = (low + high) >>> 1;
-			double midVal = traceDataProvider.getSample(mid).getXValue();
-			int cmp;
-			if(midVal < key) {
-				cmp = -1; // Neither val is NaN, thisVal is smaller
-			} else if(midVal > key) {
-				cmp = 1; // Neither val is NaN, thisVal is larger
-			} else {
-				long midBits = Double.doubleToLongBits(midVal);
-				long keyBits = Double.doubleToLongBits(key);
-				cmp = (midBits == keyBits ? 0 : // Values are equal
-						(midBits < keyBits ? -1 : // (-0.0, 0.0) or (!NaN, NaN)
-								1)); // (0.0, -0.0) or (NaN, !NaN)
-			}
-			if(cmp < 0) {
-				if(mid < traceDataProvider.getSize() - 1 && key < traceDataProvider.getSample(mid + 1).getXValue()) {
-					if(left)
-						return mid;
-					else
-						return mid + 1;
-				}
-				low = mid + 1;
-			} else if(cmp > 0) {
-				if(mid > 0 && key > traceDataProvider.getSample(mid - 1).getXValue())
-					if(left)
-						return mid - 1;
-					else
-						return mid;
-				high = mid - 1;
-			} else
-				return mid; // key found
-		}
-		return -(low + 1); // key not found.
 	}
 
 	private void clearXYGraph() {
