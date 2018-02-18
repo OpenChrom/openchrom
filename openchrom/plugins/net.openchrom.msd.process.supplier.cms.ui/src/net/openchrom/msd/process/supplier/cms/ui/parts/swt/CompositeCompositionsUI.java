@@ -31,6 +31,7 @@ import org.eclipse.nebula.visualization.xygraph.dataprovider.IDataProvider;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.ISample;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.Sample;
 import org.eclipse.nebula.visualization.xygraph.figures.Annotation;
+import org.eclipse.nebula.visualization.xygraph.figures.ToolbarArmedXYGraph;
 import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
 import org.eclipse.nebula.visualization.xygraph.util.XYGraphMediaFactory;
@@ -62,6 +63,7 @@ public class CompositeCompositionsUI extends Composite {
 	private DecimalFormat decimalFormatMouseHover = ValueFormat.getDecimalFormatEnglish("0.0##E00");
 	private TreeMap<String, Trace> traceCompositionsMap; // key is composition name string, value is Trace for that composition, needed so trace can be removed
 	private XYGraph xyGraphComposition;
+	private ToolbarArmedXYGraph toolbarArmedXYGraph;
 	private int xyGraphCompositionNumberOfPoints = 0; // if xyGraphCompositionNumberOfPoints > 0, then remainder of xyGraphComposition data items are valid
 	private Button buttonPP; // select partial pressures
 	private Button buttonMF; // select mol fraction
@@ -114,16 +116,22 @@ public class CompositeCompositionsUI extends Composite {
 		GridData topRowCompositeGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
 		compositeTopRow.setLayoutData(topRowCompositeGridData);
 		//
-		Group compositGroup = new Group(compositeTopRow, SWT.NONE);
+		Composite compositeLeftColumn = new Composite(compositeTopRow, SWT.NONE);
+		GridLayout leftColumnGridLayout = new GridLayout(1, true);
+		compositeLeftColumn.setLayout(leftColumnGridLayout);
+		GridData leftColumnGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
+		compositeLeftColumn.setLayoutData(leftColumnGridData);
+		//
+		Group displayUnitsGroup = new Group(compositeLeftColumn, SWT.NONE);
 		GridLayout compositGroupGridLayout = new GridLayout(4, false);
-		compositGroup.setLayout(compositGroupGridLayout);
+		displayUnitsGroup.setLayout(compositGroupGridLayout);
 		GridData compositGroupGridData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
-		compositGroup.setLayoutData(compositGroupGridData);
+		displayUnitsGroup.setLayoutData(compositGroupGridData);
 		// display units Buttons
-		Label label = new Label(compositGroup, SWT.NONE);
+		Label label = new Label(displayUnitsGroup, SWT.NONE);
 		label.setText("Display Units:");
 		//
-		buttonPP = new Button(compositGroup, SWT.RADIO);
+		buttonPP = new Button(displayUnitsGroup, SWT.RADIO);
 		buttonPP.setText("Partial Pressure");
 		buttonPP.setSelection(true);
 		buttonPP.addSelectionListener(new SelectionAdapter() {
@@ -144,7 +152,7 @@ public class CompositeCompositionsUI extends Composite {
 			}
 		});
 		//
-		buttonMF = new Button(compositGroup, SWT.RADIO);
+		buttonMF = new Button(displayUnitsGroup, SWT.RADIO);
 		buttonMF.setText("Mol Fraction");
 		buttonMF.setSelection(false);
 		buttonMF.addSelectionListener(new SelectionAdapter() {
@@ -165,7 +173,7 @@ public class CompositeCompositionsUI extends Composite {
 			}
 		});
 		//
-		buttonLF = new Button(compositGroup, SWT.RADIO);
+		buttonLF = new Button(displayUnitsGroup, SWT.RADIO);
 		buttonLF.setText("Library Fraction");
 		buttonLF.setSelection(false);
 		buttonLF.addSelectionListener(new SelectionAdapter() {
@@ -185,7 +193,11 @@ public class CompositeCompositionsUI extends Composite {
 				}
 			}
 		});
-		//
+		// place mouse hover text here
+		textMouseOut = new Text(compositeLeftColumn, SWT.BORDER);
+		textMouseOut.setText("empty");
+		GridData textMouseOutGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
+		textMouseOut.setLayoutData(textMouseOutGridData);
 		//
 		Group compositGroup2 = new Group(compositeTopRow, SWT.NONE); // place for log scale controls
 		GridLayout compositGroup2GridLayout = new GridLayout(1, false);
@@ -234,11 +246,6 @@ public class CompositeCompositionsUI extends Composite {
 				}
 			}
 		});
-		// place mouse hover text here
-		textMouseOut = new Text(this, SWT.BORDER);
-		textMouseOut.setText("empty");
-		GridData textMouseOutGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
-		textMouseOut.setLayoutData(textMouseOutGridData);
 		// xygraph goes here
 		Composite compositeGraph = new Composite(this, SWT.NONE);
 		GridData compositeGraphGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -247,6 +254,7 @@ public class CompositeCompositionsUI extends Composite {
 		//
 		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(compositeGraph, SWT.NONE));
 		xyGraphComposition = new XYGraph();
+		toolbarArmedXYGraph = new ToolbarArmedXYGraph(xyGraphComposition);
 		traceCompositionsMap = new TreeMap<String, Trace>();
 		xyGraphComposition.setTitle("Composition");
 		xyGraphComposition.getPrimaryXAxis().setAutoScale(true);
@@ -305,7 +313,7 @@ public class CompositeCompositionsUI extends Composite {
 
 			}
 		});
-		lightweightSystem.setContents(xyGraphComposition);
+		lightweightSystem.setContents(toolbarArmedXYGraph);
 	}
 
 	private boolean isValidDoubleString(String myString) {
