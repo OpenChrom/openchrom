@@ -23,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
@@ -163,7 +164,7 @@ public class DataProcessor {
 		return pattern;
 	}
 
-	public int getWavelength(IChromatogram measurement) {
+	public int getWavelength(IChromatogram<? extends IPeak> measurement) {
 
 		for(IScan scan : measurement.getScans()) {
 			if(scan instanceof IScanWSD) {

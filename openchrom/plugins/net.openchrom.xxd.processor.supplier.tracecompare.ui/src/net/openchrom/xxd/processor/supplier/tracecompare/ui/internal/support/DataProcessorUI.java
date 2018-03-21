@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
@@ -92,6 +93,7 @@ public class DataProcessorUI extends DataProcessor {
 		return wavelenghts.toArray(new String[wavelenghts.size()]);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Map<Integer, Map<String, ISeriesData>> extractMeasurementsData(List<File> measurementFiles, String type) {
 
 		Map<Integer, Map<String, ISeriesData>> measurementsData = new HashMap<Integer, Map<String, ISeriesData>>();
@@ -110,7 +112,7 @@ public class DataProcessorUI extends DataProcessor {
 		String wavelength;
 		//
 		List<IChromatogramWSD> measurements = runnable.getMeasurements();
-		for(IChromatogram measurement : measurements) {
+		for(IChromatogram<? extends IPeak> measurement : measurements) {
 			/*
 			 * Track 1
 			 */
@@ -121,7 +123,7 @@ public class DataProcessorUI extends DataProcessor {
 			/*
 			 * Track 2 ... n
 			 */
-			for(IChromatogram additionalMeasurement : measurement.getReferencedChromatograms()) {
+			for(IChromatogram<? extends IPeak> additionalMeasurement : measurement.getReferencedChromatograms()) {
 				seriesData = extractMeasurement(additionalMeasurement, type);
 				wavelength = Integer.toString(getWavelength(additionalMeasurement));
 				addMeasurementData(measurementsData, wavelength, seriesData, index++);
