@@ -98,7 +98,7 @@ public class MassSpectraDecomposition {
 					System.out.print("\t");
 					for(IIon libion : libSpectrum.getIons()) {
 						try {
-							fitDataset.addLibIon(libion.getIon(), libion.getAbundance(), componentSequence);
+							fitDataset.addLibIon(libion.getIon(), libion.getAbundance() * libraryMassSpectrum.getScaleFactor(), componentSequence); // adjust using current scaleFactor
 						} catch(InvalidComponentIndexException e) {
 							logger.warn(e);
 						}

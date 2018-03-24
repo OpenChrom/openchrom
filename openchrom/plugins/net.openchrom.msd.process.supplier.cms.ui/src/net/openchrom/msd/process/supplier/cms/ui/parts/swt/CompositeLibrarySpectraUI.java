@@ -13,6 +13,7 @@
 package net.openchrom.msd.process.supplier.cms.ui.parts.swt;
 
 import java.io.File;
+import java.text.DecimalFormat;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
@@ -20,6 +21,7 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -45,6 +47,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
 	private static final String SHOW_SELECTED = "  *     ";
 	private static final String SHOW_NOT_SELECTED = "        ";
+	private DecimalFormat decimalFormatsScaleFactor = ValueFormat.getDecimalFormatEnglish("0.0###");
 	//
 	private static IMassSpectra cmsLibSpectra;
 	private Text textCmsLibraryFilePath;
@@ -91,8 +94,8 @@ public class CompositeLibrarySpectraUI extends Composite {
 		thisGridLayout.marginWidth = 0;
 		this.setLayout(thisGridLayout);
 		GridData thisGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
-		thisGridData.horizontalSpan = 2;
-		thisGridData.heightHint = 300;
+		//thisGridData.horizontalSpan = 2;
+		//thisGridData.heightHint = 300;
 		this.setLayoutData(thisGridData);
 		// CMS library path
 		textCmsLibraryFilePath = new Text(this, SWT.BORDER);
@@ -165,7 +168,10 @@ public class CompositeLibrarySpectraUI extends Composite {
 
 	private String makeListLine(ICalibratedVendorLibraryMassSpectrum libSpectrum, boolean isSelected) {
 
-		StringBuilder strLine = new StringBuilder(libSpectrum.getLibraryInformation().getName());
+		StringBuilder strLine = new StringBuilder("(");
+		strLine.append(decimalFormatsScaleFactor.format(libSpectrum.getScaleFactor()));
+		strLine.append(") ");
+		strLine.append(libSpectrum.getLibraryInformation().getName());
 		strLine.append(", ");
 		strLine.append(libSpectrum.getLibraryInformation().getFormula());
 		if(isSelected) {
