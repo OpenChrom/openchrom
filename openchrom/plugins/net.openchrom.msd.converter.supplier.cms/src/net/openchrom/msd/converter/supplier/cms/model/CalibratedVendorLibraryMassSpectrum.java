@@ -24,10 +24,13 @@ import org.eclipse.chemclipse.msd.model.implementation.Ion;
 public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpectrum implements ICalibratedVendorLibraryMassSpectrum, Comparable<ICalibratedVendorLibraryMassSpectrum> {
 
 	/**
+	 * 
+	 */
+	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
 	 * methods.
 	 */
-	private static final long serialVersionUID = 788113431263082689L;
+	private static final long serialVersionUID = 714815646044225369L;
 	private static final Logger logger = Logger.getLogger(CalibratedVendorLibraryMassSpectrum.class);
 	//
 	private List<String> comments; // this implementation preserves the order in which the comments were first read
@@ -42,6 +45,7 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	protected double value2Norm; // ignored in compareTo()
 	protected boolean valid2Norm; // ignored in compareTo()
 	private boolean isSelected; // true if this spectrum is selected for some purpose, ignored in compareTo()
+	private double scaleFactor; // used for dynamic rescaling, ignored in compareTo()
 
 	public CalibratedVendorLibraryMassSpectrum() {
 		/*
@@ -59,6 +63,7 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 		this.eTimeS = -1d;
 		this.valid2Norm = false;
 		this.isSelected = false;
+		this.scaleFactor = 1d;
 	}
 
 	/**
@@ -236,6 +241,19 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	public void setSourcePressure(double pressure) {
 
 		sourcePressure = pressure;
+	}
+
+	@Override
+	public double getScaleFactor() {
+		
+		return scaleFactor;
+	}
+
+	
+	@Override
+	public void setScaleFactor(double scaleFactor) {
+	
+		this.scaleFactor = scaleFactor;
 	}
 
 	@Override

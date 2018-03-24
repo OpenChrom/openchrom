@@ -40,6 +40,8 @@ public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMas
 
 	String getInstrumentName();
 
+	double getScaleFactor();
+
 	String getSignalUnits();
 
 	double getSourcePressure();
@@ -61,6 +63,8 @@ public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMas
 	void setIenergy(double ienergy);
 
 	void setInstrumentName(String instrumentName);
+
+	void setScaleFactor(double scaleFactor);
 
 	void setSelected(boolean isSelected);
 
