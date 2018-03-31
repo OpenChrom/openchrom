@@ -54,6 +54,8 @@ public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMas
 
 	boolean isSelected();
 
+	String makeNameString();
+
 	void setComments(List<String> comments);
 
 	void setEenergy(double eenergy);

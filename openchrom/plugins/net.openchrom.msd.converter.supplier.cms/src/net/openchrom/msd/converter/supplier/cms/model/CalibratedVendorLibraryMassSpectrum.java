@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cms.model;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,19 +21,18 @@ import org.eclipse.chemclipse.msd.model.core.AbstractRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
+import org.eclipse.chemclipse.support.text.ValueFormat;
 
 public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryMassSpectrum implements ICalibratedVendorLibraryMassSpectrum, Comparable<ICalibratedVendorLibraryMassSpectrum> {
 
 	/**
-	 * 
-	 */
-	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
 	 * methods.
 	 */
-	private static final long serialVersionUID = 714815646044225369L;
+	private static final long serialVersionUID = 5981872973320440739L;
 	private static final Logger logger = Logger.getLogger(CalibratedVendorLibraryMassSpectrum.class);
 	//
+	private DecimalFormat decimalFormatScaleFactor = ValueFormat.getDecimalFormatEnglish("0.0#####");
 	private List<String> comments; // this implementation preserves the order in which the comments were first read
 	private double sourcePressure;
 	private String sourcePressureUnits;
@@ -245,14 +245,13 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 
 	@Override
 	public double getScaleFactor() {
-		
+
 		return scaleFactor;
 	}
 
-	
 	@Override
 	public void setScaleFactor(double scaleFactor) {
-	
+
 		this.scaleFactor = scaleFactor;
 	}
 
@@ -320,6 +319,19 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	public double getIenergy() {
 
 		return iEnergyV;
+	}
+
+	@Override
+	public String makeNameString() {
+
+		StringBuilder nameString = new StringBuilder();
+		if(1d != getScaleFactor()) {
+			nameString.append("[");
+			nameString.append(decimalFormatScaleFactor.format(getScaleFactor()));
+			nameString.append("]");
+		}
+		nameString.append(getLibraryInformation().getName());
+		return nameString.toString();
 	}
 
 	@Override
