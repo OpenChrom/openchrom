@@ -85,7 +85,8 @@ public class DecompositionResult {
 
 	public String getLibCompName(int i) {
 
-		return libraryComponents.get(i).getLibraryInformation().getName();
+		//was return libraryComponents.get(i).getLibraryInformation().getName();
+		return libraryComponents.get(i).makeNameString();
 	}
 
 	public int getNumberOfComponents() {
