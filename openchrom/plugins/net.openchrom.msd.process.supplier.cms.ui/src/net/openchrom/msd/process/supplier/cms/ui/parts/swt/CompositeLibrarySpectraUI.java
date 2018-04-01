@@ -27,6 +27,9 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -35,6 +38,11 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.*;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
@@ -146,6 +154,8 @@ public class CompositeLibrarySpectraUI extends Composite {
 	// Component Table
 	private void addComponentTable(Composite comp) {
 
+		final int COLUMN_0 = 0;
+		final int COLUMN_1 = 1;
 		tableCmsComponents = new Table(comp, SWT.FULL_SELECTION | SWT.BORDER | SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
 		GridData tableCmsComponentsGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		tableCmsComponentsGridData.horizontalSpan = 2;
@@ -158,7 +168,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 		//
 		TableColumn tableColumnScale = new TableColumn(tableCmsComponents, SWT.LEFT);
 		tableColumnScale.setText("Scale");
-		tableColumnScale.setWidth(80);
+		tableColumnScale.setWidth(50);
 		//
 		TableColumn tableColumnName = new TableColumn(tableCmsComponents, SWT.LEFT);
 		tableColumnName.setText("Component");
@@ -170,12 +180,16 @@ public class CompositeLibrarySpectraUI extends Composite {
 		tableEditor.grabHorizontal = true;
 		tableEditor.minimumWidth = 50;
 		//
-		tableCmsComponents.addListener(SWT.MouseUp, new Listener() {
+		tableCmsComponents.addListener(SWT.MouseDown, new Listener() {
 
 			@Override
 			public void handleEvent(Event event) {
 
 				Point pt = new Point(event.x, event.y);
+				// Clean up any previous editor control
+				Control oldEditor = tableEditor.getEditor();
+				if(oldEditor != null)
+					oldEditor.dispose();
 				TableItem item = tableCmsComponents.getItem(pt);
 				if(item != null) {
 					/* Iterate over all columns and check if event is contained */
@@ -184,60 +198,44 @@ public class CompositeLibrarySpectraUI extends Composite {
 						int rowIndex;
 						if(rect.contains(pt) && (null != cmsLibSpectra) && (0 <= (rowIndex = tableCmsComponents.indexOf(item)))) {
 							ICalibratedVendorLibraryMassSpectrum libSpectrum = (ICalibratedVendorLibraryMassSpectrum)cmsLibSpectra.getList().get(rowIndex);
-							if(1 == col) {
+							if(COLUMN_1 == col) {
 								libSpectrum.setSelected(!libSpectrum.isSelected());
-								// if (libSpectrum.isSelected()) {
-								// item.setBackground(col, item.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
-								// } else {
-								// item.setBackground(col, null);
-								// }
-								tableCmsComponents.getItem(rowIndex).setText(makeTableStrings(libSpectrum, libSpectrum.isSelected()));
-							} else if(0 == col) {
-								System.out.println(item.getText(col));
-								// Clean up any previous editor control
-								Control oldEditor = tableEditor.getEditor();
-								if(oldEditor != null)
-									oldEditor.dispose();
+								item.setText(makeTableStrings(libSpectrum, libSpectrum.isSelected()));
+							} else if(COLUMN_0 == col) {
 								// The control that will be the editor must be a child of the Table
 								Text newEditor = new Text(tableCmsComponents, SWT.NONE);
-								newEditor.setText(item.getText(col));
-								newEditor.addModifyListener(me -> {
-									Text text = (Text)tableEditor.getEditor();
-									if(isValidDoubleString(text.getText())) {
-										tableEditor.getItem().setText(0, text.getText());
-										libSpectrum.setScaleFactor(Double.parseDouble(text.getText()));
-										tableCmsComponents.getItem(rowIndex).setText(makeTableStrings(libSpectrum, libSpectrum.isSelected()));
+								newEditor.setText(item.getText(COLUMN_0));
+								newEditor.addModifyListener(new ModifyListener() {
+
+									public void modifyText(ModifyEvent e) {
+
+										Text text = (Text)tableEditor.getEditor();
+										if(isValidDoubleString(text.getText())) {
+											tableEditor.getItem().setText(COLUMN_0, text.getText());
+											libSpectrum.setScaleFactor(Double.parseDouble(text.getText()));
+											item.setText(makeTableStrings(libSpectrum, libSpectrum.isSelected()));
+										}
 									}
 								});
 								newEditor.selectAll();
 								newEditor.setFocus();
-								tableEditor.setEditor(newEditor, item, col);
+								tableEditor.setEditor(newEditor, item, COLUMN_0);
 							}
 						}
 					}
 				}
 			}
 		});
-		/*
-		 * tableCmsComponents.addSelectionListener(new SelectionListener() {
-		 * @Override
-		 * public void widgetSelected(SelectionEvent event) {
-		 * if (event.detail != SWT.CHECK) {
-		 * int selection = tableCmsComponents.getSelectionIndex();
-		 * System.out.println(tableCmsComponents.getSelection());
-		 * tableCmsComponents.deselect(selection);
-		 * }
-		 * return;
-		 * }
-		 * @Override
-		 * public void widgetDefaultSelected(SelectionEvent e) {
-		 * int[] selectedItems = tableCmsComponents.getSelectionIndices();
-		 * for(int loopIndex = 0; loopIndex < selectedItems.length; loopIndex++) {
-		 * }
-		 * return;
-		 * }
-		 * });
-		 */
+		// resize component name column(1) to take all width not used by scale column(0)
+		tableCmsComponents.addControlListener(new ControlAdapter() {
+
+			public void controlResized(ControlEvent e) {
+
+				Rectangle area = tableCmsComponents.getClientArea();
+				int width = area.width;
+				tableCmsComponents.getColumn(COLUMN_1).setWidth(width - tableCmsComponents.getColumn(COLUMN_0).getWidth());
+			}
+		});
 	}
 
 	private boolean isValidDoubleString(String myString) {
