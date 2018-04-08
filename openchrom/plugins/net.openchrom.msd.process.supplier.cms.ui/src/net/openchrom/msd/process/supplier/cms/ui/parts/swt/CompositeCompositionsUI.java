@@ -27,10 +27,8 @@ import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.Polyline;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataProvider;
-import org.eclipse.nebula.visualization.xygraph.dataprovider.IDataProvider;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.ISample;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.Sample;
-import org.eclipse.nebula.visualization.xygraph.figures.Annotation;
 import org.eclipse.nebula.visualization.xygraph.figures.ToolbarArmedXYGraph;
 import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
@@ -51,7 +49,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResult;
 import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
 
@@ -345,7 +342,8 @@ public class CompositeCompositionsUI extends Composite {
 				// 0[xX] HexDigits ._opt BinaryExponent FloatTypeSuffix_opt
 				"(0[xX]" + HexDigits + "(\\.)?)|" +
 				// 0[xX] HexDigits_opt . HexDigits BinaryExponent FloatTypeSuffix_opt
-				"(0[xX]" + HexDigits + "?(\\.)" + HexDigits + ")" + ")[pP][+-]?" + Digits + "))" + "[fFdD]?))" + "[\\x00-\\x20]*");// Optional trailing "whitespace"
+				"(0[xX]" + HexDigits + "?(\\.)" + HexDigits + ")" + ")[pP][+-]?" + Digits + "))" + "[fFdD]?))" + "[\\x00-\\x20]*" + // Optional trailing "whitespace"
+				"$"); // and that's all
 		if(Pattern.matches(fpRegex, myString))
 			return true; // Will not throw NumberFormatException
 		else {

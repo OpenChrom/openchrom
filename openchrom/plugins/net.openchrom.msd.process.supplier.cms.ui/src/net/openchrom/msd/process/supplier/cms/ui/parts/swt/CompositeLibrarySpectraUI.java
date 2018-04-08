@@ -27,24 +27,16 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
-
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
@@ -112,43 +104,10 @@ public class CompositeLibrarySpectraUI extends Composite {
 		textCmsLibraryFilePath.setText("");
 		GridData textCmsLibraryFilePathGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		textCmsLibraryFilePath.setLayoutData(textCmsLibraryFilePathGridData);
-		// Load button
+		// load library file button
 		addButtonSelect(this);
-		// addComponentList(this);
-		addComponentTable(this); // whw
-	}
-
-	// Component List
-	private void addComponentList(Composite comp) {
-
-		listCmsComponents = new List(comp, SWT.SINGLE | SWT.V_SCROLL);
-		GridData listCmsComponentsGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		listCmsComponentsGridData.horizontalSpan = 2;
-		listCmsComponents.setLayoutData(listCmsComponentsGridData);
-		listCmsComponents.addSelectionListener(new SelectionListener() {
-
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-
-				int selection = listCmsComponents.getSelectionIndex();
-				listCmsComponents.deselect(selection);
-				if(null != cmsLibSpectra) {
-					ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)cmsLibSpectra.getList().get(selection);
-					spectrum.setSelected(!spectrum.isSelected());
-					listCmsComponents.setItem(selection, makeListLine(spectrum, spectrum.isSelected()));
-				}
-				return;
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-
-				int[] selectedItems = listCmsComponents.getSelectionIndices();
-				for(int loopIndex = 0; loopIndex < selectedItems.length; loopIndex++) {
-				}
-				return;
-			}
-		});
+		// component selection table
+		addComponentTable(this);
 	}
 
 	// Component Table
@@ -267,7 +226,8 @@ public class CompositeLibrarySpectraUI extends Composite {
 				// 0[xX] HexDigits ._opt BinaryExponent FloatTypeSuffix_opt
 				"(0[xX]" + HexDigits + "(\\.)?)|" +
 				// 0[xX] HexDigits_opt . HexDigits BinaryExponent FloatTypeSuffix_opt
-				"(0[xX]" + HexDigits + "?(\\.)" + HexDigits + ")" + ")[pP][+-]?" + Digits + "))" + "[fFdD]?))" + "[\\x00-\\x20]*");// Optional trailing "whitespace"
+				"(0[xX]" + HexDigits + "?(\\.)" + HexDigits + ")" + ")[pP][+-]?" + Digits + "))" + "[fFdD]?))" + "[\\x00-\\x20]*" + // Optional trailing "whitespace"
+				"$"); // and that's all
 		if(Pattern.matches(fpRegex, myString))
 			return true; // Will not throw NumberFormatException
 		else {
