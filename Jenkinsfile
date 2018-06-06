@@ -5,7 +5,7 @@ pipeline {
         maven 'MAVEN3'
     }
     triggers {
-        pollSCM('H */5')
+        pollSCM('H/5 * * * *')
     }
     options {
         disableConcurrentBuilds()
@@ -21,7 +21,7 @@ pipeline {
     	}
 		stage('build') {
 			steps {
-				sh 'mvn -B -Dmaven.repo.local=.repository -f releng/cbi/pom.xml install'
+				sh 'mvn -B -Dmaven.repo.local=.repository -f releng/openchrom/cbi/pom.xml install'
 			}
 		}
     }
