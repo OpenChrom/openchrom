@@ -10,7 +10,6 @@ pipeline {
     options {
         disableConcurrentBuilds()
         buildDiscarder(logRotator(numToKeepStr: '3'))
-        timestamps()
     }
     stages {
     	stage('checkout') {
