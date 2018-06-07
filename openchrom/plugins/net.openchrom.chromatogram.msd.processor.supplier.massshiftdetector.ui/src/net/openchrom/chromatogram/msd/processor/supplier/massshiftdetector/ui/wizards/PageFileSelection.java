@@ -15,9 +15,10 @@ import java.io.File;
 import java.util.List;
 
 import org.eclipse.chemclipse.support.ui.wizards.AbstractExtendedWizardPage;
-import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
 import org.eclipse.chemclipse.support.ui.wizards.IChromatogramWizardElements;
-import org.eclipse.chemclipse.ux.extension.msd.ui.wizards.ChromatogramInputEntriesWizard;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputEntriesWizard;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputWizardSettings;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputWizardSettings.DataType;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -38,6 +39,9 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.prefe
 
 public class PageFileSelection extends AbstractExtendedWizardPage {
 
+	private Display display = Display.getDefault();
+	private Shell shell = display.getActiveShell();
+	//
 	private IProcessorWizardElements wizardElements;
 	//
 	private Text referenceChromatogramText;
@@ -118,9 +122,6 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 
 	private void createReferenceChromatogramSection(Composite parent) {
 
-		Display display = Display.getDefault();
-		Shell shell = display.getActiveShell();
-		//
 		Label label = new Label(parent, SWT.NONE);
 		label.setText("Reference - Chromatogram");
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
@@ -138,12 +139,20 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Reference - Chromatogram", "Select the reference chromatogram.", PreferenceSupplier.getFilterPathReferenceChromatogram());
+				InputWizardSettings inputWizardSettings = new InputWizardSettings(DataType.MSD_CHROMATOGRAM);
+				inputWizardSettings.setTitle("Reference - Chromatogram");
+				inputWizardSettings.setDescription("Select the reference chromatogram.");
+				inputWizardSettings.setPathPreferences(PreferenceSupplier.INSTANCE().getPreferences(), PreferenceSupplier.P_FILTER_PATH_REFERENCE_CHROMATOGRAM);
+				//
+				InputEntriesWizard inputWizard = new InputEntriesWizard(inputWizardSettings);
 				WizardDialog wizardDialog = new WizardDialog(shell, inputWizard);
 				wizardDialog.create();
 				//
 				if(wizardDialog.open() == WizardDialog.OK) {
+					/*
+					 * Get the list of selected chromatograms.
+					 */
+					IChromatogramWizardElements chromatogramWizardElements = inputWizard.getChromatogramWizardElements();
 					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
 					if(selectedChromatograms.size() > 0) {
 						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
@@ -162,9 +171,6 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 
 	private void createIstopeChromatogramSection(Composite parent) {
 
-		Display display = Display.getDefault();
-		Shell shell = display.getActiveShell();
-		//
 		Label label = new Label(parent, SWT.NONE);
 		label.setText("Isotope - Chromatogram");
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
@@ -182,12 +188,20 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Isotope - Chromatogram", "Select the isotope chromatogram.", PreferenceSupplier.getFilterPathIsotopeChromatogram());
+				InputWizardSettings inputWizardSettings = new InputWizardSettings(DataType.MSD_CHROMATOGRAM);
+				inputWizardSettings.setTitle("Isotope - Chromatogram");
+				inputWizardSettings.setDescription("Select the isotope chromatogram.");
+				inputWizardSettings.setPathPreferences(PreferenceSupplier.INSTANCE().getPreferences(), PreferenceSupplier.P_FILTER_PATH_ISOTOPE_CHROMATOGRAM);
+				//
+				InputEntriesWizard inputWizard = new InputEntriesWizard(inputWizardSettings);
 				WizardDialog wizardDialog = new WizardDialog(shell, inputWizard);
 				wizardDialog.create();
 				//
 				if(wizardDialog.open() == WizardDialog.OK) {
+					/*
+					 * Get the list of selected chromatograms.
+					 */
+					IChromatogramWizardElements chromatogramWizardElements = inputWizard.getChromatogramWizardElements();
 					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
 					if(selectedChromatograms.size() > 0) {
 						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);

@@ -25,11 +25,12 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.editors.AbstractExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.editors.IExtendedEditorPage;
-import org.eclipse.chemclipse.support.ui.wizards.ChromatogramWizardElements;
 import org.eclipse.chemclipse.support.ui.wizards.IChromatogramWizardElements;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.ux.extension.msd.ui.support.ChromatogramSupport;
-import org.eclipse.chemclipse.ux.extension.msd.ui.wizards.ChromatogramInputEntriesWizard;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputEntriesWizard;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputWizardSettings;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputWizardSettings.DataType;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -87,6 +88,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private ImageHyperlink calculateHyperlink;
 	//
 	private String[] ionSelectionStrategies;
+	//
+	private Display display = Display.getDefault();
+	private Shell shell = display.getActiveShell();
 
 	public PageSettings(Composite container) {
 		super("Settings", container, true);
@@ -193,9 +197,6 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 	private void createReferenceChromatogramText(Composite client) {
 
-		Display display = Display.getDefault();
-		Shell shell = display.getActiveShell();
-		//
 		createLabel(client, "Reference - Chromatogram:");
 		//
 		referenceChromatogramText = createText(client, SWT.BORDER, "");
@@ -208,12 +209,20 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Reference - Chromatogram", "Select the reference chromatogram.", PreferenceSupplier.getFilterPathReferenceChromatogram());
+				InputWizardSettings inputWizardSettings = new InputWizardSettings(DataType.MSD_CHROMATOGRAM);
+				inputWizardSettings.setTitle("Reference - Chromatogram");
+				inputWizardSettings.setDescription("Select the reference chromatogram.");
+				inputWizardSettings.setPathPreferences(PreferenceSupplier.INSTANCE().getPreferences(), PreferenceSupplier.P_FILTER_PATH_REFERENCE_CHROMATOGRAM);
+				//
+				InputEntriesWizard inputWizard = new InputEntriesWizard(inputWizardSettings);
 				WizardDialog wizardDialog = new WizardDialog(shell, inputWizard);
 				wizardDialog.create();
 				//
 				if(wizardDialog.open() == WizardDialog.OK) {
+					/*
+					 * Get the list of selected chromatograms.
+					 */
+					IChromatogramWizardElements chromatogramWizardElements = inputWizard.getChromatogramWizardElements();
 					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
 					if(selectedChromatograms.size() > 0) {
 						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
@@ -233,9 +242,6 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 	private void createIsotopeChromatogramText(Composite client) {
 
-		Display display = Display.getDefault();
-		Shell shell = display.getActiveShell();
-		//
 		createLabel(client, "Isotope - Chromatogram:");
 		//
 		isotopeChromatogramText = createText(client, SWT.BORDER, "");
@@ -248,12 +254,20 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				IChromatogramWizardElements chromatogramWizardElements = new ChromatogramWizardElements();
-				ChromatogramInputEntriesWizard inputWizard = new ChromatogramInputEntriesWizard(chromatogramWizardElements, "Isotope - Chromatogram", "Select the isotope chromatogram.", PreferenceSupplier.getFilterPathIsotopeChromatogram());
+				InputWizardSettings inputWizardSettings = new InputWizardSettings(DataType.MSD_CHROMATOGRAM);
+				inputWizardSettings.setTitle("Isotope - Chromatogram");
+				inputWizardSettings.setDescription("Select the isotope chromatogram.");
+				inputWizardSettings.setPathPreferences(PreferenceSupplier.INSTANCE().getPreferences(), PreferenceSupplier.P_FILTER_PATH_ISOTOPE_CHROMATOGRAM);
+				//
+				InputEntriesWizard inputWizard = new InputEntriesWizard(inputWizardSettings);
 				WizardDialog wizardDialog = new WizardDialog(shell, inputWizard);
 				wizardDialog.create();
 				//
 				if(wizardDialog.open() == WizardDialog.OK) {
+					/*
+					 * Get the list of selected chromatograms.
+					 */
+					IChromatogramWizardElements chromatogramWizardElements = inputWizard.getChromatogramWizardElements();
 					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
 					if(selectedChromatograms.size() > 0) {
 						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
