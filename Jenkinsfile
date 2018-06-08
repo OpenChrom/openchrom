@@ -104,7 +104,6 @@ pipeline {
 					sh 'mvn -B -Dmaven.repo.local=.repository -f processorchrom2d/openchrom/cbi/net.openchrom.xxd.processor.supplier.chrom2d.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f opentyper/openchrom/cbi/net.openchrom.msd.identifier.supplier.opentyper.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f msqbatlibs/openchrom/cbi/net.openchrom.msqbatlibs.cbi/pom.xml install'
-					sh 'mvn -B -Dmaven.repo.local=.repository -f knimeconnector/openchrom/cbi/net.openchrom.xxd.process.supplier.knime.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f processortracecompare/openchrom/cbi/net.openchrom.xxd.processor.supplier.tracecompare.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f xmutidemscontrol/chemclipse/cbi/cn.edu.xmu.tidems.control.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f batmassprocessheatmap/openchrom/cbi/org.batmass.xxd.process.supplier.heatmap.cbi/pom.xml install'
