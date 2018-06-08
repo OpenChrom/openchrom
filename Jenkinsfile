@@ -18,76 +18,76 @@ pipeline {
 					checkout scm
 				}
 				dir ('pdfconverter') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/pdfconverter.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/pdfconverter.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('abifconverter') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/abifconverter.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/abifconverter.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('processalignment') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/processalignment.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/processalignment.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('openchromjzy3d') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/openchromjzy3d.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/openchromjzy3d.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('cmsconverter') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/cmsconverter.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/cmsconverter.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('massshiftdetector') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/massshiftdetector.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/massshiftdetector.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('netcdfmschrom') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/netcdfmschrom.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/netcdfmschrom.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('processorchrom2d') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/processorchrom2d.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/processorchrom2d.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('opentyper') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/opentyper.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/opentyper.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('msqbatlibs') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/msqbatlibs.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/msqbatlibs.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('processortracecompare') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/processortracecompare.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/processortracecompare.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('xmutidemscontrol') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/xmutidemscontrol.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/xmutidemscontrol.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('batmassprocessheatmap') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/batmassprocessheatmap.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/batmassprocessheatmap.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('netcdfchromfid') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/netcdfchromfid.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/netcdfchromfid.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('openchromjython') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/openchromjython.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/openchromjython.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('knimeconnector') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/knimeconnector.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/knimeconnector.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('openchromcdksupport') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/openchromcdksupport.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/openchromcdksupport.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('cmsworkflow') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/cmsworkflow.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/cmsworkflow.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('rscriptingsupport') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/rscriptingsupport.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/rscriptingsupport.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('mgfconverter') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/mgfconverter.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/mgfconverter.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('geneident') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/GeneIdent.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/GeneIdent.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('openchromgroovy') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/openchromgroovy.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/openchromgroovy.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('compmspbm') {
-					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/compmspbm.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/compmspbm.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('ulan-openchrom') {
-					checkout resolveScm(source: [remote: 'https://github.com/holyjan3/ulan-openchrom.git',	$class: 'GitSCMSource', poll: true, traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/holyjan3/ulan-openchrom.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 			}
     	}
@@ -117,7 +117,7 @@ pipeline {
 					sh 'mvn -B -Dmaven.repo.local=.repository -f geneident/openchrom/cbi/net.openchrom.wsd.identifier.supplier.geneident.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f openchromgroovy/openchrom/cbi/net.openchrom.chromatogram.msd.process.supplier.groovy.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f compmspbm/openchrom/cbi/net.openchrom.chromatogram.msd.comparison.supplier.pbm.cbi/pom.xml install'
-					sh 'mvn -B -Dmaven.repo.local=.repository -f ulan-openchrom/chemclipse/cbi/org.chromulan.system.control.cbi/pom.xml install'
+					//disbaled for now sh 'mvn -B -Dmaven.repo.local=.repository -f ulan-openchrom/chemclipse/cbi/org.chromulan.system.control.cbi/pom.xml install'
 			}
 		}
     }
