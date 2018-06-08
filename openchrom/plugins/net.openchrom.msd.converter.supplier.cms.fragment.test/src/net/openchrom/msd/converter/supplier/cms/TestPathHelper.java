@@ -18,7 +18,7 @@ package net.openchrom.msd.converter.supplier.cms;
  */
 public class TestPathHelper extends PathResolver {
 
-	public static final String TESTFILE_IMPORT_MASS_SPECTRA_1 = "testData/files/import/MassSpectra1.CMS";
+	public static final String TESTFILE_IMPORT_MASS_SPECTRA_1 = "testData/files/import/MassSpectra1.cms";
 	public static final String TESTFILE_IMPORT_MASS_SPECTRA_2 = "testData/files/import/MassSpectra2.cms";
 	public static final String TESTFILE_IMPORT_MASS_SPECTRA_3 = "testData/files/import/MassSpectra3.cms";
 	public static final String TESTFILE_IMPORT_MASS_SPECTRA_4 = "testData/files/import/MassSpectra4.cms";
