@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="XIdent-Dev" sequenceNumber="18">
+<?pde version="3.8"?><target name="XIdent-Dev" sequenceNumber="19">
 <locations>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.ecf.core.ssl.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.nebula.widgets.nattable.extension.glazedlists.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="0.0.0"/>
@@ -81,7 +81,7 @@
 <unit id="org.eclipse.chemclipse.chromatogram.xxd.peak.detector.supplier.manual.feature.feature.group" version="0.0.0"/>
 <repository location="https://update.openchrom.net/repositories/chemclipse/latest/repository"/>
 </location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.chemclipse.thirdpartylibraries.apache.pdfbox.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.chemclipse.thirdpartylibraries.ejml.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.chemclipse.thirdpartylibraries.apache.commons.csv.feature.feature.group" version="0.0.0"/>
@@ -89,7 +89,7 @@
 <unit id="org.eclipse.chemclipse.thirdpartylibraries.swtchart.feature.feature.group" version="0.0.0"/>
 <repository location="https://update.openchrom.net/repositories/chemclipse/latest/3rdparty"/>
 </location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="net.openchrom.thirdpartylibraries.vectorgraphics2d.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.jzy3d.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.barcode4j.feature.feature.group" version="0.0.0"/>
@@ -119,7 +119,7 @@
 <unit id="net.openchrom.thirdpartylibraries.opsin.feature.feature.group" version="0.0.0"/>
 <repository location="https://update.openchrom.net/repositories/community/latest/3rdparty"/>
 </location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.ease.python.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.ease.ui.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.ease.feature.feature.group" version="0.0.0"/>
@@ -198,6 +198,10 @@
 <unit id="org.knime.features.jpmml.feature.group" version="0.0.0"/>
 <unit id="org.knime.product.desktop.feature.group" version="0.0.0"/>
 <repository location="http://update.knime.org/analytics-platform/3.3/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.apache.commons.math" version="2.1.0.v201105210652"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository"/>
 </location>
 </locations>
 </target>
