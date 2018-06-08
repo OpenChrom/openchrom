@@ -126,5 +126,9 @@
 <unit id="org.eclipse.chemclipse.thirdpartylibraries.swtchart.feature.feature.group" version="0.0.0"/>
 <repository location="https://update.openchrom.net/repositories/chemclipse/latest/3rdparty"/>
 </location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.python.pydev.feature.feature.group" version="0.0.0"/>
+<repository location="https://dl.bintray.com/fabioz/pydev/6.3.1"/>
+</location>
 </locations>
 </target>
