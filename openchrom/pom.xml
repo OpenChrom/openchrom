@@ -54,66 +54,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <!--
-	P2 REPOSITORIES
-  -->
-  <repositories>
-    <repository>
-      <id>neon</id>
-      <url>${neon-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-    <repository>
-      <id>neon-updates</id>
-      <url>${neon-updates-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-    <repository>
-      <id>jetty</id>
-      <url>${jetty-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-    <repository>
-      <id>orbit</id>
-      <url>${orbit-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-    <repository>
-      <id>nebula</id>
-      <url>${nebula-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-    <repository>
-      <id>pydev</id>
-      <url>${pydev-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-    <repository>
-      <id>nattable</id>
-      <url>${nattable-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-    <repository>
-      <id>ease</id>
-      <url>${ease-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-    <repository>
-      <id>knime</id>
-      <url>${knime-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-    <repository>
-      <id>efxclipse</id>
-      <url>${efxclipse-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-    <repository>
-      <id>egit</id>
-      <url>${egit-repo.url}</url>
-      <layout>p2</layout>
-    </repository>
-  </repositories>
-  <!--
 	PLUGIN REPOSITORIES
   -->
   <pluginRepositories>
@@ -153,22 +93,13 @@
         <artifactId>target-platform-configuration</artifactId>
         <version>${tycho.version}</version>
         <configuration>
-          <filters>
-            <filter>
-            <type>eclipse-plugin</type>
-            <id>org.eclipse.jdt.core</id>
-            <restrictTo>
-              <version>3.12.3.v20170228-1205</version>
-            </restrictTo>
-            </filter>
-            <filter>
-            <type>eclipse-plugin</type>
-            <id>com.ibm.icu</id>
-            <restrictTo>
-              <version>56.1.0.v201601250100</version>
-            </restrictTo>
-            </filter>
-          </filters>
+           <target>
+			<artifact>
+				<groupId>net.openchrom.releng</groupId>
+				<artifactId>openchrom.targetplatform</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</artifact>
+		  </target>
           <environments>
             <environment>
               <os>linux</os>
