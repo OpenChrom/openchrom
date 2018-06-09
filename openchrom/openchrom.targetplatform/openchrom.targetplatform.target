@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?><target name="XIdent-Dev" sequenceNumber="21">
+<locations>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="net.openchrom.thirdpartylibraries.vectorgraphics2d.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.jzy3d.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.barcode4j.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.orientdb.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.mockito.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.neuroph.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.javassist.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.biojava.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.jhdf5.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.jna.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.jython.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.odfdom.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.cdk.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.easymock.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.jmol.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.jogl.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.groovy.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.rserve.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.netcdf.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.imagej.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.pdfjet.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.jettison.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.xzing.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.lzf.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.matlabcontrol.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.concurrentlinkedhashmap.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.opsin.feature.feature.group" version="0.0.0"/>
+<repository location="https://update.openchrom.net/repositories/community/latest/3rdparty"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.ecf.core.ssl.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.nebula.widgets.nattable.extension.glazedlists.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.e4.rcp.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.ecore.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.integrator.supplier.sumarea.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.xxd.converter.supplier.chemclipse.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.msd.converter.supplier.animl.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.classifier.supplier.durbinwatson.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.fx.runtime.min.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.msd.converter.supplier.mz5.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.thirdpartylibraries.apache.commons.csv.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.rcp.connector.supplier.microsoft.office.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.process.supplier.pca.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.csd.filter.supplier.zeroset.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.nebula.visualization.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.platform.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.rcp.app.compilation.core.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.help.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.equinox.p2.extras.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.msd.converter.supplier.svg.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.ecf.core.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.msd.converter.supplier.mzxml.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.peak.detector.supplier.firstderivative.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.rcp.app.core.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.csd.converter.supplier.xy.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.filter.supplier.ionremover.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.integrator.supplier.peakmax.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.thirdpartylibraries.swtchart.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.equinox.p2.core.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.msd.converter.supplier.openchromx.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.integrator.supplier.trapezoid.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.filter.supplier.backfolding.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.filter.supplier.xpass.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.rtshifter.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.rcp.app.compilation.base.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.comparison.supplier.incos.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.msd.converter.supplier.amdis.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.process.supplier.batchprocess.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.ecf.filetransfer.ssl.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.msd.converter.supplier.matlab.parafac.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.rcp.app.base.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.baseline.detector.supplier.smoothed.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.calculator.supplier.noise.stein.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.msd.converter.supplier.mzml.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.nebula.widgets.nattable.core.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.calculator.supplier.noise.dyson.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.rcp.compilation.community.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.quantitation.supplier.chemclipse.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.thirdpartylibraries.apache.commons.math.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.calculator.supplier.amdiscalri.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.identifier.supplier.file.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.msd.converter.supplier.massbank.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.thirdpartylibraries.ejml.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.rcp.app.compilation.marketplace.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.filter.supplier.denoising.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.rcp.compilation.community.product.id" version="0.0.0"/>
+<unit id="org.eclipse.equinox.p2.rcp.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.report.supplier.openchrom.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.ecf.filetransfer.httpclient4.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.common.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.edit.supplier.snip.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.ux.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.process.supplier.peakidentification.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.identifier.supplier.manual.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.rcp.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.xxd.converter.supplier.jcampdx.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.classifier.supplier.wnc.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.filter.supplier.coda.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.msd.converter.supplier.mzdata.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.comparison.supplier.distance.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.msd.filter.supplier.subtract.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.chromatogram.xxd.peak.detector.supplier.manual.feature.feature.group" version="0.0.0"/>
+<repository location="https://update.openchrom.net/repositories/chemclipse/latest/repository"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.ease.python.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.ease.ui.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.ease.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.ease.modules.feature.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/ease/update/release"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.chemclipse.thirdpartylibraries.apache.pdfbox.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.thirdpartylibraries.ejml.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.thirdpartylibraries.apache.commons.csv.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.thirdpartylibraries.apache.commons.math.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.thirdpartylibraries.swtchart.feature.feature.group" version="0.0.0"/>
+<repository location="https://update.openchrom.net/repositories/chemclipse/latest/3rdparty"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.python.pydev.feature.feature.group" version="0.0.0"/>
+<repository location="https://dl.bintray.com/fabioz/pydev/6.3.1"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.nebula.feature.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/nebula/releases/1.4.0"/>
+</location>
+</locations>
+</target>
