@@ -51,6 +51,6 @@
 	MODULES
   -->
   <modules>
-    <module>../openchrom.platform</module>
+    <module>openchrom.platform</module>
   </modules>
 </project>
