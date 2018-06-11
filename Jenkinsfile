@@ -117,6 +117,7 @@ pipeline {
 					sh 'mvn -B -Dmaven.repo.local=.repository -f openchromgroovy/openchrom/cbi/net.openchrom.chromatogram.msd.process.supplier.groovy.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f compmspbm/openchrom/cbi/net.openchrom.chromatogram.msd.comparison.supplier.pbm.cbi/pom.xml install'
 					//disbaled for now sh 'mvn -B -Dmaven.repo.local=.repository -f ulan-openchrom/chemclipse/cbi/org.chromulan.system.control.cbi/pom.xml install'
+					sh 'mvn -B -Dmaven.repo.local=.repository -f releng/openchrom/sites/pom.xml install'
 			}
 		}
     }
