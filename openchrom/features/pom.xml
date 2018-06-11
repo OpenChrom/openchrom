@@ -50,4 +50,7 @@
   <!--
 	MODULES
   -->
+  <modules>
+  	<module>net.openchrom.platform.feature</module>
+  </modules>
 </project>
