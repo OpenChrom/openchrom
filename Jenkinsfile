@@ -129,7 +129,9 @@ pipeline {
 		stage('deploy') {
 			when { branch 'develop' }
 			steps {
-				sh 'scp -r releng/openchrom/sites/openchrom.platform/target/site/* '+"${DEPLOY_HOST}community/latest/platform"
+				withCredentials([string(credentialsId: 'DEPLOY_HOST', variable: 'DEPLOY_HOST')]) {
+					sh 'scp -r releng/openchrom/sites/openchrom.platform/target/site/* '+"${DEPLOY_HOST}community/latest/platform"
+				}
 			}
 		}
     }
