@@ -6,10 +6,11 @@ pipeline {
     }
     triggers {
         pollSCM('H/5 * * * *')
+        upstream(upstreamProjects: "pipelines/openchrom3rdpl/${BRANCH_NAME}", threshold: hudson.model.Result.SUCCESS)
     }
     options {
         disableConcurrentBuilds()
-        buildDiscarder(logRotator(numToKeepStr: '3'))
+        buildDiscarder(logRotator(numToKeepStr: '5'))
     }
     stages {
     	stage('checkout') {
