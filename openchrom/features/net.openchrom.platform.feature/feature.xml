@@ -236,4 +236,8 @@
          id="org.eclipse.ease.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.ease.ui.feature"
+         version="0.0.0"/>
+
 </feature>
