@@ -100,4 +100,8 @@
          id="net.openchrom.xxd.processor.supplier.tracecompare.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.chemclipse.rcp.compilation.community.feature"
+         version="0.0.0"/>
+
 </feature>
