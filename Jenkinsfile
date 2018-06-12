@@ -6,10 +6,11 @@ pipeline {
     }
     triggers {
         pollSCM('H/5 * * * *')
+        upstream(upstreamProjects: "pipelines/openchrom3rdpl/${BRANCH_NAME}", threshold: hudson.model.Result.SUCCESS)
     }
     options {
         disableConcurrentBuilds()
-        buildDiscarder(logRotator(numToKeepStr: '3'))
+        buildDiscarder(logRotator(numToKeepStr: '5'))
     }
     stages {
     	stage('checkout') {
@@ -129,7 +130,9 @@ pipeline {
 		stage('deploy') {
 			when { branch 'develop' }
 			steps {
-				sh 'scp -r releng/openchrom/sites/openchrom.platform/target/site/* '+"${DEPLOY_HOST}community/latest/platform"
+				withCredentials([string(credentialsId: 'DEPLOY_HOST', variable: 'DEPLOY_HOST')]) {
+					sh 'scp -r releng/openchrom/sites/openchrom.platform/target/site/* '+"${DEPLOY_HOST}community/latest/platform"
+				}
 			}
 		}
     }
