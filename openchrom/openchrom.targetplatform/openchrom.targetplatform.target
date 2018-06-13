@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="XIdent-Dev" sequenceNumber="21">
+<?pde version="3.8"?><target name="XIdent-Dev" sequenceNumber="22">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="net.openchrom.thirdpartylibraries.vectorgraphics2d.feature.feature.group" version="0.0.0"/>
@@ -133,6 +133,10 @@
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.nebula.feature.feature.group" version="0.0.0"/>
 <repository location="http://download.eclipse.org/nebula/releases/1.4.0"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.12.0.v20170209-1843"/>
+<repository location="http://download.eclipse.org/releases/neon"/>
 </location>
 </locations>
 </target>

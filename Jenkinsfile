@@ -6,10 +6,11 @@ pipeline {
     }
     triggers {
         pollSCM('H/5 * * * *')
+        upstream(upstreamProjects: "pipelines/openchrom3rdpl/${BRANCH_NAME}", threshold: hudson.model.Result.SUCCESS)
     }
     options {
         disableConcurrentBuilds()
-        buildDiscarder(logRotator(numToKeepStr: '3'))
+        buildDiscarder(logRotator(numToKeepStr: '5'))
     }
     stages {
     	stage('checkout') {
@@ -117,6 +118,21 @@ pipeline {
 					sh 'mvn -B -Dmaven.repo.local=.repository -f openchromgroovy/openchrom/cbi/net.openchrom.chromatogram.msd.process.supplier.groovy.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f compmspbm/openchrom/cbi/net.openchrom.chromatogram.msd.comparison.supplier.pbm.cbi/pom.xml install'
 					//disbaled for now sh 'mvn -B -Dmaven.repo.local=.repository -f ulan-openchrom/chemclipse/cbi/org.chromulan.system.control.cbi/pom.xml install'
+
+			}
+		}
+		stage('package') {
+			steps {
+				sh 'mvn -B -Dmaven.repo.local=.repository -f releng/openchrom/features/pom.xml install'
+				sh 'mvn -B -Dmaven.repo.local=.repository -f releng/openchrom/sites/pom.xml install'
+			}
+		}
+		stage('deploy') {
+			when { branch 'develop' }
+			steps {
+				withCredentials([string(credentialsId: 'DEPLOY_HOST', variable: 'DEPLOY_HOST')]) {
+					sh 'scp -r releng/openchrom/sites/openchrom.platform/target/site/* '+"${DEPLOY_HOST}community/latest/platform"
+				}
 			}
 		}
     }
