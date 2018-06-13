@@ -252,6 +252,10 @@
          id="org.eclipse.equinox.core.sdk"
          version="0.0.0"/>
 
+   <includes
+         id="cn.edu.xmu.tidems.control.feature"
+         version="0.0.0"/>
+
    <plugin
          id="org.eclipse.osgi"
          download-size="0"
