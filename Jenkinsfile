@@ -88,7 +88,7 @@ pipeline {
 					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/compmspbm.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('ulan-openchrom') {
-					checkout resolveScm(source: [remote: 'https://github.com/laeubi/ulan-openchrom.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/holyjan3/ulan-openchrom.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 			}
     	}
