@@ -88,7 +88,7 @@ pipeline {
 					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/compmspbm.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 				dir ('ulan-openchrom') {
-					checkout resolveScm(source: [remote: 'https://github.com/holyjan3/ulan-openchrom.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+					checkout resolveScm(source: [remote: 'https://github.com/laeubi/ulan-openchrom.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
 			}
     	}
@@ -117,7 +117,7 @@ pipeline {
 					sh 'mvn -B -Dmaven.repo.local=.repository -f geneident/openchrom/cbi/net.openchrom.wsd.identifier.supplier.geneident.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f openchromgroovy/openchrom/cbi/net.openchrom.chromatogram.msd.process.supplier.groovy.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f compmspbm/openchrom/cbi/net.openchrom.chromatogram.msd.comparison.supplier.pbm.cbi/pom.xml install'
-					//disbaled for now sh 'mvn -B -Dmaven.repo.local=.repository -f ulan-openchrom/chemclipse/cbi/org.chromulan.system.control.cbi/pom.xml install'
+					sh 'mvn -B -Dmaven.repo.local=.repository -f ulan-openchrom/chemclipse/cbi/org.chromulan.system.control.cbi/pom.xml install'
 
 			}
 		}
