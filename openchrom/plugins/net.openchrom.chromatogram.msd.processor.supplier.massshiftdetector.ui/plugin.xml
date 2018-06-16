@@ -35,7 +35,7 @@
       <wizard
             name="Mass Shift Detector"
             icon="icons/16x16/chromatogram.gif"
-            category="org.eclipse.chemclipse.msd"
+            category="org.eclipse.chemclipse.processors"
             class="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.wizards.WizardProcessor"
             id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.wizards.WizardProcessor">
       </wizard>
