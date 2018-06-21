@@ -14,8 +14,6 @@ package net.openchrom.csd.converter.supplier.cdf.converter;
 import java.io.File;
 
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramImportConverter;
-import org.eclipse.chemclipse.converter.processing.chromatogram.ChromatogramOverviewImportConverterProcessingInfo;
-import org.eclipse.chemclipse.converter.processing.chromatogram.IChromatogramOverviewImportConverterProcessingInfo;
 import org.eclipse.chemclipse.csd.converter.chromatogram.AbstractChromatogramCSDImportConverter;
 import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.converter.processing.chromatogram.ChromatogramCSDImportConverterProcessingInfo;
@@ -64,25 +62,16 @@ public class ChromatogramImportConverter extends AbstractChromatogramCSDImportCo
 	}
 
 	@Override
-	public IChromatogramOverviewImportConverterProcessingInfo convertOverview(File file, IProgressMonitor monitor) {
+	public IProcessingInfo convertOverview(File file, IProgressMonitor monitor) {
 
-		IChromatogramOverviewImportConverterProcessingInfo processingInfo = new ChromatogramOverviewImportConverterProcessingInfo();
-		/*
-		 * Validate the file.
-		 */
-		IProcessingInfo processingInfoValidate = super.validate(file);
-		if(processingInfoValidate.hasErrorMessages()) {
-			processingInfo.addMessages(processingInfoValidate);
-		} else {
-			/*
-			 * Read the chromatogram overview.
-			 */
+		IProcessingInfo processingInfo = super.validate(file);
+		if(!processingInfo.hasErrorMessages()) {
 			file = SpecificationValidator.validateSpecification(file);
 			IChromatogramCSDReader reader = new ChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM_OVERVIEW);
 			try {
 				IChromatogramOverview chromatogramOverview = reader.readOverview(file, monitor);
-				processingInfo.setChromatogramOverview(chromatogramOverview);
+				processingInfo.setProcessingResult(chromatogramOverview);
 			} catch(Exception e) {
 				logger.warn(e);
 				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());

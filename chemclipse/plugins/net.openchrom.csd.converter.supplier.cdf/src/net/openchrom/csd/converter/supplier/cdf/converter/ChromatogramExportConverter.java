@@ -19,7 +19,6 @@ import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDWriter;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.csd.converter.supplier.cdf.internal.converter.IConstants;
@@ -34,18 +33,12 @@ public class ChromatogramExportConverter extends AbstractChromatogramCSDExportCo
 	@Override
 	public IProcessingInfo convert(File file, IChromatogramCSD chromatogram, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
-		/*
-		 * Validate the file.
-		 */
 		file = SpecificationValidator.validateSpecification(file);
-		IProcessingInfo processingInfoValidate = super.validate(file);
+		IProcessingInfo processingInfo = super.validate(file);
 		/*
 		 * Don't process if errors have occurred.
 		 */
-		if(processingInfoValidate.hasErrorMessages()) {
-			processingInfo.addMessages(processingInfoValidate);
-		} else {
+		if(!processingInfo.hasErrorMessages()) {
 			monitor.subTask(IConstants.EXPORT_CDF_CHROMATOGRAM);
 			IChromatogramCSDWriter writer = new ChromatogramWriter();
 			try {
