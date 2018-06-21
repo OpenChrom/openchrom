@@ -18,10 +18,10 @@ import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
-import org.eclipse.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
@@ -63,8 +63,8 @@ public class ChromatogramImportRunnable implements IRunnableWithProgress {
 		IChromatogramMSD chromatogramMSD = null;
 		try {
 			File file = new File(chromatogramPath);
-			IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(file, monitor);
-			chromatogramMSD = processingInfo.getChromatogram();
+			IProcessingInfo processingInfo = ChromatogramConverterMSD.convert(file, monitor);
+			chromatogramMSD = processingInfo.getProcessingResult(IChromatogramMSD.class);
 		} catch(Exception e) {
 			logger.warn(e);
 		}
