@@ -43,7 +43,7 @@ public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 		 * Checks if the file is null or empty ...
 		 */
 		IProcessingInfo processingInfoValidate = super.validate(file);
-		if(processingInfoValidate.hasErrorMessages()) {
+		if(!processingInfoValidate.hasErrorMessages()) {
 			processingInfo.addMessages(processingInfoValidate);
 		} else {
 			try {
