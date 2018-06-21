@@ -14,13 +14,12 @@ package net.openchrom.csd.converter.supplier.cdf.converter;
 import java.io.File;
 
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
-import org.eclipse.chemclipse.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
-import org.eclipse.chemclipse.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
 import org.eclipse.chemclipse.csd.converter.chromatogram.AbstractChromatogramCSDExportConverter;
 import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDWriter;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.csd.converter.supplier.cdf.internal.converter.IConstants;
@@ -33,9 +32,9 @@ public class ChromatogramExportConverter extends AbstractChromatogramCSDExportCo
 	private static final String DESCRIPTION = "NetCDF Export Converter";
 
 	@Override
-	public IChromatogramExportConverterProcessingInfo convert(File file, IChromatogramCSD chromatogram, IProgressMonitor monitor) {
+	public IProcessingInfo convert(File file, IChromatogramCSD chromatogram, IProgressMonitor monitor) {
 
-		IChromatogramExportConverterProcessingInfo processingInfo = new ChromatogramExportConverterProcessingInfo();
+		IProcessingInfo processingInfo = new ProcessingInfo();
 		/*
 		 * Validate the file.
 		 */
@@ -55,7 +54,7 @@ public class ChromatogramExportConverter extends AbstractChromatogramCSDExportCo
 				logger.warn(e);
 				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
 			}
-			processingInfo.setFile(file);
+			processingInfo.setProcessingResult(file);
 		}
 		return processingInfo;
 	}
