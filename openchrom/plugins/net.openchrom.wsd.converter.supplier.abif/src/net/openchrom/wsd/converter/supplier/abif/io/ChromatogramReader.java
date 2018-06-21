@@ -55,6 +55,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 	// Directory entry packed structure (no padding)
 	private String tagName;
 	private int tagNumber;
+	@SuppressWarnings("unused")
 	private short elementType;
 	private short elementSize;
 	private int elements;
