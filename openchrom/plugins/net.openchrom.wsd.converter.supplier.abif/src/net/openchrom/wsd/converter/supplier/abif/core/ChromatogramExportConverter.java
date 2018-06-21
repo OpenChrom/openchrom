@@ -15,8 +15,8 @@ package net.openchrom.wsd.converter.supplier.abif.core;
 import java.io.File;
 
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
-import org.eclipse.chemclipse.converter.processing.chromatogram.ChromatogramExportConverterProcessingInfo;
-import org.eclipse.chemclipse.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.AbstractChromatogramWSDExportConverter;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -24,9 +24,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public class ChromatogramExportConverter extends AbstractChromatogramWSDExportConverter implements IChromatogramExportConverter {
 
 	@Override
-	public IChromatogramExportConverterProcessingInfo convert(File file, IChromatogramWSD chromatogram, IProgressMonitor monitor) {
+	public IProcessingInfo convert(File file, IChromatogramWSD chromatogram, IProgressMonitor monitor) {
 
-		IChromatogramExportConverterProcessingInfo processingInfo = new ChromatogramExportConverterProcessingInfo();
+		IProcessingInfo processingInfo = new ProcessingInfo();
 		return processingInfo;
 	}
 }

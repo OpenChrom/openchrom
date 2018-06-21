@@ -14,7 +14,7 @@ package net.openchrom.wsd.converter.supplier.abif;
 
 import java.io.File;
 
-import org.eclipse.chemclipse.converter.processing.chromatogram.IChromatogramExportConverterProcessingInfo;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
 import org.eclipse.chemclipse.wsd.converter.processing.chromatogram.IChromatogramWSDImportConverterProcessingInfo;
@@ -47,8 +47,8 @@ public class ChromatogramWriterTestCase extends TestCase {
 			chromatogram = importProcessingInfo.getChromatogram();
 			//
 			fileExport = new File(this.pathExport);
-			IChromatogramExportConverterProcessingInfo exportProcessingInfo = ChromatogramConverterWSD.convert(fileExport, chromatogram, extensionPointIdExport, new NullProgressMonitor());
-			File fileReImport = exportProcessingInfo.getFile();
+			IProcessingInfo exportProcessingInfo = ChromatogramConverterWSD.convert(fileExport, chromatogram, extensionPointIdExport, new NullProgressMonitor());
+			File fileReImport = exportProcessingInfo.getProcessingResult(File.class);
 			//
 			IChromatogramWSDImportConverterProcessingInfo reImportProcessingInfo = ChromatogramConverterWSD.convert(fileReImport, new NullProgressMonitor());
 			chromatogram = reImportProcessingInfo.getChromatogram();
