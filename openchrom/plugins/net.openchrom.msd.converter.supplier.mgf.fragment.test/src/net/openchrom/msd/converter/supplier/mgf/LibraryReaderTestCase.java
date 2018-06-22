@@ -14,8 +14,8 @@ package net.openchrom.msd.converter.supplier.mgf;
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.converter.database.DatabaseConverter;
-import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
@@ -33,9 +33,9 @@ public class LibraryReaderTestCase extends TestCase {
 
 		super.setUp();
 		fileImport = new File(this.pathImport);
-		IDatabaseImportConverterProcessingInfo processingInfo = DatabaseConverter.convert(fileImport, extensionPointId, new NullProgressMonitor());
+		IProcessingInfo processingInfo = DatabaseConverter.convert(fileImport, extensionPointId, new NullProgressMonitor());
 		try {
-			massSpectra = processingInfo.getMassSpectra();
+			massSpectra = processingInfo.getProcessingResult(IMassSpectra.class);
 		} catch(TypeCastException e) {
 			massSpectra = null;
 		}

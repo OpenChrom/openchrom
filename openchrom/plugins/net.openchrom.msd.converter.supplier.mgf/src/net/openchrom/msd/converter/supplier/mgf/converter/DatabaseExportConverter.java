@@ -19,8 +19,6 @@ import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.database.AbstractDatabaseExportConverter;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
-import org.eclipse.chemclipse.msd.converter.processing.database.DatabaseExportConverterProcessingInfo;
-import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseExportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
@@ -37,24 +35,18 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 	private static final Logger logger = Logger.getLogger(DatabaseExportConverter.class);
 
 	@Override
-	public IDatabaseExportConverterProcessingInfo convert(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) {
+	public IProcessingInfo convert(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) {
 
-		IDatabaseExportConverterProcessingInfo processingInfo = new DatabaseExportConverterProcessingInfo();
 		file = SpecificationValidator.validateSpecification(file);
-		IProcessingInfo processingInfoValidate = validate(file, massSpectra);
-		/*
-		 * Export
-		 */
-		if(processingInfoValidate.hasErrorMessages()) {
-			processingInfo.addMessages(processingInfoValidate);
-		} else {
+		IProcessingInfo processingInfo = validate(file, massSpectra);
+		if(!processingInfo.hasErrorMessages()) {
 			try {
 				/*
 				 * Convert the mass spectra.
 				 */
 				IMassSpectraWriter massSpectraWriter = new MGFWriter();
 				massSpectraWriter.write(file, massSpectra, append, monitor);
-				processingInfo.setFile(file);
+				processingInfo.setProcessingResult(file);
 			} catch(FileNotFoundException e) {
 				logger.warn(e);
 				processingInfo.addErrorMessage(DESCRIPTION, "The file couldn't be found: " + file.getAbsolutePath());
@@ -70,7 +62,7 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 	}
 
 	@Override
-	public IDatabaseExportConverterProcessingInfo convert(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) {
+	public IProcessingInfo convert(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) {
 
 		IMassSpectra massSpectra = new MassSpectra();
 		massSpectra.addMassSpectrum(massSpectrum);

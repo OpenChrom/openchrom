@@ -14,8 +14,8 @@ package net.openchrom.msd.converter.supplier.mgf.converter;
 
 import java.io.File;
 
-import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mgf.PathResolver;
@@ -33,8 +33,8 @@ public class MassSpectrumImportConverter_1_ITest extends TestCase {
 		super.setUp();
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MS_1));
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
-		IDatabaseImportConverterProcessingInfo processingInfo = importConverter.convert(file, new NullProgressMonitor());
-		massSpectra = processingInfo.getMassSpectra();
+		IProcessingInfo processingInfo = importConverter.convert(file, new NullProgressMonitor());
+		massSpectra = processingInfo.getProcessingResult(IMassSpectra.class);
 	}
 
 	@Override

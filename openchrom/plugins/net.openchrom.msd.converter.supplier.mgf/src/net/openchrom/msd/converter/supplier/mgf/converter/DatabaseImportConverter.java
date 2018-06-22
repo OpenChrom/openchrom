@@ -19,8 +19,6 @@ import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.database.AbstractDatabaseImportConverter;
-import org.eclipse.chemclipse.msd.converter.processing.database.DatabaseImportConverterProcessingInfo;
-import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -33,21 +31,15 @@ public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 	private static final Logger logger = Logger.getLogger(DatabaseImportConverter.class);
 
 	@Override
-	public IDatabaseImportConverterProcessingInfo convert(final File file, final IProgressMonitor monitor) {
+	public IProcessingInfo convert(final File file, final IProgressMonitor monitor) {
 
-		final IDatabaseImportConverterProcessingInfo processingInfo = new DatabaseImportConverterProcessingInfo();
-		final IProcessingInfo processingInfoValidate = super.validate(file);
-		/*
-		 * Import
-		 */
-		if(processingInfoValidate.hasErrorMessages()) {
-			processingInfo.addMessages(processingInfoValidate);
-		} else {
+		final IProcessingInfo processingInfo = super.validate(file);
+		if(!processingInfo.hasErrorMessages()) {
 			try {
 				final MGFReader mgfReader = new MGFReader();
 				final IMassSpectra massSpectra = mgfReader.read(file, monitor);
 				if(massSpectra != null && massSpectra.size() > 0) {
-					processingInfo.setMassSpectra(massSpectra);
+					processingInfo.setProcessingResult(massSpectra);
 				} else {
 					processingInfo.addErrorMessage(DESCRIPTION, "No mass spectra are stored." + file.getAbsolutePath());
 				}

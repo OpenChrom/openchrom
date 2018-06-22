@@ -14,12 +14,12 @@ package net.openchrom.msd.converter.supplier.mgf.converter;
 
 import java.io.File;
 
-import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseExportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.chemclipse.msd.model.implementation.ScanMSD;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mgf.PathResolver;
@@ -46,8 +46,8 @@ public class MassSpectrumExportConverter_1_ITest extends TestCase {
 		massSpectra = new MassSpectra();
 		massSpectra.addMassSpectrum(massSpectrum);
 		//
-		IDatabaseExportConverterProcessingInfo processingInfo = exportConverter.convert(file, massSpectra, true, new NullProgressMonitor());
-		file = processingInfo.getFile();
+		IProcessingInfo processingInfo = exportConverter.convert(file, massSpectra, true, new NullProgressMonitor());
+		file = processingInfo.getProcessingResult(File.class);
 	}
 
 	@Override

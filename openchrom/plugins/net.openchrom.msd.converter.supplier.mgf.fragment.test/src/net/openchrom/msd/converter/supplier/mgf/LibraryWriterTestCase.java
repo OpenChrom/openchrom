@@ -14,9 +14,8 @@ package net.openchrom.msd.converter.supplier.mgf;
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.converter.database.DatabaseConverter;
-import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseExportConverterProcessingInfo;
-import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
@@ -40,15 +39,15 @@ public class LibraryWriterTestCase extends TestCase {
 		super.setUp();
 		try {
 			fileImport = new File(this.pathImport);
-			IDatabaseImportConverterProcessingInfo importProcessingInfo = DatabaseConverter.convert(fileImport, extensionPointIdImport, new NullProgressMonitor());
-			massSpectra = importProcessingInfo.getMassSpectra();
+			IProcessingInfo importProcessingInfo = DatabaseConverter.convert(fileImport, extensionPointIdImport, new NullProgressMonitor());
+			massSpectra = importProcessingInfo.getProcessingResult(IMassSpectra.class);
 			//
 			fileExport = new File(this.pathExport);
-			IDatabaseExportConverterProcessingInfo exportProcessingInfo = DatabaseConverter.convert(fileExport, massSpectra, false, extensionPointIdExport, new NullProgressMonitor());
-			File fileReImport = exportProcessingInfo.getFile();
+			IProcessingInfo exportProcessingInfo = DatabaseConverter.convert(fileExport, massSpectra, false, extensionPointIdExport, new NullProgressMonitor());
+			File fileReImport = exportProcessingInfo.getProcessingResult(File.class);
 			//
-			IDatabaseImportConverterProcessingInfo reImportProcessingInfo = DatabaseConverter.convert(fileReImport, new NullProgressMonitor());
-			massSpectra = reImportProcessingInfo.getMassSpectra();
+			IProcessingInfo reImportProcessingInfo = DatabaseConverter.convert(fileReImport, new NullProgressMonitor());
+			massSpectra = reImportProcessingInfo.getProcessingResult(IMassSpectra.class);
 		} catch(TypeCastException e) {
 			massSpectra = null;
 		}
