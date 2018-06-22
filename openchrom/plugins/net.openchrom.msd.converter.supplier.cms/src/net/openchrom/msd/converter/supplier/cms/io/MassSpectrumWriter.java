@@ -16,20 +16,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.List;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraWriter;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.support.comparator.SortOrder;
-import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cms.exceptions.NotCalibratedVendorMassSpectrumException;
@@ -67,14 +63,6 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 	private static final String EENERGYV = "EENERGYV: ";
 	private static final String IENERGYV = "IENERGYV: ";
 	private static final String INAME = "INAME: ";
-	//
-	private DecimalFormat decimalFormat;
-	private TargetExtendedComparator targetExtendedComparator;
-
-	public MassSpectrumWriter() {
-		decimalFormat = ValueFormat.getDecimalFormatEnglish();
-		targetExtendedComparator = new TargetExtendedComparator(SortOrder.DESC);
-	}
 
 	@Override
 	public void write(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {

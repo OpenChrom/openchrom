@@ -21,8 +21,6 @@ import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.database.AbstractDatabaseImportConverter;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
-import org.eclipse.chemclipse.msd.converter.processing.database.DatabaseImportConverterProcessingInfo;
-import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -36,22 +34,16 @@ public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 	private static final String DESCRIPTION = "CMS MassSpectrum Import";
 
 	@Override
-	public IDatabaseImportConverterProcessingInfo convert(File file, IProgressMonitor monitor) {
+	public IProcessingInfo convert(File file, IProgressMonitor monitor) {
 
-		IDatabaseImportConverterProcessingInfo processingInfo = new DatabaseImportConverterProcessingInfo();
-		/*
-		 * Checks if the file is null or empty ...
-		 */
-		IProcessingInfo processingInfoValidate = super.validate(file);
-		if(!processingInfoValidate.hasErrorMessages()) {
-			processingInfo.addMessages(processingInfoValidate);
-		} else {
+		IProcessingInfo processingInfo = super.validate(file);
+		if(!processingInfo.hasErrorMessages()) {
 			try {
 				file = SpecificationValidator.validateSpecification(file);
 				IMassSpectraReader massSpectraReader = new MassSpectrumReader();
 				IMassSpectra massSpectra = massSpectraReader.read(file, monitor);
 				if(massSpectra != null && massSpectra.size() > 0) {
-					processingInfo.setMassSpectra(massSpectra);
+					processingInfo.setProcessingResult(massSpectra);
 				} else {
 					processingInfo.addErrorMessage(DESCRIPTION, "No mass spectra are stored." + file.getAbsolutePath());
 				}

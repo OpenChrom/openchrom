@@ -18,8 +18,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.RetentionIndexType;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
@@ -41,7 +41,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	 * methods.
 	 */
 	private static final long serialVersionUID = 788113431263082687L;
-	private static final Logger logger = Logger.getLogger(CalibratedVendorMassSpectrum.class);
+	// private static final Logger logger = Logger.getLogger(CalibratedVendorMassSpectrum.class);
 	//
 	private List<IIonMeasurement> ionMeasurements;
 	private String scanName = "";
@@ -706,11 +706,12 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	@Override
-	public IChromatogram getParentChromatogram() {
+	public IChromatogram<? extends IPeak> getParentChromatogram() {
 
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void setParentChromatogram(IChromatogram parentChromatogram) {
 

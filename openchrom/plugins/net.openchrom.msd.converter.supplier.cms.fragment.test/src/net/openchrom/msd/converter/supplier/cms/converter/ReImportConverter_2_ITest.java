@@ -16,10 +16,10 @@ import java.io.File;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseExportConverter;
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseImportConverter;
-import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cms.PathResolver;
@@ -43,8 +43,8 @@ public class ReImportConverter_2_ITest extends TestCase {
 		 * Import
 		 */
 		File importFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_5));
-		IDatabaseImportConverterProcessingInfo processingInfoImport = importConverter.convert(importFile, new NullProgressMonitor());
-		massSpectra1 = processingInfoImport.getMassSpectra();
+		IProcessingInfo processingInfoImport = importConverter.convert(importFile, new NullProgressMonitor());
+		massSpectra1 = processingInfoImport.getProcessingResult(IMassSpectra.class);
 		// calculate and subtract signal zero offset
 		for(IScanMSD spectrum : massSpectra1.getList()) {
 			if(spectrum instanceof ICalibratedVendorMassSpectrum) {
@@ -64,8 +64,8 @@ public class ReImportConverter_2_ITest extends TestCase {
 		 * Re-Import
 		 */
 		File reImportFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_DIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_2);
-		IDatabaseImportConverterProcessingInfo processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
-		massSpectra2 = processingInfoReImport.getMassSpectra();
+		IProcessingInfo processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
+		massSpectra2 = processingInfoReImport.getProcessingResult(IMassSpectra.class);
 		/*
 		 * Delete the export file.
 		 */
