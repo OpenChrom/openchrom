@@ -13,8 +13,8 @@ package net.openchrom.wsd.converter.supplier.abif.io;
 
 import java.io.File;
 
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
-import org.eclipse.chemclipse.wsd.converter.processing.chromatogram.IChromatogramWSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
@@ -36,9 +36,9 @@ public class InvalidData_ITest extends TestCase {
 		extensionPointId = ABIF.EXTENSION_POINT_ID;
 		pathImport = ABIF.getAbsolutePath(ABIF.TESTFILE_IMPORT_FAKE_AB1);
 		fileImport = new File(this.pathImport);
-		IChromatogramWSDImportConverterProcessingInfo processingInfo = ChromatogramConverterWSD.convert(fileImport, extensionPointId, new NullProgressMonitor());
+		IProcessingInfo processingInfo = ChromatogramConverterWSD.convert(fileImport, extensionPointId, new NullProgressMonitor());
 		try {
-			chromatogram = processingInfo.getChromatogram();
+			chromatogram = processingInfo.getProcessingResult(IChromatogramWSD.class);
 		} catch(Exception e) {
 			// Test succeeded. Invalid data should throw an exception.
 		}

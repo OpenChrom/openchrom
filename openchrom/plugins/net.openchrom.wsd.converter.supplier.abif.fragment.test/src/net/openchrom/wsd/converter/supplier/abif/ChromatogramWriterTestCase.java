@@ -17,7 +17,6 @@ import java.io.File;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
-import org.eclipse.chemclipse.wsd.converter.processing.chromatogram.IChromatogramWSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Ignore;
@@ -43,15 +42,15 @@ public class ChromatogramWriterTestCase extends TestCase {
 		super.setUp();
 		try {
 			fileImport = new File(this.pathImport);
-			IChromatogramWSDImportConverterProcessingInfo importProcessingInfo = ChromatogramConverterWSD.convert(fileImport, extensionPointIdImport, new NullProgressMonitor());
-			chromatogram = importProcessingInfo.getChromatogram();
+			IProcessingInfo importProcessingInfo = ChromatogramConverterWSD.convert(fileImport, extensionPointIdImport, new NullProgressMonitor());
+			chromatogram = importProcessingInfo.getProcessingResult(IChromatogramWSD.class);
 			//
 			fileExport = new File(this.pathExport);
 			IProcessingInfo exportProcessingInfo = ChromatogramConverterWSD.convert(fileExport, chromatogram, extensionPointIdExport, new NullProgressMonitor());
 			File fileReImport = exportProcessingInfo.getProcessingResult(File.class);
 			//
-			IChromatogramWSDImportConverterProcessingInfo reImportProcessingInfo = ChromatogramConverterWSD.convert(fileReImport, new NullProgressMonitor());
-			chromatogram = reImportProcessingInfo.getChromatogram();
+			IProcessingInfo reImportProcessingInfo = ChromatogramConverterWSD.convert(fileReImport, new NullProgressMonitor());
+			chromatogram = reImportProcessingInfo.getProcessingResult(IChromatogramWSD.class);
 		} catch(TypeCastException e) {
 			chromatogram = null;
 		}
