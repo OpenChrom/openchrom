@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
-import org.eclipse.chemclipse.wsd.converter.processing.chromatogram.IChromatogramWSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -56,8 +56,8 @@ public class MeasurementImportRunnable implements IRunnableWithProgress {
 		IChromatogramWSD chromatogramWSD = null;
 		try {
 			File file = new File(chromatogramPath);
-			IChromatogramWSDImportConverterProcessingInfo processingInfo = ChromatogramConverterWSD.convert(file, monitor);
-			chromatogramWSD = processingInfo.getChromatogram();
+			IProcessingInfo processingInfo = ChromatogramConverterWSD.convert(file, monitor);
+			chromatogramWSD = processingInfo.getProcessingResult(IChromatogramWSD.class);
 		} catch(Exception e) {
 			logger.warn(e);
 		}
