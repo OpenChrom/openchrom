@@ -28,11 +28,11 @@ import org.eclipse.chemclipse.model.exceptions.ChromatogramIsNullException;
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.msd.converter.database.DatabaseConverter;
 import org.eclipse.chemclipse.msd.converter.exceptions.NoMassSpectrumConverterAvailableException;
-import org.eclipse.chemclipse.msd.converter.processing.database.IDatabaseExportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.notifier.MassSpectrumSelectionUpdateNotifier;
 import org.eclipse.chemclipse.msd.swt.ui.support.DatabaseFileSupport;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.support.events.IPerspectiveAndViewIds;
@@ -176,13 +176,13 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 				 * Try to save the chromatogram.
 				 */
 				monitor.subTask("Save Mass Spectra");
-				IDatabaseExportConverterProcessingInfo processingInfo = DatabaseConverter.convert(massSpectrumFile, massSpectra, false, converterId, monitor);
+				IProcessingInfo processingInfo = DatabaseConverter.convert(massSpectrumFile, massSpectra, false, converterId, monitor);
 				try {
 					/*
 					 * If no failures have occurred, set the dirty status to
 					 * false.
 					 */
-					processingInfo.getFile();
+					processingInfo.getProcessingResult(File.class);
 					dirtyable.setDirty(false);
 				} catch(TypeCastException e) {
 					logger.warn(e);
