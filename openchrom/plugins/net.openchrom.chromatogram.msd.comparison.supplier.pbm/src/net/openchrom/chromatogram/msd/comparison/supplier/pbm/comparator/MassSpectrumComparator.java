@@ -15,8 +15,6 @@ import org.eclipse.chemclipse.chromatogram.msd.comparison.massspectrum.AbstractM
 import org.eclipse.chemclipse.chromatogram.msd.comparison.massspectrum.IMassSpectrumComparator;
 import org.eclipse.chemclipse.chromatogram.msd.comparison.math.GeometricDistanceCalculator;
 import org.eclipse.chemclipse.chromatogram.msd.comparison.math.IMatchCalculator;
-import org.eclipse.chemclipse.chromatogram.msd.comparison.processing.IMassSpectrumComparatorProcessingInfo;
-import org.eclipse.chemclipse.chromatogram.msd.comparison.processing.MassSpectrumComparatorProcessingInfo;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.model.core.IIon;
@@ -43,13 +41,10 @@ public class MassSpectrumComparator extends AbstractMassSpectrumComparator imple
 	private static final int NORMALIZATION_FACTOR = 100;
 
 	@Override
-	public IMassSpectrumComparatorProcessingInfo compare(IScanMSD unknown, IScanMSD reference) {
+	public IProcessingInfo compare(IScanMSD unknown, IScanMSD reference) {
 
-		IMassSpectrumComparatorProcessingInfo processingInfo = new MassSpectrumComparatorProcessingInfo();
-		IProcessingInfo processingInfoValidate = super.validate(unknown, reference);
-		if(processingInfoValidate.hasErrorMessages()) {
-			processingInfo.addMessages(processingInfoValidate);
-		} else {
+		IProcessingInfo processingInfo = super.validate(unknown, reference);
+		if(!processingInfo.hasErrorMessages()) {
 			IMatchCalculator geometricDistanceCalculator = new GeometricDistanceCalculator();
 			IScanMSD unknownAdjusted = adjustMassSpectrum(unknown);
 			IScanMSD referenceAdjusted = adjustMassSpectrum(reference);
@@ -68,7 +63,7 @@ public class MassSpectrumComparator extends AbstractMassSpectrumComparator imple
 			 * Result
 			 */
 			IMassSpectrumComparisonResult massSpectrumComparisonResult = new MassSpectrumComparisonResult(matchFactor, reverseMatchFactor, matchFactorDirect, reverseMatchFactorDirect);
-			processingInfo.setMassSpectrumComparisonResult(massSpectrumComparisonResult);
+			processingInfo.setProcessingResult(massSpectrumComparisonResult);
 		}
 		return processingInfo;
 	}
