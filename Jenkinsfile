@@ -17,6 +17,10 @@ pipeline {
     	steps {
     			dir('releng') {
 					checkout scm
+					sh 'wget -nv https://github.com/OpenChrom/openchromcomp/raw/develop/openchrom/packaging/net.openchrom.rcp.compilation.community.packaging/build/jre/jre-8u102-windows-i586.tar.gz'
+					sh 'wget -nv https://github.com/OpenChrom/openchromcomp/raw/develop/openchrom/packaging/net.openchrom.rcp.compilation.community.packaging/build/jre/jre-8u102-windows-x64.tar.gz'
+					sh 'tar -xvzf jre-8u102-windows-i586.tar.gz -C openchrom/features/net.openchrom.jre.win32.win32.x86.feature/jre'
+					sh 'tar -xvzf jre-8u102-windows-x64.tar.gz -C openchrom/features/net.openchrom.jre.win32.win32.x86_64.feature/jre'
 				}
 				dir ('pdfconverter') {
 					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/pdfconverter.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])

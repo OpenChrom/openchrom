@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.jre.linux.gtk.x86.feature"
+      label="Bundle JRE Feature"
+      version="1.0.0.qualifier"
+      os="linux"
+      ws="gtk"
+      arch="x86">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+</feature>
