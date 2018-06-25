@@ -17,7 +17,7 @@ pipeline {
     	steps {
     			dir('releng') {
 					checkout scm
-					sh 'wget https://github.com/OpenChrom/openchromcomp/raw/develop/openchrom/packaging/net.openchrom.rcp.compilation.community.packaging/build/jre/jre-8u102-windows-i586.tar.gz'
+					sh 'wget -nv https://github.com/OpenChrom/openchromcomp/raw/develop/openchrom/packaging/net.openchrom.rcp.compilation.community.packaging/build/jre/jre-8u102-windows-i586.tar.gz'
 					sh 'tar -xvzf jre-8u102-windows-i586.tar.gz -C openchrom/features/net.openchrom.jre.win32.win32.x86.feature/jre'
 				}
 				dir ('pdfconverter') {
