@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.msd.identifier.chromatogram.AbstractChromatogramIdentifier;
-import org.eclipse.chemclipse.chromatogram.msd.identifier.processing.ChromatogramIdentifierProcessingInfo;
-import org.eclipse.chemclipse.chromatogram.msd.identifier.processing.IChromatogramIdentifierProcessingInfo;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IChromatogramIdentifierSettings;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
@@ -26,6 +24,8 @@ import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IScanTargetMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
@@ -47,9 +47,9 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 	}
 
 	@Override
-	public IChromatogramIdentifierProcessingInfo identify(IChromatogramSelectionMSD chromatogramSelection, IChromatogramIdentifierSettings identifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo identify(IChromatogramSelectionMSD chromatogramSelection, IChromatogramIdentifierSettings identifierSettings, IProgressMonitor monitor) {
 
-		IChromatogramIdentifierProcessingInfo processingInfo = new ChromatogramIdentifierProcessingInfo();
+		IProcessingInfo processingInfo = new ProcessingInfo();
 		try {
 			super.validateChromatogramSelection(chromatogramSelection);
 			super.validateSettings(identifierSettings);
@@ -103,7 +103,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 	}
 
 	@Override
-	public IChromatogramIdentifierProcessingInfo identify(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo identify(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
 
 		IVendorIdentifierSettings identifierSettings = PreferenceSupplier.getIdentifierSettings();
 		return identify(chromatogramSelection, identifierSettings, monitor);
