@@ -147,6 +147,11 @@ pipeline {
 		}
     }
     post {
+    	always {
+    	    junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+    	    warnings canRunOnFailed: true, consoleParsers: [[parserName: 'Maven']], shouldDetectModules: true
+    	    openTasks canRunOnFailed: true, ignoreCase: true, high: 'FIXME', low: 'XXX', normal: 'TODO', pattern: '**/*.java', shouldDetectModules: true
+    	}
         failure {
             emailext(body: '${DEFAULT_CONTENT}', mimeType: 'text/html',
 		         replyTo: '$DEFAULT_REPLYTO', subject: '${DEFAULT_SUBJECT}',
