@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.jre.linux.gtk.x86.feature"
       label="Bundle JRE Feature"
-      version="1.0.0.qualifier"
+      version="1.0.0"
       os="linux"
       ws="gtk"
       arch="x86">
