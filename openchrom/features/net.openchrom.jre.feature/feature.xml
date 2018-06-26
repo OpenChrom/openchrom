@@ -38,6 +38,7 @@
 
    <includes
          id="net.openchrom.jre.macosx.cocoa.x86_64"
-         version="0.0.0"/>
+         version="0.0.0"
+         optional="true"/>
 
 </feature>
