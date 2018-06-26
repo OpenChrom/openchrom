@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>net.openchrom.jre.macosx.cocoa.x86_64</groupId>
+    <groupId>net.openchrom.releng</groupId>
     <artifactId>features</artifactId>
     <version>1.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>net.openchrom.jre.feature</artifactId>
+  <artifactId>net.openchrom.jre.macosx.cocoa.x86_64</artifactId>
   <packaging>eclipse-feature</packaging>
     
 </project>
