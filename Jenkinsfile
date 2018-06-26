@@ -19,8 +19,14 @@ pipeline {
 					checkout scm
 					sh 'wget -nv https://github.com/OpenChrom/openchromcomp/raw/develop/openchrom/packaging/net.openchrom.rcp.compilation.community.packaging/build/jre/jre-8u102-windows-i586.tar.gz'
 					sh 'wget -nv https://github.com/OpenChrom/openchromcomp/raw/develop/openchrom/packaging/net.openchrom.rcp.compilation.community.packaging/build/jre/jre-8u102-windows-x64.tar.gz'
+					sh 'wget -nv https://cdn.azul.com/zulu/bin/zulu8.30.0.1-jdk8.0.172-linux_x64.tar.gz'
+					sh 'wget -nv https://cdn.azul.com/zulu/bin/zulu8.30.0.1-jdk8.0.172-linux_i686.tar.gz'
+					sh 'wget -nv https://cdn.azul.com/zulu/bin/zulu8.30.0.1-jdk8.0.172-macosx_x64.tar.gz'
 					sh 'tar -xvzf jre-8u102-windows-i586.tar.gz -C openchrom/features/net.openchrom.jre.win32.win32.x86.feature/jre'
 					sh 'tar -xvzf jre-8u102-windows-x64.tar.gz -C openchrom/features/net.openchrom.jre.win32.win32.x86_64.feature/jre'
+					sh 'tar -xvzf zulu8.30.0.1-jdk8.0.172-linux_i686.tar.gz -C openchrom/features/net.openchrom.jre.linux.gtk.x86.feature/jre'
+					sh 'tar -xvzf zulu8.30.0.1-jdk8.0.172-linux_x64.tar.gz -C openchrom/features/net.openchrom.jre.linux.gtk.x86_64.feature/jre'
+					sh 'tar -xvzf zulu8.30.0.1-jdk8.0.172-macosx_x64.tar.gz -C openchrom/features/net.openchrom.jre.macosx.cocoa.x86_64/jre'
 				}
 				dir ('pdfconverter') {
 					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/pdfconverter.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
@@ -141,6 +147,11 @@ pipeline {
 		}
     }
     post {
+    	always {
+    	    junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+    	    warnings canRunOnFailed: true, consoleParsers: [[parserName: 'Maven']], shouldDetectModules: true
+    	    openTasks canRunOnFailed: true, ignoreCase: true, high: 'FIXME', low: 'XXX', normal: 'TODO', pattern: '**/*.java', shouldDetectModules: true
+    	}
         failure {
             emailext(body: '${DEFAULT_CONTENT}', mimeType: 'text/html',
 		         replyTo: '$DEFAULT_REPLYTO', subject: '${DEFAULT_SUBJECT}',
