@@ -1,2 +1,0 @@
-instructions.configure=org.eclipse.equinox.p2.touchpoint.eclipse.setJvm(jvm:features/net.openchrom.jre.macosx.cocoa.x86_64.feature_1.0.0/jre/ zulu8.30.0.1-jdk8.0.172-macosx_x64/bin);
-instructions.unconfigure=org.eclipse.equinox.p2.touchpoint.eclipse.setJvm(jvm:null);
