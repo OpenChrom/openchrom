@@ -10,7 +10,7 @@
 	</parent>
 
 	<version>1.0.0</version>
-	<artifactId>net.openchrom.jre.macosx.cocoa.x86_64</artifactId>
+	<artifactId>net.openchrom.jre.macosx.cocoa.x86_64.feature</artifactId>
 	<packaging>eclipse-feature</packaging>
 
 </project>

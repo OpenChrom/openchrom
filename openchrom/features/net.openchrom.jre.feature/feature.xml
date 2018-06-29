@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.jre.feature"
       label="Bundle JRE Feature"
-      version="1.0.0.qualifier">
+      version="1.0.0">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -37,7 +37,7 @@
          optional="true"/>
 
    <includes
-         id="net.openchrom.jre.macosx.cocoa.x86_64"
+         id="net.openchrom.jre.macosx.cocoa.x86_64.feature"
          version="0.0.0"
          optional="true"/>
 

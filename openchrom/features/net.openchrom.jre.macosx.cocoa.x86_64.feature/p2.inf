@@ -1,0 +1,4 @@
+instructions.configure=org.eclipse.equinox.p2.touchpoint.eclipse.setJvm(jvm:${installFolder}/features/net.openchrom.jre.macosx.cocoa.x86_64.feature_1.0.0/jre/zulu8.30.0.1-jdk8.0.172-macosx_x64/jre/lib/jli/libjli.dylib);
+instructions.unconfigure=org.eclipse.equinox.p2.touchpoint.eclipse.setJvm(jvm:null);
+
+instructions.install=org.eclipse.equinox.p2.touchpoint.eclipse.chmod(targetDir:${installFolder}/features/net.openchrom.jre.macosx.cocoa.x86_64.feature_1.0.0/jre/zulu8.30.0.1-jdk8.0.172-macosx_x64/jre/lib,targetFile:jspawnhelper,permissions:755);

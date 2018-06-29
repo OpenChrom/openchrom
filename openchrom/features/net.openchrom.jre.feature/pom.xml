@@ -9,6 +9,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
+  <version>1.0.0</version>
   <artifactId>net.openchrom.jre.feature</artifactId>
   <packaging>eclipse-feature</packaging>
     

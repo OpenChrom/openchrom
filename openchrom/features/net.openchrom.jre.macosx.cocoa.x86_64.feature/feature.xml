@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="net.openchrom.jre.macosx.cocoa.x86_64"
-      label="Jre"
+      id="net.openchrom.jre.macosx.cocoa.x86_64.feature"
+      label="Mac OSX Jre"
       version="1.0.0"
       os="macosx"
       ws="cocoa"
