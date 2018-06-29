@@ -25,19 +25,16 @@ pipeline {
 					//linux x86
 					sh 'wget -nv https://cdn.azul.com/zulu/bin/zulu8.30.0.1-jdk8.0.172-linux_i686.tar.gz'
 					sh 'tar -xvzf zulu8.30.0.1-jdk8.0.172-linux_i686.tar.gz -C openchrom/features/net.openchrom.jre.linux.gtk.x86.feature/jre'
-					sh 'chmod +x openchrom/features/net.openchrom.jre.linux.gtk.x86.feature/jre/zulu8.30.0.1-jdk8.0.172-linux_i686/bin/*'
 					//linux x86_64
 					sh 'wget -nv https://cdn.azul.com/zulu/bin/zulu8.30.0.1-jdk8.0.172-linux_x64.tar.gz'
 					sh 'tar -xvzf zulu8.30.0.1-jdk8.0.172-linux_x64.tar.gz -C openchrom/features/net.openchrom.jre.linux.gtk.x86_64.feature/jre'
 					sh 'wget -nv https://chriswhocodes.com/downloads/openjfx-8u60-sdk-overlay-linux-amd64.zip'
-					sh 'unzip openjfx-8u60-sdk-overlay-linux-amd64.zip -d openchrom/features/net.openchrom.jre.linux.gtk.x86_64.feature/jre'
-					sh 'chmod +x openchrom/features/net.openchrom.jre.linux.gtk.x86_64.feature/jre/zulu8.30.0.1-jdk8.0.172-linux_x64/bin/*'
+					sh 'unzip -o openjfx-8u60-sdk-overlay-linux-amd64.zip -d openchrom/features/net.openchrom.jre.linux.gtk.x86_64.feature/jre'
 					//mac osx
 					sh 'wget -nv https://cdn.azul.com/zulu/bin/zulu8.30.0.1-jdk8.0.172-macosx_x64.tar.gz'
 					sh 'tar -xvzf zulu8.30.0.1-jdk8.0.172-macosx_x64.tar.gz -C openchrom/features/net.openchrom.jre.macosx.cocoa.x86_64.feature/jre'
 					sh' wget -nv https://chriswhocodes.com/downloads/openjfx-8u60-sdk-overlay-osx-x64.zip'
-					sh 'unzip openjfx-8u60-sdk-overlay-osx-x64.zip -d openchrom/features/net.openchrom.jre.macosx.cocoa.x86_64.feature/jre'
-					sh 'chmod +x openchrom/features/net.openchrom.jre.macosx.cocoa.x86_64.feature/jre/zulu8.30.0.1-jdk8.0.172-macosx_x64/jre/bin/*'
+					sh 'unzip -o openjfx-8u60-sdk-overlay-osx-x64.zip -d openchrom/features/net.openchrom.jre.macosx.cocoa.x86_64.feature/jre'
 				}
 				dir ('pdfconverter') {
 					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/pdfconverter.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
