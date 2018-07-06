@@ -6,8 +6,5 @@
    <feature url="features/net.openchrom.platform.feature_1.0.0.qualifier.jar" id="net.openchrom.platform.feature" version="1.0.0.qualifier">
       <category name="openchrom.platform"/>
    </feature>
-   <feature url="features/net.openchrom.jre.feature_1.0.0.qualifier.jar" id="net.openchrom.jre.feature" version="1.0.0.qualifier">
-      <category name="openchrom.platform"/>
-   </feature>
    <category-def name="openchrom.platform" label="OpenChrom Platform"/>
 </site>
