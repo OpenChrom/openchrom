@@ -1,1 +1,0 @@
-this contains the jre that will be used for linux 32 bit

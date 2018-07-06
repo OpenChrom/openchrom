@@ -1,4 +1,0 @@
-instructions.configure=org.eclipse.equinox.p2.touchpoint.eclipse.setJvm(jvm:features/net.openchrom.jre.linux.gtk.x86.feature_1.0.0/jre/zulu8.30.0.1-jdk8.0.172-linux_i686/bin);
-instructions.unconfigure=org.eclipse.equinox.p2.touchpoint.eclipse.setJvm(jvm:null);
-
-instructions.install=org.eclipse.equinox.p2.touchpoint.eclipse.chmod(targetDir:${installFolder}/features/net.openchrom.jre.linux.gtk.x86.feature_1.0.0/jre/zulu8.30.0.1-jdk8.0.172-linux_i686/bin,targetFile:java,permissions:755);
