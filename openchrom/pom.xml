@@ -98,8 +98,8 @@
         <configuration>
           <target>
             <artifact>
-              <groupId>net.openchrom.converter</groupId>
-              <artifactId>converter.targetplatform </artifactId>
+              <groupId>net.openchrom.releng</groupId>
+              <artifactId>openchrom.targetplatform</artifactId>
               <version>1.0.0-SNAPSHOT </version>
             </artifact>
           </target>
