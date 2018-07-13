@@ -51,7 +51,7 @@
   -->
   <modules>
     <module>../../plugins/net.openchrom.swtchart.extension.export.vectorgraphics</module>
-    <module>../../features/net.openchrom.swtchart.extension.export.vectorgraphics</module>
+    <module>../../features/net.openchrom.swtchart.extension.export.vectorgraphics.feature</module>
 
   </modules>
 </project>
