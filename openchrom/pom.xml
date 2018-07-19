@@ -95,8 +95,8 @@
         <configuration>
            <target>
             <artifact>
-              <groupId>net.openchrom.releng </groupId>
-              <artifactId>openchrom.targetplatform </artifactId>
+              <groupId>net.openchrom.releng</groupId>
+              <artifactId>openchrom.targetplatform</artifactId>
               <version>1.0.0-SNAPSHOT </version>
             </artifact>
           </target>
