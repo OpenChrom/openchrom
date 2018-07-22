@@ -268,10 +268,6 @@
          id="net.openchrom.thirdpartylibraries.vectorgraphics2d.feature"
          version="0.0.0"/>
 
-   <includes
-         id="org.chromulan.system.control.feature"
-         version="0.0.0"/>
-
    <plugin
          id="org.eclipse.osgi"
          download-size="0"
