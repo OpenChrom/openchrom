@@ -13,14 +13,13 @@
 package net.openchrom.msd.identifier.supplier.opentyper.ui.views;
 
 import java.io.File;
+
 import javax.inject.Inject;
 
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.events.IPerspectiveAndViewIds;
 import org.eclipse.chemclipse.support.settings.UserManagement;
-import net.openchrom.msd.identifier.supplier.opentyper.ui.preferences.PreferenceSupplier;
-
 import org.eclipse.chemclipse.ux.extension.msd.ui.editors.MassSpectrumEditor;
 import org.eclipse.chemclipse.ux.extension.msd.ui.internal.support.MassSpectrumIdentifier;
 import org.eclipse.chemclipse.ux.extension.msd.ui.provider.MassSpectrumFileExplorerContentProvider;
@@ -50,12 +49,14 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.ui.navigator.IDescriptionProvider;
+
+import net.openchrom.msd.identifier.supplier.opentyper.ui.preferences.PreferenceSupplier;
 
 public abstract class AbstractSupplierMassSpectrumFileExplorer {
 
 	@Inject
 	private EPartService partService;
+	@SuppressWarnings("unused")
 	@Inject
 	private IEventBroker eventBroker;
 	@Inject
@@ -63,6 +64,7 @@ public abstract class AbstractSupplierMassSpectrumFileExplorer {
 	@Inject
 	private MApplication application;
 	//
+	@SuppressWarnings("unused")
 	private File lastClickedFile;
 	//
 	private TabItem drivesTab;
