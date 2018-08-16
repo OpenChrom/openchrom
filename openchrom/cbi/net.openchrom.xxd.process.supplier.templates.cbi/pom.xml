@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <!--
+	PARENT
+  -->
+  <parent>
+    <groupId>net.openchrom</groupId>
+    <artifactId>master</artifactId>
+    <version>BUILD-VERSION</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <!--
+	ARTIFACT
+  -->
+  <groupId>net.openchrom</groupId>
+  <artifactId>parent</artifactId>
+  <packaging>pom</packaging>
+  <!--
+	DESCRIPTION
+  --> 
+  <name>templates</name>
+  <description>
+	The plugin contains several template methods.
+  </description>
+  <!--
+	MODULES
+  -->
+  <modules>
+    <module>../../plugins/net.openchrom.xxd.process.supplier.templates</module>
+    <module>../../plugins/net.openchrom.xxd.process.supplier.templates.ui</module>
+    <module>../../features/net.openchrom.xxd.process.supplier.templates.feature</module>
+    <!--<module>../../plugins/net.openchrom.xxd.process.supplier.templates.fragment.test</module>-->
+  </modules>
+</project>

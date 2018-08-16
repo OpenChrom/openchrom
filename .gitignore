@@ -1,0 +1,14 @@
+openchrom/plugins/net.openchrom.xxd.process.supplier.templates.fragment.test/Openchrom.log
+openchrom/plugins/net.openchrom.xxd.process.supplier.templates.fragment.test/*.log
+openchrom/plugins/net.openchrom.xxd.process.supplier.templates.fragment.test/bin/*
+openchrom/plugins/net.openchrom.xxd.process.supplier.templates.ui/bin/*
+openchrom/plugins/net.openchrom.xxd.process.supplier.templates/bin/*
+openchrom/plugins/net.openchrom.xxd.process.supplier.templates.ui.fragment.test/bin/*
+openchrom/sites/net.openchrom.xxd.process.supplier.templates.site/artifacts.jar
+openchrom/sites/net.openchrom.xxd.process.supplier.templates.site/content.jar
+openchrom/sites/net.openchrom.xxd.process.supplier.templates.site/features/*
+openchrom/sites/net.openchrom.xxd.process.supplier.templates.site/plugins/*
+openchrom/features/net.openchrom.xxd.process.supplier.templates.feature/target/
+openchrom/plugins/net.openchrom.xxd.process.supplier.templates.ui/target/
+openchrom/plugins/net.openchrom.xxd.process.supplier.templates/target/
+openchrom/sites/net.openchrom.xxd.process.supplier.templates.updateSite/target/

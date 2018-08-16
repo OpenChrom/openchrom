@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Templates
+Bundle-SymbolicName: net.openchrom.xxd.process.supplier.templates
+Bundle-Version: 1.3.0.qualifier
+Bundle-Activator: net.openchrom.xxd.process.supplier.templates.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
