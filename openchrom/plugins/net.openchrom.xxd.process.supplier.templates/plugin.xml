@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.peak.detector.peakDetectorSupplier">
+      <PeakDetector
+            description="This peak detector tries to detect peaks by using ranges from a template."
+            id="net.openchrom.xxd.process.supplier.templates.peaks"
+            peakDetector="net.openchrom.xxd.process.supplier.templates.peaks.PeakDetectorMSD"
+            peakDetectorName="Template Peak Detector"
+            peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
+      </PeakDetector>
+   </extension>
+
+</plugin>
