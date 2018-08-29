@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.nmr.processor.scanProcessor">
+      <ScanProcessor
+            description="This processor is responsible for the zero filling."
+            id="net.openchrom.nmr.processing.supplier.base.zeroFilling"
+            processor="net.openchrom.nmr.processing.supplier.base.core.ZeroFilling"
+            processorName="Zero Filling">
+      </ScanProcessor>
+      <ScanProcessor
+            description="This processor applies the Fourier Transformation."
+            id="net.openchrom.nmr.processing.supplier.base.fourierTransformation"
+            processor="net.openchrom.nmr.processing.supplier.base.core.FourierTransformation"
+            processorName="Fourier Transformation">
+      </ScanProcessor>
+      <ScanProcessor
+            description="This processor appliers the phase shift."
+            id="net.openchrom.nmr.processing.supplier.base.phaseShift"
+            processor="net.openchrom.nmr.processing.supplier.base.core.PhaseShift"
+            processorName="Phase Shift">
+      </ScanProcessor>
+   </extension>
+
+</plugin>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <!--
+	PARENT
+  -->
+  <parent>
+    <groupId>net.openchrom</groupId>
+    <artifactId>master</artifactId>
+    <version>BUILD-VERSION</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <!--
+	ARTIFACT
+  -->
+  <groupId>net.openchrom</groupId>
+  <artifactId>parent</artifactId>
+  <packaging>pom</packaging>
+  <!--
+	DESCRIPTION
+  --> 
+  <name>jcamp-dx nmr</name>
+  <description>
+	This processor is responsible to transfer NMR raw data into processed signals.
+  </description>
+  <!--
+	MODULES
+  -->
+  <modules>
+    <module>../../plugins/net.openchrom.nmr.processing.supplier.base</module>
+    <module>../../plugins/net.openchrom.nmr.processing.supplier.base.ui</module>
+    <module>../../features/net.openchrom.nmr.processing.supplier.base.feature</module>
+    <!--<module>../../plugins/net.openchrom.nmr.processing.supplier.base.fragment.test</module>-->
+  </modules>
+</project>
