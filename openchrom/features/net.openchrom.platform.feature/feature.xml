@@ -268,6 +268,14 @@
          id="net.openchrom.thirdpartylibraries.vectorgraphics2d.feature"
          version="0.0.0"/>
 
+   <includes
+         id="net.openchrom.xxd.process.supplier.templates.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.nmr.processing.supplier.base.feature"
+         version="0.0.0"/>
+
    <plugin
          id="org.eclipse.osgi"
          download-size="0"

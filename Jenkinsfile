@@ -93,6 +93,12 @@ pipeline {
 				dir ('swtchartvectorgraphics') {
 					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/swtchartvectorgraphics.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
+				dir ('templateprocessor') {
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/templateprocessor.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+				}
+				dir ('processornmrbase') {
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/processornmrbase.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+				}
 			}
     	}
 		stage('build') {
@@ -122,6 +128,8 @@ pipeline {
 					sh 'mvn -B -Dmaven.repo.local=.repository -f compmspbm/openchrom/cbi/net.openchrom.chromatogram.msd.comparison.supplier.pbm.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f ulan-openchrom/chemclipse/cbi/org.chromulan.system.control.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f swtchartvectorgraphics/openchrom/cbi/net.openchrom.swtchart.extension.export.vectorgraphics.cbi/pom.xml install'
+					sh 'mvn -B -Dmaven.repo.local=.repository -f templateprocessor/openchrom/cbi/net.openchrom.xxd.process.supplier.templates.cbi/pom.xml install'
+					sh 'mvn -B -Dmaven.repo.local=.repository -f processornmrbase/openchrom/cbi/net.openchrom.nmr.processing.supplier.base.cbi/pom.xml install'
 			}
 		}
 		stage('package') {
