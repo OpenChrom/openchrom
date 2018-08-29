@@ -6,7 +6,7 @@
       <PeakDetector
             description="This peak detector tries to detect peaks by using ranges from a template."
             id="net.openchrom.xxd.process.supplier.templates.peaks.msd"
-            peakDetector="net.openchrom.xxd.process.supplier.templates.peaks.PeakDetectorMSD"
+            peakDetector="net.openchrom.xxd.process.supplier.templates.peaks.PeakDetector"
             peakDetectorName="Template Peak Detector (MSD)">
       </PeakDetector>
    </extension>
@@ -15,7 +15,7 @@
       <PeakDetector
             description="This peak detector tries to detect peaks by using ranges from a template."
             id="net.openchrom.xxd.process.supplier.templates.peaks.csd"
-            peakDetector="net.openchrom.xxd.process.supplier.templates.peaks.PeakDetectorCSD"
+            peakDetector="net.openchrom.xxd.process.supplier.templates.peaks.PeakDetector"
             peakDetectorName="Template Peak Detector (CSD)">
       </PeakDetector>
    </extension>   

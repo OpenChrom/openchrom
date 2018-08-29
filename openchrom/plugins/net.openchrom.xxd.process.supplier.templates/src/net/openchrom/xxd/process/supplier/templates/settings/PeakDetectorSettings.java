@@ -14,11 +14,12 @@ package net.openchrom.xxd.process.supplier.templates.settings;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorCSDSettings;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorMSDSettings;
 
 import net.openchrom.xxd.process.supplier.templates.peaks.DetectorSettings;
 
-public class PeakDetectorSettingsMSD implements IPeakDetectorMSDSettings {
+public class PeakDetectorSettings implements IPeakDetectorMSDSettings, IPeakDetectorCSDSettings {
 
 	private List<DetectorSettings> detectorSettings = new ArrayList<>();
 
