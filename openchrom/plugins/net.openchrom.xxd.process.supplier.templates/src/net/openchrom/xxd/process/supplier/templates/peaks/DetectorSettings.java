@@ -13,19 +13,17 @@ package net.openchrom.xxd.process.supplier.templates.peaks;
 
 public class DetectorSettings {
 
-	/*
-	 * Setting: includeBackground
-	 * => false: BV or VB
-	 * => true: VV
-	 */
+	public static final String DETECTOR_TYPE_BB = "BB";
+	public static final String DETECTOR_TYPE_VV = "VV";
+	//
 	private double startRetentionTime;
 	private double stopRetentionTime;
-	private boolean includeBackground = false;
+	private String detectorType = "";
 
-	public DetectorSettings(double startRetentionTime, double stopRetentionTime, boolean includeBackground) {
+	public DetectorSettings(double startRetentionTime, double stopRetentionTime, String detectorType) {
 		this.startRetentionTime = startRetentionTime;
 		this.stopRetentionTime = stopRetentionTime;
-		this.includeBackground = includeBackground;
+		this.detectorType = detectorType;
 	}
 
 	public double getStartRetentionTime() {
@@ -40,6 +38,10 @@ public class DetectorSettings {
 
 	public boolean isIncludeBackground() {
 
-		return includeBackground;
+		if(DETECTOR_TYPE_VV.equals(detectorType)) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
