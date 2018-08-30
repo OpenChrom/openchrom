@@ -16,6 +16,10 @@ public class IdentifierSettings {
 	private double startRetentionTime;
 	private double stopRetentionTime;
 	private String name = "";
+	private String casNumber = "";
+	private String comments = "";
+	private String contributor = "";
+	private String referenceId = "";
 
 	public IdentifierSettings(double startRetentionTime, double stopRetentionTime, String name) {
 		this.startRetentionTime = startRetentionTime;
@@ -36,5 +40,45 @@ public class IdentifierSettings {
 	public String getName() {
 
 		return name;
+	}
+
+	public String getCasNumber() {
+
+		return casNumber;
+	}
+
+	public void setCasNumber(String casNumber) {
+
+		this.casNumber = casNumber;
+	}
+
+	public String getComments() {
+
+		return comments;
+	}
+
+	public void setComments(String comments) {
+
+		this.comments = comments;
+	}
+
+	public String getContributor() {
+
+		return contributor;
+	}
+
+	public void setContributor(String contributor) {
+
+		this.contributor = contributor;
+	}
+
+	public String getReferenceId() {
+
+		return referenceId;
+	}
+
+	public void setReferenceId(String referenceId) {
+
+		this.referenceId = referenceId;
 	}
 }

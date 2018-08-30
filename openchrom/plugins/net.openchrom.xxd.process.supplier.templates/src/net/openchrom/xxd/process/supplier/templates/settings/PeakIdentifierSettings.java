@@ -14,6 +14,7 @@ package net.openchrom.xxd.process.supplier.templates.settings;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.chemclipse.chromatogram.csd.identifier.settings.IPeakIdentifierSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettingsMSD;
 import org.eclipse.chemclipse.model.identifier.AbstractIdentifierSettings;
 import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
@@ -26,7 +27,7 @@ import net.openchrom.xxd.process.supplier.templates.peaks.IdentifierSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
 
-public class PeakIdentifierSettings extends AbstractIdentifierSettings implements IPeakIdentifierSettingsMSD {
+public class PeakIdentifierSettings extends AbstractIdentifierSettings implements IPeakIdentifierSettingsMSD, IPeakIdentifierSettingsCSD {
 
 	public static final String DESCRIPTION = "Template Peak Identifier";
 	//

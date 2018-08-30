@@ -28,8 +28,8 @@ public class PeakIdentifierListUtil {
 
 	private static final Logger logger = Logger.getLogger(PeakIdentifierListUtil.class);
 	//
-	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | Styrene";
-	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | Styrene ; 10.71 | 10.76 | Benzene";
+	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | Styrene | 100-42-5 | comment | contributor | referenceId";
+	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | Styrene | 100-42-5 | comment | contributor | referenceId ; 10.71 | 10.76 | Benzene";
 	public static final String SEPARATOR_TOKEN = ";";
 	public static final String SEPARATOR_ENTRY = "|";
 	//

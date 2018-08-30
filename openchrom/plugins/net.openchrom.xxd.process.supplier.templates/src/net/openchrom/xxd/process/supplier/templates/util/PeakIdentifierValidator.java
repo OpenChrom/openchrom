@@ -30,6 +30,10 @@ public class PeakIdentifierValidator implements IValidator {
 	private double startRetentionTime = 0;
 	private double stopRetentionTime = 0;
 	private String name = "";
+	private String casNumber = "";
+	private String comments = "";
+	private String contributor = "";
+	private String referenceId = "";
 
 	//
 	@Override
@@ -50,7 +54,7 @@ public class PeakIdentifierValidator implements IValidator {
 					 * Extract retention time, ...
 					 */
 					String[] values = text.trim().split("\\" + SEPARATOR_ENTRY); // The pipe needs to be escaped.
-					if(values.length == 3) {
+					if(values.length >= 3) {
 						/*
 						 * Evaluation
 						 */
@@ -65,8 +69,21 @@ public class PeakIdentifierValidator implements IValidator {
 						}
 						//
 						name = values[2].trim();
-						if(name.contains(SEPARATOR_TOKEN) || name.contains(SEPARATOR_ENTRY)) {
-							message = "The name must not contain: '" + SEPARATOR_TOKEN + "' or '" + SEPARATOR_ENTRY + "'";
+						//
+						if(values.length > 3) {
+							casNumber = values[3].trim();
+						}
+						//
+						if(values.length > 4) {
+							comments = values[4].trim();
+						}
+						//
+						if(values.length > 5) {
+							contributor = values[5].trim();
+						}
+						//
+						if(values.length > 6) {
+							referenceId = values[6].trim();
 						}
 					} else {
 						message = ERROR_ENTRY;
@@ -97,6 +114,11 @@ public class PeakIdentifierValidator implements IValidator {
 
 	public IdentifierSettings getIdentifierSettings() {
 
-		return new IdentifierSettings(startRetentionTime, stopRetentionTime, name);
+		IdentifierSettings identifierSettings = new IdentifierSettings(startRetentionTime, stopRetentionTime, name);
+		identifierSettings.setCasNumber(casNumber);
+		identifierSettings.setComments(comments);
+		identifierSettings.setContributor(contributor);
+		identifierSettings.setReferenceId(referenceId);
+		return identifierSettings;
 	}
 }

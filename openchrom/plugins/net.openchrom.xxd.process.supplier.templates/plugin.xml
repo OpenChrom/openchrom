@@ -20,19 +20,27 @@
             peakDetectorName="Template Peak Detector (CSD)"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
       </PeakDetector>
-   </extension>
-   
+   </extension> 
    <extension
          point="org.eclipse.chemclipse.chromatogram.msd.identifier.peakIdentifier">
       <PeakIdentificationSupplier
             description="This peak identifier tries to identify peaks by using ranges from a template."
             id="net.openchrom.xxd.process.supplier.templates.peaks.identifier.msd"
-            identifier="net.openchrom.xxd.process.supplier.templates.peaks.PeakIdentifier"
+            identifier="net.openchrom.xxd.process.supplier.templates.peaks.PeakIdentifierMSD"
             identifierName="Template Peak Identifier (MSD)"
             identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings">
       </PeakIdentificationSupplier>
    </extension>   
-      
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.csd.identifier.peakIdentifier">
+      <PeakIdentificationSupplier
+            description="This peak identifier tries to identify peaks by using ranges from a template."
+            id="net.openchrom.xxd.process.supplier.templates.peaks.identifier.csd"
+            identifier="net.openchrom.xxd.process.supplier.templates.peaks.PeakIdentifierCSD"
+            identifierName="Template Peak Identifier (CSD)"
+            identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings">
+      </PeakIdentificationSupplier>
+   </extension>         
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
