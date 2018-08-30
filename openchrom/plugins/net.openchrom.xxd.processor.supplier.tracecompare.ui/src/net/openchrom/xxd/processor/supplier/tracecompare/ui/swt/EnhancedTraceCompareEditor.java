@@ -31,6 +31,7 @@ import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -205,7 +206,7 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 				PreferenceDialog preferenceDialog = new PreferenceDialog(Display.getDefault().getActiveShell(), preferenceManager);
 				preferenceDialog.create();
 				preferenceDialog.setMessage("Settings");
-				if(preferenceDialog.open() == PreferenceDialog.OK) {
+				if(preferenceDialog.open() == Window.OK) {
 					MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Settings", "The settings have been updated.");
 				}
 			}
