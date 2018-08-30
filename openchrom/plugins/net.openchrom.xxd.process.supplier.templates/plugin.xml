@@ -5,7 +5,7 @@
          point="org.eclipse.chemclipse.chromatogram.msd.peak.detector.peakDetectorSupplier">
       <PeakDetector
             description="This peak detector tries to detect peaks by using ranges from a template."
-            id="net.openchrom.xxd.process.supplier.templates.peaks.msd"
+            id="net.openchrom.xxd.process.supplier.templates.peaks.detector.msd"
             peakDetector="net.openchrom.xxd.process.supplier.templates.peaks.PeakDetector"
             peakDetectorName="Template Peak Detector (MSD)"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
@@ -15,12 +15,24 @@
          point="org.eclipse.chemclipse.chromatogram.csd.peak.detector.peakDetectorSupplier">
       <PeakDetector
             description="This peak detector tries to detect peaks by using ranges from a template."
-            id="net.openchrom.xxd.process.supplier.templates.peaks.csd"
+            id="net.openchrom.xxd.process.supplier.templates.peaks.detector.csd"
             peakDetector="net.openchrom.xxd.process.supplier.templates.peaks.PeakDetector"
             peakDetectorName="Template Peak Detector (CSD)"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
       </PeakDetector>
+   </extension>
+   
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.identifier.peakIdentifier">
+      <PeakIdentificationSupplier
+            description="This peak identifier tries to identify peaks by using ranges from a template."
+            id="net.openchrom.xxd.process.supplier.templates.peaks.identifier.msd"
+            identifier="net.openchrom.xxd.process.supplier.templates.peaks.PeakIdentifier"
+            identifierName="Template Peak Identifier (MSD)"
+            identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings">
+      </PeakIdentificationSupplier>
    </extension>   
+      
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer

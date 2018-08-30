@@ -3,6 +3,12 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            name="Template Processor"
+            category="org.eclipse.chemclipse.chromatogram.msd.process.ui.preferences.processPreferencePage"
+            class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePage"
+            id="net.openchrom.xxd.process.supplier.templates.ui.preferences.preferencePage">
+      </page>         
+      <page
             name="Peak Detector Template"
             category="org.eclipse.chemclipse.chromatogram.msd.peak.detector.ui.preferences.peakDetectorPreferencePage"
             class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakDetector"
@@ -19,6 +25,19 @@
             category="net.openchrom.xxd.process.supplier.templates.ui.preferences.pagePeakDetector"
             class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakDetectorCSD"
             id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pagePeakDetectorCSD">
-      </page>            
+      </page>
+      <page
+            name="Peak Identifier Template (MSD)"
+            category="org.eclipse.chemclipse.chromatogram.msd.identifier.ui.preferences.identifierPreferencePage"
+            class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakIdentifierMSD"
+            id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pagePeakIdentifierMSD">
+      </page>
+      <page
+            name="Peak Identifier Template (CSD)"
+            category="org.eclipse.chemclipse.chromatogram.csd.identifier.ui.preferences.preferencePage"
+            class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakIdentifierCSD"
+            id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pagePeakIdentifierCSD">
+      </page>        
+                  
    </extension>
 </plugin>

@@ -11,5 +11,65 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.settings;
 
-public class PeakIdentifierSettings {
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettingsMSD;
+import org.eclipse.chemclipse.model.identifier.AbstractIdentifierSettings;
+import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
+import org.eclipse.core.runtime.IStatus;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+
+import net.openchrom.xxd.process.supplier.templates.peaks.IdentifierSettings;
+import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
+import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
+
+public class PeakIdentifierSettings extends AbstractIdentifierSettings implements IPeakIdentifierSettingsMSD {
+
+	public static final String DESCRIPTION = "Template Peak Identifier";
+	//
+	@JsonProperty(value = "Identifier Settings", defaultValue = "")
+	@JsonPropertyDescription(value = "Example: '" + PeakIdentifierListUtil.EXAMPLE_MULTIPLE + "'")
+	private String identifierSettings = "";
+
+	public void setIdentifierSettings(String identifierSettings) {
+
+		this.identifierSettings = identifierSettings;
+	}
+
+	public List<IdentifierSettings> getIdentifierSettings() {
+
+		PeakIdentifierListUtil util = new PeakIdentifierListUtil();
+		PeakIdentifierValidator validator = new PeakIdentifierValidator();
+		List<IdentifierSettings> settings = new ArrayList<>();
+		//
+		List<String> items = util.getList(identifierSettings);
+		for(String item : items) {
+			IStatus status = validator.validate(item);
+			if(status.isOK()) {
+				settings.add(validator.getIdentifierSettings());
+			}
+		}
+		//
+		return settings;
+	}
+
+	@Override
+	public String getMassSpectrumComparatorId() {
+
+		return "not needed here";
+	}
+
+	@Override
+	public void setMassSpectrumComparatorId(String massSpectrumComparatorId) {
+
+	}
+
+	@Override
+	public IMarkedIons getExcludedIons() {
+
+		return null;
+	}
 }

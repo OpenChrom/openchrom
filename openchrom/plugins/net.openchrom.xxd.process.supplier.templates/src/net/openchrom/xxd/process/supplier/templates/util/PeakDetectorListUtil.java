@@ -62,7 +62,7 @@ public class PeakDetectorListUtil {
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
 			for(String item : items) {
-				printWriter.print(item);
+				printWriter.println(item);
 			}
 			printWriter.flush();
 			printWriter.close();

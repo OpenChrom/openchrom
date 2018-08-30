@@ -22,7 +22,7 @@ public class PeakDetectorValidator implements IValidator {
 
 	private static final Logger logger = Logger.getLogger(PeakDetectorValidator.class);
 	//
-	private static final String ERROR_ENTRY = "Please enter an item, e.g.: 10.52 | 10.63 | VV";
+	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = PeakDetectorListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = PeakDetectorListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;

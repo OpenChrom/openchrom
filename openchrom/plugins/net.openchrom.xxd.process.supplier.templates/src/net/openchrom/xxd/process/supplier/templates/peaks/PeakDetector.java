@@ -71,6 +71,13 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		return detect(chromatogramSelection, settings, monitor);
 	}
 
+	private PeakDetectorSettings getPeakDetectorSettings(String preferenceKey) {
+
+		PeakDetectorSettings settings = new PeakDetectorSettings();
+		settings.setDetectorSettings(PreferenceSupplier.getSettings(preferenceKey, ""));
+		return settings;
+	}
+
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	private IProcessingInfo applyDetector(IChromatogramSelection<? extends IPeak> chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
 
@@ -83,18 +90,10 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 					setPeakBySettings(chromatogram, detectorSettings);
 				}
 			} else {
-				processingInfo.addErrorMessage(PeakDetectorSettings.DETECTOR_DESCRIPTION, "The settings instance is wrong.");
+				processingInfo.addErrorMessage(PeakDetectorSettings.DESCRIPTION, "The settings instance is wrong.");
 			}
 		}
 		return processingInfo;
-	}
-
-	private PeakDetectorSettings getPeakDetectorSettings(String preferenceKey) {
-
-		PeakDetectorSettings settings = new PeakDetectorSettings();
-		settings.setDetectorSettings(PreferenceSupplier.getPeakDetectorSettings(preferenceKey, ""));
-		//
-		return settings;
 	}
 
 	private void setPeakBySettings(IChromatogram<? extends IPeak> chromatogram, DetectorSettings detectorSettings) {
@@ -119,12 +118,12 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 				if(chromatogram instanceof IChromatogramMSD) {
 					IChromatogramMSD chromatogramMSD = (IChromatogramMSD)chromatogram;
 					IChromatogramPeakMSD peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground);
-					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
+					peak.setDetectorDescription(PeakDetectorSettings.DESCRIPTION);
 					chromatogramMSD.addPeak(peak);
 				} else if(chromatogram instanceof IChromatogramCSD) {
 					IChromatogramCSD chromatogramCSD = (IChromatogramCSD)chromatogram;
 					IChromatogramPeakCSD peak = PeakBuilderCSD.createPeak(chromatogramCSD, scanRange, includeBackground);
-					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
+					peak.setDetectorDescription(PeakDetectorSettings.DESCRIPTION);
 					chromatogramCSD.addPeak(peak);
 				}
 			}

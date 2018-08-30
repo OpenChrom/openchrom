@@ -36,6 +36,8 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_PEAK_DETECTOR_LIST_PATH_IMPORT, "Peak Detector Path Import", getFieldEditorParent()));
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_PEAK_DETECTOR_LIST_PATH_EXPORT, "Peak Detector Path Export", getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(PreferenceSupplier.P_PEAK_IDENTIFIER_LIST_PATH_IMPORT, "Peak Identifier Path Import", getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(PreferenceSupplier.P_PEAK_IDENTIFIER_LIST_PATH_EXPORT, "Peak Identifier Path Export", getFieldEditorParent()));
 	}
 
 	/*

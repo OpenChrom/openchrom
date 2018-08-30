@@ -34,7 +34,7 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
 public class PeakDetectorListEditor extends ListEditor {
 
-	private static final String DESCRIPTION = PeakDetectorSettings.DETECTOR_DESCRIPTION;
+	private static final String DESCRIPTION = PeakDetectorSettings.DESCRIPTION;
 	private static final String MESSAGE = "You can create a new peak detector item here.";
 	private static final String INITIAL_VALUE = PeakDetectorListUtil.EXAMPLE_SINGLE;
 	//

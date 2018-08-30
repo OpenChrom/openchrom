@@ -34,7 +34,7 @@ public class PagePeakDetectorCSD extends FieldEditorPreferencePage implements IW
 	 */
 	public void createFieldEditors() {
 
-		addField(new PeakDetectorListEditor(PreferenceSupplier.P_PEAK_DETECTOR_LIST_CSD, "Peak Template (CSD)", getFieldEditorParent()));
+		addField(new PeakDetectorListEditor(PreferenceSupplier.P_PEAK_DETECTOR_LIST_CSD, "Peak Detector (CSD)", getFieldEditorParent()));
 	}
 
 	/*

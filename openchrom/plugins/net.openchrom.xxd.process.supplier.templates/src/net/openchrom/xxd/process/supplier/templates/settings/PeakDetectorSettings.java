@@ -27,7 +27,7 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
 public class PeakDetectorSettings implements IPeakDetectorMSDSettings, IPeakDetectorCSDSettings {
 
-	public static final String DETECTOR_DESCRIPTION = "Template Peak Detector";
+	public static final String DESCRIPTION = "Template Peak Detector";
 	//
 	@JsonProperty(value = "Detector Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + PeakDetectorListUtil.EXAMPLE_MULTIPLE + "'")

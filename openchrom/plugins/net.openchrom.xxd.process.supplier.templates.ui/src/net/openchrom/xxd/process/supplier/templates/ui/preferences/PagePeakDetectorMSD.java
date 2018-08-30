@@ -34,7 +34,7 @@ public class PagePeakDetectorMSD extends FieldEditorPreferencePage implements IW
 	 */
 	public void createFieldEditors() {
 
-		addField(new PeakDetectorListEditor(PreferenceSupplier.P_PEAK_DETECTOR_LIST_MSD, "Peak Template (MSD)", getFieldEditorParent()));
+		addField(new PeakDetectorListEditor(PreferenceSupplier.P_PEAK_DETECTOR_LIST_MSD, "Peak Detector (MSD)", getFieldEditorParent()));
 	}
 
 	/*
