@@ -11,8 +11,6 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.peaks;
 
-import java.util.List;
-
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.IPeakDetectorCSD;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorCSDSettings;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.IPeakDetectorMSD;
@@ -37,18 +35,13 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
-import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
-import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
 public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorMSD, IPeakDetectorCSD {
 
 	private static final Logger logger = Logger.getLogger(PeakDetector.class);
-	//
-	private static final String DETECTOR_DESCRIPTION = "Template Peak Detector";
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -90,7 +83,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 					setPeakBySettings(chromatogram, detectorSettings);
 				}
 			} else {
-				processingInfo.addErrorMessage(DETECTOR_DESCRIPTION, "The settings instance is wrong.");
+				processingInfo.addErrorMessage(PeakDetectorSettings.DETECTOR_DESCRIPTION, "The settings instance is wrong.");
 			}
 		}
 		return processingInfo;
@@ -99,16 +92,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 	private PeakDetectorSettings getPeakDetectorSettings(String preferenceKey) {
 
 		PeakDetectorSettings settings = new PeakDetectorSettings();
-		PeakDetectorListUtil util = new PeakDetectorListUtil();
-		PeakDetectorValidator validator = new PeakDetectorValidator();
-		//
-		List<String> ranges = util.getList(PreferenceSupplier.INSTANCE().getPreferences().get(preferenceKey, ""));
-		for(String range : ranges) {
-			IStatus status = validator.validate(range);
-			if(status.isOK()) {
-				settings.getDetectorSettings().add(validator.getDetectorSettings());
-			}
-		}
+		settings.setDetectorSettings(PreferenceSupplier.getPeakDetectorSettings(preferenceKey, ""));
 		//
 		return settings;
 	}
@@ -135,11 +119,13 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 				if(chromatogram instanceof IChromatogramMSD) {
 					IChromatogramMSD chromatogramMSD = (IChromatogramMSD)chromatogram;
 					IChromatogramPeakMSD peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground);
-					peak.setDetectorDescription(DETECTOR_DESCRIPTION);
+					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
+					chromatogramMSD.addPeak(peak);
 				} else if(chromatogram instanceof IChromatogramCSD) {
 					IChromatogramCSD chromatogramCSD = (IChromatogramCSD)chromatogram;
 					IChromatogramPeakCSD peak = PeakBuilderCSD.createPeak(chromatogramCSD, scanRange, includeBackground);
-					peak.setDetectorDescription(DETECTOR_DESCRIPTION);
+					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
+					chromatogramCSD.addPeak(peak);
 				}
 			}
 		} catch(PeakException e) {

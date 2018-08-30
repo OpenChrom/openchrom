@@ -24,7 +24,7 @@ public class PagePeakDetectorCSD extends FieldEditorPreferencePage implements IW
 	public PagePeakDetectorCSD() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Peak Detector List (CSD)");
+		setDescription("Edit the peak detector template (CSD).");
 	}
 
 	/**

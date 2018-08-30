@@ -11,10 +11,12 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.preferences;
 
+import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.Activator;
 
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
@@ -32,6 +34,8 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 */
 	public void createFieldEditors() {
 
+		addField(new DirectoryFieldEditor(PreferenceSupplier.P_PEAK_DETECTOR_LIST_PATH_IMPORT, "Peak Detector Path Import", getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(PreferenceSupplier.P_PEAK_DETECTOR_LIST_PATH_EXPORT, "Peak Detector Path Export", getFieldEditorParent()));
 	}
 
 	/*

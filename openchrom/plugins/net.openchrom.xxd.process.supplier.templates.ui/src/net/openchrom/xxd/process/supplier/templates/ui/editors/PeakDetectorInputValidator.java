@@ -37,7 +37,7 @@ public class PeakDetectorInputValidator implements IInputValidator {
 		if(status.isOK()) {
 			for(String item : items) {
 				if(item.equals(range)) {
-					return "The range already exists.";
+					return "The item already exists.";
 				}
 			}
 		} else {

@@ -22,8 +22,10 @@ public class PeakDetectorValidator implements IValidator {
 
 	private static final Logger logger = Logger.getLogger(PeakDetectorValidator.class);
 	//
-	private static final String ERROR_ENTRY = "Please enter range, e.g.: 10.52 | 10.63 | VV";
-	private static final String ERROR_TOKEN = "The range must not contain: " + PeakDetectorListUtil.SEPARATOR_TOKEN;
+	private static final String ERROR_ENTRY = "Please enter an item, e.g.: 10.52 | 10.63 | VV";
+	private static final String SEPARATOR_TOKEN = PeakDetectorListUtil.SEPARATOR_TOKEN;
+	private static final String SEPARATOR_ENTRY = PeakDetectorListUtil.SEPARATOR_ENTRY;
+	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
 	private double startRetentionTime = 0;
 	private double stopRetentionTime = 0;
@@ -39,7 +41,7 @@ public class PeakDetectorValidator implements IValidator {
 		} else {
 			if(value instanceof String) {
 				String text = ((String)value).trim();
-				if(text.contains(PeakDetectorListUtil.SEPARATOR_TOKEN)) {
+				if(text.contains(SEPARATOR_TOKEN)) {
 					message = ERROR_TOKEN;
 				} else if("".equals(text.trim())) {
 					message = ERROR_ENTRY;
@@ -47,7 +49,7 @@ public class PeakDetectorValidator implements IValidator {
 					/*
 					 * Extract retention time, ...
 					 */
-					String[] values = text.trim().split("\\" + PeakDetectorListUtil.SEPARATOR_ENTRY); // The pipe needs to be escaped.
+					String[] values = text.trim().split("\\" + SEPARATOR_ENTRY); // The pipe needs to be escaped.
 					if(values.length == 3) {
 						/*
 						 * Evaluation

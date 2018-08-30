@@ -11,14 +11,65 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.core.runtime.IStatus;
+
 public class PeakDetectorListUtil {
 
+	private static final Logger logger = Logger.getLogger(PeakDetectorListUtil.class);
+	//
+	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | VV";
+	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | VV ; 10.71 | 10.76 | BB";
 	public static final String SEPARATOR_TOKEN = ";";
 	public static final String SEPARATOR_ENTRY = "|";
+	//
+	private PeakDetectorValidator validator = new PeakDetectorValidator();
+
+	public List<String> importItems(File file) {
+
+		List<String> items = new ArrayList<>();
+		try {
+			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+			String item;
+			while((item = bufferedReader.readLine()) != null) {
+				IStatus status = validator.validate(item);
+				if(status.isOK()) {
+					items.add(item);
+				}
+			}
+			bufferedReader.close();
+		} catch(FileNotFoundException e1) {
+			logger.warn(e1);
+		} catch(IOException e1) {
+			logger.warn(e1);
+		}
+		//
+		return items;
+	}
+
+	public void exportItems(File file, String[] items) {
+
+		try {
+			PrintWriter printWriter = new PrintWriter(file);
+			for(String item : items) {
+				printWriter.print(item);
+			}
+			printWriter.flush();
+			printWriter.close();
+		} catch(FileNotFoundException e1) {
+			logger.warn(e1);
+		}
+	}
 
 	public String createList(String[] items) {
 

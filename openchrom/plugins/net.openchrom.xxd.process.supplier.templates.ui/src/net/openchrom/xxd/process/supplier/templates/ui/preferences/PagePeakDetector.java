@@ -15,16 +15,14 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.Activator;
-import net.openchrom.xxd.process.supplier.templates.ui.editors.PeakDetectorListEditor;
 
-public class PagePeakDetectorMSD extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class PagePeakDetector extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-	public PagePeakDetectorMSD() {
+	public PagePeakDetector() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Edit the peak detector template (MSD).");
+		setDescription("Peak Detector Template");
 	}
 
 	/**
@@ -34,7 +32,6 @@ public class PagePeakDetectorMSD extends FieldEditorPreferencePage implements IW
 	 */
 	public void createFieldEditors() {
 
-		addField(new PeakDetectorListEditor(PreferenceSupplier.P_PEAK_DETECTOR_LIST_MSD, "Peak Template (MSD)", getFieldEditorParent()));
 	}
 
 	/*
