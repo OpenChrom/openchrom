@@ -40,7 +40,22 @@
             identifierName="Template Peak Identifier (CSD)"
             identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings">
       </PeakIdentificationSupplier>
-   </extension>         
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.quantifier.peakQuantifierSupplier">
+      <PeakQuantifierSupplier
+            description="This methods sets the ISTD information."
+            id="net.openchrom.xxd.process.supplier.templates.peaks.standards.assigner"
+            peakQuantifier="net.openchrom.xxd.process.supplier.templates.peaks.StandardsAssigner"
+            peakQuantifierName="Peak Standards Assigner (ISTD)">
+      </PeakQuantifierSupplier>
+      <PeakQuantifierSupplier
+            description="This methods sets the ISTD references."
+            id="net.openchrom.xxd.process.supplier.templates.peaks.standards.referencer"
+            peakQuantifier="net.openchrom.xxd.process.supplier.templates.peaks.StandardsReferencer"
+            peakQuantifierName="Peak Standards Referencer (ISTD)">
+      </PeakQuantifierSupplier>          
+   </extension>        
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer

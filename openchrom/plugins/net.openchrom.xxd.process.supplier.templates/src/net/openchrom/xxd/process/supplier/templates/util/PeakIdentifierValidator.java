@@ -11,17 +11,14 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.peaks.IdentifierSettings;
 
-public class PeakIdentifierValidator implements IValidator {
+public class PeakIdentifierValidator extends AbstractValidator implements IValidator {
 
-	private static final Logger logger = Logger.getLogger(PeakIdentifierValidator.class);
-	//
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakIdentifierListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = PeakDetectorListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = PeakDetectorListUtil.SEPARATOR_ENTRY;
@@ -69,6 +66,9 @@ public class PeakIdentifierValidator implements IValidator {
 						}
 						//
 						name = values[2].trim();
+						if("".equals(name)) {
+							message = "A substance name needs to be set.";
+						}
 						//
 						if(values.length > 3) {
 							casNumber = values[3].trim();
@@ -101,24 +101,13 @@ public class PeakIdentifierValidator implements IValidator {
 		}
 	}
 
-	private double parseDouble(String input) {
+	public IdentifierSettings getSettings() {
 
-		double result = 0.0d;
-		try {
-			result = Double.parseDouble(input);
-		} catch(NumberFormatException e) {
-			logger.warn(e);
-		}
-		return result;
-	}
-
-	public IdentifierSettings getIdentifierSettings() {
-
-		IdentifierSettings identifierSettings = new IdentifierSettings(startRetentionTime, stopRetentionTime, name);
-		identifierSettings.setCasNumber(casNumber);
-		identifierSettings.setComments(comments);
-		identifierSettings.setContributor(contributor);
-		identifierSettings.setReferenceId(referenceId);
-		return identifierSettings;
+		IdentifierSettings settings = new IdentifierSettings(startRetentionTime, stopRetentionTime, name);
+		settings.setCasNumber(casNumber);
+		settings.setComments(comments);
+		settings.setContributor(contributor);
+		settings.setReferenceId(referenceId);
+		return settings;
 	}
 }

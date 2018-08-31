@@ -11,17 +11,14 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.peaks.DetectorSettings;
 
-public class PeakDetectorValidator implements IValidator {
+public class PeakDetectorValidator extends AbstractValidator implements IValidator {
 
-	private static final Logger logger = Logger.getLogger(PeakDetectorValidator.class);
-	//
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = PeakDetectorListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = PeakDetectorListUtil.SEPARATOR_ENTRY;
@@ -84,18 +81,7 @@ public class PeakDetectorValidator implements IValidator {
 		}
 	}
 
-	private double parseDouble(String input) {
-
-		double result = 0.0d;
-		try {
-			result = Double.parseDouble(input);
-		} catch(NumberFormatException e) {
-			logger.warn(e);
-		}
-		return result;
-	}
-
-	public DetectorSettings getDetectorSettings() {
+	public DetectorSettings getSettings() {
 
 		return new DetectorSettings(startRetentionTime, stopRetentionTime, detectorType);
 	}

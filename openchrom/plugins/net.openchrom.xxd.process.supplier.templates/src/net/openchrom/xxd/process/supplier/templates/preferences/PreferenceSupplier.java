@@ -35,14 +35,14 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String DEF_PEAK_IDENTIFIER_LIST_MSD = "";
 	public static final String P_PEAK_IDENTIFIER_LIST_CSD = "peakIdentifierListCSD";
 	public static final String DEF_PEAK_IDENTIFIER_LIST_CSD = "";
-	public static final String P_PEAK_DETECTOR_LIST_PATH_IMPORT = "peakDetectorListPathImport";
-	public static final String DEF_PEAK_DETECTOR_LIST_PATH_IMPORT = "";
-	public static final String P_PEAK_DETECTOR_LIST_PATH_EXPORT = "peakDetectorListPathExport";
-	public static final String DEF_PEAK_DETECTOR_LIST_PATH_EXPORT = "";
-	public static final String P_PEAK_IDENTIFIER_LIST_PATH_IMPORT = "peakIdentifierListPathImport";
-	public static final String DEF_PEAK_IDENTIFIER_LIST_PATH_IMPORT = "";
-	public static final String P_PEAK_IDENTIFIER_LIST_PATH_EXPORT = "peakIdentifierListPathExport";
-	public static final String DEF_PEAK_IDENTIFIER_LIST_PATH_EXPORT = "";
+	public static final String P_STANDARDS_ASSIGNER_LIST = "standardsAssignerList";
+	public static final String DEF_STANDARDS_ASSIGNER_LIST = "";
+	public static final String P_STANDARDS_REFERENCER_LIST = "standardsReferencerList";
+	public static final String DEF_STANDARDS_REFERENCER_LIST = "";
+	public static final String P_LIST_PATH_IMPORT = "listPathImport";
+	public static final String DEF_LIST_PATH_IMPORT = "";
+	public static final String P_LIST_PATH_EXPORT = "listPathExport";
+	public static final String DEF_LIST_PATH_EXPORT = "";
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -74,10 +74,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_PEAK_DETECTOR_LIST_CSD, DEF_PEAK_DETECTOR_LIST_CSD);
 		defaultValues.put(P_PEAK_IDENTIFIER_LIST_MSD, DEF_PEAK_IDENTIFIER_LIST_MSD);
 		defaultValues.put(P_PEAK_IDENTIFIER_LIST_CSD, DEF_PEAK_IDENTIFIER_LIST_CSD);
-		defaultValues.put(P_PEAK_DETECTOR_LIST_PATH_IMPORT, DEF_PEAK_DETECTOR_LIST_PATH_IMPORT);
-		defaultValues.put(P_PEAK_DETECTOR_LIST_PATH_EXPORT, DEF_PEAK_DETECTOR_LIST_PATH_EXPORT);
-		defaultValues.put(P_PEAK_IDENTIFIER_LIST_PATH_IMPORT, DEF_PEAK_IDENTIFIER_LIST_PATH_IMPORT);
-		defaultValues.put(P_PEAK_IDENTIFIER_LIST_PATH_EXPORT, DEF_PEAK_IDENTIFIER_LIST_PATH_EXPORT);
+		defaultValues.put(P_STANDARDS_ASSIGNER_LIST, DEF_STANDARDS_ASSIGNER_LIST);
+		defaultValues.put(P_STANDARDS_REFERENCER_LIST, DEF_STANDARDS_REFERENCER_LIST);
+		defaultValues.put(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
+		defaultValues.put(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
 		return defaultValues;
 	}
 
@@ -93,44 +93,24 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.get(key, def);
 	}
 
-	public static String getPeakDetectorListPathImport() {
+	public static String getListPathImport() {
 
-		return getFilterPath(P_PEAK_DETECTOR_LIST_PATH_IMPORT, DEF_PEAK_DETECTOR_LIST_PATH_IMPORT);
+		return getFilterPath(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
 	}
 
-	public static void setPeakDetectorListPathImport(String filterPath) {
+	public static void setListPathImport(String filterPath) {
 
-		setFilterPath(P_PEAK_DETECTOR_LIST_PATH_IMPORT, filterPath);
+		setFilterPath(P_LIST_PATH_IMPORT, filterPath);
 	}
 
-	public static String getPeakDetectorListPathExport() {
+	public static String getListPathExport() {
 
-		return getFilterPath(P_PEAK_DETECTOR_LIST_PATH_EXPORT, DEF_PEAK_DETECTOR_LIST_PATH_EXPORT);
+		return getFilterPath(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
 	}
 
-	public static void setPeakDetectorListPathExport(String filterPath) {
+	public static void setListPathExport(String filterPath) {
 
-		setFilterPath(P_PEAK_DETECTOR_LIST_PATH_EXPORT, filterPath);
-	}
-
-	public static String getPeakIdentifierListPathImport() {
-
-		return getFilterPath(P_PEAK_IDENTIFIER_LIST_PATH_IMPORT, DEF_PEAK_IDENTIFIER_LIST_PATH_IMPORT);
-	}
-
-	public static void setPeakIdentifierListPathImport(String filterPath) {
-
-		setFilterPath(P_PEAK_IDENTIFIER_LIST_PATH_IMPORT, filterPath);
-	}
-
-	public static String getPeakIdentifierListPathExport() {
-
-		return getFilterPath(P_PEAK_IDENTIFIER_LIST_PATH_EXPORT, DEF_PEAK_IDENTIFIER_LIST_PATH_EXPORT);
-	}
-
-	public static void setPeakIdentifierListPathExport(String filterPath) {
-
-		setFilterPath(P_PEAK_IDENTIFIER_LIST_PATH_EXPORT, filterPath);
+		setFilterPath(P_LIST_PATH_EXPORT, filterPath);
 	}
 
 	private static String getFilterPath(String key, String def) {

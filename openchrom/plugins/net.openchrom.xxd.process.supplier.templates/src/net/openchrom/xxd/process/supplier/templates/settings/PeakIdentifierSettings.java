@@ -50,7 +50,7 @@ public class PeakIdentifierSettings extends AbstractIdentifierSettings implement
 		for(String item : items) {
 			IStatus status = validator.validate(item);
 			if(status.isOK()) {
-				settings.add(validator.getIdentifierSettings());
+				settings.add(validator.getSettings());
 			}
 		}
 		//

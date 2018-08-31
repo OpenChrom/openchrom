@@ -11,38 +11,14 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.editors;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.swt.widgets.List;
 
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
-public class PeakDetectorInputValidator implements IInputValidator {
-
-	private String[] items = new String[]{};
-	private PeakDetectorValidator validator = new PeakDetectorValidator();
+public class PeakDetectorInputValidator extends AbstractInputValidator implements IInputValidator {
 
 	public PeakDetectorInputValidator(List list) {
-		if(list != null) {
-			items = list.getItems();
-		} else {
-			items = new String[]{};
-		}
-	}
-
-	@Override
-	public String isValid(String range) {
-
-		IStatus status = validator.validate(range);
-		if(status.isOK()) {
-			for(String item : items) {
-				if(item.equals(range)) {
-					return "The item already exists.";
-				}
-			}
-		} else {
-			return status.getMessage();
-		}
-		return null;
+		super(new PeakDetectorValidator(), list);
 	}
 }

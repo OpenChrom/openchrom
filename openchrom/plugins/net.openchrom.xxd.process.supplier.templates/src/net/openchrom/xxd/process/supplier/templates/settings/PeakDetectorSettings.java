@@ -48,7 +48,7 @@ public class PeakDetectorSettings implements IPeakDetectorMSDSettings, IPeakDete
 		for(String item : items) {
 			IStatus status = validator.validate(item);
 			if(status.isOK()) {
-				settings.add(validator.getDetectorSettings());
+				settings.add(validator.getSettings());
 			}
 		}
 		//

@@ -56,7 +56,7 @@ public abstract class AbstractPeakIdentifier {
 		return peaks;
 	}
 
-	protected PeakIdentifierSettings getPeakIdentifierSettings(String preferenceKey) {
+	protected PeakIdentifierSettings getSettings(String preferenceKey) {
 
 		PeakIdentifierSettings settings = new PeakIdentifierSettings();
 		settings.setIdentifierSettings(PreferenceSupplier.getSettings(preferenceKey, ""));

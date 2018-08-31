@@ -53,7 +53,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 	@Override
 	public IProcessingInfo detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
 
-		PeakDetectorSettings settings = getPeakDetectorSettings(PreferenceSupplier.P_PEAK_DETECTOR_LIST_MSD);
+		PeakDetectorSettings settings = getSettings(PreferenceSupplier.P_PEAK_DETECTOR_LIST_MSD);
 		return detect(chromatogramSelection, settings, monitor);
 	}
 
@@ -67,11 +67,11 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 	@Override
 	public IProcessingInfo detect(IChromatogramSelectionCSD chromatogramSelection, IProgressMonitor monitor) {
 
-		PeakDetectorSettings settings = getPeakDetectorSettings(PreferenceSupplier.P_PEAK_DETECTOR_LIST_CSD);
+		PeakDetectorSettings settings = getSettings(PreferenceSupplier.P_PEAK_DETECTOR_LIST_CSD);
 		return detect(chromatogramSelection, settings, monitor);
 	}
 
-	private PeakDetectorSettings getPeakDetectorSettings(String preferenceKey) {
+	private PeakDetectorSettings getSettings(String preferenceKey) {
 
 		PeakDetectorSettings settings = new PeakDetectorSettings();
 		settings.setDetectorSettings(PreferenceSupplier.getSettings(preferenceKey, ""));

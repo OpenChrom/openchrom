@@ -38,6 +38,17 @@
             class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakIdentifierCSD"
             id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pagePeakIdentifierCSD">
       </page>        
-                  
+      <page
+            name="Standards Assigner (ISTD)"
+            category="org.eclipse.chemclipse.chromatogram.msd.quantitation.ui.preferences.quantifierPreferencePage"
+            class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageStandardsAssigner"
+            id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageStandardsAssigner">
+      </page>
+      <page
+            name="Standards Referencer (ISTD)"
+            category="org.eclipse.chemclipse.chromatogram.msd.quantitation.ui.preferences.quantifierPreferencePage"
+            class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageStandardsReferencer"
+            id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageStandardsReferencer">
+      </page>                           
    </extension>
 </plugin>

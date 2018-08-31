@@ -39,13 +39,13 @@ public class PeakIdentifierCSD extends AbstractPeakIdentifier implements IPeakId
 	@Override
 	public IProcessingInfo identify(IPeakCSD peak, IProgressMonitor monitor) {
 
-		return identify(peak, getPeakIdentifierSettings(PreferenceSupplier.P_PEAK_IDENTIFIER_LIST_CSD), monitor);
+		return identify(peak, getSettings(PreferenceSupplier.P_PEAK_IDENTIFIER_LIST_CSD), monitor);
 	}
 
 	@Override
 	public IProcessingInfo identify(List<IPeakCSD> peaks, IProgressMonitor monitor) {
 
-		return identify(peaks, getPeakIdentifierSettings(PreferenceSupplier.P_PEAK_IDENTIFIER_LIST_CSD), monitor);
+		return identify(peaks, getSettings(PreferenceSupplier.P_PEAK_IDENTIFIER_LIST_CSD), monitor);
 	}
 
 	@SuppressWarnings("unchecked")
