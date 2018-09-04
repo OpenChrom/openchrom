@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -24,12 +24,12 @@ import net.openchrom.nmr.processing.supplier.base.settings.FourierTransformation
 public class FourierTransformation extends AbstractScanProcessor implements IScanProcessor {
 
 	@Override
-	public IProcessingInfo process(IScanNMR scanNMR, IProcessorSettings processorSettings, IProgressMonitor monitor) {
+	public IProcessingInfo process(final IScanNMR scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(scanNMR, processorSettings, FourierTransformationSettings.class);
+		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
-			FourierTransformationSettings settings = (FourierTransformationSettings)processorSettings;
-			Complex[] modifiedSignals = scanNMR.getModifiedSignals();
+			final FourierTransformationSettings settings = (FourierTransformationSettings)processorSettings;
+			final Complex[] modifiedSignals = scanNMR.getModifiedSignals();
 			/*
 			 * Add your implementation here.
 			 */
