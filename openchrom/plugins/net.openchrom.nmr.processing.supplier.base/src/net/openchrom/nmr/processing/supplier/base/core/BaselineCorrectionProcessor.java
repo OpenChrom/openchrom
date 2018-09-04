@@ -8,11 +8,11 @@ import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettings;
+import net.openchrom.nmr.processing.supplier.base.settings.BaselineCorrectionSettings;
 
-public class PhaseCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
+public class BaselineCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
 
-	public PhaseCorrectionProcessor() {
+	public BaselineCorrectionProcessor() {
 
 		super();
 		// TODO Auto-generated constructor stub
@@ -23,15 +23,15 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 
 		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
-			final PhaseCorrectionSettings settings = (PhaseCorrectionSettings)processorSettings;
-			final Complex[] phaseCorrectedData = perform(scanNMR.getFourierTransformedData(), settings);
-			scanNMR.setPhaseCorrectedData(phaseCorrectedData);
+			final BaselineCorrectionSettings settings = (BaselineCorrectionSettings)processorSettings;
+			final Complex[] baselineCorrectedData = perform(scanNMR.getPhaseCorrectedData(), settings);
+			scanNMR.setBaselineCorrectedData(baselineCorrectedData);
 			processingInfo.setProcessingResult(scanNMR);
 		}
 		return processingInfo;
 	}
 
-	private Complex[] perform(final Complex[] modifiedSignals, final PhaseCorrectionSettings settings) {
+	private Complex[] perform(final Complex[] modifiedSignals, final BaselineCorrectionSettings settings) {
 
 		// TODO Auto-generated method stub
 		return null;

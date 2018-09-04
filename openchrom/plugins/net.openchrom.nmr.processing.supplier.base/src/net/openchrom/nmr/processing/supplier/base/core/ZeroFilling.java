@@ -29,7 +29,7 @@ public class ZeroFilling extends AbstractScanProcessor implements IScanProcessor
 		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
 			final ZeroFillingSettings settings = (ZeroFillingSettings)processorSettings;
-			final Complex[] modifiedSignals = scanNMR.getModifiedSignals();
+			final Complex[] modifiedSignals = scanNMR.getFourierTransformedData();
 			/*
 			 * Add your implementation here.
 			 */

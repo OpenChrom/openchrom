@@ -29,7 +29,7 @@ public class PhaseShift extends AbstractScanProcessor implements IScanProcessor 
 		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
 			final PhaseShiftSettings settings = (PhaseShiftSettings)processorSettings;
-			final Complex[] modifiedSignals = scanNMR.getModifiedSignals();
+			final Complex[] modifiedSignals = scanNMR.getFourierTransformedData();
 			/*
 			 * Add your implementation here.
 			 */

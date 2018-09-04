@@ -38,7 +38,7 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		if(!processingInfo.hasErrorMessages()) {
 			FourierTransformationSettings settings = (FourierTransformationSettings)processorSettings;
 			Complex[] fourierTransformedData = transform(scanNMR, settings);
-			scanNMR.setModifiedSignals(fourierTransformedData);
+			scanNMR.setFourierTransformedData(fourierTransformedData);
 			processingInfo.setProcessingResult(scanNMR);
 		}
 		return processingInfo;
