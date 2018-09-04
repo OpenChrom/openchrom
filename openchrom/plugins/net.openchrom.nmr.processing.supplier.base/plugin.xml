@@ -12,7 +12,7 @@
       <ScanProcessor
             description="This processor applies the Fourier Transformation."
             id="net.openchrom.nmr.processing.supplier.base.fourierTransformation"
-            processor="net.openchrom.nmr.processing.supplier.base.core.FourierTransformation"
+            processor="net.openchrom.nmr.processing.supplier.base.core.FourierTransformationProcessor"
             processorName="Fourier Transformation">
       </ScanProcessor>
       <ScanProcessor
@@ -20,6 +20,12 @@
             id="net.openchrom.nmr.processing.supplier.base.phaseShift"
             processor="net.openchrom.nmr.processing.supplier.base.core.PhaseShift"
             processorName="Phase Shift">
+      </ScanProcessor>
+      <ScanProcessor
+            description="This processor applies the phase correction."
+            id="net.openchrom.nmr.processing.supplier.base.phaseCorrection"
+            processor="net.openchrom.nmr.processing.supplier.base.core.PhaseCorrectionProcessor"
+            processorName="Phase Correction">
       </ScanProcessor>
    </extension>
 

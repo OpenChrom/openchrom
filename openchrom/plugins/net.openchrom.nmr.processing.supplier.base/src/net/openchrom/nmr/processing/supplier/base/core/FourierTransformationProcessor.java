@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.nmr.processing.supplier.base.settings.FourierTransformationSettings;
 
-public class FourierTransformation extends AbstractScanProcessor implements IScanProcessor {
+public class FourierTransformationProcessor extends AbstractScanProcessor implements IScanProcessor {
 
 	@Override
 	public IProcessingInfo process(final IScanNMR scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
