@@ -26,12 +26,13 @@ import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
+
 import net.openchrom.nmr.processing.supplier.base.settings.FourierTransformationSettings;
 
 public class FourierTransformation extends AbstractScanProcessor implements IScanProcessor {
 
 	@Override
-	public IProcessingInfo process(IScanNMR scanNMR, IProcessorSettings processorSettings, IProgressMonitor monitor) {
+	public IProcessingInfo process(final IScanNMR scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
 
 		IProcessingInfo processingInfo = validate(scanNMR, processorSettings, FourierTransformationSettings.class);
 		if(!processingInfo.hasErrorMessages()) {

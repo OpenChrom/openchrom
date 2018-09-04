@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -24,12 +24,12 @@ import net.openchrom.nmr.processing.supplier.base.settings.ZeroFillingSettings;
 public class ZeroFilling extends AbstractScanProcessor implements IScanProcessor {
 
 	@Override
-	public IProcessingInfo process(IScanNMR scanNMR, IProcessorSettings processorSettings, IProgressMonitor monitor) {
+	public IProcessingInfo process(final IScanNMR scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(scanNMR, processorSettings, ZeroFillingSettings.class);
+		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
-			ZeroFillingSettings settings = (ZeroFillingSettings)processorSettings;
-			Complex[] modifiedSignals = scanNMR.getModifiedSignals();
+			final ZeroFillingSettings settings = (ZeroFillingSettings)processorSettings;
+			final Complex[] modifiedSignals = scanNMR.getModifiedSignals();
 			/*
 			 * Add your implementation here.
 			 */
