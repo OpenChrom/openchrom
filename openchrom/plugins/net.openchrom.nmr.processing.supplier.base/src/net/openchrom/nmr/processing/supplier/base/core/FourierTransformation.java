@@ -34,7 +34,7 @@ public class FourierTransformation extends AbstractScanProcessor implements ISca
 	@Override
 	public IProcessingInfo process(final IScanNMR scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(scanNMR, processorSettings, FourierTransformationSettings.class);
+		IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
 			FourierTransformationSettings settings = (FourierTransformationSettings)processorSettings;
 			Complex[] fourierTransformedData = transform(scanNMR, settings);
