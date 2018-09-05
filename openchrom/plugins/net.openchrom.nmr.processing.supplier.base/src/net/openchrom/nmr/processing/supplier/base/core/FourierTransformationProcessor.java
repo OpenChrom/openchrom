@@ -383,46 +383,67 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 				switch (decimationFactorOfDigitalFilter) {
 					case 2:
 						decimationFactorOfDigitalFilterRow = 0;
+						break;
 					case 3:
 						decimationFactorOfDigitalFilterRow = 1;
+						break;
 					case 4:
 						decimationFactorOfDigitalFilterRow = 2;
+						break;
 					case 6:
 						decimationFactorOfDigitalFilterRow = 3;
+						break;
 					case 8:
 						decimationFactorOfDigitalFilterRow = 4;
+						break;
 					case 12:
 						decimationFactorOfDigitalFilterRow = 5;
+						break;
 					case 16:
 						decimationFactorOfDigitalFilterRow = 6;
+						break;
 					case 24:
 						decimationFactorOfDigitalFilterRow = 7;
+						break;
 					case 32:
 						decimationFactorOfDigitalFilterRow = 8;
+						break;
 					case 48:
 						decimationFactorOfDigitalFilterRow = 9;
+						break;
 					case 64:
 						decimationFactorOfDigitalFilterRow = 10;
+						break;
 					case 96:
 						decimationFactorOfDigitalFilterRow = 11;
+						break;
 					case 128:
 						decimationFactorOfDigitalFilterRow = 12;
+						break;
 					case 192:
 						decimationFactorOfDigitalFilterRow = 13;
+						break;
 					case 256:
 						decimationFactorOfDigitalFilterRow = 14;
+						break;
 					case 384:
 						decimationFactorOfDigitalFilterRow = 15;
+						break;
 					case 512:
 						decimationFactorOfDigitalFilterRow = 16;
+						break;
 					case 768:
 						decimationFactorOfDigitalFilterRow = 17;
+						break;
 					case 1024:
 						decimationFactorOfDigitalFilterRow = 18;
+						break;
 					case 1536:
 						decimationFactorOfDigitalFilterRow = 19;
+						break;
 					case 2048:
 						decimationFactorOfDigitalFilterRow = 20;
+						break;
 					default:
 						// unknown value
 						decimationFactorOfDigitalFilter = 0;
@@ -440,10 +461,13 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 				switch (dspFirmwareVersion) {
 					case 10:
 						dspFirmwareVersionRow = 1;
+						break;
 					case 11:
 						dspFirmwareVersionRow = 2;
+						break;
 					case 12:
 						dspFirmwareVersionRow = 3;
+						break;
 					default:
 						// unknown value
 						dspFirmwareVersion = 0;
