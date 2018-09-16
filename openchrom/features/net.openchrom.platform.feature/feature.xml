@@ -276,6 +276,10 @@
          id="net.openchrom.nmr.processing.supplier.base.feature"
          version="0.0.0"/>
 
+   <includes
+         id="net.openchrom.pcr.report.supplier.misc.feature"
+         version="0.0.0"/>
+
    <plugin
          id="org.eclipse.osgi"
          download-size="0"
