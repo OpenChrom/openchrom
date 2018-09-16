@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <!--
+	PARENT
+  -->
+  <parent>
+    <groupId>net.openchrom</groupId>
+    <artifactId>master</artifactId>
+    <version>BUILD-VERSION</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <!--
+	ARTIFACT
+  -->
+  <groupId>net.openchrom</groupId>
+  <artifactId>parent</artifactId>
+  <packaging>pom</packaging>
+  <!--
+	DESCRIPTION
+  --> 
+  <name>PCR Report</name>
+  <description>
+	This module is used to create PCR reports.
+  </description>
+  <!--
+	MODULES
+  -->
+  <modules>
+    <module>../../plugins/net.openchrom.pcr.report.supplier.misc</module>
+    <module>../../plugins/net.openchrom.pcr.report.supplier.misc.ui</module>
+    <module>../../features/net.openchrom.pcr.report.supplier.misc.feature</module>
+    <!--<module>../../plugins/net.openchrom.pcr.report.supplier.misc.fragment.test</module>-->
+  </modules>
+</project>

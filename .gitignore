@@ -1,0 +1,14 @@
+openchrom/plugins/net.openchrom.pcr.report.supplier.misc.fragment.test/Openchrom.log.*
+openchrom/plugins/net.openchrom.pcr.report.supplier.misc.fragment.test/Openchrom.log
+openchrom/plugins/net.openchrom.pcr.report.supplier.misc.fragment.test/bin/*
+openchrom/plugins/net.openchrom.pcr.report.supplier.misc.ui.fragment.test/bin/*
+openchrom/plugins/net.openchrom.pcr.report.supplier.misc.ui/bin/*
+openchrom/plugins/net.openchrom.pcr.report.supplier.misc/bin/*
+openchrom/sites/net.openchrom.pcr.report.supplier.misc.updateSite/artifacts.jar
+openchrom/sites/net.openchrom.pcr.report.supplier.misc.updateSite/content.jar
+openchrom/sites/net.openchrom.pcr.report.supplier.misc.updateSite/features/
+openchrom/sites/net.openchrom.pcr.report.supplier.misc.updateSite/plugins/
+openchrom/features/net.openchrom.pcr.report.supplier.misc.feature/target/
+openchrom/plugins/net.openchrom.pcr.report.supplier.misc.ui/target/
+openchrom/plugins/net.openchrom.pcr.report.supplier.misc/target/
+openchrom/sites/net.openchrom.pcr.report.supplier.misc.updateSite/target/

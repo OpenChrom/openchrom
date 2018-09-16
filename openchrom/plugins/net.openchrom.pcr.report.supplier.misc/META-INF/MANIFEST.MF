@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Misc
+Bundle-SymbolicName: net.openchrom.pcr.report.supplier.misc
+Bundle-Version: 1.3.0.qualifier
+Bundle-Activator: net.openchrom.pcr.report.supplier.misc.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
