@@ -40,23 +40,40 @@ public class PCRExportConverter extends AbstractPlateExportConverter implements 
 				PrintWriter printWriter = new PrintWriter(file);
 				//
 				Map<String, String> headerDataMap = plate.getHeaderDataMap();
-				printWriter.println("-------------------");
+				printWriter.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 				printValue(printWriter, IPlate.NAME, headerDataMap);
-				printWriter.println("-------------------");
+				printWriter.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 				printValue(printWriter, IPlate.DATE, headerDataMap);
 				printValue(printWriter, IPlate.NOISEBAND, headerDataMap);
 				printValue(printWriter, IPlate.THRESHOLD, headerDataMap);
 				printWriter.println("");
 				//
+				printWriter.print("Position");
+				printWriter.print("\t");
+				printWriter.print("Name");
+				printWriter.print("\t");
+				printWriter.print("Subset");
+				printWriter.print("\t");
+				printWriter.print("Target");
+				printWriter.print("\t");
+				printWriter.print("CP");
+				printWriter.println("");
+				printWriter.println("----------------------------------------------------------------------");
+				//
 				for(IWell well : plate.getWells()) {
 					if(!well.isEmptyMeasurement()) {
 						Position position = well.getPosition();
 						Map<String, String> dataMap = well.getData();
-						printWriter.println(position.getRow() + position.getColumn());
-						printValue(printWriter, IWell.SAMPLE_ID, dataMap);
-						printValue(printWriter, IWell.TARGET_NAME, dataMap);
-						printValue(printWriter, IWell.CROSSING_POINT, dataMap);
-						printValue(printWriter, IWell.SAMPLE_SUBSET, dataMap);
+						//
+						printWriter.print(position.getRow() + position.getColumn());
+						printWriter.print("\t");
+						printWriter.print(dataMap.getOrDefault(IWell.SAMPLE_ID, ""));
+						printWriter.print("\t");
+						printWriter.print(dataMap.getOrDefault(IWell.SAMPLE_SUBSET, ""));
+						printWriter.print("\t");
+						printWriter.print(dataMap.getOrDefault(IWell.TARGET_NAME, ""));
+						printWriter.print("\t");
+						printWriter.print(dataMap.getOrDefault(IWell.CROSSING_POINT, ""));
 						printWriter.println("");
 					}
 				}
