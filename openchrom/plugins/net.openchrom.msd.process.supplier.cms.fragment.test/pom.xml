@@ -10,6 +10,6 @@
 
   <artifactId>net.openchrom.msd.process.supplier.cms.fragment.test</artifactId>
   <packaging>eclipse-test-plugin</packaging>
-  <version>1.3.0-SNAPSHOT</version>
+  <version>1.4.0-SNAPSHOT</version>
   
 </project>

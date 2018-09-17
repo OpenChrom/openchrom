@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.msd.process.supplier.cms.feature"
       label="CMS Workflow"
-      version="1.3.0.qualifier"
+      version="1.4.0.qualifier"
       provider-name="OpenChrom">
 
    <description url="http://www.openchrom.net">
@@ -28,7 +28,7 @@ http://www.eclipse.org/legal/epl-v10.html
    </license>
 
    <requires>
-      <import feature="net.openchrom.msd.converter.supplier.cms.feature" version="1.3.0.qualifier"/>
+      <import feature="net.openchrom.msd.converter.supplier.cms.feature" version="1.4.0.qualifier"/>
       <import feature="org.eclipse.nebula.visualization.feature" version="1.0.0.201611041723"/>
    </requires>
 
