@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.feature_1.3.0.qualifier.jar" id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.feature" version="1.3.0.qualifier">
+   <feature url="features/net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.feature_1.4.0.qualifier.jar" id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.feature" version="1.4.0.qualifier">
       <category name="org.eclipse.chemclipse.xxd.process.supplier"/>
    </feature>
    <category-def name="org.eclipse.chemclipse.xxd.process.supplier" label="Process Supplier"/>
