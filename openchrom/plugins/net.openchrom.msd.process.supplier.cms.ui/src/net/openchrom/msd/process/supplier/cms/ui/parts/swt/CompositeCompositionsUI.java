@@ -285,6 +285,7 @@ public class CompositeCompositionsUI extends Composite {
 			public void mouseHover(MouseEvent me) {
 
 				int xPos, yPos;
+				double yTemp;
 				ISample sample;
 				if(0 == xyGraphComposition.getPlotArea().getTraceList().size())
 					return;
@@ -293,7 +294,11 @@ public class CompositeCompositionsUI extends Composite {
 				xPos = xyGraphComposition.getPrimaryXAxis().getValuePosition(sample.getXValue(), false);
 				yPos = xyGraphComposition.getPrimaryYAxis().getValuePosition(sample.getYValue(), false);
 				txt = txt + sample.getXValue() + "\t";
-				txt = txt + decimalFormatMouseHover.format(sample.getYValue()) + "\t";
+				yTemp = sample.getYValue();
+				if(usingOffsetLogScale) {
+					yTemp = yTemp - scaleOffset; // remove offset to get true value
+				}
+				txt = txt + decimalFormatMouseHover.format(yTemp) + "\t";
 				txt = txt + sample.getInfo();
 				textMouseOut.setText(txt);
 				if(null == pLine) {
