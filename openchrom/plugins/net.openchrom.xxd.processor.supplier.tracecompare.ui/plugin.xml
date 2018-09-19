@@ -11,7 +11,7 @@
          point="org.eclipse.ui.preferencePages">
       <page
             name="Trace Compare Settings"
-            category="org.eclipse.chemclipse.chromatogram.msd.process.ui.preferences.processPreferencePage"
+            category="org.eclipse.chemclipse.xxd.process.ui.preferences.processPreferencePage"
             class="net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences.PreferencePage"
             id="net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences.preferencePage">
       </page>
