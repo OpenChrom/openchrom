@@ -11,7 +11,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-      		category="org.eclipse.chemclipse.chromatogram.msd.process.ui.preferences.processPreferencePage"
+      		category="org.eclipse.chemclipse.xxd.process.ui.preferences.processPreferencePage"
             class="net.openchrom.msd.process.supplier.cms.ui.preferences.PreferencePage"
             id="net.openchrom.msd.process.supplier.cms.ui.preferences.preferencePage"
             name="CMS Process">
