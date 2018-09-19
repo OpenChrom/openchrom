@@ -11,7 +11,7 @@
          point="org.eclipse.ui.preferencePages">
       <page
             name="Mass Shift Detector Settings"
-            category="org.eclipse.chemclipse.chromatogram.msd.process.ui.preferences.processPreferencePage"
+            category="org.eclipse.chemclipse.xxd.process.ui.preferences.processPreferencePage"
             class="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.preferences.PreferencePage"
             id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.preferences.preferencePage">
       </page>
