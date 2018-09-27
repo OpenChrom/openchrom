@@ -27,8 +27,6 @@ import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.Polyline;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataProvider;
-import org.eclipse.nebula.visualization.xygraph.dataprovider.ISample;
-import org.eclipse.nebula.visualization.xygraph.dataprovider.Sample;
 import org.eclipse.nebula.visualization.xygraph.figures.ToolbarArmedXYGraph;
 import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
@@ -54,50 +52,144 @@ import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
 
 public class CompositeCompositionsUI extends Composite {
 
-	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
-	//
-	private DecimalFormat decimalFormatscaleOffset = ValueFormat.getDecimalFormatEnglish("0.0##E00");
-	private DecimalFormat decimalFormatMouseHover = ValueFormat.getDecimalFormatEnglish("0.0##E00");
-	private TreeMap<String, Trace> traceCompositionsMap; // key is composition name string, value is Trace for that composition, needed so trace can be removed
-	private XYGraph xyGraphComposition;
-	private ToolbarArmedXYGraph toolbarArmedXYGraph;
-	private int xyGraphCompositionNumberOfPoints = 0; // if xyGraphCompositionNumberOfPoints > 0, then remainder of xyGraphComposition data items are valid
-	private Button buttonPP; // select partial pressures
-	private Button buttonMF; // select mol fraction
-	private Button buttonLF; // select library fraction
-	private Button buttonLogScale; // if checked, use offset log scale, otherwise use linear scale
-	private DecompositionResults results = null;
-	private boolean usingETimes = false;
-	private boolean usingOffsetLogScale = false;
-	private double scaleOffset;
-	private Text textLogScaleOffset;
-	private Text textMouseOut;
-	private boolean txtLogScaleOffsetIgnoreEvent = false;
-	private Trace traceScaleOffset = null;
-	private Yunits yUnits = Yunits.PP;
-	private TreeMap<String, ArrayList<Double>> lookup;
-	private Polyline pLine;
+	private class ClosestPoint {
 
-	public CompositeCompositionsUI(Composite parent, int style) {
-		super(parent, style);
-		this.initialize();
+		String traceName;
+		int xIndex;
+		int xPos, yPos;
+		double xValue, yValue;
+
+		ClosestPoint(int x, int y) { // x and y are cursor position in pixels, returns x & y value for closest point
+			int testXposition, testYposition;
+			double minDist, testDist, testXvalue, testYvalue;
+			// double closestXvalue, closestYvalue;
+			boolean initialized = false;
+			List<Trace> traceList = new ArrayList<Trace>();
+			CircularBufferDataProvider tempDataProvider = new CircularBufferDataProvider(false);
+			traceList = xyGraphComposition.getPlotArea().getTraceList();
+			traceName = "no name";
+			minDist = 0.0;
+			xValue = 0.0;
+			yValue = 0.0;
+			xPos = 0;
+			yPos = 0;
+			for(Trace traceTemp : traceList) {
+				if(null != traceTemp) {
+					if(!(traceTemp.getDataProvider() instanceof CircularBufferDataProvider)) {
+						continue;
+					} else {
+						tempDataProvider = (CircularBufferDataProvider)traceTemp.getDataProvider();
+						for(int i = 0; i < tempDataProvider.getSize(); i++) { // linear search over values
+							testXvalue = tempDataProvider.getSample(i).getXValue();
+							testYvalue = tempDataProvider.getSample(i).getYValue();
+							testXposition = xyGraphComposition.getPrimaryXAxis().getValuePosition(testXvalue, false); // x position
+							testYposition = xyGraphComposition.getPrimaryYAxis().getValuePosition(testYvalue, false); // y position
+							testDist = Math.pow(x - testXposition, 2) + Math.pow(y - testYposition, 2); // distance in position units
+							if(!initialized) {
+								initialized = true;
+								minDist = testDist;
+								xValue = testXvalue;
+								yValue = testYvalue;
+								xPos = testXposition;
+								yPos = testYposition;
+								traceName = traceTemp.getName();
+								xIndex = i;
+							} else if(testDist < minDist) {
+								minDist = testDist;
+								xValue = testXvalue;
+								yValue = testYvalue;
+								xPos = testXposition;
+								yPos = testYposition;
+								traceName = traceTemp.getName();
+								xIndex = i;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		private String getTraceName() {
+
+			return traceName;
+		}
+
+		private int getxIndex() {
+
+			return xIndex;
+		}
+
+		private int getxPos() {
+
+			return xPos;
+		}
+
+		private double getxValue() {
+
+			return xValue;
+		}
+
+		private int getyPos() {
+
+			return yPos;
+		}
+
+		private double getyValue() {
+
+			return yValue;
+		}
 	}
 
 	private enum Yunits {
 		PP, MF, LF // Partial Pressure, Mol Fraction, Library Fraction
 	};
 
-	private void setyUnits(Yunits yUnits) {
+	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
+	private Button buttonLF; // select library fraction
+	private Button buttonLogScale; // if checked, use offset log scale, otherwise use linear scale
+	private Button buttonMF; // select mol fraction
+	private Button buttonPP; // select partial pressures
+	private CircularBufferDataProvider dataProviderTraceComposition;
+	private DecimalFormat decimalFormatMouseHover = ValueFormat.getDecimalFormatEnglish("0.0##E00");
+	//
+	private DecimalFormat decimalFormatscaleOffset = ValueFormat.getDecimalFormatEnglish("0.0##E00");
+	private TreeMap<String, ArrayList<Double>> lookup;
+	private Polyline pLine;
+	private DecompositionResults results = null;
+	private double scaleOffset;
+	private Text textLogScaleOffset;
+	private Text textMouseOut;
+	private ToolbarArmedXYGraph toolbarArmedXYGraph;
+	private TreeMap<String, Trace> traceCompositionsMap; // key is composition name string, value is Trace for that composition, needed so trace can be removed
+	private Trace traceScaleOffset = null;
+	private boolean txtLogScaleOffsetIgnoreEvent = false;
+	private boolean usingETimes = false;
+	private boolean usingOffsetLogScale = false;
+	private double[] xDataTraceComposition;
+	private XYGraph xyGraphComposition;
+	private int xyGraphCompositionNumberOfPoints = 0; // if xyGraphCompositionNumberOfPoints > 0, then remainder of xyGraphComposition data items are valid
+	private Yunits yUnits = Yunits.PP;;
 
-		if((null != results) && !results.isCalibrated()) {
-			yUnits = Yunits.LF;
-			buttonPP.setSelection(false);
-			buttonMF.setSelection(false);
-			buttonLF.setSelection(true);
-		} else {
-			this.yUnits = yUnits;
+	public CompositeCompositionsUI(Composite parent, int style) {
+		super(parent, style);
+		this.initialize();
+	}
+
+	private void clearXYGraph() {
+
+		if(null != traceCompositionsMap) {
+			for(Trace traceTemp : traceCompositionsMap.values()) {
+				xyGraphComposition.removeTrace(traceTemp);
+			}
 		}
-		updateXYGraph();
+		xyGraphComposition.setTitle("Composition");
+		xyGraphComposition.getPrimaryXAxis().setAutoScale(true);
+		xyGraphComposition.getPrimaryXAxis().setShowMajorGrid(true);
+		xyGraphComposition.getPrimaryYAxis().setAutoScale(true);
+		xyGraphComposition.getPrimaryYAxis().setShowMajorGrid(true);
+		xyGraphComposition.getPrimaryYAxis().setFormatPattern("0.0##E00");
+		xyGraphComposition.getPrimaryYAxis().setAutoScaleThreshold(0);
+		xyGraphCompositionNumberOfPoints = 0; // invalidate current XYGraph composition plots
 	}
 
 	private void initialize() {
@@ -284,22 +376,26 @@ public class CompositeCompositionsUI extends Composite {
 			@Override
 			public void mouseHover(MouseEvent me) {
 
-				int xPos, yPos;
-				double yTemp;
-				ISample sample;
-				if(0 == xyGraphComposition.getPlotArea().getTraceList().size())
+				if(0 == xyGraphComposition.getPlotArea().getTraceList().size()) {
 					return;
-				String txt = new String();
-				sample = findClosestPoint(me.x, me.y);
-				xPos = xyGraphComposition.getPrimaryXAxis().getValuePosition(sample.getXValue(), false);
-				yPos = xyGraphComposition.getPrimaryYAxis().getValuePosition(sample.getYValue(), false);
-				txt = txt + sample.getXValue() + "\t";
-				yTemp = sample.getYValue();
-				if(usingOffsetLogScale) {
-					yTemp = yTemp - scaleOffset; // remove offset to get true value
 				}
-				txt = txt + decimalFormatMouseHover.format(yTemp) + "\t";
-				txt = txt + sample.getInfo();
+				String txt = new String();
+				ClosestPoint closestPoint;
+				closestPoint = new ClosestPoint(me.x, me.y);
+				int xPos, yPos;
+				xPos = closestPoint.getxPos();
+				yPos = closestPoint.getyPos();
+				double yval, xval;
+				xval = closestPoint.getxValue();
+				yval = closestPoint.getyValue();
+				ArrayList<Double> templist;
+				templist = lookup.get(closestPoint.getTraceName());
+				if(null != templist) {
+					yval = templist.get(closestPoint.getxIndex());
+				}
+				txt = txt + xval + "\t";
+				txt = txt + decimalFormatMouseHover.format(yval) + "\t";
+				txt = txt + closestPoint.getTraceName();
 				textMouseOut.setText(txt);
 				if(null == pLine) {
 					pLine = new Polyline();
@@ -349,87 +445,23 @@ public class CompositeCompositionsUI extends Composite {
 				// 0[xX] HexDigits_opt . HexDigits BinaryExponent FloatTypeSuffix_opt
 				"(0[xX]" + HexDigits + "?(\\.)" + HexDigits + ")" + ")[pP][+-]?" + Digits + "))" + "[fFdD]?))" + "[\\x00-\\x20]*" + // Optional trailing "whitespace"
 				"$"); // and that's all
-		if(Pattern.matches(fpRegex, myString))
+		if(Pattern.matches(fpRegex, myString)) {
 			return true; // Will not throw NumberFormatException
-		else {
+		} else {
 			return false;
 		}
 	}
 
-	private ISample findClosestPoint(int x, int y) { // x and y are cursor position in pixels, returns x & y value for closest point
+	private void setyUnits(Yunits yUnits) {
 
-		int testXposition, testYposition;
-		double minDist, testDist, closestXvalue, closestYvalue, testXvalue,
-				testYvalue;
-		boolean initialized = false;
-		List<Trace> traceList = new ArrayList<Trace>();
-		CircularBufferDataProvider tempDataProvider = new CircularBufferDataProvider(false);
-		traceList = xyGraphComposition.getPlotArea().getTraceList();
-		String traceName = new String("no name");
-		minDist = 0.0;
-		closestXvalue = 0.0;
-		closestYvalue = 0.0;
-		for(Trace traceTemp : traceList) {
-			if(null != traceTemp) {
-				if(!(traceTemp.getDataProvider() instanceof CircularBufferDataProvider))
-					continue;
-				else {
-					tempDataProvider = (CircularBufferDataProvider)traceTemp.getDataProvider();
-					for(int i = 0; i < tempDataProvider.getSize(); i++) { // linear search over values
-						testXvalue = tempDataProvider.getSample(i).getXValue();
-						testYvalue = tempDataProvider.getSample(i).getYValue();
-						testXposition = xyGraphComposition.getPrimaryXAxis().getValuePosition(testXvalue, false); // x position
-						testYposition = xyGraphComposition.getPrimaryYAxis().getValuePosition(testYvalue, false); // y position
-						testDist = Math.pow(x - testXposition, 2) + Math.pow(y - testYposition, 2); // distance in position units
-						if(!initialized) {
-							initialized = true;
-							minDist = testDist;
-							closestXvalue = testXvalue;
-							closestYvalue = testYvalue;
-							traceName = traceTemp.getName();
-						} else if(testDist < minDist) {
-							minDist = testDist;
-							closestXvalue = testXvalue;
-							closestYvalue = testYvalue;
-							traceName = traceTemp.getName();
-						}
-					}
-				}
-			}
-		}
-		return new Sample(closestXvalue, closestYvalue, 0, 0, 0, 0, traceName);
-	}
-
-	private void clearXYGraph() {
-
-		if(null != traceCompositionsMap) {
-			for(Trace traceTemp : traceCompositionsMap.values()) {
-				xyGraphComposition.removeTrace(traceTemp);
-			}
-		}
-		xyGraphComposition.setTitle("Composition");
-		xyGraphComposition.getPrimaryXAxis().setAutoScale(true);
-		xyGraphComposition.getPrimaryXAxis().setShowMajorGrid(true);
-		xyGraphComposition.getPrimaryYAxis().setAutoScale(true);
-		xyGraphComposition.getPrimaryYAxis().setShowMajorGrid(true);
-		xyGraphComposition.getPrimaryYAxis().setFormatPattern("0.0##E00");
-		xyGraphComposition.getPrimaryYAxis().setAutoScaleThreshold(0);
-		xyGraphCompositionNumberOfPoints = 0; // invalidate current XYGraph composition plots
-	}
-
-	public void updateXYGraph(DecompositionResults results) {
-
-		this.results = results;
-		if(null == results) {
-			clearXYGraph();
-			return;
-		} else if(!results.isCalibrated()) {
+		if((null != results) && !results.isCalibrated()) {
 			yUnits = Yunits.LF;
 			buttonPP.setSelection(false);
 			buttonMF.setSelection(false);
 			buttonLF.setSelection(true);
+		} else {
+			this.yUnits = yUnits;
 		}
-		this.usingETimes = results.isUsingETimes();
 		updateXYGraph();
 	}
 
@@ -459,7 +491,7 @@ public class CompositeCompositionsUI extends Composite {
 			xyGraphComposition.getPrimaryYAxis().setLogScale(usingOffsetLogScale);
 			lookup = new TreeMap<String, ArrayList<Double>>();
 			xyGraphCompositionNumberOfPoints = results.getDecompositionResultsList().size();
-			double[] xDataTraceComposition = new double[xyGraphCompositionNumberOfPoints];
+			xDataTraceComposition = new double[xyGraphCompositionNumberOfPoints];
 			String componentName;
 			DecompositionResult result;
 			for(int i = 0; i < xyGraphCompositionNumberOfPoints; i++) {
@@ -526,8 +558,10 @@ public class CompositeCompositionsUI extends Composite {
 					txtLogScaleOffsetIgnoreEvent = false;
 				} else {
 					if(isValidDoubleString(textLogScaleOffset.getText())) {
-						scaleOffset = Double.parseDouble(textLogScaleOffset.getText());
-						minAbsY = java.lang.StrictMath.abs(scaleOffset + minY); // compute new minAbsY for Y-axis limits
+						scaleOffset = java.lang.StrictMath.abs(Double.parseDouble(textLogScaleOffset.getText()));
+						// still looking for better way to set minAbsY, these have been tried
+						// minAbsY = java.lang.StrictMath.abs(scaleOffset + minY); // compute new minAbsY for Y-axis limits
+						// minAbsY = 0.95*java.lang.StrictMath.abs(minY); // compute new minAbsY for Y-axis limits
 					}
 				}
 			}
@@ -553,7 +587,7 @@ public class CompositeCompositionsUI extends Composite {
 					}
 				}
 				// create a trace data provider
-				CircularBufferDataProvider dataProviderTraceComposition = new CircularBufferDataProvider(false); // XYGraph data item
+				dataProviderTraceComposition = new CircularBufferDataProvider(false); // XYGraph data item
 				dataProviderTraceComposition.setBufferSize(xyGraphCompositionNumberOfPoints);
 				dataProviderTraceComposition.setCurrentXDataArray(xDataTraceComposition);
 				dataProviderTraceComposition.setCurrentYDataArray(ydata);
@@ -600,5 +634,21 @@ public class CompositeCompositionsUI extends Composite {
 			}
 		}
 		// xyGraph.setShowLegend(!xyGraph.isShowLegend());
+	}
+
+	public void updateXYGraph(DecompositionResults results) {
+
+		this.results = results;
+		if(null == results) {
+			clearXYGraph();
+			return;
+		} else if(!results.isCalibrated()) {
+			yUnits = Yunits.LF;
+			buttonPP.setSelection(false);
+			buttonMF.setSelection(false);
+			buttonLF.setSelection(true);
+		}
+		this.usingETimes = results.isUsingETimes();
+		updateXYGraph();
 	}
 }
