@@ -8,6 +8,7 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
 import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.core.SignalNMR;
 import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
 import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
@@ -204,6 +205,13 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 			}
 		}
 
+		// save processed data for further displaying purposes in OpenNMR
+		for (int i = 0; i < nmrSpectrumFTProcessedPhasedBaseline.length; i++) {
+			double intensity = nmrSpectrumFTProcessedPhasedBaseline[i].getReal();
+			double chemicalShift = deltaAxisPPM[i];
+			scanNMR.getProcessedSignals().add(new SignalNMR(chemicalShift, intensity));
+		}
+
 		return nmrSpectrumFTProcessedPhasedBaseline;
 	}
 	
@@ -226,5 +234,6 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 		}
 		return vector;
 	}
+	
 	
 }
