@@ -883,11 +883,6 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		return null;
 	}
 
-	// @Override
-	// public ILibraryInformation getLibraryInformation() {
-	//
-	// return null;
-	// }
 	@Override
 	public void setLibraryInformation(ILibraryInformation libraryInformation) {
 
