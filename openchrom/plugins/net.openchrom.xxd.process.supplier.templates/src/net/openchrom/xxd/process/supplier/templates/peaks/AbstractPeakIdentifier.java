@@ -22,12 +22,12 @@ import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.model.identifier.ComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IComparisonResult;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.IIdentifierSettings;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.identifier.LibraryInformation;
+import org.eclipse.chemclipse.model.implementation.IdentificationTarget;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
-import org.eclipse.chemclipse.model.targets.IPeakTarget;
-import org.eclipse.chemclipse.model.targets.PeakTarget;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -98,9 +98,9 @@ public abstract class AbstractPeakIdentifier {
 						libraryInformation.setContributor(identifierSettings.getContributor());
 						libraryInformation.setReferenceIdentifier(identifierSettings.getReferenceId());
 						IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
-						IPeakTarget identificationTarget = new PeakTarget(libraryInformation, comparisonResult);
+						IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 						identificationTarget.setIdentifier(PeakIdentifierSettings.DESCRIPTION);
-						peak.addTarget(identificationTarget);
+						peak.getTargets().add(identificationTarget);
 					}
 				}
 			}
