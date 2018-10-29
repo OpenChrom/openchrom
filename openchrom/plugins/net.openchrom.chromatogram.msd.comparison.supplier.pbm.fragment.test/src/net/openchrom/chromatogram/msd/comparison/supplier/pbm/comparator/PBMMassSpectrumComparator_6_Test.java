@@ -11,15 +11,15 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
+import org.eclipse.chemclipse.model.identifier.IComparisonResult;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IMassSpectrumComparisonResult;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 
 public class PBMMassSpectrumComparator_6_Test extends MassSpectrumSetTestCase {
 
 	private MassSpectrumComparator comparator;
 	private IProcessingInfo processingInfo;
-	private IMassSpectrumComparisonResult result;
+	private IComparisonResult result;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -31,7 +31,7 @@ public class PBMMassSpectrumComparator_6_Test extends MassSpectrumSetTestCase {
 		//
 		comparator = new MassSpectrumComparator();
 		processingInfo = comparator.compare(unknown, reference);
-		result = processingInfo.getProcessingResult(IMassSpectrumComparisonResult.class);
+		result = processingInfo.getProcessingResult(IComparisonResult.class);
 	}
 
 	@Override
