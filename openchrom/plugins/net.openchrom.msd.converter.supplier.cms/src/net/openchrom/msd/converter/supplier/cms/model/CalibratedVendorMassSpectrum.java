@@ -28,7 +28,6 @@ import org.eclipse.chemclipse.msd.model.core.AbstractScanMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IIonBounds;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IScanTargetMSD;
 import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
@@ -874,29 +873,8 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	@Override
-	public void addTarget(IScanTargetMSD massSpectrumTarget) {
-
-	}
-
-	@Override
-	public void removeTarget(IScanTargetMSD massSpectrumTarget) {
-
-	}
-
-	@Override
-	public void removeTargets(List<IScanTargetMSD> targetsToDelete) {
-
-	}
-
-	@Override
 	public void removeAllTargets() {
 
-	}
-
-	@Override
-	public List<IScanTargetMSD> getTargets() {
-
-		return null;
 	}
 
 	@Override
