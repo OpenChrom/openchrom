@@ -18,14 +18,14 @@ import java.util.List;
 
 import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
-import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IScanTargetMSD;
-import org.eclipse.chemclipse.swt.ui.preferences.PreferenceSupplier;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
+import org.eclipse.chemclipse.swt.ui.preferences.PreferenceSupplier;
+import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
@@ -180,7 +180,7 @@ public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
 		return image;
 	}
 
-	private ILibraryInformation getLibraryInformation(List<IScanTargetMSD> targets) {
+	private ILibraryInformation getLibraryInformation(List<IIdentificationTarget> targets) {
 
 		ILibraryInformation libraryInformation = null;
 		targets = new ArrayList<>(targets);
