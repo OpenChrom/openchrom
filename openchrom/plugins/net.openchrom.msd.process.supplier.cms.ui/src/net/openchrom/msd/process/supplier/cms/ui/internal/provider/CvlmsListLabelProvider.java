@@ -12,13 +12,9 @@
 package net.openchrom.msd.process.supplier.cms.ui.internal.provider;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
-import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -178,16 +174,5 @@ public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
 
 		Image image = ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_MASS_SPECTRUM, IApplicationImage.SIZE_16x16);
 		return image;
-	}
-
-	private ILibraryInformation getLibraryInformation(List<IIdentificationTarget> targets) {
-
-		ILibraryInformation libraryInformation = null;
-		targets = new ArrayList<>(targets);
-		Collections.sort(targets, targetExtendedComparator);
-		if(targets.size() >= 1) {
-			libraryInformation = targets.get(0).getLibraryInformation();
-		}
-		return libraryInformation;
 	}
 }
