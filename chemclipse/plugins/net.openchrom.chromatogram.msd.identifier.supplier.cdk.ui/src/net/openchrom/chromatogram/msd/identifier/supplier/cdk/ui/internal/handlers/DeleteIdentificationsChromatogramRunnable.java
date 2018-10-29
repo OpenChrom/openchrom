@@ -105,7 +105,7 @@ public class DeleteIdentificationsChromatogramRunnable implements IRunnableWithP
 		/*
 		 * Delete each marked entry in the selected peak.
 		 */
-		scanMSD.getTargets().remove(targetsToDelete);
+		scanMSD.getTargets().removeAll(targetsToDelete);
 	}
 
 	private void deleteTargets(List<IChromatogramPeakMSD> peaks) {

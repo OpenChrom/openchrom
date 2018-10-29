@@ -148,7 +148,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 		 * Delete each marked entry in the selected peak.
 		 */
 		if(deleteIdentificationsWithoutFormula) {
-			scanMSD.getTargets().remove(targetsToDelete);
+			scanMSD.getTargets().removeAll(targetsToDelete);
 		}
 	}
 
@@ -196,7 +196,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 			 * Delete each marked entry in the selected peak.
 			 */
 			if(deleteIdentificationsWithoutFormula) {
-				peak.getTargets().remove(targetsToDelete);
+				peak.getTargets().removeAll(targetsToDelete);
 			}
 		}
 	}
