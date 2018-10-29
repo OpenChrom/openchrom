@@ -13,16 +13,16 @@ package net.openchrom.chromatogram.msd.identifier.supplier.cdk.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.chromatogram.msd.identifier.chromatogram.AbstractChromatogramIdentifier;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IChromatogramIdentifierSettings;
 import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
-import org.eclipse.chemclipse.model.targets.IPeakTarget;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IScanTargetMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
@@ -114,14 +114,13 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 		/*
 		 * Get the targets for each peak.
 		 */
-		List<IScanTargetMSD> targets = scanMSD.getTargets();
-		List<IScanTargetMSD> targetsToDelete = new ArrayList<IScanTargetMSD>();
-		for(IScanTargetMSD target : targets) {
+		List<IIdentificationTarget> targetsToDelete = new ArrayList<IIdentificationTarget>();
+		for(IIdentificationTarget target : scanMSD.getTargets()) {
 			/*
 			 * Check if the peak is a peak identification entry.
 			 */
-			if(target instanceof IScanTargetMSD) {
-				ILibraryInformation libraryInformation = ((IScanTargetMSD)target).getLibraryInformation();
+			if(target instanceof IIdentificationTarget) {
+				ILibraryInformation libraryInformation = ((IIdentificationTarget)target).getLibraryInformation();
 				if(libraryInformation.getSmiles().equals("")) {
 					/*
 					 * Calculate SMILES
@@ -149,7 +148,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 		 * Delete each marked entry in the selected peak.
 		 */
 		if(deleteIdentificationsWithoutFormula) {
-			scanMSD.removeTargets(targetsToDelete);
+			scanMSD.getTargets().remove(targetsToDelete);
 		}
 	}
 
@@ -162,14 +161,14 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 			/*
 			 * Get the targets for each peak.
 			 */
-			List<IPeakTarget> targets = peak.getTargets();
-			List<IPeakTarget> targetsToDelete = new ArrayList<IPeakTarget>();
-			for(IPeakTarget target : targets) {
+			Set<IIdentificationTarget> targets = peak.getTargets();
+			List<IIdentificationTarget> targetsToDelete = new ArrayList<IIdentificationTarget>();
+			for(IIdentificationTarget target : targets) {
 				/*
 				 * Check if the peak is a peak identification entry.
 				 */
-				if(target instanceof IPeakTarget) {
-					ILibraryInformation libraryInformation = ((IPeakTarget)target).getLibraryInformation();
+				if(target instanceof IIdentificationTarget) {
+					ILibraryInformation libraryInformation = ((IIdentificationTarget)target).getLibraryInformation();
 					if(libraryInformation.getSmiles().equals("")) {
 						/*
 						 * Calculate SMILES
@@ -197,7 +196,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 			 * Delete each marked entry in the selected peak.
 			 */
 			if(deleteIdentificationsWithoutFormula) {
-				peak.removeTargets(targetsToDelete);
+				peak.getTargets().remove(targetsToDelete);
 			}
 		}
 	}

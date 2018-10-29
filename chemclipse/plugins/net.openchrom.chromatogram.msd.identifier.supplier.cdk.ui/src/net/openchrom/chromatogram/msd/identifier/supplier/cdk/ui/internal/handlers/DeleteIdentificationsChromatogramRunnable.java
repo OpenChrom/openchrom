@@ -14,14 +14,14 @@ package net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.internal.handl
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
-import org.eclipse.chemclipse.model.targets.IPeakTarget;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IScanTargetMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -90,14 +90,13 @@ public class DeleteIdentificationsChromatogramRunnable implements IRunnableWithP
 		/*
 		 * Get the targets for each peak.
 		 */
-		List<IScanTargetMSD> targets = scanMSD.getTargets();
-		List<IScanTargetMSD> targetsToDelete = new ArrayList<IScanTargetMSD>();
-		for(IScanTargetMSD target : targets) {
+		List<IIdentificationTarget> targetsToDelete = new ArrayList<IIdentificationTarget>();
+		for(IIdentificationTarget target : scanMSD.getTargets()) {
 			/*
 			 * Check if the peak is a peak identification entry.
 			 */
-			if(target instanceof IScanTargetMSD) {
-				ILibraryInformation libraryInformation = ((IScanTargetMSD)target).getLibraryInformation();
+			if(target instanceof IIdentificationTarget) {
+				ILibraryInformation libraryInformation = ((IIdentificationTarget)target).getLibraryInformation();
 				if(libraryInformation.getSmiles().equals("")) {
 					targetsToDelete.add(target);
 				}
@@ -106,7 +105,7 @@ public class DeleteIdentificationsChromatogramRunnable implements IRunnableWithP
 		/*
 		 * Delete each marked entry in the selected peak.
 		 */
-		scanMSD.removeTargets(targetsToDelete);
+		scanMSD.getTargets().remove(targetsToDelete);
 	}
 
 	private void deleteTargets(List<IChromatogramPeakMSD> peaks) {
@@ -115,14 +114,14 @@ public class DeleteIdentificationsChromatogramRunnable implements IRunnableWithP
 			/*
 			 * Get the targets for each peak.
 			 */
-			List<IPeakTarget> targets = peak.getTargets();
-			List<IPeakTarget> targetsToDelete = new ArrayList<IPeakTarget>();
-			for(IPeakTarget target : targets) {
+			Set<IIdentificationTarget> targets = peak.getTargets();
+			List<IIdentificationTarget> targetsToDelete = new ArrayList<IIdentificationTarget>();
+			for(IIdentificationTarget target : targets) {
 				/*
 				 * Check if the peak is a peak identification entry.
 				 */
-				if(target instanceof IPeakTarget) {
-					ILibraryInformation libraryInformation = ((IPeakTarget)target).getLibraryInformation();
+				if(target instanceof IIdentificationTarget) {
+					ILibraryInformation libraryInformation = ((IIdentificationTarget)target).getLibraryInformation();
 					if(libraryInformation.getSmiles().equals("")) {
 						targetsToDelete.add(target);
 					}
@@ -131,7 +130,7 @@ public class DeleteIdentificationsChromatogramRunnable implements IRunnableWithP
 			/*
 			 * Delete each marked entry in the selected peak.
 			 */
-			peak.removeTargets(targetsToDelete);
+			peak.getTargets().removeAll(targetsToDelete);
 		}
 	}
 

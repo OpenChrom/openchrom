@@ -14,13 +14,14 @@ package net.openchrom.chromatogram.msd.identifier.supplier.cdk.core;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.core.identifier.massspectrum.IScanTargetMSD;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -87,13 +88,13 @@ public class SmilesCalculator {
 		}
 	}
 
-	private ILibraryInformation getLibraryInformation(List<IScanTargetMSD> targets) {
+	private ILibraryInformation getLibraryInformation(Set<IIdentificationTarget> targets) {
 
 		ILibraryInformation libraryInformation = null;
-		targets = new ArrayList<>(targets);
-		Collections.sort(targets, targetExtendedComparator);
-		if(targets.size() >= 1) {
-			libraryInformation = targets.get(0).getLibraryInformation();
+		List<IIdentificationTarget> targetsList = new ArrayList<>(targets);
+		Collections.sort(targetsList, targetExtendedComparator);
+		if(targetsList.size() >= 1) {
+			libraryInformation = targetsList.get(0).getLibraryInformation();
 		}
 		return libraryInformation;
 	}
