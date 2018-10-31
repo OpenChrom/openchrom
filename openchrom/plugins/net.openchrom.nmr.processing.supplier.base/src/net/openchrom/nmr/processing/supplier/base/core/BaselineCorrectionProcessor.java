@@ -8,7 +8,8 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
 import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
-import org.eclipse.chemclipse.nmr.model.core.SignalNMR;
+import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
+import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
 import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
@@ -20,6 +21,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.BaselineCorrectionSet
 public class BaselineCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
 
 	public BaselineCorrectionProcessor() {
+
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -30,14 +32,15 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
 			final BaselineCorrectionSettings settings = (BaselineCorrectionSettings)processorSettings;
-			final Complex[] baselineCorrectedData = perform(scanNMR.getPhaseCorrectedData(), scanNMR, settings);
-			scanNMR.setBaselineCorrectedData(baselineCorrectedData);
+			ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
+			final Complex[] baselineCorrection = perform(signalExtractor, scanNMR, settings);
+			signalExtractor.setBaselineCorrection(baselineCorrection, true);
 			processingInfo.setProcessingResult(scanNMR);
 		}
 		return processingInfo;
 	}
 
-	private Complex[] perform(final Complex[] phasedSignals, IScanNMR scanNMR, final BaselineCorrectionSettings settings) {
+	private Complex[] perform(ISignalExtractor signalExtractor, IScanNMR scanNMR, final BaselineCorrectionSettings settings) {
 
 		/*
 		 * Matlab:
@@ -64,7 +67,11 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 		/*
 		 * Literature: G. A. Pearson, Journal of Magnetic Resonance, 27, 265-272 (1977)
 		 */
+		double[] deltaAxisPPM = signalExtractor.extractChemicalShift();
+		Complex[] phasedSignals = signalExtractor.extractPhaseCorrectedData();
+		//
 		Complex[] nmrSpectrumFTProcessedPhasedBaseline = new Complex[phasedSignals.length];
+		// chemical shift axis used while fitting
 		// change/select parameters for BC
 		int fittingConstantU = 6; // 4 recommended from paper but probably from grotty data?
 		int fittingConstantV = 6; // 2-3 recommended from paper
@@ -112,8 +119,6 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 		for(int i = 0; i < fittingFunctionality.length; i++) {
 			fittingFunctionality[i] = 0;
 		}
-		// chemical shift axis used while fitting
-		double[] deltaAxisPPM = generateChemicalShiftAxis(scanNMR);
 		//
 		// iterative baseline correction
 		for(int i = 1; i < maximumIterations; i++) {
@@ -220,25 +225,8 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 				System.out.println("maximum iterations reached.");
 			}
 		}
-		// save processed data for further displaying purposes in OpenNMR
-		for(int i = 0; i < nmrSpectrumFTProcessedPhasedBaseline.length; i++) {
-			double intensity = nmrSpectrumFTProcessedPhasedBaseline[i].getReal();
-			double chemicalShift = deltaAxisPPM[i];
-			scanNMR.getProcessedSignals().add(new SignalNMR(chemicalShift, intensity));
-		}
 		//
-		return nmrSpectrumFTProcessedPhasedBaseline;
-	}
-
-	public static double[] generateChemicalShiftAxis(IScanNMR scanNMR) {
-
-		double doubleSize = scanNMR.getProcessingParameters("numberOfFourierPoints");
-		int deltaAxisPoints = (int)doubleSize;
-		double[] chemicalShiftAxis = new double[(int)doubleSize];
-		double minValueDeltaAxis = scanNMR.getProcessingParameters("firstDataPointOffset");
-		double maxValueDeltaAxis = scanNMR.getProcessingParameters("sweepWidth") + scanNMR.getProcessingParameters("firstDataPointOffset");
-		chemicalShiftAxis = generateLinearlySpacedVector(minValueDeltaAxis, maxValueDeltaAxis, deltaAxisPoints);
-		return chemicalShiftAxis;
+		return baselineCorrection;
 	}
 
 	public static double[] generateLinearlySpacedVector(double minVal, double maxVal, int points) {

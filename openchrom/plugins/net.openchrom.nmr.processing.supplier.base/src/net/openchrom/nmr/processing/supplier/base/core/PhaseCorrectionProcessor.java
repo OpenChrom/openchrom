@@ -2,7 +2,6 @@ package net.openchrom.nmr.processing.supplier.base.core;
 
 import java.util.Arrays;
 
-import org.apache.commons.lang3.time.StopWatch;
 import org.apache.commons.math3.analysis.MultivariateFunction;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.optim.InitialGuess;
@@ -19,6 +18,8 @@ import org.apache.commons.math3.random.JDKRandomGenerator;
 import org.apache.commons.math3.random.RandomVectorGenerator;
 import org.apache.commons.math3.random.UncorrelatedRandomVectorGenerator;
 import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
+import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
 import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
@@ -30,6 +31,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettin
 public class PhaseCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
 
 	public PhaseCorrectionProcessor() {
+
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -40,16 +42,19 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
 			final PhaseCorrectionSettings settings = (PhaseCorrectionSettings)processorSettings;
-			final Complex[] phaseCorrectedData = perform(scanNMR.getFourierTransformedData(), scanNMR, settings);
-			scanNMR.setPhaseCorrectedData(phaseCorrectedData);
+			ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
+			final Complex[] phaseCorrection = perform(signalExtractor, scanNMR, settings);
+			signalExtractor.setPhaseCorrection(phaseCorrection, true);
 			processingInfo.setProcessingResult(scanNMR);
 		}
 		return processingInfo;
 	}
 
-	private Complex[] perform(final Complex[] fourierTransformedSignals, IScanNMR scanNMR, final PhaseCorrectionSettings settings) {
+	private Complex[] perform(ISignalExtractor signalExtractor, IScanNMR scanNMR, final PhaseCorrectionSettings settings) {
 
-		Complex[] nmrSpectrumFTProcessedPhased = new Complex[fourierTransformedSignals.length];
+		Complex[] fourierTransformedSignals = signalExtractor.extractFourierTransformedData();
+		double[] deltaAxisPPM = signalExtractor.extractChemicalShift();
+		//
 		double leftPhaseChange = 0;
 		double rightPhaseChange = 0;
 		// switch for automatic phasing routine
@@ -59,10 +64,8 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 			/*
 			 * ACME algorithm - Chen et al., J Magn Res 2002, 158 (1), 164–168.
 			 */
-			StopWatch stopwatch = new StopWatch();
-			stopwatch.start();
 			// parts of optimizer
-			CalculateACMEEntropy calculateACMEEntropyFcn = new CalculateACMEEntropy(scanNMR);
+			CalculateACMEEntropy calculateACMEEntropyFcn = new CalculateACMEEntropy(signalExtractor.extractFourierTransformedData());
 			SimplexOptimizer nestedSimplexOptimizer = new SimplexOptimizer(1e-10, 1e-30);
 			double[] initialGuessMultiStart = new double[]{0, 0}; // {rightPhaseChange, leftPhaseChange};
 			NelderMeadSimplex nelderMeadSimplex = new NelderMeadSimplex(initialGuessMultiStart.length);
@@ -89,13 +92,9 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 				leftPhaseChange = phaseOpt[1];
 			}
 			//
-			stopwatch.stop();
-			long timeElapsed = stopwatch.getTime();
-			System.out.println("Automatic phase correction duration [ms]: " + timeElapsed);
-			stopwatch.reset();
 			System.out.println("No. of evaluations: " + calculateACMEEntropyFcn.getCount() + ", PH0: " + rightPhaseChange + ", PH1: " + leftPhaseChange);
 			// phase spectrum - ps
-			nmrSpectrumFTProcessedPhased = phaseCorrection(fourierTransformedSignals, phaseOpt);
+			return phaseCorrection(fourierTransformedSignals, phaseOpt);
 		} else {
 			double firstOrderPhaseCorrection = 0;
 			double zeroOrderPhaseCorrection = 0;
@@ -129,7 +128,6 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 			Double complexSize = scanNMR.getProcessingParameters("numberOfFourierPoints");
 			Complex[] totalPhaseCorrection = new Complex[complexSize.intValue()];
 			Complex phaseCorrectionComplexFactor;
-			double[] deltaAxisPPM = generateChemicalShiftAxis(scanNMR);
 			double phasingPivotpoint = deltaAxisPPM[(complexSize.intValue() / 2) - 1];
 			//
 			double[] leftPhaseCorrection = generateLinearlySpacedVector(0, 1, complexSize.intValue());
@@ -160,9 +158,7 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 					phaseCorrectionComplexFactor = phaseCorrectionFactor.multiply(correctionFactorTerm);
 					totalPhaseCorrection[i] = phaseCorrectionComplexFactor.exp();
 				}
-				for(int i = 0; i < nmrSpectrumFTProcessedPhased.length; i++) {
-					nmrSpectrumFTProcessedPhased[i] = fourierTransformedSignals[i].multiply(totalPhaseCorrection[i]); // phasing
-				}
+				return totalPhaseCorrection;
 			} else {
 				if(absolutePhase == 2) {
 					// never mind the pivot
@@ -186,26 +182,8 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 				phaseCorrection[i] = phaseCorrectionComplexFactor.exp();
 			}
 			//
-			if(absolutePhase == 20) {
-				// phased already
-			} else {
-				for(int i = 0; i < nmrSpectrumFTProcessedPhased.length; i++) {
-					nmrSpectrumFTProcessedPhased[i] = fourierTransformedSignals[i].multiply(phaseCorrection[i]); // phasing
-				}
-			}
+			return phaseCorrection;
 		}
-		return nmrSpectrumFTProcessedPhased;
-	}
-
-	public static double[] generateChemicalShiftAxis(IScanNMR scanNMR) {
-
-		double doubleSize = scanNMR.getProcessingParameters("numberOfFourierPoints");
-		int deltaAxisPoints = (int)doubleSize;
-		double[] chemicalShiftAxis = new double[(int)doubleSize];
-		double minValueDeltaAxis = scanNMR.getProcessingParameters("firstDataPointOffset");
-		double maxValueDeltaAxis = scanNMR.getProcessingParameters("sweepWidth") + scanNMR.getProcessingParameters("firstDataPointOffset");
-		chemicalShiftAxis = generateLinearlySpacedVector(minValueDeltaAxis, maxValueDeltaAxis, deltaAxisPoints);
-		return chemicalShiftAxis;
 	}
 
 	public static double[] generateLinearlySpacedVector(double minVal, double maxVal, int points) {
@@ -222,8 +200,9 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		private final Complex[] fourierTransformedData;
 		private int iterCount;
 
-		public CalculateACMEEntropy(final IScanNMR scanNMR) {
-			this.fourierTransformedData = scanNMR.getFourierTransformedData();
+		public CalculateACMEEntropy(Complex[] fourierTransformedData) {
+
+			this.fourierTransformedData = fourierTransformedData;
 			this.iterCount = 0;
 		}
 
@@ -319,9 +298,6 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 			phaseCorrection[i] = phaseCorrection[i].exp();
 		}
 		// apply correction
-		for(int i = 0; i < dataSize; i++) {
-			nmrDataOut[i] = nmrDataIn[i].multiply(phaseCorrection[i]);
-		}
-		return nmrDataOut;
+		return phaseCorrection;
 	}
 }

@@ -22,6 +22,8 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
+import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
 import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
@@ -38,11 +40,24 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
 			FourierTransformationSettings settings = (FourierTransformationSettings)processorSettings;
+			ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
 			Complex[] fourierTransformedData = transform(scanNMR, settings);
-			scanNMR.setFourierTransformedData(fourierTransformedData);
+			double[] chemicalShift = generateChemicalShiftAxis(scanNMR);
+			signalExtractor.createScans(fourierTransformedData, chemicalShift);
 			processingInfo.setProcessingResult(scanNMR);
 		}
 		return processingInfo;
+	}
+
+	public static double[] generateChemicalShiftAxis(IScanNMR scanNMR) {
+
+		double doubleSize = scanNMR.getProcessingParameters("numberOfFourierPoints");
+		int deltaAxisPoints = (int)doubleSize;
+		double[] chemicalShiftAxis = new double[(int)doubleSize];
+		double minValueDeltaAxis = scanNMR.getProcessingParameters("firstDataPointOffset");
+		double maxValueDeltaAxis = scanNMR.getProcessingParameters("sweepWidth") + scanNMR.getProcessingParameters("firstDataPointOffset");
+		chemicalShiftAxis = generateLinearlySpacedVector(minValueDeltaAxis, maxValueDeltaAxis, deltaAxisPoints);
+		return chemicalShiftAxis;
 	}
 
 	private Complex[] transform(IScanNMR scanNMR, FourierTransformationSettings processorSettings) {
