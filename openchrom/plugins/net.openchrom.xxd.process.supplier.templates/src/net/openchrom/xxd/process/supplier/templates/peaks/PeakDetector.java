@@ -12,9 +12,9 @@
 package net.openchrom.xxd.process.supplier.templates.peaks;
 
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.IPeakDetectorCSD;
-import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorCSDSettings;
+import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.IPeakDetectorMSD;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorMSDSettings;
+import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.chromatogram.peak.detector.core.AbstractPeakDetector;
 import org.eclipse.chemclipse.chromatogram.peak.detector.settings.IPeakDetectorSettings;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
@@ -45,7 +45,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IProcessingInfo detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorMSDSettings settings, IProgressMonitor monitor) {
+	public IProcessingInfo detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD settings, IProgressMonitor monitor) {
 
 		return applyDetector(chromatogramSelection, settings, monitor);
 	}
@@ -59,7 +59,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IProcessingInfo detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorCSDSettings settings, IProgressMonitor monitor) {
+	public IProcessingInfo detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD settings, IProgressMonitor monitor) {
 
 		return applyDetector(chromatogramSelection, settings, monitor);
 	}
