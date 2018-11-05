@@ -13,17 +13,20 @@ package net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings;
 
 import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.AbstractChromatogramIdentifierSettings;
 
-public class VendorIdentifierSettings extends AbstractChromatogramIdentifierSettings implements IVendorIdentifierSettings {
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
-	private boolean deleteIdentificationsWithoutFormula;
+public class IdentifierSettings extends AbstractChromatogramIdentifierSettings {
 
-	@Override
+	@JsonProperty(value = "Delete identifications without formula", defaultValue = "true")
+	@JsonPropertyDescription(value = "All targets which don't have a formula will be deleted.")
+	private boolean deleteIdentificationsWithoutFormula = true;
+
 	public boolean isDeleteIdentificationsWithoutFormula() {
 
 		return deleteIdentificationsWithoutFormula;
 	}
 
-	@Override
 	public void setDeleteIdentificationsWithoutFormula(boolean deleteIdentificationsWithoutFormula) {
 
 		this.deleteIdentificationsWithoutFormula = deleteIdentificationsWithoutFormula;

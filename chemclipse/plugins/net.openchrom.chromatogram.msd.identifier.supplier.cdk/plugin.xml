@@ -7,7 +7,8 @@
             description="This identifier calculates a SMILES formula for each identification entry."
             id="net.openchrom.chromatogram.msd.identifier.supplier.cdk"
             identifier="net.openchrom.chromatogram.msd.identifier.supplier.cdk.core.ChromatogramIdentifier"
-            identifierName="SMILES Identifier">
+            identifierName="SMILES Identifier"
+            identifierSettings="net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IdentifierSettings">
       </ChromatogramIdentificationSupplier>
    </extension>
    <extension

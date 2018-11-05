@@ -25,8 +25,7 @@ import net.openchrom.chromatogram.msd.identifier.supplier.cdk.Activator;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeDecider;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeDeciderFactory;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeParser;
-import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IVendorIdentifierSettings;
-import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.VendorIdentifierSettings;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IdentifierSettings;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
@@ -113,9 +112,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return new String[][]{{"&Basic Isotope Set (C,H,N,O)", IsotopePreference.BASIC.toString()}, {"&Organic Isotope Set (C,H,N,O,Cl,Br,S,P,I,B)", IsotopePreference.ORGANIC.toString()}, {"&User Defined Isotope Set", IsotopePreference.USER_DEFINED.toString()}};
 	}
 
-	public static IVendorIdentifierSettings getIdentifierSettings() {
+	public static IdentifierSettings getIdentifierSettings() {
 
-		IVendorIdentifierSettings identifierSettings = new VendorIdentifierSettings();
+		IdentifierSettings identifierSettings = new IdentifierSettings();
 		identifierSettings.setDeleteIdentificationsWithoutFormula(isDeleteIdentificationsWithoutFormula());
 		return identifierSettings;
 	}

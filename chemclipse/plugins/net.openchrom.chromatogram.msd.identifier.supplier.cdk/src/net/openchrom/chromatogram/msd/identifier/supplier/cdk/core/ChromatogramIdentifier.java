@@ -25,11 +25,10 @@ import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
-import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IVendorIdentifierSettings;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IdentifierSettings;
 
 import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
 import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
@@ -47,57 +46,55 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 	}
 
 	@Override
-	public IProcessingInfo identify(IChromatogramSelectionMSD chromatogramSelection, IChromatogramIdentifierSettings identifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo identify(IChromatogramSelectionMSD chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
-		try {
-			super.validateChromatogramSelection(chromatogramSelection);
-			super.validateSettings(identifierSettings);
-			//
-			boolean deleteIdentificationsWithoutFormula = false;
-			if(identifierSettings instanceof IVendorIdentifierSettings) {
-				deleteIdentificationsWithoutFormula = ((IVendorIdentifierSettings)identifierSettings).isDeleteIdentificationsWithoutFormula();
-			}
-			/*
-			 * Scans
-			 */
-			IChromatogramMSD chromatogram = chromatogramSelection.getChromatogramMSD();
-			int startScan = chromatogram.getScanNumber(chromatogramSelection.getStartRetentionTime());
-			int stopScan = chromatogram.getScanNumber(chromatogramSelection.getStopRetentionTime());
-			/*
-			 * Scans
-			 */
-			for(int scan = startScan; scan <= stopScan; scan++) {
-				IScan supplierScan = chromatogram.getScan(scan);
-				if(supplierScan instanceof IScanMSD) {
-					IScanMSD scanMSD = (IScanMSD)supplierScan;
-					/*
-					 * Scan
-					 */
-					if(scanMSD.getTargets().size() > 0) {
-						calculateSmilesFormula(scanMSD, deleteIdentificationsWithoutFormula);
-					}
-					/*
-					 * Optimized Scan.
-					 */
-					IScanMSD optimizedMassSpectrum = scanMSD.getOptimizedMassSpectrum();
-					if(optimizedMassSpectrum != null) {
-						if(optimizedMassSpectrum.getTargets().size() > 0) {
-							calculateSmilesFormula(optimizedMassSpectrum, deleteIdentificationsWithoutFormula);
+		IProcessingInfo processingInfo = validate(chromatogramSelection, chromatogramIdentifierSettings);
+		if(!processingInfo.hasErrorMessages()) {
+			if(chromatogramIdentifierSettings instanceof IdentifierSettings) {
+				/*
+				 * Settings
+				 */
+				IdentifierSettings identifierSettings = (IdentifierSettings)chromatogramIdentifierSettings;
+				boolean deleteIdentificationsWithoutFormula = identifierSettings.isDeleteIdentificationsWithoutFormula();
+				/*
+				 * Scans
+				 */
+				IChromatogramMSD chromatogram = chromatogramSelection.getChromatogramMSD();
+				int startScan = chromatogram.getScanNumber(chromatogramSelection.getStartRetentionTime());
+				int stopScan = chromatogram.getScanNumber(chromatogramSelection.getStopRetentionTime());
+				/*
+				 * Scans
+				 */
+				for(int scan = startScan; scan <= stopScan; scan++) {
+					IScan supplierScan = chromatogram.getScan(scan);
+					if(supplierScan instanceof IScanMSD) {
+						IScanMSD scanMSD = (IScanMSD)supplierScan;
+						/*
+						 * Scan
+						 */
+						if(scanMSD.getTargets().size() > 0) {
+							calculateSmilesFormula(scanMSD, deleteIdentificationsWithoutFormula);
+						}
+						/*
+						 * Optimized Scan.
+						 */
+						IScanMSD optimizedMassSpectrum = scanMSD.getOptimizedMassSpectrum();
+						if(optimizedMassSpectrum != null) {
+							if(optimizedMassSpectrum.getTargets().size() > 0) {
+								calculateSmilesFormula(optimizedMassSpectrum, deleteIdentificationsWithoutFormula);
+							}
 						}
 					}
 				}
+				/*
+				 * Peaks
+				 */
+				List<IPeakMSD> peaks = new ArrayList<IPeakMSD>();
+				for(IPeakMSD peakMSD : chromatogramSelection.getChromatogramMSD().getPeaks(chromatogramSelection)) {
+					peaks.add(peakMSD);
+				}
+				calculateSmilesFormula(peaks, deleteIdentificationsWithoutFormula);
 			}
-			/*
-			 * Peaks
-			 */
-			List<IPeakMSD> peaks = new ArrayList<IPeakMSD>();
-			for(IPeakMSD peakMSD : chromatogramSelection.getChromatogramMSD().getPeaks(chromatogramSelection)) {
-				peaks.add(peakMSD);
-			}
-			calculateSmilesFormula(peaks, deleteIdentificationsWithoutFormula);
-		} catch(Exception e) {
-			processingInfo.addErrorMessage("SMILES", "Something gone wrong.");
 		}
 		return processingInfo;
 	}
@@ -105,7 +102,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 	@Override
 	public IProcessingInfo identify(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
 
-		IVendorIdentifierSettings identifierSettings = PreferenceSupplier.getIdentifierSettings();
+		IdentifierSettings identifierSettings = PreferenceSupplier.getIdentifierSettings();
 		return identify(chromatogramSelection, identifierSettings, monitor);
 	}
 
