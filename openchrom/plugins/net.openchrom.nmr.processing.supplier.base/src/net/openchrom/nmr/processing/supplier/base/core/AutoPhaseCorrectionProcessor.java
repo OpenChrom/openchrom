@@ -212,9 +212,6 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		for(int i = 0; i < dataSize; i++) {
 			phaseCorrection[i] = phaseCorrection[i].exp();
 		}
-		for(int i = 0; i < dataSize; i++) {
-			phaseCorrection[i] = phaseCorrection[i].exp();
-		}
 		// apply correction
 		return phaseCorrection;
 	}
