@@ -89,7 +89,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		//
 		System.out.println("No. of evaluations: " + calculateACMEEntropyFcn.getCount() + ", PH0: " + rightPhaseChange + ", PH1: " + leftPhaseChange);
 		// phase spectrum - ps
-		return phaseCorrection(fourierTransformedSignals, phaseOpt);
+		return phaseCorrection(fourierTransformedSignals.length, phaseOpt);
 	}
 
 	private static double[] generateLinearlySpacedVector(double minVal, double maxVal, int points) {
@@ -187,18 +187,30 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 
 	private static Complex[] phaseCorrection(Complex[] fourierTransformedData, double[] phaseParameters) {
 
+		int dataSize = fourierTransformedData.length;
+		Complex[] correction = phaseCorrection(dataSize, phaseParameters);
+		Complex[] nmrDataIn = fourierTransformedData;
+		Complex[] nmrDataOut = new Complex[dataSize];
+		for(int i = 0; i < dataSize; i++) {
+			nmrDataOut[i] = nmrDataIn[i].multiply(correction[i]);
+		}
+		return nmrDataOut;
+	}
+
+	private static Complex[] phaseCorrection(int dataSize, double[] phaseParameters) {
+
 		// convert to radians
 		double zerothPhase = phaseParameters[0] * Math.PI / 180;
 		double firstPhase = phaseParameters[1] * Math.PI / 180;
-		int dataSize = fourierTransformedData.length;
-		Complex[] nmrDataIn = fourierTransformedData;
-		Complex[] nmrDataOut = new Complex[dataSize];
 		Complex complexFactor = new Complex(0.0, 1.0); // sqrt(-1)
 		double[] phasingArray = generateLinearlySpacedVector(0, dataSize, dataSize);
 		Complex[] phaseCorrection = new Complex[dataSize];
 		// generate phase correction array
 		for(int i = 0; i < dataSize; i++) {
 			phaseCorrection[i] = complexFactor.multiply(zerothPhase + (firstPhase * phasingArray[i] / dataSize));
+		}
+		for(int i = 0; i < dataSize; i++) {
+			phaseCorrection[i] = phaseCorrection[i].exp();
 		}
 		for(int i = 0; i < dataSize; i++) {
 			phaseCorrection[i] = phaseCorrection[i].exp();
