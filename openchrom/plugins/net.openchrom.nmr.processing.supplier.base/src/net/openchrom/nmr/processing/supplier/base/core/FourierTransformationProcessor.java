@@ -56,7 +56,8 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		double[] chemicalShiftAxis = new double[(int)doubleSize];
 		double minValueDeltaAxis = scanNMR.getProcessingParameters("firstDataPointOffset");
 		double maxValueDeltaAxis = scanNMR.getProcessingParameters("sweepWidth") + scanNMR.getProcessingParameters("firstDataPointOffset");
-		chemicalShiftAxis = generateLinearlySpacedVector(minValueDeltaAxis, maxValueDeltaAxis, deltaAxisPoints);
+		UtilityFunctions utilityFunction = new UtilityFunctions();
+		chemicalShiftAxis = utilityFunction.generateLinearlySpacedVector(minValueDeltaAxis, maxValueDeltaAxis, deltaAxisPoints);
 		return chemicalShiftAxis;
 	}
 
@@ -193,8 +194,9 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 				for(int i = 0; i < freeInductionDecay.length; i++) {
 					tempRealArray[i] = tempFID[i].getReal();
 				}
-				double tempFIDmin = getMinValueOfArray(tempRealArray);
-				double tempFIDmax = getMaxValueOfArray(tempRealArray);
+				UtilityFunctions utilityFunction = new UtilityFunctions();
+				double tempFIDmin = utilityFunction.getMinValueOfArray(tempRealArray);
+				double tempFIDmax = utilityFunction.getMaxValueOfArray(tempRealArray);
 				//
 				if(Math.abs(tempFIDmax) > Math.abs(tempFIDmin)) {
 					// System.out.println("neg, *-1");
@@ -744,18 +746,10 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		double maxValTimescaleFactor = (scanNMR.getProcessingParameters("numberOfFourierPoints") / scanNMR.getProcessingParameters("numberOfPoints"));
 		double maxValTimescale = scanNMR.getProcessingParameters("acquisitionTime") * maxValTimescaleFactor; // linspace(0,NmrData.at*(NmrData.fn/NmrData.np),NmrData.fn);
 		int timescalePoints = scanNMR.getProcessingParameters("numberOfFourierPoints").intValue();
-		double[] timeScale = generateLinearlySpacedVector(minValTimescale, maxValTimescale, timescalePoints); // for ft-operation
+		UtilityFunctions utilityFunction = new UtilityFunctions();
+		double[] timeScale = utilityFunction.generateLinearlySpacedVector(minValTimescale, maxValTimescale, timescalePoints); // for ft-operation
 		// else: double[] TimeScale = GenerateLinearlySpacedVector(minValTimescale, BrukerAT, TimescalePoints);
 		return timeScale;
-	}
-
-	private static double[] generateLinearlySpacedVector(double minVal, double maxVal, int points) {
-
-		double[] vector = new double[points];
-		for(int i = 0; i < points; i++) {
-			vector[i] = minVal + (double)i / (points - 1) * (maxVal - minVal);
-		}
-		return vector;
 	}
 
 	private static double[] exponentialApodizationFunction(double[] timeScale, IScanNMR scanNMR) {
@@ -931,27 +925,5 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		Complex[] analogFID = new Complex[unfilteredFID.length];
 		System.arraycopy(unfilteredFID, 0, analogFID, 0, unfilteredFID.length);
 		return analogFID;
-	}
-
-	public static double getMaxValueOfArray(double[] dataArray) {
-
-		double maxValue = 0;
-		for(int m = 1; m < dataArray.length; m++) {
-			if(dataArray[m] > maxValue) {
-				maxValue = dataArray[m];
-			}
-		}
-		return maxValue;
-	}
-
-	public static double getMinValueOfArray(double[] dataArray) {
-
-		double minValue = 0;
-		for(int m = 1; m < dataArray.length; m++) {
-			if(dataArray[m] < minValue) {
-				minValue = dataArray[m];
-			}
-		}
-		return minValue;
 	}
 }

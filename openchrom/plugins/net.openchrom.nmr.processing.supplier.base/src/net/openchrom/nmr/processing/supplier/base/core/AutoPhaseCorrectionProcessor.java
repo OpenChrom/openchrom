@@ -31,7 +31,6 @@ import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettin
 public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
 
 	public AutoPhaseCorrectionProcessor() {
-
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -56,7 +55,6 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		//
 		double leftPhaseChange = 0;
 		double rightPhaseChange = 0;
-		// switch for automatic phasing routine
 		//
 		/*
 		 * ACME algorithm - Chen et al., J Magn Res 2002, 158 (1), 164–168.
@@ -89,16 +87,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		//
 		System.out.println("No. of evaluations: " + calculateACMEEntropyFcn.getCount() + ", PH0: " + rightPhaseChange + ", PH1: " + leftPhaseChange);
 		// phase spectrum - ps
-		return phaseCorrection(fourierTransformedSignals.length, phaseOpt);
-	}
-
-	private static double[] generateLinearlySpacedVector(double minVal, double maxVal, int points) {
-
-		double[] vector = new double[points];
-		for(int i = 0; i < points; i++) {
-			vector[i] = minVal + (double)i / (points - 1) * (maxVal - minVal);
-		}
-		return vector;
+		return generatePhaseCorrection(fourierTransformedSignals.length, phaseOpt);
 	}
 
 	private static class CalculateACMEEntropy implements MultivariateFunction {
@@ -107,7 +96,6 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		private int iterCount;
 
 		public CalculateACMEEntropy(Complex[] fourierTransformedData) {
-
 			this.fourierTransformedData = fourierTransformedData;
 			this.iterCount = 0;
 		}
@@ -122,7 +110,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 			++iterCount;
 			// (de)phase spectrum
 			int dataSize = fourierTransformedData.length;
-			Complex[] nmrDataComplex = phaseCorrection(fourierTransformedData, parameters);
+			Complex[] nmrDataComplex = applyPhaseCorrection(fourierTransformedData, parameters);
 			double[] nmrDataReal = new double[dataSize];
 			for(int i = 0; i < dataSize; i++) {
 				nmrDataReal[i] = nmrDataComplex[i].getReal();
@@ -185,10 +173,10 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		}
 	}
 
-	private static Complex[] phaseCorrection(Complex[] fourierTransformedData, double[] phaseParameters) {
+	private static Complex[] applyPhaseCorrection(Complex[] fourierTransformedData, double[] phaseParameters) {
 
 		int dataSize = fourierTransformedData.length;
-		Complex[] correction = phaseCorrection(dataSize, phaseParameters);
+		Complex[] correction = generatePhaseCorrection(dataSize, phaseParameters);
 		Complex[] nmrDataIn = fourierTransformedData;
 		Complex[] nmrDataOut = new Complex[dataSize];
 		for(int i = 0; i < dataSize; i++) {
@@ -197,13 +185,14 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		return nmrDataOut;
 	}
 
-	private static Complex[] phaseCorrection(int dataSize, double[] phaseParameters) {
+	private static Complex[] generatePhaseCorrection(int dataSize, double[] phaseParameters) {
 
 		// convert to radians
 		double zerothPhase = phaseParameters[0] * Math.PI / 180;
 		double firstPhase = phaseParameters[1] * Math.PI / 180;
 		Complex complexFactor = new Complex(0.0, 1.0); // sqrt(-1)
-		double[] phasingArray = generateLinearlySpacedVector(0, dataSize, dataSize);
+		UtilityFunctions utilityFunction = new UtilityFunctions();
+		double[] phasingArray = utilityFunction.generateLinearlySpacedVector(0, dataSize, dataSize);
 		Complex[] phaseCorrection = new Complex[dataSize];
 		// generate phase correction array
 		for(int i = 0; i < dataSize; i++) {
@@ -212,10 +201,6 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		for(int i = 0; i < dataSize; i++) {
 			phaseCorrection[i] = phaseCorrection[i].exp();
 		}
-		for(int i = 0; i < dataSize; i++) {
-			phaseCorrection[i] = phaseCorrection[i].exp();
-		}
-		// apply correction
 		return phaseCorrection;
 	}
 }

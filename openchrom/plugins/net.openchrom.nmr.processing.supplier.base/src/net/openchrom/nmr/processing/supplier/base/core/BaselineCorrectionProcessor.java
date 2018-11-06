@@ -21,7 +21,6 @@ import net.openchrom.nmr.processing.supplier.base.settings.BaselineCorrectionSet
 public class BaselineCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
 
 	public BaselineCorrectionProcessor() {
-
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -67,11 +66,12 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 		/*
 		 * Literature: G. A. Pearson, Journal of Magnetic Resonance, 27, 265-272 (1977)
 		 */
+		// chemical shift axis used while fitting
 		double[] deltaAxisPPM = signalExtractor.extractChemicalShift();
+		// spectrum to be phase corrected
 		Complex[] phasedSignals = signalExtractor.extractPhaseCorrectedData();
 		//
 		Complex[] nmrSpectrumFTProcessedPhasedBaseline = new Complex[phasedSignals.length];
-		// chemical shift axis used while fitting
 		// change/select parameters for BC
 		int fittingConstantU = 6; // 4 recommended from paper but probably from grotty data?
 		int fittingConstantV = 6; // 2-3 recommended from paper
@@ -105,7 +105,7 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 		}
 		//
 		// parts of the fitting routine
-		int maximumIterations = 100;
+		int maximumIterations = 1000;
 		int numberOfFourierPoints = scanNMR.getProcessingParameters("numberOfFourierPoints").intValue();
 		double[] heavisideFunctionality = new double[nmrSpectrumBaselineCorrAbsolute.length];
 		for(int i = 0; i < heavisideFunctionality.length; i++) {
@@ -121,8 +121,9 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 		}
 		//
 		// iterative baseline correction
+		boolean firstFit = true;
 		for(int i = 1; i < maximumIterations; i++) {
-			System.out.println("Iteration " + i);
+			// System.out.println("Iteration " + i);
 			// create heaviside functionality
 			for(int k = 0; k < heavisideFunctionality.length; k++) {
 				heavisideFunctionality[k] = (fittingConstantU * sigmaOne) - nmrSpectrumBaselineCorrAbsolute[k];
@@ -147,8 +148,7 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 			// coefficients for PolynomialCurveFitter
 			final double[] realCoeff;
 			final double[] imagCoeff;
-			// int fitCompare = Double.compare(sigmaNull, sigmaOne);
-			// if (fitCompare == 0) {
+			//
 			if(Math.abs(sigmaNull - sigmaOne) < 1E-18) {
 				// fitting here
 				for(int z = 0; z < baselineCorrection.length; z++) {
@@ -158,15 +158,20 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 				for(int k = 0; k < fittingFunctionality.length; k++) {
 					fittingFunctionality[k] = (fittingConstantV * sigmaOne) - nmrSpectrumBaselineCorrAbsolute[k];
 				}
-				// the data has to be stored in ArrayList to be fitted
+				// the data has to be stored in ArrayList to be fitted; Complex[] not supported by Fitter etc. => split into real and imaginary parts
 				ArrayList<WeightedObservedPoint> realFittingPoints = new ArrayList<WeightedObservedPoint>();
 				ArrayList<WeightedObservedPoint> imagFittingPoints = new ArrayList<WeightedObservedPoint>();
 				double fittingWeight = 1.0; // weight = 1.0 if none
 				// add data to ArrayList
 				for(int z = 0; z < phasedSignals.length; z++) {
 					if(fittingFunctionality[z] > 0) {
-						realFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z], phasedSignals[z].getReal()));
-						imagFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z], phasedSignals[z].getImaginary()));
+						if(firstFit) {
+							realFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z], phasedSignals[z].getReal()));
+							imagFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z], phasedSignals[z].getImaginary()));
+						} else {
+							realFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z], nmrSpectrumFTProcessedPhasedBaseline[z].getReal()));
+							imagFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z], nmrSpectrumFTProcessedPhasedBaseline[z].getImaginary()));
+						}
 					} // else?? = 0 ??
 				}
 				// TODO define polynomial order for fitting
@@ -182,9 +187,17 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 					baselineCorrectionImag[s] = polyFuncImag.value(deltaAxisPPM[s]);
 				}
 				// apply baseline correction
-				for(int w = 0; w < nmrSpectrumFTProcessedPhasedBaseline.length; w++) {
-					baselineCorrection[w] = new Complex(baselineCorrectionReal[w], baselineCorrectionImag[w]);
-					nmrSpectrumFTProcessedPhasedBaseline[w] = phasedSignals[w].subtract(baselineCorrection[w]);
+				if(firstFit) {
+					for(int w = 0; w < nmrSpectrumFTProcessedPhasedBaseline.length; w++) {
+						baselineCorrection[w] = new Complex(baselineCorrectionReal[w], baselineCorrectionImag[w]);
+						nmrSpectrumFTProcessedPhasedBaseline[w] = phasedSignals[w].subtract(baselineCorrection[w]);
+					}
+					firstFit = false;
+				} else {
+					for(int w = 0; w < nmrSpectrumFTProcessedPhasedBaseline.length; w++) {
+						baselineCorrection[w] = new Complex(baselineCorrectionReal[w], baselineCorrectionImag[w]);
+						nmrSpectrumFTProcessedPhasedBaseline[w] = nmrSpectrumFTProcessedPhasedBaseline[w].subtract(baselineCorrection[w]);
+					}
 				}
 				//
 				// preparation of real part of spectrum for further fitting
@@ -205,15 +218,12 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 				}
 				//
 				// check if baseline correction is good enough
-				// Complex baselineCorrectionBreakCheck = new Complex(0, 0);
 				double baselineCorrectionBreakCheck = 0;
 				for(int g = 0; g < baselineCorrection.length; g++) {
-					// baselineCorrectionBreakCheck.add(baselineCorrection[g].abs());
 					baselineCorrectionBreakCheck = baselineCorrectionBreakCheck + baselineCorrection[g].abs();
 				}
-				// if (baselineCorrectionBreakCheck.abs() < (negligibleFactorMinimum * sigmaOne)) {
 				double breakCondition = negligibleFactorMinimum * sigmaOne;
-				System.out.println("baselineCorrectionBreakCheck = " + baselineCorrectionBreakCheck + ", breakCondition = " + breakCondition + "; " + i);
+				// System.out.println("baselineCorrectionBreakCheck = " + baselineCorrectionBreakCheck + ", breakCondition = " + breakCondition + "; " + i);
 				if(baselineCorrectionBreakCheck < breakCondition) {
 					System.out.println("baseline correction iterations: " + i);
 					break;
@@ -225,16 +235,6 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 				System.out.println("maximum iterations reached.");
 			}
 		}
-		//
 		return baselineCorrection;
-	}
-
-	public static double[] generateLinearlySpacedVector(double minVal, double maxVal, int points) {
-
-		double[] vector = new double[points];
-		for(int i = 0; i < points; i++) {
-			vector[i] = minVal + (double)i / (points - 1) * (maxVal - minVal);
-		}
-		return vector;
 	}
 }
