@@ -26,7 +26,7 @@ import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettings;
+import net.openchrom.nmr.processing.supplier.base.settings.AutoPhaseCorrectionSettings;
 
 public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
 
@@ -40,7 +40,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 
 		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
-			final PhaseCorrectionSettings settings = (PhaseCorrectionSettings)processorSettings;
+			final AutoPhaseCorrectionSettings settings = (AutoPhaseCorrectionSettings)processorSettings;
 			ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
 			final Complex[] phaseCorrection = perform(signalExtractor, scanNMR, settings);
 			signalExtractor.setPhaseCorrection(phaseCorrection, true);
@@ -49,7 +49,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		return processingInfo;
 	}
 
-	private Complex[] perform(ISignalExtractor signalExtractor, IScanNMR scanNMR, final PhaseCorrectionSettings settings) {
+	private Complex[] perform(ISignalExtractor signalExtractor, IScanNMR scanNMR, final AutoPhaseCorrectionSettings settings) {
 
 		Complex[] fourierTransformedSignals = signalExtractor.extractFourierTransformedData();
 		//
@@ -201,6 +201,9 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		for(int i = 0; i < dataSize; i++) {
 			phaseCorrection[i] = phaseCorrection[i].exp();
 		}
+
+		// apply correction
+
 		return phaseCorrection;
 	}
 }

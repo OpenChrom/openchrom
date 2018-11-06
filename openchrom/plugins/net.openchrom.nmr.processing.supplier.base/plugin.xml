@@ -16,6 +16,12 @@
             processorName="Phase Correction">
       </ScanProcessor>
       <ScanProcessor
+            description="This processor applies the phase correction."
+            id="net.openchrom.nmr.processing.supplier.base.autoPhaseCorrection"
+            processor="net.openchrom.nmr.processing.supplier.base.core.AutoPhaseCorrectionProcessor"
+            processorName="Auto Phase Correction">
+      </ScanProcessor>
+      <ScanProcessor
             description="This processor applies the baseline correction."
             id="net.openchrom.nmr.processing.supplier.base.baselineCorrection"
             processor="net.openchrom.nmr.processing.supplier.base.core.BaselineCorrectionProcessor"
