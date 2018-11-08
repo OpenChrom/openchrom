@@ -64,17 +64,6 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 	private Complex[] transform(IScanNMR scanNMR, FourierTransformationSettings processorSettings) {
 
 		/*
-		 * Raw Data
-		 */
-		double[] signals = scanNMR.getRawSignals();
-		int sigsize = signals.length;
-		Complex[] complexSignals = new Complex[sigsize / 2];
-		int c = 0;
-		for(int q = 0; q < signals.length; q += 2) {
-			complexSignals[c] = new Complex(signals[q], -signals[q + 1]); // equals fid; prepared for processing
-			c += 1;
-		}
-		/*
 		 * Header Data
 		 */
 		BrukerVariableImporter brukerVariableImporter = new BrukerVariableImporter();
@@ -85,6 +74,38 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 			importNanalysisVariables(scanNMR, nanalysisVariableImporter);
 		} else {
 			// another approach
+		}
+		/*
+		 * Raw Data
+		 */
+		double[] signals = scanNMR.getRawSignals();
+		int sigsize = signals.length;
+		Complex[] complexSignals = null;
+		//
+		if(scanNMR.getProcessingParameters("ProcessedDataFlag").equals(1.0)) {
+			double intensityScalingFactor = scanNMR.getProcessingParameters("intensityScalingFactor");
+			for(int i = 0; i < sigsize; i++) { // scale processed data up/down
+				signals[i] = signals[i] * (Math.pow(2, intensityScalingFactor)); // * dataArrayDimension if > 1
+			}
+			// inverse FT to get FID from processed data
+			FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
+			Complex[] processedDataFID = fFourierTransformer.transform(signals, TransformType.INVERSE);
+			complexSignals = new Complex[sigsize / 8];
+			System.arraycopy(processedDataFID, 0, complexSignals, 0, complexSignals.length);
+			//
+			// different size for processed data
+			double numberOfPoints = complexSignals.length;
+			scanNMR.putProcessingParameters("numberOfPoints", numberOfPoints);
+			double numberOfFourierPoints = numberOfPoints;
+			scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
+		} else {
+			// construct raw data FID
+			complexSignals = new Complex[sigsize / 2];
+			int c = 0;
+			for(int q = 0; q < signals.length; q += 2) {
+				complexSignals[c] = new Complex(signals[q], -signals[q + 1]); // equals fid; prepared for processing
+				c += 1;
+			}
 		}
 		/*
 		 * Digital Filtering
@@ -300,6 +321,10 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		// double[] deltaAxisPPM = generateChemicalShiftAxis(brukerParameterMap);
 		// Fourier transform, shift and flip the data
 		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(freeInductionDecayShiftedWindowMultiplicationZeroFill, dataShifter);
+		if(scanNMR.getProcessingParameters("ProcessedDataFlag").equals(1.0)) {
+			// shift processed data once more
+			dataShifter.leftShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
+		}
 		return nmrSpectrumProcessed;
 	}
 
@@ -562,6 +587,21 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		double gaussianLineBroadeningFactor = 0;
 		gaussianLineBroadeningFactor = brukerVariableImporter.importBrukerVariable(gaussianLineBroadeningFactor, scanNMR, "procs_GB");
 		scanNMR.putProcessingParameters("gaussianLineBroadeningFactor", gaussianLineBroadeningFactor);
+		//
+		double intensityScalingFactor = 0; // NC_proc
+		/*
+		 * NC_proc = -3 : data were scaled up (multiplied by 2) three times
+		 * NC_proc = 4 : the data were scaled down (divided by 2) four times
+		 */
+		intensityScalingFactor = brukerVariableImporter.importBrukerVariable(intensityScalingFactor, scanNMR, "procs_NC_proc");
+		scanNMR.putProcessingParameters("intensityScalingFactor", intensityScalingFactor);
+		//
+		if(scanNMR.getProcessingParameters("ProcessedDataFlag").equals(1.0)) {
+			firstOrderPhaseCorrection = 0;
+			scanNMR.putProcessingParameters("firstOrderPhaseCorrection", firstOrderPhaseCorrection);
+			zeroOrderPhaseCorrection = 0;
+			scanNMR.putProcessingParameters("zeroOrderPhaseCorrection", zeroOrderPhaseCorrection);
+		}
 	}
 
 	class BrukerVariableImporter {
@@ -826,7 +866,6 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 			return dataArray;
 		}
 
-		@SuppressWarnings("unused")
 		private void leftShiftNMRComplexData(Complex[] dataArray, int pointsToShift) {
 
 			pointsToShift = pointsToShift % dataArray.length;

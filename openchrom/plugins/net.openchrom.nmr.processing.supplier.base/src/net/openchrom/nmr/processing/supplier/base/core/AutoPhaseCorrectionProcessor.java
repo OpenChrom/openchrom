@@ -1,6 +1,9 @@
 package net.openchrom.nmr.processing.supplier.base.core;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.math3.analysis.MultivariateFunction;
 import org.apache.commons.math3.complex.Complex;
@@ -56,11 +59,26 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		double leftPhaseChange = 0;
 		double rightPhaseChange = 0;
 		//
+		boolean tweakFlag = false;
+		try {
+			for(Map.Entry<String, String> e : scanNMR.getHeaderDataMap().entrySet()) {
+				if(e.getKey().contains("JCAMP-DX")) {
+					Pattern p = Pattern.compile("\\b" + "JCAMP-DX" + "\\b");
+					Matcher m = p.matcher(e.getKey());
+					if(m.find()) {
+						tweakFlag = true;
+					}
+				}
+			}
+		} catch(Exception e) {
+			throw new IllegalStateException("Variable not detected!");
+		}
+		//
 		/*
 		 * ACME algorithm - Chen et al., J Magn Res 2002, 158 (1), 164–168.
 		 */
 		// parts of optimizer
-		CalculateACMEEntropy calculateACMEEntropyFcn = new CalculateACMEEntropy(signalExtractor.extractFourierTransformedData());
+		CalculateACMEEntropy calculateACMEEntropyFcn = new CalculateACMEEntropy(signalExtractor.extractFourierTransformedData(), tweakFlag);
 		SimplexOptimizer nestedSimplexOptimizer = new SimplexOptimizer(1e-10, 1e-30);
 		double[] initialGuessMultiStart = new double[]{0, 0}; // {rightPhaseChange, leftPhaseChange};
 		NelderMeadSimplex nelderMeadSimplex = new NelderMeadSimplex(initialGuessMultiStart.length);
@@ -94,10 +112,12 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 
 		private final Complex[] fourierTransformedData;
 		private int iterCount;
+		private boolean tweakFlag;
 
-		public CalculateACMEEntropy(Complex[] fourierTransformedData) {
+		public CalculateACMEEntropy(Complex[] fourierTransformedData, boolean tweakFlag) {
 			this.fourierTransformedData = fourierTransformedData;
 			this.iterCount = 0;
+			this.tweakFlag = tweakFlag;
 		}
 
 		@Override
@@ -159,7 +179,18 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 				double nmrDataRealAbsoluteSquare = Arrays.stream(tempSquare).sum();
 				pFun = pFun + nmrDataRealAbsoluteSquare / 4 / dataSize / dataSize;
 			}
-			double penaltyFunction = 1000 * pFun;
+			double finalTweaking = 5; // values in the range from 1.1 to 5 seem good
+			// double finalTweaking = ThreadLocalRandom.current().nextDouble(1.1, 5.1); a way to automate the process?
+			// =====> with a too big range the optimizer cannot find the minimum!
+			//
+			// Following it is conceivable to divide or multiply the penaltyFactor; Division currently preferred
+			double penaltyFactor = 0;
+			if(tweakFlag) {
+				penaltyFactor = 1E9 / finalTweaking; // to balance the contributions of the entropy and penalty parts
+			} else {
+				penaltyFactor = 1E-9 / finalTweaking; // to balance the contributions of the entropy and penalty parts
+			}
+			double penaltyFunction = penaltyFactor * pFun;
 			iterCount++;
 			// value of objective function
 			double result = probabilityDistributionSum + penaltyFunction;
@@ -201,9 +232,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		for(int i = 0; i < dataSize; i++) {
 			phaseCorrection[i] = phaseCorrection[i].exp();
 		}
-
 		// apply correction
-
 		return phaseCorrection;
 	}
 }
