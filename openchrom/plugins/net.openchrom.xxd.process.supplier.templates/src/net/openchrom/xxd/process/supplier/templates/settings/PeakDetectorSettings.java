@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
+import org.eclipse.chemclipse.model.settings.AbstractProcessSettings;
 import org.eclipse.core.runtime.IStatus;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,7 +26,7 @@ import net.openchrom.xxd.process.supplier.templates.peaks.DetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
-public class PeakDetectorSettings implements IPeakDetectorSettingsMSD, IPeakDetectorSettingsCSD {
+public class PeakDetectorSettings extends AbstractProcessSettings implements IPeakDetectorSettingsMSD, IPeakDetectorSettingsCSD {
 
 	public static final String DESCRIPTION = "Template Peak Detector";
 	//
