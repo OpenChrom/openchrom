@@ -54,4 +54,11 @@ public class PeakIdentifierMSD extends AbstractPeakIdentifier implements IPeakId
 
 		return identify(extractPeaks(chromatogramSelectionMSD), monitor);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public IProcessingInfo identify(IChromatogramSelectionMSD chromatogramSelectionMSD, IPeakIdentifierSettingsMSD peakIdentifierSettings, IProgressMonitor monitor) {
+
+		return identify(extractPeaks(chromatogramSelectionMSD), peakIdentifierSettings, monitor);
+	}
 }
