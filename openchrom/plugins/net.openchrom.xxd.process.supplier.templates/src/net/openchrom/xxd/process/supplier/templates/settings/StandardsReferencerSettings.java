@@ -14,8 +14,7 @@ package net.openchrom.xxd.process.supplier.templates.settings;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.chemclipse.chromatogram.msd.quantitation.settings.IPeakQuantifierSettings;
-import org.eclipse.chemclipse.model.settings.AbstractProcessSettings;
+import org.eclipse.chemclipse.chromatogram.msd.quantitation.settings.AbstractPeakQuantifierSettings;
 import org.eclipse.core.runtime.IStatus;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,7 +24,7 @@ import net.openchrom.xxd.process.supplier.templates.peaks.ReferencerSettings;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerValidator;
 
-public class StandardsReferencerSettings extends AbstractProcessSettings implements IPeakQuantifierSettings {
+public class StandardsReferencerSettings extends AbstractPeakQuantifierSettings {
 
 	public static final String DESCRIPTION = "Template Standards Referencer";
 	//

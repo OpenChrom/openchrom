@@ -47,13 +47,15 @@
             description="This methods sets the ISTD information."
             id="net.openchrom.xxd.process.supplier.templates.peaks.standards.assigner"
             peakQuantifier="net.openchrom.xxd.process.supplier.templates.peaks.StandardsAssigner"
-            peakQuantifierName="Peak Standards Assigner (ISTD)">
+            peakQuantifierName="Peak Standards Assigner (ISTD)"
+            peakQuantifierSettings="net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSettings">
       </PeakQuantifierSupplier>
       <PeakQuantifierSupplier
             description="This methods sets the ISTD references."
             id="net.openchrom.xxd.process.supplier.templates.peaks.standards.referencer"
             peakQuantifier="net.openchrom.xxd.process.supplier.templates.peaks.StandardsReferencer"
-            peakQuantifierName="Peak Standards Referencer (ISTD)">
+            peakQuantifierName="Peak Standards Referencer (ISTD)"
+            peakQuantifierSettings="net.openchrom.xxd.process.supplier.templates.settings.StandardsReferencerSettings">
       </PeakQuantifierSupplier>          
    </extension>        
    <extension
