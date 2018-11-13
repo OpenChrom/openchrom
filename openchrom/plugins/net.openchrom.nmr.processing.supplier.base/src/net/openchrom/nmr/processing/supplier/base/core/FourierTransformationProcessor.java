@@ -12,9 +12,6 @@
 package net.openchrom.nmr.processing.supplier.base.core;
 
 import java.util.Arrays;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
@@ -66,47 +63,12 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		/*
 		 * Header Data
 		 */
-		BrukerVariableImporter brukerVariableImporter = new BrukerVariableImporter();
-		NanalysisVariableImporter nanalysisVariableImporter = new NanalysisVariableImporter();
-		if(scanNMR.getHeaderDataMap().containsValue("Bruker BioSpin GmbH")) {
-			importBrukerVariables(scanNMR, brukerVariableImporter);
-		} else if(scanNMR.getHeaderDataMap().containsValue("Nanalysis Corp.")) {
-			importNanalysisVariables(scanNMR, nanalysisVariableImporter);
-		} else {
-			// another approach
-		}
+		// ==> done in each respective reader
 		/*
 		 * Raw Data
 		 */
-		double[] signals = scanNMR.getRawSignals();
-		int sigsize = signals.length;
-		Complex[] complexSignals = null;
-		//
-		if(scanNMR.getProcessingParameters("ProcessedDataFlag").equals(1.0)) {
-			double intensityScalingFactor = scanNMR.getProcessingParameters("intensityScalingFactor");
-			for(int i = 0; i < sigsize; i++) { // scale processed data up/down
-				signals[i] = signals[i] * (Math.pow(2, intensityScalingFactor)); // * dataArrayDimension if > 1
-			}
-			// inverse FT to get FID from processed data
-			FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
-			Complex[] processedDataFID = fFourierTransformer.transform(signals, TransformType.INVERSE);
-			complexSignals = new Complex[sigsize / 8];
-			System.arraycopy(processedDataFID, 0, complexSignals, 0, complexSignals.length);
-			//
-			// different size for processed data
-			double numberOfPoints = complexSignals.length;
-			scanNMR.putProcessingParameters("numberOfPoints", numberOfPoints);
-			double numberOfFourierPoints = numberOfPoints;
-			scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
-		} else {
-			// construct raw data FID
-			complexSignals = new Complex[sigsize / 2];
-			int c = 0;
-			for(int q = 0; q < signals.length; q += 2) {
-				complexSignals[c] = new Complex(signals[q], -signals[q + 1]); // equals fid; prepared for processing
-				c += 1;
-			}
-		}
+		ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
+		Complex[] complexSignals = signalExtractor.extractIntesityFID();
 		/*
 		 * Digital Filtering
 		 */
@@ -183,7 +145,6 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 						}
 					}
 				}
-				//
 				Complex[] filteredNMRSpectrum = null;
 				if(!Arrays.asList(freeInductionDecayZeroFill).contains(null)) {// (freeInductionDecayZeroFill != null) {
 					filteredNMRSpectrum = fourierTransformNmrData(freeInductionDecayZeroFill, dataShifter);
@@ -245,9 +206,7 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		//
 		if(scanNMR.getHeaderDataMap().containsValue("Bruker BioSpin GmbH")) {
 			// On A*X data, FCOR (from proc(s)) allows you to control the DC offset of the spectrum; value between 0.0 and 2.0
-			double firstFIDDataPointMultiplicationFactor = 0;
-			firstFIDDataPointMultiplicationFactor = brukerVariableImporter.importBrukerVariable(firstFIDDataPointMultiplicationFactor, scanNMR, "procs_FCOR");
-			scanNMR.putProcessingParameters("firstFIDDataPointMultiplicationFactor", firstFIDDataPointMultiplicationFactor);
+			double firstFIDDataPointMultiplicationFactor = scanNMR.getProcessingParameters("firstFIDDataPointMultiplicationFactor");
 			// multiply first data point
 			freeInductionDecayShiftedWindowMultiplication[1].multiply(firstFIDDataPointMultiplicationFactor);
 		} else if(scanNMR.getHeaderDataMap().containsValue("Nanalysis Corp.")) {
@@ -326,315 +285,6 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 			dataShifter.leftShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
 		}
 		return nmrSpectrumProcessed;
-	}
-
-	private void importNanalysisVariables(IScanNMR scanNMR, NanalysisVariableImporter nanalysisVariableImporter) {
-
-		double sweepWidth = 0;
-		double firstDataPointOffset = 0;
-		double firstOrderPhaseCorrection = 0;
-		double zeroOrderPhaseCorrection = 0;
-		double spectralReferenceFrequency = 0;
-		double irradiationCarrierFrequency = 0;
-		double numberOfPoints = 0;
-		//
-		if(scanNMR.getHeaderData("DataArrayDimension").contentEquals("1")) {
-			sweepWidth = nanalysisVariableImporter.importVariable(sweepWidth, scanNMR, "SW");
-			scanNMR.putProcessingParameters("sweepWidth", sweepWidth);
-			//
-			Matcher m = null;
-			for(Map.Entry<String, String> e : scanNMR.getHeaderDataMap().entrySet()) {
-				if(e.getKey().contains("LB")) {
-					Pattern p = Pattern.compile("\\bLB\\b");
-					m = p.matcher(e.getKey());
-				}
-			}
-			//
-			if(m.find()) {// (scanNMR.getHeaderDataMap().containsKey("LB")){
-				firstDataPointOffset = nanalysisVariableImporter.importVariable(firstDataPointOffset, scanNMR, "OFFSET");
-				firstDataPointOffset = firstDataPointOffset - sweepWidth;
-				scanNMR.putProcessingParameters("firstDataPointOffset", firstDataPointOffset);
-				firstOrderPhaseCorrection = nanalysisVariableImporter.importVariable(firstOrderPhaseCorrection, scanNMR, "PHC1");// "PHASE 1");
-				scanNMR.putProcessingParameters("firstOrderPhaseCorrection", firstOrderPhaseCorrection);
-				zeroOrderPhaseCorrection = nanalysisVariableImporter.importVariable(zeroOrderPhaseCorrection, scanNMR, "PHC0");// "PHASE 0");
-				// zeroOrderPhaseCorrection = zeroOrderPhaseCorrection*-1 - firstOrderPhaseCorrection;
-				scanNMR.putProcessingParameters("zeroOrderPhaseCorrection", zeroOrderPhaseCorrection);
-			} else {
-				// if not available estimate processing parameters from acquisition parameters
-				spectralReferenceFrequency = nanalysisVariableImporter.importVariable(spectralReferenceFrequency, scanNMR, "BF1");
-				scanNMR.putProcessingParameters("spectralReferenceFrequency", spectralReferenceFrequency);
-				irradiationCarrierFrequency = nanalysisVariableImporter.importVariable(irradiationCarrierFrequency, scanNMR, "SFO1");
-				scanNMR.putProcessingParameters("irradiationCarrierFrequency", irradiationCarrierFrequency);
-				double offsetTermOne = (irradiationCarrierFrequency / spectralReferenceFrequency - 1) * 1E6;
-				double offsetTermTwo = 0.5 * sweepWidth * (irradiationCarrierFrequency / spectralReferenceFrequency);
-				firstDataPointOffset = offsetTermOne + offsetTermTwo - sweepWidth;
-				scanNMR.putProcessingParameters("firstDataPointOffset", firstDataPointOffset);
-				firstOrderPhaseCorrection = 0;
-				scanNMR.putProcessingParameters("firstOrderPhaseCorrection", firstOrderPhaseCorrection);
-				zeroOrderPhaseCorrection = 0;
-				scanNMR.putProcessingParameters("zeroOrderPhaseCorrection", zeroOrderPhaseCorrection);
-			}
-		} else {
-			// 2D and so forth to come
-		}
-		numberOfPoints = nanalysisVariableImporter.importVariable(numberOfPoints, scanNMR, "TD");
-		numberOfPoints = numberOfPoints / 2;
-		scanNMR.putProcessingParameters("numberOfPoints", numberOfPoints);
-		double numberOfFourierPoints = numberOfPoints; // No of FP can be modified later on
-		scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
-		irradiationCarrierFrequency = nanalysisVariableImporter.importVariable(irradiationCarrierFrequency, scanNMR, "SFO1");
-		scanNMR.putProcessingParameters("irradiationCarrierFrequency", irradiationCarrierFrequency);
-		double acquisitionTimeDivisor = (sweepWidth * irradiationCarrierFrequency);
-		double acquisitionTime = numberOfPoints / acquisitionTimeDivisor;
-		scanNMR.putProcessingParameters("acquisitionTime", acquisitionTime);
-		double sizeofRealSpectrum = 0;
-		if(scanNMR.getHeaderData("ProcessedDataFlag").contentEquals("true")) {
-			sizeofRealSpectrum = nanalysisVariableImporter.importVariable(sizeofRealSpectrum, scanNMR, "SI");
-			sizeofRealSpectrum = Math.round(sizeofRealSpectrum);
-			scanNMR.putProcessingParameters("sizeofRealSpectrum", sizeofRealSpectrum);
-			acquisitionTimeDivisor = (numberOfPoints / sizeofRealSpectrum);
-			acquisitionTime = 0.5 * acquisitionTime / acquisitionTimeDivisor;
-			scanNMR.putProcessingParameters("acquisitionTime", acquisitionTime);
-		}
-		//
-		double leftPhaseIndex = firstOrderPhaseCorrection;
-		double rightPhaseIndex = zeroOrderPhaseCorrection;
-		scanNMR.putProcessingParameters("leftPhaseIndex", leftPhaseIndex);
-		scanNMR.putProcessingParameters("rightPhaseIndex", rightPhaseIndex);
-		//
-		int decimationFactorOfDigitalFilter = 1; // DECIM
-		decimationFactorOfDigitalFilter = nanalysisVariableImporter.importVariable(decimationFactorOfDigitalFilter, scanNMR, "DECIMATION");
-		scanNMR.putProcessingParameters("decimationFactorOfDigitalFilter", (double)decimationFactorOfDigitalFilter);
-		// int dspFirmwareVersion = 1; //DSPFVS
-		// dspFirmwareVersion = nanalysisVariableImporter.importVariable(dspFirmwareVersion, scanNMR, "acqus_DSPFVS");
-		// scanNMR.putProcessingParameters("dspFirmwareVersion", (double)dspFirmwareVersion);
-		// double groupDelay = 0; // GRPDLY corresponds to digital shift
-		// groupDelay = nanalysisVariableImporter.importVariable(groupDelay, scanNMR, "acqus_GRPDLY");
-		// scanNMR.putProcessingParameters("groupDelay", groupDelay);
-		//
-		String processedDataFlag = null;
-		processedDataFlag = nanalysisVariableImporter.importVariable(processedDataFlag, scanNMR, "ProcessedDataFlag");
-		if(processedDataFlag.equals("true")) {
-			scanNMR.putProcessingParameters("ProcessedDataFlag", 1.0);
-		} else {
-			scanNMR.putProcessingParameters("ProcessedDataFlag", 0.0);
-		}
-		//
-		double exponentialLineBroadeningFactor = 0;
-		exponentialLineBroadeningFactor = nanalysisVariableImporter.importVariable(exponentialLineBroadeningFactor, scanNMR, "LB");
-		scanNMR.putProcessingParameters("exponentialLineBroadeningFactor", exponentialLineBroadeningFactor);
-		// double gaussianLineBroadeningFactor = 0;
-		// gaussianLineBroadeningFactor = nanalysisVariableImporter.importVariable(gaussianLineBroadeningFactor, scanNMR, "procs_GB");
-		// scanNMR.putProcessingParameters("gaussianLineBroadeningFactor", gaussianLineBroadeningFactor);
-	}
-
-	class NanalysisVariableImporter {
-
-		public double importVariable(double importedVariable, IScanNMR scanNMR, String variableName) {
-
-			try {
-				String tempValue = "";
-				for(Map.Entry<String, String> e : scanNMR.getHeaderDataMap().entrySet()) {
-					if(e.getKey().contains(variableName)) {
-						Pattern p = Pattern.compile("\\b" + variableName + "\\b");
-						Matcher m = p.matcher(e.getKey());
-						if(m.find()) {
-							tempValue = e.getValue();
-							importedVariable = Double.parseDouble(tempValue);
-						}
-					}
-				}
-			} catch(Exception e) {
-				throw new IllegalStateException("No Variable >>" + variableName + "<< detected!");
-			}
-			return importedVariable;
-		}
-
-		public String importVariable(String importedVariable, IScanNMR scanNMR, String variableName) {
-
-			try {
-				String tempValue = "";
-				for(Map.Entry<String, String> e : scanNMR.getHeaderDataMap().entrySet()) {
-					if(e.getKey().contains(variableName)) {
-						Pattern p = Pattern.compile("\\b" + variableName + "\\b");
-						Matcher m = p.matcher(e.getKey());
-						if(m.find()) {
-							tempValue = e.getValue();
-							importedVariable = tempValue;
-						}
-					}
-				}
-			} catch(Exception e) {
-				throw new IllegalStateException("No Variable >>" + variableName + "<< detected!");
-			}
-			return importedVariable;
-		}
-
-		public int importVariable(int importedVariable, IScanNMR scanNMR, String variableName) {
-
-			try {
-				String tempValue = "";
-				for(Map.Entry<String, String> e : scanNMR.getHeaderDataMap().entrySet()) {
-					if(e.getKey().contains(variableName)) {
-						Pattern p = Pattern.compile("\\b" + variableName + "\\b");
-						Matcher m = p.matcher(e.getKey());
-						if(m.find()) {
-							tempValue = e.getValue();
-							importedVariable = Integer.parseInt(tempValue);
-						}
-					}
-				}
-			} catch(Exception e) {
-				throw new IllegalStateException("No Variable >>" + variableName + "<< detected!");
-			}
-			return importedVariable;
-		}
-	}
-
-	private void importBrukerVariables(IScanNMR scanNMR, BrukerVariableImporter brukerVariableImporter) {
-
-		double sweepWidth = 0;
-		double firstDataPointOffset = 0;
-		double firstOrderPhaseCorrection = 0;
-		double zeroOrderPhaseCorrection = 0;
-		double spectralReferenceFrequency = 0;
-		double irradiationCarrierFrequency = 0;
-		double numberOfPoints = 0;
-		//
-		if(scanNMR.getHeaderData("DataArrayDimension").contentEquals("1")) {
-			// The ngrad pulse program statement is mainly used on AMX/ARX spectrometers.
-			// An exception is gradient shimming, where the ngrad statement is used.
-			// int BrukernGrad = 1;
-			//
-			sweepWidth = brukerVariableImporter.importBrukerVariable(sweepWidth, scanNMR, "acqus_SW");
-			scanNMR.putProcessingParameters("sweepWidth", sweepWidth);
-			if(scanNMR.getHeaderDataMap().containsKey("procs_LB")) {
-				firstDataPointOffset = brukerVariableImporter.importBrukerVariable(firstDataPointOffset, scanNMR, "procs_OFFSET");
-				firstDataPointOffset = firstDataPointOffset - sweepWidth;
-				scanNMR.putProcessingParameters("firstDataPointOffset", firstDataPointOffset);
-				firstOrderPhaseCorrection = brukerVariableImporter.importBrukerVariable(firstOrderPhaseCorrection, scanNMR, "procs_PHC1");
-				scanNMR.putProcessingParameters("firstOrderPhaseCorrection", firstOrderPhaseCorrection);
-				zeroOrderPhaseCorrection = brukerVariableImporter.importBrukerVariable(zeroOrderPhaseCorrection, scanNMR, "procs_PHC0");
-				zeroOrderPhaseCorrection = zeroOrderPhaseCorrection * -1 - firstOrderPhaseCorrection;
-				scanNMR.putProcessingParameters("zeroOrderPhaseCorrection", zeroOrderPhaseCorrection);
-			} else {
-				// if not available estimate processing parameters from acquisition parameters
-				spectralReferenceFrequency = brukerVariableImporter.importBrukerVariable(spectralReferenceFrequency, scanNMR, "acqus_BF1");
-				scanNMR.putProcessingParameters("spectralReferenceFrequency", spectralReferenceFrequency);
-				irradiationCarrierFrequency = brukerVariableImporter.importBrukerVariable(irradiationCarrierFrequency, scanNMR, "acqus_SFO1");
-				scanNMR.putProcessingParameters("irradiationCarrierFrequency", irradiationCarrierFrequency);
-				double offsetTermOne = (irradiationCarrierFrequency / spectralReferenceFrequency - 1) * 1E6;
-				double offsetTermTwo = 0.5 * sweepWidth * (irradiationCarrierFrequency / spectralReferenceFrequency);
-				firstDataPointOffset = offsetTermOne + offsetTermTwo - sweepWidth;
-				scanNMR.putProcessingParameters("firstDataPointOffset", firstDataPointOffset);
-				firstOrderPhaseCorrection = 0;
-				scanNMR.putProcessingParameters("firstOrderPhaseCorrection", firstOrderPhaseCorrection);
-				zeroOrderPhaseCorrection = 0;
-				scanNMR.putProcessingParameters("zeroOrderPhaseCorrection", zeroOrderPhaseCorrection);
-			}
-		} else {
-			// 2D and so forth to come
-		}
-		numberOfPoints = brukerVariableImporter.importBrukerVariable(numberOfPoints, scanNMR, "acqus_TD");
-		numberOfPoints = numberOfPoints / 2;
-		scanNMR.putProcessingParameters("numberOfPoints", numberOfPoints);
-		double numberOfFourierPoints = numberOfPoints; // No of FP can be modified later on
-		scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
-		irradiationCarrierFrequency = brukerVariableImporter.importBrukerVariable(irradiationCarrierFrequency, scanNMR, "acqus_SFO1");
-		scanNMR.putProcessingParameters("irradiationCarrierFrequency", irradiationCarrierFrequency);
-		double acquisitionTimeDivisor = (sweepWidth * irradiationCarrierFrequency);
-		double acquisitionTime = numberOfPoints / acquisitionTimeDivisor;
-		scanNMR.putProcessingParameters("acquisitionTime", acquisitionTime);
-		double sizeofRealSpectrum = 0;
-		if(scanNMR.getHeaderData("ProcessedDataFlag").contentEquals("true")) {
-			sizeofRealSpectrum = brukerVariableImporter.importBrukerVariable(sizeofRealSpectrum, scanNMR, "procs_SI");
-			sizeofRealSpectrum = Math.round(sizeofRealSpectrum);
-			scanNMR.putProcessingParameters("sizeofRealSpectrum", sizeofRealSpectrum);
-			acquisitionTimeDivisor = (numberOfPoints / sizeofRealSpectrum);
-			acquisitionTime = 0.5 * acquisitionTime / acquisitionTimeDivisor;
-			scanNMR.putProcessingParameters("acquisitionTime", acquisitionTime);
-		}
-		//
-		double leftPhaseIndex = firstOrderPhaseCorrection;
-		double rightPhaseIndex = zeroOrderPhaseCorrection;
-		scanNMR.putProcessingParameters("leftPhaseIndex", leftPhaseIndex);
-		scanNMR.putProcessingParameters("rightPhaseIndex", rightPhaseIndex);
-		//
-		int decimationFactorOfDigitalFilter = 1; // DECIM
-		decimationFactorOfDigitalFilter = brukerVariableImporter.importBrukerVariable(decimationFactorOfDigitalFilter, scanNMR, "acqus_DECIM");
-		scanNMR.putProcessingParameters("decimationFactorOfDigitalFilter", (double)decimationFactorOfDigitalFilter);
-		//
-		int dspFirmwareVersion = 1; // DSPFVS
-		dspFirmwareVersion = brukerVariableImporter.importBrukerVariable(dspFirmwareVersion, scanNMR, "acqus_DSPFVS");
-		scanNMR.putProcessingParameters("dspFirmwareVersion", (double)dspFirmwareVersion);
-		//
-		double groupDelay = 0; // GRPDLY corresponds to digital shift
-		groupDelay = brukerVariableImporter.importBrukerVariable(groupDelay, scanNMR, "acqus_GRPDLY");
-		scanNMR.putProcessingParameters("groupDelay", groupDelay);
-		//
-		String processedDataFlag = null;
-		processedDataFlag = brukerVariableImporter.importBrukerVariable(processedDataFlag, scanNMR, "ProcessedDataFlag");
-		if(processedDataFlag.equals("true")) {
-			scanNMR.putProcessingParameters("ProcessedDataFlag", 1.0);
-		} else {
-			scanNMR.putProcessingParameters("ProcessedDataFlag", 0.0);
-		}
-		//
-		double exponentialLineBroadeningFactor = 0;
-		exponentialLineBroadeningFactor = brukerVariableImporter.importBrukerVariable(exponentialLineBroadeningFactor, scanNMR, "procs_LB");
-		scanNMR.putProcessingParameters("exponentialLineBroadeningFactor", exponentialLineBroadeningFactor);
-		//
-		double gaussianLineBroadeningFactor = 0;
-		gaussianLineBroadeningFactor = brukerVariableImporter.importBrukerVariable(gaussianLineBroadeningFactor, scanNMR, "procs_GB");
-		scanNMR.putProcessingParameters("gaussianLineBroadeningFactor", gaussianLineBroadeningFactor);
-		//
-		double intensityScalingFactor = 0; // NC_proc
-		/*
-		 * NC_proc = -3 : data were scaled up (multiplied by 2) three times
-		 * NC_proc = 4 : the data were scaled down (divided by 2) four times
-		 */
-		intensityScalingFactor = brukerVariableImporter.importBrukerVariable(intensityScalingFactor, scanNMR, "procs_NC_proc");
-		scanNMR.putProcessingParameters("intensityScalingFactor", intensityScalingFactor);
-		//
-		if(scanNMR.getProcessingParameters("ProcessedDataFlag").equals(1.0)) {
-			firstOrderPhaseCorrection = 0;
-			scanNMR.putProcessingParameters("firstOrderPhaseCorrection", firstOrderPhaseCorrection);
-			zeroOrderPhaseCorrection = 0;
-			scanNMR.putProcessingParameters("zeroOrderPhaseCorrection", zeroOrderPhaseCorrection);
-		}
-	}
-
-	class BrukerVariableImporter {
-
-		public double importBrukerVariable(double importedVariable, IScanNMR scanNMR, String variableName) {
-
-			if(scanNMR.getHeaderDataMap().containsKey(variableName)) {
-				importedVariable = Double.parseDouble(scanNMR.getHeaderData(variableName));
-			} else {
-				throw new IllegalStateException("No Variable >>" + variableName + "<< detected!");
-			}
-			return importedVariable;
-		}
-
-		public String importBrukerVariable(String importedVariable, IScanNMR scanNMR, String variableName) {
-
-			if(scanNMR.getHeaderDataMap().containsKey(variableName)) {
-				importedVariable = scanNMR.getHeaderData(variableName);
-			} else {
-				throw new IllegalStateException("No Variable >>" + variableName + "<< detected!");
-			}
-			return importedVariable;
-		}
-
-		public int importBrukerVariable(int importedVariable, IScanNMR scanNMR, String variableName) {
-
-			if(scanNMR.getHeaderDataMap().containsKey(variableName)) {
-				importedVariable = Integer.parseInt(scanNMR.getHeaderData(variableName));
-			} else {
-				throw new IllegalStateException("No Variable >>" + variableName + "<< detected!");
-			}
-			return importedVariable;
-		}
 	}
 
 	private static double determineDigitalFilter(IScanNMR scanNMR) {
