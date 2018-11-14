@@ -26,6 +26,7 @@ import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.nmr.processing.supplier.base.settings.FourierTransformationSettings;
 
@@ -39,23 +40,12 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 			FourierTransformationSettings settings = (FourierTransformationSettings)processorSettings;
 			ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
 			Complex[] fourierTransformedData = transform(scanNMR, settings);
-			double[] chemicalShift = generateChemicalShiftAxis(scanNMR);
+			UtilityFunctions utilityFunction = new UtilityFunctions();
+			double[] chemicalShift = utilityFunction.generateChemicalShiftAxis(scanNMR);
 			signalExtractor.createScans(fourierTransformedData, chemicalShift);
 			processingInfo.setProcessingResult(scanNMR);
 		}
 		return processingInfo;
-	}
-
-	public static double[] generateChemicalShiftAxis(IScanNMR scanNMR) {
-
-		double doubleSize = scanNMR.getProcessingParameters("numberOfFourierPoints");
-		int deltaAxisPoints = (int)doubleSize;
-		double[] chemicalShiftAxis = new double[(int)doubleSize];
-		double minValueDeltaAxis = scanNMR.getProcessingParameters("firstDataPointOffset");
-		double maxValueDeltaAxis = scanNMR.getProcessingParameters("sweepWidth") + scanNMR.getProcessingParameters("firstDataPointOffset");
-		UtilityFunctions utilityFunction = new UtilityFunctions();
-		chemicalShiftAxis = utilityFunction.generateLinearlySpacedVector(minValueDeltaAxis, maxValueDeltaAxis, deltaAxisPoints);
-		return chemicalShiftAxis;
 	}
 
 	private Complex[] transform(IScanNMR scanNMR, FourierTransformationSettings processorSettings) {
@@ -68,7 +58,14 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		 * Raw Data
 		 */
 		ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
-		Complex[] complexSignals = signalExtractor.extractIntesityFID();
+		/*
+		 * according to J.Holy:
+		 * ~~~~~~~
+		 * extractRawIntesityFID(); will be used for data where/until the digital filter is removed
+		 * and
+		 * extractIntesityFID(); will hold the data after apodization (=> setScanFIDCorrection();)
+		 */
+		Complex[] complexSignals = signalExtractor.extractRawIntesityFID();
 		/*
 		 * Digital Filtering
 		 */
@@ -83,8 +80,11 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		/*
 		 * data pre-processing
 		 */
-		// Generate Timescale
-		double[] timeScale = generateTimeScale(scanNMR);
+		// Get Timescale
+		double[] timeScale = signalExtractor.extractTimeFID();// generateTimeScale(scanNMR);
+		for(int i = 0; i < timeScale.length; i++) {
+			timeScale[i] = timeScale[i] / 1000000;
+		}
 		// exponential apodization
 		double[] exponentialLineBroadening = new double[timeScale.length];
 		exponentialLineBroadening = exponentialApodizationFunction(timeScale, scanNMR);
@@ -110,43 +110,48 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		// // expand for nD dimensions
 		// //}
 		// }
+		//
 		// Direct Current correction; FID
 		Complex[] freeInductionDecay = new Complex[complexSignals.length];
 		freeInductionDecay = directCurrentCorrectionFID(complexSignalsShifted, scanNMR);
-		// remove shifted points, apply window multiplication
+		/*
+		 * 1. remove shifted points
+		 * 2. apply window multiplication = apodization is the technical term for changing the shape of e.g. an electrical signal
+		 */
 		double numberOfPoints = scanNMR.getProcessingParameters("numberOfPoints");
 		double numberOfFourierPoints = scanNMR.getProcessingParameters("numberOfFourierPoints");
 		Complex[] freeInductionDecayShiftedWindowMultiplication = new Complex[complexSignals.length];
 		for(int i = 0; i < complexSignals.length; i++) {
 			freeInductionDecayShiftedWindowMultiplication[i] = new Complex(0, 0);
 		}
-		// int shiftedPointsToRetain = (int)(numberOfPoints-leftRotationFid+1);
-		// Complex overwriteShiftedData = new Complex(0, 0);
 		if(numberOfFourierPoints >= numberOfPoints) {
 			Complex[] tempFID = new Complex[freeInductionDecay.length];
 			if(Math.abs(leftRotationFid) > 0.0) {
-				// for(int i = shiftedPointsToRetain; i < numberOfPoints; i++) {
-				// freeInductionDecay[i] = overwriteShiftedData;
-				// }
 				// automatic zero filling just in case size != 2^n
 				int checkPowerOfTwo = freeInductionDecay.length % 256;
 				Complex[] freeInductionDecayZeroFill = new Complex[freeInductionDecay.length];
+				// // save old size here
+				// int originalFIDSize = freeInductionDecay.length;
+				//
 				if(checkPowerOfTwo > 0) {
-					for(int i = 10; i < 17; i++) {
-						int automaticSize = (int)Math.pow(2, i);
-						if(automaticSize > freeInductionDecay.length) {
-							freeInductionDecayZeroFill = new Complex[automaticSize];
-							for(int j = 0; j < automaticSize; j++) {
-								freeInductionDecayZeroFill[j] = new Complex(0, 0);
-							}
-							int copySize = freeInductionDecay.length;
-							System.arraycopy(freeInductionDecay, 0, freeInductionDecayZeroFill, 0, copySize);
-							break;
-						}
-					}
+					double autoZeroFill = 1;
+					scanNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
+					//
+					double zeroFillingFactor = 0.0; // 0 = no action
+					scanNMR.putProcessingParameters("zeroFillingFactor", zeroFillingFactor);
+					//
+					ZeroFilling zeroFiller = new ZeroFilling();
+					zeroFiller.process(scanNMR, null, new NullProgressMonitor());
+					freeInductionDecayZeroFill = signalExtractor.extractRawIntesityFID();
+					autoZeroFill = 0;
+					scanNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
+				} else {
+					double autoZeroFill = 0;
+					scanNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
 				}
+				// fft => create filtered spectrum
 				Complex[] filteredNMRSpectrum = null;
-				if(!Arrays.asList(freeInductionDecayZeroFill).contains(null)) {// (freeInductionDecayZeroFill != null) {
+				if(!Arrays.asList(freeInductionDecayZeroFill).contains(null)) {
 					filteredNMRSpectrum = fourierTransformNmrData(freeInductionDecayZeroFill, dataShifter);
 				} else {
 					filteredNMRSpectrum = fourierTransformNmrData(freeInductionDecay, dataShifter);
@@ -166,11 +171,25 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 					unfilteredNMRSpectrum[f] = filteredNMRSpectrum[f].multiply(exponentialFactor.exp());
 					f++;
 				}
-				//
+				// ifft => revert to fid
 				Complex[] tempUnfilteredSpectrum = inverseFourierTransformData(unfilteredNMRSpectrum, dataShifter);
-				// remove temporary zero filling
+				// remove temporary zero filling if necessary
 				System.arraycopy(tempUnfilteredSpectrum, 0, tempFID, 0, tempFID.length);
+				// save unfiltered spectrum
+				UtilityFunctions utilityFunction = new UtilityFunctions();
+				int[] timeAxis = utilityFunction.generateTimeScale(scanNMR);
+				signalExtractor.createScansFID(tempFID, timeAxis);
+			} else {
+				// no digital filter, no zero filling
+				double autoZeroFill = 0;
+				scanNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
 			}
+			/*
+			 * applying apodization here
+			 */
+			// signals to be modified
+			tempFID = signalExtractor.extractRawIntesityFID();
+			//
 			if(!Arrays.asList(tempFID).contains(null)) {
 				double[] tempRealArray = new double[freeInductionDecay.length];
 				for(int i = 0; i < freeInductionDecay.length; i++) {
@@ -182,102 +201,111 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 				//
 				if(Math.abs(tempFIDmax) > Math.abs(tempFIDmin)) {
 					// System.out.println("neg, *-1");
-					for(int i = 0; i < numberOfFourierPoints; i++) {
-						// introduced "-"lineBroadeningWindwowFunction after refactoring the removal of dig. filter to flip spectrum up-down
-						freeInductionDecayShiftedWindowMultiplication[i] = tempFID[i].multiply(-lineBroadeningWindwowFunction[i]);
+					// introduced "-"lineBroadeningWindwowFunction after refactoring the removal of dig. filter to flip spectrum up-down
+					for(int i = 0; i < lineBroadeningWindwowFunction.length; i++) {
+						lineBroadeningWindwowFunction[i] *= -1;
 					}
+					signalExtractor.setScansFIDCorrection(lineBroadeningWindwowFunction, false);
 				} else {
 					// System.out.println("pos");
-					for(int i = 0; i < numberOfFourierPoints; i++) {
-						freeInductionDecayShiftedWindowMultiplication[i] = tempFID[i].multiply(lineBroadeningWindwowFunction[i]);
-					}
+					signalExtractor.setScansFIDCorrection(lineBroadeningWindwowFunction, false);
 				}
 			} else {
-				for(int i = 0; i < numberOfFourierPoints; i++) {
-					// without removal of dig. filter
-					freeInductionDecayShiftedWindowMultiplication[i] = freeInductionDecay[i].multiply(lineBroadeningWindwowFunction[i]);
-				}
+				// without removal of dig. filter
+				signalExtractor.setScansFIDCorrection(lineBroadeningWindwowFunction, false);
 			}
 		} else {
-			for(int i = 0; i < numberOfPoints; i++) {
-				freeInductionDecayShiftedWindowMultiplication[i] = freeInductionDecay[i].multiply(lineBroadeningWindwowFunction[i]);
-			}
+			signalExtractor.setScansFIDCorrection(lineBroadeningWindwowFunction, false);
 		}
+		// modified signals after apodization
+		freeInductionDecayShiftedWindowMultiplication = signalExtractor.extractIntesityFID();
 		//
 		if(scanNMR.getHeaderDataMap().containsValue("Bruker BioSpin GmbH")) {
 			// On A*X data, FCOR (from proc(s)) allows you to control the DC offset of the spectrum; value between 0.0 and 2.0
 			double firstFIDDataPointMultiplicationFactor = scanNMR.getProcessingParameters("firstFIDDataPointMultiplicationFactor");
 			// multiply first data point
-			freeInductionDecayShiftedWindowMultiplication[1].multiply(firstFIDDataPointMultiplicationFactor);
+			freeInductionDecayShiftedWindowMultiplication[0].multiply(firstFIDDataPointMultiplicationFactor);
 		} else if(scanNMR.getHeaderDataMap().containsValue("Nanalysis Corp.")) {
 			// no multiplication necessary?
 		} else {
 			// another approach
 		}
 		// zero filling // Automatic zero filling if size != 2^n
-		int zeroFillingFactor = 0;
 		Complex[] freeInductionDecayShiftedWindowMultiplicationZeroFill = new Complex[freeInductionDecayShiftedWindowMultiplication.length];
 		int checkPowerOfTwo = freeInductionDecayShiftedWindowMultiplication.length % 256;
 		boolean automaticZeroFill = true;
 		if(checkPowerOfTwo > 0) {
-			for(int i = 10; i < 17; i++) {
-				int automaticSize = (int)Math.pow(2, i);
-				if(automaticSize > freeInductionDecayShiftedWindowMultiplication.length) {
-					freeInductionDecayShiftedWindowMultiplicationZeroFill = new Complex[automaticSize];
-					for(int j = 0; j < automaticSize; j++) {
-						freeInductionDecayShiftedWindowMultiplicationZeroFill[j] = new Complex(0, 0);
-					}
-					int copySize = freeInductionDecayShiftedWindowMultiplication.length;
-					System.arraycopy(freeInductionDecayShiftedWindowMultiplication, 0, freeInductionDecayShiftedWindowMultiplicationZeroFill, 0, copySize);
-					numberOfFourierPoints = automaticSize;
-					scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
-					automaticZeroFill = false;
-					break;
-				}
-			}
+			double autoZeroFill = 1;
+			scanNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
+			ZeroFilling zeroFiller = new ZeroFilling();
+			zeroFiller.process(scanNMR, null, new NullProgressMonitor());
+			freeInductionDecayShiftedWindowMultiplicationZeroFill = signalExtractor.extractIntesityFID();
+			autoZeroFill = 0;
+			scanNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
+			// for(int i = 10; i < 17; i++) {
+			// int automaticSize = (int)Math.pow(2, i);
+			// if(automaticSize > freeInductionDecayShiftedWindowMultiplication.length) {
+			// freeInductionDecayShiftedWindowMultiplicationZeroFill = new Complex[automaticSize];
+			// for(int j = 0; j < automaticSize; j++) {
+			// freeInductionDecayShiftedWindowMultiplicationZeroFill[j] = new Complex(0, 0);
+			// }
+			// int copySize = freeInductionDecayShiftedWindowMultiplication.length;
+			// System.arraycopy(freeInductionDecayShiftedWindowMultiplication, 0, freeInductionDecayShiftedWindowMultiplicationZeroFill, 0, copySize);
+			// numberOfFourierPoints = automaticSize;
+			// scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
+			// automaticZeroFill = false;
+			// break;
+			// }
+			// }
 		}
+		//
+		double zeroFillingFactor = 0.0; // 0 = no action, 16 = 16k, 32 = 32k, 64 = 64k
+		scanNMR.putProcessingParameters("zeroFillingFactor", zeroFillingFactor);
+		//
+		ZeroFilling zeroFiller = new ZeroFilling();
+		zeroFiller.process(scanNMR, null, new NullProgressMonitor());
+		freeInductionDecayShiftedWindowMultiplicationZeroFill = signalExtractor.extractIntesityFID();
+		//
 		if(zeroFillingFactor == 1) { // 16k
-			int newDataSize = (int)Math.pow(2, 14);
-			freeInductionDecayShiftedWindowMultiplicationZeroFill = new Complex[newDataSize];
-			for(int i = 0; i < newDataSize; i++) {
-				freeInductionDecayShiftedWindowMultiplicationZeroFill[i] = new Complex(0, 0);
-			}
-			int copySize = freeInductionDecayShiftedWindowMultiplication.length;
-			System.arraycopy(freeInductionDecayShiftedWindowMultiplication, 0, freeInductionDecayShiftedWindowMultiplicationZeroFill, 0, copySize);
-			numberOfFourierPoints = newDataSize;
-			scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
+			// int newDataSize = (int)Math.pow(2, 14);
+			// freeInductionDecayShiftedWindowMultiplicationZeroFill = new Complex[newDataSize];
+			// for(int i = 0; i < newDataSize; i++) {
+			// freeInductionDecayShiftedWindowMultiplicationZeroFill[i] = new Complex(0, 0);
+			// }
+			// int copySize = freeInductionDecayShiftedWindowMultiplication.length;
+			// System.arraycopy(freeInductionDecayShiftedWindowMultiplication, 0, freeInductionDecayShiftedWindowMultiplicationZeroFill, 0, copySize);
+			// numberOfFourierPoints = newDataSize;
+			// scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
 		} else if(zeroFillingFactor == 2) { // 32k
-			int newDataSize = (int)Math.pow(2, 15);
-			freeInductionDecayShiftedWindowMultiplicationZeroFill = new Complex[newDataSize];
-			for(int i = 0; i < newDataSize; i++) {
-				freeInductionDecayShiftedWindowMultiplicationZeroFill[i] = new Complex(0, 0);
-			}
-			int copySize = freeInductionDecayShiftedWindowMultiplication.length;
-			System.arraycopy(freeInductionDecayShiftedWindowMultiplication, 0, freeInductionDecayShiftedWindowMultiplicationZeroFill, 0, copySize);
-			numberOfFourierPoints = newDataSize;
-			scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
+			// int newDataSize = (int)Math.pow(2, 15);
+			// freeInductionDecayShiftedWindowMultiplicationZeroFill = new Complex[newDataSize];
+			// for(int i = 0; i < newDataSize; i++) {
+			// freeInductionDecayShiftedWindowMultiplicationZeroFill[i] = new Complex(0, 0);
+			// }
+			// int copySize = freeInductionDecayShiftedWindowMultiplication.length;
+			// System.arraycopy(freeInductionDecayShiftedWindowMultiplication, 0, freeInductionDecayShiftedWindowMultiplicationZeroFill, 0, copySize);
+			// numberOfFourierPoints = newDataSize;
+			// scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
 		} else if(zeroFillingFactor == 3) { // 64k
-			int newDataSize = (int)Math.pow(2, 16);
-			freeInductionDecayShiftedWindowMultiplicationZeroFill = new Complex[newDataSize];
-			for(int i = 0; i < newDataSize; i++) {
-				freeInductionDecayShiftedWindowMultiplicationZeroFill[i] = new Complex(0, 0);
-			}
-			int copySize = freeInductionDecayShiftedWindowMultiplication.length;
-			System.arraycopy(freeInductionDecayShiftedWindowMultiplication, 0, freeInductionDecayShiftedWindowMultiplicationZeroFill, 0, copySize);
-			numberOfFourierPoints = newDataSize;
-			scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
+			// int newDataSize = (int)Math.pow(2, 16);
+			// freeInductionDecayShiftedWindowMultiplicationZeroFill = new Complex[newDataSize];
+			// for(int i = 0; i < newDataSize; i++) {
+			// freeInductionDecayShiftedWindowMultiplicationZeroFill[i] = new Complex(0, 0);
+			// }
+			// int copySize = freeInductionDecayShiftedWindowMultiplication.length;
+			// System.arraycopy(freeInductionDecayShiftedWindowMultiplication, 0, freeInductionDecayShiftedWindowMultiplicationZeroFill, 0, copySize);
+			// numberOfFourierPoints = newDataSize;
+			// scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
 		} else {
-			// do nothing
-			if(automaticZeroFill) {
-				int dataSize = freeInductionDecayShiftedWindowMultiplication.length;
-				freeInductionDecayShiftedWindowMultiplicationZeroFill = new Complex[dataSize];
-				System.arraycopy(freeInductionDecayShiftedWindowMultiplication, 0, freeInductionDecayShiftedWindowMultiplicationZeroFill, 0, dataSize);
-				numberOfFourierPoints = dataSize;
-				scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
-			}
+			// // do nothing
+			// if(automaticZeroFill) {
+			// int dataSize = freeInductionDecayShiftedWindowMultiplication.length;
+			// freeInductionDecayShiftedWindowMultiplicationZeroFill = new Complex[dataSize];
+			// System.arraycopy(freeInductionDecayShiftedWindowMultiplication, 0, freeInductionDecayShiftedWindowMultiplicationZeroFill, 0, dataSize);
+			// numberOfFourierPoints = dataSize;
+			// scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
+			// }
 		}
-		// // generate x-axis (delta [ppm])
-		// double[] deltaAxisPPM = generateChemicalShiftAxis(brukerParameterMap);
 		// Fourier transform, shift and flip the data
 		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(freeInductionDecayShiftedWindowMultiplicationZeroFill, dataShifter);
 		if(scanNMR.getProcessingParameters("ProcessedDataFlag").equals(1.0)) {
@@ -428,18 +456,6 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		groupDelayOfDigitallyFilteredData = Math.round(groupDelayOfDigitallyFilteredData);
 		scanNMR.putProcessingParameters("groupDelayOfDigitallyFilteredData", groupDelayOfDigitallyFilteredData);
 		return groupDelayOfDigitallyFilteredData;
-	}
-
-	private static double[] generateTimeScale(IScanNMR scanNMR) {
-
-		double minValTimescale = 0;
-		double maxValTimescaleFactor = (scanNMR.getProcessingParameters("numberOfFourierPoints") / scanNMR.getProcessingParameters("numberOfPoints"));
-		double maxValTimescale = scanNMR.getProcessingParameters("acquisitionTime") * maxValTimescaleFactor; // linspace(0,NmrData.at*(NmrData.fn/NmrData.np),NmrData.fn);
-		int timescalePoints = scanNMR.getProcessingParameters("numberOfFourierPoints").intValue();
-		UtilityFunctions utilityFunction = new UtilityFunctions();
-		double[] timeScale = utilityFunction.generateLinearlySpacedVector(minValTimescale, maxValTimescale, timescalePoints); // for ft-operation
-		// else: double[] TimeScale = GenerateLinearlySpacedVector(minValTimescale, BrukerAT, TimescalePoints);
-		return timeScale;
 	}
 
 	private static double[] exponentialApodizationFunction(double[] timeScale, IScanNMR scanNMR) {
