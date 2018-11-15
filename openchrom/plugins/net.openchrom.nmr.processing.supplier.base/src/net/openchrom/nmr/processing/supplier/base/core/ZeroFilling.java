@@ -14,37 +14,18 @@ package net.openchrom.nmr.processing.supplier.base.core;
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
-import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
-import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
-import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
-import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
-import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.nmr.processing.supplier.base.settings.ZeroFillingSettings;
+public class ZeroFilling {
 
-public class ZeroFilling extends AbstractScanProcessor implements IScanProcessor {
+	public Complex[] zerofill(ISignalExtractor signalExtractor, IScanNMR scanNMR) {
 
-	@Override
-	public IProcessingInfo process(final IScanNMR scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
-
-		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
-		if(!processingInfo.hasErrorMessages()) {
-			final ZeroFillingSettings settings = (ZeroFillingSettings)processorSettings;
-			ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
-			final Complex[] zerofilledSignals = zerofill(signalExtractor, scanNMR, settings);
-			UtilityFunctions utilityFunction = new UtilityFunctions();
-			int[] timeScale = utilityFunction.generateTimeScale(scanNMR);
-			signalExtractor.createScansFID(zerofilledSignals, timeScale);
-			processingInfo.setProcessingResult(scanNMR);
+		Complex[] intesityFID = null;
+		if(scanNMR.getProcessingParameters("digitalFilterZeroFill").equals(1.0)) {
+			intesityFID = signalExtractor.extractRawIntesityFID();
+		} else {
+			intesityFID = signalExtractor.extractIntesityFID();
 		}
-		return processingInfo;
-	}
-
-	private Complex[] zerofill(ISignalExtractor signalExtractor, IScanNMR scanNMR, final ZeroFillingSettings settings) {
-
-		Complex[] intesityFID = signalExtractor.extractIntesityFID();
-		Complex[] zeroFilledFID = new Complex[signalExtractor.extractIntesityFID().length];
+		Complex[] zeroFilledFID = new Complex[signalExtractor.extractRawIntesityFID().length];
 		//
 		boolean autoZeroFill = false;
 		if(scanNMR.getProcessingParameters("autoZeroFill").equals(1.0)) {
@@ -68,20 +49,7 @@ public class ZeroFilling extends AbstractScanProcessor implements IScanProcessor
 		if(autoZeroFill) {
 			// automatic zero filling
 			//
-			for(int i = 10; i < 17; i++) {
-				int automaticSize = (int)Math.pow(2, i);
-				if(automaticSize > intesityFID.length) {
-					zeroFilledFID = new Complex[automaticSize];
-					for(int j = 0; j < automaticSize; j++) {
-						zeroFilledFID[j] = new Complex(0, 0);
-					}
-					int copySize = intesityFID.length;
-					System.arraycopy(intesityFID, 0, zeroFilledFID, 0, copySize);
-					double numberOfFourierPoints = automaticSize;
-					scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
-					break;
-				}
-			}
+			newDataSize = (int)Math.pow(2, (int)(Math.ceil((Math.log(intesityFID.length) / Math.log(2)))));
 		} else {
 			// user defined zero filling
 			//
@@ -103,15 +71,15 @@ public class ZeroFilling extends AbstractScanProcessor implements IScanProcessor
 					newDataSize = intesityFID.length;
 					break;
 			}
-			zeroFilledFID = new Complex[newDataSize];
-			for(int i = 0; i < newDataSize; i++) {
-				zeroFilledFID[i] = new Complex(0, 0);
-			}
-			int copySize = intesityFID.length;
-			System.arraycopy(intesityFID, 0, zeroFilledFID, 0, copySize);
-			double numberOfFourierPoints = newDataSize;
-			scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
 		}
+		zeroFilledFID = new Complex[newDataSize];
+		for(int i = 0; i < newDataSize; i++) {
+			zeroFilledFID[i] = new Complex(0, 0);
+		}
+		int copySize = intesityFID.length;
+		System.arraycopy(intesityFID, 0, zeroFilledFID, 0, copySize);
+		double numberOfFourierPoints = newDataSize;
+		scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
 		return zeroFilledFID;
 	}
 }
