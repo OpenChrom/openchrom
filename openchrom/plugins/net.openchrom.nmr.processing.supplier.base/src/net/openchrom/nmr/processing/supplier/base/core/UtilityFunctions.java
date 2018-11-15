@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Alexander Stark.
+ * Copyright (c) 2018 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 
 public class UtilityFunctions {
@@ -70,5 +71,53 @@ public class UtilityFunctions {
 			}
 		}
 		return minValue;
+	}
+
+	public void leftShiftNMRData(int[] dataArray, int pointsToShift) {
+
+		pointsToShift = pointsToShift % dataArray.length;
+		while(pointsToShift-- > 0) {
+			int tempArray = dataArray[0];
+			for(int i = 1; i < dataArray.length; i++) {
+				dataArray[i - 1] = dataArray[i];
+			}
+			dataArray[dataArray.length - 1] = tempArray;
+		}
+	}
+
+	public int[] rightShiftNMRData(int[] dataArray, int pointsToShift) {
+
+		for(int i = 0; i < pointsToShift; i++) {
+			int tempArray = dataArray[dataArray.length - 1];
+			for(int g = dataArray.length - 2; g > -1; g--) {
+				dataArray[g + 1] = dataArray[g];
+			}
+			dataArray[0] = tempArray;
+		}
+		return dataArray;
+	}
+
+	public void leftShiftNMRComplexData(Complex[] dataArray, int pointsToShift) {
+
+		pointsToShift = pointsToShift % dataArray.length;
+		while(pointsToShift-- > 0) {
+			Complex tempArray = dataArray[0];
+			for(int i = 1; i < dataArray.length; i++) {
+				dataArray[i - 1] = dataArray[i];
+			}
+			dataArray[dataArray.length - 1] = tempArray;
+		}
+	}
+
+	public Complex[] rightShiftNMRComplexData(Complex[] dataArray, int pointsToShift) {
+
+		for(int i = 0; i < pointsToShift; i++) {
+			Complex tempArray = dataArray[dataArray.length - 1];
+			for(int g = dataArray.length - 2; g > -1; g--) {
+				dataArray[g + 1] = dataArray[g];
+			}
+			dataArray[0] = tempArray;
+		}
+		return dataArray;
 	}
 }
