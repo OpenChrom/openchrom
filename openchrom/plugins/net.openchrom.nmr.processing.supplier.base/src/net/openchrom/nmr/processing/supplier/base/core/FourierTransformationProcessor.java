@@ -48,12 +48,10 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 	private Complex[] transform(IScanNMR scanNMR, FourierTransformationSettings processorSettings) {
 
 		/*
-		 * Header Data
+		 * Header Data and Raw Data
+		 * ==> prepared in each respective reader
 		 */
-		// ==> done in each respective reader
-		/*
-		 * Raw Data
-		 */
+		//
 		ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
 		/*
 		 * according to J.Holy:
@@ -61,90 +59,13 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		 * extractRawIntesityFID(); will be used for data where/until the digital filter is removed
 		 * and
 		 * extractIntesityFID(); will hold the data after apodization (=> setScanFIDCorrection();)
+		 * => both operation are performed in the ScanReader
 		 */
-		Complex[] complexSignals = signalExtractor.extractRawIntesityFID();
-		//
-		// leftshift the fid - complex
-		// int dataArrayDimension = 0;
-		// dataArrayDimension = brukerVariableImporter.importBrukerVariable(dataArrayDimension, scanNMR, "dataArrayDimension");;
-		Complex[] complexSignalsShifted = new Complex[complexSignals.length];
-		System.arraycopy(complexSignals, 0, complexSignalsShifted, 0, complexSignals.length);
 		UtilityFunctions utilityFunction = new UtilityFunctions();
-		// if (leftRotationFid > 0) {
-		// //for (int k = 1; k <= dataArrayDimension; k++) {
-		// dataShifter.leftShiftNMRComplexData(complexSignalsShifted, (int)leftRotationFid);
-		// // expand for nD dimensions
-		// //}
-		// }
-		//
-		/*
-		 * Direct Current correction; FID
-		 */
-		Complex[] freeInductionDecay = new Complex[complexSignals.length];
-		DirectCurrentCorrection directCurrentCorrection = new DirectCurrentCorrection();
-		freeInductionDecay = directCurrentCorrection.directCurrentCorrectionFID(complexSignalsShifted, scanNMR);
-		/*
-		 * 1. remove shifted points e.g digital filter
-		 * 2. apply window multiplication = apodization is the technical term for changing the shape of e.g. an electrical signal
-		 */
-		double numberOfPoints = scanNMR.getProcessingParameters("numberOfPoints");
-		double numberOfFourierPoints = scanNMR.getProcessingParameters("numberOfFourierPoints");
-		Complex[] freeInductionDecayShiftedWindowMultiplication = new Complex[complexSignals.length];
-		for(int i = 0; i < complexSignals.length; i++) {
-			freeInductionDecayShiftedWindowMultiplication[i] = new Complex(0, 0);
-		}
-		if(numberOfFourierPoints >= numberOfPoints) {
-			Complex[] tempFID = new Complex[freeInductionDecay.length];
-			//
-			DigitalFilterRemoval digitalFilterRemoval = new DigitalFilterRemoval();
-			tempFID = digitalFilterRemoval.removeDigitalFilter(scanNMR, freeInductionDecay);
-			/*
-			 * applying apodization here
-			 */
-			WindowMultiplication apodize = new WindowMultiplication();
-			double[] lineBroadeningWindwowFunction = apodize.generateApodizationFunction(scanNMR, signalExtractor);
-			// signals to be modified
-			tempFID = signalExtractor.extractRawIntesityFID();
-			//
-			if(!scanNMR.getProcessingParameters("ProcessedDataFlag").equals(1.0)) {
-				/*
-				 * data after removal of digital filter or without digital filter; at this point data is equal
-				 */
-				double[] tempRealArray = new double[freeInductionDecay.length];
-				for(int i = 0; i < freeInductionDecay.length; i++) {
-					tempRealArray[i] = tempFID[i].getReal();
-				}
-				double tempFIDmin = utilityFunction.getMinValueOfArray(tempRealArray);
-				double tempFIDmax = utilityFunction.getMaxValueOfArray(tempRealArray);
-				//
-				if(Math.abs(tempFIDmax) > Math.abs(tempFIDmin)) {
-					// System.out.println("neg, *-1");
-					// introduced "-"lineBroadeningWindwowFunction after refactoring the removal of dig. filter to flip spectrum up-down
-					for(int i = 0; i < lineBroadeningWindwowFunction.length; i++) {
-						lineBroadeningWindwowFunction[i] *= -1;
-					}
-					signalExtractor.setScansFIDCorrection(lineBroadeningWindwowFunction, false);
-				} else {
-					// System.out.println("pos");
-					signalExtractor.setScansFIDCorrection(lineBroadeningWindwowFunction, false);
-				}
-			} else {
-				/*
-				 * processed data; without removal of dig. filter
-				 */
-				for(int i = 0; i < lineBroadeningWindwowFunction.length; i++) {
-					// do not apply apodization
-					lineBroadeningWindwowFunction[i] = 1;
-				}
-				signalExtractor.setScansFIDCorrection(lineBroadeningWindwowFunction, false);
-			}
-		} // else {
-			// signalExtractor.setScansFIDCorrection(lineBroadeningWindwowFunction, false);
-			// }
 		/*
 		 * modified signals after apodization
 		 */
-		freeInductionDecayShiftedWindowMultiplication = signalExtractor.extractIntesityFID();
+		Complex[] freeInductionDecayShiftedWindowMultiplication = signalExtractor.extractIntesityFID();
 		//
 		if(scanNMR.getHeaderDataMap().containsValue("Bruker BioSpin GmbH")) {
 			// On A*X data, FCOR (from proc(s)) allows you to control the DC offset of the spectrum; value between 0.0 and 2.0
