@@ -62,6 +62,8 @@ public class PCRExportConverter extends AbstractPlateExportConverter implements 
 				printValue(printWriter, IPlate.DATE, headerDataMap);
 				printValue(printWriter, IPlate.NOISEBAND, headerDataMap);
 				printValue(printWriter, IPlate.THRESHOLD, headerDataMap);
+				printWriter.print("Detection Format: ");
+				printWriter.println((plate.getDetectionFormat() == null) ? "--" : plate.getDetectionFormat().getName());
 				printWriter.println("");
 				//
 				List<String> sampleSubsets = new ArrayList<>(getSampleSubsets(plate));
@@ -115,9 +117,20 @@ public class PCRExportConverter extends AbstractPlateExportConverter implements 
 		printWriter.print("Subset");
 		printWriter.print(TAB);
 		printWriter.print("Target");
-		printWriter.print(TAB);
-		printWriter.print("Crossing Points...");
+		//
+		IDetectionFormat detectionFormat = plate.getDetectionFormat();
+		if(detectionFormat != null) {
+			for(IChannelSpecification channelSpecification : detectionFormat.getChannelSpecifications()) {
+				printWriter.print(TAB);
+				printWriter.print(channelSpecification.getName());
+			}
+		} else {
+			printWriter.print(TAB);
+			printWriter.print("Crossing Points...");
+		}
+		//
 		printWriter.println("");
+		//
 		//
 		for(IWell well : plate.getWells()) {
 			if(!well.isEmptyMeasurement()) {
