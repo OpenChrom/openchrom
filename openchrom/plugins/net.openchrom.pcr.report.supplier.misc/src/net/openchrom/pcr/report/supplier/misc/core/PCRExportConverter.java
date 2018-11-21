@@ -96,8 +96,7 @@ public class PCRExportConverter extends AbstractPlateExportConverter implements 
 		sampleSubsets.add(SAMPLE_SUBSET_ALL);
 		//
 		for(IWell well : plate.getWells()) {
-			Map<String, String> dataMap = well.getData();
-			String sampleSubset = dataMap.getOrDefault(IWell.SAMPLE_SUBSET, "");
+			String sampleSubset = well.getSampleSubset();
 			if(!"".equals(sampleSubset)) {
 				sampleSubsets.add(sampleSubset);
 			}
@@ -138,17 +137,15 @@ public class PCRExportConverter extends AbstractPlateExportConverter implements 
 				 * Sample Subset
 				 */
 				Position position = well.getPosition();
-				Map<String, String> dataMap = well.getData();
-				//
-				String sampleSubset = dataMap.getOrDefault(IWell.SAMPLE_SUBSET, "");
+				String sampleSubset = well.getSampleSubset();
 				if(isSubsetMatch(sampleSubset, targetSubset)) {
 					printWriter.print(position.getRow() + position.getColumn());
 					printWriter.print(TAB);
-					printWriter.print(dataMap.getOrDefault(IWell.SAMPLE_ID, ""));
+					printWriter.print(well.getSampleId());
 					printWriter.print(TAB);
-					printWriter.print(dataMap.getOrDefault(IWell.SAMPLE_SUBSET, ""));
+					printWriter.print(well.getSampleSubset());
 					printWriter.print(TAB);
-					printWriter.print(dataMap.getOrDefault(IWell.TARGET_NAME, ""));
+					printWriter.print(well.getTargetName());
 					//
 					List<Integer> keys = new ArrayList<>(well.getChannels().keySet());
 					Collections.sort(keys);
