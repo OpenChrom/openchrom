@@ -73,11 +73,11 @@ public class UtilityFunctions {
 		return minValue;
 	}
 
-	public void leftShiftNMRData(int[] dataArray, int pointsToShift) {
+	public void leftShiftNMRData(double[] dataArray, int pointsToShift) {
 
 		pointsToShift = pointsToShift % dataArray.length;
 		while(pointsToShift-- > 0) {
-			int tempArray = dataArray[0];
+			double tempArray = dataArray[0];
 			for(int i = 1; i < dataArray.length; i++) {
 				dataArray[i - 1] = dataArray[i];
 			}
@@ -85,10 +85,10 @@ public class UtilityFunctions {
 		}
 	}
 
-	public int[] rightShiftNMRData(int[] dataArray, int pointsToShift) {
+	public double[] rightShiftNMRData(double[] dataArray, int pointsToShift) {
 
 		for(int i = 0; i < pointsToShift; i++) {
-			int tempArray = dataArray[dataArray.length - 1];
+			double tempArray = dataArray[dataArray.length - 1];
 			for(int g = dataArray.length - 2; g > -1; g--) {
 				dataArray[g + 1] = dataArray[g];
 			}

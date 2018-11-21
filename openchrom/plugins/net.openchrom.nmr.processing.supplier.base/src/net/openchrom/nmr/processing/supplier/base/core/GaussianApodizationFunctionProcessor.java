@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
-import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
@@ -66,41 +65,6 @@ public class GaussianApodizationFunctionProcessor extends AbstractScanProcessor 
 		} else {
 			for(int i = 0; i < timeScale.length; i++) {
 				gaussianLineBroadening[i] = (timeScale[i] * 0 + 1);
-			}
-		}
-		/*
-		 * check for raw / processed data
-		 */
-		UtilityFunctions utilityFunction = new UtilityFunctions();
-		Complex[] tempFID = signalExtractor.extractIntesityFID();
-		if(!scanNMR.getProcessingParameters("ProcessedDataFlag").equals(1.0)) {
-			/*
-			 * data after removal of digital filter or without digital filter; at this point data is equal
-			 */
-			double[] tempRealArray = new double[tempFID.length];
-			for(int i = 0; i < tempFID.length; i++) {
-				tempRealArray[i] = tempFID[i].getReal();
-			}
-			double tempFIDmin = utilityFunction.getMinValueOfArray(tempRealArray);
-			double tempFIDmax = utilityFunction.getMaxValueOfArray(tempRealArray);
-			//
-			if(Math.abs(tempFIDmax) > Math.abs(tempFIDmin)) {
-				// System.out.println("neg, *-1");
-				// introduced "-"lineBroadeningWindwowFunction after refactoring the removal of dig. filter to flip spectrum up-down
-				for(int i = 0; i < gaussianLineBroadening.length; i++) {
-					gaussianLineBroadening[i] *= -1;
-				}
-			} else {
-				// System.out.println("pos");
-				// do nothing
-			}
-		} else {
-			/*
-			 * processed data; without removal of dig. filter
-			 */
-			for(int i = 0; i < gaussianLineBroadening.length; i++) {
-				// do not apply apodization
-				gaussianLineBroadening[i] = 1;
 			}
 		}
 		//

@@ -109,10 +109,6 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		}
 		// Fourier transform, shift and flip the data
 		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(freeInductionDecayShiftedWindowMultiplicationZeroFill, utilityFunction);
-		if(scanNMR.getProcessingParameters("ProcessedDataFlag").equals(1.0)) {
-			// shift processed data once more
-			utilityFunction.leftShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
-		}
 		return nmrSpectrumProcessed;
 	}
 
