@@ -16,6 +16,8 @@ import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 
+import net.openchrom.nmr.processing.supplier.base.settings.support.ZERO_FILLING_FACTOR;
+
 public class DigitalFilterRemoval {
 
 	public Complex[] removeDigitalFilter(IScanNMR scanNMR, Complex[] FID) {
@@ -61,7 +63,7 @@ public class DigitalFilterRemoval {
 				scanNMR.putProcessingParameters("zeroFillingFactor", zeroFillingFactor);
 				//
 				ZeroFilling zeroFiller = new ZeroFilling();
-				freeInductionDecayZeroFill = zeroFiller.zerofill(signalExtractor, scanNMR);
+				freeInductionDecayZeroFill = zeroFiller.zerofill(signalExtractor, scanNMR, ZERO_FILLING_FACTOR.AUTO);
 				// reset flags
 				autoZeroFill = 0;
 				scanNMR.putProcessingParameters("autoZeroFill", autoZeroFill);

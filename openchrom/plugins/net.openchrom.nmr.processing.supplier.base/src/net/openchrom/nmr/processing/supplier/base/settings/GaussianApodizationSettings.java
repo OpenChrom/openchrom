@@ -14,4 +14,20 @@ package net.openchrom.nmr.processing.supplier.base.settings;
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 
 public class GaussianApodizationSettings implements IProcessorSettings {
+
+	private double gaussianLineBroadeningFactor = 0;
+
+	public GaussianApodizationSettings() {
+
+	}
+
+	public void setGaussianLineBroadeningFactor(double gaussianLineBroadeningFactor) {
+
+		this.gaussianLineBroadeningFactor = gaussianLineBroadeningFactor;
+	}
+
+	public double getGaussianLineBroadeningFactor() {
+
+		return gaussianLineBroadeningFactor;
+	}
 }

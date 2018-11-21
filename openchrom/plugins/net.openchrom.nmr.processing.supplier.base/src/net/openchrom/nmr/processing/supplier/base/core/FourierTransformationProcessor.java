@@ -26,6 +26,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.nmr.processing.supplier.base.settings.FourierTransformationSettings;
+import net.openchrom.nmr.processing.supplier.base.settings.support.ZERO_FILLING_FACTOR;
 
 public class FourierTransformationProcessor extends AbstractScanProcessor implements IScanProcessor {
 
@@ -53,6 +54,7 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		 */
 		//
 		ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
+		ZERO_FILLING_FACTOR zeroFillingFactor = processorSettings.getZeroFillingFactor();
 		/*
 		 * according to J.Holy:
 		 * ~~~~~~~
@@ -78,35 +80,8 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 			// another approach
 		}
 		// zero filling // Automatic zero filling if size != 2^n
-		Complex[] freeInductionDecayShiftedWindowMultiplicationZeroFill = new Complex[freeInductionDecayShiftedWindowMultiplication.length];
-		//
-		int n = freeInductionDecayShiftedWindowMultiplication.length;
-		int nextPower = (int)(Math.ceil((Math.log(n) / Math.log(2))));
-		int previousPower = (int)(Math.floor(((Math.log(n) / Math.log(2)))));
-		if(nextPower != previousPower) {
-			// zero filling
-			double autoZeroFill = 1;
-			scanNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
-			ZeroFilling zeroFiller = new ZeroFilling();
-			freeInductionDecayShiftedWindowMultiplicationZeroFill = zeroFiller.zerofill(signalExtractor, scanNMR);
-			autoZeroFill = 0;
-			scanNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
-			// mark data as automatically zero filled
-			scanNMR.putProcessingParameters("automaticallyZeroFilled", 1.0);
-		} else {
-			// no ZF!
-		}
-		//
-		double zeroFillingFactor = 0.0; // 0 = no action, 16 = 16k, 32 = 32k, 64 = 64k
-		if(zeroFillingFactor > 0) {
-			scanNMR.putProcessingParameters("zeroFillingFactor", zeroFillingFactor);
-			// user defined zero filling
-			ZeroFilling zeroFiller = new ZeroFilling();
-			freeInductionDecayShiftedWindowMultiplicationZeroFill = zeroFiller.zerofill(signalExtractor, scanNMR);
-		} else {
-			int copySize = freeInductionDecayShiftedWindowMultiplication.length;
-			System.arraycopy(freeInductionDecayShiftedWindowMultiplication, 0, freeInductionDecayShiftedWindowMultiplicationZeroFill, 0, copySize);
-		}
+		ZeroFilling zeroFiller = new ZeroFilling();
+		Complex[] freeInductionDecayShiftedWindowMultiplicationZeroFill = zeroFiller.zerofill(signalExtractor, scanNMR, zeroFillingFactor);
 		// Fourier transform, shift and flip the data
 		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(freeInductionDecayShiftedWindowMultiplicationZeroFill, utilityFunction);
 		return nmrSpectrumProcessed;

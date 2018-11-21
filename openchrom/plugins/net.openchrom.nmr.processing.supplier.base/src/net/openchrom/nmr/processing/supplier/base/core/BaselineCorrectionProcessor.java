@@ -21,6 +21,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.BaselineCorrectionSet
 public class BaselineCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
 
 	public BaselineCorrectionProcessor() {
+
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -41,6 +42,7 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 
 	private Complex[] perform(ISignalExtractor signalExtractor, IScanNMR scanNMR, final BaselineCorrectionSettings settings) {
 
+		int polynomialOrder = settings.getPolynomialOrder();
 		/*
 		 * Matlab:
 		 * polyfit - Polynomial curve fitting
@@ -175,7 +177,6 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 					} // else?? = 0 ??
 				}
 				// TODO define polynomial order for fitting
-				int polynomialOrder = 1; // 0,1,2,3,...
 				final PolynomialCurveFitter baselineFitter = PolynomialCurveFitter.create(polynomialOrder);
 				realCoeff = baselineFitter.fit(realFittingPoints);
 				imagCoeff = baselineFitter.fit(imagFittingPoints);

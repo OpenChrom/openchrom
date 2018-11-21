@@ -46,10 +46,12 @@ public class GaussianApodizationFunctionProcessor extends AbstractScanProcessor 
 			timeScale[i] = timeScale[i] / 1000000;
 		}
 		//
-		double gaussianLineBroadeningFactor = 0;
-		if(scanNMR.processingParametersContainsKey("gaussianLineBroadeningFactor")) {
-			gaussianLineBroadeningFactor = scanNMR.getProcessingParameters("gaussianLineBroadeningFactor");
-		}
+		double gaussianLineBroadeningFactor = gaussianApodizationSettings.getGaussianLineBroadeningFactor();
+		/*
+		 * if(scanNMR.processingParametersContainsKey("gaussianLineBroadeningFactor")) {
+		 * gaussianLineBroadeningFactor = scanNMR.getProcessingParameters("gaussianLineBroadeningFactor");
+		 * }
+		 */
 		double[] gaussianLineBroadening = new double[timeScale.length];
 		double gaussianLineBroadenigTermA;
 		double gaussianLineBroadenigTermB;

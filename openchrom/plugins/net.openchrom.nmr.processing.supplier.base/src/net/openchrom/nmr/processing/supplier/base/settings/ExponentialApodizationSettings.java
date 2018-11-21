@@ -14,4 +14,20 @@ package net.openchrom.nmr.processing.supplier.base.settings;
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 
 public class ExponentialApodizationSettings implements IProcessorSettings {
+
+	private double exponentialLineBroadeningFactor = 0;
+
+	public ExponentialApodizationSettings() {
+
+	}
+
+	public double getExponentialLineBroadeningFactor() {
+
+		return exponentialLineBroadeningFactor;
+	}
+
+	public void setExponentialLineBroadeningFactor(double exponentialLineBroadeningFactor) {
+
+		this.exponentialLineBroadeningFactor = exponentialLineBroadeningFactor;
+	}
 }

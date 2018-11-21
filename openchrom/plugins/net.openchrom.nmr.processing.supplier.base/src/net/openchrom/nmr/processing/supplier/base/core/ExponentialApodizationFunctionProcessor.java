@@ -46,10 +46,12 @@ public class ExponentialApodizationFunctionProcessor extends AbstractScanProcess
 			timeScale[i] = timeScale[i] / 1000000;
 		}
 		//
-		double exponentialLineBroadeningFactor = 0;
-		if(scanNMR.processingParametersContainsKey("exponentialLineBroadeningFactor")) {
-			exponentialLineBroadeningFactor = scanNMR.getProcessingParameters("exponentialLineBroadeningFactor");
-		}
+		double exponentialLineBroadeningFactor = exponentialApodizationSettings.getExponentialLineBroadeningFactor();
+		/*
+		 * if(scanNMR.processingParametersContainsKey("exponentialLineBroadeningFactor")) {
+		 * exponentialLineBroadeningFactor = scanNMR.getProcessingParameters("exponentialLineBroadeningFactor");
+		 * }
+		 */
 		double[] exponentialLineBroadening = new double[timeScale.length];
 		double exponentialLineBroadenigTerm;
 		if(exponentialLineBroadeningFactor > 0) {

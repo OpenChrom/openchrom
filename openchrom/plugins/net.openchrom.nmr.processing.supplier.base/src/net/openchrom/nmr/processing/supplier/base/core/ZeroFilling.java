@@ -15,9 +15,11 @@ import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 
+import net.openchrom.nmr.processing.supplier.base.settings.support.ZERO_FILLING_FACTOR;
+
 public class ZeroFilling {
 
-	public Complex[] zerofill(ISignalExtractor signalExtractor, IScanNMR scanNMR) {
+	public Complex[] zerofill(ISignalExtractor signalExtractor, IScanNMR scanNMR, ZERO_FILLING_FACTOR zeroFillingFactor) {
 
 		Complex[] intesityFID = null;
 		if(scanNMR.getProcessingParameters("digitalFilterZeroFill").equals(1.0)) {
@@ -27,50 +29,11 @@ public class ZeroFilling {
 		}
 		Complex[] zeroFilledFID = new Complex[signalExtractor.extractRawIntesityFID().length];
 		//
-		boolean autoZeroFill = false;
-		if(scanNMR.getProcessingParameters("autoZeroFill").equals(1.0)) {
-			autoZeroFill = true;
-		} else {
-			// no zero filling needed
-		}
-		//
 		int newDataSize = 0;
-		int zeroFillingFactor = 0;
-		if(scanNMR.getProcessingParameters("zeroFillingFactor").equals(16.0)) {
-			zeroFillingFactor = 16;
-		} else if(scanNMR.getProcessingParameters("zeroFillingFactor").equals(32.0)) {
-			zeroFillingFactor = 32;
-		} else if(scanNMR.getProcessingParameters("zeroFillingFactor").equals(64.0)) {
-			zeroFillingFactor = 64;
-		} else {
-			// default
-		}
-		//
-		if(autoZeroFill) {
-			// automatic zero filling
-			//
+		if(zeroFillingFactor.equals(ZERO_FILLING_FACTOR.AUTO)) {
 			newDataSize = (int)Math.pow(2, (int)(Math.ceil((Math.log(intesityFID.length) / Math.log(2)))));
 		} else {
-			// user defined zero filling
-			//
-			switch(zeroFillingFactor) {
-				case 16:
-					// 16k
-					newDataSize = (int)Math.pow(2, 14);
-					break;
-				case 32:
-					// 32k
-					newDataSize = (int)Math.pow(2, 15);
-					break;
-				case 64:
-					// 64k
-					newDataSize = (int)Math.pow(2, 16);
-					break;
-				default:
-					// do nothing
-					newDataSize = intesityFID.length;
-					break;
-			}
+			newDataSize = zeroFillingFactor.getValue();
 		}
 		zeroFilledFID = new Complex[newDataSize];
 		for(int i = 0; i < newDataSize; i++) {

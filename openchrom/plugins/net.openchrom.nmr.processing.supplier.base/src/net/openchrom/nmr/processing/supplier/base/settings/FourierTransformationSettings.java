@@ -13,5 +13,23 @@ package net.openchrom.nmr.processing.supplier.base.settings;
 
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 
+import net.openchrom.nmr.processing.supplier.base.settings.support.ZERO_FILLING_FACTOR;
+
 public class FourierTransformationSettings implements IProcessorSettings {
+
+	private ZERO_FILLING_FACTOR zeroFillingFactor = ZERO_FILLING_FACTOR.FACTOR_32k;
+
+	public FourierTransformationSettings() {
+
+	}
+
+	public ZERO_FILLING_FACTOR getZeroFillingFactor() {
+
+		return zeroFillingFactor;
+	}
+
+	public void setZeroFillingFactor(ZERO_FILLING_FACTOR zeroFillingFactor) {
+
+		this.zeroFillingFactor = zeroFillingFactor;
+	}
 }
