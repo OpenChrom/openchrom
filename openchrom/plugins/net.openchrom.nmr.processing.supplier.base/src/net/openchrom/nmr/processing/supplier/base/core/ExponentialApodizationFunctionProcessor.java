@@ -41,7 +41,7 @@ public class ExponentialApodizationFunctionProcessor extends AbstractScanProcess
 	private double[] ExponentialApodizationFunction(IScanNMR scanNMR, ISignalExtractor signalExtractor, ExponentialApodizationSettings exponentialApodizationSettings) {
 
 		// Get Timescale
-		double[] timeScale = signalExtractor.extractTimeFID();// generateTimeScale(scanNMR);
+		int[] timeScale = signalExtractor.extractTimeFID();// generateTimeScale(scanNMR);
 		for(int i = 0; i < timeScale.length; i++) {
 			timeScale[i] = timeScale[i] / 1000000;
 		}
