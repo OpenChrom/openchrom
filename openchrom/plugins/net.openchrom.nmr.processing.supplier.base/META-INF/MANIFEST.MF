@@ -14,7 +14,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.thirdpartylibraries.apache.commons.math;bundle-version="3.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: net.openchrom.nmr.processing.supplier.base.core
+Export-Package: net.openchrom.nmr.processing.supplier.base.core,
+ net.openchrom.nmr.processing.supplier.base.settings,
+ net.openchrom.nmr.processing.supplier.base.settings.support
 Import-Package: org.apache.commons.lang3;version="3.2.1",
  org.eclipse.chemclipse.model.core,
  org.eclipse.chemclipse.nmr.converter.core
