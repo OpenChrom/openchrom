@@ -27,7 +27,7 @@ public class UtilityFunctions {
 		return chemicalShiftAxis;
 	}
 
-	public int[] generateTimeScale(IScanNMR vendorScan) {
+	public long[] generateTimeScale(IScanNMR vendorScan) {
 
 		double minValTimescale = 0;
 		double maxValTimescaleFactor = (vendorScan.getProcessingParameters("numberOfFourierPoints") / vendorScan.getProcessingParameters("numberOfPoints"));
@@ -35,9 +35,9 @@ public class UtilityFunctions {
 		int timescalePoints = vendorScan.getProcessingParameters("numberOfFourierPoints").intValue();
 		double[] timeScaleTemp = generateLinearlySpacedVector(minValTimescale, maxValTimescale, timescalePoints); // for ft-operation
 		// else: double[] TimeScale = GenerateLinearlySpacedVector(minValTimescale, BrukerAT, TimescalePoints);
-		int[] timeScale = new int[timeScaleTemp.length];
+		long[] timeScale = new long[timeScaleTemp.length];
 		for(int i = 0; i < timeScaleTemp.length; i++) {
-			timeScale[i] = (int)(timeScaleTemp[i] * 1000000);
+			timeScale[i] = (long)(timeScaleTemp[i] * 1000000);
 		}
 		return timeScale;
 	}

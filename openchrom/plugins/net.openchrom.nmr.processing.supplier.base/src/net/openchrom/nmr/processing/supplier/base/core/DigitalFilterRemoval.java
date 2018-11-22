@@ -97,7 +97,7 @@ public class DigitalFilterRemoval {
 			// remove temporary zero filling if necessary
 			System.arraycopy(tempUnfilteredSpectrum, 0, tempFID, 0, tempFID.length);
 			// save unfiltered fid
-			int[] timeAxis = utilityFunction.generateTimeScale(scanNMR);
+			long[] timeAxis = utilityFunction.generateTimeScale(scanNMR);
 			signalExtractor.createScansFID(tempFID, timeAxis);
 		} else {
 			// no digital filter, no zero filling

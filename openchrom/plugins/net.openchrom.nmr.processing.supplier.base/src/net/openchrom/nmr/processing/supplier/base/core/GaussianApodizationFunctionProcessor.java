@@ -41,7 +41,7 @@ public class GaussianApodizationFunctionProcessor extends AbstractScanProcessor 
 	private double[] GaussianApodizationFunction(IScanNMR scanNMR, ISignalExtractor signalExtractor, GaussianApodizationSettings gaussianApodizationSettings) {
 
 		// Get Timescale
-		int[] time = signalExtractor.extractTimeFID();// generateTimeScale(scanNMR);
+		long[] time = signalExtractor.extractTimeFID();// generateTimeScale(scanNMR);
 		double[] timeScale = new double[time.length];
 		for(int i = 0; i < time.length; i++) {
 			timeScale[i] = time[i] / 1000000.0;
