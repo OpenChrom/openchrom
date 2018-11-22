@@ -22,18 +22,19 @@ public class ZeroFilling {
 	public Complex[] zerofill(ISignalExtractor signalExtractor, IScanNMR scanNMR, ZERO_FILLING_FACTOR zeroFillingFactor) {
 
 		Complex[] intesityFID = null;
-		if(scanNMR.getProcessingParameters("digitalFilterZeroFill").equals(1.0)) {
-			intesityFID = signalExtractor.extractRawIntesityFID();
-		} else {
-			intesityFID = signalExtractor.extractIntesityFID();
-		}
+		// if(scanNMR.getProcessingParameters("digitalFilterZeroFill").equals(1.0)) {
+		// intesityFID = signalExtractor.extractRawIntesityFID();
+		// } else {
+		intesityFID = signalExtractor.extractIntesityFID();
+		// }
 		Complex[] zeroFilledFID = new Complex[signalExtractor.extractRawIntesityFID().length];
 		//
 		int newDataSize = 0;
-		if(zeroFillingFactor.equals(ZERO_FILLING_FACTOR.AUTO)) {
+		int zeroFillingSize = zeroFillingFactor.getValue();
+		if(zeroFillingFactor.equals(ZERO_FILLING_FACTOR.AUTO) || zeroFillingSize < zeroFilledFID.length) {
 			newDataSize = (int)Math.pow(2, (int)(Math.ceil((Math.log(intesityFID.length) / Math.log(2)))));
 		} else {
-			newDataSize = zeroFillingFactor.getValue();
+			newDataSize = zeroFillingSize;
 		}
 		zeroFilledFID = new Complex[newDataSize];
 		for(int i = 0; i < newDataSize; i++) {
