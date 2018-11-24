@@ -7,7 +7,8 @@
             description="This processor applies the Fourier Transformation."
             id="net.openchrom.nmr.processing.supplier.base.fourierTransformation"
             processor="net.openchrom.nmr.processing.supplier.base.core.FourierTransformationProcessor"
-            processorName="Fourier Transformation">
+            processorName="Fourier Transformation"
+            settings="net.openchrom.nmr.processing.supplier.base.settings.FourierTransformationSettings">
       </ScanProcessor>
       <ScanProcessor
             description="This processor applies the phase correction."
@@ -19,14 +20,29 @@
             description="This processor applies the phase correction."
             id="net.openchrom.nmr.processing.supplier.base.autoPhaseCorrection"
             processor="net.openchrom.nmr.processing.supplier.base.core.AutoPhaseCorrectionProcessor"
-            processorName="Auto Phase Correction">
+            processorName="Auto Phase Correction"
+            settings="net.openchrom.nmr.processing.supplier.base.settings.AutoPhaseCorrectionSettings">
       </ScanProcessor>
       <ScanProcessor
             description="This processor applies the baseline correction."
             id="net.openchrom.nmr.processing.supplier.base.baselineCorrection"
             processor="net.openchrom.nmr.processing.supplier.base.core.BaselineCorrectionProcessor"
-            processorName="Baseline Correction">
+            processorName="Baseline Correction"
+            settings="net.openchrom.nmr.processing.supplier.base.settings.BaselineCorrectionSettings">
+      </ScanProcessor>
+      <ScanProcessor
+            description="Exponential Apodization Function"
+            id="net.openchrom.nmr.processing.supplier.base.exponentialApodizationFunction"
+            processor="net.openchrom.nmr.processing.supplier.base.core.ExponentialApodizationFunctionProcessor"
+            processorName="Exponential Apodization Function"
+            settings="net.openchrom.nmr.processing.supplier.base.settings.ExponentialApodizationSettings">
+      </ScanProcessor>
+      <ScanProcessor
+            description="Gaussian Apodization Function"
+            id="net.openchrom.nmr.processing.supplier.base.gaussianApodizationFunction"
+            processor="net.openchrom.nmr.processing.supplier.base.core.GaussianApodizationFunctionProcessor"
+            processorName="Gaussian Apodization Function"
+            settings="net.openchrom.nmr.processing.supplier.base.settings.GaussianApodizationSettings">
       </ScanProcessor>
    </extension>
-
 </plugin>

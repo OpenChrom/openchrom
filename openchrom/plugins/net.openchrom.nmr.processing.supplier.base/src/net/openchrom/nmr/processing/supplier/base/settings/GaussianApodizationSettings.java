@@ -12,9 +12,14 @@
 package net.openchrom.nmr.processing.supplier.base.settings;
 
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
+import org.eclipse.chemclipse.support.settings.DoubleSettingsProperty;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GaussianApodizationSettings implements IProcessorSettings {
 
+	@JsonProperty(value = "Gaussian Line Broadening", defaultValue = "0.0")
+	@DoubleSettingsProperty(minValue = 0)
 	private double gaussianLineBroadeningFactor = 0;
 
 	public GaussianApodizationSettings() {
