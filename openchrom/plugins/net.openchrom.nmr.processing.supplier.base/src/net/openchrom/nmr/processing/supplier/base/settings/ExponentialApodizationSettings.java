@@ -18,8 +18,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ExponentialApodizationSettings implements IProcessorSettings {
 
-	@JsonProperty(value = "Exponential Line BroadeningFactor", defaultValue = "0.0")
-	@DoubleSettingsProperty(minValue = 0)
+	@JsonProperty(value = "Exponential Line Broadening Factor", defaultValue = "0.0")
+	@DoubleSettingsProperty()
 	private double exponentialLineBroadeningFactor = 0;
 
 	public ExponentialApodizationSettings() {

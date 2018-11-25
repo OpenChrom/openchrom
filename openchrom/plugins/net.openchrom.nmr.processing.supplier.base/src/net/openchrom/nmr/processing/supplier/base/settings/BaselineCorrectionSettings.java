@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BaselineCorrectionSettings implements IProcessorSettings {
 
-	@JsonProperty(value = "Plynomial Order", defaultValue = "1")
+	@JsonProperty(value = "Polynomial Order", defaultValue = "1")
 	@IntSettingsProperty(minValue = 0)
 	private int polynomialOrder = 1;
 

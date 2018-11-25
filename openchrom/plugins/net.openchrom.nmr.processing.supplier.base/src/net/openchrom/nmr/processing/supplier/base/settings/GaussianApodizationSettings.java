@@ -18,8 +18,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GaussianApodizationSettings implements IProcessorSettings {
 
-	@JsonProperty(value = "Gaussian Line Broadening", defaultValue = "0.0")
-	@DoubleSettingsProperty(minValue = 0)
+	@JsonProperty(value = "Gaussian Line Broadening Factor", defaultValue = "0.0")
+	@DoubleSettingsProperty()
 	private double gaussianLineBroadeningFactor = 0;
 
 	public GaussianApodizationSettings() {
