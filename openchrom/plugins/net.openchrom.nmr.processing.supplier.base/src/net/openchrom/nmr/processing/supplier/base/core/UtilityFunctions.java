@@ -53,8 +53,8 @@ public class UtilityFunctions {
 
 	public double getMaxValueOfArray(double[] dataArray) {
 
-		double maxValue = 0;
-		for(int m = 1; m < dataArray.length; m++) {
+		double maxValue = -Double.MAX_VALUE;
+		for(int m = 0; m < dataArray.length; m++) {
 			if(dataArray[m] > maxValue) {
 				maxValue = dataArray[m];
 			}
@@ -64,8 +64,8 @@ public class UtilityFunctions {
 
 	public double getMinValueOfArray(double[] dataArray) {
 
-		double minValue = 0;
-		for(int m = 1; m < dataArray.length; m++) {
+		double minValue = Double.MAX_VALUE;
+		for(int m = 0; m < dataArray.length; m++) {
 			if(dataArray[m] < minValue) {
 				minValue = dataArray[m];
 			}

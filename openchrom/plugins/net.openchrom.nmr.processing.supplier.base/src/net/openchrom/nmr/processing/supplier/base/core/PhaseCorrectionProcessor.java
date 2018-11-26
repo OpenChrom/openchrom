@@ -1,5 +1,6 @@
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
@@ -44,15 +45,19 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		Complex phaseCorrectionFactor = new Complex(0, (Math.PI / 180));
 		Double complexSize = scanNMR.getProcessingParameters("numberOfFourierPoints");
 		Complex phaseCorrectionComplexFactor;
-		double phasingPivotpoint = deltaAxisPPM[(complexSize.intValue() / 2) - 1];
+		double phasingPivotpoint = 0;
+		/*
+		 * get settings from enum
+		 */
+		PhaseCorrectionSettings phaseCorrectionSettings = new PhaseCorrectionSettings();
 		//
-		if(scanNMR.getProcessingParameters("firstOrderPhaseCorrection") != -1) {
-			leftPhaseChange = scanNMR.getProcessingParameters("firstOrderPhaseCorrection"); // lp
+		if(Double.valueOf(phaseCorrectionSettings.getFirstOrderPhaseCorrection()) instanceof Double) {
+			leftPhaseChange = phaseCorrectionSettings.getFirstOrderPhaseCorrection();
 		} else {
 			leftPhaseChange = 0; // lp
 		}
-		if(scanNMR.getProcessingParameters("zeroOrderPhaseCorrection") != -1) {
-			rightPhaseChange = scanNMR.getProcessingParameters("zeroOrderPhaseCorrection"); // rp
+		if(Double.valueOf(phaseCorrectionSettings.getZeroOrderPhaseCorrection()) instanceof Double) {
+			rightPhaseChange = phaseCorrectionSettings.getZeroOrderPhaseCorrection();
 		} else {
 			rightPhaseChange = 0; // rp
 		}
@@ -64,26 +69,56 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		}
 		double[] leftPhaseCorrectionDSP = new double[complexSize.intValue()];
 		//
-		boolean notUsingPivot = true;
-		if(notUsingPivot) {
-			leftPhaseCorrectionDSP = utilityFunction.generateLinearlySpacedVector(0, 1, complexSize.intValue());
-			for(int i = 0; i < leftPhaseCorrectionDSP.length; i++) {
-				leftPhaseCorrectionDSP[i] *= scanNMR.getProcessingParameters("dspPhaseFactor"); // dspPhase
-			}
-		} else {
-			/*
-			 * to be used later on with the GUI
-			 */
-			double phaseCorrectionTermA = (phasingPivotpoint - scanNMR.getProcessingParameters("firstDataPointOffset"));
-			double phaseCorrectionTermB = phaseCorrectionTermA / scanNMR.getProcessingParameters("sweepWidth");
-			double phaseCorrectionTermC = Math.round(complexSize * phaseCorrectionTermB);
-			double rightPhaseCorrectionleftPhase = -(leftPhaseCorrection[(int)phaseCorrectionTermC]);
-			rightPhaseChange += rightPhaseCorrectionleftPhase;
-			firstOrderPhaseCorrection += leftPhaseChange;
-			zeroOrderPhaseCorrection += rightPhaseChange;
-			scanNMR.putProcessingParameters("firstOrderPhaseCorrection", firstOrderPhaseCorrection);
-			scanNMR.putProcessingParameters("zeroOrderPhaseCorrection", zeroOrderPhaseCorrection);
+		
+		switch(phaseCorrectionSettings.getPivotPointSelection()) {
+			case LEFT:
+				// position off the peaks
+				phasingPivotpoint = deltaAxisPPM[0];
+				break;
+			case MIDDLE:
+				// middle of spectrum
+				phasingPivotpoint = deltaAxisPPM[(complexSize.intValue() / 2) - 1];
+				break;
+			case PEAK_MAX:
+				// getMaxVal; at biggest peak in spectrum
+				double bigPeak = utilityFunction.getMaxValueOfArray(signalExtractor.extractFourierTransformedDataRealPart());
+				int peakPosition = ArrayUtils.indexOf(signalExtractor.extractFourierTransformedDataRealPart(), bigPeak);
+				phasingPivotpoint = deltaAxisPPM[peakPosition];
+				break;
+			case USER_DEFINED:
+				// user input position
+				double userDefinedPosition = phaseCorrectionSettings.getUserDefinedPivotPointValue();
+				int userPeakPosition = findIndexOfValue(deltaAxisPPM, userDefinedPosition);
+				phasingPivotpoint = deltaAxisPPM[userPeakPosition];
+				break;
+			default:
+				// without setting pivot point
+				leftPhaseCorrectionDSP = utilityFunction.generateLinearlySpacedVector(0, 1, complexSize.intValue());
+				for(int i = 0; i < leftPhaseCorrectionDSP.length; i++) {
+					leftPhaseCorrectionDSP[i] *= scanNMR.getProcessingParameters("dspPhaseFactor"); // dspPhase
+				}
+				// generate correction array
+				Complex[] phaseCorrection = new Complex[leftPhaseCorrectionDSP.length];
+				for(int i = 0; i < leftPhaseCorrectionDSP.length; i++) {
+					double phaseCorrectionFactorTerm = (rightPhaseChange + leftPhaseCorrection[i] + leftPhaseCorrectionDSP[i]);
+					phaseCorrectionComplexFactor = phaseCorrectionFactor.multiply(phaseCorrectionFactorTerm);
+					phaseCorrection[i] = phaseCorrectionComplexFactor.exp();
+				}
+				return phaseCorrection;
 		}
+		/*
+		 * to be used later on with the GUI
+		 */
+		double phaseCorrectionTermA = (phasingPivotpoint - scanNMR.getProcessingParameters("firstDataPointOffset"));
+		double phaseCorrectionTermB = phaseCorrectionTermA / scanNMR.getProcessingParameters("sweepWidth");
+		double phaseCorrectionTermC = Math.round(complexSize * phaseCorrectionTermB);
+		double rightPhaseCorrectionleftPhase = -(leftPhaseCorrection[(int)phaseCorrectionTermC]);
+		rightPhaseChange += rightPhaseCorrectionleftPhase;
+		firstOrderPhaseCorrection += leftPhaseChange;
+		zeroOrderPhaseCorrection += rightPhaseChange;
+		scanNMR.putProcessingParameters("firstOrderPhaseCorrection", firstOrderPhaseCorrection);
+		scanNMR.putProcessingParameters("zeroOrderPhaseCorrection", zeroOrderPhaseCorrection);
+		// }
 		// generate correction array
 		Complex[] phaseCorrection = new Complex[leftPhaseCorrectionDSP.length];
 		for(int i = 0; i < leftPhaseCorrectionDSP.length; i++) {
@@ -92,5 +127,16 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 			phaseCorrection[i] = phaseCorrectionComplexFactor.exp();
 		}
 		return phaseCorrection;
+	}
+
+	private int findIndexOfValue(double[] array, double value) {
+
+		int index;
+		for(index = 0; index < array.length; index++) {
+			if(Math.abs(array[index] - value) < 0.001) {
+				break;
+			}
+		}
+		return index;
 	}
 }
