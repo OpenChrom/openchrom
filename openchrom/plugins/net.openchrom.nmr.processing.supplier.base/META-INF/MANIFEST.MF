@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.nmr.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.nmr.processor;bundle-version="0.8.0",
  org.eclipse.chemclipse.processing;bundle-version="0.8.0",
- org.eclipse.chemclipse.thirdpartylibraries.apache.commons.math;bundle-version="3.5.0"
+ org.eclipse.chemclipse.thirdpartylibraries.apache.commons.math;bundle-version="3.5.0",
+ com.fasterxml.jackson.core.jackson-annotations
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.nmr.processing.supplier.base.core,
