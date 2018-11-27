@@ -26,6 +26,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.util.Matrix;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -54,7 +55,6 @@ public class PDFSupport {
 	//
 	private static final float L_0_5_MM = 0.5f * L_1_MM;
 	private static final float L_1_4_MM = 1.4f * L_1_MM;
-	private static final float L_15_MM = 15 * L_1_MM;
 	private static final float L_20_MM = 20 * L_1_MM;
 	private static final float L_200_MM = 200 * L_1_MM;
 	private static final float L_297_MM = 297 * L_1_MM;
@@ -63,6 +63,7 @@ public class PDFSupport {
 	private PDFont fontBold = PDType1Font.HELVETICA_BOLD;
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
+	private PDFUtil pdfUtil = new PDFUtil();
 
 	@SuppressWarnings("rawtypes")
 	public void createPDF(File file, IChromatogram chromatogram, IProgressMonitor monitor) throws IOException {
@@ -70,7 +71,7 @@ public class PDFSupport {
 		PDDocument document = null;
 		try {
 			document = new PDDocument();
-			createHeaderTable(document, chromatogram, 1, 1, monitor);
+			createHeader(document, chromatogram, 1, 1, monitor);
 			List<PDImageXObject> chromatogramImages = createImages(chromatogram, document, 8);
 			int pages = chromatogramImages.size();
 			int page = 1;
@@ -89,63 +90,43 @@ public class PDFSupport {
 		}
 	}
 
-	private PDPage createHeaderTable(PDDocument document, IChromatogram chromatogram, int page, int pages, IProgressMonitor monitor) throws IOException {
+	@SuppressWarnings("rawtypes")
+	private PDPage createHeader(PDDocument document, IChromatogram chromatogram, int page, int pages, IProgressMonitor monitor) throws IOException {
 
 		PDPage pdPage = new PDPage(PDRectangle.A4);
 		document.addPage(pdPage);
 		//
 		PDPageContentStream contentStream = new PDPageContentStream(document, pdPage);
-		contentStream.setFont(font, 12);
-		float xPosition = BORDER;
-		float yPosition = 0;
 		//
-		yPosition = printHeaderTable(contentStream, chromatogram, xPosition, yPosition);
+		contentStream.setFont(font, 14);
+		printText(contentStream, BORDER, getPositionFromTop(BORDER), "Chromatogram: " + chromatogram.getName());
+		//
+		PDFTable pdfTable = new PDFTable();
+		pdfTable.addColumn("Name", 95.0f);
+		pdfTable.addColumn("Value", 95.0f);
+		for(Map.Entry<String, String> entry : chromatogram.getHeaderDataMap().entrySet()) {
+			List<String> row = new ArrayList<>();
+			row.add(entry.getKey());
+			row.add(entry.getValue());
+			pdfTable.addRow(row);
+		}
+		pdfUtil.showTable(contentStream, pdfTable, new Position(10.0f, 25.0f));
+		/*
+		 * OpenChrom Logo + Text
+		 */
+		PDImageXObject image = JPEGFactory.createFromStream(document, PDFSupport.class.getResourceAsStream("openchromlogo.jpg"));
+		contentStream.drawImage(image, BORDER, getPositionFromTop(270 * L_1_MM), image.getWidth() * 0.15f, image.getHeight() * 0.15f);
+		contentStream.beginText();
+		contentStream.newLineAtOffset(BORDER, getPositionFromTop(275 * L_1_MM));
+		contentStream.showText("OpenChrom - the open source alternative for chromatography/spectrometry");
+		contentStream.endText();
+		/*
+		 * Footer
+		 */
 		printPageFooter(document, contentStream, page, pages);
 		//
 		contentStream.close();
 		return pdPage;
-	}
-
-	@SuppressWarnings("rawtypes")
-	private float printHeaderTable(PDPageContentStream contentStream, IChromatogram chromatogram, float xPosition, float yPosition) throws IOException {
-
-		/*
-		 * L_200_MM - L_20_MM
-		 * ~520
-		 */
-		yPosition += L_15_MM;
-		float yStartPosition = yPosition;
-		/*
-		 * Headline
-		 */
-		List<TableCell> cellsMaster = new ArrayList<TableCell>();
-		cellsMaster.add(new TableCell("Name", 260.0f));
-		cellsMaster.add(new TableCell("Value", 260.0f));
-		yPosition = printTableLine(contentStream, xPosition, yPosition, cellsMaster, Color.GRAY, true, true);
-		/*
-		 * Data
-		 */
-		Map<String, String> headerDataMap = chromatogram.getHeaderDataMap();
-		//
-		int i = 0;
-		List<TableCell> cells;
-		for(Map.Entry<String, String> entry : headerDataMap.entrySet()) {
-			cells = new ArrayList<TableCell>();
-			cells.add(new TableCell(entry.getKey(), 260.0f));
-			cells.add(new TableCell(entry.getValue(), 260.0f));
-			//
-			if(i % 2 == 0) {
-				yPosition = printTableLine(contentStream, xPosition, yPosition, cells, Color.LIGHT_GRAY, false, true);
-			} else {
-				yPosition = printTableLine(contentStream, xPosition, yPosition, cells, null, false, true);
-			}
-			i++;
-		}
-		/*
-		 * Print last line.
-		 */
-		printTableLastLine(contentStream, xPosition, yPosition, yStartPosition, cellsMaster);
-		return yPosition;
 	}
 
 	private PDPage createImagePage(PDDocument document, PDImageXObject chromatogramImage, int page, int pages, IProgressMonitor monitor) throws IOException {
@@ -195,7 +176,7 @@ public class PDFSupport {
 		 * L_200_MM - L_20_MM
 		 * ~520
 		 */
-		yPosition += L_15_MM;
+		yPosition += BORDER;
 		float yStartPosition = yPosition;
 		/*
 		 * Headline
