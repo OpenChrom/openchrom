@@ -8,7 +8,8 @@ public class PhaseCorrectionSettings implements IProcessorSettings {
 		LEFT("pivot @ far left end of the spectrum"), //
 		MIDDLE("pivot @ middle of the spectrum"), //
 		PEAK_MAX("pivot @ biggest peak of the spectrum"), //
-		USER_DEFINED("pivot @ user defined position");//
+		USER_DEFINED("pivot @ user defined position"), //
+		NOT_DEFINED("phasing without specified pivot point");//
 
 		private String pivotPosition = "";
 

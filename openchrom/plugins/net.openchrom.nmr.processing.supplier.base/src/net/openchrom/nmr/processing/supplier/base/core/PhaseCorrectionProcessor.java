@@ -69,7 +69,6 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		}
 		double[] leftPhaseCorrectionDSP = new double[complexSize.intValue()];
 		//
-		
 		switch(phaseCorrectionSettings.getPivotPointSelection()) {
 			case LEFT:
 				// position off the peaks
@@ -91,7 +90,7 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 				int userPeakPosition = findIndexOfValue(deltaAxisPPM, userDefinedPosition);
 				phasingPivotpoint = deltaAxisPPM[userPeakPosition];
 				break;
-			default:
+			case NOT_DEFINED:
 				// without setting pivot point
 				leftPhaseCorrectionDSP = utilityFunction.generateLinearlySpacedVector(0, 1, complexSize.intValue());
 				for(int i = 0; i < leftPhaseCorrectionDSP.length; i++) {
