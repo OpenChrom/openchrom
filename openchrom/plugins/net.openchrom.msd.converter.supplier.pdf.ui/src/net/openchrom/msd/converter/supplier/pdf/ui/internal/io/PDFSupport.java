@@ -18,6 +18,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -28,15 +29,24 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.util.Matrix;
+import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
+import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
+
+import net.openchrom.msd.converter.supplier.pdf.preferences.PreferenceSupplier;
 
 public class PDFSupport {
 
@@ -49,29 +59,25 @@ public class PDFSupport {
 	private static final float LEFT_BORDER = 10.0f; // mm
 	private static final float IMAGE_WIDTH = 190; // mm
 	private static final float IMAGE_HEIGHT = 270; // mm
+	private static final int NUMBER_ROWS_HEADER = 40;
+	private static final int NUMBER_ROWS_DATA = 46;
 	private static final PDFont FONT_NORMAL = PDType1Font.HELVETICA;
 	//
-	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
+	private DecimalFormat decimalFormatRT = ValueFormat.getDecimalFormatEnglish("0.00");
+	private DecimalFormat decimalFormatArea = ValueFormat.getDecimalFormatEnglish("0.000");
 	private PDFUtil pdfUtil = new PDFUtil();
+	private TargetExtendedComparator targetComparator = new TargetExtendedComparator(SortOrder.DESC);
 
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public void createPDF(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) throws IOException {
 
 		PDDocument document = null;
 		try {
 			document = new PDDocument();
-			//
-			ImageRunnable imageRunnable = createImages(chromatogram, document, 8);
-			PDFTable headerDataTable = getHeaderDataTable(chromatogram.getHeaderDataMap());
-			List<PDImageXObject> chromatogramImages = imageRunnable.getChromatogramImages();
-			List<? extends IPeak> peaks = imageRunnable.getPeaks();
-			List<IScan> scans = imageRunnable.getScans();
-			//
-			int pages = chromatogramImages.size();
-			int page = 1;
-			//
-			printHeaderData(document, chromatogram.getName(), headerDataTable, 1, 1, monitor);
-			printImages(document, chromatogramImages, page, pages, monitor);
-			printPeakTable(document, peaks, page, pages, monitor);
+			createChromatogramPDF(chromatogram, document, monitor);
+			for(IChromatogram chromatogramReference : chromatogram.getReferencedChromatograms()) {
+				createChromatogramPDF(chromatogramReference, document, monitor);
+			}
 			//
 			document.save(file);
 		} catch(IOException e) {
@@ -83,7 +89,60 @@ public class PDFSupport {
 		}
 	}
 
-	private PDPage printHeaderData(PDDocument document, String name, PDFTable pdfTable, int page, int pages, IProgressMonitor monitor) throws IOException {
+	private void createChromatogramPDF(IChromatogram<? extends IPeak> chromatogram, PDDocument document, IProgressMonitor monitor) throws IOException {
+
+		int numberImagePages = PreferenceSupplier.getNumberImagePages();
+		ImageRunnable imageRunnable = createImages(chromatogram, document, numberImagePages);
+		//
+		String chromatogramName = getChromatogramName(chromatogram);
+		PDFTable headerDataTable = getHeaderDataTable(chromatogram.getHeaderDataMap());
+		List<PDImageXObject> chromatogramImages = imageRunnable.getChromatogramImages();
+		PDFTable peakDataTable = getPeakDataTable(imageRunnable.getPeaks());
+		PDFTable scanDataTable = getScanDataTable(imageRunnable.getScans());
+		/*
+		 * Calculate the number of pages.
+		 */
+		int pages = headerDataTable.getNumberRows() / NUMBER_ROWS_HEADER + 1;
+		pages += chromatogramImages.size();
+		pages += peakDataTable.getNumberRows() / NUMBER_ROWS_DATA + 1;
+		pages += peakDataTable.getNumberRows() / NUMBER_ROWS_DATA + 1;
+		//
+		int page = printHeaderDataPages(document, chromatogramName, headerDataTable, 1, pages, monitor);
+		page = printImagePages(document, chromatogramImages, page, pages, monitor);
+		page = printPeakTablePages(document, peakDataTable, page, pages, monitor);
+		page = printScanTablePages(document, scanDataTable, page, pages, monitor);
+	}
+
+	private String getChromatogramName(IChromatogram<? extends IPeak> chromatogram) {
+
+		String name = chromatogram.getName();
+		if(chromatogram instanceof IChromatogramMSD) {
+			name += " (MSD)";
+		} else if(chromatogram instanceof IChromatogramCSD) {
+			name += " (CSD)";
+		} else if(chromatogram instanceof IChromatogramWSD) {
+			name += " (WSD)";
+		}
+		//
+		return name;
+	}
+
+	private int printHeaderDataPages(PDDocument document, String name, PDFTable pdfTable, int page, int pages, IProgressMonitor monitor) throws IOException {
+
+		int parts = pdfTable.getNumberRows() / NUMBER_ROWS_HEADER + 1;
+		for(int part = 0; part < parts; part++) {
+			int range = part * NUMBER_ROWS_HEADER;
+			int rowStart = range + 1;
+			int rowStop = range + NUMBER_ROWS_HEADER;
+			rowStop = (rowStop > pdfTable.getNumberRows()) ? pdfTable.getNumberRows() : rowStop;
+			pdfTable.setRowStart(rowStart);
+			pdfTable.setRowStop(rowStop);
+			page = printHeaderData(document, name, pdfTable, page, pages, monitor);
+		}
+		return page;
+	}
+
+	private int printHeaderData(PDDocument document, String name, PDFTable pdfTable, int page, int pages, IProgressMonitor monitor) throws IOException {
 
 		PDPage pdPage = new PDPage(PDRectangle.A4);
 		document.addPage(pdPage);
@@ -116,18 +175,19 @@ public class PDFSupport {
 		printPageFooter(document, contentStream, page, pages);
 		//
 		contentStream.close();
-		return pdPage;
+		return ++page;
 	}
 
-	private void printImages(PDDocument document, List<PDImageXObject> chromatogramImages, int page, int pages, IProgressMonitor monitor) throws IOException {
+	private int printImagePages(PDDocument document, List<PDImageXObject> chromatogramImages, int page, int pages, IProgressMonitor monitor) throws IOException {
 
-		for(int i = pages - 1; i >= 0; i--) {
+		for(int i = chromatogramImages.size() - 1; i >= 0; i--) {
 			PDImageXObject chromatogramImage = chromatogramImages.get(i);
-			createImagePage(document, chromatogramImage, page, pages, monitor);
+			page = printImagePage(document, chromatogramImage, page, pages, monitor);
 		}
+		return page;
 	}
 
-	private PDPage createImagePage(PDDocument document, PDImageXObject chromatogramImage, int page, int pages, IProgressMonitor monitor) throws IOException {
+	private int printImagePage(PDDocument document, PDImageXObject chromatogramImage, int page, int pages, IProgressMonitor monitor) throws IOException {
 
 		PDPage pdPage = new PDPage(PDRectangle.A4);
 		document.addPage(pdPage);
@@ -147,10 +207,25 @@ public class PDFSupport {
 		printPageFooter(document, contentStream, page, pages);
 		//
 		contentStream.close();
-		return pdPage;
+		return ++page;
 	}
 
-	private PDPage printPeakTable(PDDocument document, List<? extends IPeak> peaks, int page, int pages, IProgressMonitor monitor) throws IOException {
+	private int printPeakTablePages(PDDocument document, PDFTable pdfTable, int page, int pages, IProgressMonitor monitor) throws IOException {
+
+		int parts = pdfTable.getNumberRows() / NUMBER_ROWS_DATA + 1;
+		for(int part = 0; part < parts; part++) {
+			int range = part * NUMBER_ROWS_DATA;
+			int rowStart = range + 1;
+			int rowStop = range + NUMBER_ROWS_DATA;
+			rowStop = (rowStop > pdfTable.getNumberRows()) ? pdfTable.getNumberRows() : rowStop;
+			pdfTable.setRowStart(rowStart);
+			pdfTable.setRowStop(rowStop);
+			page = printPeakTablePage(document, pdfTable, page, pages, monitor);
+		}
+		return page;
+	}
+
+	private int printPeakTablePage(PDDocument document, PDFTable pdfTable, int page, int pages, IProgressMonitor monitor) throws IOException {
 
 		PDPage pdPage = new PDPage(PDRectangle.A4);
 		document.addPage(pdPage);
@@ -158,18 +233,14 @@ public class PDFSupport {
 		/*
 		 * Info
 		 */
-		PDFTable pdfTable = getPeakDataTable(peaks);
-		//
 		contentStream.setFont(FONT_NORMAL, 16);
-		int start = 1;
-		int stop = 46;
 		int size = pdfTable.getNumberRows();
 		StringBuilder builder = new StringBuilder();
 		builder.append("Peak Table:");
 		builder.append(" ");
-		builder.append(start);
+		builder.append(pdfTable.getRowStart());
 		builder.append(" - ");
-		builder.append(stop);
+		builder.append(pdfTable.getRowStop());
 		builder.append(" / ");
 		builder.append(size);
 		//
@@ -181,8 +252,6 @@ public class PDFSupport {
 		pdfTable.setPositionX(10.0f);
 		pdfTable.setPositionY(20.0f);
 		pdfTable.setColumnHeight(5.5f);
-		pdfTable.setRowStart(1);
-		pdfTable.setRowStop(45);
 		pdfUtil.printTable(contentStream, pdfTable);
 		/*
 		 * Footer
@@ -190,7 +259,59 @@ public class PDFSupport {
 		printPageFooter(document, contentStream, page, pages);
 		//
 		contentStream.close();
-		return pdPage;
+		return ++page;
+	}
+
+	private int printScanTablePages(PDDocument document, PDFTable pdfTable, int page, int pages, IProgressMonitor monitor) throws IOException {
+
+		int parts = pdfTable.getNumberRows() / NUMBER_ROWS_DATA + 1;
+		for(int part = 0; part < parts; part++) {
+			int range = part * NUMBER_ROWS_DATA;
+			int rowStart = range + 1;
+			int rowStop = range + NUMBER_ROWS_DATA;
+			rowStop = (rowStop > pdfTable.getNumberRows()) ? pdfTable.getNumberRows() : rowStop;
+			pdfTable.setRowStart(rowStart);
+			pdfTable.setRowStop(rowStop);
+			page = printScanTablePage(document, pdfTable, page, pages, monitor);
+		}
+		return page;
+	}
+
+	private int printScanTablePage(PDDocument document, PDFTable pdfTable, int page, int pages, IProgressMonitor monitor) throws IOException {
+
+		PDPage pdPage = new PDPage(PDRectangle.A4);
+		document.addPage(pdPage);
+		PDPageContentStream contentStream = new PDPageContentStream(document, pdPage);
+		/*
+		 * Info
+		 */
+		contentStream.setFont(FONT_NORMAL, 16);
+		int size = pdfTable.getNumberRows();
+		StringBuilder builder = new StringBuilder();
+		builder.append("Scan Table:");
+		builder.append(" ");
+		builder.append(pdfTable.getRowStart());
+		builder.append(" - ");
+		builder.append(pdfTable.getRowStop());
+		builder.append(" / ");
+		builder.append(size);
+		//
+		pdfUtil.printText(contentStream, pdfUtil.getPositionLeft(LEFT_BORDER), pdfUtil.getPositionTop(15.0f), builder.toString());
+		/*
+		 * Peak Data
+		 */
+		contentStream.setFont(FONT_NORMAL, 12);
+		pdfTable.setPositionX(10.0f);
+		pdfTable.setPositionY(20.0f);
+		pdfTable.setColumnHeight(5.5f);
+		pdfUtil.printTable(contentStream, pdfTable);
+		/*
+		 * Footer
+		 */
+		printPageFooter(document, contentStream, page, pages);
+		//
+		contentStream.close();
+		return ++page;
 	}
 
 	private void printPageFooter(PDDocument document, PDPageContentStream contentStream, int page, int pages) throws IOException {
@@ -225,25 +346,74 @@ public class PDFSupport {
 	private PDFTable getPeakDataTable(List<? extends IPeak> peaks) {
 
 		PDFTable pdfTable = new PDFTable();
-		pdfTable.addColumn("ID", 20.0f);
-		pdfTable.addColumn("RT", 30.0f);
-		pdfTable.addColumn("Area", 40.0f);
-		pdfTable.addColumn("Leading", 50.0f);
-		pdfTable.addColumn("Tailing", 50.0f);
+		pdfTable.addColumn("ID", 15.0f);
+		pdfTable.addColumn("RT", 20.0f);
+		pdfTable.addColumn("Area%", 20.0f);
+		pdfTable.addColumn("Identification", 135.0f);
+		//
+		double totalPeakArea = getTotalPeakArea(peaks);
 		//
 		int i = 1;
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
 			List<String> row = new ArrayList<>();
 			row.add("P" + i++);
-			row.add(decimalFormat.format(peakModel.getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
-			row.add(decimalFormat.format(peak.getIntegratedArea()));
-			row.add(decimalFormat.format(peakModel.getLeading()));
-			row.add(decimalFormat.format(peakModel.getTailing()));
+			row.add(decimalFormatRT.format(peakModel.getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+			row.add(decimalFormatArea.format(getPercentagePeakArea(totalPeakArea, peak.getIntegratedArea())));
+			row.add(getBestIdentification(peak.getTargets()));
 			pdfTable.addRow(row);
 		}
 		//
 		return pdfTable;
+	}
+
+	private double getPercentagePeakArea(double totalPeakArea, double peakArea) {
+
+		if(totalPeakArea > 0) {
+			return (100.0d / totalPeakArea) * peakArea;
+		} else {
+			return 0.0d;
+		}
+	}
+
+	private double getTotalPeakArea(List<? extends IPeak> peaks) {
+
+		double totalPeakArea = 0.0d;
+		for(IPeak peak : peaks) {
+			totalPeakArea += peak.getIntegratedArea();
+		}
+		return totalPeakArea;
+	}
+
+	private PDFTable getScanDataTable(List<IScan> scans) {
+
+		PDFTable pdfTable = new PDFTable();
+		pdfTable.addColumn("ID", 15.0f);
+		pdfTable.addColumn("RT", 20.0f);
+		pdfTable.addColumn("Scan#", 20.0f);
+		pdfTable.addColumn("Identification", 135.0f);
+		//
+		int i = 1;
+		for(IScan scan : scans) {
+			List<String> row = new ArrayList<>();
+			row.add("S" + i++);
+			row.add(decimalFormatRT.format(scan.getRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+			row.add(Integer.toString(scan.getScanNumber()));
+			row.add(getBestIdentification(scan.getTargets()));
+			pdfTable.addRow(row);
+		}
+		//
+		return pdfTable;
+	}
+
+	private String getBestIdentification(Set<IIdentificationTarget> targets) {
+
+		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(targets, targetComparator);
+		if(libraryInformation != null) {
+			return libraryInformation.getName();
+		} else {
+			return "";
+		}
 	}
 
 	private ImageRunnable createImages(IChromatogram<? extends IPeak> chromatogram, PDDocument document, int numberOfPages) {

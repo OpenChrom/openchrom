@@ -11,10 +11,12 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.ui.preferences;
 
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpinnerFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+import net.openchrom.msd.converter.supplier.pdf.preferences.PreferenceSupplier;
 import net.openchrom.msd.converter.supplier.pdf.ui.Activator;
 
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
@@ -33,5 +35,6 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	@Override
 	protected void createFieldEditors() {
 
+		addField(new SpinnerFieldEditor(PreferenceSupplier.P_NUMBER_IMAGE_PAGES, "Number Images Pages", PreferenceSupplier.MIN_NUMBER_IMAGE_PAGES, PreferenceSupplier.MAX_NUMBER_IMAGE_PAGES, getFieldEditorParent()));
 	}
 }

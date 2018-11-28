@@ -79,15 +79,17 @@ public class PDFUtil {
 			/*
 			 * Data
 			 */
-			for(int i = startIndex; i <= stopIndex; i++) {
-				List<String> row = rows.get(i);
-				List<TableCell> rowCells = new ArrayList<TableCell>();
-				for(int j = 0; j < row.size(); j++) {
-					String cell = row.get(j);
-					rowCells.add(new TableCell(cell, convertMillimeterToPoint(bounds.get(j))));
+			if(pdfTable.getNumberRows() > 0) {
+				for(int i = startIndex; i <= stopIndex; i++) {
+					List<String> row = rows.get(i);
+					List<TableCell> rowCells = new ArrayList<TableCell>();
+					for(int j = 0; j < row.size(); j++) {
+						String cell = row.get(j);
+						rowCells.add(new TableCell(cell, convertMillimeterToPoint(bounds.get(j))));
+					}
+					Color backgroundColor = (i % 2 == 0) ? null : Color.LIGHT_GRAY;
+					yPosition -= printTableLine(contentStream, xPosition, yPosition, width, height, rowCells, backgroundColor, false, true);
 				}
-				Color backgroundColor = (i % 2 == 0) ? null : Color.LIGHT_GRAY;
-				yPosition -= printTableLine(contentStream, xPosition, yPosition, width, height, rowCells, backgroundColor, false, true);
 			}
 			/*
 			 * Print last line.

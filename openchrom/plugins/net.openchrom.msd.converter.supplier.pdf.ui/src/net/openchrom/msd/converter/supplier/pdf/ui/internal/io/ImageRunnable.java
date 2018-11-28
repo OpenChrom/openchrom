@@ -34,7 +34,9 @@ import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.ChromatogramDat
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.PeakChartSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.ScanChartSupport;
 import org.eclipse.eavp.service.swtchart.core.BaseChart;
+import org.eclipse.eavp.service.swtchart.core.IChartSettings;
 import org.eclipse.eavp.service.swtchart.core.IExtendedChart;
+import org.eclipse.eavp.service.swtchart.core.RangeRestriction;
 import org.eclipse.eavp.service.swtchart.images.ImageFactory;
 import org.eclipse.eavp.service.swtchart.linecharts.ILineSeriesData;
 import org.eclipse.eavp.service.swtchart.linecharts.ILineSeriesSettings;
@@ -93,8 +95,15 @@ public class ImageRunnable implements Runnable {
 
 		if(chromatogram != null && document != null) {
 			try {
+				/*
+				 * Create the chart
+				 */
 				ImageFactory<ChromatogramChart> imageFactory = new ImageFactory<ChromatogramChart>(ChromatogramChart.class, width, height);
 				ChromatogramChart chromatogramChart = imageFactory.getChart();
+				IChartSettings chartSettings = chromatogramChart.getChartSettings();
+				RangeRestriction rangeRestriction = chartSettings.getRangeRestriction();
+				rangeRestriction.setExtendMaxY(0.1d);
+				chromatogramChart.applySettings(chartSettings);
 				List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
 				//
 				lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesDataChromatogram(chromatogram, chromatogram.getName(), Colors.RED));
