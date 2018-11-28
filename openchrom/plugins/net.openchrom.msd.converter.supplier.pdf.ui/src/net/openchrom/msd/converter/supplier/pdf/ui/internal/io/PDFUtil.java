@@ -32,20 +32,38 @@ public class PDFUtil {
 	private static final Logger logger = Logger.getLogger(PDFUtil.class);
 	//
 	private static final float FACTOR_MM_TO_PT = 2.8346f;
+	//
 	private static final float A4_PORTRAIT_HEIGHT = 297 * FACTOR_MM_TO_PT;
-	private static final float A4_PORTRAIT_WIDTH = 210 * FACTOR_MM_TO_PT;
+	// private static final float A4_PORTRAIT_WIDTH = 210 * FACTOR_MM_TO_PT;
 	//
 	private static final PDFont FONT_NORMAL = PDType1Font.HELVETICA;
 	private static final PDFont FONT_BOLD = PDType1Font.HELVETICA_BOLD;
 
-	public void showTable(PDPageContentStream contentStream, PDFTable pdfTable, Position position) throws IOException {
+	public float convertMillimeterToPoint(float value) {
+
+		return value * FACTOR_MM_TO_PT;
+	}
+
+	public float getPositionLeft(float x) {
+
+		return x * FACTOR_MM_TO_PT;
+	}
+
+	public float getPositionTop(float y) {
+
+		return A4_PORTRAIT_HEIGHT - y * FACTOR_MM_TO_PT;
+	}
+
+	public void printTable(PDPageContentStream contentStream, PDFTable pdfTable) throws IOException {
 
 		if(pdfTable.isValid()) {
 			//
-			float xPosition = getPositionLeft(position.getX());
-			float yPosition = getPositionTop(position.getY());
-			float width = A4_PORTRAIT_WIDTH - 2 * xPosition;
-			float height = getMillimeterInPt(5.5f);
+			float xPosition = getPositionLeft(pdfTable.getPositionX());
+			float yPosition = getPositionTop(pdfTable.getPositionY());
+			float width = convertMillimeterToPoint(pdfTable.getWidth());
+			float height = convertMillimeterToPoint(pdfTable.getColumnHeight());
+			int startIndex = pdfTable.getRowStart() - 1;
+			int stopIndex = pdfTable.getRowStop() - 1;
 			//
 			List<String> titles = pdfTable.getTitles();
 			List<Float> bounds = pdfTable.getBounds();
@@ -55,18 +73,18 @@ public class PDFUtil {
 			 */
 			List<TableCell> titleCells = new ArrayList<TableCell>();
 			for(int i = 0; i < titles.size(); i++) {
-				titleCells.add(new TableCell(titles.get(i), getMillimeterInPt(bounds.get(i))));
+				titleCells.add(new TableCell(titles.get(i), convertMillimeterToPoint(bounds.get(i))));
 			}
 			yPosition -= printTableLine(contentStream, xPosition, yPosition, width, height, titleCells, Color.GRAY, true, true);
 			/*
 			 * Data
 			 */
-			for(int i = 0; i < rows.size(); i++) {
+			for(int i = startIndex; i <= stopIndex; i++) {
 				List<String> row = rows.get(i);
 				List<TableCell> rowCells = new ArrayList<TableCell>();
 				for(int j = 0; j < row.size(); j++) {
 					String cell = row.get(j);
-					rowCells.add(new TableCell(cell, getMillimeterInPt(bounds.get(j))));
+					rowCells.add(new TableCell(cell, convertMillimeterToPoint(bounds.get(j))));
 				}
 				Color backgroundColor = (i % 2 == 0) ? null : Color.LIGHT_GRAY;
 				yPosition -= printTableLine(contentStream, xPosition, yPosition, width, height, rowCells, backgroundColor, false, true);
@@ -74,7 +92,7 @@ public class PDFUtil {
 			/*
 			 * Print last line.
 			 */
-			printTableLines(contentStream, xPosition, yPosition, width, height, getPositionTop(position.getY()), titleCells);
+			printTableLines(contentStream, xPosition, yPosition, width, height, getPositionTop(pdfTable.getPositionY()), titleCells);
 		} else {
 			logger.warn("The PDFTable is invalid.");
 		}
@@ -95,10 +113,10 @@ public class PDFUtil {
 		/*
 		 * Print the text
 		 */
-		contentStream.setStrokingColor(Color.WHITE); // Background, Border
+		contentStream.setStrokingColor(Color.WHITE); // Background/Border
 		contentStream.setNonStrokingColor(Color.BLACK); // Text
 		float xLeft = xPosition;
-		float yText = yPosition - height + getMillimeterInPt(1.0f);
+		float yText = yPosition - height + convertMillimeterToPoint(1.0f);
 		for(TableCell cell : cells) {
 			printText(contentStream, xLeft, yText, " " + cell.getText());
 			xLeft += cell.getWidth();
@@ -107,7 +125,7 @@ public class PDFUtil {
 		 * Bottom Line
 		 */
 		if(drawBottomLine) {
-			contentStream.setStrokingColor(Color.BLACK); // Background, Border
+			contentStream.setStrokingColor(Color.BLACK); // Background/Border
 			contentStream.setNonStrokingColor(Color.BLACK); // Text
 			float yBottom = yPosition - height;
 			drawLine(contentStream, xPosition, yBottom, xPosition + width, yBottom);
@@ -118,7 +136,7 @@ public class PDFUtil {
 
 	private void printTableLines(PDPageContentStream contentStream, float xPosition, float yPosition, float width, float height, float yStartPosition, List<TableCell> cells) throws IOException {
 
-		contentStream.setStrokingColor(Color.BLACK); // Background, Border
+		contentStream.setStrokingColor(Color.BLACK); // Background/Border
 		contentStream.setNonStrokingColor(Color.BLACK); // Text
 		/*
 		 * Top Line
@@ -129,7 +147,7 @@ public class PDFUtil {
 		 */
 		//
 		float yStart = yStartPosition;
-		float yStartExtraSpace = (yStartPosition + getMillimeterInPt(1.9f));
+		float yStartExtraSpace = (yStartPosition + convertMillimeterToPoint(1.9f));
 		float yStop = yPosition;
 		float xLeft = xPosition;
 		for(TableCell cell : cells) {
@@ -144,33 +162,37 @@ public class PDFUtil {
 		drawLine(contentStream, xPosition + width, yStart, xPosition + width, yStop);
 	}
 
-	private void drawLine(PDPageContentStream contentStream, float x1, float y1, float x2, float y2) throws IOException {
+	/**
+	 * X and Y in pt.
+	 * 
+	 * @param contentStream
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @throws IOException
+	 */
+	public void drawLine(PDPageContentStream contentStream, float x1, float y1, float x2, float y2) throws IOException {
 
 		contentStream.moveTo(x1, y1);
 		contentStream.lineTo(x2, y2);
 		contentStream.stroke();
 	}
 
-	private void printText(PDPageContentStream contentStream, float xPosition, float yPosition, String text) throws IOException {
+	/**
+	 * X and Y in pt.
+	 * 
+	 * @param contentStream
+	 * @param x
+	 * @param y
+	 * @param text
+	 * @throws IOException
+	 */
+	public void printText(PDPageContentStream contentStream, float x, float y, String text) throws IOException {
 
 		contentStream.beginText();
-		contentStream.newLineAtOffset(xPosition, yPosition);
+		contentStream.newLineAtOffset(x, y);
 		contentStream.showText(text);
 		contentStream.endText();
-	}
-
-	private float getMillimeterInPt(float value) {
-
-		return value * FACTOR_MM_TO_PT;
-	}
-
-	private float getPositionLeft(float x) {
-
-		return x * FACTOR_MM_TO_PT;
-	}
-
-	private float getPositionTop(float y) {
-
-		return A4_PORTRAIT_HEIGHT - y * FACTOR_MM_TO_PT;
 	}
 }

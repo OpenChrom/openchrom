@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.ui.internal.io;
 
-import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
@@ -30,8 +29,11 @@ import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.util.Matrix;
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.IPeakModel;
+import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -44,42 +46,33 @@ public class PDFSupport {
 	 * A4 LANDSCAPE = 842.0 x 595.0 pt
 	 * 0,0 is lower left!
 	 */
-	//
-	private static final float L_1_MM = 2.8346f;
-	//
-	private static final float A4_WIDTH = 210 * L_1_MM;
-	private static final float BORDER = 10 * L_1_MM;
-	//
-	private static final float IMAGE_WIDTH = A4_WIDTH - 2 * BORDER;
-	private static final float IMAGE_HEIGHT = 270 * L_1_MM; // 297 - 17 (12+5) - 10
-	//
-	private static final float L_0_5_MM = 0.5f * L_1_MM;
-	private static final float L_1_4_MM = 1.4f * L_1_MM;
-	private static final float L_20_MM = 20 * L_1_MM;
-	private static final float L_200_MM = 200 * L_1_MM;
-	private static final float L_297_MM = 297 * L_1_MM;
-	//
-	private PDFont font = PDType1Font.HELVETICA;
-	private PDFont fontBold = PDType1Font.HELVETICA_BOLD;
+	private static final float LEFT_BORDER = 10.0f; // mm
+	private static final float IMAGE_WIDTH = 190; // mm
+	private static final float IMAGE_HEIGHT = 270; // mm
+	private static final PDFont FONT_NORMAL = PDType1Font.HELVETICA;
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
 	private PDFUtil pdfUtil = new PDFUtil();
 
-	@SuppressWarnings("rawtypes")
-	public void createPDF(File file, IChromatogram chromatogram, IProgressMonitor monitor) throws IOException {
+	public void createPDF(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) throws IOException {
 
 		PDDocument document = null;
 		try {
 			document = new PDDocument();
-			createHeader(document, chromatogram, 1, 1, monitor);
-			List<PDImageXObject> chromatogramImages = createImages(chromatogram, document, 8);
+			//
+			ImageRunnable imageRunnable = createImages(chromatogram, document, 8);
+			PDFTable headerDataTable = getHeaderDataTable(chromatogram.getHeaderDataMap());
+			List<PDImageXObject> chromatogramImages = imageRunnable.getChromatogramImages();
+			List<? extends IPeak> peaks = imageRunnable.getPeaks();
+			List<IScan> scans = imageRunnable.getScans();
+			//
 			int pages = chromatogramImages.size();
 			int page = 1;
-			for(int i = pages - 1; i >= 0; i--) {
-				PDImageXObject chromatogramImage = chromatogramImages.get(i);
-				createImagePage(document, chromatogramImage, page, pages, monitor);
-			}
-			createTablePages(document, chromatogram, page, pages, monitor);
+			//
+			printHeaderData(document, chromatogram.getName(), headerDataTable, 1, 1, monitor);
+			printImages(document, chromatogramImages, page, pages, monitor);
+			printPeakTable(document, peaks, page, pages, monitor);
+			//
 			document.save(file);
 		} catch(IOException e) {
 			logger.warn(e);
@@ -90,36 +83,33 @@ public class PDFSupport {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	private PDPage createHeader(PDDocument document, IChromatogram chromatogram, int page, int pages, IProgressMonitor monitor) throws IOException {
+	private PDPage printHeaderData(PDDocument document, String name, PDFTable pdfTable, int page, int pages, IProgressMonitor monitor) throws IOException {
 
 		PDPage pdPage = new PDPage(PDRectangle.A4);
 		document.addPage(pdPage);
-		//
 		PDPageContentStream contentStream = new PDPageContentStream(document, pdPage);
-		//
-		contentStream.setFont(font, 14);
-		printText(contentStream, BORDER, getPositionFromTop(BORDER), "Chromatogram: " + chromatogram.getName());
-		//
-		PDFTable pdfTable = new PDFTable();
-		pdfTable.addColumn("Name", 95.0f);
-		pdfTable.addColumn("Value", 95.0f);
-		for(Map.Entry<String, String> entry : chromatogram.getHeaderDataMap().entrySet()) {
-			List<String> row = new ArrayList<>();
-			row.add(entry.getKey());
-			row.add(entry.getValue());
-			pdfTable.addRow(row);
-		}
-		pdfUtil.showTable(contentStream, pdfTable, new Position(10.0f, 25.0f));
 		/*
-		 * OpenChrom Logo + Text
+		 * Logo
 		 */
+		contentStream.setFont(FONT_NORMAL, 12);
 		PDImageXObject image = JPEGFactory.createFromStream(document, PDFSupport.class.getResourceAsStream("openchromlogo.jpg"));
-		contentStream.drawImage(image, BORDER, getPositionFromTop(270 * L_1_MM), image.getWidth() * 0.15f, image.getHeight() * 0.15f);
-		contentStream.beginText();
-		contentStream.newLineAtOffset(BORDER, getPositionFromTop(275 * L_1_MM));
-		contentStream.showText("OpenChrom - the open source alternative for chromatography/spectrometry");
-		contentStream.endText();
+		float factor = 0.15f;
+		float width = image.getWidth() * factor;
+		float height = image.getHeight() * factor;
+		contentStream.drawImage(image, pdfUtil.getPositionLeft(LEFT_BORDER), pdfUtil.getPositionTop(10.0f) - height, width, height);
+		pdfUtil.printText(contentStream, pdfUtil.getPositionLeft(LEFT_BORDER), pdfUtil.getPositionTop(13.0f) - height, "OpenChrom - the open source alternative for chromatography/spectrometry");
+		/*
+		 * Chromatogram Name
+		 */
+		contentStream.setFont(FONT_NORMAL, 16);
+		pdfUtil.printText(contentStream, pdfUtil.getPositionLeft(LEFT_BORDER), pdfUtil.getPositionTop(45.0f), "Chromatogram: " + name);
+		/*
+		 * Header Data
+		 */
+		pdfTable.setPositionX(10.0f);
+		pdfTable.setPositionY(50.0f);
+		pdfTable.setColumnHeight(5.5f);
+		pdfUtil.printTable(contentStream, pdfTable);
 		/*
 		 * Footer
 		 */
@@ -129,16 +119,26 @@ public class PDFSupport {
 		return pdPage;
 	}
 
+	private void printImages(PDDocument document, List<PDImageXObject> chromatogramImages, int page, int pages, IProgressMonitor monitor) throws IOException {
+
+		for(int i = pages - 1; i >= 0; i--) {
+			PDImageXObject chromatogramImage = chromatogramImages.get(i);
+			createImagePage(document, chromatogramImage, page, pages, monitor);
+		}
+	}
+
 	private PDPage createImagePage(PDDocument document, PDImageXObject chromatogramImage, int page, int pages, IProgressMonitor monitor) throws IOException {
 
 		PDPage pdPage = new PDPage(PDRectangle.A4);
 		document.addPage(pdPage);
-		//
 		PDPageContentStream contentStream = new PDPageContentStream(document, pdPage);
-		contentStream.setFont(font, 12);
 		//
 		if(chromatogramImage != null) {
-			AffineTransform transform = new AffineTransform(IMAGE_WIDTH, 0, 0, IMAGE_HEIGHT, 200 * L_1_MM, 17 * L_1_MM);
+			float width = pdfUtil.convertMillimeterToPoint(IMAGE_WIDTH);
+			float height = pdfUtil.convertMillimeterToPoint(IMAGE_HEIGHT);
+			float x = pdfUtil.convertMillimeterToPoint(200.0f);
+			float y = pdfUtil.convertMillimeterToPoint(17.0f);
+			AffineTransform transform = new AffineTransform(width, 0, 0, height, x, y);
 			transform.rotate(Math.toRadians(90));
 			Matrix matrix = new Matrix(transform);
 			contentStream.drawImage(chromatogramImage, matrix);
@@ -150,192 +150,109 @@ public class PDFSupport {
 		return pdPage;
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	private PDPage createTablePages(PDDocument document, IChromatogram chromatogram, int page, int pages, IProgressMonitor monitor) throws IOException {
+	private PDPage printPeakTable(PDDocument document, List<? extends IPeak> peaks, int page, int pages, IProgressMonitor monitor) throws IOException {
 
 		PDPage pdPage = new PDPage(PDRectangle.A4);
 		document.addPage(pdPage);
-		//
 		PDPageContentStream contentStream = new PDPageContentStream(document, pdPage);
-		contentStream.setFont(font, 12);
-		float xPosition = L_20_MM;
-		float yPosition = 0;
+		/*
+		 * Info
+		 */
+		PDFTable pdfTable = getPeakDataTable(peaks);
 		//
-		List<IPeak> peaks = chromatogram.getPeaks();
-		yPosition = printTableResults(contentStream, peaks, xPosition, yPosition);
+		contentStream.setFont(FONT_NORMAL, 16);
+		int start = 1;
+		int stop = 46;
+		int size = pdfTable.getNumberRows();
+		StringBuilder builder = new StringBuilder();
+		builder.append("Peak Table:");
+		builder.append(" ");
+		builder.append(start);
+		builder.append(" - ");
+		builder.append(stop);
+		builder.append(" / ");
+		builder.append(size);
+		//
+		pdfUtil.printText(contentStream, pdfUtil.getPositionLeft(LEFT_BORDER), pdfUtil.getPositionTop(15.0f), builder.toString());
+		/*
+		 * Peak Data
+		 */
+		contentStream.setFont(FONT_NORMAL, 12);
+		pdfTable.setPositionX(10.0f);
+		pdfTable.setPositionY(20.0f);
+		pdfTable.setColumnHeight(5.5f);
+		pdfTable.setRowStart(1);
+		pdfTable.setRowStop(45);
+		pdfUtil.printTable(contentStream, pdfTable);
+		/*
+		 * Footer
+		 */
 		printPageFooter(document, contentStream, page, pages);
 		//
 		contentStream.close();
 		return pdPage;
 	}
 
-	@SuppressWarnings("deprecation")
-	private float printTableResults(PDPageContentStream contentStream, List<IPeak> peaks, float xPosition, float yPosition) throws IOException {
-
-		/*
-		 * L_200_MM - L_20_MM
-		 * ~520
-		 */
-		yPosition += BORDER;
-		float yStartPosition = yPosition;
-		/*
-		 * Headline
-		 */
-		List<TableCell> cellsMaster = new ArrayList<TableCell>();
-		cellsMaster.add(new TableCell("Name", 190.0f));
-		cellsMaster.add(new TableCell("CAS#", 90.0f));
-		cellsMaster.add(new TableCell("Conc.", 55.0f));
-		cellsMaster.add(new TableCell("Unit", 55.0f));
-		cellsMaster.add(new TableCell("MQ", 55.0f));
-		cellsMaster.add(new TableCell("OK", 75.0f));
-		yPosition = printTableLine(contentStream, xPosition, yPosition, cellsMaster, Color.GRAY, true, true);
-		/*
-		 * Data
-		 */
-		int i = 0;
-		List<TableCell> cells;
-		for(IPeak peak : peaks) {
-			cells = new ArrayList<TableCell>();
-			cells.add(new TableCell(peak.getDetectorDescription(), 190.0f));
-			cells.add(new TableCell(peak.getModelDescription(), 90.0f));
-			cells.add(new TableCell(decimalFormat.format(peak.getIntegratedArea()), 55.0f));
-			cells.add(new TableCell(peak.getClassifier(), 55.0f));
-			cells.add(new TableCell(decimalFormat.format(peak.getSuggestedNumberOfComponents()), 55.0f));
-			cells.add(new TableCell("+", 75.0f));
-			//
-			if(i % 2 == 0) {
-				yPosition = printTableLine(contentStream, xPosition, yPosition, cells, Color.LIGHT_GRAY, false, true);
-			} else {
-				yPosition = printTableLine(contentStream, xPosition, yPosition, cells, null, false, true);
-			}
-			i++;
-		}
-		/*
-		 * Print last line.
-		 */
-		float top = getPositionFromTop(yPosition * L_1_MM);
-		contentStream.drawLine(xPosition, top, L_200_MM, top);
-		/*
-		 * Print vertical lines.
-		 */
-		float yStart = getPositionFromTop(yStartPosition * L_1_MM);
-		float yStartExtraSpace = getPositionFromTop((yStartPosition + L_1_4_MM + L_0_5_MM) * L_1_MM);
-		float yStop = getPositionFromTop(yPosition * L_1_MM);
-		float left = xPosition;
-		for(TableCell cell : cellsMaster) {
-			if(cell.isPrintLeftLine()) {
-				contentStream.drawLine(left, yStart, left, yStop);
-			} else {
-				contentStream.drawLine(left, yStartExtraSpace, left, yStop);
-			}
-			left += cell.getWidth();
-		}
-		contentStream.drawLine(L_200_MM, yStart, L_200_MM, yStop);
-		return yPosition;
-	}
-
-	private float printTableLine(PDPageContentStream contentStream, float xPosition, float yPosition, List<TableCell> cells, Color color, boolean bold, boolean drawTopLine) throws IOException {
-
-		float left = xPosition;
-		float top = getPositionFromTop(yPosition * L_1_MM);
-		/*
-		 * Draw a colored background.
-		 */
-		if(color != null) {
-			contentStream.setNonStrokingColor(color);
-			float heightx = L_1_4_MM + L_0_5_MM;
-			float topx = getPositionFromTop((yPosition + heightx) * L_1_MM);
-			float widthx = L_200_MM - xPosition;
-			contentStream.addRect(xPosition, topx, widthx, heightx * L_1_MM);
-			contentStream.fill();
-		}
-		contentStream.setNonStrokingColor(Color.BLACK);
-		/*
-		 * Draw line at bottom?
-		 */
-		if(drawTopLine) {
-			contentStream.setStrokingColor(Color.BLACK);
-		} else {
-			contentStream.setStrokingColor(color);
-		}
-		drawLine(contentStream, xPosition, top, L_200_MM, top);
-		yPosition += L_1_4_MM;
-		/*
-		 * Print the text
-		 */
-		top = getPositionFromTop(yPosition * L_1_MM);
-		for(TableCell cell : cells) {
-			if(bold) {
-				contentStream.setFont(fontBold, 12);
-			}
-			printText(contentStream, left, top, " " + cell.getText()); // $NON-NLS-1$
-			left += cell.getWidth();
-		}
-		/*
-		 * Add space if there is a top line.
-		 */
-		yPosition += L_0_5_MM;
-		/*
-		 * Set normal font
-		 */
-		contentStream.setFont(font, 12);
-		return yPosition;
-	}
-
-	private void printTableLastLine(PDPageContentStream contentStream, float xPosition, float yPosition, float yStartPosition, List<TableCell> cells) throws IOException {
-
-		float top = getPositionFromTop(yPosition * L_1_MM);
-		drawLine(contentStream, xPosition, top, L_200_MM, top);
-		/*
-		 * Print vertical lines.
-		 */
-		float yStart = getPositionFromTop(yStartPosition * L_1_MM);
-		float yStartExtraSpace = getPositionFromTop((yStartPosition + L_1_4_MM + L_0_5_MM) * L_1_MM);
-		float yStop = getPositionFromTop(yPosition * L_1_MM);
-		float left = xPosition;
-		for(TableCell cell : cells) {
-			if(cell.isPrintLeftLine()) {
-				drawLine(contentStream, left, yStart, left, yStop);
-			} else {
-				drawLine(contentStream, left, yStartExtraSpace, left, yStop);
-			}
-			left += cell.getWidth();
-		}
-		drawLine(contentStream, L_200_MM, yStart, L_200_MM, yStop);
-	}
-
-	private void drawLine(PDPageContentStream contentStream, float x1, float y1, float x2, float y2) throws IOException {
-
-		contentStream.moveTo(x1, y1);
-		contentStream.lineTo(x2, y2);
-		contentStream.stroke();
-	}
-
 	private void printPageFooter(PDDocument document, PDPageContentStream contentStream, int page, int pages) throws IOException {
 
-		printText(contentStream, BORDER, getPositionFromTop(285 * L_1_MM), "Page " + page + "/" + pages); // $NON-NLS-1$
+		StringBuilder builder = new StringBuilder();
+		builder.append("Page");
+		builder.append(" ");
+		builder.append(page);
+		builder.append(" / ");
+		builder.append(pages);
+		//
+		contentStream.setFont(FONT_NORMAL, 12);
+		pdfUtil.printText(contentStream, pdfUtil.getPositionLeft(LEFT_BORDER), pdfUtil.getPositionTop(285.0f), builder.toString());
 	}
 
-	private void printText(PDPageContentStream contentStream, float xPosition, float yPosition, String text) throws IOException {
+	private PDFTable getHeaderDataTable(Map<String, String> headerDataMap) {
 
-		contentStream.beginText();
-		contentStream.newLineAtOffset(xPosition, yPosition);
-		contentStream.showText(text);
-		contentStream.endText();
+		PDFTable pdfTable = new PDFTable();
+		pdfTable.addColumn("Name", 95.0f);
+		pdfTable.addColumn("Value", 95.0f);
+		//
+		for(Map.Entry<String, String> entry : headerDataMap.entrySet()) {
+			List<String> row = new ArrayList<>();
+			row.add(entry.getKey());
+			row.add(entry.getValue());
+			pdfTable.addRow(row);
+		}
+		//
+		return pdfTable;
 	}
 
-	private float getPositionFromTop(float x) {
+	private PDFTable getPeakDataTable(List<? extends IPeak> peaks) {
 
-		return L_297_MM - x;
+		PDFTable pdfTable = new PDFTable();
+		pdfTable.addColumn("ID", 20.0f);
+		pdfTable.addColumn("RT", 30.0f);
+		pdfTable.addColumn("Area", 40.0f);
+		pdfTable.addColumn("Leading", 50.0f);
+		pdfTable.addColumn("Tailing", 50.0f);
+		//
+		int i = 1;
+		for(IPeak peak : peaks) {
+			IPeakModel peakModel = peak.getPeakModel();
+			List<String> row = new ArrayList<>();
+			row.add("P" + i++);
+			row.add(decimalFormat.format(peakModel.getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+			row.add(decimalFormat.format(peak.getIntegratedArea()));
+			row.add(decimalFormat.format(peakModel.getLeading()));
+			row.add(decimalFormat.format(peakModel.getTailing()));
+			pdfTable.addRow(row);
+		}
+		//
+		return pdfTable;
 	}
 
-	@SuppressWarnings("rawtypes")
-	private List<PDImageXObject> createImages(IChromatogram chromatogram, PDDocument document, int numberOfPages) {
+	private ImageRunnable createImages(IChromatogram<? extends IPeak> chromatogram, PDDocument document, int numberOfPages) {
 
 		int width = 1080;
 		int height = (int)(width * (IMAGE_WIDTH / IMAGE_HEIGHT));
 		ImageRunnable imageRunnable = new ImageRunnable(chromatogram, document, numberOfPages, width, height);
 		DisplayUtils.getDisplay().syncExec(imageRunnable);
-		return imageRunnable.getChromatogramImages();
+		//
+		return imageRunnable;
 	}
 }
