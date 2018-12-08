@@ -20,7 +20,8 @@ import org.apache.commons.math3.random.GaussianRandomGenerator;
 import org.apache.commons.math3.random.JDKRandomGenerator;
 import org.apache.commons.math3.random.RandomVectorGenerator;
 import org.apache.commons.math3.random.UncorrelatedRandomVectorGenerator;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
+import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
@@ -34,12 +35,13 @@ import net.openchrom.nmr.processing.supplier.base.settings.AutoPhaseCorrectionSe
 public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
 
 	public AutoPhaseCorrectionProcessor() {
+
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public IProcessingInfo process(final IScanNMR scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
+	public IProcessingInfo process(final IDataNMRSelection scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
 
 		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
@@ -52,8 +54,9 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		return processingInfo;
 	}
 
-	private Complex[] perform(ISignalExtractor signalExtractor, IScanNMR scanNMR, final AutoPhaseCorrectionSettings settings) {
+	private Complex[] perform(ISignalExtractor signalExtractor, IDataNMRSelection dataNMRSelection, final AutoPhaseCorrectionSettings settings) {
 
+		IMeasurementNMR measurementNMR = dataNMRSelection.getMeasurmentNMR();
 		Complex[] fourierTransformedSignals = signalExtractor.extractFourierTransformedData();
 		//
 		double leftPhaseChange = 0;
@@ -61,7 +64,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		//
 		boolean tweakFlag = false;
 		try {
-			for(Map.Entry<String, String> e : scanNMR.getHeaderDataMap().entrySet()) {
+			for(Map.Entry<String, String> e : measurementNMR.getHeaderDataMap().entrySet()) {
 				if(e.getKey().contains("JCAMP-DX")) {
 					Pattern p = Pattern.compile("\\b" + "JCAMP-DX" + "\\b");
 					Matcher m = p.matcher(e.getKey());
@@ -97,10 +100,10 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		// optimized values
 		double[] phaseOpt = new double[initialGuessMultiStart.length];
 		phaseOpt[0] = optimizedPhaseValues.getKey()[0];
-		scanNMR.putProcessingParameters("zeroOrderPhaseCorrection", phaseOpt[0]);
+		measurementNMR.putProcessingParameters("zeroOrderPhaseCorrection", phaseOpt[0]);
 		rightPhaseChange = phaseOpt[0];
 		phaseOpt[1] = optimizedPhaseValues.getKey()[1];
-		scanNMR.putProcessingParameters("firstOrderPhaseCorrection", phaseOpt[1]);
+		measurementNMR.putProcessingParameters("firstOrderPhaseCorrection", phaseOpt[1]);
 		leftPhaseChange = phaseOpt[1];
 		//
 		System.out.println("No. of evaluations: " + calculateACMEEntropyFcn.getCount() + ", PH0: " + rightPhaseChange + ", PH1: " + leftPhaseChange);
@@ -115,6 +118,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		private boolean tweakFlag;
 
 		public CalculateACMEEntropy(Complex[] fourierTransformedData, boolean tweakFlag) {
+
 			this.fourierTransformedData = fourierTransformedData;
 			this.iterCount = 0;
 			this.tweakFlag = tweakFlag;

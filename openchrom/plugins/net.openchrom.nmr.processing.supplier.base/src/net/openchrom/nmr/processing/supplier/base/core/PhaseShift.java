@@ -11,8 +11,7 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
-import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
 import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
@@ -24,12 +23,11 @@ import net.openchrom.nmr.processing.supplier.base.settings.PhaseShiftSettings;
 public class PhaseShift extends AbstractScanProcessor implements IScanProcessor {
 
 	@Override
-	public IProcessingInfo process(final IScanNMR scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
+	public IProcessingInfo process(final IDataNMRSelection scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
 
 		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
 			final PhaseShiftSettings settings = (PhaseShiftSettings)processorSettings;
-			final Complex[] modifiedSignals = scanNMR.getFourierTransformedData();
 			/*
 			 * Add your implementation here.
 			 */

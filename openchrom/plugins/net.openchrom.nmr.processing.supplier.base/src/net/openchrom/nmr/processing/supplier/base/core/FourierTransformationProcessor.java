@@ -16,7 +16,8 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
+import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
@@ -31,30 +32,31 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.ZERO_FILLING_
 public class FourierTransformationProcessor extends AbstractScanProcessor implements IScanProcessor {
 
 	@Override
-	public IProcessingInfo process(final IScanNMR scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
+	public IProcessingInfo process(final IDataNMRSelection dataNMRSelection, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
+		IProcessingInfo processingInfo = validate(dataNMRSelection, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
 			FourierTransformationSettings settings = (FourierTransformationSettings)processorSettings;
-			ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
-			Complex[] fourierTransformedData = transform(scanNMR, settings);
+			ISignalExtractor signalExtractor = new SignalExtractor(dataNMRSelection);
+			Complex[] fourierTransformedData = transform(dataNMRSelection, settings);
 			UtilityFunctions utilityFunction = new UtilityFunctions();
-			double[] chemicalShift = utilityFunction.generateChemicalShiftAxis(scanNMR);
+			double[] chemicalShift = utilityFunction.generateChemicalShiftAxis(dataNMRSelection.getMeasurmentNMR());
 			signalExtractor.createScans(fourierTransformedData, chemicalShift);
-			processingInfo.setProcessingResult(scanNMR);
+			processingInfo.setProcessingResult(dataNMRSelection);
 		}
 		return processingInfo;
 	}
 
-	private Complex[] transform(IScanNMR scanNMR, FourierTransformationSettings processorSettings) {
+	private Complex[] transform(IDataNMRSelection dataNMRSelection, FourierTransformationSettings processorSettings) {
 
 		/*
 		 * Header Data and Raw Data
 		 * ==> prepared in each respective reader
 		 */
 		//
-		ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
+		ISignalExtractor signalExtractor = new SignalExtractor(dataNMRSelection);
 		ZERO_FILLING_FACTOR zeroFillingFactor = processorSettings.getZeroFillingFactor();
+		IMeasurementNMR measurementNMR = dataNMRSelection.getMeasurmentNMR();
 		/*
 		 * according to J.Holy:
 		 * ~~~~~~~
@@ -69,19 +71,19 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		 */
 		Complex[] freeInductionDecayShiftedWindowMultiplication = signalExtractor.extractIntesityFID();
 		//
-		if(scanNMR.getHeaderDataMap().containsValue("Bruker BioSpin GmbH")) {
+		if(measurementNMR.getHeaderDataMap().containsValue("Bruker BioSpin GmbH")) {
 			// On A*X data, FCOR (from proc(s)) allows you to control the DC offset of the spectrum; value between 0.0 and 2.0
-			double firstFIDDataPointMultiplicationFactor = scanNMR.getProcessingParameters("firstFIDDataPointMultiplicationFactor");
+			double firstFIDDataPointMultiplicationFactor = measurementNMR.getProcessingParameters("firstFIDDataPointMultiplicationFactor");
 			// multiply first data point
 			freeInductionDecayShiftedWindowMultiplication[0].multiply(firstFIDDataPointMultiplicationFactor);
-		} else if(scanNMR.getHeaderDataMap().containsValue("Nanalysis Corp.")) {
+		} else if(measurementNMR.getHeaderDataMap().containsValue("Nanalysis Corp.")) {
 			// no multiplication necessary?
 		} else {
 			// another approach
 		}
 		// zero filling // Automatic zero filling if size != 2^n
 		ZeroFilling zeroFiller = new ZeroFilling();
-		Complex[] freeInductionDecayShiftedWindowMultiplicationZeroFill = zeroFiller.zerofill(signalExtractor, scanNMR, zeroFillingFactor);
+		Complex[] freeInductionDecayShiftedWindowMultiplicationZeroFill = zeroFiller.zerofill(signalExtractor, dataNMRSelection.getMeasurmentNMR(), zeroFillingFactor);
 		// Fourier transform, shift and flip the data
 		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(freeInductionDecayShiftedWindowMultiplicationZeroFill, utilityFunction);
 		return nmrSpectrumProcessed;

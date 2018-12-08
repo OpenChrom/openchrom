@@ -15,21 +15,22 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
+import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 
 public class DirectCurrentCorrection {
 	/*
 	 * TODO: insert DC correction for FID and spectrum here
 	 */
 
-	public Complex[] directCurrentCorrectionFID(Complex[] complexSignals, IScanNMR scanNMR) {
+	public Complex[] directCurrentCorrectionFID(Complex[] complexSignals, IMeasurementNMR measurementNMR) {
 
 		/*
 		 * to be used before FT
 		 */
 		// following as used in GNAT
-		int numberOfFourierPoints = scanNMR.getProcessingParameters("numberOfFourierPoints").intValue();
-		int numberOfPoints = scanNMR.getProcessingParameters("numberOfPoints").intValue();
+		int numberOfFourierPoints = measurementNMR.getProcessingParameters("numberOfFourierPoints").intValue();
+		int numberOfPoints = measurementNMR.getProcessingParameters("numberOfPoints").intValue();
 		int directCurrentPointsTerm = 5 * numberOfFourierPoints / 20;
 		int directCurrentPoints = Math.round(directCurrentPointsTerm);
 		/*
@@ -80,16 +81,17 @@ public class DirectCurrentCorrection {
 		return freeInductionDecay;
 	}
 
-	public Complex[] directCurrentCorrectionSpectrum(Complex[] nmrSpectrumProcessedPhased, IScanNMR scanNMR) {
+	public Complex[] directCurrentCorrectionSpectrum(Complex[] nmrSpectrumProcessedPhased, IDataNMRSelection dataNMRSelection) {
 
 		/*
 		 * to be used after phase correction
 		 */
 		// TODO select direct current correction for spectrum
+		IMeasurementNMR measurementNMR = dataNMRSelection.getMeasurmentNMR();
 		int directCurrentSpec = 1; // 0 = No, 1 = Yes
 		Complex[] nmrSpectrumProcessedPhasedDC = new Complex[nmrSpectrumProcessedPhased.length];
 		if(directCurrentSpec == 1) {
-			double directCurrentPointsSpec = Math.ceil(2 * scanNMR.getProcessingParameters("numberOfFourierPoints").intValue() / 20);
+			double directCurrentPointsSpec = Math.ceil(2 * measurementNMR.getProcessingParameters("numberOfFourierPoints").intValue() / 20);
 			double directCurrentPointsSpecPart = Math.ceil(directCurrentPointsSpec / 10);
 			int directCurrentPointsRange = (int)(directCurrentPointsSpec - directCurrentPointsSpecPart) + 1;
 			Complex[] directCurrentPointsSpecFront = new Complex[directCurrentPointsRange];

@@ -7,7 +7,8 @@ import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
+import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
@@ -27,7 +28,7 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 	}
 
 	@Override
-	public IProcessingInfo process(final IScanNMR scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
+	public IProcessingInfo process(final IDataNMRSelection scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
 
 		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
@@ -40,9 +41,10 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 		return processingInfo;
 	}
 
-	private Complex[] perform(ISignalExtractor signalExtractor, IScanNMR scanNMR, final BaselineCorrectionSettings settings) {
+	private Complex[] perform(ISignalExtractor signalExtractor, IDataNMRSelection dataNMRSelection, final BaselineCorrectionSettings settings) {
 
 		int polynomialOrder = settings.getPolynomialOrder();
+		IMeasurementNMR measurementNMR = dataNMRSelection.getMeasurmentNMR();
 		/*
 		 * Matlab:
 		 * polyfit - Polynomial curve fitting
@@ -108,7 +110,7 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 		//
 		// parts of the fitting routine
 		int maximumIterations = 1000;
-		int numberOfFourierPoints = scanNMR.getProcessingParameters("numberOfFourierPoints").intValue();
+		int numberOfFourierPoints = measurementNMR.getProcessingParameters("numberOfFourierPoints").intValue();
 		double[] heavisideFunctionality = new double[nmrSpectrumBaselineCorrAbsolute.length];
 		for(int i = 0; i < heavisideFunctionality.length; i++) {
 			heavisideFunctionality[i] = 0;

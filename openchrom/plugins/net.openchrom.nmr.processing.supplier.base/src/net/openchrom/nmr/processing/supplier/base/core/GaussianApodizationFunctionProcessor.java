@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
@@ -25,7 +25,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.GaussianApodizationSe
 public class GaussianApodizationFunctionProcessor extends AbstractScanProcessor implements IScanProcessor {
 
 	@Override
-	public IProcessingInfo process(IScanNMR scanNMR, IProcessorSettings processorSettings, IProgressMonitor monitor) {
+	public IProcessingInfo process(IDataNMRSelection scanNMR, IProcessorSettings processorSettings, IProgressMonitor monitor) {
 
 		IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
@@ -38,7 +38,7 @@ public class GaussianApodizationFunctionProcessor extends AbstractScanProcessor 
 		return processingInfo;
 	}
 
-	private double[] GaussianApodizationFunction(IScanNMR scanNMR, ISignalExtractor signalExtractor, GaussianApodizationSettings gaussianApodizationSettings) {
+	private double[] GaussianApodizationFunction(IDataNMRSelection scanNMR, ISignalExtractor signalExtractor, GaussianApodizationSettings gaussianApodizationSettings) {
 
 		// Get Timescale
 		long[] time = signalExtractor.extractTimeFID();// generateTimeScale(scanNMR);

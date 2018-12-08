@@ -2,7 +2,7 @@ package net.openchrom.nmr.processing.supplier.base.core;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
@@ -16,12 +16,13 @@ import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettin
 public class PhaseCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
 
 	public PhaseCorrectionProcessor() {
+
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public IProcessingInfo process(final IScanNMR scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
+	public IProcessingInfo process(final IDataNMRSelection scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
 
 		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
 		if(!processingInfo.hasErrorMessages()) {
@@ -34,7 +35,7 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		return processingInfo;
 	}
 
-	private Complex[] perform(ISignalExtractor signalExtractor, IScanNMR scanNMR, final PhaseCorrectionSettings settings) {
+	private Complex[] perform(ISignalExtractor signalExtractor, IDataNMRSelection scanNMR, final PhaseCorrectionSettings settings) {
 
 		double[] deltaAxisPPM = signalExtractor.extractChemicalShift();
 		//
@@ -43,7 +44,7 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		double firstOrderPhaseCorrection = 0;
 		double zeroOrderPhaseCorrection = 0;
 		Complex phaseCorrectionFactor = new Complex(0, (Math.PI / 180));
-		Double complexSize = scanNMR.getProcessingParameters("numberOfFourierPoints");
+		Double complexSize = scanNMR.getMeasurmentNMR().getProcessingParameters("numberOfFourierPoints");
 		Complex phaseCorrectionComplexFactor;
 		double phasingPivotpoint = 0;
 		/*
@@ -94,7 +95,7 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 				// without setting pivot point
 				leftPhaseCorrectionDSP = utilityFunction.generateLinearlySpacedVector(0, 1, complexSize.intValue());
 				for(int i = 0; i < leftPhaseCorrectionDSP.length; i++) {
-					leftPhaseCorrectionDSP[i] *= scanNMR.getProcessingParameters("dspPhaseFactor"); // dspPhase
+					leftPhaseCorrectionDSP[i] *= scanNMR.getMeasurmentNMR().getProcessingParameters("dspPhaseFactor"); // dspPhase
 				}
 				// generate correction array
 				Complex[] phaseCorrection = new Complex[leftPhaseCorrectionDSP.length];
@@ -108,15 +109,15 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		/*
 		 * to be used later on with the GUI
 		 */
-		double phaseCorrectionTermA = (phasingPivotpoint - scanNMR.getProcessingParameters("firstDataPointOffset"));
-		double phaseCorrectionTermB = phaseCorrectionTermA / scanNMR.getProcessingParameters("sweepWidth");
+		double phaseCorrectionTermA = (phasingPivotpoint - scanNMR.getMeasurmentNMR().getProcessingParameters("firstDataPointOffset"));
+		double phaseCorrectionTermB = phaseCorrectionTermA / scanNMR.getMeasurmentNMR().getProcessingParameters("sweepWidth");
 		double phaseCorrectionTermC = Math.round(complexSize * phaseCorrectionTermB);
 		double rightPhaseCorrectionleftPhase = -(leftPhaseCorrection[(int)phaseCorrectionTermC]);
 		rightPhaseChange += rightPhaseCorrectionleftPhase;
 		firstOrderPhaseCorrection += leftPhaseChange;
 		zeroOrderPhaseCorrection += rightPhaseChange;
-		scanNMR.putProcessingParameters("firstOrderPhaseCorrection", firstOrderPhaseCorrection);
-		scanNMR.putProcessingParameters("zeroOrderPhaseCorrection", zeroOrderPhaseCorrection);
+		scanNMR.getMeasurmentNMR().putProcessingParameters("firstOrderPhaseCorrection", firstOrderPhaseCorrection);
+		scanNMR.getMeasurmentNMR().putProcessingParameters("zeroOrderPhaseCorrection", zeroOrderPhaseCorrection);
 		// }
 		// generate correction array
 		Complex[] phaseCorrection = new Complex[leftPhaseCorrectionDSP.length];

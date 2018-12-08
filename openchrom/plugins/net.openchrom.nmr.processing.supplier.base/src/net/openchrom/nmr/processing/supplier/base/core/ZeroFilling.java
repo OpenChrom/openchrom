@@ -12,14 +12,14 @@
 package net.openchrom.nmr.processing.supplier.base.core;
 
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZERO_FILLING_FACTOR;
 
 public class ZeroFilling {
 
-	public Complex[] zerofill(ISignalExtractor signalExtractor, IScanNMR scanNMR, ZERO_FILLING_FACTOR zeroFillingFactor) {
+	public Complex[] zerofill(ISignalExtractor signalExtractor, IMeasurementNMR measurementNMR, ZERO_FILLING_FACTOR zeroFillingFactor) {
 
 		Complex[] intesityFID = null;
 		// if(scanNMR.getProcessingParameters("digitalFilterZeroFill").equals(1.0)) {
@@ -43,7 +43,7 @@ public class ZeroFilling {
 		int copySize = intesityFID.length;
 		System.arraycopy(intesityFID, 0, zeroFilledFID, 0, copySize);
 		double numberOfFourierPoints = newDataSize;
-		scanNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
+		measurementNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
 		return zeroFilledFID;
 	}
 }

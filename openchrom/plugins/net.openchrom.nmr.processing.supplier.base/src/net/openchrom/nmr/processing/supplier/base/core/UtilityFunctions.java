@@ -12,11 +12,11 @@
 package net.openchrom.nmr.processing.supplier.base.core;
 
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
 
 public class UtilityFunctions {
 
-	public double[] generateChemicalShiftAxis(IScanNMR scanNMR) {
+	public double[] generateChemicalShiftAxis(IMeasurementNMR scanNMR) {
 
 		double doubleSize = scanNMR.getProcessingParameters("numberOfFourierPoints");
 		int deltaAxisPoints = (int)doubleSize;
@@ -27,7 +27,7 @@ public class UtilityFunctions {
 		return chemicalShiftAxis;
 	}
 
-	public long[] generateTimeScale(IScanNMR vendorScan) {
+	public long[] generateTimeScale(IMeasurementNMR vendorScan) {
 
 		double minValTimescale = 0;
 		double maxValTimescaleFactor = (vendorScan.getProcessingParameters("numberOfFourierPoints") / vendorScan.getProcessingParameters("numberOfPoints"));

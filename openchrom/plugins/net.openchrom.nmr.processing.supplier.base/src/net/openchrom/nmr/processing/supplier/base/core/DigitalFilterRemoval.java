@@ -12,7 +12,7 @@
 package net.openchrom.nmr.processing.supplier.base.core;
 
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 
@@ -21,11 +21,11 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.ZERO_FILLING_
 
 public class DigitalFilterRemoval {
 
-	public Complex[] removeDigitalFilter(IScanNMR scanNMR, Complex[] FID, DigitalFilterRemovalSettings digitalFilterRemovalSettings) {
+	public Complex[] removeDigitalFilter(IMeasurementNMR measurementNMR, Complex[] FID, DigitalFilterRemovalSettings digitalFilterRemovalSettings) {
 
 		FourierTransformationProcessor transform = new FourierTransformationProcessor();
 		UtilityFunctions utilityFunction = new UtilityFunctions();
-		ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
+		ISignalExtractor signalExtractor = new SignalExtractor(measurementNMR);
 		//
 		Complex[] freeInductionDecay = FID;
 		Complex[] tempFID = new Complex[freeInductionDecay.length];
@@ -36,9 +36,9 @@ public class DigitalFilterRemoval {
 		double leftRotationFid = digitalFilterRemovalSettings.getLeftRotationFid();
 		double leftRotationFidOriginal = digitalFilterRemovalSettings.getLeftRotationFidOriginal();
 		double dspPhaseFactor = digitalFilterRemovalSettings.getDspPhaseFactor();
-		scanNMR.putProcessingParameters("dspPhaseFactor", dspPhaseFactor);
-		scanNMR.putProcessingParameters("leftRotationFid", leftRotationFid);
-		scanNMR.putProcessingParameters("leftRotationFidOriginal", leftRotationFidOriginal);
+		measurementNMR.putProcessingParameters("dspPhaseFactor", dspPhaseFactor);
+		measurementNMR.putProcessingParameters("leftRotationFid", leftRotationFid);
+		measurementNMR.putProcessingParameters("leftRotationFidOriginal", leftRotationFidOriginal);
 		//
 		if(Math.abs(leftRotationFid) > 0.0) {
 			// // save old size here
@@ -54,27 +54,27 @@ public class DigitalFilterRemoval {
 			if(nextPower != previousPower) {
 				// flag for used data
 				double digitalFilterZeroFill = 1;
-				scanNMR.putProcessingParameters("digitalFilterZeroFill", digitalFilterZeroFill);
+				measurementNMR.putProcessingParameters("digitalFilterZeroFill", digitalFilterZeroFill);
 				// zero filling
 				double autoZeroFill = 1;
-				scanNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
+				measurementNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
 				//
 				double zeroFillingFactor = 0.0; // 0 = no action
-				scanNMR.putProcessingParameters("zeroFillingFactor", zeroFillingFactor);
+				measurementNMR.putProcessingParameters("zeroFillingFactor", zeroFillingFactor);
 				//
 				ZeroFilling zeroFiller = new ZeroFilling();
-				freeInductionDecayZeroFill = zeroFiller.zerofill(signalExtractor, scanNMR, ZERO_FILLING_FACTOR.AUTO);
+				freeInductionDecayZeroFill = zeroFiller.zerofill(signalExtractor, measurementNMR, ZERO_FILLING_FACTOR.AUTO);
 				// reset flags
 				autoZeroFill = 0;
-				scanNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
+				measurementNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
 				digitalFilterZeroFill = 0;
-				scanNMR.putProcessingParameters("digitalFilterZeroFill", digitalFilterZeroFill);
+				measurementNMR.putProcessingParameters("digitalFilterZeroFill", digitalFilterZeroFill);
 				//
 				filteredNMRSpectrum = transform.fourierTransformNmrData(freeInductionDecayZeroFill, utilityFunction);
 			} else {
 				// no ZF!
 				double autoZeroFill = 0;
-				scanNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
+				measurementNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
 				filteredNMRSpectrum = transform.fourierTransformNmrData(freeInductionDecay, utilityFunction);
 			}
 			// create filtered spectrum
@@ -97,12 +97,12 @@ public class DigitalFilterRemoval {
 			// remove temporary zero filling if necessary
 			System.arraycopy(tempUnfilteredSpectrum, 0, tempFID, 0, tempFID.length);
 			// save unfiltered fid
-			long[] timeAxis = utilityFunction.generateTimeScale(scanNMR);
+			long[] timeAxis = utilityFunction.generateTimeScale(measurementNMR);
 			signalExtractor.createScansFID(tempFID, timeAxis);
 		} else {
 			// no digital filter, no zero filling
 			double autoZeroFill = 0;
-			scanNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
+			measurementNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
 		}
 		//
 		return tempFID;
