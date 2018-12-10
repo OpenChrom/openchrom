@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.model.core.IScan;
-import org.eclipse.eavp.service.swtchart.core.BaseChart;
-import org.eclipse.eavp.service.swtchart.marker.LabelMarker;
 import org.eclipse.swt.SWT;
+import org.eclipse.swtchart.extensions.core.BaseChart;
+import org.eclipse.swtchart.extensions.marker.LabelMarker;
 
 public class ScanLabelMarker extends LabelMarker {
 
