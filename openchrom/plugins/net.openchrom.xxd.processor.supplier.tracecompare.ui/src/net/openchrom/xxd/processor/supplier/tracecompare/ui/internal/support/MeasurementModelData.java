@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.eavp.service.swtchart.core.ISeriesData;
+import org.eclipse.swtchart.extensions.core.ISeriesData;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;

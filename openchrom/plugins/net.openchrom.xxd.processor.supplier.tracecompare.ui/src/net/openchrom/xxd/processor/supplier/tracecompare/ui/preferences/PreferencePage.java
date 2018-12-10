@@ -12,13 +12,13 @@
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.preferences;
 
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
-import org.eclipse.eavp.service.swtchart.preferences.PreferenceSupport;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
+import org.eclipse.swtchart.extensions.preferences.PreferenceSupport;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 

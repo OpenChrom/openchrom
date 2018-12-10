@@ -11,8 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.converter;
 
-import org.eclipse.eavp.service.swtchart.core.AbstractAxisScaleConverter;
-import org.eclipse.eavp.service.swtchart.core.IAxisScaleConverter;
+import org.eclipse.swtchart.extensions.core.AbstractAxisScaleConverter;
+import org.eclipse.swtchart.extensions.core.IAxisScaleConverter;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceSupplier;
 
