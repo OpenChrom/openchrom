@@ -15,12 +15,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.eavp.service.swtchart.core.ScrollableChart;
-import org.eclipse.eavp.service.swtchart.menu.export.ISeriesExportConverter;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swtchart.extensions.core.ScrollableChart;
+import org.eclipse.swtchart.extensions.menu.export.ISeriesExportConverter;
 
 import de.erichseifert.vectorgraphics2d.Document;
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;

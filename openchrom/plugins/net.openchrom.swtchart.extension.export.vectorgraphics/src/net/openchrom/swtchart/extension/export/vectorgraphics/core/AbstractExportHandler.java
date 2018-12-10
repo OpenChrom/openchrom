@@ -20,16 +20,16 @@ import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.Locale;
 
-import org.eclipse.eavp.service.swtchart.core.BaseChart;
-import org.eclipse.eavp.service.swtchart.core.IAxisScaleConverter;
-import org.eclipse.eavp.service.swtchart.core.IAxisSettings;
-import org.eclipse.eavp.service.swtchart.core.ISecondaryAxisSettings;
-import org.eclipse.eavp.service.swtchart.core.ScrollableChart;
-import org.eclipse.eavp.service.swtchart.menu.export.AbstractSeriesExportHandler;
-import org.eclipse.eavp.service.swtchart.menu.export.ExportSettingsDialog;
-import org.eclipse.eavp.service.swtchart.menu.export.ISeriesExportConverter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swtchart.extensions.core.BaseChart;
+import org.eclipse.swtchart.extensions.core.IAxisScaleConverter;
+import org.eclipse.swtchart.extensions.core.IAxisSettings;
+import org.eclipse.swtchart.extensions.core.ISecondaryAxisSettings;
+import org.eclipse.swtchart.extensions.core.ScrollableChart;
+import org.eclipse.swtchart.extensions.menu.export.AbstractSeriesExportHandler;
+import org.eclipse.swtchart.extensions.menu.export.ExportSettingsDialog;
+import org.eclipse.swtchart.extensions.menu.export.ISeriesExportConverter;
 import org.swtchart.ISeries;
 
 import de.erichseifert.vectorgraphics2d.VectorGraphics2D;

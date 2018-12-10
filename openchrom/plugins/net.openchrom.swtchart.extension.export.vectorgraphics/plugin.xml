@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.eavp.service.swtchart.menuitems">
+         point="org.eclipse.swtchart.extensions.menuitems">
       <MenuItemSupplier
             MenuEntry="net.openchrom.swtchart.extension.export.vectorgraphics.core.SVGExportHandler">
       </MenuItemSupplier>
