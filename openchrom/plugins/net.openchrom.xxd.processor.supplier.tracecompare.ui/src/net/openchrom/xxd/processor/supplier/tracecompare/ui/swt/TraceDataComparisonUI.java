@@ -53,8 +53,8 @@ import org.eclipse.swtchart.extensions.core.ISeriesData;
 import org.eclipse.swtchart.extensions.core.ISeriesModificationListener;
 import org.eclipse.swtchart.extensions.images.ImageSupplier;
 import org.eclipse.swtchart.extensions.linecharts.LineChart;
-import org.swtchart.IAxis;
-import org.swtchart.Range;
+import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.Range;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;

@@ -35,7 +35,7 @@ import org.eclipse.swtchart.extensions.core.SeriesData;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
 import org.eclipse.swtchart.extensions.linecharts.LineSeriesData;
-import org.swtchart.LineStyle;
+import org.eclipse.swtchart.LineStyle;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;

@@ -24,8 +24,8 @@ import org.eclipse.swtchart.extensions.core.IPrimaryAxisSettings;
 import org.eclipse.swtchart.extensions.core.ISecondaryAxisSettings;
 import org.eclipse.swtchart.extensions.core.SecondaryAxisSettings;
 import org.eclipse.swtchart.extensions.linecharts.LineChart;
-import org.swtchart.IAxis.Position;
-import org.swtchart.LineStyle;
+import org.eclipse.swtchart.IAxis.Position;
+import org.eclipse.swtchart.LineStyle;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.converter.MillisecondsToMillimeterConverter;
 
