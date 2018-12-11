@@ -7,7 +7,7 @@ Bundle-Activator: net.openchrom.swtchart.extension.export.vectorgraphics.Activat
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.thirdpartylibraries.vectorgraphics2d;bundle-version="0.13.0",
- org.swtchart;bundle-version="0.10.0",
+ org.eclipse.swtchart;bundle-version="0.7.0",
  org.eclipse.swtchart.extensions;bundle-version="0.7.0",
  org.eclipse.swt;bundle-version="3.105.3",
  org.eclipse.jface;bundle-version="3.12.2",

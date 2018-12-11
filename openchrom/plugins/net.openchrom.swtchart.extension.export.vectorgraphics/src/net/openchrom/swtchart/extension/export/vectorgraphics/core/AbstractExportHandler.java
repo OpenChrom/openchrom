@@ -30,7 +30,7 @@ import org.eclipse.swtchart.extensions.core.ScrollableChart;
 import org.eclipse.swtchart.extensions.menu.export.AbstractSeriesExportHandler;
 import org.eclipse.swtchart.extensions.menu.export.ExportSettingsDialog;
 import org.eclipse.swtchart.extensions.menu.export.ISeriesExportConverter;
-import org.swtchart.ISeries;
+import org.eclipse.swtchart.ISeries;
 
 import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
