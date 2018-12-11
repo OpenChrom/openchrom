@@ -41,9 +41,9 @@ import org.eclipse.swtchart.extensions.core.RangeRestriction;
 import org.eclipse.swtchart.extensions.images.ImageFactory;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
-import org.swtchart.ILineSeries.PlotSymbolType;
-import org.swtchart.IPlotArea;
-import org.swtchart.LineStyle;
+import org.eclipse.swtchart.ILineSeries.PlotSymbolType;
+import org.eclipse.swtchart.IPlotArea;
+import org.eclipse.swtchart.LineStyle;
 
 public class ImageRunnable implements Runnable {
 
