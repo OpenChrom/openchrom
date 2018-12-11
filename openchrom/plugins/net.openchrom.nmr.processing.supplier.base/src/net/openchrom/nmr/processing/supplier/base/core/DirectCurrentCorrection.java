@@ -44,38 +44,23 @@ public class DirectCurrentCorrection {
 		double[] complexSignalsReal = new double[complexSignals.length];
 		double[] complexSignalsImag = new double[complexSignals.length];
 		// for (int k = 1; k <= dataArrayDimension; k++) { // expand for nD dimensions
-		if(numberOfFourierPoints >= numberOfPoints) {
-			if(directCurrentFID > 0) {
-				complexSignalsDCcopy = Arrays.copyOfRange(complexSignals, directCurrentPoints, complexSignals.length);
-				for(int i = 0; i < complexSignalsDCcopy.length; i++) {
-					complexSignalsReal[i] = (complexSignalsDCcopy[i].getReal());
-					complexSignalsImag[i] = (complexSignalsDCcopy[i].getImaginary());
-				}
-				double realAverage = Arrays.stream(complexSignalsReal).average().getAsDouble();
-				double imagAverage = Arrays.stream(complexSignalsImag).average().getAsDouble();
-				complexSignalsDCcopyAverage = new Complex(realAverage, imagAverage);
-				for(int i = 0; i < numberOfPoints; i++) {
-					freeInductionDecay[i] = complexSignals[i].subtract(complexSignalsDCcopyAverage);
-				}
-			} else {
-				freeInductionDecay = Arrays.copyOfRange(complexSignals, 0, numberOfPoints);
+		/*
+		 * assuming that numberOfFourierPoints will never be less than numberOfPoints
+		 */
+		if(directCurrentFID > 0) {
+			complexSignalsDCcopy = Arrays.copyOfRange(complexSignals, directCurrentPoints, complexSignals.length);
+			for(int i = 0; i < complexSignalsDCcopy.length; i++) {
+				complexSignalsReal[i] = (complexSignalsDCcopy[i].getReal());
+				complexSignalsImag[i] = (complexSignalsDCcopy[i].getImaginary());
+			}
+			double realAverage = Arrays.stream(complexSignalsReal).average().getAsDouble();
+			double imagAverage = Arrays.stream(complexSignalsImag).average().getAsDouble();
+			complexSignalsDCcopyAverage = new Complex(realAverage, imagAverage);
+			for(int i = 0; i < numberOfFourierPoints; i++) {
+				freeInductionDecay[i] = complexSignals[i].subtract(complexSignalsDCcopyAverage);
 			}
 		} else {
-			if(directCurrentFID > 0) {
-				complexSignalsDCcopy = Arrays.copyOfRange(complexSignals, directCurrentPoints, complexSignals.length);
-				for(int i = 0; i < complexSignalsDCcopy.length; i++) {
-					complexSignalsReal[i] = (complexSignalsDCcopy[i].getReal());
-					complexSignalsImag[i] = (complexSignalsDCcopy[i].getImaginary());
-				}
-				double realAverage = Arrays.stream(complexSignalsReal).average().getAsDouble();
-				double imagAverage = Arrays.stream(complexSignalsImag).average().getAsDouble();
-				complexSignalsDCcopyAverage = new Complex(realAverage, imagAverage);
-				for(int i = 0; i < numberOfFourierPoints; i++) {
-					freeInductionDecay[i] = complexSignals[i].subtract(complexSignalsDCcopyAverage);
-				}
-			} else {
-				freeInductionDecay = Arrays.copyOfRange(complexSignals, 0, numberOfFourierPoints);
-			}
+			freeInductionDecay = Arrays.copyOfRange(complexSignals, 0, numberOfFourierPoints);
 		}
 		// }
 		return freeInductionDecay;
