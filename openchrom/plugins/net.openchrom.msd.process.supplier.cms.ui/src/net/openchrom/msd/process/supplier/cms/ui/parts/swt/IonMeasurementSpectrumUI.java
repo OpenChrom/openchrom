@@ -19,9 +19,9 @@ import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.swt.ui.support.Sign;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.swtchart.IBarSeries;
-import org.swtchart.IBarSeries.BarWidthStyle;
-import org.swtchart.ISeries.SeriesType;
+import org.eclipse.swtchart.IBarSeries;
+import org.eclipse.swtchart.IBarSeries.BarWidthStyle;
+import org.eclipse.swtchart.ISeries.SeriesType;
 
 import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
