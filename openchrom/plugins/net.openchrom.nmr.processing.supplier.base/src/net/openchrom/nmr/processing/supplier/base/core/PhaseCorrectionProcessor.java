@@ -50,6 +50,8 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		 * get settings from enum
 		 */
 		PhaseCorrectionSettings phaseCorrectionSettings = new PhaseCorrectionSettings();
+		double dspPhaseFactor = phaseCorrectionSettings.getDspPhaseFactor();
+		scanNMR.getMeasurmentNMR().putProcessingParameters("dspPhaseFactor", dspPhaseFactor);
 		//
 		if(Double.valueOf(phaseCorrectionSettings.getFirstOrderPhaseCorrection()) instanceof Double) {
 			leftPhaseChange = phaseCorrectionSettings.getFirstOrderPhaseCorrection();
@@ -96,7 +98,7 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 				for(int i = 0; i < leftPhaseCorrectionDSP.length; i++) {
 					leftPhaseCorrectionDSP[i] *= scanNMR.getMeasurmentNMR().getProcessingParameters("dspPhaseFactor"); // dspPhase
 				}
-				// generate correction array
+				// generate correcti)on array
 				Complex[] phaseCorrection = new Complex[leftPhaseCorrectionDSP.length];
 				for(int i = 0; i < leftPhaseCorrectionDSP.length; i++) {
 					double phaseCorrectionFactorTerm = (rightPhaseChange + leftPhaseCorrection[i] + leftPhaseCorrectionDSP[i]);

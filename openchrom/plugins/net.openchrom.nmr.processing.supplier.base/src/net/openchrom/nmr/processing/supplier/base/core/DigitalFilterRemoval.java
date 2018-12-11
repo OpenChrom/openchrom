@@ -34,11 +34,7 @@ public class DigitalFilterRemoval {
 		 */
 		// necessary parameters for processing
 		double leftRotationFid = digitalFilterRemovalSettings.getLeftRotationFid();
-		double leftRotationFidOriginal = digitalFilterRemovalSettings.getLeftRotationFidOriginal();
-		double dspPhaseFactor = digitalFilterRemovalSettings.getDspPhaseFactor();
-		measurementNMR.putProcessingParameters("dspPhaseFactor", dspPhaseFactor);
 		measurementNMR.putProcessingParameters("leftRotationFid", leftRotationFid);
-		measurementNMR.putProcessingParameters("leftRotationFidOriginal", leftRotationFidOriginal);
 		//
 		if(Math.abs(leftRotationFid) > 0.0) {
 			// // save old size here

@@ -28,6 +28,17 @@ public class PhaseCorrectionSettings implements IProcessorSettings {
 	private double zeroOrderPhaseCorrection = 0.0;
 	private double firstOrderPhaseCorrection = 0.0;
 	private double userDefinedPivotPointValue = 0.0;
+	private double dspPhaseFactor = 0.0;
+
+	public double getDspPhaseFactor() {
+
+		return dspPhaseFactor;
+	}
+
+	public void setDspPhaseFactor(double dspPhaseFactor) {
+
+		this.dspPhaseFactor = dspPhaseFactor;
+	}
 
 	public PIVOT_POINT_SELECTION getPivotPointSelection() {
 
