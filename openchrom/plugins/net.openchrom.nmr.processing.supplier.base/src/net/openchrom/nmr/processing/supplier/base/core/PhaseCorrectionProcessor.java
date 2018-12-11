@@ -16,7 +16,6 @@ import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettin
 public class PhaseCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
 
 	public PhaseCorrectionProcessor() {
-
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -114,8 +113,11 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		double phaseCorrectionTermC = Math.round(complexSize * phaseCorrectionTermB);
 		double rightPhaseCorrectionleftPhase = -(leftPhaseCorrection[(int)phaseCorrectionTermC]);
 		rightPhaseChange += rightPhaseCorrectionleftPhase;
-		firstOrderPhaseCorrection += leftPhaseChange;
-		zeroOrderPhaseCorrection += rightPhaseChange;
+		//
+		firstOrderPhaseCorrection = phaseCorrectionSettings.getFirstOrderPhaseCorrection() + leftPhaseChange;
+		zeroOrderPhaseCorrection = phaseCorrectionSettings.getZeroOrderPhaseCorrection() + rightPhaseChange;
+		phaseCorrectionSettings.setFirstOrderPhaseCorrection(firstOrderPhaseCorrection);
+		phaseCorrectionSettings.setZeroOrderPhaseCorrection(zeroOrderPhaseCorrection);
 		scanNMR.getMeasurmentNMR().putProcessingParameters("firstOrderPhaseCorrection", firstOrderPhaseCorrection);
 		scanNMR.getMeasurmentNMR().putProcessingParameters("zeroOrderPhaseCorrection", zeroOrderPhaseCorrection);
 		// }
