@@ -229,10 +229,6 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.chemclipse.thirdpartylibraries.swtchart.feature"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.ease.feature"
          version="0.0.0"/>
 
