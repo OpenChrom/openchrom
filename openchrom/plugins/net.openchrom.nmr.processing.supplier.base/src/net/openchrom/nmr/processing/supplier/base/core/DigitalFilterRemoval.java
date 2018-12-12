@@ -92,13 +92,11 @@ public class DigitalFilterRemoval {
 			Complex[] tempUnfilteredSpectrum = transform.inverseFourierTransformData(unfilteredNMRSpectrum, utilityFunction);
 			// remove temporary zero filling if necessary
 			System.arraycopy(tempUnfilteredSpectrum, 0, tempFID, 0, tempFID.length);
-			// save unfiltered fid
-			long[] timeAxis = utilityFunction.generateTimeScale(measurementNMR);
-			signalExtractor.createScansFID(tempFID, timeAxis);
 		} else {
 			// no digital filter, no zero filling
 			double autoZeroFill = 0;
 			measurementNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
+			System.arraycopy(freeInductionDecay, 0, tempFID, 0, tempFID.length);
 		}
 		//
 		return tempFID;
