@@ -14,11 +14,11 @@ package net.openchrom.wsd.converter.supplier.abif.core;
 
 import java.io.File;
 
+import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramImportConverter;
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramImportConverter;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.chemclipse.wsd.converter.chromatogram.AbstractChromatogramWSDImportConverter;
 import org.eclipse.chemclipse.wsd.converter.io.IChromatogramWSDReader;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -27,7 +27,7 @@ import net.openchrom.wsd.converter.supplier.abif.internal.support.IConstants;
 import net.openchrom.wsd.converter.supplier.abif.internal.support.SpecificationValidator;
 import net.openchrom.wsd.converter.supplier.abif.io.ChromatogramReader;
 
-public class ChromatogramImportConverter extends AbstractChromatogramWSDImportConverter implements IChromatogramImportConverter {
+public class ChromatogramImportConverter extends AbstractChromatogramImportConverter implements IChromatogramImportConverter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramImportConverter.class);
 	private static final String DESCRIPTION = "ABIF Import Converter";
