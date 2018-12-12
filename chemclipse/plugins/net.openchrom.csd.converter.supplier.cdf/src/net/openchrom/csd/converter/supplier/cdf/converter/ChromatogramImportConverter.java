@@ -13,8 +13,8 @@ package net.openchrom.csd.converter.supplier.cdf.converter;
 
 import java.io.File;
 
+import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramImportConverter;
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramImportConverter;
-import org.eclipse.chemclipse.csd.converter.chromatogram.AbstractChromatogramCSDImportConverter;
 import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -26,7 +26,7 @@ import net.openchrom.csd.converter.supplier.cdf.internal.converter.IConstants;
 import net.openchrom.csd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.openchrom.csd.converter.supplier.cdf.io.ChromatogramReader;
 
-public class ChromatogramImportConverter extends AbstractChromatogramCSDImportConverter implements IChromatogramImportConverter {
+public class ChromatogramImportConverter extends AbstractChromatogramImportConverter implements IChromatogramImportConverter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramImportConverter.class);
 	private static final String DESCRIPTION = "NetCDF Import Converter";
