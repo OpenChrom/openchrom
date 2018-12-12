@@ -52,16 +52,33 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		PhaseCorrectionSettings phaseCorrectionSettings = new PhaseCorrectionSettings();
 		double dspPhaseFactor = phaseCorrectionSettings.getDspPhaseFactor();
 		scanNMR.getMeasurmentNMR().putProcessingParameters("dspPhaseFactor", dspPhaseFactor);
-		//
+		// firstOrderPhaseCorrection
 		if(Double.valueOf(phaseCorrectionSettings.getFirstOrderPhaseCorrection()) instanceof Double) {
 			leftPhaseChange = phaseCorrectionSettings.getFirstOrderPhaseCorrection();
 		} else {
-			leftPhaseChange = 0; // lp
+			// leftPhaseChange = 0; // lp
+			//
+			if(scanNMR.getMeasurmentNMR().headerDataContainsKey("procs_PHC1")) {
+				String procsPHC1 = scanNMR.getMeasurmentNMR().getHeaderData("procs_PHC1");
+				try {
+					leftPhaseChange = Double.parseDouble(procsPHC1);
+				} catch(NumberFormatException e) {
+				}
+			}
 		}
+		// zeroOrderPhaseCorrection
 		if(Double.valueOf(phaseCorrectionSettings.getZeroOrderPhaseCorrection()) instanceof Double) {
 			rightPhaseChange = phaseCorrectionSettings.getZeroOrderPhaseCorrection();
 		} else {
-			rightPhaseChange = 0; // rp
+			// rightPhaseChange = 0; // rp
+			//
+			if(scanNMR.getMeasurmentNMR().headerDataContainsKey("procs_PHC0")) {
+				String procsPHC0 = scanNMR.getMeasurmentNMR().getHeaderData("procs_PHC0");
+				try {
+					rightPhaseChange = Double.parseDouble(procsPHC0);
+				} catch(NumberFormatException e) {
+				}
+			}
 		}
 		//
 		UtilityFunctions utilityFunction = new UtilityFunctions();
