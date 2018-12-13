@@ -56,7 +56,7 @@ public class MeasurementImportRunnable implements IRunnableWithProgress {
 		IChromatogramWSD chromatogramWSD = null;
 		try {
 			File file = new File(chromatogramPath);
-			IProcessingInfo processingInfo = ChromatogramConverterWSD.convert(file, monitor);
+			IProcessingInfo processingInfo = ChromatogramConverterWSD.getInstance().convert(file, monitor);
 			chromatogramWSD = processingInfo.getProcessingResult(IChromatogramWSD.class);
 		} catch(Exception e) {
 			logger.warn(e);
