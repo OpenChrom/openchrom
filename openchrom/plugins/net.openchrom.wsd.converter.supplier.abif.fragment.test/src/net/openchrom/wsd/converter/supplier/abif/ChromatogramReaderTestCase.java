@@ -36,7 +36,7 @@ public class ChromatogramReaderTestCase extends TestCase {
 
 		super.setUp();
 		fileImport = new File(this.pathImport);
-		IProcessingInfo processingInfo = ChromatogramConverterWSD.convert(fileImport, extensionPointId, new NullProgressMonitor());
+		IProcessingInfo processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, extensionPointId, new NullProgressMonitor());
 		try {
 			chromatogram = processingInfo.getProcessingResult(IChromatogramWSD.class);
 		} catch(TypeCastException e) {

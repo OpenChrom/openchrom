@@ -36,7 +36,7 @@ public class InvalidData_ITest extends TestCase {
 		extensionPointId = ABIF.EXTENSION_POINT_ID;
 		pathImport = ABIF.getAbsolutePath(ABIF.TESTFILE_IMPORT_FAKE_AB1);
 		fileImport = new File(this.pathImport);
-		IProcessingInfo processingInfo = ChromatogramConverterWSD.convert(fileImport, extensionPointId, new NullProgressMonitor());
+		IProcessingInfo processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, extensionPointId, new NullProgressMonitor());
 		try {
 			chromatogram = processingInfo.getProcessingResult(IChromatogramWSD.class);
 		} catch(Exception e) {

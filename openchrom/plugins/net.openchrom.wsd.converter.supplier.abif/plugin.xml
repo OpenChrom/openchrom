@@ -5,7 +5,6 @@
          point="org.eclipse.chemclipse.wsd.converter.chromatogramSupplier">
       <ChromatogramSupplier
             description="Reads ABIF Sanger Sequencing Trace Files."
-            exportConverter="org.eclipse.chemclipse.converter.chromatogram.DefaultExportConverter"
             fileExtension=".ab1"
             filterName="ABIF Sanger Sequencing Trace File (*.ab1)"
             id="net.openchrom.wsd.converter.supplier.ab1"

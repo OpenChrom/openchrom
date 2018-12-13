@@ -42,14 +42,14 @@ public class ChromatogramWriterTestCase extends TestCase {
 		super.setUp();
 		try {
 			fileImport = new File(this.pathImport);
-			IProcessingInfo importProcessingInfo = ChromatogramConverterWSD.convert(fileImport, extensionPointIdImport, new NullProgressMonitor());
+			IProcessingInfo importProcessingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, extensionPointIdImport, new NullProgressMonitor());
 			chromatogram = importProcessingInfo.getProcessingResult(IChromatogramWSD.class);
 			//
 			fileExport = new File(this.pathExport);
-			IProcessingInfo exportProcessingInfo = ChromatogramConverterWSD.convert(fileExport, chromatogram, extensionPointIdExport, new NullProgressMonitor());
+			IProcessingInfo exportProcessingInfo = ChromatogramConverterWSD.getInstance().convert(fileExport, chromatogram, extensionPointIdExport, new NullProgressMonitor());
 			File fileReImport = exportProcessingInfo.getProcessingResult(File.class);
 			//
-			IProcessingInfo reImportProcessingInfo = ChromatogramConverterWSD.convert(fileReImport, new NullProgressMonitor());
+			IProcessingInfo reImportProcessingInfo = ChromatogramConverterWSD.getInstance().convert(fileReImport, new NullProgressMonitor());
 			chromatogram = reImportProcessingInfo.getProcessingResult(IChromatogramWSD.class);
 		} catch(TypeCastException e) {
 			chromatogram = null;
