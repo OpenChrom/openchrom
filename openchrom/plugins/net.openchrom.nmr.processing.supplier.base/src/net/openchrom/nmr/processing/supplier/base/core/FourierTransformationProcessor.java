@@ -41,7 +41,7 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 			Complex[] fourierTransformedData = transform(dataNMRSelection, settings);
 			UtilityFunctions utilityFunction = new UtilityFunctions();
 			double[] chemicalShift = utilityFunction.generateChemicalShiftAxis(dataNMRSelection.getMeasurmentNMR());
-			signalExtractor.createScans(fourierTransformedData, chemicalShift);
+			signalExtractor.storeFrequencyDomainSpectrum(fourierTransformedData, chemicalShift);
 			processingInfo.setProcessingResult(dataNMRSelection);
 		}
 		return processingInfo;
@@ -69,7 +69,7 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		/*
 		 * modified signals after apodization
 		 */
-		Complex[] freeInductionDecayShiftedWindowMultiplication = signalExtractor.extractIntesityFID();
+		Complex[] freeInductionDecayShiftedWindowMultiplication = signalExtractor.extractIntesityProcessedFID();
 		//
 		if(measurementNMR.getHeaderDataMap().containsValue("Bruker BioSpin GmbH")) {
 			// On A*X data, FCOR (from proc(s)) allows you to control the DC offset of the spectrum; value between 0.0 and 2.0
@@ -83,7 +83,7 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		}
 		// zero filling // Automatic zero filling if size != 2^n
 		ZeroFilling zeroFiller = new ZeroFilling();
-		Complex[] freeInductionDecayShiftedWindowMultiplicationZeroFill = zeroFiller.zerofill(signalExtractor, dataNMRSelection.getMeasurmentNMR(), zeroFillingFactor);
+		Complex[] freeInductionDecayShiftedWindowMultiplicationZeroFill = zeroFiller.zerofill(freeInductionDecayShiftedWindowMultiplication, dataNMRSelection.getMeasurmentNMR(), zeroFillingFactor);
 		// Fourier transform, shift and flip the data
 		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(freeInductionDecayShiftedWindowMultiplicationZeroFill, utilityFunction);
 		return nmrSpectrumProcessed;

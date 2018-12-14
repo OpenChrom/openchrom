@@ -13,25 +13,19 @@ package net.openchrom.nmr.processing.supplier.base.core;
 
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
-import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZERO_FILLING_FACTOR;
 
 public class ZeroFilling {
 
-	public Complex[] zerofill(ISignalExtractor signalExtractor, IMeasurementNMR measurementNMR, ZERO_FILLING_FACTOR zeroFillingFactor) {
+	public Complex[] zerofill(Complex[] intesityFID, IMeasurementNMR measurementNMR, ZERO_FILLING_FACTOR zeroFillingFactor) {
 
-		Complex[] intesityFID = null;
-		// if(scanNMR.getProcessingParameters("digitalFilterZeroFill").equals(1.0)) {
-		// intesityFID = signalExtractor.extractRawIntesityFID();
-		// } else {
-		intesityFID = signalExtractor.extractIntesityFID();
 		// }
-		Complex[] zeroFilledFID = new Complex[signalExtractor.extractRawIntesityFID().length];
+		Complex[] zeroFilledFID;
 		//
 		int newDataSize = 0;
 		int zeroFillingSize = zeroFillingFactor.getValue();
-		if(zeroFillingFactor.equals(ZERO_FILLING_FACTOR.AUTO) || zeroFillingSize < zeroFilledFID.length) {
+		if(zeroFillingFactor.equals(ZERO_FILLING_FACTOR.AUTO) || zeroFillingSize < intesityFID.length) {
 			newDataSize = (int)Math.pow(2, (int)(Math.ceil((Math.log(intesityFID.length) / Math.log(2)))));
 		} else {
 			newDataSize = zeroFillingSize;

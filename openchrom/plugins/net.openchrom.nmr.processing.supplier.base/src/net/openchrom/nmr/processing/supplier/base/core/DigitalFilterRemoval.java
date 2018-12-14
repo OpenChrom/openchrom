@@ -59,7 +59,7 @@ public class DigitalFilterRemoval {
 				measurementNMR.putProcessingParameters("zeroFillingFactor", zeroFillingFactor);
 				//
 				ZeroFilling zeroFiller = new ZeroFilling();
-				freeInductionDecayZeroFill = zeroFiller.zerofill(signalExtractor, measurementNMR, ZERO_FILLING_FACTOR.AUTO);
+				freeInductionDecayZeroFill = zeroFiller.zerofill(signalExtractor.extractIntesityProcessedFID(), measurementNMR, ZERO_FILLING_FACTOR.AUTO);
 				// reset flags
 				autoZeroFill = 0;
 				measurementNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
