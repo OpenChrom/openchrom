@@ -69,7 +69,7 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		/*
 		 * modified signals after apodization
 		 */
-		Complex[] freeInductionDecayShiftedWindowMultiplication = signalExtractor.extractIntesityProcessedFID();
+		Complex[] freeInductionDecayShiftedWindowMultiplication = signalExtractor.extractIntensityProcessedFID();
 		//
 		if(measurementNMR.getHeaderDataMap().containsValue("Bruker BioSpin GmbH")) {
 			// On A*X data, FCOR (from proc(s)) allows you to control the DC offset of the spectrum; value between 0.0 and 2.0
