@@ -15,7 +15,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
-import net.openchrom.xxd.process.supplier.templates.peaks.AssignerSettings;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerSetting;
 
 public class StandardsAssignerValidator extends AbstractValidator implements IValidator {
 
@@ -99,9 +99,12 @@ public class StandardsAssignerValidator extends AbstractValidator implements IVa
 		}
 	}
 
-	public AssignerSettings getSettings() {
+	public AssignerSetting getSetting() {
 
-		AssignerSettings settings = new AssignerSettings(startRetentionTime, stopRetentionTime, name);
+		AssignerSetting settings = new AssignerSetting();
+		settings.setStartRetentionTime(startRetentionTime);
+		settings.setStopRetentionTime(stopRetentionTime);
+		settings.setName(name);
 		settings.setConcentration(concentration);
 		settings.setConcentrationUnit(concentrationUnit);
 		settings.setResponseFactor(responseFactor);

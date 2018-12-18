@@ -17,7 +17,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.Activator;
-import net.openchrom.xxd.process.supplier.templates.ui.editors.StandardsAssignerListEditor;
+import net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.StandardsAssignerFieldEditor;
 
 public class PageStandardsAssigner extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
@@ -34,7 +34,7 @@ public class PageStandardsAssigner extends FieldEditorPreferencePage implements 
 	 */
 	public void createFieldEditors() {
 
-		addField(new StandardsAssignerListEditor(PreferenceSupplier.P_STANDARDS_ASSIGNER_LIST, "Standards Assigner (ISTD)", getFieldEditorParent()));
+		addField(new StandardsAssignerFieldEditor(PreferenceSupplier.P_STANDARDS_ASSIGNER_LIST, "Standards Assigner (ISTD)", getFieldEditorParent()));
 	}
 
 	/*

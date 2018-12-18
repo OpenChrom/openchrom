@@ -27,6 +27,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.xxd.process.supplier.templates.model.AssignerSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSettings;
 
@@ -41,8 +42,8 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof StandardsAssignerSettings) {
 				StandardsAssignerSettings standardsAssignerSettings = (StandardsAssignerSettings)settings;
-				for(AssignerSettings assignerSettings : standardsAssignerSettings.getAssignerSettings()) {
-					assignPeak(peaks, assignerSettings);
+				for(AssignerSetting assignerSetting : standardsAssignerSettings.getAssignerSettings()) {
+					assignPeak(peaks, assignerSetting);
 				}
 			} else {
 				processingInfo.addErrorMessage(StandardsAssignerSettings.DESCRIPTION, "The settings instance is wrong.");
@@ -82,20 +83,20 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 		return settings;
 	}
 
-	private void assignPeak(List<? extends IPeak> peaks, AssignerSettings assignerSettings) {
+	private void assignPeak(List<? extends IPeak> peaks, AssignerSetting assignerSetting) {
 
-		int startRetentionTime = (int)(assignerSettings.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-		int stopRetentionTime = (int)(assignerSettings.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		int startRetentionTime = (int)(assignerSetting.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		int stopRetentionTime = (int)(assignerSetting.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
 		//
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {
 				for(IPeak peak : peaks) {
 					if(isPeakMatch(peak, startRetentionTime, stopRetentionTime)) {
 						if(peak.getIntegratedArea() > 0.0d) {
-							String name = assignerSettings.getName();
-							double concentration = assignerSettings.getConcentration();
-							String concentrationUnit = assignerSettings.getConcentrationUnit();
-							double responseFactor = assignerSettings.getResponseFactor();
+							String name = assignerSetting.getName();
+							double concentration = assignerSetting.getConcentration();
+							String concentrationUnit = assignerSetting.getConcentrationUnit();
+							double responseFactor = assignerSetting.getResponseFactor();
 							InternalStandard internalStandard = new InternalStandard(name, concentration, concentrationUnit, responseFactor);
 							peak.addInternalStandard(internalStandard);
 						} else {
