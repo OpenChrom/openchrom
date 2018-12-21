@@ -19,34 +19,25 @@ import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 
-public class StandardsAssignerLabelProvider extends AbstractChemClipseLabelProvider {
+public class StandardsReferencerLabelProvider extends AbstractChemClipseLabelProvider {
 
 	public static final String NAME = "Name";
 	public static final String START_RETENTION_TIME = "Start Retention Time";
 	public static final String STOP_RETENTION_TIME = "Stop Retention Time";
-	public static final String CONCENTRATION = "Concentration";
-	public static final String CONCENTRATION_UNIT = "Concentration Unit";
-	public static final String RESPONSE_FACTOR = "Response Factor";
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 	//
 	public static final String[] TITLES = { //
 			NAME, //
 			START_RETENTION_TIME, //
-			STOP_RETENTION_TIME, //
-			CONCENTRATION, //
-			CONCENTRATION_UNIT, //
-			RESPONSE_FACTOR//
+			STOP_RETENTION_TIME //
 	};
 	public static final int[] BOUNDS = { //
 			200, //
 			100, //
-			100, //
-			50, //
-			50, //
-			50 //
+			100 //
 	};
 
 	@Override
@@ -62,8 +53,8 @@ public class StandardsAssignerLabelProvider extends AbstractChemClipseLabelProvi
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof AssignerStandard) {
-			AssignerStandard setting = (AssignerStandard)element;
+		if(element instanceof AssignerReference) {
+			AssignerReference setting = (AssignerReference)element;
 			switch(columnIndex) {
 				case 0:
 					text = setting.getName();
@@ -73,15 +64,6 @@ public class StandardsAssignerLabelProvider extends AbstractChemClipseLabelProvi
 					break;
 				case 2:
 					text = decimalFormat.format(setting.getStopRetentionTime());
-					break;
-				case 3:
-					text = decimalFormat.format(setting.getConcentration());
-					break;
-				case 4:
-					text = setting.getConcentrationUnit();
-					break;
-				case 5:
-					text = decimalFormat.format(setting.getResponseFactor());
 					break;
 				default:
 					text = "n.v.";

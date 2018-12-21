@@ -11,24 +11,18 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-public class AssignerSetting {
+public class AssignerReference {
 
 	private String name = "";
-	private double startRetentionTime = 0.0d;
-	private double stopRetentionTime = 0.0d;
-	private double concentration = 0.0d;
-	private String concentrationUnit = "";
-	private double responseFactor = 1.0d;
+	private double startRetentionTime = 0.0d; // Minutes
+	private double stopRetentionTime = 0.0d; // Minutes
 
-	public void copyFrom(AssignerSetting setting) {
+	public void copyFrom(AssignerReference setting) {
 
 		if(setting != null) {
 			setName(setting.getName());
 			setStartRetentionTime(setting.getStartRetentionTime());
 			setStopRetentionTime(setting.getStopRetentionTime());
-			setConcentration(setting.getConcentration());
-			setConcentrationUnit(setting.getConcentrationUnit());
-			setResponseFactor(setting.getResponseFactor());
 		}
 	}
 
@@ -62,36 +56,6 @@ public class AssignerSetting {
 		this.stopRetentionTime = stopRetentionTime;
 	}
 
-	public double getConcentration() {
-
-		return concentration;
-	}
-
-	public void setConcentration(double concentration) {
-
-		this.concentration = concentration;
-	}
-
-	public String getConcentrationUnit() {
-
-		return concentrationUnit;
-	}
-
-	public void setConcentrationUnit(String concentrationUnit) {
-
-		this.concentrationUnit = concentrationUnit;
-	}
-
-	public double getResponseFactor() {
-
-		return responseFactor;
-	}
-
-	public void setResponseFactor(double responseFactor) {
-
-		this.responseFactor = responseFactor;
-	}
-
 	@Override
 	public int hashCode() {
 
@@ -110,7 +74,7 @@ public class AssignerSetting {
 			return false;
 		if(getClass() != obj.getClass())
 			return false;
-		AssignerSetting other = (AssignerSetting)obj;
+		AssignerReference other = (AssignerReference)obj;
 		if(name == null) {
 			if(other.name != null)
 				return false;
@@ -122,6 +86,6 @@ public class AssignerSetting {
 	@Override
 	public String toString() {
 
-		return "AssignerSetting [name=" + name + ", startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", concentration=" + concentration + ", concentrationUnit=" + concentrationUnit + ", responseFactor=" + responseFactor + "]";
+		return "AssignerReference [name=" + name + ", startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + "]";
 	}
 }

@@ -14,9 +14,9 @@ package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 
-public class StandardsAssignerFilter extends ViewerFilter {
+public class StandardsReferencerFilter extends ViewerFilter {
 
 	private String searchText;
 	private boolean caseSensitive;
@@ -34,22 +34,16 @@ public class StandardsAssignerFilter extends ViewerFilter {
 			return true;
 		}
 		//
-		if(element instanceof AssignerStandard) {
-			AssignerStandard setting = (AssignerStandard)element;
+		if(element instanceof AssignerReference) {
+			AssignerReference setting = (AssignerReference)element;
 			String name = setting.getName();
-			String concentrationUnit = setting.getConcentrationUnit();
 			//
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				name = name.toLowerCase();
-				concentrationUnit = concentrationUnit.toLowerCase();
 			}
 			//
 			if(name.contains(searchText)) {
-				return true;
-			}
-			//
-			if(concentrationUnit.contains(searchText)) {
 				return true;
 			}
 		}

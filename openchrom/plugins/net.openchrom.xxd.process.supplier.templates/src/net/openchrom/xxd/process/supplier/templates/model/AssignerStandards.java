@@ -21,22 +21,21 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.support.util.TargetListUtil;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerValidator;
 
-public class AssignerSettings extends HashMap<String, AssignerSetting> {
+public class AssignerStandards extends HashMap<String, AssignerStandard> {
 
-	private static final Logger logger = Logger.getLogger(AssignerSettings.class);
+	private static final Logger logger = Logger.getLogger(AssignerStandards.class);
 	//
 	private static final long serialVersionUID = -9211939853837711565L;
 	private StandardsAssignerListUtil listUtil = new StandardsAssignerListUtil();
 	private static final String SEPARATOR_TOKEN = StandardsAssignerListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = StandardsAssignerListUtil.SEPARATOR_ENTRY;
 
-	public void add(AssignerSetting setting) {
+	public void add(AssignerStandard setting) {
 
 		if(setting != null) {
 			put(setting.getName(), setting);
@@ -56,9 +55,9 @@ public class AssignerSettings extends HashMap<String, AssignerSetting> {
 	public String save() {
 
 		StringBuilder builder = new StringBuilder();
-		Iterator<AssignerSetting> iterator = values().iterator();
+		Iterator<AssignerStandard> iterator = values().iterator();
 		while(iterator.hasNext()) {
-			AssignerSetting setting = iterator.next();
+			AssignerStandard setting = iterator.next();
 			extractSetting(setting, builder);
 			if(iterator.hasNext()) {
 				builder.append(SEPARATOR_TOKEN);
@@ -67,20 +66,20 @@ public class AssignerSettings extends HashMap<String, AssignerSetting> {
 		return builder.toString().trim();
 	}
 
-	public String extractSettingString(AssignerSetting setting) {
+	public String extractSettingString(AssignerStandard setting) {
 
 		StringBuilder builder = new StringBuilder();
 		extractSetting(setting, builder);
 		return builder.toString();
 	}
 
-	public AssignerSetting extractSettingInstance(String item) {
+	public AssignerStandard extractSettingInstance(String item) {
 
-		AssignerSetting setting = null;
+		AssignerStandard setting = null;
 		//
 		if(!"".equals(item)) {
 			String[] values = item.split("\\" + SEPARATOR_ENTRY);
-			setting = new AssignerSetting();
+			setting = new AssignerStandard();
 			setting.setStartRetentionTime(getDouble(values, 0));
 			setting.setStopRetentionTime(getDouble(values, 1));
 			setting.setName(getString(values, 2));
@@ -99,10 +98,8 @@ public class AssignerSettings extends HashMap<String, AssignerSetting> {
 			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
-				System.out.println(line);
 				IStatus status = validator.validate(line);
 				if(status.isOK()) {
-					System.out.println(validator.getSetting().getName());
 					add(validator.getSetting());
 				} else {
 					logger.warn(status.getMessage());
@@ -120,10 +117,10 @@ public class AssignerSettings extends HashMap<String, AssignerSetting> {
 
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
-			Iterator<AssignerSetting> iterator = values().iterator();
+			Iterator<AssignerStandard> iterator = values().iterator();
 			while(iterator.hasNext()) {
 				StringBuilder builder = new StringBuilder();
-				AssignerSetting setting = iterator.next();
+				AssignerStandard setting = iterator.next();
 				extractSetting(setting, builder);
 				printWriter.println(builder.toString());
 			}
@@ -142,7 +139,7 @@ public class AssignerSettings extends HashMap<String, AssignerSetting> {
 			String[] items = listUtil.parseString(iems);
 			if(items.length > 0) {
 				for(String item : items) {
-					AssignerSetting setting = extractSettingInstance(item);
+					AssignerStandard setting = extractSettingInstance(item);
 					if(setting != null) {
 						add(setting);
 					}
@@ -151,27 +148,27 @@ public class AssignerSettings extends HashMap<String, AssignerSetting> {
 		}
 	}
 
-	private void extractSetting(AssignerSetting setting, StringBuilder builder) {
+	private void extractSetting(AssignerStandard setting, StringBuilder builder) {
 
 		builder.append(setting.getStartRetentionTime());
 		builder.append(" ");
-		builder.append(TargetListUtil.SEPARATOR_ENTRY);
+		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
 		builder.append(setting.getStopRetentionTime());
 		builder.append(" ");
-		builder.append(TargetListUtil.SEPARATOR_ENTRY);
+		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
 		builder.append(setting.getName());
 		builder.append(" ");
-		builder.append(TargetListUtil.SEPARATOR_ENTRY);
+		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
 		builder.append(setting.getConcentration());
 		builder.append(" ");
-		builder.append(TargetListUtil.SEPARATOR_ENTRY);
+		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
 		builder.append(setting.getConcentrationUnit());
 		builder.append(" ");
-		builder.append(TargetListUtil.SEPARATOR_ENTRY);
+		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
 		builder.append(setting.getResponseFactor());
 	}

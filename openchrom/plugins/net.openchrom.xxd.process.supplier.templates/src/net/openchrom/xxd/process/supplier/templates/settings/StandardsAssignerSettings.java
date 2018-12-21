@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
-import net.openchrom.xxd.process.supplier.templates.model.AssignerSetting;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerValidator;
 
@@ -37,11 +37,11 @@ public class StandardsAssignerSettings extends AbstractPeakQuantifierSettings {
 		this.assignerSettings = assignerSettings;
 	}
 
-	public List<AssignerSetting> getAssignerSettings() {
+	public List<AssignerStandard> getAssignerSettings() {
 
 		StandardsAssignerListUtil util = new StandardsAssignerListUtil();
 		StandardsAssignerValidator validator = new StandardsAssignerValidator();
-		List<AssignerSetting> settings = new ArrayList<>();
+		List<AssignerStandard> settings = new ArrayList<>();
 		//
 		List<String> items = util.getList(assignerSettings);
 		for(String item : items) {

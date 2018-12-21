@@ -26,6 +26,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsReferencerSettings;
 
@@ -40,8 +41,8 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof StandardsReferencerSettings) {
 				StandardsReferencerSettings standardsReferencerSettings = (StandardsReferencerSettings)settings;
-				for(ReferencerSettings referencerSettings : standardsReferencerSettings.getReferencerSettings()) {
-					referencePeak(peaks, referencerSettings);
+				for(AssignerReference assignerReference : standardsReferencerSettings.getReferencerSettings()) {
+					referencePeak(peaks, assignerReference);
 				}
 			} else {
 				processingInfo.addErrorMessage(StandardsReferencerSettings.DESCRIPTION, "The settings instance is wrong.");
@@ -81,16 +82,16 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 		return settings;
 	}
 
-	private void referencePeak(List<? extends IPeak> peaks, ReferencerSettings referencerSettings) {
+	private void referencePeak(List<? extends IPeak> peaks, AssignerReference assignerReference) {
 
-		int startRetentionTime = (int)(referencerSettings.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-		int stopRetentionTime = (int)(referencerSettings.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		int startRetentionTime = (int)(assignerReference.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		int stopRetentionTime = (int)(assignerReference.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
 		//
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {
 				for(IPeak peak : peaks) {
 					if(isPeakMatch(peak, startRetentionTime, stopRetentionTime)) {
-						String quantitationReference = referencerSettings.getName();
+						String quantitationReference = assignerReference.getName();
 						peak.addQuantitationReference(quantitationReference);
 					}
 				}

@@ -15,7 +15,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
-import net.openchrom.xxd.process.supplier.templates.peaks.ReferencerSettings;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 
 public class StandardsReferencerValidator extends AbstractValidator implements IValidator {
 
@@ -24,9 +24,9 @@ public class StandardsReferencerValidator extends AbstractValidator implements I
 	private static final String SEPARATOR_ENTRY = StandardsReferencerListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
+	private String name = "";
 	private double startRetentionTime = 0;
 	private double stopRetentionTime = 0;
-	private String name = "";
 
 	//
 	@Override
@@ -81,8 +81,12 @@ public class StandardsReferencerValidator extends AbstractValidator implements I
 		}
 	}
 
-	public ReferencerSettings getSettings() {
+	public AssignerReference getSetting() {
 
-		return new ReferencerSettings(startRetentionTime, stopRetentionTime, name);
+		AssignerReference settings = new AssignerReference();
+		settings.setStartRetentionTime(startRetentionTime);
+		settings.setStopRetentionTime(stopRetentionTime);
+		settings.setName(name);
+		return settings;
 	}
 }

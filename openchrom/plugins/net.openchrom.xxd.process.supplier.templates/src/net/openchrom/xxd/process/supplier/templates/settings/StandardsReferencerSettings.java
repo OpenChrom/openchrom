@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
-import net.openchrom.xxd.process.supplier.templates.peaks.ReferencerSettings;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerValidator;
 
@@ -37,17 +37,17 @@ public class StandardsReferencerSettings extends AbstractPeakQuantifierSettings 
 		this.referencerSettings = referencerSettings;
 	}
 
-	public List<ReferencerSettings> getReferencerSettings() {
+	public List<AssignerReference> getReferencerSettings() {
 
 		StandardsReferencerListUtil util = new StandardsReferencerListUtil();
 		StandardsReferencerValidator validator = new StandardsReferencerValidator();
-		List<ReferencerSettings> settings = new ArrayList<>();
+		List<AssignerReference> settings = new ArrayList<>();
 		//
 		List<String> items = util.getList(referencerSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
 			if(status.isOK()) {
-				settings.add(validator.getSettings());
+				settings.add(validator.getSetting());
 			}
 		}
 		//

@@ -31,20 +31,20 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 
-import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
-import net.openchrom.xxd.process.supplier.templates.model.AssignerStandards;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerReferences;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.StandardsAssignerInputValidator;
-import net.openchrom.xxd.process.supplier.templates.ui.swt.StandardsAssignerListUI;
-import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerListUtil;
+import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.StandardsReferencerInputValidator;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.StandardsReferencerListUI;
+import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerListUtil;
 
-public class StandardsAssignerFieldEditor extends FieldEditor {
+public class StandardsReferencerFieldEditor extends FieldEditor {
 
 	private static final int NUMBER_COLUMNS = 2;
 	//
 	private Composite composite;
-	private AssignerStandards settings = new AssignerStandards();
-	private StandardsAssignerListUI listUI;
+	private AssignerReferences settings = new AssignerReferences();
+	private StandardsReferencerListUI listUI;
 	//
 	private static final String ADD = "Add";
 	private static final String ADD_TOOLTIP = "Add a new standard";
@@ -68,10 +68,10 @@ public class StandardsAssignerFieldEditor extends FieldEditor {
 	private static final String MESSAGE_EXPORT_FAILED = "Failed to export the standards.";
 	//
 	private static final String FILTER_EXTENSION = "*.txt";
-	private static final String FILTER_NAME = "Standards Assigner (*.txt)";
-	private static final String FILE_NAME = "StandardsAssigner.txt";
+	private static final String FILTER_NAME = "Standards Referencer (*.txt)";
+	private static final String FILE_NAME = "StandardsReferencer.txt";
 
-	public StandardsAssignerFieldEditor(String name, String labelText, Composite parent) {
+	public StandardsReferencerFieldEditor(String name, String labelText, Composite parent) {
 		init(name, labelText);
 		createControl(parent);
 	}
@@ -131,7 +131,7 @@ public class StandardsAssignerFieldEditor extends FieldEditor {
 		gridData.grabExcessVerticalSpace = true;
 		composite.setLayoutData(gridData);
 		//
-		listUI = new StandardsAssignerListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		listUI = new StandardsReferencerListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		setTableViewerInput();
 	}
 
@@ -164,10 +164,10 @@ public class StandardsAssignerFieldEditor extends FieldEditor {
 
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, StandardsAssignerListUtil.EXAMPLE_SINGLE, new StandardsAssignerInputValidator(settings.keySet()));
+				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, StandardsReferencerListUtil.EXAMPLE_SINGLE, new StandardsReferencerInputValidator(settings.keySet()));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
-					AssignerStandard setting = settings.extractSettingInstance(item);
+					AssignerReference setting = settings.extractSettingInstance(item);
 					if(setting != null) {
 						settings.add(setting);
 						setTableViewerInput();
@@ -249,12 +249,12 @@ public class StandardsAssignerFieldEditor extends FieldEditor {
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
 				Object object = structuredSelection.getFirstElement();
-				if(object instanceof AssignerStandard) {
-					AssignerStandard setting = (AssignerStandard)object;
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new StandardsAssignerInputValidator(settings.keySet()));
+				if(object instanceof AssignerReference) {
+					AssignerReference setting = (AssignerReference)object;
+					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new StandardsReferencerInputValidator(settings.keySet()));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
-						AssignerStandard settingNew = settings.extractSettingInstance(item);
+						AssignerReference settingNew = settings.extractSettingInstance(item);
 						setting.copyFrom(settingNew);
 					}
 				}
@@ -276,8 +276,8 @@ public class StandardsAssignerFieldEditor extends FieldEditor {
 				if(MessageDialog.openQuestion(button.getShell(), DIALOG_TITLE, MESSAGE_REMOVE)) {
 					IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
 					for(Object object : structuredSelection.toArray()) {
-						if(object instanceof AssignerStandard) {
-							settings.remove(((AssignerStandard)object).getName());
+						if(object instanceof AssignerReference) {
+							settings.remove(((AssignerReference)object).getName());
 						}
 					}
 					setTableViewerInput();

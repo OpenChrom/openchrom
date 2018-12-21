@@ -27,7 +27,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.process.supplier.templates.model.AssignerSetting;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSettings;
 
@@ -42,7 +42,7 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof StandardsAssignerSettings) {
 				StandardsAssignerSettings standardsAssignerSettings = (StandardsAssignerSettings)settings;
-				for(AssignerSetting assignerSetting : standardsAssignerSettings.getAssignerSettings()) {
+				for(AssignerStandard assignerSetting : standardsAssignerSettings.getAssignerSettings()) {
 					assignPeak(peaks, assignerSetting);
 				}
 			} else {
@@ -83,7 +83,7 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 		return settings;
 	}
 
-	private void assignPeak(List<? extends IPeak> peaks, AssignerSetting assignerSetting) {
+	private void assignPeak(List<? extends IPeak> peaks, AssignerStandard assignerSetting) {
 
 		int startRetentionTime = (int)(assignerSetting.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
 		int stopRetentionTime = (int)(assignerSetting.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);

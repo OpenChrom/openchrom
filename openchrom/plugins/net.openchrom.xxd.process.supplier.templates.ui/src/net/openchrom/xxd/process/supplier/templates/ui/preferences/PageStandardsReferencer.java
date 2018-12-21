@@ -17,7 +17,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.Activator;
-import net.openchrom.xxd.process.supplier.templates.ui.editors.StandardsReferencerListEditor;
+import net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.StandardsReferencerFieldEditor;
 
 public class PageStandardsReferencer extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
@@ -34,7 +34,7 @@ public class PageStandardsReferencer extends FieldEditorPreferencePage implement
 	 */
 	public void createFieldEditors() {
 
-		addField(new StandardsReferencerListEditor(PreferenceSupplier.P_STANDARDS_REFERENCER_LIST, "Standards Referencer (ISTD)", getFieldEditorParent()));
+		addField(new StandardsReferencerFieldEditor(PreferenceSupplier.P_STANDARDS_REFERENCER_LIST, "Standards Referencer (ISTD)", getFieldEditorParent()));
 	}
 
 	/*

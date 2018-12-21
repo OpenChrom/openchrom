@@ -17,15 +17,15 @@ import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IInputValidator;
 
-import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
-import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerValidator;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
+import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerValidator;
 
-public class StandardsAssignerInputValidator implements IInputValidator {
+public class StandardsReferencerInputValidator implements IInputValidator {
 
-	private StandardsAssignerValidator validator = new StandardsAssignerValidator();
+	private StandardsReferencerValidator validator = new StandardsReferencerValidator();
 	private Set<String> names = new HashSet<>();
 
-	public StandardsAssignerInputValidator(Set<String> names) {
+	public StandardsReferencerInputValidator(Set<String> names) {
 		if(names != null) {
 			this.names = names;
 		}
@@ -36,7 +36,7 @@ public class StandardsAssignerInputValidator implements IInputValidator {
 
 		IStatus status = validator.validate(target);
 		if(status.isOK()) {
-			AssignerStandard setting = validator.getSetting();
+			AssignerReference setting = validator.getSetting();
 			String name = setting.getName();
 			if(names.contains(name)) {
 				return "The element already exists.";

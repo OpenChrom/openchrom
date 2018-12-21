@@ -16,15 +16,15 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 
-import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 
-public class StandardsAssignerEditingSupport extends EditingSupport {
+public class StandardsReferencerEditingSupport extends EditingSupport {
 
 	private CellEditor cellEditor;
 	private ExtendedTableViewer tableViewer;
 	private String column;
 
-	public StandardsAssignerEditingSupport(ExtendedTableViewer tableViewer, String column) {
+	public StandardsReferencerEditingSupport(ExtendedTableViewer tableViewer, String column) {
 		super(tableViewer);
 		this.column = column;
 		this.cellEditor = new TextCellEditor(tableViewer.getTable());
@@ -46,22 +46,16 @@ public class StandardsAssignerEditingSupport extends EditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof AssignerStandard) {
-			AssignerStandard setting = (AssignerStandard)element;
+		if(element instanceof AssignerReference) {
+			AssignerReference setting = (AssignerReference)element;
 			switch(column) {
 				/*
 				 * Do not edit the name
 				 */
-				case StandardsAssignerLabelProvider.START_RETENTION_TIME:
+				case StandardsReferencerLabelProvider.START_RETENTION_TIME:
 					return Double.toString(setting.getStartRetentionTime());
-				case StandardsAssignerLabelProvider.STOP_RETENTION_TIME:
+				case StandardsReferencerLabelProvider.STOP_RETENTION_TIME:
 					return Double.toString(setting.getStopRetentionTime());
-				case StandardsAssignerLabelProvider.CONCENTRATION:
-					return Double.toString(setting.getConcentration());
-				case StandardsAssignerLabelProvider.CONCENTRATION_UNIT:
-					return setting.getConcentrationUnit();
-				case StandardsAssignerLabelProvider.RESPONSE_FACTOR:
-					return Double.toString(setting.getResponseFactor());
 			}
 		}
 		return false;
@@ -70,14 +64,14 @@ public class StandardsAssignerEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof AssignerStandard) {
-			AssignerStandard setting = (AssignerStandard)element;
+		if(element instanceof AssignerReference) {
+			AssignerReference setting = (AssignerReference)element;
 			double result;
 			switch(column) {
 				/*
 				 * Do not edit the name
 				 */
-				case StandardsAssignerLabelProvider.START_RETENTION_TIME:
+				case StandardsReferencerLabelProvider.START_RETENTION_TIME:
 					result = convertValue(value);
 					if(!Double.isNaN(result)) {
 						if(result <= setting.getStopRetentionTime()) {
@@ -85,33 +79,11 @@ public class StandardsAssignerEditingSupport extends EditingSupport {
 						}
 					}
 					break;
-				case StandardsAssignerLabelProvider.STOP_RETENTION_TIME:
+				case StandardsReferencerLabelProvider.STOP_RETENTION_TIME:
 					result = convertValue(value);
 					if(!Double.isNaN(result)) {
 						if(result >= setting.getStartRetentionTime()) {
 							setting.setStopRetentionTime(result);
-						}
-					}
-					break;
-				case StandardsAssignerLabelProvider.CONCENTRATION:
-					result = convertValue(value);
-					if(!Double.isNaN(result)) {
-						if(result > 0.0d) {
-							setting.setConcentration(result);
-						}
-					}
-					break;
-				case StandardsAssignerLabelProvider.CONCENTRATION_UNIT:
-					String text = ((String)value).trim();
-					if(!"".equals(text)) {
-						setting.setConcentrationUnit(text);
-					}
-					break;
-				case StandardsAssignerLabelProvider.RESPONSE_FACTOR:
-					result = convertValue(value);
-					if(!Double.isNaN(result)) {
-						if(result > 0.0d) {
-							setting.setResponseFactor(result);
 						}
 					}
 					break;

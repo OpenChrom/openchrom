@@ -15,18 +15,18 @@ import org.eclipse.chemclipse.support.ui.swt.AbstractRecordTableComparator;
 import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.Viewer;
 
-import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 
-public class StandardsAssignerComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
+public class StandardsReferencerComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
 
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof AssignerStandard && e2 instanceof AssignerStandard) {
+		if(e1 instanceof AssignerReference && e2 instanceof AssignerReference) {
 			//
-			AssignerStandard setting1 = (AssignerStandard)e1;
-			AssignerStandard setting2 = (AssignerStandard)e2;
+			AssignerReference setting1 = (AssignerReference)e1;
+			AssignerReference setting2 = (AssignerReference)e2;
 			//
 			switch(getPropertyIndex()) {
 				case 0:
@@ -37,15 +37,6 @@ public class StandardsAssignerComparator extends AbstractRecordTableComparator i
 					break;
 				case 2:
 					sortOrder = Double.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
-					break;
-				case 3:
-					sortOrder = Double.compare(setting2.getConcentration(), setting1.getConcentration());
-					break;
-				case 4:
-					sortOrder = setting2.getConcentrationUnit().compareTo(setting1.getConcentrationUnit());
-					break;
-				case 5:
-					sortOrder = Double.compare(setting2.getResponseFactor(), setting1.getResponseFactor());
 					break;
 				default:
 					sortOrder = 0;
