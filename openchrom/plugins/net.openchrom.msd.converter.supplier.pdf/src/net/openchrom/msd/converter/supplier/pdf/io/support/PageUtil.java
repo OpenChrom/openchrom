@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
@@ -25,56 +26,60 @@ import org.apache.pdfbox.util.Matrix;
 import org.eclipse.chemclipse.logging.core.Logger;
 
 /*
- * Default A4 portrait
  * 0,0 is upper left
+ * Unit is MM
  */
-public class PDFUtil {
+public class PageUtil {
 
-	private static final Logger logger = Logger.getLogger(PDFUtil.class);
-	/*
-	 * Default A4 portrait
-	 */
-	private PDPage pdPage;
-	private PDPageContentStream contentStream;
-	private PDRectangle pdRectangle = PDRectangle.A4;
-	private IUnitConverter unitConverter = UnitConverterFactory.getInstance(Unit.PT);
+	private static final Logger logger = Logger.getLogger(PageUtil.class);
+	//
+	private PDPage pdPage = null; // Initialized in constructor
+	private PDPageContentStream contentStream = null; // Initialized in constructor
+	private Matrix rotateMatrix = null;
+	private IUnitConverter unitConverter = UnitConverterFactory.getInstance(Unit.MM);
 
-	public PDFUtil(PDRectangle pdRectangle, IUnitConverter unitConverter) {
-		// pdPage = new PDPage(pdRectangle);
-		// contentStream = new PDPageContentStream(document, pdPage);
-		this.pdRectangle = pdRectangle;
-		this.unitConverter = unitConverter;
+	public PageUtil(PDDocument document, PDRectangle pdRectangle, boolean landscape) throws IOException {
+		pdPage = new PDPage(pdRectangle);
+		document.addPage(pdPage);
+		contentStream = new PDPageContentStream(document, pdPage);
+		if(landscape) {
+			pdPage.setRotation(-90);
+			float x = 0;
+			float y = pdRectangle.getHeight();
+			contentStream.transform(Matrix.getTranslateInstance(x, y));
+			rotateMatrix = Matrix.getRotateInstance(Math.toRadians(-90), 0, 0);
+		}
 	}
-	
-	public PDPage getPage() {
-		
-		return pdPage;
+
+	public void close() throws IOException {
+
+		contentStream.close();
 	}
 
-	public void printImage(PDPageContentStream contentStream, PDImageXObject image, float x, float y, float width, float height) throws IOException {
+	public void printTextTopEdge(PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
+
+		float height = calculateTextHeight(font, fontSize);
+		printText(font, fontSize, getPositionLeft(x), getPositionTop(y) - height, convert(maxWidth), text);
+	}
+
+	public void printTextBottomEdge(PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
+
+		printText(font, fontSize, getPositionLeft(x), getPositionTop(y), convert(maxWidth), text);
+	}
+
+	public void printImage(PDImageXObject image, float x, float y, float width, float height) throws IOException {
 
 		contentStream.drawImage(image, getPositionLeft(x), getPositionTop(y + height), convert(width), convert(height));
 	}
 
-	public void printLine(PDPageContentStream contentStream, float x1, float y1, float x2, float y2) throws IOException {
+	public void printLine(float x1, float y1, float x2, float y2) throws IOException {
 
 		contentStream.moveTo(getPositionLeft(x1), getPositionTop(y1));
 		contentStream.lineTo(getPositionLeft(x2), getPositionTop(y2));
 		contentStream.stroke();
 	}
 
-	public void printTextTopEdge(PDPageContentStream contentStream, PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
-
-		float height = calculateTextHeight(font, fontSize);
-		printText(contentStream, font, fontSize, getPositionLeft(x), getPositionTop(y) - height, convert(maxWidth), text);
-	}
-
-	public void printTextBottomEdge(PDPageContentStream contentStream, PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
-
-		printText(contentStream, font, fontSize, getPositionLeft(x), getPositionTop(y), convert(maxWidth), text);
-	}
-
-	public void printBackground(PDPageContentStream contentStream, Color strokingColor, Color nonStrokingColor, float x, float y, float width, float height) throws IOException {
+	public void printBackground(Color strokingColor, Color nonStrokingColor, float x, float y, float width, float height) throws IOException {
 
 		contentStream.setStrokingColor(strokingColor);
 		contentStream.setNonStrokingColor(nonStrokingColor);
@@ -82,7 +87,7 @@ public class PDFUtil {
 		contentStream.fill();
 	}
 
-	public void printTable(PDPageContentStream contentStream, PDFTable pdfTable) throws IOException {
+	public void printTable(PDFTable pdfTable) throws IOException {
 
 		if(pdfTable.isValid()) {
 			//
@@ -103,7 +108,7 @@ public class PDFUtil {
 			for(int i = 0; i < titles.size(); i++) {
 				titleCells.add(new TableCell(titles.get(i), bounds.get(i)));
 			}
-			y += printTableLine(contentStream, pdfTable.getFontBold(), pdfTable.getFont(), pdfTable.getFontSize(), x, y, width, height, titleCells, Color.GRAY, true, true);
+			y += printTableLine(pdfTable.getFontBold(), pdfTable.getFont(), pdfTable.getFontSize(), x, y, width, height, titleCells, Color.GRAY, true, true);
 			/*
 			 * Data
 			 */
@@ -116,13 +121,13 @@ public class PDFUtil {
 						rowCells.add(new TableCell(cell, bounds.get(j)));
 					}
 					Color backgroundColor = (i % 2 == 0) ? null : Color.LIGHT_GRAY;
-					y += printTableLine(contentStream, pdfTable.getFontBold(), pdfTable.getFont(), pdfTable.getFontSize(), x, y, width, height, rowCells, backgroundColor, false, true);
+					y += printTableLine(pdfTable.getFontBold(), pdfTable.getFont(), pdfTable.getFontSize(), x, y, width, height, rowCells, backgroundColor, false, true);
 				}
 			}
 			/*
 			 * Print last line.
 			 */
-			printTableLines(contentStream, x, y, width, height, pdfTable.getPositionY(), titleCells);
+			printTableLines(x, y, width, height, pdfTable.getPositionY(), titleCells);
 		} else {
 			logger.warn("The PDFTable is invalid.");
 		}
@@ -130,12 +135,14 @@ public class PDFUtil {
 
 	private float getPageHeight() {
 
-		return pdRectangle.getHeight();
+		PDRectangle rectangle = pdPage.getMediaBox();
+		return (rotateMatrix != null) ? rectangle.getWidth() : rectangle.getHeight();
 	}
 
 	private float getPageWidth() {
 
-		return pdRectangle.getWidth();
+		PDRectangle rectangle = pdPage.getMediaBox();
+		return (rotateMatrix != null) ? rectangle.getHeight() : rectangle.getWidth();
 	}
 
 	private float calculateTextHeight(PDFont font, float fontSize) {
@@ -164,7 +171,7 @@ public class PDFUtil {
 		return unitConverter.convert(value);
 	}
 
-	private void printText(PDPageContentStream contentStream, PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
+	private void printText(PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
 
 		int textLength = text.length();
 		if(textLength > 0) {
@@ -184,26 +191,28 @@ public class PDFUtil {
 			}
 			//
 			contentStream.setFont(font, fontSize);
-			printText(contentStream, x, y, printText);
+			printText(x, y, printText);
 		}
 	}
 
-	private void printText(PDPageContentStream contentStream, float x, float y, String text) throws IOException {
+	private void printText(float x, float y, String text) throws IOException {
 
 		contentStream.beginText();
-		contentStream.setTextMatrix(Matrix.getRotateInstance(Math.toRadians(-90), 0, 0));
+		if(rotateMatrix != null) {
+			contentStream.setTextMatrix(rotateMatrix);
+		}
 		contentStream.newLineAtOffset(x, y);
 		contentStream.showText(text);
 		contentStream.endText();
 	}
 
-	private float printTableLine(PDPageContentStream contentStream, PDFont fontBold, PDFont font, float fontSize, float x, float y, float width, float height, List<TableCell> cells, Color color, boolean bold, boolean drawBottomLine) throws IOException {
+	private float printTableLine(PDFont fontBold, PDFont font, float fontSize, float x, float y, float width, float height, List<TableCell> cells, Color color, boolean bold, boolean drawBottomLine) throws IOException {
 
 		/*
 		 * Background
 		 */
 		if(color != null) {
-			printBackground(contentStream, color, color, x, y, width, height);
+			printBackground(color, color, x, y, width, height);
 		}
 		/*
 		 * Print the text
@@ -213,7 +222,7 @@ public class PDFUtil {
 		float xLeft = x; // + 1mm? instead of whitespace " " + cell.getText()
 		float yText = y + 1; // TODO + 1mm
 		for(TableCell cell : cells) {
-			printTextTopEdge(contentStream, (bold) ? fontBold : font, fontSize, xLeft, yText, cell.getWidth(), " " + cell.getText());
+			printTextTopEdge((bold) ? fontBold : font, fontSize, xLeft, yText, cell.getWidth(), " " + cell.getText());
 			xLeft += cell.getWidth();
 		}
 		/*
@@ -223,20 +232,20 @@ public class PDFUtil {
 			contentStream.setStrokingColor(Color.BLACK); // Background/Border
 			contentStream.setNonStrokingColor(Color.BLACK); // Text
 			float yBottom = y + height;
-			printLine(contentStream, x, yBottom, x + width, yBottom);
+			printLine(x, yBottom, x + width, yBottom);
 		}
 		//
 		return height;
 	}
 
-	private void printTableLines(PDPageContentStream contentStream, float x, float y, float width, float height, float yStartPosition, List<TableCell> cells) throws IOException {
+	private void printTableLines(float x, float y, float width, float height, float yStartPosition, List<TableCell> cells) throws IOException {
 
 		contentStream.setStrokingColor(Color.BLACK); // Background/Border
 		contentStream.setNonStrokingColor(Color.BLACK); // Text
 		/*
 		 * Top Line
 		 */
-		printLine(contentStream, x, yStartPosition, x + width, yStartPosition);
+		printLine(x, yStartPosition, x + width, yStartPosition);
 		/*
 		 * Print vertical lines.
 		 */
@@ -247,13 +256,13 @@ public class PDFUtil {
 		float xLeft = x;
 		for(TableCell cell : cells) {
 			if(cell.isPrintLeftLine()) {
-				printLine(contentStream, xLeft, yStart, xLeft, yStop);
+				printLine(xLeft, yStart, xLeft, yStop);
 			} else {
-				printLine(contentStream, xLeft, yStartExtraSpace, xLeft, yStop);
+				printLine(xLeft, yStartExtraSpace, xLeft, yStop);
 			}
 			xLeft += cell.getWidth();
 		}
 		//
-		printLine(contentStream, x + width, yStart, x + width, yStop);
+		printLine(x + width, yStart, x + width, yStop);
 	}
 }
