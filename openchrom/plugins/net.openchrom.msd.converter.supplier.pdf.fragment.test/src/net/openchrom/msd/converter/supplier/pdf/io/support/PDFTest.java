@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
@@ -57,15 +58,18 @@ public class PDFTest extends TestCase {
 		//
 		printPage1(document, PDType1Font.HELVETICA);
 		printPage2(document, PDType1Font.HELVETICA);
+		printPage3(document, PDType1Font.HELVETICA);
+		printPage4(document, PDType1Font.HELVETICA);
 		// printPage1(document, PDType1Font.HELVETICA);
 		// printPage2(document, PDType1Font.HELVETICA);
 		// printPage3(document, PDType1Font.HELVETICA);
 		// printPage4(document, PDType1Font.HELVETICA);
 	}
 
-	private void printPage1(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPage1(PDDocument document, PDFont font) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, false);
+		//
 		String text0 = "Erste Zeile";
 		String text1 = "Chromatogram Text und so und so viel text wie da auch nur stehen kann und ich weiß nicht doch das könnte etwas anders sein, wenn man bedenkt.";
 		String text2 = "Letzte Zeile";
@@ -77,10 +81,17 @@ public class PDFTest extends TestCase {
 			pageUtil.printTextTopEdge(font, fontSize, left, i * 10, maxWidth, text1);
 		}
 		pageUtil.printTextBottomEdge(font, fontSize, left, 297, maxWidth, text2);
+		//
+		pageUtil.printLine(10, 10, 10, 287); // left
+		pageUtil.printLine(10, 10, 200, 10); // top
+		pageUtil.printLine(200, 10, 200, 287); // right
+		pageUtil.printLine(10, 287, 200, 287); // bottom
+		//
 		pageUtil.close();
+		return pageUtil.getPage();
 	}
 
-	private void printPage2(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPage2(PDDocument document, PDFont font) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
 		String text0 = "Erste Zeile";
@@ -94,7 +105,28 @@ public class PDFTest extends TestCase {
 			pageUtil.printTextTopEdge(font, fontSize, left, i * 10, maxWidth, text1);
 		}
 		pageUtil.printTextBottomEdge(font, fontSize, left, 210, maxWidth, text2);
+		//
+		pageUtil.printLine(10, 10, 10, 200); // left
+		pageUtil.printLine(10, 10, 287, 10); // top
+		pageUtil.printLine(287, 10, 287, 200); // right
+		pageUtil.printLine(10, 200, 287, 200); // bottom
+		//
 		pageUtil.close();
+		return pageUtil.getPage();
+	}
+
+	private PDPage printPage3(PDDocument document, PDFont font) throws IOException {
+
+		PDPage page = printPage2(document, font);
+		page.setRotation(0);
+		return page;
+	}
+
+	private PDPage printPage4(PDDocument document, PDFont font) throws IOException {
+
+		PDPage page = printPage2(document, font);
+		page.setRotation(-180);
+		return page;
 	}
 	// private void printPage1(PDDocument document, PDFont font) throws IOException {
 	//

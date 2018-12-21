@@ -26,29 +26,36 @@ import org.apache.pdfbox.util.Matrix;
 import org.eclipse.chemclipse.logging.core.Logger;
 
 /*
- * 0,0 is upper left
- * Unit is MM
+ * Defaults
+ * Page Center: 0,0
+ * Unit: MM
  */
 public class PageUtil {
 
 	private static final Logger logger = Logger.getLogger(PageUtil.class);
 	//
-	private PDPage pdPage = null; // Initialized in constructor
+	private PDPage page = null; // Initialized in constructor
 	private PDPageContentStream contentStream = null; // Initialized in constructor
-	private Matrix rotateMatrix = null;
 	private IUnitConverter unitConverter = UnitConverterFactory.getInstance(Unit.MM);
+	private boolean landscape = false;
 
 	public PageUtil(PDDocument document, PDRectangle pdRectangle, boolean landscape) throws IOException {
-		pdPage = new PDPage(pdRectangle);
-		document.addPage(pdPage);
-		contentStream = new PDPageContentStream(document, pdPage);
-		if(landscape) {
-			pdPage.setRotation(-90);
+		page = new PDPage(pdRectangle);
+		document.addPage(page);
+		contentStream = new PDPageContentStream(document, page);
+		this.landscape = landscape;
+		if(this.landscape) {
+			page.setRotation(-90);
 			float x = 0;
 			float y = pdRectangle.getHeight();
 			contentStream.transform(Matrix.getTranslateInstance(x, y));
-			rotateMatrix = Matrix.getRotateInstance(Math.toRadians(-90), 0, 0);
+			contentStream.transform(Matrix.getRotateInstance(Math.toRadians(-90), 0, 0));
 		}
+	}
+
+	public PDPage getPage() {
+
+		return page;
 	}
 
 	public void close() throws IOException {
@@ -72,6 +79,9 @@ public class PageUtil {
 		contentStream.drawImage(image, getPositionLeft(x), getPositionTop(y + height), convert(width), convert(height));
 	}
 
+	/*
+	 * OK
+	 */
 	public void printLine(float x1, float y1, float x2, float y2) throws IOException {
 
 		contentStream.moveTo(getPositionLeft(x1), getPositionTop(y1));
@@ -135,14 +145,14 @@ public class PageUtil {
 
 	private float getPageHeight() {
 
-		PDRectangle rectangle = pdPage.getMediaBox();
-		return (rotateMatrix != null) ? rectangle.getWidth() : rectangle.getHeight();
+		PDRectangle rectangle = page.getMediaBox();
+		return (landscape) ? rectangle.getWidth() : rectangle.getHeight();
 	}
 
 	private float getPageWidth() {
 
-		PDRectangle rectangle = pdPage.getMediaBox();
-		return (rotateMatrix != null) ? rectangle.getHeight() : rectangle.getWidth();
+		PDRectangle rectangle = page.getMediaBox();
+		return (landscape) ? rectangle.getHeight() : rectangle.getWidth();
 	}
 
 	private float calculateTextHeight(PDFont font, float fontSize) {
@@ -198,9 +208,6 @@ public class PageUtil {
 	private void printText(float x, float y, String text) throws IOException {
 
 		contentStream.beginText();
-		if(rotateMatrix != null) {
-			contentStream.setTextMatrix(rotateMatrix);
-		}
 		contentStream.newLineAtOffset(x, y);
 		contentStream.showText(text);
 		contentStream.endText();
