@@ -24,6 +24,7 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.util.Matrix;
 
 import junit.framework.TestCase;
 
@@ -62,10 +63,33 @@ public class PDFTest extends TestCase {
 		// printPage(document, PDType1Font.TIMES_ITALIC);
 		// printPage(document, PDType1Font.TIMES_ROMAN);
 		//
-		printPage1(document, PDType1Font.HELVETICA);
-		printPage2(document, PDType1Font.HELVETICA);
-		printPage3(document, PDType1Font.HELVETICA);
-		printPage4(document, PDType1Font.HELVETICA);
+		printPage0(document, PDType1Font.HELVETICA);
+		// printPage1(document, PDType1Font.HELVETICA);
+		// printPage2(document, PDType1Font.HELVETICA);
+		// printPage3(document, PDType1Font.HELVETICA);
+		// printPage4(document, PDType1Font.HELVETICA);
+	}
+
+	private void printPage0(PDDocument document, PDFont font) throws IOException {
+
+		PDPage pdPage = new PDPage(PDRectangle.A4);
+		document.addPage(pdPage);
+		PDPageContentStream contentStream = new PDPageContentStream(document, pdPage);
+		//
+		pdPage.setRotation(-90);
+		contentStream.transform(Matrix.getTranslateInstance(-87 * 2.83465f, 297 * 2.83465f));// 297 - 210, 297
+		//
+		String text0 = "Erste Zeile";
+		String text1 = "Chromatogram Text und so und so viel text wie da auch nur stehen kann und ich weiß nicht doch das könnte etwas anders sein, wenn man bedenkt.";
+		String text2 = "Letzte Zeile";
+		//
+		pdfUtil.printTextTopEdge(contentStream, font, 12, 0, 0, 297, text0);
+		for(int i = 1; i <= 17; i++) {
+			pdfUtil.printTextTopEdge(contentStream, font, 12, 0, i * 10, 297, text1);
+		}
+		pdfUtil.printTextTopEdge(contentStream, font, 12, 0, 180, 297, text2);
+		//
+		contentStream.close();
 	}
 
 	private void printPage1(PDDocument document, PDFont font) throws IOException {
@@ -75,8 +99,8 @@ public class PDFTest extends TestCase {
 		PDPageContentStream contentStream = new PDPageContentStream(document, pdPage);
 		//
 		String text = "Chromatogram Text und so und so viel text wie da auch nur stehen kann und ich weiß nicht doch das könnte etwas anders sein, wenn man bedenkt.";
-		pdfUtil.printTextTopEdge(contentStream, font, 12, 10, 10, text);
-		pdfUtil.printTextTopEdge(contentStream, font, 12, 10, 20, text);
+		pdfUtil.printTextTopEdge(contentStream, font, 12, 10, 10, 190, text);
+		pdfUtil.printTextTopEdge(contentStream, font, 12, 10, 20, 190, text);
 		pdfUtil.printLine(contentStream, 10, 10, 10, 287);
 		pdfUtil.printLine(contentStream, 10, 10, 200, 10);
 		//
@@ -90,6 +114,9 @@ public class PDFTest extends TestCase {
 		pdPage.setRotation(90);
 		PDPageContentStream contentStream = new PDPageContentStream(document, pdPage);
 		//
+		String text = "Chromatogram Text und so und so viel text wie da auch nur stehen kann und ich weiß nicht doch das könnte etwas anders sein, wenn man bedenkt.";
+		pdfUtil.printTextTopEdge(contentStream, font, 12, 10, 10, 190, text);
+		pdfUtil.printTextTopEdge(contentStream, font, 12, 10, 20, 190, text);
 		pdfUtil.printLine(contentStream, 10, 10, 10, 287);
 		pdfUtil.printLine(contentStream, 10, 10, 200, 10);
 		//
@@ -130,7 +157,7 @@ public class PDFTest extends TestCase {
 		 */
 		PDImageXObject image = JPEGFactory.createFromStream(document, PDFTest.class.getResourceAsStream("openchromlogo.jpg"));
 		pdfUtil.printImage(contentStream, image, 10, 10, 63.5f, 12.5f);
-		pdfUtil.printTextTopEdge(contentStream, font, 12, 10, 23, "OpenChrom - the open source alternative for chromatography/spectrometry");
+		pdfUtil.printTextTopEdge(contentStream, font, 12, 10, 23, 190, "OpenChrom - the open source alternative for chromatography/spectrometry");
 		/*
 		 * Footer
 		 */
@@ -141,8 +168,7 @@ public class PDFTest extends TestCase {
 		builder.append(" / ");
 		builder.append(20);
 		//
-		// - pdfUtil.calculateTextHeight(font, 12)
-		pdfUtil.printTextBottomEdge(contentStream, font, 12, 10, 287, builder.toString());
+		pdfUtil.printTextBottomEdge(contentStream, font, 12, 10, 287, 190, builder.toString());
 		//
 		contentStream.close();
 	}

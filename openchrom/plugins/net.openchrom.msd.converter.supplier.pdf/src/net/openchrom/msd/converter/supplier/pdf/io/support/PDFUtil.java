@@ -16,10 +16,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.util.Matrix;
 import org.eclipse.chemclipse.logging.core.Logger;
 
 /*
@@ -32,12 +34,21 @@ public class PDFUtil {
 	/*
 	 * Default A4 portrait
 	 */
+	private PDPage pdPage;
+	private PDPageContentStream contentStream;
 	private PDRectangle pdRectangle = PDRectangle.A4;
 	private IUnitConverter unitConverter = UnitConverterFactory.getInstance(Unit.PT);
 
 	public PDFUtil(PDRectangle pdRectangle, IUnitConverter unitConverter) {
+		// pdPage = new PDPage(pdRectangle);
+		// contentStream = new PDPageContentStream(document, pdPage);
 		this.pdRectangle = pdRectangle;
 		this.unitConverter = unitConverter;
+	}
+	
+	public PDPage getPage() {
+		
+		return pdPage;
 	}
 
 	public void printImage(PDPageContentStream contentStream, PDImageXObject image, float x, float y, float width, float height) throws IOException {
@@ -52,17 +63,15 @@ public class PDFUtil {
 		contentStream.stroke();
 	}
 
-	public void printTextTopEdge(PDPageContentStream contentStream, PDFont font, float fontSize, float x, float y, String text) throws IOException {
+	public void printTextTopEdge(PDPageContentStream contentStream, PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
 
-		contentStream.setFont(font, fontSize);
 		float height = calculateTextHeight(font, fontSize);
-		printText(contentStream, getPositionLeft(x), getPositionTop(y) - height, text);
+		printText(contentStream, font, fontSize, getPositionLeft(x), getPositionTop(y) - height, convert(maxWidth), text);
 	}
 
-	public void printTextBottomEdge(PDPageContentStream contentStream, PDFont font, float fontSize, float x, float y, String text) throws IOException {
+	public void printTextBottomEdge(PDPageContentStream contentStream, PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
 
-		contentStream.setFont(font, fontSize);
-		printText(contentStream, getPositionLeft(x), getPositionTop(y), text);
+		printText(contentStream, font, fontSize, getPositionLeft(x), getPositionTop(y), convert(maxWidth), text);
 	}
 
 	public void printBackground(PDPageContentStream contentStream, Color strokingColor, Color nonStrokingColor, float x, float y, float width, float height) throws IOException {
@@ -119,12 +128,12 @@ public class PDFUtil {
 		}
 	}
 
-	private float getHeight() {
+	private float getPageHeight() {
 
 		return pdRectangle.getHeight();
 	}
 
-	private float getWidth() {
+	private float getPageWidth() {
 
 		return pdRectangle.getWidth();
 	}
@@ -147,7 +156,7 @@ public class PDFUtil {
 
 	private float getPositionTop(float y) {
 
-		return getHeight() - convert(y);
+		return getPageHeight() - convert(y);
 	}
 
 	private float convert(float value) {
@@ -155,9 +164,34 @@ public class PDFUtil {
 		return unitConverter.convert(value);
 	}
 
+	private void printText(PDPageContentStream contentStream, PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
+
+		int textLength = text.length();
+		if(textLength > 0) {
+			float textWidth = calculateTextWidth(font, fontSize, text);
+			float pageWidth = getPageWidth();
+			float availableWidth = (maxWidth > pageWidth) ? pageWidth : maxWidth;
+			/*
+			 * TODO
+			 * Shorten, MultiLine?
+			 */
+			String printText;
+			int endIndex = (int)(text.length() / textWidth * availableWidth) - 4;
+			if(textWidth > availableWidth && endIndex > 0) {
+				printText = text.substring(0, endIndex) + "...";
+			} else {
+				printText = text;
+			}
+			//
+			contentStream.setFont(font, fontSize);
+			printText(contentStream, x, y, printText);
+		}
+	}
+
 	private void printText(PDPageContentStream contentStream, float x, float y, String text) throws IOException {
 
 		contentStream.beginText();
+		contentStream.setTextMatrix(Matrix.getRotateInstance(Math.toRadians(-90), 0, 0));
 		contentStream.newLineAtOffset(x, y);
 		contentStream.showText(text);
 		contentStream.endText();
@@ -176,10 +210,10 @@ public class PDFUtil {
 		 */
 		contentStream.setStrokingColor(Color.WHITE); // Background/Border
 		contentStream.setNonStrokingColor(Color.BLACK); // Text
-		float xLeft = x;
+		float xLeft = x; // + 1mm? instead of whitespace " " + cell.getText()
 		float yText = y + 1; // TODO + 1mm
 		for(TableCell cell : cells) {
-			printTextTopEdge(contentStream, (bold) ? fontBold : font, fontSize, xLeft, yText, " " + cell.getText());
+			printTextTopEdge(contentStream, (bold) ? fontBold : font, fontSize, xLeft, yText, cell.getWidth(), " " + cell.getText());
 			xLeft += cell.getWidth();
 		}
 		/*
