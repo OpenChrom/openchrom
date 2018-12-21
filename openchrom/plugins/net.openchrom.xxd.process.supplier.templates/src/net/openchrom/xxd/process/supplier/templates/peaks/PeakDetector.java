@@ -36,6 +36,7 @@ import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 
@@ -86,8 +87,8 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 			if(settings instanceof PeakDetectorSettings) {
 				IChromatogram chromatogram = chromatogramSelection.getChromatogram();
 				PeakDetectorSettings peakDetectorSettings = (PeakDetectorSettings)settings;
-				for(DetectorSettings detectorSettings : peakDetectorSettings.getDetectorSettings()) {
-					setPeakBySettings(chromatogram, detectorSettings);
+				for(DetectorSetting detectorSetting : peakDetectorSettings.getDetectorSettings()) {
+					setPeakBySettings(chromatogram, detectorSetting);
 				}
 			} else {
 				processingInfo.addErrorMessage(PeakDetectorSettings.DESCRIPTION, "The settings instance is wrong.");
@@ -96,11 +97,11 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		return processingInfo;
 	}
 
-	private void setPeakBySettings(IChromatogram<? extends IPeak> chromatogram, DetectorSettings detectorSettings) {
+	private void setPeakBySettings(IChromatogram<? extends IPeak> chromatogram, DetectorSetting detectorSetting) {
 
-		int start = (int)(detectorSettings.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-		int stop = (int)(detectorSettings.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-		setPeakByRetentionTimeRange(chromatogram, start, stop, detectorSettings.isIncludeBackground());
+		int start = (int)(detectorSetting.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		int stop = (int)(detectorSetting.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		setPeakByRetentionTimeRange(chromatogram, start, stop, detectorSetting.isIncludeBackground());
 	}
 
 	private void setPeakByRetentionTimeRange(IChromatogram<? extends IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, boolean includeBackground) {

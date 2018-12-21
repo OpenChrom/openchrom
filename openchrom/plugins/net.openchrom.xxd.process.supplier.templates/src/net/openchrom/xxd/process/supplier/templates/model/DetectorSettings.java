@@ -17,30 +17,23 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
-import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerListUtil;
-import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerValidator;
+import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
+import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
-public class AssignerReferences extends HashMap<String, AssignerReference> {
+public class DetectorSettings extends ArrayList<DetectorSetting> {
 
-	private static final Logger logger = Logger.getLogger(AssignerReferences.class);
+	private static final Logger logger = Logger.getLogger(DetectorSettings.class);
 	//
-	private static final long serialVersionUID = -219152470872308287L;
-	private StandardsReferencerListUtil listUtil = new StandardsReferencerListUtil();
-	private static final String SEPARATOR_TOKEN = StandardsReferencerListUtil.SEPARATOR_TOKEN;
-	private static final String SEPARATOR_ENTRY = StandardsReferencerListUtil.SEPARATOR_ENTRY;
-
-	public void add(AssignerReference setting) {
-
-		if(setting != null) {
-			put(setting.getName(), setting);
-		}
-	}
+	private static final long serialVersionUID = -4685218696168308093L;
+	private PeakDetectorListUtil listUtil = new PeakDetectorListUtil();
+	private static final String SEPARATOR_TOKEN = PeakDetectorListUtil.SEPARATOR_TOKEN;
+	private static final String SEPARATOR_ENTRY = PeakDetectorListUtil.SEPARATOR_ENTRY;
 
 	public void load(String items) {
 
@@ -55,9 +48,9 @@ public class AssignerReferences extends HashMap<String, AssignerReference> {
 	public String save() {
 
 		StringBuilder builder = new StringBuilder();
-		Iterator<AssignerReference> iterator = values().iterator();
+		Iterator<DetectorSetting> iterator = iterator();
 		while(iterator.hasNext()) {
-			AssignerReference setting = iterator.next();
+			DetectorSetting setting = iterator.next();
 			extractSetting(setting, builder);
 			if(iterator.hasNext()) {
 				builder.append(SEPARATOR_TOKEN);
@@ -66,23 +59,23 @@ public class AssignerReferences extends HashMap<String, AssignerReference> {
 		return builder.toString().trim();
 	}
 
-	public String extractSettingString(AssignerReference setting) {
+	public String extractSettingString(DetectorSetting setting) {
 
 		StringBuilder builder = new StringBuilder();
 		extractSetting(setting, builder);
 		return builder.toString();
 	}
 
-	public AssignerReference extractSettingInstance(String item) {
+	public DetectorSetting extractSettingInstance(String item) {
 
-		AssignerReference setting = null;
+		DetectorSetting setting = null;
 		//
 		if(!"".equals(item)) {
 			String[] values = item.split("\\" + SEPARATOR_ENTRY);
-			setting = new AssignerReference();
+			setting = new DetectorSetting();
 			setting.setStartRetentionTime(getDouble(values, 0));
 			setting.setStopRetentionTime(getDouble(values, 1));
-			setting.setName(getString(values, 2));
+			setting.setDetectorType(getString(values, 2));
 		}
 		//
 		return setting;
@@ -91,7 +84,7 @@ public class AssignerReferences extends HashMap<String, AssignerReference> {
 	public void importItems(File file) {
 
 		try {
-			StandardsReferencerValidator validator = new StandardsReferencerValidator();
+			PeakDetectorValidator validator = new PeakDetectorValidator();
 			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
@@ -114,10 +107,10 @@ public class AssignerReferences extends HashMap<String, AssignerReference> {
 
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
-			Iterator<AssignerReference> iterator = values().iterator();
+			Iterator<DetectorSetting> iterator = iterator();
 			while(iterator.hasNext()) {
 				StringBuilder builder = new StringBuilder();
-				AssignerReference setting = iterator.next();
+				DetectorSetting setting = iterator.next();
 				extractSetting(setting, builder);
 				printWriter.println(builder.toString());
 			}
@@ -136,7 +129,7 @@ public class AssignerReferences extends HashMap<String, AssignerReference> {
 			String[] items = listUtil.parseString(iems);
 			if(items.length > 0) {
 				for(String item : items) {
-					AssignerReference setting = extractSettingInstance(item);
+					DetectorSetting setting = extractSettingInstance(item);
 					if(setting != null) {
 						add(setting);
 					}
@@ -145,7 +138,7 @@ public class AssignerReferences extends HashMap<String, AssignerReference> {
 		}
 	}
 
-	private void extractSetting(AssignerReference setting, StringBuilder builder) {
+	private void extractSetting(DetectorSetting setting, StringBuilder builder) {
 
 		builder.append(setting.getStartRetentionTime());
 		builder.append(" ");
@@ -155,7 +148,7 @@ public class AssignerReferences extends HashMap<String, AssignerReference> {
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
-		builder.append(setting.getName());
+		builder.append(setting.getDetectorType().toString());
 	}
 
 	private String getString(String[] values, int index) {

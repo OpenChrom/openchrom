@@ -17,7 +17,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.Activator;
-import net.openchrom.xxd.process.supplier.templates.ui.editors.PeakDetectorListEditor;
+import net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.PeakDetectorFieldEditor;
 
 public class PagePeakDetectorMSD extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
@@ -34,7 +34,7 @@ public class PagePeakDetectorMSD extends FieldEditorPreferencePage implements IW
 	 */
 	public void createFieldEditors() {
 
-		addField(new PeakDetectorListEditor(PreferenceSupplier.P_PEAK_DETECTOR_LIST_MSD, "Peak Detector (MSD)", getFieldEditorParent()));
+		addField(new PeakDetectorFieldEditor(PreferenceSupplier.P_PEAK_DETECTOR_LIST_MSD, "Peak Detector (MSD)", getFieldEditorParent()));
 	}
 
 	/*

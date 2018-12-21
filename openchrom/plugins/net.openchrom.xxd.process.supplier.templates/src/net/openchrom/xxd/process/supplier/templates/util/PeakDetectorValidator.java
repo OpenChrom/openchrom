@@ -15,7 +15,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
-import net.openchrom.xxd.process.supplier.templates.peaks.DetectorSettings;
+import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 
 public class PeakDetectorValidator extends AbstractValidator implements IValidator {
 
@@ -62,8 +62,8 @@ public class PeakDetectorValidator extends AbstractValidator implements IValidat
 						}
 						//
 						detectorType = values[2].trim();
-						if(!DetectorSettings.DETECTOR_TYPE_BB.equals(detectorType) && !DetectorSettings.DETECTOR_TYPE_VV.equals(detectorType)) {
-							message = "The detector type must be: '" + DetectorSettings.DETECTOR_TYPE_BB + "' or '" + DetectorSettings.DETECTOR_TYPE_VV + "'";
+						if(!DetectorSetting.DETECTOR_TYPE_BB.equals(detectorType) && !DetectorSetting.DETECTOR_TYPE_VV.equals(detectorType)) {
+							message = "The detector type must be: '" + DetectorSetting.DETECTOR_TYPE_BB + "' or '" + DetectorSetting.DETECTOR_TYPE_VV + "'";
 						}
 					} else {
 						message = ERROR_ENTRY;
@@ -81,8 +81,12 @@ public class PeakDetectorValidator extends AbstractValidator implements IValidat
 		}
 	}
 
-	public DetectorSettings getSettings() {
+	public DetectorSetting getSetting() {
 
-		return new DetectorSettings(startRetentionTime, stopRetentionTime, detectorType);
+		DetectorSetting setting = new DetectorSetting();
+		setting.setStartRetentionTime(startRetentionTime);
+		setting.setStopRetentionTime(stopRetentionTime);
+		setting.setDetectorType(detectorType);
+		return setting;
 	}
 }

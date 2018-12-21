@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.IStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
-import net.openchrom.xxd.process.supplier.templates.peaks.DetectorSettings;
+import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
@@ -39,17 +39,17 @@ public class PeakDetectorSettings extends AbstractProcessSettings implements IPe
 		this.detectorSettings = detectorSettings;
 	}
 
-	public List<DetectorSettings> getDetectorSettings() {
+	public List<DetectorSetting> getDetectorSettings() {
 
 		PeakDetectorListUtil util = new PeakDetectorListUtil();
 		PeakDetectorValidator validator = new PeakDetectorValidator();
-		List<DetectorSettings> settings = new ArrayList<>();
+		List<DetectorSetting> settings = new ArrayList<>();
 		//
 		List<String> items = util.getList(detectorSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
 			if(status.isOK()) {
-				settings.add(validator.getSettings());
+				settings.add(validator.getSetting());
 			}
 		}
 		//
