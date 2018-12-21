@@ -11,35 +11,27 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-public class AssignerStandard {
+public class IdentifierSetting {
 
-	private String name = "";
 	private double startRetentionTime = 0.0d; // Minutes
 	private double stopRetentionTime = 0.0d; // Minutes
-	private double concentration = 0.0d;
-	private String concentrationUnit = "";
-	private double responseFactor = 1.0d;
+	private String name = "";
+	private String casNumber = "";
+	private String comments = "";
+	private String contributor = "";
+	private String referenceId = "";
 
-	public void copyFrom(AssignerStandard setting) {
+	public void copyFrom(IdentifierSetting setting) {
 
 		if(setting != null) {
-			setName(setting.getName());
 			setStartRetentionTime(setting.getStartRetentionTime());
 			setStopRetentionTime(setting.getStopRetentionTime());
-			setConcentration(setting.getConcentration());
-			setConcentrationUnit(setting.getConcentrationUnit());
-			setResponseFactor(setting.getResponseFactor());
+			setName(setting.getName());
+			setCasNumber(setting.getCasNumber());
+			setComments(setting.getComments());
+			setContributor(setting.getContributor());
+			setReferenceId(setting.getReferenceId());
 		}
-	}
-
-	public String getName() {
-
-		return name;
-	}
-
-	public void setName(String name) {
-
-		this.name = name;
 	}
 
 	public double getStartRetentionTime() {
@@ -62,34 +54,54 @@ public class AssignerStandard {
 		this.stopRetentionTime = stopRetentionTime;
 	}
 
-	public double getConcentration() {
+	public String getName() {
 
-		return concentration;
+		return name;
 	}
 
-	public void setConcentration(double concentration) {
+	public void setName(String name) {
 
-		this.concentration = concentration;
+		this.name = name;
 	}
 
-	public String getConcentrationUnit() {
+	public String getCasNumber() {
 
-		return concentrationUnit;
+		return casNumber;
 	}
 
-	public void setConcentrationUnit(String concentrationUnit) {
+	public void setCasNumber(String casNumber) {
 
-		this.concentrationUnit = concentrationUnit;
+		this.casNumber = casNumber;
 	}
 
-	public double getResponseFactor() {
+	public String getComments() {
 
-		return responseFactor;
+		return comments;
 	}
 
-	public void setResponseFactor(double responseFactor) {
+	public void setComments(String comments) {
 
-		this.responseFactor = responseFactor;
+		this.comments = comments;
+	}
+
+	public String getContributor() {
+
+		return contributor;
+	}
+
+	public void setContributor(String contributor) {
+
+		this.contributor = contributor;
+	}
+
+	public String getReferenceId() {
+
+		return referenceId;
+	}
+
+	public void setReferenceId(String referenceId) {
+
+		this.referenceId = referenceId;
 	}
 
 	@Override
@@ -110,7 +122,7 @@ public class AssignerStandard {
 			return false;
 		if(getClass() != obj.getClass())
 			return false;
-		AssignerStandard other = (AssignerStandard)obj;
+		IdentifierSetting other = (IdentifierSetting)obj;
 		if(name == null) {
 			if(other.name != null)
 				return false;
@@ -122,6 +134,6 @@ public class AssignerStandard {
 	@Override
 	public String toString() {
 
-		return "AssignerStandard [name=" + name + ", startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", concentration=" + concentration + ", concentrationUnit=" + concentrationUnit + ", responseFactor=" + responseFactor + "]";
+		return "IdentifierSetting [startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", name=" + name + ", casNumber=" + casNumber + ", comments=" + comments + ", contributor=" + contributor + ", referenceId=" + referenceId + "]";
 	}
 }

@@ -12,8 +12,6 @@
 package net.openchrom.xxd.process.supplier.templates.ui.fieldeditors;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
@@ -32,26 +30,26 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 
-import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
-import net.openchrom.xxd.process.supplier.templates.model.DetectorSettings;
+import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
+import net.openchrom.xxd.process.supplier.templates.model.IdentifierSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakDetectorInputValidator;
-import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakDetectorListUI;
-import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
+import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakIdentifierInputValidator;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakIdentifierListUI;
+import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
 
-public class PeakDetectorFieldEditor extends AbstractFieldEditor {
+public class PeakIdentifierFieldEditor extends AbstractFieldEditor {
 
 	private static final int NUMBER_COLUMNS = 2;
 	//
 	private Composite composite;
-	private DetectorSettings settings = new DetectorSettings();
-	private PeakDetectorListUI listUI;
+	private IdentifierSettings settings = new IdentifierSettings();
+	private PeakIdentifierListUI listUI;
 	//
 	private static final String FILTER_EXTENSION = "*.txt";
-	private static final String FILTER_NAME = "Peak Detector Template (*.txt)";
-	private static final String FILE_NAME = "PeakDetectorTemplate.txt";
+	private static final String FILTER_NAME = "Peak Identifier Template (*.txt)";
+	private static final String FILE_NAME = "PeakIdentifierTemplate.txt";
 
-	public PeakDetectorFieldEditor(String name, String labelText, Composite parent) {
+	public PeakIdentifierFieldEditor(String name, String labelText, Composite parent) {
 		init(name, labelText);
 		createControl(parent);
 	}
@@ -111,7 +109,7 @@ public class PeakDetectorFieldEditor extends AbstractFieldEditor {
 		gridData.grabExcessVerticalSpace = true;
 		composite.setLayoutData(gridData);
 		//
-		listUI = new PeakDetectorListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		listUI = new PeakIdentifierListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		setTableViewerInput();
 	}
 
@@ -144,10 +142,10 @@ public class PeakDetectorFieldEditor extends AbstractFieldEditor {
 
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, PeakDetectorListUtil.EXAMPLE_SINGLE, new PeakDetectorInputValidator(settings));
+				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, PeakIdentifierListUtil.EXAMPLE_SINGLE, new PeakIdentifierInputValidator(settings.keySet()));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
-					DetectorSetting setting = settings.extractSettingInstance(item);
+					IdentifierSetting setting = settings.extractSettingInstance(item);
 					if(setting != null) {
 						settings.add(setting);
 						setTableViewerInput();
@@ -229,12 +227,12 @@ public class PeakDetectorFieldEditor extends AbstractFieldEditor {
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
 				Object object = structuredSelection.getFirstElement();
-				if(object instanceof DetectorSetting) {
-					DetectorSetting setting = (DetectorSetting)object;
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new PeakDetectorInputValidator(settings));
+				if(object instanceof IdentifierSetting) {
+					IdentifierSetting setting = (IdentifierSetting)object;
+					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new PeakIdentifierInputValidator(settings.keySet()));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
-						DetectorSetting settingNew = settings.extractSettingInstance(item);
+						IdentifierSetting settingNew = settings.extractSettingInstance(item);
 						setting.copyFrom(settingNew);
 					}
 				}
@@ -255,13 +253,11 @@ public class PeakDetectorFieldEditor extends AbstractFieldEditor {
 
 				if(MessageDialog.openQuestion(button.getShell(), DIALOG_TITLE, MESSAGE_REMOVE)) {
 					IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
-					List<DetectorSetting> removeElements = new ArrayList<>();
 					for(Object object : structuredSelection.toArray()) {
-						if(object instanceof DetectorSetting) {
-							removeElements.add((DetectorSetting)object);
+						if(object instanceof IdentifierSetting) {
+							settings.remove(((IdentifierSetting)object).getName());
 						}
 					}
-					settings.removeAll(removeElements);
 					setTableViewerInput();
 				}
 			}
@@ -291,7 +287,7 @@ public class PeakDetectorFieldEditor extends AbstractFieldEditor {
 
 	private void setTableViewerInput() {
 
-		listUI.setInput(settings);
+		listUI.setInput(settings.values());
 	}
 
 	@Override

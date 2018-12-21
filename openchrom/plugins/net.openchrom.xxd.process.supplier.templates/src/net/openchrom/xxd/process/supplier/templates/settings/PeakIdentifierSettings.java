@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.IStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
-import net.openchrom.xxd.process.supplier.templates.peaks.IdentifierSettings;
+import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
 
@@ -40,17 +40,17 @@ public class PeakIdentifierSettings extends AbstractIdentifierSettings implement
 		this.identifierSettings = identifierSettings;
 	}
 
-	public List<IdentifierSettings> getIdentifierSettings() {
+	public List<IdentifierSetting> getIdentifierSettings() {
 
 		PeakIdentifierListUtil util = new PeakIdentifierListUtil();
 		PeakIdentifierValidator validator = new PeakIdentifierValidator();
-		List<IdentifierSettings> settings = new ArrayList<>();
+		List<IdentifierSetting> settings = new ArrayList<>();
 		//
 		List<String> items = util.getList(identifierSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
 			if(status.isOK()) {
-				settings.add(validator.getSettings());
+				settings.add(validator.getSetting());
 			}
 		}
 		//

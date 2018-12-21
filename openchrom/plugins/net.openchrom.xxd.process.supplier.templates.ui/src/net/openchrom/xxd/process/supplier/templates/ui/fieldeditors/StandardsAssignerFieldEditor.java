@@ -18,7 +18,6 @@ import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -38,7 +37,7 @@ import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.Standar
 import net.openchrom.xxd.process.supplier.templates.ui.swt.StandardsAssignerListUI;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerListUtil;
 
-public class StandardsAssignerFieldEditor extends FieldEditor {
+public class StandardsAssignerFieldEditor extends AbstractFieldEditor {
 
 	private static final int NUMBER_COLUMNS = 2;
 	//
@@ -46,30 +45,9 @@ public class StandardsAssignerFieldEditor extends FieldEditor {
 	private AssignerStandards settings = new AssignerStandards();
 	private StandardsAssignerListUI listUI;
 	//
-	private static final String ADD = "Add";
-	private static final String ADD_TOOLTIP = "Add a new standard";
-	private static final String EDIT = "Edit";
-	private static final String EDIT_TOOLTIP = "Edit the selected standard";
-	private static final String REMOVE = "Remove";
-	private static final String REMOVE_TOOLTIP = "Remove Selected Standard(s)";
-	private static final String REMOVE_ALL = "Remove All";
-	private static final String REMOVE_ALL_TOOLTIP = "Remove All Standards";
-	private static final String IMPORT = "Import";
-	private static final String EXPORT = "Export";
-	//
-	private static final String IMPORT_TITLE = "Import Standards";
-	private static final String EXPORT_TITLE = "Export Standards";
-	private static final String DIALOG_TITLE = "Standard(s)";
-	private static final String MESSAGE_ADD = "You can create a new standard here.";
-	private static final String MESSAGE_EDIT = "Edit the selected standard.";
-	private static final String MESSAGE_REMOVE = "Do you want to delete the selected standard(s)?";
-	private static final String MESSAGE_REMOVE_ALL = "Do you want to delete all standard(s)?";
-	private static final String MESSAGE_EXPORT_SUCCESSFUL = "Standards have been exported successfully.";
-	private static final String MESSAGE_EXPORT_FAILED = "Failed to export the standards.";
-	//
 	private static final String FILTER_EXTENSION = "*.txt";
-	private static final String FILTER_NAME = "Standards Assigner (*.txt)";
-	private static final String FILE_NAME = "StandardsAssigner.txt";
+	private static final String FILTER_NAME = "Standards Assigner Template (*.txt)";
+	private static final String FILE_NAME = "StandardsAssignerTemplate.txt";
 
 	public StandardsAssignerFieldEditor(String name, String labelText, Composite parent) {
 		init(name, labelText);

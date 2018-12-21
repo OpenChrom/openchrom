@@ -15,7 +15,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
-import net.openchrom.xxd.process.supplier.templates.peaks.IdentifierSettings;
+import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
 
 public class PeakIdentifierValidator extends AbstractValidator implements IValidator {
 
@@ -101,13 +101,16 @@ public class PeakIdentifierValidator extends AbstractValidator implements IValid
 		}
 	}
 
-	public IdentifierSettings getSettings() {
+	public IdentifierSetting getSetting() {
 
-		IdentifierSettings settings = new IdentifierSettings(startRetentionTime, stopRetentionTime, name);
-		settings.setCasNumber(casNumber);
-		settings.setComments(comments);
-		settings.setContributor(contributor);
-		settings.setReferenceId(referenceId);
-		return settings;
+		IdentifierSetting setting = new IdentifierSetting();
+		setting.setStartRetentionTime(startRetentionTime);
+		setting.setStopRetentionTime(stopRetentionTime);
+		setting.setName(name);
+		setting.setCasNumber(casNumber);
+		setting.setComments(comments);
+		setting.setContributor(contributor);
+		setting.setReferenceId(referenceId);
+		return setting;
 	}
 }

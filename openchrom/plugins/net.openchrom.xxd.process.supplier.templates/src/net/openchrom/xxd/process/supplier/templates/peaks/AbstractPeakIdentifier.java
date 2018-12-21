@@ -32,6 +32,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings;
 
@@ -69,8 +70,8 @@ public abstract class AbstractPeakIdentifier {
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakIdentifierSettings) {
 				PeakIdentifierSettings peakIdentifierSettings = (PeakIdentifierSettings)settings;
-				for(IdentifierSettings identifierSettings : peakIdentifierSettings.getIdentifierSettings()) {
-					identifyPeak(peaks, identifierSettings);
+				for(IdentifierSetting identifierSetting : peakIdentifierSettings.getIdentifierSettings()) {
+					identifyPeak(peaks, identifierSetting);
 				}
 			} else {
 				processingInfo.addErrorMessage(PeakIdentifierSettings.DESCRIPTION, "The settings instance is wrong.");
@@ -79,10 +80,10 @@ public abstract class AbstractPeakIdentifier {
 		return processingInfo;
 	}
 
-	private void identifyPeak(List<? extends IPeak> peaks, IdentifierSettings identifierSettings) {
+	private void identifyPeak(List<? extends IPeak> peaks, IdentifierSetting identifierSetting) {
 
-		int startRetentionTime = (int)(identifierSettings.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-		int stopRetentionTime = (int)(identifierSettings.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		int startRetentionTime = (int)(identifierSetting.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		int stopRetentionTime = (int)(identifierSetting.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
 		//
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {
@@ -92,11 +93,11 @@ public abstract class AbstractPeakIdentifier {
 						 * Target
 						 */
 						ILibraryInformation libraryInformation = new LibraryInformation();
-						libraryInformation.setName(identifierSettings.getName());
-						libraryInformation.setCasNumber(identifierSettings.getCasNumber());
-						libraryInformation.setComments(identifierSettings.getComments());
-						libraryInformation.setContributor(identifierSettings.getContributor());
-						libraryInformation.setReferenceIdentifier(identifierSettings.getReferenceId());
+						libraryInformation.setName(identifierSetting.getName());
+						libraryInformation.setCasNumber(identifierSetting.getCasNumber());
+						libraryInformation.setComments(identifierSetting.getComments());
+						libraryInformation.setContributor(identifierSetting.getContributor());
+						libraryInformation.setReferenceIdentifier(identifierSetting.getReferenceId());
 						IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
 						IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 						identificationTarget.setIdentifier(PeakIdentifierSettings.DESCRIPTION);
