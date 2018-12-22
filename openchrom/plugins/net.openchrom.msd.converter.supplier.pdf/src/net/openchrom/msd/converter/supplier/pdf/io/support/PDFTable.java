@@ -22,13 +22,9 @@ import org.eclipse.chemclipse.logging.core.Logger;
 public class PDFTable {
 
 	private static final Logger logger = Logger.getLogger(PDFTable.class);
-	//
-	private static final float A4_PORTRAIT_HEIGHT = 297;
-	private static final float A4_PORTRAIT_WIDTH = 210;
 	/*
 	 * 0,0 is left top.
 	 */
-	//
 	private PDFont font = PDType1Font.HELVETICA;
 	private PDFont fontBold = PDType1Font.HELVETICA;
 	private float fontSize = 12;
@@ -176,20 +172,6 @@ public class PDFTable {
 				logger.warn("Row size not equals bounds size: " + row.size() + " - " + bounds.size());
 				return false;
 			}
-		}
-		//
-		float width = positionX + getWidth();
-		if(width > A4_PORTRAIT_WIDTH) {
-			logger.warn("The table width is larger then the paper width: " + width + " - " + A4_PORTRAIT_WIDTH);
-			return false;
-		}
-		/*
-		 * +2 = Header + Offset
-		 */
-		float height = (rowStop - rowStart + 2) * columnHeight;
-		if(height > A4_PORTRAIT_HEIGHT) {
-			logger.warn("The table contains more elements than there is available space: " + height + " - " + A4_PORTRAIT_HEIGHT);
-			// No valid false
 		}
 		//
 		return true;

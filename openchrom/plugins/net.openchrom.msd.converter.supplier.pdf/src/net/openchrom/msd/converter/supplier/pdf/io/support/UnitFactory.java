@@ -11,6 +11,33 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.io.support;
 
-public enum Scale {
-	MM, PT;
+import java.util.HashMap;
+import java.util.Map;
+
+public class UnitFactory {
+
+	private static final Map<Unit, IUnitConverter> CONVERTER_MAP = new HashMap<>();
+
+	public static IUnitConverter getInstance(Unit unit) {
+
+		if(!CONVERTER_MAP.containsKey(unit)) {
+			IUnitConverter unitConverter = new IUnitConverter() {
+
+				@Override
+				public float getFactor() {
+
+					return unit.getFactor();
+				}
+
+				@Override
+				public float convert(float value) {
+
+					return value * getFactor();
+				}
+			};
+			CONVERTER_MAP.put(unit, unitConverter);
+		}
+		//
+		return CONVERTER_MAP.get(unit);
+	}
 }

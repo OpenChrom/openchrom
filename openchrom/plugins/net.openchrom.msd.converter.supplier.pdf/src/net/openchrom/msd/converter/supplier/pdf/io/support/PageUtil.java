@@ -24,20 +24,33 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.util.Matrix;
 import org.eclipse.chemclipse.logging.core.Logger;
-
 /*
  * Defaults
- * Page Center: 0,0
- * Unit: MM
+ * Page Center: top left (0,0)
+ * Unit: mm
+ * ***
+ * All public method x,y values are handled in the given unit.In this case:mm and page center top left(0,0).*All private method x,y values are using the default PDF values pt and and page center bottom left(0,0).
  */
+
 public class PageUtil {
 
 	private static final Logger logger = Logger.getLogger(PageUtil.class);
 	//
 	private PDPage page = null; // Initialized in constructor
 	private PDPageContentStream contentStream = null; // Initialized in constructor
-	private IUnitConverter unitConverter = UnitConverterFactory.getInstance(Unit.MM);
+	private IUnitConverter unitConverter = UnitFactory.getInstance(Unit.MM);
 	private boolean landscape = false;
+
+	/**
+	 * Portrait
+	 * 
+	 * @param document
+	 * @param pdRectangle
+	 * @throws IOException
+	 */
+	public PageUtil(PDDocument document, PDRectangle pdRectangle) throws IOException {
+		this(document, pdRectangle, false);
+	}
 
 	public PageUtil(PDDocument document, PDRectangle pdRectangle, boolean landscape) throws IOException {
 		page = new PDPage(pdRectangle);
@@ -53,34 +66,101 @@ public class PageUtil {
 		}
 	}
 
+	@Override
+	protected void finalize() throws Throwable {
+
+		close();
+		super.finalize();
+	}
+
 	public PDPage getPage() {
 
 		return page;
 	}
 
+	/**
+	 * Call close when page creation is finished.
+	 * 
+	 * @throws IOException
+	 */
 	public void close() throws IOException {
 
-		contentStream.close();
+		if(contentStream != null) {
+			contentStream.close();
+		}
 	}
 
+	/**
+	 * Prints the text at the given position. The top line of the text is aligned at y.
+	 * 
+	 * @param font
+	 * @param fontSize
+	 * @param x
+	 * @param y
+	 * @param maxWidth
+	 * @param text
+	 * @throws IOException
+	 */
 	public void printTextTopEdge(PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
 
 		float height = calculateTextHeight(font, fontSize);
 		printText(font, fontSize, getPositionLeft(x), getPositionTop(y) - height, convert(maxWidth), text);
 	}
 
+	/**
+	 * Prints the text at the given position. The bottom line of the text is aligned at y.
+	 * 
+	 * @param font
+	 * @param fontSize
+	 * @param x
+	 * @param y
+	 * @param maxWidth
+	 * @param text
+	 * @throws IOException
+	 */
 	public void printTextBottomEdge(PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
 
 		printText(font, fontSize, getPositionLeft(x), getPositionTop(y), convert(maxWidth), text);
 	}
 
-	public void printImage(PDImageXObject image, float x, float y, float width, float height) throws IOException {
+	/**
+	 * Prints the image at the given position. The top line of the image is aligned at y.
+	 * 
+	 * @param image
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @throws IOException
+	 */
+	public void printImageTopEdge(PDImageXObject image, float x, float y, float width, float height) throws IOException {
 
-		contentStream.drawImage(image, getPositionLeft(x), getPositionTop(y + height), convert(width), convert(height));
+		printImage(image, getPositionLeft(x), getPositionTop(y + height), convert(width), convert(height));
 	}
 
-	/*
-	 * OK
+	/**
+	 * Prints the image at the given position. The bottom line of the image is aligned at y.
+	 * 
+	 * @param image
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @throws IOException
+	 */
+	public void printImageBottomEdge(PDImageXObject image, float x, float y, float width, float height) throws IOException {
+
+		contentStream.drawImage(image, getPositionLeft(x), getPositionTop(y), convert(width), convert(height));
+	}
+
+	/**
+	 * Prints a line.
+	 * 
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @throws IOException
 	 */
 	public void printLine(float x1, float y1, float x2, float y2) throws IOException {
 
@@ -89,17 +169,26 @@ public class PageUtil {
 		contentStream.stroke();
 	}
 
-	public void printBackground(Color strokingColor, Color nonStrokingColor, float x, float y, float width, float height) throws IOException {
+	/**
+	 * Prints a rectangle.
+	 * 
+	 * @param color
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @throws IOException
+	 */
+	public void printBackground(Color color, float x, float y, float width, float height) throws IOException {
 
-		contentStream.setStrokingColor(strokingColor);
-		contentStream.setNonStrokingColor(nonStrokingColor);
+		contentStream.setNonStrokingColor(color);
 		contentStream.addRect(getPositionLeft(x), getPositionTop(y + height), convert(width), convert(height));
 		contentStream.fill();
 	}
 
 	public void printTable(PDFTable pdfTable) throws IOException {
 
-		if(pdfTable.isValid()) {
+		if(isTableValid(pdfTable)) {
 			//
 			float x = pdfTable.getPositionX();
 			float y = pdfTable.getPositionY();
@@ -143,44 +232,97 @@ public class PageUtil {
 		}
 	}
 
+	private boolean isTableValid(PDFTable pdfTable) {
+
+		boolean isValid = pdfTable.isValid();
+		if(isValid) {
+			float widthTable = convert(pdfTable.getPositionX() + pdfTable.getWidth());
+			float widthPage = getPageWidth();
+			if(widthTable > widthPage) {
+				logger.warn("The table width (" + widthTable + ")is larger then the page width (" + widthPage + ").");
+			}
+			/*
+			 * +2 = Header + Offset
+			 */
+			float heightTable = convert((pdfTable.getRowStop() - pdfTable.getRowStart() + 2) * pdfTable.getColumnHeight() + pdfTable.getPositionY());
+			float heightPage = getPageHeight();
+			if(heightTable > heightPage) {
+				logger.warn("The table height (" + heightTable + ")is larger then the page height (" + heightPage + ").");
+			}
+		}
+		//
+		return isValid;
+	}
+
+	/*
+	 * Page Height (pt)
+	 */
 	private float getPageHeight() {
 
 		PDRectangle rectangle = page.getMediaBox();
 		return (landscape) ? rectangle.getWidth() : rectangle.getHeight();
 	}
 
+	/*
+	 * Page Width (pt)
+	 */
 	private float getPageWidth() {
 
 		PDRectangle rectangle = page.getMediaBox();
 		return (landscape) ? rectangle.getHeight() : rectangle.getWidth();
 	}
 
+	/*
+	 * Text height (pt)
+	 */
 	private float calculateTextHeight(PDFont font, float fontSize) {
 
 		PDRectangle rectangle = font.getFontDescriptor().getFontBoundingBox();
 		return (rectangle.getHeight() / 1000.0f * fontSize * 0.68f);
 	}
 
+	/*
+	 * Text width (pt)
+	 */
 	private float calculateTextWidth(PDFont font, float fontSize, String text) throws IOException {
 
 		return (font.getStringWidth(text) / 1000.0f * fontSize);
 	}
 
+	/*
+	 * Left (pt) - 0,0 left bottom
+	 */
 	private float getPositionLeft(float x) {
 
 		return convert(x);
 	}
 
+	/*
+	 * Top (pt) - 0,0 left bottom
+	 */
 	private float getPositionTop(float y) {
 
 		return getPageHeight() - convert(y);
 	}
 
+	/*
+	 * Convert value to pt
+	 */
 	private float convert(float value) {
 
 		return unitConverter.convert(value);
 	}
 
+	/*
+	 * fontSize, x, y, maxWidth (pt)
+	 * @param font
+	 * @param fontSize
+	 * @param x
+	 * @param y
+	 * @param maxWidth
+	 * @param text
+	 * @throws IOException
+	 */
 	private void printText(PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
 
 		int textLength = text.length();
@@ -205,6 +347,13 @@ public class PageUtil {
 		}
 	}
 
+	/*
+	 * x, y (pt)
+	 * @param x
+	 * @param y
+	 * @param text
+	 * @throws IOException
+	 */
 	private void printText(float x, float y, String text) throws IOException {
 
 		contentStream.beginText();
@@ -213,13 +362,27 @@ public class PageUtil {
 		contentStream.endText();
 	}
 
+	/*
+	 * x, y, width, height (pt)
+	 * @param image
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @throws IOException
+	 */
+	private void printImage(PDImageXObject image, float x, float y, float width, float height) throws IOException {
+
+		contentStream.drawImage(image, x, y, width, height);
+	}
+
 	private float printTableLine(PDFont fontBold, PDFont font, float fontSize, float x, float y, float width, float height, List<TableCell> cells, Color color, boolean bold, boolean drawBottomLine) throws IOException {
 
 		/*
 		 * Background
 		 */
 		if(color != null) {
-			printBackground(color, color, x, y, width, height);
+			printBackground(color, x, y, width, height);
 		}
 		/*
 		 * Print the text
