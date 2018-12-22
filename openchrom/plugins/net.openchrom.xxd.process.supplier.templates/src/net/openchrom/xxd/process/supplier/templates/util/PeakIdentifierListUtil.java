@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-public class PeakIdentifierListUtil extends AbstractListUtil {
+public class PeakIdentifierListUtil extends AbstractListUtil<PeakIdentifierValidator> {
 
 	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | Styrene | 100-42-5 | comment | contributor | referenceId";
 	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | Styrene | 100-42-5 | comment | contributor | referenceId ; 10.71 | 10.76 | Benzene";

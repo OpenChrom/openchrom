@@ -23,21 +23,24 @@ import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 
 public class StandardsReferencerLabelProvider extends AbstractChemClipseLabelProvider {
 
-	public static final String NAME = "Name";
-	public static final String START_RETENTION_TIME = "Start Retention Time";
-	public static final String STOP_RETENTION_TIME = "Stop Retention Time";
+	public static final String NAME = "Target ISTD (Internal Standard)";
+	public static final String START_RETENTION_TIME = "Source Start RT (Retention Time - Minutes)";
+	public static final String STOP_RETENTION_TIME = "Source Stop RT (Retention Time - Minutes)";
+	public static final String IDENTIFIER = "Source Identifier";
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 	//
 	public static final String[] TITLES = { //
 			NAME, //
 			START_RETENTION_TIME, //
-			STOP_RETENTION_TIME //
+			STOP_RETENTION_TIME, //
+			IDENTIFIER //
 	};
 	public static final int[] BOUNDS = { //
 			200, //
 			100, //
-			100 //
+			100, //
+			200 //
 	};
 
 	@Override
@@ -60,10 +63,23 @@ public class StandardsReferencerLabelProvider extends AbstractChemClipseLabelPro
 					text = setting.getName();
 					break;
 				case 1:
-					text = decimalFormat.format(setting.getStartRetentionTime());
+					double startRT = setting.getStartRetentionTime();
+					if(startRT == 0.0d) {
+						text = "--";
+					} else {
+						text = decimalFormat.format(startRT);
+					}
 					break;
 				case 2:
-					text = decimalFormat.format(setting.getStopRetentionTime());
+					double stopRT = setting.getStopRetentionTime();
+					if(stopRT == 0.0d) {
+						text = "--";
+					} else {
+						text = decimalFormat.format(stopRT);
+					}
+					break;
+				case 3:
+					text = setting.getIdentifier();
 					break;
 				default:
 					text = "n.v.";

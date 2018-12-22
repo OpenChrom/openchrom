@@ -11,19 +11,21 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-import org.eclipse.chemclipse.logging.core.Logger;
-
 public abstract class AbstractValidator {
 
-	private static final Logger logger = Logger.getLogger(AbstractValidator.class);
+	protected String parseString(String[] values, int index) {
 
-	public double parseDouble(String input) {
+		return (values.length > index) ? values[index].trim() : "";
+	}
+
+	protected double parseDouble(String[] values, int index) {
 
 		double result = 0.0d;
+		String value = parseString(values, index);
 		try {
-			result = Double.parseDouble(input);
+			result = Double.parseDouble(value);
 		} catch(NumberFormatException e) {
-			logger.warn(e);
+			//
 		}
 		return result;
 	}

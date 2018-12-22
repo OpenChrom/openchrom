@@ -38,6 +38,9 @@ public class StandardsReferencerComparator extends AbstractRecordTableComparator
 				case 2:
 					sortOrder = Double.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
 					break;
+				case 3:
+					sortOrder = setting2.getIdentifier().compareTo(setting1.getIdentifier());
+					break;
 				default:
 					sortOrder = 0;
 			}

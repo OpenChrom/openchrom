@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-public class StandardsAssignerListUtil extends AbstractListUtil {
+public class StandardsAssignerListUtil extends AbstractListUtil<StandardsAssignerValidator> {
 
 	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | Styrene | 10.5 | mg/L | 1.0";
 	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | Styrene | 10.5 | mg/L | 1.0 ; 10.71 | 10.76 | Benzene | 5.6 | g/kg | 0.7";

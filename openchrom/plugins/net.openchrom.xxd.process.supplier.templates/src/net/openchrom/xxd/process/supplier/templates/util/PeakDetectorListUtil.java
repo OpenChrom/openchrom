@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-public class PeakDetectorListUtil extends AbstractListUtil {
+public class PeakDetectorListUtil extends AbstractListUtil<PeakDetectorValidator> {
 
 	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | VV";
 	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | VV ; 10.71 | 10.76 | BB";

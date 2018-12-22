@@ -25,17 +25,23 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
-public abstract class AbstractListUtil implements IListUtil {
+public abstract class AbstractListUtil<T extends IValidator> implements IListUtil<T> {
 
 	private static final Logger logger = Logger.getLogger(AbstractListUtil.class);
 	//
 	public static final String SEPARATOR_TOKEN = ";";
 	public static final String SEPARATOR_ENTRY = "|";
 	//
-	private IValidator validator;
+	private T validator;
 
-	public AbstractListUtil(IValidator validator) {
+	public AbstractListUtil(T validator) {
 		this.validator = validator;
+	}
+
+	@Override
+	public T getValidator() {
+
+		return validator;
 	}
 
 	@Override

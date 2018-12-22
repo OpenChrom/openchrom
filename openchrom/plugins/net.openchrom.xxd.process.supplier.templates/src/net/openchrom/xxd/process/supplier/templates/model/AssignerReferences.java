@@ -17,7 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -26,7 +26,7 @@ import org.eclipse.core.runtime.IStatus;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerValidator;
 
-public class AssignerReferences extends HashMap<String, AssignerReference> {
+public class AssignerReferences extends ArrayList<AssignerReference> {
 
 	private static final Logger logger = Logger.getLogger(AssignerReferences.class);
 	//
@@ -34,13 +34,6 @@ public class AssignerReferences extends HashMap<String, AssignerReference> {
 	private StandardsReferencerListUtil listUtil = new StandardsReferencerListUtil();
 	private static final String SEPARATOR_TOKEN = StandardsReferencerListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = StandardsReferencerListUtil.SEPARATOR_ENTRY;
-
-	public void add(AssignerReference setting) {
-
-		if(setting != null) {
-			put(setting.getName(), setting);
-		}
-	}
 
 	public void load(String items) {
 
@@ -55,7 +48,7 @@ public class AssignerReferences extends HashMap<String, AssignerReference> {
 	public String save() {
 
 		StringBuilder builder = new StringBuilder();
-		Iterator<AssignerReference> iterator = values().iterator();
+		Iterator<AssignerReference> iterator = iterator();
 		while(iterator.hasNext()) {
 			AssignerReference setting = iterator.next();
 			extractSetting(setting, builder);
@@ -75,31 +68,18 @@ public class AssignerReferences extends HashMap<String, AssignerReference> {
 
 	public AssignerReference extractSettingInstance(String item) {
 
-		AssignerReference setting = null;
-		//
-		if(!"".equals(item)) {
-			String[] values = item.split("\\" + SEPARATOR_ENTRY);
-			setting = new AssignerReference();
-			setting.setStartRetentionTime(getDouble(values, 0));
-			setting.setStopRetentionTime(getDouble(values, 1));
-			setting.setName(getString(values, 2));
-		}
-		//
-		return setting;
+		return extract(item);
 	}
 
 	public void importItems(File file) {
 
 		try {
-			StandardsReferencerValidator validator = new StandardsReferencerValidator();
 			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
-				IStatus status = validator.validate(line);
-				if(status.isOK()) {
-					add(validator.getSetting());
-				} else {
-					logger.warn(status.getMessage());
+				AssignerReference setting = extract(line);
+				if(setting != null) {
+					add(setting);
 				}
 			}
 			bufferedReader.close();
@@ -114,7 +94,7 @@ public class AssignerReferences extends HashMap<String, AssignerReference> {
 
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
-			Iterator<AssignerReference> iterator = values().iterator();
+			Iterator<AssignerReference> iterator = iterator();
 			while(iterator.hasNext()) {
 				StringBuilder builder = new StringBuilder();
 				AssignerReference setting = iterator.next();
@@ -128,6 +108,21 @@ public class AssignerReferences extends HashMap<String, AssignerReference> {
 			logger.warn(e);
 			return false;
 		}
+	}
+
+	private AssignerReference extract(String text) {
+
+		AssignerReference setting = null;
+		StandardsReferencerValidator validator = listUtil.getValidator();
+		//
+		IStatus status = validator.validate(text);
+		if(status.isOK()) {
+			setting = validator.getSetting();
+		} else {
+			logger.warn(status.getMessage());
+		}
+		//
+		return setting;
 	}
 
 	private void loadSettings(String iems) {
@@ -156,22 +151,9 @@ public class AssignerReferences extends HashMap<String, AssignerReference> {
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
 		builder.append(setting.getName());
-	}
-
-	private String getString(String[] values, int index) {
-
-		return (values.length > index) ? values[index].trim() : "";
-	}
-
-	private double getDouble(String[] values, int index) {
-
-		double result = 0.0d;
-		String value = getString(values, index);
-		try {
-			result = Double.parseDouble(value);
-		} catch(NumberFormatException e) {
-			//
-		}
-		return result;
+		builder.append(" ");
+		builder.append(SEPARATOR_ENTRY);
+		builder.append(" ");
+		builder.append(setting.getIdentifier());
 	}
 }

@@ -14,7 +14,11 @@ package net.openchrom.xxd.process.supplier.templates.util;
 import java.io.File;
 import java.util.List;
 
-public interface IListUtil {
+import org.eclipse.core.databinding.validation.IValidator;
+
+public interface IListUtil<T extends IValidator> {
+
+	T getValidator();
 
 	String[] parseString(String stringList);
 

@@ -13,9 +13,10 @@ package net.openchrom.xxd.process.supplier.templates.model;
 
 public class AssignerReference {
 
-	private String name = "";
+	private String name = ""; // Target ISTD
 	private double startRetentionTime = 0.0d; // Minutes
 	private double stopRetentionTime = 0.0d; // Minutes
+	private String identifier = ""; // Source Identifier
 
 	public void copyFrom(AssignerReference setting) {
 
@@ -23,6 +24,7 @@ public class AssignerReference {
 			setName(setting.getName());
 			setStartRetentionTime(setting.getStartRetentionTime());
 			setStopRetentionTime(setting.getStopRetentionTime());
+			setIdentifier(setting.getIdentifier());
 		}
 	}
 
@@ -56,11 +58,22 @@ public class AssignerReference {
 		this.stopRetentionTime = stopRetentionTime;
 	}
 
+	public String getIdentifier() {
+
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+
+		this.identifier = identifier;
+	}
+
 	@Override
 	public int hashCode() {
 
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -75,6 +88,11 @@ public class AssignerReference {
 		if(getClass() != obj.getClass())
 			return false;
 		AssignerReference other = (AssignerReference)obj;
+		if(identifier == null) {
+			if(other.identifier != null)
+				return false;
+		} else if(!identifier.equals(other.identifier))
+			return false;
 		if(name == null) {
 			if(other.name != null)
 				return false;
@@ -86,6 +104,6 @@ public class AssignerReference {
 	@Override
 	public String toString() {
 
-		return "AssignerReference [name=" + name + ", startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + "]";
+		return "AssignerReference [name=" + name + ", startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", identifier=" + identifier + "]";
 	}
 }

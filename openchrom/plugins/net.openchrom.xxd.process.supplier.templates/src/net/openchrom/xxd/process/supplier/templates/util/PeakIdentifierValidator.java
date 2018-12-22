@@ -55,36 +55,25 @@ public class PeakIdentifierValidator extends AbstractValidator implements IValid
 						/*
 						 * Evaluation
 						 */
-						startRetentionTime = parseDouble(values[0].trim());
+						startRetentionTime = parseDouble(values, 0);
 						if(startRetentionTime < 0.0d) {
 							message = "The start retention time must be not lower than 0.";
 						}
 						//
-						stopRetentionTime = parseDouble(values[1].trim());
+						stopRetentionTime = parseDouble(values, 1);
 						if(stopRetentionTime <= startRetentionTime) {
 							message = "The stop retention time must be greater then the start retention time.";
 						}
 						//
-						name = values[2].trim();
+						name = parseString(values, 2);
 						if("".equals(name)) {
 							message = "A substance name needs to be set.";
 						}
 						//
-						if(values.length > 3) {
-							casNumber = values[3].trim();
-						}
-						//
-						if(values.length > 4) {
-							comments = values[4].trim();
-						}
-						//
-						if(values.length > 5) {
-							contributor = values[5].trim();
-						}
-						//
-						if(values.length > 6) {
-							referenceId = values[6].trim();
-						}
+						casNumber = parseString(values, 3);
+						comments = parseString(values, 4);
+						contributor = parseString(values, 5);
+						referenceId = parseString(values, 6);
 					} else {
 						message = ERROR_ENTRY;
 					}

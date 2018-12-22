@@ -37,13 +37,19 @@ public class StandardsReferencerFilter extends ViewerFilter {
 		if(element instanceof AssignerReference) {
 			AssignerReference setting = (AssignerReference)element;
 			String name = setting.getName();
+			String identifier = setting.getIdentifier();
 			//
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				name = name.toLowerCase();
+				identifier = identifier.toLowerCase();
 			}
 			//
 			if(name.contains(searchText)) {
+				return true;
+			}
+			//
+			if(identifier.contains(searchText)) {
 				return true;
 			}
 		}

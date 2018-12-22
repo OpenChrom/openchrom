@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.templates.peaks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.chromatogram.msd.quantitation.core.AbstractPeakQuantifier;
 import org.eclipse.chemclipse.chromatogram.msd.quantitation.core.IPeakQuantifier;
@@ -22,6 +23,7 @@ import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -86,12 +88,43 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 
 		int startRetentionTime = (int)(assignerReference.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
 		int stopRetentionTime = (int)(assignerReference.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		String quantitationReference = assignerReference.getName();
+		String identifierReference = assignerReference.getIdentifier();
 		//
 		try {
-			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {
+			if(isValidRetentionTimeRange(startRetentionTime, stopRetentionTime)) {
+				/*
+				 * 10.52 | 10.63 | Toluene |
+				 * 10.52 | 10.63 | Toluene | Styrene
+				 */
 				for(IPeak peak : peaks) {
 					if(isPeakMatch(peak, startRetentionTime, stopRetentionTime)) {
-						String quantitationReference = assignerReference.getName();
+						if("".equals(identifierReference)) {
+							/*
+							 * * 10.52 | 10.63 | Toluene |
+							 * All peaks in the range of RT 10.52 to 10.63 will be quantified against Toluene.
+							 */
+							peak.addQuantitationReference(quantitationReference);
+						} else {
+							/*
+							 * 10.52 | 10.63 | Toluene | Styrene
+							 * All peaks in the range of RT 10.52 to 10.63 will be quantified against Toluene
+							 * if they are at least identified as Styrene.
+							 */
+							if(isIdentifierMatch(peak, identifierReference)) {
+								peak.addQuantitationReference(quantitationReference);
+							}
+						}
+					}
+				}
+			} else {
+				/*
+				 * 0.0 | 0.0 | Toluene | Styrene
+				 * All peaks will be quantified against Toluene
+				 * if they are at least identified as Styrene.
+				 */
+				for(IPeak peak : peaks) {
+					if(isIdentifierMatch(peak, identifierReference)) {
 						peak.addQuantitationReference(quantitationReference);
 					}
 				}
@@ -99,6 +132,23 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 		} catch(PeakException e) {
 			logger.warn(e);
 		}
+	}
+
+	private boolean isIdentifierMatch(IPeak peak, String identifierReference) {
+
+		Set<IIdentificationTarget> targets = peak.getTargets();
+		for(IIdentificationTarget target : targets) {
+			if(target.getLibraryInformation().getName().equals(identifierReference)) {
+				return true;
+			}
+		}
+		//
+		return false;
+	}
+
+	private boolean isValidRetentionTimeRange(int startRetentionTime, int stopRetentionTime) {
+
+		return startRetentionTime > 0 && startRetentionTime < stopRetentionTime;
 	}
 
 	private boolean isPeakMatch(IPeak peak, int startRetentionTime, int stopRetentionTime) {

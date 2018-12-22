@@ -68,31 +68,18 @@ public class DetectorSettings extends ArrayList<DetectorSetting> {
 
 	public DetectorSetting extractSettingInstance(String item) {
 
-		DetectorSetting setting = null;
-		//
-		if(!"".equals(item)) {
-			String[] values = item.split("\\" + SEPARATOR_ENTRY);
-			setting = new DetectorSetting();
-			setting.setStartRetentionTime(getDouble(values, 0));
-			setting.setStopRetentionTime(getDouble(values, 1));
-			setting.setDetectorType(getString(values, 2));
-		}
-		//
-		return setting;
+		return extract(item);
 	}
 
 	public void importItems(File file) {
 
 		try {
-			PeakDetectorValidator validator = new PeakDetectorValidator();
 			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
-				IStatus status = validator.validate(line);
-				if(status.isOK()) {
-					add(validator.getSetting());
-				} else {
-					logger.warn(status.getMessage());
+				DetectorSetting setting = extract(line);
+				if(setting != null) {
+					add(setting);
 				}
 			}
 			bufferedReader.close();
@@ -123,6 +110,21 @@ public class DetectorSettings extends ArrayList<DetectorSetting> {
 		}
 	}
 
+	private DetectorSetting extract(String text) {
+
+		DetectorSetting setting = null;
+		PeakDetectorValidator validator = listUtil.getValidator();
+		//
+		IStatus status = validator.validate(text);
+		if(status.isOK()) {
+			setting = validator.getSetting();
+		} else {
+			logger.warn(status.getMessage());
+		}
+		//
+		return setting;
+	}
+
 	private void loadSettings(String iems) {
 
 		if(!"".equals(iems)) {
@@ -149,22 +151,5 @@ public class DetectorSettings extends ArrayList<DetectorSetting> {
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
 		builder.append(setting.getDetectorType().toString());
-	}
-
-	private String getString(String[] values, int index) {
-
-		return (values.length > index) ? values[index].trim() : "";
-	}
-
-	private double getDouble(String[] values, int index) {
-
-		double result = 0.0d;
-		String value = getString(values, index);
-		try {
-			result = Double.parseDouble(value);
-		} catch(NumberFormatException e) {
-			//
-		}
-		return result;
 	}
 }

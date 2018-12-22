@@ -12,6 +12,8 @@
 package net.openchrom.xxd.process.supplier.templates.ui.fieldeditors;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
@@ -142,7 +144,7 @@ public class StandardsReferencerFieldEditor extends AbstractFieldEditor {
 
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, StandardsReferencerListUtil.EXAMPLE_SINGLE, new StandardsReferencerInputValidator(settings.keySet()));
+				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, StandardsReferencerListUtil.EXAMPLE_SINGLE, new StandardsReferencerInputValidator(settings));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
 					AssignerReference setting = settings.extractSettingInstance(item);
@@ -229,7 +231,7 @@ public class StandardsReferencerFieldEditor extends AbstractFieldEditor {
 				Object object = structuredSelection.getFirstElement();
 				if(object instanceof AssignerReference) {
 					AssignerReference setting = (AssignerReference)object;
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new StandardsReferencerInputValidator(settings.keySet()));
+					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new StandardsReferencerInputValidator(settings));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
 						AssignerReference settingNew = settings.extractSettingInstance(item);
@@ -253,11 +255,14 @@ public class StandardsReferencerFieldEditor extends AbstractFieldEditor {
 
 				if(MessageDialog.openQuestion(button.getShell(), DIALOG_TITLE, MESSAGE_REMOVE)) {
 					IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
+					List<AssignerReference> removeItems = new ArrayList<>();
 					for(Object object : structuredSelection.toArray()) {
 						if(object instanceof AssignerReference) {
-							settings.remove(((AssignerReference)object).getName());
+							removeItems.add((AssignerReference)object);
 						}
 					}
+					//
+					settings.removeAll(removeItems);
 					setTableViewerInput();
 				}
 			}
@@ -287,7 +292,7 @@ public class StandardsReferencerFieldEditor extends AbstractFieldEditor {
 
 	private void setTableViewerInput() {
 
-		listUI.setInput(settings.values());
+		listUI.setInput(settings);
 	}
 
 	@Override

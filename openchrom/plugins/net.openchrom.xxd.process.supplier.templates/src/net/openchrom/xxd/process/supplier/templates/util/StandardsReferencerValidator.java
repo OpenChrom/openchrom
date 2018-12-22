@@ -27,6 +27,7 @@ public class StandardsReferencerValidator extends AbstractValidator implements I
 	private String name = "";
 	private double startRetentionTime = 0;
 	private double stopRetentionTime = 0;
+	private String identifier = "";
 
 	//
 	@Override
@@ -47,23 +48,32 @@ public class StandardsReferencerValidator extends AbstractValidator implements I
 					 * Extract retention time, ...
 					 */
 					String[] values = text.trim().split("\\" + SEPARATOR_ENTRY); // The pipe needs to be escaped.
-					if(values.length == 3) {
+					if(values.length >= 3) {
 						/*
 						 * Evaluation
 						 */
-						startRetentionTime = parseDouble(values[0].trim());
+						startRetentionTime = parseDouble(values, 0);
 						if(startRetentionTime < 0.0d) {
 							message = "The start retention time must be not lower than 0.";
 						}
 						//
-						stopRetentionTime = parseDouble(values[1].trim());
-						if(stopRetentionTime <= startRetentionTime) {
-							message = "The stop retention time must be greater then the start retention time.";
-						}
-						//
-						name = values[2].trim();
+						stopRetentionTime = parseDouble(values, 1);
+						name = parseString(values, 2);
 						if("".equals(name)) {
 							message = "A substance name needs to be set.";
+						}
+						identifier = parseString(values, 3);
+						/*
+						 * Extended Check
+						 */
+						if(startRetentionTime == 0.0d && stopRetentionTime == 0.0d) {
+							if("".equals(identifier)) {
+								message = "Please set a source identifier instead of the start/stop retention time.";
+							}
+						} else {
+							if(stopRetentionTime <= startRetentionTime) {
+								message = "The stop retention time must be greater then the start retention time.";
+							}
 						}
 					} else {
 						message = ERROR_ENTRY;
@@ -87,6 +97,7 @@ public class StandardsReferencerValidator extends AbstractValidator implements I
 		settings.setStartRetentionTime(startRetentionTime);
 		settings.setStopRetentionTime(stopRetentionTime);
 		settings.setName(name);
+		settings.setIdentifier(identifier);
 		return settings;
 	}
 }

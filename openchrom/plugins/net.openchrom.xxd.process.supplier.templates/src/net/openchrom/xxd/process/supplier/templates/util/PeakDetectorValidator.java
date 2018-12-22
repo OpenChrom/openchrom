@@ -51,17 +51,17 @@ public class PeakDetectorValidator extends AbstractValidator implements IValidat
 						/*
 						 * Evaluation
 						 */
-						startRetentionTime = parseDouble(values[0].trim());
+						startRetentionTime = parseDouble(values, 0);
 						if(startRetentionTime < 0.0d) {
 							message = "The start retention time must be not lower than 0.";
 						}
 						//
-						stopRetentionTime = parseDouble(values[1].trim());
+						stopRetentionTime = parseDouble(values, 1);
 						if(stopRetentionTime <= startRetentionTime) {
 							message = "The stop retention time must be greater then the start retention time.";
 						}
 						//
-						detectorType = values[2].trim();
+						detectorType = parseString(values, 2);
 						if(!DetectorSetting.DETECTOR_TYPE_BB.equals(detectorType) && !DetectorSetting.DETECTOR_TYPE_VV.equals(detectorType)) {
 							message = "The detector type must be: '" + DetectorSetting.DETECTOR_TYPE_BB + "' or '" + DetectorSetting.DETECTOR_TYPE_VV + "'";
 						}

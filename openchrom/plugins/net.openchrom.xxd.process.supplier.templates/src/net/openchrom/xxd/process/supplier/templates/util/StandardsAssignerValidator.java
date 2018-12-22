@@ -54,32 +54,32 @@ public class StandardsAssignerValidator extends AbstractValidator implements IVa
 						/*
 						 * Evaluation
 						 */
-						startRetentionTime = parseDouble(values[0].trim());
+						startRetentionTime = parseDouble(values, 0);
 						if(startRetentionTime < 0.0d) {
 							message = "The start retention time must be not lower than 0.";
 						}
 						//
-						stopRetentionTime = parseDouble(values[1].trim());
+						stopRetentionTime = parseDouble(values, 1);
 						if(stopRetentionTime <= startRetentionTime) {
 							message = "The stop retention time must be greater then the start retention time.";
 						}
 						//
-						name = values[2].trim();
+						name = parseString(values, 2);
 						if("".equals(name)) {
 							message = "A substance name needs to be set.";
 						}
 						//
-						concentration = parseDouble(values[3].trim());
+						concentration = parseDouble(values, 3);
 						if(concentration <= 0) {
 							message = "The concentration must be > 0.";
 						}
 						//
-						concentrationUnit = values[4].trim();
+						concentrationUnit = parseString(values, 4);
 						if("".equals(concentrationUnit)) {
 							message = "A concentration unit needs to be set.";
 						}
 						//
-						responseFactor = parseDouble(values[5].trim());
+						responseFactor = parseDouble(values, 5);
 						if(responseFactor <= 0) {
 							message = "The response factor must be > 0.";
 						}

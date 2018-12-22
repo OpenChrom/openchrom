@@ -75,35 +75,18 @@ public class IdentifierSettings extends HashMap<String, IdentifierSetting> {
 
 	public IdentifierSetting extractSettingInstance(String item) {
 
-		IdentifierSetting setting = null;
-		//
-		if(!"".equals(item)) {
-			String[] values = item.split("\\" + SEPARATOR_ENTRY);
-			setting = new IdentifierSetting();
-			setting.setStartRetentionTime(getDouble(values, 0));
-			setting.setStopRetentionTime(getDouble(values, 1));
-			setting.setName(getString(values, 2));
-			setting.setCasNumber(getString(values, 3));
-			setting.setComments(getString(values, 4));
-			setting.setContributor(getString(values, 5));
-			setting.setReferenceId(getString(values, 6));
-		}
-		//
-		return setting;
+		return extract(item);
 	}
 
 	public void importItems(File file) {
 
 		try {
-			PeakIdentifierValidator validator = new PeakIdentifierValidator();
 			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
-				IStatus status = validator.validate(line);
-				if(status.isOK()) {
-					add(validator.getSetting());
-				} else {
-					logger.warn(status.getMessage());
+				IdentifierSetting setting = extract(line);
+				if(setting != null) {
+					add(setting);
 				}
 			}
 			bufferedReader.close();
@@ -132,6 +115,21 @@ public class IdentifierSettings extends HashMap<String, IdentifierSetting> {
 			logger.warn(e);
 			return false;
 		}
+	}
+
+	private IdentifierSetting extract(String text) {
+
+		IdentifierSetting setting = null;
+		PeakIdentifierValidator validator = listUtil.getValidator();
+		//
+		IStatus status = validator.validate(text);
+		if(status.isOK()) {
+			setting = validator.getSetting();
+		} else {
+			logger.warn(status.getMessage());
+		}
+		//
+		return setting;
 	}
 
 	private void loadSettings(String iems) {
@@ -176,22 +174,5 @@ public class IdentifierSettings extends HashMap<String, IdentifierSetting> {
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
 		builder.append(setting.getReferenceId());
-	}
-
-	private String getString(String[] values, int index) {
-
-		return (values.length > index) ? values[index].trim() : "";
-	}
-
-	private double getDouble(String[] values, int index) {
-
-		double result = 0.0d;
-		String value = getString(values, index);
-		try {
-			result = Double.parseDouble(value);
-		} catch(NumberFormatException e) {
-			//
-		}
-		return result;
 	}
 }

@@ -11,8 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IInputValidator;
@@ -23,11 +23,11 @@ import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerVali
 public class StandardsReferencerInputValidator implements IInputValidator {
 
 	private StandardsReferencerValidator validator = new StandardsReferencerValidator();
-	private Set<String> names = new HashSet<>();
+	private List<AssignerReference> settings = new ArrayList<>();
 
-	public StandardsReferencerInputValidator(Set<String> names) {
-		if(names != null) {
-			this.names = names;
+	public StandardsReferencerInputValidator(List<AssignerReference> settings) {
+		if(settings != null) {
+			this.settings = settings;
 		}
 	}
 
@@ -37,8 +37,7 @@ public class StandardsReferencerInputValidator implements IInputValidator {
 		IStatus status = validator.validate(target);
 		if(status.isOK()) {
 			AssignerReference setting = validator.getSetting();
-			String name = setting.getName();
-			if(names.contains(name)) {
+			if(settings.contains(setting)) {
 				return "The element already exists.";
 			}
 		} else {

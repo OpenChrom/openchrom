@@ -75,34 +75,18 @@ public class AssignerStandards extends HashMap<String, AssignerStandard> {
 
 	public AssignerStandard extractSettingInstance(String item) {
 
-		AssignerStandard setting = null;
-		//
-		if(!"".equals(item)) {
-			String[] values = item.split("\\" + SEPARATOR_ENTRY);
-			setting = new AssignerStandard();
-			setting.setStartRetentionTime(getDouble(values, 0));
-			setting.setStopRetentionTime(getDouble(values, 1));
-			setting.setName(getString(values, 2));
-			setting.setConcentration(getDouble(values, 3));
-			setting.setConcentrationUnit(getString(values, 4));
-			setting.setResponseFactor(getDouble(values, 5));
-		}
-		//
-		return setting;
+		return extract(item);
 	}
 
 	public void importItems(File file) {
 
 		try {
-			StandardsAssignerValidator validator = new StandardsAssignerValidator();
 			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
-				IStatus status = validator.validate(line);
-				if(status.isOK()) {
-					add(validator.getSetting());
-				} else {
-					logger.warn(status.getMessage());
+				AssignerStandard setting = extract(line);
+				if(setting != null) {
+					add(setting);
 				}
 			}
 			bufferedReader.close();
@@ -131,6 +115,21 @@ public class AssignerStandards extends HashMap<String, AssignerStandard> {
 			logger.warn(e);
 			return false;
 		}
+	}
+
+	private AssignerStandard extract(String text) {
+
+		AssignerStandard setting = null;
+		StandardsAssignerValidator validator = listUtil.getValidator();
+		//
+		IStatus status = validator.validate(text);
+		if(status.isOK()) {
+			setting = validator.getSetting();
+		} else {
+			logger.warn(status.getMessage());
+		}
+		//
+		return setting;
 	}
 
 	private void loadSettings(String iems) {
@@ -171,22 +170,5 @@ public class AssignerStandards extends HashMap<String, AssignerStandard> {
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
 		builder.append(setting.getResponseFactor());
-	}
-
-	private String getString(String[] values, int index) {
-
-		return (values.length > index) ? values[index].trim() : "";
-	}
-
-	private double getDouble(String[] values, int index) {
-
-		double result = 0.0d;
-		String value = getString(values, index);
-		try {
-			result = Double.parseDouble(value);
-		} catch(NumberFormatException e) {
-			//
-		}
-		return result;
 	}
 }

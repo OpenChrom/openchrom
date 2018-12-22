@@ -56,6 +56,8 @@ public class StandardsReferencerEditingSupport extends EditingSupport {
 					return Double.toString(setting.getStartRetentionTime());
 				case StandardsReferencerLabelProvider.STOP_RETENTION_TIME:
 					return Double.toString(setting.getStopRetentionTime());
+				case StandardsReferencerLabelProvider.IDENTIFIER:
+					return setting.getIdentifier();
 			}
 		}
 		return false;
@@ -86,6 +88,9 @@ public class StandardsReferencerEditingSupport extends EditingSupport {
 							setting.setStopRetentionTime(result);
 						}
 					}
+					break;
+				case StandardsReferencerLabelProvider.IDENTIFIER:
+					setting.setIdentifier(value.toString());
 					break;
 			}
 			tableViewer.refresh();

@@ -23,9 +23,9 @@ import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
 
 public class StandardsAssignerLabelProvider extends AbstractChemClipseLabelProvider {
 
-	public static final String NAME = "Name";
-	public static final String START_RETENTION_TIME = "Start Retention Time";
-	public static final String STOP_RETENTION_TIME = "Stop Retention Time";
+	public static final String NAME = "ISTD (Internal Standard)";
+	public static final String START_RETENTION_TIME = "Start Retention Time (Minutes)";
+	public static final String STOP_RETENTION_TIME = "Stop Retention Time (Minutes)";
 	public static final String CONCENTRATION = "Concentration";
 	public static final String CONCENTRATION_UNIT = "Concentration Unit";
 	public static final String RESPONSE_FACTOR = "Response Factor";
