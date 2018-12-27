@@ -79,7 +79,7 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 	private StandardsAssignerSettings getSettings() {
 
 		StandardsAssignerSettings settings = new StandardsAssignerSettings();
-		settings.setAssignerSettings(PreferenceSupplier.getSettings(PreferenceSupplier.P_STANDARDS_ASSIGNER_LIST, ""));
+		settings.setAssignerSettings(PreferenceSupplier.getSettings(PreferenceSupplier.P_STANDARDS_ASSIGNER_LIST, PreferenceSupplier.DEF_STANDARDS_ASSIGNER_LIST));
 		return settings;
 	}
 

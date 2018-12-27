@@ -80,7 +80,7 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 	private StandardsReferencerSettings getSettings() {
 
 		StandardsReferencerSettings settings = new StandardsReferencerSettings();
-		settings.setReferencerSettings(PreferenceSupplier.getSettings(PreferenceSupplier.P_STANDARDS_REFERENCER_LIST, ""));
+		settings.setReferencerSettings(PreferenceSupplier.getSettings(PreferenceSupplier.P_STANDARDS_REFERENCER_LIST, PreferenceSupplier.DEF_STANDARDS_REFERENCER_LIST));
 		return settings;
 	}
 
