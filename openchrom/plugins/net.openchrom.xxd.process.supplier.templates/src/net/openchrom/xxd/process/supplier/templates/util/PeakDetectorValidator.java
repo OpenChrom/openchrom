@@ -11,14 +11,14 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-import org.eclipse.chemclipse.support.validators.AbstractValidator;
+import org.eclipse.chemclipse.support.util.ValueParserSupport;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 
-public class PeakDetectorValidator extends AbstractValidator implements IValidator {
+public class PeakDetectorValidator extends ValueParserSupport implements IValidator {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = PeakDetectorListUtil.SEPARATOR_TOKEN;
