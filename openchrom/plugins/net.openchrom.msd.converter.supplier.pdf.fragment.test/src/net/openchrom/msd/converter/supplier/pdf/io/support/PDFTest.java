@@ -77,14 +77,14 @@ public class PDFTest extends TestCase {
 		String text0 = "Erste Zeile";
 		String text1 = "Chromatogram Text und so und so viel text wie da auch nur stehen kann und ich weiß nicht doch das könnte etwas anders sein, wenn man bedenkt.";
 		String text2 = "Letzte Zeile";
-		int left = 10;
-		float fontSize = 12;
-		float maxWidth = 190;
-		pageUtil.printTextTopEdge(font, fontSize, left, 0, maxWidth, text0);
+		//
+		TextElement textElement = new TextElement().setX(10).setMaxWidth(190);
+		//
+		pageUtil.printText(textElement.setY(0).setText(text0));
 		for(int i = 1; i <= 28; i++) {
-			pageUtil.printTextTopEdge(font, fontSize, left, i * 10, maxWidth, text1);
+			pageUtil.printText(textElement.setY(i * 10).setText(text1));
 		}
-		pageUtil.printTextBottomEdge(font, fontSize, left, 297, maxWidth, text2);
+		pageUtil.printText(textElement.setY(297).setText(text2).setAlignVertical(AlignVertical.BOTTOM));
 		//
 		pageUtil.printLine(10, 10, 10, 287); // left
 		pageUtil.printLine(10, 10, 200, 10); // top

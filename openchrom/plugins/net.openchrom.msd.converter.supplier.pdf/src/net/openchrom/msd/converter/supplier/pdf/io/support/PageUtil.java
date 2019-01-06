@@ -90,6 +90,42 @@ public class PageUtil {
 		}
 	}
 
+	public void printText(TextElement textElement) throws IOException {
+
+		PDFont font = textElement.getFont();
+		float fontSize = textElement.getFontSize();
+		float maxWidth = convert(textElement.getMaxWidth());
+		String text = textElement.getText();
+		//
+		float x;
+		switch(textElement.getAlignHorizontal()) {
+			case LEFT:
+				x = getPositionLeft(textElement.getX());
+				break;
+			default:
+				x = getPositionLeft(textElement.getX()); // Default LEFT
+				logger.warn("Horizontal alignemt: Only LEFT is supported at the moment. Default LEFT");
+				break;
+		}
+		//
+		float y;
+		switch(textElement.getAlignVertical()) {
+			case TOP:
+				float height = calculateTextHeight(font, fontSize);
+				y = getPositionTop(textElement.getY()) - height;
+				break;
+			case BOTTOM:
+				y = getPositionTop(textElement.getY());
+				break;
+			default:
+				logger.warn("Vertical alignemt: Only TOP and BOTTOM are supported at the moment. Default BOTTOM");
+				y = getPositionTop(textElement.getY());
+				break;
+		}
+		//
+		printText(font, fontSize, x, y, maxWidth, text);
+	}
+
 	/**
 	 * Prints the text at the given position. The top line of the text is aligned at y.
 	 * 
