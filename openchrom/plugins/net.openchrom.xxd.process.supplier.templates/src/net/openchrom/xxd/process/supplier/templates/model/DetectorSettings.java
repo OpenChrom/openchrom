@@ -78,7 +78,7 @@ public class DetectorSettings extends ArrayList<DetectorSetting> {
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
 				DetectorSetting setting = extract(line);
-				if(setting != null) {
+				if(setting != null && !this.contains(setting)) {
 					add(setting);
 				}
 			}
@@ -132,7 +132,7 @@ public class DetectorSettings extends ArrayList<DetectorSetting> {
 			if(items.length > 0) {
 				for(String item : items) {
 					DetectorSetting setting = extractSettingInstance(item);
-					if(setting != null) {
+					if(setting != null && !contains(setting)) {
 						add(setting);
 					}
 				}
@@ -150,6 +150,10 @@ public class DetectorSettings extends ArrayList<DetectorSetting> {
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
-		builder.append(setting.getDetectorType().toString());
+		builder.append(setting.getDetectorType());
+		builder.append(" ");
+		builder.append(SEPARATOR_ENTRY);
+		builder.append(" ");
+		builder.append(setting.getTraces());
 	}
 }

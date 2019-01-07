@@ -26,18 +26,21 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 	public static final String START_RETENTION_TIME = "Start Retention Time";
 	public static final String STOP_RETENTION_TIME = "Stop Retention Time";
 	public static final String DETECTOR_TYPE = "Detector Type";
+	public static final String TRACES = "Traces";
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 	//
 	public static final String[] TITLES = { //
 			START_RETENTION_TIME, //
 			STOP_RETENTION_TIME, //
-			DETECTOR_TYPE//
+			DETECTOR_TYPE, //
+			TRACES //
 	};
 	public static final int[] BOUNDS = { //
 			100, //
 			100, //
-			50 //
+			50, //
+			100 //
 	};
 
 	@Override
@@ -64,6 +67,9 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 					break;
 				case 2:
 					text = setting.getDetectorType();
+					break;
+				case 3:
+					text = setting.getTraces();
 					break;
 				default:
 					text = "n.v.";

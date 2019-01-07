@@ -37,13 +37,19 @@ public class PeakDetectorFilter extends ViewerFilter {
 		if(element instanceof DetectorSetting) {
 			DetectorSetting setting = (DetectorSetting)element;
 			String detectorType = setting.getDetectorType();
+			String traces = setting.getTraces();
 			//
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				detectorType = detectorType.toLowerCase();
+				traces = traces.toLowerCase();
 			}
 			//
 			if(detectorType.contains(searchText)) {
+				return true;
+			}
+			//
+			if(traces.contains(searchText)) {
 				return true;
 			}
 		}

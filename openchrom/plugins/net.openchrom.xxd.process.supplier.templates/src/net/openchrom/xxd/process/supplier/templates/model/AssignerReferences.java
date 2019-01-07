@@ -78,7 +78,7 @@ public class AssignerReferences extends ArrayList<AssignerReference> {
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
 				AssignerReference setting = extract(line);
-				if(setting != null) {
+				if(setting != null && !this.contains(setting)) {
 					add(setting);
 				}
 			}
@@ -132,7 +132,7 @@ public class AssignerReferences extends ArrayList<AssignerReference> {
 			if(items.length > 0) {
 				for(String item : items) {
 					AssignerReference setting = extractSettingInstance(item);
-					if(setting != null) {
+					if(setting != null && !this.contains(setting)) {
 						add(setting);
 					}
 				}

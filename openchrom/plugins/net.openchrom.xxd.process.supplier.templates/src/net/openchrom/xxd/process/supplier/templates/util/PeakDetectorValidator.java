@@ -28,8 +28,8 @@ public class PeakDetectorValidator extends ValueParserSupport implements IValida
 	private double startRetentionTime = 0;
 	private double stopRetentionTime = 0;
 	private String detectorType = "";
+	private String traces = "";
 
-	//
 	@Override
 	public IStatus validate(Object value) {
 
@@ -48,7 +48,7 @@ public class PeakDetectorValidator extends ValueParserSupport implements IValida
 					 * Extract retention time, ...
 					 */
 					String[] values = text.trim().split("\\" + SEPARATOR_ENTRY); // The pipe needs to be escaped.
-					if(values.length == 3) {
+					if(values.length >= 3) {
 						/*
 						 * Evaluation
 						 */
@@ -66,6 +66,8 @@ public class PeakDetectorValidator extends ValueParserSupport implements IValida
 						if(!DetectorSetting.DETECTOR_TYPE_BB.equals(detectorType) && !DetectorSetting.DETECTOR_TYPE_VV.equals(detectorType)) {
 							message = "The detector type must be: '" + DetectorSetting.DETECTOR_TYPE_BB + "' or '" + DetectorSetting.DETECTOR_TYPE_VV + "'";
 						}
+						//
+						traces = parseString(values, 3);
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -88,6 +90,7 @@ public class PeakDetectorValidator extends ValueParserSupport implements IValida
 		setting.setStartRetentionTime(startRetentionTime);
 		setting.setStopRetentionTime(stopRetentionTime);
 		setting.setDetectorType(detectorType);
+		setting.setTraces(traces);
 		return setting;
 	}
 }

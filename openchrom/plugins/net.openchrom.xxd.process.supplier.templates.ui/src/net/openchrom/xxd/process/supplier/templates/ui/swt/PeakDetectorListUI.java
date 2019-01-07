@@ -67,6 +67,8 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 			String label = tableViewerColumn.getColumn().getText();
 			if(label.equals(PeakDetectorLabelProvider.DETECTOR_TYPE)) {
 				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
+			} else if(label.equals(PeakDetectorLabelProvider.TRACES)) {
+				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
 			}
 		}
 	}

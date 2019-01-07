@@ -38,6 +38,9 @@ public class PeakDetectorComparator extends AbstractRecordTableComparator implem
 				case 2:
 					sortOrder = setting2.getDetectorType().compareTo(setting1.getDetectorType());
 					break;
+				case 3:
+					sortOrder = setting2.getTraces().compareTo(setting1.getTraces());
+					break;
 				default:
 					sortOrder = 0;
 			}

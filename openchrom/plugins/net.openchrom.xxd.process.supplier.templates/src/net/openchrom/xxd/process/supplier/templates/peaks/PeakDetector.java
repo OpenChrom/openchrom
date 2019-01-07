@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.peaks;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.IPeakDetectorCSD;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.IPeakDetectorMSD;
@@ -34,6 +37,7 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
@@ -101,24 +105,32 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 
 		int start = (int)(detectorSetting.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
 		int stop = (int)(detectorSetting.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-		setPeakByRetentionTimeRange(chromatogram, start, stop, detectorSetting.isIncludeBackground());
+		setPeakByRetentionTimeRange(chromatogram, start, stop, detectorSetting);
 	}
 
-	private void setPeakByRetentionTimeRange(IChromatogram<? extends IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, boolean includeBackground) {
+	private void setPeakByRetentionTimeRange(IChromatogram<? extends IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, DetectorSetting detectorSetting) {
 
 		int startScan = chromatogram.getScanNumber(startRetentionTime);
 		int stopScan = chromatogram.getScanNumber(stopRetentionTime);
-		setPeakByScanRange(chromatogram, startScan, stopScan, includeBackground);
+		setPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting);
 	}
 
-	private void setPeakByScanRange(IChromatogram<? extends IPeak> chromatogram, int startScan, int stopScan, boolean includeBackground) {
+	private void setPeakByScanRange(IChromatogram<? extends IPeak> chromatogram, int startScan, int stopScan, DetectorSetting detectorSetting) {
 
+		boolean includeBackground = detectorSetting.isIncludeBackground();
+		//
 		try {
 			if(startScan > 0 && startScan < stopScan) {
 				IScanRange scanRange = new ScanRange(startScan, stopScan);
 				if(chromatogram instanceof IChromatogramMSD) {
 					IChromatogramMSD chromatogramMSD = (IChromatogramMSD)chromatogram;
-					IChromatogramPeakMSD peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground);
+					Set<Integer> includedIons = extractTraces(detectorSetting.getTraces());
+					IChromatogramPeakMSD peak;
+					if(includedIons.size() > 0) {
+						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground, includedIons);
+					} else {
+						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground);
+					}
 					peak.setDetectorDescription(PeakDetectorSettings.DESCRIPTION);
 					chromatogramMSD.addPeak(peak);
 				} else if(chromatogram instanceof IChromatogramCSD) {
@@ -126,10 +138,51 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 					IChromatogramPeakCSD peak = PeakBuilderCSD.createPeak(chromatogramCSD, scanRange, includeBackground);
 					peak.setDetectorDescription(PeakDetectorSettings.DESCRIPTION);
 					chromatogramCSD.addPeak(peak);
+				} else if(chromatogram instanceof IChromatogramWSD) {
+					// String traces = detectorSetting.getTraces();
+					// Not implemented yet.
 				}
 			}
 		} catch(PeakException e) {
 			logger.warn(e);
 		}
+	}
+
+	private Set<Integer> extractTraces(String traces) {
+
+		Set<Integer> traceSet = new HashSet<>();
+		String[] values = traces.split(",");
+		for(String value : values) {
+			if(value.contains("-")) {
+				String[] parts = value.split("-");
+				if(parts.length == 2) {
+					int startTrace = getTrace(parts[0]);
+					int stopTrace = getTrace(parts[1]);
+					if(startTrace <= stopTrace) {
+						for(int trace = startTrace; trace <= stopTrace; trace++) {
+							traceSet.add(trace);
+						}
+					}
+				}
+			} else {
+				int trace = getTrace(value);
+				if(trace != -1) {
+					traceSet.add(trace);
+				}
+			}
+		}
+		return traceSet;
+	}
+
+	private int getTrace(String value) {
+
+		int trace = -1;
+		try {
+			trace = Integer.parseInt(value.trim());
+		} catch(NumberFormatException e) {
+			// logger.warn(e);
+		}
+		//
+		return trace;
 	}
 }

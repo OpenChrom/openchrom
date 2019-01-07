@@ -19,6 +19,7 @@ public class DetectorSetting {
 	private double startRetentionTime = 0.0d; // Minutes
 	private double stopRetentionTime = 0.0d; // Minutes
 	private String detectorType = "";
+	private String traces = "";
 
 	public void copyFrom(DetectorSetting setting) {
 
@@ -26,6 +27,7 @@ public class DetectorSetting {
 			setStartRetentionTime(setting.getStartRetentionTime());
 			setStopRetentionTime(setting.getStopRetentionTime());
 			setDetectorType(setting.getDetectorType());
+			setTraces(setting.getTraces());
 		}
 	}
 
@@ -57,6 +59,16 @@ public class DetectorSetting {
 	public void setDetectorType(String detectorType) {
 
 		this.detectorType = detectorType;
+	}
+
+	public String getTraces() {
+
+		return traces;
+	}
+
+	public void setTraces(String traces) {
+
+		this.traces = traces;
 	}
 
 	public boolean isIncludeBackground() {
@@ -101,6 +113,6 @@ public class DetectorSetting {
 	@Override
 	public String toString() {
 
-		return "DetectorSetting [startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", detectorType=" + detectorType + "]";
+		return "DetectorSetting [startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", detectorType=" + detectorType + ", traces=" + traces + "]";
 	}
 }

@@ -51,6 +51,8 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 			switch(column) {
 				case PeakDetectorLabelProvider.DETECTOR_TYPE:
 					return setting.getDetectorType();
+				case PeakDetectorLabelProvider.TRACES:
+					return setting.getTraces();
 			}
 		}
 		return false;
@@ -63,10 +65,14 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 			DetectorSetting setting = (DetectorSetting)element;
 			switch(column) {
 				case PeakDetectorLabelProvider.DETECTOR_TYPE:
-					String text = ((String)value).trim();
-					if(!"".equals(text) && (text.equals(DetectorSetting.DETECTOR_TYPE_BB) || text.equals(DetectorSetting.DETECTOR_TYPE_VV))) {
-						setting.setDetectorType(text);
+					String detectorType = ((String)value).trim();
+					if(!"".equals(detectorType) && (detectorType.equals(DetectorSetting.DETECTOR_TYPE_BB) || detectorType.equals(DetectorSetting.DETECTOR_TYPE_VV))) {
+						setting.setDetectorType(detectorType);
 					}
+					break;
+				case PeakDetectorLabelProvider.TRACES:
+					String traces = ((String)value).trim();
+					setting.setTraces(traces);
 					break;
 			}
 			tableViewer.refresh();
