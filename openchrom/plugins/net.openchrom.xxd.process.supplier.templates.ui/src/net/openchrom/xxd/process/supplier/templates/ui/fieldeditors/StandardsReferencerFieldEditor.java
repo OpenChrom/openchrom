@@ -159,6 +159,82 @@ public class StandardsReferencerFieldEditor extends AbstractFieldEditor {
 		return button;
 	}
 
+	private Button createButtonEdit(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText(EDIT);
+		button.setToolTipText(EDIT_TOOLTIP);
+		button.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(SelectionEvent e) {
+
+				IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
+				Object object = structuredSelection.getFirstElement();
+				if(object instanceof AssignerReference) {
+					List<AssignerReference> settingsEdit = new ArrayList<>();
+					settingsEdit.addAll(settings);
+					AssignerReference setting = (AssignerReference)object;
+					settingsEdit.remove(setting);
+					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new StandardsReferencerInputValidator(settingsEdit));
+					if(IDialogConstants.OK_ID == dialog.open()) {
+						String item = dialog.getValue();
+						AssignerReference settingNew = settings.extractSettingInstance(item);
+						setting.copyFrom(settingNew);
+						setTableViewerInput();
+					}
+				}
+			}
+		});
+		//
+		return button;
+	}
+
+	private Button createButtonRemove(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText(REMOVE);
+		button.setToolTipText(REMOVE_TOOLTIP);
+		button.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(SelectionEvent e) {
+
+				if(MessageDialog.openQuestion(button.getShell(), DIALOG_TITLE, MESSAGE_REMOVE)) {
+					IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
+					List<AssignerReference> removeItems = new ArrayList<>();
+					for(Object object : structuredSelection.toArray()) {
+						if(object instanceof AssignerReference) {
+							removeItems.add((AssignerReference)object);
+						}
+					}
+					//
+					settings.removeAll(removeItems);
+					setTableViewerInput();
+				}
+			}
+		});
+		//
+		return button;
+	}
+
+	private Button createButtonRemoveAll(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText(REMOVE_ALL);
+		button.setToolTipText(REMOVE_ALL_TOOLTIP);
+		button.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(SelectionEvent e) {
+
+				if(MessageDialog.openQuestion(button.getShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
+					settings.clear();
+					setTableViewerInput();
+				}
+			}
+		});
+		//
+		return button;
+	}
+
 	private Button createButtonImport(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
@@ -211,78 +287,6 @@ public class StandardsReferencerFieldEditor extends AbstractFieldEditor {
 					} else {
 						MessageDialog.openWarning(button.getShell(), EXPORT_TITLE, MESSAGE_EXPORT_FAILED);
 					}
-				}
-			}
-		});
-		//
-		return button;
-	}
-
-	private Button createButtonEdit(Composite parent) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText(EDIT);
-		button.setToolTipText(EDIT_TOOLTIP);
-		button.addSelectionListener(new SelectionAdapter() {
-
-			public void widgetSelected(SelectionEvent e) {
-
-				IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
-				Object object = structuredSelection.getFirstElement();
-				if(object instanceof AssignerReference) {
-					AssignerReference setting = (AssignerReference)object;
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new StandardsReferencerInputValidator(settings));
-					if(IDialogConstants.OK_ID == dialog.open()) {
-						String item = dialog.getValue();
-						AssignerReference settingNew = settings.extractSettingInstance(item);
-						setting.copyFrom(settingNew);
-					}
-				}
-			}
-		});
-		//
-		return button;
-	}
-
-	private Button createButtonRemove(Composite parent) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText(REMOVE);
-		button.setToolTipText(REMOVE_TOOLTIP);
-		button.addSelectionListener(new SelectionAdapter() {
-
-			public void widgetSelected(SelectionEvent e) {
-
-				if(MessageDialog.openQuestion(button.getShell(), DIALOG_TITLE, MESSAGE_REMOVE)) {
-					IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
-					List<AssignerReference> removeItems = new ArrayList<>();
-					for(Object object : structuredSelection.toArray()) {
-						if(object instanceof AssignerReference) {
-							removeItems.add((AssignerReference)object);
-						}
-					}
-					//
-					settings.removeAll(removeItems);
-					setTableViewerInput();
-				}
-			}
-		});
-		//
-		return button;
-	}
-
-	private Button createButtonRemoveAll(Composite parent) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText(REMOVE_ALL);
-		button.setToolTipText(REMOVE_ALL_TOOLTIP);
-		button.addSelectionListener(new SelectionAdapter() {
-
-			public void widgetSelected(SelectionEvent e) {
-
-				if(MessageDialog.openQuestion(button.getShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
-					settings.clear();
-					setTableViewerInput();
 				}
 			}
 		});

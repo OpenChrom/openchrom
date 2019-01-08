@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
 public class PeakDetectorEditingSupport extends EditingSupport {
 
@@ -72,7 +73,11 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 					break;
 				case PeakDetectorLabelProvider.TRACES:
 					String traces = ((String)value).trim();
-					setting.setTraces(traces);
+					PeakDetectorValidator validator = new PeakDetectorValidator();
+					String message = validator.validateTraces(traces);
+					if(message == null) {
+						setting.setTraces(traces);
+					}
 					break;
 			}
 			tableViewer.refresh();

@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.peaks;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.IPeakDetectorCSD;
@@ -43,10 +42,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
+import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
 public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorMSD, IPeakDetectorCSD {
 
 	private static final Logger logger = Logger.getLogger(PeakDetector.class);
+	private PeakDetectorListUtil listUtil = new PeakDetectorListUtil();
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -124,8 +125,8 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 				IScanRange scanRange = new ScanRange(startScan, stopScan);
 				if(chromatogram instanceof IChromatogramMSD) {
 					IChromatogramMSD chromatogramMSD = (IChromatogramMSD)chromatogram;
-					Set<Integer> includedIons = extractTraces(detectorSetting.getTraces());
 					IChromatogramPeakMSD peak;
+					Set<Integer> includedIons = listUtil.extractTraces(detectorSetting.getTraces());
 					if(includedIons.size() > 0) {
 						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground, includedIons);
 					} else {
@@ -139,50 +140,11 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 					peak.setDetectorDescription(PeakDetectorSettings.DESCRIPTION);
 					chromatogramCSD.addPeak(peak);
 				} else if(chromatogram instanceof IChromatogramWSD) {
-					// String traces = detectorSetting.getTraces();
-					// Not implemented yet.
+					logger.info("Handling WSD data is not supported yet");
 				}
 			}
 		} catch(PeakException e) {
 			logger.warn(e);
 		}
-	}
-
-	private Set<Integer> extractTraces(String traces) {
-
-		Set<Integer> traceSet = new HashSet<>();
-		String[] values = traces.split(",");
-		for(String value : values) {
-			if(value.contains("-")) {
-				String[] parts = value.split("-");
-				if(parts.length == 2) {
-					int startTrace = getTrace(parts[0]);
-					int stopTrace = getTrace(parts[1]);
-					if(startTrace <= stopTrace) {
-						for(int trace = startTrace; trace <= stopTrace; trace++) {
-							traceSet.add(trace);
-						}
-					}
-				}
-			} else {
-				int trace = getTrace(value);
-				if(trace != -1) {
-					traceSet.add(trace);
-				}
-			}
-		}
-		return traceSet;
-	}
-
-	private int getTrace(String value) {
-
-		int trace = -1;
-		try {
-			trace = Integer.parseInt(value.trim());
-		} catch(NumberFormatException e) {
-			// logger.warn(e);
-		}
-		//
-		return trace;
 	}
 }
