@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.classifier.chromatogramClassifierSupplier">
+      <ChromatogramClassifierSupplier
+            classifier="net.openchrom.xxd.classifier.supplier.ratios.core.Classifier"
+            classifierName="Ratio Classifier"
+            classifierSettings="net.openchrom.xxd.classifier.supplier.ratios.settings.ClassifierSettings"
+            description="This classifier calculates various ratios."
+            id="net.openchrom.xxd.classifier.supplier.ratios">
+      </ChromatogramClassifierSupplier>
+   </extension>         
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+</plugin>

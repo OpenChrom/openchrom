@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+
+   <extension
+         id="net.openchrom.xxd.classifier.supplier.ratios.ui.fragment"
+         point="org.eclipse.e4.workbench.model">
+      <fragment
+            uri="fragment.e4xmi">
+      </fragment>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.chemclipse.chromatogram.msd.classifier.ui.preferences.classifierPreferencePage"
+            class="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.PreferencePage"
+            id="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePage"
+            name="Ration Calissier">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.ux.extension.ui.measurementResultVisualization">
+      <MeasurementResultVisualization
+            Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.ClassifierTableComparator"
+            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.ClassifierContentProvider"
+            Identifier="net.openchrom.xxd.classifier.supplier.ratios"
+            LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.ClassifierLabelProvider"
+            Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.MeasurementResultTitles">
+      </MeasurementResultVisualization>
+   </extension>
+</plugin>
