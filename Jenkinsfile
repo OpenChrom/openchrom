@@ -102,6 +102,9 @@ pipeline {
 				dir ('pcrreportmisc') {
 					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/pcrreportmisc.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
 				}
+				dir ('classifierratios') {
+					checkout resolveScm(source: [remote: 'https://github.com/OpenChrom/classifierratios.git',	$class: 'GitSCMSource', poll: true, extensions: [[$class: 'CheckoutOption', timeout: 240]], , traits: [[$class: 'jenkins.plugins.git.traits.BranchDiscoveryTrait']]], targets: [BRANCH_NAME,'develop'])
+				}
 			}
     	}
 		stage('build') {
@@ -134,6 +137,7 @@ pipeline {
 					sh 'mvn -B -Dmaven.repo.local=.repository -f templateprocessor/openchrom/cbi/net.openchrom.xxd.process.supplier.templates.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f processornmrbase/openchrom/cbi/net.openchrom.nmr.processing.supplier.base.cbi/pom.xml install'
 					sh 'mvn -B -Dmaven.repo.local=.repository -f pcrreportmisc/openchrom/cbi/net.openchrom.pcr.report.supplier.misc.cbi/pom.xml install'
+					sh 'mvn -B -Dmaven.repo.local=.repository -f classifierratios/openchrom/cbi/net.openchrom.xxd.classifier.supplier.ratios.cbi/pom.xml install'
 			}
 		}
 		stage('package') {
