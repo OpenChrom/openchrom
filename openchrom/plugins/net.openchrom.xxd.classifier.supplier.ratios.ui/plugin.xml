@@ -20,11 +20,11 @@
    <extension
          point="org.eclipse.chemclipse.ux.extension.ui.measurementResultVisualization">
       <MeasurementResultVisualization
-            Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.ClassifierTableComparator"
-            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.ClassifierContentProvider"
-            Identifier="net.openchrom.xxd.classifier.supplier.ratios"
-            LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.ClassifierLabelProvider"
-            Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.MeasurementResultTitles">
+            Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakIonClassifierTableComparator"
+            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakIonClassifierContentProvider"
+            Identifier="net.openchrom.xxd.classifier.supplier.ratios.peak.ion"
+            LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakIonClassifierLabelProvider"
+            Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakIonMeasurementResultTitles">
       </MeasurementResultVisualization>
    </extension>
 </plugin>

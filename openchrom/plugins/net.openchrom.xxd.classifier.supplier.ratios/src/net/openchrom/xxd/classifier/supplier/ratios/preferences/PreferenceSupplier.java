@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 
 import net.openchrom.xxd.classifier.supplier.ratios.Activator;
-import net.openchrom.xxd.classifier.supplier.ratios.settings.ClassifierSettings;
+import net.openchrom.xxd.classifier.supplier.ratios.settings.PeakIonClassifierSettings;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
@@ -71,8 +71,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return getScopeContext().getNode(getPreferenceNode());
 	}
 
-	public static ClassifierSettings getClassifierSettings() {
+	public static PeakIonClassifierSettings getClassifierSettings() {
 
-		return new ClassifierSettings();
+		return new PeakIonClassifierSettings();
 	}
 }

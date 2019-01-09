@@ -17,7 +17,15 @@ import org.eclipse.chemclipse.chromatogram.msd.classifier.result.ResultStatus;
 
 public class ClassifierResult extends AbstractChromatogramClassifierResult implements IChromatogramClassifierResult {
 
-	public ClassifierResult(ResultStatus resultStatus, String description) {
+	private TraceRatios traceRatios;
+
+	public ClassifierResult(ResultStatus resultStatus, String description, TraceRatios traceRatios) {
 		super(resultStatus, description);
+		this.traceRatios = traceRatios;
+	}
+
+	public TraceRatios getTraceRatios() {
+
+		return traceRatios;
 	}
 }

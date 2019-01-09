@@ -9,27 +9,11 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
+package net.openchrom.xxd.classifier.supplier.ratios.model;
 
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.Viewer;
+import java.util.TreeSet;
 
-public class ClassifierContentProvider implements IStructuredContentProvider {
+public class TraceRatios extends TreeSet<TraceRatio> {
 
-	@Override
-	public Object[] getElements(Object inputElement) {
-
-		System.out.println("TODO");
-		return null;
-	}
-
-	@Override
-	public void dispose() {
-
-	}
-
-	@Override
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-
-	}
+	private static final long serialVersionUID = 3055499236651500754L;
 }

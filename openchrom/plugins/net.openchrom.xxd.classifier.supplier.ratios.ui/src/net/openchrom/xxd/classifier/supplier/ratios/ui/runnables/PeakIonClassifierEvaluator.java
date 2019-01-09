@@ -22,12 +22,13 @@ import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
-public class ClassifierEvaluator extends AbstractChromatogramProcessor implements IRunnableWithProgress {
+import net.openchrom.xxd.classifier.supplier.ratios.core.PeakIonClassifier;
 
-	private static final String DESCRIPTION = "Ratio Classifier";
-	private static final String CLASSIFIER_ID = "net.openchrom.xxd.classifier.supplier.ratios";
+public class PeakIonClassifierEvaluator extends AbstractChromatogramProcessor implements IRunnableWithProgress {
 
-	public ClassifierEvaluator(IChromatogramSelectionMSD chromatogramSelection) {
+	private static final String DESCRIPTION = "Peak Ion Ratio Classifier";
+
+	public PeakIonClassifierEvaluator(IChromatogramSelectionMSD chromatogramSelection) {
 		super(chromatogramSelection);
 	}
 
@@ -40,7 +41,7 @@ public class ClassifierEvaluator extends AbstractChromatogramProcessor implement
 			/*
 			 * Apply the classifier.
 			 */
-			final IProcessingInfo processingInfo = ChromatogramClassifier.applyClassifier((IChromatogramSelectionMSD)chromatogramSelection, CLASSIFIER_ID, monitor);
+			final IProcessingInfo processingInfo = ChromatogramClassifier.applyClassifier((IChromatogramSelectionMSD)chromatogramSelection, PeakIonClassifier.CLASSIFIER_ID, monitor);
 			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
 			chromatogramSelection.update(true);
 		}

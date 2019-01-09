@@ -16,12 +16,12 @@ import javax.naming.directory.InvalidAttributesException;
 import org.eclipse.chemclipse.ux.extension.ui.support.AbstractMeasurementResultTitles;
 import org.eclipse.chemclipse.ux.extension.ui.support.IMeasurementResultTitles;
 
-public class MeasurementResultTitles extends AbstractMeasurementResultTitles implements IMeasurementResultTitles {
+public class PeakIonMeasurementResultTitles extends AbstractMeasurementResultTitles implements IMeasurementResultTitles {
 
-	private static final String[] titles = {"Target", "Deviation [%]", "Note"};
-	private static final int[] bounds = {250, 150, 100};
+	private static final String[] titles = {"RT (Minutes)", "Name", "Check", "Expectation [%]", "Result [%]"};
+	private static final int[] bounds = {80, 150, 120, 120, 80};
 
-	public MeasurementResultTitles() throws InvalidAttributesException {
+	public PeakIonMeasurementResultTitles() throws InvalidAttributesException {
 		super(titles, bounds);
 	}
 }

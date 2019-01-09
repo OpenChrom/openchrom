@@ -9,19 +9,9 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
+package net.openchrom.xxd.classifier.supplier.ratios.settings;
 
-import org.eclipse.chemclipse.support.ui.swt.AbstractRecordTableComparator;
-import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
-import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.chemclipse.chromatogram.msd.classifier.settings.AbstractChromatogramClassifierSettings;
 
-public class ClassifierTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
-
-	@Override
-	public int compare(Viewer viewer, Object e1, Object e2) {
-
-		int sortOrder = 0;
-		System.out.println("TODO");
-		return sortOrder;
-	}
+public class PeakIonClassifierSettings extends AbstractChromatogramClassifierSettings {
 }

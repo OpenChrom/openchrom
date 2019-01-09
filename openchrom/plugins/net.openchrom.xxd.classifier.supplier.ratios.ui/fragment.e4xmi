@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_Vgi8wBQWEem6molGgMzXtA"/>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_Vgi8wBQWEem6molGgMzXtA">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="__klOMBQ1Eem6molGgMzXtA" featurename="commands" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
+    <elements xsi:type="commands:Command" xmi:id="_LrlcQBQ2Eem6molGgMzXtA" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.command.classifier" commandName="Peak Ion Ratio Classifier"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="__3-EQBQ1Eem6molGgMzXtA" featurename="handlers" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
+    <elements xsi:type="commands:Handler" xmi:id="_RS6RIBQ2Eem6molGgMzXtA" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.handler.classifier" contributionURI="bundleclass://net.openchrom.xxd.classifier.supplier.ratios.ui/net.openchrom.xxd.classifier.supplier.ratios.ui.handlers.PeakIonClassifierHandler" command="_LrlcQBQ2Eem6molGgMzXtA"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_GBmU8BQ2Eem6molGgMzXtA" featurename="children" parentElementId="org.eclipse.chemclipse.ux.extension.ui.menu.classifier">
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_YTYDMBQ2Eem6molGgMzXtA" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.handledmenuitem.ratioclassifier" label="Peak Ion Ratio Classifier" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/classifier.gif" command="_LrlcQBQ2Eem6molGgMzXtA">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_fSLBUBQ2Eem6molGgMzXtA" coreExpressionId="org.eclipse.chemclipse.ux.extension.ui.definitions.isChromatogramTypeMSD"/>
+    </elements>
+  </fragments>
+</fragment:ModelFragments>
