@@ -402,40 +402,40 @@ public class PageUtil {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private float calculateX(IElement element) throws IOException {
+	private float calculateX(IReferenceElement referenceElement) throws IOException {
 
 		float x;
-		switch(element.getReferenceX()) {
+		switch(referenceElement.getReferenceX()) {
 			case LEFT:
-				x = getPositionLeft(element.getX());
+				x = getPositionLeft(referenceElement.getX());
 				break;
 			default:
-				logger.warn("Option not supported: " + element.getReferenceY());
+				logger.warn("Option not supported: " + referenceElement.getReferenceY());
 				logger.warn("Option selected instead: " + ReferenceX.LEFT);
-				x = getPositionLeft(element.getX());
+				x = getPositionLeft(referenceElement.getX());
 				break;
 		}
 		return x;
 	}
 
 	@SuppressWarnings("rawtypes")
-	private float calculateY(IElement element, float height) {
+	private float calculateY(IReferenceElement referenceElement, float height) {
 
 		float y;
-		switch(element.getReferenceY()) {
+		switch(referenceElement.getReferenceY()) {
 			case TOP:
-				y = getPositionTop(element.getY()) - height;
+				y = getPositionTop(referenceElement.getY()) - height;
 				break;
 			case CENTER:
-				y = getPositionTop(element.getY()) - height / 2.0f;
+				y = getPositionTop(referenceElement.getY()) - height / 2.0f;
 				break;
 			case BOTTOM:
-				y = getPositionTop(element.getY());
+				y = getPositionTop(referenceElement.getY());
 				break;
 			default:
-				logger.warn("Option not supported: " + element.getReferenceY());
+				logger.warn("Option not supported: " + referenceElement.getReferenceY());
 				logger.warn("Option selected instead: " + ReferenceY.BOTTOM);
-				y = getPositionTop(element.getY());
+				y = getPositionTop(referenceElement.getY());
 				break;
 		}
 		return y;

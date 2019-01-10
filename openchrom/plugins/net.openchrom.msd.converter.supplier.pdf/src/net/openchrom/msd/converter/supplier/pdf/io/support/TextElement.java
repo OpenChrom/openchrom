@@ -14,7 +14,7 @@ package net.openchrom.msd.converter.supplier.pdf.io.support;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
-public class TextElement extends AbstractElement<TextElement> {
+public class TextElement extends AbstractReferenceElement<TextElement> {
 
 	private PDFont font = PDType1Font.HELVETICA;
 	private float fontSize = 12;

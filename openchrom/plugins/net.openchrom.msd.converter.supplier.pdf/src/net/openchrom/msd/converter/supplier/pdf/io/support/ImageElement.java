@@ -13,7 +13,7 @@ package net.openchrom.msd.converter.supplier.pdf.io.support;
 
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
-public class ImageElement extends AbstractElement<ImageElement> {
+public class ImageElement extends AbstractReferenceElement<ImageElement> {
 
 	private PDImageXObject image;
 	private float width = 0.0f;

@@ -11,38 +11,13 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.io.support;
 
-public abstract class AbstractElement<T> implements IElement<T> {
+public interface IReferenceElement<T> extends IElement<T> {
 
-	private float x = 0.0f;
-	private float y = 0.0f;
+	ReferenceX getReferenceX();
 
-	@Override
-	public float getX() {
+	T setReferenceX(ReferenceX referenceX);
 
-		return x;
-	}
+	ReferenceY getReferenceY();
 
-	public T setX(float x) {
-
-		this.x = x;
-		return reference();
-	}
-
-	@Override
-	public float getY() {
-
-		return y;
-	}
-
-	public T setY(float y) {
-
-		this.y = y;
-		return reference();
-	}
-
-	@SuppressWarnings("unchecked")
-	protected T reference() {
-
-		return (T)this;
-	}
+	T setReferenceY(ReferenceY referenceY);
 }
