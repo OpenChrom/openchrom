@@ -96,67 +96,11 @@ public class PageUtil {
 		float fontSize = textElement.getFontSize();
 		float maxWidth = convert(textElement.getMaxWidth());
 		String text = textElement.getText();
-		//
-		float x;
-		switch(textElement.getAlignHorizontal()) {
-			case LEFT:
-				x = getPositionLeft(textElement.getX());
-				break;
-			default:
-				x = getPositionLeft(textElement.getX()); // Default LEFT
-				logger.warn("Horizontal alignemt: Only LEFT is supported at the moment. Default LEFT");
-				break;
-		}
-		//
-		float y;
-		switch(textElement.getAlignVertical()) {
-			case TOP:
-				float height = calculateTextHeight(font, fontSize);
-				y = getPositionTop(textElement.getY()) - height;
-				break;
-			case BOTTOM:
-				y = getPositionTop(textElement.getY());
-				break;
-			default:
-				logger.warn("Vertical alignemt: Only TOP and BOTTOM are supported at the moment. Default BOTTOM");
-				y = getPositionTop(textElement.getY());
-				break;
-		}
+		float x = calculateX(textElement);
+		float height = calculateTextHeight(font, fontSize);
+		float y = calculateY(textElement, height);
 		//
 		printText(font, fontSize, x, y, maxWidth, text);
-	}
-
-	/**
-	 * Prints the text at the given position. The top line of the text is aligned at y.
-	 * 
-	 * @param font
-	 * @param fontSize
-	 * @param x
-	 * @param y
-	 * @param maxWidth
-	 * @param text
-	 * @throws IOException
-	 */
-	public void printTextTopEdge(PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
-
-		float height = calculateTextHeight(font, fontSize);
-		printText(font, fontSize, getPositionLeft(x), getPositionTop(y) - height, convert(maxWidth), text);
-	}
-
-	/**
-	 * Prints the text at the given position. The bottom line of the text is aligned at y.
-	 * 
-	 * @param font
-	 * @param fontSize
-	 * @param x
-	 * @param y
-	 * @param maxWidth
-	 * @param text
-	 * @throws IOException
-	 */
-	public void printTextBottomEdge(PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
-
-		printText(font, fontSize, getPositionLeft(x), getPositionTop(y), convert(maxWidth), text);
 	}
 
 	/**
@@ -428,7 +372,7 @@ public class PageUtil {
 		float xLeft = x; // + 1mm? instead of whitespace " " + cell.getText()
 		float yText = y + 1; // TODO + 1mm
 		for(TableCell cell : cells) {
-			printTextTopEdge((bold) ? fontBold : font, fontSize, xLeft, yText, cell.getWidth(), " " + cell.getText());
+			printText(new TextElement().setFont((bold) ? fontBold : font).setFontSize(fontSize).setX(xLeft).setY(yText).setMaxWidth(cell.getWidth()).setText(" " + cell.getText()));
 			xLeft += cell.getWidth();
 		}
 		/*
@@ -470,5 +414,45 @@ public class PageUtil {
 		}
 		//
 		printLine(x + width, yStart, x + width, yStop);
+	}
+
+	@SuppressWarnings("rawtypes")
+	private float calculateX(IElement textElement) throws IOException {
+
+		float x;
+		switch(textElement.getReferenceX()) {
+			case LEFT:
+				x = getPositionLeft(textElement.getX());
+				break;
+			default:
+				logger.warn("Option not supported: " + textElement.getReferenceY());
+				logger.warn("Option selected instead: " + ReferenceX.LEFT);
+				x = getPositionLeft(textElement.getX());
+				break;
+		}
+		return x;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private float calculateY(IElement textElement, float height) {
+
+		float y;
+		switch(textElement.getReferenceY()) {
+			case TOP:
+				y = getPositionTop(textElement.getY()) - height;
+				break;
+			case CENTER:
+				y = getPositionTop(textElement.getY()) - height / 2.0f;
+				break;
+			case BOTTOM:
+				y = getPositionTop(textElement.getY());
+				break;
+			default:
+				logger.warn("Option not supported: " + textElement.getReferenceY());
+				logger.warn("Option selected instead: " + ReferenceY.BOTTOM);
+				y = getPositionTop(textElement.getY());
+				break;
+		}
+		return y;
 	}
 }

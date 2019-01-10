@@ -28,6 +28,11 @@ import junit.framework.TestCase;
 
 public class PDFTest extends TestCase {
 
+	private static final String OPENCHROM = "OpenChrom - the open source alternative for chromatography/spectrometry";
+	private static final String LINE_FIRST = "First Line";
+	private static final String LINE_CONTENT = "Lorem ipsum";
+	private static final String LINE_LAST = "Last Line";
+	//
 	private DecimalFormat decimalFormat = new DecimalFormat("0.0000");
 
 	public void test1() throws IOException {
@@ -74,17 +79,12 @@ public class PDFTest extends TestCase {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
 		//
-		String text0 = "Erste Zeile";
-		String text1 = "Chromatogram Text und so und so viel text wie da auch nur stehen kann und ich weiß nicht doch das könnte etwas anders sein, wenn man bedenkt.";
-		String text2 = "Letzte Zeile";
-		//
 		TextElement textElement = new TextElement().setX(10).setMaxWidth(190);
-		//
-		pageUtil.printText(textElement.setY(0).setText(text0));
+		pageUtil.printText(textElement.setY(0).setText(LINE_FIRST));
 		for(int i = 1; i <= 28; i++) {
-			pageUtil.printText(textElement.setY(i * 10).setText(text1));
+			pageUtil.printText(textElement.setY(i * 10).setText(LINE_CONTENT));
 		}
-		pageUtil.printText(textElement.setY(297).setText(text2).setAlignVertical(AlignVertical.BOTTOM));
+		pageUtil.printText(textElement.setY(297).setText(LINE_LAST).setReferenceY(ReferenceY.BOTTOM));
 		//
 		pageUtil.printLine(10, 10, 10, 287); // left
 		pageUtil.printLine(10, 10, 200, 10); // top
@@ -99,17 +99,12 @@ public class PDFTest extends TestCase {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
 		//
-		String text0 = "Erste Zeile";
-		String text1 = "Chromatogram Text und so und so viel text wie da auch nur stehen kann und ich weiß nicht doch das könnte etwas anders sein, wenn man bedenkt.";
-		String text2 = "Letzte Zeile";
-		int left = 10;
-		float fontSize = 12;
-		float maxWidth = 277;
-		pageUtil.printTextTopEdge(font, fontSize, left, 0, maxWidth, text0);
+		TextElement textElement = new TextElement().setX(10).setMaxWidth(277);
+		pageUtil.printText(textElement.setY(0).setText(LINE_FIRST));
 		for(int i = 1; i <= 17; i++) {
-			pageUtil.printTextTopEdge(font, fontSize, left, i * 10, maxWidth, text1);
+			pageUtil.printText(textElement.setY(i * 10).setText(LINE_CONTENT));
 		}
-		pageUtil.printTextBottomEdge(font, fontSize, left, 210, maxWidth, text2);
+		pageUtil.printText(textElement.setY(210).setText(LINE_LAST).setReferenceY(ReferenceY.BOTTOM));
 		//
 		pageUtil.printLine(10, 10, 10, 200); // left
 		pageUtil.printLine(10, 10, 287, 10); // top
@@ -141,12 +136,11 @@ public class PDFTest extends TestCase {
 		PDImageXObject image = JPEGFactory.createFromStream(document, PDFTest.class.getResourceAsStream("openchromlogo.jpg"));
 		//
 		pageUtil.printImageTopEdge(image, 10, 10, 63.5f, 8.05f);
-		pageUtil.printTextTopEdge(font, 12, 10, 20, 190, "OpenChrom - the open source alternative for chromatography/spectrometry");
+		pageUtil.printText(new TextElement().setX(10).setY(20).setMaxWidth(190).setText(OPENCHROM));
 		//
-		pageUtil.printTextBottomEdge(font, 12, 10, 277, 190, "OpenChrom - the open source alternative for chromatography/spectrometry");
+		pageUtil.printText(new TextElement().setX(10).setY(277).setMaxWidth(190).setText(OPENCHROM).setReferenceY(ReferenceY.BOTTOM));
 		pageUtil.printImageBottomEdge(image, 10, 287, 63.5f, 8.05f);
-		//
-		pageUtil.printTextBottomEdge(font, 12, 74, 287, 190, "Page 1/20");
+		pageUtil.printText(new TextElement().setX(74).setY(287).setMaxWidth(190).setText("Page 1/20").setReferenceY(ReferenceY.BOTTOM));
 		//
 		pageUtil.close();
 		return pageUtil.getPage();
@@ -159,12 +153,11 @@ public class PDFTest extends TestCase {
 		PDImageXObject image = JPEGFactory.createFromStream(document, PDFTest.class.getResourceAsStream("openchromlogo.jpg"));
 		//
 		pageUtil.printImageTopEdge(image, 10, 10, 63.5f, 8.05f);
-		pageUtil.printTextTopEdge(font, 12, 10, 20, 277, "OpenChrom - the open source alternative for chromatography/spectrometry");
+		pageUtil.printText(new TextElement().setX(10).setY(20).setMaxWidth(277).setText(OPENCHROM));
 		//
-		pageUtil.printTextBottomEdge(font, 12, 10, 190, 277, "OpenChrom - the open source alternative for chromatography/spectrometry");
+		pageUtil.printText(new TextElement().setX(10).setY(190).setMaxWidth(277).setText(OPENCHROM).setReferenceY(ReferenceY.BOTTOM));
 		pageUtil.printImageBottomEdge(image, 10, 200, 63.5f, 8.05f);
-		//
-		pageUtil.printTextBottomEdge(font, 12, 74, 200, 277, "Page 1/20");
+		pageUtil.printText(new TextElement().setX(74).setY(200).setMaxWidth(277).setText("Page 1/20").setReferenceY(ReferenceY.BOTTOM));
 		//
 		pageUtil.close();
 		return pageUtil.getPage();

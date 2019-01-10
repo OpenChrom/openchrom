@@ -14,16 +14,12 @@ package net.openchrom.msd.converter.supplier.pdf.io.support;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
-public class TextElement {
+public class TextElement extends AbstractElement<TextElement> {
 
 	private PDFont font = PDType1Font.HELVETICA;
 	private float fontSize = 12;
-	private float x = 0.0f;
-	private float y = 0.0f;
 	private float maxWidth = Float.MAX_VALUE;
 	private String text = "";
-	private AlignHorizontal alignHorizontal = AlignHorizontal.LEFT;
-	private AlignVertical alignVertical = AlignVertical.TOP;
 
 	public PDFont getFont() {
 
@@ -47,28 +43,6 @@ public class TextElement {
 		return this;
 	}
 
-	public float getX() {
-
-		return x;
-	}
-
-	public TextElement setX(float x) {
-
-		this.x = x;
-		return this;
-	}
-
-	public float getY() {
-
-		return y;
-	}
-
-	public TextElement setY(float y) {
-
-		this.y = y;
-		return this;
-	}
-
 	public float getMaxWidth() {
 
 		return maxWidth;
@@ -88,28 +62,6 @@ public class TextElement {
 	public TextElement setText(String text) {
 
 		this.text = text;
-		return this;
-	}
-
-	public AlignHorizontal getAlignHorizontal() {
-
-		return alignHorizontal;
-	}
-
-	public TextElement setAlignHorizontal(AlignHorizontal alignHorizontal) {
-
-		this.alignHorizontal = alignHorizontal;
-		return this;
-	}
-
-	public AlignVertical getAlignVertical() {
-
-		return alignVertical;
-	}
-
-	public TextElement setAlignVertical(AlignVertical alignVertical) {
-
-		this.alignVertical = alignVertical;
 		return this;
 	}
 }

@@ -11,6 +11,6 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.io.support;
 
-public enum AlignVertical {
+public enum ReferenceY {
 	TOP, CENTER, BOTTOM;
 }
