@@ -41,13 +41,19 @@ public class PeakIonClassifierTableComparator extends AbstractRecordTableCompara
 					sortOrder = traceRatio2.getName().compareTo(traceRatio1.getName());
 					break;
 				case 2:
-					sortOrder = traceRatio2.getTest().compareTo(traceRatio1.getTest());
+					sortOrder = traceRatio2.getTestCase().compareTo(traceRatio1.getTestCase());
 					break;
 				case 3:
-					sortOrder = Double.compare(traceRatio2.getExpected(), traceRatio1.getExpected());
+					sortOrder = Double.compare(traceRatio2.getExpectedRatio(), traceRatio1.getExpectedRatio());
 					break;
 				case 4:
-					sortOrder = Double.compare(traceRatio2.getActual(), traceRatio1.getActual());
+					sortOrder = Double.compare(traceRatio2.getActualRatio(), traceRatio1.getActualRatio());
+					break;
+				case 5:
+					sortOrder = Double.compare(traceRatio2.getDeviationWarn(), traceRatio1.getDeviationWarn());
+					break;
+				case 6:
+					sortOrder = Double.compare(traceRatio2.getDeviationError(), traceRatio1.getDeviationError());
 					break;
 			}
 			if(getDirection() == ASCENDING) {

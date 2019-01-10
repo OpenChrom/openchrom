@@ -18,8 +18,8 @@ import org.eclipse.chemclipse.ux.extension.ui.support.IMeasurementResultTitles;
 
 public class PeakIonMeasurementResultTitles extends AbstractMeasurementResultTitles implements IMeasurementResultTitles {
 
-	private static final String[] titles = {"RT (Minutes)", "Name", "Check", "Expectation [%]", "Result [%]"};
-	private static final int[] bounds = {80, 150, 120, 120, 80};
+	private static final String[] titles = {"RT (Minutes)", "Name", "Test Case", "Expected Ratio [%]", "Actual Ratio [%]", "Deviation Warn", "Deviation Error"};
+	private static final int[] bounds = {80, 150, 120, 120, 80, 80, 80};
 
 	public PeakIonMeasurementResultTitles() throws InvalidAttributesException {
 		super(titles, bounds);

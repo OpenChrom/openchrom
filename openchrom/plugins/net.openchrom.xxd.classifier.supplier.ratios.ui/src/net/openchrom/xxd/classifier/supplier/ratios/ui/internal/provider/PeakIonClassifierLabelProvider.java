@@ -56,13 +56,19 @@ public class PeakIonClassifierLabelProvider extends AbstractChemClipseLabelProvi
 					text = traceRatio.getName();
 					break;
 				case 2:
-					text = traceRatio.getTest();
+					text = traceRatio.getTestCase();
 					break;
 				case 3:
-					text = decimalFormat.format(traceRatio.getExpected());
+					text = decimalFormat.format(traceRatio.getExpectedRatio());
 					break;
 				case 4:
-					text = decimalFormat.format(traceRatio.getActual());
+					text = decimalFormat.format(traceRatio.getActualRatio());
+					break;
+				case 5:
+					text = decimalFormat.format(traceRatio.getDeviationWarn());
+					break;
+				case 6:
+					text = decimalFormat.format(traceRatio.getDeviationError());
 					break;
 			}
 		}

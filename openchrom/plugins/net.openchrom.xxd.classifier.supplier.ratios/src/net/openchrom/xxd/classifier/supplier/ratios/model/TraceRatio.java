@@ -15,16 +15,19 @@ import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 
 public class TraceRatio implements Comparable<TraceRatio> {
 
-	private IPeakMSD peakMSD = null;
+	private IPeakMSD peakMSD = null; // optional
+	//
 	private String name = "";
-	private String test = "";
-	private double expected = 0.0d;
-	private double actual = 0.0d;
+	private String testCase = "";
+	private double expectedRatio = 0.0d;
+	private double actualRatio = 0.0d;
+	private double deviationWarn = 0.0d;
+	private double deviationError = 0.0d;
 
-	public TraceRatio(String name, String test, double expected) {
+	public TraceRatio(String name, String testCase, double expectedRatio) {
 		this.name = name;
-		this.test = test;
-		this.expected = expected;
+		this.testCase = testCase;
+		this.expectedRatio = expectedRatio;
 	}
 
 	public IPeakMSD getPeakMSD() {
@@ -47,34 +50,54 @@ public class TraceRatio implements Comparable<TraceRatio> {
 		this.name = name;
 	}
 
-	public String getTest() {
+	public String getTestCase() {
 
-		return test;
+		return testCase;
 	}
 
-	public void setTest(String test) {
+	public void setTestCase(String testCase) {
 
-		this.test = test;
+		this.testCase = testCase;
 	}
 
-	public double getExpected() {
+	public double getExpectedRatio() {
 
-		return expected;
+		return expectedRatio;
 	}
 
-	public void setExpected(double expected) {
+	public void setExpectedRatio(double expectedRatio) {
 
-		this.expected = expected;
+		this.expectedRatio = expectedRatio;
 	}
 
-	public double getActual() {
+	public double getActualRatio() {
 
-		return actual;
+		return actualRatio;
 	}
 
-	public void setActual(double actual) {
+	public void setActualRatio(double actualRatio) {
 
-		this.actual = actual;
+		this.actualRatio = actualRatio;
+	}
+
+	public double getDeviationWarn() {
+
+		return deviationWarn;
+	}
+
+	public void setDeviationWarn(double deviationWarn) {
+
+		this.deviationWarn = deviationWarn;
+	}
+
+	public double getDeviationError() {
+
+		return deviationError;
+	}
+
+	public void setDeviationError(double deviationError) {
+
+		this.deviationError = deviationError;
 	}
 
 	@Override
@@ -82,7 +105,7 @@ public class TraceRatio implements Comparable<TraceRatio> {
 
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((test == null) ? 0 : test.hashCode());
+		result = prime * result + ((testCase == null) ? 0 : testCase.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -97,10 +120,10 @@ public class TraceRatio implements Comparable<TraceRatio> {
 		if(getClass() != obj.getClass())
 			return false;
 		TraceRatio other = (TraceRatio)obj;
-		if(test == null) {
-			if(other.test != null)
+		if(testCase == null) {
+			if(other.testCase != null)
 				return false;
-		} else if(!test.equals(other.test))
+		} else if(!testCase.equals(other.testCase))
 			return false;
 		if(name == null) {
 			if(other.name != null)
@@ -113,7 +136,7 @@ public class TraceRatio implements Comparable<TraceRatio> {
 	@Override
 	public String toString() {
 
-		return "TraceRatio [name=" + name + ", test=" + test + ", expected=" + expected + ", actual=" + actual + "]";
+		return "TraceRatio [peakMSD=" + peakMSD + ", name=" + name + ", testCase=" + testCase + ", expectedRatio=" + expectedRatio + ", actualRatio=" + actualRatio + ", deviationWarn=" + deviationWarn + ", deviationError=" + deviationError + "]";
 	}
 
 	@Override

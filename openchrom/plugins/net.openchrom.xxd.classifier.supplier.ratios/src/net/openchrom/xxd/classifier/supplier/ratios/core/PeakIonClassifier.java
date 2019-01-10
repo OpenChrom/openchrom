@@ -68,7 +68,7 @@ public class PeakIonClassifier extends AbstractChromatogramClassifier {
 			for(IChromatogramPeakMSD peak : peaks) {
 				for(IIdentificationTarget identificationTarget : peak.getTargets()) {
 					if(identificationTarget.getLibraryInformation().getName().equals(traceRatio.getName())) {
-						String[] values = traceRatio.getTest().split(":");
+						String[] values = traceRatio.getTestCase().split(":");
 						if(values.length == 2) {
 							try {
 								int reference = Integer.parseInt(values[0]);
@@ -80,7 +80,7 @@ public class PeakIonClassifier extends AbstractChromatogramClassifier {
 								if(intensityReference != 0) {
 									double actual = 100.0d / intensityReference * intensityTarget;
 									traceRatio.setPeakMSD(peak);
-									traceRatio.setActual(actual);
+									traceRatio.setActualRatio(actual);
 								}
 							} catch(NumberFormatException e) {
 								logger.warn(e);
