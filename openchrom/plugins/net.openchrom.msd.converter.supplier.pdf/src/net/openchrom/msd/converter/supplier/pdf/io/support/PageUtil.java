@@ -35,9 +35,13 @@ import org.eclipse.chemclipse.logging.core.Logger;
 public class PageUtil {
 
 	private static final Logger logger = Logger.getLogger(PageUtil.class);
+	/*
+	 * Initialized in constructor
+	 */
+	private PDDocument document = null;
+	private PDPage page = null;
+	private PDPageContentStream contentStream = null;
 	//
-	private PDPage page = null; // Initialized in constructor
-	private PDPageContentStream contentStream = null; // Initialized in constructor
 	private IUnitConverter unitConverter = UnitFactory.getInstance(Unit.MM);
 	private boolean landscape = false;
 
@@ -53,8 +57,9 @@ public class PageUtil {
 	}
 
 	public PageUtil(PDDocument document, PDRectangle pdRectangle, boolean landscape) throws IOException {
+		this.document = document;
 		page = new PDPage(pdRectangle);
-		document.addPage(page);
+		this.document.addPage(page);
 		contentStream = new PDPageContentStream(document, page);
 		this.landscape = landscape;
 		if(this.landscape) {
@@ -94,58 +99,38 @@ public class PageUtil {
 
 		PDFont font = textElement.getFont();
 		float fontSize = textElement.getFontSize();
-		float maxWidth = convert(textElement.getMaxWidth());
 		String text = textElement.getText();
-		float x = calculateX(textElement);
+		float maxWidth = convert(textElement.getMaxWidth());
 		float height = calculateTextHeight(font, fontSize);
+		float x = calculateX(textElement);
 		float y = calculateY(textElement, height);
 		//
 		printText(font, fontSize, x, y, maxWidth, text);
 	}
 
-	/**
-	 * Prints the image at the given position. The top line of the image is aligned at y.
-	 * 
-	 * @param image
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @throws IOException
-	 */
-	public void printImageTopEdge(PDImageXObject image, float x, float y, float width, float height) throws IOException {
+	public void printImage(ImageElement imageElement) throws IOException {
 
-		printImage(image, getPositionLeft(x), getPositionTop(y + height), convert(width), convert(height));
+		PDImageXObject image = imageElement.getImage();
+		float width = convert(imageElement.getWidth());
+		float height = convert(imageElement.getHeight());
+		float x = calculateX(imageElement);
+		float y = calculateY(imageElement, height);
+		//
+		printImage(image, x, y, width, height);
 	}
 
-	/**
-	 * Prints the image at the given position. The bottom line of the image is aligned at y.
-	 * 
-	 * @param image
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @throws IOException
-	 */
-	public void printImageBottomEdge(PDImageXObject image, float x, float y, float width, float height) throws IOException {
+	public void printLine(LineElement lineElement) throws IOException {
 
-		contentStream.drawImage(image, getPositionLeft(x), getPositionTop(y), convert(width), convert(height));
-	}
-
-	/**
-	 * Prints a line.
-	 * 
-	 * @param x1
-	 * @param y1
-	 * @param x2
-	 * @param y2
-	 * @throws IOException
-	 */
-	public void printLine(float x1, float y1, float x2, float y2) throws IOException {
-
-		contentStream.moveTo(getPositionLeft(x1), getPositionTop(y1));
-		contentStream.lineTo(getPositionLeft(x2), getPositionTop(y2));
+		float width = convert(lineElement.getWidth());
+		float x0 = getPositionLeft(lineElement.getX());
+		float y0 = getPositionTop(lineElement.getY());
+		float x1 = getPositionLeft(lineElement.getX1());
+		float y1 = getPositionTop(lineElement.getY1());
+		//
+		contentStream.setStrokingColor(lineElement.getColor());
+		contentStream.setLineWidth(width);
+		contentStream.moveTo(x0, y0);
+		contentStream.lineTo(x1, y1);
 		contentStream.stroke();
 	}
 
@@ -382,7 +367,7 @@ public class PageUtil {
 			contentStream.setStrokingColor(Color.BLACK); // Background/Border
 			contentStream.setNonStrokingColor(Color.BLACK); // Text
 			float yBottom = y + height;
-			printLine(x, yBottom, x + width, yBottom);
+			printLine(new LineElement(x, yBottom, x + width, yBottom).setWidth(0.2f));
 		}
 		//
 		return height;
@@ -395,7 +380,7 @@ public class PageUtil {
 		/*
 		 * Top Line
 		 */
-		printLine(x, yStartPosition, x + width, yStartPosition);
+		printLine(new LineElement(x, yStartPosition, x + width, yStartPosition).setWidth(0.2f));
 		/*
 		 * Print vertical lines.
 		 */
@@ -406,51 +391,51 @@ public class PageUtil {
 		float xLeft = x;
 		for(TableCell cell : cells) {
 			if(cell.isPrintLeftLine()) {
-				printLine(xLeft, yStart, xLeft, yStop);
+				printLine(new LineElement(xLeft, yStart, xLeft, yStop).setWidth(0.2f));
 			} else {
-				printLine(xLeft, yStartExtraSpace, xLeft, yStop);
+				printLine(new LineElement(xLeft, yStartExtraSpace, xLeft, yStop).setWidth(0.2f));
 			}
 			xLeft += cell.getWidth();
 		}
 		//
-		printLine(x + width, yStart, x + width, yStop);
+		printLine(new LineElement(x + width, yStart, x + width, yStop).setWidth(0.2f));
 	}
 
 	@SuppressWarnings("rawtypes")
-	private float calculateX(IElement textElement) throws IOException {
+	private float calculateX(IElement element) throws IOException {
 
 		float x;
-		switch(textElement.getReferenceX()) {
+		switch(element.getReferenceX()) {
 			case LEFT:
-				x = getPositionLeft(textElement.getX());
+				x = getPositionLeft(element.getX());
 				break;
 			default:
-				logger.warn("Option not supported: " + textElement.getReferenceY());
+				logger.warn("Option not supported: " + element.getReferenceY());
 				logger.warn("Option selected instead: " + ReferenceX.LEFT);
-				x = getPositionLeft(textElement.getX());
+				x = getPositionLeft(element.getX());
 				break;
 		}
 		return x;
 	}
 
 	@SuppressWarnings("rawtypes")
-	private float calculateY(IElement textElement, float height) {
+	private float calculateY(IElement element, float height) {
 
 		float y;
-		switch(textElement.getReferenceY()) {
+		switch(element.getReferenceY()) {
 			case TOP:
-				y = getPositionTop(textElement.getY()) - height;
+				y = getPositionTop(element.getY()) - height;
 				break;
 			case CENTER:
-				y = getPositionTop(textElement.getY()) - height / 2.0f;
+				y = getPositionTop(element.getY()) - height / 2.0f;
 				break;
 			case BOTTOM:
-				y = getPositionTop(textElement.getY());
+				y = getPositionTop(element.getY());
 				break;
 			default:
-				logger.warn("Option not supported: " + textElement.getReferenceY());
+				logger.warn("Option not supported: " + element.getReferenceY());
 				logger.warn("Option selected instead: " + ReferenceY.BOTTOM);
-				y = getPositionTop(textElement.getY());
+				y = getPositionTop(element.getY());
 				break;
 		}
 		return y;

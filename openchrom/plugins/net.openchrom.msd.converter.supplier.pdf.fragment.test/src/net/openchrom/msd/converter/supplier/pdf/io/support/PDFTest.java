@@ -32,6 +32,7 @@ public class PDFTest extends TestCase {
 	private static final String LINE_FIRST = "First Line";
 	private static final String LINE_CONTENT = "Lorem ipsum";
 	private static final String LINE_LAST = "Last Line";
+	private static final String FOOTER = "Page 1/20";
 	//
 	private DecimalFormat decimalFormat = new DecimalFormat("0.0000");
 
@@ -86,10 +87,10 @@ public class PDFTest extends TestCase {
 		}
 		pageUtil.printText(textElement.setY(297).setText(LINE_LAST).setReferenceY(ReferenceY.BOTTOM));
 		//
-		pageUtil.printLine(10, 10, 10, 287); // left
-		pageUtil.printLine(10, 10, 200, 10); // top
-		pageUtil.printLine(200, 10, 200, 287); // right
-		pageUtil.printLine(10, 287, 200, 287); // bottom
+		pageUtil.printLine(new LineElement(10, 10, 10, 287).setWidth(0.2f)); // left
+		pageUtil.printLine(new LineElement(10, 10, 200, 10).setWidth(0.2f)); // top
+		pageUtil.printLine(new LineElement(200, 10, 200, 287).setWidth(0.2f)); // right
+		pageUtil.printLine(new LineElement(10, 287, 200, 287).setWidth(0.2f)); // bottom
 		//
 		pageUtil.close();
 		return pageUtil.getPage();
@@ -106,10 +107,10 @@ public class PDFTest extends TestCase {
 		}
 		pageUtil.printText(textElement.setY(210).setText(LINE_LAST).setReferenceY(ReferenceY.BOTTOM));
 		//
-		pageUtil.printLine(10, 10, 10, 200); // left
-		pageUtil.printLine(10, 10, 287, 10); // top
-		pageUtil.printLine(287, 10, 287, 200); // right
-		pageUtil.printLine(10, 200, 287, 200); // bottom
+		pageUtil.printLine(new LineElement(10, 10, 10, 200).setWidth(0.2f)); // left
+		pageUtil.printLine(new LineElement(10, 10, 287, 10).setWidth(0.2f)); // top
+		pageUtil.printLine(new LineElement(287, 10, 287, 200).setWidth(0.2f)); // right
+		pageUtil.printLine(new LineElement(10, 200, 287, 200).setWidth(0.2f)); // bottom
 		//
 		pageUtil.close();
 		return pageUtil.getPage();
@@ -133,14 +134,15 @@ public class PDFTest extends TestCase {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
 		//
-		PDImageXObject image = JPEGFactory.createFromStream(document, PDFTest.class.getResourceAsStream("openchromlogo.jpg"));
-		//
-		pageUtil.printImageTopEdge(image, 10, 10, 63.5f, 8.05f);
+		pageUtil.printImage(new ImageElement().setImage(getImage(document)).setX(10).setY(10).setWidth(63.5f).setHeight(8.05f));
 		pageUtil.printText(new TextElement().setX(10).setY(20).setMaxWidth(190).setText(OPENCHROM));
 		//
+		pageUtil.printImage(new ImageElement().setImage(getImage(document)).setX(10).setY(148.5f).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.CENTER));
+		pageUtil.printText(new TextElement().setX(83.5f).setY(148.5f).setMaxWidth(116.5f).setText(OPENCHROM).setReferenceY(ReferenceY.CENTER));
+		//
 		pageUtil.printText(new TextElement().setX(10).setY(277).setMaxWidth(190).setText(OPENCHROM).setReferenceY(ReferenceY.BOTTOM));
-		pageUtil.printImageBottomEdge(image, 10, 287, 63.5f, 8.05f);
-		pageUtil.printText(new TextElement().setX(74).setY(287).setMaxWidth(190).setText("Page 1/20").setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printImage(new ImageElement().setImage(getImage(document)).setX(10).setY(287).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printText(new TextElement().setX(74).setY(287).setMaxWidth(190).setText(FOOTER).setReferenceY(ReferenceY.BOTTOM));
 		//
 		pageUtil.close();
 		return pageUtil.getPage();
@@ -150,14 +152,15 @@ public class PDFTest extends TestCase {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
 		//
-		PDImageXObject image = JPEGFactory.createFromStream(document, PDFTest.class.getResourceAsStream("openchromlogo.jpg"));
-		//
-		pageUtil.printImageTopEdge(image, 10, 10, 63.5f, 8.05f);
+		pageUtil.printImage(new ImageElement().setImage(getImage(document)).setX(10).setY(10).setWidth(63.5f).setHeight(8.05f));
 		pageUtil.printText(new TextElement().setX(10).setY(20).setMaxWidth(277).setText(OPENCHROM));
 		//
+		pageUtil.printImage(new ImageElement().setImage(getImage(document)).setX(10).setY(105).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.CENTER));
+		pageUtil.printText(new TextElement().setX(83.5f).setY(105).setMaxWidth(203.5f).setText(OPENCHROM).setReferenceY(ReferenceY.CENTER));
+		//
 		pageUtil.printText(new TextElement().setX(10).setY(190).setMaxWidth(277).setText(OPENCHROM).setReferenceY(ReferenceY.BOTTOM));
-		pageUtil.printImageBottomEdge(image, 10, 200, 63.5f, 8.05f);
-		pageUtil.printText(new TextElement().setX(74).setY(200).setMaxWidth(277).setText("Page 1/20").setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printImage(new ImageElement().setImage(getImage(document)).setX(10).setY(200).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printText(new TextElement().setX(74).setY(200).setMaxWidth(277).setText(FOOTER).setReferenceY(ReferenceY.BOTTOM));
 		//
 		pageUtil.close();
 		return pageUtil.getPage();
@@ -219,5 +222,10 @@ public class PDFTest extends TestCase {
 		//
 		pageUtil.close();
 		return pageUtil.getPage();
+	}
+
+	private PDImageXObject getImage(PDDocument document) throws IOException {
+
+		return JPEGFactory.createFromStream(document, PDFTest.class.getResourceAsStream("openchromlogo.jpg"));
 	}
 }
