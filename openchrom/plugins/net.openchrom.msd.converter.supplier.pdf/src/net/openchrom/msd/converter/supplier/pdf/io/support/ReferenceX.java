@@ -12,5 +12,5 @@
 package net.openchrom.msd.converter.supplier.pdf.io.support;
 
 public enum ReferenceX {
-	LEFT;
+	LEFT, RIGHT;
 }

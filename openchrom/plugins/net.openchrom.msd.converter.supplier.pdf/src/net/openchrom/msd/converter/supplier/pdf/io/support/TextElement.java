@@ -21,6 +21,12 @@ public class TextElement extends AbstractReferenceElement<TextElement> {
 	private float maxWidth = Float.MAX_VALUE;
 	private String text = "";
 
+	public TextElement(float x, float y, float maxWidth) {
+		setX(x);
+		setY(y);
+		this.maxWidth = maxWidth;
+	}
+
 	public PDFont getFont() {
 
 		return font;

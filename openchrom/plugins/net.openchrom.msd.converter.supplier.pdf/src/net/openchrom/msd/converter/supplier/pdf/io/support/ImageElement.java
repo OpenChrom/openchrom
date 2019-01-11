@@ -19,6 +19,11 @@ public class ImageElement extends AbstractReferenceElement<ImageElement> {
 	private float width = 0.0f;
 	private float height = 0.0f;
 
+	public ImageElement(float x, float y) {
+		setX(x);
+		setY(y);
+	}
+
 	public PDImageXObject getImage() {
 
 		return image;

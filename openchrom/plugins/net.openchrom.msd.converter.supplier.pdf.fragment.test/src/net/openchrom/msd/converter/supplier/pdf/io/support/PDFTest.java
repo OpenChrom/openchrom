@@ -30,7 +30,7 @@ public class PDFTest extends TestCase {
 
 	private static final String OPENCHROM = "OpenChrom - the open source alternative for chromatography/spectrometry";
 	private static final String LINE_FIRST = "First Line";
-	private static final String LINE_CONTENT = "Lorem ipsum";
+	private static final String LINE_CONTENT = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.";
 	private static final String LINE_LAST = "Last Line";
 	private static final String FOOTER = "Page 1/20";
 	//
@@ -80,12 +80,11 @@ public class PDFTest extends TestCase {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
 		//
-		TextElement textElement = new TextElement().setX(10).setMaxWidth(190);
-		pageUtil.printText(textElement.setY(0).setText(LINE_FIRST));
+		pageUtil.printText(new TextElement(10, 0, 190).setText(LINE_FIRST).setReferenceX(ReferenceX.RIGHT));
 		for(int i = 1; i <= 28; i++) {
-			pageUtil.printText(textElement.setY(i * 10).setText(LINE_CONTENT));
+			pageUtil.printText(new TextElement(10, i * 10, 190).setText(LINE_CONTENT));
 		}
-		pageUtil.printText(textElement.setY(297).setText(LINE_LAST).setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printText(new TextElement(10, 297, 190).setText(LINE_LAST).setReferenceY(ReferenceY.BOTTOM));
 		//
 		pageUtil.printLine(new LineElement(10, 10, 10, 287).setWidth(0.2f)); // left
 		pageUtil.printLine(new LineElement(10, 10, 200, 10).setWidth(0.2f)); // top
@@ -100,12 +99,11 @@ public class PDFTest extends TestCase {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
 		//
-		TextElement textElement = new TextElement().setX(10).setMaxWidth(277);
-		pageUtil.printText(textElement.setY(0).setText(LINE_FIRST));
+		pageUtil.printText(new TextElement(10, 0, 277).setText(LINE_FIRST));
 		for(int i = 1; i <= 17; i++) {
-			pageUtil.printText(textElement.setY(i * 10).setText(LINE_CONTENT));
+			pageUtil.printText(new TextElement(10, i * 10, 277).setText(LINE_CONTENT).setReferenceX(ReferenceX.RIGHT));
 		}
-		pageUtil.printText(textElement.setY(210).setText(LINE_LAST).setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printText(new TextElement(10, 210, 277).setText(LINE_LAST).setReferenceY(ReferenceY.BOTTOM).setReferenceX(ReferenceX.RIGHT));
 		//
 		pageUtil.printLine(new LineElement(10, 10, 10, 200).setWidth(0.2f)); // left
 		pageUtil.printLine(new LineElement(10, 10, 287, 10).setWidth(0.2f)); // top
@@ -134,15 +132,15 @@ public class PDFTest extends TestCase {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
 		//
-		pageUtil.printImage(new ImageElement().setImage(getImage(document)).setX(10).setY(10).setWidth(63.5f).setHeight(8.05f));
-		pageUtil.printText(new TextElement().setX(10).setY(20).setMaxWidth(190).setText(OPENCHROM));
+		pageUtil.printImage(new ImageElement(10, 10).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f));
+		pageUtil.printText(new TextElement(10, 20, 190).setText(OPENCHROM));
 		//
-		pageUtil.printImage(new ImageElement().setImage(getImage(document)).setX(10).setY(148.5f).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.CENTER));
-		pageUtil.printText(new TextElement().setX(83.5f).setY(148.5f).setMaxWidth(116.5f).setText(OPENCHROM).setReferenceY(ReferenceY.CENTER));
+		pageUtil.printImage(new ImageElement(10, 148.5f).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.CENTER));
+		pageUtil.printText(new TextElement(83.5f, 148.5f, 116.5f).setText(OPENCHROM).setReferenceY(ReferenceY.CENTER));
 		//
-		pageUtil.printText(new TextElement().setX(10).setY(277).setMaxWidth(190).setText(OPENCHROM).setReferenceY(ReferenceY.BOTTOM));
-		pageUtil.printImage(new ImageElement().setImage(getImage(document)).setX(10).setY(287).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.BOTTOM));
-		pageUtil.printText(new TextElement().setX(74).setY(287).setMaxWidth(190).setText(FOOTER).setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printText(new TextElement(10, 277, 190).setText(OPENCHROM).setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printImage(new ImageElement(10, 287).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printText(new TextElement(74, 287, 190).setText(FOOTER).setReferenceY(ReferenceY.BOTTOM));
 		//
 		pageUtil.close();
 		return pageUtil.getPage();
@@ -152,15 +150,15 @@ public class PDFTest extends TestCase {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
 		//
-		pageUtil.printImage(new ImageElement().setImage(getImage(document)).setX(10).setY(10).setWidth(63.5f).setHeight(8.05f));
-		pageUtil.printText(new TextElement().setX(10).setY(20).setMaxWidth(277).setText(OPENCHROM));
+		pageUtil.printImage(new ImageElement(10, 10).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f));
+		pageUtil.printText(new TextElement(20, 20, 277).setText(OPENCHROM));
 		//
-		pageUtil.printImage(new ImageElement().setImage(getImage(document)).setX(10).setY(105).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.CENTER));
-		pageUtil.printText(new TextElement().setX(83.5f).setY(105).setMaxWidth(203.5f).setText(OPENCHROM).setReferenceY(ReferenceY.CENTER));
+		pageUtil.printImage(new ImageElement(10, 105).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.CENTER));
+		pageUtil.printText(new TextElement(83.5f, 105, 203.5f).setText(OPENCHROM).setReferenceY(ReferenceY.CENTER));
 		//
-		pageUtil.printText(new TextElement().setX(10).setY(190).setMaxWidth(277).setText(OPENCHROM).setReferenceY(ReferenceY.BOTTOM));
-		pageUtil.printImage(new ImageElement().setImage(getImage(document)).setX(10).setY(200).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.BOTTOM));
-		pageUtil.printText(new TextElement().setX(74).setY(200).setMaxWidth(277).setText(FOOTER).setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printText(new TextElement(10, 190, 277).setText(OPENCHROM).setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printImage(new ImageElement(10, 200).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printText(new TextElement(74, 200, 277).setText(FOOTER).setReferenceY(ReferenceY.BOTTOM));
 		//
 		pageUtil.close();
 		return pageUtil.getPage();

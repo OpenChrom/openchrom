@@ -101,11 +101,13 @@ public class PageUtil {
 		float fontSize = textElement.getFontSize();
 		String text = textElement.getText();
 		float maxWidth = convert(textElement.getMaxWidth());
-		float height = calculateTextHeight(font, fontSize);
-		float x = calculateX(textElement);
-		float y = calculateY(textElement, height);
+		float textWidth = calculateTextWidth(font, fontSize, text);
+		float textHeight = calculateTextHeight(font, fontSize);
+		float x = calculateX(textElement, textWidth, maxWidth);
+		float y = calculateY(textElement, textHeight);
+		boolean shorten = textElement.getReferenceX().equals(ReferenceX.LEFT) ? true : false;
 		//
-		printText(font, fontSize, x, y, maxWidth, text);
+		printText(font, fontSize, x, y, maxWidth, text, shorten);
 	}
 
 	public void printImage(ImageElement imageElement) throws IOException {
@@ -113,7 +115,7 @@ public class PageUtil {
 		PDImageXObject image = imageElement.getImage();
 		float width = convert(imageElement.getWidth());
 		float height = convert(imageElement.getHeight());
-		float x = calculateX(imageElement);
+		float x = calculateX(imageElement, width, width);
 		float y = calculateY(imageElement, height);
 		//
 		printImage(image, x, y, width, height);
@@ -288,7 +290,7 @@ public class PageUtil {
 	 * @param text
 	 * @throws IOException
 	 */
-	private void printText(PDFont font, float fontSize, float x, float y, float maxWidth, String text) throws IOException {
+	private void printText(PDFont font, float fontSize, float x, float y, float maxWidth, String text, boolean shorten) throws IOException {
 
 		int textLength = text.length();
 		if(textLength > 0) {
@@ -299,12 +301,12 @@ public class PageUtil {
 			 * TODO
 			 * Shorten, MultiLine?
 			 */
-			String printText;
-			int endIndex = (int)(text.length() / textWidth * availableWidth) - 4;
-			if(textWidth > availableWidth && endIndex > 0) {
-				printText = text.substring(0, endIndex) + "...";
-			} else {
-				printText = text;
+			String printText = text;
+			if(shorten) {
+				int endIndex = (int)(text.length() / textWidth * availableWidth) - 4;
+				if(textWidth > availableWidth && endIndex > 0) {
+					printText = text.substring(0, endIndex) + "...";
+				}
 			}
 			//
 			contentStream.setFont(font, fontSize);
@@ -357,7 +359,7 @@ public class PageUtil {
 		float xLeft = x; // + 1mm? instead of whitespace " " + cell.getText()
 		float yText = y + 1; // TODO + 1mm
 		for(TableCell cell : cells) {
-			printText(new TextElement().setFont((bold) ? fontBold : font).setFontSize(fontSize).setX(xLeft).setY(yText).setMaxWidth(cell.getWidth()).setText(" " + cell.getText()));
+			printText(new TextElement(xLeft, yText, cell.getWidth()).setFont((bold) ? fontBold : font).setFontSize(fontSize).setText(" " + cell.getText()));
 			xLeft += cell.getWidth();
 		}
 		/*
@@ -402,12 +404,15 @@ public class PageUtil {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private float calculateX(IReferenceElement referenceElement) throws IOException {
+	private float calculateX(IReferenceElement referenceElement, float elementWidth, float maxWidth) throws IOException {
 
 		float x;
 		switch(referenceElement.getReferenceX()) {
 			case LEFT:
 				x = getPositionLeft(referenceElement.getX());
+				break;
+			case RIGHT:
+				x = getPositionLeft(referenceElement.getX()) + maxWidth - elementWidth;
 				break;
 			default:
 				logger.warn("Option not supported: " + referenceElement.getReferenceY());
@@ -419,15 +424,15 @@ public class PageUtil {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private float calculateY(IReferenceElement referenceElement, float height) {
+	private float calculateY(IReferenceElement referenceElement, float elementHeight) {
 
 		float y;
 		switch(referenceElement.getReferenceY()) {
 			case TOP:
-				y = getPositionTop(referenceElement.getY()) - height;
+				y = getPositionTop(referenceElement.getY()) - elementHeight;
 				break;
 			case CENTER:
-				y = getPositionTop(referenceElement.getY()) - height / 2.0f;
+				y = getPositionTop(referenceElement.getY()) - elementHeight / 2.0f;
 				break;
 			case BOTTOM:
 				y = getPositionTop(referenceElement.getY());
