@@ -136,20 +136,16 @@ public class PageUtil {
 		contentStream.stroke();
 	}
 
-	/**
-	 * Prints a rectangle.
-	 * 
-	 * @param color
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @throws IOException
-	 */
-	public void printBackground(Color color, float x, float y, float width, float height) throws IOException {
+	public void printBox(BoxElement boxElement) throws IOException {
 
+		Color color = boxElement.getColor();
+		float x = getPositionLeft(boxElement.getX());
+		float y = getPositionTop(boxElement.getY() + boxElement.getHeight());
+		float width = convert(boxElement.getWidth());
+		float height = convert(boxElement.getHeight());
+		//
 		contentStream.setNonStrokingColor(color);
-		contentStream.addRect(getPositionLeft(x), getPositionTop(y + height), convert(width), convert(height));
+		contentStream.addRect(x, y, width, height);
 		contentStream.fill();
 	}
 
@@ -349,7 +345,7 @@ public class PageUtil {
 		 * Background
 		 */
 		if(color != null) {
-			printBackground(color, x, y, width, height);
+			printBox(new BoxElement(x, y, width, height).setColor(color));
 		}
 		/*
 		 * Print the text
