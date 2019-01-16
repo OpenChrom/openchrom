@@ -70,12 +70,13 @@ public class PDFTest extends TestCase {
 		printPageLeftShorten(document, PDType1Font.HELVETICA);
 		printPageRight(document, PDType1Font.HELVETICA);
 		printPageRightShorten(document, PDType1Font.HELVETICA);
-		printPage4(document, PDType1Font.HELVETICA);
-		printPage5(document, PDType1Font.HELVETICA);
-		printPage6(document, PDType1Font.HELVETICA);
-		printPage7(document, PDType1Font.HELVETICA);
-		printPage8(document, PDType1Font.HELVETICA);
-		printPage9(document, PDType1Font.HELVETICA);
+		printPageMultiLine(document, PDType1Font.HELVETICA);
+		printPageRotate0(document, PDType1Font.HELVETICA);
+		printPageRotate180(document, PDType1Font.HELVETICA);
+		printPageLogoPortrait(document, PDType1Font.HELVETICA);
+		printPageLogoLandscape(document, PDType1Font.HELVETICA);
+		printPageTablePortrait(document, PDType1Font.HELVETICA);
+		printPageTableLandscape(document, PDType1Font.HELVETICA);
 	}
 
 	private PDPage printPageLeft(PDDocument document, PDFont font) throws IOException {
@@ -154,21 +155,38 @@ public class PDFTest extends TestCase {
 		return pageUtil.getPage();
 	}
 
-	private PDPage printPage4(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPageMultiLine(PDDocument document, PDFont font) throws IOException {
+
+		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
+		//
+		pageUtil.printText(new TextElement(10, 0, 190).setText(LINE_FIRST).setReferenceX(ReferenceX.RIGHT));
+		pageUtil.printText(new TextElement(10, 10, 190).setText(LINE_CONTENT).setTextOption(TextOption.MULTI_LINE));
+		pageUtil.printText(new TextElement(10, 297, 190).setText(LINE_LAST).setReferenceY(ReferenceY.BOTTOM));
+		//
+		pageUtil.printLine(new LineElement(10, 10, 10, 287).setWidth(0.2f)); // left
+		pageUtil.printLine(new LineElement(10, 10, 200, 10).setWidth(0.2f)); // top
+		pageUtil.printLine(new LineElement(200, 10, 200, 287).setWidth(0.2f)); // right
+		pageUtil.printLine(new LineElement(10, 287, 200, 287).setWidth(0.2f)); // bottom
+		//
+		pageUtil.close();
+		return pageUtil.getPage();
+	}
+
+	private PDPage printPageRotate0(PDDocument document, PDFont font) throws IOException {
 
 		PDPage page = printPageRight(document, font);
 		page.setRotation(0);
 		return page;
 	}
 
-	private PDPage printPage5(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPageRotate180(PDDocument document, PDFont font) throws IOException {
 
 		PDPage page = printPageRight(document, font);
 		page.setRotation(-180);
 		return page;
 	}
 
-	private PDPage printPage6(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPageLogoPortrait(PDDocument document, PDFont font) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
 		//
@@ -186,12 +204,12 @@ public class PDFTest extends TestCase {
 		return pageUtil.getPage();
 	}
 
-	private PDPage printPage7(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPageLogoLandscape(PDDocument document, PDFont font) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
 		//
 		pageUtil.printImage(new ImageElement(10, 10).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f));
-		pageUtil.printText(new TextElement(20, 20, 277).setText(OPENCHROM));
+		pageUtil.printText(new TextElement(10, 20, 277).setText(OPENCHROM));
 		//
 		pageUtil.printImage(new ImageElement(10, 105).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.CENTER));
 		pageUtil.printText(new TextElement(83.5f, 105, 203.5f).setText(OPENCHROM).setReferenceY(ReferenceY.CENTER));
@@ -204,7 +222,7 @@ public class PDFTest extends TestCase {
 		return pageUtil.getPage();
 	}
 
-	private PDPage printPage8(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPageTablePortrait(PDDocument document, PDFont font) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
 		//
@@ -233,7 +251,7 @@ public class PDFTest extends TestCase {
 		return pageUtil.getPage();
 	}
 
-	private PDPage printPage9(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPageTableLandscape(PDDocument document, PDFont font) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
 		//

@@ -101,50 +101,20 @@ public class PageUtil {
 
 		String text = textElement.getText();
 		if(text.length() > 0) {
-			/*
-			 * Settings
-			 */
-			PDFont font = textElement.getFont();
-			float fontSize = textElement.getFontSize();
-			//
-			float maxWidth = convert(textElement.getMaxWidth());
-			float textWidth = calculateTextWidth(font, fontSize, text);
-			float textHeight = calculateTextHeight(font, fontSize);
-			float y = calculateY(textElement, textHeight);
-			float x; // Calculated separately
-			//
 			switch(textElement.getTextOption()) {
 				case NONE:
-					x = calculateX(textElement, textWidth, maxWidth);
-					printText(font, fontSize, x, y, text);
+					printTextDefault(textElement);
 					break;
 				case SHORTEN:
-					String shortenedText = text; // default
-					ReferenceX referenceX = textElement.getReferenceX();
-					switch(referenceX) {
-						case LEFT:
-							shortenedText = shortenStringLeft(text, textWidth, maxWidth);
-							break;
-						case RIGHT:
-							shortenedText = shortenStringRight(text, textWidth, maxWidth);
-							break;
-						default:
-							logger.warn("Option not supported: " + referenceX);
-							logger.warn("Option selected instead: " + ReferenceX.LEFT);
-							shortenedText = shortenStringLeft(text, textWidth, maxWidth);
-							break;
-					}
-					x = convert(textElement.getX());
-					printText(font, fontSize, x, y, shortenedText);
+					printTextShorten(textElement);
 					break;
 				case MULTI_LINE:
-					logger.info("Multiline needs to be implemented.");
+					printTextMultiLine(textElement);
 					break;
 				default:
 					logger.warn("Option not supported: " + textElement.getTextOption());
 					logger.warn("Option selected instead: " + TextOption.NONE);
-					x = calculateX(textElement, textWidth, maxWidth);
-					printText(font, fontSize, x, y, text);
+					printTextDefault(textElement);
 					break;
 			}
 		}
@@ -453,6 +423,69 @@ public class PageUtil {
 		return y;
 	}
 
+	private void printTextDefault(TextElement textElement) throws IOException {
+
+		PDFont font = textElement.getFont();
+		float fontSize = textElement.getFontSize();
+		String text = textElement.getText();
+		float maxWidth = convert(textElement.getMaxWidth());
+		float textWidth = calculateTextWidth(font, fontSize, text);
+		float textHeight = calculateTextHeight(font, fontSize);
+		float x = calculateX(textElement, textWidth, maxWidth);
+		float y = calculateY(textElement, textHeight);
+		//
+		printText(font, fontSize, x, y, text);
+	}
+
+	private void printTextShorten(TextElement textElement) throws IOException {
+
+		PDFont font = textElement.getFont();
+		float fontSize = textElement.getFontSize();
+		String text = textElement.getText();
+		float maxWidth = convert(textElement.getMaxWidth());
+		float textWidth = calculateTextWidth(font, fontSize, text);
+		float textHeight = calculateTextHeight(font, fontSize);
+		float x = convert(textElement.getX());
+		float y = calculateY(textElement, textHeight);
+		//
+		String shortenedText = text; // default
+		ReferenceX referenceX = textElement.getReferenceX();
+		switch(referenceX) {
+			case LEFT:
+				shortenedText = shortenStringLeft(text, textWidth, maxWidth);
+				break;
+			case RIGHT:
+				shortenedText = shortenStringRight(text, textWidth, maxWidth);
+				break;
+			default:
+				logger.warn("Option not supported: " + referenceX);
+				logger.warn("Option selected instead: " + ReferenceX.LEFT);
+				shortenedText = shortenStringLeft(text, textWidth, maxWidth);
+				break;
+		}
+		//
+		printText(font, fontSize, x, y, shortenedText);
+	}
+
+	private void printTextMultiLine(TextElement textElement) throws IOException {
+
+		PDFont font = textElement.getFont();
+		float fontSize = textElement.getFontSize();
+		String text = textElement.getText();
+		float maxWidth = convert(textElement.getMaxWidth());
+		float textWidth = calculateTextWidth(font, fontSize, text);
+		float textHeight = calculateTextHeight(font, fontSize);
+		float x = convert(textElement.getX());
+		float y = calculateY(textElement, textHeight);
+		//
+		List<String> textElements = cutStringMultiLine(text, textWidth, maxWidth);
+		float offset = 0.0f;
+		for(String part : textElements) {
+			printText(font, fontSize, x, y - offset, part);
+			offset += textHeight;
+		}
+	}
+
 	/*
 	 * textWidth, availableWidth (pt)
 	 * Lorem ipsum dolor sit amet, consetetur sadipscing...
@@ -480,5 +513,21 @@ public class PageUtil {
 		} else {
 			return text;
 		}
+	}
+
+	private List<String> cutStringMultiLine(String text, float textWidth, float maxWidth) {
+
+		List<String> textElements = new ArrayList<>();
+		//
+		int textLength = text.length();
+		int partLength = (int)(textLength / textWidth * maxWidth);
+		int parts = textLength / partLength + 1;
+		for(int i = 0; i < parts; i++) {
+			int startIndex = i * partLength;
+			int stopIndex = startIndex + partLength;
+			textElements.add(text.substring(startIndex, (stopIndex > textLength) ? textLength : stopIndex));
+		}
+		//
+		return textElements;
 	}
 }
