@@ -66,17 +66,19 @@ public class PDFTest extends TestCase {
 		// printPage(document, PDType1Font.TIMES_ITALIC);
 		// printPage(document, PDType1Font.TIMES_ROMAN);
 		//
-		printPage1(document, PDType1Font.HELVETICA);
-		printPage2(document, PDType1Font.HELVETICA);
-		printPage3(document, PDType1Font.HELVETICA);
+		printPageLeft(document, PDType1Font.HELVETICA);
+		printPageLeftShorten(document, PDType1Font.HELVETICA);
+		printPageRight(document, PDType1Font.HELVETICA);
+		printPageRightShorten(document, PDType1Font.HELVETICA);
 		printPage4(document, PDType1Font.HELVETICA);
 		printPage5(document, PDType1Font.HELVETICA);
 		printPage6(document, PDType1Font.HELVETICA);
 		printPage7(document, PDType1Font.HELVETICA);
 		printPage8(document, PDType1Font.HELVETICA);
+		printPage9(document, PDType1Font.HELVETICA);
 	}
 
-	private PDPage printPage1(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPageLeft(PDDocument document, PDFont font) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
 		//
@@ -95,7 +97,26 @@ public class PDFTest extends TestCase {
 		return pageUtil.getPage();
 	}
 
-	private PDPage printPage2(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPageLeftShorten(PDDocument document, PDFont font) throws IOException {
+
+		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
+		//
+		pageUtil.printText(new TextElement(10, 0, 190).setText(LINE_FIRST).setReferenceX(ReferenceX.RIGHT));
+		for(int i = 1; i <= 28; i++) {
+			pageUtil.printText(new TextElement(10, i * 10, 190).setText(LINE_CONTENT).setTextOption(TextOption.SHORTEN));
+		}
+		pageUtil.printText(new TextElement(10, 297, 190).setText(LINE_LAST).setReferenceY(ReferenceY.BOTTOM));
+		//
+		pageUtil.printLine(new LineElement(10, 10, 10, 287).setWidth(0.2f)); // left
+		pageUtil.printLine(new LineElement(10, 10, 200, 10).setWidth(0.2f)); // top
+		pageUtil.printLine(new LineElement(200, 10, 200, 287).setWidth(0.2f)); // right
+		pageUtil.printLine(new LineElement(10, 287, 200, 287).setWidth(0.2f)); // bottom
+		//
+		pageUtil.close();
+		return pageUtil.getPage();
+	}
+
+	private PDPage printPageRight(PDDocument document, PDFont font) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
 		//
@@ -114,21 +135,40 @@ public class PDFTest extends TestCase {
 		return pageUtil.getPage();
 	}
 
-	private PDPage printPage3(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPageRightShorten(PDDocument document, PDFont font) throws IOException {
 
-		PDPage page = printPage2(document, font);
-		page.setRotation(0);
-		return page;
+		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
+		//
+		pageUtil.printText(new TextElement(10, 0, 277).setText(LINE_FIRST));
+		for(int i = 1; i <= 17; i++) {
+			pageUtil.printText(new TextElement(10, i * 10, 277).setText(LINE_CONTENT).setReferenceX(ReferenceX.RIGHT).setTextOption(TextOption.SHORTEN));
+		}
+		pageUtil.printText(new TextElement(10, 210, 277).setText(LINE_LAST).setReferenceY(ReferenceY.BOTTOM).setReferenceX(ReferenceX.RIGHT));
+		//
+		pageUtil.printLine(new LineElement(10, 10, 10, 200).setWidth(0.2f)); // left
+		pageUtil.printLine(new LineElement(10, 10, 287, 10).setWidth(0.2f)); // top
+		pageUtil.printLine(new LineElement(287, 10, 287, 200).setWidth(0.2f)); // right
+		pageUtil.printLine(new LineElement(10, 200, 287, 200).setWidth(0.2f)); // bottom
+		//
+		pageUtil.close();
+		return pageUtil.getPage();
 	}
 
 	private PDPage printPage4(PDDocument document, PDFont font) throws IOException {
 
-		PDPage page = printPage2(document, font);
-		page.setRotation(-180);
+		PDPage page = printPageRight(document, font);
+		page.setRotation(0);
 		return page;
 	}
 
 	private PDPage printPage5(PDDocument document, PDFont font) throws IOException {
+
+		PDPage page = printPageRight(document, font);
+		page.setRotation(-180);
+		return page;
+	}
+
+	private PDPage printPage6(PDDocument document, PDFont font) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
 		//
@@ -146,7 +186,7 @@ public class PDFTest extends TestCase {
 		return pageUtil.getPage();
 	}
 
-	private PDPage printPage6(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPage7(PDDocument document, PDFont font) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
 		//
@@ -164,7 +204,7 @@ public class PDFTest extends TestCase {
 		return pageUtil.getPage();
 	}
 
-	private PDPage printPage7(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPage8(PDDocument document, PDFont font) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
 		//
@@ -193,7 +233,7 @@ public class PDFTest extends TestCase {
 		return pageUtil.getPage();
 	}
 
-	private PDPage printPage8(PDDocument document, PDFont font) throws IOException {
+	private PDPage printPage9(PDDocument document, PDFont font) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
 		//

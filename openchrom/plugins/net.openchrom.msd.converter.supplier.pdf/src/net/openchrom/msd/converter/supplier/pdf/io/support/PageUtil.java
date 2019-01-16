@@ -35,6 +35,8 @@ import org.eclipse.chemclipse.logging.core.Logger;
 public class PageUtil {
 
 	private static final Logger logger = Logger.getLogger(PageUtil.class);
+	//
+	private static final String TEXT_CUT = "...";
 	/*
 	 * Initialized in constructor
 	 */
@@ -97,17 +99,55 @@ public class PageUtil {
 
 	public void printText(TextElement textElement) throws IOException {
 
-		PDFont font = textElement.getFont();
-		float fontSize = textElement.getFontSize();
 		String text = textElement.getText();
-		float maxWidth = convert(textElement.getMaxWidth());
-		float textWidth = calculateTextWidth(font, fontSize, text);
-		float textHeight = calculateTextHeight(font, fontSize);
-		float x = calculateX(textElement, textWidth, maxWidth);
-		float y = calculateY(textElement, textHeight);
-		boolean shorten = textElement.getReferenceX().equals(ReferenceX.LEFT) ? true : false;
-		//
-		printText(font, fontSize, x, y, maxWidth, text, shorten);
+		if(text.length() > 0) {
+			/*
+			 * Settings
+			 */
+			PDFont font = textElement.getFont();
+			float fontSize = textElement.getFontSize();
+			//
+			float maxWidth = convert(textElement.getMaxWidth());
+			float textWidth = calculateTextWidth(font, fontSize, text);
+			float textHeight = calculateTextHeight(font, fontSize);
+			float y = calculateY(textElement, textHeight);
+			float x; // Calculated separately
+			//
+			switch(textElement.getTextOption()) {
+				case NONE:
+					x = calculateX(textElement, textWidth, maxWidth);
+					printText(font, fontSize, x, y, text);
+					break;
+				case SHORTEN:
+					String shortenedText = text; // default
+					ReferenceX referenceX = textElement.getReferenceX();
+					switch(referenceX) {
+						case LEFT:
+							shortenedText = shortenStringLeft(text, textWidth, maxWidth);
+							break;
+						case RIGHT:
+							shortenedText = shortenStringRight(text, textWidth, maxWidth);
+							break;
+						default:
+							logger.warn("Option not supported: " + referenceX);
+							logger.warn("Option selected instead: " + ReferenceX.LEFT);
+							shortenedText = shortenStringLeft(text, textWidth, maxWidth);
+							break;
+					}
+					x = convert(textElement.getX());
+					printText(font, fontSize, x, y, shortenedText);
+					break;
+				case MULTI_LINE:
+					logger.info("Multiline needs to be implemented.");
+					break;
+				default:
+					logger.warn("Option not supported: " + textElement.getTextOption());
+					logger.warn("Option selected instead: " + TextOption.NONE);
+					x = calculateX(textElement, textWidth, maxWidth);
+					printText(font, fontSize, x, y, text);
+					break;
+			}
+		}
 	}
 
 	public void printImage(ImageElement imageElement) throws IOException {
@@ -277,48 +317,17 @@ public class PageUtil {
 	}
 
 	/*
-	 * fontSize, x, y, maxWidth (pt)
+	 * x, y (pt)
 	 * @param font
 	 * @param fontSize
 	 * @param x
 	 * @param y
-	 * @param maxWidth
 	 * @param text
 	 * @throws IOException
 	 */
-	private void printText(PDFont font, float fontSize, float x, float y, float maxWidth, String text, boolean shorten) throws IOException {
+	private void printText(PDFont font, float fontSize, float x, float y, String text) throws IOException {
 
-		int textLength = text.length();
-		if(textLength > 0) {
-			float textWidth = calculateTextWidth(font, fontSize, text);
-			float pageWidth = getPageWidth();
-			float availableWidth = (maxWidth > pageWidth) ? pageWidth : maxWidth;
-			/*
-			 * TODO
-			 * Shorten, MultiLine?
-			 */
-			String printText = text;
-			if(shorten) {
-				int endIndex = (int)(text.length() / textWidth * availableWidth) - 4;
-				if(textWidth > availableWidth && endIndex > 0) {
-					printText = text.substring(0, endIndex) + "...";
-				}
-			}
-			//
-			contentStream.setFont(font, fontSize);
-			printText(x, y, printText);
-		}
-	}
-
-	/*
-	 * x, y (pt)
-	 * @param x
-	 * @param y
-	 * @param text
-	 * @throws IOException
-	 */
-	private void printText(float x, float y, String text) throws IOException {
-
+		contentStream.setFont(font, fontSize);
 		contentStream.beginText();
 		contentStream.newLineAtOffset(x, y);
 		contentStream.showText(text);
@@ -403,7 +412,8 @@ public class PageUtil {
 	private float calculateX(IReferenceElement referenceElement, float elementWidth, float maxWidth) throws IOException {
 
 		float x;
-		switch(referenceElement.getReferenceX()) {
+		ReferenceX referenceX = referenceElement.getReferenceX();
+		switch(referenceX) {
 			case LEFT:
 				x = getPositionLeft(referenceElement.getX());
 				break;
@@ -411,7 +421,7 @@ public class PageUtil {
 				x = getPositionLeft(referenceElement.getX()) + maxWidth - elementWidth;
 				break;
 			default:
-				logger.warn("Option not supported: " + referenceElement.getReferenceY());
+				logger.warn("Option not supported: " + referenceX);
 				logger.warn("Option selected instead: " + ReferenceX.LEFT);
 				x = getPositionLeft(referenceElement.getX());
 				break;
@@ -423,7 +433,8 @@ public class PageUtil {
 	private float calculateY(IReferenceElement referenceElement, float elementHeight) {
 
 		float y;
-		switch(referenceElement.getReferenceY()) {
+		ReferenceY referenceY = referenceElement.getReferenceY();
+		switch(referenceY) {
 			case TOP:
 				y = getPositionTop(referenceElement.getY()) - elementHeight;
 				break;
@@ -434,11 +445,40 @@ public class PageUtil {
 				y = getPositionTop(referenceElement.getY());
 				break;
 			default:
-				logger.warn("Option not supported: " + referenceElement.getReferenceY());
+				logger.warn("Option not supported: " + referenceY);
 				logger.warn("Option selected instead: " + ReferenceY.BOTTOM);
 				y = getPositionTop(referenceElement.getY());
 				break;
 		}
 		return y;
+	}
+
+	/*
+	 * textWidth, availableWidth (pt)
+	 * Lorem ipsum dolor sit amet, consetetur sadipscing...
+	 */
+	private String shortenStringLeft(String text, float textWidth, float maxWidth) {
+
+		int endIndex = (int)(text.length() / textWidth * maxWidth) - 3; // -3 (TEXT_CUT)
+		if(textWidth > maxWidth && endIndex > 0) {
+			return text.substring(0, endIndex) + TEXT_CUT;
+		} else {
+			return text;
+		}
+	}
+
+	/*
+	 * textWidth, availableWidth (pt)
+	 * ...kasd gubergren, no sea takimata sanctus est.
+	 */
+	private String shortenStringRight(String text, float textWidth, float maxWidth) {
+
+		int length = text.length();
+		int startIndex = length - (int)((length / textWidth * maxWidth));
+		if(textWidth > maxWidth && startIndex > 0) {
+			return TEXT_CUT + text.substring(startIndex, length);
+		} else {
+			return text;
+		}
 	}
 }

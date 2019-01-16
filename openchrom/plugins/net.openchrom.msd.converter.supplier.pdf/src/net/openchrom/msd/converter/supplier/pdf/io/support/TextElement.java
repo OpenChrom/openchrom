@@ -18,8 +18,10 @@ public class TextElement extends AbstractReferenceElement<TextElement> {
 
 	private PDFont font = PDType1Font.HELVETICA;
 	private float fontSize = 12;
+	private float minHeight = -1;
 	private float maxWidth = Float.MAX_VALUE;
 	private String text = "";
+	private TextOption textOption = TextOption.NONE;
 
 	public TextElement(float x, float y, float maxWidth) {
 		setX(x);
@@ -49,6 +51,17 @@ public class TextElement extends AbstractReferenceElement<TextElement> {
 		return this;
 	}
 
+	public float getMinHeight() {
+
+		return minHeight;
+	}
+
+	public TextElement setMinHeight(float minHeight) {
+
+		this.minHeight = minHeight;
+		return this;
+	}
+
 	public float getMaxWidth() {
 
 		return maxWidth;
@@ -68,6 +81,17 @@ public class TextElement extends AbstractReferenceElement<TextElement> {
 	public TextElement setText(String text) {
 
 		this.text = text;
+		return this;
+	}
+
+	public TextOption getTextOption() {
+
+		return textOption;
+	}
+
+	public TextElement setTextOption(TextOption textOption) {
+
+		this.textOption = textOption;
 		return this;
 	}
 }
