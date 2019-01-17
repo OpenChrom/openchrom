@@ -474,6 +474,7 @@ public class PageUtil {
 		String text = textElement.getText();
 		float maxWidth = convert(textElement.getMaxWidth());
 		float textWidth = calculateTextWidth(font, fontSize, text);
+		float minHeight = convert(textElement.getMinHeight());
 		float textHeight = calculateTextHeight(font, fontSize);
 		float x = convert(textElement.getX());
 		float y = calculateY(textElement, textHeight);
@@ -482,7 +483,7 @@ public class PageUtil {
 		float offset = 0.0f;
 		for(String part : textElements) {
 			printText(font, fontSize, x, y - offset, part);
-			offset += textHeight;
+			offset += (textHeight > minHeight) ? textHeight : minHeight;
 		}
 	}
 

@@ -161,6 +161,8 @@ public class PDFTest extends TestCase {
 		//
 		pageUtil.printText(new TextElement(10, 0, 190).setText(LINE_FIRST).setReferenceX(ReferenceX.RIGHT));
 		pageUtil.printText(new TextElement(10, 10, 190).setText(LINE_CONTENT).setTextOption(TextOption.MULTI_LINE));
+		pageUtil.printText(new TextElement(10, 100, 190).setText(LINE_CONTENT).setTextOption(TextOption.MULTI_LINE).setMinHeight(5));
+		pageUtil.printText(new TextElement(10, 150, 190).setText(LINE_CONTENT).setTextOption(TextOption.MULTI_LINE).setMinHeight(15));
 		pageUtil.printText(new TextElement(10, 297, 190).setText(LINE_LAST).setReferenceY(ReferenceY.BOTTOM));
 		//
 		pageUtil.printLine(new LineElement(10, 10, 10, 287).setWidth(0.2f)); // left
