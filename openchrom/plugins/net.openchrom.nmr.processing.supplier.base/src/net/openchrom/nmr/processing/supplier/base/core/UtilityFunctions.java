@@ -73,6 +73,17 @@ public class UtilityFunctions {
 		return minValue;
 	}
 
+	public int findIndexOfValue(double[] array, double value) {
+
+		int index;
+		for(index = 0; index < array.length; index++) {
+			if(Math.abs(array[index] - value) < 0.001) {
+				break;
+			}
+		}
+		return index;
+	}
+
 	public void leftShiftNMRData(double[] dataArray, int pointsToShift) {
 
 		pointsToShift = pointsToShift % dataArray.length;

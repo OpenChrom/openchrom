@@ -16,6 +16,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettin
 public class PhaseCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
 
 	public PhaseCorrectionProcessor() {
+
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -106,7 +107,7 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 			case USER_DEFINED:
 				// user input position
 				double userDefinedPosition = phaseCorrectionSettings.getUserDefinedPivotPointValue();
-				int userPeakPosition = findIndexOfValue(deltaAxisPPM, userDefinedPosition);
+				int userPeakPosition = utilityFunction.findIndexOfValue(deltaAxisPPM, userDefinedPosition);
 				phasingPivotpoint = deltaAxisPPM[userPeakPosition];
 				break;
 			case NOT_DEFINED:
@@ -148,16 +149,5 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 			phaseCorrection[i] = phaseCorrectionComplexFactor.exp();
 		}
 		return phaseCorrection;
-	}
-
-	private int findIndexOfValue(double[] array, double value) {
-
-		int index;
-		for(index = 0; index < array.length; index++) {
-			if(Math.abs(array[index] - value) < 0.001) {
-				break;
-			}
-		}
-		return index;
 	}
 }
