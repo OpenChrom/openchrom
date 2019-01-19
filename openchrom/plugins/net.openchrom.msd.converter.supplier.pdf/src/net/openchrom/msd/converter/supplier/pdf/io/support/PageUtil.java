@@ -33,7 +33,7 @@ public class PageUtil {
 
 	private static final Logger logger = Logger.getLogger(PageUtil.class);
 	//
-	private static final String TEXT_CUT = "...";
+	private static final String TEXT_SHORTEN_MARKER = "...";
 	/*
 	 * Initialized in constructor
 	 */
@@ -151,15 +151,14 @@ public class PageUtil {
 
 	public void printTable(TableElement tableElement) throws IOException {
 
-		PDFTable pdfTable = tableElement.getPdfTable();
-	}
-
-	public void printTable(PDFTable pdfTable) throws IOException {
-
-		if(isTableValid(pdfTable)) {
+		if(isTableValid(tableElement)) {
+			/*
+			 * Settings
+			 */
+			float x = tableElement.getX();
+			float y = tableElement.getY();
+			PDFTable pdfTable = tableElement.getPdfTable();
 			//
-			float x = pdfTable.getPositionX();
-			float y = pdfTable.getPositionY();
 			float width = pdfTable.getWidth();
 			float height = pdfTable.getColumnHeight();
 			int startIndex = pdfTable.getRowStart() - 1;
@@ -194,17 +193,19 @@ public class PageUtil {
 			/*
 			 * Print last line.
 			 */
-			printTableLines(x, y, width, height, pdfTable.getPositionY(), titleCells);
+			printTableLines(x, y, width, height, tableElement.getY(), titleCells);
 		} else {
 			logger.warn("The PDFTable is invalid.");
 		}
 	}
 
-	private boolean isTableValid(PDFTable pdfTable) {
+	private boolean isTableValid(TableElement tableElement) {
 
+		PDFTable pdfTable = tableElement.getPdfTable();
 		boolean isValid = pdfTable.isValid();
+		//
 		if(isValid) {
-			float widthTable = convert(pdfTable.getPositionX() + pdfTable.getWidth());
+			float widthTable = convert(tableElement.getX() + pdfTable.getWidth());
 			float widthPage = getPageWidth();
 			if(widthTable > widthPage) {
 				logger.warn("The table width (" + widthTable + ")is larger then the page width (" + widthPage + ").");
@@ -212,7 +213,7 @@ public class PageUtil {
 			/*
 			 * +2 = Header + Offset
 			 */
-			float heightTable = convert((pdfTable.getRowStop() - pdfTable.getRowStart() + 2) * pdfTable.getColumnHeight() + pdfTable.getPositionY());
+			float heightTable = convert((pdfTable.getRowStop() - pdfTable.getRowStart() + 2) * pdfTable.getColumnHeight() + tableElement.getY());
 			float heightPage = getPageHeight();
 			if(heightTable > heightPage) {
 				logger.warn("The table height (" + heightTable + ")is larger then the page height (" + heightPage + ").");
@@ -490,7 +491,7 @@ public class PageUtil {
 
 		int endIndex = (int)(text.length() / textWidth * maxWidth) - 3; // -3 (TEXT_CUT)
 		if(textWidth > maxWidth && endIndex > 0) {
-			return text.substring(0, endIndex) + TEXT_CUT;
+			return text.substring(0, endIndex) + TEXT_SHORTEN_MARKER;
 		} else {
 			return text;
 		}
@@ -505,7 +506,7 @@ public class PageUtil {
 		int length = text.length();
 		int startIndex = length - (int)((length / textWidth * maxWidth));
 		if(textWidth > maxWidth && startIndex > 0) {
-			return TEXT_CUT + text.substring(startIndex, length);
+			return TEXT_SHORTEN_MARKER + text.substring(startIndex, length);
 		} else {
 			return text;
 		}

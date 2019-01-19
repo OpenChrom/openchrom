@@ -29,8 +29,6 @@ public class PDFTable {
 	private PDFont fontBold = PDType1Font.HELVETICA;
 	private float fontSize = 12;
 	//
-	private float positionX = 0.0f; // mm
-	private float positionY = 0.0f; // mm
 	private float columnHeight = 5.5f; // mm
 	private int rowStart = 1;
 	private int rowStop = 0;
@@ -67,26 +65,6 @@ public class PDFTable {
 	public void setFontSize(float fontSize) {
 
 		this.fontSize = fontSize;
-	}
-
-	public float getPositionX() {
-
-		return positionX;
-	}
-
-	public void setPositionX(float positionX) {
-
-		this.positionX = positionX;
-	}
-
-	public float getPositionY() {
-
-		return positionY;
-	}
-
-	public void setPositionY(float positionY) {
-
-		this.positionY = positionY;
 	}
 
 	public float getColumnHeight() {

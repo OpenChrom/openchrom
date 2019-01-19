@@ -228,9 +228,9 @@ public class PDFTest extends TestCase {
 
 		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, false));
 		//
+		TableElement tableElement = new TableElement(10, 10);
 		PDFTable pdfTable = new PDFTable();
-		pdfTable.setPositionX(10);
-		pdfTable.setPositionY(10);
+		tableElement.setPdfTable(pdfTable);
 		/*
 		 * Header
 		 */
@@ -247,8 +247,8 @@ public class PDFTest extends TestCase {
 			row.add(decimalFormat.format(Math.random()));
 			pdfTable.addRow(row);
 		}
-		pageUtil.printTable(pdfTable);
 		//
+		pageUtil.printTable(tableElement);
 		pageUtil.close();
 		return pageUtil.getPage();
 	}
@@ -257,9 +257,9 @@ public class PDFTest extends TestCase {
 
 		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, true));
 		//
+		TableElement tableElement = new TableElement(10, 10);
 		PDFTable pdfTable = new PDFTable();
-		pdfTable.setPositionX(10);
-		pdfTable.setPositionY(10);
+		tableElement.setPdfTable(pdfTable);
 		/*
 		 * Header
 		 */
@@ -276,8 +276,8 @@ public class PDFTest extends TestCase {
 			row.add(decimalFormat.format(Math.random()));
 			pdfTable.addRow(row);
 		}
-		pageUtil.printTable(pdfTable);
 		//
+		pageUtil.printTable(tableElement);
 		pageUtil.close();
 		return pageUtil.getPage();
 	}
