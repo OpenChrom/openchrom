@@ -77,6 +77,7 @@ public class PDFTest extends TestCase {
 		printPageLogoLandscape(document, PDType1Font.HELVETICA);
 		printPageTablePortrait(document, PDType1Font.HELVETICA);
 		printPageTableLandscape(document, PDType1Font.HELVETICA);
+		printPageDefault(document, PDType1Font.HELVETICA);
 	}
 
 	private PDPage printPageLeft(PDDocument document, PDFont font) throws IOException {
@@ -278,6 +279,16 @@ public class PDFTest extends TestCase {
 		}
 		//
 		pageUtil.printTable(tableElement);
+		pageUtil.close();
+		return pageUtil.getPage();
+	}
+
+	private PDPage printPageDefault(PDDocument document, PDFont font) throws IOException {
+
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.BOTTOM_LEFT, Unit.PT, false));
+		//
+		pageUtil.printText(new TextElement(28.3465f, 28.3465f, 538.5835f).setText(LINE_CONTENT).setReferenceY(ReferenceY.BOTTOM).setTextOption(TextOption.SHORTEN));
+		//
 		pageUtil.close();
 		return pageUtil.getPage();
 	}
