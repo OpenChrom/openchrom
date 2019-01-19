@@ -81,7 +81,7 @@ public class PDFTest extends TestCase {
 
 	private PDPage printPageLeft(PDDocument document, PDFont font) throws IOException {
 
-		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, false));
 		//
 		pageUtil.printText(new TextElement(10, 0, 190).setText(LINE_FIRST).setReferenceX(ReferenceX.RIGHT));
 		for(int i = 1; i <= 28; i++) {
@@ -100,7 +100,7 @@ public class PDFTest extends TestCase {
 
 	private PDPage printPageLeftShorten(PDDocument document, PDFont font) throws IOException {
 
-		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, false));
 		//
 		pageUtil.printText(new TextElement(10, 0, 190).setText(LINE_FIRST).setReferenceX(ReferenceX.RIGHT));
 		for(int i = 1; i <= 28; i++) {
@@ -119,7 +119,7 @@ public class PDFTest extends TestCase {
 
 	private PDPage printPageRight(PDDocument document, PDFont font) throws IOException {
 
-		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, true));
 		//
 		pageUtil.printText(new TextElement(10, 0, 277).setText(LINE_FIRST));
 		for(int i = 1; i <= 17; i++) {
@@ -138,7 +138,7 @@ public class PDFTest extends TestCase {
 
 	private PDPage printPageRightShorten(PDDocument document, PDFont font) throws IOException {
 
-		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, true));
 		//
 		pageUtil.printText(new TextElement(10, 0, 277).setText(LINE_FIRST));
 		for(int i = 1; i <= 17; i++) {
@@ -157,7 +157,7 @@ public class PDFTest extends TestCase {
 
 	private PDPage printPageMultiLine(PDDocument document, PDFont font) throws IOException {
 
-		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, false));
 		//
 		pageUtil.printText(new TextElement(10, 0, 190).setText(LINE_FIRST).setReferenceX(ReferenceX.RIGHT));
 		pageUtil.printText(new TextElement(10, 10, 190).setText(LINE_CONTENT).setTextOption(TextOption.MULTI_LINE));
@@ -190,7 +190,7 @@ public class PDFTest extends TestCase {
 
 	private PDPage printPageLogoPortrait(PDDocument document, PDFont font) throws IOException {
 
-		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, false));
 		//
 		pageUtil.printImage(new ImageElement(10, 10).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f));
 		pageUtil.printText(new TextElement(10, 20, 190).setText(OPENCHROM));
@@ -208,7 +208,7 @@ public class PDFTest extends TestCase {
 
 	private PDPage printPageLogoLandscape(PDDocument document, PDFont font) throws IOException {
 
-		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, true));
 		//
 		pageUtil.printImage(new ImageElement(10, 10).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f));
 		pageUtil.printText(new TextElement(10, 20, 277).setText(OPENCHROM));
@@ -226,7 +226,7 @@ public class PDFTest extends TestCase {
 
 	private PDPage printPageTablePortrait(PDDocument document, PDFont font) throws IOException {
 
-		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4);
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, false));
 		//
 		PDFTable pdfTable = new PDFTable();
 		pdfTable.setPositionX(10);
@@ -255,7 +255,7 @@ public class PDFTest extends TestCase {
 
 	private PDPage printPageTableLandscape(PDDocument document, PDFont font) throws IOException {
 
-		PageUtil pageUtil = new PageUtil(document, PDRectangle.A4, true);
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, true));
 		//
 		PDFTable pdfTable = new PDFTable();
 		pdfTable.setPositionX(10);

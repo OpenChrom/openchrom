@@ -24,14 +24,11 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.util.Matrix;
 import org.eclipse.chemclipse.logging.core.Logger;
-/*
- * Defaults
- * Page Center: top left (0,0)
- * Unit: mm
- * ***
- * All public method x,y values are handled in the given unit.In this case:mm and page center top left(0,0).*All private method x,y values are using the default PDF values pt and and page center bottom left(0,0).
- */
 
+/*
+ * All public method x,y values are handled in the given unit.
+ * All private method x,y values are using the default PDF values pt and and page center bottom left(0,0).
+ */
 public class PageUtil {
 
 	private static final Logger logger = Logger.getLogger(PageUtil.class);
@@ -43,31 +40,24 @@ public class PageUtil {
 	private PDDocument document = null;
 	private PDPage page = null;
 	private PDPageContentStream contentStream = null;
-	//
-	private IUnitConverter unitConverter = UnitFactory.getInstance(Unit.MM);
-	private boolean landscape = false;
+	private IBaseConverter baseConverter = null;
+	private IUnitConverter unitConverter = null;
+	private boolean landscape;
 
-	/**
-	 * Portrait
-	 * 
-	 * @param document
-	 * @param pdRectangle
-	 * @throws IOException
-	 */
-	public PageUtil(PDDocument document, PDRectangle pdRectangle) throws IOException {
-		this(document, pdRectangle, false);
-	}
-
-	public PageUtil(PDDocument document, PDRectangle pdRectangle, boolean landscape) throws IOException {
+	public PageUtil(PDDocument document, PageSettings pageSettings) throws IOException {
 		this.document = document;
-		page = new PDPage(pdRectangle);
+		page = new PDPage(pageSettings.getPDRectangle());
 		this.document.addPage(page);
 		contentStream = new PDPageContentStream(document, page);
-		this.landscape = landscape;
+		//
+		baseConverter = ConverterFactory.getInstance(pageSettings.getBase());
+		unitConverter = ConverterFactory.getInstance(pageSettings.getUnit());
+		this.landscape = pageSettings.isLandscape();
+		//
 		if(this.landscape) {
 			page.setRotation(-90);
 			float x = 0;
-			float y = pdRectangle.getHeight();
+			float y = pageSettings.getPDRectangle().getHeight();
 			contentStream.transform(Matrix.getTranslateInstance(x, y));
 			contentStream.transform(Matrix.getRotateInstance(Math.toRadians(-90), 0, 0));
 		}
@@ -134,10 +124,10 @@ public class PageUtil {
 	public void printLine(LineElement lineElement) throws IOException {
 
 		float width = convert(lineElement.getWidth());
-		float x0 = getPositionLeft(lineElement.getX());
-		float y0 = getPositionTop(lineElement.getY());
-		float x1 = getPositionLeft(lineElement.getX1());
-		float y1 = getPositionTop(lineElement.getY1());
+		float x0 = getPositionX(convert(lineElement.getX()));
+		float y0 = getPositionY(convert(lineElement.getY()));
+		float x1 = getPositionX(convert(lineElement.getX1()));
+		float y1 = getPositionY(convert(lineElement.getY1()));
 		//
 		contentStream.setStrokingColor(lineElement.getColor());
 		contentStream.setLineWidth(width);
@@ -149,14 +139,19 @@ public class PageUtil {
 	public void printBox(BoxElement boxElement) throws IOException {
 
 		Color color = boxElement.getColor();
-		float x = getPositionLeft(boxElement.getX());
-		float y = getPositionTop(boxElement.getY() + boxElement.getHeight());
+		float x = getPositionX(convert(boxElement.getX()));
+		float y = getPositionY(convert(boxElement.getY() + boxElement.getHeight()));
 		float width = convert(boxElement.getWidth());
 		float height = convert(boxElement.getHeight());
 		//
 		contentStream.setNonStrokingColor(color);
 		contentStream.addRect(x, y, width, height);
 		contentStream.fill();
+	}
+
+	public void printTable(TableElement tableElement) throws IOException {
+
+		PDFTable pdfTable = tableElement.getPdfTable();
 	}
 
 	public void printTable(PDFTable pdfTable) throws IOException {
@@ -263,19 +258,19 @@ public class PageUtil {
 	}
 
 	/*
-	 * Left (pt) - 0,0 left bottom
+	 * X (pt) - 0,0 left bottom
 	 */
-	private float getPositionLeft(float x) {
+	private float getPositionX(float x) {
 
-		return convert(x);
+		return baseConverter.getPositionX(getPageWidth(), x);
 	}
 
 	/*
-	 * Top (pt) - 0,0 left bottom
+	 * Y (pt) - 0,0 left bottom
 	 */
-	private float getPositionTop(float y) {
+	private float getPositionY(float y) {
 
-		return getPageHeight() - convert(y);
+		return baseConverter.getPositionY(getPageHeight(), y);
 	}
 
 	/*
@@ -385,15 +380,15 @@ public class PageUtil {
 		ReferenceX referenceX = referenceElement.getReferenceX();
 		switch(referenceX) {
 			case LEFT:
-				x = getPositionLeft(referenceElement.getX());
+				x = getPositionX(convert(referenceElement.getX()));
 				break;
 			case RIGHT:
-				x = getPositionLeft(referenceElement.getX()) + maxWidth - elementWidth;
+				x = getPositionX(convert(referenceElement.getX())) + maxWidth - elementWidth;
 				break;
 			default:
 				logger.warn("Option not supported: " + referenceX);
 				logger.warn("Option selected instead: " + ReferenceX.LEFT);
-				x = getPositionLeft(referenceElement.getX());
+				x = getPositionX(convert(referenceElement.getX()));
 				break;
 		}
 		return x;
@@ -406,18 +401,18 @@ public class PageUtil {
 		ReferenceY referenceY = referenceElement.getReferenceY();
 		switch(referenceY) {
 			case TOP:
-				y = getPositionTop(referenceElement.getY()) - elementHeight;
+				y = getPositionY(convert(referenceElement.getY())) - elementHeight;
 				break;
 			case CENTER:
-				y = getPositionTop(referenceElement.getY()) - elementHeight / 2.0f;
+				y = getPositionY(convert(referenceElement.getY())) - elementHeight / 2.0f;
 				break;
 			case BOTTOM:
-				y = getPositionTop(referenceElement.getY());
+				y = getPositionY(convert(referenceElement.getY()));
 				break;
 			default:
 				logger.warn("Option not supported: " + referenceY);
 				logger.warn("Option selected instead: " + ReferenceY.BOTTOM);
-				y = getPositionTop(referenceElement.getY());
+				y = getPositionY(convert(referenceElement.getY()));
 				break;
 		}
 		return y;
