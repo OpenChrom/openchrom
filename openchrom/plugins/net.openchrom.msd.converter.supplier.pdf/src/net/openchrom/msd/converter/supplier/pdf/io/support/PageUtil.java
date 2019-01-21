@@ -151,51 +151,51 @@ public class PageUtil {
 
 	public void printTable(TableElement tableElement) throws IOException {
 
+		float x = tableElement.getX();
+		float y = tableElement.getY();
+		//
 		if(isTableValid(tableElement)) {
 			/*
 			 * Settings
 			 */
-			float x = tableElement.getX();
-			float y = tableElement.getY();
-			PDFTable pdfTable = tableElement.getPdfTable();
+			float height = tableElement.getColumnHeight();
+			Color colorTitle = tableElement.getColorTitle();
+			Color colorData = tableElement.getColorData();
+			float textOffsetX = tableElement.getTextOffsetX();
+			float textOffsetY = tableElement.getTextOffsetY();
+			float lineWidth = tableElement.getLineWidth();
 			//
+			PDFTable pdfTable = tableElement.getPdfTable();
 			float width = pdfTable.getWidth();
-			float height = pdfTable.getColumnHeight();
 			int startIndex = pdfTable.getRowStart() - 1;
 			int stopIndex = pdfTable.getRowStop() - 1;
-			//
-			List<String> titles = pdfTable.getTitles();
-			List<Float> bounds = pdfTable.getBounds();
-			List<List<String>> rows = pdfTable.getRows();
 			/*
 			 * Header
 			 */
-			List<TableCell> titleCells = new ArrayList<TableCell>();
-			for(int i = 0; i < titles.size(); i++) {
-				titleCells.add(new TableCell(titles.get(i), bounds.get(i)));
+			for(List<TableCell> titleRow : pdfTable.getTitles()) {
+				y += printTableLine(x, y, width, height, titleRow, colorTitle, textOffsetX, textOffsetY, lineWidth);
 			}
-			y += printTableLine(pdfTable.getFontBold(), pdfTable.getFont(), pdfTable.getFontSize(), x, y, width, height, titleCells, Color.GRAY, true, true);
 			/*
 			 * Data
 			 */
+			List<Float> bounds = pdfTable.getBounds();
+			List<List<String>> rows = pdfTable.getRows();
+			//
 			if(pdfTable.getNumberRows() > 0) {
 				for(int i = startIndex; i <= stopIndex; i++) {
 					List<String> row = rows.get(i);
 					List<TableCell> rowCells = new ArrayList<TableCell>();
 					for(int j = 0; j < row.size(); j++) {
 						String cell = row.get(j);
-						rowCells.add(new TableCell(cell, bounds.get(j)));
+						rowCells.add(new TableCell(cell, bounds.get(j), TableCell.BORDER_ALL));
 					}
-					Color backgroundColor = (i % 2 == 0) ? null : Color.LIGHT_GRAY;
-					y += printTableLine(pdfTable.getFontBold(), pdfTable.getFont(), pdfTable.getFontSize(), x, y, width, height, rowCells, backgroundColor, false, true);
+					Color backgroundColor = (i % 2 == 0) ? null : colorData;
+					y += printTableLine(x, y, width, height, rowCells, backgroundColor, textOffsetX, textOffsetY, lineWidth);
 				}
 			}
-			/*
-			 * Print last line.
-			 */
-			printTableLines(x, y, width, height, tableElement.getY(), titleCells);
 		} else {
 			logger.warn("The PDFTable is invalid.");
+			printText(new TextElement(x, y, Float.MAX_VALUE).setText("The table is invalid."));
 		}
 	}
 
@@ -205,15 +205,19 @@ public class PageUtil {
 		boolean isValid = pdfTable.isValid();
 		//
 		if(isValid) {
+			/*
+			 * Width
+			 */
 			float widthTable = convert(tableElement.getX() + pdfTable.getWidth());
 			float widthPage = getPageWidth();
 			if(widthTable > widthPage) {
 				logger.warn("The table width (" + widthTable + ")is larger then the page width (" + widthPage + ").");
 			}
 			/*
+			 * Height
 			 * +2 = Header + Offset
 			 */
-			float heightTable = convert((pdfTable.getRowStop() - pdfTable.getRowStart() + 2) * pdfTable.getColumnHeight() + tableElement.getY());
+			float heightTable = convert((pdfTable.getRowStop() - pdfTable.getRowStart() + 2) * tableElement.getColumnHeight() + tableElement.getY());
 			float heightPage = getPageHeight();
 			if(heightTable > heightPage) {
 				logger.warn("The table height (" + heightTable + ")is larger then the page height (" + heightPage + ").");
@@ -314,7 +318,22 @@ public class PageUtil {
 		contentStream.drawImage(image, x, y, width, height);
 	}
 
-	private float printTableLine(PDFont fontBold, PDFont font, float fontSize, float x, float y, float width, float height, List<TableCell> cells, Color color, boolean bold, boolean drawBottomLine) throws IOException {
+	/**
+	 * Returns the height in the original unit.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @param cells
+	 * @param color
+	 * @param textOffsetX
+	 * @param textOffsetY
+	 * @param lineWidth
+	 * @return float
+	 * @throws IOException
+	 */
+	private float printTableLine(float x, float y, float width, float height, List<TableCell> cells, Color color, float textOffsetX, float textOffsetY, float lineWidth) throws IOException {
 
 		/*
 		 * Background
@@ -323,55 +342,46 @@ public class PageUtil {
 			printBox(new BoxElement(x, y, width, height).setColor(color));
 		}
 		/*
-		 * Print the text
+		 * Table
 		 */
-		contentStream.setStrokingColor(Color.WHITE); // Background/Border
-		contentStream.setNonStrokingColor(Color.BLACK); // Text
-		float xLeft = x; // + 1mm? instead of whitespace " " + cell.getText()
-		float yText = y + 1; // TODO + 1mm
+		contentStream.setNonStrokingColor(Color.BLACK);
+		contentStream.setStrokingColor(Color.BLACK);
+		//
+		float xLeft = x;
 		for(TableCell cell : cells) {
-			printText(new TextElement(xLeft, yText, cell.getWidth()).setFont((bold) ? fontBold : font).setFontSize(fontSize).setText(" " + cell.getText()));
+			/*
+			 * Text
+			 */
+			printText(new TextElement(xLeft + textOffsetX, y + textOffsetY, cell.getWidth()).setFont(cell.getFont()).setFontSize(cell.getFontSize()).setText(cell.getText()));
+			/*
+			 * Border(s)
+			 */
+			if(cell.isBorderSet()) {
+				//
+				float xRight = xLeft + cell.getWidth();
+				float yHeight = y + height;
+				//
+				if(cell.isBorderSet(TableCell.BORDER_LEFT)) {
+					printLine(new LineElement(xLeft, y, xLeft, yHeight).setWidth(lineWidth));
+				}
+				//
+				if(cell.isBorderSet(TableCell.BORDER_RIGHT)) {
+					printLine(new LineElement(xRight, y, xRight, yHeight).setWidth(lineWidth));
+				}
+				//
+				if(cell.isBorderSet(TableCell.BORDER_TOP)) {
+					printLine(new LineElement(xLeft, y, xRight, y).setWidth(lineWidth));
+				}
+				//
+				if(cell.isBorderSet(TableCell.BORDER_BOTTOM)) {
+					printLine(new LineElement(xLeft, yHeight, xRight, yHeight).setWidth(lineWidth));
+				}
+			}
+			//
 			xLeft += cell.getWidth();
-		}
-		/*
-		 * Bottom Line
-		 */
-		if(drawBottomLine) {
-			contentStream.setStrokingColor(Color.BLACK); // Background/Border
-			contentStream.setNonStrokingColor(Color.BLACK); // Text
-			float yBottom = y + height;
-			printLine(new LineElement(x, yBottom, x + width, yBottom).setWidth(0.2f));
 		}
 		//
 		return height;
-	}
-
-	private void printTableLines(float x, float y, float width, float height, float yStartPosition, List<TableCell> cells) throws IOException {
-
-		contentStream.setStrokingColor(Color.BLACK); // Background/Border
-		contentStream.setNonStrokingColor(Color.BLACK); // Text
-		/*
-		 * Top Line
-		 */
-		printLine(new LineElement(x, yStartPosition, x + width, yStartPosition).setWidth(0.2f));
-		/*
-		 * Print vertical lines.
-		 */
-		//
-		float yStart = yStartPosition;
-		float yStartExtraSpace = yStartPosition; // + 5.0f; // 5.385835pt -> 1.9 mm
-		float yStop = y;
-		float xLeft = x;
-		for(TableCell cell : cells) {
-			if(cell.isPrintLeftLine()) {
-				printLine(new LineElement(xLeft, yStart, xLeft, yStop).setWidth(0.2f));
-			} else {
-				printLine(new LineElement(xLeft, yStartExtraSpace, xLeft, yStop).setWidth(0.2f));
-			}
-			xLeft += cell.getWidth();
-		}
-		//
-		printLine(new LineElement(x + width, yStart, x + width, yStop).setWidth(0.2f));
 	}
 
 	@SuppressWarnings("rawtypes")

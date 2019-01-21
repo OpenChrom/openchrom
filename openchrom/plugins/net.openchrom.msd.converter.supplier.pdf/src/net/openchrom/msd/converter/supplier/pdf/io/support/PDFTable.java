@@ -12,69 +12,29 @@
 package net.openchrom.msd.converter.supplier.pdf.io.support;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.eclipse.chemclipse.logging.core.Logger;
 
 public class PDFTable {
 
 	private static final Logger logger = Logger.getLogger(PDFTable.class);
-	/*
-	 * 0,0 is left top.
-	 */
-	private PDFont font = PDType1Font.HELVETICA;
-	private PDFont fontBold = PDType1Font.HELVETICA;
-	private float fontSize = 12;
 	//
-	private float columnHeight = 5.5f; // mm
 	private int rowStart = 1;
 	private int rowStop = 0;
 	//
-	private List<String> titles = new ArrayList<>();
-	private List<Float> bounds = new ArrayList<>();
-	private List<List<String>> rows = new ArrayList<>();
+	private int index = -1;
+	private List<List<TableCell>> titleRows = new ArrayList<>();
+	private List<List<String>> dataRows = new ArrayList<>();
 
-	public PDFont getFont() {
-
-		return font;
+	public PDFTable() {
+		nextTitleRow();
 	}
 
-	public void setFont(PDFont font) {
+	public void nextTitleRow() {
 
-		this.font = font;
-	}
-
-	public PDFont getFontBold() {
-
-		return fontBold;
-	}
-
-	public void setFontBold(PDFont fontBold) {
-
-		this.fontBold = fontBold;
-	}
-
-	public float getFontSize() {
-
-		return fontSize;
-	}
-
-	public void setFontSize(float fontSize) {
-
-		this.fontSize = fontSize;
-	}
-
-	public float getColumnHeight() {
-
-		return columnHeight;
-	}
-
-	public void setColumnHeight(float columnHeight) {
-
-		this.columnHeight = columnHeight;
+		titleRows.add(new ArrayList<>());
+		index = titleRows.size() - 1;
 	}
 
 	public int getRowStart() {
@@ -99,40 +59,49 @@ public class PDFTable {
 
 	public int getNumberRows() {
 
-		return rows.size();
+		return dataRows.size();
 	}
 
 	public void addColumn(String title, float columnWidth) {
 
-		titles.add(title);
-		bounds.add(columnWidth);
+		addColumn(new TableCell(title, columnWidth, TableCell.BORDER_ALL));
+	}
+
+	public void addColumn(TableCell tableCell) {
+
+		List<TableCell> titleRow = titleRows.get(index);
+		titleRow.add(tableCell);
 	}
 
 	public void addRow(List<String> row) {
 
-		rows.add(row);
+		dataRows.add(row);
 		rowStop = getNumberRows();
 	}
 
-	public List<String> getTitles() {
+	public List<List<TableCell>> getTitles() {
 
-		return Collections.unmodifiableList(titles);
+		return titleRows;
 	}
 
 	public List<Float> getBounds() {
 
-		return Collections.unmodifiableList(bounds);
+		List<Float> bounds = new ArrayList<>();
+		for(TableCell tableCell : titleRows.get(index)) {
+			bounds.add(tableCell.getWidth());
+		}
+		return bounds;
 	}
 
 	public List<List<String>> getRows() {
 
-		return rows;
+		return dataRows;
 	}
 
 	public float getWidth() {
 
 		float width = 0.0f;
-		for(float bound : bounds) {
+		for(float bound : getBounds()) {
 			width += bound;
 		}
 		return width;
@@ -140,14 +109,10 @@ public class PDFTable {
 
 	public boolean isValid() {
 
-		if(titles.size() != bounds.size()) {
-			logger.warn("Titles size not equals bounds size: " + titles.size() + " - " + bounds.size());
-			return false;
-		}
-		//
-		for(List<String> row : rows) {
-			if(row.size() != bounds.size()) {
-				logger.warn("Row size not equals bounds size: " + row.size() + " - " + bounds.size());
+		List<Float> bounds = getBounds();
+		for(List<String> dataRow : dataRows) {
+			if(dataRow.size() != bounds.size()) {
+				logger.warn("Row size not equals bounds size: " + dataRow.size() + " - " + bounds.size());
 				return false;
 			}
 		}

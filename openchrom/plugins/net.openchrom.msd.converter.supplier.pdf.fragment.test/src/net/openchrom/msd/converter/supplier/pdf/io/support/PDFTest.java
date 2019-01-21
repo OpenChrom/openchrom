@@ -28,7 +28,7 @@ import junit.framework.TestCase;
 
 public class PDFTest extends TestCase {
 
-	private static final String OPENCHROM = "OpenChrom - the open source alternative for chromatography/spectrometry";
+	private static final String TEXT = "the open source alternative for chromatography/spectrometry";
 	private static final String LINE_FIRST = "First Line";
 	private static final String LINE_CONTENT = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.";
 	private static final String LINE_LAST = "Last Line";
@@ -54,18 +54,6 @@ public class PDFTest extends TestCase {
 
 	private void printHeaderData(PDDocument document) throws IOException {
 
-		// printPage(document, PDType1Font.COURIER);
-		// printPage(document, PDType1Font.COURIER_BOLD);
-		// printPage(document, PDType1Font.COURIER_BOLD_OBLIQUE);
-		// printPage(document, PDType1Font.COURIER_OBLIQUE);
-		// printPage(document, PDType1Font.HELVETICA_BOLD);
-		// printPage(document, PDType1Font.HELVETICA_BOLD_OBLIQUE);
-		// printPage(document, PDType1Font.HELVETICA_OBLIQUE);
-		// printPage(document, PDType1Font.TIMES_BOLD);
-		// printPage(document, PDType1Font.TIMES_BOLD_ITALIC);
-		// printPage(document, PDType1Font.TIMES_ITALIC);
-		// printPage(document, PDType1Font.TIMES_ROMAN);
-		//
 		printPageLeft(document, PDType1Font.HELVETICA);
 		printPageLeftShorten(document, PDType1Font.HELVETICA);
 		printPageRight(document, PDType1Font.HELVETICA);
@@ -194,12 +182,12 @@ public class PDFTest extends TestCase {
 		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, false));
 		//
 		pageUtil.printImage(new ImageElement(10, 10).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f));
-		pageUtil.printText(new TextElement(10, 20, 190).setText(OPENCHROM));
+		pageUtil.printText(new TextElement(10, 20, 190).setText(TEXT));
 		//
 		pageUtil.printImage(new ImageElement(10, 148.5f).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.CENTER));
-		pageUtil.printText(new TextElement(83.5f, 148.5f, 116.5f).setText(OPENCHROM).setReferenceY(ReferenceY.CENTER));
+		pageUtil.printText(new TextElement(83.5f, 148.5f, 116.5f).setText(TEXT).setReferenceY(ReferenceY.CENTER));
 		//
-		pageUtil.printText(new TextElement(10, 277, 190).setText(OPENCHROM).setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printText(new TextElement(10, 277, 190).setText(TEXT).setReferenceY(ReferenceY.BOTTOM));
 		pageUtil.printImage(new ImageElement(10, 287).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.BOTTOM));
 		pageUtil.printText(new TextElement(74, 287, 190).setText(FOOTER).setReferenceY(ReferenceY.BOTTOM));
 		//
@@ -212,12 +200,12 @@ public class PDFTest extends TestCase {
 		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, true));
 		//
 		pageUtil.printImage(new ImageElement(10, 10).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f));
-		pageUtil.printText(new TextElement(10, 20, 277).setText(OPENCHROM));
+		pageUtil.printText(new TextElement(10, 20, 277).setText(TEXT));
 		//
 		pageUtil.printImage(new ImageElement(10, 105).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.CENTER));
-		pageUtil.printText(new TextElement(83.5f, 105, 203.5f).setText(OPENCHROM).setReferenceY(ReferenceY.CENTER));
+		pageUtil.printText(new TextElement(83.5f, 105, 203.5f).setText(TEXT).setReferenceY(ReferenceY.CENTER));
 		//
-		pageUtil.printText(new TextElement(10, 190, 277).setText(OPENCHROM).setReferenceY(ReferenceY.BOTTOM));
+		pageUtil.printText(new TextElement(10, 190, 277).setText(TEXT).setReferenceY(ReferenceY.BOTTOM));
 		pageUtil.printImage(new ImageElement(10, 200).setImage(getImage(document)).setWidth(63.5f).setHeight(8.05f).setReferenceY(ReferenceY.BOTTOM));
 		pageUtil.printText(new TextElement(74, 200, 277).setText(FOOTER).setReferenceY(ReferenceY.BOTTOM));
 		//
@@ -229,20 +217,37 @@ public class PDFTest extends TestCase {
 
 		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, false));
 		//
-		TableElement tableElement = new TableElement(10, 10);
+		TableElement tableElement = new TableElement(10, 10, 5.5f);
+		tableElement.setTextOffsetX(1.0f);
+		tableElement.setTextOffsetY(1.0f);
+		tableElement.setLineWidth(0.2f);
 		PDFTable pdfTable = new PDFTable();
 		tableElement.setPdfTable(pdfTable);
 		/*
 		 * Header
 		 */
-		pdfTable.addColumn("A", 50);
-		pdfTable.addColumn("B", 100);
-		pdfTable.addColumn("C", 40);
+		pdfTable.addColumn(new TableCell("", 50.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
+		pdfTable.addColumn(new TableCell("Test", 45.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
+		pdfTable.addColumn(new TableCell("STD", 25.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
+		pdfTable.addColumn(new TableCell("Content", 45.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
+		pdfTable.addColumn(new TableCell("Result", 25.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_RIGHT | TableCell.BORDER_TOP));
+		pdfTable.nextTitleRow();
+		pdfTable.addColumn(new TableCell("Analyte", 50.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
+		pdfTable.addColumn(new TableCell("Total", 22.5f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
+		pdfTable.addColumn(new TableCell("Top", 22.5f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
+		pdfTable.addColumn(new TableCell("AA", 25.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
+		pdfTable.addColumn(new TableCell("-B", 22.5f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
+		pdfTable.addColumn(new TableCell("+B", 22.5f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
+		pdfTable.addColumn(new TableCell("[mg/L]", 25).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_RIGHT | TableCell.BORDER_BOTTOM));
 		/*
 		 * Data
 		 */
 		for(int i = 0; i < 30; i++) {
 			List<String> row = new ArrayList<>();
+			row.add("A");
+			row.add(decimalFormat.format(Math.random()));
+			row.add(decimalFormat.format(Math.random()));
+			row.add(decimalFormat.format(Math.random()));
 			row.add(decimalFormat.format(Math.random()));
 			row.add(decimalFormat.format(Math.random()));
 			row.add(decimalFormat.format(Math.random()));
@@ -258,7 +263,10 @@ public class PDFTest extends TestCase {
 
 		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, true));
 		//
-		TableElement tableElement = new TableElement(10, 10);
+		TableElement tableElement = new TableElement(10, 10, 5.5f);
+		tableElement.setTextOffsetX(1.0f);
+		tableElement.setTextOffsetY(1.0f);
+		tableElement.setLineWidth(0.2f);
 		PDFTable pdfTable = new PDFTable();
 		tableElement.setPdfTable(pdfTable);
 		/*
