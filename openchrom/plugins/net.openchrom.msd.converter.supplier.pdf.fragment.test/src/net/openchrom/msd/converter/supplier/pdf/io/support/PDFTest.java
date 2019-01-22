@@ -54,18 +54,19 @@ public class PDFTest extends TestCase {
 
 	private void printHeaderData(PDDocument document) throws IOException {
 
-		printPageLeft(document, PDType1Font.HELVETICA);
-		printPageLeftShorten(document, PDType1Font.HELVETICA);
-		printPageRight(document, PDType1Font.HELVETICA);
-		printPageRightShorten(document, PDType1Font.HELVETICA);
-		printPageMultiLine(document, PDType1Font.HELVETICA);
-		printPageRotate0(document, PDType1Font.HELVETICA);
-		printPageRotate180(document, PDType1Font.HELVETICA);
-		printPageLogoPortrait(document, PDType1Font.HELVETICA);
-		printPageLogoLandscape(document, PDType1Font.HELVETICA);
-		printPageTablePortrait(document, PDType1Font.HELVETICA);
-		printPageTableLandscape(document, PDType1Font.HELVETICA);
-		printPageDefault(document, PDType1Font.HELVETICA);
+		PDFont font = PDType1Font.HELVETICA;
+		printPageLeft(document, font);
+		printPageLeftShorten(document, font);
+		printPageRight(document, font);
+		printPageRightShorten(document, font);
+		printPageMultiLine(document, font);
+		printPageRotate0(document, font);
+		printPageRotate180(document, font);
+		printPageLogoPortrait(document, font);
+		printPageLogoLandscape(document, font);
+		printPageTablePortrait(document, font);
+		printPageTableLandscape(document, font);
+		printPageDefault(document, font);
 	}
 
 	private PDPage printPageLeft(PDDocument document, PDFont font) throws IOException {
@@ -226,19 +227,19 @@ public class PDFTest extends TestCase {
 		/*
 		 * Header
 		 */
-		pdfTable.addColumn(new TableCell("", 50.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
-		pdfTable.addColumn(new TableCell("Test", 45.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
-		pdfTable.addColumn(new TableCell("STD", 25.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
-		pdfTable.addColumn(new TableCell("Content", 45.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
-		pdfTable.addColumn(new TableCell("Result", 25.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_RIGHT | TableCell.BORDER_TOP));
-		pdfTable.nextTitleRow();
-		pdfTable.addColumn(new TableCell("Analyte", 50.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
-		pdfTable.addColumn(new TableCell("Total", 22.5f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
-		pdfTable.addColumn(new TableCell("Top", 22.5f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
-		pdfTable.addColumn(new TableCell("AA", 25.0f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
-		pdfTable.addColumn(new TableCell("-B", 22.5f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
-		pdfTable.addColumn(new TableCell("+B", 22.5f).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
-		pdfTable.addColumn(new TableCell("[mg/L]", 25).setFont(PDType1Font.HELVETICA_BOLD).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_RIGHT | TableCell.BORDER_BOTTOM));
+		pdfTable.addColumn(new TableCell("", 50.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
+		pdfTable.addColumn(new TableCell("Test", 45.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
+		pdfTable.addColumn(new TableCell("STD", 25.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
+		pdfTable.addColumn(new TableCell("Content", 45.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
+		pdfTable.addColumn(new TableCell("Result", 25.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_RIGHT | TableCell.BORDER_TOP));
+		pdfTable.nextHeaderRow();
+		pdfTable.addColumn(new TableCell("Analyte", 50.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
+		pdfTable.addColumn(new TableCell("Total", 22.5f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
+		pdfTable.addColumn(new TableCell("Top", 22.5f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
+		pdfTable.addColumn(new TableCell("AA", 25.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
+		pdfTable.addColumn(new TableCell("-B", 22.5f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
+		pdfTable.addColumn(new TableCell("+B", 22.5f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
+		pdfTable.addColumn(new TableCell("[mg/L]", 25).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_RIGHT | TableCell.BORDER_BOTTOM));
 		/*
 		 * Data
 		 */
@@ -251,7 +252,7 @@ public class PDFTest extends TestCase {
 			row.add(decimalFormat.format(Math.random()));
 			row.add(decimalFormat.format(Math.random()));
 			row.add(decimalFormat.format(Math.random()));
-			pdfTable.addRow(row);
+			pdfTable.addDataRow(row);
 		}
 		//
 		pageUtil.printTable(tableElement);
@@ -283,7 +284,7 @@ public class PDFTest extends TestCase {
 			row.add(decimalFormat.format(Math.random()));
 			row.add(decimalFormat.format(Math.random()));
 			row.add(decimalFormat.format(Math.random()));
-			pdfTable.addRow(row);
+			pdfTable.addDataRow(row);
 		}
 		//
 		pageUtil.printTable(tableElement);

@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.io.support;
 
+import java.awt.Color;
+
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
@@ -26,6 +28,7 @@ public class TableCell {
 	private String text;
 	private float width;
 	//
+	private Color color = Color.BLACK;
 	private PDFont font = PDType1Font.HELVETICA;
 	private float fontSize = 12.0f;
 	private int border = BORDER_NONE;
@@ -48,6 +51,16 @@ public class TableCell {
 	public float getWidth() {
 
 		return width;
+	}
+
+	public Color getColor() {
+
+		return color;
+	}
+
+	public void setColor(Color color) {
+
+		this.color = color;
 	}
 
 	public PDFont getFont() {

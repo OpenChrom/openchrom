@@ -26,5 +26,13 @@ public interface IUnitConverter {
 	 * @param value
 	 * @return float
 	 */
-	float convert(float value);
+	float convertToPt(float value);
+
+	/**
+	 * Converts the given value (pt) to the unit of this converter.
+	 * 
+	 * @param value
+	 * @return
+	 */
+	float convertFromPt(float value);
 }

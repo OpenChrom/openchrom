@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.io.support;
 
+import java.awt.Color;
+
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
@@ -18,6 +20,7 @@ public class TextElement extends AbstractReferenceElement<TextElement> {
 
 	private PDFont font = PDType1Font.HELVETICA;
 	private float fontSize = 12;
+	private Color color = Color.BLACK;
 	private float minHeight = -1;
 	private float maxWidth = Float.MAX_VALUE;
 	private String text = "";
@@ -48,6 +51,17 @@ public class TextElement extends AbstractReferenceElement<TextElement> {
 	public TextElement setFontSize(float fontSize) {
 
 		this.fontSize = fontSize;
+		return this;
+	}
+
+	public Color getColor() {
+
+		return color;
+	}
+
+	public TextElement setColor(Color color) {
+
+		this.color = color;
 		return this;
 	}
 

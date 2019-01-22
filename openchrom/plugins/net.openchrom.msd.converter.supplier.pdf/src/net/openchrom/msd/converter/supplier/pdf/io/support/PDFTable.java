@@ -20,99 +20,132 @@ public class PDFTable {
 
 	private static final Logger logger = Logger.getLogger(PDFTable.class);
 	//
-	private int rowStart = 1;
-	private int rowStop = 0;
+	private int startIndex = 0;
+	private int stopIndex = 0;
+	private int defaultBorder; // initialized in constructor
 	//
-	private int index = -1;
-	private List<List<TableCell>> titleRows = new ArrayList<>();
+	private int indexHeader = -1;
+	private List<List<TableCell>> headerRows = new ArrayList<>();
 	private List<List<String>> dataRows = new ArrayList<>();
 
 	public PDFTable() {
-		nextTitleRow();
+		this(TableCell.BORDER_ALL);
 	}
 
-	public void nextTitleRow() {
-
-		titleRows.add(new ArrayList<>());
-		index = titleRows.size() - 1;
+	public PDFTable(int defaultBorder) {
+		/*
+		 * Important to add at least one header row.
+		 */
+		nextHeaderRow();
+		this.defaultBorder = defaultBorder;
 	}
 
-	public int getRowStart() {
+	public void nextHeaderRow() {
 
-		return rowStart;
+		headerRows.add(new ArrayList<>());
+		indexHeader = headerRows.size() - 1;
 	}
 
-	public void setRowStart(int rowStart) {
+	/**
+	 * Get the data row start index - 0 based.
+	 * 
+	 * @return int
+	 */
+	public int getStartIndex() {
 
-		this.rowStart = rowStart;
+		return startIndex;
 	}
 
-	public int getRowStop() {
+	/**
+	 * Data row start index - 0 based.
+	 * 
+	 * @param startIndex
+	 */
+	public void setStartIndex(int startIndex) {
 
-		return rowStop;
+		this.startIndex = startIndex;
 	}
 
-	public void setRowStop(int rowStop) {
+	/**
+	 * Get the data row stop index - 0 based.
+	 * 
+	 * @return int
+	 */
+	public int getStopIndex() {
 
-		this.rowStop = rowStop;
+		return stopIndex;
 	}
 
-	public int getNumberRows() {
+	/**
+	 * Data row stop index - 0 based.
+	 * 
+	 * @param startIndex
+	 */
+	public void setStopIndex(int stopIndex) {
+
+		this.stopIndex = stopIndex;
+	}
+
+	public int getNumberHeaderRows() {
+
+		return headerRows.size();
+	}
+
+	public int getNumberDataRows() {
 
 		return dataRows.size();
 	}
 
 	public void addColumn(String title, float columnWidth) {
 
-		addColumn(new TableCell(title, columnWidth, TableCell.BORDER_ALL));
+		addColumn(new TableCell(title, columnWidth, defaultBorder));
 	}
 
 	public void addColumn(TableCell tableCell) {
 
-		List<TableCell> titleRow = titleRows.get(index);
+		List<TableCell> titleRow = headerRows.get(indexHeader);
 		titleRow.add(tableCell);
 	}
 
-	public void addRow(List<String> row) {
+	public List<List<TableCell>> getHeader() {
+
+		return headerRows;
+	}
+
+	public void addDataRow(List<String> row) {
 
 		dataRows.add(row);
-		rowStop = getNumberRows();
+		stopIndex = getNumberDataRows();
 	}
 
-	public List<List<TableCell>> getTitles() {
+	public List<TableCell> getDataRow(int i) {
 
-		return titleRows;
-	}
-
-	public List<Float> getBounds() {
-
-		List<Float> bounds = new ArrayList<>();
-		for(TableCell tableCell : titleRows.get(index)) {
-			bounds.add(tableCell.getWidth());
+		List<TableCell> rowCells = new ArrayList<TableCell>();
+		if(i >= 0 && i < dataRows.size()) {
+			List<String> row = dataRows.get(i);
+			for(int j = 0; j < row.size(); j++) {
+				float width = headerRows.get(indexHeader).get(j).getWidth();
+				rowCells.add(new TableCell(row.get(j), width, defaultBorder));
+			}
 		}
-		return bounds;
-	}
-
-	public List<List<String>> getRows() {
-
-		return dataRows;
+		return rowCells;
 	}
 
 	public float getWidth() {
 
 		float width = 0.0f;
-		for(float bound : getBounds()) {
-			width += bound;
+		for(TableCell tableCell : headerRows.get(indexHeader)) {
+			width += tableCell.getWidth();
 		}
 		return width;
 	}
 
 	public boolean isValid() {
 
-		List<Float> bounds = getBounds();
+		int columns = headerRows.get(indexHeader).size();
 		for(List<String> dataRow : dataRows) {
-			if(dataRow.size() != bounds.size()) {
-				logger.warn("Row size not equals bounds size: " + dataRow.size() + " - " + bounds.size());
+			if(dataRow.size() != columns) {
+				logger.warn("Row size not equals columns size: " + dataRow.size() + " - " + columns);
 				return false;
 			}
 		}

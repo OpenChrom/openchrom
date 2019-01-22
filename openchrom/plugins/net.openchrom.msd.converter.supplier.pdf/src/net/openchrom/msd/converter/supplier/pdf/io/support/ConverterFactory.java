@@ -31,9 +31,15 @@ public class ConverterFactory {
 				}
 
 				@Override
-				public float convert(float value) {
+				public float convertToPt(float value) {
 
 					return value * getFactor();
+				}
+
+				@Override
+				public float convertFromPt(float value) {
+
+					return value / getFactor();
 				}
 			};
 			UNIT_CONVERTER_MAP.put(unit, unitConverter);

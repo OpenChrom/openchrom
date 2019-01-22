@@ -25,12 +25,12 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.util.Matrix;
 import org.eclipse.chemclipse.logging.core.Logger;
 
-/*
- * All public method x,y values are handled in the given unit.
- * All private method x,y values are using the default PDF values pt and and page center bottom left(0,0).
- */
 public class PageUtil {
 
+	/*
+	 * All public method values (x,y) are handled in the given unit
+	 * of the page settings. Internally, pt is used and the page base bottom left (0,0).
+	 */
 	private static final Logger logger = Logger.getLogger(PageUtil.class);
 	//
 	private static final String TEXT_SHORTEN_MARKER = "...";
@@ -87,47 +87,69 @@ public class PageUtil {
 		}
 	}
 
-	public void printText(TextElement textElement) throws IOException {
+	/**
+	 * Print the text and returns the height in the given unit.
+	 * 
+	 * @param textElement
+	 * @return float
+	 * @throws IOException
+	 */
+	public float printText(TextElement textElement) throws IOException {
 
+		float height = 0.0f;
 		String text = textElement.getText();
 		if(text.length() > 0) {
 			switch(textElement.getTextOption()) {
 				case NONE:
-					printTextDefault(textElement);
+					height = printTextDefault(textElement);
 					break;
 				case SHORTEN:
-					printTextShorten(textElement);
+					height = printTextShorten(textElement);
 					break;
 				case MULTI_LINE:
-					printTextMultiLine(textElement);
+					height = printTextMultiLine(textElement);
 					break;
 				default:
 					logger.warn("Option not supported: " + textElement.getTextOption());
 					logger.warn("Option selected instead: " + TextOption.NONE);
-					printTextDefault(textElement);
+					height = printTextDefault(textElement);
 					break;
 			}
 		}
+		//
+		return unitConverter.convertFromPt(height);
 	}
 
+	/**
+	 * Print the image.
+	 * 
+	 * @param imageElement
+	 * @throws IOException
+	 */
 	public void printImage(ImageElement imageElement) throws IOException {
 
 		PDImageXObject image = imageElement.getImage();
-		float width = convert(imageElement.getWidth());
-		float height = convert(imageElement.getHeight());
+		float width = unitConverter.convertToPt(imageElement.getWidth());
+		float height = unitConverter.convertToPt(imageElement.getHeight());
 		float x = calculateX(imageElement, width, width);
 		float y = calculateY(imageElement, height);
 		//
 		printImage(image, x, y, width, height);
 	}
 
+	/**
+	 * Print a line.
+	 * 
+	 * @param lineElement
+	 * @throws IOException
+	 */
 	public void printLine(LineElement lineElement) throws IOException {
 
-		float width = convert(lineElement.getWidth());
-		float x0 = getPositionX(convert(lineElement.getX()));
-		float y0 = getPositionY(convert(lineElement.getY()));
-		float x1 = getPositionX(convert(lineElement.getX1()));
-		float y1 = getPositionY(convert(lineElement.getY1()));
+		float width = unitConverter.convertToPt(lineElement.getWidth());
+		float x0 = getPositionX(unitConverter.convertToPt(lineElement.getX()));
+		float y0 = getPositionY(unitConverter.convertToPt(lineElement.getY()));
+		float x1 = getPositionX(unitConverter.convertToPt(lineElement.getX1()));
+		float y1 = getPositionY(unitConverter.convertToPt(lineElement.getY1()));
 		//
 		contentStream.setStrokingColor(lineElement.getColor());
 		contentStream.setLineWidth(width);
@@ -136,69 +158,69 @@ public class PageUtil {
 		contentStream.stroke();
 	}
 
+	/**
+	 * Print the box, e.g. rectangle of a certain color.
+	 * 
+	 * @param boxElement
+	 * @throws IOException
+	 */
 	public void printBox(BoxElement boxElement) throws IOException {
 
 		Color color = boxElement.getColor();
-		float x = getPositionX(convert(boxElement.getX()));
-		float y = getPositionY(convert(boxElement.getY() + boxElement.getHeight()));
-		float width = convert(boxElement.getWidth());
-		float height = convert(boxElement.getHeight());
+		float x = getPositionX(unitConverter.convertToPt(boxElement.getX()));
+		float y = getPositionY(unitConverter.convertToPt(boxElement.getY() + boxElement.getHeight()));
+		float width = unitConverter.convertToPt(boxElement.getWidth());
+		float height = unitConverter.convertToPt(boxElement.getHeight());
 		//
 		contentStream.setNonStrokingColor(color);
 		contentStream.addRect(x, y, width, height);
 		contentStream.fill();
 	}
 
+	/**
+	 * Print the table.
+	 * 
+	 * @param tableElement
+	 * @throws IOException
+	 */
 	public void printTable(TableElement tableElement) throws IOException {
 
-		float x = tableElement.getX();
-		float y = tableElement.getY();
-		//
 		if(isTableValid(tableElement)) {
 			/*
 			 * Settings
 			 */
-			float height = tableElement.getColumnHeight();
-			Color colorTitle = tableElement.getColorTitle();
-			Color colorData = tableElement.getColorData();
-			float textOffsetX = tableElement.getTextOffsetX();
-			float textOffsetY = tableElement.getTextOffsetY();
-			float lineWidth = tableElement.getLineWidth();
-			//
 			PDFTable pdfTable = tableElement.getPdfTable();
-			float width = pdfTable.getWidth();
-			int startIndex = pdfTable.getRowStart() - 1;
-			int stopIndex = pdfTable.getRowStop() - 1;
+			float y = unitConverter.convertToPt(tableElement.getY());
 			/*
 			 * Header
 			 */
-			for(List<TableCell> titleRow : pdfTable.getTitles()) {
-				y += printTableLine(x, y, width, height, titleRow, colorTitle, textOffsetX, textOffsetY, lineWidth);
+			for(List<TableCell> titleRow : pdfTable.getHeader()) {
+				y += printTableLine(y, tableElement, titleRow, tableElement.getColorTitle());
 			}
 			/*
 			 * Data
 			 */
-			List<Float> bounds = pdfTable.getBounds();
-			List<List<String>> rows = pdfTable.getRows();
-			//
-			if(pdfTable.getNumberRows() > 0) {
-				for(int i = startIndex; i <= stopIndex; i++) {
-					List<String> row = rows.get(i);
-					List<TableCell> rowCells = new ArrayList<TableCell>();
-					for(int j = 0; j < row.size(); j++) {
-						String cell = row.get(j);
-						rowCells.add(new TableCell(cell, bounds.get(j), TableCell.BORDER_ALL));
-					}
-					Color backgroundColor = (i % 2 == 0) ? null : colorData;
-					y += printTableLine(x, y, width, height, rowCells, backgroundColor, textOffsetX, textOffsetY, lineWidth);
+			if(pdfTable.getNumberDataRows() > 0) {
+				for(int i = pdfTable.getStartIndex(); i <= pdfTable.getStopIndex(); i++) {
+					List<TableCell> rowCells = pdfTable.getDataRow(i);
+					Color color = (i % 2 == 0) ? null : tableElement.getColorData();
+					y += printTableLine(y, tableElement, rowCells, color);
 				}
 			}
 		} else {
 			logger.warn("The PDFTable is invalid.");
+			float x = tableElement.getX();
+			float y = tableElement.getY();
 			printText(new TextElement(x, y, Float.MAX_VALUE).setText("The table is invalid."));
 		}
 	}
 
+	/**
+	 * Returns false if the table contains no valid data and prints validation messages.
+	 * 
+	 * @param tableElement
+	 * @return boolean
+	 */
 	private boolean isTableValid(TableElement tableElement) {
 
 		PDFTable pdfTable = tableElement.getPdfTable();
@@ -208,16 +230,15 @@ public class PageUtil {
 			/*
 			 * Width
 			 */
-			float widthTable = convert(tableElement.getX() + pdfTable.getWidth());
+			float widthTable = unitConverter.convertToPt(tableElement.getX() + pdfTable.getWidth());
 			float widthPage = getPageWidth();
 			if(widthTable > widthPage) {
 				logger.warn("The table width (" + widthTable + ")is larger then the page width (" + widthPage + ").");
 			}
 			/*
 			 * Height
-			 * +2 = Header + Offset
 			 */
-			float heightTable = convert((pdfTable.getRowStop() - pdfTable.getRowStart() + 2) * tableElement.getColumnHeight() + tableElement.getY());
+			float heightTable = unitConverter.convertToPt((pdfTable.getStopIndex() - pdfTable.getStartIndex() + 1 + pdfTable.getNumberHeaderRows()) * tableElement.getColumnHeight() + tableElement.getY());
 			float heightPage = getPageHeight();
 			if(heightTable > heightPage) {
 				logger.warn("The table height (" + heightTable + ")is larger then the page height (" + heightPage + ").");
@@ -227,8 +248,10 @@ public class PageUtil {
 		return isValid;
 	}
 
-	/*
+	/**
 	 * Page Height (pt)
+	 * 
+	 * @return float
 	 */
 	private float getPageHeight() {
 
@@ -236,8 +259,10 @@ public class PageUtil {
 		return (landscape) ? rectangle.getWidth() : rectangle.getHeight();
 	}
 
-	/*
+	/**
 	 * Page Width (pt)
+	 * 
+	 * @return float
 	 */
 	private float getPageWidth() {
 
@@ -245,8 +270,12 @@ public class PageUtil {
 		return (landscape) ? rectangle.getHeight() : rectangle.getWidth();
 	}
 
-	/*
+	/**
 	 * Text height (pt)
+	 * 
+	 * @param font
+	 * @param fontSize
+	 * @return float
 	 */
 	private float calculateTextHeight(PDFont font, float fontSize) {
 
@@ -254,58 +283,45 @@ public class PageUtil {
 		return (rectangle.getHeight() / 1000.0f * fontSize * 0.68f);
 	}
 
-	/*
+	/**
 	 * Text width (pt)
+	 * 
+	 * @param font
+	 * @param fontSize
+	 * @param text
+	 * @return float
+	 * @throws IOException
 	 */
 	private float calculateTextWidth(PDFont font, float fontSize, String text) throws IOException {
 
 		return (font.getStringWidth(text) / 1000.0f * fontSize);
 	}
 
-	/*
+	/**
 	 * X (pt) - 0,0 left bottom
+	 * 
+	 * @param x
+	 * @return float
 	 */
 	private float getPositionX(float x) {
 
 		return baseConverter.getPositionX(getPageWidth(), x);
 	}
 
-	/*
+	/**
 	 * Y (pt) - 0,0 left bottom
+	 * 
+	 * @param y
+	 * @return float
 	 */
 	private float getPositionY(float y) {
 
 		return baseConverter.getPositionY(getPageHeight(), y);
 	}
 
-	/*
-	 * Convert value to pt
-	 */
-	private float convert(float value) {
-
-		return unitConverter.convert(value);
-	}
-
-	/*
-	 * x, y (pt)
-	 * @param font
-	 * @param fontSize
-	 * @param x
-	 * @param y
-	 * @param text
-	 * @throws IOException
-	 */
-	private void printText(PDFont font, float fontSize, float x, float y, String text) throws IOException {
-
-		contentStream.setFont(font, fontSize);
-		contentStream.beginText();
-		contentStream.newLineAtOffset(x, y);
-		contentStream.showText(text);
-		contentStream.endText();
-	}
-
-	/*
+	/**
 	 * x, y, width, height (pt)
+	 * 
 	 * @param image
 	 * @param x
 	 * @param y
@@ -319,13 +335,13 @@ public class PageUtil {
 	}
 
 	/**
-	 * Returns the height in the original unit.
+	 * Returns the height of the column (pt).
 	 * 
 	 * @param x
 	 * @param y
 	 * @param width
 	 * @param height
-	 * @param cells
+	 * @param tableCells
 	 * @param color
 	 * @param textOffsetX
 	 * @param textOffsetY
@@ -333,57 +349,74 @@ public class PageUtil {
 	 * @return float
 	 * @throws IOException
 	 */
-	private float printTableLine(float x, float y, float width, float height, List<TableCell> cells, Color color, float textOffsetX, float textOffsetY, float lineWidth) throws IOException {
+	private float printTableLine(float y, TableElement tableElement, List<TableCell> tableCells, Color color) throws IOException {
 
+		/*
+		 * _x = (_) means original unit.
+		 */
+		PDFTable pdfTable = tableElement.getPdfTable();
+		float _x = tableElement.getX();
+		float _y = unitConverter.convertFromPt(y);
+		float _height = tableElement.getColumnHeight();
+		float _lineWidth = tableElement.getLineWidth();
 		/*
 		 * Background
 		 */
 		if(color != null) {
-			printBox(new BoxElement(x, y, width, height).setColor(color));
+			printBox(new BoxElement(_x, _y, pdfTable.getWidth(), _height).setColor(color));
 		}
-		/*
-		 * Table
-		 */
-		contentStream.setNonStrokingColor(Color.BLACK);
-		contentStream.setStrokingColor(Color.BLACK);
 		//
-		float xLeft = x;
-		for(TableCell cell : cells) {
+		for(TableCell tableCell : tableCells) {
 			/*
 			 * Text
 			 */
-			printText(new TextElement(xLeft + textOffsetX, y + textOffsetY, cell.getWidth()).setFont(cell.getFont()).setFontSize(cell.getFontSize()).setText(cell.getText()));
+			TextElement textElement = new TextElement(_x + tableElement.getTextOffsetX(), _y + tableElement.getTextOffsetY(), tableCell.getWidth());
+			textElement.setFont(tableCell.getFont());
+			textElement.setFontSize(tableCell.getFontSize());
+			textElement.setColor(tableCell.getColor());
+			textElement.setText(tableCell.getText());
+			//
+			printText(textElement);
 			/*
 			 * Border(s)
 			 */
-			if(cell.isBorderSet()) {
+			if(tableCell.isBorderSet()) {
 				//
-				float xRight = xLeft + cell.getWidth();
-				float yHeight = y + height;
+				float _xRight = _x + tableCell.getWidth();
+				float _yHeight = _y + _height;
 				//
-				if(cell.isBorderSet(TableCell.BORDER_LEFT)) {
-					printLine(new LineElement(xLeft, y, xLeft, yHeight).setWidth(lineWidth));
+				if(tableCell.isBorderSet(TableCell.BORDER_LEFT)) {
+					printLine(new LineElement(_x, _y, _x, _yHeight).setWidth(_lineWidth));
 				}
 				//
-				if(cell.isBorderSet(TableCell.BORDER_RIGHT)) {
-					printLine(new LineElement(xRight, y, xRight, yHeight).setWidth(lineWidth));
+				if(tableCell.isBorderSet(TableCell.BORDER_RIGHT)) {
+					printLine(new LineElement(_xRight, _y, _xRight, _yHeight).setWidth(_lineWidth));
 				}
 				//
-				if(cell.isBorderSet(TableCell.BORDER_TOP)) {
-					printLine(new LineElement(xLeft, y, xRight, y).setWidth(lineWidth));
+				if(tableCell.isBorderSet(TableCell.BORDER_TOP)) {
+					printLine(new LineElement(_x, _y, _xRight, _y).setWidth(_lineWidth));
 				}
 				//
-				if(cell.isBorderSet(TableCell.BORDER_BOTTOM)) {
-					printLine(new LineElement(xLeft, yHeight, xRight, yHeight).setWidth(lineWidth));
+				if(tableCell.isBorderSet(TableCell.BORDER_BOTTOM)) {
+					printLine(new LineElement(_x, _yHeight, _xRight, _yHeight).setWidth(_lineWidth));
 				}
 			}
 			//
-			xLeft += cell.getWidth();
+			_x += tableCell.getWidth();
 		}
 		//
-		return height;
+		return unitConverter.convertToPt(_height);
 	}
 
+	/**
+	 * X position (pt)
+	 * 
+	 * @param referenceElement
+	 * @param elementWidth
+	 * @param maxWidth
+	 * @return float
+	 * @throws IOException
+	 */
 	@SuppressWarnings("rawtypes")
 	private float calculateX(IReferenceElement referenceElement, float elementWidth, float maxWidth) throws IOException {
 
@@ -391,20 +424,27 @@ public class PageUtil {
 		ReferenceX referenceX = referenceElement.getReferenceX();
 		switch(referenceX) {
 			case LEFT:
-				x = getPositionX(convert(referenceElement.getX()));
+				x = getPositionX(unitConverter.convertToPt(referenceElement.getX()));
 				break;
 			case RIGHT:
-				x = getPositionX(convert(referenceElement.getX())) + maxWidth - elementWidth;
+				x = getPositionX(unitConverter.convertToPt(referenceElement.getX())) + maxWidth - elementWidth;
 				break;
 			default:
 				logger.warn("Option not supported: " + referenceX);
 				logger.warn("Option selected instead: " + ReferenceX.LEFT);
-				x = getPositionX(convert(referenceElement.getX()));
+				x = getPositionX(unitConverter.convertToPt(referenceElement.getX()));
 				break;
 		}
 		return x;
 	}
 
+	/**
+	 * Y position (pt)
+	 * 
+	 * @param referenceElement
+	 * @param elementHeight
+	 * @return float
+	 */
 	@SuppressWarnings("rawtypes")
 	private float calculateY(IReferenceElement referenceElement, float elementHeight) {
 
@@ -412,46 +452,62 @@ public class PageUtil {
 		ReferenceY referenceY = referenceElement.getReferenceY();
 		switch(referenceY) {
 			case TOP:
-				y = getPositionY(convert(referenceElement.getY())) - elementHeight;
+				y = getPositionY(unitConverter.convertToPt(referenceElement.getY())) - elementHeight;
 				break;
 			case CENTER:
-				y = getPositionY(convert(referenceElement.getY())) - elementHeight / 2.0f;
+				y = getPositionY(unitConverter.convertToPt(referenceElement.getY())) - elementHeight / 2.0f;
 				break;
 			case BOTTOM:
-				y = getPositionY(convert(referenceElement.getY()));
+				y = getPositionY(unitConverter.convertToPt(referenceElement.getY()));
 				break;
 			default:
 				logger.warn("Option not supported: " + referenceY);
 				logger.warn("Option selected instead: " + ReferenceY.BOTTOM);
-				y = getPositionY(convert(referenceElement.getY()));
+				y = getPositionY(unitConverter.convertToPt(referenceElement.getY()));
 				break;
 		}
 		return y;
 	}
 
-	private void printTextDefault(TextElement textElement) throws IOException {
+	/**
+	 * Returns the height of the printed text (pt).
+	 * 
+	 * @param textElement
+	 * @return
+	 * @throws IOException
+	 */
+	private float printTextDefault(TextElement textElement) throws IOException {
 
 		PDFont font = textElement.getFont();
 		float fontSize = textElement.getFontSize();
+		Color color = textElement.getColor();
 		String text = textElement.getText();
-		float maxWidth = convert(textElement.getMaxWidth());
+		float maxWidth = unitConverter.convertToPt(textElement.getMaxWidth());
 		float textWidth = calculateTextWidth(font, fontSize, text);
 		float textHeight = calculateTextHeight(font, fontSize);
 		float x = calculateX(textElement, textWidth, maxWidth);
 		float y = calculateY(textElement, textHeight);
 		//
-		printText(font, fontSize, x, y, text);
+		return printText(font, fontSize, color, x, y, text);
 	}
 
-	private void printTextShorten(TextElement textElement) throws IOException {
+	/**
+	 * Returns the height of the printed text in (pt).
+	 * 
+	 * @param textElement
+	 * @return float
+	 * @throws IOException
+	 */
+	private float printTextShorten(TextElement textElement) throws IOException {
 
 		PDFont font = textElement.getFont();
 		float fontSize = textElement.getFontSize();
+		Color color = textElement.getColor();
 		String text = textElement.getText();
-		float maxWidth = convert(textElement.getMaxWidth());
+		float maxWidth = unitConverter.convertToPt(textElement.getMaxWidth());
 		float textWidth = calculateTextWidth(font, fontSize, text);
 		float textHeight = calculateTextHeight(font, fontSize);
-		float x = convert(textElement.getX());
+		float x = unitConverter.convertToPt(textElement.getX());
 		float y = calculateY(textElement, textHeight);
 		//
 		String shortenedText = text; // default
@@ -470,32 +526,72 @@ public class PageUtil {
 				break;
 		}
 		//
-		printText(font, fontSize, x, y, shortenedText);
+		return printText(font, fontSize, color, x, y, shortenedText);
 	}
 
-	private void printTextMultiLine(TextElement textElement) throws IOException {
+	/**
+	 * Returns the height of the printed text in (pt).
+	 * 
+	 * @param textElement
+	 * @return float
+	 * @throws IOException
+	 */
+	private float printTextMultiLine(TextElement textElement) throws IOException {
 
 		PDFont font = textElement.getFont();
 		float fontSize = textElement.getFontSize();
+		Color color = textElement.getColor();
 		String text = textElement.getText();
-		float maxWidth = convert(textElement.getMaxWidth());
+		float maxWidth = unitConverter.convertToPt(textElement.getMaxWidth());
 		float textWidth = calculateTextWidth(font, fontSize, text);
-		float minHeight = convert(textElement.getMinHeight());
+		float minHeight = unitConverter.convertToPt(textElement.getMinHeight());
 		float textHeight = calculateTextHeight(font, fontSize);
-		float x = convert(textElement.getX());
+		float x = unitConverter.convertToPt(textElement.getX());
 		float y = calculateY(textElement, textHeight);
 		//
 		List<String> textElements = cutStringMultiLine(text, textWidth, maxWidth);
 		float offset = 0.0f;
 		for(String part : textElements) {
-			printText(font, fontSize, x, y - offset, part);
+			printText(font, fontSize, color, x, y - offset, part);
 			offset += (textHeight > minHeight) ? textHeight : minHeight;
 		}
+		//
+		return offset;
 	}
 
-	/*
+	/**
+	 * Returns the height of the printed text in (pt).
+	 * 
+	 * @param font
+	 * @param fontSize
+	 * @param color
+	 * @param x
+	 * @param y
+	 * @param text
+	 * @return
+	 * @throws IOException
+	 */
+	private float printText(PDFont font, float fontSize, Color color, float x, float y, String text) throws IOException {
+
+		contentStream.setFont(font, fontSize);
+		contentStream.setNonStrokingColor(color);
+		contentStream.beginText();
+		contentStream.newLineAtOffset(x, y);
+		contentStream.showText(text);
+		contentStream.endText();
+		//
+		return calculateTextHeight(font, fontSize);
+	}
+
+	/**
+	 * Shorten the text.
 	 * textWidth, availableWidth (pt)
 	 * Lorem ipsum dolor sit amet, consetetur sadipscing...
+	 * 
+	 * @param text
+	 * @param textWidth
+	 * @param maxWidth
+	 * @return String
 	 */
 	private String shortenStringLeft(String text, float textWidth, float maxWidth) {
 
@@ -507,9 +603,15 @@ public class PageUtil {
 		}
 	}
 
-	/*
+	/**
+	 * Shorten the text.
 	 * textWidth, availableWidth (pt)
 	 * ...kasd gubergren, no sea takimata sanctus est.
+	 * 
+	 * @param text
+	 * @param textWidth
+	 * @param maxWidth
+	 * @return String
 	 */
 	private String shortenStringRight(String text, float textWidth, float maxWidth) {
 
@@ -522,10 +624,20 @@ public class PageUtil {
 		}
 	}
 
+	/**
+	 * Cut the text.
+	 * 
+	 * @param text
+	 * @param textWidth
+	 * @param maxWidth
+	 * @return List<String>
+	 */
 	private List<String> cutStringMultiLine(String text, float textWidth, float maxWidth) {
 
 		List<String> textElements = new ArrayList<>();
-		//
+		/*
+		 * This could be more dynamically.
+		 */
 		int textLength = text.length();
 		int partLength = (int)(textLength / textWidth * maxWidth);
 		int parts = textLength / partLength + 1;
