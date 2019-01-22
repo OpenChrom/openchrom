@@ -16,23 +16,23 @@ import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 
-public class PDFTable {
+public class PDTable {
 
-	private static final Logger logger = Logger.getLogger(PDFTable.class);
+	private static final Logger logger = Logger.getLogger(PDTable.class);
 	//
 	private int startIndex = 0;
 	private int stopIndex = 0;
 	private int defaultBorder; // initialized in constructor
 	//
 	private int indexHeader = -1;
-	private List<List<TableCell>> headerRows = new ArrayList<>();
+	private List<List<CellElement>> headerRows = new ArrayList<>();
 	private List<List<String>> dataRows = new ArrayList<>();
 
-	public PDFTable() {
-		this(TableCell.BORDER_ALL);
+	public PDTable() {
+		this(CellElement.BORDER_ALL);
 	}
 
-	public PDFTable(int defaultBorder) {
+	public PDTable(int defaultBorder) {
 		/*
 		 * Important to add at least one header row.
 		 */
@@ -98,16 +98,16 @@ public class PDFTable {
 
 	public void addColumn(String title, float columnWidth) {
 
-		addColumn(new TableCell(title, columnWidth, defaultBorder));
+		addColumn(new CellElement(title, columnWidth, defaultBorder));
 	}
 
-	public void addColumn(TableCell tableCell) {
+	public void addColumn(CellElement tableCell) {
 
-		List<TableCell> titleRow = headerRows.get(indexHeader);
+		List<CellElement> titleRow = headerRows.get(indexHeader);
 		titleRow.add(tableCell);
 	}
 
-	public List<List<TableCell>> getHeader() {
+	public List<List<CellElement>> getHeader() {
 
 		return headerRows;
 	}
@@ -118,14 +118,14 @@ public class PDFTable {
 		stopIndex = getNumberDataRows();
 	}
 
-	public List<TableCell> getDataRow(int i) {
+	public List<CellElement> getDataRow(int i) {
 
-		List<TableCell> rowCells = new ArrayList<TableCell>();
+		List<CellElement> rowCells = new ArrayList<CellElement>();
 		if(i >= 0 && i < dataRows.size()) {
 			List<String> row = dataRows.get(i);
 			for(int j = 0; j < row.size(); j++) {
-				float width = headerRows.get(indexHeader).get(j).getWidth();
-				rowCells.add(new TableCell(row.get(j), width, defaultBorder));
+				float width = headerRows.get(indexHeader).get(j).getMaxWidth();
+				rowCells.add(new CellElement(row.get(j), width, defaultBorder));
 			}
 		}
 		return rowCells;
@@ -134,8 +134,8 @@ public class PDFTable {
 	public float getWidth() {
 
 		float width = 0.0f;
-		for(TableCell tableCell : headerRows.get(indexHeader)) {
-			width += tableCell.getWidth();
+		for(CellElement tableCell : headerRows.get(indexHeader)) {
+			width += tableCell.getMaxWidth();
 		}
 		return width;
 	}

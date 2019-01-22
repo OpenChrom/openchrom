@@ -22,7 +22,7 @@ public class TableElement extends AbstractElement<TableElement> {
 	private float textOffsetY = 0.0f;
 	private float lineWidth = 1.0f;
 	//
-	private PDFTable pdfTable = new PDFTable();
+	private PDTable pdTable = new PDTable();
 
 	public TableElement(float x, float y, float columnHeight) {
 		setX(x);
@@ -96,14 +96,14 @@ public class TableElement extends AbstractElement<TableElement> {
 		return this;
 	}
 
-	public PDFTable getPdfTable() {
+	public PDTable getpdTable() {
 
-		return pdfTable;
+		return pdTable;
 	}
 
-	public TableElement setPdfTable(PDFTable pdfTable) {
+	public TableElement setpdTable(PDTable pdTable) {
 
-		this.pdfTable = pdfTable;
+		this.pdTable = pdTable;
 		return this;
 	}
 }

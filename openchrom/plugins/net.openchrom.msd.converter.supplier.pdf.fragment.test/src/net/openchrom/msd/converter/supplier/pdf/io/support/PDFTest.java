@@ -66,6 +66,7 @@ public class PDFTest extends TestCase {
 		printPageLogoLandscape(document, font);
 		printPageTablePortrait(document, font);
 		printPageTableLandscape(document, font);
+		printPageTableExtendedText(document, font);
 		printPageDefault(document, font);
 	}
 
@@ -222,24 +223,24 @@ public class PDFTest extends TestCase {
 		tableElement.setTextOffsetX(1.0f);
 		tableElement.setTextOffsetY(1.0f);
 		tableElement.setLineWidth(0.2f);
-		PDFTable pdfTable = new PDFTable();
-		tableElement.setPdfTable(pdfTable);
+		PDTable pdTable = new PDTable();
+		tableElement.setpdTable(pdTable);
 		/*
 		 * Header
 		 */
-		pdfTable.addColumn(new TableCell("", 50.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
-		pdfTable.addColumn(new TableCell("Test", 45.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
-		pdfTable.addColumn(new TableCell("STD", 25.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
-		pdfTable.addColumn(new TableCell("Content", 45.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_TOP));
-		pdfTable.addColumn(new TableCell("Result", 25.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_RIGHT | TableCell.BORDER_TOP));
-		pdfTable.nextHeaderRow();
-		pdfTable.addColumn(new TableCell("Analyte", 50.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
-		pdfTable.addColumn(new TableCell("Total", 22.5f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
-		pdfTable.addColumn(new TableCell("Top", 22.5f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
-		pdfTable.addColumn(new TableCell("AA", 25.0f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
-		pdfTable.addColumn(new TableCell("-B", 22.5f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
-		pdfTable.addColumn(new TableCell("+B", 22.5f).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_BOTTOM));
-		pdfTable.addColumn(new TableCell("[mg/L]", 25).setFont(font).setBorder(TableCell.BORDER_LEFT | TableCell.BORDER_RIGHT | TableCell.BORDER_BOTTOM));
+		pdTable.addColumn(new CellElement("", 50.0f, CellElement.BORDER_LEFT | CellElement.BORDER_TOP));
+		pdTable.addColumn(new CellElement("Test", 45.0f, CellElement.BORDER_LEFT | CellElement.BORDER_TOP));
+		pdTable.addColumn(new CellElement("STD", 25.0f, CellElement.BORDER_LEFT | CellElement.BORDER_TOP));
+		pdTable.addColumn(new CellElement("Content", 45.0f, CellElement.BORDER_LEFT | CellElement.BORDER_TOP));
+		pdTable.addColumn(new CellElement("Result", 25.0f, CellElement.BORDER_LEFT | CellElement.BORDER_RIGHT | CellElement.BORDER_TOP));
+		pdTable.nextHeaderRow();
+		pdTable.addColumn(new CellElement("Analyte", 50.0f, CellElement.BORDER_LEFT | CellElement.BORDER_BOTTOM));
+		pdTable.addColumn(new CellElement("Total", 22.5f, CellElement.BORDER_LEFT | CellElement.BORDER_BOTTOM));
+		pdTable.addColumn(new CellElement("Top", 22.5f, CellElement.BORDER_LEFT | CellElement.BORDER_BOTTOM));
+		pdTable.addColumn(new CellElement("AA", 25.0f, CellElement.BORDER_LEFT | CellElement.BORDER_BOTTOM));
+		pdTable.addColumn(new CellElement("-B", 22.5f, CellElement.BORDER_LEFT | CellElement.BORDER_BOTTOM));
+		pdTable.addColumn(new CellElement("+B", 22.5f, CellElement.BORDER_LEFT | CellElement.BORDER_BOTTOM));
+		pdTable.addColumn(new CellElement("[mg/L]", 25, CellElement.BORDER_LEFT | CellElement.BORDER_RIGHT | CellElement.BORDER_BOTTOM));
 		/*
 		 * Data
 		 */
@@ -252,7 +253,7 @@ public class PDFTest extends TestCase {
 			row.add(decimalFormat.format(Math.random()));
 			row.add(decimalFormat.format(Math.random()));
 			row.add(decimalFormat.format(Math.random()));
-			pdfTable.addDataRow(row);
+			pdTable.addDataRow(row);
 		}
 		//
 		pageUtil.printTable(tableElement);
@@ -268,14 +269,14 @@ public class PDFTest extends TestCase {
 		tableElement.setTextOffsetX(1.0f);
 		tableElement.setTextOffsetY(1.0f);
 		tableElement.setLineWidth(0.2f);
-		PDFTable pdfTable = new PDFTable();
-		tableElement.setPdfTable(pdfTable);
+		PDTable pdTable = new PDTable();
+		tableElement.setpdTable(pdTable);
 		/*
 		 * Header
 		 */
-		pdfTable.addColumn("A", 77);
-		pdfTable.addColumn("B", 150);
-		pdfTable.addColumn("C", 50);
+		pdTable.addColumn("A", 77);
+		pdTable.addColumn("B", 150);
+		pdTable.addColumn("C", 50);
 		/*
 		 * Data
 		 */
@@ -284,7 +285,39 @@ public class PDFTest extends TestCase {
 			row.add(decimalFormat.format(Math.random()));
 			row.add(decimalFormat.format(Math.random()));
 			row.add(decimalFormat.format(Math.random()));
-			pdfTable.addDataRow(row);
+			pdTable.addDataRow(row);
+		}
+		//
+		pageUtil.printTable(tableElement);
+		pageUtil.close();
+		return pageUtil.getPage();
+	}
+
+	private PDPage printPageTableExtendedText(PDDocument document, PDFont font) throws IOException {
+
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, Base.TOP_LEFT, Unit.MM, true));
+		//
+		TableElement tableElement = new TableElement(10, 10, 5.5f);
+		tableElement.setTextOffsetX(1.0f);
+		tableElement.setTextOffsetY(1.0f);
+		tableElement.setLineWidth(0.2f);
+		PDTable pdTable = new PDTable();
+		tableElement.setpdTable(pdTable);
+		/*
+		 * Header
+		 */
+		pdTable.addColumn(new CellElement("A - Lorem ipsum dolor sit amet,", 77, CellElement.BORDER_ALL).setTextOption(TextOption.NONE));
+		pdTable.addColumn(new CellElement("B - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.", 150, CellElement.BORDER_ALL).setTextOption(TextOption.MULTI_LINE));
+		pdTable.addColumn(new CellElement("C - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.", 50, CellElement.BORDER_ALL).setTextOption(TextOption.SHORTEN));
+		/*
+		 * Data
+		 */
+		for(int i = 0; i < 30; i++) {
+			List<String> row = new ArrayList<>();
+			row.add(decimalFormat.format(Math.random()));
+			row.add(decimalFormat.format(Math.random()));
+			row.add(decimalFormat.format(Math.random()));
+			pdTable.addDataRow(row);
 		}
 		//
 		pageUtil.printTable(tableElement);

@@ -14,6 +14,7 @@ package net.openchrom.msd.converter.supplier.pdf.io.support;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -189,26 +190,26 @@ public class PageUtil {
 			/*
 			 * Settings
 			 */
-			PDFTable pdfTable = tableElement.getPdfTable();
+			PDTable pdTable = tableElement.getpdTable();
 			float y = unitConverter.convertToPt(tableElement.getY());
 			/*
 			 * Header
 			 */
-			for(List<TableCell> titleRow : pdfTable.getHeader()) {
-				y += printTableLine(y, tableElement, titleRow, tableElement.getColorTitle());
+			for(List<CellElement> titleRow : pdTable.getHeader()) {
+				y += printTableRow(y, tableElement, titleRow, tableElement.getColorTitle());
 			}
 			/*
 			 * Data
 			 */
-			if(pdfTable.getNumberDataRows() > 0) {
-				for(int i = pdfTable.getStartIndex(); i <= pdfTable.getStopIndex(); i++) {
-					List<TableCell> rowCells = pdfTable.getDataRow(i);
+			if(pdTable.getNumberDataRows() > 0) {
+				for(int i = pdTable.getStartIndex(); i <= pdTable.getStopIndex(); i++) {
+					List<CellElement> rowCells = pdTable.getDataRow(i);
 					Color color = (i % 2 == 0) ? null : tableElement.getColorData();
-					y += printTableLine(y, tableElement, rowCells, color);
+					y += printTableRow(y, tableElement, rowCells, color);
 				}
 			}
 		} else {
-			logger.warn("The PDFTable is invalid.");
+			logger.warn("The pdTable is invalid.");
 			float x = tableElement.getX();
 			float y = tableElement.getY();
 			printText(new TextElement(x, y, Float.MAX_VALUE).setText("The table is invalid."));
@@ -223,14 +224,14 @@ public class PageUtil {
 	 */
 	private boolean isTableValid(TableElement tableElement) {
 
-		PDFTable pdfTable = tableElement.getPdfTable();
-		boolean isValid = pdfTable.isValid();
+		PDTable pdTable = tableElement.getpdTable();
+		boolean isValid = pdTable.isValid();
 		//
 		if(isValid) {
 			/*
 			 * Width
 			 */
-			float widthTable = unitConverter.convertToPt(tableElement.getX() + pdfTable.getWidth());
+			float widthTable = unitConverter.convertToPt(tableElement.getX() + pdTable.getWidth());
 			float widthPage = getPageWidth();
 			if(widthTable > widthPage) {
 				logger.warn("The table width (" + widthTable + ")is larger then the page width (" + widthPage + ").");
@@ -238,7 +239,7 @@ public class PageUtil {
 			/*
 			 * Height
 			 */
-			float heightTable = unitConverter.convertToPt((pdfTable.getStopIndex() - pdfTable.getStartIndex() + 1 + pdfTable.getNumberHeaderRows()) * tableElement.getColumnHeight() + tableElement.getY());
+			float heightTable = unitConverter.convertToPt((pdTable.getStopIndex() - pdTable.getStartIndex() + 1 + pdTable.getNumberHeaderRows()) * tableElement.getColumnHeight() + tableElement.getY());
 			float heightPage = getPageHeight();
 			if(heightTable > heightPage) {
 				logger.warn("The table height (" + heightTable + ")is larger then the page height (" + heightPage + ").");
@@ -341,7 +342,7 @@ public class PageUtil {
 	 * @param y
 	 * @param width
 	 * @param height
-	 * @param tableCells
+	 * @param cells
 	 * @param color
 	 * @param textOffsetX
 	 * @param textOffsetY
@@ -349,60 +350,57 @@ public class PageUtil {
 	 * @return float
 	 * @throws IOException
 	 */
-	private float printTableLine(float y, TableElement tableElement, List<TableCell> tableCells, Color color) throws IOException {
+	private float printTableRow(float y, TableElement tableElement, List<CellElement> cells, Color color) throws IOException {
 
 		/*
 		 * _x = (_) means original unit.
 		 */
-		PDFTable pdfTable = tableElement.getPdfTable();
+		PDTable pdTable = tableElement.getpdTable();
 		float _x = tableElement.getX();
 		float _y = unitConverter.convertFromPt(y);
-		float _height = tableElement.getColumnHeight();
+		float _height = unitConverter.convertFromPt(calculateRowHeight(cells, unitConverter.convertToPt(tableElement.getColumnHeight())));
 		float _lineWidth = tableElement.getLineWidth();
 		/*
 		 * Background
 		 */
 		if(color != null) {
-			printBox(new BoxElement(_x, _y, pdfTable.getWidth(), _height).setColor(color));
+			float _extra = unitConverter.convertFromPt(0.3f); // Prevents a tiny gap
+			printBox(new BoxElement(_x, _y, pdTable.getWidth(), _height + _extra).setColor(color));
 		}
 		//
-		for(TableCell tableCell : tableCells) {
+		for(CellElement cell : cells) {
 			/*
 			 * Text
 			 */
-			TextElement textElement = new TextElement(_x + tableElement.getTextOffsetX(), _y + tableElement.getTextOffsetY(), tableCell.getWidth());
-			textElement.setFont(tableCell.getFont());
-			textElement.setFontSize(tableCell.getFontSize());
-			textElement.setColor(tableCell.getColor());
-			textElement.setText(tableCell.getText());
-			//
-			printText(textElement);
+			cell.setX(_x + tableElement.getTextOffsetX());
+			cell.setY(_y + tableElement.getTextOffsetY());
+			printText(cell);
 			/*
 			 * Border(s)
 			 */
-			if(tableCell.isBorderSet()) {
+			if(cell.isBorderSet()) {
 				//
-				float _xRight = _x + tableCell.getWidth();
+				float _xRight = _x + cell.getMaxWidth();
 				float _yHeight = _y + _height;
 				//
-				if(tableCell.isBorderSet(TableCell.BORDER_LEFT)) {
+				if(cell.isBorderSet(CellElement.BORDER_LEFT)) {
 					printLine(new LineElement(_x, _y, _x, _yHeight).setWidth(_lineWidth));
 				}
 				//
-				if(tableCell.isBorderSet(TableCell.BORDER_RIGHT)) {
+				if(cell.isBorderSet(CellElement.BORDER_RIGHT)) {
 					printLine(new LineElement(_xRight, _y, _xRight, _yHeight).setWidth(_lineWidth));
 				}
 				//
-				if(tableCell.isBorderSet(TableCell.BORDER_TOP)) {
+				if(cell.isBorderSet(CellElement.BORDER_TOP)) {
 					printLine(new LineElement(_x, _y, _xRight, _y).setWidth(_lineWidth));
 				}
 				//
-				if(tableCell.isBorderSet(TableCell.BORDER_BOTTOM)) {
+				if(cell.isBorderSet(CellElement.BORDER_BOTTOM)) {
 					printLine(new LineElement(_x, _yHeight, _xRight, _yHeight).setWidth(_lineWidth));
 				}
 			}
 			//
-			_x += tableCell.getWidth();
+			_x += cell.getMaxWidth();
 		}
 		//
 		return unitConverter.convertToPt(_height);
@@ -549,9 +547,9 @@ public class PageUtil {
 		float x = unitConverter.convertToPt(textElement.getX());
 		float y = calculateY(textElement, textHeight);
 		//
-		List<String> textElements = cutStringMultiLine(text, textWidth, maxWidth);
+		List<String> parts = cutStringMultiLine(text, textWidth, maxWidth);
 		float offset = 0.0f;
-		for(String part : textElements) {
+		for(String part : parts) {
 			printText(font, fontSize, color, x, y - offset, part);
 			offset += (textHeight > minHeight) ? textHeight : minHeight;
 		}
@@ -634,7 +632,7 @@ public class PageUtil {
 	 */
 	private List<String> cutStringMultiLine(String text, float textWidth, float maxWidth) {
 
-		List<String> textElements = new ArrayList<>();
+		List<String> elements = new ArrayList<>();
 		/*
 		 * This could be more dynamically.
 		 */
@@ -644,9 +642,37 @@ public class PageUtil {
 		for(int i = 0; i < parts; i++) {
 			int startIndex = i * partLength;
 			int stopIndex = startIndex + partLength;
-			textElements.add(text.substring(startIndex, (stopIndex > textLength) ? textLength : stopIndex));
+			elements.add(text.substring(startIndex, (stopIndex > textLength) ? textLength : stopIndex));
 		}
 		//
-		return textElements;
+		return elements;
+	}
+
+	private float calculateRowHeight(List<CellElement> cells, float minHeight) throws IOException {
+
+		float rowHeight = minHeight;
+		for(CellElement cell : cells) {
+			if(cell.getTextOption().equals(TextOption.MULTI_LINE)) {
+				/*
+				 * Get text metrics.
+				 */
+				String text = cell.getText();
+				PDFont font = cell.getFont();
+				float fontSize = cell.getFontSize();
+				float textWidth = calculateTextWidth(font, fontSize, text);
+				float textHeight = calculateTextHeight(font, fontSize);
+				List<String> parts = cutStringMultiLine(text, textWidth, unitConverter.convertToPt(cell.getMaxWidth()));
+				//
+				float cellHeight = 0.0f;
+				Iterator<String> iterator = parts.iterator();
+				while(iterator.hasNext()) {
+					iterator.next();
+					cellHeight += (textHeight > minHeight) ? textHeight : minHeight;
+				}
+				//
+				rowHeight = Math.max(rowHeight, cellHeight);
+			}
+		}
+		return rowHeight;
 	}
 }

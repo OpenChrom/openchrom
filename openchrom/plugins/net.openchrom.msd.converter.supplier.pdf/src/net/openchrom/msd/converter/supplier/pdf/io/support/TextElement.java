@@ -19,7 +19,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 public class TextElement extends AbstractReferenceElement<TextElement> {
 
 	private PDFont font = PDType1Font.HELVETICA;
-	private float fontSize = 12;
+	private float fontSize = 12; // pt
 	private Color color = Color.BLACK;
 	private float minHeight = -1;
 	private float maxWidth = Float.MAX_VALUE;
