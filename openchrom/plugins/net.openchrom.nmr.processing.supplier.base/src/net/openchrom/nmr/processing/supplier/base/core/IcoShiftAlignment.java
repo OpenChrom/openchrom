@@ -23,9 +23,11 @@ import java.nio.file.PathMatcher;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
@@ -261,10 +263,10 @@ public class IcoShiftAlignment {
 		}
 	}
 
-	public SimpleMatrix extractMultipleSpectra(String[] experimentalDatasets) {
+	public SimpleMatrix extractMultipleSpectra(List<Object> experimentalDatasetsList) {
 
-		List<Object> experimentalDatasetsList = new ArrayList<Object>();
-		experimentalDatasetsList = importMultipleDatasets(experimentalDatasets);
+		// List<Object> experimentalDatasetsList = new ArrayList<Object>();
+		// experimentalDatasetsList = importMultipleDatasets(experimentalDatasets);
 		//
 		boolean firstDataset = true;
 		SimpleMatrix experimentalDatasetsMatrix = null;
@@ -298,7 +300,11 @@ public class IcoShiftAlignment {
 
 		List<Object> experimentalDatasetsList = new ArrayList<Object>();
 		//
+		int counter = 0;
 		for(String s : experimentalDatasets) {
+			counter++;
+			System.out.println("Importing dataset " + counter + " / " + experimentalDatasets.length);
+			//
 			File file = new File(s);
 			IProcessingInfo processingInfo = ScanConverterNMR.convert(file, new NullProgressMonitor());
 			Object object = processingInfo.getProcessingResult();
@@ -308,5 +314,130 @@ public class IcoShiftAlignment {
 			}
 		}
 		return experimentalDatasetsList;
+	}
+
+	public LinkedHashMap<Integer, Integer> CalculateIntervals(List<Object> experimentalDatasetsList, String intervalsForAlignment) {
+
+		/*
+		 * refactor into ==> enum?
+		 * NUMBER_OF_INTERVALS
+		 * INTERVAL_LENGTH
+		 * WHOLE_SPECTRUM
+		 * SINGLE_PEAK
+		 * USER_DEFINED_INTERVALS
+		 */
+		LinkedHashMap<Integer, Integer> intervalRegionsMap = new LinkedHashMap<Integer, Integer>();
+		//
+		// Object object = experimentalDatasetsList.get(0);
+		IMeasurementNMR measureNMR = (IMeasurementNMR)experimentalDatasetsList.get(0);
+		IDataNMRSelection dataNMRSelect = new DataNMRSelection(measureNMR);
+		ISignalExtractor signalExtract = new SignalExtractor(dataNMRSelect);
+		double[] chemicalShiftAxis = signalExtract.extractChemicalShift();
+		int lengthOfDataset = dataNMRSelect.getMeasurmentNMR().getScanMNR().getNumberOfFourierPoints();
+		//
+		switch(intervalsForAlignment) {
+			case "SINGLE_PEAK":
+				/*
+				 * get left and right boundaries in ppm
+				 * find indices in data
+				 */
+				double lowerBorder = 2.0d; // ppm, user input
+				double higherBorder = 2.2d; // ppm, user input
+				UtilityFunctions utilityFunction = new UtilityFunctions();
+				int lowerBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, lowerBorder);
+				int higherBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, higherBorder);
+				intervalRegionsMap.put(lowerBorderIndex, higherBorderIndex);
+				break;
+			case "WHOLE_SPECTRUM":
+				/*
+				 * no user input required
+				 * start at index=0, end at index=lengthOfDataset-1
+				 */
+				intervalRegionsMap.put(0, lengthOfDataset - 1);
+				break;
+			case "NUMBER_OF_INTERVALS":
+				/*
+				 * divide present data in number of equal intervals
+				 * save every interval in map with left and right boundaries
+				 */
+				int numberOfIntervals = 100; // user input
+				//
+				int remainingInterval = lengthOfDataset % numberOfIntervals;
+				int approxIntervalSpan = (int)Math.floor(lengthOfDataset / numberOfIntervals);
+				// int maxValue = (remainingInterval - 1) * (approxIntervalSpan + 1) + 1;
+				int intervalSpan = approxIntervalSpan + 1;
+				//
+				int[] intervalStartsPartA = new int[remainingInterval];
+				for(int i = 1; i < remainingInterval; i++) {
+					intervalStartsPartA[i] = intervalStartsPartA[i - 1] + intervalSpan;
+				}
+				//
+				int[] intervalStartsPartB = new int[numberOfIntervals - remainingInterval];
+				int startOfPartB = (remainingInterval - 1) * (approxIntervalSpan + 1) + 1 + 1 + approxIntervalSpan;
+				intervalStartsPartB[0] = startOfPartB - 1;
+				for(int i = 1; i < numberOfIntervals - remainingInterval; i++) {
+					intervalStartsPartB[i] = intervalStartsPartB[i - 1] + approxIntervalSpan;
+				}
+				//
+				int[] intervalStartValues = ArrayUtils.addAll(intervalStartsPartA, intervalStartsPartB);
+				int[] intervalEndValues = new int[numberOfIntervals];
+				System.arraycopy(intervalStartValues, 1, intervalEndValues, 0, intervalStartValues.length - 1);
+				intervalEndValues[intervalEndValues.length - 1] = lengthOfDataset - 1;
+				//
+				for(int i = 0; i < numberOfIntervals; i++) {
+					intervalRegionsMap.put(intervalStartValues[i], intervalEndValues[i]);
+				}
+				break;
+			case "INTERVAL_LENGTH":
+				/*
+				 * divide present data by the amount of given datapoints (=length of interval) in equal intervals
+				 * save every interval in map with left and right boundaries
+				 */
+				int lengthOfIntervals = 1000; // user input
+				//
+				int numberOfFullIntervals = (int)Math.floor(lengthOfDataset / lengthOfIntervals);
+				int[] intervalStarts = new int[numberOfFullIntervals + 1];
+				for(int i = 1; i < numberOfFullIntervals + 1; i++) {
+					intervalStarts[i] = intervalStarts[i - 1] + lengthOfIntervals - 1;
+				}
+				int[] intervalEnds = new int[numberOfFullIntervals + 1];
+				intervalEnds[0] = lengthOfIntervals - 1;
+				for(int i = 1; i < numberOfFullIntervals + 1; i++) {
+					intervalEnds[i] = intervalEnds[i - 1] + lengthOfIntervals - 1;
+				}
+				if(intervalEnds[intervalEnds.length - 1] != lengthOfDataset - 1) {
+					intervalEnds[intervalEnds.length - 1] = lengthOfDataset - 1;
+				}
+				for(int i = 0; i < numberOfFullIntervals + 1; i++) {
+					intervalRegionsMap.put(intervalStarts[i], intervalEnds[i]);
+				}
+				break;
+			case "USER_DEFINED_INTERVALS":
+				/*
+				 * take a map / import a file / read an integral list... with user defined intervals
+				 * the boundaries will be in ppm (?); find indices in data
+				 * ***
+				 * main difference to number/length methods: intervals may be discontiguous!
+				 */
+				LinkedHashMap<Double, Double> userDefIntervalRegions = new LinkedHashMap<Double, Double>();
+				userDefIntervalRegions.put(9.765, 9.432);
+				userDefIntervalRegions.put(5.864, 4.732);
+				userDefIntervalRegions.put(4.284, 4.132);
+				userDefIntervalRegions.put(2.724, 2.483);
+				userDefIntervalRegions.put(1.999, 0.111);
+				//
+				UtilityFunctions utilityFunctionU = new UtilityFunctions();
+				userDefIntervalRegions.entrySet().forEach((entry) -> {
+					// get indices for each user defined interval
+					double higherUserBorder = entry.getKey();
+					double lowerUserBorder = entry.getValue();
+					// System.out.println(higherUserBorder + "-" + lowerUserBorder);
+					int lowerUserBorderIndex = utilityFunctionU.findIndexOfValue(chemicalShiftAxis, lowerUserBorder);
+					int higherUserBorderIndex = utilityFunctionU.findIndexOfValue(chemicalShiftAxis, higherUserBorder);
+					intervalRegionsMap.put(lowerUserBorderIndex, higherUserBorderIndex);
+				});
+				break;
+		}
+		return intervalRegionsMap;
 	}
 }
