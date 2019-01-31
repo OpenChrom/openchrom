@@ -14,18 +14,18 @@ package net.openchrom.nmr.processing.supplier.base.core;
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
 
-import net.openchrom.nmr.processing.supplier.base.settings.support.ZERO_FILLING_FACTOR;
+import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
 public class ZeroFilling {
 
-	public Complex[] zerofill(Complex[] intesityFID, IMeasurementNMR measurementNMR, ZERO_FILLING_FACTOR zeroFillingFactor) {
+	public Complex[] zerofill(Complex[] intesityFID, IMeasurementNMR measurementNMR, ZeroFillingFactor zeroFillingFactor) {
 
 		// }
 		Complex[] zeroFilledFID;
 		//
 		int newDataSize = 0;
 		int zeroFillingSize = zeroFillingFactor.getValue();
-		if(zeroFillingFactor.equals(ZERO_FILLING_FACTOR.AUTO) || zeroFillingSize < intesityFID.length) {
+		if(zeroFillingFactor.equals(ZeroFillingFactor.AUTO) || zeroFillingSize < intesityFID.length) {
 			newDataSize = (int)Math.pow(2, (int)(Math.ceil((Math.log(intesityFID.length) / Math.log(2)))));
 		} else {
 			newDataSize = zeroFillingSize;

@@ -4,7 +4,7 @@ import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 
 public class PhaseCorrectionSettings implements IProcessorSettings {
 
-	public enum PIVOT_POINT_SELECTION {
+	public enum PivotPointSelection {
 		LEFT("pivot @ far left end of the spectrum"), //
 		MIDDLE("pivot @ middle of the spectrum"), //
 		PEAK_MAX("pivot @ biggest peak of the spectrum"), //
@@ -13,7 +13,7 @@ public class PhaseCorrectionSettings implements IProcessorSettings {
 
 		private String pivotPosition = "";
 
-		private PIVOT_POINT_SELECTION(String pivotPosition) {
+		private PivotPointSelection(String pivotPosition) {
 			this.pivotPosition = pivotPosition;
 		}
 
@@ -24,7 +24,7 @@ public class PhaseCorrectionSettings implements IProcessorSettings {
 		}
 	}
 
-	private PIVOT_POINT_SELECTION pivotPointSelection = PIVOT_POINT_SELECTION.PEAK_MAX;
+	private PivotPointSelection pivotPointSelection = PivotPointSelection.PEAK_MAX;
 	private double zeroOrderPhaseCorrection = 0.0;
 	private double firstOrderPhaseCorrection = 0.0;
 	private double userDefinedPivotPointValue = 0.0;
@@ -40,12 +40,12 @@ public class PhaseCorrectionSettings implements IProcessorSettings {
 		this.dspPhaseFactor = dspPhaseFactor;
 	}
 
-	public PIVOT_POINT_SELECTION getPivotPointSelection() {
+	public PivotPointSelection getPivotPointSelection() {
 
 		return pivotPointSelection;
 	}
 
-	public void setPivotPointSelection(PIVOT_POINT_SELECTION pivotPointSelection) {
+	public void setPivotPointSelection(PivotPointSelection pivotPointSelection) {
 
 		this.pivotPointSelection = pivotPointSelection;
 	}

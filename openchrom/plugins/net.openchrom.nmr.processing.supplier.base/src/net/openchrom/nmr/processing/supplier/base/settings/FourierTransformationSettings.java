@@ -16,24 +16,24 @@ import org.eclipse.chemclipse.support.settings.EnumSelectionSettingProperty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import net.openchrom.nmr.processing.supplier.base.settings.support.ZERO_FILLING_FACTOR;
+import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
 public class FourierTransformationSettings implements IProcessorSettings {
 
 	@JsonProperty(value = "Zero Filling", defaultValue = "AUTO")
 	@EnumSelectionSettingProperty
-	private ZERO_FILLING_FACTOR zeroFillingFactor = ZERO_FILLING_FACTOR.AUTO;
+	private ZeroFillingFactor zeroFillingFactor = ZeroFillingFactor.AUTO;
 
 	public FourierTransformationSettings() {
 
 	}
 
-	public ZERO_FILLING_FACTOR getZeroFillingFactor() {
+	public ZeroFillingFactor getZeroFillingFactor() {
 
 		return zeroFillingFactor;
 	}
 
-	public void setZeroFillingFactor(ZERO_FILLING_FACTOR zeroFillingFactor) {
+	public void setZeroFillingFactor(ZeroFillingFactor zeroFillingFactor) {
 
 		this.zeroFillingFactor = zeroFillingFactor;
 	}

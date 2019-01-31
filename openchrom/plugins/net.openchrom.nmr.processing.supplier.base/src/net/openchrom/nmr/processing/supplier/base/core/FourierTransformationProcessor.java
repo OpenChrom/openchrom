@@ -27,7 +27,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.nmr.processing.supplier.base.settings.FourierTransformationSettings;
-import net.openchrom.nmr.processing.supplier.base.settings.support.ZERO_FILLING_FACTOR;
+import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
 public class FourierTransformationProcessor extends AbstractScanProcessor implements IScanProcessor {
 
@@ -55,7 +55,7 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		 */
 		//
 		ISignalExtractor signalExtractor = new SignalExtractor(dataNMRSelection);
-		ZERO_FILLING_FACTOR zeroFillingFactor = processorSettings.getZeroFillingFactor();
+		ZeroFillingFactor zeroFillingFactor = processorSettings.getZeroFillingFactor();
 		IMeasurementNMR measurementNMR = dataNMRSelection.getMeasurmentNMR();
 		/*
 		 * according to J.Holy:
