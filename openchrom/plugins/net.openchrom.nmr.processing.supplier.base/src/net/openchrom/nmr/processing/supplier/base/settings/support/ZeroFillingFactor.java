@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings.support;
 
-public enum ZERO_FILLING_FACTOR {
+public enum ZeroFillingFactor {
 	AUTO(0, "Auto zero filling"), //
 	FACTOR_2(1, "2"), //
 	FACTOR_4(2, "4"), //
@@ -37,7 +37,7 @@ public enum ZERO_FILLING_FACTOR {
 	private int exponent;
 	private String name;
 
-	private ZERO_FILLING_FACTOR(int exponent, String name) {
+	private ZeroFillingFactor(int exponent, String name) {
 
 		this.exponent = exponent;
 		this.name = name;
