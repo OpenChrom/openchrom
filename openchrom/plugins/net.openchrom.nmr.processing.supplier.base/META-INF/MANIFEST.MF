@@ -10,15 +10,15 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
  org.eclipse.chemclipse.nmr.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.nmr.processor;bundle-version="0.8.0",
- org.eclipse.chemclipse.processing;bundle-version="0.8.0",
- org.eclipse.chemclipse.thirdpartylibraries.apache.commons.math;bundle-version="3.5.0",
- com.fasterxml.jackson.core.jackson-annotations
+ org.eclipse.chemclipse.processing;bundle-version="0.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.nmr.processing.supplier.base.core,
  net.openchrom.nmr.processing.supplier.base.settings,
  net.openchrom.nmr.processing.supplier.base.settings.support
-Import-Package: org.apache.commons.lang3;version="3.2.1",
+Import-Package: com.fasterxml.jackson.annotation;version="2.0.0",
+ org.apache.commons.lang3;version="3.0.0",
+ org.apache.commons.math3,
  org.eclipse.chemclipse.model.core,
  org.eclipse.chemclipse.nmr.converter.core,
  org.ejml.simple
