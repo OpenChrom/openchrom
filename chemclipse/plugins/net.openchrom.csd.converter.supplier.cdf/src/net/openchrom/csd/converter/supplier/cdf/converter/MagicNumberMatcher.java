@@ -23,40 +23,32 @@ import ucar.nc2.NetcdfFile;
 public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
 
 	private static final Logger logger = Logger.getLogger(MagicNumberMatcher.class);
-	public static final String VARIABLE_MASS_VALUES = "mass_values";
+	private static final String VARIABLE_MASS_VALUES = "mass_values";
 
 	@Override
 	public boolean checkFileFormat(File file) {
 
 		boolean isValidFormat = false;
-		if(file != null) {
-			String fileName = file.getName().toLowerCase();
-			if(fileName.endsWith(".cdf")) {
-				NetcdfFile ncfile = null;
+		if(checkFileExtension(file, ".cdf")) {
+			NetcdfFile ncfile = null;
+			try {
 				try {
-					/*
-					 * If no mass values are stored, assume that it is a FID file.
-					 */
 					ncfile = NetcdfFile.open(file.getAbsolutePath());
 					if(ncfile != null) {
+						/*
+						 * If no mass values are stored, assume that it is a FID file.
+						 */
 						if(ncfile.findVariable(VARIABLE_MASS_VALUES) == null) {
 							isValidFormat = true;
 						}
 					}
-				} catch(IOException e) {
-					logger.warn(e);
 				} finally {
-					if(ncfile != null) {
-						try {
-							ncfile.close();
-						} catch(IOException e) {
-							logger.warn(e);
-						}
-					}
+					ncfile.close();
 				}
+			} catch(IOException e) {
+				logger.warn(e);
 			}
 		}
-		//
 		return isValidFormat;
 	}
 }
