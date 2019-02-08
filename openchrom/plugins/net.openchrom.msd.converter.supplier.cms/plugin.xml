@@ -10,7 +10,7 @@
             filterName="Calibrated Mass Spectra (*.CMS)"
             id="net.openchrom.msd.process.supplier.cms"
             importConverter="net.openchrom.msd.converter.supplier.cms.converter.DatabaseImportConverter"
-            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.cms.converter.MagicNumberMatcherDatabase"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.cms.converter.MagicNumberMatcher"
             isExportable="true"
             isImportable="true">
       </DatabaseSupplier>
