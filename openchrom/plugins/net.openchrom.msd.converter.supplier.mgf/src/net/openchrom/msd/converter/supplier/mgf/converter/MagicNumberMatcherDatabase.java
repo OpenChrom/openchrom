@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2019 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -21,9 +21,6 @@ public class MagicNumberMatcherDatabase extends AbstractMagicNumberMatcher imple
 	@Override
 	public boolean checkFileFormat(File file) {
 
-		if(file.getName().endsWith(".mgf")) {
-			return true;
-		}
-		return false;
+		return checkFileExtension(file, ".mgf");
 	}
 }
