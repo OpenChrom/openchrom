@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,6 +20,7 @@ public class IdentifierSetting {
 	private String comments = "";
 	private String contributor = "";
 	private String referenceId = "";
+	private String traces = "";
 
 	public void copyFrom(IdentifierSetting setting) {
 
@@ -31,6 +32,7 @@ public class IdentifierSetting {
 			setComments(setting.getComments());
 			setContributor(setting.getContributor());
 			setReferenceId(setting.getReferenceId());
+			setTraces(setting.getTraces());
 		}
 	}
 
@@ -102,6 +104,16 @@ public class IdentifierSetting {
 	public void setReferenceId(String referenceId) {
 
 		this.referenceId = referenceId;
+	}
+
+	public String getTraces() {
+
+		return traces;
+	}
+
+	public void setTraces(String traces) {
+
+		this.traces = traces;
 	}
 
 	@Override

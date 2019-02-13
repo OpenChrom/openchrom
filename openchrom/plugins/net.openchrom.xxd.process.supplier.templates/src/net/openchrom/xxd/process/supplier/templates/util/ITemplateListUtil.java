@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -13,10 +13,11 @@ package net.openchrom.xxd.process.supplier.templates.util;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.databinding.validation.IValidator;
 
-public interface IListUtil<T extends IValidator> {
+public interface ITemplateListUtil<T extends IValidator> {
 
 	T getValidator();
 
@@ -27,4 +28,8 @@ public interface IListUtil<T extends IValidator> {
 	List<String> importItems(File file);
 
 	void exportItems(File file, String[] items);
+
+	List<String> getList(String preferenceEntry);
+
+	Set<Integer> extractTraces(String traces);
 }

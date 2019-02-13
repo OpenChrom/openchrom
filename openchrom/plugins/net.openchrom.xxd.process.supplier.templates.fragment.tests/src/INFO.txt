@@ -1,1 +1,0 @@
-GIT needs at least one file in this directory to track it, otherwise Eclipse gives a compile error at checkout. Remove it, if not needed anymore.

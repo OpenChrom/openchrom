@@ -19,22 +19,27 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
-public abstract class AbstractListUtil<T extends IValidator> implements IListUtil<T> {
+public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> implements ITemplateListUtil<T> {
 
-	private static final Logger logger = Logger.getLogger(AbstractListUtil.class);
+	private static final Logger logger = Logger.getLogger(AbstractTemplateListUtil.class);
 	//
 	public static final String SEPARATOR_TOKEN = ";";
 	public static final String SEPARATOR_ENTRY = "|";
 	//
+	public static final String SEPARATOR_TRACE_ITEM = ",";
+	public static final String SEPARATOR_TRACE_RANGE = "-";
+	public static final int TRACE_ERROR = -1;
+	//
 	private T validator;
 
-	public AbstractListUtil(T validator) {
+	public AbstractTemplateListUtil(T validator) {
 		this.validator = validator;
 	}
 
@@ -106,6 +111,7 @@ public abstract class AbstractListUtil<T extends IValidator> implements IListUti
 		}
 	}
 
+	@Override
 	public List<String> getList(String preferenceEntry) {
 
 		List<String> values = new ArrayList<String>();
@@ -119,6 +125,35 @@ public abstract class AbstractListUtil<T extends IValidator> implements IListUti
 		}
 		Collections.sort(values);
 		return values;
+	}
+
+	@Override
+	public Set<Integer> extractTraces(String traces) {
+
+		Set<Integer> traceSet = new HashSet<>();
+		String[] values = traces.split(SEPARATOR_TRACE_ITEM);
+		for(String value : values) {
+			if(value.contains(SEPARATOR_TRACE_RANGE)) {
+				String[] parts = value.split(SEPARATOR_TRACE_RANGE);
+				if(parts.length == 2) {
+					int startTrace = validator.getTrace(parts[0]);
+					int stopTrace = validator.getTrace(parts[1]);
+					if(startTrace != TRACE_ERROR && stopTrace != TRACE_ERROR) {
+						if(startTrace <= stopTrace) {
+							for(int trace = startTrace; trace <= stopTrace; trace++) {
+								traceSet.add(trace);
+							}
+						}
+					}
+				}
+			} else {
+				int trace = validator.getTrace(value);
+				if(trace != TRACE_ERROR) {
+					traceSet.add(trace);
+				}
+			}
+		}
+		return traceSet;
 	}
 
 	private List<String> getValues(String[] items) {

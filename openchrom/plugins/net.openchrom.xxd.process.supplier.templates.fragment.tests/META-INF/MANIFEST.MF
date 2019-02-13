@@ -6,3 +6,4 @@ Bundle-Version: 1.4.0.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.xxd.process.supplier.templates;bundle-version="1.4.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit;bundle-version="4.12.0"

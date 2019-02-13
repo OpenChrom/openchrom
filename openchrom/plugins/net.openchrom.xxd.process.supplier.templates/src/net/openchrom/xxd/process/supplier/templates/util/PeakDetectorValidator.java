@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,22 +11,17 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-import org.eclipse.chemclipse.support.util.ValueParserSupport;
-import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 
-public class PeakDetectorValidator extends ValueParserSupport implements IValidator {
+public class PeakDetectorValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = PeakDetectorListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = PeakDetectorListUtil.SEPARATOR_ENTRY;
-	private static final String SEPARATOR_TRACE_ITEM = PeakDetectorListUtil.SEPARATOR_TRACE_ITEM;
-	private static final String SEPARATOR_TRACE_RANGE = PeakDetectorListUtil.SEPARATOR_TRACE_RANGE;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
-	private static final int TRACE_ERROR = PeakDetectorListUtil.TRACE_ERROR;
 	//
 	private double startRetentionTime = 0;
 	private double stopRetentionTime = 0;
@@ -89,41 +84,6 @@ public class PeakDetectorValidator extends ValueParserSupport implements IValida
 		}
 	}
 
-	public String validateTraces(String traces) {
-
-		String message = null;
-		if(!"".equals(traces)) {
-			String[] traceValues = traces.split(SEPARATOR_TRACE_ITEM);
-			exitloop:
-			for(String traceValue : traceValues) {
-				if(traceValue.contains(SEPARATOR_TRACE_RANGE)) {
-					String[] rangeParts = traceValue.split(SEPARATOR_TRACE_RANGE);
-					if(rangeParts.length == 2) {
-						int startTrace = getTrace(rangeParts[0]);
-						int stopTrace = getTrace(rangeParts[1]);
-						if(startTrace == TRACE_ERROR) {
-							message = "The start trace value is invalid: " + traceValue;
-							break exitloop;
-						} else if(stopTrace == TRACE_ERROR) {
-							message = "The stop trace value is invalid: " + traceValue;
-							break exitloop;
-						} else if(stopTrace < startTrace) {
-							message = "The start trace value must be lower than the stop value: " + traceValue;
-							break exitloop;
-						}
-					}
-				} else {
-					int trace = getTrace(traceValue);
-					if(trace == TRACE_ERROR) {
-						message = "The trace value is invalid: " + traceValue;
-						break exitloop;
-					}
-				}
-			}
-		}
-		return message;
-	}
-
 	public DetectorSetting getSetting() {
 
 		DetectorSetting setting = new DetectorSetting();
@@ -132,21 +92,5 @@ public class PeakDetectorValidator extends ValueParserSupport implements IValida
 		setting.setDetectorType(detectorType);
 		setting.setTraces(traces);
 		return setting;
-	}
-
-	public int getTrace(String value) {
-
-		int trace;
-		//
-		try {
-			trace = Integer.parseInt(value.trim());
-			if(trace <= 0) {
-				trace = TRACE_ERROR;
-			}
-		} catch(NumberFormatException e) {
-			trace = TRACE_ERROR;
-		}
-		//
-		return trace;
 	}
 }

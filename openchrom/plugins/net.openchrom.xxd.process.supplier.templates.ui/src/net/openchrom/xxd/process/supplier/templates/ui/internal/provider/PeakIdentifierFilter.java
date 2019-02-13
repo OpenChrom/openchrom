@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -41,6 +41,7 @@ public class PeakIdentifierFilter extends ViewerFilter {
 			String comments = setting.getComments();
 			String contributor = setting.getContributor();
 			String referenceId = setting.getReferenceId();
+			String traces = setting.getTraces();
 			//
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
@@ -49,6 +50,7 @@ public class PeakIdentifierFilter extends ViewerFilter {
 				comments = comments.toLowerCase();
 				contributor = contributor.toLowerCase();
 				referenceId = referenceId.toLowerCase();
+				traces = traces.toLowerCase();
 			}
 			//
 			if(name.contains(searchText)) {
@@ -68,6 +70,10 @@ public class PeakIdentifierFilter extends ViewerFilter {
 			}
 			//
 			if(referenceId.contains(searchText)) {
+				return true;
+			}
+			//
+			if(traces.contains(searchText)) {
 				return true;
 			}
 		}

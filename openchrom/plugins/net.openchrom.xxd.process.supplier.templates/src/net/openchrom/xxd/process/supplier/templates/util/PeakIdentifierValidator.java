@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,14 +11,12 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-import org.eclipse.chemclipse.support.util.ValueParserSupport;
-import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
 
-public class PeakIdentifierValidator extends ValueParserSupport implements IValidator {
+public class PeakIdentifierValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakIdentifierListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = PeakDetectorListUtil.SEPARATOR_TOKEN;
@@ -32,8 +30,8 @@ public class PeakIdentifierValidator extends ValueParserSupport implements IVali
 	private String comments = "";
 	private String contributor = "";
 	private String referenceId = "";
+	private String traces = "";
 
-	//
 	@Override
 	public IStatus validate(Object value) {
 
@@ -75,6 +73,10 @@ public class PeakIdentifierValidator extends ValueParserSupport implements IVali
 						comments = parseString(values, 4);
 						contributor = parseString(values, 5);
 						referenceId = parseString(values, 6);
+						//
+						String traceValues = parseString(values, 7);
+						message = validateTraces(traceValues);
+						traces = (message == null) ? traceValues : "";
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -101,6 +103,7 @@ public class PeakIdentifierValidator extends ValueParserSupport implements IVali
 		setting.setComments(comments);
 		setting.setContributor(contributor);
 		setting.setReferenceId(referenceId);
+		setting.setTraces(traces);
 		return setting;
 	}
 }

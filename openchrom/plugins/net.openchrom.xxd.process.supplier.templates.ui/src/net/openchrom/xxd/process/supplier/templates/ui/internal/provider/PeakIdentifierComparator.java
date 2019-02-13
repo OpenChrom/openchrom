@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -49,6 +49,9 @@ public class PeakIdentifierComparator extends AbstractRecordTableComparator impl
 					break;
 				case 6:
 					sortOrder = setting2.getReferenceId().compareTo(setting1.getReferenceId());
+					break;
+				case 7:
+					sortOrder = setting2.getTraces().compareTo(setting1.getTraces());
 					break;
 				default:
 					sortOrder = 0;

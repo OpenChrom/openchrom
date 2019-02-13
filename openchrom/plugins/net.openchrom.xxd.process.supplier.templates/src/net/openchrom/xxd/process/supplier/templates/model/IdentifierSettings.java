@@ -174,5 +174,9 @@ public class IdentifierSettings extends HashMap<String, IdentifierSetting> {
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
 		builder.append(setting.getReferenceId());
+		builder.append(" ");
+		builder.append(SEPARATOR_ENTRY);
+		builder.append(" ");
+		builder.append(setting.getTraces());
 	}
 }

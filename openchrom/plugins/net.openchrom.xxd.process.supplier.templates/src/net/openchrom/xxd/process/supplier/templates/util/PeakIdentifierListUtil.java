@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -11,10 +11,10 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-public class PeakIdentifierListUtil extends AbstractListUtil<PeakIdentifierValidator> {
+public class PeakIdentifierListUtil extends AbstractTemplateListUtil<PeakIdentifierValidator> {
 
-	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | Styrene | 100-42-5 | comment | contributor | referenceId";
-	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | Styrene | 100-42-5 | comment | contributor | referenceId ; 10.71 | 10.76 | Benzene";
+	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | Styrene | 100-42-5 | comment | contributor | referenceId | 103, 104";
+	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | Styrene | 100-42-5 | comment | contributor | referenceId | 103, 104; 10.71 | 10.76 | Benzene";
 
 	public PeakIdentifierListUtil() {
 		super(new PeakIdentifierValidator());

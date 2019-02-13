@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-public class StandardsReferencerListUtil extends AbstractListUtil<StandardsReferencerValidator> {
+public class StandardsReferencerListUtil extends AbstractTemplateListUtil<StandardsReferencerValidator> {
 
 	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | Toluene | Styrene";
 	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | Toluene | Styrene; 10.71 | 10.76 | Toluene | Benzene";

@@ -126,9 +126,9 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 				if(chromatogram instanceof IChromatogramMSD) {
 					IChromatogramMSD chromatogramMSD = (IChromatogramMSD)chromatogram;
 					IChromatogramPeakMSD peak;
-					Set<Integer> includedIons = listUtil.extractTraces(detectorSetting.getTraces());
-					if(includedIons.size() > 0) {
-						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground, includedIons);
+					Set<Integer> traces = listUtil.extractTraces(detectorSetting.getTraces());
+					if(traces.size() > 0) {
+						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground, traces);
 					} else {
 						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground);
 					}

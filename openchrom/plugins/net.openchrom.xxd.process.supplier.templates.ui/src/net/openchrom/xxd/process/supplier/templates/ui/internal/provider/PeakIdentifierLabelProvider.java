@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -30,6 +30,7 @@ public class PeakIdentifierLabelProvider extends AbstractChemClipseLabelProvider
 	public static final String COMMENTS = "Comments";
 	public static final String CONTRIBUTOR = "Contributor";
 	public static final String REFERENCE_ID = "Reference Id";
+	public static final String TRACES = "Traces";
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 	//
@@ -40,7 +41,8 @@ public class PeakIdentifierLabelProvider extends AbstractChemClipseLabelProvider
 			CAS_NUMBER, //
 			COMMENTS, //
 			CONTRIBUTOR, //
-			REFERENCE_ID //
+			REFERENCE_ID, //
+			TRACES //
 	};
 	public static final int[] BOUNDS = { //
 			200, //
@@ -49,7 +51,8 @@ public class PeakIdentifierLabelProvider extends AbstractChemClipseLabelProvider
 			100, //
 			100, //
 			100, //
-			50 //
+			50, //
+			100 //
 	};
 
 	@Override
@@ -88,6 +91,9 @@ public class PeakIdentifierLabelProvider extends AbstractChemClipseLabelProvider
 					break;
 				case 6:
 					text = setting.getReferenceId();
+					break;
+				case 7:
+					text = setting.getTraces();
 					break;
 				default:
 					text = "n.v.";
