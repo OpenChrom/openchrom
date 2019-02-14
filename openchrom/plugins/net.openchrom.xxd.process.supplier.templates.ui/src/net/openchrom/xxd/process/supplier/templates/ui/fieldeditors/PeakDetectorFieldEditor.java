@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,6 +15,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
+import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
+import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
+import org.eclipse.chemclipse.support.ui.swt.ITableSettings;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -22,6 +26,7 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -31,6 +36,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSettings;
@@ -50,6 +56,9 @@ public class PeakDetectorFieldEditor extends AbstractFieldEditor {
 	private static final String FILTER_EXTENSION = "*.txt";
 	private static final String FILTER_NAME = "Peak Detector Template (*.txt)";
 	private static final String FILE_NAME = "PeakDetectorTemplate.txt";
+	//
+	private static final String CATEGORY = "Peak Detector";
+	private static final String DELETE = "Delete";
 
 	public PeakDetectorFieldEditor(String name, String labelText, Composite parent) {
 		init(name, labelText);
@@ -112,6 +121,13 @@ public class PeakDetectorFieldEditor extends AbstractFieldEditor {
 		composite.setLayoutData(gridData);
 		//
 		listUI = new PeakDetectorListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		//
+		Shell shell = listUI.getTable().getShell();
+		ITableSettings tableSettings = listUI.getTableSettings();
+		addDeleteMenuEntry(shell, tableSettings);
+		addKeyEventProcessors(shell, tableSettings);
+		listUI.applySettings(tableSettings);
+		//
 		setTableViewerInput();
 	}
 
@@ -198,17 +214,7 @@ public class PeakDetectorFieldEditor extends AbstractFieldEditor {
 
 			public void widgetSelected(SelectionEvent e) {
 
-				if(MessageDialog.openQuestion(button.getShell(), DIALOG_TITLE, MESSAGE_REMOVE)) {
-					IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
-					List<DetectorSetting> removeElements = new ArrayList<>();
-					for(Object object : structuredSelection.toArray()) {
-						if(object instanceof DetectorSetting) {
-							removeElements.add((DetectorSetting)object);
-						}
-					}
-					settings.removeAll(removeElements);
-					setTableViewerInput();
-				}
+				deleteItems(e.display.getActiveShell());
 			}
 		});
 		//
@@ -333,6 +339,59 @@ public class PeakDetectorFieldEditor extends AbstractFieldEditor {
 			GridData gridData = (GridData)composite.getLayoutData();
 			gridData.horizontalSpan = numColumns - 1;
 			gridData.grabExcessHorizontalSpace = true;
+		}
+	}
+
+	private void addDeleteMenuEntry(Shell shell, ITableSettings tableSettings) {
+
+		tableSettings.addMenuEntry(new ITableMenuEntry() {
+
+			@Override
+			public String getName() {
+
+				return DELETE;
+			}
+
+			@Override
+			public String getCategory() {
+
+				return CATEGORY;
+			}
+
+			@Override
+			public void execute(ExtendedTableViewer extendedTableViewer) {
+
+				deleteItems(shell);
+			}
+		});
+	}
+
+	private void addKeyEventProcessors(Shell shell, ITableSettings tableSettings) {
+
+		tableSettings.addKeyEventProcessor(new IKeyEventProcessor() {
+
+			@Override
+			public void handleEvent(ExtendedTableViewer extendedTableViewer, KeyEvent e) {
+
+				if(e.keyCode == SWT.DEL) {
+					deleteItems(shell);
+				}
+			}
+		});
+	}
+
+	private void deleteItems(Shell shell) {
+
+		if(MessageDialog.openQuestion(shell, DIALOG_TITLE, MESSAGE_REMOVE)) {
+			IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
+			List<DetectorSetting> removeElements = new ArrayList<>();
+			for(Object object : structuredSelection.toArray()) {
+				if(object instanceof DetectorSetting) {
+					removeElements.add((DetectorSetting)object);
+				}
+			}
+			settings.removeAll(removeElements);
+			setTableViewerInput();
 		}
 	}
 }
