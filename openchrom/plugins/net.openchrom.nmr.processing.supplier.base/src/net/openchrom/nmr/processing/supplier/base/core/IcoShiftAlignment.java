@@ -73,7 +73,7 @@ public class IcoShiftAlignment {
 		/*
 		 * intervals to align => "SINGLE_PEAK", "WHOLE_SPECTRUM", "NUMBER_OF_INTERVALS", "INTERVAL_LENGTH", "USER_DEFINED_INTERVALS"
 		 */
-		intervalSelection.setIntervalSelection("NUMBER_OF_INTERVALS");
+		intervalSelection.setIntervalSelection("SINGLE_PEAK");
 		// SINGLE_PEAK
 		intervalSelection.setSinglePeakHigherBorder(2.41);
 		intervalSelection.setSinglePeakLowerBorder(2.21);
@@ -100,8 +100,15 @@ public class IcoShiftAlignment {
 		 */
 		gapFillingType.setGapFillingType("MARGIN");
 		/*
+		 * optional preliminary Co-Shifting of whole dataset => "YES" or "NO"
+		 */
+		preliminaryCoShifting.setPreliminaryCoShifting("NO");
+		/*
 		 * settings end
 		 */
+		if(!intervalSelection.getIntervalSelection().contentEquals("WHOLE_SPECTRUM") && preliminaryCoShifting.getPreliminaryCoShifting().contentEquals("YES")) {
+			experimentalDatasetsMatrix = executePreliminaryCoShifting(experimentalDatasetsList, experimentalDatasetsMatrix);
+		}
 		// calculate intervals according to settings
 		LinkedHashMap<Integer, Integer> intervalRegionsMap = calculateIntervals(experimentalDatasetsList);
 		// check after calculation of intervals
@@ -134,6 +141,32 @@ public class IcoShiftAlignment {
 				break;
 		}
 		return alignedDatasets;
+	}
+
+	private SimpleMatrix executePreliminaryCoShifting(List<Object> experimentalDatasetsList, SimpleMatrix experimentalDatasetsMatrix) {
+
+		SimpleMatrix result = new SimpleMatrix(experimentalDatasetsMatrix.numRows(), experimentalDatasetsMatrix.numCols());
+		// backup settings made by user
+		String backupTargetCalculationSelection = targetCalculationSelection.getTargetCalculationSelection();
+		String backupIntervalSelection = intervalSelection.getIntervalSelection();
+		String backupShiftCorrectionType = shiftCorrectionType.getShiftCorrectionType();
+		String backupGapFillingType = gapFillingType.getGapFillingType();
+		// change settings for preliminary Co-Shifting
+		targetCalculationSelection.setTargetCalculationSelection("MEAN"); // or MEDIAN
+		intervalSelection.setIntervalSelection("WHOLE_SPECTRUM");
+		shiftCorrectionType.setShiftCorrectionType("FAST");
+		gapFillingType.setGapFillingType("MARGIN");
+		// co-shift the datasets
+		LinkedHashMap<Integer, Integer> preliminaryIntervalRegionsMap = calculateIntervals(experimentalDatasetsList);
+		result = alignSeveralIntervals(preliminaryIntervalRegionsMap, experimentalDatasetsMatrix);
+		intervalSelection.IntervalRegionsMap.clear();
+		// restore settings
+		targetCalculationSelection.setTargetCalculationSelection(backupTargetCalculationSelection);
+		intervalSelection.setIntervalSelection(backupIntervalSelection);
+		shiftCorrectionType.setShiftCorrectionType(backupShiftCorrectionType);
+		gapFillingType.setGapFillingType(backupGapFillingType);
+		//
+		return result;
 	}
 
 	private double[] calculateSelectedTarget(SimpleMatrix experimentalDatasetsMatrix) {
@@ -1213,4 +1246,34 @@ public class IcoShiftAlignment {
 	}
 
 	public TARGET_CALCULATION_SELECTION targetCalculationSelection = TARGET_CALCULATION_SELECTION.MEAN;
+
+	public enum PRELIMINARY_CO_SHIFTING {
+		YES("YES"), //
+		NO("NO"); //
+
+		private String preliminaryCoShifting;
+
+		public String getPreliminaryCoShifting() {
+
+			return preliminaryCoShifting;
+		}
+
+		public void setPreliminaryCoShifting(String preliminaryCoShifting) {
+
+			this.preliminaryCoShifting = preliminaryCoShifting;
+		}
+
+		private PRELIMINARY_CO_SHIFTING(String preliminaryCoShifting) {
+
+			this.preliminaryCoShifting = preliminaryCoShifting;
+		}
+
+		@Override
+		public String toString() {
+
+			return preliminaryCoShifting;
+		}
+	}
+
+	public PRELIMINARY_CO_SHIFTING preliminaryCoShifting = PRELIMINARY_CO_SHIFTING.NO;
 }
