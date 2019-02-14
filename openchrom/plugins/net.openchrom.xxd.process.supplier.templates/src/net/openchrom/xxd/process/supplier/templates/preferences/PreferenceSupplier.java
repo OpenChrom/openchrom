@@ -39,6 +39,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String DEF_STANDARDS_ASSIGNER_LIST = "";
 	public static final String P_STANDARDS_REFERENCER_LIST = "standardsReferencerList";
 	public static final String DEF_STANDARDS_REFERENCER_LIST = "";
+	public static final String P_PEAK_INTEGRATOR_LIST = "peakIntegratorList";
+	public static final String DEF_PEAK_INTEGRATOR_LIST = "";
+	//
 	public static final String P_LIST_PATH_IMPORT = "listPathImport";
 	public static final String DEF_LIST_PATH_IMPORT = "";
 	public static final String P_LIST_PATH_EXPORT = "listPathExport";
@@ -76,6 +79,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_PEAK_IDENTIFIER_LIST_CSD, DEF_PEAK_IDENTIFIER_LIST_CSD);
 		defaultValues.put(P_STANDARDS_ASSIGNER_LIST, DEF_STANDARDS_ASSIGNER_LIST);
 		defaultValues.put(P_STANDARDS_REFERENCER_LIST, DEF_STANDARDS_REFERENCER_LIST);
+		defaultValues.put(P_PEAK_INTEGRATOR_LIST, DEF_PEAK_INTEGRATOR_LIST);
+		//
 		defaultValues.put(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
 		defaultValues.put(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
 		return defaultValues;

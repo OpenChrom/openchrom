@@ -57,7 +57,17 @@
             peakQuantifierName="Peak Standards Referencer (ISTD)"
             peakQuantifierSettings="net.openchrom.xxd.process.supplier.templates.settings.StandardsReferencerSettings">
       </PeakQuantifierSupplier>          
-   </extension>        
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.xxd.integrator.peakIntegratorSupplier">
+      <PeakIntegratorSupplier
+            description="This template peak integrator allows to select integration methods."
+            id="net.openchrom.xxd.process.supplier.templates.peakIntegrator"
+            integrator="net.openchrom.xxd.process.supplier.templates.peaks.TemplateIntegrator"
+            integratorName="Peak Integrator Template"
+            integratorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakIntegrationSettings">
+      </PeakIntegratorSupplier>
+   </extension>           
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
