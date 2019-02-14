@@ -28,6 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
+import java.util.stream.DoubleStream;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -141,6 +142,22 @@ public class IcoShiftAlignment {
 				break;
 		}
 		return alignedDatasets;
+	}
+
+	private void checkLengthOfEachSpectrum(List<Object> experimentalDatasetsList) {
+
+		double[] collectNumberOfFourierPoints = new double[experimentalDatasetsList.size()];
+		//
+		for(int i = 0; i < experimentalDatasetsList.size(); i++) {
+			IMeasurementNMR measureNMR = (IMeasurementNMR)experimentalDatasetsList.get(i);
+			IDataNMRSelection dataNMRSelect = new DataNMRSelection(measureNMR);
+			collectNumberOfFourierPoints[i] = dataNMRSelect.getMeasurmentNMR().getProcessingParameters("numberOfFourierPoints");// getScanMNR().getNumberOfFourierPoints();
+		}
+		//
+		boolean verification = DoubleStream.of(collectNumberOfFourierPoints).anyMatch(x -> x != collectNumberOfFourierPoints[0]);
+		if(verification) {
+			throw new IllegalArgumentException("Size of all experiments is not equal!");
+		}
 	}
 
 	private SimpleMatrix executePreliminaryCoShifting(List<Object> experimentalDatasetsList, SimpleMatrix experimentalDatasetsMatrix) {
@@ -448,6 +465,10 @@ public class IcoShiftAlignment {
 				experimentalDatasetsList.add(object);
 			}
 		}
+		//
+		// safety check for length of each spectrum; has to be equal length!
+		checkLengthOfEachSpectrum(experimentalDatasetsList);
+		//
 		return experimentalDatasetsList;
 	}
 
@@ -1000,8 +1021,7 @@ public class IcoShiftAlignment {
 
 	private void checkShiftCorrectionTypeValueSize(LinkedHashMap<Integer, Integer> intervalRegionsMap) {
 
-		IcoShiftAlignment isal = new IcoShiftAlignment();
-		int shiftCorrectionTypeValue = isal.shiftCorrectionType.getShiftCorrectionTypeValue();
+		int shiftCorrectionTypeValue = shiftCorrectionType.getShiftCorrectionTypeValue();
 		intervalRegionsMap.entrySet().forEach((interval) -> {
 			int intervalRange = interval.getValue() - interval.getKey() + 1;
 			if((shiftCorrectionTypeValue > intervalRange) || ((shiftCorrectionTypeValue * 2) > intervalRange)) {
