@@ -70,7 +70,7 @@ public class IcoShiftAlignment {
 	public SimpleMatrix process(SimpleMatrix experimentalDatasetsMatrix, SortedMap<Integer, Interval> intervalRegionsMap, IcoShiftAlignmentSettings settings) {
 
 		this.settings = settings;
-		if(!settings.getAlignmentType().equals(AlignmentType.WHOLE_SPECTRUM) && settings.getPrelimiterCoShifting().equals(PrelimiterCoShifting.YES)) {
+		if(!settings.getAlignmentType().equals(AlignmentType.WHOLE_SPECTRUM) && settings.isPrelimiterCoShifting()) {
 			experimentalDatasetsMatrix = executePreliminaryCoShifting(experimentalDatasetsMatrix);
 		}
 		// check after calculation of intervals
@@ -893,24 +893,6 @@ public class IcoShiftAlignment {
 		public String toString() {
 
 			return targetCalculationSelection;
-		}
-	}
-
-	public enum PrelimiterCoShifting {
-		YES("Yes"), //
-		NO("No"); //
-
-		private String preliminaryCoShifting;
-
-		private PrelimiterCoShifting(String preliminaryCoShifting) {
-
-			this.preliminaryCoShifting = preliminaryCoShifting;
-		}
-
-		@Override
-		public String toString() {
-
-			return preliminaryCoShifting;
 		}
 	}
 }

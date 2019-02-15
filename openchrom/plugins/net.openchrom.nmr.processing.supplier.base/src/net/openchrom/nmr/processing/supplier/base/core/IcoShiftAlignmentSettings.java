@@ -16,7 +16,6 @@ import java.util.List;
 import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.AlignmentType;
 import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.ChemicalShiftInterval;
 import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.GapFillingType;
-import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.PrelimiterCoShifting;
 import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.ShiftCorrectionType;
 import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.TargetCalculationSelection;
 
@@ -32,7 +31,7 @@ public class IcoShiftAlignmentSettings {
 	private int numberOfIntervals;
 	private double intervalLength;
 	private List<ChemicalShiftInterval> userDefIntervalRegions;
-	private PrelimiterCoShifting prelimiterCoShifting = PrelimiterCoShifting.NO;
+	private boolean prelimiterCoShifting = false;
 
 	public TargetCalculationSelection getTargetCalculationSelection() {
 
@@ -134,13 +133,13 @@ public class IcoShiftAlignmentSettings {
 		this.shiftCorrectionTypeValue = shiftCorrectionTypeValue;
 	}
 
-	public void setPrelimiterCoShifting(PrelimiterCoShifting prelimiterCoShifting) {
-
-		this.prelimiterCoShifting = prelimiterCoShifting;
-	}
-
-	public PrelimiterCoShifting getPrelimiterCoShifting() {
+	public boolean isPrelimiterCoShifting() {
 
 		return prelimiterCoShifting;
+	}
+
+	public void setPrelimiterCoShifting(boolean prelimiterCoShifting) {
+
+		this.prelimiterCoShifting = prelimiterCoShifting;
 	}
 }
