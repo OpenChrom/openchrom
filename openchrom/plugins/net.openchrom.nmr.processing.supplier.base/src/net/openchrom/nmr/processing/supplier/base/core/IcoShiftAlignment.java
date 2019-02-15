@@ -768,11 +768,11 @@ public class IcoShiftAlignment {
 	 * enums
 	 */
 	public enum AlignmentType {
-		SINGLE_PEAK("SINGLE_PEAK"), // align spectra referencing a single peak
-		WHOLE_SPECTRUM("WHOLE_SPECTRUM"), // align the whole spectrum
-		NUMBER_OF_INTERVALS("NUMBER_OF_INTERVALS"), // align the spectrum divided in the given no. of intervals
-		INTERVAL_LENGTH("INTERVAL_LENGTH"), // align the spectrum divided in intervals of given length
-		USER_DEFINED_INTERVALS("USER_DEFINED_INTERVALS");
+		SINGLE_PEAK("Single Peak"), // align spectra referencing a single peak
+		WHOLE_SPECTRUM("Whole Spectrum"), // align the whole spectrum
+		NUMBER_OF_INTERVALS("Number of Intervals"), // align the spectrum divided in the given no. of intervals
+		INTERVAL_LENGTH("Interval Length"), // align the spectrum divided in intervals of given length
+		USER_DEFINED_INTERVALS("User Defined Intervals");
 
 		//
 		private String intervalSelection;

@@ -24,7 +24,7 @@ public class IcoShiftAlignmentSettings {
 	private TargetCalculationSelection targetCalculationSelection = TargetCalculationSelection.MEAN;
 	private ShiftCorrectionType shiftCorrectionType = ShiftCorrectionType.FAST;
 	private int shiftCorrectionTypeValue;
-	private GapFillingType gapFillingType = GapFillingType.ZERO;
+	private GapFillingType gapFillingType = GapFillingType.MARGIN;
 	private AlignmentType alignmentType = AlignmentType.SINGLE_PEAK;
 	private double singlePeakLowerBorder;
 	private double singlePeakHigherBorder;
