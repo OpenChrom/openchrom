@@ -29,10 +29,7 @@ import org.eclipse.chemclipse.nmr.model.selection.DataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.ejml.simple.SimpleMatrix;
-
-import net.openchrom.nmr.processing.supplier.base.settings.FourierTransformationSettings;
 
 public class IcoShiftAlignment {
 
@@ -215,17 +212,14 @@ public class IcoShiftAlignment {
 		int matrixRow = 0;
 		//
 		for(IMeasurementNMR measurementNMR : experimentalDatasetsList) {
-			IDataNMRSelection dataNMRSelection = new DataNMRSelection(measurementNMR);
-			FourierTransformationProcessor fourierTransformation = new FourierTransformationProcessor();
-			fourierTransformation.process(dataNMRSelection, new FourierTransformationSettings(), new NullProgressMonitor());
 			// prepare matrix for storage of spectra >once< => aiming for comparison each spectrum should have the same size
 			if(firstDataset) {
 				int numberOfDatasets = experimentalDatasetsList.size();
-				int datapointsPerDataset = dataNMRSelection.getMeasurmentNMR().getScanMNR().getNumberOfFourierPoints();
+				int datapointsPerDataset = measurementNMR.getScanMNR().getNumberOfFourierPoints();
 				experimentalDatasetsMatrix = new SimpleMatrix(numberOfDatasets, datapointsPerDataset);
 				firstDataset = false;
 			}
-			ISignalExtractor signalExtractor = new SignalExtractor(dataNMRSelection);
+			ISignalExtractor signalExtractor = new SignalExtractor(measurementNMR);
 			experimentalDatasetsMatrix.setRow(matrixRow, 0, signalExtractor.extractFourierTransformedDataRealPart());
 			matrixRow++;
 		}
