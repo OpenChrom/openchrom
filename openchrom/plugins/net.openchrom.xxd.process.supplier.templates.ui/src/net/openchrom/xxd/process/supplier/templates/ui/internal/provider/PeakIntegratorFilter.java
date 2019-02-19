@@ -36,16 +36,16 @@ public class PeakIntegratorFilter extends ViewerFilter {
 		//
 		if(element instanceof IntegratorSetting) {
 			IntegratorSetting setting = (IntegratorSetting)element;
-			String name = setting.getName();
+			String identifier = setting.getIdentifier();
 			String integrator = setting.getIntegrator();
 			//
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
-				name = name.toLowerCase();
+				identifier = identifier.toLowerCase();
 				integrator = integrator.toLowerCase();
 			}
 			//
-			if(name.contains(searchText)) {
+			if(identifier.contains(searchText)) {
 				return true;
 			}
 			//

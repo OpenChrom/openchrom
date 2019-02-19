@@ -32,8 +32,8 @@ public class IntegratorSetting_2_Test extends TestCase {
 
 	public void test1() {
 
-		setting.setName("Test");
-		assertEquals("Test", setting.getName());
+		setting.setIdentifier("Test");
+		assertEquals("Test", setting.getIdentifier());
 	}
 
 	public void test2() {

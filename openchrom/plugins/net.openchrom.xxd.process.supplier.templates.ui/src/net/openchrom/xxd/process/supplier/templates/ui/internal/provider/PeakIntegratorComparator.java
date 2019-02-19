@@ -30,13 +30,13 @@ public class PeakIntegratorComparator extends AbstractRecordTableComparator impl
 			//
 			switch(getPropertyIndex()) {
 				case 0:
-					sortOrder = setting2.getName().compareTo(setting1.getName());
-					break;
-				case 1:
 					sortOrder = Double.compare(setting2.getStartRetentionTime(), setting1.getStartRetentionTime());
 					break;
-				case 2:
+				case 1:
 					sortOrder = Double.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
+					break;
+				case 2:
+					sortOrder = setting2.getIdentifier().compareTo(setting1.getIdentifier());
 					break;
 				case 3:
 					sortOrder = setting2.getIntegrator().compareTo(setting1.getIntegrator());

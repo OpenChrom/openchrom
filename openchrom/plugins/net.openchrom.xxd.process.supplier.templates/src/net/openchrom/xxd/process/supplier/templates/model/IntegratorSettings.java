@@ -142,15 +142,15 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> {
 
 	private void extractSetting(IntegratorSetting setting, StringBuilder builder) {
 
-		builder.append(setting.getName());
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
 		builder.append(setting.getStartRetentionTime());
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
 		builder.append(setting.getStopRetentionTime());
+		builder.append(" ");
+		builder.append(SEPARATOR_ENTRY);
+		builder.append(" ");
+		builder.append(setting.getIdentifier());
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");

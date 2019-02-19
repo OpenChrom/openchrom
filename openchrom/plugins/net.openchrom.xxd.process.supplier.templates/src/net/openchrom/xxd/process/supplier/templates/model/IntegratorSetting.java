@@ -13,32 +13,24 @@ package net.openchrom.xxd.process.supplier.templates.model;
 
 public class IntegratorSetting {
 
-	public static final String INTEGRATOR_MAX = "Max";
-	public static final String INTEGRATOR_TRAPEZOID = "Trapezoid";
+	public static final String INTEGRATOR_NAME_TRAPEZOID = "Trapezoid";
+	public static final String INTEGRATOR_ID_TRAPEZOID = "org.eclipse.chemclipse.chromatogram.xxd.integrator.supplier.trapezoid.peakIntegrator";
+	public static final String INTEGRATOR_NAME_MAX = "Max";
+	public static final String INTEGRATOR_ID_MAX = "org.eclipse.chemclipse.chromatogram.msd.integrator.supplier.peakmax.peakIntegrator";
 	//
-	private String name = "";
 	private double startRetentionTime = 0.0d; // Minutes
 	private double stopRetentionTime = 0.0d; // Minutes
+	private String identifier = "";
 	private String integrator = "";
 
 	public void copyFrom(IntegratorSetting setting) {
 
 		if(setting != null) {
-			setName(setting.getName());
 			setStartRetentionTime(setting.getStartRetentionTime());
 			setStopRetentionTime(setting.getStopRetentionTime());
+			setIdentifier(setting.getIdentifier());
 			setIntegrator(setting.getIntegrator());
 		}
-	}
-
-	public String getName() {
-
-		return name;
-	}
-
-	public void setName(String name) {
-
-		this.name = name;
 	}
 
 	public double getStartRetentionTime() {
@@ -61,6 +53,16 @@ public class IntegratorSetting {
 		this.stopRetentionTime = stopRetentionTime;
 	}
 
+	public String getIdentifier() {
+
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+
+		this.identifier = identifier;
+	}
+
 	public String getIntegrator() {
 
 		return integrator;
@@ -76,7 +78,12 @@ public class IntegratorSetting {
 
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(startRetentionTime);
+		result = prime * result + (int)(temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(stopRetentionTime);
+		result = prime * result + (int)(temp ^ (temp >>> 32));
 		return result;
 	}
 
@@ -90,10 +97,14 @@ public class IntegratorSetting {
 		if(getClass() != obj.getClass())
 			return false;
 		IntegratorSetting other = (IntegratorSetting)obj;
-		if(name == null) {
-			if(other.name != null)
+		if(identifier == null) {
+			if(other.identifier != null)
 				return false;
-		} else if(!name.equals(other.name))
+		} else if(!identifier.equals(other.identifier))
+			return false;
+		if(Double.doubleToLongBits(startRetentionTime) != Double.doubleToLongBits(other.startRetentionTime))
+			return false;
+		if(Double.doubleToLongBits(stopRetentionTime) != Double.doubleToLongBits(other.stopRetentionTime))
 			return false;
 		return true;
 	}
@@ -101,6 +112,6 @@ public class IntegratorSetting {
 	@Override
 	public String toString() {
 
-		return "IntegratorSetting [name=" + name + ", startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", integrator=" + integrator + "]";
+		return "IntegratorSetting [startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", identifier=" + identifier + ", integrator=" + integrator + "]";
 	}
 }

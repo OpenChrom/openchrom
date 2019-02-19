@@ -13,8 +13,8 @@ package net.openchrom.xxd.process.supplier.templates.util;
 
 public class PeakIntegratorListUtil extends AbstractTemplateListUtil<PeakIntegratorValidator> {
 
-	public static final String EXAMPLE_SINGLE = "Styrene | 10.52 | 10.63 | Trapezoid";
-	public static final String EXAMPLE_MULTIPLE = "Styrene | 10.52 | 10.63 | Trapezoid; Benzene | 10.71 | 10.76 | Max";
+	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | Styrene | Trapezoid";
+	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | Styrene | Trapezoid; 10.71 | 10.76 | Benzene | Max";
 
 	public PeakIntegratorListUtil() {
 		super(new PeakIntegratorValidator());

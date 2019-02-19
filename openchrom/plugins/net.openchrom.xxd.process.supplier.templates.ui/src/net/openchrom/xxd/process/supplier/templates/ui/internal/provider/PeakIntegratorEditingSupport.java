@@ -13,8 +13,10 @@ package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.SWT;
 
 import net.openchrom.xxd.process.supplier.templates.model.IntegratorSetting;
 
@@ -23,11 +25,22 @@ public class PeakIntegratorEditingSupport extends EditingSupport {
 	private CellEditor cellEditor;
 	private ExtendedTableViewer tableViewer;
 	private String column;
+	//
+	private String[] integratorItems = new String[]{ //
+			IntegratorSetting.INTEGRATOR_NAME_TRAPEZOID, //
+			IntegratorSetting.INTEGRATOR_NAME_MAX //
+	};
 
 	public PeakIntegratorEditingSupport(ExtendedTableViewer tableViewer, String column) {
 		super(tableViewer);
 		this.column = column;
-		this.cellEditor = new TextCellEditor(tableViewer.getTable());
+		if(column.equals(PeakIntegratorLabelProvider.INTEGRATOR)) {
+			this.cellEditor = new ComboBoxCellEditor(tableViewer.getTable(), //
+					integratorItems, //
+					SWT.READ_ONLY); //
+		} else {
+			this.cellEditor = new TextCellEditor(tableViewer.getTable());
+		}
 		this.tableViewer = tableViewer;
 	}
 
@@ -49,15 +62,21 @@ public class PeakIntegratorEditingSupport extends EditingSupport {
 		if(element instanceof IntegratorSetting) {
 			IntegratorSetting setting = (IntegratorSetting)element;
 			switch(column) {
-				/*
-				 * Do not edit the name
-				 */
 				case PeakIntegratorLabelProvider.START_RETENTION_TIME:
 					return Double.toString(setting.getStartRetentionTime());
 				case PeakIntegratorLabelProvider.STOP_RETENTION_TIME:
 					return Double.toString(setting.getStopRetentionTime());
+				case PeakIntegratorLabelProvider.IDENTIFIER:
+					return setting.getIdentifier();
 				case PeakIntegratorLabelProvider.INTEGRATOR:
-					return setting.getIntegrator();
+					String item = setting.getIntegrator();
+					if(item.equals(IntegratorSetting.INTEGRATOR_NAME_TRAPEZOID)) {
+						return 0;
+					} else if(item.equals(IntegratorSetting.INTEGRATOR_NAME_MAX)) {
+						return 1;
+					} else {
+						return 0;
+					}
 			}
 		}
 		return false;
@@ -70,9 +89,6 @@ public class PeakIntegratorEditingSupport extends EditingSupport {
 			IntegratorSetting setting = (IntegratorSetting)element;
 			double result;
 			switch(column) {
-				/*
-				 * Do not edit the name
-				 */
 				case PeakIntegratorLabelProvider.START_RETENTION_TIME:
 					result = convertValue(value);
 					if(!Double.isNaN(result)) {
@@ -89,8 +105,12 @@ public class PeakIntegratorEditingSupport extends EditingSupport {
 						}
 					}
 					break;
+				case PeakIntegratorLabelProvider.IDENTIFIER:
+					setting.setIdentifier((String)value);
+					break;
 				case PeakIntegratorLabelProvider.INTEGRATOR:
-					setting.setIntegrator(value.toString());
+					String integrator = integratorItems[(int)value];
+					setting.setIntegrator(integrator);
 					break;
 			}
 			tableViewer.refresh();

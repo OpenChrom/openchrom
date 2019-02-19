@@ -23,23 +23,23 @@ import net.openchrom.xxd.process.supplier.templates.model.IntegratorSetting;
 
 public class PeakIntegratorLabelProvider extends AbstractChemClipseLabelProvider {
 
-	public static final String NAME = "Name";
 	public static final String START_RETENTION_TIME = "Start Retention Time";
 	public static final String STOP_RETENTION_TIME = "Stop Retention Time";
+	public static final String IDENTIFIER = "Identifier";
 	public static final String INTEGRATOR = "Integrator";
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 	//
 	public static final String[] TITLES = { //
-			NAME, //
 			START_RETENTION_TIME, //
 			STOP_RETENTION_TIME, //
+			IDENTIFIER, //
 			INTEGRATOR //
 	};
 	public static final int[] BOUNDS = { //
+			100, //
+			100, //
 			200, //
-			100, //
-			100, //
 			100 //
 	};
 
@@ -60,13 +60,16 @@ public class PeakIntegratorLabelProvider extends AbstractChemClipseLabelProvider
 			IntegratorSetting setting = (IntegratorSetting)element;
 			switch(columnIndex) {
 				case 0:
-					text = setting.getName();
+					double startRT = setting.getStartRetentionTime();
+					text = (startRT == 0.0d) ? "--" : decimalFormat.format(startRT);
 					break;
 				case 1:
-					text = decimalFormat.format(setting.getStartRetentionTime());
+					double stopRT = setting.getStopRetentionTime();
+					text = (stopRT == 0.0d) ? "--" : decimalFormat.format(stopRT);
 					break;
 				case 2:
-					text = decimalFormat.format(setting.getStopRetentionTime());
+					String identifier = setting.getIdentifier();
+					text = ("".equals(identifier)) ? "--" : identifier;
 					break;
 				case 3:
 					text = setting.getIntegrator();

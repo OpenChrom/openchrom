@@ -65,9 +65,7 @@ public class PeakIntegratorListUI extends ExtendedTableViewer {
 		for(int i = 0; i < tableViewerColumns.size(); i++) {
 			TableViewerColumn tableViewerColumn = tableViewerColumns.get(i);
 			String label = tableViewerColumn.getColumn().getText();
-			if(!label.equals(PeakIntegratorLabelProvider.NAME)) {
-				tableViewerColumn.setEditingSupport(new PeakIntegratorEditingSupport(this, label));
-			}
+			tableViewerColumn.setEditingSupport(new PeakIntegratorEditingSupport(this, label));
 		}
 	}
 }

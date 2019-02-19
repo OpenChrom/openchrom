@@ -64,19 +64,11 @@ public class StandardsReferencerLabelProvider extends AbstractChemClipseLabelPro
 					break;
 				case 1:
 					double startRT = setting.getStartRetentionTime();
-					if(startRT == 0.0d) {
-						text = "--";
-					} else {
-						text = decimalFormat.format(startRT);
-					}
+					text = (startRT == 0.0d) ? "--" : decimalFormat.format(startRT);
 					break;
 				case 2:
 					double stopRT = setting.getStopRetentionTime();
-					if(stopRT == 0.0d) {
-						text = "--";
-					} else {
-						text = decimalFormat.format(stopRT);
-					}
+					text = (stopRT == 0.0d) ? "--" : decimalFormat.format(stopRT);
 					break;
 				case 3:
 					text = setting.getIdentifier();

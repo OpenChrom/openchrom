@@ -23,7 +23,7 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 	private static final String SEPARATOR_ENTRY = PeakIntegratorListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
-	private String name = "";
+	private String identifier = "";
 	private double startRetentionTime = 0;
 	private double stopRetentionTime = 0;
 	private String integrator = "";
@@ -50,24 +50,31 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 						/*
 						 * Evaluation
 						 */
-						name = parseString(values, 0);
-						if("".equals(name)) {
-							message = "A substance name needs to be set.";
-						}
-						//
-						startRetentionTime = parseDouble(values, 1);
+						startRetentionTime = parseDouble(values, 0);
 						if(startRetentionTime < 0.0d) {
 							message = "The start retention time must be not lower than 0.";
 						}
-						//
-						stopRetentionTime = parseDouble(values, 2);
-						if(stopRetentionTime <= startRetentionTime) {
-							message = "The stop retention time must be greater then the start retention time.";
-						}
-						//
+						stopRetentionTime = parseDouble(values, 1);
+						identifier = parseString(values, 2);
 						integrator = parseString(values, 3);
 						if("".equals(integrator)) {
 							message = "An integrator needs to be set.";
+						} else {
+							if(!(integrator.equals(IntegratorSetting.INTEGRATOR_NAME_TRAPEZOID) || integrator.equals(IntegratorSetting.INTEGRATOR_NAME_MAX))) {
+								message = "The integrator must be either '" + IntegratorSetting.INTEGRATOR_NAME_TRAPEZOID + "' or '" + IntegratorSetting.INTEGRATOR_NAME_MAX + "'";
+							}
+						}
+						/*
+						 * Extended Check
+						 */
+						if(startRetentionTime == 0.0d && stopRetentionTime == 0.0d) {
+							if("".equals(identifier)) {
+								message = "A substance name needs to be set.";
+							}
+						} else {
+							if(stopRetentionTime <= startRetentionTime) {
+								message = "The stop retention time must be greater then the start retention time.";
+							}
 						}
 					} else {
 						message = ERROR_ENTRY;
@@ -88,9 +95,9 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 	public IntegratorSetting getSetting() {
 
 		IntegratorSetting setting = new IntegratorSetting();
-		setting.setName(name);
 		setting.setStartRetentionTime(startRetentionTime);
 		setting.setStopRetentionTime(stopRetentionTime);
+		setting.setIdentifier(identifier);
 		setting.setIntegrator(integrator);
 		return setting;
 	}
