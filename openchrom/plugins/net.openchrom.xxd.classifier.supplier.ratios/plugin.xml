@@ -4,11 +4,11 @@
    <extension
          point="org.eclipse.chemclipse.chromatogram.msd.classifier.chromatogramClassifierSupplier">
       <ChromatogramClassifierSupplier
-            classifier="net.openchrom.xxd.classifier.supplier.ratios.core.PeakIonClassifier"
-            classifierName="Peak Ion Ratio Classifier"
-            classifierSettings="net.openchrom.xxd.classifier.supplier.ratios.settings.PeakIonClassifierSettings"
-            description="This classifier calculates peak m/z intensity ratios."
-            id="net.openchrom.xxd.classifier.supplier.ratios.peak.ion">
+            classifier="net.openchrom.xxd.classifier.supplier.ratios.core.TraceRatioClassifier"
+            classifierName="Trace Ratio Classifier"
+            classifierSettings="net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioSettings"
+            description="This classifier calculates peak trace ratios."
+            id="net.openchrom.xxd.classifier.supplier.ratios.traceratio">
       </ChromatogramClassifierSupplier>
    </extension>         
    <extension

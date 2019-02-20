@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.Viewer;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
 
-public class PeakIonClassifierTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
+public class TraceRatioTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
 
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {

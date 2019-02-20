@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.chromatogram.msd.classifier.result.ResultStatus;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.settings.IChromatogramClassifierSettings;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IMeasurementResult;
+import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.implementation.MeasurementResult;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
@@ -30,27 +31,26 @@ import net.openchrom.xxd.classifier.supplier.ratios.model.ClassifierResult;
 import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceSupplier;
-import net.openchrom.xxd.classifier.supplier.ratios.settings.PeakIonClassifierSettings;
+import net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioSettings;
 
-public class PeakIonClassifier extends AbstractChromatogramClassifier {
+public class TraceRatioClassifier extends AbstractChromatogramClassifier {
 
-	public static final String CLASSIFIER_ID = "net.openchrom.xxd.classifier.supplier.ratios.peak.ion";
+	public static final String CLASSIFIER_ID = "net.openchrom.xxd.classifier.supplier.ratios.traceratio";
 	//
-	private static final Logger logger = Logger.getLogger(PeakIonClassifier.class);
+	private static final Logger logger = Logger.getLogger(TraceRatioClassifier.class);
 
 	@Override
 	public IProcessingInfo applyClassifier(IChromatogramSelectionMSD chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
 
 		IProcessingInfo processingInfo = validate(chromatogramSelection, chromatogramClassifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
-			if(chromatogramClassifierSettings instanceof PeakIonClassifierSettings) {
+			if(chromatogramClassifierSettings instanceof TraceRatioSettings) {
 				/*
 				 * Calculate the result.
 				 */
-				TraceRatios traceRatios = calculateTraceRatios(chromatogramSelection, (PeakIonClassifierSettings)chromatogramClassifierSettings);
+				TraceRatios traceRatios = calculateTraceRatios(chromatogramSelection, (TraceRatioSettings)chromatogramClassifierSettings);
 				ClassifierResult classifierResult = new ClassifierResult(ResultStatus.OK, "The chromatogram peaks have been classified.", traceRatios);
-				//
-				IMeasurementResult measurementResult = new MeasurementResult("Peak Ion Ratio Classifier", CLASSIFIER_ID, "Trace Ratios", traceRatios);
+				IMeasurementResult measurementResult = new MeasurementResult("Trace Ratio Classifier", CLASSIFIER_ID, "Trace Ratios", traceRatios);
 				chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
 				processingInfo.setProcessingResult(classifierResult);
 			}
@@ -58,33 +58,40 @@ public class PeakIonClassifier extends AbstractChromatogramClassifier {
 		return processingInfo;
 	}
 
-	private TraceRatios calculateTraceRatios(IChromatogramSelectionMSD chromatogramSelection, PeakIonClassifierSettings classifierSettings) {
+	@Override
+	public IProcessingInfo applyClassifier(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
 
-		TraceRatios traceRatios = new TraceRatios();
-		traceRatios.add(new TraceRatio("2-Methoxy-4-vinylphenol", "150:135", 76.88));
+		TraceRatioSettings classifierSettings = PreferenceSupplier.getClassifierSettings();
+		return applyClassifier(chromatogramSelection, classifierSettings, monitor);
+	}
+
+	private TraceRatios calculateTraceRatios(IChromatogramSelectionMSD chromatogramSelection, TraceRatioSettings classifierSettings) {
+
+		TraceRatios traceRatios = classifierSettings.getTraceRatioSettings();
 		//
 		List<IChromatogramPeakMSD> peaks = chromatogramSelection.getChromatogramMSD().getPeaks();
 		for(TraceRatio traceRatio : traceRatios) {
 			for(IChromatogramPeakMSD peak : peaks) {
-				for(IIdentificationTarget identificationTarget : peak.getTargets()) {
-					if(identificationTarget.getLibraryInformation().getName().equals(traceRatio.getName())) {
-						String[] values = traceRatio.getTestCase().split(":");
-						if(values.length == 2) {
-							try {
-								int reference = Integer.parseInt(values[0]);
-								int target = Integer.parseInt(values[1]);
-								//
-								ExtractedIonSignal extractedIonSignal = new ExtractedIonSignal(peak.getPeakModel().getPeakMassSpectrum().getIons());
-								float intensityReference = extractedIonSignal.getAbundance(reference);
-								float intensityTarget = extractedIonSignal.getAbundance(target);
-								if(intensityReference != 0) {
-									double actual = 100.0d / intensityReference * intensityTarget;
-									traceRatio.setPeakMSD(peak);
-									traceRatio.setActualRatio(actual);
-								}
-							} catch(NumberFormatException e) {
-								logger.warn(e);
+				if(isPeakMatch(peak, traceRatio)) {
+					String[] values = traceRatio.getTestCase().split(":");
+					if(values.length == 2) {
+						try {
+							/*
+							 * E.g. 104:103
+							 */
+							int reference = Integer.parseInt(values[0]);
+							int target = Integer.parseInt(values[1]);
+							//
+							ExtractedIonSignal extractedIonSignal = new ExtractedIonSignal(peak.getPeakModel().getPeakMassSpectrum().getIons());
+							float intensityReference = extractedIonSignal.getAbundance(reference);
+							float intensityTarget = extractedIonSignal.getAbundance(target);
+							if(intensityReference != 0) {
+								double actual = 100.0d / intensityReference * intensityTarget;
+								traceRatio.setPeakMSD(peak);
+								traceRatio.setActualRatio(actual);
 							}
+						} catch(NumberFormatException e) {
+							logger.warn(e);
 						}
 					}
 				}
@@ -94,10 +101,13 @@ public class PeakIonClassifier extends AbstractChromatogramClassifier {
 		return traceRatios;
 	}
 
-	@Override
-	public IProcessingInfo applyClassifier(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
+	private boolean isPeakMatch(IPeak peak, TraceRatio traceRatio) {
 
-		PeakIonClassifierSettings classifierSettings = PreferenceSupplier.getClassifierSettings();
-		return applyClassifier(chromatogramSelection, classifierSettings, monitor);
+		for(IIdentificationTarget identificationTarget : peak.getTargets()) {
+			if(identificationTarget.getLibraryInformation().getName().equals(traceRatio.getName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

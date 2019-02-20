@@ -23,7 +23,7 @@ import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
 
-public class PeakIonClassifierLabelProvider extends AbstractChemClipseLabelProvider {
+public class TraceRatioLabelProvider extends AbstractChemClipseLabelProvider {
 
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
 

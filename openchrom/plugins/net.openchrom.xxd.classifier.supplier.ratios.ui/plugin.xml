@@ -14,17 +14,23 @@
             category="org.eclipse.chemclipse.chromatogram.msd.classifier.ui.preferences.classifierPreferencePage"
             class="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.PreferencePage"
             id="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePage"
-            name="Ration Calissier">
+            name="Ratio Classifier">
       </page>
+      <page
+            category="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePage"
+            class="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.PreferencePageTraceRatio"
+            id="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePageTraceRatio"
+            name="Trace Ratio Classifier">
+      </page>      
    </extension>
    <extension
          point="org.eclipse.chemclipse.ux.extension.ui.measurementResultVisualization">
       <MeasurementResultVisualization
-            Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakIonClassifierTableComparator"
-            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakIonClassifierContentProvider"
-            Identifier="net.openchrom.xxd.classifier.supplier.ratios.peak.ion"
-            LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakIonClassifierLabelProvider"
-            Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakIonMeasurementResultTitles">
+            Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioTableComparator"
+            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioContentProvider"
+            Identifier="net.openchrom.xxd.classifier.supplier.ratios.traceratio"
+            LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioLabelProvider"
+            Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioResultTitles">
       </MeasurementResultVisualization>
    </extension>
 </plugin>

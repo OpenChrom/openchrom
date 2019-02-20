@@ -29,11 +29,11 @@ import org.eclipse.swt.widgets.Display;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
-import net.openchrom.xxd.classifier.supplier.ratios.ui.runnables.PeakIonClassifierEvaluator;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.runnables.TraceRatioClassifierEvaluator;
 
-public class PeakIonClassifierHandler implements EventHandler {
+public class TraceRatioClassifierHandler implements EventHandler {
 
-	private static final Logger logger = Logger.getLogger(PeakIonClassifierHandler.class);
+	private static final Logger logger = Logger.getLogger(TraceRatioClassifierHandler.class);
 	private static IChromatogramSelectionMSD chromatogramSelection;
 
 	@Execute
@@ -45,7 +45,7 @@ public class PeakIonClassifierHandler implements EventHandler {
 			/*
 			 * Do the operation.<br/> Open a progress monitor dialog.
 			 */
-			IRunnableWithProgress runnable = new PeakIonClassifierEvaluator(chromatogramSelection);
+			IRunnableWithProgress runnable = new TraceRatioClassifierEvaluator(chromatogramSelection);
 			ProgressMonitorDialog monitor = new ProgressMonitorDialog(display.getActiveShell());
 			try {
 				/*

@@ -11,21 +11,20 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.ui.preferences;
 
-import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.FloatFieldEditor;
-import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceSupplier;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.Activator;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.fieldeditors.TraceRatioFieldEditor;
 
-public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class PreferencePageTraceRatio extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-	public PreferencePage() {
+	public PreferencePageTraceRatio() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Ratio Classifier");
+		setDescription("Trace Ratio");
 	}
 
 	/**
@@ -36,11 +35,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	@Override
 	public void createFieldEditors() {
 
-		addField(new FloatFieldEditor(PreferenceSupplier.P_ALLOWED_DEVIATION, "Allowed Deviation (%)", PreferenceSupplier.MIN_DEVIATION, PreferenceSupplier.MAX_DEVIATION, getFieldEditorParent()));
-		addField(new FloatFieldEditor(PreferenceSupplier.P_ALLOWED_DEVIATION_WARN, "Allowed Deviation Warn (%)", PreferenceSupplier.MIN_DEVIATION, PreferenceSupplier.MAX_DEVIATION, getFieldEditorParent()));
-		//
-		addField(new DirectoryFieldEditor(PreferenceSupplier.P_LIST_PATH_IMPORT, "List Path Import", getFieldEditorParent()));
-		addField(new DirectoryFieldEditor(PreferenceSupplier.P_LIST_PATH_EXPORT, "List Path Export", getFieldEditorParent()));
+		addField(new TraceRatioFieldEditor(PreferenceSupplier.P_TRACE_RATIO_LIST, "Trace Ratio(s)", getFieldEditorParent()));
 	}
 
 	/*

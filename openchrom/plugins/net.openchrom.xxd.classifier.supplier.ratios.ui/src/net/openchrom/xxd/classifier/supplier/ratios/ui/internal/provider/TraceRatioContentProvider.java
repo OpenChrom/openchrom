@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.Viewer;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatios;
 
-public class PeakIonClassifierContentProvider implements IStructuredContentProvider {
+public class TraceRatioContentProvider implements IStructuredContentProvider {
 
 	@Override
 	public Object[] getElements(Object inputElement) {

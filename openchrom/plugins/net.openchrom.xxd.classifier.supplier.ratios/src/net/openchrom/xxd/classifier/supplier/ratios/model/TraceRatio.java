@@ -13,21 +13,26 @@ package net.openchrom.xxd.classifier.supplier.ratios.model;
 
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 
-public class TraceRatio implements Comparable<TraceRatio> {
+public class TraceRatio {
 
 	private IPeakMSD peakMSD = null; // optional
 	//
 	private String name = "";
 	private String testCase = "";
 	private double expectedRatio = 0.0d;
-	private double actualRatio = 0.0d;
+	private double actualRatio = 0.0d; // transient
 	private double deviationWarn = 0.0d;
 	private double deviationError = 0.0d;
 
-	public TraceRatio(String name, String testCase, double expectedRatio) {
-		this.name = name;
-		this.testCase = testCase;
-		this.expectedRatio = expectedRatio;
+	public void copyFrom(TraceRatio setting) {
+
+		if(setting != null) {
+			setName(setting.getName());
+			setTestCase(setting.getTestCase());
+			setExpectedRatio(setting.getExpectedRatio());
+			setDeviationWarn(setting.getDeviationWarn());
+			setDeviationError(setting.getDeviationError());
+		}
 	}
 
 	public IPeakMSD getPeakMSD() {
@@ -137,15 +142,5 @@ public class TraceRatio implements Comparable<TraceRatio> {
 	public String toString() {
 
 		return "TraceRatio [peakMSD=" + peakMSD + ", name=" + name + ", testCase=" + testCase + ", expectedRatio=" + expectedRatio + ", actualRatio=" + actualRatio + ", deviationWarn=" + deviationWarn + ", deviationError=" + deviationError + "]";
-	}
-
-	@Override
-	public int compareTo(TraceRatio traceRatio) {
-
-		int result = 0;
-		if(traceRatio != null) {
-			result = name.compareTo(traceRatio.getName());
-		}
-		return result;
 	}
 }

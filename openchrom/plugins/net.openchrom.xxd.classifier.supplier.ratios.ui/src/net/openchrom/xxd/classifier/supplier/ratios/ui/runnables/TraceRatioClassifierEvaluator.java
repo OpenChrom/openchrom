@@ -22,13 +22,13 @@ import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
-import net.openchrom.xxd.classifier.supplier.ratios.core.PeakIonClassifier;
+import net.openchrom.xxd.classifier.supplier.ratios.core.TraceRatioClassifier;
 
-public class PeakIonClassifierEvaluator extends AbstractChromatogramProcessor implements IRunnableWithProgress {
+public class TraceRatioClassifierEvaluator extends AbstractChromatogramProcessor implements IRunnableWithProgress {
 
-	private static final String DESCRIPTION = "Peak Ion Ratio Classifier";
+	private static final String DESCRIPTION = "Trace Ratio Classifier";
 
-	public PeakIonClassifierEvaluator(IChromatogramSelectionMSD chromatogramSelection) {
+	public TraceRatioClassifierEvaluator(IChromatogramSelectionMSD chromatogramSelection) {
 		super(chromatogramSelection);
 	}
 
@@ -41,7 +41,7 @@ public class PeakIonClassifierEvaluator extends AbstractChromatogramProcessor im
 			/*
 			 * Apply the classifier.
 			 */
-			final IProcessingInfo processingInfo = ChromatogramClassifier.applyClassifier((IChromatogramSelectionMSD)chromatogramSelection, PeakIonClassifier.CLASSIFIER_ID, monitor);
+			final IProcessingInfo processingInfo = ChromatogramClassifier.applyClassifier((IChromatogramSelectionMSD)chromatogramSelection, TraceRatioClassifier.CLASSIFIER_ID, monitor);
 			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
 			chromatogramSelection.update(true);
 		}
