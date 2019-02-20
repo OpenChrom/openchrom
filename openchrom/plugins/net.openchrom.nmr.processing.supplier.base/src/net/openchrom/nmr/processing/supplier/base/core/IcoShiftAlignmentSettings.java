@@ -29,9 +29,9 @@ public class IcoShiftAlignmentSettings {
 	private double singlePeakLowerBorder;
 	private double singlePeakHigherBorder;
 	private int numberOfIntervals;
-	private double intervalLength;
+	private int intervalLength;
 	private List<ChemicalShiftInterval> userDefIntervalRegions;
-	private boolean prelimiterCoShifting = false;
+	private boolean preliminaryCoShifting = false;
 
 	public TargetCalculationSelection getTargetCalculationSelection() {
 
@@ -68,9 +68,9 @@ public class IcoShiftAlignmentSettings {
 		return alignmentType;
 	}
 
-	public void setAligmentType(AlignmentType intervalSelection) {
+	public void setAlignmentType(AlignmentType alignmentType) {
 
-		this.alignmentType = intervalSelection;
+		this.alignmentType = alignmentType;
 	}
 
 	public double getSinglePeakLowerBorder() {
@@ -93,12 +93,12 @@ public class IcoShiftAlignmentSettings {
 		this.singlePeakHigherBorder = singlePeakHigherBorder;
 	}
 
-	public double getIntervalLength() {
+	public int getIntervalLength() {
 
 		return intervalLength;
 	}
 
-	public void setIntervalLength(double intervalLength) {
+	public void setIntervalLength(int intervalLength) {
 
 		this.intervalLength = intervalLength;
 	}
@@ -133,13 +133,13 @@ public class IcoShiftAlignmentSettings {
 		this.shiftCorrectionTypeValue = shiftCorrectionTypeValue;
 	}
 
-	public boolean isPrelimiterCoShifting() {
+	public boolean isPreliminaryCoShifting() {
 
-		return prelimiterCoShifting;
+		return preliminaryCoShifting;
 	}
 
-	public void setPrelimiterCoShifting(boolean prelimiterCoShifting) {
+	public void setPreliminaryCoShifting(boolean preliminaryCoShifting) {
 
-		this.prelimiterCoShifting = prelimiterCoShifting;
+		this.preliminaryCoShifting = preliminaryCoShifting;
 	}
 }
