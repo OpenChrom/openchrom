@@ -8,7 +8,7 @@
  *
  * Contributors:
  * Alexander Stark - initial API and implementation
- * Jan Holy - implementation
+ * Jan Holy - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
