@@ -9,23 +9,23 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.processing.supplier.base.core;
+package net.openchrom.nmr.processing.supplier.base.settings;
 
 import java.util.List;
 
-import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.AlignmentType;
-import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.ChemicalShiftInterval;
-import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.GapFillingType;
-import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.ShiftCorrectionType;
-import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.TargetCalculationSelection;
+import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentGapFillingType;
+import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentShiftCorrectionType;
+import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentTargetCalculationSelection;
+import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentType;
+import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities.ChemicalShiftInterval;
 
 public class IcoShiftAlignmentSettings {
 
-	private TargetCalculationSelection targetCalculationSelection = TargetCalculationSelection.MEAN;
-	private ShiftCorrectionType shiftCorrectionType = ShiftCorrectionType.FAST;
+	private IcoShiftAlignmentTargetCalculationSelection targetCalculationSelection = IcoShiftAlignmentTargetCalculationSelection.MEAN;
+	private IcoShiftAlignmentShiftCorrectionType shiftCorrectionType = IcoShiftAlignmentShiftCorrectionType.FAST;
 	private int shiftCorrectionTypeValue;
-	private GapFillingType gapFillingType = GapFillingType.MARGIN;
-	private AlignmentType alignmentType = AlignmentType.SINGLE_PEAK;
+	private IcoShiftAlignmentGapFillingType gapFillingType = IcoShiftAlignmentGapFillingType.MARGIN;
+	private IcoShiftAlignmentType alignmentType = IcoShiftAlignmentType.SINGLE_PEAK;
 	private double singlePeakLowerBorder;
 	private double singlePeakHigherBorder;
 	private int numberOfIntervals;
@@ -33,42 +33,42 @@ public class IcoShiftAlignmentSettings {
 	private List<ChemicalShiftInterval> userDefIntervalRegions;
 	private boolean preliminaryCoShifting;
 
-	public TargetCalculationSelection getTargetCalculationSelection() {
+	public IcoShiftAlignmentTargetCalculationSelection getTargetCalculationSelection() {
 
 		return targetCalculationSelection;
 	}
 
-	public void setTargetCalculationSelection(TargetCalculationSelection targetCalculationSelection) {
+	public void setTargetCalculationSelection(IcoShiftAlignmentTargetCalculationSelection targetCalculationSelection) {
 
 		this.targetCalculationSelection = targetCalculationSelection;
 	}
 
-	public ShiftCorrectionType getShiftCorrectionType() {
+	public IcoShiftAlignmentShiftCorrectionType getShiftCorrectionType() {
 
 		return shiftCorrectionType;
 	}
 
-	public void setShiftCorrectionType(ShiftCorrectionType shiftCorrectionType) {
+	public void setShiftCorrectionType(IcoShiftAlignmentShiftCorrectionType shiftCorrectionType) {
 
 		this.shiftCorrectionType = shiftCorrectionType;
 	}
 
-	public GapFillingType getGapFillingType() {
+	public IcoShiftAlignmentGapFillingType getGapFillingType() {
 
 		return gapFillingType;
 	}
 
-	public void setGapFillingType(GapFillingType gapFillingType) {
+	public void setGapFillingType(IcoShiftAlignmentGapFillingType gapFillingType) {
 
 		this.gapFillingType = gapFillingType;
 	}
 
-	public AlignmentType getAlignmentType() {
+	public IcoShiftAlignmentType getAlignmentType() {
 
 		return alignmentType;
 	}
 
-	public void setAlignmentType(AlignmentType alignmentType) {
+	public void setAlignmentType(IcoShiftAlignmentType alignmentType) {
 
 		this.alignmentType = alignmentType;
 	}
