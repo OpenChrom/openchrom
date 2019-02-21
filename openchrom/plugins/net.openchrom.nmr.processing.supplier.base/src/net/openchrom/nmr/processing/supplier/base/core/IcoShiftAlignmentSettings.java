@@ -31,7 +31,7 @@ public class IcoShiftAlignmentSettings {
 	private int numberOfIntervals;
 	private int intervalLength;
 	private List<ChemicalShiftInterval> userDefIntervalRegions;
-	private boolean preliminaryCoShifting = false;
+	private boolean preliminaryCoShifting;
 
 	public TargetCalculationSelection getTargetCalculationSelection() {
 
