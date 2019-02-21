@@ -20,8 +20,59 @@ import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
 
 public class TraceRatioTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
 
-	@Override
+	private String displayOption = "";
+
+	public TraceRatioTableComparator() {
+		this(TraceRatioResultTitles.OPTION_RESULTS);
+	}
+
+	public TraceRatioTableComparator(String displayOption) {
+		this.displayOption = (displayOption.equals(TraceRatioResultTitles.OPTION_SETTINGS)) ? TraceRatioResultTitles.OPTION_SETTINGS : TraceRatioResultTitles.OPTION_RESULTS;
+	}
+
 	public int compare(Viewer viewer, Object e1, Object e2) {
+
+		if(TraceRatioResultTitles.OPTION_RESULTS.equals(displayOption)) {
+			return compareResults(viewer, e1, e2);
+		} else if(TraceRatioResultTitles.OPTION_SETTINGS.equals(displayOption)) {
+			return compareSettings(viewer, e1, e2);
+		} else {
+			return 0;
+		}
+	}
+
+	public int compareSettings(Viewer viewer, Object e1, Object e2) {
+
+		int sortOrder = 0;
+		if(e1 instanceof TraceRatio && e2 instanceof TraceRatio) {
+			TraceRatio traceRatio1 = (TraceRatio)e1;
+			TraceRatio traceRatio2 = (TraceRatio)e2;
+			//
+			switch(getPropertyIndex()) {
+				case 0:
+					sortOrder = traceRatio2.getName().compareTo(traceRatio1.getName());
+					break;
+				case 1:
+					sortOrder = traceRatio2.getTestCase().compareTo(traceRatio1.getTestCase());
+					break;
+				case 2:
+					sortOrder = Double.compare(traceRatio2.getExpectedRatio(), traceRatio1.getExpectedRatio());
+					break;
+				case 3:
+					sortOrder = Double.compare(traceRatio2.getDeviationWarn(), traceRatio1.getDeviationWarn());
+					break;
+				case 4:
+					sortOrder = Double.compare(traceRatio2.getDeviationError(), traceRatio1.getDeviationError());
+					break;
+			}
+			if(getDirection() == ASCENDING) {
+				sortOrder = -sortOrder;
+			}
+		}
+		return sortOrder;
+	}
+
+	public int compareResults(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
 		if(e1 instanceof TraceRatio && e2 instanceof TraceRatio) {
@@ -44,16 +95,10 @@ public class TraceRatioTableComparator extends AbstractRecordTableComparator imp
 					sortOrder = traceRatio2.getTestCase().compareTo(traceRatio1.getTestCase());
 					break;
 				case 3:
-					sortOrder = Double.compare(traceRatio2.getExpectedRatio(), traceRatio1.getExpectedRatio());
+					sortOrder = Double.compare(traceRatio2.getRatio(), traceRatio1.getRatio());
 					break;
 				case 4:
-					sortOrder = Double.compare(traceRatio2.getActualRatio(), traceRatio1.getActualRatio());
-					break;
-				case 5:
-					sortOrder = Double.compare(traceRatio2.getDeviationWarn(), traceRatio1.getDeviationWarn());
-					break;
-				case 6:
-					sortOrder = Double.compare(traceRatio2.getDeviationError(), traceRatio1.getDeviationError());
+					sortOrder = Double.compare(traceRatio2.getDeviation(), traceRatio1.getDeviation());
 					break;
 			}
 			if(getDirection() == ASCENDING) {

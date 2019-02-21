@@ -91,7 +91,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		TraceRatioSettings traceRatioSettings = new TraceRatioSettings();
 		traceRatioSettings.setTraceRatioSettings(getSettings(P_TRACE_RATIO_LIST, DEF_TRACE_RATIO_LIST));
-		return new TraceRatioSettings();
+		return traceRatioSettings;
 	}
 
 	public static String getListPathImport() {

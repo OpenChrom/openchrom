@@ -20,7 +20,15 @@ public class TraceRatio {
 	private String name = "";
 	private String testCase = "";
 	private double expectedRatio = 0.0d;
-	private double actualRatio = 0.0d; // transient
+	/*
+	 * Calculated (transient)
+	 */
+	private double ratio = 0.0d;
+	private double deviation = 0.0d;
+	/*
+	 * 0 - 0%
+	 * 100 - 100%
+	 */
 	private double deviationWarn = 0.0d;
 	private double deviationError = 0.0d;
 
@@ -75,14 +83,24 @@ public class TraceRatio {
 		this.expectedRatio = expectedRatio;
 	}
 
-	public double getActualRatio() {
+	public double getRatio() {
 
-		return actualRatio;
+		return ratio;
 	}
 
-	public void setActualRatio(double actualRatio) {
+	public void setRatio(double ratio) {
 
-		this.actualRatio = actualRatio;
+		this.ratio = ratio;
+	}
+
+	public double getDeviation() {
+
+		return deviation;
+	}
+
+	public void setDeviation(double deviation) {
+
+		this.deviation = deviation;
 	}
 
 	public double getDeviationWarn() {
@@ -141,6 +159,6 @@ public class TraceRatio {
 	@Override
 	public String toString() {
 
-		return "TraceRatio [peakMSD=" + peakMSD + ", name=" + name + ", testCase=" + testCase + ", expectedRatio=" + expectedRatio + ", actualRatio=" + actualRatio + ", deviationWarn=" + deviationWarn + ", deviationError=" + deviationError + "]";
+		return "TraceRatio [peakMSD=" + peakMSD + ", name=" + name + ", testCase=" + testCase + ", expectedRatio=" + expectedRatio + ", ratio=" + ratio + ", deviation=" + deviation + ", deviationWarn=" + deviationWarn + ", deviationError=" + deviationError + "]";
 	}
 }

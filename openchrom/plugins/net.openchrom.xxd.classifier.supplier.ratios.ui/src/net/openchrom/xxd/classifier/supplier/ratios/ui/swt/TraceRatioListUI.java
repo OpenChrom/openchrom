@@ -27,11 +27,11 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRa
 
 public class TraceRatioListUI extends ExtendedTableViewer {
 
-	private static final String[] TITLES = TraceRatioResultTitles.TITLES;
-	private static final int[] BOUNDS = TraceRatioResultTitles.BOUNDS;
+	private static final String[] TITLES = TraceRatioResultTitles.TITLES_SETTINGS;
+	private static final int[] BOUNDS = TraceRatioResultTitles.BOUNDS_SETTINGS;
 	//
-	private TraceRatioLabelProvider labelProvider = new TraceRatioLabelProvider();
-	private TraceRatioTableComparator tableComparator = new TraceRatioTableComparator();
+	private TraceRatioLabelProvider labelProvider = new TraceRatioLabelProvider(TraceRatioResultTitles.OPTION_SETTINGS);
+	private TraceRatioTableComparator tableComparator = new TraceRatioTableComparator(TraceRatioResultTitles.OPTION_SETTINGS);
 	private TraceRatioFilter listFilter = new TraceRatioFilter();
 
 	public TraceRatioListUI(Composite parent, int style) {

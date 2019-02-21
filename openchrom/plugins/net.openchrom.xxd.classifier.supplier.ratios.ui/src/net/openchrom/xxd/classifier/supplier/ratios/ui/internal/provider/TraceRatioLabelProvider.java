@@ -26,6 +26,15 @@ import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
 public class TraceRatioLabelProvider extends AbstractChemClipseLabelProvider {
 
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
+	private String displayOption = "";
+
+	public TraceRatioLabelProvider() {
+		this(TraceRatioResultTitles.OPTION_RESULTS);
+	}
+
+	public TraceRatioLabelProvider(String displayOption) {
+		this.displayOption = (displayOption.equals(TraceRatioResultTitles.OPTION_SETTINGS)) ? TraceRatioResultTitles.OPTION_SETTINGS : TraceRatioResultTitles.OPTION_RESULTS;
+	}
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) {
@@ -39,6 +48,43 @@ public class TraceRatioLabelProvider extends AbstractChemClipseLabelProvider {
 
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
+
+		if(TraceRatioResultTitles.OPTION_RESULTS.equals(displayOption)) {
+			return getColumnTextResults(element, columnIndex);
+		} else if(TraceRatioResultTitles.OPTION_SETTINGS.equals(displayOption)) {
+			return getColumnTextSettings(element, columnIndex);
+		} else {
+			return "";
+		}
+	}
+
+	private String getColumnTextSettings(Object element, int columnIndex) {
+
+		String text = "";
+		if(element instanceof TraceRatio) {
+			TraceRatio traceRatio = (TraceRatio)element;
+			switch(columnIndex) {
+				case 0:
+					text = traceRatio.getName();
+					break;
+				case 1:
+					text = traceRatio.getTestCase();
+					break;
+				case 2:
+					text = decimalFormat.format(traceRatio.getExpectedRatio());
+					break;
+				case 3:
+					text = decimalFormat.format(traceRatio.getDeviationWarn());
+					break;
+				case 4:
+					text = decimalFormat.format(traceRatio.getDeviationError());
+					break;
+			}
+		}
+		return text;
+	}
+
+	private String getColumnTextResults(Object element, int columnIndex) {
 
 		String text = "";
 		if(element instanceof TraceRatio) {
@@ -59,16 +105,10 @@ public class TraceRatioLabelProvider extends AbstractChemClipseLabelProvider {
 					text = traceRatio.getTestCase();
 					break;
 				case 3:
-					text = decimalFormat.format(traceRatio.getExpectedRatio());
+					text = decimalFormat.format(traceRatio.getRatio());
 					break;
 				case 4:
-					text = decimalFormat.format(traceRatio.getActualRatio());
-					break;
-				case 5:
-					text = decimalFormat.format(traceRatio.getDeviationWarn());
-					break;
-				case 6:
-					text = decimalFormat.format(traceRatio.getDeviationError());
+					text = decimalFormat.format(traceRatio.getDeviation());
 					break;
 			}
 		}

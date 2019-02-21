@@ -86,9 +86,14 @@ public class TraceRatioClassifier extends AbstractChromatogramClassifier {
 							float intensityReference = extractedIonSignal.getAbundance(reference);
 							float intensityTarget = extractedIonSignal.getAbundance(target);
 							if(intensityReference != 0) {
-								double actual = 100.0d / intensityReference * intensityTarget;
+								double ratio = 100.0d / intensityReference * intensityTarget;
 								traceRatio.setPeakMSD(peak);
-								traceRatio.setActualRatio(actual);
+								traceRatio.setRatio(ratio);
+								double expectedRatio = traceRatio.getExpectedRatio();
+								if(expectedRatio != 0) {
+									double deviation = Math.abs(ratio - expectedRatio) / expectedRatio;
+									traceRatio.setDeviation(deviation);
+								}
 							}
 						} catch(NumberFormatException e) {
 							logger.warn(e);

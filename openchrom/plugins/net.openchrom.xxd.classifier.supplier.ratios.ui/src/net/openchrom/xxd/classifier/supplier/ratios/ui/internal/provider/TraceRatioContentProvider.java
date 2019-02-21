@@ -11,26 +11,57 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.chemclipse.model.core.IMeasurementResult;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
+import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatios;
 
 public class TraceRatioContentProvider implements IStructuredContentProvider {
 
+	private String displayOption = "";
+
+	public TraceRatioContentProvider() {
+		this(TraceRatioResultTitles.OPTION_RESULTS);
+	}
+
+	public TraceRatioContentProvider(String displayOption) {
+		this.displayOption = (displayOption.equals(TraceRatioResultTitles.OPTION_SETTINGS)) ? TraceRatioResultTitles.OPTION_SETTINGS : TraceRatioResultTitles.OPTION_RESULTS;
+	}
+
 	@Override
 	public Object[] getElements(Object inputElement) {
 
+		TraceRatios traceRatios = null;
+		//
 		if(inputElement instanceof IMeasurementResult) {
 			IMeasurementResult measurementResult = (IMeasurementResult)inputElement;
 			Object object = measurementResult.getResult();
 			if(object instanceof TraceRatios) {
-				return ((TraceRatios)object).toArray();
+				traceRatios = (TraceRatios)object;
 			}
 		} else if(inputElement instanceof TraceRatios) {
-			return ((TraceRatios)inputElement).toArray();
+			traceRatios = (TraceRatios)inputElement;
 		}
+		//
+		if(traceRatios != null) {
+			if(TraceRatioResultTitles.OPTION_RESULTS.equals(displayOption)) {
+				List<TraceRatio> ratios = new ArrayList<>();
+				for(TraceRatio ratio : traceRatios) {
+					if(ratio.getPeakMSD() != null) {
+						ratios.add(ratio);
+					}
+				}
+				return ratios.toArray();
+			} else if(TraceRatioResultTitles.OPTION_SETTINGS.equals(displayOption)) {
+				return traceRatios.toArray();
+			}
+		}
+		//
 		return null;
 	}
 
