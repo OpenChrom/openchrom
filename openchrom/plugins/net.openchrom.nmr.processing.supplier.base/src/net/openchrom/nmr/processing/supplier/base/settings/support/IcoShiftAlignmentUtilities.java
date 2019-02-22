@@ -18,55 +18,35 @@ import org.ejml.simple.SimpleMatrix;
 
 public class IcoShiftAlignmentUtilities {
 
-	public static class ChemicalShiftInterval {
+	public final class Interval<T extends Number> {
 
-		public ChemicalShiftInterval(double start, double stop) {
+		private T start;
+		private T stop;
 
-			this.start = start;
-			this.stop = stop;
-		}
-
-		private double start;
-		private double stop;
-
-		public double getStart() {
-
-			return start;
-		}
-
-		public double getStop() {
-
-			return stop;
-		}
-	}
-
-	public static class Interval {
-
-		public Interval(int start, int stop) {
+		public Interval(T start, T stop) {
 
 			this.start = start;
 			this.stop = stop;
 		}
 
-		private int start;
-		private int stop;
-
-		public int getStart() {
+		public T getStart() {
 
 			return start;
 		}
 
-		public int getStop() {
+		public T getStop() {
 
 			return stop;
 		}
 	}
 
-	public static int[] generateReferenceWindow(Interval interval) {
+	public static int[] generateReferenceWindow(Interval<Integer> interval) {
 
-		int[] referenceWindow = new int[interval.getStop() - interval.getStart() + 1];
+		int stop = interval.getStop();
+		int start = interval.getStart();
+		int[] referenceWindow = new int[stop - start + 1];
 		for(int i = 0; i < referenceWindow.length; ++i) {
-			referenceWindow[i] = referenceWindow[i] + interval.getStart() + i;
+			referenceWindow[i] = referenceWindow[i] + start + i;
 		}
 		return referenceWindow;
 	}

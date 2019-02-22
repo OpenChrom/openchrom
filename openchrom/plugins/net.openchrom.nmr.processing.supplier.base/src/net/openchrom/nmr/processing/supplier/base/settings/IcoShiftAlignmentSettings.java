@@ -18,7 +18,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlign
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentShiftCorrectionType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentTargetCalculationSelection;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentType;
-import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities.ChemicalShiftInterval;
+import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities.Interval;
 
 /**
  * IcoShiftAlignmentSettings will define all necessary settings for the
@@ -37,7 +37,7 @@ public class IcoShiftAlignmentSettings {
 	private double singlePeakHigherBorder;
 	private int numberOfIntervals;
 	private int intervalLength;
-	private List<ChemicalShiftInterval> userDefIntervalRegions;
+	private List<Interval<Double>> userDefIntervalRegions;
 	private boolean preliminaryCoShifting;
 
 	/**
@@ -210,7 +210,7 @@ public class IcoShiftAlignmentSettings {
 	 *
 	 * @param getUserDefIntervalRegions
 	 */
-	public List<ChemicalShiftInterval> getUserDefIntervalRegions() {
+	public List<Interval<Double>> getUserDefIntervalRegions() {
 
 		return userDefIntervalRegions;
 	}
@@ -223,7 +223,7 @@ public class IcoShiftAlignmentSettings {
 	 *
 	 * @param setUserDefIntervalRegions
 	 */
-	public void setUserDefIntervalRegions(List<ChemicalShiftInterval> userDefIntervalRegions) {
+	public void setUserDefIntervalRegions(List<Interval<Double>> userDefIntervalRegions) {
 
 		this.userDefIntervalRegions = userDefIntervalRegions;
 	}
