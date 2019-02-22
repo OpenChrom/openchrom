@@ -71,6 +71,18 @@ public class TraceRatioValidator extends ValueParserSupport implements IValidato
 						expectedRatio = parseDouble(values, 2);
 						deviationWarn = parseDouble(values, 3);
 						deviationError = parseDouble(values, 4);
+						//
+						if(deviationWarn <= 0) {
+							message = "The deviation warn must be >= 0.";
+						}
+						//
+						if(deviationError <= 0) {
+							message = "The deviation error must be >= 0.";
+						}
+						//
+						if(deviationError < deviationWarn) {
+							message = "The deviation error must be > deviation warn.";
+						}
 					} else {
 						message = ERROR_ENTRY;
 					}
