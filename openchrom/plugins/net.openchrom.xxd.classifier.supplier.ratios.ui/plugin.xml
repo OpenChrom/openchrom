@@ -26,10 +26,12 @@
    <extension
          point="org.eclipse.chemclipse.ux.extension.ui.measurementResultVisualization">
       <MeasurementResultVisualization
+            CellColorProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioColorProvider"
             Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioTableComparator"
             ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioContentProvider"
             Identifier="net.openchrom.xxd.classifier.supplier.ratios.traceratio"
             LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioLabelProvider"
+            SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioSelectionListener"
             Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioResultTitles">
       </MeasurementResultVisualization>
    </extension>
