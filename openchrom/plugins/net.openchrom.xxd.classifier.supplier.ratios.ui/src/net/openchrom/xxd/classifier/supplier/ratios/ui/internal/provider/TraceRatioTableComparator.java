@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
 
-import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
+import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.support.ui.swt.AbstractRecordTableComparator;
 import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.Viewer;
@@ -79,13 +79,13 @@ public class TraceRatioTableComparator extends AbstractRecordTableComparator imp
 			TraceRatio traceRatio1 = (TraceRatio)e1;
 			TraceRatio traceRatio2 = (TraceRatio)e2;
 			//
-			IPeakMSD peakMSD1 = traceRatio1.getPeakMSD();
-			IPeakMSD peakMSD2 = traceRatio2.getPeakMSD();
+			IPeak peak1 = traceRatio1.getPeak();
+			IPeak peak2 = traceRatio2.getPeak();
 			//
 			switch(getPropertyIndex()) {
 				case 0:
-					if(peakMSD1 != null && peakMSD2 != null) {
-						sortOrder = Integer.compare(peakMSD2.getPeakModel().getRetentionTimeAtPeakMaximum(), peakMSD1.getPeakModel().getRetentionTimeAtPeakMaximum());
+					if(peak1 != null && peak2 != null) {
+						sortOrder = Integer.compare(peak2.getPeakModel().getRetentionTimeAtPeakMaximum(), peak1.getPeakModel().getRetentionTimeAtPeakMaximum());
 					}
 					break;
 				case 1:

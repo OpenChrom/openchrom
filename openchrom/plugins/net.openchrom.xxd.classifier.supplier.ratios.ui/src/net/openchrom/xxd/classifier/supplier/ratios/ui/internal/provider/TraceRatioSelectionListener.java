@@ -13,7 +13,6 @@ package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
 
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
-import org.eclipse.chemclipse.support.ui.addons.ModelSupportAddon;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -22,6 +21,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.Activator;
 
 public class TraceRatioSelectionListener extends SelectionAdapter implements SelectionListener {
 
@@ -36,9 +36,9 @@ public class TraceRatioSelectionListener extends SelectionAdapter implements Sel
 			Object data = tableItem.getData();
 			if(data instanceof TraceRatio) {
 				TraceRatio traceRatio = (TraceRatio)data;
-				IPeak peak = traceRatio.getPeakMSD();
+				IPeak peak = traceRatio.getPeak();
 				if(peak != null) {
-					IEventBroker eventBroker = ModelSupportAddon.getEventBroker();
+					IEventBroker eventBroker = Activator.getDefault().getEventBroker();
 					if(eventBroker != null) {
 						eventBroker.send(IChemClipseEvents.TOPIC_PEAK_XXD_UPDATE_SELECTION, peak);
 					}

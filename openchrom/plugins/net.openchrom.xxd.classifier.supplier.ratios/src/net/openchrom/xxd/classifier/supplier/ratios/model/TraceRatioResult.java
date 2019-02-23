@@ -15,11 +15,11 @@ import org.eclipse.chemclipse.chromatogram.msd.classifier.result.AbstractChromat
 import org.eclipse.chemclipse.chromatogram.msd.classifier.result.IChromatogramClassifierResult;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.result.ResultStatus;
 
-public class ClassifierResult extends AbstractChromatogramClassifierResult implements IChromatogramClassifierResult {
+public class TraceRatioResult extends AbstractChromatogramClassifierResult implements IChromatogramClassifierResult {
 
 	private TraceRatios traceRatios;
 
-	public ClassifierResult(ResultStatus resultStatus, String description, TraceRatios traceRatios) {
+	public TraceRatioResult(ResultStatus resultStatus, String description, TraceRatios traceRatios) {
 		super(resultStatus, description);
 		this.traceRatios = traceRatios;
 	}

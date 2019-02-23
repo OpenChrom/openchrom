@@ -14,7 +14,7 @@ package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
 import java.text.DecimalFormat;
 
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
-import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
+import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.text.ValueFormat;
@@ -91,9 +91,9 @@ public class TraceRatioLabelProvider extends AbstractChemClipseLabelProvider {
 			TraceRatio traceRatio = (TraceRatio)element;
 			switch(columnIndex) {
 				case 0:
-					IPeakMSD peakMSD = traceRatio.getPeakMSD();
-					if(peakMSD != null) {
-						text = decimalFormat.format(peakMSD.getPeakModel().getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+					IPeak peak = traceRatio.getPeak();
+					if(peak != null) {
+						text = decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
 					} else {
 						text = "--";
 					}

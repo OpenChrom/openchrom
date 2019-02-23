@@ -52,7 +52,7 @@ public class TraceRatioContentProvider implements IStructuredContentProvider {
 			if(TraceRatioResultTitles.OPTION_RESULTS.equals(displayOption)) {
 				List<TraceRatio> ratios = new ArrayList<>();
 				for(TraceRatio ratio : traceRatios) {
-					if(ratio.getPeakMSD() != null) {
+					if(ratio.getPeak() != null) {
 						ratios.add(ratio);
 					}
 				}

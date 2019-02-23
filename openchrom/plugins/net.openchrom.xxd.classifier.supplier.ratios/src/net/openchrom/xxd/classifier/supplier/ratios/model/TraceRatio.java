@@ -11,26 +11,11 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model;
 
-import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
+public class TraceRatio extends AbstractRatio {
 
-public class TraceRatio {
-
-	private IPeakMSD peakMSD = null; // optional
-	//
-	private String name = "";
 	private String testCase = "";
 	private double expectedRatio = 0.0d;
-	/*
-	 * Calculated (transient)
-	 */
-	private double ratio = 0.0d;
-	private double deviation = 0.0d;
-	/*
-	 * 0 - 0%
-	 * 100 - 100%
-	 */
-	private double deviationWarn = 0.0d;
-	private double deviationError = 0.0d;
+	private double ratio = 0.0d; // Calculated (transient)
 
 	public void copyFrom(TraceRatio setting) {
 
@@ -41,26 +26,6 @@ public class TraceRatio {
 			setDeviationWarn(setting.getDeviationWarn());
 			setDeviationError(setting.getDeviationError());
 		}
-	}
-
-	public IPeakMSD getPeakMSD() {
-
-		return peakMSD;
-	}
-
-	public void setPeakMSD(IPeakMSD peakMSD) {
-
-		this.peakMSD = peakMSD;
-	}
-
-	public String getName() {
-
-		return name;
-	}
-
-	public void setName(String name) {
-
-		this.name = name;
 	}
 
 	public String getTestCase() {
@@ -93,43 +58,12 @@ public class TraceRatio {
 		this.ratio = ratio;
 	}
 
-	public double getDeviation() {
-
-		return deviation;
-	}
-
-	public void setDeviation(double deviation) {
-
-		this.deviation = deviation;
-	}
-
-	public double getDeviationWarn() {
-
-		return deviationWarn;
-	}
-
-	public void setDeviationWarn(double deviationWarn) {
-
-		this.deviationWarn = deviationWarn;
-	}
-
-	public double getDeviationError() {
-
-		return deviationError;
-	}
-
-	public void setDeviationError(double deviationError) {
-
-		this.deviationError = deviationError;
-	}
-
 	@Override
 	public int hashCode() {
 
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((testCase == null) ? 0 : testCase.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -138,7 +72,7 @@ public class TraceRatio {
 
 		if(this == obj)
 			return true;
-		if(obj == null)
+		if(!super.equals(obj))
 			return false;
 		if(getClass() != obj.getClass())
 			return false;
@@ -148,17 +82,12 @@ public class TraceRatio {
 				return false;
 		} else if(!testCase.equals(other.testCase))
 			return false;
-		if(name == null) {
-			if(other.name != null)
-				return false;
-		} else if(!name.equals(other.name))
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 
-		return "TraceRatio [peakMSD=" + peakMSD + ", name=" + name + ", testCase=" + testCase + ", expectedRatio=" + expectedRatio + ", ratio=" + ratio + ", deviation=" + deviation + ", deviationWarn=" + deviationWarn + ", deviationError=" + deviationError + "]";
+		return "TraceRatio [testCase=" + testCase + ", expectedRatio=" + expectedRatio + ", ratio=" + ratio + ", AbstractRatio=" + super.toString() + "]";
 	}
 }

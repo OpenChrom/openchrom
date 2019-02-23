@@ -27,8 +27,8 @@ import org.eclipse.chemclipse.msd.model.xic.ExtractedIonSignal;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.ClassifierResult;
 import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatioResult;
 import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceSupplier;
 import net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioSettings;
@@ -49,7 +49,7 @@ public class TraceRatioClassifier extends AbstractChromatogramClassifier {
 				 * Calculate the result.
 				 */
 				TraceRatios traceRatios = calculateTraceRatios(chromatogramSelection, (TraceRatioSettings)chromatogramClassifierSettings);
-				ClassifierResult classifierResult = new ClassifierResult(ResultStatus.OK, "The chromatogram peaks have been classified.", traceRatios);
+				TraceRatioResult classifierResult = new TraceRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", traceRatios);
 				IMeasurementResult measurementResult = new MeasurementResult("Trace Ratio Classifier", CLASSIFIER_ID, "Trace Ratios", traceRatios);
 				chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
 				processingInfo.setProcessingResult(classifierResult);
@@ -87,7 +87,7 @@ public class TraceRatioClassifier extends AbstractChromatogramClassifier {
 							float intensityTarget = extractedIonSignal.getAbundance(target);
 							if(intensityReference != 0) {
 								double ratio = 100.0d / intensityReference * intensityTarget;
-								traceRatio.setPeakMSD(peak);
+								traceRatio.setPeak(peak);
 								traceRatio.setRatio(ratio);
 								double expectedRatio = traceRatio.getExpectedRatio();
 								if(expectedRatio != 0) {
