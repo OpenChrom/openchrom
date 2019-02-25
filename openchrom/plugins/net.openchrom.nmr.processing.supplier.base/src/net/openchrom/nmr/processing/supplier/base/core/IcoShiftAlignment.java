@@ -27,10 +27,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Pattern;
+
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.stream.DoubleStream;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
+
+import org.apache.commons.math3.complex.Complex;
+
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
@@ -41,8 +46,7 @@ import org.eclipse.chemclipse.nmr.model.selection.DataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
-import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.core.runtime.NullProgressMonitor;
+
 import org.ejml.simple.SimpleMatrix;
 
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
@@ -165,7 +169,7 @@ public class IcoShiftAlignment {
 		return columnSumArray;
 	}
 
-	public double[] CalculateMedianTarget(SimpleMatrix experimentalDatasetsMatrix) {
+	public double[] calculateMedianTarget(SimpleMatrix experimentalDatasetsMatrix) {
 
 		// create an object of Median class
 		Median median = new Median();
@@ -183,7 +187,7 @@ public class IcoShiftAlignment {
 		return columnArray;
 	}
 
-	public double[] CalculateMaxTarget(SimpleMatrix experimentalDatasetsMatrix) {
+	public double[] calculateMaxTarget(SimpleMatrix experimentalDatasetsMatrix) {
 
 		int numRowsMax = experimentalDatasetsMatrix.numRows();
 		double[] rowArraySum = new double[numRowsMax];
@@ -196,10 +200,7 @@ public class IcoShiftAlignment {
 		}
 		UtilityFunctions utilityFunction = new UtilityFunctions();
 		double maxRowValue = utilityFunction.getMaxValueOfArray(rowArraySum);
-		int maxTargetIndex = utilityFunction.findIndexOfValue(rowArraySum, maxRowValue);
-		/*
-		 * TODO extract max interval only
-		 */
+		int maxTargetIndex = utilityFunction.findIndexOfValue(rowArraySum, maxRowValue);		
 		double[] maxTarget = experimentalDatasetsMatrix.extractVector(true, maxTargetIndex).getMatrix().getData();
 		return maxTarget;
 	}
@@ -230,12 +231,10 @@ public class IcoShiftAlignment {
 		SortedMap<Integer, Interval<Integer>> intervalRegionsMap = new TreeMap<>();
 
 		/*
-		 * refactor into ==> enum?
-		 * NUMBER_OF_INTERVALS
-		 * INTERVAL_LENGTH
-		 * WHOLE_SPECTRUM
-		 * SINGLE_PEAK
-		 * USER_DEFINED_INTERVALS
+		 * For use with MS data, chromatograms, etc .:
+		 * ~~~~~~~
+		 * as long as the supplied object has an X-axis and a defined
+		 * length, the algorithm should be able to work with it.
 		 */
 
 		//
@@ -245,6 +244,7 @@ public class IcoShiftAlignment {
 		ISignalExtractor signalExtract = new SignalExtractor(dataNMRSelect);
 		double[] chemicalShiftAxis = signalExtract.extractChemicalShift();
 		int lengthOfDataset = dataNMRSelect.getMeasurmentNMR().getScanMNR().getNumberOfFourierPoints();
+		UtilityFunctions utilityFunction = new UtilityFunctions();
 		//
 
 		IcoShiftAlignmentUtilities shiftUtils = new IcoShiftAlignmentUtilities();
@@ -256,16 +256,15 @@ public class IcoShiftAlignment {
 				 * get left and right boundaries in ppm
 				 * find indices in data
 				 */
-				double lowerBorder = 2.0d; // ppm, user input
-				double higherBorder = 2.2d; // ppm, user input
-				UtilityFunctions utilityFunction = new UtilityFunctions();
+				double lowerBorder = settings.getSinglePeakLowerBorder();
+				double higherBorder = settings.getSinglePeakHigherBorder();
 				int lowerBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, lowerBorder);
 				int higherBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, higherBorder);
 
 				intervalRegionsMap.put(1, shiftUtils.new Interval<Integer>(lowerBorderIndex, higherBorderIndex));
 
 				break;
-			case "WHOLE_SPECTRUM":
+			case WHOLE_SPECTRUM:
 				/*
 				 * no user input required
 				 * start at index=0, end at index=lengthOfDataset-1
@@ -274,12 +273,12 @@ public class IcoShiftAlignment {
 				intervalRegionsMap.put(1, shiftUtils.new Interval<Integer>(0, lengthOfDataset - 1));
 
 				break;
-			case "NUMBER_OF_INTERVALS":
+			case NUMBER_OF_INTERVALS:
 				/*
 				 * divide present data in number of equal intervals
 				 * save every interval in map with left and right boundaries
 				 */
-				int numberOfIntervals = 100; // user input
+				int numberOfIntervals = settings.getNumberOfIntervals();
 				//
 				int remainingInterval = lengthOfDataset % numberOfIntervals;
 				int approxIntervalSpan = (int)Math.floor(lengthOfDataset / numberOfIntervals);
@@ -309,12 +308,12 @@ public class IcoShiftAlignment {
 
 				}
 				break;
-			case "INTERVAL_LENGTH":
+			case INTERVAL_LENGTH:
 				/*
 				 * divide present data by the amount of given datapoints (=length of interval) in equal intervals
 				 * save every interval in map with left and right boundaries
 				 */
-				int lengthOfIntervals = 1000; // user input
+				int lengthOfIntervals = settings.getIntervalLength();
 				//
 				int numberOfFullIntervals = (int)Math.floor(lengthOfDataset / lengthOfIntervals);
 				int[] intervalStarts = new int[numberOfFullIntervals + 1];
@@ -335,10 +334,10 @@ public class IcoShiftAlignment {
 
 				}
 				break;
-			case "USER_DEFINED_INTERVALS":
+			case USER_DEFINED_INTERVALS:
 				/*
 				 * take a map / import a file / read an integral list... with user defined intervals
-				 * the boundaries will be in ppm (?); find indices in data
+				 * the boundaries will be in ppm (?) => double value!; find indices in data
 				 * ***
 				 * main difference to number/length methods: intervals may be discontiguous!
 				 */
