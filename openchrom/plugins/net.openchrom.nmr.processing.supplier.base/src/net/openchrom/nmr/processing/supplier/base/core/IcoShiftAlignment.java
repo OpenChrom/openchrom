@@ -12,30 +12,16 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.PathMatcher;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.DoubleStream;
 
 import org.apache.commons.lang3.ArrayUtils;
-
 import org.apache.commons.math3.complex.Complex;
-
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
@@ -46,7 +32,6 @@ import org.eclipse.chemclipse.nmr.model.selection.DataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
-
 import org.ejml.simple.SimpleMatrix;
 
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
@@ -122,11 +107,27 @@ public class IcoShiftAlignment {
 		return icoShiftAlignment.performMainAlignment(experimentalDatasetsMatrix, intervalRegionsMap, settings);
 	}
 
+	/**
+	 * This method will generate an separate instance of alignment settings
+	 * especially needed for a preliminary Co-Shifting routine that is selected
+	 * by setting the option {@link setPreliminaryCoShifting} = true.
+	 * <p>
+	 * This preliminary alignment with its settings will not affect the set of
+	 * settings defined for the main alignment and will be executed before the
+	 * main alignment as a preparatory measure in order to achieve a better
+	 * overall alignment.
+	 * <p>
+	 * All settings are fixed except for the calculation of the target.
+	 * This can be set to:<br>
+	 * {@link IcoShiftAlignmentTargetCalculationSelection.MEAN}<br>
+	 * or <br>
+	 * {@link IcoShiftAlignmentTargetCalculationSelection.MEDIAN}.
+	 *
+	 * @author Alexander Stark
+	 *
+	 */
 	private IcoShiftAlignmentSettings generatePreliminarySettings() {
 
-		/*
-		 * TODO add special comment that describes this
-		 */
 		IcoShiftAlignmentSettings settings = new IcoShiftAlignmentSettings();
 		settings.setTargetCalculationSelection(IcoShiftAlignmentTargetCalculationSelection.MEAN); // or MEDIAN
 		settings.setAlignmentType(IcoShiftAlignmentType.WHOLE_SPECTRUM);
@@ -154,7 +155,6 @@ public class IcoShiftAlignment {
 	}
 
 	private double[] calculateMeanTarget(SimpleMatrix experimentalDatasetsMatrix) {
-
 
 		int numColsMax = experimentalDatasetsMatrix.numCols();
 		int numRowsMax = experimentalDatasetsMatrix.numRows();
@@ -200,7 +200,7 @@ public class IcoShiftAlignment {
 		}
 		UtilityFunctions utilityFunction = new UtilityFunctions();
 		double maxRowValue = utilityFunction.getMaxValueOfArray(rowArraySum);
-		int maxTargetIndex = utilityFunction.findIndexOfValue(rowArraySum, maxRowValue);		
+		int maxTargetIndex = utilityFunction.findIndexOfValue(rowArraySum, maxRowValue);
 		double[] maxTarget = experimentalDatasetsMatrix.extractVector(true, maxTargetIndex).getMatrix().getData();
 		return maxTarget;
 	}
@@ -224,34 +224,28 @@ public class IcoShiftAlignment {
 		return experimentalDatasetsMatrix;
 	}
 
-
 	private SortedMap<Integer, Interval<Integer>> calculateIntervals(Collection<? extends IMeasurementNMR> experimentalDatasetsList, IcoShiftAlignmentSettings settings) {
 
 		// map to store throughout numbered intervals
 		SortedMap<Integer, Interval<Integer>> intervalRegionsMap = new TreeMap<>();
-
 		/*
 		 * For use with MS data, chromatograms, etc .:
 		 * ~~~~~~~
 		 * as long as the supplied object has an X-axis and a defined
 		 * length, the algorithm should be able to work with it.
 		 */
-
 		//
 		IMeasurementNMR measureNMR = experimentalDatasetsList.iterator().next();
-
 		IDataNMRSelection dataNMRSelect = new DataNMRSelection(measureNMR);
 		ISignalExtractor signalExtract = new SignalExtractor(dataNMRSelect);
 		double[] chemicalShiftAxis = signalExtract.extractChemicalShift();
 		int lengthOfDataset = dataNMRSelect.getMeasurmentNMR().getScanMNR().getNumberOfFourierPoints();
 		UtilityFunctions utilityFunction = new UtilityFunctions();
 		//
-
 		IcoShiftAlignmentUtilities shiftUtils = new IcoShiftAlignmentUtilities();
 		IcoShiftAlignmentType alignmentType = settings.getAlignmentType();
 		switch(alignmentType) {
 			case SINGLE_PEAK:
-
 				/*
 				 * get left and right boundaries in ppm
 				 * find indices in data
@@ -260,18 +254,14 @@ public class IcoShiftAlignment {
 				double higherBorder = settings.getSinglePeakHigherBorder();
 				int lowerBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, lowerBorder);
 				int higherBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, higherBorder);
-
 				intervalRegionsMap.put(1, shiftUtils.new Interval<Integer>(lowerBorderIndex, higherBorderIndex));
-
 				break;
 			case WHOLE_SPECTRUM:
 				/*
 				 * no user input required
 				 * start at index=0, end at index=lengthOfDataset-1
 				 */
-
 				intervalRegionsMap.put(1, shiftUtils.new Interval<Integer>(0, lengthOfDataset - 1));
-
 				break;
 			case NUMBER_OF_INTERVALS:
 				/*
@@ -303,9 +293,7 @@ public class IcoShiftAlignment {
 				intervalEndValues[intervalEndValues.length - 1] = lengthOfDataset - 1;
 				//
 				for(int i = 0; i < numberOfIntervals; i++) {
-
 					intervalRegionsMap.put(i + 1, shiftUtils.new Interval<Integer>(intervalStartValues[i], intervalEndValues[i]));
-
 				}
 				break;
 			case INTERVAL_LENGTH:
@@ -329,9 +317,7 @@ public class IcoShiftAlignment {
 					intervalEnds[intervalEnds.length - 1] = lengthOfDataset - 1;
 				}
 				for(int i = 0; i < numberOfFullIntervals + 1; i++) {
-
 					intervalRegionsMap.put(i + 1, shiftUtils.new Interval<Integer>(intervalStarts[i], intervalEnds[i]));
-
 				}
 				break;
 			case USER_DEFINED_INTERVALS:
@@ -341,7 +327,6 @@ public class IcoShiftAlignment {
 				 * ***
 				 * main difference to number/length methods: intervals may be discontiguous!
 				 */
-
 				List<Interval<Double>> userDefIntervalRegions = settings.getUserDefIntervalRegions();
 				Iterator<Interval<Double>> userDefIntervalRegionsIterator = userDefIntervalRegions.iterator();
 				int intervalNumber = 1;
@@ -356,14 +341,12 @@ public class IcoShiftAlignment {
 					intervalRegionsMap.put(intervalNumber, shiftUtils.new Interval<Integer>(lowerUserBorderIndex, higherUserBorderIndex));
 					intervalNumber++;
 				}
-
 				break;
 			default:
 				throw new IllegalArgumentException("unsupported AlignmentType: " + alignmentType);
 		}
 		return intervalRegionsMap;
 	}
-
 
 	public int[] coshiftSpectra(SimpleMatrix experimentalDatasetsMatrix, Interval<Integer> interval, IcoShiftAlignmentSettings settings) {
 
@@ -769,5 +752,4 @@ public class IcoShiftAlignment {
 			throw new IllegalArgumentException("Size of all experiments is not equal!");
 		}
 	}
-
 }
