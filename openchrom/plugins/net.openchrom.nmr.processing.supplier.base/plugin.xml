@@ -4,44 +4,44 @@
    <extension
          point="org.eclipse.chemclipse.nmr.processor.scanProcessor">
       <ScanProcessor
-            description="This processor applies the Fourier Transformation."
+            description="This processor applies the Fourier Transformation to the raw data (fid). This gives an unprocessed NMR spectrum."
             id="net.openchrom.nmr.processing.supplier.base.fourierTransformation"
             processor="net.openchrom.nmr.processing.supplier.base.core.FourierTransformationProcessor"
-            processorName="Fourier Transformation"
+            processorName="Fourier Transformation Processor"
             settings="net.openchrom.nmr.processing.supplier.base.settings.FourierTransformationSettings">
       </ScanProcessor>
       <ScanProcessor
-            description="This processor applies the phase correction."
+            description="This processor applies the manual phase correction to the fourier transformed data. This gives an NMR spectrum with (mainly) absorptive lines."
             id="net.openchrom.nmr.processing.supplier.base.phaseCorrection"
             processor="net.openchrom.nmr.processing.supplier.base.core.PhaseCorrectionProcessor"
-            processorName="Phase Correction">
+            processorName="Phase Correction Processor">
       </ScanProcessor>
       <ScanProcessor
-            description="This processor applies the phase correction."
+            description="This processor applies the automatic phase correction to the fourier transformed data. This gives an NMR spectrum with (mainly) absorptive lines."
             id="net.openchrom.nmr.processing.supplier.base.autoPhaseCorrection"
             processor="net.openchrom.nmr.processing.supplier.base.core.AutoPhaseCorrectionProcessor"
-            processorName="Auto Phase Correction"
+            processorName="Auto Phase Correction Processor"
             settings="net.openchrom.nmr.processing.supplier.base.settings.AutoPhaseCorrectionSettings">
       </ScanProcessor>
       <ScanProcessor
-            description="This processor applies the baseline correction."
+            description="This processor applies the automatic baseline correction. This processor uses an iterative approach to flatten the baseline."
             id="net.openchrom.nmr.processing.supplier.base.baselineCorrection"
             processor="net.openchrom.nmr.processing.supplier.base.core.BaselineCorrectionProcessor"
-            processorName="Baseline Correction"
+            processorName="Baseline Correction Processor"
             settings="net.openchrom.nmr.processing.supplier.base.settings.BaselineCorrectionSettings">
       </ScanProcessor>
       <ScanProcessor
-            description="Exponential Apodization Function"
+            description="This processor applies the exponential apodization function to the raw data (fid)."
             id="net.openchrom.nmr.processing.supplier.base.exponentialApodizationFunction"
             processor="net.openchrom.nmr.processing.supplier.base.core.ExponentialApodizationFunctionProcessor"
-            processorName="Exponential Apodization Function"
+            processorName="Exponential Apodization Function Processor"
             settings="net.openchrom.nmr.processing.supplier.base.settings.ExponentialApodizationSettings">
       </ScanProcessor>
       <ScanProcessor
-            description="Gaussian Apodization Function"
+            description="This processor applies the gaussian apodization function to the raw data (fid)."
             id="net.openchrom.nmr.processing.supplier.base.gaussianApodizationFunction"
             processor="net.openchrom.nmr.processing.supplier.base.core.GaussianApodizationFunctionProcessor"
-            processorName="Gaussian Apodization Function"
+            processorName="Gaussian Apodization Function Processor"
             settings="net.openchrom.nmr.processing.supplier.base.settings.GaussianApodizationSettings">
       </ScanProcessor>
    </extension>
