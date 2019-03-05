@@ -873,11 +873,6 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	@Override
-	public void removeAllTargets() {
-
-	}
-
-	@Override
 	public List<IIon> getIons() {
 
 		return null;
