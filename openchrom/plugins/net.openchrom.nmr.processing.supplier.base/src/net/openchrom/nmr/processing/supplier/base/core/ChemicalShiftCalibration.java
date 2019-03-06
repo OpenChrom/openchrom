@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.math3.complex.Complex;
@@ -26,6 +25,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlign
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentShiftCorrectionType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentTargetCalculationSelection;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentType;
+import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities.Interval;
 
 public class ChemicalShiftCalibration {
 
@@ -55,28 +55,17 @@ public class ChemicalShiftCalibration {
 		SimpleMatrix calibratedData = icoShiftAlignment.process(experimentalDatasetsList, calibrationSettings);
 		//
 		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(experimentalDatasetsList);
-		Collection<? extends IMeasurementNMR> newDatasetsList = new ArrayList<IMeasurementNMR>();
-		boolean goodCalibration = true;
-		boolean firstCheck = true;
+		Collection<? extends IMeasurementNMR> newDatasetsList = copyPartlyCalibratedData(experimentalDatasetsList, calibratedData);
 		int checkIterator = 0;
-		do { // check for quality of calibration
-			goodCalibration = checkCalibration(calibratedData, chemicalShiftAxis, calibrationSettings);
-			//
-			if(goodCalibration == false) { // fill partly calibrated data in new list
-				if(firstCheck) {
-					newDatasetsList = copyPartlyCalibratedData(experimentalDatasetsList, calibratedData);
-					firstCheck = false;
-				} else {
-					newDatasetsList = copyPartlyCalibratedData(newDatasetsList, calibratedData);
-				}
-				// try to calibrate datasets again
-				calibratedData = icoShiftAlignment.process(newDatasetsList, calibrationSettings);
-			}
+		while(!checkCalibration(calibratedData, chemicalShiftAxis, calibrationSettings)) { // check for quality of calibration
+			newDatasetsList = copyPartlyCalibratedData(newDatasetsList, calibratedData);
+			// try to calibrate datasets again
+			calibratedData = icoShiftAlignment.process(newDatasetsList, calibrationSettings);
 			checkIterator++;
 			if(checkIterator == 5) {
-				goodCalibration = true;
+				break;
 			}
-		} while(goodCalibration != true);
+		}
 		//
 		if(checkIterator > 2) {
 			calibratedData = finalPeakCalibration(calibratedData, chemicalShiftAxis, calibrationSettings);
@@ -85,21 +74,20 @@ public class ChemicalShiftCalibration {
 		return calibratedData;
 	}
 
-	private boolean checkCalibration(SimpleMatrix calibratedData, double[] chemicalShiftAxis, IcoShiftAlignmentSettings calibrationSettings) {
+	private static boolean checkCalibration(SimpleMatrix calibratedData, double[] chemicalShiftAxis, IcoShiftAlignmentSettings calibrationSettings) {
 
-		int[] intervalIndices = ChemicalShiftCalibrationUtilities.getCalibrationIntervalIndices(chemicalShiftAxis, calibrationSettings);
+		Interval<Integer> intervalIndices = ChemicalShiftCalibrationUtilities.getCalibrationIntervalIndices(chemicalShiftAxis, calibrationSettings);
 		int intendedPosition = ChemicalShiftCalibrationUtilities.getIntendedPeakPosition(intervalIndices, chemicalShiftAxis);
 		int[] actualPositions = ChemicalShiftCalibrationUtilities.getActualPeakPositions(intervalIndices, calibratedData);
 		return ChemicalShiftCalibrationUtilities.isSamePeakPosition(actualPositions, intendedPosition);
 	}
 
-	private Collection<? extends IMeasurementNMR> copyPartlyCalibratedData(Collection<? extends IMeasurementNMR> datasetsList, SimpleMatrix calibratedData) {
+	private static Collection<? extends IMeasurementNMR> copyPartlyCalibratedData(Collection<? extends IMeasurementNMR> datasetsList, SimpleMatrix calibratedData) {
 
-		Collection<? extends IMeasurementNMR> newDatasetsList = datasetsList;
 		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(datasetsList);
 		//
 		int r = 0;
-		for(IMeasurementNMR measurementNMR : newDatasetsList) {
+		for(IMeasurementNMR measurementNMR : datasetsList) {
 			double[] rowVector = calibratedData.extractVector(true, r).getMatrix().getData();
 			r++;
 			Complex[] complexVector = new Complex[rowVector.length];
@@ -110,28 +98,28 @@ public class ChemicalShiftCalibration {
 			ISignalExtractor signalExtractor = new SignalExtractor(measurementNMR);
 			signalExtractor.storeFrequencyDomainSpectrum(complexVector, chemicalShiftAxis);
 		}
-		return newDatasetsList;
+		return datasetsList;
 	}
 
-	private SimpleMatrix finalPeakCalibration(SimpleMatrix calibratedData, double[] chemicalShiftAxis, IcoShiftAlignmentSettings calibrationSettings) {
+	private static SimpleMatrix finalPeakCalibration(SimpleMatrix calibratedData, double[] chemicalShiftAxis, IcoShiftAlignmentSettings calibrationSettings) {
 
-		int[] intervalIndices = ChemicalShiftCalibrationUtilities.getCalibrationIntervalIndices(chemicalShiftAxis, calibrationSettings);
+		Interval<Integer> intervalIndices = ChemicalShiftCalibrationUtilities.getCalibrationIntervalIndices(chemicalShiftAxis, calibrationSettings);
 		int intendedPosition = ChemicalShiftCalibrationUtilities.getIntendedPeakPosition(intervalIndices, chemicalShiftAxis);
 		int[] actualPositions = ChemicalShiftCalibrationUtilities.getActualPeakPositions(intervalIndices, calibratedData);
 		//
 		UtilityFunctions utilityFunction = new UtilityFunctions();
 		// try to correct the remaining discrepancy
-		for(int f = 0; f < actualPositions.length; f++) {
-			double[] shiftVector = calibratedData.extractVector(true, f).getMatrix().getData();
+		for(int i = 0; i < actualPositions.length; i++) {
+			double[] shiftVector = calibratedData.extractVector(true, i).getMatrix().getData();
 			//
-			if(actualPositions[f] > intendedPosition) {
+			if(actualPositions[i] > intendedPosition) {
 				// leftShift
-				utilityFunction.leftShiftNMRData(shiftVector, (actualPositions[f] - intendedPosition));
-				calibratedData.setRow(f, 0, shiftVector);
+				utilityFunction.leftShiftNMRData(shiftVector, (actualPositions[i] - intendedPosition));
+				calibratedData.setRow(i, 0, shiftVector);
 			} else {
 				// rightShift
-				utilityFunction.rightShiftNMRData(shiftVector, (intendedPosition - actualPositions[f]));
-				calibratedData.setRow(f, 0, shiftVector);
+				utilityFunction.rightShiftNMRData(shiftVector, (intendedPosition - actualPositions[i]));
+				calibratedData.setRow(i, 0, shiftVector);
 			}
 		}
 		return calibratedData;
@@ -158,7 +146,7 @@ public class ChemicalShiftCalibration {
 	 * @author Alexander Stark
 	 *
 	 */
-	private IcoShiftAlignmentSettings generateCalibrationSettings() {
+	private static IcoShiftAlignmentSettings generateCalibrationSettings() {
 
 		IcoShiftAlignmentSettings calibrationSettings = new IcoShiftAlignmentSettings();
 		//

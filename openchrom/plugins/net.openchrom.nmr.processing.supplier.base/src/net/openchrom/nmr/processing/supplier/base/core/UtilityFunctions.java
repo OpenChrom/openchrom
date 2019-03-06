@@ -82,14 +82,14 @@ public class UtilityFunctions {
 			}
 		}
 		//
-		int reverseIndex;
-		for(reverseIndex = array.length - 1; reverseIndex > 0; reverseIndex--) {
+		int reverseIndex = array.length - 1;
+		for(; reverseIndex > 0; reverseIndex--) {
 			if(Math.abs(array[reverseIndex] - value) < 0.001) {
 				break;
 			}
 		}
 		//
-		if(0 > value) {
+		if(Double.compare(value, 0.0) < 0) {
 			return (int)Math.floor((reverseIndex + index) / 2);
 		} else {
 			return (int)Math.ceil((reverseIndex + index) / 2);

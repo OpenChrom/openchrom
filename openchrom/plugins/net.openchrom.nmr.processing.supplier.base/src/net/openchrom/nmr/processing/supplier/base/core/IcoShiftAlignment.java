@@ -158,7 +158,7 @@ public class IcoShiftAlignment {
 		}
 	}
 
-	private double[] calculateCalibrationTarget(SimpleMatrix experimentalDatasetsMatrix) {
+	private static double[] calculateCalibrationTarget(SimpleMatrix experimentalDatasetsMatrix) {
 
 		/*
 		 * generate lorentzian distribution and calculate a peak from it
@@ -167,7 +167,7 @@ public class IcoShiftAlignment {
 		UtilityFunctions utilityFunction = new UtilityFunctions();
 		//
 		int windowWidth = experimentalDatasetsMatrix.numCols();
-		double[] xAxisVector = utilityFunction.generateLinearlySpacedVector(-1.0, 1.0, windowWidth);// 2000 => referenceWindow!?
+		double[] xAxisVector = utilityFunction.generateLinearlySpacedVector(-1.0, 1.0, windowWidth);
 		double[] probabilityDensityFunction = new double[xAxisVector.length];
 		for(int i = 0; i < xAxisVector.length; i++) {
 			// calculate a peak with some intensity and peak maximum in the middle of interval
@@ -177,7 +177,7 @@ public class IcoShiftAlignment {
 		return probabilityDensityFunction;
 	}
 
-	private double[] calculateMeanTarget(SimpleMatrix experimentalDatasetsMatrix) {
+	private static double[] calculateMeanTarget(SimpleMatrix experimentalDatasetsMatrix) {
 
 		int numColsMax = experimentalDatasetsMatrix.numCols();
 		int numRowsMax = experimentalDatasetsMatrix.numRows();
@@ -192,7 +192,7 @@ public class IcoShiftAlignment {
 		return columnSumArray;
 	}
 
-	public double[] calculateMedianTarget(SimpleMatrix experimentalDatasetsMatrix) {
+	public static double[] calculateMedianTarget(SimpleMatrix experimentalDatasetsMatrix) {
 
 		// create an object of Median class
 		Median median = new Median();
@@ -210,7 +210,7 @@ public class IcoShiftAlignment {
 		return columnArray;
 	}
 
-	public double[] calculateMaxTarget(SimpleMatrix experimentalDatasetsMatrix) {
+	public static double[] calculateMaxTarget(SimpleMatrix experimentalDatasetsMatrix) {
 
 		int numRowsMax = experimentalDatasetsMatrix.numRows();
 		double[] rowArraySum = new double[numRowsMax];
