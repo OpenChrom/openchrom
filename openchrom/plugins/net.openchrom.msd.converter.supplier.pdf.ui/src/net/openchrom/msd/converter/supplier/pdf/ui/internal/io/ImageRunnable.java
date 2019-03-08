@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -34,6 +34,9 @@ import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.ChromatogramDat
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.PeakChartSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.ScanChartSupport;
 import org.eclipse.swt.SWT;
+import org.eclipse.swtchart.ILineSeries.PlotSymbolType;
+import org.eclipse.swtchart.IPlotArea;
+import org.eclipse.swtchart.LineStyle;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.IExtendedChart;
@@ -41,9 +44,6 @@ import org.eclipse.swtchart.extensions.core.RangeRestriction;
 import org.eclipse.swtchart.extensions.images.ImageFactory;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
-import org.eclipse.swtchart.ILineSeries.PlotSymbolType;
-import org.eclipse.swtchart.IPlotArea;
-import org.eclipse.swtchart.LineStyle;
 
 public class ImageRunnable implements Runnable {
 
@@ -128,7 +128,7 @@ public class ImageRunnable implements Runnable {
 		if(peaks.size() > 0) {
 			Collections.sort(peaks, peakRetentionTimeComparator);
 			ILineSeriesData lineSeriesData = peakChartSupport.getPeaks(peaks, true, false, Colors.GRAY, "Peaks");
-			ILineSeriesSettings lineSeriesSettings = lineSeriesData.getLineSeriesSettings();
+			ILineSeriesSettings lineSeriesSettings = lineSeriesData.getSettings();
 			lineSeriesSettings.setEnableArea(false);
 			lineSeriesSettings.setLineStyle(LineStyle.NONE);
 			lineSeriesSettings.setSymbolType(PlotSymbolType.INVERTED_TRIANGLE);
@@ -150,7 +150,7 @@ public class ImageRunnable implements Runnable {
 		List<IScan> scans = chromatogramDataSupport.getIdentifiedScans(chromatogram);
 		if(scans.size() > 0) {
 			ILineSeriesData lineSeriesData = scanChartSupport.getLineSeriesDataPoint(scans, false, "Scans");
-			ILineSeriesSettings lineSeriesSettings = lineSeriesData.getLineSeriesSettings();
+			ILineSeriesSettings lineSeriesSettings = lineSeriesData.getSettings();
 			lineSeriesSettings.setLineStyle(LineStyle.NONE);
 			lineSeriesSettings.setSymbolType(PlotSymbolType.CIRCLE);
 			lineSeriesSettings.setSymbolSize(5);
