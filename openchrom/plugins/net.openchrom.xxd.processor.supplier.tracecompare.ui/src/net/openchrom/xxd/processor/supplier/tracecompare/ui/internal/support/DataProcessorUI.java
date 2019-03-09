@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -30,12 +30,12 @@ import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignals;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swtchart.LineStyle;
 import org.eclipse.swtchart.extensions.core.ISeriesData;
 import org.eclipse.swtchart.extensions.core.SeriesData;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
 import org.eclipse.swtchart.extensions.linecharts.LineSeriesData;
-import org.eclipse.swtchart.LineStyle;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
@@ -182,7 +182,7 @@ public class DataProcessorUI extends DataProcessor {
 		double[] ySeries = new double[]{0, 1000};
 		ISeriesData seriesData = new SeriesData(xSeries, ySeries, "0");
 		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
-		ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
+		ILineSeriesSettings lineSerieSettings = lineSeriesData.getSettings();
 		lineSerieSettings.setDescription("0 nm");
 		lineSerieSettings.setEnableArea(false);
 		lineSerieSettings.setLineColor(colorDefault);
@@ -195,7 +195,7 @@ public class DataProcessorUI extends DataProcessor {
 		boolean isReference = seriesData.getId().startsWith(MEASUREMENT_REFERENCE);
 		//
 		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
-		ILineSeriesSettings lineSeriesSettings = lineSeriesData.getLineSeriesSettings();
+		ILineSeriesSettings lineSeriesSettings = lineSeriesData.getSettings();
 		lineSeriesSettings.setEnableArea(false);
 		if(isReference) {
 			/*
