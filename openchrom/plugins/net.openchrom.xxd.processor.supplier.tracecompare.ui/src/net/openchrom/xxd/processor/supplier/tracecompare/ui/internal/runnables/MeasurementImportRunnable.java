@@ -1,13 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Alexander Kerner - Generics
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.runnables;
 
@@ -25,13 +26,14 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 
 public class MeasurementImportRunnable implements IRunnableWithProgress {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(MeasurementImportRunnable.class);
 	//
 	private List<IChromatogramWSD> measurements;
 	private List<File> measurementFiles;
 
 	public MeasurementImportRunnable(List<File> measurementFiles) {
-		measurements = new ArrayList<IChromatogramWSD>();
+		measurements = new ArrayList<>();
 		this.measurementFiles = measurementFiles;
 	}
 
@@ -54,13 +56,9 @@ public class MeasurementImportRunnable implements IRunnableWithProgress {
 	public IChromatogramWSD importChromatogram(String chromatogramPath, IProgressMonitor monitor) {
 
 		IChromatogramWSD chromatogramWSD = null;
-		try {
-			File file = new File(chromatogramPath);
-			IProcessingInfo processingInfo = ChromatogramConverterWSD.getInstance().convert(file, monitor);
-			chromatogramWSD = processingInfo.getProcessingResult(IChromatogramWSD.class);
-		} catch(Exception e) {
-			logger.warn(e);
-		}
+		File file = new File(chromatogramPath);
+		IProcessingInfo<IChromatogramWSD> processingInfo = ChromatogramConverterWSD.getInstance().convert(file, monitor);
+		chromatogramWSD = processingInfo.getProcessingResult();
 		return chromatogramWSD;
 	}
 }
