@@ -1,13 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Lablicate GmbH.
- * 
+ * Copyright (c) 2014, 2018, 2019 Lablicate GmbH.
+ *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Alexander Kerner - Generics
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.cdf.converter;
 
@@ -26,15 +27,15 @@ import net.openchrom.csd.converter.supplier.cdf.internal.converter.IConstants;
 import net.openchrom.csd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.openchrom.csd.converter.supplier.cdf.io.ChromatogramReader;
 
-public class ChromatogramImportConverter extends AbstractChromatogramImportConverter implements IChromatogramImportConverter {
+public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramCSD> implements IChromatogramImportConverter<IChromatogramCSD> {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramImportConverter.class);
 	private static final String DESCRIPTION = "NetCDF Import Converter";
 
 	@Override
-	public IProcessingInfo convert(File file, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramCSD> convert(File file, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = super.validate(file);
+		IProcessingInfo<IChromatogramCSD> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			file = SpecificationValidator.validateSpecification(file);
 			IChromatogramCSDReader reader = new ChromatogramReader();
@@ -50,9 +51,9 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 	}
 
 	@Override
-	public IProcessingInfo convertOverview(File file, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramOverview> convertOverview(File file, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = super.validate(file);
+		IProcessingInfo<IChromatogramOverview> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			file = SpecificationValidator.validateSpecification(file);
 			IChromatogramCSDReader reader = new ChromatogramReader();
@@ -61,7 +62,7 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 				IChromatogramOverview chromatogramOverview = reader.readOverview(file, monitor);
 				processingInfo.setProcessingResult(chromatogramOverview);
 			} catch(Exception e) {
-				logger.warn(e);
+				logger.error(e.getLocalizedMessage(), e);
 				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
 			}
 		}
