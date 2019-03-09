@@ -1,13 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Alexander Kerner - Generics
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.peaks;
 
@@ -22,42 +23,40 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
-public class PeakIdentifierMSD extends AbstractPeakIdentifier implements IPeakIdentifierMSD {
+public class PeakIdentifierMSD<T> extends AbstractPeakIdentifier implements IPeakIdentifierMSD<T> {
 
 	@Override
-	public IProcessingInfo identify(List<IPeakMSD> peaks, IPeakIdentifierSettingsMSD settings, IProgressMonitor monitor) {
+	public IProcessingInfo<T> identify(List<? extends IPeakMSD> peaks, IPeakIdentifierSettingsMSD settings, IProgressMonitor monitor) {
 
 		return applyIdentifier(peaks, settings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo identify(IPeakMSD peak, IPeakIdentifierSettingsMSD settings, IProgressMonitor monitor) {
+	public IProcessingInfo<T> identify(IPeakMSD peak, IPeakIdentifierSettingsMSD settings, IProgressMonitor monitor) {
 
 		return identify(extractPeaks(peak), settings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo identify(IPeakMSD peak, IProgressMonitor monitor) {
+	public IProcessingInfo<T> identify(IPeakMSD peak, IProgressMonitor monitor) {
 
 		return identify(peak, getSettings(PreferenceSupplier.P_PEAK_IDENTIFIER_LIST_MSD), monitor);
 	}
 
 	@Override
-	public IProcessingInfo identify(List<IPeakMSD> peaks, IProgressMonitor monitor) {
+	public IProcessingInfo<T> identify(List<? extends IPeakMSD> peaks, IProgressMonitor monitor) {
 
 		return identify(peaks, getSettings(PreferenceSupplier.P_PEAK_IDENTIFIER_LIST_MSD), monitor);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public IProcessingInfo identify(IChromatogramSelectionMSD chromatogramSelectionMSD, IProgressMonitor monitor) {
+	public IProcessingInfo<T> identify(IChromatogramSelectionMSD chromatogramSelectionMSD, IProgressMonitor monitor) {
 
 		return identify(extractPeaks(chromatogramSelectionMSD), monitor);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public IProcessingInfo identify(IChromatogramSelectionMSD chromatogramSelectionMSD, IPeakIdentifierSettingsMSD peakIdentifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<T> identify(IChromatogramSelectionMSD chromatogramSelectionMSD, IPeakIdentifierSettingsMSD peakIdentifierSettings, IProgressMonitor monitor) {
 
 		return identify(extractPeaks(chromatogramSelectionMSD), peakIdentifierSettings, monitor);
 	}

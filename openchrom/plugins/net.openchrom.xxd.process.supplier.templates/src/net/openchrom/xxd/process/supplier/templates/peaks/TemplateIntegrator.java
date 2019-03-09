@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -31,12 +31,12 @@ import net.openchrom.xxd.process.supplier.templates.model.IntegratorSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakIntegrationSettings;
 
-public class TemplateIntegrator extends AbstractPeakIntegrator {
+public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
 
 	@Override
-	public IProcessingInfo integrate(List<? extends IPeak> peaks, IPeakIntegrationSettings settings, IProgressMonitor monitor) {
+	public IProcessingInfo<T> integrate(List<? extends IPeak> peaks, IPeakIntegrationSettings settings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = super.validate(peaks, settings);
+		IProcessingInfo<T> processingInfo = super.validate(peaks, settings);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakIntegrationSettings) {
 				PeakIntegrationSettings peakIntegrationSettings = (PeakIntegrationSettings)settings;
@@ -84,30 +84,30 @@ public class TemplateIntegrator extends AbstractPeakIntegrator {
 	}
 
 	@Override
-	public IProcessingInfo integrate(IPeak peak, IPeakIntegrationSettings peakIntegrationSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<T> integrate(IPeak peak, IPeakIntegrationSettings peakIntegrationSettings, IProgressMonitor monitor) {
 
-		List<IPeak> peaks = new ArrayList<IPeak>();
+		List<IPeak> peaks = new ArrayList<>();
 		peaks.add(peak);
 		return integrate(peaks, peakIntegrationSettings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo integrate(IPeak peak, IProgressMonitor monitor) {
+	public IProcessingInfo<T> integrate(IPeak peak, IProgressMonitor monitor) {
 
-		List<IPeak> peaks = new ArrayList<IPeak>();
+		List<IPeak> peaks = new ArrayList<>();
 		peaks.add(peak);
 		return integrate(peaks, getSettings(), monitor);
 	}
 
 	@Override
-	public IProcessingInfo integrate(List<? extends IPeak> peaks, IProgressMonitor monitor) {
+	public IProcessingInfo<T> integrate(List<? extends IPeak> peaks, IProgressMonitor monitor) {
 
 		return integrate(peaks, getSettings(), monitor);
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
-	public IProcessingInfo integrate(IChromatogramSelection chromatogramSelection, IPeakIntegrationSettings peakIntegrationSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<T> integrate(IChromatogramSelection chromatogramSelection, IPeakIntegrationSettings peakIntegrationSettings, IProgressMonitor monitor) {
 
 		List<IPeak> peaks = chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection);
 		return integrate(peaks, peakIntegrationSettings, monitor);
@@ -115,7 +115,7 @@ public class TemplateIntegrator extends AbstractPeakIntegrator {
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
-	public IProcessingInfo integrate(IChromatogramSelection chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<T> integrate(IChromatogramSelection chromatogramSelection, IProgressMonitor monitor) {
 
 		List<IPeak> peaks = chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection);
 		return integrate(peaks, getSettings(), monitor);

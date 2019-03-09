@@ -1,13 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Alexander Kerner - Generics
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.peaks;
 
@@ -24,8 +25,8 @@ import org.eclipse.chemclipse.csd.model.core.IChromatogramPeakCSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.csd.model.core.support.PeakBuilderCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
@@ -85,7 +86,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	private IProcessingInfo applyDetector(IChromatogramSelection<? extends IPeak> chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
+	private IProcessingInfo applyDetector(IChromatogramSelection<? extends IPeak, ?> chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
 
 		IProcessingInfo processingInfo = super.validate(chromatogramSelection, settings, monitor);
 		if(!processingInfo.hasErrorMessages()) {
@@ -104,8 +105,8 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 
 	private void setPeakBySettings(IChromatogram<? extends IPeak> chromatogram, DetectorSetting detectorSetting) {
 
-		int start = (int)(detectorSetting.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-		int stop = (int)(detectorSetting.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		int start = (int)(detectorSetting.getStartRetentionTime() * IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+		int stop = (int)(detectorSetting.getStopRetentionTime() * IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 		setPeakByRetentionTimeRange(chromatogram, start, stop, detectorSetting);
 	}
 

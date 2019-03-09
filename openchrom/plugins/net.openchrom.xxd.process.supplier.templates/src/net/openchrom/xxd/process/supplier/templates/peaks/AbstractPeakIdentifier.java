@@ -1,13 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Alexander Kerner - Generics
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.peaks;
 
@@ -18,8 +19,8 @@ import java.util.Set;
 
 import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
@@ -57,11 +58,11 @@ public abstract class AbstractPeakIdentifier {
 		return peaks;
 	}
 
-	protected List<? extends IPeak> extractPeaks(IChromatogramSelection<? extends IPeak> chromatogramSelection) {
+	protected <T extends IPeak> List<T> extractPeaks(IChromatogramSelection<T, ?> chromatogramSelection) {
 
-		IChromatogram<? extends IPeak> chromatogram = chromatogramSelection.getChromatogram();
-		List<IPeak> peaks = new ArrayList<>();
-		for(IPeak peak : chromatogram.getPeaks(chromatogramSelection)) {
+		IChromatogram<T> chromatogram = chromatogramSelection.getChromatogram();
+		List<T> peaks = new ArrayList<>();
+		for(T peak : chromatogram.getPeaks(chromatogramSelection)) {
 			peaks.add(peak);
 		}
 		return peaks;
@@ -74,9 +75,9 @@ public abstract class AbstractPeakIdentifier {
 		return settings;
 	}
 
-	protected IProcessingInfo applyIdentifier(List<? extends IPeak> peaks, IIdentifierSettings settings, IProgressMonitor monitor) {
+	protected <T> IProcessingInfo<T> applyIdentifier(List<? extends IPeak> peaks, IIdentifierSettings settings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(peaks, settings, monitor);
+		IProcessingInfo<T> processingInfo = validate(peaks, settings, monitor);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakIdentifierSettings) {
 				PeakIdentifierSettings peakIdentifierSettings = (PeakIdentifierSettings)settings;
@@ -92,8 +93,8 @@ public abstract class AbstractPeakIdentifier {
 
 	private void identifyPeak(List<? extends IPeak> peaks, IdentifierSetting identifierSetting) {
 
-		int startRetentionTime = (int)(identifierSetting.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-		int stopRetentionTime = (int)(identifierSetting.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		int startRetentionTime = (int)(identifierSetting.getStartRetentionTime() * IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+		int stopRetentionTime = (int)(identifierSetting.getStopRetentionTime() * IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 		//
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {
@@ -136,7 +137,7 @@ public abstract class AbstractPeakIdentifier {
 	/**
 	 * MSD, WSD is checked
 	 * CSD always true
-	 * 
+	 *
 	 * @return
 	 */
 	private boolean isTraceMatch(IPeak peak, IdentifierSetting identifierSetting) {
@@ -178,7 +179,7 @@ public abstract class AbstractPeakIdentifier {
 					isTraceContained = true;
 				}
 			} catch(Exception e) {
-				logger.warn(e);
+				logger.error(e.getLocalizedMessage(), e);
 			}
 		} else if(scan instanceof IScanWSD) {
 			IScanWSD scanWSD = (IScanWSD)scan;
@@ -189,9 +190,9 @@ public abstract class AbstractPeakIdentifier {
 		return isTraceContained;
 	}
 
-	private IProcessingInfo validate(List<? extends IPeak> peaks, IIdentifierSettings settings, IProgressMonitor monitor) {
+	private <T> IProcessingInfo<T> validate(List<? extends IPeak> peaks, IIdentifierSettings settings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
+		IProcessingInfo<T> processingInfo = new ProcessingInfo<>();
 		if(peaks == null) {
 			processingInfo.addErrorMessage(PeakIdentifierSettings.DESCRIPTION, "The peaks selection must not be null.");
 		}
