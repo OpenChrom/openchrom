@@ -1,13 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Alexander Kerner - Generics
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables;
 
@@ -27,6 +28,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 
 public class ChromatogramImportRunnable implements IRunnableWithProgress {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ChromatogramImportRunnable.class);
 	//
 	private List<IChromatogramSelectionMSD> chromatogramSelections;
@@ -34,7 +36,7 @@ public class ChromatogramImportRunnable implements IRunnableWithProgress {
 	private String pathChromatogramIsotope;
 
 	public ChromatogramImportRunnable(String pathChromatogramReference, String pathChromatogramIsotope) {
-		chromatogramSelections = new ArrayList<IChromatogramSelectionMSD>();
+		chromatogramSelections = new ArrayList<>();
 		this.pathChromatogramReference = pathChromatogramReference;
 		this.pathChromatogramIsotope = pathChromatogramIsotope;
 	}
@@ -61,13 +63,9 @@ public class ChromatogramImportRunnable implements IRunnableWithProgress {
 	public IChromatogramMSD importChromatogram(String chromatogramPath, IProgressMonitor monitor) {
 
 		IChromatogramMSD chromatogramMSD = null;
-		try {
-			File file = new File(chromatogramPath);
-			IProcessingInfo processingInfo = ChromatogramConverterMSD.getInstance().convert(file, monitor);
-			chromatogramMSD = processingInfo.getProcessingResult(IChromatogramMSD.class);
-		} catch(Exception e) {
-			logger.warn(e);
-		}
+		File file = new File(chromatogramPath);
+		IProcessingInfo<IChromatogramMSD> processingInfo = ChromatogramConverterMSD.getInstance().convert(file, monitor);
+		chromatogramMSD = processingInfo.getProcessingResult();
 		return chromatogramMSD;
 	}
 }
