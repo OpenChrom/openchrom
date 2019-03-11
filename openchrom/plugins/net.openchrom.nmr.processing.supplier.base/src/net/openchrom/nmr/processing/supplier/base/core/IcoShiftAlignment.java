@@ -419,11 +419,11 @@ public class IcoShiftAlignment {
 		//
 		IcoShiftAlignmentTargetCalculationSelection targetCalculationSelection = settings.getTargetCalculationSelection();
 		if(calculateTargetFunction != null) {
-			targetForProcessing = calculateTargetFunction.calculateTarget(experimentalDatasetsMatrix, interval, settings);
+			targetForProcessing = calculateTargetFunction.calculateTarget(experimentalDatasetsMatrix, referenceWindow, settings);
 			if(targetForProcessing == null) {
 				throw new IllegalArgumentException("Target Function returns null");
 			}
-			if(targetForProcessing.length != experimentalDatasetsMatrix.numRows()) {
+			if(targetForProcessing.length != referenceWindow.length) {
 				throw new IllegalArgumentException("Target Function returns array with wrong length");
 			}
 			// targetForProcessing = calculateSelectedTargetFunction.apply(t, u)
