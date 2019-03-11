@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,10 +22,9 @@ import org.eclipse.chemclipse.msd.model.implementation.ScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import junit.framework.TestCase;
 import net.openchrom.msd.converter.supplier.mgf.PathResolver;
 import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
-
-import junit.framework.TestCase;
 
 public class MassSpectrumExportConverter_1_ITest extends TestCase {
 
@@ -46,8 +45,8 @@ public class MassSpectrumExportConverter_1_ITest extends TestCase {
 		massSpectra = new MassSpectra();
 		massSpectra.addMassSpectrum(massSpectrum);
 		//
-		IProcessingInfo processingInfo = exportConverter.convert(file, massSpectra, true, new NullProgressMonitor());
-		file = processingInfo.getProcessingResult(File.class);
+		IProcessingInfo<File> processingInfo = exportConverter.convert(file, massSpectra, true, new NullProgressMonitor());
+		file = processingInfo.getProcessingResult();
 	}
 
 	@Override

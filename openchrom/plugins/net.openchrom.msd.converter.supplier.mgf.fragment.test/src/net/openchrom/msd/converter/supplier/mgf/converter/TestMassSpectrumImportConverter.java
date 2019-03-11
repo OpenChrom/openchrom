@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Lablicate GmbH.
+ * Copyright (c) 2016, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -56,9 +56,9 @@ public class TestMassSpectrumImportConverter {
 	@Test
 	public void testConvert01() throws TypeCastException {
 
-		IProcessingInfo processingInfo = importConverter.convert(new File("testData/files/import/janko/ppw_L3_142651862521.txt"), new NullProgressMonitor());
+		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(new File("testData/files/import/janko/ppw_L3_142651862521.txt"), new NullProgressMonitor());
 		String[] expectedPepMasses = new String[]{"MS1dummyElement", "1022.5123", "1030.3408", "1048.3794", "1083.3975", "1177.6327", "1225.314", "1327.7755", "1389.6481", "1514.8406", "1534.8009", "1576.7075", "1631.7775", "1668.7076", "1719.7902", "1807.8884"};
-		IMassSpectra massSpectra = processingInfo.getProcessingResult(IMassSpectra.class);
+		IMassSpectra massSpectra = processingInfo.getProcessingResult();
 		// i == 0: MS1 Scan
 		assertEquals(expectedPepMasses.length, massSpectra.getList().size());
 		for(int i = 1; i < massSpectra.getList().size(); i++) {
