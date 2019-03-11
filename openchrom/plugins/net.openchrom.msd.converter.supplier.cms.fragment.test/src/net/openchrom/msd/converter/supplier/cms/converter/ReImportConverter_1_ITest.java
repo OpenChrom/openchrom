@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2019 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,6 +9,7 @@
  * Contributors:
  * Walter Whitlock - initial API and implementation
  * Philip Wenig - initial API and implementation
+ * Alexander Kerner - Generics
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cms.converter;
 
@@ -23,12 +24,11 @@ import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import junit.framework.TestCase;
 import net.openchrom.msd.converter.supplier.cms.PathResolver;
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
-
-import junit.framework.TestCase;
 
 public class ReImportConverter_1_ITest extends TestCase {
 
@@ -38,14 +38,14 @@ public class ReImportConverter_1_ITest extends TestCase {
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		IDatabaseImportConverter importConverter = new DatabaseImportConverter();
+		IDatabaseImportConverter<IMassSpectra> importConverter = new DatabaseImportConverter();
 		IDatabaseExportConverter exportConverter = new DatabaseExportConverter();
 		/*
 		 * Import
 		 */
 		File importFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_2));
-		IProcessingInfo processingInfoImport = importConverter.convert(importFile, new NullProgressMonitor());
-		massSpectra1 = processingInfoImport.getProcessingResult(IMassSpectra.class);
+		IProcessingInfo<IMassSpectra> processingInfoImport = importConverter.convert(importFile, new NullProgressMonitor());
+		massSpectra1 = processingInfoImport.getProcessingResult();
 		/*
 		 * Export
 		 */
@@ -55,8 +55,8 @@ public class ReImportConverter_1_ITest extends TestCase {
 		 * Re-Import
 		 */
 		File reImportFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_DIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_1);
-		IProcessingInfo processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
-		massSpectra2 = processingInfoReImport.getProcessingResult(IMassSpectra.class);
+		IProcessingInfo<IMassSpectra> processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
+		massSpectra2 = processingInfoReImport.getProcessingResult();
 		/*
 		 * Delete the export file.
 		 */

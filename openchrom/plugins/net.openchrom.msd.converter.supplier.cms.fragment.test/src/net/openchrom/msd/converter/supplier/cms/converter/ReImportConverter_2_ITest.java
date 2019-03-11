@@ -22,12 +22,11 @@ import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import junit.framework.TestCase;
 import net.openchrom.msd.converter.supplier.cms.PathResolver;
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
-
-import junit.framework.TestCase;
 
 public class ReImportConverter_2_ITest extends TestCase {
 
@@ -37,14 +36,14 @@ public class ReImportConverter_2_ITest extends TestCase {
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		IDatabaseImportConverter importConverter = new DatabaseImportConverter();
+		IDatabaseImportConverter<IMassSpectra> importConverter = new DatabaseImportConverter();
 		IDatabaseExportConverter exportConverter = new DatabaseExportConverter();
 		/*
 		 * Import
 		 */
 		File importFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_5));
-		IProcessingInfo processingInfoImport = importConverter.convert(importFile, new NullProgressMonitor());
-		massSpectra1 = processingInfoImport.getProcessingResult(IMassSpectra.class);
+		IProcessingInfo<IMassSpectra> processingInfoImport = importConverter.convert(importFile, new NullProgressMonitor());
+		massSpectra1 = processingInfoImport.getProcessingResult();
 		// calculate and subtract signal zero offset
 		for(IScanMSD spectrum : massSpectra1.getList()) {
 			if(spectrum instanceof ICalibratedVendorMassSpectrum) {
@@ -64,8 +63,8 @@ public class ReImportConverter_2_ITest extends TestCase {
 		 * Re-Import
 		 */
 		File reImportFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_DIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_2);
-		IProcessingInfo processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
-		massSpectra2 = processingInfoReImport.getProcessingResult(IMassSpectra.class);
+		IProcessingInfo<IMassSpectra> processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
+		massSpectra2 = processingInfoReImport.getProcessingResult();
 		/*
 		 * Delete the export file.
 		 */

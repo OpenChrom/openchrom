@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Walter Whitlock - initial API and implementation
  * Philip Wenig - initial API and implementation
@@ -35,10 +35,10 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 	private static final String DESCRIPTION = "CMS MassSpectrum Export";
 
 	@Override
-	public IProcessingInfo convert(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) {
+	public IProcessingInfo<File> convert(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) {
 
 		file = SpecificationValidator.validateSpecification(file);
-		IProcessingInfo processingInfo = validate(file, massSpectrum);
+		IProcessingInfo<File> processingInfo = validate(file, massSpectrum);
 		if(!processingInfo.hasErrorMessages()) {
 			try {
 				/*
@@ -62,10 +62,10 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 	}
 
 	@Override
-	public IProcessingInfo convert(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) {
+	public IProcessingInfo<File> convert(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) {
 
 		file = SpecificationValidator.validateSpecification(file);
-		IProcessingInfo processingInfo = validate(file, massSpectra);
+		IProcessingInfo<File> processingInfo = validate(file, massSpectra);
 		if(!processingInfo.hasErrorMessages()) {
 			try {
 				/*
@@ -88,17 +88,17 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 		return processingInfo;
 	}
 
-	private IProcessingInfo validate(File file, IScanMSD massSpectrum) {
+	private IProcessingInfo<File> validate(File file, IScanMSD massSpectrum) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
+		IProcessingInfo<File> processingInfo = new ProcessingInfo();
 		processingInfo.addMessages(super.validate(file));
 		processingInfo.addMessages(super.validate(massSpectrum));
 		return processingInfo;
 	}
 
-	private IProcessingInfo validate(File file, IMassSpectra massSpectra) {
+	private IProcessingInfo<File> validate(File file, IMassSpectra massSpectra) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
+		IProcessingInfo<File> processingInfo = new ProcessingInfo();
 		processingInfo.addMessages(super.validate(file));
 		processingInfo.addMessages(super.validate(massSpectra));
 		return processingInfo;

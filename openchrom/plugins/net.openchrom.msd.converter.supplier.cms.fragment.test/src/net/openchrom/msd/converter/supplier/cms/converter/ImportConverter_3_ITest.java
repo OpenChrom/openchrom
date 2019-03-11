@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2019 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,6 +9,7 @@
  * Contributors:
  * Walter Whitlock - initial API and implementation
  * Philip Wenig - initial API and implementation
+ * Alexander Kerner - Generics
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cms.converter;
 
@@ -23,12 +24,11 @@ import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import junit.framework.TestCase;
 import net.openchrom.msd.converter.supplier.cms.PathResolver;
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
-
-import junit.framework.TestCase;
 
 public class ImportConverter_3_ITest extends TestCase {
 
@@ -39,9 +39,9 @@ public class ImportConverter_3_ITest extends TestCase {
 
 		super.setUp();
 		File importFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_3));
-		IDatabaseImportConverter importConverter = new DatabaseImportConverter();
-		IProcessingInfo processingInfo = importConverter.convert(importFile, new NullProgressMonitor());
-		massSpectra = processingInfo.getProcessingResult(IMassSpectra.class);
+		IDatabaseImportConverter<IMassSpectra> importConverter = new DatabaseImportConverter();
+		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(importFile, new NullProgressMonitor());
+		massSpectra = processingInfo.getProcessingResult();
 	}
 
 	@Override
