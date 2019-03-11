@@ -25,7 +25,12 @@ public class ZeroFilling {
 		//
 		int newDataSize = 0;
 		int zeroFillingSize = zeroFillingFactor.getValue();
-		if(zeroFillingFactor.equals(ZeroFillingFactor.AUTO) || zeroFillingSize < intesityFID.length) {
+		if(Boolean.parseBoolean(measurementNMR.getHeaderDataMap().get("ProcessedDataFlag"))) {
+			/*
+			 * For processed data it must be ensured that the original data size is restored!
+			 */
+			newDataSize = measurementNMR.getProcessingParameters("sizeofRealSpectrum").intValue();
+		} else if(zeroFillingFactor.equals(ZeroFillingFactor.AUTO) || zeroFillingSize < intesityFID.length) {
 			newDataSize = (int)Math.pow(2, (int)(Math.ceil((Math.log(intesityFID.length) / Math.log(2)))));
 		} else {
 			newDataSize = zeroFillingSize;

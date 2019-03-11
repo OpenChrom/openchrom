@@ -22,6 +22,7 @@ import java.util.stream.DoubleStream;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.distribution.CauchyDistribution;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
@@ -149,12 +150,34 @@ public class IcoShiftAlignment {
 			case MAX: {
 				return calculateMaxTarget(experimentalDatasetsMatrix);
 			}
+			case CALIBRATE: {
+				return calculateCalibrationTarget(experimentalDatasetsMatrix);
+			}
 			default:
 				throw new IllegalArgumentException("unsupported TargetCalculationSelection: " + targetCalculationSelection);
 		}
 	}
 
-	private double[] calculateMeanTarget(SimpleMatrix experimentalDatasetsMatrix) {
+	private static double[] calculateCalibrationTarget(SimpleMatrix experimentalDatasetsMatrix) {
+
+		/*
+		 * generate lorentzian distribution and calculate a peak from it
+		 */
+		CauchyDistribution cDistribution = new CauchyDistribution(0, 0.01);
+		UtilityFunctions utilityFunction = new UtilityFunctions();
+		//
+		int windowWidth = experimentalDatasetsMatrix.numCols();
+		double[] xAxisVector = utilityFunction.generateLinearlySpacedVector(-1.0, 1.0, windowWidth);
+		double[] probabilityDensityFunction = new double[xAxisVector.length];
+		for(int i = 0; i < xAxisVector.length; i++) {
+			// calculate a peak with some intensity and peak maximum in the middle of interval
+			probabilityDensityFunction[i] = Math.pow(cDistribution.density(xAxisVector[i]), 2); // TARGET
+		}
+		//
+		return probabilityDensityFunction;
+	}
+
+	private static double[] calculateMeanTarget(SimpleMatrix experimentalDatasetsMatrix) {
 
 		int numColsMax = experimentalDatasetsMatrix.numCols();
 		int numRowsMax = experimentalDatasetsMatrix.numRows();
@@ -169,7 +192,7 @@ public class IcoShiftAlignment {
 		return columnSumArray;
 	}
 
-	public double[] calculateMedianTarget(SimpleMatrix experimentalDatasetsMatrix) {
+	public static double[] calculateMedianTarget(SimpleMatrix experimentalDatasetsMatrix) {
 
 		// create an object of Median class
 		Median median = new Median();
@@ -187,7 +210,7 @@ public class IcoShiftAlignment {
 		return columnArray;
 	}
 
-	public double[] calculateMaxTarget(SimpleMatrix experimentalDatasetsMatrix) {
+	public static double[] calculateMaxTarget(SimpleMatrix experimentalDatasetsMatrix) {
 
 		int numRowsMax = experimentalDatasetsMatrix.numRows();
 		double[] rowArraySum = new double[numRowsMax];
@@ -406,8 +429,8 @@ public class IcoShiftAlignment {
 		SimpleMatrix experimentalDatasetsMatrixPartForProcessing = extractPartOfDataForProcessing(experimentalDatasetsMatrix, referenceWindow);
 		//
 		IcoShiftAlignmentTargetCalculationSelection targetCalculationSelection = settings.getTargetCalculationSelection();
-		if(targetCalculationSelection == IcoShiftAlignmentTargetCalculationSelection.MAX) {
-			// calculate max target here for each interval
+		if((targetCalculationSelection == IcoShiftAlignmentTargetCalculationSelection.MAX) || (targetCalculationSelection == IcoShiftAlignmentTargetCalculationSelection.CALIBRATE)) {
+			// calculate max target here for each interval; "CALIBRATE" applies here too
 			targetForProcessing = calculateSelectedTarget(experimentalDatasetsMatrixPartForProcessing, settings);
 		} else {
 			// "MEAN" and "MEDIAN"

@@ -81,7 +81,19 @@ public class UtilityFunctions {
 				break;
 			}
 		}
-		return index;
+		//
+		int reverseIndex = array.length - 1;
+		for(; reverseIndex > 0; reverseIndex--) {
+			if(Math.abs(array[reverseIndex] - value) < 0.001) {
+				break;
+			}
+		}
+		//
+		if(Double.compare(value, 0.0) < 0) {
+			return (int)Math.floor((reverseIndex + index) / 2);
+		} else {
+			return (int)Math.ceil((reverseIndex + index) / 2);
+		}
 	}
 
 	public void leftShiftNMRData(double[] dataArray, int pointsToShift) {
