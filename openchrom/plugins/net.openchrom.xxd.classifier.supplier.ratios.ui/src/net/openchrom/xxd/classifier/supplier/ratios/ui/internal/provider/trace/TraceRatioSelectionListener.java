@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
+package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace;
 
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;

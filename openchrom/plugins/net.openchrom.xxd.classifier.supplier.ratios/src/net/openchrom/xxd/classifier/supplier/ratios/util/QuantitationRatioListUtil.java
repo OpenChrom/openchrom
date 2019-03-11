@@ -14,7 +14,7 @@ package net.openchrom.xxd.classifier.supplier.ratios.util;
 public class QuantitationRatioListUtil extends AbstractTraceListUtil<QuantitationRatioValidator> {
 
 	public static final String EXAMPLE_SINGLE = "Naphthalin | 5.0 | 15.0";
-	public static final String EXAMPLE_MULTIPLE = "Naphthalin | 5.0 | 15.0; Sytrene | 5.0 | 15.0";
+	public static final String EXAMPLE_MULTIPLE = "Naphthalin | 5.0 | 15.0; Styrene | 5.0 | 15.0";
 
 	public QuantitationRatioListUtil() {
 		super(new QuantitationRatioValidator());

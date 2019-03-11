@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
+package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace;
 
 import java.text.DecimalFormat;
 
@@ -22,18 +22,19 @@ import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvide
 import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
 
 public class TraceRatioLabelProvider extends AbstractChemClipseLabelProvider {
 
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
-	private String displayOption = "";
+	private DisplayOption displayOption = DisplayOption.RESULTS;
 
 	public TraceRatioLabelProvider() {
-		this(TraceRatioResultTitles.OPTION_RESULTS);
+		this(DisplayOption.RESULTS);
 	}
 
-	public TraceRatioLabelProvider(String displayOption) {
-		this.displayOption = (displayOption.equals(TraceRatioResultTitles.OPTION_SETTINGS)) ? TraceRatioResultTitles.OPTION_SETTINGS : TraceRatioResultTitles.OPTION_RESULTS;
+	public TraceRatioLabelProvider(DisplayOption displayOption) {
+		this.displayOption = displayOption;
 	}
 
 	@Override
@@ -49,13 +50,19 @@ public class TraceRatioLabelProvider extends AbstractChemClipseLabelProvider {
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
 
-		if(TraceRatioResultTitles.OPTION_RESULTS.equals(displayOption)) {
-			return getColumnTextResults(element, columnIndex);
-		} else if(TraceRatioResultTitles.OPTION_SETTINGS.equals(displayOption)) {
-			return getColumnTextSettings(element, columnIndex);
-		} else {
-			return "";
+		String text;
+		switch(displayOption) {
+			case RESULTS:
+				text = getColumnTextResults(element, columnIndex);
+				break;
+			case SETTINGS:
+				text = getColumnTextSettings(element, columnIndex);
+				break;
+			default:
+				text = "";
+				break;
 		}
+		return text;
 	}
 
 	private String getColumnTextSettings(Object element, int columnIndex) {

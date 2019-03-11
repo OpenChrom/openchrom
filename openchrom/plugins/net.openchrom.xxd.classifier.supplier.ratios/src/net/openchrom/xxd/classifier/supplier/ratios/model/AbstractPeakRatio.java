@@ -14,7 +14,7 @@ package net.openchrom.xxd.classifier.supplier.ratios.model;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 
-public abstract class AbstractRatio {
+public abstract class AbstractPeakRatio {
 
 	private IPeak peak = null; // optional
 	private String name = "";
@@ -90,7 +90,7 @@ public abstract class AbstractRatio {
 			return false;
 		if(getClass() != obj.getClass())
 			return false;
-		AbstractRatio other = (AbstractRatio)obj;
+		AbstractPeakRatio other = (AbstractPeakRatio)obj;
 		if(name == null) {
 			if(other.name != null)
 				return false;

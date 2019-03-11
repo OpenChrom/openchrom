@@ -26,13 +26,13 @@
    <extension
          point="org.eclipse.chemclipse.ux.extension.ui.measurementResultVisualization">
       <MeasurementResultVisualization
-            CellColorProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioColorProvider"
-            Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioTableComparator"
-            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioContentProvider"
+            CellColorProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioColorProvider"
+            Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioTableComparator"
+            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioContentProvider"
             Identifier="net.openchrom.xxd.classifier.supplier.ratios.traceratio"
-            LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioLabelProvider"
-            SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioSelectionListener"
-            Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.TraceRatioResultTitles">
+            LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioLabelProvider"
+            SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioSelectionListener"
+            Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioResultTitles">
       </MeasurementResultVisualization>
    </extension>
 </plugin>

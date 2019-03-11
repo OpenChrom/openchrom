@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
+package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace;
 
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.support.ui.swt.AbstractRecordTableComparator;
@@ -17,28 +17,35 @@ import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.Viewer;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
 
 public class TraceRatioTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
 
-	private String displayOption = "";
+	private DisplayOption displayOption = DisplayOption.RESULTS;
 
 	public TraceRatioTableComparator() {
-		this(TraceRatioResultTitles.OPTION_RESULTS);
+		this(DisplayOption.RESULTS);
 	}
 
-	public TraceRatioTableComparator(String displayOption) {
-		this.displayOption = (displayOption.equals(TraceRatioResultTitles.OPTION_SETTINGS)) ? TraceRatioResultTitles.OPTION_SETTINGS : TraceRatioResultTitles.OPTION_RESULTS;
+	public TraceRatioTableComparator(DisplayOption displayOption) {
+		this.displayOption = displayOption;
 	}
 
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
-		if(TraceRatioResultTitles.OPTION_RESULTS.equals(displayOption)) {
-			return compareResults(viewer, e1, e2);
-		} else if(TraceRatioResultTitles.OPTION_SETTINGS.equals(displayOption)) {
-			return compareSettings(viewer, e1, e2);
-		} else {
-			return 0;
+		int result;
+		switch(displayOption) {
+			case RESULTS:
+				result = compareResults(viewer, e1, e2);
+				break;
+			case SETTINGS:
+				result = compareSettings(viewer, e1, e2);
+				break;
+			default:
+				result = 0;
+				break;
 		}
+		return result;
 	}
 
 	public int compareSettings(Viewer viewer, Object e1, Object e2) {

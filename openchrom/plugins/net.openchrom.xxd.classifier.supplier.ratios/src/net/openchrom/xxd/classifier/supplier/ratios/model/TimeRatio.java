@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model;
 
-public class TimeRatio extends AbstractRatio {
+public class TimeRatio extends AbstractPeakRatio {
 
 	private double expectedRetentionTime = 0;
 	private double retentionTime = 0; // Calculated (transient)

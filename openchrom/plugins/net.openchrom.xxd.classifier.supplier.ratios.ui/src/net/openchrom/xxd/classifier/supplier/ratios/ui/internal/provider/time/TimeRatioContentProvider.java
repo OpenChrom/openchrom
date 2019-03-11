@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
+package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,47 +18,48 @@ import org.eclipse.chemclipse.model.core.IMeasurementResult;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
 
-public class TraceRatioContentProvider implements IStructuredContentProvider {
+public class TimeRatioContentProvider implements IStructuredContentProvider {
 
-	private String displayOption = "";
+	private DisplayOption displayOption = DisplayOption.RESULTS;
 
-	public TraceRatioContentProvider() {
-		this(TraceRatioResultTitles.OPTION_RESULTS);
+	public TimeRatioContentProvider() {
+		this(DisplayOption.RESULTS);
 	}
 
-	public TraceRatioContentProvider(String displayOption) {
-		this.displayOption = (displayOption.equals(TraceRatioResultTitles.OPTION_SETTINGS)) ? TraceRatioResultTitles.OPTION_SETTINGS : TraceRatioResultTitles.OPTION_RESULTS;
+	public TimeRatioContentProvider(DisplayOption displayOption) {
+		this.displayOption = displayOption;
 	}
 
 	@Override
 	public Object[] getElements(Object inputElement) {
 
-		TraceRatios traceRatios = null;
+		TimeRatios timeRatios = null;
 		//
 		if(inputElement instanceof IMeasurementResult) {
 			IMeasurementResult measurementResult = (IMeasurementResult)inputElement;
 			Object object = measurementResult.getResult();
-			if(object instanceof TraceRatios) {
-				traceRatios = (TraceRatios)object;
+			if(object instanceof TimeRatios) {
+				timeRatios = (TimeRatios)object;
 			}
-		} else if(inputElement instanceof TraceRatios) {
-			traceRatios = (TraceRatios)inputElement;
+		} else if(inputElement instanceof TimeRatios) {
+			timeRatios = (TimeRatios)inputElement;
 		}
 		//
-		if(traceRatios != null) {
-			if(TraceRatioResultTitles.OPTION_RESULTS.equals(displayOption)) {
-				List<TraceRatio> ratios = new ArrayList<>();
-				for(TraceRatio ratio : traceRatios) {
+		if(timeRatios != null) {
+			if(DisplayOption.RESULTS.equals(displayOption)) {
+				List<TimeRatio> ratios = new ArrayList<>();
+				for(TimeRatio ratio : timeRatios) {
 					if(ratio.getPeak() != null) {
 						ratios.add(ratio);
 					}
 				}
 				return ratios.toArray();
-			} else if(TraceRatioResultTitles.OPTION_SETTINGS.equals(displayOption)) {
-				return traceRatios.toArray();
+			} else if(DisplayOption.SETTINGS.equals(displayOption)) {
+				return timeRatios.toArray();
 			}
 		}
 		//

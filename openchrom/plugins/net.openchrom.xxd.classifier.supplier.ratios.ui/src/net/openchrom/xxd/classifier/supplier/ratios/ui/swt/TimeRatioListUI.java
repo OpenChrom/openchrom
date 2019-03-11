@@ -22,24 +22,24 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioEditingSupport;
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioFilter;
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioLabelProvider;
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioResultTitles;
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioTableComparator;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioEditingSupport;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioFilter;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioLabelProvider;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioResultTitles;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioTableComparator;
 
-public class TraceRatioListUI extends ExtendedTableViewer {
+public class TimeRatioListUI extends ExtendedTableViewer {
 
-	private static final String[] TITLES = TraceRatioResultTitles.TITLES_SETTINGS;
-	private static final int[] BOUNDS = TraceRatioResultTitles.BOUNDS_SETTINGS;
+	private static final String[] TITLES = TimeRatioResultTitles.TITLES_SETTINGS;
+	private static final int[] BOUNDS = TimeRatioResultTitles.BOUNDS_SETTINGS;
 	//
-	private TraceRatioLabelProvider labelProvider = new TraceRatioLabelProvider(DisplayOption.SETTINGS);
-	private TraceRatioTableComparator tableComparator = new TraceRatioTableComparator(DisplayOption.SETTINGS);
-	private TraceRatioFilter listFilter = new TraceRatioFilter();
+	private TimeRatioLabelProvider labelProvider = new TimeRatioLabelProvider(DisplayOption.SETTINGS);
+	private TimeRatioTableComparator tableComparator = new TimeRatioTableComparator(DisplayOption.SETTINGS);
+	private TimeRatioFilter listFilter = new TimeRatioFilter();
 
-	public TraceRatioListUI(Composite parent, int style) {
+	public TimeRatioListUI(Composite parent, int style) {
 		super(parent, style);
 		createColumns();
 	}
@@ -72,8 +72,8 @@ public class TraceRatioListUI extends ExtendedTableViewer {
 		for(int i = 0; i < tableViewerColumns.size(); i++) {
 			TableViewerColumn tableViewerColumn = tableViewerColumns.get(i);
 			String label = tableViewerColumn.getColumn().getText();
-			if(!label.equals(TraceRatioResultTitles.NAME)) {
-				tableViewerColumn.setEditingSupport(new TraceRatioEditingSupport(this, label));
+			if(!label.equals(TimeRatioResultTitles.NAME)) {
+				tableViewerColumn.setEditingSupport(new TimeRatioEditingSupport(this, label));
 			}
 		}
 	}
@@ -84,7 +84,7 @@ public class TraceRatioListUI extends ExtendedTableViewer {
 		/*
 		 * Warn
 		 */
-		tableViewerColumn = getTableViewerColumn(TraceRatioResultTitles.DEVIATION_WARN);
+		tableViewerColumn = getTableViewerColumn(TimeRatioResultTitles.DEVIATION_WARN);
 		if(tableViewerColumn != null) {
 			tableViewerColumn.setLabelProvider(new StyledCellLabelProvider() {
 
@@ -92,10 +92,10 @@ public class TraceRatioListUI extends ExtendedTableViewer {
 				public void update(ViewerCell cell) {
 
 					if(cell != null) {
-						TraceRatio traceRatio = (TraceRatio)cell.getElement();
+						TimeRatio timeRatio = (TimeRatio)cell.getElement();
 						cell.setBackground(Colors.YELLOW);
 						cell.setForeground(Colors.BLACK);
-						cell.setText(">= " + Double.toString(traceRatio.getDeviationWarn()));
+						cell.setText(">= " + Double.toString(timeRatio.getDeviationWarn()));
 						super.update(cell);
 					}
 				}
@@ -104,7 +104,7 @@ public class TraceRatioListUI extends ExtendedTableViewer {
 		/*
 		 * Error
 		 */
-		tableViewerColumn = getTableViewerColumn(TraceRatioResultTitles.DEVIATION_ERROR);
+		tableViewerColumn = getTableViewerColumn(TimeRatioResultTitles.DEVIATION_ERROR);
 		if(tableViewerColumn != null) {
 			tableViewerColumn.setLabelProvider(new StyledCellLabelProvider() {
 
@@ -112,10 +112,10 @@ public class TraceRatioListUI extends ExtendedTableViewer {
 				public void update(ViewerCell cell) {
 
 					if(cell != null) {
-						TraceRatio traceRatio = (TraceRatio)cell.getElement();
+						TimeRatio timeRatio = (TimeRatio)cell.getElement();
 						cell.setBackground(Colors.RED);
 						cell.setForeground(Colors.WHITE);
-						cell.setText(">= " + Double.toString(traceRatio.getDeviationError()));
+						cell.setText(">= " + Double.toString(timeRatio.getDeviationError()));
 						super.update(cell);
 					}
 				}

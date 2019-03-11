@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
+package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +17,15 @@ import java.util.List;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IInputValidator;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.util.TraceRatioValidator;
+import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.util.TimeRatioValidator;
 
-public class TraceRatioInputValidator implements IInputValidator {
+public class TimeRatioInputValidator implements IInputValidator {
 
-	private TraceRatioValidator validator = new TraceRatioValidator();
-	private List<TraceRatio> settings = new ArrayList<>();
+	private TimeRatioValidator validator = new TimeRatioValidator();
+	private List<TimeRatio> settings = new ArrayList<>();
 
-	public TraceRatioInputValidator(List<TraceRatio> settings) {
+	public TimeRatioInputValidator(List<TimeRatio> settings) {
 		if(settings != null) {
 			this.settings = settings;
 		}
@@ -36,7 +36,7 @@ public class TraceRatioInputValidator implements IInputValidator {
 
 		IStatus status = validator.validate(target);
 		if(status.isOK()) {
-			TraceRatio setting = validator.getSetting();
+			TimeRatio setting = validator.getSetting();
 			if(settings.contains(setting)) {
 				return "The element already exists.";
 			}

@@ -9,14 +9,9 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.classifier.supplier.ratios.util;
+package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
 
-public class TimeRatioListUtil extends AbstractTraceListUtil<TimeRatioValidator> {
-
-	public static final String EXAMPLE_SINGLE = "Naphthalin | 3.45 | 5.0 | 15.0";
-	public static final String EXAMPLE_MULTIPLE = "Naphthalin | 3.45 | 5.0 | 15.0; Styrene | 4.05 | 5.0 | 15.0";
-
-	public TimeRatioListUtil() {
-		super(new TimeRatioValidator());
-	}
+public enum DisplayOption {
+	SETTINGS, //
+	RESULTS;
 }

@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
+package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
@@ -17,17 +17,18 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioResultTitles;
 
-public class TraceRatioEditingSupport extends EditingSupport {
+public class TimeRatioEditingSupport extends EditingSupport {
 
-	private static final Logger logger = Logger.getLogger(TraceRatioEditingSupport.class);
+	private static final Logger logger = Logger.getLogger(TimeRatioEditingSupport.class);
 	//
 	private CellEditor cellEditor;
 	private ExtendedTableViewer tableViewer;
 	private String column;
 
-	public TraceRatioEditingSupport(ExtendedTableViewer tableViewer, String column) {
+	public TimeRatioEditingSupport(ExtendedTableViewer tableViewer, String column) {
 		super(tableViewer);
 		this.column = column;
 		this.cellEditor = new TextCellEditor(tableViewer.getTable());
@@ -49,13 +50,9 @@ public class TraceRatioEditingSupport extends EditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof TraceRatio) {
-			TraceRatio setting = (TraceRatio)element;
+		if(element instanceof TimeRatio) {
+			TimeRatio setting = (TimeRatio)element;
 			switch(column) {
-				case TraceRatioResultTitles.TEST_CASE:
-					return setting.getTestCase();
-				case TraceRatioResultTitles.EXPECTED_RATIO:
-					return Double.toString(setting.getExpectedRatio());
 				case TraceRatioResultTitles.DEVIATION_WARN:
 					return Double.toString(setting.getDeviationWarn());
 				case TraceRatioResultTitles.DEVIATION_ERROR:
@@ -68,18 +65,9 @@ public class TraceRatioEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof TraceRatio) {
-			TraceRatio setting = (TraceRatio)element;
+		if(element instanceof TimeRatio) {
+			TimeRatio setting = (TimeRatio)element;
 			switch(column) {
-				case TraceRatioResultTitles.TEST_CASE:
-					setting.setTestCase((String)value);
-					break;
-				case TraceRatioResultTitles.EXPECTED_RATIO:
-					double expectedRatio = parseDouble((String)value);
-					if(expectedRatio > 0) {
-						setting.setExpectedRatio(expectedRatio);
-					}
-					break;
 				case TraceRatioResultTitles.DEVIATION_WARN:
 					double deviationWarn = parseDouble((String)value);
 					if(deviationWarn > 0 && deviationWarn < setting.getDeviationError()) {

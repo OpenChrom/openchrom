@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model;
 
-public class TraceRatio extends AbstractRatio {
+public class TraceRatio extends AbstractPeakRatio {
 
 	private String testCase = "";
 	private double expectedRatio = 0.0d;

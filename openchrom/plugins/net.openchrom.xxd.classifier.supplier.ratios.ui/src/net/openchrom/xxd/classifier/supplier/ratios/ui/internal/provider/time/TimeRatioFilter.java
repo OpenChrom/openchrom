@@ -9,14 +9,14 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
+package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatio;
 
-public class TraceRatioFilter extends ViewerFilter {
+public class TimeRatioFilter extends ViewerFilter {
 
 	private String searchText;
 	private boolean caseSensitive;
@@ -34,22 +34,16 @@ public class TraceRatioFilter extends ViewerFilter {
 			return true;
 		}
 		//
-		if(element instanceof TraceRatio) {
-			TraceRatio setting = (TraceRatio)element;
+		if(element instanceof TimeRatio) {
+			TimeRatio setting = (TimeRatio)element;
 			String name = setting.getName();
-			String testCase = setting.getTestCase();
 			//
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				name = name.toLowerCase();
-				testCase = testCase.toLowerCase();
 			}
 			//
 			if(name.contains(searchText)) {
-				return true;
-			}
-			//
-			if(testCase.contains(searchText)) {
 				return true;
 			}
 		}

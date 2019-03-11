@@ -38,29 +38,29 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceSupplier;
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioInputValidator;
-import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.TraceRatioListUI;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioInputValidator;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.TimeRatioListUI;
 import net.openchrom.xxd.classifier.supplier.ratios.util.TraceRatioListUtil;
 
-public class TraceRatioFieldEditor extends AbstractFieldEditor {
+public class TimeRatioFieldEditor extends AbstractFieldEditor {
 
 	private static final int NUMBER_COLUMNS = 2;
 	//
 	private Composite composite;
-	private TraceRatios settings = new TraceRatios();
-	private TraceRatioListUI listUI;
+	private TimeRatios settings = new TimeRatios();
+	private TimeRatioListUI listUI;
 	//
 	private static final String FILTER_EXTENSION = "*.txt";
-	private static final String FILTER_NAME = "Trace Ratio Template (*.txt)";
-	private static final String FILE_NAME = "TraceRatioTemplate.txt";
+	private static final String FILTER_NAME = "Time Ratio Template (*.txt)";
+	private static final String FILE_NAME = "TimeRatioTemplate.txt";
 	//
-	private static final String CATEGORY = "Trace Ratio";
+	private static final String CATEGORY = "Time Ratio";
 	private static final String DELETE = "Delete";
 
-	public TraceRatioFieldEditor(String name, String labelText, Composite parent) {
+	public TimeRatioFieldEditor(String name, String labelText, Composite parent) {
 		init(name, labelText);
 		createControl(parent);
 	}
@@ -120,7 +120,7 @@ public class TraceRatioFieldEditor extends AbstractFieldEditor {
 		gridData.grabExcessVerticalSpace = true;
 		composite.setLayoutData(gridData);
 		//
-		listUI = new TraceRatioListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		listUI = new TimeRatioListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		//
 		Shell shell = listUI.getTable().getShell();
 		ITableSettings tableSettings = listUI.getTableSettings();
@@ -160,10 +160,10 @@ public class TraceRatioFieldEditor extends AbstractFieldEditor {
 
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, TraceRatioListUtil.EXAMPLE_SINGLE, new TraceRatioInputValidator(settings));
+				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, TraceRatioListUtil.EXAMPLE_SINGLE, new TimeRatioInputValidator(settings));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
-					TraceRatio setting = settings.extractSettingInstance(item);
+					TimeRatio setting = settings.extractSettingInstance(item);
 					if(setting != null) {
 						settings.add(setting);
 						setTableViewerInput();
@@ -186,15 +186,15 @@ public class TraceRatioFieldEditor extends AbstractFieldEditor {
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
 				Object object = structuredSelection.getFirstElement();
-				if(object instanceof TraceRatio) {
-					List<TraceRatio> settingsEdit = new ArrayList<>();
+				if(object instanceof TimeRatio) {
+					List<TimeRatio> settingsEdit = new ArrayList<>();
 					settingsEdit.addAll(settings);
-					TraceRatio setting = (TraceRatio)object;
+					TimeRatio setting = (TimeRatio)object;
 					settingsEdit.remove(setting);
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new TraceRatioInputValidator(settingsEdit));
+					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new TimeRatioInputValidator(settingsEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
-						TraceRatio settingNew = settings.extractSettingInstance(item);
+						TimeRatio settingNew = settings.extractSettingInstance(item);
 						setting.copyFrom(settingNew);
 						setTableViewerInput();
 					}
@@ -384,10 +384,10 @@ public class TraceRatioFieldEditor extends AbstractFieldEditor {
 
 		if(MessageDialog.openQuestion(shell, DIALOG_TITLE, MESSAGE_REMOVE)) {
 			IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
-			List<TraceRatio> removeElements = new ArrayList<>();
+			List<TimeRatio> removeElements = new ArrayList<>();
 			for(Object object : structuredSelection.toArray()) {
-				if(object instanceof TraceRatio) {
-					removeElements.add((TraceRatio)object);
+				if(object instanceof TimeRatio) {
+					removeElements.add((TimeRatio)object);
 				}
 			}
 			settings.removeAll(removeElements);

@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
+package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace;
 
 import javax.naming.directory.InvalidAttributesException;
 
@@ -18,8 +18,6 @@ import org.eclipse.chemclipse.ux.extension.ui.support.IMeasurementResultTitles;
 
 public class TraceRatioResultTitles extends AbstractMeasurementResultTitles implements IMeasurementResultTitles {
 
-	public static final String OPTION_SETTINGS = "Settings";
-	public static final String OPTION_RESULTS = "Results";
 	/*
 	 * Settings => Styrene | 104:103 | 9.9 | 5.0 | 20.0
 	 * Results => 3.722 | Styrene | 136:137 | 9.483 | 0.042

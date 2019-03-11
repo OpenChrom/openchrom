@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model;
 
-public class QuantitationRatio extends AbstractRatio {
+public class QuantitationRatio extends AbstractPeakRatio {
 
 	private double expectedContent = 0.0d;
 	private double content = 0.0d; // Calculated (transient)
