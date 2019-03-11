@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Alexander Stark - initial API and implementation
+ * Jan Holy - implementation
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
@@ -17,13 +18,33 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
 import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
+import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
+import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
+import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
+import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.core.runtime.IProgressMonitor;
 
-public class DirectCurrentCorrection {
+public class DirectCurrentCorrection extends AbstractScanProcessor implements IScanProcessor {
 	/*
 	 * TODO: insert DC correction for FID and spectrum here
 	 */
 
-	public Complex[] directCurrentCorrectionFID(Complex[] complexSignals, IMeasurementNMR measurementNMR) {
+	@Override
+	public IProcessingInfo process(IDataNMRSelection scanNMR, IProcessorSettings processorSettings, IProgressMonitor monitor) {
+
+		IProcessingInfo processInfo = super.validate(scanNMR, processorSettings);
+		if(!processInfo.hasErrorMessages()) {
+			IMeasurementNMR dataNMRSelection = scanNMR.getMeasurmentNMR();
+			SignalExtractor signalExtractor = new SignalExtractor(dataNMRSelection);
+			Complex[] processSignal = directCurrentCorrectionFID(signalExtractor.extractIntensityPreprocessedFID(), dataNMRSelection);
+			signalExtractor.setPreprocessFID(processSignal);
+			processInfo.setProcessingResult(dataNMRSelection);
+		}
+		return processInfo;
+	}
+
+	private Complex[] directCurrentCorrectionFID(Complex[] complexSignals, IMeasurementNMR measurementNMR) {
 
 		/*
 		 * to be used before FT

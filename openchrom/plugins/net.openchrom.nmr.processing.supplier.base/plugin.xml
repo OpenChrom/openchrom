@@ -37,12 +37,20 @@
             processorName="Exponential Apodization Function Processor"
             settings="net.openchrom.nmr.processing.supplier.base.settings.ExponentialApodizationSettings">
       </ScanProcessor>
+     
       <ScanProcessor
             description="This processor applies the gaussian apodization function to the raw data (fid)."
             id="net.openchrom.nmr.processing.supplier.base.gaussianApodizationFunction"
             processor="net.openchrom.nmr.processing.supplier.base.core.GaussianApodizationFunctionProcessor"
             processorName="Gaussian Apodization Function Processor"
             settings="net.openchrom.nmr.processing.supplier.base.settings.GaussianApodizationSettings">
+      </ScanProcessor>
+       <ScanProcessor
+            description="Direct Current Correction"
+            id="net.openchrom.nmr.processing.supplier.base.directCurrentCorrection"
+            processor="net.openchrom.nmr.processing.supplier.base.core.DirectCurrentCorrection"
+            processorName="Direct Current Correction"
+            settings="net.openchrom.nmr.processing.supplier.base.settings.DirectCurrentCorrectionSettings">
       </ScanProcessor>
    </extension>
 </plugin>
