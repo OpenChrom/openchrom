@@ -16,7 +16,7 @@ import org.eclipse.chemclipse.support.ui.swt.AbstractRecordTableComparator;
 import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.Viewer;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
 
 public class TraceRatioTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
@@ -102,9 +102,12 @@ public class TraceRatioTableComparator extends AbstractRecordTableComparator imp
 					sortOrder = traceRatio2.getTestCase().compareTo(traceRatio1.getTestCase());
 					break;
 				case 3:
-					sortOrder = Double.compare(traceRatio2.getRatio(), traceRatio1.getRatio());
+					sortOrder = Double.compare(traceRatio2.getExpectedRatio(), traceRatio1.getExpectedRatio());
 					break;
 				case 4:
+					sortOrder = Double.compare(traceRatio2.getRatio(), traceRatio1.getRatio());
+					break;
+				case 5:
 					sortOrder = Double.compare(traceRatio2.getDeviation(), traceRatio1.getDeviation());
 					break;
 			}

@@ -19,37 +19,35 @@ import org.eclipse.core.runtime.IStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatios;
-import net.openchrom.xxd.classifier.supplier.ratios.util.TimeRatioListUtil;
-import net.openchrom.xxd.classifier.supplier.ratios.util.TimeRatioValidator;
+import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.util.time.TimeRatioListUtil;
+import net.openchrom.xxd.classifier.supplier.ratios.util.time.TimeRatioValidator;
 
 public class TimeRatioSettings extends AbstractChromatogramClassifierSettings {
 
 	@JsonProperty(value = "Time Ratio Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + TimeRatioListUtil.EXAMPLE_MULTIPLE + "'")
-	private String timeRatioSettings = "";
+	private String ratioSettings = "";
 
-	public void setTimeRatioSettings(String timeRatioSettings) {
+	public void setRatioSettings(String ratioSettings) {
 
-		this.timeRatioSettings = timeRatioSettings;
+		this.ratioSettings = ratioSettings;
 	}
 
-	public TimeRatios getTimeRatioSettings() {
+	public TimeRatios getRatioSettings() {
 
 		TimeRatioListUtil util = new TimeRatioListUtil();
 		TimeRatioValidator validator = new TimeRatioValidator();
-		TimeRatios timeRatios = new TimeRatios();
+		TimeRatios ratios = new TimeRatios();
 		//
-		List<String> items = util.getList(timeRatioSettings);
+		List<String> items = util.getList(ratioSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
 			if(status.isOK()) {
-				timeRatios.add(validator.getSetting());
+				ratios.add(validator.getSetting());
 			}
 		}
-		// traceRatios.add(new TraceRatio("Naphthalin-D8 (ISTD)", "136:137", 9.90, 5.0d, 15.0));
-		// traceRatios.add(new TraceRatio("Naphthalin", "128:127", 14.60, 5.0d, 15.0));
 		//
-		return timeRatios;
+		return ratios;
 	}
 }

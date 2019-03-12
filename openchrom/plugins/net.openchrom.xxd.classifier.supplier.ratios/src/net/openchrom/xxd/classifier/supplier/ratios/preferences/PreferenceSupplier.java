@@ -22,6 +22,8 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.xxd.classifier.supplier.ratios.Activator;
+import net.openchrom.xxd.classifier.supplier.ratios.settings.QuantRatioSettings;
+import net.openchrom.xxd.classifier.supplier.ratios.settings.TimeRatioSettings;
 import net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioSettings;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
@@ -38,6 +40,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	//
 	public static final String P_TRACE_RATIO_LIST = "traceRatioList";
 	public static final String DEF_TRACE_RATIO_LIST = "";
+	public static final String P_TIME_RATIO_LIST = "timeRatioList";
+	public static final String DEF_TIME_RATIO_LIST = "";
+	public static final String P_QUANT_RATIO_LIST = "quantRatioList";
+	public static final String DEF_QUANT_RATIO_LIST = "";
 	//
 	public static final String P_LIST_PATH_IMPORT = "listPathImport";
 	public static final String DEF_LIST_PATH_IMPORT = "";
@@ -74,6 +80,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_ALLOWED_DEVIATION, Float.toString(DEF_ALLOWED_DEVIATION));
 		defaultValues.put(P_ALLOWED_DEVIATION_WARN, Float.toString(DEF_ALLOWED_DEVIATION_WARN));
 		defaultValues.put(P_TRACE_RATIO_LIST, DEF_TRACE_RATIO_LIST);
+		defaultValues.put(P_TIME_RATIO_LIST, DEF_TIME_RATIO_LIST);
+		defaultValues.put(P_QUANT_RATIO_LIST, DEF_QUANT_RATIO_LIST);
 		//
 		defaultValues.put(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
 		defaultValues.put(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
@@ -87,11 +95,25 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return getScopeContext().getNode(getPreferenceNode());
 	}
 
-	public static TraceRatioSettings getClassifierSettings() {
+	public static TraceRatioSettings getSettingsTrace() {
 
-		TraceRatioSettings traceRatioSettings = new TraceRatioSettings();
-		traceRatioSettings.setTraceRatioSettings(getSettings(P_TRACE_RATIO_LIST, DEF_TRACE_RATIO_LIST));
-		return traceRatioSettings;
+		TraceRatioSettings settings = new TraceRatioSettings();
+		settings.setRatioSettings(getSettings(P_TRACE_RATIO_LIST, DEF_TRACE_RATIO_LIST));
+		return settings;
+	}
+
+	public static TimeRatioSettings getSettingsTime() {
+
+		TimeRatioSettings settings = new TimeRatioSettings();
+		settings.setRatioSettings(getSettings(P_TIME_RATIO_LIST, DEF_TIME_RATIO_LIST));
+		return settings;
+	}
+
+	public static QuantRatioSettings getSettingsQuant() {
+
+		QuantRatioSettings settings = new QuantRatioSettings();
+		settings.setRatioSettings(getSettings(P_QUANT_RATIO_LIST, DEF_QUANT_RATIO_LIST));
+		return settings;
 	}
 
 	public static String getListPathImport() {

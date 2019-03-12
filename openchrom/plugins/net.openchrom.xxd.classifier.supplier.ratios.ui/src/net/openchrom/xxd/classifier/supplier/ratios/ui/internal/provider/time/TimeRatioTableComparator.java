@@ -16,7 +16,7 @@ import org.eclipse.chemclipse.support.ui.swt.AbstractRecordTableComparator;
 import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.Viewer;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
 
 public class TimeRatioTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
@@ -96,6 +96,9 @@ public class TimeRatioTableComparator extends AbstractRecordTableComparator impl
 					sortOrder = timeRatio2.getName().compareTo(timeRatio1.getName());
 					break;
 				case 2:
+					sortOrder = Double.compare(timeRatio2.getExpectedRetentionTime(), timeRatio1.getExpectedRetentionTime());
+					break;
+				case 3:
 					sortOrder = Double.compare(timeRatio2.getDeviation(), timeRatio1.getDeviation());
 					break;
 			}

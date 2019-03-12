@@ -19,37 +19,35 @@ import org.eclipse.core.runtime.IStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatios;
-import net.openchrom.xxd.classifier.supplier.ratios.util.TraceRatioListUtil;
-import net.openchrom.xxd.classifier.supplier.ratios.util.TraceRatioValidator;
+import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.util.trace.TraceRatioListUtil;
+import net.openchrom.xxd.classifier.supplier.ratios.util.trace.TraceRatioValidator;
 
 public class TraceRatioSettings extends AbstractChromatogramClassifierSettings {
 
 	@JsonProperty(value = "Trace Ratio Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + TraceRatioListUtil.EXAMPLE_MULTIPLE + "'")
-	private String traceRatioSettings = "";
+	private String ratioSettings = "";
 
-	public void setTraceRatioSettings(String traceRatioSettings) {
+	public void setRatioSettings(String ratioSettings) {
 
-		this.traceRatioSettings = traceRatioSettings;
+		this.ratioSettings = ratioSettings;
 	}
 
-	public TraceRatios getTraceRatioSettings() {
+	public TraceRatios getRatioSettings() {
 
 		TraceRatioListUtil util = new TraceRatioListUtil();
 		TraceRatioValidator validator = new TraceRatioValidator();
-		TraceRatios traceRatios = new TraceRatios();
+		TraceRatios ratios = new TraceRatios();
 		//
-		List<String> items = util.getList(traceRatioSettings);
+		List<String> items = util.getList(ratioSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
 			if(status.isOK()) {
-				traceRatios.add(validator.getSetting());
+				ratios.add(validator.getSetting());
 			}
 		}
-		// traceRatios.add(new TraceRatio("Naphthalin-D8 (ISTD)", "136:137", 9.90, 5.0d, 15.0));
-		// traceRatios.add(new TraceRatio("Naphthalin", "128:127", 14.60, 5.0d, 15.0));
 		//
-		return traceRatios;
+		return ratios;
 	}
 }

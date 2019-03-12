@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="ASCII"?>
 <fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_Vgi8wBQWEem6molGgMzXtA">
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="__klOMBQ1Eem6molGgMzXtA" featurename="commands" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
-    <elements xsi:type="commands:Command" xmi:id="_LrlcQBQ2Eem6molGgMzXtA" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.command.traceratio" commandName="Trace Ratio Classifier"/>
+    <elements xsi:type="commands:Command" xmi:id="_LrlcQBQ2Eem6molGgMzXtA" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.command.trace" commandName="Trace Ratio Classifier"/>
+    <elements xsi:type="commands:Command" xmi:id="_8fSA4ESrEemxHNI0QU6Bdw" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.command.time" commandName="Time Ratio Classifier"/>
+    <elements xsi:type="commands:Command" xmi:id="_YTAPkETlEemxHNI0QU6Bdw" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.command.quant" commandName="Quant Ratio Classifier"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="__3-EQBQ1Eem6molGgMzXtA" featurename="handlers" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
-    <elements xsi:type="commands:Handler" xmi:id="_RS6RIBQ2Eem6molGgMzXtA" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.handler.classifier.traceratio" contributionURI="bundleclass://net.openchrom.xxd.classifier.supplier.ratios.ui/net.openchrom.xxd.classifier.supplier.ratios.ui.handlers.TraceRatioClassifierHandler" command="_LrlcQBQ2Eem6molGgMzXtA"/>
+    <elements xsi:type="commands:Handler" xmi:id="_RS6RIBQ2Eem6molGgMzXtA" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.handler.classifier.trace" contributionURI="bundleclass://net.openchrom.xxd.classifier.supplier.ratios.ui/net.openchrom.xxd.classifier.supplier.ratios.ui.handlers.ClassifierHandlerTrace" command="_LrlcQBQ2Eem6molGgMzXtA"/>
+    <elements xsi:type="commands:Handler" xmi:id="_A07LcESsEemxHNI0QU6Bdw" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.handler.classifier.time" contributionURI="bundleclass://net.openchrom.xxd.classifier.supplier.ratios.ui/net.openchrom.xxd.classifier.supplier.ratios.ui.handlers.ClassifierHandlerTime" command="_8fSA4ESrEemxHNI0QU6Bdw"/>
+    <elements xsi:type="commands:Handler" xmi:id="_bGAisETlEemxHNI0QU6Bdw" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.handler.classifier.quant" contributionURI="bundleclass://net.openchrom.xxd.classifier.supplier.ratios.ui/net.openchrom.xxd.classifier.supplier.ratios.ui.handlers.ClassifierHandlerQuant" command="_YTAPkETlEemxHNI0QU6Bdw"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_GBmU8BQ2Eem6molGgMzXtA" featurename="children" parentElementId="org.eclipse.chemclipse.ux.extension.ui.menu.classifier">
-    <elements xsi:type="menu:HandledMenuItem" xmi:id="_YTYDMBQ2Eem6molGgMzXtA" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.handledmenuitem.traceratio" label="Trace Ratio Classifier" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/classifier.gif" command="_LrlcQBQ2Eem6molGgMzXtA">
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_YTYDMBQ2Eem6molGgMzXtA" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.handledmenuitem.trace" label="Trace Ratio Classifier" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/classifier.gif" command="_LrlcQBQ2Eem6molGgMzXtA">
       <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_fSLBUBQ2Eem6molGgMzXtA" coreExpressionId="org.eclipse.chemclipse.ux.extension.ui.definitions.isChromatogramTypeMSD"/>
+    </elements>
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_FdpDAESsEemxHNI0QU6Bdw" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.handledmenuitem.time" label="Time Ratio Classifier" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/classifier.gif" command="_8fSA4ESrEemxHNI0QU6Bdw">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_KN9XYESsEemxHNI0QU6Bdw" coreExpressionId="org.eclipse.chemclipse.ux.extension.ui.definitions.isChromatogramTypeMSD"/>
+    </elements>
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_g_T4YETlEemxHNI0QU6Bdw" elementId="net.openchrom.xxd.classifier.supplier.ratios.ui.handledmenuitem.quant" label="Quant Ratio Classifier" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/classifier.gif" command="_YTAPkETlEemxHNI0QU6Bdw">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_k0zjQETlEemxHNI0QU6Bdw" coreExpressionId="org.eclipse.chemclipse.ux.extension.ui.definitions.isChromatogramTypeMSD"/>
     </elements>
   </fragments>
 </fragment:ModelFragments>

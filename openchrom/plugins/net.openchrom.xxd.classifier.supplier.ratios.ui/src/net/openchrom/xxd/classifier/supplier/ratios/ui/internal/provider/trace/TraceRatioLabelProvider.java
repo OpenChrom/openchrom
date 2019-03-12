@@ -21,7 +21,7 @@ import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
 
 public class TraceRatioLabelProvider extends AbstractChemClipseLabelProvider {
@@ -112,9 +112,12 @@ public class TraceRatioLabelProvider extends AbstractChemClipseLabelProvider {
 					text = traceRatio.getTestCase();
 					break;
 				case 3:
-					text = decimalFormat.format(traceRatio.getRatio());
+					text = decimalFormat.format(traceRatio.getExpectedRatio());
 					break;
 				case 4:
+					text = decimalFormat.format(traceRatio.getRatio());
+					break;
+				case 5:
 					text = decimalFormat.format(traceRatio.getDeviation());
 					break;
 			}

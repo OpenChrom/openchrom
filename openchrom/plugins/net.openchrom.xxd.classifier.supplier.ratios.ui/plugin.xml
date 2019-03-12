@@ -18,21 +18,57 @@
       </page>
       <page
             category="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePage"
-            class="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.PreferencePageTraceRatio"
-            id="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePageTraceRatio"
+            class="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.PreferencePageTrace"
+            id="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePageTrace"
             name="Trace Ratio Classifier">
-      </page>      
+      </page>
+      <page
+            category="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePage"
+            class="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.PreferencePageTime"
+            id="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePageTime"
+            name="Time Ratio Classifier">
+      </page>  
+      <page
+            category="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePage"
+            class="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.PreferencePageQuant"
+            id="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePageQuant"
+            name="Quant Ratio Classifier">
+      </page>                  
    </extension>
    <extension
          point="org.eclipse.chemclipse.ux.extension.ui.measurementResultVisualization">
       <MeasurementResultVisualization
-            CellColorProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioColorProvider"
+            CellColorProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.RatioColorProvider"
             Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioTableComparator"
             ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioContentProvider"
-            Identifier="net.openchrom.xxd.classifier.supplier.ratios.traceratio"
+            Identifier="net.openchrom.xxd.classifier.supplier.ratios.trace"
             LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioLabelProvider"
-            SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioSelectionListener"
+            SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.RatioSelectionListener"
             Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioResultTitles">
       </MeasurementResultVisualization>
    </extension>
+   <extension
+         point="org.eclipse.chemclipse.ux.extension.ui.measurementResultVisualization">
+      <MeasurementResultVisualization
+            CellColorProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.RatioColorProvider"
+            Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioTableComparator"
+            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioContentProvider"
+            Identifier="net.openchrom.xxd.classifier.supplier.ratios.time"
+            LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioLabelProvider"
+            SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.RatioSelectionListener"
+            Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioResultTitles">
+      </MeasurementResultVisualization>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.ux.extension.ui.measurementResultVisualization">
+      <MeasurementResultVisualization
+            CellColorProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.RatioColorProvider"
+            Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioTableComparator"
+            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioContentProvider"
+            Identifier="net.openchrom.xxd.classifier.supplier.ratios.quant"
+            LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioLabelProvider"
+            SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.RatioSelectionListener"
+            Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioResultTitles">
+      </MeasurementResultVisualization>
+   </extension>         
 </plugin>

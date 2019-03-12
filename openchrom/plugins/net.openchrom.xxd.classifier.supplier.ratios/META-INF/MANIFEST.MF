@@ -20,8 +20,15 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.databinding;bundle-version="1.6.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: net.openchrom.xxd.classifier.supplier.ratios.core,
+Export-Package: net.openchrom.xxd.classifier.supplier.ratios,
+ net.openchrom.xxd.classifier.supplier.ratios.core,
  net.openchrom.xxd.classifier.supplier.ratios.model,
+ net.openchrom.xxd.classifier.supplier.ratios.model.quant,
+ net.openchrom.xxd.classifier.supplier.ratios.model.time,
+ net.openchrom.xxd.classifier.supplier.ratios.model.trace,
  net.openchrom.xxd.classifier.supplier.ratios.preferences,
  net.openchrom.xxd.classifier.supplier.ratios.settings,
- net.openchrom.xxd.classifier.supplier.ratios.util
+ net.openchrom.xxd.classifier.supplier.ratios.util,
+ net.openchrom.xxd.classifier.supplier.ratios.util.quant,
+ net.openchrom.xxd.classifier.supplier.ratios.util.time,
+ net.openchrom.xxd.classifier.supplier.ratios.util.trace

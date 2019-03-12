@@ -17,8 +17,8 @@ import java.util.List;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IInputValidator;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.util.TraceRatioValidator;
+import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.util.trace.TraceRatioValidator;
 
 public class TraceRatioInputValidator implements IInputValidator {
 

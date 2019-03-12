@@ -21,7 +21,7 @@ import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
 
 public class TimeRatioLabelProvider extends AbstractChemClipseLabelProvider {
@@ -106,6 +106,9 @@ public class TimeRatioLabelProvider extends AbstractChemClipseLabelProvider {
 					text = timeRatio.getName();
 					break;
 				case 2:
+					text = decimalFormat.format(timeRatio.getExpectedRetentionTime());
+					break;
+				case 3:
 					text = decimalFormat.format(timeRatio.getDeviation());
 					break;
 			}

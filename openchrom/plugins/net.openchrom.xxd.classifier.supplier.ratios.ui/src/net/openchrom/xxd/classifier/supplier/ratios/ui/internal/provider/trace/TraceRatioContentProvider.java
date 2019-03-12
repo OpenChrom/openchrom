@@ -18,8 +18,8 @@ import org.eclipse.chemclipse.model.core.IMeasurementResult;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
 
 public class TraceRatioContentProvider implements IStructuredContentProvider {

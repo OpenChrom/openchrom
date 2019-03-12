@@ -17,8 +17,8 @@ import java.util.List;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IInputValidator;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.util.TimeRatioValidator;
+import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.util.time.TimeRatioValidator;
 
 public class TimeRatioInputValidator implements IInputValidator {
 

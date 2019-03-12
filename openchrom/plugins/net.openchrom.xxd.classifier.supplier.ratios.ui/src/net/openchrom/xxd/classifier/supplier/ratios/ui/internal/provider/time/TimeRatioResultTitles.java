@@ -13,17 +13,13 @@ package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time;
 
 import javax.naming.directory.InvalidAttributesException;
 
-import org.eclipse.chemclipse.ux.extension.ui.support.AbstractMeasurementResultTitles;
 import org.eclipse.chemclipse.ux.extension.ui.support.IMeasurementResultTitles;
 
-public class TimeRatioResultTitles extends AbstractMeasurementResultTitles implements IMeasurementResultTitles {
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractRatioTitles;
 
-	public static final String RETENTION_TIME = "RT (Minutes)";
-	public static final String NAME = "Name";
+public class TimeRatioResultTitles extends AbstractRatioTitles implements IMeasurementResultTitles {
+
 	public static final String EXPECTED_RETENTION_TIME = "Expected RT (Minutes)";
-	public static final String DEVIATION = "Deviation [%]";
-	public static final String DEVIATION_WARN = "Deviation Warn [%]";
-	public static final String DEVIATION_ERROR = "Deviation Error [%]";
 	//
 	public static final String[] TITLES_SETTINGS = { //
 			NAME, //
@@ -42,12 +38,14 @@ public class TimeRatioResultTitles extends AbstractMeasurementResultTitles imple
 	public static final String[] TITLES_RESULTS = { //
 			RETENTION_TIME, //
 			NAME, //
+			EXPECTED_RETENTION_TIME, //
 			DEVIATION //
 	};
 	//
 	public static final int[] BOUNDS_RESULTS = { //
 			80, //
 			150, //
+			80, //
 			80 //
 	};
 

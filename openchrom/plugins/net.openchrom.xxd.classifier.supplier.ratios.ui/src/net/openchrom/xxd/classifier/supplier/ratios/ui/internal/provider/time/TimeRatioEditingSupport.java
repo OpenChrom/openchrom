@@ -17,8 +17,7 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioResultTitles;
+import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
 
 public class TimeRatioEditingSupport extends EditingSupport {
 
@@ -53,9 +52,11 @@ public class TimeRatioEditingSupport extends EditingSupport {
 		if(element instanceof TimeRatio) {
 			TimeRatio setting = (TimeRatio)element;
 			switch(column) {
-				case TraceRatioResultTitles.DEVIATION_WARN:
+				case TimeRatioResultTitles.EXPECTED_RETENTION_TIME:
+					return Double.toString(setting.getExpectedRetentionTime());
+				case TimeRatioResultTitles.DEVIATION_WARN:
 					return Double.toString(setting.getDeviationWarn());
-				case TraceRatioResultTitles.DEVIATION_ERROR:
+				case TimeRatioResultTitles.DEVIATION_ERROR:
 					return Double.toString(setting.getDeviationError());
 			}
 		}
@@ -68,13 +69,19 @@ public class TimeRatioEditingSupport extends EditingSupport {
 		if(element instanceof TimeRatio) {
 			TimeRatio setting = (TimeRatio)element;
 			switch(column) {
-				case TraceRatioResultTitles.DEVIATION_WARN:
+				case TimeRatioResultTitles.EXPECTED_RETENTION_TIME:
+					double expectedRetentionTime = parseDouble((String)value);
+					if(expectedRetentionTime > 0) {
+						setting.setExpectedRetentionTime(expectedRetentionTime);
+					}
+					break;
+				case TimeRatioResultTitles.DEVIATION_WARN:
 					double deviationWarn = parseDouble((String)value);
 					if(deviationWarn > 0 && deviationWarn < setting.getDeviationError()) {
 						setting.setDeviationWarn(deviationWarn);
 					}
 					break;
-				case TraceRatioResultTitles.DEVIATION_ERROR:
+				case TimeRatioResultTitles.DEVIATION_ERROR:
 					double deviationError = parseDouble((String)value);
 					if(deviationError > 0 && deviationError > setting.getDeviationWarn()) {
 						setting.setDeviationError(deviationError);

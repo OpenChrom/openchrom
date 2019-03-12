@@ -38,12 +38,12 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceSupplier;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioInputValidator;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.TimeRatioListUI;
-import net.openchrom.xxd.classifier.supplier.ratios.util.TraceRatioListUtil;
+import net.openchrom.xxd.classifier.supplier.ratios.util.time.TimeRatioListUtil;
 
 public class TimeRatioFieldEditor extends AbstractFieldEditor {
 
@@ -160,7 +160,7 @@ public class TimeRatioFieldEditor extends AbstractFieldEditor {
 
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, TraceRatioListUtil.EXAMPLE_SINGLE, new TimeRatioInputValidator(settings));
+				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, TimeRatioListUtil.EXAMPLE_SINGLE, new TimeRatioInputValidator(settings));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
 					TimeRatio setting = settings.extractSettingInstance(item);

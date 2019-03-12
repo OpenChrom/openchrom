@@ -18,8 +18,8 @@ import org.eclipse.chemclipse.model.core.IMeasurementResult;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.model.TimeRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
 
 public class TimeRatioContentProvider implements IStructuredContentProvider {

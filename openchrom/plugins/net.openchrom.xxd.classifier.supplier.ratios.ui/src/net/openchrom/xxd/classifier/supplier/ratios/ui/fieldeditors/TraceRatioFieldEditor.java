@@ -38,12 +38,12 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceSupplier;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioInputValidator;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.TraceRatioListUI;
-import net.openchrom.xxd.classifier.supplier.ratios.util.TraceRatioListUtil;
+import net.openchrom.xxd.classifier.supplier.ratios.util.trace.TraceRatioListUtil;
 
 public class TraceRatioFieldEditor extends AbstractFieldEditor {
 

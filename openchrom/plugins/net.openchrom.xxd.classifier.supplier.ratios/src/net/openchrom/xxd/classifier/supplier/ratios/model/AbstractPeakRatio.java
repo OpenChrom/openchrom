@@ -14,59 +14,73 @@ package net.openchrom.xxd.classifier.supplier.ratios.model;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 
-public abstract class AbstractPeakRatio {
+public abstract class AbstractPeakRatio implements IPeakRatio {
 
 	private IPeak peak = null; // optional
 	private String name = "";
+	/*
+	 * 0 => 0%
+	 * 100 => 100%
+	 */
 	private double deviation = 0.0d;
-	private double deviationWarn = 0.0d; // 100 => 100%
-	private double deviationError = 0.0d; // 100 => 100%
+	private double deviationWarn = 0.0d;
+	private double deviationError = 0.0d;
 
+	@Override
 	public IPeak getPeak() {
 
 		return peak;
 	}
 
+	@Override
 	public void setPeak(IPeakMSD peak) {
 
 		this.peak = peak;
 	}
 
+	@Override
 	public String getName() {
 
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 
 		this.name = name;
 	}
 
+	@Override
 	public double getDeviation() {
 
 		return deviation;
 	}
 
+	@Override
 	public void setDeviation(double deviation) {
 
 		this.deviation = deviation;
 	}
 
+	@Override
 	public double getDeviationWarn() {
 
 		return deviationWarn;
 	}
 
+	@Override
 	public void setDeviationWarn(double deviationWarn) {
 
 		this.deviationWarn = deviationWarn;
 	}
 
+	@Override
 	public double getDeviationError() {
 
 		return deviationError;
 	}
 
+	@Override
 	public void setDeviationError(double deviationError) {
 
 		this.deviationError = deviationError;

@@ -8,9 +8,29 @@
             classifierName="Trace Ratio Classifier"
             classifierSettings="net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioSettings"
             description="This classifier calculates peak trace ratios."
-            id="net.openchrom.xxd.classifier.supplier.ratios.traceratio">
+            id="net.openchrom.xxd.classifier.supplier.ratios.trace">
       </ChromatogramClassifierSupplier>
-   </extension>         
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.classifier.chromatogramClassifierSupplier">
+      <ChromatogramClassifierSupplier
+            classifier="net.openchrom.xxd.classifier.supplier.ratios.core.TimeRatioClassifier"
+            classifierName="Time Ratio Classifier"
+            classifierSettings="net.openchrom.xxd.classifier.supplier.ratios.settings.TimeRatioSettings"
+            description="This classifier calculates peak time ratios."
+            id="net.openchrom.xxd.classifier.supplier.ratios.time">
+      </ChromatogramClassifierSupplier>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.classifier.chromatogramClassifierSupplier">
+      <ChromatogramClassifierSupplier
+            classifier="net.openchrom.xxd.classifier.supplier.ratios.core.QuantRatioClassifier"
+            classifierName="Quant Ratio Classifier"
+            classifierSettings="net.openchrom.xxd.classifier.supplier.ratios.settings.QuantRatioSettings"
+            description="This classifier calculates peak quant ratios."
+            id="net.openchrom.xxd.classifier.supplier.ratios.quant">
+      </ChromatogramClassifierSupplier>
+   </extension>                        
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer

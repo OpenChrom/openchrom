@@ -13,13 +13,11 @@ package net.openchrom.xxd.classifier.supplier.ratios.core;
 
 import java.util.List;
 
-import org.eclipse.chemclipse.chromatogram.msd.classifier.core.AbstractChromatogramClassifier;
+import org.eclipse.chemclipse.chromatogram.msd.classifier.result.IChromatogramClassifierResult;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.result.ResultStatus;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.settings.IChromatogramClassifierSettings;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IMeasurementResult;
-import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.implementation.MeasurementResult;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
@@ -27,28 +25,28 @@ import org.eclipse.chemclipse.msd.model.xic.ExtractedIonSignal;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatioResult;
-import net.openchrom.xxd.classifier.supplier.ratios.model.TraceRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatioResult;
+import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceSupplier;
 import net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioSettings;
 
-public class TraceRatioClassifier extends AbstractChromatogramClassifier {
+public class TraceRatioClassifier extends AbstractRatioClassifier {
 
-	public static final String CLASSIFIER_ID = "net.openchrom.xxd.classifier.supplier.ratios.traceratio";
+	public static final String CLASSIFIER_ID = "net.openchrom.xxd.classifier.supplier.ratios.trace";
 	//
 	private static final Logger logger = Logger.getLogger(TraceRatioClassifier.class);
 
 	@Override
-	public IProcessingInfo applyClassifier(IChromatogramSelectionMSD chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelectionMSD chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(chromatogramSelection, chromatogramClassifierSettings);
+		IProcessingInfo<IChromatogramClassifierResult> processingInfo = validate(chromatogramSelection, chromatogramClassifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
 			if(chromatogramClassifierSettings instanceof TraceRatioSettings) {
 				/*
 				 * Calculate the result.
 				 */
-				TraceRatios traceRatios = calculateTraceRatios(chromatogramSelection, (TraceRatioSettings)chromatogramClassifierSettings);
+				TraceRatios traceRatios = calculateRatios(chromatogramSelection, (TraceRatioSettings)chromatogramClassifierSettings);
 				TraceRatioResult classifierResult = new TraceRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", traceRatios);
 				IMeasurementResult measurementResult = new MeasurementResult("Trace Ratio Classifier", CLASSIFIER_ID, "Trace Ratios", traceRatios);
 				chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
@@ -59,18 +57,18 @@ public class TraceRatioClassifier extends AbstractChromatogramClassifier {
 	}
 
 	@Override
-	public IProcessingInfo applyClassifier(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
 
-		TraceRatioSettings classifierSettings = PreferenceSupplier.getClassifierSettings();
-		return applyClassifier(chromatogramSelection, classifierSettings, monitor);
+		TraceRatioSettings settings = PreferenceSupplier.getSettingsTrace();
+		return applyClassifier(chromatogramSelection, settings, monitor);
 	}
 
-	private TraceRatios calculateTraceRatios(IChromatogramSelectionMSD chromatogramSelection, TraceRatioSettings classifierSettings) {
+	private TraceRatios calculateRatios(IChromatogramSelectionMSD chromatogramSelection, TraceRatioSettings classifierSettings) {
 
-		TraceRatios traceRatios = classifierSettings.getTraceRatioSettings();
+		TraceRatios ratios = classifierSettings.getRatioSettings();
 		//
-		List<IChromatogramPeakMSD> peaks = chromatogramSelection.getChromatogramMSD().getPeaks();
-		for(TraceRatio traceRatio : traceRatios) {
+		List<IChromatogramPeakMSD> peaks = chromatogramSelection.getChromatogram().getPeaks();
+		for(TraceRatio traceRatio : ratios) {
 			for(IChromatogramPeakMSD peak : peaks) {
 				if(isPeakMatch(peak, traceRatio)) {
 					String[] values = traceRatio.getTestCase().split(":");
@@ -103,16 +101,6 @@ public class TraceRatioClassifier extends AbstractChromatogramClassifier {
 			}
 		}
 		//
-		return traceRatios;
-	}
-
-	private boolean isPeakMatch(IPeak peak, TraceRatio traceRatio) {
-
-		for(IIdentificationTarget identificationTarget : peak.getTargets()) {
-			if(identificationTarget.getLibraryInformation().getName().equals(traceRatio.getName())) {
-				return true;
-			}
-		}
-		return false;
+		return ratios;
 	}
 }
