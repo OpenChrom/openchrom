@@ -72,7 +72,7 @@ public class ChemicalShiftCalibrationUtilities {
 
 		UtilityFunctions utilityFunction = new UtilityFunctions();
 		IcoShiftAlignmentUtilities shiftUtils = new IcoShiftAlignmentUtilities();
-		// int[] intervalIndices = new int[2];
+		//
 		double leftMargin = calibrationSettings.getSinglePeakHigherBorder();
 		double rigthMargin = calibrationSettings.getSinglePeakLowerBorder();
 		int leftIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, leftMargin);

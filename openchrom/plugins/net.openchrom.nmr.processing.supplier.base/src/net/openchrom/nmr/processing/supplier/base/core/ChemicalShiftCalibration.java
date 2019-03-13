@@ -20,7 +20,7 @@ import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.ejml.simple.SimpleMatrix;
 
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
-import net.openchrom.nmr.processing.supplier.base.settings.support.Calibrate;
+import net.openchrom.nmr.processing.supplier.base.settings.support.ChemicalShiftCalibrationTargetCalculation;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ChemicalShiftCalibrationUtilities;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentGapFillingType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentShiftCorrectionType;
@@ -52,7 +52,8 @@ public class ChemicalShiftCalibration {
 
 		IcoShiftAlignmentSettings calibrationSettings = generateCalibrationSettings();
 		IcoShiftAlignment icoShiftAlignment = new IcoShiftAlignment();
-		icoShiftAlignment.setCalculateSelectedTargetFunction(new Calibrate());
+		// set calibration target in IcoShift algorithm
+		icoShiftAlignment.setCalculateCalibrationTargetFunction(new ChemicalShiftCalibrationTargetCalculation());
 		SimpleMatrix calibratedData = icoShiftAlignment.process(experimentalDatasetsList, calibrationSettings);
 		//
 		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(experimentalDatasetsList);
@@ -150,7 +151,6 @@ public class ChemicalShiftCalibration {
 	private static IcoShiftAlignmentSettings generateCalibrationSettings() {
 
 		IcoShiftAlignmentSettings calibrationSettings = new IcoShiftAlignmentSettings();
-		//
 		//
 		calibrationSettings.setShiftCorrectionType(IcoShiftAlignmentShiftCorrectionType.BEST);
 		//

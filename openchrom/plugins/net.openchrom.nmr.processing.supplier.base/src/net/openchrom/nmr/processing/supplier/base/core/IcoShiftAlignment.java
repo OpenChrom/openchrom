@@ -35,7 +35,7 @@ import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.ejml.simple.SimpleMatrix;
 
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
-import net.openchrom.nmr.processing.supplier.base.settings.support.CalculateTargetFunction;
+import net.openchrom.nmr.processing.supplier.base.settings.support.ChemicalShiftCalibrationTargetFunction;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentGapFillingType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentShiftCorrectionType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentTargetCalculationSelection;
@@ -51,16 +51,18 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlign
 public class IcoShiftAlignment {
 
 	private static final Logger icoShiftAlignmentLogger = Logger.getLogger(IcoShiftAlignment.class);
-	private CalculateTargetFunction calculateTargetFunction;
+	//
+	// in the case of a calibration call the necessary target is set here
+	private ChemicalShiftCalibrationTargetFunction calculateCalibrationTargetFunction;
 
-	public void setCalculateSelectedTargetFunction(CalculateTargetFunction calculateSelectedTargetFunction) {
+	public void setCalculateCalibrationTargetFunction(ChemicalShiftCalibrationTargetFunction calculateCalibrationTargetFunction) {
 
-		this.calculateTargetFunction = calculateSelectedTargetFunction;
+		this.calculateCalibrationTargetFunction = calculateCalibrationTargetFunction;
 	}
 
-	public CalculateTargetFunction getCalculateSelectedTargetFunction() {
+	public ChemicalShiftCalibrationTargetFunction getCalculateCalibrationTargetFunction() {
 
-		return calculateTargetFunction;
+		return calculateCalibrationTargetFunction;
 	}
 
 	public SimpleMatrix process(Collection<? extends IMeasurementNMR> experimentalDatasetsList, IcoShiftAlignmentSettings settings) {
@@ -418,17 +420,17 @@ public class IcoShiftAlignment {
 		SimpleMatrix experimentalDatasetsMatrixPartForProcessing = extractPartOfDataForProcessing(experimentalDatasetsMatrix, referenceWindow);
 		//
 		IcoShiftAlignmentTargetCalculationSelection targetCalculationSelection = settings.getTargetCalculationSelection();
-		if(calculateTargetFunction != null) {
-			targetForProcessing = calculateTargetFunction.calculateTarget(experimentalDatasetsMatrix, referenceWindow, settings);
+		if(calculateCalibrationTargetFunction != null) {
+			// calculate target used for calibration here
+			targetForProcessing = calculateCalibrationTargetFunction.calculateCalibrationTarget(experimentalDatasetsMatrix, interval, settings);
 			if(targetForProcessing == null) {
-				throw new IllegalArgumentException("Target Function returns null");
+				throw new IllegalArgumentException("Calibration target could not be calculated correctly.");
 			}
 			if(targetForProcessing.length != referenceWindow.length) {
-				throw new IllegalArgumentException("Target Function returns array with wrong length");
+				throw new IllegalArgumentException("Calculated calibration target does not have the correct length.");
 			}
-			// targetForProcessing = calculateSelectedTargetFunction.apply(t, u)
 		} else if((targetCalculationSelection == IcoShiftAlignmentTargetCalculationSelection.MAX)) {
-			// calculate max target here for each interval; "CALIBRATE" applies here too
+			// calculate max target here for each interval
 			targetForProcessing = calculateSelectedTarget(experimentalDatasetsMatrixPartForProcessing, settings);
 		} else {
 			// "MEAN" and "MEDIAN"
