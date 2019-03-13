@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 
@@ -28,7 +29,11 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 	public PeakDetectorEditingSupport(ExtendedTableViewer tableViewer, String column) {
 		super(tableViewer);
 		this.column = column;
-		this.cellEditor = new TextCellEditor(tableViewer.getTable());
+		if(column.equals(PeakDetectorLabelProvider.OPTIMIZE_RANGE)) {
+			this.cellEditor = new CheckboxCellEditor(tableViewer.getTable());
+		} else {
+			this.cellEditor = new TextCellEditor(tableViewer.getTable());
+		}
 		this.tableViewer = tableViewer;
 	}
 
@@ -54,6 +59,8 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 					return setting.getDetectorType();
 				case PeakDetectorLabelProvider.TRACES:
 					return setting.getTraces();
+				case PeakDetectorLabelProvider.OPTIMIZE_RANGE:
+					return setting.isOptimizeRange();
 			}
 		}
 		return false;
@@ -78,6 +85,9 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 					if(message == null) {
 						setting.setTraces(traces);
 					}
+					break;
+				case PeakDetectorLabelProvider.OPTIMIZE_RANGE:
+					setting.setOptimizeRange((boolean)value);
 					break;
 			}
 			tableViewer.refresh();

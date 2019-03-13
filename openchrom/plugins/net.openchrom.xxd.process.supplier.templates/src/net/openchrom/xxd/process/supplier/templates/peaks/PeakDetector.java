@@ -28,14 +28,17 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.support.IScanRange;
 import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
+import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -50,7 +53,6 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 	private static final Logger logger = Logger.getLogger(PeakDetector.class);
 	private PeakDetectorListUtil listUtil = new PeakDetectorListUtil();
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public IProcessingInfo detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD settings, IProgressMonitor monitor) {
 
@@ -64,7 +66,6 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		return detect(chromatogramSelection, settings, monitor);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public IProcessingInfo detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD settings, IProgressMonitor monitor) {
 
@@ -123,11 +124,22 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		//
 		try {
 			if(startScan > 0 && startScan < stopScan) {
-				IScanRange scanRange = new ScanRange(startScan, stopScan);
+				/*
+				 * Get the scan range.
+				 */
+				Set<Integer> traces = listUtil.extractTraces(detectorSetting.getTraces());
+				IScanRange scanRange;
+				if(detectorSetting.isOptimizeRange()) {
+					scanRange = optimizeRange(chromatogram, startScan, stopScan, traces);
+				} else {
+					scanRange = new ScanRange(startScan, stopScan);
+				}
+				/*
+				 * Try to create a peak.
+				 */
 				if(chromatogram instanceof IChromatogramMSD) {
 					IChromatogramMSD chromatogramMSD = (IChromatogramMSD)chromatogram;
 					IChromatogramPeakMSD peak;
-					Set<Integer> traces = listUtil.extractTraces(detectorSetting.getTraces());
 					if(traces.size() > 0) {
 						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground, traces);
 					} else {
@@ -147,5 +159,67 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		} catch(PeakException e) {
 			logger.warn(e);
 		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	private IScanRange optimizeRange(IChromatogram chromatogram, int startScan, int stopScan, Set<Integer> traces) {
+
+		int scanWidth = stopScan - startScan + 1;
+		int partLength = scanWidth / 4;
+		/*
+		 * Assume max value in ~ in the middle.
+		 */
+		float maxSignalCenter = Float.MIN_VALUE;
+		int centerScan = startScan;
+		for(int i = startScan + partLength; i <= stopScan - partLength; i++) {
+			float signal = getScanSignal(chromatogram, i, traces);
+			if(signal > maxSignalCenter) {
+				maxSignalCenter = signal;
+				centerScan = i;
+			}
+		}
+		/*
+		 * Left border optimization
+		 */
+		float minSignalLeft = Float.MAX_VALUE;
+		int startScanOptimized = startScan;
+		for(int i = startScan; i < centerScan; i++) {
+			float signal = getScanSignal(chromatogram, i, traces);
+			if(signal < minSignalLeft) {
+				minSignalLeft = signal;
+				startScanOptimized = i;
+			}
+		}
+		/*
+		 * Right border optimization
+		 */
+		float minSignalRight = Float.MAX_VALUE;
+		int stopScanOptimized = stopScan;
+		for(int i = stopScan; i > centerScan; i--) {
+			float signal = getScanSignal(chromatogram, i, traces);
+			if(signal < minSignalRight) {
+				minSignalRight = signal;
+				stopScanOptimized = i;
+			}
+		}
+		//
+		return new ScanRange(startScanOptimized, stopScanOptimized);
+	}
+
+	@SuppressWarnings("rawtypes")
+	private float getScanSignal(IChromatogram chromatogram, int scanNumber, Set<Integer> traces) {
+
+		float scanSignal = 0.0f;
+		IScan scan = chromatogram.getScan(scanNumber);
+		if(scan instanceof IScanMSD) {
+			IScanMSD scanMSD = (IScanMSD)scan;
+			IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
+			for(int trace : traces) {
+				scanSignal += extractedIonSignal.getAbundance(trace);
+			}
+		} else {
+			scanSignal = scan.getTotalSignal();
+		}
+		return scanSignal;
 	}
 }

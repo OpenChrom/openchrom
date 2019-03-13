@@ -27,6 +27,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 	private double stopRetentionTime = 0;
 	private String detectorType = "";
 	private String traces = "";
+	private boolean optimizeRange = false;
 
 	@Override
 	public IStatus validate(Object value) {
@@ -68,6 +69,8 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 						String traceValues = parseString(values, 3);
 						message = validateTraces(traceValues);
 						traces = (message == null) ? traceValues : "";
+						//
+						optimizeRange = parseBoolean(values, 4, false);
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -91,6 +94,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 		setting.setStopRetentionTime(stopRetentionTime);
 		setting.setDetectorType(detectorType);
 		setting.setTraces(traces);
+		setting.setOptimizeRange(optimizeRange);
 		return setting;
 	}
 }

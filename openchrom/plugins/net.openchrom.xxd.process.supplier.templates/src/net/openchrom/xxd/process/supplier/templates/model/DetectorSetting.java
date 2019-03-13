@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,6 +20,7 @@ public class DetectorSetting {
 	private double stopRetentionTime = 0.0d; // Minutes
 	private String detectorType = "";
 	private String traces = "";
+	private boolean optimizeRange = false;
 
 	public void copyFrom(DetectorSetting setting) {
 
@@ -28,6 +29,7 @@ public class DetectorSetting {
 			setStopRetentionTime(setting.getStopRetentionTime());
 			setDetectorType(setting.getDetectorType());
 			setTraces(setting.getTraces());
+			setOptimizeRange(setting.isOptimizeRange());
 		}
 	}
 
@@ -69,6 +71,16 @@ public class DetectorSetting {
 	public void setTraces(String traces) {
 
 		this.traces = traces;
+	}
+
+	public boolean isOptimizeRange() {
+
+		return optimizeRange;
+	}
+
+	public void setOptimizeRange(boolean optimizeRange) {
+
+		this.optimizeRange = optimizeRange;
 	}
 
 	public boolean isIncludeBackground() {
@@ -113,6 +125,6 @@ public class DetectorSetting {
 	@Override
 	public String toString() {
 
-		return "DetectorSetting [startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", detectorType=" + detectorType + ", traces=" + traces + "]";
+		return "DetectorSetting [startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", detectorType=" + detectorType + ", traces=" + traces + ", optimizeRange=" + optimizeRange + "]";
 	}
 }

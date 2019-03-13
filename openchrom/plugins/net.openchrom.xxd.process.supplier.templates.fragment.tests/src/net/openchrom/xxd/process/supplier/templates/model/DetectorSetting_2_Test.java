@@ -58,4 +58,10 @@ public class DetectorSetting_2_Test extends TestCase {
 		setting.setTraces("103, 104");
 		assertEquals("103, 104", setting.getTraces());
 	}
+
+	public void test5() {
+
+		setting.setOptimizeRange(true);
+		assertEquals(true, setting.isOptimizeRange());
+	}
 }

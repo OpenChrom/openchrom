@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -40,6 +40,9 @@ public class PeakDetectorComparator extends AbstractRecordTableComparator implem
 					break;
 				case 3:
 					sortOrder = setting2.getTraces().compareTo(setting1.getTraces());
+					break;
+				case 4:
+					sortOrder = Boolean.compare(setting2.isOptimizeRange(), setting1.isOptimizeRange());
 					break;
 				default:
 					sortOrder = 0;

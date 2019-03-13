@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,6 +27,9 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 	public static final String STOP_RETENTION_TIME = "Stop Retention Time";
 	public static final String DETECTOR_TYPE = "Detector Type";
 	public static final String TRACES = "Traces";
+	public static final String OPTIMIZE_RANGE = "Optimize Range";
+	//
+	public static final int INDEX_OPTIMIZE_RANGE = 4;
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 	//
@@ -34,13 +37,15 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 			START_RETENTION_TIME, //
 			STOP_RETENTION_TIME, //
 			DETECTOR_TYPE, //
-			TRACES //
+			TRACES, //
+			OPTIMIZE_RANGE //
 	};
 	public static final int[] BOUNDS = { //
 			100, //
 			100, //
 			50, //
-			100 //
+			100, //
+			30 //
 	};
 
 	@Override
@@ -48,6 +53,12 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 
 		if(columnIndex == 0) {
 			return getImage(element);
+		} else if(columnIndex == INDEX_OPTIMIZE_RANGE) {
+			if(element instanceof DetectorSetting) {
+				DetectorSetting setting = (DetectorSetting)element;
+				String fileName = (setting.isOptimizeRange()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
+				return ApplicationImageFactory.getInstance().getImage(fileName, IApplicationImage.SIZE_16x16);
+			}
 		}
 		return null;
 	}
@@ -70,6 +81,9 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 					break;
 				case 3:
 					text = setting.getTraces();
+					break;
+				case 4:
+					text = "";
 					break;
 				default:
 					text = "n.v.";
