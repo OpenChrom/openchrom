@@ -35,14 +35,7 @@ public enum IcoShiftAlignmentTargetCalculationSelection {
 	 *
 	 * @param MAX
 	 */
-	MAX("Max"), //
-	/**
-	 * select "CALIBRATE" to calculate a target which will be used to calibrate the spectra
-	 * to an internal standard at 0 ppm
-	 *
-	 * @param CALIBRATE
-	 */
-	CALIBRATE("Calibrate");//
+	MAX("Max");//
 
 	private String targetCalculationSelection;
 

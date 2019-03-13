@@ -22,7 +22,6 @@ import java.util.stream.DoubleStream;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
-import org.apache.commons.math3.distribution.CauchyDistribution;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
@@ -36,6 +35,7 @@ import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.ejml.simple.SimpleMatrix;
 
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
+import net.openchrom.nmr.processing.supplier.base.settings.support.CalculateTargetFunction;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentGapFillingType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentShiftCorrectionType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentTargetCalculationSelection;
@@ -51,6 +51,17 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlign
 public class IcoShiftAlignment {
 
 	private static final Logger icoShiftAlignmentLogger = Logger.getLogger(IcoShiftAlignment.class);
+	private CalculateTargetFunction calculateTargetFunction;
+
+	public void setCalculateSelectedTargetFunction(CalculateTargetFunction calculateSelectedTargetFunction) {
+
+		this.calculateTargetFunction = calculateSelectedTargetFunction;
+	}
+
+	public CalculateTargetFunction getCalculateSelectedTargetFunction() {
+
+		return calculateTargetFunction;
+	}
 
 	public SimpleMatrix process(Collection<? extends IMeasurementNMR> experimentalDatasetsList, IcoShiftAlignmentSettings settings) {
 
@@ -150,31 +161,9 @@ public class IcoShiftAlignment {
 			case MAX: {
 				return calculateMaxTarget(experimentalDatasetsMatrix);
 			}
-			case CALIBRATE: {
-				return calculateCalibrationTarget(experimentalDatasetsMatrix);
-			}
 			default:
 				throw new IllegalArgumentException("unsupported TargetCalculationSelection: " + targetCalculationSelection);
 		}
-	}
-
-	private static double[] calculateCalibrationTarget(SimpleMatrix experimentalDatasetsMatrix) {
-
-		/*
-		 * generate lorentzian distribution and calculate a peak from it
-		 */
-		CauchyDistribution cDistribution = new CauchyDistribution(0, 0.01);
-		UtilityFunctions utilityFunction = new UtilityFunctions();
-		//
-		int windowWidth = experimentalDatasetsMatrix.numCols();
-		double[] xAxisVector = utilityFunction.generateLinearlySpacedVector(-1.0, 1.0, windowWidth);
-		double[] probabilityDensityFunction = new double[xAxisVector.length];
-		for(int i = 0; i < xAxisVector.length; i++) {
-			// calculate a peak with some intensity and peak maximum in the middle of interval
-			probabilityDensityFunction[i] = Math.pow(cDistribution.density(xAxisVector[i]), 2); // TARGET
-		}
-		//
-		return probabilityDensityFunction;
 	}
 
 	private static double[] calculateMeanTarget(SimpleMatrix experimentalDatasetsMatrix) {
@@ -429,7 +418,16 @@ public class IcoShiftAlignment {
 		SimpleMatrix experimentalDatasetsMatrixPartForProcessing = extractPartOfDataForProcessing(experimentalDatasetsMatrix, referenceWindow);
 		//
 		IcoShiftAlignmentTargetCalculationSelection targetCalculationSelection = settings.getTargetCalculationSelection();
-		if((targetCalculationSelection == IcoShiftAlignmentTargetCalculationSelection.MAX) || (targetCalculationSelection == IcoShiftAlignmentTargetCalculationSelection.CALIBRATE)) {
+		if(calculateTargetFunction != null) {
+			targetForProcessing = calculateTargetFunction.calculateTarget(experimentalDatasetsMatrix, referenceWindow, settings);
+			if(targetForProcessing == null) {
+				throw new IllegalArgumentException("Target Function returns null");
+			}
+			if(targetForProcessing.length != referenceWindow.length) {
+				throw new IllegalArgumentException("Target Function returns array with wrong length");
+			}
+			// targetForProcessing = calculateSelectedTargetFunction.apply(t, u)
+		} else if((targetCalculationSelection == IcoShiftAlignmentTargetCalculationSelection.MAX)) {
 			// calculate max target here for each interval; "CALIBRATE" applies here too
 			targetForProcessing = calculateSelectedTarget(experimentalDatasetsMatrixPartForProcessing, settings);
 		} else {
