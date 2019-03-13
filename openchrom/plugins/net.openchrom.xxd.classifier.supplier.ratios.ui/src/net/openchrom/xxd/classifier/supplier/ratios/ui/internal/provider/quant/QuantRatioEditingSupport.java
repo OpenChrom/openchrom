@@ -52,6 +52,8 @@ public class QuantRatioEditingSupport extends EditingSupport {
 		if(element instanceof QuantRatio) {
 			QuantRatio setting = (QuantRatio)element;
 			switch(column) {
+				case QuantRatioResultTitles.QUANTITATION_NAME:
+					return setting.getQuantitationName();
 				case QuantRatioResultTitles.EXPECTED_CONCENTRATION:
 					return Double.toString(setting.getExpectedConcentration());
 				case QuantRatioResultTitles.CONCENTRATION_UNIT:
@@ -71,6 +73,12 @@ public class QuantRatioEditingSupport extends EditingSupport {
 		if(element instanceof QuantRatio) {
 			QuantRatio setting = (QuantRatio)element;
 			switch(column) {
+				case QuantRatioResultTitles.QUANTITATION_NAME:
+					String quantitationName = (String)value;
+					if(!"".equals(quantitationName)) {
+						setting.setQuantitationName(quantitationName);
+					}
+					break;
 				case QuantRatioResultTitles.EXPECTED_CONCENTRATION:
 					double expectedConcentration = parseDouble((String)value);
 					if(expectedConcentration > 0) {

@@ -60,15 +60,18 @@ public class QuantRatioTableComparator extends AbstractRecordTableComparator imp
 					sortOrder = ratio2.getName().compareTo(ratio1.getName());
 					break;
 				case 1:
-					sortOrder = Double.compare(ratio2.getExpectedConcentration(), ratio1.getExpectedConcentration());
+					sortOrder = ratio2.getQuantitationName().compareTo(ratio1.getQuantitationName());
 					break;
 				case 2:
-					sortOrder = ratio2.getConcentrationUnit().compareTo(ratio1.getConcentrationUnit());
+					sortOrder = Double.compare(ratio2.getExpectedConcentration(), ratio1.getExpectedConcentration());
 					break;
 				case 3:
-					sortOrder = Double.compare(ratio2.getDeviationWarn(), ratio1.getDeviationWarn());
+					sortOrder = ratio2.getConcentrationUnit().compareTo(ratio1.getConcentrationUnit());
 					break;
 				case 4:
+					sortOrder = Double.compare(ratio2.getDeviationWarn(), ratio1.getDeviationWarn());
+					break;
+				case 5:
 					sortOrder = Double.compare(ratio2.getDeviationError(), ratio1.getDeviationError());
 					break;
 			}
@@ -96,7 +99,7 @@ public class QuantRatioTableComparator extends AbstractRecordTableComparator imp
 					}
 					break;
 				case 1:
-					sortOrder = ratio2.getName().compareTo(ratio1.getName());
+					sortOrder = ratio2.getQuantitationName().compareTo(ratio1.getQuantitationName());
 					break;
 				case 2:
 					sortOrder = Double.compare(ratio2.getExpectedConcentration(), ratio1.getExpectedConcentration());

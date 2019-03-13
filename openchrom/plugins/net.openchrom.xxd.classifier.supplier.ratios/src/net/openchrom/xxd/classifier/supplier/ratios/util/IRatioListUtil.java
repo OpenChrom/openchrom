@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.core.databinding.validation.IValidator;
 
-public interface ITraceListUtil<T extends IValidator> {
+public interface IRatioListUtil<T extends IValidator> {
 
 	T getValidator();
 

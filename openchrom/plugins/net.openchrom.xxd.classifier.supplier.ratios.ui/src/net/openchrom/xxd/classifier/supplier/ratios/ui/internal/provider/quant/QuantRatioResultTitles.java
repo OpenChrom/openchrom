@@ -15,16 +15,18 @@ import javax.naming.directory.InvalidAttributesException;
 
 import org.eclipse.chemclipse.ux.extension.ui.support.IMeasurementResultTitles;
 
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractRatioTitles;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractPeakRatioTitles;
 
-public class QuantRatioResultTitles extends AbstractRatioTitles implements IMeasurementResultTitles {
+public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements IMeasurementResultTitles {
 
+	public static final String QUANTITATION_NAME = "Quantitation Name";
 	public static final String CONCENTRATION = "Concentration";
 	public static final String CONCENTRATION_UNIT = "ConcentrationUnit";
 	public static final String EXPECTED_CONCENTRATION = "Expected Concentration";
 	//
 	public static final String[] TITLES_SETTINGS = { //
 			NAME, //
+			QUANTITATION_NAME, //
 			EXPECTED_CONCENTRATION, //
 			CONCENTRATION_UNIT, //
 			DEVIATION_WARN, //
@@ -32,6 +34,7 @@ public class QuantRatioResultTitles extends AbstractRatioTitles implements IMeas
 	};
 	//
 	public static final int[] BOUNDS_SETTINGS = { //
+			150, //
 			150, //
 			80, //
 			120, //
@@ -41,7 +44,7 @@ public class QuantRatioResultTitles extends AbstractRatioTitles implements IMeas
 	//
 	public static final String[] TITLES_RESULTS = { //
 			RETENTION_TIME, //
-			NAME, //
+			QUANTITATION_NAME, //
 			EXPECTED_CONCENTRATION, //
 			CONCENTRATION, //
 			CONCENTRATION_UNIT, //

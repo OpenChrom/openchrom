@@ -19,12 +19,12 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractRatioTitles;
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.RatioFilter;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractPeakRatioTitles;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRatioFilter;
 
 public abstract class AbstractRatioListUI extends ExtendedTableViewer {
 
-	protected RatioFilter listFilter = new RatioFilter();
+	protected PeakRatioFilter listFilter = new PeakRatioFilter();
 
 	public AbstractRatioListUI(Composite parent, int style) {
 		super(parent, style);
@@ -47,7 +47,7 @@ public abstract class AbstractRatioListUI extends ExtendedTableViewer {
 		/*
 		 * Warn
 		 */
-		tableViewerColumn = getTableViewerColumn(AbstractRatioTitles.DEVIATION_WARN);
+		tableViewerColumn = getTableViewerColumn(AbstractPeakRatioTitles.DEVIATION_WARN);
 		if(tableViewerColumn != null) {
 			tableViewerColumn.setLabelProvider(new StyledCellLabelProvider() {
 
@@ -67,7 +67,7 @@ public abstract class AbstractRatioListUI extends ExtendedTableViewer {
 		/*
 		 * Error
 		 */
-		tableViewerColumn = getTableViewerColumn(AbstractRatioTitles.DEVIATION_ERROR);
+		tableViewerColumn = getTableViewerColumn(AbstractPeakRatioTitles.DEVIATION_ERROR);
 		if(tableViewerColumn != null) {
 			tableViewerColumn.setLabelProvider(new StyledCellLabelProvider() {
 

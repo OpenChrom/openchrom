@@ -25,8 +25,8 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.xxd.classifier.supplier.ratios.model.PeakRatioResult;
 import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatioResult;
 import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceSupplier;
 import net.openchrom.xxd.classifier.supplier.ratios.settings.QuantRatioSettings;
@@ -45,7 +45,7 @@ public class QuantRatioClassifier extends AbstractRatioClassifier {
 				 * Calculate the result.
 				 */
 				QuantRatios traceRatios = calculateRatios(chromatogramSelection, (QuantRatioSettings)chromatogramClassifierSettings);
-				QuantRatioResult classifierResult = new QuantRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", traceRatios);
+				PeakRatioResult classifierResult = new PeakRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", traceRatios);
 				IMeasurementResult measurementResult = new MeasurementResult("Quant Ratio Classifier", CLASSIFIER_ID, "Quant Ratios", traceRatios);
 				chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
 				processingInfo.setProcessingResult(classifierResult);
@@ -68,15 +68,17 @@ public class QuantRatioClassifier extends AbstractRatioClassifier {
 		List<IChromatogramPeakMSD> peaks = chromatogramSelection.getChromatogram().getPeaks();
 		for(QuantRatio ratio : ratios) {
 			for(IChromatogramPeakMSD peak : peaks) {
-				IQuantitationEntry quantitationEntry = isQuantMatch(peak, ratio);
-				if(quantitationEntry != null) {
-					double concentration = quantitationEntry.getConcentration();
-					double expectedConcentration = ratio.getExpectedConcentration();
-					if(concentration != 0) {
-						ratio.setPeak(peak);
-						ratio.setConcentration(concentration);
-						double deviation = (Math.abs(expectedConcentration - concentration) / concentration) * 100.0d;
-						ratio.setDeviation(deviation);
+				if(isPeakMatch(peak, ratio)) {
+					IQuantitationEntry quantitationEntry = getQuantitationEntry(peak, ratio);
+					if(quantitationEntry != null) {
+						double concentration = quantitationEntry.getConcentration();
+						double expectedConcentration = ratio.getExpectedConcentration();
+						if(concentration != 0) {
+							ratio.setPeak(peak);
+							ratio.setConcentration(concentration);
+							double deviation = (Math.abs(expectedConcentration - concentration) / concentration) * 100.0d;
+							ratio.setDeviation(deviation);
+						}
 					}
 				}
 			}
@@ -85,11 +87,11 @@ public class QuantRatioClassifier extends AbstractRatioClassifier {
 		return ratios;
 	}
 
-	private IQuantitationEntry isQuantMatch(IPeak peak, QuantRatio quantRatio) {
+	private IQuantitationEntry getQuantitationEntry(IPeak peak, QuantRatio quantRatio) {
 
 		if(peak != null) {
 			for(IQuantitationEntry quantitationEntry : peak.getQuantitationEntries()) {
-				if(quantitationEntry.getName().equals(quantRatio.getName()) && quantitationEntry.getConcentrationUnit().equals(quantRatio.getConcentrationUnit())) {
+				if(quantitationEntry.getName().equals(quantRatio.getQuantitationName()) && quantitationEntry.getConcentrationUnit().equals(quantRatio.getConcentrationUnit())) {
 					return quantitationEntry;
 				}
 			}

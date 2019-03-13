@@ -15,6 +15,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.model.AbstractPeakRatio;
 
 public class QuantRatio extends AbstractPeakRatio {
 
+	private String quantitationName = "";
 	private double expectedConcentration = 0.0d;
 	private double concentration = 0.0d; // Extracted (transient)
 	private String concentrationUnit = "";
@@ -23,11 +24,22 @@ public class QuantRatio extends AbstractPeakRatio {
 
 		if(setting != null) {
 			setName(setting.getName());
+			setQuantitationName(setting.getQuantitationName());
 			setExpectedConcentration(setting.getExpectedConcentration());
 			setConcentrationUnit(setting.getConcentrationUnit());
 			setDeviationWarn(setting.getDeviationWarn());
 			setDeviationError(setting.getDeviationError());
 		}
+	}
+
+	public String getQuantitationName() {
+
+		return quantitationName;
+	}
+
+	public void setQuantitationName(String quantitationName) {
+
+		this.quantitationName = quantitationName;
 	}
 
 	public double getExpectedConcentration() {
@@ -95,6 +107,6 @@ public class QuantRatio extends AbstractPeakRatio {
 	@Override
 	public String toString() {
 
-		return "QuantitationRatio [expectedConcentration=" + expectedConcentration + ", concentrationUnit=" + concentrationUnit + ", AbstractRatio=" + super.toString() + "]";
+		return "QuantitationRatio [quantitationName=" + quantitationName + ", expectedConcentration=" + expectedConcentration + ", concentrationUnit=" + concentrationUnit + ", AbstractRatio=" + super.toString() + "]";
 	}
 }

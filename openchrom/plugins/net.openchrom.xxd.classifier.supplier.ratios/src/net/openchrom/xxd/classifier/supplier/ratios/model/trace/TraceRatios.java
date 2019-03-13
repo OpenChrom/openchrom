@@ -23,10 +23,11 @@ import java.util.Iterator;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
+import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.util.trace.TraceRatioListUtil;
 import net.openchrom.xxd.classifier.supplier.ratios.util.trace.TraceRatioValidator;
 
-public class TraceRatios extends ArrayList<TraceRatio> {
+public class TraceRatios extends ArrayList<TraceRatio> implements IPeakRatios<TraceRatio> {
 
 	private static final Logger logger = Logger.getLogger(TraceRatios.class);
 	//

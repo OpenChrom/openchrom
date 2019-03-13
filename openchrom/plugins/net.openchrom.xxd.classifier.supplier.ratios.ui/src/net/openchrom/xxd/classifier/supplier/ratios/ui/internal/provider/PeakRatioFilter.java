@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatio;
 
-public class RatioFilter extends ViewerFilter {
+public class PeakRatioFilter extends ViewerFilter {
 
 	private String searchText;
 	private boolean caseSensitive;

@@ -24,14 +24,14 @@ import org.eclipse.swt.graphics.Color;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatio;
 
-public class RatioColorProvider implements ICellColorProvider {
+public class PeakRatioColorProvider implements ICellColorProvider {
 
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
 
 	@Override
 	public void setCellColor(ExtendedTableViewer tableViewer) {
 
-		TableViewerColumn tableViewerColumn = tableViewer.getTableViewerColumn(AbstractRatioTitles.DEVIATION);
+		TableViewerColumn tableViewerColumn = tableViewer.getTableViewerColumn(AbstractPeakRatioTitles.DEVIATION);
 		if(tableViewerColumn != null) {
 			tableViewerColumn.setLabelProvider(new StyledCellLabelProvider() {
 

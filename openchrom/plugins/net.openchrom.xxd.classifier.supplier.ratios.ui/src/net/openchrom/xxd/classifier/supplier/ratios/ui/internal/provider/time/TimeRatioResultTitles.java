@@ -15,9 +15,9 @@ import javax.naming.directory.InvalidAttributesException;
 
 import org.eclipse.chemclipse.ux.extension.ui.support.IMeasurementResultTitles;
 
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractRatioTitles;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractPeakRatioTitles;
 
-public class TimeRatioResultTitles extends AbstractRatioTitles implements IMeasurementResultTitles {
+public class TimeRatioResultTitles extends AbstractPeakRatioTitles implements IMeasurementResultTitles {
 
 	public static final String EXPECTED_RETENTION_TIME = "Expected RT (Minutes)";
 	//

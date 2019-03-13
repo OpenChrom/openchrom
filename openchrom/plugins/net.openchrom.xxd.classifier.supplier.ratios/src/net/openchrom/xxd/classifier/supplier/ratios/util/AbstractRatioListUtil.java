@@ -25,9 +25,9 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
-public abstract class AbstractTraceListUtil<T extends IValidator> implements ITraceListUtil<T> {
+public abstract class AbstractRatioListUtil<T extends IValidator> implements IRatioListUtil<T> {
 
-	private static final Logger logger = Logger.getLogger(AbstractTraceListUtil.class);
+	private static final Logger logger = Logger.getLogger(AbstractRatioListUtil.class);
 	//
 	public static final String SEPARATOR_TOKEN = ";";
 	public static final String SEPARATOR_ENTRY = "|";
@@ -38,7 +38,7 @@ public abstract class AbstractTraceListUtil<T extends IValidator> implements ITr
 	//
 	private T validator;
 
-	public AbstractTraceListUtil(T validator) {
+	public AbstractRatioListUtil(T validator) {
 		this.validator = validator;
 	}
 

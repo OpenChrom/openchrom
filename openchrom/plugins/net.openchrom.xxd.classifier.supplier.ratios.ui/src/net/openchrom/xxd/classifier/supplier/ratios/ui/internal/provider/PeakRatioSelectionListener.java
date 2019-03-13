@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.TableItem;
 import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.Activator;
 
-public class RatioSelectionListener extends SelectionAdapter implements SelectionListener {
+public class PeakRatioSelectionListener extends SelectionAdapter implements SelectionListener {
 
 	@Override
 	public void widgetSelected(SelectionEvent e) {

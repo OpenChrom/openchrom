@@ -11,12 +11,12 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.util.quant;
 
-import net.openchrom.xxd.classifier.supplier.ratios.util.AbstractTraceListUtil;
+import net.openchrom.xxd.classifier.supplier.ratios.util.AbstractRatioListUtil;
 
-public class QuantRatioListUtil extends AbstractTraceListUtil<QuantRatioValidator> {
+public class QuantRatioListUtil extends AbstractRatioListUtil<QuantRatioValidator> {
 
-	public static final String EXAMPLE_SINGLE = "Naphthalin | 1.0 | mg/L | 5.0 | 15.0";
-	public static final String EXAMPLE_MULTIPLE = "Naphthalin | 1.0 | mg/L | 5.0 | 15.0; Styrene | 12.0 | g/L | 5.0 | 15.0";
+	public static final String EXAMPLE_SINGLE = "Naphthalin | Naphthalin-D8 | 1.0 | mg/L | 5.0 | 15.0";
+	public static final String EXAMPLE_MULTIPLE = "Naphthalin | Naphthalin-D8 | 1.0 | mg/L | 5.0 | 15.0; Styrene | Toluene | 12.0 | g/L | 5.0 | 15.0";
 
 	public QuantRatioListUtil() {
 		super(new QuantRatioValidator());

@@ -11,28 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model;
 
-import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
+import java.util.List;
 
-public interface IPeakRatio {
-
-	IPeak getPeak();
-
-	void setPeak(IPeakMSD peak);
-
-	String getName();
-
-	void setName(String name);
-
-	double getDeviation();
-
-	void setDeviation(double deviation);
-
-	double getDeviationWarn();
-
-	void setDeviationWarn(double deviationWarn);
-
-	double getDeviationError();
-
-	void setDeviationError(double deviationError);
+public interface IPeakRatios<T extends IPeakRatio> extends List<T> {
 }

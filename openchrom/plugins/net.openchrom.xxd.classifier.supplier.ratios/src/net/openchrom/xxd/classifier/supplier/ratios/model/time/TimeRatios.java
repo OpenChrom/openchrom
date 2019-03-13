@@ -23,10 +23,11 @@ import java.util.Iterator;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
+import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.util.time.TimeRatioListUtil;
 import net.openchrom.xxd.classifier.supplier.ratios.util.time.TimeRatioValidator;
 
-public class TimeRatios extends ArrayList<TimeRatio> {
+public class TimeRatios extends ArrayList<TimeRatio> implements IPeakRatios<TimeRatio> {
 
 	private static final Logger logger = Logger.getLogger(TimeRatios.class);
 	//

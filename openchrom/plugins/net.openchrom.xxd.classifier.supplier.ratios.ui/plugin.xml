@@ -38,36 +38,36 @@
    <extension
          point="org.eclipse.chemclipse.ux.extension.ui.measurementResultVisualization">
       <MeasurementResultVisualization
-            CellColorProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.RatioColorProvider"
+            CellColorProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRatioColorProvider"
             Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioTableComparator"
-            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioContentProvider"
+            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRatioContentProvider"
             Identifier="net.openchrom.xxd.classifier.supplier.ratios.trace"
             LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioLabelProvider"
-            SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.RatioSelectionListener"
+            SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRatioSelectionListener"
             Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioResultTitles">
       </MeasurementResultVisualization>
    </extension>
    <extension
          point="org.eclipse.chemclipse.ux.extension.ui.measurementResultVisualization">
       <MeasurementResultVisualization
-            CellColorProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.RatioColorProvider"
+            CellColorProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRatioColorProvider"
             Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioTableComparator"
-            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioContentProvider"
+            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRatioContentProvider"
             Identifier="net.openchrom.xxd.classifier.supplier.ratios.time"
             LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioLabelProvider"
-            SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.RatioSelectionListener"
+            SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRatioSelectionListener"
             Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioResultTitles">
       </MeasurementResultVisualization>
    </extension>
    <extension
          point="org.eclipse.chemclipse.ux.extension.ui.measurementResultVisualization">
       <MeasurementResultVisualization
-            CellColorProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.RatioColorProvider"
+            CellColorProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRatioColorProvider"
             Comparator="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioTableComparator"
-            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioContentProvider"
+            ContentProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRatioContentProvider"
             Identifier="net.openchrom.xxd.classifier.supplier.ratios.quant"
             LabelProvider="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioLabelProvider"
-            SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.RatioSelectionListener"
+            SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRatioSelectionListener"
             Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioResultTitles">
       </MeasurementResultVisualization>
    </extension>         

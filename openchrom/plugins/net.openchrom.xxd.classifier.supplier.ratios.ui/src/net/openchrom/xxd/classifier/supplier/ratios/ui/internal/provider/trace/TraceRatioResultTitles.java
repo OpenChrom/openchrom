@@ -15,9 +15,9 @@ import javax.naming.directory.InvalidAttributesException;
 
 import org.eclipse.chemclipse.ux.extension.ui.support.IMeasurementResultTitles;
 
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractRatioTitles;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractPeakRatioTitles;
 
-public class TraceRatioResultTitles extends AbstractRatioTitles implements IMeasurementResultTitles {
+public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements IMeasurementResultTitles {
 
 	public static final String TEST_CASE = "Test Case";
 	public static final String EXPECTED_RATIO = "Expected Ratio [%]";

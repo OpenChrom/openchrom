@@ -26,6 +26,7 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
 	private String name = "";
+	private String quantitationName = "";
 	private double expectedConcentration = 0.0d;
 	private String concentrationUnit = "";
 	private double deviationWarn = 0.0d;
@@ -49,7 +50,7 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 					 * Extract the name
 					 */
 					String[] values = text.trim().split("\\" + SEPARATOR_ENTRY); // The pipe needs to be escaped.
-					if(values.length >= 5) {
+					if(values.length >= 6) {
 						/*
 						 * Evaluation
 						 */
@@ -58,18 +59,23 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 							message = "A substance name needs to be set.";
 						}
 						//
-						expectedConcentration = parseDouble(values, 1);
+						quantitationName = parseString(values, 1);
+						if("".equals(quantitationName)) {
+							message = "A quantitation name needs to be set.";
+						}
+						//
+						expectedConcentration = parseDouble(values, 2);
 						if(expectedConcentration <= 0) {
 							message = "The expected concentration must be > 0.";
 						}
 						//
-						concentrationUnit = parseString(values, 2);
+						concentrationUnit = parseString(values, 3);
 						if("".equals(concentrationUnit)) {
 							message = "A concentration unit needs to be set.";
 						}
 						//
-						deviationWarn = parseDouble(values, 3);
-						deviationError = parseDouble(values, 4);
+						deviationWarn = parseDouble(values, 4);
+						deviationError = parseDouble(values, 5);
 						//
 						if(deviationWarn <= 0) {
 							message = "The deviation warn must be >= 0.";
@@ -102,6 +108,7 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 
 		QuantRatio setting = new QuantRatio();
 		setting.setName(name);
+		setting.setQuantitationName(quantitationName);
 		setting.setExpectedConcentration(expectedConcentration);
 		setting.setConcentrationUnit(concentrationUnit);
 		setting.setDeviationWarn(deviationWarn);

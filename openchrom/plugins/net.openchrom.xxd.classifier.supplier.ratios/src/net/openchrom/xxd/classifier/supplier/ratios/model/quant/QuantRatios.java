@@ -23,10 +23,11 @@ import java.util.Iterator;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
+import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.util.quant.QuantRatioListUtil;
 import net.openchrom.xxd.classifier.supplier.ratios.util.quant.QuantRatioValidator;
 
-public class QuantRatios extends ArrayList<QuantRatio> {
+public class QuantRatios extends ArrayList<QuantRatio> implements IPeakRatios<QuantRatio> {
 
 	private static final Logger logger = Logger.getLogger(QuantRatios.class);
 	//
@@ -143,6 +144,10 @@ public class QuantRatios extends ArrayList<QuantRatio> {
 	private void extractSetting(QuantRatio setting, StringBuilder builder) {
 
 		builder.append(setting.getName());
+		builder.append(" ");
+		builder.append(SEPARATOR_ENTRY);
+		builder.append(" ");
+		builder.append(setting.getQuantitationName());
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");

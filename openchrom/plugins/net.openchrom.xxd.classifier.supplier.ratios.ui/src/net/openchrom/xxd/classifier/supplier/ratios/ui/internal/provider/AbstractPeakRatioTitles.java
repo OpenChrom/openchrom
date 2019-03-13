@@ -15,7 +15,7 @@ import javax.naming.directory.InvalidAttributesException;
 
 import org.eclipse.chemclipse.ux.extension.ui.support.AbstractMeasurementResultTitles;
 
-public abstract class AbstractRatioTitles extends AbstractMeasurementResultTitles {
+public abstract class AbstractPeakRatioTitles extends AbstractMeasurementResultTitles {
 
 	public static final String RETENTION_TIME = "RT (Minutes)";
 	public static final String NAME = "Name";
@@ -24,7 +24,7 @@ public abstract class AbstractRatioTitles extends AbstractMeasurementResultTitle
 	public static final String DEVIATION_WARN = "Deviation Warn [%]";
 	public static final String DEVIATION_ERROR = "Deviation Error [%]";
 
-	public AbstractRatioTitles(String[] titles, int[] bounds) throws InvalidAttributesException {
+	public AbstractPeakRatioTitles(String[] titles, int[] bounds) throws InvalidAttributesException {
 		super(titles, bounds);
 	}
 }

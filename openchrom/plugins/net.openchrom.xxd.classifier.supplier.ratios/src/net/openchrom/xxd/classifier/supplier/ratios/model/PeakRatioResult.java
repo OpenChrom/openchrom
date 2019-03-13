@@ -9,23 +9,23 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.classifier.supplier.ratios.model.quant;
+package net.openchrom.xxd.classifier.supplier.ratios.model;
 
 import org.eclipse.chemclipse.chromatogram.msd.classifier.result.AbstractChromatogramClassifierResult;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.result.IChromatogramClassifierResult;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.result.ResultStatus;
 
-public class QuantRatioResult extends AbstractChromatogramClassifierResult implements IChromatogramClassifierResult {
+public class PeakRatioResult extends AbstractChromatogramClassifierResult implements IChromatogramClassifierResult {
 
-	private QuantRatios ratios;
+	private IPeakRatios<? extends IPeakRatio> peakRatios;
 
-	public QuantRatioResult(ResultStatus resultStatus, String description, QuantRatios ratios) {
+	public PeakRatioResult(ResultStatus resultStatus, String description, IPeakRatios<? extends IPeakRatio> peakRatios) {
 		super(resultStatus, description);
-		this.ratios = ratios;
+		this.peakRatios = peakRatios;
 	}
 
-	public QuantRatios getRatios() {
+	public IPeakRatios<? extends IPeakRatio> getPeakRatios() {
 
-		return ratios;
+		return peakRatios;
 	}
 }

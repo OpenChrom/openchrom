@@ -11,9 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.util.time;
 
-import net.openchrom.xxd.classifier.supplier.ratios.util.AbstractTraceListUtil;
+import net.openchrom.xxd.classifier.supplier.ratios.util.AbstractRatioListUtil;
 
-public class TimeRatioListUtil extends AbstractTraceListUtil<TimeRatioValidator> {
+public class TimeRatioListUtil extends AbstractRatioListUtil<TimeRatioValidator> {
 
 	public static final String EXAMPLE_SINGLE = "Naphthalin | 3.45 | 5.0 | 15.0";
 	public static final String EXAMPLE_MULTIPLE = "Naphthalin | 3.45 | 5.0 | 15.0; Styrene | 4.05 | 5.0 | 15.0";

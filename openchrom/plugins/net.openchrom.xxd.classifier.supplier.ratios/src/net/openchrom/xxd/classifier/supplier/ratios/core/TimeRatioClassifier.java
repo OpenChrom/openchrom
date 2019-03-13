@@ -24,8 +24,8 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.xxd.classifier.supplier.ratios.model.PeakRatioResult;
 import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatioResult;
 import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceSupplier;
 import net.openchrom.xxd.classifier.supplier.ratios.settings.TimeRatioSettings;
@@ -44,7 +44,7 @@ public class TimeRatioClassifier extends AbstractRatioClassifier {
 				 * Calculate the result.
 				 */
 				TimeRatios timeRatios = calculateRatios(chromatogramSelection, (TimeRatioSettings)chromatogramClassifierSettings);
-				TimeRatioResult classifierResult = new TimeRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", timeRatios);
+				PeakRatioResult classifierResult = new PeakRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", timeRatios);
 				IMeasurementResult measurementResult = new MeasurementResult("Time Ratio Classifier", CLASSIFIER_ID, "Time Ratios", timeRatios);
 				chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
 				processingInfo.setProcessingResult(classifierResult);

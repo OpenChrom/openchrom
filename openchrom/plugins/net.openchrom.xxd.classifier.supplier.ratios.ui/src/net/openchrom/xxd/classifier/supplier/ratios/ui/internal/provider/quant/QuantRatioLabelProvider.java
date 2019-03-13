@@ -75,15 +75,18 @@ public class QuantRatioLabelProvider extends AbstractChemClipseLabelProvider {
 					text = ratio.getName();
 					break;
 				case 1:
-					text = decimalFormat.format(ratio.getExpectedConcentration());
+					text = ratio.getQuantitationName();
 					break;
 				case 2:
-					text = ratio.getConcentrationUnit();
+					text = decimalFormat.format(ratio.getExpectedConcentration());
 					break;
 				case 3:
-					text = decimalFormat.format(ratio.getDeviationWarn());
+					text = ratio.getConcentrationUnit();
 					break;
 				case 4:
+					text = decimalFormat.format(ratio.getDeviationWarn());
+					break;
+				case 5:
 					text = decimalFormat.format(ratio.getDeviationError());
 					break;
 			}
@@ -106,7 +109,7 @@ public class QuantRatioLabelProvider extends AbstractChemClipseLabelProvider {
 					}
 					break;
 				case 1:
-					text = ratio.getName();
+					text = ratio.getQuantitationName();
 					break;
 				case 2:
 					text = decimalFormat.format(ratio.getExpectedConcentration());
