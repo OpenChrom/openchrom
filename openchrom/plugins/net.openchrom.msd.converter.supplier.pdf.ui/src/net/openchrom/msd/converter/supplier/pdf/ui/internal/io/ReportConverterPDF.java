@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.quantitation.IQuantitationEntry;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.pdfbox.extensions.core.PDTable;
 import org.eclipse.chemclipse.pdfbox.extensions.core.PageUtil;
@@ -45,6 +47,7 @@ import org.eclipse.chemclipse.pdfbox.extensions.settings.PageBase;
 import org.eclipse.chemclipse.pdfbox.extensions.settings.PageSettings;
 import org.eclipse.chemclipse.pdfbox.extensions.settings.ReferenceX;
 import org.eclipse.chemclipse.pdfbox.extensions.settings.ReferenceY;
+import org.eclipse.chemclipse.pdfbox.extensions.settings.TextOption;
 import org.eclipse.chemclipse.pdfbox.extensions.settings.Unit;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.support.text.ValueFormat;
@@ -60,12 +63,14 @@ public class ReportConverterPDF {
 	//
 	private static final float LEFT_BORDER = 10.0f;
 	private static final float TOP_BORDER = 10.0f;
-	private static final float MAX_WIDTH = 190.0f;
+	private static final float MAX_WIDTH_PORTRAIT = 190.0f;
+	private static final float MAX_WIDTH_LANDSCAPE = 277.0f;
 	private static final float LINE_HEIGHT = 5.5f;
 	private static final float LINE_WIDTH = 0.2f;
 	private static final float TEXT_OFFSET_X = 1.0f;
 	private static final float TEXT_OFFSET_Y = 1.0f;
-	private static final int MAX_ROWS = 36;
+	private static final int MAX_ROWS_PORTRAIT = 36;
+	private static final int MAX_ROWS_LANDSCAPE = 20;
 	//
 	private static final float IMAGE_WIDTH = 270.0f;
 	private static final float IMAGE_HEIGHT = 190.0f;
@@ -74,8 +79,11 @@ public class ReportConverterPDF {
 	private String slogan = null;
 	//
 	private TargetExtendedComparator targetComparator = new TargetExtendedComparator(SortOrder.DESC);
-	private DecimalFormat decimalFormatRT = ValueFormat.getDecimalFormatEnglish("0.00");
-	private DecimalFormat decimalFormatArea = ValueFormat.getDecimalFormatEnglish("0.000");
+	//
+	private DecimalFormat dfRetentionTime = ValueFormat.getDecimalFormatEnglish("0.00");
+	private DecimalFormat dfAreaPercent = ValueFormat.getDecimalFormatEnglish("0.000");
+	private DecimalFormat dfAreaNormal = ValueFormat.getDecimalFormatEnglish("0.0#E0");
+	private DecimalFormat dfConcentration = ValueFormat.getDecimalFormatEnglish("0.000");
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public void createPDF(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) throws IOException {
@@ -103,18 +111,21 @@ public class ReportConverterPDF {
 			List<PDImageXObject> chromatogramImages = imageRunnable.getChromatogramImages();
 			PDTable peakDataTable = getPeakDataTable(imageRunnable.getPeaks());
 			PDTable scanDataTable = getScanDataTable(imageRunnable.getScans());
+			PDTable quantitationDataTable = getQuantitationDataTable(imageRunnable.getPeaks());
 			/*
 			 * Calculate the number of pages.
 			 */
-			int pages = headerDataTable.getNumberDataRows() / MAX_ROWS + 1;
+			int pages = headerDataTable.getNumberDataRows() / MAX_ROWS_PORTRAIT + 1;
 			pages += chromatogramImages.size();
-			pages += peakDataTable.getNumberDataRows() / MAX_ROWS + 1;
-			pages += scanDataTable.getNumberDataRows() / MAX_ROWS + 1;
+			pages += peakDataTable.getNumberDataRows() / MAX_ROWS_PORTRAIT + 1;
+			pages += scanDataTable.getNumberDataRows() / MAX_ROWS_PORTRAIT + 1;
+			pages += quantitationDataTable.getNumberDataRows() / MAX_ROWS_LANDSCAPE + 1;
 			//
-			int page = printTablePages(document, headerDataTable, "Header Table:", chromatogramName, 1, pages, monitor);
+			int page = printTablePages(document, headerDataTable, "Header Table:", chromatogramName, 1, pages, false, monitor);
 			page = printImagePages(document, chromatogramImages, page, pages, monitor);
-			page = printTablePages(document, peakDataTable, "Peak Table:", chromatogramName, page, pages, monitor);
-			page = printTablePages(document, scanDataTable, "Scan Table:", chromatogramName, page, pages, monitor);
+			page = printTablePages(document, peakDataTable, "Peak Table:", chromatogramName, page, pages, false, monitor);
+			page = printTablePages(document, scanDataTable, "Scan Table:", chromatogramName, page, pages, false, monitor);
+			page = printTablePages(document, quantitationDataTable, "Quantitation Table:", chromatogramName, page, pages, true, monitor);
 		}
 	}
 
@@ -136,33 +147,35 @@ public class ReportConverterPDF {
 			pageUtil.printImage(imageElement);
 		}
 		//
-		pageUtil.printText(new TextElement(LEFT_BORDER, 200.0f, 287.0f).setReferenceX(ReferenceX.RIGHT).setText("Page " + page + "/" + pages));
+		printPageFooter(pageUtil, page, pages, true);
 		pageUtil.close();
 		return ++page;
 	}
 
-	private int printTablePages(PDDocument document, PDTable pdTable, String title, String chromatogramName, int page, int pages, IProgressMonitor monitor) throws IOException {
+	private int printTablePages(PDDocument document, PDTable pdTable, String title, String chromatogramName, int page, int pages, boolean landscape, IProgressMonitor monitor) throws IOException {
 
-		int parts = pdTable.getNumberDataRows() / MAX_ROWS + 1;
+		int maxRows = (landscape) ? MAX_ROWS_LANDSCAPE : MAX_ROWS_PORTRAIT;
+		//
+		int parts = pdTable.getNumberDataRows() / maxRows + 1;
 		for(int part = 0; part < parts; part++) {
-			int range = part * MAX_ROWS;
+			int range = part * maxRows;
 			int startIndex = range;
-			int stopIndex = range + MAX_ROWS;
+			int stopIndex = range + maxRows;
 			stopIndex = (stopIndex > pdTable.getNumberDataRows()) ? pdTable.getNumberDataRows() : stopIndex;
 			pdTable.setStartIndex(startIndex);
 			pdTable.setStopIndex(stopIndex);
-			page = printTablePage(document, pdTable, title, chromatogramName, page, pages, monitor);
+			page = printTablePage(document, pdTable, title, chromatogramName, page, pages, landscape, monitor);
 		}
 		return page;
 	}
 
-	private int printTablePage(PDDocument document, PDTable pdTable, String title, String chromatogramName, int page, int pages, IProgressMonitor monitor) throws IOException {
+	private int printTablePage(PDDocument document, PDTable pdTable, String title, String chromatogramName, int page, int pages, boolean landscape, IProgressMonitor monitor) throws IOException {
 
-		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, PageBase.TOP_LEFT, Unit.MM, false));
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, PageBase.TOP_LEFT, Unit.MM, landscape));
 		printPageHeader(pageUtil);
 		//
-		pageUtil.printText(new TextElement(LEFT_BORDER, 45.0f, MAX_WIDTH).setText("Chromatogram: " + chromatogramName));
-		pageUtil.printText(new TextElement(LEFT_BORDER, 50.0f, MAX_WIDTH).setText(getTableHeaderText(pdTable, title)));
+		pageUtil.printText(new TextElement(LEFT_BORDER, 45.0f, MAX_WIDTH_PORTRAIT).setText("Chromatogram: " + chromatogramName));
+		pageUtil.printText(new TextElement(LEFT_BORDER, 50.0f, MAX_WIDTH_PORTRAIT).setText(getTableHeaderText(pdTable, title)));
 		//
 		TableElement tableElement = new TableElement(LEFT_BORDER, 60.0f, LINE_HEIGHT);
 		tableElement.setTextOffsetX(TEXT_OFFSET_X);
@@ -171,7 +184,7 @@ public class ReportConverterPDF {
 		tableElement.setPDTable(pdTable);
 		pageUtil.printTable(tableElement);
 		//
-		printPageFooter(pageUtil, page, pages);
+		printPageFooter(pageUtil, page, pages, landscape);
 		pageUtil.close();
 		//
 		return ++page;
@@ -196,12 +209,23 @@ public class ReportConverterPDF {
 		banner = (banner == null) ? getBanner(pageUtil) : banner;
 		slogan = (slogan == null) ? PreferenceSupplier.getReportSlogan() : slogan;
 		pageUtil.printImage(new ImageElement(LEFT_BORDER, TOP_BORDER).setWidth(100.0f).setHeight(13.89f).setImage(banner));
-		pageUtil.printText(new TextElement(LEFT_BORDER, 28.0f, MAX_WIDTH).setText(slogan));
+		pageUtil.printText(new TextElement(LEFT_BORDER, 28.0f, MAX_WIDTH_PORTRAIT).setText(slogan));
 	}
 
-	private void printPageFooter(PageUtil pageUtil, int page, int pages) throws IOException {
+	private void printPageFooter(PageUtil pageUtil, int page, int pages, boolean landscape) throws IOException {
 
-		pageUtil.printText(new TextElement(LEFT_BORDER, 287.0f, MAX_WIDTH).setReferenceY(ReferenceY.BOTTOM).setText(" Page " + page + "/" + pages));
+		float y;
+		float maxWidth;
+		//
+		if(landscape) {
+			y = 200.0f;
+			maxWidth = MAX_WIDTH_LANDSCAPE;
+		} else {
+			y = 287.0f;
+			maxWidth = MAX_WIDTH_PORTRAIT;
+		}
+		//
+		pageUtil.printText(new TextElement(LEFT_BORDER, y, maxWidth).setReferenceX(ReferenceX.RIGHT).setReferenceY(ReferenceY.BOTTOM).setText("Page " + page + "/" + pages));
 	}
 
 	private PDImageXObject getBanner(PageUtil pageUtil) throws IOException {
@@ -241,13 +265,15 @@ public class ReportConverterPDF {
 	private PDTable getHeaderDataTable(Map<String, String> headerDataMap) {
 
 		PDTable pdTable = new PDTable();
+		pdTable.setTextOption(TextOption.SHORTEN);
+		//
 		pdTable.addColumn("Name", 95.0f);
 		pdTable.addColumn("Value", 95.0f);
 		//
 		for(Map.Entry<String, String> entry : headerDataMap.entrySet()) {
 			List<String> row = new ArrayList<>();
 			row.add(entry.getKey());
-			row.add(entry.getValue());
+			row.add(getNormalizedText(entry.getValue()));
 			pdTable.addDataRow(row);
 		}
 		//
@@ -257,6 +283,8 @@ public class ReportConverterPDF {
 	private PDTable getPeakDataTable(List<? extends IPeak> peaks) {
 
 		PDTable pdTable = new PDTable();
+		pdTable.setTextOption(TextOption.SHORTEN);
+		//
 		pdTable.addColumn("ID", 15.0f);
 		pdTable.addColumn("RT", 20.0f);
 		pdTable.addColumn("Area%", 20.0f);
@@ -269,8 +297,8 @@ public class ReportConverterPDF {
 			IPeakModel peakModel = peak.getPeakModel();
 			List<String> row = new ArrayList<>();
 			row.add("P" + i++);
-			row.add(decimalFormatRT.format(peakModel.getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
-			row.add(decimalFormatArea.format(getPercentagePeakArea(totalPeakArea, peak.getIntegratedArea())));
+			row.add(dfRetentionTime.format(peakModel.getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+			row.add(dfAreaPercent.format(getPercentagePeakArea(totalPeakArea, peak.getIntegratedArea())));
 			row.add(getBestIdentification(peak.getTargets()));
 			pdTable.addDataRow(row);
 		}
@@ -281,6 +309,8 @@ public class ReportConverterPDF {
 	private PDTable getScanDataTable(List<IScan> scans) {
 
 		PDTable pdTable = new PDTable();
+		pdTable.setTextOption(TextOption.SHORTEN);
+		//
 		pdTable.addColumn("ID", 15.0f);
 		pdTable.addColumn("RT", 20.0f);
 		pdTable.addColumn("Scan#", 20.0f);
@@ -290,10 +320,45 @@ public class ReportConverterPDF {
 		for(IScan scan : scans) {
 			List<String> row = new ArrayList<>();
 			row.add("S" + i++);
-			row.add(decimalFormatRT.format(scan.getRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+			row.add(dfRetentionTime.format(scan.getRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
 			row.add(Integer.toString(scan.getScanNumber()));
 			row.add(getBestIdentification(scan.getTargets()));
 			pdTable.addDataRow(row);
+		}
+		//
+		return pdTable;
+	}
+
+	private PDTable getQuantitationDataTable(List<? extends IPeak> peaks) {
+
+		PDTable pdTable = new PDTable();
+		pdTable.setTextOption(TextOption.SHORTEN);
+		//
+		pdTable.addColumn("#", 15.0f);
+		pdTable.addColumn("Identification", 91.0f);
+		pdTable.addColumn("Substance", 91.0f);
+		pdTable.addColumn("RT", 20.0f);
+		pdTable.addColumn("Area", 20.0f);
+		pdTable.addColumn("Conc.", 20.0f);
+		pdTable.addColumn("Unit", 20.0f);
+		//
+		int i = 1;
+		for(IPeak peak : peaks) {
+			IPeakModel peakModel = peak.getPeakModel();
+			String identification = getBestIdentification(peak.getTargets());
+			String retentionTime = dfRetentionTime.format(peakModel.getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+			for(IQuantitationEntry quantitationEntry : peak.getQuantitationEntries()) {
+				List<String> row = new ArrayList<>();
+				row.add("P" + i);
+				row.add(identification);
+				row.add(quantitationEntry.getName());
+				row.add(retentionTime);
+				row.add(dfAreaNormal.format(quantitationEntry.getArea()));
+				row.add(dfConcentration.format(quantitationEntry.getConcentration()));
+				row.add(quantitationEntry.getConcentrationUnit());
+				pdTable.addDataRow(row);
+			}
+			i++;
 		}
 		//
 		return pdTable;
@@ -339,5 +404,10 @@ public class ReportConverterPDF {
 		}
 		//
 		return name;
+	}
+
+	private String getNormalizedText(String text) {
+
+		return Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("\\P{InBasic_Latin}", "?");
 	}
 }
