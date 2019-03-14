@@ -24,6 +24,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int MIN_NUMBER_IMAGE_PAGES = 1;
 	public static final int MAX_NUMBER_IMAGE_PAGES = 30;
 	public static final int DEF_NUMBER_IMAGE_PAGES = 5;
+	public static final String P_REPORT_BANNER = "reportBanner";
+	public static final String DEF_REPORT_BANNER = ""; // default openchromlogo.jpg
+	public static final String P_REPORT_SLOGAN = "reportSlogan";
+	public static final String DEF_REPORT_SLOGAN = "OpenChrom - the open source alternative for chromatography/mass spectrometry";
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -52,6 +56,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		Map<String, String> defaultValues = new HashMap<String, String>();
 		defaultValues.put(P_NUMBER_IMAGE_PAGES, Integer.toString(DEF_NUMBER_IMAGE_PAGES));
+		defaultValues.put(P_REPORT_BANNER, DEF_REPORT_BANNER);
+		defaultValues.put(P_REPORT_SLOGAN, DEF_REPORT_SLOGAN);
 		return defaultValues;
 	}
 
@@ -65,5 +71,17 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_NUMBER_IMAGE_PAGES, DEF_NUMBER_IMAGE_PAGES);
+	}
+
+	public static String getReportBanner() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_REPORT_BANNER, DEF_REPORT_BANNER);
+	}
+
+	public static String getReportSlogan() {
+
+		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
+		return eclipsePreferences.get(P_REPORT_SLOGAN, DEF_REPORT_SLOGAN);
 	}
 }

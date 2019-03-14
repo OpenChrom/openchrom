@@ -1,0 +1,343 @@
+/*******************************************************************************
+ * Copyright (c) 2019 Lablicate GmbH.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Dr. Philip Wenig - initial API and implementation
+ *******************************************************************************/
+package net.openchrom.msd.converter.supplier.pdf.ui.internal.io;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
+import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
+import org.eclipse.chemclipse.model.core.AbstractChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.IPeakModel;
+import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.pdfbox.extensions.core.PDTable;
+import org.eclipse.chemclipse.pdfbox.extensions.core.PageUtil;
+import org.eclipse.chemclipse.pdfbox.extensions.elements.ImageElement;
+import org.eclipse.chemclipse.pdfbox.extensions.elements.TableElement;
+import org.eclipse.chemclipse.pdfbox.extensions.elements.TextElement;
+import org.eclipse.chemclipse.pdfbox.extensions.settings.PageBase;
+import org.eclipse.chemclipse.pdfbox.extensions.settings.PageSettings;
+import org.eclipse.chemclipse.pdfbox.extensions.settings.ReferenceX;
+import org.eclipse.chemclipse.pdfbox.extensions.settings.ReferenceY;
+import org.eclipse.chemclipse.pdfbox.extensions.settings.Unit;
+import org.eclipse.chemclipse.support.comparator.SortOrder;
+import org.eclipse.chemclipse.support.text.ValueFormat;
+import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
+import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
+import org.eclipse.core.runtime.IProgressMonitor;
+
+import net.openchrom.msd.converter.supplier.pdf.preferences.PreferenceSupplier;
+
+public class ReportConverterPDF {
+
+	private static final Logger logger = Logger.getLogger(ReportConverterPDF.class);
+	//
+	private static final float LEFT_BORDER = 10.0f;
+	private static final float TOP_BORDER = 10.0f;
+	private static final float MAX_WIDTH = 190.0f;
+	private static final float LINE_HEIGHT = 5.5f;
+	private static final float LINE_WIDTH = 0.2f;
+	private static final float TEXT_OFFSET_X = 1.0f;
+	private static final float TEXT_OFFSET_Y = 1.0f;
+	private static final int MAX_ROWS = 36;
+	//
+	private static final float IMAGE_WIDTH = 270.0f;
+	private static final float IMAGE_HEIGHT = 190.0f;
+	//
+	private PDImageXObject banner = null;
+	private String slogan = null;
+	//
+	private TargetExtendedComparator targetComparator = new TargetExtendedComparator(SortOrder.DESC);
+	private DecimalFormat decimalFormatRT = ValueFormat.getDecimalFormatEnglish("0.00");
+	private DecimalFormat decimalFormatArea = ValueFormat.getDecimalFormatEnglish("0.000");
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	public void createPDF(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) throws IOException {
+
+		try (PDDocument document = new PDDocument()) {
+			/*
+			 * Report Name
+			 */
+			createChromatogramPDF(chromatogram, document, monitor);
+			for(IChromatogram chromatogramReference : chromatogram.getReferencedChromatograms()) {
+				createChromatogramPDF(chromatogramReference, document, monitor);
+			}
+			document.save(file);
+		} catch(Exception e) {
+			logger.warn(e);
+		}
+	}
+
+	private void createChromatogramPDF(IChromatogram<? extends IPeak> chromatogram, PDDocument document, IProgressMonitor monitor) throws IOException {
+
+		if(chromatogram != null) {
+			String chromatogramName = getChromatogramName(chromatogram);
+			PDTable headerDataTable = getHeaderDataTable(chromatogram.getHeaderDataMap());
+			ImageRunnable imageRunnable = createImages(chromatogram, document, PreferenceSupplier.getNumberImagePages());
+			List<PDImageXObject> chromatogramImages = imageRunnable.getChromatogramImages();
+			PDTable peakDataTable = getPeakDataTable(imageRunnable.getPeaks());
+			PDTable scanDataTable = getScanDataTable(imageRunnable.getScans());
+			/*
+			 * Calculate the number of pages.
+			 */
+			int pages = headerDataTable.getNumberDataRows() / MAX_ROWS + 1;
+			pages += chromatogramImages.size();
+			pages += peakDataTable.getNumberDataRows() / MAX_ROWS + 1;
+			pages += scanDataTable.getNumberDataRows() / MAX_ROWS + 1;
+			//
+			int page = printTablePages(document, headerDataTable, "Header Table:", chromatogramName, 1, pages, monitor);
+			page = printImagePages(document, chromatogramImages, page, pages, monitor);
+			page = printTablePages(document, peakDataTable, "Peak Table:", chromatogramName, page, pages, monitor);
+			page = printTablePages(document, scanDataTable, "Scan Table:", chromatogramName, page, pages, monitor);
+		}
+	}
+
+	private int printImagePages(PDDocument document, List<PDImageXObject> chromatogramImages, int page, int pages, IProgressMonitor monitor) throws IOException {
+
+		for(int i = 0; i < chromatogramImages.size(); i++) {
+			PDImageXObject chromatogramImage = chromatogramImages.get(i);
+			page = printImagePage(document, chromatogramImage, page, pages, monitor);
+		}
+		return page;
+	}
+
+	private int printImagePage(PDDocument document, PDImageXObject chromatogramImage, int page, int pages, IProgressMonitor monitor) throws IOException {
+
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, PageBase.TOP_LEFT, Unit.MM, true));
+		//
+		if(chromatogramImage != null) {
+			ImageElement imageElement = new ImageElement(LEFT_BORDER, TOP_BORDER).setWidth(IMAGE_WIDTH).setHeight(IMAGE_HEIGHT).setImage(chromatogramImage);
+			pageUtil.printImage(imageElement);
+		}
+		//
+		pageUtil.printText(new TextElement(LEFT_BORDER, 200.0f, 287.0f).setReferenceX(ReferenceX.RIGHT).setText("Page " + page + "/" + pages));
+		pageUtil.close();
+		return ++page;
+	}
+
+	private int printTablePages(PDDocument document, PDTable pdTable, String title, String chromatogramName, int page, int pages, IProgressMonitor monitor) throws IOException {
+
+		int parts = pdTable.getNumberDataRows() / MAX_ROWS + 1;
+		for(int part = 0; part < parts; part++) {
+			int range = part * MAX_ROWS;
+			int startIndex = range;
+			int stopIndex = range + MAX_ROWS;
+			stopIndex = (stopIndex > pdTable.getNumberDataRows()) ? pdTable.getNumberDataRows() : stopIndex;
+			pdTable.setStartIndex(startIndex);
+			pdTable.setStopIndex(stopIndex);
+			page = printTablePage(document, pdTable, title, chromatogramName, page, pages, monitor);
+		}
+		return page;
+	}
+
+	private int printTablePage(PDDocument document, PDTable pdTable, String title, String chromatogramName, int page, int pages, IProgressMonitor monitor) throws IOException {
+
+		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, PageBase.TOP_LEFT, Unit.MM, false));
+		printPageHeader(pageUtil);
+		//
+		pageUtil.printText(new TextElement(LEFT_BORDER, 45.0f, MAX_WIDTH).setText("Chromatogram: " + chromatogramName));
+		pageUtil.printText(new TextElement(LEFT_BORDER, 50.0f, MAX_WIDTH).setText(getTableHeaderText(pdTable, title)));
+		//
+		TableElement tableElement = new TableElement(LEFT_BORDER, 60.0f, LINE_HEIGHT);
+		tableElement.setTextOffsetX(TEXT_OFFSET_X);
+		tableElement.setTextOffsetY(TEXT_OFFSET_Y);
+		tableElement.setLineWidth(LINE_WIDTH);
+		tableElement.setPDTable(pdTable);
+		pageUtil.printTable(tableElement);
+		//
+		printPageFooter(pageUtil, page, pages);
+		pageUtil.close();
+		//
+		return ++page;
+	}
+
+	private String getTableHeaderText(PDTable pdTable, String title) {
+
+		int size = pdTable.getNumberDataRows();
+		StringBuilder builder = new StringBuilder();
+		builder.append(title);
+		builder.append(" ");
+		builder.append(pdTable.getStartIndex());
+		builder.append(" - ");
+		builder.append(pdTable.getStopIndex());
+		builder.append(" / ");
+		builder.append(size);
+		return builder.toString();
+	}
+
+	private void printPageHeader(PageUtil pageUtil) throws IOException {
+
+		banner = (banner == null) ? getBanner(pageUtil) : banner;
+		slogan = (slogan == null) ? PreferenceSupplier.getReportSlogan() : slogan;
+		pageUtil.printImage(new ImageElement(LEFT_BORDER, TOP_BORDER).setWidth(100.0f).setHeight(13.89f).setImage(banner));
+		pageUtil.printText(new TextElement(LEFT_BORDER, 28.0f, MAX_WIDTH).setText(slogan));
+	}
+
+	private void printPageFooter(PageUtil pageUtil, int page, int pages) throws IOException {
+
+		pageUtil.printText(new TextElement(LEFT_BORDER, 287.0f, MAX_WIDTH).setReferenceY(ReferenceY.BOTTOM).setText(" Page " + page + "/" + pages));
+	}
+
+	private PDImageXObject getBanner(PageUtil pageUtil) throws IOException {
+
+		PDImageXObject banner = null;
+		InputStream inputStream = null;
+		//
+		try {
+			File file = new File(PreferenceSupplier.getReportBanner());
+			if(file.exists() && file.getName().toLowerCase().endsWith(".jpg")) { // $NON-NLS-1$
+				inputStream = new FileInputStream(file);
+			} else {
+				inputStream = ReportConverterPDF.class.getResourceAsStream("openchromlogo.jpg"); // $NON-NLS-1$
+			}
+			banner = JPEGFactory.createFromStream(pageUtil.getDocument(), inputStream);
+		} catch(Exception e) {
+			logger.warn(e);
+		} finally {
+			if(inputStream != null) {
+				inputStream.close();
+			}
+		}
+		//
+		return banner;
+	}
+
+	private ImageRunnable createImages(IChromatogram<? extends IPeak> chromatogram, PDDocument document, int numberOfPages) {
+
+		int width = 1080;
+		int height = (int)(width * (IMAGE_HEIGHT / IMAGE_WIDTH));
+		ImageRunnable imageRunnable = new ImageRunnable(chromatogram, document, numberOfPages, width, height);
+		DisplayUtils.getDisplay().syncExec(imageRunnable);
+		//
+		return imageRunnable;
+	}
+
+	private PDTable getHeaderDataTable(Map<String, String> headerDataMap) {
+
+		PDTable pdTable = new PDTable();
+		pdTable.addColumn("Name", 95.0f);
+		pdTable.addColumn("Value", 95.0f);
+		//
+		for(Map.Entry<String, String> entry : headerDataMap.entrySet()) {
+			List<String> row = new ArrayList<>();
+			row.add(entry.getKey());
+			row.add(entry.getValue());
+			pdTable.addDataRow(row);
+		}
+		//
+		return pdTable;
+	}
+
+	private PDTable getPeakDataTable(List<? extends IPeak> peaks) {
+
+		PDTable pdTable = new PDTable();
+		pdTable.addColumn("ID", 15.0f);
+		pdTable.addColumn("RT", 20.0f);
+		pdTable.addColumn("Area%", 20.0f);
+		pdTable.addColumn("Identification", 135.0f);
+		//
+		double totalPeakArea = getTotalPeakArea(peaks);
+		//
+		int i = 1;
+		for(IPeak peak : peaks) {
+			IPeakModel peakModel = peak.getPeakModel();
+			List<String> row = new ArrayList<>();
+			row.add("P" + i++);
+			row.add(decimalFormatRT.format(peakModel.getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+			row.add(decimalFormatArea.format(getPercentagePeakArea(totalPeakArea, peak.getIntegratedArea())));
+			row.add(getBestIdentification(peak.getTargets()));
+			pdTable.addDataRow(row);
+		}
+		//
+		return pdTable;
+	}
+
+	private PDTable getScanDataTable(List<IScan> scans) {
+
+		PDTable pdTable = new PDTable();
+		pdTable.addColumn("ID", 15.0f);
+		pdTable.addColumn("RT", 20.0f);
+		pdTable.addColumn("Scan#", 20.0f);
+		pdTable.addColumn("Identification", 135.0f);
+		//
+		int i = 1;
+		for(IScan scan : scans) {
+			List<String> row = new ArrayList<>();
+			row.add("S" + i++);
+			row.add(decimalFormatRT.format(scan.getRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+			row.add(Integer.toString(scan.getScanNumber()));
+			row.add(getBestIdentification(scan.getTargets()));
+			pdTable.addDataRow(row);
+		}
+		//
+		return pdTable;
+	}
+
+	private double getPercentagePeakArea(double totalPeakArea, double peakArea) {
+
+		if(totalPeakArea > 0) {
+			return (100.0d / totalPeakArea) * peakArea;
+		} else {
+			return 0.0d;
+		}
+	}
+
+	private double getTotalPeakArea(List<? extends IPeak> peaks) {
+
+		double totalPeakArea = 0.0d;
+		for(IPeak peak : peaks) {
+			totalPeakArea += peak.getIntegratedArea();
+		}
+		return totalPeakArea;
+	}
+
+	private String getBestIdentification(Set<IIdentificationTarget> targets) {
+
+		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(targets, targetComparator);
+		if(libraryInformation != null) {
+			return libraryInformation.getName();
+		} else {
+			return "";
+		}
+	}
+
+	private String getChromatogramName(IChromatogram<? extends IPeak> chromatogram) {
+
+		String name = chromatogram.getName();
+		if(chromatogram instanceof IChromatogramMSD) {
+			name += " (MSD)";
+		} else if(chromatogram instanceof IChromatogramCSD) {
+			name += " (CSD)";
+		} else if(chromatogram instanceof IChromatogramWSD) {
+			name += " (WSD)";
+		}
+		//
+		return name;
+	}
+}

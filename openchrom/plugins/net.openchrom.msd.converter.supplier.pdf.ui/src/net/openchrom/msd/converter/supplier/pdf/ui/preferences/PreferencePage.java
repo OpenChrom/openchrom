@@ -11,8 +11,11 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.ui.preferences;
 
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpinnerFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.FileFieldEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -36,5 +39,9 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	protected void createFieldEditors() {
 
 		addField(new SpinnerFieldEditor(PreferenceSupplier.P_NUMBER_IMAGE_PAGES, "Number Images Pages", PreferenceSupplier.MIN_NUMBER_IMAGE_PAGES, PreferenceSupplier.MAX_NUMBER_IMAGE_PAGES, getFieldEditorParent()));
+		//
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new FileFieldEditor(PreferenceSupplier.P_REPORT_BANNER, "Report Banner (*.jpg) [1200x164 px, 600 dpi]", getFieldEditorParent()));
+		addField(new StringFieldEditor(PreferenceSupplier.P_REPORT_SLOGAN, "Report Slogan", getFieldEditorParent()));
 	}
 }

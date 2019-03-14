@@ -25,7 +25,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.pdf.ui.internal.io.PDFSupport;
+import net.openchrom.msd.converter.supplier.pdf.ui.internal.io.ReportConverterPDF;
 import net.openchrom.msd.converter.supplier.pdf.ui.settings.ReportSettings;
 
 public class ReportPDF extends AbstractChromatogramReportGenerator {
@@ -39,7 +39,7 @@ public class ReportPDF extends AbstractChromatogramReportGenerator {
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		try {
 			if(chromatograms.size() > 0) {
-				PDFSupport pdfSupport = new PDFSupport();
+				ReportConverterPDF pdfSupport = new ReportConverterPDF();
 				pdfSupport.createPDF(file, chromatograms.get(0), monitor);
 			}
 		} catch(IOException e) {
