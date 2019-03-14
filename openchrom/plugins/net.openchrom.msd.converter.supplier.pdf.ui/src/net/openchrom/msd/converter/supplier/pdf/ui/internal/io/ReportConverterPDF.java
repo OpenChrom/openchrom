@@ -196,7 +196,7 @@ public class ReportConverterPDF {
 		StringBuilder builder = new StringBuilder();
 		builder.append(title);
 		builder.append(" ");
-		builder.append(pdTable.getStartIndex());
+		builder.append((pdTable.getStartIndex() == 0) ? 0 : pdTable.getStartIndex() + 1);
 		builder.append(" - ");
 		builder.append(pdTable.getStopIndex());
 		builder.append(" / ");
@@ -272,7 +272,7 @@ public class ReportConverterPDF {
 		//
 		for(Map.Entry<String, String> entry : headerDataMap.entrySet()) {
 			List<String> row = new ArrayList<>();
-			row.add(entry.getKey());
+			row.add(getNormalizedText(entry.getKey()));
 			row.add(getNormalizedText(entry.getValue()));
 			pdTable.addDataRow(row);
 		}
@@ -351,11 +351,11 @@ public class ReportConverterPDF {
 				List<String> row = new ArrayList<>();
 				row.add("P" + i);
 				row.add(identification);
-				row.add(quantitationEntry.getName());
+				row.add(getNormalizedText(quantitationEntry.getName()));
 				row.add(retentionTime);
 				row.add(dfAreaNormal.format(quantitationEntry.getArea()));
 				row.add(dfConcentration.format(quantitationEntry.getConcentration()));
-				row.add(quantitationEntry.getConcentrationUnit());
+				row.add(getNormalizedText(quantitationEntry.getConcentrationUnit().replaceAll("µ", "u")));
 				pdTable.addDataRow(row);
 			}
 			i++;
@@ -386,7 +386,7 @@ public class ReportConverterPDF {
 
 		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(targets, targetComparator);
 		if(libraryInformation != null) {
-			return libraryInformation.getName();
+			return getNormalizedText(libraryInformation.getName());
 		} else {
 			return "";
 		}
