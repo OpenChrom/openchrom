@@ -196,7 +196,7 @@ public class ReportConverterPDF {
 		StringBuilder builder = new StringBuilder();
 		builder.append(title);
 		builder.append(" ");
-		builder.append((pdTable.getStartIndex() == 0) ? 0 : pdTable.getStartIndex() + 1);
+		builder.append((pdTable.getNumberDataRows() == 0) ? 0 : pdTable.getStartIndex() + 1);
 		builder.append(" - ");
 		builder.append(pdTable.getStopIndex());
 		builder.append(" / ");
@@ -272,8 +272,8 @@ public class ReportConverterPDF {
 		//
 		for(Map.Entry<String, String> entry : headerDataMap.entrySet()) {
 			List<String> row = new ArrayList<>();
-			row.add(getNormalizedText(entry.getKey()));
-			row.add(getNormalizedText(entry.getValue()));
+			row.add(normalizeText(entry.getKey()));
+			row.add(normalizeText(entry.getValue()));
 			pdTable.addDataRow(row);
 		}
 		//
@@ -351,11 +351,11 @@ public class ReportConverterPDF {
 				List<String> row = new ArrayList<>();
 				row.add("P" + i);
 				row.add(identification);
-				row.add(getNormalizedText(quantitationEntry.getName()));
+				row.add(normalizeText(quantitationEntry.getName()));
 				row.add(retentionTime);
 				row.add(dfAreaNormal.format(quantitationEntry.getArea()));
 				row.add(dfConcentration.format(quantitationEntry.getConcentration()));
-				row.add(getNormalizedText(quantitationEntry.getConcentrationUnit().replaceAll("µ", "u")));
+				row.add(normalizeText(replaceText(quantitationEntry.getConcentrationUnit())));
 				pdTable.addDataRow(row);
 			}
 			i++;
@@ -386,7 +386,7 @@ public class ReportConverterPDF {
 
 		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(targets, targetComparator);
 		if(libraryInformation != null) {
-			return getNormalizedText(libraryInformation.getName());
+			return normalizeText(libraryInformation.getName());
 		} else {
 			return "";
 		}
@@ -406,7 +406,16 @@ public class ReportConverterPDF {
 		return name;
 	}
 
-	private String getNormalizedText(String text) {
+	private String replaceText(String text) {
+
+		if(text.contains("μ")) {
+			return text.replace("μ", "u");
+		} else {
+			return text;
+		}
+	}
+
+	private String normalizeText(String text) {
 
 		return Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("\\P{InBasic_Latin}", "?");
 	}
