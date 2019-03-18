@@ -31,6 +31,9 @@ public class ChemicalShiftCalibrationTargetCalculation implements ChemicalShiftC
 		ChemicalShiftCalibrationSettings calibrationSettings = new ChemicalShiftCalibrationSettings();
 		double locationOfCauchyDistribution = calibrationSettings.getLocationOfCauchyDistribution();
 		double scaleOfCauchyDistribution = calibrationSettings.getScaleOfCauchyDistribution();
+		if(Double.compare(scaleOfCauchyDistribution, 0.0) < 0) {
+			throw new IllegalArgumentException("Value of the scale of Cauchy Distribution must be greater than zero.");
+		}
 		double rangeOfCauchyDistribution = calibrationSettings.getRangeOfCauchyDistribution();
 		// generate lorentzian distribution and calculate a peak from it
 		CauchyDistribution cDistribution = new CauchyDistribution(locationOfCauchyDistribution, scaleOfCauchyDistribution);

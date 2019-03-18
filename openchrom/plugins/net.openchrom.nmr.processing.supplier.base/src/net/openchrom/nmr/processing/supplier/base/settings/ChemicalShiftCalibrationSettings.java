@@ -67,7 +67,8 @@ public class ChemicalShiftCalibrationSettings {
 
 	/**
 	 * setScaleOfCauchyDistribution sets the scale parameter of the used
-	 * Cauchy Distribution.
+	 * Cauchy Distribution.<br>
+	 * Only values ​​greater than zero are allowed.
 	 * <p>
 	 * By default, the value is set to 0.01.
 	 *

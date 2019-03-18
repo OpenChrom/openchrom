@@ -75,10 +75,8 @@ public class IcoShiftAlignmentUtilities {
 		matrix = matrix.elementPower(2);
 		SimpleMatrix sumMatrix = new SimpleMatrix(rows, 1);
 		for(int r = 0; r < rows; r++) {
-			double[] array = matrix.extractVector(true, r).getMatrix().getData();
-			double sum = Arrays.stream(array).sum();
-			sum = Math.sqrt(sum);
-			sumMatrix.setRow(r, 0, sum);
+			double sum = matrix.extractVector(true, r).elementSum();
+			sumMatrix.setRow(r, 0, Math.sqrt(sum));
 		}
 		return sumMatrix;
 	}

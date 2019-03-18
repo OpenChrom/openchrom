@@ -175,9 +175,7 @@ public class IcoShiftAlignment {
 		double[] columnSumArray = new double[numColsMax];
 		for(int c = 0; c < numColsMax; c++) {
 			// step through each column and sum matrix column-wise up
-			for(int r = 0; r < numRowsMax; r++) {
-				columnSumArray[c] = columnSumArray[c] + experimentalDatasetsMatrix.get(r, c);
-			}
+			columnSumArray[c] = experimentalDatasetsMatrix.extractVector(false, c).elementSum();
 			columnSumArray[c] = columnSumArray[c] / numRowsMax;
 		}
 		return columnSumArray;
@@ -191,12 +189,9 @@ public class IcoShiftAlignment {
 		int numColsMax = experimentalDatasetsMatrix.numCols();
 		double[] columnArray = new double[numColsMax];
 		for(int c = 0; c < numColsMax; c++) {
-			// calculate median for each column
-			SimpleMatrix matrixColumnVector = experimentalDatasetsMatrix.extractVector(false, c);
-			double[] columnVector = matrixColumnVector.getMatrix().getData();
-			// evaluation of median
-			double evaluation = median.evaluate(columnVector);
-			columnArray[c] = evaluation;
+			// calculate and evaluate median for each column
+			double[] columnVector = experimentalDatasetsMatrix.extractVector(false, c).getMatrix().getData();
+			columnArray[c] = median.evaluate(columnVector);
 		}
 		return columnArray;
 	}
@@ -206,11 +201,7 @@ public class IcoShiftAlignment {
 		int numRowsMax = experimentalDatasetsMatrix.numRows();
 		double[] rowArraySum = new double[numRowsMax];
 		for(int r = 0; r < numRowsMax; r++) {
-			// extract each row
-			SimpleMatrix matrixRowVector = experimentalDatasetsMatrix.extractVector(true, r);
-			double[] rowVector = matrixRowVector.getMatrix().getData();
-			// sum of row
-			rowArraySum[r] = Arrays.stream(rowVector).sum();
+			rowArraySum[r] = experimentalDatasetsMatrix.extractVector(true, r).elementSum();
 		}
 		UtilityFunctions utilityFunction = new UtilityFunctions();
 		double maxRowValue = utilityFunction.getMaxValueOfArray(rowArraySum);
@@ -423,12 +414,6 @@ public class IcoShiftAlignment {
 		if(calculateCalibrationTargetFunction != null) {
 			// calculate target used for calibration here
 			targetForProcessing = calculateCalibrationTargetFunction.calculateCalibrationTarget(experimentalDatasetsMatrix, interval, settings);
-			if(targetForProcessing == null) {
-				throw new IllegalArgumentException("Calibration target could not be calculated correctly.");
-			}
-			if(targetForProcessing.length != referenceWindow.length) {
-				throw new IllegalArgumentException("Calculated calibration target does not have the correct length.");
-			}
 		} else if((targetCalculationSelection == IcoShiftAlignmentTargetCalculationSelection.MAX)) {
 			// calculate max target here for each interval
 			targetForProcessing = calculateSelectedTarget(experimentalDatasetsMatrixPartForProcessing, settings);
@@ -494,18 +479,10 @@ public class IcoShiftAlignment {
 
 	private SimpleMatrix extractPartOfDataForProcessing(SimpleMatrix data, int[] referenceWindow) {
 
-		SimpleMatrix experimentalDatasetsMatrix = data;
-		//
-		SimpleMatrix experimentalDatasetsMatrixPartForProcessing = new SimpleMatrix(experimentalDatasetsMatrix.numRows(), referenceWindow.length);
-		int numberOfRows = experimentalDatasetsMatrixPartForProcessing.numRows();
-		int numberOfCols = experimentalDatasetsMatrixPartForProcessing.numCols();
-		for(int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
-			// extract necessary part of data matrix
-			for(int c = 0; c < numberOfCols; c++) {
-				experimentalDatasetsMatrixPartForProcessing.set(rowIndex, c, experimentalDatasetsMatrix.get(rowIndex, referenceWindow[c]));
-			}
-		}
-		return experimentalDatasetsMatrixPartForProcessing;
+		int numberOfRows = data.numRows();
+		int startOfPart = referenceWindow[0];
+		int endOfPart = referenceWindow[referenceWindow.length - 1] + 1;
+		return data.extractMatrix(0, numberOfRows, startOfPart, endOfPart);// experimentalDatasetsMatrixPartForProcessing;
 	}
 
 	private double[] extractPartOfDataForProcessing(double[] targetSpectrum, int[] referenceWindow) {
@@ -561,11 +538,7 @@ public class IcoShiftAlignment {
 		int cols = experimentalDatasetsMatrixPartForProcessing.numCols();
 		SimpleMatrix experimentalDatasetForFFT = new SimpleMatrix(rows, cols);
 		for(int r = 0; r < rows; r++) {
-			for(int c = 0; c < cols; c++) {
-				double value = experimentalDatasetsMatrixPartForProcessing.get(r, c);
-				value = value / datasetNormalization.get(r, 0);
-				experimentalDatasetForFFT.setRow(r, c, value);
-			}
+			experimentalDatasetForFFT.insertIntoThis(r, 0, experimentalDatasetsMatrixPartForProcessing.extractVector(true, r).divide(datasetNormalization.get(r, 0)));
 		}
 		return experimentalDatasetForFFT;
 	}
@@ -711,15 +684,7 @@ public class IcoShiftAlignment {
 		double[] targetForFFTzf = new double[newDataSize];
 		System.arraycopy(targetForFFT, 0, targetForFFTzf, 0, targetForFFT.length);
 		SimpleMatrix experimentalDatasetForFFTzf = new SimpleMatrix(rows, newDataSize);
-		double[] tempDataDestination = new double[newDataSize];
-		for(int r = 0; r < experimentalDatasetForFFT.numRows(); r++) {
-			double[] tempDataSource = experimentalDatasetForFFT.extractVector(true, r).getMatrix().getData();
-			System.arraycopy(tempDataSource, 0, tempDataDestination, 0, tempDataSource.length);
-			experimentalDatasetForFFTzf.setRow(r, 0, tempDataDestination);
-			// reset array content
-			// tempDataDestination = Arrays.stream(tempDataDestination).map(i -> i > 0 ? 0 : i).toArray();
-			Arrays.fill(tempDataDestination, 0);
-		}
+		experimentalDatasetForFFTzf.insertIntoThis(0, 0, experimentalDatasetForFFT);
 		// FFT
 		// MATLAB: fft(X,n,2) returns the n-point Fourier transform of each row.
 		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
