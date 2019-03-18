@@ -34,6 +34,7 @@ import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.ejml.simple.SimpleMatrix;
 
+import net.openchrom.nmr.processing.supplier.base.settings.ChemicalShiftCalibrationSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ChemicalShiftCalibrationTargetFunction;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentGapFillingType;
@@ -52,7 +53,7 @@ public class IcoShiftAlignment {
 
 	private static final Logger icoShiftAlignmentLogger = Logger.getLogger(IcoShiftAlignment.class);
 	//
-	// in the case of a calibration call the necessary target is set here
+	// in the case of a calibration call the necessary target and settings are set here
 	private ChemicalShiftCalibrationTargetFunction calculateCalibrationTargetFunction;
 
 	public void setCalculateCalibrationTargetFunction(ChemicalShiftCalibrationTargetFunction calculateCalibrationTargetFunction) {
@@ -63,6 +64,18 @@ public class IcoShiftAlignment {
 	public ChemicalShiftCalibrationTargetFunction getCalculateCalibrationTargetFunction() {
 
 		return calculateCalibrationTargetFunction;
+	}
+
+	public ChemicalShiftCalibrationSettings calibrationSettings;
+
+	public ChemicalShiftCalibrationSettings getCalibrationSettings() {
+
+		return calibrationSettings;
+	}
+
+	public void setCalibrationSettings(ChemicalShiftCalibrationSettings calibrationSettings) {
+
+		this.calibrationSettings = calibrationSettings;
 	}
 
 	public SimpleMatrix process(Collection<? extends IMeasurementNMR> experimentalDatasetsList, IcoShiftAlignmentSettings settings) {
@@ -413,7 +426,7 @@ public class IcoShiftAlignment {
 		IcoShiftAlignmentTargetCalculationSelection targetCalculationSelection = settings.getTargetCalculationSelection();
 		if(calculateCalibrationTargetFunction != null) {
 			// calculate target used for calibration here
-			targetForProcessing = calculateCalibrationTargetFunction.calculateCalibrationTarget(experimentalDatasetsMatrix, interval, settings);
+			targetForProcessing = calculateCalibrationTargetFunction.calculateCalibrationTarget(experimentalDatasetsMatrix, interval, settings, calibrationSettings);
 		} else if((targetCalculationSelection == IcoShiftAlignmentTargetCalculationSelection.MAX)) {
 			// calculate max target here for each interval
 			targetForProcessing = calculateSelectedTarget(experimentalDatasetsMatrixPartForProcessing, settings);

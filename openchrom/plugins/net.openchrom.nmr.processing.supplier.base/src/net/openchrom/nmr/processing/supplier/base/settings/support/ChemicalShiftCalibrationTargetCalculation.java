@@ -22,16 +22,15 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlign
 public class ChemicalShiftCalibrationTargetCalculation implements ChemicalShiftCalibrationTargetFunction {
 
 	@Override
-	public double[] calculateCalibrationTarget(SimpleMatrix data, Interval<Integer> interval, IcoShiftAlignmentSettings settings) {
+	public double[] calculateCalibrationTarget(SimpleMatrix data, Interval<Integer> interval, IcoShiftAlignmentSettings alignmentSettings, ChemicalShiftCalibrationSettings calibrationSettings) {
 
 		/*
 		 * For future use e.g. in KNIME, the data matrix and alignment settings
 		 * are passed as arguments though they are not currently being used.
 		 */
-		ChemicalShiftCalibrationSettings calibrationSettings = new ChemicalShiftCalibrationSettings();
 		double locationOfCauchyDistribution = calibrationSettings.getLocationOfCauchyDistribution();
 		double scaleOfCauchyDistribution = calibrationSettings.getScaleOfCauchyDistribution();
-		if(Double.compare(scaleOfCauchyDistribution, 0.0) < 0) {
+		if(scaleOfCauchyDistribution < 0) {
 			throw new IllegalArgumentException("Value of the scale of Cauchy Distribution must be greater than zero.");
 		}
 		double rangeOfCauchyDistribution = calibrationSettings.getRangeOfCauchyDistribution();

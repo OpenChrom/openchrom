@@ -68,12 +68,12 @@ public class ChemicalShiftCalibrationUtilities {
 		return utilityFunction.findIndexOfValue(chemicalShiftAxisPart, 0);
 	}
 
-	public static Interval<Integer> getCalibrationIntervalIndices(double[] chemicalShiftAxis, IcoShiftAlignmentSettings calibrationSettings) {
+	public static Interval<Integer> getCalibrationIntervalIndices(double[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {
 
 		UtilityFunctions utilityFunction = new UtilityFunctions();
 		IcoShiftAlignmentUtilities shiftUtils = new IcoShiftAlignmentUtilities();
-		double leftMargin = calibrationSettings.getSinglePeakHigherBorder();
-		double rigthMargin = calibrationSettings.getSinglePeakLowerBorder();
+		double leftMargin = alignmentSettings.getSinglePeakHigherBorder();
+		double rigthMargin = alignmentSettings.getSinglePeakLowerBorder();
 		int leftIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, leftMargin);
 		int rightIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, rigthMargin);
 		return shiftUtils.new Interval<Integer>(leftIndex, rightIndex);

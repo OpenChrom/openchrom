@@ -13,10 +13,11 @@ package net.openchrom.nmr.processing.supplier.base.settings.support;
 
 import org.ejml.simple.SimpleMatrix;
 
+import net.openchrom.nmr.processing.supplier.base.settings.ChemicalShiftCalibrationSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities.Interval;
 
 public interface ChemicalShiftCalibrationTargetFunction {
 
-	double[] calculateCalibrationTarget(SimpleMatrix experimentalDatasetsMatrix, Interval<Integer> interval, IcoShiftAlignmentSettings settings);
+	double[] calculateCalibrationTarget(SimpleMatrix experimentalDatasetsMatrix, Interval<Integer> interval, IcoShiftAlignmentSettings alignmentSettings, ChemicalShiftCalibrationSettings calibrationSettings);
 }
