@@ -53,6 +53,9 @@ public class ChemicalShiftCalibration {
 
 		IcoShiftAlignmentSettings alignmentSettings = generateAlignmentSettings();
 		IcoShiftAlignment icoShiftAlignment = new IcoShiftAlignment();
+		if(!checkSettingsForPeakPosition(alignmentSettings, calibrationSettings)) {
+			throw new IllegalArgumentException("Peak Position in calibration settings and alignment settings does not match.");
+		}
 		// set calibration target in IcoShift algorithm
 		icoShiftAlignment.setCalculateCalibrationTargetFunction(new ChemicalShiftCalibrationTargetCalculation());
 		icoShiftAlignment.setCalibrationSettings(calibrationSettings);
@@ -76,6 +79,19 @@ public class ChemicalShiftCalibration {
 		}
 		//
 		return calibratedData;
+	}
+
+	private static boolean checkSettingsForPeakPosition(IcoShiftAlignmentSettings alignmentSettings, ChemicalShiftCalibrationSettings calibrationSettings) {
+
+		double highBorder = alignmentSettings.getSinglePeakHigherBorder();
+		double lowBorder = alignmentSettings.getSinglePeakLowerBorder();
+		double alignmentPeakPosition = (highBorder + lowBorder) / 2;
+		double calibrationPeakPosition = calibrationSettings.getLocationOfCauchyDistribution();
+		if(Double.compare(alignmentPeakPosition, calibrationPeakPosition) == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private static boolean checkCalibration(SimpleMatrix calibratedData, double[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {
