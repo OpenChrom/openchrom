@@ -22,7 +22,6 @@ import java.util.stream.DoubleStream;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
-import org.apache.commons.math3.distribution.CauchyDistribution;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
@@ -35,7 +34,9 @@ import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.ejml.simple.SimpleMatrix;
 
+import net.openchrom.nmr.processing.supplier.base.settings.ChemicalShiftCalibrationSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
+import net.openchrom.nmr.processing.supplier.base.settings.support.ChemicalShiftCalibrationTargetFunction;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentGapFillingType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentShiftCorrectionType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentTargetCalculationSelection;
@@ -51,6 +52,31 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlign
 public class IcoShiftAlignment {
 
 	private static final Logger icoShiftAlignmentLogger = Logger.getLogger(IcoShiftAlignment.class);
+	//
+	// in the case of a calibration call the necessary target and settings are set here
+	private ChemicalShiftCalibrationTargetFunction calculateCalibrationTargetFunction;
+
+	public void setCalculateCalibrationTargetFunction(ChemicalShiftCalibrationTargetFunction calculateCalibrationTargetFunction) {
+
+		this.calculateCalibrationTargetFunction = calculateCalibrationTargetFunction;
+	}
+
+	public ChemicalShiftCalibrationTargetFunction getCalculateCalibrationTargetFunction() {
+
+		return calculateCalibrationTargetFunction;
+	}
+
+	public ChemicalShiftCalibrationSettings calibrationSettings;
+
+	public ChemicalShiftCalibrationSettings getCalibrationSettings() {
+
+		return calibrationSettings;
+	}
+
+	public void setCalibrationSettings(ChemicalShiftCalibrationSettings calibrationSettings) {
+
+		this.calibrationSettings = calibrationSettings;
+	}
 
 	public SimpleMatrix process(Collection<? extends IMeasurementNMR> experimentalDatasetsList, IcoShiftAlignmentSettings settings) {
 
@@ -150,31 +176,9 @@ public class IcoShiftAlignment {
 			case MAX: {
 				return calculateMaxTarget(experimentalDatasetsMatrix);
 			}
-			case CALIBRATE: {
-				return calculateCalibrationTarget(experimentalDatasetsMatrix);
-			}
 			default:
 				throw new IllegalArgumentException("unsupported TargetCalculationSelection: " + targetCalculationSelection);
 		}
-	}
-
-	private static double[] calculateCalibrationTarget(SimpleMatrix experimentalDatasetsMatrix) {
-
-		/*
-		 * generate lorentzian distribution and calculate a peak from it
-		 */
-		CauchyDistribution cDistribution = new CauchyDistribution(0, 0.01);
-		UtilityFunctions utilityFunction = new UtilityFunctions();
-		//
-		int windowWidth = experimentalDatasetsMatrix.numCols();
-		double[] xAxisVector = utilityFunction.generateLinearlySpacedVector(-1.0, 1.0, windowWidth);
-		double[] probabilityDensityFunction = new double[xAxisVector.length];
-		for(int i = 0; i < xAxisVector.length; i++) {
-			// calculate a peak with some intensity and peak maximum in the middle of interval
-			probabilityDensityFunction[i] = Math.pow(cDistribution.density(xAxisVector[i]), 2); // TARGET
-		}
-		//
-		return probabilityDensityFunction;
 	}
 
 	private static double[] calculateMeanTarget(SimpleMatrix experimentalDatasetsMatrix) {
@@ -184,9 +188,7 @@ public class IcoShiftAlignment {
 		double[] columnSumArray = new double[numColsMax];
 		for(int c = 0; c < numColsMax; c++) {
 			// step through each column and sum matrix column-wise up
-			for(int r = 0; r < numRowsMax; r++) {
-				columnSumArray[c] = columnSumArray[c] + experimentalDatasetsMatrix.get(r, c);
-			}
+			columnSumArray[c] = experimentalDatasetsMatrix.extractVector(false, c).elementSum();
 			columnSumArray[c] = columnSumArray[c] / numRowsMax;
 		}
 		return columnSumArray;
@@ -200,12 +202,9 @@ public class IcoShiftAlignment {
 		int numColsMax = experimentalDatasetsMatrix.numCols();
 		double[] columnArray = new double[numColsMax];
 		for(int c = 0; c < numColsMax; c++) {
-			// calculate median for each column
-			SimpleMatrix matrixColumnVector = experimentalDatasetsMatrix.extractVector(false, c);
-			double[] columnVector = matrixColumnVector.getMatrix().getData();
-			// evaluation of median
-			double evaluation = median.evaluate(columnVector);
-			columnArray[c] = evaluation;
+			// calculate and evaluate median for each column
+			double[] columnVector = experimentalDatasetsMatrix.extractVector(false, c).getMatrix().getData();
+			columnArray[c] = median.evaluate(columnVector);
 		}
 		return columnArray;
 	}
@@ -215,11 +214,7 @@ public class IcoShiftAlignment {
 		int numRowsMax = experimentalDatasetsMatrix.numRows();
 		double[] rowArraySum = new double[numRowsMax];
 		for(int r = 0; r < numRowsMax; r++) {
-			// extract each row
-			SimpleMatrix matrixRowVector = experimentalDatasetsMatrix.extractVector(true, r);
-			double[] rowVector = matrixRowVector.getMatrix().getData();
-			// sum of row
-			rowArraySum[r] = Arrays.stream(rowVector).sum();
+			rowArraySum[r] = experimentalDatasetsMatrix.extractVector(true, r).elementSum();
 		}
 		UtilityFunctions utilityFunction = new UtilityFunctions();
 		double maxRowValue = utilityFunction.getMaxValueOfArray(rowArraySum);
@@ -429,8 +424,11 @@ public class IcoShiftAlignment {
 		SimpleMatrix experimentalDatasetsMatrixPartForProcessing = extractPartOfDataForProcessing(experimentalDatasetsMatrix, referenceWindow);
 		//
 		IcoShiftAlignmentTargetCalculationSelection targetCalculationSelection = settings.getTargetCalculationSelection();
-		if((targetCalculationSelection == IcoShiftAlignmentTargetCalculationSelection.MAX) || (targetCalculationSelection == IcoShiftAlignmentTargetCalculationSelection.CALIBRATE)) {
-			// calculate max target here for each interval; "CALIBRATE" applies here too
+		if(calculateCalibrationTargetFunction != null) {
+			// calculate target used for calibration here
+			targetForProcessing = calculateCalibrationTargetFunction.calculateCalibrationTarget(experimentalDatasetsMatrix, interval, settings, calibrationSettings);
+		} else if((targetCalculationSelection == IcoShiftAlignmentTargetCalculationSelection.MAX)) {
+			// calculate max target here for each interval
 			targetForProcessing = calculateSelectedTarget(experimentalDatasetsMatrixPartForProcessing, settings);
 		} else {
 			// "MEAN" and "MEDIAN"
@@ -494,18 +492,10 @@ public class IcoShiftAlignment {
 
 	private SimpleMatrix extractPartOfDataForProcessing(SimpleMatrix data, int[] referenceWindow) {
 
-		SimpleMatrix experimentalDatasetsMatrix = data;
-		//
-		SimpleMatrix experimentalDatasetsMatrixPartForProcessing = new SimpleMatrix(experimentalDatasetsMatrix.numRows(), referenceWindow.length);
-		int numberOfRows = experimentalDatasetsMatrixPartForProcessing.numRows();
-		int numberOfCols = experimentalDatasetsMatrixPartForProcessing.numCols();
-		for(int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
-			// extract necessary part of data matrix
-			for(int c = 0; c < numberOfCols; c++) {
-				experimentalDatasetsMatrixPartForProcessing.set(rowIndex, c, experimentalDatasetsMatrix.get(rowIndex, referenceWindow[c]));
-			}
-		}
-		return experimentalDatasetsMatrixPartForProcessing;
+		int numberOfRows = data.numRows();
+		int startOfPart = referenceWindow[0];
+		int endOfPart = referenceWindow[referenceWindow.length - 1] + 1;
+		return data.extractMatrix(0, numberOfRows, startOfPart, endOfPart);// experimentalDatasetsMatrixPartForProcessing;
 	}
 
 	private double[] extractPartOfDataForProcessing(double[] targetSpectrum, int[] referenceWindow) {
@@ -561,11 +551,7 @@ public class IcoShiftAlignment {
 		int cols = experimentalDatasetsMatrixPartForProcessing.numCols();
 		SimpleMatrix experimentalDatasetForFFT = new SimpleMatrix(rows, cols);
 		for(int r = 0; r < rows; r++) {
-			for(int c = 0; c < cols; c++) {
-				double value = experimentalDatasetsMatrixPartForProcessing.get(r, c);
-				value = value / datasetNormalization.get(r, 0);
-				experimentalDatasetForFFT.setRow(r, c, value);
-			}
+			experimentalDatasetForFFT.insertIntoThis(r, 0, experimentalDatasetsMatrixPartForProcessing.extractVector(true, r).divide(datasetNormalization.get(r, 0)));
 		}
 		return experimentalDatasetForFFT;
 	}
@@ -711,15 +697,7 @@ public class IcoShiftAlignment {
 		double[] targetForFFTzf = new double[newDataSize];
 		System.arraycopy(targetForFFT, 0, targetForFFTzf, 0, targetForFFT.length);
 		SimpleMatrix experimentalDatasetForFFTzf = new SimpleMatrix(rows, newDataSize);
-		double[] tempDataDestination = new double[newDataSize];
-		for(int r = 0; r < experimentalDatasetForFFT.numRows(); r++) {
-			double[] tempDataSource = experimentalDatasetForFFT.extractVector(true, r).getMatrix().getData();
-			System.arraycopy(tempDataSource, 0, tempDataDestination, 0, tempDataSource.length);
-			experimentalDatasetForFFTzf.setRow(r, 0, tempDataDestination);
-			// reset array content
-			// tempDataDestination = Arrays.stream(tempDataDestination).map(i -> i > 0 ? 0 : i).toArray();
-			Arrays.fill(tempDataDestination, 0);
-		}
+		experimentalDatasetForFFTzf.insertIntoThis(0, 0, experimentalDatasetForFFT);
 		// FFT
 		// MATLAB: fft(X,n,2) returns the n-point Fourier transform of each row.
 		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);

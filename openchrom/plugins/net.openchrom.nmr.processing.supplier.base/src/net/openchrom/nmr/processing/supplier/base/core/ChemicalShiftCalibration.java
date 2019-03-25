@@ -19,11 +19,12 @@ import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.ejml.simple.SimpleMatrix;
 
+import net.openchrom.nmr.processing.supplier.base.settings.ChemicalShiftCalibrationSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
+import net.openchrom.nmr.processing.supplier.base.settings.support.ChemicalShiftCalibrationTargetCalculation;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ChemicalShiftCalibrationUtilities;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentGapFillingType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentShiftCorrectionType;
-import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentTargetCalculationSelection;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities.Interval;
 
@@ -48,19 +49,25 @@ public class ChemicalShiftCalibration {
 	 *
 	 * @author Alexander Stark
 	 */
-	public SimpleMatrix calibrate(Collection<? extends IMeasurementNMR> experimentalDatasetsList) {
+	public SimpleMatrix calibrate(Collection<? extends IMeasurementNMR> experimentalDatasetsList, ChemicalShiftCalibrationSettings calibrationSettings) {
 
-		IcoShiftAlignmentSettings calibrationSettings = generateCalibrationSettings();
+		IcoShiftAlignmentSettings alignmentSettings = generateAlignmentSettings();
 		IcoShiftAlignment icoShiftAlignment = new IcoShiftAlignment();
-		SimpleMatrix calibratedData = icoShiftAlignment.process(experimentalDatasetsList, calibrationSettings);
+		if(!checkSettingsForPeakPosition(alignmentSettings, calibrationSettings)) {
+			throw new IllegalArgumentException("Peak Position in calibration settings and alignment settings does not match.");
+		}
+		// set calibration target in IcoShift algorithm
+		icoShiftAlignment.setCalculateCalibrationTargetFunction(new ChemicalShiftCalibrationTargetCalculation());
+		icoShiftAlignment.setCalibrationSettings(calibrationSettings);
+		SimpleMatrix calibratedData = icoShiftAlignment.process(experimentalDatasetsList, alignmentSettings);
 		//
 		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(experimentalDatasetsList);
 		Collection<? extends IMeasurementNMR> newDatasetsList = copyPartlyCalibratedData(experimentalDatasetsList, calibratedData);
 		int checkIterator = 0;
-		while(!checkCalibration(calibratedData, chemicalShiftAxis, calibrationSettings)) { // check for quality of calibration
+		while(!checkCalibration(calibratedData, chemicalShiftAxis, alignmentSettings)) { // check for quality of calibration
 			newDatasetsList = copyPartlyCalibratedData(newDatasetsList, calibratedData);
 			// try to calibrate datasets again
-			calibratedData = icoShiftAlignment.process(newDatasetsList, calibrationSettings);
+			calibratedData = icoShiftAlignment.process(newDatasetsList, alignmentSettings);
 			checkIterator++;
 			if(checkIterator == 5) {
 				break;
@@ -68,15 +75,28 @@ public class ChemicalShiftCalibration {
 		}
 		//
 		if(checkIterator > 2) {
-			calibratedData = finalPeakCalibration(calibratedData, chemicalShiftAxis, calibrationSettings);
+			calibratedData = finalPeakCalibration(calibratedData, chemicalShiftAxis, alignmentSettings);
 		}
 		//
 		return calibratedData;
 	}
 
-	private static boolean checkCalibration(SimpleMatrix calibratedData, double[] chemicalShiftAxis, IcoShiftAlignmentSettings calibrationSettings) {
+	private static boolean checkSettingsForPeakPosition(IcoShiftAlignmentSettings alignmentSettings, ChemicalShiftCalibrationSettings calibrationSettings) {
 
-		Interval<Integer> intervalIndices = ChemicalShiftCalibrationUtilities.getCalibrationIntervalIndices(chemicalShiftAxis, calibrationSettings);
+		double highBorder = alignmentSettings.getSinglePeakHigherBorder();
+		double lowBorder = alignmentSettings.getSinglePeakLowerBorder();
+		double alignmentPeakPosition = (highBorder + lowBorder) / 2;
+		double calibrationPeakPosition = calibrationSettings.getLocationOfCauchyDistribution();
+		if(Double.compare(alignmentPeakPosition, calibrationPeakPosition) == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private static boolean checkCalibration(SimpleMatrix calibratedData, double[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {
+
+		Interval<Integer> intervalIndices = ChemicalShiftCalibrationUtilities.getCalibrationIntervalIndices(chemicalShiftAxis, alignmentSettings);
 		int intendedPosition = ChemicalShiftCalibrationUtilities.getIntendedPeakPosition(intervalIndices, chemicalShiftAxis);
 		int[] actualPositions = ChemicalShiftCalibrationUtilities.getActualPeakPositions(intervalIndices, calibratedData);
 		return ChemicalShiftCalibrationUtilities.isSamePeakPosition(actualPositions, intendedPosition);
@@ -101,9 +121,9 @@ public class ChemicalShiftCalibration {
 		return datasetsList;
 	}
 
-	private static SimpleMatrix finalPeakCalibration(SimpleMatrix calibratedData, double[] chemicalShiftAxis, IcoShiftAlignmentSettings calibrationSettings) {
+	private static SimpleMatrix finalPeakCalibration(SimpleMatrix calibratedData, double[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {
 
-		Interval<Integer> intervalIndices = ChemicalShiftCalibrationUtilities.getCalibrationIntervalIndices(chemicalShiftAxis, calibrationSettings);
+		Interval<Integer> intervalIndices = ChemicalShiftCalibrationUtilities.getCalibrationIntervalIndices(chemicalShiftAxis, alignmentSettings);
 		int intendedPosition = ChemicalShiftCalibrationUtilities.getIntendedPeakPosition(intervalIndices, chemicalShiftAxis);
 		int[] actualPositions = ChemicalShiftCalibrationUtilities.getActualPeakPositions(intervalIndices, calibratedData);
 		//
@@ -146,19 +166,17 @@ public class ChemicalShiftCalibration {
 	 * @author Alexander Stark
 	 *
 	 */
-	private static IcoShiftAlignmentSettings generateCalibrationSettings() {
+	private static IcoShiftAlignmentSettings generateAlignmentSettings() {
 
-		IcoShiftAlignmentSettings calibrationSettings = new IcoShiftAlignmentSettings();
+		IcoShiftAlignmentSettings alignmentSettings = new IcoShiftAlignmentSettings();
 		//
-		calibrationSettings.setTargetCalculationSelection(IcoShiftAlignmentTargetCalculationSelection.CALIBRATE);
+		alignmentSettings.setShiftCorrectionType(IcoShiftAlignmentShiftCorrectionType.BEST);
 		//
-		calibrationSettings.setShiftCorrectionType(IcoShiftAlignmentShiftCorrectionType.BEST);
+		alignmentSettings.setAlignmentType(IcoShiftAlignmentType.SINGLE_PEAK);
+		alignmentSettings.setSinglePeakLowerBorder(-0.05);
+		alignmentSettings.setSinglePeakHigherBorder(0.05);
 		//
-		calibrationSettings.setAlignmentType(IcoShiftAlignmentType.SINGLE_PEAK);
-		calibrationSettings.setSinglePeakLowerBorder(-0.05);
-		calibrationSettings.setSinglePeakHigherBorder(0.05);
-		//
-		calibrationSettings.setGapFillingType(IcoShiftAlignmentGapFillingType.MARGIN);
-		return calibrationSettings;
+		alignmentSettings.setGapFillingType(IcoShiftAlignmentGapFillingType.MARGIN);
+		return alignmentSettings;
 	}
 }
