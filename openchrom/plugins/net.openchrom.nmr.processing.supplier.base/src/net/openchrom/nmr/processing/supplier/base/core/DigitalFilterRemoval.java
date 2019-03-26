@@ -12,7 +12,7 @@
 package net.openchrom.nmr.processing.supplier.base.core;
 
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
+import org.eclipse.chemclipse.nmr.model.core.MeasurementNMR;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 
@@ -21,7 +21,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFa
 
 public class DigitalFilterRemoval {
 
-	public Complex[] removeDigitalFilter(IMeasurementNMR measurementNMR, Complex[] FID, DigitalFilterRemovalSettings digitalFilterRemovalSettings) {
+	public Complex[] removeDigitalFilter(MeasurementNMR measurementNMR, Complex[] FID, DigitalFilterRemovalSettings digitalFilterRemovalSettings) {
 
 		FourierTransformationProcessor transform = new FourierTransformationProcessor();
 		UtilityFunctions utilityFunction = new UtilityFunctions();

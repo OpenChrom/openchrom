@@ -20,7 +20,7 @@ import org.apache.commons.math3.random.GaussianRandomGenerator;
 import org.apache.commons.math3.random.JDKRandomGenerator;
 import org.apache.commons.math3.random.RandomVectorGenerator;
 import org.apache.commons.math3.random.UncorrelatedRandomVectorGenerator;
-import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
+import org.eclipse.chemclipse.nmr.model.core.MeasurementNMR;
 import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
@@ -35,7 +35,6 @@ import net.openchrom.nmr.processing.supplier.base.settings.AutoPhaseCorrectionSe
 public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
 
 	public AutoPhaseCorrectionProcessor() {
-
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -56,7 +55,8 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 
 	private Complex[] perform(ISignalExtractor signalExtractor, IDataNMRSelection dataNMRSelection, final AutoPhaseCorrectionSettings settings) {
 
-		IMeasurementNMR measurementNMR = dataNMRSelection.getMeasurmentNMR();
+		// TODO fix cast later
+		MeasurementNMR measurementNMR = (MeasurementNMR)dataNMRSelection.getMeasurmentNMR();
 		Complex[] fourierTransformedSignals = signalExtractor.extractFourierTransformedData();
 		//
 		double leftPhaseChange = 0;
@@ -118,7 +118,6 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		private boolean tweakFlag;
 
 		public CalculateACMEEntropy(Complex[] fourierTransformedData, boolean tweakFlag) {
-
 			this.fourierTransformedData = fourierTransformedData;
 			this.iterCount = 0;
 			this.tweakFlag = tweakFlag;

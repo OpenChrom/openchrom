@@ -17,6 +17,7 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
+import org.eclipse.chemclipse.nmr.model.core.MeasurementNMR;
 import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
@@ -83,7 +84,8 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		}
 		// zero filling // Automatic zero filling if size != 2^n
 		ZeroFilling zeroFiller = new ZeroFilling();
-		Complex[] freeInductionDecayShiftedWindowMultiplicationZeroFill = zeroFiller.zerofill(freeInductionDecayShiftedWindowMultiplication, dataNMRSelection.getMeasurmentNMR(), zeroFillingFactor);
+		// TODO fix cast later
+		Complex[] freeInductionDecayShiftedWindowMultiplicationZeroFill = zeroFiller.zerofill(freeInductionDecayShiftedWindowMultiplication, (MeasurementNMR)dataNMRSelection.getMeasurmentNMR(), zeroFillingFactor);
 		// Fourier transform, shift and flip the data
 		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(freeInductionDecayShiftedWindowMultiplicationZeroFill, utilityFunction);
 		return nmrSpectrumProcessed;

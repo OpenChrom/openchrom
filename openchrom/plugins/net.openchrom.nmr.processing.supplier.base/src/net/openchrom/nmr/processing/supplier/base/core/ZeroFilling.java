@@ -12,13 +12,13 @@
 package net.openchrom.nmr.processing.supplier.base.core;
 
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
+import org.eclipse.chemclipse.nmr.model.core.MeasurementNMR;
 
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
 public class ZeroFilling {
 
-	public Complex[] zerofill(Complex[] intesityFID, IMeasurementNMR measurementNMR, ZeroFillingFactor zeroFillingFactor) {
+	public Complex[] zerofill(Complex[] intesityFID, MeasurementNMR measurementNMR, ZeroFillingFactor zeroFillingFactor) {
 
 		// }
 		Complex[] zeroFilledFID;
