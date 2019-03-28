@@ -41,7 +41,7 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 			ISignalExtractor signalExtractor = new SignalExtractor(dataNMRSelection);
 			Complex[] fourierTransformedData = transform(dataNMRSelection, settings);
 			UtilityFunctions utilityFunction = new UtilityFunctions();
-			double[] chemicalShift = utilityFunction.generateChemicalShiftAxis(dataNMRSelection.getMeasurmentNMR());
+			double[] chemicalShift = utilityFunction.generateChemicalShiftAxis((IMeasurementNMR)dataNMRSelection.getMeasurement());
 			signalExtractor.storeFrequencyDomainSpectrum(fourierTransformedData, chemicalShift);
 			processingInfo.setProcessingResult(dataNMRSelection);
 		}
@@ -57,7 +57,7 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		//
 		ISignalExtractor signalExtractor = new SignalExtractor(dataNMRSelection);
 		ZeroFillingFactor zeroFillingFactor = processorSettings.getZeroFillingFactor();
-		IMeasurementNMR measurementNMR = dataNMRSelection.getMeasurmentNMR();
+		IMeasurementNMR measurementNMR = (IMeasurementNMR)dataNMRSelection.getMeasurement();
 		/*
 		 * according to J.Holy:
 		 * ~~~~~~~
@@ -85,27 +85,27 @@ public class FourierTransformationProcessor extends AbstractScanProcessor implem
 		// zero filling // Automatic zero filling if size != 2^n
 		ZeroFilling zeroFiller = new ZeroFilling();
 		// TODO fix cast later
-		Complex[] freeInductionDecayShiftedWindowMultiplicationZeroFill = zeroFiller.zerofill(freeInductionDecayShiftedWindowMultiplication, (MeasurementNMR)dataNMRSelection.getMeasurmentNMR(), zeroFillingFactor);
+		Complex[] freeInductionDecayShiftedWindowMultiplicationZeroFill = zeroFiller.zerofill(freeInductionDecayShiftedWindowMultiplication, (MeasurementNMR)dataNMRSelection.getMeasurement(), zeroFillingFactor);
 		// Fourier transform, shift and flip the data
-		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(freeInductionDecayShiftedWindowMultiplicationZeroFill, utilityFunction);
+		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(freeInductionDecayShiftedWindowMultiplicationZeroFill);
 		return nmrSpectrumProcessed;
 	}
 
-	public Complex[] fourierTransformNmrData(Complex[] fid, UtilityFunctions utilityFunction) {
+	public static Complex[] fourierTransformNmrData(Complex[] fid) {
 
 		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
 		Complex[] nmrSpectrum = fFourierTransformer.transform(fid, TransformType.FORWARD);
 		Complex[] nmrSpectrumProcessed = new Complex[nmrSpectrum.length];
 		System.arraycopy(nmrSpectrum, 0, nmrSpectrumProcessed, 0, nmrSpectrum.length); // NmrData.SPECTRA
-		utilityFunction.rightShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
+		UtilityFunctions.rightShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
 		ArrayUtils.reverse(nmrSpectrumProcessed);
 		return nmrSpectrumProcessed;
 	}
 
-	public Complex[] inverseFourierTransformData(Complex[] spectrum, UtilityFunctions utilityFunction) {
+	public static Complex[] inverseFourierTransformData(Complex[] spectrum) {
 
 		ArrayUtils.reverse(spectrum);
-		utilityFunction.rightShiftNMRComplexData(spectrum, spectrum.length / 2);
+		UtilityFunctions.rightShiftNMRComplexData(spectrum, spectrum.length / 2);
 		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
 		Complex[] unfilteredFID = fFourierTransformer.transform(spectrum, TransformType.INVERSE);
 		Complex[] analogFID = new Complex[unfilteredFID.length];

@@ -13,7 +13,7 @@ package net.openchrom.nmr.processing.supplier.base.settings;
 
 public class DigitalFilterRemovalSettings {
 
-	private double leftRotationFid;
+	private double leftRotationFid = Double.NaN;
 
 	public double getLeftRotationFid() {
 

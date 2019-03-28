@@ -11,10 +11,28 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.math3.complex.Complex;
+import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
 
 public class UtilityFunctions {
+
+	public static ComplexFIDData toComplexFIDData(Collection<? extends FIDSignal> signals) {
+
+		Complex[] array = new Complex[signals.size()];
+		BigDecimal[] times = new BigDecimal[signals.size()];
+		int i = 0;
+		for(FIDSignal signal : signals) {
+			array[i] = new Complex(signal.getY(), signal.getImaginaryY());
+			times[i] = signal.getSignalTime();
+		}
+		return new ComplexFIDData(array, times);
+	}
 
 	public double[] generateChemicalShiftAxis(IMeasurementNMR scanNMR) {
 
@@ -132,7 +150,7 @@ public class UtilityFunctions {
 		}
 	}
 
-	public Complex[] rightShiftNMRComplexData(Complex[] dataArray, int pointsToShift) {
+	public static Complex[] rightShiftNMRComplexData(Complex[] dataArray, int pointsToShift) {
 
 		for(int i = 0; i < pointsToShift; i++) {
 			Complex tempArray = dataArray[dataArray.length - 1];
@@ -142,5 +160,57 @@ public class UtilityFunctions {
 			dataArray[0] = tempArray;
 		}
 		return dataArray;
+	}
+
+	public static final class ComplexFIDData {
+
+		public Complex[] signals;
+		public BigDecimal[] times;
+
+		public ComplexFIDData(Complex[] array, BigDecimal[] times) {
+			this.signals = array;
+			this.times = times;
+		}
+
+		public Collection<FIDSignal> toSignal() {
+
+			if(signals.length != times.length) {
+				throw new IllegalStateException("times length differs from signals length");
+			}
+			List<FIDSignal> list = new ArrayList<>(times.length);
+			for(int i = 0; i < times.length; i++) {
+				list.add(new ComplexFIDSignal(times[i], signals[i]));
+			}
+			return list;
+		}
+	}
+
+	private static final class ComplexFIDSignal implements FIDSignal {
+
+		private Complex complex;
+		private BigDecimal time;
+
+		public ComplexFIDSignal(BigDecimal time, Complex complex) {
+			this.time = time;
+			this.complex = complex;
+		}
+
+		@Override
+		public BigDecimal getSignalTime() {
+
+			return time;
+		}
+
+		@Override
+		public Number getRealComponent() {
+
+			return complex.getReal();
+		}
+
+		@Override
+		public Number getImaginaryComponent() {
+
+			return complex.getImaginary();
+		}
 	}
 }

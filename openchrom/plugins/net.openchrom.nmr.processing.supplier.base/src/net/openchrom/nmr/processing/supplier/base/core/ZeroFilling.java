@@ -8,8 +8,11 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - add general purpose static filling function
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
+
+import java.util.Arrays;
 
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.MeasurementNMR;
@@ -44,5 +47,22 @@ public class ZeroFilling {
 		double numberOfFourierPoints = newDataSize;
 		measurementNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
 		return zeroFilledFID;
+	}
+
+	public static Complex[] fill(Complex[] signals) {
+
+		if(signals == null) {
+			throw new IllegalArgumentException("Signals can't be null");
+		}
+		if(signals.length == 0) {
+			throw new IllegalArgumentException("Signals can't be empty");
+		}
+		int newLength = Math.max(2, (int)Math.pow(2, (int)(Math.ceil((Math.log(signals.length) / Math.log(2))))));
+		if(newLength == signals.length) {
+			return signals;
+		}
+		Complex[] copyOf = Arrays.copyOf(signals, newLength);
+		Arrays.fill(copyOf, signals.length, newLength, Complex.ZERO);
+		return copyOf;
 	}
 }

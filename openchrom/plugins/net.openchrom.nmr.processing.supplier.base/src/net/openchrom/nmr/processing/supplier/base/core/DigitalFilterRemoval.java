@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,97 +8,96 @@
  *
  * Contributors:
  * Alexander Stark - initial API and implementation
+ * Christoph Läubrich - Change to use a more generic API, cleanup the code and streamline the algorithm flow
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import java.util.Collection;
+
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.nmr.model.core.MeasurementNMR;
-import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
-import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
+import org.eclipse.chemclipse.filter.Filter;
+import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
+import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
+import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
+import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.osgi.service.component.annotations.Component;
 
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
 import net.openchrom.nmr.processing.supplier.base.settings.DigitalFilterRemovalSettings;
-import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
-public class DigitalFilterRemoval {
+@Component(service = {Filter.class, IMeasurementFilter.class})
+public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterRemovalSettings> {
 
-	public Complex[] removeDigitalFilter(MeasurementNMR measurementNMR, Complex[] FID, DigitalFilterRemovalSettings digitalFilterRemovalSettings) {
+	private static final String FILTER_NAME = "Digital Filter Removal";
+	private static final String MARKER = DigitalFilterRemoval.class.getName() + ".filtered";
 
-		FourierTransformationProcessor transform = new FourierTransformationProcessor();
-		UtilityFunctions utilityFunction = new UtilityFunctions();
-		ISignalExtractor signalExtractor = new SignalExtractor(measurementNMR);
-		//
-		Complex[] freeInductionDecay = FID;
-		Complex[] tempFID = new Complex[freeInductionDecay.length];
-		/*
-		 * Digital Filtering
-		 */
-		// necessary parameters for processing
-		double leftRotationFid = digitalFilterRemovalSettings.getLeftRotationFid();
-		measurementNMR.putProcessingParameters("leftRotationFid", leftRotationFid);
-		//
-		if(Math.abs(leftRotationFid) > 0.0) {
-			// // save old size here
-			// int originalFIDSize = freeInductionDecay.length;
-			//
-			Complex[] freeInductionDecayZeroFill = new Complex[freeInductionDecay.length];
-			Complex[] filteredNMRSpectrum = null;
-			//
-			// automatic zero filling just in case size != 2^n
-			int n = freeInductionDecay.length;
-			int nextPower = (int)(Math.ceil((Math.log(n) / Math.log(2))));
-			int previousPower = (int)(Math.floor(((Math.log(n) / Math.log(2)))));
-			if(nextPower != previousPower) {
-				// flag for used data
-				double digitalFilterZeroFill = 1;
-				measurementNMR.putProcessingParameters("digitalFilterZeroFill", digitalFilterZeroFill);
-				// zero filling
-				double autoZeroFill = 1;
-				measurementNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
-				//
-				double zeroFillingFactor = 0.0; // 0 = no action
-				measurementNMR.putProcessingParameters("zeroFillingFactor", zeroFillingFactor);
-				//
-				ZeroFilling zeroFiller = new ZeroFilling();
-				freeInductionDecayZeroFill = zeroFiller.zerofill(signalExtractor.extractIntensityProcessedFID(), measurementNMR, ZeroFillingFactor.AUTO);
-				// reset flags
-				autoZeroFill = 0;
-				measurementNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
-				digitalFilterZeroFill = 0;
-				measurementNMR.putProcessingParameters("digitalFilterZeroFill", digitalFilterZeroFill);
-				//
-				filteredNMRSpectrum = transform.fourierTransformNmrData(freeInductionDecayZeroFill, utilityFunction);
-			} else {
-				// no ZF!
-				double autoZeroFill = 0;
-				measurementNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
-				filteredNMRSpectrum = transform.fourierTransformNmrData(freeInductionDecay, utilityFunction);
-			}
-			// create filtered spectrum
-			Complex[] unfilteredNMRSpectrum = new Complex[filteredNMRSpectrum.length];
-			double[] digitalFilterFactor = new double[filteredNMRSpectrum.length];
-			int spectrumSize = filteredNMRSpectrum.length;
-			int f = 0;
-			Complex complexFactor = new Complex(-0.0, -1.0);
-			// remove the filter!
-			for(int i = 1; i <= spectrumSize; i++) {
-				double filterTermA = (double)i / spectrumSize;
-				double filterTermB = Math.floor(spectrumSize / 2);
-				digitalFilterFactor[f] = filterTermA - filterTermB;
-				Complex exponentialFactor = complexFactor.multiply(leftRotationFid * 2 * Math.PI * digitalFilterFactor[f]);
-				unfilteredNMRSpectrum[f] = filteredNMRSpectrum[f].multiply(exponentialFactor.exp());
-				f++;
-			}
-			// ifft => revert to fid
-			Complex[] tempUnfilteredSpectrum = transform.inverseFourierTransformData(unfilteredNMRSpectrum, utilityFunction);
-			// remove temporary zero filling if necessary
-			System.arraycopy(tempUnfilteredSpectrum, 0, tempFID, 0, tempFID.length);
-		} else {
-			// no digital filter, no zero filling
-			double autoZeroFill = 0;
-			measurementNMR.putProcessingParameters("autoZeroFill", autoZeroFill);
-			System.arraycopy(freeInductionDecay, 0, tempFID, 0, tempFID.length);
+	public DigitalFilterRemoval() {
+		super(DigitalFilterRemovalSettings.class);
+	}
+
+	@Override
+	protected boolean accepts(FIDMeasurement item) {
+
+		return item.getHeaderData(MARKER) == null;
+	}
+
+	@Override
+	public String getFilterName() {
+
+		return FILTER_NAME;
+	}
+
+	@Override
+	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, DigitalFilterRemovalSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+
+		double leftRotationFid = settings.getLeftRotationFid();
+		if(Double.isNaN(leftRotationFid)) {
+			messageConsumer.addWarnMessage(FILTER_NAME, "No left rotation value was given, returning unprocessed results");
+			return null;
 		}
+		if(Math.abs(leftRotationFid) > 0.0) {
+			FilteredFIDMeasurement filteredFIDMeasurement = new FilteredFIDMeasurement(measurement);
+			filteredFIDMeasurement.putHeaderData(MARKER, "true");
+			filteredFIDMeasurement.setSignals(DigitalFilterRemoval.removeDigitalFilter(measurement.getSignals(), leftRotationFid, messageConsumer));
+			return filteredFIDMeasurement;
+		} else {
+			messageConsumer.addWarnMessage(FILTER_NAME, "Left Rotation value must be greater than zero, skipp processing");
+			return null;
+		}
+	}
+
+	private static Collection<FIDSignal> removeDigitalFilter(Collection<? extends FIDSignal> signals, double leftRotationFid, MessageConsumer messageConsumer) {
+
+		ComplexFIDData freeInductionDecay = UtilityFunctions.toComplexFIDData(signals);
+		// automatic zero filling just in case size != 2^n
+		Complex[] freeInductionDecayZeroFill = ZeroFilling.fill(freeInductionDecay.signals);
+		Complex[] filteredNMRSpectrum = null;
 		//
-		return tempFID;
+		filteredNMRSpectrum = FourierTransformationProcessor.fourierTransformNmrData(freeInductionDecayZeroFill);
+		// create filtered spectrum
+		Complex[] unfilteredNMRSpectrum = new Complex[filteredNMRSpectrum.length];
+		double[] digitalFilterFactor = new double[filteredNMRSpectrum.length];
+		int spectrumSize = filteredNMRSpectrum.length;
+		int f = 0;
+		Complex complexFactor = new Complex(-0.0, -1.0);
+		// remove the filter!
+		for(int i = 1; i <= spectrumSize; i++) {
+			double filterTermA = (double)i / spectrumSize;
+			double filterTermB = Math.floor(spectrumSize / 2);
+			digitalFilterFactor[f] = filterTermA - filterTermB;
+			Complex exponentialFactor = complexFactor.multiply(leftRotationFid * 2 * Math.PI * digitalFilterFactor[f]);
+			unfilteredNMRSpectrum[f] = filteredNMRSpectrum[f].multiply(exponentialFactor.exp());
+			f++;
+		}
+		// ifft => revert to fid
+		Complex[] tempUnfilteredSpectrum = FourierTransformationProcessor.inverseFourierTransformData(unfilteredNMRSpectrum);
+		// copy transformed data back to datastructure
+		for(int i = 0; i < freeInductionDecay.signals.length; i++) {
+			freeInductionDecay.signals[i] = tempUnfilteredSpectrum[i];
+		}
+		return freeInductionDecay.toSignal();
 	}
 }
