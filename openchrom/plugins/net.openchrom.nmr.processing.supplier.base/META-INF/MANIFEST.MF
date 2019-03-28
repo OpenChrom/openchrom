@@ -29,4 +29,7 @@ Service-Component: OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.Digi
  OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.ExponentialApodizationFunctionProcessor.xml,
  OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.GaussianApodizationFunctionProcessor.xml,
  OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.DirectCurrentCorrection.xml,
- OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.FourierTransformationProcessor.xml
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.FourierTransformationProcessor.xml,
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.AutoPhaseCorrectionProcessor.xml,
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.BaselineCorrectionProcessor.xml,
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.PhaseCorrectionProcessor.xml

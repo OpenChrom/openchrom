@@ -13,11 +13,7 @@ package net.openchrom.nmr.processing.supplier.base.settings.support;
 
 import java.util.Collection;
 
-import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
-import org.eclipse.chemclipse.nmr.model.selection.DataNMRSelection;
-import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
-import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
-import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.ejml.simple.SimpleMatrix;
 
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
@@ -36,12 +32,10 @@ public class ChemicalShiftCalibrationUtilities {
 		return true;
 	}
 
-	public static double[] getChemicalShiftAxis(Collection<? extends IMeasurementNMR> experimentalDatasetsList) {
+	public static double[] getChemicalShiftAxis(Collection<? extends SpectrumMeasurement> experimentalDatasetsList) {
 
-		IMeasurementNMR measurementNMR = experimentalDatasetsList.iterator().next();
-		IDataNMRSelection dataNMRSelection = new DataNMRSelection(measurementNMR);
-		ISignalExtractor signalExtractor = new SignalExtractor(dataNMRSelection);
-		return signalExtractor.extractChemicalShift();
+		SpectrumMeasurement measurementNMR = experimentalDatasetsList.iterator().next();
+		return measurementNMR.getSignals().stream().mapToDouble(value -> value.getChemicalShift().doubleValue()).toArray();
 	}
 
 	public static int[] getActualPeakPositions(Interval<Integer> intervalIndices, SimpleMatrix calibratedData) {

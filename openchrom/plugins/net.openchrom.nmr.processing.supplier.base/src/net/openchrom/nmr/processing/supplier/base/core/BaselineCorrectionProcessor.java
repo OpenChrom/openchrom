@@ -1,5 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Alexander Stark - initial API and implementation
+ * Christoph Läubrich - rework for new filter model
+ *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -7,44 +20,59 @@ import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
-import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
-import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
-import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
-import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
-import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
-import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
-import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
-import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.filter.Filter;
+import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
+import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
+import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.osgi.service.component.annotations.Component;
 
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
 import net.openchrom.nmr.processing.supplier.base.settings.BaselineCorrectionSettings;
 
-public class BaselineCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
+@Component(service = {Filter.class, IMeasurementFilter.class})
+public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<BaselineCorrectionSettings> {
+
+	private static final String NAME = "Baseline Correction Processor";
 
 	public BaselineCorrectionProcessor() {
-
-		super();
-		// TODO Auto-generated constructor stub
+		super(BaselineCorrectionSettings.class);
 	}
 
 	@Override
-	public IProcessingInfo process(final IDataNMRSelection scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
+	public String getFilterName() {
 
-		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
-		if(!processingInfo.hasErrorMessages()) {
-			final BaselineCorrectionSettings settings = (BaselineCorrectionSettings)processorSettings;
-			ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
-			final Complex[] baselineCorrection = perform(signalExtractor, scanNMR, settings);
-			signalExtractor.setBaselineCorrection(baselineCorrection, true);
-			processingInfo.setProcessingResult(scanNMR);
-		}
-		return processingInfo;
+		return NAME;
 	}
 
-	private Complex[] perform(ISignalExtractor signalExtractor, IDataNMRSelection dataNMRSelection, final BaselineCorrectionSettings settings) {
+	@Override
+	protected FilteredMeasurement<?> doFiltering(SpectrumMeasurement measurement, BaselineCorrectionSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+
+		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurement.getSignals());
+		FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(measurement);
+		filtered.setSignals(spectrumData.toSignal());
+		return filtered;
+	}
+	//
+	// @Override
+	// public IProcessingInfo process(final IDataNMRSelection scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
+	//
+	// final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
+	// if(!processingInfo.hasErrorMessages()) {
+	// final BaselineCorrectionSettings settings = (BaselineCorrectionSettings)processorSettings;
+	// ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
+	// final Complex[] baselineCorrection = perform(signalExtractor, scanNMR, settings);
+	// signalExtractor.setBaselineCorrection(baselineCorrection, true);
+	// processingInfo.setProcessingResult(scanNMR);
+	// }
+	// return processingInfo;
+	// }
+
+	private void perform(SpectrumData spectrumData, final BaselineCorrectionSettings settings) {
 
 		int polynomialOrder = settings.getPolynomialOrder();
-		IMeasurementNMR measurementNMR = dataNMRSelection.getMeasurmentNMR();
 		/*
 		 * Matlab:
 		 * polyfit - Polynomial curve fitting
@@ -71,9 +99,9 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 		 * Literature: G. A. Pearson, Journal of Magnetic Resonance, 27, 265-272 (1977)
 		 */
 		// chemical shift axis used while fitting
-		double[] deltaAxisPPM = signalExtractor.extractChemicalShift();
-		// spectrum to be phase corrected
-		Complex[] phasedSignals = signalExtractor.extractPhaseCorrectedData();
+		BigDecimal[] deltaAxisPPM = spectrumData.chemicalShift;
+		// spectrum to be baseline corrected
+		Complex[] phasedSignals = spectrumData.signals;
 		//
 		Complex[] nmrSpectrumFTProcessedPhasedBaseline = new Complex[phasedSignals.length];
 		// change/select parameters for BC
@@ -110,7 +138,7 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 		//
 		// parts of the fitting routine
 		int maximumIterations = 1000;
-		int numberOfFourierPoints = measurementNMR.getProcessingParameters("numberOfFourierPoints").intValue();
+		int numberOfFourierPoints = spectrumData.signals.length;
 		double[] heavisideFunctionality = new double[nmrSpectrumBaselineCorrAbsolute.length];
 		for(int i = 0; i < heavisideFunctionality.length; i++) {
 			heavisideFunctionality[i] = 0;
@@ -170,11 +198,11 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 				for(int z = 0; z < phasedSignals.length; z++) {
 					if(fittingFunctionality[z] > 0) {
 						if(firstFit) {
-							realFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z], phasedSignals[z].getReal()));
-							imagFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z], phasedSignals[z].getImaginary()));
+							realFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z].doubleValue(), phasedSignals[z].getReal()));
+							imagFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z].doubleValue(), phasedSignals[z].getImaginary()));
 						} else {
-							realFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z], nmrSpectrumFTProcessedPhasedBaseline[z].getReal()));
-							imagFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z], nmrSpectrumFTProcessedPhasedBaseline[z].getImaginary()));
+							realFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z].doubleValue(), nmrSpectrumFTProcessedPhasedBaseline[z].getReal()));
+							imagFittingPoints.add(new WeightedObservedPoint(fittingWeight, deltaAxisPPM[z].doubleValue(), nmrSpectrumFTProcessedPhasedBaseline[z].getImaginary()));
 						}
 					} // else?? = 0 ??
 				}
@@ -186,8 +214,8 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 				final PolynomialFunction polyFuncReal = new PolynomialFunction(realCoeff);
 				final PolynomialFunction polyFuncImag = new PolynomialFunction(imagCoeff);
 				for(int s = 0; s < deltaAxisPPM.length; s++) {
-					baselineCorrectionReal[s] = polyFuncReal.value(deltaAxisPPM[s]);
-					baselineCorrectionImag[s] = polyFuncImag.value(deltaAxisPPM[s]);
+					baselineCorrectionReal[s] = polyFuncReal.value(deltaAxisPPM[s].doubleValue());
+					baselineCorrectionImag[s] = polyFuncImag.value(deltaAxisPPM[s].doubleValue());
 				}
 				// apply baseline correction
 				if(firstFit) {
@@ -238,6 +266,8 @@ public class BaselineCorrectionProcessor extends AbstractScanProcessor implement
 				System.out.println("maximum iterations reached.");
 			}
 		}
-		return baselineCorrection;
+		for(int j = 0; j < spectrumData.signals.length; j++) {
+			spectrumData.signals[j] = spectrumData.signals[j].multiply(baselineCorrection[j]);
+		}
 	}
 }

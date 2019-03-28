@@ -1,52 +1,82 @@
+/*******************************************************************************
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Alexander Stark - initial API and implementation
+ * Christoph Läubrich - rework for new filter model
+ *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.nmr.model.core.MeasurementNMR;
-import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
-import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
-import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
-import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
-import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
-import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
-import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.core.runtime.IProgressMonitor;
+import java.math.BigDecimal;
 
+import org.apache.commons.math3.complex.Complex;
+import org.eclipse.chemclipse.filter.Filter;
+import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
+import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
+import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.core.runtime.Adapters;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.osgi.service.component.annotations.Component;
+
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
 import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettings;
 
-public class PhaseCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
+@Component(service = {Filter.class, IMeasurementFilter.class})
+public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<PhaseCorrectionSettings> {
+
+	private static final String NAME = "Phase Correction Processor";
 
 	public PhaseCorrectionProcessor() {
-		super();
-		// TODO Auto-generated constructor stub
+		super(PhaseCorrectionSettings.class);
 	}
 
 	@Override
-	public IProcessingInfo process(final IDataNMRSelection scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
+	public String getFilterName() {
 
-		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
-		if(!processingInfo.hasErrorMessages()) {
-			final PhaseCorrectionSettings settings = (PhaseCorrectionSettings)processorSettings;
-			ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
-			final Complex[] phaseCorrection = perform(signalExtractor, scanNMR, settings);
-			signalExtractor.setPhaseCorrection(phaseCorrection, true);
-			processingInfo.setProcessingResult(scanNMR);
-		}
-		return processingInfo;
+		return NAME;
 	}
 
-	private Complex[] perform(ISignalExtractor signalExtractor, IDataNMRSelection scanNMR, final PhaseCorrectionSettings settings) {
+	@Override
+	protected FilteredMeasurement<?> doFiltering(SpectrumMeasurement measurement, PhaseCorrectionSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
-		double[] deltaAxisPPM = signalExtractor.extractChemicalShift();
+		FIDMeasurement fidMeasurement = Adapters.adapt(measurement, FIDMeasurement.class);
+		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurement.getSignals());
+		double firstDataOffset;
+		double sweepWidth;
+		if(fidMeasurement != null) {
+			sweepWidth = fidMeasurement.getSweepWidth();
+			firstDataOffset = fidMeasurement.getFirstDataPointOffset();
+		} else {
+			sweepWidth = 1;
+			firstDataOffset = 0;
+		}
+		Complex[] phaseCorrection = perform(spectrumData, settings, firstDataOffset, sweepWidth);
+		for(int i = 0; i < phaseCorrection.length; i++) {
+			spectrumData.signals[i] = spectrumData.signals[i].multiply(phaseCorrection[i]);
+		}
+		FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(measurement);
+		filtered.setSignals(spectrumData.toSignal());
+		return filtered;
+	}
+
+	private static Complex[] perform(SpectrumData spectrumData, final PhaseCorrectionSettings settings, double firstDataOffset, double sweepWidth) {
+
+		BigDecimal[] deltaAxisPPM = spectrumData.chemicalShift;
 		//
 		double leftPhaseChange = 0;
 		double rightPhaseChange = 0;
 		double firstOrderPhaseCorrection = 0;
 		double zeroOrderPhaseCorrection = 0;
 		Complex phaseCorrectionFactor = new Complex(0, (Math.PI / 180));
-		// TODO fix cast later
-		MeasurementNMR measurmentNMR = (MeasurementNMR)scanNMR.getMeasurmentNMR();
-		Double complexSize = measurmentNMR.getProcessingParameters("numberOfFourierPoints");
+		int complexSize = spectrumData.signals.length;
 		Complex phaseCorrectionComplexFactor;
 		double phasingPivotpoint = 0;
 		/*
@@ -54,69 +84,42 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		 */
 		PhaseCorrectionSettings phaseCorrectionSettings = new PhaseCorrectionSettings();
 		double dspPhaseFactor = phaseCorrectionSettings.getDspPhaseFactor();
-		measurmentNMR.putProcessingParameters("dspPhaseFactor", dspPhaseFactor);
 		// firstOrderPhaseCorrection
-		if(Double.valueOf(phaseCorrectionSettings.getFirstOrderPhaseCorrection()) instanceof Double) {
-			leftPhaseChange = phaseCorrectionSettings.getFirstOrderPhaseCorrection();
-		} else {
-			// leftPhaseChange = 0; // lp
-			//
-			if(measurmentNMR.headerDataContainsKey("procs_PHC1")) {
-				String procsPHC1 = measurmentNMR.getHeaderData("procs_PHC1");
-				try {
-					leftPhaseChange = Double.parseDouble(procsPHC1);
-				} catch(NumberFormatException e) {
-				}
-			}
-		}
+		leftPhaseChange = phaseCorrectionSettings.getFirstOrderPhaseCorrection();
 		// zeroOrderPhaseCorrection
-		if(Double.valueOf(phaseCorrectionSettings.getZeroOrderPhaseCorrection()) instanceof Double) {
-			rightPhaseChange = phaseCorrectionSettings.getZeroOrderPhaseCorrection();
-		} else {
-			// rightPhaseChange = 0; // rp
-			//
-			if(measurmentNMR.headerDataContainsKey("procs_PHC0")) {
-				String procsPHC0 = measurmentNMR.getHeaderData("procs_PHC0");
-				try {
-					rightPhaseChange = Double.parseDouble(procsPHC0);
-				} catch(NumberFormatException e) {
-				}
-			}
-		}
+		rightPhaseChange = phaseCorrectionSettings.getZeroOrderPhaseCorrection();
 		//
 		UtilityFunctions utilityFunction = new UtilityFunctions();
-		double[] leftPhaseCorrection = utilityFunction.generateLinearlySpacedVector(0, 1, complexSize.intValue());
+		double[] leftPhaseCorrection = utilityFunction.generateLinearlySpacedVector(0, 1, complexSize);
 		for(int i = 0; i < leftPhaseCorrection.length; i++) {
 			leftPhaseCorrection[i] *= leftPhaseChange;
 		}
-		double[] leftPhaseCorrectionDSP = new double[complexSize.intValue()];
+		double[] leftPhaseCorrectionDSP = new double[complexSize];
 		//
 		switch(phaseCorrectionSettings.getPivotPointSelection()) {
 			case LEFT:
 				// position off the peaks
-				phasingPivotpoint = deltaAxisPPM[0];
+				phasingPivotpoint = deltaAxisPPM[0].doubleValue();
 				break;
 			case MIDDLE:
 				// middle of spectrum
-				phasingPivotpoint = deltaAxisPPM[(complexSize.intValue() / 2) - 1];
+				phasingPivotpoint = deltaAxisPPM[(complexSize / 2) - 1].doubleValue();
 				break;
 			case PEAK_MAX:
 				// getMaxVal; at biggest peak in spectrum
-				double bigPeak = utilityFunction.getMaxValueOfArray(signalExtractor.extractFourierTransformedDataRealPart());
-				int peakPosition = ArrayUtils.indexOf(signalExtractor.extractFourierTransformedDataRealPart(), bigPeak);
-				phasingPivotpoint = deltaAxisPPM[peakPosition];
+				phasingPivotpoint = deltaAxisPPM[spectrumData.maxIndex].doubleValue();
 				break;
 			case USER_DEFINED:
 				// user input position
 				double userDefinedPosition = phaseCorrectionSettings.getUserDefinedPivotPointValue();
-				int userPeakPosition = utilityFunction.findIndexOfValue(deltaAxisPPM, userDefinedPosition);
-				phasingPivotpoint = deltaAxisPPM[userPeakPosition];
+				int userPeakPosition = UtilityFunctions.findIndexOfValue(deltaAxisPPM, userDefinedPosition);
+				phasingPivotpoint = deltaAxisPPM[userPeakPosition].doubleValue();
 				break;
 			case NOT_DEFINED:
 				// without setting pivot point
-				leftPhaseCorrectionDSP = utilityFunction.generateLinearlySpacedVector(0, 1, complexSize.intValue());
+				leftPhaseCorrectionDSP = utilityFunction.generateLinearlySpacedVector(0, 1, complexSize);
 				for(int i = 0; i < leftPhaseCorrectionDSP.length; i++) {
-					leftPhaseCorrectionDSP[i] *= measurmentNMR.getProcessingParameters("dspPhaseFactor"); // dspPhase
+					leftPhaseCorrectionDSP[i] *= dspPhaseFactor; // dspPhase
 				}
 				// generate correcti)on array
 				Complex[] phaseCorrection = new Complex[leftPhaseCorrectionDSP.length];
@@ -130,8 +133,8 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		/*
 		 * to be used later on with the GUI
 		 */
-		double phaseCorrectionTermA = (phasingPivotpoint - measurmentNMR.getProcessingParameters("firstDataPointOffset"));
-		double phaseCorrectionTermB = phaseCorrectionTermA / measurmentNMR.getProcessingParameters("sweepWidth");
+		double phaseCorrectionTermA = (phasingPivotpoint - firstDataOffset);
+		double phaseCorrectionTermB = phaseCorrectionTermA / sweepWidth;
 		double phaseCorrectionTermC = Math.round(complexSize * phaseCorrectionTermB);
 		double rightPhaseCorrectionleftPhase = -(leftPhaseCorrection[(int)phaseCorrectionTermC]);
 		rightPhaseChange += rightPhaseCorrectionleftPhase;
@@ -140,8 +143,6 @@ public class PhaseCorrectionProcessor extends AbstractScanProcessor implements I
 		zeroOrderPhaseCorrection = phaseCorrectionSettings.getZeroOrderPhaseCorrection() + rightPhaseChange;
 		phaseCorrectionSettings.setFirstOrderPhaseCorrection(firstOrderPhaseCorrection);
 		phaseCorrectionSettings.setZeroOrderPhaseCorrection(zeroOrderPhaseCorrection);
-		measurmentNMR.putProcessingParameters("firstOrderPhaseCorrection", firstOrderPhaseCorrection);
-		measurmentNMR.putProcessingParameters("zeroOrderPhaseCorrection", zeroOrderPhaseCorrection);
 		// }
 		// generate correction array
 		Complex[] phaseCorrection = new Complex[leftPhaseCorrectionDSP.length];

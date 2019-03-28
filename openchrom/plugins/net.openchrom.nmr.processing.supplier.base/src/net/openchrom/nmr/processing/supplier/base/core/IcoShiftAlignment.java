@@ -9,6 +9,7 @@
  * Contributors:
  * Alexander Stark - initial API and implementation
  * Jan Holy - refactoring
+ * Christoph Läubrich - rework for new filter model
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
@@ -27,16 +28,14 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
-import org.eclipse.chemclipse.nmr.model.selection.DataNMRSelection;
-import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
-import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
-import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
+import org.eclipse.chemclipse.model.core.IComplexSignal;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.ejml.simple.SimpleMatrix;
 
 import net.openchrom.nmr.processing.supplier.base.settings.ChemicalShiftCalibrationSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ChemicalShiftCalibrationTargetFunction;
+import net.openchrom.nmr.processing.supplier.base.settings.support.ChemicalShiftCalibrationUtilities;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentGapFillingType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentShiftCorrectionType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentTargetCalculationSelection;
@@ -78,7 +77,7 @@ public class IcoShiftAlignment {
 		this.calibrationSettings = calibrationSettings;
 	}
 
-	public SimpleMatrix process(Collection<? extends IMeasurementNMR> experimentalDatasetsList, IcoShiftAlignmentSettings settings) {
+	public SimpleMatrix process(Collection<? extends SpectrumMeasurement> experimentalDatasetsList, IcoShiftAlignmentSettings settings) {
 
 		// safety check for length of each spectrum; they all must have equal length!
 		checkLengthOfEachSpectrum(experimentalDatasetsList);
@@ -223,26 +222,26 @@ public class IcoShiftAlignment {
 		return maxTarget;
 	}
 
-	private SimpleMatrix extractMultipleSpectra(Collection<? extends IMeasurementNMR> experimentalDatasetsList) {
+	private SimpleMatrix extractMultipleSpectra(Collection<? extends SpectrumMeasurement> collection) {
 
-		IDataNMRSelection dataNMRSelect = new DataNMRSelection(experimentalDatasetsList.iterator().next());
-		int datapointsPerDataset = dataNMRSelect.getMeasurmentNMR().getScanMNR().getNumberOfFourierPoints();
+		SpectrumMeasurement next = collection.iterator().next();
+		int datapointsPerDataset = next.getSignals().size();
 		if(datapointsPerDataset == 0) {
 			throw new IllegalArgumentException("No datapoints for dataset found!");
 		}
-		int numberOfDatasets = experimentalDatasetsList.size();
+		int numberOfDatasets = collection.size();
 		SimpleMatrix experimentalDatasetsMatrix = new SimpleMatrix(numberOfDatasets, datapointsPerDataset);
 		int matrixRow = 0;
 		//
-		for(IMeasurementNMR measurementNMR : experimentalDatasetsList) {
-			ISignalExtractor signalExtractor = new SignalExtractor(measurementNMR);
-			experimentalDatasetsMatrix.setRow(matrixRow, 0, signalExtractor.extractFourierTransformedDataRealPart());
+		for(SpectrumMeasurement spectrumMeasurement : collection) {
+			double[] array = spectrumMeasurement.getSignals().stream().mapToDouble(IComplexSignal::getX).toArray();
+			experimentalDatasetsMatrix.setRow(matrixRow, 0, array);
 			matrixRow++;
 		}
 		return experimentalDatasetsMatrix;
 	}
 
-	private SortedMap<Integer, Interval<Integer>> calculateIntervals(Collection<? extends IMeasurementNMR> experimentalDatasetsList, IcoShiftAlignmentSettings settings) {
+	private SortedMap<Integer, Interval<Integer>> calculateIntervals(Collection<? extends SpectrumMeasurement> collection, IcoShiftAlignmentSettings settings) {
 
 		// map to store throughout numbered intervals
 		SortedMap<Integer, Interval<Integer>> intervalRegionsMap = new TreeMap<>();
@@ -253,11 +252,8 @@ public class IcoShiftAlignment {
 		 * length, the algorithm should be able to work with it.
 		 */
 		//
-		IMeasurementNMR measureNMR = experimentalDatasetsList.iterator().next();
-		IDataNMRSelection dataNMRSelect = new DataNMRSelection(measureNMR);
-		ISignalExtractor signalExtract = new SignalExtractor(dataNMRSelect);
-		double[] chemicalShiftAxis = signalExtract.extractChemicalShift();
-		int lengthOfDataset = dataNMRSelect.getMeasurmentNMR().getScanMNR().getNumberOfFourierPoints();
+		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(collection);
+		int lengthOfDataset = chemicalShiftAxis.length;
 		UtilityFunctions utilityFunction = new UtilityFunctions();
 		//
 		IcoShiftAlignmentUtilities shiftUtils = new IcoShiftAlignmentUtilities();
@@ -737,14 +733,12 @@ public class IcoShiftAlignment {
 		});
 	}
 
-	private void checkLengthOfEachSpectrum(Collection<? extends IMeasurementNMR> experimentalDatasetsList) {
+	private void checkLengthOfEachSpectrum(Collection<? extends SpectrumMeasurement> collection) {
 
-		double[] collectNumberOfFourierPoints = new double[experimentalDatasetsList.size()];
+		double[] collectNumberOfFourierPoints = new double[collection.size()];
 		int i = 0;
-		for(Object o : experimentalDatasetsList) {
-			IMeasurementNMR measureNMR = (IMeasurementNMR)o;
-			IDataNMRSelection dataNMRSelect = new DataNMRSelection(measureNMR);
-			collectNumberOfFourierPoints[i] = dataNMRSelect.getMeasurmentNMR().getProcessingParameters("numberOfFourierPoints");
+		for(SpectrumMeasurement o : collection) {
+			collectNumberOfFourierPoints[i] = o.getSignals().size();
 			i++;
 		}
 		//

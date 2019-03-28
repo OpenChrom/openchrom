@@ -18,7 +18,6 @@ import java.util.List;
 
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
-import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 
 public class UtilityFunctions {
@@ -40,37 +39,18 @@ public class UtilityFunctions {
 		Complex[] array = new Complex[signals.size()];
 		BigDecimal[] chemicalShift = new BigDecimal[signals.size()];
 		int i = 0;
+		int maxIndex = 0;
+		double maxValue = Double.MIN_NORMAL;
 		for(SpectrumSignal signal : signals) {
-			array[i] = new Complex(signal.getY(), signal.getImaginaryY());
+			double real = signal.getY();
+			array[i] = new Complex(real, signal.getImaginaryY());
 			chemicalShift[i] = signal.getChemicalShift();
+			if(real > maxValue) {
+				maxValue = real;
+				maxIndex = i;
+			}
 		}
-		return new SpectrumData(array, chemicalShift);
-	}
-
-	public double[] generateChemicalShiftAxis(IMeasurementNMR scanNMR) {
-
-		double doubleSize = scanNMR.getProcessingParameters("numberOfFourierPoints");
-		int deltaAxisPoints = (int)doubleSize;
-		double[] chemicalShiftAxis = new double[(int)doubleSize];
-		double minValueDeltaAxis = scanNMR.getProcessingParameters("firstDataPointOffset");
-		double maxValueDeltaAxis = scanNMR.getProcessingParameters("sweepWidth") + scanNMR.getProcessingParameters("firstDataPointOffset");
-		chemicalShiftAxis = generateLinearlySpacedVector(minValueDeltaAxis, maxValueDeltaAxis, deltaAxisPoints);
-		return chemicalShiftAxis;
-	}
-
-	public long[] generateTimeScale(IMeasurementNMR vendorScan) {
-
-		double minValTimescale = 0;
-		double maxValTimescaleFactor = (vendorScan.getProcessingParameters("numberOfFourierPoints") / vendorScan.getProcessingParameters("numberOfPoints"));
-		double maxValTimescale = vendorScan.getProcessingParameters("acquisitionTime") * maxValTimescaleFactor; // linspace(0,NmrData.at*(NmrData.fn/NmrData.np),NmrData.fn);
-		int timescalePoints = vendorScan.getProcessingParameters("numberOfFourierPoints").intValue();
-		double[] timeScaleTemp = generateLinearlySpacedVector(minValTimescale, maxValTimescale, timescalePoints); // for ft-operation
-		// else: double[] TimeScale = GenerateLinearlySpacedVector(minValTimescale, BrukerAT, TimescalePoints);
-		long[] timeScale = new long[timeScaleTemp.length];
-		for(int i = 0; i < timeScaleTemp.length; i++) {
-			timeScale[i] = (long)(timeScaleTemp[i] * 1000000);
-		}
-		return timeScale;
+		return new SpectrumData(array, chemicalShift, maxIndex);
 	}
 
 	public double[] generateLinearlySpacedVector(double minVal, double maxVal, int points) {
@@ -116,6 +96,29 @@ public class UtilityFunctions {
 		int reverseIndex = array.length - 1;
 		for(; reverseIndex > 0; reverseIndex--) {
 			if(Math.abs(array[reverseIndex] - value) < 0.001) {
+				break;
+			}
+		}
+		//
+		if(Double.compare(value, 0.0) < 0) {
+			return (int)Math.floor((reverseIndex + index) / 2);
+		} else {
+			return (int)Math.ceil((reverseIndex + index) / 2);
+		}
+	}
+
+	public static int findIndexOfValue(BigDecimal[] array, double value) {
+
+		int index;
+		for(index = 0; index < array.length; index++) {
+			if(Math.abs(array[index].doubleValue() - value) < 0.001) {
+				break;
+			}
+		}
+		//
+		int reverseIndex = array.length - 1;
+		for(; reverseIndex > 0; reverseIndex--) {
+			if(Math.abs(array[reverseIndex].doubleValue() - value) < 0.001) {
 				break;
 			}
 		}
@@ -179,10 +182,12 @@ public class UtilityFunctions {
 
 		public Complex[] signals;
 		public BigDecimal[] chemicalShift;
+		public int maxIndex;
 
-		public SpectrumData(Complex[] array, BigDecimal[] chemicalShift) {
+		public SpectrumData(Complex[] array, BigDecimal[] chemicalShift, int maxIndex) {
 			this.signals = array;
 			this.chemicalShift = chemicalShift;
+			this.maxIndex = maxIndex;
 		}
 
 		public Collection<SpectrumSignal> toSignal() {
@@ -218,35 +223,6 @@ public class UtilityFunctions {
 				list.add(new ComplexFIDSignal(times[i], signals[i]));
 			}
 			return list;
-		}
-	}
-
-	private static final class ComplexSpectrumSignal implements SpectrumSignal {
-
-		private Complex complex;
-		private BigDecimal shift;
-
-		public ComplexSpectrumSignal(BigDecimal shift, Complex complex) {
-			this.shift = shift;
-			this.complex = complex;
-		}
-
-		@Override
-		public BigDecimal getChemicalShift() {
-
-			return shift;
-		}
-
-		@Override
-		public Number getAbsorptiveIntensity() {
-
-			return complex.getReal();
-		}
-
-		@Override
-		public Number getDispersiveIntensity() {
-
-			return complex.getImaginary();
 		}
 	}
 

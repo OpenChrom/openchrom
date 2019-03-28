@@ -11,14 +11,16 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
-import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
-import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
+import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.ejml.simple.SimpleMatrix;
 
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
 import net.openchrom.nmr.processing.supplier.base.settings.ChemicalShiftCalibrationSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ChemicalShiftCalibrationTargetCalculation;
@@ -49,7 +51,7 @@ public class ChemicalShiftCalibration {
 	 *
 	 * @author Alexander Stark
 	 */
-	public SimpleMatrix calibrate(Collection<? extends IMeasurementNMR> experimentalDatasetsList, ChemicalShiftCalibrationSettings calibrationSettings) {
+	public SimpleMatrix calibrate(Collection<? extends SpectrumMeasurement> experimentalDatasetsList, ChemicalShiftCalibrationSettings calibrationSettings) {
 
 		IcoShiftAlignmentSettings alignmentSettings = generateAlignmentSettings();
 		IcoShiftAlignment icoShiftAlignment = new IcoShiftAlignment();
@@ -62,7 +64,7 @@ public class ChemicalShiftCalibration {
 		SimpleMatrix calibratedData = icoShiftAlignment.process(experimentalDatasetsList, alignmentSettings);
 		//
 		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(experimentalDatasetsList);
-		Collection<? extends IMeasurementNMR> newDatasetsList = copyPartlyCalibratedData(experimentalDatasetsList, calibratedData);
+		Collection<? extends SpectrumMeasurement> newDatasetsList = copyPartlyCalibratedData(experimentalDatasetsList, calibratedData);
 		int checkIterator = 0;
 		while(!checkCalibration(calibratedData, chemicalShiftAxis, alignmentSettings)) { // check for quality of calibration
 			newDatasetsList = copyPartlyCalibratedData(newDatasetsList, calibratedData);
@@ -102,23 +104,23 @@ public class ChemicalShiftCalibration {
 		return ChemicalShiftCalibrationUtilities.isSamePeakPosition(actualPositions, intendedPosition);
 	}
 
-	private static Collection<? extends IMeasurementNMR> copyPartlyCalibratedData(Collection<? extends IMeasurementNMR> datasetsList, SimpleMatrix calibratedData) {
+	private static Collection<? extends SpectrumMeasurement> copyPartlyCalibratedData(Collection<? extends SpectrumMeasurement> experimentalDatasetsList, SimpleMatrix calibratedData) {
 
-		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(datasetsList);
-		//
+		Collection<SpectrumMeasurement> result = new ArrayList<>();
 		int r = 0;
-		for(IMeasurementNMR measurementNMR : datasetsList) {
+		for(SpectrumMeasurement measurementNMR : experimentalDatasetsList) {
+			SpectrumData complexSpectrumData = UtilityFunctions.toComplexSpectrumData(measurementNMR.getSignals());
 			double[] rowVector = calibratedData.extractVector(true, r).getMatrix().getData();
 			r++;
-			Complex[] complexVector = new Complex[rowVector.length];
-			for(int c = 0; c < complexVector.length; c++) {
-				complexVector[c] = new Complex(rowVector[c], 0);
+			List<ComplexSpectrumSignal> newSignals = new ArrayList<>();
+			for(int c = 0; c < rowVector.length; c++) {
+				newSignals.add(new ComplexSpectrumSignal(complexSpectrumData.chemicalShift[c], new Complex(rowVector[c], 0)));
 			}
-			//
-			ISignalExtractor signalExtractor = new SignalExtractor(measurementNMR);
-			signalExtractor.storeFrequencyDomainSpectrum(complexVector, chemicalShiftAxis);
+			FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(measurementNMR);
+			filtered.setSignals(newSignals);
+			result.add(filtered);
 		}
-		return datasetsList;
+		return result;
 	}
 
 	private static SimpleMatrix finalPeakCalibration(SimpleMatrix calibratedData, double[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {

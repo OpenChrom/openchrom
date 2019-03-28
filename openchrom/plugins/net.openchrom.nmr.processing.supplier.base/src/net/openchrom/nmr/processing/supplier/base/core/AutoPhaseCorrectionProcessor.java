@@ -1,9 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Alexander Stark - initial API and implementation
+ * Christoph Läubrich - rework for new filter model
+ *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
 import java.util.Arrays;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.math3.analysis.MultivariateFunction;
 import org.apache.commons.math3.complex.Complex;
@@ -20,68 +29,53 @@ import org.apache.commons.math3.random.GaussianRandomGenerator;
 import org.apache.commons.math3.random.JDKRandomGenerator;
 import org.apache.commons.math3.random.RandomVectorGenerator;
 import org.apache.commons.math3.random.UncorrelatedRandomVectorGenerator;
-import org.eclipse.chemclipse.nmr.model.core.MeasurementNMR;
-import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
-import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
-import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
-import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
-import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
-import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
-import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.filter.Filter;
+import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
+import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
+import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.osgi.service.component.annotations.Component;
 
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
 import net.openchrom.nmr.processing.supplier.base.settings.AutoPhaseCorrectionSettings;
 
-public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implements IScanProcessor {
+@Component(service = {Filter.class, IMeasurementFilter.class})
+public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<AutoPhaseCorrectionSettings> {
+
+	private static final String NAME = "Auto Phase Correction Processor";
 
 	public AutoPhaseCorrectionProcessor() {
-		super();
-		// TODO Auto-generated constructor stub
+		super(AutoPhaseCorrectionSettings.class);
 	}
 
 	@Override
-	public IProcessingInfo process(final IDataNMRSelection scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
+	public String getFilterName() {
 
-		final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
-		if(!processingInfo.hasErrorMessages()) {
-			final AutoPhaseCorrectionSettings settings = (AutoPhaseCorrectionSettings)processorSettings;
-			ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
-			final Complex[] phaseCorrection = perform(signalExtractor, scanNMR, settings);
-			signalExtractor.setPhaseCorrection(phaseCorrection, true);
-			processingInfo.setProcessingResult(scanNMR);
-		}
-		return processingInfo;
+		return NAME;
 	}
 
-	private Complex[] perform(ISignalExtractor signalExtractor, IDataNMRSelection dataNMRSelection, final AutoPhaseCorrectionSettings settings) {
+	@Override
+	protected FilteredMeasurement<?> doFiltering(SpectrumMeasurement measurement, AutoPhaseCorrectionSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
-		// TODO fix cast later
-		MeasurementNMR measurementNMR = (MeasurementNMR)dataNMRSelection.getMeasurmentNMR();
-		Complex[] fourierTransformedSignals = signalExtractor.extractFourierTransformedData();
+		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurement.getSignals());
+		perform(spectrumData, settings);
+		FilteredSpectrumMeasurement spectrumMeasurement = new FilteredSpectrumMeasurement(measurement);
+		spectrumMeasurement.setSignals(spectrumData.toSignal());
+		return spectrumMeasurement;
+	}
+
+	private static void perform(SpectrumData spectrumData, final AutoPhaseCorrectionSettings settings) {
+
+		Complex[] fourierTransformedSignals = spectrumData.signals;
 		//
-		double leftPhaseChange = 0;
-		double rightPhaseChange = 0;
-		//
-		boolean tweakFlag = false;
-		try {
-			for(Map.Entry<String, String> e : measurementNMR.getHeaderDataMap().entrySet()) {
-				if(e.getKey().contains("JCAMP-DX")) {
-					Pattern p = Pattern.compile("\\b" + "JCAMP-DX" + "\\b");
-					Matcher m = p.matcher(e.getKey());
-					if(m.find()) {
-						tweakFlag = true;
-					}
-				}
-			}
-		} catch(Exception e) {
-			throw new IllegalStateException("Variable not detected!");
-		}
 		//
 		/*
 		 * ACME algorithm - Chen et al., J Magn Res 2002, 158 (1), 164–168.
 		 */
 		// parts of optimizer
-		CalculateACMEEntropy calculateACMEEntropyFcn = new CalculateACMEEntropy(signalExtractor.extractFourierTransformedData(), tweakFlag);
+		CalculateACMEEntropy calculateACMEEntropyFcn = new CalculateACMEEntropy(fourierTransformedSignals, settings.getPenaltyFactor());
 		SimplexOptimizer nestedSimplexOptimizer = new SimplexOptimizer(1e-10, 1e-30);
 		double[] initialGuessMultiStart = new double[]{0, 0}; // {rightPhaseChange, leftPhaseChange};
 		NelderMeadSimplex nelderMeadSimplex = new NelderMeadSimplex(initialGuessMultiStart.length);
@@ -100,27 +94,25 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 		// optimized values
 		double[] phaseOpt = new double[initialGuessMultiStart.length];
 		phaseOpt[0] = optimizedPhaseValues.getKey()[0];
-		measurementNMR.putProcessingParameters("zeroOrderPhaseCorrection", phaseOpt[0]);
-		rightPhaseChange = phaseOpt[0];
 		phaseOpt[1] = optimizedPhaseValues.getKey()[1];
-		measurementNMR.putProcessingParameters("firstOrderPhaseCorrection", phaseOpt[1]);
-		leftPhaseChange = phaseOpt[1];
 		//
-		System.out.println("No. of evaluations: " + calculateACMEEntropyFcn.getCount() + ", PH0: " + rightPhaseChange + ", PH1: " + leftPhaseChange);
 		// phase spectrum - ps
-		return generatePhaseCorrection(fourierTransformedSignals.length, phaseOpt);
+		Complex[] phaseCorrection = generatePhaseCorrection(fourierTransformedSignals.length, phaseOpt);
+		for(int i = 0; i < phaseCorrection.length; i++) {
+			spectrumData.signals[i] = spectrumData.signals[i].multiply(phaseCorrection[i]);
+		}
 	}
 
 	private static class CalculateACMEEntropy implements MultivariateFunction {
 
 		private final Complex[] fourierTransformedData;
 		private int iterCount;
-		private boolean tweakFlag;
+		private double penaltyFactor;
 
-		public CalculateACMEEntropy(Complex[] fourierTransformedData, boolean tweakFlag) {
+		public CalculateACMEEntropy(Complex[] fourierTransformedData, double penaltyFactor) {
 			this.fourierTransformedData = fourierTransformedData;
+			this.penaltyFactor = penaltyFactor;
 			this.iterCount = 0;
-			this.tweakFlag = tweakFlag;
 		}
 
 		@Override
@@ -181,17 +173,6 @@ public class AutoPhaseCorrectionProcessor extends AbstractScanProcessor implemen
 				}
 				double nmrDataRealAbsoluteSquare = Arrays.stream(tempSquare).sum();
 				pFun = pFun + nmrDataRealAbsoluteSquare / 4 / dataSize / dataSize;
-			}
-			double finalTweaking = 5; // values in the range from 1.1 to 5 seem good
-			// double finalTweaking = ThreadLocalRandom.current().nextDouble(1.1, 5.1); a way to automate the process?
-			// =====> with a too big range the optimizer cannot find the minimum!
-			//
-			// Following it is conceivable to divide or multiply the penaltyFactor; Division currently preferred
-			double penaltyFactor = 0;
-			if(tweakFlag) {
-				penaltyFactor = 1E9 / finalTweaking; // to balance the contributions of the entropy and penalty parts
-			} else {
-				penaltyFactor = 1E-9 / finalTweaking; // to balance the contributions of the entropy and penalty parts
 			}
 			double penaltyFunction = penaltyFactor * pFun;
 			iterCount++;
