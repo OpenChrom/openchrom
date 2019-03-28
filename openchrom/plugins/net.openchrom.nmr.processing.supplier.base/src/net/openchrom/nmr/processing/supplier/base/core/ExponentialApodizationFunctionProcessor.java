@@ -8,64 +8,59 @@
  *
  * Contributors:
  * Jan Holy - initial API and implementation
+ * Christoph Läubrich - complete rework of filter
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
-import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
-import org.eclipse.chemclipse.nmr.model.support.ISignalExtractor;
-import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
-import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
-import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
-import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
-import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.core.runtime.IProgressMonitor;
+import java.math.BigDecimal;
 
+import org.eclipse.chemclipse.filter.Filter;
+import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
+import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
+import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.osgi.service.component.annotations.Component;
+
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
 import net.openchrom.nmr.processing.supplier.base.settings.ExponentialApodizationSettings;
 
-public class ExponentialApodizationFunctionProcessor extends AbstractScanProcessor implements IScanProcessor {
+@Component(service = {Filter.class, IMeasurementFilter.class})
+public class ExponentialApodizationFunctionProcessor extends AbstractFIDSignalFilter<ExponentialApodizationSettings> {
 
-	@Override
-	public IProcessingInfo process(IDataNMRSelection scanNMR, IProcessorSettings processorSettings, IProgressMonitor monitor) {
+	private static final String FILTER_NAME = "Exponential Apodization Function";
+	private static final BigDecimal PI = BigDecimal.valueOf(Math.PI);
 
-		IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
-		if(!processingInfo.hasErrorMessages()) {
-			ExponentialApodizationSettings settings = (ExponentialApodizationSettings)processorSettings;
-			ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
-			double[] exponentialApodization = ExponentialApodizationFunction(scanNMR, signalExtractor, settings);
-			signalExtractor.setScansFIDCorrection(exponentialApodization, false);
-			processingInfo.setProcessingResult(scanNMR);
-		}
-		return processingInfo;
+	public ExponentialApodizationFunctionProcessor() {
+		super(ExponentialApodizationSettings.class);
 	}
 
-	private double[] ExponentialApodizationFunction(IDataNMRSelection scanNMR, ISignalExtractor signalExtractor, ExponentialApodizationSettings exponentialApodizationSettings) {
+	@Override
+	public String getFilterName() {
 
-		// Get Timescale
-		long[] time = signalExtractor.extractAcquisitionTimeFID();// generateTimeScale(scanNMR);
-		double[] timeScale = new double[time.length];
-		for(int i = 0; i < time.length; i++) {
-			timeScale[i] = time[i] / 1000000.0;
-		}
-		//
-		double exponentialLineBroadeningFactor = exponentialApodizationSettings.getExponentialLineBroadeningFactor();
-		/*
-		 * if(scanNMR.processingParametersContainsKey("exponentialLineBroadeningFactor")) {
-		 * exponentialLineBroadeningFactor = scanNMR.getProcessingParameters("exponentialLineBroadeningFactor");
-		 * }
-		 */
-		double[] exponentialLineBroadening = new double[timeScale.length];
-		double exponentialLineBroadenigTerm;
-		if(exponentialLineBroadeningFactor > 0) {
-			for(int i = 0; i < timeScale.length; i++) { // Lbfunc=exp(-Timescale'*pi*NmrData.lb);
-				exponentialLineBroadenigTerm = (-timeScale[i] * Math.PI * exponentialLineBroadeningFactor);
-				exponentialLineBroadening[i] = Math.exp(exponentialLineBroadenigTerm);
+		return FILTER_NAME;
+	}
+
+	@Override
+	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, ExponentialApodizationSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+
+		double broadeningFactor = settings.getExponentialLineBroadeningFactor();
+		if(broadeningFactor > 0 || broadeningFactor < 0) {
+			BigDecimal factor = BigDecimal.valueOf(broadeningFactor);
+			FilteredFIDMeasurement fidMeasurement = new FilteredFIDMeasurement(measurement);
+			ComplexFIDData data = UtilityFunctions.toComplexFIDData(measurement.getSignals());
+			for(int i = 0; i < data.times.length; i++) {
+				BigDecimal time = data.times[i];
+				// Lbfunc=exp(-Timescale'*pi*NmrData.lb);
+				BigDecimal exponentialLineBroadenigTerm = time.negate().multiply(PI).multiply(factor);
+				double exponentialLineBroadening = Math.exp(exponentialLineBroadenigTerm.doubleValue());
+				data.signals[i] = data.signals[i].multiply(exponentialLineBroadening);
 			}
-		} else {
-			for(int i = 0; i < timeScale.length; i++) {
-				exponentialLineBroadening[i] = (timeScale[i] * 0 + 1);
-			}
+			fidMeasurement.setSignals(data.toSignal());
+			return fidMeasurement;
 		}
-		//
-		return exponentialLineBroadening;
+		messageConsumer.addWarnMessage(FILTER_NAME, "ExponentialLineBroadeningFactor mut be greater or smaller than zero, skipped filtering");
+		return null;
 	}
 }

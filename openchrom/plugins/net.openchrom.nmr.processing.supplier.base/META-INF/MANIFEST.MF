@@ -23,5 +23,8 @@ Import-Package: org.apache.commons.lang3;version="3.2.1",
  org.eclipse.chemclipse.filter;version="[1.0.0,1.1.0)",
  org.eclipse.chemclipse.model.core,
  org.eclipse.chemclipse.nmr.converter.core,
- org.osgi.service.component;version="1.2.2"
-Service-Component: OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.DigitalFilterRemoval.xml
+ org.osgi.service.component;version="1.2.2",
+ org.osgi.service.component.annotations;version="1.2.0"
+Service-Component: OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.DigitalFilterRemoval.xml,
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.ExponentialApodizationFunctionProcessor.xml,
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.GaussianApodizationFunctionProcessor.xml
