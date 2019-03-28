@@ -9,6 +9,7 @@
  * Contributors:
  * Alexander Stark - initial API and implementation
  * Jan Holy - implementation
+ * Christoph Läubrich rework to use new filtering API, cleanup algorithm
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
@@ -16,121 +17,127 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
-import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
-import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
-import org.eclipse.chemclipse.nmr.processor.core.AbstractScanProcessor;
-import org.eclipse.chemclipse.nmr.processor.core.IScanProcessor;
-import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
-import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.filter.Filter;
+import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
+import org.eclipse.chemclipse.model.core.IMeasurement;
+import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
+import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
+import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.osgi.service.component.annotations.Component;
 
-public class DirectCurrentCorrection extends AbstractScanProcessor implements IScanProcessor {
-	/*
-	 * TODO: insert DC correction for FID and spectrum here
-	 */
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
+import net.openchrom.nmr.processing.supplier.base.settings.DirectCurrentCorrectionSettings;
 
-	@Override
-	public IProcessingInfo process(IDataNMRSelection scanNMR, IProcessorSettings processorSettings, IProgressMonitor monitor) {
+@Component(service = {Filter.class, IMeasurementFilter.class})
+public class DirectCurrentCorrection extends AbstractComplexSignalFilter<DirectCurrentCorrectionSettings, IComplexSignalMeasurement<?>> {
 
-		IProcessingInfo processInfo = super.validate(scanNMR, processorSettings);
-		if(!processInfo.hasErrorMessages()) {
-			IMeasurementNMR dataNMRSelection = scanNMR.getMeasurmentNMR();
-			SignalExtractor signalExtractor = new SignalExtractor(dataNMRSelection);
-			Complex[] processSignal = directCurrentCorrectionFID(signalExtractor.extractIntensityPreprocessedFID(), dataNMRSelection);
-			signalExtractor.setPreprocessFID(processSignal);
-			processInfo.setProcessingResult(dataNMRSelection);
-		}
-		return processInfo;
+	public DirectCurrentCorrection() {
+		super(DirectCurrentCorrectionSettings.class);
 	}
 
-	private Complex[] directCurrentCorrectionFID(Complex[] complexSignals, IMeasurementNMR measurementNMR) {
+	private static final String FILTER_NAME = "DirectCurrentCorrection";
 
-		/*
-		 * to be used before FT
-		 */
+	private static void directCurrentCorrectionFID(ComplexFIDData fidData) {
+
 		// following as used in GNAT
-		int numberOfFourierPoints = measurementNMR.getProcessingParameters("numberOfFourierPoints").intValue();
-		int numberOfPoints = measurementNMR.getProcessingParameters("numberOfPoints").intValue();
-		int directCurrentPointsTerm = 5 * numberOfFourierPoints / 20;
+		int numberOfPoints = fidData.signals.length;
+		int directCurrentPointsTerm = 5 * numberOfPoints / 20;
 		int directCurrentPoints = Math.round(directCurrentPointsTerm);
-		/*
-		 * select direct current correction for FID
-		 */
-		int directCurrentFID = 1; // 0 = No, 1 = Yes
 		//
-		Complex[] freeInductionDecay = new Complex[complexSignals.length];
-		Complex[] complexSignalsDCcopy = new Complex[complexSignals.length - directCurrentPoints];
-		Complex complexSignalsDCcopyAverage = new Complex(0, 0);
-		double[] complexSignalsReal = new double[complexSignals.length];
-		double[] complexSignalsImag = new double[complexSignals.length];
-		// for (int k = 1; k <= dataArrayDimension; k++) { // expand for nD dimensions
-		/*
-		 * assuming that numberOfFourierPoints will never be less than numberOfPoints
-		 */
-		if(directCurrentFID > 0) {
-			complexSignalsDCcopy = Arrays.copyOfRange(complexSignals, directCurrentPoints, complexSignals.length);
-			for(int i = 0; i < complexSignalsDCcopy.length; i++) {
-				complexSignalsReal[i] = (complexSignalsDCcopy[i].getReal());
-				complexSignalsImag[i] = (complexSignalsDCcopy[i].getImaginary());
-			}
-			double realAverage = Arrays.stream(complexSignalsReal).average().getAsDouble();
-			double imagAverage = Arrays.stream(complexSignalsImag).average().getAsDouble();
-			complexSignalsDCcopyAverage = new Complex(realAverage, imagAverage);
-			for(int i = 0; i < numberOfFourierPoints; i++) {
-				freeInductionDecay[i] = complexSignals[i].subtract(complexSignalsDCcopyAverage);
-			}
-		} else {
-			freeInductionDecay = Arrays.copyOfRange(complexSignals, 0, numberOfFourierPoints);
+		Complex[] complexSignalsDCcopy = new Complex[numberOfPoints - directCurrentPoints];
+		double[] complexSignalsReal = new double[numberOfPoints];
+		double[] complexSignalsImag = new double[numberOfPoints];
+		complexSignalsDCcopy = Arrays.copyOfRange(fidData.signals, directCurrentPoints, numberOfPoints);
+		for(int i = 0; i < complexSignalsDCcopy.length; i++) {
+			complexSignalsReal[i] = (complexSignalsDCcopy[i].getReal());
+			complexSignalsImag[i] = (complexSignalsDCcopy[i].getImaginary());
 		}
-		// }
-		return freeInductionDecay;
+		double realAverage = Arrays.stream(complexSignalsReal).average().getAsDouble();
+		double imagAverage = Arrays.stream(complexSignalsImag).average().getAsDouble();
+		Complex complexSignalsDCcopyAverage = new Complex(realAverage, imagAverage);
+		for(int i = 0; i < numberOfPoints; i++) {
+			fidData.signals[i] = fidData.signals[i].subtract(complexSignalsDCcopyAverage);
+		}
 	}
 
-	public Complex[] directCurrentCorrectionSpectrum(Complex[] nmrSpectrumProcessedPhased, IDataNMRSelection dataNMRSelection) {
+	public Complex[] directCurrentCorrectionSpectrum(SpectrumData spectrumData) {
 
 		/*
 		 * to be used after phase correction
 		 */
 		// TODO select direct current correction for spectrum
-		IMeasurementNMR measurementNMR = dataNMRSelection.getMeasurmentNMR();
-		int directCurrentSpec = 1; // 0 = No, 1 = Yes
-		Complex[] nmrSpectrumProcessedPhasedDC = new Complex[nmrSpectrumProcessedPhased.length];
-		if(directCurrentSpec == 1) {
-			double directCurrentPointsSpec = Math.ceil(2 * measurementNMR.getProcessingParameters("numberOfFourierPoints").intValue() / 20);
-			double directCurrentPointsSpecPart = Math.ceil(directCurrentPointsSpec / 10);
-			int directCurrentPointsRange = (int)(directCurrentPointsSpec - directCurrentPointsSpecPart) + 1;
-			Complex[] directCurrentPointsSpecFront = new Complex[directCurrentPointsRange];
-			Complex[] directCurrentPointsSpecBack = new Complex[directCurrentPointsRange];
-			int z = 0;
-			for(int i = (int)directCurrentPointsSpecPart; i <= (int)directCurrentPointsSpec; i++) {
-				directCurrentPointsSpecFront[z] = nmrSpectrumProcessedPhased[i];
-				z++;
-			}
-			z = 0;
-			int forInitialization = (int)(nmrSpectrumProcessedPhased.length - directCurrentPointsSpec);
-			int forTermination = (int)(nmrSpectrumProcessedPhased.length - directCurrentPointsSpecPart);
-			for(int i = forInitialization; i <= forTermination; i++) {
-				directCurrentPointsSpecBack[z] = nmrSpectrumProcessedPhased[i];
-				z++;
-			}
-			Complex[] combinedDirectCurrentPointsSpec = new Complex[directCurrentPointsRange * 2];
-			combinedDirectCurrentPointsSpec = ArrayUtils.addAll(directCurrentPointsSpecFront, directCurrentPointsSpecBack);
-			double[] tempCombinedArrayReal = new double[combinedDirectCurrentPointsSpec.length];
-			double[] tempCombinedArrayImag = new double[combinedDirectCurrentPointsSpec.length];
-			for(int i = 0; i < combinedDirectCurrentPointsSpec.length; i++) {
-				tempCombinedArrayReal[i] = (combinedDirectCurrentPointsSpec[i].getReal());
-				tempCombinedArrayImag[i] = (combinedDirectCurrentPointsSpec[i].getImaginary());
-			}
-			double tempCombinedArrayRealAverage = Arrays.stream(tempCombinedArrayReal).average().getAsDouble();
-			double tempCombinedArrayImagAverage = Arrays.stream(tempCombinedArrayImag).average().getAsDouble();
-			Complex tempCombinedArrayAverage = new Complex(tempCombinedArrayRealAverage, tempCombinedArrayImagAverage);
-			for(int i = 0; i < nmrSpectrumProcessedPhasedDC.length; i++) {
-				nmrSpectrumProcessedPhasedDC[i] = nmrSpectrumProcessedPhased[i].subtract(tempCombinedArrayAverage);
-			}
-		} else {
-			System.arraycopy(nmrSpectrumProcessedPhased, 0, nmrSpectrumProcessedPhasedDC, 0, nmrSpectrumProcessedPhased.length);
+		int length = spectrumData.signals.length;
+		Complex[] nmrSpectrumProcessedPhasedDC = new Complex[length];
+		double directCurrentPointsSpec = Math.ceil(2d * length / 20d);
+		double directCurrentPointsSpecPart = Math.ceil(directCurrentPointsSpec / 10);
+		int directCurrentPointsRange = (int)(directCurrentPointsSpec - directCurrentPointsSpecPart) + 1;
+		Complex[] directCurrentPointsSpecFront = new Complex[directCurrentPointsRange];
+		Complex[] directCurrentPointsSpecBack = new Complex[directCurrentPointsRange];
+		int z = 0;
+		for(int i = (int)directCurrentPointsSpecPart; i <= (int)directCurrentPointsSpec; i++) {
+			directCurrentPointsSpecFront[z] = spectrumData.signals[i];
+			z++;
+		}
+		z = 0;
+		int forInitialization = (int)(length - directCurrentPointsSpec);
+		int forTermination = (int)(length - directCurrentPointsSpecPart);
+		for(int i = forInitialization; i <= forTermination; i++) {
+			directCurrentPointsSpecBack[z] = spectrumData.signals[i];
+			z++;
+		}
+		Complex[] combinedDirectCurrentPointsSpec = new Complex[directCurrentPointsRange * 2];
+		combinedDirectCurrentPointsSpec = ArrayUtils.addAll(directCurrentPointsSpecFront, directCurrentPointsSpecBack);
+		double[] tempCombinedArrayReal = new double[combinedDirectCurrentPointsSpec.length];
+		double[] tempCombinedArrayImag = new double[combinedDirectCurrentPointsSpec.length];
+		for(int i = 0; i < combinedDirectCurrentPointsSpec.length; i++) {
+			tempCombinedArrayReal[i] = (combinedDirectCurrentPointsSpec[i].getReal());
+			tempCombinedArrayImag[i] = (combinedDirectCurrentPointsSpec[i].getImaginary());
+		}
+		double tempCombinedArrayRealAverage = Arrays.stream(tempCombinedArrayReal).average().getAsDouble();
+		double tempCombinedArrayImagAverage = Arrays.stream(tempCombinedArrayImag).average().getAsDouble();
+		Complex tempCombinedArrayAverage = new Complex(tempCombinedArrayRealAverage, tempCombinedArrayImagAverage);
+		for(int i = 0; i < nmrSpectrumProcessedPhasedDC.length; i++) {
+			spectrumData.signals[i] = spectrumData.signals[i].subtract(tempCombinedArrayAverage);
 		}
 		return nmrSpectrumProcessedPhasedDC;
+	}
+
+	@Override
+	public boolean acceptsIMeasurement(IMeasurement item) {
+
+		return item instanceof FIDMeasurement || item instanceof SpectrumMeasurement;
+	}
+
+	@Override
+	public String getFilterName() {
+
+		return FILTER_NAME;
+	}
+
+	@Override
+	protected FilteredMeasurement<?> doFiltering(IComplexSignalMeasurement<?> measurement, DirectCurrentCorrectionSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+
+		if(measurement instanceof FIDMeasurement) {
+			FIDMeasurement fid = (FIDMeasurement)measurement;
+			ComplexFIDData fidData = UtilityFunctions.toComplexFIDData(fid.getSignals());
+			directCurrentCorrectionFID(fidData);
+			FilteredFIDMeasurement filtered = new FilteredFIDMeasurement(fid);
+			filtered.setSignals(fidData.toSignal());
+			return filtered;
+		} else if(measurement instanceof SpectrumMeasurement) {
+			SpectrumMeasurement spectrum = (SpectrumMeasurement)measurement;
+			SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(spectrum.getSignals());
+			FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(spectrum);
+			directCurrentCorrectionSpectrum(spectrumData);
+			filtered.setSignals(spectrumData.toSignal());
+			return filtered;
+		}
+		return null;
 	}
 }

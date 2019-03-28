@@ -27,4 +27,6 @@ Import-Package: org.apache.commons.lang3;version="3.2.1",
  org.osgi.service.component.annotations;version="1.2.0"
 Service-Component: OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.DigitalFilterRemoval.xml,
  OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.ExponentialApodizationFunctionProcessor.xml,
- OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.GaussianApodizationFunctionProcessor.xml
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.GaussianApodizationFunctionProcessor.xml,
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.DirectCurrentCorrection.xml,
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.FourierTransformationProcessor.xml

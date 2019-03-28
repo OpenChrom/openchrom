@@ -15,41 +15,17 @@ package net.openchrom.nmr.processing.supplier.base.core;
 import java.util.Arrays;
 
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.nmr.model.core.MeasurementNMR;
 
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
 public class ZeroFilling {
 
-	public Complex[] zerofill(Complex[] intesityFID, MeasurementNMR measurementNMR, ZeroFillingFactor zeroFillingFactor) {
+	public static Complex[] fill(Complex[] signals) {
 
-		// }
-		Complex[] zeroFilledFID;
-		//
-		int newDataSize = 0;
-		int zeroFillingSize = zeroFillingFactor.getValue();
-		if(Boolean.parseBoolean(measurementNMR.getHeaderDataMap().get("ProcessedDataFlag"))) {
-			/*
-			 * For processed data it must be ensured that the original data size is restored!
-			 */
-			newDataSize = measurementNMR.getProcessingParameters("sizeofRealSpectrum").intValue();
-		} else if(zeroFillingFactor.equals(ZeroFillingFactor.AUTO) || zeroFillingSize < intesityFID.length) {
-			newDataSize = (int)Math.pow(2, (int)(Math.ceil((Math.log(intesityFID.length) / Math.log(2)))));
-		} else {
-			newDataSize = zeroFillingSize;
-		}
-		zeroFilledFID = new Complex[newDataSize];
-		for(int i = 0; i < newDataSize; i++) {
-			zeroFilledFID[i] = new Complex(0, 0);
-		}
-		int copySize = intesityFID.length;
-		System.arraycopy(intesityFID, 0, zeroFilledFID, 0, copySize);
-		double numberOfFourierPoints = newDataSize;
-		measurementNMR.putProcessingParameters("numberOfFourierPoints", numberOfFourierPoints);
-		return zeroFilledFID;
+		return fill(signals, ZeroFillingFactor.AUTO);
 	}
 
-	public static Complex[] fill(Complex[] signals) {
+	public static Complex[] fill(Complex[] signals, ZeroFillingFactor factor) {
 
 		if(signals == null) {
 			throw new IllegalArgumentException("Signals can't be null");
@@ -57,7 +33,8 @@ public class ZeroFilling {
 		if(signals.length == 0) {
 			throw new IllegalArgumentException("Signals can't be empty");
 		}
-		int newLength = Math.max(2, (int)Math.pow(2, (int)(Math.ceil((Math.log(signals.length) / Math.log(2))))));
+		int lowerBound = factor == ZeroFillingFactor.AUTO ? 2 : factor.getValue();
+		int newLength = Math.max(lowerBound, (int)Math.pow(lowerBound, (int)(Math.ceil((Math.log(signals.length) / Math.log(lowerBound))))));
 		if(newLength == signals.length) {
 			return signals;
 		}

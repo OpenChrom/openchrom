@@ -14,6 +14,7 @@ package net.openchrom.nmr.processing.supplier.base.settings;
 public class DigitalFilterRemovalSettings {
 
 	private double leftRotationFid = Double.NaN;
+	private double dcOffsetMultiplicationFactor = Double.NaN;
 
 	public double getLeftRotationFid() {
 
@@ -23,5 +24,15 @@ public class DigitalFilterRemovalSettings {
 	public void setLeftRotationFid(double leftRotationFid) {
 
 		this.leftRotationFid = leftRotationFid;
+	}
+
+	public double getDcOffsetMultiplicationFactor() {
+
+		return dcOffsetMultiplicationFactor;
+	}
+
+	public void setDcOffsetMultiplicationFactor(double dcOffsetMultiplicationFactor) {
+
+		this.dcOffsetMultiplicationFactor = dcOffsetMultiplicationFactor;
 	}
 }

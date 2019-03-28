@@ -12,14 +12,11 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
-import java.util.Collection;
-
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.filter.Filter;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
-import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -53,25 +50,35 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 	@Override
 	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, DigitalFilterRemovalSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
+		double multiplicationFactor = settings.getDcOffsetMultiplicationFactor();
 		double leftRotationFid = settings.getLeftRotationFid();
-		if(Double.isNaN(leftRotationFid)) {
-			messageConsumer.addWarnMessage(FILTER_NAME, "No left rotation value was given, returning unprocessed results");
+		if(Double.isNaN(leftRotationFid) && Double.isNaN(multiplicationFactor)) {
+			messageConsumer.addInfoMessage(FILTER_NAME, "No Left Rotation value and no DC offset specified, skipp processing");
 			return null;
 		}
-		if(Math.abs(leftRotationFid) > 0.0) {
-			FilteredFIDMeasurement filteredFIDMeasurement = new FilteredFIDMeasurement(measurement);
-			filteredFIDMeasurement.putHeaderData(MARKER, "true");
-			filteredFIDMeasurement.setSignals(DigitalFilterRemoval.removeDigitalFilter(measurement.getSignals(), leftRotationFid, messageConsumer));
-			return filteredFIDMeasurement;
+		FilteredFIDMeasurement filteredFIDMeasurement = new FilteredFIDMeasurement(measurement);
+		ComplexFIDData fidData = UtilityFunctions.toComplexFIDData(measurement.getSignals());
+		if(Double.isNaN(multiplicationFactor)) {
+			messageConsumer.addInfoMessage(FILTER_NAME, "No DC Offset to remove");
+		} else {
+			fidData.signals[0] = fidData.signals[0].multiply(multiplicationFactor);
+			messageConsumer.addInfoMessage(FILTER_NAME, "DC Offset was removed");
+		}
+		if(Double.isNaN(leftRotationFid)) {
+			messageConsumer.addInfoMessage(FILTER_NAME, "No left rotation value was given, skipp processing");
+		} else if(Math.abs(leftRotationFid) > 0.0) {
+			DigitalFilterRemoval.removeDigitalFilter(fidData, leftRotationFid, messageConsumer);
+			messageConsumer.addInfoMessage(FILTER_NAME, "Digital FIlter was removed");
 		} else {
 			messageConsumer.addWarnMessage(FILTER_NAME, "Left Rotation value must be greater than zero, skipp processing");
-			return null;
 		}
+		filteredFIDMeasurement.putHeaderData(MARKER, "true");
+		filteredFIDMeasurement.setSignals(fidData.toSignal());
+		return filteredFIDMeasurement;
 	}
 
-	private static Collection<FIDSignal> removeDigitalFilter(Collection<? extends FIDSignal> signals, double leftRotationFid, MessageConsumer messageConsumer) {
+	private static void removeDigitalFilter(ComplexFIDData freeInductionDecay, double leftRotationFid, MessageConsumer messageConsumer) {
 
-		ComplexFIDData freeInductionDecay = UtilityFunctions.toComplexFIDData(signals);
 		// automatic zero filling just in case size != 2^n
 		Complex[] freeInductionDecayZeroFill = ZeroFilling.fill(freeInductionDecay.signals);
 		Complex[] filteredNMRSpectrum = null;
@@ -98,6 +105,5 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 		for(int i = 0; i < freeInductionDecay.signals.length; i++) {
 			freeInductionDecay.signals[i] = tempUnfilteredSpectrum[i];
 		}
-		return freeInductionDecay.toSignal();
 	}
 }

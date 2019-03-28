@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 
 public class UtilityFunctions {
 
@@ -32,6 +33,18 @@ public class UtilityFunctions {
 			times[i] = signal.getSignalTime();
 		}
 		return new ComplexFIDData(array, times);
+	}
+
+	public static SpectrumData toComplexSpectrumData(Collection<? extends SpectrumSignal> signals) {
+
+		Complex[] array = new Complex[signals.size()];
+		BigDecimal[] chemicalShift = new BigDecimal[signals.size()];
+		int i = 0;
+		for(SpectrumSignal signal : signals) {
+			array[i] = new Complex(signal.getY(), signal.getImaginaryY());
+			chemicalShift[i] = signal.getChemicalShift();
+		}
+		return new SpectrumData(array, chemicalShift);
 	}
 
 	public double[] generateChemicalShiftAxis(IMeasurementNMR scanNMR) {
@@ -162,6 +175,29 @@ public class UtilityFunctions {
 		return dataArray;
 	}
 
+	public static final class SpectrumData {
+
+		public Complex[] signals;
+		public BigDecimal[] chemicalShift;
+
+		public SpectrumData(Complex[] array, BigDecimal[] chemicalShift) {
+			this.signals = array;
+			this.chemicalShift = chemicalShift;
+		}
+
+		public Collection<SpectrumSignal> toSignal() {
+
+			if(signals.length != chemicalShift.length) {
+				throw new IllegalStateException("chemicalShift length differs from signals length");
+			}
+			List<SpectrumSignal> list = new ArrayList<>(chemicalShift.length);
+			for(int i = 0; i < chemicalShift.length; i++) {
+				list.add(new ComplexSpectrumSignal(chemicalShift[i], signals[i]));
+			}
+			return list;
+		}
+	}
+
 	public static final class ComplexFIDData {
 
 		public Complex[] signals;
@@ -182,6 +218,35 @@ public class UtilityFunctions {
 				list.add(new ComplexFIDSignal(times[i], signals[i]));
 			}
 			return list;
+		}
+	}
+
+	private static final class ComplexSpectrumSignal implements SpectrumSignal {
+
+		private Complex complex;
+		private BigDecimal shift;
+
+		public ComplexSpectrumSignal(BigDecimal shift, Complex complex) {
+			this.shift = shift;
+			this.complex = complex;
+		}
+
+		@Override
+		public BigDecimal getChemicalShift() {
+
+			return shift;
+		}
+
+		@Override
+		public Number getAbsorptiveIntensity() {
+
+			return complex.getReal();
+		}
+
+		@Override
+		public Number getDispersiveIntensity() {
+
+			return complex.getImaginary();
 		}
 	}
 
