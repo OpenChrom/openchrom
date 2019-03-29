@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_TT434FHjEemRK6ILagu1xg">
+  <imports xsi:type="advanced:Area" xmi:id="_wQ-SQFHjEemRK6ILagu1xg" elementId="org.eclipse.chemclipse.rcp.app.ui.editor"/>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_TnMOYFHjEemRK6ILagu1xg" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.perspectivestack.main">
+    <elements xsi:type="advanced:Perspective" xmi:id="_hYtdgFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.perspective.nmr" label="NMR Perspective" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/scan-nmr.gif">
+      <children xsi:type="basic:PartSashContainer" xmi:id="_sjhwIFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.partsashcontainer.0" horizontal="true">
+        <children xsi:type="basic:PartStack" xmi:id="_2iG5IFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.partstack.0" containerData="20">
+          <children xsi:type="basic:Part" xmi:id="_0UnRYFHkEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.part.nmrdataexplorer" contributionURI="bundleclass://net.openchrom.nmr.processing.supplier.base.ui/net.openchrom.nmr.processing.supplier.base.ui.NMRDataExplorerView" label="NMR Data Explorer" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrumFileExplorer.gif"/>
+        </children>
+        <children xsi:type="advanced:Placeholder" xmi:id="_3Cm-IFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.placeholder.0" containerData="80" ref="_wQ-SQFHjEemRK6ILagu1xg"/>
+      </children>
+    </elements>
+  </fragments>
+</fragment:ModelFragments>
