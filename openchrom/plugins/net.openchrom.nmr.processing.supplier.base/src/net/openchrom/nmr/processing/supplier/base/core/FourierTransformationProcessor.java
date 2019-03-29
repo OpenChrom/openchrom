@@ -41,7 +41,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFa
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class FourierTransformationProcessor extends AbstractFIDSignalFilter<FourierTransformationSettings> {
 
-	private static final String NAME = "Fourier Transformation Processor";
+	private static final String NAME = "Fourier Transformation";
 
 	public FourierTransformationProcessor() {
 		super(FourierTransformationSettings.class);

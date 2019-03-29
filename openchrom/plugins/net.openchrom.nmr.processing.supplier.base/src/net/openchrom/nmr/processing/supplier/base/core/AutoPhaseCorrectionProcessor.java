@@ -44,7 +44,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.AutoPhaseCorrectionSe
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<AutoPhaseCorrectionSettings> {
 
-	private static final String NAME = "Auto Phase Correction Processor";
+	private static final String NAME = "Auto Phase Correction";
 
 	public AutoPhaseCorrectionProcessor() {
 		super(AutoPhaseCorrectionSettings.class);

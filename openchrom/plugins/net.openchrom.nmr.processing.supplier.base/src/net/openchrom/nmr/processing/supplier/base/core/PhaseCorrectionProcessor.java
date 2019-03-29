@@ -32,7 +32,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettin
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<PhaseCorrectionSettings> {
 
-	private static final String NAME = "Phase Correction Processor";
+	private static final String NAME = "Phase Correction";
 
 	public PhaseCorrectionProcessor() {
 		super(PhaseCorrectionSettings.class);

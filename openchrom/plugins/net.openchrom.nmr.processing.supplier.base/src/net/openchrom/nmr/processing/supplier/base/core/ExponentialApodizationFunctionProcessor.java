@@ -29,7 +29,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.ExponentialApodizatio
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class ExponentialApodizationFunctionProcessor extends AbstractFIDSignalFilter<ExponentialApodizationSettings> {
 
-	private static final String FILTER_NAME = "Exponential Apodization Function";
+	private static final String FILTER_NAME = "Exponential Apodization";
 	private static final BigDecimal PI = BigDecimal.valueOf(Math.PI);
 
 	public ExponentialApodizationFunctionProcessor() {

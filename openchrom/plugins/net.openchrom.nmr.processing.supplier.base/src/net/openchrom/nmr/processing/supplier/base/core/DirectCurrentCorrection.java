@@ -41,7 +41,7 @@ public class DirectCurrentCorrection extends AbstractComplexSignalFilter<DirectC
 		super(DirectCurrentCorrectionSettings.class);
 	}
 
-	private static final String FILTER_NAME = "DirectCurrentCorrection";
+	private static final String FILTER_NAME = "Direct Current Correction";
 
 	private static void directCurrentCorrectionFID(ComplexFIDData fidData) {
 

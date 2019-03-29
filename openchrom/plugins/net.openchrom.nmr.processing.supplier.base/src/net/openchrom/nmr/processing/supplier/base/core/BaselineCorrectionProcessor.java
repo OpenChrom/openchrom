@@ -35,7 +35,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.BaselineCorrectionSet
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<BaselineCorrectionSettings> {
 
-	private static final String NAME = "Baseline Correction Processor";
+	private static final String NAME = "Baseline Correction";
 
 	public BaselineCorrectionProcessor() {
 		super(BaselineCorrectionSettings.class);
@@ -52,23 +52,10 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 
 		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurement.getSignals());
 		FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(measurement);
+		perform(spectrumData, settings);
 		filtered.setSignals(spectrumData.toSignal());
 		return filtered;
 	}
-	//
-	// @Override
-	// public IProcessingInfo process(final IDataNMRSelection scanNMR, final IProcessorSettings processorSettings, final IProgressMonitor monitor) {
-	//
-	// final IProcessingInfo processingInfo = validate(scanNMR, processorSettings);
-	// if(!processingInfo.hasErrorMessages()) {
-	// final BaselineCorrectionSettings settings = (BaselineCorrectionSettings)processorSettings;
-	// ISignalExtractor signalExtractor = new SignalExtractor(scanNMR);
-	// final Complex[] baselineCorrection = perform(signalExtractor, scanNMR, settings);
-	// signalExtractor.setBaselineCorrection(baselineCorrection, true);
-	// processingInfo.setProcessingResult(scanNMR);
-	// }
-	// return processingInfo;
-	// }
 
 	private void perform(SpectrumData spectrumData, final BaselineCorrectionSettings settings) {
 
