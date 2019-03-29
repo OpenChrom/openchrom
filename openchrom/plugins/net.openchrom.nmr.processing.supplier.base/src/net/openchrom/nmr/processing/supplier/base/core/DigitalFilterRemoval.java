@@ -81,9 +81,8 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 
 		// automatic zero filling just in case size != 2^n
 		Complex[] freeInductionDecayZeroFill = ZeroFilling.fill(freeInductionDecay.signals);
-		Complex[] filteredNMRSpectrum = null;
 		//
-		filteredNMRSpectrum = FourierTransformationProcessor.fourierTransformNmrData(freeInductionDecayZeroFill);
+		Complex[] filteredNMRSpectrum = FourierTransformationProcessor.fourierTransformNmrData(freeInductionDecayZeroFill);
 		// create filtered spectrum
 		Complex[] unfilteredNMRSpectrum = new Complex[filteredNMRSpectrum.length];
 		double[] digitalFilterFactor = new double[filteredNMRSpectrum.length];

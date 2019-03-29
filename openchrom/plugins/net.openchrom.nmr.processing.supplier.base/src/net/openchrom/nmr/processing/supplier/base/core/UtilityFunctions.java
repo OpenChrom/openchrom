@@ -30,6 +30,7 @@ public class UtilityFunctions {
 		for(FIDSignal signal : signals) {
 			array[i] = new Complex(signal.getY(), signal.getImaginaryY());
 			times[i] = signal.getSignalTime();
+			i++;
 		}
 		return new ComplexFIDData(array, times);
 	}
@@ -49,6 +50,7 @@ public class UtilityFunctions {
 				maxValue = real;
 				maxIndex = i;
 			}
+			i++;
 		}
 		return new SpectrumData(array, chemicalShift, maxIndex);
 	}
