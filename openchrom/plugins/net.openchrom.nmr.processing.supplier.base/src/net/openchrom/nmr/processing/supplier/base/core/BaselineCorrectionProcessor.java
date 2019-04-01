@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Alexander Stark - initial API and implementation
  * Christoph Läubrich - rework for new filter model
@@ -38,6 +38,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 	private static final String NAME = "Baseline Correction";
 
 	public BaselineCorrectionProcessor() {
+
 		super(BaselineCorrectionSettings.class);
 	}
 
@@ -254,7 +255,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 			}
 		}
 		for(int j = 0; j < spectrumData.signals.length; j++) {
-			spectrumData.signals[j] = spectrumData.signals[j].multiply(baselineCorrection[j]);
+			spectrumData.signals[j] = spectrumData.signals[j].subtract(baselineCorrection[j]);
 		}
 	}
 }
