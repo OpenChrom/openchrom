@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Alexander Stark - initial API and implementation
  * Christoph Läubrich - rework for new filter model
@@ -35,6 +35,7 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 	private static final String NAME = "Phase Correction";
 
 	public PhaseCorrectionProcessor() {
+
 		super(PhaseCorrectionSettings.class);
 	}
 
@@ -52,11 +53,13 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 		double firstDataOffset;
 		double sweepWidth;
 		if(fidMeasurement != null) {
+			// FIXME get necessary values for spectrum from fid measurement
 			sweepWidth = fidMeasurement.getSweepWidth();
 			firstDataOffset = fidMeasurement.getFirstDataPointOffset();
 		} else {
-			sweepWidth = 1;
-			firstDataOffset = 0;
+			// FIXME correlates with FIXME above; find default values if possible
+			sweepWidth = 20.5524343527429;
+			firstDataOffset = 15.07362;
 		}
 		Complex[] phaseCorrection = perform(spectrumData, settings, firstDataOffset, sweepWidth);
 		for(int i = 0; i < phaseCorrection.length; i++) {
@@ -133,7 +136,7 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 		/*
 		 * to be used later on with the GUI
 		 */
-		double phaseCorrectionTermA = (phasingPivotpoint - firstDataOffset);
+		double phaseCorrectionTermA = (phasingPivotpoint - (firstDataOffset - sweepWidth));
 		double phaseCorrectionTermB = phaseCorrectionTermA / sweepWidth;
 		double phaseCorrectionTermC = Math.round(complexSize * phaseCorrectionTermB);
 		double rightPhaseCorrectionleftPhase = -(leftPhaseCorrection[(int)phaseCorrectionTermC]);
