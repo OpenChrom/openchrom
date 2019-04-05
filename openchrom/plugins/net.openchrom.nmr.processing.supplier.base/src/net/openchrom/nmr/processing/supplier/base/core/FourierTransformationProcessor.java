@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Alexander Stark - initial API and implementation
  * Christoph Läubrich - changes for ne processor api and process optimizations
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
@@ -44,6 +44,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 	private static final String NAME = "Fourier Transformation";
 
 	public FourierTransformationProcessor() {
+
 		super(FourierTransformationSettings.class);
 	}
 
@@ -55,7 +56,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		Complex[] zeroFilledFid = ZeroFilling.fill(fidData.signals, zeroFillingFactor);
 		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(zeroFilledFid);
 		BigDecimal min = BigDecimal.valueOf(measurement.getFirstDataPointOffset());
-		BigDecimal max = BigDecimal.valueOf(measurement.getSweepWidth());
+		BigDecimal max = BigDecimal.valueOf(measurement.getFirstDataPointOffset() + measurement.getSweepWidth());
 		BigDecimal step = max.subtract(min).divide(BigDecimal.valueOf(nmrSpectrumProcessed.length - 1).setScale(10), RoundingMode.HALF_UP);
 		List<FFTSpectrumSignal> signals = new ArrayList<>(nmrSpectrumProcessed.length);
 		for(int i = 0; i < nmrSpectrumProcessed.length; i++) {
@@ -98,6 +99,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		private Collection<? extends SpectrumSignal> signals;
 
 		public FFTFilteredMeasurement(FIDMeasurement measurement, Collection<FFTSpectrumSignal> signals) {
+
 			super(measurement);
 			this.signals = Collections.unmodifiableCollection(signals);
 		}
@@ -115,6 +117,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		private Complex complex;
 
 		public FFTSpectrumSignal(BigDecimal shift, Complex complex) {
+
 			this.shift = shift;
 			this.complex = complex;
 		}
