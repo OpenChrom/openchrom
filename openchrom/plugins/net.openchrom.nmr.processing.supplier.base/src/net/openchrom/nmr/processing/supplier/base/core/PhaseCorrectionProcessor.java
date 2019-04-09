@@ -70,7 +70,7 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 		return filtered;
 	}
 
-	private static Complex[] perform(SpectrumData spectrumData, final PhaseCorrectionSettings settings, double firstDataOffset, double sweepWidth) {
+	private static Complex[] perform(SpectrumData spectrumData, final PhaseCorrectionSettings phaseCorrectionSettings, double firstDataOffset, double sweepWidth) {
 
 		BigDecimal[] deltaAxisPPM = spectrumData.chemicalShift;
 		//
@@ -85,7 +85,6 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 		/*
 		 * get settings from enum
 		 */
-		PhaseCorrectionSettings phaseCorrectionSettings = new PhaseCorrectionSettings();
 		double dspPhaseFactor = phaseCorrectionSettings.getDspPhaseFactor();
 		// firstOrderPhaseCorrection
 		leftPhaseChange = phaseCorrectionSettings.getFirstOrderPhaseCorrection();
