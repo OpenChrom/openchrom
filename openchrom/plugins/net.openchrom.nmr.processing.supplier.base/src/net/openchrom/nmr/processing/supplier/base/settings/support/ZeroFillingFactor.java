@@ -7,9 +7,13 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Jan Holy - initial API and implementation
+ * Alexander Stark - initial API and implementation
+ * Jan Holy - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings.support;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public enum ZeroFillingFactor {
 	AUTO(0, "Automatic zero filling to a size with the next power of 2"), //
@@ -36,6 +40,7 @@ public enum ZeroFillingFactor {
 
 	private int exponent;
 	private String name;
+	private static Map<Object, Object> zeroFillingMap = new HashMap<>();
 
 	private ZeroFillingFactor(int exponent, String name) {
 
@@ -57,5 +62,16 @@ public enum ZeroFillingFactor {
 	public String toString() {
 
 		return name;
+	}
+
+	static {
+		for(ZeroFillingFactor zeroFillingFactor : ZeroFillingFactor.values()) {
+			zeroFillingMap.put(zeroFillingFactor.exponent, zeroFillingFactor);
+		}
+	}
+
+	public static ZeroFillingFactor valueOf(int zeroFillingFactor) {
+
+		return (ZeroFillingFactor)zeroFillingMap.get(zeroFillingFactor);
 	}
 }
