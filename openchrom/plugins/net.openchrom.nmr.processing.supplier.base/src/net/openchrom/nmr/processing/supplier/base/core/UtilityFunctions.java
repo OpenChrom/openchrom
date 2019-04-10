@@ -13,8 +13,10 @@ package net.openchrom.nmr.processing.supplier.base.core;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
@@ -66,24 +68,12 @@ public class UtilityFunctions {
 
 	public double getMaxValueOfArray(double[] dataArray) {
 
-		double maxValue = -Double.MAX_VALUE;
-		for(int m = 0; m < dataArray.length; m++) {
-			if(dataArray[m] > maxValue) {
-				maxValue = dataArray[m];
-			}
-		}
-		return maxValue;
+		return Arrays.stream(dataArray).max().orElseThrow(IllegalArgumentException::new);
 	}
 
 	public double getMinValueOfArray(double[] dataArray) {
 
-		double minValue = Double.MAX_VALUE;
-		for(int m = 0; m < dataArray.length; m++) {
-			if(dataArray[m] < minValue) {
-				minValue = dataArray[m];
-			}
-		}
-		return minValue;
+		return Arrays.stream(dataArray).min().orElseThrow(IllegalArgumentException::new);
 	}
 
 	public int findIndexOfValue(double[] array, double value) {

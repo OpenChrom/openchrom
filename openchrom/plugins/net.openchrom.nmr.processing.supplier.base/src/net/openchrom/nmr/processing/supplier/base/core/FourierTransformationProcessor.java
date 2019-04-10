@@ -73,12 +73,15 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 
 	public static Complex[] fourierTransformNmrData(Complex[] fid) {
 
+		// This has nothing to do with the inverted UI!
+		// ArrayUtils.reverse(fid);
 		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
 		Complex[] nmrSpectrum = fFourierTransformer.transform(fid, TransformType.FORWARD);
 		Complex[] nmrSpectrumProcessed = new Complex[nmrSpectrum.length];
 		System.arraycopy(nmrSpectrum, 0, nmrSpectrumProcessed, 0, nmrSpectrum.length); // NmrData.SPECTRA
 		UtilityFunctions.rightShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
-		ArrayUtils.reverse(nmrSpectrumProcessed);
+		// This has nothing to do with the inverted UI!
+		// ArrayUtils.reverse(nmrSpectrumProcessed);
 		return nmrSpectrumProcessed;
 	}
 
