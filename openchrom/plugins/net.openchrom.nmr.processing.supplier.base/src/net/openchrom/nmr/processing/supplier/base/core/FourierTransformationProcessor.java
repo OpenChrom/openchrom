@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
@@ -87,7 +86,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 
 	public static Complex[] inverseFourierTransformData(Complex[] spectrum) {
 
-		ArrayUtils.reverse(spectrum);
+		// ArrayUtils.reverse(spectrum);
 		UtilityFunctions.rightShiftNMRComplexData(spectrum, spectrum.length / 2);
 		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
 		Complex[] unfilteredFID = fFourierTransformer.transform(spectrum, TransformType.INVERSE);
