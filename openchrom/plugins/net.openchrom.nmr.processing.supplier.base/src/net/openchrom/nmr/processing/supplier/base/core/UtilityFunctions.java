@@ -8,7 +8,6 @@
  *
  * Contributors:
  * Alexander Stark - initial API and implementation
- * Alexander Kerner - implementation
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
@@ -79,13 +78,48 @@ public class UtilityFunctions {
 
 	public int findIndexOfValue(double[] array, double value) {
 
-		return IntStream.range(0, array.length).filter(i -> value == array[i]).findFirst().orElse(-1);
+		int index;
+		for(index = 0; index < array.length; index++) {
+			if(Math.abs(array[index] - value) < 0.001) {
+				break;
+			}
+		}
+		//
+		int reverseIndex = array.length - 1;
+		for(; reverseIndex > 0; reverseIndex--) {
+			if(Math.abs(array[reverseIndex] - value) < 0.001) {
+				break;
+			}
+		}
+		//
+		if(Double.compare(value, 0.0) < 0) {
+			return (int)Math.floor((reverseIndex + index) / 2);
+		} else {
+			return (int)Math.ceil((reverseIndex + index) / 2);
+		}
 	}
 
 	public static int findIndexOfValue(BigDecimal[] array, double value) {
 
-		Arrays.sort(array);
-		return Arrays.binarySearch(array, value);
+		int index;
+		for(index = 0; index < array.length; index++) {
+			if(Math.abs(array[index].doubleValue() - value) < 0.001) {
+				break;
+			}
+		}
+		//
+		int reverseIndex = array.length - 1;
+		for(; reverseIndex > 0; reverseIndex--) {
+			if(Math.abs(array[reverseIndex].doubleValue() - value) < 0.001) {
+				break;
+			}
+		}
+		//
+		if(Double.compare(value, 0.0) < 0) {
+			return (int)Math.floor((reverseIndex + index) / 2);
+		} else {
+			return (int)Math.ceil((reverseIndex + index) / 2);
+		}
 	}
 
 	public void leftShiftNMRData(double[] dataArray, int pointsToShift) {
