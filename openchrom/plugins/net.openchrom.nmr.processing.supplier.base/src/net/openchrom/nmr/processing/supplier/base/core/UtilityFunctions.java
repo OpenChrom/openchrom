@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
@@ -146,7 +145,7 @@ public class UtilityFunctions {
 		return dataArray;
 	}
 
-	public void leftShiftNMRComplexData(Complex[] dataArray, int pointsToShift) {
+	public static void leftShiftNMRComplexData(Complex[] dataArray, int pointsToShift) {
 
 		pointsToShift = pointsToShift % dataArray.length;
 		while(pointsToShift-- > 0) {
