@@ -87,16 +87,15 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 		Complex[] unfilteredNMRSpectrum = new Complex[filteredNMRSpectrum.length];
 		double[] digitalFilterFactor = new double[filteredNMRSpectrum.length];
 		int spectrumSize = filteredNMRSpectrum.length;
-		int f = 0;
+
 		Complex complexFactor = new Complex(-0.0, -1.0);
 		// remove the filter!
-		for(int i = 1; i <= spectrumSize; i++) {
+		for(int i = 0; i < spectrumSize; i++) {
 			double filterTermA = (double)i / spectrumSize;
 			double filterTermB = Math.floor(spectrumSize / 2);
-			digitalFilterFactor[f] = filterTermA - filterTermB;
-			Complex exponentialFactor = complexFactor.multiply(leftRotationFid * 2 * Math.PI * digitalFilterFactor[f]);
-			unfilteredNMRSpectrum[f] = filteredNMRSpectrum[f].multiply(exponentialFactor.exp());
-			f++;
+			digitalFilterFactor[i] = filterTermB - filterTermA;
+			Complex exponentialFactor = complexFactor.multiply(leftRotationFid * 2 * Math.PI * digitalFilterFactor[i]);
+			unfilteredNMRSpectrum[i] = filteredNMRSpectrum[i].multiply(exponentialFactor.exp());
 		}
 		// ifft => revert to fid
 		Complex[] tempUnfilteredSpectrum = FourierTransformationProcessor.inverseFourierTransformData(unfilteredNMRSpectrum);

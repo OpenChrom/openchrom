@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
@@ -77,15 +76,15 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		Complex[] nmrSpectrum = fFourierTransformer.transform(fid, TransformType.FORWARD);
 		Complex[] nmrSpectrumProcessed = new Complex[nmrSpectrum.length];
 		System.arraycopy(nmrSpectrum, 0, nmrSpectrumProcessed, 0, nmrSpectrum.length); // NmrData.SPECTRA
-		UtilityFunctions.rightShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
+		UtilityFunctions.leftShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
 		// This has nothing to do with the inverted UI!
-		ArrayUtils.reverse(nmrSpectrumProcessed);
+		// ArrayUtils.reverse(nmrSpectrumProcessed);
 		return nmrSpectrumProcessed;
 	}
 
 	public static Complex[] inverseFourierTransformData(Complex[] spectrum) {
 
-		ArrayUtils.reverse(spectrum);
+		// ArrayUtils.reverse(spectrum);
 		UtilityFunctions.rightShiftNMRComplexData(spectrum, spectrum.length / 2);
 		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
 		Complex[] unfilteredFID = fFourierTransformer.transform(spectrum, TransformType.INVERSE);
