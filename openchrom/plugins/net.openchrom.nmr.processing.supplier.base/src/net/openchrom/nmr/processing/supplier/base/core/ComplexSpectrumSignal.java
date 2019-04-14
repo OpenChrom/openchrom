@@ -19,15 +19,15 @@ import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 public final class ComplexSpectrumSignal implements SpectrumSignal {
 
 	private Complex complex;
-	private BigDecimal shift;
+	private Number shift;
 
-	public ComplexSpectrumSignal(BigDecimal shift, Complex complex) {
+	public ComplexSpectrumSignal(Number shift, Complex complex) {
 		this.shift = shift;
 		this.complex = complex;
 	}
 
 	@Override
-	public BigDecimal getChemicalShift() {
+	public Number getChemicalShift() {
 
 		return shift;
 	}

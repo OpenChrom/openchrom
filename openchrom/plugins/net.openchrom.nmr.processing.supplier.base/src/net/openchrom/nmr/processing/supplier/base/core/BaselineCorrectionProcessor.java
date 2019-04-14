@@ -87,7 +87,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 		 * Literature: G. A. Pearson, Journal of Magnetic Resonance, 27, 265-272 (1977)
 		 */
 		// chemical shift axis used while fitting
-		BigDecimal[] deltaAxisPPM = spectrumData.chemicalShift;
+		Number[] deltaAxisPPM = spectrumData.chemicalShift;
 		// spectrum to be baseline corrected
 		Complex[] phasedSignals = spectrumData.signals;
 		//

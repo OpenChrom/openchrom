@@ -39,7 +39,7 @@ public class UtilityFunctions {
 	public static SpectrumData toComplexSpectrumData(Collection<? extends SpectrumSignal> signals) {
 
 		Complex[] array = new Complex[signals.size()];
-		BigDecimal[] chemicalShift = new BigDecimal[signals.size()];
+		Number[] chemicalShift = new BigDecimal[signals.size()];
 		int i = 0;
 		int maxIndex = 0;
 		double maxValue = Double.MIN_NORMAL;
@@ -98,7 +98,7 @@ public class UtilityFunctions {
 		}
 	}
 
-	public static int findIndexOfValue(BigDecimal[] array, double value) {
+	public static int findIndexOfValue(Number[] array, double value) {
 
 		int index;
 		for(index = 0; index < array.length; index++) {
@@ -172,10 +172,10 @@ public class UtilityFunctions {
 	public static final class SpectrumData {
 
 		public Complex[] signals;
-		public BigDecimal[] chemicalShift;
+		public Number[] chemicalShift;
 		public int maxIndex;
 
-		public SpectrumData(Complex[] array, BigDecimal[] chemicalShift, int maxIndex) {
+		public SpectrumData(Complex[] array, Number[] chemicalShift, int maxIndex) {
 			this.signals = array;
 			this.chemicalShift = chemicalShift;
 			this.maxIndex = maxIndex;

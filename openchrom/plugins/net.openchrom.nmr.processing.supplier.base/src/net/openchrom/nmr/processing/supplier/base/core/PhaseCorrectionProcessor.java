@@ -72,7 +72,7 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 
 	private static Complex[] perform(SpectrumData spectrumData, final PhaseCorrectionSettings phaseCorrectionSettings, double firstDataOffset, double sweepWidth) {
 
-		BigDecimal[] deltaAxisPPM = spectrumData.chemicalShift;
+		Number[] deltaAxisPPM = spectrumData.chemicalShift;
 		//
 		double leftPhaseChange = 0;
 		double rightPhaseChange = 0;
