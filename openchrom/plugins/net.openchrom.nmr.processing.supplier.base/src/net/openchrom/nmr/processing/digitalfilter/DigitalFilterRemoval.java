@@ -10,7 +10,7 @@
  * Alexander Stark - initial API and implementation
  * Christoph Läubrich - Change to use a more generic API, cleanup the code and streamline the algorithm flow
  *******************************************************************************/
-package net.openchrom.nmr.processing.supplier.base.core;
+package net.openchrom.nmr.processing.digitalfilter;
 
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.filter.Filter;
@@ -22,8 +22,11 @@ import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
+import net.openchrom.nmr.processing.supplier.base.core.AbstractFIDSignalFilter;
+import net.openchrom.nmr.processing.supplier.base.core.FourierTransformationProcessor;
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
+import net.openchrom.nmr.processing.supplier.base.core.ZeroFilling;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
-import net.openchrom.nmr.processing.supplier.base.settings.DigitalFilterRemovalSettings;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterRemovalSettings> {

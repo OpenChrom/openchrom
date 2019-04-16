@@ -9,7 +9,7 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.processing.supplier.base.settings;
+package net.openchrom.nmr.processing.digitalfilter;
 
 public class DigitalFilterRemovalSettings {
 

@@ -27,8 +27,10 @@ Service-Component: OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.Expo
  OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.AutoPhaseCorrectionProcessor.xml,
  OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.BaselineCorrectionProcessor.xml,
  OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.PhaseCorrectionProcessor.xml,
- OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.DigitalFilterRemoval.xml
-Export-Package: net.openchrom.nmr.processing.supplier.base,
+ OSGI-INF/net.openchrom.nmr.processing.digitalfilter.DigitalFilterRemoval.xml
+Export-Package: net.openchrom.nmr.processing,
+ net.openchrom.nmr.processing.digitalfilter,
+ net.openchrom.nmr.processing.supplier.base,
  net.openchrom.nmr.processing.supplier.base.core,
  net.openchrom.nmr.processing.supplier.base.settings,
  net.openchrom.nmr.processing.supplier.base.settings.support

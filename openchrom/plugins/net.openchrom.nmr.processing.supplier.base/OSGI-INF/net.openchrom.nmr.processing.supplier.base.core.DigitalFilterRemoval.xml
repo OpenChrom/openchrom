@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="net.openchrom.nmr.processing.supplier.base.core.DigitalFilterRemoval">
-   <service>
-      <provide interface="org.eclipse.chemclipse.filter.Filter"/>
-      <provide interface="org.eclipse.chemclipse.model.filter.IMeasurementFilter"/>
-   </service>
-   <implementation class="net.openchrom.nmr.processing.supplier.base.core.DigitalFilterRemoval"/>
-</scr:component>
