@@ -88,46 +88,58 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 
 		double concentration = getMeasuredConcentration(peaks, compensationSetting);
 		double expectedConcentration = compensationSetting.getExpectedConcentration();
+		//
 		if(concentration > 0 && expectedConcentration > 0) {
 			/*
 			 * Calculate the factor and create an adjusted quantitation entry.
 			 */
 			double compensationFactor = 100.0d / concentration * expectedConcentration / 100.0d;
 			for(IPeak peak : peaks) {
-				IQuantitationEntry quantitationEntry = getQuantitationEntry(peak, compensationSetting.getName(), compensationSetting.getConcentrationUnit());
-				if(quantitationEntry != null) {
+				List<IQuantitationEntry> quantitationEntries = getQuantitationEntries(peak, compensationSetting.getName(), compensationSetting.getConcentrationUnit());
+				for(IQuantitationEntry quantitationEntry : quantitationEntries) {
 					double adjustedConcentration = quantitationEntry.getConcentration() * compensationFactor;
-					peak.addQuantitationEntry(createAdjustedQuantitationEntry(compensationSetting, adjustedConcentration, quantitationEntry.getArea()));
+					peak.addQuantitationEntry(createAdjustedQuantitationEntry(compensationSetting, adjustedConcentration, quantitationEntry));
 				}
 			}
 		}
 	}
 
-	private IQuantitationEntry createAdjustedQuantitationEntry(CompensationSetting compensationSetting, double adjustedConcentration, double area) {
+	private IQuantitationEntry createAdjustedQuantitationEntry(CompensationSetting compensationSetting, double adjustedConcentration, IQuantitationEntry quantitationEntry) {
 
 		String name = compensationSetting.getName() + LABEL_ADJUSTED;
-		return new QuantitationEntry(name, adjustedConcentration, compensationSetting.getConcentrationUnit(), area);
+		IQuantitationEntry adjustedQuantitationEntry = new QuantitationEntry(name, adjustedConcentration, compensationSetting.getConcentrationUnit(), quantitationEntry.getArea());
+		adjustedQuantitationEntry.setChemicalClass(quantitationEntry.getChemicalClass());
+		adjustedQuantitationEntry.setCalibrationMethod(quantitationEntry.getCalibrationMethod());
+		adjustedQuantitationEntry.setUsedCrossZero(quantitationEntry.getUsedCrossZero());
+		adjustedQuantitationEntry.setDescription(quantitationEntry.getDescription());
+		adjustedQuantitationEntry.setSignal(quantitationEntry.getSignal());
+		return adjustedQuantitationEntry;
 	}
 
 	private double getMeasuredConcentration(List<? extends IPeak> peaks, CompensationSetting compensationSetting) {
 
 		double concentration = 0.0d;
+		exitloop:
 		for(IPeak peak : peaks) {
-			if(isIdentifierMatch(peak, compensationSetting)) {
-				IQuantitationEntry quantitationEntry = getQuantitationEntry(peak, compensationSetting.getInternalStandard(), compensationSetting.getConcentrationUnit());
-				if(quantitationEntry != null) {
-					concentration = quantitationEntry.getConcentration();
+			if(isIdentifierMatch(peak, compensationSetting.getInternalStandard())) {
+				List<IQuantitationEntry> quantitationEntries = getQuantitationEntries(peak, compensationSetting.getInternalStandard(), compensationSetting.getConcentrationUnit());
+				if(quantitationEntries.size() > 0) {
+					for(IQuantitationEntry quantitationEntry : quantitationEntries) {
+						concentration = quantitationEntry.getConcentration();
+					}
+					concentration /= quantitationEntries.size();
+					break exitloop;
 				}
 			}
 		}
 		return concentration;
 	}
 
-	private boolean isIdentifierMatch(IPeak peak, CompensationSetting compensationSetting) {
+	private boolean isIdentifierMatch(IPeak peak, String name) {
 
 		Set<IIdentificationTarget> targets = peak.getTargets();
 		for(IIdentificationTarget target : targets) {
-			if(target.getLibraryInformation().getName().equals(compensationSetting.getName())) {
+			if(target.getLibraryInformation().getName().equals(name)) {
 				return true;
 			}
 		}
@@ -135,16 +147,19 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 		return false;
 	}
 
-	private IQuantitationEntry getQuantitationEntry(IPeak peak, String name, String concentrationUnit) {
+	private List<IQuantitationEntry> getQuantitationEntries(IPeak peak, String name, String concentrationUnit) {
 
+		List<IQuantitationEntry> quantitationEntries = new ArrayList<>();
+		//
 		for(IQuantitationEntry quantitationEntry : peak.getQuantitationEntries()) {
 			if(quantitationEntry.getName().equals(name)) {
 				if(quantitationEntry.getConcentrationUnit().equals(concentrationUnit)) {
-					return quantitationEntry;
+					quantitationEntries.add(quantitationEntry);
 				}
 			}
 		}
-		return null;
+		//
+		return quantitationEntries;
 	}
 
 	private IProcessingInfo validate(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
