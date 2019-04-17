@@ -11,8 +11,11 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.digitalfilter;
 
-public class DigitalFilterRemovalSettings {
+import java.io.Serializable;
 
+public class DigitalFilterRemovalSettings implements Serializable {
+
+	private static final long serialVersionUID = 4796560971210022576L;
 	private double leftRotationFid = Double.NaN;
 	private double dcOffsetMultiplicationFactor = Double.NaN;
 

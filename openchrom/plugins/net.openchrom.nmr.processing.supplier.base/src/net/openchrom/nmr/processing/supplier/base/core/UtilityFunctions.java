@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -194,8 +195,9 @@ public class UtilityFunctions {
 		}
 	}
 
-	public static final class ComplexFIDData {
+	public static final class ComplexFIDData implements Serializable {
 
+		private static final long serialVersionUID = -3917469249085421088L;
 		public Complex[] signals;
 		public BigDecimal[] times;
 
@@ -217,8 +219,9 @@ public class UtilityFunctions {
 		}
 	}
 
-	private static final class ComplexFIDSignal implements FIDSignal {
+	private static final class ComplexFIDSignal implements FIDSignal, Serializable {
 
+		private static final long serialVersionUID = -561512031857962638L;
 		private Complex complex;
 		private BigDecimal time;
 

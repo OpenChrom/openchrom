@@ -11,11 +11,16 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import java.io.Serializable;
+
 import org.eclipse.chemclipse.filter.FilterCategory;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 
-public abstract class AbstractFIDSignalFilter<ConfigType> extends AbstractComplexSignalFilter<ConfigType, FIDMeasurement> {
+public abstract class AbstractFIDSignalFilter<ConfigType>
+		extends AbstractComplexSignalFilter<ConfigType, FIDMeasurement> implements Serializable {
+
+	private static final long serialVersionUID = -6422870258150962140L;
 
 	public AbstractFIDSignalFilter(Class<ConfigType> configClass) {
 		super(configClass);

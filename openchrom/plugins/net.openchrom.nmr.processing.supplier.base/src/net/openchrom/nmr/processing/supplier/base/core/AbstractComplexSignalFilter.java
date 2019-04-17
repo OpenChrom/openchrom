@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,8 +26,10 @@ import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 
-public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IComplexSignalMeasurement<?>> implements IMeasurementFilter<ConfigType> {
+public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IComplexSignalMeasurement<?>>
+		implements IMeasurementFilter<ConfigType>, Serializable {
 
+	private static final long serialVersionUID = 6491722860634659049L;
 	private Class<ConfigType> configClass;
 
 	public AbstractComplexSignalFilter(Class<ConfigType> configClass) {

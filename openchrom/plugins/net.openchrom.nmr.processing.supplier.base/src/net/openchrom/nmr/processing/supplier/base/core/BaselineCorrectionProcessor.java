@@ -12,7 +12,6 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -35,6 +34,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.BaselineCorrectionSet
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<BaselineCorrectionSettings> {
 
+	private static final long serialVersionUID = 9204141423512867226L;
 	private static final String NAME = "Baseline Correction";
 
 	public BaselineCorrectionProcessor() {

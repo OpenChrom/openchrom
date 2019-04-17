@@ -12,6 +12,8 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.digitalfilter;
 
+import java.io.Serializable;
+
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.filter.Filter;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
@@ -25,12 +27,14 @@ import org.osgi.service.component.annotations.Component;
 import net.openchrom.nmr.processing.supplier.base.core.AbstractFIDSignalFilter;
 import net.openchrom.nmr.processing.supplier.base.core.FourierTransformationProcessor;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
-import net.openchrom.nmr.processing.supplier.base.core.ZeroFilling;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
+import net.openchrom.nmr.processing.supplier.base.core.ZeroFilling;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
-public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterRemovalSettings> {
+public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterRemovalSettings>
+		implements Serializable {
 
+	private static final long serialVersionUID = 879825705309454206L;
 	private static final String FILTER_NAME = "Digital Filter Removal";
 	private static final String MARKER = DigitalFilterRemoval.class.getName() + ".filtered";
 
