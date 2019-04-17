@@ -27,6 +27,7 @@ public class CompensationQuantValidator extends AbstractTemplateValidator implem
 	private String internalStandard = "";
 	private double expectedConcentration = 0.0d;
 	private String concentrationUnit = "";
+	private boolean adjustQuantitationEntry = false;
 
 	@Override
 	public IStatus validate(Object value) {
@@ -46,7 +47,7 @@ public class CompensationQuantValidator extends AbstractTemplateValidator implem
 					 * Extract retention time, ...
 					 */
 					String[] values = text.trim().split("\\" + SEPARATOR_ENTRY); // The pipe needs to be escaped.
-					if(values.length == 4) {
+					if(values.length == 5) {
 						/*
 						 * Evaluation
 						 */
@@ -69,6 +70,8 @@ public class CompensationQuantValidator extends AbstractTemplateValidator implem
 						if("".equals(concentrationUnit)) {
 							message = "A concentration unit needs to be set.";
 						}
+						//
+						adjustQuantitationEntry = parseBoolean(values, 4);
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -92,6 +95,7 @@ public class CompensationQuantValidator extends AbstractTemplateValidator implem
 		setting.setInternalStandard(internalStandard);
 		setting.setExpectedConcentration(expectedConcentration);
 		setting.setConcentrationUnit(concentrationUnit);
+		setting.setAdjustQuantitationEntry(adjustQuantitationEntry);
 		return setting;
 	}
 }

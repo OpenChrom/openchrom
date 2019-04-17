@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.peaks;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ import org.eclipse.chemclipse.model.implementation.QuantitationEntry;
 import org.eclipse.chemclipse.model.quantitation.IQuantitationEntry;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.model.CompensationSetting;
@@ -88,6 +90,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 
 		double concentration = getMeasuredConcentration(peaks, compensationSetting);
 		double expectedConcentration = compensationSetting.getExpectedConcentration();
+		boolean adjustQuantitationEntry = compensationSetting.isAdjustQuantitationEntry();
 		//
 		if(concentration > 0 && expectedConcentration > 0) {
 			/*
@@ -95,23 +98,37 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 			 */
 			double compensationFactor = 100.0d / concentration * expectedConcentration / 100.0d;
 			for(IPeak peak : peaks) {
-				List<IQuantitationEntry> quantitationEntries = getQuantitationEntries(peak, compensationSetting.getName(), compensationSetting.getConcentrationUnit());
-				for(IQuantitationEntry quantitationEntry : quantitationEntries) {
-					double adjustedConcentration = quantitationEntry.getConcentration() * compensationFactor;
-					peak.addQuantitationEntry(createAdjustedQuantitationEntry(compensationSetting, adjustedConcentration, quantitationEntry));
+				//
+				List<IQuantitationEntry> quantitationEntriesAdd = new ArrayList<>();
+				List<IQuantitationEntry> quantitationEntriesDelete = (adjustQuantitationEntry) ? new ArrayList<>() : null;
+				//
+				for(IQuantitationEntry quantitationEntry : getQuantitationEntries(peak, compensationSetting.getName(), compensationSetting.getConcentrationUnit())) {
+					quantitationEntriesAdd.add(createAdjustedQuantitationEntry(compensationSetting, compensationFactor, quantitationEntry));
+					if(adjustQuantitationEntry) {
+						quantitationEntriesDelete.add(quantitationEntry);
+					}
 				}
+				//
+				if(quantitationEntriesDelete != null) {
+					peak.removeQuantitationEntries(quantitationEntriesDelete);
+				}
+				peak.addAllQuantitationEntries(quantitationEntriesAdd);
 			}
 		}
 	}
 
-	private IQuantitationEntry createAdjustedQuantitationEntry(CompensationSetting compensationSetting, double adjustedConcentration, IQuantitationEntry quantitationEntry) {
+	private IQuantitationEntry createAdjustedQuantitationEntry(CompensationSetting compensationSetting, double compensationFactor, IQuantitationEntry quantitationEntry) {
 
-		String name = compensationSetting.getName() + LABEL_ADJUSTED;
+		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
+		double adjustedConcentration = quantitationEntry.getConcentration() * compensationFactor;
+		String name = compensationSetting.isAdjustQuantitationEntry() ? compensationSetting.getName() : compensationSetting.getName() + LABEL_ADJUSTED;
+		String description = "Adjusted with factor " + decimalFormat.format(compensationFactor) + " based on " + compensationSetting.getInternalStandard();
+		//
 		IQuantitationEntry adjustedQuantitationEntry = new QuantitationEntry(name, adjustedConcentration, compensationSetting.getConcentrationUnit(), quantitationEntry.getArea());
 		adjustedQuantitationEntry.setChemicalClass(quantitationEntry.getChemicalClass());
 		adjustedQuantitationEntry.setCalibrationMethod(quantitationEntry.getCalibrationMethod());
 		adjustedQuantitationEntry.setUsedCrossZero(quantitationEntry.getUsedCrossZero());
-		adjustedQuantitationEntry.setDescription(quantitationEntry.getDescription());
+		adjustedQuantitationEntry.setDescription(description);
 		adjustedQuantitationEntry.setSignal(quantitationEntry.getSignal());
 		return adjustedQuantitationEntry;
 	}

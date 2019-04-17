@@ -13,8 +13,8 @@ package net.openchrom.xxd.process.supplier.templates.util;
 
 public class CompensationQuantListUtil extends AbstractTemplateListUtil<CompensationQuantValidator> {
 
-	public static final String EXAMPLE_SINGLE = "Substance A | Styrene | 1.0 | mg/L";
-	public static final String EXAMPLE_MULTIPLE = "Substance A | Styrene | 1.0 | mg/L ; Substance B | Benzene | 1.2 | g/kg";
+	public static final String EXAMPLE_SINGLE = "Substance A | Styrene | 1.0 | mg/L | false";
+	public static final String EXAMPLE_MULTIPLE = "Substance A | Styrene | 1.0 | mg/L | false ; Substance B | Benzene | 1.2 | g/kg | true";
 
 	public CompensationQuantListUtil() {
 		super(new CompensationQuantValidator());

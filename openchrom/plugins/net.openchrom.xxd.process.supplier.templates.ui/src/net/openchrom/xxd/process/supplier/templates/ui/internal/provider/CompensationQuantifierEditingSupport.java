@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 
@@ -27,7 +28,11 @@ public class CompensationQuantifierEditingSupport extends EditingSupport {
 	public CompensationQuantifierEditingSupport(ExtendedTableViewer tableViewer, String column) {
 		super(tableViewer);
 		this.column = column;
-		this.cellEditor = new TextCellEditor(tableViewer.getTable());
+		if(column.equals(CompensationQuantifierLabelProvider.ADJUST_QUANTITATION_ENTRY)) {
+			this.cellEditor = new CheckboxCellEditor(tableViewer.getTable());
+		} else {
+			this.cellEditor = new TextCellEditor(tableViewer.getTable());
+		}
 		this.tableViewer = tableViewer;
 	}
 
@@ -58,6 +63,8 @@ public class CompensationQuantifierEditingSupport extends EditingSupport {
 					return Double.toString(setting.getExpectedConcentration());
 				case CompensationQuantifierLabelProvider.CONCENTRATION_UNIT:
 					return setting.getConcentrationUnit();
+				case CompensationQuantifierLabelProvider.ADJUST_QUANTITATION_ENTRY:
+					return setting.isAdjustQuantitationEntry();
 			}
 		}
 		return false;
@@ -84,6 +91,9 @@ public class CompensationQuantifierEditingSupport extends EditingSupport {
 					break;
 				case CompensationQuantifierLabelProvider.CONCENTRATION_UNIT:
 					setting.setConcentrationUnit(value.toString());
+					break;
+				case CompensationQuantifierLabelProvider.ADJUST_QUANTITATION_ENTRY:
+					setting.setAdjustQuantitationEntry((boolean)value);
 					break;
 			}
 			tableViewer.refresh();

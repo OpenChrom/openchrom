@@ -162,5 +162,9 @@ public class CompensationSettings extends HashMap<String, CompensationSetting> {
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
 		builder.append(setting.getConcentrationUnit());
+		builder.append(" ");
+		builder.append(SEPARATOR_ENTRY);
+		builder.append(" ");
+		builder.append(setting.isAdjustQuantitationEntry());
 	}
 }

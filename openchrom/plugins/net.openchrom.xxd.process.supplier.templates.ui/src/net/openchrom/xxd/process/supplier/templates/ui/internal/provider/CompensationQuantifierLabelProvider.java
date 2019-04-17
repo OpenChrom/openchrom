@@ -27,6 +27,7 @@ public class CompensationQuantifierLabelProvider extends AbstractChemClipseLabel
 	public static final String INTERNAL_STANDARD = "Internal Standard";
 	public static final String EXPECTED_CONCENTRATION = "Expected Concentration";
 	public static final String CONCENTRATION_UNIT = "Concentration Unit";
+	public static final String ADJUST_QUANTITATION_ENTRY = "Adjust Quantitation Entry";
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 	//
@@ -34,14 +35,16 @@ public class CompensationQuantifierLabelProvider extends AbstractChemClipseLabel
 			NAME, //
 			INTERNAL_STANDARD, //
 			EXPECTED_CONCENTRATION, //
-			CONCENTRATION_UNIT //
+			CONCENTRATION_UNIT, //
+			ADJUST_QUANTITATION_ENTRY //
 	};
 	//
 	public static final int[] BOUNDS = { //
 			150, //
 			150, //
 			50, //
-			50 //
+			50, //
+			30 //
 	};
 
 	@Override
@@ -49,6 +52,12 @@ public class CompensationQuantifierLabelProvider extends AbstractChemClipseLabel
 
 		if(columnIndex == 0) {
 			return getImage(element);
+		} else if(columnIndex == 4) {
+			if(element instanceof CompensationSetting) {
+				CompensationSetting compensationSetting = (CompensationSetting)element;
+				String fileName = compensationSetting.isAdjustQuantitationEntry() ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
+				return ApplicationImageFactory.getInstance().getImage(fileName, IApplicationImage.SIZE_16x16);
+			}
 		}
 		return null;
 	}
@@ -71,6 +80,9 @@ public class CompensationQuantifierLabelProvider extends AbstractChemClipseLabel
 					break;
 				case 3:
 					text = setting.getConcentrationUnit();
+					break;
+				case 4:
+					text = "";
 					break;
 				default:
 					text = "n.v.";

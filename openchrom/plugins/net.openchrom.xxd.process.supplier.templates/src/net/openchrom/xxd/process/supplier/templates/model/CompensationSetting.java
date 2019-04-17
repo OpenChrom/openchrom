@@ -17,6 +17,7 @@ public class CompensationSetting {
 	private String internalStandard = "";
 	private double expectedConcentration = 0.0d;
 	private String concentrationUnit = "";
+	private boolean adjustQuantitationEntry = false;
 
 	public void copyFrom(CompensationSetting setting) {
 
@@ -25,6 +26,7 @@ public class CompensationSetting {
 			setInternalStandard(setting.getInternalStandard());
 			setExpectedConcentration(setting.getExpectedConcentration());
 			setConcentrationUnit(setting.getConcentrationUnit());
+			setAdjustQuantitationEntry(adjustQuantitationEntry);
 		}
 	}
 
@@ -68,6 +70,16 @@ public class CompensationSetting {
 		this.concentrationUnit = concentrationUnit;
 	}
 
+	public boolean isAdjustQuantitationEntry() {
+
+		return adjustQuantitationEntry;
+	}
+
+	public void setAdjustQuantitationEntry(boolean adjustQuantitationEntry) {
+
+		this.adjustQuantitationEntry = adjustQuantitationEntry;
+	}
+
 	@Override
 	public int hashCode() {
 
@@ -98,6 +110,6 @@ public class CompensationSetting {
 	@Override
 	public String toString() {
 
-		return "CompensationSetting [name=" + name + ", internalStandard=" + internalStandard + ", expectedConcentration=" + expectedConcentration + ", concentrationUnit=" + concentrationUnit + "]";
+		return "CompensationSetting [name=" + name + ", internalStandard=" + internalStandard + ", expectedConcentration=" + expectedConcentration + ", concentrationUnit=" + concentrationUnit + ", adjustQuantitationEntry=" + adjustQuantitationEntry + "]";
 	}
 }
