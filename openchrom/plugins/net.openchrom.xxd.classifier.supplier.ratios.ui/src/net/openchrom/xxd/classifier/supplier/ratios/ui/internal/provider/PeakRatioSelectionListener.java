@@ -28,22 +28,26 @@ public class PeakRatioSelectionListener extends SelectionAdapter implements Sele
 	@Override
 	public void widgetSelected(SelectionEvent e) {
 
-		Object object = e.getSource();
-		if(object instanceof Table) {
-			Table table = (Table)object;
-			int index = table.getSelectionIndex();
-			TableItem tableItem = table.getItem(index);
-			Object data = tableItem.getData();
-			if(data instanceof IPeakRatio) {
-				IPeakRatio peakRatio = (IPeakRatio)data;
-				IPeak peak = peakRatio.getPeak();
-				if(peak != null) {
-					IEventBroker eventBroker = Activator.getDefault().getEventBroker();
-					if(eventBroker != null) {
-						eventBroker.send(IChemClipseEvents.TOPIC_PEAK_XXD_UPDATE_SELECTION, peak);
+		try {
+			Object object = e.getSource();
+			if(object instanceof Table) {
+				Table table = (Table)object;
+				int index = table.getSelectionIndex();
+				TableItem tableItem = table.getItem(index);
+				Object data = tableItem.getData();
+				if(data instanceof IPeakRatio) {
+					IPeakRatio peakRatio = (IPeakRatio)data;
+					IPeak peak = peakRatio.getPeak();
+					if(peak != null) {
+						IEventBroker eventBroker = Activator.getDefault().getEventBroker();
+						if(eventBroker != null) {
+							eventBroker.send(IChemClipseEvents.TOPIC_PEAK_XXD_UPDATE_SELECTION, peak);
+						}
 					}
 				}
 			}
+		} catch(Exception e1) {
+			//
 		}
 	}
 }
