@@ -11,8 +11,6 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
-import java.math.BigDecimal;
-
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 

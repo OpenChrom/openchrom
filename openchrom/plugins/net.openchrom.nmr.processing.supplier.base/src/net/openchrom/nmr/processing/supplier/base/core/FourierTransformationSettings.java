@@ -9,7 +9,9 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.processing.supplier.base.settings;
+package net.openchrom.nmr.processing.supplier.base.core;
+
+import java.io.Serializable;
 
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 import org.eclipse.chemclipse.support.settings.EnumSelectionSettingProperty;
@@ -18,8 +20,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
-public class FourierTransformationSettings implements IProcessorSettings {
+public class FourierTransformationSettings implements IProcessorSettings, Serializable {
 
+	private static final long serialVersionUID = 3167139244222779370L;
 	@JsonProperty(value = "Zero Filling", defaultValue = "AUTO")
 	@EnumSelectionSettingProperty
 	private ZeroFillingFactor zeroFillingFactor = ZeroFillingFactor.AUTO;

@@ -10,7 +10,7 @@
  * Jan Holy - initial API and implementation
  * Christoph Läubrich - complete rework of filter
  *******************************************************************************/
-package net.openchrom.nmr.processing.supplier.base.core;
+package net.openchrom.nmr.processing.apodization;
 
 import java.math.BigDecimal;
 
@@ -23,12 +23,14 @@ import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
+import net.openchrom.nmr.processing.supplier.base.core.AbstractFIDSignalFilter;
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
-import net.openchrom.nmr.processing.supplier.base.settings.ExponentialApodizationSettings;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class ExponentialApodizationFunctionProcessor extends AbstractFIDSignalFilter<ExponentialApodizationSettings> {
 
+	private static final long serialVersionUID = -2227392287932085043L;
 	private static final String FILTER_NAME = "Exponential Apodization";
 	private static final BigDecimal PI = BigDecimal.valueOf(Math.PI);
 

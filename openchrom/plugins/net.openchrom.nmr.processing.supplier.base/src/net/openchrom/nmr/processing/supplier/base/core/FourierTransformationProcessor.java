@@ -12,6 +12,7 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -34,12 +35,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
-import net.openchrom.nmr.processing.supplier.base.settings.FourierTransformationSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class FourierTransformationProcessor extends AbstractFIDSignalFilter<FourierTransformationSettings> {
 
+	private static final long serialVersionUID = 7524927252300991470L;
 	private static final String NAME = "Fourier Transformation";
 
 	public FourierTransformationProcessor() {
@@ -111,8 +112,9 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		}
 	}
 
-	private static final class FFTSpectrumSignal implements SpectrumSignal {
+	private static final class FFTSpectrumSignal implements SpectrumSignal, Serializable {
 
+		private static final long serialVersionUID = 343539516695828431L;
 		private BigDecimal shift;
 		private Complex complex;
 
