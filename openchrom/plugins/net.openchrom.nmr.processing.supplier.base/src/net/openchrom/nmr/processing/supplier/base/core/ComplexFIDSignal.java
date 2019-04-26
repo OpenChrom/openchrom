@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 
-final class ComplexFIDSignal implements FIDSignal, Serializable {
+public class ComplexFIDSignal implements FIDSignal, Serializable {
 
 	private static final long serialVersionUID = -561512031857962638L;
 	private Complex complex;
