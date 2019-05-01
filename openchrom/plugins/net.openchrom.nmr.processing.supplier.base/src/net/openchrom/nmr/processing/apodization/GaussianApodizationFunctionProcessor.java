@@ -10,7 +10,7 @@
  * Jan Holy - initial API and implementation
  * Christoph Läubrich - complete rework
  *******************************************************************************/
-package net.openchrom.nmr.processing.supplier.base.core;
+package net.openchrom.nmr.processing.apodization;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -24,6 +24,8 @@ import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
+import net.openchrom.nmr.processing.supplier.base.core.AbstractFIDSignalFilter;
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
 import net.openchrom.nmr.processing.supplier.base.settings.GaussianApodizationSettings;
 

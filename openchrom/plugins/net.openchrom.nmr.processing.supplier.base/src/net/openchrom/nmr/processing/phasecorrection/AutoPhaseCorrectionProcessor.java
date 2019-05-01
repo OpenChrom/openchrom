@@ -10,7 +10,7 @@
  * Alexander Stark - initial API and implementation
  * Christoph Läubrich - rework for new filter model
  *******************************************************************************/
-package net.openchrom.nmr.processing.supplier.base.core;
+package net.openchrom.nmr.processing.phasecorrection;
 
 import java.util.Arrays;
 
@@ -38,6 +38,8 @@ import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
+import net.openchrom.nmr.processing.supplier.base.core.AbstractSpectrumSignalFilter;
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
 import net.openchrom.nmr.processing.supplier.base.settings.AutoPhaseCorrectionSettings;
 

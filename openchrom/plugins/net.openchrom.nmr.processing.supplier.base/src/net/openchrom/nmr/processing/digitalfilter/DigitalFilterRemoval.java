@@ -24,8 +24,8 @@ import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
+import net.openchrom.nmr.processing.ft.FourierTransformationProcessor;
 import net.openchrom.nmr.processing.supplier.base.core.AbstractFIDSignalFilter;
-import net.openchrom.nmr.processing.supplier.base.core.FourierTransformationProcessor;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
 import net.openchrom.nmr.processing.supplier.base.core.ZeroFilling;

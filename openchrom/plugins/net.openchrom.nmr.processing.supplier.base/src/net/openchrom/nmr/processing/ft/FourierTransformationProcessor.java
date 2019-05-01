@@ -10,7 +10,7 @@
  * Alexander Stark - initial API and implementation
  * Christoph Läubrich - changes for ne processor api and process optimizations
  *******************************************************************************/
-package net.openchrom.nmr.processing.supplier.base.core;
+package net.openchrom.nmr.processing.ft;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -34,6 +34,9 @@ import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
+import net.openchrom.nmr.processing.supplier.base.core.AbstractFIDSignalFilter;
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
+import net.openchrom.nmr.processing.supplier.base.core.ZeroFilling;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
