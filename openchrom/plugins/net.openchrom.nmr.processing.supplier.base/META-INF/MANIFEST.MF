@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: NMR Processing Base
 Bundle-SymbolicName: net.openchrom.nmr.processing.supplier.base;singleton:=true
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.4.1.qualifier
 Bundle-Activator: net.openchrom.nmr.processing.supplier.base.Activator
-Bundle-Vendor: OpenChrom
+Bundle-Vendor: Lablicate GmbH
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
@@ -19,7 +19,7 @@ Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.commons.lang3;version="[3.0.0,4.0.0)",
  org.apache.commons.math3.analysis;version="[3.0.0,4.0.0)",
  org.apache.commons.math3.analysis.polynomials;version="[3.0.0,4.0.0)",
- org.apache.commons.math3.complex,
+ org.apache.commons.math3.complex;version="[3.0.0,4.0.0)",
  org.apache.commons.math3.distribution;version="[3.0.0,4.0.0)",
  org.apache.commons.math3.fitting;version="[3.0.0,4.0.0)",
  org.apache.commons.math3.optim;version="[3.0.0,4.0.0)",
