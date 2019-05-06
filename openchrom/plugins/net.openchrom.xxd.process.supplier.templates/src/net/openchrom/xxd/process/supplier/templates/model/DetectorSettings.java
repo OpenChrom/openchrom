@@ -18,11 +18,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
+import net.openchrom.xxd.process.supplier.templates.comparator.DetectorComparator;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
@@ -94,10 +97,10 @@ public class DetectorSettings extends ArrayList<DetectorSetting> {
 
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
-			Iterator<DetectorSetting> iterator = iterator();
-			while(iterator.hasNext()) {
+			List<DetectorSetting> settings = new ArrayList<>(this);
+			Collections.sort(settings, new DetectorComparator());
+			for(DetectorSetting setting : settings) {
 				StringBuilder builder = new StringBuilder();
-				DetectorSetting setting = iterator.next();
 				extractSetting(setting, builder);
 				printWriter.println(builder.toString());
 			}

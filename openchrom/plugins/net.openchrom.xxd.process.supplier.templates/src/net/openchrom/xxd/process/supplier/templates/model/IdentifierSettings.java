@@ -17,12 +17,16 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
+import net.openchrom.xxd.process.supplier.templates.comparator.IdentifierComparator;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
 
@@ -101,10 +105,10 @@ public class IdentifierSettings extends HashMap<String, IdentifierSetting> {
 
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
-			Iterator<IdentifierSetting> iterator = values().iterator();
-			while(iterator.hasNext()) {
+			List<IdentifierSetting> settings = new ArrayList<>(values());
+			Collections.sort(settings, new IdentifierComparator());
+			for(IdentifierSetting setting : settings) {
 				StringBuilder builder = new StringBuilder();
-				IdentifierSetting setting = iterator.next();
 				extractSetting(setting, builder);
 				printWriter.println(builder.toString());
 			}

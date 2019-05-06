@@ -18,11 +18,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
+import net.openchrom.xxd.process.supplier.templates.comparator.ReferenceComparator;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerValidator;
 
@@ -94,10 +97,10 @@ public class AssignerReferences extends ArrayList<AssignerReference> {
 
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
-			Iterator<AssignerReference> iterator = iterator();
-			while(iterator.hasNext()) {
+			List<AssignerReference> settings = new ArrayList<>(this);
+			Collections.sort(settings, new ReferenceComparator());
+			for(AssignerReference setting : settings) {
 				StringBuilder builder = new StringBuilder();
-				AssignerReference setting = iterator.next();
 				extractSetting(setting, builder);
 				printWriter.println(builder.toString());
 			}

@@ -18,11 +18,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
+import net.openchrom.xxd.process.supplier.templates.comparator.IntegratorComparator;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIntegratorListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIntegratorValidator;
 
@@ -94,10 +97,10 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> {
 
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
-			Iterator<IntegratorSetting> iterator = iterator();
-			while(iterator.hasNext()) {
+			List<IntegratorSetting> settings = new ArrayList<>(this);
+			Collections.sort(settings, new IntegratorComparator());
+			for(IntegratorSetting setting : settings) {
 				StringBuilder builder = new StringBuilder();
-				IntegratorSetting setting = iterator.next();
 				extractSetting(setting, builder);
 				printWriter.println(builder.toString());
 			}

@@ -11,6 +11,10 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.preferences;
 
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.DoubleFieldEditor;
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpinnerFieldEditor;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
@@ -36,6 +40,13 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_LIST_PATH_IMPORT, "List Path Import", getFieldEditorParent()));
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_LIST_PATH_EXPORT, "List Path Export", getFieldEditorParent()));
+		//
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_EXPORT_OPTIMIZE_RANGE, "Export Optimize Range", getFieldEditorParent()));
+		addField(new DoubleFieldEditor(PreferenceSupplier.P_EXPORT_DELTA_LEFT_MINUTES, "Delta Minutes Left", PreferenceSupplier.MIN_DELTA_MINUTES, PreferenceSupplier.MAX_DELTA_MINUTES, getFieldEditorParent()));
+		addField(new DoubleFieldEditor(PreferenceSupplier.P_EXPORT_DELTA_RIGHT_MINUTES, "Delta Minutes Right", PreferenceSupplier.MIN_DELTA_MINUTES, PreferenceSupplier.MAX_DELTA_MINUTES, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_EXPORT_USE_TRACES, "Export Use Traces", getFieldEditorParent()));
+		addField(new SpinnerFieldEditor(PreferenceSupplier.P_EXPORT_NUMBER_TRACES, "Number Traces", PreferenceSupplier.MIN_NUMBER_TRACES, PreferenceSupplier.MAX_NUMBER_TRACES, getFieldEditorParent()));
 	}
 
 	/*

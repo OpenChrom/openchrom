@@ -17,12 +17,16 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
+import net.openchrom.xxd.process.supplier.templates.comparator.StandardComparator;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerValidator;
 
@@ -101,10 +105,10 @@ public class AssignerStandards extends HashMap<String, AssignerStandard> {
 
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
-			Iterator<AssignerStandard> iterator = values().iterator();
-			while(iterator.hasNext()) {
+			List<AssignerStandard> settings = new ArrayList<>(values());
+			Collections.sort(settings, new StandardComparator());
+			for(AssignerStandard setting : settings) {
 				StringBuilder builder = new StringBuilder();
-				AssignerStandard setting = iterator.next();
 				extractSetting(setting, builder);
 				printWriter.println(builder.toString());
 			}

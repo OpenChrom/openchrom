@@ -17,12 +17,16 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
+import net.openchrom.xxd.process.supplier.templates.comparator.CompensationComparator;
 import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantValidator;
 
@@ -101,10 +105,10 @@ public class CompensationSettings extends HashMap<String, CompensationSetting> {
 
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
-			Iterator<CompensationSetting> iterator = values().iterator();
-			while(iterator.hasNext()) {
+			List<CompensationSetting> settings = new ArrayList<>(values());
+			Collections.sort(settings, new CompensationComparator());
+			for(CompensationSetting setting : settings) {
 				StringBuilder builder = new StringBuilder();
-				CompensationSetting setting = iterator.next();
 				extractSetting(setting, builder);
 				printWriter.println(builder.toString());
 			}

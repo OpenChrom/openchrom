@@ -49,6 +49,21 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_LIST_PATH_EXPORT = "listPathExport";
 	public static final String DEF_LIST_PATH_EXPORT = "";
 	//
+	public static final String P_EXPORT_OPTIMIZE_RANGE = "exportOptimizeRange";
+	public static final boolean DEF_EXPORT_OPTIMIZE_RANGE = true;
+	public static final double MIN_DELTA_MINUTES = 0.0d; // 0 Minutes
+	public static final double MAX_DELTA_MINUTES = 1.0d; // 1 Minute
+	public static final String P_EXPORT_DELTA_LEFT_MINUTES = "exportDeltaLeftMinutes";
+	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES = 0.1d;
+	public static final String P_EXPORT_DELTA_RIGHT_MINUTES = "exportDeltaRightMinutes";
+	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES = 0.1d;
+	public static final String P_EXPORT_USE_TRACES = "exportUseTraces";
+	public static final boolean DEF_EXPORT_USE_TRACES = false;
+	public static final int MIN_NUMBER_TRACES = 1;
+	public static final int MAX_NUMBER_TRACES = 10;
+	public static final String P_EXPORT_NUMBER_TRACES = "exportNumberTraces";
+	public static final int DEF_EXPORT_NUMBER_TRACES = 5;
+	//
 	private static IPreferenceSupplier preferenceSupplier;
 
 	public static IPreferenceSupplier INSTANCE() {
@@ -86,6 +101,13 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		//
 		defaultValues.put(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
 		defaultValues.put(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
+		//
+		defaultValues.put(P_EXPORT_OPTIMIZE_RANGE, Boolean.toString(DEF_EXPORT_OPTIMIZE_RANGE));
+		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES));
+		defaultValues.put(P_EXPORT_USE_TRACES, Boolean.toString(DEF_EXPORT_USE_TRACES));
+		defaultValues.put(P_EXPORT_NUMBER_TRACES, Integer.toString(DEF_EXPORT_NUMBER_TRACES));
+		//
 		return defaultValues;
 	}
 
@@ -119,6 +141,36 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void setListPathExport(String filterPath) {
 
 		setFilterPath(P_LIST_PATH_EXPORT, filterPath);
+	}
+
+	public static boolean isExportOptimizeRange() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_EXPORT_OPTIMIZE_RANGE, DEF_EXPORT_OPTIMIZE_RANGE);
+	}
+
+	public static double getExportDeltaLeftMinutes() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES, DEF_EXPORT_DELTA_LEFT_MINUTES);
+	}
+
+	public static double getExportDeltaRightMinutes() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES, DEF_EXPORT_DELTA_RIGHT_MINUTES);
+	}
+
+	public static boolean isUseTraces() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_EXPORT_USE_TRACES, DEF_EXPORT_USE_TRACES);
+	}
+
+	public static int getExportNumberTraces() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_EXPORT_NUMBER_TRACES, DEF_EXPORT_NUMBER_TRACES);
 	}
 
 	private static String getFilterPath(String key, String def) {
