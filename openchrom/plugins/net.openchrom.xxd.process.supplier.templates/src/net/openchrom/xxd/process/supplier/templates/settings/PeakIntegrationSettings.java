@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 import net.openchrom.xxd.process.supplier.templates.model.IntegratorSetting;
+import net.openchrom.xxd.process.supplier.templates.model.IntegratorSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIntegratorListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIntegratorValidator;
 
@@ -33,6 +34,12 @@ public class PeakIntegrationSettings extends AbstractPeakIntegrationSettings {
 	public void setIntegrationSettings(String integratorSettings) {
 
 		this.integratorSettings = integratorSettings;
+	}
+
+	public void setIntegrationSettings(List<IntegratorSetting> integratorSettings) {
+
+		IntegratorSettings settings = new IntegratorSettings();
+		this.integratorSettings = settings.extractSettings(integratorSettings);
 	}
 
 	public List<IntegratorSetting> getIntegratorSettings() {

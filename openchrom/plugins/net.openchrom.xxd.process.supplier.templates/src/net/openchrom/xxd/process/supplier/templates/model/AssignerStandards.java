@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,8 +59,20 @@ public class AssignerStandards extends HashMap<String, AssignerStandard> {
 
 	public String save() {
 
+		return extractSettings(values());
+	}
+
+	public String extractSetting(AssignerStandard setting) {
+
+		List<AssignerStandard> settings = new ArrayList<>();
+		settings.add(setting);
+		return extractSettings(settings);
+	}
+
+	public String extractSettings(Collection<AssignerStandard> settings) {
+
 		StringBuilder builder = new StringBuilder();
-		Iterator<AssignerStandard> iterator = values().iterator();
+		Iterator<AssignerStandard> iterator = settings.iterator();
 		while(iterator.hasNext()) {
 			AssignerStandard setting = iterator.next();
 			extractSetting(setting, builder);
@@ -68,13 +81,6 @@ public class AssignerStandards extends HashMap<String, AssignerStandard> {
 			}
 		}
 		return builder.toString().trim();
-	}
-
-	public String extractSettingString(AssignerStandard setting) {
-
-		StringBuilder builder = new StringBuilder();
-		extractSetting(setting, builder);
-		return builder.toString();
 	}
 
 	public AssignerStandard extractSettingInstance(String item) {

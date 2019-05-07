@@ -191,7 +191,7 @@ public class PeakIdentifierFieldEditor extends AbstractFieldEditor {
 					keySetEdit.addAll(settings.keySet());
 					IdentifierSetting setting = (IdentifierSetting)object;
 					keySetEdit.remove(setting.getName());
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new PeakIdentifierInputValidator(keySetEdit));
+					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new PeakIdentifierInputValidator(keySetEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
 						IdentifierSetting settingNew = settings.extractSettingInstance(item);

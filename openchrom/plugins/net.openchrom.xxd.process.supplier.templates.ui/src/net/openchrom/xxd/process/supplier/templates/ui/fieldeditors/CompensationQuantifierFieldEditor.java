@@ -191,7 +191,7 @@ public class CompensationQuantifierFieldEditor extends AbstractFieldEditor {
 					keySetEdit.addAll(settings.keySet());
 					CompensationSetting setting = (CompensationSetting)object;
 					keySetEdit.remove(setting.getName());
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new CompensationQuantifierInputValidator(keySetEdit));
+					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new CompensationQuantifierInputValidator(keySetEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
 						CompensationSetting settingNew = settings.extractSettingInstance(item);

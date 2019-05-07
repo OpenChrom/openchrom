@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -50,8 +51,20 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> {
 
 	public String save() {
 
+		return extractSettings(this);
+	}
+
+	public String extractSetting(IntegratorSetting setting) {
+
+		List<IntegratorSetting> settings = new ArrayList<>();
+		settings.add(setting);
+		return extractSettings(settings);
+	}
+
+	public String extractSettings(Collection<IntegratorSetting> settings) {
+
 		StringBuilder builder = new StringBuilder();
-		Iterator<IntegratorSetting> iterator = iterator();
+		Iterator<IntegratorSetting> iterator = settings.iterator();
 		while(iterator.hasNext()) {
 			IntegratorSetting setting = iterator.next();
 			extractSetting(setting, builder);
@@ -60,13 +73,6 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> {
 			}
 		}
 		return builder.toString().trim();
-	}
-
-	public String extractSettingString(IntegratorSetting setting) {
-
-		StringBuilder builder = new StringBuilder();
-		extractSetting(setting, builder);
-		return builder.toString();
 	}
 
 	public IntegratorSetting extractSettingInstance(String item) {

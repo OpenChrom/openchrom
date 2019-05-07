@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,8 +59,20 @@ public class CompensationSettings extends HashMap<String, CompensationSetting> {
 
 	public String save() {
 
+		return extractSettings(this.values());
+	}
+
+	public String extractSetting(CompensationSetting setting) {
+
+		List<CompensationSetting> settings = new ArrayList<>();
+		settings.add(setting);
+		return extractSettings(settings);
+	}
+
+	public String extractSettings(Collection<CompensationSetting> settings) {
+
 		StringBuilder builder = new StringBuilder();
-		Iterator<CompensationSetting> iterator = values().iterator();
+		Iterator<CompensationSetting> iterator = settings.iterator();
 		while(iterator.hasNext()) {
 			CompensationSetting setting = iterator.next();
 			extractSetting(setting, builder);
@@ -68,13 +81,6 @@ public class CompensationSettings extends HashMap<String, CompensationSetting> {
 			}
 		}
 		return builder.toString().trim();
-	}
-
-	public String extractSettingString(CompensationSetting setting) {
-
-		StringBuilder builder = new StringBuilder();
-		extractSetting(setting, builder);
-		return builder.toString();
 	}
 
 	public CompensationSetting extractSettingInstance(String item) {

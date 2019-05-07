@@ -82,7 +82,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 	private CompensationQuantifierSettings getSettings() {
 
 		CompensationQuantifierSettings settings = new CompensationQuantifierSettings();
-		settings.seCompensationSettings(PreferenceSupplier.getSettings(PreferenceSupplier.P_COMPENSATION_QUANTIFIER_LIST, PreferenceSupplier.DEF_COMPENSATION_QUANTIFIER_LIST));
+		settings.setCompensationSettings(PreferenceSupplier.getSettings(PreferenceSupplier.P_COMPENSATION_QUANTIFIER_LIST, PreferenceSupplier.DEF_COMPENSATION_QUANTIFIER_LIST));
 		return settings;
 	}
 

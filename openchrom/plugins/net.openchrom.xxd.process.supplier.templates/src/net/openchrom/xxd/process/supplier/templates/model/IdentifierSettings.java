@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,8 +59,20 @@ public class IdentifierSettings extends HashMap<String, IdentifierSetting> {
 
 	public String save() {
 
+		return extractSettings(this.values());
+	}
+
+	public String extractSetting(IdentifierSetting setting) {
+
+		List<IdentifierSetting> settings = new ArrayList<>();
+		settings.add(setting);
+		return extractSettings(settings);
+	}
+
+	public String extractSettings(Collection<IdentifierSetting> settings) {
+
 		StringBuilder builder = new StringBuilder();
-		Iterator<IdentifierSetting> iterator = values().iterator();
+		Iterator<IdentifierSetting> iterator = settings.iterator();
 		while(iterator.hasNext()) {
 			IdentifierSetting setting = iterator.next();
 			extractSetting(setting, builder);
@@ -68,13 +81,6 @@ public class IdentifierSettings extends HashMap<String, IdentifierSetting> {
 			}
 		}
 		return builder.toString().trim();
-	}
-
-	public String extractSettingString(IdentifierSetting setting) {
-
-		StringBuilder builder = new StringBuilder();
-		extractSetting(setting, builder);
-		return builder.toString();
 	}
 
 	public IdentifierSetting extractSettingInstance(String item) {

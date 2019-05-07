@@ -191,7 +191,7 @@ public class StandardsAssignerFieldEditor extends AbstractFieldEditor {
 					keySetEdit.addAll(settings.keySet());
 					AssignerStandard setting = (AssignerStandard)object;
 					keySetEdit.remove(setting.getName());
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new StandardsAssignerInputValidator(keySetEdit));
+					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new StandardsAssignerInputValidator(keySetEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
 						AssignerStandard settingNew = settings.extractSettingInstance(item);

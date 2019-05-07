@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerReferences;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerValidator;
 
@@ -35,6 +36,12 @@ public class StandardsReferencerSettings extends AbstractPeakQuantifierSettings 
 	public void setReferencerSettings(String referencerSettings) {
 
 		this.referencerSettings = referencerSettings;
+	}
+
+	public void setReferencerSettings(List<AssignerReference> referencerSettings) {
+
+		AssignerReferences settings = new AssignerReferences();
+		this.referencerSettings = settings.extractSettings(referencerSettings);
 	}
 
 	public List<AssignerReference> getReferencerSettings() {

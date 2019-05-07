@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 import net.openchrom.xxd.process.supplier.templates.model.CompensationSetting;
+import net.openchrom.xxd.process.supplier.templates.model.CompensationSettings;
 import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantValidator;
 
@@ -32,9 +33,15 @@ public class CompensationQuantifierSettings extends AbstractPeakQuantifierSettin
 	@JsonPropertyDescription(value = "Example: '" + CompensationQuantListUtil.EXAMPLE_MULTIPLE + "'")
 	private String compensationSettings = "";
 
-	public void seCompensationSettings(String compensationSettings) {
+	public void setCompensationSettings(String compensationSettings) {
 
 		this.compensationSettings = compensationSettings;
+	}
+
+	public void setCompensationSettings(List<CompensationSetting> compensationSetting) {
+
+		CompensationSettings settings = new CompensationSettings();
+		this.compensationSettings = settings.extractSettings(compensationSetting);
 	}
 
 	public List<CompensationSetting> getCompensationSettings() {

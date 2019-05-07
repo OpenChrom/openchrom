@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerStandards;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerValidator;
 
@@ -35,6 +36,12 @@ public class StandardsAssignerSettings extends AbstractPeakQuantifierSettings {
 	public void setAssignerSettings(String assignerSettings) {
 
 		this.assignerSettings = assignerSettings;
+	}
+
+	public void setAssignerSettings(List<AssignerStandard> assignerSettings) {
+
+		AssignerStandards settings = new AssignerStandards();
+		this.assignerSettings = settings.extractSettings(assignerSettings);
 	}
 
 	public List<AssignerStandard> getAssignerSettings() {

@@ -191,7 +191,7 @@ public class StandardsReferencerFieldEditor extends AbstractFieldEditor {
 					settingsEdit.addAll(settings);
 					AssignerReference setting = (AssignerReference)object;
 					settingsEdit.remove(setting);
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new StandardsReferencerInputValidator(settingsEdit));
+					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new StandardsReferencerInputValidator(settingsEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
 						AssignerReference settingNew = settings.extractSettingInstance(item);

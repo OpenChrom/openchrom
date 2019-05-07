@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -50,8 +51,20 @@ public class AssignerReferences extends ArrayList<AssignerReference> {
 
 	public String save() {
 
+		return extractSettings(this);
+	}
+
+	public String extractSetting(AssignerReference setting) {
+
+		List<AssignerReference> settings = new ArrayList<>();
+		settings.add(setting);
+		return extractSettings(settings);
+	}
+
+	public String extractSettings(Collection<AssignerReference> settings) {
+
 		StringBuilder builder = new StringBuilder();
-		Iterator<AssignerReference> iterator = iterator();
+		Iterator<AssignerReference> iterator = settings.iterator();
 		while(iterator.hasNext()) {
 			AssignerReference setting = iterator.next();
 			extractSetting(setting, builder);
@@ -60,13 +73,6 @@ public class AssignerReferences extends ArrayList<AssignerReference> {
 			}
 		}
 		return builder.toString().trim();
-	}
-
-	public String extractSettingString(AssignerReference setting) {
-
-		StringBuilder builder = new StringBuilder();
-		extractSetting(setting, builder);
-		return builder.toString();
 	}
 
 	public AssignerReference extractSettingInstance(String item) {

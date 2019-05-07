@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -50,8 +51,20 @@ public class DetectorSettings extends ArrayList<DetectorSetting> {
 
 	public String save() {
 
+		return extractSettings(this);
+	}
+
+	public String extractSettingString(DetectorSetting setting) {
+
+		List<DetectorSetting> settings = new ArrayList<>();
+		settings.add(setting);
+		return extractSettings(settings);
+	}
+
+	public String extractSettings(Collection<DetectorSetting> settings) {
+
 		StringBuilder builder = new StringBuilder();
-		Iterator<DetectorSetting> iterator = iterator();
+		Iterator<DetectorSetting> iterator = settings.iterator();
 		while(iterator.hasNext()) {
 			DetectorSetting setting = iterator.next();
 			extractSetting(setting, builder);
@@ -60,13 +73,6 @@ public class DetectorSettings extends ArrayList<DetectorSetting> {
 			}
 		}
 		return builder.toString().trim();
-	}
-
-	public String extractSettingString(DetectorSetting setting) {
-
-		StringBuilder builder = new StringBuilder();
-		extractSetting(setting, builder);
-		return builder.toString();
 	}
 
 	public DetectorSetting extractSettingInstance(String item) {

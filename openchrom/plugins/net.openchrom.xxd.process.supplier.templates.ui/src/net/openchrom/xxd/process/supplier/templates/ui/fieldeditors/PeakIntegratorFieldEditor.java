@@ -191,7 +191,7 @@ public class PeakIntegratorFieldEditor extends AbstractFieldEditor {
 					settingsEdit.addAll(settings);
 					IntegratorSetting setting = (IntegratorSetting)object;
 					settingsEdit.remove(setting);
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new PeakIntegratorInputValidator(settingsEdit));
+					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new PeakIntegratorInputValidator(settingsEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
 						IntegratorSetting settingNew = settings.extractSettingInstance(item);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
+import net.openchrom.xxd.process.supplier.templates.model.IdentifierSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
 
@@ -38,6 +39,12 @@ public class PeakIdentifierSettings extends AbstractIdentifierSettings implement
 	public void setIdentifierSettings(String identifierSettings) {
 
 		this.identifierSettings = identifierSettings;
+	}
+
+	public void setIdentifierSettings(List<IdentifierSetting> identifierSettings) {
+
+		IdentifierSettings settings = new IdentifierSettings();
+		this.identifierSettings = settings.extractSettings(identifierSettings);
 	}
 
 	public List<IdentifierSetting> getIdentifierSettings() {
