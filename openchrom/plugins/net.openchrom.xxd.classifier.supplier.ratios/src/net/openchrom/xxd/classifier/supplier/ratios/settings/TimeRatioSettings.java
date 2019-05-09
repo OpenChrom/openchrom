@@ -14,6 +14,7 @@ package net.openchrom.xxd.classifier.supplier.ratios.settings;
 import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.msd.classifier.settings.AbstractChromatogramClassifierSettings;
+import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,7 +27,8 @@ import net.openchrom.xxd.classifier.supplier.ratios.util.time.TimeRatioValidator
 public class TimeRatioSettings extends AbstractChromatogramClassifierSettings {
 
 	@JsonProperty(value = "Time Ratio Settings", defaultValue = "")
-	@JsonPropertyDescription(value = "Example: '" + TimeRatioListUtil.EXAMPLE_MULTIPLE + "'")
+	@JsonPropertyDescription(value = "Example: '" + TimeRatioListUtil.EXAMPLE_SINGLE + "'")
+	@StringSettingsProperty(regExp = "", isMultiLine = true)
 	private String ratioSettings = "";
 
 	public void setRatioSettings(String ratioSettings) {

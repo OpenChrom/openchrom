@@ -14,6 +14,7 @@ package net.openchrom.xxd.classifier.supplier.ratios.settings;
 import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.msd.classifier.settings.AbstractChromatogramClassifierSettings;
+import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,7 +27,8 @@ import net.openchrom.xxd.classifier.supplier.ratios.util.quant.QuantRatioValidat
 public class QuantRatioSettings extends AbstractChromatogramClassifierSettings {
 
 	@JsonProperty(value = "Quant Ratio Settings", defaultValue = "")
-	@JsonPropertyDescription(value = "Example: '" + QuantRatioListUtil.EXAMPLE_MULTIPLE + "'")
+	@JsonPropertyDescription(value = "Example: '" + QuantRatioListUtil.EXAMPLE_SINGLE + "'")
+	@StringSettingsProperty(regExp = "", isMultiLine = true)
 	private String ratioSettings = "";
 
 	public void setRatioSettings(String ratioSettings) {
