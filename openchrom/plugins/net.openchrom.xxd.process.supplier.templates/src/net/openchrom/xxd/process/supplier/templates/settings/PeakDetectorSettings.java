@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.model.settings.AbstractProcessSettings;
+import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,7 +33,8 @@ public class PeakDetectorSettings extends AbstractProcessSettings implements IPe
 	public static final String DESCRIPTION = "Template Peak Detector";
 	//
 	@JsonProperty(value = "Detector Settings", defaultValue = "")
-	@JsonPropertyDescription(value = "Example: '" + PeakDetectorListUtil.EXAMPLE_MULTIPLE + "'")
+	@JsonPropertyDescription(value = "Example: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'")
+	@StringSettingsProperty(regExp = "^(\\d+\\.\\d+)(\\s*\\|\\s*)(\\d+\\.\\d+)(\\s*\\|\\s*)(VV|BB)(\\s*\\|\\s*)([\\d+,|\\d+-]*)(\\s*\\|\\s*)(true|false)", isMultiLine = true)
 	private String detectorSettings = "";
 
 	public void setDetectorSettings(String detectorSettings) {

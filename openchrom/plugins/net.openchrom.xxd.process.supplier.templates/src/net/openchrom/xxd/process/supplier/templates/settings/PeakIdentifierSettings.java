@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.chromatogram.csd.identifier.settings.IPeakIdentifi
 import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettingsMSD;
 import org.eclipse.chemclipse.model.identifier.AbstractIdentifierSettings;
 import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
+import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,7 +34,8 @@ public class PeakIdentifierSettings extends AbstractIdentifierSettings implement
 	public static final String DESCRIPTION = "Template Peak Identifier";
 	//
 	@JsonProperty(value = "Identifier Settings", defaultValue = "")
-	@JsonPropertyDescription(value = "Example: '" + PeakIdentifierListUtil.EXAMPLE_MULTIPLE + "'")
+	@JsonPropertyDescription(value = "Example: '" + PeakIdentifierListUtil.EXAMPLE_SINGLE + "'")
+	@StringSettingsProperty(regExp = "^(\\d+\\.\\d+)(\\s*\\|\\s*)(\\d+\\.\\d+)(\\s*\\|\\s*)([^;\\|]*)(\\s*\\|\\s*)([^;\\|]*)(\\s*\\|\\s*)([^;\\|]*)(\\s*\\|\\s*)([^;\\|]*)(\\s*\\|\\s*)([^;\\|]*)(\\s*\\|\\s*)([\\d+,|\\d+-]*)", isMultiLine = true)
 	private String identifierSettings = "";
 
 	public void setIdentifierSettings(String identifierSettings) {
