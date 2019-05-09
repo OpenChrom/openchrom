@@ -21,6 +21,7 @@ import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
 import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
@@ -29,13 +30,31 @@ import net.openchrom.xxd.process.supplier.templates.model.IdentifierSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
 
-public class PeakIdentifierSettings extends AbstractIdentifierSettings implements IPeakIdentifierSettingsMSD, IPeakIdentifierSettingsCSD {
+public class PeakIdentifierSettings extends AbstractIdentifierSettings implements IPeakIdentifierSettingsMSD, IPeakIdentifierSettingsCSD, ITemplateSettings {
 
 	public static final String DESCRIPTION = "Template Peak Identifier";
-	//
+	/*
+	 * 10.52 | 10.63 | Styrene | 100-42-5 | comment | contributor | referenceId | 103, 104
+	 */
 	@JsonProperty(value = "Identifier Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + PeakIdentifierListUtil.EXAMPLE_SINGLE + "'")
-	@StringSettingsProperty(regExp = "^(\\d+\\.\\d+)(\\s*\\|\\s*)(\\d+\\.\\d+)(\\s*\\|\\s*)([^;\\|]*)(\\s*\\|\\s*)([^;\\|]*)(\\s*\\|\\s*)([^;\\|]*)(\\s*\\|\\s*)([^;\\|]*)(\\s*\\|\\s*)([^;\\|]*)(\\s*\\|\\s*)([\\d+,|\\d+-]*)", isMultiLine = true)
+	@StringSettingsProperty(regExp = RE_START + //
+			RE_MINUTES + // Start RT
+			RE_SEPARATOR + //
+			RE_MINUTES + // Stop RT
+			RE_SEPARATOR + //
+			RE_TEXT + // Substance
+			RE_SEPARATOR + //
+			RE_TEXT + // CAS
+			RE_SEPARATOR + //
+			RE_TEXT + // Comment
+			RE_SEPARATOR + //
+			RE_TEXT + // Contributor
+			RE_SEPARATOR + //
+			RE_TEXT + // Reference ID
+			RE_SEPARATOR + //
+			RE_TRACES, // Traces
+			isMultiLine = true)
 	private String identifierSettings = "";
 
 	public void setIdentifierSettings(String identifierSettings) {
@@ -66,6 +85,7 @@ public class PeakIdentifierSettings extends AbstractIdentifierSettings implement
 		return settings;
 	}
 
+	@JsonIgnore
 	@Override
 	public String getMassSpectrumComparatorId() {
 
@@ -77,6 +97,7 @@ public class PeakIdentifierSettings extends AbstractIdentifierSettings implement
 
 	}
 
+	@JsonIgnore
 	@Override
 	public IMarkedIons getExcludedIons() {
 

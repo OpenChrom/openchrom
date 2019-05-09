@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.msd.quantitation.settings.AbstractPeakQuantifierSettings;
+import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,12 +26,25 @@ import net.openchrom.xxd.process.supplier.templates.model.CompensationSettings;
 import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantValidator;
 
-public class CompensationQuantifierSettings extends AbstractPeakQuantifierSettings {
+public class CompensationQuantifierSettings extends AbstractPeakQuantifierSettings implements ITemplateSettings {
 
 	public static final String DESCRIPTION = "Template Compensation Quantifier";
-	//
+	/*
+	 * Substance A | Styrene | 1.0 | mg/L | false
+	 */
 	@JsonProperty(value = "Compensation Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + CompensationQuantListUtil.EXAMPLE_MULTIPLE + "'")
+	@StringSettingsProperty(regExp = RE_START + //
+			RE_TEXT + // Substance
+			RE_SEPARATOR + //
+			RE_TEXT + // ISTD
+			RE_SEPARATOR + //
+			RE_NUMBER + // Concentration
+			RE_SEPARATOR + //
+			RE_TEXT + // Unit
+			RE_SEPARATOR + //
+			RE_FLAG, // Adjust Quantitation Entry
+			isMultiLine = true)
 	private String compensationSettings = "";
 
 	public void setCompensationSettings(String compensationSettings) {

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.msd.quantitation.settings.AbstractPeakQuantifierSettings;
+import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,12 +26,23 @@ import net.openchrom.xxd.process.supplier.templates.model.AssignerReferences;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerValidator;
 
-public class StandardsReferencerSettings extends AbstractPeakQuantifierSettings {
+public class StandardsReferencerSettings extends AbstractPeakQuantifierSettings implements ITemplateSettings {
 
 	public static final String DESCRIPTION = "Template Standards Referencer";
-	//
+	/*
+	 * 10.52 | 10.63 | Toluene | Styrene
+	 */
 	@JsonProperty(value = "Referencer Settings", defaultValue = "")
-	@JsonPropertyDescription(value = "Example: '" + StandardsReferencerListUtil.EXAMPLE_MULTIPLE + "'")
+	@JsonPropertyDescription(value = "Example: '" + StandardsReferencerListUtil.EXAMPLE_SINGLE + "'")
+	@StringSettingsProperty(regExp = RE_START + //
+			RE_MINUTES + // Start RT
+			RE_SEPARATOR + //
+			RE_MINUTES + // Stop RT
+			RE_SEPARATOR + //
+			RE_TEXT + // ISTD
+			RE_SEPARATOR + //
+			RE_TEXT, // Name
+			isMultiLine = true)
 	private String referencerSettings = "";
 
 	public void setReferencerSettings(String referencerSettings) {

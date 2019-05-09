@@ -28,13 +28,25 @@ import net.openchrom.xxd.process.supplier.templates.model.DetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
-public class PeakDetectorSettings extends AbstractProcessSettings implements IPeakDetectorSettingsMSD, IPeakDetectorSettingsCSD {
+public class PeakDetectorSettings extends AbstractProcessSettings implements IPeakDetectorSettingsMSD, IPeakDetectorSettingsCSD, ITemplateSettings {
 
 	public static final String DESCRIPTION = "Template Peak Detector";
-	//
+	/*
+	 * 10.52 | 10.63 | VV | 103, 104, 108-110 | true
+	 */
 	@JsonProperty(value = "Detector Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'")
-	@StringSettingsProperty(regExp = "^(\\d+\\.\\d+)(\\s*\\|\\s*)(\\d+\\.\\d+)(\\s*\\|\\s*)(VV|BB)(\\s*\\|\\s*)([\\d+,|\\d+-]*)(\\s*\\|\\s*)(true|false)", isMultiLine = true)
+	@StringSettingsProperty(regExp = RE_START + //
+			RE_MINUTES + // Start RT
+			RE_SEPARATOR + //
+			RE_MINUTES + // Stop RT
+			RE_SEPARATOR + //
+			RE_DETECTOR_TYPE + // Detector Type
+			RE_SEPARATOR + //
+			RE_TRACES + // Traces
+			RE_SEPARATOR + //
+			RE_FLAG, // Optimize Range
+			isMultiLine = true)
 	private String detectorSettings = "";
 
 	public void setDetectorSettings(String detectorSettings) {

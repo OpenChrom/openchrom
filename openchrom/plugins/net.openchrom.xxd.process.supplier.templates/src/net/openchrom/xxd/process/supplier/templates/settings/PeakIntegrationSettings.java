@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.AbstractPeakIntegrationSettings;
+import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,10 +26,22 @@ import net.openchrom.xxd.process.supplier.templates.model.IntegratorSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIntegratorListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIntegratorValidator;
 
-public class PeakIntegrationSettings extends AbstractPeakIntegrationSettings {
+public class PeakIntegrationSettings extends AbstractPeakIntegrationSettings implements ITemplateSettings {
 
+	/*
+	 * 10.52 | 10.63 | Styrene | Trapezoid
+	 */
 	@JsonProperty(value = "Integrator Settings", defaultValue = "")
-	@JsonPropertyDescription(value = "Example: '" + PeakIntegratorListUtil.EXAMPLE_MULTIPLE + "'")
+	@JsonPropertyDescription(value = "Example: '" + PeakIntegratorListUtil.EXAMPLE_SINGLE + "'")
+	@StringSettingsProperty(regExp = RE_START + //
+			RE_MINUTES + // Start RT
+			RE_SEPARATOR + //
+			RE_MINUTES + // Stop RT
+			RE_SEPARATOR + //
+			RE_TEXT + // Name
+			RE_SEPARATOR + //
+			RE_INTEGRATOR_TYPE, // Type
+			isMultiLine = true)
 	private String integratorSettings = "";
 
 	public void setIntegrationSettings(String integratorSettings) {

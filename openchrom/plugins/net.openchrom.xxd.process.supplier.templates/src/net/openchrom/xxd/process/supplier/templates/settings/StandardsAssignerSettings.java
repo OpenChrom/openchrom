@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.msd.quantitation.settings.AbstractPeakQuantifierSettings;
+import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,12 +26,27 @@ import net.openchrom.xxd.process.supplier.templates.model.AssignerStandards;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerValidator;
 
-public class StandardsAssignerSettings extends AbstractPeakQuantifierSettings {
+public class StandardsAssignerSettings extends AbstractPeakQuantifierSettings implements ITemplateSettings {
 
 	public static final String DESCRIPTION = "Template Standards Assigner";
-	//
+	/*
+	 * 10.52 | 10.63 | Styrene | 10.5 | mg/L | 1.0
+	 */
 	@JsonProperty(value = "Assigner Settings", defaultValue = "")
-	@JsonPropertyDescription(value = "Example: '" + StandardsAssignerListUtil.EXAMPLE_MULTIPLE + "'")
+	@JsonPropertyDescription(value = "Example: '" + StandardsAssignerListUtil.EXAMPLE_SINGLE + "'")
+	@StringSettingsProperty(regExp = RE_START + //
+			RE_MINUTES + // Start RT
+			RE_SEPARATOR + //
+			RE_MINUTES + // Stop RT
+			RE_SEPARATOR + //
+			RE_TEXT + // Name
+			RE_SEPARATOR + //
+			RE_NUMBER + // Concentration
+			RE_SEPARATOR + //
+			RE_TEXT + // Unit
+			RE_SEPARATOR + //
+			RE_NUMBER, // Response Factor
+			isMultiLine = true)
 	private String assignerSettings = "";
 
 	public void setAssignerSettings(String assignerSettings) {
