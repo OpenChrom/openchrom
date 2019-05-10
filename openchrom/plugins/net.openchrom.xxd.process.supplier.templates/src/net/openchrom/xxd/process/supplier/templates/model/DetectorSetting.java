@@ -18,7 +18,7 @@ public class DetectorSetting {
 	//
 	private double startRetentionTime = 0.0d; // Minutes
 	private double stopRetentionTime = 0.0d; // Minutes
-	private String detectorType = "";
+	private String detectorType = DETECTOR_TYPE_VV;
 	private String traces = "";
 	private boolean optimizeRange = false;
 

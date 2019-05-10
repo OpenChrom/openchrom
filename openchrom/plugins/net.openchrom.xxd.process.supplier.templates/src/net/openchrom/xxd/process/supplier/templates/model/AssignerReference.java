@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,29 +13,19 @@ package net.openchrom.xxd.process.supplier.templates.model;
 
 public class AssignerReference {
 
-	private String name = ""; // Target ISTD
 	private double startRetentionTime = 0.0d; // Minutes
 	private double stopRetentionTime = 0.0d; // Minutes
+	private String internalStandard = ""; // Target ISTD
 	private String identifier = ""; // Source Identifier
 
 	public void copyFrom(AssignerReference setting) {
 
 		if(setting != null) {
-			setName(setting.getName());
 			setStartRetentionTime(setting.getStartRetentionTime());
 			setStopRetentionTime(setting.getStopRetentionTime());
+			setInternalStandard(setting.getInternalStandard());
 			setIdentifier(setting.getIdentifier());
 		}
-	}
-
-	public String getName() {
-
-		return name;
-	}
-
-	public void setName(String name) {
-
-		this.name = name;
 	}
 
 	public double getStartRetentionTime() {
@@ -58,6 +48,16 @@ public class AssignerReference {
 		this.stopRetentionTime = stopRetentionTime;
 	}
 
+	public String getInternalStandard() {
+
+		return internalStandard;
+	}
+
+	public void setInternalStandard(String internalStandard) {
+
+		this.internalStandard = internalStandard;
+	}
+
 	public String getIdentifier() {
 
 		return identifier;
@@ -74,7 +74,7 @@ public class AssignerReference {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((internalStandard == null) ? 0 : internalStandard.hashCode());
 		return result;
 	}
 
@@ -93,10 +93,10 @@ public class AssignerReference {
 				return false;
 		} else if(!identifier.equals(other.identifier))
 			return false;
-		if(name == null) {
-			if(other.name != null)
+		if(internalStandard == null) {
+			if(other.internalStandard != null)
 				return false;
-		} else if(!name.equals(other.name))
+		} else if(!internalStandard.equals(other.internalStandard))
 			return false;
 		return true;
 	}
@@ -104,6 +104,6 @@ public class AssignerReference {
 	@Override
 	public String toString() {
 
-		return "AssignerReference [name=" + name + ", startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", identifier=" + identifier + "]";
+		return "AssignerReference [startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", internalStandard=" + internalStandard + ", identifier=" + identifier + "]";
 	}
 }

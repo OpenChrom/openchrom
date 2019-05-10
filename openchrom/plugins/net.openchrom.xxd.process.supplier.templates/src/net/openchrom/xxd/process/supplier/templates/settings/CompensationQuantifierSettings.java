@@ -33,9 +33,9 @@ public class CompensationQuantifierSettings extends AbstractPeakQuantifierSettin
 	 * Substance A | Styrene | 1.0 | mg/L | false
 	 */
 	@JsonProperty(value = "Compensation Settings", defaultValue = "")
-	@JsonPropertyDescription(value = "Example: '" + CompensationQuantListUtil.EXAMPLE_MULTIPLE + "'")
+	@JsonPropertyDescription(value = "Example: '" + CompensationQuantListUtil.EXAMPLE_SINGLE + "'")
 	@StringSettingsProperty(regExp = RE_START + //
-			RE_TEXT + // Substance
+			RE_TEXT + // Name
 			RE_SEPARATOR + //
 			RE_TEXT + // ISTD
 			RE_SEPARATOR + //

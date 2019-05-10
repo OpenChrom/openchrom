@@ -34,9 +34,9 @@ public class PeakIntegrationSettings extends AbstractPeakIntegrationSettings imp
 	@JsonProperty(value = "Integrator Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + PeakIntegratorListUtil.EXAMPLE_SINGLE + "'")
 	@StringSettingsProperty(regExp = RE_START + //
-			RE_MINUTES + // Start RT
+			RE_NUMBER + // Start RT
 			RE_SEPARATOR + //
-			RE_MINUTES + // Stop RT
+			RE_NUMBER + // Stop RT
 			RE_SEPARATOR + //
 			RE_TEXT + // Name
 			RE_SEPARATOR + //

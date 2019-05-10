@@ -35,13 +35,13 @@ public class StandardsReferencerSettings extends AbstractPeakQuantifierSettings 
 	@JsonProperty(value = "Referencer Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + StandardsReferencerListUtil.EXAMPLE_SINGLE + "'")
 	@StringSettingsProperty(regExp = RE_START + //
-			RE_MINUTES + // Start RT
+			RE_NUMBER + // Start RT
 			RE_SEPARATOR + //
-			RE_MINUTES + // Stop RT
+			RE_NUMBER + // Stop RT
 			RE_SEPARATOR + //
 			RE_TEXT + // ISTD
 			RE_SEPARATOR + //
-			RE_TEXT, // Name
+			RE_TEXT, // Identifier
 			isMultiLine = true)
 	private String referencerSettings = "";
 

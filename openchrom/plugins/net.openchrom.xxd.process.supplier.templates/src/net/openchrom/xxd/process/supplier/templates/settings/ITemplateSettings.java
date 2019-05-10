@@ -14,12 +14,12 @@ package net.openchrom.xxd.process.supplier.templates.settings;
 public interface ITemplateSettings {
 
 	String RE_START = "^";
-	String RE_MINUTES = "(\\d+\\.\\d+)";
-	String RE_SEPARATOR = "(\\s*\\|\\s*)";
-	String RE_TRACES = "([\\d+,|\\d+-]*)";
-	String RE_FLAG = "(true|false)";
-	String RE_TEXT = "([^;\\|]*)";
 	String RE_NUMBER = "(\\d*\\.)?\\d+";
+	String RE_TEXT = "([^;\\|]*)";
+	String RE_FLAG = "(true|false)";
+	String RE_SEPARATOR = "(\\s*\\|\\s*)";
+	//
+	String RE_TRACES = "([\\d+,|\\d+-]*)";
 	String RE_DETECTOR_TYPE = "(VV|BB)";
 	String RE_INTEGRATOR_TYPE = "(Trapezoid|Max)";
 }

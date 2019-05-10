@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,9 +13,9 @@ package net.openchrom.xxd.process.supplier.templates.model;
 
 public class AssignerStandard {
 
-	private String name = "";
 	private double startRetentionTime = 0.0d; // Minutes
 	private double stopRetentionTime = 0.0d; // Minutes
+	private String name = "";
 	private double concentration = 0.0d;
 	private String concentrationUnit = "";
 	private double responseFactor = 1.0d;
@@ -23,23 +23,13 @@ public class AssignerStandard {
 	public void copyFrom(AssignerStandard setting) {
 
 		if(setting != null) {
-			setName(setting.getName());
 			setStartRetentionTime(setting.getStartRetentionTime());
 			setStopRetentionTime(setting.getStopRetentionTime());
+			setName(setting.getName());
 			setConcentration(setting.getConcentration());
 			setConcentrationUnit(setting.getConcentrationUnit());
 			setResponseFactor(setting.getResponseFactor());
 		}
-	}
-
-	public String getName() {
-
-		return name;
-	}
-
-	public void setName(String name) {
-
-		this.name = name;
 	}
 
 	public double getStartRetentionTime() {
@@ -60,6 +50,16 @@ public class AssignerStandard {
 	public void setStopRetentionTime(double stopRetentionTime) {
 
 		this.stopRetentionTime = stopRetentionTime;
+	}
+
+	public String getName() {
+
+		return name;
+	}
+
+	public void setName(String name) {
+
+		this.name = name;
 	}
 
 	public double getConcentration() {

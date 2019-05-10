@@ -39,9 +39,9 @@ public class PeakIdentifierSettings extends AbstractIdentifierSettings implement
 	@JsonProperty(value = "Identifier Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + PeakIdentifierListUtil.EXAMPLE_SINGLE + "'")
 	@StringSettingsProperty(regExp = RE_START + //
-			RE_MINUTES + // Start RT
+			RE_NUMBER + // Start RT
 			RE_SEPARATOR + //
-			RE_MINUTES + // Stop RT
+			RE_NUMBER + // Stop RT
 			RE_SEPARATOR + //
 			RE_TEXT + // Substance
 			RE_SEPARATOR + //

@@ -25,7 +25,7 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator impl
 	//
 	private double startRetentionTime = 0;
 	private double stopRetentionTime = 0;
-	private String name = "";
+	private String internalStandard = "";
 	private String identifier = "";
 
 	//
@@ -57,9 +57,9 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator impl
 						}
 						//
 						stopRetentionTime = parseDouble(values, 1);
-						name = parseString(values, 2);
-						if("".equals(name)) {
-							message = "A substance name needs to be set.";
+						internalStandard = parseString(values, 2);
+						if("".equals(internalStandard)) {
+							message = "The name of the internal standards needs to be set.";
 						}
 						identifier = parseString(values, 3);
 						/*
@@ -95,7 +95,7 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator impl
 		AssignerReference settings = new AssignerReference();
 		settings.setStartRetentionTime(startRetentionTime);
 		settings.setStopRetentionTime(stopRetentionTime);
-		settings.setName(name);
+		settings.setInternalStandard(internalStandard);
 		settings.setIdentifier(identifier);
 		return settings;
 	}

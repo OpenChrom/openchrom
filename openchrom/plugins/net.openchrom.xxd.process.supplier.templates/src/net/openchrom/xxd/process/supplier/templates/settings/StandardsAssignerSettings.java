@@ -35,9 +35,9 @@ public class StandardsAssignerSettings extends AbstractPeakQuantifierSettings im
 	@JsonProperty(value = "Assigner Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + StandardsAssignerListUtil.EXAMPLE_SINGLE + "'")
 	@StringSettingsProperty(regExp = RE_START + //
-			RE_MINUTES + // Start RT
+			RE_NUMBER + // Start RT
 			RE_SEPARATOR + //
-			RE_MINUTES + // Stop RT
+			RE_NUMBER + // Stop RT
 			RE_SEPARATOR + //
 			RE_TEXT + // Name
 			RE_SEPARATOR + //

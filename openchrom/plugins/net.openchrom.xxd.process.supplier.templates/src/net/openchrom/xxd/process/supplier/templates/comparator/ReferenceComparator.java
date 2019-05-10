@@ -20,6 +20,6 @@ public class ReferenceComparator implements Comparator<AssignerReference> {
 	@Override
 	public int compare(AssignerReference setting1, AssignerReference setting2) {
 
-		return setting1.getName().compareTo(setting2.getName());
+		return setting1.getInternalStandard().compareTo(setting2.getInternalStandard());
 	}
 }

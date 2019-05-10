@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -36,6 +36,7 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 
 	private static final Logger logger = Logger.getLogger(StandardsReferencer.class);
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public IProcessingInfo quantify(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
@@ -88,7 +89,7 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 
 		int startRetentionTime = (int)(assignerReference.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
 		int stopRetentionTime = (int)(assignerReference.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-		String quantitationReference = assignerReference.getName();
+		String quantitationReference = assignerReference.getInternalStandard();
 		String identifierReference = assignerReference.getIdentifier();
 		//
 		try {

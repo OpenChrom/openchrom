@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -36,7 +36,7 @@ public class StandardsReferencerFilter extends ViewerFilter {
 		//
 		if(element instanceof AssignerReference) {
 			AssignerReference setting = (AssignerReference)element;
-			String name = setting.getName();
+			String name = setting.getInternalStandard();
 			String identifier = setting.getIdentifier();
 			//
 			if(!caseSensitive) {

@@ -24,7 +24,7 @@ public class PageCompensationQuantifier extends FieldEditorPreferencePage implem
 	public PageCompensationQuantifier() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Compensation Quantifier.");
+		setDescription("Compensation Quantifier (ISTD).");
 	}
 
 	/**

@@ -32,7 +32,7 @@ public class AssignerReference_1_Test extends TestCase {
 
 	public void test1() {
 
-		assertEquals("", setting.getName());
+		assertEquals("", setting.getInternalStandard());
 	}
 
 	public void test2() {

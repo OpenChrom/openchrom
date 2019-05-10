@@ -42,7 +42,7 @@ public class DetectorSetting_1_Test extends TestCase {
 
 	public void test3() {
 
-		assertEquals("", setting.getDetectorType());
+		assertEquals(DetectorSetting.DETECTOR_TYPE_VV, setting.getDetectorType());
 	}
 
 	public void test4() {

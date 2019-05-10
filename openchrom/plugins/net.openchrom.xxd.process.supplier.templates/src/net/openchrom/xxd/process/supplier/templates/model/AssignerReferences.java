@@ -159,7 +159,7 @@ public class AssignerReferences extends ArrayList<AssignerReference> {
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
-		builder.append(setting.getName());
+		builder.append(setting.getInternalStandard());
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");

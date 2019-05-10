@@ -37,9 +37,9 @@ public class PeakDetectorSettings extends AbstractProcessSettings implements IPe
 	@JsonProperty(value = "Detector Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'")
 	@StringSettingsProperty(regExp = RE_START + //
-			RE_MINUTES + // Start RT
+			RE_NUMBER + // Start RT
 			RE_SEPARATOR + //
-			RE_MINUTES + // Stop RT
+			RE_NUMBER + // Stop RT
 			RE_SEPARATOR + //
 			RE_DETECTOR_TYPE + // Detector Type
 			RE_SEPARATOR + //
