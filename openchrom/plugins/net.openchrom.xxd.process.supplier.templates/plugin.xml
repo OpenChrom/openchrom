@@ -88,8 +88,41 @@
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.DetectorExport"
             fileExtension="txt"
             fileName="PeakDetectorTemplate.txt"
-            filterName="Peak Detector Template (*.txt)"
+            filterName="Template Peak Detector (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.detectorTemplateMSD"
+            importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>
+      <ChromatogramSupplier
+            description="Exports a Peak Identifier Template "
+            exportConverter="net.openchrom.xxd.process.supplier.templates.io.IdentifierExport"
+            fileExtension="txt"
+            fileName="PeakIdentifierTemplate.txt"
+            filterName="Template Peak Identifier (*.txt)"
+            id="net.openchrom.xxd.process.supplier.templates.export.identifierTemplateMSD"
+            importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>  
+      <ChromatogramSupplier
+            description="Exports a Peak Standards Template "
+            exportConverter="net.openchrom.xxd.process.supplier.templates.io.StandardsExport"
+            fileExtension="txt"
+            fileName="StandardsAssignerTemplate.txt"
+            filterName="Template Standards Assigner (*.txt)"
+            id="net.openchrom.xxd.process.supplier.templates.export.standardsAssignerTemplateMSD"
+            importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>
+      <ChromatogramSupplier
+            description="Exports a Peak Referencer Template "
+            exportConverter="net.openchrom.xxd.process.supplier.templates.io.ReferencerExport"
+            fileExtension="txt"
+            fileName="StandardsReferencerTemplate.txt"
+            filterName="Template Standards Referencer (*.txt)"
+            id="net.openchrom.xxd.process.supplier.templates.export.standardsReferencerTemplateMSD"
             importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
             isExportable="true"
             isImportable="false">
@@ -102,39 +135,44 @@
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.DetectorExport"
             fileExtension="txt"
             fileName="PeakDetectorTemplate.txt"
-            filterName="Peak Detector Template (*.txt)"
+            filterName="Template Peak Detector (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.detectorTemplateCSD"
             importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
             isExportable="true"
             isImportable="false">
       </ChromatogramSupplier>
-   </extension>
-   <extension
-         point="org.eclipse.chemclipse.msd.converter.chromatogramSupplier">
       <ChromatogramSupplier
             description="Exports a Peak Identifier Template "
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.IdentifierExport"
             fileExtension="txt"
             fileName="PeakIdentifierTemplate.txt"
-            filterName="Peak Identifier Template (*.txt)"
-            id="net.openchrom.xxd.process.supplier.templates.export.identifierTemplateMSD"
-            importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
-            isExportable="true"
-            isImportable="false">
-      </ChromatogramSupplier>
-   </extension>
-   <extension
-         point="org.eclipse.chemclipse.csd.converter.chromatogramSupplier">
-      <ChromatogramSupplier
-            description="Exports a Peak Identifier Template "
-            exportConverter="net.openchrom.xxd.process.supplier.templates.io.IdentifierExport"
-            fileExtension="txt"
-            fileName="PeakIdentifierTemplate.txt"
-            filterName="Peak Identifier Template (*.txt)"
+            filterName="Template Peak Identifier (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.identifierTemplateCSD"
             importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
             isExportable="true"
             isImportable="false">
       </ChromatogramSupplier>
-   </extension>   
+      <ChromatogramSupplier
+            description="Exports a Peak Standards Template "
+            exportConverter="net.openchrom.xxd.process.supplier.templates.io.StandardsExport"
+            fileExtension="txt"
+            fileName="StandardsAssignerTemplate.txt"
+            filterName="Template Standards Assigner (*.txt)"
+            id="net.openchrom.xxd.process.supplier.templates.export.standardsAssignerTemplateCSD"
+            importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>
+      <ChromatogramSupplier
+            description="Exports a Peak Referencer Template "
+            exportConverter="net.openchrom.xxd.process.supplier.templates.io.ReferencerExport"
+            fileExtension="txt"
+            fileName="StandardsReferencerTemplate.txt"
+            filterName="Template Standards Referencer (*.txt)"
+            id="net.openchrom.xxd.process.supplier.templates.export.standardsReferencerTemplateCSD"
+            importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>     
+   </extension>
 </plugin>

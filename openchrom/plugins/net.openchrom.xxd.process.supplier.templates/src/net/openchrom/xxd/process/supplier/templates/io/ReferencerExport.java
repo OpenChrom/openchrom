@@ -27,13 +27,13 @@ import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
-import net.openchrom.xxd.process.supplier.templates.model.IdentifierSettings;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerReferences;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
-public class IdentifierExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
+public class ReferencerExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
 
-	private static final String DESCRIPTION = "Identifier Template Export";
+	private static final String DESCRIPTION = "References Template Export";
 
 	@Override
 	public IProcessingInfo<File> convert(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) {
@@ -42,34 +42,49 @@ public class IdentifierExport extends AbstractChromatogramExportConverter implem
 		//
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
-		IdentifierSettings identifierSettings = new IdentifierSettings();
+		AssignerReferences assignerReferences = new AssignerReferences();
 		//
 		double deltaLeft = PreferenceSupplier.getExportDeltaLeftMinutes();
 		double deltaRight = PreferenceSupplier.getExportDeltaRightMinutes();
-		boolean useTraces = PreferenceSupplier.isUseTraces();
-		int numberTraces = PreferenceSupplier.getExportNumberTraces();
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
-			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), comparator);
-			if(libraryInformation != null) {
-				IdentifierSetting identifierSetting = new IdentifierSetting();
-				identifierSetting.setStartRetentionTime(convertRetentionTime(peakModel.getStartRetentionTime(), -deltaLeft));
-				identifierSetting.setStopRetentionTime(convertRetentionTime(peakModel.getStopRetentionTime(), deltaRight));
-				identifierSetting.setName(libraryInformation.getName());
-				identifierSetting.setCasNumber(libraryInformation.getCasNumber());
-				identifierSetting.setComments(libraryInformation.getComments());
-				identifierSetting.setContributor(libraryInformation.getContributor());
-				identifierSetting.setReferenceId(libraryInformation.getReferenceIdentifier());
-				identifierSetting.setTraces(extractTraces(peak, useTraces, numberTraces));
-				identifierSettings.add(identifierSetting);
+			List<String> references = peak.getQuantitationReferences();
+			for(String reference : references) {
+				String identifier = getIdentifier(peak, comparator);
+				if(!reference.equals(identifier)) {
+					/*
+					 * Create a reference
+					 */
+					AssignerReference assignerReference = new AssignerReference();
+					assignerReference.setInternalStandard(reference);
+					assignerReference.setIdentifier(identifier);
+					/*
+					 * If no identifier is available, use the retention time.
+					 */
+					if("".equals(identifier)) {
+						assignerReference.setStartRetentionTime(convertRetentionTime(peakModel.getStartRetentionTime(), -deltaLeft));
+						assignerReference.setStopRetentionTime(convertRetentionTime(peakModel.getStopRetentionTime(), deltaRight));
+					} else {
+						assignerReference.setStartRetentionTime(0.0d);
+						assignerReference.setStopRetentionTime(0.0d);
+					}
+					//
+					assignerReferences.add(assignerReference);
+				}
 			}
 		}
 		//
-		identifierSettings.exportItems(file);
+		assignerReferences.exportItems(file);
 		//
 		processingInfo.setProcessingResult(file);
-		processingInfo.addInfoMessage(DESCRIPTION, "The identifier template has been exported successfully.");
+		processingInfo.addInfoMessage(DESCRIPTION, "The references template has been exported successfully.");
 		return processingInfo;
+	}
+
+	private String getIdentifier(IPeak peak, TargetExtendedComparator comparator) {
+
+		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), comparator);
+		return (libraryInformation != null) ? libraryInformation.getName() : "";
 	}
 }

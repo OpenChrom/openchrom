@@ -19,46 +19,50 @@ import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverte
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
+import org.eclipse.chemclipse.model.quantitation.IInternalStandard;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
-import net.openchrom.xxd.process.supplier.templates.model.DetectorSettings;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
+import net.openchrom.xxd.process.supplier.templates.model.AssignerStandards;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
-public class DetectorExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
+public class StandardsExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
 
-	private static final String DESCRIPTION = "Detector Template Export";
+	private static final String DESCRIPTION = "Standards Template Export";
 
 	@Override
 	public IProcessingInfo<File> convert(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) {
 
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
-		DetectorSettings detectorSettings = new DetectorSettings();
+		AssignerStandards assignerStandards = new AssignerStandards();
 		//
 		double deltaLeft = PreferenceSupplier.getExportDeltaLeftMinutes();
 		double deltaRight = PreferenceSupplier.getExportDeltaRightMinutes();
-		boolean optimizeRange = PreferenceSupplier.isExportOptimizeRange();
-		boolean useTraces = PreferenceSupplier.isUseTraces();
-		int numberTraces = PreferenceSupplier.getExportNumberTraces();
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
-			DetectorSetting detectorSetting = new DetectorSetting();
-			detectorSetting.setStartRetentionTime(convertRetentionTime(peakModel.getStartRetentionTime(), -deltaLeft));
-			detectorSetting.setStopRetentionTime(convertRetentionTime(peakModel.getStopRetentionTime(), deltaRight));
-			detectorSetting.setDetectorType(DetectorSetting.DETECTOR_TYPE_VV);
-			detectorSetting.setTraces(extractTraces(peak, useTraces, numberTraces));
-			detectorSetting.setOptimizeRange(optimizeRange);
-			detectorSettings.add(detectorSetting);
+			List<IInternalStandard> internalStandards = peak.getInternalStandards();
+			if(internalStandards.size() > 0) {
+				for(IInternalStandard internalStandard : internalStandards) {
+					AssignerStandard assignerStandard = new AssignerStandard();
+					assignerStandard.setStartRetentionTime(convertRetentionTime(peakModel.getStartRetentionTime(), -deltaLeft));
+					assignerStandard.setStopRetentionTime(convertRetentionTime(peakModel.getStopRetentionTime(), deltaRight));
+					assignerStandard.setName(internalStandard.getName());
+					assignerStandard.setConcentration(internalStandard.getConcentration());
+					assignerStandard.setConcentrationUnit(internalStandard.getConcentrationUnit());
+					assignerStandard.setResponseFactor(internalStandard.getResponseFactor());
+					assignerStandards.add(assignerStandard);
+				}
+			}
 		}
 		//
-		detectorSettings.exportItems(file);
+		assignerStandards.exportItems(file);
 		//
 		processingInfo.setProcessingResult(file);
-		processingInfo.addInfoMessage(DESCRIPTION, "The detector template has been exported successfully.");
+		processingInfo.addInfoMessage(DESCRIPTION, "The standards template has been exported successfully.");
 		return processingInfo;
 	}
 }

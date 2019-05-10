@@ -20,6 +20,10 @@ public class ReferenceComparator implements Comparator<AssignerReference> {
 	@Override
 	public int compare(AssignerReference setting1, AssignerReference setting2) {
 
-		return setting1.getInternalStandard().compareTo(setting2.getInternalStandard());
+		int result = Double.compare(setting1.getStartRetentionTime(), setting2.getStartRetentionTime());
+		if(result == 0) {
+			result = setting1.getInternalStandard().compareTo(setting2.getInternalStandard());
+		}
+		return result;
 	}
 }
