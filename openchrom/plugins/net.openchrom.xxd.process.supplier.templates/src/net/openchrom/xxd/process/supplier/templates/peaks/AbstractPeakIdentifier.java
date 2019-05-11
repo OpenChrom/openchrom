@@ -20,7 +20,6 @@ import java.util.Set;
 import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
@@ -93,8 +92,8 @@ public abstract class AbstractPeakIdentifier {
 
 	private void identifyPeak(List<? extends IPeak> peaks, IdentifierSetting identifierSetting) {
 
-		int startRetentionTime = (int)(identifierSetting.getStartRetentionTime() * IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
-		int stopRetentionTime = (int)(identifierSetting.getStopRetentionTime() * IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+		int startRetentionTime = (int)(identifierSetting.getStartRetentionTime() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int stopRetentionTime = (int)(identifierSetting.getStopRetentionTime() * IChromatogram.MINUTE_CORRELATION_FACTOR);
 		//
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {
