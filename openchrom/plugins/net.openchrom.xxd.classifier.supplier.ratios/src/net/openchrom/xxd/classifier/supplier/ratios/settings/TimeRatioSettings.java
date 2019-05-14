@@ -20,20 +20,38 @@ import org.eclipse.core.runtime.IStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
+import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.util.time.TimeRatioListUtil;
 import net.openchrom.xxd.classifier.supplier.ratios.util.time.TimeRatioValidator;
 
-public class TimeRatioSettings extends AbstractChromatogramClassifierSettings {
+public class TimeRatioSettings extends AbstractChromatogramClassifierSettings implements ITemplateSettings {
 
+	/*
+	 * Naphthalin | 3.45 | 5.0 | 15.0
+	 */
 	@JsonProperty(value = "Time Ratio Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + TimeRatioListUtil.EXAMPLE_SINGLE + "'")
-	@StringSettingsProperty(regExp = "", isMultiLine = true)
+	@StringSettingsProperty(regExp = RE_START + //
+			RE_TEXT + // Identifier
+			RE_SEPARATOR + //
+			RE_NUMBER + // Expected Retention Time
+			RE_SEPARATOR + //
+			RE_NUMBER + // Limit Warn
+			RE_SEPARATOR + //
+			RE_NUMBER, // Limit Error
+			isMultiLine = true)
 	private String ratioSettings = "";
 
 	public void setRatioSettings(String ratioSettings) {
 
 		this.ratioSettings = ratioSettings;
+	}
+
+	public void setRatioSettings(List<TimeRatio> ratioSettings) {
+
+		TimeRatios settings = new TimeRatios();
+		this.ratioSettings = settings.extractSettings(ratioSettings);
 	}
 
 	public TimeRatios getRatioSettings() {

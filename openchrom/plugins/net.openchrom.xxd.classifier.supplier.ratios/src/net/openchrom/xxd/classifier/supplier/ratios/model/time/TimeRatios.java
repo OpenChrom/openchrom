@@ -18,7 +18,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -48,8 +50,20 @@ public class TimeRatios extends ArrayList<TimeRatio> implements IPeakRatios<Time
 
 	public String save() {
 
+		return extractSettings(this);
+	}
+
+	public String extractSettingString(TimeRatio setting) {
+
+		List<TimeRatio> settings = new ArrayList<>();
+		settings.add(setting);
+		return extractSettings(settings);
+	}
+
+	public String extractSettings(Collection<TimeRatio> settings) {
+
 		StringBuilder builder = new StringBuilder();
-		Iterator<TimeRatio> iterator = iterator();
+		Iterator<TimeRatio> iterator = settings.iterator();
 		while(iterator.hasNext()) {
 			TimeRatio setting = iterator.next();
 			extractSetting(setting, builder);
@@ -58,13 +72,6 @@ public class TimeRatios extends ArrayList<TimeRatio> implements IPeakRatios<Time
 			}
 		}
 		return builder.toString().trim();
-	}
-
-	public String extractSettingString(TimeRatio setting) {
-
-		StringBuilder builder = new StringBuilder();
-		extractSetting(setting, builder);
-		return builder.toString();
 	}
 
 	public TimeRatio extractSettingInstance(String item) {

@@ -20,20 +20,42 @@ import org.eclipse.core.runtime.IStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
+import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.util.quant.QuantRatioListUtil;
 import net.openchrom.xxd.classifier.supplier.ratios.util.quant.QuantRatioValidator;
 
-public class QuantRatioSettings extends AbstractChromatogramClassifierSettings {
+public class QuantRatioSettings extends AbstractChromatogramClassifierSettings implements ITemplateSettings {
 
+	/*
+	 * Naphthalin | Naphthalin-D8 | 1.0 | mg/L | 5.0 | 15.0
+	 */
 	@JsonProperty(value = "Quant Ratio Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + QuantRatioListUtil.EXAMPLE_SINGLE + "'")
-	@StringSettingsProperty(regExp = "", isMultiLine = true)
+	@StringSettingsProperty(regExp = RE_START + //
+			RE_TEXT + // Identifier
+			RE_SEPARATOR + //
+			RE_TEXT + // Quantifier
+			RE_SEPARATOR + //
+			RE_NUMBER + // Expected Concentration
+			RE_SEPARATOR + //
+			RE_TEXT + // Unit
+			RE_SEPARATOR + //
+			RE_NUMBER + // Limit Warn
+			RE_SEPARATOR + //
+			RE_NUMBER, // Limit Error
+			isMultiLine = true)
 	private String ratioSettings = "";
 
 	public void setRatioSettings(String ratioSettings) {
 
 		this.ratioSettings = ratioSettings;
+	}
+
+	public void setRatioSettings(List<QuantRatio> ratioSettings) {
+
+		QuantRatios settings = new QuantRatios();
+		this.ratioSettings = settings.extractSettings(ratioSettings);
 	}
 
 	public QuantRatios getRatioSettings() {

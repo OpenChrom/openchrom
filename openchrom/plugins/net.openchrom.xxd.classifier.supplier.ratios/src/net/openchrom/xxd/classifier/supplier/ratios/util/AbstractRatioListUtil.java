@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.support.settings.OperatingSystemUtils;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
@@ -51,9 +52,16 @@ public abstract class AbstractRatioListUtil<T extends IValidator> implements IRa
 	@Override
 	public String[] parseString(String stringList) {
 
+		String lineDelimiterSpecific = OperatingSystemUtils.getLineDelimiter();
+		String lineDelimiterGeneric = "\n";
+		//
 		String[] decodedArray;
 		if(stringList.contains(SEPARATOR_TOKEN)) {
 			decodedArray = stringList.split(SEPARATOR_TOKEN);
+		} else if(stringList.contains(lineDelimiterSpecific)) {
+			decodedArray = stringList.split(lineDelimiterSpecific);
+		} else if(stringList.contains(lineDelimiterGeneric)) {
+			decodedArray = stringList.split(lineDelimiterGeneric);
 		} else {
 			decodedArray = new String[1];
 			decodedArray[0] = stringList;

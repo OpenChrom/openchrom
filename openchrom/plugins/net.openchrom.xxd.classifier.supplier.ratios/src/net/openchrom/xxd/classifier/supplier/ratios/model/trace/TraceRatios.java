@@ -18,7 +18,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -48,8 +50,20 @@ public class TraceRatios extends ArrayList<TraceRatio> implements IPeakRatios<Tr
 
 	public String save() {
 
+		return extractSettings(this);
+	}
+
+	public String extractSettingString(TraceRatio setting) {
+
+		List<TraceRatio> settings = new ArrayList<>();
+		settings.add(setting);
+		return extractSettings(settings);
+	}
+
+	public String extractSettings(Collection<TraceRatio> settings) {
+
 		StringBuilder builder = new StringBuilder();
-		Iterator<TraceRatio> iterator = iterator();
+		Iterator<TraceRatio> iterator = settings.iterator();
 		while(iterator.hasNext()) {
 			TraceRatio setting = iterator.next();
 			extractSetting(setting, builder);
@@ -58,13 +72,6 @@ public class TraceRatios extends ArrayList<TraceRatio> implements IPeakRatios<Tr
 			}
 		}
 		return builder.toString().trim();
-	}
-
-	public String extractSettingString(TraceRatio setting) {
-
-		StringBuilder builder = new StringBuilder();
-		extractSetting(setting, builder);
-		return builder.toString();
 	}
 
 	public TraceRatio extractSettingInstance(String item) {

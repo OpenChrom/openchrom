@@ -18,7 +18,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -48,8 +50,20 @@ public class QuantRatios extends ArrayList<QuantRatio> implements IPeakRatios<Qu
 
 	public String save() {
 
+		return extractSettings(this);
+	}
+
+	public String extractSettingString(QuantRatio setting) {
+
+		List<QuantRatio> settings = new ArrayList<>();
+		settings.add(setting);
+		return extractSettings(settings);
+	}
+
+	public String extractSettings(Collection<QuantRatio> settings) {
+
 		StringBuilder builder = new StringBuilder();
-		Iterator<QuantRatio> iterator = iterator();
+		Iterator<QuantRatio> iterator = settings.iterator();
 		while(iterator.hasNext()) {
 			QuantRatio setting = iterator.next();
 			extractSetting(setting, builder);
@@ -58,13 +72,6 @@ public class QuantRatios extends ArrayList<QuantRatio> implements IPeakRatios<Qu
 			}
 		}
 		return builder.toString().trim();
-	}
-
-	public String extractSettingString(QuantRatio setting) {
-
-		StringBuilder builder = new StringBuilder();
-		extractSetting(setting, builder);
-		return builder.toString();
 	}
 
 	public QuantRatio extractSettingInstance(String item) {
