@@ -12,6 +12,7 @@
 package net.openchrom.xxd.classifier.supplier.ratios.ui.preferences;
 
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.FloatFieldEditor;
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpinnerFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
@@ -41,6 +42,8 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		//
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_LIST_PATH_IMPORT, "List Path Import", getFieldEditorParent()));
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_LIST_PATH_EXPORT, "List Path Export", getFieldEditorParent()));
+		//
+		addField(new SpinnerFieldEditor(PreferenceSupplier.P_EXPORT_NUMBER_TRACES, "Export Number Traces", PreferenceSupplier.MIN_NUMBER_TRACES, PreferenceSupplier.MAX_NUMBER_TRACES, getFieldEditorParent()));
 	}
 
 	/*

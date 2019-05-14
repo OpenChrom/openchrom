@@ -17,12 +17,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatios;
@@ -150,11 +152,13 @@ public class TimeRatios extends ArrayList<TimeRatio> implements IPeakRatios<Time
 
 	private void extractSetting(TimeRatio setting, StringBuilder builder) {
 
+		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
+		//
 		builder.append(setting.getName());
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
-		builder.append(setting.getExpectedRetentionTime());
+		builder.append(decimalFormat.format(setting.getExpectedRetentionTimeMinutes()));
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");

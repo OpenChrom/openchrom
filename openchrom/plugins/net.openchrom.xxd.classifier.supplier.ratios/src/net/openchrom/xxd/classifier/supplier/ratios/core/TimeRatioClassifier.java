@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.result.IChromatogramClassifierResult;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.result.ResultStatus;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.settings.IChromatogramClassifierSettings;
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IMeasurementResult;
 import org.eclipse.chemclipse.model.implementation.MeasurementResult;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
@@ -68,11 +68,11 @@ public class TimeRatioClassifier extends AbstractRatioClassifier {
 		for(TimeRatio ratio : ratios) {
 			for(IChromatogramPeakMSD peak : peaks) {
 				if(isPeakMatch(peak, ratio)) {
-					double retentionTime = peak.getPeakModel().getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR;
-					double expectedRetentionTime = ratio.getExpectedRetentionTime();
-					if(retentionTime != 0) {
+					double retentionTimeMinutes = peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR;
+					double expectedRetentionTimeMinutes = ratio.getExpectedRetentionTimeMinutes();
+					if(retentionTimeMinutes != 0) {
 						ratio.setPeak(peak);
-						double deviation = (Math.abs(expectedRetentionTime - retentionTime) / retentionTime) * 100.0d;
+						double deviation = (Math.abs(expectedRetentionTimeMinutes - retentionTimeMinutes) / retentionTimeMinutes) * 100.0d;
 						ratio.setDeviation(deviation);
 					}
 				}

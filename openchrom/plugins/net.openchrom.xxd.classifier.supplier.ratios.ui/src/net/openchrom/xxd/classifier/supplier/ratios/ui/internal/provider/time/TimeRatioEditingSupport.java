@@ -53,7 +53,7 @@ public class TimeRatioEditingSupport extends EditingSupport {
 			TimeRatio setting = (TimeRatio)element;
 			switch(column) {
 				case TimeRatioResultTitles.EXPECTED_RETENTION_TIME:
-					return Double.toString(setting.getExpectedRetentionTime());
+					return Double.toString(setting.getExpectedRetentionTimeMinutes());
 				case TimeRatioResultTitles.DEVIATION_WARN:
 					return Double.toString(setting.getDeviationWarn());
 				case TimeRatioResultTitles.DEVIATION_ERROR:
@@ -70,9 +70,9 @@ public class TimeRatioEditingSupport extends EditingSupport {
 			TimeRatio setting = (TimeRatio)element;
 			switch(column) {
 				case TimeRatioResultTitles.EXPECTED_RETENTION_TIME:
-					double expectedRetentionTime = parseDouble((String)value);
-					if(expectedRetentionTime > 0) {
-						setting.setExpectedRetentionTime(expectedRetentionTime);
+					double expectedRetentionTimeMinutes = parseDouble((String)value);
+					if(expectedRetentionTimeMinutes > 0) {
+						setting.setExpectedRetentionTimeMinutes(expectedRetentionTimeMinutes);
 					}
 					break;
 				case TimeRatioResultTitles.DEVIATION_WARN:

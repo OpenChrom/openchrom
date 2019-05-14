@@ -26,7 +26,7 @@ public class TimeRatioValidator extends ValueParserSupport implements IValidator
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
 	private String name = "";
-	private double expectedRetentionTime = 0.0d;
+	private double expectedRetentionTimeMinutes = 0.0d;
 	private double deviationWarn = 0.0d;
 	private double deviationError = 0.0d;
 
@@ -57,8 +57,8 @@ public class TimeRatioValidator extends ValueParserSupport implements IValidator
 							message = "A substance name needs to be set.";
 						}
 						//
-						expectedRetentionTime = parseDouble(values, 1);
-						if(expectedRetentionTime <= 0.0d) {
+						expectedRetentionTimeMinutes = parseDouble(values, 1);
+						if(expectedRetentionTimeMinutes <= 0.0d) {
 							message = "The expected retention time must be > 0.";
 						}
 						//
@@ -96,7 +96,7 @@ public class TimeRatioValidator extends ValueParserSupport implements IValidator
 
 		TimeRatio setting = new TimeRatio();
 		setting.setName(name);
-		setting.setExpectedRetentionTime(expectedRetentionTime);
+		setting.setExpectedRetentionTimeMinutes(expectedRetentionTimeMinutes);
 		setting.setDeviationWarn(deviationWarn);
 		setting.setDeviationError(deviationError);
 		return setting;

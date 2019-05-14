@@ -60,7 +60,7 @@ public class TimeRatioTableComparator extends AbstractRecordTableComparator impl
 					sortOrder = timeRatio2.getName().compareTo(timeRatio1.getName());
 					break;
 				case 2:
-					sortOrder = Double.compare(timeRatio2.getExpectedRetentionTime(), timeRatio1.getExpectedRetentionTime());
+					sortOrder = Integer.compare(timeRatio2.getExpectedRetentionTime(), timeRatio1.getExpectedRetentionTime());
 					break;
 				case 3:
 					sortOrder = Double.compare(timeRatio2.getDeviationWarn(), timeRatio1.getDeviationWarn());
@@ -96,7 +96,7 @@ public class TimeRatioTableComparator extends AbstractRecordTableComparator impl
 					sortOrder = timeRatio2.getName().compareTo(timeRatio1.getName());
 					break;
 				case 2:
-					sortOrder = Double.compare(timeRatio2.getExpectedRetentionTime(), timeRatio1.getExpectedRetentionTime());
+					sortOrder = Integer.compare(timeRatio2.getExpectedRetentionTime(), timeRatio1.getExpectedRetentionTime());
 					break;
 				case 3:
 					sortOrder = Double.compare(timeRatio2.getDeviation(), timeRatio1.getDeviation());

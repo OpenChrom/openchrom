@@ -15,6 +15,8 @@ import net.openchrom.xxd.classifier.supplier.ratios.model.AbstractPeakRatio;
 
 public class TraceRatio extends AbstractPeakRatio {
 
+	public static final String TEST_CASE_SEPARATOR = ":";
+	//
 	private String testCase = "";
 	private double expectedRatio = 0.0d;
 	private double ratio = 0.0d; // Calculated (transient)

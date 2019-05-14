@@ -13,7 +13,7 @@ package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace;
 
 import java.text.DecimalFormat;
 
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -100,7 +100,7 @@ public class TraceRatioLabelProvider extends AbstractChemClipseLabelProvider {
 				case 0:
 					IPeak peak = traceRatio.getPeak();
 					if(peak != null) {
-						text = decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+						text = decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR);
 					} else {
 						text = "--";
 					}

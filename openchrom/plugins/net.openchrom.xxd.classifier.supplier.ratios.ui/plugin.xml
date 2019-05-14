@@ -70,5 +70,5 @@
             SelectionListener="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRatioSelectionListener"
             Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioResultTitles">
       </MeasurementResultVisualization>
-   </extension>         
+   </extension>
 </plugin>

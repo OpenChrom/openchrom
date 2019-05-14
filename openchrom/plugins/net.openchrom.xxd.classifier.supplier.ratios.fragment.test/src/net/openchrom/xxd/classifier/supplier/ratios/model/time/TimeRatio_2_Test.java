@@ -61,7 +61,7 @@ public class TimeRatio_2_Test extends TestCase {
 
 	public void test6() {
 
-		peakRatio.setExpectedRetentionTime(4.5d);
-		assertEquals(4.5d, peakRatio.getExpectedRetentionTime());
+		peakRatio.setExpectedRetentionTimeMinutes(4.5d);
+		assertEquals(4.5d, peakRatio.getExpectedRetentionTimeMinutes());
 	}
 }

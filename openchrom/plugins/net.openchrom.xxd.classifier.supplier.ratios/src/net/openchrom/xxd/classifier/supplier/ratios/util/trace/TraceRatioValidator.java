@@ -63,7 +63,7 @@ public class TraceRatioValidator extends ValueParserSupport implements IValidato
 						if("".equals(testCase)) {
 							message = "A test case needs to be set.";
 						} else {
-							if(testCase.split(":").length != 2) {
+							if(testCase.split(TraceRatio.TEST_CASE_SEPARATOR).length != 2) {
 								message = "Please set a valid test case, e.g. 104:103.";
 							}
 						}

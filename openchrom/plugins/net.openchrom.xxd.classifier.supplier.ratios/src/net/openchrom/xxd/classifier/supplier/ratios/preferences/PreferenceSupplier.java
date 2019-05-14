@@ -50,6 +50,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_LIST_PATH_EXPORT = "listPathExport";
 	public static final String DEF_LIST_PATH_EXPORT = "";
 	//
+	public static final int MIN_NUMBER_TRACES = 1;
+	public static final int MAX_NUMBER_TRACES = 10;
+	public static final String P_EXPORT_NUMBER_TRACES = "exportNumberTraces";
+	public static final int DEF_EXPORT_NUMBER_TRACES = 5;
+	//
 	private static IPreferenceSupplier preferenceSupplier;
 
 	public static IPreferenceSupplier INSTANCE() {
@@ -79,12 +84,15 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		//
 		defaultValues.put(P_ALLOWED_DEVIATION, Float.toString(DEF_ALLOWED_DEVIATION));
 		defaultValues.put(P_ALLOWED_DEVIATION_WARN, Float.toString(DEF_ALLOWED_DEVIATION_WARN));
+		//
 		defaultValues.put(P_TRACE_RATIO_LIST, DEF_TRACE_RATIO_LIST);
 		defaultValues.put(P_TIME_RATIO_LIST, DEF_TIME_RATIO_LIST);
 		defaultValues.put(P_QUANT_RATIO_LIST, DEF_QUANT_RATIO_LIST);
 		//
 		defaultValues.put(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
 		defaultValues.put(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
+		//
+		defaultValues.put(P_EXPORT_NUMBER_TRACES, Integer.toString(DEF_EXPORT_NUMBER_TRACES));
 		//
 		return defaultValues;
 	}
@@ -116,6 +124,18 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return settings;
 	}
 
+	public static float getAllowedDeviation() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getFloat(P_ALLOWED_DEVIATION, DEF_ALLOWED_DEVIATION);
+	}
+
+	public static float getAllowedDeviationWarn() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getFloat(P_ALLOWED_DEVIATION_WARN, DEF_ALLOWED_DEVIATION_WARN);
+	}
+
 	public static String getListPathImport() {
 
 		return getFilterPath(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
@@ -134,6 +154,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void setListPathExport(String filterPath) {
 
 		setFilterPath(P_LIST_PATH_EXPORT, filterPath);
+	}
+
+	public static int getNumberTraces() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_EXPORT_NUMBER_TRACES, DEF_EXPORT_NUMBER_TRACES);
 	}
 
 	private static String getSettings(String key, String def) {

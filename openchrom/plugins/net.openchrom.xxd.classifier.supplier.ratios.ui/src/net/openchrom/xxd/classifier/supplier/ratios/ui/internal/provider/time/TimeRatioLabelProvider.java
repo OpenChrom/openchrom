@@ -13,7 +13,7 @@ package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time;
 
 import java.text.DecimalFormat;
 
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -75,7 +75,7 @@ public class TimeRatioLabelProvider extends AbstractChemClipseLabelProvider {
 					text = timeRatio.getName();
 					break;
 				case 1:
-					text = decimalFormat.format(timeRatio.getExpectedRetentionTime());
+					text = decimalFormat.format(timeRatio.getExpectedRetentionTimeMinutes());
 					break;
 				case 2:
 					text = decimalFormat.format(timeRatio.getDeviationWarn());
@@ -97,7 +97,7 @@ public class TimeRatioLabelProvider extends AbstractChemClipseLabelProvider {
 				case 0:
 					IPeak peak = timeRatio.getPeak();
 					if(peak != null) {
-						text = decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+						text = decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR);
 					} else {
 						text = "--";
 					}
@@ -106,7 +106,7 @@ public class TimeRatioLabelProvider extends AbstractChemClipseLabelProvider {
 					text = timeRatio.getName();
 					break;
 				case 2:
-					text = decimalFormat.format(timeRatio.getExpectedRetentionTime());
+					text = decimalFormat.format(timeRatio.getExpectedRetentionTimeMinutes());
 					break;
 				case 3:
 					text = decimalFormat.format(timeRatio.getDeviation());
