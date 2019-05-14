@@ -11,10 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-public class AssignerReference {
+public class AssignerReference extends AbstractSetting {
 
-	private double startRetentionTime = 0.0d; // Minutes
-	private double stopRetentionTime = 0.0d; // Minutes
 	private String internalStandard = ""; // Target ISTD
 	private String identifier = ""; // Source Identifier
 
@@ -26,26 +24,6 @@ public class AssignerReference {
 			setInternalStandard(setting.getInternalStandard());
 			setIdentifier(setting.getIdentifier());
 		}
-	}
-
-	public double getStartRetentionTime() {
-
-		return startRetentionTime;
-	}
-
-	public void setStartRetentionTime(double startRetentionTime) {
-
-		this.startRetentionTime = startRetentionTime;
-	}
-
-	public double getStopRetentionTime() {
-
-		return stopRetentionTime;
-	}
-
-	public void setStopRetentionTime(double stopRetentionTime) {
-
-		this.stopRetentionTime = stopRetentionTime;
 	}
 
 	public String getInternalStandard() {
@@ -104,6 +82,6 @@ public class AssignerReference {
 	@Override
 	public String toString() {
 
-		return "AssignerReference [startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", internalStandard=" + internalStandard + ", identifier=" + identifier + "]";
+		return "AssignerReference [startRetentionTime=" + getStartRetentionTime() + ", stopRetentionTime=" + getStopRetentionTime() + ", internalStandard=" + internalStandard + ", identifier=" + identifier + "]";
 	}
 }

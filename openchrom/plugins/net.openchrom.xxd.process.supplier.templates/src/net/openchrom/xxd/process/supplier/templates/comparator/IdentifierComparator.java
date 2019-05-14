@@ -20,6 +20,6 @@ public class IdentifierComparator implements Comparator<IdentifierSetting> {
 	@Override
 	public int compare(IdentifierSetting setting1, IdentifierSetting setting2) {
 
-		return Double.compare(setting1.getStartRetentionTime(), setting2.getStartRetentionTime());
+		return Integer.compare(setting1.getStartRetentionTime(), setting2.getStartRetentionTime());
 	}
 }

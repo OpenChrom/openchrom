@@ -92,8 +92,8 @@ public abstract class AbstractPeakIdentifier {
 
 	private void identifyPeak(List<? extends IPeak> peaks, IdentifierSetting identifierSetting) {
 
-		int startRetentionTime = (int)(identifierSetting.getStartRetentionTime() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		int stopRetentionTime = (int)(identifierSetting.getStopRetentionTime() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int startRetentionTime = identifierSetting.getStartRetentionTime();
+		int stopRetentionTime = identifierSetting.getStopRetentionTime();
 		//
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {

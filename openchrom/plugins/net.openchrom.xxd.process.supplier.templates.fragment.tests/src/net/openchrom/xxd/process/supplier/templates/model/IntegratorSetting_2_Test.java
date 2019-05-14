@@ -38,14 +38,14 @@ public class IntegratorSetting_2_Test extends TestCase {
 
 	public void test2() {
 
-		setting.setStartRetentionTime(2.10d);
-		assertEquals(2.10d, setting.getStartRetentionTime());
+		setting.setStartRetentionTimeMinutes(2.10d);
+		assertEquals(2.10d, setting.getStartRetentionTimeMinutes());
 	}
 
 	public void test3() {
 
-		setting.setStopRetentionTime(7.46d);
-		assertEquals(7.46d, setting.getStopRetentionTime());
+		setting.setStopRetentionTimeMinutes(7.46d);
+		assertEquals(7.46d, setting.getStopRetentionTimeMinutes());
 	}
 
 	public void test4() {

@@ -11,10 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-public class IdentifierSetting {
+public class IdentifierSetting extends AbstractSetting {
 
-	private double startRetentionTime = 0.0d; // Minutes
-	private double stopRetentionTime = 0.0d; // Minutes
 	private String name = "";
 	private String casNumber = "";
 	private String comments = "";
@@ -34,26 +32,6 @@ public class IdentifierSetting {
 			setReferenceId(setting.getReferenceId());
 			setTraces(setting.getTraces());
 		}
-	}
-
-	public double getStartRetentionTime() {
-
-		return startRetentionTime;
-	}
-
-	public void setStartRetentionTime(double startRetentionTime) {
-
-		this.startRetentionTime = startRetentionTime;
-	}
-
-	public double getStopRetentionTime() {
-
-		return stopRetentionTime;
-	}
-
-	public void setStopRetentionTime(double stopRetentionTime) {
-
-		this.stopRetentionTime = stopRetentionTime;
 	}
 
 	public String getName() {
@@ -146,6 +124,6 @@ public class IdentifierSetting {
 	@Override
 	public String toString() {
 
-		return "IdentifierSetting [startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", name=" + name + ", casNumber=" + casNumber + ", comments=" + comments + ", contributor=" + contributor + ", referenceId=" + referenceId + "]";
+		return "IdentifierSetting [startRetentionTime=" + getStartRetentionTime() + ", stopRetentionTime=" + getStopRetentionTime() + ", name=" + name + ", casNumber=" + casNumber + ", comments=" + comments + ", contributor=" + contributor + ", referenceId=" + referenceId + "]";
 	}
 }

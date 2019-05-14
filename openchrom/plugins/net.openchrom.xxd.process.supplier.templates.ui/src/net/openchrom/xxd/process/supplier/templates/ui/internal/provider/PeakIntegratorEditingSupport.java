@@ -63,9 +63,9 @@ public class PeakIntegratorEditingSupport extends EditingSupport {
 			IntegratorSetting setting = (IntegratorSetting)element;
 			switch(column) {
 				case PeakIntegratorLabelProvider.START_RETENTION_TIME:
-					return Double.toString(setting.getStartRetentionTime());
+					return Double.toString(setting.getStartRetentionTimeMinutes());
 				case PeakIntegratorLabelProvider.STOP_RETENTION_TIME:
-					return Double.toString(setting.getStopRetentionTime());
+					return Double.toString(setting.getStopRetentionTimeMinutes());
 				case PeakIntegratorLabelProvider.IDENTIFIER:
 					return setting.getIdentifier();
 				case PeakIntegratorLabelProvider.INTEGRATOR:
@@ -92,16 +92,16 @@ public class PeakIntegratorEditingSupport extends EditingSupport {
 				case PeakIntegratorLabelProvider.START_RETENTION_TIME:
 					result = convertValue(value);
 					if(!Double.isNaN(result)) {
-						if(result <= setting.getStopRetentionTime()) {
-							setting.setStartRetentionTime(result);
+						if(result <= setting.getStopRetentionTimeMinutes()) {
+							setting.setStartRetentionTimeMinutes(result);
 						}
 					}
 					break;
 				case PeakIntegratorLabelProvider.STOP_RETENTION_TIME:
 					result = convertValue(value);
 					if(!Double.isNaN(result)) {
-						if(result >= setting.getStartRetentionTime()) {
-							setting.setStopRetentionTime(result);
+						if(result >= setting.getStartRetentionTimeMinutes()) {
+							setting.setStopRetentionTimeMinutes(result);
 						}
 					}
 					break;

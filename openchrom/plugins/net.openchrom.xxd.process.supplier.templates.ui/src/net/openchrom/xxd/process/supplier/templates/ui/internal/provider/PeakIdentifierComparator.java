@@ -33,10 +33,10 @@ public class PeakIdentifierComparator extends AbstractRecordTableComparator impl
 					sortOrder = setting2.getName().compareTo(setting1.getName());
 					break;
 				case 1:
-					sortOrder = Double.compare(setting2.getStartRetentionTime(), setting1.getStartRetentionTime());
+					sortOrder = Integer.compare(setting2.getStartRetentionTime(), setting1.getStartRetentionTime());
 					break;
 				case 2:
-					sortOrder = Double.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
+					sortOrder = Integer.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
 					break;
 				case 3:
 					sortOrder = setting2.getCasNumber().compareTo(setting1.getCasNumber());

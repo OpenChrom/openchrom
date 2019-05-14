@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,7 +18,6 @@ import org.eclipse.chemclipse.chromatogram.msd.quantitation.core.AbstractPeakQua
 import org.eclipse.chemclipse.chromatogram.msd.quantitation.core.IPeakQuantifier;
 import org.eclipse.chemclipse.chromatogram.msd.quantitation.settings.IPeakQuantifierSettings;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
@@ -31,6 +30,7 @@ import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSettings;
 
+@SuppressWarnings("rawtypes")
 public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQuantifier {
 
 	private static final Logger logger = Logger.getLogger(StandardsAssigner.class);
@@ -85,8 +85,8 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 
 	private void assignPeak(List<? extends IPeak> peaks, AssignerStandard assignerSetting) {
 
-		int startRetentionTime = (int)(assignerSetting.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-		int stopRetentionTime = (int)(assignerSetting.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		int startRetentionTime = assignerSetting.getStartRetentionTime();
+		int stopRetentionTime = assignerSetting.getStopRetentionTime();
 		//
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {

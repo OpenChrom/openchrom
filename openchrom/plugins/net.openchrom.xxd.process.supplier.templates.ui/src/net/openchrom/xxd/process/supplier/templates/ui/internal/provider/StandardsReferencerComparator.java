@@ -33,10 +33,10 @@ public class StandardsReferencerComparator extends AbstractRecordTableComparator
 					sortOrder = setting2.getInternalStandard().compareTo(setting1.getInternalStandard());
 					break;
 				case 1:
-					sortOrder = Double.compare(setting2.getStartRetentionTime(), setting1.getStartRetentionTime());
+					sortOrder = Integer.compare(setting2.getStartRetentionTime(), setting1.getStartRetentionTime());
 					break;
 				case 2:
-					sortOrder = Double.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
+					sortOrder = Integer.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
 					break;
 				case 3:
 					sortOrder = setting2.getIdentifier().compareTo(setting1.getIdentifier());

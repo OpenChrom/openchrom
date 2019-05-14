@@ -23,8 +23,8 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 	private static final String SEPARATOR_ENTRY = PeakDetectorListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
-	private double startRetentionTime = 0;
-	private double stopRetentionTime = 0;
+	private double startRetentionTimeMinutes = 0;
+	private double stopRetentionTimeMinutes = 0;
 	private String name = "";
 	private String casNumber = "";
 	private String comments = "";
@@ -54,13 +54,13 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 						/*
 						 * Evaluation
 						 */
-						startRetentionTime = parseDouble(values, 0);
-						if(startRetentionTime < 0.0d) {
+						startRetentionTimeMinutes = parseDouble(values, 0);
+						if(startRetentionTimeMinutes < 0.0d) {
 							message = "The start retention time must be not lower than 0.";
 						}
 						//
-						stopRetentionTime = parseDouble(values, 1);
-						if(stopRetentionTime <= startRetentionTime) {
+						stopRetentionTimeMinutes = parseDouble(values, 1);
+						if(stopRetentionTimeMinutes <= startRetentionTimeMinutes) {
 							message = "The stop retention time must be greater then the start retention time.";
 						}
 						//
@@ -96,8 +96,8 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 	public IdentifierSetting getSetting() {
 
 		IdentifierSetting setting = new IdentifierSetting();
-		setting.setStartRetentionTime(startRetentionTime);
-		setting.setStopRetentionTime(stopRetentionTime);
+		setting.setStartRetentionTimeMinutes(startRetentionTimeMinutes);
+		setting.setStopRetentionTimeMinutes(stopRetentionTimeMinutes);
 		setting.setName(name);
 		setting.setCasNumber(casNumber);
 		setting.setComments(comments);

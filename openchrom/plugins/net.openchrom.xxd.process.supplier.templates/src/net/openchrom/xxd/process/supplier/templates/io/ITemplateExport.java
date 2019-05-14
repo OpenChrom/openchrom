@@ -11,13 +11,11 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.io;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.msd.model.core.IIon;
@@ -25,7 +23,6 @@ import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.comparator.IonAbundanceComparator;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
-import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.wsd.model.core.IPeakWSD;
 
 import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUtil;
@@ -64,11 +61,5 @@ public interface ITemplateExport {
 			}
 		}
 		return traces;
-	}
-
-	default double convertRetentionTime(int retentionTime, double delta) {
-
-		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
-		return Double.valueOf(decimalFormat.format(retentionTime / AbstractChromatogram.MINUTE_CORRELATION_FACTOR + delta));
 	}
 }

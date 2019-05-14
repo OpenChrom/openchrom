@@ -20,7 +20,7 @@ public class StandardComparator implements Comparator<AssignerStandard> {
 	@Override
 	public int compare(AssignerStandard setting1, AssignerStandard setting2) {
 
-		int result = Double.compare(setting1.getStartRetentionTime(), setting2.getStartRetentionTime());
+		int result = Integer.compare(setting1.getStartRetentionTime(), setting2.getStartRetentionTime());
 		if(result == 0) {
 			result = setting1.getName().compareTo(setting2.getName());
 		}

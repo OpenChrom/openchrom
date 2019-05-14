@@ -30,7 +30,7 @@ import net.openchrom.xxd.process.supplier.templates.comparator.DetectorComparato
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
-public class DetectorSettings extends ArrayList<DetectorSetting> {
+public class DetectorSettings extends ArrayList<DetectorSetting> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(DetectorSettings.class);
 	//
@@ -151,11 +151,11 @@ public class DetectorSettings extends ArrayList<DetectorSetting> {
 
 	private void extractSetting(DetectorSetting setting, StringBuilder builder) {
 
-		builder.append(setting.getStartRetentionTime());
+		builder.append(getFormattedRetentionTime(setting.getStartRetentionTimeMinutes()));
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
-		builder.append(setting.getStopRetentionTime());
+		builder.append(getFormattedRetentionTime(setting.getStopRetentionTimeMinutes()));
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");

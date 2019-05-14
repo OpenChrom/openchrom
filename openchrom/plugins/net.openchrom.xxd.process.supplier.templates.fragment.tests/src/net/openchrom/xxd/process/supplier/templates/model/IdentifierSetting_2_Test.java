@@ -32,14 +32,14 @@ public class IdentifierSetting_2_Test extends TestCase {
 
 	public void test1() {
 
-		setting.setStartRetentionTime(1.23d);
-		assertEquals(1.23d, setting.getStartRetentionTime());
+		setting.setStartRetentionTimeMinutes(1.23d);
+		assertEquals(1.23d, setting.getStartRetentionTimeMinutes());
 	}
 
 	public void test2() {
 
-		setting.setStopRetentionTime(6.63d);
-		assertEquals(6.63d, setting.getStopRetentionTime());
+		setting.setStopRetentionTimeMinutes(6.63d);
+		assertEquals(6.63d, setting.getStopRetentionTimeMinutes());
 	}
 
 	public void test3() {

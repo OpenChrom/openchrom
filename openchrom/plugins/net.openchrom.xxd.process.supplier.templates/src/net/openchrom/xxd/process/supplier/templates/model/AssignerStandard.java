@@ -11,10 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-public class AssignerStandard {
+public class AssignerStandard extends AbstractSetting {
 
-	private double startRetentionTime = 0.0d; // Minutes
-	private double stopRetentionTime = 0.0d; // Minutes
 	private String name = "";
 	private double concentration = 0.0d;
 	private String concentrationUnit = "";
@@ -30,26 +28,6 @@ public class AssignerStandard {
 			setConcentrationUnit(setting.getConcentrationUnit());
 			setResponseFactor(setting.getResponseFactor());
 		}
-	}
-
-	public double getStartRetentionTime() {
-
-		return startRetentionTime;
-	}
-
-	public void setStartRetentionTime(double startRetentionTime) {
-
-		this.startRetentionTime = startRetentionTime;
-	}
-
-	public double getStopRetentionTime() {
-
-		return stopRetentionTime;
-	}
-
-	public void setStopRetentionTime(double stopRetentionTime) {
-
-		this.stopRetentionTime = stopRetentionTime;
 	}
 
 	public String getName() {
@@ -122,6 +100,6 @@ public class AssignerStandard {
 	@Override
 	public String toString() {
 
-		return "AssignerStandard [name=" + name + ", startRetentionTime=" + startRetentionTime + ", stopRetentionTime=" + stopRetentionTime + ", concentration=" + concentration + ", concentrationUnit=" + concentrationUnit + ", responseFactor=" + responseFactor + "]";
+		return "AssignerStandard [name=" + name + ", startRetentionTime=" + getStartRetentionTime() + ", stopRetentionTime=" + getStopRetentionTime() + ", concentration=" + concentration + ", concentrationUnit=" + concentrationUnit + ", responseFactor=" + responseFactor + "]";
 	}
 }

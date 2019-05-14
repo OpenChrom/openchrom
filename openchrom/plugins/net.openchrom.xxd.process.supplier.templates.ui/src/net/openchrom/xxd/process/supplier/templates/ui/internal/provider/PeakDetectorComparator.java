@@ -30,10 +30,10 @@ public class PeakDetectorComparator extends AbstractRecordTableComparator implem
 			//
 			switch(getPropertyIndex()) {
 				case 0:
-					sortOrder = Double.compare(setting2.getStartRetentionTime(), setting1.getStartRetentionTime());
+					sortOrder = Integer.compare(setting2.getStartRetentionTime(), setting1.getStartRetentionTime());
 					break;
 				case 1:
-					sortOrder = Double.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
+					sortOrder = Integer.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
 					break;
 				case 2:
 					sortOrder = setting2.getDetectorType().compareTo(setting1.getDetectorType());

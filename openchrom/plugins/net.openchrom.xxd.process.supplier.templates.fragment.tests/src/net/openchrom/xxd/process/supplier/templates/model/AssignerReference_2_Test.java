@@ -38,14 +38,14 @@ public class AssignerReference_2_Test extends TestCase {
 
 	public void test2() {
 
-		setting.setStartRetentionTime(3.45d);
-		assertEquals(3.45d, setting.getStartRetentionTime());
+		setting.setStartRetentionTimeMinutes(3.45d);
+		assertEquals(3.45d, setting.getStartRetentionTimeMinutes());
 	}
 
 	public void test3() {
 
-		setting.setStopRetentionTime(10.98d);
-		assertEquals(10.98d, setting.getStopRetentionTime());
+		setting.setStopRetentionTimeMinutes(10.98d);
+		assertEquals(10.98d, setting.getStopRetentionTimeMinutes());
 	}
 
 	public void test4() {

@@ -71,10 +71,10 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 			DetectorSetting setting = (DetectorSetting)element;
 			switch(columnIndex) {
 				case 0:
-					text = decimalFormat.format(setting.getStartRetentionTime());
+					text = decimalFormat.format(setting.getStartRetentionTimeMinutes());
 					break;
 				case 1:
-					text = decimalFormat.format(setting.getStopRetentionTime());
+					text = decimalFormat.format(setting.getStopRetentionTimeMinutes());
 					break;
 				case 2:
 					text = setting.getDetectorType();

@@ -44,8 +44,8 @@ public class IdentifierExport extends AbstractChromatogramExportConverter implem
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		IdentifierSettings identifierSettings = new IdentifierSettings();
 		//
-		double deltaLeft = PreferenceSupplier.getExportDeltaLeftMinutes();
-		double deltaRight = PreferenceSupplier.getExportDeltaRightMinutes();
+		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
 		boolean useTraces = PreferenceSupplier.isUseTraces();
 		int numberTraces = PreferenceSupplier.getExportNumberTraces();
 		//
@@ -54,8 +54,8 @@ public class IdentifierExport extends AbstractChromatogramExportConverter implem
 			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), comparator);
 			if(libraryInformation != null) {
 				IdentifierSetting identifierSetting = new IdentifierSetting();
-				identifierSetting.setStartRetentionTime(convertRetentionTime(peakModel.getStartRetentionTime(), -deltaLeft));
-				identifierSetting.setStopRetentionTime(convertRetentionTime(peakModel.getStopRetentionTime(), deltaRight));
+				identifierSetting.setStartRetentionTime(peakModel.getStartRetentionTime() - deltaLeft);
+				identifierSetting.setStopRetentionTime(peakModel.getStopRetentionTime() + deltaRight);
 				identifierSetting.setName(libraryInformation.getName());
 				identifierSetting.setCasNumber(libraryInformation.getCasNumber());
 				identifierSetting.setComments(libraryInformation.getComments());

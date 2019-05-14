@@ -31,7 +31,7 @@ import net.openchrom.xxd.process.supplier.templates.comparator.IdentifierCompara
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
 
-public class IdentifierSettings extends HashMap<String, IdentifierSetting> {
+public class IdentifierSettings extends HashMap<String, IdentifierSetting> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(IdentifierSettings.class);
 	//
@@ -159,11 +159,11 @@ public class IdentifierSettings extends HashMap<String, IdentifierSetting> {
 
 	private void extractSetting(IdentifierSetting setting, StringBuilder builder) {
 
-		builder.append(setting.getStartRetentionTime());
+		builder.append(getFormattedRetentionTime(setting.getStartRetentionTimeMinutes()));
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
-		builder.append(setting.getStopRetentionTime());
+		builder.append(getFormattedRetentionTime(setting.getStopRetentionTimeMinutes()));
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");

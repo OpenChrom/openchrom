@@ -44,8 +44,8 @@ public class ReferencerExport extends AbstractChromatogramExportConverter implem
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		AssignerReferences assignerReferences = new AssignerReferences();
 		//
-		double deltaLeft = PreferenceSupplier.getExportDeltaLeftMinutes();
-		double deltaRight = PreferenceSupplier.getExportDeltaRightMinutes();
+		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
@@ -63,11 +63,11 @@ public class ReferencerExport extends AbstractChromatogramExportConverter implem
 					 * If no identifier is available, use the retention time.
 					 */
 					if("".equals(identifier)) {
-						assignerReference.setStartRetentionTime(convertRetentionTime(peakModel.getStartRetentionTime(), -deltaLeft));
-						assignerReference.setStopRetentionTime(convertRetentionTime(peakModel.getStopRetentionTime(), deltaRight));
+						assignerReference.setStartRetentionTime(peakModel.getStartRetentionTime() - deltaLeft);
+						assignerReference.setStopRetentionTime(peakModel.getStopRetentionTime() + deltaRight);
 					} else {
-						assignerReference.setStartRetentionTime(0.0d);
-						assignerReference.setStopRetentionTime(0.0d);
+						assignerReference.setStartRetentionTime(0);
+						assignerReference.setStopRetentionTime(0);
 					}
 					//
 					assignerReferences.add(assignerReference);

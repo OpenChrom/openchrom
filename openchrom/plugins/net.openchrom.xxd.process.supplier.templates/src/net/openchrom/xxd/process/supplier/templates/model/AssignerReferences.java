@@ -30,7 +30,7 @@ import net.openchrom.xxd.process.supplier.templates.comparator.ReferenceComparat
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerValidator;
 
-public class AssignerReferences extends ArrayList<AssignerReference> {
+public class AssignerReferences extends ArrayList<AssignerReference> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(AssignerReferences.class);
 	//
@@ -151,11 +151,11 @@ public class AssignerReferences extends ArrayList<AssignerReference> {
 
 	private void extractSetting(AssignerReference setting, StringBuilder builder) {
 
-		builder.append(setting.getStartRetentionTime());
+		builder.append(getFormattedRetentionTime(setting.getStartRetentionTimeMinutes()));
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
-		builder.append(setting.getStopRetentionTime());
+		builder.append(getFormattedRetentionTime(setting.getStopRetentionTimeMinutes()));
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");

@@ -19,7 +19,6 @@ import org.eclipse.chemclipse.chromatogram.msd.quantitation.core.AbstractPeakQua
 import org.eclipse.chemclipse.chromatogram.msd.quantitation.core.IPeakQuantifier;
 import org.eclipse.chemclipse.chromatogram.msd.quantitation.settings.IPeakQuantifierSettings;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
@@ -32,11 +31,11 @@ import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsReferencerSettings;
 
+@SuppressWarnings("rawtypes")
 public class StandardsReferencer extends AbstractPeakQuantifier implements IPeakQuantifier {
 
 	private static final Logger logger = Logger.getLogger(StandardsReferencer.class);
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public IProcessingInfo quantify(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
@@ -87,8 +86,8 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 
 	private void referencePeak(List<? extends IPeak> peaks, AssignerReference assignerReference) {
 
-		int startRetentionTime = (int)(assignerReference.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-		int stopRetentionTime = (int)(assignerReference.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+		int startRetentionTime = assignerReference.getStartRetentionTime();
+		int stopRetentionTime = assignerReference.getStopRetentionTime();
 		String quantitationReference = assignerReference.getInternalStandard();
 		String identifierReference = assignerReference.getIdentifier();
 		//

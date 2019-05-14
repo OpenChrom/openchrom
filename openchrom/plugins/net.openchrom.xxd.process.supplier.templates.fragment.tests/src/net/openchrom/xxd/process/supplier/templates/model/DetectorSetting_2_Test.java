@@ -32,14 +32,14 @@ public class DetectorSetting_2_Test extends TestCase {
 
 	public void test1() {
 
-		setting.setStartRetentionTime(0.78d);
-		assertEquals(0.78d, setting.getStartRetentionTime());
+		setting.setStartRetentionTimeMinutes(0.78d);
+		assertEquals(0.78d, setting.getStartRetentionTimeMinutes());
 	}
 
 	public void test2() {
 
-		setting.setStopRetentionTime(1.28d);
-		assertEquals(1.28d, setting.getStopRetentionTime());
+		setting.setStopRetentionTimeMinutes(1.28d);
+		assertEquals(1.28d, setting.getStopRetentionTimeMinutes());
 	}
 
 	public void test3() {

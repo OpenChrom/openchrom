@@ -23,8 +23,8 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator impl
 	private static final String SEPARATOR_ENTRY = StandardsReferencerListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
-	private double startRetentionTime = 0;
-	private double stopRetentionTime = 0;
+	private double startRetentionTimeMinutes = 0;
+	private double stopRetentionTimeMinutes = 0;
 	private String internalStandard = "";
 	private String identifier = "";
 
@@ -51,12 +51,12 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator impl
 						/*
 						 * Evaluation
 						 */
-						startRetentionTime = parseDouble(values, 0);
-						if(startRetentionTime < 0.0d) {
+						startRetentionTimeMinutes = parseDouble(values, 0);
+						if(startRetentionTimeMinutes < 0.0d) {
 							message = "The start retention time must be not lower than 0.";
 						}
 						//
-						stopRetentionTime = parseDouble(values, 1);
+						stopRetentionTimeMinutes = parseDouble(values, 1);
 						internalStandard = parseString(values, 2);
 						if("".equals(internalStandard)) {
 							message = "The name of the internal standards needs to be set.";
@@ -65,12 +65,12 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator impl
 						/*
 						 * Extended Check
 						 */
-						if(startRetentionTime == 0.0d && stopRetentionTime == 0.0d) {
+						if(startRetentionTimeMinutes == 0.0d && stopRetentionTimeMinutes == 0.0d) {
 							if("".equals(identifier)) {
 								message = "Please set a source identifier instead of the start/stop retention time.";
 							}
 						} else {
-							if(stopRetentionTime <= startRetentionTime) {
+							if(stopRetentionTimeMinutes <= startRetentionTimeMinutes) {
 								message = "The stop retention time must be greater then the start retention time.";
 							}
 						}
@@ -93,8 +93,8 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator impl
 	public AssignerReference getSetting() {
 
 		AssignerReference settings = new AssignerReference();
-		settings.setStartRetentionTime(startRetentionTime);
-		settings.setStopRetentionTime(stopRetentionTime);
+		settings.setStartRetentionTimeMinutes(startRetentionTimeMinutes);
+		settings.setStopRetentionTimeMinutes(stopRetentionTimeMinutes);
 		settings.setInternalStandard(internalStandard);
 		settings.setIdentifier(identifier);
 		return settings;

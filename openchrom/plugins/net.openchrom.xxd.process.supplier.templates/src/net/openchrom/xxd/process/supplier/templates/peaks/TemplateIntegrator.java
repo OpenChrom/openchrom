@@ -18,7 +18,6 @@ import java.util.Set;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.peaks.AbstractPeakIntegrator;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.peaks.PeakIntegrator;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.IPeakIntegrationSettings;
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -45,8 +44,8 @@ public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
 					/*
 					 * Bounds
 					 */
-					int startRetentionTime = (int)(integratorSetting.getStartRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-					int stopRetentionTime = (int)(integratorSetting.getStopRetentionTime() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+					int startRetentionTime = integratorSetting.getStartRetentionTime();
+					int stopRetentionTime = integratorSetting.getStopRetentionTime();
 					List<IPeak> peaksToIntegrate = new ArrayList<>();
 					for(IPeak peak : peaks) {
 						//

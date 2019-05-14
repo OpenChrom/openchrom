@@ -60,11 +60,11 @@ public class PeakIntegratorLabelProvider extends AbstractChemClipseLabelProvider
 			IntegratorSetting setting = (IntegratorSetting)element;
 			switch(columnIndex) {
 				case 0:
-					double startRT = setting.getStartRetentionTime();
+					double startRT = setting.getStartRetentionTimeMinutes();
 					text = (startRT == 0.0d) ? "--" : decimalFormat.format(startRT);
 					break;
 				case 1:
-					double stopRT = setting.getStopRetentionTime();
+					double stopRT = setting.getStopRetentionTimeMinutes();
 					text = (stopRT == 0.0d) ? "--" : decimalFormat.format(stopRT);
 					break;
 				case 2:

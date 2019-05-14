@@ -39,8 +39,8 @@ public class StandardsExport extends AbstractChromatogramExportConverter impleme
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		AssignerStandards assignerStandards = new AssignerStandards();
 		//
-		double deltaLeft = PreferenceSupplier.getExportDeltaLeftMinutes();
-		double deltaRight = PreferenceSupplier.getExportDeltaRightMinutes();
+		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
@@ -48,8 +48,8 @@ public class StandardsExport extends AbstractChromatogramExportConverter impleme
 			if(internalStandards.size() > 0) {
 				for(IInternalStandard internalStandard : internalStandards) {
 					AssignerStandard assignerStandard = new AssignerStandard();
-					assignerStandard.setStartRetentionTime(convertRetentionTime(peakModel.getStartRetentionTime(), -deltaLeft));
-					assignerStandard.setStopRetentionTime(convertRetentionTime(peakModel.getStopRetentionTime(), deltaRight));
+					assignerStandard.setStartRetentionTime(peakModel.getStartRetentionTime() - deltaLeft);
+					assignerStandard.setStopRetentionTime(peakModel.getStopRetentionTime() + deltaRight);
 					assignerStandard.setName(internalStandard.getName());
 					assignerStandard.setConcentration(internalStandard.getConcentration());
 					assignerStandard.setConcentrationUnit(internalStandard.getConcentrationUnit());

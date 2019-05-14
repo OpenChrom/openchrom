@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -53,9 +53,9 @@ public class PeakIdentifierEditingSupport extends EditingSupport {
 				 * Do not edit the name
 				 */
 				case PeakIdentifierLabelProvider.START_RETENTION_TIME:
-					return Double.toString(setting.getStartRetentionTime());
+					return Double.toString(setting.getStartRetentionTimeMinutes());
 				case PeakIdentifierLabelProvider.STOP_RETENTION_TIME:
-					return Double.toString(setting.getStopRetentionTime());
+					return Double.toString(setting.getStopRetentionTimeMinutes());
 				case PeakIdentifierLabelProvider.CAS_NUMBER:
 					return setting.getCasNumber();
 				case PeakIdentifierLabelProvider.COMMENTS:
@@ -83,16 +83,16 @@ public class PeakIdentifierEditingSupport extends EditingSupport {
 				case PeakIdentifierLabelProvider.START_RETENTION_TIME:
 					result = convertValue(value);
 					if(!Double.isNaN(result)) {
-						if(result <= setting.getStopRetentionTime()) {
-							setting.setStartRetentionTime(result);
+						if(result <= setting.getStopRetentionTimeMinutes()) {
+							setting.setStartRetentionTimeMinutes(result);
 						}
 					}
 					break;
 				case PeakIdentifierLabelProvider.STOP_RETENTION_TIME:
 					result = convertValue(value);
 					if(!Double.isNaN(result)) {
-						if(result >= setting.getStartRetentionTime()) {
-							setting.setStopRetentionTime(result);
+						if(result >= setting.getStartRetentionTimeMinutes()) {
+							setting.setStopRetentionTimeMinutes(result);
 						}
 					}
 					break;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,8 +23,8 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 	private static final String SEPARATOR_ENTRY = StandardsAssignerListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
-	private double startRetentionTime = 0;
-	private double stopRetentionTime = 0;
+	private double startRetentionTimeMinutes = 0;
+	private double stopRetentionTimeMinutes = 0;
 	private String name = "";
 	private double concentration = 0.0d;
 	private String concentrationUnit = "";
@@ -53,13 +53,13 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 						/*
 						 * Evaluation
 						 */
-						startRetentionTime = parseDouble(values, 0);
-						if(startRetentionTime < 0.0d) {
+						startRetentionTimeMinutes = parseDouble(values, 0);
+						if(startRetentionTimeMinutes < 0.0d) {
 							message = "The start retention time must be not lower than 0.";
 						}
 						//
-						stopRetentionTime = parseDouble(values, 1);
-						if(stopRetentionTime <= startRetentionTime) {
+						stopRetentionTimeMinutes = parseDouble(values, 1);
+						if(stopRetentionTimeMinutes <= startRetentionTimeMinutes) {
 							message = "The stop retention time must be greater then the start retention time.";
 						}
 						//
@@ -101,8 +101,8 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 	public AssignerStandard getSetting() {
 
 		AssignerStandard settings = new AssignerStandard();
-		settings.setStartRetentionTime(startRetentionTime);
-		settings.setStopRetentionTime(stopRetentionTime);
+		settings.setStartRetentionTimeMinutes(startRetentionTimeMinutes);
+		settings.setStopRetentionTimeMinutes(stopRetentionTimeMinutes);
 		settings.setName(name);
 		settings.setConcentration(concentration);
 		settings.setConcentrationUnit(concentrationUnit);

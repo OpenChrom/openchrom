@@ -31,7 +31,7 @@ import net.openchrom.xxd.process.supplier.templates.comparator.StandardComparato
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerValidator;
 
-public class AssignerStandards extends HashMap<String, AssignerStandard> {
+public class AssignerStandards extends HashMap<String, AssignerStandard> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(AssignerStandards.class);
 	//
@@ -159,11 +159,11 @@ public class AssignerStandards extends HashMap<String, AssignerStandard> {
 
 	private void extractSetting(AssignerStandard setting, StringBuilder builder) {
 
-		builder.append(setting.getStartRetentionTime());
+		builder.append(getFormattedRetentionTime(setting.getStartRetentionTimeMinutes()));
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");
-		builder.append(setting.getStopRetentionTime());
+		builder.append(getFormattedRetentionTime(setting.getStopRetentionTimeMinutes()));
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);
 		builder.append(" ");

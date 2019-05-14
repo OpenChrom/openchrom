@@ -75,10 +75,10 @@ public class PeakIdentifierLabelProvider extends AbstractChemClipseLabelProvider
 					text = setting.getName();
 					break;
 				case 1:
-					text = decimalFormat.format(setting.getStartRetentionTime());
+					text = decimalFormat.format(setting.getStartRetentionTimeMinutes());
 					break;
 				case 2:
-					text = decimalFormat.format(setting.getStopRetentionTime());
+					text = decimalFormat.format(setting.getStopRetentionTimeMinutes());
 					break;
 				case 3:
 					text = setting.getCasNumber();

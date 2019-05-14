@@ -26,7 +26,6 @@ import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD
 import org.eclipse.chemclipse.csd.model.core.support.PeakBuilderCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
@@ -48,6 +47,7 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
+@SuppressWarnings("rawtypes")
 public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorMSD, IPeakDetectorCSD {
 
 	private static final Logger logger = Logger.getLogger(PeakDetector.class);
@@ -86,7 +86,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		return settings;
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({"unchecked"})
 	private IProcessingInfo applyDetector(IChromatogramSelection<? extends IPeak, ?> chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
 
 		IProcessingInfo processingInfo = super.validate(chromatogramSelection, settings, monitor);
@@ -106,9 +106,9 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 
 	private void setPeakBySettings(IChromatogram<? extends IPeak> chromatogram, DetectorSetting detectorSetting) {
 
-		int start = (int)(detectorSetting.getStartRetentionTime() * IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
-		int stop = (int)(detectorSetting.getStopRetentionTime() * IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
-		setPeakByRetentionTimeRange(chromatogram, start, stop, detectorSetting);
+		int startRetentionTime = detectorSetting.getStartRetentionTime();
+		int stopRetentionTime = detectorSetting.getStopRetentionTime();
+		setPeakByRetentionTimeRange(chromatogram, startRetentionTime, stopRetentionTime, detectorSetting);
 	}
 
 	private void setPeakByRetentionTimeRange(IChromatogram<? extends IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, DetectorSetting detectorSetting) {
@@ -161,7 +161,6 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
 	private IScanRange optimizeRange(IChromatogram chromatogram, int startScan, int stopScan, Set<Integer> traces) {
 
 		int scanWidth = stopScan - startScan + 1;
@@ -206,7 +205,6 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		return new ScanRange(startScanOptimized, stopScanOptimized);
 	}
 
-	@SuppressWarnings("rawtypes")
 	private float getScanSignal(IChromatogram chromatogram, int scanNumber, Set<Integer> traces) {
 
 		float scanSignal = 0.0f;

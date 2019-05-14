@@ -37,12 +37,12 @@ public class AssignerStandard_1_Test extends TestCase {
 
 	public void test2() {
 
-		assertEquals(0.0d, setting.getStartRetentionTime());
+		assertEquals(0.0d, setting.getStartRetentionTimeMinutes());
 	}
 
 	public void test3() {
 
-		assertEquals(0.0d, setting.getStopRetentionTime());
+		assertEquals(0.0d, setting.getStopRetentionTimeMinutes());
 	}
 
 	public void test4() {

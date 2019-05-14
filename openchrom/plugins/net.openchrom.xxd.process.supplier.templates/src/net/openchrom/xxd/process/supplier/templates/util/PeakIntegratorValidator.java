@@ -24,8 +24,8 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
 	private String identifier = "";
-	private double startRetentionTime = 0;
-	private double stopRetentionTime = 0;
+	private double startRetentionTimeMinutes = 0;
+	private double stopRetentionTimeMinutes = 0;
 	private String integrator = "";
 
 	@Override
@@ -50,11 +50,11 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 						/*
 						 * Evaluation
 						 */
-						startRetentionTime = parseDouble(values, 0);
-						if(startRetentionTime < 0.0d) {
+						startRetentionTimeMinutes = parseDouble(values, 0);
+						if(startRetentionTimeMinutes < 0.0d) {
 							message = "The start retention time must be not lower than 0.";
 						}
-						stopRetentionTime = parseDouble(values, 1);
+						stopRetentionTimeMinutes = parseDouble(values, 1);
 						identifier = parseString(values, 2);
 						integrator = parseString(values, 3);
 						if("".equals(integrator)) {
@@ -67,12 +67,12 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 						/*
 						 * Extended Check
 						 */
-						if(startRetentionTime == 0.0d && stopRetentionTime == 0.0d) {
+						if(startRetentionTimeMinutes == 0.0d && stopRetentionTimeMinutes == 0.0d) {
 							if("".equals(identifier)) {
 								message = "A substance name needs to be set.";
 							}
 						} else {
-							if(stopRetentionTime <= startRetentionTime) {
+							if(stopRetentionTimeMinutes <= startRetentionTimeMinutes) {
 								message = "The stop retention time must be greater then the start retention time.";
 							}
 						}
@@ -95,8 +95,8 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 	public IntegratorSetting getSetting() {
 
 		IntegratorSetting setting = new IntegratorSetting();
-		setting.setStartRetentionTime(startRetentionTime);
-		setting.setStopRetentionTime(stopRetentionTime);
+		setting.setStartRetentionTimeMinutes(startRetentionTimeMinutes);
+		setting.setStopRetentionTimeMinutes(stopRetentionTimeMinutes);
 		setting.setIdentifier(identifier);
 		setting.setIntegrator(integrator);
 		return setting;

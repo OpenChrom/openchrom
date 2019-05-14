@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -69,10 +69,10 @@ public class StandardsAssignerLabelProvider extends AbstractChemClipseLabelProvi
 					text = setting.getName();
 					break;
 				case 1:
-					text = decimalFormat.format(setting.getStartRetentionTime());
+					text = decimalFormat.format(setting.getStartRetentionTimeMinutes());
 					break;
 				case 2:
-					text = decimalFormat.format(setting.getStopRetentionTime());
+					text = decimalFormat.format(setting.getStopRetentionTimeMinutes());
 					break;
 				case 3:
 					text = decimalFormat.format(setting.getConcentration());
