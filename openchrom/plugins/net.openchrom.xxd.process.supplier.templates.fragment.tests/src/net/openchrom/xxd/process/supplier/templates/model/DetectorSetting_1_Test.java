@@ -54,4 +54,9 @@ public class DetectorSetting_1_Test extends TestCase {
 
 		assertEquals(false, setting.isOptimizeRange());
 	}
+
+	public void test6() {
+
+		assertEquals("", setting.getReferenceIdentifier());
+	}
 }

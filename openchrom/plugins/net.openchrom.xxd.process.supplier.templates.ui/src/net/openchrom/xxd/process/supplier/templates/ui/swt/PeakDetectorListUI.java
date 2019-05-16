@@ -71,6 +71,8 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
 			} else if(label.equals(PeakDetectorLabelProvider.OPTIMIZE_RANGE)) {
 				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
+			} else if(label.equals(PeakDetectorLabelProvider.REFERENCE_IDENTIFIER)) {
+				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
 			}
 		}
 	}

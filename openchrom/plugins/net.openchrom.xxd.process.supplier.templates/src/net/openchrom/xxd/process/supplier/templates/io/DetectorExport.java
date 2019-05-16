@@ -52,6 +52,7 @@ public class DetectorExport extends AbstractChromatogramExportConverter implemen
 			detectorSetting.setDetectorType(DetectorSetting.DETECTOR_TYPE_VV);
 			detectorSetting.setTraces(extractTraces(peak, useTraces, numberTraces));
 			detectorSetting.setOptimizeRange(optimizeRange);
+			detectorSetting.setReferenceIdentifier("");
 			detectorSettings.add(detectorSetting);
 		}
 		//

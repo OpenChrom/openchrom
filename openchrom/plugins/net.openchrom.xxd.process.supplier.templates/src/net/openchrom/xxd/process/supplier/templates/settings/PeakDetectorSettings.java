@@ -32,7 +32,7 @@ public class PeakDetectorSettings extends AbstractProcessSettings implements IPe
 
 	public static final String DESCRIPTION = "Template Peak Detector";
 	/*
-	 * 10.52 | 10.63 | VV | 103, 104, 108-110 | true
+	 * 10.52 | 10.63 | VV | 103, 104, 108-110 | true | Styrene
 	 */
 	@JsonProperty(value = "Detector Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'")
@@ -45,7 +45,9 @@ public class PeakDetectorSettings extends AbstractProcessSettings implements IPe
 			RE_SEPARATOR + //
 			RE_TRACES + // Traces
 			RE_SEPARATOR + //
-			RE_FLAG, // Optimize Range
+			RE_FLAG + // Optimize Range
+			RE_SEPARATOR + //
+			RE_TEXT, // Reference Identifier
 			isMultiLine = true)
 	private String detectorSettings = "";
 

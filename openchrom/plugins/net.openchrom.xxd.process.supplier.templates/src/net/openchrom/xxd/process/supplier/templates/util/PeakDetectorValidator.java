@@ -28,6 +28,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 	private String detectorType = "";
 	private String traces = "";
 	private boolean optimizeRange = false;
+	private String referenceIdentifier = "";
 
 	@Override
 	public IStatus validate(Object value) {
@@ -71,6 +72,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 						traces = (message == null) ? traceValues : "";
 						//
 						optimizeRange = parseBoolean(values, 4, false);
+						referenceIdentifier = parseString(values, 5, "");
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -95,6 +97,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 		setting.setDetectorType(detectorType);
 		setting.setTraces(traces);
 		setting.setOptimizeRange(optimizeRange);
+		setting.setReferenceIdentifier(referenceIdentifier);
 		return setting;
 	}
 }

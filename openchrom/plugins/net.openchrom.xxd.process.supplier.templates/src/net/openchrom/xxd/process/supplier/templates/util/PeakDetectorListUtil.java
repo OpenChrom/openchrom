@@ -13,8 +13,8 @@ package net.openchrom.xxd.process.supplier.templates.util;
 
 public class PeakDetectorListUtil extends AbstractTemplateListUtil<PeakDetectorValidator> {
 
-	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | VV | 103, 104, 108-110 | true";
-	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | VV | 103, 104, 108-110 | true; 10.71 | 10.76 | BB | 105, 106 | false";
+	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | VV | 103, 104, 108-110 | true | Reference";
+	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | VV | 103, 104, 108-110 | true | Reference; 10.71 | 10.76 | BB | 105, 106 | false | ";
 
 	public PeakDetectorListUtil() {
 		super(new PeakDetectorValidator());

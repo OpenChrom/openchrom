@@ -19,6 +19,7 @@ public class DetectorSetting extends AbstractSetting {
 	private String detectorType = DETECTOR_TYPE_VV;
 	private String traces = "";
 	private boolean optimizeRange = false;
+	private String referenceIdentifier = "";
 
 	public void copyFrom(DetectorSetting setting) {
 
@@ -28,6 +29,7 @@ public class DetectorSetting extends AbstractSetting {
 			setDetectorType(setting.getDetectorType());
 			setTraces(setting.getTraces());
 			setOptimizeRange(setting.isOptimizeRange());
+			setReferenceIdentifier(setting.getReferenceIdentifier());
 		}
 	}
 
@@ -59,6 +61,16 @@ public class DetectorSetting extends AbstractSetting {
 	public void setOptimizeRange(boolean optimizeRange) {
 
 		this.optimizeRange = optimizeRange;
+	}
+
+	public String getReferenceIdentifier() {
+
+		return referenceIdentifier;
+	}
+
+	public void setReferenceIdentifier(String referenceIdentifier) {
+
+		this.referenceIdentifier = referenceIdentifier;
 	}
 
 	public boolean isIncludeBackground() {
@@ -100,6 +112,6 @@ public class DetectorSetting extends AbstractSetting {
 	@Override
 	public String toString() {
 
-		return "DetectorSetting [startRetentionTime=" + getStartRetentionTime() + ", stopRetentionTime=" + getStopRetentionTime() + ", detectorType=" + detectorType + ", traces=" + traces + ", optimizeRange=" + optimizeRange + "]";
+		return "DetectorSetting [startRetentionTime=" + getStartRetentionTime() + ", stopRetentionTime=" + getStopRetentionTime() + ", detectorType=" + detectorType + ", traces=" + traces + ", optimizeRange=" + optimizeRange + ", referenceIdentifier=" + referenceIdentifier + "]";
 	}
 }

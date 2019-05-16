@@ -44,6 +44,9 @@ public class PeakDetectorComparator extends AbstractRecordTableComparator implem
 				case 4:
 					sortOrder = Boolean.compare(setting2.isOptimizeRange(), setting1.isOptimizeRange());
 					break;
+				case 5:
+					sortOrder = setting2.getReferenceIdentifier().compareTo(setting1.getReferenceIdentifier());
+					break;
 				default:
 					sortOrder = 0;
 			}

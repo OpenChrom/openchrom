@@ -64,4 +64,10 @@ public class DetectorSetting_2_Test extends TestCase {
 		setting.setOptimizeRange(true);
 		assertEquals(true, setting.isOptimizeRange());
 	}
+
+	public void test6() {
+
+		setting.setReferenceIdentifier("Styrene");
+		assertEquals("Styrene", setting.getReferenceIdentifier());
+	}
 }

@@ -25,10 +25,14 @@ import org.eclipse.chemclipse.csd.model.core.IChromatogramPeakCSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.csd.model.core.support.PeakBuilderCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.support.IScanRange;
 import org.eclipse.chemclipse.model.support.ScanRange;
@@ -39,6 +43,7 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -51,6 +56,8 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorMSD, IPeakDetectorCSD {
 
 	private static final Logger logger = Logger.getLogger(PeakDetector.class);
+	//
+	private TargetExtendedComparator comparator = new TargetExtendedComparator(SortOrder.DESC);
 	private PeakDetectorListUtil listUtil = new PeakDetectorListUtil();
 
 	@Override
@@ -108,6 +115,20 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 
 		int startRetentionTime = detectorSetting.getStartRetentionTime();
 		int stopRetentionTime = detectorSetting.getStopRetentionTime();
+		/*
+		 * If a reference identifier is set, the retention time range
+		 * is adjusted dynamically by the position of the given peak.
+		 */
+		String referenceIdentifier = detectorSetting.getReferenceIdentifier();
+		if(!"".equals(referenceIdentifier)) {
+			IPeak peak = getReferencePeak(chromatogram, referenceIdentifier);
+			if(peak != null) {
+				IPeakModel peakModel = peak.getPeakModel();
+				startRetentionTime += peakModel.getStartRetentionTime();
+				stopRetentionTime += peakModel.getStopRetentionTime();
+			}
+		}
+		//
 		setPeakByRetentionTimeRange(chromatogram, startRetentionTime, stopRetentionTime, detectorSetting);
 	}
 
@@ -219,5 +240,18 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 			scanSignal = scan.getTotalSignal();
 		}
 		return scanSignal;
+	}
+
+	private IPeak getReferencePeak(IChromatogram<? extends IPeak> chromatogram, String referenceIdentifier) {
+
+		for(IPeak peak : chromatogram.getPeaks()) {
+			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), comparator);
+			if(libraryInformation != null) {
+				if(referenceIdentifier.equals(libraryInformation.getName())) {
+					return peak;
+				}
+			}
+		}
+		return null;
 	}
 }

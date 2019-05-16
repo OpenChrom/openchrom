@@ -61,6 +61,8 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 					return setting.getTraces();
 				case PeakDetectorLabelProvider.OPTIMIZE_RANGE:
 					return setting.isOptimizeRange();
+				case PeakDetectorLabelProvider.REFERENCE_IDENTIFIER:
+					return setting.getReferenceIdentifier();
 			}
 		}
 		return false;
@@ -88,6 +90,10 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 					break;
 				case PeakDetectorLabelProvider.OPTIMIZE_RANGE:
 					setting.setOptimizeRange((boolean)value);
+					break;
+				case PeakDetectorLabelProvider.REFERENCE_IDENTIFIER:
+					String referenceIdentifier = ((String)value).trim();
+					setting.setReferenceIdentifier(referenceIdentifier);
 					break;
 			}
 			tableViewer.refresh();
