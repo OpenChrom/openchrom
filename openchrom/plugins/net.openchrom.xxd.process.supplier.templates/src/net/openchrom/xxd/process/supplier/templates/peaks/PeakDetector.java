@@ -28,7 +28,6 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -123,9 +122,9 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		if(!"".equals(referenceIdentifier)) {
 			IPeak peak = getReferencePeak(chromatogram, referenceIdentifier);
 			if(peak != null) {
-				IPeakModel peakModel = peak.getPeakModel();
-				startRetentionTime += peakModel.getStartRetentionTime();
-				stopRetentionTime += peakModel.getStopRetentionTime();
+				int retentionTime = peak.getPeakModel().getRetentionTimeAtPeakMaximum();
+				startRetentionTime += retentionTime;
+				stopRetentionTime += retentionTime;
 			}
 		}
 		//

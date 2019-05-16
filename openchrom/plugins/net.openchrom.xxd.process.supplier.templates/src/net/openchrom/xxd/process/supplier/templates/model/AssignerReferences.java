@@ -27,6 +27,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.comparator.ReferenceComparator;
+import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerValidator;
 
@@ -36,8 +37,6 @@ public class AssignerReferences extends ArrayList<AssignerReference> implements 
 	//
 	private static final long serialVersionUID = -219152470872308287L;
 	private StandardsReferencerListUtil listUtil = new StandardsReferencerListUtil();
-	private static final String SEPARATOR_TOKEN = StandardsReferencerListUtil.SEPARATOR_TOKEN;
-	private static final String SEPARATOR_ENTRY = StandardsReferencerListUtil.SEPARATOR_ENTRY;
 
 	public void load(String items) {
 
@@ -69,7 +68,7 @@ public class AssignerReferences extends ArrayList<AssignerReference> implements 
 			AssignerReference setting = iterator.next();
 			extractSetting(setting, builder);
 			if(iterator.hasNext()) {
-				builder.append(SEPARATOR_TOKEN);
+				builder.append(AbstractTemplateListUtil.SEPARATOR_TOKEN);
 			}
 		}
 		return builder.toString().trim();
@@ -152,17 +151,17 @@ public class AssignerReferences extends ArrayList<AssignerReference> implements 
 	private void extractSetting(AssignerReference setting, StringBuilder builder) {
 
 		builder.append(getFormattedRetentionTime(setting.getStartRetentionTimeMinutes()));
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(getFormattedRetentionTime(setting.getStopRetentionTimeMinutes()));
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.getInternalStandard());
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.getIdentifier());
 	}
 }

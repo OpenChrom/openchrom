@@ -27,6 +27,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.comparator.IntegratorComparator;
+import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIntegratorListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIntegratorValidator;
 
@@ -36,8 +37,6 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> implements 
 	//
 	private static final long serialVersionUID = -5759647615014062815L;
 	private PeakIntegratorListUtil listUtil = new PeakIntegratorListUtil();
-	private static final String SEPARATOR_TOKEN = PeakIntegratorListUtil.SEPARATOR_TOKEN;
-	private static final String SEPARATOR_ENTRY = PeakIntegratorListUtil.SEPARATOR_ENTRY;
 
 	public void load(String items) {
 
@@ -69,7 +68,7 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> implements 
 			IntegratorSetting setting = iterator.next();
 			extractSetting(setting, builder);
 			if(iterator.hasNext()) {
-				builder.append(SEPARATOR_TOKEN);
+				builder.append(AbstractTemplateListUtil.SEPARATOR_TOKEN);
 			}
 		}
 		return builder.toString().trim();
@@ -152,17 +151,17 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> implements 
 	private void extractSetting(IntegratorSetting setting, StringBuilder builder) {
 
 		builder.append(getFormattedRetentionTime(setting.getStartRetentionTimeMinutes()));
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(getFormattedRetentionTime(setting.getStopRetentionTimeMinutes()));
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.getIdentifier());
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.getIntegrator());
 	}
 }

@@ -29,8 +29,9 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 	private String casNumber = "";
 	private String comments = "";
 	private String contributor = "";
-	private String referenceId = "";
+	private String reference = "";
 	private String traces = "";
+	private String referenceIdentifier = "";
 
 	@Override
 	public IStatus validate(Object value) {
@@ -72,11 +73,13 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 						casNumber = parseString(values, 3);
 						comments = parseString(values, 4);
 						contributor = parseString(values, 5);
-						referenceId = parseString(values, 6);
+						reference = parseString(values, 6);
 						//
 						String traceValues = parseString(values, 7);
 						message = validateTraces(traceValues);
 						traces = (message == null) ? traceValues : "";
+						//
+						referenceIdentifier = parseString(values, 8, "");
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -102,8 +105,9 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 		setting.setCasNumber(casNumber);
 		setting.setComments(comments);
 		setting.setContributor(contributor);
-		setting.setReferenceId(referenceId);
+		setting.setReference(reference);
 		setting.setTraces(traces);
+		setting.setReferenceIdentifier(referenceIdentifier);
 		return setting;
 	}
 }

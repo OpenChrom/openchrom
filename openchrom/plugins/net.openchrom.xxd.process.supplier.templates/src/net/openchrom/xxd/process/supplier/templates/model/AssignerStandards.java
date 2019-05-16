@@ -28,6 +28,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.comparator.StandardComparator;
+import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerValidator;
 
@@ -37,8 +38,6 @@ public class AssignerStandards extends HashMap<String, AssignerStandard> impleme
 	//
 	private static final long serialVersionUID = -9211939853837711565L;
 	private StandardsAssignerListUtil listUtil = new StandardsAssignerListUtil();
-	private static final String SEPARATOR_TOKEN = StandardsAssignerListUtil.SEPARATOR_TOKEN;
-	private static final String SEPARATOR_ENTRY = StandardsAssignerListUtil.SEPARATOR_ENTRY;
 
 	public void add(AssignerStandard setting) {
 
@@ -77,7 +76,7 @@ public class AssignerStandards extends HashMap<String, AssignerStandard> impleme
 			AssignerStandard setting = iterator.next();
 			extractSetting(setting, builder);
 			if(iterator.hasNext()) {
-				builder.append(SEPARATOR_TOKEN);
+				builder.append(AbstractTemplateListUtil.SEPARATOR_TOKEN);
 			}
 		}
 		return builder.toString().trim();
@@ -160,25 +159,25 @@ public class AssignerStandards extends HashMap<String, AssignerStandard> impleme
 	private void extractSetting(AssignerStandard setting, StringBuilder builder) {
 
 		builder.append(getFormattedRetentionTime(setting.getStartRetentionTimeMinutes()));
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(getFormattedRetentionTime(setting.getStopRetentionTimeMinutes()));
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.getName());
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.getConcentration());
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.getConcentrationUnit());
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.getResponseFactor());
 	}
 }

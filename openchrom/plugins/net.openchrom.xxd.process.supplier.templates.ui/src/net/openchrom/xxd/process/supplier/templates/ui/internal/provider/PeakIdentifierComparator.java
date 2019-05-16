@@ -48,10 +48,13 @@ public class PeakIdentifierComparator extends AbstractRecordTableComparator impl
 					sortOrder = setting2.getContributor().compareTo(setting1.getContributor());
 					break;
 				case 6:
-					sortOrder = setting2.getReferenceId().compareTo(setting1.getReferenceId());
+					sortOrder = setting2.getReference().compareTo(setting1.getReference());
 					break;
 				case 7:
 					sortOrder = setting2.getTraces().compareTo(setting1.getTraces());
+					break;
+				case 8:
+					sortOrder = setting2.getReferenceIdentifier().compareTo(setting1.getReferenceIdentifier());
 					break;
 				default:
 					sortOrder = 0;

@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 
 import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
+import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
 
 public class PeakIdentifierEditingSupport extends EditingSupport {
 
@@ -62,8 +63,12 @@ public class PeakIdentifierEditingSupport extends EditingSupport {
 					return setting.getComments();
 				case PeakIdentifierLabelProvider.CONTRIBUTOR:
 					return setting.getContributor();
-				case PeakIdentifierLabelProvider.REFERENCE_ID:
-					return setting.getReferenceId();
+				case PeakIdentifierLabelProvider.REFERENCE:
+					return setting.getReference();
+				case PeakIdentifierLabelProvider.TRACES:
+					return setting.getTraces();
+				case PeakIdentifierLabelProvider.REFERENCE_IDENTIFIER:
+					return setting.getReferenceIdentifier();
 			}
 		}
 		return false;
@@ -114,10 +119,24 @@ public class PeakIdentifierEditingSupport extends EditingSupport {
 						setting.setContributor(text);
 					}
 					break;
-				case PeakIdentifierLabelProvider.REFERENCE_ID:
+				case PeakIdentifierLabelProvider.REFERENCE:
 					text = ((String)value).trim();
 					if(!"".equals(text)) {
-						setting.setReferenceId(text);
+						setting.setReference(text);
+					}
+					break;
+				case PeakIdentifierLabelProvider.TRACES:
+					String traces = ((String)value).trim();
+					PeakIdentifierValidator validator = new PeakIdentifierValidator();
+					String message = validator.validateTraces(traces);
+					if(message == null) {
+						setting.setTraces(traces);
+					}
+					break;
+				case PeakIdentifierLabelProvider.REFERENCE_IDENTIFIER:
+					text = ((String)value).trim();
+					if(!"".equals(text)) {
+						setting.setReferenceIdentifier(text);
 					}
 					break;
 			}

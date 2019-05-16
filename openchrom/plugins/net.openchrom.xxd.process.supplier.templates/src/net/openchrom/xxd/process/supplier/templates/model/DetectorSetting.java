@@ -19,7 +19,7 @@ public class DetectorSetting extends AbstractSetting {
 	private String detectorType = DETECTOR_TYPE_VV;
 	private String traces = "";
 	private boolean optimizeRange = false;
-	private String referenceIdentifier = "";
+	private String referenceIdentifier = ""; // Used for relative retention time
 
 	public void copyFrom(DetectorSetting setting) {
 

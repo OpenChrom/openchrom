@@ -68,13 +68,19 @@ public class IdentifierSetting_2_Test extends TestCase {
 
 	public void test7() {
 
-		setting.setReferenceId("REF-7");
-		assertEquals("REF-7", setting.getReferenceId());
+		setting.setReference("REF-7");
+		assertEquals("REF-7", setting.getReference());
 	}
 
 	public void test8() {
 
 		setting.setTraces("103, 104");
 		assertEquals("103, 104", setting.getTraces());
+	}
+
+	public void test9() {
+
+		setting.setReferenceIdentifier("Styrene");
+		assertEquals("Styrene", setting.getReferenceIdentifier());
 	}
 }

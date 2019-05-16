@@ -17,8 +17,9 @@ public class IdentifierSetting extends AbstractSetting {
 	private String casNumber = "";
 	private String comments = "";
 	private String contributor = "";
-	private String referenceId = "";
+	private String reference = "";
 	private String traces = "";
+	private String referenceIdentifier = ""; // Used for relative retention time
 
 	public void copyFrom(IdentifierSetting setting) {
 
@@ -29,8 +30,9 @@ public class IdentifierSetting extends AbstractSetting {
 			setCasNumber(setting.getCasNumber());
 			setComments(setting.getComments());
 			setContributor(setting.getContributor());
-			setReferenceId(setting.getReferenceId());
+			setReference(setting.getReference());
 			setTraces(setting.getTraces());
+			setReferenceIdentifier(setting.getReferenceIdentifier());
 		}
 	}
 
@@ -74,14 +76,14 @@ public class IdentifierSetting extends AbstractSetting {
 		this.contributor = contributor;
 	}
 
-	public String getReferenceId() {
+	public String getReference() {
 
-		return referenceId;
+		return reference;
 	}
 
-	public void setReferenceId(String referenceId) {
+	public void setReference(String reference) {
 
-		this.referenceId = referenceId;
+		this.reference = reference;
 	}
 
 	public String getTraces() {
@@ -92,6 +94,16 @@ public class IdentifierSetting extends AbstractSetting {
 	public void setTraces(String traces) {
 
 		this.traces = traces;
+	}
+
+	public String getReferenceIdentifier() {
+
+		return referenceIdentifier;
+	}
+
+	public void setReferenceIdentifier(String referenceIdentifier) {
+
+		this.referenceIdentifier = referenceIdentifier;
 	}
 
 	@Override
@@ -124,6 +136,6 @@ public class IdentifierSetting extends AbstractSetting {
 	@Override
 	public String toString() {
 
-		return "IdentifierSetting [startRetentionTime=" + getStartRetentionTime() + ", stopRetentionTime=" + getStopRetentionTime() + ", name=" + name + ", casNumber=" + casNumber + ", comments=" + comments + ", contributor=" + contributor + ", referenceId=" + referenceId + "]";
+		return "IdentifierSetting [startRetentionTime=" + getStartRetentionTime() + ", stopRetentionTime=" + getStopRetentionTime() + ", name=" + name + ", casNumber=" + casNumber + ", comments=" + comments + ", contributor=" + contributor + ", referenceId=" + reference + ", traces=" + traces + ", referenceIdentifier=" + referenceIdentifier + "]";
 	}
 }

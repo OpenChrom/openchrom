@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
@@ -36,6 +37,7 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
+import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
 import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -48,6 +50,8 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
 public abstract class AbstractPeakIdentifier {
 
 	private static final Logger logger = Logger.getLogger(AbstractPeakIdentifier.class);
+	//
+	private TargetExtendedComparator comparator = new TargetExtendedComparator(SortOrder.DESC);
 	private PeakIdentifierListUtil listUtil = new PeakIdentifierListUtil();
 
 	protected <T> List<T> extractPeaks(T peak) {
@@ -90,10 +94,36 @@ public abstract class AbstractPeakIdentifier {
 		return processingInfo;
 	}
 
+	private IPeak getReferencePeak(List<? extends IPeak> peaks, String referenceIdentifier) {
+
+		for(IPeak peak : peaks) {
+			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), comparator);
+			if(libraryInformation != null) {
+				if(referenceIdentifier.equals(libraryInformation.getName())) {
+					return peak;
+				}
+			}
+		}
+		return null;
+	}
+
 	private void identifyPeak(List<? extends IPeak> peaks, IdentifierSetting identifierSetting) {
 
 		int startRetentionTime = identifierSetting.getStartRetentionTime();
 		int stopRetentionTime = identifierSetting.getStopRetentionTime();
+		/*
+		 * If a reference identifier is set, the retention time range
+		 * is adjusted dynamically by the position of the given peak.
+		 */
+		String referenceIdentifier = identifierSetting.getReferenceIdentifier();
+		if(!"".equals(referenceIdentifier)) {
+			IPeak peak = getReferencePeak(peaks, referenceIdentifier);
+			if(peak != null) {
+				int retentionTime = peak.getPeakModel().getRetentionTimeAtPeakMaximum();
+				startRetentionTime += retentionTime;
+				stopRetentionTime += retentionTime;
+			}
+		}
 		//
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {
@@ -108,7 +138,7 @@ public abstract class AbstractPeakIdentifier {
 							libraryInformation.setCasNumber(identifierSetting.getCasNumber());
 							libraryInformation.setComments(identifierSetting.getComments());
 							libraryInformation.setContributor(identifierSetting.getContributor());
-							libraryInformation.setReferenceIdentifier(identifierSetting.getReferenceId());
+							libraryInformation.setReferenceIdentifier(identifierSetting.getReference());
 							IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
 							IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 							identificationTarget.setIdentifier(PeakIdentifierSettings.DESCRIPTION);

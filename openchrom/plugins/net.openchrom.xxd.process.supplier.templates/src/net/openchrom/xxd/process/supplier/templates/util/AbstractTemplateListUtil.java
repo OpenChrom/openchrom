@@ -31,6 +31,7 @@ public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> imp
 
 	private static final Logger logger = Logger.getLogger(AbstractTemplateListUtil.class);
 	//
+	public static final String WHITE_SPACE = " ";
 	public static final String SEPARATOR_TOKEN = ";";
 	public static final String SEPARATOR_ENTRY = "|";
 	//

@@ -62,11 +62,16 @@ public class IdentifierSetting_1_Test extends TestCase {
 
 	public void test7() {
 
-		assertEquals("", setting.getReferenceId());
+		assertEquals("", setting.getReference());
 	}
 
 	public void test8() {
 
 		assertEquals("", setting.getTraces());
+	}
+
+	public void test9() {
+
+		assertEquals("", setting.getReferenceIdentifier());
 	}
 }

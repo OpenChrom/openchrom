@@ -60,8 +60,9 @@ public class IdentifierExport extends AbstractChromatogramExportConverter implem
 				identifierSetting.setCasNumber(libraryInformation.getCasNumber());
 				identifierSetting.setComments(libraryInformation.getComments());
 				identifierSetting.setContributor(libraryInformation.getContributor());
-				identifierSetting.setReferenceId(libraryInformation.getReferenceIdentifier());
+				identifierSetting.setReference(libraryInformation.getReferenceIdentifier());
 				identifierSetting.setTraces(extractTraces(peak, useTraces, numberTraces));
+				identifierSetting.setReferenceIdentifier("");
 				identifierSettings.add(identifierSetting);
 			}
 		}

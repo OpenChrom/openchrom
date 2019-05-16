@@ -51,9 +51,11 @@ public class PeakIdentifierSettings extends AbstractIdentifierSettings implement
 			RE_SEPARATOR + //
 			RE_TEXT + // Contributor
 			RE_SEPARATOR + //
-			RE_TEXT + // Reference ID
+			RE_TEXT + // Reference
 			RE_SEPARATOR + //
-			RE_TRACES, // Traces
+			RE_TRACES + // Traces
+			RE_SEPARATOR + //
+			RE_TEXT, // Reference Identifier
 			isMultiLine = true)
 	private String identifierSettings = "";
 

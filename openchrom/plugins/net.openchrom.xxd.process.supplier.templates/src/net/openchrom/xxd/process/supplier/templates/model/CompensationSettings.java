@@ -28,6 +28,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.comparator.CompensationComparator;
+import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantValidator;
 
@@ -37,8 +38,6 @@ public class CompensationSettings extends HashMap<String, CompensationSetting> {
 	private static final Logger logger = Logger.getLogger(CompensationSettings.class);
 	//
 	private CompensationQuantListUtil listUtil = new CompensationQuantListUtil();
-	private static final String SEPARATOR_TOKEN = CompensationQuantListUtil.SEPARATOR_TOKEN;
-	private static final String SEPARATOR_ENTRY = CompensationQuantListUtil.SEPARATOR_ENTRY;
 
 	public void add(CompensationSetting setting) {
 
@@ -77,7 +76,7 @@ public class CompensationSettings extends HashMap<String, CompensationSetting> {
 			CompensationSetting setting = iterator.next();
 			extractSetting(setting, builder);
 			if(iterator.hasNext()) {
-				builder.append(SEPARATOR_TOKEN);
+				builder.append(AbstractTemplateListUtil.SEPARATOR_TOKEN);
 			}
 		}
 		return builder.toString().trim();
@@ -160,21 +159,21 @@ public class CompensationSettings extends HashMap<String, CompensationSetting> {
 	private void extractSetting(CompensationSetting setting, StringBuilder builder) {
 
 		builder.append(setting.getName());
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.getInternalStandard());
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.getExpectedConcentration());
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.getConcentrationUnit());
-		builder.append(" ");
-		builder.append(SEPARATOR_ENTRY);
-		builder.append(" ");
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.isAdjustQuantitationEntry());
 	}
 }

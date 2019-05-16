@@ -29,8 +29,9 @@ public class PeakIdentifierLabelProvider extends AbstractChemClipseLabelProvider
 	public static final String CAS_NUMBER = "CAS";
 	public static final String COMMENTS = "Comments";
 	public static final String CONTRIBUTOR = "Contributor";
-	public static final String REFERENCE_ID = "Reference Id";
+	public static final String REFERENCE = "Reference";
 	public static final String TRACES = "Traces";
+	public static final String REFERENCE_IDENTIFIER = "Reference Identifier";
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 	//
@@ -41,8 +42,9 @@ public class PeakIdentifierLabelProvider extends AbstractChemClipseLabelProvider
 			CAS_NUMBER, //
 			COMMENTS, //
 			CONTRIBUTOR, //
-			REFERENCE_ID, //
-			TRACES //
+			REFERENCE, //
+			TRACES, //
+			REFERENCE_IDENTIFIER //
 	};
 	public static final int[] BOUNDS = { //
 			200, //
@@ -52,7 +54,8 @@ public class PeakIdentifierLabelProvider extends AbstractChemClipseLabelProvider
 			100, //
 			100, //
 			50, //
-			100 //
+			100, //
+			150 //
 	};
 
 	@Override
@@ -90,10 +93,13 @@ public class PeakIdentifierLabelProvider extends AbstractChemClipseLabelProvider
 					text = setting.getContributor();
 					break;
 				case 6:
-					text = setting.getReferenceId();
+					text = setting.getReference();
 					break;
 				case 7:
 					text = setting.getTraces();
+					break;
+				case 8:
+					text = setting.getReferenceIdentifier();
 					break;
 				default:
 					text = "n.v.";
