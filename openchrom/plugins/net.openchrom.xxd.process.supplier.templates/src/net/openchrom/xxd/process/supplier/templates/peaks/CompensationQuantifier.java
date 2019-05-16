@@ -119,17 +119,22 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 
 	private IQuantitationEntry createAdjustedQuantitationEntry(CompensationSetting compensationSetting, double compensationFactor, IQuantitationEntry quantitationEntry) {
 
-		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
 		double adjustedConcentration = quantitationEntry.getConcentration() * compensationFactor;
 		String name = compensationSetting.isAdjustQuantitationEntry() ? compensationSetting.getName() : compensationSetting.getName() + LABEL_ADJUSTED;
-		String description = "Adjusted with factor " + decimalFormat.format(compensationFactor) + " based on " + compensationSetting.getInternalStandard();
 		//
 		IQuantitationEntry adjustedQuantitationEntry = new QuantitationEntry(name, adjustedConcentration, compensationSetting.getConcentrationUnit(), quantitationEntry.getArea());
 		adjustedQuantitationEntry.setChemicalClass(quantitationEntry.getChemicalClass());
 		adjustedQuantitationEntry.setCalibrationMethod(quantitationEntry.getCalibrationMethod());
 		adjustedQuantitationEntry.setUsedCrossZero(quantitationEntry.getUsedCrossZero());
-		adjustedQuantitationEntry.setDescription(description);
+		adjustedQuantitationEntry.setDescription(quantitationEntry.getDescription());
 		adjustedQuantitationEntry.setSignal(quantitationEntry.getSignal());
+		/*
+		 * Add the adjustment information.
+		 */
+		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
+		String description = "Adjusted with factor " + decimalFormat.format(compensationFactor) + " based on " + compensationSetting.getInternalStandard();
+		adjustedQuantitationEntry.appendDescription(description);
+		//
 		return adjustedQuantitationEntry;
 	}
 
