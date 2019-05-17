@@ -11,33 +11,43 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
-import java.util.List;
-
-import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.jface.wizard.Wizard;
 
+@SuppressWarnings("rawtypes")
 public class PeaksWizard extends Wizard {
 
+	public static final int DEFAULT_WIDTH = 500;
+	public static final int DEFAULT_HEIGHT = 650;
+	//
 	private PeaksPage page;
-	private List<IPeak> peaks;
+	private ProcessSettings processSettings;
+	//
+	private int startRetentionTime;
+	private int stopRetentionTime;
 
-	public PeaksWizard(List<IPeak> peaks) {
+	public PeaksWizard(ProcessSettings processSettings) {
 		setNeedsProgressMonitor(true);
-		setWindowTitle("Manual Peak Detector UI");
-		this.peaks = peaks;
+		setWindowTitle(PeakDetectorSupport.DESCRIPTION);
+		//
+		this.processSettings = processSettings;
+		IChromatogramSelection chromatogramSelection = processSettings.getChromatogramSelection();
+		startRetentionTime = chromatogramSelection.getStartRetentionTime();
+		stopRetentionTime = chromatogramSelection.getStopRetentionTime();
 	}
 
 	@Override
 	public void addPages() {
 
-		System.out.println(peaks);
-		page = new PeaksPage("Peaks");
+		page = new PeaksPage("Peaks", processSettings);
 		addPage(page);
 	}
 
 	@Override
 	public boolean performFinish() {
 
+		IChromatogramSelection chromatogramSelection = processSettings.getChromatogramSelection();
+		chromatogramSelection.setRangeRetentionTime(startRetentionTime, stopRetentionTime);
 		return true;
 	}
 }

@@ -11,9 +11,6 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
-import java.util.List;
-
-import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -21,16 +18,20 @@ import org.eclipse.swt.widgets.Shell;
 
 public class PeakDetectorSupport {
 
-	private static final String DESCRIPTION = "Manual Peak Detector UI";
+	public static final String DESCRIPTION = "Template Peak Detector UI";
 
-	public void addPeaks(List<IPeak> peaks, Shell shell, IProcessingInfo processingInfo) {
+	@SuppressWarnings("rawtypes")
+	public void addPeaks(Shell shell, ProcessSettings processSettings) {
 
-		PeaksWizard wizard = new PeaksWizard(peaks);
-		WizardDialog dialog = new WizardDialog(shell, wizard);
-		if(dialog.open() == Dialog.OK) {
-			processingInfo.addErrorMessage(DESCRIPTION, "Successfully modified/added the peaks.");
+		PeaksWizard wizard = new PeaksWizard(processSettings);
+		WizardDialog wizardDialog = new WizardDialog(shell, wizard);
+		wizardDialog.setMinimumPageSize(PeaksWizard.DEFAULT_WIDTH, PeaksWizard.DEFAULT_HEIGHT);
+		//
+		IProcessingInfo processingInfo = processSettings.getProcessingInfo();
+		if(wizardDialog.open() == Dialog.OK) {
+			processingInfo.addErrorMessage(DESCRIPTION, "Successfully modified/added the peak(s).");
 		} else {
-			processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to add the peaks.");
+			processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to add the peak(s).");
 		}
 	}
 }

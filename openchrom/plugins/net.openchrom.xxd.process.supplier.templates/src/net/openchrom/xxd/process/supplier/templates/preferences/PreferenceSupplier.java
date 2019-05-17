@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.xxd.process.supplier.templates.Activator;
+import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
@@ -171,6 +172,22 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_EXPORT_NUMBER_TRACES, DEF_EXPORT_NUMBER_TRACES);
+	}
+
+	public static PeakDetectorSettings getPeakDetectorSettingsCSD() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		PeakDetectorSettings settings = new PeakDetectorSettings();
+		settings.setDetectorSettings(preferences.get(P_PEAK_DETECTOR_LIST_CSD, DEF_PEAK_DETECTOR_LIST_CSD));
+		return settings;
+	}
+
+	public static PeakDetectorSettings getPeakDetectorSettingsMSD() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		PeakDetectorSettings settings = new PeakDetectorSettings();
+		settings.setDetectorSettings(preferences.get(P_PEAK_DETECTOR_LIST_MSD, DEF_PEAK_DETECTOR_LIST_MSD));
+		return settings;
 	}
 
 	private static String getFilterPath(String key, String def) {

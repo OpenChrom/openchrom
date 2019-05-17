@@ -11,12 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.AbstractPeakDetectorMSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
-import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
@@ -24,9 +20,13 @@ import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Shell;
 
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
+import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakDetectorSupport;
+import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.WizardRunnable;
 
+@SuppressWarnings("rawtypes")
 public class PeakDetectorMSD extends AbstractPeakDetectorMSD {
 
 	@Override
@@ -35,13 +35,13 @@ public class PeakDetectorMSD extends AbstractPeakDetectorMSD {
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		if(peakDetectorSettings instanceof PeakDetectorSettings) {
 			PeakDetectorSettings settings = (PeakDetectorSettings)peakDetectorSettings;
-			//
-			List<IPeak> peaks = new ArrayList<>();
+			ProcessSettings processSettings = new ProcessSettings(processingInfo, chromatogramSelection, settings);
 			Shell shell = DisplayUtils.getShell();
 			if(shell != null) {
-				//
+				PeakDetectorSupport peakDetectorSupport = new PeakDetectorSupport();
+				peakDetectorSupport.addPeaks(shell, processSettings);
 			} else {
-				WizardRunnable wizardRunnable = new WizardRunnable(processingInfo, peaks);
+				WizardRunnable wizardRunnable = new WizardRunnable(processSettings);
 				DisplayUtils.getDisplay().syncExec(wizardRunnable);
 			}
 		}
@@ -51,7 +51,7 @@ public class PeakDetectorMSD extends AbstractPeakDetectorMSD {
 	@Override
 	public IProcessingInfo detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
 
-		PeakDetectorSettings settings = new PeakDetectorSettings(); // PreferenceSupplier.get
+		PeakDetectorSettings settings = PreferenceSupplier.getPeakDetectorSettingsMSD();
 		return detect(chromatogramSelection, settings, monitor);
 	}
 }

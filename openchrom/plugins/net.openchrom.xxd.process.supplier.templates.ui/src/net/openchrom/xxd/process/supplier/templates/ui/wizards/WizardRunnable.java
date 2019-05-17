@@ -11,20 +11,14 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
-import java.util.List;
-
-import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.swt.widgets.Shell;
 
 public class WizardRunnable implements Runnable {
 
-	private IProcessingInfo processingInfo;
-	private List<IPeak> peaks;
+	private ProcessSettings processSettings;
 
-	public WizardRunnable(IProcessingInfo processingInfo, List<IPeak> peaks) {
-		this.processingInfo = processingInfo;
-		this.peaks = peaks;
+	public WizardRunnable(ProcessSettings processSettings) {
+		this.processSettings = processSettings;
 	}
 
 	@Override
@@ -38,8 +32,9 @@ public class WizardRunnable implements Runnable {
 		Shell shell = new Shell();
 		shell.setSize(0, 0);
 		shell.open();
+		//
 		PeakDetectorSupport peakDetectorSupport = new PeakDetectorSupport();
-		peakDetectorSupport.addPeaks(peaks, shell, processingInfo);
+		peakDetectorSupport.addPeaks(shell, processSettings);
 		shell.close();
 	}
 }
