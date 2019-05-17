@@ -63,4 +63,14 @@
             id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageCompensationQuantifier">
       </page>                                  
    </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.peak.detector.peakDetectorSupplier">
+      <PeakDetector
+            description="This is the template UI peak detector (MSD)."
+            id="net.openchrom.xxd.process.supplier.templates.ui"
+            peakDetector="net.openchrom.xxd.process.supplier.templates.ui.core.PeakDetectorMSD"
+            peakDetectorName="Template Peak Detector UI (MSD)"
+            peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
+      </PeakDetector>
+   </extension>   
 </plugin>
