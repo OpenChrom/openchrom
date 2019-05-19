@@ -21,11 +21,11 @@ public class PeakDetectorSupport {
 	public static final String DESCRIPTION = "Template Peak Detector UI";
 
 	@SuppressWarnings("rawtypes")
-	public void addPeaks(Shell shell, ProcessSettings processSettings) {
+	public void addPeaks(Shell shell, PeakProcessSettings processSettings) {
 
-		PeaksWizard wizard = new PeaksWizard(processSettings);
+		PeakDetectorWizard wizard = new PeakDetectorWizard(processSettings);
 		WizardDialog wizardDialog = new WizardDialog(shell, wizard);
-		wizardDialog.setMinimumPageSize(PeaksWizard.DEFAULT_WIDTH, PeaksWizard.DEFAULT_HEIGHT);
+		wizardDialog.setMinimumPageSize(PeakDetectorWizard.DEFAULT_WIDTH, PeakDetectorWizard.DEFAULT_HEIGHT);
 		//
 		IProcessingInfo processingInfo = processSettings.getProcessingInfo();
 		if(wizardDialog.open() == Dialog.OK) {

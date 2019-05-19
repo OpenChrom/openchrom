@@ -15,18 +15,18 @@ import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.jface.wizard.Wizard;
 
 @SuppressWarnings("rawtypes")
-public class PeaksWizard extends Wizard {
+public class PeakDetectorWizard extends Wizard {
 
 	public static final int DEFAULT_WIDTH = 500;
 	public static final int DEFAULT_HEIGHT = 650;
 	//
-	private PeaksPage page;
-	private ProcessSettings processSettings;
+	private PeakDetectorPage page;
+	private PeakProcessSettings processSettings;
 	//
 	private int startRetentionTime;
 	private int stopRetentionTime;
 
-	public PeaksWizard(ProcessSettings processSettings) {
+	public PeakDetectorWizard(PeakProcessSettings processSettings) {
 		setNeedsProgressMonitor(true);
 		setWindowTitle(PeakDetectorSupport.DESCRIPTION);
 		//
@@ -39,15 +39,27 @@ public class PeaksWizard extends Wizard {
 	@Override
 	public void addPages() {
 
-		page = new PeaksPage("Peaks", processSettings);
+		page = new PeakDetectorPage("Peak Detector", processSettings);
 		addPage(page);
+	}
+
+	@Override
+	public boolean performCancel() {
+
+		restoreChromatogramSelection();
+		return super.performCancel();
 	}
 
 	@Override
 	public boolean performFinish() {
 
+		restoreChromatogramSelection();
+		return true;
+	}
+
+	private void restoreChromatogramSelection() {
+
 		IChromatogramSelection chromatogramSelection = processSettings.getChromatogramSelection();
 		chromatogramSelection.setRangeRetentionTime(startRetentionTime, stopRetentionTime);
-		return true;
 	}
 }

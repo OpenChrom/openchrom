@@ -15,9 +15,9 @@ import org.eclipse.swt.widgets.Shell;
 
 public class WizardRunnable implements Runnable {
 
-	private ProcessSettings processSettings;
+	private PeakProcessSettings processSettings;
 
-	public WizardRunnable(ProcessSettings processSettings) {
+	public WizardRunnable(PeakProcessSettings processSettings) {
 		this.processSettings = processSettings;
 	}
 
