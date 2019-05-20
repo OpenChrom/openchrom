@@ -11,11 +11,14 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 
+import net.openchrom.xxd.process.supplier.templates.comparator.DetectorComparator;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 
@@ -24,15 +27,15 @@ public class PeakProcessSettings {
 
 	private IProcessingInfo processingInfo;
 	private IChromatogramSelection chromatogramSelection;
-	private PeakDetectorSettings peakDetectorSettings;
-	//
-	private int index;
-	//
+	private List<DetectorSetting> detectorSettings = new ArrayList<>();
+	private int selectedIndex;
 
 	public PeakProcessSettings(IProcessingInfo processingInfo, IChromatogramSelection chromatogramSelection, PeakDetectorSettings peakDetectorSettings) {
 		this.processingInfo = processingInfo;
 		this.chromatogramSelection = chromatogramSelection;
-		this.peakDetectorSettings = peakDetectorSettings;
+		this.detectorSettings.addAll(peakDetectorSettings.getDetectorSettings());
+		Collections.sort(detectorSettings, new DetectorComparator());
+		selectedIndex = detectorSettings.size() > 0 ? 0 : -1;
 	}
 
 	public IProcessingInfo getProcessingInfo() {
@@ -45,30 +48,34 @@ public class PeakProcessSettings {
 		return chromatogramSelection;
 	}
 
-	public PeakDetectorSettings getPeakDetectorSettings() {
-
-		return peakDetectorSettings;
-	}
-
 	public void decreaseSelection() {
 
-		if(index > 0) {
-			index--;
+		if(selectedIndex > 0) {
+			selectedIndex--;
 		}
 	}
 
 	public void increaseSelection() {
 
-		if(index < peakDetectorSettings.getDetectorSettings().size()) {
-			index++;
+		if(selectedIndex < detectorSettings.size()) {
+			selectedIndex++;
 		}
+	}
+
+	public boolean hasPrevious() {
+
+		return selectedIndex > 0;
+	}
+
+	public boolean hasNext() {
+
+		return selectedIndex < detectorSettings.size();
 	}
 
 	public DetectorSetting getSelectedDetectorSetting() {
 
-		List<DetectorSetting> settings = peakDetectorSettings.getDetectorSettings();
-		if(index >= 0 && index < settings.size()) {
-			return settings.get(index);
+		if(selectedIndex >= 0 && selectedIndex < detectorSettings.size()) {
+			return detectorSettings.get(selectedIndex);
 		} else {
 			return null;
 		}

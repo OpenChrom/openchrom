@@ -28,6 +28,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
 	//
+	public static final double MIN_DELTA_MINUTES = 0.0d; // 0 Minutes
+	public static final double MAX_DELTA_MINUTES = 1.0d; // 1 Minute
+	//
 	public static final String P_PEAK_DETECTOR_LIST_MSD = "peakDetectorListMSD";
 	public static final String DEF_PEAK_DETECTOR_LIST_MSD = "";
 	public static final String P_PEAK_DETECTOR_LIST_CSD = "peakDetectorListCSD";
@@ -52,8 +55,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	//
 	public static final String P_EXPORT_OPTIMIZE_RANGE = "exportOptimizeRange";
 	public static final boolean DEF_EXPORT_OPTIMIZE_RANGE = true;
-	public static final double MIN_DELTA_MINUTES = 0.0d; // 0 Minutes
-	public static final double MAX_DELTA_MINUTES = 1.0d; // 1 Minute
 	public static final String P_EXPORT_DELTA_LEFT_MINUTES = "exportDeltaLeftMinutes";
 	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES = 0.1d;
 	public static final String P_EXPORT_DELTA_RIGHT_MINUTES = "exportDeltaRightMinutes";
@@ -64,6 +65,13 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int MAX_NUMBER_TRACES = 10;
 	public static final String P_EXPORT_NUMBER_TRACES = "exportNumberTraces";
 	public static final int DEF_EXPORT_NUMBER_TRACES = 5;
+	//
+	public static final String P_UI_DETECTOR_DELTA_LEFT_MINUTES = "uiDetectorDeltaLeftMinutes";
+	public static final double DEF_UI_DETECTOR_DELTA_LEFT_MINUTES = 0.5d;
+	public static final String P_UI_DETECTOR_DELTA_RIGHT_MINUTES = "uiDetectorDeltaRightMinutes";
+	public static final double DEF_UI_DETECTOR_DELTA_RIGHT_MINUTES = 0.5d;
+	public static final String P_UI_DETECTOR_REPLACE_PEAK = "uiDetectorReplacePeak";
+	public static final boolean DEF_UI_DETECTOR_REPLACE_PEAK = true;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -108,6 +116,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES));
 		defaultValues.put(P_EXPORT_USE_TRACES, Boolean.toString(DEF_EXPORT_USE_TRACES));
 		defaultValues.put(P_EXPORT_NUMBER_TRACES, Integer.toString(DEF_EXPORT_NUMBER_TRACES));
+		//
+		defaultValues.put(P_UI_DETECTOR_DELTA_LEFT_MINUTES, Double.toString(DEF_UI_DETECTOR_DELTA_LEFT_MINUTES));
+		defaultValues.put(P_UI_DETECTOR_DELTA_RIGHT_MINUTES, Double.toString(DEF_UI_DETECTOR_DELTA_RIGHT_MINUTES));
+		defaultValues.put(P_UI_DETECTOR_REPLACE_PEAK, Boolean.toString(DEF_UI_DETECTOR_REPLACE_PEAK));
 		//
 		return defaultValues;
 	}
@@ -172,6 +184,41 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_EXPORT_NUMBER_TRACES, DEF_EXPORT_NUMBER_TRACES);
+	}
+
+	public static double getUiDetectorDeltaLeftMinutes() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_UI_DETECTOR_DELTA_LEFT_MINUTES, DEF_UI_DETECTOR_DELTA_LEFT_MINUTES);
+	}
+
+	public static double getUiDetectorDeltaRightMinutes() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_UI_DETECTOR_DELTA_RIGHT_MINUTES, DEF_UI_DETECTOR_DELTA_RIGHT_MINUTES);
+	}
+
+	public static boolean isDetectorReplacePeak() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_UI_DETECTOR_REPLACE_PEAK, DEF_UI_DETECTOR_REPLACE_PEAK);
+	}
+
+	public static void toggleDetectorReplacePeak() {
+
+		boolean replacePeak = isDetectorReplacePeak();
+		setDetectorReplacePeak(!replacePeak);
+	}
+
+	public static void setDetectorReplacePeak(boolean replacePeak) {
+
+		try {
+			IEclipsePreferences preferences = INSTANCE().getPreferences();
+			preferences.putBoolean(P_UI_DETECTOR_REPLACE_PEAK, replacePeak);
+			preferences.flush();
+		} catch(BackingStoreException e) {
+			logger.warn(e);
+		}
 	}
 
 	public static PeakDetectorSettings getPeakDetectorSettingsCSD() {
