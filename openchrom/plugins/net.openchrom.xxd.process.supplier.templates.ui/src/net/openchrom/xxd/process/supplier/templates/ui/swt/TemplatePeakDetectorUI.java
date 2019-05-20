@@ -742,6 +742,7 @@ public class TemplatePeakDetectorUI extends Composite {
 
 		/*
 		 * Calculate the rectangle factors.
+		 * Enable to set the peak as selected with retention time and abundance range.
 		 */
 		Rectangle rectangle = getPlotArea().getBounds();
 		// int height = rectangle.height;
