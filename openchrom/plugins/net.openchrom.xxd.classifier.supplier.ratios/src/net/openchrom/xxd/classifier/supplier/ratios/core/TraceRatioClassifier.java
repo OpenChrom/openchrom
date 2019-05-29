@@ -82,14 +82,14 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 							//
 							ExtractedIonSignal extractedIonSignal = new ExtractedIonSignal(peak.getPeakModel().getPeakMassSpectrum().getIons());
 							float intensityReference = extractedIonSignal.getAbundance(reference);
-							float intensityTarget = extractedIonSignal.getAbundance(target);
 							if(intensityReference != 0) {
-								double ratio = 100.0d / intensityReference * intensityTarget;
-								traceRatio.setPeak(peak);
-								traceRatio.setRatio(ratio);
 								double expectedRatio = traceRatio.getExpectedRatio();
 								if(expectedRatio != 0) {
-									double deviation = Math.abs(ratio - expectedRatio) / expectedRatio;
+									float intensityTarget = extractedIonSignal.getAbundance(target);
+									double actualRatio = 100.0d / intensityReference * intensityTarget;
+									traceRatio.setPeak(peak);
+									traceRatio.setRatio(actualRatio);
+									double deviation = Math.abs(100.0d - (100.0d / expectedRatio * actualRatio));
 									traceRatio.setDeviation(deviation);
 								}
 							}
