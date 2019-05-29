@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,15 +22,15 @@ import java.util.Locale;
 
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swtchart.ISeries;
+import org.eclipse.swtchart.export.core.AbstractSeriesExportHandler;
+import org.eclipse.swtchart.export.core.ExportSettingsDialog;
+import org.eclipse.swtchart.export.core.ISeriesExportConverter;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IAxisScaleConverter;
 import org.eclipse.swtchart.extensions.core.IAxisSettings;
 import org.eclipse.swtchart.extensions.core.ISecondaryAxisSettings;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
-import org.eclipse.swtchart.extensions.menu.export.AbstractSeriesExportHandler;
-import org.eclipse.swtchart.extensions.menu.export.ExportSettingsDialog;
-import org.eclipse.swtchart.extensions.menu.export.ISeriesExportConverter;
-import org.eclipse.swtchart.ISeries;
 
 import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
