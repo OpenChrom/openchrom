@@ -36,23 +36,23 @@ import org.osgi.service.component.annotations.Component;
 
 import net.openchrom.nmr.processing.supplier.base.core.AbstractFIDSignalFilter;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
-import net.openchrom.nmr.processing.supplier.base.core.ZeroFilling;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
+import net.openchrom.nmr.processing.supplier.base.core.ZeroFilling;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
-public class FourierTransformationProcessor extends AbstractFIDSignalFilter<FourierTransformationSettings> {
+public class FourierTransformationProcessor extends AbstractFIDSignalFilter<ZeroFillingSettings> {
 
-	private static final long serialVersionUID = 7524927252300991470L;
+	private static final long serialVersionUID = 1842995453403411693L;
 	private static final String NAME = "Fourier Transformation";
 
 	public FourierTransformationProcessor() {
 
-		super(FourierTransformationSettings.class);
+		super(ZeroFillingSettings.class);
 	}
 
 	@Override
-	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, FourierTransformationSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, ZeroFillingSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		ComplexFIDData fidData = UtilityFunctions.toComplexFIDData(measurement.getSignals());
 		ZeroFillingFactor zeroFillingFactor = settings.getZeroFillingFactor();

@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -20,14 +20,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
-public class FourierTransformationSettings implements IProcessorSettings, Serializable {
+public class ZeroFillingSettings implements IProcessorSettings, Serializable {
 
-	private static final long serialVersionUID = 3167139244222779370L;
+	private static final long serialVersionUID = 3020289179888430042L;
 	@JsonProperty(value = "Zero Filling", defaultValue = "AUTO")
 	@EnumSelectionSettingProperty
 	private ZeroFillingFactor zeroFillingFactor = ZeroFillingFactor.AUTO;
 
-	public FourierTransformationSettings() {
+	public ZeroFillingSettings() {
 
 	}
 
