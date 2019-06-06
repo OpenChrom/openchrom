@@ -4,9 +4,6 @@
   <imports xsi:type="basic:Part" xmi:id="_csbOgBK9EeeX1JgCll1fBQ" elementId="org.eclipse.ui.navigator.ProjectExplorer"/>
   <imports xsi:type="basic:Part" xmi:id="_wyx4wBK9EeeX1JgCll1fBQ" elementId="org.eclipse.chemclipse.processing.ui.parts.ProcessingInfoPart"/>
   <imports xsi:type="basic:Part" xmi:id="_-xNigBK9EeeX1JgCll1fBQ" elementId="org.eclipse.chemclipse.ux.extension.xxd.ui.part.chromatogramOverlayMirrored"/>
-  <imports xsi:type="basic:Part" xmi:id="_JVNRcBLZEeeX1JgCll1fBQ" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.massspectrumcomparison"/>
-  <imports xsi:type="basic:Part" xmi:id="_Kg0I8BLZEeeX1JgCll1fBQ" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.massspectrumdifference"/>
-  <imports xsi:type="basic:Part" xmi:id="_LxwzcBLZEeeX1JgCll1fBQ" elementId="org.eclipse.chemclipse.ux.extension.msd.ui.part.massspectrumstack"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_V8IlYATmEeeTJNNUrNvi1w" featurename="commands" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
     <elements xsi:type="commands:Command" xmi:id="_aMrNgATmEeeTJNNUrNvi1w" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.command.processor" commandName="Mass Shift Detector"/>
   </fragments>
@@ -28,14 +25,9 @@
         <children xsi:type="basic:PartSashContainer" xmi:id="_gSzfUBK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.partsashcontainer.2" containerData="4300" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_qcCZIBK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.partstack.1">
             <children xsi:type="advanced:Placeholder" xmi:id="_DpYLUBK-EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.placeholder.2" ref="_-xNigBK9EeeX1JgCll1fBQ"/>
-            <children xsi:type="advanced:Placeholder" xmi:id="_OsuIsBLZEeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.placeholder.4" ref="_Kg0I8BLZEeeX1JgCll1fBQ"/>
-          </children>
-          <children xsi:type="basic:PartStack" xmi:id="_qt92oBK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.partstack.2">
-            <children xsi:type="advanced:Placeholder" xmi:id="_jt9FoBK_EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.placeholder.3" ref="_JVNRcBLZEeeX1JgCll1fBQ"/>
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_rAz6IBK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.partstack.3">
             <children xsi:type="advanced:Placeholder" xmi:id="_676r8BK9EeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.placeholder.1" ref="_wyx4wBK9EeeX1JgCll1fBQ"/>
-            <children xsi:type="advanced:Placeholder" xmi:id="_QWimMBLZEeeX1JgCll1fBQ" elementId="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.placeholder.5" ref="_LxwzcBLZEeeX1JgCll1fBQ"/>
           </children>
         </children>
       </children>
