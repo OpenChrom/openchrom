@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_TT434FHjEemRK6ILagu1xg">
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_TT434FHjEemRK6ILagu1xg">
   <imports xsi:type="advanced:Area" xmi:id="_wQ-SQFHjEemRK6ILagu1xg" elementId="org.eclipse.chemclipse.rcp.app.ui.editor"/>
+  <imports xsi:type="commands:Command" xmi:id="_bnIWoIgsEemJaOKd7Cy7Ww" elementId="org.eclipse.chemclipse.rcp.app.ui.command.opensnippet"/>
+  <imports xsi:type="commands:Command" xmi:id="_39AKkIgtEemJaOKd7Cy7Ww" elementId="org.eclipse.chemclipse.rcp.app.ui.command.about"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_TnMOYFHjEemRK6ILagu1xg" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.perspectivestack.main">
     <elements xsi:type="advanced:Perspective" xmi:id="_hYtdgFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.perspective.nmr" label="NMR Perspective" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/scan-nmr.gif">
       <children xsi:type="basic:PartSashContainer" xmi:id="_sjhwIFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.partsashcontainer.0" horizontal="true">
         <children xsi:type="basic:PartStack" xmi:id="_2iG5IFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.partstack.0" containerData="20">
           <children xsi:type="basic:Part" xmi:id="_0UnRYFHkEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.part.nmrdataexplorer" contributionURI="bundleclass://net.openchrom.nmr.processing.supplier.base.ui/net.openchrom.nmr.processing.supplier.base.ui.NMRDataExplorerView" label="NMR Data Explorer" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrumFileExplorer.gif">
             <toolbar xmi:id="_tc0-YIeTEemBGvwXZ3o29g" elementId="net.openchrom.nmr.processing.supplier.base.ui.toolbar.0">
+              <children xsi:type="menu:HandledToolItem" xmi:id="_meyLwIgjEemJaOKd7Cy7Ww" elementId="net.openchrom.nmr.processing.supplier.base.ui.handledtoolitem.opennewmultispectrumanalysis" label="Open new Multi Spectrum Analysis" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/execute.gif" tooltip="Open a new Multi Spectrum Analysis Editor" command="_bnIWoIgsEemJaOKd7Cy7Ww">
+                <parameters xmi:id="_gaaNgIguEemJaOKd7Cy7Ww" elementId="net.openchrom.nmr.processing.supplier.base.ui.parameter.0" name="org.eclipse.chemclipse.rcp.app.ui.commandparameter.opensnippet.snippetid" value="net.openchrom.nmr.processing.supplier.base.ui.inputpart.multispektrumanalysis"/>
+              </children>
               <children xsi:type="menu:DirectToolItem" xmi:id="_-QJxoIeTEemBGvwXZ3o29g" elementId="net.openchrom.nmr.processing.supplier.base.ui.directtoolitem.reset" label="Reset" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/reset.gif" contributionURI="bundleclass://net.openchrom.nmr.processing.supplier.base.ui/net.openchrom.nmr.processing.supplier.base.ui.NMRDataExplorerView$ResetNMRDataExplorerHandler"/>
               <children xsi:type="menu:DirectToolItem" xmi:id="_uLHAsIeTEemBGvwXZ3o29g" elementId="net.openchrom.nmr.processing.supplier.base.ui.directtoolitem.settings" label="Settings" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/configure.gif" tooltip="Change Settings" contributionURI="bundleclass://net.openchrom.nmr.processing.supplier.base.ui/net.openchrom.nmr.processing.supplier.base.ui.NMRDataExplorerView$NMRDataExplorerSettingsHandler"/>
             </toolbar>
@@ -15,5 +20,8 @@
         <children xsi:type="advanced:Placeholder" xmi:id="_3Cm-IFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.placeholder.0" containerData="80" ref="_wQ-SQFHjEemRK6ILagu1xg"/>
       </children>
     </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_qO-VUIgiEemJaOKd7Cy7Ww" featurename="snippets" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
+    <elements xsi:type="basic:InputPart" xmi:id="_whn_IIgiEemJaOKd7Cy7Ww" elementId="net.openchrom.nmr.processing.supplier.base.ui.inputpart.multispektrumanalysis" contributionURI="bundleclass://net.openchrom.nmr.processing.supplier.base.ui/net.openchrom.nmr.processing.supplier.base.ui.MultiSpectrumEditor" label="Multi Spektrum Analysis" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/chromatogramOverlay.gif" closeable="true"/>
   </fragments>
 </fragment:ModelFragments>
