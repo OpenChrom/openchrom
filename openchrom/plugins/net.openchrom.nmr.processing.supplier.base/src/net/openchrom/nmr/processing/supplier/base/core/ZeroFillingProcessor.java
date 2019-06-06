@@ -30,17 +30,17 @@ import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
-import net.openchrom.nmr.processing.ft.ZeroFillingSettings;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
+import net.openchrom.nmr.processing.supplier.base.settings.ZeroFillingSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
-public class ZeroFilling extends AbstractFIDSignalFilter<ZeroFillingSettings> {
+public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSettings> {
 
-	private static final long serialVersionUID = -4234206196493639300L;
+	private static final long serialVersionUID = 8816847297266490529L;
 	private static final String FILTER_NAME = "Zero Filling";
 
-	public ZeroFilling() {
+	public ZeroFillingProcessor() {
 
 		super(ZeroFillingSettings.class);
 	}
@@ -58,7 +58,7 @@ public class ZeroFilling extends AbstractFIDSignalFilter<ZeroFillingSettings> {
 		ComplexFIDData rawFID = UtilityFunctions.toComplexFIDData(measurement.getSignals());
 		//
 		ZeroFillingFactor zeroFillingFactor = settings.getZeroFillingFactor();
-		Complex[] zeroFilledFID = ZeroFilling.fill(rawFID.signals, zeroFillingFactor);
+		Complex[] zeroFilledFID = ZeroFillingProcessor.fill(rawFID.signals, zeroFillingFactor);
 		//
 		BigDecimal max = BigDecimal.valueOf(measurement.getAcquisitionTime());
 		BigDecimal step = max.divide(BigDecimal.valueOf((zeroFilledFID.length) - 1).setScale(10), RoundingMode.HALF_UP);

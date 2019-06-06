@@ -28,17 +28,17 @@ import net.openchrom.nmr.processing.ft.FourierTransformationProcessor;
 import net.openchrom.nmr.processing.supplier.base.core.AbstractFIDSignalFilter;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
-import net.openchrom.nmr.processing.supplier.base.core.ZeroFilling;
+import net.openchrom.nmr.processing.supplier.base.core.ZeroFillingProcessor;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
-public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterRemovalSettings>
-		implements Serializable {
+public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterRemovalSettings> implements Serializable {
 
 	private static final long serialVersionUID = 879825705309454206L;
 	private static final String FILTER_NAME = "Digital Filter Removal";
 	private static final String MARKER = DigitalFilterRemoval.class.getName() + ".filtered";
 
 	public DigitalFilterRemoval() {
+
 		super(DigitalFilterRemovalSettings.class);
 	}
 
@@ -87,14 +87,13 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 	private static void removeDigitalFilter(ComplexFIDData freeInductionDecay, double leftRotationFid, MessageConsumer messageConsumer) {
 
 		// automatic zero filling just in case size != 2^n
-		Complex[] freeInductionDecayZeroFill = ZeroFilling.fill(freeInductionDecay.signals);
+		Complex[] freeInductionDecayZeroFill = ZeroFillingProcessor.fill(freeInductionDecay.signals);
 		//
 		Complex[] filteredNMRSpectrum = FourierTransformationProcessor.fourierTransformNmrData(freeInductionDecayZeroFill);
 		// create filtered spectrum
 		Complex[] unfilteredNMRSpectrum = new Complex[filteredNMRSpectrum.length];
 		double[] digitalFilterFactor = new double[filteredNMRSpectrum.length];
 		int spectrumSize = filteredNMRSpectrum.length;
-
 		Complex complexFactor = new Complex(-0.0, -1.0);
 		// remove the filter!
 		for(int i = 0; i < spectrumSize; i++) {

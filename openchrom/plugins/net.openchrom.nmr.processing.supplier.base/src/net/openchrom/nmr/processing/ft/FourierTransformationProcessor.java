@@ -37,26 +37,24 @@ import org.osgi.service.component.annotations.Component;
 import net.openchrom.nmr.processing.supplier.base.core.AbstractFIDSignalFilter;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
-import net.openchrom.nmr.processing.supplier.base.core.ZeroFilling;
-import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
+import net.openchrom.nmr.processing.supplier.base.core.ZeroFillingProcessor;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
-public class FourierTransformationProcessor extends AbstractFIDSignalFilter<ZeroFillingSettings> {
+public class FourierTransformationProcessor extends AbstractFIDSignalFilter<FourierTransformationSettings> {
 
-	private static final long serialVersionUID = 1842995453403411693L;
+	private static final long serialVersionUID = 5702896391785304170L;
 	private static final String NAME = "Fourier Transformation";
 
 	public FourierTransformationProcessor() {
 
-		super(ZeroFillingSettings.class);
+		super(FourierTransformationSettings.class);
 	}
 
 	@Override
-	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, ZeroFillingSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, FourierTransformationSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		ComplexFIDData fidData = UtilityFunctions.toComplexFIDData(measurement.getSignals());
-		ZeroFillingFactor zeroFillingFactor = settings.getZeroFillingFactor();
-		Complex[] zeroFilledFid = ZeroFilling.fill(fidData.signals, zeroFillingFactor);
+		Complex[] zeroFilledFid = ZeroFillingProcessor.fill(fidData.signals);
 		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(zeroFilledFid);
 		BigDecimal min = BigDecimal.valueOf(measurement.getFirstDataPointOffset());
 		BigDecimal max = BigDecimal.valueOf(measurement.getFirstDataPointOffset() + measurement.getSweepWidth());

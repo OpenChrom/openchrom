@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.processing.ft;
+package net.openchrom.nmr.processing.supplier.base.settings;
 
 import java.io.Serializable;
 
@@ -22,7 +22,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFa
 
 public class ZeroFillingSettings implements IProcessorSettings, Serializable {
 
-	private static final long serialVersionUID = 3020289179888430042L;
+	private static final long serialVersionUID = 6451885381492864060L;
 	@JsonProperty(value = "Zero Filling", defaultValue = "AUTO")
 	@EnumSelectionSettingProperty
 	private ZeroFillingFactor zeroFillingFactor = ZeroFillingFactor.AUTO;
