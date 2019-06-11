@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.types.DataType;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -27,10 +28,11 @@ import org.eclipse.chemclipse.support.ui.editors.AbstractExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.editors.IExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.wizards.IChromatogramWizardElements;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
-import org.eclipse.chemclipse.ux.extension.msd.ui.support.ChromatogramSupport;
+import org.eclipse.chemclipse.ux.extension.ui.provider.ISupplierEditorSupport;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.EditorSupportFactory;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputEntriesWizard;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputWizardSettings;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputWizardSettings.DataType;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputWizardSettings.InputDataType;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -209,7 +211,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputWizardSettings inputWizardSettings = new InputWizardSettings(DataType.MSD_CHROMATOGRAM);
+				InputWizardSettings inputWizardSettings = new InputWizardSettings(InputDataType.MSD_CHROMATOGRAM);
 				inputWizardSettings.setTitle("Reference - Chromatogram");
 				inputWizardSettings.setDescription("Select the reference chromatogram.");
 				inputWizardSettings.setPathPreferences(PreferenceSupplier.INSTANCE().getPreferences(), PreferenceSupplier.P_FILTER_PATH_REFERENCE_CHROMATOGRAM);
@@ -254,7 +256,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputWizardSettings inputWizardSettings = new InputWizardSettings(DataType.MSD_CHROMATOGRAM);
+				InputWizardSettings inputWizardSettings = new InputWizardSettings(InputDataType.MSD_CHROMATOGRAM);
 				inputWizardSettings.setTitle("Isotope - Chromatogram");
 				inputWizardSettings.setDescription("Select the isotope chromatogram.");
 				inputWizardSettings.setPathPreferences(PreferenceSupplier.INSTANCE().getPreferences(), PreferenceSupplier.P_FILTER_PATH_ISOTOPE_CHROMATOGRAM);
@@ -558,7 +560,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				ProcessorData processorData = editorProcessor.getProcessorData();
 				if(processorData.getReferenceChromatogram() != null) {
 					IChromatogramMSD chromatogram = processorData.getReferenceChromatogram();
-					ChromatogramSupport.getInstanceEditorSupport().openEditor(chromatogram);
+					ISupplierEditorSupport editorSupport = new EditorSupportFactory(DataType.MSD).getInstanceEditorSupport();
+					editorSupport.openEditor(chromatogram);
 				}
 			}
 		});
@@ -584,7 +587,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				ProcessorData processorData = editorProcessor.getProcessorData();
 				if(processorData.getIsotopeChromatogram() != null) {
 					IChromatogramMSD chromatogram = processorData.getIsotopeChromatogram();
-					ChromatogramSupport.getInstanceEditorSupport().openEditor(chromatogram);
+					ISupplierEditorSupport editorSupport = new EditorSupportFactory(DataType.MSD).getInstanceEditorSupport();
+					editorSupport.openEditor(chromatogram);
 				}
 			}
 		});

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
@@ -27,7 +28,7 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.support.ui.addons.ModelSupportAddon;
 import org.eclipse.chemclipse.support.ui.listener.AbstractControllerComposite;
-import org.eclipse.chemclipse.ux.extension.msd.ui.editors.IChromatogramEditorMSD;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.ChromatogramEditorMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -310,6 +311,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 		}
 	}
 
+	@SuppressWarnings({"deprecation", "rawtypes"})
 	private void updateComparisonViews() {
 
 		IStructuredSelection selection = scanMarkerListUI.getStructuredSelection();
@@ -339,16 +341,19 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 					EPartService partService = ModelSupportAddon.getPartService();
 					Collection<MPart> parts = partService.getParts();
 					for(MPart part : parts) {
-						if(part.getObject() instanceof IChromatogramEditorMSD) {
-							IChromatogramEditorMSD chromatogramEditorMSD = (IChromatogramEditorMSD)part.getObject();
-							IChromatogramSelectionMSD chromatogramSelectionMSD = chromatogramEditorMSD.getChromatogramSelection();
-							if(chromatogramSelectionMSD.getChromatogramMSD().getName().equals(referenceChromatogram.getName())) {
-								chromatogramSelectionMSD.setSelectedScan(referenceMassSpectrum);
-								int startRetentionTime = referenceMassSpectrum.getRetentionTime() - 5000; // -5 seconds
-								int stopRetentionTime = referenceMassSpectrum.getRetentionTime() + 5000; // +5 seconds
-								chromatogramSelectionMSD.setStopRetentionTime(stopRetentionTime);
-								chromatogramSelectionMSD.setStartRetentionTime(startRetentionTime);
-								chromatogramSelectionMSD.fireUpdateChange(true);
+						if(part.getObject() instanceof ChromatogramEditorMSD) {
+							ChromatogramEditorMSD chromatogramEditorMSD = (ChromatogramEditorMSD)part.getObject();
+							IChromatogramSelection chromatogramSelection = chromatogramEditorMSD.getChromatogramSelection();
+							if(chromatogramSelection instanceof IChromatogramSelectionMSD) {
+								IChromatogramSelectionMSD chromatogramSelectionMSD = (IChromatogramSelectionMSD)chromatogramSelection;
+								if(chromatogramSelectionMSD.getChromatogramMSD().getName().equals(referenceChromatogram.getName())) {
+									chromatogramSelectionMSD.setSelectedScan(referenceMassSpectrum);
+									int startRetentionTime = referenceMassSpectrum.getRetentionTime() - 5000; // -5 seconds
+									int stopRetentionTime = referenceMassSpectrum.getRetentionTime() + 5000; // +5 seconds
+									chromatogramSelectionMSD.setStopRetentionTime(stopRetentionTime);
+									chromatogramSelectionMSD.setStartRetentionTime(startRetentionTime);
+									chromatogramSelectionMSD.fireUpdateChange(true);
+								}
 							}
 						}
 					}
