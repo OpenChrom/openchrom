@@ -4,7 +4,7 @@
   <imports xsi:type="commands:Command" xmi:id="_bnIWoIgsEemJaOKd7Cy7Ww" elementId="org.eclipse.chemclipse.rcp.app.ui.command.opensnippet"/>
   <imports xsi:type="commands:Command" xmi:id="_39AKkIgtEemJaOKd7Cy7Ww" elementId="org.eclipse.chemclipse.rcp.app.ui.command.about"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_TnMOYFHjEemRK6ILagu1xg" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.perspectivestack.main">
-    <elements xsi:type="advanced:Perspective" xmi:id="_hYtdgFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.perspective.nmr" label="NMR Perspective" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/scan-nmr.gif">
+    <elements xsi:type="advanced:Perspective" xmi:id="_hYtdgFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.perspective.nmr" label="NMR" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/scan-nmr.gif">
       <children xsi:type="basic:PartSashContainer" xmi:id="_sjhwIFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.partsashcontainer.0" horizontal="true">
         <children xsi:type="basic:PartStack" xmi:id="_2iG5IFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.partstack.0" containerData="20">
           <children xsi:type="basic:Part" xmi:id="_0UnRYFHkEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.part.nmrdataexplorer" contributionURI="bundleclass://net.openchrom.nmr.processing.supplier.base.ui/net.openchrom.nmr.processing.supplier.base.ui.NMRDataExplorerView" label="NMR Data Explorer" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrumFileExplorer.gif">
