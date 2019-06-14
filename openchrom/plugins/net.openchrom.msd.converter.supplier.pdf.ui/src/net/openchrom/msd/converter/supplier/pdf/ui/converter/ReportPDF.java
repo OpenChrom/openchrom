@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018,2019 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,12 +8,13 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - enhance settings
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.ui.converter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.xxd.report.chromatogram.AbstractChromatogramReportGenerator;
@@ -36,10 +37,16 @@ public class ReportPDF extends AbstractChromatogramReportGenerator {
 	@Override
 	public IProcessingInfo generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, IChromatogramReportSettings chromatogramReportSettings, IProgressMonitor monitor) {
 
+		ReportSettings settings;
+		if(chromatogramReportSettings instanceof ReportSettings) {
+			settings = (ReportSettings)chromatogramReportSettings;
+		} else {
+			settings = new ReportSettings();
+		}
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		try {
 			if(chromatograms.size() > 0) {
-				ReportConverterPDF pdfSupport = new ReportConverterPDF();
+				ReportConverterPDF pdfSupport = new ReportConverterPDF(settings);
 				pdfSupport.createPDF(file, chromatograms.get(0), monitor);
 			}
 		} catch(IOException e) {
@@ -51,24 +58,18 @@ public class ReportPDF extends AbstractChromatogramReportGenerator {
 	@Override
 	public IProcessingInfo generate(File file, boolean append, IChromatogram<? extends IPeak> chromatogram, IChromatogramReportSettings chromatogramReportSettings, IProgressMonitor monitor) {
 
-		List<IChromatogram<? extends IPeak>> chromatograms = new ArrayList<>();
-		chromatograms.add(chromatogram);
-		return generate(file, append, chromatograms, chromatogramReportSettings, monitor);
+		return generate(file, append, Collections.singletonList(chromatogram), chromatogramReportSettings, monitor);
 	}
 
 	@Override
 	public IProcessingInfo generate(File file, boolean append, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) {
 
-		ReportSettings reportSettings = new ReportSettings();
-		List<IChromatogram<? extends IPeak>> chromatograms = new ArrayList<>();
-		chromatograms.add(chromatogram);
-		return generate(file, append, chromatograms, reportSettings, monitor);
+		return generate(file, append, Collections.singletonList(chromatogram), null, monitor);
 	}
 
 	@Override
 	public IProcessingInfo generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, IProgressMonitor monitor) {
 
-		ReportSettings reportSettings = new ReportSettings();
-		return generate(file, append, chromatograms, reportSettings, monitor);
+		return generate(file, append, chromatograms, null, monitor);
 	}
 }
