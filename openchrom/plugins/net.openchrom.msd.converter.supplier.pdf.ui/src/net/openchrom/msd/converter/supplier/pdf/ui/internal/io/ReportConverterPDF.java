@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - Settings support
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.ui.internal.io;
 
@@ -55,7 +56,7 @@ import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.pdf.preferences.PreferenceSupplier;
+import net.openchrom.msd.converter.supplier.pdf.ui.settings.ReportSettings;
 
 public class ReportConverterPDF {
 
@@ -84,6 +85,15 @@ public class ReportConverterPDF {
 	private DecimalFormat dfAreaPercent = ValueFormat.getDecimalFormatEnglish("0.000");
 	private DecimalFormat dfAreaNormal = ValueFormat.getDecimalFormatEnglish("0.0#E0");
 	private DecimalFormat dfConcentration = ValueFormat.getDecimalFormatEnglish("0.000");
+	private ReportSettings settings;
+
+	public ReportConverterPDF() {
+		this(new ReportSettings());
+	}
+
+	public ReportConverterPDF(ReportSettings settings) {
+		this.settings = settings;
+	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public void createPDF(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) throws IOException {
@@ -107,7 +117,7 @@ public class ReportConverterPDF {
 		if(chromatogram != null) {
 			String chromatogramName = getChromatogramName(chromatogram);
 			PDTable headerDataTable = getHeaderDataTable(chromatogram.getHeaderDataMap());
-			ImageRunnable imageRunnable = createImages(chromatogram, document, PreferenceSupplier.getNumberImagePages());
+			ImageRunnable imageRunnable = createImages(chromatogram, document, settings.getNumberOfImagesPerPage());
 			List<PDImageXObject> chromatogramImages = imageRunnable.getChromatogramImages();
 			PDTable peakDataTable = getPeakDataTable(imageRunnable.getPeaks());
 			PDTable scanDataTable = getScanDataTable(imageRunnable.getScans());
@@ -207,7 +217,7 @@ public class ReportConverterPDF {
 	private void printPageHeader(PageUtil pageUtil) throws IOException {
 
 		banner = (banner == null) ? getBanner(pageUtil) : banner;
-		slogan = (slogan == null) ? PreferenceSupplier.getReportSlogan() : slogan;
+		slogan = (slogan == null) ? settings.getReportSlogan() : slogan;
 		pageUtil.printImage(new ImageElement(LEFT_BORDER, TOP_BORDER).setWidth(100.0f).setHeight(13.89f).setImage(banner));
 		pageUtil.printText(new TextElement(LEFT_BORDER, 28.0f, MAX_WIDTH_PORTRAIT).setText(slogan));
 	}
@@ -234,7 +244,7 @@ public class ReportConverterPDF {
 		InputStream inputStream = null;
 		//
 		try {
-			File file = new File(PreferenceSupplier.getReportBanner());
+			File file = new File(settings.getReportBanner());
 			if(file.exists() && file.getName().toLowerCase().endsWith(".jpg")) { // $NON-NLS-1$
 				inputStream = new FileInputStream(file);
 			} else {
