@@ -8,16 +8,26 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - adjust to new API
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant;
 
-import javax.naming.directory.InvalidAttributesException;
+import static org.eclipse.chemclipse.support.ui.swt.columns.ColumnBuilder.defaultSortableColumn;
 
-import org.eclipse.chemclipse.ux.extension.ui.support.IMeasurementResultTitles;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Function;
 
+import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.support.ui.swt.columns.ColumnDefinition;
+import org.eclipse.chemclipse.support.ui.swt.columns.ColumnDefinitionProvider;
+
+import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractPeakRatioTitles;
 
-public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements IMeasurementResultTitles {
+public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements ColumnDefinitionProvider {
 
 	public static final String QUANTITATION_NAME = "Quantitation Name";
 	public static final String CONCENTRATION = "Concentration";
@@ -60,7 +70,63 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements I
 			80 //
 	};
 
-	public QuantRatioResultTitles() throws InvalidAttributesException {
-		super(TITLES_RESULTS, BOUNDS_RESULTS);
+	@Override
+	public Collection<? extends ColumnDefinition<?, ?>> getColumnDefinitions() {
+
+		List<ColumnDefinition<?, ?>> list = new ArrayList<>();
+		list.add(defaultSortableColumn(RETENTION_TIME, 80, new Function<QuantRatio, Double>() {
+
+			@Override
+			public Double apply(QuantRatio ratio) {
+
+				IPeak peak = ratio.getPeak();
+				if(peak != null) {
+					return peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR;
+				} else {
+					return null;
+				}
+			}
+		}).create());
+		list.add(defaultSortableColumn(QUANTITATION_NAME, 150, new Function<QuantRatio, String>() {
+
+			@Override
+			public String apply(QuantRatio ratio) {
+
+				return ratio.getName();
+			}
+		}).create());
+		list.add(defaultSortableColumn(EXPECTED_CONCENTRATION, 80, new Function<QuantRatio, Double>() {
+
+			@Override
+			public Double apply(QuantRatio ratio) {
+
+				return ratio.getExpectedConcentration();
+			}
+		}).create());
+		list.add(defaultSortableColumn(CONCENTRATION, 80, new Function<QuantRatio, Double>() {
+
+			@Override
+			public Double apply(QuantRatio ratio) {
+
+				return ratio.getConcentration();
+			}
+		}).create());
+		list.add(defaultSortableColumn(CONCENTRATION_UNIT, 100, new Function<QuantRatio, String>() {
+
+			@Override
+			public String apply(QuantRatio ratio) {
+
+				return ratio.getConcentrationUnit();
+			}
+		}).create());
+		list.add(defaultSortableColumn(DEVIATION, 80, new Function<QuantRatio, Double>() {
+
+			@Override
+			public Double apply(QuantRatio ratio) {
+
+				return ratio.getDeviation();
+			}
+		}).create());
+		return list;
 	}
 }
