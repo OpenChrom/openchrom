@@ -8,14 +8,11 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - adjust to new API
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
 
-import javax.naming.directory.InvalidAttributesException;
-
-import org.eclipse.chemclipse.ux.extension.ui.support.AbstractMeasurementResultTitles;
-
-public abstract class AbstractPeakRatioTitles extends AbstractMeasurementResultTitles {
+public abstract class AbstractPeakRatioTitles {
 
 	public static final String RETENTION_TIME = "RT (Minutes)";
 	public static final String NAME = "Name";
@@ -23,8 +20,4 @@ public abstract class AbstractPeakRatioTitles extends AbstractMeasurementResultT
 	public static final String DEVIATION = "Deviation [%]";
 	public static final String DEVIATION_WARN = "Deviation Warn [%]";
 	public static final String DEVIATION_ERROR = "Deviation Error [%]";
-
-	public AbstractPeakRatioTitles(String[] titles, int[] bounds) throws InvalidAttributesException {
-		super(titles, bounds);
-	}
 }

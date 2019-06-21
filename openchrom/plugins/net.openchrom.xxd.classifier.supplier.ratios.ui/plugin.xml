@@ -71,4 +71,23 @@
             Titles="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioResultTitles">
       </MeasurementResultVisualization>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatios"
+            class="net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRatiosAdapterFactory">
+         <adapter
+               type="org.eclipse.jface.viewers.IStructuredContentProvider">
+         </adapter>
+         <adapter
+               type="org.eclipse.jface.viewers.ITableLabelProvider">
+         </adapter>
+         <adapter
+               type="org.eclipse.chemclipse.support.ui.swt.columns.ColumnDefinitionProvider">
+         </adapter>
+         <adapter
+               type="org.eclipse.jface.viewers.ISelectionChangedListener">
+         </adapter>
+      </factory>
+   </extension>
 </plugin>

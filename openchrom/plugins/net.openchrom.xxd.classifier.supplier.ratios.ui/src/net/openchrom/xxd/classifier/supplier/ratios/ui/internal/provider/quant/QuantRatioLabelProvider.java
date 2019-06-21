@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - Color-support
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant;
 
@@ -18,13 +19,13 @@ import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.text.ValueFormat;
-import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractTraceRatioLabelProvider;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
 
-public class QuantRatioLabelProvider extends AbstractChemClipseLabelProvider {
+public class QuantRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
 	private DisplayOption displayOption = DisplayOption.RESULTS;
@@ -34,6 +35,7 @@ public class QuantRatioLabelProvider extends AbstractChemClipseLabelProvider {
 	}
 
 	public QuantRatioLabelProvider(DisplayOption displayOption) {
+		super(5);
 		this.displayOption = displayOption;
 	}
 
@@ -128,6 +130,7 @@ public class QuantRatioLabelProvider extends AbstractChemClipseLabelProvider {
 		return text;
 	}
 
+	@Override
 	public Image getImage(Object element) {
 
 		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CLASSIFIER, IApplicationImage.SIZE_16x16);
