@@ -16,7 +16,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,7 +45,6 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 	private static final String NAME = "Fourier Transformation";
 
 	public FourierTransformationProcessor() {
-
 		super(FourierTransformationSettings.class);
 	}
 
@@ -98,16 +96,15 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 	private static final class FFTFilteredMeasurement extends FilteredMeasurement<FIDMeasurement> implements SpectrumMeasurement {
 
 		private static final long serialVersionUID = -3570180428815391262L;
-		private Collection<? extends SpectrumSignal> signals;
+		private List<? extends SpectrumSignal> signals;
 
-		public FFTFilteredMeasurement(FIDMeasurement measurement, Collection<FFTSpectrumSignal> signals) {
-
+		public FFTFilteredMeasurement(FIDMeasurement measurement, List<FFTSpectrumSignal> signals) {
 			super(measurement);
-			this.signals = Collections.unmodifiableCollection(signals);
+			this.signals = Collections.unmodifiableList(signals);
 		}
 
 		@Override
-		public Collection<? extends SpectrumSignal> getSignals() {
+		public List<? extends SpectrumSignal> getSignals() {
 
 			return signals;
 		}
@@ -120,7 +117,6 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		private Complex complex;
 
 		public FFTSpectrumSignal(BigDecimal shift, Complex complex) {
-
 			this.shift = shift;
 			this.complex = complex;
 		}

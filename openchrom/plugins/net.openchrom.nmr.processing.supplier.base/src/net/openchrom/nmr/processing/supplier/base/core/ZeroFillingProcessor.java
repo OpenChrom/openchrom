@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.filter.Filter;
@@ -41,7 +41,6 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 	private static final String FILTER_NAME = "Zero Filling";
 
 	public ZeroFillingProcessor() {
-
 		super(ZeroFillingSettings.class);
 	}
 
@@ -62,7 +61,7 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 		//
 		BigDecimal max = BigDecimal.valueOf(measurement.getAcquisitionTime());
 		BigDecimal step = max.divide(BigDecimal.valueOf((zeroFilledFID.length) - 1).setScale(10), RoundingMode.HALF_UP);
-		Collection<FIDSignal> newSignals = new ArrayList<>();
+		List<FIDSignal> newSignals = new ArrayList<>();
 		for(int i = 0; i < zeroFilledFID.length; i++) {
 			newSignals.add(new SimpleFIDSignal(BigDecimal.valueOf(i).multiply(step), zeroFilledFID[i].getReal(), zeroFilledFID[i].getImaginary()));
 		}

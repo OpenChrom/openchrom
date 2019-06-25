@@ -182,7 +182,7 @@ public class UtilityFunctions {
 			this.maxIndex = maxIndex;
 		}
 
-		public Collection<SpectrumSignal> toSignal() {
+		public List<SpectrumSignal> toSignal() {
 
 			if(signals.length != chemicalShift.length) {
 				throw new IllegalStateException("chemicalShift length differs from signals length");
@@ -206,7 +206,7 @@ public class UtilityFunctions {
 			this.times = times;
 		}
 
-		public Collection<FIDSignal> toSignal() {
+		public List<FIDSignal> toSignal() {
 
 			if(signals.length != times.length) {
 				throw new IllegalStateException("times length differs from signals length");
