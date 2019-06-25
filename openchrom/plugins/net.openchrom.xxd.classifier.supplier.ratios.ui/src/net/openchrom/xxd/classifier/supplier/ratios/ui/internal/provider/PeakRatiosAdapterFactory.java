@@ -21,6 +21,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioLabelProvider;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioResultTitles;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioLabelProvider;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioResultTitles;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioLabelProvider;
@@ -28,6 +29,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.T
 
 public class PeakRatiosAdapterFactory implements IAdapterFactory {
 
+	private static final QuantRatioResultTitles TITLES_QUANT = new QuantRatioResultTitles();
 	private static final PeakRatioSelectionListener SELECTION_LISTENER = new PeakRatioSelectionListener();
 	private static final TimeRatioResultTitles TITLES_TIME = new TimeRatioResultTitles();
 	private static final TraceRatioResultTitles TITLES_TRACE = new TraceRatioResultTitles();
@@ -59,7 +61,7 @@ public class PeakRatiosAdapterFactory implements IAdapterFactory {
 				return adapterType.cast(TITLES_TRACE);
 			}
 			if(adaptableObject instanceof QuantRatios) {
-				// return adapterType.cast(LABEL_PROVIDER_QUANT);
+				return adapterType.cast(TITLES_QUANT);
 			}
 			if(adaptableObject instanceof TimeRatios) {
 				return adapterType.cast(TITLES_TIME);
