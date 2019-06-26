@@ -45,6 +45,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 	private static final String NAME = "Fourier Transformation";
 
 	public FourierTransformationProcessor() {
+
 		super(FourierTransformationSettings.class);
 	}
 
@@ -58,8 +59,17 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		BigDecimal max = BigDecimal.valueOf(measurement.getFirstDataPointOffset() + measurement.getSweepWidth());
 		BigDecimal step = max.subtract(min).divide(BigDecimal.valueOf(nmrSpectrumProcessed.length - 1).setScale(10), RoundingMode.HALF_UP);
 		List<FFTSpectrumSignal> signals = new ArrayList<>(nmrSpectrumProcessed.length);
-		for(int i = 0; i < nmrSpectrumProcessed.length; i++) {
-			signals.add(new FFTSpectrumSignal(BigDecimal.valueOf(i).multiply(step).add(min), nmrSpectrumProcessed[i]));
+		// handle another Bruker specific characteristic
+		if(measurement.getDataName().equals("Digital Filter Removal")) {
+			// Bruker spectral data has to be added in a "reversed" order to fit the chemical shift values
+			for(int i = 0; i < nmrSpectrumProcessed.length; i++) {
+				signals.add(new FFTSpectrumSignal(max.subtract(step.multiply(BigDecimal.valueOf(i))), nmrSpectrumProcessed[i]));
+			}
+		} else {
+			// other types of nmr data are not affected and can be added the way it was done before
+			for(int i = 0; i < nmrSpectrumProcessed.length; i++) {
+				signals.add(new FFTSpectrumSignal(BigDecimal.valueOf(i).multiply(step).add(min), nmrSpectrumProcessed[i]));
+			}
 		}
 		return new FFTFilteredMeasurement(measurement, signals);
 	}
@@ -99,6 +109,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		private List<? extends SpectrumSignal> signals;
 
 		public FFTFilteredMeasurement(FIDMeasurement measurement, List<FFTSpectrumSignal> signals) {
+
 			super(measurement);
 			this.signals = Collections.unmodifiableList(signals);
 		}
@@ -117,6 +128,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		private Complex complex;
 
 		public FFTSpectrumSignal(BigDecimal shift, Complex complex) {
+
 			this.shift = shift;
 			this.complex = complex;
 		}
