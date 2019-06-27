@@ -30,7 +30,17 @@
             description="This classifier calculates peak quant ratios."
             id="net.openchrom.xxd.classifier.supplier.ratios.quant">
       </ChromatogramClassifierSupplier>
-   </extension>                        
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.classifier.chromatogramClassifierSupplier">
+      <ChromatogramClassifierSupplier
+            classifier="net.openchrom.xxd.classifier.supplier.ratios.core.QualRatioClassifier"
+            classifierName="Quality Ratio Classifier"
+            classifierSettings="net.openchrom.xxd.classifier.supplier.ratios.settings.QualRatioSettings"
+            description="This classifier calculates peak quality ratios."
+            id="net.openchrom.xxd.classifier.supplier.ratios.qual">
+      </ChromatogramClassifierSupplier>
+   </extension>                              
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer

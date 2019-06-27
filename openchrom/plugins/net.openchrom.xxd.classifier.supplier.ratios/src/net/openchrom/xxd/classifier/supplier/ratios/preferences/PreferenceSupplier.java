@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.xxd.classifier.supplier.ratios.Activator;
+import net.openchrom.xxd.classifier.supplier.ratios.settings.QualRatioSettings;
 import net.openchrom.xxd.classifier.supplier.ratios.settings.QuantRatioSettings;
 import net.openchrom.xxd.classifier.supplier.ratios.settings.TimeRatioSettings;
 import net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioSettings;
@@ -122,6 +123,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		QuantRatioSettings settings = new QuantRatioSettings();
 		settings.setRatioSettings(getSettings(P_QUANT_RATIO_LIST, DEF_QUANT_RATIO_LIST));
 		return settings;
+	}
+
+	public static QualRatioSettings getSettingsQual() {
+
+		return new QualRatioSettings();
 	}
 
 	public static float getAllowedDeviation() {
