@@ -26,7 +26,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.swtchart;bundle-version="0.8.0",
  org.eclipse.chemclipse.csd.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.wsd.model;bundle-version="0.8.0",
- org.eclipse.chemclipse.pdfbox.extensions;bundle-version="0.8.0"
+ org.eclipse.chemclipse.pdfbox.extensions;bundle-version="0.8.0",
+ org.eclipse.swtchart.export;bundle-version="0.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: com.fasterxml.jackson.annotation;version="2.7.1",

@@ -35,13 +35,13 @@ import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.PeakChartSuppor
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.ScanChartSupport;
 import org.eclipse.swt.SWT;
 import org.eclipse.swtchart.ILineSeries.PlotSymbolType;
+import org.eclipse.swtchart.export.images.ImageFactory;
 import org.eclipse.swtchart.IPlotArea;
 import org.eclipse.swtchart.LineStyle;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.IExtendedChart;
 import org.eclipse.swtchart.extensions.core.RangeRestriction;
-import org.eclipse.swtchart.extensions.images.ImageFactory;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
 
