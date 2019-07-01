@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -49,11 +49,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swtchart.IAxis;
 import org.eclipse.swtchart.Range;
+import org.eclipse.swtchart.export.images.ImageSupplier;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.ISeriesData;
 import org.eclipse.swtchart.extensions.core.ISeriesModificationListener;
-import org.eclipse.swtchart.extensions.images.ImageSupplier;
 import org.eclipse.swtchart.extensions.linecharts.LineChart;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
