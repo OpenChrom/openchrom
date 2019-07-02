@@ -20,10 +20,12 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
+import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
+import net.openchrom.xxd.classifier.supplier.ratios.model.qual.PeakQuality;
 import net.openchrom.xxd.classifier.supplier.ratios.model.qual.QualRatio;
 
 public class QualRatioLabelProvider extends AbstractChemClipseLabelProvider implements ITableColorProvider {
@@ -46,13 +48,19 @@ public class QualRatioLabelProvider extends AbstractChemClipseLabelProvider impl
 		String text = "";
 		if(element instanceof QualRatio) {
 			QualRatio ratio = (QualRatio)element;
+			IPeak peak = ratio.getPeak();
 			switch(columnIndex) {
 				case 0:
-					IPeak peak = ratio.getPeak();
 					text = (peak != null) ? decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR) : "--";
 					break;
 				case 1:
-					text = ratio.getComment();
+					text = ratio.getLeadingTailing().getLabel();
+					break;
+				case 2:
+					text = ratio.getSignalToNoise().getLabel();
+					break;
+				case 3:
+					text = ratio.getSymmetry().getLabel();
 					break;
 			}
 		}
@@ -68,12 +76,58 @@ public class QualRatioLabelProvider extends AbstractChemClipseLabelProvider impl
 	@Override
 	public Color getForeground(Object element, int columnIndex) {
 
+		if(element instanceof QualRatio) {
+			QualRatio qualRatio = (QualRatio)element;
+			if(columnIndex == 1) {
+				return getColorPeakQuality(qualRatio.getLeadingTailing(), false);
+			} else if(columnIndex == 2) {
+				return getColorPeakQuality(qualRatio.getSignalToNoise(), false);
+			} else if(columnIndex == 3) {
+				return getColorPeakQuality(qualRatio.getSymmetry(), false);
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public Color getBackground(Object element, int columnIndex) {
 
+		if(element instanceof QualRatio) {
+			QualRatio qualRatio = (QualRatio)element;
+			if(columnIndex == 1) {
+				return getColorPeakQuality(qualRatio.getLeadingTailing(), true);
+			} else if(columnIndex == 2) {
+				return getColorPeakQuality(qualRatio.getSignalToNoise(), true);
+			} else if(columnIndex == 3) {
+				return getColorPeakQuality(qualRatio.getSymmetry(), true);
+			}
+		}
 		return null;
+	}
+
+	private Color getColorPeakQuality(PeakQuality peakQuality, boolean background) {
+
+		Color color;
+		switch(peakQuality) {
+			case VERY_GOOD:
+				color = (background) ? Colors.GREEN : Colors.BLACK;
+				break;
+			case GOOD:
+				color = (background) ? Colors.GREEN : Colors.BLACK;
+				break;
+			case ACCEPTABLE:
+				color = (background) ? Colors.YELLOW : Colors.BLACK;
+				break;
+			case BAD:
+				color = (background) ? Colors.RED : Colors.WHITE;
+				break;
+			case VERY_BAD:
+				color = (background) ? Colors.RED : Colors.WHITE;
+				break;
+			default:
+				color = null;
+				break;
+		}
+		return color;
 	}
 }

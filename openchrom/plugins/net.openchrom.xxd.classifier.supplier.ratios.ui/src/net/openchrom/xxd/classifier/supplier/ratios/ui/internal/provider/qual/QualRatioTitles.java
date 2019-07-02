@@ -24,13 +24,16 @@ import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.support.ui.swt.columns.ColumnDefinition;
 import org.eclipse.chemclipse.support.ui.swt.columns.ColumnDefinitionProvider;
 
+import net.openchrom.xxd.classifier.supplier.ratios.model.qual.PeakQuality;
 import net.openchrom.xxd.classifier.supplier.ratios.model.qual.QualRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractPeakRatioTitles;
 
 public class QualRatioTitles extends AbstractPeakRatioTitles implements ColumnDefinitionProvider {
 
 	public static final String RETENTION_TIME = "RT (Minutes)";
-	public static final String COMMENT = "Comment";
+	public static final String LEADING_TAILING = "Leading/Tailing";
+	public static final String SIGNAL_TO_NOISE = "S/N";
+	public static final String SYMMETRY = "Symmetry";
 
 	@Override
 	public Collection<? extends ColumnDefinition<?, ?>> getColumnDefinitions() {
@@ -49,12 +52,28 @@ public class QualRatioTitles extends AbstractPeakRatioTitles implements ColumnDe
 				}
 			}
 		}).create());
-		list.add(defaultSortableColumn(COMMENT, 150, new Function<QualRatio, String>() {
+		list.add(defaultSortableColumn(LEADING_TAILING, 130, new Function<QualRatio, PeakQuality>() {
 
 			@Override
-			public String apply(QualRatio ratio) {
+			public PeakQuality apply(QualRatio ratio) {
 
-				return ratio.getComment();
+				return ratio.getLeadingTailing();
+			}
+		}).create());
+		list.add(defaultSortableColumn(SIGNAL_TO_NOISE, 130, new Function<QualRatio, PeakQuality>() {
+
+			@Override
+			public PeakQuality apply(QualRatio ratio) {
+
+				return ratio.getSignalToNoise();
+			}
+		}).create());
+		list.add(defaultSortableColumn(SYMMETRY, 130, new Function<QualRatio, PeakQuality>() {
+
+			@Override
+			public PeakQuality apply(QualRatio ratio) {
+
+				return ratio.getSymmetry();
 			}
 		}).create());
 		return list;

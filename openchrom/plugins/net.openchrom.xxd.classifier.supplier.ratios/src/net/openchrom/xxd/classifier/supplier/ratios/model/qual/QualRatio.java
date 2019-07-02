@@ -16,15 +16,16 @@ import org.eclipse.chemclipse.model.core.IPeak;
 public class QualRatio {
 
 	private IPeak peak = null; // optional
-	private String comment = "";
+	private PeakQuality leadingTailing = PeakQuality.NONE;
+	private PeakQuality signalToNoise = PeakQuality.NONE;
+	private PeakQuality symmetry = PeakQuality.NONE;
 
 	public QualRatio() {
-		this(null, "");
+		this(null);
 	}
 
-	public QualRatio(IPeak peak, String comment) {
+	public QualRatio(IPeak peak) {
 		this.peak = peak;
-		this.comment = comment;
 	}
 
 	public IPeak getPeak() {
@@ -37,13 +38,33 @@ public class QualRatio {
 		this.peak = peak;
 	}
 
-	public String getComment() {
+	public PeakQuality getLeadingTailing() {
 
-		return comment;
+		return leadingTailing;
 	}
 
-	public void setComment(String comment) {
+	public void setLeadingTailing(PeakQuality leadingTailing) {
 
-		this.comment = comment;
+		this.leadingTailing = leadingTailing;
+	}
+
+	public PeakQuality getSignalToNoise() {
+
+		return signalToNoise;
+	}
+
+	public void setSignalToNoise(PeakQuality signalToNoise) {
+
+		this.signalToNoise = signalToNoise;
+	}
+
+	public PeakQuality getSymmetry() {
+
+		return symmetry;
+	}
+
+	public void setSymmetry(PeakQuality symmetry) {
+
+		this.symmetry = symmetry;
 	}
 }
