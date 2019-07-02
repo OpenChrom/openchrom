@@ -8,7 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
- * Christoph Läubrich - enhance settings
+ * Christoph Läubrich - enhance settings, support merge
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.ui.converter;
 
@@ -16,27 +16,35 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
+import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.eclipse.chemclipse.chromatogram.xxd.report.chromatogram.AbstractChromatogramReportGenerator;
 import org.eclipse.chemclipse.chromatogram.xxd.report.settings.IChromatogramReportSettings;
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.msd.converter.supplier.pdf.ui.internal.io.ReportConverterPDF;
 import net.openchrom.msd.converter.supplier.pdf.ui.settings.ReportSettings;
 
 public class ReportPDF extends AbstractChromatogramReportGenerator {
 
-	private static final Logger logger = Logger.getLogger(ReportPDF.class);
+	/**
+	 * Use 100 MB of main memory to merge pdfs
+	 */
+	private static final int MAX_MERGE_MEMORY = 1024 * 1024 * 100;
+	private static final String REPORT_PDF = "ReportPDF";
 
 	//
 	@Override
 	public IProcessingInfo generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, IChromatogramReportSettings chromatogramReportSettings, IProgressMonitor monitor) {
 
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 100 * chromatograms.size());
 		ReportSettings settings;
 		if(chromatogramReportSettings instanceof ReportSettings) {
 			settings = (ReportSettings)chromatogramReportSettings;
@@ -45,12 +53,37 @@ public class ReportPDF extends AbstractChromatogramReportGenerator {
 		}
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		try {
-			if(chromatograms.size() > 0) {
+			for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
 				ReportConverterPDF pdfSupport = new ReportConverterPDF(settings);
-				pdfSupport.createPDF(file, chromatograms.get(0), monitor);
+				if(append && file.exists()) {
+					File newFile = File.createTempFile("report", ".pdf");
+					newFile.deleteOnExit();
+					try {
+						pdfSupport.createPDF(newFile, chromatogram, subMonitor.split(100));
+						File oldFile = new File(file.getParentFile(), file.getName() + "." + UUID.randomUUID() + ".pdf");
+						String destinationFile = file.getAbsolutePath();
+						if(file.renameTo(oldFile)) {
+							PDFMergerUtility mergerUtility = new PDFMergerUtility();
+							mergerUtility.setDestinationFileName(destinationFile);
+							mergerUtility.addSource(oldFile);
+							mergerUtility.addSource(newFile);
+							mergerUtility.mergeDocuments(MemoryUsageSetting.setupMixed(MAX_MERGE_MEMORY));
+							if(!oldFile.delete()) {
+								oldFile.deleteOnExit();
+								processingInfo.addWarnMessage(REPORT_PDF, "can't delete old file " + oldFile.getAbsolutePath());
+							}
+						} else {
+							processingInfo.addErrorMessage(REPORT_PDF, "can't move file " + file.getAbsolutePath() + " to " + oldFile);
+						}
+					} finally {
+						newFile.delete();
+					}
+				} else {
+					pdfSupport.createPDF(file, chromatogram, subMonitor.split(100));
+				}
 			}
 		} catch(IOException e) {
-			logger.warn(e);
+			processingInfo.addErrorMessage(REPORT_PDF, "creation of PDF failed", e);
 		}
 		return processingInfo;
 	}
