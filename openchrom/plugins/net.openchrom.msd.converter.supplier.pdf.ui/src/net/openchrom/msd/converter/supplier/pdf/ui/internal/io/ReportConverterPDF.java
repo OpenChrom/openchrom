@@ -244,8 +244,8 @@ public class ReportConverterPDF {
 		InputStream inputStream = null;
 		//
 		try {
-			File file = new File(settings.getReportBanner());
-			if(file.exists() && file.getName().toLowerCase().endsWith(".jpg")) { // $NON-NLS-1$
+			File file = settings.getReportBanner();
+			if(file != null && file.exists() && (file.getName().toLowerCase().endsWith(".jpg") || file.getName().toLowerCase().endsWith(".jepg"))) { // $NON-NLS-1$
 				inputStream = new FileInputStream(file);
 			} else {
 				inputStream = ReportConverterPDF.class.getResourceAsStream("openchromlogo.jpg"); // $NON-NLS-1$

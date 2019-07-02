@@ -12,7 +12,10 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.ui.settings;
 
+import java.io.File;
+
 import org.eclipse.chemclipse.chromatogram.xxd.report.settings.AbstractChromatogramReportSettings;
+import org.eclipse.chemclipse.support.settings.FileSettingProperty;
 import org.eclipse.chemclipse.support.settings.IntSettingsProperty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,7 +28,8 @@ public class ReportSettings extends AbstractChromatogramReportSettings {
 	@JsonProperty(value = "Number Images per Pages", defaultValue = "" + PreferenceSupplier.DEF_NUMBER_IMAGE_PAGES)
 	private int numberOfImagesPerPage = -1;
 	@JsonProperty(value = "Report Banner (*.jpg) [1200x164 px, 600 dpi]", defaultValue = PreferenceSupplier.DEF_REPORT_BANNER)
-	private String reportBanner;
+	@FileSettingProperty(onlyDirectory = false, validExtensions = {"*.jpg;*.jpeg", "*.*"}, extensionNames = {"JPEG Files", "All Files"})
+	private File reportBanner;
 	@JsonProperty(value = "Report Slogan", defaultValue = PreferenceSupplier.DEF_REPORT_SLOGAN)
 	private String reportSlogan;
 
@@ -43,10 +47,13 @@ public class ReportSettings extends AbstractChromatogramReportSettings {
 		return numberOfImagesPerPage;
 	}
 
-	public String getReportBanner() {
+	public File getReportBanner() {
 
 		if(reportBanner == null) {
-			return PreferenceSupplier.getReportBanner();
+			String banner = PreferenceSupplier.getReportBanner();
+			if(banner != null && !banner.isEmpty()) {
+				return new File(banner);
+			}
 		}
 		return reportBanner;
 	}
