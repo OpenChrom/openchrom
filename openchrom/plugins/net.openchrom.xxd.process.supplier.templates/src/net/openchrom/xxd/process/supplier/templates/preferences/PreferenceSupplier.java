@@ -66,6 +66,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_EXPORT_NUMBER_TRACES = "exportNumberTraces";
 	public static final int DEF_EXPORT_NUMBER_TRACES = 5;
 	//
+	public static final String P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT = "standardsExtractorConcentrationUnit";
+	public static final String DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT = "ppm";
+	//
 	public static final String P_UI_DETECTOR_DELTA_LEFT_MINUTES = "uiDetectorDeltaLeftMinutes";
 	public static final double DEF_UI_DETECTOR_DELTA_LEFT_MINUTES = 0.5d;
 	public static final String P_UI_DETECTOR_DELTA_RIGHT_MINUTES = "uiDetectorDeltaRightMinutes";
@@ -116,6 +119,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES));
 		defaultValues.put(P_EXPORT_USE_TRACES, Boolean.toString(DEF_EXPORT_USE_TRACES));
 		defaultValues.put(P_EXPORT_NUMBER_TRACES, Integer.toString(DEF_EXPORT_NUMBER_TRACES));
+		//
+		defaultValues.put(P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT, DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT);
 		//
 		defaultValues.put(P_UI_DETECTOR_DELTA_LEFT_MINUTES, Double.toString(DEF_UI_DETECTOR_DELTA_LEFT_MINUTES));
 		defaultValues.put(P_UI_DETECTOR_DELTA_RIGHT_MINUTES, Double.toString(DEF_UI_DETECTOR_DELTA_RIGHT_MINUTES));
@@ -241,6 +246,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.get(key, def);
+	}
+
+	public static String getStandardsExtractorConcentrationUnit() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.get(P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT, DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT);
 	}
 
 	private static void setFilterPath(String key, String filterPath) {

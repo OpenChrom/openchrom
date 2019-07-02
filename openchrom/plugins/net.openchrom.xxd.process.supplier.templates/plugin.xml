@@ -63,7 +63,14 @@
             peakQuantifier="net.openchrom.xxd.process.supplier.templates.peaks.CompensationQuantifier"
             peakQuantifierName="Peak Compensation Quantifier"
             peakQuantifierSettings="net.openchrom.xxd.process.supplier.templates.settings.CompensationQuantifierSettings">
-      </PeakQuantifierSupplier>                   
+      </PeakQuantifierSupplier>
+      <PeakQuantifierSupplier
+            description="This methods extracts the ISTD information from the header misc info."
+            id="net.openchrom.xxd.process.supplier.templates.peaks.standards.extractor"
+            peakQuantifier="net.openchrom.xxd.process.supplier.templates.peaks.StandardsExtractor"
+            peakQuantifierName="Peak Standards Extractor (ISTD)"
+            peakQuantifierSettings="net.openchrom.xxd.process.supplier.templates.settings.StandardsExtractorSettings">
+      </PeakQuantifierSupplier>                        
    </extension>
    <extension
          point="org.eclipse.chemclipse.chromatogram.xxd.integrator.peakIntegratorSupplier">
