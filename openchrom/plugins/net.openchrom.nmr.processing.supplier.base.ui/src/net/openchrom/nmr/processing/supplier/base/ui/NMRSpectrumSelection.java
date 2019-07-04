@@ -25,6 +25,7 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -56,7 +57,11 @@ public class NMRSpectrumSelection {
 				@Override
 				public Color getBackground(Object element) {
 
-					return viewer.getTable().getDisplay().getSystemColor(SWT.COLOR_DARK_RED);
+					IDataNMRSelection selection = getSelection(element);
+					if(selection instanceof IColorProvider) {
+						return ((IColorProvider)selection).getBackground(element);
+					}
+					return null;
 				}
 			});
 		}

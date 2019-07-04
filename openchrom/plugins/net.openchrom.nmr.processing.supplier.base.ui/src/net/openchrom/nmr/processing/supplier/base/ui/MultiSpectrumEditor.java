@@ -44,8 +44,6 @@ public class MultiSpectrumEditor {
 		sashForm.setWeights(new int[]{800, 200});
 		extendedNMROverlayUI = new ExtendedNMROverlayUI(left, partservice, Activator.getDefault().getPreferenceStore());
 		measurementsUI = new NMRSpectrumSelection(right);
-		extendedNMROverlayUI.update();
-		measurementsUI.update(extendedNMROverlayUI.getSelections());
 	}
 
 	@PreDestroy
@@ -61,5 +59,7 @@ public class MultiSpectrumEditor {
 	@Focus
 	public void onFocus() {
 
+		extendedNMROverlayUI.update();
+		measurementsUI.update(extendedNMROverlayUI.getSelections());
 	}
 }
