@@ -141,12 +141,12 @@ public class IdentifierSettings extends HashMap<String, IdentifierSetting> imple
 		return setting;
 	}
 
-	private void loadSettings(String iems) {
+	private void loadSettings(String items) {
 
-		if(!"".equals(iems)) {
-			String[] items = listUtil.parseString(iems);
-			if(items.length > 0) {
-				for(String item : items) {
+		if(!"".equals(items)) {
+			String[] parsedItems = listUtil.parseString(items);
+			if(parsedItems.length > 0) {
+				for(String item : parsedItems) {
 					IdentifierSetting setting = extractSettingInstance(item);
 					if(setting != null) {
 						add(setting);
