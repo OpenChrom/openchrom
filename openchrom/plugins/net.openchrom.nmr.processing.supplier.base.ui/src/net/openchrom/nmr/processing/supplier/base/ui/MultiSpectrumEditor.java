@@ -20,12 +20,14 @@ import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 public class MultiSpectrumEditor {
 
 	private ExtendedNMROverlayUI extendedNMROverlayUI;
+	private NMRSpectrumSelection measurementsUI;
 
 	@Inject
 	public MultiSpectrumEditor() {
@@ -34,9 +36,16 @@ public class MultiSpectrumEditor {
 	@PostConstruct
 	public void postConstruct(Composite parent, EPartService partservice) {
 
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(2, false));
-		extendedNMROverlayUI = new ExtendedNMROverlayUI(parent, partservice, Activator.getDefault().getPreferenceStore());
+		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
+		Composite left = new Composite(sashForm, SWT.NONE);
+		left.setLayout(new FillLayout());
+		Composite right = new Composite(sashForm, SWT.NONE);
+		right.setLayout(new FillLayout());
+		sashForm.setWeights(new int[]{800, 200});
+		extendedNMROverlayUI = new ExtendedNMROverlayUI(left, partservice, Activator.getDefault().getPreferenceStore());
+		measurementsUI = new NMRSpectrumSelection(right);
+		extendedNMROverlayUI.update();
+		measurementsUI.update(extendedNMROverlayUI.getSelections());
 	}
 
 	@PreDestroy
@@ -52,6 +61,5 @@ public class MultiSpectrumEditor {
 	@Focus
 	public void onFocus() {
 
-		extendedNMROverlayUI.update();
 	}
 }
