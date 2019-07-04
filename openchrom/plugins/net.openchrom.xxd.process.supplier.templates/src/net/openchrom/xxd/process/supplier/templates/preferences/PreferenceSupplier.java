@@ -30,6 +30,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	//
 	public static final double MIN_DELTA_MINUTES = 0.0d; // 0 Minutes
 	public static final double MAX_DELTA_MINUTES = 1.0d; // 1 Minute
+	public static final int MIN_NUMBER_TRACES = 1;
+	public static final int MAX_NUMBER_TRACES = 10;
 	//
 	public static final String P_PEAK_DETECTOR_LIST_MSD = "peakDetectorListMSD";
 	public static final String DEF_PEAK_DETECTOR_LIST_MSD = "";
@@ -61,8 +63,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES = 0.1d;
 	public static final String P_EXPORT_USE_TRACES = "exportUseTraces";
 	public static final boolean DEF_EXPORT_USE_TRACES = false;
-	public static final int MIN_NUMBER_TRACES = 1;
-	public static final int MAX_NUMBER_TRACES = 10;
 	public static final String P_EXPORT_NUMBER_TRACES = "exportNumberTraces";
 	public static final int DEF_EXPORT_NUMBER_TRACES = 5;
 	//
@@ -75,6 +75,15 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final double DEF_UI_DETECTOR_DELTA_RIGHT_MINUTES = 0.5d;
 	public static final String P_UI_DETECTOR_REPLACE_PEAK = "uiDetectorReplacePeak";
 	public static final boolean DEF_UI_DETECTOR_REPLACE_PEAK = true;
+	//
+	public static final String P_TRANSFER_USE_BEST_TARGET_ONLY = "transferUseBestTargetOnly";
+	public static final boolean DEF_TRANSFER_USE_BEST_TARGET_ONLY = true;
+	public static final String P_TRANSFER_RETENTION_TIME_MINUTES_LEFT = "transferRetentionTimeMinutesLeft";
+	public static final double DEF_TRANSFER_RETENTION_TIME_MINUTES_LEFT = 0.0d;
+	public static final String P_TRANSFER_RETENTION_TIME_MINUTES_RIGHT = "transferRetentionTimeMinutesRight";
+	public static final double DEF_TRANSFER_RETENTION_TIME_MINUTES_RIGHT = 0.0d;
+	public static final String P_TRANSFER_NUMBER_TRACES = "transferNumberTraces";
+	public static final int DEF_TRANSFER_NUMBER_TRACES = 15;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -125,6 +134,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_UI_DETECTOR_DELTA_LEFT_MINUTES, Double.toString(DEF_UI_DETECTOR_DELTA_LEFT_MINUTES));
 		defaultValues.put(P_UI_DETECTOR_DELTA_RIGHT_MINUTES, Double.toString(DEF_UI_DETECTOR_DELTA_RIGHT_MINUTES));
 		defaultValues.put(P_UI_DETECTOR_REPLACE_PEAK, Boolean.toString(DEF_UI_DETECTOR_REPLACE_PEAK));
+		//
+		defaultValues.put(P_TRANSFER_USE_BEST_TARGET_ONLY, Boolean.toString(DEF_TRANSFER_USE_BEST_TARGET_ONLY));
+		defaultValues.put(P_TRANSFER_RETENTION_TIME_MINUTES_LEFT, Double.toString(DEF_TRANSFER_RETENTION_TIME_MINUTES_LEFT));
+		defaultValues.put(P_TRANSFER_RETENTION_TIME_MINUTES_RIGHT, Double.toString(DEF_TRANSFER_RETENTION_TIME_MINUTES_RIGHT));
+		defaultValues.put(P_TRANSFER_NUMBER_TRACES, Integer.toString(DEF_TRANSFER_NUMBER_TRACES));
 		//
 		return defaultValues;
 	}
@@ -252,6 +266,30 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.get(P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT, DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT);
+	}
+
+	public static boolean isTransferUseBestTargetOnly() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_TRANSFER_USE_BEST_TARGET_ONLY, DEF_TRANSFER_USE_BEST_TARGET_ONLY);
+	}
+
+	public static double getTransferRetentionTimeMinutesLeft() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_TRANSFER_RETENTION_TIME_MINUTES_LEFT, DEF_TRANSFER_RETENTION_TIME_MINUTES_LEFT);
+	}
+
+	public static double getTransferRetentionTimeMinutesRight() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_TRANSFER_RETENTION_TIME_MINUTES_RIGHT, DEF_TRANSFER_RETENTION_TIME_MINUTES_RIGHT);
+	}
+
+	public static int getTransferNumberTraces() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_TRANSFER_NUMBER_TRACES, DEF_TRANSFER_NUMBER_TRACES);
 	}
 
 	private static void setFilterPath(String key, String filterPath) {
