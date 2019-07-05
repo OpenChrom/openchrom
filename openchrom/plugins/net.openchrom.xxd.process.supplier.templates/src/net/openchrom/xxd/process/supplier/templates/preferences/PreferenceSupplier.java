@@ -84,6 +84,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final double DEF_TRANSFER_RETENTION_TIME_MINUTES_RIGHT = 0.0d;
 	public static final String P_TRANSFER_NUMBER_TRACES = "transferNumberTraces";
 	public static final int DEF_TRANSFER_NUMBER_TRACES = 15;
+	public static final String P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY = "transferUseIdentifiedPeaksOnly";
+	public static final boolean DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY = false;
+	public static final String P_TRANSFER_USE_ADJUSTMENT_BY_PURITY = "transferUseAdjustmentByPurity";
+	public static final boolean DEF_TRANSFER_USE_ADJUSTMENT_BY_PURITY = true;
+	public static final String P_TRANSFER_OPTIMIZE_RANGE = "transferOptimizeRange";
+	public static final boolean DEF_TRANSFER_OPTIMIZE_RANGE = true;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -139,6 +145,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_TRANSFER_RETENTION_TIME_MINUTES_LEFT, Double.toString(DEF_TRANSFER_RETENTION_TIME_MINUTES_LEFT));
 		defaultValues.put(P_TRANSFER_RETENTION_TIME_MINUTES_RIGHT, Double.toString(DEF_TRANSFER_RETENTION_TIME_MINUTES_RIGHT));
 		defaultValues.put(P_TRANSFER_NUMBER_TRACES, Integer.toString(DEF_TRANSFER_NUMBER_TRACES));
+		defaultValues.put(P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, Boolean.toString(DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY));
+		defaultValues.put(P_TRANSFER_USE_ADJUSTMENT_BY_PURITY, Boolean.toString(DEF_TRANSFER_USE_ADJUSTMENT_BY_PURITY));
+		defaultValues.put(P_TRANSFER_OPTIMIZE_RANGE, Boolean.toString(DEF_TRANSFER_OPTIMIZE_RANGE));
 		//
 		return defaultValues;
 	}
@@ -290,6 +299,24 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_TRANSFER_NUMBER_TRACES, DEF_TRANSFER_NUMBER_TRACES);
+	}
+
+	public static boolean isTransferUseIdentifiedPeaksOnly() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY);
+	}
+
+	public static boolean isTransferUseAdjustmentByPurity() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_TRANSFER_USE_ADJUSTMENT_BY_PURITY, DEF_TRANSFER_USE_ADJUSTMENT_BY_PURITY);
+	}
+
+	public static boolean isTransferOptimizeRange() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_TRANSFER_OPTIMIZE_RANGE, DEF_TRANSFER_OPTIMIZE_RANGE);
 	}
 
 	private static void setFilterPath(String key, String filterPath) {

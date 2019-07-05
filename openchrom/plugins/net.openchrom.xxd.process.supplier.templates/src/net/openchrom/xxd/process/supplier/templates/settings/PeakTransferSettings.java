@@ -36,6 +36,18 @@ public class PeakTransferSettings extends AbstractProcessSettings implements IPe
 	@JsonProperty(value = "Number Traces", defaultValue = "15")
 	@JsonPropertyDescription(value = "If a MSD peak contains <= number traces, then SIM detection will be forced.")
 	private int numberTraces = 15;
+	//
+	@JsonProperty(value = "Transfer Identified Peaks Only", defaultValue = "false")
+	@JsonPropertyDescription(value = "If this value is true, only identified peaks will be transfered.")
+	private boolean useIdentifiedPeaksOnly = false;
+	//
+	@JsonProperty(value = "Use Adjustment By Purity", defaultValue = "true")
+	@JsonPropertyDescription(value = "If this value is true, peaks will be adjusted by using the peak purity value.")
+	private boolean useAdjustmentByPurity = true;
+	//
+	@JsonProperty(value = "Optimize Range", defaultValue = "true")
+	@JsonPropertyDescription(value = "If this value is true, the peak model range will be optimized.")
+	private boolean optimizeRange = true;
 
 	public boolean isUseBestTargetOnly() {
 
@@ -75,5 +87,35 @@ public class PeakTransferSettings extends AbstractProcessSettings implements IPe
 	public void setNumberTraces(int numberTraces) {
 
 		this.numberTraces = numberTraces;
+	}
+
+	public boolean isUseIdentifiedPeaksOnly() {
+
+		return useIdentifiedPeaksOnly;
+	}
+
+	public void setUseIdentifiedPeaksOnly(boolean useIdentifiedPeaksOnly) {
+
+		this.useIdentifiedPeaksOnly = useIdentifiedPeaksOnly;
+	}
+
+	public boolean isUseAdjustmentByPurity() {
+
+		return useAdjustmentByPurity;
+	}
+
+	public void setUseAdjustmentByPurity(boolean useAdjustmentByPurity) {
+
+		this.useAdjustmentByPurity = useAdjustmentByPurity;
+	}
+
+	public boolean isOptimizeRange() {
+
+		return optimizeRange;
+	}
+
+	public void setOptimizeRange(boolean optimizeRange) {
+
+		this.optimizeRange = optimizeRange;
 	}
 }

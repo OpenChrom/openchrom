@@ -28,6 +28,7 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.ComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -85,6 +86,9 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		settings.setDeltaRetentionTimeLeft(PreferenceSupplier.getTransferRetentionTimeMinutesLeft());
 		settings.setDeltaRetentionTimeRight(PreferenceSupplier.getTransferRetentionTimeMinutesRight());
 		settings.setNumberTraces(PreferenceSupplier.getTransferNumberTraces());
+		settings.setUseIdentifiedPeaksOnly(PreferenceSupplier.isTransferUseIdentifiedPeaksOnly());
+		settings.setUseAdjustmentByPurity(PreferenceSupplier.isTransferUseAdjustmentByPurity());
+		settings.setOptimizeRange(PreferenceSupplier.isTransferOptimizeRange());
 		return settings;
 	}
 
@@ -115,70 +119,109 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 	}
 
 	@SuppressWarnings("unchecked")
-	private void transferPeaks(List<IPeak> peaks, IChromatogram chromatogram, PeakTransferSettings peakTransferSettings) {
+	private void transferPeaks(List<IPeak> peaks, IChromatogram chromatogramSink, PeakTransferSettings peakTransferSettings) {
 
 		/*
 		 * General Settings
 		 */
-		boolean useBestTargetOnly = peakTransferSettings.isUseBestTargetOnly();
 		TargetExtendedComparator comparator = new TargetExtendedComparator(SortOrder.DESC);
 		PeakSupport peakSupport = new PeakSupport();
+		//
 		int deltaRetentionTimeLeft = (int)(peakTransferSettings.getDeltaRetentionTimeLeft() * IChromatogram.MINUTE_CORRELATION_FACTOR);
 		int deltaRetentionTimeRight = (int)(peakTransferSettings.getDeltaRetentionTimeRight() * IChromatogram.MINUTE_CORRELATION_FACTOR);
 		int numberTraces = peakTransferSettings.getNumberTraces();
+		boolean useBestTargetOnly = peakTransferSettings.isUseBestTargetOnly();
+		boolean useIdentifiedPeaksOnly = peakTransferSettings.isUseIdentifiedPeaksOnly();
+		boolean useAdjustmentByPurity = peakTransferSettings.isUseAdjustmentByPurity();
+		boolean optimizeRange = peakTransferSettings.isOptimizeRange();
 		//
-		for(IPeak peak : peaks) {
+		for(IPeak peakSource : peaks) {
+			/*
+			 * Skip the peak of only identified peaks shall be transfered
+			 * and the current peak contains no targets.
+			 */
+			if(useIdentifiedPeaksOnly && peakSource.getTargets().size() == 0) {
+				continue;
+			}
 			/*
 			 * Specific Settings
 			 */
-			IPeakModel peakModel = peak.getPeakModel();
-			int startRetentionTime = peakModel.getStartRetentionTime() - deltaRetentionTimeLeft;
-			int stopRetentionTime = peakModel.getStopRetentionTime() + deltaRetentionTimeRight;
+			IPeakModel peakModelSource = peakSource.getPeakModel();
+			int startRetentionTime = peakModelSource.getStartRetentionTime() - deltaRetentionTimeLeft;
+			int stopRetentionTime = peakModelSource.getStopRetentionTime() + deltaRetentionTimeRight;
+			boolean includeBackground = peakSource.getPeakType().equals(PeakType.VV);
+			float purity = getPurity(peakSource);
+			Set<Integer> traces = getTraces(peakSource, numberTraces);
 			//
-			Set<Integer> traces = new HashSet<>();
-			float purity = 1.0f;
-			//
-			if(peak instanceof IChromatogramPeakMSD) {
-				IChromatogramPeakMSD peakMSD = (IChromatogramPeakMSD)peak;
-				purity = peakMSD.getPurity();
-				if(purity < 1.0f) {
-					IScanMSD scanMSD = peakMSD.getExtractedMassSpectrum();
-					if(scanMSD.getIons().size() <= numberTraces) {
-						IExtractedIonSignal extractedIonSignal = peakMSD.getExtractedMassSpectrum().getExtractedIonSignal();
-						for(int ion = extractedIonSignal.getStartIon(); ion <= extractedIonSignal.getStopIon(); ion++) {
-							if(extractedIonSignal.getAbundance(ion) > 0.0f) {
-								traces.add(ion);
-							}
+			IPeak peakSink = peakSupport.extractPeakByRetentionTime(chromatogramSink, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces);
+			if(peakSink != null) {
+				adjustPeakIntensity(peakSink, purity, useAdjustmentByPurity);
+				transferTargets(peakSource, peakSink, useBestTargetOnly, comparator);
+				chromatogramSink.addPeak(peakSink);
+			}
+		}
+	}
+
+	private float getPurity(IPeak peakSource) {
+
+		float purity = 1.0f;
+		if(peakSource instanceof IChromatogramPeakMSD) {
+			IChromatogramPeakMSD peakMSD = (IChromatogramPeakMSD)peakSource;
+			purity = peakMSD.getPurity();
+		}
+		return purity;
+	}
+
+	private Set<Integer> getTraces(IPeak peakSource, int numberTraces) {
+
+		Set<Integer> traces = new HashSet<>();
+		if(peakSource instanceof IChromatogramPeakMSD) {
+			IChromatogramPeakMSD peakMSD = (IChromatogramPeakMSD)peakSource;
+			if(peakMSD.getPurity() < 1.0f) {
+				IScanMSD scanMSD = peakMSD.getExtractedMassSpectrum();
+				if(scanMSD.getIons().size() <= numberTraces) {
+					IExtractedIonSignal extractedIonSignal = peakMSD.getExtractedMassSpectrum().getExtractedIonSignal();
+					for(int ion = extractedIonSignal.getStartIon(); ion <= extractedIonSignal.getStopIon(); ion++) {
+						if(extractedIonSignal.getAbundance(ion) > 0.0f) {
+							traces.add(ion);
 						}
 					}
 				}
 			}
-			//
-			IPeak peakReference = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, true, true, traces);
-			if(peakReference != null) {
+		}
+		return traces;
+	}
+
+	private void adjustPeakIntensity(IPeak peakSink, float purity, boolean useAdjustmentByPurity) {
+
+		if(useAdjustmentByPurity) {
+			if(purity > 0.0d && purity < 1.0f) {
 				/*
 				 * Adjust the peak model.
 				 * Skip it if it's of type MSD, cause the traces already led to an adjusted peak.
 				 */
-				if(purity > 0.0d && purity < 1.0f) {
-					if(peakReference instanceof IChromatogramPeakCSD || peakReference instanceof IChromatogramPeakWSD) {
-						IScan peakMaximum = peakReference.getPeakModel().getPeakMaximum();
-						float totalSignal = peakMaximum.getTotalSignal();
-						peakMaximum.adjustTotalSignal(totalSignal * purity);
-					}
+				if(peakSink instanceof IChromatogramPeakCSD || peakSink instanceof IChromatogramPeakWSD) {
+					IScan peakMaximum = peakSink.getPeakModel().getPeakMaximum();
+					float totalSignal = peakMaximum.getTotalSignal();
+					peakMaximum.adjustTotalSignal(totalSignal * purity);
 				}
-				/*
-				 * Transfer the targets.
-				 */
-				if(useBestTargetOnly) {
-					IIdentificationTarget identificationTarget = IIdentificationTarget.getBestIdentificationTarget(peak.getTargets(), comparator);
-					peakReference.getTargets().add(createIdentificationTarget(identificationTarget));
-				} else {
-					for(IIdentificationTarget identificationTarget : peak.getTargets()) {
-						peakReference.getTargets().add(createIdentificationTarget(identificationTarget));
-					}
-				}
-				chromatogram.addPeak(peakReference);
+			}
+		}
+	}
+
+	private void transferTargets(IPeak peakSource, IPeak peakSink, boolean useBestTargetOnly, TargetExtendedComparator comparator) {
+
+		/*
+		 * Transfer the targets.
+		 */
+		if(useBestTargetOnly) {
+			IIdentificationTarget identificationTarget = IIdentificationTarget.getBestIdentificationTarget(peakSource.getTargets(), comparator);
+			if(identificationTarget != null) {
+				peakSink.getTargets().add(createIdentificationTarget(identificationTarget));
+			}
+		} else {
+			for(IIdentificationTarget identificationTarget : peakSource.getTargets()) {
+				peakSink.getTargets().add(createIdentificationTarget(identificationTarget));
 			}
 		}
 	}
