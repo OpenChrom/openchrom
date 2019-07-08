@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - adjust chart API
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt;
 
@@ -480,7 +481,7 @@ public class TemplatePeakDetectorUI extends Composite {
 		/*
 		 * Add the paint listeners to draw the selected peak range.
 		 */
-		IPlotArea plotArea = (IPlotArea)getPlotArea();
+		IPlotArea plotArea = getPlotArea();
 		baselineSelectionPaintListener = new BaselineSelectionPaintListener();
 		plotArea.addCustomPaintListener(baselineSelectionPaintListener);
 		//
@@ -679,7 +680,7 @@ public class TemplatePeakDetectorUI extends Composite {
 		chromatogramChart.getBaseChart().redraw();
 	}
 
-	private Composite getPlotArea() {
+	private IPlotArea getPlotArea() {
 
 		return chromatogramChart.getBaseChart().getPlotArea();
 	}
