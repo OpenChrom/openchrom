@@ -13,9 +13,9 @@ package net.openchrom.nmr.processing.supplier.base.core;
 
 import java.io.Serializable;
 
-import org.eclipse.chemclipse.filter.FilterCategory;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
+import org.eclipse.chemclipse.processing.DataCategory;
 
 public abstract class AbstractFIDSignalFilter<ConfigType>
 		extends AbstractComplexSignalFilter<ConfigType, FIDMeasurement> implements Serializable {
@@ -27,9 +27,9 @@ public abstract class AbstractFIDSignalFilter<ConfigType>
 	}
 
 	@Override
-	public FilterCategory[] getFilterCategories() {
+	public DataCategory[] getFilterCategories() {
 
-		return new FilterCategory[]{FilterCategory.FID};
+		return new DataCategory[]{DataCategory.FID};
 	}
 
 	@Override

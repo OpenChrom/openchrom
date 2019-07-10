@@ -14,26 +14,25 @@ package net.openchrom.nmr.processing;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
-import org.eclipse.chemclipse.filter.FilterChain;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.processing.core.DefaultProcessingResult;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.filter.FilterChain;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 public class FilterUtils {
 
 	public FilterUtils() {
-
 	}
 
-	public static <ConfigType> Collection<? extends IMeasurement> applyFilter(IMeasurementFilter<ConfigType> filter,
-			IMeasurement measurement) {
+	public static <ConfigType> Collection<? extends IMeasurement> applyFilter(IMeasurementFilter<ConfigType> filter, IMeasurement measurement) {
 
-		ConfigType configuration = filter.createConfiguration(measurement);
-		Collection<? extends IMeasurement> filtered = filter.filterIMeasurements(Collections.singleton(measurement),
-				configuration, new FilterChain<Collection<? extends IMeasurement>>() {
+		Set<IMeasurement> items = Collections.singleton(measurement);
+		ConfigType configuration = filter.createConfiguration(items);
+		Collection<? extends IMeasurement> filtered = filter.filterIMeasurements(items, configuration, new FilterChain<Collection<? extends IMeasurement>>() {
 
 			@Override
 			public Collection<? extends IMeasurement> doFilter(Collection<? extends IMeasurement> items, MessageConsumer messageConsumer) {

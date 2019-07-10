@@ -23,11 +23,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.e4.ui.workbench;bundle-version="1.4.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  org.eclipse.chemclipse.rcp.app.ui;bundle-version="0.8.0",
- org.eclipse.jface
+ org.eclipse.jface,
+ org.eclipse.chemclipse.processing;bundle-version="0.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: javax.annotation;version="1.0.0";resolution:=optional,
  javax.inject;version="1.0.0",
- org.eclipse.chemclipse.filter;version="1.0.0",
  org.eclipse.chemclipse.nmr.model.core,
  org.eclipse.chemclipse.nmr.model.selection
 Bundle-ActivationPolicy: lazy

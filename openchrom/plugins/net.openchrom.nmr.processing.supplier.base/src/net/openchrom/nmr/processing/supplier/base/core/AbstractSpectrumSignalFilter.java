@@ -11,9 +11,9 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
-import org.eclipse.chemclipse.filter.FilterCategory;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
+import org.eclipse.chemclipse.processing.DataCategory;
 
 public abstract class AbstractSpectrumSignalFilter<ConfigType> extends AbstractComplexSignalFilter<ConfigType, SpectrumMeasurement> {
 
@@ -22,9 +22,9 @@ public abstract class AbstractSpectrumSignalFilter<ConfigType> extends AbstractC
 	}
 
 	@Override
-	public FilterCategory[] getFilterCategories() {
+	public DataCategory[] getFilterCategories() {
 
-		return new FilterCategory[]{FilterCategory.NMR};
+		return new DataCategory[]{DataCategory.NMR};
 	}
 
 	@Override

@@ -16,18 +16,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.chemclipse.filter.FilterChain;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.filter.FilterChain;
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 
-public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IComplexSignalMeasurement<?>>
-		implements IMeasurementFilter<ConfigType>, Serializable {
+public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IComplexSignalMeasurement<?>> implements IMeasurementFilter<ConfigType>, Serializable {
 
 	private static final long serialVersionUID = 6491722860634659049L;
 	private Class<ConfigType> configClass;
@@ -47,13 +46,15 @@ public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IC
 	}
 
 	@Override
-	public ConfigType createConfiguration(IMeasurement item) {
+	public ConfigType createConfiguration(Collection<? extends IMeasurement> items) {
 
-		ConfigType config = Adapters.adapt(item, configClass);
-		if(config != null) {
-			return config;
+		for(IMeasurement item : items) {
+			ConfigType config = Adapters.adapt(item, configClass);
+			if(config != null) {
+				return config;
+			}
 		}
-		return IMeasurementFilter.super.createConfiguration(item);
+		return IMeasurementFilter.super.createConfiguration(items);
 	}
 
 	@Override
