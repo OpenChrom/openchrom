@@ -45,7 +45,7 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 	}
 
 	@Override
-	public String getFilterName() {
+	public String getName() {
 
 		return FILTER_NAME;
 	}

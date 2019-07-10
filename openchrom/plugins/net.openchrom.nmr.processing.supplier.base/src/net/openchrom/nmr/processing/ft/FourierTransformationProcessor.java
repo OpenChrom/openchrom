@@ -45,7 +45,6 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 	private static final String NAME = "Fourier Transformation";
 
 	public FourierTransformationProcessor() {
-
 		super(FourierTransformationSettings.class);
 	}
 
@@ -75,7 +74,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 	}
 
 	@Override
-	public String getFilterName() {
+	public String getName() {
 
 		return NAME;
 	}
@@ -109,7 +108,6 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		private List<? extends SpectrumSignal> signals;
 
 		public FFTFilteredMeasurement(FIDMeasurement measurement, List<FFTSpectrumSignal> signals) {
-
 			super(measurement);
 			this.signals = Collections.unmodifiableList(signals);
 		}
@@ -128,7 +126,6 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		private Complex complex;
 
 		public FFTSpectrumSignal(BigDecimal shift, Complex complex) {
-
 			this.shift = shift;
 			this.complex = complex;
 		}

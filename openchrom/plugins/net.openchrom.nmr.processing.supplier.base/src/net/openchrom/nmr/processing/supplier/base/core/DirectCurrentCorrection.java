@@ -115,7 +115,7 @@ public class DirectCurrentCorrection extends AbstractComplexSignalFilter<DirectC
 	}
 
 	@Override
-	public String getFilterName() {
+	public String getName() {
 
 		return FILTER_NAME;
 	}

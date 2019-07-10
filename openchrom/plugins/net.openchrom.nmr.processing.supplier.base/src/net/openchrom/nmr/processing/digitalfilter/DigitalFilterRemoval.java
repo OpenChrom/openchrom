@@ -38,7 +38,6 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 	private static final String MARKER = DigitalFilterRemoval.class.getName() + ".filtered";
 
 	public DigitalFilterRemoval() {
-
 		super(DigitalFilterRemovalSettings.class);
 	}
 
@@ -49,7 +48,7 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 	}
 
 	@Override
-	public String getFilterName() {
+	public String getName() {
 
 		return FILTER_NAME;
 	}

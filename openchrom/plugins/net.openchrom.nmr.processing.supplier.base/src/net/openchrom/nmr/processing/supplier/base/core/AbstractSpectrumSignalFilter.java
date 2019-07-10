@@ -22,7 +22,7 @@ public abstract class AbstractSpectrumSignalFilter<ConfigType> extends AbstractC
 	}
 
 	@Override
-	public DataCategory[] getFilterCategories() {
+	public DataCategory[] getDataCategories() {
 
 		return new DataCategory[]{DataCategory.NMR};
 	}

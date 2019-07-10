@@ -60,7 +60,7 @@ public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IC
 	@Override
 	public Collection<? extends IMeasurement> filterIMeasurements(Collection<? extends IMeasurement> filterItems, ConfigType configuration, FilterChain<Collection<? extends IMeasurement>> nextFilter, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
 
-		SubMonitor subMonitor = SubMonitor.convert(monitor, getFilterName(), 100 * filterItems.size());
+		SubMonitor subMonitor = SubMonitor.convert(monitor, getName(), 100 * filterItems.size());
 		// collect filtered items here...
 		List<IMeasurement> filtered = new ArrayList<>();
 		for(IMeasurement measurement : filterItems) {
@@ -77,7 +77,7 @@ public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IC
 				}
 				FilteredMeasurement<?> filteredMeasurement = doFiltering(nmrMeasurement, settings, messageConsumer, subMonitor.split(100));
 				if(filteredMeasurement != null) {
-					filteredMeasurement.setDataName(getFilterName());
+					filteredMeasurement.setDataName(getName());
 					filteredMeasurement.setFilter(this);
 					filtered.add(filteredMeasurement);
 				} else {

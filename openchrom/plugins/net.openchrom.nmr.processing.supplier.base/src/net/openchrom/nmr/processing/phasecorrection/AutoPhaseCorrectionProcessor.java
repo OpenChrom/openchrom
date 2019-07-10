@@ -78,12 +78,11 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 	}
 
 	public AutoPhaseCorrectionProcessor() {
-
 		super(AutoPhaseCorrectionSettings.class);
 	}
 
 	@Override
-	public String getFilterName() {
+	public String getName() {
 
 		return NAME;
 	}
@@ -94,12 +93,10 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		private T firstOrderValue;
 
 		public PhaseCorrectionValue(T zerothOrderValue) {
-
 			this.zerothOrderValue = zerothOrderValue;
 		}
 
 		public PhaseCorrectionValue(T zerothOrderValue, T firstOrderValue) {
-
 			this.zerothOrderValue = zerothOrderValue;
 			this.firstOrderValue = firstOrderValue;
 		}
@@ -209,7 +206,6 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		private final AutoPhaseCorrectionSettings settings;
 
 		public CalculateACMEEntropy(Complex[] fourierTransformedData, AutoPhaseCorrectionSettings settings) {
-
 			this.fourierTransformedData = fourierTransformedData;
 			this.settings = settings;
 		}

@@ -39,7 +39,7 @@ public class ExponentialApodizationFunctionProcessor extends AbstractFIDSignalFi
 	}
 
 	@Override
-	public String getFilterName() {
+	public String getName() {
 
 		return FILTER_NAME;
 	}

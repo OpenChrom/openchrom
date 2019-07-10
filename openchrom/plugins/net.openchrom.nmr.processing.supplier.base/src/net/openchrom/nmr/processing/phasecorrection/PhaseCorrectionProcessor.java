@@ -12,8 +12,6 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.phasecorrection;
 
-import java.math.BigDecimal;
-
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
@@ -37,12 +35,11 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 	private static final String NAME = "Phase Correction";
 
 	public PhaseCorrectionProcessor() {
-
 		super(PhaseCorrectionSettings.class);
 	}
 
 	@Override
-	public String getFilterName() {
+	public String getName() {
 
 		return NAME;
 	}

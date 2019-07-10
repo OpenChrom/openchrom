@@ -41,7 +41,7 @@ public class GaussianApodizationFunctionProcessor extends AbstractFIDSignalFilte
 	}
 
 	@Override
-	public String getFilterName() {
+	public String getName() {
 
 		return FILTER_NAME;
 	}

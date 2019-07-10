@@ -40,12 +40,11 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 	private static final Logger baselineCorrectionLogger = Logger.getLogger(BaselineCorrectionProcessor.class);
 
 	public BaselineCorrectionProcessor() {
-
 		super(BaselineCorrectionSettings.class);
 	}
 
 	@Override
-	public String getFilterName() {
+	public String getName() {
 
 		return NAME;
 	}
