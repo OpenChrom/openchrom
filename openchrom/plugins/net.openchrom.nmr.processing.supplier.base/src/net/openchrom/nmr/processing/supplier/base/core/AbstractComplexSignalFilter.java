@@ -46,15 +46,13 @@ public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IC
 	}
 
 	@Override
-	public ConfigType createConfiguration(Collection<? extends IMeasurement> items) {
+	public ConfigType createConfiguration(IMeasurement item) throws IllegalArgumentException {
 
-		for(IMeasurement item : items) {
-			ConfigType config = Adapters.adapt(item, configClass);
-			if(config != null) {
-				return config;
-			}
+		ConfigType config = Adapters.adapt(item, configClass);
+		if(config != null) {
+			return config;
 		}
-		return IMeasurementFilter.super.createConfiguration(items);
+		return IMeasurementFilter.super.createConfiguration(item);
 	}
 
 	@Override
