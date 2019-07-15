@@ -19,7 +19,6 @@ import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
@@ -27,6 +26,7 @@ import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.osgi.service.component.annotations.Component;
 
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
@@ -37,7 +37,6 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 
 	private static final long serialVersionUID = -3321578724822253648L;
 	private static final String NAME = "Baseline Correction";
-	private static final Logger baselineCorrectionLogger = Logger.getLogger(BaselineCorrectionProcessor.class);
 
 	public BaselineCorrectionProcessor() {
 		super(BaselineCorrectionSettings.class);
@@ -53,14 +52,6 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 	protected FilteredMeasurement<?> doFiltering(SpectrumMeasurement measurement, BaselineCorrectionSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurement.getSignals());
-		FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(measurement);
-		perform(spectrumData, settings);
-		filtered.setSignals(spectrumData.toSignal());
-		return filtered;
-	}
-
-	private void perform(SpectrumData spectrumData, final BaselineCorrectionSettings settings) {
-
 		/*
 		 * Matlab:
 		 * polyfit - Polynomial curve fitting
@@ -110,7 +101,11 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 		Complex[] baselineCorrection = new Complex[nmrSpectrumBaselineCorrAbsolute.length];
 		//
 		// iterative baseline correction
+		SubMonitor subMonitor = SubMonitor.convert(monitor, getName(), maximumIterations);
 		for(int i = 1; i < maximumIterations; i++) {
+			if(subMonitor.isCanceled()) {
+				return null;
+			}
 			// create heaviside functionality
 			for(int k = 0; k < heavisideFunctionality.length; k++) {
 				heavisideFunctionality[k] = (fittingConstantU * sigmaOne) - nmrSpectrumBaselineCorrAbsolute[k];
@@ -165,19 +160,23 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 				double baselineCorrectionBreakCheck = calculateBaselineCorrectionBreakCheck(baselineCorrection);
 				double breakCondition = negligibleFactorMinimum * sigmaOne;
 				if(baselineCorrectionBreakCheck < breakCondition) {
-					baselineCorrectionLogger.info(i + " baseline correction iterations performed");
+					messageConsumer.addInfoMessage(getName(), i + " baseline correction iterations performed");
 					break;
 				}
 			} else {
 				sigmaOne = sigmaNull;
 			}
 			if(i == maximumIterations - 1) {
-				baselineCorrectionLogger.info("maximum iterations reached!");
+				messageConsumer.addWarnMessage(getName(), "maximum iterations reached!");
 			}
+			subMonitor.worked(1);
 		}
 		for(int j = 0; j < spectrumData.signals.length; j++) {
 			spectrumData.signals[j] = phasedSignals[j];
 		}
+		FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(measurement);
+		filtered.setSignals(spectrumData.toSignal());
+		return filtered;
 	}
 
 	private static Complex[] calculateBaselineCorrection(Number[] deltaAxisPPM, PolynomialFunction polyFuncReal, PolynomialFunction polyFuncImag) {
