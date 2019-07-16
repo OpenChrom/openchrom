@@ -24,6 +24,7 @@ public class IcoShiftAlignmentUtilities {
 		private T stop;
 
 		public Interval(T start, T stop) {
+
 			this.start = start;
 			this.stop = stop;
 		}

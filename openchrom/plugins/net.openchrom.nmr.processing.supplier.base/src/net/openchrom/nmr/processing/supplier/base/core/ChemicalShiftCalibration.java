@@ -16,9 +16,17 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.math3.complex.Complex;
+import org.eclipse.chemclipse.model.core.IMeasurement;
+import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SimpleNMRSignal;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
+import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.filter.Filter;
+import org.eclipse.chemclipse.processing.filter.FilterChain;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.ejml.simple.SimpleMatrix;
+import org.osgi.service.component.annotations.Component;
 
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
 import net.openchrom.nmr.processing.supplier.base.settings.ChemicalShiftCalibrationSettings;
@@ -30,7 +38,79 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlign
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities.Interval;
 
-public class ChemicalShiftCalibration {
+@Component(service = {Filter.class, IMeasurementFilter.class})
+public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShiftCalibrationSettings> {
+
+	@Override
+	public String getName() {
+
+		return "Chemical Shift Calibration";
+	}
+
+	@Override
+	public ChemicalShiftCalibrationSettings createNewConfiguration() {
+
+		return new ChemicalShiftCalibrationSettings();
+	}
+
+	@Override
+	public Collection<? extends IMeasurement> filterIMeasurements(Collection<? extends IMeasurement> filterItems, ChemicalShiftCalibrationSettings configuration, FilterChain<Collection<? extends IMeasurement>> nextFilter, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
+
+		if(configuration == null) {
+			configuration = createNewConfiguration();
+		}
+		Collection<SpectrumMeasurement> collection = new ArrayList<>();
+		for(IMeasurement measurement : filterItems) {
+			if(measurement instanceof SpectrumMeasurement) {
+				collection.add((SpectrumMeasurement)measurement);
+			} else {
+				throw new IllegalArgumentException();
+			}
+		}
+		SimpleMatrix calibrationResult = calibrate(collection, configuration);
+		int lengthOfCalibrationResult = calibrationResult.numRows() - 1;
+		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(collection);
+		List<IMeasurement> results = new ArrayList<>();
+		//
+		for(SpectrumMeasurement measurement : collection) {
+			FilteredSpectrumMeasurement filteredSpectrumMeasurement = new FilteredSpectrumMeasurement(measurement);
+			List<SimpleNMRSignal> newSignals = new ArrayList<>();
+			double[] dataArray = calibrationResult.extractVector(true, lengthOfCalibrationResult).getMatrix().getData();
+			for(int i = 0; i < dataArray.length; i++) {
+				newSignals.add(new SimpleNMRSignal(chemicalShiftAxis[i], dataArray[i], 0, null));
+				// SimpleNMRSignal(Number chemicalShift, Number real, Number imaginary, BigDecimal scalingFactor)
+				// => no imaginary part and no scaling factor
+			}
+			lengthOfCalibrationResult++;
+			filteredSpectrumMeasurement.setSignals(newSignals);
+			results.add(filteredSpectrumMeasurement);
+		}
+		return nextFilter.doFilter(results, messageConsumer);
+	}
+
+	@Override
+	public boolean acceptsIMeasurement(IMeasurement item) {
+
+		// calibration can be done with one measurement
+		return true;
+	}
+
+	@Override
+	public boolean acceptsIMeasurements(Collection<? extends IMeasurement> items) {
+
+		if(items.size() < 2) {
+			return false;
+		}
+		Collection<SpectrumMeasurement> collection = new ArrayList<>();
+		for(IMeasurement measurement : items) {
+			if(measurement instanceof SpectrumMeasurement) {
+				collection.add((SpectrumMeasurement)measurement);
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * The method calibrate will define the necessary settings and calculate
@@ -175,8 +255,8 @@ public class ChemicalShiftCalibration {
 		alignmentSettings.setShiftCorrectionType(IcoShiftAlignmentShiftCorrectionType.BEST);
 		//
 		alignmentSettings.setAlignmentType(IcoShiftAlignmentType.SINGLE_PEAK);
-		alignmentSettings.setSinglePeakLowerBorder(-0.05);
-		alignmentSettings.setSinglePeakHigherBorder(0.05);
+		alignmentSettings.setSinglePeakLowerBorder(0.05);// changed from -0.05
+		alignmentSettings.setSinglePeakHigherBorder(-0.05);// changed from 0.05
 		//
 		alignmentSettings.setGapFillingType(IcoShiftAlignmentGapFillingType.MARGIN);
 		return alignmentSettings;

@@ -33,6 +33,7 @@ import org.eclipse.chemclipse.model.core.IComplexSignal;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SimpleNMRSignal;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
@@ -88,11 +89,22 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 				throw new IllegalArgumentException();
 			}
 		}
-		SimpleMatrix matrix = process(collection, configuration);
+		SimpleMatrix alignmentResult = process(collection, configuration);
+		int lengthOfAlignmentResult = alignmentResult.numRows() - 1;
+		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(collection);
 		List<IMeasurement> results = new ArrayList<>();
+		//
 		for(SpectrumMeasurement measurement : collection) {
 			FilteredSpectrumMeasurement filteredSpectrumMeasurement = new FilteredSpectrumMeasurement(measurement);
-			// TODO apply the matrix!
+			List<SimpleNMRSignal> newSignals = new ArrayList<>();
+			double[] dataArray = alignmentResult.extractVector(true, lengthOfAlignmentResult).getMatrix().getData();
+			for(int i = 0; i < dataArray.length; i++) {
+				newSignals.add(new SimpleNMRSignal(chemicalShiftAxis[i], dataArray[i], 0, null));
+				// SimpleNMRSignal(Number chemicalShift, Number real, Number imaginary, BigDecimal scalingFactor)
+				// => no imaginary part and no scaling factor
+			}
+			lengthOfAlignmentResult++;
+			filteredSpectrumMeasurement.setSignals(newSignals);
 			results.add(filteredSpectrumMeasurement);
 		}
 		return nextFilter.doFilter(results, messageConsumer);
@@ -196,7 +208,6 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		// define settings for preliminary Co-Shifting
 		IcoShiftAlignmentSettings settings = generatePreliminarySettings();
 		//
-		IcoShiftAlignmentUtilities shiftUtils = new IcoShiftAlignmentUtilities();
 		int lengthOfDataset = experimentalDatasetsMatrix.numCols();
 		SortedMap<Integer, Interval<Integer>> intervalRegionsMap = new TreeMap<>();
 		// local map of a full range interval; same calculation as in calculateIntervals() with AlignmentType.WHOLE_SPECTRUM
@@ -307,7 +318,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		int matrixRow = 0;
 		//
 		for(SpectrumMeasurement spectrumMeasurement : collection) {
-			double[] array = spectrumMeasurement.getSignals().stream().mapToDouble(IComplexSignal::getX).toArray();
+			double[] array = spectrumMeasurement.getSignals().stream().mapToDouble(IComplexSignal::getY).toArray();
 			experimentalDatasetsMatrix.setRow(matrixRow, 0, array);
 			matrixRow++;
 		}
@@ -329,7 +340,6 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		int lengthOfDataset = chemicalShiftAxis.length;
 		UtilityFunctions utilityFunction = new UtilityFunctions();
 		//
-		IcoShiftAlignmentUtilities shiftUtils = new IcoShiftAlignmentUtilities();
 		IcoShiftAlignmentType alignmentType = settings.getAlignmentType();
 		switch(alignmentType) {
 			case SINGLE_PEAK:
@@ -809,11 +819,15 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 	public static boolean checkLengthOfEachSpectrum(Collection<? extends SpectrumMeasurement> collection) {
 
 		double[] collectNumberOfFourierPoints = new double[collection.size()];
-		int i = 0;
-		for(SpectrumMeasurement o : collection) {
-			collectNumberOfFourierPoints[i] = o.getSignals().size();
-			i++;
+		if(collectNumberOfFourierPoints.length == 1) {
+			return true;
+		} else {
+			int i = 0;
+			for(SpectrumMeasurement o : collection) {
+				collectNumberOfFourierPoints[i] = o.getSignals().size();
+				i++;
+			}
+			return i > 1 && !DoubleStream.of(collectNumberOfFourierPoints).anyMatch(x -> x != collectNumberOfFourierPoints[0]);
 		}
-		return i > 1 && !DoubleStream.of(collectNumberOfFourierPoints).anyMatch(x -> x != collectNumberOfFourierPoints[0]);
 	}
 }

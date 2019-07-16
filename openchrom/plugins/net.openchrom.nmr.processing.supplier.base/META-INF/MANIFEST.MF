@@ -49,5 +49,6 @@ Service-Component: OSGI-INF/net.openchrom.nmr.processing.apodization.Exponential
  OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.BaselineCorrectionProcessor.xml,
  OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.DirectCurrentCorrection.xml,
  OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.ZeroFillingProcessor.xml,
- OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.xml
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.xml,
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.ChemicalShiftCalibration.xml
 Automatic-Module-Name: net.openchrom.nmr.processing.supplier.base
