@@ -13,23 +13,23 @@
 package net.openchrom.nmr.processing.supplier.base.core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
+import java.util.function.DoubleUnaryOperator;
 
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
-import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.osgi.service.component.annotations.Component;
 
-import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
 import net.openchrom.nmr.processing.supplier.base.settings.BaselineCorrectionSettings;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
@@ -51,202 +51,179 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 	@Override
 	protected FilteredMeasurement<?> doFiltering(SpectrumMeasurement measurement, BaselineCorrectionSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
-		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurement.getSignals());
-		/*
-		 * Matlab:
-		 * polyfit - Polynomial curve fitting
-		 * p = polyfit(x,y,n)
-		 * p = polyfit(x,y,n) returns the coefficients for a polynomial p(x) of degree n that
-		 * is a best fit (in a least-squares sense) for the data in y. The coefficients in p
-		 * are in descending powers, and the length of p is n+1
-		 */
-		// Class PolynomialCurveFitter
-		// org.apache.commons.math4.fitting.PolynomialCurveFitter
-		//
-		/*
-		 * Matlab:
-		 * polyval - Polynomial evaluation
-		 * y = polyval(p,x)
-		 * y = polyval(p,x) returns the value of a polynomial of degree n evaluated at x.
-		 * The input argument p is a vector of length n+1 whose elements are the coefficients
-		 * in descending powers of the polynomial to be evaluated.
-		 */
-		// Class PolynomialFunction
-		// org.apache.commons.math3.analysis.polynomials.PolynomialFunction
-		//
-		/*
-		 * Literature: G. A. Pearson, Journal of Magnetic Resonance, 27, 265-272 (1977)
-		 */
-		// chemical shift axis used while fitting
-		Number[] deltaAxisPPM = spectrumData.chemicalShift;
-		// spectrum to be baseline corrected
-		Complex[] phasedSignals = spectrumData.signals;
-		// change/select parameters for BC
+		// read parameters
 		int fittingConstantU = settings.getFittingConstantU(); // 4 recommended from paper but probably from grotty data?
 		int fittingConstantV = settings.getFittingConstantV(); // 2-3 recommended from paper
 		double negligibleFactorMinimum = settings.getFactorForNegligibleBaselineCorrection();// 0.125 from paper
 		double cutPercentage = settings.getOmitPercentOfTheSpectrum(); // ignore this % of spectrum each side
-		double sigmaOne = Double.POSITIVE_INFINITY; // starting value: infinity
-		//
-		// preparation of real part of spectrum for fitting
-		double[] nmrSpectrumForBaselineCorr = cutPartOfSpectrum(phasedSignals, cutPercentage);
-		double[] nmrSpectrumBaselineCorrAbsolute = calculateAbsoluteSpectrum(nmrSpectrumForBaselineCorr); // spec_abs
-		double[] nmrSpectrumBaselineCorrSquare = calculateSquaredSpectrum(nmrSpectrumForBaselineCorr); // spec_sq
-		//
-		// parts of the fitting routine
-		int polynomialOrder = settings.getPolynomialOrder();
 		int maximumIterations = settings.getNumberOfIterations();
-		double[] heavisideFunctionality = new double[nmrSpectrumBaselineCorrAbsolute.length];
-		double[] fittingFunctionality = new double[nmrSpectrumBaselineCorrAbsolute.length]; // spec_v
-		Complex[] baselineCorrection = new Complex[nmrSpectrumBaselineCorrAbsolute.length];
-		//
+		// init data
+		List<WeightedObservedPointSpectrumSignal> signals = initSignalData(measurement, cutPercentage);
+		// start the fitting
+		final PolynomialCurveFitter baselineFitter = PolynomialCurveFitter.create(settings.getPolynomialOrder());
+		double sigmaOne = Double.POSITIVE_INFINITY; // starting value: infinity
 		// iterative baseline correction
 		SubMonitor subMonitor = SubMonitor.convert(monitor, getName(), maximumIterations);
-		for(int i = 1; i < maximumIterations; i++) {
+		int iteration = 0;
+		for(; iteration < maximumIterations; iteration++) {
 			if(subMonitor.isCanceled()) {
 				return null;
 			}
-			// create heaviside functionality
-			for(int k = 0; k < heavisideFunctionality.length; k++) {
-				heavisideFunctionality[k] = (fittingConstantU * sigmaOne) - nmrSpectrumBaselineCorrAbsolute[k];
-				if(heavisideFunctionality[k] > 0) {
-					heavisideFunctionality[k] = 1;
-				}
-				if(heavisideFunctionality[k] < 0) {
-					heavisideFunctionality[k] = 0;
-				}
-			}
 			// Tentative sigma
-			double sigmaNull = calculateTentativeSigma(heavisideFunctionality, nmrSpectrumBaselineCorrSquare);
+			double sigmaNull = calculateTentativeSigma(signals, fittingConstantU * sigmaOne);
 			//
 			if(Double.compare(sigmaNull, sigmaOne) == 0) {
-				// fitting here
-				for(int k = 0; k < fittingFunctionality.length; k++) {
-					fittingFunctionality[k] = (fittingConstantV * sigmaOne) - nmrSpectrumBaselineCorrAbsolute[k];
-				}
-				// the data has to be stored in ArrayList to be fitted
-				// Complex[] not supported by Fitter etc. => split into real and imaginary parts
-				ArrayList<WeightedObservedPoint> realFittingPoints = new ArrayList<WeightedObservedPoint>();
-				ArrayList<WeightedObservedPoint> imagFittingPoints = new ArrayList<WeightedObservedPoint>();
-				double fittingWeight = 1.0; // weight = 1.0 if none
-				// add data to ArrayList
-				for(int z = 0; z < phasedSignals.length; z++) {
-					if(fittingFunctionality[z] > 0) {
-						realFittingPoints.add(new WeightedObservedPoint(fittingWeight, //
-								deltaAxisPPM[z].doubleValue(), phasedSignals[z].getReal()));
-						imagFittingPoints.add(new WeightedObservedPoint(fittingWeight, //
-								deltaAxisPPM[z].doubleValue(), phasedSignals[z].getImaginary()));
-					} // else?? = 0 ??
-				}
-				// define polynomial order for fitting
-				final PolynomialCurveFitter baselineFitter = PolynomialCurveFitter.create(polynomialOrder);
-				// coefficients for PolynomialCurveFitter
-				final double[] realCoeff = baselineFitter.fit(realFittingPoints);
-				final double[] imagCoeff = baselineFitter.fit(imagFittingPoints);
-				// apply PolynomialFunction with calculated coefficients
-				final PolynomialFunction polyFuncReal = new PolynomialFunction(realCoeff);
-				final PolynomialFunction polyFuncImag = new PolynomialFunction(imagCoeff);
-				baselineCorrection = calculateBaselineCorrection(deltaAxisPPM, polyFuncReal, polyFuncImag);
+				DoubleUnaryOperator[] polyFunction = getPolyFunction(signals, baselineFitter, fittingConstantV * sigmaOne);
 				// apply baseline correction
-				for(int w = 0; w < phasedSignals.length; w++) {
-					phasedSignals[w] = phasedSignals[w].subtract(baselineCorrection[w]);
+				double baselineCorrectionBreakCheck = 0;
+				for(WeightedObservedPointSpectrumSignal signal : signals) {
+					double x = signal.getX();
+					double realCorrection = polyFunction[0].applyAsDouble(x);
+					double imagCorrection = polyFunction[1].applyAsDouble(x);
+					signal.subtract(realCorrection, imagCorrection);
+					baselineCorrectionBreakCheck += Math.sqrt(realCorrection * realCorrection + imagCorrection * imagCorrection);
 				}
-				// preparation of real part of spectrum for next iteration
-				nmrSpectrumForBaselineCorr = cutPartOfSpectrum(phasedSignals, cutPercentage);
-				nmrSpectrumBaselineCorrSquare = calculateSquaredSpectrum(nmrSpectrumForBaselineCorr);
-				nmrSpectrumBaselineCorrAbsolute = calculateAbsoluteSpectrum(nmrSpectrumForBaselineCorr);
 				//
 				// check if baseline correction is good enough
-				double baselineCorrectionBreakCheck = calculateBaselineCorrectionBreakCheck(baselineCorrection);
 				double breakCondition = negligibleFactorMinimum * sigmaOne;
 				if(baselineCorrectionBreakCheck < breakCondition) {
-					messageConsumer.addInfoMessage(getName(), i + " baseline correction iterations performed");
+					messageConsumer.addInfoMessage(getName(), iteration + " baseline correction iterations performed");
 					break;
 				}
 			} else {
 				sigmaOne = sigmaNull;
 			}
-			if(i == maximumIterations - 1) {
-				messageConsumer.addWarnMessage(getName(), "maximum iterations reached!");
-			}
 			subMonitor.worked(1);
 		}
-		for(int j = 0; j < spectrumData.signals.length; j++) {
-			spectrumData.signals[j] = phasedSignals[j];
+		if(iteration == maximumIterations - 1) {
+			messageConsumer.addWarnMessage(getName(), "maximum iterations reached!");
 		}
 		FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(measurement);
-		filtered.setSignals(spectrumData.toSignal());
+		filtered.setSignals(signals);
 		return filtered;
 	}
 
-	private static Complex[] calculateBaselineCorrection(Number[] deltaAxisPPM, PolynomialFunction polyFuncReal, PolynomialFunction polyFuncImag) {
+	private static DoubleUnaryOperator[] getPolyFunction(List<WeightedObservedPointSpectrumSignal> signals, PolynomialCurveFitter baselineFitter, double fittingFunctionality) {
 
-		double[] baselineCorrectionReal = new double[deltaAxisPPM.length];
-		double[] baselineCorrectionImag = new double[deltaAxisPPM.length];
-		Complex[] baselineCorrection = new Complex[deltaAxisPPM.length];
-		for(int s = 0; s < deltaAxisPPM.length; s++) {
-			baselineCorrectionReal[s] = polyFuncReal.value(deltaAxisPPM[s].doubleValue());
-			baselineCorrectionImag[s] = polyFuncImag.value(deltaAxisPPM[s].doubleValue());
-			baselineCorrection[s] = new Complex(baselineCorrectionReal[s], baselineCorrectionImag[s]);
+		List<WeightedObservedPoint> realFittingPoints = new ArrayList<>(signals.size());
+		List<WeightedObservedPoint> imagFittingPoints = new ArrayList<>(signals.size());
+		for(WeightedObservedPointSpectrumSignal signal : signals) {
+			SignalWeightedObservedPoint realPoint = signal.real;
+			double value = realPoint.cutof ? 0 : realPoint.abs;
+			if(fittingFunctionality - value > 0) {
+				realFittingPoints.add(realPoint);
+				imagFittingPoints.add(signal.imag);
+			}
 		}
-		return baselineCorrection;
+		// coefficients for PolynomialCurveFitter
+		final PolynomialFunction polyFuncReal = new PolynomialFunction(baselineFitter.fit(realFittingPoints));
+		final PolynomialFunction polyFuncImag = new PolynomialFunction(baselineFitter.fit(imagFittingPoints));
+		return new DoubleUnaryOperator[]{polyFuncReal::value, polyFuncImag::value};
 	}
 
-	private static double calculateBaselineCorrectionBreakCheck(Complex[] baselineCorrection) {
+	private static List<WeightedObservedPointSpectrumSignal> initSignalData(SpectrumMeasurement measurement, double cutPercentage) {
 
-		double baselineCorrectionBreakCheck = 0;
-		for(int g = 0; g < baselineCorrection.length; g++) {
-			baselineCorrectionBreakCheck = baselineCorrectionBreakCheck + baselineCorrection[g].abs();
+		List<? extends SpectrumSignal> signals = measurement.getSignals();
+		int size = signals.size();
+		List<WeightedObservedPointSpectrumSignal> convertedSignals = new ArrayList<>();
+		double fittingWeight = 1.0; // weight = 1.0 if none
+		int lowerCut = (int)Math.round(size * cutPercentage * 0.01);
+		int upperCut = size - lowerCut + 1;
+		for(int i = 0; i < size; i++) {
+			SpectrumSignal signal = signals.get(i);
+			double chemicalShift = signal.getChemicalShift().doubleValue();
+			double realPart = signal.getY();
+			boolean cut = i <= lowerCut || i >= upperCut;
+			convertedSignals.add(new WeightedObservedPointSpectrumSignal(new SignalWeightedObservedPoint(fittingWeight, chemicalShift, realPart, cut), new SignalWeightedObservedPoint(fittingWeight, chemicalShift, signal.getImaginaryY(), cut)));
 		}
-		return baselineCorrectionBreakCheck;
+		return convertedSignals;
 	}
 
-	private static double calculateTentativeSigma(double[] heavisideFunctionality, double[] nmrSpectrumBaselineCorrSquare) {
+	private static double calculateTentativeSigma(List<WeightedObservedPointSpectrumSignal> signals, double heavySide) {
 
-		double[] tempDividend = new double[heavisideFunctionality.length];
-		for(int a = 0; a < heavisideFunctionality.length; a++) {
-			tempDividend[a] = nmrSpectrumBaselineCorrSquare[a] * heavisideFunctionality[a];
+		double sum = 0;
+		int count = 0;
+		for(WeightedObservedPointSpectrumSignal signal : signals) {
+			SignalWeightedObservedPoint point = signal.real;
+			double value = point.cutof ? 0 : point.abs;
+			if(heavySide - value > 0) {
+				count++;
+				sum += value * value;
+			}
 		}
-		double tempDividendSum = Arrays.stream(tempDividend).sum();
-		double tempDivisor = 1 + Arrays.stream(heavisideFunctionality).sum();
-		double sigmaNull = tempDividendSum / tempDivisor;
-		return sigmaNull = Math.sqrt(sigmaNull);
+		return Math.sqrt(sum / (1.0 + count));
 	}
 
-	private static double[] calculateAbsoluteSpectrum(double[] nmrSpectrumForBaselineCorr) {
+	private static final class WeightedObservedPointSpectrumSignal implements SpectrumSignal {
 
-		double[] nmrSpectrumBaselineCorrAbsolute = new double[nmrSpectrumForBaselineCorr.length];
-		for(int i = 0; i < nmrSpectrumForBaselineCorr.length; i++) {
-			nmrSpectrumBaselineCorrAbsolute[i] = Math.abs(nmrSpectrumForBaselineCorr[i]);
+		private SignalWeightedObservedPoint real;
+		private SignalWeightedObservedPoint imag;
+
+		private WeightedObservedPointSpectrumSignal(SignalWeightedObservedPoint real, SignalWeightedObservedPoint imag) {
+			this.real = real;
+			this.imag = imag;
 		}
-		return nmrSpectrumBaselineCorrAbsolute;
+
+		@Override
+		public Number getChemicalShift() {
+
+			return real.getX();
+		}
+
+		@Override
+		public Number getAbsorptiveIntensity() {
+
+			return real.getY();
+		}
+
+		@Override
+		public Number getDispersiveIntensity() {
+
+			return imag.getY();
+		}
+
+		private void subtract(double subtractReal, double substractImag) {
+
+			this.real.setValue(this.real.value - subtractReal);
+			this.imag.setValue(this.imag.value - substractImag);
+		}
+
+		@Override
+		public double getX() {
+
+			return real.getX();
+		}
 	}
 
-	private static double[] calculateSquaredSpectrum(double[] nmrSpectrumForBaselineCorr) {
+	/**
+	 * A modifiable extension of the unmodifiable WeightedObservedPoint
+	 * 
+	 * @author Christoph Läubrich
+	 *
+	 */
+	private static final class SignalWeightedObservedPoint extends WeightedObservedPoint {
 
-		double[] nmrSpectrumBaselineCorrSquare = new double[nmrSpectrumForBaselineCorr.length];
-		for(int i = 0; i < nmrSpectrumForBaselineCorr.length; i++) {
-			nmrSpectrumBaselineCorrSquare[i] = Math.pow(nmrSpectrumForBaselineCorr[i], 2);
-		}
-		return nmrSpectrumBaselineCorrSquare;
-	}
+		private static final long serialVersionUID = 2565341389484393927L;
+		private double value;
+		private double abs;
+		private boolean cutof;
 
-	private static double[] cutPartOfSpectrum(Complex[] phasedSignals, double cutPercentage) {
+		public SignalWeightedObservedPoint(double fittingWeight, double chemicalShift, double value, boolean cutof) {
+			super(fittingWeight, chemicalShift, Double.NaN);
+			this.cutof = cutof;
+			setValue(value);
+		}
 
-		double[] nmrSpectrumForBaselineCorr = new double[phasedSignals.length]; // spec
-		for(int i = 0; i < phasedSignals.length; i++) {
-			nmrSpectrumForBaselineCorr[i] = phasedSignals[i].getReal();
+		@Override
+		public double getY() {
+
+			return value;
 		}
-		//
-		int cutPartOfSpectrum = (int)Math.round(phasedSignals.length * cutPercentage * 0.01);
-		for(int i = 0; i <= cutPartOfSpectrum; i++) {
-			nmrSpectrumForBaselineCorr[i] = 0;
+
+		public void setValue(double value) {
+
+			this.value = value;
+			this.abs = Math.abs(value);
 		}
-		//
-		int forInitialization = phasedSignals.length - cutPartOfSpectrum + 1;
-		for(int i = forInitialization; i < phasedSignals.length; i++) {
-			nmrSpectrumForBaselineCorr[i] = 0;
-		}
-		return nmrSpectrumForBaselineCorr;
 	}
 }
