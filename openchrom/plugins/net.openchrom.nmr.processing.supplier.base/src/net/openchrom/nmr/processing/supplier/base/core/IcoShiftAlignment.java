@@ -13,6 +13,7 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -29,8 +30,16 @@ import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IComplexSignal;
+import org.eclipse.chemclipse.model.core.IMeasurement;
+import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
+import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
+import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.filter.Filter;
+import org.eclipse.chemclipse.processing.filter.FilterChain;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.ejml.simple.SimpleMatrix;
+import org.osgi.service.component.annotations.Component;
 
 import net.openchrom.nmr.processing.supplier.base.settings.ChemicalShiftCalibrationSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
@@ -48,9 +57,71 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlign
  * ---
  * based on: Savorani et al., J. Magn. Reson. 202, Nr. 2 (1. Februar 2010): 190–202.
  */
-public class IcoShiftAlignment {
+@Component(service = {Filter.class, IMeasurementFilter.class})
+public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSettings> {
 
 	private static final Logger icoShiftAlignmentLogger = Logger.getLogger(IcoShiftAlignment.class);
+
+	@Override
+	public String getName() {
+
+		return "Icoshift Alignment";
+	}
+
+	@Override
+	public IcoShiftAlignmentSettings createNewConfiguration() {
+
+		return new IcoShiftAlignmentSettings();
+	}
+
+	@Override
+	public Collection<? extends IMeasurement> filterIMeasurements(Collection<? extends IMeasurement> filterItems, IcoShiftAlignmentSettings configuration, FilterChain<Collection<? extends IMeasurement>> nextFilter, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
+
+		if(configuration == null) {
+			configuration = createNewConfiguration();
+		}
+		Collection<SpectrumMeasurement> collection = new ArrayList<>();
+		for(IMeasurement measurement : filterItems) {
+			if(measurement instanceof SpectrumMeasurement) {
+				collection.add((SpectrumMeasurement)measurement);
+			} else {
+				throw new IllegalArgumentException();
+			}
+		}
+		SimpleMatrix matrix = process(collection, configuration);
+		List<IMeasurement> results = new ArrayList<>();
+		for(SpectrumMeasurement measurement : collection) {
+			FilteredSpectrumMeasurement filteredSpectrumMeasurement = new FilteredSpectrumMeasurement(measurement);
+			// TODO apply the matrix!
+			results.add(filteredSpectrumMeasurement);
+		}
+		return nextFilter.doFilter(results, messageConsumer);
+	}
+
+	@Override
+	public boolean acceptsIMeasurement(IMeasurement item) {
+
+		// we need at least two measurement
+		return false;
+	}
+
+	@Override
+	public boolean acceptsIMeasurements(Collection<? extends IMeasurement> items) {
+
+		if(items.size() < 2) {
+			return false;
+		}
+		Collection<SpectrumMeasurement> collection = new ArrayList<>();
+		for(IMeasurement measurement : items) {
+			if(measurement instanceof SpectrumMeasurement) {
+				collection.add((SpectrumMeasurement)measurement);
+			} else {
+				return false;
+			}
+		}
+		return checkLengthOfEachSpectrum(collection);
+	}
+
 	//
 	// in the case of a calibration call the necessary target and settings are set here
 	private ChemicalShiftCalibrationTargetFunction calculateCalibrationTargetFunction;
@@ -80,7 +151,9 @@ public class IcoShiftAlignment {
 	public SimpleMatrix process(Collection<? extends SpectrumMeasurement> experimentalDatasetsList, IcoShiftAlignmentSettings settings) {
 
 		// safety check for length of each spectrum; they all must have equal length!
-		checkLengthOfEachSpectrum(experimentalDatasetsList);
+		if(!checkLengthOfEachSpectrum(experimentalDatasetsList)) {
+			throw new IllegalArgumentException("Size of all experiments is not equal!");
+		}
 		// import real parts of spectra
 		SimpleMatrix experimentalDatasetsMatrix = extractMultipleSpectra(experimentalDatasetsList);
 		// calculate intervals according to settings
@@ -127,7 +200,7 @@ public class IcoShiftAlignment {
 		int lengthOfDataset = experimentalDatasetsMatrix.numCols();
 		SortedMap<Integer, Interval<Integer>> intervalRegionsMap = new TreeMap<>();
 		// local map of a full range interval; same calculation as in calculateIntervals() with AlignmentType.WHOLE_SPECTRUM
-		intervalRegionsMap.put(1, shiftUtils.new Interval<Integer>(0, lengthOfDataset - 1));
+		intervalRegionsMap.put(1, new Interval<Integer>(0, lengthOfDataset - 1));
 		//
 		IcoShiftAlignment icoShiftAlignment = new IcoShiftAlignment();
 		return icoShiftAlignment.performMainAlignment(experimentalDatasetsMatrix, intervalRegionsMap, settings);
@@ -268,14 +341,14 @@ public class IcoShiftAlignment {
 				double higherBorder = settings.getSinglePeakHigherBorder();
 				int lowerBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, lowerBorder);
 				int higherBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, higherBorder);
-				intervalRegionsMap.put(1, shiftUtils.new Interval<Integer>(lowerBorderIndex, higherBorderIndex));
+				intervalRegionsMap.put(1, new Interval<Integer>(lowerBorderIndex, higherBorderIndex));
 				break;
 			case WHOLE_SPECTRUM:
 				/*
 				 * no user input required
 				 * start at index=0, end at index=lengthOfDataset-1
 				 */
-				intervalRegionsMap.put(1, shiftUtils.new Interval<Integer>(0, lengthOfDataset - 1));
+				intervalRegionsMap.put(1, new Interval<Integer>(0, lengthOfDataset - 1));
 				break;
 			case NUMBER_OF_INTERVALS:
 				/*
@@ -307,7 +380,7 @@ public class IcoShiftAlignment {
 				intervalEndValues[intervalEndValues.length - 1] = lengthOfDataset - 1;
 				//
 				for(int i = 0; i < numberOfIntervals; i++) {
-					intervalRegionsMap.put(i + 1, shiftUtils.new Interval<Integer>(intervalStartValues[i], intervalEndValues[i]));
+					intervalRegionsMap.put(i + 1, new Interval<Integer>(intervalStartValues[i], intervalEndValues[i]));
 				}
 				break;
 			case INTERVAL_LENGTH:
@@ -331,7 +404,7 @@ public class IcoShiftAlignment {
 					intervalEnds[intervalEnds.length - 1] = lengthOfDataset - 1;
 				}
 				for(int i = 0; i < numberOfFullIntervals + 1; i++) {
-					intervalRegionsMap.put(i + 1, shiftUtils.new Interval<Integer>(intervalStarts[i], intervalEnds[i]));
+					intervalRegionsMap.put(i + 1, new Interval<Integer>(intervalStarts[i], intervalEnds[i]));
 				}
 				break;
 			case USER_DEFINED_INTERVALS:
@@ -352,7 +425,7 @@ public class IcoShiftAlignment {
 					double lowerUserBorder = interval.getStop();
 					int lowerUserBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, lowerUserBorder);
 					int higherUserBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, higherUserBorder);
-					intervalRegionsMap.put(intervalNumber, shiftUtils.new Interval<Integer>(lowerUserBorderIndex, higherUserBorderIndex));
+					intervalRegionsMap.put(intervalNumber, new Interval<Integer>(lowerUserBorderIndex, higherUserBorderIndex));
 					intervalNumber++;
 				}
 				break;
@@ -733,7 +806,7 @@ public class IcoShiftAlignment {
 		});
 	}
 
-	private void checkLengthOfEachSpectrum(Collection<? extends SpectrumMeasurement> collection) {
+	public static boolean checkLengthOfEachSpectrum(Collection<? extends SpectrumMeasurement> collection) {
 
 		double[] collectNumberOfFourierPoints = new double[collection.size()];
 		int i = 0;
@@ -741,10 +814,6 @@ public class IcoShiftAlignment {
 			collectNumberOfFourierPoints[i] = o.getSignals().size();
 			i++;
 		}
-		//
-		boolean verification = DoubleStream.of(collectNumberOfFourierPoints).anyMatch(x -> x != collectNumberOfFourierPoints[0]);
-		if(verification) {
-			throw new IllegalArgumentException("Size of all experiments is not equal!");
-		}
+		return i > 1 && !DoubleStream.of(collectNumberOfFourierPoints).anyMatch(x -> x != collectNumberOfFourierPoints[0]);
 	}
 }

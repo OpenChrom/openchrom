@@ -18,13 +18,12 @@ import org.ejml.simple.SimpleMatrix;
 
 public class IcoShiftAlignmentUtilities {
 
-	public final class Interval<T extends Number> {
+	public static final class Interval<T extends Number> {
 
 		private T start;
 		private T stop;
 
 		public Interval(T start, T stop) {
-
 			this.start = start;
 			this.stop = stop;
 		}
