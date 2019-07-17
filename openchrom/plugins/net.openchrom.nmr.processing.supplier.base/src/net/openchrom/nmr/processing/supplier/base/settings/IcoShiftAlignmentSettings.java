@@ -30,13 +30,13 @@ public class IcoShiftAlignmentSettings {
 
 	private IcoShiftAlignmentTargetCalculationSelection targetCalculationSelection = IcoShiftAlignmentTargetCalculationSelection.MEAN;
 	private IcoShiftAlignmentShiftCorrectionType shiftCorrectionType = IcoShiftAlignmentShiftCorrectionType.FAST;
-	private int shiftCorrectionTypeValue;
+	private int shiftCorrectionTypeValue = 55;
 	private IcoShiftAlignmentGapFillingType gapFillingType = IcoShiftAlignmentGapFillingType.MARGIN;
-	private IcoShiftAlignmentType alignmentType = IcoShiftAlignmentType.SINGLE_PEAK;
-	private double singlePeakLowerBorder;
-	private double singlePeakHigherBorder;
-	private int numberOfIntervals;
-	private int intervalLength;
+	private IcoShiftAlignmentType alignmentType = IcoShiftAlignmentType.WHOLE_SPECTRUM;
+	private double singlePeakLowerBorder = 2.21;
+	private double singlePeakHigherBorder = 2.41;
+	private int numberOfIntervals = 120;
+	private int intervalLength = 1000;
 	private List<Interval<Double>> userDefIntervalRegions;
 	private boolean preliminaryCoShifting;
 

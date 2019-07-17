@@ -20,7 +20,6 @@ import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
-import org.eclipse.chemclipse.nmr.model.core.SimpleNMRSignal;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
@@ -36,6 +35,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.ChemicalShift
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentGapFillingType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentShiftCorrectionType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentType;
+import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities.Interval;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
@@ -68,23 +68,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 			}
 		}
 		SimpleMatrix calibrationResult = calibrate(collection, configuration);
-		int calibrationResultIndex = 0;
-		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(collection);
-		List<IMeasurement> results = new ArrayList<>();
-		//
-		for(SpectrumMeasurement measurement : collection) {
-			FilteredSpectrumMeasurement filteredSpectrumMeasurement = new FilteredSpectrumMeasurement(measurement);
-			List<SimpleNMRSignal> newSignals = new ArrayList<>();
-			double[] dataArray = calibrationResult.extractVector(true, calibrationResultIndex).getMatrix().getData();
-			for(int i = 0; i < dataArray.length; i++) {
-				newSignals.add(new SimpleNMRSignal(chemicalShiftAxis[i], dataArray[i], 0, null));
-				// SimpleNMRSignal(Number chemicalShift, Number real, Number imaginary, BigDecimal scalingFactor)
-				// => no imaginary part and no scaling factor
-			}
-			calibrationResultIndex++;
-			filteredSpectrumMeasurement.setSignals(newSignals);
-			results.add(filteredSpectrumMeasurement);
-		}
+		List<IMeasurement> results = IcoShiftAlignmentUtilities.processResultsForFilter(collection, calibrationResult);
 		return chain.apply(results);
 	}
 

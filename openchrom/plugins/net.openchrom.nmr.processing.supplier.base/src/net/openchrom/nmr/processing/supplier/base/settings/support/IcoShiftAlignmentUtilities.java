@@ -11,9 +11,16 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings.support;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.math3.complex.Complex;
+import org.eclipse.chemclipse.model.core.IMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SimpleNMRSignal;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.ejml.simple.SimpleMatrix;
 
 public class IcoShiftAlignmentUtilities {
@@ -79,5 +86,27 @@ public class IcoShiftAlignmentUtilities {
 			sumMatrix.setRow(r, 0, Math.sqrt(sum));
 		}
 		return sumMatrix;
+	}
+
+	public static List<IMeasurement> processResultsForFilter(Collection<SpectrumMeasurement> collection, SimpleMatrix result) {
+
+		int alignmentResultIndex = 0;
+		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(collection);
+		List<IMeasurement> results = new ArrayList<>();
+		//
+		for(SpectrumMeasurement measurement : collection) {
+			FilteredSpectrumMeasurement filteredSpectrumMeasurement = new FilteredSpectrumMeasurement(measurement);
+			List<SimpleNMRSignal> newSignals = new ArrayList<>();
+			double[] dataArray = result.extractVector(true, alignmentResultIndex).getMatrix().getData();
+			for(int i = 0; i < dataArray.length; i++) {
+				newSignals.add(new SimpleNMRSignal(chemicalShiftAxis[i], dataArray[i], 0, null));
+				// SimpleNMRSignal(Number chemicalShift, Number real, Number imaginary, BigDecimal scalingFactor)
+				// => no imaginary part and no scaling factor
+			}
+			alignmentResultIndex++;
+			filteredSpectrumMeasurement.setSignals(newSignals);
+			results.add(filteredSpectrumMeasurement);
+		}
+		return results;
 	}
 }
