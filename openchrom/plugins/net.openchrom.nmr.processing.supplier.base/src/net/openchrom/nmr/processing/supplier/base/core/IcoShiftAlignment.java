@@ -37,6 +37,7 @@ import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.ejml.simple.SimpleMatrix;
 import org.osgi.service.component.annotations.Component;
 
@@ -87,7 +88,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 				throw new IllegalArgumentException();
 			}
 		}
-		SimpleMatrix alignmentResult = process(collection, configuration);
+		SimpleMatrix alignmentResult = process(collection, configuration, monitor);
 		List<IMeasurement> results = IcoShiftAlignmentUtilities.processResultsForFilter(collection, alignmentResult);
 		return chain.apply(results);
 	}
@@ -135,24 +136,29 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		this.calibrationSettings = calibrationSettings;
 	}
 
-	public SimpleMatrix process(Collection<? extends SpectrumMeasurement> experimentalDatasetsList, IcoShiftAlignmentSettings settings) {
+	public SimpleMatrix process(Collection<? extends SpectrumMeasurement> experimentalDatasetsList, IcoShiftAlignmentSettings settings, IProgressMonitor monitor) {
 
+		SubMonitor subMonitor = SubMonitor.convert(monitor, getName(), 3000);
 		// safety check for length of each spectrum; they all must have equal length!
 		if(!checkLengthOfEachSpectrum(experimentalDatasetsList)) {
 			throw new IllegalArgumentException("Size of all experiments is not equal!");
 		}
 		// import real parts of spectra
-		SimpleMatrix experimentalDatasetsMatrix = extractMultipleSpectra(experimentalDatasetsList);
+		subMonitor.subTask("Extract spectras");
+		SimpleMatrix experimentalDatasetsMatrix = extractMultipleSpectra(experimentalDatasetsList, subMonitor.split(1000, SubMonitor.SUPPRESS_NONE));
 		// calculate intervals according to settings
-		SortedMap<Integer, Interval<Integer>> intervalRegionsMap = calculateIntervals(experimentalDatasetsList, settings);
+		subMonitor.subTask("calculate intervals");
+		SortedMap<Integer, Interval<Integer>> intervalRegionsMap = calculateIntervals(experimentalDatasetsList, settings, subMonitor.split(1000, SubMonitor.SUPPRESS_NONE));
 		// do the alignment
-		return performMainAlignment(experimentalDatasetsMatrix, intervalRegionsMap, settings);
+		subMonitor.subTask("perform alignment");
+		return performMainAlignment(experimentalDatasetsMatrix, intervalRegionsMap, settings, subMonitor.split(1000, SubMonitor.SUPPRESS_NONE));
 	}
 
-	private SimpleMatrix performMainAlignment(SimpleMatrix experimentalDatasetsMatrix, SortedMap<Integer, Interval<Integer>> intervalRegionsMap, IcoShiftAlignmentSettings settings) {
+	private SimpleMatrix performMainAlignment(SimpleMatrix experimentalDatasetsMatrix, SortedMap<Integer, Interval<Integer>> intervalRegionsMap, IcoShiftAlignmentSettings settings, IProgressMonitor monitor) {
 
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 100);
 		if(!(settings.getAlignmentType() == IcoShiftAlignmentType.WHOLE_SPECTRUM) && settings.isPreliminaryCoShifting()) {
-			experimentalDatasetsMatrix = executePreliminaryCoShifting(experimentalDatasetsMatrix);
+			experimentalDatasetsMatrix = executePreliminaryCoShifting(experimentalDatasetsMatrix, subMonitor.split(50));
 		}
 		// check after calculation of intervals
 		IcoShiftAlignmentShiftCorrectionType shiftCorrectionType = settings.getShiftCorrectionType();
@@ -164,13 +170,13 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		switch(alignmentType) {
 			case SINGLE_PEAK: // fall through for one interval
 			case WHOLE_SPECTRUM: {
-				SimpleMatrix alignedDatasets = alignOneInterval(intervalRegionsMap, experimentalDatasetsMatrix, settings);
+				SimpleMatrix alignedDatasets = alignOneInterval(intervalRegionsMap, experimentalDatasetsMatrix, settings, subMonitor.split(50));
 				return alignedDatasets;
 			}
 			case NUMBER_OF_INTERVALS: // fall through for several intervals
 			case INTERVAL_LENGTH:
 			case USER_DEFINED_INTERVALS: {
-				SimpleMatrix alignedDatasets = alignSeveralIntervals(intervalRegionsMap, experimentalDatasetsMatrix, settings);
+				SimpleMatrix alignedDatasets = alignSeveralIntervals(intervalRegionsMap, experimentalDatasetsMatrix, settings, subMonitor.split(50));
 				return alignedDatasets;
 			}
 			default:
@@ -178,7 +184,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		}
 	}
 
-	private SimpleMatrix executePreliminaryCoShifting(SimpleMatrix experimentalDatasetsMatrix) {
+	private SimpleMatrix executePreliminaryCoShifting(SimpleMatrix experimentalDatasetsMatrix, IProgressMonitor monitor) {
 
 		// define settings for preliminary Co-Shifting
 		IcoShiftAlignmentSettings settings = generatePreliminarySettings();
@@ -189,7 +195,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		intervalRegionsMap.put(1, new Interval<Integer>(0, lengthOfDataset - 1));
 		//
 		IcoShiftAlignment icoShiftAlignment = new IcoShiftAlignment();
-		return icoShiftAlignment.performMainAlignment(experimentalDatasetsMatrix, intervalRegionsMap, settings);
+		return icoShiftAlignment.performMainAlignment(experimentalDatasetsMatrix, intervalRegionsMap, settings, monitor);
 	}
 
 	/**
@@ -281,7 +287,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		return maxTarget;
 	}
 
-	private SimpleMatrix extractMultipleSpectra(Collection<? extends SpectrumMeasurement> collection) {
+	private SimpleMatrix extractMultipleSpectra(Collection<? extends SpectrumMeasurement> collection, IProgressMonitor monitor) {
 
 		SpectrumMeasurement next = collection.iterator().next();
 		int datapointsPerDataset = next.getSignals().size();
@@ -300,7 +306,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		return experimentalDatasetsMatrix;
 	}
 
-	private SortedMap<Integer, Interval<Integer>> calculateIntervals(Collection<? extends SpectrumMeasurement> collection, IcoShiftAlignmentSettings settings) {
+	private SortedMap<Integer, Interval<Integer>> calculateIntervals(Collection<? extends SpectrumMeasurement> collection, IcoShiftAlignmentSettings settings, IProgressMonitor monitor) {
 
 		// map to store throughout numbered intervals
 		SortedMap<Integer, Interval<Integer>> intervalRegionsMap = new TreeMap<>();
@@ -653,10 +659,12 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		return warpedDataset;
 	}
 
-	public SimpleMatrix alignSeveralIntervals(SortedMap<Integer, Interval<Integer>> intervalRegionsList, SimpleMatrix experimentalDatasetsMatrix, IcoShiftAlignmentSettings settings) {
+	public SimpleMatrix alignSeveralIntervals(SortedMap<Integer, Interval<Integer>> intervalRegionsList, SimpleMatrix experimentalDatasetsMatrix, IcoShiftAlignmentSettings settings, IProgressMonitor monitor) {
 
 		//
-		Iterator<Interval<Integer>> intervalRegionsMapIterator = intervalRegionsList.values().iterator();
+		Collection<Interval<Integer>> values = intervalRegionsList.values();
+		SubMonitor subMonitor = SubMonitor.convert(monitor, values.size());
+		Iterator<Interval<Integer>> intervalRegionsMapIterator = values.iterator();
 		int[] shiftingValues = new int[experimentalDatasetsMatrix.numRows()];
 		SimpleMatrix alignedDatasets = new SimpleMatrix(experimentalDatasetsMatrix.numRows(), experimentalDatasetsMatrix.numCols());
 		//
@@ -677,14 +685,17 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 			// combine all individual parts
 			int insertCol = referenceWindow[0];
 			alignedDatasets.insertIntoThis(0, insertCol, matrixPart);
+			subMonitor.worked(1);
 		}
 		return alignedDatasets;
 	}
 
-	private SimpleMatrix alignOneInterval(SortedMap<Integer, Interval<Integer>> intervalRegionsMap, SimpleMatrix experimentalDatasetsMatrix, IcoShiftAlignmentSettings settings) {
+	private SimpleMatrix alignOneInterval(SortedMap<Integer, Interval<Integer>> intervalRegionsMap, SimpleMatrix experimentalDatasetsMatrix, IcoShiftAlignmentSettings settings, IProgressMonitor monitor) {
 
 		//
-		Iterator<Interval<Integer>> intervalRegionsMapIterator = intervalRegionsMap.values().iterator();
+		Collection<Interval<Integer>> values = intervalRegionsMap.values();
+		SubMonitor subMonitor = SubMonitor.convert(monitor, values.size());
+		Iterator<Interval<Integer>> intervalRegionsMapIterator = values.iterator();
 		int[] shiftingValues = new int[experimentalDatasetsMatrix.numRows()];
 		SimpleMatrix alignedDatasets = new SimpleMatrix(experimentalDatasetsMatrix.numRows(), experimentalDatasetsMatrix.numCols());
 		//
@@ -692,6 +703,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 			Interval<Integer> interval = intervalRegionsMapIterator.next();
 			icoShiftAlignmentLogger.info("Aligning region from index " + interval.getStart() + " to " + interval.getStop());
 			shiftingValues = coshiftSpectra(experimentalDatasetsMatrix, interval, settings);
+			subMonitor.worked(1);
 		}
 		// shifting datasets
 		alignedDatasets = alignAllDatasets(shiftingValues, experimentalDatasetsMatrix, settings);

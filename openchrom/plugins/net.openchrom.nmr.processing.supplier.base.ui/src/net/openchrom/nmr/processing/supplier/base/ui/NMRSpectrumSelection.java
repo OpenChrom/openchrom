@@ -43,6 +43,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 
 public class NMRSpectrumSelection {
@@ -205,14 +206,31 @@ public class NMRSpectrumSelection {
 						}
 					};
 					Collection<IMeasurementFilter<?>> filters = filterFactory.getFilters(FilterFactory.genericClass(IMeasurementFilter.class), acceptor);
-					for(IMeasurementFilter<?> filter : filters) {
-						Consumer<Collection<? extends IMeasurement>> consumer = new Consumer<Collection<? extends IMeasurement>>() {
+					Consumer<Collection<? extends IMeasurement>> consumer = new Consumer<Collection<? extends IMeasurement>>() {
 
-							@Override
-							public void accept(Collection<? extends IMeasurement> t) {
+						@Override
+						public void accept(Collection<? extends IMeasurement> t) {
 
+							for(IMeasurement measurement : t) {
+								if(items.get(measurement) == null && measurement instanceof Filtered<?>) {
+									Filtered<?> filtered = (Filtered<?>)measurement;
+									Object filteredObject = filtered.getFilteredObject();
+									IDataNMRSelection dataNMRSelection = items.get(filteredObject);
+									if(dataNMRSelection != null) {
+										if(measurement instanceof IComplexSignalMeasurement<?>) {
+											try {
+												dataNMRSelection.addMeasurement((IComplexSignalMeasurement<?>)measurement);
+											} catch(UnsupportedOperationException e) {
+												// optional operation not supported... ignore then
+											}
+										}
+									}
+								}
 							}
-						};
+							Display.getDefault().asyncExec(viewer::refresh);
+						}
+					};
+					for(IMeasurementFilter<?> filter : filters) {
 						mgr.add(new IMeasurementFilterAction(filter, measurements, consumer));
 					}
 				}

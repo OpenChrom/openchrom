@@ -31,7 +31,6 @@ public class IcoShiftAlignmentUtilities {
 		private T stop;
 
 		public Interval(T start, T stop) {
-
 			this.start = start;
 			this.stop = stop;
 		}
@@ -96,6 +95,7 @@ public class IcoShiftAlignmentUtilities {
 		//
 		for(SpectrumMeasurement measurement : collection) {
 			FilteredSpectrumMeasurement filteredSpectrumMeasurement = new FilteredSpectrumMeasurement(measurement);
+			filteredSpectrumMeasurement.setDataName("IcoShift");
 			List<SimpleNMRSignal> newSignals = new ArrayList<>();
 			double[] dataArray = result.extractVector(true, alignmentResultIndex).getMatrix().getData();
 			for(int i = 0; i < dataArray.length; i++) {

@@ -112,7 +112,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 		// set calibration target in IcoShift algorithm
 		icoShiftAlignment.setCalculateCalibrationTargetFunction(new ChemicalShiftCalibrationTargetCalculation());
 		icoShiftAlignment.setCalibrationSettings(calibrationSettings);
-		SimpleMatrix calibratedData = icoShiftAlignment.process(experimentalDatasetsList, alignmentSettings);
+		SimpleMatrix calibratedData = icoShiftAlignment.process(experimentalDatasetsList, alignmentSettings, null);
 		//
 		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(experimentalDatasetsList);
 		Collection<? extends SpectrumMeasurement> newDatasetsList = copyPartlyCalibratedData(experimentalDatasetsList, calibratedData);
@@ -120,7 +120,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 		while(!checkCalibration(calibratedData, chemicalShiftAxis, alignmentSettings)) { // check for quality of calibration
 			newDatasetsList = copyPartlyCalibratedData(newDatasetsList, calibratedData);
 			// try to calibrate datasets again
-			calibratedData = icoShiftAlignment.process(newDatasetsList, alignmentSettings);
+			calibratedData = icoShiftAlignment.process(newDatasetsList, alignmentSettings, null);
 			checkIterator++;
 			if(checkIterator == 5) {
 				break;
