@@ -13,13 +13,25 @@ package net.openchrom.nmr.processing.supplier.base.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.BiFunction;
 
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.model.core.IMeasurement;
+import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
+import org.eclipse.chemclipse.processing.filter.FilterFactory;
 import org.eclipse.chemclipse.processing.filter.Filtered;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -31,13 +43,16 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 
 public class NMRSpectrumSelection {
 
 	private static final Object NULL = new Object();
 	private TableViewer viewer;
+	private FilterFactory filterFactory;
 
-	public NMRSpectrumSelection(Composite parent) {
+	public NMRSpectrumSelection(Composite parent, FilterFactory filterFactory) {
+		this.filterFactory = filterFactory;
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		viewer.getTable().setHeaderVisible(true);
@@ -155,6 +170,50 @@ public class NMRSpectrumSelection {
 				}
 			});
 		}
+		createContextMenu();
+	}
+
+	private void createContextMenu() {
+
+		MenuManager contextMenu = new MenuManager("ViewerContextMenu"); //$NON-NLS-1$
+		contextMenu.setRemoveAllWhenShown(true);
+		contextMenu.addMenuListener(new IMenuListener() {
+
+			@Override
+			public void menuAboutToShow(IMenuManager mgr) {
+
+				Iterator<?> iterator = viewer.getStructuredSelection().iterator();
+				Map<SpectrumMeasurement, IDataNMRSelection> items = new LinkedHashMap<>();
+				while(iterator.hasNext()) {
+					Object object = iterator.next();
+					if(object instanceof IDataNMRSelection) {
+						IDataNMRSelection selection = (IDataNMRSelection)object;
+						IComplexSignalMeasurement<?> measurement = selection.getMeasurement();
+						if(measurement instanceof SpectrumMeasurement) {
+							items.put((SpectrumMeasurement)measurement, selection);
+						}
+					}
+				}
+				if(!items.isEmpty()) {
+					Set<SpectrumMeasurement> measurements = items.keySet();
+					BiFunction<IMeasurementFilter<?>, Map<String, ?>, Boolean> acceptor = new BiFunction<IMeasurementFilter<?>, Map<String, ?>, Boolean>() {
+
+						@Override
+						public Boolean apply(IMeasurementFilter<?> filter, Map<String, ?> properties) {
+
+							return filter.acceptsIMeasurements(measurements);
+						}
+					};
+					Collection<IMeasurementFilter<?>> filters = filterFactory.getFilters(FilterFactory.genericClass(IMeasurementFilter.class), acceptor);
+					for(IMeasurementFilter<?> filter : filters) {
+						IAction action = new FilterAction(filter, items);
+						mgr.add(action);
+					}
+				}
+			}
+		});
+		Menu menu = contextMenu.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
 	}
 
 	public void update(Collection<IDataNMRSelection> collection) {
@@ -183,5 +242,11 @@ public class NMRSpectrumSelection {
 			}
 		}
 		return measurement.getDataName();
+	}
+
+	public static class FilterAction extends Action {
+
+		public FilterAction(IMeasurementFilter<?> filter, Map<SpectrumMeasurement, IDataNMRSelection> items) {
+		}
 	}
 }

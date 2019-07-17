@@ -15,13 +15,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
-import org.eclipse.chemclipse.processing.filter.FilterChain;
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
@@ -45,18 +45,37 @@ public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IC
 		}
 	}
 
-	@Override
 	public ConfigType createConfiguration(IMeasurement item) throws IllegalArgumentException {
 
 		ConfigType config = Adapters.adapt(item, configClass);
 		if(config != null) {
 			return config;
 		}
-		return IMeasurementFilter.super.createConfiguration(item);
+		return createNewConfiguration();
 	}
 
 	@Override
-	public Collection<? extends IMeasurement> filterIMeasurements(Collection<? extends IMeasurement> filterItems, ConfigType configuration, FilterChain<Collection<? extends IMeasurement>> nextFilter, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
+	public boolean acceptsIMeasurements(Collection<? extends IMeasurement> items) {
+
+		for(IMeasurement measurement : items) {
+			if(!acceptsIMeasurement(measurement)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public ConfigType createConfiguration(Collection<? extends IMeasurement> items) throws IllegalArgumentException {
+
+		for(IMeasurement measurement : items) {
+			return createConfiguration(measurement);
+		}
+		return IMeasurementFilter.super.createConfiguration(items);
+	}
+
+	@Override
+	public <ResultType> ResultType filterIMeasurements(Collection<? extends IMeasurement> filterItems, ConfigType configuration, Function<? super Collection<? extends IMeasurement>, ResultType> chain, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, getName(), 100 * filterItems.size());
 		// collect filtered items here...
@@ -87,8 +106,10 @@ public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IC
 			}
 		}
 		// and pass them to the next filter
-		return nextFilter.doFilter(filtered, messageConsumer);
+		return chain.apply(filtered);
 	}
+
+	protected abstract boolean acceptsIMeasurement(IMeasurement measurement);
 
 	protected abstract FilteredMeasurement<?> doFiltering(SubType measurement, ConfigType settings, MessageConsumer messageConsumer, IProgressMonitor monitor);
 

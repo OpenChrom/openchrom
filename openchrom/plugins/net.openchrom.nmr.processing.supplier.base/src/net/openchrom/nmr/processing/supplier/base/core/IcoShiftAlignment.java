@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.function.Function;
 import java.util.stream.DoubleStream;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -37,7 +38,6 @@ import org.eclipse.chemclipse.nmr.model.core.SimpleNMRSignal;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
-import org.eclipse.chemclipse.processing.filter.FilterChain;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.ejml.simple.SimpleMatrix;
 import org.osgi.service.component.annotations.Component;
@@ -76,7 +76,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 	}
 
 	@Override
-	public Collection<? extends IMeasurement> filterIMeasurements(Collection<? extends IMeasurement> filterItems, IcoShiftAlignmentSettings configuration, FilterChain<Collection<? extends IMeasurement>> nextFilter, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
+	public <ResultType> ResultType filterIMeasurements(Collection<? extends IMeasurement> filterItems, IcoShiftAlignmentSettings configuration, Function<? super Collection<? extends IMeasurement>, ResultType> chain, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
 
 		if(configuration == null) {
 			configuration = createNewConfiguration();
@@ -107,14 +107,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 			filteredSpectrumMeasurement.setSignals(newSignals);
 			results.add(filteredSpectrumMeasurement);
 		}
-		return nextFilter.doFilter(results, messageConsumer);
-	}
-
-	@Override
-	public boolean acceptsIMeasurement(IMeasurement item) {
-
-		// we need at least two measurement
-		return false;
+		return chain.apply(results);
 	}
 
 	@Override

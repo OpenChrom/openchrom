@@ -14,6 +14,7 @@ package net.openchrom.nmr.processing.supplier.base.core;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.model.core.IMeasurement;
@@ -23,7 +24,6 @@ import org.eclipse.chemclipse.nmr.model.core.SimpleNMRSignal;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
-import org.eclipse.chemclipse.processing.filter.FilterChain;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.ejml.simple.SimpleMatrix;
 import org.osgi.service.component.annotations.Component;
@@ -54,7 +54,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 	}
 
 	@Override
-	public Collection<? extends IMeasurement> filterIMeasurements(Collection<? extends IMeasurement> filterItems, ChemicalShiftCalibrationSettings configuration, FilterChain<Collection<? extends IMeasurement>> nextFilter, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
+	public <ResultType> ResultType filterIMeasurements(Collection<? extends IMeasurement> filterItems, ChemicalShiftCalibrationSettings configuration, Function<? super Collection<? extends IMeasurement>, ResultType> chain, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
 
 		if(configuration == null) {
 			configuration = createNewConfiguration();
@@ -85,27 +85,14 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 			filteredSpectrumMeasurement.setSignals(newSignals);
 			results.add(filteredSpectrumMeasurement);
 		}
-		return nextFilter.doFilter(results, messageConsumer);
-	}
-
-	@Override
-	public boolean acceptsIMeasurement(IMeasurement item) {
-
-		// calibration can be done with one measurement
-		return true;
+		return chain.apply(results);
 	}
 
 	@Override
 	public boolean acceptsIMeasurements(Collection<? extends IMeasurement> items) {
 
-		if(items.size() < 2) {
-			return false;
-		}
-		Collection<SpectrumMeasurement> collection = new ArrayList<>();
 		for(IMeasurement measurement : items) {
-			if(measurement instanceof SpectrumMeasurement) {
-				collection.add((SpectrumMeasurement)measurement);
-			} else {
+			if(!(measurement instanceof SpectrumMeasurement)) {
 				return false;
 			}
 		}
