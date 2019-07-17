@@ -90,20 +90,20 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 			}
 		}
 		SimpleMatrix alignmentResult = process(collection, configuration);
-		int lengthOfAlignmentResult = alignmentResult.numRows() - 1;
+		int alignmentResultIndex = 0;
 		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(collection);
 		List<IMeasurement> results = new ArrayList<>();
 		//
 		for(SpectrumMeasurement measurement : collection) {
 			FilteredSpectrumMeasurement filteredSpectrumMeasurement = new FilteredSpectrumMeasurement(measurement);
 			List<SimpleNMRSignal> newSignals = new ArrayList<>();
-			double[] dataArray = alignmentResult.extractVector(true, lengthOfAlignmentResult).getMatrix().getData();
+			double[] dataArray = alignmentResult.extractVector(true, alignmentResultIndex).getMatrix().getData();
 			for(int i = 0; i < dataArray.length; i++) {
 				newSignals.add(new SimpleNMRSignal(chemicalShiftAxis[i], dataArray[i], 0, null));
 				// SimpleNMRSignal(Number chemicalShift, Number real, Number imaginary, BigDecimal scalingFactor)
 				// => no imaginary part and no scaling factor
 			}
-			lengthOfAlignmentResult++;
+			alignmentResultIndex++;
 			filteredSpectrumMeasurement.setSignals(newSignals);
 			results.add(filteredSpectrumMeasurement);
 		}

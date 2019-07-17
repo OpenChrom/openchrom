@@ -68,20 +68,20 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 			}
 		}
 		SimpleMatrix calibrationResult = calibrate(collection, configuration);
-		int lengthOfCalibrationResult = calibrationResult.numRows() - 1;
+		int calibrationResultIndex = 0;
 		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(collection);
 		List<IMeasurement> results = new ArrayList<>();
 		//
 		for(SpectrumMeasurement measurement : collection) {
 			FilteredSpectrumMeasurement filteredSpectrumMeasurement = new FilteredSpectrumMeasurement(measurement);
 			List<SimpleNMRSignal> newSignals = new ArrayList<>();
-			double[] dataArray = calibrationResult.extractVector(true, lengthOfCalibrationResult).getMatrix().getData();
+			double[] dataArray = calibrationResult.extractVector(true, calibrationResultIndex).getMatrix().getData();
 			for(int i = 0; i < dataArray.length; i++) {
 				newSignals.add(new SimpleNMRSignal(chemicalShiftAxis[i], dataArray[i], 0, null));
 				// SimpleNMRSignal(Number chemicalShift, Number real, Number imaginary, BigDecimal scalingFactor)
 				// => no imaginary part and no scaling factor
 			}
-			lengthOfCalibrationResult++;
+			calibrationResultIndex++;
 			filteredSpectrumMeasurement.setSignals(newSignals);
 			results.add(filteredSpectrumMeasurement);
 		}
