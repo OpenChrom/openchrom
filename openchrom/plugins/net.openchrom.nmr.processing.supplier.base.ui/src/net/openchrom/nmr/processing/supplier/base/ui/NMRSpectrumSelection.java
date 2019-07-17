@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.model.core.IMeasurement;
@@ -27,8 +28,7 @@ import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.processing.filter.FilterFactory;
 import org.eclipse.chemclipse.processing.filter.Filtered;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.actions.IMeasurementFilterAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -206,8 +206,14 @@ public class NMRSpectrumSelection {
 					};
 					Collection<IMeasurementFilter<?>> filters = filterFactory.getFilters(FilterFactory.genericClass(IMeasurementFilter.class), acceptor);
 					for(IMeasurementFilter<?> filter : filters) {
-						IAction action = new FilterAction(filter, items);
-						mgr.add(action);
+						Consumer<Collection<? extends IMeasurement>> consumer = new Consumer<Collection<? extends IMeasurement>>() {
+
+							@Override
+							public void accept(Collection<? extends IMeasurement> t) {
+
+							}
+						};
+						mgr.add(new IMeasurementFilterAction(filter, measurements, consumer));
 					}
 				}
 			}
@@ -242,11 +248,5 @@ public class NMRSpectrumSelection {
 			}
 		}
 		return measurement.getDataName();
-	}
-
-	public static class FilterAction extends Action {
-
-		public FilterAction(IMeasurementFilter<?> filter, Map<SpectrumMeasurement, IDataNMRSelection> items) {
-		}
 	}
 }
