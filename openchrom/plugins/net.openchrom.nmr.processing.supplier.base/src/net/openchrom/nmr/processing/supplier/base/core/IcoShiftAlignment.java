@@ -770,9 +770,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 			}
 			// IFFT
 			Complex[] arrayAfterFFT = fFourierTransformer.transform(fouriertransformedArray, TransformType.INVERSE);
-			for(int x = 0; x < arrayAfterFFT.length; x++) {
-				fouriertransformedDatasetCrossCorrelated.setRow(r, 0, IcoShiftAlignmentUtilities.getRealPartOfComplexArray(arrayAfterFFT));
-			}
+			fouriertransformedDatasetCrossCorrelated.setRow(r, 0, IcoShiftAlignmentUtilities.getRealPartOfComplexArray(arrayAfterFFT));
 		}
 		//
 		int[] shiftValues = calculateShiftValues(fouriertransformedDatasetCrossCorrelated, shiftCorrectionTypeValue, settings);
