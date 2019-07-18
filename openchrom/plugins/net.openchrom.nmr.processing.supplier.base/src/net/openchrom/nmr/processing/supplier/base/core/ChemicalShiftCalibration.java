@@ -68,7 +68,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 			}
 		}
 		SimpleMatrix calibrationResult = calibrate(collection, configuration);
-		List<IMeasurement> results = IcoShiftAlignmentUtilities.processResultsForFilter(collection, calibrationResult);
+		List<IMeasurement> results = IcoShiftAlignmentUtilities.processResultsForFilter(collection, calibrationResult, this.getName());
 		return chain.apply(results);
 	}
 

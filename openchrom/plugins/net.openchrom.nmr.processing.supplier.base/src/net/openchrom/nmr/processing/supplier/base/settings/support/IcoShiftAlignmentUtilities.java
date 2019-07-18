@@ -31,6 +31,7 @@ public class IcoShiftAlignmentUtilities {
 		private T stop;
 
 		public Interval(T start, T stop) {
+
 			this.start = start;
 			this.stop = stop;
 		}
@@ -87,7 +88,7 @@ public class IcoShiftAlignmentUtilities {
 		return sumMatrix;
 	}
 
-	public static List<IMeasurement> processResultsForFilter(Collection<SpectrumMeasurement> collection, SimpleMatrix result) {
+	public static List<IMeasurement> processResultsForFilter(Collection<SpectrumMeasurement> collection, SimpleMatrix result, String processorName) {
 
 		int alignmentResultIndex = 0;
 		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(collection);
@@ -95,7 +96,11 @@ public class IcoShiftAlignmentUtilities {
 		//
 		for(SpectrumMeasurement measurement : collection) {
 			FilteredSpectrumMeasurement filteredSpectrumMeasurement = new FilteredSpectrumMeasurement(measurement);
-			filteredSpectrumMeasurement.setDataName("IcoShift");
+			if(processorName.contentEquals("Icoshift Alignment")) {
+				filteredSpectrumMeasurement.setDataName("IcoShift");
+			} else {
+				filteredSpectrumMeasurement.setDataName("Calibration");
+			}
 			List<SimpleNMRSignal> newSignals = new ArrayList<>();
 			double[] dataArray = result.extractVector(true, alignmentResultIndex).getMatrix().getData();
 			for(int i = 0; i < dataArray.length; i++) {

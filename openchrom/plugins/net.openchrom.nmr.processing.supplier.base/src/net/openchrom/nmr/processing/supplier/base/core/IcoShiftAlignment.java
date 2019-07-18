@@ -89,7 +89,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 			}
 		}
 		SimpleMatrix alignmentResult = process(collection, configuration, monitor);
-		List<IMeasurement> results = IcoShiftAlignmentUtilities.processResultsForFilter(collection, alignmentResult);
+		List<IMeasurement> results = IcoShiftAlignmentUtilities.processResultsForFilter(collection, alignmentResult, this.getName());
 		return chain.apply(results);
 	}
 
