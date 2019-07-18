@@ -104,7 +104,7 @@ public class IcoShiftAlignmentUtilities {
 			List<SimpleNMRSignal> newSignals = new ArrayList<>();
 			double[] dataArray = result.extractVector(true, alignmentResultIndex).getMatrix().getData();
 			for(int i = 0; i < dataArray.length; i++) {
-				newSignals.add(new SimpleNMRSignal(chemicalShiftAxis[i], dataArray[i], 0, null));
+				newSignals.add(new SimpleNMRSignal(chemicalShiftAxis[i], dataArray[i], 0.0d, null));
 				// SimpleNMRSignal(Number chemicalShift, Number real, Number imaginary, BigDecimal scalingFactor)
 				// => no imaginary part and no scaling factor
 			}

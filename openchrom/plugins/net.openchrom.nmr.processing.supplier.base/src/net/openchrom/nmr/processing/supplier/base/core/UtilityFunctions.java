@@ -47,7 +47,7 @@ public class UtilityFunctions {
 		for(SpectrumSignal signal : signals) {
 			double real = signal.getY();
 			array[i] = new Complex(real, signal.getImaginaryY());
-			chemicalShift[i] = signal.getChemicalShift();
+			chemicalShift[i] = BigDecimal.valueOf(signal.getChemicalShift().doubleValue());
 			if(real > maxValue) {
 				maxValue = real;
 				maxIndex = i;
@@ -177,6 +177,7 @@ public class UtilityFunctions {
 		public int maxIndex;
 
 		public SpectrumData(Complex[] array, Number[] chemicalShift, int maxIndex) {
+
 			this.signals = array;
 			this.chemicalShift = chemicalShift;
 			this.maxIndex = maxIndex;
@@ -202,6 +203,7 @@ public class UtilityFunctions {
 		public BigDecimal[] times;
 
 		public ComplexFIDData(Complex[] array, BigDecimal[] times) {
+
 			this.signals = array;
 			this.times = times;
 		}
