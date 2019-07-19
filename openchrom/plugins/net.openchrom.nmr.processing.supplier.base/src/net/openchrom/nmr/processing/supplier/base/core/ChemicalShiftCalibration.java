@@ -48,9 +48,9 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 	}
 
 	@Override
-	public ChemicalShiftCalibrationSettings createNewConfiguration() {
+	public Class<ChemicalShiftCalibrationSettings> getConfigClass() {
 
-		return new ChemicalShiftCalibrationSettings();
+		return ChemicalShiftCalibrationSettings.class;
 	}
 
 	@Override

@@ -36,13 +36,9 @@ public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IC
 	}
 
 	@Override
-	public ConfigType createNewConfiguration() {
+	public Class<ConfigType> getConfigClass() {
 
-		try {
-			return configClass.newInstance();
-		} catch(InstantiationException | IllegalAccessException e) {
-			throw new AssertionError("can't instantiate config " + configClass);
-		}
+		return configClass;
 	}
 
 	public ConfigType createConfiguration(IMeasurement item) throws IllegalArgumentException {

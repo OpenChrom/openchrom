@@ -69,9 +69,9 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 	}
 
 	@Override
-	public IcoShiftAlignmentSettings createNewConfiguration() {
+	public Class<IcoShiftAlignmentSettings> getConfigClass() {
 
-		return new IcoShiftAlignmentSettings();
+		return IcoShiftAlignmentSettings.class;
 	}
 
 	@Override

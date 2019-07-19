@@ -29,6 +29,7 @@ import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.processing.filter.FilterFactory;
 import org.eclipse.chemclipse.processing.filter.Filtered;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.actions.IMeasurementFilterAction;
+import org.eclipse.chemclipse.xxd.process.support.ProcessTypeSupport;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -51,9 +52,11 @@ public class NMRSpectrumSelection {
 	private static final Object NULL = new Object();
 	private TableViewer viewer;
 	private FilterFactory filterFactory;
+	private ProcessTypeSupport processTypeSupport;
 
 	public NMRSpectrumSelection(Composite parent, FilterFactory filterFactory) {
 		this.filterFactory = filterFactory;
+		processTypeSupport = new ProcessTypeSupport(filterFactory);
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		viewer.getTable().setHeaderVisible(true);
@@ -231,7 +234,7 @@ public class NMRSpectrumSelection {
 						}
 					};
 					for(IMeasurementFilter<?> filter : filters) {
-						mgr.add(new IMeasurementFilterAction(filter, measurements, consumer));
+						mgr.add(new IMeasurementFilterAction(filter, measurements, consumer, processTypeSupport));
 					}
 				}
 			}
