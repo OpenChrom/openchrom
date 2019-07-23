@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2019 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -8,18 +8,33 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
- * Matthias Mailänder - initial API and implementation
+ * Christoph Läubrich - reuse the DataExplorerUI
  *******************************************************************************/
 package net.openchrom.msd.identifier.supplier.opentyper.ui.views;
 
+import java.util.Collections;
+
 import javax.inject.Inject;
 
+import org.eclipse.chemclipse.ux.extension.msd.ui.support.MassSpectrumSupport;
+import org.eclipse.chemclipse.ux.extension.ui.swt.DataExplorerUI;
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.swt.widgets.Composite;
 
-public class MassSpectrumFileExplorer extends AbstractSupplierMassSpectrumFileExplorer {
+public class MassSpectrumFileExplorer {
+
+	private DataExplorerUI explorerUI;
 
 	@Inject
 	public MassSpectrumFileExplorer(Composite parent) {
-		super(parent);
+		explorerUI = new DataExplorerUI(parent, null);
+		explorerUI.setSupplierFileIdentifier(Collections.singleton(MassSpectrumSupport.getInstanceEditorSupport()));
+		explorerUI.expandLastDirectoryPath();
+	}
+
+	@Focus
+	private void setFocus() {
+
+		explorerUI.setFocus();
 	}
 }
