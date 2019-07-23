@@ -20,8 +20,8 @@ import javax.inject.Named;
 import org.eclipse.chemclipse.model.types.DataType;
 import org.eclipse.chemclipse.ux.extension.ui.preferences.PreferencePage;
 import org.eclipse.chemclipse.ux.extension.ui.provider.ISupplierFileEditorSupport;
+import org.eclipse.chemclipse.ux.extension.ui.swt.DataExplorerUI;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.EditorSupportFactory;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.DataExplorerUI;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
@@ -41,8 +41,8 @@ public class NMRDataExplorerView {
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 
-		dataExplorerUI = new DataExplorerUI(parent);
-		dataExplorerUI.setSupplierFileEditorSupportList(NMR_SUPPLIER);
+		dataExplorerUI = new DataExplorerUI(parent, null);
+		dataExplorerUI.setSupplierFileIdentifier(NMR_SUPPLIER);
 	}
 
 	public static final class NMRDataExplorerSettingsHandler {
@@ -59,7 +59,7 @@ public class NMRDataExplorerView {
 			preferenceDialog.setMessage("Settings");
 			if(preferenceDialog.open() == Window.OK) {
 				try {
-					explorer.dataExplorerUI.setSupplierFileEditorSupportList(NMR_SUPPLIER);
+					explorer.dataExplorerUI.setSupplierFileIdentifier(NMR_SUPPLIER);
 				} catch(Exception e1) {
 					MessageDialog.openError(shell, "Settings", "Something has gone wrong to apply the chart settings.");
 				}
@@ -73,7 +73,7 @@ public class NMRDataExplorerView {
 		public void execute(MPart part) {
 
 			NMRDataExplorerView explorer = (NMRDataExplorerView)part.getObject();
-			explorer.dataExplorerUI.setSupplierFileEditorSupportList(NMR_SUPPLIER);
+			explorer.dataExplorerUI.expandLastDirectoryPath();
 		}
 	}
 }
