@@ -62,15 +62,15 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		}
 		ComplexFIDData fidData = UtilityFunctions.toComplexFIDData(signals);
 		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(fidData.signals);
-		BigDecimal min = BigDecimal.valueOf(measurement.getAcquisitionParameter().getSpectralOffset());
-		BigDecimal max = BigDecimal.valueOf(measurement.getAcquisitionParameter().getSpectralOffset() + measurement.getAcquisitionParameter().getSpectralWidth());
-		BigDecimal step = max.subtract(min).divide(BigDecimal.valueOf(nmrSpectrumProcessed.length - 1).setScale(10), RoundingMode.HALF_UP);
+		BigDecimal offset = measurement.getAcquisitionParameter().getSpectralOffset();
+		BigDecimal width = measurement.getAcquisitionParameter().getSpectralWidth();
+		BigDecimal step = width.divide(BigDecimal.valueOf(nmrSpectrumProcessed.length - 1).setScale(10), RoundingMode.HALF_UP);
 		// center the data around the spectral frequency
 		UtilityFunctions.leftShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
 		List<FFTSpectrumSignal> newSignals = new ArrayList<>();
 		for(int i = 0; i < nmrSpectrumProcessed.length; i++) {
 			// api requires from high to low, so start with higest order
-			BigDecimal shift = step.multiply(BigDecimal.valueOf(nmrSpectrumProcessed.length - 1 - i));
+			BigDecimal shift = step.multiply(BigDecimal.valueOf(nmrSpectrumProcessed.length - 1 - i)).add(offset);
 			newSignals.add(new FFTSpectrumSignal(shift, nmrSpectrumProcessed[i]));
 		}
 		return new FFTFilteredMeasurement(measurement, newSignals);
