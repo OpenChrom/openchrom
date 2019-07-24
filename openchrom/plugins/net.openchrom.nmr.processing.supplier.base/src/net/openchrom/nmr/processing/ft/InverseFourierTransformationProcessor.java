@@ -13,6 +13,7 @@ package net.openchrom.nmr.processing.ft;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,8 +24,8 @@ import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
+import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.DataDimension;
-import org.eclipse.chemclipse.nmr.model.core.FIDAcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
@@ -63,14 +64,10 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 		Complex[] spectrumSignals = spectrumData.signals;
 		Complex[] fid = inverseFourierTransformData(spectrumSignals);
 		List<InverseFFTSpectrumSignal> signals = new ArrayList<>();
-		for(int i = 0; i < spectrumData.frequency.length; i++) {
-			BigDecimal time;
-			if(BigDecimal.ZERO.compareTo(spectrumData.frequency[i]) == 0) {
-				time = BigDecimal.ZERO;
-			} else {
-				time = BigDecimal.ONE.divide(spectrumData.frequency[i], 10, BigDecimal.ROUND_HALF_EVEN);
-			}
-			signals.add(new InverseFFTSpectrumSignal(time, fid[i]));
+		BigDecimal max = measurement.getAcquisitionParameter().getAcquisitionTime();
+		BigDecimal step = max.divide(BigDecimal.valueOf((fid.length) - 1).setScale(10), RoundingMode.HALF_UP);
+		for(int i = 0; i < measurement.getAcquisitionParameter().getNumberOfPoints(); i++) {
+			signals.add(new InverseFFTSpectrumSignal(BigDecimal.valueOf(i).multiply(step), fid[i]));
 		}
 		return new InverseFFTFilteredMeasurement(measurement, signals);
 	}
@@ -84,7 +81,7 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 		return fid;
 	}
 
-	private static final class InverseFFTFilteredMeasurement extends FilteredMeasurement<SpectrumMeasurement> implements FIDMeasurement, FIDAcquisitionParameter {
+	private static final class InverseFFTFilteredMeasurement extends FilteredMeasurement<SpectrumMeasurement> implements FIDMeasurement {
 
 		private static final long serialVersionUID = -3240032383041201512L;
 		private List<InverseFFTSpectrumSignal> signals;
@@ -107,42 +104,9 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 		}
 
 		@Override
-		public FIDAcquisitionParameter getAcquisitionParameter() {
+		public AcquisitionParameter getAcquisitionParameter() {
 
-			return this;
-		}
-
-		@Override
-		public double getPulseWidth() {
-
-			FIDMeasurement fidMeasurement = getFilteredObject().getAdapter(FIDMeasurement.class);
-			if(fidMeasurement != null) {
-				return fidMeasurement.getAcquisitionParameter().getPulseWidth();
-			}
-			return Double.NaN;
-		}
-
-		@Override
-		public BigDecimal getAcquisitionTime() {
-
-			// the aq is the time of the first datapoint minus the time of the last datapoint
-			return signals.get(signals.size() - 1).getSignalTime().subtract(signals.get(0).getSignalTime());
-		}
-
-		@Override
-		public int getNumberOfPoints() {
-
-			return signals.size();
-		}
-
-		@Override
-		public double getRecycleDelay() {
-
-			FIDMeasurement fidMeasurement = getFilteredObject().getAdapter(FIDMeasurement.class);
-			if(fidMeasurement != null) {
-				return fidMeasurement.getAcquisitionParameter().getRecycleDelay();
-			}
-			return Double.NaN;
+			return getFilteredObject().getAcquisitionParameter();
 		}
 	}
 

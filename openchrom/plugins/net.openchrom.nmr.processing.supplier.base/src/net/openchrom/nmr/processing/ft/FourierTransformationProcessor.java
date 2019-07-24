@@ -14,6 +14,7 @@ package net.openchrom.nmr.processing.ft;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,9 +25,9 @@ import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
-import org.eclipse.chemclipse.nmr.model.core.FIDAcquisitionParameter;
+import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
-import org.eclipse.chemclipse.nmr.model.core.SpectrumAcquisitionParameter;
+import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
@@ -38,6 +39,7 @@ import net.openchrom.nmr.processing.supplier.base.core.AbstractFIDSignalFilter;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
 import net.openchrom.nmr.processing.supplier.base.core.ZeroFillingProcessor;
+import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class FourierTransformationProcessor extends AbstractFIDSignalFilter<FourierTransformationSettings> {
@@ -52,20 +54,24 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 	@Override
 	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, FourierTransformationSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
-		ComplexFIDData fidData = UtilityFunctions.toComplexFIDData(measurement.getSignals());
-		Complex[] zeroFilledFid = ZeroFillingProcessor.fill(fidData.signals);
-		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(zeroFilledFid);
-		List<FFTSpectrumSignal> signals = new ArrayList<>(nmrSpectrumProcessed.length);
-		for(int i = 0; i < fidData.times.length; i++) {
-			BigDecimal frequency;
-			if(BigDecimal.ZERO.compareTo(fidData.times[i]) == 0) {
-				frequency = BigDecimal.ZERO;
-			} else {
-				frequency = BigDecimal.ONE.divide(fidData.times[i], 10, BigDecimal.ROUND_HALF_EVEN);
-			}
-			signals.add(new FFTSpectrumSignal(frequency, nmrSpectrumProcessed[i]));
+		List<? extends FIDSignal> signals = measurement.getSignals();
+		int fillLength = ZeroFillingProcessor.getZeroFillLength(signals.size(), ZeroFillingFactor.AUTO);
+		if(fillLength != signals.size()) {
+			messageConsumer.addErrorMessage(getName(), "Your data must be Zerofilled first (fill length = " + fillLength + ")");
+			return null;
 		}
-		return new FFTFilteredMeasurement(measurement, signals);
+		ComplexFIDData fidData = UtilityFunctions.toComplexFIDData(signals);
+		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(fidData.signals);
+		BigDecimal min = BigDecimal.valueOf(measurement.getAcquisitionParameter().getSpectralOffset());
+		BigDecimal max = BigDecimal.valueOf(measurement.getAcquisitionParameter().getSpectralOffset() + measurement.getAcquisitionParameter().getSpectralWidth());
+		BigDecimal step = max.subtract(min).divide(BigDecimal.valueOf(nmrSpectrumProcessed.length - 1).setScale(10), RoundingMode.HALF_UP);
+		// center the data around the spectral frequency
+		UtilityFunctions.leftShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
+		List<FFTSpectrumSignal> newSignals = new ArrayList<>();
+		for(int i = 0; i < nmrSpectrumProcessed.length; i++) {
+			newSignals.add(new FFTSpectrumSignal(step.multiply(BigDecimal.valueOf(i)), nmrSpectrumProcessed[i]));
+		}
+		return new FFTFilteredMeasurement(measurement, newSignals);
 	}
 
 	@Override
@@ -78,24 +84,17 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 
 		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
 		Complex[] nmrSpectrum = fFourierTransformer.transform(fid, TransformType.FORWARD);
-		Complex[] nmrSpectrumProcessed = new Complex[nmrSpectrum.length];
-		System.arraycopy(nmrSpectrum, 0, nmrSpectrumProcessed, 0, nmrSpectrum.length); // NmrData.SPECTRA
-		UtilityFunctions.leftShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
-		return nmrSpectrumProcessed;
+		return nmrSpectrum;
 	}
 
-	private static final class FFTFilteredMeasurement extends FilteredMeasurement<FIDMeasurement> implements SpectrumMeasurement, SpectrumAcquisitionParameter {
+	private static final class FFTFilteredMeasurement extends FilteredMeasurement<FIDMeasurement> implements SpectrumMeasurement {
 
 		private static final long serialVersionUID = -3570180428815391262L;
 		private List<? extends SpectrumSignal> signals;
-		private double spectralWidth;
 
 		public FFTFilteredMeasurement(FIDMeasurement measurement, List<FFTSpectrumSignal> signals) {
 			super(measurement);
 			this.signals = Collections.unmodifiableList(signals);
-			FIDAcquisitionParameter parameter = measurement.getAcquisitionParameter();
-			// TODO check scaling
-			this.spectralWidth = (parameter.getNumberOfPoints() / parameter.getAcquisitionTime().doubleValue()) / 2;
 		}
 
 		@Override
@@ -105,25 +104,9 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		}
 
 		@Override
-		public SpectrumAcquisitionParameter getAcquisitionParameter() {
+		public AcquisitionParameter getAcquisitionParameter() {
 
-			return this;
-		}
-
-		@Override
-		public double getSpectrometerFrequency() {
-
-			SpectrumAcquisitionParameter spectrumAcquisitionParameter = getFilteredObject().getAdapter(SpectrumAcquisitionParameter.class);
-			if(spectrumAcquisitionParameter != null) {
-				return spectrumAcquisitionParameter.getSpectrometerFrequency();
-			}
-			return Double.NaN;
-		}
-
-		@Override
-		public double getSpectralWidth() {
-
-			return spectralWidth;
+			return getFilteredObject().getAcquisitionParameter();
 		}
 	}
 

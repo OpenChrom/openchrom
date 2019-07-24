@@ -43,6 +43,7 @@ public class NMRDataExplorerView {
 
 		dataExplorerUI = new DataExplorerUI(parent, null);
 		dataExplorerUI.setSupplierFileIdentifier(NMR_SUPPLIER);
+		dataExplorerUI.expandLastDirectoryPath();
 	}
 
 	public static final class NMRDataExplorerSettingsHandler {
