@@ -13,7 +13,6 @@
 package net.openchrom.nmr.processing.supplier.base.core;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,13 +23,11 @@ import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
-import org.eclipse.chemclipse.nmr.model.core.SimpleFIDSignal;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
-import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
 import net.openchrom.nmr.processing.supplier.base.settings.ZeroFillingSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
@@ -53,20 +50,53 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 	@Override
 	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, ZeroFillingSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
-		FilteredFIDMeasurement fidMeasurement = new FilteredFIDMeasurement(measurement);
-		ComplexFIDData rawFID = UtilityFunctions.toComplexFIDData(measurement.getSignals());
-		//
+		List<? extends FIDSignal> signals = measurement.getSignals();
+		int signalsize = signals.size();
+		if(signalsize < 2) {
+			messageConsumer.addErrorMessage(getName(), "At least two datapoints are requred for zerofilling");
+			return null;
+		}
 		ZeroFillingFactor zeroFillingFactor = settings.getZeroFillingFactor();
-		Complex[] zeroFilledFID = ZeroFillingProcessor.fill(rawFID.signals, zeroFillingFactor);
-		//
-		BigDecimal max = BigDecimal.valueOf(measurement.getAcquisitionTime());
-		BigDecimal step = max.divide(BigDecimal.valueOf((zeroFilledFID.length) - 1).setScale(10), RoundingMode.HALF_UP);
-		List<FIDSignal> newSignals = new ArrayList<>();
-		for(int i = 0; i < zeroFilledFID.length; i++) {
-			newSignals.add(new SimpleFIDSignal(BigDecimal.valueOf(i).multiply(step), zeroFilledFID[i].getReal(), zeroFilledFID[i].getImaginary()));
+		FilteredFIDMeasurement fidMeasurement = new FilteredFIDMeasurement(measurement);
+		int zeroFillLength = getZeroFillLength(signalsize, zeroFillingFactor);
+		if(zeroFillLength == signalsize) {
+			return fidMeasurement;
+		}
+		List<FIDSignal> newSignals = new ArrayList<>(zeroFillLength);
+		newSignals.addAll(signals);
+		BigDecimal step = signals.get(1).getSignalTime().subtract(signals.get(0).getSignalTime());
+		for(int i = signalsize; i < zeroFillLength; i++) {
+			newSignals.add(new ZeroFIDSignal(BigDecimal.valueOf(i).multiply(step)));
 		}
 		fidMeasurement.setSignals(newSignals);
 		return fidMeasurement;
+	}
+
+	private static final class ZeroFIDSignal implements FIDSignal {
+
+		private BigDecimal time;
+
+		public ZeroFIDSignal(BigDecimal time) {
+			this.time = time;
+		}
+
+		@Override
+		public BigDecimal getSignalTime() {
+
+			return time;
+		}
+
+		@Override
+		public Number getRealComponent() {
+
+			return BigDecimal.ZERO;
+		}
+
+		@Override
+		public Number getImaginaryComponent() {
+
+			return BigDecimal.ZERO;
+		}
 	}
 
 	public static Complex[] fill(Complex[] signals) {
@@ -79,16 +109,21 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 		if(signals == null) {
 			throw new IllegalArgumentException("Signals can't be null");
 		}
-		if(signals.length == 0) {
-			throw new IllegalArgumentException("Signals can't be empty");
-		}
-		int lowerBound = factor == ZeroFillingFactor.AUTO ? 2 : factor.getValue();
-		int newLength = Math.max(lowerBound, (int)Math.pow(lowerBound, (int)(Math.ceil((Math.log(signals.length) / Math.log(lowerBound))))));
+		int newLength = getZeroFillLength(signals.length, factor);
 		if(newLength == signals.length) {
 			return signals;
 		}
 		Complex[] copyOf = Arrays.copyOf(signals, newLength);
 		Arrays.fill(copyOf, signals.length, newLength, Complex.ZERO);
 		return copyOf;
+	}
+
+	public static int getZeroFillLength(int currentLenth, ZeroFillingFactor factor) {
+
+		if(currentLenth == 0) {
+			throw new IllegalArgumentException("Current length can't be 0");
+		}
+		int lowerBound = factor == ZeroFillingFactor.AUTO ? 2 : factor.getValue();
+		return Math.max(lowerBound, (int)Math.pow(lowerBound, (int)(Math.ceil((Math.log(currentLenth) / Math.log(lowerBound))))));
 	}
 }

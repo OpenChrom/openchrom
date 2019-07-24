@@ -14,7 +14,6 @@ package net.openchrom.nmr.processing.ft;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +24,9 @@ import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
+import org.eclipse.chemclipse.nmr.model.core.FIDAcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumAcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
@@ -41,7 +42,7 @@ import net.openchrom.nmr.processing.supplier.base.core.ZeroFillingProcessor;
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class FourierTransformationProcessor extends AbstractFIDSignalFilter<FourierTransformationSettings> {
 
-	private static final long serialVersionUID = 5702896391785304170L;
+	private static final long serialVersionUID = -9149804307608333565L;
 	private static final String NAME = "Fourier Transformation";
 
 	public FourierTransformationProcessor() {
@@ -54,21 +55,15 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		ComplexFIDData fidData = UtilityFunctions.toComplexFIDData(measurement.getSignals());
 		Complex[] zeroFilledFid = ZeroFillingProcessor.fill(fidData.signals);
 		Complex[] nmrSpectrumProcessed = fourierTransformNmrData(zeroFilledFid);
-		BigDecimal min = BigDecimal.valueOf(measurement.getFirstDataPointOffset());
-		BigDecimal max = BigDecimal.valueOf(measurement.getFirstDataPointOffset() + measurement.getSweepWidth());
-		BigDecimal step = max.subtract(min).divide(BigDecimal.valueOf(nmrSpectrumProcessed.length - 1).setScale(10), RoundingMode.HALF_UP);
 		List<FFTSpectrumSignal> signals = new ArrayList<>(nmrSpectrumProcessed.length);
-		// handle another Bruker specific characteristic
-		if(measurement.getDataName().equals("Digital Filter Removal")) {
-			// Bruker spectral data has to be added in a "reversed" order to fit the chemical shift values
-			for(int i = 0; i < nmrSpectrumProcessed.length; i++) {
-				signals.add(new FFTSpectrumSignal(max.subtract(step.multiply(BigDecimal.valueOf(i))), nmrSpectrumProcessed[i]));
+		for(int i = 0; i < fidData.times.length; i++) {
+			BigDecimal frequency;
+			if(BigDecimal.ZERO.compareTo(fidData.times[i]) == 0) {
+				frequency = BigDecimal.ZERO;
+			} else {
+				frequency = BigDecimal.ONE.divide(fidData.times[i], 10, BigDecimal.ROUND_HALF_EVEN);
 			}
-		} else {
-			// other types of nmr data are not affected and can be added the way it was done before
-			for(int i = 0; i < nmrSpectrumProcessed.length; i++) {
-				signals.add(new FFTSpectrumSignal(BigDecimal.valueOf(i).multiply(step).add(min), nmrSpectrumProcessed[i]));
-			}
+			signals.add(new FFTSpectrumSignal(frequency, nmrSpectrumProcessed[i]));
 		}
 		return new FFTFilteredMeasurement(measurement, signals);
 	}
@@ -86,36 +81,49 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		Complex[] nmrSpectrumProcessed = new Complex[nmrSpectrum.length];
 		System.arraycopy(nmrSpectrum, 0, nmrSpectrumProcessed, 0, nmrSpectrum.length); // NmrData.SPECTRA
 		UtilityFunctions.leftShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
-		// This has nothing to do with the inverted UI!
-		// ArrayUtils.reverse(nmrSpectrumProcessed);
 		return nmrSpectrumProcessed;
 	}
 
-	public static Complex[] inverseFourierTransformData(Complex[] spectrum) {
-
-		// ArrayUtils.reverse(spectrum);
-		UtilityFunctions.rightShiftNMRComplexData(spectrum, spectrum.length / 2);
-		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
-		Complex[] unfilteredFID = fFourierTransformer.transform(spectrum, TransformType.INVERSE);
-		Complex[] analogFID = new Complex[unfilteredFID.length];
-		System.arraycopy(unfilteredFID, 0, analogFID, 0, unfilteredFID.length);
-		return analogFID;
-	}
-
-	private static final class FFTFilteredMeasurement extends FilteredMeasurement<FIDMeasurement> implements SpectrumMeasurement {
+	private static final class FFTFilteredMeasurement extends FilteredMeasurement<FIDMeasurement> implements SpectrumMeasurement, SpectrumAcquisitionParameter {
 
 		private static final long serialVersionUID = -3570180428815391262L;
 		private List<? extends SpectrumSignal> signals;
+		private double spectralWidth;
 
 		public FFTFilteredMeasurement(FIDMeasurement measurement, List<FFTSpectrumSignal> signals) {
 			super(measurement);
 			this.signals = Collections.unmodifiableList(signals);
+			FIDAcquisitionParameter parameter = measurement.getAcquisitionParameter();
+			// TODO check scaling
+			this.spectralWidth = (parameter.getNumberOfPoints() / parameter.getAcquisitionTime().doubleValue()) / 2;
 		}
 
 		@Override
 		public List<? extends SpectrumSignal> getSignals() {
 
 			return signals;
+		}
+
+		@Override
+		public SpectrumAcquisitionParameter getAcquisitionParameter() {
+
+			return this;
+		}
+
+		@Override
+		public double getSpectrometerFrequency() {
+
+			SpectrumAcquisitionParameter spectrumAcquisitionParameter = getFilteredObject().getAdapter(SpectrumAcquisitionParameter.class);
+			if(spectrumAcquisitionParameter != null) {
+				return spectrumAcquisitionParameter.getSpectrometerFrequency();
+			}
+			return Double.NaN;
+		}
+
+		@Override
+		public double getSpectralWidth() {
+
+			return spectralWidth;
 		}
 	}
 
@@ -131,7 +139,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		}
 
 		@Override
-		public BigDecimal getChemicalShift() {
+		public BigDecimal getFrequency() {
 
 			return shift;
 		}

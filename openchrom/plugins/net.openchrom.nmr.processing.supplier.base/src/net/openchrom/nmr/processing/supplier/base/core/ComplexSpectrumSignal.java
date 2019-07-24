@@ -12,6 +12,7 @@
 package net.openchrom.nmr.processing.supplier.base.core;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
@@ -23,17 +24,17 @@ public final class ComplexSpectrumSignal implements SpectrumSignal, Serializable
 	 */
 	private static final long serialVersionUID = -3361359307799587392L;
 	private Complex complex;
-	private Number shift;
+	private BigDecimal frequency;
 
-	public ComplexSpectrumSignal(Number shift, Complex complex) {
-		this.shift = shift;
+	public ComplexSpectrumSignal(BigDecimal frequency, Complex complex) {
+		this.frequency = frequency;
 		this.complex = complex;
 	}
 
 	@Override
-	public Number getChemicalShift() {
+	public BigDecimal getFrequency() {
 
-		return shift;
+		return frequency;
 	}
 
 	@Override

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.DoubleUnaryOperator;
@@ -131,7 +132,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 		int upperCut = size - lowerCut + 1;
 		for(int i = 0; i < size; i++) {
 			SpectrumSignal signal = signals.get(i);
-			double chemicalShift = signal.getChemicalShift().doubleValue();
+			double chemicalShift = signal.getFrequency().doubleValue();
 			double realPart = signal.getY();
 			boolean cut = i <= lowerCut || i >= upperCut;
 			convertedSignals.add(new WeightedObservedPointSpectrumSignal(new SignalWeightedObservedPoint(fittingWeight, chemicalShift, realPart, cut), new SignalWeightedObservedPoint(fittingWeight, chemicalShift, signal.getImaginaryY(), cut)));
@@ -165,9 +166,9 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 		}
 
 		@Override
-		public Number getChemicalShift() {
+		public BigDecimal getFrequency() {
 
-			return real.getX();
+			return BigDecimal.valueOf(real.getX());
 		}
 
 		@Override

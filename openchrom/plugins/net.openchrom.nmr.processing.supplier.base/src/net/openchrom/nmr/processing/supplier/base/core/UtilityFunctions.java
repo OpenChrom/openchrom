@@ -40,14 +40,14 @@ public class UtilityFunctions {
 	public static SpectrumData toComplexSpectrumData(Collection<? extends SpectrumSignal> signals) {
 
 		Complex[] array = new Complex[signals.size()];
-		Number[] chemicalShift = new BigDecimal[signals.size()];
+		BigDecimal[] chemicalShift = new BigDecimal[signals.size()];
 		int i = 0;
 		int maxIndex = 0;
 		double maxValue = Double.MIN_NORMAL;
 		for(SpectrumSignal signal : signals) {
 			double real = signal.getY();
 			array[i] = new Complex(real, signal.getImaginaryY());
-			chemicalShift[i] = BigDecimal.valueOf(signal.getChemicalShift().doubleValue());
+			chemicalShift[i] = signal.getFrequency();
 			if(real > maxValue) {
 				maxValue = real;
 				maxIndex = i;
@@ -173,24 +173,23 @@ public class UtilityFunctions {
 	public static final class SpectrumData {
 
 		public Complex[] signals;
-		public Number[] chemicalShift;
+		public BigDecimal[] frequency;
 		public int maxIndex;
 
-		public SpectrumData(Complex[] array, Number[] chemicalShift, int maxIndex) {
-
+		public SpectrumData(Complex[] array, BigDecimal[] chemicalShift, int maxIndex) {
 			this.signals = array;
-			this.chemicalShift = chemicalShift;
+			this.frequency = chemicalShift;
 			this.maxIndex = maxIndex;
 		}
 
 		public List<SpectrumSignal> toSignal() {
 
-			if(signals.length != chemicalShift.length) {
+			if(signals.length != frequency.length) {
 				throw new IllegalStateException("chemicalShift length differs from signals length");
 			}
-			List<SpectrumSignal> list = new ArrayList<>(chemicalShift.length);
-			for(int i = 0; i < chemicalShift.length; i++) {
-				list.add(new ComplexSpectrumSignal(chemicalShift[i], signals[i]));
+			List<SpectrumSignal> list = new ArrayList<>(frequency.length);
+			for(int i = 0; i < frequency.length; i++) {
+				list.add(new ComplexSpectrumSignal(frequency[i], signals[i]));
 			}
 			return list;
 		}
@@ -203,7 +202,6 @@ public class UtilityFunctions {
 		public BigDecimal[] times;
 
 		public ComplexFIDData(Complex[] array, BigDecimal[] times) {
-
 			this.signals = array;
 			this.times = times;
 		}

@@ -15,12 +15,10 @@ package net.openchrom.nmr.processing.phasecorrection;
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
-import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
-import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
@@ -47,19 +45,9 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 	@Override
 	protected FilteredMeasurement<?> doFiltering(SpectrumMeasurement measurement, PhaseCorrectionSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
-		FIDMeasurement fidMeasurement = Adapters.adapt(measurement, FIDMeasurement.class);
 		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurement.getSignals());
-		double firstDataOffset;
-		double sweepWidth;
-		if(fidMeasurement != null) {
-			// FIXME get necessary values for spectrum from fid measurement
-			sweepWidth = fidMeasurement.getSweepWidth();
-			firstDataOffset = fidMeasurement.getFirstDataPointOffset();
-		} else {
-			// FIXME correlates with FIXME above; find default values if possible
-			sweepWidth = 20.5524343527429;
-			firstDataOffset = 15.07362;
-		}
+		double firstDataOffset = spectrumData.frequency.length == 0 ? 0 : spectrumData.frequency[0].doubleValue();
+		double sweepWidth = measurement.getAcquisitionParameter().getSpectralWidth();
 		Complex[] phaseCorrection = perform(spectrumData, settings, firstDataOffset, sweepWidth);
 		for(int i = 0; i < phaseCorrection.length; i++) {
 			spectrumData.signals[i] = spectrumData.signals[i].multiply(phaseCorrection[i]);
@@ -71,7 +59,7 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 
 	private static Complex[] perform(SpectrumData spectrumData, final PhaseCorrectionSettings phaseCorrectionSettings, double firstDataOffset, double sweepWidth) {
 
-		Number[] deltaAxisPPM = spectrumData.chemicalShift;
+		Number[] deltaAxisPPM = spectrumData.frequency;
 		//
 		double leftPhaseChange = 0;
 		double rightPhaseChange = 0;

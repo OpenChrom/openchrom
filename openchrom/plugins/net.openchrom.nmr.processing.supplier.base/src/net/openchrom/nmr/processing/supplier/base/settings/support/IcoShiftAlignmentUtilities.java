@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings.support;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,8 +20,8 @@ import java.util.List;
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
-import org.eclipse.chemclipse.nmr.model.core.SimpleNMRSignal;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 import org.ejml.simple.SimpleMatrix;
 
 public class IcoShiftAlignmentUtilities {
@@ -31,7 +32,6 @@ public class IcoShiftAlignmentUtilities {
 		private T stop;
 
 		public Interval(T start, T stop) {
-
 			this.start = start;
 			this.stop = stop;
 		}
@@ -101,17 +101,45 @@ public class IcoShiftAlignmentUtilities {
 			} else {
 				filteredSpectrumMeasurement.setDataName("Calibration");
 			}
-			List<SimpleNMRSignal> newSignals = new ArrayList<>();
+			List<IcoShiftSignal> newSignals = new ArrayList<>();
 			double[] dataArray = result.extractVector(true, alignmentResultIndex).getMatrix().getData();
 			for(int i = 0; i < dataArray.length; i++) {
-				newSignals.add(new SimpleNMRSignal(chemicalShiftAxis[i], dataArray[i], 0.0d, null));
-				// SimpleNMRSignal(Number chemicalShift, Number real, Number imaginary, BigDecimal scalingFactor)
-				// => no imaginary part and no scaling factor
+				newSignals.add(new IcoShiftSignal(chemicalShiftAxis[i], dataArray[i]));
 			}
 			alignmentResultIndex++;
 			filteredSpectrumMeasurement.setSignals(newSignals);
 			results.add(filteredSpectrumMeasurement);
 		}
 		return results;
+	}
+
+	private static final class IcoShiftSignal implements SpectrumSignal {
+
+		private double ppm;
+		private double real;
+
+		public IcoShiftSignal(double ppm, double real) {
+			this.ppm = ppm;
+			this.real = real;
+		}
+
+		@Override
+		public BigDecimal getFrequency() {
+
+			return BigDecimal.valueOf(ppm);
+		}
+
+		@Override
+		public Number getAbsorptiveIntensity() {
+
+			return real;
+		}
+
+		@Override
+		public Number getDispersiveIntensity() {
+
+			// no imaginary part
+			return 0.0d;
+		}
 	}
 }

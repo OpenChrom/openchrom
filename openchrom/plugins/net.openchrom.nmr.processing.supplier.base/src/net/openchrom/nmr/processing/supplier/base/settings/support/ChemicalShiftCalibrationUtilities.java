@@ -35,7 +35,7 @@ public class ChemicalShiftCalibrationUtilities {
 	public static double[] getChemicalShiftAxis(Collection<? extends SpectrumMeasurement> experimentalDatasetsList) {
 
 		SpectrumMeasurement measurementNMR = experimentalDatasetsList.iterator().next();
-		return measurementNMR.getSignals().stream().mapToDouble(value -> value.getChemicalShift().doubleValue()).toArray();
+		return measurementNMR.getSignals().stream().mapToDouble(value -> value.getFrequency().doubleValue()).toArray();
 	}
 
 	public static int[] getActualPeakPositions(Interval<Integer> intervalIndices, SimpleMatrix calibratedData) {

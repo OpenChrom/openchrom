@@ -165,7 +165,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 			r++;
 			List<ComplexSpectrumSignal> newSignals = new ArrayList<>();
 			for(int c = 0; c < rowVector.length; c++) {
-				newSignals.add(new ComplexSpectrumSignal(complexSpectrumData.chemicalShift[c], new Complex(rowVector[c], 0)));
+				newSignals.add(new ComplexSpectrumSignal(complexSpectrumData.frequency[c], new Complex(rowVector[c], 0)));
 			}
 			FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(measurementNMR);
 			filtered.setSignals(newSignals);
