@@ -69,7 +69,9 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		UtilityFunctions.leftShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
 		List<FFTSpectrumSignal> newSignals = new ArrayList<>();
 		for(int i = 0; i < nmrSpectrumProcessed.length; i++) {
-			newSignals.add(new FFTSpectrumSignal(step.multiply(BigDecimal.valueOf(i)), nmrSpectrumProcessed[i]));
+			// api requires from high to low, so start with higest order
+			BigDecimal shift = step.multiply(BigDecimal.valueOf(nmrSpectrumProcessed.length - 1 - i));
+			newSignals.add(new FFTSpectrumSignal(shift, nmrSpectrumProcessed[i]));
 		}
 		return new FFTFilteredMeasurement(measurement, newSignals);
 	}
@@ -80,7 +82,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		return NAME;
 	}
 
-	public static Complex[] fourierTransformNmrData(Complex[] fid) {
+	private static Complex[] fourierTransformNmrData(Complex[] fid) {
 
 		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
 		Complex[] nmrSpectrum = fFourierTransformer.transform(fid, TransformType.FORWARD);
