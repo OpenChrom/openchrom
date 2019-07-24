@@ -124,6 +124,13 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 			throw new IllegalArgumentException("Current length can't be 0");
 		}
 		int lowerBound = factor == ZeroFillingFactor.AUTO ? 2 : factor.getValue();
-		return Math.max(lowerBound, (int)Math.pow(lowerBound, (int)(Math.ceil((Math.log(currentLenth) / Math.log(lowerBound))))));
+		if(lowerBound >= currentLenth) {
+			return lowerBound;
+		}
+		int value = 1;
+		while(value < currentLenth) {
+			value = value << 1;
+		}
+		return value;
 	}
 }
