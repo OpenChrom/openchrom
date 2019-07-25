@@ -125,7 +125,7 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 		/*
 		 * to be used later on with the GUI
 		 */
-		double phaseCorrectionTermA = (phasingPivotpoint - (firstDataOffset - sweepWidth));
+		double phaseCorrectionTermA = (phasingPivotpoint - firstDataOffset);
 		double phaseCorrectionTermB = phaseCorrectionTermA / sweepWidth;
 		double phaseCorrectionTermC = Math.round(complexSize * phaseCorrectionTermB);
 		double rightPhaseCorrectionleftPhase = -(leftPhaseCorrection[(int)phaseCorrectionTermC]);
