@@ -1,8 +1,8 @@
 package net.openchrom.nmr.processing.supplier.base.settings;
 
-import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
+import java.util.Observable;
 
-public class PhaseCorrectionSettings implements IProcessorSettings {
+public class PhaseCorrectionSettings extends Observable {
 
 	public enum PivotPointSelection {
 		LEFT("pivot @ far left end of the spectrum"), //
@@ -38,6 +38,7 @@ public class PhaseCorrectionSettings implements IProcessorSettings {
 	public void setDspPhaseFactor(double dspPhaseFactor) {
 
 		this.dspPhaseFactor = dspPhaseFactor;
+		fireUpdate();
 	}
 
 	public PivotPointSelection getPivotPointSelection() {
@@ -48,6 +49,7 @@ public class PhaseCorrectionSettings implements IProcessorSettings {
 	public void setPivotPointSelection(PivotPointSelection pivotPointSelection) {
 
 		this.pivotPointSelection = pivotPointSelection;
+		fireUpdate();
 	}
 
 	public double getZeroOrderPhaseCorrection() {
@@ -58,6 +60,7 @@ public class PhaseCorrectionSettings implements IProcessorSettings {
 	public void setZeroOrderPhaseCorrection(double zeroOrderPhaseCorrection) {
 
 		this.zeroOrderPhaseCorrection = zeroOrderPhaseCorrection;
+		fireUpdate();
 	}
 
 	public double getFirstOrderPhaseCorrection() {
@@ -68,6 +71,7 @@ public class PhaseCorrectionSettings implements IProcessorSettings {
 	public void setFirstOrderPhaseCorrection(double firstOrderPhaseCorrection) {
 
 		this.firstOrderPhaseCorrection = firstOrderPhaseCorrection;
+		fireUpdate();
 	}
 
 	public double getUserDefinedPivotPointValue() {
@@ -78,5 +82,12 @@ public class PhaseCorrectionSettings implements IProcessorSettings {
 	public void setUserDefinedPivotPointValue(double userDefinedPivotPointValue) {
 
 		this.userDefinedPivotPointValue = userDefinedPivotPointValue;
+		fireUpdate();
+	}
+
+	private void fireUpdate() {
+
+		setChanged();
+		notifyObservers(this);
 	}
 }

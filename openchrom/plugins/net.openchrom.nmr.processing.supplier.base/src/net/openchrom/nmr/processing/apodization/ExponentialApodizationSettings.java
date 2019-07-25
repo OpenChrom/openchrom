@@ -11,22 +11,17 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.apodization;
 
-import java.io.Serializable;
-
-import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 import org.eclipse.chemclipse.support.settings.DoubleSettingsProperty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ExponentialApodizationSettings implements IProcessorSettings, Serializable {
+public class ExponentialApodizationSettings {
 
-	private static final long serialVersionUID = 2901106514027930353L;
 	@JsonProperty(value = "Exponential Line Broadening Factor", defaultValue = "0.0")
 	@DoubleSettingsProperty()
 	private double exponentialLineBroadeningFactor = 0;
 
 	public ExponentialApodizationSettings() {
-
 	}
 
 	public double getExponentialLineBroadeningFactor() {

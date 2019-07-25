@@ -11,24 +11,19 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings;
 
-import java.io.Serializable;
-
-import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 import org.eclipse.chemclipse.support.settings.EnumSelectionSettingProperty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
-public class ZeroFillingSettings implements IProcessorSettings, Serializable {
+public class ZeroFillingSettings {
 
-	private static final long serialVersionUID = 6451885381492864060L;
 	@JsonProperty(value = "Zero Filling", defaultValue = "AUTO")
 	@EnumSelectionSettingProperty
 	private ZeroFillingFactor zeroFillingFactor = ZeroFillingFactor.AUTO;
 
 	public ZeroFillingSettings() {
-
 	}
 
 	public ZeroFillingFactor getZeroFillingFactor() {

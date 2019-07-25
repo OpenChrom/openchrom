@@ -11,12 +11,11 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings;
 
-import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 import org.eclipse.chemclipse.support.settings.IntSettingsProperty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class BaselineCorrectionSettings implements IProcessorSettings {
+public class BaselineCorrectionSettings {
 
 	static final int DEFAULT_OMIT_PERCENT_OF_SPECTRUM = 5;
 	static final int DEFUALT_NUMBER_OF_ITERATIONS = 1000;
@@ -35,7 +34,6 @@ public class BaselineCorrectionSettings implements IProcessorSettings {
 	private int polynomialOrder = 2;
 
 	public BaselineCorrectionSettings() {
-
 	}
 
 	public int getPolynomialOrder() {

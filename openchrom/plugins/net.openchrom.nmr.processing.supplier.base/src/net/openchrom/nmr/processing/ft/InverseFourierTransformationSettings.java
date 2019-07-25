@@ -11,7 +11,5 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.ft;
 
-import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
-
-public class InverseFourierTransformationSettings implements IProcessorSettings {
+public class InverseFourierTransformationSettings {
 }

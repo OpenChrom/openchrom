@@ -11,19 +11,17 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings;
 
-import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 import org.eclipse.chemclipse.support.settings.DoubleSettingsProperty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GaussianApodizationSettings implements IProcessorSettings {
+public class GaussianApodizationSettings {
 
 	@JsonProperty(value = "Gaussian Line Broadening Factor", defaultValue = "0.0")
 	@DoubleSettingsProperty()
 	private double gaussianLineBroadeningFactor = 0;
 
 	public GaussianApodizationSettings() {
-
 	}
 
 	public void setGaussianLineBroadeningFactor(double gaussianLineBroadeningFactor) {

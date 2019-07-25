@@ -11,11 +11,9 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings;
 
-import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
-
 import net.openchrom.nmr.processing.phasecorrection.AutoPhaseCorrectionProcessor.PhaseCorrectionValue;
 
-public class AutoPhaseCorrectionSettings implements IProcessorSettings {
+public class AutoPhaseCorrectionSettings {
 
 	static final double DEFAULT_PENALTY_FACTORY = 1E-9 / 5;
 	static final int DEFAULT_NUMBER_OF_OPTIMIZATION_CYCLES = 1;
