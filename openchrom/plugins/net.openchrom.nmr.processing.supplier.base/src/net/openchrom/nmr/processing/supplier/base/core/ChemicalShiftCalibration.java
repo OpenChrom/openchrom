@@ -105,7 +105,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 	 */
 	public SimpleMatrix calibrate(Collection<? extends SpectrumMeasurement> experimentalDatasetsList, ChemicalShiftCalibrationSettings calibrationSettings) {
 
-		IcoShiftAlignmentSettings alignmentSettings = generateAlignmentSettings();
+		IcoShiftAlignmentSettings alignmentSettings = generateAlignmentSettings(calibrationSettings);
 		IcoShiftAlignment icoShiftAlignment = new IcoShiftAlignment();
 		if(!checkSettingsForPeakPosition(alignmentSettings, calibrationSettings)) {
 			throw new IllegalArgumentException("Peak Position in calibration settings and alignment settings does not match.");
@@ -220,15 +220,20 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 	 * @author Alexander Stark
 	 *
 	 */
-	private static IcoShiftAlignmentSettings generateAlignmentSettings() {
+	private static IcoShiftAlignmentSettings generateAlignmentSettings(ChemicalShiftCalibrationSettings calibrationSettings) {
 
 		IcoShiftAlignmentSettings alignmentSettings = new IcoShiftAlignmentSettings();
 		//
 		alignmentSettings.setShiftCorrectionType(IcoShiftAlignmentShiftCorrectionType.BEST);
 		//
 		alignmentSettings.setAlignmentType(IcoShiftAlignmentType.SINGLE_PEAK);
-		alignmentSettings.setSinglePeakLowerBorder(0.05);// changed from -0.05
-		alignmentSettings.setSinglePeakHigherBorder(-0.05);// changed from 0.05
+		/*
+		 * It can be assumed that deviations (if any) are covered by this range
+		 * from 0.05 to -0.05 ppm. A larger range means that impurities or other
+		 * peaks could be misused for calibration.
+		 */
+		alignmentSettings.setSinglePeakLowerBorder(calibrationSettings.getRangeAroundCalibrationSignal() / 2);
+		alignmentSettings.setSinglePeakHigherBorder(-calibrationSettings.getRangeAroundCalibrationSignal() / 2);
 		//
 		alignmentSettings.setGapFillingType(IcoShiftAlignmentGapFillingType.MARGIN);
 		return alignmentSettings;

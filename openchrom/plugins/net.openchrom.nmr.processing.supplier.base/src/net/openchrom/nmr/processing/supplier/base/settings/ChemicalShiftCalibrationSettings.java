@@ -26,6 +26,7 @@ public class ChemicalShiftCalibrationSettings {
 	private double locationOfCauchyDistribution = 0;
 	private double scaleOfCauchyDistribution = 0.01;
 	private double rangeOfCauchyDistribution = 2;
+	private double rangeAroundCalibrationSignal = 0.1;
 
 	/**
 	 * getLocationOfCauchyDistribution returns the location parameter of the
@@ -103,5 +104,35 @@ public class ChemicalShiftCalibrationSettings {
 	public void setRangeOfCauchyDistribution(double rangeOfCauchyDistribution) {
 
 		this.rangeOfCauchyDistribution = rangeOfCauchyDistribution;
+	}
+
+	/**
+	 * getRangeAroundCalibrationSignal returns the range parameter used for the
+	 * selection of the calibration signal. This parameter describes the width
+	 * of the considered section around the observed peak of the internal
+	 * standard.
+	 *
+	 * @param getRangeAroundCalibrationSignal
+	 */
+	public double getRangeAroundCalibrationSignal() {
+
+		return rangeAroundCalibrationSignal;
+	}
+
+	/**
+	 * setRangeAroundCalibrationSignal sets the range parameter used for the
+	 * selection of the calibration signal.
+	 * <p>
+	 * By default, the value is set to 0.1.
+	 * <p>
+	 * It can be assumed that deviations (if any) are covered by this range
+	 * from 0.05 to -0.05 ppm. A larger range means that impurities or other
+	 * peaks could be misused for calibration.
+	 *
+	 * @param setRangeAroundCalibrationSignal
+	 */
+	public void setRangeAroundCalibrationSignal(double rangeAroundCalibrationSignal) {
+
+		this.rangeAroundCalibrationSignal = rangeAroundCalibrationSignal;
 	}
 }
