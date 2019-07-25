@@ -49,10 +49,9 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 
 		SpectrumMeasurement measurement = context.getFilteredObject();
 		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurement);
-		double firstDataOffset = spectrumData.frequency.length == 0 ? 0 : spectrumData.frequency[0].doubleValue();
 		AcquisitionParameter parameter = measurement.getAcquisitionParameter();
 		double sweepWidth = parameter.toPPM(parameter.getSpectralWidth()).doubleValue();
-		Complex[] phaseCorrection = perform(spectrumData, context.getFilterConfig(), firstDataOffset, sweepWidth);
+		Complex[] phaseCorrection = perform(spectrumData, context.getFilterConfig(), parameter.toPPM(parameter.getSpectralOffset()).doubleValue(), sweepWidth);
 		for(int i = 0; i < phaseCorrection.length; i++) {
 			spectrumData.signals[i] = spectrumData.signals[i].multiply(phaseCorrection[i]);
 		}
@@ -63,7 +62,7 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 
 	private static Complex[] perform(SpectrumData spectrumData, final PhaseCorrectionSettings phaseCorrectionSettings, double firstDataOffset, double sweepWidth) {
 
-		Number[] deltaAxisPPM = spectrumData.frequency;
+		Number[] deltaAxisPPM = spectrumData.chemicalShift;
 		//
 		double leftPhaseChange = 0;
 		double rightPhaseChange = 0;
