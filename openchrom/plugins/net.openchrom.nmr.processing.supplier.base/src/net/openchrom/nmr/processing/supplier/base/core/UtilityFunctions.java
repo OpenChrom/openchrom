@@ -70,7 +70,7 @@ public class UtilityFunctions {
 			}
 			i++;
 		}
-		return new SpectrumData(array, frequency, chemicalShift, maxIndex);
+		return new SpectrumData(array, frequency, chemicalShift, maxIndex, parameter);
 	}
 
 	public double[] generateLinearlySpacedVector(double minVal, double maxVal, int points) {
@@ -192,12 +192,14 @@ public class UtilityFunctions {
 		public BigDecimal[] frequency;
 		public BigDecimal[] chemicalShift;
 		public int maxIndex;
+		public AcquisitionParameter parameter;
 
-		public SpectrumData(Complex[] array, BigDecimal[] frequency, BigDecimal[] chemicalShift, int maxIndex) {
+		public SpectrumData(Complex[] array, BigDecimal[] frequency, BigDecimal[] chemicalShift, int maxIndex, AcquisitionParameter parameter) {
 			this.signals = array;
 			this.frequency = frequency;
 			this.chemicalShift = chemicalShift;
 			this.maxIndex = maxIndex;
+			this.parameter = parameter;
 		}
 
 		public List<SpectrumSignal> toSignal() {
