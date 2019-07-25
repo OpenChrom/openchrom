@@ -19,7 +19,9 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.math3.complex.Complex;
+import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 
 public class UtilityFunctions {
@@ -37,24 +39,38 @@ public class UtilityFunctions {
 		return new ComplexFIDData(array, times);
 	}
 
-	public static SpectrumData toComplexSpectrumData(Collection<? extends SpectrumSignal> signals) {
+	public static Complex[] toComplexArray(List<? extends SpectrumSignal> signals) {
 
 		Complex[] array = new Complex[signals.size()];
+		for(int i = 0; i < array.length; i++) {
+			SpectrumSignal signal = signals.get(i);
+			array[i] = new Complex(signal.getY(), signal.getImaginaryY());
+		}
+		return array;
+	}
+
+	public static SpectrumData toComplexSpectrumData(SpectrumMeasurement measurement) {
+
+		List<? extends SpectrumSignal> signals = measurement.getSignals();
+		AcquisitionParameter parameter = measurement.getAcquisitionParameter();
+		Complex[] array = new Complex[signals.size()];
 		BigDecimal[] chemicalShift = new BigDecimal[signals.size()];
+		BigDecimal[] frequency = new BigDecimal[signals.size()];
 		int i = 0;
 		int maxIndex = 0;
 		double maxValue = Double.MIN_NORMAL;
 		for(SpectrumSignal signal : signals) {
 			double real = signal.getY();
 			array[i] = new Complex(real, signal.getImaginaryY());
-			chemicalShift[i] = signal.getFrequency();
+			frequency[i] = signal.getFrequency();
+			chemicalShift[i] = parameter.toPPM(frequency[i]);
 			if(real > maxValue) {
 				maxValue = real;
 				maxIndex = i;
 			}
 			i++;
 		}
-		return new SpectrumData(array, chemicalShift, maxIndex);
+		return new SpectrumData(array, frequency, chemicalShift, maxIndex);
 	}
 
 	public double[] generateLinearlySpacedVector(double minVal, double maxVal, int points) {
@@ -174,11 +190,13 @@ public class UtilityFunctions {
 
 		public Complex[] signals;
 		public BigDecimal[] frequency;
+		public BigDecimal[] chemicalShift;
 		public int maxIndex;
 
-		public SpectrumData(Complex[] array, BigDecimal[] chemicalShift, int maxIndex) {
+		public SpectrumData(Complex[] array, BigDecimal[] frequency, BigDecimal[] chemicalShift, int maxIndex) {
 			this.signals = array;
-			this.frequency = chemicalShift;
+			this.frequency = frequency;
+			this.chemicalShift = chemicalShift;
 			this.maxIndex = maxIndex;
 		}
 

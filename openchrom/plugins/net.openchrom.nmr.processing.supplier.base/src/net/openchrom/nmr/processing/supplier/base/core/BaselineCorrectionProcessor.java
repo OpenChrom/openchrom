@@ -20,13 +20,14 @@ import java.util.function.DoubleUnaryOperator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
-import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
+import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.osgi.service.component.annotations.Component;
@@ -50,18 +51,19 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 	}
 
 	@Override
-	protected FilteredMeasurement<?> doFiltering(SpectrumMeasurement measurement, BaselineCorrectionSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, BaselineCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
+		BaselineCorrectionSettings config = context.getFilterConfig();
 		// read parameters
-		int fittingConstantU = settings.getFittingConstantU(); // 4 recommended from paper but probably from grotty data?
-		int fittingConstantV = settings.getFittingConstantV(); // 2-3 recommended from paper
-		double negligibleFactorMinimum = settings.getFactorForNegligibleBaselineCorrection();// 0.125 from paper
-		double cutPercentage = settings.getOmitPercentOfTheSpectrum(); // ignore this % of spectrum each side
-		int maximumIterations = settings.getNumberOfIterations();
+		int fittingConstantU = config.getFittingConstantU(); // 4 recommended from paper but probably from grotty data?
+		int fittingConstantV = config.getFittingConstantV(); // 2-3 recommended from paper
+		double negligibleFactorMinimum = config.getFactorForNegligibleBaselineCorrection();// 0.125 from paper
+		double cutPercentage = config.getOmitPercentOfTheSpectrum(); // ignore this % of spectrum each side
+		int maximumIterations = config.getNumberOfIterations();
 		// init data
-		List<WeightedObservedPointSpectrumSignal> signals = initSignalData(measurement, cutPercentage);
+		List<WeightedObservedPointSpectrumSignal> signals = initSignalData(context.getFilteredObject(), cutPercentage);
 		// start the fitting
-		final PolynomialCurveFitter baselineFitter = PolynomialCurveFitter.create(settings.getPolynomialOrder());
+		final PolynomialCurveFitter baselineFitter = PolynomialCurveFitter.create(config.getPolynomialOrder());
 		double sigmaOne = Double.POSITIVE_INFINITY; // starting value: infinity
 		// iterative baseline correction
 		SubMonitor subMonitor = SubMonitor.convert(monitor, getName(), maximumIterations);
@@ -99,7 +101,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 		if(iteration == maximumIterations - 1) {
 			messageConsumer.addWarnMessage(getName(), "maximum iterations reached!");
 		}
-		FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(measurement);
+		FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(context);
 		filtered.setSignals(signals);
 		return filtered;
 	}

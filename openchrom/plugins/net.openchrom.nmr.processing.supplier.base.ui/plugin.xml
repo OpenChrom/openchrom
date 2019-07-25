@@ -17,5 +17,15 @@
             uri="fragment.e4xmi">
       </fragment>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettings"
+            class="net.openchrom.nmr.processing.supplier.base.ui.PhaseCorrectionSettingsAdapterFactory">
+         <adapter
+               type="org.eclipse.chemclipse.ux.extension.xxd.ui.editors.EditorExtension">
+         </adapter>
+      </factory>
+   </extension>
 
 </plugin>

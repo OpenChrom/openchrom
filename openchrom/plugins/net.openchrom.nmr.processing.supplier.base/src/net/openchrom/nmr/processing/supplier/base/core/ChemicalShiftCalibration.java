@@ -23,6 +23,7 @@ import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
+import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.ejml.simple.SimpleMatrix;
 import org.osgi.service.component.annotations.Component;
@@ -160,14 +161,14 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 		Collection<SpectrumMeasurement> result = new ArrayList<>();
 		int r = 0;
 		for(SpectrumMeasurement measurementNMR : experimentalDatasetsList) {
-			SpectrumData complexSpectrumData = UtilityFunctions.toComplexSpectrumData(measurementNMR.getSignals());
+			SpectrumData complexSpectrumData = UtilityFunctions.toComplexSpectrumData(measurementNMR);
 			double[] rowVector = calibratedData.extractVector(true, r).getMatrix().getData();
 			r++;
 			List<ComplexSpectrumSignal> newSignals = new ArrayList<>();
 			for(int c = 0; c < rowVector.length; c++) {
 				newSignals.add(new ComplexSpectrumSignal(complexSpectrumData.frequency[c], new Complex(rowVector[c], 0)));
 			}
-			FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(measurementNMR);
+			FilteredSpectrumMeasurement<Void> filtered = new FilteredSpectrumMeasurement<>(FilterContext.create(measurementNMR, null, null));
 			filtered.setSignals(newSignals);
 			result.add(filtered);
 		}

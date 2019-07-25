@@ -215,9 +215,9 @@ public class NMRSpectrumSelection {
 						public void accept(Collection<? extends IMeasurement> t) {
 
 							for(IMeasurement measurement : t) {
-								if(items.get(measurement) == null && measurement instanceof Filtered<?>) {
-									Filtered<?> filtered = (Filtered<?>)measurement;
-									Object filteredObject = filtered.getFilteredObject();
+								if(items.get(measurement) == null && measurement instanceof Filtered<?, ?>) {
+									Filtered<?, ?> filtered = (Filtered<?, ?>)measurement;
+									Object filteredObject = filtered.getFilterContext().getFilteredObject();
 									IDataNMRSelection dataNMRSelection = items.get(filteredObject);
 									if(dataNMRSelection != null) {
 										if(measurement instanceof IComplexSignalMeasurement<?>) {
@@ -263,7 +263,7 @@ public class NMRSpectrumSelection {
 			return "-";
 		}
 		if(measurement instanceof Filtered) {
-			Object object = ((Filtered<?>)measurement).getFilteredObject();
+			Object object = ((Filtered<?, ?>)measurement).getFilterContext().getFilteredObject();
 			if(object instanceof IMeasurement) {
 				return getName((IMeasurement)object) + " > " + measurement.getDataName();
 			}

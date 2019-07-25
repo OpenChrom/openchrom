@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
@@ -88,10 +89,11 @@ public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IC
 					// try to determine better settings...
 					settings = createConfiguration(measurement);
 				}
-				FilteredMeasurement<?> filteredMeasurement = doFiltering(nmrMeasurement, settings, messageConsumer, subMonitor.split(100));
+				IMeasurement filteredMeasurement = doFiltering(FilterContext.create(nmrMeasurement, this, settings), messageConsumer, subMonitor.split(100));
 				if(filteredMeasurement != null) {
-					filteredMeasurement.setDataName(getName());
-					filteredMeasurement.setFilter(this);
+					if(filteredMeasurement instanceof FilteredMeasurement<?, ?>) {
+						filteredMeasurement.setDataName(getName());
+					}
 					filtered.add(filteredMeasurement);
 				} else {
 					// nothing filtered, add the original one
@@ -107,7 +109,7 @@ public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IC
 
 	protected abstract boolean acceptsIMeasurement(IMeasurement measurement);
 
-	protected abstract FilteredMeasurement<?> doFiltering(SubType measurement, ConfigType settings, MessageConsumer messageConsumer, IProgressMonitor monitor);
+	protected abstract IMeasurement doFiltering(FilterContext<SubType, ConfigType> context, MessageConsumer messageConsumer, IProgressMonitor monitor);
 
 	protected boolean isValidConfig(ConfigType config) {
 

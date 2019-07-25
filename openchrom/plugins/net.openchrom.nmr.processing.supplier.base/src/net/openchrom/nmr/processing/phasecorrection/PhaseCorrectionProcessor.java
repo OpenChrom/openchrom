@@ -13,13 +13,14 @@
 package net.openchrom.nmr.processing.phasecorrection;
 
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
+import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
@@ -44,17 +45,18 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 	}
 
 	@Override
-	protected FilteredMeasurement<?> doFiltering(SpectrumMeasurement measurement, PhaseCorrectionSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, PhaseCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
-		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurement.getSignals());
+		SpectrumMeasurement measurement = context.getFilteredObject();
+		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurement);
 		double firstDataOffset = spectrumData.frequency.length == 0 ? 0 : spectrumData.frequency[0].doubleValue();
 		AcquisitionParameter parameter = measurement.getAcquisitionParameter();
 		double sweepWidth = parameter.toPPM(parameter.getSpectralWidth()).doubleValue();
-		Complex[] phaseCorrection = perform(spectrumData, settings, firstDataOffset, sweepWidth);
+		Complex[] phaseCorrection = perform(spectrumData, context.getFilterConfig(), firstDataOffset, sweepWidth);
 		for(int i = 0; i < phaseCorrection.length; i++) {
 			spectrumData.signals[i] = spectrumData.signals[i].multiply(phaseCorrection[i]);
 		}
-		FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(measurement);
+		FilteredSpectrumMeasurement<PhaseCorrectionSettings> filtered = new FilteredSpectrumMeasurement<PhaseCorrectionSettings>(context);
 		filtered.setSignals(spectrumData.toSignal());
 		return filtered;
 	}

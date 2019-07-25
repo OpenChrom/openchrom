@@ -17,12 +17,13 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
+import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
@@ -38,7 +39,6 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 	private static final String MARKER = DigitalFilterRemoval.class.getName() + ".filtered";
 
 	public DigitalFilterRemoval() {
-
 		super(DigitalFilterRemovalSettings.class);
 	}
 
@@ -55,27 +55,26 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 	}
 
 	@Override
-	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, DigitalFilterRemovalSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, DigitalFilterRemovalSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
-		double multiplicationFactor = settings.getDcOffsetMultiplicationFactor();
-		int leftRotationFid = (int)settings.getLeftRotationFid();
+		DigitalFilterRemovalSettings config = context.getFilterConfig();
+		double multiplicationFactor = config.getDcOffsetMultiplicationFactor();
+		int leftRotationFid = config.getLeftRotationFid();
 		if(Double.isNaN(leftRotationFid) && Double.isNaN(multiplicationFactor)) {
 			messageConsumer.addInfoMessage(FILTER_NAME, "No Left Rotation value and no DC offset specified, skipp processing");
 			return null;
 		}
-		FilteredFIDMeasurement filteredFIDMeasurement = new FilteredFIDMeasurement(measurement);
-		ComplexFIDData fidData = UtilityFunctions.toComplexFIDData(measurement.getSignals());
+		FilteredFIDMeasurement<DigitalFilterRemovalSettings> filteredFIDMeasurement = new FilteredFIDMeasurement<DigitalFilterRemovalSettings>(context);
+		ComplexFIDData fidData = UtilityFunctions.toComplexFIDData(context.getFilteredObject().getSignals());
 		if(Double.isNaN(multiplicationFactor)) {
 			messageConsumer.addInfoMessage(FILTER_NAME, "No DC Offset to remove");
 		} else {
 			fidData.signals[0] = fidData.signals[0].multiply(multiplicationFactor);
 			messageConsumer.addInfoMessage(FILTER_NAME, "DC Offset was removed");
 		}
-		if(Double.isNaN(leftRotationFid)) {
-			messageConsumer.addInfoMessage(FILTER_NAME, "No left rotation value was given, skipp processing");
-		} else if(Math.abs(leftRotationFid) > 0.0) {
+		if(Math.abs(leftRotationFid) > 0) {
 			DigitalFilterRemoval.removeDigitalFilter(fidData, leftRotationFid, messageConsumer);
-			messageConsumer.addInfoMessage(FILTER_NAME, "Digital FIlter was removed");
+			messageConsumer.addInfoMessage(FILTER_NAME, "Digital Filter was removed");
 		} else {
 			messageConsumer.addWarnMessage(FILTER_NAME, "Left Rotation value must be greater than zero, skipp processing");
 		}

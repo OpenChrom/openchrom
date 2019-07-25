@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
+import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.ejml.simple.SimpleMatrix;
 
 public class IcoShiftAlignmentUtilities {
@@ -95,7 +96,7 @@ public class IcoShiftAlignmentUtilities {
 		List<IMeasurement> results = new ArrayList<>();
 		//
 		for(SpectrumMeasurement measurement : collection) {
-			FilteredSpectrumMeasurement filteredSpectrumMeasurement = new FilteredSpectrumMeasurement(measurement);
+			FilteredSpectrumMeasurement<Void> filteredSpectrumMeasurement = new FilteredSpectrumMeasurement<>(FilterContext.create(measurement, null, null));
 			if(processorName.contentEquals("Icoshift Alignment")) {
 				filteredSpectrumMeasurement.setDataName("IcoShift");
 			} else {

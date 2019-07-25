@@ -30,12 +30,13 @@ import org.apache.commons.math3.random.GaussianRandomGenerator;
 import org.apache.commons.math3.random.JDKRandomGenerator;
 import org.apache.commons.math3.random.RandomVectorGenerator;
 import org.apache.commons.math3.random.UncorrelatedRandomVectorGenerator;
-import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
+import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
@@ -131,11 +132,11 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 	}
 
 	@Override
-	protected FilteredMeasurement<?> doFiltering(SpectrumMeasurement measurement, AutoPhaseCorrectionSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, AutoPhaseCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
-		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurement.getSignals());
-		perform(spectrumData, settings);
-		FilteredSpectrumMeasurement spectrumMeasurement = new FilteredSpectrumMeasurement(measurement);
+		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(context.getFilteredObject());
+		perform(spectrumData, context.getFilterConfig());
+		FilteredSpectrumMeasurement<AutoPhaseCorrectionSettings> spectrumMeasurement = new FilteredSpectrumMeasurement<AutoPhaseCorrectionSettings>(context);
 		spectrumMeasurement.setSignals(spectrumData.toSignal());
 		return spectrumMeasurement;
 	}

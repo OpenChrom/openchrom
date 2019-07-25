@@ -18,13 +18,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
+import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
@@ -48,16 +49,16 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 	}
 
 	@Override
-	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, ZeroFillingSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, ZeroFillingSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
-		List<? extends FIDSignal> signals = measurement.getSignals();
+		List<? extends FIDSignal> signals = context.getFilteredObject().getSignals();
 		int signalsize = signals.size();
 		if(signalsize < 2) {
 			messageConsumer.addErrorMessage(getName(), "At least two datapoints are requred for zerofilling");
 			return null;
 		}
-		ZeroFillingFactor zeroFillingFactor = settings.getZeroFillingFactor();
-		FilteredFIDMeasurement fidMeasurement = new FilteredFIDMeasurement(measurement);
+		ZeroFillingFactor zeroFillingFactor = context.getFilterConfig().getZeroFillingFactor();
+		FilteredFIDMeasurement<ZeroFillingSettings> fidMeasurement = new FilteredFIDMeasurement<>(context);
 		int zeroFillLength = getZeroFillLength(signalsize, zeroFillingFactor);
 		if(zeroFillLength == signalsize) {
 			return fidMeasurement;

@@ -15,12 +15,13 @@ package net.openchrom.nmr.processing.apodization;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
+import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
@@ -47,14 +48,14 @@ public class GaussianApodizationFunctionProcessor extends AbstractFIDSignalFilte
 	}
 
 	@Override
-	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, GaussianApodizationSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, GaussianApodizationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
-		double gaussianLineBroadeningFactor = settings.getGaussianLineBroadeningFactor();
+		double gaussianLineBroadeningFactor = context.getFilterConfig().getGaussianLineBroadeningFactor();
 		if(gaussianLineBroadeningFactor > 0) {
 			// gf=2*sqrt(log(2))/(pi*NmrData.gw);
 			BigDecimal gaussFactor = GAUS_CONSTANT.divide(PI.multiply(BigDecimal.valueOf(gaussianLineBroadeningFactor)), RoundingMode.HALF_UP);
-			FilteredFIDMeasurement fidMeasurement = new FilteredFIDMeasurement(measurement);
-			ComplexFIDData data = UtilityFunctions.toComplexFIDData(measurement.getSignals());
+			FilteredFIDMeasurement<GaussianApodizationSettings> fidMeasurement = new FilteredFIDMeasurement<GaussianApodizationSettings>(context);
+			ComplexFIDData data = UtilityFunctions.toComplexFIDData(context.getFilteredObject().getSignals());
 			for(int i = 0; i < data.times.length; i++) {
 				BigDecimal time = data.times[i];
 				// Gwfunc=exp(-(Timescale'/gf).^2);

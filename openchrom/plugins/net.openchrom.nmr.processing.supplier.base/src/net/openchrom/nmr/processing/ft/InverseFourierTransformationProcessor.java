@@ -23,21 +23,21 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.DataDimension;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
-import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
+import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
 import net.openchrom.nmr.processing.supplier.base.core.AbstractSpectrumSignalFilter;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
-import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class InverseFourierTransformationProcessor extends AbstractSpectrumSignalFilter<InverseFourierTransformationSettings> {
@@ -56,38 +56,30 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 	}
 
 	@Override
-	protected FilteredMeasurement<?> doFiltering(SpectrumMeasurement measurement, InverseFourierTransformationSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, InverseFourierTransformationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		// IFFT spectrum to fid
-		FilteredSpectrumMeasurement spectrumMeasurement = new FilteredSpectrumMeasurement(measurement);
-		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(spectrumMeasurement.getSignals());
-		Complex[] spectrumSignals = spectrumData.signals;
-		Complex[] fid = inverseFourierTransformData(spectrumSignals);
+		SpectrumMeasurement spectrumMeasurement = context.getFilteredObject();
+		Complex[] spectrumSignals = UtilityFunctions.toComplexArray(spectrumMeasurement.getSignals());
+		UtilityFunctions.rightShiftNMRComplexData(spectrumSignals, spectrumSignals.length / 2);
+		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
+		Complex[] fid = fFourierTransformer.transform(spectrumSignals, TransformType.INVERSE);
 		List<InverseFFTSpectrumSignal> signals = new ArrayList<>();
-		BigDecimal max = measurement.getAcquisitionParameter().getAcquisitionTime();
+		BigDecimal max = spectrumMeasurement.getAcquisitionParameter().getAcquisitionTime();
 		BigDecimal step = max.divide(BigDecimal.valueOf((fid.length) - 1).setScale(10), RoundingMode.HALF_UP);
-		for(int i = 0; i < measurement.getAcquisitionParameter().getNumberOfPoints(); i++) {
+		for(int i = 0; i < spectrumMeasurement.getAcquisitionParameter().getNumberOfPoints(); i++) {
 			signals.add(new InverseFFTSpectrumSignal(BigDecimal.valueOf(i).multiply(step), fid[i]));
 		}
-		return new InverseFFTFilteredMeasurement(measurement, signals);
+		return new InverseFFTFilteredMeasurement(context, signals);
 	}
 
-	public static Complex[] inverseFourierTransformData(Complex[] spectrum) {
-
-		// ArrayUtils.reverse(spectrum);
-		UtilityFunctions.rightShiftNMRComplexData(spectrum, spectrum.length / 2);
-		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
-		Complex[] fid = fFourierTransformer.transform(spectrum, TransformType.INVERSE);
-		return fid;
-	}
-
-	private static final class InverseFFTFilteredMeasurement extends FilteredMeasurement<SpectrumMeasurement> implements FIDMeasurement {
+	private static final class InverseFFTFilteredMeasurement extends FilteredMeasurement<SpectrumMeasurement, InverseFourierTransformationSettings> implements FIDMeasurement {
 
 		private static final long serialVersionUID = -3240032383041201512L;
 		private List<InverseFFTSpectrumSignal> signals;
 
-		public InverseFFTFilteredMeasurement(SpectrumMeasurement measurement, List<InverseFFTSpectrumSignal> signals) {
-			super(measurement);
+		public InverseFFTFilteredMeasurement(FilterContext<SpectrumMeasurement, InverseFourierTransformationSettings> filterContext, List<InverseFFTSpectrumSignal> signals) {
+			super(filterContext);
 			this.signals = Collections.unmodifiableList(signals);
 		}
 

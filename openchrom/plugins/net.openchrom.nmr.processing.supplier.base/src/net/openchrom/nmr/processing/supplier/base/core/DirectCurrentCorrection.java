@@ -17,7 +17,6 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.model.core.FilteredMeasurement;
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
@@ -27,6 +26,7 @@ import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
+import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
@@ -121,19 +121,20 @@ public class DirectCurrentCorrection extends AbstractComplexSignalFilter<DirectC
 	}
 
 	@Override
-	protected FilteredMeasurement<?> doFiltering(IComplexSignalMeasurement<?> measurement, DirectCurrentCorrectionSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<IComplexSignalMeasurement<?>, DirectCurrentCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
+		IComplexSignalMeasurement<?> measurement = context.getFilteredObject();
 		if(measurement instanceof FIDMeasurement) {
 			FIDMeasurement fid = (FIDMeasurement)measurement;
 			ComplexFIDData fidData = UtilityFunctions.toComplexFIDData(fid.getSignals());
 			directCurrentCorrectionFID(fidData);
-			FilteredFIDMeasurement filtered = new FilteredFIDMeasurement(fid);
+			FilteredFIDMeasurement<DirectCurrentCorrectionSettings> filtered = new FilteredFIDMeasurement<>(FilterContext.create(fid, this, context.getFilterConfig()));
 			filtered.setSignals(fidData.toSignal());
 			return filtered;
 		} else if(measurement instanceof SpectrumMeasurement) {
 			SpectrumMeasurement spectrum = (SpectrumMeasurement)measurement;
-			SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(spectrum.getSignals());
-			FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(spectrum);
+			SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(spectrum);
+			FilteredSpectrumMeasurement<DirectCurrentCorrectionSettings> filtered = new FilteredSpectrumMeasurement<>(FilterContext.create(spectrum, this, context.getFilterConfig()));
 			directCurrentCorrectionSpectrum(spectrumData);
 			filtered.setSignals(spectrumData.toSignal());
 			return filtered;

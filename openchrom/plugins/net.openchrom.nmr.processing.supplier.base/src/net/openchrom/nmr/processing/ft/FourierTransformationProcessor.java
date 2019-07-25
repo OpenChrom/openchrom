@@ -24,6 +24,7 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
@@ -32,6 +33,7 @@ import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
+import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
@@ -52,8 +54,9 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 	}
 
 	@Override
-	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, FourierTransformationSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, FourierTransformationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
+		FIDMeasurement measurement = context.getFilteredObject();
 		List<? extends FIDSignal> signals = measurement.getSignals();
 		int fillLength = ZeroFillingProcessor.getZeroFillLength(signals.size(), ZeroFillingFactor.AUTO);
 		if(fillLength != signals.size()) {
@@ -73,7 +76,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 			BigDecimal shift = step.multiply(BigDecimal.valueOf(nmrSpectrumProcessed.length - 1 - i)).add(offset);
 			newSignals.add(new FFTSpectrumSignal(shift, nmrSpectrumProcessed[i]));
 		}
-		return new FFTFilteredMeasurement(measurement, newSignals);
+		return new FFTFilteredMeasurement(context, newSignals);
 	}
 
 	@Override
@@ -89,13 +92,13 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		return nmrSpectrum;
 	}
 
-	private static final class FFTFilteredMeasurement extends FilteredMeasurement<FIDMeasurement> implements SpectrumMeasurement {
+	private static final class FFTFilteredMeasurement extends FilteredMeasurement<FIDMeasurement, FourierTransformationSettings> implements SpectrumMeasurement {
 
 		private static final long serialVersionUID = -3570180428815391262L;
 		private List<? extends SpectrumSignal> signals;
 
-		public FFTFilteredMeasurement(FIDMeasurement measurement, List<FFTSpectrumSignal> signals) {
-			super(measurement);
+		public FFTFilteredMeasurement(FilterContext<FIDMeasurement, FourierTransformationSettings> filterContext, List<FFTSpectrumSignal> signals) {
+			super(filterContext);
 			this.signals = Collections.unmodifiableList(signals);
 		}
 

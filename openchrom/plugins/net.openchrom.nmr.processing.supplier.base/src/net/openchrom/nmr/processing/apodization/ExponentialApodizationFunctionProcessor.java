@@ -14,12 +14,13 @@ package net.openchrom.nmr.processing.apodization;
 
 import java.math.BigDecimal;
 
-import org.eclipse.chemclipse.model.core.FilteredMeasurement;
+import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
+import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
@@ -45,13 +46,13 @@ public class ExponentialApodizationFunctionProcessor extends AbstractFIDSignalFi
 	}
 
 	@Override
-	protected FilteredMeasurement<?> doFiltering(FIDMeasurement measurement, ExponentialApodizationSettings settings, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, ExponentialApodizationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
-		double broadeningFactor = settings.getExponentialLineBroadeningFactor();
+		double broadeningFactor = context.getFilterConfig().getExponentialLineBroadeningFactor();
 		if(broadeningFactor > 0 || broadeningFactor < 0) {
 			BigDecimal factor = BigDecimal.valueOf(broadeningFactor);
-			FilteredFIDMeasurement fidMeasurement = new FilteredFIDMeasurement(measurement);
-			ComplexFIDData data = UtilityFunctions.toComplexFIDData(measurement.getSignals());
+			FilteredFIDMeasurement<ExponentialApodizationSettings> fidMeasurement = new FilteredFIDMeasurement<ExponentialApodizationSettings>(context);
+			ComplexFIDData data = UtilityFunctions.toComplexFIDData(context.getFilteredObject().getSignals());
 			for(int i = 0; i < data.times.length; i++) {
 				BigDecimal time = data.times[i];
 				// Lbfunc=exp(-Timescale'*pi*NmrData.lb);
@@ -61,8 +62,9 @@ public class ExponentialApodizationFunctionProcessor extends AbstractFIDSignalFi
 			}
 			fidMeasurement.setSignals(data.toSignal());
 			return fidMeasurement;
+		} else {
+			messageConsumer.addWarnMessage(FILTER_NAME, "ExponentialLineBroadeningFactor mut be greater or smaller than zero, skipped filtering");
+			return null;
 		}
-		messageConsumer.addWarnMessage(FILTER_NAME, "ExponentialLineBroadeningFactor mut be greater or smaller than zero, skipped filtering");
-		return null;
 	}
 }

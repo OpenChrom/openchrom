@@ -16,15 +16,15 @@ import java.io.Serializable;
 public class DigitalFilterRemovalSettings implements Serializable {
 
 	private static final long serialVersionUID = 4796560971210022576L;
-	private double leftRotationFid = Double.NaN;
+	private int leftRotationFid = 0;
 	private double dcOffsetMultiplicationFactor = Double.NaN;
 
-	public double getLeftRotationFid() {
+	public int getLeftRotationFid() {
 
 		return leftRotationFid;
 	}
 
-	public void setLeftRotationFid(double leftRotationFid) {
+	public void setLeftRotationFid(int leftRotationFid) {
 
 		this.leftRotationFid = leftRotationFid;
 	}
