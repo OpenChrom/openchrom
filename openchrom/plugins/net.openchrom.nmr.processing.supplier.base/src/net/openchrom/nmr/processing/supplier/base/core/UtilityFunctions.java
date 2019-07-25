@@ -190,9 +190,9 @@ public class UtilityFunctions {
 
 		public Complex[] signals;
 		public BigDecimal[] frequency;
-		public BigDecimal[] chemicalShift;
-		public int maxIndex;
-		public AcquisitionParameter parameter;
+		public final BigDecimal[] chemicalShift;
+		public final int maxIndex;
+		public final AcquisitionParameter parameter;
 
 		public SpectrumData(Complex[] array, BigDecimal[] frequency, BigDecimal[] chemicalShift, int maxIndex, AcquisitionParameter parameter) {
 			this.signals = array;
