@@ -3,10 +3,10 @@ package net.openchrom.nmr.processing.supplier.base.settings;
 import java.util.Observable;
 
 /**
- * this class is final, synchronized and {@link Observable} since it participates in the dynamic settings framework
+ * this class is final, synchronized, {@link Cloneable} and {@link Observable} since it participates in the dynamic settings framework
  *
  */
-public final class PhaseCorrectionSettings extends Observable {
+public final class PhaseCorrectionSettings extends Observable implements Cloneable {
 
 	public enum PivotPointSelection {
 		LEFT("pivot @ far left end of the spectrum"), //
@@ -118,5 +118,17 @@ public final class PhaseCorrectionSettings extends Observable {
 		}
 		builder.append("]");
 		return builder.toString();
+	}
+
+	@Override
+	public synchronized PhaseCorrectionSettings clone() throws CloneNotSupportedException {
+
+		PhaseCorrectionSettings settings = new PhaseCorrectionSettings();
+		settings.dspPhaseFactor = dspPhaseFactor;
+		settings.firstOrderPhaseCorrection = firstOrderPhaseCorrection;
+		settings.pivotPointSelection = pivotPointSelection;
+		settings.userDefinedPivotPointValue = userDefinedPivotPointValue;
+		settings.zeroOrderPhaseCorrection = zeroOrderPhaseCorrection;
+		return settings;
 	}
 }
