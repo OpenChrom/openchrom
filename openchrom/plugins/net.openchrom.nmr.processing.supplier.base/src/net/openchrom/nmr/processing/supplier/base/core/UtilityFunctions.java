@@ -73,7 +73,7 @@ public class UtilityFunctions {
 		return new SpectrumData(array, frequency, chemicalShift, maxIndex, parameter);
 	}
 
-	public double[] generateLinearlySpacedVector(double minVal, double maxVal, int points) {
+	public static double[] generateLinearlySpacedVector(double minVal, double maxVal, int points) {
 
 		double[] vector = new double[points];
 		for(int i = 0; i < points; i++) {

@@ -66,8 +66,6 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 		//
 		double leftPhaseChange = 0;
 		double rightPhaseChange = 0;
-		double firstOrderPhaseCorrection = 0;
-		double zeroOrderPhaseCorrection = 0;
 		Complex phaseCorrectionFactor = new Complex(0, (Math.PI / 180));
 		int complexSize = spectrumData.signals.length;
 		Complex phaseCorrectionComplexFactor;
@@ -81,8 +79,7 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 		// zeroOrderPhaseCorrection
 		rightPhaseChange = phaseCorrectionSettings.getZeroOrderPhaseCorrection();
 		//
-		UtilityFunctions utilityFunction = new UtilityFunctions();
-		double[] leftPhaseCorrection = utilityFunction.generateLinearlySpacedVector(0, 1, complexSize);
+		double[] leftPhaseCorrection = UtilityFunctions.generateLinearlySpacedVector(0, 1, complexSize);
 		for(int i = 0; i < leftPhaseCorrection.length; i++) {
 			leftPhaseCorrection[i] *= leftPhaseChange;
 		}
@@ -109,7 +106,7 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 				break;
 			case NOT_DEFINED:
 				// without setting pivot point
-				leftPhaseCorrectionDSP = utilityFunction.generateLinearlySpacedVector(0, 1, complexSize);
+				leftPhaseCorrectionDSP = UtilityFunctions.generateLinearlySpacedVector(0, 1, complexSize);
 				for(int i = 0; i < leftPhaseCorrectionDSP.length; i++) {
 					leftPhaseCorrectionDSP[i] *= dspPhaseFactor; // dspPhase
 				}
@@ -130,12 +127,6 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 		double phaseCorrectionTermC = Math.round(complexSize * phaseCorrectionTermB);
 		double rightPhaseCorrectionleftPhase = -(leftPhaseCorrection[(int)phaseCorrectionTermC]);
 		rightPhaseChange += rightPhaseCorrectionleftPhase;
-		//
-		firstOrderPhaseCorrection = phaseCorrectionSettings.getFirstOrderPhaseCorrection() + leftPhaseChange;
-		zeroOrderPhaseCorrection = phaseCorrectionSettings.getZeroOrderPhaseCorrection() + rightPhaseChange;
-		phaseCorrectionSettings.setFirstOrderPhaseCorrection(firstOrderPhaseCorrection);
-		phaseCorrectionSettings.setZeroOrderPhaseCorrection(zeroOrderPhaseCorrection);
-		// }
 		// generate correction array
 		Complex[] phaseCorrection = new Complex[leftPhaseCorrectionDSP.length];
 		for(int i = 0; i < leftPhaseCorrectionDSP.length; i++) {

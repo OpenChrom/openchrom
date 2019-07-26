@@ -2,7 +2,11 @@ package net.openchrom.nmr.processing.supplier.base.settings;
 
 import java.util.Observable;
 
-public class PhaseCorrectionSettings extends Observable {
+/**
+ * this class is final, synchronized and {@link Observable} since it participates in the dynamic settings framework
+ *
+ */
+public final class PhaseCorrectionSettings extends Observable {
 
 	public enum PivotPointSelection {
 		LEFT("pivot @ far left end of the spectrum"), //
@@ -30,64 +34,89 @@ public class PhaseCorrectionSettings extends Observable {
 	private double userDefinedPivotPointValue = 0.0;
 	private double dspPhaseFactor = 0.0;
 
-	public double getDspPhaseFactor() {
+	public synchronized double getDspPhaseFactor() {
 
 		return dspPhaseFactor;
 	}
 
-	public void setDspPhaseFactor(double dspPhaseFactor) {
+	public synchronized void setDspPhaseFactor(double dspPhaseFactor) {
 
 		this.dspPhaseFactor = dspPhaseFactor;
 		fireUpdate();
 	}
 
-	public PivotPointSelection getPivotPointSelection() {
+	public synchronized PivotPointSelection getPivotPointSelection() {
 
 		return pivotPointSelection;
 	}
 
-	public void setPivotPointSelection(PivotPointSelection pivotPointSelection) {
+	public synchronized void setPivotPointSelection(PivotPointSelection pivotPointSelection) {
 
 		this.pivotPointSelection = pivotPointSelection;
 		fireUpdate();
 	}
 
-	public double getZeroOrderPhaseCorrection() {
+	public synchronized double getZeroOrderPhaseCorrection() {
 
 		return zeroOrderPhaseCorrection;
 	}
 
-	public void setZeroOrderPhaseCorrection(double zeroOrderPhaseCorrection) {
+	public synchronized void setZeroOrderPhaseCorrection(double zeroOrderPhaseCorrection) {
 
 		this.zeroOrderPhaseCorrection = zeroOrderPhaseCorrection;
 		fireUpdate();
 	}
 
-	public double getFirstOrderPhaseCorrection() {
+	public synchronized double getFirstOrderPhaseCorrection() {
 
 		return firstOrderPhaseCorrection;
 	}
 
-	public void setFirstOrderPhaseCorrection(double firstOrderPhaseCorrection) {
+	public synchronized void setFirstOrderPhaseCorrection(double firstOrderPhaseCorrection) {
 
 		this.firstOrderPhaseCorrection = firstOrderPhaseCorrection;
 		fireUpdate();
 	}
 
-	public double getUserDefinedPivotPointValue() {
+	public synchronized double getUserDefinedPivotPointValue() {
 
 		return userDefinedPivotPointValue;
 	}
 
-	public void setUserDefinedPivotPointValue(double userDefinedPivotPointValue) {
+	public synchronized void setUserDefinedPivotPointValue(double userDefinedPivotPointValue) {
 
 		this.userDefinedPivotPointValue = userDefinedPivotPointValue;
 		fireUpdate();
 	}
 
-	private void fireUpdate() {
+	private synchronized void fireUpdate() {
 
-		setChanged();
-		notifyObservers(this);
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				setChanged();
+				notifyObservers(this);
+			}
+		}).start();
+	}
+
+	@Override
+	public String toString() {
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("PhaseCorrectionSettings [zeroOrderPhaseCorrection=");
+		builder.append(zeroOrderPhaseCorrection);
+		builder.append(", firstOrderPhaseCorrection=");
+		builder.append(firstOrderPhaseCorrection);
+		builder.append(", pivotPointSelection=");
+		builder.append(pivotPointSelection);
+		if(pivotPointSelection == PivotPointSelection.USER_DEFINED) {
+			builder.append(", userDefinedPivotPointValue=");
+			builder.append(userDefinedPivotPointValue);
+		}
+		builder.append("]");
+		return builder.toString();
 	}
 }
