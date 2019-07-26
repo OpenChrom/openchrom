@@ -177,8 +177,14 @@ public class SliderUI {
 		consumers.add(consumer);
 	}
 
-	public void increment(int increment) {
+	/**
+	 * Increments the slider by multiples of the page increment
+	 * 
+	 * @param incrementValue
+	 */
+	public void increment(int incrementValue) {
 
+		int increment = scale.getPageIncrement() * incrementValue;
 		int current = scale.getSelection();
 		int modulus = scale.getMaximum();
 		current = absWithModulus(current, modulus);
