@@ -121,7 +121,7 @@ public final class PhaseCorrectionSettings extends Observable implements Cloneab
 	}
 
 	@Override
-	public synchronized PhaseCorrectionSettings clone() throws CloneNotSupportedException {
+	public synchronized PhaseCorrectionSettings clone() {
 
 		PhaseCorrectionSettings settings = new PhaseCorrectionSettings();
 		settings.dspPhaseFactor = dspPhaseFactor;
