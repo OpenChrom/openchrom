@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="XIdent-Dev" sequenceNumber="25">
+<?pde version="3.8"?><target name="XIdent-Dev" sequenceNumber="27">
 <locations>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="com.google.guava" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20180206163158/repository"/>
-</location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.python.pydev.feature.feature.group" version="0.0.0"/>
 <repository location="https://dl.bintray.com/fabioz/pydev/6.3.1"/>
@@ -21,36 +17,6 @@
 <repository location="http://download.eclipse.org/nebula/releases/1.4.0"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="net.openchrom.thirdpartylibraries.vectorgraphics2d.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.jzy3d.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.barcode4j.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.orientdb.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.mockito.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.neuroph.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.javassist.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.biojava.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.jhdf5.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.jna.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.jython.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.odfdom.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.cdk.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.easymock.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.jmol.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.jogl.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.groovy.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.rserve.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.netcdf.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.imagej.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.pdfjet.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.jettison.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.xzing.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.lzf.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.matlabcontrol.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.concurrentlinkedhashmap.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.opsin.feature.feature.group" version="0.0.0"/>
-<repository location="https://update.openchrom.net/repositories/community/latest/3rdparty"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.ease.python.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.ease.ui.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.ease.feature.feature.group" version="0.0.0"/>
@@ -65,6 +31,43 @@
 <unit id="org.eclipse.chemclipse.rcp.compilation.testing.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.chemclipse.rcp.compilation.community.feature.feature.group" version="0.0.0"/>
 <repository location="https://update.openchrom.net/repositories/chemclipse/latest/platform"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="com.google.guava" version="21.0.0.v20170206-1425"/>
+<unit id="org.apache.commons.math" version="2.1.0.v201105210652"/>
+<unit id="org.apache.commons.math3" version="3.5.0.v20160301-1110"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20180206163158/repository"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="net.openchrom.thirdpartylibraries.vectorgraphics2d.feature.feature.group" version="0.13.0.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.orientdb.feature.feature.group" version="2.1.16.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.jzy3d.feature.feature.group" version="1.0.2.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.mockito.feature.feature.group" version="2.0.2.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.barcode4j.feature.feature.group" version="2.1.0.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.javassist.feature.feature.group" version="3.20.0.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.neuroph.feature.feature.group" version="2.9.2.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.jcampdx.feature.feature.group" version="0.9.5.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.biojava.feature.feature.group" version="4.2.4.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.jhdf5.feature.feature.group" version="14.12.6.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.jogl.feature.feature.group" version="2.4.0.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.jna.feature.feature.group" version="4.2.2.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.concurrentlinkedhashmap.feature.feature.group" version="1.4.1.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.odfdom.feature.feature.group" version="0.8.7.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.easymock.feature.feature.group" version="3.4.0.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.jmol.feature.feature.group" version="13.2.8.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.groovy.feature.feature.group" version="2.0.2.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.netcdf.feature.feature.group" version="4.3.19.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.rserve.feature.feature.group" version="1.8.5.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.jython.feature.feature.group" version="2.7.0.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.cdk.feature.feature.group" version="1.4.19.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.pdfjet.feature.feature.group" version="2.81.0.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.imagej.feature.feature.group" version="1.47.0.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.jettison.feature.feature.group" version="1.1.0.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.xzing.feature.feature.group" version="3.3.2.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.opsin.feature.feature.group" version="1.5.0.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.lzf.feature.feature.group" version="1.0.4.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.matlabcontrol.feature.feature.group" version="4.1.0.v2019"/>
+<repository location="https://update.openchrom.net/repositories/community/latest/3rdparty"/>
 </location>
 </locations>
 </target>

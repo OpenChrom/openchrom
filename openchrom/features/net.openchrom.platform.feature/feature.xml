@@ -280,6 +280,10 @@
          id="net.openchrom.xxd.classifier.supplier.ratios.feature"
          version="0.0.0"/>
 
+   <includes
+         id="net.openchrom.thirdpartylibraries.jcampdx.feature"
+         version="0.0.0"/>
+
    <plugin
          id="org.eclipse.osgi"
          download-size="0"
