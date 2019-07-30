@@ -21,13 +21,15 @@ import org.eclipse.chemclipse.ux.extension.ui.swt.DataExplorerUI;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.swt.widgets.Composite;
 
+import net.openchrom.msd.identifier.supplier.opentyper.ui.Activator;
+
 public class MassSpectrumFileExplorer {
 
 	private DataExplorerUI explorerUI;
 
 	@Inject
 	public MassSpectrumFileExplorer(Composite parent) {
-		explorerUI = new DataExplorerUI(parent, null);
+		explorerUI = new DataExplorerUI(parent, null, Activator.getDefault().getPreferenceStore());
 		explorerUI.setSupplierFileIdentifier(Collections.singleton(MassSpectrumSupport.getInstanceEditorSupport()));
 		explorerUI.expandLastDirectoryPath();
 	}
