@@ -73,8 +73,9 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		List<FFTSpectrumSignal> newSignals = new ArrayList<>();
 		for(int i = 0; i < nmrSpectrumProcessed.length; i++) {
 			// api requires from high to low, so start with higest order
-			BigDecimal shift = step.multiply(BigDecimal.valueOf(nmrSpectrumProcessed.length - 1 - i)).add(offset);
-			newSignals.add(new FFTSpectrumSignal(shift, nmrSpectrumProcessed[i]));
+			int reversed_index = nmrSpectrumProcessed.length - 1 - i;
+			BigDecimal shift = step.multiply(BigDecimal.valueOf(reversed_index)).add(offset);
+			newSignals.add(new FFTSpectrumSignal(shift, nmrSpectrumProcessed[reversed_index]));
 		}
 		return new FFTFilteredMeasurement(context, newSignals);
 	}
