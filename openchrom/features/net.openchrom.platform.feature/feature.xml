@@ -213,22 +213,6 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.chemclipse.thirdpartylibraries.apache.commons.csv.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.chemclipse.thirdpartylibraries.apache.commons.math.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.chemclipse.thirdpartylibraries.apache.pdfbox.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.chemclipse.thirdpartylibraries.ejml.feature"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.ease.feature"
          version="0.0.0"/>
 
