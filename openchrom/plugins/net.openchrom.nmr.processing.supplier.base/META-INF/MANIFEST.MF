@@ -12,7 +12,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.nmr.processor;bundle-version="0.8.0",
  org.eclipse.chemclipse.processing;bundle-version="0.8.0",
  com.fasterxml.jackson.core.jackson-annotations,
- org.eclipse.chemclipse.thirdpartylibraries.ejml;bundle-version="0.29.0",
+ org.ejml.core;bundle-version="0.29.0",
+ org.ejml.dense64;bundle-version="0.29.0",
+ org.ejml.denseC64;bundle-version="0.29.0",
+ org.ejml.equation;bundle-version="0.29.0",
+ org.ejml.experimental;bundle-version="0.29.0",
+ org.ejml.simple;bundle-version="0.29.0",
  org.eclipse.chemclipse.model;bundle-version="0.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
