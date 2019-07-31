@@ -8,12 +8,14 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - change to new Wizard API, fix shell access
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.types.DataType;
@@ -26,16 +28,13 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.editors.AbstractExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.editors.IExtendedEditorPage;
-import org.eclipse.chemclipse.support.ui.wizards.IChromatogramWizardElements;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.ux.extension.ui.provider.ISupplierEditorSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.EditorSupportFactory;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputEntriesWizard;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputWizardSettings;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputWizardSettings.InputDataType;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -64,6 +63,7 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorSettings;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.preferences.PreferenceSupplier;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.Activator;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.ChromatogramImportRunnable;
 
 public class PageSettings extends AbstractExtendedEditorPage implements IExtendedEditorPage {
@@ -91,8 +91,6 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	//
 	private String[] ionSelectionStrategies;
 	//
-	private Display display = Display.getDefault();
-	private Shell shell = display.getActiveShell();
 
 	public PageSettings(Composite container) {
 		super("Settings", container, true);
@@ -142,7 +140,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				numberHighestIntensityMZText.setEnabled(false);
 			}
 			//
-			IProcessingInfo processingInfo = validateSettings();
+			IProcessingInfo<?> processingInfo = validateSettings();
 			boolean hasErrorMessage = processingInfo.hasErrorMessages();
 			referenceChromatogramHyperlink.setEnabled(!hasErrorMessage);
 			isotopeChromatogramHyperlink.setEnabled(!hasErrorMessage);
@@ -211,32 +209,15 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputWizardSettings inputWizardSettings = new InputWizardSettings(InputDataType.MSD_CHROMATOGRAM);
+				InputWizardSettings inputWizardSettings = InputWizardSettings.create(Activator.getDefault().getPreferenceStore(), PreferenceSupplier.P_FILTER_PATH_REFERENCE_CHROMATOGRAM, DataType.MSD);
 				inputWizardSettings.setTitle("Reference - Chromatogram");
 				inputWizardSettings.setDescription("Select the reference chromatogram.");
-				inputWizardSettings.setPathPreferences(PreferenceSupplier.INSTANCE().getPreferences(), PreferenceSupplier.P_FILTER_PATH_REFERENCE_CHROMATOGRAM);
-				//
-				InputEntriesWizard inputWizard = new InputEntriesWizard(inputWizardSettings);
-				WizardDialog wizardDialog = new WizardDialog(shell, inputWizard);
-				wizardDialog.create();
-				//
-				if(wizardDialog.open() == WizardDialog.OK) {
-					/*
-					 * Get the list of selected chromatograms.
-					 */
-					IChromatogramWizardElements chromatogramWizardElements = inputWizard.getChromatogramWizardElements();
-					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
-					if(selectedChromatograms.size() > 0) {
-						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
-						referenceChromatogramText.setText(selectedChromatogram);
-						ProcessorData processorData = editorProcessor.getProcessorData();
-						processorData.getProcessorModel().setReferenceChromatogramPath(selectedChromatogram);
-						//
-						File file = new File(selectedChromatogram);
-						if(file.exists()) {
-							PreferenceSupplier.setFilterPathReferenceChromatogram(file.getParentFile().toString());
-						}
-					}
+				Set<File> selected = InputEntriesWizard.openWizard(button.getShell(), inputWizardSettings).keySet();
+				for(File file : selected) {
+					referenceChromatogramText.setText(file.getAbsolutePath());
+					ProcessorData processorData = editorProcessor.getProcessorData();
+					processorData.getProcessorModel().setReferenceChromatogramPath(file.getAbsolutePath());
+					break;
 				}
 			}
 		});
@@ -256,32 +237,15 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputWizardSettings inputWizardSettings = new InputWizardSettings(InputDataType.MSD_CHROMATOGRAM);
+				InputWizardSettings inputWizardSettings = InputWizardSettings.create(Activator.getDefault().getPreferenceStore(), PreferenceSupplier.P_FILTER_PATH_ISOTOPE_CHROMATOGRAM, DataType.MSD);
 				inputWizardSettings.setTitle("Isotope - Chromatogram");
 				inputWizardSettings.setDescription("Select the isotope chromatogram.");
-				inputWizardSettings.setPathPreferences(PreferenceSupplier.INSTANCE().getPreferences(), PreferenceSupplier.P_FILTER_PATH_ISOTOPE_CHROMATOGRAM);
-				//
-				InputEntriesWizard inputWizard = new InputEntriesWizard(inputWizardSettings);
-				WizardDialog wizardDialog = new WizardDialog(shell, inputWizard);
-				wizardDialog.create();
-				//
-				if(wizardDialog.open() == WizardDialog.OK) {
-					/*
-					 * Get the list of selected chromatograms.
-					 */
-					IChromatogramWizardElements chromatogramWizardElements = inputWizard.getChromatogramWizardElements();
-					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
-					if(selectedChromatograms.size() > 0) {
-						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
-						isotopeChromatogramText.setText(selectedChromatogram);
-						ProcessorData processorData = editorProcessor.getProcessorData();
-						processorData.getProcessorModel().setIsotopeChromatogramPath(selectedChromatogram);
-						//
-						File file = new File(selectedChromatogram);
-						if(file.exists()) {
-							PreferenceSupplier.setFilterPathIsotopeChromatogram(file.getParentFile().toString());
-						}
-					}
+				Set<File> selected = InputEntriesWizard.openWizard(button.getShell(), inputWizardSettings).keySet();
+				for(File file : selected) {
+					isotopeChromatogramText.setText(file.getAbsolutePath());
+					ProcessorData processorData = editorProcessor.getProcessorData();
+					processorData.getProcessorModel().setIsotopeChromatogramPath(file.getAbsolutePath());
+					break;
 				}
 			}
 		});
@@ -508,6 +472,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		imageHyperlink.setLayoutData(gridData);
 		imageHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
 
+			@Override
 			public void linkActivated(HyperlinkEvent e) {
 
 				String pathChromatogramReference = referenceChromatogramText.getText().trim();
@@ -552,6 +517,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		imageHyperlink.setLayoutData(gridData);
 		imageHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
 
+			@Override
 			public void linkActivated(HyperlinkEvent e) {
 
 				/*
@@ -579,6 +545,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		imageHyperlink.setLayoutData(gridData);
 		imageHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
 
+			@Override
 			public void linkActivated(HyperlinkEvent e) {
 
 				/*
@@ -609,6 +576,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		imageHyperlink.setLayoutData(gridData);
 		imageHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
 
+			@Override
 			public void linkActivated(HyperlinkEvent e) {
 
 				ProcessorData processorRawData = editorProcessor.getProcessorData();
@@ -630,7 +598,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		 * Display display = Display.getCurrent();
 		 */
 		editorProcessor.setDirty(true);
-		IProcessingInfo processingInfo = validateSettings();
+		IProcessingInfo<?> processingInfo = validateSettings();
 		boolean hasErrorMessage = processingInfo.hasErrorMessages();
 		referenceChromatogramHyperlink.setEnabled(!hasErrorMessage);
 		isotopeChromatogramHyperlink.setEnabled(!hasErrorMessage);
@@ -638,9 +606,9 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
 	}
 
-	private IProcessingInfo validateSettings() {
+	private IProcessingInfo<?> validateSettings() {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
+		IProcessingInfo<?> processingInfo = new ProcessingInfo<Void>();
 		ProcessorData processorData = editorProcessor.getProcessorData();
 		IProcessorModel processorModel = processorData.getProcessorModel();
 		IProcessorSettings processorSettings = processorModel.getProcessorSettings();

@@ -8,18 +8,17 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - change to new Wizard API, fix shell access
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.wizards;
 
 import java.io.File;
-import java.util.List;
+import java.util.Set;
 
+import org.eclipse.chemclipse.model.types.DataType;
 import org.eclipse.chemclipse.support.ui.wizards.AbstractExtendedWizardPage;
-import org.eclipse.chemclipse.support.ui.wizards.IChromatogramWizardElements;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputEntriesWizard;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputWizardSettings;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputWizardSettings.InputDataType;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -29,18 +28,15 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.preferences.PreferenceSupplier;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.Activator;
 
 public class PageFileSelection extends AbstractExtendedWizardPage {
 
-	private Display display = Display.getDefault();
-	private Shell shell = display.getActiveShell();
 	//
 	private IProcessorWizardElements wizardElements;
 	//
@@ -139,32 +135,15 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputWizardSettings inputWizardSettings = new InputWizardSettings(InputDataType.MSD_CHROMATOGRAM);
+				InputWizardSettings inputWizardSettings = InputWizardSettings.create(Activator.getDefault().getPreferenceStore(), PreferenceSupplier.P_FILTER_PATH_REFERENCE_CHROMATOGRAM, DataType.MSD);
 				inputWizardSettings.setTitle("Reference - Chromatogram");
 				inputWizardSettings.setDescription("Select the reference chromatogram.");
-				inputWizardSettings.setPathPreferences(PreferenceSupplier.INSTANCE().getPreferences(), PreferenceSupplier.P_FILTER_PATH_REFERENCE_CHROMATOGRAM);
-				//
-				InputEntriesWizard inputWizard = new InputEntriesWizard(inputWizardSettings);
-				WizardDialog wizardDialog = new WizardDialog(shell, inputWizard);
-				wizardDialog.create();
-				//
-				if(wizardDialog.open() == WizardDialog.OK) {
-					/*
-					 * Get the list of selected chromatograms.
-					 */
-					IChromatogramWizardElements chromatogramWizardElements = inputWizard.getChromatogramWizardElements();
-					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
-					if(selectedChromatograms.size() > 0) {
-						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
-						referenceChromatogramText.setText(selectedChromatogram);
-						validateData();
-						//
-						File file = new File(selectedChromatogram);
-						if(file.exists()) {
-							PreferenceSupplier.setFilterPathReferenceChromatogram(file.getParentFile().toString());
-						}
-					}
+				Set<File> selected = InputEntriesWizard.openWizard(getShell(), inputWizardSettings).keySet();
+				for(File file : selected) {
+					referenceChromatogramText.setText(file.getAbsolutePath());
+					break;
 				}
+				validateData();
 			}
 		});
 	}
@@ -188,32 +167,15 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputWizardSettings inputWizardSettings = new InputWizardSettings(InputDataType.MSD_CHROMATOGRAM);
+				InputWizardSettings inputWizardSettings = InputWizardSettings.create(Activator.getDefault().getPreferenceStore(), PreferenceSupplier.P_FILTER_PATH_ISOTOPE_CHROMATOGRAM, DataType.MSD);
 				inputWizardSettings.setTitle("Isotope - Chromatogram");
 				inputWizardSettings.setDescription("Select the isotope chromatogram.");
-				inputWizardSettings.setPathPreferences(PreferenceSupplier.INSTANCE().getPreferences(), PreferenceSupplier.P_FILTER_PATH_ISOTOPE_CHROMATOGRAM);
-				//
-				InputEntriesWizard inputWizard = new InputEntriesWizard(inputWizardSettings);
-				WizardDialog wizardDialog = new WizardDialog(shell, inputWizard);
-				wizardDialog.create();
-				//
-				if(wizardDialog.open() == WizardDialog.OK) {
-					/*
-					 * Get the list of selected chromatograms.
-					 */
-					IChromatogramWizardElements chromatogramWizardElements = inputWizard.getChromatogramWizardElements();
-					List<String> selectedChromatograms = chromatogramWizardElements.getSelectedChromatograms();
-					if(selectedChromatograms.size() > 0) {
-						String selectedChromatogram = chromatogramWizardElements.getSelectedChromatograms().get(0);
-						isotopeChromatogramText.setText(selectedChromatogram);
-						validateData();
-						//
-						File file = new File(selectedChromatogram);
-						if(file.exists()) {
-							PreferenceSupplier.setFilterPathIsotopeChromatogram(file.getParentFile().toString());
-						}
-					}
+				Set<File> selected = InputEntriesWizard.openWizard(getShell(), inputWizardSettings).keySet();
+				for(File file : selected) {
+					isotopeChromatogramText.setText(file.getAbsolutePath());
+					break;
 				}
+				validateData();
 			}
 		});
 	}
@@ -232,6 +194,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		notesText.setLayoutData(gridData);
 		notesText.addModifyListener(new ModifyListener() {
 
+			@Override
 			public void modifyText(ModifyEvent e) {
 
 				validateData();
@@ -253,6 +216,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		descriptionText.setLayoutData(gridData);
 		descriptionText.addModifyListener(new ModifyListener() {
 
+			@Override
 			public void modifyText(ModifyEvent e) {
 
 				validateData();
