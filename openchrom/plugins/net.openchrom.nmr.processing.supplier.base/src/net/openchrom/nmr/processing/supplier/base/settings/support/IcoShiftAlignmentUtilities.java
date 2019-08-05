@@ -23,6 +23,7 @@ import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 import org.eclipse.chemclipse.processing.filter.FilterContext;
+import org.ejml.data.DenseMatrix64F;
 import org.ejml.simple.SimpleMatrix;
 
 public class IcoShiftAlignmentUtilities {
@@ -103,7 +104,8 @@ public class IcoShiftAlignmentUtilities {
 				filteredSpectrumMeasurement.setDataName("Calibration");
 			}
 			List<IcoShiftSignal> newSignals = new ArrayList<>();
-			double[] dataArray = result.extractVector(true, alignmentResultIndex).getMatrix().getData();
+			DenseMatrix64F matrix = result.extractVector(true, alignmentResultIndex).getMatrix();
+			double[] dataArray = matrix.getData();
 			for(int i = 0; i < dataArray.length; i++) {
 				newSignals.add(new IcoShiftSignal(chemicalShiftAxis[i], dataArray[i]));
 			}
