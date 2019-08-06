@@ -13,8 +13,11 @@ package net.openchrom.nmr.processing.supplier.base.ui;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -104,9 +107,9 @@ public class NMRDataListUI extends DataListUI {
 	@Override
 	public String getName(File file) {
 
-		MeasurementLoadResult measurement = filesMap.get(file);
-		if(measurement != null) {
-			return measurement.getName();
+		MeasurementLoadResult loadResult = filesMap.get(file);
+		if(loadResult != null) {
+			return loadResult.getName();
 		}
 		return super.getName(file);
 	}
@@ -115,6 +118,18 @@ public class NMRDataListUI extends DataListUI {
 	protected void removed(File file) {
 
 		filesMap.remove(file);
+	}
+
+	public List<IComplexSignalMeasurement<?>> getMeasurements() {
+
+		Collection<MeasurementLoadResult> values = filesMap.values();
+		List<IComplexSignalMeasurement<?>> list = new ArrayList<>();
+		for(MeasurementLoadResult loadResult : values) {
+			if(loadResult.selected != null) {
+				list.add(loadResult.selected);
+			}
+		}
+		return list;
 	}
 
 	@Override
@@ -153,6 +168,9 @@ public class NMRDataListUI extends DataListUI {
 		private IComplexSignalMeasurement<?> selected;
 
 		public MeasurementLoadResult(File file, Collection<IComplexSignalMeasurement<?>> measurements) {
+			if(measurements == null) {
+				measurements = Collections.emptyList();
+			}
 			this.file = file;
 			this.measurements = measurements;
 			for(IComplexSignalMeasurement<?> measurement : measurements) {
@@ -167,7 +185,11 @@ public class NMRDataListUI extends DataListUI {
 
 		public String getName(IComplexSignalMeasurement<?> measurement) {
 
-			return file.getName() + " [ " + measurement.getDataName() + " ]";
+			if(measurements.size() > 1) {
+				return file.getName() + " [ " + measurement.getDataName() + " ]";
+			} else {
+				return file.getName();
+			}
 		}
 	}
 }
