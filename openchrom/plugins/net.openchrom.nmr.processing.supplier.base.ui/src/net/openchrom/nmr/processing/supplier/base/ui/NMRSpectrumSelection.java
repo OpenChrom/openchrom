@@ -257,7 +257,7 @@ public class NMRSpectrumSelection {
 		return null;
 	}
 
-	private String getName(IMeasurement measurement) {
+	public static String getName(IMeasurement measurement) {
 
 		if(measurement == null) {
 			return "-";

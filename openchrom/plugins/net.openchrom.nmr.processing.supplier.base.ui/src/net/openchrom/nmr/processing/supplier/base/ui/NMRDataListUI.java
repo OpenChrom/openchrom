@@ -186,7 +186,7 @@ public class NMRDataListUI extends DataListUI {
 		public String getName(IComplexSignalMeasurement<?> measurement) {
 
 			if(measurements.size() > 1) {
-				return file.getName() + " [ " + measurement.getDataName() + " ]";
+				return file.getName() + " [ " + NMRSpectrumSelection.getName(measurement) + " ]";
 			} else {
 				return file.getName();
 			}
