@@ -34,6 +34,7 @@ import org.eclipse.chemclipse.model.core.IComplexSignal;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
+import org.eclipse.chemclipse.processing.DataCategory;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -72,6 +73,12 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 	public Class<IcoShiftAlignmentSettings> getConfigClass() {
 
 		return IcoShiftAlignmentSettings.class;
+	}
+
+	@Override
+	public DataCategory[] getDataCategories() {
+
+		return new DataCategory[]{DataCategory.NMR};
 	}
 
 	@Override
