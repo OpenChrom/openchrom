@@ -21,9 +21,11 @@ import org.eclipse.chemclipse.model.methods.ProcessMethod;
 import org.eclipse.chemclipse.model.types.DataType;
 import org.eclipse.chemclipse.processing.filter.FilterFactory;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.BatchJobUI;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.DataListUI;
 import org.eclipse.chemclipse.xxd.process.support.ProcessTypeSupport;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 
 public class NMRBatchJob implements IRunnableWithProgress {
@@ -37,7 +39,14 @@ public class NMRBatchJob implements IRunnableWithProgress {
 	public void postConstruct(Composite parent) {
 
 		processTypeSupport = new ProcessTypeSupport(filterFactory);
-		batchJobUI = new BatchJobUI(parent, processTypeSupport, Activator.getDefault().getPreferenceStore(), "nmrBatchUIUserLocation", new DataType[]{DataType.NMR}, this);
+		batchJobUI = new BatchJobUI(parent, processTypeSupport, Activator.getDefault().getPreferenceStore(), "nmrBatchUIUserLocation", new DataType[]{DataType.NMR}, this) {
+
+			@Override
+			protected DataListUI createDataList(Composite parent, IPreferenceStore preferenceStore, String userlocationPrefrenceKey, DataType[] dataTypes) {
+
+				return new NMRDataListUI(parent, this::setEditorDirty, preferenceStore, userlocationPrefrenceKey, dataTypes);
+			}
+		};
 		batchJobUI.doLoad(Collections.emptyList(), new ProcessMethod());
 	}
 
