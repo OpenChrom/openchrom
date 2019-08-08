@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
-import org.eclipse.chemclipse.processing.filter.FilterFactory;
+import org.eclipse.chemclipse.processing.ProcessorFactory;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.ExtendedNMROverlayUI;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
@@ -30,7 +30,7 @@ public class MultiSpectrumEditor {
 	private ExtendedNMROverlayUI extendedNMROverlayUI;
 	private NMRSpectrumSelection measurementsUI;
 	@Inject
-	private FilterFactory filterFactory;
+	private ProcessorFactory filterFactory;
 
 	@Inject
 	public MultiSpectrumEditor() {

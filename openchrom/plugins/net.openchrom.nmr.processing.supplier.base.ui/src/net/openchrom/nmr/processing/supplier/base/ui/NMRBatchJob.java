@@ -23,8 +23,8 @@ import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.methods.ProcessMethod;
 import org.eclipse.chemclipse.model.types.DataType;
+import org.eclipse.chemclipse.processing.ProcessorFactory;
 import org.eclipse.chemclipse.processing.core.DefaultProcessingResult;
-import org.eclipse.chemclipse.processing.filter.FilterFactory;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.part.support.SupplierEditorSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.BatchJobUI;
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Display;
 public class NMRBatchJob implements IRunnableWithProgress {
 
 	@Inject
-	private FilterFactory filterFactory;
+	private ProcessorFactory filterFactory;
 	private BatchJobUI batchJobUI;
 	private ProcessTypeSupport processTypeSupport;
 

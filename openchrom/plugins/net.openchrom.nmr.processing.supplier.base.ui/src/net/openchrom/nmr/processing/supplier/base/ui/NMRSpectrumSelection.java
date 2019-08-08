@@ -18,7 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
@@ -26,7 +26,7 @@ import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
-import org.eclipse.chemclipse.processing.filter.FilterFactory;
+import org.eclipse.chemclipse.processing.ProcessorFactory;
 import org.eclipse.chemclipse.processing.filter.Filtered;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.actions.IMeasurementFilterAction;
 import org.eclipse.chemclipse.xxd.process.support.ProcessTypeSupport;
@@ -51,10 +51,10 @@ public class NMRSpectrumSelection {
 
 	private static final Object NULL = new Object();
 	private TableViewer viewer;
-	private FilterFactory filterFactory;
+	private ProcessorFactory filterFactory;
 	private ProcessTypeSupport processTypeSupport;
 
-	public NMRSpectrumSelection(Composite parent, FilterFactory filterFactory) {
+	public NMRSpectrumSelection(Composite parent, ProcessorFactory filterFactory) {
 		this.filterFactory = filterFactory;
 		processTypeSupport = new ProcessTypeSupport(filterFactory);
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
@@ -200,15 +200,15 @@ public class NMRSpectrumSelection {
 				}
 				if(!items.isEmpty()) {
 					Set<SpectrumMeasurement> measurements = items.keySet();
-					BiFunction<IMeasurementFilter<?>, Map<String, ?>, Boolean> acceptor = new BiFunction<IMeasurementFilter<?>, Map<String, ?>, Boolean>() {
+					BiPredicate<IMeasurementFilter<?>, Map<String, ?>> acceptor = new BiPredicate<IMeasurementFilter<?>, Map<String, ?>>() {
 
 						@Override
-						public Boolean apply(IMeasurementFilter<?> filter, Map<String, ?> properties) {
+						public boolean test(IMeasurementFilter<?> filter, Map<String, ?> properties) {
 
 							return filter.acceptsIMeasurements(measurements);
 						}
 					};
-					Collection<IMeasurementFilter<?>> filters = filterFactory.getFilters(FilterFactory.genericClass(IMeasurementFilter.class), acceptor);
+					Collection<IMeasurementFilter<?>> filters = filterFactory.getProcessors(ProcessorFactory.genericClass(IMeasurementFilter.class), acceptor);
 					Consumer<Collection<? extends IMeasurement>> consumer = new Consumer<Collection<? extends IMeasurement>>() {
 
 						@Override
