@@ -11,30 +11,28 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.peakdetection;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.chemclipse.model.core.IMeasurement;
-import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
-import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
+import org.eclipse.chemclipse.model.core.PeakList;
+import org.eclipse.chemclipse.model.core.PeakPosition;
+import org.eclipse.chemclipse.model.detector.IMeasurementPeakDetector;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
-import org.eclipse.chemclipse.processing.filter.Filter;
-import org.eclipse.chemclipse.processing.filter.FilterContext;
+import org.eclipse.chemclipse.processing.detector.Detector;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.osgi.service.component.annotations.Component;
 
-import net.openchrom.nmr.processing.supplier.base.core.AbstractSpectrumSignalFilter;
-import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
-import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
+@Component(service = {Detector.class, IMeasurementPeakDetector.class})
+public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<WaveletPeakDetectorSettings> {
 
-@Component(service = {Filter.class, IMeasurementFilter.class})
-public class WaveletPeakDetectorProcessor extends AbstractSpectrumSignalFilter<WaveletPeakDetectorSettings> {
-
-	private static final long serialVersionUID = -2363858740271951917L;
 	private static final String NAME = "Wavelet Peak Detector";
-
-	public WaveletPeakDetectorProcessor() {
-
-		super(WaveletPeakDetectorSettings.class);
-	}
 
 	@Override
 	public String getName() {
@@ -43,31 +41,51 @@ public class WaveletPeakDetectorProcessor extends AbstractSpectrumSignalFilter<W
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, WaveletPeakDetectorSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	public Class<WaveletPeakDetectorSettings> getConfigClass() {
 
-		SpectrumMeasurement measurement = context.getFilteredObject();
-		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurement);
-		/*
-		 * WIP
-		 */
-		double[] peaks = detect(spectrumData, context.getFilterConfig());
-		for(int i = 0; i < peaks.length; i++) {
-			System.out.println(peaks[i]);
-		}
-		FilteredSpectrumMeasurement<WaveletPeakDetectorSettings> filtered = new FilteredSpectrumMeasurement<WaveletPeakDetectorSettings>(context);
-		filtered.setSignals(spectrumData.toSignal());
-		return filtered;
+		return WaveletPeakDetectorSettings.class;
 	}
 
-	private double[] detect(SpectrumData spectrumData, Object clone) {
+	@Override
+	public <T extends IMeasurement> Map<T, PeakList> detectIMeasurementPeaks(Collection<T> detectorInputItems, WaveletPeakDetectorSettings configuration, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
+
+		SubMonitor convert = SubMonitor.convert(monitor, getName(), detectorInputItems.size() * 100);
+		LinkedHashMap<T, PeakList> map = new LinkedHashMap<>();
+		for(T measurement : detectorInputItems) {
+			if(measurement instanceof SpectrumMeasurement) {
+				map.put(measurement, detect(((SpectrumMeasurement)measurement).getSignals(), configuration, messageConsumer, convert.split(100)));
+			}
+		}
+		return map;
+	}
+
+	private PeakList detect(List<? extends SpectrumSignal> signals, WaveletPeakDetectorSettings configuration, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		/*
 		 * TODO detect the peaks
 		 */
-		double[] signals = new double[spectrumData.signals.length];
-		for(int i = 0; i < spectrumData.signals.length; i++) {
-			signals[i] = spectrumData.signals[i].getReal();
+		SubMonitor subMonitor = SubMonitor.convert(monitor, signals.size());
+		List<PeakPosition> peakPositions = new ArrayList<>();
+		int index = 0;
+		for(SpectrumSignal signal : signals) {
+			double x = signal.getX();
+			double y = signal.getY();
+			subMonitor.worked(1);
+			if(index == 100) {
+				peakPositions.add(new WavletPeakPosition());
+			}
 		}
-		return signals;
+		return new PeakList(peakPositions, getID(), getName(), getDescription());
+	}
+
+	@Override
+	public boolean acceptsIMeasurements(Collection<? extends IMeasurement> items) {
+
+		for(IMeasurement measurement : items) {
+			if(!(measurement instanceof SpectrumMeasurement)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
