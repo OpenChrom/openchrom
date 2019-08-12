@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="XIdent-Dev" sequenceNumber="28">
+<?pde version="3.8"?><target name="OpenChrom Community Target" sequenceNumber="28">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.python.pydev.feature.feature.group" version="0.0.0"/>
