@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_F2IcYDzAEeO9Cpf0lomO-Q">
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_F2IcYDzAEeO9Cpf0lomO-Q">
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_BXwhsDzCEeO9Cpf0lomO-Q" featurename="sharedElements" parentElementId="org.eclipse.chemclipse.rcp.app.ui.trimmedwindow.main">
     <elements xsi:type="basic:Part" xmi:id="_FmKb0DzCEeO9Cpf0lomO-Q" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.part.moleculeView" contributionURI="bundleclass://net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui/net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.views.MoleculeView" label="Molecule View" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/denoising.gif"/>
     <elements xsi:type="basic:Part" xmi:id="_ho8-8E0aEeO5B_4ZxeFNDw" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.part.formulaCalculatorView" contributionURI="bundleclass://net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui/net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.views.FormulaCalculatorView" label="Formula Calculator" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/denoising.gif"/>
@@ -24,6 +24,15 @@
       </children>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_PtnT4EzqEeartrKP1w92_w" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.handledmenuitem.calculatesmileslibrary" label="Calculate SMILES (Library)" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/cdkPeaks.gif" command="_yc62cEzoEeartrKP1w92_w">
         <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_UNq-sEzqEeartrKP1w92_w" coreExpressionId="org.eclipse.chemclipse.ux.extension.ui.definitions.isLibraryTypeMSD"/>
+      </children>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_XdcwAL3YEemdlNJ21rW-ug" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.perspectivestack.main">
+    <elements xsi:type="advanced:Perspective" xmi:id="_aKMqIL3YEemdlNJ21rW-ug" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.perspective.cdkchemistrydevelopmentkit" label="CDK (Chemistry Development Kit)" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/cdkPeaks.gif">
+      <children xsi:type="basic:PartSashContainer" xmi:id="_sfV1cL3YEemdlNJ21rW-ug" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.partsashcontainer.0">
+        <children xsi:type="basic:PartStack" xmi:id="_trXjsL3YEemdlNJ21rW-ug" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.partstack.0">
+          <children xsi:type="advanced:Placeholder" xmi:id="_vZ6wML3YEemdlNJ21rW-ug" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.placeholder.0" ref="_FmKb0DzCEeO9Cpf0lomO-Q"/>
+        </children>
       </children>
     </elements>
   </fragments>
