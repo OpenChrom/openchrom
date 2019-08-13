@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.model.core.IMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
@@ -107,8 +108,9 @@ public class IcoShiftAlignmentUtilities {
 			List<IcoShiftSignal> newSignals = new ArrayList<>();
 			DenseMatrix64F matrix = result.extractVector(true, alignmentResultIndex).getMatrix();
 			double[] dataArray = matrix.getData();
+			AcquisitionParameter parameter = measurement.getAcquisitionParameter();
 			for(int i = 0; i < dataArray.length; i++) {
-				newSignals.add(new IcoShiftSignal(chemicalShiftAxis[i].doubleValue(), dataArray[i]));
+				newSignals.add(new IcoShiftSignal(parameter.toHz(BigDecimal.valueOf(chemicalShiftAxis[i].doubleValue())), dataArray[i]));
 			}
 			alignmentResultIndex++;
 			filteredSpectrumMeasurement.setSignals(newSignals);
@@ -119,19 +121,19 @@ public class IcoShiftAlignmentUtilities {
 
 	private static final class IcoShiftSignal implements SpectrumSignal {
 
-		private double ppm;
 		private double real;
+		private BigDecimal hz;
 
-		public IcoShiftSignal(double ppm, double real) {
+		public IcoShiftSignal(BigDecimal hz, double real) {
 
-			this.ppm = ppm;
+			this.hz = hz;
 			this.real = real;
 		}
 
 		@Override
 		public BigDecimal getFrequency() {
 
-			return BigDecimal.valueOf(ppm);
+			return hz;
 		}
 
 		@Override
