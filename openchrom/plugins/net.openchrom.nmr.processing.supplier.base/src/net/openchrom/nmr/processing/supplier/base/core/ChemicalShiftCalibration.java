@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -115,7 +116,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 		icoShiftAlignment.setCalibrationSettings(calibrationSettings);
 		SimpleMatrix calibratedData = icoShiftAlignment.process(experimentalDatasetsList, alignmentSettings, null);
 		//
-		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(experimentalDatasetsList);
+		BigDecimal[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(experimentalDatasetsList);
 		Collection<? extends SpectrumMeasurement> newDatasetsList = copyPartlyCalibratedData(experimentalDatasetsList, calibratedData);
 		int checkIterator = 0;
 		while(!checkCalibration(calibratedData, chemicalShiftAxis, alignmentSettings)) { // check for quality of calibration
@@ -148,7 +149,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 		}
 	}
 
-	private static boolean checkCalibration(SimpleMatrix calibratedData, double[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {
+	private static boolean checkCalibration(SimpleMatrix calibratedData, BigDecimal[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {
 
 		Interval<Integer> intervalIndices = ChemicalShiftCalibrationUtilities.getCalibrationIntervalIndices(chemicalShiftAxis, alignmentSettings);
 		int intendedPosition = ChemicalShiftCalibrationUtilities.getIntendedPeakPosition(intervalIndices, chemicalShiftAxis);
@@ -175,7 +176,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 		return result;
 	}
 
-	private static SimpleMatrix finalPeakCalibration(SimpleMatrix calibratedData, double[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {
+	private static SimpleMatrix finalPeakCalibration(SimpleMatrix calibratedData, BigDecimal[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {
 
 		Interval<Integer> intervalIndices = ChemicalShiftCalibrationUtilities.getCalibrationIntervalIndices(chemicalShiftAxis, alignmentSettings);
 		int intendedPosition = ChemicalShiftCalibrationUtilities.getIntendedPeakPosition(intervalIndices, chemicalShiftAxis);

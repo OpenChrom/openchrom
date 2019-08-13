@@ -34,6 +34,7 @@ public class IcoShiftAlignmentUtilities {
 		private T stop;
 
 		public Interval(T start, T stop) {
+
 			this.start = start;
 			this.stop = stop;
 		}
@@ -93,7 +94,7 @@ public class IcoShiftAlignmentUtilities {
 	public static List<IMeasurement> processResultsForFilter(Collection<SpectrumMeasurement> collection, SimpleMatrix result, String processorName) {
 
 		int alignmentResultIndex = 0;
-		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(collection);
+		BigDecimal[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(collection);
 		List<IMeasurement> results = new ArrayList<>();
 		//
 		for(SpectrumMeasurement measurement : collection) {
@@ -107,7 +108,7 @@ public class IcoShiftAlignmentUtilities {
 			DenseMatrix64F matrix = result.extractVector(true, alignmentResultIndex).getMatrix();
 			double[] dataArray = matrix.getData();
 			for(int i = 0; i < dataArray.length; i++) {
-				newSignals.add(new IcoShiftSignal(chemicalShiftAxis[i], dataArray[i]));
+				newSignals.add(new IcoShiftSignal(chemicalShiftAxis[i].doubleValue(), dataArray[i]));
 			}
 			alignmentResultIndex++;
 			filteredSpectrumMeasurement.setSignals(newSignals);
@@ -122,6 +123,7 @@ public class IcoShiftAlignmentUtilities {
 		private double real;
 
 		public IcoShiftSignal(double ppm, double real) {
+
 			this.ppm = ppm;
 			this.real = real;
 		}

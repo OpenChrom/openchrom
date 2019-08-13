@@ -13,6 +13,7 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -324,9 +325,8 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		 * length, the algorithm should be able to work with it.
 		 */
 		//
-		double[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(collection);
+		BigDecimal[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(collection);
 		int lengthOfDataset = chemicalShiftAxis.length;
-		UtilityFunctions utilityFunction = new UtilityFunctions();
 		//
 		IcoShiftAlignmentType alignmentType = settings.getAlignmentType();
 		switch(alignmentType) {
@@ -337,8 +337,8 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 				 */
 				double lowerBorder = settings.getSinglePeakLowerBorder();
 				double higherBorder = settings.getSinglePeakHigherBorder();
-				int lowerBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, lowerBorder);
-				int higherBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, higherBorder);
+				int lowerBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, lowerBorder);
+				int higherBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, higherBorder);
 				intervalRegionsMap.put(1, new Interval<Integer>(lowerBorderIndex, higherBorderIndex));
 				break;
 			case WHOLE_SPECTRUM:
@@ -421,8 +421,8 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 					// get indices for each user defined interval
 					double higherUserBorder = interval.getStart();
 					double lowerUserBorder = interval.getStop();
-					int lowerUserBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, lowerUserBorder);
-					int higherUserBorderIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, higherUserBorder);
+					int lowerUserBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, lowerUserBorder);
+					int higherUserBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, higherUserBorder);
 					intervalRegionsMap.put(intervalNumber, new Interval<Integer>(lowerUserBorderIndex, higherUserBorderIndex));
 					intervalNumber++;
 				}

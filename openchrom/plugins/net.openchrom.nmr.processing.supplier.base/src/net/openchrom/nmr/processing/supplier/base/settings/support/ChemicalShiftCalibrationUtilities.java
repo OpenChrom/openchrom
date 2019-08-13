@@ -11,12 +11,14 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings.support;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.ejml.simple.SimpleMatrix;
 
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
+import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities.Interval;
 
@@ -32,10 +34,11 @@ public class ChemicalShiftCalibrationUtilities {
 		return true;
 	}
 
-	public static double[] getChemicalShiftAxis(Collection<? extends SpectrumMeasurement> experimentalDatasetsList) {
+	public static BigDecimal[] getChemicalShiftAxis(Collection<? extends SpectrumMeasurement> experimentalDatasetsList) {
 
 		SpectrumMeasurement measurementNMR = experimentalDatasetsList.iterator().next();
-		return measurementNMR.getSignals().stream().mapToDouble(value -> value.getFrequency().doubleValue()).toArray();
+		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurementNMR);
+		return spectrumData.chemicalShift;
 	}
 
 	public static int[] getActualPeakPositions(Interval<Integer> intervalIndices, SimpleMatrix calibratedData) {
@@ -54,21 +57,19 @@ public class ChemicalShiftCalibrationUtilities {
 		return actualPositions;
 	}
 
-	public static int getIntendedPeakPosition(Interval<Integer> intervalIndices, double[] chemicalShiftAxis) {
+	public static int getIntendedPeakPosition(Interval<Integer> intervalIndices, BigDecimal[] chemicalShiftAxis) {
 
-		UtilityFunctions utilityFunction = new UtilityFunctions();
-		double[] chemicalShiftAxisPart = new double[intervalIndices.getStart() - intervalIndices.getStop()];
-		System.arraycopy(chemicalShiftAxis, intervalIndices.getStop(), chemicalShiftAxisPart, 0, intervalIndices.getStart() - intervalIndices.getStop());
-		return utilityFunction.findIndexOfValue(chemicalShiftAxisPart, 0);
+		BigDecimal[] chemicalShiftAxisPart = new BigDecimal[intervalIndices.getStart() - intervalIndices.getStop()];
+		System.arraycopy(chemicalShiftAxis, intervalIndices.getStart(), chemicalShiftAxisPart, 0, intervalIndices.getStart() - intervalIndices.getStop());
+		return UtilityFunctions.findIndexOfValue(chemicalShiftAxisPart, 0);
 	}
 
-	public static Interval<Integer> getCalibrationIntervalIndices(double[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {
+	public static Interval<Integer> getCalibrationIntervalIndices(BigDecimal[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {
 
-		UtilityFunctions utilityFunction = new UtilityFunctions();
 		double leftMargin = alignmentSettings.getSinglePeakHigherBorder();
 		double rigthMargin = alignmentSettings.getSinglePeakLowerBorder();
-		int leftIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, leftMargin);
-		int rightIndex = utilityFunction.findIndexOfValue(chemicalShiftAxis, rigthMargin);
+		int leftIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, leftMargin);
+		int rightIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, rigthMargin);
 		return new Interval<Integer>(leftIndex, rightIndex);
 	}
 }
