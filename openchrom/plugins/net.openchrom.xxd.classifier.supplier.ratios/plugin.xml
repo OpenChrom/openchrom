@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.classifier.chromatogramClassifierSupplier">
+      <ChromatogramClassifierSupplier
+            classifier="net.openchrom.xxd.classifier.supplier.ratios.core.TraceRatioClassifier"
+            classifierName="Trace Ratio Classifier"
+            classifierSettings="net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioSettings"
+            description="This classifier calculates peak trace ratios."
+            id="net.openchrom.xxd.classifier.supplier.ratios.trace">
+      </ChromatogramClassifierSupplier>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.classifier.chromatogramClassifierSupplier">
+      <ChromatogramClassifierSupplier
+            classifier="net.openchrom.xxd.classifier.supplier.ratios.core.TimeRatioClassifier"
+            classifierName="Time Ratio Classifier"
+            classifierSettings="net.openchrom.xxd.classifier.supplier.ratios.settings.TimeRatioSettings"
+            description="This classifier calculates peak time ratios."
+            id="net.openchrom.xxd.classifier.supplier.ratios.time">
+      </ChromatogramClassifierSupplier>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.classifier.chromatogramClassifierSupplier">
+      <ChromatogramClassifierSupplier
+            classifier="net.openchrom.xxd.classifier.supplier.ratios.core.QuantRatioClassifier"
+            classifierName="Quant Ratio Classifier"
+            classifierSettings="net.openchrom.xxd.classifier.supplier.ratios.settings.QuantRatioSettings"
+            description="This classifier calculates peak quant ratios."
+            id="net.openchrom.xxd.classifier.supplier.ratios.quant">
+      </ChromatogramClassifierSupplier>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.classifier.chromatogramClassifierSupplier">
+      <ChromatogramClassifierSupplier
+            classifier="net.openchrom.xxd.classifier.supplier.ratios.core.QualRatioClassifier"
+            classifierName="Quality Ratio Classifier"
+            classifierSettings="net.openchrom.xxd.classifier.supplier.ratios.settings.QualRatioSettings"
+            description="This classifier calculates peak quality ratios."
+            id="net.openchrom.xxd.classifier.supplier.ratios.qual">
+      </ChromatogramClassifierSupplier>
+   </extension>                              
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.msd.converter.chromatogramSupplier">
+      <ChromatogramSupplier
+            description="Exports a Quant Ratio Classifier Template "
+            exportConverter="net.openchrom.xxd.classifier.supplier.ratios.core.QuantRatioExport"
+            fileExtension="txt"
+            fileName="QuantRatioClassifierTemplate.txt"
+            filterName="Template Quant Ratios (*.txt)"
+            id="net.openchrom.xxd.classifier.supplier.ratios.quantRatioTemplateMSD"
+            importMagicNumberMatcher="net.openchrom.xxd.classifier.supplier.ratios.core.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>
+      <ChromatogramSupplier
+            description="Exports a Time Ratio Classifier Template "
+            exportConverter="net.openchrom.xxd.classifier.supplier.ratios.core.TimeRatioExport"
+            fileExtension="txt"
+            fileName="TimeRatioClassifierTemplate.txt"
+            filterName="Template Time Ratios (*.txt)"
+            id="net.openchrom.xxd.classifier.supplier.ratios.timeRatioTemplateMSD"
+            importMagicNumberMatcher="net.openchrom.xxd.classifier.supplier.ratios.core.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>
+      <ChromatogramSupplier
+            description="Exports a Trace Ratio Classifier Template "
+            exportConverter="net.openchrom.xxd.classifier.supplier.ratios.core.TraceRatioExport"
+            fileExtension="txt"
+            fileName="TraceRatioClassifierTemplate.txt"
+            filterName="Template Trace Ratios (*.txt)"
+            id="net.openchrom.xxd.classifier.supplier.ratios.traceRatioTemplateMSD"
+            importMagicNumberMatcher="net.openchrom.xxd.classifier.supplier.ratios.core.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>           
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.csd.converter.chromatogramSupplier">
+      <ChromatogramSupplier
+            description="Exports a Quant Ratio Classifier Template "
+            exportConverter="net.openchrom.xxd.classifier.supplier.ratios.core.QuantRatioExport"
+            fileExtension="txt"
+            fileName="QuantRatioClassifierTemplate.txt"
+            filterName="Template Quant Ratios (*.txt)"
+            id="net.openchrom.xxd.classifier.supplier.ratios.quantRatioTemplateCSD"
+            importMagicNumberMatcher="net.openchrom.xxd.classifier.supplier.ratios.core.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>
+      <ChromatogramSupplier
+            description="Exports a Time Ratio Classifier Template "
+            exportConverter="net.openchrom.xxd.classifier.supplier.ratios.core.TimeRatioExport"
+            fileExtension="txt"
+            fileName="TimeRatioClassifierTemplate.txt"
+            filterName="Template Time Ratios (*.txt)"
+            id="net.openchrom.xxd.classifier.supplier.ratios.timeRatioTemplateCSD"
+            importMagicNumberMatcher="net.openchrom.xxd.classifier.supplier.ratios.core.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>       
+   </extension> 
+</plugin>

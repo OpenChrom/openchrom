@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.xxd.classifier.supplier.ratios.feature"
+      label="Ratio Calculator"
+      version="1.0.0.qualifier"
+      provider-name="OpenChrom">
+
+   <description url="https://www.openchrom.net">
+      This plugin allows to classify various kinds of ratios.
+   </description>
+
+   <copyright url="http://www.openchrom.net">
+      Copyright (c) 2019 Lablicate GmbH.
+   </copyright>
+
+   <license url="http://www.eclipse.org/legal/epl-v10.html">
+      Copyright (c) 2019 Lablicate GmbH.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License
+v1.0 which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+   </license>
+
+   <plugin
+         id="net.openchrom.xxd.classifier.supplier.ratios"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xxd.classifier.supplier.ratios.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
