@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.chemclipse.ux.extension.ui.welcometile">
+      <WelcomeTile
+            Section="NMR"
+            defaultShow="false"
+            Description="Nuclear magnetic resonance analysis"
+            PerspectiveId="net.openchrom.nmr.processing.supplier.base.ui.perspective.nmr">
+      </WelcomeTile>
+   </extension>
+   <extension
+         id="net.openchrom.nmr.processing.supplier.base.ui.fragment"
+         point="org.eclipse.e4.workbench.model">
+      <fragment
+            uri="fragment.e4xmi">
+      </fragment>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettings"
+            class="net.openchrom.nmr.processing.supplier.base.ui.PhaseCorrectionSettingsAdapterFactory">
+         <adapter
+               type="org.eclipse.chemclipse.ux.extension.xxd.ui.editors.EditorExtension">
+         </adapter>
+      </factory>
+   </extension>
+
+</plugin>

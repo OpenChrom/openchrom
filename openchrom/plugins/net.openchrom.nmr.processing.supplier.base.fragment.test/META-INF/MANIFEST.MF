@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test
+Bundle-SymbolicName: net.openchrom.nmr.processing.supplier.base.fragment.test
+Bundle-Version: 1.4.0.qualifier
+Bundle-Vendor: OpenChrom
+Fragment-Host: net.openchrom.nmr.processing.supplier.base;bundle-version="1.4.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit

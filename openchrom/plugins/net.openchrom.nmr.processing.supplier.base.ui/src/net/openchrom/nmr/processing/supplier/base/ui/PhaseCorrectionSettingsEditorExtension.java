@@ -1,0 +1,200 @@
+/*******************************************************************************
+ * Copyright (c) 2019 Lablicate GmbH.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * Christoph Läubrich - initial API and implementation
+ *******************************************************************************/
+package net.openchrom.nmr.processing.supplier.base.ui;
+
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Observable;
+
+import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.EditorExtension;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
+
+import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettings;
+import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettings.PivotPointSelection;
+
+public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
+
+	private static final int FRACTIONS = 2;
+	private static final int FIRST_ORDER_RANGE = 1000000;
+	private static final int ZERO_ORDER_RANGE = 180;
+	private static final int ZERO_ORDER_INCREMENT = 90;
+	private PhaseCorrectionSettings settings;
+
+	public PhaseCorrectionSettingsEditorExtension(PhaseCorrectionSettings settings) {
+		this.settings = settings;
+	}
+
+	@Override
+	public Observable createExtension(Composite parent) {
+
+		new PhaseCorrectionSettingsExtension(parent);
+		return settings;
+	}
+
+	private class PhaseCorrectionSettingsExtension {
+
+		public PhaseCorrectionSettingsExtension(Composite parent) {
+			Composite composite = new Composite(parent, SWT.NONE);
+			composite.setLayout(new GridLayout(1, false));
+			{
+				Label label = new Label(composite, SWT.NONE);
+				label.setText("zero order phase correction (in degree)");
+				GridData labelLayout = new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1);
+				label.setLayoutData(labelLayout);
+			}
+			createZeroOrderSlider(composite);
+			{
+				Label label = new Label(composite, SWT.NONE);
+				label.setText("first order phase correction");
+				GridData labelLayout = new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1);
+				label.setLayoutData(labelLayout);
+			}
+			createFirstOrderSlider(composite);
+			{
+				Label label = new Label(composite, SWT.NONE);
+				label.setText("pivot point");
+				GridData labelLayout = new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1);
+				label.setLayoutData(labelLayout);
+			}
+			createPivotSelection(composite);
+		}
+
+		private void createPivotSelection(Composite parent) {
+
+			Composite composite = new Composite(parent, SWT.NONE);
+			composite.setLayout(new GridLayout(2, false));
+			ComboViewer pivotCombo = new ComboViewer(composite);
+			pivotCombo.setContentProvider(ArrayContentProvider.getInstance());
+			pivotCombo.setInput(PivotPointSelection.values());
+			pivotCombo.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			Text textField = new Text(composite, SWT.BORDER);
+			GridData layoutData = new GridData(SWT.CENTER, SWT.CENTER, false, false);
+			layoutData.widthHint = 80;
+			textField.setLayoutData(layoutData);
+			pivotCombo.addSelectionChangedListener(new ISelectionChangedListener() {
+
+				@Override
+				public void selectionChanged(SelectionChangedEvent event) {
+
+					PivotPointSelection selection = (PivotPointSelection)pivotCombo.getStructuredSelection().getFirstElement();
+					if(selection != settings.getPivotPointSelection()) {
+						settings.setPivotPointSelection(selection);
+					}
+					textField.setEnabled(selection == PivotPointSelection.USER_DEFINED);
+				}
+			});
+			NumberFormat numberFormat = NumberFormat.getInstance();
+			textField.addSelectionListener(new SelectionListener() {
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+
+				}
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent se) {
+
+					try {
+						settings.setUserDefinedPivotPointValue(numberFormat.parse(textField.getText()).doubleValue());
+					} catch(ParseException | RuntimeException e) {
+						// TODO show a decorator!
+					}
+				}
+			});
+			textField.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusLost(FocusEvent e) {
+
+				}
+
+				@Override
+				public void focusGained(FocusEvent e) {
+
+					Display.getCurrent().asyncExec(textField::selectAll);
+				}
+			});
+			PivotPointSelection pivotPointSelection = settings.getPivotPointSelection();
+			pivotCombo.setSelection(new StructuredSelection(pivotPointSelection));
+			textField.setText(numberFormat.format(settings.getUserDefinedPivotPointValue()));
+			textField.setEnabled(pivotPointSelection == PivotPointSelection.USER_DEFINED);
+		}
+
+		private SliderUI createFirstOrderSlider(Composite composite) {
+
+			SliderUI ui = new SliderUI(composite, FRACTIONS);
+			ui.setRange(-FIRST_ORDER_RANGE, FIRST_ORDER_RANGE);
+			ui.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			ui.setValue(settings.getFirstOrderPhaseCorrection());
+			ui.addConsumer(settings::setFirstOrderPhaseCorrection);
+			return ui;
+		}
+
+		private SliderUI createZeroOrderSlider(Composite composite) {
+
+			SliderUI ui = new SliderUI(composite, FRACTIONS);
+			ui.setRange(-ZERO_ORDER_RANGE, ZERO_ORDER_RANGE);
+			ui.setPageIncrement(ZERO_ORDER_INCREMENT);
+			ui.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			Composite buttons = new Composite(composite, SWT.NONE);
+			GridData ldButtons = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
+			ldButtons.horizontalSpan = 2;
+			buttons.setLayoutData(ldButtons);
+			buttons.setLayout(new GridLayout(4, true));
+			createButton("+ 90°", 1, ui, buttons);
+			createButton("- 90°", -1, ui, buttons);
+			createButton("+/- 180°", 2, ui, buttons);
+			ui.setValue(settings.getZeroOrderPhaseCorrection());
+			ui.addConsumer(settings::setZeroOrderPhaseCorrection);
+			return ui;
+		}
+
+		private Button createButton(String text, int increment, SliderUI ui, Composite buttons) {
+
+			Button button = new Button(buttons, SWT.PUSH);
+			GridData buttonData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
+			buttonData.widthHint = 70;
+			button.setLayoutData(buttonData);
+			button.setText(text);
+			button.addSelectionListener(new SelectionListener() {
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+
+					ui.increment(increment);
+				}
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+
+				}
+			});
+			return button;
+		}
+	}
+}
