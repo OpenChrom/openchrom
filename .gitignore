@@ -12,3 +12,5 @@ openchrom/features/net.openchrom.swtchart.extension.export.vectorgraphics.featur
 openchrom/plugins/net.openchrom.swtchart.extension.export.vectorgraphics.ui/target/
 openchrom/plugins/net.openchrom.swtchart.extension.export.vectorgraphics/target/
 openchrom/sites/net.openchrom.swtchart.extension.export.vectorgraphics.updateSite/target/
+bin/
+target/

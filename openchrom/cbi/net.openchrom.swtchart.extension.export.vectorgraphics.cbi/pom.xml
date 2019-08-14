@@ -4,22 +4,21 @@
   <!--
 	PARENT
   -->
-  <parent>
-    <groupId>net.openchrom</groupId>
-    <artifactId>master</artifactId>
-    <version>BUILD-VERSION</version>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
+          <parent>
+              <groupId>net.openchrom</groupId>
+              <artifactId>master</artifactId>
+              <version>1.4.0-SNAPSHOT</version>
+          </parent>
   <!--
 	ARTIFACT
   -->
   <groupId>net.openchrom</groupId>
-  <artifactId>parent</artifactId>
+<artifactId>swtchartvectorgraphics</artifactId>
   <packaging>pom</packaging>
   <!--
 	DESCRIPTION
   --> 
-  <name>OpenChrom SWTChart SVG, EPS, PDF Extension</name>
+<name>OpenChrom::swtchartvectorgraphics::Aggregator</name>
   <description>
 	This plugin allows to export charts to SVG, EPS, PDF format. 
   </description>
@@ -38,7 +37,7 @@
   <developers>
     <developer>
       <id>eselmeister</id>
-      <name>Philip Wenig</name>
+<name>OpenChrom::swtchartvectorgraphics::Aggregator</name>
       <email>philip.wenig [at] openchrom.net</email>
       <timezone>+1</timezone>
       <roles>
