@@ -4,7 +4,7 @@
   <parent>
     <groupId>net.openchrom</groupId>
     <artifactId>master</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>net.openchrom</groupId>
@@ -48,5 +48,6 @@
     <module>../net.openchrom.targetplatform</module>
     <module>../../plugins</module>
     <module>../../features</module>
+    <module>../../sites</module>
   </modules>
 </project>

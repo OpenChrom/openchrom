@@ -5,15 +5,15 @@
 	PARENT
   -->
   <parent>
-    <groupId>net.openchrom.releng</groupId>
+    <groupId>net.openchrom</groupId>
     <artifactId>master</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <!--
 	ARTIFACT
   -->
-  <groupId>net.openchrom.releng</groupId>
+  <groupId>net.openchrom</groupId>
   <artifactId>sites</artifactId>
   <packaging>pom</packaging>
   <!--
@@ -51,6 +51,6 @@
 	MODULES
   -->
   <modules>
-    <module>openchrom.platform</module>
+    <module>net.openchrom.platform.updateSite</module>
   </modules>
 </project>
