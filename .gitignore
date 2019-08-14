@@ -14,3 +14,5 @@ openchrom/plugins/net.openchrom.msd.converter.supplier.mgf/target/
 openchrom/sites/net.openchrom.msd.converter.supplier.mgf.updateSite/target/
 openchrom/plugins/net.openchrom.msd.converter.supplier.mgf.fragment.test/*.log
 
+bin/
+target/
