@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <!--
+	PARENT
+  -->
+  <parent>
+    <groupId>net.openchrom</groupId>
+    <artifactId>master</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <!--
+	ARTIFACT
+  -->
+  <groupId>net.openchrom</groupId>
+  <artifactId>features</artifactId>
+  <packaging>pom</packaging>
+  <!--
+	DESCRIPTION
+  -->
+  <name>OpenChrom::Features</name>
+  <description>
+	OpenChrom is an open source workbench to edit and modify chromatographic data.
+  </description>
+  <url>https://github.com/OpenChrom/releng</url>
+  <!--
+	LICENSES
+  -->
+  <licenses>
+    <license>
+      <name>EPL v1.0</name>
+      <url>http://www.eclipse.org/legal/epl-v10.html</url>
+    </license> 
+  </licenses>
+  <!--
+	DEVELOPERS
+  -->
+  <developers>
+    <developer>
+      <id>eselmeister</id>
+      <name>Philip Wenig</name>
+      <email>philip.wenig [at] openchrom.net</email>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+  <!--
+	MODULES
+  -->
+  <modules>
+<module>net.openchrom.chromatogram.msd.comparison.supplier.pbm.feature</module>
+<module>net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.feature</module>
+<module>net.openchrom.msd.converter.supplier.cms.feature</module>
+<module>net.openchrom.msd.converter.supplier.mgf.feature</module>
+<module>net.openchrom.msd.converter.supplier.pdf.feature</module>
+<module>net.openchrom.msd.identifier.supplier.opentyper.feature</module>
+<module>net.openchrom.msd.process.supplier.cms.feature</module>
+<module>net.openchrom.msqbatlibs.feature</module>
+<module>net.openchrom.msqbatlibs.kerner.utils.feature</module>
+<module>net.openchrom.nmr.processing.supplier.base.feature</module>
+<module>net.openchrom.pcr.report.supplier.misc.feature</module>
+<module>net.openchrom.platform.feature</module>
+<module>net.openchrom.swtchart.extension.export.vectorgraphics.feature</module>
+<module>net.openchrom.wsd.converter.supplier.abif.feature</module>
+<module>net.openchrom.xxd.classifier.supplier.ratios.feature</module>
+<module>net.openchrom.xxd.process.supplier.templates.feature</module>
+<module>net.openchrom.xxd.processor.supplier.tracecompare.feature</module>
+  </modules>
+</project>
