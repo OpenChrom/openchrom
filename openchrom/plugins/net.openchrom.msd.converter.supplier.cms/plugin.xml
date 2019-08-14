@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.msd.converter.databaseSupplier">
+      <DatabaseSupplier
+            description="Reads an writes CMS mass spectra."
+            exportConverter="net.openchrom.msd.converter.supplier.cms.converter.DatabaseExportConverter"
+            fileExtension=".CMS"
+            filterName="Calibrated Mass Spectra (*.CMS)"
+            id="net.openchrom.msd.process.supplier.cms"
+            importConverter="net.openchrom.msd.converter.supplier.cms.converter.DatabaseImportConverter"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.cms.converter.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="true">
+      </DatabaseSupplier>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="net.openchrom.msd.converter.supplier.cms.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>   
+</plugin>
