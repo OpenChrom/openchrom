@@ -12,3 +12,5 @@ openchrom/features/net.openchrom.pcr.report.supplier.misc.feature/target/
 openchrom/plugins/net.openchrom.pcr.report.supplier.misc.ui/target/
 openchrom/plugins/net.openchrom.pcr.report.supplier.misc/target/
 openchrom/sites/net.openchrom.pcr.report.supplier.misc.updateSite/target/
+bin/
+target/

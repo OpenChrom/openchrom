@@ -4,22 +4,21 @@
   <!--
 	PARENT
   -->
-  <parent>
-    <groupId>net.openchrom</groupId>
-    <artifactId>master</artifactId>
-    <version>BUILD-VERSION</version>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
+          <parent>
+              <groupId>net.openchrom</groupId>
+              <artifactId>master</artifactId>
+              <version>1.4.0-SNAPSHOT</version>
+          </parent>
   <!--
 	ARTIFACT
   -->
   <groupId>net.openchrom</groupId>
-  <artifactId>parent</artifactId>
+<artifactId>pcrreportmisc</artifactId>
   <packaging>pom</packaging>
   <!--
 	DESCRIPTION
   --> 
-  <name>PCR Report</name>
+<name>OpenChrom::pcrreportmisc::Aggregator</name>
   <description>
 	This module is used to create PCR reports.
   </description>
