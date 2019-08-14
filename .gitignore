@@ -12,3 +12,5 @@ openchrom/features/net.openchrom.nmr.processing.supplier.base.feature/target/
 openchrom/plugins/net.openchrom.nmr.processing.supplier.base.ui/target/
 openchrom/plugins/net.openchrom.nmr.processing.supplier.base/target/
 openchrom/sites/net.openchrom.nmr.processing.supplier.base.updateSite/target/
+bin/
+target/

@@ -25,7 +25,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.chemclipse.rcp.app.ui;bundle-version="0.8.0",
  org.eclipse.jface,
  org.eclipse.chemclipse.processing;bundle-version="0.8.0",
- net.openchrom.nmr.processing.supplier.base;bundle-version="1.4.1",
+ net.openchrom.nmr.processing.supplier.base;bundle-version="1.4.0",
  org.eclipse.chemclipse.support.ui,
  org.eclipse.chemclipse.nmr.converter,
  org.eclipse.chemclipse.processing.ui;bundle-version="0.8.0"
