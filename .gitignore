@@ -12,3 +12,5 @@ openchrom/features/net.openchrom.xxd.classifier.supplier.ratios.feature/target/
 openchrom/plugins/net.openchrom.xxd.classifier.supplier.ratios.ui/target/
 openchrom/plugins/net.openchrom.xxd.classifier.supplier.ratios/target/
 openchrom/sites/net.openchrom.xxd.classifier.supplier.ratios.updateSite/target/
+bin/
+target/
