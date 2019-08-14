@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+   <extension
+         id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.fragment"
+         point="org.eclipse.e4.workbench.model">
+      <fragment
+            uri="fragment.e4xmi">
+      </fragment>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="Mass Shift Detector Settings"
+            category="org.eclipse.chemclipse.xxd.process.ui.preferences.processPreferencePage"
+            class="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.preferences.PreferencePage"
+            id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.preferences.preferencePage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors.EditorProcessor"
+            extensions="mdp"
+            icon="icons/16x16/chromatogram.gif"
+            id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.editors.editorProcessor"
+            name="Mass Shift Detector">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="Mass Spectrometry"
+            id="org.eclipse.chemclipse.msd">
+      </category>
+      <wizard
+            name="Mass Shift Detector"
+            icon="icons/16x16/chromatogram.gif"
+            category="org.eclipse.chemclipse.processors"
+            class="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.wizards.WizardProcessor"
+            id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.wizards.WizardProcessor">
+      </wizard>
+   </extension>   
+</plugin>
