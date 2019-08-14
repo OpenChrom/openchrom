@@ -1,0 +1,20 @@
+IGNORED: testing ignored field in state 0
+COMMENT: testing comment field in state 0, comment #1
+SCAN: Argon=0.5, Nitrogen=0.3, Oxygen=0.2, Ethane=0.2, Ethylene=0.2
+SOURCEP: 1
+COMMENT: testing comment field in state 1, comment #1
+SPUNITS: mbar
+SIGUNITS: Amp
+TSTAMP: 2016-12-12_14:22:01_EDT
+ETIMES: 0.0e0 This trailing comment is ignored
+COMMENT: testing comment field in state 1, comment #2
+EENERGYV: 70
+IENERGYV: 3000
+INAME: VG 14-80
+IGNORED: testing ignored field in state #1
+NUM PEAKS: 15
+14 1.0315e-06; 16 8.76088e-07; 20 1.46214e-06; 24 1.12011e-07; 25 4.52446e-07; 
+COMMENT: testing comment field in state 2, comment 1
+26 3.04711e-06; 27 3.82397e-06; 28 1.4e-05; 29 9.973e-07; 30 1.0529e-06; 
+IGNORED: testing ignored field in state 2
+31 2.0002e-08; 32 4e-06; 36 3.0003e-08; 38 5.0005e-09; 40 1e-05; 
