@@ -4,22 +4,21 @@
   <!--
 	PARENT
   -->
-  <parent>
-    <groupId>net.openchrom</groupId>
-    <artifactId>master</artifactId>
-    <version>BUILD-VERSION</version>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
+          <parent>
+              <groupId>net.openchrom</groupId>
+              <artifactId>master</artifactId>
+              <version>1.4.0-SNAPSHOT</version>
+          </parent>
   <!--
 	ARTIFACT
   -->
   <groupId>net.openchrom</groupId>
-  <artifactId>parent</artifactId>
+<artifactId>templateprocessor</artifactId>
   <packaging>pom</packaging>
   <!--
 	DESCRIPTION
   --> 
-  <name>templates</name>
+<name>OpenChrom::templateprocessor::Aggregator</name>
   <description>
 	The plugin contains several template methods.
   </description>

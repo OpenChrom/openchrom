@@ -12,3 +12,5 @@ openchrom/features/net.openchrom.xxd.process.supplier.templates.feature/target/
 openchrom/plugins/net.openchrom.xxd.process.supplier.templates.ui/target/
 openchrom/plugins/net.openchrom.xxd.process.supplier.templates/target/
 openchrom/sites/net.openchrom.xxd.process.supplier.templates.updateSite/target/
+bin/
+target/
