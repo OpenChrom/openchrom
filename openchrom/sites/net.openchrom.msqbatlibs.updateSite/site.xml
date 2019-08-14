@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/net.openchrom.msqbatlibs.feature_1.4.0.qualifier.jar" id="net.openchrom.msqbatlibs.feature" version="1.4.0.qualifier">
+      <category name="net.openchrom.chromatogram.msd.plugins.identifier"/>
+   </feature>
+   <category-def name="net.openchrom.chromatogram.msd.plugins.identifier" label="Identifier"/>
+</site>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.msqbatlibs.feature"
+      label="MSqBAT Libraries Feature"
+      version="1.4.0.qualifier"
+      provider-name="OpenChrom">
+
+   <description url="http://www.openchrom.net">
+      This is the MSqBAT libs plugin.
+   </description>
+
+   <copyright url="http://www.openchrom.net">
+      Copyright (c) 2015, 2018 Dr. Alexander Kerner, Dr. Philip Wenig.
+   </copyright>
+
+   <license url="http://www.eclipse.org/legal/epl-v10.html">
+      Copyright (c) 2015, 2018 Dr. Alexander Kerner, Dr. Philip Wenig.
+
+All rights reserved.
+This program and the accompanying materials are made available under the
+terms of the Eclipse Public License v1.0 which accompanies this distribution,
+and is available at http://www.eclipse.org/legal/epl-v10.html
+   </license>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.jtables"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.jfasta"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.bioutils.proteomics"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.jmgf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.jranges"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.kerner.utils"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.kerner.utils.collections"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.kerner.utils.io"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.msqbatlibs.bridge"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

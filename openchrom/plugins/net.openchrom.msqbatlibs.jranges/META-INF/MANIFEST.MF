@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jranges
+Bundle-SymbolicName: net.openchrom.msqbatlibs.jranges
+Bundle-Version: 1.4.0.qualifier
+Bundle-Activator: net.openchrom.msqbatlibs.jranges.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.4.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: net.sf.jranges.range;version="1.1.0.qualifier",
+ net.sf.jranges.range.doublerange;version="1.1.0.qualifier",
+ net.sf.jranges.range.doublerange.impl;version="1.1.0.qualifier",
+ net.sf.jranges.range.integerrange;version="1.1.0.qualifier",
+ net.sf.jranges.range.integerrange.impl;version="1.1.0.qualifier",
+ net.sf.jranges.range.longrange;version="1.1.0.qualifier",
+ net.sf.jranges.range.longrange.impl;version="1.1.0.qualifier"
