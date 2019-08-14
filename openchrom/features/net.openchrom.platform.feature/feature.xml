@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.platform.feature"
       label="OpenChrom Platform"
-      version="1.0.0.qualifier">
+      version="1.4.0.qualifier">
 
    <description url="http://www.example.com/description">
       This contains the OpenChrom platform
@@ -25,23 +25,7 @@
          version="0.0.0"/>
 
    <includes
-         id="net.openchrom.chromatogram.msd.process.supplier.groovy.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="net.openchrom.chromatogram.msd.process.supplier.jython.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="net.openchrom.chromatogram.msd.process.supplier.jzy3d.feature"
-         version="0.0.0"/>
-
-   <includes
          id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="net.openchrom.chromatogram.xxd.process.supplier.alignment.feature"
          version="0.0.0"/>
 
    <includes
@@ -82,18 +66,6 @@
 
    <includes
          id="net.openchrom.wsd.converter.supplier.abif.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="net.openchrom.wsd.identifier.supplier.geneident.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="net.openchrom.xxd.processor.supplier.chrom2d.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="net.openchrom.xxd.processor.supplier.rscripting.feature"
          version="0.0.0"/>
 
    <includes
@@ -221,23 +193,11 @@
          version="0.0.0"/>
 
    <includes
-         id="org.python.pydev.feature"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.equinox.compendium.sdk"
          version="0.0.0"/>
 
    <includes
          id="org.eclipse.equinox.core.sdk"
-         version="0.0.0"/>
-
-   <includes
-         id="cn.edu.xmu.tidems.control.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.chromulan.system.control.feature"
          version="0.0.0"/>
 
    <includes
@@ -267,26 +227,5 @@
    <includes
          id="net.openchrom.thirdpartylibraries.jcampdx.feature"
          version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.osgi"
-         download-size="0"
-         install-size="0"
-         version="3.11.3.v20170209-1843"
-         unpack="false"/>
-
-   <plugin
-         id="com.google.guava"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.objectweb.asm"
-         download-size="0"
-         install-size="0"
-         version="3.3.1.v201105211655"
-         unpack="false"/>
 
 </feature>

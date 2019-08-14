@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.csd.converter.supplier.cdf.feature"
       label="NetCDF FID (*.cdf)"
-      version="0.8.0.qualifier"
+      version="1.4.0.qualifier"
       provider-name="ChemClipse">
 
    <description url="http://www.chemclipse.net">

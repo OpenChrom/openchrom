@@ -46,5 +46,7 @@
   -->
   <modules>
     <module>../net.openchrom.targetplatform</module>
+    <module>../../plugins</module>
+    <module>../../features</module>
   </modules>
 </project>

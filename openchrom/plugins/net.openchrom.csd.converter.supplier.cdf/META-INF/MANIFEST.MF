@@ -3,7 +3,7 @@ Eclipse-RegisterBuddy: 	org.eclipse.chemclipse.model, org.eclipse.chemclipse.csd
 Bundle-ManifestVersion: 2
 Bundle-Name: Cdf
 Bundle-SymbolicName: net.openchrom.csd.converter.supplier.cdf;singleton:=true
-Bundle-Version: 0.8.0.qualifier
+Bundle-Version: 1.4.0.qualifier
 Bundle-Activator: net.openchrom.csd.converter.supplier.cdf.Activator
 Bundle-Vendor: ChemClipse
 Require-Bundle: org.eclipse.core.runtime,

@@ -4,12 +4,12 @@
 
 	<parent>
 		<groupId>net.openchrom</groupId>
-		<artifactId>plugins</artifactId>
+		<artifactId>master</artifactId>
 		<version>1.4.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>net.openchrom.pdfconverter.plugins</artifactId>
+	<artifactId>net.openchrom.plugins</artifactId>
 	<packaging>pom</packaging>
 	<name>OpenChrom::Plugins</name>
 	<modules>
@@ -28,7 +28,6 @@
 		<module>net.openchrom.msd.converter.supplier.cdf.fragment.test</module>
 		<module>net.openchrom.msd.converter.supplier.cdf.ui</module>
 		<module>net.openchrom.msd.converter.supplier.cdf</module>
-		<module>net.openchrom.msd.converter.supplier.cms.documentation</module>
 		<module>net.openchrom.msd.converter.supplier.cms.fragment.test</module>
 		<module>net.openchrom.msd.converter.supplier.cms.ui</module>
 		<module>net.openchrom.msd.converter.supplier.cms</module>
@@ -41,7 +40,6 @@
 		<module>net.openchrom.msd.identifier.supplier.opentyper.fragment.test</module>
 		<module>net.openchrom.msd.identifier.supplier.opentyper.ui</module>
 		<module>net.openchrom.msd.identifier.supplier.opentyper</module>
-		<module>net.openchrom.msd.process.supplier.cms.documentation</module>
 		<module>net.openchrom.msd.process.supplier.cms.fragment.test</module>
 		<module>net.openchrom.msd.process.supplier.cms.ui</module>
 		<module>net.openchrom.msd.process.supplier.cms</module>
