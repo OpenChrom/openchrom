@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.chemclipse.rcp.app.ui.org.eclipse.chemclipse.rcp.application"
+            name="OpenChrom Analytics Edition (Lawrence)">
+         <property
+               name="windowImages"
+               value="icons/logo_16x16.png,icons/logo_32x32.png,icons/logo_48x48.png,icons/logo_64x64.png,icons/logo_128x128.png">
+         </property>
+         <property
+               name="aboutText"
+               value="OpenChrom Analytics Edition (Lawrence) - the open source software for chromatography and spectrometry">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/about_250x330.png">
+         </property>
+         <property
+               name="appName"
+               value="OpenChrom Analytics Edition (Lawrence)">
+         </property>
+         <property
+               name="applicationXMI"
+               value="org.eclipse.chemclipse.rcp.app.ui/Application.e4xmi">
+         </property>
+         <property
+               name="applicationCSS"
+               value="/org.eclipse.chemclipse.rcp.app.ui/css/chemclipse.css">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandler
+            class="net.openchrom.rcp.compilation.community.ui.splash.EnhancedSplashHandler"
+            id="net.openchrom.rcp.compilation.community.ui.splash.enhancedSplashHandler">
+      </splashHandler>         
+      <splashHandlerProductBinding
+            productId="net.openchrom.rcp.compilation.community.ui.product"
+            splashId="net.openchrom.rcp.compilation.community.ui.splash.enhancedSplashHandler">
+      </splashHandlerProductBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="net.openchrom.rcp.compilation.community.ui.PluginStartup"></startup>
+   </extension>
+   <extension
+         point="org.eclipse.epp.mpc.ui.catalog">
+         <catalog
+		    description="Install extensions from the Lablicate marketplace."
+		    icon="icons/logo_32x32.png"
+		    label="Lablicate Marketplace"
+		    url="http://marketplace.lablicate.com/"
+		    selfContained="false">
+	    </catalog>
+   </extension>
+
+</plugin>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="OpenChrom Analytics Edition (Lawrence)" uid="net.openchrom.rcp.compilation.community.product.id" id="net.openchrom.rcp.compilation.community.ui.product" application="org.eclipse.chemclipse.rcp.app.ui.org.eclipse.chemclipse.rcp.application" version="1.4.0.qualifier" useFeatures="true" includeLaunchers="true">
+
+   <aboutInfo>
+      <image path="/net.openchrom.rcp.compilation.community.ui/icons/about_250x330.png"/>
+      <text>
+         OpenChrom Analytics Edition (Lawrence) - the open source software for chromatography and spectrometry
+      </text>
+   </aboutInfo>
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <programArgs>-clearPersistedState
+      </programArgs>
+      <programArgsLin>--launcher.GTK_version
+2
+      </programArgsLin>
+      <vmArgs>-Xms512M
+-Xmx1024M
+-Dosgi.framework.extensions=org.eclipse.fx.osgi
+-Dapplication.name=OpenChrom_Analytics_Edition
+-Dapplication.version=1.4.x
+-Denable.cli.support=false
+-Dosgi.instance.area=@user.home/OpenChrom/1.4.x
+-Dosgi.user.area=@user.home/.openchrom/1.4.x
+-Dorg.eclipse.update.reconcile=false
+      </vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i16="/net.openchrom.rcp.compilation.community.ui/icons/logo_16x16.png" i32="/net.openchrom.rcp.compilation.community.ui/icons/logo_32x32.png" i48="/net.openchrom.rcp.compilation.community.ui/icons/logo_48x48.png" i64="/net.openchrom.rcp.compilation.community.ui/icons/logo_64x64.png" i128="/net.openchrom.rcp.compilation.community.ui/icons/logo_128x128.png"/>
+
+   <splash
+      location="net.openchrom.rcp.compilation.community.ui" />
+   <launcher name="openchrom">
+      <linux icon="icons/linux/Icon.xpm"/>
+      <solaris/>
+      <win useIco="false">
+         <bmp
+            winSmallHigh="icons/windows/16x16-32.bmp"
+            winSmallLow="icons/windows/16x16-8.bmp"
+            winMediumHigh="icons/windows/32x32-32.bmp"
+            winMediumLow="icons/windows/32x32-8.bmp"
+            winLargeHigh="icons/windows/48x48-32.bmp"
+            winLargeLow="icons/windows/48x48-8.bmp"
+            winExtraLargeHigh="icons/windows/256x256-32.bmp"/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <license>
+        <url>http://www.openchrom.net</url>
+        <text>
+   Copyright (c) 2008, 2018 Lablicate GmbH.
+
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+
+Contributors:
+	Dr. Philip Wenig - initial API and implementation
+         </text>
+   </license>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="net.openchrom.jre.feature"/>
+      <feature id="net.openchrom.platform.feature" version="1.4.0.qualifier"/>
+   </features>
+
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+      <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4" />
+      <property name="org.eclipse.update.reconcile" value="false" />
+      <property name="osgi.requiredJavaVersion" value="1.8" />
+      <property name="sun.awt.xembedserver" value="true" />
+   </configurations>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+      <file path="/org.eclipse.chemclipse.rcp.app.ui/css/chemclipse.css"/>
+   </cssInfo>
+
+</product>

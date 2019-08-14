@@ -79,5 +79,6 @@
 		<module>net.openchrom.xxd.processor.supplier.tracecompare.fragment.test</module>
 		<module>net.openchrom.xxd.processor.supplier.tracecompare.ui</module>
 		<module>net.openchrom.xxd.processor.supplier.tracecompare</module>
+		<module>net.openchrom.rcp.compilation.community.ui</module>
 	</modules>
 </project>
