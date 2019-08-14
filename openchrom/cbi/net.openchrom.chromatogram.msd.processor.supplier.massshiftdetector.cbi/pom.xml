@@ -4,22 +4,21 @@
   <!--
 	PARENT
   -->
-  <parent>
-    <groupId>net.openchrom</groupId>
-    <artifactId>master</artifactId>
-    <version>BUILD-VERSION</version>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
+          <parent>
+              <groupId>net.openchrom</groupId>
+              <artifactId>master</artifactId>
+              <version>1.4.0-SNAPSHOT</version>
+          </parent>
   <!--
 	ARTIFACT
   -->
   <groupId>net.openchrom</groupId>
-  <artifactId>parent</artifactId>
+<artifactId>massshiftdetector</artifactId>
   <packaging>pom</packaging>
   <!--
 	DESCRIPTION
   --> 
-  <name>massshiftdetector</name>
+<name>OpenChrom::massshiftdetector::Aggregator</name>
   <description>
 	This processor helps to detect mass shifts.
   </description>

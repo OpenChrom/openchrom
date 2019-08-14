@@ -2,15 +2,15 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>net.openchrom</groupId>
-    <artifactId>parent</artifactId>
-    <version>BUILD-VERSION</version>
-    <relativePath>../cbi/net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.cbi/pom.xml</relativePath>
-  </parent>
+          <parent>
+              <groupId>net.openchrom</groupId>
+              <artifactId>massshiftdetector</artifactId>
+              <version>1.4.0-SNAPSHOT</version>
+              <relativePath>../cbi/net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.cbi/pom.xml</relativePath>
+          </parent>
 
-  <artifactId>net.openchrom.sites.parent</artifactId>
+<artifactId>net.openchrom.massshiftdetector.sites</artifactId>
   <packaging>pom</packaging>
-  <name>updateSites</name>
+<name>OpenChrom::massshiftdetector::Sites</name>
 
 </project>

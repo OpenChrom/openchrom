@@ -12,3 +12,5 @@ openchrom/features/net.openchrom.chromatogram.msd.processor.supplier.massshiftde
 openchrom/plugins/net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui/target/
 openchrom/plugins/net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector/target/
 openchrom/sites/net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.updateSite/target/
+bin/
+target/
