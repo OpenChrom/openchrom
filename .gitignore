@@ -13,3 +13,5 @@ openchrom/sites/net.openchrom.chromatogram.msd.comparison.supplier.pbm.updateSit
 openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test/Openchrom.log
 openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test/Openchrom.log*
 openchrom/plugins/net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test/*.log
+bin/
+target/

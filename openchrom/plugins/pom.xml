@@ -2,15 +2,15 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>net.openchrom</groupId>
-    <artifactId>parent</artifactId>
-    <version>BUILD-VERSION</version>
-    <relativePath>../cbi/net.openchrom.chromatogram.msd.comparison.supplier.pbm.cbi/pom.xml</relativePath>
-  </parent>
+          <parent>
+              <groupId>net.openchrom</groupId>
+              <artifactId>compmspbm</artifactId>
+              <version>1.4.0-SNAPSHOT</version>
+              <relativePath>../cbi/net.openchrom.chromatogram.msd.comparison.supplier.pbm.cbi/pom.xml</relativePath>
+          </parent>
 
-  <artifactId>net.openchrom.plugins.parent</artifactId>
+<artifactId>net.openchrom.compmspbm.plugins</artifactId>
   <packaging>pom</packaging>
-  <name>plugins</name>
+<name>OpenChrom::compmspbm::Plugins</name>
 
 </project>
