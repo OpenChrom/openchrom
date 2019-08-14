@@ -12,3 +12,5 @@ openchrom/features/net.openchrom.wsd.converter.supplier.abif.feature/target/
 openchrom/plugins/net.openchrom.wsd.converter.supplier.abif.ui/target/
 openchrom/plugins/net.openchrom.wsd.converter.supplier.abif/target/
 openchrom/sites/net.openchrom.wsd.converter.supplier.abif.updateSite/target/
+bin/
+target/
