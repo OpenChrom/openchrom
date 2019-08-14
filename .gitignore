@@ -12,3 +12,5 @@ openchrom/features/net.openchrom.msd.process.supplier.cms.feature/target/
 openchrom/plugins/net.openchrom.msd.process.supplier.cms.ui/target/
 openchrom/plugins/net.openchrom.msd.process.supplier.cms/target/
 openchrom/sites/net.openchrom.msd.process.supplier.cms.updateSite/target/
+bin/
+target/
