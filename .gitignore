@@ -13,3 +13,5 @@ openchrom/plugins/net.openchrom.msqbatlibs.*./target/
 openchrom/sites/net.openchrom.msqbatlibs.*.updateSite/target/
 openchrom/plugins/net.openchrom.msqbatlibs.*.fragment.test/*.log
 
+bin/
+target/
