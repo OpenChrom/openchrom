@@ -12,3 +12,5 @@ openchrom/features/net.openchrom.xxd.processor.supplier.tracecompare.feature/tar
 openchrom/plugins/net.openchrom.xxd.processor.supplier.tracecompare.ui/target/
 openchrom/plugins/net.openchrom.xxd.processor.supplier.tracecompare/target/
 openchrom/sites/net.openchrom.xxd.processor.supplier.tracecompare.updateSite/target/
+bin/
+target/

@@ -2,15 +2,15 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>net.openchrom</groupId>
-    <artifactId>parent</artifactId>
-    <version>BUILD-VERSION</version>
-    <relativePath>../cbi/net.openchrom.xxd.processor.supplier.tracecompare.cbi/pom.xml</relativePath>
-  </parent>
+          <parent>
+              <groupId>net.openchrom</groupId>
+              <artifactId>processortracecompare</artifactId>
+              <version>1.4.0-SNAPSHOT</version>
+              <relativePath>../cbi/net.openchrom.xxd.processor.supplier.tracecompare.cbi/pom.xml</relativePath>
+          </parent>
 
-  <artifactId>net.openchrom.plugins.parent</artifactId>
+<artifactId>net.openchrom.processortracecompare.plugins</artifactId>
   <packaging>pom</packaging>
-  <name>plugins</name>
+<name>OpenChrom::processortracecompare::Plugins</name>
 
 </project>
