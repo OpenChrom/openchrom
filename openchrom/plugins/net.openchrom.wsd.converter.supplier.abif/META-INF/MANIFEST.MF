@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ab1
+Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.abif;singleton:=true
+Bundle-Version: 1.4.0.qualifier
+Bundle-Activator: net.openchrom.wsd.converter.supplier.abif.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.chemclipse.converter;bundle-version="0.8.0",
+ org.eclipse.chemclipse.wsd.converter;bundle-version="0.8.0",
+ org.eclipse.chemclipse.model;bundle-version="0.8.0",
+ org.eclipse.chemclipse.wsd.model;bundle-version="0.8.0",
+ org.eclipse.chemclipse.logging;bundle-version="0.8.0",
+ org.eclipse.chemclipse.processing;bundle-version="0.8.0",
+ org.eclipse.chemclipse.support;bundle-version="0.8.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
