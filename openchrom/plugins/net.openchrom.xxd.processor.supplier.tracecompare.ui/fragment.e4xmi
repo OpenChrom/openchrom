@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_X4Y-EATjEeeTJNNUrNvi1w">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_V8IlYATmEeeTJNNUrNvi1w" featurename="commands" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
+    <elements xsi:type="commands:Command" xmi:id="_aMrNgATmEeeTJNNUrNvi1w" elementId="net.openchrom.xxd.processor.supplier.tracecompare.ui.command.processor" commandName="Trace Compare"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_TpDIcATmEeeTJNNUrNvi1w" featurename="handlers" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
+    <elements xsi:type="commands:Handler" xmi:id="_cO484ATmEeeTJNNUrNvi1w" elementId="net.openchrom.xxd.processor.supplier.tracecompare.ui.handler.0" contributionURI="bundleclass://net.openchrom.xxd.processor.supplier.tracecompare.ui/net.openchrom.xxd.processor.supplier.tracecompare.ui.handlers.ProcessorWizardHandler" command="_aMrNgATmEeeTJNNUrNvi1w"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_jS7AUATmEeeTJNNUrNvi1w" featurename="children" parentElementId="org.eclipse.chemclipse.ux.extension.ui.menu.process">
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_l_NAYATmEeeTJNNUrNvi1w" elementId="net.openchrom.xxd.processor.supplier.tracecompare.ui.handledmenuitem.processor" label="Trace Compare" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/peak.gif" command="_aMrNgATmEeeTJNNUrNvi1w"/>
+  </fragments>
+</fragment:ModelFragments>
