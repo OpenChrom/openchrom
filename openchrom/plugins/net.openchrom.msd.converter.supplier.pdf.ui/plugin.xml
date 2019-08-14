@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.chemclipse.msd.converter.ui.converterPreferencePage"
+            class="net.openchrom.msd.converter.supplier.pdf.ui.preferences.PreferencePage"
+            id="net.openchrom.msd.converter.supplier.pdf.ui.preferences.converterPreferencePage"
+            name="PDF Chromatogram MS Converter">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.xxd.report.chromatogramReportSupplier">
+      <ChromatogramReportSupplier
+            description="Chromatogram PDF Report."
+            fileExtension=".pdf"
+            fileName="OpenChromReport"
+            id="net.openchrom.msd.converter.supplier.pdf.ui.chromatogramReportPDF"
+            reportGenerator="net.openchrom.msd.converter.supplier.pdf.ui.converter.ReportPDF"
+            reportName="PDF Report (*.pdf)"
+            reportSettings="net.openchrom.msd.converter.supplier.pdf.ui.settings.ReportSettings">
+      </ChromatogramReportSupplier>  
+   </extension>
+</plugin>

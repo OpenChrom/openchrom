@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+
+          <parent>
+              <groupId>net.openchrom</groupId>
+              <artifactId>pdfconverter</artifactId>
+              <version>1.4.0-SNAPSHOT</version>
+              <relativePath>../cbi/net.openchrom.msd.converter.supplier.pdf.cbi/pom.xml</relativePath>
+          </parent>
+
+<artifactId>net.openchrom.pdfconverter.plugins</artifactId>
+  <packaging>pom</packaging>
+<name>OpenChrom::pdfconverter::Plugins</name>
+
+</project>
