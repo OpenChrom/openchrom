@@ -33,12 +33,12 @@
 <repository location="https://update.openchrom.net/repositories/community/latest/3rdparty"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.equinox.sdk.feature.group" version="3.12.0.v20170209-1843"/>
-<unit id="org.eclipse.gemini.jpa.feature.feature.group" version="1.2.0.M1"/>
-<unit id="org.eclipse.persistence.sdk.feature.group" version="2.7.1.v20171221-bd47e8f"/>
-<unit id="org.eclipse.equinox.executable.feature.group" version="3.6.300.v20161122-1740"/>
-<unit id="org.eclipse.chemclipse.rcp.compilation.community.feature.feature.group" version="0.8.0.201908160915"/>
-<unit id="org.eclipse.chemclipse.rcp.compilation.testing.feature.feature.group" version="0.8.0.201908160915"/>
+<unit id="org.eclipse.equinox.sdk.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.gemini.jpa.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.persistence.sdk.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.rcp.compilation.community.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.chemclipse.rcp.compilation.testing.feature.feature.group" version="0.0.0"/>
 <repository location="https://update.openchrom.net/repositories/chemclipse/latest/platform"/>
 </location>
 </locations>
