@@ -11,7 +11,9 @@
 	<artifactId>net.openchrom.platform.updateSite</artifactId>
 	<version>1.4.0-SNAPSHOT</version>
 	<packaging>eclipse-repository</packaging>
-
+	<properties>
+		<skip.install>true</skip.install>
+	</properties>
 
 	<build>
 		<plugins>

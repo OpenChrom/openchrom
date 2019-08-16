@@ -9,38 +9,40 @@
 	</parent>
 
 	<name>OpenChrom Compilation Community Product</name>
-
+	<properties>
+		<skip.install>true</skip.install>
+	</properties>
 	<artifactId>openchrom.compilation.community</artifactId>
 	<packaging>eclipse-repository</packaging>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>${tycho.groupid}</groupId>
-        <artifactId>tycho-p2-director-plugin</artifactId>
-        <version>${tycho.version}</version>
-        <executions>
-          <execution>
-            <id>materialize-products</id>
-            <goals>
-             <goal>materialize-products</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>archive-products</id>
-            <goals>
-              <goal>archive-products</goal>
-            </goals>
-            <configuration>
-            <formats>
-			  <linux>tar.gz</linux>
-			  <macosx>tar.gz</macosx>
-			</formats>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>${tycho.groupid}</groupId>
+				<artifactId>tycho-p2-director-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<id>materialize-products</id>
+						<goals>
+							<goal>materialize-products</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>archive-products</id>
+						<goals>
+							<goal>archive-products</goal>
+						</goals>
+						<configuration>
+							<formats>
+								<linux>tar.gz</linux>
+								<macosx>tar.gz</macosx>
+							</formats>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
