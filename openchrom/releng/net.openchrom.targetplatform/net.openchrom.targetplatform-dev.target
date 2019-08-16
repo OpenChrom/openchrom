@@ -2,11 +2,11 @@
 <?pde version="3.8"?><target name="OpenChrom Target (Dev)" sequenceNumber="39">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="net.openchrom.platform.feature.feature.group" version="1.0.0.201908082120"/>
+<unit id="net.openchrom.platform.feature.feature.group" version="0.0.0"/>
 <repository location="https://update.openchrom.net/repositories/community/latest/platform"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.equinox.sdk.feature.group" version="3.12.0.v20170209-1843"/>
+<unit id="org.eclipse.equinox.sdk.feature.group" version="0.0.0"/>
 <repository location="https://update.openchrom.net/repositories/chemclipse/latest/platform"/>
 </location>
 </locations>
