@@ -13,6 +13,6 @@ We will be happy to aswer your questions which will serve as a resource to other
 
 ## Reporting Issues
 
-If there is any issues you encounter that could not be resolved by [Asking Questions](Asking Questions), please file an issue [here](https://github.com/OpenChrom/openchrom/issues).
+If there is any issues you encounter that could not be resolved by [Asking Questions](https://github.com/OpenChrom/openchrom/blob/develop/CONTRIBUTING.md#asking-questions), please file an issue [here](https://github.com/OpenChrom/openchrom/issues).
 
 # Thank You!
