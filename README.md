@@ -1,12 +1,10 @@
-<img src="https://www.openchrom.net/img/LogoTrans.png" width="150" align="right">
+<img src="https://www.openchrom.net/img/LogoTrans.png" width="150" align="left"><img src="https://lablicate.com/img/LablicateLogo.png" width="150" align="right">
 
 # OpenChrom® Community Edition
 
 [OpenChrom®](https://en.wikipedia.org/wiki/OpenChrom) is a tool for the analysis and visualization of mass spectrometric and chromatographic data developed by [Lablicate GmbH](https://lablicate.com).
 
 It is based on [Chemclipse](https://github.com/eclipse/chemclipse) but offers additional features that cannot be part of the Chemclipse project due to licencing constrains. Those are, most importantly, additional binary data reader as well as the Lablicate marketplace.
-
-<img src="https://lablicate.com/img/LablicateLogo.png" width="150" align="right">
 
 ---
 
