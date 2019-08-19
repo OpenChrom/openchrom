@@ -1,4 +1,4 @@
-<img src="https://www.openchrom.net/img/LogoTrans.png" width="150" align="right"><img 
+<img src="https://www.openchrom.net/img/LogoTrans.png" width="150" align="right">
 
 # OpenChrom® Community Edition
 
@@ -6,7 +6,7 @@
 
 It is based on [Chemclipse](https://github.com/eclipse/chemclipse) but offers additional features that cannot be part of the Chemclipse project due to licencing constrains. Those are, most importantly, additional binary data reader as well as the Lablicate marketplace.
 
-src="https://lablicate.com/img/LablicateLogo.png" width="150" align="right">
+<img src="https://lablicate.com/img/LablicateLogo.png" width="150" align="right">
 
 ---
 
