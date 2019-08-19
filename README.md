@@ -1,5 +1,4 @@
-<img src="https://www.openchrom.net/img/LogoTrans.png" width="150" align="left">
-<img src="https://lablicate.com/img/LablicateLogo.png" width="150" align="right">
+<img src="https://www.openchrom.net/img/LogoTrans.png" width="150" align="left"><img src="https://lablicate.com/img/LablicateLogo.png" width="150" align="right">
 
 # OpenChrom® Community Edition
 
