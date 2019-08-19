@@ -11,6 +11,10 @@ Have a question? Rather than opening an issue, please ask away on [Stack Overflo
 
 We will be happy to aswer your questions which will serve as a resource to others searching for help.
 
+## Writing Code
+
+If you are a developer and want to write your own plug-in, please refer to our [wiki](https://github.com/OpenChrom/openchrom/wiki/OpenChrom-Developer-Manual) for some helpful guidelines.
+
 ## Reporting Issues
 
 If there is any issues you encounter that could not be resolved by [Asking Questions](https://github.com/OpenChrom/openchrom/blob/develop/CONTRIBUTING.md#asking-questions), please file an issue [here](https://github.com/OpenChrom/openchrom/issues).
