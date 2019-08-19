@@ -6,8 +6,8 @@ It is based on [Chemclipse](https://github.com/eclipse/chemclipse) but offers ad
 
 ---
 
-Please find our Code of Conduct [here](https://github.com/OpenChrom/openchrom/blob/develop/CODE_OF_CONDUCT.md).
+Please find our **Code of Conduct** [here](https://github.com/OpenChrom/openchrom/blob/develop/CODE_OF_CONDUCT.md).
 
-If you would like to contribute to this project, please have a look at [this guideline](https://github.com/OpenChrom/openchrom/blob/develop/CONTRIBUTING.md).
+If you would like to **contribute** to this project, please have a look at [this guideline](https://github.com/OpenChrom/openchrom/blob/develop/CONTRIBUTING.md).
 
-For our Wiki, user- and developer documentation, have a look [here](https://github.com/OpenChrom/openchrom/wiki).
+For our Wiki, user- and developer **documentation**, have a look [here](https://github.com/OpenChrom/openchrom/wiki).
