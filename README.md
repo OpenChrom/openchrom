@@ -4,6 +4,8 @@
 
 It is based on [Chemclipse](https://github.com/eclipse/chemclipse) but offers additional features that cannot be part of the Chemclipse project due to licencing constrains. Those are, most importantly, additional binary data reader as well as the Lablicate marketplace.
 
+---
+
 Please find our Code of Conduct [here](https://github.com/OpenChrom/openchrom/blob/develop/CODE_OF_CONDUCT.md).
 
 If you would like to contribute to this project, please have a look at [this guideline](https://github.com/OpenChrom/openchrom/blob/develop/CONTRIBUTING.md).
