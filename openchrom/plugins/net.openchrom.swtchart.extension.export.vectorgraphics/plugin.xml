@@ -4,9 +4,6 @@
    <extension
          point="org.eclipse.swtchart.extensions.menuitems">
       <MenuItemSupplier
-            MenuEntry="net.openchrom.swtchart.extension.export.vectorgraphics.core.SVGExportHandler">
-      </MenuItemSupplier>
-      <MenuItemSupplier
             MenuEntry="net.openchrom.swtchart.extension.export.vectorgraphics.core.EPSExportHandler">
       </MenuItemSupplier>
       <MenuItemSupplier
