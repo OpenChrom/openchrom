@@ -73,10 +73,6 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.chemclipse.rcp.compilation.community.feature"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.ease.feature"
          version="0.0.0"/>
 
@@ -111,6 +107,10 @@
    <includes
          id="net.openchrom.xxd.classifier.supplier.ratios.feature"
          version="0.0.0"/>
+
+   <requires>
+      <import feature="org.eclipse.chemclipse.rcp.compilation.community.feature" version="0.0.0"/>
+   </requires>
 
    <plugin
          id="net.openchrom.rcp.compilation.community.ui"
