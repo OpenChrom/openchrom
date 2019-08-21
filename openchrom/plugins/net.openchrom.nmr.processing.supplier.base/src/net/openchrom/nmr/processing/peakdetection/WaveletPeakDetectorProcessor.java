@@ -27,12 +27,20 @@ import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.detector.Detector;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
+import org.ejml.simple.SimpleMatrix;
 import org.osgi.service.component.annotations.Component;
 
-@Component(service = {Detector.class, IMeasurementPeakDetector.class})
+@Component(service = { Detector.class, IMeasurementPeakDetector.class })
 public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<WaveletPeakDetectorSettings> {
 
+	/*
+	 * Reference for the Wavelet Peak Detector:
+	 *
+	 * Du, Pan et al. Bioinformatics 22, Nr. 17 (1. September 2006): 2059–65.
+	 */
 	private static final String NAME = "Wavelet Peak Detector";
+	private static final int[] psiScales = { 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, //
+			36, 40, 44, 48, 52, 56, 60, 64 };
 
 	@Override
 	public String getName() {
@@ -47,45 +55,82 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 	}
 
 	@Override
-	public <T extends IMeasurement> Map<T, PeakList> detectIMeasurementPeaks(Collection<T> detectorInputItems, WaveletPeakDetectorSettings configuration, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
+	public <T extends IMeasurement> Map<T, PeakList> detectIMeasurementPeaks(Collection<T> detectorInputItems,
+			WaveletPeakDetectorSettings configuration, MessageConsumer messageConsumer, IProgressMonitor monitor)
+			throws IllegalArgumentException {
 
 		SubMonitor convert = SubMonitor.convert(monitor, getName(), detectorInputItems.size() * 100);
 		LinkedHashMap<T, PeakList> map = new LinkedHashMap<>();
-		for(T measurement : detectorInputItems) {
-			if(measurement instanceof SpectrumMeasurement) {
-				map.put(measurement, detect(((SpectrumMeasurement)measurement).getSignals(), configuration, messageConsumer, convert.split(100)));
+		for (T measurement : detectorInputItems) {
+			if (measurement instanceof SpectrumMeasurement) {
+				map.put(measurement, detect(((SpectrumMeasurement) measurement).getSignals(), configuration,
+						messageConsumer, convert.split(100)));
 			}
 		}
 		return map;
 	}
 
-	private PeakList detect(List<? extends SpectrumSignal> signals, WaveletPeakDetectorSettings configuration, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	private PeakList detect(List<? extends SpectrumSignal> signals, WaveletPeakDetectorSettings configuration,
+			MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		/*
 		 * TODO detect the peaks
 		 */
+		SimpleMatrix waveletCoefficients = WaveletPeakDetectorCWT.calculateWaveletCoefficients(signals, psiScales);
+		//
+		SimpleMatrix localMaxima = calculateLocalMaxima(waveletCoefficients, psiScales, configuration);
+		//
 		SubMonitor subMonitor = SubMonitor.convert(monitor, signals.size());
 		List<PeakPosition> peakPositions = new ArrayList<>();
 		int index = 0;
-		for(SpectrumSignal signal : signals) {
+		for (SpectrumSignal signal : signals) {
+			@SuppressWarnings("unused")
 			double x = signal.getX();
+			@SuppressWarnings("unused")
 			double y = signal.getY();
 			subMonitor.worked(1);
-			if(index == 100) {
+			if (index == 100) {
 				peakPositions.add(new WavletPeakPosition());
 			}
 		}
 		return new PeakList(peakPositions, getID(), getName(), getDescription());
 	}
 
+	/*
+	 * WIP maximum part
+	 */
+
+	private SimpleMatrix calculateLocalMaxima(SimpleMatrix waveletCoefficients, int[] psiScales,
+			WaveletPeakDetectorSettings configuration) {
+
+		double amplitudeThreshold = Double.POSITIVE_INFINITY;
+		if (configuration.getAmplitudeThreshold() == 0) {
+			amplitudeThreshold = 0;
+		} else {
+			amplitudeThreshold = identifyMaxCoefficient(waveletCoefficients) * configuration.getAmplitudeThreshold();
+		}
+
+		return null;
+	}
+
+	private double identifyMaxCoefficient(SimpleMatrix waveletCoefficients) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/*
+	 * WIP maximum part end
+	 */
+
 	@Override
 	public boolean acceptsIMeasurements(Collection<? extends IMeasurement> items) {
 
-		for(IMeasurement measurement : items) {
-			if(!(measurement instanceof SpectrumMeasurement)) {
+		for (IMeasurement measurement : items) {
+			if (!(measurement instanceof SpectrumMeasurement)) {
 				return false;
 			}
 		}
 		return true;
 	}
+
 }
