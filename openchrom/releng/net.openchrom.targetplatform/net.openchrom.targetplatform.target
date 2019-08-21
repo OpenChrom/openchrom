@@ -3,6 +3,7 @@
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="net.openchrom.thirdpartylibraries.vectorgraphics2d.feature.feature.group" version="0.13.0.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.orientdb.feature.feature.group" version="2.1.16.v2019"/>
 <unit id="net.openchrom.thirdpartylibraries.jzy3d.feature.feature.group" version="1.0.2.v2019"/>
 <unit id="net.openchrom.thirdpartylibraries.mockito.feature.feature.group" version="2.0.2.v2019"/>
 <unit id="net.openchrom.thirdpartylibraries.barcode4j.feature.feature.group" version="2.1.0.v2019"/>
