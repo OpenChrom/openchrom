@@ -31,7 +31,7 @@ public class UtilityFunctions {
 		Complex[] array = new Complex[signals.size()];
 		BigDecimal[] times = new BigDecimal[signals.size()];
 		int i = 0;
-		for(FIDSignal signal : signals) {
+		for (FIDSignal signal : signals) {
 			array[i] = new Complex(signal.getY(), signal.getImaginaryY());
 			times[i] = signal.getSignalTime();
 			i++;
@@ -42,7 +42,7 @@ public class UtilityFunctions {
 	public static Complex[] toComplexArray(List<? extends SpectrumSignal> signals) {
 
 		Complex[] array = new Complex[signals.size()];
-		for(int i = 0; i < array.length; i++) {
+		for (int i = 0; i < array.length; i++) {
 			SpectrumSignal signal = signals.get(i);
 			array[i] = new Complex(signal.getY(), signal.getImaginaryY());
 		}
@@ -59,12 +59,12 @@ public class UtilityFunctions {
 		int i = 0;
 		int maxIndex = 0;
 		double maxValue = Double.MIN_NORMAL;
-		for(SpectrumSignal signal : signals) {
+		for (SpectrumSignal signal : signals) {
 			double real = signal.getY();
 			array[i] = new Complex(real, signal.getImaginaryY());
 			frequency[i] = signal.getFrequency();
 			chemicalShift[i] = parameter.toPPM(frequency[i]);
-			if(real > maxValue) {
+			if (real > maxValue) {
 				maxValue = real;
 				maxIndex = i;
 			}
@@ -76,74 +76,74 @@ public class UtilityFunctions {
 	public static double[] generateLinearlySpacedVector(double minVal, double maxVal, int points) {
 
 		double[] vector = new double[points];
-		for(int i = 0; i < points; i++) {
-			vector[i] = minVal + (double)i / (points - 1) * (maxVal - minVal);
+		for (int i = 0; i < points; i++) {
+			vector[i] = minVal + (double) i / (points - 1) * (maxVal - minVal);
 		}
 		return vector;
 	}
 
-	public double getMaxValueOfArray(double[] dataArray) {
+	public static double getMaxValueOfArray(double[] dataArray) {
 
 		return Arrays.stream(dataArray).max().orElseThrow(IllegalArgumentException::new);
 	}
 
-	public double getMinValueOfArray(double[] dataArray) {
+	public static double getMinValueOfArray(double[] dataArray) {
 
 		return Arrays.stream(dataArray).min().orElseThrow(IllegalArgumentException::new);
 	}
 
-	public int findIndexOfValue(double[] array, double value) {
+	public static int findIndexOfValue(double[] array, double value) {
 
 		int index;
-		for(index = 0; index < array.length; index++) {
-			if(Math.abs(array[index] - value) < 0.001) {
+		for (index = 0; index < array.length; index++) {
+			if (Math.abs(array[index] - value) < 0.001) {
 				break;
 			}
 		}
 		//
 		int reverseIndex = array.length - 1;
-		for(; reverseIndex > 0; reverseIndex--) {
-			if(Math.abs(array[reverseIndex] - value) < 0.001) {
+		for (; reverseIndex > 0; reverseIndex--) {
+			if (Math.abs(array[reverseIndex] - value) < 0.001) {
 				break;
 			}
 		}
 		//
-		if(Double.compare(value, 0.0) < 0) {
-			return (int)Math.floor((reverseIndex + index) / 2);
+		if (Double.compare(value, 0.0) < 0) {
+			return (int) Math.floor((reverseIndex + index) / 2);
 		} else {
-			return (int)Math.ceil((reverseIndex + index) / 2);
+			return (int) Math.ceil((reverseIndex + index) / 2);
 		}
 	}
 
 	public static int findIndexOfValue(Number[] array, double value) {
 
 		int index;
-		for(index = 0; index < array.length; index++) {
-			if(Math.abs(array[index].doubleValue() - value) < 0.001) {
+		for (index = 0; index < array.length; index++) {
+			if (Math.abs(array[index].doubleValue() - value) < 0.001) {
 				break;
 			}
 		}
 		//
 		int reverseIndex = array.length - 1;
-		for(; reverseIndex > 0; reverseIndex--) {
-			if(Math.abs(array[reverseIndex].doubleValue() - value) < 0.001) {
+		for (; reverseIndex > 0; reverseIndex--) {
+			if (Math.abs(array[reverseIndex].doubleValue() - value) < 0.001) {
 				break;
 			}
 		}
 		//
-		if(Double.compare(value, 0.0) < 0) {
-			return (int)Math.floor((reverseIndex + index) / 2);
+		if (Double.compare(value, 0.0) < 0) {
+			return (int) Math.floor((reverseIndex + index) / 2);
 		} else {
-			return (int)Math.ceil((reverseIndex + index) / 2);
+			return (int) Math.ceil((reverseIndex + index) / 2);
 		}
 	}
 
 	public void leftShiftNMRData(double[] dataArray, int pointsToShift) {
 
 		pointsToShift = pointsToShift % dataArray.length;
-		while(pointsToShift-- > 0) {
+		while (pointsToShift-- > 0) {
 			double tempArray = dataArray[0];
-			for(int i = 1; i < dataArray.length; i++) {
+			for (int i = 1; i < dataArray.length; i++) {
 				dataArray[i - 1] = dataArray[i];
 			}
 			dataArray[dataArray.length - 1] = tempArray;
@@ -152,9 +152,9 @@ public class UtilityFunctions {
 
 	public double[] rightShiftNMRData(double[] dataArray, int pointsToShift) {
 
-		for(int i = 0; i < pointsToShift; i++) {
+		for (int i = 0; i < pointsToShift; i++) {
 			double tempArray = dataArray[dataArray.length - 1];
-			for(int g = dataArray.length - 2; g > -1; g--) {
+			for (int g = dataArray.length - 2; g > -1; g--) {
 				dataArray[g + 1] = dataArray[g];
 			}
 			dataArray[0] = tempArray;
@@ -165,9 +165,9 @@ public class UtilityFunctions {
 	public static void leftShiftNMRComplexData(Complex[] dataArray, int pointsToShift) {
 
 		pointsToShift = pointsToShift % dataArray.length;
-		while(pointsToShift-- > 0) {
+		while (pointsToShift-- > 0) {
 			Complex tempArray = dataArray[0];
-			for(int i = 1; i < dataArray.length; i++) {
+			for (int i = 1; i < dataArray.length; i++) {
 				dataArray[i - 1] = dataArray[i];
 			}
 			dataArray[dataArray.length - 1] = tempArray;
@@ -176,9 +176,9 @@ public class UtilityFunctions {
 
 	public static Complex[] rightShiftNMRComplexData(Complex[] dataArray, int pointsToShift) {
 
-		for(int i = 0; i < pointsToShift; i++) {
+		for (int i = 0; i < pointsToShift; i++) {
 			Complex tempArray = dataArray[dataArray.length - 1];
-			for(int g = dataArray.length - 2; g > -1; g--) {
+			for (int g = dataArray.length - 2; g > -1; g--) {
 				dataArray[g + 1] = dataArray[g];
 			}
 			dataArray[0] = tempArray;
@@ -194,7 +194,8 @@ public class UtilityFunctions {
 		public final int maxIndex;
 		public final AcquisitionParameter parameter;
 
-		public SpectrumData(Complex[] array, BigDecimal[] frequency, BigDecimal[] chemicalShift, int maxIndex, AcquisitionParameter parameter) {
+		public SpectrumData(Complex[] array, BigDecimal[] frequency, BigDecimal[] chemicalShift, int maxIndex,
+				AcquisitionParameter parameter) {
 			this.signals = array;
 			this.frequency = frequency;
 			this.chemicalShift = chemicalShift;
@@ -204,11 +205,11 @@ public class UtilityFunctions {
 
 		public List<SpectrumSignal> toSignal() {
 
-			if(signals.length != frequency.length) {
+			if (signals.length != frequency.length) {
 				throw new IllegalStateException("chemicalShift length differs from signals length");
 			}
 			List<SpectrumSignal> list = new ArrayList<>(frequency.length);
-			for(int i = 0; i < frequency.length; i++) {
+			for (int i = 0; i < frequency.length; i++) {
 				list.add(new ComplexSpectrumSignal(frequency[i], signals[i]));
 			}
 			return list;
@@ -228,11 +229,11 @@ public class UtilityFunctions {
 
 		public List<FIDSignal> toSignal() {
 
-			if(signals.length != times.length) {
+			if (signals.length != times.length) {
 				throw new IllegalStateException("times length differs from signals length");
 			}
 			List<FIDSignal> list = new ArrayList<>(times.length);
-			for(int i = 0; i < times.length; i++) {
+			for (int i = 0; i < times.length; i++) {
 				list.add(new ComplexFIDSignal(times[i], signals[i]));
 			}
 			return list;
