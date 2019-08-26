@@ -17,7 +17,7 @@
 		<groupId>org.eclipse.chemclipse</groupId>
 		<artifactId>master</artifactId>
 		<version>0.8.0-SNAPSHOT</version>
-		<relativePath>../../chemclipse/chemclipse.pom.xml</relativePath>
+		<relativePath>../../chemclipse/chemclipse/pom.xml</relativePath>
 	</parent>
 	<properties>
 		<tycho.target.groupId>net.openchrom</tycho.target.groupId>
