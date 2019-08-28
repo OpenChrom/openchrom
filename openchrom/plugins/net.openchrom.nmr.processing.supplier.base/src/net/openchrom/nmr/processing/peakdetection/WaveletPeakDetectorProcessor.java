@@ -127,78 +127,19 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 
 			// search using column and windowSize
 			for (int c = 0; c < waveletCoefficientsWithData.numCols(); c++) {
+				int shiftDataValue = Integer.MIN_VALUE;
 				int dataLength = waveletCoefficientsWithData.numRows();
 				int rowNumber = (int) Math.ceil((double) dataLength / windowSize);
-				double lastColumnValue = waveletCoefficientsWithData.get(dataLength - 1, c);
-				int smallArraySize = rowNumber * windowSize - dataLength;
-				double[] smallArray = new double[smallArraySize];
-				for (int i = 0; i < smallArraySize; i++) {
-					smallArray[i] = lastColumnValue;
-				}
-				double[] localDataArray = waveletCoefficientsWithData.extractVector(false, c).getMatrix().getData();
-				double[] paddedDataArray = ArrayUtils.addAll(localDataArray, smallArray);
-				SimpleMatrix paddedDataArrayMatrix = new SimpleMatrix(windowSize,
-						(paddedDataArray.length / windowSize));
 
-				// transform array into matrix with columns[windowSize]
-				int copyFrom = 0;
-				int copyTo = 5;
-				for (int i = 0; i < rowNumber; i++) {
-					// System.out.println(copyFrom + " - " + copyTo);
-					double[] copy = Arrays.copyOfRange(paddedDataArray, copyFrom, copyTo);
-					// System.out.println(Arrays.toString(copy) + " Anzahl " + copy.length);
+				localMaximum = locateMaxima(c, rowNumber, windowSize, dataLength, shiftDataValue,
+						waveletCoefficientsWithData);
 
-					if (i == rowNumber - 1) {
-						double append = paddedDataArray[paddedDataArray.length - 1];
-						ArrayUtils.addAll(copy, new double[] { append });
-					}
-					paddedDataArrayMatrix.setColumn(i, 0, copy);
-					copyFrom = copyFrom + 5;
-					copyTo = copyTo + 5;
-				}
+				shiftDataValue = (int) Math.floor(windowSize / 2);
+				rowNumber = (int) Math.ceil((double) (dataLength + shiftDataValue) / windowSize);
 
-				// get max per column
-				double[] paddedDataArrayMatrixMaxIndices = new double[paddedDataArrayMatrix.numCols()];
-				for (int i = 0; i < rowNumber; i++) {
-					double[] column = paddedDataArrayMatrix.extractVector(false, i).getMatrix().getData();
-					// System.out.println(Arrays.toString(column));
-					paddedDataArrayMatrixMaxIndices[i] = UtilityFunctions.findIndexOfValue(column,
-							UtilityFunctions.getMaxValueOfArray(column));
-				}
-
-				// check if maximum is bigger than column bounds
-				boolean[] maximumBiggerThanBounds = new boolean[paddedDataArrayMatrixMaxIndices.length];
-				for (int i = 0; i < rowNumber; i++) {
-					double[] column = paddedDataArrayMatrix.extractVector(false, i).getMatrix().getData();
-					double max = UtilityFunctions.getMaxValueOfArray(column);
-					double lowBound = column[0];
-					double highBound = column[column.length - 1];
-					if (max > lowBound && max > highBound) {
-						maximumBiggerThanBounds[i] = true;
-					} else {
-						maximumBiggerThanBounds[i] = false;
-					}
-				}
-				// and extract selected indices
-				List<Integer> selectedIndices = new ArrayList<Integer>();
-				int index = 0;
-				for (boolean b : maximumBiggerThanBounds) {
-					if (b) {
-						selectedIndices.add(index);
-					}
-					index++;
-				}
-				int i = 0;
-				while (i < selectedIndices.size()) {
-					if (selectedIndices.get(i).intValue() > 0) {
-						int product = (selectedIndices.get(i).intValue() - 1) * windowSize;
-						int position = (int) (product
-								+ paddedDataArrayMatrixMaxIndices[selectedIndices.get(i).intValue()]);
-						localMaximum[position] = 1;
-						// selectedIndices.set(i, product);
-					}
-					i++;
-				}
+				//
+				double[] temp = locateMaxima(c, rowNumber, windowSize, dataLength, shiftDataValue,
+						waveletCoefficientsWithData);
 
 				int breakPoint = 1;
 
@@ -211,6 +152,105 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 			// placeholder
 		}
 		return null;
+	}
+
+	private static double[] locateMaxima(int c, int rowNumber, int windowSize, int dataLength, int shiftDataValue,
+			SimpleMatrix waveletCoefficientsWithData) {
+
+		double[] localMaximum = new double[waveletCoefficientsWithData.numRows()];
+
+		double[] localDataArray = waveletCoefficientsWithData.extractVector(false, c).getMatrix().getData();
+		double lastColumnValue = waveletCoefficientsWithData.get(dataLength - 1, c);
+
+		double[] paddedDataArray = null;
+		SimpleMatrix paddedDataArrayMatrix = null;
+		if (shiftDataValue == Integer.MIN_VALUE) {
+			// without shift
+			int smallArraySize = rowNumber * windowSize - dataLength;
+			double[] smallArray = new double[smallArraySize];
+			for (int i = 0; i < smallArraySize; i++) {
+				smallArray[i] = lastColumnValue;
+			}
+			paddedDataArray = ArrayUtils.addAll(localDataArray, smallArray);
+			paddedDataArrayMatrix = new SimpleMatrix(windowSize, (paddedDataArray.length / windowSize));
+			System.out.println(paddedDataArray.length);
+		} else {
+			// with shift
+			double firstColumnValue = waveletCoefficientsWithData.get(0, c);
+			double[] frontArray = new double[shiftDataValue];
+			double[] backArray = new double[rowNumber * windowSize - dataLength - shiftDataValue];
+			for (int i = 0; i < frontArray.length; i++) {
+				frontArray[i] = firstColumnValue;
+			}
+			for (int i = 0; i < backArray.length; i++) {
+				backArray[i] = lastColumnValue;
+			}
+			paddedDataArray = ArrayUtils.addAll(frontArray, localDataArray);
+			paddedDataArray = ArrayUtils.addAll(paddedDataArray, backArray);
+			paddedDataArrayMatrix = new SimpleMatrix(windowSize, (paddedDataArray.length / windowSize));
+			System.out.println(paddedDataArray.length);
+
+		}
+
+		// transform array into matrix with columns[windowSize]
+		int copyFrom = 0;
+		int copyTo = 5;
+		for (int i = 0; i < rowNumber; i++) {
+			// System.out.println(copyFrom + " - " + copyTo);
+			double[] copy = Arrays.copyOfRange(paddedDataArray, copyFrom, copyTo);
+			// System.out.println(Arrays.toString(copy) + " Anzahl " + copy.length);
+
+			if (i == rowNumber - 1) {
+				double append = paddedDataArray[paddedDataArray.length - 1];
+				ArrayUtils.addAll(copy, new double[] { append });
+			}
+			paddedDataArrayMatrix.setColumn(i, 0, copy);
+			copyFrom = copyFrom + 5;
+			copyTo = copyTo + 5;
+		}
+
+		// get max per column
+		double[] paddedDataArrayMatrixMaxIndices = new double[paddedDataArrayMatrix.numCols()];
+		for (int i = 0; i < rowNumber; i++) {
+			double[] column = paddedDataArrayMatrix.extractVector(false, i).getMatrix().getData();
+			// System.out.println(Arrays.toString(column));
+			paddedDataArrayMatrixMaxIndices[i] = UtilityFunctions.findIndexOfValue(column,
+					UtilityFunctions.getMaxValueOfArray(column));
+		}
+
+		// check if maximum is bigger than column bounds
+		boolean[] maximumBiggerThanBounds = new boolean[paddedDataArrayMatrixMaxIndices.length];
+		for (int i = 0; i < rowNumber; i++) {
+			double[] column = paddedDataArrayMatrix.extractVector(false, i).getMatrix().getData();
+			double max = UtilityFunctions.getMaxValueOfArray(column);
+			double lowBound = column[0];
+			double highBound = column[column.length - 1];
+			if (max > lowBound && max > highBound) {
+				maximumBiggerThanBounds[i] = true;
+			} else {
+				maximumBiggerThanBounds[i] = false;
+			}
+		}
+		// and extract selected indices
+		List<Integer> selectedIndices = new ArrayList<Integer>();
+		int index = 0;
+		for (boolean b : maximumBiggerThanBounds) {
+			if (b) {
+				selectedIndices.add(index);
+			}
+			index++;
+		}
+		int i = 0;
+		while (i < selectedIndices.size()) {
+			if (selectedIndices.get(i).intValue() > 0) {
+				int product = (selectedIndices.get(i).intValue() - 1) * windowSize;
+				int position = (int) (product + paddedDataArrayMatrixMaxIndices[selectedIndices.get(i).intValue()]);
+				localMaximum[position] = 1;
+				// selectedIndices.set(i, product);
+			}
+			i++;
+		}
+		return localMaximum;
 	}
 
 	private static int calculateWindowSize(int currentScale, int minimumWindowSize) {
