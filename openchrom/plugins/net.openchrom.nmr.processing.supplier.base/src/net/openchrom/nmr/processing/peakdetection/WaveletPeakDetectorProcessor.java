@@ -29,6 +29,7 @@ import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.detector.Detector;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
+import org.ejml.data.MatrixIterator64F;
 import org.ejml.simple.SimpleMatrix;
 import org.osgi.service.component.annotations.Component;
 
@@ -118,6 +119,8 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 		double amplitudeThreshold = calculateAmplitudeThreshold(waveletCoefficientsWithData, configuration);
 
 		int minimumWindowSize = 5;
+		SimpleMatrix localMaximumMatrix = new SimpleMatrix(waveletCoefficientsWithData.numRows(),
+				waveletCoefficientsWithData.numCols());
 		double[] localMaximum = new double[signals.size()];
 
 		// search column-wise for maximum within the specified window
@@ -138,19 +141,67 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 				rowNumber = (int) Math.ceil((double) (dataLength + shiftDataValue) / windowSize);
 
 				//
-				double[] temp = locateMaxima(c, rowNumber, windowSize, dataLength, shiftDataValue,
+				double[] tempLocalMaximum = locateMaxima(c, rowNumber, windowSize, dataLength, shiftDataValue,
 						waveletCoefficientsWithData);
+				// combine results from both locateMaxima calls
+				for (int i = 0; i < tempLocalMaximum.length; i++) {
+					if (tempLocalMaximum[i] == 1) {
+						localMaximum[i] = 1;
+					}
+				}
 
-				int breakPoint = 1;
-
+				List<Integer> maxIndices = new ArrayList<Integer>();
+				List<Integer> selectedIndices = new ArrayList<Integer>();
+				for (int i = 0; i < localMaximum.length; i++) {
+					if (localMaximum[i] > 0) {
+						maxIndices.add(i);
+					}
+				}
+				// calculate differences between pairs of consecutive elements
+				// and check for maxima within windowSize
+				for (int i = 0; i < maxIndices.size() - 1; i++) {
+					if ((maxIndices.get(i + 1) - maxIndices.get(i)) < windowSize) {
+						selectedIndices.add(i);
+					}
+				}
+				List<Integer> selectedIndicesA = new ArrayList<Integer>();
+				List<Integer> selectedIndicesB = new ArrayList<Integer>();
+				double[] spectralData = extractAbsorptiveSignalIntensity(signals);
+				double[] selectedIndicesDifference = new double[selectedIndices.size()];
+				if (selectedIndices.size() > 0) {
+					for (int i = 0; i < selectedIndices.size() - 1; i++) {
+						selectedIndicesA.add(maxIndices.get(selectedIndices.get(i)));
+						selectedIndicesB.add(maxIndices.get(selectedIndices.get(i) + 1));
+					}
+					for (int i = 0; i < selectedIndices.size() - 1; i++) {
+						selectedIndicesDifference[i] = spectralData[selectedIndicesA.get(i)]
+								- spectralData[selectedIndicesB.get(i)];
+					}
+					for (int i = 0; i < selectedIndicesDifference.length - 1; i++) {
+						if (selectedIndicesDifference[i] <= 0) {
+							localMaximum[selectedIndicesA.get(i)] = 0;
+						}
+						if (selectedIndicesDifference[i] > 0) {
+							localMaximum[selectedIndicesB.get(i)] = 0;
+						}
+					}
+				}
+				localMaximumMatrix.setColumn(c, 0, localMaximum);
 			}
-
 		}
 
 		// alle Maxima für die Koeff < amplitudeThreshold gilt => auf 0 setzen
-		if (1 < amplitudeThreshold) {
-			// placeholder
+		MatrixIterator64F matrixIterator = localMaximumMatrix.iterator(false, 0, 0, localMaximumMatrix.numRows() - 1,
+				localMaximumMatrix.numCols() - 1);
+		while (matrixIterator.hasNext()) {
+			matrixIterator.next();
+			int index = matrixIterator.getIndex();
+			if (1 < amplitudeThreshold) {
+				// placeholder
+			}
+			// check stuff
 		}
+
 		return null;
 	}
 
@@ -173,7 +224,6 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 			}
 			paddedDataArray = ArrayUtils.addAll(localDataArray, smallArray);
 			paddedDataArrayMatrix = new SimpleMatrix(windowSize, (paddedDataArray.length / windowSize));
-			System.out.println(paddedDataArray.length);
 		} else {
 			// with shift
 			double firstColumnValue = waveletCoefficientsWithData.get(0, c);
@@ -188,7 +238,6 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 			paddedDataArray = ArrayUtils.addAll(frontArray, localDataArray);
 			paddedDataArray = ArrayUtils.addAll(paddedDataArray, backArray);
 			paddedDataArrayMatrix = new SimpleMatrix(windowSize, (paddedDataArray.length / windowSize));
-			System.out.println(paddedDataArray.length);
 
 		}
 
@@ -231,6 +280,7 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 				maximumBiggerThanBounds[i] = false;
 			}
 		}
+
 		// and extract selected indices
 		List<Integer> selectedIndices = new ArrayList<Integer>();
 		int index = 0;
@@ -243,9 +293,23 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 		int i = 0;
 		while (i < selectedIndices.size()) {
 			if (selectedIndices.get(i).intValue() > 0) {
+
+				// check difference here
+
 				int product = (selectedIndices.get(i).intValue() - 1) * windowSize;
-				int position = (int) (product + paddedDataArrayMatrixMaxIndices[selectedIndices.get(i).intValue()]);
-				localMaximum[position] = 1;
+				int summand = 0;
+				if (shiftDataValue == Integer.MIN_VALUE) {
+					summand = (int) paddedDataArrayMatrixMaxIndices[selectedIndices.get(i).intValue()];
+				} else {
+					summand = (int) paddedDataArrayMatrixMaxIndices[selectedIndices.get(i).intValue()] - shiftDataValue;
+				}
+
+				int position = (product + summand);
+				if (position < 0) {
+					// check for negative position and restore index
+					position = position + shiftDataValue;
+				}
+				localMaximum[Math.abs(position)] = 1;
 				// selectedIndices.set(i, product);
 			}
 			i++;
@@ -265,12 +329,7 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 	private static SimpleMatrix prepareDataForSearch(List<? extends SpectrumSignal> signals,
 			SimpleMatrix waveletCoefficients) {
 
-		double[] dataArray = new double[signals.size()];
-		int position = 0;
-		for (SpectrumSignal signal : signals) {
-			dataArray[position] = signal.getAbsorptiveIntensity().doubleValue();
-			position++;
-		}
+		double[] dataArray = extractAbsorptiveSignalIntensity(signals);
 		SimpleMatrix dataArrayMatrix = new SimpleMatrix(signals.size(), 1);
 		dataArrayMatrix.setColumn(0, 0, dataArray);
 		SimpleMatrix waveletCoefficientsWithData = new SimpleMatrix(waveletCoefficients.numRows(),
@@ -278,6 +337,17 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 		waveletCoefficientsWithData.insertIntoThis(0, 0, dataArrayMatrix);
 		waveletCoefficientsWithData.insertIntoThis(0, 1, waveletCoefficients);
 		return waveletCoefficientsWithData;
+	}
+
+	private static double[] extractAbsorptiveSignalIntensity(List<? extends SpectrumSignal> signals) {
+
+		double[] dataArray = new double[signals.size()];
+		int position = 0;
+		for (SpectrumSignal signal : signals) {
+			dataArray[position] = signal.getAbsorptiveIntensity().doubleValue();
+			position++;
+		}
+		return dataArray;
 	}
 
 	private static double calculateAmplitudeThreshold(SimpleMatrix waveletCoefficientsWithData,
