@@ -56,6 +56,7 @@
 		<module>net.openchrom.platform.feature</module>
 		<module>net.openchrom.swtchart.extension.export.vectorgraphics.feature</module>
 		<module>net.openchrom.wsd.converter.supplier.abif.feature</module>
+		<module>net.openchrom.wsd.identifier.supplier.geneident.feature</module>
 		<module>net.openchrom.xxd.classifier.supplier.ratios.feature</module>
 		<module>net.openchrom.xxd.process.supplier.templates.feature</module>
 		<module>net.openchrom.xxd.processor.supplier.tracecompare.feature</module>

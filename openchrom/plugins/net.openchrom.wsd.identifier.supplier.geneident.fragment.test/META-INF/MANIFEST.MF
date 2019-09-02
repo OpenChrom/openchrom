@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test
+Bundle-SymbolicName: net.openchrom.wsd.identifier.supplier.geneident.fragment.test
+Bundle-Version: 1.4.0.qualifier
+Bundle-Vendor: GeneIdent
+Fragment-Host: net.openchrom.wsd.identifier.supplier.geneident;bundle-version="1.4.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
