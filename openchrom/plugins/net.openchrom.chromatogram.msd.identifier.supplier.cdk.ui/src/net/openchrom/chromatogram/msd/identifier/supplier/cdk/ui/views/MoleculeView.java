@@ -207,9 +207,6 @@ public class MoleculeView {
 	private void subscribe() {
 
 		if(eventBroker != null) {
-			/*
-			 * Receives and handles chromatogram selection updates.
-			 */
 			eventHandler = new EventHandler() {
 
 				public void handleEvent(Event event) {
@@ -217,12 +214,14 @@ public class MoleculeView {
 					/*
 					 * Receive name and formula.
 					 */
-					IIdentificationTarget identificationTarget = (IIdentificationTarget)event.getProperty(IChemClipseEvents.PROPERTY_IDENTIFICATION_TARGET);
-					ILibraryInformation libraryInformation = identificationTarget.getLibraryInformation();
-					iupacName = libraryInformation.getName();
-					smilesFormula = libraryInformation.getSmiles();
-					//
-					makeImage();
+					Object object = event.getProperty(IChemClipseEvents.PROPERTY_IDENTIFICATION_TARGET);
+					if(object instanceof IIdentificationTarget) {
+						IIdentificationTarget identificationTarget = (IIdentificationTarget)object;
+						ILibraryInformation libraryInformation = identificationTarget.getLibraryInformation();
+						iupacName = libraryInformation.getName();
+						smilesFormula = libraryInformation.getSmiles();
+						makeImage();
+					}
 				}
 			};
 			eventBroker.subscribe(IChemClipseEvents.TOPIC_IDENTIFICATION_TARGET_UPDATE, eventHandler);
