@@ -26,7 +26,7 @@
 <unit id="net.openchrom.thirdpartylibraries.imagej.feature.feature.group" version="1.47.0.v2019"/>
 <unit id="net.openchrom.thirdpartylibraries.jettison.feature.feature.group" version="1.1.0.v2019"/>
 <unit id="net.openchrom.thirdpartylibraries.xzing.feature.feature.group" version="3.3.2.v2019"/>
-<unit id="net.openchrom.thirdpartylibraries.opsin.feature.feature.group" version="1.5.0.v2019"/>
+<unit id="net.openchrom.thirdpartylibraries.opsin.feature.feature.group" version="2.4.0.v2019"/>
 <unit id="net.openchrom.thirdpartylibraries.lzf.feature.feature.group" version="1.0.4.v2019"/>
 <unit id="net.openchrom.thirdpartylibraries.matlabcontrol.feature.feature.group" version="4.1.0.v2019"/>
 <repository location="https://update.openchrom.net/repositories/community/latest/3rdparty"/>
