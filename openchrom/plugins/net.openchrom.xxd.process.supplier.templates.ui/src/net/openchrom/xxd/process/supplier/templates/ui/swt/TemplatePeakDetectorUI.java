@@ -52,7 +52,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -62,6 +62,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.IAxisSet;
 import org.eclipse.swtchart.ILineSeries.PlotSymbolType;
 import org.eclipse.swtchart.IPlotArea;
 import org.eclipse.swtchart.LineStyle;
@@ -85,6 +86,10 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 public class TemplatePeakDetectorUI extends Composite {
 
 	private PeakProcessSettings peakProcessSettings;
+	//
+	private static final String SERIES_ID_CHROMATOGRAM = "Chromatogram";
+	private static final String SERIES_ID_PEAKS = "Peaks";
+	private static final String SERIES_ID_PEAK = "Peak";
 	//
 	private Composite toolbarInfo;
 	//
@@ -134,7 +139,7 @@ public class TemplatePeakDetectorUI extends Composite {
 		public void handleEvent(BaseChart baseChart, Event event) {
 
 			peakProcessSettings.decreaseSelection();
-			updateSettingSelection();
+			updateSettingSelection(true);
 		}
 	}
 
@@ -190,7 +195,7 @@ public class TemplatePeakDetectorUI extends Composite {
 		public void handleEvent(BaseChart baseChart, Event event) {
 
 			peakProcessSettings.increaseSelection();
-			updateSettingSelection();
+			updateSettingSelection(true);
 		}
 	}
 
@@ -277,7 +282,7 @@ public class TemplatePeakDetectorUI extends Composite {
 	public void setPeakProcessSettings(PeakProcessSettings peakProcessSettings) {
 
 		this.peakProcessSettings = peakProcessSettings;
-		updateSettingSelection();
+		updateSettingSelection(true);
 	}
 
 	private void createControl() {
@@ -325,7 +330,7 @@ public class TemplatePeakDetectorUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				peakProcessSettings.decreaseSelection();
-				updateSettingSelection();
+				updateSettingSelection(false);
 			}
 		});
 		return button;
@@ -387,7 +392,7 @@ public class TemplatePeakDetectorUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				peakProcessSettings.increaseSelection();
-				updateSettingSelection();
+				updateSettingSelection(false);
 			}
 		});
 		return button;
@@ -490,19 +495,26 @@ public class TemplatePeakDetectorUI extends Composite {
 
 	private void applySettings() {
 
-		updateSettingSelection();
+		updateSettingSelection(false);
 	}
 
 	@SuppressWarnings("rawtypes")
-	private void updateSettingSelection() {
+	private void updateSettingSelection(boolean adjustRange) {
 
+		BaseChart baseChart = chromatogramChart.getBaseChart();
+		IAxisSet axisSet = baseChart.getAxisSet();
+		IAxis xAxis = axisSet.getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
+		IAxis yAxis = axisSet.getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+		Range rangeX = xAxis.getRange();
+		Range rangeY = yAxis.getRange();
+		//
 		DetectorSetting detectorSetting = peakProcessSettings.getSelectedDetectorSetting();
 		IChromatogramSelection chromatogramSelection = peakProcessSettings.getChromatogramSelection();
 		//
-		chromatogramChart.deleteSeries();
 		buttonNavigateLeft.setEnabled(peakProcessSettings.hasPrevious());
 		buttonNavigateRight.setEnabled(peakProcessSettings.hasNext());
 		//
+		chromatogramChart.deleteSeries();
 		List<ILineSeriesData> lineSeriesDataList = new ArrayList<>();
 		if(detectorSetting != null) {
 			lineSeriesDataList = extractSelectedRange(chromatogramSelection, detectorSetting);
@@ -511,6 +523,29 @@ public class TemplatePeakDetectorUI extends Composite {
 		}
 		//
 		chromatogramChart.addSeriesData(lineSeriesDataList);
+		if(adjustRange) {
+			adjustChartRange(rangeX, rangeY);
+		}
+	}
+
+	private void adjustChartRange(Range rangeX, Range rangeY) {
+
+		BaseChart baseChart = chromatogramChart.getBaseChart();
+		IAxisSet axisSet = baseChart.getAxisSet();
+		/*
+		 * Axis X
+		 */
+		if(rangeX.lower != 0.0d && rangeX.upper != 1.0d) {
+			IAxis xAxis = axisSet.getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
+			xAxis.setRange(rangeX);
+		}
+		/*
+		 * Axis Y
+		 */
+		if(rangeY.lower != 0.0d && rangeY.upper != 1.0d) {
+			IAxis yAxis = axisSet.getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+			yAxis.setRange(rangeY);
+		}
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
@@ -538,13 +573,8 @@ public class TemplatePeakDetectorUI extends Composite {
 			markedSignals.add(new MarkedIon(trace));
 		}
 		//
-		lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, "Chromatogram", DisplayType.XIC, ChromatogramChartSupport.DERIVATIVE_NONE, Colors.BLACK, markedSignals, false));
-		int i = 1;
-		for(IPeak peak : chromatogram.getPeaks(startRetentionTime, stopRetentionTime)) {
-			if(peakContainsTraces(peak, traces)) {
-				lineSeriesDataList.add(peakChartSupport.getPeak(peak, true, false, Colors.RED, "Peak " + i++));
-			}
-		}
+		lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM, DisplayType.XIC, ChromatogramChartSupport.DERIVATIVE_NONE, Colors.BLACK, markedSignals, false));
+		lineSeriesDataList.addAll(extractPeaksSeries(chromatogram, startRetentionTime, stopRetentionTime, traces));
 		//
 		return lineSeriesDataList;
 	}
@@ -555,35 +585,61 @@ public class TemplatePeakDetectorUI extends Composite {
 		List<ILineSeriesData> lineSeriesDataList = new ArrayList<>();
 		IChromatogram<? extends IPeak> chromatogram = chromatogramSelection.getChromatogram();
 		//
-		textStartRetentionTime.setText(decimalFormat.format(chromatogram.getStartRetentionTime() / IChromatogram.MINUTE_CORRELATION_FACTOR));
-		textStopRetentionTime.setText(decimalFormat.format(chromatogram.getStopRetentionTime() / IChromatogram.MINUTE_CORRELATION_FACTOR));
+		int startRetentionTime = chromatogram.getStartRetentionTime();
+		int stopRetentionTime = chromatogram.getStopRetentionTime();
+		textStartRetentionTime.setText(decimalFormat.format(startRetentionTime / IChromatogram.MINUTE_CORRELATION_FACTOR));
+		textStopRetentionTime.setText(decimalFormat.format(stopRetentionTime / IChromatogram.MINUTE_CORRELATION_FACTOR));
 		textTraces.setText("");
 		//
-		lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesDataChromatogram(chromatogram, "Chromatogram", Colors.RED));
+		lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesDataChromatogram(chromatogram, SERIES_ID_CHROMATOGRAM, Colors.RED));
+		lineSeriesDataList.add(extractPeaksSeries(chromatogram));
+		lineSeriesDataList.addAll(extractPeaksSeries(chromatogram, startRetentionTime, stopRetentionTime, null));
 		//
+		return lineSeriesDataList;
+	}
+
+	private ILineSeriesData extractPeaksSeries(IChromatogram<? extends IPeak> chromatogram) {
+
 		List<IPeak> peaks = new ArrayList<>(chromatogram.getPeaks());
 		Collections.sort(peaks, peakRetentionTimeComparator);
-		ILineSeriesData lineSeriesData = peakChartSupport.getPeaks(peaks, true, false, Colors.DARK_GRAY, "Peaks");
+		ILineSeriesData lineSeriesData = peakChartSupport.getPeaks(peaks, true, false, Colors.DARK_GRAY, SERIES_ID_PEAKS);
 		ILineSeriesSettings lineSeriesSettings = lineSeriesData.getSettings();
 		lineSeriesSettings.setEnableArea(false);
 		lineSeriesSettings.setLineStyle(LineStyle.NONE);
 		lineSeriesSettings.setSymbolType(PlotSymbolType.INVERTED_TRIANGLE);
 		lineSeriesSettings.setSymbolSize(5);
 		lineSeriesSettings.setSymbolColor(Colors.DARK_GRAY);
-		lineSeriesDataList.add(lineSeriesData);
+		//
+		return lineSeriesData;
+	}
+
+	private List<ILineSeriesData> extractPeaksSeries(IChromatogram<? extends IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, Set<Integer> traces) {
+
+		List<ILineSeriesData> lineSeriesDataList = new ArrayList<>();
+		//
+		int i = 1;
+		for(IPeak peak : chromatogram.getPeaks(startRetentionTime, stopRetentionTime)) {
+			if(traces != null && peakContainsTraces(peak, traces)) {
+				lineSeriesDataList.add(peakChartSupport.getPeak(peak, true, false, Colors.RED, SERIES_ID_PEAK + i++));
+			} else {
+				lineSeriesDataList.add(peakChartSupport.getPeak(peak, true, false, Colors.RED, SERIES_ID_PEAK + i++));
+			}
+		}
 		//
 		return lineSeriesDataList;
 	}
 
 	private boolean peakContainsTraces(IPeak peak, Set<Integer> traces) {
 
-		IScan scan = peak.getPeakModel().getPeakMaximum();
-		if(scan instanceof IScanMSD) {
-			IScanMSD scanMSD = (IScanMSD)scan;
-			IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
-			for(int trace : traces) {
-				if(extractedIonSignal.getAbundance(trace) > 0) {
-					return true;
+		if(peak != null && traces != null) {
+			IScan scan = peak.getPeakModel().getPeakMaximum();
+			if(scan instanceof IScanMSD) {
+				IScanMSD scanMSD = (IScanMSD)scan;
+				IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
+				for(int trace : traces) {
+					if(extractedIonSignal.getAbundance(trace) > 0) {
+						return true;
+					}
 				}
 			}
 		}
@@ -614,7 +670,7 @@ public class TemplatePeakDetectorUI extends Composite {
 			extractPeak();
 			setCursorDefault();
 			resetSelectedRange();
-			updateSettingSelection();
+			updateSettingSelection(true);
 		}
 	}
 
@@ -745,57 +801,60 @@ public class TemplatePeakDetectorUI extends Composite {
 		 * Calculate the rectangle factors.
 		 * Enable to set the peak as selected with retention time and abundance range.
 		 */
-		Rectangle rectangle = getPlotArea().getBounds();
-		// int height = rectangle.height;
-		// double factorHeight = 100.0d / height;
-		int width = rectangle.width;
-		double factorWidth = 100.0d / width;
-		/*
-		 * Calculate the percentage heights and widths.
-		 */
-		// double percentageStartHeight = (100.0d - (factorHeight * yStart)) / 100.0d;
-		// double percentageStopHeight = (100.0d - (factorHeight * yStop)) / 100.0d;
-		double percentageStartWidth = (factorWidth * xStart) / 100.0d;
-		double percentageStopWidth = (factorWidth * xStop) / 100.0d;
-		/*
-		 * Calculate the start and end points.
-		 */
-		BaseChart baseChart = chromatogramChart.getBaseChart();
-		IAxis retentionTime = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
-		Range millisecondsRange = retentionTime.getRange();
-		// IAxis intensity = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
-		// Range abundanceRange = intensity.getRange();
-		/*
-		 * With abundance and retention time.
-		 */
-		// double abundanceHeight = abundanceRange.upper - abundanceRange.lower;
-		double millisecondsWidth = millisecondsRange.upper - millisecondsRange.lower;
-		/*
-		 * Peak start and stop abundances and retention times.
-		 */
-		int startRetentionTime = (int)(millisecondsRange.lower + millisecondsWidth * percentageStartWidth);
-		int stopRetentionTime = (int)(millisecondsRange.lower + millisecondsWidth * percentageStopWidth);
-		// float startAbundance = (float)(abundanceRange.lower + abundanceHeight * percentageStartHeight);
-		// float stopAbundance = (float)(abundanceRange.lower + abundanceHeight * percentageStopHeight);
-		//
-		IChromatogramSelection chromatogramSelection = peakProcessSettings.getChromatogramSelection();
-		IChromatogram<? extends IPeak> chromatogram = chromatogramSelection.getChromatogram();
-		DetectorSetting detectorSetting = peakProcessSettings.getSelectedDetectorSetting();
-		//
-		Set<Integer> traces;
-		boolean includeBackground;
-		boolean optimizeRange;
-		//
-		if(detectorSetting != null) {
-			traces = listUtil.extractTraces(detectorSetting.getTraces());
-			includeBackground = detectorSetting.isIncludeBackground();
-			optimizeRange = detectorSetting.isOptimizeRange();
-		} else {
-			traces = new HashSet<>();
-			includeBackground = false;
-			optimizeRange = true;
+		IPeak peak = null;
+		Point rectangle = getPlotArea().getSize();
+		int width = rectangle.x;
+		double factorWidth = 0.0d;
+		if(width != 0) {
+			factorWidth = 100.0d / width;
+			/*
+			 * Calculate the percentage heights and widths.
+			 */
+			// double percentageStartHeight = (100.0d - (factorHeight * yStart)) / 100.0d;
+			// double percentageStopHeight = (100.0d - (factorHeight * yStop)) / 100.0d;
+			double percentageStartWidth = (factorWidth * xStart) / 100.0d;
+			double percentageStopWidth = (factorWidth * xStop) / 100.0d;
+			/*
+			 * Calculate the start and end points.
+			 */
+			BaseChart baseChart = chromatogramChart.getBaseChart();
+			IAxis retentionTime = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
+			Range millisecondsRange = retentionTime.getRange();
+			// IAxis intensity = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+			// Range abundanceRange = intensity.getRange();
+			/*
+			 * With abundance and retention time.
+			 */
+			// double abundanceHeight = abundanceRange.upper - abundanceRange.lower;
+			double millisecondsWidth = millisecondsRange.upper - millisecondsRange.lower;
+			/*
+			 * Peak start and stop abundances and retention times.
+			 */
+			int startRetentionTime = (int)(millisecondsRange.lower + millisecondsWidth * percentageStartWidth);
+			int stopRetentionTime = (int)(millisecondsRange.lower + millisecondsWidth * percentageStopWidth);
+			// float startAbundance = (float)(abundanceRange.lower + abundanceHeight * percentageStartHeight);
+			// float stopAbundance = (float)(abundanceRange.lower + abundanceHeight * percentageStopHeight);
+			//
+			IChromatogramSelection chromatogramSelection = peakProcessSettings.getChromatogramSelection();
+			IChromatogram<? extends IPeak> chromatogram = chromatogramSelection.getChromatogram();
+			DetectorSetting detectorSetting = peakProcessSettings.getSelectedDetectorSetting();
+			//
+			Set<Integer> traces;
+			boolean includeBackground;
+			boolean optimizeRange;
+			//
+			if(detectorSetting != null) {
+				traces = listUtil.extractTraces(detectorSetting.getTraces());
+				includeBackground = detectorSetting.isIncludeBackground();
+				optimizeRange = detectorSetting.isOptimizeRange();
+			} else {
+				traces = new HashSet<>();
+				includeBackground = false;
+				optimizeRange = true;
+			}
+			//
+			peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces);
 		}
-		//
-		return peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces);
+		return peak;
 	}
 }

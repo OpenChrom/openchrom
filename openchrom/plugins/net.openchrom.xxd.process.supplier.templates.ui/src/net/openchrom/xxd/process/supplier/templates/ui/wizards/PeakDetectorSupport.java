@@ -28,8 +28,11 @@ public class PeakDetectorSupport {
 		wizardDialog.setMinimumPageSize(PeakDetectorWizard.DEFAULT_WIDTH, PeakDetectorWizard.DEFAULT_HEIGHT);
 		//
 		IProcessingInfo processingInfo = processSettings.getProcessingInfo();
-		if(wizardDialog.open() == Dialog.OK) {
-			processingInfo.addErrorMessage(DESCRIPTION, "Successfully modified/added the peak(s).");
+		int status = wizardDialog.open();
+		if(status == Dialog.OK) {
+			processingInfo.addInfoMessage(DESCRIPTION, "Successfully modified/added the peak(s).");
+		} else if(status == Dialog.CANCEL) {
+			processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peak(s) added.");
 		} else {
 			processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to add the peak(s).");
 		}
