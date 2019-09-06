@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 
 import net.openchrom.xxd.process.supplier.templates.comparator.DetectorComparator;
@@ -29,6 +30,11 @@ public class PeakProcessSettings {
 	private IChromatogramSelection chromatogramSelection;
 	private List<DetectorSetting> detectorSettings = new ArrayList<>();
 	private int selectedIndex;
+	/*
+	 * Crap ... try to find a smarter solution.
+	 */
+	private IUpdateListener chartUpdateListener;
+	private IUpdateListener controlUpdateListener;
 
 	public PeakProcessSettings(IProcessingInfo processingInfo, IChromatogramSelection chromatogramSelection, PeakDetectorSettings peakDetectorSettings) {
 		this.processingInfo = processingInfo;
@@ -36,6 +42,21 @@ public class PeakProcessSettings {
 		this.detectorSettings.addAll(peakDetectorSettings.getDetectorSettings());
 		Collections.sort(detectorSettings, new DetectorComparator());
 		selectedIndex = detectorSettings.size() > 0 ? 0 : -1;
+	}
+
+	public void setChartUpdateListener(IUpdateListener chartUpdateListener) {
+
+		this.chartUpdateListener = chartUpdateListener;
+	}
+
+	public void setControlUpdateListener(IUpdateListener controlUpdateListener) {
+
+		this.controlUpdateListener = controlUpdateListener;
+	}
+
+	public void updateControl() {
+
+		fireUpdateControl();
 	}
 
 	public IProcessingInfo getProcessingInfo() {
@@ -52,6 +73,7 @@ public class PeakProcessSettings {
 
 		if(selectedIndex > 0) {
 			selectedIndex--;
+			fireUpdateChart();
 		}
 	}
 
@@ -59,7 +81,13 @@ public class PeakProcessSettings {
 
 		if(selectedIndex < detectorSettings.size()) {
 			selectedIndex++;
+			fireUpdateChart();
 		}
+	}
+
+	public void applySettings() {
+
+		fireUpdateChart();
 	}
 
 	public boolean hasPrevious() {
@@ -78,6 +106,20 @@ public class PeakProcessSettings {
 			return detectorSettings.get(selectedIndex);
 		} else {
 			return null;
+		}
+	}
+
+	private void fireUpdateChart() {
+
+		if(chartUpdateListener != null) {
+			chartUpdateListener.update();
+		}
+	}
+
+	private void fireUpdateControl() {
+
+		if(controlUpdateListener != null) {
+			controlUpdateListener.update();
 		}
 	}
 }
