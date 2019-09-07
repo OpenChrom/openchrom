@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Marwin Wollschläger.
+ * Copyright (c) 2013, 2019 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,16 +8,16 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
+ * Dr. Philip Wenig - adjustments
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.descriptors;
 
 import java.io.IOException;
 
-import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IMolecule;
-import org.openscience.cdk.qsar.descriptors.atomic.VdWRadiusDescriptor;
-
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.qsar.descriptors.atomic.VdWRadiusDescriptor;
 
 /**
  * A simple descriptor class that calculates the Van-Der-Waals-Radius of an atom in a molecule and returns
@@ -31,7 +31,7 @@ public class CDKVanDerWaalsDescriptor extends AbstractStructureDescriptor implem
 	private static final Logger logger = Logger.getLogger(CDKVanDerWaalsDescriptor.class);
 
 	@Override
-	public double describe(IAtom atom, IMolecule molecule) {
+	public double describe(IAtom atom, IAtomContainer molecule) {
 
 		double value = 1.0;
 		if(atom != null && molecule != null) {

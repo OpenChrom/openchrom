@@ -22,7 +22,7 @@ http://www.eclipse.org/legal/epl-v10.html
    </license>
 
    <requires>
-      <import feature="net.openchrom.thirdpartylibraries.cdk.feature" version="1.4.19.qualifier"/>
+      <import feature="net.openchrom.thirdpartylibraries.cdk.feature" version="2.3.0.qualifier"/>
       <import feature="net.openchrom.thirdpartylibraries.opsin.feature" version="2.4.0.qualifier"/>
       <import feature="net.openchrom.thirdpartylibraries.jmol.feature" version="13.2.8.qualifier"/>
       <import feature="net.openchrom.thirdpartylibraries.biojava.feature" version="3.0.7.qualifier"/>

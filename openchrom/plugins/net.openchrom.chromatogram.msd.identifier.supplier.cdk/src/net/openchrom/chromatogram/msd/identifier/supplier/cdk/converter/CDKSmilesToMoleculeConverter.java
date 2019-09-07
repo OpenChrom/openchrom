@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Marwin Wollschläger.
+ * Copyright (c) 2013, 2019 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,12 +12,11 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter;
 
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.InvalidSmilesException;
-import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.smiles.SmilesParser;
-
-import org.eclipse.chemclipse.logging.core.Logger;
 
 /**
  * Very useful wrapper class, that converts Smiles Strings to IMolecule instances and also does (a little) exception handling.
@@ -31,9 +30,9 @@ public class CDKSmilesToMoleculeConverter implements IStructureConverter {
 	private SmilesParser smilesParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
 
 	@Override
-	public IMolecule generate(String input) {
+	public IAtomContainer generate(String input) {
 
-		IMolecule molecule = null;
+		IAtomContainer molecule = null;
 		if(input != null) {
 			try {
 				molecule = smilesParser.parseSmiles(input);

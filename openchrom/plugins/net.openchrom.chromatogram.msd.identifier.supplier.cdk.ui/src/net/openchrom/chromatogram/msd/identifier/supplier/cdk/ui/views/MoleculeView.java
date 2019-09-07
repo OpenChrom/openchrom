@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Dr. Philip Wenig, Marwin Wollschläger.
+ * Copyright (c) 2013, 2019 Dr. Philip Wenig, Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,6 +20,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
+import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -29,6 +30,7 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -72,19 +74,19 @@ public class MoleculeView {
 		subscribe();
 	}
 
-	private Image convertMoleculeToImage(boolean useSmiles, String converterInput) {
+	private Image convertMoleculeToImage(Display display, boolean useSmiles, String converterInput) {
 
-		Image moleculeImage = null;
+		Image image = null;
 		try {
 			Point point = calculateMoleculeImageSize();
-			moleculeImage = ImageConverter.getInstance().moleculeToImage(useSmiles, converterInput, point);
+			image = ImageConverter.getInstance().moleculeToImage(display, useSmiles, converterInput, point);
 		} catch(Exception e) {
 			logger.warn(e);
 		}
-		return moleculeImage;
+		return image;
 	}
 
-	private void makeImage() {
+	private void makeImage(Display display) {
 
 		if(isPartVisible()) {
 			/*
@@ -93,9 +95,9 @@ public class MoleculeView {
 			 */
 			Image moleculeImage = null;
 			if(smilesFormula != null && !smilesFormula.equals("")) {
-				moleculeImage = convertMoleculeToImage(true, smilesFormula);
+				moleculeImage = convertMoleculeToImage(display, true, smilesFormula);
 			} else {
-				moleculeImage = convertMoleculeToImage(false, iupacName);
+				moleculeImage = convertMoleculeToImage(display, false, iupacName);
 			}
 			moleculeInfo.setText(iupacName + " | " + smilesFormula);
 			/*
@@ -152,19 +154,19 @@ public class MoleculeView {
 		 * Molecule
 		 */
 		moleculeComposite = new Composite(parent, SWT.NONE);
-		moleculeComposite.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		moleculeComposite.setBackground(Colors.WHITE);
 		moleculeComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		moleculeComposite.setLayout(new GridLayout(2, true));
+		moleculeComposite.setLayout(new FillLayout());
 		moleculeComposite.addControlListener(new ControlAdapter() {
 
 			@Override
 			public void controlResized(ControlEvent e) {
 
-				makeImage();
+				makeImage(e.display);
 			}
 		});
 		moleculeLabel = new Label(moleculeComposite, SWT.CENTER);
-		moleculeLabel.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		moleculeLabel.setBackground(Colors.WHITE);
 		moleculeLabel.addControlListener(new ControlAdapter() {
 
 			@Override
@@ -174,7 +176,7 @@ public class MoleculeView {
 			}
 		});
 		//
-		makeImage();
+		makeImage(moleculeComposite.getDisplay());
 	}
 
 	@PreDestroy
@@ -187,6 +189,7 @@ public class MoleculeView {
 	public void setFocus() {
 
 		moleculeLabel.setFocus();
+		makeImage(moleculeComposite.getDisplay());
 	}
 
 	private boolean isPartVisible() {
@@ -220,7 +223,7 @@ public class MoleculeView {
 						ILibraryInformation libraryInformation = identificationTarget.getLibraryInformation();
 						iupacName = libraryInformation.getName();
 						smilesFormula = libraryInformation.getSmiles();
-						makeImage();
+						makeImage(moleculeComposite.getDisplay());
 					}
 				}
 			};

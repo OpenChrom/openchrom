@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Marwin Wollschläger.
+ * Copyright (c) 2013, 2019 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter;
 
-import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.interfaces.IAtomContainer;
 
 import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
 import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
@@ -23,9 +23,9 @@ public class OPSINIupacToMoleculeConverter implements IStructureConverter {
 	private CDKSmilesToMoleculeConverter smilesToIMolecule = new CDKSmilesToMoleculeConverter();
 
 	@Override
-	public IMolecule generate(String input) {
+	public IAtomContainer generate(String input) {
 
-		IMolecule molecule = null;
+		IAtomContainer molecule = null;
 		if(input != null) {
 			NameToStructure nameStructure = NameToStructure.getInstance();
 			NameToStructureConfig nameStructureConfig = new NameToStructureConfig();

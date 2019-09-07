@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Marwin Wollschläger.
+ * Copyright (c) 2013, 2019 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
+ * Dr. Philip Wenig - adjustments
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.renderer;
 
@@ -31,8 +32,8 @@ import java.util.List;
 import javax.vecmath.Point2d;
 
 import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IBond;
-import org.openscience.cdk.interfaces.IMolecule;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.descriptors.CDKVanDerWaalsDescriptor;
 
@@ -48,7 +49,7 @@ public class CDKGraphView implements IStructureRenderer {
 	// van der waals radii need to be scaled to be visible
 	int vanDerWaalsScale = 5;
 	// molecule that is to be displayed!
-	IMolecule molecule;
+	IAtomContainer molecule;
 	// style to use for rendering molecules and bonds!
 	IStructureRendererColorScheme colorScheme = new StructureRendererSimpleColorTheme();// default Theme
 
@@ -58,7 +59,7 @@ public class CDKGraphView implements IStructureRenderer {
 	}
 
 	@Override
-	public boolean checkForCoordinates(IMolecule moleculeToRender) {
+	public boolean checkForCoordinates(IAtomContainer moleculeToRender) {
 
 		if(moleculeToRender.getAtom(0) != null)
 			return true;
@@ -66,7 +67,7 @@ public class CDKGraphView implements IStructureRenderer {
 	}
 
 	@Override
-	public void renderStructure(Graphics2D g2d, IMolecule moleculeToRender) {
+	public void renderStructure(Graphics2D g2d, IAtomContainer moleculeToRender) {
 
 		// Use RenderingHints to enhance the quality of the rendering process!
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Marwin Wollschläger.
+ * Copyright (c) 2013, 2019 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,12 +8,13 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
+ * Dr. Philip Wenig - adjustments
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.renderer;
 
 import java.awt.Graphics2D;
 
-import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
  * Interface that all Renderers for Molecules must implement.
@@ -26,7 +27,7 @@ import org.openscience.cdk.interfaces.IMolecule;
  */
 public interface IStructureRenderer {
 
-	public void renderStructure(Graphics2D g2d, IMolecule moleculeToRender);
+	public void renderStructure(Graphics2D g2d, IAtomContainer moleculeToRender);
 
-	public boolean checkForCoordinates(IMolecule moleculeToRender);
+	public boolean checkForCoordinates(IAtomContainer moleculeToRender);
 }

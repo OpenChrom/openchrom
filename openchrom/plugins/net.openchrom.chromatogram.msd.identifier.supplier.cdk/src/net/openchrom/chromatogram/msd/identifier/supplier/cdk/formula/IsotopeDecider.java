@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Marwin Wollschläger.
+ * Copyright (c) 2013, 2019 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,20 +8,16 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
+ * Dr. Philip Wenig - adjustments
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openscience.cdk.DefaultChemObjectBuilder;
-import org.openscience.cdk.config.IsotopeFactory;
-import org.openscience.cdk.formula.MolecularFormulaRange;
-import org.openscience.cdk.interfaces.IChemObjectBuilder;
-import org.openscience.cdk.interfaces.IIsotope;
-
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.openscience.cdk.formula.MolecularFormulaRange;
+import org.openscience.cdk.interfaces.IIsotope;
 
 /**
  * A Simple class for handling the settings of the generic mass to formula tool. Using this class,
@@ -36,14 +32,13 @@ public class IsotopeDecider {
 	private static final Logger logger = Logger.getLogger(IsotopeDecider.class);
 	private List<IIsotope> isotopeSet;
 	private int iterationDepth = 15;
-	private IChemObjectBuilder chemObjectBuilder;
-	private IsotopeFactory isotopeFactory;
+	private IsotopeDeciderFactory isotopeFactory;
 
 	public IsotopeDecider() {
-		chemObjectBuilder = DefaultChemObjectBuilder.getInstance();
 		try {
-			isotopeFactory = IsotopeFactory.getInstance(chemObjectBuilder);
-		} catch(IOException e) {
+			IsotopeDeciderFactory.getInstance();
+			isotopeFactory = IsotopeDeciderFactory.getInstance();
+		} catch(Exception e) {
 			logger.warn("Something went wrong with your Isotope Selection.\n" + "Maybe you misspelled some of the element symbols? Anyway,\n" + "Something went wrong because of the following error:\n" + e);
 		}
 	}
@@ -72,14 +67,14 @@ public class IsotopeDecider {
 
 		List<IIsotope> isotopesToSet = new ArrayList<IIsotope>();
 		for(String name : isotopeNames) {
-			isotopesToSet.add(isotopeFactory.getMajorIsotope(name));
+			isotopesToSet.add(isotopeFactory.getIsotope(name));
 		}
 		isotopeSet = isotopesToSet;
 	}
 
 	public void addIsotope(String name) {
 
-		isotopeSet.add(isotopeFactory.getMajorIsotope(name));
+		isotopeSet.add(isotopeFactory.getIsotope(name));
 	}
 
 	public void addIsotope(List<IIsotope> isotopesToAdd) {
