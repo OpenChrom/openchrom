@@ -16,6 +16,7 @@ import org.openscience.cdk.depict.DepictionGenerator;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.isomorphism.Mappings;
 import org.openscience.cdk.isomorphism.Pattern;
 import org.openscience.cdk.smarts.SmartsPattern;
 import org.openscience.cdk.smiles.SmilesParser;
@@ -42,10 +43,42 @@ public class RRF_1_Test extends TestCase {
 
 	public void test1() throws Exception {
 
-		String name = "1,4-Epoxy-p-menthan"; // "1,4-Cineole";
+		calculateAndPrint("1,4-Epoxy-p-menthan"); // 0 "1,4-Cineole"
 		//
-		String smiles = calculateSmiles(name);
+		calculateAndPrint("2-nonanol"); // 0
+		calculateAndPrint("tetralin"); // 1
+		calculateAndPrint("1,4-dibromobenzene"); // 1
+		calculateAndPrint("undecanol"); // 0
+		calculateAndPrint("styrene"); // 1
+		//
+		calculateAndPrint("Pyridine-3-carbonitrile, 2-[2-(3,4-dihydroxyphenyl)-2-oxoethylthio]-4-methoxymethyl-6-methyl-"); // 1
+		calculateAndPrint("Phenol, 4-(ethoxymethyl)-2-methoxy-"); // 1
+		calculateAndPrint("Folic Acid"); // 1
+		calculateAndPrint("3-Phenylpropylamine, N-acetyl-2-[3-[3,4,5-trimethoxyphenyl]propionyl]-"); // 2
+		calculateAndPrint("1,3,2-Dioxaphosphorinan-2-amine, N,N-dimethyl-5,5-diphenyl-, 2-oxide"); // 2
+	}
+
+	private void calculateAndPrint(String iupacName) {
+
+		double RRFi;
+		try {
+			RRFi = calculateRrfIupac(iupacName);
+			System.out.println("RRFi (" + iupacName + "): " + RRFi);
+		} catch(Exception e) {
+			System.out.println("RRFi (" + iupacName + "): --");
+		}
+	}
+
+	private double calculateRrfIupac(String iupacName) throws Exception {
+
+		String smiles = calculateSmiles(iupacName);
+		return calculateRrfSmiles(smiles);
+	}
+
+	private double calculateRrfSmiles(String smiles) throws Exception {
+
 		IAtomContainer molecule = calculateMolecule(smiles);
+		//
 		DepictionGenerator depictionGenerator = new DepictionGenerator();
 		depictionGenerator.depict(molecule).writeTo("/home/pwenig/Dokumente/ISEO/Molecule.png");
 		//
@@ -59,19 +92,28 @@ public class RRF_1_Test extends TestCase {
 		int br = countAtoms(molecule, "Br");
 		int i = countAtoms(molecule, "I");
 		int si = countAtoms(molecule, "Si");
-		//
-		IAtomContainer benzene = calculateMolecule("C1=CC=CC=C1");
-		Pattern pattern = SmartsPattern.findSubstructure(benzene);
-		int[] matches = pattern.match(molecule);
-		int benz = matches.length;
+		int benz = countBenzeneStructure(molecule);
 		//
 		IAtomContainer methylOctanoate = calculateMolecule("CCCCCCCC(=O)OC");
 		//
 		double Mwi = AtomContainerManipulator.getMass(molecule);
 		double MwISTD = AtomContainerManipulator.getMass(methylOctanoate);
 		//
-		double RRFi = (1000 * (Mwi / MwISTD)) / (-61.3 + 88.8 * c + 18.7 * h - 41.3 * o + 6.4 * n + 64.0 * s - 20.2 * f - 23.5 * cl + 51.6 * br - 1.75 * i + 39.9 * si + 127 * benz);
-		System.out.println("RRFi (" + name + "): " + RRFi);
+		double RRFi = (1000 * (Mwi / MwISTD)) / (//
+		-61.3 //
+				+ 88.8 * c //
+				+ 18.7 * h //
+				- 41.3 * o //
+				+ 6.4 * n //
+				+ 64.0 * s //
+				- 20.2 * f //
+				- 23.5 * cl //
+				+ 51.6 * br //
+				- 1.75 * i //
+				+ 39.9 * si //
+				+ 127 * benz //
+		);
+		return RRFi;
 	}
 
 	private String calculateSmiles(String name) throws Exception {
@@ -90,16 +132,6 @@ public class RRF_1_Test extends TestCase {
 
 		SmilesParser smilesParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
 		IAtomContainer molecule = smilesParser.parseSmiles(smiles);
-		//
-		// CDKAtomTypeMatcher matcher = CDKAtomTypeMatcher.getInstance(molecule.getBuilder());
-		// for(IAtom atom : molecule.atoms()) {
-		// IAtomType type = matcher.findMatchingAtomType(molecule, atom);
-		// AtomTypeManipulator.configure(atom, type);
-		// }
-		//
-		// CDKHydrogenAdder hydrogenAdder = CDKHydrogenAdder.getInstance(molecule.getBuilder());
-		// hydrogenAdder.addImplicitHydrogens(molecule);
-		//
 		return molecule;
 	}
 
@@ -114,5 +146,13 @@ public class RRF_1_Test extends TestCase {
 			}
 		}
 		return count;
+	}
+
+	private int countBenzeneStructure(IAtomContainer molecule) throws CDKException {
+
+		IAtomContainer benzene = calculateMolecule("C1=CC=CC=C1");
+		Pattern pattern = SmartsPattern.findSubstructure(benzene);
+		Mappings mappings = pattern.matchAll(molecule);
+		return mappings.count() / 6;
 	}
 }
