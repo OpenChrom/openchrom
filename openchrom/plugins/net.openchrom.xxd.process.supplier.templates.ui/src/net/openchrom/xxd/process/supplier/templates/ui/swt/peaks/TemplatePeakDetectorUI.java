@@ -22,7 +22,7 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakProcessSettin
 public class TemplatePeakDetectorUI extends Composite {
 
 	private PeakDetectorControl peakDetectorControl;
-	private ChromatogramPeakChart chromatogramPeakChart;
+	private PeakDetectorChart peakDetectorChart;
 
 	public TemplatePeakDetectorUI(Composite parent, int style) {
 		super(parent, style);
@@ -32,7 +32,6 @@ public class TemplatePeakDetectorUI extends Composite {
 	public void setInput(PeakProcessSettings peakProcessSettings) {
 
 		peakDetectorControl.setInput(peakProcessSettings);
-		chromatogramPeakChart.setInput(peakProcessSettings);
 	}
 
 	private void createControl() {
@@ -46,7 +45,11 @@ public class TemplatePeakDetectorUI extends Composite {
 		composite.setLayout(gridLayout);
 		//
 		peakDetectorControl = createPeakDetectorControl(composite);
-		chromatogramPeakChart = createChromatogramChart(composite);
+		peakDetectorChart = createPeakDetectorChart(composite);
+		/*
+		 * Link control and chart.
+		 */
+		peakDetectorControl.setPeakDetectorChart(peakDetectorChart);
 	}
 
 	private PeakDetectorControl createPeakDetectorControl(Composite parent) {
@@ -56,9 +59,9 @@ public class TemplatePeakDetectorUI extends Composite {
 		return control;
 	}
 
-	private ChromatogramPeakChart createChromatogramChart(Composite parent) {
+	private PeakDetectorChart createPeakDetectorChart(Composite parent) {
 
-		ChromatogramPeakChart chart = new ChromatogramPeakChart(parent, SWT.BORDER);
+		PeakDetectorChart chart = new PeakDetectorChart(parent, SWT.BORDER);
 		chart.setLayoutData(new GridData(GridData.FILL_BOTH));
 		return chart;
 	}

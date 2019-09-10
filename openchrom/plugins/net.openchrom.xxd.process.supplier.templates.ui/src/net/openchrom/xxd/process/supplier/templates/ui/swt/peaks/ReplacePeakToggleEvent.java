@@ -17,13 +17,9 @@ import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.events.AbstractHandledEventProcessor;
 import org.eclipse.swtchart.extensions.events.IHandledEventProcessor;
 
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
+
 public class ReplacePeakToggleEvent extends AbstractHandledEventProcessor implements IHandledEventProcessor {
-
-	private ChromatogramPeakChart chromatogramPeakChart;
-
-	public ReplacePeakToggleEvent(ChromatogramPeakChart chromatogramPeakChart) {
-		this.chromatogramPeakChart = chromatogramPeakChart;
-	}
 
 	@Override
 	public int getEvent() {
@@ -46,6 +42,6 @@ public class ReplacePeakToggleEvent extends AbstractHandledEventProcessor implem
 	@Override
 	public void handleEvent(BaseChart baseChart, Event event) {
 
-		chromatogramPeakChart.toggleReplacePeak();
+		PreferenceSupplier.toggleDetectorReplacePeak();
 	}
 }
