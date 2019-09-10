@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.core;
 
+import java.io.IOException;
+
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.depict.DepictionGenerator;
 import org.openscience.cdk.exception.CDKException;
@@ -78,9 +80,7 @@ public class RRF_1_Test extends TestCase {
 	private double calculateRrfSmiles(String smiles) throws Exception {
 
 		IAtomContainer molecule = calculateMolecule(smiles);
-		//
-		DepictionGenerator depictionGenerator = new DepictionGenerator();
-		depictionGenerator.depict(molecule).writeTo("/home/pwenig/Dokumente/ISEO/Molecule.png");
+		// exportFile(molecule, "Molecule.png");
 		//
 		int c = countAtoms(molecule, "C");
 		int h = countAtoms(molecule, "H");
@@ -154,5 +154,11 @@ public class RRF_1_Test extends TestCase {
 		Pattern pattern = SmartsPattern.findSubstructure(benzene);
 		Mappings mappings = pattern.matchAll(molecule);
 		return mappings.count() / 6;
+	}
+
+	private void exportFile(IAtomContainer molecule, String path) throws IOException, CDKException {
+
+		DepictionGenerator depictionGenerator = new DepictionGenerator();
+		depictionGenerator.depict(molecule).writeTo(path);
 	}
 }
