@@ -40,12 +40,12 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtchart.IAxis;
-import org.eclipse.swtchart.IAxisSet;
 import org.eclipse.swtchart.IPlotArea;
 import org.eclipse.swtchart.Range;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.ICustomSelectionHandler;
+import org.eclipse.swtchart.extensions.core.IExtendedChart;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -227,23 +227,8 @@ public class PeakDetectorChart extends ChromatogramChart {
 
 	private void adjustChartRange() {
 
-		BaseChart baseChart = getBaseChart();
-		IAxisSet axisSet = baseChart.getAxisSet();
-		/*
-		 * Axis X
-		 */
-		if(selectedRangeX != null) {
-			IAxis xAxis = axisSet.getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
-			xAxis.setRange(selectedRangeX);
-		}
-		/*
-		 * Axis Y
-		 */
-		if(selectedRangeY != null) {
-			IAxis yAxis = axisSet.getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
-			yAxis.setRange(selectedRangeY);
-		}
-		//
+		setRange(IExtendedChart.X_AXIS, selectedRangeX);
+		setRange(IExtendedChart.Y_AXIS, selectedRangeY);
 		redrawChart();
 	}
 
