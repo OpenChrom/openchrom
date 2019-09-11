@@ -78,6 +78,10 @@ public class MoleculeView {
 
 		Image image = null;
 		try {
+			/*
+			 * DepictionGenerator depictionGenerator = new DepictionGenerator();
+			 * depictionGenerator.depict(molecule).writeTo(path);
+			 */
 			Point point = calculateMoleculeImageSize();
 			image = ImageConverter.getInstance().moleculeToImage(display, useSmiles, converterInput, point);
 		} catch(Exception e) {

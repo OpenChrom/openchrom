@@ -20,7 +20,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter,
  net.openchrom.chromatogram.msd.identifier.supplier.cdk.core,
- net.openchrom.chromatogram.msd.identifier.supplier.cdk.descriptors,
  net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula,
  net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences,
  net.openchrom.chromatogram.msd.identifier.supplier.cdk.renderer,

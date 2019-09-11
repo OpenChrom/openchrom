@@ -46,11 +46,11 @@ public class DetectorSetting_2_Test extends TestCase {
 
 		setting.setDetectorType(DetectorSetting.DETECTOR_TYPE_BB);
 		assertEquals("BB", setting.getDetectorType());
-		assertTrue(setting.isIncludeBackground());
+		assertFalse(setting.isIncludeBackground());
 		//
 		setting.setDetectorType(DetectorSetting.DETECTOR_TYPE_VV);
 		assertEquals("VV", setting.getDetectorType());
-		assertFalse(setting.isIncludeBackground());
+		assertTrue(setting.isIncludeBackground());
 	}
 
 	public void test4() {
