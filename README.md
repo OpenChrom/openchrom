@@ -12,4 +12,4 @@ Please find our **Code of Conduct** [here](https://github.com/OpenChrom/openchro
 
 If you would like to **contribute** to this project, please have a look at [this guideline](https://github.com/OpenChrom/openchrom/blob/develop/CONTRIBUTING.md).
 
-For our Wiki, user- and developer **documentation**, have a look [here](https://github.com/OpenChrom/openchrom/wiki).
+For user- and developer **documentation**, have a look at our [wiki](https://github.com/OpenChrom/openchrom/wiki).
