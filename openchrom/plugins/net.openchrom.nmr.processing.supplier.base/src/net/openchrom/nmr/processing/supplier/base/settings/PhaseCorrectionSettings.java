@@ -16,10 +16,14 @@ package net.openchrom.nmr.processing.supplier.base.settings;
 
 import java.util.Observable;
 
+import org.eclipse.chemclipse.support.settings.SystemSettings;
+import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
+
 /**
  * this class is final, synchronized, {@link Cloneable} and {@link Observable} since it participates in the dynamic settings framework
  *
  */
+@SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public final class PhaseCorrectionSettings extends Observable implements Cloneable {
 
 	public enum PivotPointSelection {
