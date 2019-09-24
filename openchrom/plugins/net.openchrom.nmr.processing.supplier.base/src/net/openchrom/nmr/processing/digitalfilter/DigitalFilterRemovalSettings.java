@@ -13,6 +13,10 @@ package net.openchrom.nmr.processing.digitalfilter;
 
 import java.io.Serializable;
 
+import org.eclipse.chemclipse.support.settings.SystemSettings;
+import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
+
+@SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class DigitalFilterRemovalSettings implements Serializable {
 
 	private static final long serialVersionUID = 4796560971210022576L;
