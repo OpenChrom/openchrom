@@ -17,13 +17,11 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.methods.ProcessMethod;
 import org.eclipse.chemclipse.model.types.DataType;
-import org.eclipse.chemclipse.processing.ProcessorFactory;
 import org.eclipse.chemclipse.processing.core.DefaultProcessingResult;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.part.support.SupplierEditorSupport;
@@ -38,15 +36,13 @@ import org.eclipse.swt.widgets.Display;
 
 public class NMRBatchJob implements IRunnableWithProgress {
 
-	@Inject
-	private ProcessorFactory filterFactory;
 	private BatchJobUI batchJobUI;
 	private ProcessTypeSupport processTypeSupport;
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 
-		processTypeSupport = new ProcessTypeSupport(filterFactory);
+		processTypeSupport = new ProcessTypeSupport();
 		batchJobUI = new BatchJobUI(parent, processTypeSupport, Activator.getDefault().getPreferenceStore(), "nmrBatchUIUserLocation", new DataType[]{DataType.NMR}, this) {
 
 			@Override

@@ -56,7 +56,7 @@ public class NMRSpectrumSelection {
 
 	public NMRSpectrumSelection(Composite parent, ProcessorFactory filterFactory) {
 		this.filterFactory = filterFactory;
-		processTypeSupport = new ProcessTypeSupport(filterFactory);
+		processTypeSupport = new ProcessTypeSupport();
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		viewer.getTable().setHeaderVisible(true);
