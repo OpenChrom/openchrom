@@ -13,7 +13,6 @@
 package net.openchrom.nmr.processing.phasecorrection;
 
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
@@ -35,6 +34,7 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 	private static final String NAME = "Phase Correction";
 
 	public PhaseCorrectionProcessor() {
+
 		super(PhaseCorrectionSettings.class);
 	}
 
@@ -45,7 +45,7 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, PhaseCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	public FilteredSpectrumMeasurement<PhaseCorrectionSettings> doFiltering(FilterContext<SpectrumMeasurement, PhaseCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		SpectrumMeasurement measurement = context.getFilteredObject();
 		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(measurement);

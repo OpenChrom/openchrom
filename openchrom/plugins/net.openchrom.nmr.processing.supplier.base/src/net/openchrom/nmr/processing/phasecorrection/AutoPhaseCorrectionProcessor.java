@@ -30,7 +30,6 @@ import org.apache.commons.math3.random.GaussianRandomGenerator;
 import org.apache.commons.math3.random.JDKRandomGenerator;
 import org.apache.commons.math3.random.RandomVectorGenerator;
 import org.apache.commons.math3.random.UncorrelatedRandomVectorGenerator;
-import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
@@ -79,6 +78,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 	}
 
 	public AutoPhaseCorrectionProcessor() {
+
 		super(AutoPhaseCorrectionSettings.class);
 	}
 
@@ -94,10 +94,12 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		private T firstOrderValue;
 
 		public PhaseCorrectionValue(T zerothOrderValue) {
+
 			this.zerothOrderValue = zerothOrderValue;
 		}
 
 		public PhaseCorrectionValue(T zerothOrderValue, T firstOrderValue) {
+
 			this.zerothOrderValue = zerothOrderValue;
 			this.firstOrderValue = firstOrderValue;
 		}
@@ -132,7 +134,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, AutoPhaseCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	public FilteredSpectrumMeasurement<AutoPhaseCorrectionSettings> doFiltering(FilterContext<SpectrumMeasurement, AutoPhaseCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(context.getFilteredObject());
 		perform(spectrumData, context.getFilterConfig());
@@ -207,6 +209,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		private final AutoPhaseCorrectionSettings settings;
 
 		public CalculateACMEEntropy(Complex[] fourierTransformedData, AutoPhaseCorrectionSettings settings) {
+
 			this.fourierTransformedData = fourierTransformedData;
 			this.settings = settings;
 		}

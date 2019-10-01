@@ -24,7 +24,6 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
-import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
@@ -50,11 +49,12 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 	private static final String NAME = "Fourier Transformation";
 
 	public FourierTransformationProcessor() {
+
 		super(FourierTransformationSettings.class);
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, FourierTransformationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	public FFTFilteredMeasurement doFiltering(FilterContext<FIDMeasurement, FourierTransformationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		FIDMeasurement measurement = context.getFilteredObject();
 		List<? extends FIDSignal> signals = measurement.getSignals();
@@ -99,6 +99,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		private List<? extends SpectrumSignal> signals;
 
 		public FFTFilteredMeasurement(FilterContext<FIDMeasurement, FourierTransformationSettings> filterContext, List<FFTSpectrumSignal> signals) {
+
 			super(filterContext);
 			this.signals = Collections.unmodifiableList(signals);
 		}
@@ -123,6 +124,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		private Complex complex;
 
 		public FFTSpectrumSignal(BigDecimal shift, Complex complex) {
+
 			this.shift = shift;
 			this.complex = complex;
 		}

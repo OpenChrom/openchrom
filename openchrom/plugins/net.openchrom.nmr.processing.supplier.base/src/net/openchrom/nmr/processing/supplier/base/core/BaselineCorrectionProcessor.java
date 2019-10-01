@@ -20,7 +20,6 @@ import java.util.function.DoubleUnaryOperator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
-import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
@@ -41,6 +40,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 	private static final String NAME = "Baseline Correction";
 
 	public BaselineCorrectionProcessor() {
+
 		super(BaselineCorrectionSettings.class);
 	}
 
@@ -51,7 +51,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, BaselineCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	public FilteredSpectrumMeasurement doFiltering(FilterContext<SpectrumMeasurement, BaselineCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		BaselineCorrectionSettings config = context.getFilterConfig();
 		// read parameters
@@ -163,6 +163,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 		private SignalWeightedObservedPoint imag;
 
 		private WeightedObservedPointSpectrumSignal(SignalWeightedObservedPoint real, SignalWeightedObservedPoint imag) {
+
 			this.real = real;
 			this.imag = imag;
 		}
@@ -212,6 +213,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 		private boolean cutof;
 
 		public SignalWeightedObservedPoint(double fittingWeight, double chemicalShift, double value, boolean cutof) {
+
 			super(fittingWeight, chemicalShift, Double.NaN);
 			this.cutof = cutof;
 			setValue(value);

@@ -23,7 +23,6 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 import org.eclipse.chemclipse.model.core.FilteredMeasurement;
-import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.DataDimension;
@@ -52,11 +51,12 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 	}
 
 	public InverseFourierTransformationProcessor() {
+
 		super(InverseFourierTransformationSettings.class);
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, InverseFourierTransformationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	public InverseFFTFilteredMeasurement doFiltering(FilterContext<SpectrumMeasurement, InverseFourierTransformationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		// IFFT spectrum to fid
 		SpectrumMeasurement spectrumMeasurement = context.getFilteredObject();
@@ -79,6 +79,7 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 		private List<InverseFFTSpectrumSignal> signals;
 
 		public InverseFFTFilteredMeasurement(FilterContext<SpectrumMeasurement, InverseFourierTransformationSettings> filterContext, List<InverseFFTSpectrumSignal> signals) {
+
 			super(filterContext);
 			this.signals = Collections.unmodifiableList(signals);
 		}
@@ -109,6 +110,7 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 		private Complex complex;
 
 		public InverseFFTSpectrumSignal(BigDecimal time, Complex complex) {
+
 			this.time = time;
 			this.complex = complex;
 		}

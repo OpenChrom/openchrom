@@ -17,7 +17,6 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
@@ -39,6 +38,7 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 	private static final String MARKER = DigitalFilterRemoval.class.getName() + ".filtered";
 
 	public DigitalFilterRemoval() {
+
 		super(DigitalFilterRemovalSettings.class);
 	}
 
@@ -55,7 +55,7 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, DigitalFilterRemovalSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	public FilteredFIDMeasurement<DigitalFilterRemovalSettings> doFiltering(FilterContext<FIDMeasurement, DigitalFilterRemovalSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		DigitalFilterRemovalSettings config = context.getFilterConfig();
 		double multiplicationFactor = config.getDcOffsetMultiplicationFactor();

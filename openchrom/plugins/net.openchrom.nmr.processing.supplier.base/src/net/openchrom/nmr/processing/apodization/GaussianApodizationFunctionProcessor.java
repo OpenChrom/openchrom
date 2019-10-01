@@ -15,7 +15,6 @@ package net.openchrom.nmr.processing.apodization;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
@@ -38,6 +37,7 @@ public class GaussianApodizationFunctionProcessor extends AbstractFIDSignalFilte
 	private static final BigDecimal GAUS_CONSTANT = BigDecimal.valueOf(2).setScale(10).multiply(BigDecimal.valueOf(Math.sqrt(Math.log(2))));
 
 	public GaussianApodizationFunctionProcessor() {
+
 		super(GaussianApodizationSettings.class);
 	}
 
@@ -48,7 +48,7 @@ public class GaussianApodizationFunctionProcessor extends AbstractFIDSignalFilte
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, GaussianApodizationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	public FilteredFIDMeasurement<GaussianApodizationSettings> doFiltering(FilterContext<FIDMeasurement, GaussianApodizationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		double gaussianLineBroadeningFactor = context.getFilterConfig().getGaussianLineBroadeningFactor();
 		if(gaussianLineBroadeningFactor > 0) {

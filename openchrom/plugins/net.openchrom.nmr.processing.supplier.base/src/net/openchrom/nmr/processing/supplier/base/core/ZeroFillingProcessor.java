@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.math3.complex.Complex;
-import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
@@ -39,6 +38,7 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 	private static final String FILTER_NAME = "Zero Filling";
 
 	public ZeroFillingProcessor() {
+
 		super(ZeroFillingSettings.class);
 	}
 
@@ -49,7 +49,7 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, ZeroFillingSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	public FilteredFIDMeasurement<ZeroFillingSettings> doFiltering(FilterContext<FIDMeasurement, ZeroFillingSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		List<? extends FIDSignal> signals = context.getFilteredObject().getSignals();
 		int signalsize = signals.size();
@@ -78,6 +78,7 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 		private BigDecimal time;
 
 		public ZeroFIDSignal(BigDecimal time) {
+
 			this.time = time;
 		}
 

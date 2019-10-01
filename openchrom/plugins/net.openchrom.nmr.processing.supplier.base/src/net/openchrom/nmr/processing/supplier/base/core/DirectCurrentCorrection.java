@@ -38,6 +38,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.DirectCurrentCorrecti
 public class DirectCurrentCorrection extends AbstractComplexSignalFilter<DirectCurrentCorrectionSettings, IComplexSignalMeasurement<?>> {
 
 	public DirectCurrentCorrection() {
+
 		super(DirectCurrentCorrectionSettings.class);
 	}
 
@@ -121,7 +122,7 @@ public class DirectCurrentCorrection extends AbstractComplexSignalFilter<DirectC
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<IComplexSignalMeasurement<?>, DirectCurrentCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	public IMeasurement doFiltering(FilterContext<IComplexSignalMeasurement<?>, DirectCurrentCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		IComplexSignalMeasurement<?> measurement = context.getFilteredObject();
 		if(measurement instanceof FIDMeasurement) {
