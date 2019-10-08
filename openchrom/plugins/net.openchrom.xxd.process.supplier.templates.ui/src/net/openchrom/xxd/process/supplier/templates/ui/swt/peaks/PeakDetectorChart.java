@@ -25,6 +25,7 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.support.IMarkedIon;
+import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
 import org.eclipse.chemclipse.msd.model.core.support.MarkedIon;
 import org.eclipse.chemclipse.msd.model.core.support.MarkedIons;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
@@ -377,7 +378,7 @@ public class PeakDetectorChart extends ChromatogramChart {
 
 	private IMarkedSignals<IMarkedIon> extractMarkedSignals(Set<Integer> traces) {
 
-		IMarkedSignals<IMarkedIon> markedSignals = new MarkedIons();
+		IMarkedSignals<IMarkedIon> markedSignals = new MarkedIons(IMarkedIons.IonMarkMode.INCLUDE);
 		for(int trace : traces) {
 			markedSignals.add(new MarkedIon(trace));
 		}
