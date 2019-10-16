@@ -3,7 +3,7 @@
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="net.openchrom.platform.feature.feature.group" version="0.0.0"/>
-<repository location="https://update.openchrom.net/repositories/community/latest/platform"/>
+<repository location="https://update.openchrom.net/repositories/community/GSTL-1.1.x/platform"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.equinox.sdk.feature.group" version="0.0.0"/>
