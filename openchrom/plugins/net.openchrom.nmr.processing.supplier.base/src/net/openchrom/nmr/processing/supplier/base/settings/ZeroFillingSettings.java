@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Alexander Kerner - implementation
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings;
 
@@ -22,11 +23,24 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFa
 @SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class ZeroFillingSettings {
 
+	public static ZeroFillingSettings build(String headerData) {
+
+		ZeroFillingSettings settings = new ZeroFillingSettings();
+		if (headerData == null) {
+			return settings;
+		}
+		int exponent = (int)(Math.ceil((Math.log(Integer.parseInt(headerData)) / Math.log(2))));
+		ZeroFillingFactor factor = ZeroFillingFactor.valueOf(exponent);
+		settings.setZeroFillingFactor(factor);
+		return settings;
+	}
+
 	@JsonProperty(value = "Zero Filling", defaultValue = "AUTO")
 	@EnumSelectionSettingProperty
 	private ZeroFillingFactor zeroFillingFactor = ZeroFillingFactor.AUTO;
 
 	public ZeroFillingSettings() {
+
 	}
 
 	public ZeroFillingFactor getZeroFillingFactor() {

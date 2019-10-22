@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Jan Holy - initial API and implementation
+ * Alexander Kerner - implementation
  *******************************************************************************/
 package net.openchrom.nmr.processing.digitalfilter;
 
@@ -18,6 +19,15 @@ import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
 
 @SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class DigitalFilterRemovalSettings implements Serializable {
+
+	public static DigitalFilterRemovalSettings build(String dcOffsetMultiplicationFactorString) {
+
+		DigitalFilterRemovalSettings settings = new DigitalFilterRemovalSettings();
+		if (dcOffsetMultiplicationFactorString != null) {
+			settings.setDcOffsetMultiplicationFactor(Double.parseDouble(dcOffsetMultiplicationFactorString));
+		}
+		return settings;
+	}
 
 	private static final long serialVersionUID = 4796560971210022576L;
 	private int leftRotationFid = 0;

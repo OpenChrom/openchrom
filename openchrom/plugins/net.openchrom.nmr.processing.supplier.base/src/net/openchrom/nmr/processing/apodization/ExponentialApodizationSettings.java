@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Alexander Stark - initial API and implementation
+ * Alexander Kerner - implementation
  *******************************************************************************/
 package net.openchrom.nmr.processing.apodization;
 
@@ -20,11 +21,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class ExponentialApodizationSettings {
 
+	public static ExponentialApodizationSettings build(String exponentialLineBroadeningFactorString) {
+
+		ExponentialApodizationSettings settings = new ExponentialApodizationSettings();
+		if(exponentialLineBroadeningFactorString != null) {
+			double exponentialLineBroadeningFactor = Double.parseDouble(exponentialLineBroadeningFactorString);
+			settings.setExponentialLineBroadeningFactor(exponentialLineBroadeningFactor);
+		}
+		return settings;
+	}
+
 	@JsonProperty(value = "Exponential Line Broadening Factor", defaultValue = "0.0")
 	@DoubleSettingsProperty()
 	private double exponentialLineBroadeningFactor = 0;
 
 	public ExponentialApodizationSettings() {
+
 	}
 
 	public double getExponentialLineBroadeningFactor() {

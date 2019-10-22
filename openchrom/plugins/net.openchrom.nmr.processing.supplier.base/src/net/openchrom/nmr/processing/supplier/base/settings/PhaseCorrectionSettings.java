@@ -26,6 +26,18 @@ import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
 @SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public final class PhaseCorrectionSettings extends Observable implements Cloneable {
 
+	public static PhaseCorrectionSettings build(String phc0String, String phc1String) {
+
+		PhaseCorrectionSettings settings = new PhaseCorrectionSettings();
+		if(phc0String != null) {
+			settings.setZeroOrderPhaseCorrection(Double.parseDouble(phc0String));
+		}
+		if(phc1String != null) {
+			settings.setFirstOrderPhaseCorrection(Double.parseDouble(phc1String));
+		}
+		return settings;
+	}
+
 	public enum PivotPointSelection {
 		LEFT("pivot @ far left end of the spectrum"), //
 		MIDDLE("pivot @ middle of the spectrum"), //
@@ -36,6 +48,7 @@ public final class PhaseCorrectionSettings extends Observable implements Cloneab
 		private String pivotPosition = "";
 
 		private PivotPointSelection(String pivotPosition) {
+
 			this.pivotPosition = pivotPosition;
 		}
 
