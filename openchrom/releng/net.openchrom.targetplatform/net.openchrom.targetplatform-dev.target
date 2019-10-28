@@ -8,7 +8,7 @@
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.equinox.sdk.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.chemclipse.rcp.compilation.testing.feature.feature.group" version="0.0.0"/>
-<repository location="https://update.openchrom.net/repositories/chemclipse/latest/platform"/>
+<repository location="https://download.eclipse.org/chemclipse/develop/repository"/>
 </location>
 </locations>
 </target>

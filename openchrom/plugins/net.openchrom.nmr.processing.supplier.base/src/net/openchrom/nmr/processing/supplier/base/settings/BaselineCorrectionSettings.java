@@ -12,9 +12,12 @@
 package net.openchrom.nmr.processing.supplier.base.settings;
 
 import org.eclipse.chemclipse.support.settings.IntSettingsProperty;
+import org.eclipse.chemclipse.support.settings.SystemSettings;
+import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class BaselineCorrectionSettings {
 
 	static final int DEFAULT_OMIT_PERCENT_OF_SPECTRUM = 5;

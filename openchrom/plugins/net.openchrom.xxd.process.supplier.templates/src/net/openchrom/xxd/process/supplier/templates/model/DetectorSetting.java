@@ -16,7 +16,7 @@ public class DetectorSetting extends AbstractSetting {
 	public static final String DETECTOR_TYPE_BB = "BB";
 	public static final String DETECTOR_TYPE_VV = "VV";
 	//
-	private String detectorType = DETECTOR_TYPE_VV;
+	private String detectorType = DETECTOR_TYPE_VV; // VV => include background: true
 	private String traces = "";
 	private boolean optimizeRange = false;
 	private String referenceIdentifier = ""; // Used for relative retention time
@@ -75,11 +75,7 @@ public class DetectorSetting extends AbstractSetting {
 
 	public boolean isIncludeBackground() {
 
-		if(DETECTOR_TYPE_VV.equals(detectorType)) {
-			return false;
-		} else {
-			return true;
-		}
+		return (DETECTOR_TYPE_VV.equals(detectorType)) ? true : false;
 	}
 
 	@Override

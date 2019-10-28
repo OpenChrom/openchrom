@@ -15,7 +15,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.xxd.process.supplier.templates.ui.swt.TemplatePeakDetectorUI;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.peaks.TemplatePeakDetectorUI;
 
 public class PeakDetectorPage extends WizardPage {
 
@@ -33,7 +33,7 @@ public class PeakDetectorPage extends WizardPage {
 	public void createControl(Composite parent) {
 
 		TemplatePeakDetectorUI control = new TemplatePeakDetectorUI(parent, SWT.NONE);
-		control.setPeakProcessSettings(peakProcessSettings);
+		control.setInput(peakProcessSettings);
 		setControl(control);
 	}
 }

@@ -14,6 +14,9 @@ package net.openchrom.nmr.processing.supplier.base.settings;
 
 import java.util.List;
 
+import org.eclipse.chemclipse.support.settings.SystemSettings;
+import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
+
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentGapFillingType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentShiftCorrectionType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentTargetCalculationSelection;
@@ -26,6 +29,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlign
  *
  * @author Alexander Stark
  */
+@SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class IcoShiftAlignmentSettings {
 
 	private IcoShiftAlignmentTargetCalculationSelection targetCalculationSelection = IcoShiftAlignmentTargetCalculationSelection.MEAN;

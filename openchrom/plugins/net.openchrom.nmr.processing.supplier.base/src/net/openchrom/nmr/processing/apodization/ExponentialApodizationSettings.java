@@ -12,9 +12,12 @@
 package net.openchrom.nmr.processing.apodization;
 
 import org.eclipse.chemclipse.support.settings.DoubleSettingsProperty;
+import org.eclipse.chemclipse.support.settings.SystemSettings;
+import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class ExponentialApodizationSettings {
 
 	@JsonProperty(value = "Exponential Line Broadening Factor", defaultValue = "0.0")

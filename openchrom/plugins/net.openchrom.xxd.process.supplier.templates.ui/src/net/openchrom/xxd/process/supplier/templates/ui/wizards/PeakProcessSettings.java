@@ -64,12 +64,18 @@ public class PeakProcessSettings {
 
 	public boolean hasPrevious() {
 
-		return selectedIndex > 0;
+		if(detectorSettings.size() > 0) {
+			return selectedIndex > 0;
+		}
+		return false;
 	}
 
 	public boolean hasNext() {
 
-		return selectedIndex < detectorSettings.size();
+		if(detectorSettings.size() > 0) {
+			return selectedIndex < detectorSettings.size();
+		}
+		return false;
 	}
 
 	public DetectorSetting getSelectedDetectorSetting() {

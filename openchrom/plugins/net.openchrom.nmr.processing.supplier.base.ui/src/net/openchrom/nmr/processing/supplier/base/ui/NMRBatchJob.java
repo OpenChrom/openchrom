@@ -14,16 +14,16 @@ package net.openchrom.nmr.processing.supplier.base.ui;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.methods.ProcessMethod;
 import org.eclipse.chemclipse.model.types.DataType;
-import org.eclipse.chemclipse.processing.ProcessorFactory;
+import org.eclipse.chemclipse.processing.DataCategory;
 import org.eclipse.chemclipse.processing.core.DefaultProcessingResult;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.part.support.SupplierEditorSupport;
@@ -38,24 +38,22 @@ import org.eclipse.swt.widgets.Display;
 
 public class NMRBatchJob implements IRunnableWithProgress {
 
-	@Inject
-	private ProcessorFactory filterFactory;
 	private BatchJobUI batchJobUI;
 	private ProcessTypeSupport processTypeSupport;
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 
-		processTypeSupport = new ProcessTypeSupport(filterFactory);
-		batchJobUI = new BatchJobUI(parent, processTypeSupport, Activator.getDefault().getPreferenceStore(), "nmrBatchUIUserLocation", new DataType[]{DataType.NMR}, this) {
+		processTypeSupport = new ProcessTypeSupport();
+		batchJobUI = new BatchJobUI(parent, processTypeSupport, Activator.getDefault().getPreferenceStore(), "nmrBatchUIUserLocation", new DataCategory[]{DataCategory.FID, DataCategory.NMR}, this) {
 
 			@Override
-			protected DataListUI createDataList(Composite parent, IPreferenceStore preferenceStore, String userlocationPrefrenceKey, DataType[] dataTypes) {
+			protected DataListUI createDataList(Composite parent, IPreferenceStore preferenceStore, String userlocationPrefrenceKey, DataCategory[] dataTypes) {
 
-				return new NMRDataListUI(parent, this::setEditorDirty, preferenceStore, userlocationPrefrenceKey, dataTypes);
+				return new NMRDataListUI(parent, this::setEditorDirty, preferenceStore, userlocationPrefrenceKey, DataType.convert(dataTypes));
 			}
 		};
-		batchJobUI.doLoad(Collections.emptyList(), new ProcessMethod());
+		batchJobUI.doLoad(Collections.emptyList(), new ProcessMethod(EnumSet.of(DataCategory.FID, DataCategory.NMR)));
 	}
 
 	@Override

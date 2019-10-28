@@ -67,6 +67,14 @@
    <includes
          id="net.openchrom.wsd.converter.supplier.abif.feature"
          version="0.0.0"/>
+         
+   <includes
+         id="net.openchrom.wsd.identifier.supplier.geneident.feature"
+         version="0.0.0"/>         
+
+   <includes
+         id="net.openchrom.thirdpartylibraries.biojava.feature"
+         version="0.0.0"/>    
 
    <includes
          id="net.openchrom.xxd.processor.supplier.tracecompare.feature"

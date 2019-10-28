@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings;
 
+import org.eclipse.chemclipse.support.settings.SystemSettings;
+import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
+
 /**
  * ChemicalShiftCalibrationSettings will define all necessary settings for the
  * calculation of a lorentzian shaped line/peak which in turn will be used for
@@ -21,6 +24,7 @@ package net.openchrom.nmr.processing.supplier.base.settings;
  * @author Alexander Stark
  *
  */
+@SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class ChemicalShiftCalibrationSettings {
 
 	private double locationOfCauchyDistribution = 0;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Marwin Wollschläger.
+ * Copyright (c) 2013, 2019 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,21 +8,17 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
+ * Dr. Philip Wenig - adjustments
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.openscience.cdk.DefaultChemObjectBuilder;
-import org.openscience.cdk.config.IsotopeFactory;
-import org.openscience.cdk.interfaces.IChemObjectBuilder;
-import org.openscience.cdk.interfaces.IIsotope;
-
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.openscience.cdk.interfaces.IIsotope;
 
 /**
  * A class for managing simple collections of isotopes that are often in use,
@@ -85,16 +81,15 @@ public class IsotopeDeciderFactory {
 
 	public IsotopeDecider getIsotopeDecider(Set<String> isotopes) {
 
-		IChemObjectBuilder chemObjectBuilder = DefaultChemObjectBuilder.getInstance();
 		IsotopeDecider isotopeDecider = new IsotopeDecider();
 		try {
-			IsotopeFactory isotopeFactory = IsotopeFactory.getInstance(chemObjectBuilder);
+			IsotopeDeciderFactory isotopeFactory = IsotopeDeciderFactory.getInstance();
 			List<IIsotope> isotopeSet = new ArrayList<IIsotope>();
 			for(String isotope : isotopes) {
-				isotopeSet.add(isotopeFactory.getMajorIsotope(isotope));
+				isotopeSet.add(isotopeFactory.getIsotope(isotope));
 			}
 			isotopeDecider.setIsotopeSet(isotopeSet);
-		} catch(IOException e) {
+		} catch(Exception e) {
 			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
 		}
 		return isotopeDecider;
@@ -113,13 +108,11 @@ public class IsotopeDeciderFactory {
 
 	public IIsotope getIsotope(String elementSymbol) {
 
-		IChemObjectBuilder chemObjectBuilder = DefaultChemObjectBuilder.getInstance();
-		IsotopeFactory isotopeFactory;
 		IIsotope result = null;
 		try {
-			isotopeFactory = IsotopeFactory.getInstance(chemObjectBuilder);
-			result = isotopeFactory.getMajorIsotope(elementSymbol);
-		} catch(IOException e) {
+			IsotopeDeciderFactory isotopeFactory = IsotopeDeciderFactory.getInstance();
+			result = isotopeFactory.getIsotope(elementSymbol);
+		} catch(Exception e) {
 			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
 		}
 		return result;
@@ -127,13 +120,11 @@ public class IsotopeDeciderFactory {
 
 	public IIsotope getIsotope(String elementSymbol, int massNumber) {
 
-		IChemObjectBuilder chemObjectBuilder = DefaultChemObjectBuilder.getInstance();
-		IsotopeFactory isotopeFactory;
 		IIsotope result = null;
 		try {
-			isotopeFactory = IsotopeFactory.getInstance(chemObjectBuilder);
+			IsotopeDeciderFactory isotopeFactory = IsotopeDeciderFactory.getInstance();
 			result = isotopeFactory.getIsotope(elementSymbol, massNumber);
-		} catch(IOException e) {
+		} catch(Exception e) {
 			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
 		}
 		return result;

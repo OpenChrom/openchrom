@@ -70,6 +70,9 @@
 		<module>net.openchrom.wsd.converter.supplier.abif.fragment.test</module>
 		<module>net.openchrom.wsd.converter.supplier.abif.ui</module>
 		<module>net.openchrom.wsd.converter.supplier.abif</module>
+		<module>net.openchrom.wsd.identifier.supplier.geneident.fragment.test</module>
+		<module>net.openchrom.wsd.identifier.supplier.geneident.ui</module>
+		<module>net.openchrom.wsd.identifier.supplier.geneident</module>
 		<module>net.openchrom.xxd.classifier.supplier.ratios.fragment.test</module>
 		<module>net.openchrom.xxd.classifier.supplier.ratios.ui</module>
 		<module>net.openchrom.xxd.classifier.supplier.ratios</module>

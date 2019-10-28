@@ -11,8 +11,12 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings;
 
+import org.eclipse.chemclipse.support.settings.SystemSettings;
+import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
+
 import net.openchrom.nmr.processing.phasecorrection.AutoPhaseCorrectionProcessor.PhaseCorrectionValue;
 
+@SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class AutoPhaseCorrectionSettings {
 
 	static final double DEFAULT_PENALTY_FACTORY = 1E-9 / 5;
