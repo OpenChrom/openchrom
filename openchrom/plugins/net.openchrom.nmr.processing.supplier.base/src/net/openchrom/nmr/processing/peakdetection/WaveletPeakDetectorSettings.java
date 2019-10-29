@@ -13,9 +13,12 @@ package net.openchrom.nmr.processing.peakdetection;
 
 public class WaveletPeakDetectorSettings {
 
+	private static final int[] DEFAULT_PSI_SCALES = { 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 36, 40, 44, 48, 52, 56, 60, 64 };
+	private int[] psiScales = DEFAULT_PSI_SCALES;
+	//
 	private boolean considerNearbyPeaks = true;
 	private int signalToNoiseThreshold = 3;
-	double amplitudeThreshold = 0.01d;
+	private double amplitudeThreshold = 0.01d;
 	private int ridgeLength = 24;
 	private int peakScaleRange = 5;
 
@@ -57,5 +60,13 @@ public class WaveletPeakDetectorSettings {
 
 	public void setPeakScaleRange(int peakScaleRange) {
 		this.peakScaleRange = peakScaleRange;
+	}
+
+	public int[] getPsiScales() {
+		return psiScales;
+	}
+
+	public void setPsiScales(int[] psiScales) {
+		this.psiScales = psiScales;
 	}
 }

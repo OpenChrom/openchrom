@@ -26,12 +26,12 @@ public class WaveletPeakDetectorCWT {
 		WaveletPeakDetectorCWT.paddedData = paddedData;
 	}
 
-	public static SimpleMatrix calculateWaveletCoefficients(List<? extends SpectrumSignal> signals, int[] psiScales) {
+	public static SimpleMatrix calculateWaveletCoefficients(List<? extends SpectrumSignal> signals, WaveletPeakDetectorSettings configuration) {
 
 		double[] psiValues = UtilityFunctions.generateLinearlySpacedVector(-8, 8, 1024);
 		double[] psi = calculatePsi(psiValues);
 		double subtractPsi = psiValues[0];
-		for (int i = 0; i < psiValues.length; i++) {
+		for(int i = 0; i < psiValues.length; i++) {
 			psiValues[i] = psiValues[i] - subtractPsi;
 		}
 		double dxValue = psiValues[1];
@@ -43,8 +43,9 @@ public class WaveletPeakDetectorCWT {
 
 		// calculate coefficients
 
+		int[] psiScales = configuration.getPsiScales();
 		SimpleMatrix coefficients = new SimpleMatrix(workingLength, psiScales.length);
-		for (int i = 0; i < psiScales.length; i++) {
+		for(int i = 0; i < psiScales.length; i++) {
 			int currentScale = psiScales[i];
 
 			int[] waveValues = calculateWaveValues(currentScale, maxPsiValue, dxValue);
@@ -55,7 +56,7 @@ public class WaveletPeakDetectorCWT {
 
 			coefficients.setColumn(i, 0, convolvedSignals);
 		}
-		if (isPaddedData()) {
+		if(isPaddedData()) {
 			/*
 			 * cut coefficients back to original data size if padding was done
 			 *
@@ -74,7 +75,7 @@ public class WaveletPeakDetectorCWT {
 
 		double[] psi = new double[psiValues.length];
 		double psiConstant = (2 / Math.sqrt(3)) * Math.pow(Math.PI, -0.25);
-		for (int i = 0; i < psiValues.length; i++) {
+		for(int i = 0; i < psiValues.length; i++) {
 			psi[i] = psiConstant * (1 - Math.pow(psiValues[i], 2)) * Math.exp(-Math.pow(psiValues[i], 2) / 2);
 		}
 		return psi;
@@ -85,16 +86,16 @@ public class WaveletPeakDetectorCWT {
 		double[] convolveFunction = new double[workingLength];
 		double[] partsOfPsi = new double[waveValues.length];
 		int v = 0;
-		for (int value : waveValues) {
+		for(int value : waveValues) {
 			partsOfPsi[v] = psi[value - 1];
 			v++;
 		}
 		ArrayUtils.reverse(partsOfPsi);
 		double meanPsi = Arrays.stream(partsOfPsi).sum();
-		for (int c = 0; c < waveValues.length; c++) {
+		for(int c = 0; c < waveValues.length; c++) {
 			convolveFunction[c] = partsOfPsi[c] - meanPsi;
 		}
-		if (convolveFunction.length > workingLength) {
+		if(convolveFunction.length > workingLength) {
 			throw new IllegalArgumentException("Current scale is too large!");
 		}
 		return convolveFunction;
@@ -108,12 +109,12 @@ public class WaveletPeakDetectorCWT {
 
 		int[] waveValues = new int[waveValuesTemp.length];
 		double scaleDivisor = currentScale * dxValue;
-		for (int w = 1; w < waveValuesTemp.length; w++) {
+		for(int w = 1; w < waveValuesTemp.length; w++) {
 			waveValues[w] = (int) (1 + Math.floor(waveValuesTemp[w] / scaleDivisor));
 		}
 		waveValues[0] = 1;
 
-		if (waveValues.length == 1) {
+		if(waveValues.length == 1) {
 			waveValues = new int[] { 1, 1 };
 		}
 		return waveValues;
@@ -121,10 +122,10 @@ public class WaveletPeakDetectorCWT {
 
 	private static double[] convolveSignals(double[] dataArray, double[] convolveF, int currentScale, int lengthWave) {
 
-		if (!checkIfNumeric(dataArray) || !checkIfNumeric(convolveF)) {
+		if(!checkIfNumeric(dataArray) || !checkIfNumeric(convolveF)) {
 			throw new IllegalArgumentException("Data is not only numeric!");
 		}
-		if (dataArray.length != convolveF.length) {
+		if(dataArray.length != convolveF.length) {
 			throw new IllegalArgumentException("Arguments length mismatch in convolution!");
 		}
 		// do the convolution
@@ -132,14 +133,14 @@ public class WaveletPeakDetectorCWT {
 		Complex[] complexDataArray = fft.transform(dataArray, TransformType.FORWARD);
 		Complex[] complexConvolveF = fft.transform(convolveF, TransformType.FORWARD);
 		Complex[] tempOutput = new Complex[complexConvolveF.length];
-		for (int i = 0; i < complexConvolveF.length; i++) {
+		for(int i = 0; i < complexConvolveF.length; i++) {
 			complexConvolveF[i] = complexConvolveF[i].conjugate();
 			tempOutput[i] = complexDataArray[i].multiply(complexConvolveF[i]);
 		}
 		Complex[] finalOutput = fft.transform(tempOutput, TransformType.INVERSE);
 		// process for return
 		double[] convolvedSignals = IcoShiftAlignmentUtilities.getRealPartOfComplexArray(finalOutput);
-		for (int c = 0; c < convolvedSignals.length; c++) {
+		for(int c = 0; c < convolvedSignals.length; c++) {
 			convolvedSignals[c] = convolvedSignals[c] * (1 / Math.sqrt(currentScale));
 		}
 		int fromBackToFront = (int) (dataArray.length - Math.floor(lengthWave / 2) + 1);
@@ -151,7 +152,7 @@ public class WaveletPeakDetectorCWT {
 
 	private static boolean checkIfNumeric(double[] array) {
 
-		for (double d : array) {
+		for(double d : array) {
 			try {
 				Double.valueOf(d);
 			} catch (NumberFormatException e) {
@@ -165,13 +166,13 @@ public class WaveletPeakDetectorCWT {
 
 		double[] dataArray;
 		// check if length of data equals 2^n
-		if (!lengthIsPowerOfTwo(signals)) {
+		if(!lengthIsPowerOfTwo(signals)) {
 			// pseudo zero filling, e.g. append part of data to satisfy FFT condition
 			int newLength = (int) (Math.ceil((Math.log(signals.size()) / Math.log(2))));
 			int diffLength = newLength - signals.size();
 			double[] tempDataArray = new double[signals.size()];
 			int position = 0;
-			for (SpectrumSignal signal : signals) {
+			for(SpectrumSignal signal : signals) {
 				tempDataArray[position] = signal.getAbsorptiveIntensity().doubleValue();
 				position++;
 			}
@@ -182,7 +183,7 @@ public class WaveletPeakDetectorCWT {
 			// just copy data
 			dataArray = new double[signals.size()];
 			int position = 0;
-			for (SpectrumSignal signal : signals) {
+			for(SpectrumSignal signal : signals) {
 				dataArray[position] = signal.getAbsorptiveIntensity().doubleValue();
 				position++;
 			}
@@ -192,7 +193,7 @@ public class WaveletPeakDetectorCWT {
 
 	private static boolean lengthIsPowerOfTwo(List<? extends SpectrumSignal> signals) {
 
-		if (signals.size() == 0) {
+		if(signals.size() == 0) {
 			throw new IllegalArgumentException("Signals length can't be 0");
 		}
 		double divisor = Math.log(2);
