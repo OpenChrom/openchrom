@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Alexander Stark.
+ * Copyright (c) 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,6 +21,8 @@ public class WaveletPeakDetectorSettings {
 	private double amplitudeThreshold = 0.01d;
 	private int ridgeLength = 24;
 	private int peakScaleRange = 5;
+	//
+	private int minimumWindowSize = 5;
 
 	public double getAmplitudeThreshold() {
 		return amplitudeThreshold;
@@ -68,5 +70,13 @@ public class WaveletPeakDetectorSettings {
 
 	public void setPsiScales(int[] psiScales) {
 		this.psiScales = psiScales;
+	}
+
+	public int getMinimumWindowSize() {
+		return minimumWindowSize;
+	}
+
+	public void setMinimumWindowSize(int minimumWindowSize) {
+		this.minimumWindowSize = minimumWindowSize;
 	}
 }
