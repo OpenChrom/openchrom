@@ -23,5 +23,6 @@
 		<tycho.target.groupId>net.openchrom</tycho.target.groupId>
 		<tycho.target.artifactId>net.openchrom.targetplatform</tycho.target.artifactId>
 		<tycho.target.version>${project.version}</tycho.target.version>
+		<skip.install>false</skip.install>
 	</properties>
 </project>
