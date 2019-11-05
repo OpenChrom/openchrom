@@ -73,9 +73,9 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 		/*
 		 * TODO detect the peaks
 		 */
-		SimpleMatrix waveletCoefficients = WaveletPeakDetectorCWT.calculateWaveletCoefficients(signals, configuration);
+		SimpleMatrix waveletCoefficients = WaveletPeakDetector.calculateWaveletCoefficients(signals, configuration);
 		//
-		SimpleMatrix localMaxima = WaveletPeakDetectorMaxima.calculateLocalMaxima(signals, waveletCoefficients, configuration);
+		SimpleMatrix localMaxima = WaveletPeakDetector.calculateLocalMaxima(signals, waveletCoefficients, configuration);
 		//
 		int gapThreshold = 3;
 		int skipValue = 2;

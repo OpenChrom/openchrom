@@ -138,4 +138,31 @@ public class WaveletPeakDetectorCWTUtils {
 		return dataArray;
 	}
 
+	static boolean paddedData = false;
+
+	static boolean isPaddedData() {
+		return paddedData;
+	}
+
+	static void setPaddedData(boolean paddedData) {
+		WaveletPeakDetectorCWTUtils.paddedData = paddedData;
+	}
+
+	static double[] extractDataFromList(List<? extends SpectrumSignal> signals, WaveletPeakDetectorSettings configuration) {
+
+		// check if length of data equals 2^n
+		if(!lengthIsPowerOfTwo(signals)) {
+			// pseudo zero filling, e.g. append part of data to satisfy FFT condition
+			setPaddedData(true);
+			int newLength = (int) (Math.ceil((Math.log(signals.size()) / Math.log(2))));
+			int diffLength = newLength - signals.size();
+			double[] tempDataArray = getAbsorptiveIntensity(signals);
+			double[] dataToAppend = Arrays.copyOfRange(tempDataArray, 0, diffLength);
+			return ArrayUtils.addAll(tempDataArray, dataToAppend);
+		} else {
+			// just copy data
+			return getAbsorptiveIntensity(signals);
+		}
+	}
+
 }
