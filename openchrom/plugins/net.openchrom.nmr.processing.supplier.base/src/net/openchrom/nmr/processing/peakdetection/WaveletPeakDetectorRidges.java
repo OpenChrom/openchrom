@@ -12,9 +12,12 @@
 package net.openchrom.nmr.processing.peakdetection;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -25,7 +28,7 @@ import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 
 public class WaveletPeakDetectorRidges {
 
-	public static List<Integer> constructRidgeList(SimpleMatrix localMaxima, WaveletPeakDetectorSettings configuration, int gapThreshold, int skipValue) {
+	public static LinkedHashMap<String, List<Integer>> constructRidgeList(SimpleMatrix localMaxima, WaveletPeakDetectorSettings configuration, int gapThreshold, int skipValue) {
 
 		int[] psiScales = ArrayUtils.addAll(new int[] { 0 }, configuration.getPsiScales());
 		int numberOfColumns = localMaxima.numCols();
@@ -45,6 +48,7 @@ public class WaveletPeakDetectorRidges {
 		// main loop
 		int[] columnIndex = WaveletPeakDetectorRidgesUtils.generateColumnIndex(numberOfColumns);
 		int numberOfLevels = columnIndex.length;
+		LinkedHashMap<String, List<Integer>> finalRidgeList = new LinkedHashMap<String, List<Integer>>();
 		for(int i = 0; i < numberOfLevels; i++) {
 			int localColumn = columnIndex[i];
 			int localScale = psiScales[localColumn];
@@ -61,11 +65,6 @@ public class WaveletPeakDetectorRidges {
 			// slide window size
 			int localWindowSize = WaveletPeakDetectorMaximaUtils.calculateWindowSize(localScale, configuration);
 
-			// prüfen ob richtiger Typ
-			// LinkedHashMap<Integer, Integer> selectedPeaks = new LinkedHashMap<Integer,
-			// Integer>();
-			// LinkedHashMap<Integer, Integer> removePeak = new LinkedHashMap<Integer,
-			// Integer>();
 			List<Integer> localSelectedPeaks = new ArrayList<Integer>();
 			List<Integer> localRemovePeaks = new ArrayList<Integer>();
 
@@ -132,12 +131,96 @@ public class WaveletPeakDetectorRidges {
 			// Check for duplicated selected peaks;only keep the one with the longest path
 			List<Integer> localUniquePeaks = localSelectedPeaks.stream().distinct().collect(Collectors.toList());
 			if(localSelectedPeaks.size() > localUniquePeaks.size()) {
-				//
+				List<Integer> duplicatedPeaksToRemoveIndices = new ArrayList<>();
 				List<Integer> localDiplicatedPeaks = localSelectedPeaks.stream().filter(not(new HashSet<>(localUniquePeaks)::contains)).collect(Collectors.toList());
+				Integer maxLengthOfMatchingIndices = null;
+				for(Integer duplicatedPeak : localDiplicatedPeaks) {
+					// get indices for duplicate peaks
+					List<Integer> matchingIndicesForDuplicatePeaks = new ArrayList<>();
+					for(int m = 0; m < localSelectedPeaks.size(); m++) {
+						Integer localSelectedPeak = localSelectedPeaks.get(m);
+						if(duplicatedPeak.equals(localSelectedPeak)) {
+							matchingIndicesForDuplicatePeaks.add(m); // 99 346
+						}
+					}
+					// get length of these duplicate peak ridges
+					List<Integer> lengthOfMatchingIndices = new ArrayList<>();
+					for(Integer matchingIndex : matchingIndicesForDuplicatePeaks) {
+						int match = 0;
+						Iterator<Entry<Integer, List<Integer>>> iterator = ridgeList.entrySet().iterator();
+						while (iterator.hasNext()) {
+							Entry<Integer, List<Integer>> peakRidgeEntry = iterator.next();
+							if(duplicatedPeak.equals(peakRidgeEntry.getKey()) & matchingIndex.equals(match)) {
+								// double check necessary above?
+								lengthOfMatchingIndices.add(peakRidgeEntry.getValue().size()); // 9 3
+							}
+							match++;
+						}
+					}
+					maxLengthOfMatchingIndices = Collections.max(lengthOfMatchingIndices);
+					int positionOfBetterDuplicatePeak = lengthOfMatchingIndices.indexOf(maxLengthOfMatchingIndices);
+					matchingIndicesForDuplicatePeaks.remove(positionOfBetterDuplicatePeak);
+					// collect all indices of duplicate peaks with short ridges
+					duplicatedPeaksToRemoveIndices.addAll(matchingIndicesForDuplicatePeaks);
+					// fill in the orphanRidgeList
+					String key = String.valueOf(localColumn + "_" + localSelectedPeaks.get(maxLengthOfMatchingIndices));
+					List<Integer> values = ridgeList.get(positionOfBetterDuplicatePeak);
+					orphanRidgeList.put(key, values);
+				}
+				// finally remove all "bad" peaks
+				for(Integer removeIndex : duplicatedPeaksToRemoveIndices) {
+					localSelectedPeaks.remove(removeIndex);
+					ridgeList.keySet().stream().collect(Collectors.toList()).remove(removeIndex);
+					peakStatus.keySet().stream().collect(Collectors.toList()).remove(removeIndex);
+				}
+			}
+			//
+			if(localScale >= 2) {
+				List<Integer> nextCurrentMaxIndex = WaveletPeakDetectorRidgesUtils.getMaxCurrentIndex(localMaxima, localColumn);
+				List<Integer> addPeaks = nextCurrentMaxIndex.stream().filter(not(new HashSet<>(localSelectedPeaks)::contains)).collect(Collectors.toList());
+				if(addPeaks.size() > 1) {
+					for(int p = 0; p < addPeaks.size(); p++) {
+						ridgeList.put(addPeaks.get(p), new ArrayList<Integer>(addPeaks.get(p)));
+					}
+				} else {
+					ridgeList.put(addPeaks.get(0), addPeaks);
+				}
+				// add to currentMaxIndex =>localSelectedPeaks + new peaks
+//				List<Integer> tempList = new ArrayList<Integer>();
+//				tempList.addAll(localSelectedPeaks);
+//				tempList.addAll(addPeaks);
+//				Collections.sort(tempList);
+				addPeaks.stream().filter(not(new HashSet<>(currentMaxIndex)::contains)).forEachOrdered(currentMaxIndex::add);
+				for(Integer status : addPeaks) {
+					peakStatus.put(status, 0);
+				}
+			} else {
+				currentMaxIndex.clear();
+				currentMaxIndex.addAll(localSelectedPeaks);
+			}
+			// prepare final ridge list
 
+			Iterator<Entry<Integer, List<Integer>>> iterator = ridgeList.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<Integer, List<Integer>> peakRidgeEntry = iterator.next();
+				String newKey = "1_" + String.valueOf(peakRidgeEntry.getKey());
+				finalRidgeList.put(newKey, peakRidgeEntry.getValue());
+			}
+			/*
+			 * this call is equivalent to that of calling put(k, v) - check for duplicates?
+			 * map1.keySet().equals(map2.keySet());
+			 */
+			finalRidgeList.putAll(orphanRidgeList);
+			//
+			Iterator<Entry<String, List<Integer>>> finalIterator = finalRidgeList.entrySet().iterator();
+			while (finalIterator.hasNext()) {
+				Entry<String, List<Integer>> finalEntry = finalIterator.next();
+				List<Integer> reversedList = finalEntry.getValue();
+				Collections.reverse(reversedList);
+				finalRidgeList.put(finalEntry.getKey(), reversedList);
 			}
 		}
-		return null;
+		return finalRidgeList;
 	}
 
 	private static <T> Predicate<T> not(Predicate<T> predicate) {

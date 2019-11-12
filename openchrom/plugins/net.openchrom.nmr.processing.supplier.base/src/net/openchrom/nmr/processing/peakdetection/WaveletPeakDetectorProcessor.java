@@ -79,7 +79,7 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 		//
 		int gapThreshold = 3;
 		int skipValue = 2;
-		List<Integer> ridgeList = WaveletPeakDetectorRidges.constructRidgeList(localMaxima, configuration, gapThreshold, skipValue);
+		LinkedHashMap<String, List<Integer>> ridgeList = WaveletPeakDetectorRidges.constructRidgeList(localMaxima, configuration, gapThreshold, skipValue);
 		//
 		SubMonitor subMonitor = SubMonitor.convert(monitor, signals.size());
 		List<PeakPosition> peakPositions = new ArrayList<>();
