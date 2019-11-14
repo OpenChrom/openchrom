@@ -148,7 +148,7 @@ public class WaveletPeakDetectorCWTUtils {
 		WaveletPeakDetectorCWTUtils.paddedData = paddedData;
 	}
 
-	static double[] extractDataFromList(List<? extends SpectrumSignal> signals, WaveletPeakDetectorSettings configuration) {
+	static double[] extractDataFromList(List<? extends SpectrumSignal> signals) {
 
 		// check if length of data equals 2^n
 		if(!lengthIsPowerOfTwo(signals)) {

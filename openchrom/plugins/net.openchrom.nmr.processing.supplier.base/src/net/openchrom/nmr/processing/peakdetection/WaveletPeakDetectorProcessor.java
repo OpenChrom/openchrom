@@ -27,8 +27,10 @@ import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.detector.Detector;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
-import org.ejml.simple.SimpleMatrix;
 import org.osgi.service.component.annotations.Component;
+
+import net.openchrom.nmr.processing.peakdetection.peakmodel.CwtPeak;
+import net.openchrom.nmr.processing.peakdetection.peakmodel.CwtPeakSupport;
 
 @Component(service = { Detector.class, IMeasurementPeakDetector.class })
 public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<WaveletPeakDetectorSettings> {
@@ -73,13 +75,20 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 		/*
 		 * TODO detect the peaks
 		 */
-		SimpleMatrix waveletCoefficients = WaveletPeakDetector.calculateWaveletCoefficients(signals, configuration);
+		CwtPeakSupport cwtPeakSupport = new CwtPeakSupport();
 		//
-		SimpleMatrix localMaxima = WaveletPeakDetector.calculateLocalMaxima(signals, waveletCoefficients, configuration);
+		WaveletPeakDetector.calculateWaveletCoefficients(cwtPeakSupport, signals, configuration);
 		//
-		int gapThreshold = 3;
-		int skipValue = 2;
-		LinkedHashMap<String, List<Integer>> ridgeList = WaveletPeakDetectorRidges.constructRidgeList(localMaxima, configuration, gapThreshold, skipValue);
+		WaveletPeakDetector.calculateLocalMaxima(cwtPeakSupport, signals, configuration);
+		//
+		WaveletPeakDetectorRidges.constructRidgeList(cwtPeakSupport, configuration);
+		//
+		CwtPeak cwtPeak = new CwtPeak();
+		cwtPeak.setIndex(1054);
+		cwtPeak.setValue(15248.54);
+		cwtPeakSupport.getCwtPeakList().put("Peak", cwtPeak);
+		cwtPeakSupport.getCwtPeakList().get("Peak").getIndex(); // getX
+		cwtPeakSupport.getCwtPeakList().get("Peak").getValue(); // getY
 		//
 		SubMonitor subMonitor = SubMonitor.convert(monitor, signals.size());
 		List<PeakPosition> peakPositions = new ArrayList<>();
@@ -96,14 +105,6 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 		}
 		return new PeakList(peakPositions, getID(), getName(), getDescription());
 	}
-
-	/*
-	 * WIP part
-	 */
-
-	/*
-	 * WIP end
-	 */
 
 	@Override
 	public boolean acceptsIMeasurements(Collection<? extends IMeasurement> items) {

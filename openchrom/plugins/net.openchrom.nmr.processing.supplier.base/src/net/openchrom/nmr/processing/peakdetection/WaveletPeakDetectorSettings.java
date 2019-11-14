@@ -14,15 +14,25 @@ package net.openchrom.nmr.processing.peakdetection;
 public class WaveletPeakDetectorSettings {
 
 	private static final int[] DEFAULT_PSI_SCALES = { 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 36, 40, 44, 48, 52, 56, 60, 64 };
+	private static final int[] EXT_DEFAULT_PSI_SCALES = { 0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 36, 40, 44, 48, 52, 56, 60, 64 };
 	private int[] psiScales = DEFAULT_PSI_SCALES;
+	private int[] extendedPsiScales = EXT_DEFAULT_PSI_SCALES;
+
 	//
 	private boolean considerNearbyPeaks = true;
 	private int signalToNoiseThreshold = 3;
-	private double amplitudeThreshold = 0.01d;
+	private double amplitudeThreshold = 0.0001d;
 	private int ridgeLength = 24;
 	private int peakScaleRange = 5;
 	//
 	private int minimumWindowSize = 5;
+	//
+	private int gapThreshold = 3;
+	private int skipValue = 2;
+	//
+	private double minimumNoiseLevel = 0.003;
+	private int nearbyWinSize = 100;
+	private int windowSizeNoise = 500;
 
 	public double getAmplitudeThreshold() {
 		return amplitudeThreshold;
@@ -79,4 +89,53 @@ public class WaveletPeakDetectorSettings {
 	public void setMinimumWindowSize(int minimumWindowSize) {
 		this.minimumWindowSize = minimumWindowSize;
 	}
+
+	public int getGapThreshold() {
+		return gapThreshold;
+	}
+
+	public void setGapThreshold(int gapThreshold) {
+		this.gapThreshold = gapThreshold;
+	}
+
+	public int getSkipValue() {
+		return skipValue;
+	}
+
+	public void setSkipValue(int skipValue) {
+		this.skipValue = skipValue;
+	}
+
+	public int[] getExtendedPsiScales() {
+		return extendedPsiScales;
+	}
+
+	public void setExtendedPsiScales(int[] extendedPsiScales) {
+		this.extendedPsiScales = extendedPsiScales;
+	}
+
+	public double getMinimumNoiseLevel() {
+		return minimumNoiseLevel;
+	}
+
+	public void setMinimumNoiseLevel(double minimumNoiseLevel) {
+		this.minimumNoiseLevel = minimumNoiseLevel;
+	}
+
+	public int getNearbyWinSize() {
+		return nearbyWinSize;
+	}
+
+	public void setNearbyWinSize(int nearbyWinSize) {
+		this.nearbyWinSize = nearbyWinSize;
+	}
+
+	public int getWindowSizeNoise() {
+		return windowSizeNoise;
+	}
+
+	public void setWindowSizeNoise(int windowSizeNoise) {
+		this.windowSizeNoise = windowSizeNoise;
+	}
+
 }

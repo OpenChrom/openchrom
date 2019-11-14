@@ -13,28 +13,25 @@ package net.openchrom.nmr.processing.peakdetection;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.ejml.simple.SimpleMatrix;
-
+import net.openchrom.nmr.processing.peakdetection.peakmodel.CwtPeakSupport;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 
 public class WaveletPeakDetectorRidges {
 
-	public static LinkedHashMap<String, List<Integer>> constructRidgeList(SimpleMatrix localMaxima, WaveletPeakDetectorSettings configuration, int gapThreshold, int skipValue) {
+	public static void constructRidgeList(CwtPeakSupport cwtPeakSupport, WaveletPeakDetectorSettings configuration) {
 
-		int[] psiScales = ArrayUtils.addAll(new int[] { 0 }, configuration.getPsiScales());
-		int numberOfColumns = localMaxima.numCols();
-		int numberOfRows = localMaxima.numRows();
+		int[] extendedPsiScales = configuration.getExtendedPsiScales();
+		List<Integer> currentMaxIndex = WaveletPeakDetectorRidgesUtils.getMaxCurrentIndex(cwtPeakSupport.getLocalMaxima(), cwtPeakSupport.getLocalMaxima().numCols());
+		int skipValue = WaveletPeakDetectorRidgesUtils.checkSkipValue(configuration.getSkipValue(), cwtPeakSupport.getLocalMaxima().numCols());
 
-		List<Integer> currentMaxIndex = WaveletPeakDetectorRidgesUtils.getMaxCurrentIndex(localMaxima, numberOfColumns);
 		LinkedHashMap<Integer, List<Integer>> ridgeList = new LinkedHashMap<Integer, List<Integer>>();
 		LinkedHashMap<Integer, Integer> peakStatus = new LinkedHashMap<Integer, Integer>();
 		for(Integer key : currentMaxIndex) {
@@ -46,12 +43,12 @@ public class WaveletPeakDetectorRidges {
 		LinkedHashMap<String, List<Integer>> orphanRidgeList = new LinkedHashMap<String, List<Integer>>();
 
 		// main loop
-		int[] columnIndex = WaveletPeakDetectorRidgesUtils.generateColumnIndex(numberOfColumns);
+		int[] columnIndex = WaveletPeakDetectorRidgesUtils.generateColumnIndex(cwtPeakSupport.getLocalMaxima().numCols());
 		int numberOfLevels = columnIndex.length;
 		LinkedHashMap<String, List<Integer>> finalRidgeList = new LinkedHashMap<String, List<Integer>>();
 		for(int i = 0; i < numberOfLevels; i++) {
 			int localColumn = columnIndex[i];
-			int localScale = psiScales[localColumn];
+			int localScale = extendedPsiScales[localColumn];
 			if(columnIndex[i] == skipValue) {
 				for(Integer key : ridgeList.keySet()) {
 					ridgeList.get(key).add(key);
@@ -59,39 +56,31 @@ public class WaveletPeakDetectorRidges {
 				continue;
 			}
 			if(currentMaxIndex.size() == 0) {
-				currentMaxIndex = WaveletPeakDetectorRidgesUtils.getMaxCurrentIndex(localMaxima, localColumn);
+				currentMaxIndex = WaveletPeakDetectorRidgesUtils.getMaxCurrentIndex(cwtPeakSupport.getLocalMaxima(), localColumn);
 				continue;
 			}
-			// slide window size
-			int localWindowSize = WaveletPeakDetectorMaximaUtils.calculateWindowSize(localScale, configuration);
-
-			List<Integer> localSelectedPeaks = new ArrayList<Integer>();
-			List<Integer> localRemovePeaks = new ArrayList<Integer>();
 
 			// inner loop
+			List<Integer> localSelectedPeaks = new ArrayList<Integer>();
+			List<Integer> localRemovePeaks = new ArrayList<Integer>();
 			for(int k = 0; k < currentMaxIndex.size(); k++) {
 				int localIndex = currentMaxIndex.get(k);
-				int start = ((localIndex - localWindowSize < 1) ? 1 : localIndex - localWindowSize);
-				int end = ((localIndex + localWindowSize > numberOfRows) ? numberOfRows : localIndex + localWindowSize);
-				//
-				List<Integer> currentIndex = new ArrayList<Integer>();
-				double[] partOfMaxColumn = WaveletPeakDetectorMaximaUtils.extractMatrixElements(localMaxima, false, localColumn);
-				for(int p = start; p < end; p++) {
-					if(partOfMaxColumn[p] > 0) {
-						currentIndex.add(p + start);
-					}
-				}
+				System.out.println(localIndex);
+				HashMap<String, Integer> currentIndexBounds = WaveletPeakDetectorRidgesUtils.getCurrentIndexBounds(localIndex, cwtPeakSupport.getLocalMaxima().numRows(), localScale, configuration);
+				double[] partOfMaxColumn = WaveletPeakDetectorMaximaUtils.extractMatrixElements(cwtPeakSupport.getLocalMaxima(), false, localColumn);
+				List<Integer> currentIndex = WaveletPeakDetectorRidgesUtils.calculateCurrentIndex(partOfMaxColumn, currentIndexBounds);
 
 				if(currentIndex.size() == 0) {
-					int localStatus = peakStatus.get(localIndex);
-					if(localStatus == 0) {
-						localStatus = gapThreshold + 1;
+					Integer localStatus = peakStatus.get(localIndex);
+					if(localStatus == null /* || localStatus.SIZE == 0 */) {
+						localStatus = configuration.getGapThreshold() + 1;
 					}
-					if(localStatus > gapThreshold & localScale >= 2) {
+					if(localStatus > configuration.getGapThreshold() && localScale >= 2) {
 						List<Integer> tempList = ridgeList.get(localIndex);
+						// FIXME NPE after accessing a localIndex successfully several times that index
+						// seem to "disappear"?!
 						List<Integer> values = tempList.subList(0, tempList.size() - localStatus);
-						String key = String.valueOf(localColumn + localStatus + 1) + "_" + String.valueOf(localIndex);
-						orphanRidgeList.put(key, values);
+						WaveletPeakDetectorRidgesUtils.fillRidgeListMaps(orphanRidgeList, localColumn + localStatus + 1, localIndex, values);
 						localRemovePeaks.add(localIndex);
 						continue;
 					} else {
@@ -106,92 +95,57 @@ public class WaveletPeakDetectorRidges {
 							tempIndex[j] = Math.abs(currentIndex.get(j) - localIndex);
 						}
 
-						double minValue = UtilityFunctions.getMinValueOfArray(tempIndex);
+						int minValue = (int) UtilityFunctions.getMinValueOfArray(tempIndex);
 						for(Integer element : currentIndex) {
-							if(!element.equals(Double.valueOf(minValue).intValue())) {
+							if(!element.equals(minValue)) {
 								currentIndex.remove(element);
 							}
 						}
 					}
 				}
-				ridgeList.put(localIndex, currentIndex);
+				ridgeList.get(localIndex).addAll(currentIndex);
+				// ridgeList.put(localIndex, currentIndex);
 				localSelectedPeaks.add(currentIndex.get(0));
 			} // end inner loop
 
-			// Remove disconnected lines
-			if(localRemovePeaks.size() > 0) {
-				for(Integer removePeak : localRemovePeaks) {
-					if(ridgeList.containsKey(removePeak)) {
-						ridgeList.remove(removePeak);
-						peakStatus.remove(removePeak);
-					}
-				}
-			}
+			// Remove disconnected ridge lines
+			WaveletPeakDetectorRidgesUtils.removeDisconnectedLines(localRemovePeaks, ridgeList, peakStatus);
 
 			// Check for duplicated selected peaks;only keep the one with the longest path
 			List<Integer> localUniquePeaks = localSelectedPeaks.stream().distinct().collect(Collectors.toList());
 			if(localSelectedPeaks.size() > localUniquePeaks.size()) {
 				List<Integer> duplicatedPeaksToRemoveIndices = new ArrayList<>();
-				List<Integer> localDiplicatedPeaks = localSelectedPeaks.stream().filter(not(new HashSet<>(localUniquePeaks)::contains)).collect(Collectors.toList());
-				Integer maxLengthOfMatchingIndices = null;
+				List<Integer> localDiplicatedPeaks = localSelectedPeaks.stream().filter(WaveletPeakDetectorRidgesUtils.not(new HashSet<>(localUniquePeaks)::contains)).collect(Collectors.toList());
+
 				for(Integer duplicatedPeak : localDiplicatedPeaks) {
-					// get indices for duplicate peaks
-					List<Integer> matchingIndicesForDuplicatePeaks = new ArrayList<>();
-					for(int m = 0; m < localSelectedPeaks.size(); m++) {
-						Integer localSelectedPeak = localSelectedPeaks.get(m);
-						if(duplicatedPeak.equals(localSelectedPeak)) {
-							matchingIndicesForDuplicatePeaks.add(m); // 99 346
-						}
-					}
-					// get length of these duplicate peak ridges
-					List<Integer> lengthOfMatchingIndices = new ArrayList<>();
-					for(Integer matchingIndex : matchingIndicesForDuplicatePeaks) {
-						int match = 0;
-						Iterator<Entry<Integer, List<Integer>>> iterator = ridgeList.entrySet().iterator();
-						while (iterator.hasNext()) {
-							Entry<Integer, List<Integer>> peakRidgeEntry = iterator.next();
-							if(duplicatedPeak.equals(peakRidgeEntry.getKey()) & matchingIndex.equals(match)) {
-								// double check necessary above?
-								lengthOfMatchingIndices.add(peakRidgeEntry.getValue().size()); // 9 3
-							}
-							match++;
-						}
-					}
-					maxLengthOfMatchingIndices = Collections.max(lengthOfMatchingIndices);
-					int positionOfBetterDuplicatePeak = lengthOfMatchingIndices.indexOf(maxLengthOfMatchingIndices);
-					matchingIndicesForDuplicatePeaks.remove(positionOfBetterDuplicatePeak);
-					// collect all indices of duplicate peaks with short ridges
+					// get indices for duplicate peaks and the length of their ridges
+					List<Integer> matchingIndicesForDuplicatePeaks = WaveletPeakDetectorRidgesUtils.getIndicesForDuplicatePeaks(localSelectedPeaks, duplicatedPeak);
+					List<Integer> lengthOfMatchingIndices = WaveletPeakDetectorRidgesUtils.getLengthOfDuplicatePeakRidges(matchingIndicesForDuplicatePeaks, ridgeList, duplicatedPeak);
+					// find the better peak e.g. with longer ridge and collect only indices of
+					// duplicate peaks with short ridges
+					matchingIndicesForDuplicatePeaks.remove(lengthOfMatchingIndices.indexOf(Collections.max(lengthOfMatchingIndices)));
 					duplicatedPeaksToRemoveIndices.addAll(matchingIndicesForDuplicatePeaks);
-					// fill in the orphanRidgeList
-					String key = String.valueOf(localColumn + "_" + localSelectedPeaks.get(maxLengthOfMatchingIndices));
-					List<Integer> values = ridgeList.get(positionOfBetterDuplicatePeak);
-					orphanRidgeList.put(key, values);
+					// fill peaks with short ridges in the orphanRidgeList
+					List<Integer> values = ridgeList.get(lengthOfMatchingIndices.indexOf(Collections.max(lengthOfMatchingIndices)));
+					WaveletPeakDetectorRidgesUtils.fillRidgeListMaps(orphanRidgeList, localColumn, localSelectedPeaks.get(Collections.max(lengthOfMatchingIndices)), values);
 				}
-				// finally remove all "bad" peaks
-				for(Integer removeIndex : duplicatedPeaksToRemoveIndices) {
-					localSelectedPeaks.remove(removeIndex);
-					ridgeList.keySet().stream().collect(Collectors.toList()).remove(removeIndex);
-					peakStatus.keySet().stream().collect(Collectors.toList()).remove(removeIndex);
-				}
+				// finally remove all peaks with shorter ridges
+				WaveletPeakDetectorRidgesUtils.removePeaksWithShortRidges(duplicatedPeaksToRemoveIndices, localSelectedPeaks, ridgeList, peakStatus);
 			}
 			//
 			if(localScale >= 2) {
-				List<Integer> nextCurrentMaxIndex = WaveletPeakDetectorRidgesUtils.getMaxCurrentIndex(localMaxima, localColumn);
-				List<Integer> addPeaks = nextCurrentMaxIndex.stream().filter(not(new HashSet<>(localSelectedPeaks)::contains)).collect(Collectors.toList());
-				if(addPeaks.size() > 1) {
-					for(int p = 0; p < addPeaks.size(); p++) {
-						ridgeList.put(addPeaks.get(p), new ArrayList<Integer>(addPeaks.get(p)));
+				List<Integer> nextCurrentMaxIndex = WaveletPeakDetectorRidgesUtils.getMaxCurrentIndex(cwtPeakSupport.getLocalMaxima(), localColumn);
+				List<Integer> newPeaksToAdd = nextCurrentMaxIndex.stream().filter(WaveletPeakDetectorRidgesUtils.not(new HashSet<>(localSelectedPeaks)::contains)).collect(Collectors.toList());
+				if(newPeaksToAdd.size() > 1) {
+					for(int p = 0; p < newPeaksToAdd.size(); p++) {
+						ridgeList.put(newPeaksToAdd.get(p), new ArrayList<Integer>(newPeaksToAdd.get(p)));
 					}
 				} else {
-					ridgeList.put(addPeaks.get(0), addPeaks);
+					ridgeList.put(newPeaksToAdd.get(0), newPeaksToAdd);
 				}
 				// add to currentMaxIndex =>localSelectedPeaks + new peaks
-//				List<Integer> tempList = new ArrayList<Integer>();
-//				tempList.addAll(localSelectedPeaks);
-//				tempList.addAll(addPeaks);
-//				Collections.sort(tempList);
-				addPeaks.stream().filter(not(new HashSet<>(currentMaxIndex)::contains)).forEachOrdered(currentMaxIndex::add);
-				for(Integer status : addPeaks) {
+				newPeaksToAdd.stream().filter(WaveletPeakDetectorRidgesUtils.not(new HashSet<>(currentMaxIndex)::contains)).forEachOrdered(currentMaxIndex::add);
+				for(Integer status : newPeaksToAdd) {
 					peakStatus.put(status, 0);
 				}
 			} else {
@@ -199,12 +153,10 @@ public class WaveletPeakDetectorRidges {
 				currentMaxIndex.addAll(localSelectedPeaks);
 			}
 			// prepare final ridge list
-
 			Iterator<Entry<Integer, List<Integer>>> iterator = ridgeList.entrySet().iterator();
 			while (iterator.hasNext()) {
 				Entry<Integer, List<Integer>> peakRidgeEntry = iterator.next();
-				String newKey = "1_" + String.valueOf(peakRidgeEntry.getKey());
-				finalRidgeList.put(newKey, peakRidgeEntry.getValue());
+				WaveletPeakDetectorRidgesUtils.fillRidgeListMaps(finalRidgeList, 1, peakRidgeEntry.getKey(), peakRidgeEntry.getValue());
 			}
 			/*
 			 * this call is equivalent to that of calling put(k, v) - check for duplicates?
@@ -220,11 +172,6 @@ public class WaveletPeakDetectorRidges {
 				finalRidgeList.put(finalEntry.getKey(), reversedList);
 			}
 		}
-		return finalRidgeList;
-	}
-
-	private static <T> Predicate<T> not(Predicate<T> predicate) {
-
-		return predicate.negate();
+		cwtPeakSupport.setRidgeList(finalRidgeList);
 	}
 }
