@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - Adjust to new API
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.core;
 
@@ -16,12 +17,13 @@ import java.util.List;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.result.IChromatogramClassifierResult;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.result.ResultStatus;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.settings.IChromatogramClassifierSettings;
+import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IMeasurementResult;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.implementation.MeasurementResult;
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -37,36 +39,33 @@ public class QualRatioClassifier extends AbstractRatioClassifier {
 	public static final String CLASSIFIER_ID = "net.openchrom.xxd.classifier.supplier.ratios.qual";
 
 	@Override
-	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelectionMSD chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
 
+		QualRatioSettings settings;
+		if(chromatogramClassifierSettings instanceof QualRatioSettings) {
+			settings = (QualRatioSettings)chromatogramClassifierSettings;
+		} else {
+			settings = PreferenceSupplier.getSettingsQual();
+		}
 		IProcessingInfo<IChromatogramClassifierResult> processingInfo = validate(chromatogramSelection, chromatogramClassifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
-			if(chromatogramClassifierSettings instanceof QualRatioSettings) {
-				/*
-				 * Calculate the peak quality
-				 */
-				QualRatios qualRatios = calculateRatios(chromatogramSelection, (QualRatioSettings)chromatogramClassifierSettings);
-				QualRatioResult classifierResult = new QualRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", qualRatios);
-				IMeasurementResult measurementResult = new MeasurementResult("Qual Ratio Classifier", CLASSIFIER_ID, "Qual Ratios", qualRatios);
-				chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
-				processingInfo.setProcessingResult(classifierResult);
-			}
+			/*
+			 * Calculate the peak quality
+			 */
+			QualRatios qualRatios = calculateRatios(chromatogramSelection.getChromatogram(), settings);
+			QualRatioResult classifierResult = new QualRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", qualRatios);
+			IMeasurementResult measurementResult = new MeasurementResult("Qual Ratio Classifier", CLASSIFIER_ID, "Qual Ratios", qualRatios);
+			chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
+			processingInfo.setProcessingResult(classifierResult);
 		}
 		return processingInfo;
 	}
 
-	@Override
-	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
-
-		QualRatioSettings settings = PreferenceSupplier.getSettingsQual();
-		return applyClassifier(chromatogramSelection, settings, monitor);
-	}
-
-	private QualRatios calculateRatios(IChromatogramSelectionMSD chromatogramSelection, QualRatioSettings classifierSettings) {
+	private QualRatios calculateRatios(IChromatogram<?> chromatogram, QualRatioSettings classifierSettings) {
 
 		QualRatios ratios = new QualRatios();
 		//
-		List<? extends IPeak> peaks = chromatogramSelection.getChromatogram().getPeaks();
+		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
 			QualRatio qualRatio = new QualRatio(peak);
