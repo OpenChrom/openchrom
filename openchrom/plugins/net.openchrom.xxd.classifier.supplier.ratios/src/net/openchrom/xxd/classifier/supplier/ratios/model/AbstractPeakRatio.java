@@ -8,15 +8,15 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - adjust API
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model;
 
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 
 public abstract class AbstractPeakRatio implements IPeakRatio {
 
-	private IPeak peak = null; // optional
+	private IPeak peak;
 	private String name = "";
 	/*
 	 * 0 => 0%
@@ -33,7 +33,7 @@ public abstract class AbstractPeakRatio implements IPeakRatio {
 	}
 
 	@Override
-	public void setPeak(IPeakMSD peak) {
+	public void setPeak(IPeak peak) {
 
 		this.peak = peak;
 	}

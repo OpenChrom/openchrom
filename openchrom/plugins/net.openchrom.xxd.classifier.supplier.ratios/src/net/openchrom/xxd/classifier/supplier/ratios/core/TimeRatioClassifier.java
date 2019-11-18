@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - adjust API
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.core;
 
@@ -18,9 +19,9 @@ import org.eclipse.chemclipse.chromatogram.msd.classifier.result.ResultStatus;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.settings.IChromatogramClassifierSettings;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IMeasurementResult;
+import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.implementation.MeasurementResult;
-import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -35,38 +36,35 @@ public class TimeRatioClassifier extends AbstractRatioClassifier {
 	public static final String CLASSIFIER_ID = "net.openchrom.xxd.classifier.supplier.ratios.time";
 
 	@Override
-	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelectionMSD chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
 
+		TimeRatioSettings settings;
+		if(chromatogramClassifierSettings instanceof TimeRatioSettings) {
+			settings = (TimeRatioSettings)chromatogramClassifierSettings;
+		} else {
+			settings = PreferenceSupplier.getSettingsTime();
+		}
 		IProcessingInfo<IChromatogramClassifierResult> processingInfo = validate(chromatogramSelection, chromatogramClassifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
-			if(chromatogramClassifierSettings instanceof TimeRatioSettings) {
-				/*
-				 * Calculate the result.
-				 */
-				TimeRatios timeRatios = calculateRatios(chromatogramSelection, (TimeRatioSettings)chromatogramClassifierSettings);
-				PeakRatioResult classifierResult = new PeakRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", timeRatios);
-				IMeasurementResult measurementResult = new MeasurementResult("Time Ratio Classifier", CLASSIFIER_ID, "Time Ratios", timeRatios);
-				chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
-				processingInfo.setProcessingResult(classifierResult);
-			}
+			/*
+			 * Calculate the result.
+			 */
+			TimeRatios timeRatios = calculateRatios(chromatogramSelection.getChromatogram(), settings);
+			PeakRatioResult classifierResult = new PeakRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", timeRatios);
+			IMeasurementResult measurementResult = new MeasurementResult("Time Ratio Classifier", CLASSIFIER_ID, "Time Ratios", timeRatios);
+			chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
+			processingInfo.setProcessingResult(classifierResult);
 		}
 		return processingInfo;
 	}
 
-	@Override
-	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
-
-		TimeRatioSettings settings = PreferenceSupplier.getSettingsTime();
-		return applyClassifier(chromatogramSelection, settings, monitor);
-	}
-
-	private TimeRatios calculateRatios(IChromatogramSelectionMSD chromatogramSelection, TimeRatioSettings classifierSettings) {
+	private TimeRatios calculateRatios(IChromatogram<?> chromatogram, TimeRatioSettings classifierSettings) {
 
 		TimeRatios ratios = classifierSettings.getRatioSettings();
 		//
-		List<IChromatogramPeakMSD> peaks = chromatogramSelection.getChromatogram().getPeaks();
+		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		for(TimeRatio ratio : ratios) {
-			for(IChromatogramPeakMSD peak : peaks) {
+			for(IPeak peak : peaks) {
 				if(isPeakMatch(peak, ratio)) {
 					double retentionTimeMinutes = peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR;
 					double expectedRetentionTimeMinutes = ratio.getExpectedRetentionTimeMinutes();

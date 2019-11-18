@@ -8,17 +8,17 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - adjust API
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model;
 
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 
 public interface IPeakRatio {
 
 	IPeak getPeak();
 
-	void setPeak(IPeakMSD peak);
+	void setPeak(IPeak peak);
 
 	String getName();
 

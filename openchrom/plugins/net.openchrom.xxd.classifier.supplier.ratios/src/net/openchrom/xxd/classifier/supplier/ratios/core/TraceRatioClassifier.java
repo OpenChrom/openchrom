@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - adjust API
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.core;
 
@@ -17,10 +18,13 @@ import org.eclipse.chemclipse.chromatogram.msd.classifier.result.IChromatogramCl
 import org.eclipse.chemclipse.chromatogram.msd.classifier.result.ResultStatus;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.settings.IChromatogramClassifierSettings;
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IMeasurementResult;
+import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.implementation.MeasurementResult;
-import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.msd.model.core.IPeakModelMSD;
 import org.eclipse.chemclipse.msd.model.xic.ExtractedIonSignal;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -38,38 +42,35 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 	private static final Logger logger = Logger.getLogger(TraceRatioClassifier.class);
 
 	@Override
-	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelectionMSD chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
 
+		TraceRatioSettings settings;
+		if(chromatogramClassifierSettings instanceof TraceRatioSettings) {
+			settings = (TraceRatioSettings)chromatogramClassifierSettings;
+		} else {
+			settings = PreferenceSupplier.getSettingsTrace();
+		}
 		IProcessingInfo<IChromatogramClassifierResult> processingInfo = validate(chromatogramSelection, chromatogramClassifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
-			if(chromatogramClassifierSettings instanceof TraceRatioSettings) {
-				/*
-				 * Calculate the result.
-				 */
-				TraceRatios traceRatios = calculateRatios(chromatogramSelection, (TraceRatioSettings)chromatogramClassifierSettings);
-				PeakRatioResult classifierResult = new PeakRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", traceRatios);
-				IMeasurementResult measurementResult = new MeasurementResult("Trace Ratio Classifier", CLASSIFIER_ID, "Trace Ratios", traceRatios);
-				chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
-				processingInfo.setProcessingResult(classifierResult);
-			}
+			/*
+			 * Calculate the result.
+			 */
+			TraceRatios traceRatios = calculateRatios(chromatogramSelection.getChromatogram(), settings);
+			PeakRatioResult classifierResult = new PeakRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", traceRatios);
+			IMeasurementResult measurementResult = new MeasurementResult("Trace Ratio Classifier", CLASSIFIER_ID, "Trace Ratios", traceRatios);
+			chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
+			processingInfo.setProcessingResult(classifierResult);
 		}
 		return processingInfo;
 	}
 
-	@Override
-	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
-
-		TraceRatioSettings settings = PreferenceSupplier.getSettingsTrace();
-		return applyClassifier(chromatogramSelection, settings, monitor);
-	}
-
-	private TraceRatios calculateRatios(IChromatogramSelectionMSD chromatogramSelection, TraceRatioSettings classifierSettings) {
+	private TraceRatios calculateRatios(IChromatogram<?> chromatogram, TraceRatioSettings classifierSettings) {
 
 		TraceRatios ratios = classifierSettings.getRatioSettings();
 		//
-		List<IChromatogramPeakMSD> peaks = chromatogramSelection.getChromatogram().getPeaks();
+		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		for(TraceRatio traceRatio : ratios) {
-			for(IChromatogramPeakMSD peak : peaks) {
+			for(IPeak peak : peaks) {
 				if(isPeakMatch(peak, traceRatio)) {
 					String[] values = traceRatio.getTestCase().split(":");
 					if(values.length == 2) {
@@ -80,17 +81,20 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 							int reference = Integer.parseInt(values[0]);
 							int target = Integer.parseInt(values[1]);
 							//
-							ExtractedIonSignal extractedIonSignal = new ExtractedIonSignal(peak.getPeakModel().getPeakMassSpectrum().getIons());
-							float intensityReference = extractedIonSignal.getAbundance(reference);
-							if(intensityReference != 0) {
-								double expectedRatio = traceRatio.getExpectedRatio();
-								if(expectedRatio != 0) {
-									float intensityTarget = extractedIonSignal.getAbundance(target);
-									double actualRatio = 100.0d / intensityReference * intensityTarget;
-									traceRatio.setPeak(peak);
-									traceRatio.setRatio(actualRatio);
-									double deviation = Math.abs(100.0d - (100.0d / expectedRatio * actualRatio));
-									traceRatio.setDeviation(deviation);
+							IPeakModel peakModel = peak.getPeakModel();
+							if(peakModel instanceof IPeakModelMSD) {
+								ExtractedIonSignal extractedIonSignal = new ExtractedIonSignal(((IPeakModelMSD)peakModel).getPeakMassSpectrum().getIons());
+								float intensityReference = extractedIonSignal.getAbundance(reference);
+								if(intensityReference != 0) {
+									double expectedRatio = traceRatio.getExpectedRatio();
+									if(expectedRatio != 0) {
+										float intensityTarget = extractedIonSignal.getAbundance(target);
+										double actualRatio = 100.0d / intensityReference * intensityTarget;
+										traceRatio.setPeak(peak);
+										traceRatio.setRatio(actualRatio);
+										double deviation = Math.abs(100.0d - (100.0d / expectedRatio * actualRatio));
+										traceRatio.setDeviation(deviation);
+									}
 								}
 							}
 						} catch(NumberFormatException e) {
