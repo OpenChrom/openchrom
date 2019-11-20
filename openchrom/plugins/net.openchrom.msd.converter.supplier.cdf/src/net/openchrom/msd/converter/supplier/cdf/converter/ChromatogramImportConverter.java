@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2019 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -23,9 +23,9 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cdf.internal.converter.SpecificationValidator;
-import net.openchrom.msd.converter.supplier.cdf.internal.support.IConstants;
 import net.openchrom.msd.converter.supplier.cdf.io.ChromatogramReader;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class ChromatogramImportConverter extends AbstractChromatogramImportConverter implements IChromatogramImportConverter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramImportConverter.class);
@@ -56,7 +56,6 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 		if(!processingInfo.hasErrorMessages()) {
 			file = SpecificationValidator.validateSpecification(file);
 			IChromatogramMSDReader reader = new ChromatogramReader();
-			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM_OVERVIEW);
 			try {
 				IChromatogramOverview chromatogramOverview = reader.readOverview(file, monitor);
 				processingInfo.setProcessingResult(chromatogramOverview);

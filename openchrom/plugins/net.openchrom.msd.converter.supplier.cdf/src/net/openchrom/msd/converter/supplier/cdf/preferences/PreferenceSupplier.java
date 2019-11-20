@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2019 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,10 +14,10 @@ package net.openchrom.msd.converter.supplier.cdf.preferences;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 
 import net.openchrom.msd.converter.supplier.cdf.Activator;
 
@@ -28,6 +28,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int MIN_PRECISION = 0;
 	public static final int MAX_PRECISION = 10;
 	public static final int PRECISION_INCEREMENT = 1;
+	//
+	public static final String P_FORCE_PARSE_NOMINAL = "forceParseNominal";
+	public static final boolean DEF_FORCE_PARSE_NOMINAL = false;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -56,6 +59,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		Map<String, String> defaultValues = new HashMap<String, String>();
 		defaultValues.put(P_PRECISION, Integer.toString(DEF_PRECISION));
+		defaultValues.put(P_FORCE_PARSE_NOMINAL, Boolean.toString(DEF_FORCE_PARSE_NOMINAL));
 		return defaultValues;
 	}
 
@@ -76,5 +80,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 			precision = DEF_PRECISION;
 		}
 		return precision;
+	}
+
+	public static boolean isForceParseNominal() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_FORCE_PARSE_NOMINAL, DEF_FORCE_PARSE_NOMINAL);
 	}
 }

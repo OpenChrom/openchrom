@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2019 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -34,7 +34,6 @@ import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFou
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
-import net.openchrom.msd.converter.supplier.cdf.internal.support.IConstants;
 import net.openchrom.msd.converter.supplier.cdf.io.support.CDFChromatogramOverviewArrayReader;
 import net.openchrom.msd.converter.supplier.cdf.io.support.CDFChromtogramArrayReader;
 import net.openchrom.msd.converter.supplier.cdf.io.support.DateSupport;
@@ -59,7 +58,6 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 		}
 		// If it is a valid file, try to read it.
 		try {
-			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM);
 			chromatogram = readChromatogram(file, monitor);
 		} catch(Exception e) {
 			logger.warn(e);
@@ -77,7 +75,6 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 		}
 		// If it is a valid file, try to read it.
 		try {
-			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM_OVERVIEW);
 			chromatogram = readChromatogramOverview(file, monitor);
 		} catch(Exception e) {
 			logger.warn(e);
@@ -136,12 +133,11 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 		setChromatogramEntries(chromatogram, in, file);
 		//
 		int precision = PreferenceSupplier.getPrecision();
+		boolean forceParseNominal = PreferenceSupplier.isForceParseNominal();
 		//
-		monitor.subTask(IConstants.PARSE_SCANS);
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
 			try {
-				monitor.subTask(IConstants.SCAN + " " + i);
-				massSpectrum = in.getMassSpectrum(i, precision);
+				massSpectrum = in.getMassSpectrum(i, precision, forceParseNominal);
 				chromatogram.addScan(massSpectrum);
 			} catch(NoSuchScanStored e) {
 				logger.warn(e);
@@ -170,10 +166,9 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 		CDFChromatogramOverviewArrayReader in = new CDFChromatogramOverviewArrayReader(cdfChromatogram);
 		VendorChromatogram chromatogram = new VendorChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
-		monitor.subTask(IConstants.PARSE_SCANS);
+		//
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
 			try {
-				monitor.subTask(IConstants.SCAN + " " + i);
 				VendorScan massSpectrum = new VendorScan();
 				massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
 				VendorIon ion = new VendorIon(IIon.TIC_ION, true);

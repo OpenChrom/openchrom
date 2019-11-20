@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2019 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -12,6 +12,8 @@
 package net.openchrom.msd.converter.supplier.cdf.io.support;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
@@ -23,6 +25,7 @@ import net.openchrom.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorIon;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorScan;
+
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
@@ -31,7 +34,7 @@ import ucar.nc2.Variable;
  * 
  * @author eselmeister
  */
-public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReader implements ICDFChromatogramArrayReader {
+public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReader {
 
 	private static final Logger logger = Logger.getLogger(CDFChromtogramArrayReader.class);
 	private Variable valuesIon;
@@ -83,9 +86,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		valueArrayScanIndex = (int[])valuesScanIndex.read().get1DJavaArray(int.class);
 	}
 
-	// ------------------------------------------------ICDFChromatogramArrayReader
-	@Override
-	public VendorScan getMassSpectrum(int scan, int precision) throws NoSuchScanStored {
+	public VendorScan getMassSpectrum(int scan, int precision, boolean forceNominal) throws NoSuchScanStored {
 
 		/*
 		 * If the scan is out of a valid range.
@@ -93,33 +94,76 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		if(scan < 1 || scan > getNumberOfScans()) {
 			throw new NoSuchScanStored("The requested scan " + scan + " is not available");
 		}
-		VendorIon ion;
+		/*
+		 * Scan
+		 */
 		VendorScan massSpectrum = new VendorScan();
-		int peaks;
-		int offset;
-		int position;
-		// --scan because the index of the array starts at 0 and not at 1.
+		Map<Integer, DataPoint> dataPointMap = (forceNominal) ? new HashMap<>() : null;
+		/*
+		 * --scan because the index of the array starts at 0 and not at 1.
+		 */
 		--scan;
-		peaks = valueArrayPointCount[scan];
-		offset = valueArrayScanIndex[scan];
+		int peaks = valueArrayPointCount[scan];
+		int offset = valueArrayScanIndex[scan];
+		//
 		for(int i = 0; i < peaks; i++) {
-			position = offset + i;
-			try {
-				double mz = AbstractIon.getIon(valueArrayIon[position], precision);
-				if(valueArrayAbundance[position] > 0) {
-					ion = new VendorIon(mz, valueArrayAbundance[position]);
-					massSpectrum.addIon(ion, false);
+			int position = offset + i;
+			/*
+			 * If force nominal, then first collect and condense the data.
+			 */
+			if(forceNominal) {
+				int mz = (int)Math.round(valueArrayIon[position]);
+				float intensity = valueArrayAbundance[position];
+				//
+				if(intensity > 0) {
+					DataPoint dataPoint = dataPointMap.get(mz);
+					if(dataPoint == null) {
+						dataPoint = new DataPoint(mz, intensity);
+						dataPointMap.put(mz, dataPoint);
+					} else {
+						double abundance = dataPoint.getIntensity() + intensity;
+						dataPoint.setIntensity(abundance);
+					}
 				}
-			} catch(AbundanceLimitExceededException e) {
-				logger.warn(e);
-			} catch(IonLimitExceededException e) {
-				logger.warn(e);
+			} else {
+				/*
+				 * Normal
+				 */
+				double mz = AbstractIon.getIon(valueArrayIon[position], precision);
+				float intensity = valueArrayAbundance[position];
+				//
+				if(intensity > 0) {
+					addIon(massSpectrum, mz, intensity);
+				}
 			}
 		}
-		// ++scan because it was decremented before
+		/*
+		 * Add the collected and condensed data.
+		 */
+		if(forceNominal) {
+			for(DataPoint dataPoint : dataPointMap.values()) {
+				double mz = dataPoint.getMz();
+				float intensity = (float)dataPoint.getIntensity();
+				addIon(massSpectrum, mz, intensity);
+			}
+		}
+		/*
+		 * ++scan because it was decremented before
+		 */
 		int retentionTime = getScanAcquisitionTime(++scan);
 		massSpectrum.setRetentionTime(retentionTime);
 		return massSpectrum;
 	}
-	// ------------------------------------------------ICDFChromatogramArrayReader
+
+	private void addIon(VendorScan massSpectrum, double mz, float intensity) {
+
+		try {
+			VendorIon ion = new VendorIon(mz, intensity);
+			massSpectrum.addIon(ion, false);
+		} catch(AbundanceLimitExceededException e) {
+			logger.warn(e);
+		} catch(IonLimitExceededException e) {
+			logger.warn(e);
+		}
+	}
 }

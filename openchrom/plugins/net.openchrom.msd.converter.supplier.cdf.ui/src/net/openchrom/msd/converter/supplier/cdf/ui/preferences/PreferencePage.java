@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2019 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -11,8 +11,9 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.ui.preferences;
 
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpinnerFieldEditor;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -35,6 +36,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	@Override
 	protected void createFieldEditors() {
 
-		addField(new IntegerFieldEditor(PreferenceSupplier.P_PRECISION, "Precision Ions (" + PreferenceSupplier.MIN_PRECISION + " - " + PreferenceSupplier.MAX_PRECISION + ")", getFieldEditorParent()));
+		addField(new SpinnerFieldEditor(PreferenceSupplier.P_PRECISION, "Precision Ions", PreferenceSupplier.MIN_PRECISION, PreferenceSupplier.MAX_PRECISION, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_FORCE_PARSE_NOMINAL, "Force Parse Nominal", getFieldEditorParent()));
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2019 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.msd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.openchrom.msd.converter.supplier.cdf.io.ChromatogramWriter;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class ChromatogramExportConverter extends AbstractChromatogramExportConverter implements IChromatogramExportConverter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramExportConverter.class);

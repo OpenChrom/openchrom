@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2019 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -23,15 +23,14 @@ import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDWriter;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import ucar.ma2.InvalidRangeException;
-import ucar.nc2.Dimension;
-import ucar.nc2.NetcdfFileWriteable;
-
-import net.openchrom.msd.converter.supplier.cdf.internal.support.IConstants;
 import net.openchrom.msd.converter.supplier.cdf.io.support.AttributeSupport;
 import net.openchrom.msd.converter.supplier.cdf.io.support.CDFConstants;
 import net.openchrom.msd.converter.supplier.cdf.io.support.DimensionSupport;
 import net.openchrom.msd.converter.supplier.cdf.io.support.IDataEntry;
+
+import ucar.ma2.InvalidRangeException;
+import ucar.nc2.Dimension;
+import ucar.nc2.NetcdfFileWriteable;
 
 @SuppressWarnings("deprecation")
 public class ChromatogramWriter extends AbstractChromatogramWriter implements IChromatogramMSDWriter {
@@ -42,7 +41,6 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
 
 		// Do not distinguish between CDFChromatogram and others.
-		monitor.subTask(IConstants.EXPORT_CDF_CHROMATOGRAM);
 		writeCDFChromatogram(file, chromatogram, monitor);
 	}
 
@@ -88,11 +86,9 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 		dimensionSupport.addVariableCharD2(CDFConstants.VARIABLE_INSTRUMENT_APP_VERSION, instrumentNumber, byteString32, "");
 		dimensionSupport.addVariableCharD2(CDFConstants.VARIABLE_INSTRUMENT_COMMENTS, instrumentNumber, byteString32, "");
 		try {
-			monitor.subTask(IConstants.EXPORT_DATA_ENTRIES);
 			cdfChromatogram.create();
 			ArrayList<IDataEntry> dataEntries = dimensionSupport.getDataEntries();
 			for(IDataEntry entry : dataEntries) {
-				monitor.subTask(entry.getVarName());
 				cdfChromatogram.write(entry.getVarName(), entry.getValues());
 			}
 			cdfChromatogram.close();
