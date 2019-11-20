@@ -30,6 +30,7 @@ import org.osgi.service.component.annotations.Component;
 import net.openchrom.nmr.processing.supplier.base.core.AbstractFIDSignalFilter;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
+import net.openchrom.nmr.processing.supplier.base.settings.DigitalFilterRemovalSettings;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterRemovalSettings> implements Serializable {

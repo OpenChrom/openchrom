@@ -26,17 +26,22 @@ public class BaselineCorrectionSettings {
 	static final int DEFAULT_FITTING_CONSTANT_U = 4;
 	static final int DEFAULT_FITTING_CONSTANT_V = 2;
 	//
+	@JsonProperty("Omit edge portions of spectrum [%]")
 	private int omitPercentOfTheSpectrum = DEFAULT_OMIT_PERCENT_OF_SPECTRUM;
+	@JsonProperty("No. of optimization iterations")
 	private int numberOfIterations = DEFUALT_NUMBER_OF_ITERATIONS;
+	@JsonProperty("Positive fitting constant U for SD")
 	private int fittingConstantU = DEFAULT_FITTING_CONSTANT_U;
+	@JsonProperty("Positive fitting constant V for smoothing")
 	private int fittingConstantV = DEFAULT_FITTING_CONSTANT_V;
+	@JsonProperty("Factor for negligible baseline correction")
 	private double factorForNegligibleBaselineCorrection = DEFAULT_FACTOR_FOR_NEGLIGIBLE_BASELINE_CORRECTION;
 	//
 	@JsonProperty(value = "Polynomial Order", defaultValue = "2")
 	@IntSettingsProperty(minValue = 1)
 	private int polynomialOrder = 2;
 
-	public BaselineCorrectionSettings() {
+	public BaselineCorrectionSettings(){
 	}
 
 	public int getPolynomialOrder() {

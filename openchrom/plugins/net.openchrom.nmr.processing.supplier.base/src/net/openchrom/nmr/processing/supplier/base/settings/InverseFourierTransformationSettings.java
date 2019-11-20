@@ -9,7 +9,7 @@
  * Contributors:
  * Alexander Stark - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.processing.ft;
+package net.openchrom.nmr.processing.supplier.base.settings;
 
 public class InverseFourierTransformationSettings {
 }

@@ -14,7 +14,7 @@ package net.openchrom.nmr.processing.supplier.base.settings;
 import org.eclipse.chemclipse.support.settings.SystemSettings;
 import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
 
-import net.openchrom.nmr.processing.phasecorrection.AutoPhaseCorrectionProcessor.PhaseCorrectionValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class AutoPhaseCorrectionSettings {
@@ -23,21 +23,34 @@ public class AutoPhaseCorrectionSettings {
 	static final int DEFAULT_NUMBER_OF_OPTIMIZATION_CYCLES = 1;
 	static final int DEFAULT_OMIT_PERCENT_OF_SPECTRUM = 15;
 	// user might provide better values
+	@JsonProperty("Weighting penalty factor")
 	private double penaltyFactor = DEFAULT_PENALTY_FACTORY;
+	@JsonProperty("No. of optimization cycles")
 	private int numberOfOptimizationCycles = DEFAULT_NUMBER_OF_OPTIMIZATION_CYCLES;
+	@JsonProperty("Omit edge portions of spectrum [%]")
 	private int omitPercentOfTheSpectrum = DEFAULT_OMIT_PERCENT_OF_SPECTRUM;
 	//
+	@JsonProperty("Apply only 0th order correction")
 	private boolean correctOnlyZerothPhase;
-	private PhaseCorrectionValue<Double> phaseCorrectionValues;
+	@JsonProperty("0th order correction [°]")
+	private double zerothOrderValue = 0.0d;
+	@JsonProperty("1st order correction [°]")
+	private double firstOrderValue = 0.0d;
 
-	public PhaseCorrectionValue<Double> getPhaseCorrectionValues() {
-
-		return phaseCorrectionValues;
+	public double getZerothOrderValue() {
+		return zerothOrderValue;
 	}
 
-	public void setPhaseCorrectionValues(PhaseCorrectionValue<Double> phaseCorrectionValues) {
+	public void setZerothOrderValue(double zerothOrderValue) {
+		this.zerothOrderValue = zerothOrderValue;
+	}
 
-		this.phaseCorrectionValues = phaseCorrectionValues;
+	public double getFirstOrderValue() {
+		return firstOrderValue;
+	}
+
+	public void setFirstOrderValue(double firstOrderValue) {
+		this.firstOrderValue = firstOrderValue;
 	}
 
 	public double getPenaltyFactor() {

@@ -9,7 +9,7 @@
  * Contributors:
  * Alexander Stark - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.processing.apodization;
+package net.openchrom.nmr.processing.supplier.base.settings;
 
 import org.eclipse.chemclipse.support.settings.DoubleSettingsProperty;
 import org.eclipse.chemclipse.support.settings.SystemSettings;
