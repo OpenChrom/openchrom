@@ -45,15 +45,15 @@ import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
 import net.openchrom.nmr.processing.supplier.base.settings.AutoPhaseCorrectionSettings;
 
-@Component(service = {Filter.class, IMeasurementFilter.class})
+@Component(service = { Filter.class, IMeasurementFilter.class })
 public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<AutoPhaseCorrectionSettings> {
 
 	private static final long serialVersionUID = 5088365386062088062L;
 	private static final String NAME = "Auto Phase Correction";
 	//
-	static final int DEFAULT_MAXIMUM_EVALUATIONS = 2000;
+	private static final int DEFAULT_MAXIMUM_EVALUATIONS = 2000;
 	private static int maximumEvaluations = DEFAULT_MAXIMUM_EVALUATIONS;
-	static final int DEFAULT_MAXIMUM_ITERATIONS = 2000;
+	private static final int DEFAULT_MAXIMUM_ITERATIONS = 2000;
 	private static int maximumIterations = DEFAULT_MAXIMUM_ITERATIONS;
 	//
 	static AutoPhaseCorrectionProcessor aPCP = new AutoPhaseCorrectionProcessor();
@@ -78,7 +78,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		AutoPhaseCorrectionProcessor.maximumIterations = maximumIterations;
 	}
 
-	public AutoPhaseCorrectionProcessor() {
+	public AutoPhaseCorrectionProcessor(){
 		super(AutoPhaseCorrectionSettings.class);
 	}
 
@@ -93,11 +93,11 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		private T zerothOrderValue;
 		private T firstOrderValue;
 
-		public PhaseCorrectionValue(T zerothOrderValue) {
+		public PhaseCorrectionValue(T zerothOrderValue){
 			this.zerothOrderValue = zerothOrderValue;
 		}
 
-		public PhaseCorrectionValue(T zerothOrderValue, T firstOrderValue) {
+		public PhaseCorrectionValue(T zerothOrderValue, T firstOrderValue){
 			this.zerothOrderValue = zerothOrderValue;
 			this.firstOrderValue = firstOrderValue;
 		}
@@ -124,9 +124,9 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		public double[] toArray() {
 
 			if(this.firstOrderValue == null) {
-				return new double[]{this.zerothOrderValue.doubleValue()};
+				return new double[] { this.zerothOrderValue.doubleValue() };
 			} else {
-				return new double[]{this.zerothOrderValue.doubleValue(), this.firstOrderValue.doubleValue()};
+				return new double[] { this.zerothOrderValue.doubleValue(), this.firstOrderValue.doubleValue() };
 			}
 		}
 	}
@@ -152,7 +152,6 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		CalculateACMEEntropy calculateACMEEntropyFcn = new CalculateACMEEntropy(fourierTransformedSignals, settings);
 		SimplexOptimizer nestedSimplexOptimizer = new SimplexOptimizer(1e-10, 1e-30);
 		//
-		// settings.setCorrectOnlyZerothPhase(true);
 		PhaseCorrectionValue<Double> initialGuessValues;
 		if(settings.isCorrectOnlyZerothPhase()) {
 			// optimize only PHC0 value
@@ -163,7 +162,8 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		}
 		NelderMeadSimplex nelderMeadSimplex = new NelderMeadSimplex(initialGuessValues.getLengthOfValues());
 		// Steps along the canonical axes representing box edges
-		// NelderMeadSimplex nelderMeadSimplex = new NelderMeadSimplex(new double[] { 1, 5 });
+		// NelderMeadSimplex nelderMeadSimplex = new NelderMeadSimplex(new double[] { 1,
+		// 5 });
 		//
 		// generator for MultiStartMultivariateOptimizer
 		RandomVectorGenerator vectorGenerator = createRandomVectorGenerator(initialGuessValues.getLengthOfValues());
@@ -181,10 +181,11 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		// optimized values
 		if(settings.isCorrectOnlyZerothPhase()) {
 			// optimize only PHC0 value
-			settings.setPhaseCorrectionValues(aPCP.new PhaseCorrectionValue<Double>(optimizedPhaseValues.getKey()[0], 0.0));
+			settings.setZerothOrderValue(optimizedPhaseValues.getKey()[0]);
 		} else {
 			// optimize PHC0 and PHC1 values
-			settings.setPhaseCorrectionValues(aPCP.new PhaseCorrectionValue<Double>(optimizedPhaseValues.getKey()[0], optimizedPhaseValues.getKey()[1]));
+			settings.setZerothOrderValue(optimizedPhaseValues.getKey()[0]);
+			settings.setFirstOrderValue(optimizedPhaseValues.getKey()[1]);
 		}
 		// phase spectrum - ps
 		Complex[] phaseCorrection = generatePhaseCorrection(fourierTransformedSignals.length, settings);
@@ -206,7 +207,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		private final Complex[] fourierTransformedData;
 		private final AutoPhaseCorrectionSettings settings;
 
-		public CalculateACMEEntropy(Complex[] fourierTransformedData, AutoPhaseCorrectionSettings settings) {
+		public CalculateACMEEntropy(Complex[] fourierTransformedData, AutoPhaseCorrectionSettings settings){
 			this.fourierTransformedData = fourierTransformedData;
 			this.settings = settings;
 		}
@@ -221,9 +222,10 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 			// (de)phase spectrum
 			int dataSize = fourierTransformedData.length;
 			if(parameters.length == 1) {
-				settings.setPhaseCorrectionValues(aPCP.new PhaseCorrectionValue<Double>(parameters[0]));
+				settings.setZerothOrderValue(parameters[0]);
 			} else {
-				settings.setPhaseCorrectionValues(aPCP.new PhaseCorrectionValue<Double>(parameters[0], parameters[1]));
+				settings.setZerothOrderValue(parameters[0]);
+				settings.setFirstOrderValue(parameters[1]);
 			}
 			Complex[] nmrDataComplex = applyPhaseCorrection(fourierTransformedData, settings);
 			double[] nmrDataReal = new double[dataSize];
@@ -234,7 +236,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 			 * "cut" left and right edges of spectrum (often distorted)
 			 */
 			double cutPercentage = settings.getOmitPercentOfTheSpectrum(); // ignore this % of spectrum each side
-			int cutPartOfSpectrum = (int)Math.round(nmrDataReal.length * cutPercentage * 0.01);
+			int cutPartOfSpectrum = (int) Math.round(nmrDataReal.length * cutPercentage * 0.01);
 			for(int i = 0; i <= cutPartOfSpectrum; i++) {
 				nmrDataReal[i] = 0;
 			}
@@ -316,16 +318,15 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		double firstPhase = 0;
 		if(settings.isCorrectOnlyZerothPhase()) {
 			// optimize only PHC0 value
-			zerothPhase = settings.getPhaseCorrectionValues().getZerothOrderValue() * Math.PI / 180;
+			zerothPhase = settings.getZerothOrderValue() * Math.PI / 180;
 		} else {
 			// optimize PHC0 and PHC1 values
-			zerothPhase = settings.getPhaseCorrectionValues().getZerothOrderValue() * Math.PI / 180;
-			firstPhase = settings.getPhaseCorrectionValues().getFirstOrderValue() * Math.PI / 180;
+			zerothPhase = settings.getZerothOrderValue() * Math.PI / 180;
+			firstPhase = settings.getFirstOrderValue() * Math.PI / 180;
 		}
 		//
 		Complex complexFactor = new Complex(0.0, 1.0); // sqrt(-1)
-		UtilityFunctions utilityFunction = new UtilityFunctions();
-		double[] phasingArray = utilityFunction.generateLinearlySpacedVector(0, dataSize, dataSize);
+		double[] phasingArray = UtilityFunctions.generateLinearlySpacedVector(0, dataSize, dataSize);
 		Complex[] phaseCorrection = new Complex[dataSize];
 		// generate phase correction array
 		for(int i = 0; i < dataSize; i++) {

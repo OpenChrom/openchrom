@@ -14,8 +14,6 @@ package net.openchrom.nmr.processing.supplier.base.settings;
 import org.eclipse.chemclipse.support.settings.SystemSettings;
 import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
 
-import net.openchrom.nmr.processing.phasecorrection.AutoPhaseCorrectionProcessor.PhaseCorrectionValue;
-
 @SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class AutoPhaseCorrectionSettings {
 
@@ -28,16 +26,23 @@ public class AutoPhaseCorrectionSettings {
 	private int omitPercentOfTheSpectrum = DEFAULT_OMIT_PERCENT_OF_SPECTRUM;
 	//
 	private boolean correctOnlyZerothPhase;
-	private PhaseCorrectionValue<Double> phaseCorrectionValues;
+	private double zerothOrderValue = 0.0d;
+	private double firstOrderValue = 0.0d;
 
-	public PhaseCorrectionValue<Double> getPhaseCorrectionValues() {
-
-		return phaseCorrectionValues;
+	public double getZerothOrderValue() {
+		return zerothOrderValue;
 	}
 
-	public void setPhaseCorrectionValues(PhaseCorrectionValue<Double> phaseCorrectionValues) {
+	public void setZerothOrderValue(double zerothOrderValue) {
+		this.zerothOrderValue = zerothOrderValue;
+	}
 
-		this.phaseCorrectionValues = phaseCorrectionValues;
+	public double getFirstOrderValue() {
+		return firstOrderValue;
+	}
+
+	public void setFirstOrderValue(double firstOrderValue) {
+		this.firstOrderValue = firstOrderValue;
 	}
 
 	public double getPenaltyFactor() {
