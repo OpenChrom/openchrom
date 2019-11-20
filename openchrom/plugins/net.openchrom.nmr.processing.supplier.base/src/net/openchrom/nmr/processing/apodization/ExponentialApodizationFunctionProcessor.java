@@ -27,6 +27,7 @@ import org.osgi.service.component.annotations.Component;
 import net.openchrom.nmr.processing.supplier.base.core.AbstractFIDSignalFilter;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
+import net.openchrom.nmr.processing.supplier.base.settings.ExponentialApodizationSettings;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class ExponentialApodizationFunctionProcessor extends AbstractFIDSignalFilter<ExponentialApodizationSettings> {

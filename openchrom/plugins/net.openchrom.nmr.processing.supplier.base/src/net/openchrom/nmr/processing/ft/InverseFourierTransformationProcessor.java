@@ -38,6 +38,7 @@ import org.osgi.service.component.annotations.Component;
 
 import net.openchrom.nmr.processing.supplier.base.core.AbstractSpectrumSignalFilter;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
+import net.openchrom.nmr.processing.supplier.base.settings.InverseFourierTransformationSettings;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class InverseFourierTransformationProcessor extends AbstractSpectrumSignalFilter<InverseFourierTransformationSettings> {

@@ -9,18 +9,22 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.processing.digitalfilter;
+package net.openchrom.nmr.processing.supplier.base.settings;
 
 import java.io.Serializable;
 
 import org.eclipse.chemclipse.support.settings.SystemSettings;
 import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class DigitalFilterRemovalSettings implements Serializable {
 
 	private static final long serialVersionUID = 4796560971210022576L;
+	@JsonProperty("Group delay of digital filter")
 	private int leftRotationFid = 0;
+	@JsonProperty("Weighting factor for first fid point")
 	private double dcOffsetMultiplicationFactor = Double.NaN;
 
 	public int getLeftRotationFid() {

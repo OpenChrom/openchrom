@@ -14,6 +14,8 @@ package net.openchrom.nmr.processing.supplier.base.settings;
 import org.eclipse.chemclipse.support.settings.SystemSettings;
 import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * ChemicalShiftCalibrationSettings will define all necessary settings for the
  * calculation of a lorentzian shaped line/peak which in turn will be used for
@@ -27,15 +29,19 @@ import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
 @SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class ChemicalShiftCalibrationSettings {
 
+	@JsonProperty("Location of calibration peak [ppm]")
 	private double locationOfCauchyDistribution = 0;
+	@JsonProperty("Scale of calculated peak")
 	private double scaleOfCauchyDistribution = 0.01;
+	@JsonProperty("Total width of calculated peak [ppm]")
 	private double rangeOfCauchyDistribution = 2;
+	@JsonProperty("Observed range around the calibration peak [ppm]")
 	private double rangeAroundCalibrationSignal = 0.1;
 
 	/**
-	 * getLocationOfCauchyDistribution returns the location parameter of the
-	 * used Cauchy Distribution. The location refers to the peak maximum of the
-	 * internal standard and corresponds to the chemical shift value in ppm.
+	 * getLocationOfCauchyDistribution returns the location parameter of the used
+	 * Cauchy Distribution. The location refers to the peak maximum of the internal
+	 * standard and corresponds to the chemical shift value in ppm.
 	 *
 	 * @param getLocationOfCauchyDistribution
 	 */
@@ -58,10 +64,9 @@ public class ChemicalShiftCalibrationSettings {
 	}
 
 	/**
-	 * getScaleOfCauchyDistribution returns the scale parameter of the
-	 * used Cauchy Distribution. The parameter scales the intensity of the
-	 * distribution to suit the intensity of observed peak of the internal
-	 * standard.
+	 * getScaleOfCauchyDistribution returns the scale parameter of the used Cauchy
+	 * Distribution. The parameter scales the intensity of the distribution to suit
+	 * the intensity of observed peak of the internal standard.
 	 *
 	 * @param getScaleOfCauchyDistribution
 	 */
@@ -71,9 +76,9 @@ public class ChemicalShiftCalibrationSettings {
 	}
 
 	/**
-	 * setScaleOfCauchyDistribution sets the scale parameter of the used
-	 * Cauchy Distribution.<br>
-	 * Only values ​​greater than zero are allowed.
+	 * setScaleOfCauchyDistribution sets the scale parameter of the used Cauchy
+	 * Distribution.<br>
+	 * Only values greater than zero are allowed.
 	 * <p>
 	 * By default, the value is set to 0.01.
 	 *
@@ -85,10 +90,10 @@ public class ChemicalShiftCalibrationSettings {
 	}
 
 	/**
-	 * getRangeOfCauchyDistribution returns the range parameter of the
-	 * used Cauchy Distribution. This parameter describes the width of the
-	 * considered section around the observed peak of the internal standard
-	 * and is used to define the peak width.
+	 * getRangeOfCauchyDistribution returns the range parameter of the used Cauchy
+	 * Distribution. This parameter describes the width of the considered section
+	 * around the observed peak of the internal standard and is used to define the
+	 * peak width.
 	 *
 	 * @param getRangeOfCauchyDistribution
 	 */
@@ -98,8 +103,8 @@ public class ChemicalShiftCalibrationSettings {
 	}
 
 	/**
-	 * setRangeOfCauchyDistribution sets the range parameter of the used
-	 * Cauchy Distribution.
+	 * setRangeOfCauchyDistribution sets the range parameter of the used Cauchy
+	 * Distribution.
 	 * <p>
 	 * By default, the value is set to 2.
 	 *
@@ -112,9 +117,8 @@ public class ChemicalShiftCalibrationSettings {
 
 	/**
 	 * getRangeAroundCalibrationSignal returns the range parameter used for the
-	 * selection of the calibration signal. This parameter describes the width
-	 * of the considered section around the observed peak of the internal
-	 * standard.
+	 * selection of the calibration signal. This parameter describes the width of
+	 * the considered section around the observed peak of the internal standard.
 	 *
 	 * @param getRangeAroundCalibrationSignal
 	 */
@@ -129,9 +133,9 @@ public class ChemicalShiftCalibrationSettings {
 	 * <p>
 	 * By default, the value is set to 0.1.
 	 * <p>
-	 * It can be assumed that deviations (if any) are covered by this range
-	 * from 0.05 to -0.05 ppm. A larger range means that impurities or other
-	 * peaks could be misused for calibration.
+	 * It can be assumed that deviations (if any) are covered by this range from
+	 * 0.05 to -0.05 ppm. A larger range means that impurities or other peaks could
+	 * be misused for calibration.
 	 *
 	 * @param setRangeAroundCalibrationSignal
 	 */

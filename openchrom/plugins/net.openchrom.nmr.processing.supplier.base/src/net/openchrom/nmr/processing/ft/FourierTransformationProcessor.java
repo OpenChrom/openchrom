@@ -41,6 +41,7 @@ import net.openchrom.nmr.processing.supplier.base.core.AbstractFIDSignalFilter;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
 import net.openchrom.nmr.processing.supplier.base.core.ZeroFillingProcessor;
+import net.openchrom.nmr.processing.supplier.base.settings.FourierTransformationSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
 @Component(service = {Filter.class, IMeasurementFilter.class})
