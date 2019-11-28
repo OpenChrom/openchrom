@@ -15,6 +15,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.events;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtchart.extensions.core.BaseChart;
+import org.eclipse.swtchart.extensions.core.IKeyboardSupport;
 import org.eclipse.swtchart.extensions.events.AbstractHandledEventProcessor;
 import org.eclipse.swtchart.extensions.events.IHandledEventProcessor;
 
@@ -23,13 +24,13 @@ public class PeakDetectionEvent extends AbstractHandledEventProcessor implements
 	@Override
 	public int getEvent() {
 
-		return BaseChart.EVENT_KEY_UP;
+		return IKeyboardSupport.EVENT_KEY_UP;
 	}
 
 	@Override
 	public int getButton() {
 
-		return BaseChart.KEY_CODE_n;
+		return IKeyboardSupport.KEY_CODE_LC_N;
 	}
 
 	@Override
