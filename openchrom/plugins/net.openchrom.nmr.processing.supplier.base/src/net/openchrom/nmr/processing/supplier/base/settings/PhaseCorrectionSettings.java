@@ -20,6 +20,7 @@ import org.eclipse.chemclipse.support.settings.SystemSettings;
 import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * this class is final, synchronized, {@link Cloneable} and {@link Observable}
@@ -36,6 +37,7 @@ public final class PhaseCorrectionSettings extends Observable implements Cloneab
 		USER_DEFINED("pivot @ user defined position"), //
 		NOT_DEFINED("phasing without specified pivot point");//
 
+		@JsonValue
 		private String pivotPosition = "";
 
 		private PivotPointSelection(String pivotPosition){
