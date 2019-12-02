@@ -11,8 +11,11 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings.support;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
- * GapFillingType will define how the resulting gaps after the alignment are closed again
+ * GapFillingType will define how the resulting gaps after the alignment are
+ * closed again
  *
  * @author Alexander Stark
  */
@@ -24,15 +27,17 @@ public enum IcoShiftAlignmentGapFillingType {
 	 */
 	ZERO("Zero"), //
 	/**
-	 * select "MARGIN" to fill the resulting gap values from the right/left margin of each interval
+	 * select "MARGIN" to fill the resulting gap values from the right/left margin
+	 * of each interval
 	 *
 	 * @param MARGIN
 	 */
 	MARGIN("Margin"); //
 
+	@JsonValue
 	private String gapFillingType;
 
-	private IcoShiftAlignmentGapFillingType(String gapFillingType) {
+	private IcoShiftAlignmentGapFillingType(String gapFillingType){
 
 		this.gapFillingType = gapFillingType;
 	}

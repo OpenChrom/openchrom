@@ -34,7 +34,7 @@ public class IcoShiftAlignmentUtilities {
 		private T start;
 		private T stop;
 
-		public Interval(T start, T stop) {
+		public Interval(T start, T stop){
 
 			this.start = start;
 			this.stop = stop;
@@ -124,7 +124,7 @@ public class IcoShiftAlignmentUtilities {
 		private double real;
 		private BigDecimal hz;
 
-		public IcoShiftSignal(BigDecimal hz, double real) {
+		public IcoShiftSignal(BigDecimal hz, double real){
 
 			this.hz = hz;
 			this.real = real;
@@ -148,5 +148,31 @@ public class IcoShiftAlignmentUtilities {
 			// no imaginary part
 			return 0.0d;
 		}
+	}
+
+	public static List<Interval<Double>> parseUserDefinedIntervalRegionsToList(String userDefinedIntervalRegions) {
+
+		List<Interval<Double>> finalIntervalRegions = new ArrayList<Interval<Double>>();
+		if(!userDefinedIntervalRegions.isEmpty()) {
+			String[] tempIntervals = userDefinedIntervalRegions.split(System.getProperty("line.separator"));
+			for(String interval : tempIntervals) {
+				if(!interval.isEmpty()) {
+					// parse
+					String[] tempIntervalValues = interval.split("-");
+					double[] intervalValues = new double[tempIntervalValues.length];
+					int position = 0;
+					for(String s : tempIntervalValues) {
+						intervalValues[position] = Double.parseDouble(s);
+						position++;
+					}
+					if(intervalValues[0] < intervalValues[1]) {
+						finalIntervalRegions.add(new Interval<Double>(intervalValues[0], intervalValues[1]));
+					} else {
+						throw new IllegalArgumentException("Please note the order of the interval limits! Input high field value first followed by low field value.");
+					}
+				}
+			}
+		}
+		return finalIntervalRegions;
 	}
 }

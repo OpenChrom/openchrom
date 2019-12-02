@@ -14,15 +14,18 @@ package net.openchrom.nmr.processing.supplier.base.settings;
 
 import java.util.List;
 
+import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.chemclipse.support.settings.SystemSettings;
 import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentGapFillingType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentShiftCorrectionType;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentTargetCalculationSelection;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentType;
+import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities.Interval;
 
 /**
@@ -33,6 +36,8 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlign
  */
 @SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class IcoShiftAlignmentSettings {
+	@JsonProperty("Perform preliminary CoShifting")
+	private boolean preliminaryCoShifting;
 	@JsonProperty("Calculated target function")
 	private IcoShiftAlignmentTargetCalculationSelection targetCalculationSelection = IcoShiftAlignmentTargetCalculationSelection.MEAN;
 	@JsonProperty("Shift correction type")
@@ -51,10 +56,9 @@ public class IcoShiftAlignmentSettings {
 	private int numberOfIntervals = 120;
 	@JsonProperty("Length of intervals")
 	private int intervalLength = 1000;
-	@JsonProperty("User defined regions")
-	private List<Interval<Double>> userDefIntervalRegions;
-	@JsonProperty("Perform preliminary CoShifting")
-	private boolean preliminaryCoShifting;
+	@StringSettingsProperty(regExp = "(\\d*\\.\\d+)-(\\d*\\.\\d+)", isMultiLine = true)
+	@JsonProperty("User defined regions [ppm] \ne.g.\n5.1-5.25\n2.985-3.5 ")
+	private String userDefinedIntervalRegions = "5.2-5.5\n4.1-4.4\n2.25-2.4\n1.9-2.1\n1.2-1.4";
 
 	/**
 	 * getTargetCalculationSelection returns a calculated target vector that can be
@@ -221,27 +225,43 @@ public class IcoShiftAlignmentSettings {
 	}
 
 	/**
-	 * getUserDefIntervalRegions returns a map with user defined regions for
+	 * getUserDefinedIntervalRegions returns a String with user defined regions for
 	 * interval calculation.
 	 *
-	 * @param getUserDefIntervalRegions
+	 * @param getUserDefinedIntervalRegions
 	 */
-	public List<Interval<Double>> getUserDefIntervalRegions() {
 
-		return userDefIntervalRegions;
+	public String getUserDefinedIntervalRegions() {
+
+		return userDefinedIntervalRegions;
 	}
 
 	/**
-	 * setUserDefIntervalRegions defines a map with user defined regions for
-	 * interval calculation. Each value pair is inserted as new
-	 * ChemicalShiftInterval(hV, lV), where hV is the higher value and lV is the
-	 * lower value of the pair.
+	 * setUserDefinedIntervalRegions defines a String with user defined regions for
+	 * interval calculation. Each interval is inserted as new value pair hV-lV,
+	 * where hV is the higher value and lV is the lower value of the pair.
 	 *
-	 * @param setUserDefIntervalRegions
+	 * @param setUserDefinedIntervalRegions
 	 */
-	public void setUserDefIntervalRegions(List<Interval<Double>> userDefIntervalRegions) {
 
-		this.userDefIntervalRegions = userDefIntervalRegions;
+	public void setUserDefinedIntervalRegions(String userDefinedIntervalRegions) {
+
+		this.userDefinedIntervalRegions = userDefinedIntervalRegions;
+	}
+
+	/**
+	 * getUserDefinedIntervalRegionsAsList is used to parse the input String
+	 * {@link userDefinedIntervalRegions} which holds the interval values. It
+	 * returns a List that contains multiple ChemicalShiftIntervals.<br>
+	 * Each value pair per new line is inserted as new ChemicalShiftInterval(hV,
+	 * lV), where hV is the higher value and lV is the lower value of the pair.
+	 *
+	 * @param getUserDefinedIntervalRegionsAsList
+	 */
+	@JsonIgnore
+	public List<Interval<Double>> getUserDefinedIntervalRegionsAsList() {
+
+		return IcoShiftAlignmentUtilities.parseUserDefinedIntervalRegionsToList(userDefinedIntervalRegions);
 	}
 
 	/**

@@ -59,7 +59,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlign
  * ---
  * based on: Savorani et al., J. Magn. Reson. 202, Nr. 2 (1. Februar 2010): 190–202.
  */
-@Component(service = {Filter.class, IMeasurementFilter.class})
+@Component(service = { Filter.class, IMeasurementFilter.class })
 public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSettings> {
 
 	private static final Logger icoShiftAlignmentLogger = Logger.getLogger(IcoShiftAlignment.class);
@@ -79,7 +79,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 	@Override
 	public DataCategory[] getDataCategories() {
 
-		return new DataCategory[]{DataCategory.NMR};
+		return new DataCategory[] { DataCategory.NMR };
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		Collection<SpectrumMeasurement> collection = new ArrayList<>();
 		for(IMeasurement measurement : filterItems) {
 			if(measurement instanceof SpectrumMeasurement) {
-				collection.add((SpectrumMeasurement)measurement);
+				collection.add((SpectrumMeasurement) measurement);
 			} else {
 				throw new IllegalArgumentException();
 			}
@@ -110,7 +110,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		Collection<SpectrumMeasurement> collection = new ArrayList<>();
 		for(IMeasurement measurement : items) {
 			if(measurement instanceof SpectrumMeasurement) {
-				collection.add((SpectrumMeasurement)measurement);
+				collection.add((SpectrumMeasurement) measurement);
 			} else {
 				return false;
 			}
@@ -119,7 +119,8 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 	}
 
 	//
-	// in the case of a calibration call the necessary target and settings are set here
+	// in the case of a calibration call the necessary target and settings are set
+	// here
 	private ChemicalShiftCalibrationTargetFunction calculateCalibrationTargetFunction;
 
 	public void setCalculateCalibrationTargetFunction(ChemicalShiftCalibrationTargetFunction calculateCalibrationTargetFunction) {
@@ -175,20 +176,20 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		}
 		//
 		IcoShiftAlignmentType alignmentType = settings.getAlignmentType();
-		switch(alignmentType) {
-			case SINGLE_PEAK: // fall through for one interval
-			case WHOLE_SPECTRUM: {
-				SimpleMatrix alignedDatasets = alignOneInterval(intervalRegionsMap, experimentalDatasetsMatrix, settings, subMonitor.split(50));
-				return alignedDatasets;
-			}
-			case NUMBER_OF_INTERVALS: // fall through for several intervals
-			case INTERVAL_LENGTH:
-			case USER_DEFINED_INTERVALS: {
-				SimpleMatrix alignedDatasets = alignSeveralIntervals(intervalRegionsMap, experimentalDatasetsMatrix, settings, subMonitor.split(50));
-				return alignedDatasets;
-			}
-			default:
-				throw new IllegalArgumentException("unsupported AlignmentType: " + alignmentType);
+		switch (alignmentType) {
+		case SINGLE_PEAK: // fall through for one interval
+		case WHOLE_SPECTRUM: {
+			SimpleMatrix alignedDatasets = alignOneInterval(intervalRegionsMap, experimentalDatasetsMatrix, settings, subMonitor.split(50));
+			return alignedDatasets;
+		}
+		case NUMBER_OF_INTERVALS: // fall through for several intervals
+		case INTERVAL_LENGTH:
+		case USER_DEFINED_INTERVALS: {
+			SimpleMatrix alignedDatasets = alignSeveralIntervals(intervalRegionsMap, experimentalDatasetsMatrix, settings, subMonitor.split(50));
+			return alignedDatasets;
+		}
+		default:
+			throw new IllegalArgumentException("unsupported AlignmentType: " + alignmentType);
 		}
 	}
 
@@ -199,7 +200,8 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		//
 		int lengthOfDataset = experimentalDatasetsMatrix.numCols();
 		SortedMap<Integer, Interval<Integer>> intervalRegionsMap = new TreeMap<>();
-		// local map of a full range interval; same calculation as in calculateIntervals() with AlignmentType.WHOLE_SPECTRUM
+		// local map of a full range interval; same calculation as in
+		// calculateIntervals() with AlignmentType.WHOLE_SPECTRUM
 		intervalRegionsMap.put(1, new Interval<Integer>(0, lengthOfDataset - 1));
 		//
 		IcoShiftAlignment icoShiftAlignment = new IcoShiftAlignment();
@@ -208,16 +210,16 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 
 	/**
 	 * This method will generate an separate instance of alignment settings
-	 * especially needed for a preliminary Co-Shifting routine that is selected
-	 * by setting the option {@link setPreliminaryCoShifting} = true.
+	 * especially needed for a preliminary Co-Shifting routine that is selected by
+	 * setting the option {@link setPreliminaryCoShifting} = true.
 	 * <p>
 	 * This preliminary alignment with its settings will not affect the set of
-	 * settings defined for the main alignment and will be executed before the
-	 * main alignment as a preparatory measure in order to achieve a better
-	 * overall alignment.
+	 * settings defined for the main alignment and will be executed before the main
+	 * alignment as a preparatory measure in order to achieve a better overall
+	 * alignment.
 	 * <p>
-	 * All settings are fixed except for the calculation of the target.
-	 * This can be set to:<br>
+	 * All settings are fixed except for the calculation of the target. This can be
+	 * set to:<br>
 	 * {@link IcoShiftAlignmentTargetCalculationSelection.MEAN}<br>
 	 * or <br>
 	 * {@link IcoShiftAlignmentTargetCalculationSelection.MEDIAN}.
@@ -238,18 +240,18 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 	private double[] calculateSelectedTarget(SimpleMatrix experimentalDatasetsMatrix, IcoShiftAlignmentSettings settings) {
 
 		IcoShiftAlignmentTargetCalculationSelection targetCalculationSelection = settings.getTargetCalculationSelection();
-		switch(targetCalculationSelection) {
-			case MEAN: {
-				return calculateMeanTarget(experimentalDatasetsMatrix);
-			}
-			case MEDIAN: {
-				return calculateMedianTarget(experimentalDatasetsMatrix);
-			}
-			case MAX: {
-				return calculateMaxTarget(experimentalDatasetsMatrix);
-			}
-			default:
-				throw new IllegalArgumentException("unsupported TargetCalculationSelection: " + targetCalculationSelection);
+		switch (targetCalculationSelection) {
+		case MEAN: {
+			return calculateMeanTarget(experimentalDatasetsMatrix);
+		}
+		case MEDIAN: {
+			return calculateMedianTarget(experimentalDatasetsMatrix);
+		}
+		case MAX: {
+			return calculateMaxTarget(experimentalDatasetsMatrix);
+		}
+		default:
+			throw new IllegalArgumentException("unsupported TargetCalculationSelection: " + targetCalculationSelection);
 		}
 	}
 
@@ -319,116 +321,113 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		// map to store throughout numbered intervals
 		SortedMap<Integer, Interval<Integer>> intervalRegionsMap = new TreeMap<>();
 		/*
-		 * For use with MS data, chromatograms, etc .:
-		 * ~~~~~~~
-		 * as long as the supplied object has an X-axis and a defined
-		 * length, the algorithm should be able to work with it.
+		 * For use with MS data, chromatograms, etc .: ~~~~~~~ as long as the supplied
+		 * object has an X-axis and a defined length, the algorithm should be able to
+		 * work with it.
 		 */
 		//
 		BigDecimal[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(collection);
 		int lengthOfDataset = chemicalShiftAxis.length;
 		//
 		IcoShiftAlignmentType alignmentType = settings.getAlignmentType();
-		switch(alignmentType) {
-			case SINGLE_PEAK:
-				/*
-				 * get left and right boundaries in ppm
-				 * find indices in data
-				 */
-				double lowerBorder = settings.getSinglePeakLowerBorder();
-				double higherBorder = settings.getSinglePeakHigherBorder();
-				int lowerBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, lowerBorder);
-				int higherBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, higherBorder);
-				intervalRegionsMap.put(1, new Interval<Integer>(lowerBorderIndex, higherBorderIndex));
-				break;
-			case WHOLE_SPECTRUM:
-				/*
-				 * no user input required
-				 * start at index=0, end at index=lengthOfDataset-1
-				 */
-				intervalRegionsMap.put(1, new Interval<Integer>(0, lengthOfDataset - 1));
-				break;
-			case NUMBER_OF_INTERVALS:
-				/*
-				 * divide present data in number of equal intervals
-				 * save every interval in map with left and right boundaries
-				 */
-				int numberOfIntervals = settings.getNumberOfIntervals();
-				//
-				int remainingInterval = lengthOfDataset % numberOfIntervals;
-				int approxIntervalSpan = (int)Math.floor(lengthOfDataset / numberOfIntervals);
-				// int maxValue = (remainingInterval - 1) * (approxIntervalSpan + 1) + 1;
-				int intervalSpan = approxIntervalSpan + 1;
-				//
-				int[] intervalStartsPartA = new int[remainingInterval];
-				for(int i = 1; i < remainingInterval; i++) {
-					intervalStartsPartA[i] = intervalStartsPartA[i - 1] + intervalSpan;
-				}
-				//
-				int[] intervalStartsPartB = new int[numberOfIntervals - remainingInterval];
-				int startOfPartB = (remainingInterval - 1) * (approxIntervalSpan + 1) + 1 + 1 + approxIntervalSpan;
-				intervalStartsPartB[0] = startOfPartB - 1;
-				for(int i = 1; i < numberOfIntervals - remainingInterval; i++) {
-					intervalStartsPartB[i] = intervalStartsPartB[i - 1] + approxIntervalSpan;
-				}
-				//
-				int[] intervalStartValues = ArrayUtils.addAll(intervalStartsPartA, intervalStartsPartB);
-				int[] intervalEndValues = new int[numberOfIntervals];
-				System.arraycopy(intervalStartValues, 1, intervalEndValues, 0, intervalStartValues.length - 1);
-				intervalEndValues[intervalEndValues.length - 1] = lengthOfDataset - 1;
-				//
-				for(int i = 0; i < numberOfIntervals; i++) {
-					intervalRegionsMap.put(i + 1, new Interval<Integer>(intervalStartValues[i], intervalEndValues[i]));
-				}
-				break;
-			case INTERVAL_LENGTH:
-				/*
-				 * divide present data by the amount of given datapoints (=length of interval) in equal intervals
-				 * save every interval in map with left and right boundaries
-				 */
-				int lengthOfIntervals = settings.getIntervalLength();
-				//
-				int numberOfFullIntervals = (int)Math.floor(lengthOfDataset / lengthOfIntervals);
-				int[] intervalStarts = new int[numberOfFullIntervals + 1];
-				for(int i = 1; i < numberOfFullIntervals + 1; i++) {
-					intervalStarts[i] = intervalStarts[i - 1] + lengthOfIntervals - 1;
-				}
-				int[] intervalEnds = new int[numberOfFullIntervals + 1];
-				intervalEnds[0] = lengthOfIntervals - 1;
-				for(int i = 1; i < numberOfFullIntervals + 1; i++) {
-					intervalEnds[i] = intervalEnds[i - 1] + lengthOfIntervals - 1;
-				}
-				if(intervalEnds[intervalEnds.length - 1] != lengthOfDataset - 1) {
-					intervalEnds[intervalEnds.length - 1] = lengthOfDataset - 1;
-				}
-				for(int i = 0; i < numberOfFullIntervals + 1; i++) {
-					intervalRegionsMap.put(i + 1, new Interval<Integer>(intervalStarts[i], intervalEnds[i]));
-				}
-				break;
-			case USER_DEFINED_INTERVALS:
-				/*
-				 * take a map / import a file / read an integral list... with user defined intervals
-				 * the boundaries will be in ppm (?) => double value!; find indices in data
-				 * ***
-				 * main difference to number/length methods: intervals may be discontiguous!
-				 */
-				List<Interval<Double>> userDefIntervalRegions = settings.getUserDefIntervalRegions();
-				Iterator<Interval<Double>> userDefIntervalRegionsIterator = userDefIntervalRegions.iterator();
-				int intervalNumber = 1;
-				//
-				while(userDefIntervalRegionsIterator.hasNext()) {
-					Interval<Double> interval = userDefIntervalRegionsIterator.next();
-					// get indices for each user defined interval
-					double higherUserBorder = interval.getStart();
-					double lowerUserBorder = interval.getStop();
-					int lowerUserBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, lowerUserBorder);
-					int higherUserBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, higherUserBorder);
-					intervalRegionsMap.put(intervalNumber, new Interval<Integer>(lowerUserBorderIndex, higherUserBorderIndex));
-					intervalNumber++;
-				}
-				break;
-			default:
-				throw new IllegalArgumentException("unsupported AlignmentType: " + alignmentType);
+		switch (alignmentType) {
+		case SINGLE_PEAK:
+			/*
+			 * get left and right boundaries in ppm find indices in data
+			 */
+			double lowerBorder = settings.getSinglePeakLowerBorder();
+			double higherBorder = settings.getSinglePeakHigherBorder();
+			int lowerBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, lowerBorder);
+			int higherBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, higherBorder);
+			intervalRegionsMap.put(1, new Interval<Integer>(lowerBorderIndex, higherBorderIndex));
+			break;
+		case WHOLE_SPECTRUM:
+			/*
+			 * no user input required start at index=0, end at index=lengthOfDataset-1
+			 */
+			intervalRegionsMap.put(1, new Interval<Integer>(0, lengthOfDataset - 1));
+			break;
+		case NUMBER_OF_INTERVALS:
+			/*
+			 * divide present data in number of equal intervals save every interval in map
+			 * with left and right boundaries
+			 */
+			int numberOfIntervals = settings.getNumberOfIntervals();
+			//
+			int remainingInterval = lengthOfDataset % numberOfIntervals;
+			int approxIntervalSpan = (int) Math.floor(lengthOfDataset / numberOfIntervals);
+			// int maxValue = (remainingInterval - 1) * (approxIntervalSpan + 1) + 1;
+			int intervalSpan = approxIntervalSpan + 1;
+			//
+			int[] intervalStartsPartA = new int[remainingInterval];
+			for(int i = 1; i < remainingInterval; i++) {
+				intervalStartsPartA[i] = intervalStartsPartA[i - 1] + intervalSpan;
+			}
+			//
+			int[] intervalStartsPartB = new int[numberOfIntervals - remainingInterval];
+			int startOfPartB = (remainingInterval - 1) * (approxIntervalSpan + 1) + 1 + 1 + approxIntervalSpan;
+			intervalStartsPartB[0] = startOfPartB - 1;
+			for(int i = 1; i < numberOfIntervals - remainingInterval; i++) {
+				intervalStartsPartB[i] = intervalStartsPartB[i - 1] + approxIntervalSpan;
+			}
+			//
+			int[] intervalStartValues = ArrayUtils.addAll(intervalStartsPartA, intervalStartsPartB);
+			int[] intervalEndValues = new int[numberOfIntervals];
+			System.arraycopy(intervalStartValues, 1, intervalEndValues, 0, intervalStartValues.length - 1);
+			intervalEndValues[intervalEndValues.length - 1] = lengthOfDataset - 1;
+			//
+			for(int i = 0; i < numberOfIntervals; i++) {
+				intervalRegionsMap.put(i + 1, new Interval<Integer>(intervalStartValues[i], intervalEndValues[i]));
+			}
+			break;
+		case INTERVAL_LENGTH:
+			/*
+			 * divide present data by the amount of given datapoints (=length of interval)
+			 * in equal intervals save every interval in map with left and right boundaries
+			 */
+			int lengthOfIntervals = settings.getIntervalLength();
+			//
+			int numberOfFullIntervals = (int) Math.floor(lengthOfDataset / lengthOfIntervals);
+			int[] intervalStarts = new int[numberOfFullIntervals + 1];
+			for(int i = 1; i < numberOfFullIntervals + 1; i++) {
+				intervalStarts[i] = intervalStarts[i - 1] + lengthOfIntervals - 1;
+			}
+			int[] intervalEnds = new int[numberOfFullIntervals + 1];
+			intervalEnds[0] = lengthOfIntervals - 1;
+			for(int i = 1; i < numberOfFullIntervals + 1; i++) {
+				intervalEnds[i] = intervalEnds[i - 1] + lengthOfIntervals - 1;
+			}
+			if(intervalEnds[intervalEnds.length - 1] != lengthOfDataset - 1) {
+				intervalEnds[intervalEnds.length - 1] = lengthOfDataset - 1;
+			}
+			for(int i = 0; i < numberOfFullIntervals + 1; i++) {
+				intervalRegionsMap.put(i + 1, new Interval<Integer>(intervalStarts[i], intervalEnds[i]));
+			}
+			break;
+		case USER_DEFINED_INTERVALS:
+			/*
+			 * take a map / import a file / read an integral list... with user defined
+			 * intervals the boundaries will be in ppm (?) => double value!; find indices in
+			 * data *** main difference to number/length methods: intervals may be
+			 * discontiguous!
+			 */
+			List<Interval<Double>> userDefIntervalRegions = settings.getUserDefinedIntervalRegionsAsList();
+			Iterator<Interval<Double>> userDefIntervalRegionsIterator = userDefIntervalRegions.iterator();
+			int intervalNumber = 1;
+			//
+			while (userDefIntervalRegionsIterator.hasNext()) {
+				Interval<Double> interval = userDefIntervalRegionsIterator.next();
+				// get indices for each user defined interval
+				double higherUserBorder = interval.getStart();
+				double lowerUserBorder = interval.getStop();
+				int lowerUserBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, lowerUserBorder);
+				int higherUserBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, higherUserBorder);
+				intervalRegionsMap.put(intervalNumber, new Interval<Integer>(lowerUserBorderIndex, higherUserBorderIndex));
+				intervalNumber++;
+			}
+			break;
+		default:
+			throw new IllegalArgumentException("unsupported AlignmentType: " + alignmentType);
 		}
 		return intervalRegionsMap;
 	}
@@ -444,8 +443,8 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 			referenceWindowLength = 1;
 		}
 		// int[] dimensionOfTarget = {1, targetSpectrum.length};
-		int[] dimensionOfDataset = {experimentalDatasetsMatrix.numRows(), experimentalDatasetsMatrix.numCols()};
-		int[] dimensionOfReferenceWindow = {1, referenceWindowLength};
+		int[] dimensionOfDataset = { experimentalDatasetsMatrix.numRows(), experimentalDatasetsMatrix.numCols() };
+		int[] dimensionOfReferenceWindow = { 1, referenceWindowLength };
 		//
 		int localDimension = 0;
 		boolean fastAutomaticSearch = false;
@@ -472,20 +471,19 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 				sourceStep = Math.round(localDimension / 2) - 1;
 			} else {
 				// change here the first searching point for the best "n"
-				shiftCorrectionTypeValue = (int)Math.max(Math.floor(0.05 * localDimension), 10);
+				shiftCorrectionTypeValue = (int) Math.max(Math.floor(0.05 * localDimension), 10);
 				// change here to define the searching step
-				sourceStep = (int)Math.floor(localDimension / 20);
+				sourceStep = (int) Math.floor(localDimension / 20);
 			}
 		}
 		//
 		double blockSize = Math.pow(2, 25);
 		double sizeOfDouble = Double.SIZE / 8; // in bytes
 		double byteSize = experimentalDatasetsMatrix.getNumElements() * sizeOfDouble;
-		int numberOfBlocks = (int)Math.ceil(byteSize / blockSize); // *** of any use!?
+		int numberOfBlocks = (int) Math.ceil(byteSize / blockSize); // *** of any use!?
 		//
 		/*
-		 * calculate target here
-		 * extract needed parts for co-shifting
+		 * calculate target here extract needed parts for co-shifting
 		 */
 		double[] targetForProcessing = null;
 		SimpleMatrix experimentalDatasetsMatrixPartForProcessing = extractPartOfDataForProcessing(experimentalDatasetsMatrix, referenceWindow);
@@ -505,13 +503,13 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		/*
 		 * Automatic search for the best "shiftCorrectionTypeValue" for each interval
 		 */
-		int[] shiftCorrectionTypeBorders = {-shiftCorrectionTypeValue, shiftCorrectionTypeValue};
+		int[] shiftCorrectionTypeBorders = { -shiftCorrectionTypeValue, shiftCorrectionTypeValue };
 		boolean bestShift = false;
 		int bestShiftIteration = 0;
 		int[] shiftingValues = new int[experimentalDatasetsMatrixPartForProcessing.numRows()];
 		//
 		int shiftCorrectionTypeValueInternal = shiftCorrectionTypeValue;
-		while(!bestShift) {
+		while (!bestShift) {
 			//
 			bestShiftIteration++;
 			icoShiftAlignmentLogger.info("Searching optimal max. shift: iteration #" + bestShiftIteration);
@@ -594,7 +592,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 
 	private double[] normalizeDataBeforeCalculation(double[] targetForProcessing) {
 
-		Double targetNormalization = (double)IcoShiftAlignmentUtilities.calculateSquareRootOfSum(targetForProcessing);
+		Double targetNormalization = (double) IcoShiftAlignmentUtilities.calculateSquareRootOfSum(targetForProcessing);
 		if(targetNormalization.compareTo(0.0) == 0) {
 			targetNormalization = 1.0;
 		}
@@ -633,7 +631,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 			double[] shiftArray = fouriertransformedDatasetCrossCorrelated.extractVector(true, r).getMatrix().getData();
 			double[] shiftedArray = new double[shiftArray.length]; // initialize with zero
 			int end = fouriertransformedDatasetCrossCorrelated.numCols() - 1;
-			double[] rowMarginValues = {fouriertransformedDatasetCrossCorrelated.get(r, 0), fouriertransformedDatasetCrossCorrelated.get(r, end)};
+			double[] rowMarginValues = { fouriertransformedDatasetCrossCorrelated.get(r, 0), fouriertransformedDatasetCrossCorrelated.get(r, end) };
 			//
 			IcoShiftAlignmentGapFillingType gapFillingType = settings.getGapFillingType();
 			if(shiftValues[r] >= 0) {
@@ -680,7 +678,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 			alignedDatasets = experimentalDatasetsMatrix.copy();
 		}
 		//
-		while(intervalRegionsMapIterator.hasNext()) {
+		while (intervalRegionsMapIterator.hasNext()) {
 			Interval<Integer> interval = intervalRegionsMapIterator.next();
 			icoShiftAlignmentLogger.info("Aligning region from index " + interval.getStart() + " to " + interval.getStop());
 			shiftingValues = coshiftSpectra(experimentalDatasetsMatrix, interval, settings);
@@ -706,7 +704,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		int[] shiftingValues = new int[experimentalDatasetsMatrix.numRows()];
 		SimpleMatrix alignedDatasets = new SimpleMatrix(experimentalDatasetsMatrix.numRows(), experimentalDatasetsMatrix.numCols());
 		//
-		while(intervalRegionsMapIterator.hasNext()) {
+		while (intervalRegionsMapIterator.hasNext()) {
 			Interval<Integer> interval = intervalRegionsMapIterator.next();
 			icoShiftAlignmentLogger.info("Aligning region from index " + interval.getStart() + " to " + interval.getStop());
 			shiftingValues = coshiftSpectra(experimentalDatasetsMatrix, interval, settings);
@@ -759,14 +757,13 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 	public int[] calculateFFTCrossCorrelation(double[] targetForFFT, SimpleMatrix experimentalDatasetForFFT, int shiftCorrectionTypeValue, IcoShiftAlignmentSettings settings) {
 
 		/*
-		 * procedure: zero filling >> FFT >> CC calculations >> IFFT
-		 * *******
-		 * automatic zero filling! make sure datasize always == 2^n
+		 * procedure: zero filling >> FFT >> CC calculations >> IFFT ******* automatic
+		 * zero filling! make sure datasize always == 2^n
 		 */
 		// zero filling
 		int rows = experimentalDatasetForFFT.numRows();
 		int cols = experimentalDatasetForFFT.numCols();
-		int newDataSize = (int)Math.pow(2, (int)(Math.ceil((Math.log(cols) / Math.log(2)))));
+		int newDataSize = (int) Math.pow(2, (int) (Math.ceil((Math.log(cols) / Math.log(2)))));
 		double[] targetForFFTzf = new double[newDataSize];
 		System.arraycopy(targetForFFT, 0, targetForFFTzf, 0, targetForFFT.length);
 		SimpleMatrix experimentalDatasetForFFTzf = new SimpleMatrix(rows, newDataSize);

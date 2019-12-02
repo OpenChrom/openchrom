@@ -11,8 +11,11 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings.support;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
- * ShiftCorrectionType will select the way the maximum shift correction value is calculated
+ * ShiftCorrectionType will select the way the maximum shift correction value is
+ * calculated
  *
  * @author Alexander Stark
  */
@@ -30,17 +33,18 @@ public enum IcoShiftAlignmentShiftCorrectionType {
 	 */
 	BEST("Best"), //
 	/**
-	 * select "USER_DEFINED" to define a shift correction value
-	 * requires user input {@link shiftCorrectionTypeValue}
+	 * select "USER_DEFINED" to define a shift correction value requires user input
+	 * {@link shiftCorrectionTypeValue}
 	 *
 	 * @param USER_DEFINED
 	 *
 	 */
 	USER_DEFINED("User Defined");//
 
+	@JsonValue
 	private String shiftCorrectionType;
 
-	private IcoShiftAlignmentShiftCorrectionType(String shiftCorrectionType) {
+	private IcoShiftAlignmentShiftCorrectionType(String shiftCorrectionType){
 
 		this.shiftCorrectionType = shiftCorrectionType;
 	}

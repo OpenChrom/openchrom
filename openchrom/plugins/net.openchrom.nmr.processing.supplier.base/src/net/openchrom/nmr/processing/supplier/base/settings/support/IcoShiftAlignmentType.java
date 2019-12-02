@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings.support;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * IcoShiftAlignmentType is used to define how / what should be aligned
  *
@@ -30,27 +32,31 @@ public enum IcoShiftAlignmentType {
 	 */
 	WHOLE_SPECTRUM("Whole Spectrum"), //
 	/**
-	 * select "NUMBER_OF_INTERVALS" to align the spectra divided in the given no. of intervals
+	 * select "NUMBER_OF_INTERVALS" to align the spectra divided in the given no. of
+	 * intervals
 	 *
 	 * @param NUMBER_OF_INTERVALS
 	 */
 	NUMBER_OF_INTERVALS("Number of Intervals"), //
 	/**
-	 * select "INTERVAL_LENGTH" to align the spectra divided in intervals of given length
+	 * select "INTERVAL_LENGTH" to align the spectra divided in intervals of given
+	 * length
 	 *
 	 * @param INTERVAL_LENGTH
 	 */
 	INTERVAL_LENGTH("Interval Length"), //
 	/**
-	 * select "USER_DEFINED_INTERVALS" to align the spectra only within the selected ranges
+	 * select "USER_DEFINED_INTERVALS" to align the spectra only within the selected
+	 * ranges
 	 *
 	 * @param USER_DEFINED_INTERVALS
 	 */
 	USER_DEFINED_INTERVALS("User Defined Intervals");
 
+	@JsonValue
 	private String alignmentType;
 
-	private IcoShiftAlignmentType(String alignmentType) {
+	private IcoShiftAlignmentType(String alignmentType){
 
 		this.alignmentType = alignmentType;
 	}
