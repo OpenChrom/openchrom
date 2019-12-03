@@ -32,13 +32,13 @@ import org.osgi.service.component.annotations.Component;
 import net.openchrom.nmr.processing.supplier.base.settings.ZeroFillingSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
-@Component(service = {Filter.class, IMeasurementFilter.class})
+@Component(service = { Filter.class, IMeasurementFilter.class })
 public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSettings> {
 
-	private static final long serialVersionUID = 8816847297266490529L;
+	private static final long serialVersionUID = -7190114750655302768L;
 	private static final String FILTER_NAME = "Zero Filling";
 
-	public ZeroFillingProcessor() {
+	public ZeroFillingProcessor(){
 		super(ZeroFillingSettings.class);
 	}
 
@@ -77,7 +77,7 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 
 		private BigDecimal time;
 
-		public ZeroFIDSignal(BigDecimal time) {
+		public ZeroFIDSignal(BigDecimal time){
 			this.time = time;
 		}
 
@@ -129,7 +129,7 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 			return lowerBound;
 		}
 		int value = 1;
-		while(value < currentLenth) {
+		while (value <= currentLenth) {
 			value = value << 1;
 		}
 		return value;
