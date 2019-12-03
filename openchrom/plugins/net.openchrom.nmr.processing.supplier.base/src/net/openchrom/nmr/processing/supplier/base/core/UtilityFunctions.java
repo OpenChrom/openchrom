@@ -77,7 +77,7 @@ public class UtilityFunctions {
 
 		double[] vector = new double[points];
 		for(int i = 0; i < points; i++) {
-			vector[i] = minVal + (double)i / (points - 1) * (maxVal - minVal);
+			vector[i] = minVal + (double) i / (points - 1) * (maxVal - minVal);
 		}
 		return vector;
 	}
@@ -109,9 +109,9 @@ public class UtilityFunctions {
 		}
 		//
 		if(Double.compare(value, 0.0) < 0) {
-			return (int)Math.floor((reverseIndex + index) / 2);
+			return (int) Math.floor((reverseIndex + index) / 2);
 		} else {
-			return (int)Math.ceil((reverseIndex + index) / 2);
+			return (int) Math.ceil((reverseIndex + index) / 2);
 		}
 	}
 
@@ -132,16 +132,16 @@ public class UtilityFunctions {
 		}
 		//
 		if(Double.compare(value, 0.0) < 0) {
-			return (int)Math.floor((reverseIndex + index) / 2);
+			return (int) Math.floor((reverseIndex + index) / 2);
 		} else {
-			return (int)Math.ceil((reverseIndex + index) / 2);
+			return (int) Math.ceil((reverseIndex + index) / 2);
 		}
 	}
 
 	public void leftShiftNMRData(double[] dataArray, int pointsToShift) {
 
 		pointsToShift = pointsToShift % dataArray.length;
-		while(pointsToShift-- > 0) {
+		while (pointsToShift-- > 0) {
 			double tempArray = dataArray[0];
 			for(int i = 1; i < dataArray.length; i++) {
 				dataArray[i - 1] = dataArray[i];
@@ -165,7 +165,7 @@ public class UtilityFunctions {
 	public static void leftShiftNMRComplexData(Complex[] dataArray, int pointsToShift) {
 
 		pointsToShift = pointsToShift % dataArray.length;
-		while(pointsToShift-- > 0) {
+		while (pointsToShift-- > 0) {
 			Complex tempArray = dataArray[0];
 			for(int i = 1; i < dataArray.length; i++) {
 				dataArray[i - 1] = dataArray[i];
@@ -186,6 +186,16 @@ public class UtilityFunctions {
 		return dataArray;
 	}
 
+	public static boolean lengthIsPowerOfTwo(List<? extends FIDSignal> signals) {
+
+		if(signals.size() == 0) {
+			throw new IllegalArgumentException("Signals length can't be 0");
+		}
+		double divisor = Math.log(2);
+		double dividend = Math.log(signals.size());
+		return (int) (Math.ceil((dividend / divisor))) == (int) (Math.floor(((dividend / divisor))));
+	}
+
 	public static final class SpectrumData {
 
 		public Complex[] signals;
@@ -194,7 +204,7 @@ public class UtilityFunctions {
 		public final int maxIndex;
 		public final AcquisitionParameter parameter;
 
-		public SpectrumData(Complex[] array, BigDecimal[] frequency, BigDecimal[] chemicalShift, int maxIndex, AcquisitionParameter parameter) {
+		public SpectrumData(Complex[] array, BigDecimal[] frequency, BigDecimal[] chemicalShift, int maxIndex, AcquisitionParameter parameter){
 			this.signals = array;
 			this.frequency = frequency;
 			this.chemicalShift = chemicalShift;
@@ -221,7 +231,7 @@ public class UtilityFunctions {
 		public Complex[] signals;
 		public BigDecimal[] times;
 
-		public ComplexFIDData(Complex[] array, BigDecimal[] times) {
+		public ComplexFIDData(Complex[] array, BigDecimal[] times){
 			this.signals = array;
 			this.times = times;
 		}

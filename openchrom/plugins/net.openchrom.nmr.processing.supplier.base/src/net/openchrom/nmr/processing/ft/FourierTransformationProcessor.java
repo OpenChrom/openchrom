@@ -44,13 +44,13 @@ import net.openchrom.nmr.processing.supplier.base.core.ZeroFillingProcessor;
 import net.openchrom.nmr.processing.supplier.base.settings.FourierTransformationSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
-@Component(service = {Filter.class, IMeasurementFilter.class})
+@Component(service = { Filter.class, IMeasurementFilter.class })
 public class FourierTransformationProcessor extends AbstractFIDSignalFilter<FourierTransformationSettings> {
 
-	private static final long serialVersionUID = -9149804307608333565L;
+	private static final long serialVersionUID = 4689862977089790920L;
 	private static final String NAME = "Fourier Transformation";
 
-	public FourierTransformationProcessor() {
+	public FourierTransformationProcessor(){
 		super(FourierTransformationSettings.class);
 	}
 
@@ -59,9 +59,10 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 
 		FIDMeasurement measurement = context.getFilteredObject();
 		List<? extends FIDSignal> signals = measurement.getSignals();
-		int fillLength = ZeroFillingProcessor.getZeroFillLength(signals.size(), ZeroFillingFactor.AUTO);
-		if(fillLength != signals.size()) {
-			messageConsumer.addErrorMessage(getName(), "Your data must be Zerofilled first (fill length = " + fillLength + ")");
+		// check if length of data is OK; warn if zero filling has to be applied
+		if(!UtilityFunctions.lengthIsPowerOfTwo(signals)) {
+			int fillLength = ZeroFillingProcessor.getZeroFillLength(signals.size(), ZeroFillingFactor.AUTO);
+			messageConsumer.addErrorMessage(getName(), "Your data must be Zerofilled first (minimum fill length = " + fillLength + ")");
 			return null;
 		}
 		ComplexFIDData fidData = UtilityFunctions.toComplexFIDData(signals);
@@ -73,7 +74,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		UtilityFunctions.leftShiftNMRComplexData(nmrSpectrumProcessed, nmrSpectrumProcessed.length / 2);
 		List<FFTSpectrumSignal> newSignals = new ArrayList<>();
 		for(int i = 0; i < nmrSpectrumProcessed.length; i++) {
-			// api requires from high to low, so start with higest order
+			// api requires from high to low, so start with highest order
 			int reversed_index = nmrSpectrumProcessed.length - 1 - i;
 			BigDecimal shift = step.multiply(BigDecimal.valueOf(reversed_index)).add(offset);
 			newSignals.add(new FFTSpectrumSignal(shift, nmrSpectrumProcessed[reversed_index]));
@@ -99,7 +100,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		private static final long serialVersionUID = -3570180428815391262L;
 		private List<? extends SpectrumSignal> signals;
 
-		public FFTFilteredMeasurement(FilterContext<FIDMeasurement, FourierTransformationSettings> filterContext, List<FFTSpectrumSignal> signals) {
+		public FFTFilteredMeasurement(FilterContext<FIDMeasurement, FourierTransformationSettings> filterContext, List<FFTSpectrumSignal> signals){
 			super(filterContext);
 			this.signals = Collections.unmodifiableList(signals);
 		}
@@ -123,7 +124,7 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		private BigDecimal shift;
 		private Complex complex;
 
-		public FFTSpectrumSignal(BigDecimal shift, Complex complex) {
+		public FFTSpectrumSignal(BigDecimal shift, Complex complex){
 			this.shift = shift;
 			this.complex = complex;
 		}
