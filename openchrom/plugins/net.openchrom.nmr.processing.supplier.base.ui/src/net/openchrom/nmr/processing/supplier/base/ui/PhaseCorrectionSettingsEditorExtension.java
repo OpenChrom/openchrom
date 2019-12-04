@@ -5,9 +5,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Christoph Läubrich - initial API and implementation
+ * Alexander Stark - re-factoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.ui;
 
@@ -39,13 +40,15 @@ import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettin
 
 public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 
-	private static final int FRACTIONS = 2;
-	private static final int FIRST_ORDER_RANGE = 1000000;
+	private static final int FRACTIONS = 0;// 2;
+	private static final int FIRST_ORDER_RANGE = 1000;// 1000000;
 	private static final int ZERO_ORDER_RANGE = 180;
 	private static final int ZERO_ORDER_INCREMENT = 90;
 	private PhaseCorrectionSettings settings;
+	//
+	private static final char DEGREE = 0x00B0;
 
-	public PhaseCorrectionSettingsEditorExtension(PhaseCorrectionSettings settings) {
+	public PhaseCorrectionSettingsEditorExtension(PhaseCorrectionSettings settings){
 		this.settings = settings;
 	}
 
@@ -58,27 +61,27 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 
 	private class PhaseCorrectionSettingsExtension {
 
-		public PhaseCorrectionSettingsExtension(Composite parent) {
+		public PhaseCorrectionSettingsExtension(Composite parent){
 			Composite composite = new Composite(parent, SWT.NONE);
 			composite.setLayout(new GridLayout(1, false));
 			{
 				Label label = new Label(composite, SWT.NONE);
-				label.setText("zero order phase correction (in degree)");
-				GridData labelLayout = new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1);
+				label.setText("Zero order phase correction [" + DEGREE + "]:");
+				GridData labelLayout = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 				label.setLayoutData(labelLayout);
 			}
 			createZeroOrderSlider(composite);
 			{
 				Label label = new Label(composite, SWT.NONE);
-				label.setText("first order phase correction");
-				GridData labelLayout = new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1);
+				label.setText("First order phase correction [" + DEGREE + "]:");
+				GridData labelLayout = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 				label.setLayoutData(labelLayout);
 			}
 			createFirstOrderSlider(composite);
 			{
 				Label label = new Label(composite, SWT.NONE);
-				label.setText("pivot point");
-				GridData labelLayout = new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1);
+				label.setText("Pivot point:");
+				GridData labelLayout = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 				label.setLayoutData(labelLayout);
 			}
 			createPivotSelection(composite);
@@ -101,7 +104,7 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 				@Override
 				public void selectionChanged(SelectionChangedEvent event) {
 
-					PivotPointSelection selection = (PivotPointSelection)pivotCombo.getStructuredSelection().getFirstElement();
+					PivotPointSelection selection = (PivotPointSelection) pivotCombo.getStructuredSelection().getFirstElement();
 					if(selection != settings.getPivotPointSelection()) {
 						settings.setPivotPointSelection(selection);
 					}
@@ -121,7 +124,7 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 
 					try {
 						settings.setUserDefinedPivotPointValue(numberFormat.parse(textField.getText()).doubleValue());
-					} catch(ParseException | RuntimeException e) {
+					} catch (ParseException | RuntimeException e) {
 						// TODO show a decorator!
 					}
 				}
@@ -166,9 +169,9 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 			ldButtons.horizontalSpan = 2;
 			buttons.setLayoutData(ldButtons);
 			buttons.setLayout(new GridLayout(4, true));
-			createButton("+ 90°", 1, ui, buttons);
-			createButton("- 90°", -1, ui, buttons);
-			createButton("+/- 180°", 2, ui, buttons);
+			createButton("+ 90" + DEGREE, 1, ui, buttons);
+			createButton("- 90" + DEGREE, -1, ui, buttons);
+			createButton("+/- 180" + DEGREE, 2, ui, buttons);
 			ui.setValue(settings.getZeroOrderPhaseCorrection());
 			ui.addConsumer(settings::setZeroOrderPhaseCorrection);
 			return ui;
