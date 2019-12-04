@@ -36,7 +36,7 @@ public class ReImportConverter_2_ITest extends TestCase {
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		IDatabaseImportConverter<IMassSpectra> importConverter = new DatabaseImportConverter();
+		IDatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IDatabaseExportConverter exportConverter = new DatabaseExportConverter();
 		/*
 		 * Import
