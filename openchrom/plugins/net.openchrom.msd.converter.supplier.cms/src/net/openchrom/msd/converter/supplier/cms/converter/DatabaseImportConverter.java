@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.io.SpecificationValidator;
 
-public class DatabaseImportConverter extends AbstractDatabaseImportConverter<IMassSpectra> {
+public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 
 	private static final Logger logger = Logger.getLogger(DatabaseImportConverter.class);
 	private static final String DESCRIPTION = "CMS MassSpectrum Import";
