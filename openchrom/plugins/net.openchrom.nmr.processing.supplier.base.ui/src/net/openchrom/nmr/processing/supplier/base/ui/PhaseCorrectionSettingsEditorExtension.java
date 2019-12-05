@@ -80,7 +80,7 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 			createFirstOrderSlider(composite);
 			{
 				Label label = new Label(composite, SWT.NONE);
-				label.setText("Pivot point:");
+				label.setText("Pivot point [ppm]:");
 				GridData labelLayout = new GridData(SWT.LEFT, SWT.CENTER, true, false, 2, 1);
 				label.setLayoutData(labelLayout);
 			}
@@ -91,11 +91,12 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 
 			Composite composite = new Composite(parent, SWT.NONE);
 			composite.setLayout(new GridLayout(2, false));
+			Text textField = new Text(composite, SWT.BORDER);
 			ComboViewer pivotCombo = new ComboViewer(composite);
+			//
 			pivotCombo.setContentProvider(ArrayContentProvider.getInstance());
 			pivotCombo.setInput(PivotPointSelection.values());
 			pivotCombo.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			Text textField = new Text(composite, SWT.BORDER);
 			GridData layoutData = new GridData(SWT.CENTER, SWT.CENTER, false, false);
 			layoutData.widthHint = 80;
 			textField.setLayoutData(layoutData);
