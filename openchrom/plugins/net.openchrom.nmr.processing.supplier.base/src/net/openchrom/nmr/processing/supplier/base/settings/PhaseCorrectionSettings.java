@@ -51,12 +51,12 @@ public final class PhaseCorrectionSettings extends Observable implements Cloneab
 		}
 	}
 
-	@JsonProperty("Position of pivot point")
-	private PivotPointSelection pivotPointSelection = PivotPointSelection.PEAK_MAX;
 	@JsonProperty("0th order correction [°]")
 	private double zeroOrderPhaseCorrection = 0.0;
 	@JsonProperty("1st order correction [°]")
 	private double firstOrderPhaseCorrection = 0.0;
+	@JsonProperty("Position of pivot point")
+	private PivotPointSelection pivotPointSelection = PivotPointSelection.PEAK_MAX;
 	@JsonProperty("User defined pivot point value")
 	private double userDefinedPivotPointValue = 0.0;
 	@JsonProperty("User defined phase correction factor")

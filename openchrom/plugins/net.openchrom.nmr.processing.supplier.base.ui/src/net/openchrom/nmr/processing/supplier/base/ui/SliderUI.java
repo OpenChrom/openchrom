@@ -5,9 +5,10 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Christoph Läubrich - initial API and implementation
+ * Alexander Stark - re-factoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.ui;
 
@@ -42,19 +43,21 @@ public class SliderUI {
 	private Collection<DoubleConsumer> consumers = new CopyOnWriteArrayList<>();
 
 	/**
-	 * 
+	 *
 	 * @param composite
 	 * @param range
 	 * @param min
 	 * @param fractionDigits
 	 */
-	public SliderUI(Composite parent, int fractionDigits) {
-		scaleFactor = (int)Math.pow(10, fractionDigits);
+	public SliderUI(Composite parent, int fractionDigits){
+		scaleFactor = (int) Math.pow(10, fractionDigits);
 		numberFormat.setMaximumFractionDigits(fractionDigits);
 		numberFormat.setMinimumFractionDigits(fractionDigits);
 		composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
+		textField = new Text(composite, SWT.BORDER);
 		scale = new Scale(composite, SWT.HORIZONTAL);
+		//
 		scale.setMinimum(0);
 		scale.setIncrement(1);
 		scale.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -72,7 +75,6 @@ public class SliderUI {
 
 			}
 		});
-		textField = new Text(composite, SWT.BORDER);
 		textField.addFocusListener(new FocusListener() {
 
 			@Override
@@ -98,7 +100,7 @@ public class SliderUI {
 
 				try {
 					setValue(NumberFormat.getInstance().parse(textField.getText()).doubleValue());
-				} catch(RuntimeException | ParseException e) {
+				} catch (RuntimeException | ParseException e) {
 					// can't parse (yet)
 				}
 			}
@@ -122,12 +124,12 @@ public class SliderUI {
 
 		int rawValue = scale.getSelection();
 		int scaledValue = rawValue + min;
-		return (double)scaledValue / (double)scaleFactor;
+		return (double) scaledValue / (double) scaleFactor;
 	}
 
 	public void setValue(double value) {
 
-		int scaled = (int)(value * scaleFactor) - min;
+		int scaled = (int) (value * scaleFactor) - min;
 		setValueInternal(scaled);
 	}
 
@@ -153,7 +155,7 @@ public class SliderUI {
 		this.min = min * scaleFactor;
 		int maxScaled = (Math.abs(min) + Math.abs(max)) * scaleFactor;
 		scale.setMaximum(maxScaled);
-		GridData layoutData = (GridData)textField.getLayoutData();
+		GridData layoutData = (GridData) textField.getLayoutData();
 		layoutData.widthHint = Math.max(getTextLength(numberFormat.format(min)), getTextLength(numberFormat.format(max)));
 	}
 
@@ -179,7 +181,7 @@ public class SliderUI {
 
 	/**
 	 * Increments the slider by multiples of the page increment
-	 * 
+	 *
 	 * @param incrementValue
 	 */
 	public void increment(int incrementValue) {
