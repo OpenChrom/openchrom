@@ -14,6 +14,7 @@ package net.openchrom.nmr.processing.supplier.base.ui;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Locale;
 import java.util.Observable;
 
 import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.EditorExtension;
@@ -112,7 +113,7 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 					textField.setEnabled(selection == PivotPointSelection.USER_DEFINED);
 				}
 			});
-			NumberFormat numberFormat = NumberFormat.getInstance();
+			NumberFormat numberFormat = NumberFormat.getInstance(Locale.ENGLISH);
 			textField.addSelectionListener(new SelectionListener() {
 
 				@Override
