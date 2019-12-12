@@ -82,7 +82,7 @@ public class UtilityFunctions {
 		return vector;
 	}
 
-	public double getMaxValueOfArray(double[] dataArray) {
+	public static double getMaxValueOfArray(double[] dataArray) {
 
 		return Arrays.stream(dataArray).max().orElseThrow(IllegalArgumentException::new);
 	}
@@ -92,18 +92,19 @@ public class UtilityFunctions {
 		return Arrays.stream(dataArray).min().orElseThrow(IllegalArgumentException::new);
 	}
 
-	public int findIndexOfValue(double[] array, double value) {
+	public static int findIndexOfValue(double[] array, double value) {
 
 		int index;
+		double threshold = 0.001;
 		for(index = 0; index < array.length; index++) {
-			if(Math.abs(array[index] - value) < 0.001) {
+			if(Math.abs(array[index] - value) < threshold) {
 				break;
 			}
 		}
 		//
 		int reverseIndex = array.length - 1;
 		for(; reverseIndex > 0; reverseIndex--) {
-			if(Math.abs(array[reverseIndex] - value) < 0.001) {
+			if(Math.abs(array[reverseIndex] - value) < threshold) {
 				break;
 			}
 		}
@@ -118,15 +119,16 @@ public class UtilityFunctions {
 	public static int findIndexOfValue(Number[] array, double value) {
 
 		int index;
+		double threshold = 0.001;
 		for(index = 0; index < array.length; index++) {
-			if(Math.abs(array[index].doubleValue() - value) < 0.001) {
+			if(Math.abs(array[index].doubleValue() - value) < threshold) {
 				break;
 			}
 		}
 		//
 		int reverseIndex = array.length - 1;
 		for(; reverseIndex > 0; reverseIndex--) {
-			if(Math.abs(array[reverseIndex].doubleValue() - value) < 0.001) {
+			if(Math.abs(array[reverseIndex].doubleValue() - value) < threshold) {
 				break;
 			}
 		}
@@ -138,7 +140,47 @@ public class UtilityFunctions {
 		}
 	}
 
-	public void leftShiftNMRData(double[] dataArray, int pointsToShift) {
+	public static int findIndexOfValue(Number[] array, BigDecimal value) {
+
+		int index;
+		for(index = 0; index < array.length; index++) {
+			if(value.compareTo(BigDecimal.valueOf(array[index].doubleValue())) != -1) {
+				break;
+			}
+		}
+		//
+		int reverseIndex = array.length - 1;
+		for(; reverseIndex > 0; reverseIndex--) {
+			if(value.compareTo(BigDecimal.valueOf(array[reverseIndex].doubleValue())) != 1) {
+				break;
+			}
+		}
+		//
+		if(Double.compare(reverseIndex, index) == 0) {
+			return reverseIndex;
+		} else {
+			if((index - reverseIndex) > 1) {
+				Number[] partOfArray = Arrays.copyOfRange(array, reverseIndex, index);
+				double[] searchForMax = new double[partOfArray.length];
+				for(int n = 1; n < partOfArray.length; n++) {
+					searchForMax[n] = partOfArray[n].doubleValue();
+				}
+				return findIndexOfValue(array, getMaxValueOfArray(searchForMax));
+			} else {
+				double indexValue = Math.abs(array[index].doubleValue() - value.doubleValue());
+				double revIndexValue = Math.abs(array[reverseIndex].doubleValue() - value.doubleValue());
+				if(Double.compare(value.doubleValue(), 0) < 0) {
+					// values<0
+					return ((Double.compare(indexValue, revIndexValue) > 0) ? index : reverseIndex);
+				} else {
+					// values>0
+					return ((Double.compare(indexValue, revIndexValue) < 0) ? index : reverseIndex);
+				}
+			}
+		}
+	}
+
+	public static void leftShiftNMRData(double[] dataArray, int pointsToShift) {
 
 		pointsToShift = pointsToShift % dataArray.length;
 		while (pointsToShift-- > 0) {
@@ -150,7 +192,7 @@ public class UtilityFunctions {
 		}
 	}
 
-	public double[] rightShiftNMRData(double[] dataArray, int pointsToShift) {
+	public static double[] rightShiftNMRData(double[] dataArray, int pointsToShift) {
 
 		for(int i = 0; i < pointsToShift; i++) {
 			double tempArray = dataArray[dataArray.length - 1];

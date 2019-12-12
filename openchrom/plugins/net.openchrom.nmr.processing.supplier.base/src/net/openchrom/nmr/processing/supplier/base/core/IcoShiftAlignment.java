@@ -290,9 +290,8 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 		for(int r = 0; r < numRowsMax; r++) {
 			rowArraySum[r] = experimentalDatasetsMatrix.extractVector(true, r).elementSum();
 		}
-		UtilityFunctions utilityFunction = new UtilityFunctions();
-		double maxRowValue = utilityFunction.getMaxValueOfArray(rowArraySum);
-		int maxTargetIndex = utilityFunction.findIndexOfValue(rowArraySum, maxRowValue);
+		double maxRowValue = UtilityFunctions.getMaxValueOfArray(rowArraySum);
+		int maxTargetIndex = UtilityFunctions.findIndexOfValue(rowArraySum, maxRowValue);
 		double[] maxTarget = experimentalDatasetsMatrix.extractVector(true, maxTargetIndex).getMatrix().getData();
 		return maxTarget;
 	}
@@ -524,8 +523,7 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 				for(int s = 0; s < shiftingValues.length; s++) {
 					absoluteShiftingValues[s] = Math.abs(shiftingValues[s]);
 				}
-				UtilityFunctions utilityFunction = new UtilityFunctions();
-				double tempMax = utilityFunction.getMaxValueOfArray(absoluteShiftingValues);
+				double tempMax = UtilityFunctions.getMaxValueOfArray(absoluteShiftingValues);
 				int tempNumber = shiftCorrectionTypeBorders[1] + sourceStep;
 				//
 				if(tempMax == shiftCorrectionTypeBorders[1] && !fastAutomaticSearch) {
@@ -624,7 +622,6 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 	private SimpleMatrix alignAllDatasets(int[] shiftValues, SimpleMatrix fouriertransformedDatasetCrossCorrelated, IcoShiftAlignmentSettings settings) {
 
 		SimpleMatrix warpedDataset = new SimpleMatrix(fouriertransformedDatasetCrossCorrelated.numRows(), fouriertransformedDatasetCrossCorrelated.numCols());
-		UtilityFunctions utilityFunction = new UtilityFunctions();
 		//
 		for(int r = 0; r < fouriertransformedDatasetCrossCorrelated.numRows(); r++) {
 			//
@@ -638,11 +635,11 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 				// left shift
 				if(gapFillingType == IcoShiftAlignmentGapFillingType.ZERO) {
 					// fill array here with 0
-					utilityFunction.leftShiftNMRData(shiftArray, shiftValues[r]);
+					UtilityFunctions.leftShiftNMRData(shiftArray, shiftValues[r]);
 					System.arraycopy(shiftArray, 0, shiftedArray, 0, shiftArray.length - shiftValues[r]);
 				} else {
 					// margin value
-					utilityFunction.leftShiftNMRData(shiftArray, shiftValues[r]);
+					UtilityFunctions.leftShiftNMRData(shiftArray, shiftValues[r]);
 					Arrays.fill(shiftedArray, rowMarginValues[1]); // fill with number
 					System.arraycopy(shiftArray, 0, shiftedArray, 0, shiftArray.length - shiftValues[r]);
 				}
@@ -650,11 +647,11 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 				// right shift
 				if(gapFillingType == IcoShiftAlignmentGapFillingType.ZERO) {
 					// fill array here with 0
-					double[] temp = utilityFunction.rightShiftNMRData(shiftArray, Math.abs(shiftValues[r]));
+					double[] temp = UtilityFunctions.rightShiftNMRData(shiftArray, Math.abs(shiftValues[r]));
 					System.arraycopy(temp, Math.abs(shiftValues[r]), shiftedArray, Math.abs(shiftValues[r]), shiftArray.length - Math.abs(shiftValues[r]));
 				} else {
 					// margin value
-					double[] temp = utilityFunction.rightShiftNMRData(shiftArray, Math.abs(shiftValues[r]));
+					double[] temp = UtilityFunctions.rightShiftNMRData(shiftArray, Math.abs(shiftValues[r]));
 					Arrays.fill(shiftedArray, rowMarginValues[0]); // fill with number
 					System.arraycopy(temp, Math.abs(shiftValues[r]), shiftedArray, Math.abs(shiftValues[r]), shiftArray.length - Math.abs(shiftValues[r]));
 				}
@@ -718,15 +715,13 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 
 	private int[] calculateShiftValues(SimpleMatrix fouriertransformedDatasetCrossCorrelated, int shiftCorrectionTypeValue, IcoShiftAlignmentSettings settings) {
 
-		UtilityFunctions utilityFunction = new UtilityFunctions();
-		//
 		int[] maxPeakPositions = new int[fouriertransformedDatasetCrossCorrelated.numRows()];
 		double[] searchArray = null;
 		IcoShiftAlignmentShiftCorrectionType shiftCorrectionType = settings.getShiftCorrectionType();
 		for(int r = 0; r < fouriertransformedDatasetCrossCorrelated.numRows(); r++) {
 			double[] shiftArray = fouriertransformedDatasetCrossCorrelated.extractVector(true, r).getMatrix().getData();
 			// circular shift
-			fouriertransformedDatasetCrossCorrelated.setRow(r, 0, utilityFunction.rightShiftNMRData(shiftArray, shiftArray.length / 2));
+			fouriertransformedDatasetCrossCorrelated.setRow(r, 0, UtilityFunctions.rightShiftNMRData(shiftArray, shiftArray.length / 2));
 			searchArray = shiftArray;
 			//
 			if(!(shiftCorrectionType == IcoShiftAlignmentShiftCorrectionType.FAST)) { // either USER_DEFINED or BEST
@@ -736,8 +731,8 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 				searchArray = Arrays.copyOfRange(shiftArray, copyOfRangeFrom, copyOfRangeTo);
 			}
 			// find max. peak positions
-			double maxValue = utilityFunction.getMaxValueOfArray(searchArray);
-			int maxValueIndex = utilityFunction.findIndexOfValue(searchArray, maxValue);
+			double maxValue = UtilityFunctions.getMaxValueOfArray(searchArray);
+			int maxValueIndex = UtilityFunctions.findIndexOfValue(searchArray, maxValue);
 			maxPeakPositions[r] = maxValueIndex;
 		}
 		// correct the range to fit newDataSize

@@ -12,6 +12,8 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.phasecorrection;
 
+import java.math.BigDecimal;
+
 import org.apache.commons.math3.complex.Complex;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
@@ -101,7 +103,7 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 			break;
 		case USER_DEFINED:
 			// user input position
-			double userDefinedPosition = phaseCorrectionSettings.getUserDefinedPivotPointValue();
+			BigDecimal userDefinedPosition = BigDecimal.valueOf(phaseCorrectionSettings.getUserDefinedPivotPointValue());
 			int userPeakPosition = UtilityFunctions.findIndexOfValue(deltaAxisPPM, userDefinedPosition);
 			phasingPivotpoint = deltaAxisPPM[userPeakPosition].doubleValue();
 			break;
@@ -111,7 +113,7 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 			for(int i = 0; i < leftPhaseCorrectionDSP.length; i++) {
 				leftPhaseCorrectionDSP[i] *= dspPhaseFactor; // dspPhase
 			}
-			// generate correcti)on array
+			// generate correction array
 			Complex[] phaseCorrection = new Complex[leftPhaseCorrectionDSP.length];
 			for(int i = 0; i < leftPhaseCorrectionDSP.length; i++) {
 				double phaseCorrectionFactorTerm = (rightPhaseChange + leftPhaseCorrection[i] + leftPhaseCorrectionDSP[i]);
@@ -125,8 +127,8 @@ public class PhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<Phase
 		 */
 		double phaseCorrectionTermA = (phasingPivotpoint - firstDataOffset);
 		double phaseCorrectionTermB = phaseCorrectionTermA / sweepWidth;
-		double phaseCorrectionTermC = Math.round(complexSize * phaseCorrectionTermB);
-		double rightPhaseCorrectionleftPhase = -(leftPhaseCorrection[(int) phaseCorrectionTermC]);
+		int pivotIndex = ((int) Math.floor(complexSize * phaseCorrectionTermB)) - 1;
+		double rightPhaseCorrectionleftPhase = -(leftPhaseCorrection[pivotIndex]);
 		rightPhaseChange += rightPhaseCorrectionleftPhase;
 		// generate correction array
 		Complex[] phaseCorrection = new Complex[leftPhaseCorrectionDSP.length];
