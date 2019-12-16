@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
+import org.eclipse.chemclipse.processing.DataCategory;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.chemclipse.processing.filter.FilterContext;
@@ -40,7 +41,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlign
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities.Interval;
 
-@Component(service = {Filter.class, IMeasurementFilter.class})
+@Component(service = { Filter.class, IMeasurementFilter.class })
 public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShiftCalibrationSettings> {
 
 	@Override
@@ -56,6 +57,12 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 	}
 
 	@Override
+	public DataCategory[] getDataCategories() {
+
+		return new DataCategory[] { DataCategory.NMR };
+	}
+
+	@Override
 	public <ResultType> ResultType filterIMeasurements(Collection<? extends IMeasurement> filterItems, ChemicalShiftCalibrationSettings configuration, Function<? super Collection<? extends IMeasurement>, ResultType> chain, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
 
 		if(configuration == null) {
@@ -64,7 +71,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 		Collection<SpectrumMeasurement> collection = new ArrayList<>();
 		for(IMeasurement measurement : filterItems) {
 			if(measurement instanceof SpectrumMeasurement) {
-				collection.add((SpectrumMeasurement)measurement);
+				collection.add((SpectrumMeasurement) measurement);
 			} else {
 				throw new IllegalArgumentException();
 			}
@@ -86,8 +93,8 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 	}
 
 	/**
-	 * The method calibrate will define the necessary settings and calculate
-	 * a target for calibration of the dataset and calibrate the data.
+	 * The method calibrate will define the necessary settings and calculate a
+	 * target for calibration of the dataset and calibrate the data.
 	 * <p>
 	 * Commonly used internal standards for calibrating chemical shift:
 	 * <ul>
@@ -97,8 +104,8 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 	 *
 	 * <li>TSP (3-(trimethylsilyl)propionic acid, sodium salt)</li>
 	 * <ul>
-	 * <li>The chemical shift of the (main) singlet of each standard is
-	 * assigned as 0 ppm.</li>
+	 * <li>The chemical shift of the (main) singlet of each standard is assigned as
+	 * 0 ppm.</li>
 	 * </ul>
 	 * </ul>
 	 *
@@ -119,7 +126,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 		BigDecimal[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(experimentalDatasetsList);
 		Collection<? extends SpectrumMeasurement> newDatasetsList = copyPartlyCalibratedData(experimentalDatasetsList, calibratedData);
 		int checkIterator = 0;
-		while(!checkCalibration(calibratedData, chemicalShiftAxis, alignmentSettings)) { // check for quality of calibration
+		while (!checkCalibration(calibratedData, chemicalShiftAxis, alignmentSettings)) { // check for quality of calibration
 			newDatasetsList = copyPartlyCalibratedData(newDatasetsList, calibratedData);
 			// try to calibrate datasets again
 			calibratedData = icoShiftAlignment.process(newDatasetsList, alignmentSettings, null);
@@ -201,22 +208,21 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 	}
 
 	/**
-	 * This method will generate a separate instance of alignment settings
-	 * used for a calibration of datasets.
+	 * This method will generate a separate instance of alignment settings used for
+	 * a calibration of datasets.
 	 * <p>
 	 * <p>
-	 * All settings are fixed for the calculation of the target. The peak of
-	 * a commonly used internal standard for calibration (assigned as 0 ppm)
-	 * is predefined.
+	 * All settings are fixed for the calculation of the target. The peak of a
+	 * commonly used internal standard for calibration (assigned as 0 ppm) is
+	 * predefined.
 	 * <p>
-	 * If needed the range for a user defined peak can be defined by setting:
-	 * <br>
+	 * If needed the range for a user defined peak can be defined by setting: <br>
 	 * {@link calibrationSettings.setSinglePeakLowerBorder()}<br>
 	 * and <br>
 	 * {@link calibrationSettings.setSinglePeakHigherBorder()}.
 	 * <p>
-	 * The selected region should not be too wide to ensure that only the peak
-	 * of interest is used for the calibration.
+	 * The selected region should not be too wide to ensure that only the peak of
+	 * interest is used for the calibration.
 	 *
 	 * @author Alexander Stark
 	 *
@@ -229,9 +235,9 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 		//
 		alignmentSettings.setAlignmentType(IcoShiftAlignmentType.SINGLE_PEAK);
 		/*
-		 * It can be assumed that deviations (if any) are covered by this range
-		 * from 0.05 to -0.05 ppm. A larger range means that impurities or other
-		 * peaks could be misused for calibration.
+		 * It can be assumed that deviations (if any) are covered by this range from
+		 * 0.05 to -0.05 ppm. A larger range means that impurities or other peaks could
+		 * be misused for calibration.
 		 */
 		alignmentSettings.setSinglePeakLowerBorder(calibrationSettings.getRangeAroundCalibrationSignal() / 2);
 		alignmentSettings.setSinglePeakHigherBorder(-calibrationSettings.getRangeAroundCalibrationSignal() / 2);
