@@ -48,15 +48,4 @@
       <startup
             class="net.openchrom.rcp.compilation.community.ui.PluginStartup"></startup>
    </extension>
-   <extension
-         point="org.eclipse.epp.mpc.ui.catalog">
-         <catalog
-		    description="Install extensions from the Lablicate marketplace."
-		    icon="icons/logo_32x32.png"
-		    label="Lablicate Marketplace"
-		    url="http://marketplace.lablicate.com/"
-		    selfContained="false">
-	    </catalog>
-   </extension>
-
 </plugin>
