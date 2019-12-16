@@ -18,14 +18,18 @@ import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import net.openchrom.nmr.processing.supplier.base.settings.support.DigitalFilterTreatmentOptions;
+
 @SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class DigitalFilterRemovalSettings implements Serializable {
 
-	private static final long serialVersionUID = 4796560971210022576L;
+	private static final long serialVersionUID = 7271244127560614155L;
 	@JsonProperty("Group delay of digital filter")
 	private int leftRotationFid = 0;
 	@JsonProperty("Weighting factor for first fid point")
 	private double dcOffsetMultiplicationFactor = Double.NaN;
+	@JsonProperty("Filter treatment options")
+	private DigitalFilterTreatmentOptions treatmentOptions = DigitalFilterTreatmentOptions.SUBSTITUTE_WITH_NOISE;
 
 	public int getLeftRotationFid() {
 
@@ -45,5 +49,15 @@ public class DigitalFilterRemovalSettings implements Serializable {
 	public void setDcOffsetMultiplicationFactor(double dcOffsetMultiplicationFactor) {
 
 		this.dcOffsetMultiplicationFactor = dcOffsetMultiplicationFactor;
+	}
+
+	public DigitalFilterTreatmentOptions getTreatmentOptions() {
+
+		return treatmentOptions;
+	}
+
+	public void setTreatmentOptions(DigitalFilterTreatmentOptions treatmentOptions) {
+
+		this.treatmentOptions = treatmentOptions;
 	}
 }
