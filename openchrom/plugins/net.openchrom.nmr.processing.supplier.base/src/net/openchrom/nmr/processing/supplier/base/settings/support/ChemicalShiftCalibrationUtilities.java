@@ -43,7 +43,6 @@ public class ChemicalShiftCalibrationUtilities {
 
 	public static int[] getActualPeakPositions(Interval<Integer> intervalIndices, SimpleMatrix calibratedData) {
 
-		UtilityFunctions utilityFunction = new UtilityFunctions();
 		int numRowsMax = calibratedData.numRows();
 		int[] actualPositions = new int[numRowsMax];
 		for(int r = 0; r < numRowsMax; r++) {
@@ -51,8 +50,8 @@ public class ChemicalShiftCalibrationUtilities {
 			double[] rowVectorPart = new double[intervalIndices.getStart() - intervalIndices.getStop()];
 			//
 			System.arraycopy(rowVector, intervalIndices.getStop(), rowVectorPart, 0, intervalIndices.getStart() - intervalIndices.getStop());
-			double maxValue = utilityFunction.getMaxValueOfArray(rowVectorPart);
-			actualPositions[r] = utilityFunction.findIndexOfValue(rowVectorPart, maxValue);
+			double maxValue = UtilityFunctions.getMaxValueOfArray(rowVectorPart);
+			actualPositions[r] = UtilityFunctions.findIndexOfValue(rowVectorPart, maxValue);
 		}
 		return actualPositions;
 	}
@@ -60,8 +59,8 @@ public class ChemicalShiftCalibrationUtilities {
 	public static int getIntendedPeakPosition(Interval<Integer> intervalIndices, BigDecimal[] chemicalShiftAxis) {
 
 		BigDecimal[] chemicalShiftAxisPart = new BigDecimal[intervalIndices.getStart() - intervalIndices.getStop()];
-		System.arraycopy(chemicalShiftAxis, intervalIndices.getStart(), chemicalShiftAxisPart, 0, intervalIndices.getStart() - intervalIndices.getStop());
-		return UtilityFunctions.findIndexOfValue(chemicalShiftAxisPart, 0);
+		System.arraycopy(chemicalShiftAxis, intervalIndices.getStop(), chemicalShiftAxisPart, 0, intervalIndices.getStart() - intervalIndices.getStop());
+		return UtilityFunctions.findIndexOfValue(chemicalShiftAxisPart, new BigDecimal(0.000));
 	}
 
 	public static Interval<Integer> getCalibrationIntervalIndices(BigDecimal[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {

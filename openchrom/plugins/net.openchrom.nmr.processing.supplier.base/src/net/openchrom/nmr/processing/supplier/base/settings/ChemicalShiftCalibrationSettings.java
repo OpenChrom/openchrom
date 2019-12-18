@@ -37,6 +37,8 @@ public class ChemicalShiftCalibrationSettings {
 	private double rangeOfCauchyDistribution = 2;
 	@JsonProperty("Observed range around the calibration peak [ppm]")
 	private double rangeAroundCalibrationSignal = 0.1;
+	@JsonProperty("No. of qualitiy control cycles")
+	private int numberOfQualitiyControlCycles = 1;
 
 	/**
 	 * getLocationOfCauchyDistribution returns the location parameter of the used
@@ -142,5 +144,13 @@ public class ChemicalShiftCalibrationSettings {
 	public void setRangeAroundCalibrationSignal(double rangeAroundCalibrationSignal) {
 
 		this.rangeAroundCalibrationSignal = rangeAroundCalibrationSignal;
+	}
+
+	public int getNumberOfQualitiyControlCycles() {
+		return numberOfQualitiyControlCycles;
+	}
+
+	public void setNumberOfQualitiyControlCycles(int numberOfQualitiyControlCycles) {
+		this.numberOfQualitiyControlCycles = numberOfQualitiyControlCycles;
 	}
 }

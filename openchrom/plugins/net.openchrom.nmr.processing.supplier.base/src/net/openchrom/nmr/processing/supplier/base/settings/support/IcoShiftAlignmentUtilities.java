@@ -110,7 +110,7 @@ public class IcoShiftAlignmentUtilities {
 			double[] dataArray = matrix.getData();
 			AcquisitionParameter parameter = measurement.getAcquisitionParameter();
 			for(int i = 0; i < dataArray.length; i++) {
-				newSignals.add(new IcoShiftSignal(parameter.toHz(BigDecimal.valueOf(chemicalShiftAxis[i].doubleValue())), dataArray[i]));
+				newSignals.add(new IcoShiftSignal(parameter.toHz(chemicalShiftAxis[i]), dataArray[i]));
 			}
 			alignmentResultIndex++;
 			filteredSpectrumMeasurement.setSignals(newSignals);

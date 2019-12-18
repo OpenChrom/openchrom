@@ -131,12 +131,12 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 			// try to calibrate datasets again
 			calibratedData = icoShiftAlignment.process(newDatasetsList, alignmentSettings, null);
 			checkIterator++;
-			if(checkIterator == 5) {
+			if(checkIterator == calibrationSettings.getNumberOfQualitiyControlCycles()) {
 				break;
 			}
 		}
 		//
-		if(checkIterator > 2) {
+		if(checkIterator >= calibrationSettings.getNumberOfQualitiyControlCycles()) {
 			calibratedData = finalPeakCalibration(calibratedData, chemicalShiftAxis, alignmentSettings);
 		}
 		//
@@ -188,19 +188,17 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 		Interval<Integer> intervalIndices = ChemicalShiftCalibrationUtilities.getCalibrationIntervalIndices(chemicalShiftAxis, alignmentSettings);
 		int intendedPosition = ChemicalShiftCalibrationUtilities.getIntendedPeakPosition(intervalIndices, chemicalShiftAxis);
 		int[] actualPositions = ChemicalShiftCalibrationUtilities.getActualPeakPositions(intervalIndices, calibratedData);
-		//
-		UtilityFunctions utilityFunction = new UtilityFunctions();
 		// try to correct the remaining discrepancy
 		for(int i = 0; i < actualPositions.length; i++) {
 			double[] shiftVector = calibratedData.extractVector(true, i).getMatrix().getData();
 			//
 			if(actualPositions[i] > intendedPosition) {
 				// leftShift
-				utilityFunction.leftShiftNMRData(shiftVector, (actualPositions[i] - intendedPosition));
+				UtilityFunctions.leftShiftNMRData(shiftVector, (actualPositions[i] - intendedPosition));
 				calibratedData.setRow(i, 0, shiftVector);
 			} else {
 				// rightShift
-				utilityFunction.rightShiftNMRData(shiftVector, (intendedPosition - actualPositions[i]));
+				UtilityFunctions.rightShiftNMRData(shiftVector, (intendedPosition - actualPositions[i]));
 				calibratedData.setRow(i, 0, shiftVector);
 			}
 		}
