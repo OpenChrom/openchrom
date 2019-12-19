@@ -94,50 +94,21 @@ public class UtilityFunctions {
 
 	public static int findIndexOfValue(double[] array, double value) {
 
-		int index;
-		double threshold = 0.001;
-		for(index = 0; index < array.length; index++) {
-			if(Math.abs(array[index] - value) < threshold) {
-				break;
-			}
-		}
-		//
-		int reverseIndex = array.length - 1;
-		for(; reverseIndex > 0; reverseIndex--) {
-			if(Math.abs(array[reverseIndex] - value) < threshold) {
-				break;
-			}
-		}
-		//
-		if(Double.compare(value, 0.0) < 0) {
-			return (int) Math.floor((reverseIndex + index) / 2);
-		} else {
-			return (int) Math.ceil((reverseIndex + index) / 2);
-		}
+		return findIndexOfValue(parseToNumberArray(array), BigDecimal.valueOf(value));
 	}
 
 	public static int findIndexOfValue(Number[] array, double value) {
 
-		int index;
-		double threshold = 0.001;
-		for(index = 0; index < array.length; index++) {
-			if(Math.abs(array[index].doubleValue() - value) < threshold) {
-				break;
-			}
+		return findIndexOfValue(array, BigDecimal.valueOf(value));
+	}
+
+	private static Number[] parseToNumberArray(double[] array) {
+
+		Number[] numberArray = new Number[array.length];
+		for(int i = 0; i < array.length; i++) {
+			numberArray[i] = BigDecimal.valueOf(array[i]);
 		}
-		//
-		int reverseIndex = array.length - 1;
-		for(; reverseIndex > 0; reverseIndex--) {
-			if(Math.abs(array[reverseIndex].doubleValue() - value) < threshold) {
-				break;
-			}
-		}
-		//
-		if(Double.compare(value, 0.0) < 0) {
-			return (int) Math.floor((reverseIndex + index) / 2);
-		} else {
-			return (int) Math.ceil((reverseIndex + index) / 2);
-		}
+		return numberArray;
 	}
 
 	public static int findIndexOfValue(Number[] array, BigDecimal value) {
