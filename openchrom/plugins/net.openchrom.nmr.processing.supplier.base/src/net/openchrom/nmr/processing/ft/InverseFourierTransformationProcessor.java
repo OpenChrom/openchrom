@@ -40,10 +40,10 @@ import net.openchrom.nmr.processing.supplier.base.core.AbstractSpectrumSignalFil
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.settings.InverseFourierTransformationSettings;
 
-@Component(service = {Filter.class, IMeasurementFilter.class})
+@Component(service = { Filter.class, IMeasurementFilter.class })
 public class InverseFourierTransformationProcessor extends AbstractSpectrumSignalFilter<InverseFourierTransformationSettings> {
 
-	private static final long serialVersionUID = 886603297773084819L;
+	private static final long serialVersionUID = 2343292442585806324L;
 	private static final String NAME = "Inverse Fourier Transformation";
 
 	@Override
@@ -52,7 +52,7 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 		return NAME;
 	}
 
-	public InverseFourierTransformationProcessor() {
+	public InverseFourierTransformationProcessor(){
 		super(InverseFourierTransformationSettings.class);
 	}
 
@@ -63,15 +63,27 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 		SpectrumMeasurement spectrumMeasurement = context.getFilteredObject();
 		Complex[] spectrumSignals = UtilityFunctions.toComplexArray(spectrumMeasurement.getSignals());
 		UtilityFunctions.rightShiftNMRComplexData(spectrumSignals, spectrumSignals.length / 2);
-		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
-		Complex[] fid = fFourierTransformer.transform(spectrumSignals, TransformType.INVERSE);
-		List<InverseFFTSpectrumSignal> signals = new ArrayList<>();
+		Complex[] fid = inverseFourierTransformNmrData(spectrumSignals);
 		BigDecimal max = spectrumMeasurement.getAcquisitionParameter().getAcquisitionTime();
 		BigDecimal step = max.divide(BigDecimal.valueOf((fid.length) - 1).setScale(10), RoundingMode.HALF_UP);
+		List<InverseFFTSpectrumSignal> signals = new ArrayList<>();
 		for(int i = 0; i < spectrumMeasurement.getAcquisitionParameter().getNumberOfPoints(); i++) {
-			signals.add(new InverseFFTSpectrumSignal(BigDecimal.valueOf(i).multiply(step), fid[i]));
+			/*
+			 * API requires values from high to low after doing the forward fourier
+			 * transformation. So to display the fid after the inverse fourier
+			 * transformation the order of values has to be restored.
+			 */
+			int reversed_index = fid.length - 1 - i;
+			signals.add(new InverseFFTSpectrumSignal(BigDecimal.valueOf(i).multiply(step), fid[reversed_index]));
 		}
 		return new InverseFFTFilteredMeasurement(context, signals);
+	}
+
+	private static Complex[] inverseFourierTransformNmrData(Complex[] spectrumSignals) {
+
+		FastFourierTransformer fFourierTransformer = new FastFourierTransformer(DftNormalization.STANDARD);
+		Complex[] fid = fFourierTransformer.transform(spectrumSignals, TransformType.INVERSE);
+		return fid;
 	}
 
 	private static final class InverseFFTFilteredMeasurement extends FilteredMeasurement<SpectrumMeasurement, InverseFourierTransformationSettings> implements FIDMeasurement {
@@ -79,7 +91,7 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 		private static final long serialVersionUID = -3240032383041201512L;
 		private List<InverseFFTSpectrumSignal> signals;
 
-		public InverseFFTFilteredMeasurement(FilterContext<SpectrumMeasurement, InverseFourierTransformationSettings> filterContext, List<InverseFFTSpectrumSignal> signals) {
+		public InverseFFTFilteredMeasurement(FilterContext<SpectrumMeasurement, InverseFourierTransformationSettings> filterContext, List<InverseFFTSpectrumSignal> signals){
 			super(filterContext);
 			this.signals = Collections.unmodifiableList(signals);
 		}
@@ -109,7 +121,7 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 		private BigDecimal time;
 		private Complex complex;
 
-		public InverseFFTSpectrumSignal(BigDecimal time, Complex complex) {
+		public InverseFFTSpectrumSignal(BigDecimal time, Complex complex){
 			this.time = time;
 			this.complex = complex;
 		}
