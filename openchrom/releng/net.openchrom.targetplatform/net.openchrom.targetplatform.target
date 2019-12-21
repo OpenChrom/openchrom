@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="OpenChrom Target (build)" sequenceNumber="40">
+<?pde version="3.8"?><target name="OpenChrom Target (build)" sequenceNumber="41">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.equinox.sdk.feature.group" version="0.0.0"/>
@@ -41,6 +41,10 @@
 <unit id="net.openchrom.thirdpartylibraries.matlabcontrol.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.opsin.feature.feature.group" version="0.0.0"/>
 <repository location="https://update.openchrom.net/repositories/community/latest/3rdparty"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.ops4j.pax.jpa.feature.feature.group" version="0.0.0"/>
+<repository location="https://update.openchrom.net/repositories/community/latest/pax-jpa"/>
 </location>
 </locations>
 </target>
