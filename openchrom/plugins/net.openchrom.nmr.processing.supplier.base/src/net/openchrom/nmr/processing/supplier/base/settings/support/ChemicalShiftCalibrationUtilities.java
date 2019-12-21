@@ -12,6 +12,7 @@
 package net.openchrom.nmr.processing.supplier.base.settings.support;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collection;
 
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
@@ -56,19 +57,21 @@ public class ChemicalShiftCalibrationUtilities {
 		return actualPositions;
 	}
 
-	public static int getIntendedPeakPosition(Interval<Integer> intervalIndices, BigDecimal[] chemicalShiftAxis) {
+	public static int getIntendedPeakPosition(Interval<Integer> intervalIndices, BigDecimal[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {
 
 		BigDecimal[] chemicalShiftAxisPart = new BigDecimal[intervalIndices.getStart() - intervalIndices.getStop()];
 		System.arraycopy(chemicalShiftAxis, intervalIndices.getStop(), chemicalShiftAxisPart, 0, intervalIndices.getStart() - intervalIndices.getStop());
-		return UtilityFunctions.findIndexOfValue(chemicalShiftAxisPart, new BigDecimal(0.000));
+		double calibrationPeak = (alignmentSettings.getSinglePeakHigherBorder() + alignmentSettings.getSinglePeakLowerBorder()) / 2;
+		BigDecimal calibrationPeakPosition = new BigDecimal(calibrationPeak).setScale(3, RoundingMode.HALF_UP);
+		return UtilityFunctions.findIndexOfValue(chemicalShiftAxisPart, calibrationPeakPosition);
 	}
 
 	public static Interval<Integer> getCalibrationIntervalIndices(BigDecimal[] chemicalShiftAxis, IcoShiftAlignmentSettings alignmentSettings) {
 
 		double leftMargin = alignmentSettings.getSinglePeakHigherBorder();
 		double rigthMargin = alignmentSettings.getSinglePeakLowerBorder();
-		int leftIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, leftMargin);
-		int rightIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, rigthMargin);
+		int leftIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, BigDecimal.valueOf(leftMargin));
+		int rightIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, BigDecimal.valueOf(rigthMargin));
 		return new Interval<Integer>(leftIndex, rightIndex);
 	}
 }

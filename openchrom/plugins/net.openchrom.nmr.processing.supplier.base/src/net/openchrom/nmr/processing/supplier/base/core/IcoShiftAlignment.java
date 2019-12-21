@@ -336,8 +336,8 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 			 */
 			double lowerBorder = settings.getSinglePeakLowerBorder();
 			double higherBorder = settings.getSinglePeakHigherBorder();
-			int lowerBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, lowerBorder);
-			int higherBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, higherBorder);
+			int lowerBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, BigDecimal.valueOf(lowerBorder));
+			int higherBorderIndex = UtilityFunctions.findIndexOfValue(chemicalShiftAxis, BigDecimal.valueOf(higherBorder));
 			intervalRegionsMap.put(1, new Interval<Integer>(lowerBorderIndex, higherBorderIndex));
 			break;
 		case WHOLE_SPECTRUM:
@@ -728,6 +728,10 @@ public class IcoShiftAlignment implements IMeasurementFilter<IcoShiftAlignmentSe
 				// cut out central part of observed shiftArray
 				int copyOfRangeFrom = (shiftArray.length / 2) - shiftCorrectionTypeValue - 1;
 				int copyOfRangeTo = (shiftArray.length / 2) + shiftCorrectionTypeValue;
+				if(Double.compare(copyOfRangeFrom, 0) < 0) {
+					copyOfRangeTo = copyOfRangeTo + (2 * copyOfRangeFrom);
+					copyOfRangeFrom = Math.abs(copyOfRangeFrom);
+				}
 				searchArray = Arrays.copyOfRange(shiftArray, copyOfRangeFrom, copyOfRangeTo);
 			}
 			// find max. peak positions
