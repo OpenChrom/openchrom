@@ -13,3 +13,5 @@ Please find our **Code of Conduct** [here](https://github.com/OpenChrom/openchro
 If you would like to **contribute** to this project, please have a look at [this guideline](https://github.com/OpenChrom/openchrom/blob/develop/CONTRIBUTING.md).
 
 For user- and developer **documentation**, have a look at our [wiki](https://github.com/OpenChrom/openchrom/wiki).
+
+Builds for Windows, MacOS and Linux can be found [here](https://www.lablicate.com/platform/openchrom/download).
