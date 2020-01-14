@@ -47,7 +47,7 @@ public class ChemicalShiftCalibrationUtilities {
 		int numRowsMax = calibratedData.numRows();
 		int[] actualPositions = new int[numRowsMax];
 		for(int r = 0; r < numRowsMax; r++) {
-			double[] rowVector = calibratedData.extractVector(true, r).getMatrix().getData();
+			double[] rowVector = IcoShiftAlignmentUtilities.extractVectorFromMatrix(calibratedData, true, r);
 			double[] rowVectorPart = new double[intervalIndices.getStart() - intervalIndices.getStop()];
 			//
 			System.arraycopy(rowVector, intervalIndices.getStop(), rowVectorPart, 0, intervalIndices.getStart() - intervalIndices.getStop());

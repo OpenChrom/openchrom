@@ -24,7 +24,7 @@ import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 import org.eclipse.chemclipse.processing.filter.FilterContext;
-import org.ejml.data.DenseMatrix64F;
+import org.ejml.data.DMatrixD1;
 import org.ejml.simple.SimpleMatrix;
 
 public class IcoShiftAlignmentUtilities {
@@ -106,8 +106,7 @@ public class IcoShiftAlignmentUtilities {
 				filteredSpectrumMeasurement.setDataName("Calibration");
 			}
 			List<IcoShiftSignal> newSignals = new ArrayList<>();
-			DenseMatrix64F matrix = result.extractVector(true, alignmentResultIndex).getMatrix();
-			double[] dataArray = matrix.getData();
+			double[] dataArray = extractVectorFromMatrix(result, true, alignmentResultIndex);
 			AcquisitionParameter parameter = measurement.getAcquisitionParameter();
 			for(int i = 0; i < dataArray.length; i++) {
 				newSignals.add(new IcoShiftSignal(parameter.toHz(chemicalShiftAxis[i]), dataArray[i]));
@@ -174,5 +173,12 @@ public class IcoShiftAlignmentUtilities {
 			}
 		}
 		return finalIntervalRegions;
+	}
+
+	public static double[] extractVectorFromMatrix(SimpleMatrix dataMatrix, boolean extractRow, int element) {
+
+		DMatrixD1 matrixRow = dataMatrix.extractVector(extractRow, element).getMatrix();
+		double[] columnVector = matrixRow.getData();
+		return columnVector;
 	}
 }
