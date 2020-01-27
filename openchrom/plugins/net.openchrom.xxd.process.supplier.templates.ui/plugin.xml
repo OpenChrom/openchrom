@@ -104,5 +104,12 @@
                type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
          </adapter>
       </factory>
+      <factory
+            adaptableType="net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings"
+            class="net.openchrom.xxd.process.supplier.templates.ui.adapter.PeakIdentifierSettingsAdapterFactory">
+         <adapter
+               type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
+         </adapter>
+      </factory>
    </extension>      
 </plugin>

@@ -34,7 +34,9 @@ import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.Abstr
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
@@ -66,36 +68,36 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
-import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
-import net.openchrom.xxd.process.supplier.templates.model.DetectorSettings;
+import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
+import net.openchrom.xxd.process.supplier.templates.model.IdentifierSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
-import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakDetectorInputValidator;
-import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
+import net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings;
+import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakIdentifierInputValidator;
+import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
 
-public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUIControl {
+public class TemplatePeakIdentifierEditor implements SettingsUIProvider.SettingsUIControl {
 
 	private static final int NUMBER_COLUMNS = 2;
 	//
 	private Composite composite;
-	private DetectorSettings settings = new DetectorSettings();
-	private PeakDetectorListUI listUI;
+	private IdentifierSettings settings = new IdentifierSettings();
+	private PeakIdentifierListUI listUI;
 	//
 	private static final String FILTER_EXTENSION = "*.txt";
-	private static final String FILTER_NAME = "Peak Detector Template (*.txt)";
-	private static final String FILE_NAME = "PeakDetectorTemplate.txt";
+	private static final String FILTER_NAME = "Peak Identifier Template (*.txt)";
+	private static final String FILE_NAME = "PeakIdentifierTemplate.txt";
 	//
-	private static final String CATEGORY = "Peak Detector";
+	private static final String CATEGORY = "Peak Identifier";
 	private static final String DELETE = "Delete";
 	private List<Listener> listeners = new ArrayList<>();
 	private List<Button> buttons = new ArrayList<>();
 	private SearchSupportUI searchSupportUI;
-	private ProcessorPreferences<PeakDetectorSettings> preferences;
+	private ProcessorPreferences<PeakIdentifierSettings> preferences;
 
-	public TemplatePeakListEditor(Composite parent, ProcessorPreferences<PeakDetectorSettings> preferences, PeakDetectorSettings settings) {
+	public TemplatePeakIdentifierEditor(Composite parent, ProcessorPreferences<PeakIdentifierSettings> preferences, PeakIdentifierSettings settings) {
 		this.preferences = preferences;
 		if(settings != null) {
-			this.settings.load(settings.getDetectorSettings());
+			this.settings.load(settings.getIdentifierSettings());
 		}
 		composite = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout(NUMBER_COLUMNS, false);
@@ -144,7 +146,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		gridData.grabExcessVerticalSpace = true;
 		composite.setLayoutData(gridData);
 		//
-		listUI = new PeakDetectorListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		listUI = new PeakIdentifierListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		//
 		Shell shell = listUI.getTable().getShell();
 		ITableSettings tableSettings = listUI.getTableSettings();
@@ -192,10 +194,10 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, PeakDetectorListUtil.EXAMPLE_SINGLE, new PeakDetectorInputValidator(settings));
+				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, PeakIdentifierListUtil.EXAMPLE_SINGLE, new PeakIdentifierInputValidator(settings.keySet()));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
-					DetectorSetting setting = settings.extractSettingInstance(item);
+					IdentifierSetting setting = settings.extractSettingInstance(item);
 					if(setting != null) {
 						settings.add(setting);
 						setTableViewerInput();
@@ -219,15 +221,15 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
 				Object object = structuredSelection.getFirstElement();
-				if(object instanceof DetectorSetting) {
-					List<DetectorSetting> settingsEdit = new ArrayList<>();
-					settingsEdit.addAll(settings);
-					DetectorSetting setting = (DetectorSetting)object;
-					settingsEdit.remove(setting);
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new PeakDetectorInputValidator(settingsEdit));
+				if(object instanceof IdentifierSetting) {
+					Set<String> keySetEdit = new HashSet<>();
+					keySetEdit.addAll(settings.keySet());
+					IdentifierSetting setting = (IdentifierSetting)object;
+					keySetEdit.remove(setting.getName());
+					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new PeakIdentifierInputValidator(keySetEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
-						DetectorSetting settingNew = settings.extractSettingInstance(item);
+						IdentifierSetting settingNew = settings.extractSettingInstance(item);
 						setting.copyFrom(settingNew);
 						setTableViewerInput();
 					}
@@ -338,27 +340,10 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 
 	private void setTableViewerInput() {
 
-		listUI.setInput(settings);
+		listUI.setInput(settings.values());
 		for(Listener listener : listeners) {
 			listener.handleEvent(new Event());
 		}
-	}
-
-	public void load(String entries) {
-
-		settings.load(entries);
-		setTableViewerInput();
-	}
-
-	public String getValues() {
-
-		return settings.save();
-	}
-
-	@Override
-	public Control getControl() {
-
-		return composite;
 	}
 
 	private void addDeleteMenuEntry(Shell shell, ITableSettings tableSettings) {
@@ -403,21 +388,13 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 
 		if(MessageDialog.openQuestion(shell, DIALOG_TITLE, MESSAGE_REMOVE)) {
 			IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
-			List<DetectorSetting> removeElements = new ArrayList<>();
 			for(Object object : structuredSelection.toArray()) {
-				if(object instanceof DetectorSetting) {
-					removeElements.add((DetectorSetting)object);
+				if(object instanceof IdentifierSetting) {
+					settings.remove(((IdentifierSetting)object).getName());
 				}
 			}
-			settings.removeAll(removeElements);
 			setTableViewerInput();
 		}
-	}
-
-	@Override
-	public void addChangeListener(Listener listener) {
-
-		listeners.add(listener);
 	}
 
 	@Override
@@ -433,10 +410,6 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	@Override
 	public IStatus validate() {
 
-		String id = preferences.getSupplier().getId();
-		if(preferences != null && id.equals("PeakDetectorMSD.net.openchrom.xxd.process.supplier.templates.peaks.detector.msd") && settings.isEmpty()) {
-			return ValidationStatus.error("At least one item is required");
-		}
 		return ValidationStatus.ok();
 	}
 
@@ -444,10 +417,33 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	public String getSettings() throws IOException {
 
 		if(preferences != null) {
-			PeakDetectorSettings s = new PeakDetectorSettings();
-			s.setDetectorSettings(settings.save());
+			PeakIdentifierSettings s = new PeakIdentifierSettings();
+			s.setIdentifierSettings(settings.save());
 			return preferences.getSerialization().toString(s);
 		}
 		return "";
+	}
+
+	@Override
+	public void addChangeListener(Listener listener) {
+
+		listeners.add(listener);
+	}
+
+	@Override
+	public Control getControl() {
+
+		return composite;
+	}
+
+	public void load(String entries) {
+
+		settings.load(entries);
+		setTableViewerInput();
+	}
+
+	public String getValues() {
+
+		return settings.save();
 	}
 }
