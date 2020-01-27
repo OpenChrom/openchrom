@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - API adjustments
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
@@ -33,7 +34,7 @@ public class PeakProcessSettings {
 	public PeakProcessSettings(IProcessingInfo processingInfo, IChromatogramSelection chromatogramSelection, PeakDetectorSettings peakDetectorSettings) {
 		this.processingInfo = processingInfo;
 		this.chromatogramSelection = chromatogramSelection;
-		this.detectorSettings.addAll(peakDetectorSettings.getDetectorSettings());
+		this.detectorSettings.addAll(peakDetectorSettings.getDetectorSettingsList());
 		Collections.sort(detectorSettings, new DetectorComparator());
 		selectedIndex = detectorSettings.size() > 0 ? 0 : -1;
 	}

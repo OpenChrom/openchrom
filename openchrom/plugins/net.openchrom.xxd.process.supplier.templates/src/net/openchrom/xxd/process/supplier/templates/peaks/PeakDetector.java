@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,6 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  * Alexander Kerner - Generics
+ * Christoph Läubrich - adjust to changed API
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.peaks;
 
@@ -82,7 +83,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 			if(settings instanceof PeakDetectorSettings) {
 				IChromatogram chromatogram = chromatogramSelection.getChromatogram();
 				PeakDetectorSettings peakDetectorSettings = (PeakDetectorSettings)settings;
-				for(DetectorSetting detectorSetting : peakDetectorSettings.getDetectorSettings()) {
+				for(DetectorSetting detectorSetting : peakDetectorSettings.getDetectorSettingsList()) {
 					setPeakBySettings(chromatogram, detectorSetting);
 				}
 			} else {

@@ -94,5 +94,15 @@
             peakDetectorName="Template Peak Detector UI (CSD)"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
       </PeakDetector>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings"
+            class="net.openchrom.xxd.process.supplier.templates.ui.adapter.PeakDetectorSettingsAdapterFactory">
+         <adapter
+               type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
+         </adapter>
+      </factory>
    </extension>      
 </plugin>

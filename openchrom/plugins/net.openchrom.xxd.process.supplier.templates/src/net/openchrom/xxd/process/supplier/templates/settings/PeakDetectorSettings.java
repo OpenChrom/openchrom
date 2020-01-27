@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - adjust names of getter/setter
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.settings;
 
@@ -20,6 +21,7 @@ import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetec
 import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
@@ -56,13 +58,20 @@ public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implem
 		this.detectorSettings = detectorSettings;
 	}
 
+	@JsonIgnore
 	public void setDetectorSettings(List<DetectorSetting> detectorSettings) {
 
 		DetectorSettings settings = new DetectorSettings();
 		this.detectorSettings = settings.extractSettings(detectorSettings);
 	}
 
-	public List<DetectorSetting> getDetectorSettings() {
+	public String getDetectorSettings() {
+
+		return detectorSettings;
+	}
+
+	@JsonIgnore
+	public List<DetectorSetting> getDetectorSettingsList() {
 
 		PeakDetectorListUtil util = new PeakDetectorListUtil();
 		PeakDetectorValidator validator = new PeakDetectorValidator();
