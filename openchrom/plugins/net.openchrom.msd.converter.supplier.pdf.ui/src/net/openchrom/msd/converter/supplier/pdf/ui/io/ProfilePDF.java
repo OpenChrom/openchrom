@@ -327,7 +327,7 @@ public class ProfilePDF {
 				if(printAll) {
 					for(int i = 1; i < sortedTargets.size(); i++) {
 						List<String> rowOther = new ArrayList<>();
-						rowOther.add("*" + getTargetName(sortedTargets.get(0)));
+						rowOther.add("*" + getTargetName(sortedTargets.get(i)));
 						rowOther.add("[" + percentageArea + "]");
 						pdTable.addDataRow(rowOther);
 					}
