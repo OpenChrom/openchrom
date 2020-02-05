@@ -17,9 +17,18 @@
             fileExtension=".pdf"
             fileName="OpenChromReport"
             id="net.openchrom.msd.converter.supplier.pdf.ui.chromatogramReportPDF"
-            reportGenerator="net.openchrom.msd.converter.supplier.pdf.ui.converter.ReportPDF"
+            reportGenerator="net.openchrom.msd.converter.supplier.pdf.ui.converter.GenericReport"
             reportName="PDF Report (*.pdf)"
-            reportSettings="net.openchrom.msd.converter.supplier.pdf.ui.settings.ReportSettings">
-      </ChromatogramReportSupplier>  
+            reportSettings="net.openchrom.msd.converter.supplier.pdf.ui.settings.ReportSettingsGeneric">
+      </ChromatogramReportSupplier>   
+      <ChromatogramReportSupplier
+            description="Area PDF Report."
+            fileExtension=".pdf"
+            fileName="OpenChromReport"
+            id="net.openchrom.msd.converter.supplier.pdf.ui.chromatogramProfilePDF"
+            reportGenerator="net.openchrom.msd.converter.supplier.pdf.ui.converter.ProfileReport"
+            reportName="Profile Report (*.pdf)"
+            reportSettings="net.openchrom.msd.converter.supplier.pdf.ui.settings.ReportSettingsProfile">
+      </ChromatogramReportSupplier>        
    </extension>
 </plugin>

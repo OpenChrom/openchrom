@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -10,7 +10,7 @@
  * Dr. Philip Wenig - initial API and implementation
  * Christoph Läubrich - Settings support
  *******************************************************************************/
-package net.openchrom.msd.converter.supplier.pdf.ui.internal.io;
+package net.openchrom.msd.converter.supplier.pdf.ui.io;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,11 +56,12 @@ import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.pdf.ui.settings.ReportSettings;
+import net.openchrom.msd.converter.supplier.pdf.ui.io.generic.ImageRunnableGeneric;
+import net.openchrom.msd.converter.supplier.pdf.ui.settings.ReportSettingsGeneric;
 
-public class ReportConverterPDF {
+public class GenericPDF {
 
-	private static final Logger logger = Logger.getLogger(ReportConverterPDF.class);
+	private static final Logger logger = Logger.getLogger(GenericPDF.class);
 	//
 	private static final float LEFT_BORDER = 10.0f;
 	private static final float TOP_BORDER = 10.0f;
@@ -85,13 +86,13 @@ public class ReportConverterPDF {
 	private DecimalFormat dfAreaPercent = ValueFormat.getDecimalFormatEnglish("0.000");
 	private DecimalFormat dfAreaNormal = ValueFormat.getDecimalFormatEnglish("0.0#E0");
 	private DecimalFormat dfConcentration = ValueFormat.getDecimalFormatEnglish("0.000");
-	private ReportSettings settings;
+	private ReportSettingsGeneric settings;
 
-	public ReportConverterPDF() {
-		this(new ReportSettings());
+	public GenericPDF() {
+		this(new ReportSettingsGeneric());
 	}
 
-	public ReportConverterPDF(ReportSettings settings) {
+	public GenericPDF(ReportSettingsGeneric settings) {
 		this.settings = settings;
 	}
 
@@ -117,7 +118,7 @@ public class ReportConverterPDF {
 		if(chromatogram != null) {
 			String chromatogramName = getChromatogramName(chromatogram);
 			PDTable headerDataTable = getHeaderDataTable(chromatogram.getHeaderDataMap());
-			ImageRunnable imageRunnable = createImages(chromatogram, document, settings.getNumberOfImagesPerPage());
+			ImageRunnableGeneric imageRunnable = createImages(chromatogram, document, settings.getNumberOfImagesPerPage());
 			List<PDImageXObject> chromatogramImages = imageRunnable.getChromatogramImages();
 			PDTable peakDataTable = getPeakDataTable(imageRunnable.getPeaks());
 			PDTable scanDataTable = getScanDataTable(imageRunnable.getScans());
@@ -248,7 +249,7 @@ public class ReportConverterPDF {
 			if(file != null && file.exists() && (file.getName().toLowerCase().endsWith(".jpg") || file.getName().toLowerCase().endsWith(".jepg"))) { // $NON-NLS-1$
 				inputStream = new FileInputStream(file);
 			} else {
-				inputStream = ReportConverterPDF.class.getResourceAsStream("openchromlogo.jpg"); // $NON-NLS-1$
+				inputStream = GenericPDF.class.getResourceAsStream("openchromlogo.jpg"); // $NON-NLS-1$
 			}
 			banner = JPEGFactory.createFromStream(pageUtil.getDocument(), inputStream);
 		} catch(Exception e) {
@@ -262,11 +263,11 @@ public class ReportConverterPDF {
 		return banner;
 	}
 
-	private ImageRunnable createImages(IChromatogram<? extends IPeak> chromatogram, PDDocument document, int numberOfPages) {
+	private ImageRunnableGeneric createImages(IChromatogram<? extends IPeak> chromatogram, PDDocument document, int numberOfPages) {
 
 		int width = 1080;
 		int height = (int)(width * (IMAGE_HEIGHT / IMAGE_WIDTH));
-		ImageRunnable imageRunnable = new ImageRunnable(chromatogram, document, numberOfPages, width, height);
+		ImageRunnableGeneric imageRunnable = new ImageRunnableGeneric(chromatogram, document, numberOfPages, width, height);
 		DisplayUtils.getDisplay().syncExec(imageRunnable);
 		//
 		return imageRunnable;

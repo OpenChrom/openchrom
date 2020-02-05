@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.converter.supplier.pdf.ui.internal.io;
+package net.openchrom.msd.converter.supplier.pdf.ui.io.generic;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,9 +35,9 @@ import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.PeakChartSuppor
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.ScanChartSupport;
 import org.eclipse.swt.SWT;
 import org.eclipse.swtchart.ILineSeries.PlotSymbolType;
-import org.eclipse.swtchart.export.images.ImageFactory;
 import org.eclipse.swtchart.IPlotArea;
 import org.eclipse.swtchart.LineStyle;
+import org.eclipse.swtchart.export.images.ImageFactory;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.IExtendedChart;
@@ -45,9 +45,9 @@ import org.eclipse.swtchart.extensions.core.RangeRestriction;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
 
-public class ImageRunnable implements Runnable {
+public class ImageRunnableGeneric implements Runnable {
 
-	private static final Logger logger = Logger.getLogger(ImageRunnable.class);
+	private static final Logger logger = Logger.getLogger(ImageRunnableGeneric.class);
 	private static final String PLUGIN_NAME = "net.openchrom.msd.converter.supplier.pdf.ui";
 	//
 	private ChromatogramDataSupport chromatogramDataSupport = new ChromatogramDataSupport();
@@ -67,7 +67,7 @@ public class ImageRunnable implements Runnable {
 	private List<? extends IPeak> peaks = new ArrayList<>();
 	private List<IScan> scans = new ArrayList<>();
 
-	public ImageRunnable(IChromatogram<? extends IPeak> chromatogram, PDDocument document, int numberOfPages, int width, int height) {
+	public ImageRunnableGeneric(IChromatogram<? extends IPeak> chromatogram, PDDocument document, int numberOfPages, int width, int height) {
 		this.chromatogram = chromatogram;
 		this.document = document;
 		this.numberOfPages = numberOfPages;

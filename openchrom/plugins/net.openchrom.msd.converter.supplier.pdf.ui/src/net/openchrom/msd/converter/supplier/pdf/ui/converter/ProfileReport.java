@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018,2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,10 +29,11 @@ import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 
-import net.openchrom.msd.converter.supplier.pdf.ui.internal.io.ReportConverterPDF;
-import net.openchrom.msd.converter.supplier.pdf.ui.settings.ReportSettings;
+import net.openchrom.msd.converter.supplier.pdf.ui.io.ProfilePDF;
+import net.openchrom.msd.converter.supplier.pdf.ui.settings.ReportSettingsProfile;
 
-public class ReportPDF extends AbstractChromatogramReportGenerator {
+@SuppressWarnings("rawtypes")
+public class ProfileReport extends AbstractChromatogramReportGenerator {
 
 	/**
 	 * Use 100 MB of main memory to merge pdfs
@@ -45,16 +46,16 @@ public class ReportPDF extends AbstractChromatogramReportGenerator {
 	public IProcessingInfo generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, IChromatogramReportSettings chromatogramReportSettings, IProgressMonitor monitor) {
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 100 * chromatograms.size());
-		ReportSettings settings;
-		if(chromatogramReportSettings instanceof ReportSettings) {
-			settings = (ReportSettings)chromatogramReportSettings;
+		ReportSettingsProfile settings;
+		if(chromatogramReportSettings instanceof ReportSettingsProfile) {
+			settings = (ReportSettingsProfile)chromatogramReportSettings;
 		} else {
-			settings = new ReportSettings();
+			settings = new ReportSettingsProfile();
 		}
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		try {
 			for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
-				ReportConverterPDF pdfSupport = new ReportConverterPDF(settings);
+				ProfilePDF pdfSupport = new ProfilePDF(settings);
 				if(append && file.exists()) {
 					File newFile = File.createTempFile("report", ".pdf");
 					newFile.deleteOnExit();

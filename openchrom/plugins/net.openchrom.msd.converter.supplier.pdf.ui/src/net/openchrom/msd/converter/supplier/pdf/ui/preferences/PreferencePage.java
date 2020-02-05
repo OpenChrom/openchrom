@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 Lablicate GmbH.
+ * Copyright (c) 2012, 2020 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -11,8 +11,10 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.ui.preferences;
 
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.LabelFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpinnerFieldEditor;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
@@ -38,10 +40,18 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	@Override
 	protected void createFieldEditors() {
 
-		addField(new SpinnerFieldEditor(PreferenceSupplier.P_NUMBER_IMAGE_PAGES, "Number Images Pages", PreferenceSupplier.MIN_NUMBER_IMAGE_PAGES, PreferenceSupplier.MAX_NUMBER_IMAGE_PAGES, getFieldEditorParent()));
-		//
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new FileFieldEditor(PreferenceSupplier.P_REPORT_BANNER, "Report Banner (*.jpg) [1200x164 px, 600 dpi]", getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceSupplier.P_REPORT_SLOGAN, "Report Slogan", getFieldEditorParent()));
+		//
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new LabelFieldEditor("Generic Report", getFieldEditorParent()));
+		addField(new SpinnerFieldEditor(PreferenceSupplier.P_NUMBER_IMAGE_PAGES, "Number Images Pages", PreferenceSupplier.MIN_NUMBER_IMAGE_PAGES, PreferenceSupplier.MAX_NUMBER_IMAGE_PAGES, getFieldEditorParent()));
+		//
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new LabelFieldEditor("Profile Report", getFieldEditorParent()));
+		addField(new StringFieldEditor(PreferenceSupplier.P_REPORT_METHOD, "Report Method", getFieldEditorParent()));
+		addField(new SpinnerFieldEditor(PreferenceSupplier.P_NUMBER_LARGEST_PEAKS, "Number Largest Peaks", PreferenceSupplier.MIN_NUMBER_LARGEST_PEAKS, PreferenceSupplier.MAX_NUMBER_LARGEST_PEAKS, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_PRINT_ALL_TARGETS, "Print all targets", getFieldEditorParent()));
 	}
 }

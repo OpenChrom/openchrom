@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.openchrom.msd.converter.supplier.pdf.preferences.PreferenceSupplier;
 
-public class ReportSettings extends DefaultChromatogramReportSettings {
+public class ReportSettingsGeneric extends DefaultChromatogramReportSettings {
 
 	@IntSettingsProperty(maxValue = PreferenceSupplier.MAX_NUMBER_IMAGE_PAGES, minValue = PreferenceSupplier.MIN_NUMBER_IMAGE_PAGES)
 	@JsonProperty(value = "Number Images per Pages", defaultValue = "" + PreferenceSupplier.DEF_NUMBER_IMAGE_PAGES)
