@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - paint comment on chart
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
@@ -381,11 +382,15 @@ public class PeakDetectorControl extends Composite {
 			detectorRange.setRetentionTimeStop(getRetentionTime(retentionTimeStop.getText()));
 			detectorRange.setTraces(peakDetectorListUtil.extractTraces(traces.getText()));
 			DetectorSetting detectorSetting = peakProcessSettings.getSelectedDetectorSetting();
+			String label;
 			if(detectorSetting != null) {
 				detectorRange.setDetectorType(detectorSetting.getDetectorType());
 				detectorRange.setOptimizeRange(detectorSetting.isOptimizeRange());
+				label = detectorSetting.getComment();
+			} else {
+				label = null;
 			}
-			peakDetectorChart.update(detectorRange);
+			peakDetectorChart.update(detectorRange, label);
 		}
 	}
 

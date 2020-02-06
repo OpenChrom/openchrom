@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - add support for comments
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
@@ -20,6 +21,7 @@ public class DetectorSetting extends AbstractSetting {
 	private String traces = "";
 	private boolean optimizeRange = false;
 	private String referenceIdentifier = ""; // Used for relative retention time
+	private String comment = "";
 
 	public void copyFrom(DetectorSetting setting) {
 
@@ -109,5 +111,15 @@ public class DetectorSetting extends AbstractSetting {
 	public String toString() {
 
 		return "DetectorSetting [startRetentionTime=" + getStartRetentionTime() + ", stopRetentionTime=" + getStopRetentionTime() + ", detectorType=" + detectorType + ", traces=" + traces + ", optimizeRange=" + optimizeRange + ", referenceIdentifier=" + referenceIdentifier + "]";
+	}
+
+	public String getComment() {
+
+		return comment;
+	}
+
+	public void setComment(String comment) {
+
+		this.comment = comment;
 	}
 }

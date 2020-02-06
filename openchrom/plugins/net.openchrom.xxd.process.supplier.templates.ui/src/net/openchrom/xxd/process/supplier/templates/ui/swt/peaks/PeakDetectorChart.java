@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - add support for comments
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
@@ -36,11 +37,14 @@ import org.eclipse.chemclipse.ux.extension.xxd.ui.support.DisplayType;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.ChromatogramChartSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.PeakChartSupport;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.ICustomPaintListener;
 import org.eclipse.swtchart.IPlotArea;
 import org.eclipse.swtchart.Range;
 import org.eclipse.swtchart.extensions.core.BaseChart;
@@ -77,6 +81,7 @@ public class PeakDetectorChart extends ChromatogramChart {
 	private PeakChartSupport peakChartSupport = new PeakChartSupport();
 	//
 	private DetectorRange detectorRange;
+	private String title;
 
 	public PeakDetectorChart(Composite parent, int style) {
 		super(parent, style);
@@ -85,12 +90,19 @@ public class PeakDetectorChart extends ChromatogramChart {
 
 	public void update(DetectorRange detectorRange) {
 
+		update(detectorRange, null);
+	}
+
+	public void update(DetectorRange detectorRange, String title) {
+
 		this.detectorRange = detectorRange;
+		this.title = title;
 		selectedRangeX = null;
 		selectedRangeY = null;
 		updateDetectorRange();
 	}
 
+	@Override
 	public void handleMouseDownEvent(Event event) {
 
 		super.handleMouseDownEvent(event);
@@ -100,6 +112,7 @@ public class PeakDetectorChart extends ChromatogramChart {
 		}
 	}
 
+	@Override
 	public void handleMouseMoveEvent(Event event) {
 
 		super.handleMouseMoveEvent(event);
@@ -110,6 +123,7 @@ public class PeakDetectorChart extends ChromatogramChart {
 		}
 	}
 
+	@Override
 	public void handleMouseUpEvent(Event event) {
 
 		super.handleMouseUpEvent(event);
@@ -139,6 +153,20 @@ public class PeakDetectorChart extends ChromatogramChart {
 		IPlotArea plotArea = getBaseChart().getPlotArea();
 		baselineSelectionPaintListener = new BaselineSelectionPaintListener();
 		plotArea.addCustomPaintListener(baselineSelectionPaintListener);
+		plotArea.addCustomPaintListener(new ICustomPaintListener() {
+
+			@Override
+			public void paintControl(PaintEvent pe) {
+
+				if(title != null && !title.isEmpty()) {
+					GC gc = pe.gc;
+					gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_BLACK));
+					Point extent = gc.stringExtent(title);
+					Point size = plotArea.getSize();
+					gc.drawString(title, (size.x / 2) - extent.x / 2, 5);
+				}
+			}
+		});
 		//
 		getBaseChart().addCustomRangeSelectionHandler(new ICustomSelectionHandler() {
 

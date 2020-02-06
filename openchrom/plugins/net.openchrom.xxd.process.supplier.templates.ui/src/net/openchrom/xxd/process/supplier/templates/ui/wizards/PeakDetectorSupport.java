@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - maximize shell
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
@@ -24,7 +25,15 @@ public class PeakDetectorSupport {
 	public void addPeaks(Shell shell, PeakProcessSettings processSettings) {
 
 		PeakDetectorWizard wizard = new PeakDetectorWizard(processSettings);
-		WizardDialog wizardDialog = new WizardDialog(shell, wizard);
+		WizardDialog wizardDialog = new WizardDialog(shell, wizard) {
+
+			@Override
+			protected void constrainShellSize() {
+
+				super.constrainShellSize();
+				getShell().setMaximized(true);
+			}
+		};
 		wizardDialog.setMinimumPageSize(PeakDetectorWizard.DEFAULT_WIDTH, PeakDetectorWizard.DEFAULT_HEIGHT);
 		//
 		IProcessingInfo processingInfo = processSettings.getProcessingInfo();

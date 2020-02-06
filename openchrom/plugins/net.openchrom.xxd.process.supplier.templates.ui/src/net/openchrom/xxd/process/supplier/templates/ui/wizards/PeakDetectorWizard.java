@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - no need for progressmonitor
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
@@ -27,7 +28,7 @@ public class PeakDetectorWizard extends Wizard {
 	private int stopRetentionTime;
 
 	public PeakDetectorWizard(PeakProcessSettings processSettings) {
-		setNeedsProgressMonitor(true);
+		setNeedsProgressMonitor(false);
 		setWindowTitle(PeakDetectorSupport.DESCRIPTION);
 		//
 		this.processSettings = processSettings;

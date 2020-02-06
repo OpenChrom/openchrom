@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - add support for comments
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt;
 
@@ -18,6 +19,8 @@ import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakDetectorComparator;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakDetectorEditingSupport;
@@ -32,6 +35,7 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 	private PeakDetectorLabelProvider labelProvider = new PeakDetectorLabelProvider();
 	private PeakDetectorComparator tableComparator = new PeakDetectorComparator();
 	private PeakDetectorFilter listFilter = new PeakDetectorFilter();
+	private List<Listener> listeners;
 
 	public PeakDetectorListUI(Composite parent, int style) {
 		super(parent, style);
@@ -73,7 +77,25 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
 			} else if(label.equals(PeakDetectorLabelProvider.REFERENCE_IDENTIFIER)) {
 				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
+			} else if(label.equals(PeakDetectorLabelProvider.COMMENT)) {
+				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
 			}
 		}
+	}
+
+	@Override
+	protected void internalRefresh(Object element) {
+
+		super.internalRefresh(element);
+		if(listeners != null) {
+			for(Listener listener : listeners) {
+				listener.handleEvent(new Event());
+			}
+		}
+	}
+
+	public void setListener(List<Listener> listeners) {
+
+		this.listeners = listeners;
 	}
 }

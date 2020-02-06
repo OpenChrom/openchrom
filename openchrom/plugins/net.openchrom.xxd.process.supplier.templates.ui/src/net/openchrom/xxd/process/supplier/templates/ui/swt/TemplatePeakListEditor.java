@@ -151,6 +151,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
 		listUI.applySettings(tableSettings);
+		listUI.setListener(listeners);
 		//
 		setTableViewerInput();
 	}

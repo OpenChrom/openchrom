@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - add support for comments
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
@@ -29,6 +30,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 	private String traces = "";
 	private boolean optimizeRange = false;
 	private String referenceIdentifier = "";
+	private String comment = "";
 
 	@Override
 	public IStatus validate(Object value) {
@@ -73,6 +75,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 						//
 						optimizeRange = parseBoolean(values, 4, false);
 						referenceIdentifier = parseString(values, 5, "");
+						comment = parseString(values, 6, "");
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -98,6 +101,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 		setting.setTraces(traces);
 		setting.setOptimizeRange(optimizeRange);
 		setting.setReferenceIdentifier(referenceIdentifier);
+		setting.setComment(comment);
 		return setting;
 	}
 }

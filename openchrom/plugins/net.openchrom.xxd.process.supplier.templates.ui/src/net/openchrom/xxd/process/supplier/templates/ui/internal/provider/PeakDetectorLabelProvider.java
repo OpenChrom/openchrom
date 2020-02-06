@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - add support for comments
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
@@ -29,6 +30,7 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 	public static final String TRACES = "Traces";
 	public static final String OPTIMIZE_RANGE = "Optimize Range";
 	public static final String REFERENCE_IDENTIFIER = "Reference Identifier";
+	public static final String COMMENT = "Comment";
 	//
 	public static final int INDEX_OPTIMIZE_RANGE = 4;
 	//
@@ -40,7 +42,8 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 			DETECTOR_TYPE, //
 			TRACES, //
 			OPTIMIZE_RANGE, //
-			REFERENCE_IDENTIFIER //
+			REFERENCE_IDENTIFIER, //
+			COMMENT//
 	};
 	public static final int[] BOUNDS = { //
 			100, //
@@ -48,7 +51,8 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 			50, //
 			100, //
 			30, //
-			150 //
+			150, //
+			200//
 	};
 
 	@Override
@@ -91,6 +95,8 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 				case 5:
 					text = setting.getReferenceIdentifier();
 					break;
+				case 6:
+					return setting.getComment();
 				default:
 					text = "n.v.";
 			}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - add support for comments
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
@@ -63,6 +64,8 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 					return setting.isOptimizeRange();
 				case PeakDetectorLabelProvider.REFERENCE_IDENTIFIER:
 					return setting.getReferenceIdentifier();
+				case PeakDetectorLabelProvider.COMMENT:
+					return setting.getComment();
 			}
 		}
 		return false;
@@ -95,8 +98,12 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 					String referenceIdentifier = ((String)value).trim();
 					setting.setReferenceIdentifier(referenceIdentifier);
 					break;
+				case PeakDetectorLabelProvider.COMMENT:
+					String comment = ((String)value).trim();
+					setting.setComment(comment);
+					break;
 			}
-			tableViewer.refresh();
+			tableViewer.refresh(element);
 		}
 	}
 }
