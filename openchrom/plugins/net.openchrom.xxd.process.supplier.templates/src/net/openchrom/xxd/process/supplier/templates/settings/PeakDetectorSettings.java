@@ -52,6 +52,8 @@ public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implem
 			RE_TEXT, // Reference Identifier
 			isMultiLine = true)
 	private String detectorSettings = "";
+	@JsonProperty(value = "Use Comments As Names", defaultValue = "false")
+	private boolean useCommentAsNames;
 
 	public void setDetectorSettings(String detectorSettings) {
 
@@ -86,5 +88,15 @@ public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implem
 		}
 		//
 		return settings;
+	}
+
+	public boolean isUseCommentAsNames() {
+
+		return useCommentAsNames;
+	}
+
+	public void setUseCommentAsNames(boolean useCommentAsNames) {
+
+		this.useCommentAsNames = useCommentAsNames;
 	}
 }

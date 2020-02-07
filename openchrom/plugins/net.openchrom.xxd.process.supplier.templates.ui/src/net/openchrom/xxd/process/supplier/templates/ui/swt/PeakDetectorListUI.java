@@ -19,8 +19,6 @@ import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakDetectorComparator;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakDetectorEditingSupport;
@@ -35,7 +33,7 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 	private PeakDetectorLabelProvider labelProvider = new PeakDetectorLabelProvider();
 	private PeakDetectorComparator tableComparator = new PeakDetectorComparator();
 	private PeakDetectorFilter listFilter = new PeakDetectorFilter();
-	private List<Listener> listeners;
+	private Runnable updateListener;
 
 	public PeakDetectorListUI(Composite parent, int style) {
 		super(parent, style);
@@ -87,15 +85,13 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 	protected void internalRefresh(Object element) {
 
 		super.internalRefresh(element);
-		if(listeners != null) {
-			for(Listener listener : listeners) {
-				listener.handleEvent(new Event());
-			}
+		if(updateListener != null) {
+			updateListener.run();
 		}
 	}
 
-	public void setListener(List<Listener> listeners) {
+	public void setListener(Runnable runnable) {
 
-		this.listeners = listeners;
+		this.updateListener = runnable;
 	}
 }

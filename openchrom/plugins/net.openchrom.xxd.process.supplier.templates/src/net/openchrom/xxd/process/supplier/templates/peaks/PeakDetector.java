@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetec
 import org.eclipse.chemclipse.chromatogram.peak.detector.core.AbstractPeakDetector;
 import org.eclipse.chemclipse.chromatogram.peak.detector.settings.IPeakDetectorSettings;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
+import org.eclipse.chemclipse.model.core.AbstractPeak;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
@@ -84,7 +85,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 				IChromatogram chromatogram = chromatogramSelection.getChromatogram();
 				PeakDetectorSettings peakDetectorSettings = (PeakDetectorSettings)settings;
 				for(DetectorSetting detectorSetting : peakDetectorSettings.getDetectorSettingsList()) {
-					setPeakBySettings(chromatogram, detectorSetting);
+					setPeakBySettings(chromatogram, detectorSetting, peakDetectorSettings.isUseCommentAsNames());
 				}
 			} else {
 				processingInfo.addErrorMessage(PeakDetectorSettings.DESCRIPTION, "The settings instance is wrong.");
@@ -93,20 +94,26 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		return processingInfo;
 	}
 
-	private void setPeakBySettings(IChromatogram<? extends IPeak> chromatogram, DetectorSetting detectorSetting) {
+	private void setPeakBySettings(IChromatogram<? extends IPeak> chromatogram, DetectorSetting detectorSetting, boolean setCommentAsName) {
 
 		RetentionTimeRange retentionTimeRange = peakSupport.getRetentionTimeRange(chromatogram.getPeaks(), detectorSetting, detectorSetting.getReferenceIdentifier());
-		setPeakByRetentionTimeRange(chromatogram, retentionTimeRange, detectorSetting);
+		setPeakByRetentionTimeRange(chromatogram, retentionTimeRange, detectorSetting, setCommentAsName);
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setPeakByRetentionTimeRange(IChromatogram chromatogram, RetentionTimeRange retentionTimeRange, DetectorSetting detectorSetting) {
+	private void setPeakByRetentionTimeRange(IChromatogram chromatogram, RetentionTimeRange retentionTimeRange, DetectorSetting detectorSetting, boolean setCommentAsName) {
 
 		int startScan = chromatogram.getScanNumber(retentionTimeRange.getStartRetentionTime());
 		int stopScan = chromatogram.getScanNumber(retentionTimeRange.getStopRetentionTime());
 		Set<Integer> traces = listUtil.extractTraces(detectorSetting.getTraces());
 		IPeak peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), traces);
 		if(peak != null) {
+			if(setCommentAsName) {
+				if(peak instanceof AbstractPeak) {
+					AbstractPeak abstractPeak = (AbstractPeak)peak;
+					abstractPeak.setName(detectorSetting.getComment());
+				}
+			}
 			chromatogram.addPeak(peak);
 		}
 	}

@@ -30,6 +30,7 @@ import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.Abstr
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE_ALL;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE_ALL_TOOLTIP;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE_TOOLTIP;
+import static org.eclipse.chemclipse.support.ui.swt.ControlBuilder.checkbox;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +55,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -62,7 +64,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
@@ -91,21 +92,23 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	private List<Button> buttons = new ArrayList<>();
 	private SearchSupportUI searchSupportUI;
 	private ProcessorPreferences<PeakDetectorSettings> preferences;
+	private boolean useCommentAsNames;
 
 	public TemplatePeakListEditor(Composite parent, ProcessorPreferences<PeakDetectorSettings> preferences, PeakDetectorSettings settings) {
 		this.preferences = preferences;
 		if(settings != null) {
 			this.settings.load(settings.getDetectorSettings());
+			useCommentAsNames = settings.isUseCommentAsNames();
 		}
 		composite = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout(NUMBER_COLUMNS, false);
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		composite.setLayout(gridLayout);
-		createLabelSection(composite);
 		createSearchSection(composite);
 		createTableSection(composite);
 		createButtonGroup(composite);
+		createLabelSection(composite);
 	}
 
 	private void createSearchSection(Composite parent) {
@@ -127,12 +130,28 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 
 	private void createLabelSection(Composite parent) {
 
-		Label label = new Label(parent, SWT.LEFT);
-		label.setText("");
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = NUMBER_COLUMNS;
-		label.setLayoutData(gridData);
+		if(preferences != null && isPekDetector(preferences.getSupplier().getId())) {
+			Button button = checkbox(composite, "Use Comment as Names", useCommentAsNames);
+			GridData gridData = new GridData();
+			gridData.horizontalAlignment = SWT.LEFT;
+			gridData.grabExcessHorizontalSpace = true;
+			gridData.horizontalSpan = NUMBER_COLUMNS;
+			button.setLayoutData(gridData);
+			button.addSelectionListener(new SelectionListener() {
+
+				@Override
+				public void widgetSelected(SelectionEvent se) {
+
+					useCommentAsNames = button.getSelection();
+					notifyListener();
+				}
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent se) {
+
+				}
+			});
+		}
 	}
 
 	private void createTableSection(Composite parent) {
@@ -151,7 +170,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
 		listUI.applySettings(tableSettings);
-		listUI.setListener(listeners);
+		listUI.setListener(this::notifyListener);
 		//
 		setTableViewerInput();
 	}
@@ -340,6 +359,11 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	private void setTableViewerInput() {
 
 		listUI.setInput(settings);
+		notifyListener();
+	}
+
+	private void notifyListener() {
+
 		for(Listener listener : listeners) {
 			listener.handleEvent(new Event());
 		}
@@ -435,10 +459,20 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	public IStatus validate() {
 
 		String id = preferences.getSupplier().getId();
-		if(preferences != null && id.equals("PeakDetectorMSD.net.openchrom.xxd.process.supplier.templates.peaks.detector.msd") && settings.isEmpty()) {
+		if(preferences != null && isPekDetector(id) && settings.isEmpty()) {
 			return ValidationStatus.error("At least one item is required");
 		}
 		return ValidationStatus.ok();
+	}
+
+	/**
+	 * 
+	 * @param id
+	 * @return <code>true</code> if this is the peakdetector (in contrast to the UI version)
+	 */
+	private boolean isPekDetector(String id) {
+
+		return id.equals("PeakDetectorMSD.net.openchrom.xxd.process.supplier.templates.peaks.detector.msd");
 	}
 
 	@Override
@@ -447,6 +481,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		if(preferences != null) {
 			PeakDetectorSettings s = new PeakDetectorSettings();
 			s.setDetectorSettings(settings.save());
+			s.setUseCommentAsNames(useCommentAsNames);
 			return preferences.getSerialization().toString(s);
 		}
 		return "";
