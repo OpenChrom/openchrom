@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - use retention time range interface
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.support;
 
@@ -24,6 +25,7 @@ import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.support.IRetentionTimeRange;
 import org.eclipse.chemclipse.model.support.IScanRange;
 import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
@@ -43,7 +45,7 @@ public class PeakSupport {
 	private static final Logger logger = Logger.getLogger(PeakSupport.class);
 	private TargetExtendedComparator comparator = new TargetExtendedComparator(SortOrder.DESC);
 
-	public RetentionTimeRange getRetentionTimeRange(List<? extends IPeak> peaks, AbstractSetting setting, String referenceIdentifier) {
+	public IRetentionTimeRange getRetentionTimeRange(List<? extends IPeak> peaks, AbstractSetting setting, String referenceIdentifier) {
 
 		int startRetentionTime = setting.getStartRetentionTime();
 		int stopRetentionTime = setting.getStopRetentionTime();

@@ -17,6 +17,7 @@ import java.text.DecimalFormat;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.model.support.IRetentionTimeRange;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -45,7 +46,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
-import net.openchrom.xxd.process.supplier.templates.model.RetentionTimeRange;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePage;
@@ -315,7 +315,7 @@ public class PeakDetectorControl extends Composite {
 				DetectorSetting detectorSetting = peakProcessSettings.getSelectedDetectorSetting();
 				int retentionTimeDeltaLeft = (int)(PreferenceSupplier.getUiDetectorDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
 				int retentionTimeDeltaRight = (int)(PreferenceSupplier.getUiDetectorDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-				RetentionTimeRange retentionTimeRange = peakSupport.getRetentionTimeRange(chromatogram.getPeaks(), detectorSetting, detectorSetting.getReferenceIdentifier());
+				IRetentionTimeRange retentionTimeRange = peakSupport.getRetentionTimeRange(chromatogram.getPeaks(), detectorSetting, detectorSetting.getReferenceIdentifier());
 				startRetentionTime = retentionTimeRange.getStartRetentionTime() - retentionTimeDeltaLeft;
 				stopRetentionTime = detectorSetting.getStopRetentionTime() + retentionTimeDeltaRight;
 				traceSelection = detectorSetting.getTraces();

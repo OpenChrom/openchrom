@@ -33,6 +33,7 @@ import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.identifier.LibraryInformation;
 import org.eclipse.chemclipse.model.implementation.IdentificationTarget;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.model.support.IRetentionTimeRange;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -42,7 +43,6 @@ import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
-import net.openchrom.xxd.process.supplier.templates.model.RetentionTimeRange;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
@@ -97,7 +97,7 @@ public abstract class AbstractPeakIdentifier {
 	private void identifyPeak(List<? extends IPeak> peaks, IdentifierSetting identifierSetting) {
 
 		PeakSupport retentionTimeSupport = new PeakSupport();
-		RetentionTimeRange retentionTimeRange = retentionTimeSupport.getRetentionTimeRange(peaks, identifierSetting, identifierSetting.getReferenceIdentifier());
+		IRetentionTimeRange retentionTimeRange = retentionTimeSupport.getRetentionTimeRange(peaks, identifierSetting, identifierSetting.getReferenceIdentifier());
 		int startRetentionTime = retentionTimeRange.getStartRetentionTime();
 		int stopRetentionTime = retentionTimeRange.getStopRetentionTime();
 		//

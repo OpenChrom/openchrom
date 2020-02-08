@@ -26,12 +26,12 @@ import org.eclipse.chemclipse.model.core.AbstractPeak;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.model.support.IRetentionTimeRange;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
-import net.openchrom.xxd.process.supplier.templates.model.RetentionTimeRange;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
@@ -96,12 +96,12 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 
 	private void setPeakBySettings(IChromatogram<? extends IPeak> chromatogram, DetectorSetting detectorSetting, boolean setCommentAsName) {
 
-		RetentionTimeRange retentionTimeRange = peakSupport.getRetentionTimeRange(chromatogram.getPeaks(), detectorSetting, detectorSetting.getReferenceIdentifier());
+		IRetentionTimeRange retentionTimeRange = peakSupport.getRetentionTimeRange(chromatogram.getPeaks(), detectorSetting, detectorSetting.getReferenceIdentifier());
 		setPeakByRetentionTimeRange(chromatogram, retentionTimeRange, detectorSetting, setCommentAsName);
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setPeakByRetentionTimeRange(IChromatogram chromatogram, RetentionTimeRange retentionTimeRange, DetectorSetting detectorSetting, boolean setCommentAsName) {
+	private void setPeakByRetentionTimeRange(IChromatogram chromatogram, IRetentionTimeRange retentionTimeRange, DetectorSetting detectorSetting, boolean setCommentAsName) {
 
 		int startScan = chromatogram.getScanNumber(retentionTimeRange.getStartRetentionTime());
 		int stopScan = chromatogram.getScanNumber(retentionTimeRange.getStopRetentionTime());
