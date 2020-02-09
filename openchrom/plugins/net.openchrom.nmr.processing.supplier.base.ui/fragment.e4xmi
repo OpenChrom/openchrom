@@ -32,7 +32,7 @@
     </elements>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_qO-VUIgiEemJaOKd7Cy7Ww" featurename="snippets" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
-    <elements xsi:type="basic:InputPart" xmi:id="_whn_IIgiEemJaOKd7Cy7Ww" elementId="net.openchrom.nmr.processing.supplier.base.ui.inputpart.multispektrumanalysis" contributionURI="bundleclass://net.openchrom.nmr.processing.supplier.base.ui/net.openchrom.nmr.processing.supplier.base.ui.MultiSpectrumEditor" label="Multi Spektrum Analysis" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/chromatogramOverlay.gif" closeable="true"/>
+    <elements xsi:type="basic:Part" xmi:id="_whn_IIgiEemJaOKd7Cy7Ww" elementId="net.openchrom.nmr.processing.supplier.base.ui.inputpart.multispektrumanalysis" contributionURI="bundleclass://net.openchrom.nmr.processing.supplier.base.ui/net.openchrom.nmr.processing.supplier.base.ui.MultiSpectrumEditor" label="Multi Spektrum Analysis" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/chromatogramOverlay.gif" closeable="true"/>
     <elements xsi:type="basic:Part" xmi:id="_0rxAALgUEemNgNx3khJk0g" elementId="net.openchrom.nmr.processing.supplier.base.ui.part.batchjob" contributionURI="bundleclass://net.openchrom.nmr.processing.supplier.base.ui/net.openchrom.nmr.processing.supplier.base.ui.NMRBatchJob" label="BatchJob" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/batchprocess.gif"/>
   </fragments>
 </fragment:ModelFragments>
