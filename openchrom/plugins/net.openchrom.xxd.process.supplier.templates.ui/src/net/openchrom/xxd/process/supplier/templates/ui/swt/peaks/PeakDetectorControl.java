@@ -76,6 +76,7 @@ public class PeakDetectorControl extends Composite {
 	private TracesValidator tracesValidator = new TracesValidator();
 
 	public PeakDetectorControl(Composite parent, int style) {
+
 		super(parent, style);
 		createControl();
 	}
@@ -384,7 +385,7 @@ public class PeakDetectorControl extends Composite {
 			DetectorSetting detectorSetting = peakProcessSettings.getSelectedDetectorSetting();
 			String label;
 			if(detectorSetting != null) {
-				detectorRange.setDetectorType(detectorSetting.getDetectorType());
+				detectorRange.setDetectorType(detectorSetting.getDetectorType().name());
 				detectorRange.setOptimizeRange(detectorSetting.isOptimizeRange());
 				label = detectorSetting.getComment();
 			} else {

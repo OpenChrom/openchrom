@@ -8,7 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
- * Christoph Läubrich - adjust names of getter/setter
+ * Christoph Läubrich - adjust names of getter/setter, RE is no longer used
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.settings;
 
@@ -18,7 +18,6 @@ import java.util.List;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.AbstractPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
-import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,19 +37,6 @@ public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implem
 	 */
 	@JsonProperty(value = "Detector Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'")
-	@StringSettingsProperty(regExp = RE_START + //
-			RE_NUMBER + // Start RT
-			RE_SEPARATOR + //
-			RE_NUMBER + // Stop RT
-			RE_SEPARATOR + //
-			RE_DETECTOR_TYPE + // Detector Type
-			RE_SEPARATOR + //
-			RE_TRACES + // Traces
-			RE_SEPARATOR + //
-			RE_FLAG + // Optimize Range
-			RE_SEPARATOR + //
-			RE_TEXT, // Reference Identifier
-			isMultiLine = true)
 	private String detectorSettings = "";
 	@JsonProperty(value = "Use Comments As Names", defaultValue = "false")
 	private boolean useCommentAsNames;

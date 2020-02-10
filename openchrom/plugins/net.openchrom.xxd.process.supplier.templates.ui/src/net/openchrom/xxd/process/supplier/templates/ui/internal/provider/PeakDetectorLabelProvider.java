@@ -8,12 +8,13 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
- * Christoph Läubrich - add support for comments
+ * Christoph Läubrich - add support for comments, use PeakType instead of plain String
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import java.text.DecimalFormat;
 
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.text.ValueFormat;
@@ -84,8 +85,12 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 					text = decimalFormat.format(setting.getStopRetentionTimeMinutes());
 					break;
 				case 2:
-					text = setting.getDetectorType();
-					break;
+					PeakType detectorType = setting.getDetectorType();
+					if(detectorType != null) {
+						return detectorType.name();
+					} else {
+						return "";
+					}
 				case 3:
 					text = setting.getTraces();
 					break;

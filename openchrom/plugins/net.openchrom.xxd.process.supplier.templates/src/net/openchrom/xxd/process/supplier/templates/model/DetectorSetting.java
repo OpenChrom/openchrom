@@ -12,12 +12,11 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
+import org.eclipse.chemclipse.model.core.PeakType;
+
 public class DetectorSetting extends AbstractSetting {
 
-	public static final String DETECTOR_TYPE_BB = "BB";
-	public static final String DETECTOR_TYPE_VV = "VV";
-	//
-	private String detectorType = DETECTOR_TYPE_VV; // VV => include background: true
+	private PeakType detectorType = PeakType.VV; // VV => include background: true
 	private String traces = "";
 	private boolean optimizeRange = false;
 	private String referenceIdentifier = ""; // Used for relative retention time
@@ -35,12 +34,12 @@ public class DetectorSetting extends AbstractSetting {
 		}
 	}
 
-	public String getDetectorType() {
+	public PeakType getDetectorType() {
 
 		return detectorType;
 	}
 
-	public void setDetectorType(String detectorType) {
+	public void setDetectorType(PeakType detectorType) {
 
 		this.detectorType = detectorType;
 	}
@@ -73,38 +72,6 @@ public class DetectorSetting extends AbstractSetting {
 	public void setReferenceIdentifier(String referenceIdentifier) {
 
 		this.referenceIdentifier = referenceIdentifier;
-	}
-
-	public boolean isIncludeBackground() {
-
-		return (DETECTOR_TYPE_VV.equals(detectorType)) ? true : false;
-	}
-
-	@Override
-	public int hashCode() {
-
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + getStartRetentionTime();
-		result = prime * result + getStopRetentionTime();
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-
-		if(this == obj)
-			return true;
-		if(obj == null)
-			return false;
-		if(getClass() != obj.getClass())
-			return false;
-		DetectorSetting other = (DetectorSetting)obj;
-		if(getStartRetentionTime() != other.getStartRetentionTime())
-			return false;
-		if(getStopRetentionTime() != other.getStopRetentionTime())
-			return false;
-		return true;
 	}
 
 	@Override

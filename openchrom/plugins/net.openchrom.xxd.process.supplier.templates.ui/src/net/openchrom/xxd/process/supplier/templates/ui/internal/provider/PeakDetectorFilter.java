@@ -1,6 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
- * 
+ * Copyright (c) 2018, 2020
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,9 +7,11 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - use PeakType instead of plain String
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
@@ -36,17 +37,19 @@ public class PeakDetectorFilter extends ViewerFilter {
 		//
 		if(element instanceof DetectorSetting) {
 			DetectorSetting setting = (DetectorSetting)element;
-			String detectorType = setting.getDetectorType();
+			PeakType detectorType = setting.getDetectorType();
 			String traces = setting.getTraces();
 			//
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
-				detectorType = detectorType.toLowerCase();
 				traces = traces.toLowerCase();
 			}
 			//
-			if(detectorType.contains(searchText)) {
-				return true;
+			if(detectorType != null) {
+				if(caseSensitive) {
+					return detectorType.name().contains(searchText);
+				}
+				return detectorType.name().toLowerCase().contains(searchText);
 			}
 			//
 			if(traces.contains(searchText)) {

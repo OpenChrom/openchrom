@@ -8,10 +8,15 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
- * Christoph Läubrich - add support for comments
+ * Christoph Läubrich - add support for comments,  use PeakType instead of plain String
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
+
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
@@ -19,6 +24,7 @@ import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 
 public class PeakDetectorValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
+	public static final Set<PeakType> USEFULL_TYPES = Collections.unmodifiableSet(EnumSet.of(PeakType.BB, PeakType.VV, PeakType.DD));
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = PeakDetectorListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = PeakDetectorListUtil.SEPARATOR_ENTRY;
@@ -26,7 +32,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 	//
 	private double startRetentionTimeMinutes = 0;
 	private double stopRetentionTimeMinutes = 0;
-	private String detectorType = "";
+	private PeakType detectorType;
 	private String traces = "";
 	private boolean optimizeRange = false;
 	private String referenceIdentifier = "";
@@ -64,9 +70,16 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 							message = "The stop retention time must be greater then the start retention time.";
 						}
 						//
-						detectorType = parseString(values, 2);
-						if(!DetectorSetting.DETECTOR_TYPE_BB.equals(detectorType) && !DetectorSetting.DETECTOR_TYPE_VV.equals(detectorType)) {
-							message = "The detector type must be: '" + DetectorSetting.DETECTOR_TYPE_BB + "' or '" + DetectorSetting.DETECTOR_TYPE_VV + "'";
+						detectorType = parseType(parseString(values, 2));
+						if(detectorType == null) {
+							StringBuilder sb = new StringBuilder();
+							for(PeakType peakType : USEFULL_TYPES) {
+								if(sb.length() > 0) {
+									sb.append(", ");
+								}
+								sb.append(peakType.name());
+							}
+							message = "The detector type must be one of " + sb;
 						}
 						//
 						String traceValues = parseString(values, 3);
@@ -90,6 +103,21 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 		} else {
 			return ValidationStatus.ok();
 		}
+	}
+
+	public static PeakType parseType(String parseString) {
+
+		if(parseString != null) {
+			try {
+				PeakType type = PeakType.valueOf(parseString.toUpperCase());
+				if(USEFULL_TYPES.contains(type)) {
+					return type;
+				}
+			} catch(RuntimeException e) {
+				// invalid!
+			}
+		}
+		return null;
 	}
 
 	public DetectorSetting getSetting() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - use PeakType instead of plain String
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.io;
 
@@ -19,6 +20,7 @@ import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverte
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -49,7 +51,7 @@ public class DetectorExport extends AbstractChromatogramExportConverter implemen
 			DetectorSetting detectorSetting = new DetectorSetting();
 			detectorSetting.setStartRetentionTime(peakModel.getStartRetentionTime() - deltaLeft);
 			detectorSetting.setStopRetentionTime(peakModel.getStopRetentionTime() + deltaRight);
-			detectorSetting.setDetectorType(DetectorSetting.DETECTOR_TYPE_VV);
+			detectorSetting.setDetectorType(PeakType.VV);
 			detectorSetting.setTraces(extractTraces(peak, useTraces, numberTraces));
 			detectorSetting.setOptimizeRange(optimizeRange);
 			detectorSetting.setReferenceIdentifier("");

@@ -8,15 +8,20 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
- * Christoph Läubrich - add support for comments
+ * Christoph Läubrich - add support for comments, use combobox editor
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
+import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
@@ -28,10 +33,17 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 	private String column;
 
 	public PeakDetectorEditingSupport(ExtendedTableViewer tableViewer, String column) {
+
 		super(tableViewer);
 		this.column = column;
 		if(column.equals(PeakDetectorLabelProvider.OPTIMIZE_RANGE)) {
 			this.cellEditor = new CheckboxCellEditor(tableViewer.getTable());
+		} else if(column.equals(PeakDetectorLabelProvider.DETECTOR_TYPE)) {
+			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite)tableViewer.getControl());
+			ComboViewer comboViewer = editor.getViewer();
+			comboViewer.setContentProvider(ArrayContentProvider.getInstance());
+			comboViewer.setInput(PeakDetectorValidator.USEFULL_TYPES);
+			this.cellEditor = editor;
 		} else {
 			this.cellEditor = new TextCellEditor(tableViewer.getTable());
 		}
@@ -78,9 +90,8 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 			DetectorSetting setting = (DetectorSetting)element;
 			switch(column) {
 				case PeakDetectorLabelProvider.DETECTOR_TYPE:
-					String detectorType = ((String)value).trim();
-					if(!"".equals(detectorType) && (detectorType.equals(DetectorSetting.DETECTOR_TYPE_BB) || detectorType.equals(DetectorSetting.DETECTOR_TYPE_VV))) {
-						setting.setDetectorType(detectorType);
+					if(value instanceof PeakType) {
+						setting.setDetectorType((PeakType)value);
 					}
 					break;
 				case PeakDetectorLabelProvider.TRACES:
@@ -103,7 +114,7 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 					setting.setComment(comment);
 					break;
 			}
-			tableViewer.refresh(element);
+			tableViewer.update(element, null);
 		}
 	}
 }

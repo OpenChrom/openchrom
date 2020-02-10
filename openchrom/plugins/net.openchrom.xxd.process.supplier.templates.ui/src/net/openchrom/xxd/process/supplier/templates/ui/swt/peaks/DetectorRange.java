@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Christoph Läubrich - use PeakType instead of plain String
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
@@ -16,8 +17,7 @@ import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
-
-import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import org.eclipse.chemclipse.model.core.PeakType;
 
 public class DetectorRange {
 
@@ -25,7 +25,7 @@ public class DetectorRange {
 	private int retentionTimeStart = 0;
 	private int retentionTimeStop = 0;
 	private Set<Integer> traces = new HashSet<>();
-	private String detectorType = DetectorSetting.DETECTOR_TYPE_VV;
+	private String detectorType = PeakType.VV.name();
 	private boolean optimizeRange = true;
 
 	public IChromatogram<? extends IPeak> getChromatogram() {
@@ -80,7 +80,7 @@ public class DetectorRange {
 
 	public boolean isIncludeBackground() {
 
-		return (DetectorSetting.DETECTOR_TYPE_VV.equals(detectorType)) ? true : false;
+		return (PeakType.VV.name().equals(detectorType)) ? true : false;
 	}
 
 	public boolean isOptimizeRange() {
