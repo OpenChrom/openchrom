@@ -21,8 +21,11 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
+import net.openchrom.xxd.process.supplier.templates.detector.DefaultTemplatePeakDetector;
+
 public class Activator implements BundleActivator {
 
+	private static final DefaultTemplatePeakDetector FALLBACK_DETECTOR = new DefaultTemplatePeakDetector();
 	private static BundleContext context;
 	private static ServiceTracker<ProcessorFactory, ProcessorFactory> serviceTracker;
 
@@ -58,8 +61,11 @@ public class Activator implements BundleActivator {
 
 		ProcessorFactory service = serviceTracker.getService();
 		if(service != null) {
-			return service.getProcessors(ProcessorFactory.genericClass(TemplatePeakDetector.class), (always, ever) -> true);
+			Collection<TemplatePeakDetector<?>> collection = service.getProcessors(ProcessorFactory.genericClass(TemplatePeakDetector.class), (always, ever) -> true);
+			if(!collection.isEmpty()) {
+				return collection;
+			}
 		}
-		return Collections.emptyList();
+		return Collections.singleton(FALLBACK_DETECTOR);
 	}
 }
