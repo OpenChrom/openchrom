@@ -36,6 +36,7 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 	private Runnable updateListener;
 
 	public PeakDetectorListUI(Composite parent, int style) {
+
 		super(parent, style);
 		createColumns();
 	}
@@ -85,6 +86,15 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 	protected void internalRefresh(Object element) {
 
 		super.internalRefresh(element);
+		if(updateListener != null) {
+			updateListener.run();
+		}
+	}
+
+	@Override
+	public void update(Object element, String[] properties) {
+
+		super.update(element, properties);
 		if(updateListener != null) {
 			updateListener.run();
 		}
