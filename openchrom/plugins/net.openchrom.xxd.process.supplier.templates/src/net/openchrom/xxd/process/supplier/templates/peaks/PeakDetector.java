@@ -49,6 +49,8 @@ import org.eclipse.chemclipse.msd.model.detector.TemplatePeakDetector;
 import org.eclipse.chemclipse.msd.model.implementation.ChromatogramPeakMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.Activator;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
@@ -99,7 +101,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 	private IProcessingInfo applyDetector(IChromatogramSelection<? extends IPeak, ?> chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
 
 		@SuppressWarnings("unchecked")
-		IProcessingInfo<?> processingInfo = super.validate(chromatogramSelection, settings, monitor);
+		IProcessingInfo<?> processingInfo = super.validate(chromatogramSelection, settings, new NullProgressMonitor());
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakDetectorSettings) {
 				IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
@@ -114,12 +116,14 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 					// detect peaks
 					Collection<TemplatePeakDetector<?>> detectors = Activator.getDetectors();
 					List<Map<DetectorSettingTemplatePeak, IPeakModel>> peaks = new ArrayList<>();
+					Set<Entry<PeakType, List<DetectorSettingTemplatePeak>>> detectorSet = templates.entrySet();
+					SubMonitor subMonitor = SubMonitor.convert(monitor, detectorSet.size() * 100);
 					outer:
-					for(Entry<PeakType, List<DetectorSettingTemplatePeak>> entry : templates.entrySet()) {
+					for(Entry<PeakType, List<DetectorSettingTemplatePeak>> entry : detectorSet) {
 						PeakType peakType = entry.getKey();
 						for(TemplatePeakDetector<?> templatePeakDetector : detectors) {
 							if(templatePeakDetector.isDefaultFor(peakType)) {
-								peaks.add(templatePeakDetector.detectPeaks(chromatogram, entry.getValue(), null));
+								peaks.add(templatePeakDetector.detectPeaks(chromatogram, entry.getValue(), null, processingInfo, subMonitor.split(100)));
 								continue outer;
 							}
 						}
