@@ -24,7 +24,9 @@ import org.eclipse.chemclipse.msd.model.detector.TemplatePeakDetector;
 import org.eclipse.chemclipse.processing.DataCategory;
 import org.eclipse.chemclipse.processing.Processor;
 import org.eclipse.chemclipse.processing.ProcessorCategory;
+import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.detector.Detector;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.osgi.service.component.annotations.Component;
 
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
@@ -47,7 +49,7 @@ public class DefaultTemplatePeakDetector implements TemplatePeakDetector<Void> {
 	}
 
 	@Override
-	public <TPT extends TemplatePeak> Map<TPT, IPeakModel> detectPeaks(IChromatogram<?> chromatogram, Collection<TPT> templates, Void configuration) {
+	public <TPT extends TemplatePeak> Map<TPT, IPeakModel> detectPeaks(IChromatogram<?> chromatogram, Collection<TPT> templates, Void configuration, MessageConsumer messages, IProgressMonitor progressMonitor) {
 
 		LinkedHashMap<TPT, IPeakModel> result = new LinkedHashMap<>();
 		for(TPT templatePeak : templates) {
