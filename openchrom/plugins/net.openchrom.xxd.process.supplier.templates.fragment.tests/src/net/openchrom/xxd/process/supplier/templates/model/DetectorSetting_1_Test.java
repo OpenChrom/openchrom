@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
+import org.eclipse.chemclipse.model.core.PeakType;
+
 import junit.framework.TestCase;
 
 public class DetectorSetting_1_Test extends TestCase {
@@ -42,7 +44,7 @@ public class DetectorSetting_1_Test extends TestCase {
 
 	public void test3() {
 
-		assertEquals(DetectorSetting.DETECTOR_TYPE_VV, setting.getDetectorType());
+		assertEquals(PeakType.VV, setting.getDetectorType());
 	}
 
 	public void test4() {

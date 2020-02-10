@@ -130,7 +130,7 @@ public class DetectorConfigurationDialog extends Dialog {
 
 				TemplatePeakDetector<?> detector = selectedMap.get(element);
 				if(detector != null && detector.getConfigClass() != null) {
-					ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16);
+					return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16);
 				}
 				return null;
 			}
