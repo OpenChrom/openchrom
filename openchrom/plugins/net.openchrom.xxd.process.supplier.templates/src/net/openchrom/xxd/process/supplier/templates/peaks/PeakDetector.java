@@ -50,6 +50,7 @@ import org.eclipse.chemclipse.msd.model.implementation.ChromatogramPeakMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.Activator;
@@ -123,7 +124,15 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 						PeakType peakType = entry.getKey();
 						for(TemplatePeakDetector<?> templatePeakDetector : detectors) {
 							if(templatePeakDetector.isDefaultFor(peakType)) {
-								peaks.add(templatePeakDetector.detectPeaks(chromatogram, entry.getValue(), null, processingInfo, subMonitor.split(100)));
+								try {
+									peaks.add(templatePeakDetector.detectPeaks(chromatogram, entry.getValue(), null, processingInfo, subMonitor.split(100)));
+								} catch(OperationCanceledException e) {
+									processingInfo.addErrorMessage(PeakDetectorSettings.DESCRIPTION, "Operation was canceled");
+									return processingInfo;
+								} catch(InterruptedException e) {
+									Thread.currentThread().interrupt();
+									return processingInfo;
+								}
 								continue outer;
 							}
 						}
