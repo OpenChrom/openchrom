@@ -42,6 +42,20 @@ public class DetectorSetting_2_Test extends TestCase {
 		assertEquals(1.28d, setting.getStopRetentionTimeMinutes());
 	}
 
+<<<<<<< HEAD
+=======
+	public void test3() {
+
+		setting.setDetectorType(DetectorSetting.DETECTOR_TYPE_BB);
+		assertEquals("BB", setting.getDetectorType());
+		assertFalse(setting.isIncludeBackground());
+		//
+		setting.setDetectorType(DetectorSetting.DETECTOR_TYPE_VV);
+		assertEquals("VV", setting.getDetectorType());
+		assertTrue(setting.isIncludeBackground());
+	}
+
+>>>>>>> upstream/wavelet-peak-detector
 	public void test4() {
 
 		setting.setTraces("103, 104");

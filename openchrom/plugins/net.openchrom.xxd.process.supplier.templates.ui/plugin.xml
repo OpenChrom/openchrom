@@ -94,6 +94,7 @@
             peakDetectorName="Template Peak Detector UI (CSD)"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
       </PeakDetector>
+<<<<<<< HEAD
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">
@@ -111,5 +112,7 @@
                type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
          </adapter>
       </factory>
+=======
+>>>>>>> upstream/wavelet-peak-detector
    </extension>      
 </plugin>

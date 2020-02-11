@@ -22,7 +22,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.openchrom.msd.converter.supplier.pdf.preferences.PreferenceSupplier;
 
+<<<<<<< HEAD:openchrom/plugins/net.openchrom.msd.converter.supplier.pdf.ui/src/net/openchrom/msd/converter/supplier/pdf/ui/settings/ReportSettingsGeneric.java
 public class ReportSettingsGeneric extends DefaultChromatogramReportSettings {
+=======
+public class ReportSettings extends DefaultChromatogramReportSettings {
+>>>>>>> upstream/wavelet-peak-detector:openchrom/plugins/net.openchrom.msd.converter.supplier.pdf.ui/src/net/openchrom/msd/converter/supplier/pdf/ui/settings/ReportSettings.java
 
 	@IntSettingsProperty(maxValue = PreferenceSupplier.MAX_NUMBER_IMAGE_PAGES, minValue = PreferenceSupplier.MIN_NUMBER_IMAGE_PAGES)
 	@JsonProperty(value = "Number Images per Pages", defaultValue = "" + PreferenceSupplier.DEF_NUMBER_IMAGE_PAGES)

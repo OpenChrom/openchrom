@@ -1,5 +1,9 @@
 /*******************************************************************************
+<<<<<<< HEAD
  * Copyright (c) 2019, 2020 Lablicate GmbH.
+=======
+ * Copyright (c) 2019 Lablicate GmbH.
+>>>>>>> upstream/wavelet-peak-detector
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,7 +12,10 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+<<<<<<< HEAD
  * Christoph Läubrich - add support for comments
+=======
+>>>>>>> upstream/wavelet-peak-detector
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
@@ -37,14 +44,21 @@ import org.eclipse.chemclipse.ux.extension.xxd.ui.support.DisplayType;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.ChromatogramChartSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.PeakChartSupport;
 import org.eclipse.swt.SWT;
+<<<<<<< HEAD
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
+=======
+import org.eclipse.swt.graphics.Cursor;
+>>>>>>> upstream/wavelet-peak-detector
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtchart.IAxis;
+<<<<<<< HEAD
 import org.eclipse.swtchart.ICustomPaintListener;
+=======
+>>>>>>> upstream/wavelet-peak-detector
 import org.eclipse.swtchart.IPlotArea;
 import org.eclipse.swtchart.Range;
 import org.eclipse.swtchart.extensions.core.BaseChart;
@@ -81,7 +95,10 @@ public class PeakDetectorChart extends ChromatogramChart {
 	private PeakChartSupport peakChartSupport = new PeakChartSupport();
 	//
 	private DetectorRange detectorRange;
+<<<<<<< HEAD
 	private String title;
+=======
+>>>>>>> upstream/wavelet-peak-detector
 
 	public PeakDetectorChart(Composite parent, int style) {
 		super(parent, style);
@@ -90,6 +107,7 @@ public class PeakDetectorChart extends ChromatogramChart {
 
 	public void update(DetectorRange detectorRange) {
 
+<<<<<<< HEAD
 		update(detectorRange, null);
 	}
 
@@ -97,12 +115,18 @@ public class PeakDetectorChart extends ChromatogramChart {
 
 		this.detectorRange = detectorRange;
 		this.title = title;
+=======
+		this.detectorRange = detectorRange;
+>>>>>>> upstream/wavelet-peak-detector
 		selectedRangeX = null;
 		selectedRangeY = null;
 		updateDetectorRange();
 	}
 
+<<<<<<< HEAD
 	@Override
+=======
+>>>>>>> upstream/wavelet-peak-detector
 	public void handleMouseDownEvent(Event event) {
 
 		super.handleMouseDownEvent(event);
@@ -112,7 +136,10 @@ public class PeakDetectorChart extends ChromatogramChart {
 		}
 	}
 
+<<<<<<< HEAD
 	@Override
+=======
+>>>>>>> upstream/wavelet-peak-detector
 	public void handleMouseMoveEvent(Event event) {
 
 		super.handleMouseMoveEvent(event);
@@ -123,7 +150,10 @@ public class PeakDetectorChart extends ChromatogramChart {
 		}
 	}
 
+<<<<<<< HEAD
 	@Override
+=======
+>>>>>>> upstream/wavelet-peak-detector
 	public void handleMouseUpEvent(Event event) {
 
 		super.handleMouseUpEvent(event);
@@ -153,6 +183,7 @@ public class PeakDetectorChart extends ChromatogramChart {
 		IPlotArea plotArea = getBaseChart().getPlotArea();
 		baselineSelectionPaintListener = new BaselineSelectionPaintListener();
 		plotArea.addCustomPaintListener(baselineSelectionPaintListener);
+<<<<<<< HEAD
 		plotArea.addCustomPaintListener(new ICustomPaintListener() {
 
 			@Override
@@ -167,6 +198,8 @@ public class PeakDetectorChart extends ChromatogramChart {
 				}
 			}
 		});
+=======
+>>>>>>> upstream/wavelet-peak-detector
 		//
 		getBaseChart().addCustomRangeSelectionHandler(new ICustomSelectionHandler() {
 

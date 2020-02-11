@@ -75,7 +75,7 @@ Contributors:
 
    <features>
       <feature id="net.openchrom.jre.feature"/>
-      <feature id="net.openchrom.platform.feature"/>
+      <feature id="net.openchrom.platform.feature" version="1.4.0.qualifier"/>
    </features>
 
    <configurations>

@@ -16,7 +16,14 @@ import org.eclipse.chemclipse.model.core.PeakType;
 
 public class DetectorSetting extends AbstractSetting {
 
+<<<<<<< HEAD
 	private PeakType detectorType = PeakType.VV; // VV => include background: true
+=======
+	public static final String DETECTOR_TYPE_BB = "BB";
+	public static final String DETECTOR_TYPE_VV = "VV";
+	//
+	private String detectorType = DETECTOR_TYPE_VV; // VV => include background: true
+>>>>>>> upstream/wavelet-peak-detector
 	private String traces = "";
 	private boolean optimizeRange = false;
 	private String referenceIdentifier = ""; // Used for relative retention time
@@ -74,6 +81,14 @@ public class DetectorSetting extends AbstractSetting {
 		this.referenceIdentifier = referenceIdentifier;
 	}
 
+<<<<<<< HEAD
+=======
+	public boolean isIncludeBackground() {
+
+		return (DETECTOR_TYPE_VV.equals(detectorType)) ? true : false;
+	}
+
+>>>>>>> upstream/wavelet-peak-detector
 	@Override
 	public String toString() {
 

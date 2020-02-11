@@ -14,7 +14,10 @@ package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtchart.extensions.core.BaseChart;
+<<<<<<< HEAD
 import org.eclipse.swtchart.extensions.core.IKeyboardSupport;
+=======
+>>>>>>> upstream/wavelet-peak-detector
 import org.eclipse.swtchart.extensions.events.AbstractHandledEventProcessor;
 import org.eclipse.swtchart.extensions.events.IHandledEventProcessor;
 
@@ -25,13 +28,21 @@ public class ReplacePeakToggleEvent extends AbstractHandledEventProcessor implem
 	@Override
 	public int getEvent() {
 
+<<<<<<< HEAD
 		return IKeyboardSupport.EVENT_KEY_UP;
+=======
+		return BaseChart.EVENT_KEY_UP;
+>>>>>>> upstream/wavelet-peak-detector
 	}
 
 	@Override
 	public int getButton() {
 
+<<<<<<< HEAD
 		return IKeyboardSupport.KEY_CODE_LC_D;
+=======
+		return BaseChart.KEY_CODE_d;
+>>>>>>> upstream/wavelet-peak-detector
 	}
 
 	@Override

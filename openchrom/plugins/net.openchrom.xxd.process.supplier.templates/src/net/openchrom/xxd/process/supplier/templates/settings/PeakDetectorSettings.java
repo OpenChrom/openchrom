@@ -18,6 +18,10 @@ import java.util.List;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.AbstractPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
+<<<<<<< HEAD
+=======
+import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
+>>>>>>> upstream/wavelet-peak-detector
 import org.eclipse.core.runtime.IStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

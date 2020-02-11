@@ -1,5 +1,9 @@
 /*******************************************************************************
+<<<<<<< HEAD
  * Copyright (c) 2019, 2020 Lablicate GmbH.
+=======
+ * Copyright (c) 2019 Lablicate GmbH.
+>>>>>>> upstream/wavelet-peak-detector
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,7 +12,10 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+<<<<<<< HEAD
  * Christoph Läubrich - use PeakType instead of plain String
+=======
+>>>>>>> upstream/wavelet-peak-detector
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
@@ -17,7 +24,12 @@ import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
+<<<<<<< HEAD
 import org.eclipse.chemclipse.model.core.PeakType;
+=======
+
+import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+>>>>>>> upstream/wavelet-peak-detector
 
 public class DetectorRange {
 
@@ -25,7 +37,11 @@ public class DetectorRange {
 	private int retentionTimeStart = 0;
 	private int retentionTimeStop = 0;
 	private Set<Integer> traces = new HashSet<>();
+<<<<<<< HEAD
 	private String detectorType = PeakType.VV.name();
+=======
+	private String detectorType = DetectorSetting.DETECTOR_TYPE_VV;
+>>>>>>> upstream/wavelet-peak-detector
 	private boolean optimizeRange = true;
 
 	public IChromatogram<? extends IPeak> getChromatogram() {
@@ -80,7 +96,11 @@ public class DetectorRange {
 
 	public boolean isIncludeBackground() {
 
+<<<<<<< HEAD
 		return (PeakType.VV.name().equals(detectorType)) ? true : false;
+=======
+		return (DetectorSetting.DETECTOR_TYPE_VV.equals(detectorType)) ? true : false;
+>>>>>>> upstream/wavelet-peak-detector
 	}
 
 	public boolean isOptimizeRange() {

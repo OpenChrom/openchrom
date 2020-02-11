@@ -23,6 +23,8 @@ import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
+import org.ejml.data.DMatrixD1;
+import org.ejml.simple.SimpleMatrix;
 
 public class UtilityFunctions {
 
@@ -87,7 +89,7 @@ public class UtilityFunctions {
 		return Arrays.stream(dataArray).max().orElseThrow(IllegalArgumentException::new);
 	}
 
-	public double getMinValueOfArray(double[] dataArray) {
+	public static double getMinValueOfArray(double[] dataArray) {
 
 		return Arrays.stream(dataArray).min().orElseThrow(IllegalArgumentException::new);
 	}
@@ -217,7 +219,14 @@ public class UtilityFunctions {
 		public final int maxIndex;
 		public final AcquisitionParameter parameter;
 
+		// <<<<<<<HEAD
+
 		public SpectrumData(Complex[] array, BigDecimal[] frequency, BigDecimal[] chemicalShift, int maxIndex, AcquisitionParameter parameter){
+			// =======
+			//
+			// public SpectrumData(Complex[] array, BigDecimal[] frequency, BigDecimal[]
+			// chemicalShift, int maxIndex, AcquisitionParameter parameter) {
+			// >>>>>>> wavelet-peak-detector
 			this.signals = array;
 			this.frequency = frequency;
 			this.chemicalShift = chemicalShift;
@@ -260,5 +269,12 @@ public class UtilityFunctions {
 			}
 			return list;
 		}
+	}
+
+	public static double[] extractVectorFromMatrix(SimpleMatrix dataMatrix, boolean extractRow, int element) {
+
+		DMatrixD1 matrixRow = dataMatrix.extractVector(extractRow, element).getMatrix();
+		double[] columnVector = matrixRow.getData();
+		return columnVector;
 	}
 }
