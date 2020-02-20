@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="net.openchrom.xxd.process.supplier.templates.detector.DefaultTemplatePeakDetector">
-   <service>
-      <provide interface="org.eclipse.chemclipse.msd.model.detector.TemplatePeakDetector"/>
-      <provide interface="org.eclipse.chemclipse.processing.detector.Detector"/>
-      <provide interface="org.eclipse.chemclipse.processing.Processor"/>
-   </service>
-   <implementation class="net.openchrom.xxd.process.supplier.templates.detector.DefaultTemplatePeakDetector"/>
-</scr:component>

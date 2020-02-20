@@ -35,10 +35,8 @@ import static org.eclipse.chemclipse.support.ui.swt.ControlBuilder.checkbox;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.chemclipse.msd.model.detector.TemplatePeakDetector;
 import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
@@ -49,7 +47,6 @@ import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -70,7 +67,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
-import net.openchrom.xxd.process.supplier.templates.Activator;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -99,7 +95,6 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	private boolean useCommentAsNames;
 
 	public TemplatePeakListEditor(Composite parent, ProcessorPreferences<PeakDetectorSettings> preferences, PeakDetectorSettings settings) {
-
 		this.preferences = preferences;
 		if(settings != null) {
 			this.settings.load(settings.getDetectorSettings());
@@ -198,26 +193,6 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		setButtonLayoutData(createButtonRemoveAll(composite));
 		setButtonLayoutData(createButtonImport(composite));
 		setButtonLayoutData(createButtonExport(composite));
-		setButtonLayoutData(createButtonDetectors(composite));
-	}
-
-	private Button createButtonDetectors(Composite parent) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("Detectors");
-		button.setToolTipText("Configure Detectors");
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				Collection<TemplatePeakDetector<?>> detectors = Activator.getDetectors();
-				Dialog dialog = new DetectorConfigurationDialog(parent.getShell(), detectors);
-				dialog.open();
-			}
-		});
-		//
-		return button;
 	}
 
 	private void setButtonLayoutData(Button button) {

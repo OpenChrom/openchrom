@@ -14,7 +14,6 @@
 package net.openchrom.xxd.process.supplier.templates.peaks;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +43,6 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
 import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons.IonMarkMode;
 import org.eclipse.chemclipse.msd.model.core.support.MarkedIons;
-import org.eclipse.chemclipse.msd.model.detector.TemplatePeak;
-import org.eclipse.chemclipse.msd.model.detector.TemplatePeakDetector;
 import org.eclipse.chemclipse.msd.model.implementation.ChromatogramPeakMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -53,7 +50,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 
-import net.openchrom.xxd.process.supplier.templates.Activator;
+import net.openchrom.xxd.process.supplier.templates.detector.TemplatePeakDetector;
+import net.openchrom.xxd.process.supplier.templates.detector.ITemplatePeak;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
@@ -108,37 +106,38 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 				IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
 				if(chromatogram instanceof IChromatogramCSD || chromatogram instanceof IChromatogramMSD) {
 					PeakDetectorSettings peakDetectorSettings = (PeakDetectorSettings)settings;
-					// collect all settings
+					/*
+					 * Collect all settings
+					 */
 					Map<PeakType, List<DetectorSettingTemplatePeak>> templates = new LinkedHashMap<>();
 					for(DetectorSetting detectorSetting : peakDetectorSettings.getDetectorSettingsList()) {
 						PeakType type = detectorSetting.getDetectorType();
 						templates.computeIfAbsent(type, t -> new ArrayList<>()).add(new DetectorSettingTemplatePeak(chromatogram, detectorSetting));
 					}
-					// detect peaks
-					Collection<TemplatePeakDetector<?>> detectors = Activator.getDetectors();
+					/*
+					 * Detect peaks
+					 */
+					TemplatePeakDetector templatePeakDetector = new TemplatePeakDetector();
 					List<Map<DetectorSettingTemplatePeak, IPeakModel>> peaks = new ArrayList<>();
 					Set<Entry<PeakType, List<DetectorSettingTemplatePeak>>> detectorSet = templates.entrySet();
 					SubMonitor subMonitor = SubMonitor.convert(monitor, detectorSet.size() * 100);
 					outer:
 					for(Entry<PeakType, List<DetectorSettingTemplatePeak>> entry : detectorSet) {
 						PeakType peakType = entry.getKey();
-						for(TemplatePeakDetector<?> templatePeakDetector : detectors) {
-							if(templatePeakDetector.isDefaultFor(peakType)) {
-								try {
-									peaks.add(templatePeakDetector.detectPeaks(chromatogram, entry.getValue(), null, processingInfo, subMonitor.split(100)));
-								} catch(OperationCanceledException e) {
-									processingInfo.addErrorMessage(PeakDetectorSettings.DESCRIPTION, "Operation was canceled");
-									return processingInfo;
-								} catch(InterruptedException e) {
-									Thread.currentThread().interrupt();
-									return processingInfo;
-								}
-								continue outer;
+						if(templatePeakDetector.isDefaultFor(peakType)) {
+							try {
+								peaks.add(templatePeakDetector.detectPeaks(chromatogram, entry.getValue(), null, processingInfo, subMonitor.split(100)));
+							} catch(OperationCanceledException e) {
+								processingInfo.addErrorMessage(PeakDetectorSettings.DESCRIPTION, "Operation was canceled");
+								return processingInfo;
 							}
+							continue outer;
 						}
 						processingInfo.addErrorMessage(PeakDetectorSettings.DESCRIPTION, "No detector present for type " + peakType.name());
 					}
-					// insert peaks into chromatogram
+					/*
+					 * Insert peaks into chromatogram
+					 */
 					for(Map<DetectorSettingTemplatePeak, IPeakModel> map : peaks) {
 						for(Entry<DetectorSettingTemplatePeak, IPeakModel> entry : map.entrySet()) {
 							DetectorSettingTemplatePeak setting = entry.getKey();
@@ -175,7 +174,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		return processingInfo;
 	}
 
-	private static final class DetectorSettingTemplatePeak implements TemplatePeak {
+	private static final class DetectorSettingTemplatePeak implements ITemplatePeak {
 
 		private int startScan;
 		private int stopScan;
@@ -185,7 +184,6 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		private DetectorSetting detectorSetting;
 
 		public DetectorSettingTemplatePeak(IChromatogram<?> chromatogram, DetectorSetting detectorSetting) {
-
 			this.detectorSetting = detectorSetting;
 			IRetentionTimeRange retentionTimeRange = PEAK_SUPPORT.getRetentionTimeRange(chromatogram.getPeaks(), detectorSetting, detectorSetting.getReferenceIdentifier());
 			startScan = chromatogram.getScanNumber(retentionTimeRange.getStartRetentionTime());

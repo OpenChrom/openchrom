@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,22 +12,12 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates;
 
-import java.util.Collection;
-import java.util.Collections;
-
-import org.eclipse.chemclipse.msd.model.detector.TemplatePeakDetector;
-import org.eclipse.chemclipse.processing.ProcessorFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.util.tracker.ServiceTracker;
-
-import net.openchrom.xxd.process.supplier.templates.detector.DefaultTemplatePeakDetector;
 
 public class Activator implements BundleActivator {
 
-	private static final DefaultTemplatePeakDetector FALLBACK_DETECTOR = new DefaultTemplatePeakDetector();
 	private static BundleContext context;
-	private static ServiceTracker<ProcessorFactory, ProcessorFactory> serviceTracker;
 
 	public static BundleContext getContext() {
 
@@ -42,8 +32,6 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 
 		Activator.context = bundleContext;
-		serviceTracker = new ServiceTracker<>(context, ProcessorFactory.class, null);
-		serviceTracker.open();
 	}
 
 	/*
@@ -54,18 +42,5 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext bundleContext) throws Exception {
 
 		Activator.context = null;
-		serviceTracker.close();
-	}
-
-	public static Collection<TemplatePeakDetector<?>> getDetectors() {
-
-		ProcessorFactory service = serviceTracker.getService();
-		if(service != null) {
-			Collection<TemplatePeakDetector<?>> collection = service.getProcessors(ProcessorFactory.genericClass(TemplatePeakDetector.class), (always, ever) -> true);
-			if(!collection.isEmpty()) {
-				return collection;
-			}
-		}
-		return Collections.singleton(FALLBACK_DETECTOR);
 	}
 }
