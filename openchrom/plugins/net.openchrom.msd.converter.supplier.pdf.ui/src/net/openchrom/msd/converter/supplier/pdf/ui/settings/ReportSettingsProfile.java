@@ -57,7 +57,7 @@ public class ReportSettingsProfile extends DefaultChromatogramReportSettings {
 
 	public String getReportMethod() {
 
-		if(reportSlogan == null) {
+		if(reportMethod == null) {
 			return PreferenceSupplier.getReportMethod();
 		}
 		return reportMethod;
