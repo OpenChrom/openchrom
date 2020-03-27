@@ -45,12 +45,13 @@ import org.eclipse.swtchart.extensions.core.RangeRestriction;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
 
+import net.openchrom.msd.converter.supplier.pdf.ui.Activator;
+
 public class ImageRunnableGeneric implements Runnable {
 
 	private static final Logger logger = Logger.getLogger(ImageRunnableGeneric.class);
-	private static final String PLUGIN_NAME = "net.openchrom.msd.converter.supplier.pdf.ui";
+	private static final String PLUGIN_NAME = Activator.getDefault().getBundle().getSymbolicName();
 	//
-	private ChromatogramDataSupport chromatogramDataSupport = new ChromatogramDataSupport();
 	private ChromatogramChartSupport chromatogramChartSupport = new ChromatogramChartSupport();
 	private PeakChartSupport peakChartSupport = new PeakChartSupport();
 	private ScanChartSupport scanChartSupport = new ScanChartSupport();
@@ -147,7 +148,7 @@ public class ImageRunnableGeneric implements Runnable {
 
 	private List<IScan> addScans(BaseChart baseChart, List<ILineSeriesData> lineSeriesDataList) {
 
-		List<IScan> scans = chromatogramDataSupport.getIdentifiedScans(chromatogram);
+		List<IScan> scans = ChromatogramDataSupport.getIdentifiedScans(chromatogram);
 		if(scans.size() > 0) {
 			ILineSeriesData lineSeriesData = scanChartSupport.getLineSeriesDataPoint(scans, false, "Scans");
 			ILineSeriesSettings lineSeriesSettings = lineSeriesData.getSettings();

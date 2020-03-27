@@ -43,10 +43,12 @@ import org.eclipse.swtchart.extensions.core.RangeRestriction;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
 
+import net.openchrom.msd.converter.supplier.pdf.ui.Activator;
+
 public class ImageRunnableProfile implements Runnable {
 
 	private static final Logger logger = Logger.getLogger(ImageRunnableProfile.class);
-	private static final String PLUGIN_NAME = "net.openchrom.msd.converter.supplier.pdf.ui";
+	private static final String PLUGIN_NAME = Activator.getDefault().getBundle().getSymbolicName();
 	//
 	private ChromatogramChartSupport chromatogramChartSupport = new ChromatogramChartSupport();
 	private PeakChartSupport peakChartSupport = new PeakChartSupport();
