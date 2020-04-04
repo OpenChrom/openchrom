@@ -35,6 +35,7 @@ import org.eclipse.chemclipse.ux.extension.xxd.ui.charts.ChromatogramChart;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.BaselineSelectionPaintListener;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.DisplayType;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.ChromatogramChartSupport;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.Derivative;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.PeakChartSupport;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -388,12 +389,12 @@ public class PeakDetectorChart extends ChromatogramChart {
 			if(chromatogram instanceof IChromatogramMSD) {
 				if(traces.size() > 0) {
 					IMarkedSignals<IMarkedIon> markedSignals = extractMarkedSignals(traces);
-					lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM_XIC, DisplayType.XIC, ChromatogramChartSupport.DERIVATIVE_NONE, Colors.RED, markedSignals, false));
+					lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM_XIC, DisplayType.XIC, Derivative.NONE, Colors.RED, markedSignals, false));
 				} else {
-					lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM_TIC, DisplayType.TIC, ChromatogramChartSupport.DERIVATIVE_NONE, Colors.RED, null, false));
+					lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM_TIC, DisplayType.TIC, Derivative.NONE, Colors.RED, null, false));
 				}
 			} else {
-				lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM_TIC, DisplayType.TIC, ChromatogramChartSupport.DERIVATIVE_NONE, Colors.RED, null, false));
+				lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM_TIC, DisplayType.TIC, Derivative.NONE, Colors.RED, null, false));
 			}
 			/*
 			 * Peaks Series
