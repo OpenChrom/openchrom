@@ -20,6 +20,8 @@
 		<relativePath>../../chemclipse/chemclipse/pom.xml</relativePath>
 	</parent>
 	<properties>
+		<!-- due to bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=387701 we need to use an older Tycho version here -->
+		<tycho.version>1.5.1</tycho.version>
 		<tycho.target.groupId>net.openchrom</tycho.target.groupId>
 		<tycho.target.artifactId>net.openchrom.targetplatform</tycho.target.artifactId>
 		<tycho.target.version>${project.version}</tycho.target.version>
