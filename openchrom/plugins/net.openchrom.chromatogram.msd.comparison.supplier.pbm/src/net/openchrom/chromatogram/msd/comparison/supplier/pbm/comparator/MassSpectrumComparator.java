@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2018 Lablicate GmbH.
+ * Copyright (c) 2008, 2020 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -19,6 +19,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.model.identifier.ComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IComparisonResult;
+import org.eclipse.chemclipse.model.identifier.MatchConstraints;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
@@ -30,17 +31,17 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 /**
  * This class gives back a IMassSpectrumComparisonResult which implements the
  * PBM mass spectrum comparison algorithm.
- * 
- * @author eselmeister
  */
 public class MassSpectrumComparator extends AbstractMassSpectrumComparator implements IMassSpectrumComparator {
 
 	public static final String COMPARATOR_ID = "net.openchrom.chromatogram.msd.comparison.supplier.pbm";
+	//
 	private static final Logger logger = Logger.getLogger(MassSpectrumComparator.class);
 	private static final int NORMALIZATION_FACTOR = 100;
 
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
-	public IProcessingInfo compare(IScanMSD unknown, IScanMSD reference) {
+	public IProcessingInfo compare(IScanMSD unknown, IScanMSD reference, MatchConstraints matchConstraints) {
 
 		IProcessingInfo processingInfo = super.validate(unknown, reference);
 		if(!processingInfo.hasErrorMessages()) {
