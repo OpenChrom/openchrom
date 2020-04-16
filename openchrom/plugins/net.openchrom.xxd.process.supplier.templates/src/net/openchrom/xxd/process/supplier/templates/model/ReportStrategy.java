@@ -12,5 +12,16 @@
 package net.openchrom.xxd.process.supplier.templates.model;
 
 public enum ReportStrategy {
-	CLOSEST; // TODO
+	ALL("All");
+
+	private String description = "";
+
+	private ReportStrategy(String description) {
+		this.description = description;
+	}
+
+	public String getDescription() {
+
+		return description;
+	}
 }

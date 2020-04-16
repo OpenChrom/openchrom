@@ -30,8 +30,11 @@ import net.openchrom.xxd.process.supplier.templates.util.ReportValidator;
 public class ChromatogramReportSettings extends DefaultChromatogramReportSettings implements ITemplateSettings {
 
 	public static final String DESCRIPTION = "Template Report";
+	//
+	@JsonProperty(value = "Report referenced chromatogram(s)", defaultValue = "false")
+	private boolean reportReferencedChromatograms;
 	/*
-	 * 10.52 | 10.63 | Styrene | 100-42-5 | CL
+	 * 10.52 | 10.63 | Styrene | 100-42-5
 	 */
 	@JsonProperty(value = "Report Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + ReportListUtil.EXAMPLE_SINGLE + "'")
@@ -43,9 +46,20 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 			RE_TEXT + // Substance
 			RE_SEPARATOR + //
 			RE_TEXT + // CAS
-			RE_SEPARATOR, //
+			RE_SEPARATOR + //
+			RE_TEXT, // Report Strategy
 			isMultiLine = true)
 	private String reportSettings = "";
+
+	public boolean isReportReferencedChromatograms() {
+
+		return reportReferencedChromatograms;
+	}
+
+	public void setReportReferencedChromatograms(boolean reportReferencedChromatograms) {
+
+		this.reportReferencedChromatograms = reportReferencedChromatograms;
+	}
 
 	public void setReportSettings(String reportSettings) {
 

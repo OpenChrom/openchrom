@@ -94,6 +94,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_TRANSFER_OPTIMIZE_RANGE = "transferOptimizeRange";
 	public static final boolean DEF_TRANSFER_OPTIMIZE_RANGE = true;
 	//
+	public static final String P_REPORT_REFERENCED_CHROMATOGRAMS = "reportReferencedChromatograms";
+	public static final boolean DEF_REPORT_REFERENCED_CHROMATOGRAMS = false;
+	//
 	private static IPreferenceSupplier preferenceSupplier;
 
 	public static IPreferenceSupplier INSTANCE() {
@@ -152,6 +155,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, Boolean.toString(DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY));
 		defaultValues.put(P_TRANSFER_USE_ADJUSTMENT_BY_PURITY, Boolean.toString(DEF_TRANSFER_USE_ADJUSTMENT_BY_PURITY));
 		defaultValues.put(P_TRANSFER_OPTIMIZE_RANGE, Boolean.toString(DEF_TRANSFER_OPTIMIZE_RANGE));
+		//
+		defaultValues.put(P_REPORT_REFERENCED_CHROMATOGRAMS, Boolean.toString(DEF_REPORT_REFERENCED_CHROMATOGRAMS));
 		//
 		return defaultValues;
 	}
@@ -273,6 +278,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		ChromatogramReportSettings settings = new ChromatogramReportSettings();
+		settings.setReportReferencedChromatograms(preferences.getBoolean(P_REPORT_REFERENCED_CHROMATOGRAMS, DEF_REPORT_REFERENCED_CHROMATOGRAMS));
 		settings.setReportSettings(preferences.get(P_CHROMATOGRAM_REPORT_LIST, DEF_CHROMATOGRAM_REPORT_LIST));
 		return settings;
 	}

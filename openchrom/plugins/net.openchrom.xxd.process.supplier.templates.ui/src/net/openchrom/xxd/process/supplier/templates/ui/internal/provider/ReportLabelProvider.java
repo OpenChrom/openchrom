@@ -27,6 +27,7 @@ public class ReportLabelProvider extends AbstractChemClipseLabelProvider {
 	public static final String START_RETENTION_TIME = "Start Retention Time";
 	public static final String STOP_RETENTION_TIME = "Stop Retention Time";
 	public static final String CAS_NUMBER = "CAS";
+	public static final String REPORT_STRATEGY = "Strategy";
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 	//
@@ -34,10 +35,12 @@ public class ReportLabelProvider extends AbstractChemClipseLabelProvider {
 			NAME, //
 			START_RETENTION_TIME, //
 			STOP_RETENTION_TIME, //
-			CAS_NUMBER //
+			CAS_NUMBER, //
+			REPORT_STRATEGY //
 	};
 	public static final int[] BOUNDS = { //
 			200, //
+			100, //
 			100, //
 			100, //
 			100 //
@@ -70,6 +73,9 @@ public class ReportLabelProvider extends AbstractChemClipseLabelProvider {
 					break;
 				case 3:
 					text = setting.getCasNumber();
+					break;
+				case 4:
+					text = setting.getReportStrategy().getDescription();
 					break;
 				default:
 					text = "n.v.";

@@ -13,8 +13,8 @@ package net.openchrom.xxd.process.supplier.templates.util;
 
 public class ReportListUtil extends AbstractTemplateListUtil<ReportValidator> {
 
-	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | Styrene | 100-42-5 | CL";
-	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | Styrene | 100-42-5 | CL; 10.71 | 10.76 | Benzene | 71-43-2 | CL";
+	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | Styrene | 100-42-5 | ALL";
+	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | Styrene | 100-42-5 | ALL; 10.71 | 10.76 | Benzene | 71-43-2 | ALL";
 
 	public ReportListUtil() {
 		super(new ReportValidator());

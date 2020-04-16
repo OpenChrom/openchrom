@@ -41,6 +41,9 @@ public class ReportComparator extends AbstractRecordTableComparator implements I
 				case 3:
 					sortOrder = setting2.getCasNumber().compareTo(setting1.getCasNumber());
 					break;
+				case 4:
+					sortOrder = setting2.getReportStrategy().compareTo(setting1.getReportStrategy());
+					break;
 				default:
 					sortOrder = 0;
 			}

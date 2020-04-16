@@ -171,5 +171,9 @@ public class ReportSettings extends HashMap<String, ReportSetting> implements IS
 		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
 		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.getCasNumber());
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
+		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
+		builder.append(setting.getReportStrategy().toString());
 	}
 }

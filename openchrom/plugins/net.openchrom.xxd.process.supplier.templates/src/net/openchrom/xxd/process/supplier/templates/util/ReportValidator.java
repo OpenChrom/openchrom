@@ -11,13 +11,20 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
+
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
+import net.openchrom.xxd.process.supplier.templates.model.ReportStrategy;
 
 public class ReportValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
+	public static final Set<ReportStrategy> REPORT_STRATEGIES = Collections.unmodifiableSet(EnumSet.of(ReportStrategy.ALL));
+	//
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + ReportListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = ReportListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = ReportListUtil.SEPARATOR_ENTRY;
@@ -27,7 +34,7 @@ public class ReportValidator extends AbstractTemplateValidator implements ITempl
 	private double stopRetentionTimeMinutes = 0;
 	private String name = "";
 	private String casNumber = "";
-	private String reportStrategy = "";
+	private ReportStrategy reportStrategy = ReportStrategy.ALL;
 
 	@Override
 	public IStatus validate(Object value) {
@@ -47,7 +54,7 @@ public class ReportValidator extends AbstractTemplateValidator implements ITempl
 					 * Extract retention time, ...
 					 */
 					String[] values = text.trim().split("\\" + SEPARATOR_ENTRY); // The pipe needs to be escaped.
-					if(values.length >= 3) {
+					if(values.length >= 5) {
 						/*
 						 * Evaluation
 						 */
@@ -67,6 +74,12 @@ public class ReportValidator extends AbstractTemplateValidator implements ITempl
 						}
 						//
 						casNumber = parseString(values, 3);
+						//
+						try {
+							reportStrategy = ReportStrategy.valueOf(parseString(values, 4));
+						} catch(Exception e) {
+							// Shouldn't happen.
+						}
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -90,6 +103,7 @@ public class ReportValidator extends AbstractTemplateValidator implements ITempl
 		setting.setStopRetentionTimeMinutes(stopRetentionTimeMinutes);
 		setting.setName(name);
 		setting.setCasNumber(casNumber);
+		setting.setReportStrategy(reportStrategy);
 		return setting;
 	}
 }

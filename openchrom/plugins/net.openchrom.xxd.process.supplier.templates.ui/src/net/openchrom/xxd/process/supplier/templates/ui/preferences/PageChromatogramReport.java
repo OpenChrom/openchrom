@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.preferences;
 
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -35,6 +36,7 @@ public class PageChromatogramReport extends FieldEditorPreferencePage implements
 	 */
 	public void createFieldEditors() {
 
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_REPORT_REFERENCED_CHROMATOGRAMS, "Report Referenced Chromatogram(s)", getFieldEditorParent()));
 		addField(new ReportFieldEditor(PreferenceSupplier.P_CHROMATOGRAM_REPORT_LIST, "Report Template", getFieldEditorParent()));
 	}
 

@@ -15,7 +15,7 @@ public class ReportSetting extends AbstractSetting {
 
 	private String name = "";
 	private String casNumber = "";
-	private ReportStrategy reportStrategy = ReportStrategy.CLOSEST;
+	private ReportStrategy reportStrategy = ReportStrategy.ALL;
 
 	public void copyFrom(ReportSetting setting) {
 
@@ -24,6 +24,7 @@ public class ReportSetting extends AbstractSetting {
 			setStopRetentionTime(setting.getStopRetentionTime());
 			setName(setting.getName());
 			setCasNumber(setting.getCasNumber());
+			setReportStrategy(setting.getReportStrategy());
 		}
 	}
 
@@ -45,6 +46,16 @@ public class ReportSetting extends AbstractSetting {
 	public void setCasNumber(String casNumber) {
 
 		this.casNumber = casNumber;
+	}
+
+	public ReportStrategy getReportStrategy() {
+
+		return reportStrategy;
+	}
+
+	public void setReportStrategy(ReportStrategy reportStrategy) {
+
+		this.reportStrategy = reportStrategy;
 	}
 
 	@Override
@@ -77,6 +88,12 @@ public class ReportSetting extends AbstractSetting {
 	@Override
 	public String toString() {
 
-		return "IdentifierSetting [startRetentionTime=" + getStartRetentionTime() + ", stopRetentionTime=" + getStopRetentionTime() + ", name=" + name + ", casNumber=" + casNumber + "]";
+		return "IdentifierSetting [" //
+				+ "startRetentionTime=" + getStartRetentionTime() + //
+				", stopRetentionTime=" + getStopRetentionTime() + //
+				", name=" + name + //
+				", casNumber=" + casNumber + //
+				", reportStrategy=" + reportStrategy + //
+				"]"; //
 	}
 }

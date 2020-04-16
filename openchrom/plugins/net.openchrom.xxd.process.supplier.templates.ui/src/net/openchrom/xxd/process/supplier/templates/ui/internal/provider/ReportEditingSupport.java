@@ -12,11 +12,17 @@
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
+import net.openchrom.xxd.process.supplier.templates.model.ReportStrategy;
+import net.openchrom.xxd.process.supplier.templates.util.ReportValidator;
 
 public class ReportEditingSupport extends EditingSupport {
 
@@ -27,7 +33,15 @@ public class ReportEditingSupport extends EditingSupport {
 	public ReportEditingSupport(ExtendedTableViewer tableViewer, String column) {
 		super(tableViewer);
 		this.column = column;
-		this.cellEditor = new TextCellEditor(tableViewer.getTable());
+		if(column.equals(ReportLabelProvider.REPORT_STRATEGY)) {
+			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite)tableViewer.getControl());
+			ComboViewer comboViewer = editor.getViewer();
+			comboViewer.setContentProvider(ArrayContentProvider.getInstance());
+			comboViewer.setInput(ReportValidator.REPORT_STRATEGIES);
+			this.cellEditor = editor;
+		} else {
+			this.cellEditor = new TextCellEditor(tableViewer.getTable());
+		}
 		this.tableViewer = tableViewer;
 	}
 
@@ -58,6 +72,8 @@ public class ReportEditingSupport extends EditingSupport {
 					return Double.toString(setting.getStopRetentionTimeMinutes());
 				case ReportLabelProvider.CAS_NUMBER:
 					return setting.getCasNumber();
+				case ReportLabelProvider.REPORT_STRATEGY:
+					return setting.getReportStrategy();
 			}
 		}
 		return false;
@@ -94,6 +110,11 @@ public class ReportEditingSupport extends EditingSupport {
 					text = ((String)value).trim();
 					if(!"".equals(text)) {
 						setting.setCasNumber(text);
+					}
+					break;
+				case ReportLabelProvider.REPORT_STRATEGY:
+					if(value instanceof ReportStrategy) {
+						setting.setReportStrategy((ReportStrategy)value);
 					}
 					break;
 			}
