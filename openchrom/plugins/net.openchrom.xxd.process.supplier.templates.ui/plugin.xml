@@ -73,7 +73,13 @@
             category="org.eclipse.chemclipse.chromatogram.msd.peak.detector.ui.preferences.peakDetectorPreferencePage"
             class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakTransfer"
             id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pagePeakTransfer">
-      </page>                                             
+      </page>
+      <page
+            name="Template Chromatogram Report"
+            category="org.eclipse.chemclipse.chromatogram.xxd.report.ui.preferences.reportPreferencePage"
+            class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageChromatogramReport"
+            id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageChromatogramReport">
+      </page>                                                  
    </extension>
    <extension
          point="org.eclipse.chemclipse.chromatogram.msd.peak.detector.peakDetectorSupplier">

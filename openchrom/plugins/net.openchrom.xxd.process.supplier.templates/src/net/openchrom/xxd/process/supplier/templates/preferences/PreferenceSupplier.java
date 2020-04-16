@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.xxd.process.supplier.templates.Activator;
+import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
@@ -49,6 +50,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String DEF_PEAK_INTEGRATOR_LIST = "";
 	public static final String P_COMPENSATION_QUANTIFIER_LIST = "compensationQuantifierList";
 	public static final String DEF_COMPENSATION_QUANTIFIER_LIST = "";
+	public static final String P_CHROMATOGRAM_REPORT_LIST = "chromatogramReportList";
+	public static final String DEF_CHROMATOGRAM_REPORT_LIST = "";
 	//
 	public static final String P_LIST_PATH_IMPORT = "listPathImport";
 	public static final String DEF_LIST_PATH_IMPORT = "";
@@ -125,6 +128,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_STANDARDS_REFERENCER_LIST, DEF_STANDARDS_REFERENCER_LIST);
 		defaultValues.put(P_PEAK_INTEGRATOR_LIST, DEF_PEAK_INTEGRATOR_LIST);
 		defaultValues.put(P_COMPENSATION_QUANTIFIER_LIST, DEF_COMPENSATION_QUANTIFIER_LIST);
+		defaultValues.put(P_CHROMATOGRAM_REPORT_LIST, DEF_CHROMATOGRAM_REPORT_LIST);
 		//
 		defaultValues.put(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
 		defaultValues.put(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
@@ -262,6 +266,14 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		PeakDetectorSettings settings = new PeakDetectorSettings();
 		settings.setDetectorSettings(preferences.get(P_PEAK_DETECTOR_LIST_MSD, DEF_PEAK_DETECTOR_LIST_MSD));
+		return settings;
+	}
+
+	public static ChromatogramReportSettings getChromatogramReportSettings() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		ChromatogramReportSettings settings = new ChromatogramReportSettings();
+		settings.setReportSettings(preferences.get(P_CHROMATOGRAM_REPORT_LIST, DEF_CHROMATOGRAM_REPORT_LIST));
 		return settings;
 	}
 
