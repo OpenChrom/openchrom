@@ -164,7 +164,18 @@
             importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
             isExportable="true"
             isImportable="false">
-      </ChromatogramSupplier>       
+      </ChromatogramSupplier>
+      <ChromatogramSupplier
+            description="Exports a Review Template "
+            exportConverter="net.openchrom.xxd.process.supplier.templates.io.ReviewExport"
+            fileExtension="txt"
+            fileName="ReviewTemplate.txt"
+            filterName="Template Chromatogram Review (*.txt)"
+            id="net.openchrom.xxd.process.supplier.templates.export.reviewTemplateMSD"
+            importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>                
    </extension>
    <extension
          point="org.eclipse.chemclipse.csd.converter.chromatogramSupplier">
@@ -222,7 +233,18 @@
             importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
             isExportable="true"
             isImportable="false">
-      </ChromatogramSupplier>               
+      </ChromatogramSupplier>
+      <ChromatogramSupplier
+            description="Exports a Review Template "
+            exportConverter="net.openchrom.xxd.process.supplier.templates.io.ReviewExport"
+            fileExtension="txt"
+            fileName="ReviewTemplate.txt"
+            filterName="Template Chromatogram Review (*.txt)"
+            id="net.openchrom.xxd.process.supplier.templates.export.reviewTemplateCSD"
+            importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>                     
    </extension>
    <extension
          point="org.eclipse.chemclipse.chromatogram.xxd.report.chromatogramReportSupplier">

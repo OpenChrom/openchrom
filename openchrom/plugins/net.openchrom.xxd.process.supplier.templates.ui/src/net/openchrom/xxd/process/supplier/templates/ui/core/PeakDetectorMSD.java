@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Shell;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakDetectorSupport;
-import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakProcessSettings;
+import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
 
 @SuppressWarnings("rawtypes")
 public class PeakDetectorMSD extends AbstractPeakDetectorMSD {
@@ -37,7 +37,7 @@ public class PeakDetectorMSD extends AbstractPeakDetectorMSD {
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		if(peakDetectorSettings instanceof PeakDetectorSettings) {
 			PeakDetectorSettings settings = (PeakDetectorSettings)peakDetectorSettings;
-			PeakProcessSettings processSettings = new PeakProcessSettings(processingInfo, chromatogramSelection, settings);
+			ProcessDetectorSettings processSettings = new ProcessDetectorSettings(processingInfo, chromatogramSelection, settings);
 			try {
 				DisplayUtils.executeInUserInterfaceThread(new Runnable() {
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
@@ -17,21 +17,21 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
+import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 
-public class TemplatePeakDetectorUI extends Composite {
+public class TemplatePeakReviewUI extends Composite {
 
-	private PeakDetectorControl peakDetectorControl;
+	private PeakReviewControl peakReviewControl;
 	private PeakDetectorChart peakDetectorChart;
 
-	public TemplatePeakDetectorUI(Composite parent, int style) {
+	public TemplatePeakReviewUI(Composite parent, int style) {
 		super(parent, style);
 		createControl();
 	}
 
-	public void setInput(ProcessDetectorSettings peakProcessSettings) {
+	public void setInput(ProcessReviewSettings peakReviewSettings) {
 
-		peakDetectorControl.setInput(peakProcessSettings);
+		peakReviewControl.setInput(peakReviewSettings);
 	}
 
 	private void createControl() {
@@ -44,17 +44,17 @@ public class TemplatePeakDetectorUI extends Composite {
 		gridLayout.marginRight = 0;
 		composite.setLayout(gridLayout);
 		//
-		peakDetectorControl = createPeakDetectorControl(composite);
+		peakReviewControl = createPeakReviewControl(composite);
 		peakDetectorChart = createPeakDetectorChart(composite);
 		/*
 		 * Link control and chart.
 		 */
-		peakDetectorControl.setPeakDetectorChart(peakDetectorChart);
+		peakReviewControl.setPeakDetectorChart(peakDetectorChart);
 	}
 
-	private PeakDetectorControl createPeakDetectorControl(Composite parent) {
+	private PeakReviewControl createPeakReviewControl(Composite parent) {
 
-		PeakDetectorControl control = new PeakDetectorControl(parent, SWT.NONE);
+		PeakReviewControl control = new PeakReviewControl(parent, SWT.NONE);
 		control.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		return control;
 	}

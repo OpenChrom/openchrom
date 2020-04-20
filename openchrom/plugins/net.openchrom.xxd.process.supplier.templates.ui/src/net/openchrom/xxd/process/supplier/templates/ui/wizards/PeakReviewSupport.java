@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,8 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
- * Christoph Läubrich - maximize shell
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
@@ -17,14 +16,14 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
-public class PeakDetectorSupport {
+public class PeakReviewSupport {
 
-	public static final String DESCRIPTION = "Template Peak Detector UI";
+	public static final String DESCRIPTION = "Template Review UI";
 
 	@SuppressWarnings("rawtypes")
-	public void addPeaks(Shell shell, ProcessDetectorSettings processSettings) {
+	public void addPeaks(Shell shell, ProcessReviewSettings processSettings) {
 
-		PeakDetectorWizard wizard = new PeakDetectorWizard(processSettings);
+		PeakReviewWizard wizard = new PeakReviewWizard(processSettings);
 		WizardDialog wizardDialog = new WizardDialog(shell, wizard) {
 
 			@Override
@@ -34,16 +33,16 @@ public class PeakDetectorSupport {
 				getShell().setMaximized(true);
 			}
 		};
-		wizardDialog.setMinimumPageSize(PeakDetectorWizard.DEFAULT_WIDTH, PeakDetectorWizard.DEFAULT_HEIGHT);
+		wizardDialog.setMinimumPageSize(PeakReviewWizard.DEFAULT_WIDTH, PeakReviewWizard.DEFAULT_HEIGHT);
 		//
 		IProcessingInfo processingInfo = processSettings.getProcessingInfo();
 		int status = wizardDialog.open();
 		if(status == Dialog.OK) {
-			processingInfo.addInfoMessage(DESCRIPTION, "Successfully modified/added the peak(s).");
+			processingInfo.addInfoMessage(DESCRIPTION, "Successfully reviewed the peak(s).");
 		} else if(status == Dialog.CANCEL) {
-			processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peak(s) added.");
+			processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peak(s) reviewed.");
 		} else {
-			processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to add the peak(s).");
+			processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to review the peak(s).");
 		}
 	}
 }

@@ -24,6 +24,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import net.openchrom.xxd.process.supplier.templates.Activator;
 import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
+import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
@@ -52,6 +53,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String DEF_COMPENSATION_QUANTIFIER_LIST = "";
 	public static final String P_CHROMATOGRAM_REPORT_LIST = "chromatogramReportList";
 	public static final String DEF_CHROMATOGRAM_REPORT_LIST = "";
+	public static final String P_CHROMATOGRAM_REVIEW_LIST = "chromatogramReviewList";
+	public static final String DEF_CHROMATOGRAM_REVIEW_LIST = "";
 	//
 	public static final String P_LIST_PATH_IMPORT = "listPathImport";
 	public static final String DEF_LIST_PATH_IMPORT = "";
@@ -132,6 +135,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_PEAK_INTEGRATOR_LIST, DEF_PEAK_INTEGRATOR_LIST);
 		defaultValues.put(P_COMPENSATION_QUANTIFIER_LIST, DEF_COMPENSATION_QUANTIFIER_LIST);
 		defaultValues.put(P_CHROMATOGRAM_REPORT_LIST, DEF_CHROMATOGRAM_REPORT_LIST);
+		defaultValues.put(P_CHROMATOGRAM_REVIEW_LIST, DEF_CHROMATOGRAM_REVIEW_LIST);
 		//
 		defaultValues.put(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
 		defaultValues.put(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
@@ -280,6 +284,14 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		ChromatogramReportSettings settings = new ChromatogramReportSettings();
 		settings.setReportReferencedChromatograms(preferences.getBoolean(P_REPORT_REFERENCED_CHROMATOGRAMS, DEF_REPORT_REFERENCED_CHROMATOGRAMS));
 		settings.setReportSettings(preferences.get(P_CHROMATOGRAM_REPORT_LIST, DEF_CHROMATOGRAM_REPORT_LIST));
+		return settings;
+	}
+
+	public static PeakReviewSettings getReviewSettings() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		PeakReviewSettings settings = new PeakReviewSettings();
+		settings.setReviewSettings(preferences.get(P_CHROMATOGRAM_REVIEW_LIST, DEF_CHROMATOGRAM_REVIEW_LIST));
 		return settings;
 	}
 

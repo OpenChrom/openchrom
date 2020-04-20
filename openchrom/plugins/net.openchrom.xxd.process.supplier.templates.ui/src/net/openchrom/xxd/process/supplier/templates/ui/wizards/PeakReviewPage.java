@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
@@ -15,25 +15,25 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.xxd.process.supplier.templates.ui.swt.peaks.TemplatePeakDetectorUI;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.peaks.TemplatePeakReviewUI;
 
-public class PeakDetectorPage extends WizardPage {
+public class PeakReviewPage extends WizardPage {
 
-	private ProcessDetectorSettings peakProcessSettings;
+	private ProcessReviewSettings peakReviewSettings;
 
-	public PeakDetectorPage(String pageName, ProcessDetectorSettings processSettings) {
+	public PeakReviewPage(String pageName, ProcessReviewSettings processSettings) {
 		super(pageName);
-		setTitle("Modify/Add Peaks");
-		setDescription("Template peak modifier/detector");
+		setTitle("Review Peaks");
+		setDescription("Template Peak Reviewe");
 		setErrorMessage(null);
-		this.peakProcessSettings = processSettings;
+		this.peakReviewSettings = processSettings;
 	}
 
 	@Override
 	public void createControl(Composite parent) {
 
-		TemplatePeakDetectorUI control = new TemplatePeakDetectorUI(parent, SWT.NONE);
-		control.setInput(peakProcessSettings);
+		TemplatePeakReviewUI control = new TemplatePeakReviewUI(parent, SWT.NONE);
+		control.setInput(peakReviewSettings);
 		setControl(control);
 	}
 }

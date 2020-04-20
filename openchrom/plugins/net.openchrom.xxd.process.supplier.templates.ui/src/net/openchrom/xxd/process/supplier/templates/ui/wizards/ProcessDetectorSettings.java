@@ -24,14 +24,14 @@ import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 
 @SuppressWarnings("rawtypes")
-public class PeakProcessSettings {
+public class ProcessDetectorSettings {
 
 	private IProcessingInfo processingInfo;
 	private IChromatogramSelection chromatogramSelection;
 	private List<DetectorSetting> detectorSettings = new ArrayList<>();
 	private int selectedIndex;
 
-	public PeakProcessSettings(IProcessingInfo processingInfo, IChromatogramSelection chromatogramSelection, PeakDetectorSettings peakDetectorSettings) {
+	public ProcessDetectorSettings(IProcessingInfo processingInfo, IChromatogramSelection chromatogramSelection, PeakDetectorSettings peakDetectorSettings) {
 		this.processingInfo = processingInfo;
 		this.chromatogramSelection = chromatogramSelection;
 		this.detectorSettings.addAll(peakDetectorSettings.getDetectorSettingsList());

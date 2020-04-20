@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,16 +7,16 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
- * Christoph Läubrich - paint comment on chart
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.support.IRetentionTimeRange;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
@@ -45,18 +45,18 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePage;
-import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
-import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
+import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.util.RetentionTimeValidator;
+import net.openchrom.xxd.process.supplier.templates.util.ReviewListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.TracesValidator;
 
-public class PeakDetectorControl extends Composite {
+public class PeakReviewControl extends Composite {
 
-	private ProcessDetectorSettings peakProcessSettings;
+	private ProcessReviewSettings peakReviewSettings;
 	//
 	private Button optionReplace;
 	private Button navigateLeft;
@@ -69,14 +69,13 @@ public class PeakDetectorControl extends Composite {
 	private PeakDetectorChart peakDetectorChart;
 	//
 	private PeakSupport peakSupport = new PeakSupport();
-	private PeakDetectorListUtil peakDetectorListUtil = new PeakDetectorListUtil();
+	private ReviewListUtil peakReviewListUtil = new ReviewListUtil();
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
 	//
 	private RetentionTimeValidator retentionTimeValidator = new RetentionTimeValidator();
 	private TracesValidator tracesValidator = new TracesValidator();
 
-	public PeakDetectorControl(Composite parent, int style) {
-
+	public PeakReviewControl(Composite parent, int style) {
 		super(parent, style);
 		createControl();
 	}
@@ -86,9 +85,9 @@ public class PeakDetectorControl extends Composite {
 		this.peakDetectorChart = peakDetectorChart;
 	}
 
-	public void setInput(ProcessDetectorSettings peakProcessSettings) {
+	public void setInput(ProcessReviewSettings peakReviewSettings) {
 
-		this.peakProcessSettings = peakProcessSettings;
+		this.peakReviewSettings = peakReviewSettings;
 		updateRangeSelection();
 	}
 
@@ -120,8 +119,8 @@ public class PeakDetectorControl extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if(peakProcessSettings != null) {
-					peakProcessSettings.decreaseSelection();
+				if(peakReviewSettings != null) {
+					peakReviewSettings.decreaseSelection();
 					updateRangeSelection();
 				}
 			}
@@ -239,8 +238,8 @@ public class PeakDetectorControl extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if(peakProcessSettings != null) {
-					peakProcessSettings.increaseSelection();
+				if(peakReviewSettings != null) {
+					peakReviewSettings.increaseSelection();
 					updateRangeSelection();
 				}
 			}
@@ -293,53 +292,66 @@ public class PeakDetectorControl extends Composite {
 		updateChart();
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	private void updateWidgets() {
 
-		if(peakProcessSettings != null) {
-			IChromatogramSelection chromatogramSelection = peakProcessSettings.getChromatogramSelection();
-			IChromatogram<? extends IPeak> chromatogram = chromatogramSelection.getChromatogram();
-			//
-			navigateLeft.setEnabled(peakProcessSettings.hasPrevious());
-			navigateRight.setEnabled(peakProcessSettings.hasNext());
-			setOptionReplace(optionReplace);
-			//
-			int startRetentionTime;
-			int stopRetentionTime;
-			String traceSelection;
-			boolean enableWidgets;
-			//
-			if(peakProcessSettings.hasNext()) {
-				/*
-				 * Selected Range
-				 */
-				DetectorSetting detectorSetting = peakProcessSettings.getSelectedDetectorSetting();
-				int retentionTimeDeltaLeft = (int)(PreferenceSupplier.getUiDetectorDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-				int retentionTimeDeltaRight = (int)(PreferenceSupplier.getUiDetectorDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-				IRetentionTimeRange retentionTimeRange = peakSupport.getRetentionTimeRange(chromatogram.getPeaks(), detectorSetting, detectorSetting.getReferenceIdentifier());
-				startRetentionTime = retentionTimeRange.getStartRetentionTime() - retentionTimeDeltaLeft;
-				stopRetentionTime = detectorSetting.getStopRetentionTime() + retentionTimeDeltaRight;
-				traceSelection = detectorSetting.getTraces();
-				enableWidgets = false; // No modification allowed
-			} else {
-				/*
-				 * Chromatogram
-				 */
-				startRetentionTime = chromatogram.getStartRetentionTime();
-				stopRetentionTime = chromatogram.getStopRetentionTime();
-				traceSelection = "";
-				enableWidgets = true; // Modification allowed
+		if(peakReviewSettings != null) {
+			List<IPeak> selectedPeaks = peakReviewSettings.getSelectedPeaks();
+			if(selectedPeaks.size() > 0) {
+				IChromatogram<? extends IPeak> chromatogram = getChromatogram(selectedPeaks);
+				if(chromatogram != null) {
+					navigateLeft.setEnabled(peakReviewSettings.hasPrevious());
+					navigateRight.setEnabled(peakReviewSettings.hasNext());
+					setOptionReplace(optionReplace);
+					//
+					int startRetentionTime;
+					int stopRetentionTime;
+					String traceSelection;
+					boolean enableWidgets;
+					//
+					if(peakReviewSettings.hasNext()) {
+						/*
+						 * Selected Range
+						 */
+						ReviewSetting reviewSetting = peakReviewSettings.getSelectedReviewSetting();
+						int retentionTimeDeltaLeft = (int)(PreferenceSupplier.getUiDetectorDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+						int retentionTimeDeltaRight = (int)(PreferenceSupplier.getUiDetectorDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+						IRetentionTimeRange retentionTimeRange = peakSupport.getRetentionTimeRange(chromatogram.getPeaks(), reviewSetting, "");
+						startRetentionTime = retentionTimeRange.getStartRetentionTime() - retentionTimeDeltaLeft;
+						stopRetentionTime = reviewSetting.getStopRetentionTime() + retentionTimeDeltaRight;
+						traceSelection = reviewSetting.getTraces();
+						enableWidgets = false; // No modification allowed
+					} else {
+						/*
+						 * Chromatogram
+						 */
+						startRetentionTime = chromatogram.getStartRetentionTime();
+						stopRetentionTime = chromatogram.getStopRetentionTime();
+						traceSelection = "";
+						enableWidgets = true; // Modification allowed
+					}
+					//
+					retentionTimeStart.setText(decimalFormat.format(startRetentionTime / IChromatogram.MINUTE_CORRELATION_FACTOR));
+					retentionTimeStop.setText(decimalFormat.format(stopRetentionTime / IChromatogram.MINUTE_CORRELATION_FACTOR));
+					traces.setText(traceSelection);
+					//
+					updateChart.setEnabled(enableWidgets);
+					retentionTimeStart.setEnabled(enableWidgets);
+					retentionTimeStop.setEnabled(enableWidgets);
+					traces.setEnabled(enableWidgets && (chromatogram instanceof IChromatogramMSD));
+				}
 			}
-			//
-			retentionTimeStart.setText(decimalFormat.format(startRetentionTime / IChromatogram.MINUTE_CORRELATION_FACTOR));
-			retentionTimeStop.setText(decimalFormat.format(stopRetentionTime / IChromatogram.MINUTE_CORRELATION_FACTOR));
-			traces.setText(traceSelection);
-			//
-			updateChart.setEnabled(enableWidgets);
-			retentionTimeStart.setEnabled(enableWidgets);
-			retentionTimeStop.setEnabled(enableWidgets);
-			traces.setEnabled(enableWidgets && (chromatogram instanceof IChromatogramMSD));
 		}
+	}
+
+	private IChromatogram<?> getChromatogram(List<IPeak> peaks) {
+
+		for(IPeak peak : peaks) {
+			if(peak instanceof IChromatogramPeak) {
+				IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
+				return chromatogramPeak.getChromatogram();
+			}
+		}
+		return null;
 	}
 
 	private boolean validate(IValidator validator, ControlDecoration controlDecoration, String text) {
@@ -373,25 +385,21 @@ public class PeakDetectorControl extends Composite {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void updateChart() {
 
-		if(peakDetectorChart != null && peakProcessSettings != null) {
-			DetectorRange detectorRange = new DetectorRange();
-			detectorRange.setChromatogram(peakProcessSettings.getChromatogramSelection().getChromatogram());
-			detectorRange.setRetentionTimeStart(getRetentionTime(retentionTimeStart.getText()));
-			detectorRange.setRetentionTimeStop(getRetentionTime(retentionTimeStop.getText()));
-			detectorRange.setTraces(peakDetectorListUtil.extractTraces(traces.getText()));
-			DetectorSetting detectorSetting = peakProcessSettings.getSelectedDetectorSetting();
-			String label;
-			if(detectorSetting != null) {
-				detectorRange.setDetectorType(detectorSetting.getDetectorType().name());
-				detectorRange.setOptimizeRange(detectorSetting.isOptimizeRange());
-				label = detectorSetting.getComment();
-			} else {
-				label = null;
+		if(peakDetectorChart != null && peakReviewSettings != null) {
+			List<IPeak> selectedPeaks = peakReviewSettings.getSelectedPeaks();
+			if(selectedPeaks.size() > 0) {
+				IChromatogram<? extends IPeak> chromatogram = getChromatogram(selectedPeaks);
+				if(chromatogram != null) {
+					DetectorRange detectorRange = new DetectorRange();
+					detectorRange.setChromatogram(chromatogram);
+					detectorRange.setRetentionTimeStart(getRetentionTime(retentionTimeStart.getText()));
+					detectorRange.setRetentionTimeStop(getRetentionTime(retentionTimeStop.getText()));
+					detectorRange.setTraces(peakReviewListUtil.extractTraces(traces.getText()));
+					peakDetectorChart.update(detectorRange, null);
+				}
 			}
-			peakDetectorChart.update(detectorRange, label);
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,12 +22,12 @@ public class PeakDetectorWizard extends Wizard {
 	public static final int DEFAULT_HEIGHT = 650;
 	//
 	private PeakDetectorPage page;
-	private PeakProcessSettings processSettings;
+	private ProcessDetectorSettings processSettings;
 	//
 	private int startRetentionTime;
 	private int stopRetentionTime;
 
-	public PeakDetectorWizard(PeakProcessSettings processSettings) {
+	public PeakDetectorWizard(ProcessDetectorSettings processSettings) {
 		setNeedsProgressMonitor(false);
 		setWindowTitle(PeakDetectorSupport.DESCRIPTION);
 		//
