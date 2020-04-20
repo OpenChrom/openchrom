@@ -117,5 +117,14 @@
                type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
          </adapter>
       </factory>
-   </extension>      
+      <!-- Implement to display additional settings.
+      <factory
+            adaptableType="net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings"
+            class="net.openchrom.xxd.process.supplier.templates.ui.adapter.ReportSettingsAdapterFactory">
+         <adapter
+               type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
+         </adapter>
+      </factory>
+      -->   
+   </extension>   
 </plugin>
