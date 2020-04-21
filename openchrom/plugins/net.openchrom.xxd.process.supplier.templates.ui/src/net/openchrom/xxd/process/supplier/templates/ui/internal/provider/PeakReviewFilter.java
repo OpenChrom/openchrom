@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 
-public class ReviewFilter extends ViewerFilter {
+public class PeakReviewFilter extends ViewerFilter {
 
 	private String searchText;
 	private boolean caseSensitive;

@@ -19,21 +19,21 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewComparator;
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewEditingSupport;
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewFilter;
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewLabelProvider;
+import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakReviewComparator;
+import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakReviewEditingSupport;
+import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakReviewFilter;
+import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakReviewLabelProvider;
 
-public class ReviewListUI extends ExtendedTableViewer {
+public class PeakReviewListUI extends ExtendedTableViewer {
 
-	private static final String[] TITLES = ReviewLabelProvider.TITLES;
-	private static final int[] BOUNDS = ReviewLabelProvider.BOUNDS;
+	private static final String[] TITLES = PeakReviewLabelProvider.TITLES;
+	private static final int[] BOUNDS = PeakReviewLabelProvider.BOUNDS;
 	//
-	private ReviewLabelProvider labelProvider = new ReviewLabelProvider();
-	private ReviewComparator tableComparator = new ReviewComparator();
-	private ReviewFilter listFilter = new ReviewFilter();
+	private PeakReviewLabelProvider labelProvider = new PeakReviewLabelProvider();
+	private PeakReviewComparator tableComparator = new PeakReviewComparator();
+	private PeakReviewFilter listFilter = new PeakReviewFilter();
 
-	public ReviewListUI(Composite parent, int style) {
+	public PeakReviewListUI(Composite parent, int style) {
 		super(parent, style);
 		createColumns();
 	}
@@ -65,8 +65,8 @@ public class ReviewListUI extends ExtendedTableViewer {
 		for(int i = 0; i < tableViewerColumns.size(); i++) {
 			TableViewerColumn tableViewerColumn = tableViewerColumns.get(i);
 			String label = tableViewerColumn.getColumn().getText();
-			if(!label.equals(ReviewLabelProvider.NAME)) {
-				tableViewerColumn.setEditingSupport(new ReviewEditingSupport(this, label));
+			if(!label.equals(PeakReviewLabelProvider.NAME)) {
+				tableViewerColumn.setEditingSupport(new PeakReviewEditingSupport(this, label));
 			}
 		}
 	}

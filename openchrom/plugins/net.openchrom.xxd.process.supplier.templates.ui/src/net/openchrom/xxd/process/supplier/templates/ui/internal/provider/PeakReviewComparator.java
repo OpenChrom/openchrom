@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.Viewer;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 
-public class ReviewComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
+public class PeakReviewComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
 
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {

@@ -21,7 +21,7 @@ public class PeakReviewSupport {
 	public static final String DESCRIPTION = "Template Review UI";
 
 	@SuppressWarnings("rawtypes")
-	public void addPeaks(Shell shell, ProcessReviewSettings processSettings) {
+	public void addSettings(Shell shell, ProcessReviewSettings processSettings) {
 
 		PeakReviewWizard wizard = new PeakReviewWizard(processSettings);
 		WizardDialog wizardDialog = new WizardDialog(shell, wizard) {

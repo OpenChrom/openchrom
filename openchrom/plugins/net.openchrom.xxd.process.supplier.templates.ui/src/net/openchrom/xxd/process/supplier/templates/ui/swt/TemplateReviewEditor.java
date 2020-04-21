@@ -82,7 +82,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	//
 	private Composite composite;
 	private ReviewSettings settings = new ReviewSettings();
-	private ReviewListUI listUI;
+	private PeakReviewListUI listUI;
 	//
 	private static final String FILTER_EXTENSION = "*.txt";
 	private static final String FILTER_NAME = "Review Template (*.txt)";
@@ -148,7 +148,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		gridData.grabExcessVerticalSpace = true;
 		composite.setLayoutData(gridData);
 		//
-		listUI = new ReviewListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		listUI = new PeakReviewListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		//
 		Shell shell = listUI.getTable().getShell();
 		ITableSettings tableSettings = listUI.getTableSettings();

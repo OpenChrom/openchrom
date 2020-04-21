@@ -107,8 +107,8 @@
             description="This peak identifier supports reviewing identifications via a template."
             id="net.openchrom.xxd.process.supplier.templates.ui.peaks.identifier.msd"
             identifier="net.openchrom.xxd.process.supplier.templates.ui.core.PeakReviewMSD"
-            identifierName="Template Peak Review (MSD)"
-            identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReviewSettings">
+            identifierName="Template Peak Review UI (MSD)"
+            identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings">
       </PeakIdentificationSupplier>
    </extension>    
    <extension
@@ -137,7 +137,7 @@
       </factory>
       -->
       <factory
-            adaptableType="net.openchrom.xxd.process.supplier.templates.settings.ChromatoramReviewSettings"
+            adaptableType="net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings"
             class="net.openchrom.xxd.process.supplier.templates.ui.adapter.ReviewSettingsAdapterFactory">
          <adapter
                type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">

@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 
-public class ReviewLabelProvider extends AbstractChemClipseLabelProvider {
+public class PeakReviewLabelProvider extends AbstractChemClipseLabelProvider {
 
 	public static final String NAME = "Name";
 	public static final String START_RETENTION_TIME = "Start Retention Time";

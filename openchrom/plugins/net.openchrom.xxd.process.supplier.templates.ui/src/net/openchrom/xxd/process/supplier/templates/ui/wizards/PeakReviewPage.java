@@ -19,21 +19,21 @@ import net.openchrom.xxd.process.supplier.templates.ui.swt.peaks.TemplatePeakRev
 
 public class PeakReviewPage extends WizardPage {
 
-	private ProcessReviewSettings peakReviewSettings;
+	private ProcessReviewSettings processSettings;
 
 	public PeakReviewPage(String pageName, ProcessReviewSettings processSettings) {
 		super(pageName);
 		setTitle("Review Peaks");
-		setDescription("Template Peak Reviewe");
+		setDescription("Template Peak Review");
 		setErrorMessage(null);
-		this.peakReviewSettings = processSettings;
+		this.processSettings = processSettings;
 	}
 
 	@Override
 	public void createControl(Composite parent) {
 
 		TemplatePeakReviewUI control = new TemplatePeakReviewUI(parent, SWT.NONE);
-		control.setInput(peakReviewSettings);
+		control.setInput(processSettings);
 		setControl(control);
 	}
 }

@@ -19,13 +19,13 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.util.ReviewValidator;
 
-public class ReviewEditingSupport extends EditingSupport {
+public class PeakReviewEditingSupport extends EditingSupport {
 
 	private CellEditor cellEditor;
 	private ExtendedTableViewer tableViewer;
 	private String column;
 
-	public ReviewEditingSupport(ExtendedTableViewer tableViewer, String column) {
+	public PeakReviewEditingSupport(ExtendedTableViewer tableViewer, String column) {
 		super(tableViewer);
 		this.column = column;
 		this.cellEditor = new TextCellEditor(tableViewer.getTable());
@@ -53,13 +53,13 @@ public class ReviewEditingSupport extends EditingSupport {
 				/*
 				 * Do not edit the name
 				 */
-				case ReviewLabelProvider.START_RETENTION_TIME:
+				case PeakReviewLabelProvider.START_RETENTION_TIME:
 					return Double.toString(setting.getStartRetentionTimeMinutes());
-				case ReviewLabelProvider.STOP_RETENTION_TIME:
+				case PeakReviewLabelProvider.STOP_RETENTION_TIME:
 					return Double.toString(setting.getStopRetentionTimeMinutes());
-				case ReviewLabelProvider.CAS_NUMBER:
+				case PeakReviewLabelProvider.CAS_NUMBER:
 					return setting.getCasNumber();
-				case ReviewLabelProvider.TRACES:
+				case PeakReviewLabelProvider.TRACES:
 					return setting.getTraces();
 			}
 		}
@@ -77,7 +77,7 @@ public class ReviewEditingSupport extends EditingSupport {
 				/*
 				 * Do not edit the name
 				 */
-				case ReviewLabelProvider.START_RETENTION_TIME:
+				case PeakReviewLabelProvider.START_RETENTION_TIME:
 					result = convertValue(value);
 					if(!Double.isNaN(result)) {
 						if(result <= setting.getStopRetentionTimeMinutes()) {
@@ -85,7 +85,7 @@ public class ReviewEditingSupport extends EditingSupport {
 						}
 					}
 					break;
-				case ReviewLabelProvider.STOP_RETENTION_TIME:
+				case PeakReviewLabelProvider.STOP_RETENTION_TIME:
 					result = convertValue(value);
 					if(!Double.isNaN(result)) {
 						if(result >= setting.getStartRetentionTimeMinutes()) {
@@ -93,13 +93,13 @@ public class ReviewEditingSupport extends EditingSupport {
 						}
 					}
 					break;
-				case ReviewLabelProvider.CAS_NUMBER:
+				case PeakReviewLabelProvider.CAS_NUMBER:
 					text = ((String)value).trim();
 					if(!"".equals(text)) {
 						setting.setCasNumber(text);
 					}
 					break;
-				case ReviewLabelProvider.TRACES:
+				case PeakReviewLabelProvider.TRACES:
 					String traces = ((String)value).trim();
 					ReviewValidator validator = new ReviewValidator();
 					String message = validator.validateTraces(traces);

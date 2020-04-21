@@ -16,6 +16,9 @@ import java.util.concurrent.ExecutionException;
 
 import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.IPeakIdentifierMSD;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettingsMSD;
+import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramPeak;
+import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.identifier.IIdentificationResults;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -26,8 +29,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.process.supplier.templates.peaks.AbstractPeakIdentifier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
-import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakReviewSupport;
+import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 
 public class PeakReviewMSD<T> extends AbstractPeakIdentifier implements IPeakIdentifierMSD<IIdentificationResults> {
 
@@ -37,7 +40,8 @@ public class PeakReviewMSD<T> extends AbstractPeakIdentifier implements IPeakIde
 		IProcessingInfo<IIdentificationResults> processingInfo = new ProcessingInfo<IIdentificationResults>();
 		if(peakIdentifierSettings instanceof PeakReviewSettings) {
 			PeakReviewSettings settings = (PeakReviewSettings)peakIdentifierSettings;
-			ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, peaks, settings);
+			IChromatogram<?> chromatogram = getChromatogram(peaks);
+			ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
 			try {
 				DisplayUtils.executeInUserInterfaceThread(new Runnable() {
 
@@ -46,7 +50,7 @@ public class PeakReviewMSD<T> extends AbstractPeakIdentifier implements IPeakIde
 
 						Shell shell = DisplayUtils.getShell();
 						PeakReviewSupport peakReviewSupport = new PeakReviewSupport();
-						peakReviewSupport.addPeaks(shell, processSettings);
+						peakReviewSupport.addSettings(shell, processSettings);
 					}
 				});
 			} catch(InterruptedException e) {
@@ -56,5 +60,16 @@ public class PeakReviewMSD<T> extends AbstractPeakIdentifier implements IPeakIde
 			}
 		}
 		return processingInfo;
+	}
+
+	private IChromatogram<?> getChromatogram(List<? extends IPeakMSD> peaks) {
+
+		for(IPeak peak : peaks) {
+			if(peak instanceof IChromatogramPeak) {
+				IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
+				return chromatogramPeak.getChromatogram();
+			}
+		}
+		return null;
 	}
 }
