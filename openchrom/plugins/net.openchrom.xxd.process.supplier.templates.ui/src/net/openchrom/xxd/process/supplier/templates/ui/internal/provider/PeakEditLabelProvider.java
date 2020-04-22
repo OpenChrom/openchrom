@@ -13,34 +13,33 @@ package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import java.text.DecimalFormat;
 
+import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.IPeakModel;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
-
-public class PeakReviewLabelProvider extends AbstractChemClipseLabelProvider {
+public class PeakEditLabelProvider extends AbstractChemClipseLabelProvider {
 
 	public static final String NAME = "Name";
 	public static final String START_RETENTION_TIME = "Start [min]";
 	public static final String STOP_RETENTION_TIME = "Stop [min]";
-	public static final String CAS_NUMBER = "CAS";
-	public static final String TRACES = "Traces";
+	public static final String AREA = "Area";
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 	//
 	public static final String[] TITLES = { //
 			NAME, //
 			START_RETENTION_TIME, //
-			STOP_RETENTION_TIME, //
-			CAS_NUMBER, //
-			TRACES //
+			STOP_RETENTION_TIME //
 	};
 	public static final int[] BOUNDS = { //
 			200, //
-			100, //
 			100, //
 			100, //
 			100 //
@@ -59,23 +58,22 @@ public class PeakReviewLabelProvider extends AbstractChemClipseLabelProvider {
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof ReviewSetting) {
-			ReviewSetting setting = (ReviewSetting)element;
+		if(element instanceof IPeak) {
+			IPeak peak = (IPeak)element;
+			IPeakModel peakModel = peak.getPeakModel();
+			//
 			switch(columnIndex) {
 				case 0:
-					text = setting.getName();
+					text = getName(peak);
 					break;
 				case 1:
-					text = decimalFormat.format(setting.getStartRetentionTimeMinutes());
+					text = decimalFormat.format(peakModel.getStartRetentionTime() / IChromatogram.MINUTE_CORRELATION_FACTOR);
 					break;
 				case 2:
-					text = decimalFormat.format(setting.getStopRetentionTimeMinutes());
+					text = decimalFormat.format(peakModel.getStopRetentionTime() / IChromatogram.MINUTE_CORRELATION_FACTOR);
 					break;
 				case 3:
-					text = setting.getCasNumber();
-					break;
-				case 4:
-					text = setting.getTraces();
+					text = decimalFormat.format(peak.getIntegratedArea());
 					break;
 				default:
 					text = "n.v.";
@@ -87,6 +85,29 @@ public class PeakReviewLabelProvider extends AbstractChemClipseLabelProvider {
 	@Override
 	public Image getImage(Object element) {
 
-		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IDENTIFY_PEAKS, IApplicationImage.SIZE_16x16);
+		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PEAK, IApplicationImage.SIZE_16x16);
+	}
+
+	public static String getName(IPeak peak) {
+
+		/*
+		 * Is a peak name set?
+		 */
+		String name = peak.getName();
+		/*
+		 * No peak name set.
+		 * Then try to get the peak or scan best match.
+		 */
+		if(name == null) {
+			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets());
+			if(libraryInformation != null) {
+				name = libraryInformation.getName();
+			}
+		}
+		/*
+		 * No hit at all?
+		 * Then return an empty String.
+		 */
+		return name != null ? name : "";
 	}
 }

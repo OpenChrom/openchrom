@@ -12,8 +12,10 @@
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.TargetsListUI;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
@@ -32,6 +34,7 @@ import org.eclipse.swt.widgets.Table;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePage;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakEditListUI;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakReviewListUI;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
@@ -42,6 +45,8 @@ public class PeakReviewControl extends Composite {
 	private PeakDetectorChart peakDetectorChart;
 	//
 	private PeakReviewListUI peakReviewListUI;
+	private PeakEditListUI peakEditListUI;
+	private TargetsListUI targetListUI;
 	//
 	private PeakDetectorListUtil peakDetectorListUtil = new PeakDetectorListUtil();
 
@@ -74,7 +79,9 @@ public class PeakReviewControl extends Composite {
 		composite.setLayout(new GridLayout(1, true));
 		//
 		createToolbarMain(composite);
-		peakReviewListUI = createTable(composite);
+		peakReviewListUI = createTableReview(composite);
+		peakEditListUI = createTablePeaks(composite);
+		targetListUI = createTableTargets(composite);
 	}
 
 	private void createToolbarMain(Composite parent) {
@@ -88,7 +95,7 @@ public class PeakReviewControl extends Composite {
 		createSettingsButton(composite);
 	}
 
-	private PeakReviewListUI createTable(Composite parent) {
+	private PeakReviewListUI createTableReview(Composite parent) {
 
 		PeakReviewListUI listUI = new PeakReviewListUI(parent, SWT.BORDER);
 		Table table = listUI.getTable();
@@ -101,6 +108,47 @@ public class PeakReviewControl extends Composite {
 				updateRangeSelection();
 			}
 		});
+		//
+		return listUI;
+	}
+
+	private PeakEditListUI createTablePeaks(Composite parent) {
+
+		PeakEditListUI listUI = new PeakEditListUI(parent, SWT.BORDER);
+		Table table = listUI.getTable();
+		table.setLayoutData(new GridData(GridData.FILL_BOTH));
+		table.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				Object object = listUI.getStructuredSelection().getFirstElement();
+				if(object instanceof IPeak) {
+					IPeak peak = (IPeak)object;
+					targetListUI.setInput(peak.getTargets());
+				} else {
+					targetListUI.clear();
+				}
+			}
+		});
+		//
+		return listUI;
+	}
+
+	private TargetsListUI createTableTargets(Composite parent) {
+
+		TargetsListUI listUI = new TargetsListUI(parent, SWT.BORDER);
+		Table table = listUI.getTable();
+		table.setLayoutData(new GridData(GridData.FILL_BOTH));
+		table.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				//
+			}
+		});
+		//
 		return listUI;
 	}
 
@@ -156,15 +204,18 @@ public class PeakReviewControl extends Composite {
 						 */
 						int retentionTimeDeltaLeft = (int)(PreferenceSupplier.getUiDetectorDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
 						int retentionTimeDeltaRight = (int)(PreferenceSupplier.getUiDetectorDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+						int startRetentionTime = reviewSetting.getStartRetentionTime() - retentionTimeDeltaLeft;
+						int stopRetentionTime = reviewSetting.getStopRetentionTime() + retentionTimeDeltaRight;
 						//
 						DetectorRange detectorRange = new DetectorRange();
 						detectorRange.setChromatogram(chromatogram);
-						detectorRange.setRetentionTimeStart(reviewSetting.getStartRetentionTime() - retentionTimeDeltaLeft);
-						detectorRange.setRetentionTimeStop(reviewSetting.getStopRetentionTime() + retentionTimeDeltaRight);
+						detectorRange.setRetentionTimeStart(startRetentionTime);
+						detectorRange.setRetentionTimeStop(stopRetentionTime);
 						detectorRange.setTraces(peakDetectorListUtil.extractTraces(reviewSetting.getTraces()));
 						detectorRange.setDetectorType("VV");
 						detectorRange.setOptimizeRange(true);
 						//
+						peakEditListUI.setInput(chromatogram.getPeaks(startRetentionTime, stopRetentionTime));
 						peakDetectorChart.update(detectorRange, null);
 					}
 				}
