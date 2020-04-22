@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This
  * program and the accompanying materials are made available under the terms of
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.preferences;
 
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
@@ -27,7 +28,8 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	public PreferencePage() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("CDK settings");
+		setTitle("CDK (Chemistry Development Kit)");
+		setDescription("");
 	}
 
 	/**
@@ -43,6 +45,16 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(iterationDepthFieldEditor);
 		addField(new StringFieldEditor(PreferenceSupplier.P_USER_DEFINED_ISOTOPES, "User defined isotopes", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA, "Delete identifications without formula", getFieldEditorParent()));
+		//
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_SMILES_STRICT, "SMILES Strict", getFieldEditorParent()));
+		//
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_ALLOW_RADICALS, "Allow Radicals", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS, "Output Radicals As WildCard Atoms", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETAILED_FAILURE_ANALYSIS, "Detailed Failure Analysis", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID, "Interpret Acids Without The Word Acid", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_WARN_RATHER_THAN_FAIL, "Warn Rather Than Fail On Uninterpretable Stereochemistry", getFieldEditorParent()));
 	}
 
 	/*

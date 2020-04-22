@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -37,6 +37,24 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String DEF_USER_DEFINED_ISOTOPES = "C H N O";
 	public static final String P_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA = "deleteIdentificationsWithoutFormula";
 	public static final boolean DEF_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA = false;
+	/*
+	 * CDK
+	 */
+	public static final String P_SMILES_STRICT = "smilesStrict";
+	public static final boolean DEF_SMILES_STRICT = true;
+	/*
+	 * OPSIN
+	 */
+	public static final String P_ALLOW_RADICALS = "allowRadicals";
+	public static final boolean DEF_ALLOW_RADICALS = false;
+	public static final String P_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS = "outputRadicalsAsWildCardAtoms";
+	public static final boolean DEF_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS = false;
+	public static final String P_DETAILED_FAILURE_ANALYSIS = "detailedFailureAnalysis";
+	public static final boolean DEF_DETAILED_FAILURE_ANALYSIS = false;
+	public static final String P_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID = "interpretAcidsWithoutTheWordAcid";
+	public static final boolean DEF_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID = false;
+	public static final String P_WARN_RATHER_THAN_FAIL = "warnRatherThanFailOnUninterpretableStereochemistry";
+	public static final boolean DEF_WARN_RATHER_THAN_FAIL = false;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -64,10 +82,20 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public Map<String, String> getDefaultValues() {
 
 		Map<String, String> defaultValues = new HashMap<String, String>();
+		//
 		defaultValues.put(P_ISOTOPE_ITERATION_DEPTH, Integer.toString(DEF_ISOTOPE_ITERATION_DEPTH));
 		defaultValues.put(P_ISOTOPE_SET, DEF_ISOTOPE_SET);
 		defaultValues.put(P_USER_DEFINED_ISOTOPES, DEF_USER_DEFINED_ISOTOPES);
 		defaultValues.put(P_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA, Boolean.toString(DEF_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA));
+		//
+		defaultValues.put(P_SMILES_STRICT, Boolean.toString(DEF_SMILES_STRICT));
+		//
+		defaultValues.put(P_ALLOW_RADICALS, Boolean.toString(DEF_ALLOW_RADICALS));
+		defaultValues.put(P_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS, Boolean.toString(DEF_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS));
+		defaultValues.put(P_DETAILED_FAILURE_ANALYSIS, Boolean.toString(DEF_DETAILED_FAILURE_ANALYSIS));
+		defaultValues.put(P_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID, Boolean.toString(DEF_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID));
+		defaultValues.put(P_WARN_RATHER_THAN_FAIL, Boolean.toString(DEF_WARN_RATHER_THAN_FAIL));
+		//
 		return defaultValues;
 	}
 
@@ -123,5 +151,41 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA, DEF_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA);
+	}
+
+	public static boolean isSmilesStrict() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_SMILES_STRICT, DEF_SMILES_STRICT);
+	}
+
+	public static boolean isAllowRadicals() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_ALLOW_RADICALS, DEF_ALLOW_RADICALS);
+	}
+
+	public static boolean isOutputRadicalsAsWildCardAtoms() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS, DEF_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS);
+	}
+
+	public static boolean isDetailedFailureAnalysis() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_DETAILED_FAILURE_ANALYSIS, DEF_DETAILED_FAILURE_ANALYSIS);
+	}
+
+	public static boolean isInterpretAcidsWithoutTheWordAcid() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID, DEF_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID);
+	}
+
+	public static boolean isWarnRatherThanFail() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_WARN_RATHER_THAN_FAIL, DEF_WARN_RATHER_THAN_FAIL);
 	}
 }

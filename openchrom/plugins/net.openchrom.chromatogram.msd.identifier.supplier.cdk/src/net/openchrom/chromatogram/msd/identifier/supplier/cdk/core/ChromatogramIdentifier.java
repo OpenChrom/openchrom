@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Lablicate GmbH.
+ * Copyright (c) 2016, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -46,9 +46,9 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 	}
 
 	@Override
-	public IProcessingInfo identify(IChromatogramSelectionMSD chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> identify(IChromatogramSelectionMSD chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(chromatogramSelection, chromatogramIdentifierSettings);
+		IProcessingInfo<?> processingInfo = validate(chromatogramSelection, chromatogramIdentifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
 			if(chromatogramIdentifierSettings instanceof IdentifierSettings) {
 				/*
@@ -59,7 +59,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 				/*
 				 * Scans
 				 */
-				IChromatogramMSD chromatogram = chromatogramSelection.getChromatogramMSD();
+				IChromatogramMSD chromatogram = chromatogramSelection.getChromatogram();
 				int startScan = chromatogram.getScanNumber(chromatogramSelection.getStartRetentionTime());
 				int stopScan = chromatogram.getScanNumber(chromatogramSelection.getStopRetentionTime());
 				/*
@@ -90,7 +90,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 				 * Peaks
 				 */
 				List<IPeakMSD> peaks = new ArrayList<IPeakMSD>();
-				for(IPeakMSD peakMSD : chromatogramSelection.getChromatogramMSD().getPeaks(chromatogramSelection)) {
+				for(IPeakMSD peakMSD : chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection)) {
 					peaks.add(peakMSD);
 				}
 				calculateSmilesFormula(peaks, deleteIdentificationsWithoutFormula);
@@ -100,7 +100,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 	}
 
 	@Override
-	public IProcessingInfo identify(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<?> identify(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
 
 		IdentifierSettings identifierSettings = PreferenceSupplier.getIdentifierSettings();
 		return identify(chromatogramSelection, identifierSettings, monitor);
