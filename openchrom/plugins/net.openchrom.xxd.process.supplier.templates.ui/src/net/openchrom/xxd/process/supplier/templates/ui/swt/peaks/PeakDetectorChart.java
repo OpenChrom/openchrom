@@ -421,17 +421,22 @@ public class PeakDetectorChart extends ChromatogramChart {
 		for(IPeak peak : chromatogram.getPeaks(startRetentionTime, stopRetentionTime)) {
 			if(traces.size() > 0 && peak instanceof IPeakMSD) {
 				if(peakMatchesTraces(peak, traces)) {
-					lineSeriesDataList.add(peakChartSupport.getPeak(peak, true, false, Colors.RED, SERIES_ID_PEAK_XIC + i));
-					lineSeriesDataList.add(peakChartSupport.getPeakBaseline(peak, false, Colors.BLACK, SERIES_ID_BASELINE_XIC + i));
-					i++;
+					addPeakSeries(lineSeriesDataList, peak, true, i++);
 				}
 			} else {
-				lineSeriesDataList.add(peakChartSupport.getPeak(peak, true, false, Colors.RED, SERIES_ID_PEAK_TIC + i));
-				lineSeriesDataList.add(peakChartSupport.getPeakBaseline(peak, false, Colors.BLACK, SERIES_ID_BASELINE_TIC + i));
-				i++;
+				addPeakSeries(lineSeriesDataList, peak, false, i++);
 			}
 		}
 		return lineSeriesDataList;
+	}
+
+	private void addPeakSeries(List<ILineSeriesData> lineSeriesDataList, IPeak peak, boolean xic, int i) {
+
+		String idPeak = xic ? SERIES_ID_PEAK_XIC : SERIES_ID_PEAK_TIC;
+		String idBaseline = xic ? SERIES_ID_BASELINE_XIC : SERIES_ID_BASELINE_TIC;
+		//
+		lineSeriesDataList.add(peakChartSupport.getPeak(peak, true, false, Colors.RED, idPeak + i));
+		lineSeriesDataList.add(peakChartSupport.getPeakBaseline(peak, false, Colors.BLACK, idBaseline + i));
 	}
 
 	private boolean peakMatchesTraces(IPeak peak, Set<Integer> traces) {

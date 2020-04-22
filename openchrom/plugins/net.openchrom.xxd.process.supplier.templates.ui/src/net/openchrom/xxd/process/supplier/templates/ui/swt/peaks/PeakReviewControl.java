@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePage;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakReviewListUI;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
@@ -150,13 +151,20 @@ public class PeakReviewControl extends Composite {
 				if(processSettings != null) {
 					IChromatogram<?> chromatogram = processSettings.getChromatogram();
 					if(chromatogram != null) {
+						/*
+						 * Settings
+						 */
+						int retentionTimeDeltaLeft = (int)(PreferenceSupplier.getUiDetectorDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+						int retentionTimeDeltaRight = (int)(PreferenceSupplier.getUiDetectorDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+						//
 						DetectorRange detectorRange = new DetectorRange();
 						detectorRange.setChromatogram(chromatogram);
-						detectorRange.setRetentionTimeStart(reviewSetting.getStartRetentionTime());
-						detectorRange.setRetentionTimeStop(reviewSetting.getStopRetentionTime());
+						detectorRange.setRetentionTimeStart(reviewSetting.getStartRetentionTime() - retentionTimeDeltaLeft);
+						detectorRange.setRetentionTimeStop(reviewSetting.getStopRetentionTime() + retentionTimeDeltaRight);
 						detectorRange.setTraces(peakDetectorListUtil.extractTraces(reviewSetting.getTraces()));
 						detectorRange.setDetectorType("VV");
 						detectorRange.setOptimizeRange(true);
+						//
 						peakDetectorChart.update(detectorRange, null);
 					}
 				}
