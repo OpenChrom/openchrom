@@ -6,21 +6,16 @@
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_k_v0YEuVEeO05Zmz9AbMeQ" featurename="commands" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
     <elements xsi:type="commands:Command" xmi:id="_X6kCoEucEeObU4sRRHzsFQ" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.command.calculateSmilesChromatogram" commandName="Calculate SMILES (Scans and Peaks)"/>
-    <elements xsi:type="commands:Command" xmi:id="_rcLLoF8lEeO0jaPdEWKOew" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.command.deleteIdentificationsWithoutSmilesChromatogram" commandName="Delete Identifications Without SMILES (Scans and Peaks)"/>
     <elements xsi:type="commands:Command" xmi:id="_yc62cEzoEeartrKP1w92_w" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.command.calculateSmilesLibrary" commandName="Calculate SMILES (Library)"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_C8TuwEuWEeO05Zmz9AbMeQ" featurename="handlers" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
     <elements xsi:type="commands:Handler" xmi:id="_fFxFEEucEeObU4sRRHzsFQ" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.handler.calculateSmilesChromatogram" contributionURI="bundleclass://net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui/net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.handlers.CalculateSmilesChromatogramHandler" command="_X6kCoEucEeObU4sRRHzsFQ"/>
-    <elements xsi:type="commands:Handler" xmi:id="_0reMwF8lEeO0jaPdEWKOew" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.handler.deleteIdentificationsWithoutSmilesChromatogram" contributionURI="bundleclass://net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui/net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.handlers.DeleteIdentificationsChromatogramHandler" command="_rcLLoF8lEeO0jaPdEWKOew"/>
     <elements xsi:type="commands:Handler" xmi:id="_QLoiEEzpEeartrKP1w92_w" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.handler.calculateSmilesLibrary" contributionURI="bundleclass://net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui/net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.handlers.CalculateSmilesLibraryHandler" command="_yc62cEzoEeartrKP1w92_w"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_n7XwoEuYEeObU4sRRHzsFQ" featurename="children" parentElementId="org.eclipse.chemclipse.ux.extension.ui.menu.identifier">
     <elements xsi:type="menu:Menu" xmi:id="__3jPIFE5EeONNIp3wMDeNw" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.menu" label="SMILES">
       <children xsi:type="menu:HandledMenuItem" xmi:id="_zbxU4EucEeObU4sRRHzsFQ" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.handledmenuitem.calculateSmilesFormulaPeaks" label="Calculate SMILES (Scans and Peaks)" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/cdkPeaks.gif" command="_X6kCoEucEeObU4sRRHzsFQ">
         <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_rnG1MEzoEeartrKP1w92_w" coreExpressionId="org.eclipse.chemclipse.ux.extension.ui.definitions.isChromatogramTypeMSD"/>
-      </children>
-      <children xsi:type="menu:HandledMenuItem" xmi:id="_8Ch54F8lEeO0jaPdEWKOew" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.handledmenuitem.deleteIdentificationsWithoutFormula" label="Delete Identifications Without SMILES (Scans and Peaks)" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/cdkDelete.gif" command="_rcLLoF8lEeO0jaPdEWKOew">
-        <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_tVgQsEzoEeartrKP1w92_w" coreExpressionId="org.eclipse.chemclipse.ux.extension.ui.definitions.isChromatogramTypeMSD"/>
       </children>
       <children xsi:type="menu:HandledMenuItem" xmi:id="_PtnT4EzqEeartrKP1w92_w" elementId="net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.handledmenuitem.calculatesmileslibrary" label="Calculate SMILES (Library)" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/cdkPeaks.gif" command="_yc62cEzoEeartrKP1w92_w">
         <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_UNq-sEzqEeartrKP1w92_w" coreExpressionId="org.eclipse.chemclipse.ux.extension.ui.definitions.isLibraryTypeMSD"/>

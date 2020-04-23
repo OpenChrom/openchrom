@@ -490,6 +490,7 @@ public class MoleculeView {
 						iupacName = libraryInformation.getName();
 						casNumber = libraryInformation.getCasNumber();
 						smilesFormula = libraryInformation.getSmiles();
+						updateWidgets();
 						createMoleculeImage();
 					}
 				}

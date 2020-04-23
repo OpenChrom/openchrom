@@ -35,8 +35,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int DEF_ISOTOPE_ITERATION_DEPTH = 15;
 	public static final String P_USER_DEFINED_ISOTOPES = "userDefinedIsotopes";
 	public static final String DEF_USER_DEFINED_ISOTOPES = "C H N O";
-	public static final String P_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA = "deleteIdentificationsWithoutFormula";
-	public static final boolean DEF_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA = false;
 	/*
 	 * CDK
 	 */
@@ -86,7 +84,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_ISOTOPE_ITERATION_DEPTH, Integer.toString(DEF_ISOTOPE_ITERATION_DEPTH));
 		defaultValues.put(P_ISOTOPE_SET, DEF_ISOTOPE_SET);
 		defaultValues.put(P_USER_DEFINED_ISOTOPES, DEF_USER_DEFINED_ISOTOPES);
-		defaultValues.put(P_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA, Boolean.toString(DEF_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA));
 		//
 		defaultValues.put(P_SMILES_STRICT, Boolean.toString(DEF_SMILES_STRICT));
 		//
@@ -143,14 +140,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static IdentifierSettings getIdentifierSettings() {
 
 		IdentifierSettings identifierSettings = new IdentifierSettings();
-		identifierSettings.setDeleteIdentificationsWithoutFormula(isDeleteIdentificationsWithoutFormula());
+		identifierSettings.setAllowRadicals(isAllowRadicals());
+		identifierSettings.setDetailedFailureAnalysis(isDetailedFailureAnalysis());
+		identifierSettings.setInterpretAcidsWithoutTheWordAcid(isInterpretAcidsWithoutTheWordAcid());
+		identifierSettings.setOutputRadicalsAsWildCardAtoms(isOutputRadicalsAsWildCardAtoms());
+		identifierSettings.setWarnRatherThanFailOnUninterpretableStereochemistry(isWarnRatherThanFail());
 		return identifierSettings;
-	}
-
-	public static boolean isDeleteIdentificationsWithoutFormula() {
-
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA, DEF_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA);
 	}
 
 	public static boolean isSmilesStrict() {

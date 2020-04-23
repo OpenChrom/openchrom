@@ -11,10 +11,10 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.preferences;
 
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.IntegerFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
@@ -40,11 +40,8 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	public void createFieldEditors() {
 
 		addField(new RadioGroupFieldEditor(PreferenceSupplier.P_ISOTOPE_SET, "Select an isotope set.", 1, PreferenceSupplier.getIsotopePreferenceOptions(), getFieldEditorParent()));
-		IntegerFieldEditor iterationDepthFieldEditor = new IntegerFieldEditor(PreferenceSupplier.P_ISOTOPE_ITERATION_DEPTH, "Set the isotope iteration depth.", getFieldEditorParent());
-		iterationDepthFieldEditor.setValidRange(0, 50);
-		addField(iterationDepthFieldEditor);
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_ISOTOPE_ITERATION_DEPTH, "Set the isotope iteration depth.", 0, 50, getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceSupplier.P_USER_DEFINED_ISOTOPES, "User defined isotopes", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_DELETE_IDENTIFICATIONS_WITHOUT_FORMULA, "Delete identifications without formula", getFieldEditorParent()));
 		//
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_SMILES_STRICT, "SMILES Strict", getFieldEditorParent()));

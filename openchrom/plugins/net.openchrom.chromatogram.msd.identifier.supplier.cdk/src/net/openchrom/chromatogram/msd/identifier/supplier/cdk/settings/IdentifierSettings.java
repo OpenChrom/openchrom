@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Lablicate GmbH.
+ * Copyright (c) 2014, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,21 +14,69 @@ package net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.AbstractChromatogramIdentifierSettings;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 
 public class IdentifierSettings extends AbstractChromatogramIdentifierSettings {
 
-	@JsonProperty(value = "Delete identifications without formula", defaultValue = "true")
-	@JsonPropertyDescription(value = "All targets which don't have a formula will be deleted.")
-	private boolean deleteIdentificationsWithoutFormula = true;
+	@JsonProperty(value = "Allow Radicals", defaultValue = "false")
+	private boolean allowRadicals = PreferenceSupplier.DEF_ALLOW_RADICALS;
+	@JsonProperty(value = "Detailed Failure Analysis", defaultValue = "false")
+	private boolean detailedFailureAnalysis = PreferenceSupplier.DEF_DETAILED_FAILURE_ANALYSIS;
+	@JsonProperty(value = "Interpret Acids Without The Word Acid", defaultValue = "false")
+	private boolean interpretAcidsWithoutTheWordAcid = PreferenceSupplier.DEF_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID;
+	@JsonProperty(value = "Output Radicals As WildCard Atoms", defaultValue = "false")
+	private boolean outputRadicalsAsWildCardAtoms = PreferenceSupplier.DEF_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS;
+	@JsonProperty(value = "Warn Rather Than Fail On Uninterpretable Stereochemistry", defaultValue = "false")
+	private boolean warnRatherThanFailOnUninterpretableStereochemistry = PreferenceSupplier.DEF_WARN_RATHER_THAN_FAIL;
 
-	public boolean isDeleteIdentificationsWithoutFormula() {
+	public boolean isAllowRadicals() {
 
-		return deleteIdentificationsWithoutFormula;
+		return allowRadicals;
 	}
 
-	public void setDeleteIdentificationsWithoutFormula(boolean deleteIdentificationsWithoutFormula) {
+	public void setAllowRadicals(boolean allowRadicals) {
 
-		this.deleteIdentificationsWithoutFormula = deleteIdentificationsWithoutFormula;
+		this.allowRadicals = allowRadicals;
+	}
+
+	public boolean isDetailedFailureAnalysis() {
+
+		return detailedFailureAnalysis;
+	}
+
+	public void setDetailedFailureAnalysis(boolean detailedFailureAnalysis) {
+
+		this.detailedFailureAnalysis = detailedFailureAnalysis;
+	}
+
+	public boolean isInterpretAcidsWithoutTheWordAcid() {
+
+		return interpretAcidsWithoutTheWordAcid;
+	}
+
+	public void setInterpretAcidsWithoutTheWordAcid(boolean interpretAcidsWithoutTheWordAcid) {
+
+		this.interpretAcidsWithoutTheWordAcid = interpretAcidsWithoutTheWordAcid;
+	}
+
+	public boolean isOutputRadicalsAsWildCardAtoms() {
+
+		return outputRadicalsAsWildCardAtoms;
+	}
+
+	public void setOutputRadicalsAsWildCardAtoms(boolean outputRadicalsAsWildCardAtoms) {
+
+		this.outputRadicalsAsWildCardAtoms = outputRadicalsAsWildCardAtoms;
+	}
+
+	public boolean isWarnRatherThanFailOnUninterpretableStereochemistry() {
+
+		return warnRatherThanFailOnUninterpretableStereochemistry;
+	}
+
+	public void setWarnRatherThanFailOnUninterpretableStereochemistry(boolean warnRatherThanFailOnUninterpretableStereochemistry) {
+
+		this.warnRatherThanFailOnUninterpretableStereochemistry = warnRatherThanFailOnUninterpretableStereochemistry;
 	}
 }

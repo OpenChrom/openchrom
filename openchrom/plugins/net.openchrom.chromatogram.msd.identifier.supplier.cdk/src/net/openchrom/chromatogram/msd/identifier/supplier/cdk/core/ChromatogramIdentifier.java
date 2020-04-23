@@ -36,15 +36,6 @@ import uk.ac.cam.ch.wwmm.opsin.OpsinResult;
 
 public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 
-	private NameToStructure nameStructure;
-	private NameToStructureConfig nameStructureConfig;
-
-	public ChromatogramIdentifier() {
-		nameStructure = NameToStructure.getInstance();
-		nameStructureConfig = new NameToStructureConfig();
-		nameStructureConfig.setAllowRadicals(true); // TODO settings Preferences
-	}
-
 	@Override
 	public IProcessingInfo<?> identify(IChromatogramSelectionMSD chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
 
@@ -55,7 +46,13 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 				 * Settings
 				 */
 				IdentifierSettings identifierSettings = (IdentifierSettings)chromatogramIdentifierSettings;
-				boolean deleteIdentificationsWithoutFormula = identifierSettings.isDeleteIdentificationsWithoutFormula();
+				NameToStructure nameStructure = NameToStructure.getInstance();
+				NameToStructureConfig nameStructureConfig = new NameToStructureConfig();
+				nameStructureConfig.setAllowRadicals(identifierSettings.isAllowRadicals());
+				nameStructureConfig.setDetailedFailureAnalysis(identifierSettings.isDetailedFailureAnalysis());
+				nameStructureConfig.setInterpretAcidsWithoutTheWordAcid(identifierSettings.isInterpretAcidsWithoutTheWordAcid());
+				nameStructureConfig.setOutputRadicalsAsWildCardAtoms(identifierSettings.isOutputRadicalsAsWildCardAtoms());
+				nameStructureConfig.setWarnRatherThanFailOnUninterpretableStereochemistry(identifierSettings.isWarnRatherThanFailOnUninterpretableStereochemistry());
 				/*
 				 * Scans
 				 */
@@ -73,7 +70,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 						 * Scan
 						 */
 						if(scanMSD.getTargets().size() > 0) {
-							calculateSmilesFormula(scanMSD, deleteIdentificationsWithoutFormula);
+							calculateSmilesFormula(scanMSD, nameStructure, nameStructureConfig);
 						}
 						/*
 						 * Optimized Scan.
@@ -81,7 +78,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 						IScanMSD optimizedMassSpectrum = scanMSD.getOptimizedMassSpectrum();
 						if(optimizedMassSpectrum != null) {
 							if(optimizedMassSpectrum.getTargets().size() > 0) {
-								calculateSmilesFormula(optimizedMassSpectrum, deleteIdentificationsWithoutFormula);
+								calculateSmilesFormula(optimizedMassSpectrum, nameStructure, nameStructureConfig);
 							}
 						}
 					}
@@ -93,7 +90,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 				for(IPeakMSD peakMSD : chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection)) {
 					peaks.add(peakMSD);
 				}
-				calculateSmilesFormula(peaks, deleteIdentificationsWithoutFormula);
+				calculateSmilesFormula(peaks, nameStructure, nameStructureConfig);
 			}
 		}
 		return processingInfo;
@@ -106,12 +103,8 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 		return identify(chromatogramSelection, identifierSettings, monitor);
 	}
 
-	private void calculateSmilesFormula(IScanMSD scanMSD, boolean deleteIdentificationsWithoutFormula) {
+	private void calculateSmilesFormula(IScanMSD scanMSD, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
 
-		/*
-		 * Get the targets for each peak.
-		 */
-		List<IIdentificationTarget> targetsToDelete = new ArrayList<IIdentificationTarget>();
 		for(IIdentificationTarget target : scanMSD.getTargets()) {
 			/*
 			 * Check if the peak is a peak identification entry.
@@ -136,20 +129,13 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 						 * The name couldn't be parsed.
 						 */
 						libraryInformation.setComments(message);
-						targetsToDelete.add(target);
 					}
 				}
 			}
 		}
-		/*
-		 * Delete each marked entry in the selected peak.
-		 */
-		if(deleteIdentificationsWithoutFormula) {
-			scanMSD.getTargets().removeAll(targetsToDelete);
-		}
 	}
 
-	private void calculateSmilesFormula(List<IPeakMSD> peaks, boolean deleteIdentificationsWithoutFormula) {
+	private void calculateSmilesFormula(List<IPeakMSD> peaks, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
 
 		/*
 		 * Calculate formula for each peak.
@@ -159,7 +145,6 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 			 * Get the targets for each peak.
 			 */
 			Set<IIdentificationTarget> targets = peak.getTargets();
-			List<IIdentificationTarget> targetsToDelete = new ArrayList<IIdentificationTarget>();
 			for(IIdentificationTarget target : targets) {
 				/*
 				 * Check if the peak is a peak identification entry.
@@ -184,16 +169,9 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 							 * The name couldn't be parsed.
 							 */
 							libraryInformation.setComments(message);
-							targetsToDelete.add(target);
 						}
 					}
 				}
-			}
-			/*
-			 * Delete each marked entry in the selected peak.
-			 */
-			if(deleteIdentificationsWithoutFormula) {
-				peak.getTargets().removeAll(targetsToDelete);
 			}
 		}
 	}
