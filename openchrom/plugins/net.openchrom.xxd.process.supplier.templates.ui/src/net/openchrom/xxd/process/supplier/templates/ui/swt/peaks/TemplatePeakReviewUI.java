@@ -42,7 +42,7 @@ public class TemplatePeakReviewUI extends Composite {
 		peakDetectorChart = createPeakDetectorChart(sashForm);
 		//
 		peakReviewControl.setPeakDetectorChart(peakDetectorChart);
-		sashForm.setWeights(new int[]{200, 800});
+		sashForm.setWeights(new int[]{400, 600});
 	}
 
 	private PeakReviewControl createPeakReviewControl(Composite parent) {

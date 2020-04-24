@@ -11,8 +11,12 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.TargetsListUI;
@@ -22,6 +26,9 @@ import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -33,9 +40,10 @@ import org.eclipse.swt.widgets.Table;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
+import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakStatusLabelProvider;
 import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePage;
-import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakEditListUI;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakReviewListUI;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakStatusListUI;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
@@ -45,7 +53,7 @@ public class PeakReviewControl extends Composite {
 	private PeakDetectorChart peakDetectorChart;
 	//
 	private PeakReviewListUI peakReviewListUI;
-	private PeakEditListUI peakEditListUI;
+	private PeakStatusListUI peakStatusListUI;
 	private TargetsListUI targetListUI;
 	//
 	private PeakDetectorListUtil peakDetectorListUtil = new PeakDetectorListUtil();
@@ -58,6 +66,16 @@ public class PeakReviewControl extends Composite {
 	public void setPeakDetectorChart(PeakDetectorChart peakDetectorChart) {
 
 		this.peakDetectorChart = peakDetectorChart;
+		if(peakDetectorChart != null) {
+			peakDetectorChart.setUpdateListener(new IUpdateListener() {
+
+				@Override
+				public void update() {
+
+					updateEditList();
+				}
+			});
+		}
 	}
 
 	public void setInput(ProcessReviewSettings processSettings) {
@@ -74,13 +92,37 @@ public class PeakReviewControl extends Composite {
 	private void createControl() {
 
 		setLayout(new FillLayout());
+		SashForm sashForm = new SashForm(this, SWT.VERTICAL);
 		//
-		Composite composite = new Composite(this, SWT.NONE);
+		createReviewSection(sashForm);
+		createPeakSection(sashForm);
+		createTargetSection(sashForm);
+	}
+
+	private void createReviewSection(Composite parent) {
+
+		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(1, true));
 		//
 		createToolbarMain(composite);
 		peakReviewListUI = createTableReview(composite);
-		peakEditListUI = createTablePeaks(composite);
+	}
+
+	private void createPeakSection(Composite parent) {
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setLayout(new GridLayout(1, true));
+		//
+		createToolbarPeaks(composite);
+		peakStatusListUI = createTablePeaks(composite);
+	}
+
+	private void createTargetSection(Composite parent) {
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setLayout(new GridLayout(1, true));
+		//
+		createToolbarTargets(composite);
 		targetListUI = createTableTargets(composite);
 	}
 
@@ -100,6 +142,7 @@ public class PeakReviewControl extends Composite {
 		PeakReviewListUI listUI = new PeakReviewListUI(parent, SWT.BORDER);
 		Table table = listUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
+		//
 		table.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -112,27 +155,86 @@ public class PeakReviewControl extends Composite {
 		return listUI;
 	}
 
-	private PeakEditListUI createTablePeaks(Composite parent) {
+	private void createToolbarPeaks(Composite parent) {
 
-		PeakEditListUI listUI = new PeakEditListUI(parent, SWT.BORDER);
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalAlignment = SWT.END;
+		composite.setLayoutData(gridData);
+		composite.setLayout(new GridLayout(2, false));
+		//
+		createDeleteButton(composite);
+		createDeleteAllButton(composite);
+	}
+
+	private PeakStatusListUI createTablePeaks(Composite parent) {
+
+		PeakStatusListUI listUI = new PeakStatusListUI(parent, SWT.BORDER);
 		Table table = listUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
+		//
 		table.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
 				Object object = listUI.getStructuredSelection().getFirstElement();
+				List<IPeak> peaks = new ArrayList<>();
+				//
 				if(object instanceof IPeak) {
 					IPeak peak = (IPeak)object;
+					peaks.add(peak);
 					targetListUI.setInput(peak.getTargets());
 				} else {
 					targetListUI.clear();
+				}
+				//
+				if(peakDetectorChart != null) {
+					peakDetectorChart.updatePeaks(peaks);
+				}
+			}
+		});
+		//
+		table.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseUp(MouseEvent arg0) {
+
+			}
+
+			@Override
+			public void mouseDown(MouseEvent arg0) {
+
+			}
+
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {
+
+				Object object = listUI.getStructuredSelection().getFirstElement();
+				if(object instanceof IPeak) {
+					IPeak peak = (IPeak)object;
+					if(PeakStatusLabelProvider.isPeakReviewed(peak)) {
+						peak.removeClassifier(ReviewSetting.CLASSIFIER_REVIEW_OK);
+					} else {
+						peak.addClassifier(ReviewSetting.CLASSIFIER_REVIEW_OK);
+					}
+					listUI.refresh();
 				}
 			}
 		});
 		//
 		return listUI;
+	}
+
+	private void createToolbarTargets(Composite parent) {
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalAlignment = SWT.END;
+		composite.setLayoutData(gridData);
+		composite.setLayout(new GridLayout(1, false));
+		//
+		createDeleteButton(composite);
 	}
 
 	private TargetsListUI createTableTargets(Composite parent) {
@@ -180,6 +282,36 @@ public class PeakReviewControl extends Composite {
 		});
 	}
 
+	private void createDeleteButton(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setToolTipText("Delete the selected peak(s)");
+		button.setText("");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+			}
+		});
+	}
+
+	private void createDeleteAllButton(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setToolTipText("Delete all peak(s)");
+		button.setText("");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+			}
+		});
+	}
+
 	private void applySettings() {
 
 		updateChart();
@@ -202,10 +334,8 @@ public class PeakReviewControl extends Composite {
 						/*
 						 * Settings
 						 */
-						int retentionTimeDeltaLeft = (int)(PreferenceSupplier.getUiDetectorDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-						int retentionTimeDeltaRight = (int)(PreferenceSupplier.getUiDetectorDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-						int startRetentionTime = reviewSetting.getStartRetentionTime() - retentionTimeDeltaLeft;
-						int stopRetentionTime = reviewSetting.getStopRetentionTime() + retentionTimeDeltaRight;
+						int startRetentionTime = getStartRetentionTime(reviewSetting);
+						int stopRetentionTime = getStopRetentionTime(reviewSetting);
 						//
 						DetectorRange detectorRange = new DetectorRange();
 						detectorRange.setChromatogram(chromatogram);
@@ -215,11 +345,50 @@ public class PeakReviewControl extends Composite {
 						detectorRange.setDetectorType("VV");
 						detectorRange.setOptimizeRange(true);
 						//
-						peakEditListUI.setInput(chromatogram.getPeaks(startRetentionTime, stopRetentionTime));
 						peakDetectorChart.update(detectorRange, null);
+						updateEditList();
 					}
 				}
 			}
 		}
+	}
+
+	private void updateEditList() {
+
+		Object object = peakReviewListUI.getStructuredSelection().getFirstElement();
+		if(object instanceof ReviewSetting) {
+			ReviewSetting reviewSetting = (ReviewSetting)object;
+			if(processSettings != null) {
+				IChromatogram<?> chromatogram = processSettings.getChromatogram();
+				if(chromatogram != null) {
+					/*
+					 * Settings
+					 */
+					int startRetentionTime = getStartRetentionTime(reviewSetting);
+					int stopRetentionTime = getStopRetentionTime(reviewSetting);
+					peakStatusListUI.setInput(chromatogram.getPeaks(startRetentionTime, stopRetentionTime));
+				}
+			}
+		}
+	}
+
+	private int getStartRetentionTime(ReviewSetting reviewSetting) {
+
+		int time = 0;
+		if(reviewSetting != null) {
+			int retentionTimeDeltaLeft = (int)(PreferenceSupplier.getUiDetectorDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+			time = reviewSetting.getStartRetentionTime() - retentionTimeDeltaLeft;
+		}
+		return time;
+	}
+
+	private int getStopRetentionTime(ReviewSetting reviewSetting) {
+
+		int time = 0;
+		if(reviewSetting != null) {
+			int retentionTimeDeltaRight = (int)(PreferenceSupplier.getUiDetectorDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+			time = reviewSetting.getStopRetentionTime() + retentionTimeDeltaRight;
+		}
+		return time;
 	}
 }

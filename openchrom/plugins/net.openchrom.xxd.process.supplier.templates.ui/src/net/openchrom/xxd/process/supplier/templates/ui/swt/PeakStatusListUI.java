@@ -15,18 +15,18 @@ import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakEditComparator;
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakEditLabelProvider;
+import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakStatusComparator;
+import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakStatusLabelProvider;
 
-public class PeakEditListUI extends ExtendedTableViewer {
+public class PeakStatusListUI extends ExtendedTableViewer {
 
-	private static final String[] TITLES = PeakEditLabelProvider.TITLES;
-	private static final int[] BOUNDS = PeakEditLabelProvider.BOUNDS;
+	private static final String[] TITLES = PeakStatusLabelProvider.TITLES;
+	private static final int[] BOUNDS = PeakStatusLabelProvider.BOUNDS;
 	//
-	private PeakEditLabelProvider labelProvider = new PeakEditLabelProvider();
-	private PeakEditComparator tableComparator = new PeakEditComparator();
+	private PeakStatusLabelProvider labelProvider = new PeakStatusLabelProvider();
+	private PeakStatusComparator tableComparator = new PeakStatusComparator();
 
-	public PeakEditListUI(Composite parent, int style) {
+	public PeakStatusListUI(Composite parent, int style) {
 		super(parent, style);
 		createColumns();
 	}

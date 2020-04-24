@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.selection.ChromatogramSelection;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -31,7 +32,7 @@ import org.eclipse.chemclipse.msd.model.core.support.MarkedIon;
 import org.eclipse.chemclipse.msd.model.core.support.MarkedIons;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.charts.ChromatogramChart;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.ChromatogramPeakChart;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.BaselineSelectionPaintListener;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.DisplayType;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.ChromatogramChartSupport;
@@ -57,7 +58,7 @@ import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 
-public class PeakDetectorChart extends ChromatogramChart {
+public class PeakDetectorChart extends ChromatogramPeakChart {
 
 	private static final String SERIES_ID_CHROMATOGRAM_TIC = "Chromatogram TIC";
 	private static final String SERIES_ID_CHROMATOGRAM_XIC = "Chromatogram XIC";
@@ -83,10 +84,17 @@ public class PeakDetectorChart extends ChromatogramChart {
 	//
 	private DetectorRange detectorRange;
 	private String title;
+	//
+	private IUpdateListener updateListener = null;
 
 	public PeakDetectorChart(Composite parent, int style) {
 		super(parent, style);
 		initialize();
+	}
+
+	public void setUpdateListener(IUpdateListener updateListener) {
+
+		this.updateListener = updateListener;
 	}
 
 	public void update(DetectorRange detectorRange) {
@@ -248,6 +256,17 @@ public class PeakDetectorChart extends ChromatogramChart {
 		if(detectorRange != null) {
 			IChromatogram<? extends IPeak> chromatogram = detectorRange.getChromatogram();
 			if(chromatogram != null) {
+				/*
+				 * PeakChart
+				 */
+				// IChromatogramSelection chromatogramSelection = new ChromatogramSelection(chromatogram);
+				// int startRetentionTime = detectorRange.getRetentionTimeStart();
+				// int stopRetentionTime = detectorRange.getRetentionTimeStop();
+				// chromatogramSelection.setRangeRetentionTime(startRetentionTime, stopRetentionTime);
+				// updateChromatogram(chromatogramSelection);
+				/*
+				 * TIC/XIC
+				 */
 				deleteSeries();
 				addSeriesData(extractDataRange(chromatogram));
 				adjustChartRange();
@@ -280,6 +299,7 @@ public class PeakDetectorChart extends ChromatogramChart {
 						removeClosestPeak(peak, chromatogram, startRetentionTime, stopRetentionTime, traces);
 					}
 					chromatogram.addPeak(peak);
+					fireUpdate();
 				}
 			}
 		}
@@ -456,5 +476,12 @@ public class PeakDetectorChart extends ChromatogramChart {
 			}
 		}
 		return false;
+	}
+
+	private void fireUpdate() {
+
+		if(updateListener != null) {
+			updateListener.update();
+		}
 	}
 }

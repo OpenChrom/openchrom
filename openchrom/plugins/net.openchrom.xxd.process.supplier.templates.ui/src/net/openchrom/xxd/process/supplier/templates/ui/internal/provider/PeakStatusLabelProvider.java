@@ -24,22 +24,28 @@ import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-public class PeakEditLabelProvider extends AbstractChemClipseLabelProvider {
+import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
+
+public class PeakStatusLabelProvider extends AbstractChemClipseLabelProvider {
 
 	public static final String NAME = "Name";
 	public static final String START_RETENTION_TIME = "Start [min]";
 	public static final String STOP_RETENTION_TIME = "Stop [min]";
 	public static final String AREA = "Area";
+	public static final String CLASSIFICATION = "Classification";
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 	//
 	public static final String[] TITLES = { //
 			NAME, //
 			START_RETENTION_TIME, //
-			STOP_RETENTION_TIME //
+			STOP_RETENTION_TIME, //
+			AREA, //
+			CLASSIFICATION //
 	};
 	public static final int[] BOUNDS = { //
 			200, //
+			100, //
 			100, //
 			100, //
 			100 //
@@ -49,7 +55,14 @@ public class PeakEditLabelProvider extends AbstractChemClipseLabelProvider {
 	public Image getColumnImage(Object element, int columnIndex) {
 
 		if(columnIndex == 0) {
-			return getImage(element);
+			if(element instanceof IPeak) {
+				IPeak peak = (IPeak)element;
+				if(isPeakReviewed(peak)) {
+					return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_VALIDATE, IApplicationImage.SIZE_16x16);
+				} else {
+					return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_QUESTION, IApplicationImage.SIZE_16x16);
+				}
+			}
 		}
 		return null;
 	}
@@ -74,6 +87,9 @@ public class PeakEditLabelProvider extends AbstractChemClipseLabelProvider {
 					break;
 				case 3:
 					text = decimalFormat.format(peak.getIntegratedArea());
+					break;
+				case 4:
+					text = isPeakReviewed(peak) ? "OK" : "?";
 					break;
 				default:
 					text = "n.v.";
@@ -109,5 +125,14 @@ public class PeakEditLabelProvider extends AbstractChemClipseLabelProvider {
 		 * Then return an empty String.
 		 */
 		return name != null ? name : "";
+	}
+
+	public static boolean isPeakReviewed(IPeak peak) {
+
+		boolean status = false;
+		if(peak != null) {
+			status = peak.getClassifier().contains(ReviewSetting.CLASSIFIER_REVIEW_OK);
+		}
+		return status;
 	}
 }

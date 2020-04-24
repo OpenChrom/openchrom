@@ -17,7 +17,7 @@ import org.eclipse.chemclipse.support.ui.swt.AbstractRecordTableComparator;
 import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.Viewer;
 
-public class PeakEditComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
+public class PeakStatusComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
 
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
@@ -32,7 +32,7 @@ public class PeakEditComparator extends AbstractRecordTableComparator implements
 			//
 			switch(getPropertyIndex()) {
 				case 0:
-					sortOrder = PeakEditLabelProvider.getName(peak2).compareTo(PeakEditLabelProvider.getName(peak1));
+					sortOrder = PeakStatusLabelProvider.getName(peak2).compareTo(PeakStatusLabelProvider.getName(peak1));
 					break;
 				case 1:
 					sortOrder = Integer.compare(peakModel2.getStartRetentionTime(), peakModel1.getStartRetentionTime());
@@ -42,6 +42,9 @@ public class PeakEditComparator extends AbstractRecordTableComparator implements
 					break;
 				case 3:
 					sortOrder = Double.compare(peak2.getIntegratedArea(), peak1.getIntegratedArea());
+					break;
+				case 4:
+					sortOrder = Boolean.compare(PeakStatusLabelProvider.isPeakReviewed(peak2), PeakStatusLabelProvider.isPeakReviewed(peak1));
 					break;
 				default:
 					sortOrder = 0;
