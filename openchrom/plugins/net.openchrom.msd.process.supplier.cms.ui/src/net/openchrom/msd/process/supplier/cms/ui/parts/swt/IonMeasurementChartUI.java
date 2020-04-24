@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -89,7 +89,7 @@ public class IonMeasurementChartUI extends BarChart {
 		RangeRestriction rangeRestriction = chartSettings.getRangeRestriction();
 		rangeRestriction.setZeroX(false);
 		rangeRestriction.setZeroY(false);
-		rangeRestriction.setRestrictZoom(true);
+		rangeRestriction.setRestrictFrame(true);
 		rangeRestriction.setExtendTypeX(RangeRestriction.ExtendType.ABSOLUTE);
 		rangeRestriction.setExtendMinX(2.0d);
 		rangeRestriction.setExtendMaxX(2.0d);
@@ -190,9 +190,9 @@ public class IonMeasurementChartUI extends BarChart {
 
 		List<BarSeriesIon> barSeriesIons = new ArrayList<BarSeriesIon>();
 		//
-		int widthPlotArea = getBaseChart().getPlotArea().getBounds().width;
-		ISeries[] series = getBaseChart().getSeriesSet().getSeries();
-		for(ISeries barSeries : series) {
+		int widthPlotArea = getBaseChart().getPlotArea().getSize().x;
+		ISeries<?>[] series = getBaseChart().getSeriesSet().getSeries();
+		for(ISeries<?> barSeries : series) {
 			if(barSeries != null) {
 				//
 				double[] xSeries = barSeries.getXSeries();
