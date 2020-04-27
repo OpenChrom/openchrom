@@ -44,7 +44,7 @@ public class PeakStatusComparator extends AbstractRecordTableComparator implemen
 					sortOrder = Double.compare(peak2.getIntegratedArea(), peak1.getIntegratedArea());
 					break;
 				case 4:
-					sortOrder = Boolean.compare(PeakStatusLabelProvider.isPeakReviewed(peak2), PeakStatusLabelProvider.isPeakReviewed(peak1));
+					sortOrder = Boolean.compare(ReviewSupport.isPeakReviewed(peak2), ReviewSupport.isPeakReviewed(peak1));
 					break;
 				default:
 					sortOrder = 0;

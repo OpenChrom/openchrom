@@ -77,7 +77,13 @@ public class DetectorSetting extends AbstractSetting {
 	@Override
 	public String toString() {
 
-		return "DetectorSetting [startRetentionTime=" + getStartRetentionTime() + ", stopRetentionTime=" + getStopRetentionTime() + ", detectorType=" + detectorType + ", traces=" + traces + ", optimizeRange=" + optimizeRange + ", referenceIdentifier=" + referenceIdentifier + "]";
+		return "DetectorSetting [startRetentionTime=" + getStartRetentionTime() + //
+				", stopRetentionTime=" + getStopRetentionTime() + //
+				", detectorType=" + detectorType + //
+				", traces=" + traces + //
+				", optimizeRange=" + optimizeRange + //
+				", referenceIdentifier=" + referenceIdentifier + //
+				"]";
 	}
 
 	public String getComment() {

@@ -39,14 +39,11 @@ import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.ChromatogramCha
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.Derivative;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.PeakChartSupport;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtchart.IAxis;
-import org.eclipse.swtchart.ICustomPaintListener;
 import org.eclipse.swtchart.IPlotArea;
 import org.eclipse.swtchart.Range;
 import org.eclipse.swtchart.extensions.core.BaseChart;
@@ -67,6 +64,8 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private static final String SERIES_ID_BASELINE_TIC = "Baseline TIC";
 	private static final String SERIES_ID_BASELINE_XIC = "Baseline XIC";
 	//
+	private ReviewController reviewController;
+	//
 	private BaselineSelectionPaintListener baselineSelectionPaintListener;
 	private Cursor defaultCursor;
 	//
@@ -83,7 +82,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private PeakChartSupport peakChartSupport = new PeakChartSupport();
 	//
 	private DetectorRange detectorRange;
-	private String title;
+	private boolean forceTIC;
 	//
 	private IUpdateListener updateListener = null;
 
@@ -92,20 +91,56 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		initialize();
 	}
 
+	public void setReviewController(ReviewController reviewController) {
+
+		this.reviewController = reviewController;
+	}
+
+	public void updatePeaks(List<IPeak> peaks) {
+
+		super.updatePeaks(peaks);
+		// if(peaks != null && peaks.size() > 0) {
+		// double minY = Double.MAX_VALUE;
+		// double maxY = Double.MIN_VALUE;
+		// for(IPeak peak : peaks) {
+		// IPeakModel peakModel = peak.getPeakModel();
+		// float background = peakModel.getBackgroundAbundance();
+		// float abdundance = peakModel.getPeakAbundance();
+		// minY = Math.min(minY, background);
+		// maxY = Math.max(maxY, background + abdundance);
+		// }
+		// /*
+		// * Set an offset of 20%.
+		// */
+		// maxY = maxY * 0.2d;
+		// selectedRangeY = new Range(minY, maxY);
+		// }
+		adjustChartRange();
+	}
+
+	public boolean isForceTIC() {
+
+		return forceTIC;
+	}
+
+	public void setForceTIC(boolean forceTIC) {
+
+		this.forceTIC = forceTIC;
+	}
+
 	public void setUpdateListener(IUpdateListener updateListener) {
 
 		this.updateListener = updateListener;
 	}
 
-	public void update(DetectorRange detectorRange) {
+	public void update() {
 
-		update(detectorRange, null);
+		updateDetectorRange();
 	}
 
-	public void update(DetectorRange detectorRange, String title) {
+	public void update(DetectorRange detectorRange) {
 
 		this.detectorRange = detectorRange;
-		this.title = title;
 		selectedRangeX = null;
 		selectedRangeY = null;
 		updateDetectorRange();
@@ -162,20 +197,6 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		IPlotArea plotArea = getBaseChart().getPlotArea();
 		baselineSelectionPaintListener = new BaselineSelectionPaintListener();
 		plotArea.addCustomPaintListener(baselineSelectionPaintListener);
-		plotArea.addCustomPaintListener(new ICustomPaintListener() {
-
-			@Override
-			public void paintControl(PaintEvent pe) {
-
-				if(title != null && !title.isEmpty()) {
-					GC gc = pe.gc;
-					gc.setForeground(gc.getDevice().getSystemColor(SWT.COLOR_BLACK));
-					Point extent = gc.stringExtent(title);
-					Point size = plotArea.getSize();
-					gc.drawString(title, (size.x / 2) - extent.x / 2, 5);
-				}
-			}
-		});
 		//
 		getBaseChart().addCustomRangeSelectionHandler(new ICustomSelectionHandler() {
 
@@ -251,25 +272,28 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		getBaseChart().redraw();
 	}
 
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	private void updateDetectorRange() {
 
+		deleteSeries();
 		if(detectorRange != null) {
 			IChromatogram<? extends IPeak> chromatogram = detectorRange.getChromatogram();
 			if(chromatogram != null) {
 				/*
 				 * PeakChart
 				 */
-				// IChromatogramSelection chromatogramSelection = new ChromatogramSelection(chromatogram);
-				// int startRetentionTime = detectorRange.getRetentionTimeStart();
-				// int stopRetentionTime = detectorRange.getRetentionTimeStop();
-				// chromatogramSelection.setRangeRetentionTime(startRetentionTime, stopRetentionTime);
-				// updateChromatogram(chromatogramSelection);
+				IChromatogramSelection chromatogramSelection = new ChromatogramSelection(chromatogram);
+				int startRetentionTime = detectorRange.getRetentionTimeStart();
+				int stopRetentionTime = detectorRange.getRetentionTimeStop();
+				chromatogramSelection.setRangeRetentionTime(startRetentionTime, stopRetentionTime);
+				updateChromatogram(chromatogramSelection);
+				selectedRangeX = new Range(startRetentionTime, stopRetentionTime);
+				adjustChartRange();
 				/*
 				 * TIC/XIC
 				 */
-				deleteSeries();
-				addSeriesData(extractDataRange(chromatogram));
-				adjustChartRange();
+				// addSeriesData(extractDataRange(chromatogram));
+				// adjustChartRange();
 			}
 		}
 	}
@@ -410,6 +434,9 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				if(traces.size() > 0) {
 					IMarkedSignals<IMarkedIon> markedSignals = extractMarkedSignals(traces);
 					lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM_XIC, DisplayType.XIC, Derivative.NONE, Colors.RED, markedSignals, false));
+					if(forceTIC) {
+						lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM_TIC, DisplayType.TIC, Derivative.NONE, Colors.BLACK, null, false));
+					}
 				} else {
 					lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM_TIC, DisplayType.TIC, Derivative.NONE, Colors.RED, null, false));
 				}

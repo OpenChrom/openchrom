@@ -12,7 +12,6 @@
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
@@ -21,7 +20,6 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSett
 public class TemplatePeakReviewUI extends Composite {
 
 	private PeakReviewControl peakReviewControl;
-	private PeakDetectorChart peakDetectorChart;
 
 	public TemplatePeakReviewUI(Composite parent, int style) {
 		super(parent, style);
@@ -36,22 +34,6 @@ public class TemplatePeakReviewUI extends Composite {
 	private void createControl() {
 
 		setLayout(new FillLayout());
-		SashForm sashForm = new SashForm(this, SWT.HORIZONTAL);
-		//
-		peakReviewControl = createPeakReviewControl(sashForm);
-		peakDetectorChart = createPeakDetectorChart(sashForm);
-		//
-		peakReviewControl.setPeakDetectorChart(peakDetectorChart);
-		sashForm.setWeights(new int[]{400, 600});
-	}
-
-	private PeakReviewControl createPeakReviewControl(Composite parent) {
-
-		return new PeakReviewControl(parent, SWT.NONE);
-	}
-
-	private PeakDetectorChart createPeakDetectorChart(Composite parent) {
-
-		return new PeakDetectorChart(parent, SWT.BORDER);
+		peakReviewControl = new PeakReviewControl(this, SWT.NONE);
 	}
 }

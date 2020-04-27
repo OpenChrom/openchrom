@@ -76,7 +76,6 @@ public class PeakDetectorControl extends Composite {
 	private TracesValidator tracesValidator = new TracesValidator();
 
 	public PeakDetectorControl(Composite parent, int style) {
-
 		super(parent, style);
 		createControl();
 	}
@@ -377,21 +376,21 @@ public class PeakDetectorControl extends Composite {
 	private void updateChart() {
 
 		if(peakDetectorChart != null && peakProcessSettings != null) {
-			DetectorRange detectorRange = new DetectorRange();
-			detectorRange.setChromatogram(peakProcessSettings.getChromatogramSelection().getChromatogram());
-			detectorRange.setRetentionTimeStart(getRetentionTime(retentionTimeStart.getText()));
-			detectorRange.setRetentionTimeStop(getRetentionTime(retentionTimeStop.getText()));
-			detectorRange.setTraces(peakDetectorListUtil.extractTraces(traces.getText()));
 			DetectorSetting detectorSetting = peakProcessSettings.getSelectedDetectorSetting();
-			String label;
 			if(detectorSetting != null) {
+				/*
+				 * Detector Range
+				 */
+				DetectorRange detectorRange = new DetectorRange();
+				detectorRange.setChromatogram(peakProcessSettings.getChromatogramSelection().getChromatogram());
+				detectorRange.setRetentionTimeStart(getRetentionTime(retentionTimeStart.getText()));
+				detectorRange.setRetentionTimeStop(getRetentionTime(retentionTimeStop.getText()));
+				detectorRange.setTraces(peakDetectorListUtil.extractTraces(traces.getText()));
 				detectorRange.setDetectorType(detectorSetting.getDetectorType().name());
 				detectorRange.setOptimizeRange(detectorSetting.isOptimizeRange());
-				label = detectorSetting.getComment();
-			} else {
-				label = null;
+				//
+				peakDetectorChart.update(detectorRange);
 			}
-			peakDetectorChart.update(detectorRange, label);
 		}
 	}
 

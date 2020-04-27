@@ -24,8 +24,6 @@ import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
-
 public class PeakStatusLabelProvider extends AbstractChemClipseLabelProvider {
 
 	public static final String NAME = "Name";
@@ -33,6 +31,8 @@ public class PeakStatusLabelProvider extends AbstractChemClipseLabelProvider {
 	public static final String STOP_RETENTION_TIME = "Stop [min]";
 	public static final String AREA = "Area";
 	public static final String CLASSIFICATION = "Classification";
+	//
+	public static final int INDEX_CLASSIFICATION = 4;
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 	//
@@ -57,7 +57,7 @@ public class PeakStatusLabelProvider extends AbstractChemClipseLabelProvider {
 		if(columnIndex == 0) {
 			if(element instanceof IPeak) {
 				IPeak peak = (IPeak)element;
-				if(isPeakReviewed(peak)) {
+				if(ReviewSupport.isPeakReviewed(peak)) {
 					return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_VALIDATE, IApplicationImage.SIZE_16x16);
 				} else {
 					return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_QUESTION, IApplicationImage.SIZE_16x16);
@@ -89,7 +89,7 @@ public class PeakStatusLabelProvider extends AbstractChemClipseLabelProvider {
 					text = decimalFormat.format(peak.getIntegratedArea());
 					break;
 				case 4:
-					text = isPeakReviewed(peak) ? "OK" : "?";
+					text = ReviewSupport.isPeakReviewed(peak) ? "OK" : "?";
 					break;
 				default:
 					text = "n.v.";
@@ -125,14 +125,5 @@ public class PeakStatusLabelProvider extends AbstractChemClipseLabelProvider {
 		 * Then return an empty String.
 		 */
 		return name != null ? name : "";
-	}
-
-	public static boolean isPeakReviewed(IPeak peak) {
-
-		boolean status = false;
-		if(peak != null) {
-			status = peak.getClassifier().contains(ReviewSetting.CLASSIFIER_REVIEW_OK);
-		}
-		return status;
 	}
 }
