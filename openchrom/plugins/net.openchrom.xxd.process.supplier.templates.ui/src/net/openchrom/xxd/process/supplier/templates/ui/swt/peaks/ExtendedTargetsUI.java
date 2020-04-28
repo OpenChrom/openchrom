@@ -44,6 +44,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swtchart.extensions.core.IKeyboardSupport;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewSupport;
 
 public class ExtendedTargetsUI extends Composite {
@@ -57,6 +58,7 @@ public class ExtendedTargetsUI extends Composite {
 	//
 	private ReviewSetting reviewSetting;
 	private IPeak peak;
+	private Set<IIdentificationTarget> targets;
 
 	public ExtendedTargetsUI(Composite parent, int style) {
 		super(parent, style);
@@ -72,20 +74,30 @@ public class ExtendedTargetsUI extends Composite {
 
 		this.reviewSetting = reviewSetting;
 		this.peak = peak;
+		this.targets = targets;
+		/*
+		 * Set the input and sort the table.
+		 */
 		targetListUI.setInput(targets);
+		targetListUI.sortTable();
+		/*
+		 * Select the first entry if available.
+		 */
 		if(targets != null && targets.size() > 0) {
 			targetListUI.getTable().select(0);
 		}
 		updateSearchText();
-		updateSelection();
+		updateSelection(false);
 	}
 
 	private void updateSearchText() {
 
-		if(reviewSetting != null) {
-			searchSupportUI.setSearchText(reviewSetting.getName());
-		} else {
-			searchSupportUI.setSearchText("");
+		if(PreferenceSupplier.isSetReviewTargetName()) {
+			if(reviewSetting != null) {
+				searchSupportUI.setSearchText(reviewSetting.getName());
+			} else {
+				searchSupportUI.setSearchText("");
+			}
 		}
 	}
 
@@ -127,6 +139,7 @@ public class ExtendedTargetsUI extends Composite {
 	private TargetsListUI createTableTargets(Composite parent) {
 
 		TargetsListUI listUI = new TargetsListUI(parent, SWT.BORDER);
+		listUI.setEditingSupport();
 		Table table = listUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
 		setCellColorProvider(listUI);
@@ -135,7 +148,7 @@ public class ExtendedTargetsUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				updateSelection();
+				updateSelection(false);
 			}
 		});
 		/*
@@ -189,11 +202,17 @@ public class ExtendedTargetsUI extends Composite {
 			Iterator iterator = targetListUI.getStructuredSelection().iterator();
 			while(iterator.hasNext()) {
 				Object object = iterator.next();
-				if(object instanceof ITarget) {
+				if(object instanceof IIdentificationTarget) {
 					deleteTarget((ITarget)object);
 				}
 			}
-			updateSelection();
+			//
+			if(peak instanceof ITargetSupplier) {
+				ITargetSupplier targetSupplier = (ITargetSupplier)peak;
+				targets = targetSupplier.getTargets();
+				targetListUI.setInput(targets);
+			}
+			updateSelection(true);
 		}
 	}
 
@@ -261,9 +280,6 @@ public class ExtendedTargetsUI extends Composite {
 			public void handleEvent(ExtendedTableViewer extendedTableViewer, KeyEvent e) {
 
 				if(e.keyCode == SWT.DEL) {
-					/*
-					 * DEL
-					 */
 					deleteTargets(shell);
 				} else if(e.keyCode == IKeyboardSupport.KEY_CODE_LC_I && (e.stateMask & SWT.CTRL) == SWT.CTRL) {
 					if((e.stateMask & SWT.ALT) == SWT.ALT) {
@@ -278,7 +294,7 @@ public class ExtendedTargetsUI extends Composite {
 						verifyTargets(true);
 					}
 				} else {
-					updateSelection();
+					updateSelection(false);
 				}
 			}
 		});
@@ -295,7 +311,8 @@ public class ExtendedTargetsUI extends Composite {
 				identificationTarget.setManuallyVerified(verified);
 			}
 		}
-		updateSelection();
+		targetListUI.refresh(true);
+		updateSelection(true);
 	}
 
 	private void setCellColorProvider(TargetsListUI listUI) {
@@ -322,11 +339,14 @@ public class ExtendedTargetsUI extends Composite {
 		}
 	}
 
-	private void updateSelection() {
+	private void updateSelection(boolean updateChart) {
 
 		if(reviewController != null) {
 			IIdentificationTarget identificationTarget = getIdentificationTarget();
 			if(identificationTarget != null) {
+				if(updateChart) {
+					reviewController.updateDetectorChart();
+				}
 				reviewController.update(peak, identificationTarget);
 			}
 		}

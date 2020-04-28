@@ -103,6 +103,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_REPORT_REFERENCED_CHROMATOGRAMS = "reportReferencedChromatograms";
 	public static final boolean DEF_REPORT_REFERENCED_CHROMATOGRAMS = false;
 	//
+	public static final String P_SET_REVIEW_TARGET_NAME = "setReviewTargetName";
+	public static final boolean DEF_SET_REVIEW_TARGET_NAME = false;
+	public static final String P_AUTO_SELECT_BEST_PEAK_MATCH = "autoSelectBestPeakMatch";
+	public static final boolean DEF_AUTO_SELECT_BEST_PEAK_MATCH = false;
+	//
 	private static IPreferenceSupplier preferenceSupplier;
 
 	public static IPreferenceSupplier INSTANCE() {
@@ -166,6 +171,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_TRANSFER_OPTIMIZE_RANGE, Boolean.toString(DEF_TRANSFER_OPTIMIZE_RANGE));
 		//
 		defaultValues.put(P_REPORT_REFERENCED_CHROMATOGRAMS, Boolean.toString(DEF_REPORT_REFERENCED_CHROMATOGRAMS));
+		//
+		defaultValues.put(P_SET_REVIEW_TARGET_NAME, Boolean.toString(DEF_SET_REVIEW_TARGET_NAME));
+		defaultValues.put(P_AUTO_SELECT_BEST_PEAK_MATCH, Boolean.toString(DEF_AUTO_SELECT_BEST_PEAK_MATCH));
 		//
 		return defaultValues;
 	}
@@ -254,6 +262,18 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_UI_DETECTOR_REPLACE_PEAK, DEF_UI_DETECTOR_REPLACE_PEAK);
+	}
+
+	public static boolean isSetReviewTargetName() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_SET_REVIEW_TARGET_NAME, DEF_SET_REVIEW_TARGET_NAME);
+	}
+
+	public static boolean isAutoSelectBestPeakMatch() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_AUTO_SELECT_BEST_PEAK_MATCH, DEF_AUTO_SELECT_BEST_PEAK_MATCH);
 	}
 
 	public static void toggleDetectorReplacePeak() {

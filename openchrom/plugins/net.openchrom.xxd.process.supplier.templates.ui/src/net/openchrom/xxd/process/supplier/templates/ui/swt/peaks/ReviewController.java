@@ -104,6 +104,44 @@ public class ReviewController {
 		}
 	}
 
+	/**
+	 * This method updates the peak detector chart.
+	 */
+	public void updateDetectorChart() {
+
+		if(peakDetectorChart != null && extendedReviewUI != null) {
+			if(processSettings != null) {
+				if(processSettings != null && reviewSetting != null) {
+					IChromatogram<?> chromatogram = processSettings.getChromatogram();
+					if(chromatogram != null) {
+						/*
+						 * Settings
+						 */
+						int startRetentionTime = getStartRetentionTime();
+						int stopRetentionTime = getStopRetentionTime();
+						PeakType peakType = reviewSetting.getDetectorType();
+						boolean optimizeRange = reviewSetting.isOptimizeRange();
+						//
+						if(peakType != null) {
+							/*
+							 * The detector range defines how to detect peaks.
+							 */
+							DetectorRange detectorRange = new DetectorRange();
+							detectorRange.setChromatogram(chromatogram);
+							detectorRange.setRetentionTimeStart(startRetentionTime);
+							detectorRange.setRetentionTimeStop(stopRetentionTime);
+							detectorRange.setTraces(peakDetectorListUtil.extractTraces(reviewSetting.getTraces()));
+							detectorRange.setDetectorType(peakType.toString());
+							detectorRange.setOptimizeRange(optimizeRange);
+							//
+							peakDetectorChart.update(detectorRange);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	@SuppressWarnings({"unchecked"})
 	public void deletePeaks(ReviewSetting reviewSetting, List<IPeak> peaks) {
 
@@ -151,42 +189,6 @@ public class ReviewController {
 	protected void createExtendedComparisonUI(Composite parent) {
 
 		extendedComparisonUI = new ExtendedComparisonUI(parent, SWT.NONE);
-		extendedComparisonUI.setReviewController(this);
-	}
-
-	private void updateDetectorChart() {
-
-		if(peakDetectorChart != null && extendedReviewUI != null) {
-			if(processSettings != null) {
-				if(processSettings != null && reviewSetting != null) {
-					IChromatogram<?> chromatogram = processSettings.getChromatogram();
-					if(chromatogram != null) {
-						/*
-						 * Settings
-						 */
-						int startRetentionTime = getStartRetentionTime();
-						int stopRetentionTime = getStopRetentionTime();
-						PeakType peakType = reviewSetting.getDetectorType();
-						boolean optimizeRange = reviewSetting.isOptimizeRange();
-						//
-						if(peakType != null) {
-							/*
-							 * The detector range defines how to detect peaks.
-							 */
-							DetectorRange detectorRange = new DetectorRange();
-							detectorRange.setChromatogram(chromatogram);
-							detectorRange.setRetentionTimeStart(startRetentionTime);
-							detectorRange.setRetentionTimeStop(stopRetentionTime);
-							detectorRange.setTraces(peakDetectorListUtil.extractTraces(reviewSetting.getTraces()));
-							detectorRange.setDetectorType(peakType.toString());
-							detectorRange.setOptimizeRange(optimizeRange);
-							//
-							peakDetectorChart.update(detectorRange);
-						}
-					}
-				}
-			}
-		}
 	}
 
 	private void updateChartPeaks(List<IPeak> peaks) {

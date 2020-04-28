@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakStatusListUI;
 
@@ -67,18 +68,9 @@ public class ExtendedPeakStatusUI extends Composite {
 		//
 		update(reviewSetting);
 		peakStatusListUI.setInput(peaks);
-		if(peaks != null) {
-			exitloop:
-			for(int i = 0; i < peaks.size(); i++) {
-				IPeak peak = peaks.get(i);
-				if(ReviewSupport.isCompoundAvailable(peak.getTargets(), reviewSetting)) {
-					peakStatusListUI.getTable().select(i);
-					break exitloop;
-				}
-			}
-		}
+		autoSelectBestMatch();
 		//
-		updateSelection();
+		updateSelection(false);
 	}
 
 	public void setReviewController(ReviewController reviewController) {
@@ -137,7 +129,10 @@ public class ExtendedPeakStatusUI extends Composite {
 					if(peak instanceof ITargetSupplier) {
 						ITargetSupplier targetSupplier = (ITargetSupplier)peak;
 						targetSupplier.getTargets().add(identificationTarget);
-						updateSelection();
+						ReviewSupport.setReview(peak, true);
+						peakStatusListUI.refresh();
+						update(reviewSetting);
+						updateSelection(true);
 					}
 				}
 			}
@@ -210,7 +205,7 @@ public class ExtendedPeakStatusUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				updateSelection();
+				updateSelection(false);
 			}
 		});
 		//
@@ -292,7 +287,7 @@ public class ExtendedPeakStatusUI extends Composite {
 				if(e.keyCode == SWT.DEL) {
 					deletePeaks(shell);
 				} else {
-					updateSelection();
+					updateSelection(false);
 				}
 			}
 		});
@@ -317,6 +312,22 @@ public class ExtendedPeakStatusUI extends Composite {
 		return null;
 	}
 
+	private void autoSelectBestMatch() {
+
+		if(PreferenceSupplier.isAutoSelectBestPeakMatch()) {
+			if(peaks != null) {
+				exitloop:
+				for(int i = 0; i < peaks.size(); i++) {
+					IPeak peak = peaks.get(i);
+					if(ReviewSupport.isCompoundAvailable(peak.getTargets(), reviewSetting)) {
+						peakStatusListUI.getTable().select(i);
+						break exitloop;
+					}
+				}
+			}
+		}
+	}
+
 	private void update(ReviewSetting reviewSetting) {
 
 		if(reviewSetting != null) {
@@ -333,10 +344,13 @@ public class ExtendedPeakStatusUI extends Composite {
 		peakStatusListUI.setReviewSetting(reviewSetting);
 	}
 
-	private void updateSelection() {
+	private void updateSelection(boolean updateChart) {
 
 		if(reviewController != null) {
 			IPeak peak = getSelectedPeak();
+			if(updateChart) {
+				reviewController.updateDetectorChart();
+			}
 			reviewController.update(reviewSetting, peak);
 		}
 	}

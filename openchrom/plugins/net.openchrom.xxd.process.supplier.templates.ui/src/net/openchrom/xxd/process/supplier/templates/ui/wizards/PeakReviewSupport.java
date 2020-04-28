@@ -30,6 +30,7 @@ public class PeakReviewSupport {
 			protected void constrainShellSize() {
 
 				super.constrainShellSize();
+				// getButton(Dialog.CANCEL).setEnabled(false);
 				getShell().setMaximized(true);
 			}
 		};

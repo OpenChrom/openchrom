@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePage;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakReviewListUI;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
@@ -62,8 +63,6 @@ public class ExtendedReviewUI extends Composite {
 		} else {
 			peakReviewListUI.setInput(null);
 		}
-		//
-		updateSelection();
 	}
 
 	private void createControl() {
@@ -79,9 +78,10 @@ public class ExtendedReviewUI extends Composite {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		composite.setLayout(new GridLayout(2, false));
+		composite.setLayout(new GridLayout(3, false));
 		//
 		createSearchSection(composite);
+		createReplacePeakButton(composite);
 		createSettingsButton(composite);
 	}
 
@@ -99,6 +99,22 @@ public class ExtendedReviewUI extends Composite {
 		});
 		//
 		return searchSupportUI;
+	}
+
+	private void createReplacePeakButton(Composite parent) {
+
+		Button button = new Button(parent, SWT.CHECK);
+		button.setText("Replace Peak");
+		button.setToolTipText("When detecting a new peak, replace the nearest peak.");
+		button.setSelection(PreferenceSupplier.isDetectorReplacePeak());
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				PreferenceSupplier.toggleDetectorReplacePeak();
+			}
+		});
 	}
 
 	private void createSettingsButton(Composite parent) {
