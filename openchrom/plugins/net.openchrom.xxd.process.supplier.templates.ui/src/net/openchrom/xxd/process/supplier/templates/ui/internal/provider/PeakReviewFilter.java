@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
@@ -39,6 +40,7 @@ public class PeakReviewFilter extends ViewerFilter {
 			String name = setting.getName();
 			String cas = setting.getCasNumber();
 			String traces = setting.getTraces();
+			PeakType detectorType = setting.getDetectorType();
 			//
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
@@ -57,6 +59,13 @@ public class PeakReviewFilter extends ViewerFilter {
 			//
 			if(traces.contains(searchText)) {
 				return true;
+			}
+			//
+			if(detectorType != null) {
+				if(caseSensitive) {
+					return detectorType.name().contains(searchText);
+				}
+				return detectorType.name().toLowerCase().contains(searchText);
 			}
 		}
 		//

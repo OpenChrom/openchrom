@@ -11,36 +11,52 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.ITargetSupplier;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
-import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
-import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.model.targets.ITarget;
+import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
+import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
+import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
+import org.eclipse.chemclipse.support.ui.swt.ITableSettings;
+import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
+import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.TargetsListUI;
+import org.eclipse.jface.viewers.StyledCellLabelProvider;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swtchart.extensions.core.IKeyboardSupport;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewSupport;
 
 public class ExtendedTargetsUI extends Composite {
 
+	private static final String MENU_CATEGORY_TARGETS = "Targets";
+	//
 	private ReviewController reviewController;
 	//
-	private Label labelReviewSetting;
+	private SearchSupportUI searchSupportUI;
 	private TargetsListUI targetListUI;
 	//
+	private ReviewSetting reviewSetting;
 	private IPeak peak;
-	private Set<IIdentificationTarget> targets;
 
 	public ExtendedTargetsUI(Composite parent, int style) {
 		super(parent, style);
@@ -52,22 +68,24 @@ public class ExtendedTargetsUI extends Composite {
 		this.reviewController = reviewController;
 	}
 
-	public void setInput(IPeak peak, Set<IIdentificationTarget> targets) {
+	public void setInput(ReviewSetting reviewSetting, IPeak peak, Set<IIdentificationTarget> targets) {
 
+		this.reviewSetting = reviewSetting;
 		this.peak = peak;
-		this.targets = targets;
 		targetListUI.setInput(targets);
+		if(targets != null && targets.size() > 0) {
+			targetListUI.getTable().select(0);
+		}
+		updateSearchText();
+		updateSelection();
 	}
 
-	public void update(ReviewSetting reviewSetting) {
+	private void updateSearchText() {
 
 		if(reviewSetting != null) {
-			boolean isCompoundAvailable = ReviewSupport.isCompoundAvailable(targets, reviewSetting);
-			labelReviewSetting.setBackground(isCompoundAvailable ? Colors.GREEN : Colors.YELLOW);
-			labelReviewSetting.setText(reviewSetting.getName());
+			searchSupportUI.setSearchText(reviewSetting.getName());
 		} else {
-			labelReviewSetting.setBackground(null);
-			labelReviewSetting.setText("");
+			searchSupportUI.setSearchText("");
 		}
 	}
 
@@ -76,42 +94,34 @@ public class ExtendedTargetsUI extends Composite {
 		GridLayout gridLayout = new GridLayout(1, true);
 		setLayout(gridLayout);
 		//
-		createToolbarMain(this);
+		searchSupportUI = createToolbarSearch(this);
 		targetListUI = createTableTargets(this);
 	}
 
-	private void createToolbarMain(Composite parent) {
+	private IIdentificationTarget getIdentificationTarget() {
 
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		composite.setLayout(new GridLayout(2, false));
-		//
-		labelReviewSetting = createLabel(composite);
-		createDeleteTargetButton(composite);
+		Object object = targetListUI.getStructuredSelection().getFirstElement();
+		if(object instanceof IIdentificationTarget) {
+			IIdentificationTarget identificationTarget = (IIdentificationTarget)object;
+			return identificationTarget;
+		}
+		return null;
 	}
 
-	private Label createLabel(Composite parent) {
+	private SearchSupportUI createToolbarSearch(Composite parent) {
 
-		Label label = new Label(parent, SWT.NONE);
-		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		label.setText("");
-		label.setToolTipText("The selected review setting is displayed here.");
-		return label;
-	}
-
-	private void createDeleteTargetButton(Composite parent) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
-		button.setToolTipText("Delete the selected peak(s)");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImage.SIZE_16x16));
-		button.addSelectionListener(new SelectionAdapter() {
+		SearchSupportUI searchSupportUI = new SearchSupportUI(parent, SWT.NONE);
+		searchSupportUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		searchSupportUI.setSearchListener(new ISearchListener() {
 
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void performSearch(String searchText, boolean caseSensitive) {
 
+				targetListUI.setSearchText(searchText, caseSensitive);
 			}
 		});
+		//
+		return searchSupportUI;
 	}
 
 	private TargetsListUI createTableTargets(Composite parent) {
@@ -119,21 +129,206 @@ public class ExtendedTargetsUI extends Composite {
 		TargetsListUI listUI = new TargetsListUI(parent, SWT.BORDER);
 		Table table = listUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
+		setCellColorProvider(listUI);
 		table.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if(reviewController != null) {
-					Object object = listUI.getStructuredSelection().getFirstElement();
-					if(object instanceof IIdentificationTarget) {
-						IIdentificationTarget identificationTarget = (IIdentificationTarget)object;
-						reviewController.updateTarget(peak, identificationTarget);
+				updateSelection();
+			}
+		});
+		/*
+		 * Add the delete targets support.
+		 */
+		Shell shell = listUI.getTable().getShell();
+		ITableSettings tableSettings = listUI.getTableSettings();
+		addDeleteMenuEntry(shell, tableSettings);
+		addVerifyTargetsMenuEntry(tableSettings);
+		addUnverifyTargetsMenuEntry(tableSettings);
+		addKeyEventProcessors(shell, tableSettings);
+		listUI.applySettings(tableSettings);
+		//
+		return listUI;
+	}
+
+	private void addDeleteMenuEntry(Shell shell, ITableSettings tableSettings) {
+
+		tableSettings.addMenuEntry(new ITableMenuEntry() {
+
+			@Override
+			public String getName() {
+
+				return "Delete Target(s)";
+			}
+
+			@Override
+			public String getCategory() {
+
+				return MENU_CATEGORY_TARGETS;
+			}
+
+			@Override
+			public void execute(ExtendedTableViewer extendedTableViewer) {
+
+				deleteTargets(shell);
+			}
+		});
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void deleteTargets(Shell shell) {
+
+		MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+		messageBox.setText("Delete Target(s)");
+		messageBox.setMessage("Would you like to delete the selected target(s)?");
+		if(messageBox.open() == SWT.YES) {
+			/*
+			 * Delete Target
+			 */
+			Iterator iterator = targetListUI.getStructuredSelection().iterator();
+			while(iterator.hasNext()) {
+				Object object = iterator.next();
+				if(object instanceof ITarget) {
+					deleteTarget((ITarget)object);
+				}
+			}
+			updateSelection();
+		}
+	}
+
+	private void deleteTarget(ITarget target) {
+
+		if(peak instanceof ITargetSupplier) {
+			ITargetSupplier targetSupplier = (ITargetSupplier)peak;
+			targetSupplier.getTargets().remove(target);
+		}
+	}
+
+	private void addVerifyTargetsMenuEntry(ITableSettings tableSettings) {
+
+		tableSettings.addMenuEntry(new ITableMenuEntry() {
+
+			@Override
+			public String getName() {
+
+				return "Verify Target(s) Check";
+			}
+
+			@Override
+			public String getCategory() {
+
+				return MENU_CATEGORY_TARGETS;
+			}
+
+			@Override
+			public void execute(ExtendedTableViewer extendedTableViewer) {
+
+				verifyTargets(true);
+			}
+		});
+	}
+
+	private void addUnverifyTargetsMenuEntry(ITableSettings tableSettings) {
+
+		tableSettings.addMenuEntry(new ITableMenuEntry() {
+
+			@Override
+			public String getName() {
+
+				return "Verify Target(s) Uncheck";
+			}
+
+			@Override
+			public String getCategory() {
+
+				return MENU_CATEGORY_TARGETS;
+			}
+
+			@Override
+			public void execute(ExtendedTableViewer extendedTableViewer) {
+
+				verifyTargets(false);
+			}
+		});
+	}
+
+	private void addKeyEventProcessors(Shell shell, ITableSettings tableSettings) {
+
+		tableSettings.addKeyEventProcessor(new IKeyEventProcessor() {
+
+			@Override
+			public void handleEvent(ExtendedTableViewer extendedTableViewer, KeyEvent e) {
+
+				if(e.keyCode == SWT.DEL) {
+					/*
+					 * DEL
+					 */
+					deleteTargets(shell);
+				} else if(e.keyCode == IKeyboardSupport.KEY_CODE_LC_I && (e.stateMask & SWT.CTRL) == SWT.CTRL) {
+					if((e.stateMask & SWT.ALT) == SWT.ALT) {
+						/*
+						 * CTRL + ALT + I
+						 */
+						verifyTargets(false);
+					} else {
+						/*
+						 * CTRL + I
+						 */
+						verifyTargets(true);
 					}
+				} else {
+					updateSelection();
 				}
 			}
 		});
-		//
-		return listUI;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void verifyTargets(boolean verified) {
+
+		Iterator iterator = targetListUI.getStructuredSelection().iterator();
+		while(iterator.hasNext()) {
+			Object object = iterator.next();
+			if(object instanceof IIdentificationTarget) {
+				IIdentificationTarget identificationTarget = (IIdentificationTarget)object;
+				identificationTarget.setManuallyVerified(verified);
+			}
+		}
+		updateSelection();
+	}
+
+	private void setCellColorProvider(TargetsListUI listUI) {
+
+		List<TableViewerColumn> tableViewerColumns = listUI.getTableViewerColumns();
+		TableViewerColumn tableViewerColumn = tableViewerColumns.get(2); // Caution, index may change.
+		if(tableViewerColumn != null) {
+			tableViewerColumn.setLabelProvider(new StyledCellLabelProvider() {
+
+				@Override
+				public void update(ViewerCell cell) {
+
+					if(cell != null) {
+						IIdentificationTarget target = (IIdentificationTarget)cell.getElement();
+						boolean isCompoundAvailable = ReviewSupport.isCompoundAvailable(target, reviewSetting);
+						Color background = isCompoundAvailable ? Colors.GREEN : null;
+						cell.setBackground(background);
+						cell.setForeground(Colors.BLACK);
+						cell.setText(target.getLibraryInformation().getName());
+						super.update(cell);
+					}
+				}
+			});
+		}
+	}
+
+	private void updateSelection() {
+
+		if(reviewController != null) {
+			IIdentificationTarget identificationTarget = getIdentificationTarget();
+			if(identificationTarget != null) {
+				reviewController.update(peak, identificationTarget);
+			}
+		}
 	}
 }

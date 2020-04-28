@@ -8,7 +8,7 @@
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
- * Christoph Läubrich - add support for comments,  use PeakType instead of plain String
+ * Christoph Läubrich - add support for comments, use PeakType instead of plain String
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
@@ -32,9 +32,9 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 	//
 	private double startRetentionTimeMinutes = 0;
 	private double stopRetentionTimeMinutes = 0;
-	private PeakType detectorType;
+	private PeakType detectorType = PeakType.VV;
 	private String traces = "";
-	private boolean optimizeRange = false;
+	private boolean optimizeRange = true;
 	private String referenceIdentifier = "";
 	private String comment = "";
 

@@ -61,6 +61,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_LIST_PATH_EXPORT = "listPathExport";
 	public static final String DEF_LIST_PATH_EXPORT = "";
 	//
+	public static final String P_CHART_BUFFERED_SELECTION = "chartBufferedSelection";
+	public static final boolean DEF_CHART_BUFFERED_SELECTION = false;
+	//
 	public static final String P_EXPORT_OPTIMIZE_RANGE = "exportOptimizeRange";
 	public static final boolean DEF_EXPORT_OPTIMIZE_RANGE = true;
 	public static final String P_EXPORT_DELTA_LEFT_MINUTES = "exportDeltaLeftMinutes";
@@ -140,6 +143,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
 		defaultValues.put(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
 		//
+		defaultValues.put(P_CHART_BUFFERED_SELECTION, Boolean.toString(DEF_CHART_BUFFERED_SELECTION));
+		//
 		defaultValues.put(P_EXPORT_OPTIMIZE_RANGE, Boolean.toString(DEF_EXPORT_OPTIMIZE_RANGE));
 		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES));
 		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES));
@@ -195,6 +200,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void setListPathExport(String filterPath) {
 
 		setFilterPath(P_LIST_PATH_EXPORT, filterPath);
+	}
+
+	public static boolean isChartBufferedSelection() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_CHART_BUFFERED_SELECTION, DEF_CHART_BUFFERED_SELECTION);
 	}
 
 	public static boolean isExportOptimizeRange() {

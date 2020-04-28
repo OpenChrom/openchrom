@@ -32,13 +32,13 @@ public class PeakStatusComparator extends AbstractRecordTableComparator implemen
 			//
 			switch(getPropertyIndex()) {
 				case 0:
-					sortOrder = PeakStatusLabelProvider.getName(peak2).compareTo(PeakStatusLabelProvider.getName(peak1));
-					break;
-				case 1:
 					sortOrder = Integer.compare(peakModel2.getStartRetentionTime(), peakModel1.getStartRetentionTime());
 					break;
-				case 2:
+				case 1:
 					sortOrder = Integer.compare(peakModel2.getStopRetentionTime(), peakModel1.getStopRetentionTime());
+					break;
+				case 2:
+					sortOrder = ReviewSupport.getName(peak2).compareTo(ReviewSupport.getName(peak1));
 					break;
 				case 3:
 					sortOrder = Double.compare(peak2.getIntegratedArea(), peak1.getIntegratedArea());

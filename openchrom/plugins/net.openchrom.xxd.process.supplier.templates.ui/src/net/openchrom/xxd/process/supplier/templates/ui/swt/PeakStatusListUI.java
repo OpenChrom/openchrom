@@ -63,6 +63,36 @@ public class PeakStatusListUI extends ExtendedTableViewer {
 
 	private void setCellColorProvider() {
 
+		setNameColorProvider();
+		setClassificationColorProvider();
+	}
+
+	private void setNameColorProvider() {
+
+		List<TableViewerColumn> tableViewerColumns = getTableViewerColumns();
+		TableViewerColumn tableViewerColumn = tableViewerColumns.get(PeakStatusLabelProvider.INDEX_NAME);
+		if(tableViewerColumn != null) {
+			tableViewerColumn.setLabelProvider(new StyledCellLabelProvider() {
+
+				@Override
+				public void update(ViewerCell cell) {
+
+					if(cell != null) {
+						IPeak peak = (IPeak)cell.getElement();
+						boolean isCompoundAvailable = ReviewSupport.isCompoundAvailable(peak.getTargets(), reviewSetting);
+						Color background = isCompoundAvailable ? Colors.GREEN : null;
+						cell.setBackground(background);
+						cell.setForeground(Colors.BLACK);
+						cell.setText(ReviewSupport.getName(peak));
+						super.update(cell);
+					}
+				}
+			});
+		}
+	}
+
+	private void setClassificationColorProvider() {
+
 		List<TableViewerColumn> tableViewerColumns = getTableViewerColumns();
 		TableViewerColumn tableViewerColumn = tableViewerColumns.get(PeakStatusLabelProvider.INDEX_CLASSIFICATION);
 		if(tableViewerColumn != null) {

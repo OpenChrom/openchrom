@@ -11,6 +11,11 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
+
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
@@ -18,6 +23,8 @@ import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 
 public class ReviewValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
+	public static final Set<PeakType> DETECTOR_TYPES = Collections.unmodifiableSet(EnumSet.of(PeakType.BB, PeakType.VV));
+	//
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + ReviewListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = ReviewListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = ReviewListUtil.SEPARATOR_ENTRY;
@@ -28,6 +35,8 @@ public class ReviewValidator extends AbstractTemplateValidator implements ITempl
 	private String name = "";
 	private String casNumber = "";
 	private String traces = "";
+	private PeakType detectorType = PeakType.VV;
+	private boolean optimizeRange = true;
 
 	@Override
 	public IStatus validate(Object value) {
@@ -71,6 +80,13 @@ public class ReviewValidator extends AbstractTemplateValidator implements ITempl
 						String traceValues = parseString(values, 4);
 						message = validateTraces(traceValues);
 						traces = (message == null) ? traceValues : "";
+						//
+						detectorType = parseType(parseString(values, 5));
+						if(detectorType == null) {
+							detectorType = PeakType.VV;
+						}
+						//
+						optimizeRange = parseBoolean(values, 6, true);
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -87,6 +103,21 @@ public class ReviewValidator extends AbstractTemplateValidator implements ITempl
 		}
 	}
 
+	public static PeakType parseType(String parseString) {
+
+		if(parseString != null) {
+			try {
+				PeakType type = PeakType.valueOf(parseString.toUpperCase());
+				if(DETECTOR_TYPES.contains(type)) {
+					return type;
+				}
+			} catch(RuntimeException e) {
+				// invalid!
+			}
+		}
+		return null;
+	}
+
 	public ReviewSetting getSetting() {
 
 		ReviewSetting setting = new ReviewSetting();
@@ -95,6 +126,8 @@ public class ReviewValidator extends AbstractTemplateValidator implements ITempl
 		setting.setName(name);
 		setting.setCasNumber(casNumber);
 		setting.setTraces(traces);
+		setting.setDetectorType(detectorType);
+		setting.setOptimizeRange(optimizeRange);
 		return setting;
 	}
 }

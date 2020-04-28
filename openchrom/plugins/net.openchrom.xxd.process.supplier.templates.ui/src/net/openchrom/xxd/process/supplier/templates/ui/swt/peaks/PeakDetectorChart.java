@@ -12,32 +12,21 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IMarkedSignals;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.selection.ChromatogramSelection;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.core.support.IMarkedIon;
-import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
-import org.eclipse.chemclipse.msd.model.core.support.MarkedIon;
-import org.eclipse.chemclipse.msd.model.core.support.MarkedIons;
+import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
-import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.ChromatogramPeakChart;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.BaselineSelectionPaintListener;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.support.DisplayType;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.ChromatogramChartSupport;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.Derivative;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.support.charts.PeakChartSupport;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Point;
@@ -50,22 +39,13 @@ import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.ICustomSelectionHandler;
 import org.eclipse.swtchart.extensions.core.IExtendedChart;
-import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
+import org.eclipse.swtchart.extensions.core.RangeRestriction;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 
 public class PeakDetectorChart extends ChromatogramPeakChart {
 
-	private static final String SERIES_ID_CHROMATOGRAM_TIC = "Chromatogram TIC";
-	private static final String SERIES_ID_CHROMATOGRAM_XIC = "Chromatogram XIC";
-	private static final String SERIES_ID_PEAK_TIC = "Peak TIC";
-	private static final String SERIES_ID_PEAK_XIC = "Peak XIC";
-	private static final String SERIES_ID_BASELINE_TIC = "Baseline TIC";
-	private static final String SERIES_ID_BASELINE_XIC = "Baseline XIC";
-	//
-	private ReviewController reviewController;
-	//
 	private BaselineSelectionPaintListener baselineSelectionPaintListener;
 	private Cursor defaultCursor;
 	//
@@ -78,11 +58,8 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private Range selectedRangeY = null;
 	//
 	private PeakSupport peakSupport = new PeakSupport();
-	private ChromatogramChartSupport chromatogramChartSupport = new ChromatogramChartSupport();
-	private PeakChartSupport peakChartSupport = new PeakChartSupport();
 	//
 	private DetectorRange detectorRange;
-	private boolean forceTIC;
 	//
 	private IUpdateListener updateListener = null;
 
@@ -91,41 +68,10 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		initialize();
 	}
 
-	public void setReviewController(ReviewController reviewController) {
-
-		this.reviewController = reviewController;
-	}
-
 	public void updatePeaks(List<IPeak> peaks) {
 
 		super.updatePeaks(peaks);
-		// if(peaks != null && peaks.size() > 0) {
-		// double minY = Double.MAX_VALUE;
-		// double maxY = Double.MIN_VALUE;
-		// for(IPeak peak : peaks) {
-		// IPeakModel peakModel = peak.getPeakModel();
-		// float background = peakModel.getBackgroundAbundance();
-		// float abdundance = peakModel.getPeakAbundance();
-		// minY = Math.min(minY, background);
-		// maxY = Math.max(maxY, background + abdundance);
-		// }
-		// /*
-		// * Set an offset of 20%.
-		// */
-		// maxY = maxY * 0.2d;
-		// selectedRangeY = new Range(minY, maxY);
-		// }
 		adjustChartRange();
-	}
-
-	public boolean isForceTIC() {
-
-		return forceTIC;
-	}
-
-	public void setForceTIC(boolean forceTIC) {
-
-		this.forceTIC = forceTIC;
 	}
 
 	public void setUpdateListener(IUpdateListener updateListener) {
@@ -189,7 +135,9 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		IChartSettings chartSettings = getChartSettings();
 		chartSettings.setCreateMenu(true);
 		chartSettings.addHandledEventProcessor(new ReplacePeakToggleEvent());
-		chartSettings.getRangeRestriction().setZeroY(true);
+		chartSettings.setBufferSelection(PreferenceSupplier.isChartBufferedSelection());
+		RangeRestriction rangeRestriction = chartSettings.getRangeRestriction();
+		rangeRestriction.setZeroY(true);
 		applySettings(chartSettings);
 		/*
 		 * Add the paint listeners to draw the selected peak range.
@@ -280,22 +228,50 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 			IChromatogram<? extends IPeak> chromatogram = detectorRange.getChromatogram();
 			if(chromatogram != null) {
 				/*
-				 * PeakChart
+				 * ChromatogramPeakChart
 				 */
-				IChromatogramSelection chromatogramSelection = new ChromatogramSelection(chromatogram);
+				Set<Integer> traces = detectorRange.getTraces();
+				IChromatogramSelection chromatogramSelection;
+				if(chromatogram instanceof IChromatogramMSD && traces.size() > 0) {
+					/*
+					 * Show Traces
+					 */
+					ChromatogramSelectionMSD chromatogramSelectionMSD = new ChromatogramSelectionMSD((IChromatogramMSD)chromatogram);
+					chromatogramSelectionMSD.getSelectedIons().add(traces);
+					chromatogramSelection = chromatogramSelectionMSD;
+				} else {
+					/*
+					 * Normal
+					 */
+					chromatogramSelection = new ChromatogramSelection(chromatogram);
+				}
+				//
 				int startRetentionTime = detectorRange.getRetentionTimeStart();
 				int stopRetentionTime = detectorRange.getRetentionTimeStop();
 				chromatogramSelection.setRangeRetentionTime(startRetentionTime, stopRetentionTime);
 				updateChromatogram(chromatogramSelection);
-				selectedRangeX = new Range(startRetentionTime, stopRetentionTime);
-				adjustChartRange();
 				/*
-				 * TIC/XIC
+				 * Focus the range
 				 */
-				// addSeriesData(extractDataRange(chromatogram));
-				// adjustChartRange();
+				double maxY = getMaxY(chromatogram, startRetentionTime, stopRetentionTime);
+				maxY = (maxY == 0) ? chromatogramSelection.getStopAbundance() : maxY;
+				selectedRangeX = new Range(startRetentionTime, stopRetentionTime);
+				selectedRangeY = new Range(0, maxY);
+				adjustChartRange();
 			}
 		}
+	}
+
+	private double getMaxY(IChromatogram<?> chromatogram, int startRetentionTime, int stopRetentionTime) {
+
+		double maxY = 0;
+		int startScan = chromatogram.getScanNumber(startRetentionTime);
+		int stopScan = chromatogram.getScanNumber(stopRetentionTime);
+		for(int i = startScan; i <= stopScan; i++) {
+			double intensity = chromatogram.getScan(i).getTotalSignal();
+			maxY = Math.max(intensity, maxY);
+		}
+		return maxY;
 	}
 
 	private void adjustChartRange() {
@@ -414,76 +390,6 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 			}
 		}
 		return peak;
-	}
-
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	private List<ILineSeriesData> extractDataRange(IChromatogram<? extends IPeak> chromatogram) {
-
-		List<ILineSeriesData> lineSeriesDataList = new ArrayList<>();
-		if(detectorRange != null) {
-			int startRetentionTime = detectorRange.getRetentionTimeStart();
-			int stopRetentionTime = detectorRange.getRetentionTimeStop();
-			Set<Integer> traces = detectorRange.getTraces();
-			//
-			IChromatogramSelection chromatogramSelection = new ChromatogramSelection(chromatogram);
-			chromatogramSelection.setRangeRetentionTime(startRetentionTime, stopRetentionTime);
-			/*
-			 * Chromatogram Series
-			 */
-			if(chromatogram instanceof IChromatogramMSD) {
-				if(traces.size() > 0) {
-					IMarkedSignals<IMarkedIon> markedSignals = extractMarkedSignals(traces);
-					lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM_XIC, DisplayType.XIC, Derivative.NONE, Colors.RED, markedSignals, false));
-					if(forceTIC) {
-						lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM_TIC, DisplayType.TIC, Derivative.NONE, Colors.BLACK, null, false));
-					}
-				} else {
-					lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM_TIC, DisplayType.TIC, Derivative.NONE, Colors.RED, null, false));
-				}
-			} else {
-				lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesData(chromatogramSelection, SERIES_ID_CHROMATOGRAM_TIC, DisplayType.TIC, Derivative.NONE, Colors.RED, null, false));
-			}
-			/*
-			 * Peaks Series
-			 */
-			lineSeriesDataList.addAll(extractPeaksSeries(chromatogram, startRetentionTime, stopRetentionTime, traces));
-		}
-		//
-		return lineSeriesDataList;
-	}
-
-	private IMarkedSignals<IMarkedIon> extractMarkedSignals(Set<Integer> traces) {
-
-		IMarkedSignals<IMarkedIon> markedSignals = new MarkedIons(IMarkedIons.IonMarkMode.INCLUDE);
-		for(int trace : traces) {
-			markedSignals.add(new MarkedIon(trace));
-		}
-		return markedSignals;
-	}
-
-	private List<ILineSeriesData> extractPeaksSeries(IChromatogram<? extends IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, Set<Integer> traces) {
-
-		List<ILineSeriesData> lineSeriesDataList = new ArrayList<>();
-		int i = 1;
-		for(IPeak peak : chromatogram.getPeaks(startRetentionTime, stopRetentionTime)) {
-			if(traces.size() > 0 && peak instanceof IPeakMSD) {
-				if(peakMatchesTraces(peak, traces)) {
-					addPeakSeries(lineSeriesDataList, peak, true, i++);
-				}
-			} else {
-				addPeakSeries(lineSeriesDataList, peak, false, i++);
-			}
-		}
-		return lineSeriesDataList;
-	}
-
-	private void addPeakSeries(List<ILineSeriesData> lineSeriesDataList, IPeak peak, boolean xic, int i) {
-
-		String idPeak = xic ? SERIES_ID_PEAK_XIC : SERIES_ID_PEAK_TIC;
-		String idBaseline = xic ? SERIES_ID_BASELINE_XIC : SERIES_ID_BASELINE_TIC;
-		//
-		lineSeriesDataList.add(peakChartSupport.getPeak(peak, true, false, Colors.RED, idPeak + i));
-		lineSeriesDataList.add(peakChartSupport.getPeakBaseline(peak, false, Colors.BLACK, idBaseline + i));
 	}
 
 	private boolean peakMatchesTraces(IPeak peak, Set<Integer> traces) {

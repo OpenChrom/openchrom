@@ -11,13 +11,18 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
+import org.eclipse.chemclipse.model.core.PeakType;
+
 public class ReviewSetting extends AbstractSetting {
 
+	public static final String IDENTIFIER = "Review Identifier UI";
 	public static final String CLASSIFIER_REVIEW_OK = "Review (OK)";
 	//
 	private String name = "";
 	private String casNumber = "";
 	private String traces = "";
+	private PeakType detectorType = PeakType.VV; // VV => include background: true
+	private boolean optimizeRange = false;
 
 	public void copyFrom(ReviewSetting setting) {
 
@@ -27,6 +32,8 @@ public class ReviewSetting extends AbstractSetting {
 			setName(setting.getName());
 			setCasNumber(setting.getCasNumber());
 			setTraces(setting.getTraces());
+			setDetectorType(setting.getDetectorType());
+			setOptimizeRange(setting.isOptimizeRange());
 		}
 	}
 
@@ -58,6 +65,26 @@ public class ReviewSetting extends AbstractSetting {
 	public void setTraces(String traces) {
 
 		this.traces = traces;
+	}
+
+	public PeakType getDetectorType() {
+
+		return detectorType;
+	}
+
+	public void setDetectorType(PeakType detectorType) {
+
+		this.detectorType = detectorType;
+	}
+
+	public boolean isOptimizeRange() {
+
+		return optimizeRange;
+	}
+
+	public void setOptimizeRange(boolean optimizeRange) {
+
+		this.optimizeRange = optimizeRange;
 	}
 
 	@Override
@@ -94,6 +121,8 @@ public class ReviewSetting extends AbstractSetting {
 				", stopRetentionTime=" + getStopRetentionTime() + //
 				", name=" + name + ", casNumber=" + casNumber + //
 				", traces=" + traces + //
+				", detectorType=" + detectorType + //
+				", optimizeRange=" + optimizeRange + //
 				"]";//
 	}
 }

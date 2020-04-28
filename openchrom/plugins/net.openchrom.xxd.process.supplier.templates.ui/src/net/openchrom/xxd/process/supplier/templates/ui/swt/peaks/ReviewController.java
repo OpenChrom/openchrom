@@ -19,6 +19,7 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.swt.SWT;
@@ -37,30 +38,41 @@ public class ReviewController {
 	private ExtendedTargetsUI extendedTargetsUI;
 	private ExtendedComparisonUI extendedComparisonUI;
 	//
+	private ReviewSetting reviewSetting = null;
+	//
 	private PeakDetectorListUtil peakDetectorListUtil = new PeakDetectorListUtil();
 	private ProcessReviewSettings processSettings;
 
 	public void setInput(ProcessReviewSettings processSettings) {
 
+		/*
+		 * Setting the extended review UI input
+		 * calls the method "update(ReviewSetting reviewSetting, PeakType peakType, boolean optimizeRange)".
+		 */
 		this.processSettings = processSettings;
 		extendedReviewUI.setInput(processSettings);
 	}
 
 	/**
-	 * This method updates the selection of a review setting.
+	 * Updates the selection of a review setting.
 	 * 
 	 * @param reviewSetting
 	 * @param peakType
 	 * @param optimizeRange
-	 * @param forceTIC
 	 */
-	public void update(ReviewSetting reviewSetting, PeakType peakType, boolean optimizeRange, boolean forceTIC) {
+	public void update(ReviewSetting reviewSetting) {
 
-		peakDetectorChart.setForceTIC(forceTIC);
-		updateDetectorChart(reviewSetting, peakType, optimizeRange);
-		updatePeakStatusUI(reviewSetting);
+		this.reviewSetting = reviewSetting;
+		updateDetectorChart();
+		updatePeakStatusUI();
 	}
 
+	/**
+	 * Updates the selected peak.
+	 * 
+	 * @param reviewSetting
+	 * @param peak
+	 */
 	public void update(ReviewSetting reviewSetting, IPeak peak) {
 
 		List<IPeak> peaks = new ArrayList<>();
@@ -74,6 +86,37 @@ public class ReviewController {
 		updateExtendedTargetsUI(peak, targets);
 	}
 
+	/**
+	 * Updates the selected peak and target.
+	 * 
+	 * @param peak
+	 * @param identificationTarget
+	 */
+	public void update(IPeak peak, IIdentificationTarget identificationTarget) {
+
+		if(peak instanceof IPeakMSD && identificationTarget != null) {
+			IPeakMSD peakMSD = (IPeakMSD)peak;
+			IScanMSD scanMSD = peakMSD.getExtractedMassSpectrum();
+			IScanMSD unknownMassSpectrum = scanMSD.getOptimizedMassSpectrum() != null ? scanMSD.getOptimizedMassSpectrum() : scanMSD;
+			extendedComparisonUI.update(unknownMassSpectrum, identificationTarget);
+		} else {
+			extendedComparisonUI.update(null, null);
+		}
+	}
+
+	@SuppressWarnings({"unchecked"})
+	public void deletePeaks(ReviewSetting reviewSetting, List<IPeak> peaks) {
+
+		if(processSettings != null) {
+			IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
+			if(chromatogram != null) {
+				chromatogram.removePeaks(peaks);
+				updateDetectorChart();
+				updatePeakStatusUI();
+			}
+		}
+	}
+
 	protected void createExtendedReviewUI(Composite parent) {
 
 		extendedReviewUI = new ExtendedReviewUI(parent, SWT.NONE);
@@ -83,7 +126,14 @@ public class ReviewController {
 	protected void createPeakDetectorChart(Composite parent) {
 
 		peakDetectorChart = new PeakDetectorChart(parent, SWT.BORDER);
-		peakDetectorChart.setReviewController(this);
+		peakDetectorChart.setUpdateListener(new IUpdateListener() {
+
+			@Override
+			public void update() {
+
+				updatePeakStatusUI();
+			}
+		});
 	}
 
 	protected void createExtendedPeaksUI(Composite parent) {
@@ -104,17 +154,7 @@ public class ReviewController {
 		extendedComparisonUI.setReviewController(this);
 	}
 
-	public void updateTarget(IPeak peak, IIdentificationTarget identificationTarget) {
-
-		if(peak instanceof IPeakMSD) {
-			IPeakMSD peakMSD = (IPeakMSD)peak;
-			IScanMSD scanMSD = peakMSD.getExtractedMassSpectrum();
-			IScanMSD unknownMassSpectrum = scanMSD.getOptimizedMassSpectrum() != null ? scanMSD.getOptimizedMassSpectrum() : scanMSD;
-			extendedComparisonUI.update(unknownMassSpectrum, identificationTarget);
-		}
-	}
-
-	private void updateDetectorChart(ReviewSetting reviewSetting, PeakType peakType, boolean optimizeRange) {
+	private void updateDetectorChart() {
 
 		if(peakDetectorChart != null && extendedReviewUI != null) {
 			if(processSettings != null) {
@@ -124,8 +164,10 @@ public class ReviewController {
 						/*
 						 * Settings
 						 */
-						int startRetentionTime = getStartRetentionTime(reviewSetting);
-						int stopRetentionTime = getStopRetentionTime(reviewSetting);
+						int startRetentionTime = getStartRetentionTime();
+						int stopRetentionTime = getStopRetentionTime();
+						PeakType peakType = reviewSetting.getDetectorType();
+						boolean optimizeRange = reviewSetting.isOptimizeRange();
 						//
 						if(peakType != null) {
 							/*
@@ -153,10 +195,9 @@ public class ReviewController {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void updatePeakStatusUI(ReviewSetting reviewSetting) {
+	private void updatePeakStatusUI() {
 
 		List<IPeak> peaks = null;
-		//
 		if(extendedReviewUI != null) {
 			if(reviewSetting != null) {
 				if(processSettings != null) {
@@ -165,8 +206,8 @@ public class ReviewController {
 						/*
 						 * Settings
 						 */
-						int startRetentionTime = getStartRetentionTime(reviewSetting);
-						int stopRetentionTime = getStopRetentionTime(reviewSetting);
+						int startRetentionTime = getStartRetentionTime();
+						int stopRetentionTime = getStopRetentionTime();
 						peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
 					}
 				}
@@ -174,16 +215,16 @@ public class ReviewController {
 		}
 		//
 		if(extendedPeakStatusUI != null) {
-			extendedPeakStatusUI.setInput(peaks, reviewSetting);
+			extendedPeakStatusUI.setInput(reviewSetting, peaks);
 		}
 	}
 
 	private void updateExtendedTargetsUI(IPeak peak, Set<IIdentificationTarget> targets) {
 
-		extendedTargetsUI.setInput(peak, targets);
+		extendedTargetsUI.setInput(reviewSetting, peak, targets);
 	}
 
-	private int getStartRetentionTime(ReviewSetting reviewSetting) {
+	private int getStartRetentionTime() {
 
 		int time = 0;
 		if(reviewSetting != null) {
@@ -193,7 +234,7 @@ public class ReviewController {
 		return time;
 	}
 
-	private int getStopRetentionTime(ReviewSetting reviewSetting) {
+	private int getStopRetentionTime() {
 
 		int time = 0;
 		if(reviewSetting != null) {

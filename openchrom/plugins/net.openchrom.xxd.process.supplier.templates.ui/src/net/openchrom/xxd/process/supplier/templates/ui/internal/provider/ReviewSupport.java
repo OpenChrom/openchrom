@@ -22,6 +22,29 @@ import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 
 public class ReviewSupport {
 
+	public static String getName(IPeak peak) {
+
+		/*
+		 * Is a peak name set?
+		 */
+		String name = peak.getName();
+		/*
+		 * No peak name set.
+		 * Then try to get the peak or scan best match.
+		 */
+		if(name == null) {
+			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets());
+			if(libraryInformation != null) {
+				name = libraryInformation.getName();
+			}
+		}
+		/*
+		 * No hit at all?
+		 * Then return an empty String.
+		 */
+		return name != null ? name : "";
+	}
+
 	public static boolean isPeakReviewed(IPeak peak) {
 
 		boolean status = false;
@@ -29,6 +52,17 @@ public class ReviewSupport {
 			status = peak.getClassifier().contains(ReviewSetting.CLASSIFIER_REVIEW_OK);
 		}
 		return status;
+	}
+
+	public static void setReview(IPeak peak, boolean reviewSuccessful) {
+
+		if(peak != null) {
+			if(reviewSuccessful) {
+				peak.addClassifier(ReviewSetting.CLASSIFIER_REVIEW_OK);
+			} else {
+				peak.removeClassifier(ReviewSetting.CLASSIFIER_REVIEW_OK);
+			}
+		}
 	}
 
 	public static boolean isCompoundAvailable(List<IPeak> peaks, ReviewSetting reviewSetting) {
@@ -47,14 +81,24 @@ public class ReviewSupport {
 
 		if(targets != null && reviewSetting != null) {
 			for(IIdentificationTarget target : targets) {
-				ILibraryInformation libraryInformation = target.getLibraryInformation();
-				String name = libraryInformation.getName();
-				String cas = libraryInformation.getCasNumber();
-				if(name.equals(reviewSetting.getName())) {
-					return true;
-				} else if(cas.equals(reviewSetting.getCasNumber())) {
+				if(isCompoundAvailable(target, reviewSetting)) {
 					return true;
 				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean isCompoundAvailable(IIdentificationTarget target, ReviewSetting reviewSetting) {
+
+		if(target != null) {
+			ILibraryInformation libraryInformation = target.getLibraryInformation();
+			String name = libraryInformation.getName();
+			String cas = libraryInformation.getCasNumber();
+			if(name.equals(reviewSetting.getName())) {
+				return true;
+			} else if(cas.equals(reviewSetting.getCasNumber())) {
+				return true;
 			}
 		}
 		return false;
