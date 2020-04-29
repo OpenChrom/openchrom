@@ -16,6 +16,7 @@ import java.text.DecimalFormat;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.support.IRetentionTimeRange;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
@@ -377,20 +378,24 @@ public class PeakDetectorControl extends Composite {
 
 		if(peakDetectorChart != null && peakProcessSettings != null) {
 			DetectorSetting detectorSetting = peakProcessSettings.getSelectedDetectorSetting();
+			/*
+			 * Setting
+			 */
+			DetectorRange detectorRange = new DetectorRange();
+			detectorRange.setChromatogram(peakProcessSettings.getChromatogramSelection().getChromatogram());
+			detectorRange.setRetentionTimeStart(getRetentionTime(retentionTimeStart.getText()));
+			detectorRange.setRetentionTimeStop(getRetentionTime(retentionTimeStop.getText()));
+			detectorRange.setTraces(peakDetectorListUtil.extractTraces(traces.getText()));
+			//
 			if(detectorSetting != null) {
-				/*
-				 * Detector Range
-				 */
-				DetectorRange detectorRange = new DetectorRange();
-				detectorRange.setChromatogram(peakProcessSettings.getChromatogramSelection().getChromatogram());
-				detectorRange.setRetentionTimeStart(getRetentionTime(retentionTimeStart.getText()));
-				detectorRange.setRetentionTimeStop(getRetentionTime(retentionTimeStop.getText()));
-				detectorRange.setTraces(peakDetectorListUtil.extractTraces(traces.getText()));
 				detectorRange.setDetectorType(detectorSetting.getDetectorType().name());
 				detectorRange.setOptimizeRange(detectorSetting.isOptimizeRange());
-				//
-				peakDetectorChart.update(detectorRange);
+			} else {
+				detectorRange.setDetectorType(PeakType.VV.toString());
+				detectorRange.setOptimizeRange(true);
 			}
+			//
+			peakDetectorChart.update(detectorRange);
 		}
 	}
 
