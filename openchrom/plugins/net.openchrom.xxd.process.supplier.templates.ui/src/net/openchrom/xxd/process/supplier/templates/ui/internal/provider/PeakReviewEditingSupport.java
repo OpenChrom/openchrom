@@ -11,10 +11,16 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.CheckboxCellEditor;
+import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.util.ReviewValidator;
@@ -28,7 +34,17 @@ public class PeakReviewEditingSupport extends EditingSupport {
 	public PeakReviewEditingSupport(ExtendedTableViewer tableViewer, String column) {
 		super(tableViewer);
 		this.column = column;
-		this.cellEditor = new TextCellEditor(tableViewer.getTable());
+		if(column.equals(PeakReviewLabelProvider.OPTIMIZE_RANGE)) {
+			this.cellEditor = new CheckboxCellEditor(tableViewer.getTable());
+		} else if(column.equals(PeakReviewLabelProvider.DETECTOR_TYPE)) {
+			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite)tableViewer.getControl());
+			ComboViewer comboViewer = editor.getViewer();
+			comboViewer.setContentProvider(ArrayContentProvider.getInstance());
+			comboViewer.setInput(ReviewValidator.DETECTOR_TYPES);
+			this.cellEditor = editor;
+		} else {
+			this.cellEditor = new TextCellEditor(tableViewer.getTable());
+		}
 		this.tableViewer = tableViewer;
 	}
 
@@ -61,6 +77,10 @@ public class PeakReviewEditingSupport extends EditingSupport {
 					return setting.getCasNumber();
 				case PeakReviewLabelProvider.TRACES:
 					return setting.getTraces();
+				case PeakReviewLabelProvider.DETECTOR_TYPE:
+					return setting.getDetectorType();
+				case PeakReviewLabelProvider.OPTIMIZE_RANGE:
+					return setting.isOptimizeRange();
 			}
 		}
 		return false;
@@ -106,6 +126,14 @@ public class PeakReviewEditingSupport extends EditingSupport {
 					if(message == null) {
 						setting.setTraces(traces);
 					}
+					break;
+				case PeakReviewLabelProvider.DETECTOR_TYPE:
+					if(value instanceof PeakType) {
+						setting.setDetectorType((PeakType)value);
+					}
+					break;
+				case PeakReviewLabelProvider.OPTIMIZE_RANGE:
+					setting.setOptimizeRange((boolean)value);
 					break;
 			}
 			tableViewer.refresh();
