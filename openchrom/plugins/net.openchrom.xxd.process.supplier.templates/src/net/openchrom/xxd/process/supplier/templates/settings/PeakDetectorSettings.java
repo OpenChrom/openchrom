@@ -38,8 +38,6 @@ public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implem
 	@JsonProperty(value = "Detector Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'")
 	private String detectorSettings = "";
-	@JsonProperty(value = "Use Comments As Names", defaultValue = "false")
-	private boolean useCommentAsNames;
 
 	public void setDetectorSettings(String detectorSettings) {
 
@@ -74,15 +72,5 @@ public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implem
 		}
 		//
 		return settings;
-	}
-
-	public boolean isUseCommentAsNames() {
-
-		return useCommentAsNames;
-	}
-
-	public void setUseCommentAsNames(boolean useCommentAsNames) {
-
-		this.useCommentAsNames = useCommentAsNames;
 	}
 }

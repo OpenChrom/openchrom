@@ -172,9 +172,5 @@ public class DetectorSettings extends ArrayList<DetectorSetting> implements ISet
 		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
 		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
 		builder.append(setting.getReferenceIdentifier());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getComment());
 	}
 }

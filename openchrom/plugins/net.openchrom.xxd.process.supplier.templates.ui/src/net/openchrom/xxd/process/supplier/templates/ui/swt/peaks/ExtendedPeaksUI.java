@@ -16,66 +16,54 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.core.ITargetSupplier;
-import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.chemclipse.support.ui.swt.ITableSettings;
-import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 
-import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
-import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewSupport;
-import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakStatusListUI;
+import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakListUI;
 
-public class ExtendedPeakStatusUI extends Composite {
+public class ExtendedPeaksUI extends Composite {
 
 	private static final String MENU_CATEGORY_PEAKS = "Peaks";
 	//
-	private ReviewController reviewController;
-	private Label labelReviewSetting;
-	private PeakStatusListUI peakStatusListUI;
+	private DetectorController controller;
+	private PeakListUI peakListUI;
 	//
 	private List<IPeak> peaks;
-	private ReviewSetting reviewSetting;
+	//
+	private DetectorSetting detectorSetting;
 
-	public ExtendedPeakStatusUI(Composite parent, int style) {
+	public ExtendedPeaksUI(Composite parent, int style) {
 		super(parent, style);
 		createControl();
 	}
 
-	public void setInput(ReviewSetting reviewSetting, List<IPeak> peaks) {
+	public void setInput(DetectorSetting detectorSetting, List<IPeak> peaks) {
 
-		this.reviewSetting = reviewSetting;
+		this.detectorSetting = detectorSetting;
 		this.peaks = peaks;
-		//
-		update(reviewSetting);
-		peakStatusListUI.setInput(peaks);
-		autoSelectBestMatch();
-		//
+		peakListUI.setInput(peaks);
 		updateSelection(false);
 	}
 
-	public void setReviewController(ReviewController reviewController) {
+	public void setController(DetectorController controller) {
 
-		this.reviewController = reviewController;
+		this.controller = controller;
 	}
 
 	private void createControl() {
@@ -84,75 +72,19 @@ public class ExtendedPeakStatusUI extends Composite {
 		setLayout(gridLayout);
 		//
 		createToolbarMain(this);
-		peakStatusListUI = createTablePeaks(this);
+		peakListUI = createTablePeaks(this);
 	}
 
 	private void createToolbarMain(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		composite.setLayout(new GridLayout(5, false));
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalAlignment = SWT.END;
+		composite.setLayoutData(gridData);
+		composite.setLayout(new GridLayout(2, false));
 		//
-		labelReviewSetting = createLabel(composite);
-		createSetTargetButton(composite);
-		createMarkPeakButton(composite);
 		createDeletePeakButton(composite);
 		createDeletePeaksButton(composite);
-	}
-
-	private Label createLabel(Composite parent) {
-
-		Label label = new Label(parent, SWT.NONE);
-		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		label.setText("");
-		label.setToolTipText("The selected review setting is displayed here.");
-		//
-		return label;
-	}
-
-	private void createSetTargetButton(Composite parent) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
-		button.setToolTipText("Set the target manually");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXECUTE, IApplicationImage.SIZE_16x16));
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				IPeak peak = getSelectedPeak();
-				if(reviewSetting != null && peak != null) {
-					String name = reviewSetting.getName();
-					String casNumber = reviewSetting.getCasNumber();
-					IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, ReviewSetting.IDENTIFIER);
-					if(peak instanceof ITargetSupplier) {
-						ITargetSupplier targetSupplier = (ITargetSupplier)peak;
-						targetSupplier.getTargets().add(identificationTarget);
-						ReviewSupport.setReview(peak, true);
-						peakStatusListUI.refresh();
-						update(reviewSetting);
-						updateSelection(true);
-					}
-				}
-			}
-		});
-	}
-
-	private void createMarkPeakButton(Composite parent) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
-		button.setToolTipText("Edit the status of the selected peak");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_VALIDATE, IApplicationImage.SIZE_16x16));
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				togglePeakReviewStatus();
-			}
-		});
 	}
 
 	private void createDeletePeakButton(Composite parent) {
@@ -182,21 +114,21 @@ public class ExtendedPeakStatusUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if(reviewController != null) {
+				if(controller != null) {
 					MessageBox messageBox = new MessageBox(e.display.getActiveShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 					messageBox.setText("Delete Peak(s)");
 					messageBox.setMessage("Would you like to delete all peak(s)?");
 					if(messageBox.open() == SWT.YES) {
-						reviewController.deletePeaks(reviewSetting, peaks);
+						controller.deletePeaks(peaks);
 					}
 				}
 			}
 		});
 	}
 
-	private PeakStatusListUI createTablePeaks(Composite parent) {
+	private PeakListUI createTablePeaks(Composite parent) {
 
-		PeakStatusListUI listUI = new PeakStatusListUI(parent, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
+		PeakListUI listUI = new PeakListUI(parent, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		Table table = listUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
 		//
@@ -206,15 +138,6 @@ public class ExtendedPeakStatusUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				updateSelection(false);
-			}
-		});
-		//
-		table.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseDoubleClick(MouseEvent arg0) {
-
-				togglePeakReviewStatus();
 			}
 		});
 		/*
@@ -256,7 +179,7 @@ public class ExtendedPeakStatusUI extends Composite {
 	@SuppressWarnings("rawtypes")
 	private void deletePeaks(Shell shell) {
 
-		if(reviewSetting != null) {
+		if(detectorSetting != null) {
 			MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 			messageBox.setText("Delete Peak(s)");
 			messageBox.setMessage("Would you like to delete the selected peak(s)?");
@@ -265,14 +188,14 @@ public class ExtendedPeakStatusUI extends Composite {
 				 * Delete Peak(s)
 				 */
 				List<IPeak> peaksToDelete = new ArrayList<>();
-				Iterator iterator = peakStatusListUI.getStructuredSelection().iterator();
+				Iterator iterator = peakListUI.getStructuredSelection().iterator();
 				while(iterator.hasNext()) {
 					Object object = iterator.next();
 					if(object instanceof IPeak) {
 						peaksToDelete.add((IPeak)object);
 					}
 				}
-				reviewController.deletePeaks(reviewSetting, peaksToDelete);
+				controller.deletePeaks(peaksToDelete);
 			}
 		}
 	}
@@ -293,65 +216,23 @@ public class ExtendedPeakStatusUI extends Composite {
 		});
 	}
 
-	private void togglePeakReviewStatus() {
-
-		IPeak peak = getSelectedPeak();
-		if(peak != null) {
-			boolean isPeakReviewed = ReviewSupport.isPeakReviewed(peak);
-			ReviewSupport.setReview(peak, !isPeakReviewed);
-			peakStatusListUI.refresh();
-		}
-	}
-
 	private IPeak getSelectedPeak() {
 
-		Object object = peakStatusListUI.getStructuredSelection().getFirstElement();
+		Object object = peakListUI.getStructuredSelection().getFirstElement();
 		if(object instanceof IPeak) {
 			return (IPeak)object;
 		}
 		return null;
 	}
 
-	private void autoSelectBestMatch() {
-
-		if(PreferenceSupplier.isAutoSelectBestPeakMatch()) {
-			if(peaks != null) {
-				exitloop:
-				for(int i = 0; i < peaks.size(); i++) {
-					IPeak peak = peaks.get(i);
-					if(ReviewSupport.isCompoundAvailable(peak.getTargets(), reviewSetting)) {
-						peakStatusListUI.getTable().select(i);
-						break exitloop;
-					}
-				}
-			}
-		}
-	}
-
-	private void update(ReviewSetting reviewSetting) {
-
-		if(reviewSetting != null) {
-			boolean isCompoundAvailable = ReviewSupport.isCompoundAvailable(peaks, reviewSetting);
-			labelReviewSetting.setBackground(isCompoundAvailable ? Colors.GREEN : Colors.YELLOW);
-			labelReviewSetting.setText(reviewSetting.getName());
-		} else {
-			labelReviewSetting.setBackground(null);
-			labelReviewSetting.setText("");
-		}
-		/*
-		 * Color code for the identification.
-		 */
-		peakStatusListUI.setReviewSetting(reviewSetting);
-	}
-
 	private void updateSelection(boolean updateChart) {
 
-		if(reviewController != null) {
+		if(controller != null) {
 			IPeak peak = getSelectedPeak();
 			if(updateChart) {
-				reviewController.updateDetectorChart();
+				controller.updateDetectorChart();
 			}
-			reviewController.update(reviewSetting, peak);
+			controller.update(peak);
 		}
 	}
 }

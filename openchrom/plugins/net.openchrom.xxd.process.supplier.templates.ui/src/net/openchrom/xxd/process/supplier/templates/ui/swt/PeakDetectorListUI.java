@@ -36,7 +36,6 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 	private Runnable updateListener;
 
 	public PeakDetectorListUI(Composite parent, int style) {
-
 		super(parent, style);
 		createColumns();
 	}
@@ -75,8 +74,6 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 			} else if(label.equals(PeakDetectorLabelProvider.OPTIMIZE_RANGE)) {
 				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
 			} else if(label.equals(PeakDetectorLabelProvider.REFERENCE_IDENTIFIER)) {
-				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
-			} else if(label.equals(PeakDetectorLabelProvider.COMMENT)) {
 				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
 			}
 		}

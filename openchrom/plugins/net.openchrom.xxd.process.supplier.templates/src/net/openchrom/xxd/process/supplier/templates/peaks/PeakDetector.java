@@ -30,7 +30,6 @@ import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.csd.model.core.IPeakModelCSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.csd.model.implementation.ChromatogramPeakCSD;
-import org.eclipse.chemclipse.model.core.AbstractPeak;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
@@ -50,8 +49,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 
-import net.openchrom.xxd.process.supplier.templates.detector.TemplatePeakDetector;
 import net.openchrom.xxd.process.supplier.templates.detector.ITemplatePeak;
+import net.openchrom.xxd.process.supplier.templates.detector.TemplatePeakDetector;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
@@ -140,27 +139,22 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 					 */
 					for(Map<DetectorSettingTemplatePeak, IPeakModel> map : peaks) {
 						for(Entry<DetectorSettingTemplatePeak, IPeakModel> entry : map.entrySet()) {
-							DetectorSettingTemplatePeak setting = entry.getKey();
+							//
 							IPeakModel model = entry.getValue();
 							if(model == null) {
 								continue;
 							}
-							AbstractPeak peak;
+							//
 							if(chromatogram instanceof IChromatogramCSD) {
 								IChromatogramCSD csd = (IChromatogramCSD)chromatogram;
 								ChromatogramPeakCSD peakCSD = new ChromatogramPeakCSD((IPeakModelCSD)model, csd);
 								csd.addPeak(peakCSD);
-								peak = peakCSD;
 							} else if(chromatogram instanceof IChromatogramMSD) {
 								IChromatogramMSD msd = (IChromatogramMSD)chromatogram;
 								ChromatogramPeakMSD peakMSD = new ChromatogramPeakMSD((IPeakModelMSD)model, msd);
 								msd.addPeak(peakMSD);
-								peak = peakMSD;
 							} else {
 								continue;
-							}
-							if(peakDetectorSettings.isUseCommentAsNames()) {
-								peak.setName(setting.detectorSetting.getComment());
 							}
 						}
 					}
@@ -181,10 +175,8 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		private PeakType peakType;
 		private boolean optimizeRange;
 		private Set<Integer> traces;
-		private DetectorSetting detectorSetting;
 
 		public DetectorSettingTemplatePeak(IChromatogram<?> chromatogram, DetectorSetting detectorSetting) {
-			this.detectorSetting = detectorSetting;
 			IRetentionTimeRange retentionTimeRange = PEAK_SUPPORT.getRetentionTimeRange(chromatogram.getPeaks(), detectorSetting, detectorSetting.getReferenceIdentifier());
 			startScan = chromatogram.getScanNumber(retentionTimeRange.getStartRetentionTime());
 			stopScan = chromatogram.getScanNumber(retentionTimeRange.getStopRetentionTime());

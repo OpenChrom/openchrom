@@ -58,8 +58,9 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private Range selectedRangeY = null;
 	//
 	private PeakSupport peakSupport = new PeakSupport();
-	//
 	private DetectorRange detectorRange;
+	@SuppressWarnings("rawtypes")
+	private IChromatogramSelection chromatogramSelection = null;
 	//
 	private IUpdateListener updateListener = null;
 
@@ -77,11 +78,6 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	public void setUpdateListener(IUpdateListener updateListener) {
 
 		this.updateListener = updateListener;
-	}
-
-	public void update() {
-
-		updateDetectorRange();
 	}
 
 	public void update(DetectorRange detectorRange) {
@@ -122,7 +118,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 			extractPeak();
 			setCursorDefault();
 			resetSelectedRange();
-			updateDetectorRange();
+			updateChart();
 		}
 	}
 
@@ -231,7 +227,6 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				 * ChromatogramPeakChart
 				 */
 				Set<Integer> traces = detectorRange.getTraces();
-				IChromatogramSelection chromatogramSelection;
 				if(chromatogram instanceof IChromatogramMSD && traces.size() > 0) {
 					/*
 					 * Show Traces
@@ -258,6 +253,18 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				selectedRangeX = new Range(startRetentionTime, stopRetentionTime);
 				selectedRangeY = new Range(0, maxY);
 				adjustChartRange();
+			}
+		}
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	private void updateChart() {
+
+		if(chromatogramSelection != null) {
+			if(selectedRangeX != null) {
+				IChromatogram chromatogram = chromatogramSelection.getChromatogram();
+				List<IPeak> peaks = chromatogram.getPeaks((int)selectedRangeX.lower, (int)selectedRangeX.upper);
+				updatePeaks(peaks);
 			}
 		}
 	}

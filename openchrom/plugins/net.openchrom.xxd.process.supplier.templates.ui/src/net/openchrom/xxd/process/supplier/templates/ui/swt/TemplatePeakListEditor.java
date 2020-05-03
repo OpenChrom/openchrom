@@ -98,7 +98,6 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		this.preferences = preferences;
 		if(settings != null) {
 			this.settings.load(settings.getDetectorSettings());
-			useCommentAsNames = settings.isUseCommentAsNames();
 		}
 		composite = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout(NUMBER_COLUMNS, false);
@@ -481,7 +480,6 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		if(preferences != null) {
 			PeakDetectorSettings s = new PeakDetectorSettings();
 			s.setDetectorSettings(settings.save());
-			s.setUseCommentAsNames(useCommentAsNames);
 			return preferences.getSerialization().toString(s);
 		}
 		return "";

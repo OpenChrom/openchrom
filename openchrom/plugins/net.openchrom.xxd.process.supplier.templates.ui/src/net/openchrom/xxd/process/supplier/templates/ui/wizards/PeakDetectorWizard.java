@@ -12,10 +12,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.jface.wizard.Wizard;
 
-@SuppressWarnings("rawtypes")
 public class PeakDetectorWizard extends Wizard {
 
 	public static final int DEFAULT_WIDTH = 500;
@@ -23,18 +21,12 @@ public class PeakDetectorWizard extends Wizard {
 	//
 	private PeakDetectorPage page;
 	private ProcessDetectorSettings processSettings;
-	//
-	private int startRetentionTime;
-	private int stopRetentionTime;
 
 	public PeakDetectorWizard(ProcessDetectorSettings processSettings) {
 		setNeedsProgressMonitor(false);
 		setWindowTitle(PeakDetectorSupport.DESCRIPTION);
 		//
 		this.processSettings = processSettings;
-		IChromatogramSelection chromatogramSelection = processSettings.getChromatogramSelection();
-		startRetentionTime = chromatogramSelection.getStartRetentionTime();
-		stopRetentionTime = chromatogramSelection.getStopRetentionTime();
 	}
 
 	@Override
@@ -45,22 +37,8 @@ public class PeakDetectorWizard extends Wizard {
 	}
 
 	@Override
-	public boolean performCancel() {
-
-		restoreChromatogramSelection();
-		return super.performCancel();
-	}
-
-	@Override
 	public boolean performFinish() {
 
-		restoreChromatogramSelection();
 		return true;
-	}
-
-	private void restoreChromatogramSelection() {
-
-		IChromatogramSelection chromatogramSelection = processSettings.getChromatogramSelection();
-		chromatogramSelection.setRangeRetentionTime(startRetentionTime, stopRetentionTime);
 	}
 }

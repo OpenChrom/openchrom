@@ -35,7 +35,7 @@ public class PeakDetectorCSD extends AbstractPeakDetectorCSD {
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		if(peakDetectorSettings instanceof PeakDetectorSettings) {
 			PeakDetectorSettings settings = (PeakDetectorSettings)peakDetectorSettings;
-			ProcessDetectorSettings processSettings = new ProcessDetectorSettings(processingInfo, chromatogramSelection, settings);
+			ProcessDetectorSettings processSettings = new ProcessDetectorSettings(processingInfo, chromatogramSelection.getChromatogram(), settings);
 			Shell shell = DisplayUtils.getShell();
 			if(shell != null) {
 				PeakDetectorSupport peakDetectorSupport = new PeakDetectorSupport();

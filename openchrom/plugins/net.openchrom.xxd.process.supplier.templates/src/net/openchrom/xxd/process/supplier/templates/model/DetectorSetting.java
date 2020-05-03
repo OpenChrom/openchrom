@@ -20,7 +20,6 @@ public class DetectorSetting extends AbstractSetting {
 	private String traces = "";
 	private boolean optimizeRange = false;
 	private String referenceIdentifier = ""; // Used for relative retention time
-	private String comment = "";
 
 	public void copyFrom(DetectorSetting setting) {
 
@@ -84,15 +83,5 @@ public class DetectorSetting extends AbstractSetting {
 				", optimizeRange=" + optimizeRange + //
 				", referenceIdentifier=" + referenceIdentifier + //
 				"]";
-	}
-
-	public String getComment() {
-
-		return comment;
-	}
-
-	public void setComment(String comment) {
-
-		this.comment = comment;
 	}
 }

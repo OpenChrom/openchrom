@@ -33,7 +33,6 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 	private String column;
 
 	public PeakDetectorEditingSupport(ExtendedTableViewer tableViewer, String column) {
-
 		super(tableViewer);
 		this.column = column;
 		if(column.equals(PeakDetectorLabelProvider.OPTIMIZE_RANGE)) {
@@ -76,8 +75,6 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 					return setting.isOptimizeRange();
 				case PeakDetectorLabelProvider.REFERENCE_IDENTIFIER:
 					return setting.getReferenceIdentifier();
-				case PeakDetectorLabelProvider.COMMENT:
-					return setting.getComment();
 			}
 		}
 		return false;
@@ -108,10 +105,6 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 				case PeakDetectorLabelProvider.REFERENCE_IDENTIFIER:
 					String referenceIdentifier = ((String)value).trim();
 					setting.setReferenceIdentifier(referenceIdentifier);
-					break;
-				case PeakDetectorLabelProvider.COMMENT:
-					String comment = ((String)value).trim();
-					setting.setComment(comment);
 					break;
 			}
 			tableViewer.update(element, null);

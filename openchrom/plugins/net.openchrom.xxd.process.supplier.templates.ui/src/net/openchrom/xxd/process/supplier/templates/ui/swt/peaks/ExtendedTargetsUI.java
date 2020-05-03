@@ -51,7 +51,7 @@ public class ExtendedTargetsUI extends Composite {
 
 	private static final String MENU_CATEGORY_TARGETS = "Targets";
 	//
-	private ReviewController reviewController;
+	private ReviewController controller;
 	//
 	private SearchSupportUI searchSupportUI;
 	private TargetsListUI targetListUI;
@@ -65,9 +65,9 @@ public class ExtendedTargetsUI extends Composite {
 		createControl();
 	}
 
-	public void setReviewController(ReviewController reviewController) {
+	public void setController(ReviewController controller) {
 
-		this.reviewController = reviewController;
+		this.controller = controller;
 	}
 
 	public void setInput(ReviewSetting reviewSetting, IPeak peak, Set<IIdentificationTarget> targets) {
@@ -80,6 +80,7 @@ public class ExtendedTargetsUI extends Composite {
 		 */
 		targetListUI.setInput(targets);
 		targetListUI.sortTable();
+		targetListUI.setEditEnabled(false);
 		/*
 		 * Select the first entry if available.
 		 */
@@ -341,13 +342,13 @@ public class ExtendedTargetsUI extends Composite {
 
 	private void updateSelection(boolean updateChart) {
 
-		if(reviewController != null) {
+		if(controller != null) {
 			IIdentificationTarget identificationTarget = getIdentificationTarget();
 			if(identificationTarget != null) {
 				if(updateChart) {
-					reviewController.updateDetectorChart();
+					controller.updateDetectorChart();
 				}
-				reviewController.update(peak, identificationTarget);
+				controller.update(peak, identificationTarget);
 			}
 		}
 	}

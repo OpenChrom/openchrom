@@ -16,75 +16,38 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 
 import net.openchrom.xxd.process.supplier.templates.comparator.DetectorComparator;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 
-@SuppressWarnings("rawtypes")
 public class ProcessDetectorSettings {
 
-	private IProcessingInfo processingInfo;
-	private IChromatogramSelection chromatogramSelection;
+	private IProcessingInfo<?> processingInfo;
+	private IChromatogram<?> chromatogram;
 	private List<DetectorSetting> detectorSettings = new ArrayList<>();
-	private int selectedIndex;
 
-	public ProcessDetectorSettings(IProcessingInfo processingInfo, IChromatogramSelection chromatogramSelection, PeakDetectorSettings peakDetectorSettings) {
+	public ProcessDetectorSettings(IProcessingInfo<?> processingInfo, IChromatogram<?> chromatogram, PeakDetectorSettings peakDetectorSettings) {
 		this.processingInfo = processingInfo;
-		this.chromatogramSelection = chromatogramSelection;
+		this.chromatogram = chromatogram;
 		this.detectorSettings.addAll(peakDetectorSettings.getDetectorSettingsList());
 		Collections.sort(detectorSettings, new DetectorComparator());
-		selectedIndex = detectorSettings.size() > 0 ? 0 : -1;
 	}
 
-	public IProcessingInfo getProcessingInfo() {
+	public IProcessingInfo<?> getProcessingInfo() {
 
 		return processingInfo;
 	}
 
-	public IChromatogramSelection getChromatogramSelection() {
+	public IChromatogram<?> getChromatogram() {
 
-		return chromatogramSelection;
+		return chromatogram;
 	}
 
-	public void decreaseSelection() {
+	public List<DetectorSetting> getDetectorSettings() {
 
-		if(selectedIndex > 0) {
-			selectedIndex--;
-		}
-	}
-
-	public void increaseSelection() {
-
-		if(selectedIndex < detectorSettings.size()) {
-			selectedIndex++;
-		}
-	}
-
-	public boolean hasPrevious() {
-
-		if(detectorSettings.size() > 0) {
-			return selectedIndex > 0;
-		}
-		return false;
-	}
-
-	public boolean hasNext() {
-
-		if(detectorSettings.size() > 0) {
-			return selectedIndex < detectorSettings.size();
-		}
-		return false;
-	}
-
-	public DetectorSetting getSelectedDetectorSetting() {
-
-		if(selectedIndex >= 0 && selectedIndex < detectorSettings.size()) {
-			return detectorSettings.get(selectedIndex);
-		} else {
-			return null;
-		}
+		return detectorSettings;
 	}
 }

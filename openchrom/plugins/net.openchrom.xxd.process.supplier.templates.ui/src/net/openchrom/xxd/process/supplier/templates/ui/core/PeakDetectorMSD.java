@@ -37,7 +37,7 @@ public class PeakDetectorMSD extends AbstractPeakDetectorMSD {
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		if(peakDetectorSettings instanceof PeakDetectorSettings) {
 			PeakDetectorSettings settings = (PeakDetectorSettings)peakDetectorSettings;
-			ProcessDetectorSettings processSettings = new ProcessDetectorSettings(processingInfo, chromatogramSelection, settings);
+			ProcessDetectorSettings processSettings = new ProcessDetectorSettings(processingInfo, chromatogramSelection.getChromatogram(), settings);
 			try {
 				DisplayUtils.executeInUserInterfaceThread(new Runnable() {
 

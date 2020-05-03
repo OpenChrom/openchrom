@@ -20,7 +20,7 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSett
 
 public class PeakReviewControl extends Composite {
 
-	private ReviewController reviewController = new ReviewController();
+	private ReviewController controller = new ReviewController();
 
 	public PeakReviewControl(Composite parent, int style) {
 		super(parent, style);
@@ -29,7 +29,7 @@ public class PeakReviewControl extends Composite {
 
 	public void setInput(ProcessReviewSettings processSettings) {
 
-		reviewController.setInput(processSettings);
+		controller.setInput(processSettings);
 	}
 
 	private void createControl() {
@@ -37,26 +37,26 @@ public class PeakReviewControl extends Composite {
 		setLayout(new FillLayout());
 		SashForm sashForm = new SashForm(this, SWT.VERTICAL);
 		//
-		createReviewChromatogramSection(sashForm);
-		createReviewDetailsSection(sashForm);
+		createChromatogramSection(sashForm);
+		createDetailsSection(sashForm);
 	}
 
-	private void createReviewChromatogramSection(Composite parent) {
+	private void createChromatogramSection(Composite parent) {
 
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
 		//
-		reviewController.createExtendedReviewUI(sashForm);
-		reviewController.createPeakDetectorChart(sashForm);
+		controller.createExtendedReviewUI(sashForm);
+		controller.createPeakDetectorChart(sashForm);
 		//
-		sashForm.setWeights(new int[]{333, 667});
+		sashForm.setWeights(new int[]{350, 650});
 	}
 
-	private void createReviewDetailsSection(Composite parent) {
+	private void createDetailsSection(Composite parent) {
 
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
 		//
-		reviewController.createExtendedPeaksUI(sashForm);
-		reviewController.createExtendedTargetsUI(sashForm);
-		reviewController.createExtendedComparisonUI(sashForm);
+		controller.createExtendedPeaksUI(sashForm);
+		controller.createExtendedTargetsUI(sashForm);
+		controller.createExtendedComparisonUI(sashForm);
 	}
 }

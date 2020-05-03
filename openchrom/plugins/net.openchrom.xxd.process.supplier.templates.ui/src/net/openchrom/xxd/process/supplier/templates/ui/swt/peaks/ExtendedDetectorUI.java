@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2020 Lablicate GmbH.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,37 +31,37 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
-import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
+import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePage;
-import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakReviewListUI;
-import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakDetectorListUI;
+import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
 
-public class ExtendedReviewUI extends Composite {
+public class ExtendedDetectorUI extends Composite {
 
-	private ReviewController controller;
-	private PeakReviewListUI peakReviewListUI;
+	private DetectorController controller;
+	private PeakDetectorListUI peakDetectorListUI;
 
-	public ExtendedReviewUI(Composite parent, int style) {
+	public ExtendedDetectorUI(Composite parent, int style) {
 		super(parent, style);
 		createControl();
 	}
 
-	public void setController(ReviewController controller) {
+	public void setController(DetectorController controller) {
 
 		this.controller = controller;
 	}
 
-	public void setInput(ProcessReviewSettings processSettings) {
+	public void setInput(ProcessDetectorSettings processSettings) {
 
 		if(processSettings != null) {
-			List<ReviewSetting> reviewSettings = processSettings.getReviewSettings();
-			peakReviewListUI.setInput(reviewSettings);
-			if(reviewSettings.size() > 0) {
-				peakReviewListUI.getTable().select(0);
+			List<DetectorSetting> detectorSettings = processSettings.getDetectorSettings();
+			peakDetectorListUI.setInput(detectorSettings);
+			if(detectorSettings.size() > 0) {
+				peakDetectorListUI.getTable().select(0);
 			}
 		} else {
-			peakReviewListUI.setInput(null);
+			peakDetectorListUI.setInput(null);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class ExtendedReviewUI extends Composite {
 		setLayout(gridLayout);
 		//
 		createToolbarMain(this);
-		peakReviewListUI = createTable(this);
+		peakDetectorListUI = createTable(this);
 	}
 
 	private void createToolbarMain(Composite parent) {
@@ -94,7 +94,7 @@ public class ExtendedReviewUI extends Composite {
 			@Override
 			public void performSearch(String searchText, boolean caseSensitive) {
 
-				peakReviewListUI.setSearchText(searchText, caseSensitive);
+				peakDetectorListUI.setSearchText(searchText, caseSensitive);
 			}
 		});
 		//
@@ -145,9 +145,9 @@ public class ExtendedReviewUI extends Composite {
 		});
 	}
 
-	private PeakReviewListUI createTable(Composite parent) {
+	private PeakDetectorListUI createTable(Composite parent) {
 
-		PeakReviewListUI listUI = new PeakReviewListUI(parent, SWT.BORDER);
+		PeakDetectorListUI listUI = new PeakDetectorListUI(parent, SWT.BORDER);
 		Table table = listUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
 		//
@@ -168,11 +168,11 @@ public class ExtendedReviewUI extends Composite {
 		updateSelection();
 	}
 
-	private ReviewSetting getReviewSetting() {
+	private DetectorSetting getDetectorSetting() {
 
-		Object object = peakReviewListUI.getStructuredSelection().getFirstElement();
-		if(object instanceof ReviewSetting) {
-			return (ReviewSetting)object;
+		Object object = peakDetectorListUI.getStructuredSelection().getFirstElement();
+		if(object instanceof DetectorSetting) {
+			return (DetectorSetting)object;
 		}
 		return null;
 	}
@@ -180,8 +180,8 @@ public class ExtendedReviewUI extends Composite {
 	private void updateSelection() {
 
 		if(controller != null) {
-			ReviewSetting reviewSetting = getReviewSetting();
-			controller.update(reviewSetting);
+			DetectorSetting detectorSetting = getDetectorSetting();
+			controller.update(detectorSetting);
 		}
 	}
 }

@@ -31,7 +31,6 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 	public static final String TRACES = "Traces";
 	public static final String OPTIMIZE_RANGE = "Optimize Range";
 	public static final String REFERENCE_IDENTIFIER = "Reference Identifier";
-	public static final String COMMENT = "Comment";
 	//
 	public static final int INDEX_OPTIMIZE_RANGE = 4;
 	//
@@ -43,8 +42,7 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 			DETECTOR_TYPE, //
 			TRACES, //
 			OPTIMIZE_RANGE, //
-			REFERENCE_IDENTIFIER, //
-			COMMENT//
+			REFERENCE_IDENTIFIER //
 	};
 	public static final int[] BOUNDS = { //
 			100, //
@@ -52,8 +50,7 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 			50, //
 			100, //
 			30, //
-			150, //
-			200//
+			150 //
 	};
 
 	@Override
@@ -100,8 +97,6 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 				case 5:
 					text = setting.getReferenceIdentifier();
 					break;
-				case 6:
-					return setting.getComment();
 				default:
 					text = "n.v.";
 			}
