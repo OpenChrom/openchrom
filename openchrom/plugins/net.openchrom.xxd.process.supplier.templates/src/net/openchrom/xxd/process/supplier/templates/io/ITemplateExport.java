@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,10 +29,10 @@ import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUti
 
 public interface ITemplateExport {
 
-	default String extractTraces(IPeak peak, boolean useTraces, int numberTraces) {
+	default String extractTraces(IPeak peak, int numberTraces) {
 
 		String traces = "";
-		if(useTraces && (peak instanceof IPeakMSD || peak instanceof IPeakWSD)) {
+		if(numberTraces > 0 && (peak instanceof IPeakMSD || peak instanceof IPeakWSD)) {
 			if(peak instanceof IPeakMSD) {
 				IPeakMSD peakMSD = (IPeakMSD)peak;
 				IScan scan = peakMSD.getPeakModel().getPeakMaximum();

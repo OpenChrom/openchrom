@@ -44,10 +44,9 @@ public class ReviewExport extends AbstractChromatogramExportConverter implements
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		ReviewSettings reviewSettings = new ReviewSettings();
 		//
-		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		boolean useTraces = PreferenceSupplier.isUseTraces();
-		int numberTraces = PreferenceSupplier.getExportNumberTraces();
+		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutesReview() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutesReview() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int numberTraces = PreferenceSupplier.getExportNumberTracesReview();
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
@@ -58,7 +57,7 @@ public class ReviewExport extends AbstractChromatogramExportConverter implements
 				reviewSetting.setStopRetentionTime(peakModel.getStopRetentionTime() + deltaRight);
 				reviewSetting.setName(libraryInformation.getName());
 				reviewSetting.setCasNumber(libraryInformation.getCasNumber());
-				reviewSetting.setTraces(extractTraces(peak, useTraces, numberTraces));
+				reviewSetting.setTraces(extractTraces(peak, numberTraces));
 				reviewSettings.add(reviewSetting);
 			}
 		}

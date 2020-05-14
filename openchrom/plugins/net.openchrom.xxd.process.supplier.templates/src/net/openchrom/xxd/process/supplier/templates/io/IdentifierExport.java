@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -44,10 +44,9 @@ public class IdentifierExport extends AbstractChromatogramExportConverter implem
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		IdentifierSettings identifierSettings = new IdentifierSettings();
 		//
-		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		boolean useTraces = PreferenceSupplier.isUseTraces();
-		int numberTraces = PreferenceSupplier.getExportNumberTraces();
+		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutesIdentifier() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutesIdentifier() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int numberTraces = PreferenceSupplier.getExportNumberTracesIdentifier();
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
@@ -61,7 +60,7 @@ public class IdentifierExport extends AbstractChromatogramExportConverter implem
 				identifierSetting.setComments(libraryInformation.getComments());
 				identifierSetting.setContributor(libraryInformation.getContributor());
 				identifierSetting.setReference(libraryInformation.getReferenceIdentifier());
-				identifierSetting.setTraces(extractTraces(peak, useTraces, numberTraces));
+				identifierSetting.setTraces(extractTraces(peak, numberTraces));
 				identifierSetting.setReferenceIdentifier("");
 				identifierSettings.add(identifierSetting);
 			}

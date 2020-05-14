@@ -44,8 +44,8 @@ public class ReportExport extends AbstractChromatogramExportConverter implements
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		ReportSettings reportSettings = new ReportSettings();
 		//
-		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutesReport() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutesReport() * IChromatogram.MINUTE_CORRELATION_FACTOR);
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();

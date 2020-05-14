@@ -32,8 +32,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	//
 	public static final double MIN_DELTA_MINUTES = 0.0d; // 0 Minutes
 	public static final double MAX_DELTA_MINUTES = 1.0d; // 1 Minute
-	public static final int MIN_NUMBER_TRACES = 1;
-	public static final int MAX_NUMBER_TRACES = 10;
+	public static final int MIN_NUMBER_TRACES = 0; // 0 = TIC
+	public static final int MAX_NUMBER_TRACES = Integer.MAX_VALUE;
 	//
 	public static final String P_PEAK_DETECTOR_LIST_MSD = "peakDetectorListMSD";
 	public static final String DEF_PEAK_DETECTOR_LIST_MSD = "";
@@ -63,18 +63,59 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	//
 	public static final String P_CHART_BUFFERED_SELECTION = "chartBufferedSelection";
 	public static final boolean DEF_CHART_BUFFERED_SELECTION = false;
-	//
-	public static final String P_EXPORT_OPTIMIZE_RANGE = "exportOptimizeRange";
-	public static final boolean DEF_EXPORT_OPTIMIZE_RANGE = true;
-	public static final String P_EXPORT_DELTA_LEFT_MINUTES = "exportDeltaLeftMinutes";
-	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES = 0.1d;
-	public static final String P_EXPORT_DELTA_RIGHT_MINUTES = "exportDeltaRightMinutes";
-	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES = 0.1d;
-	public static final String P_EXPORT_USE_TRACES = "exportUseTraces";
-	public static final boolean DEF_EXPORT_USE_TRACES = false;
-	public static final String P_EXPORT_NUMBER_TRACES = "exportNumberTraces";
-	public static final int DEF_EXPORT_NUMBER_TRACES = 5;
-	//
+	/*
+	 * Detector
+	 */
+	public static final String P_EXPORT_NUMBER_TRACES_DETECTOR = "exportNumberTracesDetector";
+	public static final int DEF_EXPORT_NUMBER_TRACES_DETECTOR = 10;
+	public static final String P_EXPORT_OPTIMIZE_RANGE_DETECTOR = "exportOptimizeRangeDetector";
+	public static final boolean DEF_EXPORT_OPTIMIZE_RANGE_DETECTOR = true;
+	public static final String P_EXPORT_DELTA_LEFT_MINUTES_DETECTOR = "exportDeltaLeftMinutesDetector";
+	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES_DETECTOR = 0.1d;
+	public static final String P_EXPORT_DELTA_RIGHT_MINUTES_DETECTOR = "exportDeltaRightMinutesDetector";
+	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES_DETECTOR = 0.1d;
+	/*
+	 * Identifier
+	 */
+	public static final String P_EXPORT_NUMBER_TRACES_IDENTIFIER = "exportNumberTracesIdentifier";
+	public static final int DEF_EXPORT_NUMBER_TRACES_IDENTIFIER = 2;
+	public static final String P_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER = "exportDeltaLeftMinutesIdentifier";
+	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER = 0.1d;
+	public static final String P_EXPORT_DELTA_RIGHT_MINUTES_IDENTIFIER = "exportDeltaRightMinutesIdentifier";
+	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES_IDENTIFIER = 0.1d;
+	/*
+	 * Review
+	 */
+	public static final String P_EXPORT_NUMBER_TRACES_REVIEW = "exportNumberTracesReview";
+	public static final int DEF_EXPORT_NUMBER_TRACES_REVIEW = 5;
+	public static final String P_EXPORT_DELTA_LEFT_MINUTES_REVIEW = "exportDeltaLeftMinutesReview";
+	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES_REVIEW = 0.1d;
+	public static final String P_EXPORT_DELTA_RIGHT_MINUTES_REVIEW = "exportDeltaRightMinutesReview";
+	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES_REVIEW = 0.1d;
+	/*
+	 * Assigner
+	 */
+	public static final String P_EXPORT_DELTA_LEFT_MINUTES_ASSIGNER = "exportDeltaLeftMinutesAssigner";
+	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES_ASSIGNER = 0.1d;
+	public static final String P_EXPORT_DELTA_RIGHT_MINUTES_ASSIGNER = "exportDeltaRightMinutesAssigner";
+	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES_ASSIGNER = 0.1d;
+	/*
+	 * Standards
+	 */
+	public static final String P_EXPORT_DELTA_LEFT_MINUTES_STANDARDS = "exportDeltaLeftMinutesStandards";
+	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES_STANDARDS = 0.1d;
+	public static final String P_EXPORT_DELTA_RIGHT_MINUTES_STANDARDS = "exportDeltaRightMinutesStandards";
+	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES_STANDARDS = 0.1d;
+	/*
+	 * Report
+	 */
+	public static final String P_EXPORT_DELTA_LEFT_MINUTES_REPORT = "exportDeltaLeftMinutesReport";
+	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES_REPORT = 0.1d;
+	public static final String P_EXPORT_DELTA_RIGHT_MINUTES_REPORT = "exportDeltaRightMinutesReport";
+	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES_REPORT = 0.1d;
+	/*
+	 * 
+	 */
 	public static final String P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT = "standardsExtractorConcentrationUnit";
 	public static final String DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT = "ppm";
 	//
@@ -150,18 +191,36 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		//
 		defaultValues.put(P_CHART_BUFFERED_SELECTION, Boolean.toString(DEF_CHART_BUFFERED_SELECTION));
 		//
-		defaultValues.put(P_EXPORT_OPTIMIZE_RANGE, Boolean.toString(DEF_EXPORT_OPTIMIZE_RANGE));
-		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES));
-		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES));
-		defaultValues.put(P_EXPORT_USE_TRACES, Boolean.toString(DEF_EXPORT_USE_TRACES));
-		defaultValues.put(P_EXPORT_NUMBER_TRACES, Integer.toString(DEF_EXPORT_NUMBER_TRACES));
+		defaultValues.put(P_EXPORT_NUMBER_TRACES_DETECTOR, Integer.toString(DEF_EXPORT_NUMBER_TRACES_DETECTOR));
+		defaultValues.put(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, Boolean.toString(DEF_EXPORT_OPTIMIZE_RANGE_DETECTOR));
+		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES_DETECTOR, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES_DETECTOR));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES_DETECTOR, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES_DETECTOR));
+		//
+		defaultValues.put(P_EXPORT_NUMBER_TRACES_IDENTIFIER, Integer.toString(DEF_EXPORT_NUMBER_TRACES_IDENTIFIER));
+		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES_IDENTIFIER, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES_IDENTIFIER));
+		//
+		defaultValues.put(P_EXPORT_NUMBER_TRACES_REVIEW, Integer.toString(DEF_EXPORT_NUMBER_TRACES_REVIEW));
+		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES_REVIEW, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES_REVIEW));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES_REVIEW, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES_REVIEW));
+		//
+		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES_ASSIGNER, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES_ASSIGNER));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES_ASSIGNER, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES_ASSIGNER));
+		//
+		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES_STANDARDS, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES_STANDARDS));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES_STANDARDS, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES_STANDARDS));
+		//
+		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES_REPORT, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES_REPORT));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES_REPORT, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES_REPORT));
 		//
 		defaultValues.put(P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT, DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT);
 		//
 		defaultValues.put(P_UI_DETECTOR_DELTA_LEFT_MINUTES, Double.toString(DEF_UI_DETECTOR_DELTA_LEFT_MINUTES));
 		defaultValues.put(P_UI_DETECTOR_DELTA_RIGHT_MINUTES, Double.toString(DEF_UI_DETECTOR_DELTA_RIGHT_MINUTES));
 		defaultValues.put(P_UI_DETECTOR_REPLACE_PEAK, Boolean.toString(DEF_UI_DETECTOR_REPLACE_PEAK));
-		//
+		/*
+		 * Transfer
+		 */
 		defaultValues.put(P_TRANSFER_USE_BEST_TARGET_ONLY, Boolean.toString(DEF_TRANSFER_USE_BEST_TARGET_ONLY));
 		defaultValues.put(P_TRANSFER_RETENTION_TIME_MINUTES_LEFT, Double.toString(DEF_TRANSFER_RETENTION_TIME_MINUTES_LEFT));
 		defaultValues.put(P_TRANSFER_RETENTION_TIME_MINUTES_RIGHT, Double.toString(DEF_TRANSFER_RETENTION_TIME_MINUTES_RIGHT));
@@ -216,34 +275,100 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getBoolean(P_CHART_BUFFERED_SELECTION, DEF_CHART_BUFFERED_SELECTION);
 	}
 
-	public static boolean isExportOptimizeRange() {
+	public static boolean isExportOptimizeRangeDetector() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_EXPORT_OPTIMIZE_RANGE, DEF_EXPORT_OPTIMIZE_RANGE);
+		return preferences.getBoolean(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, DEF_EXPORT_OPTIMIZE_RANGE_DETECTOR);
 	}
 
-	public static double getExportDeltaLeftMinutes() {
+	public static double getExportDeltaLeftMinutesDetector() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES, DEF_EXPORT_DELTA_LEFT_MINUTES);
+		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES_DETECTOR, DEF_EXPORT_DELTA_LEFT_MINUTES_DETECTOR);
 	}
 
-	public static double getExportDeltaRightMinutes() {
+	public static double getExportDeltaRightMinutesDetector() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES, DEF_EXPORT_DELTA_RIGHT_MINUTES);
+		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES_DETECTOR, DEF_EXPORT_DELTA_RIGHT_MINUTES_DETECTOR);
 	}
 
-	public static boolean isUseTraces() {
+	public static double getExportDeltaLeftMinutesIdentifier() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_EXPORT_USE_TRACES, DEF_EXPORT_USE_TRACES);
+		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER, DEF_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER);
 	}
 
-	public static int getExportNumberTraces() {
+	public static double getExportDeltaRightMinutesIdentifier() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_NUMBER_TRACES, DEF_EXPORT_NUMBER_TRACES);
+		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES_IDENTIFIER, DEF_EXPORT_DELTA_RIGHT_MINUTES_IDENTIFIER);
+	}
+
+	public static double getExportDeltaLeftMinutesReview() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES_REVIEW, DEF_EXPORT_DELTA_LEFT_MINUTES_REVIEW);
+	}
+
+	public static double getExportDeltaRightMinutesReview() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES_REVIEW, DEF_EXPORT_DELTA_RIGHT_MINUTES_REVIEW);
+	}
+
+	public static double getExportDeltaLeftMinutesAssigner() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES_ASSIGNER, DEF_EXPORT_DELTA_LEFT_MINUTES_ASSIGNER);
+	}
+
+	public static double getExportDeltaRightMinutesAssigner() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES_ASSIGNER, DEF_EXPORT_DELTA_RIGHT_MINUTES_ASSIGNER);
+	}
+
+	public static double getExportDeltaLeftMinutesStandards() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES_STANDARDS, DEF_EXPORT_DELTA_LEFT_MINUTES_STANDARDS);
+	}
+
+	public static double getExportDeltaRightMinutesStandards() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES_STANDARDS, DEF_EXPORT_DELTA_RIGHT_MINUTES_STANDARDS);
+	}
+
+	public static double getExportDeltaLeftMinutesReport() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES_REPORT, DEF_EXPORT_DELTA_LEFT_MINUTES_REPORT);
+	}
+
+	public static double getExportDeltaRightMinutesReport() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES_REPORT, DEF_EXPORT_DELTA_RIGHT_MINUTES_REPORT);
+	}
+
+	public static int getExportNumberTracesDetector() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_EXPORT_NUMBER_TRACES_DETECTOR, DEF_EXPORT_NUMBER_TRACES_DETECTOR);
+	}
+
+	public static int getExportNumberTracesIdentifier() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_EXPORT_NUMBER_TRACES_IDENTIFIER, DEF_EXPORT_NUMBER_TRACES_IDENTIFIER);
+	}
+
+	public static int getExportNumberTracesReview() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_EXPORT_NUMBER_TRACES_REVIEW, DEF_EXPORT_NUMBER_TRACES_REVIEW);
 	}
 
 	public static double getUiDetectorDeltaLeftMinutes() {

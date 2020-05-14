@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,9 +24,11 @@ import net.openchrom.xxd.process.supplier.templates.ui.Activator;
 public class PagePeakTransfer extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PagePeakTransfer() {
+
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Peak Transfer.");
+		setTitle("Peak Transfer");
+		setDescription("");
 	}
 
 	/**
@@ -39,7 +41,7 @@ public class PagePeakTransfer extends FieldEditorPreferencePage implements IWork
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_USE_BEST_TARGET_ONLY, "Use Best Target Only", getFieldEditorParent()));
 		addField(new DoubleFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MINUTES_LEFT, "Delta Minutes Left", PreferenceSupplier.MIN_DELTA_MINUTES, PreferenceSupplier.MAX_DELTA_MINUTES, getFieldEditorParent()));
 		addField(new DoubleFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MINUTES_RIGHT, "Delta Minutes Right", PreferenceSupplier.MIN_DELTA_MINUTES, PreferenceSupplier.MAX_DELTA_MINUTES, getFieldEditorParent()));
-		addField(new SpinnerFieldEditor(PreferenceSupplier.P_TRANSFER_NUMBER_TRACES, "Number Traces", PreferenceSupplier.MIN_NUMBER_TRACES, PreferenceSupplier.MAX_NUMBER_TRACES, getFieldEditorParent()));
+		addField(new SpinnerFieldEditor(PreferenceSupplier.P_TRANSFER_NUMBER_TRACES, "Number Traces (0 = TIC)", PreferenceSupplier.MIN_NUMBER_TRACES, PreferenceSupplier.MAX_NUMBER_TRACES, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, "Transfer Identified Peaks Only", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_USE_ADJUSTMENT_BY_PURITY, "Use Adjustment By Purity", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_OPTIMIZE_RANGE, "Optimize Range (Peak)", getFieldEditorParent()));

@@ -113,7 +113,7 @@
       <ChromatogramSupplier
             description="Exports a Peak Detector Template "
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.DetectorExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="PeakDetectorTemplate.txt"
             filterName="Template Peak Detector (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.detectorTemplateMSD"
@@ -124,7 +124,7 @@
       <ChromatogramSupplier
             description="Exports a Peak Identifier Template "
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.IdentifierExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="PeakIdentifierTemplate.txt"
             filterName="Template Peak Identifier (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.identifierTemplateMSD"
@@ -135,7 +135,7 @@
       <ChromatogramSupplier
             description="Exports a Peak Standards Template "
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.StandardsExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="StandardsAssignerTemplate.txt"
             filterName="Template Standards Assigner (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.standardsAssignerTemplateMSD"
@@ -146,7 +146,7 @@
       <ChromatogramSupplier
             description="Exports a Peak Referencer Template "
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.ReferencerExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="StandardsReferencerTemplate.txt"
             filterName="Template Standards Referencer (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.standardsReferencerTemplateMSD"
@@ -157,7 +157,7 @@
       <ChromatogramSupplier
             description="Exports a Report Template "
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.ReportExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="ReportTemplate.txt"
             filterName="Template Chromatogram Report (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.reportTemplateMSD"
@@ -168,7 +168,7 @@
       <ChromatogramSupplier
             description="Exports a Review Template "
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.ReviewExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="ReviewTemplate.txt"
             filterName="Template Chromatogram Review (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.reviewTemplateMSD"
@@ -182,7 +182,7 @@
       <ChromatogramSupplier
             description="Exports a Peak Detector Template "
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.DetectorExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="PeakDetectorTemplate.txt"
             filterName="Template Peak Detector (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.detectorTemplateCSD"
@@ -193,7 +193,7 @@
       <ChromatogramSupplier
             description="Exports a Peak Identifier Template "
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.IdentifierExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="PeakIdentifierTemplate.txt"
             filterName="Template Peak Identifier (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.identifierTemplateCSD"
@@ -204,7 +204,7 @@
       <ChromatogramSupplier
             description="Exports a Peak Standards Template "
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.StandardsExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="StandardsAssignerTemplate.txt"
             filterName="Template Standards Assigner (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.standardsAssignerTemplateCSD"
@@ -215,7 +215,7 @@
       <ChromatogramSupplier
             description="Exports a Peak Referencer Template "
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.ReferencerExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="StandardsReferencerTemplate.txt"
             filterName="Template Standards Referencer (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.standardsReferencerTemplateCSD"
@@ -226,7 +226,7 @@
       <ChromatogramSupplier
             description="Exports a Report Template "
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.ReportExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="ReportTemplate.txt"
             filterName="Template Chromatogram Report (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.reportTemplateCSD"
@@ -237,7 +237,7 @@
       <ChromatogramSupplier
             description="Exports a Review Template "
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.ReviewExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="ReviewTemplate.txt"
             filterName="Template Chromatogram Review (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.reviewTemplateCSD"

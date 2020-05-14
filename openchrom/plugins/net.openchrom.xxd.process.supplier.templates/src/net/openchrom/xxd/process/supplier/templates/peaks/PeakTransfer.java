@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -177,7 +177,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		Set<Integer> traces = new HashSet<>();
 		if(peakSource instanceof IChromatogramPeakMSD) {
 			IChromatogramPeakMSD peakMSD = (IChromatogramPeakMSD)peakSource;
-			if(peakMSD.getPurity() < 1.0f) {
+			if(peakMSD.getPurity() < 1.0f && numberTraces > 0) {
 				IScanMSD scanMSD = peakMSD.getExtractedMassSpectrum();
 				if(scanMSD.getIons().size() <= numberTraces) {
 					IExtractedIonSignal extractedIonSignal = peakMSD.getExtractedMassSpectrum().getExtractedIonSignal();

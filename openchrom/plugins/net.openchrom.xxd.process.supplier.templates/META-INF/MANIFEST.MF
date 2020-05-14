@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.xxd.process.supplier.templates
 Bundle-ManifestVersion: 2
 Bundle-Name: Templates
 Bundle-SymbolicName: net.openchrom.xxd.process.supplier.templates;singleton:=true

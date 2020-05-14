@@ -40,11 +40,10 @@ public class DetectorExport extends AbstractChromatogramExportConverter implemen
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		DetectorSettings detectorSettings = new DetectorSettings();
 		//
-		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		boolean optimizeRange = PreferenceSupplier.isExportOptimizeRange();
-		boolean useTraces = PreferenceSupplier.isUseTraces();
-		int numberTraces = PreferenceSupplier.getExportNumberTraces();
+		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutesDetector() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutesDetector() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		boolean optimizeRange = PreferenceSupplier.isExportOptimizeRangeDetector();
+		int numberTraces = PreferenceSupplier.getExportNumberTracesDetector();
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
@@ -52,7 +51,7 @@ public class DetectorExport extends AbstractChromatogramExportConverter implemen
 			detectorSetting.setStartRetentionTime(peakModel.getStartRetentionTime() - deltaLeft);
 			detectorSetting.setStopRetentionTime(peakModel.getStopRetentionTime() + deltaRight);
 			detectorSetting.setDetectorType(PeakType.VV);
-			detectorSetting.setTraces(extractTraces(peak, useTraces, numberTraces));
+			detectorSetting.setTraces(extractTraces(peak, numberTraces));
 			detectorSetting.setOptimizeRange(optimizeRange);
 			detectorSetting.setReferenceIdentifier("");
 			detectorSettings.add(detectorSetting);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -44,8 +44,8 @@ public class ReferencerExport extends AbstractChromatogramExportConverter implem
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		AssignerReferences assignerReferences = new AssignerReferences();
 		//
-		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutesAssigner() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutesAssigner() * IChromatogram.MINUTE_CORRELATION_FACTOR);
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
