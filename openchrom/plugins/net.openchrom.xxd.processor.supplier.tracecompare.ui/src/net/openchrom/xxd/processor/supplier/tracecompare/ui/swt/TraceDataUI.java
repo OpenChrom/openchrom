@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -47,7 +47,7 @@ public class TraceDataUI extends LineChart {
 			IChartSettings chartSettings = getChartSettings();
 			//
 			IPrimaryAxisSettings primaryAxisSettingsX = chartSettings.getPrimaryAxisSettingsX();
-			primaryAxisSettingsX.setTitle("Retention Time (milliseconds)");
+			primaryAxisSettingsX.setTitle("Time [ms]");
 			primaryAxisSettingsX.setDecimalFormat(new DecimalFormat(("0.0##"), new DecimalFormatSymbols(Locale.ENGLISH)));
 			primaryAxisSettingsX.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 			primaryAxisSettingsX.setPosition(Position.Secondary);
@@ -55,7 +55,7 @@ public class TraceDataUI extends LineChart {
 			primaryAxisSettingsX.setVisible(false);
 			//
 			IPrimaryAxisSettings primaryAxisSettingsY = chartSettings.getPrimaryAxisSettingsY();
-			primaryAxisSettingsY.setTitle("Intensity");
+			primaryAxisSettingsY.setTitle("Intensity [counts]");
 			primaryAxisSettingsY.setDecimalFormat(new DecimalFormat(("0.0#E0"), new DecimalFormatSymbols(Locale.ENGLISH)));
 			primaryAxisSettingsY.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 			primaryAxisSettingsY.setGridLineStyle(LineStyle.NONE);
