@@ -34,6 +34,9 @@ public class PeakDetectorSupport {
 				getShell().setMaximized(true);
 			}
 		};
+		/*
+		 * Initial width and height.
+		 */
 		wizardDialog.setMinimumPageSize(PeakDetectorWizard.DEFAULT_WIDTH, PeakDetectorWizard.DEFAULT_HEIGHT);
 		//
 		IProcessingInfo processingInfo = processSettings.getProcessingInfo();

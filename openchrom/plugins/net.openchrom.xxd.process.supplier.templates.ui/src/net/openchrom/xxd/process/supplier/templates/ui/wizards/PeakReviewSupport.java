@@ -30,10 +30,12 @@ public class PeakReviewSupport {
 			protected void constrainShellSize() {
 
 				super.constrainShellSize();
-				// getButton(Dialog.CANCEL).setEnabled(false);
 				getShell().setMaximized(true);
 			}
 		};
+		/*
+		 * Initial width and height.
+		 */
 		wizardDialog.setMinimumPageSize(PeakReviewWizard.DEFAULT_WIDTH, PeakReviewWizard.DEFAULT_HEIGHT);
 		//
 		IProcessingInfo processingInfo = processSettings.getProcessingInfo();

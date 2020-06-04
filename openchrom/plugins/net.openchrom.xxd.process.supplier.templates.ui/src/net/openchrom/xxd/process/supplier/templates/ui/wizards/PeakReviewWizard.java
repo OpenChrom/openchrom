@@ -18,10 +18,10 @@ public class PeakReviewWizard extends Wizard {
 	public static final int DEFAULT_WIDTH = 500;
 	public static final int DEFAULT_HEIGHT = 650;
 	//
-	private PeakReviewPage page;
 	private ProcessReviewSettings processSettings;
 
 	public PeakReviewWizard(ProcessReviewSettings processSettings) {
+
 		setNeedsProgressMonitor(false);
 		setWindowTitle(PeakReviewSupport.DESCRIPTION);
 		//
@@ -31,8 +31,7 @@ public class PeakReviewWizard extends Wizard {
 	@Override
 	public void addPages() {
 
-		page = new PeakReviewPage("Peak Review", processSettings);
-		addPage(page);
+		addPage(new PeakReviewPage("Peak Review", processSettings));
 	}
 
 	@Override

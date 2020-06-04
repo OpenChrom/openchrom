@@ -14,14 +14,17 @@ package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.process.supplier.templates.ui.swt.peaks.TemplatePeakReviewUI;
 
 public class PeakReviewPage extends WizardPage {
 
 	private ProcessReviewSettings processSettings;
+	private TemplatePeakReviewUI control;
 
 	public PeakReviewPage(String pageName, ProcessReviewSettings processSettings) {
+
 		super(pageName);
 		setTitle("Review Peaks");
 		setDescription("Template Peak Review");
@@ -30,9 +33,21 @@ public class PeakReviewPage extends WizardPage {
 	}
 
 	@Override
+	public void setVisible(boolean visible) {
+
+		super.setVisible(visible);
+		/*
+		 * Remove the focus from the "Finish" button. It prevents that the user
+		 * accidentally press "Enter" and thus closes the dialog.
+		 */
+		Shell shell = getShell();
+		shell.getDisplay().asyncExec(() -> shell.setDefaultButton(null));
+	}
+
+	@Override
 	public void createControl(Composite parent) {
 
-		TemplatePeakReviewUI control = new TemplatePeakReviewUI(parent, SWT.NONE);
+		control = new TemplatePeakReviewUI(parent, SWT.NONE);
 		control.setInput(processSettings);
 		setControl(control);
 	}

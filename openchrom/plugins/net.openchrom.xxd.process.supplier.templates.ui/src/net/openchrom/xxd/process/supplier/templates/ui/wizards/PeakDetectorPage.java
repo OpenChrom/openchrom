@@ -14,6 +14,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.process.supplier.templates.ui.swt.peaks.TemplatePeakDetectorUI;
 
@@ -22,11 +23,24 @@ public class PeakDetectorPage extends WizardPage {
 	private ProcessDetectorSettings peakProcessSettings;
 
 	public PeakDetectorPage(String pageName, ProcessDetectorSettings processSettings) {
+
 		super(pageName);
 		setTitle("Modify/Add Peaks");
 		setDescription("Template peak modifier/detector");
 		setErrorMessage(null);
 		this.peakProcessSettings = processSettings;
+	}
+
+	@Override
+	public void setVisible(boolean visible) {
+
+		super.setVisible(visible);
+		/*
+		 * Remove the focus from the "Finish" button. It prevents that the user
+		 * accidentally press "Enter" and thus closes the dialog.
+		 */
+		Shell shell = getShell();
+		shell.getDisplay().asyncExec(() -> shell.setDefaultButton(null));
 	}
 
 	@Override
