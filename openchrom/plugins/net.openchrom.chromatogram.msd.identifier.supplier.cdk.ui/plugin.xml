@@ -17,11 +17,5 @@
             name="CDK Identifier Support">
       </page>
    </extension>
-   <extension
-         point="org.eclipse.help.toc">
-      <toc
-            file="toc_plugin.xml">
-      </toc>
-   </extension>   
 
 </plugin>

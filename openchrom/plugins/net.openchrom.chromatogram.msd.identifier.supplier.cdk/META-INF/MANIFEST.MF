@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.chromatogram.msd.identifier.supplier.cdk
 Eclipse-RegisterBuddy: net.openchrom.thirdpartylibraries.cdk.feature, net.openchrom.thirdpartylibraries.opsin
 Bundle-ManifestVersion: 2
 Bundle-Name: Cdk

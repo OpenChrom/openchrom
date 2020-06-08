@@ -12,6 +12,16 @@
       </ChromatogramIdentificationSupplier>
    </extension>
    <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.identifier.chromatogramIdentifier">
+      <ChromatogramIdentificationSupplier
+            description="This identifier calculates the mol weight for each identification entry."
+            id="net.openchrom.chromatogram.msd.identifier.supplier.cdk.molweight"
+            identifier="net.openchrom.chromatogram.msd.identifier.supplier.cdk.core.MolWeightCalculator"
+            identifierName="Mol Weight Calculator"
+            identifierSettings="net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IdentifierSettings">
+      </ChromatogramIdentificationSupplier>
+   </extension>   
+   <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
             class="net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceInitializer">

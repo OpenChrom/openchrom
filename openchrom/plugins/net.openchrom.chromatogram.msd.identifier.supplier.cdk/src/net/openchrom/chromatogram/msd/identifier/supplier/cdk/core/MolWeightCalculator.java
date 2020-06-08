@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Lablicate GmbH.
+ * Copyright (c) 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.core;
 
@@ -26,6 +26,11 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.openscience.cdk.DefaultChemObjectBuilder;
+import org.openscience.cdk.exception.InvalidSmilesException;
+import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.smiles.SmilesParser;
+import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.OpsinSupport;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
@@ -34,7 +39,9 @@ import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.Identifie
 import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
 import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
 
-public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
+public class MolWeightCalculator extends AbstractChromatogramIdentifier {
+
+	private SmilesParser smilesParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
 
 	@Override
 	public IProcessingInfo<?> identify(IChromatogramSelectionMSD chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
@@ -70,7 +77,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 						 * Scan
 						 */
 						if(scanMSD.getTargets().size() > 0) {
-							calculateSmilesFormula(scanMSD, nameStructure, nameStructureConfig);
+							calculateMolWeight(scanMSD, nameStructure, nameStructureConfig);
 						}
 						/*
 						 * Optimized Scan.
@@ -78,7 +85,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 						IScanMSD optimizedMassSpectrum = scanMSD.getOptimizedMassSpectrum();
 						if(optimizedMassSpectrum != null) {
 							if(optimizedMassSpectrum.getTargets().size() > 0) {
-								calculateSmilesFormula(optimizedMassSpectrum, nameStructure, nameStructureConfig);
+								calculateMolWeight(optimizedMassSpectrum, nameStructure, nameStructureConfig);
 							}
 						}
 					}
@@ -90,7 +97,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 				for(IPeakMSD peakMSD : chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection)) {
 					peaks.add(peakMSD);
 				}
-				calculateSmilesFormula(peaks, nameStructure, nameStructureConfig);
+				calculateMolWeight(peaks, nameStructure, nameStructureConfig);
 			}
 		}
 		return processingInfo;
@@ -103,19 +110,20 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 		return identify(chromatogramSelection, identifierSettings, monitor);
 	}
 
-	private void calculateSmilesFormula(IScanMSD scanMSD, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
+	private void calculateMolWeight(IScanMSD scanMSD, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
 
-		calculateSmilesFormula(scanMSD.getTargets(), nameStructure, nameStructureConfig);
+		calculateMolWeight(scanMSD.getTargets(), nameStructure, nameStructureConfig);
 	}
 
-	private void calculateSmilesFormula(List<IPeakMSD> peaks, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
+	private void calculateMolWeight(List<IPeakMSD> peaks, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
 
 		for(IPeakMSD peak : peaks) {
-			calculateSmilesFormula(peak.getTargets(), nameStructure, nameStructureConfig);
+			calculateMolWeight(peak.getTargets(), nameStructure, nameStructureConfig);
 		}
 	}
 
-	private void calculateSmilesFormula(Set<IIdentificationTarget> targets, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
+	@SuppressWarnings("deprecation")
+	private void calculateMolWeight(Set<IIdentificationTarget> targets, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
 
 		for(IIdentificationTarget target : targets) {
 			/*
@@ -124,7 +132,27 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 			if(target instanceof IIdentificationTarget) {
 				ILibraryInformation libraryInformation = ((IIdentificationTarget)target).getLibraryInformation();
 				OpsinSupport.calculateSmilesIfAbsent(libraryInformation, nameStructure, nameStructureConfig);
+				String smiles = libraryInformation.getSmiles();
+				if(!"".equals(smiles)) {
+					IAtomContainer molecule = generate(libraryInformation.getSmiles());
+					double molWeight = AtomContainerManipulator.getMolecularWeight(molecule);
+					libraryInformation.setMolWeight(molWeight);
+				}
 			}
 		}
+	}
+
+	private IAtomContainer generate(String smiles) {
+
+		IAtomContainer molecule = null;
+		if(smiles != null) {
+			try {
+				smilesParser.setStrict(PreferenceSupplier.isSmilesStrict());
+				molecule = smilesParser.parseSmiles(smiles);
+			} catch(InvalidSmilesException e) {
+				//
+			}
+		}
+		return molecule;
 	}
 }

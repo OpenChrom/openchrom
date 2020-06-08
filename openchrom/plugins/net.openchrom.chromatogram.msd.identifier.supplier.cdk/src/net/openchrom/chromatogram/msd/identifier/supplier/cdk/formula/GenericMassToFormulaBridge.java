@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Marwin Wollschläger.
+ * Copyright (c) 2013, 2020 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,6 +15,7 @@ package net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.formula.MassToFormulaTool;
@@ -24,8 +25,6 @@ import org.openscience.cdk.interfaces.IIsotope;
 import org.openscience.cdk.interfaces.IMolecularFormula;
 import org.openscience.cdk.interfaces.IMolecularFormulaSet;
 
-import org.eclipse.chemclipse.logging.core.Logger;
-
 /**
  * A Bridge class that should simplify the communication between the
  * GenericMassToFormula instance and the views that are part of the mass to formula calculations.
@@ -33,12 +32,14 @@ import org.eclipse.chemclipse.logging.core.Logger;
  * @author administrator_marwin
  * 
  */
+@SuppressWarnings("deprecation")
 public class GenericMassToFormulaBridge {
 
 	private static final Logger logger = Logger.getLogger(GenericMassToFormulaBridge.class);
 	private MassToFormulaTool massToFormula;
 
 	public GenericMassToFormulaBridge() {
+
 		massToFormula = new MassToFormulaTool(DefaultChemObjectBuilder.getInstance());
 	}
 

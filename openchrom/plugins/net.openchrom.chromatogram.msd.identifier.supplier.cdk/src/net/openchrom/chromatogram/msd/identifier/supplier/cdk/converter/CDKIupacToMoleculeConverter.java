@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2019 Marwin Wollschläger.
+ * Copyright (c) 2013, 2020 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -26,6 +26,7 @@ import org.openscience.cdk.iupac.parser.ParseException;
  * @author administrator_marwin
  * 
  */
+@SuppressWarnings("deprecation")
 public class CDKIupacToMoleculeConverter implements IStructureConverter {
 
 	private static final Logger logger = Logger.getLogger(CDKIupacToMoleculeConverter.class);
