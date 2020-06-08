@@ -17,7 +17,7 @@ import java.util.List;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
-import org.eclipse.chemclipse.model.updates.IUpdateListener;
+import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
@@ -129,11 +129,12 @@ public class DetectorController {
 	protected void createPeakDetectorChart(Composite parent) {
 
 		peakDetectorChart = new PeakDetectorChart(parent, SWT.BORDER);
-		peakDetectorChart.setUpdateListener(new IUpdateListener() {
+		peakDetectorChart.setPeakUpdateListener(new IPeakUpdateListener() {
 
 			@Override
-			public void update() {
+			public void update(IPeak peak) {
 
+				System.out.println("TODO Update Peak");
 				updatePeakUI();
 			}
 		});

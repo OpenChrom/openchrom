@@ -12,6 +12,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.selection.ChromatogramSelection;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
-import org.eclipse.chemclipse.model.updates.IUpdateListener;
+import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
@@ -62,9 +63,10 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	@SuppressWarnings("rawtypes")
 	private IChromatogramSelection chromatogramSelection = null;
 	//
-	private IUpdateListener updateListener = null;
+	private IPeakUpdateListener peakUpdateListener = null;
 
 	public PeakDetectorChart(Composite parent, int style) {
+
 		super(parent, style);
 		initialize();
 	}
@@ -75,9 +77,9 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		adjustChartRange();
 	}
 
-	public void setUpdateListener(IUpdateListener updateListener) {
+	public void setPeakUpdateListener(IPeakUpdateListener peakUdateListener) {
 
-		this.updateListener = updateListener;
+		this.peakUpdateListener = peakUdateListener;
 	}
 
 	public void update(DetectorRange detectorRange) {
@@ -115,10 +117,10 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		super.handleMouseUpEvent(event);
 		if(isControlKeyPressed(event)) {
 			stopBaselineSelection(event.x, event.y);
-			extractPeak();
+			IPeak peak = extractPeak();
 			setCursorDefault();
 			resetSelectedRange();
-			updateChart();
+			updateChart(peak);
 		}
 	}
 
@@ -257,14 +259,15 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		}
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	private void updateChart() {
+	private void updateChart(IPeak peak) {
 
 		if(chromatogramSelection != null) {
 			if(selectedRangeX != null) {
-				IChromatogram chromatogram = chromatogramSelection.getChromatogram();
-				List<IPeak> peaks = chromatogram.getPeaks((int)selectedRangeX.lower, (int)selectedRangeX.upper);
-				updatePeaks(peaks);
+				if(peak != null) {
+					List<IPeak> peaks = new ArrayList<>();
+					peaks.add(peak);
+					updatePeaks(peaks);
+				}
 			}
 		}
 	}
@@ -289,10 +292,11 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	private void extractPeak() {
+	private IPeak extractPeak() {
 
+		IPeak peak = null;
 		if(detectorRange != null) {
-			IPeak peak = extractPeakFromUserSelection(xStart, yStart, xStop, yStop);
+			peak = extractPeakFromUserSelection(xStart, yStart, xStop, yStop);
 			if(peak != null) {
 				IChromatogram chromatogram = detectorRange.getChromatogram();
 				if(chromatogram != null) {
@@ -306,10 +310,11 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 						removeClosestPeak(peak, chromatogram, startRetentionTime, stopRetentionTime, traces);
 					}
 					chromatogram.addPeak(peak);
-					fireUpdate();
+					fireUpdate(peak);
 				}
 			}
 		}
+		return peak;
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
@@ -418,10 +423,10 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		return false;
 	}
 
-	private void fireUpdate() {
+	private void fireUpdate(IPeak peak) {
 
-		if(updateListener != null) {
-			updateListener.update();
+		if(peakUpdateListener != null) {
+			peakUpdateListener.update(peak);
 		}
 	}
 }

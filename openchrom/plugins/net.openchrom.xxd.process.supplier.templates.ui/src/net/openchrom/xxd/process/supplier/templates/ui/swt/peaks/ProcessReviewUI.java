@@ -17,6 +17,7 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
+import org.eclipse.chemclipse.ux.extension.ui.support.PartSupport;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
@@ -37,12 +38,14 @@ import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePag
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakReviewListUI;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 
-public class ExtendedReviewUI extends Composite {
+public class ProcessReviewUI extends Composite {
 
 	private ReviewController controller;
+	private Composite toolbarSearch;
 	private PeakReviewListUI peakReviewListUI;
 
-	public ExtendedReviewUI(Composite parent, int style) {
+	public ProcessReviewUI(Composite parent, int style) {
+
 		super(parent, style);
 		createControl();
 	}
@@ -71,21 +74,26 @@ public class ExtendedReviewUI extends Composite {
 		setLayout(gridLayout);
 		//
 		createToolbarMain(this);
+		toolbarSearch = createToolbarSearch(this);
 		peakReviewListUI = createTable(this);
+		//
+		PartSupport.setCompositeVisibility(toolbarSearch, false);
 	}
 
 	private void createToolbarMain(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalAlignment = SWT.END;
+		composite.setLayoutData(gridData);
 		composite.setLayout(new GridLayout(3, false));
 		//
-		createSearchSection(composite);
+		createButtonToggleToolbarSearch(composite);
 		createReplacePeakButton(composite);
 		createSettingsButton(composite);
 	}
 
-	private SearchSupportUI createSearchSection(Composite parent) {
+	private SearchSupportUI createToolbarSearch(Composite parent) {
 
 		SearchSupportUI searchSupportUI = new SearchSupportUI(parent, SWT.NONE);
 		searchSupportUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -101,11 +109,33 @@ public class ExtendedReviewUI extends Composite {
 		return searchSupportUI;
 	}
 
+	private Button createButtonToggleToolbarSearch(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setToolTipText("Toggle search toolbar.");
+		button.setText("");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				boolean visible = PartSupport.toggleCompositeVisibility(toolbarSearch);
+				if(visible) {
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+				} else {
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+				}
+			}
+		});
+		//
+		return button;
+	}
+
 	private void createReplacePeakButton(Composite parent) {
 
-		Button button = new Button(parent, SWT.CHECK);
-		button.setText("Replace Peak");
-		button.setToolTipText("When detecting a new peak, replace the nearest peak.");
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
 		button.setSelection(PreferenceSupplier.isDetectorReplacePeak());
 		button.addSelectionListener(new SelectionAdapter() {
 
@@ -113,8 +143,21 @@ public class ExtendedReviewUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				PreferenceSupplier.toggleDetectorReplacePeak();
+				adjustDetectorButton(button);
 			}
 		});
+		adjustDetectorButton(button);
+	}
+
+	private void adjustDetectorButton(Button button) {
+
+		if(PreferenceSupplier.isDetectorReplacePeak()) {
+			button.setToolTipText("Replace the nearest peak.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PEAK_REPLACE, IApplicationImage.SIZE_16x16));
+		} else {
+			button.setToolTipText("Add the peak.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PEAK_ADD, IApplicationImage.SIZE_16x16));
+		}
 	}
 
 	private void createSettingsButton(Composite parent) {

@@ -19,7 +19,7 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
-import org.eclipse.chemclipse.model.updates.IUpdateListener;
+import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.swt.SWT;
@@ -32,7 +32,7 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
 public class ReviewController {
 
-	private ExtendedReviewUI extendedReviewUI;
+	private ProcessReviewUI processReviewUI;
 	private PeakDetectorChart peakDetectorChart;
 	private ExtendedPeakReviewUI extendedPeakReviewUI;
 	private ExtendedTargetsUI extendedTargetsUI;
@@ -49,7 +49,7 @@ public class ReviewController {
 		 * calls the method "update(ReviewSetting reviewSetting, PeakType peakType, boolean optimizeRange)".
 		 */
 		this.processSettings = processSettings;
-		extendedReviewUI.setInput(processSettings);
+		processReviewUI.setInput(processSettings);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class ReviewController {
 
 		this.reviewSetting = reviewSetting;
 		updateDetectorChart();
-		updatePeakStatusUI();
+		updatePeakStatusUI(null);
 	}
 
 	/**
@@ -72,10 +72,11 @@ public class ReviewController {
 	 * @param reviewSetting
 	 * @param peak
 	 */
-	public void update(IPeak peak) {
+	public void update(List<IPeak> peaks) {
 
-		List<IPeak> peaks = new ArrayList<>();
 		Set<IIdentificationTarget> targets = null;
+		IPeak peak = peaks.size() > 0 ? peaks.get(0) : null;
+		//
 		if(peak != null) {
 			peaks.add(peak);
 			targets = peak.getTargets();
@@ -108,7 +109,7 @@ public class ReviewController {
 	 */
 	public void updateDetectorChart() {
 
-		if(peakDetectorChart != null && extendedReviewUI != null) {
+		if(peakDetectorChart != null && processReviewUI != null) {
 			if(processSettings != null) {
 				if(processSettings != null && reviewSetting != null) {
 					IChromatogram<?> chromatogram = processSettings.getChromatogram();
@@ -149,26 +150,26 @@ public class ReviewController {
 			if(chromatogram != null) {
 				chromatogram.removePeaks(peaks);
 				updateDetectorChart();
-				updatePeakStatusUI();
+				updatePeakStatusUI(null);
 			}
 		}
 	}
 
-	protected void createExtendedReviewUI(Composite parent) {
+	protected void createProcessReviewUI(Composite parent) {
 
-		extendedReviewUI = new ExtendedReviewUI(parent, SWT.NONE);
-		extendedReviewUI.setController(this);
+		processReviewUI = new ProcessReviewUI(parent, SWT.NONE);
+		processReviewUI.setController(this);
 	}
 
 	protected void createPeakDetectorChart(Composite parent) {
 
 		peakDetectorChart = new PeakDetectorChart(parent, SWT.BORDER);
-		peakDetectorChart.setUpdateListener(new IUpdateListener() {
+		peakDetectorChart.setPeakUpdateListener(new IPeakUpdateListener() {
 
 			@Override
-			public void update() {
+			public void update(IPeak peak) {
 
-				updatePeakStatusUI();
+				updatePeakStatusUI(peak);
 			}
 		});
 	}
@@ -196,20 +197,25 @@ public class ReviewController {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void updatePeakStatusUI() {
+	private void updatePeakStatusUI(IPeak peak) {
 
-		List<IPeak> peaks = null;
-		if(extendedReviewUI != null) {
-			if(reviewSetting != null) {
-				if(processSettings != null) {
-					IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
-					if(chromatogram != null) {
-						/*
-						 * Settings
-						 */
-						int startRetentionTime = getStartRetentionTime();
-						int stopRetentionTime = getStopRetentionTime();
-						peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
+		List<IPeak> peaks = new ArrayList<>();
+		//
+		if(processReviewUI != null) {
+			if(peak != null) {
+				peaks.add(peak);
+			} else {
+				if(reviewSetting != null) {
+					if(processSettings != null) {
+						IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
+						if(chromatogram != null) {
+							/*
+							 * Settings
+							 */
+							int startRetentionTime = getStartRetentionTime();
+							int stopRetentionTime = getStopRetentionTime();
+							peaks.addAll(chromatogram.getPeaks(startRetentionTime, stopRetentionTime));
+						}
 					}
 				}
 			}

@@ -45,7 +45,7 @@ public class PeakReviewControl extends Composite {
 
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
 		//
-		controller.createExtendedReviewUI(sashForm);
+		controller.createProcessReviewUI(sashForm);
 		controller.createPeakDetectorChart(sashForm);
 		//
 		sashForm.setWeights(new int[]{350, 650});

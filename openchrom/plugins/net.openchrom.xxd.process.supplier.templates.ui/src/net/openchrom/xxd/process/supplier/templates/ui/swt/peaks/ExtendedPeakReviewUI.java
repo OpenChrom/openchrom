@@ -57,6 +57,7 @@ public class ExtendedPeakReviewUI extends Composite {
 	private ReviewSetting reviewSetting;
 
 	public ExtendedPeakReviewUI(Composite parent, int style) {
+
 		super(parent, style);
 		createControl();
 	}
@@ -312,6 +313,19 @@ public class ExtendedPeakReviewUI extends Composite {
 		return null;
 	}
 
+	private List<IPeak> getSelectedPeaks() {
+
+		List<IPeak> peaks = new ArrayList<>();
+		Iterator<?> iterator = peakStatusListUI.getStructuredSelection().iterator();
+		while(iterator.hasNext()) {
+			Object object = iterator.next();
+			if(object instanceof IPeak) {
+				peaks.add((IPeak)object);
+			}
+		}
+		return peaks;
+	}
+
 	private void autoSelectBestMatch() {
 
 		if(PreferenceSupplier.isAutoSelectBestPeakMatch()) {
@@ -347,11 +361,11 @@ public class ExtendedPeakReviewUI extends Composite {
 	private void updateSelection(boolean updateChart) {
 
 		if(controller != null) {
-			IPeak peak = getSelectedPeak();
+			List<IPeak> peaks = getSelectedPeaks();
 			if(updateChart) {
 				controller.updateDetectorChart();
 			}
-			controller.update(peak);
+			controller.update(peaks);
 		}
 	}
 }
