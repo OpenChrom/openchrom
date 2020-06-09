@@ -50,10 +50,6 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new DoubleFieldEditor(PreferenceSupplier.P_UI_DETECTOR_DELTA_LEFT_MINUTES, "Detector UI Delta Minutes Left", PreferenceSupplier.MIN_DELTA_MINUTES, PreferenceSupplier.MAX_DELTA_MINUTES, getFieldEditorParent()));
 		addField(new DoubleFieldEditor(PreferenceSupplier.P_UI_DETECTOR_DELTA_RIGHT_MINUTES, "Detector UI Delta Minutes Right", PreferenceSupplier.MIN_DELTA_MINUTES, PreferenceSupplier.MAX_DELTA_MINUTES, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_UI_DETECTOR_REPLACE_PEAK, "Detector UI Replace Peak", getFieldEditorParent()));
-		//
-		addField(new SpacerFieldEditor(getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_SET_REVIEW_TARGET_NAME, "Set Review Target Name", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_AUTO_SELECT_BEST_PEAK_MATCH, "Auto Select Best Match", getFieldEditorParent()));
 	}
 
 	/*

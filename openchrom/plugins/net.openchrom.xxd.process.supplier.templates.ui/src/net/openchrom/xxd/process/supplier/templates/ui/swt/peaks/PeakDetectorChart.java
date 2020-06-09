@@ -27,6 +27,7 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.ChromatogramPeakChart;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.PeakChartSettings;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.BaselineSelectionPaintListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
@@ -64,6 +65,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private IChromatogramSelection chromatogramSelection = null;
 	//
 	private IPeakUpdateListener peakUpdateListener = null;
+	private PeakChartSettings peakChartSettingsDefault = new PeakChartSettings();
 
 	public PeakDetectorChart(Composite parent, int style) {
 
@@ -84,10 +86,15 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 
 	public void update(DetectorRange detectorRange) {
 
+		update(detectorRange, peakChartSettingsDefault);
+	}
+
+	public void update(DetectorRange detectorRange, PeakChartSettings peakChartSettings) {
+
 		this.detectorRange = detectorRange;
 		selectedRangeX = null;
 		selectedRangeY = null;
-		updateDetectorRange();
+		updateDetectorRange(peakChartSettings);
 	}
 
 	@Override
@@ -219,7 +226,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	private void updateDetectorRange() {
+	private void updateDetectorRange(PeakChartSettings peakChartSettings) {
 
 		deleteSeries();
 		if(detectorRange != null) {
@@ -246,7 +253,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				int startRetentionTime = detectorRange.getRetentionTimeStart();
 				int stopRetentionTime = detectorRange.getRetentionTimeStop();
 				chromatogramSelection.setRangeRetentionTime(startRetentionTime, stopRetentionTime);
-				updateChromatogram(chromatogramSelection);
+				updateChromatogram(chromatogramSelection, peakChartSettings);
 				/*
 				 * Focus the range
 				 */

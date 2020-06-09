@@ -53,8 +53,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String DEF_COMPENSATION_QUANTIFIER_LIST = "";
 	public static final String P_CHROMATOGRAM_REPORT_LIST = "chromatogramReportList";
 	public static final String DEF_CHROMATOGRAM_REPORT_LIST = "";
-	public static final String P_CHROMATOGRAM_REVIEW_LIST = "chromatogramReviewList";
-	public static final String DEF_CHROMATOGRAM_REVIEW_LIST = "";
+	public static final String P_CHROMATOGRAM_REVIEW_LIST_MSD = "chromatogramReviewListMSD";
+	public static final String DEF_CHROMATOGRAM_REVIEW_LIST_MSD = "";
+	public static final String P_CHROMATOGRAM_REVIEW_LIST_CSD = "chromatogramReviewListCSD";
+	public static final String DEF_CHROMATOGRAM_REVIEW_LIST_CSD = "";
 	//
 	public static final String P_LIST_PATH_IMPORT = "listPathImport";
 	public static final String DEF_LIST_PATH_IMPORT = "";
@@ -143,11 +145,21 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	//
 	public static final String P_REPORT_REFERENCED_CHROMATOGRAMS = "reportReferencedChromatograms";
 	public static final boolean DEF_REPORT_REFERENCED_CHROMATOGRAMS = false;
-	//
+	/*
+	 * Peak Review
+	 */
 	public static final String P_SET_REVIEW_TARGET_NAME = "setReviewTargetName";
 	public static final boolean DEF_SET_REVIEW_TARGET_NAME = false;
 	public static final String P_AUTO_SELECT_BEST_PEAK_MATCH = "autoSelectBestPeakMatch";
 	public static final boolean DEF_AUTO_SELECT_BEST_PEAK_MATCH = false;
+	public static final String P_AUTO_LABEL_DETECTED_PEAK = "autoLabelDetectedPeak";
+	public static final boolean DEF_AUTO_LABEL_DETECTED_PEAK = true;
+	public static final String P_SHOW_CHROMATOGRAM_TIC = "showChromatogramTIC";
+	public static final boolean DEF_SHOW_CHROMATOGRAM_TIC = true;
+	public static final String P_SHOW_CHROMATOGRAM_XIC = "showChromatogramXIC";
+	public static final boolean DEF_SHOW_CHROMATOGRAM_XIC = true;
+	public static final String P_SHOW_BASELINE = "showBaseline";
+	public static final boolean DEF_SHOW_BASELINE = true;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -184,7 +196,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_PEAK_INTEGRATOR_LIST, DEF_PEAK_INTEGRATOR_LIST);
 		defaultValues.put(P_COMPENSATION_QUANTIFIER_LIST, DEF_COMPENSATION_QUANTIFIER_LIST);
 		defaultValues.put(P_CHROMATOGRAM_REPORT_LIST, DEF_CHROMATOGRAM_REPORT_LIST);
-		defaultValues.put(P_CHROMATOGRAM_REVIEW_LIST, DEF_CHROMATOGRAM_REVIEW_LIST);
+		defaultValues.put(P_CHROMATOGRAM_REVIEW_LIST_MSD, DEF_CHROMATOGRAM_REVIEW_LIST_MSD);
+		defaultValues.put(P_CHROMATOGRAM_REVIEW_LIST_CSD, DEF_CHROMATOGRAM_REVIEW_LIST_CSD);
 		//
 		defaultValues.put(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
 		defaultValues.put(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
@@ -233,6 +246,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		//
 		defaultValues.put(P_SET_REVIEW_TARGET_NAME, Boolean.toString(DEF_SET_REVIEW_TARGET_NAME));
 		defaultValues.put(P_AUTO_SELECT_BEST_PEAK_MATCH, Boolean.toString(DEF_AUTO_SELECT_BEST_PEAK_MATCH));
+		defaultValues.put(P_AUTO_LABEL_DETECTED_PEAK, Boolean.toString(DEF_AUTO_LABEL_DETECTED_PEAK));
+		defaultValues.put(P_SHOW_CHROMATOGRAM_TIC, Boolean.toString(DEF_SHOW_CHROMATOGRAM_TIC));
+		defaultValues.put(P_SHOW_CHROMATOGRAM_XIC, Boolean.toString(DEF_SHOW_CHROMATOGRAM_XIC));
+		defaultValues.put(P_SHOW_BASELINE, Boolean.toString(DEF_SHOW_BASELINE));
 		//
 		return defaultValues;
 	}
@@ -401,6 +418,30 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getBoolean(P_AUTO_SELECT_BEST_PEAK_MATCH, DEF_AUTO_SELECT_BEST_PEAK_MATCH);
 	}
 
+	public static boolean isAutoLabelDetectedPeak() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_AUTO_LABEL_DETECTED_PEAK, DEF_AUTO_LABEL_DETECTED_PEAK);
+	}
+
+	public static boolean isShowChromatogramTIC() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_SHOW_CHROMATOGRAM_TIC, DEF_SHOW_CHROMATOGRAM_TIC);
+	}
+
+	public static boolean isShowChromatogramXIC() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_SHOW_CHROMATOGRAM_XIC, DEF_SHOW_CHROMATOGRAM_XIC);
+	}
+
+	public static boolean isShowBaseline() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_SHOW_BASELINE, DEF_SHOW_BASELINE);
+	}
+
 	public static void toggleDetectorReplacePeak() {
 
 		boolean replacePeak = isDetectorReplacePeak();
@@ -443,11 +484,19 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return settings;
 	}
 
-	public static PeakReviewSettings getReviewSettings() {
+	public static PeakReviewSettings getReviewSettingsMSD() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		PeakReviewSettings settings = new PeakReviewSettings();
-		settings.setReviewSettings(preferences.get(P_CHROMATOGRAM_REVIEW_LIST, DEF_CHROMATOGRAM_REVIEW_LIST));
+		settings.setReviewSettings(preferences.get(P_CHROMATOGRAM_REVIEW_LIST_MSD, DEF_CHROMATOGRAM_REVIEW_LIST_MSD));
+		return settings;
+	}
+
+	public static PeakReviewSettings getReviewSettingsCSD() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		PeakReviewSettings settings = new PeakReviewSettings();
+		settings.setReviewSettings(preferences.get(P_CHROMATOGRAM_REVIEW_LIST_CSD, DEF_CHROMATOGRAM_REVIEW_LIST_CSD));
 		return settings;
 	}
 

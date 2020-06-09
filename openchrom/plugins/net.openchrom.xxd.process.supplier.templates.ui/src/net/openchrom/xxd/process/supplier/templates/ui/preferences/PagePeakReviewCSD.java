@@ -19,13 +19,13 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 import net.openchrom.xxd.process.supplier.templates.ui.Activator;
 import net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.ReviewFieldEditor;
 
-public class PagePeakReviewMSD extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class PagePeakReviewCSD extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-	public PagePeakReviewMSD() {
+	public PagePeakReviewCSD() {
 
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setTitle("Peak Review Template (MSD)");
+		setTitle("Peak Review Template (CSD)");
 		setDescription("");
 	}
 
@@ -36,7 +36,7 @@ public class PagePeakReviewMSD extends FieldEditorPreferencePage implements IWor
 	 */
 	public void createFieldEditors() {
 
-		addField(new ReviewFieldEditor(PreferenceSupplier.P_CHROMATOGRAM_REVIEW_LIST_MSD, "Peak Review (MSD)", getFieldEditorParent()));
+		addField(new ReviewFieldEditor(PreferenceSupplier.P_CHROMATOGRAM_REVIEW_LIST_CSD, "Peak Review (CSD)", getFieldEditorParent()));
 	}
 
 	/*

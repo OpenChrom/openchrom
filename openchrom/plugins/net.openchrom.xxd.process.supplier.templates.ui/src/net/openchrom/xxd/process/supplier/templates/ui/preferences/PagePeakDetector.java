@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,6 +20,7 @@ import net.openchrom.xxd.process.supplier.templates.ui.Activator;
 public class PagePeakDetector extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PagePeakDetector() {
+
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setDescription("Peak Detector Template");

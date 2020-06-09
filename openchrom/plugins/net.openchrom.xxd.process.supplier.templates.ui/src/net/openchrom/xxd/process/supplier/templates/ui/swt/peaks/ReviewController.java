@@ -17,16 +17,19 @@ import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.ITargetSupplier;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.PeakChartSettings;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
+import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
@@ -74,16 +77,9 @@ public class ReviewController {
 	 */
 	public void update(List<IPeak> peaks) {
 
-		Set<IIdentificationTarget> targets = null;
 		IPeak peak = peaks.size() > 0 ? peaks.get(0) : null;
-		//
-		if(peak != null) {
-			peaks.add(peak);
-			targets = peak.getTargets();
-		}
-		//
 		updateChartPeaks(peaks);
-		updateExtendedTargetsUI(peak, targets);
+		updateExtendedTargetsUI(peak);
 	}
 
 	/**
@@ -133,8 +129,15 @@ public class ReviewController {
 							detectorRange.setTraces(peakDetectorListUtil.extractTraces(reviewSetting.getTraces()));
 							detectorRange.setDetectorType(peakType.toString());
 							detectorRange.setOptimizeRange(optimizeRange);
+							/*
+							 * Settings display data
+							 */
+							PeakChartSettings peakChartSettings = new PeakChartSettings();
+							peakChartSettings.setShowChromatogramTIC(PreferenceSupplier.isShowChromatogramTIC());
+							peakChartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramXIC());
+							peakChartSettings.setShowBaseline(PreferenceSupplier.isShowBaseline());
 							//
-							peakDetectorChart.update(detectorRange);
+							peakDetectorChart.update(detectorRange, peakChartSettings);
 						}
 					}
 				}
@@ -169,6 +172,22 @@ public class ReviewController {
 			@Override
 			public void update(IPeak peak) {
 
+				if(PreferenceSupplier.isAutoLabelDetectedPeak()) {
+					if(reviewSetting != null && peak != null) {
+						String name = reviewSetting.getName();
+						String casNumber = reviewSetting.getCasNumber();
+						IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, ReviewSetting.IDENTIFIER);
+						if(peak instanceof ITargetSupplier) {
+							ITargetSupplier targetSupplier = (ITargetSupplier)peak;
+							targetSupplier.getTargets().add(identificationTarget);
+							ReviewSupport.setReview(peak, true);
+						}
+					}
+				}
+				/*
+				 * Update the chart and list.
+				 */
+				updateDetectorChart();
 				updatePeakStatusUI(peak);
 			}
 		});
@@ -202,32 +221,29 @@ public class ReviewController {
 		List<IPeak> peaks = new ArrayList<>();
 		//
 		if(processReviewUI != null) {
-			if(peak != null) {
-				peaks.add(peak);
-			} else {
-				if(reviewSetting != null) {
-					if(processSettings != null) {
-						IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
-						if(chromatogram != null) {
-							/*
-							 * Settings
-							 */
-							int startRetentionTime = getStartRetentionTime();
-							int stopRetentionTime = getStopRetentionTime();
-							peaks.addAll(chromatogram.getPeaks(startRetentionTime, stopRetentionTime));
-						}
+			if(reviewSetting != null) {
+				if(processSettings != null) {
+					IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
+					if(chromatogram != null) {
+						/*
+						 * Settings
+						 */
+						int startRetentionTime = getStartRetentionTime();
+						int stopRetentionTime = getStopRetentionTime();
+						peaks.addAll(chromatogram.getPeaks(startRetentionTime, stopRetentionTime));
 					}
 				}
 			}
 		}
 		//
 		if(extendedPeakReviewUI != null) {
-			extendedPeakReviewUI.setInput(reviewSetting, peaks);
+			extendedPeakReviewUI.setInput(reviewSetting, peaks, peak);
 		}
 	}
 
-	private void updateExtendedTargetsUI(IPeak peak, Set<IIdentificationTarget> targets) {
+	private void updateExtendedTargetsUI(IPeak peak) {
 
+		Set<IIdentificationTarget> targets = peak != null ? peak.getTargets() : null;
 		extendedTargetsUI.setInput(reviewSetting, peak, targets);
 	}
 

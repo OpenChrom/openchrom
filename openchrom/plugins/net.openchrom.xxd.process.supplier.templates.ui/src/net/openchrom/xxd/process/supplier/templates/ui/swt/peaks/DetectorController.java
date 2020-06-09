@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.PeakChartSettings;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
@@ -53,16 +54,11 @@ public class DetectorController {
 
 		this.detectorSetting = detectorSetting;
 		updateDetectorChart();
-		updatePeakUI();
+		updatePeakStatusUI(null);
 	}
 
-	public void update(IPeak peak) {
+	public void update(List<IPeak> peaks) {
 
-		List<IPeak> peaks = new ArrayList<>();
-		if(peak != null) {
-			peaks.add(peak);
-		}
-		//
 		updateChartPeaks(peaks);
 	}
 
@@ -92,8 +88,15 @@ public class DetectorController {
 							detectorRange.setTraces(peakDetectorListUtil.extractTraces(detectorSetting.getTraces()));
 							detectorRange.setDetectorType(peakType.toString());
 							detectorRange.setOptimizeRange(optimizeRange);
+							/*
+							 * Settings display data
+							 */
+							PeakChartSettings peakChartSettings = new PeakChartSettings();
+							peakChartSettings.setShowChromatogramTIC(PreferenceSupplier.isShowChromatogramTIC());
+							peakChartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramXIC());
+							peakChartSettings.setShowBaseline(PreferenceSupplier.isShowBaseline());
 							//
-							peakDetectorChart.update(detectorRange);
+							peakDetectorChart.update(detectorRange, peakChartSettings);
 						}
 					}
 				}
@@ -109,7 +112,7 @@ public class DetectorController {
 			if(chromatogram != null) {
 				chromatogram.removePeaks(peaks);
 				updateDetectorChart();
-				updatePeakUI();
+				updatePeakStatusUI(null);
 			}
 		}
 	}
@@ -134,8 +137,7 @@ public class DetectorController {
 			@Override
 			public void update(IPeak peak) {
 
-				System.out.println("TODO Update Peak");
-				updatePeakUI();
+				updatePeakStatusUI(peak);
 			}
 		});
 	}
@@ -146,9 +148,10 @@ public class DetectorController {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void updatePeakUI() {
+	private void updatePeakStatusUI(IPeak peak) {
 
-		List<IPeak> peaks = null;
+		List<IPeak> peaks = new ArrayList<>();
+		//
 		if(extendedDetectorUI != null) {
 			if(detectorSetting != null) {
 				if(processSettings != null) {
@@ -166,7 +169,7 @@ public class DetectorController {
 		}
 		//
 		if(extendedPeaksUI != null) {
-			extendedPeaksUI.setInput(detectorSetting, peaks);
+			extendedPeaksUI.setInput(detectorSetting, peaks, peak);
 		}
 	}
 

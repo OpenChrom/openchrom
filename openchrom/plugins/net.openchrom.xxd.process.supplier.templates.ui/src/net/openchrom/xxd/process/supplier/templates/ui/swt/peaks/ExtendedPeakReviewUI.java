@@ -62,14 +62,18 @@ public class ExtendedPeakReviewUI extends Composite {
 		createControl();
 	}
 
-	public void setInput(ReviewSetting reviewSetting, List<IPeak> peaks) {
+	public void setInput(ReviewSetting reviewSetting, List<IPeak> peaks, IPeak peak) {
 
 		this.reviewSetting = reviewSetting;
 		this.peaks = peaks;
 		//
 		update(reviewSetting);
 		peakStatusListUI.setInput(peaks);
-		autoSelectBestMatch();
+		if(peak != null) {
+			selectPeakMatch(peak);
+		} else {
+			autoSelectBestMatch();
+		}
 		//
 		updateSelection(false);
 	}
@@ -324,6 +328,21 @@ public class ExtendedPeakReviewUI extends Composite {
 			}
 		}
 		return peaks;
+	}
+
+	private void selectPeakMatch(IPeak peak) {
+
+		if(peaks != null && peak != null) {
+			exitloop:
+			for(int i = 0; i < peaks.size(); i++) {
+				if(peaks.get(i) == peak) {
+					if(ReviewSupport.isCompoundAvailable(peak.getTargets(), reviewSetting)) {
+						peakStatusListUI.getTable().select(i);
+						break exitloop;
+					}
+				}
+			}
+		}
 	}
 
 	private void autoSelectBestMatch() {

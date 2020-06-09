@@ -49,15 +49,19 @@ public class ExtendedPeaksUI extends Composite {
 	private DetectorSetting detectorSetting;
 
 	public ExtendedPeaksUI(Composite parent, int style) {
+
 		super(parent, style);
 		createControl();
 	}
 
-	public void setInput(DetectorSetting detectorSetting, List<IPeak> peaks) {
+	public void setInput(DetectorSetting detectorSetting, List<IPeak> peaks, IPeak peak) {
 
 		this.detectorSetting = detectorSetting;
 		this.peaks = peaks;
 		peakListUI.setInput(peaks);
+		if(peak != null) {
+			selectPeakMatch(peak);
+		}
 		updateSelection(false);
 	}
 
@@ -216,23 +220,40 @@ public class ExtendedPeaksUI extends Composite {
 		});
 	}
 
-	private IPeak getSelectedPeak() {
+	private void selectPeakMatch(IPeak peak) {
 
-		Object object = peakListUI.getStructuredSelection().getFirstElement();
-		if(object instanceof IPeak) {
-			return (IPeak)object;
+		if(peaks != null && peak != null) {
+			exitloop:
+			for(int i = 0; i < peaks.size(); i++) {
+				if(peaks.get(i) == peak) {
+					peakListUI.getTable().select(i);
+					break exitloop;
+				}
+			}
 		}
-		return null;
+	}
+
+	private List<IPeak> getSelectedPeaks() {
+
+		List<IPeak> peaks = new ArrayList<>();
+		Iterator<?> iterator = peakListUI.getStructuredSelection().iterator();
+		while(iterator.hasNext()) {
+			Object object = iterator.next();
+			if(object instanceof IPeak) {
+				peaks.add((IPeak)object);
+			}
+		}
+		return peaks;
 	}
 
 	private void updateSelection(boolean updateChart) {
 
 		if(controller != null) {
-			IPeak peak = getSelectedPeak();
+			List<IPeak> peaks = getSelectedPeaks();
 			if(updateChart) {
 				controller.updateDetectorChart();
 			}
-			controller.update(peak);
+			controller.update(peaks);
 		}
 	}
 }

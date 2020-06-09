@@ -7,25 +7,25 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * Contributors:
  *
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.preferences;
 
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.Activator;
-import net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.ReviewFieldEditor;
 
-public class PagePeakReviewMSD extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class PagePeakReview extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-	public PagePeakReviewMSD() {
+	public PagePeakReview() {
 
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setTitle("Peak Review Template (MSD)");
+		setTitle("Peak Review Template");
 		setDescription("");
 	}
 
@@ -36,7 +36,12 @@ public class PagePeakReviewMSD extends FieldEditorPreferencePage implements IWor
 	 */
 	public void createFieldEditors() {
 
-		addField(new ReviewFieldEditor(PreferenceSupplier.P_CHROMATOGRAM_REVIEW_LIST_MSD, "Peak Review (MSD)", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_SET_REVIEW_TARGET_NAME, "Set Review Target Name", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_AUTO_SELECT_BEST_PEAK_MATCH, "Auto Select Best Match", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_AUTO_LABEL_DETECTED_PEAK, "Auto Label Detected Peak", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_SHOW_CHROMATOGRAM_TIC, "Show Chromatogram (TIC)", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_SHOW_CHROMATOGRAM_XIC, "Show Chromatogram (XIC)", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_SHOW_BASELINE, "Show Baseline", getFieldEditorParent()));
 	}
 
 	/*

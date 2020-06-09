@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Table;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
-import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePage;
+import net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakReview;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakReviewListUI;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 
@@ -172,7 +172,7 @@ public class ProcessReviewUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				PreferenceManager preferenceManager = new PreferenceManager();
-				preferenceManager.addToRoot(new PreferenceNode("1", new PreferencePage()));
+				preferenceManager.addToRoot(new PreferenceNode("1", new PagePeakReview()));
 				//
 				PreferenceDialog preferenceDialog = new PreferenceDialog(e.display.getActiveShell(), preferenceManager);
 				preferenceDialog.create();
