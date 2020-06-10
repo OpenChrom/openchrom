@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.msqbatlibs.jfasta.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: net.openchrom.msqbatlibs.jfasta.fragment.test

@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.wsd.identifier.supplier.geneident.ui
 Bundle-SymbolicName: net.openchrom.wsd.identifier.supplier.geneident.ui;singleton:=true
 Bundle-Name: Ui
 Bundle-Version: 1.4.0.qualifier

@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.msqbatlibs.kerner.utils.collections
 Bundle-ManifestVersion: 2
 Bundle-Name: Collections
 Bundle-SymbolicName: net.openchrom.msqbatlibs.kerner.utils.collections

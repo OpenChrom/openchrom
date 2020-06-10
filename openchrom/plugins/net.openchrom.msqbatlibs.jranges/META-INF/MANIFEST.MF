@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.msqbatlibs.jranges
 Bundle-ManifestVersion: 2
 Bundle-Name: Jranges
 Bundle-SymbolicName: net.openchrom.msqbatlibs.jranges

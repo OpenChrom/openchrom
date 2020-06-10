@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.msd.converter.supplier.cdf
 Eclipse-RegisterBuddy: 	org.eclipse.chemclipse.model, org.eclipse.chemclipse.msd.model, net.openchrom.thirdpartylibraries.netcdf
 Bundle-ManifestVersion: 2
 Bundle-Name: Cdf Plug-in

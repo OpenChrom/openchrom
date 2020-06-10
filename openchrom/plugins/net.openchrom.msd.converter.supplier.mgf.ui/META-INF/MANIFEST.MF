@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.msd.converter.supplier.mgf.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: Ui
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.mgf.ui;singleton:=true

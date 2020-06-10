@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: Mass Shift Detector (Test)
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.fragment.test

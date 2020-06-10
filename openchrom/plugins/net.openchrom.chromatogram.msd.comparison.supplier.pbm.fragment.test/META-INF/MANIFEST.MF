@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: Test Fragment
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test

@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.wsd.identifier.supplier.geneident.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: net.openchrom.wsd.identifier.supplier.geneident.fragment.test

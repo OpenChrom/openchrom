@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.xxd.processor.supplier.tracecompare
 Bundle-ManifestVersion: 2
 Bundle-Name: Trace Compare (Model)
 Bundle-SymbolicName: net.openchrom.xxd.processor.supplier.tracecompare;singleton:=true

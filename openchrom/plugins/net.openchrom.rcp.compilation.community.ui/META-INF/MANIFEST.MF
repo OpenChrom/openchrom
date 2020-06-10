@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.rcp.compilation.community.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: Compilation
 Bundle-SymbolicName: net.openchrom.rcp.compilation.community.ui;singleton:=true

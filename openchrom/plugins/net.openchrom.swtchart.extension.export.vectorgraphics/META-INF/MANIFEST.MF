@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.swtchart.extension.export.vectorgraphics
 Bundle-ManifestVersion: 2
 Bundle-Name: Vectorgraphics
 Bundle-SymbolicName: net.openchrom.swtchart.extension.export.vectorgraphics;singleton:=true
