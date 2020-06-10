@@ -96,7 +96,9 @@ public class DetectorController {
 							peakChartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramXIC());
 							peakChartSettings.setShowBaseline(PreferenceSupplier.isShowBaseline());
 							//
-							peakDetectorChart.update(detectorRange, peakChartSettings);
+							int deltaRetentionTimeLeft = PreferenceSupplier.getDetectorDeltaLeftMilliseconds();
+							int deltaRetentionTimeRight = PreferenceSupplier.getDetectorDeltaRightMilliseconds();
+							peakDetectorChart.update(detectorRange, peakChartSettings, deltaRetentionTimeLeft, deltaRetentionTimeRight);
 						}
 					}
 				}
@@ -177,7 +179,7 @@ public class DetectorController {
 
 		int time = 0;
 		if(detectorSetting != null) {
-			int retentionTimeDeltaLeft = (int)(PreferenceSupplier.getUiDetectorDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+			int retentionTimeDeltaLeft = PreferenceSupplier.getDetectorDeltaLeftMilliseconds();
 			time = detectorSetting.getStartRetentionTime() - retentionTimeDeltaLeft;
 		}
 		return time;
@@ -187,7 +189,7 @@ public class DetectorController {
 
 		int time = 0;
 		if(detectorSetting != null) {
-			int retentionTimeDeltaRight = (int)(PreferenceSupplier.getUiDetectorDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+			int retentionTimeDeltaRight = PreferenceSupplier.getDetectorDeltaRightMilliseconds();
 			time = detectorSetting.getStopRetentionTime() + retentionTimeDeltaRight;
 		}
 		return time;

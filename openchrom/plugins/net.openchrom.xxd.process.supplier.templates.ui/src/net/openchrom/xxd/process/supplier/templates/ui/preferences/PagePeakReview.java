@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.preferences;
 
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.IntegerFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
@@ -36,6 +37,9 @@ public class PagePeakReview extends FieldEditorPreferencePage implements IWorkbe
 	 */
 	public void createFieldEditors() {
 
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_REVIEW_UI_DELTA_LEFT_MILLISECONDS, "Delta Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_REVIEW_UI_DELTA_RIGHT_MILLISECONDS, "Delta Right [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_UI_REPLACE_PEAK, "Replace Peak", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_SET_REVIEW_TARGET_NAME, "Set Review Target Name", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_AUTO_SELECT_BEST_PEAK_MATCH, "Auto Select Best Match", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_AUTO_LABEL_DETECTED_PEAK, "Auto Label Detected Peak", getFieldEditorParent()));

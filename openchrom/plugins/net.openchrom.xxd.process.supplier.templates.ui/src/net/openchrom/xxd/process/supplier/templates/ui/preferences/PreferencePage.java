@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.preferences;
 
-import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.DoubleFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
@@ -44,12 +43,6 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		//
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_CHART_BUFFERED_SELECTION, "Chart Buffered Selection", getFieldEditorParent()));
-		//
-		addField(new SpacerFieldEditor(getFieldEditorParent()));
-		addField(new SpacerFieldEditor(getFieldEditorParent()));
-		addField(new DoubleFieldEditor(PreferenceSupplier.P_UI_DETECTOR_DELTA_LEFT_MINUTES, "Detector UI Delta Minutes Left", PreferenceSupplier.MIN_DELTA_MINUTES, PreferenceSupplier.MAX_DELTA_MINUTES, getFieldEditorParent()));
-		addField(new DoubleFieldEditor(PreferenceSupplier.P_UI_DETECTOR_DELTA_RIGHT_MINUTES, "Detector UI Delta Minutes Right", PreferenceSupplier.MIN_DELTA_MINUTES, PreferenceSupplier.MAX_DELTA_MINUTES, getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_UI_DETECTOR_REPLACE_PEAK, "Detector UI Replace Peak", getFieldEditorParent()));
 	}
 
 	/*

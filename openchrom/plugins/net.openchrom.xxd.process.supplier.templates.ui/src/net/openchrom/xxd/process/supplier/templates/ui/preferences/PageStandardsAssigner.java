@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,9 +22,11 @@ import net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.StandardsAss
 public class PageStandardsAssigner extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PageStandardsAssigner() {
+
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Assign the internal standards (ISTD).");
+		setTitle("Standards Assigner (ISTD)");
+		setDescription("");
 	}
 
 	/**

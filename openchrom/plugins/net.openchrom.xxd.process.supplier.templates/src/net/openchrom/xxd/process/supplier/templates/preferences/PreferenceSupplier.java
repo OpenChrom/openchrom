@@ -32,6 +32,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	//
 	public static final double MIN_DELTA_MINUTES = 0.0d; // 0 Minutes
 	public static final double MAX_DELTA_MINUTES = 1.0d; // 1 Minute
+	public static final int MIN_DELTA_MILLISECONDS = 0; // 0 Minutes
+	public static final int MAX_DELTA_MILLISECONDS = 60000; // 1 Minute
 	public static final int MIN_NUMBER_TRACES = 0; // 0 = TIC
 	public static final int MAX_NUMBER_TRACES = Integer.MAX_VALUE;
 	//
@@ -121,13 +123,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT = "standardsExtractorConcentrationUnit";
 	public static final String DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT = "ppm";
 	//
-	public static final String P_UI_DETECTOR_DELTA_LEFT_MINUTES = "uiDetectorDeltaLeftMinutes";
-	public static final double DEF_UI_DETECTOR_DELTA_LEFT_MINUTES = 0.5d;
-	public static final String P_UI_DETECTOR_DELTA_RIGHT_MINUTES = "uiDetectorDeltaRightMinutes";
-	public static final double DEF_UI_DETECTOR_DELTA_RIGHT_MINUTES = 0.5d;
-	public static final String P_UI_DETECTOR_REPLACE_PEAK = "uiDetectorReplacePeak";
-	public static final boolean DEF_UI_DETECTOR_REPLACE_PEAK = true;
-	//
 	public static final String P_TRANSFER_USE_BEST_TARGET_ONLY = "transferUseBestTargetOnly";
 	public static final boolean DEF_TRANSFER_USE_BEST_TARGET_ONLY = true;
 	public static final String P_TRANSFER_RETENTION_TIME_MINUTES_LEFT = "transferRetentionTimeMinutesLeft";
@@ -146,8 +141,23 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String P_REPORT_REFERENCED_CHROMATOGRAMS = "reportReferencedChromatograms";
 	public static final boolean DEF_REPORT_REFERENCED_CHROMATOGRAMS = false;
 	/*
+	 * Peak Detector
+	 */
+	public static final String P_DETECTOR_UI_DELTA_LEFT_MILLISECONDS = "detectorUIDeltaLeftMilliseconds";
+	public static final int DEF_DETECTOR_UI_DELTA_LEFT_MILLISECONDS = 0;
+	public static final String P_DETECTOR_UI_DELTA_RIGHT_MILLISECONDS = "detectorUIDeltaRightMilliseconds";
+	public static final int DEF_DETECTOR_UI_DELTA_RIGHT_MILLISECONDS = 0;
+	public static final String P_DETECTOR_UI_REPLACE_PEAK = "detectorUIReplacePeak";
+	public static final boolean DEF_DETECTOR_UI_REPLACE_PEAK = true;
+	/*
 	 * Peak Review
 	 */
+	public static final String P_REVIEW_UI_DELTA_LEFT_MILLISECONDS = "reviewUIDeltaLeftMilliseconds";
+	public static final int DEF_REVIEW_UI_DELTA_LEFT_MILLISECONDS = 0;
+	public static final String P_REVIEW_UI_DELTA_RIGHT_MILLISECONDS = "reviewUIDeltaRightMilliseconds";
+	public static final int DEF_REVIEW_UI_DELTA_RIGHT_MILLISECONDS = 0;
+	public static final String P_REVIEW_UI_REPLACE_PEAK = "reviewUIReplacePeak";
+	public static final boolean DEF_REVIEW_UI_REPLACE_PEAK = true;
 	public static final String P_SET_REVIEW_TARGET_NAME = "setReviewTargetName";
 	public static final boolean DEF_SET_REVIEW_TARGET_NAME = false;
 	public static final String P_AUTO_SELECT_BEST_PEAK_MATCH = "autoSelectBestPeakMatch";
@@ -227,10 +237,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES_REPORT, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES_REPORT));
 		//
 		defaultValues.put(P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT, DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT);
-		//
-		defaultValues.put(P_UI_DETECTOR_DELTA_LEFT_MINUTES, Double.toString(DEF_UI_DETECTOR_DELTA_LEFT_MINUTES));
-		defaultValues.put(P_UI_DETECTOR_DELTA_RIGHT_MINUTES, Double.toString(DEF_UI_DETECTOR_DELTA_RIGHT_MINUTES));
-		defaultValues.put(P_UI_DETECTOR_REPLACE_PEAK, Boolean.toString(DEF_UI_DETECTOR_REPLACE_PEAK));
 		/*
 		 * Transfer
 		 */
@@ -243,7 +249,18 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_TRANSFER_OPTIMIZE_RANGE, Boolean.toString(DEF_TRANSFER_OPTIMIZE_RANGE));
 		//
 		defaultValues.put(P_REPORT_REFERENCED_CHROMATOGRAMS, Boolean.toString(DEF_REPORT_REFERENCED_CHROMATOGRAMS));
-		//
+		/*
+		 * Detector
+		 */
+		defaultValues.put(P_DETECTOR_UI_DELTA_LEFT_MILLISECONDS, Integer.toString(DEF_DETECTOR_UI_DELTA_LEFT_MILLISECONDS));
+		defaultValues.put(P_DETECTOR_UI_DELTA_RIGHT_MILLISECONDS, Integer.toString(DEF_DETECTOR_UI_DELTA_RIGHT_MILLISECONDS));
+		defaultValues.put(P_DETECTOR_UI_REPLACE_PEAK, Boolean.toString(DEF_DETECTOR_UI_REPLACE_PEAK));
+		/*
+		 * Review
+		 */
+		defaultValues.put(P_REVIEW_UI_DELTA_LEFT_MILLISECONDS, Integer.toString(DEF_REVIEW_UI_DELTA_LEFT_MILLISECONDS));
+		defaultValues.put(P_REVIEW_UI_DELTA_RIGHT_MILLISECONDS, Integer.toString(DEF_REVIEW_UI_DELTA_RIGHT_MILLISECONDS));
+		defaultValues.put(P_REVIEW_UI_REPLACE_PEAK, Boolean.toString(DEF_REVIEW_UI_REPLACE_PEAK));
 		defaultValues.put(P_SET_REVIEW_TARGET_NAME, Boolean.toString(DEF_SET_REVIEW_TARGET_NAME));
 		defaultValues.put(P_AUTO_SELECT_BEST_PEAK_MATCH, Boolean.toString(DEF_AUTO_SELECT_BEST_PEAK_MATCH));
 		defaultValues.put(P_AUTO_LABEL_DETECTED_PEAK, Boolean.toString(DEF_AUTO_LABEL_DETECTED_PEAK));
@@ -388,22 +405,52 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getInt(P_EXPORT_NUMBER_TRACES_REVIEW, DEF_EXPORT_NUMBER_TRACES_REVIEW);
 	}
 
-	public static double getUiDetectorDeltaLeftMinutes() {
+	public static int getDetectorDeltaLeftMilliseconds() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_UI_DETECTOR_DELTA_LEFT_MINUTES, DEF_UI_DETECTOR_DELTA_LEFT_MINUTES);
+		return preferences.getInt(P_DETECTOR_UI_DELTA_LEFT_MILLISECONDS, DEF_DETECTOR_UI_DELTA_LEFT_MILLISECONDS);
 	}
 
-	public static double getUiDetectorDeltaRightMinutes() {
+	public static int getDetectorDeltaRightMilliseconds() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_UI_DETECTOR_DELTA_RIGHT_MINUTES, DEF_UI_DETECTOR_DELTA_RIGHT_MINUTES);
+		return preferences.getInt(P_DETECTOR_UI_DELTA_RIGHT_MILLISECONDS, DEF_DETECTOR_UI_DELTA_RIGHT_MILLISECONDS);
 	}
 
 	public static boolean isDetectorReplacePeak() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_UI_DETECTOR_REPLACE_PEAK, DEF_UI_DETECTOR_REPLACE_PEAK);
+		return preferences.getBoolean(P_DETECTOR_UI_REPLACE_PEAK, DEF_DETECTOR_UI_REPLACE_PEAK);
+	}
+
+	public static void toggleDetectorReplacePeak() {
+
+		boolean replacePeak = isDetectorReplacePeak();
+		setDetectorReplacePeak(P_DETECTOR_UI_REPLACE_PEAK, !replacePeak);
+	}
+
+	public static int getReviewDeltaLeftMilliseconds() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_REVIEW_UI_DELTA_LEFT_MILLISECONDS, DEF_REVIEW_UI_DELTA_LEFT_MILLISECONDS);
+	}
+
+	public static int getReviewDeltaRightMilliseconds() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_REVIEW_UI_DELTA_RIGHT_MILLISECONDS, DEF_REVIEW_UI_DELTA_RIGHT_MILLISECONDS);
+	}
+
+	public static boolean isReviewReplacePeak() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_REVIEW_UI_REPLACE_PEAK, DEF_REVIEW_UI_REPLACE_PEAK);
+	}
+
+	public static void toggleReviewReplacePeak() {
+
+		boolean replacePeak = isReviewReplacePeak();
+		setDetectorReplacePeak(P_REVIEW_UI_REPLACE_PEAK, !replacePeak);
 	}
 
 	public static boolean isSetReviewTargetName() {
@@ -440,23 +487,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_SHOW_BASELINE, DEF_SHOW_BASELINE);
-	}
-
-	public static void toggleDetectorReplacePeak() {
-
-		boolean replacePeak = isDetectorReplacePeak();
-		setDetectorReplacePeak(!replacePeak);
-	}
-
-	public static void setDetectorReplacePeak(boolean replacePeak) {
-
-		try {
-			IEclipsePreferences preferences = INSTANCE().getPreferences();
-			preferences.putBoolean(P_UI_DETECTOR_REPLACE_PEAK, replacePeak);
-			preferences.flush();
-		} catch(BackingStoreException e) {
-			logger.warn(e);
-		}
 	}
 
 	public static PeakDetectorSettings getPeakDetectorSettingsCSD() {
@@ -552,6 +582,17 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_TRANSFER_OPTIMIZE_RANGE, DEF_TRANSFER_OPTIMIZE_RANGE);
+	}
+
+	private static void setDetectorReplacePeak(String key, boolean value) {
+
+		try {
+			IEclipsePreferences preferences = INSTANCE().getPreferences();
+			preferences.putBoolean(key, value);
+			preferences.flush();
+		} catch(BackingStoreException e) {
+			logger.warn(e);
+		}
 	}
 
 	private static void setFilterPath(String key, String filterPath) {

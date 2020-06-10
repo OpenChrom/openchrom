@@ -137,7 +137,9 @@ public class ReviewController {
 							peakChartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramXIC());
 							peakChartSettings.setShowBaseline(PreferenceSupplier.isShowBaseline());
 							//
-							peakDetectorChart.update(detectorRange, peakChartSettings);
+							int deltaRetentionTimeLeft = PreferenceSupplier.getReviewDeltaLeftMilliseconds();
+							int deltaRetentionTimeRight = PreferenceSupplier.getReviewDeltaRightMilliseconds();
+							peakDetectorChart.update(detectorRange, peakChartSettings, deltaRetentionTimeLeft, deltaRetentionTimeRight);
 						}
 					}
 				}
@@ -251,7 +253,7 @@ public class ReviewController {
 
 		int time = 0;
 		if(reviewSetting != null) {
-			int retentionTimeDeltaLeft = (int)(PreferenceSupplier.getUiDetectorDeltaLeftMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+			int retentionTimeDeltaLeft = PreferenceSupplier.getReviewDeltaLeftMilliseconds();
 			time = reviewSetting.getStartRetentionTime() - retentionTimeDeltaLeft;
 		}
 		return time;
@@ -261,7 +263,7 @@ public class ReviewController {
 
 		int time = 0;
 		if(reviewSetting != null) {
-			int retentionTimeDeltaRight = (int)(PreferenceSupplier.getUiDetectorDeltaRightMinutes() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+			int retentionTimeDeltaRight = PreferenceSupplier.getReviewDeltaRightMilliseconds();
 			time = reviewSetting.getStopRetentionTime() + retentionTimeDeltaRight;
 		}
 		return time;

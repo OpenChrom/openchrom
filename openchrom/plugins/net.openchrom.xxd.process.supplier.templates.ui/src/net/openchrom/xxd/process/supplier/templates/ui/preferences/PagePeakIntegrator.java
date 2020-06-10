@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,9 +22,11 @@ import net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.PeakIntegrat
 public class PagePeakIntegrator extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PagePeakIntegrator() {
+
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Peak Integrator Template");
+		setTitle("Peak Integrator Template");
+		setDescription("");
 	}
 
 	/**

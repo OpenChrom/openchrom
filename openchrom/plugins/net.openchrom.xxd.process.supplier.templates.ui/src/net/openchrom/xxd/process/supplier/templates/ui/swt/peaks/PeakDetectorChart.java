@@ -66,6 +66,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	//
 	private IPeakUpdateListener peakUpdateListener = null;
 	private PeakChartSettings peakChartSettingsDefault = new PeakChartSettings();
+	private DeltaRangePaintListener deltaRangePaintListener = new DeltaRangePaintListener(this.getBaseChart());
 
 	public PeakDetectorChart(Composite parent, int style) {
 
@@ -84,16 +85,17 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		this.peakUpdateListener = peakUdateListener;
 	}
 
-	public void update(DetectorRange detectorRange) {
+	public void update(DetectorRange detectorRange, int deltaRetentionTimeLeft, int deltaRetentionTimeRight) {
 
-		update(detectorRange, peakChartSettingsDefault);
+		update(detectorRange, peakChartSettingsDefault, deltaRetentionTimeLeft, deltaRetentionTimeRight);
 	}
 
-	public void update(DetectorRange detectorRange, PeakChartSettings peakChartSettings) {
+	public void update(DetectorRange detectorRange, PeakChartSettings peakChartSettings, int deltaRetentionTimeLeft, int deltaRetentionTimeRight) {
 
 		this.detectorRange = detectorRange;
 		selectedRangeX = null;
 		selectedRangeY = null;
+		deltaRangePaintListener.setDeltaRetentionTime(deltaRetentionTimeLeft, deltaRetentionTimeRight);
 		updateDetectorRange(peakChartSettings);
 	}
 

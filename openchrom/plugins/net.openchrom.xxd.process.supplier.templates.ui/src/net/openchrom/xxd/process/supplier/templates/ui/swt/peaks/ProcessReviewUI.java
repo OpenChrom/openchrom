@@ -136,13 +136,13 @@ public class ProcessReviewUI extends Composite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
-		button.setSelection(PreferenceSupplier.isDetectorReplacePeak());
+		button.setSelection(PreferenceSupplier.isReviewReplacePeak());
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				PreferenceSupplier.toggleDetectorReplacePeak();
+				PreferenceSupplier.toggleReviewReplacePeak();
 				adjustDetectorButton(button);
 			}
 		});
@@ -151,7 +151,7 @@ public class ProcessReviewUI extends Composite {
 
 	private void adjustDetectorButton(Button button) {
 
-		if(PreferenceSupplier.isDetectorReplacePeak()) {
+		if(PreferenceSupplier.isReviewReplacePeak()) {
 			button.setToolTipText("Replace the nearest peak.");
 			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PEAK_REPLACE, IApplicationImage.SIZE_16x16));
 		} else {

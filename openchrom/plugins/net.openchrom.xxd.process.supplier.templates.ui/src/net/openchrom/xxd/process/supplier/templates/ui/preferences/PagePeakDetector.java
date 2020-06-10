@@ -11,10 +11,13 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.preferences;
 
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.IntegerFieldEditor;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.Activator;
 
 public class PagePeakDetector extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
@@ -23,7 +26,8 @@ public class PagePeakDetector extends FieldEditorPreferencePage implements IWork
 
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Peak Detector Template");
+		setTitle("Peak Detector Template");
+		setDescription("");
 	}
 
 	/**
@@ -33,6 +37,9 @@ public class PagePeakDetector extends FieldEditorPreferencePage implements IWork
 	 */
 	public void createFieldEditors() {
 
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_DETECTOR_UI_DELTA_LEFT_MILLISECONDS, "Delta Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_DETECTOR_UI_DELTA_RIGHT_MILLISECONDS, "Delta Right [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_UI_REPLACE_PEAK, "Replace Peak", getFieldEditorParent()));
 	}
 
 	/*
