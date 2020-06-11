@@ -34,10 +34,22 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSett
 
 public class PeakReviewMSD<T> extends AbstractPeakIdentifier implements IPeakIdentifierMSD<IIdentificationResults> {
 
+	private static final String DESCRIPTION = "PeakReviewMSD";
+
 	@Override
 	public IProcessingInfo<IIdentificationResults> identify(List<? extends IPeakMSD> peaks, IPeakIdentifierSettingsMSD peakIdentifierSettings, IProgressMonitor monitor) {
 
 		IProcessingInfo<IIdentificationResults> processingInfo = new ProcessingInfo<IIdentificationResults>();
+		if(peaks == null || peaks.size() == 0) {
+			processingInfo.addErrorMessage(DESCRIPTION, "No peak(s) have been found in the current selection.");
+		} else {
+			runProcess(peaks, peakIdentifierSettings, processingInfo, monitor);
+		}
+		return processingInfo;
+	}
+
+	private void runProcess(List<? extends IPeakMSD> peaks, IPeakIdentifierSettingsMSD peakIdentifierSettings, IProcessingInfo<IIdentificationResults> processingInfo, IProgressMonitor monitor) {
+
 		if(peakIdentifierSettings instanceof PeakReviewSettings) {
 			PeakReviewSettings settings = (PeakReviewSettings)peakIdentifierSettings;
 			IChromatogram<?> chromatogram = getChromatogram(peaks);
@@ -56,10 +68,9 @@ public class PeakReviewMSD<T> extends AbstractPeakIdentifier implements IPeakIde
 			} catch(InterruptedException e) {
 				Thread.currentThread().interrupt();
 			} catch(ExecutionException e) {
-				processingInfo.addErrorMessage("PeakReviewMSD", "Execution failed", e);
+				processingInfo.addErrorMessage(DESCRIPTION, "The execution failed, see attached log file.", e);
 			}
 		}
-		return processingInfo;
 	}
 
 	private IChromatogram<?> getChromatogram(List<? extends IPeakMSD> peaks) {
@@ -70,6 +81,7 @@ public class PeakReviewMSD<T> extends AbstractPeakIdentifier implements IPeakIde
 				return chromatogramPeak.getChromatogram();
 			}
 		}
+		//
 		return null;
 	}
 }

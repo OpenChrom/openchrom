@@ -86,10 +86,13 @@ public class ProcessReviewUI extends Composite {
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridData);
-		composite.setLayout(new GridLayout(3, false));
+		composite.setLayout(new GridLayout(6, false));
 		//
-		createButtonToggleToolbarSearch(composite);
-		createReplacePeakButton(composite);
+		createToggleToolbarSearch(composite);
+		createButtonVisibilityDetails(composite);
+		createButtonVisibilityTIC(composite);
+		createButtonVisibilityXIC(composite);
+		createButtonReplacePeak(composite);
 		createSettingsButton(composite);
 	}
 
@@ -109,7 +112,102 @@ public class ProcessReviewUI extends Composite {
 		return searchSupportUI;
 	}
 
-	private Button createButtonToggleToolbarSearch(Composite parent) {
+	private Button createButtonVisibilityDetails(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		adjustButtonVisibilityDetails(button);
+		//
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				PreferenceSupplier.toggleShowReviewDetails();
+				adjustButtonVisibilityDetails(button);
+				if(controller != null) {
+					controller.updateSettings();
+				}
+			}
+		});
+		//
+		return button;
+	}
+
+	private void adjustButtonVisibilityDetails(Button button) {
+
+		if(PreferenceSupplier.isShowReviewDetails()) {
+			button.setToolTipText("Details are active.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_REVIEW_DETAILS_SHOW, IApplicationImage.SIZE_16x16));
+		} else {
+			button.setToolTipText("Details are deactivated.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_REVIEW_DETAILS_HIDE, IApplicationImage.SIZE_16x16));
+		}
+	}
+
+	private Button createButtonVisibilityTIC(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		adjustButtonVisibilityTIC(button);
+		//
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				PreferenceSupplier.toggleShowChromatogramReviewTIC();
+				adjustButtonVisibilityTIC(button);
+				updateSelection();
+			}
+		});
+		//
+		return button;
+	}
+
+	private void adjustButtonVisibilityTIC(Button button) {
+
+		if(PreferenceSupplier.isShowChromatogramReviewTIC()) {
+			button.setToolTipText("TIC is active.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHROMATOGRAM_TIC_SHOW, IApplicationImage.SIZE_16x16));
+		} else {
+			button.setToolTipText("TIC is deactivated.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHROMATOGRAM_TIC_HIDE, IApplicationImage.SIZE_16x16));
+		}
+	}
+
+	private Button createButtonVisibilityXIC(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		adjustButtonVisibilityXIC(button);
+		//
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				PreferenceSupplier.toggleShowChromatogramReviewXIC();
+				adjustButtonVisibilityXIC(button);
+				updateSelection();
+			}
+		});
+		//
+		return button;
+	}
+
+	private void adjustButtonVisibilityXIC(Button button) {
+
+		if(PreferenceSupplier.isShowChromatogramReviewXIC()) {
+			button.setToolTipText("XIC is active.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHROMATOGRAM_XIC_SHOW, IApplicationImage.SIZE_16x16));
+		} else {
+			button.setToolTipText("XIC is deactivated.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHROMATOGRAM_XIC_HIDE, IApplicationImage.SIZE_16x16));
+		}
+	}
+
+	private Button createToggleToolbarSearch(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setToolTipText("Toggle search toolbar.");
@@ -132,11 +230,12 @@ public class ProcessReviewUI extends Composite {
 		return button;
 	}
 
-	private void createReplacePeakButton(Composite parent) {
+	private Button createButtonReplacePeak(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
-		button.setSelection(PreferenceSupplier.isReviewReplacePeak());
+		adjustDetectorButton(button);
+		//
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -146,7 +245,8 @@ public class ProcessReviewUI extends Composite {
 				adjustDetectorButton(button);
 			}
 		});
-		adjustDetectorButton(button);
+		//
+		return button;
 	}
 
 	private void adjustDetectorButton(Button button) {
@@ -209,6 +309,9 @@ public class ProcessReviewUI extends Composite {
 	private void applySettings() {
 
 		updateSelection();
+		if(controller != null) {
+			controller.updateSettings();
+		}
 	}
 
 	private ReviewSetting getReviewSetting() {

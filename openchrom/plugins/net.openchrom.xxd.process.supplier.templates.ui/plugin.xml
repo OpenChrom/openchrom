@@ -46,7 +46,7 @@
       </page>
       <page
             name="Peak Review Template (CSD)"
-            category="org.eclipse.chemclipse.chromatogram.csd.identifier.ui.preferences.identifierPreferencePage"
+            category="org.eclipse.chemclipse.chromatogram.csd.identifier.ui.preferences.preferencePage"
             class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakReviewCSD"
             id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pagePeakReviewCSD">
       </page>              
@@ -102,6 +102,13 @@
             peakDetectorName="Template Peak Detector UI (MSD)"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
       </PeakDetector>
+      <PeakDetector
+            description="This is the direct UI peak detector (MSD)."
+            id="net.openchrom.xxd.process.supplier.templates.ui.msd.direct"
+            peakDetector="net.openchrom.xxd.process.supplier.templates.ui.core.PeakDetectorDirectMSD"
+            peakDetectorName="Direct Peak Detector UI (MSD)"
+            peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorDirectSettings">
+      </PeakDetector>      
    </extension>
    <extension
          point="org.eclipse.chemclipse.chromatogram.csd.peak.detector.peakDetectorSupplier">
@@ -112,6 +119,13 @@
             peakDetectorName="Template Peak Detector UI (CSD)"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
       </PeakDetector>
+      <PeakDetector
+            description="This is the direct UI peak detector (CSD)."
+            id="net.openchrom.xxd.process.supplier.templates.ui.csd.direct"
+            peakDetector="net.openchrom.xxd.process.supplier.templates.ui.core.PeakDetectorDirectCSD"
+            peakDetectorName="Direct Peak Detector UI (CSD)"
+            peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorDirectSettings">
+      </PeakDetector>      
    </extension>
    <extension
          point="org.eclipse.chemclipse.chromatogram.msd.identifier.peakIdentifier">

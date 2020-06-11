@@ -44,15 +44,32 @@ public class ReviewController {
 	private PeakDetectorListUtil peakDetectorListUtil = new PeakDetectorListUtil();
 	private ProcessReviewSettings processSettings;
 	private ReviewSetting reviewSetting = null;
+	//
+	private PeakReviewControl peakReviewControl;
+
+	public ReviewController(PeakReviewControl peakReviewControl) {
+
+		this.peakReviewControl = peakReviewControl;
+	}
 
 	public void setInput(ProcessReviewSettings processSettings) {
 
-		/*
-		 * Setting the extended review UI input
-		 * calls the method "update(ReviewSetting reviewSetting, PeakType peakType, boolean optimizeRange)".
-		 */
 		this.processSettings = processSettings;
 		processReviewUI.setInput(processSettings);
+		//
+		if(processSettings != null) {
+			List<ReviewSetting> reviewSettings = processSettings.getReviewSettings();
+			if(reviewSettings.size() > 0) {
+				update(reviewSettings.get(0));
+			}
+		}
+	}
+
+	public void updateSettings() {
+
+		if(peakReviewControl != null) {
+			peakReviewControl.updateWidgets();
+		}
 	}
 
 	/**
@@ -133,9 +150,9 @@ public class ReviewController {
 							 * Settings display data
 							 */
 							PeakChartSettings peakChartSettings = new PeakChartSettings();
-							peakChartSettings.setShowChromatogramTIC(PreferenceSupplier.isShowChromatogramTIC());
-							peakChartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramXIC());
-							peakChartSettings.setShowBaseline(PreferenceSupplier.isShowBaseline());
+							peakChartSettings.setShowChromatogramTIC(PreferenceSupplier.isShowChromatogramReviewTIC());
+							peakChartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramReviewXIC());
+							peakChartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineReview());
 							//
 							int deltaRetentionTimeLeft = PreferenceSupplier.getReviewDeltaLeftMilliseconds();
 							int deltaRetentionTimeRight = PreferenceSupplier.getReviewDeltaRightMilliseconds();

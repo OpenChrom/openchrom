@@ -41,6 +41,12 @@ public class DetectorController {
 
 		this.processSettings = processSettings;
 		extendedDetectorUI.setInput(processSettings);
+		if(processSettings != null) {
+			List<DetectorSetting> detectorSettings = processSettings.getDetectorSettings();
+			if(detectorSettings.size() > 0) {
+				update(detectorSettings.get(0));
+			}
+		}
 	}
 
 	/**
@@ -92,9 +98,9 @@ public class DetectorController {
 							 * Settings display data
 							 */
 							PeakChartSettings peakChartSettings = new PeakChartSettings();
-							peakChartSettings.setShowChromatogramTIC(PreferenceSupplier.isShowChromatogramTIC());
-							peakChartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramXIC());
-							peakChartSettings.setShowBaseline(PreferenceSupplier.isShowBaseline());
+							peakChartSettings.setShowChromatogramTIC(PreferenceSupplier.isShowChromatogramDetectorTIC());
+							peakChartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramDetectorXIC());
+							peakChartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineDetector());
 							//
 							int deltaRetentionTimeLeft = PreferenceSupplier.getDetectorDeltaLeftMilliseconds();
 							int deltaRetentionTimeRight = PreferenceSupplier.getDetectorDeltaRightMilliseconds();

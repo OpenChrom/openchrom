@@ -23,6 +23,7 @@ import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.xxd.process.supplier.templates.Activator;
 import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
+import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorDirectSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 
@@ -149,6 +150,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int DEF_DETECTOR_UI_DELTA_RIGHT_MILLISECONDS = 0;
 	public static final String P_DETECTOR_UI_REPLACE_PEAK = "detectorUIReplacePeak";
 	public static final boolean DEF_DETECTOR_UI_REPLACE_PEAK = true;
+	public static final String P_DETECTOR_SHOW_CHROMATOGRAM_TIC = "detectorShowChromatogramTIC";
+	public static final boolean DEF_DETECTOR_SHOW_CHROMATOGRAM_TIC = true;
+	public static final String P_DETECTOR_SHOW_CHROMATOGRAM_XIC = "detectorShowChromatogramXIC";
+	public static final boolean DEF_DETECTOR_SHOW_CHROMATOGRAM_XIC = true;
+	public static final String P_DETECTOR_SHOW_BASELINE = "detectorShowBaseline";
+	public static final boolean DEF_DETECTOR_SHOW_BASELINE = false;
 	/*
 	 * Peak Review
 	 */
@@ -164,12 +171,14 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_AUTO_SELECT_BEST_PEAK_MATCH = false;
 	public static final String P_AUTO_LABEL_DETECTED_PEAK = "autoLabelDetectedPeak";
 	public static final boolean DEF_AUTO_LABEL_DETECTED_PEAK = true;
-	public static final String P_SHOW_CHROMATOGRAM_TIC = "showChromatogramTIC";
-	public static final boolean DEF_SHOW_CHROMATOGRAM_TIC = true;
-	public static final String P_SHOW_CHROMATOGRAM_XIC = "showChromatogramXIC";
-	public static final boolean DEF_SHOW_CHROMATOGRAM_XIC = true;
-	public static final String P_SHOW_BASELINE = "showBaseline";
-	public static final boolean DEF_SHOW_BASELINE = true;
+	public static final String P_REVIEW_SHOW_CHROMATOGRAM_TIC = "reviewShowChromatogramTIC";
+	public static final boolean DEF_REVIEW_SHOW_CHROMATOGRAM_TIC = true;
+	public static final String P_REVIEW_SHOW_CHROMATOGRAM_XIC = "reviewShowChromatogramXIC";
+	public static final boolean DEF_REVIEW_SHOW_CHROMATOGRAM_XIC = true;
+	public static final String P_REVIEW_SHOW_BASELINE = "reviewShowBaseline";
+	public static final boolean DEF_REVIEW_SHOW_BASELINE = false;
+	public static final String P_REVIEW_SHOW_DETAILS = "reviewShowDetails";
+	public static final boolean DEF_REVIEW_SHOW_DETAILS = false;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -255,6 +264,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_DETECTOR_UI_DELTA_LEFT_MILLISECONDS, Integer.toString(DEF_DETECTOR_UI_DELTA_LEFT_MILLISECONDS));
 		defaultValues.put(P_DETECTOR_UI_DELTA_RIGHT_MILLISECONDS, Integer.toString(DEF_DETECTOR_UI_DELTA_RIGHT_MILLISECONDS));
 		defaultValues.put(P_DETECTOR_UI_REPLACE_PEAK, Boolean.toString(DEF_DETECTOR_UI_REPLACE_PEAK));
+		defaultValues.put(P_DETECTOR_SHOW_CHROMATOGRAM_TIC, Boolean.toString(DEF_DETECTOR_SHOW_CHROMATOGRAM_TIC));
+		defaultValues.put(P_DETECTOR_SHOW_CHROMATOGRAM_XIC, Boolean.toString(DEF_DETECTOR_SHOW_CHROMATOGRAM_XIC));
+		defaultValues.put(P_DETECTOR_SHOW_BASELINE, Boolean.toString(DEF_DETECTOR_SHOW_BASELINE));
 		/*
 		 * Review
 		 */
@@ -264,9 +276,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_SET_REVIEW_TARGET_NAME, Boolean.toString(DEF_SET_REVIEW_TARGET_NAME));
 		defaultValues.put(P_AUTO_SELECT_BEST_PEAK_MATCH, Boolean.toString(DEF_AUTO_SELECT_BEST_PEAK_MATCH));
 		defaultValues.put(P_AUTO_LABEL_DETECTED_PEAK, Boolean.toString(DEF_AUTO_LABEL_DETECTED_PEAK));
-		defaultValues.put(P_SHOW_CHROMATOGRAM_TIC, Boolean.toString(DEF_SHOW_CHROMATOGRAM_TIC));
-		defaultValues.put(P_SHOW_CHROMATOGRAM_XIC, Boolean.toString(DEF_SHOW_CHROMATOGRAM_XIC));
-		defaultValues.put(P_SHOW_BASELINE, Boolean.toString(DEF_SHOW_BASELINE));
+		defaultValues.put(P_REVIEW_SHOW_CHROMATOGRAM_TIC, Boolean.toString(DEF_REVIEW_SHOW_CHROMATOGRAM_TIC));
+		defaultValues.put(P_REVIEW_SHOW_CHROMATOGRAM_XIC, Boolean.toString(DEF_REVIEW_SHOW_CHROMATOGRAM_XIC));
+		defaultValues.put(P_REVIEW_SHOW_BASELINE, Boolean.toString(DEF_REVIEW_SHOW_BASELINE));
+		defaultValues.put(P_REVIEW_SHOW_DETAILS, Boolean.toString(DEF_REVIEW_SHOW_DETAILS));
 		//
 		return defaultValues;
 	}
@@ -290,7 +303,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static void setListPathImport(String filterPath) {
 
-		setFilterPath(P_LIST_PATH_IMPORT, filterPath);
+		putString(P_LIST_PATH_IMPORT, filterPath);
 	}
 
 	public static String getListPathExport() {
@@ -300,7 +313,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static void setListPathExport(String filterPath) {
 
-		setFilterPath(P_LIST_PATH_EXPORT, filterPath);
+		putString(P_LIST_PATH_EXPORT, filterPath);
 	}
 
 	public static boolean isChartBufferedSelection() {
@@ -426,7 +439,43 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void toggleDetectorReplacePeak() {
 
 		boolean replacePeak = isDetectorReplacePeak();
-		setDetectorReplacePeak(P_DETECTOR_UI_REPLACE_PEAK, !replacePeak);
+		putBoolean(P_DETECTOR_UI_REPLACE_PEAK, !replacePeak);
+	}
+
+	public static boolean isShowChromatogramDetectorTIC() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_DETECTOR_SHOW_CHROMATOGRAM_TIC, DEF_DETECTOR_SHOW_CHROMATOGRAM_TIC);
+	}
+
+	public static void toggleShowChromatogramDetectorTIC() {
+
+		boolean show = isShowChromatogramDetectorTIC();
+		putBoolean(P_DETECTOR_SHOW_CHROMATOGRAM_TIC, !show);
+	}
+
+	public static boolean isShowChromatogramDetectorXIC() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_DETECTOR_SHOW_CHROMATOGRAM_XIC, DEF_DETECTOR_SHOW_CHROMATOGRAM_XIC);
+	}
+
+	public static void toggleShowChromatogramDetectorXIC() {
+
+		boolean show = isShowChromatogramDetectorXIC();
+		putBoolean(P_DETECTOR_SHOW_CHROMATOGRAM_XIC, !show);
+	}
+
+	public static boolean isShowBaselineDetector() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_DETECTOR_SHOW_BASELINE, DEF_DETECTOR_SHOW_BASELINE);
+	}
+
+	public static void toggleShowBaselineDetector() {
+
+		boolean show = isShowBaselineDetector();
+		putBoolean(P_DETECTOR_SHOW_BASELINE, !show);
 	}
 
 	public static int getReviewDeltaLeftMilliseconds() {
@@ -450,7 +499,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void toggleReviewReplacePeak() {
 
 		boolean replacePeak = isReviewReplacePeak();
-		setDetectorReplacePeak(P_REVIEW_UI_REPLACE_PEAK, !replacePeak);
+		putBoolean(P_REVIEW_UI_REPLACE_PEAK, !replacePeak);
 	}
 
 	public static boolean isSetReviewTargetName() {
@@ -471,22 +520,52 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getBoolean(P_AUTO_LABEL_DETECTED_PEAK, DEF_AUTO_LABEL_DETECTED_PEAK);
 	}
 
-	public static boolean isShowChromatogramTIC() {
+	public static boolean isShowChromatogramReviewTIC() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_SHOW_CHROMATOGRAM_TIC, DEF_SHOW_CHROMATOGRAM_TIC);
+		return preferences.getBoolean(P_REVIEW_SHOW_CHROMATOGRAM_TIC, DEF_REVIEW_SHOW_CHROMATOGRAM_TIC);
 	}
 
-	public static boolean isShowChromatogramXIC() {
+	public static void toggleShowChromatogramReviewTIC() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_SHOW_CHROMATOGRAM_XIC, DEF_SHOW_CHROMATOGRAM_XIC);
+		boolean show = isShowChromatogramReviewTIC();
+		putBoolean(P_REVIEW_SHOW_CHROMATOGRAM_TIC, !show);
 	}
 
-	public static boolean isShowBaseline() {
+	public static boolean isShowChromatogramReviewXIC() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_SHOW_BASELINE, DEF_SHOW_BASELINE);
+		return preferences.getBoolean(P_REVIEW_SHOW_CHROMATOGRAM_XIC, DEF_REVIEW_SHOW_CHROMATOGRAM_XIC);
+	}
+
+	public static void toggleShowChromatogramReviewXIC() {
+
+		boolean show = isShowChromatogramReviewXIC();
+		putBoolean(P_REVIEW_SHOW_CHROMATOGRAM_XIC, !show);
+	}
+
+	public static boolean isShowBaselineReview() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_REVIEW_SHOW_BASELINE, DEF_REVIEW_SHOW_BASELINE);
+	}
+
+	public static void toggleShowBaselineReview() {
+
+		boolean show = isShowBaselineReview();
+		putBoolean(P_REVIEW_SHOW_BASELINE, !show);
+	}
+
+	public static boolean isShowReviewDetails() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_REVIEW_SHOW_DETAILS, DEF_REVIEW_SHOW_DETAILS);
+	}
+
+	public static void toggleShowReviewDetails() {
+
+		boolean show = isShowReviewDetails();
+		putBoolean(P_REVIEW_SHOW_DETAILS, !show);
 	}
 
 	public static PeakDetectorSettings getPeakDetectorSettingsCSD() {
@@ -502,6 +581,13 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		PeakDetectorSettings settings = new PeakDetectorSettings();
 		settings.setDetectorSettings(preferences.get(P_PEAK_DETECTOR_LIST_MSD, DEF_PEAK_DETECTOR_LIST_MSD));
+		return settings;
+	}
+
+	public static PeakDetectorDirectSettings getPeakDetectorSettingsDirectMSD() {
+
+		PeakDetectorDirectSettings settings = new PeakDetectorDirectSettings();
+		settings.setTraces("");
 		return settings;
 	}
 
@@ -584,7 +670,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getBoolean(P_TRANSFER_OPTIMIZE_RANGE, DEF_TRANSFER_OPTIMIZE_RANGE);
 	}
 
-	private static void setDetectorReplacePeak(String key, boolean value) {
+	private static void putBoolean(String key, boolean value) {
 
 		try {
 			IEclipsePreferences preferences = INSTANCE().getPreferences();
@@ -595,11 +681,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		}
 	}
 
-	private static void setFilterPath(String key, String filterPath) {
+	private static void putString(String key, String value) {
 
 		try {
 			IEclipsePreferences preferences = INSTANCE().getPreferences();
-			preferences.put(key, filterPath);
+			preferences.put(key, value);
 			preferences.flush();
 		} catch(BackingStoreException e) {
 			logger.warn(e);
