@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
 import org.eclipse.chemclipse.ux.extension.ui.support.PartSupport;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.preferences.PreferencePageTargets;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
@@ -273,6 +274,7 @@ public class ProcessReviewUI extends Composite {
 
 				PreferenceManager preferenceManager = new PreferenceManager();
 				preferenceManager.addToRoot(new PreferenceNode("1", new PagePeakReview()));
+				preferenceManager.addToRoot(new PreferenceNode("2", new PreferencePageTargets()));
 				//
 				PreferenceDialog preferenceDialog = new PreferenceDialog(e.display.getActiveShell(), preferenceManager);
 				preferenceDialog.create();

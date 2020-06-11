@@ -20,6 +20,7 @@ import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.ITargetSupplier;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.targets.TargetValidator;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -195,7 +196,7 @@ public class ReviewController {
 					if(reviewSetting != null && peak != null) {
 						String name = reviewSetting.getName();
 						String casNumber = reviewSetting.getCasNumber();
-						IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, ReviewSetting.IDENTIFIER);
+						IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, TargetValidator.IDENTIFIER);
 						if(peak instanceof ITargetSupplier) {
 							ITargetSupplier targetSupplier = (ITargetSupplier)peak;
 							targetSupplier.getTargets().add(identificationTarget);

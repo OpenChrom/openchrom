@@ -15,7 +15,6 @@ import org.eclipse.chemclipse.model.core.PeakType;
 
 public class ReviewSetting extends AbstractSetting {
 
-	public static final String IDENTIFIER = "Review Identifier UI";
 	public static final String CLASSIFIER_REVIEW_OK = "Review (OK)";
 	//
 	private String name = "";

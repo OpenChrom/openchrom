@@ -18,13 +18,16 @@ import java.util.List;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.ITargetSupplier;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.targets.TargetListUtil;
+import org.eclipse.chemclipse.model.targets.TargetValidator;
+import org.eclipse.chemclipse.model.updates.ITargetUpdateListener;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.chemclipse.support.ui.swt.ITableSettings;
-import org.eclipse.chemclipse.swt.ui.support.Colors;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.targets.ComboTarget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
@@ -35,7 +38,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -50,7 +52,7 @@ public class ExtendedPeakReviewUI extends Composite {
 	private static final String MENU_CATEGORY_PEAKS = "Peaks";
 	//
 	private ReviewController controller;
-	private Label labelReviewSetting;
+	private ComboTarget comboTarget;
 	private PeakStatusListUI peakStatusListUI;
 	//
 	private List<IPeak> peaks;
@@ -98,21 +100,30 @@ public class ExtendedPeakReviewUI extends Composite {
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		composite.setLayout(new GridLayout(5, false));
 		//
-		labelReviewSetting = createLabel(composite);
+		comboTarget = createComboTarget(composite);
 		createSetTargetButton(composite);
 		createMarkPeakButton(composite);
 		createDeletePeakButton(composite);
 		createDeletePeaksButton(composite);
+		//
+		comboTarget.updateContentProposals();
 	}
 
-	private Label createLabel(Composite parent) {
+	private ComboTarget createComboTarget(Composite parent) {
 
-		Label label = new Label(parent, SWT.NONE);
-		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		label.setText("");
-		label.setToolTipText("The selected review setting is displayed here.");
-		//
-		return label;
+		ComboTarget comboTarget = new ComboTarget(parent, SWT.NONE);
+		comboTarget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		comboTarget.setTargetUpdateListener(new ITargetUpdateListener() {
+
+			@Override
+			public void update(IIdentificationTarget identificationTarget) {
+
+				if(identificationTarget != null) {
+					addTarget(identificationTarget);
+				}
+			}
+		});
+		return comboTarget;
 	}
 
 	private void createSetTargetButton(Composite parent) {
@@ -126,22 +137,29 @@ public class ExtendedPeakReviewUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				IPeak peak = getSelectedPeak();
-				if(reviewSetting != null && peak != null) {
+				if(reviewSetting != null) {
 					String name = reviewSetting.getName();
 					String casNumber = reviewSetting.getCasNumber();
-					IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, ReviewSetting.IDENTIFIER);
-					if(peak instanceof ITargetSupplier) {
-						ITargetSupplier targetSupplier = (ITargetSupplier)peak;
-						targetSupplier.getTargets().add(identificationTarget);
-						ReviewSupport.setReview(peak, true);
-						peakStatusListUI.refresh();
-						update(reviewSetting);
-						updateSelection(true);
-					}
+					IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, TargetValidator.IDENTIFIER);
+					addTarget(identificationTarget);
 				}
 			}
 		});
+	}
+
+	private void addTarget(IIdentificationTarget identificationTarget) {
+
+		IPeak peak = getSelectedPeak();
+		if(peak != null && identificationTarget != null) {
+			if(peak instanceof ITargetSupplier) {
+				ITargetSupplier targetSupplier = (ITargetSupplier)peak;
+				targetSupplier.getTargets().add(identificationTarget);
+				ReviewSupport.setReview(peak, true);
+				peakStatusListUI.refresh();
+				update(reviewSetting);
+				updateSelection(true);
+			}
+		}
 	}
 
 	private void createMarkPeakButton(Composite parent) {
@@ -364,12 +382,18 @@ public class ExtendedPeakReviewUI extends Composite {
 	private void update(ReviewSetting reviewSetting) {
 
 		if(reviewSetting != null) {
-			boolean isCompoundAvailable = ReviewSupport.isCompoundAvailable(peaks, reviewSetting);
-			labelReviewSetting.setBackground(isCompoundAvailable ? Colors.GREEN : Colors.YELLOW);
-			labelReviewSetting.setText(reviewSetting.getName());
+			// boolean isCompoundAvailable = ReviewSupport.isCompoundAvailable(peaks, reviewSetting);
+			// comboTarget.setBackground(isCompoundAvailable ? Colors.GREEN : Colors.YELLOW);
+			StringBuilder builder = new StringBuilder();
+			builder.append(reviewSetting.getName());
+			builder.append(" ");
+			builder.append(TargetListUtil.SEPARATOR_ENTRY);
+			builder.append(" ");
+			builder.append(reviewSetting.getCasNumber());
+			comboTarget.setText(builder.toString());
 		} else {
-			labelReviewSetting.setBackground(null);
-			labelReviewSetting.setText("");
+			// comboTarget.setBackground(null);
+			comboTarget.setText("");
 		}
 		/*
 		 * Color code for the identification.

@@ -23,6 +23,7 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSett
 public class PeakReviewControl extends Composite {
 
 	private ReviewController controller = new ReviewController(this);
+	//
 	private SashForm sashFormMain;
 	private SashForm sashFormDetails;
 	private boolean showComparisonUI = false;
