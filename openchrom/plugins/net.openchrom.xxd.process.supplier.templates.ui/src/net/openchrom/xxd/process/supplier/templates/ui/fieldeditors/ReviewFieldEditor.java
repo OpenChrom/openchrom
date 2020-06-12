@@ -21,6 +21,7 @@ public class ReviewFieldEditor extends AbstractFieldEditor {
 	private TemplateReviewEditor editor;
 
 	public ReviewFieldEditor(String name, String labelText, Composite parent) {
+
 		init(name, labelText);
 		createControl(parent);
 	}

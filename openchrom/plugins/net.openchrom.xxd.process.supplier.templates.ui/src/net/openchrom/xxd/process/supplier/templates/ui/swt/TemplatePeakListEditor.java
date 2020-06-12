@@ -95,6 +95,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	private boolean useCommentAsNames;
 
 	public TemplatePeakListEditor(Composite parent, ProcessorPreferences<PeakDetectorSettings> preferences, PeakDetectorSettings settings) {
+
 		this.preferences = preferences;
 		if(settings != null) {
 			this.settings.load(settings.getDetectorSettings());
@@ -211,7 +212,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, PeakDetectorListUtil.EXAMPLE_SINGLE, new PeakDetectorInputValidator(settings));
+				InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_ADD, PeakDetectorListUtil.EXAMPLE_SINGLE, new PeakDetectorInputValidator(settings));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
 					DetectorSetting setting = settings.extractSettingInstance(item);
@@ -243,7 +244,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 					settingsEdit.addAll(settings);
 					DetectorSetting setting = (DetectorSetting)object;
 					settingsEdit.remove(setting);
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new PeakDetectorInputValidator(settingsEdit));
+					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new PeakDetectorInputValidator(settingsEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
 						DetectorSetting settingNew = settings.extractSettingInstance(item);
@@ -284,7 +285,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if(MessageDialog.openQuestion(button.getShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
+				if(MessageDialog.openQuestion(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
 					settings.clear();
 					setTableViewerInput();
 				}
@@ -344,9 +345,9 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 					PreferenceSupplier.setListPathExport(fileDialog.getFilterPath());
 					File file = new File(path);
 					if(settings.exportItems(file)) {
-						MessageDialog.openInformation(button.getShell(), EXPORT_TITLE, MESSAGE_EXPORT_SUCCESSFUL);
+						MessageDialog.openInformation(e.display.getActiveShell(), EXPORT_TITLE, MESSAGE_EXPORT_SUCCESSFUL);
 					} else {
-						MessageDialog.openWarning(button.getShell(), EXPORT_TITLE, MESSAGE_EXPORT_FAILED);
+						MessageDialog.openWarning(e.display.getActiveShell(), EXPORT_TITLE, MESSAGE_EXPORT_FAILED);
 					}
 				}
 			}

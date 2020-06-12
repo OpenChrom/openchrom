@@ -95,6 +95,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 	private ProcessorPreferences<PeakIdentifierSettings> preferences;
 
 	public TemplatePeakIdentifierEditor(Composite parent, ProcessorPreferences<PeakIdentifierSettings> preferences, PeakIdentifierSettings settings) {
+
 		this.preferences = preferences;
 		if(settings != null) {
 			this.settings.load(settings.getIdentifierSettings());
@@ -194,7 +195,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, PeakIdentifierListUtil.EXAMPLE_SINGLE, new PeakIdentifierInputValidator(settings.keySet()));
+				InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_ADD, PeakIdentifierListUtil.EXAMPLE_SINGLE, new PeakIdentifierInputValidator(settings.keySet()));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
 					IdentifierSetting setting = settings.extractSettingInstance(item);
@@ -226,7 +227,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 					keySetEdit.addAll(settings.keySet());
 					IdentifierSetting setting = (IdentifierSetting)object;
 					keySetEdit.remove(setting.getName());
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new PeakIdentifierInputValidator(keySetEdit));
+					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new PeakIdentifierInputValidator(keySetEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
 						IdentifierSetting settingNew = settings.extractSettingInstance(item);
@@ -267,7 +268,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if(MessageDialog.openQuestion(button.getShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
+				if(MessageDialog.openQuestion(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
 					settings.clear();
 					setTableViewerInput();
 				}
@@ -327,9 +328,9 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 					PreferenceSupplier.setListPathExport(fileDialog.getFilterPath());
 					File file = new File(path);
 					if(settings.exportItems(file)) {
-						MessageDialog.openInformation(button.getShell(), EXPORT_TITLE, MESSAGE_EXPORT_SUCCESSFUL);
+						MessageDialog.openInformation(e.display.getActiveShell(), EXPORT_TITLE, MESSAGE_EXPORT_SUCCESSFUL);
 					} else {
-						MessageDialog.openWarning(button.getShell(), EXPORT_TITLE, MESSAGE_EXPORT_FAILED);
+						MessageDialog.openWarning(e.display.getActiveShell(), EXPORT_TITLE, MESSAGE_EXPORT_FAILED);
 					}
 				}
 			}

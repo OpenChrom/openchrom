@@ -67,8 +67,8 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 
-import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -97,19 +97,72 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	private ProcessorPreferences<PeakReviewSettings> preferences;
 
 	public TemplateReviewEditor(Composite parent, ProcessorPreferences<PeakReviewSettings> preferences, PeakReviewSettings settings) {
+
 		this.preferences = preferences;
 		if(settings != null) {
 			this.settings.load(settings.getReviewSettings());
 		}
+		//
 		composite = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout(NUMBER_COLUMNS, false);
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		composite.setLayout(gridLayout);
+		//
 		createLabelSection(composite);
 		createSearchSection(composite);
 		createTableSection(composite);
 		createButtonGroup(composite);
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+
+		listUI.getControl().setEnabled(enabled);
+		for(Button button : buttons) {
+			button.setEnabled(enabled);
+		}
+		searchSupportUI.setEnabled(enabled);
+	}
+
+	@Override
+	public IStatus validate() {
+
+		return ValidationStatus.ok();
+	}
+
+	@Override
+	public String getSettings() throws IOException {
+
+		if(preferences != null) {
+			PeakReviewSettings settingz = new PeakReviewSettings();
+			settingz.setReviewSettings(settings.save());
+			return preferences.getSerialization().toString(settingz);
+		}
+		return "";
+	}
+
+	@Override
+	public void addChangeListener(Listener listener) {
+
+		listeners.add(listener);
+	}
+
+	@Override
+	public Control getControl() {
+
+		return composite;
+	}
+
+	public void load(String entries) {
+
+		settings.load(entries);
+		setTableViewerInput();
+	}
+
+	public String getValues() {
+
+		return settings.save();
 	}
 
 	private void createSearchSection(Composite parent) {
@@ -149,8 +202,10 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		composite.setLayoutData(gridData);
 		//
 		listUI = new PeakReviewListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		// listUI.setEditEnabled(false);
 		//
-		Shell shell = listUI.getTable().getShell();
+		Table table = listUI.getTable();
+		Shell shell = table.getShell();
 		ITableSettings tableSettings = listUI.getTableSettings();
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
@@ -196,7 +251,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, ReviewListUtil.EXAMPLE_SINGLE, new ReviewInputValidator(settings.keySet()));
+				InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_ADD, ReviewListUtil.EXAMPLE_SINGLE, new ReviewInputValidator(settings.keySet()));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
 					ReviewSetting setting = settings.extractSettingInstance(item);
@@ -223,12 +278,12 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
 				Object object = structuredSelection.getFirstElement();
-				if(object instanceof IdentifierSetting) {
+				if(object instanceof ReviewSetting) {
 					Set<String> keySetEdit = new HashSet<>();
 					keySetEdit.addAll(settings.keySet());
 					ReviewSetting setting = (ReviewSetting)object;
 					keySetEdit.remove(setting.getName());
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new ReviewInputValidator(keySetEdit));
+					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new ReviewInputValidator(keySetEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
 						ReviewSetting settingNew = settings.extractSettingInstance(item);
@@ -269,7 +324,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if(MessageDialog.openQuestion(button.getShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
+				if(MessageDialog.openQuestion(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
 					settings.clear();
 					setTableViewerInput();
 				}
@@ -329,9 +384,9 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 					PreferenceSupplier.setListPathExport(fileDialog.getFilterPath());
 					File file = new File(path);
 					if(settings.exportItems(file)) {
-						MessageDialog.openInformation(button.getShell(), EXPORT_TITLE, MESSAGE_EXPORT_SUCCESSFUL);
+						MessageDialog.openInformation(e.display.getActiveShell(), EXPORT_TITLE, MESSAGE_EXPORT_SUCCESSFUL);
 					} else {
-						MessageDialog.openWarning(button.getShell(), EXPORT_TITLE, MESSAGE_EXPORT_FAILED);
+						MessageDialog.openWarning(e.display.getActiveShell(), EXPORT_TITLE, MESSAGE_EXPORT_FAILED);
 					}
 				}
 			}
@@ -397,55 +452,5 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 			}
 			setTableViewerInput();
 		}
-	}
-
-	@Override
-	public void setEnabled(boolean enabled) {
-
-		listUI.getControl().setEnabled(enabled);
-		for(Button button : buttons) {
-			button.setEnabled(enabled);
-		}
-		searchSupportUI.setEnabled(enabled);
-	}
-
-	@Override
-	public IStatus validate() {
-
-		return ValidationStatus.ok();
-	}
-
-	@Override
-	public String getSettings() throws IOException {
-
-		if(preferences != null) {
-			PeakReviewSettings settingz = new PeakReviewSettings();
-			settingz.setReviewSettings(settings.save());
-			return preferences.getSerialization().toString(settingz);
-		}
-		return "";
-	}
-
-	@Override
-	public void addChangeListener(Listener listener) {
-
-		listeners.add(listener);
-	}
-
-	@Override
-	public Control getControl() {
-
-		return composite;
-	}
-
-	public void load(String entries) {
-
-		settings.load(entries);
-		setTableViewerInput();
-	}
-
-	public String getValues() {
-
-		return settings.save();
 	}
 }

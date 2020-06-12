@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -61,6 +61,7 @@ public class CompensationQuantifierFieldEditor extends AbstractFieldEditor {
 	private static final String DELETE = "Delete";
 
 	public CompensationQuantifierFieldEditor(String name, String labelText, Composite parent) {
+
 		init(name, labelText);
 		createControl(parent);
 	}
@@ -160,7 +161,7 @@ public class CompensationQuantifierFieldEditor extends AbstractFieldEditor {
 
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, CompensationQuantListUtil.EXAMPLE_SINGLE, new CompensationQuantifierInputValidator(settings.keySet()));
+				InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_ADD, CompensationQuantListUtil.EXAMPLE_SINGLE, new CompensationQuantifierInputValidator(settings.keySet()));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
 					CompensationSetting setting = settings.extractSettingInstance(item);
@@ -191,7 +192,7 @@ public class CompensationQuantifierFieldEditor extends AbstractFieldEditor {
 					keySetEdit.addAll(settings.keySet());
 					CompensationSetting setting = (CompensationSetting)object;
 					keySetEdit.remove(setting.getName());
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new CompensationQuantifierInputValidator(keySetEdit));
+					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new CompensationQuantifierInputValidator(keySetEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
 						CompensationSetting settingNew = settings.extractSettingInstance(item);
@@ -230,7 +231,7 @@ public class CompensationQuantifierFieldEditor extends AbstractFieldEditor {
 
 			public void widgetSelected(SelectionEvent e) {
 
-				if(MessageDialog.openQuestion(button.getShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
+				if(MessageDialog.openQuestion(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
 					settings.clear();
 					setTableViewerInput();
 				}
@@ -288,9 +289,9 @@ public class CompensationQuantifierFieldEditor extends AbstractFieldEditor {
 					PreferenceSupplier.setListPathExport(fileDialog.getFilterPath());
 					File file = new File(path);
 					if(settings.exportItems(file)) {
-						MessageDialog.openInformation(button.getShell(), EXPORT_TITLE, MESSAGE_EXPORT_SUCCESSFUL);
+						MessageDialog.openInformation(e.display.getActiveShell(), EXPORT_TITLE, MESSAGE_EXPORT_SUCCESSFUL);
 					} else {
-						MessageDialog.openWarning(button.getShell(), EXPORT_TITLE, MESSAGE_EXPORT_FAILED);
+						MessageDialog.openWarning(e.display.getActiveShell(), EXPORT_TITLE, MESSAGE_EXPORT_FAILED);
 					}
 				}
 			}

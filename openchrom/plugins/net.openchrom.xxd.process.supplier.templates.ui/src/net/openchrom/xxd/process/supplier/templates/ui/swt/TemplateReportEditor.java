@@ -97,6 +97,7 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 	private ProcessorPreferences<ChromatogramReportSettings> preferences;
 
 	public TemplateReportEditor(Composite parent, ProcessorPreferences<ChromatogramReportSettings> preferences, ChromatogramReportSettings settings) {
+
 		this.preferences = preferences;
 		if(settings != null) {
 			this.settings.load(settings.getReportSettings());
@@ -196,7 +197,7 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, ReportListUtil.EXAMPLE_SINGLE, new ReportInputValidator(settings.keySet()));
+				InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_ADD, ReportListUtil.EXAMPLE_SINGLE, new ReportInputValidator(settings.keySet()));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
 					ReportSetting setting = settings.extractSettingInstance(item);
@@ -228,7 +229,7 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 					keySetEdit.addAll(settings.keySet());
 					ReportSetting setting = (ReportSetting)object;
 					keySetEdit.remove(setting.getName());
-					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new ReportInputValidator(keySetEdit));
+					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new ReportInputValidator(keySetEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
 						ReportSetting settingNew = settings.extractSettingInstance(item);
@@ -269,7 +270,7 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if(MessageDialog.openQuestion(button.getShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
+				if(MessageDialog.openQuestion(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
 					settings.clear();
 					setTableViewerInput();
 				}
@@ -329,9 +330,9 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 					PreferenceSupplier.setListPathExport(fileDialog.getFilterPath());
 					File file = new File(path);
 					if(settings.exportItems(file)) {
-						MessageDialog.openInformation(button.getShell(), EXPORT_TITLE, MESSAGE_EXPORT_SUCCESSFUL);
+						MessageDialog.openInformation(e.display.getActiveShell(), EXPORT_TITLE, MESSAGE_EXPORT_SUCCESSFUL);
 					} else {
-						MessageDialog.openWarning(button.getShell(), EXPORT_TITLE, MESSAGE_EXPORT_FAILED);
+						MessageDialog.openWarning(e.display.getActiveShell(), EXPORT_TITLE, MESSAGE_EXPORT_FAILED);
 					}
 				}
 			}
