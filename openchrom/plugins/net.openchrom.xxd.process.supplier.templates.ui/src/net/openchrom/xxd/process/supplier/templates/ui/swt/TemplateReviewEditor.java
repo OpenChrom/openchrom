@@ -11,14 +11,10 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt;
 
-import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.ADD;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.ADD_TOOLTIP;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.DIALOG_TITLE;
-import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.EDIT;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.EDIT_TOOLTIP;
-import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.EXPORT;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.EXPORT_TITLE;
-import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.IMPORT;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.IMPORT_TITLE;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.MESSAGE_ADD;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.MESSAGE_EDIT;
@@ -26,8 +22,6 @@ import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.Abstr
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.MESSAGE_EXPORT_SUCCESSFUL;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.MESSAGE_REMOVE;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.MESSAGE_REMOVE_ALL;
-import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE;
-import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE_ALL;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE_ALL_TOOLTIP;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE_TOOLTIP;
 
@@ -39,12 +33,15 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
+import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.chemclipse.support.ui.swt.ITableSettings;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
+import org.eclipse.chemclipse.ux.extension.ui.support.PartSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
@@ -56,7 +53,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -64,7 +60,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -78,11 +73,10 @@ import net.openchrom.xxd.process.supplier.templates.util.ReviewListUtil;
 
 public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIControl {
 
-	private static final int NUMBER_COLUMNS = 2;
-	//
-	private Composite composite;
+	private Composite control;
 	private ReviewSettings settings = new ReviewSettings();
-	private PeakReviewListUI listUI;
+	private SearchSupportUI searchSupportUI;
+	private PeakReviewListUI peakReviewListUI;
 	//
 	private static final String FILTER_EXTENSION = "*.txt";
 	private static final String FILTER_NAME = "Review Template (*.txt)";
@@ -93,32 +87,37 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	//
 	private List<Listener> listeners = new ArrayList<>();
 	private List<Button> buttons = new ArrayList<>();
-	private SearchSupportUI searchSupportUI;
 	private ProcessorPreferences<PeakReviewSettings> preferences;
 
 	public TemplateReviewEditor(Composite parent, ProcessorPreferences<PeakReviewSettings> preferences, PeakReviewSettings settings) {
 
+		/*
+		 * Load the preferences
+		 */
 		this.preferences = preferences;
 		if(settings != null) {
 			this.settings.load(settings.getReviewSettings());
 		}
 		//
-		composite = new Composite(parent, SWT.NONE);
-		GridLayout gridLayout = new GridLayout(NUMBER_COLUMNS, false);
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridLayout gridLayout = new GridLayout(1, false);
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		composite.setLayout(gridLayout);
 		//
-		createLabelSection(composite);
-		createSearchSection(composite);
-		createTableSection(composite);
-		createButtonGroup(composite);
+		createToolbarMain(composite);
+		searchSupportUI = createSearchSection(composite);
+		peakReviewListUI = createTableSection(composite);
+		//
+		PartSupport.setCompositeVisibility(searchSupportUI, false);
+		setTableViewerInput();
+		setControl(composite);
 	}
 
 	@Override
 	public void setEnabled(boolean enabled) {
 
-		listUI.getControl().setEnabled(enabled);
+		peakReviewListUI.getControl().setEnabled(enabled);
 		for(Button button : buttons) {
 			button.setEnabled(enabled);
 		}
@@ -151,7 +150,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	@Override
 	public Control getControl() {
 
-		return composite;
+		return control;
 	}
 
 	public void load(String entries) {
@@ -165,87 +164,90 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		return settings.save();
 	}
 
-	private void createSearchSection(Composite parent) {
+	private void createToolbarMain(Composite parent) {
 
-		searchSupportUI = new SearchSupportUI(parent, SWT.NONE);
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = NUMBER_COLUMNS;
-		searchSupportUI.setLayoutData(gridData);
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalAlignment = SWT.END;
+		composite.setLayoutData(gridData);
+		composite.setLayout(new GridLayout(8, false));
+		//
+		createButtonToggleSearch(composite);
+		add(createButtonAdd(composite));
+		add(createButtonEdit(composite));
+		add(createButtonRemove(composite));
+		add(createButtonRemoveAll(composite));
+		add(createButtonImport(composite));
+		add(createButtonExport(composite));
+		add(createButtonSave(composite));
+	}
+
+	private void add(Button button) {
+
+		buttons.add(button);
+	}
+
+	private SearchSupportUI createSearchSection(Composite parent) {
+
+		SearchSupportUI searchSupportUI = new SearchSupportUI(parent, SWT.NONE);
+		searchSupportUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		searchSupportUI.setSearchListener(new ISearchListener() {
 
 			@Override
 			public void performSearch(String searchText, boolean caseSensitive) {
 
-				listUI.setSearchText(searchText, caseSensitive);
+				peakReviewListUI.setSearchText(searchText, caseSensitive);
 			}
 		});
+		//
+		return searchSupportUI;
 	}
 
-	private void createLabelSection(Composite parent) {
+	private PeakReviewListUI createTableSection(Composite parent) {
 
-		Label label = new Label(parent, SWT.LEFT);
-		label.setText("");
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = NUMBER_COLUMNS;
-		label.setLayoutData(gridData);
-	}
-
-	private void createTableSection(Composite parent) {
-
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new FillLayout());
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		composite.setLayoutData(gridData);
+		PeakReviewListUI peakReviewListUI = new PeakReviewListUI(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		Table table = peakReviewListUI.getTable();
+		table.setLayoutData(new GridData(GridData.FILL_BOTH));
+		peakReviewListUI.setEditEnabled(true);
 		//
-		listUI = new PeakReviewListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		// listUI.setEditEnabled(false);
-		//
-		Table table = listUI.getTable();
 		Shell shell = table.getShell();
-		ITableSettings tableSettings = listUI.getTableSettings();
+		ITableSettings tableSettings = peakReviewListUI.getTableSettings();
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
-		listUI.applySettings(tableSettings);
+		peakReviewListUI.applySettings(tableSettings);
 		//
-		setTableViewerInput();
+		return peakReviewListUI;
 	}
 
-	private void createButtonGroup(Composite parent) {
+	private Button createButtonToggleSearch(Composite parent) {
 
-		Composite composite = new Composite(parent, SWT.NULL);
-		GridLayout gridLayout = new GridLayout(1, true);
-		gridLayout.marginWidth = 0;
-		gridLayout.marginHeight = 0;
-		composite.setLayout(gridLayout);
-		GridData gridData = new GridData();
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalAlignment = GridData.FILL;
-		composite.setLayoutData(gridData);
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		button.setToolTipText("Toggle search toolbar.");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				boolean visible = PartSupport.toggleCompositeVisibility(searchSupportUI);
+				if(visible) {
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+				} else {
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+				}
+			}
+		});
 		//
-		setButtonLayoutData(createButtonAdd(composite));
-		setButtonLayoutData(createButtonEdit(composite));
-		setButtonLayoutData(createButtonRemove(composite));
-		setButtonLayoutData(createButtonRemoveAll(composite));
-		setButtonLayoutData(createButtonImport(composite));
-		setButtonLayoutData(createButtonExport(composite));
-	}
-
-	private void setButtonLayoutData(Button button) {
-
-		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-		button.setLayoutData(data);
-		buttons.add(button);
+		return button;
 	}
 
 	private Button createButtonAdd(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText(ADD);
+		button.setText("");
 		button.setToolTipText(ADD_TOOLTIP);
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -269,14 +271,15 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	private Button createButtonEdit(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText(EDIT);
+		button.setText("");
 		button.setToolTipText(EDIT_TOOLTIP);
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
+				IStructuredSelection structuredSelection = (IStructuredSelection)peakReviewListUI.getSelection();
 				Object object = structuredSelection.getFirstElement();
 				if(object instanceof ReviewSetting) {
 					Set<String> keySetEdit = new HashSet<>();
@@ -300,8 +303,9 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	private Button createButtonRemove(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText(REMOVE);
+		button.setText("");
 		button.setToolTipText(REMOVE_TOOLTIP);
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -317,8 +321,9 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	private Button createButtonRemoveAll(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText(REMOVE_ALL);
+		button.setText("");
 		button.setToolTipText(REMOVE_ALL_TOOLTIP);
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -337,8 +342,9 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	private Button createButtonImport(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText(IMPORT);
+		button.setText("");
 		button.setToolTipText(IMPORT_TITLE);
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -365,8 +371,9 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	private Button createButtonExport(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText(EXPORT);
+		button.setText("");
 		button.setToolTipText(EXPORT_TITLE);
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -395,9 +402,27 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		return button;
 	}
 
+	private Button createButtonSave(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		button.setToolTipText("Save the settings.");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SAVE, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				setTableViewerInput();
+			}
+		});
+		//
+		return button;
+	}
+
 	private void setTableViewerInput() {
 
-		listUI.setInput(settings.values());
+		peakReviewListUI.setInput(settings.values());
 		for(Listener listener : listeners) {
 			listener.handleEvent(new Event());
 		}
@@ -444,7 +469,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	private void deleteItems(Shell shell) {
 
 		if(MessageDialog.openQuestion(shell, DIALOG_TITLE, MESSAGE_REMOVE)) {
-			IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
+			IStructuredSelection structuredSelection = (IStructuredSelection)peakReviewListUI.getSelection();
 			for(Object object : structuredSelection.toArray()) {
 				if(object instanceof ReviewSetting) {
 					settings.remove(((ReviewSetting)object).getName());
@@ -452,5 +477,10 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 			}
 			setTableViewerInput();
 		}
+	}
+
+	private void setControl(Composite composite) {
+
+		this.control = composite;
 	}
 }
