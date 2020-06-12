@@ -20,14 +20,13 @@ import org.eclipse.chemclipse.model.core.ITargetSupplier;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.targets.TargetListUtil;
 import org.eclipse.chemclipse.model.targets.TargetValidator;
-import org.eclipse.chemclipse.model.updates.ITargetUpdateListener;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.chemclipse.support.ui.swt.ITableSettings;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.targets.ComboTarget;
+import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
@@ -41,6 +40,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -52,7 +52,7 @@ public class ExtendedPeakReviewUI extends Composite {
 	private static final String MENU_CATEGORY_PEAKS = "Peaks";
 	//
 	private ReviewController controller;
-	private ComboTarget comboTarget;
+	private Text textTarget;
 	private PeakStatusListUI peakStatusListUI;
 	//
 	private List<IPeak> peaks;
@@ -100,30 +100,19 @@ public class ExtendedPeakReviewUI extends Composite {
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		composite.setLayout(new GridLayout(5, false));
 		//
-		comboTarget = createComboTarget(composite);
+		textTarget = createTargetText(composite);
 		createSetTargetButton(composite);
 		createMarkPeakButton(composite);
 		createDeletePeakButton(composite);
 		createDeletePeaksButton(composite);
-		//
-		comboTarget.updateContentProposals();
 	}
 
-	private ComboTarget createComboTarget(Composite parent) {
+	private Text createTargetText(Composite parent) {
 
-		ComboTarget comboTarget = new ComboTarget(parent, SWT.NONE);
-		comboTarget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		comboTarget.setTargetUpdateListener(new ITargetUpdateListener() {
-
-			@Override
-			public void update(IIdentificationTarget identificationTarget) {
-
-				if(identificationTarget != null) {
-					addTarget(identificationTarget);
-				}
-			}
-		});
-		return comboTarget;
+		Text text = new Text(parent, SWT.BORDER | SWT.READ_ONLY);
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		//
+		return text;
 	}
 
 	private void createSetTargetButton(Composite parent) {
@@ -382,18 +371,18 @@ public class ExtendedPeakReviewUI extends Composite {
 	private void update(ReviewSetting reviewSetting) {
 
 		if(reviewSetting != null) {
-			// boolean isCompoundAvailable = ReviewSupport.isCompoundAvailable(peaks, reviewSetting);
-			// comboTarget.setBackground(isCompoundAvailable ? Colors.GREEN : Colors.YELLOW);
+			boolean isCompoundAvailable = ReviewSupport.isCompoundAvailable(peaks, reviewSetting);
+			textTarget.setBackground(isCompoundAvailable ? Colors.GREEN : Colors.YELLOW);
 			StringBuilder builder = new StringBuilder();
 			builder.append(reviewSetting.getName());
 			builder.append(" ");
 			builder.append(TargetListUtil.SEPARATOR_ENTRY);
 			builder.append(" ");
 			builder.append(reviewSetting.getCasNumber());
-			comboTarget.setText(builder.toString());
+			textTarget.setText(builder.toString());
 		} else {
-			// comboTarget.setBackground(null);
-			comboTarget.setText("");
+			textTarget.setBackground(null);
+			textTarget.setText("");
 		}
 		/*
 		 * Color code for the identification.

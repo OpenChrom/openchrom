@@ -127,12 +127,12 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 							try {
 								peaks.add(templatePeakDetector.detectPeaks(chromatogram, entry.getValue(), null, processingInfo, subMonitor.split(100)));
 							} catch(OperationCanceledException e) {
-								processingInfo.addErrorMessage(PeakDetectorSettings.DESCRIPTION, "Operation was canceled");
+								processingInfo.addErrorMessage(PeakDetectorSettings.DETECTOR_DESCRIPTION, "Operation was canceled");
 								return processingInfo;
 							}
 							continue outer;
 						}
-						processingInfo.addErrorMessage(PeakDetectorSettings.DESCRIPTION, "No detector present for type " + peakType.name());
+						processingInfo.addErrorMessage(PeakDetectorSettings.DETECTOR_DESCRIPTION, "No detector present for type " + peakType.name());
 					}
 					/*
 					 * Insert peaks into chromatogram
@@ -159,10 +159,10 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 						}
 					}
 				} else {
-					processingInfo.addWarnMessage(PeakDetectorSettings.DESCRIPTION, "Only MSD + CSD Chromatograms are supported");
+					processingInfo.addWarnMessage(PeakDetectorSettings.DETECTOR_DESCRIPTION, "Only MSD + CSD Chromatograms are supported");
 				}
 			} else {
-				processingInfo.addErrorMessage(PeakDetectorSettings.DESCRIPTION, "The settings instance is wrong.");
+				processingInfo.addErrorMessage(PeakDetectorSettings.DETECTOR_DESCRIPTION, "The settings instance is wrong.");
 			}
 		}
 		return processingInfo;
@@ -177,6 +177,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		private Set<Integer> traces;
 
 		public DetectorSettingTemplatePeak(IChromatogram<?> chromatogram, DetectorSetting detectorSetting) {
+
 			IRetentionTimeRange retentionTimeRange = PEAK_SUPPORT.getRetentionTimeRange(chromatogram.getPeaks(), detectorSetting, detectorSetting.getReferenceIdentifier());
 			startScan = chromatogram.getScanNumber(retentionTimeRange.getStartRetentionTime());
 			stopScan = chromatogram.getScanNumber(retentionTimeRange.getStopRetentionTime());

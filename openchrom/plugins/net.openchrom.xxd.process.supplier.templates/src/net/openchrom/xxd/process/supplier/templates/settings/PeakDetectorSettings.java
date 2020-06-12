@@ -31,7 +31,7 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
 public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implements IPeakDetectorSettingsMSD, IPeakDetectorSettingsCSD, ITemplateSettings {
 
-	public static final String DESCRIPTION = "Template Peak Detector";
+	public static final String DETECTOR_DESCRIPTION = "Template Detector";
 	/*
 	 * 10.52 | 10.63 | VV | 103, 104, 108-110 | true | Styrene
 	 */

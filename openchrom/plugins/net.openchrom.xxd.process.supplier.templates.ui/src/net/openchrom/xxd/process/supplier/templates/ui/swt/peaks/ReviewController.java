@@ -36,6 +36,8 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
 public class ReviewController {
 
+	private static final String DETECTOR_DESCRIPTION = "Manual (Review UI)";
+	//
 	private ProcessReviewUI processReviewUI;
 	private PeakDetectorChart peakDetectorChart;
 	private ExtendedPeakReviewUI extendedPeakReviewUI;
@@ -197,6 +199,7 @@ public class ReviewController {
 						String name = reviewSetting.getName();
 						String casNumber = reviewSetting.getCasNumber();
 						IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, TargetValidator.IDENTIFIER);
+						peak.setDetectorDescription(DETECTOR_DESCRIPTION);
 						if(peak instanceof ITargetSupplier) {
 							ITargetSupplier targetSupplier = (ITargetSupplier)peak;
 							targetSupplier.getTargets().add(identificationTarget);

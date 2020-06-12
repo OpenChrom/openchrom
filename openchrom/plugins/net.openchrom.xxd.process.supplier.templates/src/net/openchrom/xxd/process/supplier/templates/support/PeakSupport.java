@@ -100,11 +100,11 @@ public class PeakSupport {
 					} else {
 						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground);
 					}
-					peak.setDetectorDescription(PeakDetectorSettings.DESCRIPTION);
+					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 				} else if(chromatogram instanceof IChromatogramCSD) {
 					IChromatogramCSD chromatogramCSD = (IChromatogramCSD)chromatogram;
 					peak = PeakBuilderCSD.createPeak(chromatogramCSD, scanRange, includeBackground);
-					peak.setDetectorDescription(PeakDetectorSettings.DESCRIPTION);
+					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 				} else if(chromatogram instanceof IChromatogramWSD) {
 					logger.info("Handling WSD data is not supported yet");
 				}

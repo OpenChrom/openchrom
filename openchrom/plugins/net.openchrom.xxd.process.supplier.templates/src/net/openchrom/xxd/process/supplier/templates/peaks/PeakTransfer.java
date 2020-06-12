@@ -101,7 +101,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 				PeakTransferSettings peakTransferSettings = (PeakTransferSettings)settings;
 				transferPeaks(chromatogramSelection, peakTransferSettings);
 			} else {
-				processingInfo.addErrorMessage(PeakDetectorSettings.DESCRIPTION, "The settings instance is wrong.");
+				processingInfo.addErrorMessage(PeakDetectorSettings.DETECTOR_DESCRIPTION, "The settings instance is wrong.");
 			}
 		}
 		return processingInfo;

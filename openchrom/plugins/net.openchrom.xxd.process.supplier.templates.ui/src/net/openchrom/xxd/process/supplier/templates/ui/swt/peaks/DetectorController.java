@@ -29,6 +29,8 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
 public class DetectorController {
 
+	private static final String DETECTOR_DESCRIPTION = "Manual (Detector UI)";
+	//
 	private ExtendedDetectorUI extendedDetectorUI;
 	private ExtendedPeaksUI extendedPeaksUI;
 	private PeakDetectorChart peakDetectorChart;
@@ -145,6 +147,7 @@ public class DetectorController {
 			@Override
 			public void update(IPeak peak) {
 
+				peak.setDetectorDescription(DETECTOR_DESCRIPTION);
 				updatePeakStatusUI(peak);
 			}
 		});
