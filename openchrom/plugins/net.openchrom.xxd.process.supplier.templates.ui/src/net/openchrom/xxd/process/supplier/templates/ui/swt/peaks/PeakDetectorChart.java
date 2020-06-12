@@ -235,37 +235,38 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 			IChromatogram<? extends IPeak> chromatogram = detectorRange.getChromatogram();
 			if(chromatogram != null) {
 				/*
-				 * ChromatogramPeakChart
+				 * TIC/XIC
 				 */
 				Set<Integer> traces = detectorRange.getTraces();
-				if(chromatogram instanceof IChromatogramMSD && traces.size() > 0) {
-					/*
-					 * Show Traces
-					 */
+				if(showTraces(chromatogram, traces)) {
 					ChromatogramSelectionMSD chromatogramSelectionMSD = new ChromatogramSelectionMSD((IChromatogramMSD)chromatogram);
 					chromatogramSelectionMSD.getSelectedIons().add(traces);
 					chromatogramSelection = chromatogramSelectionMSD;
 				} else {
-					/*
-					 * Normal
-					 */
 					chromatogramSelection = new ChromatogramSelection(chromatogram);
 				}
-				//
+				/*
+				 * Retention Time Range
+				 */
 				int startRetentionTime = detectorRange.getRetentionTimeStart();
 				int stopRetentionTime = detectorRange.getRetentionTimeStop();
 				chromatogramSelection.setRangeRetentionTime(startRetentionTime, stopRetentionTime);
 				updateChromatogram(chromatogramSelection, peakChartSettings);
 				/*
-				 * Focus the range
+				 * Intensity Range
 				 */
-				double maxY = getMaxY(chromatogram, startRetentionTime, stopRetentionTime);
-				maxY = (maxY == 0) ? chromatogramSelection.getStopAbundance() : maxY;
+				double minY = showTraces(chromatogram, traces) ? 0.0d : getMinY(chromatogramSelection, startRetentionTime, stopRetentionTime);
+				double maxY = getMaxY(chromatogramSelection, startRetentionTime, stopRetentionTime);
 				selectedRangeX = new Range(startRetentionTime, stopRetentionTime);
-				selectedRangeY = new Range(0, maxY);
+				selectedRangeY = new Range(minY, maxY);
 				adjustChartRange();
 			}
 		}
+	}
+
+	private boolean showTraces(IChromatogram<? extends IPeak> chromatogram, Set<Integer> traces) {
+
+		return chromatogram instanceof IChromatogramMSD && traces.size() > 0;
 	}
 
 	private void updateChart(IPeak peak) {
@@ -281,15 +282,38 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		}
 	}
 
-	private double getMaxY(IChromatogram<?> chromatogram, int startRetentionTime, int stopRetentionTime) {
+	private double getMinY(IChromatogramSelection<?, ?> chromatogramSelection, int startRetentionTime, int stopRetentionTime) {
 
-		double maxY = 0;
+		IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
+		//
+		double minY = Double.MAX_VALUE;
+		int startScan = chromatogram.getScanNumber(startRetentionTime);
+		int stopScan = chromatogram.getScanNumber(stopRetentionTime);
+		for(int i = startScan; i <= stopScan; i++) {
+			double intensity = chromatogram.getScan(i).getTotalSignal();
+			minY = Math.min(intensity, minY);
+		}
+		//
+		minY -= minY * PreferenceSupplier.getOffsetMinY() / 100.0d;
+		//
+		return minY;
+	}
+
+	private double getMaxY(IChromatogramSelection<?, ?> chromatogramSelection, int startRetentionTime, int stopRetentionTime) {
+
+		IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
+		//
+		double maxY = Double.MIN_VALUE;
 		int startScan = chromatogram.getScanNumber(startRetentionTime);
 		int stopScan = chromatogram.getScanNumber(stopRetentionTime);
 		for(int i = startScan; i <= stopScan; i++) {
 			double intensity = chromatogram.getScan(i).getTotalSignal();
 			maxY = Math.max(intensity, maxY);
 		}
+		//
+		maxY += maxY * PreferenceSupplier.getOffsetMaxY() / 100.0d;
+		maxY = (maxY == 0) ? chromatogramSelection.getStopAbundance() : maxY;
+		//
 		return maxY;
 	}
 

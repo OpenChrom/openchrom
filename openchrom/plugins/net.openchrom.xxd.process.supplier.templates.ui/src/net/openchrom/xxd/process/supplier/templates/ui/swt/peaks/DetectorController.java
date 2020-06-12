@@ -31,7 +31,7 @@ public class DetectorController {
 
 	private static final String DETECTOR_DESCRIPTION = "Manual (Detector UI)";
 	//
-	private ExtendedDetectorUI extendedDetectorUI;
+	private ProcessDetectorUI processDetectorUI;
 	private ExtendedPeaksUI extendedPeaksUI;
 	private PeakDetectorChart peakDetectorChart;
 	//
@@ -42,7 +42,7 @@ public class DetectorController {
 	public void setInput(ProcessDetectorSettings processSettings) {
 
 		this.processSettings = processSettings;
-		extendedDetectorUI.setInput(processSettings);
+		processDetectorUI.setInput(processSettings);
 		if(processSettings != null) {
 			List<DetectorSetting> detectorSettings = processSettings.getDetectorSettings();
 			if(detectorSettings.size() > 0) {
@@ -72,7 +72,7 @@ public class DetectorController {
 
 	public void updateDetectorChart() {
 
-		if(peakDetectorChart != null && extendedDetectorUI != null) {
+		if(peakDetectorChart != null && processDetectorUI != null) {
 			if(processSettings != null) {
 				if(processSettings != null && detectorSetting != null) {
 					IChromatogram<?> chromatogram = processSettings.getChromatogram();
@@ -129,8 +129,8 @@ public class DetectorController {
 
 	protected void createExtendedDetectorUI(Composite parent) {
 
-		extendedDetectorUI = new ExtendedDetectorUI(parent, SWT.NONE);
-		extendedDetectorUI.setController(this);
+		processDetectorUI = new ProcessDetectorUI(parent, SWT.NONE);
+		processDetectorUI.setController(this);
 	}
 
 	protected void createExtendedPeaksUI(Composite parent) {
@@ -163,7 +163,7 @@ public class DetectorController {
 
 		List<IPeak> peaks = new ArrayList<>();
 		//
-		if(extendedDetectorUI != null) {
+		if(processDetectorUI != null) {
 			if(detectorSetting != null) {
 				if(processSettings != null) {
 					IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();

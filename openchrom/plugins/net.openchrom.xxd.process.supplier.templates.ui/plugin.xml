@@ -131,21 +131,33 @@
          point="org.eclipse.chemclipse.chromatogram.msd.identifier.peakIdentifier">
       <PeakIdentificationSupplier
             description="This peak identifier supports reviewing identifications via a template."
-            id="net.openchrom.xxd.process.supplier.templates.ui.peaks.identifier.msd"
+            id="net.openchrom.xxd.process.supplier.templates.ui.peaks.identifier.msd.template"
             identifier="net.openchrom.xxd.process.supplier.templates.ui.core.PeakReviewMSD"
-            identifierName="Template Peak Review UI (MSD)"
+            identifierName="Peak Review UI [Template]"
             identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings">
       </PeakIdentificationSupplier>
+      <PeakIdentificationSupplier
+            description="This peak identifier supports direct reviewing identifications."
+            id="net.openchrom.xxd.process.supplier.templates.ui.peaks.identifier.msd.direct"
+            identifier="net.openchrom.xxd.process.supplier.templates.ui.core.PeakReviewDirectMSD"
+            identifierName="Peak Review UI [Direct]">
+      </PeakIdentificationSupplier>      
    </extension>
    <extension
          point="org.eclipse.chemclipse.chromatogram.csd.identifier.peakIdentifier">
       <PeakIdentificationSupplier
             description="This peak identifier supports reviewing identifications via a template."
-            id="net.openchrom.xxd.process.supplier.templates.ui.peaks.identifier.csd"
+            id="net.openchrom.xxd.process.supplier.templates.ui.peaks.identifier.csd.template"
             identifier="net.openchrom.xxd.process.supplier.templates.ui.core.PeakReviewCSD"
-            identifierName="Template Peak Review UI (CSD)"
+            identifierName="Peak Review UI [Template]"
             identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings">
       </PeakIdentificationSupplier>
+      <PeakIdentificationSupplier
+            description="This peak identifier supports direct reviewing identifications."
+            id="net.openchrom.xxd.process.supplier.templates.ui.peaks.identifier.csd.direct"
+            identifier="net.openchrom.xxd.process.supplier.templates.ui.core.PeakReviewDirectCSD"
+            identifierName="Peak Review UI [Direct]">
+      </PeakIdentificationSupplier>      
    </extension>       
    <extension
          point="org.eclipse.core.runtime.adapters">

@@ -37,12 +37,13 @@ import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePag
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakDetectorListUI;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
 
-public class ExtendedDetectorUI extends Composite {
+public class ProcessDetectorUI extends Composite {
 
 	private DetectorController controller;
 	private PeakDetectorListUI peakDetectorListUI;
 
-	public ExtendedDetectorUI(Composite parent, int style) {
+	public ProcessDetectorUI(Composite parent, int style) {
+
 		super(parent, style);
 		createControl();
 	}

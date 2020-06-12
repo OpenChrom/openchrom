@@ -37,6 +37,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int MAX_DELTA_MILLISECONDS = 60000; // 1 Minute
 	public static final int MIN_NUMBER_TRACES = 0; // 0 = TIC
 	public static final int MAX_NUMBER_TRACES = Integer.MAX_VALUE;
+	public static final int MIN_OFFSET_Y = 0; // %
+	public static final int MAX_OFFSET_Y = 100; // %
 	//
 	public static final String P_PEAK_DETECTOR_LIST_MSD = "peakDetectorListMSD";
 	public static final String DEF_PEAK_DETECTOR_LIST_MSD = "";
@@ -68,6 +70,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	//
 	public static final String P_CHART_BUFFERED_SELECTION = "chartBufferedSelection";
 	public static final boolean DEF_CHART_BUFFERED_SELECTION = false;
+	public static final String P_OFFSET_MIN_Y = "offsetMinY";
+	public static final int DEF_OFFSET_MIN_Y = 50;
+	public static final String P_OFFSET_MAX_Y = "offsetMaxY";
+	public static final int DEF_OFFSET_MAX_Y = 30;
 	/*
 	 * Detector
 	 */
@@ -222,6 +228,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
 		//
 		defaultValues.put(P_CHART_BUFFERED_SELECTION, Boolean.toString(DEF_CHART_BUFFERED_SELECTION));
+		defaultValues.put(P_OFFSET_MIN_Y, Integer.toString(DEF_OFFSET_MIN_Y));
+		defaultValues.put(P_OFFSET_MAX_Y, Integer.toString(DEF_OFFSET_MAX_Y));
 		//
 		defaultValues.put(P_EXPORT_NUMBER_TRACES_DETECTOR, Integer.toString(DEF_EXPORT_NUMBER_TRACES_DETECTOR));
 		defaultValues.put(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, Boolean.toString(DEF_EXPORT_OPTIMIZE_RANGE_DETECTOR));
@@ -320,6 +328,18 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_CHART_BUFFERED_SELECTION, DEF_CHART_BUFFERED_SELECTION);
+	}
+
+	public static int getOffsetMinY() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_OFFSET_MIN_Y, DEF_OFFSET_MIN_Y);
+	}
+
+	public static int getOffsetMaxY() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_OFFSET_MAX_Y, DEF_OFFSET_MAX_Y);
 	}
 
 	public static boolean isExportOptimizeRangeDetector() {

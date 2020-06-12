@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.preferences;
 
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.IntegerFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
@@ -43,6 +44,8 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		//
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_CHART_BUFFERED_SELECTION, "Chart Buffered Selection", getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_OFFSET_MIN_Y, "Offset Min Y [%]", PreferenceSupplier.MIN_OFFSET_Y, PreferenceSupplier.MAX_OFFSET_Y, getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_OFFSET_MAX_Y, "Offset Max Y [%]", PreferenceSupplier.MIN_OFFSET_Y, PreferenceSupplier.MAX_OFFSET_Y, getFieldEditorParent()));
 	}
 
 	/*
