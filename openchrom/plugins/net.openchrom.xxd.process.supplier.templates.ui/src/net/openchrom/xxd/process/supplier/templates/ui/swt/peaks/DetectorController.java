@@ -18,7 +18,6 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.PeakChartSettings;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
@@ -99,14 +98,15 @@ public class DetectorController {
 							/*
 							 * Settings display data
 							 */
-							PeakChartSettings peakChartSettings = new PeakChartSettings();
-							peakChartSettings.setShowChromatogramTIC(PreferenceSupplier.isShowChromatogramDetectorTIC());
-							peakChartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramDetectorXIC());
-							peakChartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineDetector());
+							PeakDetectorChartSettings chartSettings = new PeakDetectorChartSettings();
+							chartSettings.setShowChromatogramTIC(PreferenceSupplier.isShowChromatogramDetectorTIC());
+							chartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramDetectorXIC());
+							chartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineDetector());
+							chartSettings.setDeltaRetentionTimeLeft(PreferenceSupplier.getReviewDeltaLeftMilliseconds());
+							chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getReviewDeltaRightMilliseconds());
+							chartSettings.setReplacePeak(PreferenceSupplier.isDetectorReplacePeak());
 							//
-							int deltaRetentionTimeLeft = PreferenceSupplier.getDetectorDeltaLeftMilliseconds();
-							int deltaRetentionTimeRight = PreferenceSupplier.getDetectorDeltaRightMilliseconds();
-							peakDetectorChart.update(detectorRange, peakChartSettings, deltaRetentionTimeLeft, deltaRetentionTimeRight);
+							peakDetectorChart.update(detectorRange, chartSettings);
 						}
 					}
 				}

@@ -24,7 +24,6 @@ import org.eclipse.chemclipse.model.targets.TargetValidator;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.PeakChartSettings;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
@@ -152,14 +151,15 @@ public class ReviewController {
 							/*
 							 * Settings display data
 							 */
-							PeakChartSettings peakChartSettings = new PeakChartSettings();
-							peakChartSettings.setShowChromatogramTIC(PreferenceSupplier.isShowChromatogramReviewTIC());
-							peakChartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramReviewXIC());
-							peakChartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineReview());
+							PeakDetectorChartSettings chartSettings = new PeakDetectorChartSettings();
+							chartSettings.setShowChromatogramTIC(PreferenceSupplier.isShowChromatogramReviewTIC());
+							chartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramReviewXIC());
+							chartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineReview());
+							chartSettings.setDeltaRetentionTimeLeft(PreferenceSupplier.getReviewDeltaLeftMilliseconds());
+							chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getReviewDeltaRightMilliseconds());
+							chartSettings.setReplacePeak(PreferenceSupplier.isReviewReplacePeak());
 							//
-							int deltaRetentionTimeLeft = PreferenceSupplier.getReviewDeltaLeftMilliseconds();
-							int deltaRetentionTimeRight = PreferenceSupplier.getReviewDeltaRightMilliseconds();
-							peakDetectorChart.update(detectorRange, peakChartSettings, deltaRetentionTimeLeft, deltaRetentionTimeRight);
+							peakDetectorChart.update(detectorRange, chartSettings);
 						}
 					}
 				}

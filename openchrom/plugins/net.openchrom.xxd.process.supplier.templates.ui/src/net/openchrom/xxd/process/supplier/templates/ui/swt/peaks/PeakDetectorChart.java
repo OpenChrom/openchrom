@@ -65,13 +65,15 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private IChromatogramSelection chromatogramSelection = null;
 	//
 	private IPeakUpdateListener peakUpdateListener = null;
-	private PeakChartSettings peakChartSettingsDefault = new PeakChartSettings();
+	private PeakDetectorChartSettings chartSettingsDefault = new PeakDetectorChartSettings();
 	private DeltaRangePaintListener deltaRangePaintListener = new DeltaRangePaintListener(this.getBaseChart());
+	//
+	private boolean isReplacePeak = false;
 
 	public PeakDetectorChart(Composite parent, int style) {
 
 		super(parent, style);
-		initialize();
+		createControl();
 	}
 
 	public void updatePeaks(List<IPeak> peaks) {
@@ -85,18 +87,21 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		this.peakUpdateListener = peakUdateListener;
 	}
 
-	public void update(DetectorRange detectorRange, int deltaRetentionTimeLeft, int deltaRetentionTimeRight) {
+	public void update(DetectorRange detectorRange) {
 
-		update(detectorRange, peakChartSettingsDefault, deltaRetentionTimeLeft, deltaRetentionTimeRight);
+		update(detectorRange, chartSettingsDefault);
 	}
 
-	public void update(DetectorRange detectorRange, PeakChartSettings peakChartSettings, int deltaRetentionTimeLeft, int deltaRetentionTimeRight) {
+	public void update(DetectorRange detectorRange, PeakDetectorChartSettings chartSettings) {
 
 		this.detectorRange = detectorRange;
 		selectedRangeX = null;
 		selectedRangeY = null;
+		int deltaRetentionTimeLeft = chartSettings.getDeltaRetentionTimeLeft();
+		int deltaRetentionTimeRight = chartSettings.getDeltaRetentionTimeRight();
 		deltaRangePaintListener.setDeltaRetentionTime(deltaRetentionTimeLeft, deltaRetentionTimeRight);
-		updateDetectorRange(peakChartSettings);
+		isReplacePeak = chartSettings.isReplacePeak();
+		updateDetectorRange(chartSettings);
 	}
 
 	@Override
@@ -133,7 +138,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		}
 	}
 
-	private void initialize() {
+	private void createControl() {
 
 		defaultCursor = getBaseChart().getCursor();
 		/*
@@ -336,12 +341,13 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 					/*
 					 * Remove/Add Peak
 					 */
-					if(PreferenceSupplier.isDetectorReplacePeak()) {
+					if(isReplacePeak) {
 						int startRetentionTime = detectorRange.getRetentionTimeStart();
 						int stopRetentionTime = detectorRange.getRetentionTimeStop();
 						Set<Integer> traces = detectorRange.getTraces();
-						removeClosestPeak(peak, chromatogram, startRetentionTime, stopRetentionTime, traces);
+						removeClosestPeak(peak, traces, chromatogram, startRetentionTime, stopRetentionTime);
 					}
+					//
 					chromatogram.addPeak(peak);
 					fireUpdate(peak);
 				}
@@ -350,41 +356,46 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		return peak;
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	private void removeClosestPeak(IPeak peak, IChromatogram chromatogram, int startRetentionTime, int stopRetentionTime, Set<Integer> traces) {
+	private void removeClosestPeak(IPeak peakSource, Set<Integer> traces, IChromatogram<IPeak> chromatogram, int startRetentionTime, int stopRetentionTime) {
 
-		boolean useTraces = traces.size() > 0;
-		IPeak peakToDelete = null;
-		for(Object object : chromatogram.getPeaks(startRetentionTime, stopRetentionTime)) {
+		int retentionTimeSource = peakSource.getPeakModel().getRetentionTimeAtPeakMaximum();
+		//
+		List<IPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
+		IPeak peakDelete = null;
+		//
+		for(IPeak peak : peaks) {
 			/*
-			 * Check for traces.
+			 * Check if a peak has been set yet?
 			 */
-			IPeak peakX = (IPeak)object;
-			if(useTraces) {
-				if(!peakMatchesTraces(peakX, traces)) {
-					peakX = null;
-				}
-			}
-			/*
-			 * Select peak for deletion?
-			 */
-			if(peakX != null) {
-				if(peakToDelete == null) {
-					peakToDelete = peakX;
+			if(peakDelete == null) {
+				/*
+				 * TIC = select without checks
+				 * XIC = peak must contain at least one trace
+				 */
+				if(traces.size() == 0) {
+					peakDelete = peak;
 				} else {
-					int peakRetentionTime = peak.getPeakModel().getRetentionTimeAtPeakMaximum();
-					int peakRetentionTimeX = peakX.getPeakModel().getRetentionTimeAtPeakMaximum();
-					int peakRetentionTimeD = peakToDelete.getPeakModel().getRetentionTimeAtPeakMaximum();
-					//
-					if(Math.abs(peakRetentionTime - peakRetentionTimeX) < Math.abs(peakRetentionTimeD - peakRetentionTimeX)) {
-						peakToDelete = peakX;
+					if(peakMatchesTraces(peak, traces)) {
+						peakDelete = peak;
 					}
+				}
+			} else {
+				/*
+				 * Find the closest peak.
+				 */
+				int retentionTime = peak.getPeakModel().getRetentionTimeAtPeakMaximum();
+				int retentionTimeDelete = peakDelete.getPeakModel().getRetentionTimeAtPeakMaximum();
+				//
+				if(Math.abs(retentionTimeSource - retentionTime) < Math.abs(retentionTimeDelete - retentionTime)) {
+					peakDelete = peak;
 				}
 			}
 		}
-		//
-		if(peakToDelete != null) {
-			chromatogram.removePeak(peakToDelete);
+		/*
+		 * Delete the peak if a specific peak was found.
+		 */
+		if(peakDelete != null) {
+			chromatogram.removePeak(peakDelete);
 		}
 	}
 
@@ -443,12 +454,10 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 			IScan scan = peak.getPeakModel().getPeakMaximum();
 			if(scan instanceof IScanMSD) {
 				IScanMSD scanMSD = (IScanMSD)scan;
-				if(traces.size() == scanMSD.getIons().size()) {
-					IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
-					for(int trace : traces) {
-						if(extractedIonSignal.getAbundance(trace) > 0) {
-							return true;
-						}
+				IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
+				for(int trace : traces) {
+					if(extractedIonSignal.getAbundance(trace) > 0) {
+						return true;
 					}
 				}
 			}
