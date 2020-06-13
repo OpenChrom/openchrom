@@ -17,6 +17,7 @@ import java.util.Set;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.targets.TargetValidator;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 
@@ -54,13 +55,33 @@ public class ReviewSupport {
 		return status;
 	}
 
-	public static void setReview(IPeak peak, boolean reviewSuccessful) {
+	public static void setReview(IPeak peak, ReviewSetting reviewSetting, boolean reviewSuccessful) {
 
 		if(peak != null) {
+			//
+			IIdentificationTarget identificationTarget = null;
+			if(reviewSetting != null) {
+				String name = reviewSetting.getName();
+				String casNumber = reviewSetting.getCasNumber();
+				identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, TargetValidator.IDENTIFIER);
+			}
+			//
 			if(reviewSuccessful) {
+				/*
+				 * OK
+				 */
 				peak.addClassifier(ReviewSetting.CLASSIFIER_REVIEW_OK);
+				if(identificationTarget != null) {
+					peak.getTargets().add(identificationTarget);
+				}
 			} else {
+				/*
+				 * --
+				 */
 				peak.removeClassifier(ReviewSetting.CLASSIFIER_REVIEW_OK);
+				if(identificationTarget != null) {
+					peak.getTargets().remove(identificationTarget);
+				}
 			}
 		}
 	}
@@ -69,9 +90,19 @@ public class ReviewSupport {
 
 		if(peaks != null && reviewSetting != null) {
 			for(IPeak peak : peaks) {
-				if(isCompoundAvailable(peak.getTargets(), reviewSetting)) {
+				if(isCompoundAvailable(peak, reviewSetting)) {
 					return true;
 				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean isCompoundAvailable(IPeak peak, ReviewSetting reviewSetting) {
+
+		if(peak != null && reviewSetting != null) {
+			if(isCompoundAvailable(peak.getTargets(), reviewSetting)) {
+				return true;
 			}
 		}
 		return false;

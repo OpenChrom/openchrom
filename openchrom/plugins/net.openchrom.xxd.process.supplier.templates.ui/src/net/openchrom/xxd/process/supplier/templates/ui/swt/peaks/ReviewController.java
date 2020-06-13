@@ -17,10 +17,8 @@ import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.core.ITargetSupplier;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
-import org.eclipse.chemclipse.model.targets.TargetValidator;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -196,15 +194,8 @@ public class ReviewController {
 
 				if(PreferenceSupplier.isAutoLabelDetectedPeak()) {
 					if(reviewSetting != null && peak != null) {
-						String name = reviewSetting.getName();
-						String casNumber = reviewSetting.getCasNumber();
-						IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, TargetValidator.IDENTIFIER);
 						peak.setDetectorDescription(DETECTOR_DESCRIPTION);
-						if(peak instanceof ITargetSupplier) {
-							ITargetSupplier targetSupplier = (ITargetSupplier)peak;
-							targetSupplier.getTargets().add(identificationTarget);
-							ReviewSupport.setReview(peak, true);
-						}
+						ReviewSupport.setReview(peak, reviewSetting, true);
 					}
 				}
 				/*

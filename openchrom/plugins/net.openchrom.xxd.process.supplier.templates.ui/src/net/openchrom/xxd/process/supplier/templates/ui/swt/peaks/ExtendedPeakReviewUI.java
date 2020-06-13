@@ -16,10 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.core.ITargetSupplier;
-import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.targets.TargetListUtil;
-import org.eclipse.chemclipse.model.targets.TargetValidator;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
@@ -126,29 +123,15 @@ public class ExtendedPeakReviewUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if(reviewSetting != null) {
-					String name = reviewSetting.getName();
-					String casNumber = reviewSetting.getCasNumber();
-					IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, TargetValidator.IDENTIFIER);
-					addTarget(identificationTarget);
+				IPeak peak = getSelectedPeak();
+				if(peak != null && reviewSetting != null) {
+					ReviewSupport.setReview(peak, reviewSetting, true);
+					peakStatusListUI.refresh();
+					update(reviewSetting);
+					updateSelection(true);
 				}
 			}
 		});
-	}
-
-	private void addTarget(IIdentificationTarget identificationTarget) {
-
-		IPeak peak = getSelectedPeak();
-		if(peak != null && identificationTarget != null) {
-			if(peak instanceof ITargetSupplier) {
-				ITargetSupplier targetSupplier = (ITargetSupplier)peak;
-				targetSupplier.getTargets().add(identificationTarget);
-				ReviewSupport.setReview(peak, true);
-				peakStatusListUI.refresh();
-				update(reviewSetting);
-				updateSelection(true);
-			}
-		}
 	}
 
 	private void createMarkPeakButton(Composite parent) {
@@ -162,7 +145,7 @@ public class ExtendedPeakReviewUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				togglePeakReviewStatus();
+				toggleIdentificationStatus();
 			}
 		});
 	}
@@ -226,7 +209,7 @@ public class ExtendedPeakReviewUI extends Composite {
 			@Override
 			public void mouseDoubleClick(MouseEvent arg0) {
 
-				togglePeakReviewStatus();
+				toggleIdentificationStatus();
 			}
 		});
 		/*
@@ -305,13 +288,14 @@ public class ExtendedPeakReviewUI extends Composite {
 		});
 	}
 
-	private void togglePeakReviewStatus() {
+	private void toggleIdentificationStatus() {
 
 		IPeak peak = getSelectedPeak();
 		if(peak != null) {
 			boolean isPeakReviewed = ReviewSupport.isPeakReviewed(peak);
-			ReviewSupport.setReview(peak, !isPeakReviewed);
+			ReviewSupport.setReview(peak, reviewSetting, !isPeakReviewed);
 			peakStatusListUI.refresh();
+			updateSelection(false);
 		}
 	}
 
