@@ -185,6 +185,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_REVIEW_SHOW_BASELINE = false;
 	public static final String P_REVIEW_SHOW_DETAILS = "reviewShowDetails";
 	public static final boolean DEF_REVIEW_SHOW_DETAILS = false;
+	public static final String P_REVIEW_FETCH_LIBRARY_SPECTRUM = "reviewFetchLibrarySpectrum";
+	public static final boolean DEF_REVIEW_FETCH_LIBRARY_SPECTRUM = false;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -288,6 +290,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_REVIEW_SHOW_CHROMATOGRAM_XIC, Boolean.toString(DEF_REVIEW_SHOW_CHROMATOGRAM_XIC));
 		defaultValues.put(P_REVIEW_SHOW_BASELINE, Boolean.toString(DEF_REVIEW_SHOW_BASELINE));
 		defaultValues.put(P_REVIEW_SHOW_DETAILS, Boolean.toString(DEF_REVIEW_SHOW_DETAILS));
+		defaultValues.put(P_REVIEW_FETCH_LIBRARY_SPECTRUM, Boolean.toString(DEF_REVIEW_FETCH_LIBRARY_SPECTRUM));
 		//
 		return defaultValues;
 	}
@@ -586,6 +589,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		boolean show = isShowReviewDetails();
 		putBoolean(P_REVIEW_SHOW_DETAILS, !show);
+	}
+
+	public static boolean isReviewFetchLibrarySpectrum() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_REVIEW_FETCH_LIBRARY_SPECTRUM, DEF_REVIEW_FETCH_LIBRARY_SPECTRUM);
 	}
 
 	public static PeakDetectorSettings getPeakDetectorSettingsCSD() {

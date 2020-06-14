@@ -22,9 +22,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 public class PeakDetectorDirectSettings extends AbstractPeakDetectorSettingsMSD implements IPeakDetectorSettingsMSD, IPeakDetectorSettingsCSD, ITemplateSettings {
 
 	@JsonProperty(value = "Traces", defaultValue = "")
-	@JsonPropertyDescription(value = "Example: '103, 104' or empty for using TIC.")
+	@JsonPropertyDescription(value = "Example: '103 104' or empty for using TIC.")
 	@StringSettingsProperty(regExp = RE_TRACES, isMultiLine = false)
 	private String traces = "";
+	@JsonProperty(value = "Peak Detector (VV)", defaultValue = "true")
+	@JsonPropertyDescription(value = "The valley-valley peak detection is performed. Otherwise: BB.")
+	private boolean detectorTypeVV = true;
+	@JsonProperty(value = "Optimize Range", defaultValue = "false")
+	@JsonPropertyDescription(value = "If VV as a peak detection technique has been selected, the peak is optimized.")
+	private boolean optimizeRange = false;
 
 	public String getTraces() {
 
@@ -34,5 +40,25 @@ public class PeakDetectorDirectSettings extends AbstractPeakDetectorSettingsMSD 
 	public void setTraces(String traces) {
 
 		this.traces = traces;
+	}
+
+	public boolean isDetectorTypeVV() {
+
+		return detectorTypeVV;
+	}
+
+	public void setDetectorTypeVV(boolean detectorTypeVV) {
+
+		this.detectorTypeVV = detectorTypeVV;
+	}
+
+	public boolean isOptimizeRange() {
+
+		return optimizeRange;
+	}
+
+	public void setOptimizeRange(boolean optimizeRange) {
+
+		this.optimizeRange = optimizeRange;
 	}
 }

@@ -28,6 +28,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
+
 public class ExtendedComparisonUI extends Composite {
 
 	private static final float NORMALIZATION_FACTOR = 1000.0f;
@@ -35,6 +37,7 @@ public class ExtendedComparisonUI extends Composite {
 	private ScanChartUI scanChartUI;
 
 	public ExtendedComparisonUI(Composite parent, int style) {
+
 		super(parent, style);
 		createControl();
 	}
@@ -59,46 +62,55 @@ public class ExtendedComparisonUI extends Composite {
 		scanChartUI.deleteSeries();
 		if(unknownMassSpectrum != null && identificationTarget != null) {
 			IScan scanUnkown = copyScan(unknownMassSpectrum);
-			LibraryServiceRunnable runnable = new LibraryServiceRunnable(identificationTarget, new Consumer<IScanMSD>() {
-
-				@Override
-				public void accept(IScanMSD referenceMassSpectrum) {
-
-					IScan scanReference = copyScan(referenceMassSpectrum);
-					Display.getDefault().asyncExec(new Runnable() {
-
-						@Override
-						public void run() {
-
-							updateChartComparison(scanUnkown, scanReference);
-						}
-					});
-				}
-			});
-			//
-			try {
-				if(runnable.requireProgressMonitor()) {
-					DisplayUtils.executeInUserInterfaceThread(() -> {
-						ProgressMonitorDialog monitor = new ProgressMonitorDialog(this.getDisplay().getActiveShell());
-						monitor.run(true, true, runnable);
-						return null;
-					});
-				} else {
-					DisplayUtils.executeBusy(() -> {
-						runnable.run(new NullProgressMonitor());
-						return null;
-					});
-				}
-			} catch(InterruptedException e) {
-				Thread.currentThread().interrupt();
-			} catch(ExecutionException e) {
-				// Activator.getDefault().getLog().log(new Status(IStatus.ERROR, getClass().getName(), "Update scan failed", e));
+			if(PreferenceSupplier.isReviewFetchLibrarySpectrum()) {
+				runComparison(scanUnkown, identificationTarget);
+			} else {
+				updateChartComparison(scanUnkown, null);
 			}
 		} else {
 			/*
 			 * Redraw to empty the chart.
 			 */
 			scanChartUI.getBaseChart().redraw();
+		}
+	}
+
+	private void runComparison(IScan scanUnkown, IIdentificationTarget identificationTarget) {
+
+		LibraryServiceRunnable runnable = new LibraryServiceRunnable(identificationTarget, new Consumer<IScanMSD>() {
+
+			@Override
+			public void accept(IScanMSD referenceMassSpectrum) {
+
+				IScan scanReference = copyScan(referenceMassSpectrum);
+				Display.getDefault().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+
+						updateChartComparison(scanUnkown, scanReference);
+					}
+				});
+			}
+		});
+		//
+		try {
+			if(runnable.requireProgressMonitor()) {
+				DisplayUtils.executeInUserInterfaceThread(() -> {
+					ProgressMonitorDialog monitor = new ProgressMonitorDialog(this.getDisplay().getActiveShell());
+					monitor.run(true, true, runnable);
+					return null;
+				});
+			} else {
+				DisplayUtils.executeBusy(() -> {
+					runnable.run(new NullProgressMonitor());
+					return null;
+				});
+			}
+		} catch(InterruptedException e) {
+			Thread.currentThread().interrupt();
+		} catch(ExecutionException e) {
+			//
 		}
 	}
 

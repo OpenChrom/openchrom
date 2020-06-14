@@ -48,9 +48,9 @@ public class PeakDetectorDirectMSD extends AbstractPeakDetectorMSD {
 			DetectorSetting detectorSetting = new DetectorSetting();
 			detectorSetting.setStartRetentionTime(chromatogramSelection.getStartRetentionTime());
 			detectorSetting.setStopRetentionTime(chromatogramSelection.getStopRetentionTime());
-			detectorSetting.setDetectorType(PeakType.VV);
+			detectorSetting.setDetectorType(settingsDirect.isDetectorTypeVV() ? PeakType.VV : PeakType.BB);
 			detectorSetting.setTraces(settingsDirect.getTraces());
-			detectorSetting.setOptimizeRange(true);
+			detectorSetting.setOptimizeRange(settingsDirect.isOptimizeRange());
 			detectorSettings.add(detectorSetting);
 			//
 			PeakDetectorSettings settings = new PeakDetectorSettings();

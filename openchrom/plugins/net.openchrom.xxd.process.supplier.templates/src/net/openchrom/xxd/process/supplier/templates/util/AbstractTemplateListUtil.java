@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +41,7 @@ public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> imp
 	private T validator;
 
 	public AbstractTemplateListUtil(T validator) {
+
 		this.validator = validator;
 	}
 
@@ -139,30 +139,7 @@ public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> imp
 	@Override
 	public Set<Integer> extractTraces(String traces) {
 
-		Set<Integer> traceSet = new HashSet<>();
-		String[] values = traces.split(SEPARATOR_TRACE_ITEM);
-		for(String value : values) {
-			if(value.contains(SEPARATOR_TRACE_RANGE)) {
-				String[] parts = value.split(SEPARATOR_TRACE_RANGE);
-				if(parts.length == 2) {
-					int startTrace = validator.getTrace(parts[0]);
-					int stopTrace = validator.getTrace(parts[1]);
-					if(startTrace != TRACE_ERROR && stopTrace != TRACE_ERROR) {
-						if(startTrace <= stopTrace) {
-							for(int trace = startTrace; trace <= stopTrace; trace++) {
-								traceSet.add(trace);
-							}
-						}
-					}
-				}
-			} else {
-				int trace = validator.getTrace(value);
-				if(trace != TRACE_ERROR) {
-					traceSet.add(trace);
-				}
-			}
-		}
-		return traceSet;
+		return validator.extractTraces(traces);
 	}
 
 	private List<String> getValues(String[] items) {
