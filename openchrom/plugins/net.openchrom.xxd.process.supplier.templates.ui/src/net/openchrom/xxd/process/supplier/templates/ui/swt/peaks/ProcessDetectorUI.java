@@ -17,6 +17,7 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
+import org.eclipse.chemclipse.ux.extension.ui.support.PartSupport;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
@@ -33,6 +34,7 @@ import org.eclipse.swt.widgets.Table;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
+import net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakDetector;
 import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePage;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakDetectorListUI;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
@@ -40,6 +42,7 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSe
 public class ProcessDetectorUI extends Composite {
 
 	private DetectorController controller;
+	private Composite toolbarSearch;
 	private PeakDetectorListUI peakDetectorListUI;
 
 	public ProcessDetectorUI(Composite parent, int style) {
@@ -72,21 +75,28 @@ public class ProcessDetectorUI extends Composite {
 		setLayout(gridLayout);
 		//
 		createToolbarMain(this);
+		toolbarSearch = createToolbarSearch(this);
 		peakDetectorListUI = createTable(this);
+		//
+		PartSupport.setCompositeVisibility(toolbarSearch, false);
 	}
 
 	private void createToolbarMain(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		composite.setLayout(new GridLayout(3, false));
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalAlignment = SWT.END;
+		composite.setLayoutData(gridData);
+		composite.setLayout(new GridLayout(5, false));
 		//
-		createSearchSection(composite);
-		createReplacePeakButton(composite);
+		createToggleToolbarSearch(composite);
+		createButtonVisibilityTIC(composite);
+		createButtonVisibilityXIC(composite);
+		createButtonReplacePeak(composite);
 		createSettingsButton(composite);
 	}
 
-	private SearchSupportUI createSearchSection(Composite parent) {
+	private SearchSupportUI createToolbarSearch(Composite parent) {
 
 		SearchSupportUI searchSupportUI = new SearchSupportUI(parent, SWT.NONE);
 		searchSupportUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -102,20 +112,119 @@ public class ProcessDetectorUI extends Composite {
 		return searchSupportUI;
 	}
 
-	private void createReplacePeakButton(Composite parent) {
+	private Button createToggleToolbarSearch(Composite parent) {
 
-		Button button = new Button(parent, SWT.CHECK);
-		button.setText("Replace Peak");
-		button.setToolTipText("When detecting a new peak, replace the nearest peak.");
-		button.setSelection(PreferenceSupplier.isDetectorReplacePeak());
+		Button button = new Button(parent, SWT.PUSH);
+		button.setToolTipText("Toggle search toolbar.");
+		button.setText("");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				boolean visible = PartSupport.toggleCompositeVisibility(toolbarSearch);
+				if(visible) {
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+				} else {
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+				}
+			}
+		});
+		//
+		return button;
+	}
+
+	private Button createButtonVisibilityTIC(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		adjustButtonVisibilityTIC(button);
+		//
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				PreferenceSupplier.toggleShowChromatogramDetectorTIC();
+				adjustButtonVisibilityTIC(button);
+				updateSelection();
+			}
+		});
+		//
+		return button;
+	}
+
+	private void adjustButtonVisibilityTIC(Button button) {
+
+		if(PreferenceSupplier.isShowChromatogramDetectorTIC()) {
+			button.setToolTipText("TIC is active.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHROMATOGRAM_TIC_SHOW, IApplicationImage.SIZE_16x16));
+		} else {
+			button.setToolTipText("TIC is deactivated.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHROMATOGRAM_TIC_HIDE, IApplicationImage.SIZE_16x16));
+		}
+	}
+
+	private Button createButtonVisibilityXIC(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		adjustButtonVisibilityXIC(button);
+		//
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				PreferenceSupplier.toggleShowChromatogramDetectorXIC();
+				adjustButtonVisibilityXIC(button);
+				updateSelection();
+			}
+		});
+		//
+		return button;
+	}
+
+	private void adjustButtonVisibilityXIC(Button button) {
+
+		if(PreferenceSupplier.isShowChromatogramDetectorXIC()) {
+			button.setToolTipText("XIC is active.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHROMATOGRAM_XIC_SHOW, IApplicationImage.SIZE_16x16));
+		} else {
+			button.setToolTipText("XIC is deactivated.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHROMATOGRAM_XIC_HIDE, IApplicationImage.SIZE_16x16));
+		}
+	}
+
+	private Button createButtonReplacePeak(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		adjustDetectorButton(button);
+		//
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
 				PreferenceSupplier.toggleDetectorReplacePeak();
+				adjustDetectorButton(button);
 			}
 		});
+		//
+		return button;
+	}
+
+	private void adjustDetectorButton(Button button) {
+
+		if(PreferenceSupplier.isDetectorReplacePeak()) {
+			button.setToolTipText("Replace the nearest peak.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PEAK_REPLACE, IApplicationImage.SIZE_16x16));
+		} else {
+			button.setToolTipText("Add the peak.");
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PEAK_ADD, IApplicationImage.SIZE_16x16));
+		}
 	}
 
 	private void createSettingsButton(Composite parent) {
@@ -130,7 +239,8 @@ public class ProcessDetectorUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				PreferenceManager preferenceManager = new PreferenceManager();
-				preferenceManager.addToRoot(new PreferenceNode("1", new PreferencePage()));
+				preferenceManager.addToRoot(new PreferenceNode("1", new PagePeakDetector()));
+				preferenceManager.addToRoot(new PreferenceNode("2", new PreferencePage()));
 				//
 				PreferenceDialog preferenceDialog = new PreferenceDialog(e.display.getActiveShell(), preferenceManager);
 				preferenceDialog.create();
