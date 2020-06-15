@@ -95,11 +95,6 @@ public class TracesValidator implements IValidator {
 					}
 				}
 			}
-		} else {
-			/*
-			 * TIC
-			 * Don't add 0.
-			 */
 		}
 		//
 		if(message != null) {
