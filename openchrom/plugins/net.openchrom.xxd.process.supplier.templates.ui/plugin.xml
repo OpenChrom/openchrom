@@ -91,7 +91,43 @@
             category="org.eclipse.chemclipse.chromatogram.xxd.report.ui.preferences.reportPreferencePage"
             class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageChromatogramReport"
             id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageChromatogramReport">
-      </page>                                                  
+      </page>
+      <page
+            name="Standards Assigner (Export)"
+            category="net.openchrom.xxd.process.supplier.templates.ui.preferences.preferencePage"
+            class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageExportAssigner"
+            id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageExportAssigner">
+      </page>
+      <page
+            name="Peak Detector (Export)"
+            category="net.openchrom.xxd.process.supplier.templates.ui.preferences.preferencePage"
+            class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageExportDetector"
+            id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageExportDetector">
+      </page>
+      <page
+            name="Peak Identifier (Export)"
+            category="net.openchrom.xxd.process.supplier.templates.ui.preferences.preferencePage"
+            class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageExportIdentifier"
+            id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageExportIdentifier">
+      </page>
+      <page
+            name="Standards Referencer (Export)"
+            category="net.openchrom.xxd.process.supplier.templates.ui.preferences.preferencePage"
+            class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageExportReferencer"
+            id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageExportReferencer">
+      </page>
+      <page
+            name="Report (Export)"
+            category="net.openchrom.xxd.process.supplier.templates.ui.preferences.preferencePage"
+            class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageExportReport"
+            id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageExportReport">
+      </page>
+      <page
+            name="Peak Review (Export)"
+            category="net.openchrom.xxd.process.supplier.templates.ui.preferences.preferencePage"
+            class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageExportReview"
+            id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageExportReview">
+      </page>                                                 
    </extension>
    <extension
          point="org.eclipse.chemclipse.chromatogram.msd.peak.detector.peakDetectorSupplier">
