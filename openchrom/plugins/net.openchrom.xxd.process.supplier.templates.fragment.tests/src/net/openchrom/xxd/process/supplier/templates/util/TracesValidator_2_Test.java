@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
+import java.util.Set;
+
 import org.eclipse.core.runtime.IStatus;
 
 import junit.framework.TestCase;
@@ -41,8 +43,9 @@ public class TracesValidator_2_Test extends TestCase {
 	public void test2() {
 
 		IStatus status = tracesValidator.validate("");
-		assertFalse(status.isOK());
-		assertEquals(0, tracesValidator.getTraces().size());
+		assertTrue(status.isOK());
+		Set<Integer> traces = tracesValidator.getTraces();
+		assertEquals(0, traces.size()); // TIC
 	}
 
 	public void test3() {

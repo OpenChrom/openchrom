@@ -24,7 +24,6 @@ import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.Abstr
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.MESSAGE_REMOVE_ALL;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE_ALL_TOOLTIP;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE_TOOLTIP;
-import static org.eclipse.chemclipse.support.ui.swt.ControlBuilder.checkbox;
 
 import java.io.File;
 import java.io.IOException;
@@ -131,7 +130,10 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	private void createLabelSection(Composite parent) {
 
 		if(preferences != null && isPeakDetector(preferences.getSupplier().getId())) {
-			Button button = checkbox(control, "Use Comment as Names", useCommentAsNames);
+			Button button = new Button(parent, SWT.CHECK);
+			button.setText("Use Comment as Names");
+			button.setToolTipText("Comments are used as names.");
+			button.setSelection(useCommentAsNames);
 			button.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			button.addSelectionListener(new SelectionAdapter() {
 
@@ -288,7 +290,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(IMPORT_TITLE);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override

@@ -32,7 +32,9 @@ public class TracesValidator implements IValidator {
 		traceSet.clear();
 		String message = null;
 		//
-		if(value instanceof String && !"".equals(value)) {
+		if(value == null) {
+			message = "Invalid input.";
+		} else if(value instanceof String && !"".equals(value)) {
 			/*
 			 * Preparation(s)
 			 */
@@ -94,7 +96,10 @@ public class TracesValidator implements IValidator {
 				}
 			}
 		} else {
-			message = "Invalid input.";
+			/*
+			 * TIC
+			 * Don't add 0.
+			 */
 		}
 		//
 		if(message != null) {
