@@ -86,7 +86,6 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	private List<Listener> listeners = new ArrayList<>();
 	private List<Button> buttons = new ArrayList<>();
 	private ProcessorPreferences<PeakDetectorSettings> preferences;
-	private boolean useCommentAsNames;
 
 	public TemplatePeakListEditor(Composite parent, ProcessorPreferences<PeakDetectorSettings> preferences, PeakDetectorSettings settings) {
 
@@ -104,47 +103,60 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		createToolbarMain(composite);
 		searchSupportUI = createSearchSection(composite);
 		peakDetectorListUI = createTableSection(composite);
-		createLabelSection(composite);
 		//
 		PartSupport.setCompositeVisibility(searchSupportUI, false);
 		setTableViewerInput();
 		setControl(composite);
 	}
 
-	private SearchSupportUI createSearchSection(Composite parent) {
+	@Override
+	public void setEnabled(boolean enabled) {
 
-		SearchSupportUI searchSupportUI = new SearchSupportUI(parent, SWT.NONE);
-		searchSupportUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		searchSupportUI.setSearchListener(new ISearchListener() {
-
-			@Override
-			public void performSearch(String searchText, boolean caseSensitive) {
-
-				peakDetectorListUI.setSearchText(searchText, caseSensitive);
-			}
-		});
-		//
-		return searchSupportUI;
+		peakDetectorListUI.getControl().setEnabled(enabled);
+		for(Button button : buttons) {
+			button.setEnabled(enabled);
+		}
+		searchSupportUI.setEnabled(enabled);
 	}
 
-	private void createLabelSection(Composite parent) {
+	@Override
+	public IStatus validate() {
 
-		if(preferences != null && isPeakDetector(preferences.getSupplier().getId())) {
-			Button button = new Button(parent, SWT.CHECK);
-			button.setText("Use Comment as Names");
-			button.setToolTipText("Comments are used as names.");
-			button.setSelection(useCommentAsNames);
-			button.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			button.addSelectionListener(new SelectionAdapter() {
+		return ValidationStatus.ok();
+	}
 
-				@Override
-				public void widgetSelected(SelectionEvent se) {
+	@Override
+	public String getSettings() throws IOException {
 
-					useCommentAsNames = button.getSelection();
-					notifyListener();
-				}
-			});
+		if(preferences != null) {
+			PeakDetectorSettings settingz = new PeakDetectorSettings();
+			settingz.setDetectorSettings(settings.save());
+			return preferences.getSerialization().toString(settingz);
 		}
+		return "";
+	}
+
+	@Override
+	public void addChangeListener(Listener listener) {
+
+		listeners.add(listener);
+	}
+
+	@Override
+	public Control getControl() {
+
+		return control;
+	}
+
+	public void load(String entries) {
+
+		settings.load(entries);
+		setTableViewerInput();
+	}
+
+	public String getValues() {
+
+		return settings.save();
 	}
 
 	private PeakDetectorListUI createTableSection(Composite parent) {
@@ -160,7 +172,6 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
 		peakDetectorListUI.applySettings(tableSettings);
-		peakDetectorListUI.setListener(this::notifyListener);
 		//
 		return peakDetectorListUI;
 	}
@@ -369,31 +380,9 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	private void setTableViewerInput() {
 
 		peakDetectorListUI.setInput(settings);
-		notifyListener();
-	}
-
-	private void notifyListener() {
-
 		for(Listener listener : listeners) {
 			listener.handleEvent(new Event());
 		}
-	}
-
-	@Override
-	public Control getControl() {
-
-		return control;
-	}
-
-	public void load(String entries) {
-
-		settings.load(entries);
-		setTableViewerInput();
-	}
-
-	public String getValues() {
-
-		return settings.save();
 	}
 
 	private void createToolbarMain(Composite parent) {
@@ -417,6 +406,22 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	private void add(Button button) {
 
 		buttons.add(button);
+	}
+
+	private SearchSupportUI createSearchSection(Composite parent) {
+
+		SearchSupportUI searchSupportUI = new SearchSupportUI(parent, SWT.NONE);
+		searchSupportUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		searchSupportUI.setSearchListener(new ISearchListener() {
+
+			@Override
+			public void performSearch(String searchText, boolean caseSensitive) {
+
+				peakDetectorListUI.setSearchText(searchText, caseSensitive);
+			}
+		});
+		//
+		return searchSupportUI;
 	}
 
 	private void addDeleteMenuEntry(Shell shell, ITableSettings tableSettings) {
@@ -470,53 +475,6 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 			settings.removeAll(removeElements);
 			setTableViewerInput();
 		}
-	}
-
-	@Override
-	public void addChangeListener(Listener listener) {
-
-		listeners.add(listener);
-	}
-
-	@Override
-	public void setEnabled(boolean enabled) {
-
-		peakDetectorListUI.getControl().setEnabled(enabled);
-		for(Button button : buttons) {
-			button.setEnabled(enabled);
-		}
-		searchSupportUI.setEnabled(enabled);
-	}
-
-	@Override
-	public IStatus validate() {
-
-		String id = preferences.getSupplier().getId();
-		if(preferences != null && isPeakDetector(id) && settings.isEmpty()) {
-			return ValidationStatus.error("At least one item is required");
-		}
-		return ValidationStatus.ok();
-	}
-
-	/**
-	 * 
-	 * @param id
-	 * @return <code>true</code> if this is the peakdetector (in contrast to the UI version)
-	 */
-	private boolean isPeakDetector(String id) {
-
-		return id.equals("PeakDetectorMSD.net.openchrom.xxd.process.supplier.templates.peaks.detector.msd");
-	}
-
-	@Override
-	public String getSettings() throws IOException {
-
-		if(preferences != null) {
-			PeakDetectorSettings s = new PeakDetectorSettings();
-			s.setDetectorSettings(settings.save());
-			return preferences.getSerialization().toString(s);
-		}
-		return "";
 	}
 
 	private void setControl(Composite composite) {

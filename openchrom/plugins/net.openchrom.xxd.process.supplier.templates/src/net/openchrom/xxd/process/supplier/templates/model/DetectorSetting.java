@@ -20,6 +20,7 @@ public class DetectorSetting extends AbstractSetting {
 	private String traces = "";
 	private boolean optimizeRange = false;
 	private String referenceIdentifier = ""; // Used for relative retention time
+	private String name = ""; // Used to set a simple identification ... but rather use the peak identifier
 
 	public void copyFrom(DetectorSetting setting) {
 
@@ -30,6 +31,7 @@ public class DetectorSetting extends AbstractSetting {
 			setTraces(setting.getTraces());
 			setOptimizeRange(setting.isOptimizeRange());
 			setReferenceIdentifier(setting.getReferenceIdentifier());
+			setName(setting.getName());
 		}
 	}
 
@@ -41,6 +43,11 @@ public class DetectorSetting extends AbstractSetting {
 	public void setDetectorType(PeakType detectorType) {
 
 		this.detectorType = detectorType;
+	}
+
+	public boolean isIncludeBackground() {
+
+		return (PeakType.VV.equals(detectorType)) ? true : false;
 	}
 
 	public String getTraces() {
@@ -73,6 +80,16 @@ public class DetectorSetting extends AbstractSetting {
 		this.referenceIdentifier = referenceIdentifier;
 	}
 
+	public String getName() {
+
+		return name;
+	}
+
+	public void setName(String name) {
+
+		this.name = name;
+	}
+
 	@Override
 	public String toString() {
 
@@ -82,6 +99,7 @@ public class DetectorSetting extends AbstractSetting {
 				", traces=" + traces + //
 				", optimizeRange=" + optimizeRange + //
 				", referenceIdentifier=" + referenceIdentifier + //
+				", name=" + name + //
 				"]";
 	}
 }

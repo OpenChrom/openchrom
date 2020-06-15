@@ -33,6 +33,7 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 	private String column;
 
 	public PeakDetectorEditingSupport(ExtendedTableViewer tableViewer, String column) {
+
 		super(tableViewer);
 		this.column = column;
 		if(column.equals(PeakDetectorLabelProvider.OPTIMIZE_RANGE)) {
@@ -41,7 +42,7 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite)tableViewer.getControl());
 			ComboViewer comboViewer = editor.getViewer();
 			comboViewer.setContentProvider(ArrayContentProvider.getInstance());
-			comboViewer.setInput(PeakDetectorValidator.USEFULL_TYPES);
+			comboViewer.setInput(PeakDetectorValidator.DETECTOR_TYPES);
 			this.cellEditor = editor;
 		} else {
 			this.cellEditor = new TextCellEditor(tableViewer.getTable());
@@ -75,6 +76,8 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 					return setting.isOptimizeRange();
 				case PeakDetectorLabelProvider.REFERENCE_IDENTIFIER:
 					return setting.getReferenceIdentifier();
+				case PeakDetectorLabelProvider.NAME:
+					return setting.getName();
 			}
 		}
 		return false;
@@ -105,6 +108,10 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 				case PeakDetectorLabelProvider.REFERENCE_IDENTIFIER:
 					String referenceIdentifier = ((String)value).trim();
 					setting.setReferenceIdentifier(referenceIdentifier);
+					break;
+				case PeakDetectorLabelProvider.NAME:
+					String name = ((String)value).trim();
+					setting.setName(name);
 					break;
 			}
 			tableViewer.update(element, null);

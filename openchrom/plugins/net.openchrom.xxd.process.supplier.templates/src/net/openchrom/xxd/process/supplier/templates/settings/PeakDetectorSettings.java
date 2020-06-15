@@ -33,7 +33,7 @@ public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implem
 
 	public static final String DETECTOR_DESCRIPTION = "Template Detector";
 	/*
-	 * 10.52 | 10.63 | VV | 103, 104, 108-110 | true | Styrene
+	 * 10.52 | 10.63 | VV | 103, 104, 108-110 | true | Styrene | Benzene
 	 */
 	@JsonProperty(value = "Detector Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'")

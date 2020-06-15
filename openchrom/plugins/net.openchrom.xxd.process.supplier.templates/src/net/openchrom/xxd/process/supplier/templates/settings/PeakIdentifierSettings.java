@@ -33,7 +33,7 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator
 
 public class PeakIdentifierSettings extends AbstractIdentifierSettings implements IPeakIdentifierSettingsMSD, IPeakIdentifierSettingsCSD, ITemplateSettings {
 
-	public static final String DESCRIPTION = "Template Peak Identifier";
+	public static final String IDENTIFIER_DESCRIPTION = "Template Peak Identifier";
 	/*
 	 * 10.52 | 10.63 | Styrene | 100-42-5 | comment | contributor | referenceId | 103, 104
 	 */

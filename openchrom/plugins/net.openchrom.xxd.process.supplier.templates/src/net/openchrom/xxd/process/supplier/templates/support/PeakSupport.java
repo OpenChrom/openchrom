@@ -25,7 +25,6 @@ import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
-import org.eclipse.chemclipse.model.support.IRetentionTimeRange;
 import org.eclipse.chemclipse.model.support.IScanRange;
 import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
@@ -45,7 +44,7 @@ public class PeakSupport {
 	private static final Logger logger = Logger.getLogger(PeakSupport.class);
 	private TargetExtendedComparator comparator = new TargetExtendedComparator(SortOrder.DESC);
 
-	public IRetentionTimeRange getRetentionTimeRange(List<? extends IPeak> peaks, AbstractSetting setting, String referenceIdentifier) {
+	public RetentionTimeRange getRetentionTimeRange(List<? extends IPeak> peaks, AbstractSetting setting, String referenceIdentifier) {
 
 		int startRetentionTime = setting.getStartRetentionTime();
 		int stopRetentionTime = setting.getStopRetentionTime();

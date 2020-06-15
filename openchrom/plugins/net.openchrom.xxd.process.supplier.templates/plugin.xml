@@ -7,7 +7,7 @@
             description="This peak detector tries to detect peaks by using ranges from a template."
             id="net.openchrom.xxd.process.supplier.templates.peaks.detector.msd"
             peakDetector="net.openchrom.xxd.process.supplier.templates.peaks.PeakDetector"
-            peakDetectorName="Template Peak Detector (MSD)"
+            peakDetectorName="Peak Detector [Template]"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
       </PeakDetector>
    </extension>
@@ -17,7 +17,7 @@
             description="This peak detector tries to detect peaks by using ranges from a template."
             id="net.openchrom.xxd.process.supplier.templates.peaks.detector.csd"
             peakDetector="net.openchrom.xxd.process.supplier.templates.peaks.PeakDetector"
-            peakDetectorName="Template Peak Detector (CSD)"
+            peakDetectorName="Peak Detector [Template]"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
       </PeakDetector>
    </extension> 
@@ -27,7 +27,7 @@
             description="This peak identifier tries to identify peaks by using ranges from a template."
             id="net.openchrom.xxd.process.supplier.templates.peaks.identifier.msd"
             identifier="net.openchrom.xxd.process.supplier.templates.peaks.PeakIdentifierMSD"
-            identifierName="Template Peak Identifier (MSD)"
+            identifierName="Peak Identifier [Template]"
             identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings">
       </PeakIdentificationSupplier>
    </extension>   
@@ -37,7 +37,7 @@
             description="This peak identifier tries to identify peaks by using ranges from a template."
             id="net.openchrom.xxd.process.supplier.templates.peaks.identifier.csd"
             identifier="net.openchrom.xxd.process.supplier.templates.peaks.PeakIdentifierCSD"
-            identifierName="Template Peak Identifier (CSD)"
+            identifierName="Peak Identifier [Template]"
             identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings">
       </PeakIdentificationSupplier>
    </extension>
@@ -78,7 +78,7 @@
             description="This template peak integrator allows to select integration methods."
             id="net.openchrom.xxd.process.supplier.templates.peakIntegrator"
             integrator="net.openchrom.xxd.process.supplier.templates.peaks.TemplateIntegrator"
-            integratorName="Peak Integrator Template"
+            integratorName="Peak Integrator [Template]"
             integratorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakIntegrationSettings">
       </PeakIntegratorSupplier>
    </extension>
@@ -88,7 +88,7 @@
             description="This peak detector tries to transfer peaks 1:1 to the referenced chromatograms."
             id="net.openchrom.xxd.process.supplier.templates.peaks.transfer.msd"
             peakDetector="net.openchrom.xxd.process.supplier.templates.peaks.PeakTransfer"
-            peakDetectorName="Template Peak Transfer (MSD)"
+            peakDetectorName="Peak Transfer [Template]"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakTransferSettings">
       </PeakDetector>
    </extension>
@@ -98,7 +98,7 @@
             description="This peak detector tries to transfer peaks 1:1 to the referenced chromatograms"
             id="net.openchrom.xxd.process.supplier.templates.peaks.transfer.csd"
             peakDetector="net.openchrom.xxd.process.supplier.templates.peaks.PeakTransfer"
-            peakDetectorName="Template Peak Transfer (CSD)"
+            peakDetectorName="Peak Transfer [Template]"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakTransferSettings">
       </PeakDetector>
    </extension>   

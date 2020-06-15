@@ -22,6 +22,7 @@ public class PeakDetectorFieldEditor extends AbstractFieldEditor {
 	private TemplatePeakListEditor editor;
 
 	public PeakDetectorFieldEditor(String name, String labelText, Composite parent) {
+
 		init(name, labelText);
 		createControl(parent);
 	}

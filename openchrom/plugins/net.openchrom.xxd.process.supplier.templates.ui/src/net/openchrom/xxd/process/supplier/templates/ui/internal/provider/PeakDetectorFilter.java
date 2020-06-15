@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,10 +40,14 @@ public class PeakDetectorFilter extends ViewerFilter {
 			DetectorSetting setting = (DetectorSetting)element;
 			PeakType detectorType = setting.getDetectorType();
 			String traces = setting.getTraces();
+			String referenceIdenfifier = setting.getReferenceIdentifier();
+			String name = setting.getName();
 			//
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				traces = traces.toLowerCase();
+				referenceIdenfifier = referenceIdenfifier.toLowerCase();
+				name = name.toLowerCase();
 			}
 			//
 			if(detectorType != null) {
@@ -53,6 +58,14 @@ public class PeakDetectorFilter extends ViewerFilter {
 			}
 			//
 			if(traces.contains(searchText)) {
+				return true;
+			}
+			//
+			if(referenceIdenfifier.contains(searchText)) {
+				return true;
+			}
+			//
+			if(name.contains(searchText)) {
 				return true;
 			}
 		}

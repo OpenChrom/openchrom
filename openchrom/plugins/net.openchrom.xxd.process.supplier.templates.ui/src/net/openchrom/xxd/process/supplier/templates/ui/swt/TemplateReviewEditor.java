@@ -91,9 +91,6 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 
 	public TemplateReviewEditor(Composite parent, ProcessorPreferences<PeakReviewSettings> preferences, PeakReviewSettings settings) {
 
-		/*
-		 * Load the preferences
-		 */
 		this.preferences = preferences;
 		if(settings != null) {
 			this.settings.load(settings.getReviewSettings());

@@ -24,7 +24,8 @@ import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 
 public class PeakDetectorValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
-	public static final Set<PeakType> USEFULL_TYPES = Collections.unmodifiableSet(EnumSet.of(PeakType.BB, PeakType.VV, PeakType.DD));
+	public static final Set<PeakType> DETECTOR_TYPES = Collections.unmodifiableSet(EnumSet.of(PeakType.VV, PeakType.BB));
+	//
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = PeakDetectorListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = PeakDetectorListUtil.SEPARATOR_ENTRY;
@@ -36,6 +37,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 	private String traces = "";
 	private boolean optimizeRange = true;
 	private String referenceIdentifier = "";
+	private String name = "";
 
 	@Override
 	public IStatus validate(Object value) {
@@ -71,14 +73,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 						//
 						detectorType = parseType(parseString(values, 2));
 						if(detectorType == null) {
-							StringBuilder sb = new StringBuilder();
-							for(PeakType peakType : USEFULL_TYPES) {
-								if(sb.length() > 0) {
-									sb.append(", ");
-								}
-								sb.append(peakType.name());
-							}
-							message = "The detector type must be one of " + sb;
+							message = "Please select a detector type: " + PeakType.VV + " or " + PeakType.BB;
 						}
 						//
 						String traceValues = parseString(values, 3);
@@ -87,6 +82,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 						//
 						optimizeRange = parseBoolean(values, 4, false);
 						referenceIdentifier = parseString(values, 5, "");
+						name = parseString(values, 6, "");
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -108,7 +104,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 		if(parseString != null) {
 			try {
 				PeakType type = PeakType.valueOf(parseString.toUpperCase());
-				if(USEFULL_TYPES.contains(type)) {
+				if(DETECTOR_TYPES.contains(type)) {
 					return type;
 				}
 			} catch(RuntimeException e) {
@@ -127,6 +123,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 		setting.setTraces(traces);
 		setting.setOptimizeRange(optimizeRange);
 		setting.setReferenceIdentifier(referenceIdentifier);
+		setting.setName(name);
 		return setting;
 	}
 }

@@ -21,6 +21,7 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.PeakType;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,6 +55,12 @@ public class DetectorExport extends AbstractChromatogramExportConverter implemen
 			detectorSetting.setTraces(extractTraces(peak, numberTraces));
 			detectorSetting.setOptimizeRange(optimizeRange);
 			detectorSetting.setReferenceIdentifier("");
+			IIdentificationTarget identificationTarget = IIdentificationTarget.getBestIdentificationTarget(peak.getTargets());
+			if(identificationTarget != null) {
+				detectorSetting.setName(identificationTarget.getLibraryInformation().getName());
+			} else {
+				detectorSetting.setName("");
+			}
 			detectorSettings.add(detectorSetting);
 		}
 		//

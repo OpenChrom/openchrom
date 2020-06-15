@@ -88,7 +88,7 @@ public abstract class AbstractPeakIdentifier {
 					identifyPeak(peaks, identifierSetting);
 				}
 			} else {
-				processingInfo.addErrorMessage(PeakIdentifierSettings.DESCRIPTION, "The settings instance is wrong.");
+				processingInfo.addErrorMessage(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION, "The settings instance is wrong.");
 			}
 		}
 		return processingInfo;
@@ -117,7 +117,7 @@ public abstract class AbstractPeakIdentifier {
 							libraryInformation.setReferenceIdentifier(identifierSetting.getReference());
 							IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
 							IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
-							identificationTarget.setIdentifier(PeakIdentifierSettings.DESCRIPTION);
+							identificationTarget.setIdentifier(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION);
 							peak.getTargets().add(identificationTarget);
 						}
 					}
@@ -199,10 +199,10 @@ public abstract class AbstractPeakIdentifier {
 
 		IProcessingInfo<T> processingInfo = new ProcessingInfo<>();
 		if(peaks == null) {
-			processingInfo.addErrorMessage(PeakIdentifierSettings.DESCRIPTION, "The peaks selection must not be null.");
+			processingInfo.addErrorMessage(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION, "The peaks selection must not be null.");
 		}
 		if(settings == null) {
-			processingInfo.addErrorMessage(PeakIdentifierSettings.DESCRIPTION, "The peak identifier settings must not be null.");
+			processingInfo.addErrorMessage(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION, "The peak identifier settings must not be null.");
 		}
 		return processingInfo;
 	}

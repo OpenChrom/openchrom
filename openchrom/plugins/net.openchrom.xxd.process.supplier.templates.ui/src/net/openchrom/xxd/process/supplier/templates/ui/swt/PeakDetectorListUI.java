@@ -33,9 +33,9 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 	private PeakDetectorLabelProvider labelProvider = new PeakDetectorLabelProvider();
 	private PeakDetectorComparator tableComparator = new PeakDetectorComparator();
 	private PeakDetectorFilter listFilter = new PeakDetectorFilter();
-	private Runnable updateListener;
 
 	public PeakDetectorListUI(Composite parent, int style) {
+
 		super(parent, style);
 		createColumns();
 	}
@@ -75,30 +75,9 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
 			} else if(label.equals(PeakDetectorLabelProvider.REFERENCE_IDENTIFIER)) {
 				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
+			} else if(label.equals(PeakDetectorLabelProvider.NAME)) {
+				tableViewerColumn.setEditingSupport(new PeakDetectorEditingSupport(this, label));
 			}
 		}
-	}
-
-	@Override
-	protected void internalRefresh(Object element) {
-
-		super.internalRefresh(element);
-		if(updateListener != null) {
-			updateListener.run();
-		}
-	}
-
-	@Override
-	public void update(Object element, String[] properties) {
-
-		super.update(element, properties);
-		if(updateListener != null) {
-			updateListener.run();
-		}
-	}
-
-	public void setListener(Runnable runnable) {
-
-		this.updateListener = runnable;
 	}
 }
