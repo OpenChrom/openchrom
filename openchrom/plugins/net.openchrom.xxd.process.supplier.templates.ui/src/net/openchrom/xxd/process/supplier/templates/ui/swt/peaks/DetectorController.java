@@ -17,9 +17,17 @@ import java.util.List;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.targets.TargetValidator;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.IAxisSet;
+import org.eclipse.swtchart.Range;
+import org.eclipse.swtchart.extensions.core.BaseChart;
+import org.eclipse.swtchart.extensions.core.ICustomSelectionHandler;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -102,8 +110,8 @@ public class DetectorController {
 							chartSettings.setShowChromatogramTIC(PreferenceSupplier.isShowChromatogramDetectorTIC());
 							chartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramDetectorXIC());
 							chartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineDetector());
-							chartSettings.setDeltaRetentionTimeLeft(PreferenceSupplier.getReviewDeltaLeftMilliseconds());
-							chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getReviewDeltaRightMilliseconds());
+							chartSettings.setDeltaRetentionTimeLeft(PreferenceSupplier.getDetectorDeltaLeftMilliseconds());
+							chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getDetectorDeltaRightMilliseconds());
 							chartSettings.setReplacePeak(PreferenceSupplier.isDetectorReplacePeak());
 							//
 							peakDetectorChart.update(detectorRange, chartSettings);
@@ -147,8 +155,63 @@ public class DetectorController {
 			@Override
 			public void update(IPeak peak) {
 
-				peak.setDetectorDescription(DETECTOR_DESCRIPTION);
-				updatePeakStatusUI(peak);
+				if(peak != null) {
+					/*
+					 * Get the current selection.
+					 */
+					BaseChart baseChart = peakDetectorChart.getBaseChart();
+					IAxisSet axisSet = baseChart.getAxisSet();
+					IAxis xAxis = axisSet.getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
+					IAxis yAxis = axisSet.getXAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+					Range selectedRangeX = new Range(xAxis.getRange().lower, xAxis.getRange().upper);
+					Range selectedRangeY = new Range(yAxis.getRange().lower, yAxis.getRange().upper);
+					/*
+					 * Label the peak.
+					 */
+					peak.setDetectorDescription(DETECTOR_DESCRIPTION);
+					if(detectorSetting != null) {
+						String name = detectorSetting.getName();
+						String casNumber = "";
+						IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, TargetValidator.IDENTIFIER);
+						if(identificationTarget != null) {
+							peak.getTargets().add(identificationTarget);
+						}
+					}
+					/*
+					 * Update the chart and list.
+					 */
+					updateDetectorChart();
+					updatePeakStatusUI(peak);
+					/*
+					 * Keep the selection
+					 */
+					peakDetectorChart.updateRange(selectedRangeX, selectedRangeY);
+				}
+			}
+		});
+		//
+		peakDetectorChart.getBaseChart().addCustomRangeSelectionHandler(new ICustomSelectionHandler() {
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public void handleUserSelection(Event event) {
+
+				BaseChart baseChart = peakDetectorChart.getBaseChart();
+				Range rangeX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS).getRange();
+				if(processSettings != null) {
+					IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
+					if(chromatogram != null) {
+						/*
+						 * Settings
+						 */
+						int startRetentionTime = (int)rangeX.lower;
+						int stopRetentionTime = (int)rangeX.upper;
+						List<IPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
+						if(extendedPeaksUI != null) {
+							extendedPeaksUI.setInput(detectorSetting, peaks, null);
+						}
+					}
+				}
 			}
 		});
 	}
@@ -173,7 +236,7 @@ public class DetectorController {
 						 */
 						int startRetentionTime = getStartRetentionTime();
 						int stopRetentionTime = getStopRetentionTime();
-						peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
+						peaks.addAll(chromatogram.getPeaks(startRetentionTime, stopRetentionTime));
 					}
 				}
 			}

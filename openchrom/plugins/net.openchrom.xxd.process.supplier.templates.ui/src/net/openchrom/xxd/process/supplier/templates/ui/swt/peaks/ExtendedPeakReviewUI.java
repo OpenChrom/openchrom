@@ -338,7 +338,7 @@ public class ExtendedPeakReviewUI extends Composite {
 
 	private void autoSelectBestMatch() {
 
-		if(PreferenceSupplier.isAutoSelectBestPeakMatch()) {
+		if(PreferenceSupplier.isReviewAutoSelectBestPeakMatch()) {
 			if(peaks != null) {
 				exitloop:
 				for(int i = 0; i < peaks.size(); i++) {

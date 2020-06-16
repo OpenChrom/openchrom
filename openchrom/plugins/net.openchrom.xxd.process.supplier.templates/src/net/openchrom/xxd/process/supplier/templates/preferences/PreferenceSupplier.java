@@ -171,12 +171,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int DEF_REVIEW_UI_DELTA_RIGHT_MILLISECONDS = 0;
 	public static final String P_REVIEW_UI_REPLACE_PEAK = "reviewUIReplacePeak";
 	public static final boolean DEF_REVIEW_UI_REPLACE_PEAK = true;
-	public static final String P_SET_REVIEW_TARGET_NAME = "setReviewTargetName";
-	public static final boolean DEF_SET_REVIEW_TARGET_NAME = false;
-	public static final String P_AUTO_SELECT_BEST_PEAK_MATCH = "autoSelectBestPeakMatch";
-	public static final boolean DEF_AUTO_SELECT_BEST_PEAK_MATCH = false;
-	public static final String P_AUTO_LABEL_DETECTED_PEAK = "autoLabelDetectedPeak";
-	public static final boolean DEF_AUTO_LABEL_DETECTED_PEAK = true;
+	public static final String P_REVIEW_SET_TARGET_NAME = "reviewStReviewTargetName";
+	public static final boolean DEF_REVIEW_SET_TARGET_NAME = false;
+	public static final String P_REVIEW_AUTO_SELECT_BEST_PEAK_MATCH = "reviewAutoSelectBestPeakMatch";
+	public static final boolean DEF_REVIEW_AUTO_SELECT_BEST_PEAK_MATCH = false;
+	public static final String P_REVIEW_AUTO_LABEL_DETECTED_PEAK = "reviewAutoLabelDetectedPeak";
+	public static final boolean DEF_REVIEW_AUTO_LABEL_DETECTED_PEAK = true;
 	public static final String P_REVIEW_SHOW_CHROMATOGRAM_TIC = "reviewShowChromatogramTIC";
 	public static final boolean DEF_REVIEW_SHOW_CHROMATOGRAM_TIC = true;
 	public static final String P_REVIEW_SHOW_CHROMATOGRAM_XIC = "reviewShowChromatogramXIC";
@@ -283,9 +283,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_REVIEW_UI_DELTA_LEFT_MILLISECONDS, Integer.toString(DEF_REVIEW_UI_DELTA_LEFT_MILLISECONDS));
 		defaultValues.put(P_REVIEW_UI_DELTA_RIGHT_MILLISECONDS, Integer.toString(DEF_REVIEW_UI_DELTA_RIGHT_MILLISECONDS));
 		defaultValues.put(P_REVIEW_UI_REPLACE_PEAK, Boolean.toString(DEF_REVIEW_UI_REPLACE_PEAK));
-		defaultValues.put(P_SET_REVIEW_TARGET_NAME, Boolean.toString(DEF_SET_REVIEW_TARGET_NAME));
-		defaultValues.put(P_AUTO_SELECT_BEST_PEAK_MATCH, Boolean.toString(DEF_AUTO_SELECT_BEST_PEAK_MATCH));
-		defaultValues.put(P_AUTO_LABEL_DETECTED_PEAK, Boolean.toString(DEF_AUTO_LABEL_DETECTED_PEAK));
+		defaultValues.put(P_REVIEW_SET_TARGET_NAME, Boolean.toString(DEF_REVIEW_SET_TARGET_NAME));
+		defaultValues.put(P_REVIEW_AUTO_SELECT_BEST_PEAK_MATCH, Boolean.toString(DEF_REVIEW_AUTO_SELECT_BEST_PEAK_MATCH));
+		defaultValues.put(P_REVIEW_AUTO_LABEL_DETECTED_PEAK, Boolean.toString(DEF_REVIEW_AUTO_LABEL_DETECTED_PEAK));
 		defaultValues.put(P_REVIEW_SHOW_CHROMATOGRAM_TIC, Boolean.toString(DEF_REVIEW_SHOW_CHROMATOGRAM_TIC));
 		defaultValues.put(P_REVIEW_SHOW_CHROMATOGRAM_XIC, Boolean.toString(DEF_REVIEW_SHOW_CHROMATOGRAM_XIC));
 		defaultValues.put(P_REVIEW_SHOW_BASELINE, Boolean.toString(DEF_REVIEW_SHOW_BASELINE));
@@ -525,22 +525,22 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		putBoolean(P_REVIEW_UI_REPLACE_PEAK, !replacePeak);
 	}
 
-	public static boolean isSetReviewTargetName() {
+	public static boolean isReviewSetTargetName() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_SET_REVIEW_TARGET_NAME, DEF_SET_REVIEW_TARGET_NAME);
+		return preferences.getBoolean(P_REVIEW_SET_TARGET_NAME, DEF_REVIEW_SET_TARGET_NAME);
 	}
 
-	public static boolean isAutoSelectBestPeakMatch() {
+	public static boolean isReviewAutoSelectBestPeakMatch() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_AUTO_SELECT_BEST_PEAK_MATCH, DEF_AUTO_SELECT_BEST_PEAK_MATCH);
+		return preferences.getBoolean(P_REVIEW_AUTO_SELECT_BEST_PEAK_MATCH, DEF_REVIEW_AUTO_SELECT_BEST_PEAK_MATCH);
 	}
 
-	public static boolean isAutoLabelDetectedPeak() {
+	public static boolean isReviewAutoLabelDetectedPeak() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_AUTO_LABEL_DETECTED_PEAK, DEF_AUTO_LABEL_DETECTED_PEAK);
+		return preferences.getBoolean(P_REVIEW_AUTO_LABEL_DETECTED_PEAK, DEF_REVIEW_AUTO_LABEL_DETECTED_PEAK);
 	}
 
 	public static boolean isShowChromatogramReviewTIC() {

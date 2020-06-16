@@ -192,7 +192,7 @@ public class ReviewController {
 			@Override
 			public void update(IPeak peak) {
 
-				if(PreferenceSupplier.isAutoLabelDetectedPeak()) {
+				if(PreferenceSupplier.isReviewAutoLabelDetectedPeak()) {
 					if(reviewSetting != null && peak != null) {
 						peak.setDetectorDescription(DETECTOR_DESCRIPTION);
 						ReviewSupport.setReview(peak, reviewSetting, true);

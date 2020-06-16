@@ -103,7 +103,7 @@ public class ExtendedTargetsUI extends Composite {
 
 	private void updateSearchText() {
 
-		if(PreferenceSupplier.isSetReviewTargetName()) {
+		if(PreferenceSupplier.isReviewSetTargetName()) {
 			if(reviewSetting != null) {
 				searchSupportUI.setSearchText(reviewSetting.getName());
 			} else {

@@ -92,6 +92,23 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		update(detectorRange, chartSettingsDefault);
 	}
 
+	public void updateRangeX(Range selectedRangeX) {
+
+		updateRange(selectedRangeX, selectedRangeY);
+	}
+
+	public void updateRangeY(Range selectedRangeY) {
+
+		updateRange(selectedRangeX, selectedRangeY);
+	}
+
+	public void updateRange(Range selectedRangeX, Range selectedRangeY) {
+
+		this.selectedRangeX = selectedRangeX;
+		this.selectedRangeY = selectedRangeY;
+		adjustChartRange();
+	}
+
 	public void update(DetectorRange detectorRange, PeakDetectorChartSettings chartSettings) {
 
 		this.detectorRange = detectorRange;
