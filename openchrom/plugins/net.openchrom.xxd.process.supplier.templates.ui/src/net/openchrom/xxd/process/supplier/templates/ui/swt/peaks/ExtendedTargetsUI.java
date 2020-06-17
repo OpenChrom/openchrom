@@ -97,13 +97,14 @@ public class ExtendedTargetsUI extends Composite {
 		if(targets != null && targets.size() > 0) {
 			targetListUI.getTable().select(0);
 		}
+		//
 		updateSearchText();
 		updateSelection(false);
 	}
 
 	private void updateSearchText() {
 
-		if(PreferenceSupplier.isReviewSetTargetName()) {
+		if(PreferenceSupplier.isReviewUpdateSearchTarget()) {
 			if(reviewSetting != null) {
 				searchSupportUI.setSearchText(reviewSetting.getName());
 			} else {

@@ -26,7 +26,7 @@ public class PagePeakDetector extends FieldEditorPreferencePage implements IWork
 
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setTitle("Peak Detector Template");
+		setTitle("Peak Detector UI [Template]");
 		setDescription("");
 	}
 

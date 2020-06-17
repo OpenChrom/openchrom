@@ -24,6 +24,10 @@ import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.IAxisSet;
+import org.eclipse.swtchart.Range;
+import org.eclipse.swtchart.extensions.core.BaseChart;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -155,7 +159,7 @@ public class ReviewController {
 							chartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineReview());
 							chartSettings.setDeltaRetentionTimeLeft(PreferenceSupplier.getReviewDeltaLeftMilliseconds());
 							chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getReviewDeltaRightMilliseconds());
-							chartSettings.setReplacePeak(PreferenceSupplier.isReviewReplacePeak());
+							chartSettings.setReplacePeak(PreferenceSupplier.isReviewReplaceNearestPeak());
 							//
 							peakDetectorChart.update(detectorRange, chartSettings);
 						}
@@ -192,17 +196,33 @@ public class ReviewController {
 			@Override
 			public void update(IPeak peak) {
 
-				if(PreferenceSupplier.isReviewAutoLabelDetectedPeak()) {
-					if(reviewSetting != null && peak != null) {
-						peak.setDetectorDescription(DETECTOR_DESCRIPTION);
-						ReviewSupport.setReview(peak, reviewSetting, true);
+				if(peak != null) {
+					/*
+					 * Get the current selection.
+					 */
+					BaseChart baseChart = peakDetectorChart.getBaseChart();
+					IAxisSet axisSet = baseChart.getAxisSet();
+					IAxis xAxis = axisSet.getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
+					IAxis yAxis = axisSet.getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+					Range selectedRangeX = new Range(xAxis.getRange().lower, xAxis.getRange().upper);
+					Range selectedRangeY = new Range(yAxis.getRange().lower, yAxis.getRange().upper);
+					//
+					if(PreferenceSupplier.isReviewSetTargetDetectedPeak()) {
+						if(reviewSetting != null) {
+							peak.setDetectorDescription(DETECTOR_DESCRIPTION);
+							ReviewSupport.setReview(peak, reviewSetting, true, true);
+						}
 					}
+					/*
+					 * Update the chart and list.
+					 */
+					updateDetectorChart();
+					updatePeakStatusUI(peak);
+					/*
+					 * Keep the selection
+					 */
+					peakDetectorChart.updateRange(selectedRangeX, selectedRangeY);
 				}
-				/*
-				 * Update the chart and list.
-				 */
-				updateDetectorChart();
-				updatePeakStatusUI(peak);
 			}
 		});
 	}

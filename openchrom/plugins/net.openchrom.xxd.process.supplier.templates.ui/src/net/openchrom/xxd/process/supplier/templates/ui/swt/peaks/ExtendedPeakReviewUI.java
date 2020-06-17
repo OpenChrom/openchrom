@@ -95,10 +95,9 @@ public class ExtendedPeakReviewUI extends Composite {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		composite.setLayout(new GridLayout(5, false));
+		composite.setLayout(new GridLayout(4, false));
 		//
 		textTarget = createTargetText(composite);
-		createSetTargetButton(composite);
 		createMarkPeakButton(composite);
 		createDeletePeakButton(composite);
 		createDeletePeaksButton(composite);
@@ -110,28 +109,6 @@ public class ExtendedPeakReviewUI extends Composite {
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		//
 		return text;
-	}
-
-	private void createSetTargetButton(Composite parent) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
-		button.setToolTipText("Set the target manually");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXECUTE, IApplicationImage.SIZE_16x16));
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				IPeak peak = getSelectedPeak();
-				if(peak != null && reviewSetting != null) {
-					ReviewSupport.setReview(peak, reviewSetting, true);
-					peakStatusListUI.refresh();
-					update(reviewSetting);
-					updateSelection(true);
-				}
-			}
-		});
 	}
 
 	private void createMarkPeakButton(Composite parent) {
@@ -293,9 +270,11 @@ public class ExtendedPeakReviewUI extends Composite {
 		IPeak peak = getSelectedPeak();
 		if(peak != null) {
 			boolean isPeakReviewed = ReviewSupport.isPeakReviewed(peak);
-			ReviewSupport.setReview(peak, reviewSetting, !isPeakReviewed);
+			boolean setTarget = PreferenceSupplier.isReviewSetTargetVerification();
+			ReviewSupport.setReview(peak, reviewSetting, setTarget, !isPeakReviewed);
 			peakStatusListUI.refresh();
-			updateSelection(false);
+			update(reviewSetting);
+			updateSelection(true);
 		}
 	}
 
@@ -338,7 +317,7 @@ public class ExtendedPeakReviewUI extends Composite {
 
 	private void autoSelectBestMatch() {
 
-		if(PreferenceSupplier.isReviewAutoSelectBestPeakMatch()) {
+		if(PreferenceSupplier.isReviewAutoSelectBestMatch()) {
 			if(peaks != null) {
 				exitloop:
 				for(int i = 0; i < peaks.size(); i++) {

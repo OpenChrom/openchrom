@@ -165,18 +165,18 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	/*
 	 * Peak Review
 	 */
-	public static final String P_REVIEW_UI_DELTA_LEFT_MILLISECONDS = "reviewUIDeltaLeftMilliseconds";
-	public static final int DEF_REVIEW_UI_DELTA_LEFT_MILLISECONDS = 0;
-	public static final String P_REVIEW_UI_DELTA_RIGHT_MILLISECONDS = "reviewUIDeltaRightMilliseconds";
-	public static final int DEF_REVIEW_UI_DELTA_RIGHT_MILLISECONDS = 0;
-	public static final String P_REVIEW_UI_REPLACE_PEAK = "reviewUIReplacePeak";
-	public static final boolean DEF_REVIEW_UI_REPLACE_PEAK = true;
-	public static final String P_REVIEW_SET_TARGET_NAME = "reviewStReviewTargetName";
-	public static final boolean DEF_REVIEW_SET_TARGET_NAME = false;
-	public static final String P_REVIEW_AUTO_SELECT_BEST_PEAK_MATCH = "reviewAutoSelectBestPeakMatch";
-	public static final boolean DEF_REVIEW_AUTO_SELECT_BEST_PEAK_MATCH = false;
-	public static final String P_REVIEW_AUTO_LABEL_DETECTED_PEAK = "reviewAutoLabelDetectedPeak";
-	public static final boolean DEF_REVIEW_AUTO_LABEL_DETECTED_PEAK = true;
+	public static final String P_REVIEW_DELTA_LEFT_MILLISECONDS = "reviewDeltaLeftMilliseconds";
+	public static final int DEF_REVIEW_DELTA_LEFT_MILLISECONDS = 0;
+	public static final String P_REVIEW_DELTA_RIGHT_MILLISECONDS = "reviewDeltaRightMilliseconds";
+	public static final int DEF_REVIEW_DELTA_RIGHT_MILLISECONDS = 0;
+	public static final String P_REVIEW_REPLACE_NEAREST_PEAK = "reviewReplaceNearestPeak";
+	public static final boolean DEF_REVIEW_REPLACE_NEAREST_PEAK = true;
+	public static final String P_REVIEW_SET_TARGET_DETECTED_PEAK = "reviewSetTargetDetectedPeak";
+	public static final boolean DEF_REVIEW_SET_TARGET_DETECTED_PEAK = true;
+	public static final String P_REVIEW_AUTO_SELECT_BEST_MATCH = "reviewAutoSelectBestMatch";
+	public static final boolean DEF_REVIEW_AUTO_SELECT_BEST_MATCH = false;
+	public static final String P_REVIEW_SET_TARGET_VERIFICATION = "reviewSetTargetVerification";
+	public static final boolean DEF_REVIEW_SET_TARGET_VERIFICATION = true;
 	public static final String P_REVIEW_SHOW_CHROMATOGRAM_TIC = "reviewShowChromatogramTIC";
 	public static final boolean DEF_REVIEW_SHOW_CHROMATOGRAM_TIC = true;
 	public static final String P_REVIEW_SHOW_CHROMATOGRAM_XIC = "reviewShowChromatogramXIC";
@@ -185,6 +185,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_REVIEW_SHOW_BASELINE = false;
 	public static final String P_REVIEW_SHOW_DETAILS = "reviewShowDetails";
 	public static final boolean DEF_REVIEW_SHOW_DETAILS = false;
+	public static final String P_REVIEW_UPDATE_SEARCH_TARGET = "reviewUpdateSearchTarget";
+	public static final boolean DEF_REVIEW_UPDATE_SEARCH_TARGET = false;
 	public static final String P_REVIEW_FETCH_LIBRARY_SPECTRUM = "reviewFetchLibrarySpectrum";
 	public static final boolean DEF_REVIEW_FETCH_LIBRARY_SPECTRUM = false;
 	//
@@ -280,16 +282,17 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		/*
 		 * Review
 		 */
-		defaultValues.put(P_REVIEW_UI_DELTA_LEFT_MILLISECONDS, Integer.toString(DEF_REVIEW_UI_DELTA_LEFT_MILLISECONDS));
-		defaultValues.put(P_REVIEW_UI_DELTA_RIGHT_MILLISECONDS, Integer.toString(DEF_REVIEW_UI_DELTA_RIGHT_MILLISECONDS));
-		defaultValues.put(P_REVIEW_UI_REPLACE_PEAK, Boolean.toString(DEF_REVIEW_UI_REPLACE_PEAK));
-		defaultValues.put(P_REVIEW_SET_TARGET_NAME, Boolean.toString(DEF_REVIEW_SET_TARGET_NAME));
-		defaultValues.put(P_REVIEW_AUTO_SELECT_BEST_PEAK_MATCH, Boolean.toString(DEF_REVIEW_AUTO_SELECT_BEST_PEAK_MATCH));
-		defaultValues.put(P_REVIEW_AUTO_LABEL_DETECTED_PEAK, Boolean.toString(DEF_REVIEW_AUTO_LABEL_DETECTED_PEAK));
+		defaultValues.put(P_REVIEW_DELTA_LEFT_MILLISECONDS, Integer.toString(DEF_REVIEW_DELTA_LEFT_MILLISECONDS));
+		defaultValues.put(P_REVIEW_DELTA_RIGHT_MILLISECONDS, Integer.toString(DEF_REVIEW_DELTA_RIGHT_MILLISECONDS));
+		defaultValues.put(P_REVIEW_REPLACE_NEAREST_PEAK, Boolean.toString(DEF_REVIEW_REPLACE_NEAREST_PEAK));
+		defaultValues.put(P_REVIEW_SET_TARGET_VERIFICATION, Boolean.toString(DEF_REVIEW_SET_TARGET_VERIFICATION));
+		defaultValues.put(P_REVIEW_AUTO_SELECT_BEST_MATCH, Boolean.toString(DEF_REVIEW_AUTO_SELECT_BEST_MATCH));
+		defaultValues.put(P_REVIEW_SET_TARGET_DETECTED_PEAK, Boolean.toString(DEF_REVIEW_SET_TARGET_DETECTED_PEAK));
 		defaultValues.put(P_REVIEW_SHOW_CHROMATOGRAM_TIC, Boolean.toString(DEF_REVIEW_SHOW_CHROMATOGRAM_TIC));
 		defaultValues.put(P_REVIEW_SHOW_CHROMATOGRAM_XIC, Boolean.toString(DEF_REVIEW_SHOW_CHROMATOGRAM_XIC));
 		defaultValues.put(P_REVIEW_SHOW_BASELINE, Boolean.toString(DEF_REVIEW_SHOW_BASELINE));
 		defaultValues.put(P_REVIEW_SHOW_DETAILS, Boolean.toString(DEF_REVIEW_SHOW_DETAILS));
+		defaultValues.put(P_REVIEW_UPDATE_SEARCH_TARGET, Boolean.toString(DEF_REVIEW_UPDATE_SEARCH_TARGET));
 		defaultValues.put(P_REVIEW_FETCH_LIBRARY_SPECTRUM, Boolean.toString(DEF_REVIEW_FETCH_LIBRARY_SPECTRUM));
 		//
 		return defaultValues;
@@ -504,43 +507,43 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static int getReviewDeltaLeftMilliseconds() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_REVIEW_UI_DELTA_LEFT_MILLISECONDS, DEF_REVIEW_UI_DELTA_LEFT_MILLISECONDS);
+		return preferences.getInt(P_REVIEW_DELTA_LEFT_MILLISECONDS, DEF_REVIEW_DELTA_LEFT_MILLISECONDS);
 	}
 
 	public static int getReviewDeltaRightMilliseconds() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_REVIEW_UI_DELTA_RIGHT_MILLISECONDS, DEF_REVIEW_UI_DELTA_RIGHT_MILLISECONDS);
+		return preferences.getInt(P_REVIEW_DELTA_RIGHT_MILLISECONDS, DEF_REVIEW_DELTA_RIGHT_MILLISECONDS);
 	}
 
-	public static boolean isReviewReplacePeak() {
+	public static boolean isReviewReplaceNearestPeak() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_UI_REPLACE_PEAK, DEF_REVIEW_UI_REPLACE_PEAK);
+		return preferences.getBoolean(P_REVIEW_REPLACE_NEAREST_PEAK, DEF_REVIEW_REPLACE_NEAREST_PEAK);
 	}
 
-	public static void toggleReviewReplacePeak() {
+	public static void toggleReviewReplaceNearestPeak() {
 
-		boolean replacePeak = isReviewReplacePeak();
-		putBoolean(P_REVIEW_UI_REPLACE_PEAK, !replacePeak);
+		boolean replacePeak = isReviewReplaceNearestPeak();
+		putBoolean(P_REVIEW_REPLACE_NEAREST_PEAK, !replacePeak);
 	}
 
-	public static boolean isReviewSetTargetName() {
+	public static boolean isReviewSetTargetVerification() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_SET_TARGET_NAME, DEF_REVIEW_SET_TARGET_NAME);
+		return preferences.getBoolean(P_REVIEW_SET_TARGET_VERIFICATION, DEF_REVIEW_SET_TARGET_VERIFICATION);
 	}
 
-	public static boolean isReviewAutoSelectBestPeakMatch() {
+	public static boolean isReviewAutoSelectBestMatch() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_AUTO_SELECT_BEST_PEAK_MATCH, DEF_REVIEW_AUTO_SELECT_BEST_PEAK_MATCH);
+		return preferences.getBoolean(P_REVIEW_AUTO_SELECT_BEST_MATCH, DEF_REVIEW_AUTO_SELECT_BEST_MATCH);
 	}
 
-	public static boolean isReviewAutoLabelDetectedPeak() {
+	public static boolean isReviewSetTargetDetectedPeak() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_AUTO_LABEL_DETECTED_PEAK, DEF_REVIEW_AUTO_LABEL_DETECTED_PEAK);
+		return preferences.getBoolean(P_REVIEW_SET_TARGET_DETECTED_PEAK, DEF_REVIEW_SET_TARGET_DETECTED_PEAK);
 	}
 
 	public static boolean isShowChromatogramReviewTIC() {
@@ -589,6 +592,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		boolean show = isShowReviewDetails();
 		putBoolean(P_REVIEW_SHOW_DETAILS, !show);
+	}
+
+	public static boolean isReviewUpdateSearchTarget() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_REVIEW_UPDATE_SEARCH_TARGET, DEF_REVIEW_UPDATE_SEARCH_TARGET);
 	}
 
 	public static boolean isReviewFetchLibrarySpectrum() {

@@ -26,7 +26,7 @@ public class PagePeakReview extends FieldEditorPreferencePage implements IWorkbe
 
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setTitle("Peak Review Template");
+		setTitle("Peak Review UI [Template]");
 		setDescription("");
 	}
 
@@ -37,16 +37,17 @@ public class PagePeakReview extends FieldEditorPreferencePage implements IWorkbe
 	 */
 	public void createFieldEditors() {
 
-		addField(new IntegerFieldEditor(PreferenceSupplier.P_REVIEW_UI_DELTA_LEFT_MILLISECONDS, "Delta Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
-		addField(new IntegerFieldEditor(PreferenceSupplier.P_REVIEW_UI_DELTA_RIGHT_MILLISECONDS, "Delta Right [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_UI_REPLACE_PEAK, "Replace Peak", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SET_TARGET_NAME, "Set Review Target Name", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_AUTO_SELECT_BEST_PEAK_MATCH, "Auto Select Best Match", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_AUTO_LABEL_DETECTED_PEAK, "Auto Label Detected Peak", getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_REVIEW_DELTA_LEFT_MILLISECONDS, "Delta Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_REVIEW_DELTA_RIGHT_MILLISECONDS, "Delta Right [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_REPLACE_NEAREST_PEAK, "Replace Nearest Peak (Manual Peak Detection)", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SET_TARGET_DETECTED_PEAK, "Set Target (Manual Peak Detection)", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_AUTO_SELECT_BEST_MATCH, "Autoselect Best Match", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SET_TARGET_VERIFICATION, "Set Target (Peak Verification)", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SHOW_CHROMATOGRAM_TIC, "Show Chromatogram (TIC)", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SHOW_CHROMATOGRAM_XIC, "Show Chromatogram (XIC)", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SHOW_BASELINE, "Show Baseline", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SHOW_DETAILS, "Show Details", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_UPDATE_SEARCH_TARGET, "Update Search (Target)", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_FETCH_LIBRARY_SPECTRUM, "Fetch Library Spectrum", getFieldEditorParent()));
 	}
 

@@ -55,12 +55,12 @@ public class ReviewSupport {
 		return status;
 	}
 
-	public static void setReview(IPeak peak, ReviewSetting reviewSetting, boolean reviewSuccessful) {
+	public static void setReview(IPeak peak, ReviewSetting reviewSetting, boolean setTarget, boolean reviewSuccessful) {
 
 		if(peak != null) {
 			//
 			IIdentificationTarget identificationTarget = null;
-			if(reviewSetting != null) {
+			if(reviewSetting != null && setTarget) {
 				String name = reviewSetting.getName();
 				String casNumber = reviewSetting.getCasNumber();
 				identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, TargetValidator.IDENTIFIER);
@@ -124,11 +124,20 @@ public class ReviewSupport {
 
 		if(target != null) {
 			ILibraryInformation libraryInformation = target.getLibraryInformation();
-			String name = libraryInformation.getName();
-			String cas = libraryInformation.getCasNumber();
-			if(name.equals(reviewSetting.getName())) {
+			/*
+			 * NAME
+			 */
+			String namePeak = libraryInformation.getName();
+			String nameReview = reviewSetting.getName();
+			if(!namePeak.isEmpty() && namePeak.equals(nameReview)) {
 				return true;
-			} else if(cas.equals(reviewSetting.getCasNumber())) {
+			}
+			/*
+			 * CAS
+			 */
+			String casPeak = libraryInformation.getCasNumber();
+			String casReview = reviewSetting.getCasNumber();
+			if(!casPeak.isEmpty() && casPeak.equals(casReview)) {
 				return true;
 			}
 		}
