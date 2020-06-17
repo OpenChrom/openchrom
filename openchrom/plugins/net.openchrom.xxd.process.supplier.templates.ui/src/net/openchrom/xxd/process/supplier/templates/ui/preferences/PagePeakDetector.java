@@ -37,11 +37,12 @@ public class PagePeakDetector extends FieldEditorPreferencePage implements IWork
 	 */
 	public void createFieldEditors() {
 
-		addField(new IntegerFieldEditor(PreferenceSupplier.P_DETECTOR_UI_DELTA_LEFT_MILLISECONDS, "Delta Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
-		addField(new IntegerFieldEditor(PreferenceSupplier.P_DETECTOR_UI_DELTA_RIGHT_MILLISECONDS, "Delta Right [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_UI_REPLACE_PEAK, "Replace Peak", getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_DETECTOR_DELTA_LEFT_MILLISECONDS, "Delta Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_DETECTOR_DELTA_RIGHT_MILLISECONDS, "Delta Right [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_REPLACE_NEAREST_PEAK, "Replace Peak", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_SHOW_CHROMATOGRAM_TIC, "Show Chromatogram (TIC)", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_SHOW_CHROMATOGRAM_XIC, "Show Chromatogram (XIC)", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_FOCUS_XIC, "Focus XIC", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_SHOW_BASELINE, "Show Baseline", getFieldEditorParent()));
 	}
 

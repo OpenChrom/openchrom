@@ -208,7 +208,7 @@ public class ProcessDetectorUI extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				PreferenceSupplier.toggleDetectorReplacePeak();
+				PreferenceSupplier.toggleDetectorReplaceNearestPeak();
 				adjustDetectorButton(button);
 			}
 		});
@@ -218,7 +218,7 @@ public class ProcessDetectorUI extends Composite {
 
 	private void adjustDetectorButton(Button button) {
 
-		if(PreferenceSupplier.isDetectorReplacePeak()) {
+		if(PreferenceSupplier.isDetectorReplaceNearestPeak()) {
 			button.setToolTipText("Replace the nearest peak.");
 			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PEAK_REPLACE, IApplicationImage.SIZE_16x16));
 		} else {

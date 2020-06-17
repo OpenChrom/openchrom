@@ -45,6 +45,7 @@ public class PagePeakReview extends FieldEditorPreferencePage implements IWorkbe
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SET_TARGET_VERIFICATION, "Set Target (Peak Verification)", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SHOW_CHROMATOGRAM_TIC, "Show Chromatogram (TIC)", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SHOW_CHROMATOGRAM_XIC, "Show Chromatogram (XIC)", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_FOCUS_XIC, "Focus XIC", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SHOW_BASELINE, "Show Baseline", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SHOW_DETAILS, "Show Details", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_UPDATE_SEARCH_TARGET, "Update Search (Target)", getFieldEditorParent()));
