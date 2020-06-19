@@ -254,7 +254,7 @@
             fileName="TemplateReport"
             id="org.eclipse.chemclipse.chromatogram.xxd.report.supplier.openchrom.templateChromatogramReport"
             reportGenerator="net.openchrom.xxd.process.supplier.templates.chromatogram.ChromatogramReport"
-            reportName="Template Chromatogram Report (*.txt)"
+            reportName="Peak Report [Template] (*.txt)"
             reportSettings="net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings">
       </ChromatogramReportSupplier>         
    </extension>

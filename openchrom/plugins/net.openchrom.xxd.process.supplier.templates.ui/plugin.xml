@@ -87,7 +87,7 @@
             id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pagePeakTransfer">
       </page>
       <page
-            name="Template Chromatogram Report"
+            name="Peak Report [Template]"
             category="org.eclipse.chemclipse.chromatogram.xxd.report.ui.preferences.reportPreferencePage"
             class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageChromatogramReport"
             id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageChromatogramReport">

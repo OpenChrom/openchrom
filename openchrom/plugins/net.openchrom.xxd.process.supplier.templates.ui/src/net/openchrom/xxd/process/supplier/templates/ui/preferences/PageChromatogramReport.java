@@ -23,9 +23,10 @@ import net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.ReportFieldE
 public class PageChromatogramReport extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PageChromatogramReport() {
+
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setTitle("Template Chromatogram Report");
+		setTitle("Peak Report [Template]");
 		setDescription("");
 	}
 
@@ -36,8 +37,8 @@ public class PageChromatogramReport extends FieldEditorPreferencePage implements
 	 */
 	public void createFieldEditors() {
 
+		addField(new ReportFieldEditor(PreferenceSupplier.P_CHROMATOGRAM_REPORT_LIST, "", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REPORT_REFERENCED_CHROMATOGRAMS, "Report Referenced Chromatogram(s)", getFieldEditorParent()));
-		addField(new ReportFieldEditor(PreferenceSupplier.P_CHROMATOGRAM_REPORT_LIST, "Report Template", getFieldEditorParent()));
 	}
 
 	/*

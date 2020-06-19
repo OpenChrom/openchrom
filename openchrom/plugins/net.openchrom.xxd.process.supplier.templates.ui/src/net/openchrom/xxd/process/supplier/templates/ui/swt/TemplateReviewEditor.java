@@ -74,7 +74,6 @@ import net.openchrom.xxd.process.supplier.templates.util.ReviewListUtil;
 public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIControl {
 
 	private Composite control;
-	private ReviewSettings settings = new ReviewSettings();
 	private SearchSupportUI searchSupportUI;
 	private PeakReviewListUI peakReviewListUI;
 	//
@@ -87,6 +86,8 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	//
 	private List<Listener> listeners = new ArrayList<>();
 	private List<Button> buttons = new ArrayList<>();
+	//
+	private ReviewSettings settings = new ReviewSettings();
 	private ProcessorPreferences<PeakReviewSettings> preferences;
 
 	public TemplateReviewEditor(Composite parent, ProcessorPreferences<PeakReviewSettings> preferences, PeakReviewSettings settings) {

@@ -31,8 +31,6 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 
 	public static final String DESCRIPTION = "Template Report";
 	//
-	@JsonProperty(value = "Report referenced chromatogram(s)", defaultValue = "false")
-	private boolean reportReferencedChromatograms;
 	/*
 	 * 10.52 | 10.63 | Styrene | 100-42-5
 	 */
@@ -50,16 +48,9 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 			RE_TEXT, // Report Strategy
 			isMultiLine = true)
 	private String reportSettings = "";
-
-	public boolean isReportReferencedChromatograms() {
-
-		return reportReferencedChromatograms;
-	}
-
-	public void setReportReferencedChromatograms(boolean reportReferencedChromatograms) {
-
-		this.reportReferencedChromatograms = reportReferencedChromatograms;
-	}
+	//
+	@JsonProperty(value = "Report referenced chromatogram(s)", defaultValue = "false")
+	private boolean reportReferencedChromatograms;
 
 	public void setReportSettings(String reportSettings) {
 
@@ -76,6 +67,16 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	public String getReportSettings() {
 
 		return reportSettings;
+	}
+
+	public boolean isReportReferencedChromatograms() {
+
+		return reportReferencedChromatograms;
+	}
+
+	public void setReportReferencedChromatograms(boolean reportReferencedChromatograms) {
+
+		this.reportReferencedChromatograms = reportReferencedChromatograms;
 	}
 
 	@JsonIgnore
