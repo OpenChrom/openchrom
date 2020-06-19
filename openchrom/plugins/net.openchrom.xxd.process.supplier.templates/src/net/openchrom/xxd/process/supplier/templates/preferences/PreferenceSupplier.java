@@ -81,10 +81,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int DEF_EXPORT_NUMBER_TRACES_DETECTOR = 10;
 	public static final String P_EXPORT_OPTIMIZE_RANGE_DETECTOR = "exportOptimizeRangeDetector";
 	public static final boolean DEF_EXPORT_OPTIMIZE_RANGE_DETECTOR = true;
-	public static final String P_EXPORT_DELTA_LEFT_MINUTES_DETECTOR = "exportDeltaLeftMinutesDetector";
-	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES_DETECTOR = 0.1d;
-	public static final String P_EXPORT_DELTA_RIGHT_MINUTES_DETECTOR = "exportDeltaRightMinutesDetector";
-	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES_DETECTOR = 0.1d;
+	public static final String P_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR = "exportDeltaLeftMillisecondsDetector";
+	public static final int DEF_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR = 1000; // 1 [s]
+	public static final String P_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR = "exportDeltaRightMillisecondsDetector";
+	public static final int DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR = 1000; // 1 [s]
 	/*
 	 * Identifier
 	 */
@@ -241,8 +241,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		//
 		defaultValues.put(P_EXPORT_NUMBER_TRACES_DETECTOR, Integer.toString(DEF_EXPORT_NUMBER_TRACES_DETECTOR));
 		defaultValues.put(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, Boolean.toString(DEF_EXPORT_OPTIMIZE_RANGE_DETECTOR));
-		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES_DETECTOR, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES_DETECTOR));
-		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES_DETECTOR, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES_DETECTOR));
+		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR, Integer.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR));
 		//
 		defaultValues.put(P_EXPORT_NUMBER_TRACES_IDENTIFIER, Integer.toString(DEF_EXPORT_NUMBER_TRACES_IDENTIFIER));
 		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER));
@@ -360,16 +360,16 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getBoolean(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, DEF_EXPORT_OPTIMIZE_RANGE_DETECTOR);
 	}
 
-	public static double getExportDeltaLeftMinutesDetector() {
+	public static int getExportDeltaLeftMillisecondsDetector() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES_DETECTOR, DEF_EXPORT_DELTA_LEFT_MINUTES_DETECTOR);
+		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR);
 	}
 
-	public static double getExportDeltaRightMinutesDetector() {
+	public static int getExportDeltaRightMillisecondsDetector() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES_DETECTOR, DEF_EXPORT_DELTA_RIGHT_MINUTES_DETECTOR);
+		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR);
 	}
 
 	public static double getExportDeltaLeftMinutesIdentifier() {

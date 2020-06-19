@@ -41,8 +41,8 @@ public class DetectorExport extends AbstractChromatogramExportConverter implemen
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		DetectorSettings detectorSettings = new DetectorSettings();
 		//
-		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutesDetector() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutesDetector() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaLeft = PreferenceSupplier.getExportDeltaLeftMillisecondsDetector();
+		int deltaRight = PreferenceSupplier.getExportDeltaRightMillisecondsDetector();
 		boolean optimizeRange = PreferenceSupplier.isExportOptimizeRangeDetector();
 		int numberTraces = PreferenceSupplier.getExportNumberTracesDetector();
 		//

@@ -69,6 +69,11 @@ public class ProcessDetectorUI extends Composite {
 		}
 	}
 
+	public int getSelection() {
+
+		return peakDetectorListUI.getTable().getSelectionIndex();
+	}
+
 	private void createControl() {
 
 		GridLayout gridLayout = new GridLayout(1, true);

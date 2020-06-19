@@ -206,7 +206,8 @@ public class DetectorController {
 			}
 		});
 		//
-		peakDetectorChart.getBaseChart().addCustomRangeSelectionHandler(new ICustomSelectionHandler() {
+		BaseChart baseChart = peakDetectorChart.getBaseChart();
+		baseChart.addCustomRangeSelectionHandler(new ICustomSelectionHandler() {
 
 			@SuppressWarnings("unchecked")
 			@Override
