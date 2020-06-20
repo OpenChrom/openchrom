@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.preferences;
 
-import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.DoubleFieldEditor;
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.IntegerFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpinnerFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -39,8 +39,8 @@ public class PagePeakTransfer extends FieldEditorPreferencePage implements IWork
 	public void createFieldEditors() {
 
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_USE_BEST_TARGET_ONLY, "Use Best Target Only", getFieldEditorParent()));
-		addField(new DoubleFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MINUTES_LEFT, "Delta Minutes Left", PreferenceSupplier.MIN_DELTA_MINUTES, PreferenceSupplier.MAX_DELTA_MINUTES, getFieldEditorParent()));
-		addField(new DoubleFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MINUTES_RIGHT, "Delta Minutes Right", PreferenceSupplier.MIN_DELTA_MINUTES, PreferenceSupplier.MAX_DELTA_MINUTES, getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT, "Delta Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT, "Delta Right [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
 		addField(new SpinnerFieldEditor(PreferenceSupplier.P_TRANSFER_NUMBER_TRACES, "Number Traces (0 = TIC)", PreferenceSupplier.MIN_NUMBER_TRACES, PreferenceSupplier.MAX_NUMBER_TRACES, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, "Transfer Identified Peaks Only", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_USE_ADJUSTMENT_BY_PURITY, "Use Adjustment By Purity", getFieldEditorParent()));

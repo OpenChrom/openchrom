@@ -44,8 +44,8 @@ public class ReferencerExport extends AbstractChromatogramExportConverter implem
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		AssignerReferences assignerReferences = new AssignerReferences();
 		//
-		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutesAssigner() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutesAssigner() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaLeft = PreferenceSupplier.getExportDeltaLeftMillisecondsAssigner();
+		int deltaRight = PreferenceSupplier.getExportDeltaRightMillisecondsAssigner();
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();

@@ -31,10 +31,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
 	//
-	public static final double MIN_DELTA_MINUTES = 0.0d; // 0 Minutes
-	public static final double MAX_DELTA_MINUTES = 1.0d; // 1 Minute
 	public static final int MIN_DELTA_MILLISECONDS = 0; // 0 Minutes
-	public static final int MAX_DELTA_MILLISECONDS = 60000; // 1 Minute
+	public static final int MAX_DELTA_MILLISECONDS = 120000; // 2 Minutes
 	public static final int MIN_NUMBER_TRACES = 0; // 0 = TIC
 	public static final int MAX_NUMBER_TRACES = Integer.MAX_VALUE;
 	public static final int MIN_OFFSET_Y = 0; // %
@@ -90,40 +88,40 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	 */
 	public static final String P_EXPORT_NUMBER_TRACES_IDENTIFIER = "exportNumberTracesIdentifier";
 	public static final int DEF_EXPORT_NUMBER_TRACES_IDENTIFIER = 2;
-	public static final String P_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER = "exportDeltaLeftMinutesIdentifier";
-	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER = 0.1d;
-	public static final String P_EXPORT_DELTA_RIGHT_MINUTES_IDENTIFIER = "exportDeltaRightMinutesIdentifier";
-	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES_IDENTIFIER = 0.1d;
+	public static final String P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER = "exportDeltaLeftMillisecondsIdentifier";
+	public static final int DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER = 0;
+	public static final String P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER = "exportDeltaRightMillisecondsIdentifier";
+	public static final int DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER = 0;
 	/*
 	 * Review
 	 */
 	public static final String P_EXPORT_NUMBER_TRACES_REVIEW = "exportNumberTracesReview";
 	public static final int DEF_EXPORT_NUMBER_TRACES_REVIEW = 5;
-	public static final String P_EXPORT_DELTA_LEFT_MINUTES_REVIEW = "exportDeltaLeftMinutesReview";
-	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES_REVIEW = 0.1d;
-	public static final String P_EXPORT_DELTA_RIGHT_MINUTES_REVIEW = "exportDeltaRightMinutesReview";
-	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES_REVIEW = 0.1d;
+	public static final String P_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW = "exportDeltaLeftMillisecondsReview";
+	public static final int DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW = 0;
+	public static final String P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW = "exportDeltaRightMillisecondsReview";
+	public static final int DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW = 0;
 	/*
 	 * Assigner
 	 */
-	public static final String P_EXPORT_DELTA_LEFT_MINUTES_ASSIGNER = "exportDeltaLeftMinutesAssigner";
-	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES_ASSIGNER = 0.1d;
-	public static final String P_EXPORT_DELTA_RIGHT_MINUTES_ASSIGNER = "exportDeltaRightMinutesAssigner";
-	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES_ASSIGNER = 0.1d;
+	public static final String P_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER = "exportDeltaLeftMillisecondsAssigner";
+	public static final int DEF_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER = 0;
+	public static final String P_EXPORT_DELTA_RIGHT_MILLISECONDS_ASSIGNER = "exportDeltaRightMillisecondsAssigner";
+	public static final int DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_ASSIGNER = 0;
 	/*
 	 * Standards
 	 */
-	public static final String P_EXPORT_DELTA_LEFT_MINUTES_STANDARDS = "exportDeltaLeftMinutesStandards";
-	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES_STANDARDS = 0.1d;
-	public static final String P_EXPORT_DELTA_RIGHT_MINUTES_STANDARDS = "exportDeltaRightMinutesStandards";
-	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES_STANDARDS = 0.1d;
+	public static final String P_EXPORT_DELTA_LEFT_MILLISECONDS_STANDARDS = "exportDeltaLeftMillisecondsStandards";
+	public static final int DEF_EXPORT_DELTA_LEFT_MILLISECONDS_STANDARDS = 0;
+	public static final String P_EXPORT_DELTA_RIGHT_MILLISECONDS_STANDARDS = "exportDeltaRightMillisecondsStandards";
+	public static final int DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_STANDARDS = 0;
 	/*
 	 * Report
 	 */
-	public static final String P_EXPORT_DELTA_LEFT_MINUTES_REPORT = "exportDeltaLeftMinutesReport";
-	public static final double DEF_EXPORT_DELTA_LEFT_MINUTES_REPORT = 0.1d;
-	public static final String P_EXPORT_DELTA_RIGHT_MINUTES_REPORT = "exportDeltaRightMinutesReport";
-	public static final double DEF_EXPORT_DELTA_RIGHT_MINUTES_REPORT = 0.1d;
+	public static final String P_EXPORT_DELTA_LEFT_MILLISECONDS_REPORT = "exportDeltaLeftMillisecondsReport";
+	public static final int DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REPORT = 0;
+	public static final String P_EXPORT_DELTA_RIGHT_MILLISECONDS_REPORT = "exportDeltaRightMillisecondsReport";
+	public static final int DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REPORT = 0;
 	/*
 	 * 
 	 */
@@ -132,10 +130,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	//
 	public static final String P_TRANSFER_USE_BEST_TARGET_ONLY = "transferUseBestTargetOnly";
 	public static final boolean DEF_TRANSFER_USE_BEST_TARGET_ONLY = true;
-	public static final String P_TRANSFER_RETENTION_TIME_MINUTES_LEFT = "transferRetentionTimeMinutesLeft";
-	public static final double DEF_TRANSFER_RETENTION_TIME_MINUTES_LEFT = 0.0d;
-	public static final String P_TRANSFER_RETENTION_TIME_MINUTES_RIGHT = "transferRetentionTimeMinutesRight";
-	public static final double DEF_TRANSFER_RETENTION_TIME_MINUTES_RIGHT = 0.0d;
+	public static final String P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT = "transferRetentionTimeMillisecondsLeft";
+	public static final int DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT = 0;
+	public static final String P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT = "transferRetentionTimeMillisecondsRight";
+	public static final int DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT = 0;
 	public static final String P_TRANSFER_NUMBER_TRACES = "transferNumberTraces";
 	public static final int DEF_TRANSFER_NUMBER_TRACES = 15;
 	public static final String P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY = "transferUseIdentifiedPeaksOnly";
@@ -245,29 +243,29 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR, Integer.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR));
 		//
 		defaultValues.put(P_EXPORT_NUMBER_TRACES_IDENTIFIER, Integer.toString(DEF_EXPORT_NUMBER_TRACES_IDENTIFIER));
-		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER));
-		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES_IDENTIFIER, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES_IDENTIFIER));
+		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, Integer.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER));
 		//
 		defaultValues.put(P_EXPORT_NUMBER_TRACES_REVIEW, Integer.toString(DEF_EXPORT_NUMBER_TRACES_REVIEW));
-		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES_REVIEW, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES_REVIEW));
-		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES_REVIEW, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES_REVIEW));
+		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW, Integer.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW));
 		//
-		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES_ASSIGNER, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES_ASSIGNER));
-		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES_ASSIGNER, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES_ASSIGNER));
+		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_MILLISECONDS_ASSIGNER, Integer.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_ASSIGNER));
 		//
-		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES_STANDARDS, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES_STANDARDS));
-		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES_STANDARDS, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES_STANDARDS));
+		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_STANDARDS, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_STANDARDS));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_MILLISECONDS_STANDARDS, Integer.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_STANDARDS));
 		//
-		defaultValues.put(P_EXPORT_DELTA_LEFT_MINUTES_REPORT, Double.toString(DEF_EXPORT_DELTA_LEFT_MINUTES_REPORT));
-		defaultValues.put(P_EXPORT_DELTA_RIGHT_MINUTES_REPORT, Double.toString(DEF_EXPORT_DELTA_RIGHT_MINUTES_REPORT));
+		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_REPORT, Double.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REPORT));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REPORT, Double.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REPORT));
 		//
 		defaultValues.put(P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT, DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT);
 		/*
 		 * Transfer
 		 */
 		defaultValues.put(P_TRANSFER_USE_BEST_TARGET_ONLY, Boolean.toString(DEF_TRANSFER_USE_BEST_TARGET_ONLY));
-		defaultValues.put(P_TRANSFER_RETENTION_TIME_MINUTES_LEFT, Double.toString(DEF_TRANSFER_RETENTION_TIME_MINUTES_LEFT));
-		defaultValues.put(P_TRANSFER_RETENTION_TIME_MINUTES_RIGHT, Double.toString(DEF_TRANSFER_RETENTION_TIME_MINUTES_RIGHT));
+		defaultValues.put(P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT, Integer.toString(DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT));
+		defaultValues.put(P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT, Integer.toString(DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT));
 		defaultValues.put(P_TRANSFER_NUMBER_TRACES, Integer.toString(DEF_TRANSFER_NUMBER_TRACES));
 		defaultValues.put(P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, Boolean.toString(DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY));
 		defaultValues.put(P_TRANSFER_USE_ADJUSTMENT_BY_PURITY, Boolean.toString(DEF_TRANSFER_USE_ADJUSTMENT_BY_PURITY));
@@ -372,64 +370,64 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR);
 	}
 
-	public static double getExportDeltaLeftMinutesIdentifier() {
+	public static int getExportDeltaLeftMillisecondsIdentifier() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER, DEF_EXPORT_DELTA_LEFT_MINUTES_IDENTIFIER);
+		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER);
 	}
 
-	public static double getExportDeltaRightMinutesIdentifier() {
+	public static int getExportDeltaRightMillisecondsIdentifier() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES_IDENTIFIER, DEF_EXPORT_DELTA_RIGHT_MINUTES_IDENTIFIER);
+		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER);
 	}
 
-	public static double getExportDeltaLeftMinutesReview() {
+	public static int getExportDeltaLeftMillisecondsReview() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES_REVIEW, DEF_EXPORT_DELTA_LEFT_MINUTES_REVIEW);
+		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW);
 	}
 
-	public static double getExportDeltaRightMinutesReview() {
+	public static int getExportDeltaRightMillisecondsReview() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES_REVIEW, DEF_EXPORT_DELTA_RIGHT_MINUTES_REVIEW);
+		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW);
 	}
 
-	public static double getExportDeltaLeftMinutesAssigner() {
+	public static int getExportDeltaLeftMillisecondsAssigner() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES_ASSIGNER, DEF_EXPORT_DELTA_LEFT_MINUTES_ASSIGNER);
+		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER);
 	}
 
-	public static double getExportDeltaRightMinutesAssigner() {
+	public static int getExportDeltaRightMillisecondsAssigner() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES_ASSIGNER, DEF_EXPORT_DELTA_RIGHT_MINUTES_ASSIGNER);
+		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_ASSIGNER, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_ASSIGNER);
 	}
 
-	public static double getExportDeltaLeftMinutesStandards() {
+	public static int getExportDeltaLeftMillisecondsStandards() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES_STANDARDS, DEF_EXPORT_DELTA_LEFT_MINUTES_STANDARDS);
+		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_STANDARDS, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_STANDARDS);
 	}
 
-	public static double getExportDeltaRightMinutesStandards() {
+	public static int getExportDeltaRightMillisecondsStandards() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES_STANDARDS, DEF_EXPORT_DELTA_RIGHT_MINUTES_STANDARDS);
+		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_STANDARDS, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_STANDARDS);
 	}
 
-	public static double getExportDeltaLeftMinutesReport() {
+	public static int getExportDeltaLeftMillisecondsReport() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_LEFT_MINUTES_REPORT, DEF_EXPORT_DELTA_LEFT_MINUTES_REPORT);
+		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_REPORT, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REPORT);
 	}
 
-	public static double getExportDeltaRightMinutesReport() {
+	public static int getExportDeltaRightMillisecondsReport() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_EXPORT_DELTA_RIGHT_MINUTES_REPORT, DEF_EXPORT_DELTA_RIGHT_MINUTES_REPORT);
+		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REPORT, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REPORT);
 	}
 
 	public static int getExportNumberTracesDetector() {
@@ -690,16 +688,16 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getBoolean(P_TRANSFER_USE_BEST_TARGET_ONLY, DEF_TRANSFER_USE_BEST_TARGET_ONLY);
 	}
 
-	public static double getTransferRetentionTimeMinutesLeft() {
+	public static int getTransferRetentionTimeMillisecondsLeft() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_TRANSFER_RETENTION_TIME_MINUTES_LEFT, DEF_TRANSFER_RETENTION_TIME_MINUTES_LEFT);
+		return preferences.getInt(P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT, DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT);
 	}
 
-	public static double getTransferRetentionTimeMinutesRight() {
+	public static int getTransferRetentionTimeMillisecondsRight() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_TRANSFER_RETENTION_TIME_MINUTES_RIGHT, DEF_TRANSFER_RETENTION_TIME_MINUTES_RIGHT);
+		return preferences.getInt(P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT, DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT);
 	}
 
 	public static int getTransferNumberTraces() {

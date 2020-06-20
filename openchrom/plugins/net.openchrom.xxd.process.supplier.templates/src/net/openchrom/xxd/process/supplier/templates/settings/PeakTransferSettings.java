@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -26,12 +26,12 @@ public class PeakTransferSettings extends AbstractPeakDetectorSettingsMSD implem
 	@JsonPropertyDescription(value = "If this value is true, only the best target will be transfered.")
 	private boolean useBestTargetOnly = false;
 	//
-	@JsonProperty(value = "Delta Retention Time Left (Minutes)", defaultValue = "0.0")
-	@JsonPropertyDescription(value = "This is the left delta retention time.")
-	private double deltaRetentionTimeLeft = 0.0;
-	@JsonProperty(value = "Delta Retention Time Right (Minutes)", defaultValue = "0.0")
-	@JsonPropertyDescription(value = "This is the right delta retention time.")
-	private double deltaRetentionTimeRight = 0.0;
+	@JsonProperty(value = "Delta Retention Time Left [ms]", defaultValue = "0")
+	@JsonPropertyDescription(value = "This is the left delta retention time in milliseconds.")
+	private int deltaRetentionTimeLeft = 0;
+	@JsonProperty(value = "Delta Retention Time Right [ms]", defaultValue = "0")
+	@JsonPropertyDescription(value = "This is the right delta retention time in milliseconds.")
+	private int deltaRetentionTimeRight = 0;
 	//
 	@JsonProperty(value = "Number Traces", defaultValue = "15")
 	@JsonPropertyDescription(value = "If a MSD peak contains <= number traces, then SIM detection will be forced.")
@@ -59,22 +59,22 @@ public class PeakTransferSettings extends AbstractPeakDetectorSettingsMSD implem
 		this.useBestTargetOnly = useBestTargetOnly;
 	}
 
-	public double getDeltaRetentionTimeLeft() {
+	public int getDeltaRetentionTimeLeft() {
 
 		return deltaRetentionTimeLeft;
 	}
 
-	public void setDeltaRetentionTimeLeft(double deltaRetentionTimeLeft) {
+	public void setDeltaRetentionTimeLeft(int deltaRetentionTimeLeft) {
 
 		this.deltaRetentionTimeLeft = deltaRetentionTimeLeft;
 	}
 
-	public double getDeltaRetentionTimeRight() {
+	public int getDeltaRetentionTimeRight() {
 
 		return deltaRetentionTimeRight;
 	}
 
-	public void setDeltaRetentionTimeRight(double deltaRetentionTimeRight) {
+	public void setDeltaRetentionTimeRight(int deltaRetentionTimeRight) {
 
 		this.deltaRetentionTimeRight = deltaRetentionTimeRight;
 	}

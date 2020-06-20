@@ -83,8 +83,8 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 
 		PeakTransferSettings settings = new PeakTransferSettings();
 		settings.setUseBestTargetOnly(PreferenceSupplier.isTransferUseBestTargetOnly());
-		settings.setDeltaRetentionTimeLeft(PreferenceSupplier.getTransferRetentionTimeMinutesLeft());
-		settings.setDeltaRetentionTimeRight(PreferenceSupplier.getTransferRetentionTimeMinutesRight());
+		settings.setDeltaRetentionTimeLeft(PreferenceSupplier.getTransferRetentionTimeMillisecondsLeft());
+		settings.setDeltaRetentionTimeRight(PreferenceSupplier.getTransferRetentionTimeMillisecondsRight());
 		settings.setNumberTraces(PreferenceSupplier.getTransferNumberTraces());
 		settings.setUseIdentifiedPeaksOnly(PreferenceSupplier.isTransferUseIdentifiedPeaksOnly());
 		settings.setUseAdjustmentByPurity(PreferenceSupplier.isTransferUseAdjustmentByPurity());
@@ -127,8 +127,8 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		TargetExtendedComparator comparator = new TargetExtendedComparator(SortOrder.DESC);
 		PeakSupport peakSupport = new PeakSupport();
 		//
-		int deltaRetentionTimeLeft = (int)(peakTransferSettings.getDeltaRetentionTimeLeft() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		int deltaRetentionTimeRight = (int)(peakTransferSettings.getDeltaRetentionTimeRight() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaRetentionTimeLeft = peakTransferSettings.getDeltaRetentionTimeLeft();
+		int deltaRetentionTimeRight = peakTransferSettings.getDeltaRetentionTimeRight();
 		int numberTraces = peakTransferSettings.getNumberTraces();
 		boolean useBestTargetOnly = peakTransferSettings.isUseBestTargetOnly();
 		boolean useIdentifiedPeaksOnly = peakTransferSettings.isUseIdentifiedPeaksOnly();

@@ -39,8 +39,8 @@ public class StandardsExport extends AbstractChromatogramExportConverter impleme
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		AssignerStandards assignerStandards = new AssignerStandards();
 		//
-		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutesStandards() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutesStandards() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaLeft = PreferenceSupplier.getExportDeltaLeftMillisecondsStandards();
+		int deltaRight = PreferenceSupplier.getExportDeltaRightMillisecondsStandards();
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();

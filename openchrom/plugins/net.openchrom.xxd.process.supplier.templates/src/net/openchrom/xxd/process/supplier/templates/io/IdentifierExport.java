@@ -44,8 +44,8 @@ public class IdentifierExport extends AbstractChromatogramExportConverter implem
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		IdentifierSettings identifierSettings = new IdentifierSettings();
 		//
-		int deltaLeft = (int)(PreferenceSupplier.getExportDeltaLeftMinutesIdentifier() * IChromatogram.MINUTE_CORRELATION_FACTOR);
-		int deltaRight = (int)(PreferenceSupplier.getExportDeltaRightMinutesIdentifier() * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		int deltaLeft = PreferenceSupplier.getExportDeltaLeftMillisecondsIdentifier();
+		int deltaRight = PreferenceSupplier.getExportDeltaRightMillisecondsIdentifier();
 		int numberTraces = PreferenceSupplier.getExportNumberTracesIdentifier();
 		//
 		for(IPeak peak : peaks) {
