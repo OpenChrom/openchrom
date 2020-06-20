@@ -23,7 +23,7 @@ import net.openchrom.xxd.process.supplier.templates.model.ReportStrategy;
 
 public class ReportValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
-	public static final Set<ReportStrategy> REPORT_STRATEGIES = Collections.unmodifiableSet(EnumSet.of(ReportStrategy.ALL));
+	public static final Set<ReportStrategy> REPORT_STRATEGIES = Collections.unmodifiableSet(EnumSet.of(ReportStrategy.ALL, ReportStrategy.BEST_MATCH, ReportStrategy.LARGEST_AREA, ReportStrategy.SMALLEST_AREA));
 	//
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + ReportListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = ReportListUtil.SEPARATOR_TOKEN;

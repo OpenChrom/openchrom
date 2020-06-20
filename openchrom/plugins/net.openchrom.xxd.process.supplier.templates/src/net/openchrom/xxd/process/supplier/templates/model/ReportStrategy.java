@@ -12,11 +12,15 @@
 package net.openchrom.xxd.process.supplier.templates.model;
 
 public enum ReportStrategy {
-	ALL("All");
+	ALL("All"), //
+	BEST_MATCH("Best Match"), //
+	LARGEST_AREA("Largest Area"), //
+	SMALLEST_AREA("Smallest Area");
 
 	private String description = "";
 
 	private ReportStrategy(String description) {
+
 		this.description = description;
 	}
 

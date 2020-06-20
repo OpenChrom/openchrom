@@ -49,8 +49,15 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 			isMultiLine = true)
 	private String reportSettings = "";
 	//
+	@JsonProperty(value = "Print Header", defaultValue = "true")
+	private boolean printHeader = true;
+	@JsonProperty(value = "Print Summary", defaultValue = "true")
+	private boolean printSummary = true;
+	@JsonProperty(value = "Print Columns", defaultValue = "")
+	@JsonPropertyDescription(value = "List the columns to print, e.g. 'Name','Start Time [min]'. Leave this value empty to print all columns.")
+	private String printColumns = "";
 	@JsonProperty(value = "Report referenced chromatogram(s)", defaultValue = "false")
-	private boolean reportReferencedChromatograms;
+	private boolean reportReferencedChromatograms = false;
 
 	public void setReportSettings(String reportSettings) {
 
@@ -67,6 +74,36 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	public String getReportSettings() {
 
 		return reportSettings;
+	}
+
+	public boolean isPrintHeader() {
+
+		return printHeader;
+	}
+
+	public void setPrintHeader(boolean printHeader) {
+
+		this.printHeader = printHeader;
+	}
+
+	public boolean isPrintSummary() {
+
+		return printSummary;
+	}
+
+	public void setPrintSummary(boolean printSummary) {
+
+		this.printSummary = printSummary;
+	}
+
+	public String getPrintColumns() {
+
+		return printColumns;
+	}
+
+	public void setPrintColumns(String printColumns) {
+
+		this.printColumns = printColumns;
 	}
 
 	public boolean isReportReferencedChromatograms() {
