@@ -74,6 +74,15 @@ public class ProcessDetectorUI extends Composite {
 		return peakDetectorListUI.getTable().getSelectionIndex();
 	}
 
+	public void setSelection(int index) {
+
+		Table table = peakDetectorListUI.getTable();
+		if(index >= 0 && index < table.getItemCount()) {
+			table.setSelection(index);
+			updateSelection();
+		}
+	}
+
 	private void createControl() {
 
 		GridLayout gridLayout = new GridLayout(1, true);
@@ -215,6 +224,7 @@ public class ProcessDetectorUI extends Composite {
 
 				PreferenceSupplier.toggleDetectorReplaceNearestPeak();
 				adjustDetectorButton(button);
+				updateSelection();
 			}
 		});
 		//

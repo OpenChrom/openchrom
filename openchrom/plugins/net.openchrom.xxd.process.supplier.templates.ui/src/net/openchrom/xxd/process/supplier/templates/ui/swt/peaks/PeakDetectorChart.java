@@ -18,14 +18,11 @@ import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.selection.ChromatogramSelection;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
-import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.ChromatogramPeakChart;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.PeakChartSettings;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.BaselineSelectionPaintListener;
@@ -65,6 +62,8 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private IChromatogramSelection chromatogramSelection = null;
 	//
 	private IPeakUpdateListener peakUpdateListener = null;
+	private ISectionUpdateListener sectionUpdateListener = null;
+	//
 	private PeakDetectorChartSettings chartSettingsDefault = new PeakDetectorChartSettings();
 	private DeltaRangePaintListener deltaRangePaintListener = new DeltaRangePaintListener(this.getBaseChart());
 	//
@@ -85,6 +84,11 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	public void setPeakUpdateListener(IPeakUpdateListener peakUdateListener) {
 
 		this.peakUpdateListener = peakUdateListener;
+	}
+
+	public void setSectionUpdateListener(ISectionUpdateListener sectionUpdateListener) {
+
+		this.sectionUpdateListener = sectionUpdateListener;
 	}
 
 	public void update(DetectorRange detectorRange) {
@@ -155,16 +159,29 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		}
 	}
 
+	@Override
+	public void handleMouseDoubleClick(Event event) {
+
+		super.handleMouseDoubleClick(event);
+		if(sectionUpdateListener != null) {
+			int x = event.x;
+			Point size = getBaseChart().getPlotArea().getSize();
+			int rangePrevious = size.x / 2;
+			sectionUpdateListener.update(x < rangePrevious);
+		}
+	}
+
 	private void createControl() {
 
 		defaultCursor = getBaseChart().getCursor();
 		/*
 		 * Chart Settings
 		 */
+		boolean bufferedSelection = PreferenceSupplier.isChartBufferedSelection();
 		IChartSettings chartSettings = getChartSettings();
 		chartSettings.setCreateMenu(true);
-		chartSettings.addHandledEventProcessor(new ReplacePeakToggleEvent());
-		chartSettings.setBufferSelection(PreferenceSupplier.isChartBufferedSelection());
+		chartSettings.setBufferSelection(bufferedSelection);
+		chartSettings.setEnableCompress(!bufferedSelection);
 		RangeRestriction rangeRestriction = chartSettings.getRangeRestriction();
 		rangeRestriction.setZeroY(true);
 		applySettings(chartSettings);
@@ -376,26 +393,15 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private void removeClosestPeak(IPeak peakSource, Set<Integer> traces, IChromatogram<IPeak> chromatogram, int startRetentionTime, int stopRetentionTime) {
 
 		int retentionTimeSource = peakSource.getPeakModel().getRetentionTimeAtPeakMaximum();
-		//
 		List<IPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
 		IPeak peakDelete = null;
 		//
 		for(IPeak peak : peaks) {
-			/*
-			 * Check if a peak has been set yet?
-			 */
 			if(peakDelete == null) {
 				/*
-				 * TIC = select without checks
-				 * XIC = peak must contain at least one trace
+				 * Set the delete peak.
 				 */
-				if(traces.size() == 0) {
-					peakDelete = peak;
-				} else {
-					if(peakMatchesTraces(peak, traces)) {
-						peakDelete = peak;
-					}
-				}
+				peakDelete = peak;
 			} else {
 				/*
 				 * Find the closest peak.
@@ -463,23 +469,6 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 			}
 		}
 		return peak;
-	}
-
-	private boolean peakMatchesTraces(IPeak peak, Set<Integer> traces) {
-
-		if(peak != null && traces != null) {
-			IScan scan = peak.getPeakModel().getPeakMaximum();
-			if(scan instanceof IScanMSD) {
-				IScanMSD scanMSD = (IScanMSD)scan;
-				IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
-				for(int trace : traces) {
-					if(extractedIonSignal.getAbundance(trace) > 0) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
 	}
 
 	private void fireUpdate(IPeak peak) {

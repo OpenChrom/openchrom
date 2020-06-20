@@ -202,35 +202,56 @@ public class DetectorController {
 					 * Keep the selection
 					 */
 					peakDetectorChart.updateRange(selectedRangeX, selectedRangeY);
+					updatePeakListSelection(baseChart);
 				}
+			}
+		});
+		//
+		peakDetectorChart.setSectionUpdateListener(new ISectionUpdateListener() {
+
+			@Override
+			public void update(boolean previous) {
+
+				int index = processDetectorUI.getSelection();
+				if(previous) {
+					index--;
+				} else {
+					index++;
+				}
+				processDetectorUI.setSelection(index);
 			}
 		});
 		//
 		BaseChart baseChart = peakDetectorChart.getBaseChart();
 		baseChart.addCustomRangeSelectionHandler(new ICustomSelectionHandler() {
 
-			@SuppressWarnings("unchecked")
 			@Override
 			public void handleUserSelection(Event event) {
 
 				BaseChart baseChart = peakDetectorChart.getBaseChart();
-				Range rangeX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS).getRange();
-				if(processSettings != null) {
-					IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
-					if(chromatogram != null) {
-						/*
-						 * Settings
-						 */
-						int startRetentionTime = (int)rangeX.lower;
-						int stopRetentionTime = (int)rangeX.upper;
-						List<IPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
-						if(extendedPeaksUI != null) {
-							extendedPeaksUI.setInput(detectorSetting, peaks, null);
-						}
-					}
-				}
+				updatePeakListSelection(baseChart);
 			}
 		});
+	}
+
+	@SuppressWarnings("unchecked")
+	private void updatePeakListSelection(BaseChart baseChart) {
+
+		Range rangeX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS).getRange();
+		if(processSettings != null) {
+			IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
+			if(chromatogram != null) {
+				/*
+				 * Settings
+				 */
+				int startRetentionTime = (int)rangeX.lower;
+				int stopRetentionTime = (int)rangeX.upper;
+				List<IPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
+				if(extendedPeaksUI != null) {
+					extendedPeaksUI.setInput(detectorSetting, peaks, null);
+				}
+			}
+		}
 	}
 
 	private void updateChartPeaks(List<IPeak> peaks) {

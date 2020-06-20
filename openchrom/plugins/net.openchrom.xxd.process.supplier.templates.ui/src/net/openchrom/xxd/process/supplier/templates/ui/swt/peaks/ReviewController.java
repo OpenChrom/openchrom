@@ -241,6 +241,21 @@ public class ReviewController {
 				}
 			}
 		});
+		//
+		peakDetectorChart.setSectionUpdateListener(new ISectionUpdateListener() {
+
+			@Override
+			public void update(boolean previous) {
+
+				int index = processReviewUI.getSelection();
+				if(previous) {
+					index--;
+				} else {
+					index++;
+				}
+				processReviewUI.setSelection(index);
+			}
+		});
 	}
 
 	protected void createExtendedPeaksUI(Composite parent) {

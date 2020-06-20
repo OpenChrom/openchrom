@@ -69,6 +69,20 @@ public class ProcessReviewUI extends Composite {
 		}
 	}
 
+	public int getSelection() {
+
+		return peakReviewListUI.getTable().getSelectionIndex();
+	}
+
+	public void setSelection(int index) {
+
+		Table table = peakReviewListUI.getTable();
+		if(index >= 0 && index < table.getItemCount()) {
+			table.setSelection(index);
+			updateSelection();
+		}
+	}
+
 	private void createControl() {
 
 		GridLayout gridLayout = new GridLayout(1, true);

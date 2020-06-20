@@ -24,6 +24,7 @@ public class PeakDetectorControl extends Composite {
 	private DetectorController controller = new DetectorController();
 
 	public PeakDetectorControl(Composite parent, int style) {
+
 		super(parent, style);
 		createControl();
 	}
