@@ -33,6 +33,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.process.supplier.templates,
  net.openchrom.xxd.process.supplier.templates.comparator,
+ net.openchrom.xxd.process.supplier.templates.io,
  net.openchrom.xxd.process.supplier.templates.model,
  net.openchrom.xxd.process.supplier.templates.peaks,
  net.openchrom.xxd.process.supplier.templates.preferences,

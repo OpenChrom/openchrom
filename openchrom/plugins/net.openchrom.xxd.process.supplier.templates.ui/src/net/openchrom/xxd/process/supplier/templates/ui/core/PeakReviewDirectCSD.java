@@ -73,7 +73,7 @@ public class PeakReviewDirectCSD<T> extends AbstractPeakIdentifier implements IP
 					reviewSetting.setName(libraryInformation.getName());
 					reviewSetting.setCasNumber(libraryInformation.getCasNumber());
 					reviewSetting.setDetectorType(PeakType.VV);
-					reviewSetting.setTraces(""); // ? Purity as a marker?
+					reviewSetting.setTraces("");
 					reviewSetting.setOptimizeRange(true);
 					reviewSettings.add(reviewSetting);
 				}

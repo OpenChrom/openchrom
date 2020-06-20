@@ -71,8 +71,18 @@ public class DetectorController {
 	public void update(DetectorSetting detectorSetting) {
 
 		this.detectorSetting = detectorSetting;
-		updateDetectorChart();
-		updatePeakStatusUI(null);
+		if(processSettings != null && detectorSetting != null) {
+			IChromatogram<?> chromatogram = processSettings.getChromatogram();
+			int startChromatogram = chromatogram.getStartRetentionTime();
+			int stopChromatogram = chromatogram.getStopRetentionTime();
+			int startReview = detectorSetting.getStartRetentionTime();
+			int stopReview = detectorSetting.getStopRetentionTime();
+			//
+			if(startReview >= startChromatogram && stopReview <= stopChromatogram) {
+				updateDetectorChart();
+				updatePeakStatusUI(null);
+			}
+		}
 	}
 
 	public void update(List<IPeak> peaks) {

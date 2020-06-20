@@ -25,6 +25,7 @@ import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationResults;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
@@ -32,13 +33,14 @@ import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Shell;
 
+import net.openchrom.xxd.process.supplier.templates.io.ITemplateExport;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.peaks.AbstractPeakIdentifier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 
-public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IPeakIdentifierMSD<IIdentificationResults> {
+public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IPeakIdentifierMSD<IIdentificationResults>, ITemplateExport {
 
 	private static final String DESCRIPTION = "PeakReviewMSD";
 
@@ -73,7 +75,7 @@ public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IP
 					reviewSetting.setName(libraryInformation.getName());
 					reviewSetting.setCasNumber(libraryInformation.getCasNumber());
 					reviewSetting.setDetectorType(PeakType.VV);
-					reviewSetting.setTraces(""); // ? Purity as a marker?
+					reviewSetting.setTraces(getTraces(peak));
 					reviewSetting.setOptimizeRange(true);
 					reviewSettings.add(reviewSetting);
 				}
@@ -99,6 +101,19 @@ public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IP
 		} catch(ExecutionException e) {
 			processingInfo.addErrorMessage(DESCRIPTION, "The execution failed, see attached log file.", e);
 		}
+	}
+
+	private String getTraces(IPeak peak) {
+
+		if(peak instanceof IChromatogramPeakMSD) {
+			IChromatogramPeakMSD peakMSD = (IChromatogramPeakMSD)peak;
+			if(peakMSD.getPurity() < 1.0f) {
+				int numberTraces = peakMSD.getPeakModel().getPeakMassSpectrum().getNumberOfIons();
+				return extractTraces(peakMSD, numberTraces);
+			}
+		}
+		//
+		return ""; // default
 	}
 
 	private IChromatogram<?> getChromatogram(List<? extends IPeakMSD> peaks) {

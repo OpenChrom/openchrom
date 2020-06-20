@@ -89,8 +89,18 @@ public class ReviewController {
 	public void update(ReviewSetting reviewSetting) {
 
 		this.reviewSetting = reviewSetting;
-		updateDetectorChart();
-		updatePeakStatusUI(null);
+		if(processSettings != null && reviewSetting != null) {
+			IChromatogram<?> chromatogram = processSettings.getChromatogram();
+			int startChromatogram = chromatogram.getStartRetentionTime();
+			int stopChromatogram = chromatogram.getStopRetentionTime();
+			int startReview = reviewSetting.getStartRetentionTime();
+			int stopReview = reviewSetting.getStopRetentionTime();
+			//
+			if(startReview >= startChromatogram && stopReview <= stopChromatogram) {
+				updateDetectorChart();
+				updatePeakStatusUI(null);
+			}
+		}
 	}
 
 	/**
