@@ -226,11 +226,11 @@ public class ReportWriter {
 			List<IPeak> peaks = mappedResults.get(reportSetting);
 			double[] areas = extractPeakAreas(peaks);
 			int[] startTimes = extractPeakStartTimes(peaks);
-			String startTime = timeFormat.format(getMin(startTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+			String startTime = timeFormat.format(Calculations.getMin(startTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
 			int[] centerTimes = extractPeakCenterTimes(peaks);
 			String centerTime = timeFormat.format(Calculations.getMean(centerTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
 			int[] stopTimes = extractPeakStopTimes(peaks);
-			String stopTime = timeFormat.format(getMax(stopTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+			String stopTime = timeFormat.format(Calculations.getMax(stopTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
 			/*
 			 * Data
 			 */
@@ -435,25 +435,5 @@ public class ReportWriter {
 			times[i] = peakModel.getStopRetentionTime();
 		}
 		return times;
-	}
-
-	// TODO - move to calculations
-	private int getMin(int[] values) {
-
-		int min = values.length > 0 ? Integer.MAX_VALUE : 0;
-		for(int value : values) {
-			min = Math.min(min, value);
-		}
-		return min;
-	}
-
-	// TODO - move to calculations
-	private int getMax(int[] values) {
-
-		int max = values.length > 0 ? Integer.MIN_VALUE : 0;
-		for(int value : values) {
-			max = Math.max(max, value);
-		}
-		return max;
 	}
 }
