@@ -197,10 +197,12 @@ public class DetectorController {
 					peak.setDetectorDescription(DETECTOR_DESCRIPTION);
 					if(detectorSetting != null) {
 						String name = detectorSetting.getName();
-						String casNumber = "";
-						IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, TargetValidator.IDENTIFIER);
-						if(identificationTarget != null) {
-							peak.getTargets().add(identificationTarget);
+						if(!name.isEmpty()) {
+							String casNumber = "";
+							IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, TargetValidator.IDENTIFIER);
+							if(identificationTarget != null) {
+								peak.getTargets().add(identificationTarget);
+							}
 						}
 					}
 					/*
