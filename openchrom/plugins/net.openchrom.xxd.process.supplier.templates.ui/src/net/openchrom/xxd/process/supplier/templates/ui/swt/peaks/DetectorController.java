@@ -185,12 +185,8 @@ public class DetectorController {
 					/*
 					 * Get the current selection.
 					 */
-					BaseChart baseChart = peakDetectorChart.getBaseChart();
-					IAxisSet axisSet = baseChart.getAxisSet();
-					IAxis xAxis = axisSet.getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
-					IAxis yAxis = axisSet.getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
-					Range selectedRangeX = new Range(xAxis.getRange().lower, xAxis.getRange().upper);
-					Range selectedRangeY = new Range(yAxis.getRange().lower, yAxis.getRange().upper);
+					Range selectedRangeX = peakDetectorChart.getCurrentRangeX();
+					Range selectedRangeY = peakDetectorChart.getCurrentRangeY();
 					/*
 					 * Label the peak.
 					 */
@@ -214,7 +210,7 @@ public class DetectorController {
 					 * Keep the selection
 					 */
 					peakDetectorChart.updateRange(selectedRangeX, selectedRangeY);
-					updatePeakListSelection(baseChart);
+					updatePeakListSelection(peakDetectorChart.getBaseChart());
 				}
 			}
 		});
