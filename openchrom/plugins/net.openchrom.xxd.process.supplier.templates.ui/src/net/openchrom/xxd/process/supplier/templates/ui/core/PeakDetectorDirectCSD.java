@@ -33,7 +33,7 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSe
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.WizardRunnable;
 
 @SuppressWarnings("rawtypes")
-public class PeakDetectorDirectCSD extends AbstractPeakDetectorCSD {
+public class PeakDetectorDirectCSD extends AbstractPeakDetectorCSD implements IPeakDetectorDirect {
 
 	@Override
 	public IProcessingInfo detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD peakDetectorSettings, IProgressMonitor monitor) {
@@ -43,11 +43,16 @@ public class PeakDetectorDirectCSD extends AbstractPeakDetectorCSD {
 			PeakDetectorDirectSettings settingsDirect = (PeakDetectorDirectSettings)peakDetectorSettings;
 			/*
 			 * Create the template from the current selection.
+			 * Work with an offset, if the start or stop of the chromatogram is selected.
 			 */
+			int offset = 100;
+			int startRetentionTime = getStartRetentionTime(chromatogramSelection, offset);
+			int stopRetentionTime = getStopRetentionTime(chromatogramSelection, offset);
+			//
 			List<DetectorSetting> detectorSettings = new ArrayList<>();
 			DetectorSetting detectorSetting = new DetectorSetting();
-			detectorSetting.setStartRetentionTime(chromatogramSelection.getStartRetentionTime());
-			detectorSetting.setStopRetentionTime(chromatogramSelection.getStopRetentionTime());
+			detectorSetting.setStartRetentionTime(startRetentionTime);
+			detectorSetting.setStopRetentionTime(stopRetentionTime);
 			detectorSetting.setDetectorType(settingsDirect.isDetectorTypeVV() ? PeakType.VV : PeakType.BB);
 			detectorSetting.setTraces("");
 			detectorSetting.setOptimizeRange(settingsDirect.isOptimizeRange());
