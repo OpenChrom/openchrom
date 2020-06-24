@@ -37,7 +37,6 @@ import org.eclipse.swtchart.Range;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.ICustomSelectionHandler;
-import org.eclipse.swtchart.extensions.core.IExtendedChart;
 import org.eclipse.swtchart.extensions.core.RangeRestriction;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -52,9 +51,6 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private int yStart;
 	private int xStop;
 	private int yStop;
-	//
-	private Range selectedRangeX = null;
-	private Range selectedRangeY = null;
 	//
 	private PeakSupport peakSupport = new PeakSupport();
 	private DetectorRange detectorRange;
@@ -96,28 +92,10 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		update(detectorRange, chartSettingsDefault);
 	}
 
-	public void updateRangeX(Range selectedRangeX) {
-
-		updateRange(selectedRangeX, selectedRangeY);
-	}
-
-	public void updateRangeY(Range selectedRangeY) {
-
-		updateRange(selectedRangeX, selectedRangeY);
-	}
-
-	public void updateRange(Range selectedRangeX, Range selectedRangeY) {
-
-		this.selectedRangeX = selectedRangeX;
-		this.selectedRangeY = selectedRangeY;
-		adjustChartRange();
-	}
-
 	public void update(DetectorRange detectorRange, PeakDetectorChartSettings chartSettings) {
 
 		this.detectorRange = detectorRange;
-		selectedRangeX = null;
-		selectedRangeY = null;
+		clearSelectedRange();
 		int deltaRetentionTimeLeft = chartSettings.getDeltaRetentionTimeLeft();
 		int deltaRetentionTimeRight = chartSettings.getDeltaRetentionTimeRight();
 		deltaRangePaintListener.setDeltaRetentionTime(deltaRetentionTimeLeft, deltaRetentionTimeRight);
@@ -197,9 +175,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 			@Override
 			public void handleUserSelection(Event event) {
 
-				BaseChart baseChart = getBaseChart();
-				selectedRangeX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS).getRange();
-				selectedRangeY = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS).getRange();
+				assignCurrentRangeSelection();
 			}
 		});
 	}
@@ -296,9 +272,9 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				 */
 				double minY = showTraces(chromatogram, traces) ? 0.0d : getMinY(chromatogramSelection, startRetentionTime, stopRetentionTime);
 				double maxY = getMaxY(chromatogramSelection, startRetentionTime, stopRetentionTime);
-				selectedRangeX = new Range(startRetentionTime, stopRetentionTime);
-				selectedRangeY = new Range(minY, maxY);
-				adjustChartRange();
+				Range selectedRangeX = new Range(startRetentionTime, stopRetentionTime);
+				Range selectedRangeY = new Range(minY, maxY);
+				updateRange(selectedRangeX, selectedRangeY);
 			}
 		}
 	}
@@ -311,12 +287,10 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private void updateChart(IPeak peak) {
 
 		if(chromatogramSelection != null) {
-			if(selectedRangeX != null) {
-				if(peak != null) {
-					List<IPeak> peaks = new ArrayList<>();
-					peaks.add(peak);
-					updatePeaks(peaks);
-				}
+			if(peak != null) {
+				List<IPeak> peaks = new ArrayList<>();
+				peaks.add(peak);
+				updatePeaks(peaks);
 			}
 		}
 	}
@@ -354,13 +328,6 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		maxY = (maxY == 0) ? chromatogramSelection.getStopAbundance() : maxY;
 		//
 		return maxY;
-	}
-
-	private void adjustChartRange() {
-
-		setRange(IExtendedChart.X_AXIS, selectedRangeX);
-		setRange(IExtendedChart.Y_AXIS, selectedRangeY);
-		redrawChart();
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
