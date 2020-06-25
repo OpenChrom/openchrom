@@ -22,15 +22,9 @@ import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.numeric.statistics.Calculations;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.ChromatogramPeakChart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swtchart.IAxis;
-import org.eclipse.swtchart.IAxisSet;
-import org.eclipse.swtchart.ISeries;
 import org.eclipse.swtchart.Range;
-import org.eclipse.swtchart.extensions.core.BaseChart;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -179,14 +173,7 @@ public class ReviewController {
 							 * Focus XIC
 							 */
 							if(focusXIC(detectorRange, chartSettings)) {
-								ISeries<?> series = peakDetectorChart.getBaseChart().getSeriesSet().getSeries(ChromatogramPeakChart.SERIES_ID_CHROMATOGRAM_XIC);
-								double maxY = Calculations.getMax(series.getYSeries());
-								maxY += maxY * PreferenceSupplier.getOffsetMaxY() / 100.0d;
-								BaseChart baseChart = peakDetectorChart.getBaseChart();
-								IAxisSet axisSet = baseChart.getAxisSet();
-								IAxis yAxis = axisSet.getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
-								Range selectedRangeY = new Range(yAxis.getRange().lower, maxY);
-								peakDetectorChart.updateRangeY(selectedRangeY);
+								peakDetectorChart.focusXIC(PreferenceSupplier.getOffsetMaxY());
 							}
 						}
 					}
