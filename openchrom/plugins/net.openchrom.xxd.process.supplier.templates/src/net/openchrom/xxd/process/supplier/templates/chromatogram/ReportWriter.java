@@ -19,11 +19,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -62,6 +60,29 @@ public class ReportWriter {
 	private static final String MEAN_AREA = "Mean Area";
 	private static final String MEDIAN_AREA = "Median Area";
 	private static final String STDEV_AREA = "Standard Deviation Area";
+	//
+	private List<String> columns = new ArrayList<>();
+
+	public ReportWriter() {
+
+		/*
+		 * Default Columns
+		 */
+		columns.add(NAME);
+		columns.add(CAS_NUMBER);
+		columns.add(START_TIME_SETTING);
+		columns.add(STOP_TIME_SETTING);
+		columns.add(NUM_PEAKS);
+		columns.add(START_TIME_PEAKS);
+		columns.add(CENTER_TIME_PEAKS);
+		columns.add(STOP_TIME_PEAKS);
+		columns.add(SUM_AREA);
+		columns.add(MIN_AREA);
+		columns.add(MAX_AREA);
+		columns.add(MEAN_AREA);
+		columns.add(MEDIAN_AREA);
+		columns.add(STDEV_AREA);
+	}
 
 	public void generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings reportSettings, IProgressMonitor monitor) throws IOException {
 
@@ -75,7 +96,7 @@ public class ReportWriter {
 
 		Map<ReportSetting, List<IPeak>> sumResults = new HashMap<>();
 		int reports = 0;
-		Set<String> columnsToPrint = extractColumnsToPrint(reportSettings);
+		List<String> columnsToPrint = extractColumnsToPrint(reportSettings);
 		//
 		for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
 			/*
@@ -107,42 +128,31 @@ public class ReportWriter {
 		}
 	}
 
-	private Set<String> extractColumnsToPrint(ChromatogramReportSettings reportSettings) {
+	private List<String> extractColumnsToPrint(ChromatogramReportSettings reportSettings) {
 
-		Set<String> columnsToPrint = new HashSet<>();
+		List<String> columnsToPrint = new ArrayList<>();
 		String printColumns = reportSettings.getPrintColumns();
-		if(!printColumns.isEmpty()) {
+		if(printColumns.isEmpty()) {
+			/*
+			 * Default
+			 */
+			columnsToPrint.addAll(columns);
+		} else {
 			/*
 			 * Selected Columns
 			 */
 			String[] values = printColumns.split(SEPARATOR);
 			for(String value : values) {
-				value = value.replaceAll(SINGLE_TICK, "").replaceAll(DOUBLE_TICK, "");
-				columnsToPrint.add(value.trim());
+				value = value.replaceAll(SINGLE_TICK, "").replaceAll(DOUBLE_TICK, "").trim();
+				if(columns.contains(value)) {
+					columnsToPrint.add(value);
+				}
 			}
-		} else {
-			/*
-			 * All Columns
-			 */
-			columnsToPrint.add(NAME);
-			columnsToPrint.add(CAS_NUMBER);
-			columnsToPrint.add(START_TIME_SETTING);
-			columnsToPrint.add(STOP_TIME_SETTING);
-			columnsToPrint.add(NUM_PEAKS);
-			columnsToPrint.add(START_TIME_PEAKS);
-			columnsToPrint.add(CENTER_TIME_PEAKS);
-			columnsToPrint.add(STOP_TIME_PEAKS);
-			columnsToPrint.add(SUM_AREA);
-			columnsToPrint.add(MIN_AREA);
-			columnsToPrint.add(MAX_AREA);
-			columnsToPrint.add(MEAN_AREA);
-			columnsToPrint.add(MEDIAN_AREA);
-			columnsToPrint.add(STDEV_AREA);
 		}
 		return columnsToPrint;
 	}
 
-	private Map<ReportSetting, List<IPeak>> printChromatogram(IChromatogram<? extends IPeak> chromatogram, ChromatogramReportSettings reportSettings, Set<String> columnsToPrint, PrintWriter printWriter) {
+	private Map<ReportSetting, List<IPeak>> printChromatogram(IChromatogram<? extends IPeak> chromatogram, ChromatogramReportSettings reportSettings, List<String> columnsToPrint, PrintWriter printWriter) {
 
 		Map<ReportSetting, List<IPeak>> mappedResults = mapChromatogram(chromatogram, reportSettings);
 		if(reportSettings.isPrintHeader()) {
@@ -190,34 +200,19 @@ public class ReportWriter {
 		}
 	}
 
-	private void printResults(Map<ReportSetting, List<IPeak>> mappedResults, Set<String> columnsToPrint, PrintWriter printWriter) {
+	private void printResults(Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, PrintWriter printWriter) {
 
 		printResultHeader(columnsToPrint, printWriter);
 		printResultData(mappedResults, columnsToPrint, printWriter);
 		printWriter.println("");
 	}
 
-	private void printResultHeader(Set<String> columnsToPrint, PrintWriter printWriter) {
+	private void printResultHeader(List<String> columnsToPrint, PrintWriter printWriter) {
 
-		List<String> items = new ArrayList<>();
-		addItemHeader(items, NAME, columnsToPrint);
-		addItemHeader(items, CAS_NUMBER, columnsToPrint);
-		addItemHeader(items, START_TIME_SETTING, columnsToPrint);
-		addItemHeader(items, STOP_TIME_SETTING, columnsToPrint);
-		addItemHeader(items, NUM_PEAKS, columnsToPrint);
-		addItemHeader(items, START_TIME_PEAKS, columnsToPrint);
-		addItemHeader(items, CENTER_TIME_PEAKS, columnsToPrint);
-		addItemHeader(items, STOP_TIME_PEAKS, columnsToPrint);
-		addItemHeader(items, SUM_AREA, columnsToPrint);
-		addItemHeader(items, MIN_AREA, columnsToPrint);
-		addItemHeader(items, MAX_AREA, columnsToPrint);
-		addItemHeader(items, MEAN_AREA, columnsToPrint);
-		addItemHeader(items, MEDIAN_AREA, columnsToPrint);
-		addItemHeader(items, STDEV_AREA, columnsToPrint);
-		printList(items, printWriter);
+		printList(columnsToPrint, printWriter);
 	}
 
-	private void printResultData(Map<ReportSetting, List<IPeak>> mappedResults, Set<String> columnsToPrint, PrintWriter printWriter) {
+	private void printResultData(Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, PrintWriter printWriter) {
 
 		List<ReportSetting> reportSettings = new ArrayList<>(mappedResults.keySet());
 		Collections.sort(reportSettings, new ReportComparator());
@@ -234,34 +229,29 @@ public class ReportWriter {
 			/*
 			 * Data
 			 */
+			Map<String, String> dataMap = new HashMap<>();
+			dataMap.put(NAME, reportSetting.getName());
+			dataMap.put(CAS_NUMBER, reportSetting.getCasNumber());
+			dataMap.put(START_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStartRetentionTime()));
+			dataMap.put(STOP_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStopRetentionTime()));
+			dataMap.put(NUM_PEAKS, Integer.toString(peaks.size()));
+			dataMap.put(START_TIME_PEAKS, startTime);
+			dataMap.put(CENTER_TIME_PEAKS, centerTime);
+			dataMap.put(STOP_TIME_PEAKS, stopTime);
+			dataMap.put(SUM_AREA, areaFormat.format(Calculations.getSum(areas)));
+			dataMap.put(MIN_AREA, areaFormat.format(Calculations.getMin(areas)));
+			dataMap.put(MAX_AREA, areaFormat.format(Calculations.getMax(areas)));
+			dataMap.put(MEAN_AREA, areaFormat.format(Calculations.getMean(areas)));
+			dataMap.put(MEDIAN_AREA, areaFormat.format(Calculations.getMedian(areas)));
+			dataMap.put(STDEV_AREA, areaFormat.format(Calculations.getStandardDeviation(areas)));
+			//
 			List<String> items = new ArrayList<>();
-			addItem(items, reportSetting.getName(), NAME, columnsToPrint);
-			addItem(items, reportSetting.getCasNumber(), CAS_NUMBER, columnsToPrint);
-			addItem(items, getRetentionTimeMinutes(reportSetting.getStartRetentionTime()), START_TIME_SETTING, columnsToPrint);
-			addItem(items, getRetentionTimeMinutes(reportSetting.getStopRetentionTime()), STOP_TIME_SETTING, columnsToPrint);
-			addItem(items, Integer.toString(peaks.size()), NUM_PEAKS, columnsToPrint);
-			addItem(items, startTime, START_TIME_PEAKS, columnsToPrint);
-			addItem(items, centerTime, CENTER_TIME_PEAKS, columnsToPrint);
-			addItem(items, stopTime, STOP_TIME_PEAKS, columnsToPrint);
-			addItem(items, areaFormat.format(Calculations.getSum(areas)), SUM_AREA, columnsToPrint);
-			addItem(items, areaFormat.format(Calculations.getMin(areas)), MIN_AREA, columnsToPrint);
-			addItem(items, areaFormat.format(Calculations.getMax(areas)), MAX_AREA, columnsToPrint);
-			addItem(items, areaFormat.format(Calculations.getMean(areas)), MEAN_AREA, columnsToPrint);
-			addItem(items, areaFormat.format(Calculations.getMedian(areas)), MEDIAN_AREA, columnsToPrint);
-			addItem(items, areaFormat.format(Calculations.getStandardDeviation(areas)), STDEV_AREA, columnsToPrint);
+			for(String columnToPrint : columnsToPrint) {
+				String data = dataMap.get(columnToPrint);
+				items.add((data != null) ? data : "");
+			}
+			//
 			printList(items, printWriter);
-		}
-	}
-
-	private void addItemHeader(List<String> items, String column, Set<String> columnsToPrint) {
-
-		addItem(items, column, column, columnsToPrint);
-	}
-
-	private void addItem(List<String> items, String value, String column, Set<String> columnsToPrint) {
-
-		if(columnsToPrint.contains(column)) {
-			items.add(value);
 		}
 	}
 
