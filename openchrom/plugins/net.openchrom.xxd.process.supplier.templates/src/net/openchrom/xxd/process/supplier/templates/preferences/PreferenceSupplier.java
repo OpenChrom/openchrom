@@ -72,6 +72,17 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int DEF_OFFSET_MIN_Y = 50;
 	public static final String P_OFFSET_MAX_Y = "offsetMaxY";
 	public static final int DEF_OFFSET_MAX_Y = 30;
+	//
+	public static final String P_SORT_IMPORT_TEMPLATE = "sortImportTemplate";
+	public static final boolean DEF_SORT_IMPORT_TEMPLATE = false;
+	public static final String P_SORT_EXPORT_TEMPLATE = "sortExportTemplate";
+	public static final boolean DEF_SORT_EXPORT_TEMPLATE = false;
+	public static final String P_DETECTOR_SETTINGS_SORT = "detectorSettingsSort";
+	public static final boolean DEF_DETECTOR_SETTINGS_SORT = false;
+	public static final String P_REVIEW_SETTINGS_SORT = "reviewSettingsSort";
+	public static final boolean DEF_REVIEW_SETTINGS_SORT = false;
+	public static final String P_REPORT_SETTINGS_SORT = "reportSettingsSort";
+	public static final boolean DEF_REPORT_SETTINGS_SORT = false;
 	/*
 	 * Detector
 	 */
@@ -237,6 +248,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_OFFSET_MIN_Y, Integer.toString(DEF_OFFSET_MIN_Y));
 		defaultValues.put(P_OFFSET_MAX_Y, Integer.toString(DEF_OFFSET_MAX_Y));
 		//
+		defaultValues.put(P_SORT_IMPORT_TEMPLATE, Boolean.toString(DEF_SORT_IMPORT_TEMPLATE));
+		defaultValues.put(P_SORT_EXPORT_TEMPLATE, Boolean.toString(DEF_SORT_EXPORT_TEMPLATE));
+		defaultValues.put(P_DETECTOR_SETTINGS_SORT, Boolean.toString(DEF_DETECTOR_SETTINGS_SORT));
+		defaultValues.put(P_REVIEW_SETTINGS_SORT, Boolean.toString(DEF_REVIEW_SETTINGS_SORT));
+		defaultValues.put(P_REPORT_SETTINGS_SORT, Boolean.toString(DEF_REPORT_SETTINGS_SORT));
+		//
 		defaultValues.put(P_EXPORT_NUMBER_TRACES_DETECTOR, Integer.toString(DEF_EXPORT_NUMBER_TRACES_DETECTOR));
 		defaultValues.put(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, Boolean.toString(DEF_EXPORT_OPTIMIZE_RANGE_DETECTOR));
 		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR));
@@ -350,6 +367,36 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_OFFSET_MAX_Y, DEF_OFFSET_MAX_Y);
+	}
+
+	public static boolean isSortImportTemplate() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_SORT_IMPORT_TEMPLATE, DEF_SORT_IMPORT_TEMPLATE);
+	}
+
+	public static boolean isSortExportTemplate() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_SORT_EXPORT_TEMPLATE, DEF_SORT_EXPORT_TEMPLATE);
+	}
+
+	public static boolean isDetectorSettingsSort() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_DETECTOR_SETTINGS_SORT, DEF_DETECTOR_SETTINGS_SORT);
+	}
+
+	public static boolean isReviewSettingsSort() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_REVIEW_SETTINGS_SORT, DEF_REVIEW_SETTINGS_SORT);
+	}
+
+	public static boolean isReportSettingsSort() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_REPORT_SETTINGS_SORT, DEF_REPORT_SETTINGS_SORT);
 	}
 
 	public static boolean isExportOptimizeRangeDetector() {

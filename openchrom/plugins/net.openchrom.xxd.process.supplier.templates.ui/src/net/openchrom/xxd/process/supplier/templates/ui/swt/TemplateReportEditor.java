@@ -63,7 +63,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
-import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -418,7 +417,7 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 
 	private void setTableViewerInput() {
 
-		reportListUI.setInput(settings.values());
+		reportListUI.setInput(settings);
 		for(Listener listener : listeners) {
 			listener.handleEvent(new Event());
 		}
@@ -467,8 +466,8 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 		if(MessageDialog.openQuestion(shell, DIALOG_TITLE, MESSAGE_REMOVE)) {
 			IStructuredSelection structuredSelection = (IStructuredSelection)reportListUI.getSelection();
 			for(Object object : structuredSelection.toArray()) {
-				if(object instanceof IdentifierSetting) {
-					settings.remove(((IdentifierSetting)object).getName());
+				if(object instanceof ReportSetting) {
+					settings.remove((ReportSetting)object);
 				}
 			}
 			setTableViewerInput();

@@ -20,30 +20,42 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.comparator.ReportComparator;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.ReportListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.ReportValidator;
 
-public class ReportSettings extends HashMap<String, ReportSetting> implements ISettings {
+public class ReportSettings extends ArrayList<ReportSetting> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(ReportSettings.class);
 	private static final long serialVersionUID = -5652667140827481688L;
 	//
 	private ReportListUtil listUtil = new ReportListUtil();
 
-	public void add(ReportSetting setting) {
+	public Set<String> keySet() {
+
+		Set<String> keys = new HashSet<>();
+		for(ReportSetting reportSetting : this) {
+			keys.add(reportSetting.getName());
+		}
+		return keys;
+	}
+
+	public boolean add(ReportSetting setting) {
 
 		if(setting != null) {
-			put(setting.getName(), setting);
+			return super.add(setting);
 		}
+		return false;
 	}
 
 	public void load(String items) {
@@ -58,7 +70,7 @@ public class ReportSettings extends HashMap<String, ReportSetting> implements IS
 
 	public String save() {
 
-		return extractSettings(this.values());
+		return extractSettings(this);
 	}
 
 	public String extractSetting(ReportSetting setting) {
@@ -110,8 +122,12 @@ public class ReportSettings extends HashMap<String, ReportSetting> implements IS
 
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
-			List<ReportSetting> settings = new ArrayList<>(values());
-			Collections.sort(settings, new ReportComparator());
+			//
+			List<ReportSetting> settings = new ArrayList<>(this);
+			if(PreferenceSupplier.isSortExportTemplate()) {
+				Collections.sort(settings, new ReportComparator()); // SORT OK
+			}
+			//
 			for(ReportSetting setting : settings) {
 				StringBuilder builder = new StringBuilder();
 				extractSetting(setting, builder);

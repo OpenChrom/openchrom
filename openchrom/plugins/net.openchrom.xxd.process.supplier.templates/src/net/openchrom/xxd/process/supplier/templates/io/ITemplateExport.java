@@ -41,7 +41,7 @@ public interface ITemplateExport {
 					IonAbundanceComparator comparator = new IonAbundanceComparator(SortOrder.DESC);
 					IScanMSD scanMSD = (IScanMSD)scan;
 					List<IIon> ions = new ArrayList<>(scanMSD.getIons());
-					Collections.sort(ions, comparator);
+					Collections.sort(ions, comparator); // SORT OK
 					Iterator<IIon> iterator = ions.iterator();
 					int counter = 1;
 					exitloop:

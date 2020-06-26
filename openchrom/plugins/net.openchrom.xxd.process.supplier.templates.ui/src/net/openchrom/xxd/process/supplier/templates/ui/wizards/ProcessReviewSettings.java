@@ -20,6 +20,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 
 import net.openchrom.xxd.process.supplier.templates.comparator.ReviewComparator;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 
 public class ProcessReviewSettings {
@@ -29,10 +30,14 @@ public class ProcessReviewSettings {
 	private List<ReviewSetting> reviewSettings = new ArrayList<>();
 
 	public ProcessReviewSettings(IProcessingInfo<?> processingInfo, IChromatogram<?> chromatogram, PeakReviewSettings peakReviewSettings) {
+
 		this.processingInfo = processingInfo;
 		this.chromatogram = chromatogram;
 		this.reviewSettings.addAll(peakReviewSettings.getReviewSettingsList());
-		Collections.sort(reviewSettings, new ReviewComparator());
+		//
+		if(PreferenceSupplier.isReviewSettingsSort()) {
+			Collections.sort(reviewSettings, new ReviewComparator()); // SORT OK
+		}
 	}
 
 	public IProcessingInfo<?> getProcessingInfo() {

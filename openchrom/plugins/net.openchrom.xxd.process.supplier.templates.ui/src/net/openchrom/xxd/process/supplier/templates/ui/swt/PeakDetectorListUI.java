@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakDetectorComparator;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakDetectorEditingSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakDetectorFilter;
@@ -56,7 +57,9 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 		createColumns(TITLES, BOUNDS);
 		setLabelProvider(labelProvider);
 		setContentProvider(new ListContentProvider());
-		setComparator(tableComparator);
+		if(PreferenceSupplier.isDetectorSettingsSort()) {
+			setComparator(tableComparator); // SORT OK
+		}
 		setFilters(new ViewerFilter[]{listFilter});
 		setEditingSupport();
 	}

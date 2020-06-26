@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -28,6 +28,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.comparator.StandardComparator;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerValidator;
@@ -110,8 +111,12 @@ public class AssignerStandards extends HashMap<String, AssignerStandard> impleme
 
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
+			//
 			List<AssignerStandard> settings = new ArrayList<>(values());
-			Collections.sort(settings, new StandardComparator());
+			if(PreferenceSupplier.isSortExportTemplate()) {
+				Collections.sort(settings, new StandardComparator()); // SORT OK
+			}
+			//
 			for(AssignerStandard setting : settings) {
 				StringBuilder builder = new StringBuilder();
 				extractSetting(setting, builder);

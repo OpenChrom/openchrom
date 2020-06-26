@@ -28,6 +28,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.comparator.DetectorComparator;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
@@ -103,8 +104,12 @@ public class DetectorSettings extends ArrayList<DetectorSetting> implements ISet
 
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
+			//
 			List<DetectorSetting> settings = new ArrayList<>(this);
-			Collections.sort(settings, new DetectorComparator());
+			if(PreferenceSupplier.isSortExportTemplate()) {
+				Collections.sort(settings, new DetectorComparator()); // SORT OK
+			}
+			//
 			for(DetectorSetting setting : settings) {
 				StringBuilder builder = new StringBuilder();
 				extractSetting(setting, builder);

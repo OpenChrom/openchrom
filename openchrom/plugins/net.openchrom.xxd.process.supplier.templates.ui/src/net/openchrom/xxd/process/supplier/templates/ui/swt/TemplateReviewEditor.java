@@ -420,7 +420,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 
 	private void setTableViewerInput() {
 
-		peakReviewListUI.setInput(settings.values());
+		peakReviewListUI.setInput(settings);
 		for(Listener listener : listeners) {
 			listener.handleEvent(new Event());
 		}
@@ -470,7 +470,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 			IStructuredSelection structuredSelection = (IStructuredSelection)peakReviewListUI.getSelection();
 			for(Object object : structuredSelection.toArray()) {
 				if(object instanceof ReviewSetting) {
-					settings.remove(((ReviewSetting)object).getName());
+					settings.remove((ReviewSetting)object);
 				}
 			}
 			setTableViewerInput();

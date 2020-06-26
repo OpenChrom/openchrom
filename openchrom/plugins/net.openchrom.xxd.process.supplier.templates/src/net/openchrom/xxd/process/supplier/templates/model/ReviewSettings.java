@@ -20,29 +20,41 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.comparator.ReviewComparator;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.ReviewListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.ReviewValidator;
 
-public class ReviewSettings extends HashMap<String, ReviewSetting> implements ISettings {
+public class ReviewSettings extends ArrayList<ReviewSetting> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(ReviewSettings.class);
 	private static final long serialVersionUID = -6161941038059031059L;
 	private ReviewListUtil listUtil = new ReviewListUtil();
 
-	public void add(ReviewSetting setting) {
+	public Set<String> keySet() {
+
+		Set<String> keys = new HashSet<>();
+		for(ReviewSetting reviewSetting : this) {
+			keys.add(reviewSetting.getName());
+		}
+		return keys;
+	}
+
+	public boolean add(ReviewSetting setting) {
 
 		if(setting != null) {
-			put(setting.getName(), setting);
+			return super.add(setting);
 		}
+		return false;
 	}
 
 	public void load(String items) {
@@ -57,7 +69,7 @@ public class ReviewSettings extends HashMap<String, ReviewSetting> implements IS
 
 	public String save() {
 
-		return extractSettings(this.values());
+		return extractSettings(this);
 	}
 
 	public String extractSetting(ReviewSetting setting) {
@@ -109,8 +121,12 @@ public class ReviewSettings extends HashMap<String, ReviewSetting> implements IS
 
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
-			List<ReviewSetting> settings = new ArrayList<>(values());
-			Collections.sort(settings, new ReviewComparator());
+			//
+			List<ReviewSetting> settings = new ArrayList<>(this);
+			if(PreferenceSupplier.isSortExportTemplate()) {
+				Collections.sort(settings, new ReviewComparator()); // SORT OK
+			}
+			//
 			for(ReviewSetting setting : settings) {
 				StringBuilder builder = new StringBuilder();
 				extractSetting(setting, builder);

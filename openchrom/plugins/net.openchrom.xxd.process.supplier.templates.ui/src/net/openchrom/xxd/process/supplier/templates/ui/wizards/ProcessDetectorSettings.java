@@ -21,6 +21,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 
 import net.openchrom.xxd.process.supplier.templates.comparator.DetectorComparator;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 
 public class ProcessDetectorSettings {
@@ -30,10 +31,14 @@ public class ProcessDetectorSettings {
 	private List<DetectorSetting> detectorSettings = new ArrayList<>();
 
 	public ProcessDetectorSettings(IProcessingInfo<?> processingInfo, IChromatogram<?> chromatogram, PeakDetectorSettings peakDetectorSettings) {
+
 		this.processingInfo = processingInfo;
 		this.chromatogram = chromatogram;
 		this.detectorSettings.addAll(peakDetectorSettings.getDetectorSettingsList());
-		Collections.sort(detectorSettings, new DetectorComparator());
+		//
+		if(PreferenceSupplier.isDetectorSettingsSort()) {
+			Collections.sort(detectorSettings, new DetectorComparator()); // SORT OK
+		}
 	}
 
 	public IProcessingInfo<?> getProcessingInfo() {

@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakReviewComparator;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakReviewEditingSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakReviewFilter;
@@ -34,6 +35,7 @@ public class PeakReviewListUI extends ExtendedTableViewer {
 	private PeakReviewFilter listFilter = new PeakReviewFilter();
 
 	public PeakReviewListUI(Composite parent, int style) {
+
 		super(parent, style);
 		createColumns();
 	}
@@ -54,7 +56,9 @@ public class PeakReviewListUI extends ExtendedTableViewer {
 		createColumns(TITLES, BOUNDS);
 		setLabelProvider(labelProvider);
 		setContentProvider(new ListContentProvider());
-		setComparator(tableComparator);
+		if(PreferenceSupplier.isReviewSettingsSort()) {
+			setComparator(tableComparator); // SORT OK
+		}
 		setFilters(new ViewerFilter[]{listFilter});
 		setEditingSupport();
 	}

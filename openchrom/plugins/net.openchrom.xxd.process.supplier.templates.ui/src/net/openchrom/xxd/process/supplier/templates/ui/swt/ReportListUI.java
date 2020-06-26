@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReportComparator;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReportEditingSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReportFilter;
@@ -34,6 +35,7 @@ public class ReportListUI extends ExtendedTableViewer {
 	private ReportFilter listFilter = new ReportFilter();
 
 	public ReportListUI(Composite parent, int style) {
+
 		super(parent, style);
 		createColumns();
 	}
@@ -54,7 +56,9 @@ public class ReportListUI extends ExtendedTableViewer {
 		createColumns(TITLES, BOUNDS);
 		setLabelProvider(labelProvider);
 		setContentProvider(new ListContentProvider());
-		setComparator(tableComparator);
+		if(PreferenceSupplier.isReportSettingsSort()) {
+			setComparator(tableComparator); // SORT OK
+		}
 		setFilters(new ViewerFilter[]{listFilter});
 		setEditingSupport();
 	}

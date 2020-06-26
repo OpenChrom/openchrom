@@ -26,6 +26,8 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.settings.OperatingSystemUtils;
 import org.eclipse.core.runtime.IStatus;
 
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
+
 public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> implements ITemplateListUtil<T> {
 
 	private static final Logger logger = Logger.getLogger(AbstractTemplateListUtil.class);
@@ -132,7 +134,11 @@ public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> imp
 				}
 			}
 		}
-		Collections.sort(values);
+		//
+		if(PreferenceSupplier.isSortImportTemplate()) {
+			Collections.sort(values); // SORT OK
+		}
+		//
 		return values;
 	}
 

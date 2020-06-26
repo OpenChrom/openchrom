@@ -32,7 +32,6 @@ import org.eclipse.chemclipse.numeric.statistics.Calculations;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.process.supplier.templates.comparator.ReportComparator;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
 
@@ -123,7 +122,7 @@ public class ReportWriter {
 			if(reports > 1) {
 				printWriter.println("Summary");
 				printWriter.println("");
-				printResults(sumResults, columnsToPrint, printWriter);
+				printResults(reportSettings.getReportSettingsList(), sumResults, columnsToPrint, printWriter);
 			}
 		}
 	}
@@ -158,7 +157,7 @@ public class ReportWriter {
 		if(reportSettings.isPrintHeader()) {
 			printChromatogramHeader(chromatogram, printWriter);
 		}
-		printResults(mappedResults, columnsToPrint, printWriter);
+		printResults(reportSettings.getReportSettingsList(), mappedResults, columnsToPrint, printWriter);
 		//
 		return mappedResults;
 	}
@@ -167,7 +166,7 @@ public class ReportWriter {
 
 		Map<String, String> headerData = chromatogram.getHeaderDataMap();
 		List<String> keys = new ArrayList<>(headerData.keySet());
-		Collections.sort(keys);
+		Collections.sort(keys); // SORT OK
 		//
 		for(String key : keys) {
 			printWriter.print(key);
@@ -200,10 +199,10 @@ public class ReportWriter {
 		}
 	}
 
-	private void printResults(Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, PrintWriter printWriter) {
+	private void printResults(List<ReportSetting> reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, PrintWriter printWriter) {
 
 		printResultHeader(columnsToPrint, printWriter);
-		printResultData(mappedResults, columnsToPrint, printWriter);
+		printResultData(reportSettings, mappedResults, columnsToPrint, printWriter);
 		printWriter.println("");
 	}
 
@@ -212,46 +211,52 @@ public class ReportWriter {
 		printList(columnsToPrint, printWriter);
 	}
 
-	private void printResultData(Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, PrintWriter printWriter) {
+	private void printResultData(List<ReportSetting> reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, PrintWriter printWriter) {
 
-		List<ReportSetting> reportSettings = new ArrayList<>(mappedResults.keySet());
-		Collections.sort(reportSettings, new ReportComparator());
-		//
+		/*
+		 * The sort order of the report setting list is important.
+		 * That's why the list is not extracted as a set from the map.
+		 */
 		for(ReportSetting reportSetting : reportSettings) {
 			List<IPeak> peaks = mappedResults.get(reportSetting);
-			double[] areas = extractPeakAreas(peaks);
-			int[] startTimes = extractPeakStartTimes(peaks);
-			String startTime = timeFormat.format(Calculations.getMin(startTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
-			int[] centerTimes = extractPeakCenterTimes(peaks);
-			String centerTime = timeFormat.format(Calculations.getMean(centerTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
-			int[] stopTimes = extractPeakStopTimes(peaks);
-			String stopTime = timeFormat.format(Calculations.getMax(stopTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
-			/*
-			 * Data
-			 */
-			Map<String, String> dataMap = new HashMap<>();
-			dataMap.put(NAME, reportSetting.getName());
-			dataMap.put(CAS_NUMBER, reportSetting.getCasNumber());
-			dataMap.put(START_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStartRetentionTime()));
-			dataMap.put(STOP_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStopRetentionTime()));
-			dataMap.put(NUM_PEAKS, Integer.toString(peaks.size()));
-			dataMap.put(START_TIME_PEAKS, startTime);
-			dataMap.put(CENTER_TIME_PEAKS, centerTime);
-			dataMap.put(STOP_TIME_PEAKS, stopTime);
-			dataMap.put(SUM_AREA, areaFormat.format(Calculations.getSum(areas)));
-			dataMap.put(MIN_AREA, areaFormat.format(Calculations.getMin(areas)));
-			dataMap.put(MAX_AREA, areaFormat.format(Calculations.getMax(areas)));
-			dataMap.put(MEAN_AREA, areaFormat.format(Calculations.getMean(areas)));
-			dataMap.put(MEDIAN_AREA, areaFormat.format(Calculations.getMedian(areas)));
-			dataMap.put(STDEV_AREA, areaFormat.format(Calculations.getStandardDeviation(areas)));
-			//
-			List<String> items = new ArrayList<>();
-			for(String columnToPrint : columnsToPrint) {
-				String data = dataMap.get(columnToPrint);
-				items.add((data != null) ? data : "");
+			if(peaks != null) {
+				/*
+				 * Peak Time(s)
+				 */
+				double[] areas = extractPeakAreas(peaks);
+				int[] startTimes = extractPeakStartTimes(peaks);
+				String startTime = timeFormat.format(Calculations.getMin(startTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				int[] centerTimes = extractPeakCenterTimes(peaks);
+				String centerTime = timeFormat.format(Calculations.getMean(centerTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				int[] stopTimes = extractPeakStopTimes(peaks);
+				String stopTime = timeFormat.format(Calculations.getMax(stopTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				/*
+				 * Data
+				 */
+				Map<String, String> dataMap = new HashMap<>();
+				dataMap.put(NAME, reportSetting.getName());
+				dataMap.put(CAS_NUMBER, reportSetting.getCasNumber());
+				dataMap.put(START_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStartRetentionTime()));
+				dataMap.put(STOP_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStopRetentionTime()));
+				dataMap.put(NUM_PEAKS, Integer.toString(peaks.size()));
+				dataMap.put(START_TIME_PEAKS, startTime);
+				dataMap.put(CENTER_TIME_PEAKS, centerTime);
+				dataMap.put(STOP_TIME_PEAKS, stopTime);
+				dataMap.put(SUM_AREA, areaFormat.format(Calculations.getSum(areas)));
+				dataMap.put(MIN_AREA, areaFormat.format(Calculations.getMin(areas)));
+				dataMap.put(MAX_AREA, areaFormat.format(Calculations.getMax(areas)));
+				dataMap.put(MEAN_AREA, areaFormat.format(Calculations.getMean(areas)));
+				dataMap.put(MEDIAN_AREA, areaFormat.format(Calculations.getMedian(areas)));
+				dataMap.put(STDEV_AREA, areaFormat.format(Calculations.getStandardDeviation(areas)));
+				//
+				List<String> items = new ArrayList<>();
+				for(String columnToPrint : columnsToPrint) {
+					String data = dataMap.get(columnToPrint);
+					items.add((data != null) ? data : "");
+				}
+				//
+				printList(items, printWriter);
 			}
-			//
-			printList(items, printWriter);
 		}
 	}
 
