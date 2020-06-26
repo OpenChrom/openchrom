@@ -50,13 +50,6 @@ public class PeakDetectorFilter extends ViewerFilter {
 				name = name.toLowerCase();
 			}
 			//
-			if(detectorType != null) {
-				if(caseSensitive) {
-					return detectorType.name().contains(searchText);
-				}
-				return detectorType.name().toLowerCase().contains(searchText);
-			}
-			//
 			if(traces.contains(searchText)) {
 				return true;
 			}
@@ -67,6 +60,18 @@ public class PeakDetectorFilter extends ViewerFilter {
 			//
 			if(name.contains(searchText)) {
 				return true;
+			}
+			//
+			if(detectorType != null) {
+				if(caseSensitive) {
+					if(detectorType.name().contains(searchText)) {
+						return true;
+					}
+				} else {
+					if(detectorType.name().toLowerCase().contains(searchText)) {
+						return true;
+					}
+				}
 			}
 		}
 		//

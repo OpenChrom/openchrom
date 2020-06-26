@@ -63,9 +63,14 @@ public class PeakReviewFilter extends ViewerFilter {
 			//
 			if(detectorType != null) {
 				if(caseSensitive) {
-					return detectorType.name().contains(searchText);
+					if(detectorType.name().contains(searchText)) {
+						return true;
+					}
+				} else {
+					if(detectorType.name().toLowerCase().contains(searchText)) {
+						return true;
+					}
 				}
-				return detectorType.name().toLowerCase().contains(searchText);
 			}
 		}
 		//
