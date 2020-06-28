@@ -302,7 +302,7 @@ public class StandardsAssignerFieldEditor extends AbstractFieldEditor {
 
 	private void setTableViewerInput() {
 
-		listUI.setInput(settings.values());
+		listUI.setInput(settings);
 	}
 
 	@Override
@@ -387,7 +387,7 @@ public class StandardsAssignerFieldEditor extends AbstractFieldEditor {
 			IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
 			for(Object object : structuredSelection.toArray()) {
 				if(object instanceof AssignerStandard) {
-					settings.remove(((AssignerStandard)object).getName());
+					settings.remove((AssignerStandard)object);
 				}
 			}
 			setTableViewerInput();

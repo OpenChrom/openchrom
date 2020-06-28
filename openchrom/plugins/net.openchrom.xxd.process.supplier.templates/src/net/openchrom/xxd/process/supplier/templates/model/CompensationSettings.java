@@ -20,9 +20,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -33,18 +34,28 @@ import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUti
 import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantValidator;
 
-public class CompensationSettings extends HashMap<String, CompensationSetting> {
+public class CompensationSettings extends ArrayList<CompensationSetting> {
 
 	private static final long serialVersionUID = -1566032312360942165L;
 	private static final Logger logger = Logger.getLogger(CompensationSettings.class);
 	//
 	private CompensationQuantListUtil listUtil = new CompensationQuantListUtil();
 
-	public void add(CompensationSetting setting) {
+	public Set<String> keySet() {
+
+		Set<String> keys = new HashSet<>();
+		for(CompensationSetting setting : this) {
+			keys.add(setting.getName());
+		}
+		return keys;
+	}
+
+	public boolean add(CompensationSetting setting) {
 
 		if(setting != null) {
-			put(setting.getName(), setting);
+			return super.add(setting);
 		}
+		return false;
 	}
 
 	public void load(String items) {
@@ -59,7 +70,7 @@ public class CompensationSettings extends HashMap<String, CompensationSetting> {
 
 	public String save() {
 
-		return extractSettings(this.values());
+		return extractSettings(this);
 	}
 
 	public String extractSetting(CompensationSetting setting) {
@@ -112,7 +123,7 @@ public class CompensationSettings extends HashMap<String, CompensationSetting> {
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
 			//
-			List<CompensationSetting> settings = new ArrayList<>(values());
+			List<CompensationSetting> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
 				Collections.sort(settings, new CompensationComparator()); // SORT OK
 			}

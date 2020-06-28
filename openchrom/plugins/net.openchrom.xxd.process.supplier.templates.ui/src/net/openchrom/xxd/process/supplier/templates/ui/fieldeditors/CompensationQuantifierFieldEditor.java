@@ -302,7 +302,7 @@ public class CompensationQuantifierFieldEditor extends AbstractFieldEditor {
 
 	private void setTableViewerInput() {
 
-		listUI.setInput(settings.values());
+		listUI.setInput(settings);
 	}
 
 	@Override
@@ -387,7 +387,7 @@ public class CompensationQuantifierFieldEditor extends AbstractFieldEditor {
 			IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
 			for(Object object : structuredSelection.toArray()) {
 				if(object instanceof CompensationSetting) {
-					settings.remove(((CompensationSetting)object).getName());
+					settings.remove((CompensationSetting)object);
 				}
 			}
 			setTableViewerInput();

@@ -20,9 +20,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -33,18 +34,28 @@ import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUti
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
 
-public class IdentifierSettings extends HashMap<String, IdentifierSetting> implements ISettings {
+public class IdentifierSettings extends ArrayList<IdentifierSetting> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(IdentifierSettings.class);
 	//
 	private static final long serialVersionUID = 260861794433108481L;
 	private PeakIdentifierListUtil listUtil = new PeakIdentifierListUtil();
 
-	public void add(IdentifierSetting setting) {
+	public Set<String> keySet() {
+
+		Set<String> keys = new HashSet<>();
+		for(IdentifierSetting identifierSetting : this) {
+			keys.add(identifierSetting.getName());
+		}
+		return keys;
+	}
+
+	public boolean add(IdentifierSetting setting) {
 
 		if(setting != null) {
-			put(setting.getName(), setting);
+			return super.add(setting);
 		}
+		return false;
 	}
 
 	public void load(String items) {
@@ -59,7 +70,7 @@ public class IdentifierSettings extends HashMap<String, IdentifierSetting> imple
 
 	public String save() {
 
-		return extractSettings(this.values());
+		return extractSettings(this);
 	}
 
 	public String extractSetting(IdentifierSetting setting) {
@@ -112,7 +123,7 @@ public class IdentifierSettings extends HashMap<String, IdentifierSetting> imple
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
 			//
-			List<IdentifierSetting> settings = new ArrayList<>(values());
+			List<IdentifierSetting> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
 				Collections.sort(settings, new IdentifierComparator()); // SORT OK
 			}

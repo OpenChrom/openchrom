@@ -20,9 +20,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -33,18 +34,28 @@ import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUti
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerValidator;
 
-public class AssignerStandards extends HashMap<String, AssignerStandard> implements ISettings {
+public class AssignerStandards extends ArrayList<AssignerStandard> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(AssignerStandards.class);
 	//
 	private static final long serialVersionUID = -9211939853837711565L;
 	private StandardsAssignerListUtil listUtil = new StandardsAssignerListUtil();
 
-	public void add(AssignerStandard setting) {
+	public Set<String> keySet() {
+
+		Set<String> keys = new HashSet<>();
+		for(AssignerStandard setting : this) {
+			keys.add(setting.getName());
+		}
+		return keys;
+	}
+
+	public boolean add(AssignerStandard setting) {
 
 		if(setting != null) {
-			put(setting.getName(), setting);
+			return super.add(setting);
 		}
+		return false;
 	}
 
 	public void load(String items) {
@@ -59,7 +70,7 @@ public class AssignerStandards extends HashMap<String, AssignerStandard> impleme
 
 	public String save() {
 
-		return extractSettings(values());
+		return extractSettings(this);
 	}
 
 	public String extractSetting(AssignerStandard setting) {
@@ -112,7 +123,7 @@ public class AssignerStandards extends HashMap<String, AssignerStandard> impleme
 		try {
 			PrintWriter printWriter = new PrintWriter(file);
 			//
-			List<AssignerStandard> settings = new ArrayList<>(values());
+			List<AssignerStandard> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
 				Collections.sort(settings, new StandardComparator()); // SORT OK
 			}

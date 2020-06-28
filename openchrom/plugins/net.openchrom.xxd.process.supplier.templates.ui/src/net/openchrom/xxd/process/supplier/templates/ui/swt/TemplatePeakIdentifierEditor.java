@@ -341,7 +341,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 
 	private void setTableViewerInput() {
 
-		listUI.setInput(settings.values());
+		listUI.setInput(settings);
 		for(Listener listener : listeners) {
 			listener.handleEvent(new Event());
 		}
@@ -391,7 +391,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 			IStructuredSelection structuredSelection = (IStructuredSelection)listUI.getSelection();
 			for(Object object : structuredSelection.toArray()) {
 				if(object instanceof IdentifierSetting) {
-					settings.remove(((IdentifierSetting)object).getName());
+					settings.remove((IdentifierSetting)object);
 				}
 			}
 			setTableViewerInput();
