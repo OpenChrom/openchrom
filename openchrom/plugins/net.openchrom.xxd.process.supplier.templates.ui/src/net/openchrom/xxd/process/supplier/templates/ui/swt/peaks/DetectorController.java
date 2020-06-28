@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -20,6 +21,7 @@ import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.targets.TargetValidator;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -270,7 +272,18 @@ public class DetectorController {
 						 */
 						int startRetentionTime = getStartRetentionTime();
 						int stopRetentionTime = getStopRetentionTime();
-						peaks.addAll(chromatogram.getPeaks(startRetentionTime, stopRetentionTime));
+						List<IPeak> chromatogramPeaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
+						//
+						if(PreferenceSupplier.isDetectorShowOnlyRelevantPeaks() && isChromatogramMSD(chromatogram)) {
+							Set<Integer> traces = peakDetectorListUtil.extractTraces(detectorSetting.getTraces());
+							for(IPeak chromatogramPeak : chromatogramPeaks) {
+								if(PeakSupport.isPeakRelevant(chromatogramPeak, traces)) {
+									peaks.add(chromatogramPeak);
+								}
+							}
+						} else {
+							peaks.addAll(chromatogramPeaks);
+						}
 					}
 				}
 			}
@@ -279,6 +292,12 @@ public class DetectorController {
 		if(extendedPeaksUI != null) {
 			extendedPeaksUI.setInput(detectorSetting, peaks, peak);
 		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	private boolean isChromatogramMSD(IChromatogram chromatogram) {
+
+		return chromatogram instanceof IChromatogramMSD;
 	}
 
 	private int getStartRetentionTime() {

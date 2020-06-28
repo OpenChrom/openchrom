@@ -173,6 +173,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_DETECTOR_FOCUS_XIC = true;
 	public static final String P_DETECTOR_SHOW_BASELINE = "detectorShowBaseline";
 	public static final boolean DEF_DETECTOR_SHOW_BASELINE = false;
+	public static final String P_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS = "detectorShowOnlyRelevantPeaks";
+	public static final boolean DEF_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS = false;
 	/*
 	 * Peak Review
 	 */
@@ -202,6 +204,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_REVIEW_UPDATE_SEARCH_TARGET = false;
 	public static final String P_REVIEW_FETCH_LIBRARY_SPECTRUM = "reviewFetchLibrarySpectrum";
 	public static final boolean DEF_REVIEW_FETCH_LIBRARY_SPECTRUM = false;
+	public static final String P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS = "reviewShowOnlyRelevantPeaks";
+	public static final boolean DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS = false;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -299,6 +303,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_DETECTOR_SHOW_CHROMATOGRAM_XIC, Boolean.toString(DEF_DETECTOR_SHOW_CHROMATOGRAM_XIC));
 		defaultValues.put(P_DETECTOR_FOCUS_XIC, Boolean.toString(DEF_DETECTOR_FOCUS_XIC));
 		defaultValues.put(P_DETECTOR_SHOW_BASELINE, Boolean.toString(DEF_DETECTOR_SHOW_BASELINE));
+		defaultValues.put(P_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS, Boolean.toString(DEF_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS));
 		/*
 		 * Review
 		 */
@@ -315,6 +320,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_REVIEW_SHOW_DETAILS, Boolean.toString(DEF_REVIEW_SHOW_DETAILS));
 		defaultValues.put(P_REVIEW_UPDATE_SEARCH_TARGET, Boolean.toString(DEF_REVIEW_UPDATE_SEARCH_TARGET));
 		defaultValues.put(P_REVIEW_FETCH_LIBRARY_SPECTRUM, Boolean.toString(DEF_REVIEW_FETCH_LIBRARY_SPECTRUM));
+		defaultValues.put(P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS, Boolean.toString(DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS));
 		//
 		return defaultValues;
 	}
@@ -561,6 +567,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		putBoolean(P_DETECTOR_SHOW_BASELINE, !show);
 	}
 
+	public static boolean isDetectorShowOnlyRelevantPeaks() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS, DEF_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS);
+	}
+
 	public static int getReviewDeltaLeftMilliseconds() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
@@ -667,6 +679,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_REVIEW_FETCH_LIBRARY_SPECTRUM, DEF_REVIEW_FETCH_LIBRARY_SPECTRUM);
+	}
+
+	public static boolean isReviewShowOnlyRelevantPeaks() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS, DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS);
 	}
 
 	public static PeakDetectorSettings getPeakDetectorSettingsCSD() {

@@ -20,6 +20,7 @@ import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.swt.SWT;
@@ -288,7 +289,18 @@ public class ReviewController {
 						 */
 						int startRetentionTime = getStartRetentionTime();
 						int stopRetentionTime = getStopRetentionTime();
-						peaks.addAll(chromatogram.getPeaks(startRetentionTime, stopRetentionTime));
+						List<IPeak> chromatogramPeaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
+						//
+						if(PreferenceSupplier.isReviewShowOnlyRelevantPeaks() && isChromatogramMSD(chromatogram)) {
+							Set<Integer> traces = peakDetectorListUtil.extractTraces(reviewSetting.getTraces());
+							for(IPeak chromatogramPeak : chromatogramPeaks) {
+								if(PeakSupport.isPeakRelevant(chromatogramPeak, traces)) {
+									peaks.add(chromatogramPeak);
+								}
+							}
+						} else {
+							peaks.addAll(chromatogramPeaks);
+						}
 					}
 				}
 			}
@@ -297,6 +309,12 @@ public class ReviewController {
 		if(extendedPeakReviewUI != null) {
 			extendedPeakReviewUI.setInput(reviewSetting, peaks, peak);
 		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	private boolean isChromatogramMSD(IChromatogram chromatogram) {
+
+		return chromatogram instanceof IChromatogramMSD;
 	}
 
 	private void updateExtendedTargetsUI(IPeak peak) {

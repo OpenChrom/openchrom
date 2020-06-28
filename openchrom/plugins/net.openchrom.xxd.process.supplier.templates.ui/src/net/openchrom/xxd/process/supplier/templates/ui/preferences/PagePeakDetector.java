@@ -44,6 +44,7 @@ public class PagePeakDetector extends FieldEditorPreferencePage implements IWork
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_SHOW_CHROMATOGRAM_XIC, "Show Chromatogram (XIC)", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_FOCUS_XIC, "Focus XIC", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_SHOW_BASELINE, "Show Baseline", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS, "Show Only Relevant Peaks", getFieldEditorParent()));
 	}
 
 	/*

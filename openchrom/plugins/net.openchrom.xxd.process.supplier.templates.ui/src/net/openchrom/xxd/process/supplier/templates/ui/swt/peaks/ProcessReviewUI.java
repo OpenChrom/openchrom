@@ -325,10 +325,10 @@ public class ProcessReviewUI extends Composite {
 
 	private void applySettings() {
 
-		updateSelection();
 		if(controller != null) {
 			controller.updateSettings();
 		}
+		updateSelection();
 	}
 
 	private ReviewSetting getReviewSetting() {
