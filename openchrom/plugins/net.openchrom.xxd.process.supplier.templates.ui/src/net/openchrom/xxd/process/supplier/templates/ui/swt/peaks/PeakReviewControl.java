@@ -58,9 +58,9 @@ public class PeakReviewControl extends Composite {
 		 * Show Comparison
 		 */
 		if(showComparisonUI) {
-			sashFormDetails.setWeights(new int[]{500, 500});
+			sashFormDetails.setWeights(new int[]{333, 333, 333});
 		} else {
-			sashFormDetails.setWeights(new int[]{1000, 0});
+			sashFormDetails.setWeights(new int[]{1000, 0, 0});
 		}
 	}
 
@@ -101,6 +101,7 @@ public class PeakReviewControl extends Composite {
 		//
 		controller.createExtendedTargetsUI(sashForm);
 		controller.createExtendedComparisonUI(sashForm);
+		controller.createExtendedPeakTracesUI(sashForm);
 		//
 		return sashForm;
 	}

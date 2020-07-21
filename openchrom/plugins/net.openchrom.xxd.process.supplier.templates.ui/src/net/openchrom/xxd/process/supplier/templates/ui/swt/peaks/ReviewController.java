@@ -23,6 +23,7 @@ import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.ExtendedPeakTracesUI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
@@ -44,6 +45,7 @@ public class ReviewController {
 	private ExtendedPeakReviewUI extendedPeakReviewUI;
 	private ExtendedTargetsUI extendedTargetsUI;
 	private ExtendedComparisonUI extendedComparisonUI;
+	private ExtendedPeakTracesUI extendedPeakTracesUI;
 	//
 	private PeakDetectorListUtil peakDetectorListUtil = new PeakDetectorListUtil();
 	private ProcessReviewSettings processSettings;
@@ -129,6 +131,8 @@ public class ReviewController {
 		} else {
 			extendedComparisonUI.update(null, null);
 		}
+		//
+		extendedPeakTracesUI.update(peak);
 	}
 
 	/**
@@ -287,6 +291,11 @@ public class ReviewController {
 	protected void createExtendedComparisonUI(Composite parent) {
 
 		extendedComparisonUI = new ExtendedComparisonUI(parent, SWT.NONE);
+	}
+
+	protected void createExtendedPeakTracesUI(Composite parent) {
+
+		extendedPeakTracesUI = new ExtendedPeakTracesUI(parent, SWT.NONE);
 	}
 
 	private void updateChartPeaks(List<IPeak> peaks) {
