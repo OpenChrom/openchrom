@@ -14,7 +14,9 @@ package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 public class PeakDetectorSupport {
@@ -32,6 +34,14 @@ public class PeakDetectorSupport {
 
 				super.constrainShellSize();
 				getShell().setMaximized(true);
+			}
+
+			@Override
+			protected void createButtonsForButtonBar(Composite parent) {
+
+				super.createButtonsForButtonBar(parent);
+				getButton(CANCEL).setEnabled(false);
+				getButton(IDialogConstants.FINISH_ID).setText(IDialogConstants.OK_LABEL);
 			}
 		};
 		/*
