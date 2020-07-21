@@ -20,8 +20,11 @@ import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.targets.TargetValidator;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
 public class ReviewSupport {
+
+	private static final String NULL_CAS_NUMBER = "0-00-0";
 
 	public static String getName(IPeak peak) {
 
@@ -138,7 +141,11 @@ public class ReviewSupport {
 			String casPeak = libraryInformation.getCasNumber();
 			String casReview = reviewSetting.getCasNumber();
 			if(!casPeak.isEmpty() && casPeak.equals(casReview)) {
-				return true;
+				if(casReview.equals(NULL_CAS_NUMBER) && PreferenceSupplier.isReviewIgnoreNullCasNumber()) {
+					return false;
+				} else {
+					return true;
+				}
 			}
 		}
 		return false;

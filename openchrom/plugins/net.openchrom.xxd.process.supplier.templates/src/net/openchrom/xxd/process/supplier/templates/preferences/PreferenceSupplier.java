@@ -206,6 +206,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_REVIEW_FETCH_LIBRARY_SPECTRUM = false;
 	public static final String P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS = "reviewShowOnlyRelevantPeaks";
 	public static final boolean DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS = false;
+	public static final String P_REVIEW_IGNORE_NULL_CAS_NUMBER = "reviewIgnoreNullCasNumber";
+	public static final boolean DEF_REVIEW_IGNORE_NULL_CAS_NUMBER = true;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -321,6 +323,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_REVIEW_UPDATE_SEARCH_TARGET, Boolean.toString(DEF_REVIEW_UPDATE_SEARCH_TARGET));
 		defaultValues.put(P_REVIEW_FETCH_LIBRARY_SPECTRUM, Boolean.toString(DEF_REVIEW_FETCH_LIBRARY_SPECTRUM));
 		defaultValues.put(P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS, Boolean.toString(DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS));
+		defaultValues.put(P_REVIEW_IGNORE_NULL_CAS_NUMBER, Boolean.toString(DEF_REVIEW_IGNORE_NULL_CAS_NUMBER));
 		//
 		return defaultValues;
 	}
@@ -685,6 +688,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS, DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS);
+	}
+
+	public static boolean isReviewIgnoreNullCasNumber() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_REVIEW_IGNORE_NULL_CAS_NUMBER, DEF_REVIEW_IGNORE_NULL_CAS_NUMBER);
 	}
 
 	public static PeakDetectorSettings getPeakDetectorSettingsCSD() {
