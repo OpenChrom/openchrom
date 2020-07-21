@@ -159,7 +159,7 @@ public class ExtendedPeakReviewUI extends Composite {
 					messageBox.setText("Delete Peak(s)");
 					messageBox.setMessage("Would you like to delete all peak(s)?");
 					if(messageBox.open() == SWT.YES) {
-						controller.deletePeaks(peaks);
+						controller.deletePeaks(messageBox.getParent(), peaks);
 					}
 				}
 			}
@@ -244,7 +244,8 @@ public class ExtendedPeakReviewUI extends Composite {
 						peaksToDelete.add((IPeak)object);
 					}
 				}
-				controller.deletePeaks(peaksToDelete);
+				//
+				controller.deletePeaks(messageBox.getParent(), peaksToDelete);
 			}
 		}
 	}

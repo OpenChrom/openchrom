@@ -25,6 +25,8 @@ import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.Range;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
@@ -184,14 +186,32 @@ public class ReviewController {
 	}
 
 	@SuppressWarnings({"unchecked"})
-	public void deletePeaks(List<IPeak> peaks) {
+	public void deletePeaks(Shell shell, List<IPeak> peaks) {
 
 		if(processSettings != null) {
 			IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
 			if(chromatogram != null) {
-				chromatogram.removePeaks(peaks);
-				updateDetectorChart();
-				updatePeakStatusUI(null);
+				/*
+				 * If at least one peak has been reviewed already, let
+				 * the user confirm the delete action.
+				 */
+				boolean deletePeaks = true;
+				if(containsReviewedPeaks(peaks)) {
+					MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+					messageBox.setText("Delete Peak(s)");
+					messageBox.setMessage("At least one peak has been reviewed already. Delete anyway?");
+					if(messageBox.open() != SWT.YES) {
+						deletePeaks = false;
+					}
+				}
+				/*
+				 * Delete the peak(s)
+				 */
+				if(deletePeaks) {
+					chromatogram.removePeaks(peaks);
+					updateDetectorChart();
+					updatePeakStatusUI(null);
+				}
 			}
 		}
 	}
@@ -346,5 +366,15 @@ public class ReviewController {
 	private boolean focusXIC(DetectorRange detectorRange, PeakDetectorChartSettings chartSettings) {
 
 		return detectorRange.getTraces().size() > 0 && chartSettings.isShowChromatogramXIC() && PreferenceSupplier.isReviewFocusXIC();
+	}
+
+	private boolean containsReviewedPeaks(List<IPeak> peaks) {
+
+		for(IPeak peak : peaks) {
+			if(ReviewSupport.isPeakReviewed(peak)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
