@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
+import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -26,7 +27,7 @@ public class PeakDetectorPage extends WizardPage {
 
 		super(pageName);
 		setTitle("Modify/Add Peaks");
-		setDescription("Template peak modifier/detector");
+		setDescription(getDescription(processSettings));
 		setErrorMessage(null);
 		this.peakProcessSettings = processSettings;
 	}
@@ -49,5 +50,16 @@ public class PeakDetectorPage extends WizardPage {
 		TemplatePeakDetectorUI control = new TemplatePeakDetectorUI(parent, SWT.NONE);
 		control.setInput(peakProcessSettings);
 		setControl(control);
+	}
+
+	private String getDescription(ProcessDetectorSettings processSettings) {
+
+		if(processSettings != null) {
+			IChromatogram<?> chromatogram = processSettings.getChromatogram();
+			if(chromatogram != null) {
+				return chromatogram.getName() + " / " + chromatogram.getDataName();
+			}
+		}
+		return "Template Peak Detector";
 	}
 }

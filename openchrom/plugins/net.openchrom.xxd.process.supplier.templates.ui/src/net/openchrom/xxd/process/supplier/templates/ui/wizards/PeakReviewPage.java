@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
+import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -26,7 +27,7 @@ public class PeakReviewPage extends WizardPage {
 
 		super(pageName);
 		setTitle("Review Peaks");
-		setDescription("Template Peak Review");
+		setDescription(getDescription(processSettings));
 		setErrorMessage(null);
 		this.processSettings = processSettings;
 	}
@@ -49,5 +50,16 @@ public class PeakReviewPage extends WizardPage {
 		TemplatePeakReviewUI control = new TemplatePeakReviewUI(parent, SWT.NONE);
 		control.setInput(processSettings);
 		setControl(control);
+	}
+
+	private String getDescription(ProcessReviewSettings processSettings) {
+
+		if(processSettings != null) {
+			IChromatogram<?> chromatogram = processSettings.getChromatogram();
+			if(chromatogram != null) {
+				return chromatogram.getName() + " / " + chromatogram.getDataName();
+			}
+		}
+		return "Template Peak Review";
 	}
 }
