@@ -39,7 +39,6 @@
       location="net.openchrom.rcp.compilation.community.ui" />
    <launcher name="openchrom">
       <linux icon="icons/linux/Icon.xpm"/>
-      <solaris/>
       <win useIco="false">
          <bmp
             winSmallHigh="icons/windows/16x16-32.bmp"
@@ -80,14 +79,15 @@ Contributors:
 
    <configurations>
       <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.cm" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4" />
       <property name="org.eclipse.update.reconcile" value="false" />
-      <property name="osgi.requiredJavaVersion" value="1.8" />
       <property name="sun.awt.xembedserver" value="true" />
+      <property name="osgi.requiredJavaVersion" value="1.8" />
    </configurations>
 
    <preferencesInfo>
