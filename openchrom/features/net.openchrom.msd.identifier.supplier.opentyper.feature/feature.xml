@@ -3,7 +3,7 @@
       id="net.openchrom.msd.identifier.supplier.opentyper.feature"
       label="OpenTyper"
       version="1.4.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="http://www.openchrom.net">
       This is the OpenTyper plugin.

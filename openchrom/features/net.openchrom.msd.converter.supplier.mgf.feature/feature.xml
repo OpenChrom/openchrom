@@ -3,7 +3,7 @@
       id="net.openchrom.msd.converter.supplier.mgf.feature"
       label="MGF Converter"
       version="1.4.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="http://www.chemclipse.net/plugins/converter/mzml/">
       This is the mgf mass spectrum converter.

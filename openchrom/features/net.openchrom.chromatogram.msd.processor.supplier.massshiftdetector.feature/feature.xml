@@ -3,7 +3,7 @@
       id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.feature"
       label="Mass Shift Detector"
       version="1.4.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="http://www.openchrom.net">
       This processor helps to detect mass shifts.

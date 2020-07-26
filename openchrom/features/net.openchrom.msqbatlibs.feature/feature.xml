@@ -3,7 +3,7 @@
       id="net.openchrom.msqbatlibs.feature"
       label="MSqBAT Libraries Feature"
       version="1.4.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="http://www.openchrom.net">
       This is the MSqBAT libs plugin.

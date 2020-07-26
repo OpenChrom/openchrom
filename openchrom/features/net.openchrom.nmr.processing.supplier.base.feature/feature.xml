@@ -3,7 +3,7 @@
       id="net.openchrom.nmr.processing.supplier.base.feature"
       label="NMR Processing Algorithms"
       version="1.4.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="http://www.openchrom.net">
       NMR Processing Algorithms

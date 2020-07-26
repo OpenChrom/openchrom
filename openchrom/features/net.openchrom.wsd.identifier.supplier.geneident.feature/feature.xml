@@ -3,7 +3,7 @@
       id="net.openchrom.wsd.identifier.supplier.geneident.feature"
       label="Gene Ident"
       version="1.4.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="http://www.geneident.net">
       This is the GeneIdent plugin.

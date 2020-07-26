@@ -3,7 +3,7 @@
       id="net.openchrom.xxd.process.supplier.templates.feature"
       label="Feature"
       version="1.4.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]

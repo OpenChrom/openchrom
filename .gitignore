@@ -24,3 +24,8 @@ hs_err_pid*
 target/
 bin/
 workspace/
+
+# files generated (temporary) by the tycho maven builds
+.polyglot.*
+.META-INF_MANIFEST.MF
+feature.xml.takari_issue_192

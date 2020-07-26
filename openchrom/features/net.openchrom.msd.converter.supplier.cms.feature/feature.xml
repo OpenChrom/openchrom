@@ -3,7 +3,7 @@
       id="net.openchrom.msd.converter.supplier.cms.feature"
       label="CMS Data Converter"
       version="1.4.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="http://www.openchrom.net">
       This is the CMS data file converter.

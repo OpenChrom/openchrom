@@ -2,7 +2,8 @@
 <feature
       id="net.openchrom.platform.feature"
       label="OpenChrom Platform"
-      version="1.4.0.qualifier">
+      version="1.4.0.qualifier"
+      plugin="net.openchrom.feature.branding">
 
    <description url="http://www.example.com/description">
       This contains the OpenChrom platform
@@ -67,14 +68,14 @@
    <includes
          id="net.openchrom.wsd.converter.supplier.abif.feature"
          version="0.0.0"/>
-         
+
    <includes
          id="net.openchrom.wsd.identifier.supplier.geneident.feature"
-         version="0.0.0"/>         
+         version="0.0.0"/>
 
    <includes
          id="net.openchrom.thirdpartylibraries.biojava.feature"
-         version="0.0.0"/>    
+         version="0.0.0"/>
 
    <includes
          id="net.openchrom.xxd.processor.supplier.tracecompare.feature"
@@ -114,6 +115,13 @@
 
    <plugin
          id="net.openchrom.rcp.compilation.community.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.feature.branding"
          download-size="0"
          install-size="0"
          version="0.0.0"

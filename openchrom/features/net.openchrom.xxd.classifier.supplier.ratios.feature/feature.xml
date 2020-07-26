@@ -3,7 +3,7 @@
       id="net.openchrom.xxd.classifier.supplier.ratios.feature"
       label="Ratio Calculator"
       version="1.4.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="https://www.openchrom.net">
       This plugin allows to classify various kinds of ratios.

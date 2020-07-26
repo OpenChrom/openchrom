@@ -3,7 +3,7 @@
       id="net.openchrom.msd.process.supplier.cms.feature"
       label="CMS Workflow"
       version="1.4.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="http://www.openchrom.net">
       This is the CMS workflow package.

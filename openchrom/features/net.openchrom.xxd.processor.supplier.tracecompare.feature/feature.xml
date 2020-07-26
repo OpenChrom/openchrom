@@ -3,7 +3,7 @@
       id="net.openchrom.xxd.processor.supplier.tracecompare.feature"
       label="TraceCompare CAMAG (*.DFM)"
       version="1.4.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="http://www.openchrom.net">
       This processor helps to compare chromatographic traces.

@@ -13,6 +13,7 @@
 	<packaging>pom</packaging>
 	<name>OpenChrom::Plugins</name>
 	<modules>
+		<module>net.openchrom.feature.branding</module>
 		<module>net.openchrom.chromatogram.msd.comparison.supplier.pbm.fragment.test</module>
 		<module>net.openchrom.chromatogram.msd.comparison.supplier.pbm.ui</module>
 		<module>net.openchrom.chromatogram.msd.comparison.supplier.pbm</module>
