@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.converter.supplier.cdf.io.support;
+package net.openchrom.msd.converter.supplier.cdf.io.support.io.support;
 
 import java.text.ParseException;
 import java.util.Date;
