@@ -36,6 +36,7 @@ public abstract class AbstractLabelMarker extends AbstractBaseChartPaintListener
 	private ISeries serie;
 
 	public AbstractLabelMarker(BaseChart baseChart) {
+
 		super(baseChart);
 	}
 

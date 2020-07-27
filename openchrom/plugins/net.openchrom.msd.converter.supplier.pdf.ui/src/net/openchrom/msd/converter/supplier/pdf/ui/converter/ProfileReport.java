@@ -43,7 +43,7 @@ public class ProfileReport extends AbstractChromatogramReportGenerator {
 
 	//
 	@Override
-	public IProcessingInfo generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, IChromatogramReportSettings chromatogramReportSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, IChromatogramReportSettings chromatogramReportSettings, IProgressMonitor monitor) {
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 100 * chromatograms.size());
 		ReportSettingsProfile settings;
@@ -90,19 +90,19 @@ public class ProfileReport extends AbstractChromatogramReportGenerator {
 	}
 
 	@Override
-	public IProcessingInfo generate(File file, boolean append, IChromatogram<? extends IPeak> chromatogram, IChromatogramReportSettings chromatogramReportSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> generate(File file, boolean append, IChromatogram<? extends IPeak> chromatogram, IChromatogramReportSettings chromatogramReportSettings, IProgressMonitor monitor) {
 
 		return generate(file, append, Collections.singletonList(chromatogram), chromatogramReportSettings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo generate(File file, boolean append, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) {
+	public IProcessingInfo<?> generate(File file, boolean append, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) {
 
 		return generate(file, append, Collections.singletonList(chromatogram), null, monitor);
 	}
 
 	@Override
-	public IProcessingInfo generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, IProgressMonitor monitor) {
+	public IProcessingInfo<?> generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, IProgressMonitor monitor) {
 
 		return generate(file, append, chromatograms, null, monitor);
 	}
