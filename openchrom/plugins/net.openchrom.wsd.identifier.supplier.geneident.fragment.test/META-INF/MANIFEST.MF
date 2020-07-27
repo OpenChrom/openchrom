@@ -1,9 +1,10 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.wsd.identifier.supplier.geneident.fragment.test
 Bundle-ManifestVersion: 2
-Bundle-Name: Test
+Bundle-Name: GeneIdent Tests
 Bundle-SymbolicName: net.openchrom.wsd.identifier.supplier.geneident.fragment.test
 Bundle-Version: 1.4.0.qualifier
-Bundle-Vendor: GeneIdent
+Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.wsd.identifier.supplier.geneident;bundle-version="1.4.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit;bundle-version="4.12.0"
