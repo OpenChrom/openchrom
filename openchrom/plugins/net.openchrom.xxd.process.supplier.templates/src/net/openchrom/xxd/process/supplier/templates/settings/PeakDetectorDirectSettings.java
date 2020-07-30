@@ -31,6 +31,12 @@ public class PeakDetectorDirectSettings extends AbstractPeakDetectorSettingsMSD 
 	@JsonProperty(value = "Optimize Range", defaultValue = "false")
 	@JsonPropertyDescription(value = "If VV as a peak detection technique has been selected, the peak is optimized.")
 	private boolean optimizeRange = false;
+	@JsonProperty(value = "Use Existing Peaks", defaultValue = "true")
+	@JsonPropertyDescription(value = "If true, ranges will be created using the existing peak(s).")
+	private boolean useExistingPeaks = true;
+	@JsonProperty(value = "Use Selected Range", defaultValue = "true")
+	@JsonPropertyDescription(value = "If true, a range will be created using the start and stop retention time of the selection.")
+	private boolean useSelectedRange = true;
 
 	public String getTraces() {
 
@@ -60,5 +66,25 @@ public class PeakDetectorDirectSettings extends AbstractPeakDetectorSettingsMSD 
 	public void setOptimizeRange(boolean optimizeRange) {
 
 		this.optimizeRange = optimizeRange;
+	}
+
+	public boolean isUseExistingPeaks() {
+
+		return useExistingPeaks;
+	}
+
+	public void setUseExistingPeaks(boolean useExistingPeaks) {
+
+		this.useExistingPeaks = useExistingPeaks;
+	}
+
+	public boolean isUseSelectedRange() {
+
+		return useSelectedRange;
+	}
+
+	public void setUseSelectedRange(boolean useSelectedRange) {
+
+		this.useSelectedRange = useSelectedRange;
 	}
 }

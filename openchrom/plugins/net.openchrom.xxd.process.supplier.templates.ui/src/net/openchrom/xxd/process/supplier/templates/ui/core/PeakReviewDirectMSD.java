@@ -25,7 +25,6 @@ import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationResults;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
-import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
@@ -101,19 +100,6 @@ public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IP
 		} catch(ExecutionException e) {
 			processingInfo.addErrorMessage(DESCRIPTION, "The execution failed, see attached log file.", e);
 		}
-	}
-
-	private String getTraces(IPeak peak) {
-
-		if(peak instanceof IChromatogramPeakMSD) {
-			IChromatogramPeakMSD peakMSD = (IChromatogramPeakMSD)peak;
-			if(peakMSD.getPurity() < 1.0f) {
-				int numberTraces = peakMSD.getPeakModel().getPeakMassSpectrum().getNumberOfIons();
-				return extractTraces(peakMSD, numberTraces);
-			}
-		}
-		//
-		return ""; // default
 	}
 
 	private IChromatogram<?> getChromatogram(List<? extends IPeakMSD> peaks) {

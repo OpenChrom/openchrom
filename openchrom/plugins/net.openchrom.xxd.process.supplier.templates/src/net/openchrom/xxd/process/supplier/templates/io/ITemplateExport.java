@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -28,6 +29,19 @@ import org.eclipse.chemclipse.wsd.model.core.IPeakWSD;
 import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUtil;
 
 public interface ITemplateExport {
+
+	default String getTraces(IPeak peak) {
+
+		if(peak instanceof IChromatogramPeakMSD) {
+			IChromatogramPeakMSD peakMSD = (IChromatogramPeakMSD)peak;
+			if(peakMSD.getPurity() < 1.0f) {
+				int numberTraces = peakMSD.getPeakModel().getPeakMassSpectrum().getNumberOfIons();
+				return extractTraces(peakMSD, numberTraces);
+			}
+		}
+		//
+		return ""; // default
+	}
 
 	default String extractTraces(IPeak peak, int numberTraces) {
 
