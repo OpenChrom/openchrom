@@ -57,8 +57,9 @@ public class TransformerMGFElementIScan extends AbstractTransformingListFactory<
 
 		String precursorIonTag = element.getTag(MGFElement.Identifier.PEPMASS);
 		if(precursorIonTag != null && !precursorIonTag.equals(MGFElement.TAG_NA)) {
-			String[] tags = precursorIonTag.split(" ");
-			if(tags.length == 2) {
+			String separator = precursorIonTag.contains("\t") ? "\t" : " ";
+			String[] tags = precursorIonTag.split(separator);
+			if(tags.length <= 2) {
 				double precursorIon = Double.parseDouble(tags[0].trim());
 				if(scan instanceof IFragmentedIonScan) {
 					((IFragmentedIonScan)scan).setPrecursorIon(precursorIon);
