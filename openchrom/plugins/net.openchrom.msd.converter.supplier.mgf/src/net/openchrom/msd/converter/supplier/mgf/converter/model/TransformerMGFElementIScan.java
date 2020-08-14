@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -57,9 +57,12 @@ public class TransformerMGFElementIScan extends AbstractTransformingListFactory<
 
 		String precursorIonTag = element.getTag(MGFElement.Identifier.PEPMASS);
 		if(precursorIonTag != null && !precursorIonTag.equals(MGFElement.TAG_NA)) {
-			double precursorIon = Double.parseDouble(precursorIonTag);
-			if(scan instanceof IFragmentedIonScan) {
-				((IFragmentedIonScan)scan).setPrecursorIon(precursorIon);
+			String[] tags = precursorIonTag.split(" ");
+			if(tags.length == 2) {
+				double precursorIon = Double.parseDouble(tags[0].trim());
+				if(scan instanceof IFragmentedIonScan) {
+					((IFragmentedIonScan)scan).setPrecursorIon(precursorIon);
+				}
 			}
 		}
 	}

@@ -12,30 +12,22 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mgf.converter;
 
-import java.io.File;
-
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.chemclipse.msd.model.implementation.ScanMSD;
-import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.core.runtime.NullProgressMonitor;
-
-import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
 
 import junit.framework.TestCase;
 
 public class MassSpectrumExportConverter_1_ITest extends TestCase {
 
-	private File file;
-
 	@Override
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MS_1));
-		DatabaseExportConverter exportConverter = new DatabaseExportConverter();
+		// File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MS_1));
+		// DatabaseExportConverter exportConverter = new DatabaseExportConverter();
 		//
 		IMassSpectra massSpectra = new MassSpectra();
 		IScanMSD massSpectrum = new ScanMSD();
@@ -44,17 +36,14 @@ public class MassSpectrumExportConverter_1_ITest extends TestCase {
 		massSpectrum.addIon(new Ion(89.3f, 382.3f));
 		massSpectra = new MassSpectra();
 		massSpectra.addMassSpectrum(massSpectrum);
-		//
-		@SuppressWarnings("unchecked")
-		IProcessingInfo<File> processingInfo = exportConverter.convert(file, massSpectra, true, new NullProgressMonitor());
-		file = processingInfo.getProcessingResult();
+		/*
+		 * TODO Export Test
+		 */
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 
-		file.delete();
-		file = null;
 		super.tearDown();
 	}
 
