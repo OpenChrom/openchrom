@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Lablicate GmbH.
+ * Copyright (c) 2016, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -28,8 +28,8 @@ public class LibraryWriter_1_ITest extends LibraryWriterTestCase {
 		super.setUp();
 	}
 
-	public void testAgilentChromatogramWriter_1() {
+	public void test() {
 
-		// TODO: implement
+		assertTrue("At least one test case is required.", true);
 	}
 }

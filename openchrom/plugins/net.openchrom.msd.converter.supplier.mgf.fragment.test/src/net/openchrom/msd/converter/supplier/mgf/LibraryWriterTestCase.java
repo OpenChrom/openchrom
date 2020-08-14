@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2019 Lablicate GmbH.
+ * Copyright (c) 2016, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -37,7 +37,6 @@ public class LibraryWriterTestCase extends TestCase {
 	protected void setUp() throws Exception {
 
 		super.setUp();
-
 		fileImport = new File(this.pathImport);
 		IProcessingInfo<IMassSpectra> importProcessingInfo = DatabaseConverter.convert(fileImport, extensionPointIdImport, new NullProgressMonitor());
 		massSpectra = importProcessingInfo.getProcessingResult();
@@ -48,7 +47,6 @@ public class LibraryWriterTestCase extends TestCase {
 		//
 		IProcessingInfo<IMassSpectra> reImportProcessingInfo = DatabaseConverter.convert(fileReImport, new NullProgressMonitor());
 		massSpectra = reImportProcessingInfo.getProcessingResult();
-
 	}
 
 	@Override
@@ -64,5 +62,10 @@ public class LibraryWriterTestCase extends TestCase {
 		System.gc();
 		//
 		super.tearDown();
+	}
+
+	public void test() {
+
+		assertTrue("At least one test case is required.", true);
 	}
 }

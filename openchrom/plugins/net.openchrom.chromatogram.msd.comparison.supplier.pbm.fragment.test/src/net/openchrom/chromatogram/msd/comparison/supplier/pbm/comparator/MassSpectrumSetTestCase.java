@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Lablicate GmbH.
+ * Copyright (c) 2014, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,6 +12,7 @@
 package net.openchrom.chromatogram.msd.comparison.supplier.pbm.comparator;
 
 import net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra.BenzenepropanoicAcid;
+import net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra.ITestMassSpectrum;
 import net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra.NoMatchA1;
 import net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra.NoMatchA2;
 import net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra.PhenolBenzimidazolyl;
@@ -24,7 +25,6 @@ import net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra.ProblemC2;
 import net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra.SinapylAlcohol;
 import net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra.SinapylAlcoholCis;
 import net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra.Syringylacetone;
-import net.openchrom.chromatogram.msd.comparison.supplier.pbm.spectra.ITestMassSpectrum;
 
 import junit.framework.TestCase;
 
@@ -78,5 +78,10 @@ public class MassSpectrumSetTestCase extends TestCase {
 	protected void tearDown() throws Exception {
 
 		super.tearDown();
+	}
+
+	public void test() {
+
+		assertTrue("At least one test case is required.", true);
 	}
 }
