@@ -25,7 +25,7 @@ public class DetectorRange {
 	private int retentionTimeStart = 0;
 	private int retentionTimeStop = 0;
 	private Set<Integer> traces = new HashSet<>();
-	private String detectorType = PeakType.VV.name();
+	private PeakType detectorType = PeakType.VV;
 	private boolean optimizeRange = true;
 
 	public IChromatogram<? extends IPeak> getChromatogram() {
@@ -68,19 +68,19 @@ public class DetectorRange {
 		this.traces = traces;
 	}
 
-	public String getDetectorType() {
+	public PeakType getDetectorType() {
 
 		return detectorType;
 	}
 
-	public void setDetectorType(String detectorType) {
+	public void setDetectorType(PeakType detectorType) {
 
 		this.detectorType = detectorType;
 	}
 
 	public boolean isIncludeBackground() {
 
-		return (PeakType.VV.name().equals(detectorType)) ? true : false;
+		return (PeakType.VV.equals(detectorType)) ? true : false;
 	}
 
 	public boolean isOptimizeRange() {

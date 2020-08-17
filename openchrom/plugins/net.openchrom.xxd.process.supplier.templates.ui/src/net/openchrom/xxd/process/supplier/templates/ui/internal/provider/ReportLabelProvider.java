@@ -24,8 +24,8 @@ import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 public class ReportLabelProvider extends AbstractChemClipseLabelProvider {
 
 	public static final String NAME = "Name";
-	public static final String START_RETENTION_TIME = "Start Retention Time";
-	public static final String STOP_RETENTION_TIME = "Stop Retention Time";
+	public static final String START_RETENTION_TIME = "Start Retention Time [min]";
+	public static final String STOP_RETENTION_TIME = "Stop Retention Time [min]";
 	public static final String CAS_NUMBER = "CAS";
 	public static final String REPORT_STRATEGY = "Strategy";
 	//

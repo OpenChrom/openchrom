@@ -24,7 +24,7 @@ import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 
 public class PeakDetectorValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
-	public static final Set<PeakType> DETECTOR_TYPES = Collections.unmodifiableSet(EnumSet.of(PeakType.VV, PeakType.BB));
+	public static final Set<PeakType> DETECTOR_TYPES = Collections.unmodifiableSet(EnumSet.of(PeakType.VV, PeakType.BB, PeakType.MM));
 	//
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = PeakDetectorListUtil.SEPARATOR_TOKEN;
@@ -73,7 +73,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 						//
 						detectorType = parseType(parseString(values, 2));
 						if(detectorType == null) {
-							message = "Please select a detector type: " + PeakType.VV + " or " + PeakType.BB;
+							message = "Please select a detector type: " + PeakType.VV + " or " + PeakType.BB + " or " + PeakType.MM;
 						}
 						//
 						String traceValues = parseString(values, 3);

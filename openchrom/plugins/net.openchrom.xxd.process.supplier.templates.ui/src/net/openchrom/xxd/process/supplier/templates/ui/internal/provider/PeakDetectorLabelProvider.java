@@ -25,11 +25,11 @@ import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 
 public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 
-	public static final String START_RETENTION_TIME = "Start Retention Time";
-	public static final String STOP_RETENTION_TIME = "Stop Retention Time";
+	public static final String START_RETENTION_TIME = "Start Retention Time [min] ";
+	public static final String STOP_RETENTION_TIME = "Stop Retention Time [min]";
 	public static final String DETECTOR_TYPE = "Detector Type";
 	public static final String TRACES = "Traces";
-	public static final String OPTIMIZE_RANGE = "Optimize Range";
+	public static final String OPTIMIZE_RANGE = "Optimize Range (VV)";
 	public static final String REFERENCE_IDENTIFIER = "Reference Identifier";
 	public static final String NAME = "Name";
 	//

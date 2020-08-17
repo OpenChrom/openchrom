@@ -30,7 +30,7 @@ public class PeakReviewLabelProvider extends AbstractChemClipseLabelProvider {
 	public static final String CAS_NUMBER = "CAS";
 	public static final String TRACES = "Traces";
 	public static final String DETECTOR_TYPE = "Detector Type";
-	public static final String OPTIMIZE_RANGE = "Optimize Range";
+	public static final String OPTIMIZE_RANGE = "Optimize Range (VV)";
 	//
 	public static final int INDEX_OPTIMIZE_RANGE = 6;
 	//

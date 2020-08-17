@@ -162,7 +162,7 @@ public class ReviewController {
 							detectorRange.setRetentionTimeStart(startRetentionTime);
 							detectorRange.setRetentionTimeStop(stopRetentionTime);
 							detectorRange.setTraces(peakDetectorListUtil.extractTraces(reviewSetting.getTraces()));
-							detectorRange.setDetectorType(peakType.toString());
+							detectorRange.setDetectorType(peakType);
 							detectorRange.setOptimizeRange(optimizeRange);
 							/*
 							 * Settings display data

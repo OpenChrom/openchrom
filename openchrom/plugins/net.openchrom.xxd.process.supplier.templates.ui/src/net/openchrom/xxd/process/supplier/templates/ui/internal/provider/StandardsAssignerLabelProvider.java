@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,8 +24,8 @@ import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
 public class StandardsAssignerLabelProvider extends AbstractChemClipseLabelProvider {
 
 	public static final String NAME = "ISTD (Internal Standard)";
-	public static final String START_RETENTION_TIME = "Start Retention Time (Minutes)";
-	public static final String STOP_RETENTION_TIME = "Stop Retention Time (Minutes)";
+	public static final String START_RETENTION_TIME = "Start Retention Time [min]";
+	public static final String STOP_RETENTION_TIME = "Stop Retention Time [min]";
 	public static final String CONCENTRATION = "Concentration";
 	public static final String CONCENTRATION_UNIT = "Concentration Unit";
 	public static final String RESPONSE_FACTOR = "Response Factor";

@@ -23,7 +23,7 @@ import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 
 public class ReviewValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
-	public static final Set<PeakType> DETECTOR_TYPES = Collections.unmodifiableSet(EnumSet.of(PeakType.BB, PeakType.VV));
+	public static final Set<PeakType> DETECTOR_TYPES = Collections.unmodifiableSet(EnumSet.of(PeakType.BB, PeakType.VV, PeakType.MM));
 	//
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + ReviewListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = ReviewListUtil.SEPARATOR_TOKEN;

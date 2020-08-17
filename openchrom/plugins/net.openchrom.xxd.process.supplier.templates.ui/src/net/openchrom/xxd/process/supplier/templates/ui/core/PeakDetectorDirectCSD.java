@@ -20,7 +20,6 @@ import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
-import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
@@ -28,6 +27,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import net.openchrom.xxd.process.supplier.templates.model.DetectorType;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorDirectSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
@@ -66,7 +66,7 @@ public class PeakDetectorDirectCSD extends AbstractPeakDetectorCSD implements IP
 					DetectorSetting detectorSetting = new DetectorSetting();
 					detectorSetting.setStartRetentionTime(startRetentionTime);
 					detectorSetting.setStopRetentionTime(stopRetentionTime);
-					detectorSetting.setDetectorType(settingsDirect.isDetectorTypeVV() ? PeakType.VV : PeakType.BB);
+					detectorSetting.setDetectorType(DetectorType.translate(settingsDirect.getDetectorType()));
 					detectorSetting.setTraces("");
 					detectorSetting.setOptimizeRange(settingsDirect.isOptimizeRange());
 					detectorSettings.add(detectorSetting);
@@ -85,7 +85,7 @@ public class PeakDetectorDirectCSD extends AbstractPeakDetectorCSD implements IP
 				DetectorSetting detectorSetting = new DetectorSetting();
 				detectorSetting.setStartRetentionTime(startRetentionTime);
 				detectorSetting.setStopRetentionTime(stopRetentionTime);
-				detectorSetting.setDetectorType(settingsDirect.isDetectorTypeVV() ? PeakType.VV : PeakType.BB);
+				detectorSetting.setDetectorType(DetectorType.translate(settingsDirect.getDetectorType()));
 				detectorSetting.setTraces("");
 				detectorSetting.setOptimizeRange(settingsDirect.isOptimizeRange());
 				detectorSettings.add(detectorSetting);
@@ -104,7 +104,7 @@ public class PeakDetectorDirectCSD extends AbstractPeakDetectorCSD implements IP
 				DetectorSetting detectorSetting = new DetectorSetting();
 				detectorSetting.setStartRetentionTime(startRetentionTime);
 				detectorSetting.setStopRetentionTime(stopRetentionTime);
-				detectorSetting.setDetectorType(settingsDirect.isDetectorTypeVV() ? PeakType.VV : PeakType.BB);
+				detectorSetting.setDetectorType(DetectorType.translate(settingsDirect.getDetectorType()));
 				detectorSetting.setTraces("");
 				detectorSetting.setOptimizeRange(settingsDirect.isOptimizeRange());
 				detectorSettings.add(detectorSetting);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,8 +24,8 @@ import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 public class StandardsReferencerLabelProvider extends AbstractChemClipseLabelProvider {
 
 	public static final String NAME = "Target ISTD (Internal Standard)";
-	public static final String START_RETENTION_TIME = "Source Start RT (Retention Time - Minutes)";
-	public static final String STOP_RETENTION_TIME = "Source Stop RT (Retention Time - Minutes)";
+	public static final String START_RETENTION_TIME = "Source Start Retention Time [min]";
+	public static final String STOP_RETENTION_TIME = "Source Stop Retention Time [min]";
 	public static final String IDENTIFIER = "Source Identifier";
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");

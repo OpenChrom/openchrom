@@ -71,6 +71,13 @@ public class PeakSupport {
 		return extractPeakByScanRange(chromatogram, startScan, stopScan, includeBackground, optimizeRange, traces);
 	}
 
+	public IPeak extractPeakByRetentionTime(IChromatogram<? extends IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, float startIntensity, float stopIntensity, Set<Integer> traces) {
+
+		int startScan = chromatogram.getScanNumber(startRetentionTime);
+		int stopScan = chromatogram.getScanNumber(stopRetentionTime);
+		return extractPeakByScanRange(chromatogram, startScan, stopScan, startIntensity, stopIntensity, traces);
+	}
+
 	public IPeak extractPeakByScanRange(IChromatogram<? extends IPeak> chromatogram, int startScan, int stopScan, boolean includeBackground, boolean optimizeRange, Set<Integer> traces) {
 
 		IPeak peak = null;
@@ -103,6 +110,45 @@ public class PeakSupport {
 				} else if(chromatogram instanceof IChromatogramCSD) {
 					IChromatogramCSD chromatogramCSD = (IChromatogramCSD)chromatogram;
 					peak = PeakBuilderCSD.createPeak(chromatogramCSD, scanRange, includeBackground);
+					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
+				} else if(chromatogram instanceof IChromatogramWSD) {
+					logger.info("Handling WSD data is not supported yet");
+				}
+			}
+		} catch(PeakException e) {
+			logger.warn(e);
+		}
+		//
+		return peak;
+	}
+
+	public IPeak extractPeakByScanRange(IChromatogram<? extends IPeak> chromatogram, int startScan, int stopScan, float startIntensity, float stopIntensity, Set<Integer> traces) {
+
+		IPeak peak = null;
+		//
+		try {
+			if(startScan > 0 && startScan < stopScan) {
+				/*
+				 * Get the scan range.
+				 */
+				IScanRange scanRange = new ScanRange(startScan, stopScan);
+				/*
+				 * Try to create a peak.
+				 */
+				if(chromatogram instanceof IChromatogramMSD) {
+					IChromatogramMSD chromatogramMSD = (IChromatogramMSD)chromatogram;
+					if(traces.size() > 0) {
+						/**
+						 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
+						 */
+						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, startIntensity, stopIntensity, traces, IMarkedIons.IonMarkMode.EXCLUDE);
+					} else {
+						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, startIntensity, stopIntensity);
+					}
+					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
+				} else if(chromatogram instanceof IChromatogramCSD) {
+					IChromatogramCSD chromatogramCSD = (IChromatogramCSD)chromatogram;
+					peak = PeakBuilderCSD.createPeak(chromatogramCSD, scanRange, startIntensity, stopIntensity);
 					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 				} else if(chromatogram instanceof IChromatogramWSD) {
 					logger.info("Handling WSD data is not supported yet");

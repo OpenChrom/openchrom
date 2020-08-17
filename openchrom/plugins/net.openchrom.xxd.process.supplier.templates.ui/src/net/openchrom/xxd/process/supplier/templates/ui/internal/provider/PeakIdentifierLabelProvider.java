@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,8 +24,8 @@ import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
 public class PeakIdentifierLabelProvider extends AbstractChemClipseLabelProvider {
 
 	public static final String NAME = "Name";
-	public static final String START_RETENTION_TIME = "Start Retention Time";
-	public static final String STOP_RETENTION_TIME = "Stop Retention Time";
+	public static final String START_RETENTION_TIME = "Start Retention Time [min]";
+	public static final String STOP_RETENTION_TIME = "Stop Retention Time [min]";
 	public static final String CAS_NUMBER = "CAS";
 	public static final String COMMENTS = "Comments";
 	public static final String CONTRIBUTOR = "Contributor";

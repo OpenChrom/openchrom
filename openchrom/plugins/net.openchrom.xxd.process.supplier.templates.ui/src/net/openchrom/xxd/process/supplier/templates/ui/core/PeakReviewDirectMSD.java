@@ -80,25 +80,29 @@ public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IP
 				}
 			}
 		}
-		//
-		PeakReviewSettings settings = new PeakReviewSettings();
-		settings.setReviewSettings(reviewSettings);
-		ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
-		try {
-			DisplayUtils.executeInUserInterfaceThread(new Runnable() {
+		/*
+		 * Check, that at least one review setting is set.
+		 */
+		if(reviewSettings.size() > 0) {
+			PeakReviewSettings settings = new PeakReviewSettings();
+			settings.setReviewSettings(reviewSettings);
+			ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
+			try {
+				DisplayUtils.executeInUserInterfaceThread(new Runnable() {
 
-				@Override
-				public void run() {
+					@Override
+					public void run() {
 
-					Shell shell = DisplayUtils.getShell();
-					PeakReviewSupport peakReviewSupport = new PeakReviewSupport();
-					peakReviewSupport.addSettings(shell, processSettings);
-				}
-			});
-		} catch(InterruptedException e) {
-			Thread.currentThread().interrupt();
-		} catch(ExecutionException e) {
-			processingInfo.addErrorMessage(DESCRIPTION, "The execution failed, see attached log file.", e);
+						Shell shell = DisplayUtils.getShell();
+						PeakReviewSupport peakReviewSupport = new PeakReviewSupport();
+						peakReviewSupport.addSettings(shell, processSettings);
+					}
+				});
+			} catch(InterruptedException e) {
+				Thread.currentThread().interrupt();
+			} catch(ExecutionException e) {
+				processingInfo.addErrorMessage(DESCRIPTION, "The execution failed, see attached log file.", e);
+			}
 		}
 	}
 

@@ -111,7 +111,7 @@ public class DetectorController {
 							detectorRange.setRetentionTimeStart(startRetentionTime);
 							detectorRange.setRetentionTimeStop(stopRetentionTime);
 							detectorRange.setTraces(peakDetectorListUtil.extractTraces(detectorSetting.getTraces()));
-							detectorRange.setDetectorType(peakType.toString());
+							detectorRange.setDetectorType(peakType);
 							detectorRange.setOptimizeRange(optimizeRange);
 							/*
 							 * Settings display data

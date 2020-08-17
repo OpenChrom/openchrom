@@ -14,10 +14,13 @@ package net.openchrom.xxd.process.supplier.templates.settings;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.AbstractPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
+import org.eclipse.chemclipse.support.settings.EnumSelectionSettingProperty;
 import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+
+import net.openchrom.xxd.process.supplier.templates.model.DetectorType;
 
 public class PeakDetectorDirectSettings extends AbstractPeakDetectorSettingsMSD implements IPeakDetectorSettingsMSD, IPeakDetectorSettingsCSD, ITemplateSettings {
 
@@ -25,11 +28,12 @@ public class PeakDetectorDirectSettings extends AbstractPeakDetectorSettingsMSD 
 	@JsonPropertyDescription(value = "Example: '103 104' or empty for using TIC.")
 	@StringSettingsProperty(regExp = RE_TRACES, isMultiLine = false)
 	private String traces = "";
-	@JsonProperty(value = "Peak Detector (VV)", defaultValue = "true")
-	@JsonPropertyDescription(value = "The valley-valley peak detection is performed. Otherwise: BB.")
-	private boolean detectorTypeVV = true;
-	@JsonProperty(value = "Optimize Range", defaultValue = "false")
-	@JsonPropertyDescription(value = "If VV as a peak detection technique has been selected, the peak is optimized.")
+	@JsonProperty(value = "Detector Type", defaultValue = "VV")
+	@JsonPropertyDescription(value = "Select the detector type for the manual peak detection.")
+	@EnumSelectionSettingProperty
+	private DetectorType detectorType = DetectorType.VV;
+	@JsonProperty(value = "Optimize Range (VV)", defaultValue = "false")
+	@JsonPropertyDescription(value = "If VV as a peak detector type has been selected, the peak will be optimized.")
 	private boolean optimizeRange = false;
 	@JsonProperty(value = "Use Existing Peaks", defaultValue = "true")
 	@JsonPropertyDescription(value = "If true, ranges will be created using the existing peak(s).")
@@ -48,14 +52,14 @@ public class PeakDetectorDirectSettings extends AbstractPeakDetectorSettingsMSD 
 		this.traces = traces;
 	}
 
-	public boolean isDetectorTypeVV() {
+	public DetectorType getDetectorType() {
 
-		return detectorTypeVV;
+		return detectorType;
 	}
 
-	public void setDetectorTypeVV(boolean detectorTypeVV) {
+	public void setDetectorType(DetectorType detectorType) {
 
-		this.detectorTypeVV = detectorTypeVV;
+		this.detectorType = detectorType;
 	}
 
 	public boolean isOptimizeRange() {

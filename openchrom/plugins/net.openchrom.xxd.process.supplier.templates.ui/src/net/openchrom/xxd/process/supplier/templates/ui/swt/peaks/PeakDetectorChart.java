@@ -18,6 +18,7 @@ import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.selection.ChromatogramSelection;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
@@ -32,6 +33,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.IAxisSet;
 import org.eclipse.swtchart.IPlotArea;
 import org.eclipse.swtchart.Range;
 import org.eclipse.swtchart.extensions.core.BaseChart;
@@ -403,35 +405,55 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		 */
 		IPeak peak = null;
 		if(detectorRange != null) {
-			Point rectangle = getBaseChart().getPlotArea().getSize();
+			BaseChart baseChart = getBaseChart();
+			IAxisSet axisSet = baseChart.getAxisSet();
+			Point rectangle = baseChart.getPlotArea().getSize();
 			int width = rectangle.x;
-			double factorWidth = 0.0d;
+			//
 			if(width != 0) {
-				factorWidth = 100.0d / width;
+				double factorWidth = 100.0d / width;
 				double percentageStartWidth = (factorWidth * xStart) / 100.0d;
 				double percentageStopWidth = (factorWidth * xStop) / 100.0d;
 				/*
-				 * Calculate the start and end points.
+				 * Retention Time
 				 */
-				BaseChart baseChart = getBaseChart();
-				IAxis retentionTime = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
+				IAxis retentionTime = axisSet.getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
 				Range millisecondsRange = retentionTime.getRange();
-				/*
-				 * With abundance and retention time.
-				 */
 				double millisecondsWidth = millisecondsRange.upper - millisecondsRange.lower;
-				/*
-				 * Peak start and stop abundances and retention times.
-				 */
 				int startRetentionTime = (int)(millisecondsRange.lower + millisecondsWidth * percentageStartWidth);
 				int stopRetentionTime = (int)(millisecondsRange.lower + millisecondsWidth * percentageStopWidth);
 				//
 				IChromatogram<? extends IPeak> chromatogram = detectorRange.getChromatogram();
 				if(chromatogram != null) {
+					/*
+					 * General Settings
+					 */
 					Set<Integer> traces = detectorRange.getTraces();
-					boolean includeBackground = detectorRange.isIncludeBackground();
-					boolean optimizeRange = detectorRange.isOptimizeRange();
-					peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces);
+					PeakType detectorType = detectorRange.getDetectorType();
+					//
+					if(PeakType.MM.equals(detectorType)) {
+						/*
+						 * MM
+						 */
+						double height = rectangle.y;
+						if(height > 0) {
+							double factorY1 = 1.0d - yStart / height;
+							double factorY2 = 1.0d - yStop / height;
+							IAxis intensity = axisSet.getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+							Range intensityRange = intensity.getRange();
+							double intensityHeight = intensityRange.upper - intensityRange.lower;
+							float startIntensity = (float)(intensityRange.lower + intensityHeight * factorY1);
+							float stopIntensity = (float)(intensityRange.lower + intensityHeight * factorY2);
+							peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, startIntensity, stopIntensity, traces);
+						}
+					} else {
+						/*
+						 * VV, BB
+						 */
+						boolean includeBackground = detectorRange.isIncludeBackground();
+						boolean optimizeRange = detectorRange.isOptimizeRange();
+						peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces);
+					}
 				}
 			}
 		}
