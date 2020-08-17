@@ -265,8 +265,8 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				/*
 				 * Retention Time Range
 				 */
-				int startRetentionTime = detectorRange.getRetentionTimeStart();
-				int stopRetentionTime = detectorRange.getRetentionTimeStop();
+				int startRetentionTime = getStartRetentionTime(chromatogram, detectorRange);
+				int stopRetentionTime = getStopRetentionTime(chromatogram, detectorRange);
 				chromatogramSelection.setRangeRetentionTime(startRetentionTime, stopRetentionTime);
 				updateChromatogram(chromatogramSelection, peakChartSettings);
 				/*
@@ -279,6 +279,24 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				updateRange(selectedRangeX, selectedRangeY);
 			}
 		}
+	}
+
+	private int getStartRetentionTime(IChromatogram<?> chromatogram, DetectorRange detectorRange) {
+
+		int retentionTime = detectorRange.getRetentionTimeStart();
+		if(retentionTime < chromatogram.getStartRetentionTime()) {
+			retentionTime = chromatogram.getStartRetentionTime();
+		}
+		return retentionTime;
+	}
+
+	private int getStopRetentionTime(IChromatogram<?> chromatogram, DetectorRange detectorRange) {
+
+		int retentionTime = detectorRange.getRetentionTimeStop();
+		if(retentionTime > chromatogram.getStopRetentionTime()) {
+			retentionTime = chromatogram.getStopRetentionTime();
+		}
+		return retentionTime;
 	}
 
 	private boolean showTraces(IChromatogram<? extends IPeak> chromatogram, Set<Integer> traces) {
@@ -302,8 +320,8 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
 		//
 		double minY = Double.MAX_VALUE;
-		int startScan = chromatogram.getScanNumber(startRetentionTime);
-		int stopScan = chromatogram.getScanNumber(stopRetentionTime);
+		int startScan = PeakSupport.getStartScan(chromatogram, startRetentionTime);
+		int stopScan = PeakSupport.getStopScan(chromatogram, stopRetentionTime);
 		for(int i = startScan; i <= stopScan; i++) {
 			double intensity = chromatogram.getScan(i).getTotalSignal();
 			minY = Math.min(intensity, minY);
@@ -319,8 +337,8 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
 		//
 		double maxY = Double.MIN_VALUE;
-		int startScan = chromatogram.getScanNumber(startRetentionTime);
-		int stopScan = chromatogram.getScanNumber(stopRetentionTime);
+		int startScan = PeakSupport.getStartScan(chromatogram, startRetentionTime);
+		int stopScan = PeakSupport.getStopScan(chromatogram, stopRetentionTime);
 		for(int i = startScan; i <= stopScan; i++) {
 			double intensity = chromatogram.getScan(i).getTotalSignal();
 			maxY = Math.max(intensity, maxY);

@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.AbstractPeakDetectorMSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
@@ -34,7 +35,6 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorDirectS
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakDetectorSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
-import net.openchrom.xxd.process.supplier.templates.ui.wizards.WizardRunnable;
 
 @SuppressWarnings("rawtypes")
 public class PeakDetectorDirectMSD extends AbstractPeakDetectorMSD implements IPeakDetectorDirect, ITemplateExport {
@@ -97,10 +97,9 @@ public class PeakDetectorDirectMSD extends AbstractPeakDetectorMSD implements IP
 			if(detectorSettings.size() == 0) {
 				/*
 				 * Retention Time
-				 * Note: start + offset, stop - offset is correct to avoid variations when converting the settings.
 				 */
-				int startRetentionTime = chromatogram.getStartRetentionTime() + offset;
-				int stopRetentionTime = chromatogram.getStopRetentionTime() - offset;
+				int startRetentionTime = chromatogram.getStartRetentionTime() + 2000;
+				int stopRetentionTime = chromatogram.getStopRetentionTime() - 2000;
 				//
 				DetectorSetting detectorSetting = new DetectorSetting();
 				detectorSetting.setStartRetentionTime(startRetentionTime);
@@ -113,14 +112,22 @@ public class PeakDetectorDirectMSD extends AbstractPeakDetectorMSD implements IP
 			//
 			PeakDetectorSettings settings = new PeakDetectorSettings();
 			settings.setDetectorSettings(detectorSettings);
-			ProcessDetectorSettings processSettings = new ProcessDetectorSettings(processingInfo, chromatogramSelection.getChromatogram(), settings);
-			Shell shell = DisplayUtils.getShell();
-			if(shell != null) {
-				PeakDetectorSupport peakDetectorSupport = new PeakDetectorSupport();
-				peakDetectorSupport.addPeaks(shell, processSettings);
-			} else {
-				WizardRunnable wizardRunnable = new WizardRunnable(processSettings);
-				DisplayUtils.getDisplay().syncExec(wizardRunnable);
+			ProcessDetectorSettings processSettings = new ProcessDetectorSettings(processingInfo, chromatogram, settings);
+			try {
+				DisplayUtils.executeInUserInterfaceThread(new Runnable() {
+
+					@Override
+					public void run() {
+
+						Shell shell = DisplayUtils.getShell();
+						PeakDetectorSupport peakDetectorSupport = new PeakDetectorSupport();
+						peakDetectorSupport.addPeaks(shell, processSettings);
+					}
+				});
+			} catch(InterruptedException e) {
+				Thread.currentThread().interrupt();
+			} catch(ExecutionException e) {
+				processingInfo.addErrorMessage("PeakDetectorDirectMSD", "Execution failed", e);
 			}
 		}
 		return processingInfo;

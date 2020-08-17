@@ -111,8 +111,8 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 	@SuppressWarnings("unchecked")
 	private void setPeakByRetentionTimeRange(IChromatogram chromatogram, RetentionTimeRange retentionTimeRange, DetectorSetting detectorSetting) {
 
-		int startScan = chromatogram.getScanNumber(retentionTimeRange.getStartRetentionTime());
-		int stopScan = chromatogram.getScanNumber(retentionTimeRange.getStopRetentionTime());
+		int startScan = PeakSupport.getStartScan(chromatogram, retentionTimeRange.getStartRetentionTime());
+		int stopScan = PeakSupport.getStopScan(chromatogram, retentionTimeRange.getStopRetentionTime());
 		Set<Integer> traces = listUtil.extractTraces(detectorSetting.getTraces());
 		IPeak peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), traces);
 		if(peak != null) {

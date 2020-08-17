@@ -44,6 +44,24 @@ public class PeakSupport {
 	private static final Logger logger = Logger.getLogger(PeakSupport.class);
 	private TargetExtendedComparator comparator = new TargetExtendedComparator(SortOrder.DESC);
 
+	public static int getStartScan(IChromatogram<?> chromatogram, int retentionTime) {
+
+		int startScan = chromatogram.getScanNumber(retentionTime);
+		if(startScan <= 0) {
+			startScan = 1;
+		}
+		return startScan;
+	}
+
+	public static int getStopScan(IChromatogram<?> chromatogram, int retentionTime) {
+
+		int stopScan = chromatogram.getScanNumber(retentionTime);
+		if(stopScan > chromatogram.getNumberOfScans()) {
+			stopScan = chromatogram.getNumberOfScans();
+		}
+		return stopScan;
+	}
+
 	public RetentionTimeRange getRetentionTimeRange(List<? extends IPeak> peaks, AbstractSetting setting, String referenceIdentifier) {
 
 		int startRetentionTime = setting.getStartRetentionTime();
@@ -66,15 +84,15 @@ public class PeakSupport {
 
 	public IPeak extractPeakByRetentionTime(IChromatogram<? extends IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, boolean includeBackground, boolean optimizeRange, Set<Integer> traces) {
 
-		int startScan = chromatogram.getScanNumber(startRetentionTime);
-		int stopScan = chromatogram.getScanNumber(stopRetentionTime);
+		int startScan = getStartScan(chromatogram, startRetentionTime);
+		int stopScan = getStopScan(chromatogram, stopRetentionTime);
 		return extractPeakByScanRange(chromatogram, startScan, stopScan, includeBackground, optimizeRange, traces);
 	}
 
 	public IPeak extractPeakByRetentionTime(IChromatogram<? extends IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, float startIntensity, float stopIntensity, Set<Integer> traces) {
 
-		int startScan = chromatogram.getScanNumber(startRetentionTime);
-		int stopScan = chromatogram.getScanNumber(stopRetentionTime);
+		int startScan = getStartScan(chromatogram, startRetentionTime);
+		int stopScan = getStopScan(chromatogram, stopRetentionTime);
 		return extractPeakByScanRange(chromatogram, startScan, stopScan, startIntensity, stopIntensity, traces);
 	}
 
