@@ -28,7 +28,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.csd.converter;bundle-version="0.8.0",
- org.eclipse.chemclipse.chromatogram.xxd.report;bundle-version="0.9.0"
+ org.eclipse.chemclipse.chromatogram.xxd.report;bundle-version="0.9.0",
+ org.apache.commons.math3;bundle-version="3.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.process.supplier.templates,

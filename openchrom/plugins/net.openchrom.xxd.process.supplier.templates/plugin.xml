@@ -101,7 +101,7 @@
             peakDetectorName="Peak Transfer [Template]"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakTransferSettings">
       </PeakDetector>
-   </extension>   
+   </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer

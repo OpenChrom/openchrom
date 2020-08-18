@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.preferences;
 
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.DoubleFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.IntegerFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpinnerFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
@@ -38,13 +39,17 @@ public class PagePeakTransfer extends FieldEditorPreferencePage implements IWork
 	 */
 	public void createFieldEditors() {
 
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_USE_BEST_TARGET_ONLY, "Use Best Target Only", getFieldEditorParent()));
-		addField(new IntegerFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT, "Delta Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
-		addField(new IntegerFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT, "Delta Right [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
-		addField(new SpinnerFieldEditor(PreferenceSupplier.P_TRANSFER_NUMBER_TRACES, "Number Traces (0 = TIC)", PreferenceSupplier.MIN_NUMBER_TRACES, PreferenceSupplier.MAX_NUMBER_TRACES, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, "Transfer Identified Peaks Only", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_USE_ADJUSTMENT_BY_PURITY, "Use Adjustment By Purity", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_OPTIMIZE_RANGE, "Optimize Range (Peak)", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_USE_BEST_TARGET_ONLY, "Use Best Target Only", getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT, "Delta Retention Time Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT, "Delta Retention Time Right [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM, "Offset Retention Time (Peak Maximum) [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_ADJUST_PEAK_HEIGHT, "Adjust Peak Height", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_CREATE_MODEL_PEAK, "Create Model Peak (CSD)", getFieldEditorParent()));
+		addField(new DoubleFieldEditor(PreferenceSupplier.P_TRANSFER_PEAK_OVERLAP_COVERAGE, "Peak Overlap Coverage [%]", PreferenceSupplier.MIN_PEAK_OVERLAP_COVERAGE, PreferenceSupplier.MAX_PEAK_OVERLAP_COVERAGE, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_OPTIMIZE_RANGE, "Optimize Range (VV)", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_CHECK_PURITY, "Check Purity (MSD)", getFieldEditorParent()));
+		addField(new SpinnerFieldEditor(PreferenceSupplier.P_TRANSFER_NUMBER_TRACES, "Number Traces (MSD)", PreferenceSupplier.MIN_NUMBER_TRACES, PreferenceSupplier.MAX_NUMBER_TRACES, getFieldEditorParent()));
 	}
 
 	/*

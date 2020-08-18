@@ -46,7 +46,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.chemclipse.chromatogram.xxd.report;bundle-version="0.9.0",
  org.eclipse.chemclipse.chromatogram.msd.identifier;bundle-version="0.9.0",
  org.eclipse.chemclipse.chromatogram.csd.identifier;bundle-version="0.9.0",
- org.eclipse.chemclipse.numeric;bundle-version="0.9.0"
+ org.eclipse.chemclipse.numeric;bundle-version="0.9.0",
+ org.apache.commons.math3;bundle-version="3.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: javax.annotation;version="1.1.0",

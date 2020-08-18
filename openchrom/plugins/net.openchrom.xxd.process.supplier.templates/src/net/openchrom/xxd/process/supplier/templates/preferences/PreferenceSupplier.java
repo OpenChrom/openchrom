@@ -37,6 +37,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int MAX_NUMBER_TRACES = Integer.MAX_VALUE;
 	public static final int MIN_OFFSET_Y = 0; // %
 	public static final int MAX_OFFSET_Y = 100; // %
+	public static final int MIN_PEAK_OVERLAP_COVERAGE = 1; // %
+	public static final int MAX_PEAK_OVERLAP_COVERAGE = 100; // %
 	//
 	public static final String P_PEAK_DETECTOR_LIST_MSD = "peakDetectorListMSD";
 	public static final String DEF_PEAK_DETECTOR_LIST_MSD = "";
@@ -138,22 +140,34 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	 */
 	public static final String P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT = "standardsExtractorConcentrationUnit";
 	public static final String DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT = "ppm";
-	//
+	/*
+	 * Transfer
+	 */
+	public static final String P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY = "transferUseIdentifiedPeaksOnly";
+	public static final boolean DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY = true;
 	public static final String P_TRANSFER_USE_BEST_TARGET_ONLY = "transferUseBestTargetOnly";
 	public static final boolean DEF_TRANSFER_USE_BEST_TARGET_ONLY = true;
 	public static final String P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT = "transferRetentionTimeMillisecondsLeft";
 	public static final int DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT = 0;
 	public static final String P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT = "transferRetentionTimeMillisecondsRight";
 	public static final int DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT = 0;
-	public static final String P_TRANSFER_NUMBER_TRACES = "transferNumberTraces";
-	public static final int DEF_TRANSFER_NUMBER_TRACES = 15;
-	public static final String P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY = "transferUseIdentifiedPeaksOnly";
-	public static final boolean DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY = false;
-	public static final String P_TRANSFER_USE_ADJUSTMENT_BY_PURITY = "transferUseAdjustmentByPurity";
-	public static final boolean DEF_TRANSFER_USE_ADJUSTMENT_BY_PURITY = true;
+	public static final String P_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM = "transferOffsetRetentionTimeMillisecondsPeakMaximum";
+	public static final int DEF_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM = 500;
+	public static final String P_TRANSFER_ADJUST_PEAK_HEIGHT = "transferAdjustPeakHeight";
+	public static final boolean DEF_TRANSFER_ADJUST_PEAK_HEIGHT = true;
+	public static final String P_TRANSFER_CREATE_MODEL_PEAK = "transferCreateModelPeak";
+	public static final boolean DEF_TRANSFER_CREATE_MODEL_PEAK = true;
+	public static final String P_TRANSFER_PEAK_OVERLAP_COVERAGE = "transferPeakOverlapCoverage";
+	public static final double DEF_TRANSFER_PEAK_OVERLAP_COVERAGE = 12.5f;
 	public static final String P_TRANSFER_OPTIMIZE_RANGE = "transferOptimizeRange";
 	public static final boolean DEF_TRANSFER_OPTIMIZE_RANGE = true;
-	//
+	public static final String P_TRANSFER_CHECK_PURITY = "transferCheckPurity";
+	public static final boolean DEF_TRANSFER_CHECK_PURITY = true;
+	public static final String P_TRANSFER_NUMBER_TRACES = "transferNumberTraces";
+	public static final int DEF_TRANSFER_NUMBER_TRACES = 15;
+	/*
+	 * Report
+	 */
 	public static final String P_REPORT_REFERENCED_CHROMATOGRAMS = "reportReferencedChromatograms";
 	public static final boolean DEF_REPORT_REFERENCED_CHROMATOGRAMS = false;
 	/*
@@ -286,13 +300,17 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		/*
 		 * Transfer
 		 */
+		defaultValues.put(P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, Boolean.toString(DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY));
 		defaultValues.put(P_TRANSFER_USE_BEST_TARGET_ONLY, Boolean.toString(DEF_TRANSFER_USE_BEST_TARGET_ONLY));
 		defaultValues.put(P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT, Integer.toString(DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT));
 		defaultValues.put(P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT, Integer.toString(DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT));
-		defaultValues.put(P_TRANSFER_NUMBER_TRACES, Integer.toString(DEF_TRANSFER_NUMBER_TRACES));
-		defaultValues.put(P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, Boolean.toString(DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY));
-		defaultValues.put(P_TRANSFER_USE_ADJUSTMENT_BY_PURITY, Boolean.toString(DEF_TRANSFER_USE_ADJUSTMENT_BY_PURITY));
+		defaultValues.put(P_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM, Integer.toString(DEF_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM));
+		defaultValues.put(P_TRANSFER_ADJUST_PEAK_HEIGHT, Boolean.toString(DEF_TRANSFER_ADJUST_PEAK_HEIGHT));
+		defaultValues.put(P_TRANSFER_CREATE_MODEL_PEAK, Boolean.toString(DEF_TRANSFER_CREATE_MODEL_PEAK));
+		defaultValues.put(P_TRANSFER_PEAK_OVERLAP_COVERAGE, Double.toString(DEF_TRANSFER_PEAK_OVERLAP_COVERAGE));
 		defaultValues.put(P_TRANSFER_OPTIMIZE_RANGE, Boolean.toString(DEF_TRANSFER_OPTIMIZE_RANGE));
+		defaultValues.put(P_TRANSFER_CHECK_PURITY, Boolean.toString(DEF_TRANSFER_CHECK_PURITY));
+		defaultValues.put(P_TRANSFER_NUMBER_TRACES, Integer.toString(DEF_TRANSFER_NUMBER_TRACES));
 		//
 		defaultValues.put(P_REPORT_REFERENCED_CHROMATOGRAMS, Boolean.toString(DEF_REPORT_REFERENCED_CHROMATOGRAMS));
 		/*
@@ -756,6 +774,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.get(P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT, DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT);
 	}
 
+	public static boolean isTransferUseIdentifiedPeaksOnly() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY);
+	}
+
 	public static boolean isTransferUseBestTargetOnly() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
@@ -774,28 +798,46 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getInt(P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT, DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT);
 	}
 
-	public static int getTransferNumberTraces() {
+	public static int getTransferOffsetRetentionTimePeakMaximum() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_TRANSFER_NUMBER_TRACES, DEF_TRANSFER_NUMBER_TRACES);
+		return preferences.getInt(P_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM, DEF_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM);
 	}
 
-	public static boolean isTransferUseIdentifiedPeaksOnly() {
+	public static boolean isTransferAdjustPeakHeight() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY);
+		return preferences.getBoolean(P_TRANSFER_ADJUST_PEAK_HEIGHT, DEF_TRANSFER_ADJUST_PEAK_HEIGHT);
 	}
 
-	public static boolean isTransferUseAdjustmentByPurity() {
+	public static boolean isTransferCreateModelPeak() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_TRANSFER_USE_ADJUSTMENT_BY_PURITY, DEF_TRANSFER_USE_ADJUSTMENT_BY_PURITY);
+		return preferences.getBoolean(P_TRANSFER_CREATE_MODEL_PEAK, DEF_TRANSFER_CREATE_MODEL_PEAK);
+	}
+
+	public static double getTransferPeakOverlapCoverage() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(P_TRANSFER_PEAK_OVERLAP_COVERAGE, DEF_TRANSFER_PEAK_OVERLAP_COVERAGE);
 	}
 
 	public static boolean isTransferOptimizeRange() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_TRANSFER_OPTIMIZE_RANGE, DEF_TRANSFER_OPTIMIZE_RANGE);
+	}
+
+	public static boolean isTransferCheckPurity() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_TRANSFER_CHECK_PURITY, DEF_TRANSFER_CHECK_PURITY);
+	}
+
+	public static int getTransferNumberTraces() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_TRANSFER_NUMBER_TRACES, DEF_TRANSFER_NUMBER_TRACES);
 	}
 
 	private static void putBoolean(String key, boolean value) {
