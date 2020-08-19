@@ -178,6 +178,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 			for(IPeak peak : peaks) {
 				if(!peak.getTargets().isEmpty()) {
 					if(peak.isActiveForAnalysis()) {
+						peaksSource.add(peak);
 					}
 				}
 			}
