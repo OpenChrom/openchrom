@@ -43,7 +43,8 @@ import org.eclipse.swtchart.extensions.linecharts.LineSeriesData;
  */
 public class ModelPeakDemo {
 
-	private static Text textSigma;
+	private static Text textSigmaFront;
+	private static Text textSigmaBack;
 	private static LineChart chartGaussian;
 	//
 	private static Text textShape;
@@ -93,10 +94,11 @@ public class ModelPeakDemo {
 	private static void createToolbarGaussian(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(1, true));
+		composite.setLayout(new GridLayout(2, true));
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		//
-		textSigma = createText(composite, 60.0d, "Sigma: 1 - 200");
+		textSigmaFront = createText(composite, 60.0d, "Sigma Front: 1 - 200");
+		textSigmaBack = createText(composite, 60.0d, "Sigma Back: 1 - 200");
 	}
 
 	private static void createSectionDistribution(Composite parent) {
@@ -163,8 +165,9 @@ public class ModelPeakDemo {
 
 		chartGaussian.deleteSeries();
 		List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
-		double sigma = parseDouble(textSigma);
-		ISeriesData seriesData = getPeakSeriesGaussian(sigma);
+		double sigmaFront = parseDouble(textSigmaFront);
+		double sigmaBack = parseDouble(textSigmaBack);
+		ISeriesData seriesData = getPeakSeriesGaussian(sigmaFront, sigmaBack);
 		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
 		ILineSeriesSettings lineSeriesSettings = lineSeriesData.getSettings();
 		lineSeriesSettings.setLineColor(Colors.RED);
@@ -207,6 +210,11 @@ public class ModelPeakDemo {
 
 	public static ISeriesData getPeakSeriesGaussian(double sigma) {
 
+		return getPeakSeriesGaussian(sigma, sigma);
+	}
+
+	public static ISeriesData getPeakSeriesGaussian(double sigmaFront, double sigmaBack) {
+
 		int start = 1;
 		int stop = 500;
 		int size = stop - start + 1;
@@ -216,13 +224,22 @@ public class ModelPeakDemo {
 		double[] ySeries = new double[size];
 		double[] xSeries = new double[size];
 		//
-		Gaussian gaussian = new Gaussian(norm, mean, sigma);
+		Gaussian gaussianFront = new Gaussian(norm, mean, sigmaFront);
+		Gaussian gaussianBack = new Gaussian(norm, mean, sigmaBack);
+		//
 		for(int x = start, i = 0; x <= stop; x++, i++) {
 			xSeries[i] = x;
-			ySeries[i] = gaussian.value(x);
+			if(x <= mean) {
+				ySeries[i] = gaussianFront.value(x);
+			} else {
+				// double x1 = gaussianFront.value(x);
+				// double x2 = gaussianBack.value(x);
+				// ySeries[i] = x1 + (x2 - x1) / 3.0d;
+				ySeries[i] = gaussianBack.value(x);
+			}
 		}
 		//
-		return new SeriesData(xSeries, ySeries, "Sigma: " + sigma);
+		return new SeriesData(xSeries, ySeries, "Sigma: " + sigmaFront + "|" + sigmaBack);
 	}
 
 	public static ISeriesData getPeakSeriesDistribution(double shape, double scale) {
