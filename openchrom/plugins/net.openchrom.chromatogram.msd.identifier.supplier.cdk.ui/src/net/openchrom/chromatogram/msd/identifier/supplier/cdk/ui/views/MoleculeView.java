@@ -41,6 +41,8 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -48,11 +50,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.converter.ImageConverter;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.preferences.PreferencePage;
 
@@ -92,6 +96,7 @@ public class MoleculeView {
 
 	@Inject
 	public MoleculeView(IEventBroker eventBroker, EventHandler eventHandler) {
+
 		this.eventBroker = eventBroker;
 		this.eventHandler = eventHandler;
 		subscribe();
@@ -120,12 +125,7 @@ public class MoleculeView {
 			 * First, try to parse the smiles formula. If it's not available,
 			 * try to create the molecule by parsing the IUPAC name.
 			 */
-			Image moleculeImage = null;
-			if(smilesFormula != null && !smilesFormula.equals("")) {
-				moleculeImage = convertMoleculeToImage(display, true, smilesFormula);
-			} else {
-				moleculeImage = convertMoleculeToImage(display, false, iupacName);
-			}
+			Image moleculeImage = createImage(display);
 			//
 			StringBuilder builder = new StringBuilder();
 			builder.append(iupacName);
@@ -143,6 +143,7 @@ public class MoleculeView {
 				 */
 				moleculeLabel.setText("");
 				moleculeLabel.setImage(moleculeImage);
+				moleculeImage.dispose();
 			} else {
 				/*
 				 * Parser error
@@ -151,6 +152,18 @@ public class MoleculeView {
 				moleculeLabel.setText("Sorry, it's not possible to parse the molecule.");
 			}
 		}
+	}
+
+	private Image createImage(Display display) {
+
+		Image moleculeImage = null;
+		if(smilesFormula != null && !smilesFormula.equals("")) {
+			moleculeImage = convertMoleculeToImage(display, true, smilesFormula);
+		} else {
+			moleculeImage = convertMoleculeToImage(display, false, iupacName);
+		}
+		//
+		return moleculeImage;
 	}
 
 	private Point calculateMoleculeImageSize() {
@@ -208,11 +221,12 @@ public class MoleculeView {
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridData);
-		composite.setLayout(new GridLayout(3, false));
+		composite.setLayout(new GridLayout(4, false));
 		//
 		createButtonToggleToolbarInfo(composite);
 		createButtonToggleToolbarModify(composite);
-		createSettingsButton(composite);
+		createButtonExport(composite);
+		createButtonSettings(composite);
 	}
 
 	private Button createButtonToggleToolbarInfo(Composite parent) {
@@ -379,6 +393,55 @@ public class MoleculeView {
 		return button;
 	}
 
+	private Button createButtonExport(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		button.setToolTipText("Export the molecule image");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SAVE_AS, IApplicationImage.SIZE_16x16));
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				Image image = createImage(e.display);
+				if(image != null) {
+					FileDialog fileDialog = new FileDialog(e.display.getActiveShell(), SWT.SAVE);
+					fileDialog.setOverwrite(true);
+					fileDialog.setText("Save Molecule");
+					fileDialog.setFilterExtensions(new String[]{"*.png"});
+					fileDialog.setFilterNames(new String[]{"Portable Network Graphics  (*.png)"});
+					fileDialog.setFileName(getExportName());
+					fileDialog.setFilterPath(PreferenceSupplier.getMoleculePathExport());
+					//
+					String pathname = fileDialog.open();
+					if(pathname != null) {
+						//
+						PreferenceSupplier.setMoleculePathExport(fileDialog.getFilterPath());
+						ImageData data = image.getImageData();
+						ImageLoader loader = new ImageLoader();
+						loader.data = new ImageData[]{data};
+						loader.save(pathname, SWT.IMAGE_PNG);
+					}
+					image.dispose();
+				}
+			}
+		});
+		//
+		return button;
+	}
+
+	private String getExportName() {
+
+		String name = textName.getText().trim().replaceAll(":", "");
+		int length = PreferenceSupplier.getMoleculeLengthExport();
+		if(length >= PreferenceSupplier.MIN_LENGTH_NAME_EXPORT && name.length() > length) {
+			return name.substring(0, 20);
+		} else {
+			return name;
+		}
+	}
+
 	private void updateWidgets() {
 
 		textName.setText(iupacName);
@@ -393,11 +456,19 @@ public class MoleculeView {
 
 	private void createMoleculeSection(Composite parent) {
 
-		moleculeComposite = new Composite(parent, SWT.NONE);
-		moleculeComposite.setBackground(Colors.WHITE);
-		moleculeComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		moleculeComposite.setLayout(new FillLayout());
-		moleculeComposite.addControlListener(new ControlAdapter() {
+		moleculeComposite = createMoleculeComposite(parent);
+		moleculeLabel = createMoleculeLabel(moleculeComposite);
+		//
+		createMoleculeImage();
+	}
+
+	private Composite createMoleculeComposite(Composite parent) {
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setBackground(Colors.WHITE);
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		composite.setLayout(new FillLayout());
+		composite.addControlListener(new ControlAdapter() {
 
 			@Override
 			public void controlResized(ControlEvent e) {
@@ -406,21 +477,26 @@ public class MoleculeView {
 			}
 		});
 		//
-		moleculeLabel = new Label(moleculeComposite, SWT.CENTER);
-		moleculeLabel.setBackground(Colors.WHITE);
-		moleculeLabel.addControlListener(new ControlAdapter() {
+		return composite;
+	}
+
+	private Label createMoleculeLabel(Composite parent) {
+
+		Label label = new Label(parent, SWT.CENTER);
+		label.setBackground(Colors.WHITE);
+		label.addControlListener(new ControlAdapter() {
 
 			@Override
 			public void controlResized(ControlEvent e) {
 
-				moleculeLabel.setBounds(5, 5, moleculeComposite.getSize().x, moleculeComposite.getSize().y);
+				label.setBounds(5, 5, moleculeComposite.getSize().x, moleculeComposite.getSize().y);
 			}
 		});
 		//
-		createMoleculeImage();
+		return label;
 	}
 
-	private void createSettingsButton(Composite parent) {
+	private void createButtonSettings(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setToolTipText("Open the Settings");

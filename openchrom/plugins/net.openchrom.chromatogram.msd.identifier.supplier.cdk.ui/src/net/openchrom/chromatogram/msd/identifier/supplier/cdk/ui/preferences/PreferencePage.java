@@ -14,6 +14,7 @@ package net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.preferences;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.IntegerFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
@@ -26,6 +27,7 @@ import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.Activator;
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PreferencePage() {
+
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setTitle("CDK (Chemistry Development Kit)");
@@ -52,6 +54,10 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETAILED_FAILURE_ANALYSIS, "Detailed Failure Analysis", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID, "Interpret Acids Without The Word Acid", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_WARN_RATHER_THAN_FAIL, "Warn Rather Than Fail On Uninterpretable Stereochemistry", getFieldEditorParent()));
+		//
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(PreferenceSupplier.P_MOLECULE_PATH_EXPORT, "Molecule Path Export", getFieldEditorParent()));
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_LENGTH_MOLECULE_NAME_EXPORT, "Molecule Name Length", PreferenceSupplier.MIN_LENGTH_NAME_EXPORT, PreferenceSupplier.MAX_LENGTH_NAME_EXPORT, getFieldEditorParent()));
 	}
 
 	/*
