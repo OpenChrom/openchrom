@@ -13,8 +13,11 @@ package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
 import java.util.List;
 
+import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
+import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.support.ui.provider.AbstractLabelProvider;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
 import org.eclipse.chemclipse.ux.extension.ui.support.PartSupport;
@@ -22,6 +25,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -29,10 +34,12 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakDetector;
 import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePage;
@@ -42,8 +49,12 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSe
 public class ProcessDetectorUI extends Composite {
 
 	private DetectorController controller;
+	//
+	private ComboViewer comboViewerVisibility;
 	private Composite toolbarSearch;
 	private PeakDetectorListUI peakDetectorListUI;
+	//
+	private ProcessDetectorSettings processSettings;
 
 	public ProcessDetectorUI(Composite parent, int style) {
 
@@ -58,15 +69,9 @@ public class ProcessDetectorUI extends Composite {
 
 	public void setInput(ProcessDetectorSettings processSettings) {
 
-		if(processSettings != null) {
-			List<DetectorSetting> detectorSettings = processSettings.getDetectorSettings();
-			peakDetectorListUI.setInput(detectorSettings);
-			if(detectorSettings.size() > 0) {
-				peakDetectorListUI.getTable().select(0);
-			}
-		} else {
-			peakDetectorListUI.setInput(null);
-		}
+		this.processSettings = processSettings;
+		updatePeakDetectorList();
+		updateComboViewerVisibility();
 	}
 
 	public int getSelection() {
@@ -101,11 +106,10 @@ public class ProcessDetectorUI extends Composite {
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridData);
-		composite.setLayout(new GridLayout(5, false));
+		composite.setLayout(new GridLayout(4, false));
 		//
 		createToggleToolbarSearch(composite);
-		createButtonVisibilityTIC(composite);
-		createButtonVisibilityXIC(composite);
+		comboViewerVisibility = createComboViewerVisibility(composite);
 		createButtonReplacePeak(composite);
 		createSettingsButton(composite);
 	}
@@ -149,66 +153,42 @@ public class ProcessDetectorUI extends Composite {
 		return button;
 	}
 
-	private Button createButtonVisibilityTIC(Composite parent) {
+	private ComboViewer createComboViewerVisibility(Composite parent) {
 
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
-		adjustButtonVisibilityTIC(button);
+		ComboViewer comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
+		Combo combo = comboViewer.getCombo();
+		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewer.setLabelProvider(new AbstractLabelProvider() {
+
+			@Override
+			public String getText(Object element) {
+
+				if(element instanceof Visibility) {
+					return ((Visibility)element).name();
+				}
+				return null;
+			}
+		});
 		//
-		button.addSelectionListener(new SelectionAdapter() {
+		combo.setToolTipText("Select the visibility option.");
+		GridData gridData = new GridData();
+		gridData.widthHint = 150;
+		combo.setLayoutData(gridData);
+		combo.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				PreferenceSupplier.toggleShowChromatogramDetectorTIC();
-				adjustButtonVisibilityTIC(button);
-				updateSelection();
+				Object object = comboViewer.getStructuredSelection().getFirstElement();
+				if(object instanceof Visibility) {
+					Visibility visibility = (Visibility)object;
+					PreferenceSupplier.setDetectorVisibility(visibility);
+					updateSelection();
+				}
 			}
 		});
 		//
-		return button;
-	}
-
-	private void adjustButtonVisibilityTIC(Button button) {
-
-		if(PreferenceSupplier.isShowChromatogramDetectorTIC()) {
-			button.setToolTipText("TIC is active.");
-			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHROMATOGRAM_TIC_SHOW, IApplicationImage.SIZE_16x16));
-		} else {
-			button.setToolTipText("TIC is deactivated.");
-			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHROMATOGRAM_TIC_HIDE, IApplicationImage.SIZE_16x16));
-		}
-	}
-
-	private Button createButtonVisibilityXIC(Composite parent) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
-		adjustButtonVisibilityXIC(button);
-		//
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				PreferenceSupplier.toggleShowChromatogramDetectorXIC();
-				adjustButtonVisibilityXIC(button);
-				updateSelection();
-			}
-		});
-		//
-		return button;
-	}
-
-	private void adjustButtonVisibilityXIC(Button button) {
-
-		if(PreferenceSupplier.isShowChromatogramDetectorXIC()) {
-			button.setToolTipText("XIC is active.");
-			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHROMATOGRAM_XIC_SHOW, IApplicationImage.SIZE_16x16));
-		} else {
-			button.setToolTipText("XIC is deactivated.");
-			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHROMATOGRAM_XIC_HIDE, IApplicationImage.SIZE_16x16));
-		}
+		return comboViewer;
 	}
 
 	private Button createButtonReplacePeak(Composite parent) {
@@ -301,6 +281,53 @@ public class ProcessDetectorUI extends Composite {
 			return (DetectorSetting)object;
 		}
 		return null;
+	}
+
+	private void updatePeakDetectorList() {
+
+		if(processSettings != null) {
+			List<DetectorSetting> detectorSettings = processSettings.getDetectorSettings();
+			peakDetectorListUI.setInput(detectorSettings);
+			if(detectorSettings.size() > 0) {
+				peakDetectorListUI.getTable().select(0);
+			}
+		} else {
+			peakDetectorListUI.setInput(null);
+		}
+	}
+
+	private void updateComboViewerVisibility() {
+
+		if(processSettings != null) {
+			IChromatogram<?> chromatogram = processSettings.getChromatogram();
+			if(chromatogram instanceof IChromatogramCSD) {
+				/*
+				 * CSD
+				 */
+				Combo combo = comboViewerVisibility.getCombo();
+				comboViewerVisibility.setInput(new Visibility[]{Visibility.TIC});
+				combo.select(0);
+			} else {
+				/*
+				 * MSD, WSD
+				 */
+				Visibility[] items = Visibility.values();
+				comboViewerVisibility.setInput(items);
+				Visibility visibility = PreferenceSupplier.getDetectorVisibility();
+				//
+				exitloop:
+				for(int i = 0; i < items.length; i++) {
+					Visibility item = items[i];
+					if(item.equals(visibility)) {
+						Combo combo = comboViewerVisibility.getCombo();
+						combo.select(i);
+						break exitloop;
+					}
+				}
+			}
+		} else {
+			comboViewerVisibility.setInput(null);
+		}
 	}
 
 	private void updateSelection() {

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
@@ -23,6 +24,7 @@ import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.PeakChartSettings;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.ExtendedPeakTracesUI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -31,6 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.Range;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
+import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
@@ -168,8 +171,7 @@ public class ReviewController {
 							 * Settings display data
 							 */
 							PeakDetectorChartSettings chartSettings = new PeakDetectorChartSettings();
-							chartSettings.setShowChromatogramTIC(PreferenceSupplier.isShowChromatogramReviewTIC());
-							chartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramReviewXIC());
+							setVisibilityOptions(chartSettings, chromatogram);
 							chartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineReview());
 							chartSettings.setDeltaRetentionTimeLeft(PreferenceSupplier.getReviewDeltaLeftMilliseconds());
 							chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getReviewDeltaRightMilliseconds());
@@ -385,5 +387,17 @@ public class ReviewController {
 			}
 		}
 		return false;
+	}
+
+	private void setVisibilityOptions(PeakChartSettings chartSettings, IChromatogram<?> chromatogram) {
+
+		if(chromatogram instanceof IChromatogramCSD) {
+			chartSettings.setShowChromatogramTIC(true);
+			chartSettings.setShowChromatogramXIC(false);
+		} else {
+			Visibility visibility = PreferenceSupplier.getReviewVisibility();
+			chartSettings.setShowChromatogramTIC(Visibility.isTIC(visibility));
+			chartSettings.setShowChromatogramXIC(Visibility.isTRACE(visibility));
+		}
 	}
 }

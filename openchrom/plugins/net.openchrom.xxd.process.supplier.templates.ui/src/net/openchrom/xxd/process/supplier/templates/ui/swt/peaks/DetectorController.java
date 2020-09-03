@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
@@ -22,6 +23,7 @@ import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.targets.TargetValidator;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.PeakChartSettings;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -30,6 +32,7 @@ import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.ICustomSelectionHandler;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
@@ -117,8 +120,7 @@ public class DetectorController {
 							 * Settings display data
 							 */
 							PeakDetectorChartSettings chartSettings = new PeakDetectorChartSettings();
-							chartSettings.setShowChromatogramTIC(PreferenceSupplier.isShowChromatogramDetectorTIC());
-							chartSettings.setShowChromatogramXIC(PreferenceSupplier.isShowChromatogramDetectorXIC());
+							setVisibilityOptions(chartSettings, chromatogram);
 							chartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineDetector());
 							chartSettings.setDeltaRetentionTimeLeft(PreferenceSupplier.getDetectorDeltaLeftMilliseconds());
 							chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getDetectorDeltaRightMilliseconds());
@@ -323,5 +325,17 @@ public class DetectorController {
 	private boolean focusXIC(DetectorRange detectorRange, PeakDetectorChartSettings chartSettings) {
 
 		return detectorRange.getTraces().size() > 0 && chartSettings.isShowChromatogramXIC() && PreferenceSupplier.isDetectorFocusXIC();
+	}
+
+	private void setVisibilityOptions(PeakChartSettings chartSettings, IChromatogram<?> chromatogram) {
+
+		if(chromatogram instanceof IChromatogramCSD) {
+			chartSettings.setShowChromatogramTIC(true);
+			chartSettings.setShowChromatogramXIC(false);
+		} else {
+			Visibility visibility = PreferenceSupplier.getDetectorVisibility();
+			chartSettings.setShowChromatogramTIC(Visibility.isTIC(visibility));
+			chartSettings.setShowChromatogramXIC(Visibility.isTRACE(visibility));
+		}
 	}
 }
