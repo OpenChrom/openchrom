@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.csd.identifier.settings.IPeakIdentifierSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettingsMSD;
-import org.eclipse.chemclipse.model.identifier.AbstractIdentifierSettings;
+import org.eclipse.chemclipse.model.identifier.IdentifierAdapterSettings;
 import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
 import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
@@ -31,7 +31,7 @@ import net.openchrom.xxd.process.supplier.templates.model.IdentifierSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
 
-public class PeakIdentifierSettings extends AbstractIdentifierSettings implements IPeakIdentifierSettingsMSD, IPeakIdentifierSettingsCSD, ITemplateSettings {
+public class PeakIdentifierSettings extends IdentifierAdapterSettings implements IPeakIdentifierSettingsMSD, IPeakIdentifierSettingsCSD, ITemplateSettings {
 
 	public static final String IDENTIFIER_DESCRIPTION = "Template Peak Identifier";
 	/*
