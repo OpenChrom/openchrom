@@ -26,27 +26,20 @@ public class ReviewSupport {
 
 	private static final String NULL_CAS_NUMBER = "0-00-0";
 
+	/**
+	 * Returns the best hit or "".
+	 * 
+	 * @param peak
+	 * @return
+	 */
 	public static String getName(IPeak peak) {
 
-		/*
-		 * Is a peak name set?
-		 */
-		String name = peak.getName();
-		/*
-		 * No peak name set.
-		 * Then try to get the peak or scan best match.
-		 */
-		if(name == null) {
-			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets());
-			if(libraryInformation != null) {
-				name = libraryInformation.getName();
-			}
+		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets());
+		if(libraryInformation != null) {
+			return libraryInformation.getName();
 		}
-		/*
-		 * No hit at all?
-		 * Then return an empty String.
-		 */
-		return name != null ? name : "";
+		//
+		return "";
 	}
 
 	public static boolean isPeakReviewed(IPeak peak) {
