@@ -39,7 +39,6 @@
 	</developers>
 	<!-- MODULES -->
 	<modules>
-		<module>net.openchrom.chromatogram.msd.comparison.supplier.pbm.feature</module>
 		<module>net.openchrom.chromatogram.msd.identifier.supplier.cdk.feature</module>
 		<module>net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.feature</module>
 		<module>net.openchrom.csd.converter.supplier.cdf.feature</module>
