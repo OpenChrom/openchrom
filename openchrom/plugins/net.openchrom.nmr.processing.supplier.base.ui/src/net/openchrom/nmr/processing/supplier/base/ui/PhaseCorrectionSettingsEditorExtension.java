@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,14 +9,15 @@
  * Contributors:
  * Christoph Läubrich - initial API and implementation
  * Alexander Stark - re-factoring
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.ui;
 
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.util.Locale;
 import java.util.Observable;
 
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.EditorExtension;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -41,7 +42,6 @@ import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettin
 
 public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 
-	private static final int FRACTIONS = 0;// 2;
 	private static final int FIRST_ORDER_RANGE = 1000;// 1000000;
 	private static final int ZERO_ORDER_RANGE = 180;
 	private static final int ZERO_ORDER_INCREMENT = 90;
@@ -49,7 +49,8 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 	//
 	private static final char DEGREE = 0x00B0;
 
-	public PhaseCorrectionSettingsEditorExtension(PhaseCorrectionSettings settings){
+	public PhaseCorrectionSettingsEditorExtension(PhaseCorrectionSettings settings) {
+
 		this.settings = settings;
 	}
 
@@ -62,7 +63,8 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 
 	private class PhaseCorrectionSettingsExtension {
 
-		public PhaseCorrectionSettingsExtension(Composite parent){
+		public PhaseCorrectionSettingsExtension(Composite parent) {
+
 			Composite composite = new Composite(parent, SWT.NONE);
 			composite.setLayout(new GridLayout(1, false));
 			{
@@ -106,14 +108,15 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 				@Override
 				public void selectionChanged(SelectionChangedEvent event) {
 
-					PivotPointSelection selection = (PivotPointSelection) pivotCombo.getStructuredSelection().getFirstElement();
+					PivotPointSelection selection = (PivotPointSelection)pivotCombo.getStructuredSelection().getFirstElement();
 					if(selection != settings.getPivotPointSelection()) {
 						settings.setPivotPointSelection(selection);
 					}
 					textField.setEnabled(selection == PivotPointSelection.USER_DEFINED);
 				}
 			});
-			NumberFormat numberFormat = NumberFormat.getInstance(Locale.ENGLISH);
+			//
+			DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
 			textField.addSelectionListener(new SelectionListener() {
 
 				@Override
@@ -125,8 +128,8 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 				public void widgetDefaultSelected(SelectionEvent se) {
 
 					try {
-						settings.setUserDefinedPivotPointValue(numberFormat.parse(textField.getText()).doubleValue());
-					} catch (ParseException | RuntimeException e) {
+						settings.setUserDefinedPivotPointValue(decimalFormat.parse(textField.getText()).doubleValue());
+					} catch(ParseException | RuntimeException e) {
 						// TODO show a decorator!
 					}
 				}
@@ -146,13 +149,13 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 			});
 			PivotPointSelection pivotPointSelection = settings.getPivotPointSelection();
 			pivotCombo.setSelection(new StructuredSelection(pivotPointSelection));
-			textField.setText(numberFormat.format(settings.getUserDefinedPivotPointValue()));
+			textField.setText(decimalFormat.format(settings.getUserDefinedPivotPointValue()));
 			textField.setEnabled(pivotPointSelection == PivotPointSelection.USER_DEFINED);
 		}
 
 		private SliderUI createFirstOrderSlider(Composite composite) {
 
-			SliderUI ui = new SliderUI(composite, FRACTIONS);
+			SliderUI ui = new SliderUI(composite);
 			ui.setRange(-FIRST_ORDER_RANGE, FIRST_ORDER_RANGE);
 			ui.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			ui.setValue(settings.getFirstOrderPhaseCorrection());
@@ -162,7 +165,7 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 
 		private SliderUI createZeroOrderSlider(Composite composite) {
 
-			SliderUI ui = new SliderUI(composite, FRACTIONS);
+			SliderUI ui = new SliderUI(composite);
 			ui.setRange(-ZERO_ORDER_RANGE, ZERO_ORDER_RANGE);
 			ui.setPageIncrement(ZERO_ORDER_INCREMENT);
 			ui.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

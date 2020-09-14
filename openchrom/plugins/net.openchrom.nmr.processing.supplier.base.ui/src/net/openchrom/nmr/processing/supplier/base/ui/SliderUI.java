@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,15 +9,17 @@
  * Contributors:
  * Christoph Läubrich - initial API and implementation
  * Alexander Stark - re-factoring
+ * Philip Wenig - number format refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.ui;
 
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.DoubleConsumer;
 
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -38,7 +40,7 @@ public class SliderUI {
 	private Scale scale;
 	private int min;
 	private Text textField;
-	private NumberFormat numberFormat = NumberFormat.getInstance();
+	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0");
 	private Composite composite;
 	private Collection<DoubleConsumer> consumers = new CopyOnWriteArrayList<>();
 
@@ -49,10 +51,9 @@ public class SliderUI {
 	 * @param min
 	 * @param fractionDigits
 	 */
-	public SliderUI(Composite parent, int fractionDigits){
-		scaleFactor = (int) Math.pow(10, fractionDigits);
-		numberFormat.setMaximumFractionDigits(fractionDigits);
-		numberFormat.setMinimumFractionDigits(fractionDigits);
+	public SliderUI(Composite parent) {
+
+		scaleFactor = (int)Math.pow(10, 0);
 		composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
 		textField = new Text(composite, SWT.BORDER);
@@ -99,8 +100,9 @@ public class SliderUI {
 			public void widgetDefaultSelected(SelectionEvent se) {
 
 				try {
-					setValue(NumberFormat.getInstance().parse(textField.getText()).doubleValue());
-				} catch (RuntimeException | ParseException e) {
+					DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
+					setValue(decimalFormat.parse(textField.getText()).doubleValue());
+				} catch(RuntimeException | ParseException e) {
 					// can't parse (yet)
 				}
 			}
@@ -117,19 +119,19 @@ public class SliderUI {
 
 	private void updateText() {
 
-		textField.setText(numberFormat.format(getValue()));
+		textField.setText(decimalFormat.format(getValue()));
 	}
 
 	public double getValue() {
 
 		int rawValue = scale.getSelection();
 		int scaledValue = rawValue + min;
-		return (double) scaledValue / (double) scaleFactor;
+		return (double)scaledValue / (double)scaleFactor;
 	}
 
 	public void setValue(double value) {
 
-		int scaled = (int) (value * scaleFactor) - min;
+		int scaled = (int)(value * scaleFactor) - min;
 		setValueInternal(scaled);
 	}
 
@@ -155,8 +157,8 @@ public class SliderUI {
 		this.min = min * scaleFactor;
 		int maxScaled = (Math.abs(min) + Math.abs(max)) * scaleFactor;
 		scale.setMaximum(maxScaled);
-		GridData layoutData = (GridData) textField.getLayoutData();
-		layoutData.widthHint = Math.max(getTextLength(numberFormat.format(min)), getTextLength(numberFormat.format(max)));
+		GridData layoutData = (GridData)textField.getLayoutData();
+		layoutData.widthHint = Math.max(getTextLength(decimalFormat.format(min)), getTextLength(decimalFormat.format(max)));
 	}
 
 	private int getTextLength(String str) {
