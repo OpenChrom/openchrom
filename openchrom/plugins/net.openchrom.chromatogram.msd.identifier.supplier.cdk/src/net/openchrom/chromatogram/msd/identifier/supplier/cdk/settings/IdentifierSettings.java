@@ -11,13 +11,13 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.AbstractChromatogramIdentifierSettings;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.ChromatogramIdentifierAdapterSettings;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 
-public class IdentifierSettings extends AbstractChromatogramIdentifierSettings {
+public class IdentifierSettings extends ChromatogramIdentifierAdapterSettings {
 
 	@JsonProperty(value = "Allow Radicals", defaultValue = "false")
 	private boolean allowRadicals = PreferenceSupplier.DEF_ALLOW_RADICALS;
