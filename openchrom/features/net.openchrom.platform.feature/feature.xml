@@ -109,6 +109,10 @@
          id="net.openchrom.xxd.classifier.supplier.ratios.feature"
          version="0.0.0"/>
 
+   <includes
+         id="net.openchrom.msd.converter.supplier.btmsp.feature"
+         version="0.0.0"/>
+
    <plugin
          id="net.openchrom.rcp.compilation.community.ui"
          download-size="0"

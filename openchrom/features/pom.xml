@@ -41,6 +41,7 @@
 	<modules>
 		<module>net.openchrom.chromatogram.msd.identifier.supplier.cdk.feature</module>
 		<module>net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.feature</module>
+		<module>net.openchrom.msd.converter.supplier.btmsp.feature</module>
 		<module>net.openchrom.csd.converter.supplier.cdf.feature</module>
 		<module>net.openchrom.msd.converter.supplier.cdf.feature</module>
 		<module>net.openchrom.msd.converter.supplier.cms.feature</module>
