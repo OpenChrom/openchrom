@@ -32,7 +32,6 @@ public class MassSpectrumImportConverter_1_ITest extends TestCase {
 		super.setUp();
 		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MS_1));
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
-		@SuppressWarnings("unchecked")
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();
 	}
