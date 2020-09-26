@@ -31,9 +31,9 @@ public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 	private static final Logger logger = Logger.getLogger(DatabaseImportConverter.class);
 
 	@Override
-	public IProcessingInfo convert(final File file, final IProgressMonitor monitor) {
+	public IProcessingInfo<IMassSpectra> convert(final File file, final IProgressMonitor monitor) {
 
-		final IProcessingInfo processingInfo = super.validate(file);
+		final IProcessingInfo<IMassSpectra> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			try {
 				final MGFReader mgfReader = new MGFReader();
