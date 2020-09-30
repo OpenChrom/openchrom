@@ -35,10 +35,10 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 	private static final Logger logger = Logger.getLogger(DatabaseExportConverter.class);
 
 	@Override
-	public IProcessingInfo convert(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) {
+	public IProcessingInfo<File> convert(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) {
 
 		file = SpecificationValidator.validateSpecification(file);
-		IProcessingInfo processingInfo = validate(file, massSpectra);
+		IProcessingInfo<File> processingInfo = validate(file, massSpectra);
 		if(!processingInfo.hasErrorMessages()) {
 			try {
 				/*
@@ -62,16 +62,16 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 	}
 
 	@Override
-	public IProcessingInfo convert(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) {
+	public IProcessingInfo<File> convert(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) {
 
 		IMassSpectra massSpectra = new MassSpectra();
 		massSpectra.addMassSpectrum(massSpectrum);
 		return convert(file, massSpectra, append, monitor);
 	}
 
-	private IProcessingInfo validate(File file, IMassSpectra massSpectra) {
+	private IProcessingInfo<File> validate(File file, IMassSpectra massSpectra) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
+		IProcessingInfo<File> processingInfo = new ProcessingInfo<File>();
 		processingInfo.addMessages(super.validate(file));
 		processingInfo.addMessages(super.validate(massSpectra));
 		return processingInfo;

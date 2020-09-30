@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,8 +8,9 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.converter.supplier.mgf.converter;
+package net.openchrom.msd.converter.supplier.btmsp.converter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,11 +24,11 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.mgf.converter.io.MGFReader;
+import net.openchrom.msd.converter.supplier.btmsp.converter.io.BTMSPReader;
 
 public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 
-	private static final String DESCRIPTION = "MGF MassSpectrum Import";
+	private static final String DESCRIPTION = "BTMSP Library Import";
 	private static final Logger logger = Logger.getLogger(DatabaseImportConverter.class);
 
 	@Override
@@ -36,8 +37,8 @@ public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 		final IProcessingInfo<IMassSpectra> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			try {
-				final MGFReader mgfReader = new MGFReader();
-				final IMassSpectra massSpectra = mgfReader.read(file, monitor);
+				final BTMSPReader btmspReader = new BTMSPReader();
+				final IMassSpectra massSpectra = btmspReader.read(file, monitor);
 				if(massSpectra != null && massSpectra.size() > 0) {
 					processingInfo.setProcessingResult(massSpectra);
 				} else {
@@ -54,7 +55,7 @@ public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 				processingInfo.addErrorMessage(DESCRIPTION, "The file is empty: " + file.getAbsolutePath());
 			} catch(final IOException e) {
 				logger.warn(e.getLocalizedMessage(), e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has gone completely wrong: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, "Failed or interrupted file access: " + file.getAbsolutePath());
 			}
 		}
 		return processingInfo;

@@ -9,20 +9,22 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  * Dr. Alexander Kerner - initial API and implementation
+ * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.converter.supplier.mgf.converter;
+package net.openchrom.msd.converter.supplier.btmsp.converter;
 
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
+import net.openchrom.msd.converter.supplier.btmsp.TestPathHelper;
 
 import junit.framework.TestCase;
 
-public class MassSpectrumImportConverter_1_ITest extends TestCase {
+public class MassSpectrumImportConverter_Cattle_ITest extends TestCase {
 
 	private IMassSpectra massSpectra;
 
@@ -30,7 +32,7 @@ public class MassSpectrumImportConverter_1_ITest extends TestCase {
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MS_1));
+		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_CATTLE));
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();
@@ -43,8 +45,12 @@ public class MassSpectrumImportConverter_1_ITest extends TestCase {
 		super.tearDown();
 	}
 
-	public void testExceptions_1() {
+	public void testBasicValidation() {
 
 		assertNotNull(massSpectra);
+		assertEquals("Rind 1. Versuch", massSpectra.getName());
+		assertFalse(massSpectra.getList().isEmpty());
+		IScanMSD massSpectrum = massSpectra.getList().get(0);
+		assertEquals(70, massSpectrum.getNumberOfIons());
 	}
 }
