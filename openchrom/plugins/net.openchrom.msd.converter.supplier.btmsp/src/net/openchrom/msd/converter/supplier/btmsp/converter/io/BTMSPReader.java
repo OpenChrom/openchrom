@@ -85,7 +85,7 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 					libraryInformation.setName(attribute.getValue());
 				}
 			}
-			dataXML = zipFile.getInputStream(zipData); // TODO: Do I really need to reload the whole file?
+			dataXML = zipFile.getInputStream(zipData);
 			bufferedInputStream = new BufferedInputStream(dataXML);
 			eventReader = inputFactory.createXMLEventReader(bufferedInputStream);
 			eventFilter = new EventFilterSample();
@@ -106,7 +106,7 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 					}
 				}
 			}
-			dataXML = zipFile.getInputStream(zipData); // TODO: Do I really need to reload the whole file?
+			dataXML = zipFile.getInputStream(zipData);
 			BufferedInputStream newBufferedInputStream = new BufferedInputStream(dataXML);
 			eventReader = inputFactory.createXMLEventReader(newBufferedInputStream);
 			eventFilter = new EventFilterPeakData();
