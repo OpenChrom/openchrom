@@ -33,6 +33,8 @@ import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
+import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.identifier.PeakLibraryInformation;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
@@ -64,6 +66,7 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 			zipFile.close();
 			throw new FileIsNotReadableException();
 		}
+		ILibraryInformation libraryInformation = new PeakLibraryInformation();
 		try {
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 			InputStream dataXML = zipFile.getInputStream(zipData); // UTF8, no BOM
@@ -79,6 +82,7 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 				String attributeName = attribute.getName().getLocalPart();
 				if(attributeName.equals("name")) {
 					massSpectra.setName(attribute.getValue()); // TODO: add more metadata
+					libraryInformation.setName(attribute.getValue());
 				}
 			}
 			dataXML = zipFile.getInputStream(zipData); // TODO: Do I really need to reload the whole file?
@@ -107,6 +111,7 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 					}
 				}
 			}
+			mainSpectrum.setLibraryInformation(libraryInformation);
 			massSpectra.addMassSpectrum(mainSpectrum);
 		} catch(XMLStreamException | AbundanceLimitExceededException
 				| IonLimitExceededException e) {
