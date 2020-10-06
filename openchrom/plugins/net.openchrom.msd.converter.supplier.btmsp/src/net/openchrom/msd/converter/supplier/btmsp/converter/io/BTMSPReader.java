@@ -81,8 +81,29 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 				Attribute attribute = mainSpectrumAttributes.next();
 				String attributeName = attribute.getName().getLocalPart();
 				if(attributeName.equals("name")) {
-					massSpectra.setName(attribute.getValue()); // TODO: add more metadata
+					massSpectra.setName(attribute.getValue());
 					libraryInformation.setName(attribute.getValue());
+				}
+			}
+			dataXML = zipFile.getInputStream(zipData); // TODO: Do I really need to reload the whole file?
+			bufferedInputStream = new BufferedInputStream(dataXML);
+			eventReader = inputFactory.createXMLEventReader(bufferedInputStream);
+			eventFilter = new EventFilterSample();
+			filteredEventReader = inputFactory.createFilteredReader(eventReader, eventFilter);
+			if(filteredEventReader.hasNext()) {
+				xmlEvent = filteredEventReader.nextEvent();
+				@SuppressWarnings("unchecked")
+				Iterator<? extends Attribute> sampleAttributes = xmlEvent.asStartElement().getAttributes();
+				while(sampleAttributes.hasNext()) {
+					Attribute attribute = sampleAttributes.next();
+					String attributeName = attribute.getName().getLocalPart();
+					if(attributeName.equals("providedBy")) {
+						libraryInformation.setContributor(attribute.getValue());
+					} else if(attributeName.equals("comment")) {
+						libraryInformation.setComments(attribute.getValue());
+					} else if(attributeName.equals("growingConditions")) {
+						libraryInformation.setMiscellaneous(attribute.getValue());
+					}
 				}
 			}
 			dataXML = zipFile.getInputStream(zipData); // TODO: Do I really need to reload the whole file?
