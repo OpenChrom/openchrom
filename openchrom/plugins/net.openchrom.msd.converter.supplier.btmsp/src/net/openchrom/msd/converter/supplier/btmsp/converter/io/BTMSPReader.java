@@ -52,7 +52,6 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 	@Override
 	public IMassSpectra read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
-		IMassSpectra massSpectra = new MassSpectra();
 		ZipFile zipFile = new ZipFile(file);
 		Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
 		ZipEntry zipData = null;
@@ -66,6 +65,7 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 			zipFile.close();
 			throw new FileIsNotReadableException();
 		}
+		IMassSpectra massSpectra = new MassSpectra();
 		ILibraryInformation libraryInformation = new PeakLibraryInformation();
 		try {
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
