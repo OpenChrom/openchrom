@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Christoph Läubrich - initial API and implementation
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
@@ -17,7 +18,10 @@ import org.eclipse.chemclipse.processing.DataCategory;
 
 public abstract class AbstractSpectrumSignalFilter<ConfigType> extends AbstractComplexSignalFilter<ConfigType, SpectrumMeasurement> {
 
+	private static final long serialVersionUID = -597003482088833773L;
+
 	public AbstractSpectrumSignalFilter(Class<ConfigType> configClass) {
+
 		super(configClass);
 	}
 

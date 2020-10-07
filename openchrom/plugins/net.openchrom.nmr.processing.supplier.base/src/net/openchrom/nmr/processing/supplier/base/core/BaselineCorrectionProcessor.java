@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,6 +9,7 @@
  * Contributors:
  * Alexander Stark - initial API and implementation
  * Christoph Läubrich - rework for new filter model
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
@@ -41,6 +42,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 	private static final String NAME = "Baseline Correction";
 
 	public BaselineCorrectionProcessor() {
+
 		super(BaselineCorrectionSettings.class);
 	}
 
@@ -50,6 +52,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 		return NAME;
 	}
 
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
 	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, BaselineCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
 
@@ -101,8 +104,10 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 		if(iteration == maximumIterations - 1) {
 			messageConsumer.addWarnMessage(getName(), "maximum iterations reached!");
 		}
+		//
 		FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(context);
 		filtered.setSignals(signals);
+		//
 		return filtered;
 	}
 
@@ -163,6 +168,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 		private SignalWeightedObservedPoint imag;
 
 		private WeightedObservedPointSpectrumSignal(SignalWeightedObservedPoint real, SignalWeightedObservedPoint imag) {
+
 			this.real = real;
 			this.imag = imag;
 		}
@@ -212,6 +218,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 		private boolean cutof;
 
 		public SignalWeightedObservedPoint(double fittingWeight, double chemicalShift, double value, boolean cutof) {
+
 			super(fittingWeight, chemicalShift, Double.NaN);
 			this.cutof = cutof;
 			setValue(value);

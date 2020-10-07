@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -10,6 +10,7 @@
  * Alexander Stark - initial API and implementation
  * Jan Holy - implementation
  * Christoph Läubrich rework to use new filtering API, cleanup algorithm
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
@@ -37,7 +38,10 @@ import net.openchrom.nmr.processing.supplier.base.settings.DirectCurrentCorrecti
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class DirectCurrentCorrection extends AbstractComplexSignalFilter<DirectCurrentCorrectionSettings, IComplexSignalMeasurement<?>> {
 
+	private static final long serialVersionUID = 4337568369693272497L;
+
 	public DirectCurrentCorrection() {
+
 		super(DirectCurrentCorrectionSettings.class);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,6 +9,7 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  * Christoph Läubrich - complete rework
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.apodization;
 
@@ -33,11 +34,14 @@ import net.openchrom.nmr.processing.supplier.base.settings.GaussianApodizationSe
 @Component(service = {Filter.class, IMeasurementFilter.class})
 public class GaussianApodizationFunctionProcessor extends AbstractFIDSignalFilter<GaussianApodizationSettings> {
 
+	private static final long serialVersionUID = 4474164198521021220L;
+	//
 	private static final String FILTER_NAME = "Gaussian Apodization";
 	private static final BigDecimal PI = BigDecimal.valueOf(Math.PI);
 	private static final BigDecimal GAUS_CONSTANT = BigDecimal.valueOf(2).setScale(10).multiply(BigDecimal.valueOf(Math.sqrt(Math.log(2))));
 
 	public GaussianApodizationFunctionProcessor() {
+
 		super(GaussianApodizationSettings.class);
 	}
 

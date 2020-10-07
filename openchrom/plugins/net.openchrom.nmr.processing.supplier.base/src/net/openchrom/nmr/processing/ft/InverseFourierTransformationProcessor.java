@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Alexander Stark.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -40,7 +40,7 @@ import net.openchrom.nmr.processing.supplier.base.core.AbstractSpectrumSignalFil
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.settings.InverseFourierTransformationSettings;
 
-@Component(service = { Filter.class, IMeasurementFilter.class })
+@Component(service = {Filter.class, IMeasurementFilter.class})
 public class InverseFourierTransformationProcessor extends AbstractSpectrumSignalFilter<InverseFourierTransformationSettings> {
 
 	private static final long serialVersionUID = 2343292442585806324L;
@@ -52,7 +52,8 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 		return NAME;
 	}
 
-	public InverseFourierTransformationProcessor(){
+	public InverseFourierTransformationProcessor() {
+
 		super(InverseFourierTransformationSettings.class);
 	}
 
@@ -91,7 +92,8 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 		private static final long serialVersionUID = -3240032383041201512L;
 		private List<InverseFFTSpectrumSignal> signals;
 
-		public InverseFFTFilteredMeasurement(FilterContext<SpectrumMeasurement, InverseFourierTransformationSettings> filterContext, List<InverseFFTSpectrumSignal> signals){
+		public InverseFFTFilteredMeasurement(FilterContext<SpectrumMeasurement, InverseFourierTransformationSettings> filterContext, List<InverseFFTSpectrumSignal> signals) {
+
 			super(filterContext);
 			this.signals = Collections.unmodifiableList(signals);
 		}
@@ -121,7 +123,8 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 		private BigDecimal time;
 		private Complex complex;
 
-		public InverseFFTSpectrumSignal(BigDecimal time, Complex complex){
+		public InverseFFTSpectrumSignal(BigDecimal time, Complex complex) {
+
 			this.time = time;
 			this.complex = complex;
 		}

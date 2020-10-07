@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Alexander Stark - initial API and implementation
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings.support;
 
@@ -36,10 +37,9 @@ public class ChemicalShiftCalibrationTargetCalculation implements ChemicalShiftC
 		double rangeOfCauchyDistribution = calibrationSettings.getRangeOfCauchyDistribution();
 		// generate lorentzian distribution and calculate a peak from it
 		CauchyDistribution cDistribution = new CauchyDistribution(locationOfCauchyDistribution, scaleOfCauchyDistribution);
-		UtilityFunctions utilityFunction = new UtilityFunctions();
 		//
 		int windowWidth = IcoShiftAlignmentUtilities.generateReferenceWindow(interval).length;
-		double[] xAxisVector = utilityFunction.generateLinearlySpacedVector(-rangeOfCauchyDistribution / 2, rangeOfCauchyDistribution / 2, windowWidth);
+		double[] xAxisVector = UtilityFunctions.generateLinearlySpacedVector(-rangeOfCauchyDistribution / 2, rangeOfCauchyDistribution / 2, windowWidth);
 		double[] probabilityDensityFunction = new double[xAxisVector.length];
 		for(int i = 0; i < xAxisVector.length; i++) {
 			// calculate a peak with some intensity and peak maximum in the middle of interval
