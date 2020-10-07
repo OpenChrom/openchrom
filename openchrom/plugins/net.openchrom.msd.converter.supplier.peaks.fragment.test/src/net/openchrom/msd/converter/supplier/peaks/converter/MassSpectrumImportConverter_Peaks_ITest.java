@@ -13,28 +13,22 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.peaks.converter;
 
-import java.io.File;
-
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
-import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.core.runtime.NullProgressMonitor;
-
-import net.openchrom.msd.converter.supplier.peaks.TestPathHelper;
 
 import junit.framework.TestCase;
 
 public class MassSpectrumImportConverter_Peaks_ITest extends TestCase {
 
-	private IMassSpectra massSpectra;
+	private IMassSpectra massSpectra = null;
 
 	@Override
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_PEAKS));
-		DatabaseImportConverter importConverter = new DatabaseImportConverter();
-		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
-		massSpectra = processingInfo.getProcessingResult();
+		// File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_PEAKS));
+		// DatabaseImportConverter importConverter = new DatabaseImportConverter();
+		// IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
+		// massSpectra = processingInfo.getProcessingResult();
 	}
 
 	@Override
