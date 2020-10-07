@@ -33,6 +33,8 @@ import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
+import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.identifier.PeakLibraryInformation;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
@@ -50,7 +52,6 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 	@Override
 	public IMassSpectra read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
-		IMassSpectra massSpectra = new MassSpectra();
 		ZipFile zipFile = new ZipFile(file);
 		Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
 		ZipEntry zipData = null;
@@ -64,6 +65,8 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 			zipFile.close();
 			throw new FileIsNotReadableException();
 		}
+		IMassSpectra massSpectra = new MassSpectra();
+		ILibraryInformation libraryInformation = new PeakLibraryInformation();
 		try {
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 			InputStream dataXML = zipFile.getInputStream(zipData); // UTF8, no BOM
@@ -78,10 +81,32 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 				Attribute attribute = mainSpectrumAttributes.next();
 				String attributeName = attribute.getName().getLocalPart();
 				if(attributeName.equals("name")) {
-					massSpectra.setName(attribute.getValue()); // TODO: add more metadata
+					massSpectra.setName(attribute.getValue());
+					libraryInformation.setName(attribute.getValue());
 				}
 			}
-			dataXML = zipFile.getInputStream(zipData); // TODO: Do I really need to reload the whole file?
+			dataXML = zipFile.getInputStream(zipData);
+			bufferedInputStream = new BufferedInputStream(dataXML);
+			eventReader = inputFactory.createXMLEventReader(bufferedInputStream);
+			eventFilter = new EventFilterSample();
+			filteredEventReader = inputFactory.createFilteredReader(eventReader, eventFilter);
+			if(filteredEventReader.hasNext()) {
+				xmlEvent = filteredEventReader.nextEvent();
+				@SuppressWarnings("unchecked")
+				Iterator<? extends Attribute> sampleAttributes = xmlEvent.asStartElement().getAttributes();
+				while(sampleAttributes.hasNext()) {
+					Attribute attribute = sampleAttributes.next();
+					String attributeName = attribute.getName().getLocalPart();
+					if(attributeName.equals("providedBy")) {
+						libraryInformation.setContributor(attribute.getValue());
+					} else if(attributeName.equals("comment")) {
+						libraryInformation.setComments(attribute.getValue());
+					} else if(attributeName.equals("growingConditions")) {
+						libraryInformation.setMiscellaneous(attribute.getValue());
+					}
+				}
+			}
+			dataXML = zipFile.getInputStream(zipData);
 			BufferedInputStream newBufferedInputStream = new BufferedInputStream(dataXML);
 			eventReader = inputFactory.createXMLEventReader(newBufferedInputStream);
 			eventFilter = new EventFilterPeakData();
@@ -107,6 +132,7 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 					}
 				}
 			}
+			mainSpectrum.setLibraryInformation(libraryInformation);
 			massSpectra.addMassSpectrum(mainSpectrum);
 		} catch(XMLStreamException | AbundanceLimitExceededException
 				| IonLimitExceededException e) {
