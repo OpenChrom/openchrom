@@ -60,5 +60,6 @@
 		<module>net.openchrom.xxd.classifier.supplier.ratios.feature</module>
 		<module>net.openchrom.xxd.process.supplier.templates.feature</module>
 		<module>net.openchrom.xxd.processor.supplier.tracecompare.feature</module>
+		<module>net.openchrom.msd.converter.supplier.peaks.feature</module>
 	</modules>
 </project>
