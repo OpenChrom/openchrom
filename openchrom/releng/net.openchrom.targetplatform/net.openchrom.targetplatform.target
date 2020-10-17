@@ -11,10 +11,6 @@
 <repository location="https://download.eclipse.org/chemclipse/integration/develop/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.ops4j.pax.jpa.feature.feature.group" version="0.0.0"/>
-<repository location="https://update.openchrom.net/repositories/community/latest/pax-jpa"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="net.openchrom.thirdpartylibraries.rserve.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.easymock.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.jmol.feature.feature.group" version="0.0.0"/>
