@@ -87,5 +87,8 @@
 		<module>net.openchrom.msd.converter.supplier.peaks</module>
 		<module>net.openchrom.msd.converter.supplier.peaks.fragment.test</module>
 		<module>net.openchrom.msd.converter.supplier.peaks.ui</module>
+		<module>net.openchrom.msd.converter.supplier.pkf</module>
+		<module>net.openchrom.msd.converter.supplier.pkf.fragment.test</module>
+		<module>net.openchrom.msd.converter.supplier.pkf.ui</module>
 	</modules>
 </project>
