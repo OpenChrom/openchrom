@@ -117,6 +117,14 @@
          id="net.openchrom.msd.converter.supplier.peaks.feature"
          version="0.0.0"/>
 
+   <includes
+         id="net.openchrom.msd.converter.supplier.pkf.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.thirdpartylibraries.mfl.feature"
+         version="0.0.0"/>
+
    <plugin
          id="net.openchrom.rcp.compilation.community.ui"
          download-size="0"

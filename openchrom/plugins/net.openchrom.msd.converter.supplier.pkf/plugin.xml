@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.msd.converter.databaseSupplier">
+      <DatabaseSupplier
+            description="Reads MicrobeMS Peak List Files from a Matlab™ specific file format."
+            fileExtension=".pkf"
+            filterName="Peak List Files (*.pkf)"
+            id="org.eclipse.chemclipse.msd.converter.supplier.pkf"
+            importConverter="net.openchrom.msd.converter.supplier.pkf.converter.DatabaseImportConverter"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.pkf.converter.MagicNumberMatcherDatabase"
+            exportConverter="net.openchrom.msd.converter.supplier.pkf.converter.DatabaseExportConverter"
+            isExportable="false"
+            isImportable="true">
+      </DatabaseSupplier>
+   </extension>
+</plugin>
