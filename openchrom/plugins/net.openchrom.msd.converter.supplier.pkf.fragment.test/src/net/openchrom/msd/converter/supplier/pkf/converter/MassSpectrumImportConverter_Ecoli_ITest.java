@@ -12,7 +12,14 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pkf.converter;
 
+import java.io.File;
+
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.core.runtime.NullProgressMonitor;
+
+import net.openchrom.msd.converter.supplier.pkf.TestPathHelper;
 
 import junit.framework.TestCase;
 
@@ -24,10 +31,10 @@ public class MassSpectrumImportConverter_Ecoli_ITest extends TestCase {
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		// File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_ECOLI));
-		// DatabaseImportConverter importConverter = new DatabaseImportConverter();
-		// IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
-		// massSpectra = processingInfo.getProcessingResult();
+		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_ECOLI));
+		DatabaseImportConverter importConverter = new DatabaseImportConverter();
+		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
+		massSpectra = processingInfo.getProcessingResult();
 	}
 
 	@Override
@@ -39,12 +46,11 @@ public class MassSpectrumImportConverter_Ecoli_ITest extends TestCase {
 
 	public void testBasicValidation() {
 
-		assertNull("Reading the *.pkf file currently fails due to a missing dependency in the *.mfl reader.", massSpectra);
-		// assertNotNull(massSpectra);
-		// assertEquals("ecoli-peaklist-oct16", massSpectra.getName());
-		// assertFalse(massSpectra.getList().isEmpty());
-		// IScanMSD massSpectrum = massSpectra.getMassSpectrum(1);
-		// assertEquals(30, massSpectrum.getNumberOfIons());
-		// assertEquals(18, massSpectra.getList().size()); // should be 16, but contains more
+		assertNotNull(massSpectra);
+		assertEquals("ecoli-peaklist-oct16", massSpectra.getName());
+		assertFalse(massSpectra.getList().isEmpty());
+		IScanMSD massSpectrum = massSpectra.getMassSpectrum(1);
+		assertEquals(30, massSpectrum.getNumberOfIons());
+		assertEquals(18, massSpectra.getList().size()); // should be 16, but contains more
 	}
 }
