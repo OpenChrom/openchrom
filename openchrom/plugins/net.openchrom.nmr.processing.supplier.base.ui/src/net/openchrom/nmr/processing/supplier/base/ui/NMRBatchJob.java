@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Christoph Läubrich - initial API and implementation
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.ui;
 
@@ -71,8 +72,9 @@ public class NMRBatchJob implements IRunnableWithProgress {
 				ProcessingInfoViewSupport.updateProcessingInfo(processingResult);
 			}
 		});
+		//
 		if(!processingResult.hasErrorMessages()) {
-			SupplierEditorSupport editorSupport = new SupplierEditorSupport(DataType.NMR);
+			SupplierEditorSupport editorSupport = new SupplierEditorSupport(DataType.NMR, () -> Activator.getDefault().getEclipseContext());
 			for(IMeasurement measurement : results) {
 				Display.getDefault().asyncExec(new Runnable() {
 

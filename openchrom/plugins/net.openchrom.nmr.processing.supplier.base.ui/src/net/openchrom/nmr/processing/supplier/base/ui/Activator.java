@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,24 +11,15 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.ui;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends AbstractActivatorUI {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "net.openchrom.nmr.processing.supplier.base.ui"; //$NON-NLS-1$
-	// The shared instance
 	private static Activator plugin;
-
-	/**
-	 * The constructor
-	 */
-	public Activator() {
-	}
 
 	/*
 	 * (non-Javadoc)
