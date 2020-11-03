@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Matthias Mailänder, Dr. Philip Wenig.
+ * Copyright (c) 2016, 2020 Matthias Mailänder, Dr. Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,7 +15,6 @@ package net.openchrom.wsd.converter.supplier.abif.core;
 import java.io.File;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramImportConverter;
-import org.eclipse.chemclipse.converter.chromatogram.IChromatogramImportConverter;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -27,15 +26,15 @@ import net.openchrom.wsd.converter.supplier.abif.internal.support.IConstants;
 import net.openchrom.wsd.converter.supplier.abif.internal.support.SpecificationValidator;
 import net.openchrom.wsd.converter.supplier.abif.io.ChromatogramReader;
 
-public class ChromatogramImportConverter extends AbstractChromatogramImportConverter implements IChromatogramImportConverter {
+public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramWSD> {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramImportConverter.class);
 	private static final String DESCRIPTION = "ABIF Import Converter";
 
 	@Override
-	public IProcessingInfo convert(File file, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramWSD> convert(File file, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = super.validate(file);
+		IProcessingInfo<IChromatogramWSD> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			file = SpecificationValidator.validateSpecification(file);
 			IChromatogramWSDReader reader = new ChromatogramReader();
@@ -52,9 +51,9 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 	}
 
 	@Override
-	public IProcessingInfo convertOverview(File file, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramOverview> convertOverview(File file, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = super.validate(file);
+		IProcessingInfo<IChromatogramOverview> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			file = SpecificationValidator.validateSpecification(file);
 			IChromatogramWSDReader reader = new ChromatogramReader();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2019 Lablicate GmbH.
+ * Copyright (c) 2013, 2020 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -14,7 +14,6 @@ package net.openchrom.msd.converter.supplier.cdf.converter;
 import java.io.File;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramImportConverter;
-import org.eclipse.chemclipse.converter.chromatogram.IChromatogramImportConverter;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
@@ -25,16 +24,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.msd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.openchrom.msd.converter.supplier.cdf.io.ChromatogramReader;
 
-@SuppressWarnings({"unchecked", "rawtypes"})
-public class ChromatogramImportConverter extends AbstractChromatogramImportConverter implements IChromatogramImportConverter {
+public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramMSD> {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramImportConverter.class);
 	private static final String DESCRIPTION = "NetCDF Import Converter";
 
 	@Override
-	public IProcessingInfo convert(File file, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramMSD> convert(File file, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = super.validate(file);
+		IProcessingInfo<IChromatogramMSD> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			file = SpecificationValidator.validateSpecification(file);
 			IChromatogramMSDReader reader = new ChromatogramReader();
@@ -50,9 +48,9 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 	}
 
 	@Override
-	public IProcessingInfo convertOverview(File file, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramOverview> convertOverview(File file, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = super.validate(file);
+		IProcessingInfo<IChromatogramOverview> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			file = SpecificationValidator.validateSpecification(file);
 			IChromatogramMSDReader reader = new ChromatogramReader();

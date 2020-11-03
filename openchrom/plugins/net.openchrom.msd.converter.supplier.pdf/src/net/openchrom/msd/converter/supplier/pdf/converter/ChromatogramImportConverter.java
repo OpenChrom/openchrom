@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2018 Lablicate GmbH.
+ * Copyright (c) 2011, 2020 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -14,28 +14,29 @@ package net.openchrom.msd.converter.supplier.pdf.converter;
 import java.io.File;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramImportConverter;
-import org.eclipse.chemclipse.converter.chromatogram.IChromatogramImportConverter;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-public class ChromatogramImportConverter extends AbstractChromatogramImportConverter implements IChromatogramImportConverter {
+public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramMSD> {
 
 	private static final String DESCRIPTION = "PDF Import Converter";
 	private static final String EXPORT_ERROR = "The PDF converter is not able to import chromatograms.";
 
 	@Override
-	public IProcessingInfo convert(File file, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramMSD> convert(File file, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
+		IProcessingInfo<IChromatogramMSD> processingInfo = new ProcessingInfo<>();
 		processingInfo.addErrorMessage(DESCRIPTION, EXPORT_ERROR);
 		return processingInfo;
 	}
 
 	@Override
-	public IProcessingInfo convertOverview(File file, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramOverview> convertOverview(File file, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
+		IProcessingInfo<IChromatogramOverview> processingInfo = new ProcessingInfo<>();
 		processingInfo.addErrorMessage(DESCRIPTION, EXPORT_ERROR);
 		return processingInfo;
 	}

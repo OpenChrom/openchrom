@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2019 Lablicate GmbH.
+ * Copyright (c) 2014, 2020 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -15,7 +15,6 @@ package net.openchrom.csd.converter.supplier.cdf.converter;
 import java.io.File;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramImportConverter;
-import org.eclipse.chemclipse.converter.chromatogram.IChromatogramImportConverter;
 import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -27,7 +26,7 @@ import net.openchrom.csd.converter.supplier.cdf.internal.converter.IConstants;
 import net.openchrom.csd.converter.supplier.cdf.internal.converter.SpecificationValidator;
 import net.openchrom.csd.converter.supplier.cdf.io.ChromatogramReader;
 
-public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramCSD> implements IChromatogramImportConverter<IChromatogramCSD> {
+public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramCSD> {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramImportConverter.class);
 	private static final String DESCRIPTION = "NetCDF Import Converter";
