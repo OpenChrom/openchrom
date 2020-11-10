@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui
 Bundle-ManifestVersion: 2
-Bundle-Name: Ui
+Bundle-Name: CDK Identifier UI
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui;singleton:=true
 Bundle-Version: 1.4.0.qualifier
 Bundle-Activator: net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.Activator
@@ -37,4 +37,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.event;version="1.3.0"
 Service-Component: OSGI-INF/calculateSmilesChromatogramHandler.xml,
- OSGI-INF/calculateSmilesLibraryHandler.xml
+ OSGI-INF/calculateSmilesLibraryHandler.xml,
+ OSGI-INF/net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.services.MoleculeImageService.xml

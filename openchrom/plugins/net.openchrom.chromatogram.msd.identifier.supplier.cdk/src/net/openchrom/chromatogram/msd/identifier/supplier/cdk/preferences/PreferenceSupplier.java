@@ -15,13 +15,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.openscience.cdk.interfaces.IIsotope;
-import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.Activator;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeDecider;
@@ -31,8 +29,6 @@ import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.Identifie
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
-	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
-	//
 	public static final int MIN_LENGTH_NAME_EXPORT = 1;
 	public static final int MAX_LENGTH_NAME_EXPORT = 1000;
 	//
@@ -60,11 +56,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID = false;
 	public static final String P_WARN_RATHER_THAN_FAIL = "warnRatherThanFailOnUninterpretableStereochemistry";
 	public static final boolean DEF_WARN_RATHER_THAN_FAIL = false;
-	//
-	public static final String P_MOLECULE_PATH_EXPORT = "moleculePathExport";
-	public static final String DEF_MOLECULE_PATH_EXPORT = "";
-	public static final String P_LENGTH_MOLECULE_NAME_EXPORT = "lengthMoleculeNameExport";
-	public static final int DEF_LENGTH_MOLECULE_NAME_EXPORT = 40;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -104,9 +95,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_DETAILED_FAILURE_ANALYSIS, Boolean.toString(DEF_DETAILED_FAILURE_ANALYSIS));
 		defaultValues.put(P_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID, Boolean.toString(DEF_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID));
 		defaultValues.put(P_WARN_RATHER_THAN_FAIL, Boolean.toString(DEF_WARN_RATHER_THAN_FAIL));
-		//
-		defaultValues.put(P_MOLECULE_PATH_EXPORT, DEF_MOLECULE_PATH_EXPORT);
-		defaultValues.put(P_LENGTH_MOLECULE_NAME_EXPORT, Integer.toString(DEF_LENGTH_MOLECULE_NAME_EXPORT));
 		//
 		return defaultValues;
 	}
@@ -197,38 +185,5 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_WARN_RATHER_THAN_FAIL, DEF_WARN_RATHER_THAN_FAIL);
-	}
-
-	public static String getMoleculePathExport() {
-
-		return getFilterPath(P_MOLECULE_PATH_EXPORT, DEF_MOLECULE_PATH_EXPORT);
-	}
-
-	public static void setMoleculePathExport(String filterPath) {
-
-		setSettings(P_MOLECULE_PATH_EXPORT, filterPath);
-	}
-
-	public static int getMoleculeLengthExport() {
-
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_LENGTH_MOLECULE_NAME_EXPORT, DEF_LENGTH_MOLECULE_NAME_EXPORT);
-	}
-
-	private static String getFilterPath(String key, String def) {
-
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.get(key, def);
-	}
-
-	private static void setSettings(String key, String value) {
-
-		try {
-			IEclipsePreferences preferences = INSTANCE().getPreferences();
-			preferences.put(key, value);
-			preferences.flush();
-		} catch(BackingStoreException e) {
-			logger.warn(e);
-		}
 	}
 }
