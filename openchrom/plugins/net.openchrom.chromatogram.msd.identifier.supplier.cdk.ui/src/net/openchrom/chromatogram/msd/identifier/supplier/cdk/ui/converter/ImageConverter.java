@@ -83,7 +83,11 @@ public class ImageConverter {
 		}
 		//
 		IAtomContainer molecule = structureConverter.generate(converterInput);
-		return new org.eclipse.swt.graphics.Image(display, AwtToSwtImageBridge.convertToSWT((BufferedImage)moleculeToImage(molecule, point.x, point.y)));
+		if(molecule != null) {
+			return new org.eclipse.swt.graphics.Image(display, AwtToSwtImageBridge.convertToSWT((BufferedImage)moleculeToImage(molecule, point.x, point.y)));
+		} else {
+			return null;
+		}
 	}
 
 	/**
