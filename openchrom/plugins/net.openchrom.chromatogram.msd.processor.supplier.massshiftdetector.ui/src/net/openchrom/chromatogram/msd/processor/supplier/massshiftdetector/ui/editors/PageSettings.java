@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2019 Lablicate GmbH.
+ * Copyright (c) 2017, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,6 +16,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.types.DataType;
@@ -33,6 +34,7 @@ import org.eclipse.chemclipse.ux.extension.ui.provider.ISupplierEditorSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.EditorSupportFactory;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputEntriesWizard;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.wizards.InputWizardSettings;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
@@ -93,6 +95,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	//
 
 	public PageSettings(Composite container) {
+
 		super("Settings", container, true);
 	}
 
@@ -526,7 +529,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				ProcessorData processorData = editorProcessor.getProcessorData();
 				if(processorData.getReferenceChromatogram() != null) {
 					IChromatogramMSD chromatogram = processorData.getReferenceChromatogram();
-					ISupplierEditorSupport editorSupport = new EditorSupportFactory(DataType.MSD).getInstanceEditorSupport();
+					Supplier<IEclipseContext> context = () -> Activator.getDefault().getEclipseContext();
+					ISupplierEditorSupport editorSupport = new EditorSupportFactory(DataType.MSD, context).getInstanceEditorSupport();
 					editorSupport.openEditor(chromatogram);
 				}
 			}
@@ -554,7 +558,8 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				ProcessorData processorData = editorProcessor.getProcessorData();
 				if(processorData.getIsotopeChromatogram() != null) {
 					IChromatogramMSD chromatogram = processorData.getIsotopeChromatogram();
-					ISupplierEditorSupport editorSupport = new EditorSupportFactory(DataType.MSD).getInstanceEditorSupport();
+					Supplier<IEclipseContext> context = () -> Activator.getDefault().getEclipseContext();
+					ISupplierEditorSupport editorSupport = new EditorSupportFactory(DataType.MSD, context).getInstanceEditorSupport();
 					editorSupport.openEditor(chromatogram);
 				}
 			}
