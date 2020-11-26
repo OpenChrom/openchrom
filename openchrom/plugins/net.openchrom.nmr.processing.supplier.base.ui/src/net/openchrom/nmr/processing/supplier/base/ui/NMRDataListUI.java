@@ -1,5 +1,5 @@
 /******************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,7 +25,8 @@ import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.model.types.DataType;
 import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
+import org.eclipse.chemclipse.processing.core.ProcessingInfo;
+import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoPartSupport;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.DataListUI;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -46,6 +47,7 @@ public class NMRDataListUI extends DataListUI {
 	Map<File, MeasurementLoadResult> filesMap = new HashMap<>();
 
 	public NMRDataListUI(Composite parent, Consumer<Boolean> dirtyListener, IPreferenceStore preferenceStore, String userPathKey, DataType[] dataTypes) {
+
 		super(parent, dirtyListener, preferenceStore, userPathKey, dataTypes);
 		ExtendedTableViewer tableViewer = getTableViewer();
 		tableViewer.getTableViewerColumn("Name").setEditingSupport(new EditingSupport(tableViewer) {
@@ -155,7 +157,9 @@ public class NMRDataListUI extends DataListUI {
 			});
 			super.addFiles(newFiles);
 		} catch(InvocationTargetException e) {
-			ProcessingInfoViewSupport.updateProcessingInfoError("NMR Batch Job", "loading files failed", e.getCause());
+			IProcessingInfo<?> processingInfo = new ProcessingInfo<>();
+			processingInfo.addErrorMessage("NMR Batch Job", "loading files failed", e.getCause());
+			ProcessingInfoPartSupport.getInstance().update(processingInfo);
 		} catch(InterruptedException e) {
 			return;
 		}
@@ -168,6 +172,7 @@ public class NMRDataListUI extends DataListUI {
 		private IComplexSignalMeasurement<?> selected;
 
 		public MeasurementLoadResult(File file, Collection<IComplexSignalMeasurement<?>> measurements) {
+
 			if(measurements == null) {
 				measurements = Collections.emptyList();
 			}

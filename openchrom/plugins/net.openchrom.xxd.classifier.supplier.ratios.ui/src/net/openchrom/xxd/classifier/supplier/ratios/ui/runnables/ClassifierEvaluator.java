@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,7 +18,7 @@ import org.eclipse.chemclipse.model.processor.AbstractChromatogramProcessor;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
+import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoPartSupport;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
@@ -28,22 +28,22 @@ public class ClassifierEvaluator extends AbstractChromatogramProcessor implement
 	private String classifierId = "";
 
 	public ClassifierEvaluator(IChromatogramSelectionMSD chromatogramSelection, String description, String classifierId) {
+
 		super(chromatogramSelection);
 		this.description = description;
 		this.classifierId = classifierId;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void execute(IProgressMonitor monitor) {
 
-		final IChromatogramSelection chromatogramSelection = getChromatogramSelection();
+		final IChromatogramSelection<?, ?> chromatogramSelection = getChromatogramSelection();
 		if(chromatogramSelection instanceof IChromatogramSelectionMSD) {
 			/*
 			 * Apply the classifier.
 			 */
-			final IProcessingInfo processingInfo = ChromatogramClassifier.applyClassifier((IChromatogramSelectionMSD)chromatogramSelection, classifierId, monitor);
-			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
+			final IProcessingInfo<?> processingInfo = ChromatogramClassifier.applyClassifier((IChromatogramSelectionMSD)chromatogramSelection, classifierId, monitor);
+			ProcessingInfoPartSupport.getInstance().update(processingInfo, false);
 			chromatogramSelection.update(true);
 		}
 	}

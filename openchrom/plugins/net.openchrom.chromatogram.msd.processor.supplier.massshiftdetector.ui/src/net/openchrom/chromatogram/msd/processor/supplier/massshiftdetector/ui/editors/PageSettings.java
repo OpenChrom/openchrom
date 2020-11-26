@@ -24,7 +24,7 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
-import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
+import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoPartSupport;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.editors.AbstractExtendedEditorPage;
@@ -608,7 +608,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		referenceChromatogramHyperlink.setEnabled(!hasErrorMessage);
 		isotopeChromatogramHyperlink.setEnabled(!hasErrorMessage);
 		calculateHyperlink.setEnabled(!hasErrorMessage);
-		ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
+		ProcessingInfoPartSupport.getInstance().update(processingInfo, true);
 	}
 
 	private IProcessingInfo<?> validateSettings() {

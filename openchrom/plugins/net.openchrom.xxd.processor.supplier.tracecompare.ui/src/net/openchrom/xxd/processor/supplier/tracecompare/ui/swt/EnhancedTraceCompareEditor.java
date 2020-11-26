@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -19,7 +19,7 @@ import java.util.Set;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
-import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
+import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoPartSupport;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.listener.AbstractControllerComposite;
@@ -65,6 +65,7 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 	private TraceCompareEditorUI traceCompareEditorUI;
 
 	public EnhancedTraceCompareEditor(Composite parent, int style) {
+
 		super(parent, style);
 		buttons = new ArrayList<Button>();
 		createControl();
@@ -173,14 +174,7 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 						processingInfo.addInfoMessage(DESCRIPTION, "All traces have been evaluated successfully.");
 					}
 					//
-					Display.getDefault().asyncExec(new Runnable() {
-
-						@Override
-						public void run() {
-
-							ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, true);
-						}
-					});
+					ProcessingInfoPartSupport.getInstance().update(processingInfo, true);
 				}
 			}
 		});

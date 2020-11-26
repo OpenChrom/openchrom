@@ -26,7 +26,7 @@ import org.eclipse.chemclipse.model.methods.ProcessMethod;
 import org.eclipse.chemclipse.model.types.DataType;
 import org.eclipse.chemclipse.processing.DataCategory;
 import org.eclipse.chemclipse.processing.core.DefaultProcessingResult;
-import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
+import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoPartSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.part.support.SupplierEditorSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.BatchJobUI;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.DataListUI;
@@ -69,7 +69,7 @@ public class NMRBatchJob implements IRunnableWithProgress {
 			@Override
 			public void run() {
 
-				ProcessingInfoViewSupport.updateProcessingInfo(processingResult);
+				ProcessingInfoPartSupport.getInstance().update(processingResult);
 			}
 		});
 		//
