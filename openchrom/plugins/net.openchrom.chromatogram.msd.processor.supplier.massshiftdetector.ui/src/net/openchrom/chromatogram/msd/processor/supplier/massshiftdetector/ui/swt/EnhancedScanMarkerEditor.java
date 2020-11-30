@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2019 Lablicate GmbH.
+ * Copyright (c) 2017, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,10 +23,10 @@ import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.processing.ui.Activator;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
-import org.eclipse.chemclipse.support.ui.addons.ModelSupportAddon;
 import org.eclipse.chemclipse.support.ui.listener.AbstractControllerComposite;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.ChromatogramEditorMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -69,6 +69,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 	private Label scanMarkerInfoLabel;
 
 	public EnhancedScanMarkerEditor(Composite parent, int style) {
+
 		super(parent, style);
 		buttons = new ArrayList<Button>();
 		createControl();
@@ -311,7 +312,6 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 		}
 	}
 
-	@SuppressWarnings({"deprecation", "rawtypes"})
 	private void updateComparisonViews() {
 
 		IStructuredSelection selection = scanMarkerListUI.getStructuredSelection();
@@ -329,30 +329,34 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 				IScanMSD referenceMassSpectrum = (IScanMSD)referenceChromatogram.getScan(scan);
 				IScanMSD isotopeMassSpectrum = (IScanMSD)isotopeChromatogram.getScan(scan);
 				//
-				IEventBroker eventBroker = ModelSupportAddon.getEventBroker();
-				Map<String, IScanMSD> data = new HashMap<String, IScanMSD>();
-				data.put(IChemClipseEvents.PROPERTY_REFERENCE_MS, referenceMassSpectrum);
-				data.put(IChemClipseEvents.PROPERTY_COMPARISON_MS, isotopeMassSpectrum);
-				eventBroker.post(IChemClipseEvents.TOPIC_SCAN_MSD_UPDATE_COMPARISON, data);
+				IEventBroker eventBroker = Activator.getDefault().getEventBroker();
+				if(eventBroker != null) {
+					Map<String, IScanMSD> data = new HashMap<String, IScanMSD>();
+					data.put(IChemClipseEvents.PROPERTY_REFERENCE_MS, referenceMassSpectrum);
+					data.put(IChemClipseEvents.PROPERTY_COMPARISON_MS, isotopeMassSpectrum);
+					eventBroker.post(IChemClipseEvents.TOPIC_SCAN_MSD_UPDATE_COMPARISON, data);
+				}
 				/*
 				 * Update the chromatogram selection.
 				 */
 				try {
-					EPartService partService = ModelSupportAddon.getPartService();
-					Collection<MPart> parts = partService.getParts();
-					for(MPart part : parts) {
-						if(part.getObject() instanceof ChromatogramEditorMSD) {
-							ChromatogramEditorMSD chromatogramEditorMSD = (ChromatogramEditorMSD)part.getObject();
-							IChromatogramSelection chromatogramSelection = chromatogramEditorMSD.getChromatogramSelection();
-							if(chromatogramSelection instanceof IChromatogramSelectionMSD) {
-								IChromatogramSelectionMSD chromatogramSelectionMSD = (IChromatogramSelectionMSD)chromatogramSelection;
-								if(chromatogramSelectionMSD.getChromatogramMSD().getName().equals(referenceChromatogram.getName())) {
-									chromatogramSelectionMSD.setSelectedScan(referenceMassSpectrum);
-									int startRetentionTime = referenceMassSpectrum.getRetentionTime() - 5000; // -5 seconds
-									int stopRetentionTime = referenceMassSpectrum.getRetentionTime() + 5000; // +5 seconds
-									chromatogramSelectionMSD.setStopRetentionTime(stopRetentionTime);
-									chromatogramSelectionMSD.setStartRetentionTime(startRetentionTime);
-									chromatogramSelectionMSD.fireUpdateChange(true);
+					EPartService partService = Activator.getDefault().getPartService();
+					if(partService != null) {
+						Collection<MPart> parts = partService.getParts();
+						for(MPart part : parts) {
+							if(part.getObject() instanceof ChromatogramEditorMSD) {
+								ChromatogramEditorMSD chromatogramEditorMSD = (ChromatogramEditorMSD)part.getObject();
+								IChromatogramSelection<?, ?> chromatogramSelection = chromatogramEditorMSD.getChromatogramSelection();
+								if(chromatogramSelection instanceof IChromatogramSelectionMSD) {
+									IChromatogramSelectionMSD chromatogramSelectionMSD = (IChromatogramSelectionMSD)chromatogramSelection;
+									if(chromatogramSelectionMSD.getChromatogram().getName().equals(referenceChromatogram.getName())) {
+										chromatogramSelectionMSD.setSelectedScan(referenceMassSpectrum);
+										int startRetentionTime = referenceMassSpectrum.getRetentionTime() - 5000; // -5 seconds
+										int stopRetentionTime = referenceMassSpectrum.getRetentionTime() + 5000; // +5 seconds
+										chromatogramSelectionMSD.setStopRetentionTime(stopRetentionTime);
+										chromatogramSelectionMSD.setStartRetentionTime(startRetentionTime);
+										chromatogramSelectionMSD.fireUpdateChange(true);
+									}
 								}
 							}
 						}
