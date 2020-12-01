@@ -58,7 +58,7 @@ public class NCBIqueuedBLASThandler implements EventHandler {
 	public void handleEvent(Event event) {
 
 		if(event.getTopic().equals(IChemClipseEvents.TOPIC_CHROMATOGRAM_XXD_UPDATE_SELECTION)) {
-			chromatogramSelection = (IChromatogramSelection<?, ?>)event.getProperty(IChemClipseEvents.PROPERTY_CHROMATOGRAM_SELECTION_XXD);
+			chromatogramSelection = (IChromatogramSelection<?, ?>)event.getProperty(IChemClipseEvents.EVENT_BROKER_DATA);
 		} else {
 			chromatogramSelection = null;
 		}

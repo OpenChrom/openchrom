@@ -14,9 +14,7 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.s
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
@@ -26,11 +24,10 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.processing.ui.Activator;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.support.ui.listener.AbstractControllerComposite;
+import org.eclipse.chemclipse.swt.ui.notifier.UpdateNotifierUI;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.ChromatogramEditorMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -89,7 +86,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 				if(scanMarkerList.size() > 0) {
 					scanMarkerListUI.getTable().select(0);
 					updateMassShiftList();
-					updateComparisonViews();
+					updateComparisonViews(getDisplay());
 					setScanMarkerInfoLabel(scanMarkerList.size());
 				}
 			}
@@ -158,7 +155,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 			public void widgetSelected(SelectionEvent e) {
 
 				updateMassShiftList();
-				updateComparisonViews();
+				updateComparisonViews(e.display);
 			}
 		});
 		//
@@ -187,13 +184,13 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
 				editorProcessor.setDirty(true);
 				if(scanMarkerListUI.getTable().getItemCount() == 0) {
-					calculateScanMarker(shell);
+					calculateScanMarker(e.display);
 				} else {
 					MessageBox messageBox = new MessageBox(shell, SWT.YES | SWT.NO | SWT.CANCEL);
 					messageBox.setText("Calculate Scan List");
 					messageBox.setMessage("Current results are overwritten when doing a new calculation.");
 					if(messageBox.open() == SWT.YES) {
-						calculateScanMarker(shell);
+						calculateScanMarker(e.display);
 					}
 				}
 			}
@@ -201,11 +198,11 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 		return button;
 	}
 
-	private void calculateScanMarker(Shell shell) {
+	private void calculateScanMarker(Display display) {
 
 		ProcessorData processorData = editorProcessor.getProcessorData();
 		ScanMarkerDetectorRunnable runnable = new ScanMarkerDetectorRunnable(processorData);
-		ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
+		ProgressMonitorDialog monitor = new ProgressMonitorDialog(display.getActiveShell());
 		//
 		try {
 			monitor.run(true, true, runnable);
@@ -222,7 +219,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 			scanMarkerListUI.getTable().select(0);
 		}
 		updateMassShiftList();
-		updateComparisonViews();
+		updateComparisonViews(display);
 		setScanMarkerInfoLabel(scanMarker.size());
 	}
 
@@ -312,7 +309,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 		}
 	}
 
-	private void updateComparisonViews() {
+	private void updateComparisonViews(Display display) {
 
 		IStructuredSelection selection = scanMarkerListUI.getStructuredSelection();
 		Object object = selection.getFirstElement();
@@ -328,14 +325,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 			if(referenceChromatogram != null && isotopeChromatogram != null) {
 				IScanMSD referenceMassSpectrum = (IScanMSD)referenceChromatogram.getScan(scan);
 				IScanMSD isotopeMassSpectrum = (IScanMSD)isotopeChromatogram.getScan(scan);
-				//
-				IEventBroker eventBroker = Activator.getDefault().getEventBroker();
-				if(eventBroker != null) {
-					Map<String, IScanMSD> data = new HashMap<String, IScanMSD>();
-					data.put(IChemClipseEvents.PROPERTY_REFERENCE_MS, referenceMassSpectrum);
-					data.put(IChemClipseEvents.PROPERTY_COMPARISON_MS, isotopeMassSpectrum);
-					eventBroker.post(IChemClipseEvents.TOPIC_SCAN_MSD_UPDATE_COMPARISON, data);
-				}
+				UpdateNotifierUI.update(display, referenceMassSpectrum, isotopeMassSpectrum);
 				/*
 				 * Update the chromatogram selection.
 				 */

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,12 +25,12 @@ import org.eclipse.chemclipse.converter.exceptions.NoChromatogramConverterAvaila
 import org.eclipse.chemclipse.converter.exceptions.NoConverterAvailableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.ChromatogramIsNullException;
+import org.eclipse.chemclipse.model.notifier.UpdateNotifier;
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.msd.converter.database.DatabaseConverter;
 import org.eclipse.chemclipse.msd.converter.exceptions.NoMassSpectrumConverterAvailableException;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.notifier.MassSpectrumSelectionUpdateNotifier;
 import org.eclipse.chemclipse.msd.swt.ui.support.DatabaseFileSupport;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
@@ -288,11 +288,12 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 				Object object = cmsLibraryUI.getStructuredSelection().getFirstElement();
 				if(object instanceof IScanMSD) {
 					IScanMSD massSpectrum = (IScanMSD)object;
-					MassSpectrumSelectionUpdateNotifier.fireUpdateChange(massSpectrum, true);
+					UpdateNotifier.update(massSpectrum);
 				}
 			}
 		});
-		EventDataHolder.addSubscriber(IChemClipseEvents.TOPIC_CHROMATOGRAM_MSD_UPDATE_MASSSPECTRUM);
+		//
+		EventDataHolder.addSubscriber(IChemClipseEvents.TOPIC_SCAN_XXD_UPDATE_SELECTION);
 		//
 		tabItem.setControl(cmsLibraryUI.getControl());
 	}

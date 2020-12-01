@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2020 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,65 +11,55 @@
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui.parts;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import java.util.List;
+
 import javax.inject.Inject;
 
-import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
-import org.eclipse.chemclipse.ux.extension.msd.ui.views.AbstractMassSpectrumSelectionView;
-import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.parts.AbstractPart;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
-import net.openchrom.msd.process.supplier.cms.ui.EventDataHolder;
-import net.openchrom.msd.process.supplier.cms.ui.parts.swt.IonMeasurementListUI;
+import net.openchrom.msd.process.supplier.cms.ui.parts.swt.ExtendedMeasurementUI;
 
-public class IonMeasurementListPart extends AbstractMassSpectrumSelectionView {
+public class IonMeasurementListPart extends AbstractPart<ExtendedMeasurementUI> {
 
-	@Inject
-	private Composite parent;
-	private IonMeasurementListUI ionMeasurementListUI;
+	private static final String TOPIC = IChemClipseEvents.TOPIC_SCAN_XXD_UPDATE_SELECTION;
 
 	@Inject
-	public IonMeasurementListPart(EPartService partService, MPart part, IEventBroker eventBroker) {
-		super(part, partService, eventBroker);
-	}
+	public IonMeasurementListPart(Composite parent) {
 
-	@PostConstruct
-	private void createControl() {
-
-		parent.setLayout(new FillLayout());
-		ionMeasurementListUI = new IonMeasurementListUI(parent, SWT.NONE);
-		update((IScanMSD)EventDataHolder.getData(IChemClipseEvents.TOPIC_CHROMATOGRAM_MSD_UPDATE_MASSSPECTRUM, IChemClipseEvents.PROPERTY_MASSPECTRUM), true);
-	}
-
-	@PreDestroy
-	private void preDestroy() {
-
-	}
-
-	@Focus
-	public void setFocus() {
-
-		ionMeasurementListUI.getTable().setFocus();
+		super(parent, TOPIC);
 	}
 
 	@Override
-	public void update(IScanMSD massSpectrum, boolean forceReload) {
+	protected ExtendedMeasurementUI createControl(Composite parent) {
 
-		// if(isPartVisible()) { // need to update even when not visible otherwise incorrect result is shown when view is made visible
-		if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
-			ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
-			ionMeasurementListUI.update(spectrum);
-		} else {
-			ionMeasurementListUI.update(null);
+		return new ExtendedMeasurementUI(parent, SWT.NONE);
+	}
+
+	@Override
+	protected boolean updateData(List<Object> objects, String topic) {
+
+		if(objects.size() == 1) {
+			Object object = objects.get(0);
+			if(object instanceof ICalibratedVendorLibraryMassSpectrum) {
+				ICalibratedVendorLibraryMassSpectrum spectrum = (ICalibratedVendorLibraryMassSpectrum)object;
+				getControl().update(spectrum);
+				return true;
+			} else {
+				getControl().update(null);
+				return false;
+			}
 		}
-		// }
+		//
+		return false;
+	}
+
+	@Override
+	protected boolean isUpdateTopic(String topic) {
+
+		return TOPIC.equals(topic);
 	}
 }

@@ -42,7 +42,7 @@ public class NMRDataExplorerView {
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 
-		dataExplorerUI = new DataExplorerUI(parent, null, Activator.getDefault().getPreferenceStore());
+		dataExplorerUI = new DataExplorerUI(parent, Activator.getDefault().getPreferenceStore());
 		dataExplorerUI.setSupplierFileIdentifier(NMR_SUPPLIER);
 		dataExplorerUI.expandLastDirectoryPath();
 	}

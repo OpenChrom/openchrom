@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Walter Whitlock.
+ * Copyright (c) 2017, 2020 Walter Whitlock.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Walter Whitlock - initial API and implementation
+ * Philip Wenig - adjustment event process
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui;
 
@@ -24,6 +25,7 @@ public class EventDataHolder {
 
 	private static ConcurrentHashMap<String, Object> eventDataMap; // key is topic name string, value is data object for that event
 	private static IEventBroker eventBroker;
+	//
 	static {
 		eventDataMap = new ConcurrentHashMap<String, Object>();
 		eventBroker = PlatformUI.getWorkbench().getService(IEventBroker.class);
