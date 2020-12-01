@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
-
-   <extension
-         id="net.openchrom.xxd.classifier.supplier.ratios.ui.fragment"
-         point="org.eclipse.e4.workbench.model">
-      <fragment
-            uri="fragment.e4xmi">
-      </fragment>
-   </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
       <page

@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<component name="net.openchrom.xxd.classifier.supplier.ratios.ui.handlers.ClassifierHandlerTrace">
-   <implementation class="net.openchrom.xxd.classifier.supplier.ratios.ui.handlers.ClassifierHandlerTrace" />
-   <property name="event.topics" value="chromatogram/msd/update/chromatogramselection" />
-   <service>
-      <provide interface="org.osgi.service.event.EventHandler" />
-   </service>
-</component>

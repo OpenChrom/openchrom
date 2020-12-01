@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <component name="net.openchrom.wsd.identifier.supplier.geneident.ui.handlers.NCBIqueuedBLASThandler">
    <implementation class="net.openchrom.wsd.identifier.supplier.geneident.ui.handlers.NCBIqueuedBLASThandler" />
-   <property name="event.topics" value="chromatogram/wsd/update/chromatogramselection" />
+   <property name="event.topics" value="chromatogram/xxd/load/chromatogramselection" />
    <service>
       <provide interface="org.osgi.service.event.EventHandler" />
    </service>
