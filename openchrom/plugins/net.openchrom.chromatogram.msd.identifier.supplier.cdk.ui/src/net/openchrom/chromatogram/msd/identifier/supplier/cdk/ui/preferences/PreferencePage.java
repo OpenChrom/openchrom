@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2020 Lablicate GmbH.
+ * Copyright (c) 2013, 2021 Lablicate GmbH.
  * 
  * All rights reserved. This
  * program and the accompanying materials are made available under the terms of
@@ -53,6 +53,10 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETAILED_FAILURE_ANALYSIS, "Detailed Failure Analysis", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID, "Interpret Acids Without The Word Acid", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_WARN_RATHER_THAN_FAIL, "Warn Rather Than Fail On Uninterpretable Stereochemistry", getFieldEditorParent()));
+		//
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_DELETE_SCAN_TARGETS, "Delete Scan Target(s) - No SMILES", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_DELETE_PEAK_TARGETS, "Delete Peak Target(s) - No SMILES", getFieldEditorParent()));
 	}
 
 	/*

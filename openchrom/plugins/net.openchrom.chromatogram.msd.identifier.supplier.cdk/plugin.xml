@@ -10,9 +10,6 @@
             identifierName="SMILES Identifier"
             identifierSettings="net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IdentifierSettings">
       </ChromatogramIdentificationSupplier>
-   </extension>
-   <extension
-         point="org.eclipse.chemclipse.chromatogram.msd.identifier.chromatogramIdentifier">
       <ChromatogramIdentificationSupplier
             description="This identifier calculates the mol weight for each identification entry."
             id="net.openchrom.chromatogram.msd.identifier.supplier.cdk.molweight"
@@ -20,6 +17,13 @@
             identifierName="Mol Weight Calculator"
             identifierSettings="net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IdentifierSettings">
       </ChromatogramIdentificationSupplier>
+      <ChromatogramIdentificationSupplier
+            description="This files cleans empty SMILES target(s)."
+            id="net.openchrom.chromatogram.msd.identifier.supplier.cdk.cleaner"
+            identifier="net.openchrom.chromatogram.msd.identifier.supplier.cdk.core.ChromatogramCleaner"
+            identifierName="SMILES Target Cleaner"
+            identifierSettings="net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.CleanerSettings">
+      </ChromatogramIdentificationSupplier>      
    </extension>   
    <extension
          point="org.eclipse.core.runtime.preferences">

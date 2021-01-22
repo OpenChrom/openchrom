@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2020 Lablicate GmbH.
+ * Copyright (c) 2013, 2021 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,6 +25,7 @@ import net.openchrom.chromatogram.msd.identifier.supplier.cdk.Activator;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeDecider;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeDeciderFactory;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.formula.IsotopeParser;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.CleanerSettings;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IdentifierSettings;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
@@ -56,6 +57,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID = false;
 	public static final String P_WARN_RATHER_THAN_FAIL = "warnRatherThanFailOnUninterpretableStereochemistry";
 	public static final boolean DEF_WARN_RATHER_THAN_FAIL = false;
+	//
+	public static final String P_DELETE_SCAN_TARGETS = "deleteScanTargets";
+	public static final boolean DEF_DELETE_SCAN_TARGETS = false;
+	public static final String P_DELETE_PEAK_TARGETS = "deletePeakTargets";
+	public static final boolean DEF_DELETE_PEAK_TARGETS = false;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -95,6 +101,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_DETAILED_FAILURE_ANALYSIS, Boolean.toString(DEF_DETAILED_FAILURE_ANALYSIS));
 		defaultValues.put(P_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID, Boolean.toString(DEF_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID));
 		defaultValues.put(P_WARN_RATHER_THAN_FAIL, Boolean.toString(DEF_WARN_RATHER_THAN_FAIL));
+		//
+		defaultValues.put(P_DELETE_SCAN_TARGETS, Boolean.toString(DEF_DELETE_SCAN_TARGETS));
+		defaultValues.put(P_DELETE_PEAK_TARGETS, Boolean.toString(DEF_DELETE_PEAK_TARGETS));
 		//
 		return defaultValues;
 	}
@@ -142,13 +151,20 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static IdentifierSettings getIdentifierSettings() {
 
-		IdentifierSettings identifierSettings = new IdentifierSettings();
-		identifierSettings.setAllowRadicals(isAllowRadicals());
-		identifierSettings.setDetailedFailureAnalysis(isDetailedFailureAnalysis());
-		identifierSettings.setInterpretAcidsWithoutTheWordAcid(isInterpretAcidsWithoutTheWordAcid());
-		identifierSettings.setOutputRadicalsAsWildCardAtoms(isOutputRadicalsAsWildCardAtoms());
-		identifierSettings.setWarnRatherThanFailOnUninterpretableStereochemistry(isWarnRatherThanFail());
-		return identifierSettings;
+		IdentifierSettings settings = new IdentifierSettings();
+		settings.setAllowRadicals(isAllowRadicals());
+		settings.setDetailedFailureAnalysis(isDetailedFailureAnalysis());
+		settings.setInterpretAcidsWithoutTheWordAcid(isInterpretAcidsWithoutTheWordAcid());
+		settings.setOutputRadicalsAsWildCardAtoms(isOutputRadicalsAsWildCardAtoms());
+		settings.setWarnRatherThanFailOnUninterpretableStereochemistry(isWarnRatherThanFail());
+		return settings;
+	}
+
+	public static CleanerSettings getCleanerSettings() {
+
+		CleanerSettings settings = new CleanerSettings();
+		settings.setDeleteScanTargets(isDeleteScanTargets());
+		return settings;
 	}
 
 	public static boolean isSmilesStrict() {
@@ -185,5 +201,17 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_WARN_RATHER_THAN_FAIL, DEF_WARN_RATHER_THAN_FAIL);
+	}
+
+	public static boolean isDeleteScanTargets() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_DELETE_SCAN_TARGETS, DEF_DELETE_SCAN_TARGETS);
+	}
+
+	public static boolean isDeletePeakTargets() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_DELETE_PEAK_TARGETS, DEF_DELETE_PEAK_TARGETS);
 	}
 }
