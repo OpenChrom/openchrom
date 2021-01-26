@@ -57,6 +57,9 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DELETE_SCAN_TARGETS, "Delete Scan Target(s) - No SMILES", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DELETE_PEAK_TARGETS, "Delete Peak Target(s) - No SMILES", getFieldEditorParent()));
+		//
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_SHOW_ATOMS_H, "Show H Atoms", getFieldEditorParent()));
 	}
 
 	/*

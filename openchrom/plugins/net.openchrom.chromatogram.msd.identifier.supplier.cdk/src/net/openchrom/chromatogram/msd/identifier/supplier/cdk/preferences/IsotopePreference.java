@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2021 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -12,11 +12,14 @@
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences;
 
 public enum IsotopePreference {
-	BASIC(1), ORGANIC(2), USER_DEFINED(3);
+	BASIC(1), //
+	ORGANIC(2), //
+	USER_DEFINED(3);
 
 	private int isotopePreference;
 
 	private IsotopePreference(int isotopePreference) {
+
 		this.isotopePreference = isotopePreference;
 	}
 

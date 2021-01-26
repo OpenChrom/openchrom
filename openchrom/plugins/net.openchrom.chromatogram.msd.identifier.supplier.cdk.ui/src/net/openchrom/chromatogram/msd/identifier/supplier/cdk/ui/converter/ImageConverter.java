@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2019 Marwin Wollschläger.
+ * Copyright (c) 2013, 2021 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,7 +8,7 @@
  * 
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
- * Dr. Philip Wenig - additional API and implementation
+ * Philip Wenig - additional API and implementation
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.converter;
 
@@ -33,10 +33,12 @@ import org.openscience.cdk.renderer.generators.BasicBondGenerator;
 import org.openscience.cdk.renderer.generators.BasicSceneGenerator;
 import org.openscience.cdk.renderer.generators.IGenerator;
 import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
+import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.CDKSmilesToMoleculeConverter;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.IStructureConverter;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.OPSINIupacToMoleculeConverter;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 
 public class ImageConverter {
 
@@ -107,6 +109,10 @@ public class ImageConverter {
 			 */
 			image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 			Rectangle drawArea = new Rectangle(width, height);
+			//
+			if(PreferenceSupplier.isShowAtomsH()) {
+				AtomContainerManipulator.convertImplicitToExplicitHydrogens(molecule);
+			}
 			//
 			StructureDiagramGenerator structureDiagramGenerator = new StructureDiagramGenerator();
 			structureDiagramGenerator.setMolecule(molecule);

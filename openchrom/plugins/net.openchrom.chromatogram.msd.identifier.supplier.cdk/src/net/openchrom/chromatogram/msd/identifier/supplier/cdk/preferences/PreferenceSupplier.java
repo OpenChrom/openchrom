@@ -62,6 +62,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_DELETE_SCAN_TARGETS = false;
 	public static final String P_DELETE_PEAK_TARGETS = "deletePeakTargets";
 	public static final boolean DEF_DELETE_PEAK_TARGETS = false;
+	/*
+	 * Image Converter
+	 */
+	public static final String P_SHOW_ATOMS_H = "showAtomsH";
+	public static final boolean DEF_SHOW_ATOMS_H = false;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -104,6 +109,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		//
 		defaultValues.put(P_DELETE_SCAN_TARGETS, Boolean.toString(DEF_DELETE_SCAN_TARGETS));
 		defaultValues.put(P_DELETE_PEAK_TARGETS, Boolean.toString(DEF_DELETE_PEAK_TARGETS));
+		//
+		defaultValues.put(P_SHOW_ATOMS_H, Boolean.toString(DEF_SHOW_ATOMS_H));
 		//
 		return defaultValues;
 	}
@@ -213,5 +220,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_DELETE_PEAK_TARGETS, DEF_DELETE_PEAK_TARGETS);
+	}
+
+	public static boolean isShowAtomsH() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_SHOW_ATOMS_H, DEF_SHOW_ATOMS_H);
 	}
 }
