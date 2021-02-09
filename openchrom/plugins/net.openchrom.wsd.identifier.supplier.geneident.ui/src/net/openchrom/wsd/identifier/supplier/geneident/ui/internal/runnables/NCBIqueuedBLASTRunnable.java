@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Matthias Mailänder.
+ * Copyright (c) 2016, 2021 Matthias Mailänder.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - improvements
  *******************************************************************************/
 package net.openchrom.wsd.identifier.supplier.geneident.ui.internal.runnables;
 
@@ -26,9 +27,9 @@ import org.biojava.nbio.ws.alignment.qblast.NCBIQBlastAlignmentProperties;
 import org.biojava.nbio.ws.alignment.qblast.NCBIQBlastOutputProperties;
 import org.biojava.nbio.ws.alignment.qblast.NCBIQBlastService;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.progress.core.InfoType;
 import org.eclipse.chemclipse.progress.core.StatusLineLogger;
+import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -38,11 +39,12 @@ import net.openchrom.wsd.identifier.supplier.geneident.ui.handlers.NCBIqueuedBLA
 public class NCBIqueuedBLASTRunnable implements IRunnableWithProgress {
 
 	private static final String DESCRIPTION = "Queued Web Nucleotide BLAST Search";
-	private static final String IDENTIFIER_ID = "net.openchrom.wsd.identifier.supplier.geneident.qblast";
+	// private static final String IDENTIFIER_ID = "net.openchrom.wsd.identifier.supplier.geneident.qblast";
 	private IChromatogramSelectionWSD chromatogramSelection;
 	private static final Logger logger = Logger.getLogger(NCBIqueuedBLASThandler.class);
 
 	public NCBIqueuedBLASTRunnable(IChromatogramSelectionWSD chromatogramSelection) {
+
 		this.chromatogramSelection = chromatogramSelection;
 	}
 
@@ -52,7 +54,7 @@ public class NCBIqueuedBLASTRunnable implements IRunnableWithProgress {
 		try {
 			monitor.beginTask(DESCRIPTION, IProgressMonitor.UNKNOWN);
 			//
-			IChromatogram chromtogram = chromatogramSelection.getChromatogramWSD();
+			IChromatogramWSD chromtogram = chromatogramSelection.getChromatogram();
 			String sequence = chromtogram.getMiscInfo();
 			NCBIQBlastService service = new NCBIQBlastService();
 			NCBIQBlastAlignmentProperties props = new NCBIQBlastAlignmentProperties();
