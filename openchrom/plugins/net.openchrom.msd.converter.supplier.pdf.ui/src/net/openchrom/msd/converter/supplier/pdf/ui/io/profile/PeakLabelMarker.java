@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
+import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
@@ -28,9 +28,9 @@ import org.eclipse.swtchart.extensions.core.BaseChart;
 public class PeakLabelMarker extends AbstractLabelMarker {
 
 	private int numberLargestPeaks = 0;
-	private TargetExtendedComparator targetComparator = new TargetExtendedComparator(SortOrder.DESC);
 
 	public PeakLabelMarker(BaseChart baseChart, int indexSeries, List<? extends IPeak> peaks, int numberLargestPeaks) {
+
 		super(baseChart);
 		this.numberLargestPeaks = numberLargestPeaks;
 		List<String> labels = getPeakLabels(peaks);
@@ -46,7 +46,7 @@ public class PeakLabelMarker extends AbstractLabelMarker {
 			for(int i = 0; i < peaks.size(); i++) {
 				IPeak peak = peaks.get(i);
 				if(peak.getIntegratedArea() > areaLimitToPrintLabels) {
-					labels.add(getBestIdentification(peak.getTargets()));
+					labels.add(getBestIdentification(peak.getTargets(), peak.getPeakModel().getPeakMaximum().getRetentionIndex()));
 				} else {
 					labels.add("");
 				}
@@ -71,9 +71,10 @@ public class PeakLabelMarker extends AbstractLabelMarker {
 		return areaLimit;
 	}
 
-	private String getBestIdentification(Set<IIdentificationTarget> targets) {
+	private String getBestIdentification(Set<IIdentificationTarget> targets, float retentionIndex) {
 
-		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(targets, targetComparator);
+		IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
+		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(targets, identificationTargetComparator);
 		if(libraryInformation != null) {
 			return normalizeText(libraryInformation.getName());
 		} else {

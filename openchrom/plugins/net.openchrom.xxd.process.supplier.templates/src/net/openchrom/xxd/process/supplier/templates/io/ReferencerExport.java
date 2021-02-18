@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
-import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
+import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
@@ -38,8 +38,6 @@ public class ReferencerExport extends AbstractChromatogramExportConverter implem
 	@Override
 	public IProcessingInfo<File> convert(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) {
 
-		TargetExtendedComparator comparator = new TargetExtendedComparator(SortOrder.DESC);
-		//
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		AssignerReferences assignerReferences = new AssignerReferences();
@@ -49,9 +47,11 @@ public class ReferencerExport extends AbstractChromatogramExportConverter implem
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
+			float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
+			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
+			String identifier = getIdentifier(peak, identificationTargetComparator);
 			List<String> references = peak.getQuantitationReferences();
 			for(String reference : references) {
-				String identifier = getIdentifier(peak, comparator);
 				if(!reference.equals(identifier)) {
 					/*
 					 * Create a reference
@@ -82,7 +82,7 @@ public class ReferencerExport extends AbstractChromatogramExportConverter implem
 		return processingInfo;
 	}
 
-	private String getIdentifier(IPeak peak, TargetExtendedComparator comparator) {
+	private String getIdentifier(IPeak peak, IdentificationTargetComparator comparator) {
 
 		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), comparator);
 		return (libraryInformation != null) ? libraryInformation.getName() : "";

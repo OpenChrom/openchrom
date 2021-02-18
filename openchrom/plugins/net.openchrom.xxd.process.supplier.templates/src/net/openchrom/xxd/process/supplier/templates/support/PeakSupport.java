@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,7 +18,7 @@ import java.util.Set;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.csd.model.core.support.PeakBuilderCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
+import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
@@ -42,7 +42,6 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSetting
 public class PeakSupport {
 
 	private static final Logger logger = Logger.getLogger(PeakSupport.class);
-	private TargetExtendedComparator comparator = new TargetExtendedComparator(SortOrder.DESC);
 
 	public static int getStartScan(IChromatogram<?> chromatogram, int retentionTime) {
 
@@ -242,7 +241,9 @@ public class PeakSupport {
 	private IPeak getReferencePeak(List<? extends IPeak> peaks, String referenceIdentifier) {
 
 		for(IPeak peak : peaks) {
-			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), comparator);
+			float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
+			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
+			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), identificationTargetComparator);
 			if(libraryInformation != null) {
 				if(referenceIdentifier.equals(libraryInformation.getName())) {
 					return peak;

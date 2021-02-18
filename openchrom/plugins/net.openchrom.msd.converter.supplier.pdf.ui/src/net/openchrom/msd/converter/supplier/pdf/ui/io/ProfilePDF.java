@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -31,7 +31,7 @@ import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
+import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -77,17 +77,18 @@ public class ProfilePDF {
 	private PDImageXObject banner = null;
 	private String slogan = null;
 	//
-	private TargetExtendedComparator targetComparator = new TargetExtendedComparator(SortOrder.DESC);
 	private DateFormat dateFormat = ValueFormat.getDateFormatEnglish("yyyy/MM/dd");
 	private DecimalFormat formatAreaPercent = ValueFormat.getDecimalFormatEnglish("0.00");
 	//
 	private ReportSettingsProfile settings;
 
 	public ProfilePDF() {
+
 		this(new ReportSettingsProfile());
 	}
 
 	public ProfilePDF(ReportSettingsProfile settings) {
+
 		this.settings = settings;
 	}
 
@@ -312,7 +313,7 @@ public class ProfilePDF {
 			if(peak.getTargets().size() > 0) {
 				double areaPercent = getPercentagePeakArea(totalPeakArea, peak.getIntegratedArea());
 				percents += areaPercent;
-				List<IIdentificationTarget> sortedTargets = getSortedTargets(peak.getTargets());
+				List<IIdentificationTarget> sortedTargets = getSortedTargets(peak.getTargets(), peak.getPeakModel().getPeakMaximum().getRetentionIndex());
 				String percentageArea = (areaPercent >= 0.005d) ? formatAreaPercent.format(areaPercent) : "tr"; // tr = trace
 				/*
 				 * Best Hit
@@ -366,10 +367,11 @@ public class ProfilePDF {
 		return totalPeakArea;
 	}
 
-	private List<IIdentificationTarget> getSortedTargets(Set<IIdentificationTarget> targets) {
+	private List<IIdentificationTarget> getSortedTargets(Set<IIdentificationTarget> targets, float retentionIndex) {
 
 		List<IIdentificationTarget> sortedTargets = new ArrayList<>(targets);
-		Collections.sort(sortedTargets, targetComparator);
+		IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
+		Collections.sort(sortedTargets, identificationTargetComparator);
 		return sortedTargets;
 	}
 

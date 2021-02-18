@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,7 +29,7 @@ import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
+import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -80,8 +80,6 @@ public class GenericPDF {
 	private PDImageXObject banner = null;
 	private String slogan = null;
 	//
-	private TargetExtendedComparator targetComparator = new TargetExtendedComparator(SortOrder.DESC);
-	//
 	private DecimalFormat dfRetentionTime = ValueFormat.getDecimalFormatEnglish("0.00");
 	private DecimalFormat dfAreaPercent = ValueFormat.getDecimalFormatEnglish("0.000");
 	private DecimalFormat dfAreaNormal = ValueFormat.getDecimalFormatEnglish("0.0#E0");
@@ -89,10 +87,12 @@ public class GenericPDF {
 	private ReportSettingsGeneric settings;
 
 	public GenericPDF() {
+
 		this(new ReportSettingsGeneric());
 	}
 
 	public GenericPDF(ReportSettingsGeneric settings) {
+
 		this.settings = settings;
 	}
 
@@ -310,7 +310,7 @@ public class GenericPDF {
 			row.add("P" + i++);
 			row.add(dfRetentionTime.format(peakModel.getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
 			row.add(dfAreaPercent.format(getPercentagePeakArea(totalPeakArea, peak.getIntegratedArea())));
-			row.add(getBestIdentification(peak.getTargets()));
+			row.add(getBestIdentification(peak.getTargets(), peakModel.getPeakMaximum().getRetentionIndex()));
 			pdTable.addDataRow(row);
 		}
 		//
@@ -333,7 +333,7 @@ public class GenericPDF {
 			row.add("S" + i++);
 			row.add(dfRetentionTime.format(scan.getRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
 			row.add(Integer.toString(scan.getScanNumber()));
-			row.add(getBestIdentification(scan.getTargets()));
+			row.add(getBestIdentification(scan.getTargets(), scan.getRetentionIndex()));
 			pdTable.addDataRow(row);
 		}
 		//
@@ -356,7 +356,7 @@ public class GenericPDF {
 		int i = 1;
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
-			String identification = getBestIdentification(peak.getTargets());
+			String identification = getBestIdentification(peak.getTargets(), peakModel.getPeakMaximum().getRetentionIndex());
 			String retentionTime = dfRetentionTime.format(peakModel.getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
 			for(IQuantitationEntry quantitationEntry : peak.getQuantitationEntries()) {
 				List<String> row = new ArrayList<>();
@@ -393,9 +393,10 @@ public class GenericPDF {
 		return totalPeakArea;
 	}
 
-	private String getBestIdentification(Set<IIdentificationTarget> targets) {
+	private String getBestIdentification(Set<IIdentificationTarget> targets, float retentionIndex) {
 
-		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(targets, targetComparator);
+		IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
+		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(targets, identificationTargetComparator);
 		if(libraryInformation != null) {
 			return normalizeText(libraryInformation.getName());
 		} else {

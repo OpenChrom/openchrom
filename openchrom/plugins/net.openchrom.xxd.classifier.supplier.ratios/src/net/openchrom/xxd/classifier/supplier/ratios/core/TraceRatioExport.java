@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
-import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
+import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.msd.model.core.IIon;
@@ -43,7 +43,6 @@ public class TraceRatioExport extends AbstractChromatogramExportConverter implem
 	@Override
 	public IProcessingInfo<File> convert(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) {
 
-		TargetExtendedComparator targetComparator = new TargetExtendedComparator(SortOrder.DESC);
 		IonAbundanceComparator ionComparator = new IonAbundanceComparator(SortOrder.DESC);
 		//
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
@@ -57,7 +56,9 @@ public class TraceRatioExport extends AbstractChromatogramExportConverter implem
 		//
 		for(IPeak peak : peaks) {
 			if(peak instanceof IPeakMSD) {
-				String name = getName(peak, targetComparator);
+				float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
+				IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
+				String name = getName(peak, identificationTargetComparator);
 				if(!"".equals(name)) {
 					IPeakMSD peakMSD = (IPeakMSD)peak;
 					IScanMSD scanMSD = peakMSD.getPeakModel().getPeakMassSpectrum();

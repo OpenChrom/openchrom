@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Lablicate GmbH.
+ * Copyright (c) 2016, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.core;
 
-import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
+import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
@@ -28,13 +28,12 @@ public class SmilesCalculator {
 
 	private NameToStructure nameStructure;
 	private NameToStructureConfig nameStructureConfig;
-	private TargetExtendedComparator targetExtendedComparator;
 
 	public SmilesCalculator() {
+
 		nameStructure = NameToStructure.getInstance();
 		nameStructureConfig = new NameToStructureConfig();
 		nameStructureConfig.setAllowRadicals(true);
-		targetExtendedComparator = new TargetExtendedComparator(SortOrder.DESC);
 	}
 
 	public void calculate(IMassSpectra massSpectra, IProgressMonitor monitor) {
@@ -55,7 +54,9 @@ public class SmilesCalculator {
 				IRegularLibraryMassSpectrum libraryMassSpectrum = (IRegularLibraryMassSpectrum)scanMSD;
 				libraryInformation = libraryMassSpectrum.getLibraryInformation();
 			} else {
-				libraryInformation = IIdentificationTarget.getBestLibraryInformation(scanMSD.getTargets(), targetExtendedComparator);
+				float retentionIndex = scanMSD.getRetentionIndex();
+				IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
+				libraryInformation = IIdentificationTarget.getBestLibraryInformation(scanMSD.getTargets(), identificationTargetComparator);
 			}
 			//
 			if(libraryInformation != null) {

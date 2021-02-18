@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 whitlow.
+ * Copyright (c) 2017, 2021 whitlow.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,17 +8,16 @@
  * 
  * Contributors:
  * whitlow - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui.internal.provider;
 
 import java.text.DecimalFormat;
 
-import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.chemclipse.swt.ui.preferences.PreferenceSupplier;
 import org.eclipse.swt.graphics.Image;
@@ -27,12 +26,6 @@ import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectr
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 
 public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
-
-	private TargetExtendedComparator targetExtendedComparator;
-
-	public CvlmsListLabelProvider() {
-		targetExtendedComparator = new TargetExtendedComparator(SortOrder.DESC);
-	}
 
 	@Override
 	public String getColumnText(Object element, int columnIndex) {

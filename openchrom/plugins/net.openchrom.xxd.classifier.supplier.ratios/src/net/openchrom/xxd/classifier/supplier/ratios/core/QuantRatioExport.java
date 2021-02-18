@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
-import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
+import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.quantitation.IQuantitationEntry;
@@ -38,8 +38,6 @@ public class QuantRatioExport extends AbstractChromatogramExportConverter implem
 	@Override
 	public IProcessingInfo<File> convert(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) {
 
-		TargetExtendedComparator comparator = new TargetExtendedComparator(SortOrder.DESC);
-		//
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		QuantRatios settings = new QuantRatios();
@@ -49,13 +47,16 @@ public class QuantRatioExport extends AbstractChromatogramExportConverter implem
 		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
 		//
 		for(IPeak peak : peaks) {
-			String name = getName(peak, comparator);
+			float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
+			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
+			String name = getName(peak, identificationTargetComparator);
+			//
 			if(!"".equals(name)) {
 				List<IQuantitationEntry> quantitationEntries = peak.getQuantitationEntries();
 				for(IQuantitationEntry quantitationEntry : quantitationEntries) {
 					double expectedConcentration = Double.valueOf(decimalFormat.format(quantitationEntry.getConcentration()));
 					QuantRatio quantRatio = new QuantRatio();
-					quantRatio.setName(getName(peak, comparator));
+					quantRatio.setName(name);
 					quantRatio.setQuantitationName(quantitationEntry.getName());
 					quantRatio.setExpectedConcentration(expectedConcentration);
 					quantRatio.setConcentrationUnit(quantitationEntry.getConcentrationUnit());
