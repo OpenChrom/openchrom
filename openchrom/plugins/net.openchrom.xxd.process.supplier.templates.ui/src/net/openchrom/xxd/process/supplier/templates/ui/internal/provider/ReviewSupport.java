@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -14,6 +14,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
@@ -34,7 +35,10 @@ public class ReviewSupport {
 	 */
 	public static String getName(IPeak peak) {
 
-		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets());
+		float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
+		IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(retentionIndex);
+		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), identificationTargetComparator);
+		//
 		if(libraryInformation != null) {
 			return libraryInformation.getName();
 		}
