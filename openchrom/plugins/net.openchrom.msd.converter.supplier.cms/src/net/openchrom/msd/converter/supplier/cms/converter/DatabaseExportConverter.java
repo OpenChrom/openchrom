@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2021 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -90,7 +90,7 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 
 	private IProcessingInfo<File> validate(File file, IScanMSD massSpectrum) {
 
-		IProcessingInfo<File> processingInfo = new ProcessingInfo();
+		IProcessingInfo<File> processingInfo = new ProcessingInfo<File>();
 		processingInfo.addMessages(super.validate(file));
 		processingInfo.addMessages(super.validate(massSpectrum));
 		return processingInfo;
@@ -98,7 +98,7 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 
 	private IProcessingInfo<File> validate(File file, IMassSpectra massSpectra) {
 
-		IProcessingInfo<File> processingInfo = new ProcessingInfo();
+		IProcessingInfo<File> processingInfo = new ProcessingInfo<File>();
 		processingInfo.addMessages(super.validate(file));
 		processingInfo.addMessages(super.validate(massSpectra));
 		return processingInfo;
