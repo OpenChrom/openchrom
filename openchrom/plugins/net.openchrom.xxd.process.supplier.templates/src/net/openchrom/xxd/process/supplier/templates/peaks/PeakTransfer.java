@@ -65,17 +65,16 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSetting
 import net.openchrom.xxd.process.supplier.templates.settings.PeakTransferSettings;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 
-@SuppressWarnings("rawtypes")
-public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorMSD, IPeakDetectorCSD {
+public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetector<P, C, R> implements IPeakDetectorMSD<P, C, R>, IPeakDetectorCSD<P, C, R> {
 
 	@Override
-	public IProcessingInfo detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD settings, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD settings, IProgressMonitor monitor) {
 
 		return applyDetector(chromatogramSelection, settings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
 
 		PeakTransferSettings settings = getSettings();
 		return detect(chromatogramSelection, settings, monitor);
@@ -113,10 +112,9 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		return settings;
 	}
 
-	@SuppressWarnings({"unchecked"})
-	private IProcessingInfo applyDetector(IChromatogramSelection<? extends IPeak, ?> chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
+	private IProcessingInfo<R> applyDetector(IChromatogramSelection<? extends IPeak, ?> chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = super.validate(chromatogramSelection, settings, monitor);
+		IProcessingInfo<R> processingInfo = super.validate(chromatogramSelection, settings, monitor);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakTransferSettings) {
 				PeakTransferSettings peakTransferSettings = (PeakTransferSettings)settings;
@@ -128,18 +126,17 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		return processingInfo;
 	}
 
-	@SuppressWarnings("unchecked")
 	private void transferPeaks(IChromatogramSelection<? extends IPeak, ?> chromatogramSelection, PeakTransferSettings peakTransferSettings) {
 
-		IChromatogram chromatogram = chromatogramSelection.getChromatogram();
-		List<IPeak> peaks = chromatogram.getPeaks(chromatogramSelection);
-		List<IChromatogram> referencedChromatograms = chromatogram.getReferencedChromatograms();
-		for(IChromatogram referencedChromatogram : referencedChromatograms) {
+		IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
+		List<? extends IPeak> peaks = chromatogram.getPeaks(chromatogramSelection);
+		List<IChromatogram<?>> referencedChromatograms = chromatogram.getReferencedChromatograms();
+		for(IChromatogram<?> referencedChromatogram : referencedChromatograms) {
 			transferPeaks(peaks, referencedChromatogram, peakTransferSettings);
 		}
 	}
 
-	private void transferPeaks(List<IPeak> peaks, IChromatogram<?> chromatogramSink, PeakTransferSettings peakTransferSettings) {
+	private void transferPeaks(List<? extends IPeak> peaks, IChromatogram<?> chromatogramSink, PeakTransferSettings peakTransferSettings) {
 
 		Map<Integer, List<IPeak>> peakGroups = extractPeakGroups(peaks, peakTransferSettings);
 		List<Integer> groups = new ArrayList<>();
@@ -166,7 +163,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		}
 	}
 
-	private Map<Integer, List<IPeak>> extractPeakGroups(List<IPeak> peaks, PeakTransferSettings peakTransferSettings) {
+	private Map<Integer, List<IPeak>> extractPeakGroups(List<? extends IPeak> peaks, PeakTransferSettings peakTransferSettings) {
 
 		/*
 		 * Select the peak(s).
@@ -240,7 +237,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		return peakGroups;
 	}
 
-	private void transfer(IPeak peakSource, double percentageIntensity, IChromatogram chromatogramSink, PeakTransferSettings peakTransferSettings) {
+	private void transfer(IPeak peakSource, double percentageIntensity, IChromatogram<?> chromatogramSink, PeakTransferSettings peakTransferSettings) {
 
 		int deltaRetentionTimeLeft = peakTransferSettings.getDeltaRetentionTimeLeft();
 		int deltaRetentionTimeRight = peakTransferSettings.getDeltaRetentionTimeRight();
@@ -252,8 +249,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		transfer(peakSource, startRetentionTime, stopRetentionTime, percentageIntensity, chromatogramSink, peakTransferSettings);
 	}
 
-	@SuppressWarnings("unchecked")
-	private void transfer(IPeak peakSource, int startRetentionTime, int stopRetentionTime, double percentageIntensity, IChromatogram chromatogramSink, PeakTransferSettings peakTransferSettings) {
+	private void transfer(IPeak peakSource, int startRetentionTime, int stopRetentionTime, double percentageIntensity, IChromatogram<? extends IPeak> chromatogramSink, PeakTransferSettings peakTransferSettings) {
 
 		PeakSupport peakSupport = new PeakSupport();
 		//
@@ -272,12 +268,11 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		if(peakSink != null) {
 			adjustPeakIntensity(peakSource, peakSink, percentageIntensity, peakTransferSettings);
 			transferTargets(peakSource, peakSink, peakTransferSettings);
-			chromatogramSink.addPeak(peakSink);
+			addPeak(chromatogramSink, peakSink);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private void transfer(IPeak peakSource, IChromatogram chromatogramSink, PeakTransferSettings peakTransferSettings) {
+	private void transfer(IPeak peakSource, IChromatogram<? extends IPeak> chromatogramSink, PeakTransferSettings peakTransferSettings) {
 
 		IPeakModel peakModel = peakSource.getPeakModel();
 		double percentageIntensity = getPercentageIntensity(peakSource);
@@ -311,7 +306,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 					IPeak peakSink = createDefaultGaussPeak(chromatogramCSD, startRetentionTime, centerRetentionTime, stopRetentionTime, sigma, intensity);
 					if(peakSink != null) {
 						transferTargets(peakSource, peakSink, peakTransferSettings);
-						chromatogramSink.addPeak(peakSink);
+						addPeak(chromatogramSink, peakSink);
 					}
 				}
 			}
@@ -377,7 +372,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		double percentageIntensity = 1.0d;
 		if(peakSource instanceof IChromatogramPeak) {
 			IChromatogramPeak peak = (IChromatogramPeak)peakSource;
-			IChromatogram chromatogram = peak.getChromatogram();
+			IChromatogram<?> chromatogram = peak.getChromatogram();
 			if(chromatogram != null) {
 				int scanMax = peak.getScanMax();
 				if(scanMax > 0 && scanMax <= chromatogram.getNumberOfScans()) {
@@ -467,5 +462,11 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		ChromatogramPeakCSD peak = new ChromatogramPeakCSD(peakModel, chromatogram);
 		peak.setDetectorDescription(PeakTransferSettings.DETECTOR_DESCRIPTION);
 		return peak;
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	private void addPeak(IChromatogram chromatogram, IPeak peak) {
+
+		chromatogram.addPeak(peak);
 	}
 }

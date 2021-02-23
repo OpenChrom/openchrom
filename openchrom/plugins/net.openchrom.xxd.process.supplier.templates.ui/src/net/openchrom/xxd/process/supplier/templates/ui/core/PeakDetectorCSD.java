@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,6 +14,8 @@ package net.openchrom.xxd.process.supplier.templates.ui.core;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.AbstractPeakDetectorCSD;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
+import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
@@ -26,13 +28,12 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakDetectorSuppo
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.WizardRunnable;
 
-@SuppressWarnings("rawtypes")
-public class PeakDetectorCSD extends AbstractPeakDetectorCSD {
+public class PeakDetectorCSD<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetectorCSD<P, C, R> {
 
 	@Override
-	public IProcessingInfo detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD peakDetectorSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD peakDetectorSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
+		IProcessingInfo<R> processingInfo = new ProcessingInfo<R>();
 		if(peakDetectorSettings instanceof PeakDetectorSettings) {
 			PeakDetectorSettings settings = (PeakDetectorSettings)peakDetectorSettings;
 			ProcessDetectorSettings processSettings = new ProcessDetectorSettings(processingInfo, chromatogramSelection.getChromatogram(), settings);
@@ -49,7 +50,7 @@ public class PeakDetectorCSD extends AbstractPeakDetectorCSD {
 	}
 
 	@Override
-	public IProcessingInfo detect(IChromatogramSelectionCSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionCSD chromatogramSelection, IProgressMonitor monitor) {
 
 		PeakDetectorSettings settings = PreferenceSupplier.getPeakDetectorSettingsCSD();
 		return detect(chromatogramSelection, settings, monitor);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2021 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,18 +15,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.AbstractPeakDetectorCSD;
-import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
-import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
+import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.core.AbstractPeakDetectorWSD;
+import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.settings.IPeakDetectorSettingsWSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
+import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Shell;
 
+import net.openchrom.xxd.process.supplier.templates.io.ITemplateExport;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorType;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -35,10 +36,10 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSetting
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakDetectorSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
 
-public class PeakDetectorDirectCSD<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetectorCSD<P, C, R> implements IPeakDetectorDirect {
+public class PeakDetectorDirectWSD<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetectorWSD<P, C, R> implements IPeakDetectorDirect, ITemplateExport {
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD peakDetectorSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionWSD chromatogramSelection, IPeakDetectorSettingsWSD peakDetectorSettings, IProgressMonitor monitor) {
 
 		IProcessingInfo<R> processingInfo = new ProcessingInfo<R>();
 		if(peakDetectorSettings instanceof PeakDetectorDirectSettings) {
@@ -66,7 +67,7 @@ public class PeakDetectorDirectCSD<P extends IPeak, C extends IChromatogram<P>, 
 					detectorSetting.setStartRetentionTime(startRetentionTime);
 					detectorSetting.setStopRetentionTime(stopRetentionTime);
 					detectorSetting.setDetectorType(DetectorType.translate(settingsDirect.getDetectorType()));
-					detectorSetting.setTraces("");
+					detectorSetting.setTraces(getTraces(peak));
 					detectorSetting.setOptimizeRange(settingsDirect.isOptimizeRange());
 					detectorSettings.add(detectorSetting);
 				}
@@ -85,7 +86,7 @@ public class PeakDetectorDirectCSD<P extends IPeak, C extends IChromatogram<P>, 
 				detectorSetting.setStartRetentionTime(startRetentionTime);
 				detectorSetting.setStopRetentionTime(stopRetentionTime);
 				detectorSetting.setDetectorType(DetectorType.translate(settingsDirect.getDetectorType()));
-				detectorSetting.setTraces("");
+				detectorSetting.setTraces(settingsDirect.getTraces());
 				detectorSetting.setOptimizeRange(settingsDirect.isOptimizeRange());
 				detectorSettings.add(detectorSetting);
 			}
@@ -103,7 +104,7 @@ public class PeakDetectorDirectCSD<P extends IPeak, C extends IChromatogram<P>, 
 				detectorSetting.setStartRetentionTime(startRetentionTime);
 				detectorSetting.setStopRetentionTime(stopRetentionTime);
 				detectorSetting.setDetectorType(DetectorType.translate(settingsDirect.getDetectorType()));
-				detectorSetting.setTraces("");
+				detectorSetting.setTraces(settingsDirect.getTraces());
 				detectorSetting.setOptimizeRange(settingsDirect.isOptimizeRange());
 				detectorSettings.add(detectorSetting);
 			}
@@ -125,16 +126,16 @@ public class PeakDetectorDirectCSD<P extends IPeak, C extends IChromatogram<P>, 
 			} catch(InterruptedException e) {
 				Thread.currentThread().interrupt();
 			} catch(ExecutionException e) {
-				processingInfo.addErrorMessage("PeakDetectorDirectMSD", "Execution failed", e);
+				processingInfo.addErrorMessage("PeakDetectorDirectWSD", "Execution failed", e);
 			}
 		}
 		return processingInfo;
 	}
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionCSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionWSD chromatogramSelection, IProgressMonitor monitor) {
 
-		PeakDetectorSettings settings = PreferenceSupplier.getPeakDetectorSettingsCSD();
+		PeakDetectorDirectSettings settings = PreferenceSupplier.getPeakDetectorSettingsDirectWSD();
 		return detect(chromatogramSelection, settings, monitor);
 	}
 }

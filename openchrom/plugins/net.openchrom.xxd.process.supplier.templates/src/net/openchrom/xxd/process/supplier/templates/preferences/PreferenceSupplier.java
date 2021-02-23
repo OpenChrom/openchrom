@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -51,6 +51,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String DEF_PEAK_DETECTOR_LIST_MSD = "";
 	public static final String P_PEAK_DETECTOR_LIST_CSD = "peakDetectorListCSD";
 	public static final String DEF_PEAK_DETECTOR_LIST_CSD = "";
+	public static final String P_PEAK_DETECTOR_LIST_WSD = "peakDetectorListWSD";
+	public static final String DEF_PEAK_DETECTOR_LIST_WSD = "";
 	public static final String P_PEAK_IDENTIFIER_LIST_MSD = "peakIdentifierListMSD";
 	public static final String DEF_PEAK_IDENTIFIER_LIST_MSD = "";
 	public static final String P_PEAK_IDENTIFIER_LIST_CSD = "peakIdentifierListCSD";
@@ -254,6 +256,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		Map<String, String> defaultValues = new HashMap<String, String>();
 		defaultValues.put(P_PEAK_DETECTOR_LIST_MSD, DEF_PEAK_DETECTOR_LIST_MSD);
 		defaultValues.put(P_PEAK_DETECTOR_LIST_CSD, DEF_PEAK_DETECTOR_LIST_CSD);
+		defaultValues.put(P_PEAK_DETECTOR_LIST_WSD, DEF_PEAK_DETECTOR_LIST_WSD);
 		defaultValues.put(P_PEAK_IDENTIFIER_LIST_MSD, DEF_PEAK_IDENTIFIER_LIST_MSD);
 		defaultValues.put(P_PEAK_IDENTIFIER_LIST_CSD, DEF_PEAK_IDENTIFIER_LIST_CSD);
 		defaultValues.put(P_STANDARDS_ASSIGNER_LIST, DEF_STANDARDS_ASSIGNER_LIST);
@@ -707,7 +710,22 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return settings;
 	}
 
+	public static PeakDetectorSettings getPeakDetectorSettingsWSD() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		PeakDetectorSettings settings = new PeakDetectorSettings();
+		settings.setDetectorSettings(preferences.get(P_PEAK_DETECTOR_LIST_WSD, DEF_PEAK_DETECTOR_LIST_WSD));
+		return settings;
+	}
+
 	public static PeakDetectorDirectSettings getPeakDetectorSettingsDirectMSD() {
+
+		PeakDetectorDirectSettings settings = new PeakDetectorDirectSettings();
+		settings.setTraces("");
+		return settings;
+	}
+
+	public static PeakDetectorDirectSettings getPeakDetectorSettingsDirectWSD() {
 
 		PeakDetectorDirectSettings settings = new PeakDetectorDirectSettings();
 		settings.setTraces("");

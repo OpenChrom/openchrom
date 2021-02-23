@@ -34,6 +34,7 @@ import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
+import org.eclipse.chemclipse.wsd.model.core.support.PeakBuilderWSD;
 
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.RetentionTimeRange;
@@ -129,7 +130,9 @@ public class PeakSupport {
 					peak = PeakBuilderCSD.createPeak(chromatogramCSD, scanRange, includeBackground);
 					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 				} else if(chromatogram instanceof IChromatogramWSD) {
-					logger.info("Handling WSD data is not supported yet");
+					IChromatogramWSD chromatogramWSD = (IChromatogramWSD)chromatogram;
+					peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground);
+					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 				}
 			}
 		} catch(PeakException e) {
@@ -168,7 +171,9 @@ public class PeakSupport {
 					peak = PeakBuilderCSD.createPeak(chromatogramCSD, scanRange, startIntensity, stopIntensity);
 					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 				} else if(chromatogram instanceof IChromatogramWSD) {
-					logger.info("Handling WSD data is not supported yet");
+					IChromatogramWSD chromatogramWSD = (IChromatogramWSD)chromatogram;
+					peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, startIntensity, stopIntensity);
+					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 				}
 			}
 		} catch(PeakException e) {

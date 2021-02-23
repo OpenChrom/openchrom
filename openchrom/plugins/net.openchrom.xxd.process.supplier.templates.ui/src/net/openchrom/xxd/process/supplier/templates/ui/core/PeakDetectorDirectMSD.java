@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -36,13 +36,12 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSetting
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakDetectorSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
 
-@SuppressWarnings("rawtypes")
-public class PeakDetectorDirectMSD extends AbstractPeakDetectorMSD implements IPeakDetectorDirect, ITemplateExport {
+public class PeakDetectorDirectMSD<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetectorMSD<P, C, R> implements IPeakDetectorDirect, ITemplateExport {
 
 	@Override
-	public IProcessingInfo detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD peakDetectorSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD peakDetectorSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
+		IProcessingInfo<R> processingInfo = new ProcessingInfo<R>();
 		if(peakDetectorSettings instanceof PeakDetectorDirectSettings) {
 			PeakDetectorDirectSettings settingsDirect = (PeakDetectorDirectSettings)peakDetectorSettings;
 			/*
@@ -134,7 +133,7 @@ public class PeakDetectorDirectMSD extends AbstractPeakDetectorMSD implements IP
 	}
 
 	@Override
-	public IProcessingInfo detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
 
 		PeakDetectorDirectSettings settings = PreferenceSupplier.getPeakDetectorSettingsDirectMSD();
 		return detect(chromatogramSelection, settings, monitor);

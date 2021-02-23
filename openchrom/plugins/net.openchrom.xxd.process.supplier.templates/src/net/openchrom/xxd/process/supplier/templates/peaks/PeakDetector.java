@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,6 +22,8 @@ import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.IPeakDetectorM
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.chromatogram.peak.detector.core.AbstractPeakDetector;
 import org.eclipse.chemclipse.chromatogram.peak.detector.settings.IPeakDetectorSettings;
+import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.core.IPeakDetectorWSD;
+import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.settings.IPeakDetectorSettingsWSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -29,6 +31,7 @@ import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
@@ -41,35 +44,47 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSetti
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
-@SuppressWarnings("rawtypes")
-public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorMSD, IPeakDetectorCSD {
+public class PeakDetector<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetector<P, C, R> implements IPeakDetectorMSD<P, C, R>, IPeakDetectorCSD<P, C, R>, IPeakDetectorWSD<P, C, R> {
 
 	private PeakDetectorListUtil listUtil = new PeakDetectorListUtil();
 	private PeakSupport peakSupport = new PeakSupport();
 
 	@Override
-	public IProcessingInfo detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD settings, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD settings, IProgressMonitor monitor) {
 
 		return applyDetector(chromatogramSelection, settings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
 
 		PeakDetectorSettings settings = getSettings(PreferenceSupplier.P_PEAK_DETECTOR_LIST_MSD);
 		return detect(chromatogramSelection, settings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD settings, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD settings, IProgressMonitor monitor) {
 
 		return applyDetector(chromatogramSelection, settings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo detect(IChromatogramSelectionCSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionCSD chromatogramSelection, IProgressMonitor monitor) {
 
 		PeakDetectorSettings settings = getSettings(PreferenceSupplier.P_PEAK_DETECTOR_LIST_CSD);
+		return detect(chromatogramSelection, settings, monitor);
+	}
+
+	@Override
+	public IProcessingInfo<R> detect(IChromatogramSelectionWSD chromatogramSelection, IPeakDetectorSettingsWSD settings, IProgressMonitor monitor) {
+
+		return applyDetector(chromatogramSelection, settings, monitor);
+	}
+
+	@Override
+	public IProcessingInfo<R> detect(IChromatogramSelectionWSD chromatogramSelection, IProgressMonitor monitor) {
+
+		PeakDetectorSettings settings = getSettings(PreferenceSupplier.P_PEAK_DETECTOR_LIST_WSD);
 		return detect(chromatogramSelection, settings, monitor);
 	}
 
@@ -80,13 +95,12 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		return settings;
 	}
 
-	@SuppressWarnings("unchecked")
-	private IProcessingInfo applyDetector(IChromatogramSelection<? extends IPeak, ?> chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
+	private IProcessingInfo<R> applyDetector(IChromatogramSelection<? extends IPeak, ?> chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
 
-		IProcessingInfo<?> processingInfo = super.validate(chromatogramSelection, settings, new NullProgressMonitor());
+		IProcessingInfo<R> processingInfo = super.validate(chromatogramSelection, settings, new NullProgressMonitor());
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakDetectorSettings) {
-				IChromatogram chromatogram = chromatogramSelection.getChromatogram();
+				IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
 				PeakDetectorSettings peakDetectorSettings = (PeakDetectorSettings)settings;
 				List<DetectorSetting> detectorSettings = peakDetectorSettings.getDetectorSettingsList();
 				SubMonitor subMonitor = SubMonitor.convert(monitor, detectorSettings.size());
@@ -108,8 +122,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		setPeakByRetentionTimeRange(chromatogram, retentionTimeRange, detectorSetting);
 	}
 
-	@SuppressWarnings("unchecked")
-	private void setPeakByRetentionTimeRange(IChromatogram chromatogram, RetentionTimeRange retentionTimeRange, DetectorSetting detectorSetting) {
+	private void setPeakByRetentionTimeRange(IChromatogram<? extends IPeak> chromatogram, RetentionTimeRange retentionTimeRange, DetectorSetting detectorSetting) {
 
 		int startScan = PeakSupport.getStartScan(chromatogram, retentionTimeRange.getStartRetentionTime());
 		int stopScan = PeakSupport.getStopScan(chromatogram, retentionTimeRange.getStopRetentionTime());
@@ -129,7 +142,13 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 			/*
 			 * Add the peak.
 			 */
-			chromatogram.addPeak(peak);
+			addPeak(chromatogram, peak);
 		}
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	private void addPeak(IChromatogram chromatogram, IPeak peak) {
+
+		chromatogram.addPeak(peak);
 	}
 }
