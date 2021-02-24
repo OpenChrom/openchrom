@@ -115,23 +115,34 @@ public class PeakSupport {
 				 * Try to create a peak.
 				 */
 				if(chromatogram instanceof IChromatogramMSD) {
+					/*
+					 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
+					 */
 					IChromatogramMSD chromatogramMSD = (IChromatogramMSD)chromatogram;
 					if(traces.size() > 0) {
-						/**
-						 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
-						 */
 						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground, traces, IMarkedIons.IonMarkMode.EXCLUDE);
 					} else {
 						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground);
 					}
 					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
+					/*
+					 * Only one trace.
+					 */
 				} else if(chromatogram instanceof IChromatogramCSD) {
 					IChromatogramCSD chromatogramCSD = (IChromatogramCSD)chromatogram;
 					peak = PeakBuilderCSD.createPeak(chromatogramCSD, scanRange, includeBackground);
 					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 				} else if(chromatogram instanceof IChromatogramWSD) {
+					/*
+					 * Must be called with 'exclude' mode, so given wavelengths will be 'excluded' from Scan.
+					 */
 					IChromatogramWSD chromatogramWSD = (IChromatogramWSD)chromatogram;
-					peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground);
+					if(traces.size() > 0) {
+						// TODO - activate using traces
+						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground);
+					} else {
+						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground);
+					}
 					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 				}
 			}

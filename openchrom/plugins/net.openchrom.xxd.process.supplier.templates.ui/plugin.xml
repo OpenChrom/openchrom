@@ -27,6 +27,12 @@
             id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pagePeakDetectorCSD">
       </page>
       <page
+            name="WSD"
+            category="net.openchrom.xxd.process.supplier.templates.ui.preferences.pagePeakDetector"
+            class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakDetectorWSD"
+            id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pagePeakDetectorWSD">
+      </page>      
+      <page
             name="Peak Identifier Template"
             category="org.eclipse.chemclipse.chromatogram.msd.identifier.ui.preferences.identifierPreferencePage"
             class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakIdentifierMSD"
@@ -159,6 +165,23 @@
             description="This is the direct UI peak detector."
             id="net.openchrom.xxd.process.supplier.templates.ui.csd.direct"
             peakDetector="net.openchrom.xxd.process.supplier.templates.ui.core.PeakDetectorDirectCSD"
+            peakDetectorName="Peak Detector UI [Direct]"
+            peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorDirectSettings">
+      </PeakDetector>  
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.wsd.peak.detector.peakDetectorSupplier">
+      <PeakDetector
+            description="This is the template UI peak detector."
+            id="net.openchrom.xxd.process.supplier.templates.ui.wsd.template"
+            peakDetector="net.openchrom.xxd.process.supplier.templates.ui.core.PeakDetectorWSD"
+            peakDetectorName="Peak Detector UI [Template]"
+            peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
+      </PeakDetector>
+      <PeakDetector
+            description="This is the direct UI peak detector."
+            id="net.openchrom.xxd.process.supplier.templates.ui.wsd.direct"
+            peakDetector="net.openchrom.xxd.process.supplier.templates.ui.core.PeakDetectorDirectWSD"
             peakDetectorName="Peak Detector UI [Direct]"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorDirectSettings">
       </PeakDetector>      

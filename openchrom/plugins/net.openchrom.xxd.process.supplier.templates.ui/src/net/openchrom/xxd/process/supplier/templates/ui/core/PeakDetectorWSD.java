@@ -14,14 +14,14 @@ package net.openchrom.xxd.process.supplier.templates.ui.core;
 
 import java.util.concurrent.ExecutionException;
 
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.AbstractPeakDetectorMSD;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
+import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.core.AbstractPeakDetectorWSD;
+import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.settings.IPeakDetectorSettingsWSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
+import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Shell;
 
@@ -30,10 +30,10 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSetting
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakDetectorSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
 
-public class PeakDetectorMSD<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetectorMSD<P, C, R> {
+public class PeakDetectorWSD<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetectorWSD<P, C, R> {
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD peakDetectorSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionWSD chromatogramSelection, IPeakDetectorSettingsWSD peakDetectorSettings, IProgressMonitor monitor) {
 
 		IProcessingInfo<R> processingInfo = new ProcessingInfo<>();
 		if(peakDetectorSettings instanceof PeakDetectorSettings) {
@@ -53,16 +53,16 @@ public class PeakDetectorMSD<P extends IPeak, C extends IChromatogram<P>, R> ext
 			} catch(InterruptedException e) {
 				Thread.currentThread().interrupt();
 			} catch(ExecutionException e) {
-				processingInfo.addErrorMessage("PeakDetectorMSD", "Execution failed", e);
+				processingInfo.addErrorMessage("PeakDetectorWSD", "Execution failed", e);
 			}
 		}
 		return processingInfo;
 	}
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<R> detect(IChromatogramSelectionWSD chromatogramSelection, IProgressMonitor monitor) {
 
-		PeakDetectorSettings settings = PreferenceSupplier.getPeakDetectorSettingsMSD();
+		PeakDetectorSettings settings = PreferenceSupplier.getPeakDetectorSettingsWSD();
 		return detect(chromatogramSelection, settings, monitor);
 	}
 }

@@ -20,7 +20,17 @@
             peakDetectorName="Peak Detector [Template]"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
       </PeakDetector>
-   </extension> 
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.wsd.peak.detector.peakDetectorSupplier">
+      <PeakDetector
+            description="This peak detector tries to detect peaks by using ranges from a template."
+            id="net.openchrom.xxd.process.supplier.templates.peaks.detector.wsd"
+            peakDetector="net.openchrom.xxd.process.supplier.templates.peaks.PeakDetector"
+            peakDetectorName="Peak Detector [Template]"
+            peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
+      </PeakDetector>
+   </extension>   
    <extension
          point="org.eclipse.chemclipse.chromatogram.msd.identifier.peakIdentifier">
       <PeakIdentificationSupplier
