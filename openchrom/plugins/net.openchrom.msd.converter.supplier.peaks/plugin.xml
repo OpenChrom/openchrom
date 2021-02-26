@@ -9,7 +9,7 @@
             filterName="Spectra Bank / SPECLUST (*.zip)"
             id="org.eclipse.chemclipse.msd.converter.supplier.peaks"
             importConverter="net.openchrom.msd.converter.supplier.peaks.converter.DatabaseImportConverter"
-            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.peaks.converter.MagicNumberMatcherDatabase"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.peaks.converter.MagicNumberMatcher"
             exportConverter="net.openchrom.msd.converter.supplier.peaks.converter.DatabaseExportConverter"
             isExportable="true"
             isImportable="true">

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Lablicate GmbH.
+ * Copyright (c) 2017, 2021 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -13,15 +13,17 @@
 package net.openchrom.msd.converter.supplier.peaks.converter;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.eclipse.chemclipse.converter.core.AbstractMagicNumberMatcher;
 import org.eclipse.chemclipse.converter.core.IMagicNumberMatcher;
+import org.eclipse.chemclipse.logging.core.Logger;
 
-public class MagicNumberMatcherDatabase extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
+public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
+
+	private static final Logger logger = Logger.getLogger(MagicNumberMatcher.class);
 
 	@Override
 	public boolean checkFileFormat(File file) {
@@ -36,7 +38,8 @@ public class MagicNumberMatcherDatabase extends AbstractMagicNumberMatcher imple
 						return true;
 					}
 				}
-			} catch(IOException e) {
+			} catch(Exception e) {
+				logger.warn(e);
 				return false;
 			}
 		}
