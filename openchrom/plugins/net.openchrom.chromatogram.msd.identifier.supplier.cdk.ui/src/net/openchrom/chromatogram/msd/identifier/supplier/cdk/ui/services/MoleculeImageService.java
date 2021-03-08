@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,6 +17,7 @@ import org.eclipse.chemclipse.swt.ui.services.IMoleculeImageService;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 import org.osgi.service.component.annotations.Activate;
@@ -25,6 +26,7 @@ import org.osgi.service.component.annotations.ConfigurationPolicy;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.Activator;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.converter.ImageConverter;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.preferences.PreferencePage;
 
 @Component(service = {IMoleculeImageService.class}, configurationPolicy = ConfigurationPolicy.OPTIONAL)
 public class MoleculeImageService implements IMoleculeImageService {
@@ -66,6 +68,12 @@ public class MoleculeImageService implements IMoleculeImageService {
 		}
 		//
 		return image;
+	}
+
+	@Override
+	public Class<? extends IWorkbenchPreferencePage> getPreferencePage() {
+
+		return PreferencePage.class;
 	}
 
 	private Image createImage(Display display, ILibraryInformation libraryInformation, int width, int height) {
