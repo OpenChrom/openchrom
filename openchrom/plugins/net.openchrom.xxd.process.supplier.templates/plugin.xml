@@ -180,7 +180,7 @@
             exportConverter="net.openchrom.xxd.process.supplier.templates.io.ReviewExport"
             fileExtension=".txt"
             fileName="ReviewTemplate.txt"
-            filterName="Template Chromatogram Review (*.txt)"
+            filterName="Template Peak Review (*.txt)"
             id="net.openchrom.xxd.process.supplier.templates.export.reviewTemplateMSD"
             importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.io.MagicNumberMatcher"
             isExportable="true"
