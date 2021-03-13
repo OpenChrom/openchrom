@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Christoph Läubrich - initial API and implementation
+ * Philip Wenig - enable profiles
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.adapter;
 
@@ -40,7 +41,7 @@ public class PeakDetectorSettingsAdapterFactory implements IAdapterFactory {
 		return new SettingsUIProvider<PeakDetectorSettings>() {
 
 			@Override
-			public SettingsUIProvider.SettingsUIControl createUI(Composite parent, ProcessorPreferences<PeakDetectorSettings> preferences) throws IOException {
+			public SettingsUIProvider.SettingsUIControl createUI(Composite parent, ProcessorPreferences<PeakDetectorSettings> preferences, boolean showProfileToolbar) throws IOException {
 
 				PeakDetectorSettings userSettings = preferences.getUserSettings();
 				return new TemplatePeakListEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);

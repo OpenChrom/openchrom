@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -40,7 +40,7 @@ public class ReportSettingsAdapterFactory implements IAdapterFactory {
 		return new SettingsUIProvider<ChromatogramReportSettings>() {
 
 			@Override
-			public SettingsUIProvider.SettingsUIControl createUI(Composite parent, ProcessorPreferences<ChromatogramReportSettings> preferences) throws IOException {
+			public SettingsUIProvider.SettingsUIControl createUI(Composite parent, ProcessorPreferences<ChromatogramReportSettings> preferences, boolean showProfileToolbar) throws IOException {
 
 				ChromatogramReportSettings userSettings = preferences.getUserSettings();
 				return new TemplateReportEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);
