@@ -37,7 +37,6 @@ import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.CDKSmilesToMoleculeConverter;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.IStructureConverter;
-import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.OPSINIupacToMoleculeConverter;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 
 public class ImageConverter {
@@ -47,13 +46,9 @@ public class ImageConverter {
 	public static final int DEFAULT_WIDTH = 400;
 	public static final int DEFAULT_HEIGHT = 400;
 	/**
-	 * Generate Molecule out of smilesString and
-	 * render.
+	 * Generate Molecule out of MDL MOL chemical table files, SMILES strings or InChI using OPSIN and render.
 	 **/
 	private static ImageConverter singleton;
-	//
-	private static IStructureConverter cdkConverter = new CDKSmilesToMoleculeConverter();
-	private static IStructureConverter opsinConverter = new OPSINIupacToMoleculeConverter();
 
 	public static ImageConverter getInstance() {
 
@@ -75,15 +70,8 @@ public class ImageConverter {
 		return createImage(molecule, width, height);
 	}
 
-	public org.eclipse.swt.graphics.Image moleculeToImage(Display display, boolean useSmiles, String converterInput, Point point) {
+	public org.eclipse.swt.graphics.Image moleculeToImage(Display display, IStructureConverter structureConverter, String converterInput, Point point) {
 
-		IStructureConverter structureConverter;
-		if(useSmiles) {
-			structureConverter = cdkConverter;
-		} else {
-			structureConverter = opsinConverter;
-		}
-		//
 		IAtomContainer molecule = structureConverter.generate(converterInput);
 		if(molecule != null) {
 			return new org.eclipse.swt.graphics.Image(display, AwtToSwtImageBridge.convertToSWT((BufferedImage)moleculeToImage(molecule, point.x, point.y)));

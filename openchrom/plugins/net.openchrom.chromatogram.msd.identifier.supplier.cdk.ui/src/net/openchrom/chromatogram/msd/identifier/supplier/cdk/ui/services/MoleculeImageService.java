@@ -24,6 +24,10 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.CDKMolToMoleculeConverter;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.CDKSmilesToMoleculeConverter;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.IStructureConverter;
+import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.OPSINIupacToMoleculeConverter;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.Activator;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.converter.ImageConverter;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.preferences.PreferencePage;
@@ -80,24 +84,38 @@ public class MoleculeImageService implements IMoleculeImageService {
 
 		Image image = null;
 		/*
+		 * MDL MOL
+		 */
+		String moleculeStructure = libraryInformation.getMoleculeStructure();
+		if(!moleculeStructure.isEmpty()) {
+			IStructureConverter structureConverter = new CDKMolToMoleculeConverter();
+			image = convertMoleculeToImage(display, structureConverter, moleculeStructure, width, height);
+		}
+		/*
 		 * SMILES
 		 */
-		String smiles = libraryInformation.getSmiles().trim();
-		if(!smiles.isEmpty()) {
-			image = convertMoleculeToImage(display, true, smiles, width, height);
+		if(image == null) {
+			String smiles = libraryInformation.getSmiles().trim();
+			if(!smiles.isEmpty()) {
+				IStructureConverter structureConverter = new CDKSmilesToMoleculeConverter();
+				image = convertMoleculeToImage(display, structureConverter, smiles, width, height);
+			}
 		}
 		/*
 		 * IUPAC
 		 */
 		if(image == null) {
 			String name = libraryInformation.getName().trim();
-			image = convertMoleculeToImage(display, false, name, width, height);
+			if(!name.isEmpty()) {
+				IStructureConverter structureConverter = new OPSINIupacToMoleculeConverter();
+				image = convertMoleculeToImage(display, structureConverter, name, width, height);
+			}
 		}
 		//
 		return image;
 	}
 
-	private Image convertMoleculeToImage(Display display, boolean useSmiles, String converterInput, int width, int height) {
+	private Image convertMoleculeToImage(Display display, IStructureConverter structureConverter, String converterInput, int width, int height) {
 
 		Image image = null;
 		try {
@@ -106,7 +124,7 @@ public class MoleculeImageService implements IMoleculeImageService {
 			 * depictionGenerator.depict(molecule).writeTo(path);
 			 */
 			Point point = calculateMoleculeImageSize(width, height);
-			image = ImageConverter.getInstance().moleculeToImage(display, useSmiles, converterInput, point);
+			image = ImageConverter.getInstance().moleculeToImage(display, structureConverter, converterInput, point);
 		} catch(Exception e) {
 			logger.warn(e);
 		}
