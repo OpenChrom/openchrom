@@ -8,11 +8,11 @@
  * 
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - adjustment AutoClosable
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -26,6 +26,7 @@ import org.openscience.cdk.io.MDLReader;
 /**
  * Load MDL MOL streams using CDK
  */
+@SuppressWarnings("deprecation")
 public class CDKMolToMoleculeConverter implements IStructureConverter {
 
 	private static final Logger logger = Logger.getLogger(CDKMolToMoleculeConverter.class);
@@ -35,10 +36,8 @@ public class CDKMolToMoleculeConverter implements IStructureConverter {
 
 		IAtomContainer molecule = null;
 		if(input != null) {
-			try {
-				InputStream inputStream = IOUtils.toInputStream(input);
-				MDLReader reader = new MDLReader(inputStream);
-				ChemFile chemFile = (ChemFile)reader.read(new ChemFile());
+			try (MDLReader mdlReader = new MDLReader(IOUtils.toInputStream(input))) {
+				ChemFile chemFile = (ChemFile)mdlReader.read(new ChemFile());
 				if(chemFile.getChemSequenceCount() > 0) {
 					IChemSequence chemSequence = chemFile.getChemSequence(0);
 					if(chemSequence.getChemModelCount() > 0) {
@@ -48,8 +47,6 @@ public class CDKMolToMoleculeConverter implements IStructureConverter {
 						}
 					}
 				}
-				reader.close();
-				inputStream.close();
 			} catch(IOException | CDKException e) {
 				logger.error(e);
 			}
