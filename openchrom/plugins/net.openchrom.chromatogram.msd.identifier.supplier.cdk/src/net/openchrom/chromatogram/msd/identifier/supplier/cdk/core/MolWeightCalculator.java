@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Philip Wenig - initial API and implementation
+ * Matthias Mailänder - backfall: calculate from molecular formula
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.core;
 
@@ -28,9 +29,12 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.InvalidSmilesException;
+import org.openscience.cdk.formula.MolecularFormula;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IMolecularFormula;
 import org.openscience.cdk.smiles.SmilesParser;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
+import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
 
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter.OpsinSupport;
 import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.PreferenceSupplier;
@@ -122,7 +126,6 @@ public class MolWeightCalculator extends AbstractChromatogramIdentifier {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private void calculateMolWeight(Set<IIdentificationTarget> targets, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
 
 		for(IIdentificationTarget target : targets) {
@@ -133,10 +136,19 @@ public class MolWeightCalculator extends AbstractChromatogramIdentifier {
 				ILibraryInformation libraryInformation = ((IIdentificationTarget)target).getLibraryInformation();
 				OpsinSupport.calculateSmilesIfAbsent(libraryInformation, nameStructure, nameStructureConfig);
 				String smiles = libraryInformation.getSmiles();
-				if(!"".equals(smiles)) {
+				if(!smiles.isEmpty()) {
 					IAtomContainer molecule = generate(libraryInformation.getSmiles());
-					double molWeight = AtomContainerManipulator.getMolecularWeight(molecule);
+					double molWeight = AtomContainerManipulator.getMass(molecule);
 					libraryInformation.setMolWeight(molWeight);
+				} else {
+					String formula = libraryInformation.getFormula();
+					if(!formula.isEmpty()) {
+						IMolecularFormula molecularFormula = new MolecularFormula();
+						molecularFormula = MolecularFormulaManipulator.getMolecularFormula(formula, molecularFormula);
+						IAtomContainer molecule = MolecularFormulaManipulator.getAtomContainer(molecularFormula);
+						double molWeight = AtomContainerManipulator.getMass(molecule);
+						libraryInformation.setMolWeight(molWeight);
+					}
 				}
 			}
 		}
