@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+    <extension
+         point="org.eclipse.chemclipse.msd.converter.databaseSupplier">
+      <DatabaseSupplier
+            description="Hashes database mass spectra und writes the splash to file."
+            exportConverter="net.openchrom.msd.converter.supplier.splash.converter.DatabaseExportConverter"
+            fileExtension=".txt"
+            filterName="Splash (*.txt)"
+            id="net.openchrom.msd.converter.supplier.splash"
+            importConverter="net.openchrom.msd.converter.supplier.splash.converter.DatabaseImportConverter"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.splash.core.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </DatabaseSupplier>
+   </extension>
+</plugin>
