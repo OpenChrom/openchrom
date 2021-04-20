@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2019 Lablicate GmbH.
+ * Copyright (c) 2013, 2021 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -47,6 +47,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 	private int[] valueArrayScanIndex;
 
 	public CDFChromtogramArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
+
 		super(chromatogram);
 		initializeVariables();
 	}
@@ -112,7 +113,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 			 * If force nominal, then first collect and condense the data.
 			 */
 			if(forceNominal) {
-				int mz = (int)Math.round(valueArrayIon[position]);
+				int mz = AbstractIon.getIon(valueArrayIon[position]);
 				float intensity = valueArrayAbundance[position];
 				//
 				if(intensity > 0) {

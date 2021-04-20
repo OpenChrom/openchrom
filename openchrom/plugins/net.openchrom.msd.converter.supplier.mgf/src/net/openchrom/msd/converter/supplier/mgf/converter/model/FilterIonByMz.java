@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Lablicate GmbH.
+ * Copyright (c) 2016, 2021 Lablicate GmbH.
  *
  * All rights reserved.
  *
@@ -36,10 +36,12 @@ public class FilterIonByMz implements Filter<IIon> {
 	private final double mz;
 
 	public FilterIonByMz(final double mz) {
+
 		this(mz, DEFAULT_ACCURACY);
 	}
 
 	public FilterIonByMz(final double mz, final int accuracy) {
+
 		this.accuracy = accuracy;
 		this.mz = mz;
 	}
@@ -47,6 +49,7 @@ public class FilterIonByMz implements Filter<IIon> {
 	@Override
 	public boolean filter(final IIon element) {
 
+		// TODO Check
 		return UtilMath.round(element.getIon(), accuracy) == UtilMath.round(mz, accuracy);
 	}
 

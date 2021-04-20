@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Lablicate GmbH.
+ * Copyright (c) 2015, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -74,7 +74,7 @@ public class TransformerMGFElementIScan extends AbstractTransformingListFactory<
 		if(retentionTimeInSecondsTag != null && !retentionTimeInSecondsTag.equals(MGFElement.TAG_NA)) {
 			double retentionTimeInSeconds = Double.parseDouble(retentionTimeInSecondsTag);
 			final double scale = retentionTimeInSeconds * 1000;
-			scan.setRetentionTime((int)Math.round(scale));
+			scan.setRetentionTime((int)Math.round(scale)); // Math.round() - OK
 		}
 	}
 }
