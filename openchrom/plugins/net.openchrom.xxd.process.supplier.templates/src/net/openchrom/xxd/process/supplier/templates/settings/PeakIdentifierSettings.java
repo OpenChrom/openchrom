@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.csd.identifier.settings.IPeakIdentifierSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettingsMSD;
+import org.eclipse.chemclipse.chromatogram.wsd.identifier.settings.IPeakIdentifierSettingsWSD;
 import org.eclipse.chemclipse.model.identifier.IdentifierAdapterSettings;
 import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
 import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
@@ -31,7 +32,7 @@ import net.openchrom.xxd.process.supplier.templates.model.IdentifierSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
 
-public class PeakIdentifierSettings extends IdentifierAdapterSettings implements IPeakIdentifierSettingsMSD, IPeakIdentifierSettingsCSD, ITemplateSettings {
+public class PeakIdentifierSettings extends IdentifierAdapterSettings implements IPeakIdentifierSettingsMSD, IPeakIdentifierSettingsCSD, IPeakIdentifierSettingsWSD, ITemplateSettings {
 
 	public static final String IDENTIFIER_DESCRIPTION = "Template Peak Identifier";
 	/*

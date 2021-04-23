@@ -52,6 +52,26 @@
       </PeakIdentificationSupplier>
    </extension>
    <extension
+         point="org.eclipse.chemclipse.chromatogram.csd.identifier.peakIdentifier">
+      <PeakIdentificationSupplier
+            description="This peak identifier tries to identify peaks by using ranges from a template."
+            id="net.openchrom.xxd.process.supplier.templates.peaks.identifier.wsd"
+            identifier="net.openchrom.xxd.process.supplier.templates.peaks.PeakIdentifierWSD"
+            identifierName="Peak Identifier [Template]"
+            identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings">
+      </PeakIdentificationSupplier>
+   </extension>   
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.wsd.identifier.peakIdentifier">
+      <PeakIdentificationSupplier
+            description="This peak identifier tries to identify peaks by using ranges from a template."
+            id="net.openchrom.xxd.process.supplier.templates.peaks.identifier.wsd"
+            identifier="net.openchrom.xxd.process.supplier.templates.peaks.PeakIdentifierWSD"
+            identifierName="Peak Identifier [Template]"
+            identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings">
+      </PeakIdentificationSupplier>
+   </extension>   
+   <extension
          point="org.eclipse.chemclipse.chromatogram.msd.quantifier.peakQuantifierSupplier">
       <PeakQuantifierSupplier
             description="This methods sets the ISTD information."

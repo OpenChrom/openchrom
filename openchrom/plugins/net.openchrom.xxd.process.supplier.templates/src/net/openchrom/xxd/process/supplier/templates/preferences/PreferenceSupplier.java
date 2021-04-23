@@ -57,6 +57,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String DEF_PEAK_IDENTIFIER_LIST_MSD = "";
 	public static final String P_PEAK_IDENTIFIER_LIST_CSD = "peakIdentifierListCSD";
 	public static final String DEF_PEAK_IDENTIFIER_LIST_CSD = "";
+	public static final String P_PEAK_IDENTIFIER_LIST_WSD = "peakIdentifierListWSD";
+	public static final String DEF_PEAK_IDENTIFIER_LIST_WSD = "";
 	public static final String P_STANDARDS_ASSIGNER_LIST = "standardsAssignerList";
 	public static final String DEF_STANDARDS_ASSIGNER_LIST = "";
 	public static final String P_STANDARDS_REFERENCER_LIST = "standardsReferencerList";
@@ -257,6 +259,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_PEAK_DETECTOR_LIST_WSD, DEF_PEAK_DETECTOR_LIST_WSD);
 		defaultValues.put(P_PEAK_IDENTIFIER_LIST_MSD, DEF_PEAK_IDENTIFIER_LIST_MSD);
 		defaultValues.put(P_PEAK_IDENTIFIER_LIST_CSD, DEF_PEAK_IDENTIFIER_LIST_CSD);
+		defaultValues.put(P_PEAK_IDENTIFIER_LIST_WSD, DEF_PEAK_IDENTIFIER_LIST_WSD);
 		defaultValues.put(P_STANDARDS_ASSIGNER_LIST, DEF_STANDARDS_ASSIGNER_LIST);
 		defaultValues.put(P_STANDARDS_REFERENCER_LIST, DEF_STANDARDS_REFERENCER_LIST);
 		defaultValues.put(P_PEAK_INTEGRATOR_LIST, DEF_PEAK_INTEGRATOR_LIST);
