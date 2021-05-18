@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -39,7 +39,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 	private static final String LABEL_ADJUSTED = " [adjusted]";
 
 	@Override
-	public IProcessingInfo quantify(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> quantify(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
 		IProcessingInfo processingInfo = validate(peaks, settings, monitor);
 		if(!processingInfo.hasErrorMessages()) {
@@ -56,7 +56,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 	}
 
 	@Override
-	public IProcessingInfo quantify(IPeak peak, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> quantify(IPeak peak, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
 		List<IPeak> peaks = new ArrayList<IPeak>();
 		peaks.add(peak);
@@ -64,7 +64,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 	}
 
 	@Override
-	public IProcessingInfo quantify(IPeak peak, IProgressMonitor monitor) {
+	public IProcessingInfo<?> quantify(IPeak peak, IProgressMonitor monitor) {
 
 		List<IPeak> peaks = new ArrayList<IPeak>();
 		peaks.add(peak);
@@ -73,7 +73,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 	}
 
 	@Override
-	public IProcessingInfo quantify(List<IPeak> peaks, IProgressMonitor monitor) {
+	public IProcessingInfo<?> quantify(List<IPeak> peaks, IProgressMonitor monitor) {
 
 		CompensationQuantifierSettings settings = getSettings();
 		return quantify(peaks, settings, monitor);

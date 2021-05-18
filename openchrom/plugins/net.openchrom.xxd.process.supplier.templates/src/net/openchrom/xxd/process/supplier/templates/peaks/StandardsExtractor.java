@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -53,6 +53,7 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 		private double concentration = 0.0d;
 
 		public Standard(String referenceId, double concentration) {
+
 			this.referenceId = referenceId;
 			this.concentration = concentration;
 		}
@@ -69,7 +70,7 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 	}
 
 	@Override
-	public IProcessingInfo quantify(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> quantify(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
 		IProcessingInfo processingInfo = validate(peaks, settings, monitor);
 		if(!processingInfo.hasErrorMessages()) {
@@ -84,7 +85,7 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 	}
 
 	@Override
-	public IProcessingInfo quantify(IPeak peak, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> quantify(IPeak peak, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
 		List<IPeak> peaks = new ArrayList<IPeak>();
 		peaks.add(peak);
@@ -92,7 +93,7 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 	}
 
 	@Override
-	public IProcessingInfo quantify(IPeak peak, IProgressMonitor monitor) {
+	public IProcessingInfo<?> quantify(IPeak peak, IProgressMonitor monitor) {
 
 		List<IPeak> peaks = new ArrayList<IPeak>();
 		peaks.add(peak);
@@ -101,7 +102,7 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 	}
 
 	@Override
-	public IProcessingInfo quantify(List<IPeak> peaks, IProgressMonitor monitor) {
+	public IProcessingInfo<?> quantify(List<IPeak> peaks, IProgressMonitor monitor) {
 
 		StandardsExtractorSettings settings = getSettings();
 		return quantify(peaks, settings, monitor);
