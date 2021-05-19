@@ -3,7 +3,6 @@
   <imports xsi:type="advanced:Area" xmi:id="_wQ-SQFHjEemRK6ILagu1xg" elementId="org.eclipse.chemclipse.rcp.app.ui.editor"/>
   <imports xsi:type="commands:Command" xmi:id="_bnIWoIgsEemJaOKd7Cy7Ww" elementId="org.eclipse.chemclipse.rcp.app.ui.command.opensnippet"/>
   <imports xsi:type="commands:Command" xmi:id="_39AKkIgtEemJaOKd7Cy7Ww" elementId="org.eclipse.chemclipse.rcp.app.ui.command.about"/>
-  <imports xsi:type="basic:Part" xmi:id="_4g6WMKhpEemiUe3crTR0og" elementId="org.eclipse.chemclipse.processing.ui.parts.ProcessingInfoPart"/>
   <imports xsi:type="commands:Command" xmi:id="_e_bZ8LgVEemNgNx3khJk0g" elementId="chemclipse.command.opentoolmenu"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_TnMOYFHjEemRK6ILagu1xg" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.perspectivestack.main">
     <elements xsi:type="advanced:Perspective" xmi:id="_hYtdgFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.perspective.nmr" label="NMR" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/scan-nmr.gif">
@@ -25,9 +24,9 @@
               <children xsi:type="menu:DirectToolItem" xmi:id="_uLHAsIeTEemBGvwXZ3o29g" elementId="net.openchrom.nmr.processing.supplier.base.ui.directtoolitem.settings" label="Settings" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/configure.gif" tooltip="Change Settings" contributionURI="bundleclass://net.openchrom.nmr.processing.supplier.base.ui/net.openchrom.nmr.processing.supplier.base.ui.NMRDataExplorerView$NMRDataExplorerSettingsHandler"/>
             </toolbar>
           </children>
-          <children xsi:type="advanced:Placeholder" xmi:id="__pWYgKhpEemiUe3crTR0og" elementId="net.openchrom.nmr.processing.supplier.base.ui.placeholder.1" ref="_4g6WMKhpEemiUe3crTR0og" closeable="true"/>
+          <children xsi:type="basic:Part" xmi:id="_weO7ULiUEeu34NFfbet7tg" elementId="org.eclipse.chemclipse.ux.extension.xxd.ui.part.processinginfo" contributionURI="bundleclass://org.eclipse.chemclipse.processing.ui/org.eclipse.chemclipse.processing.ui.parts.ProcessingInfoPart" label="Feedback" iconURI="platform:/plugin/org.eclipse.chemclipse.processing.ui/icons/16x16/info.gif"/>
         </children>
-        <children xsi:type="advanced:Placeholder" xmi:id="_3Cm-IFHjEemRK6ILagu1xg" elementId="net.openchrom.nmr.processing.supplier.base.ui.placeholder.0" containerData="80" ref="_wQ-SQFHjEemRK6ILagu1xg"/>
+        <children xsi:type="advanced:Placeholder" xmi:id="_3Cm-IFHjEemRK6ILagu1xg" elementId="org.eclipse.ui.editorss" containerData="80" ref="_wQ-SQFHjEemRK6ILagu1xg"/>
       </children>
     </elements>
   </fragments>
