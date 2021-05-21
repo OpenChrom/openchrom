@@ -90,5 +90,7 @@
 		<module>net.openchrom.msd.converter.supplier.pkf</module>
 		<module>net.openchrom.msd.converter.supplier.pkf.fragment.test</module>
 		<module>net.openchrom.msd.converter.supplier.pkf.ui</module>
+		<module>org.eclipse.chemclipse.msd.converter.supplier.mz5</module>
+		<module>org.eclipse.chemclipse.msd.converter.supplier.mz5.ui</module>
 	</modules>
 </project>
