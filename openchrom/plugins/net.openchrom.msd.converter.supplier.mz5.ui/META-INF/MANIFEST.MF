@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Automatic-Module-Name: org.eclipse.chemclipse.msd.converter.supplier.mz5.ui
+Automatic-Module-Name: net.openchrom.msd.converter.supplier.mz5.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: Ui
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.mz5.ui
