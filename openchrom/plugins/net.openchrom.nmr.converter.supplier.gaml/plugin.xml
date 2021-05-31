@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.nmr.converter.scanSupplier">
+      <ScanSupplier
+            description="Reads Generalized Analytical Markup Language Scans."
+            exportConverter="net.openchrom.nmr.converter.supplier.gaml.converter.ScanExportConverter"
+            fileExtension=".gaml"
+            filterName="NMR Spectroscopy (*.gaml)"
+            id="net.openchrom.nmr.converter.supplier.gaml"
+            importConverter="net.openchrom.nmr.converter.supplier.gaml.converter.ScanImportConverter"
+            importMagicNumberMatcher="net.openchrom.nmr.converter.supplier.gaml.converter.MagicNumberMatcher"
+            isExportable="false"
+            isImportable="true">
+      </ScanSupplier>
+   </extension>
+</plugin>
