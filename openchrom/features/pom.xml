@@ -62,6 +62,6 @@
 		<module>net.openchrom.xxd.processor.supplier.tracecompare.feature</module>
 		<module>net.openchrom.msd.converter.supplier.peaks.feature</module>
 		<module>net.openchrom.msd.converter.supplier.pkf.feature</module>
-		<module>org.eclipse.chemclipse.msd.converter.supplier.mz5.feature</module>
+		<module>net.openchrom.msd.converter.supplier.mz5.feature</module>
 	</modules>
 </project>
