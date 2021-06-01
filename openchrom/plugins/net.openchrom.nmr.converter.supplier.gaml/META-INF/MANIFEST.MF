@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.msd.converter.supplier.gaml
+Eclipse-RegisterBuddy: org.eclipse.chemclipse.model, org.eclipse.chemclipse.msd.model
+Bundle-ManifestVersion: 2
+Bundle-Name: GAML
+Bundle-SymbolicName: net.openchrom.nmr.converter.supplier.gaml;singleton:=true
+Bundle-Version: 1.4.0.qualifier
+Bundle-Activator: net.openchrom.nmr.converter.supplier.gaml.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.chemclipse.converter;bundle-version="0.8.0",
+ org.eclipse.chemclipse.model;bundle-version="0.8.0",
+ org.eclipse.chemclipse.logging;bundle-version="0.8.0",
+ org.eclipse.chemclipse.processing;bundle-version="0.8.0",
+ org.eclipse.chemclipse.support;bundle-version="0.8.0",
+ net.openchrom.xxd.converter.supplier.gaml;bundle-version="0.8.0",
+ org.eclipse.chemclipse.xxd.converter.supplier.chemclipse;bundle-version="0.8.0",
+ org.eclipse.chemclipse.nmr.converter;bundle-version="0.9.0",
+ org.eclipse.chemclipse.nmr.model;bundle-version="0.9.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy

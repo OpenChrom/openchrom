@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.csd.converter.chromatogramSupplier">
+      <ChromatogramSupplier
+            description="Reads Generalized Analytical Markup Language Chromatograms"
+            fileExtension=".gaml"
+            filterName="GAML CSD Chromatogram (*.gaml)"
+            id="net.openchrom.csd.converter.supplier.gaml.chromatogram"
+            importConverter="net.openchrom.csd.converter.supplier.gaml.converter.ChromatogramImportConverter"
+            importMagicNumberMatcher="net.openchrom.csd.converter.supplier.gaml.converter.MagicNumberMatcher"
+            isExportable="false"
+            isImportable="true">
+      </ChromatogramSupplier>
+   </extension>
+</plugin>

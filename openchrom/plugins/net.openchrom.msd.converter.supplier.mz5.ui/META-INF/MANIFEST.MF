@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.msd.converter.supplier.mz5.ui
+Bundle-ManifestVersion: 2
+Bundle-Name: Ui
+Bundle-SymbolicName: net.openchrom.msd.converter.supplier.mz5.ui
+Bundle-Version: 1.4.0.qualifier
+Bundle-Activator: net.openchrom.msd.converter.supplier.mz5.ui.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
