@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,6 +15,7 @@ import java.io.File;
 
 import org.eclipse.chemclipse.pcr.converter.core.AbstractPlateImportConverter;
 import org.eclipse.chemclipse.pcr.converter.core.IPlateImportConverter;
+import org.eclipse.chemclipse.pcr.model.core.IPlate;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -23,9 +24,9 @@ public class PCRImportConverter extends AbstractPlateImportConverter implements 
 	private static final String DESCRIPTION = "PCR Report Converter";
 
 	@Override
-	public IProcessingInfo convert(File file, IProgressMonitor monitor) {
+	public IProcessingInfo<IPlate> convert(File file, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = super.validate(file);
+		IProcessingInfo<IPlate> processingInfo = super.validate(file);
 		processingInfo.addErrorMessage(DESCRIPTION, "The export converter doesn't support reading files.");
 		return processingInfo;
 	}
