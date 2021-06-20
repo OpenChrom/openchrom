@@ -38,9 +38,6 @@
 		<module>net.openchrom.msd.converter.supplier.pdf.fragment.test</module>
 		<module>net.openchrom.msd.converter.supplier.pdf.ui</module>
 		<module>net.openchrom.msd.converter.supplier.pdf</module>
-		<module>net.openchrom.msd.identifier.supplier.opentyper.fragment.test</module>
-		<module>net.openchrom.msd.identifier.supplier.opentyper.ui</module>
-		<module>net.openchrom.msd.identifier.supplier.opentyper</module>
 		<module>net.openchrom.msd.process.supplier.cms.fragment.test</module>
 		<module>net.openchrom.msd.process.supplier.cms.ui</module>
 		<module>net.openchrom.msd.process.supplier.cms</module>
