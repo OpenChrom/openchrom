@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_i7rlMJRkEeW3h-K0O5zQFg">
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_i7rlMJRkEeW3h-K0O5zQFg">
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_MakskGF0EeaOm_6bF2V_sQ" featurename="commands" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
     <elements xsi:type="commands:Command" xmi:id="_QUDfkGF0EeaOm_6bF2V_sQ" elementId="net.openchrom.wsd.identifier.supplier.geneident.ui.command.NCBIqueuedBLASTsearch" commandName="NCBI QBLAST Search" description="Executes a new queued search with the National Center for Biotechnology Information (NCBI) queued Basic Local Alignment Search Tool (QBLAST). TODO: Display these only when sequences are available or we are in the right perspective."/>
   </fragments>
@@ -7,6 +7,8 @@
     <elements xsi:type="commands:Handler" xmi:id="_dFM20GF0EeaOm_6bF2V_sQ" elementId="net.openchrom.wsd.identifier.supplier.geneident.ui.handler.ncbiblastsearch" contributionURI="bundleclass://net.openchrom.wsd.identifier.supplier.geneident.ui/net.openchrom.wsd.identifier.supplier.geneident.ui.handlers.NCBIqueuedBLASThandler" command="_QUDfkGF0EeaOm_6bF2V_sQ"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_qkoQYGF0EeaOm_6bF2V_sQ" featurename="children" parentElementId="org.eclipse.chemclipse.ux.extension.ui.menu.identifier">
-    <elements xsi:type="menu:HandledMenuItem" xmi:id="_uqNlsGF0EeaOm_6bF2V_sQ" elementId="net.openchrom.wsd.identifier.supplier.geneident.ui.handledmenuitem.ncbiqblastsearch" label="NCBI Nucleotide BLAST Search" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/identify_peaks.gif" tooltip="Queue a new online BLAST search." command="_QUDfkGF0EeaOm_6bF2V_sQ"/>
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_uqNlsGF0EeaOm_6bF2V_sQ" elementId="net.openchrom.wsd.identifier.supplier.geneident.ui.handledmenuitem.ncbiqblastsearch" label="NCBI Nucleotide BLAST Search" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/identify_peaks.gif" tooltip="Queue a new online BLAST search." command="_QUDfkGF0EeaOm_6bF2V_sQ">
+      <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_X5BS8J4jEeulAsUK_t46TA" coreExpressionId="org.eclipse.chemclipse.ux.extension.ui.definitions.isChromatogramTypeWSD"/>
+    </elements>
   </fragments>
 </fragment:ModelFragments>
