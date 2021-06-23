@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Christoph Läubrich - initial API and implementation
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt;
 
@@ -418,9 +419,9 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 	public String getSettings() throws IOException {
 
 		if(preferences != null) {
-			PeakIdentifierSettings s = new PeakIdentifierSettings();
-			s.setIdentifierSettings(settings.save());
-			return preferences.getSerialization().toString(s);
+			PeakIdentifierSettings settingz = new PeakIdentifierSettings();
+			settingz.setIdentifierSettings(settings.save());
+			return preferences.getSerialization().toString(settingz);
 		}
 		return "";
 	}
