@@ -133,6 +133,10 @@
          id="net.openchrom.xxd.converter.supplier.gaml.feature"
          version="0.0.0"/>
 
+   <includes
+         id="net.openchrom.thirdpartylibraries.imaging.feature"
+         version="0.0.0"/>
+
    <plugin
          id="net.openchrom.rcp.compilation.community.ui"
          download-size="0"
