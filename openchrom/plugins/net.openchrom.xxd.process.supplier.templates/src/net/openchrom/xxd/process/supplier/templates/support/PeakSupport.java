@@ -138,8 +138,7 @@ public class PeakSupport {
 					 */
 					IChromatogramWSD chromatogramWSD = (IChromatogramWSD)chromatogram;
 					if(traces.size() > 0) {
-						// TODO - activate using traces
-						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground);
+						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground, traces);
 					} else {
 						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground);
 					}
