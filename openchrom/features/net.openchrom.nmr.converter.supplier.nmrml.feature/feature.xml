@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.nmr.converter.supplier.nmrml.feature"
+      label="nmrML Converter"
+      version="1.4.0.qualifier"
+      provider-name="OpenChrom"
+      plugin="net.openchrom.feature.branding">
+
+   <description url="http://www.openchrom.net">
+      This is the nmrML converter.
+   </description>
+
+   <copyright url="http://www.openchrom.net">
+      Copyright (c) 2021 Lablicate GmbH.
+   </copyright>
+
+   <license url="http://www.eclipse.org/legal/epl-v10.html">
+      Copyright (c) 2021 Lablicate GmbH.
+
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License
+v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+   </license>
+
+   <url>
+      <discovery label="nmrML.org" url="https://www.nmrml.org/"/>
+   </url>
+
+   <plugin
+         id="net.openchrom.nmr.converter.supplier.nmrml"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

@@ -63,5 +63,6 @@
 		<module>net.openchrom.msd.converter.supplier.pkf.feature</module>
 		<module>net.openchrom.msd.converter.supplier.mz5.feature</module>
 		<module>net.openchrom.xxd.converter.supplier.gaml.feature</module>
+		<module>net.openchrom.xxd.converter.supplier.nmrml.feature</module>
 	</modules>
 </project>

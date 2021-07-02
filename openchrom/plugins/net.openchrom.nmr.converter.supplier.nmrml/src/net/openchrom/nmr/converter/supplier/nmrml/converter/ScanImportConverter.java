@@ -9,7 +9,7 @@
  * Contributors:
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.converter.supplier.gaml.converter;
+package net.openchrom.nmr.converter.supplier.nmrml.converter;
 
 import java.io.File;
 import java.io.FileReader;
@@ -24,10 +24,8 @@ import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.xxd.converter.supplier.io.exception.UnknownVersionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.nmr.converter.supplier.gaml.io.ScanReaderVersion100;
-import net.openchrom.nmr.converter.supplier.gaml.io.ScanReaderVersion110;
-import net.openchrom.nmr.converter.supplier.gaml.io.ScanReaderVersion120;
-import net.openchrom.xxd.converter.supplier.gaml.internal.io.IConstants;
+import net.openchrom.nmr.converter.supplier.nmrml.internal.io.IConstants;
+import net.openchrom.nmr.converter.supplier.nmrml.io.ScanReaderVersion100;
 
 public class ScanImportConverter extends AbstractScanImportConverter<Collection<IComplexSignalMeasurement<?>>> implements IScanImportConverter<Collection<IComplexSignalMeasurement<?>>> {
 
@@ -42,28 +40,22 @@ public class ScanImportConverter extends AbstractScanImportConverter<Collection<
 		IProcessingInfo<Collection<IComplexSignalMeasurement<?>>> processingInfo = new ProcessingInfo<>();
 		try {
 			final FileReader fileReader = new FileReader(file);
-			final char[] charBuffer = new char[100];
+			final char[] charBuffer = new char[500];
+			System.out.println(charBuffer);
 			fileReader.read(charBuffer);
 			fileReader.close();
 			//
 			final String header = new String(charBuffer);
-			if(header.contains(IConstants.GAML_V_100)) {
+			if(header.contains(IConstants.NODE_NMRML)) {
 				ScanReaderVersion100 scanReader = new ScanReaderVersion100();
-				Collection<IComplexSignalMeasurement<?>> result = scanReader.read(file, monitor);
-				processingInfo.setProcessingResult(result);
-			} else if(header.contains(IConstants.GAML_V_110)) {
-				ScanReaderVersion110 scanReader = new ScanReaderVersion110();
-				Collection<IComplexSignalMeasurement<?>> result = scanReader.read(file, monitor);
-				processingInfo.setProcessingResult(result);
-			} else if(header.contains(IConstants.GAML_V_120)) {
-				ScanReaderVersion120 scanReader = new ScanReaderVersion120();
 				Collection<IComplexSignalMeasurement<?>> result = scanReader.read(file, monitor);
 				processingInfo.setProcessingResult(result);
 			} else {
 				throw new UnknownVersionException();
 			}
 		} catch(IOException e) {
-			processingInfo.addErrorMessage("GAML NMR", "There was a problem during file import.", e);
+			e.printStackTrace();
+			processingInfo.addErrorMessage("nmrML", "There was a problem during file import.", e);
 		}
 		return processingInfo;
 	}

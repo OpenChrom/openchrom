@@ -95,5 +95,6 @@
 		<module>net.openchrom.wsd.converter.supplier.gaml</module>
 		<module>net.openchrom.xir.converter.supplier.gaml</module>
 		<module>net.openchrom.xxd.converter.supplier.gaml</module>
+		<module>net.openchrom.nmr.converter.supplier.nmrml</module>
 	</modules>
 </project>
