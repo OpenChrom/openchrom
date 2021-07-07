@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Lablicate GmbH.
+ * Copyright (c) 2014, 2021 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,18 +18,15 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-
-import ucar.nc2.NetcdfFile;
-
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.csd.converter.io.AbstractChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
-import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
@@ -41,9 +38,11 @@ import net.openchrom.csd.converter.supplier.cdf.io.support.IAbstractCDFChromatog
 import net.openchrom.csd.converter.supplier.cdf.model.VendorChromatogram;
 import net.openchrom.csd.converter.supplier.cdf.model.VendorScan;
 
-public class ChromatogramReader extends AbstractChromatogramCSDReader implements IChromatogramCSDReader {
+import ucar.nc2.NetcdfFile;
 
-	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
+public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader implements IChromatogramCSDReader {
+
+	private static final Logger logger = Logger.getLogger(ChromatogramReaderCSD.class);
 
 	@Override
 	public IChromatogramCSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {

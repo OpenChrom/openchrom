@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Lablicate GmbH.
+ * Copyright (c) 2014, 2021 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -11,13 +11,15 @@
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.cdf.ui;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
 import org.osgi.framework.BundleContext;
+
+import net.openchrom.csd.converter.supplier.cdf.preferences.PreferenceSupplier;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends AbstractActivatorUI {
 
 	// The shared instance
 	private static Activator plugin;
@@ -26,6 +28,7 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
+
 	}
 
 	/*
@@ -36,6 +39,7 @@ public class Activator extends AbstractUIPlugin {
 
 		super.start(context);
 		plugin = this;
+		initializePreferenceStore(PreferenceSupplier.INSTANCE());
 	}
 
 	/*
@@ -50,7 +54,7 @@ public class Activator extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance
-	 * 
+	 *
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {

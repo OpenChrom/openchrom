@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2020 Lablicate GmbH.
+ * Copyright (c) 2014, 2021 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -24,11 +24,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.csd.converter.supplier.cdf.internal.converter.IConstants;
 import net.openchrom.csd.converter.supplier.cdf.internal.converter.SpecificationValidator;
-import net.openchrom.csd.converter.supplier.cdf.io.ChromatogramReader;
+import net.openchrom.csd.converter.supplier.cdf.io.ChromatogramReaderCSD;
 
-public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramCSD> {
+public class ChromatogramImportConverterCSD extends AbstractChromatogramImportConverter<IChromatogramCSD> {
 
-	private static final Logger logger = Logger.getLogger(ChromatogramImportConverter.class);
+	private static final Logger logger = Logger.getLogger(ChromatogramImportConverterCSD.class);
 	private static final String DESCRIPTION = "NetCDF Import Converter";
 
 	@Override
@@ -37,7 +37,7 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 		IProcessingInfo<IChromatogramCSD> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			file = SpecificationValidator.validateSpecification(file);
-			IChromatogramCSDReader reader = new ChromatogramReader();
+			IChromatogramCSDReader reader = new ChromatogramReaderCSD();
 			try {
 				IChromatogramCSD chromatogram = reader.read(file, monitor);
 				processingInfo.setProcessingResult(chromatogram);
@@ -55,7 +55,7 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 		IProcessingInfo<IChromatogramOverview> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			file = SpecificationValidator.validateSpecification(file);
-			IChromatogramCSDReader reader = new ChromatogramReader();
+			IChromatogramCSDReader reader = new ChromatogramReaderCSD();
 			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM_OVERVIEW);
 			try {
 				IChromatogramOverview chromatogramOverview = reader.readOverview(file, monitor);

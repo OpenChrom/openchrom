@@ -9,11 +9,16 @@
             fileExtension=".CDF"
             filterName="ANDI/AIA CDF Chromatogram (*.CDF)"
             id="net.openchrom.csd.converter.supplier.cdf"
-            importConverter="net.openchrom.csd.converter.supplier.cdf.converter.ChromatogramImportConverter"
+            importConverter="net.openchrom.csd.converter.supplier.cdf.converter.ChromatogramImportConverterCSD"
             importMagicNumberMatcher="net.openchrom.csd.converter.supplier.cdf.converter.MagicNumberMatcher"
             isExportable="false"
             isImportable="true">
       </ChromatogramSupplier>
    </extension>
-
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="net.openchrom.csd.converter.supplier.cdf.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
 </plugin>

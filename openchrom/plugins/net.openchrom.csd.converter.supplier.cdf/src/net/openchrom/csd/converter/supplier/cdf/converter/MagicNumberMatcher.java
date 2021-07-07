@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Lablicate GmbH.
+ * Copyright (c) 2016, 2021 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -48,6 +48,11 @@ public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IM
 			} catch(IOException e) {
 				logger.warn(e);
 			}
+		} else if(checkFileExtension(file, ".cdfx")) {
+			/*
+			 * GCxGC
+			 */
+			isValidFormat = true;
 		}
 		return isValidFormat;
 	}
