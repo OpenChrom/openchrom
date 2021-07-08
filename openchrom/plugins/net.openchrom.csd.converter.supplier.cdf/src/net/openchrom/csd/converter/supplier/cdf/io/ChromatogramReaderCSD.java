@@ -35,7 +35,7 @@ import net.openchrom.csd.converter.supplier.cdf.internal.converter.IConstants;
 import net.openchrom.csd.converter.supplier.cdf.io.support.CDFChromtogramArrayReader;
 import net.openchrom.csd.converter.supplier.cdf.io.support.DateSupport;
 import net.openchrom.csd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
-import net.openchrom.csd.converter.supplier.cdf.model.VendorChromatogram;
+import net.openchrom.csd.converter.supplier.cdf.model.VendorChromatogramCSD;
 import net.openchrom.csd.converter.supplier.cdf.model.VendorScan;
 
 import ucar.nc2.NetcdfFile;
@@ -58,7 +58,7 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 
 	private IChromatogramCSD readFile(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
-		VendorChromatogram chromatogram;
+		VendorChromatogramCSD chromatogram;
 		if(!isValidFileFormat(file)) {
 			return null;
 		}
@@ -123,12 +123,12 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 	 * @throws IonLimitExceededException
 	 * @throws AbundanceLimitExceededException
 	 */
-	private VendorChromatogram readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored, AbundanceLimitExceededException {
+	private VendorChromatogramCSD readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored, AbundanceLimitExceededException {
 
 		@SuppressWarnings("deprecation")
 		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
 		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
-		VendorChromatogram chromatogram = new VendorChromatogram();
+		VendorChromatogramCSD chromatogram = new VendorChromatogramCSD();
 		setChromatogramEntries(chromatogram, in, file);
 		monitor.subTask(IConstants.PARSE_SCANS);
 		int retentionTime = in.getScanDelay();
@@ -153,7 +153,7 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 	 * @param in
 	 * @param file
 	 */
-	private void setChromatogramEntries(VendorChromatogram chromatogram, IAbstractCDFChromatogramArrayReader in, File file) {
+	private void setChromatogramEntries(VendorChromatogramCSD chromatogram, IAbstractCDFChromatogramArrayReader in, File file) {
 
 		assert chromatogram != null : getClass().getName() + " The chromatogram must not be null";
 		/*

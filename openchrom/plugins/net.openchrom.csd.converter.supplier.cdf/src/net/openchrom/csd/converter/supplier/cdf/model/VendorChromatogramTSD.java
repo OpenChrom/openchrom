@@ -33,7 +33,7 @@ public class VendorChromatogramTSD extends AbstractChromatogramTSD {
 	@Override
 	public String getLabelAxisY() {
 
-		return "Retention Time Column 2 [sec]";
+		return "Column 2 [scans]";
 	}
 
 	@Override
