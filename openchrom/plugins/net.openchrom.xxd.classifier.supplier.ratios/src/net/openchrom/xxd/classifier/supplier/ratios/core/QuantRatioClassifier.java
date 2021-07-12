@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -52,7 +52,7 @@ public class QuantRatioClassifier extends AbstractRatioClassifier {
 			 */
 			QuantRatios traceRatios = calculateRatios(chromatogramSelection.getChromatogram(), settings);
 			PeakRatioResult classifierResult = new PeakRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", traceRatios);
-			IMeasurementResult measurementResult = new MeasurementResult("Quant Ratio Classifier", CLASSIFIER_ID, "Quant Ratios", traceRatios);
+			IMeasurementResult<?> measurementResult = new MeasurementResult("Quant Ratio Classifier", CLASSIFIER_ID, "Quant Ratios", traceRatios);
 			chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
 			processingInfo.setProcessingResult(classifierResult);
 		}

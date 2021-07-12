@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -102,9 +102,8 @@ public class DetectorSettings extends ArrayList<DetectorSetting> implements ISet
 
 	public boolean exportItems(File file) {
 
-		try {
-			PrintWriter printWriter = new PrintWriter(file);
-			//
+		boolean success = false;
+		try (PrintWriter printWriter = new PrintWriter(file)) {
 			List<DetectorSetting> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
 				Collections.sort(settings, new DetectorComparator()); // SORT OK
@@ -116,12 +115,12 @@ public class DetectorSettings extends ArrayList<DetectorSetting> implements ISet
 				printWriter.println(builder.toString());
 			}
 			printWriter.flush();
-			printWriter.close();
-			return true;
+			success = true;
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
-			return false;
 		}
+		//
+		return success;
 	}
 
 	private DetectorSetting extract(String text) {

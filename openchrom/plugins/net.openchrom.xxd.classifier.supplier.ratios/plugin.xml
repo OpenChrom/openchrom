@@ -52,7 +52,7 @@
       <ChromatogramSupplier
             description="Exports a Quant Ratio Classifier Template "
             exportConverter="net.openchrom.xxd.classifier.supplier.ratios.core.QuantRatioExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="QuantRatioClassifierTemplate.txt"
             filterName="Template Quant Ratios (*.txt)"
             id="net.openchrom.xxd.classifier.supplier.ratios.quantRatioTemplateMSD"
@@ -63,7 +63,7 @@
       <ChromatogramSupplier
             description="Exports a Time Ratio Classifier Template "
             exportConverter="net.openchrom.xxd.classifier.supplier.ratios.core.TimeRatioExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="TimeRatioClassifierTemplate.txt"
             filterName="Template Time Ratios (*.txt)"
             id="net.openchrom.xxd.classifier.supplier.ratios.timeRatioTemplateMSD"
@@ -74,7 +74,7 @@
       <ChromatogramSupplier
             description="Exports a Trace Ratio Classifier Template "
             exportConverter="net.openchrom.xxd.classifier.supplier.ratios.core.TraceRatioExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="TraceRatioClassifierTemplate.txt"
             filterName="Template Trace Ratios (*.txt)"
             id="net.openchrom.xxd.classifier.supplier.ratios.traceRatioTemplateMSD"
@@ -88,7 +88,7 @@
       <ChromatogramSupplier
             description="Exports a Quant Ratio Classifier Template "
             exportConverter="net.openchrom.xxd.classifier.supplier.ratios.core.QuantRatioExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="QuantRatioClassifierTemplate.txt"
             filterName="Template Quant Ratios (*.txt)"
             id="net.openchrom.xxd.classifier.supplier.ratios.quantRatioTemplateCSD"
@@ -99,7 +99,7 @@
       <ChromatogramSupplier
             description="Exports a Time Ratio Classifier Template "
             exportConverter="net.openchrom.xxd.classifier.supplier.ratios.core.TimeRatioExport"
-            fileExtension="txt"
+            fileExtension=".txt"
             fileName="TimeRatioClassifierTemplate.txt"
             filterName="Template Time Ratios (*.txt)"
             id="net.openchrom.xxd.classifier.supplier.ratios.timeRatioTemplateCSD"
