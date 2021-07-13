@@ -119,6 +119,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	 */
 	public static final String P_EXPORT_NUMBER_TRACES_REVIEW = "exportNumberTracesReview";
 	public static final int DEF_EXPORT_NUMBER_TRACES_REVIEW = 5;
+	public static final String P_EXPORT_OPTIMIZE_RANGE_REVIEW = "exportOptimizeRangeReview";
+	public static final boolean DEF_EXPORT_OPTIMIZE_RANGE_REVIEW = true;
 	public static final String P_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW = "exportDeltaLeftMillisecondsReview";
 	public static final int DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW = 0;
 	public static final String P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW = "exportDeltaRightMillisecondsReview";
@@ -290,6 +292,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, Integer.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER));
 		//
 		defaultValues.put(P_EXPORT_NUMBER_TRACES_REVIEW, Integer.toString(DEF_EXPORT_NUMBER_TRACES_REVIEW));
+		defaultValues.put(P_EXPORT_OPTIMIZE_RANGE_REVIEW, Boolean.toString(DEF_EXPORT_OPTIMIZE_RANGE_REVIEW));
 		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW));
 		defaultValues.put(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW, Integer.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW));
 		//
@@ -518,6 +521,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_EXPORT_NUMBER_TRACES_REVIEW, DEF_EXPORT_NUMBER_TRACES_REVIEW);
+	}
+
+	public static boolean isExportOptimizeRangeReview() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_EXPORT_OPTIMIZE_RANGE_REVIEW, DEF_EXPORT_OPTIMIZE_RANGE_REVIEW);
 	}
 
 	public static int getDetectorDeltaLeftMilliseconds() {

@@ -45,6 +45,7 @@ public class ReviewExport extends AbstractChromatogramExportConverter implements
 		int deltaLeft = PreferenceSupplier.getExportDeltaLeftMillisecondsReview();
 		int deltaRight = PreferenceSupplier.getExportDeltaRightMillisecondsReview();
 		int numberTraces = PreferenceSupplier.getExportNumberTracesReview();
+		boolean optimizeRange = PreferenceSupplier.isExportOptimizeRangeReview();
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
@@ -58,6 +59,7 @@ public class ReviewExport extends AbstractChromatogramExportConverter implements
 				reviewSetting.setName(libraryInformation.getName());
 				reviewSetting.setCasNumber(libraryInformation.getCasNumber());
 				reviewSetting.setTraces(extractTraces(peak, numberTraces));
+				reviewSetting.setOptimizeRange(optimizeRange);
 				reviewSettings.add(reviewSetting);
 			}
 		}
