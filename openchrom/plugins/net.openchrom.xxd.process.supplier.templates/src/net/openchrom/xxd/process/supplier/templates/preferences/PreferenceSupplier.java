@@ -463,10 +463,20 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW);
 	}
 
+	public static void setExportDeltaLeftMillisecondsReview(int deltaMilliseconds) {
+
+		putInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW, deltaMilliseconds);
+	}
+
 	public static int getExportDeltaRightMillisecondsReview() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW);
+	}
+
+	public static void setExportDeltaRightMillisecondsReview(int deltaMilliseconds) {
+
+		putInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW, deltaMilliseconds);
 	}
 
 	public static int getExportDeltaLeftMillisecondsAssigner() {
@@ -523,10 +533,20 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getInt(P_EXPORT_NUMBER_TRACES_REVIEW, DEF_EXPORT_NUMBER_TRACES_REVIEW);
 	}
 
+	public static void setExportNumberTracesReview(int numberTraces) {
+
+		putInteger(P_EXPORT_NUMBER_TRACES_REVIEW, numberTraces);
+	}
+
 	public static boolean isExportOptimizeRangeReview() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_EXPORT_OPTIMIZE_RANGE_REVIEW, DEF_EXPORT_OPTIMIZE_RANGE_REVIEW);
+	}
+
+	public static void setExportOptimizeRangeReview(boolean optimizeRange) {
+
+		putBoolean(P_EXPORT_OPTIMIZE_RANGE_REVIEW, optimizeRange);
 	}
 
 	public static int getDetectorDeltaLeftMilliseconds() {
@@ -843,6 +863,17 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		try {
 			IEclipsePreferences preferences = INSTANCE().getPreferences();
 			preferences.putBoolean(key, value);
+			preferences.flush();
+		} catch(BackingStoreException e) {
+			logger.warn(e);
+		}
+	}
+
+	private static void putInteger(String key, int value) {
+
+		try {
+			IEclipsePreferences preferences = INSTANCE().getPreferences();
+			preferences.putInt(key, value);
 			preferences.flush();
 		} catch(BackingStoreException e) {
 			logger.warn(e);
