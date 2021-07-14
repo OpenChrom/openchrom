@@ -433,10 +433,20 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getBoolean(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, DEF_EXPORT_OPTIMIZE_RANGE_DETECTOR);
 	}
 
+	public static void setExportOptimizeRangeDetector(boolean optimizeRange) {
+
+		putBoolean(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, optimizeRange);
+	}
+
 	public static int getExportDeltaLeftMillisecondsDetector() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR);
+	}
+
+	public static void setExportDeltaLeftMillisecondsDetector(int deltaMilliseconds) {
+
+		putInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR, deltaMilliseconds);
 	}
 
 	public static int getExportDeltaRightMillisecondsDetector() {
@@ -445,16 +455,31 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR);
 	}
 
+	public static void setExportDeltaRightMillisecondsDetector(int deltaMilliseconds) {
+
+		putInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR, deltaMilliseconds);
+	}
+
 	public static int getExportDeltaLeftMillisecondsIdentifier() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER);
 	}
 
+	public static void setExportDeltaLeftMillisecondsIdentifier(int deltaMilliseconds) {
+
+		putInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, deltaMilliseconds);
+	}
+
 	public static int getExportDeltaRightMillisecondsIdentifier() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER);
+	}
+
+	public static void setExportDeltaRightMillisecondsIdentifier(int deltaMilliseconds) {
+
+		putInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, deltaMilliseconds);
 	}
 
 	public static int getExportDeltaLeftMillisecondsReview() {
@@ -521,10 +546,20 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getInt(P_EXPORT_NUMBER_TRACES_DETECTOR, DEF_EXPORT_NUMBER_TRACES_DETECTOR);
 	}
 
+	public static void setExportNumberTracesDetector(int numberTraces) {
+
+		putInteger(P_EXPORT_NUMBER_TRACES_DETECTOR, numberTraces);
+	}
+
 	public static int getExportNumberTracesIdentifier() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_EXPORT_NUMBER_TRACES_IDENTIFIER, DEF_EXPORT_NUMBER_TRACES_IDENTIFIER);
+	}
+
+	public static void setExportNumberTracesIdentifier(int numberTraces) {
+
+		putInteger(P_EXPORT_NUMBER_TRACES_IDENTIFIER, numberTraces);
 	}
 
 	public static int getExportNumberTracesReview() {

@@ -25,11 +25,11 @@ import org.osgi.service.component.annotations.Component;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
 @Component(service = {IProcessTypeSupplier.class})
-public class ReviewExportProcessSupplier extends AbstractSystemProcessSettings {
+public class IdentifierExportProcessSupplier extends AbstractSystemProcessSettings {
 
-	private static final String ID = "net.openchrom.xxd.process.supplier.templates.system.peakreviewexport";
-	private static final String NAME = "Peak Review Export";
-	private static final String DESCRIPTION = "Peak review export template system settings.";
+	private static final String ID = "net.openchrom.xxd.process.supplier.templates.system.peakidentifierexport";
+	private static final String NAME = "Peak Identifier Export";
+	private static final String DESCRIPTION = "Peak identifier export template system settings.";
 
 	@Override
 	public Collection<IProcessSupplier<?>> getProcessorSuppliers() {
@@ -37,22 +37,21 @@ public class ReviewExportProcessSupplier extends AbstractSystemProcessSettings {
 		return Collections.singleton(new ProcessSupplier(this));
 	}
 
-	private static final class ProcessSupplier extends AbstractSystemProcessSupplier<ReviewExportProcessSettings> {
+	private static final class ProcessSupplier extends AbstractSystemProcessSupplier<IdentifierExportProcessSettings> {
 
 		public ProcessSupplier(IProcessTypeSupplier parent) {
 
-			super(ID, NAME, DESCRIPTION, ReviewExportProcessSettings.class, parent);
+			super(ID, NAME, DESCRIPTION, IdentifierExportProcessSettings.class, parent);
 		}
 
 		@Override
 		public void executeUserSettings(ISystemProcessSettings settings, ProcessExecutionContext context) throws Exception {
 
-			if(settings instanceof ReviewExportProcessSettings) {
-				ReviewExportProcessSettings processSettings = (ReviewExportProcessSettings)settings;
-				PreferenceSupplier.setExportNumberTracesReview(processSettings.getNumberTraces());
-				PreferenceSupplier.setExportOptimizeRangeReview(processSettings.isOptimizeRange());
-				PreferenceSupplier.setExportDeltaLeftMillisecondsReview(processSettings.getRetentionTimeDeltaLeft());
-				PreferenceSupplier.setExportDeltaRightMillisecondsReview(processSettings.getRetentionTimeDeltaRight());
+			if(settings instanceof IdentifierExportProcessSettings) {
+				IdentifierExportProcessSettings processSettings = (IdentifierExportProcessSettings)settings;
+				PreferenceSupplier.setExportNumberTracesIdentifier(processSettings.getNumberTraces());
+				PreferenceSupplier.setExportDeltaLeftMillisecondsIdentifier(processSettings.getRetentionTimeDeltaLeft());
+				PreferenceSupplier.setExportDeltaRightMillisecondsIdentifier(processSettings.getRetentionTimeDeltaRight());
 			}
 		}
 	}
