@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.msd.converter.chromatogramSupplier">
+      <ChromatogramSupplier
+            description="Reads mzMLb Chromatograms"
+            fileExtension=".mzMLb"
+            filterName="mzML Chromatogram (*.mzMLb)"
+            id="net.openchrom.msd.converter.supplier.mzmlb"
+            importConverter="net.openchrom.msd.converter.supplier.mzmlb.converter.ChromatogramImportConverter"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.mzmlb.converter.MagicNumberMatcher"
+            isExportable="false"
+            isImportable="true">
+      </ChromatogramSupplier>
+   </extension>
+</plugin>
