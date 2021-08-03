@@ -141,6 +141,10 @@
          id="net.openchrom.nmr.converter.supplier.nmrml.feature"
          version="0.0.0"/>
 
+   <includes
+         id="net.openchrom.msd.converter.supplier.mzmlb.feature"
+         version="0.0.0"/>
+
    <plugin
          id="net.openchrom.rcp.compilation.community.ui"
          download-size="0"
