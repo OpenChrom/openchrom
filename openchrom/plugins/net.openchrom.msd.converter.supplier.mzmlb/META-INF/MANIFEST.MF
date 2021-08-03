@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Automatic-Module-Name: net.openchrom.msd.converter.supplier.mz5
+Automatic-Module-Name: net.openchrom.msd.converter.supplier.mzmlb
 Bundle-ManifestVersion: 2
 Bundle-Name: mzMLb
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.mzmlb;singleton:=true
