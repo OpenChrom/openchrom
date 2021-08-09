@@ -27,6 +27,8 @@ import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.ChromatogramPeakChart;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.PeakChartSettings;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.support.BaselineSelectionPaintListener;
+import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
+import org.eclipse.chemclipse.wsd.model.core.selection.ChromatogramSelectionWSD;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Point;
@@ -252,11 +254,18 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				/*
 				 * TIC/XIC
 				 */
+				boolean showTraces = false;
 				Set<Integer> traces = detectorRange.getTraces();
-				if(showTraces(chromatogram, traces)) {
+				if(showTracesMSD(chromatogram, traces)) {
 					ChromatogramSelectionMSD chromatogramSelectionMSD = new ChromatogramSelectionMSD((IChromatogramMSD)chromatogram);
 					chromatogramSelectionMSD.getSelectedIons().add(traces);
 					chromatogramSelection = chromatogramSelectionMSD;
+					showTraces = true;
+				} else if(showTracesWSD(chromatogram, traces)) {
+					ChromatogramSelectionWSD chromatogramSelectionWSD = new ChromatogramSelectionWSD((IChromatogramWSD)chromatogram);
+					chromatogramSelectionWSD.getSelectedWavelengths().add(traces);
+					chromatogramSelection = chromatogramSelectionWSD;
+					showTraces = true;
 				} else {
 					chromatogramSelection = new ChromatogramSelection(chromatogram);
 				}
@@ -270,7 +279,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				/*
 				 * Intensity Range
 				 */
-				double minY = showTraces(chromatogram, traces) ? 0.0d : getMinY(chromatogramSelection, startRetentionTime, stopRetentionTime);
+				double minY = showTraces ? 0.0d : getMinY(chromatogramSelection, startRetentionTime, stopRetentionTime);
 				double maxY = getMaxY(chromatogramSelection, startRetentionTime, stopRetentionTime);
 				Range selectedRangeX = new Range(startRetentionTime, stopRetentionTime);
 				Range selectedRangeY = new Range(minY, maxY);
@@ -297,9 +306,14 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		return retentionTime;
 	}
 
-	private boolean showTraces(IChromatogram<? extends IPeak> chromatogram, Set<Integer> traces) {
+	private boolean showTracesMSD(IChromatogram<? extends IPeak> chromatogram, Set<Integer> traces) {
 
 		return chromatogram instanceof IChromatogramMSD && traces.size() > 0;
+	}
+
+	private boolean showTracesWSD(IChromatogram<? extends IPeak> chromatogram, Set<Integer> traces) {
+
+		return chromatogram instanceof IChromatogramWSD && traces.size() > 0;
 	}
 
 	private void updateChart(IPeak peak) {

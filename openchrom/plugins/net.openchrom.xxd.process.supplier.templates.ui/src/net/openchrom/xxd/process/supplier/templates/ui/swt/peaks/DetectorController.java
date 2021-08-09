@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -131,7 +131,7 @@ public class DetectorController {
 							 * Focus XIC
 							 */
 							if(focusXIC(detectorRange, chartSettings)) {
-								peakDetectorChart.focusXIC(PreferenceSupplier.getOffsetMaxY());
+								peakDetectorChart.focusTraces(PreferenceSupplier.getOffsetMaxY());
 							}
 						}
 					}
@@ -324,18 +324,18 @@ public class DetectorController {
 
 	private boolean focusXIC(DetectorRange detectorRange, PeakDetectorChartSettings chartSettings) {
 
-		return detectorRange.getTraces().size() > 0 && chartSettings.isShowChromatogramXIC() && PreferenceSupplier.isDetectorFocusXIC();
+		return detectorRange.getTraces().size() > 0 && chartSettings.isShowChromatogramTraces() && PreferenceSupplier.isDetectorFocusXIC();
 	}
 
 	private void setVisibilityOptions(PeakChartSettings chartSettings, IChromatogram<?> chromatogram) {
 
 		if(chromatogram instanceof IChromatogramCSD) {
 			chartSettings.setShowChromatogramTIC(true);
-			chartSettings.setShowChromatogramXIC(false);
+			chartSettings.setShowChromatogramTraces(false);
 		} else {
 			Visibility visibility = PreferenceSupplier.getDetectorVisibility();
 			chartSettings.setShowChromatogramTIC(Visibility.isTIC(visibility));
-			chartSettings.setShowChromatogramXIC(Visibility.isTRACE(visibility));
+			chartSettings.setShowChromatogramTraces(Visibility.isTRACE(visibility));
 		}
 	}
 }
