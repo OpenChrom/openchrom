@@ -23,20 +23,18 @@ import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramReader;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.core.IVendorMassSpectrum;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
-import org.eclipse.chemclipse.msd.model.implementation.VendorMassSpectrum;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mz5.internal.model.CVParam;
 import net.openchrom.msd.converter.supplier.mz5.internal.model.CVReference;
+import net.openchrom.msd.converter.supplier.mz5.io.support.IScanMarker;
+import net.openchrom.msd.converter.supplier.mz5.io.support.ScanMarker;
 import net.openchrom.msd.converter.supplier.mz5.model.IVendorChromatogram;
-import net.openchrom.msd.converter.supplier.mz5.model.IVendorIon;
+import net.openchrom.msd.converter.supplier.mz5.model.IVendorScanProxy;
 import net.openchrom.msd.converter.supplier.mz5.model.VendorChromatogram;
-import net.openchrom.msd.converter.supplier.mz5.model.VendorIon;
+import net.openchrom.msd.converter.supplier.mz5.model.VendorScanProxy;
 
 import ch.systemsx.cisd.hdf5.HDF5Factory;
 import ch.systemsx.cisd.hdf5.IHDF5SimpleReader;
@@ -81,57 +79,68 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
 		IVendorChromatogram chromatogram = null;
+		chromatogram = new VendorChromatogram();
+		IHDF5SimpleReader reader = HDF5Factory.openForReading(file);
+		CVReference[] cvReferences = reader.readCompoundArray("CVReference", CVReference.class);
+		int retentionTimeReference = 0;
+		int spectrumTitleReference = 0;
+		int msLevelReference = 0;
+		for(int c = 0; c < cvReferences.length; c++) {
+			if(cvReferences[c].accession == 1000016 && cvReferences[c].name.equals("scan start time"))
+				retentionTimeReference = c;
+			if(cvReferences[c].accession == 1000796 && cvReferences[c].name.equals("spectrum title"))
+				spectrumTitleReference = c;
+			if(cvReferences[c].accession == 1000511 && cvReferences[c].name.equals("ms level"))
+				msLevelReference = c;
+		}
+		int[] spectrumIndex = reader.readIntArray("SpectrumIndex");
+		CVParam[] cvParams = reader.readCompoundArray("CVParam", CVParam.class);
+		int[] retentionTimes = new int[spectrumIndex.length];
+		String[] spectrumTitles = new String[spectrumIndex.length];
+		short[] msLevels = new short[spectrumIndex.length];
+		int p = 0;
+		for(CVParam cvParam : cvParams) {
+			if(cvParam.cvRefID == retentionTimeReference) {
+				int multiplicator = 1; // to milisecond
+				CVReference unit = cvReferences[cvParam.uRefID];
+				if(unit.accession == 10 && unit.name.equals("second"))
+					multiplicator = 1000;
+				if(unit.accession == 31 && unit.name.equals("minute"))
+					multiplicator = 60 * 1000;
+				retentionTimes[p] = Math.round(Float.parseFloat(cvParam.value) * multiplicator);
+				p++;
+			}
+			if(cvParam.cvRefID == spectrumTitleReference) {
+				spectrumTitles[p] = cvParam.value;
+			}
+			if(cvParam.cvRefID == msLevelReference) {
+				msLevels[p] = Short.parseShort(cvParam.value);
+			}
+		}
 		try {
-			chromatogram = new VendorChromatogram();
-			IHDF5SimpleReader reader = HDF5Factory.openForReading(file);
-			CVReference[] cvReferences = reader.readCompoundArray("CVReference", CVReference.class);
-			int retentionTimeReference = 0;
-			for(int c = 0; c < cvReferences.length; c++) {
-				if(cvReferences[c].accession == 1000016 && cvReferences[c].name.equals("scan start time"))
-					retentionTimeReference = c;
-			}
-			int[] spectrumIndex = reader.readIntArray("SpectrumIndex");
-			CVParam[] cvParams = reader.readCompoundArray("CVParam", CVParam.class);
-			int[] retentionTimes = new int[spectrumIndex.length];
-			int r = 0;
-			for(CVParam cvParam : cvParams) {
-				if(cvParam.cvRefID == retentionTimeReference) {
-					int multiplicator = 1; // to milisecond
-					CVReference unit = cvReferences[cvParam.uRefID];
-					if(unit.accession == 10 && unit.name.equals("second"))
-						multiplicator = 1000;
-					if(unit.accession == 31 && unit.name.equals("minute"))
-						multiplicator = 60 * 1000;
-					retentionTimes[r] = Math.round(Float.parseFloat(cvParam.value) * multiplicator);
-					r++;
-				}
-			}
-			float[] spectrumintensity = reader.readFloatArray("SpectrumIntensity");
 			double[] mzs = reader.readDoubleArray("SpectrumMZ");
+			float[] spectrumIntensity = reader.readFloatArray("SpectrumIntensity");
 			int start = 0;
 			for(int i = 0; i < spectrumIndex.length; i++) {
-				IVendorMassSpectrum massSpectrum = new VendorMassSpectrum();
-				massSpectrum.setRetentionTime(retentionTimes[i]);
 				int offset = spectrumIndex[i];
-				double mz = 0;
+				IScanMarker scanMarker = new ScanMarker(start, offset);
+				IVendorScanProxy scanProxy = new VendorScanProxy(mzs, spectrumIntensity, scanMarker);
+				scanProxy.setScanNumber(i);
+				scanProxy.setIdentifier(spectrumTitles[i]);
+				scanProxy.setRetentionTime(retentionTimes[i]);
+				scanProxy.setMassSpectrometer(msLevels[i]);
+				float totalSignal = 0;
 				for(int o = start; o < offset; o++) {
-					float intensity = spectrumintensity[o];
-					if(intensity >= VendorIon.MIN_ABUNDANCE && intensity <= VendorIon.MAX_ABUNDANCE) {
-						mz += mzs[o]; // first m/z value and then deltas
-						IVendorIon ion = new VendorIon(mz, intensity);
-						massSpectrum.addIon(ion);
-					}
-					start = offset;
+					totalSignal = totalSignal + spectrumIntensity[o];
 				}
-				chromatogram.addScan(massSpectrum);
+				scanProxy.setTotalSignal(totalSignal);
+				chromatogram.addScan(scanProxy);
+				start = offset;
 			}
-		} catch(AbundanceLimitExceededException e) {
-			logger.warn(e);
-		} catch(IonLimitExceededException e) {
-			logger.warn(e);
+			chromatogram.setFile(file);
+		} catch(OutOfMemoryError e) {
+			logger.error(e);
 		}
-		chromatogram.setFile(file);
-		//
 		return chromatogram;
 	}
 }
