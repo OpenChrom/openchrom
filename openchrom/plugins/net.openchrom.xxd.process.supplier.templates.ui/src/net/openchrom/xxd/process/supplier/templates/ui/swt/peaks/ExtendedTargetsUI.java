@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -364,8 +364,8 @@ public class ExtendedTargetsUI extends Composite {
 
 				if(e.keyCode == SWT.DEL) {
 					deleteTargets(shell);
-				} else if(e.keyCode == IKeyboardSupport.KEY_CODE_LC_I && (e.stateMask & SWT.CTRL) == SWT.CTRL) {
-					if((e.stateMask & SWT.ALT) == SWT.ALT) {
+				} else if(e.keyCode == IKeyboardSupport.KEY_CODE_LC_I && (e.stateMask & SWT.MOD1) == SWT.MOD1) {
+					if((e.stateMask & SWT.MOD3) == SWT.MOD3) {
 						/*
 						 * CTRL + ALT + I
 						 */

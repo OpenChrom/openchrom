@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -34,6 +34,7 @@ public class ScanMarkerListUI extends ExtendedTableViewer {
 	private int bounds[] = {200, 100, 100, 60};
 
 	public ScanMarkerListUI(Composite parent, int style) {
+
 		super(parent, style);
 		createColumns();
 	}
@@ -53,7 +54,7 @@ public class ScanMarkerListUI extends ExtendedTableViewer {
 			public void keyReleased(KeyEvent e) {
 
 				// CTRL + SPACE
-				if((e.stateMask & SWT.CTRL) == SWT.CTRL && e.keyCode == 32) {
+				if((e.stateMask & SWT.MOD1) == SWT.MOD1 && e.keyCode == 32) {
 					IStructuredSelection structuredSelection = getStructuredSelection();
 					Object object = structuredSelection.getFirstElement();
 					if(object instanceof IScanMarker) {
