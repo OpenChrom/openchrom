@@ -65,5 +65,6 @@
 		<module>net.openchrom.xxd.converter.supplier.gaml.feature</module>
 		<module>net.openchrom.nmr.converter.supplier.nmrml.feature</module>
 		<module>net.openchrom.msd.converter.supplier.mzmlb.feature</module>
+		<module>net.openchrom.msd.converter.supplier.mzdb.feature</module>
 	</modules>
 </project>
