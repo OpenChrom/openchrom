@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use OpenChrom to analyze your data, please cite it as below."
+authors:
+- family-names: "Wenig"
+  given-names: "Philip"
+  orcid: "https://orcid.org/0000-0003-4903-3375"
+- family-names: "Odermatt"
+  given-names: "Juergen"
+title: "OpenChrom: a cross-platform open source software for the mass spectrometric analysis of chromatographic data"
+doi: 10.1186/1471-2105-11-405
+date-released: 2010-07-30
+url: "https://openchrom.net"
