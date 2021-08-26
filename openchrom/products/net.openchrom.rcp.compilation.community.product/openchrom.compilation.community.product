@@ -16,9 +16,6 @@
    <launcherArgs>
       <programArgs>-clearPersistedState
       </programArgs>
-      <programArgsLin>--launcher.GTK_version
-2
-      </programArgsLin>
       <vmArgs>-Xms512M
 -Xmx1024M
 -Dosgi.framework.extensions=org.eclipse.fx.osgi
