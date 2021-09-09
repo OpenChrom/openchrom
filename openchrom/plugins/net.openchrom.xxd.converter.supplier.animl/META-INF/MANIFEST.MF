@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.eclipse.chemclipse.msd.converter.supplier.animl
+Bundle-ManifestVersion: 2
+Bundle-Name: AniML
+Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.animl;singleton:=true
+Bundle-Version: 1.4.0.qualifier
+Bundle-Activator: net.openchrom.xxd.converter.supplier.animl.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.chemclipse.support
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: net.openchrom.xxd.converter.supplier.animl.internal.converter,
+ net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core,
+ net.openchrom.xxd.converter.supplier.animl.internal.model.astm.technique,
+ net.openchrom.xxd.converter.supplier.animl.internal.model.w3,
+ net.openchrom.xxd.converter.supplier.animl.preferences
