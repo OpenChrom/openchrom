@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.xxd.converter.supplier.animl.feature"
+      label="AnIML"
+      version="1.4.0.qualifier"
+      provider-name="OpenChrom"
+      plugin="net.openchrom.feature.branding">
+
+   <description url="http://www.chemclipse.net">
+      This is a AnIML converter supplier.
+   </description>
+
+   <copyright url="http://www.chemclipse.net">
+      Copyright (c) 2014, 2018 Lablicate GmbH.
+   </copyright>
+
+   <license url="http://www.eclipse.org/legal/epl-v10.html">
+      Copyright (c) 2014, 2018 Lablicate GmbH.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License
+v1.0 which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+   </license>
+
+   <plugin
+         id="net.openchrom.csd.converter.supplier.animl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xxd.converter.supplier.animl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xxd.converter.supplier.animl.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

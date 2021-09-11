@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.xxd.converter.supplier.animl.ui
+Bundle-ManifestVersion: 2
+Bundle-Name: AnimML Settings
+Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.animl.ui;singleton:=true
+Bundle-Version: 1.4.0.qualifier
+Bundle-Activator: net.openchrom.xxd.converter.supplier.animl.ui.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.chemclipse.support.ui,
+ org.eclipse.chemclipse.support
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Import-Package: net.openchrom.xxd.converter.supplier.animl.preferences
