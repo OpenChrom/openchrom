@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Automatic-Module-Name: org.eclipse.chemclipse.msd.converter.supplier.animl
+Automatic-Module-Name: net.openchrom.xxd.converter.supplier.animl
 Bundle-ManifestVersion: 2
 Bundle-Name: AniML
 Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.animl;singleton:=true
