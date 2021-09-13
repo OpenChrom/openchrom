@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -10,8 +10,6 @@
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector;
-
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.PathResolver;
 
 /**
  * THIS CLASS IS NOT SUITED FOR PRODUCTIVE USE!<br/>

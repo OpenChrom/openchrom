@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,15 +18,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
-import net.sf.jranges.range.integerrange.RangeInteger;
-import net.sf.jranges.range.integerrange.UtilsRangeInteger;
-import net.sf.jranges.range.integerrange.impl.RangeIntegerDummy;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import net.sf.jranges.range.integerrange.impl.RangeIntegerDummy;
 
 /**
  * 
