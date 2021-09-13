@@ -17,5 +17,3 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.xxd.converter.supplier.animl
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: net.openchrom.csd.converter.supplier.animl.converter,
- net.openchrom.csd.converter.supplier.animl.model
