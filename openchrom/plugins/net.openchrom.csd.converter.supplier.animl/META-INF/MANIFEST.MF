@@ -1,9 +1,10 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.csd.converter.supplier.animl
+Eclipse-RegisterBuddy: org.eclipse.chemclipse.model, org.eclipse.chemclipse.csd.model
 Bundle-ManifestVersion: 2
 Bundle-Name: AniML
 Bundle-SymbolicName: net.openchrom.csd.converter.supplier.animl;singleton:=true
-Bundle-Version: 1.4.0
+Bundle-Version: 1.4.0.qualifier
 Bundle-Activator: net.openchrom.csd.converter.supplier.animl.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
@@ -17,5 +18,3 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.xxd.converter.supplier.animl
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: net.openchrom.csd.converter.supplier.animl.converter,
- net.openchrom.csd.converter.supplier.animl.model
