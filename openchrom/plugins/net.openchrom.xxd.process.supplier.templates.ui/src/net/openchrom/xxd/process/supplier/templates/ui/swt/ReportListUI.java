@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.swt;
 
 import java.util.List;
 
+import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -33,6 +34,8 @@ public class ReportListUI extends ExtendedTableViewer {
 	private ReportLabelProvider labelProvider = new ReportLabelProvider();
 	private ReportComparator tableComparator = new ReportComparator();
 	private ReportFilter listFilter = new ReportFilter();
+	//
+	private IUpdateListener updateListener;
 
 	public ReportListUI(Composite parent, int style) {
 
@@ -46,9 +49,22 @@ public class ReportListUI extends ExtendedTableViewer {
 		refresh();
 	}
 
+	public void setUpdateListener(IUpdateListener updateListener) {
+
+		this.updateListener = updateListener;
+	}
+
+	public void updateContent() {
+
+		if(updateListener != null) {
+			updateListener.update();
+		}
+	}
+
 	public void clear() {
 
 		setInput(null);
+		updateContent();
 	}
 
 	private void createColumns() {

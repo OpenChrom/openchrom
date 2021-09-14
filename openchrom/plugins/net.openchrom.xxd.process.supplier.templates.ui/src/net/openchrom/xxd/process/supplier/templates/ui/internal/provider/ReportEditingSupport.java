@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
-import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
@@ -22,15 +21,17 @@ import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReportStrategy;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.ReportListUI;
 import net.openchrom.xxd.process.supplier.templates.util.ReportValidator;
 
 public class ReportEditingSupport extends EditingSupport {
 
 	private CellEditor cellEditor;
-	private ExtendedTableViewer tableViewer;
+	private ReportListUI tableViewer;
 	private String column;
 
-	public ReportEditingSupport(ExtendedTableViewer tableViewer, String column) {
+	public ReportEditingSupport(ReportListUI tableViewer, String column) {
+
 		super(tableViewer);
 		this.column = column;
 		if(column.equals(ReportLabelProvider.REPORT_STRATEGY)) {
@@ -118,7 +119,9 @@ public class ReportEditingSupport extends EditingSupport {
 					}
 					break;
 			}
+			//
 			tableViewer.refresh();
+			tableViewer.updateContent();
 		}
 	}
 

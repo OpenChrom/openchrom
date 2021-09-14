@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Christoph Läubrich - initial API and implementation
+ * Philip Wenig - refactoring, so that it can be used with an annotation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt;
 
@@ -26,13 +27,13 @@ import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.Abstr
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE_TOOLTIP;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
-import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
+import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
@@ -41,10 +42,8 @@ import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.chemclipse.support.ui.swt.ITableSettings;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
-import org.eclipse.chemclipse.ux.extension.ui.support.PartSupport;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider;
-import org.eclipse.core.databinding.validation.ValidationStatus;
-import org.eclipse.core.runtime.IStatus;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.methods.IChangeListener;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.IExtendedPartUI;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -66,16 +65,11 @@ import org.eclipse.swt.widgets.Shell;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
-import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReportInputValidator;
 import net.openchrom.xxd.process.supplier.templates.util.ReportListUtil;
 
-public class TemplateReportEditor implements SettingsUIProvider.SettingsUIControl {
+public class TemplateReportEditor extends Composite implements IChangeListener, IExtendedPartUI {
 
-	private Composite control;
-	private SearchSupportUI searchSupportUI;
-	private ReportListUI reportListUI;
-	//
 	private static final String FILTER_EXTENSION = "*.txt";
 	private static final String FILTER_NAME = "Report Template (*.txt)";
 	private static final String FILE_NAME = "ReportTemplate.txt";
@@ -83,82 +77,87 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 	private static final String CATEGORY = "Chromatogram Report";
 	private static final String DELETE = "Delete";
 	//
-	private List<Listener> listeners = new ArrayList<>();
-	private List<Button> buttons = new ArrayList<>();
+	private Button buttonToolbarSearch;
+	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
+	private AtomicReference<ReportListUI> tableViewer = new AtomicReference<>();
 	//
-	private ReportSettings settings = new ReportSettings();
-	private ProcessorPreferences<ChromatogramReportSettings> preferences;
+	private List<Button> buttons = new ArrayList<>();
+	private List<Listener> listeners = new ArrayList<>();
+	//
+	private ReportSettings reportSettings = new ReportSettings();
 
-	public TemplateReportEditor(Composite parent, ProcessorPreferences<ChromatogramReportSettings> preferences, ChromatogramReportSettings settings) {
+	public TemplateReportEditor(Composite parent, int style) {
 
-		this.preferences = preferences;
-		if(settings != null) {
-			this.settings.load(settings.getReportSettings());
-		}
-		//
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout gridLayout = new GridLayout(1, false);
-		gridLayout.marginWidth = 0;
-		gridLayout.marginHeight = 0;
-		composite.setLayout(gridLayout);
-		//
-		createToolbarMain(composite);
-		searchSupportUI = createSearchSection(composite);
-		reportListUI = createTableSection(composite);
-		//
-		PartSupport.setCompositeVisibility(searchSupportUI, false);
-		setTableViewerInput();
-		setControl(composite);
+		super(parent, style);
+		createControl();
 	}
 
-	@Override
-	public void setEnabled(boolean enabled) {
+	public ReportSettings getReportSettings() {
 
-		reportListUI.getControl().setEnabled(enabled);
-		for(Button button : buttons) {
-			button.setEnabled(enabled);
-		}
-		searchSupportUI.setEnabled(enabled);
+		return reportSettings;
 	}
 
-	@Override
-	public IStatus validate() {
+	public void load(String entries) {
 
-		return ValidationStatus.ok();
+		reportSettings.load(entries);
+		setViewerInput();
 	}
 
-	@Override
-	public String getSettings() throws IOException {
+	public String save() {
 
-		if(preferences != null) {
-			ChromatogramReportSettings s = new ChromatogramReportSettings();
-			s.setReportSettings(settings.save());
-			return preferences.getSerialization().toString(s);
-		}
-		return "";
+		return reportSettings.save();
 	}
 
 	@Override
 	public void addChangeListener(Listener listener) {
 
-		listeners.add(listener);
+		/*
+		 * Listen to changes in the table.
+		 */
+		Control control = tableViewer.get().getControl();
+		control.addListener(SWT.Selection, listener);
+		control.addListener(SWT.KeyUp, listener);
+		control.addListener(SWT.MouseUp, listener);
+		control.addListener(SWT.MouseDoubleClick, listener);
+		/*
+		 * Listen to selection of the buttons.
+		 */
+		for(Button button : buttons) {
+			button.addListener(SWT.Selection, listener);
+			button.addListener(SWT.KeyUp, listener);
+			button.addListener(SWT.MouseUp, listener);
+			button.addListener(SWT.MouseDoubleClick, listener);
+		}
 	}
 
 	@Override
-	public Control getControl() {
+	public void setEnabled(boolean enabled) {
 
-		return control;
+		toolbarSearch.get().setEnabled(enabled);
+		tableViewer.get().getControl().setEnabled(enabled);
+		for(Button button : buttons) {
+			button.setEnabled(enabled);
+		}
 	}
 
-	public void load(String entries) {
+	private void createControl() {
 
-		settings.load(entries);
-		setTableViewerInput();
+		GridLayout gridLayout = new GridLayout(1, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		setLayout(gridLayout);
+		//
+		createToolbarMain(this);
+		createToolbarSearch(this);
+		createTableSection(this);
+		//
+		initialize();
 	}
 
-	public String getValues() {
+	private void initialize() {
 
-		return settings.save();
+		enableToolbar(toolbarSearch, buttonToolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH, false);
+		setViewerInput();
 	}
 
 	private void createToolbarMain(Composite parent) {
@@ -167,16 +166,15 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridData);
-		composite.setLayout(new GridLayout(8, false));
+		composite.setLayout(new GridLayout(7, false));
 		//
-		createButtonToggleSearch(composite);
+		buttonToolbarSearch = createButtonToggleToolbar(composite, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH);
 		add(createButtonAdd(composite));
 		add(createButtonEdit(composite));
 		add(createButtonRemove(composite));
 		add(createButtonRemoveAll(composite));
 		add(createButtonImport(composite));
 		add(createButtonExport(composite));
-		add(createButtonSave(composite));
 	}
 
 	private void add(Button button) {
@@ -184,7 +182,7 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 		buttons.add(button);
 	}
 
-	private SearchSupportUI createSearchSection(Composite parent) {
+	private void createToolbarSearch(Composite parent) {
 
 		SearchSupportUI searchSupportUI = new SearchSupportUI(parent, SWT.NONE);
 		searchSupportUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -193,17 +191,26 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 			@Override
 			public void performSearch(String searchText, boolean caseSensitive) {
 
-				reportListUI.setSearchText(searchText, caseSensitive);
+				tableViewer.get().setSearchText(searchText, caseSensitive);
 			}
 		});
 		//
-		return searchSupportUI;
+		toolbarSearch.set(searchSupportUI);
 	}
 
-	private ReportListUI createTableSection(Composite parent) {
+	private void createTableSection(Composite parent) {
 
 		ReportListUI reportListUI = new ReportListUI(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		reportListUI.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
+		//
+		reportListUI.setUpdateListener(new IUpdateListener() {
+
+			@Override
+			public void update() {
+
+				setViewerInput();
+			}
+		});
 		//
 		Shell shell = reportListUI.getTable().getShell();
 		ITableSettings tableSettings = reportListUI.getTableSettings();
@@ -211,30 +218,7 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 		addKeyEventProcessors(shell, tableSettings);
 		reportListUI.applySettings(tableSettings);
 		//
-		return reportListUI;
-	}
-
-	private Button createButtonToggleSearch(Composite parent) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
-		button.setToolTipText("Toggle search toolbar.");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				boolean visible = PartSupport.toggleCompositeVisibility(searchSupportUI);
-				if(visible) {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
-				} else {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
-				}
-			}
-		});
-		//
-		return button;
+		tableViewer.set(reportListUI);
 	}
 
 	private Button createButtonAdd(Composite parent) {
@@ -248,13 +232,13 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_ADD, ReportListUtil.EXAMPLE_SINGLE, new ReportInputValidator(settings.keySet()));
+				InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_ADD, ReportListUtil.EXAMPLE_SINGLE, new ReportInputValidator(reportSettings.keySet()));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
-					ReportSetting setting = settings.extractSettingInstance(item);
+					ReportSetting setting = reportSettings.extractSettingInstance(item);
 					if(setting != null) {
-						settings.add(setting);
-						setTableViewerInput();
+						reportSettings.add(setting);
+						setViewerInput();
 					}
 				}
 			}
@@ -274,19 +258,19 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				IStructuredSelection structuredSelection = (IStructuredSelection)reportListUI.getSelection();
+				IStructuredSelection structuredSelection = (IStructuredSelection)tableViewer.get().getSelection();
 				Object object = structuredSelection.getFirstElement();
 				if(object instanceof ReportSetting) {
 					Set<String> keySetEdit = new HashSet<>();
-					keySetEdit.addAll(settings.keySet());
+					keySetEdit.addAll(reportSettings.keySet());
 					ReportSetting setting = (ReportSetting)object;
 					keySetEdit.remove(setting.getName());
-					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new ReportInputValidator(keySetEdit));
+					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, reportSettings.extractSetting(setting), new ReportInputValidator(keySetEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
-						ReportSetting settingNew = settings.extractSettingInstance(item);
+						ReportSetting settingNew = reportSettings.extractSettingInstance(item);
 						setting.copyFrom(settingNew);
-						setTableViewerInput();
+						setViewerInput();
 					}
 				}
 			}
@@ -325,8 +309,8 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 			public void widgetSelected(SelectionEvent e) {
 
 				if(MessageDialog.openQuestion(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
-					settings.clear();
-					setTableViewerInput();
+					reportSettings.clear();
+					setViewerInput();
 				}
 			}
 		});
@@ -354,8 +338,8 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 				if(path != null) {
 					PreferenceSupplier.setListPathImport(fileDialog.getFilterPath());
 					File file = new File(path);
-					settings.importItems(file);
-					setTableViewerInput();
+					reportSettings.importItems(file);
+					setViewerInput();
 				}
 			}
 		});
@@ -385,7 +369,7 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 				if(path != null) {
 					PreferenceSupplier.setListPathExport(fileDialog.getFilterPath());
 					File file = new File(path);
-					if(settings.exportItems(file)) {
+					if(reportSettings.exportItems(file)) {
 						MessageDialog.openInformation(e.display.getActiveShell(), EXPORT_TITLE, MESSAGE_EXPORT_SUCCESSFUL);
 					} else {
 						MessageDialog.openWarning(e.display.getActiveShell(), EXPORT_TITLE, MESSAGE_EXPORT_FAILED);
@@ -397,27 +381,9 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 		return button;
 	}
 
-	private Button createButtonSave(Composite parent) {
+	private void setViewerInput() {
 
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
-		button.setToolTipText("Save the settings.");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SAVE, IApplicationImage.SIZE_16x16));
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				setTableViewerInput();
-			}
-		});
-		//
-		return button;
-	}
-
-	private void setTableViewerInput() {
-
-		reportListUI.setInput(settings);
+		tableViewer.get().setInput(reportSettings);
 		for(Listener listener : listeners) {
 			listener.handleEvent(new Event());
 		}
@@ -464,18 +430,13 @@ public class TemplateReportEditor implements SettingsUIProvider.SettingsUIContro
 	private void deleteItems(Shell shell) {
 
 		if(MessageDialog.openQuestion(shell, DIALOG_TITLE, MESSAGE_REMOVE)) {
-			IStructuredSelection structuredSelection = (IStructuredSelection)reportListUI.getSelection();
+			IStructuredSelection structuredSelection = (IStructuredSelection)tableViewer.get().getSelection();
 			for(Object object : structuredSelection.toArray()) {
 				if(object instanceof ReportSetting) {
-					settings.remove((ReportSetting)object);
+					reportSettings.remove((ReportSetting)object);
 				}
 			}
-			setTableViewerInput();
+			setViewerInput();
 		}
-	}
-
-	private void setControl(Composite composite) {
-
-		this.control = composite;
 	}
 }

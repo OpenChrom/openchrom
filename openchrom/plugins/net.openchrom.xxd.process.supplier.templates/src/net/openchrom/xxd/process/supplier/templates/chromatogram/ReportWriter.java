@@ -123,7 +123,7 @@ public class ReportWriter {
 			if(reports > 1) {
 				printWriter.println("Summary");
 				printWriter.println("");
-				printResults(reportSettings.getReportSettingsList(), sumResults, columnsToPrint, printWriter);
+				printResults(reportSettings.getReportSettings(), sumResults, columnsToPrint, printWriter);
 			}
 		}
 	}
@@ -158,7 +158,7 @@ public class ReportWriter {
 		if(reportSettings.isPrintHeader()) {
 			printChromatogramHeader(chromatogram, printWriter);
 		}
-		printResults(reportSettings.getReportSettingsList(), mappedResults, columnsToPrint, printWriter);
+		printResults(reportSettings.getReportSettings(), mappedResults, columnsToPrint, printWriter);
 		//
 		return mappedResults;
 	}
@@ -278,7 +278,7 @@ public class ReportWriter {
 
 		Map<ReportSetting, List<IPeak>> mappedResults = new HashMap<>();
 		//
-		for(ReportSetting reportSetting : reportSettings.getReportSettingsList()) {
+		for(ReportSetting reportSetting : reportSettings.getReportSettings()) {
 			List<IPeak> matchedPeaks = extractPeaks(chromatogram, reportSetting);
 			List<IPeak> storedPeaks = mappedResults.get(reportSetting);
 			if(storedPeaks == null) {

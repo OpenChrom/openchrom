@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.fieldeditors;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
@@ -21,6 +22,7 @@ public class ReportFieldEditor extends AbstractFieldEditor {
 	private TemplateReportEditor editor;
 
 	public ReportFieldEditor(String name, String labelText, Composite parent) {
+
 		init(name, labelText);
 		createControl(parent);
 	}
@@ -29,9 +31,9 @@ public class ReportFieldEditor extends AbstractFieldEditor {
 	protected void doFillIntoGrid(Composite parent, int numColumns) {
 
 		getLabelControl(parent);
-		editor = new TemplateReportEditor(parent, null, null);
+		editor = new TemplateReportEditor(parent, SWT.NONE);
 		GridData gridData = new GridData(GridData.FILL_BOTH);
-		editor.getControl().setLayoutData(gridData);
+		editor.setLayoutData(gridData);
 	}
 
 	@Override
@@ -51,7 +53,7 @@ public class ReportFieldEditor extends AbstractFieldEditor {
 	@Override
 	protected void doStore() {
 
-		getPreferenceStore().setValue(getPreferenceName(), editor.getValues());
+		getPreferenceStore().setValue(getPreferenceName(), editor.save());
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class ReportFieldEditor extends AbstractFieldEditor {
 	protected void adjustForNumColumns(int numColumns) {
 
 		if(numColumns >= 2) {
-			GridData gridData = (GridData)editor.getControl().getLayoutData();
+			GridData gridData = (GridData)editor.getLayoutData();
 			gridData.horizontalSpan = numColumns - 1;
 			gridData.grabExcessHorizontalSpace = true;
 		}

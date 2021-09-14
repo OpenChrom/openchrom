@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" configuration-policy="optional" name="net.openchrom.xxd.process.supplier.templates.ui.services.ReportSettingsAnnotationService">
+   <service>
+      <provide interface="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.IAnnotationWidgetService"/>
+   </service>
+   <implementation class="net.openchrom.xxd.process.supplier.templates.ui.services.ReportSettingsAnnotationService"/>
+</scr:component>
