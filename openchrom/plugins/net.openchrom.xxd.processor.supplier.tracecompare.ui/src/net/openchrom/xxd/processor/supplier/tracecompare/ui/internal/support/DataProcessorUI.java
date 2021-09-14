@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2019 Lablicate GmbH.
+ * Copyright (c) 2017, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -58,6 +58,7 @@ public class DataProcessorUI extends DataProcessor {
 	private Color colorDefault;
 
 	public DataProcessorUI() {
+
 		/*
 		 * Colors
 		 */
@@ -93,7 +94,6 @@ public class DataProcessorUI extends DataProcessor {
 		return wavelenghts.toArray(new String[wavelenghts.size()]);
 	}
 
-	@SuppressWarnings("unchecked")
 	public Map<Integer, Map<String, ISeriesData>> extractMeasurementsData(List<File> measurementFiles, String type) {
 
 		Map<Integer, Map<String, ISeriesData>> measurementsData = new HashMap<Integer, Map<String, ISeriesData>>();
