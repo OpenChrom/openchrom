@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2017, 2021 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataProvider;
 import org.eclipse.nebula.visualization.xygraph.figures.Trace;
@@ -40,8 +39,6 @@ import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
 
 public class CompositeCorrelationsUI extends Composite {
 
-	private static final Logger logger = Logger.getLogger(CompositeCorrelationsUI.class);
-	//
 	private TreeMap<String, Trace> traceCorrelationsMap; // key is correlation name string, value is Trace for that correlation, needed so trace can be removed
 	private XYGraph xyGraphCorrelation;
 	private int xyGraphCorrelationNumberOfPoints = 0; // if xyGraphCorrelationNumberOfPoints > 0, then remainder of xyGraphCorrelation data items are valid
@@ -52,6 +49,7 @@ public class CompositeCorrelationsUI extends Composite {
 	private int maxTop = 1;
 
 	public CompositeCorrelationsUI(Composite parent, int style) {
+
 		super(parent, style);
 		this.initialize();
 	}

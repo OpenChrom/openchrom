@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2021 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,7 +13,6 @@ package net.openchrom.msd.process.supplier.cms.ui.internal.provider;
 
 import java.text.DecimalFormat;
 
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -63,7 +62,6 @@ public class CmsLibraryListLabelProvider extends AbstractChemClipseLabelProvider
 
 	private String getText(IScanMSD massSpectrum, ILibraryInformation libraryInformation, int columnIndex) {
 
-		DecimalFormat decimalFormat = getDecimalFormat();
 		String text = "";
 		switch(columnIndex) {
 			case 0: // Name

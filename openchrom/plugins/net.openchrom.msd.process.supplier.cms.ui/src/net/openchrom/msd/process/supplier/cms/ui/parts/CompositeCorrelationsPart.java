@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2017, 2021 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,8 +18,6 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -40,14 +38,11 @@ public class CompositeCorrelationsPart {
 	private IEventBroker eventBroker;
 	@Inject
 	private EventHandler eventHandler;
-	@Inject
-	private MPart part;
-	@Inject
-	private EPartService partService;
 	//
 	private CompositeCorrelationsUI compositeCorrelationsUI;
 
 	CompositeCorrelationsPart() {
+
 		subscribe();
 	}
 
@@ -105,13 +100,5 @@ public class CompositeCorrelationsPart {
 		if(eventBroker != null && eventHandler != null) {
 			eventBroker.unsubscribe(eventHandler);
 		}
-	}
-
-	private boolean isPartVisible() {
-
-		if(partService != null && partService.isPartVisible(part)) {
-			return true;
-		}
-		return false;
 	}
 }

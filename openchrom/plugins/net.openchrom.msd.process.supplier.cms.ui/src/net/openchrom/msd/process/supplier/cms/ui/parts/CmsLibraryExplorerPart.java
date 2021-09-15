@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2021 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -51,6 +51,7 @@ public class CmsLibraryExplorerPart {
 
 	@Inject
 	public CmsLibraryExplorerPart(Composite parent) {
+
 		treeViewer = new TreeViewer(parent);
 		treeViewer.setContentProvider(new CmsFileExplorerContentProvider());
 		treeViewer.setLabelProvider(new CmsFileExplorerLabelProvider());
@@ -134,7 +135,7 @@ public class CmsLibraryExplorerPart {
 			/*
 			 * Create the input part and prepare it.
 			 */
-			MPart part = MBasicFactory.INSTANCE.createInputPart();
+			MPart part = MBasicFactory.INSTANCE.createPart();
 			part.setElementId(CmsLibraryEditor.ID);
 			part.setContributionURI(CmsLibraryEditor.CONTRIBUTION_URI);
 			part.setObject(file.getAbsolutePath());

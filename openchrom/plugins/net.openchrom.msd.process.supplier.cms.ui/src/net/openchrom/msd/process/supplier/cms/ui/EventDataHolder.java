@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Walter Whitlock.
+ * Copyright (c) 2017, 2021 Walter Whitlock.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -61,6 +61,7 @@ public class EventDataHolder {
 		return eventDataMap.get(topic);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Object getData(String topic, String property) {
 
 		Object ob = getData(topic);

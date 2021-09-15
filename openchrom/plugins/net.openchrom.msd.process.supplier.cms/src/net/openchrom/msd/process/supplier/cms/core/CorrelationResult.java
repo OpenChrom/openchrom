@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2017, 2021 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,7 +24,7 @@ public class CorrelationResult {
 
 		private double correlationValue;
 		private ICalibratedVendorLibraryMassSpectrum library;
-		private String libName; // temporary for devlopment
+		// private String libName; // temporary for devlopment
 
 		public double getCorrelationValue() {
 
@@ -48,6 +48,7 @@ public class CorrelationResult {
 	private CorrelationItem results[];
 
 	CorrelationResult(int size, ICalibratedVendorMassSpectrum spectrum) {
+
 		resultsCount = 0;
 		results = new CorrelationItem[size];
 	}
@@ -57,7 +58,7 @@ public class CorrelationResult {
 		CorrelationItem result = new CorrelationItem();
 		result.correlationValue = value;
 		result.library = libSpec;
-		result.libName = libSpec.getLibraryInformation().getName(); // temporary
+		// result.libName = libSpec.getLibraryInformation().getName(); // temporary
 		results[resultsCount] = result;
 		resultsCount++;
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2017, 2021 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,16 +14,13 @@ package net.openchrom.msd.process.supplier.cms.core;
 
 import java.util.ArrayList;
 
-import org.eclipse.chemclipse.logging.core.Logger;
-
 public class CorrelationResults {
 
-	private static final Logger logger = Logger.getLogger(CorrelationResults.class);
-	//
 	private ArrayList<CorrelationResult> results = null;
 	private String name;
 
 	CorrelationResults(String nameString) {
+
 		results = new ArrayList<CorrelationResult>();
 		name = nameString;
 	}

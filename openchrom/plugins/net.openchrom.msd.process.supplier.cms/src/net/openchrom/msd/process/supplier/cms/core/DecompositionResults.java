@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Walter Whitlock.
+ * Copyright (c) 2016, 2021 Walter Whitlock.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,19 +8,16 @@
  *
  * Contributors:
  * Walter Whitlock - initial API and implementation
+ * Philip Wenig - reduced compiler warnings
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
 import java.util.ArrayList;
 
-import org.eclipse.chemclipse.logging.core.Logger;
-
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
 
 public class DecompositionResults {
 
-	private static final Logger logger = Logger.getLogger(MassSpectraDecomposition.class);
-	//
 	private ArrayList<DecompositionResult> decompositionResults = null;
 	private boolean isCalibrated; // true if all results in results list are calibrated
 	private boolean hasETimes; // true if all results have a valid ETIMES field
@@ -28,6 +25,7 @@ public class DecompositionResults {
 	private String name;
 
 	DecompositionResults(String nameString) {
+
 		decompositionResults = new ArrayList<DecompositionResult>();
 		name = nameString;
 		isCalibrated = true;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Walter Whitlock.
+ * Copyright (c) 2016, 2021 Walter Whitlock.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,19 +8,17 @@
  *
  * Contributors:
  * Walter Whitlock - initial API and implementation
+ * Philip Wenig - reduced compiler warnings
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
 import java.util.ArrayList;
-
-import org.eclipse.chemclipse.logging.core.Logger;
 
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
 public class DecompositionResult {
 
-	private static final Logger logger = Logger.getLogger(MassSpectraDecomposition.class);
 	private ArrayList<ICalibratedVendorLibraryMassSpectrum> libraryComponents; // only need some of the info in CalibratedVendorLibraryMassSpectrum, but take it all for now
 	private ArrayList<Double> xComp; // for library component i = fraction of library ion current spectrum which was found in scan ion current spectrum
 	private ArrayList<Boolean> isQuantitative;
@@ -37,6 +35,7 @@ public class DecompositionResult {
 	private boolean isCalibrated; // set false if at least one componen result not quantitative
 
 	public DecompositionResult(double ssErr, double wssErr, double sourcePressure, String sourcePressureUnits, double eTimeS, String sigUnits) {
+
 		sumOfSquaresError = ssErr;
 		weightedSumOfSquaresError = wssErr;
 		componentCount = 0;
@@ -85,7 +84,7 @@ public class DecompositionResult {
 
 	public String getLibCompName(int i) {
 
-		//was return libraryComponents.get(i).getLibraryInformation().getName();
+		// was return libraryComponents.get(i).getLibraryInformation().getName();
 		return libraryComponents.get(i).makeNameString();
 	}
 

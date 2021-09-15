@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Lablicate GmbH.
+ * Copyright (c) 2017, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -176,13 +176,13 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 				 * Try to save the chromatogram.
 				 */
 				monitor.subTask("Save Mass Spectra");
-				IProcessingInfo processingInfo = DatabaseConverter.convert(massSpectrumFile, massSpectra, false, converterId, monitor);
+				IProcessingInfo<?> processingInfo = DatabaseConverter.convert(massSpectrumFile, massSpectra, false, converterId, monitor);
 				try {
 					/*
 					 * If no failures have occurred, set the dirty status to
 					 * false.
 					 */
-					processingInfo.getProcessingResult(File.class);
+					processingInfo.getProcessingResult();
 					dirtyable.setDirty(false);
 				} catch(TypeCastException e) {
 					logger.warn(e);

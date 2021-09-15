@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Walter Whitlock.
+ * Copyright (c) 2017, 2021 Walter Whitlock.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,10 +8,10 @@
  *
  * Contributors:
  * Walter Whitlock - initial API and implementation
+ * Philip Wenig - reduced compiler warnings
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.core;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -20,9 +20,6 @@ import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMa
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
 public class MassSpectraCorrelation {
-
-	private static final Logger logger = Logger.getLogger(MassSpectraCorrelation.class);
-	//
 
 	private double getCorrelation(ICalibratedVendorMassSpectrum testSpectrum, ICalibratedVendorLibraryMassSpectrum libSpectrum, double massTol) {
 
