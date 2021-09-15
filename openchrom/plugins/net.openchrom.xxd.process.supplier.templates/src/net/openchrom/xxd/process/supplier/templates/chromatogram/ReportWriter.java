@@ -33,86 +33,52 @@ import org.eclipse.chemclipse.numeric.statistics.Calculations;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.xxd.process.supplier.templates.model.ReportColumns;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
 
 public class ReportWriter {
 
 	private static final String DELIMITER = "\t";
-	private static final String SEPARATOR = ",";
-	private static final String SINGLE_TICK = "'";
-	private static final String DOUBLE_TICK = "\"";
 	//
 	private static final DecimalFormat timeFormat = ValueFormat.getDecimalFormatEnglish("0.000");
 	private static final DecimalFormat areaFormat = ValueFormat.getDecimalFormatEnglish("0.0000");
-	//
-	private static final String NAME = "Name";
-	private static final String CAS_NUMBER = "CAS#";
-	private static final String START_TIME_SETTING = "Start Time Setting [min]";
-	private static final String STOP_TIME_SETTING = "Stop Time Setting [min]";
-	private static final String NUM_PEAKS = "Number Peak(s)";
-	private static final String START_TIME_PEAKS = "Start Time Peak(s) [min]";
-	private static final String CENTER_TIME_PEAKS = "Center Time Peak(s) [min]";
-	private static final String STOP_TIME_PEAKS = "Stop Time Peak(s) [min]";
-	private static final String SUM_AREA = "Sum Area";
-	private static final String MIN_AREA = "Min Area";
-	private static final String MAX_AREA = "Max Area";
-	private static final String MEAN_AREA = "Mean Area";
-	private static final String MEDIAN_AREA = "Median Area";
-	private static final String STDEV_AREA = "Standard Deviation Area";
-	//
-	private List<String> columns = new ArrayList<>();
-
-	public ReportWriter() {
-
-		/*
-		 * Default Columns
-		 */
-		columns.add(NAME);
-		columns.add(CAS_NUMBER);
-		columns.add(START_TIME_SETTING);
-		columns.add(STOP_TIME_SETTING);
-		columns.add(NUM_PEAKS);
-		columns.add(START_TIME_PEAKS);
-		columns.add(CENTER_TIME_PEAKS);
-		columns.add(STOP_TIME_PEAKS);
-		columns.add(SUM_AREA);
-		columns.add(MIN_AREA);
-		columns.add(MAX_AREA);
-		columns.add(MEAN_AREA);
-		columns.add(MEDIAN_AREA);
-		columns.add(STDEV_AREA);
-	}
 
 	public void generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings reportSettings, IProgressMonitor monitor) throws IOException {
 
+		boolean fileExists = file.exists() && file.length() > 0;
 		try (PrintWriter printWriter = new PrintWriter(new FileWriter(file, append))) {
-			printResults(chromatograms, reportSettings, printWriter, monitor);
+			printResults(chromatograms, reportSettings, printWriter, fileExists, monitor);
 			printWriter.flush();
 		}
 	}
 
-	private void printResults(List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings reportSettings, PrintWriter printWriter, IProgressMonitor monitor) {
+	private void printResults(List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings reportSettings, PrintWriter printWriter, boolean fileExists, IProgressMonitor monitor) {
 
 		Map<ReportSetting, List<IPeak>> sumResults = new HashMap<>();
 		int reports = 0;
 		List<String> columnsToPrint = extractColumnsToPrint(reportSettings);
+		String chromatogramNameMaster = "";
 		//
 		for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
 			/*
 			 * Master
 			 */
-			Map<ReportSetting, List<IPeak>> mappedResults = printChromatogram(chromatogram, reportSettings, columnsToPrint, printWriter);
+			chromatogramNameMaster = chromatogram.getName();
+			Map<ReportSetting, List<IPeak>> mappedResults = printChromatogram(chromatogram, reportSettings, columnsToPrint, fileExists, chromatogramNameMaster, printWriter);
 			merge(mappedResults, sumResults);
 			reports++;
 			/*
 			 * Reference(s)
 			 */
 			if(reportSettings.isReportReferencedChromatograms()) {
+				int reference = 1;
 				for(IChromatogram<? extends IPeak> referenceChromatogram : chromatogram.getReferencedChromatograms()) {
-					Map<ReportSetting, List<IPeak>> mappedResultsReference = printChromatogram(referenceChromatogram, reportSettings, columnsToPrint, printWriter);
+					String chromatogramNameReference = chromatogramNameMaster + "_" + reference;
+					Map<ReportSetting, List<IPeak>> mappedResultsReference = printChromatogram(referenceChromatogram, reportSettings, columnsToPrint, fileExists, chromatogramNameReference, printWriter);
 					merge(mappedResultsReference, sumResults);
 					reports++;
+					reference++;
 				}
 			}
 		}
@@ -123,7 +89,7 @@ public class ReportWriter {
 			if(reports > 1) {
 				printWriter.println("Summary");
 				printWriter.println("");
-				printResults(reportSettings.getReportSettings(), sumResults, columnsToPrint, printWriter);
+				printResults(reportSettings, sumResults, columnsToPrint, fileExists, chromatogramNameMaster, printWriter);
 			}
 		}
 	}
@@ -131,20 +97,20 @@ public class ReportWriter {
 	private List<String> extractColumnsToPrint(ChromatogramReportSettings reportSettings) {
 
 		List<String> columnsToPrint = new ArrayList<>();
-		String printColumns = reportSettings.getPrintColumns();
-		if(printColumns.isEmpty()) {
+		ReportColumns reportColumns = reportSettings.getReportColumns();
+		ReportColumns defaultColumns = ReportColumns.getDefault();
+		//
+		if(reportColumns.isEmpty()) {
 			/*
 			 * Default
 			 */
-			columnsToPrint.addAll(columns);
+			columnsToPrint.addAll(defaultColumns);
 		} else {
 			/*
 			 * Selected Columns
 			 */
-			String[] values = printColumns.split(SEPARATOR);
-			for(String value : values) {
-				value = value.replaceAll(SINGLE_TICK, "").replaceAll(DOUBLE_TICK, "").trim();
-				if(columns.contains(value)) {
+			for(String value : reportColumns) {
+				if(defaultColumns.contains(value)) {
 					columnsToPrint.add(value);
 				}
 			}
@@ -152,29 +118,30 @@ public class ReportWriter {
 		return columnsToPrint;
 	}
 
-	private Map<ReportSetting, List<IPeak>> printChromatogram(IChromatogram<? extends IPeak> chromatogram, ChromatogramReportSettings reportSettings, List<String> columnsToPrint, PrintWriter printWriter) {
+	private Map<ReportSetting, List<IPeak>> printChromatogram(IChromatogram<? extends IPeak> chromatogram, ChromatogramReportSettings reportSettings, List<String> columnsToPrint, boolean fileExists, String chromatogramName, PrintWriter printWriter) {
 
 		Map<ReportSetting, List<IPeak>> mappedResults = mapChromatogram(chromatogram, reportSettings);
-		if(reportSettings.isPrintHeader()) {
-			printChromatogramHeader(chromatogram, printWriter);
-		}
-		printResults(reportSettings.getReportSettings(), mappedResults, columnsToPrint, printWriter);
+		//
+		printChromatogramHeader(chromatogram, reportSettings, printWriter);
+		printResults(reportSettings, mappedResults, columnsToPrint, fileExists, chromatogramName, printWriter);
 		//
 		return mappedResults;
 	}
 
-	private void printChromatogramHeader(IChromatogram<? extends IPeak> chromatogram, PrintWriter printWriter) {
+	private void printChromatogramHeader(IChromatogram<? extends IPeak> chromatogram, ChromatogramReportSettings reportSettings, PrintWriter printWriter) {
 
-		Map<String, String> headerData = chromatogram.getHeaderDataMap();
-		List<String> keys = new ArrayList<>(headerData.keySet());
-		Collections.sort(keys); // SORT OK
-		//
-		for(String key : keys) {
-			printWriter.print(key);
-			printWriter.print(": ");
-			printWriter.println(headerData.get(key));
+		if(reportSettings.isPrintHeader()) {
+			Map<String, String> headerData = chromatogram.getHeaderDataMap();
+			List<String> keys = new ArrayList<>(headerData.keySet());
+			Collections.sort(keys); // SORT OK
+			//
+			for(String key : keys) {
+				printWriter.print(key);
+				printWriter.print(": ");
+				printWriter.println(headerData.get(key));
+			}
+			printWriter.println("");
 		}
-		printWriter.println("");
 	}
 
 	private void merge(Map<ReportSetting, List<IPeak>> resultsSource, Map<ReportSetting, List<IPeak>> resultsSink) {
@@ -200,19 +167,29 @@ public class ReportWriter {
 		}
 	}
 
-	private void printResults(List<ReportSetting> reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, PrintWriter printWriter) {
+	private void printResults(ChromatogramReportSettings reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, boolean fileExists, String chromatogramName, PrintWriter printWriter) {
 
-		printResultHeader(columnsToPrint, printWriter);
-		printResultData(reportSettings, mappedResults, columnsToPrint, printWriter);
+		List<ReportSetting> reportSettingsList = reportSettings.getReportSettings();
+		printResultHeader(reportSettings, columnsToPrint, fileExists, printWriter);
+		printResultData(reportSettingsList, mappedResults, columnsToPrint, chromatogramName, printWriter);
 		printWriter.println("");
 	}
 
-	private void printResultHeader(List<String> columnsToPrint, PrintWriter printWriter) {
+	private void printResultHeader(ChromatogramReportSettings reportSettings, List<String> columnsToPrint, boolean fileExists, PrintWriter printWriter) {
 
-		printList(columnsToPrint, printWriter);
+		boolean printHeader = reportSettings.isPrintResultsHeader();
+		if(printHeader) {
+			if(fileExists) {
+				printHeader = reportSettings.isAppendResultsHeader();
+			}
+		}
+		//
+		if(printHeader) {
+			printList(columnsToPrint, printWriter);
+		}
 	}
 
-	private void printResultData(List<ReportSetting> reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, PrintWriter printWriter) {
+	private void printResultData(List<ReportSetting> reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, String chromatogramName, PrintWriter printWriter) {
 
 		/*
 		 * The sort order of the report setting list is important.
@@ -235,20 +212,21 @@ public class ReportWriter {
 				 * Data
 				 */
 				Map<String, String> dataMap = new HashMap<>();
-				dataMap.put(NAME, reportSetting.getName());
-				dataMap.put(CAS_NUMBER, reportSetting.getCasNumber());
-				dataMap.put(START_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStartRetentionTime()));
-				dataMap.put(STOP_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStopRetentionTime()));
-				dataMap.put(NUM_PEAKS, Integer.toString(peaks.size()));
-				dataMap.put(START_TIME_PEAKS, startTime);
-				dataMap.put(CENTER_TIME_PEAKS, centerTime);
-				dataMap.put(STOP_TIME_PEAKS, stopTime);
-				dataMap.put(SUM_AREA, areaFormat.format(Calculations.getSum(areas)));
-				dataMap.put(MIN_AREA, areaFormat.format(Calculations.getMin(areas)));
-				dataMap.put(MAX_AREA, areaFormat.format(Calculations.getMax(areas)));
-				dataMap.put(MEAN_AREA, areaFormat.format(Calculations.getMean(areas)));
-				dataMap.put(MEDIAN_AREA, areaFormat.format(Calculations.getMedian(areas)));
-				dataMap.put(STDEV_AREA, areaFormat.format(Calculations.getStandardDeviation(areas)));
+				dataMap.put(ReportColumns.CHROMATOGRAM_NAME, chromatogramName);
+				dataMap.put(ReportColumns.PEAK_NAME, reportSetting.getName());
+				dataMap.put(ReportColumns.CAS_NUMBER, reportSetting.getCasNumber());
+				dataMap.put(ReportColumns.START_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStartRetentionTime()));
+				dataMap.put(ReportColumns.STOP_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStopRetentionTime()));
+				dataMap.put(ReportColumns.NUM_PEAKS, Integer.toString(peaks.size()));
+				dataMap.put(ReportColumns.START_TIME_PEAKS, startTime);
+				dataMap.put(ReportColumns.CENTER_TIME_PEAKS, centerTime);
+				dataMap.put(ReportColumns.STOP_TIME_PEAKS, stopTime);
+				dataMap.put(ReportColumns.SUM_AREA, areaFormat.format(Calculations.getSum(areas)));
+				dataMap.put(ReportColumns.MIN_AREA, areaFormat.format(Calculations.getMin(areas)));
+				dataMap.put(ReportColumns.MAX_AREA, areaFormat.format(Calculations.getMax(areas)));
+				dataMap.put(ReportColumns.MEAN_AREA, areaFormat.format(Calculations.getMean(areas)));
+				dataMap.put(ReportColumns.MEDIAN_AREA, areaFormat.format(Calculations.getMedian(areas)));
+				dataMap.put(ReportColumns.STDEV_AREA, areaFormat.format(Calculations.getStandardDeviation(areas)));
 				//
 				List<String> items = new ArrayList<>();
 				for(String columnToPrint : columnsToPrint) {

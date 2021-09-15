@@ -49,4 +49,5 @@ Import-Package: org.osgi.service.component.annotations;version="1.2.0"
 Service-Component: OSGI-INF/net.openchrom.xxd.process.supplier.templates.system.ReviewExportProcessSupplier.xml,
  OSGI-INF/net.openchrom.xxd.process.supplier.templates.system.DetectorExportProcessSupplier.xml,
  OSGI-INF/net.openchrom.xxd.process.supplier.templates.system.IdentifierExportProcessSupplier.xml,
- OSGI-INF/net.openchrom.xxd.process.supplier.templates.service.ReportSettingsSerializationService.xml
+ OSGI-INF/net.openchrom.xxd.process.supplier.templates.service.ReportSettingsSerializationService.xml,
+ OSGI-INF/net.openchrom.xxd.process.supplier.templates.service.ReportColumnsSerializationService.xml
