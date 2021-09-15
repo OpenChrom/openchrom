@@ -19,6 +19,8 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.methods.IChangeListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -132,6 +134,25 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 			}
 		});
 		//
+		table.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				switch(e.keyCode) {
+					case SWT.LF:
+					case SWT.CR:
+					case SWT.KEYPAD_CR:
+					case SWT.ARROW_RIGHT:
+						addColumn();
+						break;
+					default:
+						// No action
+						break;
+				}
+			}
+		});
+		//
 		return table;
 	}
 
@@ -145,6 +166,31 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 			public void mouseDoubleClick(MouseEvent e) {
 
 				removeColumn();
+			}
+		});
+		//
+		table.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				switch(e.keyCode) {
+					case SWT.LF:
+					case SWT.CR:
+					case SWT.KEYPAD_CR:
+					case SWT.ARROW_LEFT:
+						removeColumn();
+						break;
+					case SWT.ARROW_UP:
+						moveColumnUp();
+						break;
+					case SWT.ARROW_DOWN:
+						moveColumnDown();
+						break;
+					default:
+						// No action
+						break;
+				}
 			}
 		});
 		//
@@ -176,6 +222,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		//
 		toolItems.add(createToolItemAdd(toolBar));
 		toolItems.add(createToolItemRemove(toolBar));
+		toolItems.add(createToolItemRemoveAll(toolBar));
 		toolItems.add(createToolItemMoveUp(toolBar));
 		toolItems.add(createToolItemMoveDown(toolBar));
 	}
@@ -183,6 +230,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 	private ToolItem createToolItemAdd(ToolBar toolBar) {
 
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
+		toolItem.setToolTipText("Add Column");
 		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_FORWARD, IApplicationImage.SIZE_16x16));
 		//
 		toolItem.addSelectionListener(new SelectionAdapter() {
@@ -200,6 +248,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 	private ToolItem createToolItemRemove(ToolBar toolBar) {
 
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
+		toolItem.setToolTipText("Remove Column");
 		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_BACKWARD, IApplicationImage.SIZE_16x16));
 		//
 		toolItem.addSelectionListener(new SelectionAdapter() {
@@ -214,9 +263,29 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		return toolItem;
 	}
 
+	private ToolItem createToolItemRemoveAll(ToolBar toolBar) {
+
+		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
+		toolItem.setToolTipText("Clear Columns");
+		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CLEAR, IApplicationImage.SIZE_16x16));
+		//
+		toolItem.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				reportColumns.clear();
+				updateTables();
+			}
+		});
+		//
+		return toolItem;
+	}
+
 	private ToolItem createToolItemMoveUp(ToolBar toolBar) {
 
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
+		toolItem.setToolTipText("Move Column Up");
 		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_UP_2, IApplicationImage.SIZE_16x16));
 		//
 		toolItem.addSelectionListener(new SelectionAdapter() {
@@ -224,8 +293,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				switchColumns(true);
-				updateTables();
+				moveColumnUp();
 			}
 		});
 		//
@@ -235,6 +303,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 	private ToolItem createToolItemMoveDown(ToolBar toolBar) {
 
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
+		toolItem.setToolTipText("Move Column Down");
 		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_DOWN_2, IApplicationImage.SIZE_16x16));
 		//
 		toolItem.addSelectionListener(new SelectionAdapter() {
@@ -242,8 +311,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				switchColumns(false);
-				updateTables();
+				moveColumnDown();
 			}
 		});
 		//
@@ -268,17 +336,39 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		}
 	}
 
-	private void switchColumns(boolean moveUp) {
+	private void moveColumnUp() {
 
+		int indexNew = switchColumns(true);
+		updateTables();
+		if(indexNew != -1) {
+			tableReportColumns.select(indexNew);
+		}
+	}
+
+	private void moveColumnDown() {
+
+		int indexNew = switchColumns(false);
+		updateTables();
+		if(indexNew != -1) {
+			tableReportColumns.select(indexNew);
+		}
+	}
+
+	private int switchColumns(boolean moveUp) {
+
+		int indexNew = -1;
+		//
 		int index = tableReportColumns.getSelectionIndex();
 		int size = reportColumns.size();
 		if(index >= 0 && index < size) {
 			int indexSwitch = moveUp ? index - 1 : index + 1;
 			if(indexSwitch >= 0 && indexSwitch < size) {
 				Collections.swap(reportColumns, index, indexSwitch);
-				tableReportColumns.select(indexSwitch);
+				indexNew = indexSwitch;
 			}
 		}
+		//
+		return indexNew;
 	}
 
 	private void updateTables() {

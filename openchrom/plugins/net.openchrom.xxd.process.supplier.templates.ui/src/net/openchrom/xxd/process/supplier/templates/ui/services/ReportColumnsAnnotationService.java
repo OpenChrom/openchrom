@@ -33,7 +33,7 @@ public class ReportColumnsAnnotationService extends ReportColumnsSerializationSe
 		reportColumnEditor = new ReportColumnEditor(parent, SWT.NONE);
 		reportColumnEditor.setToolTipText(description);
 		GridData gridData = new GridData(GridData.FILL_BOTH);
-		gridData.heightHint = 150;
+		gridData.heightHint = 200;
 		reportColumnEditor.setLayoutData(gridData);
 		//
 		if(currentSelection instanceof String) {

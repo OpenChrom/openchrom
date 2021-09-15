@@ -26,15 +26,18 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 
 	public static final String DESCRIPTION = "Template Report";
 	//
-	@JsonProperty(value = "Print Chromatogram Header", defaultValue = "true")
+	@JsonProperty(value = "Chromatogram Header", defaultValue = "true")
 	@JsonPropertyDescription(value = "The chromatogram header data is printed on top.")
 	private boolean printHeader = true;
-	@JsonProperty(value = "Print Results Header", defaultValue = "true")
+	@JsonProperty(value = "Results Header", defaultValue = "true")
 	@JsonPropertyDescription(value = "Print the column description of each peak report column.")
 	private boolean printResultsHeader = true;
 	@JsonProperty(value = "Results Header (Append)", defaultValue = "true")
 	@JsonPropertyDescription(value = "Repeat the report header if the file is appended.")
 	private boolean appendResultsHeader = true;
+	@JsonProperty(value = "Section Separator", defaultValue = "true")
+	@JsonPropertyDescription(value = "Print a blank line after each chromatogram peaks report section.")
+	private boolean printSectionSeparator = true;
 	@JsonProperty(value = "Print Summary", defaultValue = "true")
 	private boolean printSummary = true;
 	@JsonProperty(value = "Report Settings", defaultValue = "")
@@ -77,6 +80,16 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	public void setAppendResultsHeader(boolean appendResultsHeader) {
 
 		this.appendResultsHeader = appendResultsHeader;
+	}
+
+	public boolean isPrintSectionSeparator() {
+
+		return printSectionSeparator;
+	}
+
+	public void setPrintSectionSeparator(boolean printSectionSeparator) {
+
+		this.printSectionSeparator = printSectionSeparator;
 	}
 
 	public boolean isPrintSummary() {
