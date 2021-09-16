@@ -12,6 +12,8 @@
 package net.openchrom.xxd.process.supplier.templates.settings;
 
 import org.eclipse.chemclipse.chromatogram.xxd.report.settings.DefaultChromatogramReportSettings;
+import org.eclipse.chemclipse.model.core.support.HeaderField;
+import org.eclipse.chemclipse.support.settings.EnumSelectionRadioButtonsSettingProperty;
 import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.chemclipse.support.settings.ValidatorSettingsProperty;
 
@@ -43,6 +45,9 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	@JsonPropertyDescription(value = "Example: '103 104' or empty to skip trace reporting")
 	@StringSettingsProperty(regExp = RE_TRACES, isMultiLine = false)
 	private String traces = "";
+	@JsonProperty(value = "Header Field", defaultValue = "DATA_NAME")
+	@EnumSelectionRadioButtonsSettingProperty
+	private HeaderField headerField = HeaderField.DATA_NAME;
 	@JsonProperty(value = "Print Summary", defaultValue = "true")
 	private boolean printSummary = true;
 	@JsonProperty(value = "Report Settings", defaultValue = "")
@@ -105,6 +110,16 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	public void setTraces(String traces) {
 
 		this.traces = traces;
+	}
+
+	public HeaderField getHeaderField() {
+
+		return headerField;
+	}
+
+	public void setHeaderField(HeaderField headerField) {
+
+		this.headerField = headerField;
 	}
 
 	public boolean isPrintSummary() {

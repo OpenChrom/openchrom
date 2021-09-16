@@ -32,8 +32,10 @@ import org.eclipse.chemclipse.model.core.IIntegrationEntry;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.model.core.support.HeaderField;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.support.HeaderUtil;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -81,13 +83,14 @@ public class ReportWriter {
 		Map<ReportSetting, List<IPeak>> sumResults = new HashMap<>();
 		int reports = 0;
 		List<String> columnsToPrint = extractColumnsToPrint(chromatogramReportSettings, traces);
+		HeaderField headerField = chromatogramReportSettings.getHeaderField();
 		String chromatogramNameMaster = "";
 		//
 		for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
 			/*
 			 * Master
 			 */
-			chromatogramNameMaster = chromatogram.getName();
+			chromatogramNameMaster = HeaderUtil.getChromatogramName(chromatogram, headerField, chromatogram.getName());
 			Map<ReportSetting, List<IPeak>> mappedResults = printChromatogram(chromatogram, chromatogramReportSettings, columnsToPrint, fileExists, chromatogramNameMaster, traces, printWriter);
 			merge(mappedResults, sumResults);
 			reports++;
@@ -98,7 +101,8 @@ public class ReportWriter {
 			if(chromatogramReportSettings.isReportReferencedChromatograms()) {
 				int reference = 1;
 				for(IChromatogram<? extends IPeak> referenceChromatogram : chromatogram.getReferencedChromatograms()) {
-					String chromatogramNameReference = chromatogramNameMaster + "_" + reference;
+					String defaultName = chromatogramNameMaster + "_" + reference;
+					String chromatogramNameReference = HeaderUtil.getChromatogramName(referenceChromatogram, headerField, defaultName);
 					Map<ReportSetting, List<IPeak>> mappedResultsReference = printChromatogram(referenceChromatogram, chromatogramReportSettings, columnsToPrint, fileExists, chromatogramNameReference, traces, printWriter);
 					merge(mappedResultsReference, sumResults);
 					reports++;
