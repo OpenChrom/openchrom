@@ -24,27 +24,32 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
+import org.eclipse.chemclipse.model.core.IIntegrationEntry;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.msd.model.core.AbstractIon;
+import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.numeric.statistics.Calculations;
 import org.eclipse.chemclipse.support.text.ValueFormat;
+import org.eclipse.chemclipse.wsd.model.core.IPeakWSD;
 import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReportColumns;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
+import net.openchrom.xxd.process.supplier.templates.util.TracesValidator;
 
 public class ReportWriter {
 
@@ -58,17 +63,24 @@ public class ReportWriter {
 	public void generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings chromatogramReportSettings, IProgressMonitor monitor) throws IOException {
 
 		boolean fileExists = file.exists() && file.length() > 0;
+		TracesValidator tracesValidator = new TracesValidator();
+		IStatus status = tracesValidator.validate(chromatogramReportSettings.getTraces());
+		Set<Integer> traceSet = status.isOK() ? tracesValidator.getTraces() : new HashSet<>();
+		traceSet.remove(0); // TIC doesn't make sense here.
+		List<Integer> traces = new ArrayList<>(traceSet);
+		Collections.sort(traces);
+		//
 		try (PrintWriter printWriter = new PrintWriter(new FileWriter(file, append))) {
-			printResults(chromatograms, chromatogramReportSettings, printWriter, fileExists, monitor);
+			printResults(chromatograms, chromatogramReportSettings, printWriter, fileExists, traces, monitor);
 			printWriter.flush();
 		}
 	}
 
-	private void printResults(List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings chromatogramReportSettings, PrintWriter printWriter, boolean fileExists, IProgressMonitor monitor) {
+	private void printResults(List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings chromatogramReportSettings, PrintWriter printWriter, boolean fileExists, List<Integer> traces, IProgressMonitor monitor) {
 
 		Map<ReportSetting, List<IPeak>> sumResults = new HashMap<>();
 		int reports = 0;
-		List<String> columnsToPrint = extractColumnsToPrint(chromatogramReportSettings);
+		List<String> columnsToPrint = extractColumnsToPrint(chromatogramReportSettings, traces);
 		String chromatogramNameMaster = "";
 		//
 		for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
@@ -76,9 +88,10 @@ public class ReportWriter {
 			 * Master
 			 */
 			chromatogramNameMaster = chromatogram.getName();
-			Map<ReportSetting, List<IPeak>> mappedResults = printChromatogram(chromatogram, chromatogramReportSettings, columnsToPrint, fileExists, chromatogramNameMaster, printWriter);
+			Map<ReportSetting, List<IPeak>> mappedResults = printChromatogram(chromatogram, chromatogramReportSettings, columnsToPrint, fileExists, chromatogramNameMaster, traces, printWriter);
 			merge(mappedResults, sumResults);
 			reports++;
+			fileExists = true; // The first results are written, set to exist true. This is important to skip printing the column header.
 			/*
 			 * Reference(s)
 			 */
@@ -86,7 +99,7 @@ public class ReportWriter {
 				int reference = 1;
 				for(IChromatogram<? extends IPeak> referenceChromatogram : chromatogram.getReferencedChromatograms()) {
 					String chromatogramNameReference = chromatogramNameMaster + "_" + reference;
-					Map<ReportSetting, List<IPeak>> mappedResultsReference = printChromatogram(referenceChromatogram, chromatogramReportSettings, columnsToPrint, fileExists, chromatogramNameReference, printWriter);
+					Map<ReportSetting, List<IPeak>> mappedResultsReference = printChromatogram(referenceChromatogram, chromatogramReportSettings, columnsToPrint, fileExists, chromatogramNameReference, traces, printWriter);
 					merge(mappedResultsReference, sumResults);
 					reports++;
 					reference++;
@@ -98,44 +111,66 @@ public class ReportWriter {
 		 */
 		if(chromatogramReportSettings.isPrintSummary()) {
 			if(reports > 1) {
+				if(chromatogramReportSettings.isPrintSectionSeparator()) {
+					printWriter.println("");
+				}
 				printWriter.println("Summary");
-				printWriter.println("");
-				printResults(chromatogramReportSettings, sumResults, columnsToPrint, fileExists, chromatogramNameMaster, printWriter);
+				printResults(chromatogramReportSettings, sumResults, columnsToPrint, fileExists, chromatogramNameMaster, traces, printWriter);
 			}
 		}
 	}
 
-	private List<String> extractColumnsToPrint(ChromatogramReportSettings chromatogramReportSettings) {
+	private List<String> extractColumnsToPrint(ChromatogramReportSettings chromatogramReportSettings, List<Integer> traces) {
 
 		List<String> columnsToPrint = new ArrayList<>();
 		ReportColumns reportColumns = chromatogramReportSettings.getReportColumns();
 		ReportColumns defaultColumns = ReportColumns.getDefault();
-		//
+		/*
+		 * Add default or selected columns.
+		 */
 		if(reportColumns.isEmpty()) {
-			/*
-			 * Default
-			 */
 			columnsToPrint.addAll(defaultColumns);
 		} else {
-			/*
-			 * Selected Columns
-			 */
 			for(String value : reportColumns) {
 				if(defaultColumns.contains(value)) {
 					columnsToPrint.add(value);
 				}
 			}
 		}
-		//
-		return columnsToPrint;
+		/*
+		 * Set the selected traces on demand.
+		 */
+		return adjustTracesColumns(columnsToPrint, traces);
 	}
 
-	private Map<ReportSetting, List<IPeak>> printChromatogram(IChromatogram<? extends IPeak> chromatogram, ChromatogramReportSettings chromatogramReportSettings, List<String> columnsToPrint, boolean fileExists, String chromatogramName, PrintWriter printWriter) {
+	private List<String> adjustTracesColumns(List<String> columnsToPrint, List<Integer> traces) {
+
+		List<String> columnsToPrintAdjusted = new ArrayList<>();
+		//
+		for(String column : columnsToPrint) {
+			if(column.equals(ReportColumns.TRACES_PEAKS)) {
+				if(traces.size() > 0) {
+					for(int trace : traces) {
+						columnsToPrintAdjusted.add(ReportColumns.createTraceColumnMin(trace));
+						columnsToPrintAdjusted.add(ReportColumns.createTraceColumnMean(trace));
+						columnsToPrintAdjusted.add(ReportColumns.createTraceColumnMedian(trace));
+						columnsToPrintAdjusted.add(ReportColumns.createTraceColumnMax(trace));
+					}
+				}
+			} else {
+				columnsToPrintAdjusted.add(column);
+			}
+		}
+		//
+		return columnsToPrintAdjusted;
+	}
+
+	private Map<ReportSetting, List<IPeak>> printChromatogram(IChromatogram<? extends IPeak> chromatogram, ChromatogramReportSettings chromatogramReportSettings, List<String> columnsToPrint, boolean fileExists, String chromatogramName, List<Integer> traces, PrintWriter printWriter) {
 
 		Map<ReportSetting, List<IPeak>> mappedResults = mapChromatogram(chromatogram, chromatogramReportSettings);
 		//
 		printChromatogramHeader(chromatogram, chromatogramReportSettings, printWriter);
-		printResults(chromatogramReportSettings, mappedResults, columnsToPrint, fileExists, chromatogramName, printWriter);
+		printResults(chromatogramReportSettings, mappedResults, columnsToPrint, fileExists, chromatogramName, traces, printWriter);
 		//
 		return mappedResults;
 	}
@@ -182,11 +217,11 @@ public class ReportWriter {
 		}
 	}
 
-	private void printResults(ChromatogramReportSettings chromatogramReportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, boolean fileExists, String chromatogramName, PrintWriter printWriter) {
+	private void printResults(ChromatogramReportSettings chromatogramReportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, boolean fileExists, String chromatogramName, List<Integer> traces, PrintWriter printWriter) {
 
 		List<ReportSetting> reportSettings = chromatogramReportSettings.getReportSettings();
 		printResultHeader(chromatogramReportSettings, columnsToPrint, fileExists, printWriter);
-		printResultData(reportSettings, mappedResults, columnsToPrint, chromatogramName, printWriter);
+		printResultData(reportSettings, mappedResults, columnsToPrint, chromatogramName, traces, printWriter);
 		//
 		if(chromatogramReportSettings.isPrintSectionSeparator()) {
 			printWriter.println("");
@@ -207,7 +242,7 @@ public class ReportWriter {
 		}
 	}
 
-	private void printResultData(List<ReportSetting> reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, String chromatogramName, PrintWriter printWriter) {
+	private void printResultData(List<ReportSetting> reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, String chromatogramName, List<Integer> traces, PrintWriter printWriter) {
 
 		/*
 		 * The sort order of the report setting list is important.
@@ -223,21 +258,20 @@ public class ReportWriter {
 				int[] startTimes = extractPeakStartTimes(peaks);
 				String startRetentionTime = RETENTION_TIME_FORMAT.format(Calculations.getMin(startTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
 				int[] centerTimes = extractPeakCenterTimes(peaks);
-				String centerRetentionTime = RETENTION_TIME_FORMAT.format(Calculations.getMean(centerTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				String meanRetentionTime = RETENTION_TIME_FORMAT.format(Calculations.getMean(centerTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				String medianRetentionTime = RETENTION_TIME_FORMAT.format(Calculations.getMedian(centerTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
 				int[] stopTimes = extractPeakStopTimes(peaks);
 				String stopRetentionTime = RETENTION_TIME_FORMAT.format(Calculations.getMax(stopTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
 				float[] retentionIndices = extractPeakRetentionIndices(peaks);
 				String startRetentionIndices = RETENTION_INDEX_FORMAT.format(Calculations.getMin(retentionIndices));
-				String centerRetentionIndices = RETENTION_INDEX_FORMAT.format(Calculations.getMean(retentionIndices));
+				String meanRetentionIndices = RETENTION_INDEX_FORMAT.format(Calculations.getMean(retentionIndices));
+				String medianRetentionIndices = RETENTION_INDEX_FORMAT.format(Calculations.getMedian(retentionIndices));
 				String stopRetentionIndices = RETENTION_INDEX_FORMAT.format(Calculations.getMax(retentionIndices));
 				float[] signalToNoiseRatios = extractPeakSignalToNoiseRatios(peaks);
 				String startSignalToNoiseRatios = SIGNAL_TO_NOISE_FORMAT.format(Calculations.getMin(signalToNoiseRatios));
-				String centerSignalToNoiseRatios = SIGNAL_TO_NOISE_FORMAT.format(Calculations.getMean(signalToNoiseRatios));
+				String meanSignalToNoiseRatios = SIGNAL_TO_NOISE_FORMAT.format(Calculations.getMean(signalToNoiseRatios));
+				String medianSignalToNoiseRatios = SIGNAL_TO_NOISE_FORMAT.format(Calculations.getMedian(signalToNoiseRatios));
 				String stopSignalToNoiseRatios = SIGNAL_TO_NOISE_FORMAT.format(Calculations.getMax(signalToNoiseRatios));
-				Set<Integer> traces = extractPeakTraces(peaks);
-				List<Integer> tracesList = new ArrayList<>(traces);
-				Collections.sort(tracesList);
-				String peakTraces = tracesList.stream().sorted().map(c -> c.toString()).collect(Collectors.joining(", "));
 				/*
 				 * Data
 				 */
@@ -248,17 +282,26 @@ public class ReportWriter {
 				dataMap.put(ReportColumns.START_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStartRetentionTime()));
 				dataMap.put(ReportColumns.STOP_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStopRetentionTime()));
 				dataMap.put(ReportColumns.NUM_PEAKS, Integer.toString(peaks.size()));
-				dataMap.put(ReportColumns.START_TIME_PEAKS, startRetentionTime);
-				dataMap.put(ReportColumns.CENTER_TIME_PEAKS, centerRetentionTime);
-				dataMap.put(ReportColumns.STOP_TIME_PEAKS, stopRetentionTime);
+				dataMap.put(ReportColumns.MIN_RETENTION_TIME_PEAKS, startRetentionTime);
+				dataMap.put(ReportColumns.MEAN_RETENTION_TIME_PEAKS, meanRetentionTime);
+				dataMap.put(ReportColumns.MEDIAN_RETENTION_TIME_PEAKS, medianRetentionTime);
+				dataMap.put(ReportColumns.MAX_RETENTION_TIME_PEAKS, stopRetentionTime);
+				dataMap.put(ReportColumns.MIN_RETENTION_INDEX_PEAKS, startRetentionIndices);
+				dataMap.put(ReportColumns.MEAN_RETENTION_INDEX_PEAKS, meanRetentionIndices);
+				dataMap.put(ReportColumns.MEDIAN_RETENTION_INDEX_PEAKS, medianRetentionIndices);
+				dataMap.put(ReportColumns.MAX_RETENTION_INDEX_PEAKS, stopRetentionIndices);
+				dataMap.put(ReportColumns.MIN_SIGNAL_TO_NOISE_RATIOS_PEAKS, startSignalToNoiseRatios);
+				dataMap.put(ReportColumns.MEAN_SIGNAL_TO_NOISE_RATIOS_PEAKS, meanSignalToNoiseRatios);
+				dataMap.put(ReportColumns.MEDIAN_SIGNAL_TO_NOISE_RATIOS_PEAKS, medianSignalToNoiseRatios);
+				dataMap.put(ReportColumns.MAX_SIGNAL_TO_NOISE_RATIOS_PEAKS, stopSignalToNoiseRatios);
 				//
-				dataMap.put(ReportColumns.START_RETENTION_INDEX_PEAKS, startRetentionIndices);
-				dataMap.put(ReportColumns.CENTER_RETENTION_INDEX_PEAKS, centerRetentionIndices);
-				dataMap.put(ReportColumns.STOP_RETENTION_INDEX_PEAKS, stopRetentionIndices);
-				dataMap.put(ReportColumns.START_SIGNAL_TO_NOISE_RATIOS_PEAKS, startSignalToNoiseRatios);
-				dataMap.put(ReportColumns.CENTER_SIGNAL_TO_NOISE_RATIOS_PEAKS, centerSignalToNoiseRatios);
-				dataMap.put(ReportColumns.STOP_SIGNAL_TO_NOISE_RATIOS_PEAKS, stopSignalToNoiseRatios);
-				dataMap.put(ReportColumns.TRACES_PEAKS, peakTraces);
+				for(int trace : traces) {
+					double[] areasByTrace = extractPeakAreasByTrace(peaks, trace);
+					dataMap.put(ReportColumns.createTraceColumnMin(trace), AREA_FORMAT.format(Calculations.getMin(areasByTrace)));
+					dataMap.put(ReportColumns.createTraceColumnMean(trace), AREA_FORMAT.format(Calculations.getMean(areasByTrace)));
+					dataMap.put(ReportColumns.createTraceColumnMedian(trace), AREA_FORMAT.format(Calculations.getMedian(areasByTrace)));
+					dataMap.put(ReportColumns.createTraceColumnMax(trace), AREA_FORMAT.format(Calculations.getMax(areasByTrace)));
+				}
 				//
 				dataMap.put(ReportColumns.SUM_AREA, AREA_FORMAT.format(Calculations.getSum(areas)));
 				dataMap.put(ReportColumns.MIN_AREA, AREA_FORMAT.format(Calculations.getMin(areas)));
@@ -266,11 +309,12 @@ public class ReportWriter {
 				dataMap.put(ReportColumns.MEAN_AREA, AREA_FORMAT.format(Calculations.getMean(areas)));
 				dataMap.put(ReportColumns.MEDIAN_AREA, AREA_FORMAT.format(Calculations.getMedian(areas)));
 				dataMap.put(ReportColumns.STDEV_AREA, AREA_FORMAT.format(Calculations.getStandardDeviation(areas)));
-				//
+				/*
+				 * Print all selected columns.
+				 */
 				List<String> items = new ArrayList<>();
 				for(String columnToPrint : columnsToPrint) {
-					String data = dataMap.get(columnToPrint);
-					items.add((data != null) ? data : "");
+					items.add(dataMap.getOrDefault(columnToPrint, "--"));
 				}
 				//
 				printList(items, printWriter);
@@ -478,36 +522,110 @@ public class ReportWriter {
 		return signalToNoiseRatios;
 	}
 
-	private Set<Integer> extractPeakTraces(List<IPeak> peaks) {
+	private double[] extractPeakAreasByTrace(List<IPeak> peaks, int trace) {
 
 		int size = peaks.size();
-		Set<Integer> traces = new HashSet<>();
+		double[] areas = new double[size];
 		for(int i = 0; i < size; i++) {
 			IPeak peak = peaks.get(i);
-			IPeakModel peakModel = peak.getPeakModel();
-			IScan scan = peakModel.getPeakMaximum();
-			if(scan instanceof IScanMSD) {
-				IScanMSD scanMSD = (IScanMSD)scan;
-				IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
-				int startIon = extractedIonSignal.getStartIon();
-				int stopIon = extractedIonSignal.getStopIon();
-				for(int ion = startIon; ion <= stopIon; ion++) {
-					if(extractedIonSignal.getAbundance(ion) > 0) {
-						traces.add(ion);
-					}
+			if(peak.getIntegratedArea() > 0) {
+				if(peak instanceof IPeakMSD) {
+					areas[i] = getIntegratedAreaMSD((IPeakMSD)peak, trace);
+				} else if(peak instanceof IPeakWSD) {
+					areas[i] = getIntegratedAreaWSD((IPeakWSD)peak, trace);
 				}
-			} else if(scan instanceof IScanWSD) {
-				IScanWSD scanWSD = (IScanWSD)scan;
-				IExtractedWavelengthSignal extractedWavelengthSignal = scanWSD.getExtractedWavelengthSignal();
-				int startWavelength = extractedWavelengthSignal.getStartWavelength();
-				int stopWavelength = extractedWavelengthSignal.getStopWavelength();
-				for(int wavelength = startWavelength; wavelength <= stopWavelength; wavelength++) {
-					if(extractedWavelengthSignal.getAbundance(wavelength) != 0) {
-						traces.add(wavelength);
+			}
+		}
+		return areas;
+	}
+
+	private static double getIntegratedAreaMSD(IPeakMSD peakMSD, int trace) {
+
+		double area = 0.0d;
+		//
+		List<IIntegrationEntry> integrationEntries = peakMSD.getIntegrationEntries();
+		if(integrationEntries.size() > 1) {
+			/*
+			 * Traces Integrated
+			 */
+			for(IIntegrationEntry integrationEntry : integrationEntries) {
+				int ion = AbstractIon.getIon(integrationEntry.getSignal());
+				if(ion == trace) {
+					area += integrationEntry.getIntegratedArea();
+				}
+			}
+		} else {
+			/*
+			 * TIC Integrated
+			 */
+			double integratedArea = peakMSD.getIntegratedArea();
+			if(integratedArea > 0) {
+				IScan scan = peakMSD.getPeakModel().getPeakMaximum();
+				if(scan instanceof IScanMSD) {
+					IScanMSD scanMSD = (IScanMSD)scan;
+					double totalIntensity = scanMSD.getTotalSignal();
+					double tracesIntensity = 0.0d;
+					IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
+					for(int ion = extractedIonSignal.getStartIon(); ion <= extractedIonSignal.getStopIon(); ion++) {
+						float intensity = extractedIonSignal.getAbundance(ion);
+						if(intensity > 0 && ion == trace) {
+							tracesIntensity += intensity;
+						}
+					}
+					//
+					if(totalIntensity > 0) {
+						double percentage = 1.0d / totalIntensity * tracesIntensity;
+						area = integratedArea * percentage;
 					}
 				}
 			}
 		}
-		return traces;
+		//
+		return area;
+	}
+
+	private static double getIntegratedAreaWSD(IPeakWSD peakWSD, int trace) {
+
+		double area = 0.0d;
+		//
+		List<IIntegrationEntry> integrationEntries = peakWSD.getIntegrationEntries();
+		if(integrationEntries.size() > 1) {
+			/*
+			 * Traces Integrated
+			 */
+			for(IIntegrationEntry integrationEntry : integrationEntries) {
+				int wavelength = (int)Math.round(integrationEntry.getSignal());
+				if(wavelength == trace) {
+					area += integrationEntry.getIntegratedArea();
+				}
+			}
+		} else {
+			/*
+			 * TIC Integrated
+			 */
+			double integratedArea = peakWSD.getIntegratedArea();
+			if(integratedArea > 0) {
+				IScan scan = peakWSD.getPeakModel().getPeakMaximum();
+				if(scan instanceof IScanWSD) {
+					IScanWSD scanWSD = (IScanWSD)scan;
+					double totalIntensity = scanWSD.getTotalSignal();
+					double tracesIntensity = 0.0d;
+					IExtractedWavelengthSignal extractedWavelengthSignal = scanWSD.getExtractedWavelengthSignal();
+					for(int wavelength = extractedWavelengthSignal.getStartWavelength(); wavelength <= extractedWavelengthSignal.getStopWavelength(); wavelength++) {
+						float intensity = extractedWavelengthSignal.getAbundance(wavelength);
+						if(intensity > 0 && wavelength == trace) {
+							tracesIntensity += intensity;
+						}
+					}
+					//
+					if(totalIntensity > 0) {
+						double percentage = 1.0d / totalIntensity * tracesIntensity;
+						area = integratedArea * percentage;
+					}
+				}
+			}
+		}
+		//
+		return area;
 	}
 }

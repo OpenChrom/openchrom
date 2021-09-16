@@ -24,15 +24,18 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String START_TIME_SETTING = "Start Time Setting [min]";
 	public static final String STOP_TIME_SETTING = "Stop Time Setting [min]";
 	public static final String NUM_PEAKS = "Number Peak(s)";
-	public static final String START_TIME_PEAKS = "Start Time Peak(s) [min]";
-	public static final String CENTER_TIME_PEAKS = "Center Time Peak(s) [min]";
-	public static final String STOP_TIME_PEAKS = "Stop Time Peak(s) [min]";
-	public static final String START_RETENTION_INDEX_PEAKS = "Start Retention Index Peak(s)";
-	public static final String CENTER_RETENTION_INDEX_PEAKS = "Center Retention Index Peak(s)";
-	public static final String STOP_RETENTION_INDEX_PEAKS = "Stop Retention Index Peak(s)";
-	public static final String START_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Start S/N Peak(s)";
-	public static final String CENTER_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Center S/N Peak(s)";
-	public static final String STOP_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Stop S/N Peak(s)";
+	public static final String MIN_RETENTION_TIME_PEAKS = "Min Time Peak(s) [min]";
+	public static final String MEAN_RETENTION_TIME_PEAKS = "Mean Time Peak(s) [min]";
+	public static final String MEDIAN_RETENTION_TIME_PEAKS = "Median Time Peak(s) [min]";
+	public static final String MAX_RETENTION_TIME_PEAKS = "Max Time Peak(s) [min]";
+	public static final String MIN_RETENTION_INDEX_PEAKS = "Min Retention Index Peak(s)";
+	public static final String MEAN_RETENTION_INDEX_PEAKS = "Mean Retention Index Peak(s)";
+	public static final String MEDIAN_RETENTION_INDEX_PEAKS = "Median Retention Index Peak(s)";
+	public static final String MAX_RETENTION_INDEX_PEAKS = "Max Retention Index Peak(s)";
+	public static final String MIN_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Min S/N Peak(s)";
+	public static final String MEAN_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Mean S/N Peak(s)";
+	public static final String MEDIAN_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Median S/N Peak(s)";
+	public static final String MAX_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Max S/N Peak(s)";
 	public static final String TRACES_PEAKS = "Traces Peak(s)";
 	public static final String SUM_AREA = "Sum Area";
 	public static final String MIN_AREA = "Min Area";
@@ -40,6 +43,18 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String MEAN_AREA = "Mean Area";
 	public static final String MEDIAN_AREA = "Median Area";
 	public static final String STDEV_AREA = "Standard Deviation Area";
+	/*
+	 * Internal markers
+	 */
+	private static final String MARKER_MIN = "Min";
+	private static final String MARKER_MEDIAN = "Median";
+	private static final String MARKER_MEAN = "Mean";
+	private static final String MARKER_MAX = "Max";
+	private static final String MARKER_TRACE = "Trace";
+	private static final String MARKER_AREA = "Area";
+	private static final String MARKER_SPACE = " ";
+	private static final String MARKER_BRACKET_OPEN = "(";
+	private static final String MARKER_BRACKET_CLOSE = ")";
 	//
 	private static final String SEPARATOR = ",";
 	private static final String SINGLE_TICK = "'";
@@ -55,15 +70,18 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(START_TIME_SETTING);
 		reportColumns.add(STOP_TIME_SETTING);
 		reportColumns.add(NUM_PEAKS);
-		reportColumns.add(START_TIME_PEAKS);
-		reportColumns.add(CENTER_TIME_PEAKS);
-		reportColumns.add(STOP_TIME_PEAKS);
-		reportColumns.add(START_RETENTION_INDEX_PEAKS);
-		reportColumns.add(CENTER_RETENTION_INDEX_PEAKS);
-		reportColumns.add(STOP_RETENTION_INDEX_PEAKS);
-		reportColumns.add(START_SIGNAL_TO_NOISE_RATIOS_PEAKS);
-		reportColumns.add(CENTER_SIGNAL_TO_NOISE_RATIOS_PEAKS);
-		reportColumns.add(STOP_SIGNAL_TO_NOISE_RATIOS_PEAKS);
+		reportColumns.add(MIN_RETENTION_TIME_PEAKS);
+		reportColumns.add(MEAN_RETENTION_TIME_PEAKS);
+		reportColumns.add(MEDIAN_RETENTION_TIME_PEAKS);
+		reportColumns.add(MAX_RETENTION_TIME_PEAKS);
+		reportColumns.add(MIN_RETENTION_INDEX_PEAKS);
+		reportColumns.add(MEAN_RETENTION_INDEX_PEAKS);
+		reportColumns.add(MEDIAN_RETENTION_INDEX_PEAKS);
+		reportColumns.add(MAX_RETENTION_INDEX_PEAKS);
+		reportColumns.add(MIN_SIGNAL_TO_NOISE_RATIOS_PEAKS);
+		reportColumns.add(MEAN_SIGNAL_TO_NOISE_RATIOS_PEAKS);
+		reportColumns.add(MEDIAN_SIGNAL_TO_NOISE_RATIOS_PEAKS);
+		reportColumns.add(MAX_SIGNAL_TO_NOISE_RATIOS_PEAKS);
 		reportColumns.add(TRACES_PEAKS);
 		reportColumns.add(SUM_AREA);
 		reportColumns.add(MIN_AREA);
@@ -73,6 +91,48 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(STDEV_AREA);
 		//
 		return reportColumns;
+	}
+
+	public static String createTraceColumnMin(int trace) {
+
+		return createTraceColumnId(MARKER_MIN, trace);
+	}
+
+	public static String createTraceColumnMean(int trace) {
+
+		return createTraceColumnId(MARKER_MEAN, trace);
+	}
+
+	public static String createTraceColumnMedian(int trace) {
+
+		return createTraceColumnId(MARKER_MEDIAN, trace);
+	}
+
+	public static String createTraceColumnMax(int trace) {
+
+		return createTraceColumnId(MARKER_MAX, trace);
+	}
+
+	private static String createTraceColumnId(String marker, int trace) {
+
+		StringBuilder builder = new StringBuilder();
+		/*
+		 * Min Area Trace (32)
+		 * Mean Area Trace (32)
+		 * Median Area Trace (32)
+		 * Max Area Trace (32)
+		 */
+		builder.append(marker);
+		builder.append(MARKER_SPACE);
+		builder.append(MARKER_TRACE);
+		builder.append(MARKER_SPACE);
+		builder.append(MARKER_AREA);
+		builder.append(MARKER_SPACE);
+		builder.append(MARKER_BRACKET_OPEN);
+		builder.append(Integer.toString(trace));
+		builder.append(MARKER_BRACKET_CLOSE);
+		//
+		return builder.toString();
 	}
 
 	public void load(String items) {

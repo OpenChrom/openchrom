@@ -12,6 +12,7 @@
 package net.openchrom.xxd.process.supplier.templates.settings;
 
 import org.eclipse.chemclipse.chromatogram.xxd.report.settings.DefaultChromatogramReportSettings;
+import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.chemclipse.support.settings.ValidatorSettingsProperty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,6 +39,10 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	@JsonProperty(value = "Section Separator", defaultValue = "true")
 	@JsonPropertyDescription(value = "Print a blank line after each chromatogram peaks report section.")
 	private boolean printSectionSeparator = true;
+	@JsonProperty(value = "Traces", defaultValue = "")
+	@JsonPropertyDescription(value = "Example: '103 104' or empty to skip trace reporting")
+	@StringSettingsProperty(regExp = RE_TRACES, isMultiLine = false)
+	private String traces = "";
 	@JsonProperty(value = "Print Summary", defaultValue = "true")
 	private boolean printSummary = true;
 	@JsonProperty(value = "Report Settings", defaultValue = "")
@@ -90,6 +95,16 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	public void setPrintSectionSeparator(boolean printSectionSeparator) {
 
 		this.printSectionSeparator = printSectionSeparator;
+	}
+
+	public String getTraces() {
+
+		return traces;
+	}
+
+	public void setTraces(String traces) {
+
+		this.traces = traces;
 	}
 
 	public boolean isPrintSummary() {
