@@ -99,6 +99,7 @@
 		<module>net.openchrom.msd.converter.supplier.mzmlb</module>
 		<module>net.openchrom.msd.converter.supplier.mzdb</module>
 		<module>net.openchrom.csd.converter.supplier.animl</module>
+		<module>net.openchrom.msd.converter.supplier.animl</module>
 		<module>net.openchrom.xxd.converter.supplier.animl</module>
 		<module>net.openchrom.xxd.converter.supplier.animl.ui</module>
 	</modules>

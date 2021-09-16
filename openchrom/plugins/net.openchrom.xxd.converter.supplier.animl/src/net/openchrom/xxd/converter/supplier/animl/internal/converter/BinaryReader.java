@@ -14,10 +14,23 @@ package net.openchrom.xxd.converter.supplier.animl.internal.converter;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 public class BinaryReader {
 
-	public static float[] decodeArray(byte[] binary) {
+	public static int[] decodeIntArray(byte[] binary) {
+
+		ByteBuffer byteBuffer = ByteBuffer.wrap(binary);
+		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+		IntBuffer intBuffer = byteBuffer.asIntBuffer();
+		int[] values = new int[intBuffer.capacity()];
+		for(int index = 0; index < intBuffer.capacity(); index++) {
+			values[index] = new Integer(intBuffer.get(index));
+		}
+		return values;
+	}
+
+	public static float[] decodeFloatArray(byte[] binary) {
 
 		ByteBuffer byteBuffer = ByteBuffer.wrap(binary);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -35,6 +48,15 @@ public class BinaryReader {
 		ByteBuffer byteBuffer = ByteBuffer.allocate(floatBuffer.capacity() * Float.BYTES);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		byteBuffer.asFloatBuffer().put(floatBuffer);
+		return byteBuffer.array();
+	}
+
+	public static byte[] encodeArray(int[] array) {
+
+		IntBuffer intBuffer = IntBuffer.wrap(array);
+		ByteBuffer byteBuffer = ByteBuffer.allocate(intBuffer.capacity() * Integer.BYTES);
+		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+		byteBuffer.asIntBuffer().put(intBuffer);
 		return byteBuffer.array();
 	}
 }

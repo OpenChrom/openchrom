@@ -55,13 +55,13 @@ import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Experiment;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.GAML;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Parameter;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Peaktable;
+import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Peaktable.Peak;
+import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Peaktable.Peak.Baseline;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Technique;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Trace;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Units;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Ydata;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Peaktable.Peak;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Peaktable.Peak.Baseline;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader100;
 
 public class ChromatogramReaderVersion100 extends AbstractChromatogramReader implements IChromatogramCSDReader {

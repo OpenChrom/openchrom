@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.msd.converter.chromatogramSupplier">
+      <ChromatogramSupplier
+            description="Reads Analytical Information Markup Language Chromatograms"
+            fileExtension=".animl"
+            filterName="AnIML MSD Chromatogram (*.animl)"
+            id="net.openchrom.msd.converter.supplier.animl.chromatogram"
+            importConverter="net.openchrom.msd.converter.supplier.animl.converter.ChromatogramImportConverter"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.animl.converter.MagicNumberMatcher"
+            exportConverter="net.openchrom.msd.converter.supplier.animl.converter.ChromatogramExportConverter"
+            isExportable="true"
+            isImportable="true">
+      </ChromatogramSupplier>
+   </extension>
+</plugin>

@@ -7,15 +7,11 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Matthias Mailänder - initial API and implementation
+ * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.converter.supplier.animl.internal.converter;
+package net.openchrom.msd.converter.supplier.animl.model;
 
-public interface IConstants {
+import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 
-	String IMPORT_CHROMATOGRAM = "Import AnIML Chromatogram";
-	String EXPORT_CHROMATOGRAM = "Export AnIML Chromatogram";
-	//
-	String NODE_ANIML = "AnIML";
-	String NODE_TECHNIQUE = "Technique";
+public interface IVendorMassSpectra extends IMassSpectra {
 }

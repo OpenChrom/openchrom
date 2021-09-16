@@ -9,7 +9,7 @@
  * Contributors:
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
-package net.openchrom.csd.converter.supplier.animl.converter;
+package net.openchrom.msd.converter.supplier.animl.converter;
 
 import java.io.File;
 
@@ -50,7 +50,7 @@ public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IM
 			int techniques = techniquesList.getLength();
 			for(int t = 0; t < techniques; t++) {
 				Element element = (Element)techniquesList.item(t);
-				if(element.getAttribute("name").equals("Flame Ionization Detector")) {
+				if(element.getAttribute("name").equals("Mass Spectrum Time Trace")) {
 					isValidFormat = true;
 				}
 			}

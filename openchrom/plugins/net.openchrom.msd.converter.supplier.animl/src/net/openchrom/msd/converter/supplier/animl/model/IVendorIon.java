@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Lablicate GmbH.
+ * Copyright (c) 2008, 2021 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -9,10 +9,9 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.csd.converter.supplier.animl.internal.converter;
+package net.openchrom.msd.converter.supplier.animl.model;
 
-public interface IConstants {
+import org.eclipse.chemclipse.msd.model.core.IScanIon;
 
-	String IMPORT_CHROMATOGRAM = "Import AnIML Chromatogram";
-	String EXPORT_CHROMATOGRAM = "Export AnIML Chromatogram";
+public interface IVendorIon extends IScanIon {
 }
