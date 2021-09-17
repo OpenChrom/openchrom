@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.csd.converter.supplier.animl.internal.converter;
+package net.openchrom.xxd.converter.supplier.animl.internal.converter;
 
 import java.io.File;
 

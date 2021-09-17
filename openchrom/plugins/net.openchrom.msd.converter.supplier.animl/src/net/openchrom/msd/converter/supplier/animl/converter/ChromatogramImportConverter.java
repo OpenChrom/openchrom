@@ -10,38 +10,38 @@
  * Dr. Philip Wenig - initial API and implementation
  * Christoph Läubrich - add generics
  *******************************************************************************/
-package net.openchrom.csd.converter.supplier.animl.converter;
+package net.openchrom.msd.converter.supplier.animl.converter;
 
 import java.io.File;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramImportConverter;
-import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
-import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
+import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.csd.converter.supplier.animl.io.ChromatogramReader;
+import net.openchrom.msd.converter.supplier.animl.io.ChromatogramReader;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.IConstants;
 
-public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramCSD> {
+public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramMSD> {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramImportConverter.class);
 	private static final String DESCRIPTION = "AniML Chromatogram Import Converter";
 
 	@Override
-	public IProcessingInfo<IChromatogramCSD> convert(File file, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramMSD> convert(File file, IProgressMonitor monitor) {
 
-		IProcessingInfo<IChromatogramCSD> processingInfo = super.validate(file);
+		IProcessingInfo<IChromatogramMSD> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			/*
 			 * Read the chromatogram.
 			 */
-			IChromatogramCSDReader reader = new ChromatogramReader();
+			IChromatogramMSDReader reader = new ChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CHROMATOGRAM);
 			try {
-				IChromatogramCSD chromatogram = reader.read(file, monitor);
+				IChromatogramMSD chromatogram = reader.read(file, monitor);
 				processingInfo.setProcessingResult(chromatogram);
 			} catch(Exception e) {
 				logger.warn(e);
@@ -56,7 +56,7 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 
 		IProcessingInfo<IChromatogramOverview> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
-			IChromatogramCSDReader reader = new ChromatogramReader();
+			IChromatogramMSDReader reader = new ChromatogramReader();
 			try {
 				IChromatogramOverview chromatogramOverview = reader.readOverview(file, monitor);
 				processingInfo.setProcessingResult(chromatogramOverview);

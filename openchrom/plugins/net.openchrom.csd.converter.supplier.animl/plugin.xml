@@ -7,7 +7,7 @@
             description="Writes AnIML Chromatograms."
             exportConverter="net.openchrom.csd.converter.supplier.animl.converter.ChromatogramExportConverter"
             fileExtension=".animl"
-            filterName="AnIML Chromatogram (*.animl)"
+            filterName="AnIML FID Chromatogram (*.animl)"
             id="net.openchrom.csd.converter.supplier.animl"
             importConverter="net.openchrom.csd.converter.supplier.animl.converter.ChromatogramImportConverter"
             importMagicNumberMatcher="net.openchrom.csd.converter.supplier.animl.converter.MagicNumberMatcher"

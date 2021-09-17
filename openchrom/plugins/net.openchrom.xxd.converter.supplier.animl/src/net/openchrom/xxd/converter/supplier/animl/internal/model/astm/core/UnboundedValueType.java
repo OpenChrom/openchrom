@@ -25,12 +25,20 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "UnboundedValueType", propOrder = {"f"})
+@XmlType(name = "UnboundedValueType", propOrder = {"f", "i", "l", "d", "s"})
 @XmlSeeAlso({IndividualValueSetType.class, NumericValueType.class, SingleValueType.class})
 public class UnboundedValueType {
 
 	@XmlElement(name = "F")
 	protected List<Float> f;
+	@XmlElement(name = "I")
+	protected List<Integer> i;
+	@XmlElement(name = "L")
+	protected List<Long> l;
+	@XmlElement(name = "D")
+	protected List<Double> d;
+	@XmlElement(name = "S")
+	protected List<String> s;
 
 	public List<Float> getF() {
 
@@ -38,5 +46,37 @@ public class UnboundedValueType {
 			f = new ArrayList<Float>();
 		}
 		return this.f;
+	}
+
+	public List<Integer> getI() {
+
+		if(i == null) {
+			i = new ArrayList<Integer>();
+		}
+		return this.i;
+	}
+
+	public List<Long> getL() {
+
+		if(l == null) {
+			l = new ArrayList<Long>();
+		}
+		return this.l;
+	}
+
+	public List<Double> getD() {
+
+		if(d == null) {
+			d = new ArrayList<Double>();
+		}
+		return this.d;
+	}
+
+	public List<String> getS() {
+
+		if(s == null) {
+			s = new ArrayList<String>();
+		}
+		return this.s;
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2021 Lablicate GmbH.
+ * Copyright (c) 2008, 2021 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -7,15 +7,11 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Matthias Mailänder - initial API and implementation
+ * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.converter.supplier.animl.internal.converter;
+package net.openchrom.msd.converter.supplier.animl.model;
 
-public interface IConstants {
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 
-	String IMPORT_CHROMATOGRAM = "Import AnIML Chromatogram";
-	String EXPORT_CHROMATOGRAM = "Export AnIML Chromatogram";
-	//
-	String NODE_ANIML = "AnIML";
-	String NODE_TECHNIQUE = "Technique";
+public interface IVendorChromatogram extends IChromatogramMSD {
 }
