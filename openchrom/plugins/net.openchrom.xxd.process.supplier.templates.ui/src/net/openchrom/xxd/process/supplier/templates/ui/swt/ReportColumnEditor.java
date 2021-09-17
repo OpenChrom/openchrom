@@ -182,10 +182,14 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 						removeColumn();
 						break;
 					case SWT.ARROW_UP:
-						moveColumnUp();
+						if(e.stateMask == SWT.MOD1) {
+							moveColumnUp();
+						}
 						break;
 					case SWT.ARROW_DOWN:
-						moveColumnDown();
+						if(e.stateMask == SWT.MOD1) {
+							moveColumnDown();
+						}
 						break;
 					default:
 						// No action
