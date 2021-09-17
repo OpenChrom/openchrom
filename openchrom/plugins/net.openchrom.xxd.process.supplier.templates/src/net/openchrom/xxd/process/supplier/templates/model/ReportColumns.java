@@ -36,7 +36,10 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String MEAN_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Mean S/N Peak(s)";
 	public static final String MEDIAN_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Median S/N Peak(s)";
 	public static final String MAX_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Max S/N Peak(s)";
-	public static final String TRACES_PEAKS = "Traces Peak(s)";
+	public static final String TRACES_MIN_AREA_PEAKS = "Traces Min Area Peak(s)";
+	public static final String TRACES_MEAN_AREA_PEAKS = "Traces Mean Area Peak(s)";
+	public static final String TRACES_MEDIAN_AREA_PEAKS = "Traces Median Area Peak(s)";
+	public static final String TRACES_MAX_AREA_PEAKS = "Traces Max Area Peak(s)";
 	public static final String SUM_AREA = "Sum Area";
 	public static final String MIN_AREA = "Min Area";
 	public static final String MAX_AREA = "Max Area";
@@ -82,7 +85,10 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(MEAN_SIGNAL_TO_NOISE_RATIOS_PEAKS);
 		reportColumns.add(MEDIAN_SIGNAL_TO_NOISE_RATIOS_PEAKS);
 		reportColumns.add(MAX_SIGNAL_TO_NOISE_RATIOS_PEAKS);
-		reportColumns.add(TRACES_PEAKS);
+		reportColumns.add(TRACES_MIN_AREA_PEAKS);
+		reportColumns.add(TRACES_MEAN_AREA_PEAKS);
+		reportColumns.add(TRACES_MEDIAN_AREA_PEAKS);
+		reportColumns.add(TRACES_MAX_AREA_PEAKS);
 		reportColumns.add(SUM_AREA);
 		reportColumns.add(MIN_AREA);
 		reportColumns.add(MAX_AREA);

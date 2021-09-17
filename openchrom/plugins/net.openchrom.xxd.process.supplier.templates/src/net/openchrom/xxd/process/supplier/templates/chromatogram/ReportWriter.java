@@ -152,12 +152,15 @@ public class ReportWriter {
 		List<String> columnsToPrintAdjusted = new ArrayList<>();
 		//
 		for(String column : columnsToPrint) {
-			if(column.equals(ReportColumns.TRACES_PEAKS)) {
-				if(traces.size() > 0) {
-					for(int trace : traces) {
+			if(isTraceColumnSelectedAndActive(column, traces)) {
+				for(int trace : traces) {
+					if(column.equals(ReportColumns.TRACES_MIN_AREA_PEAKS)) {
 						columnsToPrintAdjusted.add(ReportColumns.createTraceColumnMin(trace));
+					} else if(column.equals(ReportColumns.TRACES_MEAN_AREA_PEAKS)) {
 						columnsToPrintAdjusted.add(ReportColumns.createTraceColumnMean(trace));
+					} else if(column.equals(ReportColumns.TRACES_MEDIAN_AREA_PEAKS)) {
 						columnsToPrintAdjusted.add(ReportColumns.createTraceColumnMedian(trace));
+					} else if(column.equals(ReportColumns.TRACES_MAX_AREA_PEAKS)) {
 						columnsToPrintAdjusted.add(ReportColumns.createTraceColumnMax(trace));
 					}
 				}
@@ -167,6 +170,23 @@ public class ReportWriter {
 		}
 		//
 		return columnsToPrintAdjusted;
+	}
+
+	private boolean isTraceColumnSelectedAndActive(String column, List<Integer> traces) {
+
+		if(traces.size() > 0) {
+			if(column.equals(ReportColumns.TRACES_MIN_AREA_PEAKS)) {
+				return true;
+			} else if(column.equals(ReportColumns.TRACES_MEAN_AREA_PEAKS)) {
+				return true;
+			} else if(column.equals(ReportColumns.TRACES_MEDIAN_AREA_PEAKS)) {
+				return true;
+			} else if(column.equals(ReportColumns.TRACES_MAX_AREA_PEAKS)) {
+				return true;
+			}
+		}
+		//
+		return false;
 	}
 
 	private Map<ReportSetting, List<IPeak>> printChromatogram(IChromatogram<? extends IPeak> chromatogram, ChromatogramReportSettings chromatogramReportSettings, List<String> columnsToPrint, boolean fileExists, String chromatogramName, List<Integer> traces, PrintWriter printWriter) {
