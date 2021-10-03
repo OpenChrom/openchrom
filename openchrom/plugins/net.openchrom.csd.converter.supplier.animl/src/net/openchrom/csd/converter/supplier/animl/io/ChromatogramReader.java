@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - fixed return logic
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.animl.io;
 
@@ -56,8 +57,8 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 
 		IVendorChromatogram chromatogram = null;
 		try {
-			chromatogram = new VendorChromatogram();
 			AnIMLType animl = XmlReader.getAnIML(file);
+			chromatogram = new VendorChromatogram();
 			chromatogram = readSample(animl, chromatogram);
 			List<Float> retentionTimes = new ArrayList<Float>();
 			List<Float> signals = new ArrayList<Float>();
