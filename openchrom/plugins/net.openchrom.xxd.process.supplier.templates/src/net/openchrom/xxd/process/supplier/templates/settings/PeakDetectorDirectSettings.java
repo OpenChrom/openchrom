@@ -15,7 +15,6 @@ import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetec
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.AbstractPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.settings.IPeakDetectorSettingsWSD;
-import org.eclipse.chemclipse.support.settings.EnumSelectionSettingProperty;
 import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,7 +30,6 @@ public class PeakDetectorDirectSettings extends AbstractPeakDetectorSettingsMSD 
 	private String traces = "";
 	@JsonProperty(value = "Detector Type", defaultValue = "VV")
 	@JsonPropertyDescription(value = "Select the detector type for the manual peak detection.")
-	@EnumSelectionSettingProperty
 	private DetectorType detectorType = DetectorType.VV;
 	@JsonProperty(value = "Optimize Range (VV)", defaultValue = "false")
 	@JsonPropertyDescription(value = "If VV as a peak detector type has been selected, the peak will be optimized.")
