@@ -24,9 +24,19 @@ import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.csd.converter.io.AbstractChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
+import org.eclipse.chemclipse.csd.model.core.IChromatogramPeakCSD;
+import org.eclipse.chemclipse.csd.model.core.support.PeakBuilderCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.model.identifier.ComparisonResult;
+import org.eclipse.chemclipse.model.identifier.IComparisonResult;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.identifier.LibraryInformation;
+import org.eclipse.chemclipse.model.implementation.IdentificationTarget;
+import org.eclipse.chemclipse.model.support.IScanRange;
+import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.SAXException;
 
@@ -106,6 +116,56 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 							IScan scan = new VendorScan(signals.get(i));
 							scan.setRetentionTime(Math.round(retentionTimes.get(i)));
 							chromatogram.addScan(scan);
+						}
+					}
+				}
+				List<Float> startTimes = new ArrayList<Float>();
+				List<Float> endTimes = new ArrayList<Float>();
+				List<String> peakNames = new ArrayList<String>();
+				if(experimentStep.getTechnique().getName().equals("Chromatography Peak Table")) {
+					for(ResultType result : experimentStep.getResult()) {
+						SeriesSetType seriesSet = result.getSeriesSet();
+						if(seriesSet.getName().equals("Peak Table")) {
+							for(SeriesType series : seriesSet.getSeries()) {
+								if(series.getName().equals("Start Time")) {
+									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
+										for(float f : individualValueSet.getF()) {
+											startTimes.add(f);
+										}
+									}
+								}
+								if(series.getName().equals("End Time")) {
+									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
+										for(float f : individualValueSet.getF()) {
+											endTimes.add(f);
+										}
+									}
+								}
+								if(series.getName().equals("Name")) {
+									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
+										for(String s : individualValueSet.getS()) {
+											peakNames.add(s);
+										}
+									}
+								}
+							}
+							int peaks = seriesSet.getLength();
+							for(int p = 0; p < peaks; p++) {
+								int startScan = chromatogram.getScanNumber(startTimes.get(p));
+								int stopScan = chromatogram.getScanNumber(endTimes.get(p));
+								IScanRange scanRange = new ScanRange(startScan, stopScan);
+								try {
+									IChromatogramPeakCSD chromatogramPeak = PeakBuilderCSD.createPeak(chromatogram, scanRange, true);
+									ILibraryInformation libraryInformation = new LibraryInformation();
+									libraryInformation.setName(peakNames.get(p));
+									IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
+									IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
+									chromatogramPeak.getTargets().add(identificationTarget);
+									chromatogram.addPeak(chromatogramPeak);
+								} catch(Exception e) {
+									logger.warn("Peak " + p + " could not be added.");
+								}
+							}
 						}
 					}
 				}

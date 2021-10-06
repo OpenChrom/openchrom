@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.GregorianCalendar;
+import java.util.Optional;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -25,8 +26,10 @@ import javax.xml.datatype.DatatypeFactory;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.csd.converter.io.AbstractChromatogramCSDWriter;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
+import org.eclipse.chemclipse.csd.model.core.IChromatogramPeakCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -102,6 +105,11 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		detectorStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
 		detectorStep.setTechnique(createFlameIonizationTechnique());
 		experimentStepSet.getExperimentStep().add(detectorStep);
+		//
+		ExperimentStepType peakStep = new ExperimentStepType();
+		peakStep.getResult().add(createPeaks(chromatogram));
+		peakStep.setTechnique(createPeakTableTechnique());
+		experimentStepSet.getExperimentStep().add(peakStep);
 		return experimentStepSet;
 	}
 
@@ -195,6 +203,14 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		return technique;
 	}
 
+	private TechniqueType createPeakTableTechnique() {
+
+		TechniqueType technique = new TechniqueType();
+		technique.setName("Chromatography Peak Table");
+		technique.setUri("https://github.com/AnIML/techniques/blob/d749979fc21322b97c61e2efd6efe60cfa5a29be/chromatography-peak-table.atdd");
+		return technique;
+	}
+
 	private AuditTrailEntrySetType createAuditTrail(IChromatogramCSD chromatogram) throws DatatypeConfigurationException {
 
 		AuditTrailEntrySetType auditTrailEntrySet = new AuditTrailEntrySetType();
@@ -210,5 +226,114 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 			auditTrail.setTimestamp(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
 		}
 		return auditTrailEntrySet;
+	}
+
+	private ResultType createPeaks(IChromatogramCSD chromatogram) {
+
+		SeriesSetType seriesSet = new SeriesSetType();
+		seriesSet.setName("Peak Table");
+		seriesSet.setLength(chromatogram.getNumberOfPeaks());
+		//
+		SeriesType numberSeries = new SeriesType();
+		numberSeries.setName("Number");
+		//
+		SeriesType idSeries = new SeriesType();
+		idSeries.setName("ID");
+		//
+		SeriesType groupIdSeries = new SeriesType();
+		groupIdSeries.setName("Group ID");
+		//
+		SeriesType nameSeries = new SeriesType();
+		nameSeries.setName("Name");
+		//
+		SeriesType retentionTimeSeries = new SeriesType();
+		retentionTimeSeries.setName("Retention Time");
+		UnitType retentionTimeUnit = new UnitType();
+		retentionTimeUnit.setLabel("Time");
+		retentionTimeUnit.setQuantity("min");
+		retentionTimeSeries.setUnit(retentionTimeUnit);
+		//
+		SeriesType adjustedRetentionTimeSeries = new SeriesType();
+		adjustedRetentionTimeSeries.setName("Adjusted Retention Time");
+		UnitType adjustedRetentionTimeUnit = new UnitType();
+		adjustedRetentionTimeUnit.setLabel("Time");
+		adjustedRetentionTimeUnit.setQuantity("min");
+		adjustedRetentionTimeSeries.setUnit(adjustedRetentionTimeUnit);
+		//
+		SeriesType startTimeSeries = new SeriesType();
+		startTimeSeries.setName("Start Time");
+		UnitType startTimeUnit = new UnitType();
+		startTimeUnit.setLabel("Time");
+		startTimeUnit.setQuantity("min");
+		startTimeSeries.setUnit(startTimeUnit);
+		//
+		SeriesType endTimeSeries = new SeriesType();
+		endTimeSeries.setName("End Time");
+		UnitType endTimeUnit = new UnitType();
+		endTimeUnit.setLabel("Time");
+		endTimeUnit.setQuantity("min");
+		endTimeSeries.setUnit(endTimeUnit);
+		//
+		SeriesType peakHeightSeries = new SeriesType();
+		peakHeightSeries.setName("Value");
+		UnitType peakHeightUnit = new UnitType();
+		peakHeightUnit.setLabel("Arbitrary");
+		peakHeightUnit.setQuantity("arbitrary");
+		peakHeightSeries.setUnit(peakHeightUnit);
+		//
+		IndividualValueSetType numbers = new IndividualValueSetType();
+		IndividualValueSetType ids = new IndividualValueSetType();
+		IndividualValueSetType groups = new IndividualValueSetType();
+		IndividualValueSetType names = new IndividualValueSetType();
+		IndividualValueSetType retentionTimes = new IndividualValueSetType();
+		IndividualValueSetType adjustedRetentionTimes = new IndividualValueSetType();
+		IndividualValueSetType startTimes = new IndividualValueSetType();
+		IndividualValueSetType endTimes = new IndividualValueSetType();
+		IndividualValueSetType peakHeights = new IndividualValueSetType();
+		int i = 0;
+		for(IChromatogramPeakCSD peak : chromatogram.getPeaks()) {
+			numbers.getI().add(i);
+			Optional<IIdentificationTarget> target = peak.getTargets().stream().findFirst();
+			if(target.isPresent()) {
+				ids.getS().add(target.get().getIdentifier());
+				Optional<String> classifier = target.get().getLibraryInformation().getClassifier().stream().findFirst();
+				if(classifier.isPresent()) {
+					groups.getS().add(classifier.get());
+				}
+				names.getS().add(target.get().getLibraryInformation().getName());
+			}
+			retentionTimes.getD().add(peak.getX() / 1000 / 60);
+			float relativeRetentionTime = chromatogram.getScan(peak.getScanMax()).getRelativeRetentionTime() / 1000f / 60f;
+			if(relativeRetentionTime > 0) {
+				adjustedRetentionTimes.getF().add(relativeRetentionTime);
+			}
+			startTimes.getF().add(peak.getPeakModel().getStartRetentionTime() / 1000f / 60f);
+			endTimes.getF().add(peak.getPeakModel().getStopRetentionTime() / 1000f / 60f);
+			peakHeights.getF().add(peak.getPeakModel().getPeakMaximum().getTotalSignal());
+			i++;
+		}
+		numberSeries.getIndividualValueSet().add(numbers);
+		idSeries.getIndividualValueSet().add(ids);
+		groupIdSeries.getIndividualValueSet().add(groups);
+		nameSeries.getIndividualValueSet().add(names);
+		retentionTimeSeries.getIndividualValueSet().add(retentionTimes);
+		adjustedRetentionTimeSeries.getIndividualValueSet().add(adjustedRetentionTimes);
+		startTimeSeries.getIndividualValueSet().add(startTimes);
+		endTimeSeries.getIndividualValueSet().add(endTimes);
+		peakHeightSeries.getIndividualValueSet().add(peakHeights);
+		//
+		seriesSet.getSeries().add(numberSeries);
+		seriesSet.getSeries().add(idSeries);
+		seriesSet.getSeries().add(groupIdSeries);
+		seriesSet.getSeries().add(nameSeries);
+		seriesSet.getSeries().add(retentionTimeSeries);
+		seriesSet.getSeries().add(adjustedRetentionTimeSeries);
+		seriesSet.getSeries().add(startTimeSeries);
+		seriesSet.getSeries().add(endTimeSeries);
+		seriesSet.getSeries().add(peakHeightSeries);
+		//
+		ResultType result = new ResultType();
+		result.setSeriesSet(seriesSet);
+		return result;
 	}
 }
