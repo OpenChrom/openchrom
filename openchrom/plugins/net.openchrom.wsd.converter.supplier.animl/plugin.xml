@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.wsd.converter.chromatogramSupplier">
+      <ChromatogramSupplier
+            description="Reads Analytical Information Markup Language Chromatograms"
+            fileExtension=".animl"
+            filterName="AnIML UV-Vis Chromatogram (*.animl)"
+            id="net.openchrom.wsd.converter.supplier.animl.chromatogram"
+            exportConverter="net.openchrom.wsd.converter.supplier.animl.converter.ChromatogramExportConverter"
+            importConverter="net.openchrom.wsd.converter.supplier.animl.converter.ChromatogramImportConverter"
+            importMagicNumberMatcher="net.openchrom.wsd.converter.supplier.animl.converter.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="true">
+      </ChromatogramSupplier>
+   </extension>
+</plugin>
