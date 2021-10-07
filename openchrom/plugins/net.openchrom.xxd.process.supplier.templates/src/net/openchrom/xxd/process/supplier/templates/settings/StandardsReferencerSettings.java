@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.chromatogram.msd.quantitation.settings.AbstractPea
 import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
@@ -56,6 +57,7 @@ public class StandardsReferencerSettings extends AbstractPeakQuantifierSettings 
 		this.referencerSettings = settings.extractSettings(referencerSettings);
 	}
 
+	@JsonIgnore
 	public List<AssignerReference> getReferencerSettings() {
 
 		StandardsReferencerListUtil util = new StandardsReferencerListUtil();

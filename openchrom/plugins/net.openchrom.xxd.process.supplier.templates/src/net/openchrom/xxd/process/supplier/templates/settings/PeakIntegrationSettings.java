@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.Ab
 import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
@@ -55,6 +56,7 @@ public class PeakIntegrationSettings extends AbstractPeakIntegrationSettings imp
 		this.integratorSettings = settings.extractSettings(integratorSettings);
 	}
 
+	@JsonIgnore
 	public List<IntegratorSetting> getIntegratorSettings() {
 
 		PeakIntegratorListUtil util = new PeakIntegratorListUtil();
