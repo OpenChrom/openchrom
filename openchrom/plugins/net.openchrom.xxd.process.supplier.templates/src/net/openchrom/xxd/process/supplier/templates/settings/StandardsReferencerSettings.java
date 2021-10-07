@@ -51,6 +51,7 @@ public class StandardsReferencerSettings extends AbstractPeakQuantifierSettings 
 		this.referencerSettings = referencerSettings;
 	}
 
+	@JsonIgnore
 	public void setReferencerSettings(List<AssignerReference> referencerSettings) {
 
 		AssignerReferences settings = new AssignerReferences();

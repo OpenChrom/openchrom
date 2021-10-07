@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,6 +17,7 @@ import org.eclipse.chemclipse.chromatogram.msd.classifier.settings.AbstractChrom
 import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
@@ -50,12 +51,14 @@ public class TraceRatioSettings extends AbstractChromatogramClassifierSettings i
 		this.ratioSettings = ratioSettings;
 	}
 
+	@JsonIgnore
 	public void setRatioSettings(List<TraceRatio> ratioSettings) {
 
 		TraceRatios settings = new TraceRatios();
 		this.ratioSettings = settings.extractSettings(ratioSettings);
 	}
 
+	@JsonIgnore
 	public TraceRatios getRatioSettings() {
 
 		TraceRatioListUtil util = new TraceRatioListUtil();

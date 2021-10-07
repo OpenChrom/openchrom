@@ -66,16 +66,16 @@ public class PeakIdentifierSettings extends IdentifierAdapterSettings implements
 		this.identifierSettings = identifierSettings;
 	}
 
+	public String getIdentifierSettings() {
+
+		return identifierSettings;
+	}
+
 	@JsonIgnore
 	public void setIdentifierSettings(List<IdentifierSetting> identifierSettings) {
 
 		IdentifierSettings settings = new IdentifierSettings();
 		this.identifierSettings = settings.extractSettings(identifierSettings);
-	}
-
-	public String getIdentifierSettings() {
-
-		return identifierSettings;
 	}
 
 	@JsonIgnore

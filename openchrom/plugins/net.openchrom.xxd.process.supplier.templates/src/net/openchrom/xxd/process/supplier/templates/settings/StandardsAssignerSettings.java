@@ -55,6 +55,7 @@ public class StandardsAssignerSettings extends AbstractPeakQuantifierSettings im
 		this.assignerSettings = assignerSettings;
 	}
 
+	@JsonIgnore
 	public void setAssignerSettings(List<AssignerStandard> assignerSettings) {
 
 		AssignerStandards settings = new AssignerStandards();

@@ -50,6 +50,7 @@ public class PeakIntegrationSettings extends AbstractPeakIntegrationSettings imp
 		this.integratorSettings = integratorSettings;
 	}
 
+	@JsonIgnore
 	public void setIntegrationSettings(List<IntegratorSetting> integratorSettings) {
 
 		IntegratorSettings settings = new IntegratorSettings();

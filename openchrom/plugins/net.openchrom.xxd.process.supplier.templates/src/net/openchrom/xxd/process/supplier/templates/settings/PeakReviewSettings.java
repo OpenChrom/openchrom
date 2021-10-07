@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -56,16 +56,16 @@ public class PeakReviewSettings extends IdentifierAdapterSettings implements IPe
 		this.reviewSettings = reviewSettings;
 	}
 
+	public String getReviewSettings() {
+
+		return reviewSettings;
+	}
+
 	@JsonIgnore
 	public void setReviewSettings(List<ReviewSetting> reviewSettings) {
 
 		ReviewSettings settings = new ReviewSettings();
 		this.reviewSettings = settings.extractSettings(reviewSettings);
-	}
-
-	public String getReviewSettings() {
-
-		return reviewSettings;
 	}
 
 	@JsonIgnore
