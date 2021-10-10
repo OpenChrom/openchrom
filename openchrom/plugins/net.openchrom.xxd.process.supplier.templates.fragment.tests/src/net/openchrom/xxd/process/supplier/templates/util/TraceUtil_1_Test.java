@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,21 +7,24 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.templates.model;
+package net.openchrom.xxd.process.supplier.templates.util;
+
+import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.implementation.Peak;
 
 import junit.framework.TestCase;
 
-public class AssignerStandard_1_Test extends TestCase {
+public class TraceUtil_1_Test extends TestCase {
 
-	private AssignerStandard setting;
+	private TracesUtil tracesUtil = new TracesUtil();
+	private IPeak peak = new Peak();
 
 	@Override
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		setting = new AssignerStandard();
 	}
 
 	@Override
@@ -32,36 +35,21 @@ public class AssignerStandard_1_Test extends TestCase {
 
 	public void test1() {
 
-		assertEquals("", setting.getName());
+		assertFalse(tracesUtil.isTraceMatch(null, null));
 	}
 
 	public void test2() {
 
-		assertEquals(0.0d, setting.getStartRetentionTimeMinutes());
+		assertFalse(tracesUtil.isTraceMatch(null, ""));
 	}
 
 	public void test3() {
 
-		assertEquals(0.0d, setting.getStopRetentionTimeMinutes());
+		assertTrue(tracesUtil.isTraceMatch(peak, null));
 	}
 
 	public void test4() {
 
-		assertEquals(0.0d, setting.getConcentration());
-	}
-
-	public void test5() {
-
-		assertEquals("", setting.getConcentrationUnit());
-	}
-
-	public void test6() {
-
-		assertEquals(1.0d, setting.getResponseFactor());
-	}
-
-	public void test7() {
-
-		assertEquals("", setting.getTracesIdentification());
+		assertTrue(tracesUtil.isTraceMatch(peak, ""));
 	}
 }

@@ -60,12 +60,7 @@ public class DetectorExport extends AbstractChromatogramExportConverter implemen
 			float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
 			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(retentionIndex);
 			IIdentificationTarget identificationTarget = IIdentificationTarget.getBestIdentificationTarget(peak.getTargets(), identificationTargetComparator);
-			//
-			if(identificationTarget != null) {
-				detectorSetting.setName(identificationTarget.getLibraryInformation().getName());
-			} else {
-				detectorSetting.setName("");
-			}
+			detectorSetting.setName(identificationTarget != null ? identificationTarget.getLibraryInformation().getName() : "");
 			detectorSettings.add(detectorSetting);
 		}
 		//

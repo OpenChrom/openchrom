@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,6 +29,7 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 	private double concentration = 0.0d;
 	private String concentrationUnit = "";
 	private double responseFactor = 1.0d;
+	private String traces = "";
 
 	//
 	@Override
@@ -49,7 +50,7 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 					 * Extract retention time, ...
 					 */
 					String[] values = text.trim().split("\\" + SEPARATOR_ENTRY); // The pipe needs to be escaped.
-					if(values.length == 6) {
+					if(values.length >= 6) {
 						/*
 						 * Evaluation
 						 */
@@ -82,6 +83,8 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 						if(responseFactor <= 0) {
 							message = "The response factor must be > 0.";
 						}
+						//
+						traces = parseString(values, 6, "");
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -107,6 +110,7 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 		settings.setConcentration(concentration);
 		settings.setConcentrationUnit(concentrationUnit);
 		settings.setResponseFactor(responseFactor);
+		settings.setTracesIdentification(traces);
 		return settings;
 	}
 }

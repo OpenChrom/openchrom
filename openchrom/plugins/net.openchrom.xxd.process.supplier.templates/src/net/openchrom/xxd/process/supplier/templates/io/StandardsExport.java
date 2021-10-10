@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -39,6 +39,7 @@ public class StandardsExport extends AbstractChromatogramExportConverter impleme
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		AssignerStandards assignerStandards = new AssignerStandards();
 		//
+		int numberTraces = PreferenceSupplier.getExportNumberTracesAssigner();
 		int deltaLeft = PreferenceSupplier.getExportDeltaLeftMillisecondsStandards();
 		int deltaRight = PreferenceSupplier.getExportDeltaRightMillisecondsStandards();
 		//
@@ -54,6 +55,7 @@ public class StandardsExport extends AbstractChromatogramExportConverter impleme
 					assignerStandard.setConcentration(internalStandard.getConcentration());
 					assignerStandard.setConcentrationUnit(internalStandard.getConcentrationUnit());
 					assignerStandard.setResponseFactor(internalStandard.getResponseFactor());
+					assignerStandard.setTracesIdentification(extractTraces(peak, numberTraces));
 					assignerStandards.add(assignerStandard);
 				}
 			}

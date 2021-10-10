@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,6 +29,7 @@ public class StandardsAssignerLabelProvider extends AbstractChemClipseLabelProvi
 	public static final String CONCENTRATION = "Concentration";
 	public static final String CONCENTRATION_UNIT = "Concentration Unit";
 	public static final String RESPONSE_FACTOR = "Response Factor";
+	public static final String TRACES_IDENTIFICATION = "Traces Identification";
 	//
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 	//
@@ -38,7 +39,8 @@ public class StandardsAssignerLabelProvider extends AbstractChemClipseLabelProvi
 			STOP_RETENTION_TIME, //
 			CONCENTRATION, //
 			CONCENTRATION_UNIT, //
-			RESPONSE_FACTOR//
+			RESPONSE_FACTOR, //
+			TRACES_IDENTIFICATION //
 	};
 	public static final int[] BOUNDS = { //
 			200, //
@@ -46,7 +48,8 @@ public class StandardsAssignerLabelProvider extends AbstractChemClipseLabelProvi
 			100, //
 			50, //
 			50, //
-			50 //
+			50, //
+			100 //
 	};
 
 	@Override
@@ -82,6 +85,9 @@ public class StandardsAssignerLabelProvider extends AbstractChemClipseLabelProvi
 					break;
 				case 5:
 					text = decimalFormat.format(setting.getResponseFactor());
+					break;
+				case 6:
+					text = setting.getTracesIdentification();
 					break;
 				default:
 					text = "n.v.";

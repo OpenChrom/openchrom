@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -36,6 +36,7 @@ public class PageExportAssigner extends FieldEditorPreferencePage implements IWo
 	 */
 	public void createFieldEditors() {
 
+		addField(new IntegerFieldEditor(PreferenceSupplier.P_EXPORT_NUMBER_TRACES_ASSIGNER, "Number Traces for Identification (0 = TIC)", PreferenceSupplier.MIN_NUMBER_TRACES, PreferenceSupplier.MAX_NUMBER_TRACES, getFieldEditorParent()));
 		addField(new IntegerFieldEditor(PreferenceSupplier.P_EXPORT_DELTA_LEFT_MILLISECONDS_STANDARDS, "Delta Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
 		addField(new IntegerFieldEditor(PreferenceSupplier.P_EXPORT_DELTA_RIGHT_MILLISECONDS_STANDARDS, "Delta Right [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
 	}

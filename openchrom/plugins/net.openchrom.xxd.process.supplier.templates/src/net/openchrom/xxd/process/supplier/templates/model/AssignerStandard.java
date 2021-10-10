@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,6 +17,7 @@ public class AssignerStandard extends AbstractSetting {
 	private double concentration = 0.0d;
 	private String concentrationUnit = "";
 	private double responseFactor = 1.0d;
+	private String tracesIdentification = "";
 
 	public void copyFrom(AssignerStandard setting) {
 
@@ -27,6 +28,7 @@ public class AssignerStandard extends AbstractSetting {
 			setConcentration(setting.getConcentration());
 			setConcentrationUnit(setting.getConcentrationUnit());
 			setResponseFactor(setting.getResponseFactor());
+			setTracesIdentification(setting.getTracesIdentification());
 		}
 	}
 
@@ -70,6 +72,16 @@ public class AssignerStandard extends AbstractSetting {
 		this.responseFactor = responseFactor;
 	}
 
+	public String getTracesIdentification() {
+
+		return tracesIdentification;
+	}
+
+	public void setTracesIdentification(String tracesIdentification) {
+
+		this.tracesIdentification = tracesIdentification;
+	}
+
 	@Override
 	public int hashCode() {
 
@@ -100,6 +112,6 @@ public class AssignerStandard extends AbstractSetting {
 	@Override
 	public String toString() {
 
-		return "AssignerStandard [name=" + name + ", startRetentionTime=" + getStartRetentionTime() + ", stopRetentionTime=" + getStopRetentionTime() + ", concentration=" + concentration + ", concentrationUnit=" + concentrationUnit + ", responseFactor=" + responseFactor + "]";
+		return "AssignerStandard [name=" + name + ", concentration=" + concentration + ", concentrationUnit=" + concentrationUnit + ", responseFactor=" + responseFactor + ", tracesIdentification=" + tracesIdentification + "]";
 	}
 }

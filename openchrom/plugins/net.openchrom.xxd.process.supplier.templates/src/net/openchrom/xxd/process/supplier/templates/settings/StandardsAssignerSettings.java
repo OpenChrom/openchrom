@@ -31,7 +31,7 @@ public class StandardsAssignerSettings extends AbstractPeakQuantifierSettings im
 
 	public static final String DESCRIPTION = "Template Standards Assigner";
 	/*
-	 * 10.52 | 10.63 | Styrene | 10.5 | mg/L | 1.0
+	 * 10.52 | 10.63 | Styrene | 10.5 | mg/L | 1.0 | 104 103
 	 */
 	@JsonProperty(value = "Assigner Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Example: '" + StandardsAssignerListUtil.EXAMPLE_SINGLE + "'")
@@ -46,7 +46,9 @@ public class StandardsAssignerSettings extends AbstractPeakQuantifierSettings im
 			RE_SEPARATOR + //
 			RE_TEXT + // Unit
 			RE_SEPARATOR + //
-			RE_NUMBER, // Response Factor
+			RE_NUMBER + // Response Factor
+			RE_SEPARATOR_OPTIONAL + //
+			RE_TEXT, // Traces Identification
 			isMultiLine = true)
 	private String assignerSettings = "";
 

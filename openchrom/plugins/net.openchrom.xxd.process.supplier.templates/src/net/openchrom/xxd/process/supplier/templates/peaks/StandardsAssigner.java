@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSettings;
+import net.openchrom.xxd.process.supplier.templates.util.TracesUtil;
 
 @SuppressWarnings("rawtypes")
 public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQuantifier {
@@ -87,18 +88,21 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 
 		int startRetentionTime = assignerSetting.getStartRetentionTime();
 		int stopRetentionTime = assignerSetting.getStopRetentionTime();
+		TracesUtil tracesUtil = new TracesUtil();
 		//
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {
 				for(IPeak peak : peaks) {
 					if(isPeakMatch(peak, startRetentionTime, stopRetentionTime)) {
 						if(peak.getIntegratedArea() > 0.0d) {
-							String name = assignerSetting.getName();
-							double concentration = assignerSetting.getConcentration();
-							String concentrationUnit = assignerSetting.getConcentrationUnit();
-							double responseFactor = assignerSetting.getResponseFactor();
-							InternalStandard internalStandard = new InternalStandard(name, concentration, concentrationUnit, responseFactor);
-							peak.addInternalStandard(internalStandard);
+							if(tracesUtil.isTraceMatch(peak, assignerSetting.getTracesIdentification())) {
+								String name = assignerSetting.getName();
+								double concentration = assignerSetting.getConcentration();
+								String concentrationUnit = assignerSetting.getConcentrationUnit();
+								double responseFactor = assignerSetting.getResponseFactor();
+								InternalStandard internalStandard = new InternalStandard(name, concentration, concentrationUnit, responseFactor);
+								peak.addInternalStandard(internalStandard);
+							}
 						} else {
 							logger.warn("The peak area is 0.");
 						}

@@ -128,6 +128,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	/*
 	 * Assigner
 	 */
+	public static final String P_EXPORT_NUMBER_TRACES_ASSIGNER = "exportNumberTracesAssigner";
+	public static final int DEF_EXPORT_NUMBER_TRACES_ASSIGNER = 0;
 	public static final String P_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER = "exportDeltaLeftMillisecondsAssigner";
 	public static final int DEF_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER = 0;
 	public static final String P_EXPORT_DELTA_RIGHT_MILLISECONDS_ASSIGNER = "exportDeltaRightMillisecondsAssigner";
@@ -296,6 +298,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW));
 		defaultValues.put(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW, Integer.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW));
 		//
+		defaultValues.put(P_EXPORT_NUMBER_TRACES_ASSIGNER, Integer.toString(DEF_EXPORT_NUMBER_TRACES_ASSIGNER));
 		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER));
 		defaultValues.put(P_EXPORT_DELTA_RIGHT_MILLISECONDS_ASSIGNER, Integer.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_ASSIGNER));
 		//
@@ -502,6 +505,17 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void setExportDeltaRightMillisecondsReview(int deltaMilliseconds) {
 
 		putInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW, deltaMilliseconds);
+	}
+
+	public static int getExportNumberTracesAssigner() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_EXPORT_NUMBER_TRACES_ASSIGNER, DEF_EXPORT_NUMBER_TRACES_ASSIGNER);
+	}
+
+	public static void setExportNumberTracesAssigner(int numberTraces) {
+
+		putInteger(P_EXPORT_NUMBER_TRACES_ASSIGNER, numberTraces);
 	}
 
 	public static int getExportDeltaLeftMillisecondsAssigner() {

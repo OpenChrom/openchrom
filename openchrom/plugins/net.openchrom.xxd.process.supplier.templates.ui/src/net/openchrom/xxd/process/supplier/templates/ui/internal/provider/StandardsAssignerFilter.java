@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -38,11 +38,13 @@ public class StandardsAssignerFilter extends ViewerFilter {
 			AssignerStandard setting = (AssignerStandard)element;
 			String name = setting.getName();
 			String concentrationUnit = setting.getConcentrationUnit();
+			String tracesIdentification = setting.getTracesIdentification();
 			//
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				name = name.toLowerCase();
 				concentrationUnit = concentrationUnit.toLowerCase();
+				tracesIdentification = tracesIdentification.toLowerCase();
 			}
 			//
 			if(name.contains(searchText)) {
@@ -50,6 +52,10 @@ public class StandardsAssignerFilter extends ViewerFilter {
 			}
 			//
 			if(concentrationUnit.contains(searchText)) {
+				return true;
+			}
+			//
+			if(tracesIdentification.contains(searchText)) {
 				return true;
 			}
 		}
