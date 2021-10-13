@@ -22,26 +22,13 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     - name: Set up JDK 8
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
-        java-version: 8
-    - name: Setup Maven
-      run: echo "MAVEN_OPTS='-Xmx2048m'" > ~/.mavenrc
-    - name: Cache maven repo
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-maven-repo
-      with:
-        path: |
-          ~/.m2/repository
-          !~/.m2/repository/.cache/tycho
-          !~/.m2/repository/net/openchrom/
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.sha1') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+        distribution: 'zulu'
+        java-version: '8'
+        java-package: 'jdk+fx'
+        cache: 'maven'
     - name: Build with Maven
       run: mvn -f openchrom/releng/net.openchrom.aggregator/pom.xml clean install --no-transfer-progress -U -DskipTests
