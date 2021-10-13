@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,7 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model.qual;
 
-public enum PeakQuality {
+public enum PeakQuality implements ILabel {
+
 	VERY_GOOD("++"), //
 	GOOD("+"), //
 	ACCEPTABLE("~"), //
@@ -22,10 +23,11 @@ public enum PeakQuality {
 	private String label = "";
 
 	private PeakQuality(String label) {
+
 		this.label = label;
 	}
 
-	public String getLabel() {
+	public String label() {
 
 		return label;
 	}
