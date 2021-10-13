@@ -32,21 +32,25 @@ public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IM
 		if(checkFileExtension(file, ".cdf")) {
 			NetcdfFile ncfile = null;
 			try {
-				try {
-					ncfile = NetcdfFile.open(file.getAbsolutePath());
-					if(ncfile != null) {
-						/*
-						 * If no mass values are stored, assume that it is a FID file.
-						 */
-						if(ncfile.findVariable(VARIABLE_MASS_VALUES) == null) {
-							isValidFormat = true;
-						}
+				ncfile = NetcdfFile.open(file.getAbsolutePath());
+				if(ncfile != null) {
+					/*
+					 * If no mass values are stored, assume that it is a FID file.
+					 */
+					if(ncfile.findVariable(VARIABLE_MASS_VALUES) == null) {
+						isValidFormat = true;
 					}
-				} finally {
-					ncfile.close();
 				}
-			} catch(IOException e) {
+			} catch(Exception e) {
 				logger.warn(e);
+			} finally {
+				if(ncfile != null) {
+					try {
+						ncfile.close();
+					} catch(IOException e) {
+						logger.warn(e);
+					}
+				}
 			}
 		} else if(checkFileExtension(file, ".cdfx")) {
 			/*

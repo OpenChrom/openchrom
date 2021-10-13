@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Lablicate GmbH.
+ * Copyright (c) 2016, 2021 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -32,21 +32,25 @@ public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IM
 		if(checkFileExtension(file, ".cdf")) {
 			NetcdfFile ncfile = null;
 			try {
-				try {
-					ncfile = NetcdfFile.open(file.getAbsolutePath());
-					if(ncfile != null) {
-						/*
-						 * If mass values are stored, assume that it is a MSD file.
-						 */
-						if(ncfile.findVariable(VARIABLE_MASS_VALUES) != null) {
-							isValidFormat = true;
-						}
+				ncfile = NetcdfFile.open(file.getAbsolutePath());
+				if(ncfile != null) {
+					/*
+					 * If mass values are stored, assume that it is a MSD file.
+					 */
+					if(ncfile.findVariable(VARIABLE_MASS_VALUES) != null) {
+						isValidFormat = true;
 					}
-				} finally {
-					ncfile.close();
 				}
-			} catch(IOException e) {
+			} catch(Exception e) {
 				logger.warn(e);
+			} finally {
+				if(ncfile != null) {
+					try {
+						ncfile.close();
+					} catch(IOException e) {
+						logger.warn(e);
+					}
+				}
 			}
 		}
 		return isValidFormat;
