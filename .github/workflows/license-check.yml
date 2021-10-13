@@ -10,13 +10,14 @@
 # http://www.eclipse.org/legal/epl-2.0
 #
 # SPDX-License-Identifier: EPL-2.0
-name: license-check
+name: License Header
 
 on:
   pull_request:
 
 jobs:
   check-license-header-year:
+    name: Year
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
