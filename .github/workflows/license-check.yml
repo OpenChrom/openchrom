@@ -1,0 +1,48 @@
+# Copyright (c) 2020, 2021 Contributors to the Eclipse Foundation
+#
+#  Contributors:
+#  Thomas Jaeckle - initial API and implementation
+#  Yufei Cai - fix head vs base ahead error
+#  Matthias Mailänder - check all files and account for year ranges
+#
+# This program and the accompanying materials are made available under the
+# terms of the Eclipse Public License 2.0 which is available at
+# http://www.eclipse.org/legal/epl-2.0
+#
+# SPDX-License-Identifier: EPL-2.0
+name: license-check
+
+on:
+  pull_request:
+
+jobs:
+  check-license-header-year:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: jitterbit/get-changed-files@v1
+        id: changed-files
+        continue-on-error: true
+      - name: Print changed files
+        run: |
+          echo "Changed:"
+          echo "${{ steps.changed-files.outputs.all }}"
+      - name: Check year in license header
+        shell: bash
+        run: |
+          included_file_endings=".*\.(java)"
+          current_year=$(date +'%Y')
+          missing_counter=0
+          for file in ${{ steps.changed-files.outputs.all }}; do
+            if [[ $file =~ $included_file_endings ]]; then
+              if grep -q "Copyright (c) $current_year" $file; then
+                printf "\xE2\x9C\x94 $file\n"
+              elif grep -q "Copyright (c) [0-9]\{4\}, $current_year" $file; then
+                printf "\xE2\x9C\x94 $file\n"
+              else
+                printf "\xE2\x9D\x8C $file\n\tCopyright header with '$current_year' is missing from changed file.\n"
+                missing_counter=$(expr $missing_counter + 1)
+              fi
+            fi
+          done
+          exit $missing_counter
