@@ -9,12 +9,13 @@
  * Contributors:
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
-package net.openchrom.csd.converter.supplier.animl.io;
+package net.openchrom.wsd.converter.supplier.animl.io;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Optional;
 
 import javax.xml.bind.JAXBContext;
@@ -24,28 +25,33 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
-import org.eclipse.chemclipse.csd.converter.io.AbstractChromatogramCSDWriter;
-import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
-import org.eclipse.chemclipse.csd.model.core.IChromatogramPeakCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.support.history.IEditInformation;
+import org.eclipse.chemclipse.wsd.converter.io.AbstractChromatogramWSDWriter;
+import org.eclipse.chemclipse.wsd.model.core.IChromatogramPeakWSD;
+import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
+import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
+import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Version;
+
+import com.google.common.primitives.Doubles;
 
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.BinaryReader;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AnIMLType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AuditTrailEntrySetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AuditTrailEntryType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AuthorType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.CategoryType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.EncodedValueSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ExperimentStepSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ExperimentStepType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.IndividualValueSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.MethodType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ResultType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleType;
@@ -56,12 +62,12 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Techn
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
 import net.openchrom.xxd.converter.supplier.animl.preferences.PreferenceSupplier;
 
-public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
+public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramWriter.class);
 
 	@Override
-	public void writeChromatogram(File file, IChromatogramCSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void writeChromatogram(File file, IChromatogramWSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
 
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(AnIMLType.class);
@@ -79,7 +85,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		}
 	}
 
-	private SampleSetType createSampleSet(IChromatogramCSD chromatogram) {
+	private SampleSetType createSampleSet(IChromatogramWSD chromatogram) {
 
 		SampleSetType sampleSet = new SampleSetType();
 		SampleType sample = new SampleType();
@@ -91,7 +97,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		return sampleSet;
 	}
 
-	private ExperimentStepSetType createExperimentStep(IChromatogramCSD chromatogram) {
+	private ExperimentStepSetType createExperimentStep(IChromatogramWSD chromatogram) {
 
 		ExperimentStepSetType experimentStepSet = new ExperimentStepSetType();
 		//
@@ -100,10 +106,10 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		experimentStepSet.getExperimentStep().add(chromatographyStep);
 		//
 		ExperimentStepType detectorStep = new ExperimentStepType();
-		detectorStep.getResult().add(createResult(chromatogram));
+		detectorStep.getResult().add(createSignal(chromatogram));
 		detectorStep.setMethod(createMethod(chromatogram));
 		detectorStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
-		detectorStep.setTechnique(createFlameIonizationTechnique());
+		detectorStep.setTechnique(createUltraVioletDetectorTechnique());
 		experimentStepSet.getExperimentStep().add(detectorStep);
 		//
 		ExperimentStepType peakStep = new ExperimentStepType();
@@ -113,10 +119,10 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		return experimentStepSet;
 	}
 
-	private ResultType createResult(IChromatogramCSD chromatogram) {
+	private ResultType createSignal(IChromatogramWSD chromatogram) {
 
 		SeriesSetType seriesSet = new SeriesSetType();
-		seriesSet.setName("FID Trace");
+		seriesSet.setName("UV/Vis Trace");
 		seriesSet.setLength(chromatogram.getNumberOfScans());
 		//
 		SeriesType retentionTimeSeries = new SeriesType();
@@ -125,110 +131,62 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		retentionTimeUnit.setQuantity("ms");
 		retentionTimeSeries.setUnit(retentionTimeUnit);
 		//
-		SeriesType totalSignalSeries = new SeriesType();
-		UnitType totalSignalUnit = new UnitType();
-		totalSignalUnit.setLabel("Signal");
-		totalSignalUnit.setQuantity("arbitrary");
-		totalSignalSeries.setUnit(totalSignalUnit);
+		SeriesType intensitySeries = new SeriesType();
+		UnitType intensityUnit = new UnitType();
+		intensityUnit.setLabel("Intensity");
+		intensityUnit.setQuantity("arbitrary");
+		intensitySeries.setUnit(intensityUnit);
 		//
+		int scans = chromatogram.getNumberOfScans();
 		if(PreferenceSupplier.getChromatogramSaveEncoded()) {
-			int scans = chromatogram.getNumberOfScans();
-			float[] retentionTimes = new float[scans];
-			float[] totalSignals = new float[scans];
-			int i = 0;
-			for(IScan scan : chromatogram.getScans()) {
-				retentionTimes[i] = scan.getRetentionTime();
-				totalSignals[i] = scan.getTotalSignal();
-				i++;
+			int[] retentionTimes = new int[scans];
+			float[] abundance = new float[scans];
+			for(int i = 1; i <= scans; i++) {
+				IScanWSD scan = chromatogram.getSupplierScan(i);
+				retentionTimes[i - 1] = scan.getRetentionTime();
+				IScanSignalWSD signal = scan.getScanSignal(0);
+				abundance[i - 1] = signal.getAbundance();
 			}
 			EncodedValueSetType encodedRetentionTimes = new EncodedValueSetType();
 			encodedRetentionTimes.setValue(BinaryReader.encodeArray(retentionTimes));
 			retentionTimeSeries.getEncodedValueSet().add(encodedRetentionTimes);
 			//
-			EncodedValueSetType encodedTotalSignals = new EncodedValueSetType();
-			encodedTotalSignals.setValue(BinaryReader.encodeArray(totalSignals));
-			totalSignalSeries.getEncodedValueSet().add(encodedTotalSignals);
+			EncodedValueSetType encodedIntensities = new EncodedValueSetType();
+			encodedIntensities.setValue(BinaryReader.encodeArray(abundance));
+			intensitySeries.getEncodedValueSet().add(encodedIntensities);
 		} else {
 			IndividualValueSetType retentionTimes = new IndividualValueSetType();
-			IndividualValueSetType totalSignals = new IndividualValueSetType();
-			for(IScan scan : chromatogram.getScans()) {
-				retentionTimes.getF().add((float)scan.getRetentionTime());
-				totalSignals.getF().add(scan.getTotalSignal());
+			IndividualValueSetType intensities = new IndividualValueSetType();
+			for(int i = 1; i <= scans; i++) {
+				IScanWSD scan = chromatogram.getSupplierScan(i);
+				IScanSignalWSD signal = scan.getScanSignal(0);
+				retentionTimes.getI().add(scan.getRetentionTime());
+				intensities.getF().add(signal.getAbundance());
 			}
 			retentionTimeSeries.getIndividualValueSet().add(retentionTimes);
-			totalSignalSeries.getIndividualValueSet().add(totalSignals);
+			intensitySeries.getIndividualValueSet().add(intensities);
 		}
 		seriesSet.getSeries().add(retentionTimeSeries);
-		seriesSet.getSeries().add(totalSignalSeries);
+		seriesSet.getSeries().add(intensitySeries);
+		CategoryType category = new CategoryType();
+		category.setName("Acquisition Wavelength");
+		ParameterType lowerBounds = new ParameterType();
 		ResultType result = new ResultType();
+		IScanWSD firstScan = chromatogram.getSupplierScan(1);
+		List<IScanSignalWSD> signals = firstScan.getScanSignals();
+		double[] wavelengths = signals.stream().mapToDouble(s -> s.getWavelength()).toArray();
+		lowerBounds.setName("Lower Bound");
+		lowerBounds.getD().add(Doubles.min(wavelengths));
+		category.getParameter().add(lowerBounds);
+		ParameterType upperBounds = new ParameterType();
+		upperBounds.getD().add(Doubles.max(wavelengths));
+		upperBounds.setName("Upper Bound");
+		result.getCategory().add(category);
 		result.setSeriesSet(seriesSet);
 		return result;
 	}
 
-	private MethodType createMethod(IChromatogramCSD chromatogram) {
-
-		AuthorType author = new AuthorType();
-		author.setName(chromatogram.getOperator());
-		MethodType method = new MethodType();
-		method.setAuthor(author);
-		method.setSoftware(createSoftware());
-		return method;
-	}
-
-	private SoftwareType createSoftware() {
-
-		SoftwareType software = new SoftwareType();
-		software.setName("OpenChrom");
-		IProduct product = Platform.getProduct();
-		Version version = product.getDefiningBundle().getVersion();
-		software.setVersion(version.toString());
-		software.setManufacturer("Lablicate GmbH");
-		software.setOperatingSystem(System.getProperty("os.name"));
-		return software;
-	}
-
-	private TechniqueType createChromatographyTechnique() {
-
-		TechniqueType technique = new TechniqueType();
-		technique.setName("Chromatography");
-		technique.setUri("https://github.com/AnIML/techniques/blob/6e30b1e593e6df661a44ae2a9892b6198def0641/chromatography.atdd");
-		return technique;
-	}
-
-	private TechniqueType createFlameIonizationTechnique() {
-
-		TechniqueType technique = new TechniqueType();
-		technique.setName("Flame Ionization Detector");
-		technique.setUri("https://github.com/AnIML/techniques/blob/6e30b1e593e6df661a44ae2a9892b6198def0641/fid-trace.atdd");
-		return technique;
-	}
-
-	private TechniqueType createPeakTableTechnique() {
-
-		TechniqueType technique = new TechniqueType();
-		technique.setName("Chromatography Peak Table");
-		technique.setUri("https://github.com/AnIML/techniques/blob/d749979fc21322b97c61e2efd6efe60cfa5a29be/chromatography-peak-table.atdd");
-		return technique;
-	}
-
-	private AuditTrailEntrySetType createAuditTrail(IChromatogramCSD chromatogram) throws DatatypeConfigurationException {
-
-		AuditTrailEntrySetType auditTrailEntrySet = new AuditTrailEntrySetType();
-		for(IEditInformation editHistory : chromatogram.getEditHistory()) {
-			AuditTrailEntryType auditTrail = new AuditTrailEntryType();
-			auditTrail.setSoftware(createSoftware());
-			AuthorType author = new AuthorType();
-			author.setName(editHistory.getEditor());
-			auditTrail.setAuthor(author);
-			auditTrail.setComment(editHistory.getDescription());
-			GregorianCalendar calendar = new GregorianCalendar();
-			calendar.setTime(editHistory.getDate());
-			auditTrail.setTimestamp(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
-		}
-		return auditTrailEntrySet;
-	}
-
-	private ResultType createPeaks(IChromatogramCSD chromatogram) {
+	private ResultType createPeaks(IChromatogramWSD chromatogram) {
 
 		SeriesSetType seriesSet = new SeriesSetType();
 		seriesSet.setName("Peak Table");
@@ -291,7 +249,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		IndividualValueSetType endTimes = new IndividualValueSetType();
 		IndividualValueSetType peakHeights = new IndividualValueSetType();
 		int i = 0;
-		for(IChromatogramPeakCSD peak : chromatogram.getPeaks()) {
+		for(IChromatogramPeakWSD peak : chromatogram.getPeaks()) {
 			numbers.getI().add(i);
 			Optional<IIdentificationTarget> target = peak.getTargets().stream().findFirst();
 			if(target.isPresent()) {
@@ -335,5 +293,68 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		ResultType result = new ResultType();
 		result.setSeriesSet(seriesSet);
 		return result;
+	}
+
+	private MethodType createMethod(IChromatogramWSD chromatogram) {
+
+		AuthorType author = new AuthorType();
+		author.setName(chromatogram.getOperator());
+		MethodType method = new MethodType();
+		method.setAuthor(author);
+		method.setSoftware(createSoftware());
+		return method;
+	}
+
+	private SoftwareType createSoftware() {
+
+		SoftwareType software = new SoftwareType();
+		software.setName("OpenChrom");
+		IProduct product = Platform.getProduct();
+		Version version = product.getDefiningBundle().getVersion();
+		software.setVersion(version.toString());
+		software.setManufacturer("Lablicate GmbH");
+		software.setOperatingSystem(System.getProperty("os.name"));
+		return software;
+	}
+
+	private TechniqueType createChromatographyTechnique() {
+
+		TechniqueType technique = new TechniqueType();
+		technique.setName("Chromatography");
+		technique.setUri("https://github.com/AnIML/techniques/blob/6e30b1e593e6df661a44ae2a9892b6198def0641/chromatography.atdd");
+		return technique;
+	}
+
+	private TechniqueType createUltraVioletDetectorTechnique() {
+
+		TechniqueType technique = new TechniqueType();
+		technique.setName("UV/Vis Trace Detector");
+		technique.setUri("https://github.com/AnIML/techniques/blob/995bef06f90afba00a618239f40c6e591a1c0845/uv-vis-trace.atdd");
+		return technique;
+	}
+
+	private TechniqueType createPeakTableTechnique() {
+
+		TechniqueType technique = new TechniqueType();
+		technique.setName("Chromatography Peak Table");
+		technique.setUri("https://github.com/AnIML/techniques/blob/d749979fc21322b97c61e2efd6efe60cfa5a29be/chromatography-peak-table.atdd");
+		return technique;
+	}
+
+	private AuditTrailEntrySetType createAuditTrail(IChromatogramWSD chromatogram) throws DatatypeConfigurationException {
+
+		AuditTrailEntrySetType auditTrailEntrySet = new AuditTrailEntrySetType();
+		for(IEditInformation editHistory : chromatogram.getEditHistory()) {
+			AuditTrailEntryType auditTrail = new AuditTrailEntryType();
+			auditTrail.setSoftware(createSoftware());
+			AuthorType author = new AuthorType();
+			author.setName(editHistory.getEditor());
+			auditTrail.setAuthor(author);
+			auditTrail.setComment(editHistory.getDescription());
+			GregorianCalendar calendar = new GregorianCalendar();
+			calendar.setTime(editHistory.getDate());
+			auditTrail.setTimestamp(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
+		}
+		return auditTrailEntrySet;
 	}
 }
