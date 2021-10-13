@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -54,13 +54,13 @@ public class QualRatioLabelProvider extends AbstractChemClipseLabelProvider impl
 					text = (peak != null) ? decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR) : "--";
 					break;
 				case 1:
-					text = ratio.getLeadingTailing().getLabel();
+					text = ratio.getLeadingTailing().label();
 					break;
 				case 2:
-					text = ratio.getSignalToNoise().getLabel();
+					text = ratio.getSignalToNoise().label();
 					break;
 				case 3:
-					text = ratio.getSymmetry().getLabel();
+					text = ratio.getSymmetry().label();
 					break;
 			}
 		}
