@@ -11,8 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model.qual;
 
-public enum PeakQuality implements ILabel {
+import org.eclipse.chemclipse.support.text.ILabel;
 
+public enum PeakQuality implements ILabel {
 	VERY_GOOD("++"), //
 	GOOD("+"), //
 	ACCEPTABLE("~"), //
