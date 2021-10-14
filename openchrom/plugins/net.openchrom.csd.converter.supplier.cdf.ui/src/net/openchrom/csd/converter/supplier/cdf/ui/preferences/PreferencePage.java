@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.cdf.ui.preferences;
 
-import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.IntegerFieldEditor;
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.ExtendedIntegerFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -36,7 +36,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 */
 	public void createFieldEditors() {
 
-		addField(new IntegerFieldEditor(PreferenceSupplier.P_MODULATION_TIME_2D, "Modulation Time (GCxGC) [ms]", PreferenceSupplier.MIN_MODULATION_TIME, PreferenceSupplier.MAX_MODULATION_TIME, getFieldEditorParent()));
+		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_MODULATION_TIME_2D, "Modulation Time (GCxGC) [ms]", PreferenceSupplier.MIN_MODULATION_TIME, PreferenceSupplier.MAX_MODULATION_TIME, getFieldEditorParent()));
 	}
 
 	/*

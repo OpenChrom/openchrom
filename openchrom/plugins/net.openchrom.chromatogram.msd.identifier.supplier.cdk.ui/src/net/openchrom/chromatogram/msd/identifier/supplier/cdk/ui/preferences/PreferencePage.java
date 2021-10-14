@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.preferences;
 
-import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.IntegerFieldEditor;
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.ExtendedIntegerFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -41,7 +41,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	public void createFieldEditors() {
 
 		addField(new RadioGroupFieldEditor(PreferenceSupplier.P_ISOTOPE_SET, "Select an isotope set.", 1, PreferenceSupplier.getIsotopePreferenceOptions(), getFieldEditorParent()));
-		addField(new IntegerFieldEditor(PreferenceSupplier.P_ISOTOPE_ITERATION_DEPTH, "Set the isotope iteration depth.", 0, 50, getFieldEditorParent()));
+		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_ISOTOPE_ITERATION_DEPTH, "Set the isotope iteration depth.", 0, 50, getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceSupplier.P_USER_DEFINED_ISOTOPES, "User defined isotopes", getFieldEditorParent()));
 		//
 		addField(new SpacerFieldEditor(getFieldEditorParent()));

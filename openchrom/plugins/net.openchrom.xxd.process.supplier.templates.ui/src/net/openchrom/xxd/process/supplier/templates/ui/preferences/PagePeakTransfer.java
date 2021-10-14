@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,7 +12,7 @@
 package net.openchrom.xxd.process.supplier.templates.ui.preferences;
 
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.DoubleFieldEditor;
-import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.IntegerFieldEditor;
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.ExtendedIntegerFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpinnerFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -41,9 +41,9 @@ public class PagePeakTransfer extends FieldEditorPreferencePage implements IWork
 
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, "Transfer Identified Peaks Only", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_USE_BEST_TARGET_ONLY, "Use Best Target Only", getFieldEditorParent()));
-		addField(new IntegerFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT, "Delta Retention Time Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
-		addField(new IntegerFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT, "Delta Retention Time Right [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
-		addField(new IntegerFieldEditor(PreferenceSupplier.P_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM, "Offset Retention Time (Peak Maximum) [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT, "Delta Retention Time Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT, "Delta Retention Time Right [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM, "Offset Retention Time (Peak Maximum) [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_ADJUST_PEAK_HEIGHT, "Adjust Peak Height", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_CREATE_MODEL_PEAK, "Create Model Peak (CSD)", getFieldEditorParent()));
 		addField(new DoubleFieldEditor(PreferenceSupplier.P_TRANSFER_PEAK_OVERLAP_COVERAGE, "Peak Overlap Coverage [%]", PreferenceSupplier.MIN_PEAK_OVERLAP_COVERAGE, PreferenceSupplier.MAX_PEAK_OVERLAP_COVERAGE, getFieldEditorParent()));
