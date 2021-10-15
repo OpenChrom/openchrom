@@ -70,8 +70,8 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 			AnIMLType animl = XmlReader.getAnIML(file);
 			chromatogram = new VendorChromatogram();
 			chromatogram = readSample(animl, chromatogram);
-			List<Float> retentionTimes = new ArrayList<Float>();
-			List<Float> signals = new ArrayList<Float>();
+			List<Float> retentionTimes = new ArrayList<>();
+			List<Float> signals = new ArrayList<>();
 			for(ExperimentStepType experimentStep : animl.getExperimentStepSet().getExperimentStep()) {
 				if(experimentStep.getTechnique().getName().equals("Flame Ionization Detector")) {
 					MethodType method = experimentStep.getMethod();
