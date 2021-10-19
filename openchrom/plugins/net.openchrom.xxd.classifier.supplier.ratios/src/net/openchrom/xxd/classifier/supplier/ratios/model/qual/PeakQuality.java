@@ -32,4 +32,9 @@ public enum PeakQuality implements ILabel {
 
 		return label;
 	}
+
+	public static String[][] getOptions() {
+
+		return ILabel.getOptions(values());
+	}
 }
