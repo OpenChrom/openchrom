@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,8 +24,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.ISeries;
 import org.eclipse.swtchart.export.core.AbstractSeriesExportHandler;
-import org.eclipse.swtchart.export.core.ExportSettingsDialog;
 import org.eclipse.swtchart.export.core.ISeriesExportConverter;
+import org.eclipse.swtchart.export.core.VectorExportSettingsDialog;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IAxisScaleConverter;
 import org.eclipse.swtchart.extensions.core.IAxisSettings;
@@ -50,7 +50,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 		DecimalFormat decimalFormatY = new DecimalFormat(("0.0#E0"), new DecimalFormatSymbols(Locale.ENGLISH));
 		//
 		BaseChart baseChart = scrollableChart.getBaseChart();
-		ExportSettingsDialog exportSettingsDialog = new ExportSettingsDialog(shell, baseChart);
+		VectorExportSettingsDialog exportSettingsDialog = new VectorExportSettingsDialog(shell, baseChart);
 		exportSettingsDialog.create();
 		//
 		if(exportSettingsDialog.open() == Window.OK) {
@@ -89,8 +89,8 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 				double xIntent = 5;
 				double yIntent = 5;
 				//
-				ISeries[] series = baseChart.getSeriesSet().getSeries();
-				ISeries dataSeries = series[0];
+				ISeries<?>[] series = baseChart.getSeriesSet().getSeries();
+				ISeries<?> dataSeries = series[0];
 				if(dataSeries != null) {
 					double[] xSeries = dataSeries.getXSeries();
 					double[] ySeries = dataSeries.getYSeries();
