@@ -63,6 +63,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	//
 	private IPeakUpdateListener peakUpdateListener = null;
 	private ISectionUpdateListener sectionUpdateListener = null;
+	private IRangeUpdateListener rangeUpdateListener = null;
 	//
 	private PeakDetectorChartSettings chartSettingsDefault = new PeakDetectorChartSettings();
 	private DeltaRangePaintListener deltaRangePaintListener = new DeltaRangePaintListener(this.getBaseChart());
@@ -89,6 +90,11 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	public void setSectionUpdateListener(ISectionUpdateListener sectionUpdateListener) {
 
 		this.sectionUpdateListener = sectionUpdateListener;
+	}
+
+	public void setRangeUpdateListener(IRangeUpdateListener rangeUpdateListener) {
+
+		this.rangeUpdateListener = rangeUpdateListener;
 	}
 
 	public void update(DetectorRange detectorRange) {
@@ -138,6 +144,17 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 			setCursorDefault();
 			resetSelectedRange();
 			updateChart(peak);
+		}
+	}
+
+	@Override
+	public void handleKeyUpEvent(Event event) {
+
+		super.handleKeyUpEvent(event);
+		if(event.keyCode == SWT.KEYPAD_ADD) {
+			rangeUpdateListener.update(-PreferenceSupplier.getReviewDynamicOffsetMilliseconds());
+		} else if(event.keyCode == SWT.KEYPAD_SUBTRACT) {
+			rangeUpdateListener.update(PreferenceSupplier.getReviewDynamicOffsetMilliseconds());
 		}
 	}
 

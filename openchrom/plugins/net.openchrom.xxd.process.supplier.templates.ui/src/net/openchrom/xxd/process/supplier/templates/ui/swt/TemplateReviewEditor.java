@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -108,7 +109,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		peakReviewListUI = createTableSection(composite);
 		//
 		PartSupport.setCompositeVisibility(searchSupportUI, false);
-		setTableViewerInput();
+		setViewerInput();
 		setControl(composite);
 	}
 
@@ -154,7 +155,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	public void load(String entries) {
 
 		settings.load(entries);
-		setTableViewerInput();
+		setViewerInput();
 	}
 
 	public String getValues() {
@@ -208,6 +209,15 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
 		peakReviewListUI.setEditEnabled(true);
 		//
+		peakReviewListUI.setUpdateListener(new IUpdateListener() {
+
+			@Override
+			public void update() {
+
+				setViewerInput();
+			}
+		});
+		//
 		Shell shell = table.getShell();
 		ITableSettings tableSettings = peakReviewListUI.getTableSettings();
 		addDeleteMenuEntry(shell, tableSettings);
@@ -257,7 +267,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 					ReviewSetting setting = settings.extractSettingInstance(item);
 					if(setting != null) {
 						settings.add(setting);
-						setTableViewerInput();
+						setViewerInput();
 					}
 				}
 			}
@@ -289,7 +299,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 						String item = dialog.getValue();
 						ReviewSetting settingNew = settings.extractSettingInstance(item);
 						setting.copyFrom(settingNew);
-						setTableViewerInput();
+						setViewerInput();
 					}
 				}
 			}
@@ -329,7 +339,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 
 				if(MessageDialog.openQuestion(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
 					settings.clear();
-					setTableViewerInput();
+					setViewerInput();
 				}
 			}
 		});
@@ -358,7 +368,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 					PreferenceSupplier.setListPathImport(fileDialog.getFilterPath());
 					File file = new File(path);
 					settings.importItems(file);
-					setTableViewerInput();
+					setViewerInput();
 				}
 			}
 		});
@@ -411,14 +421,14 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				setTableViewerInput();
+				setViewerInput();
 			}
 		});
 		//
 		return button;
 	}
 
-	private void setTableViewerInput() {
+	private void setViewerInput() {
 
 		peakReviewListUI.setInput(settings);
 		for(Listener listener : listeners) {
@@ -473,7 +483,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 					settings.remove((ReviewSetting)object);
 				}
 			}
-			setTableViewerInput();
+			setViewerInput();
 		}
 	}
 

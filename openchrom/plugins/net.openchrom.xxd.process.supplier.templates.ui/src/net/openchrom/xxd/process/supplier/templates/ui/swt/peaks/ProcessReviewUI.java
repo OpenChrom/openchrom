@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.provider.AbstractLabelProvider;
@@ -287,9 +288,18 @@ public class ProcessReviewUI extends Composite {
 
 	private PeakReviewListUI createTable(Composite parent) {
 
-		PeakReviewListUI listUI = new PeakReviewListUI(parent, SWT.BORDER);
-		Table table = listUI.getTable();
+		PeakReviewListUI peakReviewListUI = new PeakReviewListUI(parent, SWT.BORDER);
+		Table table = peakReviewListUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
+		//
+		peakReviewListUI.setUpdateListener(new IUpdateListener() {
+
+			@Override
+			public void update() {
+
+				updateSelection();
+			}
+		});
 		//
 		table.addSelectionListener(new SelectionAdapter() {
 
@@ -300,7 +310,7 @@ public class ProcessReviewUI extends Composite {
 			}
 		});
 		//
-		return listUI;
+		return peakReviewListUI;
 	}
 
 	private void applySettings() {

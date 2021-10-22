@@ -207,6 +207,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int DEF_REVIEW_DELTA_LEFT_MILLISECONDS = 0;
 	public static final String P_REVIEW_DELTA_RIGHT_MILLISECONDS = "reviewDeltaRightMilliseconds";
 	public static final int DEF_REVIEW_DELTA_RIGHT_MILLISECONDS = 0;
+	public static final String P_REVIEW_DYNAMIC_OFFSET_MILLISECONDS = "reviewDynamicOffsetMilliseconds";
+	public static final int DEF_REVIEW_DYNAMIC_OFFSET_MILLISECONDS = 1000;
 	public static final String P_REVIEW_REPLACE_NEAREST_PEAK = "reviewReplaceNearestPeak";
 	public static final boolean DEF_REVIEW_REPLACE_NEAREST_PEAK = true;
 	public static final String P_REVIEW_SET_TARGET_DETECTED_PEAK = "reviewSetTargetDetectedPeak";
@@ -340,6 +342,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		 */
 		defaultValues.put(P_REVIEW_DELTA_LEFT_MILLISECONDS, Integer.toString(DEF_REVIEW_DELTA_LEFT_MILLISECONDS));
 		defaultValues.put(P_REVIEW_DELTA_RIGHT_MILLISECONDS, Integer.toString(DEF_REVIEW_DELTA_RIGHT_MILLISECONDS));
+		defaultValues.put(P_REVIEW_DYNAMIC_OFFSET_MILLISECONDS, Integer.toString(DEF_REVIEW_DYNAMIC_OFFSET_MILLISECONDS));
 		defaultValues.put(P_REVIEW_REPLACE_NEAREST_PEAK, Boolean.toString(DEF_REVIEW_REPLACE_NEAREST_PEAK));
 		defaultValues.put(P_REVIEW_SET_TARGET_VERIFICATION, Boolean.toString(DEF_REVIEW_SET_TARGET_VERIFICATION));
 		defaultValues.put(P_REVIEW_AUTO_SELECT_BEST_MATCH, Boolean.toString(DEF_REVIEW_AUTO_SELECT_BEST_MATCH));
@@ -668,6 +671,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_REVIEW_DELTA_RIGHT_MILLISECONDS, DEF_REVIEW_DELTA_RIGHT_MILLISECONDS);
+	}
+
+	public static int getReviewDynamicOffsetMilliseconds() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_REVIEW_DYNAMIC_OFFSET_MILLISECONDS, DEF_REVIEW_DYNAMIC_OFFSET_MILLISECONDS);
 	}
 
 	public static boolean isReviewReplaceNearestPeak() {

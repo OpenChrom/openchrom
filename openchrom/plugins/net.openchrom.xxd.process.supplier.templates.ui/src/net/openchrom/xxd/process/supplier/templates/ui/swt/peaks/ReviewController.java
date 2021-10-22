@@ -92,16 +92,11 @@ public class ReviewController {
 
 		this.reviewSetting = reviewSetting;
 		if(processSettings != null && reviewSetting != null) {
-			IChromatogram<?> chromatogram = processSettings.getChromatogram();
-			int startChromatogram = chromatogram.getStartRetentionTime();
-			int stopChromatogram = chromatogram.getStopRetentionTime();
-			int startReview = reviewSetting.getStartRetentionTime();
-			int stopReview = reviewSetting.getStopRetentionTime();
-			//
-			if(startReview >= startChromatogram && stopReview <= stopChromatogram) {
-				updateDetectorChart();
-				updatePeakStatusUI(null);
-			}
+			/*
+			 * The retention time validation is performed in the updateDetectorChart() method.
+			 */
+			updateDetectorChart();
+			updatePeakStatusUI(null);
 		}
 	}
 
@@ -153,6 +148,12 @@ public class ReviewController {
 						 */
 						int startRetentionTime = getStartRetentionTime();
 						int stopRetentionTime = getStopRetentionTime();
+						/*
+						 * Validate min/max retention time ranges.
+						 */
+						startRetentionTime = (startRetentionTime < chromatogram.getStartRetentionTime()) ? chromatogram.getStartRetentionTime() : startRetentionTime;
+						stopRetentionTime = (stopRetentionTime > chromatogram.getStopRetentionTime()) ? chromatogram.getStopRetentionTime() : stopRetentionTime;
+						//
 						PeakType peakType = reviewSetting.getDetectorType();
 						boolean optimizeRange = reviewSetting.isOptimizeRange();
 						//
@@ -274,6 +275,33 @@ public class ReviewController {
 					index++;
 				}
 				processReviewUI.setSelection(index);
+			}
+		});
+		//
+		peakDetectorChart.setRangeUpdateListener(new IRangeUpdateListener() {
+
+			@Override
+			public void update(int retentionTimeDelta) {
+
+				if(reviewSetting != null) {
+					/*
+					 * Adjust the retention time range.
+					 */
+					int startRetentionTime = reviewSetting.getStartRetentionTime() - retentionTimeDelta;
+					int stopRetentionTime = reviewSetting.getStopRetentionTime() + retentionTimeDelta;
+					//
+					if(startRetentionTime < stopRetentionTime) {
+						//
+						reviewSetting.setStartRetentionTime(startRetentionTime);
+						reviewSetting.setStopRetentionTime(stopRetentionTime);
+						/*
+						 * The retention time validation is performed in the updateDetectorChart() method.
+						 */
+						processReviewUI.update();
+						updateDetectorChart();
+						updatePeakStatusUI(null);
+					}
+				}
 			}
 		});
 	}

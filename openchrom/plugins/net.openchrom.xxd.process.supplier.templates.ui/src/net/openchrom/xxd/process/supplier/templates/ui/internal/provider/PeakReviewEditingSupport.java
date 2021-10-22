@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,7 +12,6 @@
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import org.eclipse.chemclipse.model.core.PeakType;
-import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
@@ -23,15 +22,17 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakReviewListUI;
 import net.openchrom.xxd.process.supplier.templates.util.ReviewValidator;
 
 public class PeakReviewEditingSupport extends EditingSupport {
 
 	private CellEditor cellEditor;
-	private ExtendedTableViewer tableViewer;
+	private PeakReviewListUI tableViewer;
 	private String column;
 
-	public PeakReviewEditingSupport(ExtendedTableViewer tableViewer, String column) {
+	public PeakReviewEditingSupport(PeakReviewListUI tableViewer, String column) {
+
 		super(tableViewer);
 		this.column = column;
 		if(column.equals(PeakReviewLabelProvider.OPTIMIZE_RANGE)) {
@@ -98,19 +99,15 @@ public class PeakReviewEditingSupport extends EditingSupport {
 				 * Do not edit the name
 				 */
 				case PeakReviewLabelProvider.START_RETENTION_TIME:
-					result = convertValue(value);
-					if(!Double.isNaN(result)) {
-						if(result <= setting.getStopRetentionTimeMinutes()) {
-							setting.setStartRetentionTimeMinutes(result);
-						}
+					result = convertDouble(value);
+					if(result <= setting.getStopRetentionTimeMinutes()) {
+						setting.setStartRetentionTimeMinutes(result);
 					}
 					break;
 				case PeakReviewLabelProvider.STOP_RETENTION_TIME:
-					result = convertValue(value);
-					if(!Double.isNaN(result)) {
-						if(result >= setting.getStartRetentionTimeMinutes()) {
-							setting.setStopRetentionTimeMinutes(result);
-						}
+					result = convertDouble(value);
+					if(result >= setting.getStartRetentionTimeMinutes()) {
+						setting.setStopRetentionTimeMinutes(result);
 					}
 					break;
 				case PeakReviewLabelProvider.CAS_NUMBER:
@@ -136,15 +133,18 @@ public class PeakReviewEditingSupport extends EditingSupport {
 					setting.setOptimizeRange((boolean)value);
 					break;
 			}
+			//
 			tableViewer.refresh();
+			tableViewer.updateContent();
 		}
 	}
 
-	private double convertValue(Object value) {
+	private double convertDouble(Object value) {
 
 		double result = Double.NaN;
 		try {
 			result = Double.parseDouble(((String)value).trim());
+			result = (result < 0.0d) ? 0.0d : result;
 		} catch(NumberFormatException e) {
 			//
 		}
