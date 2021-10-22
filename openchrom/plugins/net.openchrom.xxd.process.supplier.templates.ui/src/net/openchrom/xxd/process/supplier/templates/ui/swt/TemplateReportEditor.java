@@ -28,9 +28,7 @@ import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.Abstr
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
@@ -232,7 +230,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_ADD, ReportListUtil.EXAMPLE_SINGLE, new ReportInputValidator(reportSettings.keySet()));
+				InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_ADD, ReportListUtil.EXAMPLE_SINGLE, new ReportInputValidator(reportSettings));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
 					ReportSetting setting = reportSettings.extractSettingInstance(item);
@@ -261,11 +259,11 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 				IStructuredSelection structuredSelection = (IStructuredSelection)tableViewer.get().getSelection();
 				Object object = structuredSelection.getFirstElement();
 				if(object instanceof ReportSetting) {
-					Set<String> keySetEdit = new HashSet<>();
-					keySetEdit.addAll(reportSettings.keySet());
+					ReportSettings reportSettingsMod = new ReportSettings();
+					reportSettingsMod.addAll(reportSettings);
 					ReportSetting setting = (ReportSetting)object;
-					keySetEdit.remove(setting.getName());
-					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, reportSettings.extractSetting(setting), new ReportInputValidator(keySetEdit));
+					reportSettingsMod.remove(setting);
+					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, reportSettings.extractSetting(setting), new ReportInputValidator(reportSettingsMod));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
 						ReportSetting settingNew = reportSettings.extractSettingInstance(item);

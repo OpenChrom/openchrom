@@ -381,6 +381,14 @@ public class ReportWriter {
 
 		int startRetentionTime = reportSetting.getStartRetentionTime();
 		int stopRetentionTime = reportSetting.getStopRetentionTime();
+		/*
+		 * Expand the retention time to max range if no selection has been made.
+		 */
+		if(startRetentionTime == 0 && stopRetentionTime == 0) {
+			startRetentionTime = chromatogram.getStartRetentionTime();
+			stopRetentionTime = chromatogram.getStopRetentionTime();
+		}
+		//
 		List<? extends IPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
 		List<IPeak> matchedPeaks = new ArrayList<>();
 		//

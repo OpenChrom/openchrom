@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -59,13 +59,23 @@ public class ReportValidator extends AbstractTemplateValidator implements ITempl
 						 * Evaluation
 						 */
 						startRetentionTimeMinutes = parseDouble(values, 0);
-						if(startRetentionTimeMinutes < 0.0d) {
-							message = "The start retention time must be not lower than 0.";
-						}
-						//
 						stopRetentionTimeMinutes = parseDouble(values, 1);
-						if(stopRetentionTimeMinutes <= startRetentionTimeMinutes) {
-							message = "The stop retention time must be greater then the start retention time.";
+						//
+						if(startRetentionTimeMinutes == 0.0d && stopRetentionTimeMinutes == 0.0d) {
+							/*
+							 * No validation if both values are zero -> complete chromatogram range.
+							 */
+						} else {
+							/*
+							 * Validate > zero
+							 */
+							if(startRetentionTimeMinutes < 0.0d) {
+								message = "The start retention time must be not lower than 0.";
+							}
+							//
+							if(stopRetentionTimeMinutes <= startRetentionTimeMinutes) {
+								message = "The stop retention time must be greater then the start retention time.";
+							}
 						}
 						//
 						name = parseString(values, 2);

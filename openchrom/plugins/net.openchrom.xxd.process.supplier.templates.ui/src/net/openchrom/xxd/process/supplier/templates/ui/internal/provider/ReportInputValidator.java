@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -11,24 +11,21 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IInputValidator;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
+import net.openchrom.xxd.process.supplier.templates.model.ReportSettings;
 import net.openchrom.xxd.process.supplier.templates.util.ReportValidator;
 
 public class ReportInputValidator implements IInputValidator {
 
 	private ReportValidator validator = new ReportValidator();
-	private Set<String> names = new HashSet<>();
+	private ReportSettings reportSettings;
 
-	public ReportInputValidator(Set<String> names) {
-		if(names != null) {
-			this.names = names;
-		}
+	public ReportInputValidator(ReportSettings reportSettings) {
+
+		this.reportSettings = reportSettings;
 	}
 
 	@Override
@@ -37,9 +34,8 @@ public class ReportInputValidator implements IInputValidator {
 		IStatus status = validator.validate(target);
 		if(status.isOK()) {
 			ReportSetting setting = validator.getSetting();
-			String name = setting.getName();
-			if(names.contains(name)) {
-				return "The element already exists.";
+			if(reportSettings.contains(setting)) {
+				return "The element already exists: name, start- and stop retention time.";
 			}
 		} else {
 			return status.getMessage();

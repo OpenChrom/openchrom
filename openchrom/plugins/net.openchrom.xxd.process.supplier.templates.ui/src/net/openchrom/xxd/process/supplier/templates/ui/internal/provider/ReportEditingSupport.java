@@ -85,32 +85,20 @@ public class ReportEditingSupport extends EditingSupport {
 
 		if(element instanceof ReportSetting) {
 			ReportSetting setting = (ReportSetting)element;
-			double result;
-			String text;
 			switch(column) {
 				/*
 				 * Do not edit the name
 				 */
 				case PeakIdentifierLabelProvider.START_RETENTION_TIME:
-					result = convertValue(value);
-					if(!Double.isNaN(result)) {
-						if(result <= setting.getStopRetentionTimeMinutes()) {
-							setting.setStartRetentionTimeMinutes(result);
-						}
-					}
+					setting.setStartRetentionTimeMinutes(convertDouble(value));
 					break;
 				case PeakIdentifierLabelProvider.STOP_RETENTION_TIME:
-					result = convertValue(value);
-					if(!Double.isNaN(result)) {
-						if(result >= setting.getStartRetentionTimeMinutes()) {
-							setting.setStopRetentionTimeMinutes(result);
-						}
-					}
+					setting.setStopRetentionTimeMinutes(convertDouble(value));
 					break;
 				case PeakIdentifierLabelProvider.CAS_NUMBER:
-					text = ((String)value).trim();
-					if(!"".equals(text)) {
-						setting.setCasNumber(text);
+					String casNumber = ((String)value).trim();
+					if(!"".equals(casNumber)) {
+						setting.setCasNumber(casNumber);
 					}
 					break;
 				case ReportLabelProvider.REPORT_STRATEGY:
@@ -125,11 +113,12 @@ public class ReportEditingSupport extends EditingSupport {
 		}
 	}
 
-	private double convertValue(Object value) {
+	private double convertDouble(Object value) {
 
-		double result = Double.NaN;
+		double result = 0.0d;
 		try {
 			result = Double.parseDouble(((String)value).trim());
+			result = (result < 0.0d) ? 0.0d : result;
 		} catch(NumberFormatException e) {
 			//
 		}

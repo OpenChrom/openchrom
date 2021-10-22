@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -64,6 +64,8 @@ public class ReportSetting extends AbstractSetting {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + getStartRetentionTime();
+		result = prime * result + getStopRetentionTime();
 		return result;
 	}
 
@@ -81,6 +83,10 @@ public class ReportSetting extends AbstractSetting {
 			if(other.name != null)
 				return false;
 		} else if(!name.equals(other.name))
+			return false;
+		if(getStartRetentionTime() != other.getStartRetentionTime())
+			return false;
+		if(getStopRetentionTime() != other.getStopRetentionTime())
 			return false;
 		return true;
 	}
