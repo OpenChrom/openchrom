@@ -133,9 +133,6 @@ public class PeakSupport {
 					peak = PeakBuilderCSD.createPeak(chromatogramCSD, scanRange, includeBackground);
 					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 				} else if(chromatogram instanceof IChromatogramWSD) {
-					/*
-					 * Must be called with 'exclude' mode, so given wavelengths will be 'excluded' from Scan.
-					 */
 					IChromatogramWSD chromatogramWSD = (IChromatogramWSD)chromatogram;
 					if(traces.size() > 0) {
 						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground, traces);
@@ -184,6 +181,14 @@ public class PeakSupport {
 					IChromatogramWSD chromatogramWSD = (IChromatogramWSD)chromatogram;
 					peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, startIntensity, stopIntensity);
 					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
+					if(traces.size() > 0) {
+						/**
+						 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
+						 */
+						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, startIntensity, stopIntensity, traces);
+					} else {
+						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, startIntensity, stopIntensity);
+					}
 				}
 			}
 		} catch(PeakException e) {

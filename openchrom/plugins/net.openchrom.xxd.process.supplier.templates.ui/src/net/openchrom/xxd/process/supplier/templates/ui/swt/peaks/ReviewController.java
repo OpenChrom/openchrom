@@ -145,15 +145,12 @@ public class ReviewController {
 					if(chromatogram != null) {
 						/*
 						 * Settings
+						 * Validate min/max retention time ranges.
 						 */
 						int startRetentionTime = getStartRetentionTime();
 						int stopRetentionTime = getStopRetentionTime();
-						/*
-						 * Validate min/max retention time ranges.
-						 */
 						startRetentionTime = (startRetentionTime < chromatogram.getStartRetentionTime()) ? chromatogram.getStartRetentionTime() : startRetentionTime;
 						stopRetentionTime = (stopRetentionTime > chromatogram.getStopRetentionTime()) ? chromatogram.getStopRetentionTime() : stopRetentionTime;
-						//
 						PeakType peakType = reviewSetting.getDetectorType();
 						boolean optimizeRange = reviewSetting.isOptimizeRange();
 						//
@@ -281,12 +278,14 @@ public class ReviewController {
 		peakDetectorChart.setRangeUpdateListener(new IRangeUpdateListener() {
 
 			@Override
-			public void update(int retentionTimeDelta) {
+			public void update(boolean zoomIn) {
 
 				if(reviewSetting != null) {
 					/*
 					 * Adjust the retention time range.
 					 */
+					int offset = PreferenceSupplier.getReviewDynamicOffsetMilliseconds();
+					int retentionTimeDelta = zoomIn ? -offset : offset;
 					int startRetentionTime = reviewSetting.getStartRetentionTime() - retentionTimeDelta;
 					int stopRetentionTime = reviewSetting.getStopRetentionTime() + retentionTimeDelta;
 					//

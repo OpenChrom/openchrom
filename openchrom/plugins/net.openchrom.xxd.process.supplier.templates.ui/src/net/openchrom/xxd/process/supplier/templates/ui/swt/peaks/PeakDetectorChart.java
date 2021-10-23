@@ -152,9 +152,9 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 
 		super.handleKeyUpEvent(event);
 		if(event.keyCode == SWT.KEYPAD_ADD) {
-			rangeUpdateListener.update(-PreferenceSupplier.getReviewDynamicOffsetMilliseconds());
+			rangeUpdateListener.update(true);
 		} else if(event.keyCode == SWT.KEYPAD_SUBTRACT) {
-			rangeUpdateListener.update(PreferenceSupplier.getReviewDynamicOffsetMilliseconds());
+			rangeUpdateListener.update(false);
 		}
 	}
 

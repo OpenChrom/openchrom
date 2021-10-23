@@ -13,5 +13,11 @@ package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
 public interface IRangeUpdateListener {
 
-	void update(int retentionTimeDelta);
+	/**
+	 * true == zoomIn
+	 * false == zoomOut
+	 * 
+	 * @param zoomIn
+	 */
+	void update(boolean zoomIn);
 }

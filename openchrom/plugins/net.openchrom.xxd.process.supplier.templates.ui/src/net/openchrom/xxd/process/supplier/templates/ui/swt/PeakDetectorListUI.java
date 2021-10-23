@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,6 +14,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.swt;
 
 import java.util.List;
 
+import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -34,6 +35,8 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 	private PeakDetectorLabelProvider labelProvider = new PeakDetectorLabelProvider();
 	private PeakDetectorComparator tableComparator = new PeakDetectorComparator();
 	private PeakDetectorFilter listFilter = new PeakDetectorFilter();
+	//
+	private IUpdateListener updateListener;
 
 	public PeakDetectorListUI(Composite parent, int style) {
 
@@ -45,6 +48,18 @@ public class PeakDetectorListUI extends ExtendedTableViewer {
 
 		listFilter.setSearchText(searchText, caseSensitive);
 		refresh();
+	}
+
+	public void setUpdateListener(IUpdateListener updateListener) {
+
+		this.updateListener = updateListener;
+	}
+
+	public void updateContent() {
+
+		if(updateListener != null) {
+			updateListener.update();
+		}
 	}
 
 	public void clear() {

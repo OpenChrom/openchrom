@@ -72,16 +72,11 @@ public class DetectorController {
 
 		this.detectorSetting = detectorSetting;
 		if(processSettings != null && detectorSetting != null) {
-			IChromatogram<?> chromatogram = processSettings.getChromatogram();
-			int startChromatogram = chromatogram.getStartRetentionTime();
-			int stopChromatogram = chromatogram.getStopRetentionTime();
-			int startReview = detectorSetting.getStartRetentionTime();
-			int stopReview = detectorSetting.getStopRetentionTime();
-			//
-			if(startReview >= startChromatogram && stopReview <= stopChromatogram) {
-				updateDetectorChart();
-				updatePeakStatusUI(null);
-			}
+			/*
+			 * The retention time validation is performed in the updateDetectorChart() method.
+			 */
+			updateDetectorChart();
+			updatePeakStatusUI(null);
 		}
 	}
 
@@ -99,9 +94,12 @@ public class DetectorController {
 					if(chromatogram != null) {
 						/*
 						 * Settings
+						 * Validate min/max retention time ranges.
 						 */
 						int startRetentionTime = getStartRetentionTime();
 						int stopRetentionTime = getStopRetentionTime();
+						startRetentionTime = (startRetentionTime < chromatogram.getStartRetentionTime()) ? chromatogram.getStartRetentionTime() : startRetentionTime;
+						stopRetentionTime = (stopRetentionTime > chromatogram.getStopRetentionTime()) ? chromatogram.getStopRetentionTime() : stopRetentionTime;
 						PeakType peakType = detectorSetting.getDetectorType();
 						boolean optimizeRange = detectorSetting.isOptimizeRange();
 						//
@@ -219,6 +217,35 @@ public class DetectorController {
 					index++;
 				}
 				processDetectorUI.setSelection(index);
+			}
+		});
+		//
+		peakDetectorChart.setRangeUpdateListener(new IRangeUpdateListener() {
+
+			@Override
+			public void update(boolean zoomIn) {
+
+				if(detectorSetting != null) {
+					/*
+					 * Adjust the retention time range.
+					 */
+					int offset = PreferenceSupplier.getDetectorDynamicOffsetMilliseconds();
+					int retentionTimeDelta = zoomIn ? -offset : offset;
+					int startRetentionTime = detectorSetting.getStartRetentionTime() - retentionTimeDelta;
+					int stopRetentionTime = detectorSetting.getStopRetentionTime() + retentionTimeDelta;
+					//
+					if(startRetentionTime < stopRetentionTime) {
+						//
+						detectorSetting.setStartRetentionTime(startRetentionTime);
+						detectorSetting.setStopRetentionTime(stopRetentionTime);
+						/*
+						 * The retention time validation is performed in the updateDetectorChart() method.
+						 */
+						processDetectorUI.update();
+						updateDetectorChart();
+						updatePeakStatusUI(null);
+					}
+				}
 			}
 		});
 		//

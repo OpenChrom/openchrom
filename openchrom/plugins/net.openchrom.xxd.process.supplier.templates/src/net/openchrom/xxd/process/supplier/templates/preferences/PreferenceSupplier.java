@@ -190,6 +190,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int DEF_DETECTOR_DELTA_LEFT_MILLISECONDS = 0;
 	public static final String P_DETECTOR_DELTA_RIGHT_MILLISECONDS = "detectorDeltaRightMilliseconds";
 	public static final int DEF_DETECTOR_DELTA_RIGHT_MILLISECONDS = 0;
+	public static final String P_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS = "detectorDynamicOffsetMilliseconds";
+	public static final int DEF_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS = 1000;
 	public static final String P_DETECTOR_REPLACE_NEAREST_PEAK = "detectorReplaceNearestPeak";
 	public static final boolean DEF_DETECTOR_REPLACE_NEAREST_PEAK = true;
 	public static final String P_DETECTOR_VISIBILITY = "detectorVisibility";
@@ -332,6 +334,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		 */
 		defaultValues.put(P_DETECTOR_DELTA_LEFT_MILLISECONDS, Integer.toString(DEF_DETECTOR_DELTA_LEFT_MILLISECONDS));
 		defaultValues.put(P_DETECTOR_DELTA_RIGHT_MILLISECONDS, Integer.toString(DEF_DETECTOR_DELTA_RIGHT_MILLISECONDS));
+		defaultValues.put(P_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS, Integer.toString(DEF_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS));
 		defaultValues.put(P_DETECTOR_REPLACE_NEAREST_PEAK, Boolean.toString(DEF_DETECTOR_REPLACE_NEAREST_PEAK));
 		defaultValues.put(P_DETECTOR_VISIBILITY, DEF_DETECTOR_VISIBILITY);
 		defaultValues.put(P_DETECTOR_FOCUS_XIC, Boolean.toString(DEF_DETECTOR_FOCUS_XIC));
@@ -611,6 +614,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_DETECTOR_DELTA_RIGHT_MILLISECONDS, DEF_DETECTOR_DELTA_RIGHT_MILLISECONDS);
+	}
+
+	public static int getDetectorDynamicOffsetMilliseconds() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS, DEF_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS);
 	}
 
 	public static boolean isDetectorReplaceNearestPeak() {

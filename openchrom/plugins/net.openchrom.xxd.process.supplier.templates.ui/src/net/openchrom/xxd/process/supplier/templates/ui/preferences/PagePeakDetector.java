@@ -40,6 +40,7 @@ public class PagePeakDetector extends FieldEditorPreferencePage implements IWork
 
 		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_DETECTOR_DELTA_LEFT_MILLISECONDS, "Delta Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
 		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_DETECTOR_DELTA_RIGHT_MILLISECONDS, "Delta Right [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
+		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS, "Dynamic Offset [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_REPLACE_NEAREST_PEAK, "Replace Peak", getFieldEditorParent()));
 		addField(new ComboFieldEditor(PreferenceSupplier.P_DETECTOR_VISIBILITY, "Visibility", PreferenceSupplier.VISIBILITY_OPTIONS, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_FOCUS_XIC, "Focus XIC", getFieldEditorParent()));
