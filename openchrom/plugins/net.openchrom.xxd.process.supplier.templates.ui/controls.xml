@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Controls" link_to="/org.eclipse.chemclipse.rcp.app.ui/toc.xml#controls">
+	<topic label="Template Review UI" href="html/controls/template_review_ui.html">
+	</topic>
+</toc>
