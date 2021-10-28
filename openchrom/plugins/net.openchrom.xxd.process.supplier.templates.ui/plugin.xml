@@ -259,5 +259,11 @@
                type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
          </adapter>
       </factory>      
-   </extension>   
+   </extension>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="controls.xml">
+      </toc>
+   </extension>
 </plugin>
