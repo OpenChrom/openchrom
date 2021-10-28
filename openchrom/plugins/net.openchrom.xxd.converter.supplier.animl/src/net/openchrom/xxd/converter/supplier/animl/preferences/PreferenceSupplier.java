@@ -28,6 +28,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final String DEF_CHROMATOGRAM_VERSION_SAVE = IFormat.VERSION_LATEST;
 	public static final String P_CHROMATOGRAM_SAVE_ENCODED = "chromatogramEncoded";
 	public static final boolean DEF_CHROMATOGRAM_SAVE_ENCODED = true;
+	public static final String P_MASS_SPECTRUM_SAVE_ENCODED = "massSpectrumEncoded";
+	public static final boolean DEF_MASS_SPECTRUM_SAVE_ENCODED = true;
 	private static IPreferenceSupplier preferenceSupplier;
 
 	public static IPreferenceSupplier INSTANCE() {
@@ -53,9 +55,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	@Override
 	public Map<String, String> getDefaultValues() {
 
-		Map<String, String> defaultValues = new HashMap<String, String>();
+		Map<String, String> defaultValues = new HashMap<>();
 		defaultValues.put(P_CHROMATOGRAM_VERSION_SAVE, DEF_CHROMATOGRAM_VERSION_SAVE);
 		defaultValues.put(P_CHROMATOGRAM_SAVE_ENCODED, Boolean.toString(DEF_CHROMATOGRAM_SAVE_ENCODED));
+		defaultValues.put(P_MASS_SPECTRUM_SAVE_ENCODED, Boolean.toString(DEF_MASS_SPECTRUM_SAVE_ENCODED));
 		return defaultValues;
 	}
 
@@ -83,5 +86,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_CHROMATOGRAM_SAVE_ENCODED, DEF_CHROMATOGRAM_SAVE_ENCODED);
+	}
+
+	public static boolean getMassSpectrumSaveEncoded() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_MASS_SPECTRUM_SAVE_ENCODED, DEF_MASS_SPECTRUM_SAVE_ENCODED);
 	}
 }

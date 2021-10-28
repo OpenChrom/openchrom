@@ -25,7 +25,7 @@ import org.w3c.dom.NodeList;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.IConstants;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.SpecificationValidator;
 
-public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
+public class ChromatogramMagicNumberMatcher extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
 
 	@Override
 	public boolean checkFileFormat(File file) {

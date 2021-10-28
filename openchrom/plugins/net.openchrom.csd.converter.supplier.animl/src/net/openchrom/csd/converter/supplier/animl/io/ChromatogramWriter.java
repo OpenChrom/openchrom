@@ -31,12 +31,10 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.support.history.IEditInformation;
-import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Platform;
-import org.osgi.framework.Version;
 
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.BinaryReader;
+import net.openchrom.xxd.converter.supplier.animl.internal.converter.Common;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AnIMLType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AuditTrailEntrySetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AuditTrailEntryType;
@@ -51,7 +49,6 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Sampl
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SoftwareType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.TechniqueType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
 import net.openchrom.xxd.converter.supplier.animl.preferences.PreferenceSupplier;
@@ -171,20 +168,8 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		author.setName(chromatogram.getOperator());
 		MethodType method = new MethodType();
 		method.setAuthor(author);
-		method.setSoftware(createSoftware());
+		method.setSoftware(Common.createSoftware());
 		return method;
-	}
-
-	private SoftwareType createSoftware() {
-
-		SoftwareType software = new SoftwareType();
-		software.setName("OpenChrom");
-		IProduct product = Platform.getProduct();
-		Version version = product.getDefiningBundle().getVersion();
-		software.setVersion(version.toString());
-		software.setManufacturer("Lablicate GmbH");
-		software.setOperatingSystem(System.getProperty("os.name"));
-		return software;
 	}
 
 	private TechniqueType createChromatographyTechnique() {
@@ -216,7 +201,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		AuditTrailEntrySetType auditTrailEntrySet = new AuditTrailEntrySetType();
 		for(IEditInformation editHistory : chromatogram.getEditHistory()) {
 			AuditTrailEntryType auditTrail = new AuditTrailEntryType();
-			auditTrail.setSoftware(createSoftware());
+			auditTrail.setSoftware(Common.createSoftware());
 			AuthorType author = new AuthorType();
 			author.setName(editHistory.getEditor());
 			auditTrail.setAuthor(author);
