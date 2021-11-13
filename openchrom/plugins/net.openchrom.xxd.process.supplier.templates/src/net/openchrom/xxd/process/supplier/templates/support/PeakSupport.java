@@ -34,6 +34,7 @@ import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
+import org.eclipse.chemclipse.wsd.model.core.support.IMarkedWavelength.WavelengthMarkMode;
 import org.eclipse.chemclipse.wsd.model.core.support.PeakBuilderWSD;
 
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
@@ -135,7 +136,7 @@ public class PeakSupport {
 				} else if(chromatogram instanceof IChromatogramWSD) {
 					IChromatogramWSD chromatogramWSD = (IChromatogramWSD)chromatogram;
 					if(traces.size() > 0) {
-						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground, traces);
+						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground, traces, WavelengthMarkMode.INCLUDE);
 					} else {
 						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground);
 					}
