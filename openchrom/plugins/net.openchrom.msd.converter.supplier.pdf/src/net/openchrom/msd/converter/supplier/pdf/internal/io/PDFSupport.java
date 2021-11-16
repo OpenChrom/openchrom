@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 Lablicate GmbH.
+ * Copyright (c) 2012, 2021 Lablicate GmbH.
  * 
  * All rights reserved.
  *******************************************************************************/
@@ -17,7 +17,6 @@ import org.eclipse.chemclipse.model.signals.TotalScanSignalExtractor;
 import org.eclipse.chemclipse.msd.model.core.AbstractChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.support.text.ValueFormat;
-import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.pdfjet.A4;
 import com.pdfjet.Box;
@@ -64,11 +63,12 @@ public class PDFSupport {
 	private IChromatogramMSD chromatogram;
 
 	public PDFSupport() {
+
 		decimalFormat = ValueFormat.getDecimalFormatEnglish("0.00");
 		abundanceFormat = ValueFormat.getDecimalFormatEnglish("0");
 	}
 
-	public void exportChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws Exception {
+	public void exportChromatogram(File file, IChromatogramMSD chromatogram) throws Exception {
 
 		/*
 		 * Get basic chromatogram values.
@@ -282,8 +282,7 @@ public class PDFSupport {
 	private double calculateRetentionTime(int retentionTime, double width) {
 
 		double percentage = ((100.0 / maxRetentionTime) * retentionTime) / 100.0;
-		double position = (width / 100.0) * (100 * percentage);
-		return position;
+		return (width / 100.0) * (100 * percentage);
 	}
 
 	private double calculateAbundance(float abundance, double height) {
