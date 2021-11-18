@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -69,6 +69,7 @@ public class ImageRunnableGeneric implements Runnable {
 	private List<IScan> scans = new ArrayList<>();
 
 	public ImageRunnableGeneric(IChromatogram<? extends IPeak> chromatogram, PDDocument document, int numberOfPages, int width, int height) {
+
 		this.chromatogram = chromatogram;
 		this.document = document;
 		this.numberOfPages = numberOfPages;
@@ -99,13 +100,13 @@ public class ImageRunnableGeneric implements Runnable {
 				/*
 				 * Create the chart
 				 */
-				ImageFactory<ChromatogramChart> imageFactory = new ImageFactory<ChromatogramChart>(ChromatogramChart.class, width, height);
+				ImageFactory<ChromatogramChart> imageFactory = new ImageFactory<>(ChromatogramChart.class, width, height);
 				ChromatogramChart chromatogramChart = imageFactory.getChart();
 				IChartSettings chartSettings = chromatogramChart.getChartSettings();
 				RangeRestriction rangeRestriction = chartSettings.getRangeRestriction();
 				rangeRestriction.setExtendMaxY(0.1d);
 				chromatogramChart.applySettings(chartSettings);
-				List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
+				List<ILineSeriesData> lineSeriesDataList = new ArrayList<>();
 				//
 				lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesDataChromatogram(chromatogram, chromatogram.getName(), Colors.RED));
 				BaseChart baseChart = chromatogramChart.getBaseChart();
@@ -126,7 +127,7 @@ public class ImageRunnableGeneric implements Runnable {
 	private List<? extends IPeak> addPeaks(BaseChart baseChart, List<ILineSeriesData> lineSeriesDataList) {
 
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
-		if(peaks.size() > 0) {
+		if(!peaks.isEmpty()) {
 			Collections.sort(peaks, peakRetentionTimeComparator);
 			ILineSeriesData lineSeriesData = peakChartSupport.getPeaks(peaks, true, false, Colors.GRAY, "Peaks");
 			ILineSeriesSettings lineSeriesSettings = lineSeriesData.getSettings();
@@ -137,7 +138,7 @@ public class ImageRunnableGeneric implements Runnable {
 			lineSeriesSettings.setSymbolColor(Colors.DARK_GRAY);
 			lineSeriesDataList.add(lineSeriesData);
 			//
-			IPlotArea plotArea = (IPlotArea)baseChart.getPlotArea();
+			IPlotArea plotArea = baseChart.getPlotArea();
 			int indexSeries = lineSeriesDataList.size() - 1;
 			PeakLabelMarker peakLabelMarker = new PeakLabelMarker(baseChart, indexSeries, peaks);
 			plotArea.addCustomPaintListener(peakLabelMarker);
@@ -149,7 +150,7 @@ public class ImageRunnableGeneric implements Runnable {
 	private List<IScan> addScans(BaseChart baseChart, List<ILineSeriesData> lineSeriesDataList) {
 
 		List<IScan> scans = ChromatogramDataSupport.getIdentifiedScans(chromatogram);
-		if(scans.size() > 0) {
+		if(!scans.isEmpty()) {
 			ILineSeriesData lineSeriesData = scanChartSupport.getLineSeriesDataPoint(scans, false, "Scans");
 			ILineSeriesSettings lineSeriesSettings = lineSeriesData.getSettings();
 			lineSeriesSettings.setLineStyle(LineStyle.NONE);
@@ -158,7 +159,7 @@ public class ImageRunnableGeneric implements Runnable {
 			lineSeriesSettings.setSymbolColor(Colors.DARK_GRAY);
 			lineSeriesDataList.add(lineSeriesData);
 			//
-			IPlotArea plotArea = (IPlotArea)baseChart.getPlotArea();
+			IPlotArea plotArea = baseChart.getPlotArea();
 			int indexSeries = lineSeriesDataList.size() - 1;
 			ScanLabelMarker scanLabelMarker = new ScanLabelMarker(baseChart, indexSeries, scans);
 			plotArea.addCustomPaintListener(scanLabelMarker);

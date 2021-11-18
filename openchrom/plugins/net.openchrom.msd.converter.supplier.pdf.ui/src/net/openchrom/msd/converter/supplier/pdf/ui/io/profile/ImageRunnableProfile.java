@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -68,6 +68,7 @@ public class ImageRunnableProfile implements Runnable {
 	private List<IScan> scans = new ArrayList<>();
 
 	public ImageRunnableProfile(IChromatogram<? extends IPeak> chromatogram, String chromatogramName, PDDocument document, int numberOfPages, int numberOfPeaks, int width, int height) {
+
 		this.chromatogram = chromatogram;
 		this.chromatogramName = chromatogramName;
 		this.document = document;
@@ -147,7 +148,7 @@ public class ImageRunnableProfile implements Runnable {
 			lineSeriesSettings.setSymbolColor(Colors.DARK_GRAY);
 			lineSeriesDataList.add(lineSeriesData);
 			//
-			IPlotArea plotArea = (IPlotArea)baseChart.getPlotArea();
+			IPlotArea plotArea = baseChart.getPlotArea();
 			int indexSeries = lineSeriesDataList.size() - 1;
 			PeakLabelMarker peakNameMarker = new PeakLabelMarker(baseChart, indexSeries, peaks, numberOfPeaks);
 			plotArea.addCustomPaintListener(peakNameMarker);
