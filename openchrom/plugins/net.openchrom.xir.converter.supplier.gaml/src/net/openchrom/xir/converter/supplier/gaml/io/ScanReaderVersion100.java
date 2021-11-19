@@ -59,11 +59,13 @@ public class ScanReaderVersion100 {
 				vendorScan = new VendorScanXIR();
 				vendorScan.setDataName(experiment.getName());
 				XMLGregorianCalendar collectDate = experiment.getCollectdate();
-				if(collectDate != null)
+				if(collectDate != null) {
 					vendorScan.setDate(collectDate.toGregorianCalendar().getTime());
+				}
 				for(Parameter parameter : experiment.getParameter()) {
-					if(parameter.getName().equals("FileID"))
+					if(parameter.getName().equals("FileID")) {
 						vendorScan.setShortInfo(parameter.getValue());
+					}
 				}
 				for(Trace trace : experiment.getTrace()) {
 					double[] waveNumbers = null;
@@ -76,7 +78,7 @@ public class ScanReaderVersion100 {
 					}
 					int scans = Math.min(waveNumbers.length, absorbance.length);
 					for(int i = 0; i < scans; i++) {
-						vendorScan.getProcessedSignals().add(new SignalXIR(waveNumbers[i], absorbance[i]));
+						vendorScan.getProcessedSignals().add(new SignalXIR(waveNumbers[i], absorbance[i], 0));
 					}
 				}
 			}
