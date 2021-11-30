@@ -2,16 +2,16 @@
 
 # OpenChrom® Community Edition
 
-[OpenChrom®](https://en.wikipedia.org/wiki/OpenChrom) is a tool for the analysis and visualization of mass spectrometric and chromatographic data developed by [Lablicate GmbH](https://lablicate.com).
+[OpenChrom®](https://en.wikipedia.org/wiki/OpenChrom) is an Open Source tool for the analysis and visualization of mass spectrometric and chromatographic data developed by [Lablicate GmbH](https://lablicate.com).
 
-It is based on [Chemclipse](https://github.com/eclipse/chemclipse) but offers additional features that cannot be part of the Chemclipse project due to licencing constrains.
+It is based on [ChemClipse](https://github.com/eclipse/chemclipse) but offers additional features that cannot be part of the ChemClipse project due to licencing constrains.
 
 ---
 
-Please find our **Code of Conduct** [here](https://github.com/OpenChrom/openchrom/blob/develop/CODE_OF_CONDUCT.md).
+Please see our **[Code of Conduct](https://github.com/OpenChrom/openchrom/blob/develop/CODE_OF_CONDUCT.md)** for rules on how to interact on this site.
 
-If you would like to **contribute** to this project, please have a look at [this guideline](https://github.com/OpenChrom/openchrom/blob/develop/CONTRIBUTING.md).
+If you would like to **contribute** to this project, please have a look at the [guideline](https://github.com/OpenChrom/openchrom/blob/develop/CONTRIBUTING.md).
 
 For user- and developer **documentation**, have a look at our [wiki](https://github.com/OpenChrom/openchrom/wiki).
 
-Builds for Windows, MacOS and Linux can be downloaded [here](https://www.lablicate.com/platform/openchrom/download).
+Builds for Windows, macOS and Linux can be [downloaded](https://www.lablicate.com/platform/openchrom/download) including proprietary converter bundles.
