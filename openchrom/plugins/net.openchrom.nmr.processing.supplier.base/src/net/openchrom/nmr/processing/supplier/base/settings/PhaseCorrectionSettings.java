@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,6 +11,7 @@
  * Jan Holy - refactoring
  * Alexander Stark - refactoring
  * Christoph L채ubrich - refactoring
+ * Matthias Mail채nder - adapt to new ILabel interface
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings;
 
@@ -18,9 +19,9 @@ import java.util.Observable;
 
 import org.eclipse.chemclipse.support.settings.SystemSettings;
 import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
+import org.eclipse.chemclipse.support.text.ILabel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * this class is final, synchronized, {@link Cloneable} and {@link Observable}
@@ -30,30 +31,30 @@ import com.fasterxml.jackson.annotation.JsonValue;
 @SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public final class PhaseCorrectionSettings extends Observable implements Cloneable {
 
-	public enum PivotPointSelection {
+	public enum PivotPointSelection implements ILabel {
 		LEFT("pivot @ far left end of the spectrum"), //
 		MIDDLE("pivot @ middle of the spectrum"), //
 		PEAK_MAX("pivot @ biggest peak of the spectrum"), //
 		USER_DEFINED("pivot @ user defined position"), //
 		NOT_DEFINED("phasing without specified pivot point");//
 
-		@JsonValue
-		private String pivotPosition = "";
+		private String label = "";
 
-		private PivotPointSelection(String pivotPosition){
-			this.pivotPosition = pivotPosition;
+		private PivotPointSelection(String label) {
+
+			this.label = label;
 		}
 
 		@Override
-		public String toString() {
+		public String label() {
 
-			return pivotPosition;
+			return label;
 		}
 	}
 
-	@JsonProperty("0th order correction [�]")
+	@JsonProperty("0th order correction [째]")
 	private double zeroOrderPhaseCorrection = 0.0;
-	@JsonProperty("1st order correction [�]")
+	@JsonProperty("1st order correction [째]")
 	private double firstOrderPhaseCorrection = 0.0;
 	@JsonProperty("Position of pivot point")
 	private PivotPointSelection pivotPointSelection = PivotPointSelection.PEAK_MAX;
