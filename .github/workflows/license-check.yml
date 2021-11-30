@@ -27,14 +27,14 @@ jobs:
       - name: Print changed files
         run: |
           echo "Changed:"
-          echo "${{ steps.changed-files.outputs.all }}"
+          echo "${{ steps.changed-files.outputs.added_modified }}"
       - name: Check year in license header
         shell: bash
         run: |
           included_file_endings=".*\.(java)"
           current_year=$(date +'%Y')
           missing_counter=0
-          for file in ${{ steps.changed-files.outputs.all }}; do
+          for file in ${{ steps.changed-files.outputs.added_modified }}; do
             if [[ $file =~ $included_file_endings ]]; then
               if grep -q "Copyright (c) $current_year" $file; then
                 printf "\xE2\x9C\x94 $file\n"

@@ -19,8 +19,7 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.component.annotations;version="1.2.0"
-Export-Package: net.openchrom.nmr.processing,
- net.openchrom.nmr.processing.apodization,
+Export-Package: net.openchrom.nmr.processing.apodization,
  net.openchrom.nmr.processing.digitalfilter,
  net.openchrom.nmr.processing.ft,
  net.openchrom.nmr.processing.phasecorrection,

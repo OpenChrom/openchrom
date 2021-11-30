@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,15 +9,16 @@
  * Contributors:
  * Alexander Stark - initial API and implementation
  * Jan Holy - refactoring
+ * Matthias Mailänder - adapt to the new ILabel interface
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings.support;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import org.eclipse.chemclipse.support.text.ILabel;
 
-public enum ZeroFillingFactor {
+public enum ZeroFillingFactor implements ILabel {
 	AUTO(0, "Automatic zero filling to a size with the next power of 2"), //
 	EXPONENT_1(1, "Zero filling up to a size of 2 data points"), //
 	EXPONENT_2(2, "Zero filling up to a size of 4 data points"), //
@@ -41,14 +42,13 @@ public enum ZeroFillingFactor {
 	EXPONENT_20(20, "Zero filling up to a size of 1024k data points");
 
 	private int exponent;
-	@JsonValue
-	private String name;
+	private String label;
 	private static Map<Object, Object> zeroFillingMap = new HashMap<>();
 
-	private ZeroFillingFactor(int exponent, String name){
+	private ZeroFillingFactor(int exponent, String label) {
 
 		this.exponent = exponent;
-		this.name = name;
+		this.label = label;
 	}
 
 	public int getExponent() {
@@ -58,13 +58,13 @@ public enum ZeroFillingFactor {
 
 	public int getValue() {
 
-		return (int) Math.pow(2, exponent);
+		return (int)Math.pow(2, exponent);
 	}
 
 	@Override
-	public String toString() {
+	public String label() {
 
-		return name;
+		return label;
 	}
 
 	static {
@@ -75,6 +75,6 @@ public enum ZeroFillingFactor {
 
 	public static ZeroFillingFactor valueOf(int zeroFillingFactor) {
 
-		return (ZeroFillingFactor) zeroFillingMap.get(zeroFillingFactor);
+		return (ZeroFillingFactor)zeroFillingMap.get(zeroFillingFactor);
 	}
 }
