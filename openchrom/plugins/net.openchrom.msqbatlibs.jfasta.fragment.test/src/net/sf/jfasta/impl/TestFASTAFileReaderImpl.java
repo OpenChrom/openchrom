@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,17 +24,17 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.jfasta.FASTAElement;
-import net.sf.jfasta.FASTAFile;
-import net.sf.jfasta.FASTAFileReader;
-import net.sf.kerner.utils.io.UtilIO;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import net.sf.jfasta.FASTAElement;
+import net.sf.jfasta.FASTAFile;
+import net.sf.jfasta.FASTAFileReader;
+import net.sf.kerner.utils.io.UtilIO;
 
 /**
  * 
@@ -158,7 +158,6 @@ public class TestFASTAFileReaderImpl {
 		final File file = new File("src/test/resources/seq.100m.txt");
 		final FASTAFileReader reader = new FASTAFileReaderImpl(file, FASTAFileReaderImpl.DNA_ALPHABET_IGNORE_CASE);
 		// long start = System.currentTimeMillis();
-		@SuppressWarnings("unused")
 		final FASTAFile fasta = reader.read();
 		// long stop = System.currentTimeMillis();
 		// log.debug("reading 5MB fasta file took " + new TimePeriod(start, stop).getDuration() + "ms (including content checking case insensitive)");
@@ -175,7 +174,6 @@ public class TestFASTAFileReaderImpl {
 		final File file = new File("src/test/resources/seq.100m.txt");
 		final FASTAFileReader reader = new FASTAFileReaderImpl(file, FASTAFileReaderImpl.DNA_ALPHABET_IGNORE_CASE);
 		// long start = System.currentTimeMillis();
-		@SuppressWarnings("unused")
 		final FASTAFile fasta = reader.read();
 		// long stop = System.currentTimeMillis();
 		// log.debug("reading 5MB fasta file took " + new TimePeriod(start, stop).getDuration() + "ms (including content checking case sensitive)");
@@ -192,7 +190,6 @@ public class TestFASTAFileReaderImpl {
 		final File file = new File("src/test/resources/seq.100m.txt");
 		final FASTAFileReader reader = new FASTAFileReaderImpl(file);
 		// long start = System.currentTimeMillis();
-		@SuppressWarnings("unused")
 		final FASTAFile fasta = reader.read();
 		// long stop = System.currentTimeMillis();
 		// log.debug("reading 5MB fasta file took " + new TimePeriod(start, stop).getDuration() + "ms (without content checking)");

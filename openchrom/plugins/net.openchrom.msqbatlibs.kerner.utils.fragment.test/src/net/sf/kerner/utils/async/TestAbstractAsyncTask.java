@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,7 +29,6 @@ import org.junit.Test;
 public class TestAbstractAsyncTask {
 
 	private AbstractAsyncTask<String, String> call;
-	@SuppressWarnings("unused")
 	private volatile String res;
 	private volatile Exception failure;
 
