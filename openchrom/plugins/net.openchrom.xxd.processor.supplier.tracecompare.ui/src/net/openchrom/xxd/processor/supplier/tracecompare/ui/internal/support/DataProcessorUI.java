@@ -143,7 +143,7 @@ public class DataProcessorUI extends DataProcessor {
 		wavelengthData.put(wavelength, seriesData);
 	}
 
-	public ISeriesData extractMeasurement(IChromatogram measurement, String type) {
+	public ISeriesData extractMeasurement(IChromatogram<?> measurement, String type) {
 
 		boolean isMirrorReferenceData = PreferenceSupplier.isMirrorReferenceData();
 		//
