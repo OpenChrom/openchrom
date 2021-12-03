@@ -12,6 +12,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.core;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.core.AbstractPeakDetectorWSD;
@@ -25,12 +26,16 @@ import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Shell;
 
+import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakDetectorSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
+import net.openchrom.xxd.process.supplier.templates.util.ChromatogramValidator;
 
 public class PeakDetectorWSD<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetectorWSD<P, C, R> {
+
+	private static final String DESCRIPTION = "PeakDetectorWSD";
 
 	@Override
 	public IProcessingInfo<R> detect(IChromatogramSelectionWSD chromatogramSelection, IPeakDetectorSettingsWSD peakDetectorSettings, IProgressMonitor monitor) {
@@ -38,22 +43,28 @@ public class PeakDetectorWSD<P extends IPeak, C extends IChromatogram<P>, R> ext
 		IProcessingInfo<R> processingInfo = new ProcessingInfo<>();
 		if(peakDetectorSettings instanceof PeakDetectorSettings) {
 			PeakDetectorSettings settings = (PeakDetectorSettings)peakDetectorSettings;
+			IChromatogram<? extends IPeak> chromatogram = chromatogramSelection.getChromatogram();
 			ProcessDetectorSettings processSettings = new ProcessDetectorSettings(processingInfo, chromatogramSelection.getChromatogram(), settings);
-			try {
-				DisplayUtils.executeInUserInterfaceThread(new Runnable() {
+			List<DetectorSetting> detectorSettings = ChromatogramValidator.filterValidDetectorSettings(chromatogram, settings);
+			if(detectorSettings.isEmpty()) {
+				processingInfo.addWarnMessage(DESCRIPTION, "The chromatogram doesn't contain any of the given peak traces.");
+			} else {
+				try {
+					DisplayUtils.executeInUserInterfaceThread(new Runnable() {
 
-					@Override
-					public void run() {
+						@Override
+						public void run() {
 
-						Shell shell = DisplayUtils.getShell();
-						PeakDetectorSupport peakDetectorSupport = new PeakDetectorSupport();
-						peakDetectorSupport.addPeaks(shell, processSettings);
-					}
-				});
-			} catch(InterruptedException e) {
-				Thread.currentThread().interrupt();
-			} catch(ExecutionException e) {
-				processingInfo.addErrorMessage("PeakDetectorWSD", "Execution failed", e);
+							Shell shell = DisplayUtils.getShell();
+							PeakDetectorSupport peakDetectorSupport = new PeakDetectorSupport();
+							peakDetectorSupport.addPeaks(shell, processSettings);
+						}
+					});
+				} catch(InterruptedException e) {
+					Thread.currentThread().interrupt();
+				} catch(ExecutionException e) {
+					processingInfo.addErrorMessage(DESCRIPTION, "Sorry, somehow the execution failed.", e);
+				}
 			}
 		}
 		return processingInfo;
