@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2021 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -50,18 +50,22 @@ public class RowImpl<T> implements Row<T> {
 	protected volatile ObjectToIndexMapper<Object> mapper = new ObjectToIndexMapperImpl<Object>(new ArrayList<Object>());
 
 	public RowImpl() {
+
 	}
 
 	public RowImpl(final List<T> elements) {
+
 		implementation.addAll(elements);
 	}
 
 	public RowImpl(final Row<T> template) {
+
 		implementation.addAll(template);
 		mapper = new ObjectToIndexMapperImpl<Object>(template.getIdentifier());
 	}
 
 	public RowImpl(final T... elements) {
+
 		implementation.addAll(Arrays.asList(elements));
 	}
 
@@ -232,7 +236,6 @@ public class RowImpl<T> implements Row<T> {
 		return implementation.toArray();
 	}
 
-	@SuppressWarnings("hiding")
 	public <T> T[] toArray(final T[] a) {
 
 		return implementation.toArray(a);
