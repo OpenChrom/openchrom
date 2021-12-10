@@ -9,7 +9,7 @@
             filterName="AnIML MSD Chromatogram (*.animl)"
             id="net.openchrom.msd.converter.supplier.animl.chromatogram"
             importConverter="net.openchrom.msd.converter.supplier.animl.converter.ChromatogramImportConverter"
-            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.animl.converter.MagicNumberMatcher"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.animl.converter.ChromatogramMagicNumberMatcher"
             exportConverter="net.openchrom.msd.converter.supplier.animl.converter.ChromatogramExportConverter"
             isExportable="true"
             isImportable="true">
