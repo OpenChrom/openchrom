@@ -15,3 +15,9 @@ If you would like to **contribute** to this project, please have a look at the [
 For user- and developer **documentation**, have a look at our [wiki](https://github.com/OpenChrom/openchrom/wiki).
 
 Builds for Windows, macOS and Linux can be [downloaded](https://www.lablicate.com/platform/openchrom/download) including proprietary converter bundles.
+
+---
+
+![YourKit Logo](https://www.yourkit.com/images/yklogo.png)
+
+Performance measurements provided by the [YourKit Java Profiler](https://www.yourkit.com/java/profiler/)
