@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,21 +11,28 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-public enum ReportStrategy {
+import org.eclipse.chemclipse.support.text.ILabel;
+
+public enum ReportStrategy implements ILabel {
 	ALL("All"), //
 	BEST_MATCH("Best Match"), //
 	LARGEST_AREA("Largest Area"), //
 	SMALLEST_AREA("Smallest Area");
 
-	private String description = "";
+	private String label = "";
 
-	private ReportStrategy(String description) {
+	private ReportStrategy(String label) {
 
-		this.description = description;
+		this.label = label;
 	}
 
-	public String getDescription() {
+	public String label() {
 
-		return description;
+		return label;
+	}
+
+	public static String[][] getOptions() {
+
+		return ILabel.getOptions(values());
 	}
 }

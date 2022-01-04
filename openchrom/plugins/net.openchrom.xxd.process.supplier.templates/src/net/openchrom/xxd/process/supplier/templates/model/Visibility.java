@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,10 +11,29 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-public enum Visibility {
-	TIC, //
-	TRACE, //
-	BOTH; //
+import org.eclipse.chemclipse.support.text.ILabel;
+
+public enum Visibility implements ILabel {
+	TIC("Total Intensity"), //
+	TRACE("Trace"), //
+	BOTH("Total Intensity and Trace"); //
+
+	private String label = "";
+
+	private Visibility(String label) {
+
+		this.label = label;
+	}
+
+	public String label() {
+
+		return label;
+	}
+
+	public static String[][] getOptions() {
+
+		return ILabel.getOptions(values());
+	}
 
 	public static boolean isTIC(Visibility visibility) {
 

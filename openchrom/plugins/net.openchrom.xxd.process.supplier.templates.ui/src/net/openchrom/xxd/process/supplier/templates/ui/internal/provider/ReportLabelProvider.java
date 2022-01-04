@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -75,7 +75,7 @@ public class ReportLabelProvider extends AbstractChemClipseLabelProvider {
 					text = setting.getCasNumber();
 					break;
 				case 4:
-					text = setting.getReportStrategy().getDescription();
+					text = setting.getReportStrategy().label();
 					break;
 				default:
 					text = "n.v.";
