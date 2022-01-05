@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,6 +21,7 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.support.TargetSupport;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
@@ -54,12 +55,15 @@ public class QualRatioLabelProvider extends AbstractChemClipseLabelProvider impl
 					text = (peak != null) ? decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR) : "--";
 					break;
 				case 1:
-					text = ratio.getLeadingTailing().label();
+					text = TargetSupport.getBestTargetLibraryField(peak);
 					break;
 				case 2:
-					text = ratio.getSignalToNoise().label();
+					text = ratio.getLeadingTailing().label();
 					break;
 				case 3:
+					text = ratio.getSignalToNoise().label();
+					break;
+				case 4:
 					text = ratio.getSymmetry().label();
 					break;
 			}
@@ -78,11 +82,11 @@ public class QualRatioLabelProvider extends AbstractChemClipseLabelProvider impl
 
 		if(element instanceof QualRatio) {
 			QualRatio qualRatio = (QualRatio)element;
-			if(columnIndex == 1) {
+			if(columnIndex == 2) {
 				return getColorPeakQuality(qualRatio.getLeadingTailing(), false);
-			} else if(columnIndex == 2) {
-				return getColorPeakQuality(qualRatio.getSignalToNoise(), false);
 			} else if(columnIndex == 3) {
+				return getColorPeakQuality(qualRatio.getSignalToNoise(), false);
+			} else if(columnIndex == 4) {
 				return getColorPeakQuality(qualRatio.getSymmetry(), false);
 			}
 		}
@@ -94,11 +98,11 @@ public class QualRatioLabelProvider extends AbstractChemClipseLabelProvider impl
 
 		if(element instanceof QualRatio) {
 			QualRatio qualRatio = (QualRatio)element;
-			if(columnIndex == 1) {
+			if(columnIndex == 2) {
 				return getColorPeakQuality(qualRatio.getLeadingTailing(), true);
-			} else if(columnIndex == 2) {
-				return getColorPeakQuality(qualRatio.getSignalToNoise(), true);
 			} else if(columnIndex == 3) {
+				return getColorPeakQuality(qualRatio.getSignalToNoise(), true);
+			} else if(columnIndex == 4) {
 				return getColorPeakQuality(qualRatio.getSymmetry(), true);
 			}
 		}
