@@ -80,7 +80,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	//
 	private Button buttonToolbarSearch;
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
-	private Button buttonToolbarShift;
+	private Button buttonToolbarAdjust;
 	private AtomicReference<PositionAdjusterUI> toolbarAdjuster = new AtomicReference<>();
 	private AtomicReference<PeakDetectorListUI> listControl = new AtomicReference<>();
 	//
@@ -190,7 +190,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	private void initialize() {
 
 		enableToolbar(toolbarSearch, buttonToolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH, false);
-		enableToolbar(toolbarAdjuster, buttonToolbarShift, IMAGE_ADJUST_POSITION, TOOLTIP_ADJUST_POSITION, false);
+		enableToolbar(toolbarAdjuster, buttonToolbarAdjust, IMAGE_ADJUST_POSITION, TOOLTIP_ADJUST_POSITION, false);
 		setInput();
 	}
 
@@ -402,7 +402,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		composite.setLayout(new GridLayout(8, false));
 		//
 		add(buttonToolbarSearch = createButtonToggleToolbar(composite, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH));
-		add(buttonToolbarShift = createButtonToggleToolbar(composite, toolbarAdjuster, IMAGE_ADJUST_POSITION, TOOLTIP_ADJUST_POSITION));
+		add(buttonToolbarAdjust = createButtonToggleToolbar(composite, toolbarAdjuster, IMAGE_ADJUST_POSITION, TOOLTIP_ADJUST_POSITION));
 		add(buttonAdd = createButtonAdd(composite));
 		add(buttonEdit = createButtonEdit(composite));
 		add(buttonRemove = createButtonRemove(composite));
