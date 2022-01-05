@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2019 Lablicate GmbH.
+ * Copyright (c) 2013, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -27,10 +27,9 @@ import net.openchrom.msd.converter.supplier.cdf.io.support.AttributeSupport;
 import net.openchrom.msd.converter.supplier.cdf.io.support.CDFConstants;
 import net.openchrom.msd.converter.supplier.cdf.io.support.DimensionSupport;
 import net.openchrom.msd.converter.supplier.cdf.io.support.IDataEntry;
-
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Dimension;
-import ucar.nc2.NetcdfFileWriteable;
+import ucar.nc2.NetcdfFileWriter;
 
 @SuppressWarnings("deprecation")
 public class ChromatogramWriter extends AbstractChromatogramWriter implements IChromatogramMSDWriter {
@@ -46,7 +45,7 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 
 	private void writeCDFChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws IOException {
 
-		NetcdfFileWriteable cdfChromatogram = NetcdfFileWriteable.createNew(file.getAbsolutePath());
+		NetcdfFileWriter cdfChromatogram = NetcdfFileWriter.createNew(file.getAbsolutePath(), false);
 		DimensionSupport dimensionSupport = new DimensionSupport(cdfChromatogram, chromatogram);
 		AttributeSupport.setAttributes(cdfChromatogram, chromatogram);
 		Dimension errorNumber = dimensionSupport.getErrorNumber();

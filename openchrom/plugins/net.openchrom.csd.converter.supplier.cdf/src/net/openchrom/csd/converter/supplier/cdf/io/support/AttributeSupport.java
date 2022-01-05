@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -13,12 +13,12 @@ package net.openchrom.csd.converter.supplier.cdf.io.support;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 
-import ucar.nc2.NetcdfFileWriteable;
+import ucar.nc2.NetcdfFileWriter;
 
 @SuppressWarnings("deprecation")
 public class AttributeSupport {
 
-	public static void setAttributes(NetcdfFileWriteable cdfChromatogram, IChromatogramCSD chromatogram) {
+	public static void setAttributes(NetcdfFileWriter cdfChromatogram, IChromatogramCSD chromatogram) {
 
 		cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_DATASET_COMPLETENESS, "C1+C2");
 		cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_AIA_TEMPLATE_REVISION, "1.0.1");

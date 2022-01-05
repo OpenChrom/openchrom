@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Lablicate GmbH.
+ * Copyright (c) 2014, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -21,7 +21,7 @@ import ucar.ma2.ArrayInt;
 import ucar.ma2.ArrayShort;
 import ucar.ma2.DataType;
 import ucar.nc2.Dimension;
-import ucar.nc2.NetcdfFileWriteable;
+import ucar.nc2.NetcdfFileWriter;
 
 @SuppressWarnings("deprecation")
 public class DimensionSupport implements IDimensionSupport {
@@ -31,7 +31,7 @@ public class DimensionSupport implements IDimensionSupport {
 	public final short NULL_VALUE_SHORT = -9999;
 	public final float NULL_VALUE_TIME = 9.96921E36f;
 	private ArrayList<IDataEntry> dataEntries;
-	private NetcdfFileWriteable cdfChromatogram;
+	private NetcdfFileWriter cdfChromatogram;
 	private IChromatogramCSD chromatogram;
 	private Dimension byteString32;
 	private Dimension byteString64;
@@ -39,7 +39,8 @@ public class DimensionSupport implements IDimensionSupport {
 	private Dimension instrumentNumber;
 	private Dimension errorNumber;
 
-	public DimensionSupport(NetcdfFileWriteable cdfChromatogram, IChromatogramCSD chromatogram) {
+	public DimensionSupport(NetcdfFileWriter cdfChromatogram, IChromatogramCSD chromatogram) {
+
 		dataEntries = new ArrayList<IDataEntry>();
 		this.cdfChromatogram = cdfChromatogram;
 		this.chromatogram = chromatogram;
@@ -67,7 +68,7 @@ public class DimensionSupport implements IDimensionSupport {
 	@Override
 	public void addVariableCharD2(String varName, Dimension firstDimension, Dimension secondDimension, String content) {
 
-		ArrayList<Dimension> dimension = new ArrayList<Dimension>();
+		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(firstDimension);
 		dimension.add(secondDimension);
 		cdfChromatogram.addVariable(varName, DataType.CHAR, dimension);
@@ -79,7 +80,7 @@ public class DimensionSupport implements IDimensionSupport {
 	@Override
 	public void addVariableDoubleD1(String varName, Dimension firstDimension, double value) {
 
-		ArrayList<Dimension> dimension = new ArrayList<Dimension>();
+		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(firstDimension);
 		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
 		ArrayDouble.D1 values = new ArrayDouble.D1(firstDimension.getLength());
@@ -92,10 +93,10 @@ public class DimensionSupport implements IDimensionSupport {
 	@Override
 	public void addVariableShortD1(String varName, Dimension firstDimension, short value) {
 
-		ArrayList<Dimension> dimension = new ArrayList<Dimension>();
+		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(firstDimension);
 		cdfChromatogram.addVariable(varName, DataType.SHORT, dimension);
-		ArrayShort.D1 values = new ArrayShort.D1(firstDimension.getLength());
+		ArrayShort.D1 values = new ArrayShort.D1(firstDimension.getLength(), false);
 		for(int i = 0; i < firstDimension.getLength(); i++) {
 			values.set(i, value);
 		}
@@ -105,10 +106,10 @@ public class DimensionSupport implements IDimensionSupport {
 	@Override
 	public void addVariableIntD1(String varName, Dimension firstDimension, int value) {
 
-		ArrayList<Dimension> dimension = new ArrayList<Dimension>();
+		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(firstDimension);
 		cdfChromatogram.addVariable(varName, DataType.INT, dimension);
-		ArrayInt.D1 values = new ArrayInt.D1(firstDimension.getLength());
+		ArrayInt.D1 values = new ArrayInt.D1(firstDimension.getLength(), false);
 		for(int i = 0; i < firstDimension.getLength(); i++) {
 			values.set(i, value);
 		}
@@ -119,7 +120,7 @@ public class DimensionSupport implements IDimensionSupport {
 	public void addVariableOrdinateValues() {
 
 		String varName = CDFConstants.VARIABLE_ORDINATE_VALUES;
-		ArrayList<Dimension> dimension = new ArrayList<Dimension>();
+		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(numberOfScans);
 		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
 		ArrayDouble.D1 values = new ArrayDouble.D1(numberOfScans.getLength());
