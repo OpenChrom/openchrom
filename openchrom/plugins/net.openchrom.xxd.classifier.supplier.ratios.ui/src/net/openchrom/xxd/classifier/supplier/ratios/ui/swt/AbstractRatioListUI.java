@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.ui.swt;
 
+import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
@@ -25,9 +26,23 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRat
 public abstract class AbstractRatioListUI extends ExtendedTableViewer {
 
 	protected PeakRatioFilter listFilter = new PeakRatioFilter();
+	private IUpdateListener updateListener;
 
 	public AbstractRatioListUI(Composite parent, int style) {
+
 		super(parent, style);
+	}
+
+	public void setUpdateListener(IUpdateListener updateListener) {
+
+		this.updateListener = updateListener;
+	}
+
+	public void updateContent() {
+
+		if(updateListener != null) {
+			updateListener.update();
+		}
 	}
 
 	public void setSearchText(String searchText, boolean caseSensitive) {

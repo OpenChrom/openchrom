@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -58,8 +58,13 @@ public class TraceRatioSettings extends AbstractChromatogramClassifierSettings i
 		this.ratioSettings = settings.extractSettings(ratioSettings);
 	}
 
+	public String getRatioSettings() {
+
+		return ratioSettings;
+	}
+
 	@JsonIgnore
-	public TraceRatios getRatioSettings() {
+	public TraceRatios getRatioSettingsList() {
 
 		TraceRatioListUtil util = new TraceRatioListUtil();
 		TraceRatioValidator validator = new TraceRatioValidator();

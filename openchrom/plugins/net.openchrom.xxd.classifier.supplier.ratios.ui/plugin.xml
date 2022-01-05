@@ -12,7 +12,7 @@
             category="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePage"
             class="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.PreferencePageTrace"
             id="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePageTrace"
-            name="Trace Ratio Classifier">
+            name="Trace Ratios">
       </page>
       <page
             category="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePage"
@@ -70,5 +70,15 @@
                type="org.eclipse.jface.viewers.ISelectionChangedListener">
          </adapter>
       </factory>
-   </extension>   
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioSettings"
+            class="net.openchrom.xxd.classifier.supplier.ratios.ui.adapter.TraceRatioSettingsAdapterFactory">
+         <adapter
+               type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
+         </adapter>
+      </factory>     
+   </extension>
 </plugin>

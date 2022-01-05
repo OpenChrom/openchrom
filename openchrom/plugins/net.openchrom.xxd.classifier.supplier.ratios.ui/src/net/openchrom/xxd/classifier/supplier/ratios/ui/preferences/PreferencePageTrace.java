@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,9 +22,11 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.fieldeditors.TraceRatioFi
 public class PreferencePageTrace extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PreferencePageTrace() {
+
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Trace Ratio");
+		setTitle("Trace Ratios");
+		setDescription("");
 	}
 
 	/**
@@ -35,7 +37,7 @@ public class PreferencePageTrace extends FieldEditorPreferencePage implements IW
 	@Override
 	public void createFieldEditors() {
 
-		addField(new TraceRatioFieldEditor(PreferenceSupplier.P_TRACE_RATIO_LIST, "Trace Ratio(s)", getFieldEditorParent()));
+		addField(new TraceRatioFieldEditor(PreferenceSupplier.P_TRACE_RATIO_LIST, "Trace Ratios", getFieldEditorParent()));
 	}
 
 	/*
