@@ -24,7 +24,7 @@
             category="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePage"
             class="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.PreferencePageQuant"
             id="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePageQuant"
-            name="Quant Ratio Classifier">
+            name="Quant Ratios">
       </page> 
       <page
             category="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePage"
@@ -86,6 +86,13 @@
          <adapter
                type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
          </adapter>
-      </factory>          
+      </factory>
+      <factory
+            adaptableType="net.openchrom.xxd.classifier.supplier.ratios.settings.QuantRatioSettings"
+            class="net.openchrom.xxd.classifier.supplier.ratios.ui.adapter.QuantRatioSettingsAdapterFactory">
+         <adapter
+               type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
+         </adapter>
+      </factory>               
    </extension>
 </plugin>
