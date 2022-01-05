@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,7 +29,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.Abstrac
 
 public class TimeRatioResultTitles extends AbstractPeakRatioTitles implements ColumnDefinitionProvider {
 
-	public static final String EXPECTED_RETENTION_TIME = "Expected RT (Minutes)";
+	public static final String EXPECTED_RETENTION_TIME = "Expected Retention Time [min]";
 	//
 	public static final String[] TITLES_SETTINGS = { //
 			NAME, //
