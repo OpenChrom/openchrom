@@ -199,16 +199,16 @@ public class PositionAdjusterUI extends Composite {
 					for(AbstractSetting setting : settings) {
 						switch(positionMarker) {
 							case RT_MIN_START:
-								setting.setStartRetentionTime(setting.getStartRetentionTime() + (int)(positionAdjustment * IChromatogram.MINUTE_CORRELATION_FACTOR));
+								setting.setStartRetentionTime(validateRetentionTime(setting.getStartRetentionTime() + (int)(positionAdjustment * IChromatogram.MINUTE_CORRELATION_FACTOR)));
 								break;
 							case RT_MIN_STOP:
-								setting.setStopRetentionTime(setting.getStopRetentionTime() + (int)(positionAdjustment * IChromatogram.MINUTE_CORRELATION_FACTOR));
+								setting.setStopRetentionTime(validateRetentionTime(setting.getStopRetentionTime() + (int)(positionAdjustment * IChromatogram.MINUTE_CORRELATION_FACTOR)));
 								break;
 							case RT_MS_START:
-								setting.setStartRetentionTime(setting.getStartRetentionTime() + (int)positionAdjustment);
+								setting.setStartRetentionTime(validateRetentionTime(setting.getStartRetentionTime() + (int)positionAdjustment));
 								break;
 							case RT_MS_STOP:
-								setting.setStopRetentionTime(setting.getStopRetentionTime() + (int)positionAdjustment);
+								setting.setStopRetentionTime(validateRetentionTime(setting.getStopRetentionTime() + (int)positionAdjustment));
 								break;
 							default:
 								break;
@@ -218,6 +218,11 @@ public class PositionAdjusterUI extends Composite {
 				}
 			}
 		}
+	}
+
+	private int validateRetentionTime(int retentionTime) {
+
+		return retentionTime < 0 ? 0 : retentionTime;
 	}
 
 	private void fireUpdate() {

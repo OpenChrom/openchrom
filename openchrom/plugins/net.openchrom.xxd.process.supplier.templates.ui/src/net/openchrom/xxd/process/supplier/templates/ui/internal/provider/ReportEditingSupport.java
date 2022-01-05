@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
+import org.eclipse.chemclipse.model.cas.CasSupport;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
@@ -96,10 +97,7 @@ public class ReportEditingSupport extends EditingSupport {
 					setting.setStopRetentionTimeMinutes(convertDouble(value));
 					break;
 				case PeakIdentifierLabelProvider.CAS_NUMBER:
-					String casNumber = ((String)value).trim();
-					if(!"".equals(casNumber)) {
-						setting.setCasNumber(casNumber);
-					}
+					setting.setCasNumber(CasSupport.format(((String)value).trim()));
 					break;
 				case ReportLabelProvider.REPORT_STRATEGY:
 					if(value instanceof ReportStrategy) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,21 +11,23 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
-import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
+import org.eclipse.chemclipse.model.cas.CasSupport;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 
 import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakIdentifierListUI;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
 
 public class PeakIdentifierEditingSupport extends EditingSupport {
 
 	private CellEditor cellEditor;
-	private ExtendedTableViewer tableViewer;
+	private PeakIdentifierListUI tableViewer;
 	private String column;
 
-	public PeakIdentifierEditingSupport(ExtendedTableViewer tableViewer, String column) {
+	public PeakIdentifierEditingSupport(PeakIdentifierListUI tableViewer, String column) {
+
 		super(tableViewer);
 		this.column = column;
 		this.cellEditor = new TextCellEditor(tableViewer.getTable());
@@ -80,7 +82,6 @@ public class PeakIdentifierEditingSupport extends EditingSupport {
 		if(element instanceof IdentifierSetting) {
 			IdentifierSetting setting = (IdentifierSetting)element;
 			double result;
-			String text;
 			switch(column) {
 				/*
 				 * Do not edit the name
@@ -102,28 +103,16 @@ public class PeakIdentifierEditingSupport extends EditingSupport {
 					}
 					break;
 				case PeakIdentifierLabelProvider.CAS_NUMBER:
-					text = ((String)value).trim();
-					if(!"".equals(text)) {
-						setting.setCasNumber(text);
-					}
+					setting.setCasNumber(CasSupport.format(((String)value).trim()));
 					break;
 				case PeakIdentifierLabelProvider.COMMENTS:
-					text = ((String)value).trim();
-					if(!"".equals(text)) {
-						setting.setComments(text);
-					}
+					setting.setComments(((String)value).trim());
 					break;
 				case PeakIdentifierLabelProvider.CONTRIBUTOR:
-					text = ((String)value).trim();
-					if(!"".equals(text)) {
-						setting.setContributor(text);
-					}
+					setting.setContributor(((String)value).trim());
 					break;
 				case PeakIdentifierLabelProvider.REFERENCE:
-					text = ((String)value).trim();
-					if(!"".equals(text)) {
-						setting.setReference(text);
-					}
+					setting.setReference(((String)value).trim());
 					break;
 				case PeakIdentifierLabelProvider.TRACES:
 					String traces = ((String)value).trim();
@@ -134,13 +123,12 @@ public class PeakIdentifierEditingSupport extends EditingSupport {
 					}
 					break;
 				case PeakIdentifierLabelProvider.REFERENCE_IDENTIFIER:
-					text = ((String)value).trim();
-					if(!"".equals(text)) {
-						setting.setReferenceIdentifier(text);
-					}
+					setting.setReferenceIdentifier(((String)value).trim());
 					break;
 			}
+			//
 			tableViewer.refresh();
+			tableViewer.updateContent();
 		}
 	}
 
