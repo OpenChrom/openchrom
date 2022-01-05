@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.fieldeditors;
 
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.jface.preference.FieldEditor;
 
 public abstract class AbstractFieldEditor extends FieldEditor {
@@ -36,4 +37,7 @@ public abstract class AbstractFieldEditor extends FieldEditor {
 	public static final String MESSAGE_REMOVE_ALL = "Do you want to delete all template(s)?";
 	public static final String MESSAGE_EXPORT_SUCCESSFUL = "Templates have been exported successfully.";
 	public static final String MESSAGE_EXPORT_FAILED = "Failed to export the templates.";
+	//
+	public static final String TOOLTIP_ADJUST_POSITION = "the position adjust toolbar.";
+	public static final String IMAGE_ADJUST_POSITION = IApplicationImage.IMAGE_ADJUST_CHROMATOGRAMS;
 }

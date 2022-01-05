@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,6 +15,7 @@ import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.Abstr
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.DIALOG_TITLE;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.EDIT_TOOLTIP;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.EXPORT_TITLE;
+import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.IMAGE_ADJUST_POSITION;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.IMPORT_TITLE;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.MESSAGE_ADD;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.MESSAGE_EDIT;
@@ -24,6 +25,7 @@ import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.Abstr
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.MESSAGE_REMOVE_ALL;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE_ALL_TOOLTIP;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE_TOOLTIP;
+import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.TOOLTIP_ADJUST_POSITION;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
@@ -42,8 +45,8 @@ import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.chemclipse.support.ui.swt.ITableSettings;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
-import org.eclipse.chemclipse.ux.extension.ui.support.PartSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.IExtendedPartUI;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -72,11 +75,15 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewInputValidator;
 import net.openchrom.xxd.process.supplier.templates.util.ReviewListUtil;
 
-public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIControl {
+public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIControl, IExtendedPartUI {
 
 	private Composite control;
-	private SearchSupportUI searchSupportUI;
-	private PeakReviewListUI peakReviewListUI;
+	//
+	private Button buttonToolbarSearch;
+	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
+	private Button buttonToolbarShift;
+	private AtomicReference<PositionAdjusterUI> toolbarAdjuster = new AtomicReference<>();
+	private AtomicReference<PeakReviewListUI> listControl = new AtomicReference<>();
 	//
 	private static final String FILTER_EXTENSION = "*.txt";
 	private static final String FILTER_NAME = "Review Template (*.txt)";
@@ -85,8 +92,14 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	private static final String CATEGORY = "Peak Identifier";
 	private static final String DELETE = "Delete";
 	//
-	private List<Listener> listeners = new ArrayList<>();
+	private Listener listener;
 	private List<Button> buttons = new ArrayList<>();
+	private Button buttonAdd;
+	private Button buttonEdit;
+	private Button buttonRemove;
+	private Button buttonRemoveAll;
+	private Button buttonImport;
+	private Button buttonExport;
 	//
 	private ReviewSettings settings = new ReviewSettings();
 	private ProcessorPreferences<PeakReviewSettings> preferences;
@@ -105,22 +118,21 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		composite.setLayout(gridLayout);
 		//
 		createToolbarMain(composite);
-		searchSupportUI = createSearchSection(composite);
-		peakReviewListUI = createTableSection(composite);
+		createSearchSection(composite);
+		createAdjustSection(composite);
+		createTableSection(composite);
 		//
-		PartSupport.setCompositeVisibility(searchSupportUI, false);
-		setViewerInput();
+		initialize();
 		setControl(composite);
 	}
 
 	@Override
 	public void setEnabled(boolean enabled) {
 
-		peakReviewListUI.getControl().setEnabled(enabled);
 		for(Button button : buttons) {
 			button.setEnabled(enabled);
 		}
-		searchSupportUI.setEnabled(enabled);
+		listControl.get().getControl().setEnabled(enabled);
 	}
 
 	@Override
@@ -143,7 +155,20 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	@Override
 	public void addChangeListener(Listener listener) {
 
-		listeners.add(listener);
+		this.listener = listener;
+		//
+		Table table = listControl.get().getTable();
+		table.addListener(SWT.Selection, listener);
+		table.addListener(SWT.KeyUp, listener);
+		table.addListener(SWT.MouseUp, listener);
+		table.addListener(SWT.MouseDoubleClick, listener);
+		//
+		buttonAdd.addListener(SWT.KeyUp, listener);
+		buttonEdit.addListener(SWT.KeyUp, listener);
+		buttonRemove.addListener(SWT.KeyUp, listener);
+		buttonRemoveAll.addListener(SWT.KeyUp, listener);
+		buttonImport.addListener(SWT.KeyUp, listener);
+		buttonExport.addListener(SWT.KeyUp, listener);
 	}
 
 	@Override
@@ -155,12 +180,19 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	public void load(String entries) {
 
 		settings.load(entries);
-		setViewerInput();
+		setInput();
 	}
 
 	public String getValues() {
 
 		return settings.save();
+	}
+
+	private void initialize() {
+
+		enableToolbar(toolbarSearch, buttonToolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH, false);
+		enableToolbar(toolbarAdjuster, buttonToolbarShift, IMAGE_ADJUST_POSITION, TOOLTIP_ADJUST_POSITION, false);
+		setInput();
 	}
 
 	private void createToolbarMain(Composite parent) {
@@ -171,14 +203,14 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		composite.setLayoutData(gridData);
 		composite.setLayout(new GridLayout(8, false));
 		//
-		createButtonToggleSearch(composite);
-		add(createButtonAdd(composite));
-		add(createButtonEdit(composite));
-		add(createButtonRemove(composite));
-		add(createButtonRemoveAll(composite));
-		add(createButtonImport(composite));
-		add(createButtonExport(composite));
-		add(createButtonSave(composite));
+		add(buttonToolbarSearch = createButtonToggleToolbar(composite, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH));
+		add(buttonToolbarShift = createButtonToggleToolbar(composite, toolbarAdjuster, IMAGE_ADJUST_POSITION, TOOLTIP_ADJUST_POSITION));
+		add(buttonAdd = createButtonAdd(composite));
+		add(buttonEdit = createButtonEdit(composite));
+		add(buttonRemove = createButtonRemove(composite));
+		add(buttonRemoveAll = createButtonRemoveAll(composite));
+		add(buttonImport = createButtonImport(composite));
+		add(buttonExport = createButtonExport(composite));
 	}
 
 	private void add(Button button) {
@@ -186,7 +218,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		buttons.add(button);
 	}
 
-	private SearchSupportUI createSearchSection(Composite parent) {
+	private void createSearchSection(Composite parent) {
 
 		SearchSupportUI searchSupportUI = new SearchSupportUI(parent, SWT.NONE);
 		searchSupportUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -195,26 +227,47 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 			@Override
 			public void performSearch(String searchText, boolean caseSensitive) {
 
-				peakReviewListUI.setSearchText(searchText, caseSensitive);
+				listControl.get().setSearchText(searchText, caseSensitive);
 			}
 		});
 		//
-		return searchSupportUI;
+		toolbarSearch.set(searchSupportUI);
 	}
 
-	private PeakReviewListUI createTableSection(Composite parent) {
+	private void createAdjustSection(Composite parent) {
+
+		PositionAdjusterUI positionAdjusterUI = new PositionAdjusterUI(parent, SWT.NONE);
+		positionAdjusterUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		//
+		positionAdjusterUI.setUpdateListener(new IUpdateListener() {
+
+			@Override
+			public void update() {
+
+				setInput();
+			}
+		});
+		//
+		toolbarAdjuster.set(positionAdjusterUI);
+	}
+
+	private void createTableSection(Composite parent) {
 
 		PeakReviewListUI peakReviewListUI = new PeakReviewListUI(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		Table table = peakReviewListUI.getTable();
-		table.setLayoutData(new GridData(GridData.FILL_BOTH));
-		peakReviewListUI.setEditEnabled(true);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.heightHint = 450;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.verticalAlignment = SWT.TOP;
+		table.setLayoutData(gridData);
 		//
+		peakReviewListUI.setEditEnabled(true);
 		peakReviewListUI.setUpdateListener(new IUpdateListener() {
 
 			@Override
 			public void update() {
 
-				setViewerInput();
+				setInput();
 			}
 		});
 		//
@@ -224,30 +277,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		addKeyEventProcessors(shell, tableSettings);
 		peakReviewListUI.applySettings(tableSettings);
 		//
-		return peakReviewListUI;
-	}
-
-	private Button createButtonToggleSearch(Composite parent) {
-
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
-		button.setToolTipText("Toggle search toolbar.");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				boolean visible = PartSupport.toggleCompositeVisibility(searchSupportUI);
-				if(visible) {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
-				} else {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
-				}
-			}
-		});
-		//
-		return button;
+		listControl.set(peakReviewListUI);
 	}
 
 	private Button createButtonAdd(Composite parent) {
@@ -267,7 +297,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 					ReviewSetting setting = settings.extractSettingInstance(item);
 					if(setting != null) {
 						settings.add(setting);
-						setViewerInput();
+						setInput();
 					}
 				}
 			}
@@ -287,7 +317,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				IStructuredSelection structuredSelection = (IStructuredSelection)peakReviewListUI.getSelection();
+				IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 				Object object = structuredSelection.getFirstElement();
 				if(object instanceof ReviewSetting) {
 					Set<String> keySetEdit = new HashSet<>();
@@ -299,7 +329,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 						String item = dialog.getValue();
 						ReviewSetting settingNew = settings.extractSettingInstance(item);
 						setting.copyFrom(settingNew);
-						setViewerInput();
+						setInput();
 					}
 				}
 			}
@@ -339,7 +369,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 
 				if(MessageDialog.openQuestion(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_REMOVE_ALL)) {
 					settings.clear();
-					setViewerInput();
+					setInput();
 				}
 			}
 		});
@@ -368,7 +398,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 					PreferenceSupplier.setListPathImport(fileDialog.getFilterPath());
 					File file = new File(path);
 					settings.importItems(file);
-					setViewerInput();
+					setInput();
 				}
 			}
 		});
@@ -410,28 +440,12 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		return button;
 	}
 
-	private Button createButtonSave(Composite parent) {
+	private void setInput() {
 
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
-		button.setToolTipText("Save the settings.");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SAVE, IApplicationImage.SIZE_16x16));
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				setViewerInput();
-			}
-		});
+		toolbarAdjuster.get().setInput(settings);
+		listControl.get().setInput(settings);
 		//
-		return button;
-	}
-
-	private void setViewerInput() {
-
-		peakReviewListUI.setInput(settings);
-		for(Listener listener : listeners) {
+		if(listener != null) {
 			listener.handleEvent(new Event());
 		}
 	}
@@ -477,13 +491,13 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	private void deleteItems(Shell shell) {
 
 		if(MessageDialog.openQuestion(shell, DIALOG_TITLE, MESSAGE_REMOVE)) {
-			IStructuredSelection structuredSelection = (IStructuredSelection)peakReviewListUI.getSelection();
+			IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 			for(Object object : structuredSelection.toArray()) {
 				if(object instanceof ReviewSetting) {
 					settings.remove((ReviewSetting)object);
 				}
 			}
-			setViewerInput();
+			setInput();
 		}
 	}
 

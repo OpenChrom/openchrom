@@ -16,6 +16,7 @@ import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.Abstr
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.DIALOG_TITLE;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.EDIT_TOOLTIP;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.EXPORT_TITLE;
+import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.IMAGE_ADJUST_POSITION;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.IMPORT_TITLE;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.MESSAGE_ADD;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.MESSAGE_EDIT;
@@ -25,6 +26,7 @@ import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.Abstr
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.MESSAGE_REMOVE_ALL;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE_ALL_TOOLTIP;
 import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.REMOVE_TOOLTIP;
+import static net.openchrom.xxd.process.supplier.templates.ui.fieldeditors.AbstractFieldEditor.TOOLTIP_ADJUST_POSITION;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +56,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -89,9 +90,6 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	//
 	private static final String CATEGORY = "Peak Detector";
 	private static final String DELETE = "Delete";
-	//
-	private static final String TOOLTIP_ADJUST_POSITION = "the position adjust toolbar.";
-	private static final String IMAGE_ADJUST_POSITION = IApplicationImage.IMAGE_ADJUST_CHROMATOGRAMS;
 	//
 	private Listener listener;
 	private List<Button> buttons = new ArrayList<>();
@@ -198,11 +196,23 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 
 	private void createTableSection(Composite parent) {
 
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new FillLayout());
-		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		PeakDetectorListUI peakDetectorListUI = new PeakDetectorListUI(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		Table table = peakDetectorListUI.getTable();
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.heightHint = 450;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.verticalAlignment = SWT.TOP;
+		table.setLayoutData(gridData);
 		//
-		PeakDetectorListUI peakDetectorListUI = new PeakDetectorListUI(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		peakDetectorListUI.setEditEnabled(true);
+		peakDetectorListUI.setUpdateListener(new IUpdateListener() {
+
+			@Override
+			public void update() {
+
+				setInput();
+			}
+		});
 		//
 		Shell shell = peakDetectorListUI.getTable().getShell();
 		ITableSettings tableSettings = peakDetectorListUI.getTableSettings();
