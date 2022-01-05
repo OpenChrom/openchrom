@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2021 Lablicate GmbH.
+ * Copyright (c) 2014, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -28,10 +28,9 @@ import net.openchrom.csd.converter.supplier.cdf.io.support.AttributeSupport;
 import net.openchrom.csd.converter.supplier.cdf.io.support.CDFConstants;
 import net.openchrom.csd.converter.supplier.cdf.io.support.DimensionSupport;
 import net.openchrom.csd.converter.supplier.cdf.io.support.IDataEntry;
-
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Dimension;
-import ucar.nc2.NetcdfFileWriteable;
+import ucar.nc2.NetcdfFileWriter;
 
 @SuppressWarnings("deprecation")
 public class ChromatogramWriterCSD extends AbstractChromatogramWriter implements IChromatogramCSDWriter {
@@ -47,7 +46,7 @@ public class ChromatogramWriterCSD extends AbstractChromatogramWriter implements
 
 	private void writeCDFChromatogram(File file, IChromatogramCSD chromatogram, IProgressMonitor monitor) throws IOException {
 
-		NetcdfFileWriteable cdfChromatogram = NetcdfFileWriteable.createNew(file.getAbsolutePath());
+		NetcdfFileWriter cdfChromatogram = NetcdfFileWriter.createNew(file.getAbsolutePath(), false);
 		DimensionSupport dimensionSupport = new DimensionSupport(cdfChromatogram, chromatogram);
 		AttributeSupport.setAttributes(cdfChromatogram, chromatogram);
 		Dimension numberOfScans = dimensionSupport.getNumberOfScans();
