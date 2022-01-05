@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -40,7 +40,6 @@ import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.model.RetentionTimeRange;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
-import net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
@@ -134,7 +133,7 @@ public class PeakDetector<P extends IPeak, C extends IChromatogram<P>, R> extend
 			 */
 			String name = detectorSetting.getName();
 			if(name != null && !name.isEmpty()) {
-				IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, "", PeakIdentifierSettings.IDENTIFIER_DESCRIPTION);
+				IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, "", PeakDetectorSettings.DETECTOR_DESCRIPTION);
 				if(identificationTarget != null) {
 					peak.getTargets().add(identificationTarget);
 				}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -32,7 +32,7 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
 public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implements IPeakDetectorSettingsMSD, IPeakDetectorSettingsCSD, IPeakDetectorSettingsWSD, ITemplateSettings {
 
-	public static final String DETECTOR_DESCRIPTION = "Template Detector";
+	public static final String DETECTOR_DESCRIPTION = "Template Peak Detector";
 	/*
 	 * 10.52 | 10.63 | VV | 103, 104, 108-110 | true | Styrene | Benzene
 	 */
