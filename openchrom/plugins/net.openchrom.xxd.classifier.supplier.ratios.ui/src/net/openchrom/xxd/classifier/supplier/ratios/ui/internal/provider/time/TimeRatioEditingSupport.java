@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,22 +12,23 @@
 package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.AbstractRatioListUI;
 
 public class TimeRatioEditingSupport extends EditingSupport {
 
 	private static final Logger logger = Logger.getLogger(TimeRatioEditingSupport.class);
 	//
 	private CellEditor cellEditor;
-	private ExtendedTableViewer tableViewer;
+	private AbstractRatioListUI tableViewer;
 	private String column;
 
-	public TimeRatioEditingSupport(ExtendedTableViewer tableViewer, String column) {
+	public TimeRatioEditingSupport(AbstractRatioListUI tableViewer, String column) {
+
 		super(tableViewer);
 		this.column = column;
 		this.cellEditor = new TextCellEditor(tableViewer.getTable());
@@ -88,7 +89,9 @@ public class TimeRatioEditingSupport extends EditingSupport {
 					}
 					break;
 			}
+			//
 			tableViewer.refresh();
+			tableViewer.updateContent();
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,9 +22,11 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.fieldeditors.TimeRatioFie
 public class PreferencePageTime extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PreferencePageTime() {
+
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Time Ratio");
+		setTitle("Time Ratios");
+		setDescription("");
 	}
 
 	/**
@@ -35,7 +37,7 @@ public class PreferencePageTime extends FieldEditorPreferencePage implements IWo
 	@Override
 	public void createFieldEditors() {
 
-		addField(new TimeRatioFieldEditor(PreferenceSupplier.P_TIME_RATIO_LIST, "Time Ratio(s)", getFieldEditorParent()));
+		addField(new TimeRatioFieldEditor(PreferenceSupplier.P_TIME_RATIO_LIST, "Time Ratios", getFieldEditorParent()));
 	}
 
 	/*

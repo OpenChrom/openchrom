@@ -18,7 +18,7 @@
             category="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePage"
             class="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.PreferencePageTime"
             id="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePageTime"
-            name="Time Ratio Classifier">
+            name="Time Ratios">
       </page>  
       <page
             category="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePage"
@@ -79,6 +79,13 @@
          <adapter
                type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
          </adapter>
-      </factory>     
+      </factory>
+      <factory
+            adaptableType="net.openchrom.xxd.classifier.supplier.ratios.settings.TimeRatioSettings"
+            class="net.openchrom.xxd.classifier.supplier.ratios.ui.adapter.TimeRatioSettingsAdapterFactory">
+         <adapter
+               type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
+         </adapter>
+      </factory>          
    </extension>
 </plugin>
