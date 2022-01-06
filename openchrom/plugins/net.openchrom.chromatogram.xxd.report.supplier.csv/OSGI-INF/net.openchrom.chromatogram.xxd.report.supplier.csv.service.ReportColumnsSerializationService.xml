@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" configuration-policy="optional" name="net.openchrom.chromatogram.xxd.report.supplier.csv.service.ReportColumnsSerializationService">
+   <service>
+      <provide interface="org.eclipse.chemclipse.support.settings.serialization.ISerializationService"/>
+   </service>
+   <implementation class="net.openchrom.chromatogram.xxd.report.supplier.csv.service.ReportColumnsSerializationService"/>
+</scr:component>

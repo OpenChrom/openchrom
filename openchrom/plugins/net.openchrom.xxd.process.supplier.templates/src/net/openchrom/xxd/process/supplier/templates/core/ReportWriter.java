@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IIntegrationEntry;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -280,12 +281,12 @@ public class ReportWriter {
 				 */
 				double[] areas = extractPeakAreas(peaks);
 				int[] startTimes = extractPeakStartTimes(peaks);
-				String startRetentionTime = RETENTION_TIME_FORMAT.format(Calculations.getMin(startTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				String startRetentionTime = RETENTION_TIME_FORMAT.format(Calculations.getMin(startTimes) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				int[] centerTimes = extractPeakCenterTimes(peaks);
-				String meanRetentionTime = RETENTION_TIME_FORMAT.format(Calculations.getMean(centerTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
-				String medianRetentionTime = RETENTION_TIME_FORMAT.format(Calculations.getMedian(centerTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				String meanRetentionTime = RETENTION_TIME_FORMAT.format(Calculations.getMean(centerTimes) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+				String medianRetentionTime = RETENTION_TIME_FORMAT.format(Calculations.getMedian(centerTimes) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				int[] stopTimes = extractPeakStopTimes(peaks);
-				String stopRetentionTime = RETENTION_TIME_FORMAT.format(Calculations.getMax(stopTimes) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				String stopRetentionTime = RETENTION_TIME_FORMAT.format(Calculations.getMax(stopTimes) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				float[] retentionIndices = extractPeakRetentionIndices(peaks);
 				String startRetentionIndices = RETENTION_INDEX_FORMAT.format(Calculations.getMin(retentionIndices));
 				String meanRetentionIndices = RETENTION_INDEX_FORMAT.format(Calculations.getMean(retentionIndices));
