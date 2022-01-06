@@ -21,9 +21,9 @@ import java.util.function.Function;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.targets.TargetSupport;
 import org.eclipse.chemclipse.support.ui.swt.columns.ColumnDefinition;
 import org.eclipse.chemclipse.support.ui.swt.columns.ColumnDefinitionProvider;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.support.TargetSupport;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.qual.PeakQuality;
 import net.openchrom.xxd.classifier.supplier.ratios.model.qual.QualRatio;
