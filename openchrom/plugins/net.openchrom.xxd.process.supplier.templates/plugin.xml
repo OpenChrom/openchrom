@@ -288,4 +288,18 @@
             reportSettings="net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings">
       </ChromatogramReportSupplier>         
    </extension>
+   <extension
+         point="org.eclipse.chemclipse.msd.converter.chromatogramSupplier">
+      <ChromatogramSupplier
+            description="Exports a list of named traces for overlay purposes."
+            exportConverter="net.openchrom.xxd.process.supplier.templates.chromatogram.ChromatogramExport"
+            fileExtension=".txt"
+            fileName="NamedTraces.txt"
+            filterName="Named Traces (*.txt)"
+            id="net.openchrom.xxd.process.supplier.templates.export.chromatogram.namedtraces"
+            importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.chromatogram.MagicNumberMatcher"
+            isExportable="true"
+            isImportable="false">
+      </ChromatogramSupplier>
+   </extension>      
 </plugin>

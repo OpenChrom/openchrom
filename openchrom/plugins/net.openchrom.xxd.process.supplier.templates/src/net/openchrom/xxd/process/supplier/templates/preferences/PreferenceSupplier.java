@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -46,6 +46,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int MAX_OFFSET_Y = 100; // %
 	public static final int MIN_PEAK_OVERLAP_COVERAGE = 1; // %
 	public static final int MAX_PEAK_OVERLAP_COVERAGE = 100; // %
+	public static final int MIN_TRACES = 1;
+	public static final int MAX_TRACES = 100;
 	//
 	public static final String P_PEAK_DETECTOR_LIST_MSD = "peakDetectorListMSD";
 	public static final String DEF_PEAK_DETECTOR_LIST_MSD = "";
@@ -235,6 +237,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS = false;
 	public static final String P_REVIEW_IGNORE_NULL_CAS_NUMBER = "reviewIgnoreNullCasNumber";
 	public static final boolean DEF_REVIEW_IGNORE_NULL_CAS_NUMBER = true;
+	/*
+	 * Named Traces
+	 */
+	public static final String P_PEAK_EXPORT_NUMBER_TRACES = "peakExportNumberTraces";
+	public static final int DEF_PEAK_EXPORT_NUMBER_TRACES = 5;
 	//
 	private static IPreferenceSupplier preferenceSupplier;
 
@@ -358,6 +365,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_REVIEW_FETCH_LIBRARY_SPECTRUM, Boolean.toString(DEF_REVIEW_FETCH_LIBRARY_SPECTRUM));
 		defaultValues.put(P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS, Boolean.toString(DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS));
 		defaultValues.put(P_REVIEW_IGNORE_NULL_CAS_NUMBER, Boolean.toString(DEF_REVIEW_IGNORE_NULL_CAS_NUMBER));
+		/*
+		 * Named Traces
+		 */
+		defaultValues.put(P_PEAK_EXPORT_NUMBER_TRACES, Integer.toString(DEF_PEAK_EXPORT_NUMBER_TRACES));
 		//
 		return defaultValues;
 	}
@@ -923,6 +934,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_TRANSFER_NUMBER_TRACES, DEF_TRANSFER_NUMBER_TRACES);
+	}
+
+	public static int getPeakExportNumberTraces() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_PEAK_EXPORT_NUMBER_TRACES, DEF_PEAK_EXPORT_NUMBER_TRACES);
 	}
 
 	private static void putBoolean(String key, boolean value) {
