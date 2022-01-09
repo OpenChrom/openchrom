@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,21 +12,21 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import org.apache.commons.io.IOUtils;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.openscience.cdk.ChemFile;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IChemModel;
 import org.openscience.cdk.interfaces.IChemSequence;
-import org.openscience.cdk.io.MDLReader;
+import org.openscience.cdk.io.IChemObjectReader.Mode;
+import org.openscience.cdk.io.MDLV2000Reader;
 
 /**
  * Load MDL MOL streams using CDK
  */
-@SuppressWarnings("deprecation")
 public class CDKMolToMoleculeConverter implements IStructureConverter {
 
 	private static final Logger logger = Logger.getLogger(CDKMolToMoleculeConverter.class);
@@ -36,7 +36,7 @@ public class CDKMolToMoleculeConverter implements IStructureConverter {
 
 		IAtomContainer molecule = null;
 		if(input != null) {
-			try (MDLReader mdlReader = new MDLReader(IOUtils.toInputStream(input))) {
+			try (MDLV2000Reader mdlReader = new MDLV2000Reader(new ByteArrayInputStream(input.getBytes()), Mode.RELAXED)) {
 				ChemFile chemFile = (ChemFile)mdlReader.read(new ChemFile());
 				if(chemFile.getChemSequenceCount() > 0) {
 					IChemSequence chemSequence = chemFile.getChemSequence(0);
