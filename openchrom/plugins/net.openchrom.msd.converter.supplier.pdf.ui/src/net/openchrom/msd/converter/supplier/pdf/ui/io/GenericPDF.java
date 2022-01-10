@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -128,15 +128,27 @@ public class GenericPDF {
 			 */
 			int pages = headerDataTable.getNumberDataRows() / MAX_ROWS_PORTRAIT + 1;
 			pages += chromatogramImages.size();
-			pages += peakDataTable.getNumberDataRows() / MAX_ROWS_PORTRAIT + 1;
-			pages += scanDataTable.getNumberDataRows() / MAX_ROWS_PORTRAIT + 1;
-			pages += quantitationDataTable.getNumberDataRows() / MAX_ROWS_LANDSCAPE + 1;
+			if(peakDataTable.getNumberDataRows() > 0) {
+				pages += peakDataTable.getNumberDataRows() / MAX_ROWS_PORTRAIT + 1;
+			}
+			if(scanDataTable.getNumberDataRows() > 0) {
+				pages += scanDataTable.getNumberDataRows() / MAX_ROWS_PORTRAIT + 1;
+			}
+			if(quantitationDataTable.getNumberDataRows() > 0) {
+				pages += quantitationDataTable.getNumberDataRows() / MAX_ROWS_LANDSCAPE + 1;
+			}
 			//
 			int page = printTablePages(document, headerDataTable, "Header Table:", chromatogramName, 1, pages, false, monitor);
 			page = printImagePages(document, chromatogramImages, page, pages, monitor);
-			page = printTablePages(document, peakDataTable, "Peak Table:", chromatogramName, page, pages, false, monitor);
-			page = printTablePages(document, scanDataTable, "Scan Table:", chromatogramName, page, pages, false, monitor);
-			page = printTablePages(document, quantitationDataTable, "Quantitation Table:", chromatogramName, page, pages, true, monitor);
+			if(peakDataTable.getNumberDataRows() > 0) {
+				page = printTablePages(document, peakDataTable, "Peak Table:", chromatogramName, page, pages, false, monitor);
+			}
+			if(scanDataTable.getNumberDataRows() > 0) {
+				page = printTablePages(document, scanDataTable, "Scan Table:", chromatogramName, page, pages, false, monitor);
+			}
+			if(quantitationDataTable.getNumberDataRows() > 0) {
+				printTablePages(document, quantitationDataTable, "Quantitation Table:", chromatogramName, page, pages, true, monitor);
+			}
 		}
 	}
 
