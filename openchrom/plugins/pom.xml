@@ -35,9 +35,9 @@
 		<module>net.openchrom.msd.converter.supplier.mgf.fragment.test</module>
 		<module>net.openchrom.msd.converter.supplier.mgf.ui</module>
 		<module>net.openchrom.msd.converter.supplier.mgf</module>
-		<module>net.openchrom.msd.converter.supplier.pdf.fragment.test</module>
-		<module>net.openchrom.msd.converter.supplier.pdf.ui</module>
-		<module>net.openchrom.msd.converter.supplier.pdf</module>
+		<module>net.openchrom.xxd.converter.supplier.pdf.fragment.test</module>
+		<module>net.openchrom.xxd.converter.supplier.pdf.ui</module>
+		<module>net.openchrom.xxd.converter.supplier.pdf</module>
 		<module>net.openchrom.msd.process.supplier.cms.fragment.test</module>
 		<module>net.openchrom.msd.process.supplier.cms.ui</module>
 		<module>net.openchrom.msd.process.supplier.cms</module>

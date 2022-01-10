@@ -46,7 +46,7 @@
 		<module>net.openchrom.msd.converter.supplier.cdf.feature</module>
 		<module>net.openchrom.msd.converter.supplier.cms.feature</module>
 		<module>net.openchrom.msd.converter.supplier.mgf.feature</module>
-		<module>net.openchrom.msd.converter.supplier.pdf.feature</module>
+		<module>net.openchrom.xxd.converter.supplier.pdf.feature</module>
 		<module>net.openchrom.msd.process.supplier.cms.feature</module>
 		<module>net.openchrom.msqbatlibs.feature</module>
 		<module>net.openchrom.msqbatlibs.kerner.utils.feature</module>
