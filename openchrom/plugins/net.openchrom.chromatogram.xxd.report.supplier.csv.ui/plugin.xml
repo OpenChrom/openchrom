@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.chemclipse.chromatogram.xxd.report.ui.preferences.reportPreferencePage"
+            class="net.openchrom.chromatogram.xxd.report.supplier.csv.ui.preferences.PreferencePage"
+            id="net.openchrom.chromatogram.xxd.report.supplier.csv.ui.preferences.preferencePage"
+            name="CSV Chromatogram Report">
+      </page>
+   </extension>
+</plugin>

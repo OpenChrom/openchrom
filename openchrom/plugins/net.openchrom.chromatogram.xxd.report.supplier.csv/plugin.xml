@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.xxd.report.chromatogramReportSupplier">
+      <ChromatogramReportSupplier
+            description="Reports Chromatograms as CSV"
+            fileExtension=".csv"
+            fileName="CSV Chromatogram Report"
+            id="net.openchrom.chromatogram.xxd.report.supplier.openchrom.chromatogramReportCSV"
+            reportGenerator="net.openchrom.chromatogram.xxd.report.supplier.csv.core.ConfigurableReport"
+            reportName="Chromatogram Report (*.csv)"
+            reportSettings="net.openchrom.chromatogram.xxd.report.supplier.csv.settings.ChromatogramReportSettings">
+      </ChromatogramReportSupplier>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="net.openchrom.chromatogram.xxd.report.supplier.csv.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+</plugin>

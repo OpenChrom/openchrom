@@ -151,10 +151,14 @@
 
    <includes
          id="net.openchrom.thirdpartylibraries.sqlite.feature"
-        version="0.0.0"/>
+         version="0.0.0"/>
 
    <includes
          id="net.openchrom.xxd.converter.supplier.animl.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.chromatogram.xxd.report.supplier.csv.feature"
          version="0.0.0"/>
 
    <plugin
