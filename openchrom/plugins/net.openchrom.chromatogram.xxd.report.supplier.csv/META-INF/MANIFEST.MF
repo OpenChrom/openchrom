@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.chromatogram.xxd.report.supplier.csv
 Bundle-ManifestVersion: 2
-Bundle-Name: Openchrom
+Bundle-Name: CSV Report
 Bundle-SymbolicName: net.openchrom.chromatogram.xxd.report.supplier.csv;singleton:=true
 Bundle-Version: 1.4.0.qualifier
 Bundle-Activator: net.openchrom.chromatogram.xxd.report.supplier.csv.Activator
@@ -28,4 +28,4 @@ Export-Package: net.openchrom.chromatogram.xxd.report.supplier.csv.core,
  net.openchrom.chromatogram.xxd.report.supplier.csv.settings,
  net.openchrom.chromatogram.xxd.report.supplier.csv.validators
 Import-Package: org.osgi.service.component.annotations;version="1.3.0"
-Service-Component: OSGI-INF/net.openchrom.chromatogram.xxd.report.supplier.csv.service.ReportColumnsSerializationService.xml,
+Service-Component: OSGI-INF/net.openchrom.chromatogram.xxd.report.supplier.csv.service.ReportColumnsSerializationService.xml

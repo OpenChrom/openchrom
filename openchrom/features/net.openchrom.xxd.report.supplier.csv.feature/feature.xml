@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.openchrom.chromatogram.xxd.report.supplier.csv.feature"
-      label="Feature"
+      label="CSV Report"
       version="1.4.0.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding">
