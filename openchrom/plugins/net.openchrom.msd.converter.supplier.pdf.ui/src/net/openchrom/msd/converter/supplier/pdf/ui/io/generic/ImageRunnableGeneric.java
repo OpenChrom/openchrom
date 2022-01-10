@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -202,10 +202,8 @@ public class ImageRunnableGeneric implements Runnable {
 		/*
 		 * Create the directory if it not exists.
 		 */
-		if(!dir.exists()) {
-			if(!dir.mkdirs()) {
-				logger.warn("The temporarily file directory could not be created: " + dir.getAbsolutePath());
-			}
+		if(!dir.exists() && !dir.mkdirs()) {
+			logger.warn("The temporarily file directory could not be created: " + dir.getAbsolutePath());
 		}
 		/*
 		 * Create the file.

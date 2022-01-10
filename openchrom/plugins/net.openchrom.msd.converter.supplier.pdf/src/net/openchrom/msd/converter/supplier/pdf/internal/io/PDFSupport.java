@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2021 Lablicate GmbH.
- * 
+ * Copyright (c) 2012, 2022 Lablicate GmbH.
+ *
  * All rights reserved.
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pdf.internal.io;
@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.signals.ITotalScanSignal;
 import org.eclipse.chemclipse.model.signals.ITotalScanSignalExtractor;
 import org.eclipse.chemclipse.model.signals.ITotalScanSignals;
@@ -50,6 +51,7 @@ public class PDFSupport {
 	private static final double L_152_MM = 152 * L_1_MM;
 	private static final double L_170_MM = 170 * L_1_MM;
 	private static final double L_200_MM = 200 * L_1_MM;
+	private static final String FONTNAME = "Helvetica";
 	private Font font;
 	private Font font10pt;
 	private Font font14pt;
@@ -86,10 +88,10 @@ public class PDFSupport {
 		/*
 		 * PDF Pages
 		 */
-		font = new Font(pdf, "Helvetica");
-		font10pt = new Font(pdf, "Helvetica");
+		font = new Font(pdf, FONTNAME);
+		font10pt = new Font(pdf, FONTNAME);
 		font10pt.setSize(10.0);
-		font14pt = new Font(pdf, "Helvetica");
+		font14pt = new Font(pdf, FONTNAME);
 		font14pt.setSize(14.0);
 		//
 		createFirstPage(pdf);
@@ -221,7 +223,7 @@ public class PDFSupport {
 		builder.append(" - ");
 		builder.append("Max Retention Time:");
 		builder.append(" ");
-		builder.append(decimalFormat.format(maxRetentionTime / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR));
+		builder.append(decimalFormat.format(maxRetentionTime / IChromatogramOverview.MINUTE_CORRELATION_FACTOR));
 		builder.append(" ");
 		builder.append("min");
 		//
@@ -260,8 +262,8 @@ public class PDFSupport {
 		/*
 		 * Parse each scan
 		 */
-		ITotalScanSignalExtractor totalIonSignalExtractor = new TotalScanSignalExtractor(chromatogram);
-		ITotalScanSignals scans = totalIonSignalExtractor.getTotalScanSignals();
+		ITotalScanSignalExtractor totalScanSignalExtractor = new TotalScanSignalExtractor(chromatogram);
+		ITotalScanSignals scans = totalScanSignalExtractor.getTotalScanSignals();
 		for(ITotalScanSignal scan : scans.getTotalScanSignals()) {
 			int rt = scan.getRetentionTime();
 			float abundance = scan.getTotalSignal();
@@ -331,8 +333,8 @@ public class PDFSupport {
 	private void createChromatogramBoxScaleX(Page page, Box box) throws Exception {
 
 		int delta = (int)(maxRetentionTime - minRetentionTime);
-		float part = (float)((delta / 10.0f) / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR);
-		float start = (float)(minRetentionTime / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR);
+		float part = (float)((delta / 10.0f) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+		float start = (float)(minRetentionTime / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 		float scaleIndex = start;
 		Line line;
 		TextLine textLine;

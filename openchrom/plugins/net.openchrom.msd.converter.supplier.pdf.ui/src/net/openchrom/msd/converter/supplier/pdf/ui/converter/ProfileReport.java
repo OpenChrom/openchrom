@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -55,12 +55,12 @@ public class ProfileReport extends AbstractChromatogramReportGenerator {
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		try {
 			for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
-				ProfilePDF pdfSupport = new ProfilePDF(settings);
+				ProfilePDF profilePDF = new ProfilePDF(settings);
 				if(append && file.exists()) {
 					File newFile = File.createTempFile("report", ".pdf");
 					newFile.deleteOnExit();
 					try {
-						pdfSupport.createPDF(newFile, chromatogram, subMonitor.split(100));
+						profilePDF.createPDF(newFile, chromatogram, subMonitor.split(100));
 						File oldFile = new File(file.getParentFile(), file.getName() + "." + UUID.randomUUID() + ".pdf");
 						String destinationFile = file.getAbsolutePath();
 						if(file.renameTo(oldFile)) {
@@ -80,7 +80,7 @@ public class ProfileReport extends AbstractChromatogramReportGenerator {
 						newFile.delete();
 					}
 				} else {
-					pdfSupport.createPDF(file, chromatogram, subMonitor.split(100));
+					profilePDF.createPDF(file, chromatogram, subMonitor.split(100));
 				}
 			}
 		} catch(IOException e) {
