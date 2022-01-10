@@ -105,6 +105,8 @@ public class ImageRunnableGeneric implements Runnable {
 				IChartSettings chartSettings = chromatogramChart.getChartSettings();
 				RangeRestriction rangeRestriction = chartSettings.getRangeRestriction();
 				rangeRestriction.setExtendMaxY(0.1d);
+				rangeRestriction.setForceZeroMinY(false);
+				rangeRestriction.setZeroY(false);
 				chromatogramChart.applySettings(chartSettings);
 				List<ILineSeriesData> lineSeriesDataList = new ArrayList<>();
 				//
