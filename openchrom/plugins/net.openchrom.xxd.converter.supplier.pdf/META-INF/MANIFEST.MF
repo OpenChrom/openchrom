@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.msd.converter.supplier.pdf
+Eclipse-RegisterBuddy: 	org.eclipse.chemclipse.model, org.eclipse.chemclipse.msd.model, net.openchrom.thirdpartylibraries.pdfjet
+Bundle-ManifestVersion: 2
+Bundle-Name: Pdf
+Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.pdf;singleton:=true
+Bundle-Version: 1.4.0.qualifier
+Bundle-Activator: net.openchrom.xxd.converter.supplier.pdf.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",
+ org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
+ org.eclipse.chemclipse.logging;bundle-version="0.8.0",
+ org.eclipse.chemclipse.support;bundle-version="0.8.0",
+ org.eclipse.chemclipse.processing;bundle-version="0.8.0",
+ net.openchrom.thirdpartylibraries.pdfjet;bundle-version="2.81.0",
+ org.eclipse.chemclipse.converter;bundle-version="0.8.0",
+ org.eclipse.chemclipse.model;bundle-version="0.8.0",
+ org.apache.pdfbox;bundle-version="2.0.6",
+ org.apache.pdfbox.fontbox;bundle-version="2.0.6",
+ org.apache.pdfbox.preflight;bundle-version="2.0.6",
+ org.apache.pdfbox.xmpbox;bundle-version="2.0.6"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: net.openchrom.xxd.converter.supplier.pdf.converter,
+ net.openchrom.xxd.converter.supplier.pdf.io,
+ net.openchrom.xxd.converter.supplier.pdf.preferences
