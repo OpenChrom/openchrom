@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Automatic-Module-Name: net.openchrom.msd.converter.supplier.pdf.fragment.test
+Automatic-Module-Name: net.openchrom.xxd.converter.supplier.pdf.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: PDF (MSD) Tests
 Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.pdf.fragment.test

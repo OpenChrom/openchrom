@@ -5,8 +5,8 @@
          point="org.eclipse.ui.preferencePages">
       <page
             category="org.eclipse.chemclipse.msd.converter.ui.converterPreferencePage"
-            class="net.openchrom.msd.converter.supplier.pdf.ui.preferences.PreferencePage"
-            id="net.openchrom.msd.converter.supplier.pdf.ui.preferences.converterPreferencePage"
+            class="net.openchrom.xxd.converter.supplier.pdf.ui.preferences.PreferencePage"
+            id="net.openchrom.xxd.converter.supplier.pdf.ui.preferences.converterPreferencePage"
             name="PDF Chromatogram MS Converter">
       </page>
    </extension>
@@ -16,19 +16,19 @@
             description="Chromatogram PDF Report."
             fileExtension=".pdf"
             fileName="OpenChromReport"
-            id="net.openchrom.msd.converter.supplier.pdf.ui.chromatogramReportPDF"
-            reportGenerator="net.openchrom.msd.converter.supplier.pdf.ui.converter.GenericReport"
+            id="net.openchrom.xxd.converter.supplier.pdf.ui.chromatogramReportPDF"
+            reportGenerator="net.openchrom.xxd.converter.supplier.pdf.ui.converter.GenericReport"
             reportName="PDF Report (*.pdf)"
-            reportSettings="net.openchrom.msd.converter.supplier.pdf.ui.settings.ReportSettingsGeneric">
+            reportSettings="net.openchrom.xxd.converter.supplier.pdf.ui.settings.ReportSettingsGeneric">
       </ChromatogramReportSupplier>   
       <ChromatogramReportSupplier
             description="Area PDF Report."
             fileExtension=".pdf"
             fileName="OpenChromReport"
-            id="net.openchrom.msd.converter.supplier.pdf.ui.chromatogramProfilePDF"
-            reportGenerator="net.openchrom.msd.converter.supplier.pdf.ui.converter.ProfileReport"
+            id="net.openchrom.xxd.converter.supplier.pdf.ui.chromatogramProfilePDF"
+            reportGenerator="net.openchrom.xxd.converter.supplier.pdf.ui.converter.ProfileReport"
             reportName="Profile Report (*.pdf)"
-            reportSettings="net.openchrom.msd.converter.supplier.pdf.ui.settings.ReportSettingsProfile">
+            reportSettings="net.openchrom.xxd.converter.supplier.pdf.ui.settings.ReportSettingsProfile">
       </ChromatogramReportSupplier>        
    </extension>
 </plugin>
