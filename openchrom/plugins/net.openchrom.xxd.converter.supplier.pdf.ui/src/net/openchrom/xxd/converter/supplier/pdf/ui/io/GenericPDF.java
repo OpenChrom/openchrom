@@ -9,6 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  * Christoph Läubrich - Settings support
+ * Matthias Mailänder - parse JSON settings
  *******************************************************************************/
 package net.openchrom.xxd.converter.supplier.pdf.ui.io;
 
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
@@ -55,6 +57,10 @@ import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import net.openchrom.xxd.converter.supplier.pdf.ui.io.generic.ImageRunnableGeneric;
 import net.openchrom.xxd.converter.supplier.pdf.ui.settings.ReportSettingsGeneric;
@@ -285,6 +291,20 @@ public class GenericPDF {
 		return imageRunnable;
 	}
 
+	private static boolean isJSON(String tree) {
+
+		try {
+			final ObjectMapper mapper = new ObjectMapper();
+			mapper.readTree(tree);
+			return true;
+		} catch(JsonProcessingException e) {
+			return false;
+		} catch(IOException e) {
+			logger.warn(e);
+			return false;
+		}
+	}
+
 	private PDTable getHeaderDataTable(Map<String, String> headerDataMap) {
 
 		PDTable pdTable = new PDTable();
@@ -294,10 +314,31 @@ public class GenericPDF {
 		pdTable.addColumn("Value", 95.0f);
 		//
 		for(Map.Entry<String, String> entry : headerDataMap.entrySet()) {
-			List<String> row = new ArrayList<>();
-			row.add(normalizeText(entry.getKey()));
-			row.add(normalizeText(entry.getValue()));
-			pdTable.addDataRow(row);
+			String name = entry.getKey();
+			String value = entry.getValue();
+			if(isJSON(value)) {
+				final ObjectMapper mapper = new ObjectMapper();
+				try {
+					MethodSettings methodSettings = mapper.readValue(value, MethodSettings.class);
+					for(String key : methodSettings.getSettings().keySet()) {
+						name = StringUtils.capitalize(StringUtils.join(StringUtils.splitByCharacterTypeCamelCase(key), ' '));
+						value = methodSettings.getSettings().get(key).toString();
+						List<String> row = new ArrayList<>();
+						row.add(normalizeText(name));
+						row.add(normalizeText(value));
+						pdTable.addDataRow(row);
+					}
+				} catch(MismatchedInputException e) {
+					// ignore
+				} catch(IOException e) {
+					logger.warn(e);
+				}
+			} else {
+				List<String> row = new ArrayList<>();
+				row.add(normalizeText(name));
+				row.add(normalizeText(value));
+				pdTable.addDataRow(row);
+			}
 		}
 		//
 		return pdTable;
