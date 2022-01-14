@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+   <extension
+         id="org.eclipse.chemclipse.rcp.app.compilation.marketplace.ui.modelContribution"
+         point="org.eclipse.e4.workbench.model">
+      <fragment
+            uri="fragment.e4xmi">
+      </fragment>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.chemclipse.rcp.app.ui.preferences.settingsPreferencePage"
+            class="net.openchrom.rcp.app.compilation.marketplace.ui.preferences.MarketplacePreferencePage"
+            id="net.openchrom.rcp.app.compilation.marketplace.ui.preferences.marketplacePreferencePage"
+            name="Marketplaces">
+      </page>
+   </extension>
+</plugin>
