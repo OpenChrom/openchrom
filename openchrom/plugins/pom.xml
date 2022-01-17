@@ -105,5 +105,7 @@
 		<module>net.openchrom.xxd.converter.supplier.animl.ui</module>
 		<module>net.openchrom.chromatogram.xxd.report.supplier.csv</module>
 		<module>net.openchrom.chromatogram.xxd.report.supplier.csv.ui</module>
+		<module>net.openchrom.msd.converter.supplier.splash</module>
+		<module>net.openchrom.msd.converter.supplier.splash.ui</module>
 	</modules>
 </project>
