@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -14,7 +14,9 @@ package net.openchrom.msd.converter.supplier.animl.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Optional;
 
 import javax.xml.bind.JAXBContext;
@@ -30,6 +32,8 @@ import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.msd.converter.io.AbstractChromatogramMSDWriter;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
+import org.eclipse.chemclipse.msd.model.core.IIon;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -98,8 +102,15 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		chromatographyStep.setTechnique(createChromatographyTechnique());
 		experimentStepSet.getExperimentStep().add(chromatographyStep);
 		//
+		ExperimentStepType totalSignalStep = new ExperimentStepType();
+		totalSignalStep.getResult().add(createTIC(chromatogram));
+		totalSignalStep.setMethod(createMethod(chromatogram));
+		totalSignalStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
+		totalSignalStep.setTechnique(createTotalIonCurrentTechnique());
+		experimentStepSet.getExperimentStep().add(totalSignalStep);
+		//
 		ExperimentStepType detectorStep = new ExperimentStepType();
-		detectorStep.getResult().add(createTIC(chromatogram));
+		detectorStep.setResult(createMS(chromatogram));
 		detectorStep.setMethod(createMethod(chromatogram));
 		detectorStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
 		detectorStep.setTechnique(createMassSpectrometryTechnique());
@@ -110,6 +121,65 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		peakStep.setTechnique(createPeakTableTechnique());
 		experimentStepSet.getExperimentStep().add(peakStep);
 		return experimentStepSet;
+	}
+
+	private List<ResultType> createMS(IChromatogramMSD chromatogram) {
+
+		List<ResultType> results = new ArrayList<>();
+		for(IScan scan : chromatogram.getScans()) {
+			IScanMSD scanMSD = (IScanMSD)scan;
+			SeriesSetType seriesSet = new SeriesSetType();
+			seriesSet.setName("Spectrum");
+			seriesSet.setLength(scanMSD.getNumberOfIons());
+			//
+			SeriesType massChargeSeries = new SeriesType();
+			massChargeSeries.setName("Mass/Charge");
+			UnitType massChargeUnit = new UnitType();
+			massChargeUnit.setLabel("Mass/Charge Ratio");
+			massChargeUnit.setQuantity("mz");
+			massChargeSeries.setUnit(massChargeUnit);
+			//
+			SeriesType intensitySeries = new SeriesType();
+			intensitySeries.setName("Intensity");
+			UnitType intensityUnit = new UnitType();
+			intensityUnit.setLabel("Abundance");
+			intensityUnit.setQuantity("arbitrary");
+			intensitySeries.setUnit(intensityUnit);
+			//
+			if(PreferenceSupplier.getChromatogramSaveEncoded()) {
+				int scans = scanMSD.getNumberOfIons();
+				double[] ions = new double[scans];
+				float[] intensities = new float[scans];
+				int i = 0;
+				for(IIon ion : scanMSD.getIons()) {
+					ions[i] = ion.getIon();
+					intensities[i] = ion.getAbundance();
+					i++;
+				}
+				EncodedValueSetType encodedIons = new EncodedValueSetType();
+				encodedIons.setValue(BinaryReader.encodeArray(ions));
+				massChargeSeries.getEncodedValueSet().add(encodedIons);
+				//
+				EncodedValueSetType encodedIntensities = new EncodedValueSetType();
+				encodedIntensities.setValue(BinaryReader.encodeArray(intensities));
+				intensitySeries.getEncodedValueSet().add(encodedIntensities);
+			} else {
+				IndividualValueSetType ions = new IndividualValueSetType();
+				IndividualValueSetType intensities = new IndividualValueSetType();
+				for(IIon ion : scanMSD.getIons()) {
+					ions.getD().add(ion.getIon());
+					intensities.getF().add(ion.getAbundance());
+				}
+				massChargeSeries.getIndividualValueSet().add(ions);
+				intensitySeries.getIndividualValueSet().add(intensities);
+			}
+			seriesSet.getSeries().add(massChargeSeries);
+			seriesSet.getSeries().add(intensitySeries);
+			ResultType result = new ResultType();
+			result.setSeriesSet(seriesSet);
+			results.add(result);
+		}
+		return results;
 	}
 
 	private ResultType createTIC(IChromatogramMSD chromatogram) {
@@ -296,11 +366,19 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		return technique;
 	}
 
-	private TechniqueType createMassSpectrometryTechnique() {
+	private TechniqueType createTotalIonCurrentTechnique() {
 
 		TechniqueType technique = new TechniqueType();
 		technique.setName("Mass Spectrum Time Trace");
 		technique.setUri("https://github.com/AnIML/techniques/blob/2c9e7fbf5f6435b4dee9f112bdd0d81d135085ff/ms-trace.atdd");
+		return technique;
+	}
+
+	private TechniqueType createMassSpectrometryTechnique() {
+
+		TechniqueType technique = new TechniqueType();
+		technique.setName("Mass Spectrometry");
+		technique.setUri("https://github.com/AnIML/techniques/blob/db3fcd831c4fce00b647b7e6d8c21f753b76f361/mass-spec.atdd");
 		return technique;
 	}
 

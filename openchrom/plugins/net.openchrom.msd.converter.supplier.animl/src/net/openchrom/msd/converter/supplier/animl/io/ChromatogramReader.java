@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -35,15 +35,19 @@ import org.eclipse.chemclipse.model.implementation.IdentificationTarget;
 import org.eclipse.chemclipse.model.support.IScanRange;
 import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.chemclipse.msd.converter.io.AbstractChromatogramMSDReader;
+import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.SAXException;
 
 import net.openchrom.msd.converter.supplier.animl.model.IVendorChromatogram;
+import net.openchrom.msd.converter.supplier.animl.model.IVendorIon;
+import net.openchrom.msd.converter.supplier.animl.model.IVendorScan;
 import net.openchrom.msd.converter.supplier.animl.model.VendorChromatogram;
 import net.openchrom.msd.converter.supplier.animl.model.VendorIon;
 import net.openchrom.msd.converter.supplier.animl.model.VendorScan;
@@ -66,15 +70,17 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 
 	@Override
-	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
 		try {
 			AnIMLType animl = XmlReader.getAnIML(file);
 			chromatogram = new VendorChromatogram();
 			chromatogram = readSample(animl, chromatogram);
-			List<Integer> retentionTimes = new ArrayList<Integer>();
-			List<Float> signals = new ArrayList<Float>();
+			List<Integer> retentionTimes = new ArrayList<>();
+			List<Float> signals = new ArrayList<>();
+			double[] mzs = null;
+			float[] intensities = null;
 			for(ExperimentStepType experimentStep : animl.getExperimentStepSet().getExperimentStep()) {
 				if(experimentStep.getTechnique().getName().equals("Mass Spectrum Time Trace")) {
 					MethodType method = experimentStep.getMethod();
@@ -106,9 +112,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 								}
 								if(unit.getLabel().equals("Abundance")) {
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-										for(float f : individualValueSet.getF()) {
-											signals.add(f);
-										}
+										signals.addAll(individualValueSet.getF());
 									}
 									for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
 										float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
@@ -121,7 +125,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 						}
 						try {
 							for(int i = 0; i < seriesSet.getLength(); i++) {
-								VendorScan scan = new VendorScan();
+								IVendorScan scan = new VendorScan();
 								VendorIon ion = new VendorIon(IIon.TIC_ION, signals.get(i));
 								scan.addIon(ion, false);
 								scan.setRetentionTime(Math.round(retentionTimes.get(i)));
@@ -134,9 +138,63 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 						}
 					}
 				}
-				List<Float> startTimes = new ArrayList<Float>();
-				List<Float> endTimes = new ArrayList<Float>();
-				List<String> peakNames = new ArrayList<String>();
+				int spectra = 0;
+				if(experimentStep.getTechnique().getName().equals("Mass Spectrometry")) {
+					for(ResultType result : experimentStep.getResult()) {
+						SeriesSetType seriesSet = result.getSeriesSet();
+						if(seriesSet.getName().equals("Spectrum")) {
+							spectra++;
+							int length = seriesSet.getLength();
+							mzs = new double[length];
+							intensities = new float[length];
+							if(seriesSet.getName().equals("Spectrum")) {
+								for(SeriesType series : seriesSet.getSeries()) {
+									if(series.getName().equals("Mass/Charge")) {
+										for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
+											List<Double> doubles = individualValueSet.getD();
+											for(int i = 0; i < doubles.size(); i++) {
+												mzs[i] = doubles.get(i);
+											}
+										}
+										for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
+											mzs = BinaryReader.decodeDoubleArray(encodedValueSet.getValue());
+										}
+									}
+									if(series.getName().equals("Intensity")) {
+										for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
+											List<Float> floats = individualValueSet.getF();
+											for(int i = 0; i < floats.size(); i++) {
+												intensities[i] = floats.get(i);
+											}
+										}
+										for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
+											intensities = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
+										}
+									}
+								}
+							}
+						}
+						try {
+							IScanMSD scan = (IScanMSD)chromatogram.getScan(spectra);
+							scan.removeAllIons(); // we don't need the TIC anymore
+							for(int i = 0; i < seriesSet.getLength(); i++) {
+								double intensity = intensities[i];
+								if(intensity >= VendorIon.MIN_ABUNDANCE && intensity <= VendorIon.MAX_ABUNDANCE) {
+									double mz = AbstractIon.getIon(mzs[i]);
+									IVendorIon ion = new VendorIon(mz, (float)intensity);
+									scan.addIon(ion, false);
+								}
+							}
+						} catch(AbundanceLimitExceededException e) {
+							logger.warn(e);
+						} catch(IonLimitExceededException e) {
+							logger.warn(e);
+						}
+					}
+				}
+				List<Float> startTimes = new ArrayList<>();
+				List<Float> endTimes = new ArrayList<>();
+				List<String> peakNames = new ArrayList<>();
 				if(experimentStep.getTechnique().getName().equals("Chromatography Peak Table")) {
 					for(ResultType result : experimentStep.getResult()) {
 						SeriesSetType seriesSet = result.getSeriesSet();
@@ -144,23 +202,17 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 							for(SeriesType series : seriesSet.getSeries()) {
 								if(series.getName().equals("Start Time")) {
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-										for(float f : individualValueSet.getF()) {
-											startTimes.add(f);
-										}
+										startTimes.addAll(individualValueSet.getF());
 									}
 								}
 								if(series.getName().equals("End Time")) {
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-										for(float f : individualValueSet.getF()) {
-											endTimes.add(f);
-										}
+										endTimes.addAll(individualValueSet.getF());
 									}
 								}
 								if(series.getName().equals("Name")) {
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-										for(String s : individualValueSet.getS()) {
-											peakNames.add(s);
-										}
+										peakNames.addAll(individualValueSet.getS());
 									}
 								}
 							}
