@@ -112,22 +112,61 @@ public class ConfigurableReportWriter {
 				if(reportColumn.equals(ReportColumns.PEAK_NUMBER)) {
 					csvPrinter.print(peakNumber);
 				}
-				if(reportColumn.equals(ReportColumns.RETENTION_TIME)) {
-					IPeakModel peakModel = peak.getPeakModel();
-					int retentionTimePeakMax = peakModel.getRetentionTimeAtPeakMaximum();
-					csvPrinter.print(retentionTimePeakMax / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
-				}
-				if(reportColumn.equals(ReportColumns.PURITY)) {
-					if(peak instanceof IChromatogramPeak) {
-						IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
+				if(peak instanceof IChromatogramPeak) {
+					IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
+					if(reportColumn.equals(ReportColumns.PURITY)) {
 						csvPrinter.print(chromatogramPeak.getPurity());
 					}
+					if(reportColumn.equals(ReportColumns.SIGNAL_TO_NOISE)) {
+						csvPrinter.print(chromatogramPeak.getSignalToNoiseRatio());
+					}
+				}
+				if(reportColumn.equals(ReportColumns.COMPONENTS)) {
+					csvPrinter.print(peak.getSuggestedNumberOfComponents());
 				}
 				if(reportColumn.equals(ReportColumns.PEAK_AREA)) {
 					csvPrinter.print(peak.getIntegratedArea());
 				}
 				if(reportColumn.equals(ReportColumns.INTEGRATOR)) {
 					csvPrinter.print(peak.getIntegratorDescription());
+				}
+				if(reportColumn.equals(ReportColumns.MODEL)) {
+					csvPrinter.print(peak.getModelDescription());
+				}
+				if(reportColumn.equals(ReportColumns.DETECTOR)) {
+					csvPrinter.print(peak.getDetectorDescription());
+				}
+				if(reportColumn.equals(ReportColumns.QUANTIFIER)) {
+					csvPrinter.print(peak.getQuantifierDescription());
+				}
+				if(reportColumn.equals(ReportColumns.CLASSIFIER)) {
+					csvPrinter.print(peak.getClassifier());
+				}
+				IPeakModel peakModel = peak.getPeakModel();
+				if(reportColumn.equals(ReportColumns.RETENTION_TIME)) {
+					int retentionTimePeakMax = peakModel.getRetentionTimeAtPeakMaximum();
+					csvPrinter.print(retentionTimePeakMax / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+				}
+				if(reportColumn.equals(ReportColumns.PEAK_HEIGHT)) {
+					csvPrinter.print(peakModel.getPeakAbundanceByInflectionPoints());
+				}
+				if(reportColumn.equals(ReportColumns.LEADING)) {
+					csvPrinter.print(peakModel.getLeading());
+				}
+				if(reportColumn.equals(ReportColumns.TAILING)) {
+					csvPrinter.print(peakModel.getTailing());
+				}
+				if(reportColumn.equals(ReportColumns.START_RT)) {
+					csvPrinter.print(peakModel.getStartRetentionTime());
+				}
+				if(reportColumn.equals(ReportColumns.STOP_RT)) {
+					csvPrinter.print(peakModel.getStopRetentionTime());
+				}
+				if(reportColumn.equals(ReportColumns.RETENTION_INDEX)) {
+					csvPrinter.print(peakModel.getPeakMaximum().getRetentionIndex());
+				}
+				if(reportColumn.equals(ReportColumns.SCANS)) {
+					csvPrinter.print(peakModel.getNumberOfScans());
 				}
 				Set<IIdentificationTarget> peakTargets = peak.getTargets();
 				if(!peakTargets.isEmpty()) {
