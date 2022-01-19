@@ -34,8 +34,17 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String NUMBER_PEAKS = "Number Peak(s)";
 	public static final String PEAK_NUMBER = "Peak Number";
 	public static final String RETENTION_TIME = "Retention Time";
+	public static final String RETENTION_INDEX = "Retention Index";
+	public static final String SCANS = "Scans";
 	public static final String PURITY = "Purity";
+	public static final String COMPONENTS = "Components";
+	public static final String SIGNAL_TO_NOISE = "S/N";
+	public static final String LEADING = "Leading";
+	public static final String TAILING = "Tailing";
+	public static final String START_RT = "Start";
+	public static final String STOP_RT = "Stop";
 	public static final String PEAK_AREA = "Peak Area";
+	public static final String PEAK_HEIGHT = "Peak Height";
 	public static final String INTEGRATOR = "Integrator";
 	public static final String TARGET = "Target";
 	public static final String CAS = "CAS";
@@ -45,6 +54,10 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String MOL_WEIGHT = "Mol Weight";
 	public static final String IDENTIFIER = "Identifier";
 	public static final String DATABASE = "Database";
+	public static final String MODEL = "Model";
+	public static final String DETECTOR = "Detector";
+	public static final String QUANTIFIER = "Quantifier";
+	public static final String CLASSIFIER = "Classifier";
 	//
 	private static final String SEPARATOR = ",";
 	private static final String SINGLE_TICK = "'";
@@ -70,8 +83,17 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(NUMBER_PEAKS);
 		reportColumns.add(PEAK_NUMBER);
 		reportColumns.add(RETENTION_TIME);
+		reportColumns.add(RETENTION_INDEX);
+		reportColumns.add(SCANS);
 		reportColumns.add(PURITY);
+		reportColumns.add(COMPONENTS);
+		reportColumns.add(SIGNAL_TO_NOISE);
+		reportColumns.add(LEADING);
+		reportColumns.add(TAILING);
+		reportColumns.add(START_RT);
+		reportColumns.add(STOP_RT);
 		reportColumns.add(PEAK_AREA);
+		reportColumns.add(PEAK_HEIGHT);
 		reportColumns.add(INTEGRATOR);
 		reportColumns.add(TARGET);
 		reportColumns.add(CAS);
@@ -81,6 +103,10 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(MOL_WEIGHT);
 		reportColumns.add(IDENTIFIER);
 		reportColumns.add(DATABASE);
+		reportColumns.add(MODEL);
+		reportColumns.add(DETECTOR);
+		reportColumns.add(QUANTIFIER);
+		reportColumns.add(CLASSIFIER);
 		//
 		return reportColumns;
 	}
