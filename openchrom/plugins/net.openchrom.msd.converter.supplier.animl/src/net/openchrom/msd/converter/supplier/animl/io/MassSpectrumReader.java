@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -12,15 +12,12 @@
 package net.openchrom.msd.converter.supplier.animl.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
@@ -55,7 +52,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 	private static final Logger logger = Logger.getLogger(MassSpectrumReader.class);
 
 	@Override
-	public IMassSpectra read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IMassSpectra read(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorMassSpectrum massSpectrum = null;
 		//
@@ -77,10 +74,11 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 						for(CategoryType categeory : result.getCategory()) {
 							for(ParameterType parameter : categeory.getParameter()) {
 								if(parameter.getName().equals("Type")) {
-									if(parameter.getS().contains("Centroided"))
+									if(parameter.getS().contains("Centroided")) {
 										massSpectrum.setMassSpectrumType((short)0);
-									else if(parameter.getS().contains("Continuous"))
+									} else if(parameter.getS().contains("Continuous")) {
 										massSpectrum.setMassSpectrumType((short)1);
+									}
 								}
 							}
 						}
