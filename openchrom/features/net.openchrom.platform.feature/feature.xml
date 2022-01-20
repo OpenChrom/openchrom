@@ -10,7 +10,7 @@
    </description>
 
    <copyright url="https://lablicate.com/">
-      Copyright (C) 2020, 2021 Lablicate GmbH
+      Copyright (C) 2020, 2022 Lablicate GmbH
    </copyright>
 
    <license url="http://www.eclipse.org/legal/epl-v10.html">
@@ -159,6 +159,14 @@
 
    <includes
          id="net.openchrom.chromatogram.xxd.report.supplier.csv.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.msd.converter.supplier.splash.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.thirdpartylibraries.splash.feature"
          version="0.0.0"/>
 
    <plugin

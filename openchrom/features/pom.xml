@@ -68,5 +68,6 @@
 		<module>net.openchrom.msd.converter.supplier.mzdb.feature</module>
 		<module>net.openchrom.xxd.converter.supplier.animl.feature</module>
 		<module>net.openchrom.xxd.report.supplier.csv.feature</module>
+		<module>net.openchrom.msd.converter.supplier.splash.feature</module>
 	</modules>
 </project>
