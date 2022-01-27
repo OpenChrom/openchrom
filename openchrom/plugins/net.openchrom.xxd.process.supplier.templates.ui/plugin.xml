@@ -235,7 +235,23 @@
             identifier="net.openchrom.xxd.process.supplier.templates.ui.core.PeakReviewDirectCSD"
             identifierName="Peak Review UI [Direct]">
       </PeakIdentificationSupplier>      
-   </extension>       
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.wsd.identifier.peakIdentifier">
+      <PeakIdentificationSupplier
+            description="This peak identifier supports reviewing identifications via a template."
+            id="net.openchrom.xxd.process.supplier.templates.ui.peaks.identifier.wsd.template"
+            identifier="net.openchrom.xxd.process.supplier.templates.ui.core.PeakReviewWSD"
+            identifierName="Peak Review UI [Template]"
+            identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings">
+      </PeakIdentificationSupplier>
+      <PeakIdentificationSupplier
+            description="This peak identifier supports direct reviewing identifications."
+            id="net.openchrom.xxd.process.supplier.templates.ui.peaks.identifier.wsd.direct"
+            identifier="net.openchrom.xxd.process.supplier.templates.ui.core.PeakReviewDirectWSD"
+            identifierName="Peak Review UI [Direct]">
+      </PeakIdentificationSupplier>      
+   </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">
       <factory
