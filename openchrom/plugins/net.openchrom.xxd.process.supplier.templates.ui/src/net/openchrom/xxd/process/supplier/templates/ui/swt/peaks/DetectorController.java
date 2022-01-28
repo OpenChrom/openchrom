@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -55,7 +55,7 @@ public class DetectorController {
 		processDetectorUI.setInput(processSettings);
 		if(processSettings != null) {
 			List<DetectorSetting> detectorSettings = processSettings.getDetectorSettings();
-			if(detectorSettings.size() > 0) {
+			if(!detectorSettings.isEmpty()) {
 				update(detectorSettings.get(0));
 			}
 		}
@@ -351,7 +351,7 @@ public class DetectorController {
 
 	private boolean focusXIC(DetectorRange detectorRange, PeakDetectorChartSettings chartSettings) {
 
-		return detectorRange.getTraces().size() > 0 && chartSettings.isShowChromatogramTraces() && PreferenceSupplier.isDetectorFocusXIC();
+		return !detectorRange.getTraces().isEmpty() && chartSettings.isShowChromatogramTraces() && PreferenceSupplier.isDetectorFocusXIC();
 	}
 
 	private void setVisibilityOptions(PeakChartSettings chartSettings, IChromatogram<?> chromatogram) {
