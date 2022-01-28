@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Matthias Mailänder, Dr. Philip Wenig.
+ * Copyright (c) 2016, 2022 Matthias Mailänder, Dr. Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,7 +21,6 @@ import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
-import org.eclipse.chemclipse.model.versioning.PathHelper;
 import org.eclipse.chemclipse.wsd.converter.io.AbstractChromatogramWSDReader;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -36,7 +35,7 @@ import net.openchrom.wsd.converter.supplier.abif.model.VendorScanSignalDAD;
 
 public class ChromatogramReader extends AbstractChromatogramWSDReader {
 
-	private static final Logger logger = Logger.getLogger(PathHelper.class);
+	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 
 	@Override
 	public IChromatogramWSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
