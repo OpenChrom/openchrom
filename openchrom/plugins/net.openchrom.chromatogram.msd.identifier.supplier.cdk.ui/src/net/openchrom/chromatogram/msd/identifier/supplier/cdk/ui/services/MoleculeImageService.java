@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -36,6 +36,8 @@ import net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.preferences.Pre
 public class MoleculeImageService implements IMoleculeImageService {
 
 	private static final Logger logger = Logger.getLogger(MoleculeImageService.class);
+	private Image image;
+	private ILibraryInformation libraryInformation;
 
 	@Activate
 	public void start() {
@@ -66,12 +68,16 @@ public class MoleculeImageService implements IMoleculeImageService {
 	@Override
 	public Image create(Display display, ILibraryInformation libraryInformation, int width, int height) {
 
-		Image image = null;
 		if(display != null && libraryInformation != null) {
+			if(this.libraryInformation == libraryInformation && image != null) {
+				return image;
+			}
 			image = createImage(display, libraryInformation, width, height);
+			this.libraryInformation = libraryInformation;
+			return image;
 		}
 		//
-		return image;
+		return null;
 	}
 
 	@Override
