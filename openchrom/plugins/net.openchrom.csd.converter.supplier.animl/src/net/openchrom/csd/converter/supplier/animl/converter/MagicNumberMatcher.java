@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,7 +23,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.IConstants;
-import net.openchrom.xxd.converter.supplier.animl.internal.converter.SpecificationValidator;
 
 public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
 
@@ -32,7 +31,6 @@ public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IM
 
 		boolean isValidFormat = false;
 		try {
-			file = SpecificationValidator.validateSpecification(file);
 			if(!file.exists()) {
 				return isValidFormat;
 			}

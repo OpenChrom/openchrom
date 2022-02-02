@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2021 Lablicate GmbH.
+ * Copyright (c) 2014, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -25,7 +25,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.animl.io.ChromatogramWriter;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.IConstants;
-import net.openchrom.xxd.converter.supplier.animl.internal.converter.SpecificationValidator;
 
 public class ChromatogramExportConverter extends AbstractChromatogramExportConverter implements IChromatogramExportConverter {
 
@@ -35,7 +34,6 @@ public class ChromatogramExportConverter extends AbstractChromatogramExportConve
 	@Override
 	public IProcessingInfo<File> convert(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) {
 
-		file = SpecificationValidator.validateSpecification(file);
 		IProcessingInfo<File> processingInfo = super.validate(file);
 		/*
 		 * Don't process if errors have occurred.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2021 Lablicate GmbH.
+ * Copyright (c) 2013, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,7 +23,6 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mz5.internal.support.IConstants;
-import net.openchrom.msd.converter.supplier.mz5.internal.support.SpecificationValidator;
 import net.openchrom.msd.converter.supplier.mz5.io.ChromatogramReader;
 
 public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramMSD> {
@@ -39,7 +38,6 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 			/*
 			 * Read the chromatogram.
 			 */
-			file = SpecificationValidator.validateSpecification(file);
 			IChromatogramMSDReader reader = new ChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CHROMATOGRAM);
 			try {
@@ -58,7 +56,6 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 
 		IProcessingInfo<IChromatogramOverview> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
-			file = SpecificationValidator.validateSpecification(file);
 			IChromatogramMSDReader reader = new ChromatogramReader();
 			monitor.subTask(IConstants.IMPORT_CHROMATOGRAM_OVERVIEW);
 			try {

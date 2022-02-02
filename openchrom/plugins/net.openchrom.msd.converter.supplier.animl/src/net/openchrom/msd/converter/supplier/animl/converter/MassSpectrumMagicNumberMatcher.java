@@ -23,7 +23,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.IConstants;
-import net.openchrom.xxd.converter.supplier.animl.internal.converter.SpecificationValidator;
 
 public class MassSpectrumMagicNumberMatcher extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
 
@@ -32,10 +31,6 @@ public class MassSpectrumMagicNumberMatcher extends AbstractMagicNumberMatcher i
 
 		boolean isValidFormat = false;
 		try {
-			file = SpecificationValidator.validateSpecification(file);
-			if(!file.exists()) {
-				return isValidFormat;
-			}
 			if(!checkFileExtension(file, ".animl")) {
 				return isValidFormat;
 			}
