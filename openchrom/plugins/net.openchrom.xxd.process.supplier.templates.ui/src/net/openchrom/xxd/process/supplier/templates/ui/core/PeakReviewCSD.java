@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -19,7 +19,6 @@ import org.eclipse.chemclipse.chromatogram.csd.identifier.settings.IPeakIdentifi
 import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
-import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.identifier.IIdentificationResults;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
@@ -39,9 +38,9 @@ public class PeakReviewCSD<T> extends AbstractPeakIdentifier implements IPeakIde
 	@Override
 	public IProcessingInfo<IIdentificationResults> identify(List<? extends IPeakCSD> peaks, IPeakIdentifierSettingsCSD peakIdentifierSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo<IIdentificationResults> processingInfo = new ProcessingInfo<IIdentificationResults>();
-		if(peaks == null || peaks.size() == 0) {
-			processingInfo.addErrorMessage(DESCRIPTION, "No peak(s) have been found in the current selection.");
+		IProcessingInfo<IIdentificationResults> processingInfo = new ProcessingInfo<>();
+		if(peaks == null || peaks.isEmpty()) {
+			processingInfo.addErrorMessage(DESCRIPTION, "No peaks have been found in the current selection.");
 		} else {
 			runProcess(peaks, peakIdentifierSettings, processingInfo, monitor);
 		}
@@ -75,7 +74,7 @@ public class PeakReviewCSD<T> extends AbstractPeakIdentifier implements IPeakIde
 
 	private IChromatogram<?> getChromatogram(List<? extends IPeakCSD> peaks) {
 
-		for(IPeak peak : peaks) {
+		for(IPeakCSD peak : peaks) {
 			if(peak instanceof IChromatogramPeak) {
 				IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
 				return chromatogramPeak.getChromatogram();

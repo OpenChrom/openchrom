@@ -47,9 +47,9 @@ public class PeakReviewDirectWSD<T> extends AbstractPeakIdentifier implements IP
 	@Override
 	public IProcessingInfo<IIdentificationResults> identify(List<? extends IPeakWSD> peaks, IPeakIdentifierSettingsWSD peakIdentifierSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo<IIdentificationResults> processingInfo = new ProcessingInfo<IIdentificationResults>();
-		if(peaks == null || peaks.size() == 0) {
-			processingInfo.addErrorMessage(DESCRIPTION, "No peak(s) have been found in the current selection.");
+		IProcessingInfo<IIdentificationResults> processingInfo = new ProcessingInfo<>();
+		if(peaks == null || peaks.isEmpty()) {
+			processingInfo.addErrorMessage(DESCRIPTION, "No peaks have been found in the current selection.");
 		} else {
 			runProcess(peaks, peakIdentifierSettings, processingInfo, monitor);
 		}
@@ -64,7 +64,7 @@ public class PeakReviewDirectWSD<T> extends AbstractPeakIdentifier implements IP
 		IChromatogram<?> chromatogram = getChromatogram(peaks);
 		List<ReviewSetting> reviewSettings = new ArrayList<>();
 		for(IPeak peak : peaks) {
-			if(peak.getTargets().size() > 0) {
+			if(!peak.getTargets().isEmpty()) {
 				float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
 				IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(retentionIndex);
 				IIdentificationTarget identificationTarget = IIdentificationTarget.getBestIdentificationTarget(peak.getTargets(), identificationTargetComparator);
@@ -86,7 +86,7 @@ public class PeakReviewDirectWSD<T> extends AbstractPeakIdentifier implements IP
 		/*
 		 * Check, that at least one review setting is set.
 		 */
-		if(reviewSettings.size() > 0) {
+		if(!reviewSettings.isEmpty()) {
 			PeakReviewSettings settings = new PeakReviewSettings();
 			settings.setReviewSettings(reviewSettings);
 			ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
@@ -111,7 +111,7 @@ public class PeakReviewDirectWSD<T> extends AbstractPeakIdentifier implements IP
 
 	private IChromatogram<?> getChromatogram(List<? extends IPeakWSD> peaks) {
 
-		for(IPeak peak : peaks) {
+		for(IPeakWSD peak : peaks) {
 			if(peak instanceof IChromatogramPeak) {
 				IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
 				return chromatogramPeak.getChromatogram();

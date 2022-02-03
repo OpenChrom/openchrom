@@ -18,7 +18,6 @@ import org.eclipse.chemclipse.chromatogram.wsd.identifier.peak.IPeakIdentifierWS
 import org.eclipse.chemclipse.chromatogram.wsd.identifier.settings.IPeakIdentifierSettingsWSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
-import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.identifier.IIdentificationResults;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
@@ -39,9 +38,9 @@ public class PeakReviewWSD<T> extends AbstractPeakIdentifier implements IPeakIde
 	@Override
 	public IProcessingInfo<IIdentificationResults> identify(List<? extends IPeakWSD> peaks, IPeakIdentifierSettingsWSD peakIdentifierSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo<IIdentificationResults> processingInfo = new ProcessingInfo<IIdentificationResults>();
-		if(peaks == null || peaks.size() == 0) {
-			processingInfo.addErrorMessage(DESCRIPTION, "No peak(s) have been found in the current selection.");
+		IProcessingInfo<IIdentificationResults> processingInfo = new ProcessingInfo<>();
+		if(peaks == null || peaks.isEmpty()) {
+			processingInfo.addErrorMessage(DESCRIPTION, "No peaks have been found in the current selection.");
 		} else {
 			runProcess(peaks, peakIdentifierSettings, processingInfo, monitor);
 		}
@@ -75,7 +74,7 @@ public class PeakReviewWSD<T> extends AbstractPeakIdentifier implements IPeakIde
 
 	private IChromatogram<?> getChromatogram(List<? extends IPeakWSD> peaks) {
 
-		for(IPeak peak : peaks) {
+		for(IPeakWSD peak : peaks) {
 			if(peak instanceof IChromatogramPeak) {
 				IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
 				return chromatogramPeak.getChromatogram();
