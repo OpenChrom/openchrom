@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2021 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2022 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,7 +27,6 @@ import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.animl.io.MassSpectrumWriter;
-import net.openchrom.xxd.converter.supplier.animl.internal.converter.SpecificationValidator;
 
 public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 
@@ -63,7 +62,6 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 	@Override
 	public IProcessingInfo<File> convert(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) {
 
-		file = SpecificationValidator.validateSpecification(file);
 		IProcessingInfo<File> processingInfo = validate(file, massSpectra);
 		if(!processingInfo.hasErrorMessages()) {
 			try {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2021 Lablicate GmbH.
+ * Copyright (c) 2008, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -27,7 +27,6 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.animl.io.MassSpectrumReader;
-import net.openchrom.xxd.converter.supplier.animl.internal.converter.SpecificationValidator;
 
 public class MassSpectrumImportConverter extends AbstractMassSpectrumImportConverter {
 
@@ -40,7 +39,6 @@ public class MassSpectrumImportConverter extends AbstractMassSpectrumImportConve
 		IProcessingInfo<IMassSpectra> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			try {
-				file = SpecificationValidator.validateSpecification(file);
 				IMassSpectraReader massSpectraReader = new MassSpectrumReader();
 				IMassSpectra massSpectra = massSpectraReader.read(file, monitor);
 				if(massSpectra != null && massSpectra.size() > 0) {
