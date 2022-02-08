@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,6 +23,7 @@ import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
 import org.eclipse.chemclipse.ux.extension.ui.support.PartSupport;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
@@ -42,6 +43,7 @@ import org.eclipse.swt.widgets.Table;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
+import net.openchrom.xxd.process.supplier.templates.ui.Activator;
 import net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakReview;
 import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePage;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakReviewListUI;
@@ -309,6 +311,13 @@ public class ProcessReviewUI extends Composite {
 				updateSelection();
 			}
 		});
+		/*
+		 * Set/Save the column order.
+		 */
+		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+		String preferenceColumnOrder = PreferenceSupplier.P_REVIEW_COLUMN_ORDER;
+		String preferenceColumnWidth = PreferenceSupplier.P_REVIEW_COLUMN_WIDTH;
+		peakReviewListUI.setColumnMoveWidthSupport(preferenceStore, preferenceColumnOrder, preferenceColumnWidth);
 		//
 		return peakReviewListUI;
 	}
@@ -335,7 +344,7 @@ public class ProcessReviewUI extends Composite {
 		if(processSettings != null) {
 			List<ReviewSetting> reviewSettings = processSettings.getReviewSettings();
 			peakReviewListUI.setInput(reviewSettings);
-			if(reviewSettings.size() > 0) {
+			if(!reviewSettings.isEmpty()) {
 				peakReviewListUI.getTable().select(0);
 			}
 		} else {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 
 public abstract class AbstractSetting {
 
@@ -33,12 +33,12 @@ public abstract class AbstractSetting {
 
 	public double getStartRetentionTimeMinutes() {
 
-		return startRetentionTime / IChromatogram.MINUTE_CORRELATION_FACTOR;
+		return startRetentionTime / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 	}
 
 	public void setStartRetentionTimeMinutes(double startRetentionTimeMinutes) {
 
-		this.startRetentionTime = (int)(startRetentionTimeMinutes * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		this.startRetentionTime = (int)(startRetentionTimeMinutes * IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 	}
 
 	public int getStopRetentionTime() {
@@ -53,11 +53,11 @@ public abstract class AbstractSetting {
 
 	public double getStopRetentionTimeMinutes() {
 
-		return stopRetentionTime / IChromatogram.MINUTE_CORRELATION_FACTOR;
+		return stopRetentionTime / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 	}
 
 	public void setStopRetentionTimeMinutes(double stopRetentionTimeMinutes) {
 
-		this.stopRetentionTime = (int)(stopRetentionTimeMinutes * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		this.stopRetentionTime = (int)(stopRetentionTimeMinutes * IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 	}
 }
