@@ -237,6 +237,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS = false;
 	public static final String P_REVIEW_IGNORE_NULL_CAS_NUMBER = "reviewIgnoreNullCasNumber";
 	public static final boolean DEF_REVIEW_IGNORE_NULL_CAS_NUMBER = true;
+	public static final String P_REVIEW_COLUMN_ORDER = "columnOrderPeakReview";
+	public static final String DEF_REVIEW_COLUMN_ORDER = "";
+	public static final String P_REVIEW_COLUMN_WIDTH = "columnWidthPeakReview";
+	public static final String DEF_REVIEW_COLUMN_WIDTH = "";
 	/*
 	 * Named Traces
 	 */
@@ -268,7 +272,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	@Override
 	public Map<String, String> getDefaultValues() {
 
-		Map<String, String> defaultValues = new HashMap<String, String>();
+		Map<String, String> defaultValues = new HashMap<>();
 		defaultValues.put(P_PEAK_DETECTOR_LIST_MSD, DEF_PEAK_DETECTOR_LIST_MSD);
 		defaultValues.put(P_PEAK_DETECTOR_LIST_CSD, DEF_PEAK_DETECTOR_LIST_CSD);
 		defaultValues.put(P_PEAK_DETECTOR_LIST_WSD, DEF_PEAK_DETECTOR_LIST_WSD);
@@ -365,6 +369,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_REVIEW_FETCH_LIBRARY_SPECTRUM, Boolean.toString(DEF_REVIEW_FETCH_LIBRARY_SPECTRUM));
 		defaultValues.put(P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS, Boolean.toString(DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS));
 		defaultValues.put(P_REVIEW_IGNORE_NULL_CAS_NUMBER, Boolean.toString(DEF_REVIEW_IGNORE_NULL_CAS_NUMBER));
+		defaultValues.put(P_REVIEW_COLUMN_ORDER, DEF_REVIEW_COLUMN_ORDER);
+		defaultValues.put(P_REVIEW_COLUMN_WIDTH, DEF_REVIEW_COLUMN_WIDTH);
 		/*
 		 * Named Traces
 		 */
