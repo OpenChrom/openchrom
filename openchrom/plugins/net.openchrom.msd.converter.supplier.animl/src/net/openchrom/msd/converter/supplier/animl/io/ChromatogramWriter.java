@@ -159,8 +159,8 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 			intensityUnit.setLabel("Abundance");
 			intensityUnit.setQuantity("arbitrary");
 			intensitySeries.setUnit(intensityUnit);
-			massChargeSeries.setDependency(DependencyType.DEPENDENT);
-			massChargeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
+			intensitySeries.setDependency(DependencyType.DEPENDENT);
+			intensitySeries.setSeriesType(ParameterTypeType.FLOAT_32);
 			//
 			if(PreferenceSupplier.getChromatogramSaveEncoded()) {
 				int scans = scanMSD.getNumberOfIons();
