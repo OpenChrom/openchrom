@@ -27,7 +27,9 @@ import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Version;
 
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.DependencyType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.IndividualValueSetType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterTypeType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ResultType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesType;
@@ -52,41 +54,59 @@ public class Common {
 	public static ResultType createPeaks(IChromatogram chromatogram) {
 
 		SeriesSetType seriesSet = new SeriesSetType();
+		seriesSet.setId("PEAK_TABLE");
 		seriesSet.setName("Peak Table");
 		seriesSet.setLength(chromatogram.getNumberOfPeaks());
 		//
 		SeriesType numberSeries = new SeriesType();
+		numberSeries.setSeriesID("NUMBER");
 		numberSeries.setName("Number");
+		numberSeries.setSeriesType(ParameterTypeType.INT_32);
 		//
 		SeriesType idSeries = new SeriesType();
+		idSeries.setSeriesID("ID");
 		idSeries.setName("ID");
+		idSeries.setSeriesType(ParameterTypeType.STRING);
 		//
 		SeriesType groupIdSeries = new SeriesType();
+		groupIdSeries.setSeriesID("GROUP_ID");
 		groupIdSeries.setName("Group ID");
+		groupIdSeries.setSeriesType(ParameterTypeType.STRING);
 		//
 		SeriesType nameSeries = new SeriesType();
+		nameSeries.setSeriesID("NAME");
 		nameSeries.setName("Name");
+		nameSeries.setSeriesType(ParameterTypeType.STRING);
 		//
 		SeriesType retentionTimeSeries = new SeriesType();
+		retentionTimeSeries.setSeriesID("RETENTION_TIME");
 		retentionTimeSeries.setName("Retention Time");
 		UnitType retentionTimeUnit = new UnitType();
 		retentionTimeUnit.setLabel("Time");
 		retentionTimeUnit.setQuantity("min");
 		retentionTimeSeries.setUnit(retentionTimeUnit);
+		retentionTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		retentionTimeSeries.setDependency(DependencyType.INDEPENDENT);
 		//
 		SeriesType adjustedRetentionTimeSeries = new SeriesType();
+		adjustedRetentionTimeSeries.setSeriesID("ADJUSTED_RETENTION_TIME");
 		adjustedRetentionTimeSeries.setName("Adjusted Retention Time");
 		UnitType adjustedRetentionTimeUnit = new UnitType();
 		adjustedRetentionTimeUnit.setLabel("Time");
 		adjustedRetentionTimeUnit.setQuantity("min");
 		adjustedRetentionTimeSeries.setUnit(adjustedRetentionTimeUnit);
+		adjustedRetentionTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		adjustedRetentionTimeSeries.setDependency(DependencyType.DEPENDENT);
 		//
 		SeriesType startTimeSeries = new SeriesType();
+		startTimeSeries.setSeriesID("START_TIME");
 		startTimeSeries.setName("Start Time");
 		UnitType startTimeUnit = new UnitType();
 		startTimeUnit.setLabel("Time");
 		startTimeUnit.setQuantity("min");
 		startTimeSeries.setUnit(startTimeUnit);
+		startTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		startTimeSeries.setDependency(DependencyType.DEPENDENT);
 		//
 		SeriesType endTimeSeries = new SeriesType();
 		endTimeSeries.setName("End Time");
@@ -94,6 +114,8 @@ public class Common {
 		endTimeUnit.setLabel("Time");
 		endTimeUnit.setQuantity("min");
 		endTimeSeries.setUnit(endTimeUnit);
+		endTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		endTimeSeries.setDependency(DependencyType.DEPENDENT);
 		//
 		SeriesType peakHeightSeries = new SeriesType();
 		peakHeightSeries.setName("Value");
@@ -101,6 +123,8 @@ public class Common {
 		peakHeightUnit.setLabel("Arbitrary");
 		peakHeightUnit.setQuantity("arbitrary");
 		peakHeightSeries.setUnit(peakHeightUnit);
+		peakHeightSeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		peakHeightSeries.setDependency(DependencyType.DEPENDENT);
 		//
 		IndividualValueSetType numbers = new IndividualValueSetType();
 		IndividualValueSetType ids = new IndividualValueSetType();
@@ -164,6 +188,7 @@ public class Common {
 		seriesSet.getSeries().add(peakHeightSeries);
 		//
 		ResultType result = new ResultType();
+		result.setName("Peaks");
 		result.setSeriesSet(seriesSet);
 		return result;
 	}

@@ -23,6 +23,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.history.IEditInformation;
@@ -41,12 +42,14 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Audit
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AuditTrailEntryType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AuthorType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.CategoryType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.DependencyType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.EncodedValueSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ExperimentStepSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ExperimentStepType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.IndividualValueSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.MethodType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterTypeType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ResultType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleType;
@@ -68,6 +71,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 			Marshaller marshaller = jaxbContext.createMarshaller();
 			//
 			AnIMLType anIML = new AnIMLType();
+			anIML.setVersion("0.90");
 			anIML.setSampleSet(createSampleSet(chromatogram));
 			anIML.setExperimentStepSet(createExperimentStep(chromatogram));
 			anIML.setAuditTrailEntrySet(createAuditTrail(chromatogram));
@@ -83,10 +87,11 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 
 		SampleSetType sampleSet = new SampleSetType();
 		SampleType sample = new SampleType();
-		sample.setName(chromatogram.getDataName());
+		sample.setId("OPENCHROM_WSD_EXPORT");
+		sample.setName(chromatogram.getHeaderDataOrDefault("Sample Name", chromatogram.getDataName()));
 		sample.setBarcode(chromatogram.getBarcode());
 		sample.setComment(chromatogram.getMiscInfo());
-		sample.setSampleID(chromatogram.getDetailedInfo());
+		sample.setSampleID(FilenameUtils.removeExtension(chromatogram.getFile().getName()));
 		sampleSet.getSample().add(sample);
 		return sampleSet;
 	}
@@ -96,10 +101,14 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		ExperimentStepSetType experimentStepSet = new ExperimentStepSetType();
 		//
 		ExperimentStepType chromatographyStep = new ExperimentStepType();
+		chromatographyStep.setName("Chromatography");
+		chromatographyStep.setExperimentStepID("CHROMATOGRAPHY");
 		chromatographyStep.setTechnique(createChromatographyTechnique());
 		experimentStepSet.getExperimentStep().add(chromatographyStep);
 		//
 		ExperimentStepType detectorStep = new ExperimentStepType();
+		detectorStep.setName("Detector");
+		detectorStep.setExperimentStepID("DETECTOR");
 		detectorStep.getResult().add(createSignal(chromatogram));
 		detectorStep.setMethod(createMethod(chromatogram));
 		detectorStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
@@ -107,6 +116,8 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		experimentStepSet.getExperimentStep().add(detectorStep);
 		//
 		ExperimentStepType peakStep = new ExperimentStepType();
+		peakStep.setName("Peaks");
+		peakStep.setExperimentStepID("PEAKS");
 		peakStep.getResult().add(Common.createPeaks(chromatogram));
 		peakStep.setTechnique(createPeakTableTechnique());
 		experimentStepSet.getExperimentStep().add(peakStep);
@@ -116,20 +127,27 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 	private ResultType createSignal(IChromatogramWSD chromatogram) {
 
 		SeriesSetType seriesSet = new SeriesSetType();
+		seriesSet.setId("UV_VIS");
 		seriesSet.setName("UV/Vis Trace");
 		seriesSet.setLength(chromatogram.getNumberOfScans());
 		//
 		SeriesType retentionTimeSeries = new SeriesType();
+		retentionTimeSeries.setSeriesID("RETENTION_TIME");
+		retentionTimeSeries.setName("Retention Time");
 		UnitType retentionTimeUnit = new UnitType();
 		retentionTimeUnit.setLabel("Time");
 		retentionTimeUnit.setQuantity("ms");
 		retentionTimeSeries.setUnit(retentionTimeUnit);
+		retentionTimeSeries.setDependency(DependencyType.INDEPENDENT);
+		retentionTimeSeries.setSeriesType(ParameterTypeType.INT_32);
 		//
 		SeriesType intensitySeries = new SeriesType();
 		UnitType intensityUnit = new UnitType();
 		intensityUnit.setLabel("Intensity");
 		intensityUnit.setQuantity("arbitrary");
 		intensitySeries.setUnit(intensityUnit);
+		intensitySeries.setDependency(DependencyType.DEPENDENT);
+		intensitySeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		//
 		int scans = chromatogram.getNumberOfScans();
 		if(PreferenceSupplier.getChromatogramSaveEncoded()) {
@@ -177,6 +195,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		upperBounds.setName("Upper Bound");
 		result.getCategory().add(category);
 		result.setSeriesSet(seriesSet);
+		result.setName("UV/VIS");
 		return result;
 	}
 
@@ -193,6 +212,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 	private TechniqueType createChromatographyTechnique() {
 
 		TechniqueType technique = new TechniqueType();
+		technique.setId("CHROMATOGRAPHY");
 		technique.setName("Chromatography");
 		technique.setUri("https://github.com/AnIML/techniques/blob/6e30b1e593e6df661a44ae2a9892b6198def0641/chromatography.atdd");
 		return technique;
@@ -201,6 +221,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 	private TechniqueType createUltraVioletDetectorTechnique() {
 
 		TechniqueType technique = new TechniqueType();
+		technique.setId("UV_VIS");
 		technique.setName("UV/Vis Trace Detector");
 		technique.setUri("https://github.com/AnIML/techniques/blob/995bef06f90afba00a618239f40c6e591a1c0845/uv-vis-trace.atdd");
 		return technique;
@@ -209,6 +230,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 	private TechniqueType createPeakTableTechnique() {
 
 		TechniqueType technique = new TechniqueType();
+		technique.setId("CHROMATOGRAPHY_PEAK_TABLE");
 		technique.setName("Chromatography Peak Table");
 		technique.setUri("https://github.com/AnIML/techniques/blob/d749979fc21322b97c61e2efd6efe60cfa5a29be/chromatography-peak-table.atdd");
 		return technique;
