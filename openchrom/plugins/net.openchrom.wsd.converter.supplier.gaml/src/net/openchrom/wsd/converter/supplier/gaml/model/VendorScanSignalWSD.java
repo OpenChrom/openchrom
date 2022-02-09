@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -14,4 +14,6 @@ package net.openchrom.wsd.converter.supplier.gaml.model;
 import org.eclipse.chemclipse.wsd.model.core.AbstractScanSignalWSD;
 
 public class VendorScanSignalWSD extends AbstractScanSignalWSD implements IVendorScanSignalWSD {
+
+	private static final long serialVersionUID = 8383909367971644506L;
 }

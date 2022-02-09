@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Matthias Mailänder, Dr. Philip Wenig.
+ * Copyright (c) 2016, 2022 Matthias Mailänder, Dr. Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,4 +15,6 @@ package net.openchrom.wsd.converter.supplier.abif.model;
 import org.eclipse.chemclipse.wsd.model.core.AbstractScanSignalWSD;
 
 public class VendorScanSignalDAD extends AbstractScanSignalWSD implements IVendorScanSignalDAD {
+
+	private static final long serialVersionUID = 334436896576846950L;
 }
