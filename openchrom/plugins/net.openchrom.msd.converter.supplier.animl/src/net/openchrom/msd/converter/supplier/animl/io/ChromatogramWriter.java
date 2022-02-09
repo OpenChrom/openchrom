@@ -49,6 +49,7 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Indiv
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.MethodType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterTypeType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.PlotScaleType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ResultType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleType;
@@ -151,6 +152,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 			massChargeSeries.setUnit(massChargeUnit);
 			massChargeSeries.setDependency(DependencyType.DEPENDENT);
 			massChargeSeries.setSeriesType(ParameterTypeType.FLOAT_64);
+			massChargeSeries.setPlotScale(PlotScaleType.LINEAR);
 			//
 			SeriesType intensitySeries = new SeriesType();
 			intensitySeries.setSeriesID("INTENSITY");
@@ -161,6 +163,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 			intensitySeries.setUnit(intensityUnit);
 			intensitySeries.setDependency(DependencyType.DEPENDENT);
 			intensitySeries.setSeriesType(ParameterTypeType.FLOAT_32);
+			intensitySeries.setPlotScale(PlotScaleType.LINEAR);
 			//
 			if(PreferenceSupplier.getChromatogramSaveEncoded()) {
 				int scans = scanMSD.getNumberOfIons();
@@ -214,6 +217,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		retentionTimeSeries.setUnit(retentionTimeUnit);
 		retentionTimeSeries.setDependency(DependencyType.INDEPENDENT);
 		retentionTimeSeries.setSeriesType(ParameterTypeType.INT_32);
+		retentionTimeSeries.setPlotScale(PlotScaleType.LINEAR);
 		//
 		SeriesType totalSignalSeries = new SeriesType();
 		totalSignalSeries.setSeriesID("TOTAL_SIGNAL");
@@ -224,6 +228,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		totalSignalSeries.setUnit(totalSignalUnit);
 		totalSignalSeries.setDependency(DependencyType.DEPENDENT);
 		totalSignalSeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		totalSignalSeries.setPlotScale(PlotScaleType.LINEAR);
 		//
 		if(PreferenceSupplier.getChromatogramSaveEncoded()) {
 			int scans = chromatogram.getNumberOfScans();

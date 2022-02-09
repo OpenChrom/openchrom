@@ -43,6 +43,7 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Indiv
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.MethodType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterTypeType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.PlotScaleType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ResultType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleType;
@@ -154,6 +155,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		massChargeSeries.setUnit(massChargeUnit);
 		massChargeSeries.setDependency(DependencyType.INDEPENDENT);
 		massChargeSeries.setSeriesType(ParameterTypeType.FLOAT_64);
+		massChargeSeries.setPlotScale(PlotScaleType.LINEAR);
 		//
 		SeriesType intensitySeries = new SeriesType();
 		intensitySeries.setName("Intensity");
@@ -163,6 +165,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		intensitySeries.setUnit(intensityUnit);
 		intensitySeries.setDependency(DependencyType.DEPENDENT);
 		intensitySeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		intensitySeries.setPlotScale(PlotScaleType.LINEAR);
 		//
 		if(PreferenceSupplier.getMassSpectrumSaveEncoded()) {
 			int scans = massSpectrum.getNumberOfIons();

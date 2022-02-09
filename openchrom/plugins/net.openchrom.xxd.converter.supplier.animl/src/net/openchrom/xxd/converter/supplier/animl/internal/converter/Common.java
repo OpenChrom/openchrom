@@ -30,6 +30,7 @@ import org.osgi.framework.Version;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.DependencyType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.IndividualValueSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterTypeType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.PlotScaleType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ResultType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesType;
@@ -37,6 +38,11 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Softw
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
 
 public class Common {
+
+	private Common() {
+
+		// only static access
+	}
 
 	public static SoftwareType createSoftware() {
 
@@ -62,21 +68,25 @@ public class Common {
 		numberSeries.setSeriesID("NUMBER");
 		numberSeries.setName("Number");
 		numberSeries.setSeriesType(ParameterTypeType.INT_32);
+		numberSeries.setPlotScale(PlotScaleType.NONE);
 		//
 		SeriesType idSeries = new SeriesType();
 		idSeries.setSeriesID("ID");
 		idSeries.setName("ID");
 		idSeries.setSeriesType(ParameterTypeType.STRING);
+		idSeries.setPlotScale(PlotScaleType.NONE);
 		//
 		SeriesType groupIdSeries = new SeriesType();
 		groupIdSeries.setSeriesID("GROUP_ID");
 		groupIdSeries.setName("Group ID");
 		groupIdSeries.setSeriesType(ParameterTypeType.STRING);
+		groupIdSeries.setPlotScale(PlotScaleType.NONE);
 		//
 		SeriesType nameSeries = new SeriesType();
 		nameSeries.setSeriesID("NAME");
 		nameSeries.setName("Name");
 		nameSeries.setSeriesType(ParameterTypeType.STRING);
+		nameSeries.setPlotScale(PlotScaleType.NONE);
 		//
 		SeriesType retentionTimeSeries = new SeriesType();
 		retentionTimeSeries.setSeriesID("RETENTION_TIME");
@@ -87,6 +97,7 @@ public class Common {
 		retentionTimeSeries.setUnit(retentionTimeUnit);
 		retentionTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		retentionTimeSeries.setDependency(DependencyType.INDEPENDENT);
+		retentionTimeSeries.setPlotScale(PlotScaleType.NONE);
 		//
 		SeriesType adjustedRetentionTimeSeries = new SeriesType();
 		adjustedRetentionTimeSeries.setSeriesID("ADJUSTED_RETENTION_TIME");
@@ -97,6 +108,7 @@ public class Common {
 		adjustedRetentionTimeSeries.setUnit(adjustedRetentionTimeUnit);
 		adjustedRetentionTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		adjustedRetentionTimeSeries.setDependency(DependencyType.DEPENDENT);
+		adjustedRetentionTimeSeries.setPlotScale(PlotScaleType.NONE);
 		//
 		SeriesType startTimeSeries = new SeriesType();
 		startTimeSeries.setSeriesID("START_TIME");
@@ -107,6 +119,7 @@ public class Common {
 		startTimeSeries.setUnit(startTimeUnit);
 		startTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		startTimeSeries.setDependency(DependencyType.DEPENDENT);
+		startTimeSeries.setPlotScale(PlotScaleType.NONE);
 		//
 		SeriesType endTimeSeries = new SeriesType();
 		endTimeSeries.setName("End Time");
@@ -116,6 +129,7 @@ public class Common {
 		endTimeSeries.setUnit(endTimeUnit);
 		endTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		endTimeSeries.setDependency(DependencyType.DEPENDENT);
+		endTimeSeries.setPlotScale(PlotScaleType.NONE);
 		//
 		SeriesType peakHeightSeries = new SeriesType();
 		peakHeightSeries.setName("Value");
@@ -125,6 +139,7 @@ public class Common {
 		peakHeightSeries.setUnit(peakHeightUnit);
 		peakHeightSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		peakHeightSeries.setDependency(DependencyType.DEPENDENT);
+		peakHeightSeries.setPlotScale(PlotScaleType.NONE);
 		//
 		IndividualValueSetType numbers = new IndividualValueSetType();
 		IndividualValueSetType ids = new IndividualValueSetType();
