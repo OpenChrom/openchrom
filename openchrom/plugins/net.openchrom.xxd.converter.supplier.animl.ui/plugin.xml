@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.eclipse.chemclipse.msd.converter.ui.converterPreferencePage"
+            category="org.eclipse.chemclipse.converter.ui.converterPreferencePage"
             class="net.openchrom.xxd.converter.supplier.animl.ui.preferences.PreferencePage"
             id="net.openchrom.xxd.converter.supplier.animl.ui.preferences.converterPreferencePage"
             name="AnIML Converter">
