@@ -44,6 +44,7 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Exper
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.IndividualValueSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.MethodType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterTypeType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.PlotScaleType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ResultType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleType;
@@ -134,6 +135,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		retentionTimeSeries.setUnit(retentionTimeUnit);
 		retentionTimeSeries.setDependency(DependencyType.INDEPENDENT);
 		retentionTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		retentionTimeSeries.setPlotScale(PlotScaleType.LINEAR);
 		//
 		SeriesType totalSignalSeries = new SeriesType();
 		totalSignalSeries.setSeriesID("TOTAL_SIGNAL");
@@ -144,6 +146,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		totalSignalSeries.setUnit(totalSignalUnit);
 		totalSignalSeries.setDependency(DependencyType.DEPENDENT);
 		totalSignalSeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		totalSignalSeries.setPlotScale(PlotScaleType.LINEAR);
 		//
 		if(PreferenceSupplier.getChromatogramSaveEncoded()) {
 			int scans = chromatogram.getNumberOfScans();

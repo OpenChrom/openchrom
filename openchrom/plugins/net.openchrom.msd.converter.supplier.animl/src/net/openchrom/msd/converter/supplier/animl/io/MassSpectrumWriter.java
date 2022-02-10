@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -19,6 +19,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
@@ -34,12 +35,15 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AnIML
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AuditTrailEntrySetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AuditTrailEntryType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.CategoryType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.DependencyType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.EncodedValueSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ExperimentStepSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ExperimentStepType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.IndividualValueSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.MethodType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterTypeType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.PlotScaleType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ResultType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleType;
@@ -95,6 +99,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		Marshaller marshaller = jaxbContext.createMarshaller();
 		//
 		AnIMLType anIML = new AnIMLType();
+		anIML.setVersion("0.90");
 		anIML.setSampleSet(createSampleSet(massSpectrum));
 		anIML.setExperimentStepSet(createExperimentStep(massSpectrum));
 		anIML.setAuditTrailEntrySet(createAuditTrail());
@@ -105,8 +110,10 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 
 		SampleSetType sampleSet = new SampleSetType();
 		SampleType sample = new SampleType();
+		sample.setId("OPENCHROM_MASS_SPECTRUM_EXPORT");
 		sample.setName(massSpectrum.getName());
-		sample.setSampleID(massSpectrum.getIdentifier());
+		sample.setComment(massSpectrum.getIdentifier());
+		sample.setSampleID(FilenameUtils.removeExtension(massSpectrum.getFile().getName()));
 		sample.setSourceDataLocation(massSpectrum.getFile().getAbsolutePath());
 		sampleSet.getSample().add(sample);
 		return sampleSet;
@@ -116,6 +123,8 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 
 		ExperimentStepSetType experimentStepSet = new ExperimentStepSetType();
 		ExperimentStepType massSpecStep = new ExperimentStepType();
+		massSpecStep.setName("Mass Spectrometry");
+		massSpecStep.setId("MASS_SPECTROMETRY");
 		massSpecStep.setTechnique(createMassSpecTechnique());
 		massSpecStep.getResult().add(createResult(massSpectrum));
 		massSpecStep.setMethod(createMethod());
@@ -139,10 +148,14 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		//
 		SeriesType massChargeSeries = new SeriesType();
 		massChargeSeries.setName("Mass/Charge");
+		massChargeSeries.setSeriesID("MASS_CHARGE");
 		UnitType massChargeUnit = new UnitType();
 		massChargeUnit.setLabel("Mass/Charge Ratio");
 		massChargeUnit.setQuantity("mz");
 		massChargeSeries.setUnit(massChargeUnit);
+		massChargeSeries.setDependency(DependencyType.INDEPENDENT);
+		massChargeSeries.setSeriesType(ParameterTypeType.FLOAT_64);
+		massChargeSeries.setPlotScale(PlotScaleType.LINEAR);
 		//
 		SeriesType intensitySeries = new SeriesType();
 		intensitySeries.setName("Intensity");
@@ -150,6 +163,9 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		intensityUnit.setLabel("Abundance");
 		intensityUnit.setQuantity("arbitrary");
 		intensitySeries.setUnit(intensityUnit);
+		intensitySeries.setDependency(DependencyType.DEPENDENT);
+		intensitySeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		intensitySeries.setPlotScale(PlotScaleType.LINEAR);
 		//
 		if(PreferenceSupplier.getMassSpectrumSaveEncoded()) {
 			int scans = massSpectrum.getNumberOfIons();
@@ -186,8 +202,9 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		parameter.setName("Type");
 		if(massSpectrum.getMassSpectrumType() == 0) {
 			parameter.getS().add("Centroided");
-		} else
+		} else {
 			parameter.getS().add("Continuous");
+		}
 		category.getParameter().add(parameter);
 		result.getCategory().add(category);
 		result.setSeriesSet(seriesSet);
