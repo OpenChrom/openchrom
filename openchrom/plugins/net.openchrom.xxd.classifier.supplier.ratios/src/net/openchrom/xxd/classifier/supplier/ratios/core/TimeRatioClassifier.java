@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.chromatogram.msd.classifier.result.IChromatogramCl
 import org.eclipse.chemclipse.chromatogram.msd.classifier.result.ResultStatus;
 import org.eclipse.chemclipse.chromatogram.msd.classifier.settings.IChromatogramClassifierSettings;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IMeasurementResult;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.implementation.MeasurementResult;
@@ -66,7 +67,7 @@ public class TimeRatioClassifier extends AbstractRatioClassifier {
 		for(TimeRatio ratio : ratios) {
 			for(IPeak peak : peaks) {
 				if(isPeakMatch(peak, ratio)) {
-					double retentionTimeMinutes = peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR;
+					double retentionTimeMinutes = peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 					double expectedRetentionTimeMinutes = ratio.getExpectedRetentionTimeMinutes();
 					if(retentionTimeMinutes != 0) {
 						ratio.setPeak(peak);

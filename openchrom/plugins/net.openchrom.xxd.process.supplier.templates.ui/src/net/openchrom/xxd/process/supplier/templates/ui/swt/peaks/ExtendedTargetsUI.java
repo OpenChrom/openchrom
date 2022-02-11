@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -291,7 +291,7 @@ public class ExtendedTargetsUI extends Composite {
 			}
 			//
 			if(peak instanceof ITargetSupplier) {
-				ITargetSupplier targetSupplier = (ITargetSupplier)peak;
+				ITargetSupplier targetSupplier = peak;
 				targets = targetSupplier.getTargets();
 				targetListUI.setInput(targets);
 			}
@@ -302,7 +302,7 @@ public class ExtendedTargetsUI extends Composite {
 	private void deleteTarget(ITarget target) {
 
 		if(peak instanceof ITargetSupplier) {
-			ITargetSupplier targetSupplier = (ITargetSupplier)peak;
+			ITargetSupplier targetSupplier = peak;
 			targetSupplier.getTargets().remove(target);
 		}
 	}
