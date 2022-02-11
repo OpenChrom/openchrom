@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -336,7 +336,7 @@ public class ExtendedPeakReviewUI extends Composite {
 
 		if(reviewSetting != null) {
 			boolean isCompoundAvailable = ReviewSupport.isCompoundAvailable(peaks, reviewSetting);
-			textTarget.setBackground(isCompoundAvailable ? Colors.GREEN : Colors.YELLOW);
+			textTarget.setBackground(isCompoundAvailable ? Colors.getColor(Colors.LIGHT_GREEN) : Colors.getColor(Colors.LIGHT_YELLOW));
 			StringBuilder builder = new StringBuilder();
 			builder.append(reviewSetting.getName());
 			builder.append(" ");

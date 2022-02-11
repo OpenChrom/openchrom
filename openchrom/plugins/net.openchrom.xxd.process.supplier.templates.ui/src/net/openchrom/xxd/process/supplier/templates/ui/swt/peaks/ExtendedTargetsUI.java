@@ -411,7 +411,7 @@ public class ExtendedTargetsUI extends Composite {
 					if(cell != null) {
 						IIdentificationTarget target = (IIdentificationTarget)cell.getElement();
 						boolean isCompoundAvailable = ReviewSupport.isCompoundAvailable(target, reviewSetting);
-						Color background = isCompoundAvailable ? Colors.GREEN : null;
+						Color background = isCompoundAvailable ? Colors.getColor(Colors.LIGHT_GREEN) : null;
 						cell.setBackground(background);
 						cell.setForeground(Colors.BLACK);
 						cell.setText(target.getLibraryInformation().getName());
