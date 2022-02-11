@@ -114,19 +114,19 @@ public class QualRatioLabelProvider extends AbstractChemClipseLabelProvider impl
 		Color color;
 		switch(peakQuality) {
 			case VERY_GOOD:
-				color = (background) ? Colors.GREEN : Colors.BLACK;
+				color = (background) ? Colors.getColor(Colors.LIGHT_GREEN) : Colors.BLACK;
 				break;
 			case GOOD:
-				color = (background) ? Colors.GREEN : Colors.BLACK;
+				color = (background) ? Colors.getColor(Colors.LIGHT_GREEN) : Colors.BLACK;
 				break;
 			case ACCEPTABLE:
-				color = (background) ? Colors.YELLOW : Colors.BLACK;
+				color = (background) ? Colors.getColor(Colors.LIGHT_YELLOW) : Colors.BLACK;
 				break;
 			case BAD:
-				color = (background) ? Colors.RED : Colors.WHITE;
+				color = (background) ? Colors.getColor(Colors.LIGHT_RED) : Colors.BLACK;
 				break;
 			case VERY_BAD:
-				color = (background) ? Colors.RED : Colors.WHITE;
+				color = (background) ? Colors.getColor(Colors.LIGHT_RED) : Colors.BLACK;
 				break;
 			default:
 				color = null;
