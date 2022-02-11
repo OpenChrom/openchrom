@@ -29,6 +29,8 @@ import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.identifier.IComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.quantitation.IInternalStandard;
+import org.eclipse.chemclipse.model.quantitation.IQuantitationEntry;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 
 import net.openchrom.chromatogram.xxd.report.supplier.csv.model.ReportColumns;
@@ -199,6 +201,65 @@ public class ConfigurableReportWriter {
 					}
 					if(reportColumn.equals(ReportColumns.DATABASE)) {
 						csvPrinter.print(libraryInformation.getDatabase());
+					}
+				}
+				List<IInternalStandard> internalStandards = peak.getInternalStandards();
+				if(!internalStandards.isEmpty()) {
+					IInternalStandard internalStandard = internalStandards.get(0);
+					if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_CHEMICAL_CLASS)) {
+						internalStandard.getChemicalClass();
+					}
+					if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_CONCENTRATION)) {
+						internalStandard.getConcentration();
+					}
+					if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_CONCENTRATION_UNIT)) {
+						internalStandard.getConcentrationUnit();
+					}
+					if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_NAME)) {
+						internalStandard.getName();
+					}
+					if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_RESPONSE_FACTOR)) {
+						internalStandard.getResponseFactor();
+					}
+				}
+				List<IQuantitationEntry> quantitationEntries = peak.getQuantitationEntries();
+				if(!quantitationEntries.isEmpty()) {
+					IQuantitationEntry quantitationEntry = quantitationEntries.get(0);
+					if(reportColumn.equals(ReportColumns.QUANTITATION_ENTRY_AREA)) {
+						quantitationEntry.getArea();
+					}
+					if(reportColumn.equals(ReportColumns.QUANTITATION_CALIBRATION_METHOD)) {
+						quantitationEntry.getCalibrationMethod();
+					}
+					if(reportColumn.equals(ReportColumns.QUANTITATION_CHEMICAL_CLASS)) {
+						quantitationEntry.getChemicalClass();
+					}
+					if(reportColumn.equals(ReportColumns.QUANTITATION_CONCENTRATION)) {
+						quantitationEntry.getConcentration();
+					}
+					if(reportColumn.equals(ReportColumns.QUANTITATION_CONCENTRATION_UNIT)) {
+						quantitationEntry.getConcentrationUnit();
+					}
+					if(reportColumn.equals(ReportColumns.QUANTITATION_DESCRIPTION)) {
+						quantitationEntry.getDescription();
+					}
+					if(reportColumn.equals(ReportColumns.QUANTITATION_NAME)) {
+						quantitationEntry.getName();
+					}
+					if(reportColumn.equals(ReportColumns.QUANTITATION_FLAG)) {
+						quantitationEntry.getQuantitationFlag().label();
+					}
+					if(reportColumn.equals(ReportColumns.QUANTITATION_SIGNAL)) {
+						quantitationEntry.getSignal();
+					}
+					if(reportColumn.equals(ReportColumns.QUANTITATION_CROSS_ZERO)) {
+						quantitationEntry.getUsedCrossZero();
+					}
+				}
+				List<String> quantitationReferences = peak.getQuantitationReferences();
+				if(!quantitationReferences.isEmpty()) {
+					if(reportColumn.equals(ReportColumns.QUANTITATION_REFERENCE)) {
+						quantitationReferences.get(0);
 					}
 				}
 			}
