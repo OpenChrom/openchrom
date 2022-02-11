@@ -58,6 +58,22 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String DETECTOR = "Detector";
 	public static final String QUANTIFIER = "Quantifier";
 	public static final String CLASSIFIER = "Classifier";
+	public static final String INTERNAL_STANDARD_CHEMICAL_CLASS = "Internal Standard Chemical Class";
+	public static final String INTERNAL_STANDARD_CONCENTRATION = "Internal Standard Concentration";
+	public static final String INTERNAL_STANDARD_CONCENTRATION_UNIT = "Internal Standard Concentration Unit";
+	public static final String INTERNAL_STANDARD_NAME = "Internal Standard Name";
+	public static final String INTERNAL_STANDARD_RESPONSE_FACTOR = "Internal Standard Response Factor";
+	public static final String QUANTITATION_ENTRY_AREA = "Quantitation Area";
+	public static final String QUANTITATION_CALIBRATION_METHOD = "Quantitation Calibration Method";
+	public static final String QUANTITATION_CHEMICAL_CLASS = "Quantitation Chemical Class";
+	public static final String QUANTITATION_CONCENTRATION = "Quantitation Concentration";
+	public static final String QUANTITATION_CONCENTRATION_UNIT = "Quantitation Concentration Unit";
+	public static final String QUANTITATION_DESCRIPTION = "Quantitation Area Description";
+	public static final String QUANTITATION_NAME = "Quantitation Name";
+	public static final String QUANTITATION_FLAG = "Quantitation Flag";
+	public static final String QUANTITATION_SIGNAL = "Quantitation Signal";
+	public static final String QUANTITATION_CROSS_ZERO = "Quantitation Cross 0";
+	public static final String QUANTITATION_REFERENCE = "Quantitation Reference";
 	//
 	private static final String SEPARATOR = ",";
 	private static final String SINGLE_TICK = "'";
@@ -107,6 +123,22 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(DETECTOR);
 		reportColumns.add(QUANTIFIER);
 		reportColumns.add(CLASSIFIER);
+		reportColumns.add(INTERNAL_STANDARD_CHEMICAL_CLASS);
+		reportColumns.add(INTERNAL_STANDARD_CONCENTRATION);
+		reportColumns.add(INTERNAL_STANDARD_CONCENTRATION_UNIT);
+		reportColumns.add(INTERNAL_STANDARD_NAME);
+		reportColumns.add(INTERNAL_STANDARD_RESPONSE_FACTOR);
+		reportColumns.add(QUANTITATION_ENTRY_AREA);
+		reportColumns.add(QUANTITATION_CALIBRATION_METHOD);
+		reportColumns.add(QUANTITATION_CHEMICAL_CLASS);
+		reportColumns.add(QUANTITATION_CONCENTRATION);
+		reportColumns.add(QUANTITATION_CONCENTRATION_UNIT);
+		reportColumns.add(QUANTITATION_DESCRIPTION);
+		reportColumns.add(QUANTITATION_NAME);
+		reportColumns.add(QUANTITATION_FLAG);
+		reportColumns.add(QUANTITATION_SIGNAL);
+		reportColumns.add(QUANTITATION_CROSS_ZERO);
+		reportColumns.add(QUANTITATION_REFERENCE);
 		//
 		return reportColumns;
 	}
