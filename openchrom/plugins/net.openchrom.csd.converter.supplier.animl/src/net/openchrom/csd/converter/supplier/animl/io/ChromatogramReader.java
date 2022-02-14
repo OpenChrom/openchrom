@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -100,9 +100,7 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 								}
 								if(unit.getLabel().equals("Signal")) {
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-										for(float f : individualValueSet.getF()) {
-											signals.add(f);
-										}
+										signals.addAll(individualValueSet.getF());
 									}
 									for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
 										float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
@@ -130,23 +128,17 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 							for(SeriesType series : seriesSet.getSeries()) {
 								if(series.getName().equals("Start Time")) {
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-										for(float f : individualValueSet.getF()) {
-											startTimes.add(f);
-										}
+										startTimes.addAll(individualValueSet.getF());
 									}
 								}
 								if(series.getName().equals("End Time")) {
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-										for(float f : individualValueSet.getF()) {
-											endTimes.add(f);
-										}
+										endTimes.addAll(individualValueSet.getF());
 									}
 								}
 								if(series.getName().equals("Name")) {
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-										for(String s : individualValueSet.getS()) {
-											peakNames.add(s);
-										}
+										peakNames.addAll(individualValueSet.getS());
 									}
 								}
 							}
