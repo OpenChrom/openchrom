@@ -32,7 +32,7 @@
    <extension
          point="org.eclipse.chemclipse.msd.converter.databaseSupplier">
       <DatabaseSupplier
-            description="RReads and writes Analytical Information Markup Language Library Mass Spectra."
+            description="Reads and writes Analytical Information Markup Language Library Mass Spectra."
             exportConverter="net.openchrom.msd.converter.supplier.animl.converter.DatabaseExportConverter"
             fileExtension=".animl"
             filterName="AnIML Mass Spectrum Library (*.animl)"

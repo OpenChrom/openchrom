@@ -137,25 +137,25 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		retentionTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		retentionTimeSeries.setPlotScale(PlotScaleType.LINEAR);
 		//
-		SeriesType totalSignalSeries = new SeriesType();
-		totalSignalSeries.setSeriesID("TOTAL_SIGNAL");
-		totalSignalSeries.setName("Total Signal");
-		UnitType totalSignalUnit = new UnitType();
-		totalSignalUnit.setLabel("Total Signal");
-		totalSignalUnit.setQuantity("arbitrary");
-		totalSignalSeries.setUnit(totalSignalUnit);
-		totalSignalSeries.setDependency(DependencyType.DEPENDENT);
-		totalSignalSeries.setSeriesType(ParameterTypeType.FLOAT_32);
-		totalSignalSeries.setPlotScale(PlotScaleType.LINEAR);
+		SeriesType signalSeries = new SeriesType();
+		signalSeries.setSeriesID("SIGNAL");
+		signalSeries.setName("Signal");
+		UnitType signalUnit = new UnitType();
+		signalUnit.setLabel("Signal");
+		signalUnit.setQuantity("arbitrary");
+		signalSeries.setUnit(signalUnit);
+		signalSeries.setDependency(DependencyType.DEPENDENT);
+		signalSeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		signalSeries.setPlotScale(PlotScaleType.LINEAR);
 		//
 		if(PreferenceSupplier.getChromatogramSaveEncoded()) {
 			int scans = chromatogram.getNumberOfScans();
 			float[] retentionTimes = new float[scans];
-			float[] totalSignals = new float[scans];
+			float[] signals = new float[scans];
 			int i = 0;
 			for(IScan scan : chromatogram.getScans()) {
 				retentionTimes[i] = scan.getRetentionTime();
-				totalSignals[i] = scan.getTotalSignal();
+				signals[i] = scan.getTotalSignal();
 				i++;
 			}
 			EncodedValueSetType encodedRetentionTimes = new EncodedValueSetType();
@@ -163,20 +163,20 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 			retentionTimeSeries.getEncodedValueSet().add(encodedRetentionTimes);
 			//
 			EncodedValueSetType encodedTotalSignals = new EncodedValueSetType();
-			encodedTotalSignals.setValue(BinaryReader.encodeArray(totalSignals));
-			totalSignalSeries.getEncodedValueSet().add(encodedTotalSignals);
+			encodedTotalSignals.setValue(BinaryReader.encodeArray(signals));
+			signalSeries.getEncodedValueSet().add(encodedTotalSignals);
 		} else {
 			IndividualValueSetType retentionTimes = new IndividualValueSetType();
-			IndividualValueSetType totalSignals = new IndividualValueSetType();
+			IndividualValueSetType signals = new IndividualValueSetType();
 			for(IScan scan : chromatogram.getScans()) {
 				retentionTimes.getF().add((float)scan.getRetentionTime());
-				totalSignals.getF().add(scan.getTotalSignal());
+				signals.getF().add(scan.getTotalSignal());
 			}
 			retentionTimeSeries.getIndividualValueSet().add(retentionTimes);
-			totalSignalSeries.getIndividualValueSet().add(totalSignals);
+			signalSeries.getIndividualValueSet().add(signals);
 		}
 		seriesSet.getSeries().add(retentionTimeSeries);
-		seriesSet.getSeries().add(totalSignalSeries);
+		seriesSet.getSeries().add(signalSeries);
 		ResultType result = new ResultType();
 		result.setName("FID");
 		result.setSeriesSet(seriesSet);
