@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -49,13 +49,17 @@ public class PeakReviewSupport {
 		wizardDialog.setMinimumPageSize(PeakReviewWizard.DEFAULT_WIDTH, PeakReviewWizard.DEFAULT_HEIGHT);
 		//
 		IProcessingInfo processingInfo = processSettings.getProcessingInfo();
-		int status = wizardDialog.open();
-		if(status == Dialog.OK) {
-			processingInfo.addInfoMessage(DESCRIPTION, "Successfully reviewed the peak(s).");
-		} else if(status == Dialog.CANCEL) {
-			processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peak(s) reviewed.");
-		} else {
-			processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to review the peak(s).");
+		try {
+			int status = wizardDialog.open();
+			if(status == Dialog.OK) {
+				processingInfo.addInfoMessage(DESCRIPTION, "Successfully reviewed the peak(s).");
+			} else if(status == Dialog.CANCEL) {
+				processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peak(s) reviewed.");
+			} else {
+				processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to review the peak(s).");
+			}
+		} finally {
+			wizard.dispose();
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -50,13 +50,17 @@ public class PeakDetectorSupport {
 		wizardDialog.setMinimumPageSize(PeakDetectorWizard.DEFAULT_WIDTH, PeakDetectorWizard.DEFAULT_HEIGHT);
 		//
 		IProcessingInfo processingInfo = processSettings.getProcessingInfo();
-		int status = wizardDialog.open();
-		if(status == Dialog.OK) {
-			processingInfo.addInfoMessage(DESCRIPTION, "Successfully modified/added the peak(s).");
-		} else if(status == Dialog.CANCEL) {
-			processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peak(s) added.");
-		} else {
-			processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to add the peak(s).");
+		try {
+			int status = wizardDialog.open();
+			if(status == Dialog.OK) {
+				processingInfo.addInfoMessage(DESCRIPTION, "Successfully modified/added the peak(s).");
+			} else if(status == Dialog.CANCEL) {
+				processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peak(s) added.");
+			} else {
+				processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to add the peak(s).");
+			}
+		} finally {
+			wizard.dispose();
 		}
 	}
 }
