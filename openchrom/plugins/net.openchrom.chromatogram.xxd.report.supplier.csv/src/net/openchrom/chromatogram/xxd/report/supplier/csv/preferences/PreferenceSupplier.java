@@ -14,13 +14,13 @@ package net.openchrom.chromatogram.xxd.report.supplier.csv.preferences;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.chemclipse.model.settings.Delimiter;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 
 import net.openchrom.chromatogram.xxd.report.supplier.csv.Activator;
-import net.openchrom.chromatogram.xxd.report.supplier.csv.model.Delimiter;
 import net.openchrom.chromatogram.xxd.report.supplier.csv.settings.ChromatogramReportSettings;
 
 public class PreferenceSupplier implements IPreferenceSupplier {

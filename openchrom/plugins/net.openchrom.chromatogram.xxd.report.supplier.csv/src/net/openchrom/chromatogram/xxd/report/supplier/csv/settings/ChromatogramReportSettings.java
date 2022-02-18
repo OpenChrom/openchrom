@@ -13,12 +13,12 @@ package net.openchrom.chromatogram.xxd.report.supplier.csv.settings;
 
 import org.apache.commons.csv.CSVFormat;
 import org.eclipse.chemclipse.chromatogram.xxd.report.settings.DefaultChromatogramReportSettings;
+import org.eclipse.chemclipse.model.settings.Delimiter;
 import org.eclipse.chemclipse.support.settings.ValidatorSettingsProperty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
-import net.openchrom.chromatogram.xxd.report.supplier.csv.model.Delimiter;
 import net.openchrom.chromatogram.xxd.report.supplier.csv.model.ReportColumns;
 import net.openchrom.chromatogram.xxd.report.supplier.csv.validators.ReportColumnsValidator;
 
