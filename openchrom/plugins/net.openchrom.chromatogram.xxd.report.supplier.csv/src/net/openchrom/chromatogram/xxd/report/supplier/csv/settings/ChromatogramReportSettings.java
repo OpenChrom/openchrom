@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - header options have been added
  *******************************************************************************/
 package net.openchrom.chromatogram.xxd.report.supplier.csv.settings;
 
@@ -26,6 +27,18 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 
 	public static final String DESCRIPTION = "CSV Report";
 	//
+	@JsonProperty(value = "Print Header", defaultValue = "true")
+	@JsonPropertyDescription(value = "Print the report header.")
+	private boolean printResultsHeader = true;
+	//
+	@JsonProperty(value = "Append Header", defaultValue = "true")
+	@JsonPropertyDescription(value = "Repeat the report header if the file is appended.")
+	private boolean appendResultsHeader = true;
+	//
+	@JsonProperty(value = "Section Separator", defaultValue = "true")
+	@JsonPropertyDescription(value = "Print a blank line after each report section.")
+	private boolean printSectionSeparator = true;
+	//
 	@JsonProperty(value = "Delimiter", defaultValue = "COMMA")
 	@JsonPropertyDescription(value = "Select the column delimiter.")
 	private Delimiter delimiter = Delimiter.COMMA;
@@ -42,6 +55,36 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	public CSVFormat getFormat() {
 
 		return CSVFormat.RFC4180.withDelimiter(delimiter.getCharacter());
+	}
+
+	public boolean isPrintResultsHeader() {
+
+		return printResultsHeader;
+	}
+
+	public void setPrintResultsHeader(boolean printResultsHeader) {
+
+		this.printResultsHeader = printResultsHeader;
+	}
+
+	public boolean isAppendResultsHeader() {
+
+		return appendResultsHeader;
+	}
+
+	public void setAppendResultsHeader(boolean appendResultsHeader) {
+
+		this.appendResultsHeader = appendResultsHeader;
+	}
+
+	public boolean isPrintSectionSeparator() {
+
+		return printSectionSeparator;
+	}
+
+	public void setPrintSectionSeparator(boolean printSectionSeparator) {
+
+		this.printSectionSeparator = printSectionSeparator;
 	}
 
 	public Delimiter getDelimiter() {

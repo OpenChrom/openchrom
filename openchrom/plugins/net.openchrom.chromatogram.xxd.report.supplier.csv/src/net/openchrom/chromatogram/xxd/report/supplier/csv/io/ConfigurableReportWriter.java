@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - header options have been added
  *******************************************************************************/
 package net.openchrom.chromatogram.xxd.report.supplier.csv.io;
 
@@ -40,23 +41,43 @@ public class ConfigurableReportWriter {
 
 	public void generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings reportSettings) throws IOException {
 
-		try (FileWriter fileWriter = new FileWriter(file, append)) {
-			try (CSVPrinter csvPrinter = new CSVPrinter(fileWriter, reportSettings.getFormat())) {
-				ReportColumns reportColumns = reportSettings.getReportColumns();
-				printHeader(csvPrinter, reportColumns);
-				for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
-					printChromatogramData(csvPrinter, reportColumns, chromatogram);
-					if(reportSettings.reportReferencedChromatograms()) {
-						for(IChromatogram<?> referencedChromatograms : chromatogram.getReferencedChromatograms()) {
-							printChromatogramData(csvPrinter, reportColumns, referencedChromatograms);
-						}
+		boolean fileExists = file.exists() && file.length() > 0;
+		try (CSVPrinter csvPrinter = new CSVPrinter(new FileWriter(file, append), reportSettings.getFormat())) {
+			/*
+			 * Header
+			 */
+			ReportColumns reportColumns = reportSettings.getReportColumns();
+			printHeader(csvPrinter, reportColumns, reportSettings, fileExists);
+			boolean printSectionSeparator = reportSettings.isPrintSectionSeparator();
+			/*
+			 * Data
+			 */
+			for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
+				printChromatogramData(csvPrinter, reportColumns, chromatogram, printSectionSeparator);
+				if(reportSettings.reportReferencedChromatograms()) {
+					for(IChromatogram<?> referencedChromatograms : chromatogram.getReferencedChromatograms()) {
+						printChromatogramData(csvPrinter, reportColumns, referencedChromatograms, printSectionSeparator);
 					}
 				}
 			}
 		}
 	}
 
-	void printHeader(CSVPrinter csvPrinter, ReportColumns reportColumns) throws IOException {
+	private void printHeader(CSVPrinter csvPrinter, ReportColumns reportColumns, ChromatogramReportSettings reportSettings, boolean fileExists) throws IOException {
+
+		boolean printHeader = reportSettings.isPrintResultsHeader();
+		if(printHeader) {
+			if(fileExists) {
+				printHeader = reportSettings.isAppendResultsHeader();
+			}
+		}
+		//
+		if(printHeader) {
+			printHeader(csvPrinter, reportColumns);
+		}
+	}
+
+	private void printHeader(CSVPrinter csvPrinter, ReportColumns reportColumns) throws IOException {
 
 		for(String reportColumn : reportColumns) {
 			csvPrinter.print(reportColumn);
@@ -64,7 +85,7 @@ public class ConfigurableReportWriter {
 		csvPrinter.println();
 	}
 
-	void printChromatogramData(CSVPrinter csvPrinter, ReportColumns reportColumns, IChromatogram<? extends IPeak> chromatogram) throws IOException {
+	private void printChromatogramData(CSVPrinter csvPrinter, ReportColumns reportColumns, IChromatogram<? extends IPeak> chromatogram, boolean printSectionSeparator) throws IOException {
 
 		int peakNumber = 1;
 		for(IPeak peak : chromatogram.getPeaks()) {
@@ -264,6 +285,10 @@ public class ConfigurableReportWriter {
 				}
 			}
 			peakNumber++;
+			csvPrinter.println();
+		}
+		//
+		if(printSectionSeparator) {
 			csvPrinter.println();
 		}
 	}

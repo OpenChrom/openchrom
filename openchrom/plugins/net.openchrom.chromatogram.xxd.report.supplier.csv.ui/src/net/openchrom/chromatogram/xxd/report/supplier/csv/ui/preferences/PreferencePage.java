@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.xxd.report.supplier.csv.ui.preferences;
 
-import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpacerFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -39,7 +38,6 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	@Override
 	public void createFieldEditors() {
 
-		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new ComboFieldEditor(PreferenceSupplier.P_DELIMITER, "Column delimiter", PreferenceSupplier.DELIMITERS, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REPORT_REFERENCED_CHROMATOGRAMS, "Report Referenced Chromatograms", getFieldEditorParent()));
 	}

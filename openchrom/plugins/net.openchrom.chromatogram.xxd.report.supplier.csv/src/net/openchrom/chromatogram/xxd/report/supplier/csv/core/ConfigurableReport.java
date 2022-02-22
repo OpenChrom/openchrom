@@ -38,9 +38,9 @@ public class ConfigurableReport extends AbstractChromatogramReportGenerator {
 		//
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof ChromatogramReportSettings) {
-				ChromatogramReportSettings reportSettings = (ChromatogramReportSettings)settings;
-				ConfigurableReportWriter chromatogramReport = new ConfigurableReportWriter();
 				try {
+					ChromatogramReportSettings reportSettings = (ChromatogramReportSettings)settings;
+					ConfigurableReportWriter chromatogramReport = new ConfigurableReportWriter();
 					chromatogramReport.generate(file, append, chromatograms, reportSettings);
 					processingInfo.setProcessingResult(file);
 				} catch(IOException e) {
@@ -53,13 +53,6 @@ public class ConfigurableReport extends AbstractChromatogramReportGenerator {
 		}
 		//
 		return processingInfo;
-	}
-
-	protected List<IChromatogram<? extends IPeak>> getChromatogramList(IChromatogram<? extends IPeak> chromatogram) {
-
-		List<IChromatogram<? extends IPeak>> chromatograms = new ArrayList<>();
-		chromatograms.add(chromatogram);
-		return chromatograms;
 	}
 
 	@Override
@@ -88,5 +81,12 @@ public class ConfigurableReport extends AbstractChromatogramReportGenerator {
 	public IProcessingInfo<?> generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, IChromatogramReportSettings settings, IProgressMonitor monitor) {
 
 		return report(file, append, chromatograms, settings, monitor);
+	}
+
+	protected List<IChromatogram<? extends IPeak>> getChromatogramList(IChromatogram<? extends IPeak> chromatogram) {
+
+		List<IChromatogram<? extends IPeak>> chromatograms = new ArrayList<>();
+		chromatograms.add(chromatogram);
+		return chromatograms;
 	}
 }
