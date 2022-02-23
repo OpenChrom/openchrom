@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2021 Lablicate GmbH.
+ * Copyright (c) 2008, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -13,24 +13,15 @@ package net.openchrom.msd.converter.supplier.animl.model;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
-import org.eclipse.chemclipse.msd.model.core.AbstractVendorMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.AbstractVendorStandaloneMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 
-public class VendorScan extends AbstractVendorMassSpectrum implements IVendorScan {
+public class VendorScan extends AbstractVendorStandaloneMassSpectrum implements IVendorScan {
 
-	/**
-	 * Renew the serialVersionUID any time you have changed some fields or
-	 * methods.
-	 */
-	private static final long serialVersionUID = -4140714855668296421L;
+	private static final long serialVersionUID = -2505351166336940676L;
 	private static final Logger logger = Logger.getLogger(VendorScan.class);
-	/**
-	 * MAX_IONS The total amount of ions to be stored in the
-	 * cdf chromatogram.<br/>
-	 * It does not mean, that ion 65535 is the upper bound, but only 65535 mass
-	 * fragments can be stored in a mass spectrum.
-	 */
+	//
 	public static final int MAX_IONS = 65535;
 	public static final int MIN_RETENTION_TIME = 0;
 	public static final int MAX_RETENTION_TIME = Integer.MAX_VALUE;

@@ -24,7 +24,7 @@ import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
-import org.eclipse.chemclipse.msd.model.core.IVendorMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IVendorStandaloneMassSpectrum;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.VendorMassSpectrum;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,7 +54,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 	@Override
 	public IMassSpectra read(File file, IProgressMonitor monitor) throws IOException {
 
-		IVendorMassSpectrum massSpectrum = null;
+		IVendorStandaloneMassSpectrum massSpectrum = null;
 		//
 		try {
 			AnIMLType animl = XmlReader.getAnIML(file);
@@ -143,7 +143,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 		return massSpectra;
 	}
 
-	private IVendorMassSpectrum readSample(AnIMLType animl, IVendorMassSpectrum massSpectrum) {
+	private IVendorStandaloneMassSpectrum readSample(AnIMLType animl, IVendorStandaloneMassSpectrum massSpectrum) {
 
 		SampleType sample = animl.getSampleSet().getSample().get(0);
 		massSpectrum.setIdentifier(sample.getSampleID());

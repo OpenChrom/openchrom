@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2021 Lablicate GmbH.
+ * Copyright (c) 2013, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -13,7 +13,7 @@ package net.openchrom.msd.converter.supplier.gaml.model;
 
 import org.eclipse.chemclipse.msd.model.core.AbstractMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.core.IVendorMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IVendorStandaloneMassSpectrum;
 
 public class VendorMassSpectra extends AbstractMassSpectra implements IVendorMassSpectra {
 
@@ -21,8 +21,8 @@ public class VendorMassSpectra extends AbstractMassSpectra implements IVendorMas
 	public String getName() {
 
 		IScanMSD scanMSD = this.getMassSpectrum(1);
-		if(scanMSD instanceof IVendorMassSpectrum) {
-			return ((IVendorMassSpectrum)scanMSD).getName();
+		if(scanMSD instanceof IVendorStandaloneMassSpectrum) {
+			return ((IVendorStandaloneMassSpectrum)scanMSD).getName();
 		} else {
 			return super.getName();
 		}

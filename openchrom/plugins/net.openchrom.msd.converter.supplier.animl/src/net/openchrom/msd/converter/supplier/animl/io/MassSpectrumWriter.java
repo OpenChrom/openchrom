@@ -27,6 +27,7 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.IVendorMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IVendorStandaloneMassSpectrum;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.BinaryReader;
@@ -87,13 +88,15 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 	public void writeMassSpectrum(FileWriter fileWriter, IScanMSD massSpectrum, IProgressMonitor monitor) throws IOException {
 
 		try {
-			writeAnIML(fileWriter, (IVendorMassSpectrum)massSpectrum);
+			if(massSpectrum instanceof IVendorStandaloneMassSpectrum) {
+				writeAnIML(fileWriter, (IVendorStandaloneMassSpectrum)massSpectrum);
+			}
 		} catch(JAXBException e) {
 			logger.warn(e);
 		}
 	}
 
-	private void writeAnIML(FileWriter fileWriter, IVendorMassSpectrum massSpectrum) throws JAXBException {
+	private void writeAnIML(FileWriter fileWriter, IVendorStandaloneMassSpectrum massSpectrum) throws JAXBException {
 
 		JAXBContext jaxbContext = JAXBContext.newInstance(AnIMLType.class);
 		Marshaller marshaller = jaxbContext.createMarshaller();
@@ -106,7 +109,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		marshaller.marshal(anIML, fileWriter);
 	}
 
-	private SampleSetType createSampleSet(IVendorMassSpectrum massSpectrum) {
+	private SampleSetType createSampleSet(IVendorStandaloneMassSpectrum massSpectrum) {
 
 		SampleSetType sampleSet = new SampleSetType();
 		SampleType sample = new SampleType();
