@@ -54,6 +54,9 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 	@Override
 	public IMassSpectra read(File file, IProgressMonitor monitor) throws IOException {
 
+		if(file.isDirectory() || !file.getName().endsWith(".animl")) {
+			return null;
+		}
 		IVendorStandaloneMassSpectrum massSpectrum = null;
 		//
 		try {

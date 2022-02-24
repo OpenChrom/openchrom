@@ -72,6 +72,9 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 	@Override
 	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws IOException {
 
+		if(file.isDirectory() || !file.getName().endsWith(".animl")) {
+			return null;
+		}
 		IVendorChromatogram chromatogram = null;
 		try {
 			AnIMLType animl = XmlReader.getAnIML(file);
