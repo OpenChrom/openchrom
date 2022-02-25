@@ -30,10 +30,10 @@ public class MassSpectrumMagicNumberMatcher extends AbstractMagicNumberMatcher i
 	public boolean checkFileFormat(File file) {
 
 		boolean isValidFormat = false;
+		if(file.isDirectory() || !checkFileExtension(file, ".animl")) {
+			return isValidFormat;
+		}
 		try {
-			if(!checkFileExtension(file, ".animl")) {
-				return isValidFormat;
-			}
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
