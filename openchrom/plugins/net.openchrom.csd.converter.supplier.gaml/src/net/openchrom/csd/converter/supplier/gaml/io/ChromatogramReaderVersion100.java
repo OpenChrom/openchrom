@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,21 +12,15 @@
 package net.openchrom.csd.converter.supplier.gaml.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramReader;
 import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
@@ -47,12 +41,16 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import net.openchrom.csd.converter.supplier.gaml.model.IVendorChromatogram;
 import net.openchrom.csd.converter.supplier.gaml.model.VendorChromatogram;
 import net.openchrom.csd.converter.supplier.gaml.model.VendorScan;
 import net.openchrom.xxd.converter.supplier.gaml.internal.io.IConstants;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Experiment;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.GAML;
+import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.ObjectFactory;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Parameter;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Peaktable;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Peaktable.Peak;
@@ -67,19 +65,18 @@ import net.openchrom.xxd.converter.supplier.gaml.io.Reader100;
 public class ChromatogramReaderVersion100 extends AbstractChromatogramReader implements IChromatogramCSDReader {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReaderVersion100.class);
-	private String contextPath;
 
-	public ChromatogramReaderVersion100(String contextPath) {
+	public ChromatogramReaderVersion100() {
 
-		this.contextPath = contextPath;
 	}
 
 	@Override
-	public IChromatogramCSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramCSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		List<VendorChromatogram> chromatograms = getChromatograms(file);
-		if(chromatograms.isEmpty())
+		if(chromatograms.isEmpty()) {
 			return null;
+		}
 		VendorChromatogram chromatogram = chromatograms.get(0);
 		chromatograms.stream().skip(1).forEach(chromatogram::addReferencedChromatogram);
 		return chromatogram;
@@ -87,26 +84,28 @@ public class ChromatogramReaderVersion100 extends AbstractChromatogramReader imp
 
 	List<VendorChromatogram> getChromatograms(File file) {
 
-		List<VendorChromatogram> chromatograms = new ArrayList<VendorChromatogram>();
+		List<VendorChromatogram> chromatograms = new ArrayList<>();
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
 			NodeList nodeList = document.getElementsByTagName(IConstants.NODE_GAML);
-			JAXBContext jaxbContext = JAXBContext.newInstance(contextPath);
+			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			GAML gaml = (GAML)unmarshaller.unmarshal(nodeList.item(0));
 			for(Experiment experiment : gaml.getExperiment()) {
 				VendorChromatogram chromatogram = new VendorChromatogram();
 				chromatogram.setDataName(experiment.getName());
 				XMLGregorianCalendar collectDate = experiment.getCollectdate();
-				if(collectDate != null)
+				if(collectDate != null) {
 					chromatogram.setDate(collectDate.toGregorianCalendar().getTime());
+				}
 				chromatogram.setConverterId("");
 				chromatogram.setFile(file);
 				for(Parameter parameter : experiment.getParameter()) {
-					if(parameter.getName().equals("limsID"))
+					if(parameter.getName().equals("limsID")) {
 						chromatogram.setBarcode(parameter.getValue());
+					}
 				}
 				for(Trace trace : experiment.getTrace()) {
 					double[] retentionTimes = null;
@@ -162,7 +161,7 @@ public class ChromatogramReaderVersion100 extends AbstractChromatogramReader imp
 	}
 
 	@Override
-	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
 		//
@@ -172,7 +171,7 @@ public class ChromatogramReaderVersion100 extends AbstractChromatogramReader imp
 			Document document = documentBuilder.parse(file);
 			NodeList nodeList = document.getElementsByTagName(IConstants.NODE_GAML);
 			//
-			JAXBContext jaxbContext = JAXBContext.newInstance(contextPath);
+			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			GAML gaml = (GAML)unmarshaller.unmarshal(nodeList.item(0));
 			//

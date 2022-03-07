@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -40,11 +40,11 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 		//
 		final String header = new String(charBuffer);
 		if(header.contains(IConstants.GAML_V_100)) {
-			chromatogramReader = new ChromatogramReaderVersion100(IConstants.CONTEXT_PATH_V_100);
+			chromatogramReader = new ChromatogramReaderVersion100();
 		} else if(header.contains(IConstants.GAML_V_110)) {
-			chromatogramReader = new ChromatogramReaderVersion110(IConstants.CONTEXT_PATH_V_110);
+			chromatogramReader = new ChromatogramReaderVersion110();
 		} else if(header.contains(IConstants.GAML_V_120)) {
-			chromatogramReader = new ChromatogramReaderVersion120(IConstants.CONTEXT_PATH_V_120);
+			chromatogramReader = new ChromatogramReaderVersion120();
 		} else {
 			throw new UnknownVersionException();
 		}

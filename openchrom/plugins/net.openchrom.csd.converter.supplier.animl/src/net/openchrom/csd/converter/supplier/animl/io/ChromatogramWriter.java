@@ -12,13 +12,9 @@
 package net.openchrom.csd.converter.supplier.animl.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
@@ -31,6 +27,9 @@ import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.BinaryReader;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.Common;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AnIMLType;
@@ -43,6 +42,7 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Exper
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ExperimentStepType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.IndividualValueSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.MethodType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ObjectFactory;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterTypeType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.PlotScaleType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ResultType;
@@ -59,10 +59,10 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 	private static final Logger logger = Logger.getLogger(ChromatogramWriter.class);
 
 	@Override
-	public void writeChromatogram(File file, IChromatogramCSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void writeChromatogram(File file, IChromatogramCSD chromatogram, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
 		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance(AnIMLType.class);
+			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
 			//
 			AnIMLType anIML = new AnIMLType();

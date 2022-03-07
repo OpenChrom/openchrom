@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,9 +14,6 @@ package net.openchrom.xir.converter.supplier.gaml.io;
 import java.io.File;
 import java.io.IOException;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,11 +26,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import net.openchrom.xir.converter.supplier.gaml.model.IVendorScanXIR;
 import net.openchrom.xir.converter.supplier.gaml.model.VendorScanXIR;
 import net.openchrom.xxd.converter.supplier.gaml.internal.io.IConstants;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Experiment;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.GAML;
+import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.ObjectFactory;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Parameter;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Trace;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Xdata;
@@ -52,7 +53,7 @@ public class ScanReaderVersion110 {
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
 			NodeList nodeList = document.getElementsByTagName(IConstants.NODE_GAML);
-			JAXBContext jaxbContext = JAXBContext.newInstance(IConstants.CONTEXT_PATH_V_110);
+			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			GAML gaml = (GAML)unmarshaller.unmarshal(nodeList.item(0));
 			for(Experiment experiment : gaml.getExperiment()) {

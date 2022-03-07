@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -32,23 +32,20 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader implements
 	public static IChromatogramCSDReader getReader(final File file) throws IOException {
 
 		IChromatogramCSDReader chromatogramReader = null;
-		//
-		final FileReader fileReader = new FileReader(file);
-		final char[] charBuffer = new char[100];
-		fileReader.read(charBuffer);
-		fileReader.close();
-		//
-		final String header = new String(charBuffer);
-		if(header.contains(IConstants.GAML_V_100)) {
-			chromatogramReader = new ChromatogramReaderVersion100(IConstants.CONTEXT_PATH_V_100);
-		} else if(header.contains(IConstants.GAML_V_110)) {
-			chromatogramReader = new ChromatogramReaderVersion110(IConstants.CONTEXT_PATH_V_110);
-		} else if(header.contains(IConstants.GAML_V_120)) {
-			chromatogramReader = new ChromatogramReaderVersion120(IConstants.CONTEXT_PATH_V_120);
-		} else {
-			throw new UnknownVersionException();
+		try (final FileReader fileReader = new FileReader(file)) {
+			final char[] charBuffer = new char[100];
+			fileReader.read(charBuffer);
+			final String header = new String(charBuffer);
+			if(header.contains(IConstants.GAML_V_100)) {
+				chromatogramReader = new ChromatogramReaderVersion100();
+			} else if(header.contains(IConstants.GAML_V_110)) {
+				chromatogramReader = new ChromatogramReaderVersion110();
+			} else if(header.contains(IConstants.GAML_V_120)) {
+				chromatogramReader = new ChromatogramReaderVersion120();
+			} else {
+				throw new UnknownVersionException();
+			}
 		}
-		//
 		return chromatogramReader;
 	}
 
@@ -56,21 +53,13 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader implements
 	public IChromatogramCSD read(final File file, final IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
 		final IChromatogramCSDReader chromatogramReader = getReader(file);
-		if(chromatogramReader != null) {
-			return chromatogramReader.read(file, monitor);
-		} else {
-			return null;
-		}
+		return chromatogramReader.read(file, monitor);
 	}
 
 	@Override
 	public IChromatogramOverview readOverview(final File file, final IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
 		final IChromatogramCSDReader chromatogramReader = getReader(file);
-		if(chromatogramReader != null) {
-			return chromatogramReader.readOverview(file, monitor);
-		} else {
-			return null;
-		}
+		return chromatogramReader.readOverview(file, monitor);
 	}
 }

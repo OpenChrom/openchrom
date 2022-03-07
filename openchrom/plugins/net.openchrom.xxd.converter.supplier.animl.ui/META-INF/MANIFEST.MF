@@ -10,6 +10,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.chemclipse.support.ui,
  org.eclipse.chemclipse.support
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Import-Package: net.openchrom.xxd.converter.supplier.animl.preferences

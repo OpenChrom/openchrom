@@ -17,9 +17,6 @@ import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
@@ -35,6 +32,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.google.common.primitives.Doubles;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.BinaryReader;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.Common;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AnIMLType;
@@ -48,6 +48,7 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Exper
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ExperimentStepType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.IndividualValueSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.MethodType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ObjectFactory;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterTypeType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ResultType;
@@ -67,7 +68,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 	public void writeChromatogram(File file, IChromatogramWSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
 
 		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance(AnIMLType.class);
+			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
 			//
 			AnIMLType anIML = new AnIMLType();

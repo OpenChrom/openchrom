@@ -20,6 +20,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  net.openchrom.msd.converter.supplier.peaks;bundle-version="1.4.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.event;version="1.3.0"

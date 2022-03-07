@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -14,11 +14,8 @@ package net.openchrom.xxd.converter.supplier.gaml.internal.io;
 public interface IConstants {
 
 	String GAML_V_100 = "1.00";
-	String CONTEXT_PATH_V_100 = "net.openchrom.xxd.converter.supplier.gaml.internal.v100.model";
 	String GAML_V_110 = "1.10";
-	String CONTEXT_PATH_V_110 = "net.openchrom.xxd.converter.supplier.gaml.internal.v110.model";
 	String GAML_V_120 = "1.20";
-	String CONTEXT_PATH_V_120 = "net.openchrom.xxd.converter.supplier.gaml.internal.v120.model";
 	//
 	String IMPORT_CHROMATOGRAM = "Import GAML Chromatogram";
 	//

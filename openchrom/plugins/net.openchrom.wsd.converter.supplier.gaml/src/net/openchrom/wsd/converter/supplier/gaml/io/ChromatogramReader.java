@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -40,7 +40,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader implements
 		//
 		final String header = new String(charBuffer);
 		if(header.contains(IConstants.GAML_V_120)) {
-			chromatogramReader = new ChromatogramReaderVersion120(IConstants.CONTEXT_PATH_V_120);
+			chromatogramReader = new ChromatogramReaderVersion120();
 		} else {
 			throw new UnknownVersionException();
 		}
@@ -49,24 +49,16 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader implements
 	}
 
 	@Override
-	public IChromatogramWSD read(final File file, final IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramWSD read(final File file, final IProgressMonitor monitor) throws IOException {
 
 		final IChromatogramWSDReader chromatogramReader = getReader(file);
-		if(chromatogramReader != null) {
-			return chromatogramReader.read(file, monitor);
-		} else {
-			return null;
-		}
+		return chromatogramReader.read(file, monitor);
 	}
 
 	@Override
 	public IChromatogramOverview readOverview(final File file, final IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
 		final IChromatogramWSDReader chromatogramReader = getReader(file);
-		if(chromatogramReader != null) {
-			return chromatogramReader.readOverview(file, monitor);
-		} else {
-			return null;
-		}
+		return chromatogramReader.readOverview(file, monitor);
 	}
 }

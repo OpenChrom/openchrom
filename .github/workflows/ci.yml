@@ -1,5 +1,5 @@
 ###############################################################################
-# Copyright (c) 2021 ArSysOp and others
+# Copyright (c) 2021, 2022 ArSysOp and others
 #
 # This program and the accompanying materials are made available under the
 # terms of the Eclipse Public License 2.0 which is available at
@@ -30,12 +30,11 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: openchrom
-    - name: Set up JDK 8
+    - name: Set up JDK 11
       uses: actions/setup-java@v2
       with:
-        distribution: 'zulu'
-        java-version: '8'
-        java-package: 'jdk+fx'
+        distribution: 'temurin'
+        java-version: '11'
         cache: 'maven'
     - name: Build with Maven
       run: cd openchrom && mvn -f openchrom/releng/net.openchrom.aggregator/pom.xml install --batch-mode --no-transfer-progress

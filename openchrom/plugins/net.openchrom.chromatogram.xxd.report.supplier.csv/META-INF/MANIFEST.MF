@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.databinding;bundle-version="1.6.200",
  com.fasterxml.jackson.core.jackson-databind,
  com.fasterxml.jackson.core.jackson-core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.chromatogram.xxd.report.supplier.csv.core,
  net.openchrom.chromatogram.xxd.report.supplier.csv.io,

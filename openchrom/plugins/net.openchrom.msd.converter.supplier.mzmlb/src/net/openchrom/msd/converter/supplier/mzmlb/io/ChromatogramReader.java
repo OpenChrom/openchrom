@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,9 +17,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -82,7 +82,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			InputStream inputStream = new ByteArrayInputStream(xml);
 			Document document = documentBuilder.parse(inputStream);
 			NodeList topNode = document.getElementsByTagName(IConstants.NODE_MZML);
-			JAXBContext jaxbContext = JAXBContext.newInstance(IFormat.CONTEXT_PATH_V_110);
+			JAXBContext jaxbContext = JAXBContext.newInstance(MzML.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			MzML mzML = (MzML)unmarshaller.unmarshal(topNode.item(0));
 			RunType run = mzML.getRun();

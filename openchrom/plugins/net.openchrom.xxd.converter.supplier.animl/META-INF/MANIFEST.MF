@@ -9,10 +9,13 @@ Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.support,
  org.eclipse.chemclipse.model
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.converter.supplier.animl.internal.converter,
  net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core,
  net.openchrom.xxd.converter.supplier.animl.internal.model.astm.technique,
  net.openchrom.xxd.converter.supplier.animl.internal.model.w3,
  net.openchrom.xxd.converter.supplier.animl.preferences
+Import-Package: jakarta.xml.bind,
+ jakarta.xml.bind.annotation,
+ jakarta.xml.bind.annotation.adapters
