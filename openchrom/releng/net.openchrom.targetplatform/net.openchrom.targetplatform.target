@@ -2,9 +2,6 @@
 <?pde version="3.8"?><target name="OpenChrom Target (build)" sequenceNumber="42">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.equinox.sdk.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.gemini.jpa.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.persistence.sdk.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.chemclipse.rcp.compilation.community.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.chemclipse.rcp.compilation.testing.feature.feature.group" version="0.0.0"/>

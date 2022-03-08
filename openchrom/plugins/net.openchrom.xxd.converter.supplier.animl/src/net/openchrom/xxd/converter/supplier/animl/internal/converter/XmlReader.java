@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,9 +14,6 @@ package net.openchrom.xxd.converter.supplier.animl.internal.converter;
 import java.io.File;
 import java.io.IOException;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,7 +22,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AnIMLType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ObjectFactory;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
 
 public class XmlReader {
@@ -37,7 +38,7 @@ public class XmlReader {
 		Document document = documentBuilder.parse(file);
 		NodeList topNode = document.getElementsByTagName(IConstants.NODE_ANIML);
 		//
-		JAXBContext jaxbContext = JAXBContext.newInstance(IFormat.CONTEXT_PATH_V_090);
+		JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 		return (AnIMLType)unmarshaller.unmarshal(topNode.item(0));
 	}

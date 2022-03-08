@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
@@ -41,6 +40,7 @@ import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.SAXException;
 
+import jakarta.xml.bind.JAXBException;
 import net.openchrom.csd.converter.supplier.animl.model.IVendorChromatogram;
 import net.openchrom.csd.converter.supplier.animl.model.VendorChromatogram;
 import net.openchrom.csd.converter.supplier.animl.model.VendorScan;
@@ -63,7 +63,7 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 
 	@Override
-	public IChromatogramCSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramCSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
 		try {

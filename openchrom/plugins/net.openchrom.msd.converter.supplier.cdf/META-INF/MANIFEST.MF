@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.thirdpartylibraries.netcdf;bundle-version="4.3.19",
  org.eclipse.chemclipse.support;bundle-version="0.8.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: ChemClipse
 Export-Package: net.openchrom.msd.converter.supplier.cdf.converter,
  net.openchrom.msd.converter.supplier.cdf.exceptions,

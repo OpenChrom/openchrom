@@ -53,9 +53,12 @@ Require-Bundle: org.eclipse.ui,
  com.fasterxml.jackson.core.jackson-core;bundle-version="2.9.2",
  com.fasterxml.jackson.core.jackson-databind;bundle-version="2.9.2",
  org.eclipse.help;bundle-version="3.8.100"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
-Import-Package: javax.annotation;version="1.1.0",
+Import-Package: jakarta.xml.bind,
+ jakarta.xml.bind.annotation,
+ jakarta.xml.bind.annotation.adapters,
+ javax.annotation;version="1.1.0",
  org.osgi.service.component.annotations;version="[1.2.0,2.0.0)", 
  org.osgi.service.event;version="[1.0.0,2.0.0)"
 Service-Component: OSGI-INF/net.openchrom.xxd.process.supplier.templates.ui.services.ReportSettingsAnnotationService.xml,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,9 +22,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.zip.Inflater;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,6 +33,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import net.openchrom.nmr.converter.supplier.nmrml.internal.io.IConstants;
 import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.Acquisition1DType;
 import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.AcquisitionDimensionParameterSetType;
@@ -45,6 +45,7 @@ import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.CVParamTyp
 import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.FirstDimensionProcessingParameterSetType;
 import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.FirstDimensionProcessingParameterSetType.WindowFunction;
 import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.NmrMLType;
+import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.ObjectFactory;
 import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.SpectrumListType;
 import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.ValueWithUnitType;
 import net.openchrom.nmr.converter.supplier.nmrml.model.VendorFIDMeasurement;
@@ -64,7 +65,7 @@ public class ScanReaderVersion100 {
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
 			NodeList nodeList = document.getElementsByTagName(IConstants.NODE_NMRML);
-			JAXBContext jaxbContext = JAXBContext.newInstance(IConstants.V100_MODEL);
+			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			NmrMLType nmrML = (NmrMLType)unmarshaller.unmarshal(nodeList.item(0));
 			VendorFIDMeasurement measurement = new VendorFIDMeasurement();

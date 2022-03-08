@@ -28,7 +28,7 @@
          </property>
          <property
                name="applicationCSS"
-               value="/org.eclipse.chemclipse.rcp.app.ui/css/chemclipse.css">
+               value="platform:/plugin/org.eclipse.chemclipse.rcp.app.ui/css/chemclipse.css">
          </property>
       </product>
    </extension>
