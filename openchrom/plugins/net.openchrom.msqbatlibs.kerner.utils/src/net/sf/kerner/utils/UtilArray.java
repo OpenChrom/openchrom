@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -151,7 +151,7 @@ public class UtilArray {
 
 		final Double[] result = new Double[numbers.length];
 		for(int i = 0; i < result.length; i++) {
-			result[i] = new Double(numbers[i].doubleValue());
+			result[i] = Double.valueOf(numbers[i].doubleValue());
 		}
 		return result;
 	}

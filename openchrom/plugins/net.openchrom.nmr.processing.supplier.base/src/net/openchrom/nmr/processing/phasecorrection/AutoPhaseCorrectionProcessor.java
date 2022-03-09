@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -264,7 +264,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 			}
 			// calculation of entropy
 			for(int p = 0; p < penaltyArray.length; p++) {
-				if(new Double(penaltyArray[p]).equals(0.0)) {
+				if(Double.valueOf(penaltyArray[p]).equals(0.0)) {
 					penaltyArray[p] = 1.0;
 				}
 			}
