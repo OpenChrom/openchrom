@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (c) 2012, 2018 Lablicate GmbH. All rights reserved. This program 
+<!-- Copyright (c) 2012, 2022 Lablicate GmbH. All rights reserved. This program 
 	and the accompanying materials are made available under the terms of the 
 	Eclipse Public License v1.0 which accompanies this distribution, and is available 
 	at http://www.eclipse.org/legal/epl-v10.html Contributors: Dr. Philip Wenig 
@@ -20,8 +20,7 @@
 		<relativePath>../../chemclipse/chemclipse/pom.xml</relativePath>
 	</parent>
 	<properties>
-		<!-- due to bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=387701 we need to use an older Tycho version here -->
-		<tycho.version>1.7.0</tycho.version>
+		<tycho.version>2.3.0</tycho.version>
 		<tycho.target.groupId>net.openchrom</tycho.target.groupId>
 		<tycho.target.artifactId>net.openchrom.targetplatform</tycho.target.artifactId>
 		<tycho.target.version>${project.version}</tycho.target.version>
