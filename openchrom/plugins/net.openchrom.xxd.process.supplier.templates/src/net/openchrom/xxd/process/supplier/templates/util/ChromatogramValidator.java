@@ -29,6 +29,11 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 
 public class ChromatogramValidator {
 
+	private ChromatogramValidator() {
+
+		// only static access
+	}
+
 	public static List<DetectorSetting> filterValidDetectorSettings(IChromatogram<?> chromatogram, PeakDetectorSettings settings) {
 
 		List<DetectorSetting> detectorSettings = new ArrayList<>();

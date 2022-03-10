@@ -39,6 +39,7 @@ import net.openchrom.xxd.process.supplier.templates.peaks.AbstractPeakIdentifier
 import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
+import net.openchrom.xxd.process.supplier.templates.util.ChromatogramValidator;
 
 public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IPeakIdentifierMSD<IIdentificationResults>, ITemplateExport {
 
@@ -51,12 +52,12 @@ public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IP
 		if(peaks == null || peaks.isEmpty()) {
 			processingInfo.addErrorMessage(DESCRIPTION, "No peaks have been found in the current selection.");
 		} else {
-			runProcess(peaks, peakIdentifierSettings, processingInfo, monitor);
+			runProcess(peaks, processingInfo);
 		}
 		return processingInfo;
 	}
 
-	private void runProcess(List<? extends IPeakMSD> peaks, IPeakIdentifierSettingsMSD peakIdentifierSettings, IProcessingInfo<IIdentificationResults> processingInfo, IProgressMonitor monitor) {
+	private void runProcess(List<? extends IPeakMSD> peaks, IProcessingInfo<IIdentificationResults> processingInfo) {
 
 		/*
 		 * No settings: peakIdentifierSettings == null

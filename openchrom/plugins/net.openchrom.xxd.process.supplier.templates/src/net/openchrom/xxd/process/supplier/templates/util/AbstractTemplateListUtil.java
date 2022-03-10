@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -88,8 +88,7 @@ public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> imp
 	public List<String> importItems(File file) {
 
 		List<String> items = new ArrayList<>();
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			String item;
 			while((item = bufferedReader.readLine()) != null) {
 				IStatus status = validator.validate(item);
@@ -97,11 +96,10 @@ public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> imp
 					items.add(item);
 				}
 			}
-			bufferedReader.close();
-		} catch(FileNotFoundException e1) {
-			logger.warn(e1);
-		} catch(IOException e1) {
-			logger.warn(e1);
+		} catch(FileNotFoundException e) {
+			logger.warn(e);
+		} catch(IOException e) {
+			logger.warn(e);
 		}
 		//
 		return items;
@@ -125,8 +123,8 @@ public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> imp
 	@Override
 	public List<String> getList(String preferenceEntry) {
 
-		List<String> values = new ArrayList<String>();
-		if(preferenceEntry != "") {
+		List<String> values = new ArrayList<>();
+		if(!"".equals(preferenceEntry)) {
 			String[] items = parseString(preferenceEntry);
 			if(items.length > 0) {
 				for(String item : items) {
@@ -150,7 +148,7 @@ public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> imp
 
 	private List<String> getValues(String[] items) {
 
-		List<String> values = new ArrayList<String>();
+		List<String> values = new ArrayList<>();
 		if(items != null) {
 			int size = items.length;
 			for(int i = 0; i < size; i++) {
