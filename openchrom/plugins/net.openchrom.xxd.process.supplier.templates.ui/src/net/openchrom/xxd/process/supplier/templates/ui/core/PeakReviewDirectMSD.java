@@ -89,22 +89,27 @@ public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IP
 		if(!reviewSettings.isEmpty()) {
 			PeakReviewSettings settings = new PeakReviewSettings();
 			settings.setReviewSettings(reviewSettings);
-			ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
-			try {
-				DisplayUtils.executeInUserInterfaceThread(new Runnable() {
+			List<ReviewSetting> filteredReviewSettings = ChromatogramValidator.filterValidReviewSettings(chromatogram, settings);
+			if(filteredReviewSettings.isEmpty()) {
+				processingInfo.addWarnMessage(DESCRIPTION, "The chromatogram doesn't contain any of the given peak traces.");
+			} else {
+				ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
+				try {
+					DisplayUtils.executeInUserInterfaceThread(new Runnable() {
 
-					@Override
-					public void run() {
+						@Override
+						public void run() {
 
-						Shell shell = DisplayUtils.getShell();
-						PeakReviewSupport peakReviewSupport = new PeakReviewSupport();
-						peakReviewSupport.addSettings(shell, processSettings);
-					}
-				});
-			} catch(InterruptedException e) {
-				Thread.currentThread().interrupt();
-			} catch(ExecutionException e) {
-				processingInfo.addErrorMessage(DESCRIPTION, "The execution failed, see attached log file.", e);
+							Shell shell = DisplayUtils.getShell();
+							PeakReviewSupport peakReviewSupport = new PeakReviewSupport();
+							peakReviewSupport.addSettings(shell, processSettings);
+						}
+					});
+				} catch(InterruptedException e) {
+					Thread.currentThread().interrupt();
+				} catch(ExecutionException e) {
+					processingInfo.addErrorMessage(DESCRIPTION, "The execution failed, see attached log file.", e);
+				}
 			}
 		}
 	}
