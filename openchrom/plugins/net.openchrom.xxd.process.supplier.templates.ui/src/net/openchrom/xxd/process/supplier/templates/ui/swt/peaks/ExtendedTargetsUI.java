@@ -21,6 +21,7 @@ import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.targets.ITarget;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
@@ -94,7 +95,7 @@ public class ExtendedTargetsUI extends Composite {
 		/*
 		 * Select the first entry if available.
 		 */
-		if(targets != null && targets.size() > 0) {
+		if(targets != null && !targets.isEmpty()) {
 			targetListUI.getTable().select(0);
 		}
 		//
@@ -150,9 +151,9 @@ public class ExtendedTargetsUI extends Composite {
 
 				boolean visible = PartSupport.toggleCompositeVisibility(searchSupportUI);
 				if(visible) {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImageProvider.SIZE_16x16));
 				} else {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImageProvider.SIZE_16x16));
 				}
 			}
 		});
@@ -165,7 +166,7 @@ public class ExtendedTargetsUI extends Composite {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText("Open the Settings");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -197,8 +198,7 @@ public class ExtendedTargetsUI extends Composite {
 
 		Object object = targetListUI.getStructuredSelection().getFirstElement();
 		if(object instanceof IIdentificationTarget) {
-			IIdentificationTarget identificationTarget = (IIdentificationTarget)object;
-			return identificationTarget;
+			return (IIdentificationTarget)object;
 		}
 		return null;
 	}

@@ -39,6 +39,7 @@ import net.openchrom.xxd.process.supplier.templates.peaks.AbstractPeakIdentifier
 import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
+import net.openchrom.xxd.process.supplier.templates.util.ChromatogramValidator;
 
 public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IPeakIdentifierMSD<IIdentificationResults>, ITemplateExport {
 
@@ -51,12 +52,12 @@ public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IP
 		if(peaks == null || peaks.isEmpty()) {
 			processingInfo.addErrorMessage(DESCRIPTION, "No peaks have been found in the current selection.");
 		} else {
-			runProcess(peaks, peakIdentifierSettings, processingInfo, monitor);
+			runProcess(peaks, processingInfo);
 		}
 		return processingInfo;
 	}
 
-	private void runProcess(List<? extends IPeakMSD> peaks, IPeakIdentifierSettingsMSD peakIdentifierSettings, IProcessingInfo<IIdentificationResults> processingInfo, IProgressMonitor monitor) {
+	private void runProcess(List<? extends IPeakMSD> peaks, IProcessingInfo<IIdentificationResults> processingInfo) {
 
 		/*
 		 * No settings: peakIdentifierSettings == null
@@ -89,22 +90,27 @@ public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IP
 		if(!reviewSettings.isEmpty()) {
 			PeakReviewSettings settings = new PeakReviewSettings();
 			settings.setReviewSettings(reviewSettings);
-			ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
-			try {
-				DisplayUtils.executeInUserInterfaceThread(new Runnable() {
+			List<ReviewSetting> filteredReviewSettings = ChromatogramValidator.filterValidReviewSettings(chromatogram, settings);
+			if(filteredReviewSettings.isEmpty()) {
+				processingInfo.addWarnMessage(DESCRIPTION, "The chromatogram doesn't contain any of the given peak traces.");
+			} else {
+				ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
+				try {
+					DisplayUtils.executeInUserInterfaceThread(new Runnable() {
 
-					@Override
-					public void run() {
+						@Override
+						public void run() {
 
-						Shell shell = DisplayUtils.getShell();
-						PeakReviewSupport peakReviewSupport = new PeakReviewSupport();
-						peakReviewSupport.addSettings(shell, processSettings);
-					}
-				});
-			} catch(InterruptedException e) {
-				Thread.currentThread().interrupt();
-			} catch(ExecutionException e) {
-				processingInfo.addErrorMessage(DESCRIPTION, "The execution failed, see attached log file.", e);
+							Shell shell = DisplayUtils.getShell();
+							PeakReviewSupport peakReviewSupport = new PeakReviewSupport();
+							peakReviewSupport.addSettings(shell, processSettings);
+						}
+					});
+				} catch(InterruptedException e) {
+					Thread.currentThread().interrupt();
+				} catch(ExecutionException e) {
+					processingInfo.addErrorMessage(DESCRIPTION, "The execution failed, see attached log file.", e);
+				}
 			}
 		}
 	}
