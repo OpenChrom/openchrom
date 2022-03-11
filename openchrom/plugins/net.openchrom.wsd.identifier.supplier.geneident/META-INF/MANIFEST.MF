@@ -5,7 +5,7 @@ Bundle-Name: GeneIdent
 Bundle-SymbolicName: net.openchrom.wsd.identifier.supplier.geneident
 Bundle-Version: 1.4.0.qualifier
 Bundle-Activator: net.openchrom.wsd.identifier.supplier.geneident.Activator
-Bundle-Vendor: GeneIdent
+Bundle-Vendor: Lablicate GmbH
 Require-Bundle: org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
