@@ -21,6 +21,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.osgi.services;bundle-version="3.7.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
-Service-Component: OSGI-INF/net.openchrom.csd.converter.supplier.cdf.converter.ChromatogramImportConverterTSD.xml
 Export-Package: net.openchrom.csd.converter.supplier.cdf.model,
  net.openchrom.csd.converter.supplier.cdf.preferences
+Service-Component: OSGI-INF/net.openchrom.csd.converter.supplier.cdf.converter.ChromatogramImportConverterTSD.xml

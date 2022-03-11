@@ -27,17 +27,17 @@ Export-Package: net.openchrom.nmr.processing.apodization,
  net.openchrom.nmr.processing.supplier.base.core,
  net.openchrom.nmr.processing.supplier.base.settings,
  net.openchrom.nmr.processing.supplier.base.settings.support
+Automatic-Module-Name: net.openchrom.nmr.processing.supplier.base
 Service-Component: OSGI-INF/net.openchrom.nmr.processing.apodization.ExponentialApodizationFunctionProcessor.xml,
  OSGI-INF/net.openchrom.nmr.processing.apodization.GaussianApodizationFunctionProcessor.xml,
  OSGI-INF/net.openchrom.nmr.processing.digitalfilter.DigitalFilterRemoval.xml,
  OSGI-INF/net.openchrom.nmr.processing.ft.FourierTransformationProcessor.xml,
+ OSGI-INF/net.openchrom.nmr.processing.ft.InverseFourierTransformationProcessor.xml,
+ OSGI-INF/net.openchrom.nmr.processing.peakdetection.WaveletPeakDetectorProcessor.xml,
  OSGI-INF/net.openchrom.nmr.processing.phasecorrection.AutoPhaseCorrectionProcessor.xml,
  OSGI-INF/net.openchrom.nmr.processing.phasecorrection.PhaseCorrectionProcessor.xml,
  OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.BaselineCorrectionProcessor.xml,
- OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.DirectCurrentCorrection.xml,
- OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.ZeroFillingProcessor.xml,
- OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.xml,
  OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.ChemicalShiftCalibration.xml,
- OSGI-INF/net.openchrom.nmr.processing.ft.InverseFourierTransformationProcessor.xml,
- OSGI-INF/net.openchrom.nmr.processing.peakdetection.WaveletPeakDetectorProcessor.xml
-Automatic-Module-Name: net.openchrom.nmr.processing.supplier.base
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.DirectCurrentCorrection.xml,
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.xml,
+ OSGI-INF/net.openchrom.nmr.processing.supplier.base.core.ZeroFillingProcessor.xml
