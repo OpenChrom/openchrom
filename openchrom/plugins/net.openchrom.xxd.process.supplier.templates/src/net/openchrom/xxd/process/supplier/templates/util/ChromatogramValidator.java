@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,9 +23,16 @@ import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
+import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 
 public class ChromatogramValidator {
+
+	private ChromatogramValidator() {
+
+		// only static access
+	}
 
 	public static List<DetectorSetting> filterValidDetectorSettings(IChromatogram<?> chromatogram, PeakDetectorSettings settings) {
 
@@ -37,6 +44,18 @@ public class ChromatogramValidator {
 		}
 		//
 		return detectorSettings;
+	}
+
+	public static List<ReviewSetting> filterValidReviewSettings(IChromatogram<?> chromatogram, PeakReviewSettings settings) {
+
+		List<ReviewSetting> reviewSettings = new ArrayList<>();
+		for(ReviewSetting reviewSetting : settings.getReviewSettingsList()) {
+			if(chromatogramContainsTraces(chromatogram, reviewSetting.getTraces())) {
+				reviewSettings.add(reviewSetting);
+			}
+		}
+		//
+		return reviewSettings;
 	}
 
 	public static boolean chromatogramContainsTraces(IChromatogram<?> chromatogram, String tracesSetting) {
