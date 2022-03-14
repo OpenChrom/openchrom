@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.core.databinding.validation.IValidator;
 
-public interface IRatioListUtil<T extends IValidator> {
+public interface IRatioListUtil<T extends IValidator<Object>> {
 
 	T getValidator();
 

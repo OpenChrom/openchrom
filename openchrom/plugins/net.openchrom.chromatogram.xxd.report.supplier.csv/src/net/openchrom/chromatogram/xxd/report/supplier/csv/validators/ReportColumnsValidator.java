@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.chromatogram.xxd.report.supplier.csv.model.ReportColumns;
 
-public class ReportColumnsValidator implements IValidator {
+public class ReportColumnsValidator implements IValidator<Object> {
 
 	@Override
 	public IStatus validate(Object value) {

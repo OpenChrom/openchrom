@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,7 +15,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
-public class RetentionTimeValidator implements IValidator {
+public class RetentionTimeValidator implements IValidator<Object> {
 
 	private static final String ERROR = "Please enter a correct retention time in minutes, e.g. 4.25";
 	private static final String ERROR_VALUE_RANGE = "The retention time must be not <= 0.";

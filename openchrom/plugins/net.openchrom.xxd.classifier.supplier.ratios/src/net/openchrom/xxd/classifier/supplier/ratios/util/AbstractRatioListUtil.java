@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -26,7 +26,7 @@ import org.eclipse.chemclipse.support.settings.OperatingSystemUtils;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 
-public abstract class AbstractRatioListUtil<T extends IValidator> implements IRatioListUtil<T> {
+public abstract class AbstractRatioListUtil<T extends IValidator<Object>> implements IRatioListUtil<T> {
 
 	private static final Logger logger = Logger.getLogger(AbstractRatioListUtil.class);
 	//
@@ -40,6 +40,7 @@ public abstract class AbstractRatioListUtil<T extends IValidator> implements IRa
 	private T validator;
 
 	public AbstractRatioListUtil(T validator) {
+
 		this.validator = validator;
 	}
 

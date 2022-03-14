@@ -58,7 +58,6 @@ import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
@@ -297,9 +296,7 @@ public class GenericPDF {
 			final ObjectMapper mapper = new ObjectMapper();
 			mapper.readTree(tree);
 			return true;
-		} catch(JsonProcessingException e) {
-			return false;
-		} catch(IOException e) {
+		} catch(Exception e) {
 			logger.warn(e);
 			return false;
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,7 +18,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
-public class TracesValidator implements IValidator {
+public class TracesValidator implements IValidator<Object> {
 
 	private static final String SEPARATOR_TRACE_ITEM = AbstractTemplateListUtil.SEPARATOR_TRACE_ITEM;
 	private static final String SEPARATOR_TRACE_RANGE = AbstractTemplateListUtil.SEPARATOR_TRACE_RANGE;

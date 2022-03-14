@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -75,7 +75,6 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 			EventFilter eventFilter = new EventFilterMainSpectrum();
 			XMLEventReader filteredEventReader = inputFactory.createFilteredReader(eventReader, eventFilter);
 			XMLEvent xmlEvent = filteredEventReader.nextEvent();
-			@SuppressWarnings("unchecked")
 			Iterator<? extends Attribute> mainSpectrumAttributes = xmlEvent.asStartElement().getAttributes();
 			while(mainSpectrumAttributes.hasNext()) {
 				Attribute attribute = mainSpectrumAttributes.next();
@@ -92,7 +91,6 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 			filteredEventReader = inputFactory.createFilteredReader(eventReader, eventFilter);
 			if(filteredEventReader.hasNext()) {
 				xmlEvent = filteredEventReader.nextEvent();
-				@SuppressWarnings("unchecked")
 				Iterator<? extends Attribute> sampleAttributes = xmlEvent.asStartElement().getAttributes();
 				while(sampleAttributes.hasNext()) {
 					Attribute attribute = sampleAttributes.next();
@@ -114,7 +112,6 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 			BTMSPMassSpectrum mainSpectrum = new BTMSPMassSpectrum(); // TODO this only parses the MSP, but the source spectra are saved in here as well
 			while(filteredEventReader.hasNext()) {
 				xmlEvent = filteredEventReader.nextEvent();
-				@SuppressWarnings("unchecked")
 				Iterator<? extends Attribute> peakAttributes = xmlEvent.asStartElement().getAttributes();
 				float abundance = 0;
 				double ion = 0;
