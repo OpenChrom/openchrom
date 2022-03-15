@@ -25,7 +25,7 @@
 -Dosgi.user.area=@user.home/.openchrom/1.4.x
 -Dorg.eclipse.update.reconcile=false
       </vmArgs>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      <vmArgsMac>-XstartOnFirstThread
       </vmArgsMac>
    </launcherArgs>
 
