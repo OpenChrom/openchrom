@@ -17,9 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,7 +27,6 @@ import org.eclipse.chemclipse.converter.io.AbstractChromatogramReader;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
-import org.eclipse.chemclipse.msd.converter.supplier.mzml.converter.io.IFormat;
 import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.converter.IConstants;
 import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.converter.XmlReader;
 import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.BinaryDataArrayType;
@@ -55,6 +51,9 @@ import net.openchrom.msd.converter.supplier.mzmlb.model.VendorScanProxy;
 
 import ch.systemsx.cisd.hdf5.HDF5Factory;
 import ch.systemsx.cisd.hdf5.IHDF5SimpleReader;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 public class ChromatogramReader extends AbstractChromatogramReader implements IChromatogramMSDReader {
 

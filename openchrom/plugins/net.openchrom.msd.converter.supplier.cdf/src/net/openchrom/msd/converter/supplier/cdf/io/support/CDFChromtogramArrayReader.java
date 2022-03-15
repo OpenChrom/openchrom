@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2021 Lablicate GmbH.
+ * Copyright (c) 2013, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -26,6 +26,7 @@ import net.openchrom.msd.converter.supplier.cdf.exceptions.NotEnoughScanDataStor
 import net.openchrom.msd.converter.supplier.cdf.model.VendorIon;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorScan;
 
+import ucar.ma2.DataType;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
@@ -81,10 +82,10 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		 * -> Int ------------- Agilent: Ion -> Float Abundance -> Float
 		 * PointCount -> Int ScanIndex -> Int
 		 */
-		valueArrayIon = (double[])valuesIon.read().get1DJavaArray(double.class);
-		valueArrayAbundance = (float[])valuesAbundance.read().get1DJavaArray(float.class);
-		valueArrayPointCount = (int[])valuesPointCount.read().get1DJavaArray(int.class);
-		valueArrayScanIndex = (int[])valuesScanIndex.read().get1DJavaArray(int.class);
+		valueArrayIon = (double[])valuesIon.read().get1DJavaArray(DataType.DOUBLE);
+		valueArrayAbundance = (float[])valuesAbundance.read().get1DJavaArray(DataType.FLOAT);
+		valueArrayPointCount = (int[])valuesPointCount.read().get1DJavaArray(DataType.INT);
+		valueArrayScanIndex = (int[])valuesScanIndex.read().get1DJavaArray(DataType.INT);
 	}
 
 	public VendorScan getMassSpectrum(int scan, int precision, boolean forceNominal) throws NoSuchScanStored {
