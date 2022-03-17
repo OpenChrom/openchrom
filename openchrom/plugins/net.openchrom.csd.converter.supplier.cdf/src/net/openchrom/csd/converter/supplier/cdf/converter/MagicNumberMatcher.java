@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2021 Lablicate GmbH.
+ * Copyright (c) 2016, 2022 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -19,6 +19,7 @@ import org.eclipse.chemclipse.converter.core.IMagicNumberMatcher;
 import org.eclipse.chemclipse.logging.core.Logger;
 
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 
 public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
 
@@ -30,23 +31,23 @@ public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IM
 
 		boolean isValidFormat = false;
 		if(checkFileExtension(file, ".cdf")) {
-			NetcdfFile ncfile = null;
+			NetcdfFile netcdfFile = null;
 			try {
-				ncfile = NetcdfFile.open(file.getAbsolutePath());
-				if(ncfile != null) {
+				netcdfFile = NetcdfFiles.open(file.getAbsolutePath());
+				if(netcdfFile != null) {
 					/*
 					 * If no mass values are stored, assume that it is a FID file.
 					 */
-					if(ncfile.findVariable(VARIABLE_MASS_VALUES) == null) {
+					if(netcdfFile.findVariable(VARIABLE_MASS_VALUES) == null) {
 						isValidFormat = true;
 					}
 				}
 			} catch(Exception e) {
 				logger.warn(e);
 			} finally {
-				if(ncfile != null) {
+				if(netcdfFile != null) {
 					try {
-						ncfile.close();
+						netcdfFile.close();
 					} catch(IOException e) {
 						logger.warn(e);
 					}
