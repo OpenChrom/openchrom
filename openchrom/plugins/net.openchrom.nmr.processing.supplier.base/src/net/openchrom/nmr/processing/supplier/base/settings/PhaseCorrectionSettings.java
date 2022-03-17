@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,10 +12,12 @@
  * Alexander Stark - refactoring
  * Christoph Läubrich - refactoring
  * Matthias Mailänder - adapt to new ILabel interface
+ * Philip Wenig - refactoring Observable
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings;
 
-import java.util.Observable;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeSupport;
 
 import org.eclipse.chemclipse.support.settings.SystemSettings;
 import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
@@ -24,14 +26,22 @@ import org.eclipse.chemclipse.support.text.ILabel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * this class is final, synchronized, {@link Cloneable} and {@link Observable}
+ * this class is final, synchronized, {@link Cloneable} and {@link PropertyChangeSupport}
  * since it participates in the dynamic settings framework
  *
  */
 @SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
-public final class PhaseCorrectionSettings extends Observable implements Cloneable {
+public final class PhaseCorrectionSettings extends PropertyChangeSupport implements Cloneable {
+
+	private static final long serialVersionUID = 8441565462969403390L;
+
+	public PhaseCorrectionSettings() {
+
+		super("PhaseCorrectionSettings");
+	}
 
 	public enum PivotPointSelection implements ILabel {
+
 		LEFT("pivot @ far left end of the spectrum"), //
 		MIDDLE("pivot @ middle of the spectrum"), //
 		PEAK_MAX("pivot @ biggest peak of the spectrum"), //
@@ -125,8 +135,7 @@ public final class PhaseCorrectionSettings extends Observable implements Cloneab
 			@Override
 			public void run() {
 
-				setChanged();
-				notifyObservers(this);
+				firePropertyChange(new PropertyChangeEvent(this, "Update", "PhaseCorrectionSettings", "PhaseCorrectionSettings"));
 			}
 		}).start();
 	}

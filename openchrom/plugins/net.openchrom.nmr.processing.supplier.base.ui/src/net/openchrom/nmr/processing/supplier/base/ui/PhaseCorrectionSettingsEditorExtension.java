@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,9 +13,9 @@
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.ui;
 
+import java.beans.PropertyChangeSupport;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.util.Observable;
 
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.EditorExtension;
@@ -55,7 +55,7 @@ public class PhaseCorrectionSettingsEditorExtension implements EditorExtension {
 	}
 
 	@Override
-	public Observable createExtension(Composite parent) {
+	public PropertyChangeSupport createExtension(Composite parent) {
 
 		new PhaseCorrectionSettingsExtension(parent);
 		return settings;
