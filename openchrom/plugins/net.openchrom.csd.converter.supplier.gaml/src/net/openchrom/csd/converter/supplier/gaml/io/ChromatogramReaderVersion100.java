@@ -41,9 +41,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import net.openchrom.csd.converter.supplier.gaml.model.IVendorChromatogram;
 import net.openchrom.csd.converter.supplier.gaml.model.VendorChromatogram;
 import net.openchrom.csd.converter.supplier.gaml.model.VendorScan;
@@ -61,6 +58,10 @@ import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Units;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.Ydata;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader100;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 public class ChromatogramReaderVersion100 extends AbstractChromatogramReader implements IChromatogramCSDReader {
 
@@ -125,21 +126,25 @@ public class ChromatogramReaderVersion100 extends AbstractChromatogramReader imp
 							for(Peaktable peaktable : ydata.getPeaktable()) {
 								for(Peak peak : peaktable.getPeak()) {
 									Baseline baseline = peak.getBaseline();
-									int startScan = chromatogram.getScanNumber((float)baseline.getStartXvalue());
-									int stopScan = chromatogram.getScanNumber((float)baseline.getEndXvalue());
-									IScanRange scanRange = new ScanRange(startScan, stopScan);
-									try {
-										IChromatogramPeakCSD chromatogramPeak = PeakBuilderCSD.createPeak(chromatogram, scanRange, true);
-										if(peak.getName() != null) {
-											ILibraryInformation libraryInformation = new LibraryInformation();
-											libraryInformation.setName(peak.getName());
-											IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
-											IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
-											chromatogramPeak.getTargets().add(identificationTarget);
+									if(baseline != null) {
+										int startScan = chromatogram.getScanNumber((float)baseline.getStartXvalue());
+										int stopScan = chromatogram.getScanNumber((float)baseline.getEndXvalue());
+										IScanRange scanRange = new ScanRange(startScan, stopScan);
+										try {
+											IChromatogramPeakCSD chromatogramPeak = PeakBuilderCSD.createPeak(chromatogram, scanRange, true);
+											if(peak.getName() != null) {
+												ILibraryInformation libraryInformation = new LibraryInformation();
+												libraryInformation.setName(peak.getName());
+												IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
+												IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
+												chromatogramPeak.getTargets().add(identificationTarget);
+											}
+											chromatogram.addPeak(chromatogramPeak);
+										} catch(Exception e) {
+											logger.warn("Peak " + peak.getNumber() + " could not be added.");
 										}
-										chromatogram.addPeak(chromatogramPeak);
-									} catch(Exception e) {
-										logger.warn("Peak " + peak.getNumber() + " could not be added.");
+									} else {
+										logger.warn("Ignoring peak at " + peak.getPeakXvalue() + " with height " + peak.getPeakYvalue());
 									}
 								}
 							}
