@@ -106,10 +106,6 @@
          version="0.0.0"/>
 
    <includes
-         id="net.openchrom.thirdpartylibraries.mfl.feature"
-         version="0.0.0"/>
-
-   <includes
          id="net.openchrom.thirdpartylibraries.eclipselink.feature"
          version="0.0.0"/>
 
@@ -178,6 +174,13 @@
 
    <plugin
          id="net.openchrom.feature.branding"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="wrapped.us.hebi.matlab.mat.mfl-core"
          download-size="0"
          install-size="0"
          version="0.0.0"
