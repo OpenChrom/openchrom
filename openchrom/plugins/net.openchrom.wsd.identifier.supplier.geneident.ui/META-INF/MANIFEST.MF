@@ -16,8 +16,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
- net.openchrom.thirdpartylibraries.biojava;bundle-version="4.2.4",
- org.eclipse.chemclipse.ux.extension.wsd.ui;bundle-version="0.8.0"
+ org.eclipse.chemclipse.ux.extension.wsd.ui;bundle-version="0.8.0",
+ wrapped.org.biojava.biojava-core;bundle-version="6.0.5",
+ wrapped.org.biojava.biojava-ws;bundle-version="6.0.5"
 Bundle-ManifestVersion: 2
 Bundle-Activator: net.openchrom.wsd.identifier.supplier.geneident.ui.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-11

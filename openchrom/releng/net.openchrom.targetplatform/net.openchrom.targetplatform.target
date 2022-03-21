@@ -17,7 +17,6 @@
 <unit id="net.openchrom.thirdpartylibraries.groovy.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.lzf.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.opsin.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.biojava.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.javassist.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.xzing.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.concurrentlinkedhashmap.feature.feature.group" version="0.0.0"/>
@@ -52,6 +51,26 @@
 				<groupId>us.hebi.matlab.mat</groupId>
 				<artifactId>mfl-core</artifactId>
 				<version>0.5.8</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
+	<location includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>org.biojava</groupId>
+				<artifactId>biojava-core</artifactId>
+				<version>6.0.5</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
+	<location includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>org.biojava</groupId>
+				<artifactId>biojava-ws</artifactId>
+				<version>6.0.5</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>
