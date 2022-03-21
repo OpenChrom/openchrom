@@ -37,7 +37,6 @@
 <unit id="net.openchrom.thirdpartylibraries.jcampdx.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.jython.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.neuroph.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.mfl.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.jackcess.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.barcode4j.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.derby.feature.feature.group" version="0.0.0"/>
