@@ -66,10 +66,6 @@
          version="0.0.0"/>
 
    <includes
-         id="net.openchrom.thirdpartylibraries.biojava.feature"
-         version="0.0.0"/>
-
-   <includes
          id="net.openchrom.xxd.processor.supplier.tracecompare.feature"
          version="0.0.0"/>
 
@@ -181,6 +177,20 @@
 
    <plugin
          id="wrapped.us.hebi.matlab.mat.mfl-core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="wrapped.org.biojava.biojava-core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="wrapped.org.biojava.biojava-ws"
          download-size="0"
          install-size="0"
          version="0.0.0"
