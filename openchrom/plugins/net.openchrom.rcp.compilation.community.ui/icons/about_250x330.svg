@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -14,7 +12,7 @@
    height="330"
    id="svg2"
    version="1.0"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
    sodipodi:docname="about_250x330.svg"
    sodipodi:version="0.32"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
@@ -23,6 +21,18 @@
    inkscape:export-ydpi="96">
   <defs
      id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient933">
+      <stop
+         style="stop-color:#666666;stop-opacity:1;"
+         offset="0"
+         id="stop929" />
+      <stop
+         style="stop-color:#666666;stop-opacity:0;"
+         offset="1"
+         id="stop931" />
+    </linearGradient>
     <linearGradient
        id="linearGradient3854">
       <stop
@@ -329,14 +339,13 @@
     </linearGradient>
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient4158"
-       id="linearGradient3077"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.60954171,0,0,1.1632424,-13.302162,-35.393525)"
-       x1="27.62475"
-       y1="77.694611"
-       x2="569.52759"
-       y2="343.34332" />
+       xlink:href="#linearGradient933"
+       id="linearGradient935"
+       x1="-17.873728"
+       y1="136.18474"
+       x2="268.61089"
+       y2="136.18474"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -352,16 +361,17 @@
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1025"
+     inkscape:window-height="1007"
      inkscape:window-x="0"
-     inkscape:window-y="27"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true"
      showborder="true"
      objecttolerance="1"
      gridtolerance="1"
-     guidetolerance="1">
+     guidetolerance="1"
+     inkscape:document-rotation="0">
     <sodipodi:guide
        orientation="1,0"
        position="250,587.54675"
@@ -424,7 +434,7 @@
        x="-31.721952"
        y="-57.493481" />
     <rect
-       style="fill:url(#linearGradient3077);fill-opacity:1;stroke:none"
+       style="fill:url(#linearGradient935);fill-opacity:1;stroke:none"
        id="rect3659"
        width="286.48462"
        height="354.46939"
@@ -470,7 +480,7 @@
              id="tspan3759-7"
              x="85.971931"
              y="69.299202"
-             style="font-weight:bold;font-size:60.54641342px;line-height:1.25;-inkscape-font-specification:'Arial Bold'"><tspan
+             style="font-weight:bold;font-size:60.5464px;line-height:1.25;-inkscape-font-specification:'Arial Bold'"><tspan
                style="fill:#990000;fill-opacity:1"
                id="tspan3848-3">OPEN</tspan><tspan
                style="font-weight:normal;-inkscape-font-specification:Arial;fill:#333333;fill-opacity:1"
@@ -495,7 +505,7 @@
              id="tspan3095-4"
              x="433.83719"
              y="128.08392"
-             style="font-size:9.3849926px;line-height:1.25">R</tspan></text>
+             style="font-size:9.38499px;line-height:1.25">R</tspan></text>
         <path
            sodipodi:type="arc"
            style="fill:none;stroke:#666666;stroke-opacity:1"
