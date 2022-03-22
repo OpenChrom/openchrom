@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.wsd.converter.supplier.animl
 Eclipse-RegisterBuddy: org.eclipse.chemclipse.model, org.eclipse.chemclipse.wsd.model
 Bundle-ManifestVersion: 2
-Bundle-Name: AniML HPLC-UV/VIS
+Bundle-Name: AnIML HPLC-UV/VIS
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.animl;singleton:=true
 Bundle-Version: 1.4.0.qualifier
 Bundle-Activator: net.openchrom.wsd.converter.supplier.animl.Activator

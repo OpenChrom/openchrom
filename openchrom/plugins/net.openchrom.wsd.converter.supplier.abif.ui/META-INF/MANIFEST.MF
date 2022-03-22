@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.wsd.converter.supplier.abif.ui
 Bundle-ManifestVersion: 2
-Bundle-Name: Ui
+Bundle-Name: ab1 UI
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.abif.ui;singleton:=true
 Bundle-Version: 1.4.0.qualifier
 Bundle-Activator: net.openchrom.wsd.converter.supplier.abif.ui.Activator
