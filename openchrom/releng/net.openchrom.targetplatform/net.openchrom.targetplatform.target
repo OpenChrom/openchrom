@@ -41,7 +41,6 @@
 <unit id="net.openchrom.thirdpartylibraries.derby.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.eclipselink.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.imaging.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.sqlite.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.splash.feature.feature.group" version="0.0.0"/>
 <repository location="https://update.openchrom.net/repositories/community/latest/3rdparty"/>
 </location>
@@ -71,6 +70,16 @@
 				<groupId>org.biojava</groupId>
 				<artifactId>biojava-ws</artifactId>
 				<version>6.0.5</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
+	<location includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>org.xerial</groupId>
+				<artifactId>sqlite-jdbc</artifactId>
+				<version>3.36.0.3</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>

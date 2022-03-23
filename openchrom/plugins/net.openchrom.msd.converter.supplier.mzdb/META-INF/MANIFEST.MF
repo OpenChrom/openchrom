@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  org.eclipse.chemclipse.msd.converter.supplier.mzml,
- net.openchrom.thirdpartylibraries.sqlite;bundle-version="3.36.1"
+ org.xerial.sqlite-jdbc;bundle-version="3.36.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.msd.converter.supplier.mzdb,
