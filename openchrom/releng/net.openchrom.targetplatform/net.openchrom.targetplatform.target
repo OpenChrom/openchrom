@@ -24,7 +24,6 @@
 <unit id="net.openchrom.thirdpartylibraries.odfdom.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.imagej.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.jdbc.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.jhdf5.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.vectorgraphics2d.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.jna.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.pdfjet.feature.feature.group" version="0.0.0"/>
@@ -83,6 +82,22 @@
 				<type>jar</type>
 			</dependency>
 		</dependencies>
+	</location>
+	<location includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>cisd</groupId>
+				<artifactId>jhdf5</artifactId>
+				<version>14.12.6</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+		<repositories>
+			<repository>
+				<id>SciJava</id>
+				<url>https://maven.scijava.org/content/repositories/public/</url>
+			</repository>
+		</repositories>
 	</location>
 </locations>
 </target>

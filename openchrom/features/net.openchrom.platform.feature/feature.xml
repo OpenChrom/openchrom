@@ -118,10 +118,6 @@
          version="0.0.0"/>
 
    <includes
-         id="net.openchrom.thirdpartylibraries.jhdf5.feature"
-         version="0.0.0"/>
-
-   <includes
          id="net.openchrom.xxd.converter.supplier.gaml.feature"
          version="0.0.0"/>
 
@@ -194,6 +190,13 @@
 
    <plugin
          id="org.xerial.sqlite-jdbc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="wrapped.cisd.jhdf5"
          download-size="0"
          install-size="0"
          version="0.0.0"
