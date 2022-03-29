@@ -93,7 +93,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 			retentionTimeScaleFactor = 1;
 		}
 		/*
-		 * Not all supplier store a run time lenght.
+		 * Not all supplier store a run time length.
 		 */
 		variable = CDFConstants.VARIABLE_ACTUAL_RUN_TIME_LENGTH;
 		valueRunTimeLength = chromatogram.findVariable(variable);
