@@ -81,35 +81,22 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 	 */
 	private boolean isValidFileFormat(File file) {
 
-		assert file != null : getClass().getName() + " The chromatogram file " + file + " must not be null.";
+		if(file == null)
+			return false;
 		String check = "CDF";
-		if(file == null) {
-			return false;
-		} else {
-			FileInputStream is = null;
-			byte[] data = new byte[3];
-			try {
-				is = new FileInputStream(file);
-				is.read(data);
-			} catch(FileNotFoundException e) {
-				logger.warn(e);
-			} catch(IOException e) {
-				logger.warn(e);
-			} finally {
-				if(is != null) {
-					try {
-						is.close();
-					} catch(IOException e) {
-						logger.warn(e);
-					}
-				}
-			}
-			String test = new String(data).trim();
-			if(test.equals(check)) {
-				return true;
-			}
-			return false;
+		byte[] data = new byte[3];
+		try (FileInputStream is = new FileInputStream(file)) {
+			is.read(data);
+		} catch(FileNotFoundException e) {
+			logger.warn(e);
+		} catch(IOException e) {
+			logger.warn(e);
 		}
+		String test = new String(data).trim();
+		if(test.equals(check)) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -172,8 +159,8 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 		try {
 			operator = in.getOperator();
 			date = in.getDate();
-		} catch(NoCDFAttributeDataFound e1) {
-			logger.warn(e1);
+		} catch(NoCDFAttributeDataFound e) {
+			logger.warn(e);
 		}
 		/*
 		 * Set the file name to the chromatogram.
