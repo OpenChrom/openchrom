@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -62,4 +62,6 @@ public interface IAbstractCDFChromatogramArrayReader {
 	public NetcdfFile getChromatogram();
 
 	public float getIntensity(int scan);
+
+	public void readPeakTable();
 }
