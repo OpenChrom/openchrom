@@ -3,7 +3,8 @@
       id="net.openchrom.swtchart.extension.export.vectorgraphics.feature"
       label="Feature"
       version="1.4.0.qualifier"
-      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
+      provider-name="OpenChrom"
+      plugin="net.openchrom.feature.branding">
 
    <description url="https://projects.eclipse.org/projects/science.eavp">
       This is a SWTChart Extensions to support SVG, EPS and PDF export.
@@ -25,19 +26,8 @@ v1.0 which accompanies this distribution, and is available at
 http://www.eclipse.org/legal/epl-v10.html
    </license>
 
-   <requires>
-      <import feature="net.openchrom.thirdpartylibraries.vectorgraphics2d.feature" version="0.13.0.qualifier"/>
-   </requires>
-
    <plugin
          id="net.openchrom.swtchart.extension.export.vectorgraphics"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.openchrom.thirdpartylibraries.vectorgraphics2d"
          download-size="0"
          install-size="0"
          version="0.0.0"

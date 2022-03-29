@@ -25,7 +25,6 @@
 <unit id="net.openchrom.thirdpartylibraries.imagej.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.jdbc.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.jhdf5.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.vectorgraphics2d.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.jna.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.pdfjet.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.jettison.feature.feature.group" version="0.0.0"/>
@@ -44,7 +43,7 @@
 <unit id="net.openchrom.thirdpartylibraries.splash.feature.feature.group" version="0.0.0"/>
 <repository location="https://update.openchrom.net/repositories/community/latest/3rdparty"/>
 </location>
-	<location missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>us.hebi.matlab.mat</groupId>
@@ -54,7 +53,7 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeSource="true" missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>org.biojava</groupId>
@@ -64,7 +63,7 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeSource="true" missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>org.biojava</groupId>
@@ -74,12 +73,22 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeSource="true" missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>org.xerial</groupId>
 				<artifactId>sqlite-jdbc</artifactId>
 				<version>3.36.0.3</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
+	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>de.erichseifert.vectorgraphics2d</groupId>
+				<artifactId>VectorGraphics2D</artifactId>
+				<version>0.13</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>
