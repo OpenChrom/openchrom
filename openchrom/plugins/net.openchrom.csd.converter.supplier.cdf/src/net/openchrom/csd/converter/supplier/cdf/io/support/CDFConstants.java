@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2018 Lablicate GmbH.
+ * Copyright (c) 2014, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -46,4 +46,11 @@ public class CDFConstants {
 	public static final String VARIABLE_ACTUAL_SAMPLING_INTERVAL = "actual_sampling_interval";
 	public static final String VARIABLE_ACTUAL_DELAY_TIME = "actual_delay_time";
 	public static final String VARIABLE_ORDINATE_VALUES = "ordinate_values";
+	//
+	public static final String VARIABLE_PEAK_NAME = "peak_name";
+	public static final String VARIABLE_PEAK_RETENTION_TIME = "peak_retention_time";
+	public static final String VARIABLE_PEAK_AMOUNT = "peak_amount";
+	public static final String VARIABLE_PEAK_HEIGHT = "peak_height";
+	public static final String VARIABLE_PEAK_AREA = "peak_area";
+	public static final String VARIABLE_PEAK_AREA_PERCENT = "peak_area_percent";
 }

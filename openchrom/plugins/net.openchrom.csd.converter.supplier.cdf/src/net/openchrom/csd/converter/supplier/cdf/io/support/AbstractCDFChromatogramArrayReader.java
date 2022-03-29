@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2019 Lablicate GmbH.
+ * Copyright (c) 2013, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -13,10 +13,12 @@ package net.openchrom.csd.converter.supplier.cdf.io.support;
 
 import java.io.IOException;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
-
+import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayFloat;
 import ucar.nc2.Attribute;
 import ucar.nc2.Dimension;
@@ -25,6 +27,7 @@ import ucar.nc2.Variable;
 
 public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDFChromatogramArrayReader {
 
+	private static final Logger logger = Logger.getLogger(AbstractCDFChromatogramArrayReader.class);
 	private NetcdfFile chromatogram;
 	private Attribute operator;
 	private Attribute date;
@@ -40,6 +43,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	private int scanInterval;
 
 	public AbstractCDFChromatogramArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
+
 		this.chromatogram = chromatogram;
 		initializeVariables();
 	}
@@ -175,5 +179,46 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	public float getIntensity(int scan) {
 
 		return valueArrayIntensity.get(scan--);
+	}
+
+	@Override
+	public void readPeakTable() {
+
+		try {
+			Variable valuesPeakName = chromatogram.findVariable(CDFConstants.VARIABLE_PEAK_NAME);
+			if(valuesPeakName == null) {
+				return;
+			}
+			ArrayChar.D2 valuesArrayPeakName = (ArrayChar.D2)valuesPeakName.read();
+			Variable valuesPeakRententionTime = chromatogram.findVariable(CDFConstants.VARIABLE_PEAK_RETENTION_TIME);
+			if(valuesPeakRententionTime == null) {
+				return;
+			}
+			ArrayFloat.D1 valuesArrayPeakRententionTime = (ArrayFloat.D1)valuesPeakRententionTime.read();
+			Variable valuesPeakAmount = chromatogram.findVariable(CDFConstants.VARIABLE_PEAK_AMOUNT);
+			if(valuesPeakAmount == null) {
+				return;
+			}
+			Variable valuesPeakHeight = chromatogram.findVariable(CDFConstants.VARIABLE_PEAK_HEIGHT);
+			if(valuesPeakHeight == null) {
+				return;
+			}
+			Variable valuesPeakArea = chromatogram.findVariable(CDFConstants.VARIABLE_PEAK_AREA);
+			if(valuesPeakArea == null) {
+				return;
+			}
+			Variable valuesPeakAreaPercent = chromatogram.findVariable(CDFConstants.VARIABLE_PEAK_AREA_PERCENT);
+			if(valuesPeakAreaPercent == null) {
+				return;
+			}
+			// TODO: actually import the peaks
+			long size = Math.min(valuesPeakName.getSize(), valuesArrayPeakRententionTime.getSize());
+			for(int p = 0; p < size; p++) {
+				logger.warn("Ignoring peak " + valuesArrayPeakName.getString(p) + " at " + valuesArrayPeakRententionTime.get(p));
+			}
+		} catch(Exception e) {
+			System.out.println("Failed to read the peak table.");
+			logger.warn(e);
+		}
 	}
 }
