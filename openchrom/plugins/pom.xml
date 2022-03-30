@@ -61,9 +61,6 @@
 		<module>net.openchrom.nmr.processing.supplier.base.fragment.test</module>
 		<module>net.openchrom.nmr.processing.supplier.base.ui</module>
 		<module>net.openchrom.nmr.processing.supplier.base</module>
-		<module>net.openchrom.pcr.report.supplier.misc.fragment.test</module>
-		<module>net.openchrom.pcr.report.supplier.misc.ui</module>
-		<module>net.openchrom.pcr.report.supplier.misc</module>
 		<module>net.openchrom.swtchart.extension.export.vectorgraphics</module>
 		<module>net.openchrom.wsd.converter.supplier.abif.fragment.test</module>
 		<module>net.openchrom.wsd.converter.supplier.abif.ui</module>
