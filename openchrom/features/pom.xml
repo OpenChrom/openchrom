@@ -51,7 +51,6 @@
 		<module>net.openchrom.msqbatlibs.feature</module>
 		<module>net.openchrom.msqbatlibs.kerner.utils.feature</module>
 		<module>net.openchrom.nmr.processing.supplier.base.feature</module>
-		<module>net.openchrom.pcr.report.supplier.misc.feature</module>
 		<module>net.openchrom.platform.feature</module>
 		<module>net.openchrom.swtchart.extension.export.vectorgraphics.feature</module>
 		<module>net.openchrom.wsd.converter.supplier.abif.feature</module>
