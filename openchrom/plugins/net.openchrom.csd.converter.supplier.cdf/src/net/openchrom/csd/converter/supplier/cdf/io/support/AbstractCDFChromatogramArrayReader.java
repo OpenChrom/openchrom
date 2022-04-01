@@ -14,10 +14,18 @@ package net.openchrom.csd.converter.supplier.cdf.io.support;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.identifier.ComparisonResult;
+import org.eclipse.chemclipse.model.identifier.IComparisonResult;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.identifier.LibraryInformation;
+import org.eclipse.chemclipse.model.implementation.IdentificationTarget;
 
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
+import net.openchrom.csd.converter.supplier.cdf.model.VendorChromatogramCSD;
+
 import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayFloat;
 import ucar.nc2.Attribute;
@@ -182,7 +190,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	}
 
 	@Override
-	public void readPeakTable() {
+	public void readPeakTable(VendorChromatogramCSD vendorChromatogram) {
 
 		try {
 			Variable valuesPeakName = chromatogram.findVariable(CDFConstants.VARIABLE_PEAK_NAME);
@@ -195,26 +203,14 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 				return;
 			}
 			ArrayFloat.D1 valuesArrayPeakRententionTime = (ArrayFloat.D1)valuesPeakRententionTime.read();
-			Variable valuesPeakAmount = chromatogram.findVariable(CDFConstants.VARIABLE_PEAK_AMOUNT);
-			if(valuesPeakAmount == null) {
-				return;
-			}
-			Variable valuesPeakHeight = chromatogram.findVariable(CDFConstants.VARIABLE_PEAK_HEIGHT);
-			if(valuesPeakHeight == null) {
-				return;
-			}
-			Variable valuesPeakArea = chromatogram.findVariable(CDFConstants.VARIABLE_PEAK_AREA);
-			if(valuesPeakArea == null) {
-				return;
-			}
-			Variable valuesPeakAreaPercent = chromatogram.findVariable(CDFConstants.VARIABLE_PEAK_AREA_PERCENT);
-			if(valuesPeakAreaPercent == null) {
-				return;
-			}
-			// TODO: actually import the peaks
-			long size = Math.min(valuesPeakName.getSize(), valuesArrayPeakRententionTime.getSize());
-			for(int p = 0; p < size; p++) {
-				logger.warn("Ignoring peak " + valuesArrayPeakName.getString(p) + " at " + valuesArrayPeakRententionTime.get(p));
+			long rts = valuesArrayPeakRententionTime.getSize();
+			for(int p = 0; p < rts; p++) {
+				float rt = valuesArrayPeakRententionTime.get(p);
+				ILibraryInformation libraryInformation = new LibraryInformation();
+				libraryInformation.setName(valuesArrayPeakName.getString(p));
+				IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
+				IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
+				vendorChromatogram.getScan(vendorChromatogram.getScanNumber(rt)).getTargets().add(identificationTarget);
 			}
 		} catch(Exception e) {
 			System.out.println("Failed to read the peak table.");

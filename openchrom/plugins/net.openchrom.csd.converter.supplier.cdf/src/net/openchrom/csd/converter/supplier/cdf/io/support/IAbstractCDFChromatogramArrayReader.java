@@ -12,6 +12,7 @@
 package net.openchrom.csd.converter.supplier.cdf.io.support;
 
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
+import net.openchrom.csd.converter.supplier.cdf.model.VendorChromatogramCSD;
 
 import ucar.nc2.NetcdfFile;
 
@@ -63,5 +64,5 @@ public interface IAbstractCDFChromatogramArrayReader {
 
 	public float getIntensity(int scan);
 
-	public void readPeakTable();
+	public void readPeakTable(VendorChromatogramCSD vendorChromatogram);
 }

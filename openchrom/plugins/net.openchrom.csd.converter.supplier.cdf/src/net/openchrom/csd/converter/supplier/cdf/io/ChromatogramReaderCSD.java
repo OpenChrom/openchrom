@@ -37,7 +37,6 @@ import net.openchrom.csd.converter.supplier.cdf.io.support.DateSupport;
 import net.openchrom.csd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
 import net.openchrom.csd.converter.supplier.cdf.model.VendorChromatogramCSD;
 import net.openchrom.csd.converter.supplier.cdf.model.VendorScan;
-
 import ucar.nc2.NetcdfFile;
 
 public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader implements IChromatogramCSDReader {
@@ -81,8 +80,9 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 	 */
 	private boolean isValidFileFormat(File file) {
 
-		if(file == null)
+		if(file == null) {
 			return false;
+		}
 		String check = "CDF";
 		byte[] data = new byte[3];
 		try (FileInputStream is = new FileInputStream(file)) {
@@ -127,7 +127,7 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 			retentionTime += in.getScanInterval();
 			chromatogram.addScan(scan);
 		}
-		in.readPeakTable();
+		in.readPeakTable(chromatogram);
 		cdfChromatogram.close();
 		return chromatogram;
 	}
