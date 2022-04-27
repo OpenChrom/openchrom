@@ -101,6 +101,16 @@
 				<type>jar</type>
 			</dependency>
 		</dependencies>
-	</location>		
+	</location>
+	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>com.github.fracpete</groupId>
+				<artifactId>jcamp-dx</artifactId>
+				<version>0.9.7</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
 </locations>
 </target>
