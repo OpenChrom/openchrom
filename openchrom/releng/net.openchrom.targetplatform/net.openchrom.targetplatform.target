@@ -65,7 +65,7 @@
 				<type>jar</type>
 			</dependency>
 		</dependencies>
-    </location>
+	</location>
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
@@ -82,5 +82,15 @@
 			</repository>
 		</repositories>
 	</location>
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>com.ning</groupId>
+				<artifactId>compress-lzf</artifactId>
+				<version>1.0.4</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>	
 </locations>
 </target>
