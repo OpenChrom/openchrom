@@ -91,6 +91,16 @@
 				<type>jar</type>
 			</dependency>
 		</dependencies>
-	</location>	
+	</location>
+	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-imaging</artifactId>
+				<version>1.0-alpha2</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>		
 </locations>
 </target>
