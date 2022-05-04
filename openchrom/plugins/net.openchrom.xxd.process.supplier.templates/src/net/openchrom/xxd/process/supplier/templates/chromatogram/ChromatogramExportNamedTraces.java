@@ -30,9 +30,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
-public class ChromatogramExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter {
+public class ChromatogramExportNamedTraces extends AbstractChromatogramExportConverter implements IChromatogramExportConverter {
 
-	private static final Logger logger = Logger.getLogger(ChromatogramExport.class);
+	private static final Logger logger = Logger.getLogger(ChromatogramExportNamedTraces.class);
 	private static final String DESCRIPTION = "Named Traces Export";
 
 	@Override
