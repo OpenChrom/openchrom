@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,7 +21,7 @@ import javax.inject.Named;
 import org.eclipse.chemclipse.model.types.DataType;
 import org.eclipse.chemclipse.ux.extension.ui.preferences.PreferencePage;
 import org.eclipse.chemclipse.ux.extension.ui.provider.ISupplierFileEditorSupport;
-import org.eclipse.chemclipse.ux.extension.ui.swt.DataExplorerUI;
+import org.eclipse.chemclipse.ux.extension.ui.swt.MultiDataExplorerTreeUI;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.EditorSupportFactory;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -37,12 +37,12 @@ import org.eclipse.swt.widgets.Shell;
 public class NMRDataExplorerView {
 
 	private static final List<ISupplierFileEditorSupport> NMR_SUPPLIER = Collections.singletonList(new EditorSupportFactory(DataType.NMR, () -> Activator.getDefault().getEclipseContext()).getInstanceEditorSupport());
-	private DataExplorerUI dataExplorerUI;
+	private MultiDataExplorerTreeUI dataExplorerUI;
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 
-		dataExplorerUI = new DataExplorerUI(parent, Activator.getDefault().getPreferenceStore());
+		dataExplorerUI = new MultiDataExplorerTreeUI(parent, Activator.getDefault().getPreferenceStore());
 		dataExplorerUI.setSupplierFileIdentifier(NMR_SUPPLIER);
 		dataExplorerUI.expandLastDirectoryPath();
 	}
