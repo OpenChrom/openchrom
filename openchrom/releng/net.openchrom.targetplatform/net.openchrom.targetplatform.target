@@ -14,6 +14,7 @@
 <unit id="net.openchrom.thirdpartylibraries.pdfjet.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.cdk.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.netcdf.feature.feature.group" version="0.0.0"/>
+<unit id="net.openchrom.thirdpartylibraries.splash.feature.feature.group" version="0.0.0"/>
 <repository location="https://update.openchrom.net/repositories/community/latest/3rdparty"/>
 </location>
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" missingManifest="generate" type="Maven">
@@ -65,22 +66,6 @@
 				<type>jar</type>
 			</dependency>
 		</dependencies>
-	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-		<dependencies>
-			<dependency>
-				<groupId>edu.ucdavis.fiehnlab.splash</groupId>
-				<artifactId>core</artifactId>
-				<version>1.8</version>
-				<type>jar</type>
-			</dependency>
-		</dependencies>
-		<repositories>
-			<repository>
-				<id>Fiehnlab</id>
-				<url>http://gose.fiehnlab.ucdavis.edu:55000/content/groups/public</url>
-			</repository>
-		</repositories>
 	</location>
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
