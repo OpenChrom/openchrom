@@ -176,7 +176,7 @@
          unpack="false"/>
 
    <plugin
-         id="wrapped.edu.ucdavis.fiehnlab.splash.core"
+         id="net.openchrom.thirdpartylibraries.splash"
          download-size="0"
          install-size="0"
          version="0.0.0"
