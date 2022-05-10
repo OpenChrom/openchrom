@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.model.core.MarkedTraceModus;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
@@ -29,12 +30,10 @@ import org.eclipse.chemclipse.model.support.IScanRange;
 import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
-import org.eclipse.chemclipse.wsd.model.core.support.IMarkedWavelength.WavelengthMarkMode;
 import org.eclipse.chemclipse.wsd.model.core.support.PeakBuilderWSD;
 
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
@@ -121,7 +120,7 @@ public class PeakSupport {
 					 */
 					IChromatogramMSD chromatogramMSD = (IChromatogramMSD)chromatogram;
 					if(traces.size() > 0) {
-						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground, traces, IMarkedIons.IonMarkMode.EXCLUDE);
+						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground, traces, MarkedTraceModus.EXCLUDE);
 					} else {
 						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground);
 					}
@@ -136,7 +135,7 @@ public class PeakSupport {
 				} else if(chromatogram instanceof IChromatogramWSD) {
 					IChromatogramWSD chromatogramWSD = (IChromatogramWSD)chromatogram;
 					if(traces.size() > 0) {
-						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground, traces, WavelengthMarkMode.INCLUDE);
+						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground, traces, MarkedTraceModus.INCLUDE);
 					} else {
 						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground);
 					}
@@ -169,7 +168,7 @@ public class PeakSupport {
 						/**
 						 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
 						 */
-						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, startIntensity, stopIntensity, traces, IMarkedIons.IonMarkMode.EXCLUDE);
+						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, startIntensity, stopIntensity, traces, MarkedTraceModus.EXCLUDE);
 					} else {
 						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, startIntensity, stopIntensity);
 					}
