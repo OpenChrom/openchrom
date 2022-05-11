@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -26,6 +26,7 @@ public class PeakDetectorInputValidator implements IInputValidator {
 	private List<DetectorSetting> settings = new ArrayList<>();
 
 	public PeakDetectorInputValidator(List<DetectorSetting> settings) {
+
 		if(settings != null) {
 			this.settings = settings;
 		}

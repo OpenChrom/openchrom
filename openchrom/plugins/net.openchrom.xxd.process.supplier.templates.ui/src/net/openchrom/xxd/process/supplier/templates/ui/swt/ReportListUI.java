@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,20 +13,19 @@ package net.openchrom.xxd.process.supplier.templates.ui.swt;
 
 import java.util.List;
 
-import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
-import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
+import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.AbstractTemplateLabelProvider;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReportComparator;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReportEditingSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReportFilter;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReportLabelProvider;
 
-public class ReportListUI extends ExtendedTableViewer {
+public class ReportListUI extends AbstractTemplateListUI {
 
 	private static final String[] TITLES = ReportLabelProvider.TITLES;
 	private static final int[] BOUNDS = ReportLabelProvider.BOUNDS;
@@ -34,8 +33,6 @@ public class ReportListUI extends ExtendedTableViewer {
 	private ReportLabelProvider labelProvider = new ReportLabelProvider();
 	private ReportComparator tableComparator = new ReportComparator();
 	private ReportFilter listFilter = new ReportFilter();
-	//
-	private IUpdateListener updateListener;
 
 	public ReportListUI(Composite parent, int style) {
 
@@ -47,24 +44,6 @@ public class ReportListUI extends ExtendedTableViewer {
 
 		listFilter.setSearchText(searchText, caseSensitive);
 		refresh();
-	}
-
-	public void setUpdateListener(IUpdateListener updateListener) {
-
-		this.updateListener = updateListener;
-	}
-
-	public void updateContent() {
-
-		if(updateListener != null) {
-			updateListener.update();
-		}
-	}
-
-	public void clear() {
-
-		setInput(null);
-		updateContent();
 	}
 
 	private void createColumns() {
@@ -85,7 +64,7 @@ public class ReportListUI extends ExtendedTableViewer {
 		for(int i = 0; i < tableViewerColumns.size(); i++) {
 			TableViewerColumn tableViewerColumn = tableViewerColumns.get(i);
 			String label = tableViewerColumn.getColumn().getText();
-			if(!label.equals(ReportLabelProvider.NAME)) {
+			if(!label.equals(AbstractTemplateLabelProvider.NAME)) {
 				tableViewerColumn.setEditingSupport(new ReportEditingSupport(this, label));
 			}
 		}

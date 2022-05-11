@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,20 +13,19 @@ package net.openchrom.xxd.process.supplier.templates.ui.swt;
 
 import java.util.List;
 
-import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
-import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
+import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.AbstractTemplateLabelProvider;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakReviewComparator;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakReviewEditingSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakReviewFilter;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakReviewLabelProvider;
 
-public class PeakReviewListUI extends ExtendedTableViewer {
+public class PeakReviewListUI extends AbstractTemplateListUI {
 
 	private static final String[] TITLES = PeakReviewLabelProvider.TITLES;
 	private static final int[] BOUNDS = PeakReviewLabelProvider.BOUNDS;
@@ -34,13 +33,16 @@ public class PeakReviewListUI extends ExtendedTableViewer {
 	private PeakReviewLabelProvider labelProvider = new PeakReviewLabelProvider();
 	private PeakReviewComparator tableComparator = new PeakReviewComparator();
 	private PeakReviewFilter listFilter = new PeakReviewFilter();
-	//
-	private IUpdateListener updateListener;
 
 	public PeakReviewListUI(Composite parent, int style) {
 
+		this(parent, style, true);
+	}
+
+	public PeakReviewListUI(Composite parent, int style, boolean enableEditPositionDirective) {
+
 		super(parent, style);
-		createColumns();
+		createColumns(enableEditPositionDirective);
 	}
 
 	public void setSearchText(String searchText, boolean caseSensitive) {
@@ -49,24 +51,7 @@ public class PeakReviewListUI extends ExtendedTableViewer {
 		refresh();
 	}
 
-	public void setUpdateListener(IUpdateListener updateListener) {
-
-		this.updateListener = updateListener;
-	}
-
-	public void updateContent() {
-
-		if(updateListener != null) {
-			updateListener.update();
-		}
-	}
-
-	public void clear() {
-
-		setInput(null);
-	}
-
-	private void createColumns() {
+	private void createColumns(boolean enableEditPositionDirective) {
 
 		createColumns(TITLES, BOUNDS);
 		setLabelProvider(labelProvider);
@@ -75,18 +60,29 @@ public class PeakReviewListUI extends ExtendedTableViewer {
 			setComparator(tableComparator); // SORT OK
 		}
 		setFilters(new ViewerFilter[]{listFilter});
-		setEditingSupport();
+		setEditingSupport(enableEditPositionDirective);
 	}
 
-	private void setEditingSupport() {
+	private void setEditingSupport(boolean enableEditPositionDirective) {
 
 		List<TableViewerColumn> tableViewerColumns = getTableViewerColumns();
 		for(int i = 0; i < tableViewerColumns.size(); i++) {
 			TableViewerColumn tableViewerColumn = tableViewerColumns.get(i);
 			String label = tableViewerColumn.getColumn().getText();
-			if(!label.equals(PeakReviewLabelProvider.NAME)) {
+			if(isEditEnabled(label, enableEditPositionDirective)) {
 				tableViewerColumn.setEditingSupport(new PeakReviewEditingSupport(this, label));
 			}
+		}
+	}
+
+	private boolean isEditEnabled(String label, boolean enableEditPositionDirective) {
+
+		if(AbstractTemplateLabelProvider.NAME.equals(label)) {
+			return false;
+		} else if(AbstractTemplateLabelProvider.POSITION_DIRECTIVE.equals(label)) {
+			return enableEditPositionDirective;
+		} else {
+			return true;
 		}
 	}
 }

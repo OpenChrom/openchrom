@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
 import net.openchrom.xxd.process.supplier.templates.model.AssignerStandards;
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
 public class StandardsExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
@@ -48,15 +49,16 @@ public class StandardsExport extends AbstractChromatogramExportConverter impleme
 			List<IInternalStandard> internalStandards = peak.getInternalStandards();
 			if(internalStandards.size() > 0) {
 				for(IInternalStandard internalStandard : internalStandards) {
-					AssignerStandard assignerStandard = new AssignerStandard();
-					assignerStandard.setStartRetentionTime(peakModel.getStartRetentionTime() - deltaLeft);
-					assignerStandard.setStopRetentionTime(peakModel.getStopRetentionTime() + deltaRight);
-					assignerStandard.setName(internalStandard.getName());
-					assignerStandard.setConcentration(internalStandard.getConcentration());
-					assignerStandard.setConcentrationUnit(internalStandard.getConcentrationUnit());
-					assignerStandard.setResponseFactor(internalStandard.getResponseFactor());
-					assignerStandard.setTracesIdentification(extractTraces(peak, numberTraces));
-					assignerStandards.add(assignerStandard);
+					AssignerStandard setting = new AssignerStandard();
+					setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
+					setting.setPositionStart((peakModel.getStartRetentionTime() - deltaLeft) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+					setting.setPositionStop((peakModel.getStopRetentionTime() + deltaRight) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+					setting.setName(internalStandard.getName());
+					setting.setConcentration(internalStandard.getConcentration());
+					setting.setConcentrationUnit(internalStandard.getConcentrationUnit());
+					setting.setResponseFactor(internalStandard.getResponseFactor());
+					setting.setTracesIdentification(extractTraces(peak, numberTraces));
+					assignerStandards.add(setting);
 				}
 			}
 		}

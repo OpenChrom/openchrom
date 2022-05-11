@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -10,6 +10,8 @@
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
+
+import java.util.Objects;
 
 public class AssignerStandard extends AbstractSetting {
 
@@ -22,8 +24,9 @@ public class AssignerStandard extends AbstractSetting {
 	public void copyFrom(AssignerStandard setting) {
 
 		if(setting != null) {
-			setStartRetentionTime(setting.getStartRetentionTime());
-			setStopRetentionTime(setting.getStopRetentionTime());
+			setPositionStart(setting.getPositionStart());
+			setPositionStop(setting.getPositionStop());
+			setPositionDirective(setting.getPositionDirective());
 			setName(setting.getName());
 			setConcentration(setting.getConcentration());
 			setConcentrationUnit(setting.getConcentrationUnit());
@@ -86,8 +89,8 @@ public class AssignerStandard extends AbstractSetting {
 	public int hashCode() {
 
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(name);
 		return result;
 	}
 
@@ -96,22 +99,17 @@ public class AssignerStandard extends AbstractSetting {
 
 		if(this == obj)
 			return true;
-		if(obj == null)
+		if(!super.equals(obj))
 			return false;
 		if(getClass() != obj.getClass())
 			return false;
 		AssignerStandard other = (AssignerStandard)obj;
-		if(name == null) {
-			if(other.name != null)
-				return false;
-		} else if(!name.equals(other.name))
-			return false;
-		return true;
+		return Objects.equals(name, other.name);
 	}
 
 	@Override
 	public String toString() {
 
-		return "AssignerStandard [name=" + name + ", concentration=" + concentration + ", concentrationUnit=" + concentrationUnit + ", responseFactor=" + responseFactor + ", tracesIdentification=" + tracesIdentification + "]";
+		return "AssignerStandard [name=" + name + "]";
 	}
 }

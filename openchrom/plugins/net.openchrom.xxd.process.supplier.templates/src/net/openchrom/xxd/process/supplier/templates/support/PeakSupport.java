@@ -27,6 +27,7 @@ import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.support.IScanRange;
+import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -62,10 +63,10 @@ public class PeakSupport {
 		return stopScan;
 	}
 
-	public RetentionTimeRange getRetentionTimeRange(List<? extends IPeak> peaks, AbstractSetting setting, String referenceIdentifier) {
+	public RetentionTimeRange getRetentionTimeRange(List<? extends IPeak> peaks, AbstractSetting setting, String referenceIdentifier, RetentionIndexMap retentionIndexMap) {
 
-		int startRetentionTime = setting.getStartRetentionTime();
-		int stopRetentionTime = setting.getStopRetentionTime();
+		int startRetentionTime = setting.getRetentionTimeStart(retentionIndexMap);
+		int stopRetentionTime = setting.getRetentionTimeStop(retentionIndexMap);
 		/*
 		 * If a reference identifier is set, the retention time range
 		 * is adjusted dynamically by the position of the given peak.

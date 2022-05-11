@@ -13,11 +13,22 @@ package net.openchrom.xxd.process.supplier.templates.util;
 
 import java.util.Set;
 
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.runtime.IStatus;
+
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
+import net.openchrom.xxd.process.supplier.templates.model.ReportStrategy;
 
 public interface ITemplateValidator extends IValidator<Object> {
 
-	String validateTraces(String traces);
+	IStatus validateTraces(String traces);
 
 	Set<Integer> extractTraces(String traces);
+
+	PositionDirective parsePositionDirective(String value);
+
+	ReportStrategy parseReportStrategy(String value);
+
+	PeakType parsePeakType(String value);
 }

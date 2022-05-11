@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,21 +33,24 @@ public class StandardsAssignerComparator extends AbstractRecordTableComparator i
 					sortOrder = setting2.getName().compareTo(setting1.getName());
 					break;
 				case 1:
-					sortOrder = Integer.compare(setting2.getStartRetentionTime(), setting1.getStartRetentionTime());
+					sortOrder = Double.compare(setting2.getPositionStart(), setting1.getPositionStart());
 					break;
 				case 2:
-					sortOrder = Integer.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
+					sortOrder = Double.compare(setting2.getPositionStop(), setting1.getPositionStop());
 					break;
 				case 3:
-					sortOrder = Double.compare(setting2.getConcentration(), setting1.getConcentration());
+					sortOrder = setting2.getPositionDirective().compareTo(setting1.getPositionDirective());
 					break;
 				case 4:
-					sortOrder = setting2.getConcentrationUnit().compareTo(setting1.getConcentrationUnit());
+					sortOrder = Double.compare(setting2.getConcentration(), setting1.getConcentration());
 					break;
 				case 5:
-					sortOrder = Double.compare(setting2.getResponseFactor(), setting1.getResponseFactor());
+					sortOrder = setting2.getConcentrationUnit().compareTo(setting1.getConcentrationUnit());
 					break;
 				case 6:
+					sortOrder = Double.compare(setting2.getResponseFactor(), setting1.getResponseFactor());
+					break;
+				case 7:
 					sortOrder = setting2.getTracesIdentification().compareTo(setting1.getTracesIdentification());
 					break;
 				default:

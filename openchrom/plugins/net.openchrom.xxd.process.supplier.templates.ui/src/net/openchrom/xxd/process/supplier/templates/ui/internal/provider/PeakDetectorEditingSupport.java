@@ -13,73 +13,43 @@
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import org.eclipse.chemclipse.model.core.PeakType;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CheckboxCellEditor;
-import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakDetectorListUI;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
-public class PeakDetectorEditingSupport extends EditingSupport {
-
-	private CellEditor cellEditor;
-	private PeakDetectorListUI tableViewer;
-	private String column;
+public class PeakDetectorEditingSupport extends AbstractTemplateEditingSupport {
 
 	public PeakDetectorEditingSupport(PeakDetectorListUI tableViewer, String column) {
 
-		super(tableViewer);
-		this.column = column;
-		if(column.equals(PeakDetectorLabelProvider.OPTIMIZE_RANGE)) {
-			this.cellEditor = new CheckboxCellEditor(tableViewer.getTable());
-		} else if(column.equals(PeakDetectorLabelProvider.DETECTOR_TYPE)) {
-			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite)tableViewer.getControl());
-			ComboViewer comboViewer = editor.getViewer();
-			comboViewer.setContentProvider(ArrayContentProvider.getInstance());
-			comboViewer.setInput(PeakDetectorValidator.DETECTOR_TYPES);
-			this.cellEditor = editor;
-		} else {
-			this.cellEditor = new TextCellEditor(tableViewer.getTable());
-		}
-		this.tableViewer = tableViewer;
-	}
-
-	@Override
-	protected CellEditor getCellEditor(Object element) {
-
-		return cellEditor;
-	}
-
-	@Override
-	protected boolean canEdit(Object element) {
-
-		return tableViewer.isEditEnabled();
+		super(tableViewer, column);
 	}
 
 	@Override
 	protected Object getValue(Object element) {
 
 		if(element instanceof DetectorSetting) {
-			DetectorSetting setting = (DetectorSetting)element;
-			switch(column) {
-				case PeakDetectorLabelProvider.DETECTOR_TYPE:
-					return setting.getDetectorType();
-				case PeakDetectorLabelProvider.TRACES:
-					return setting.getTraces();
-				case PeakDetectorLabelProvider.OPTIMIZE_RANGE:
-					return setting.isOptimizeRange();
-				case PeakDetectorLabelProvider.REFERENCE_IDENTIFIER:
-					return setting.getReferenceIdentifier();
-				case PeakDetectorLabelProvider.NAME:
-					return setting.getName();
+			Object object = super.getValue(element);
+			if(object != null) {
+				return object;
+			} else {
+				DetectorSetting setting = (DetectorSetting)element;
+				switch(getColumn()) {
+					case AbstractTemplateLabelProvider.PEAK_TYPE:
+						return setting.getPeakType();
+					case AbstractTemplateLabelProvider.TRACES:
+						return setting.getTraces();
+					case AbstractTemplateLabelProvider.OPTIMIZE_RANGE:
+						return setting.isOptimizeRange();
+					case AbstractTemplateLabelProvider.REFERENCE_IDENTIFIER:
+						return setting.getReferenceIdentifier();
+					case AbstractTemplateLabelProvider.NAME:
+						return setting.getName();
+				}
 			}
 		}
+		//
 		return false;
 	}
 
@@ -88,34 +58,34 @@ public class PeakDetectorEditingSupport extends EditingSupport {
 
 		if(element instanceof DetectorSetting) {
 			DetectorSetting setting = (DetectorSetting)element;
-			switch(column) {
-				case PeakDetectorLabelProvider.DETECTOR_TYPE:
+			super.setValue(element, value);
+			switch(getColumn()) {
+				case AbstractTemplateLabelProvider.PEAK_TYPE:
 					if(value instanceof PeakType) {
-						setting.setDetectorType((PeakType)value);
+						setting.setPeakType((PeakType)value);
 					}
 					break;
-				case PeakDetectorLabelProvider.TRACES:
+				case AbstractTemplateLabelProvider.TRACES:
 					String traces = ((String)value).trim();
 					PeakDetectorValidator validator = new PeakDetectorValidator();
-					String message = validator.validateTraces(traces);
-					if(message == null) {
+					IStatus status = validator.validateTraces(traces);
+					if(status.isOK()) {
 						setting.setTraces(traces);
 					}
 					break;
-				case PeakDetectorLabelProvider.OPTIMIZE_RANGE:
+				case AbstractTemplateLabelProvider.OPTIMIZE_RANGE:
 					setting.setOptimizeRange((boolean)value);
 					break;
-				case PeakDetectorLabelProvider.REFERENCE_IDENTIFIER:
+				case AbstractTemplateLabelProvider.REFERENCE_IDENTIFIER:
 					String referenceIdentifier = ((String)value).trim();
 					setting.setReferenceIdentifier(referenceIdentifier);
 					break;
-				case PeakDetectorLabelProvider.NAME:
+				case AbstractTemplateLabelProvider.NAME:
 					setting.setName(((String)value).trim());
 					break;
 			}
 			//
-			tableViewer.refresh();
-			tableViewer.updateContent();
+			updateTableViewer();
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -174,38 +174,19 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 
 	private void extractSetting(IdentifierSetting setting, StringBuilder builder) {
 
-		builder.append(getFormattedRetentionTime(setting.getStartRetentionTimeMinutes()));
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(getFormattedRetentionTime(setting.getStopRetentionTimeMinutes()));
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getName());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getCasNumber());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getComments());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getContributor());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getReference());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getTraces());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getReferenceIdentifier());
+		List<String> entries = new ArrayList<>();
+		//
+		entries.add(getFormattedPosition(setting.getPositionStart()));
+		entries.add(getFormattedPosition(setting.getPositionStop()));
+		entries.add(setting.getName());
+		entries.add(setting.getCasNumber());
+		entries.add(setting.getComments());
+		entries.add(setting.getContributor());
+		entries.add(setting.getReference());
+		entries.add(setting.getTraces());
+		entries.add(setting.getReferenceIdentifier());
+		entries.add(setting.getPositionDirective().name());
+		//
+		compile(builder, entries);
 	}
 }

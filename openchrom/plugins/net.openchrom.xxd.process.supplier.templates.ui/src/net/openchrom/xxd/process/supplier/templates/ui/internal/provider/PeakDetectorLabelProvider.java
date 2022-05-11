@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,41 +12,28 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
-import java.text.DecimalFormat;
-
-import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.support.text.ValueFormat;
-import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 
-public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
+public class PeakDetectorLabelProvider extends AbstractTemplateLabelProvider {
 
-	public static final String START_RETENTION_TIME = "Start Retention Time [min] ";
-	public static final String STOP_RETENTION_TIME = "Stop Retention Time [min]";
-	public static final String DETECTOR_TYPE = "Detector Type";
-	public static final String TRACES = "Traces";
-	public static final String OPTIMIZE_RANGE = "Optimize Range (VV)";
-	public static final String REFERENCE_IDENTIFIER = "Reference Identifier";
-	public static final String NAME = "Name";
-	//
-	public static final int INDEX_OPTIMIZE_RANGE = 4;
-	//
-	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
+	public static final int INDEX_OPTIMIZE_RANGE = 5;
 	//
 	public static final String[] TITLES = { //
-			START_RETENTION_TIME, //
-			STOP_RETENTION_TIME, //
-			DETECTOR_TYPE, //
+			POSITION_START, //
+			POSITION_STOP, //
+			POSITION_DIRECTIVE, //
+			PEAK_TYPE, //
 			TRACES, //
 			OPTIMIZE_RANGE, //
 			REFERENCE_IDENTIFIER, //
 			NAME //
 	};
 	public static final int[] BOUNDS = { //
+			100, //
 			100, //
 			100, //
 			50, //
@@ -79,28 +66,26 @@ public class PeakDetectorLabelProvider extends AbstractChemClipseLabelProvider {
 			DetectorSetting setting = (DetectorSetting)element;
 			switch(columnIndex) {
 				case 0:
-					text = decimalFormat.format(setting.getStartRetentionTimeMinutes());
+					text = getFormattedPosition(setting.getPositionStart());
 					break;
 				case 1:
-					text = decimalFormat.format(setting.getStopRetentionTimeMinutes());
+					text = getFormattedPosition(setting.getPositionStop());
 					break;
 				case 2:
-					PeakType detectorType = setting.getDetectorType();
-					if(detectorType != null) {
-						return detectorType.name();
-					} else {
-						return "";
-					}
+					text = setting.getPositionDirective().label();
+					break;
 				case 3:
+					text = getFormattedPeakType(setting.getPeakType());
+				case 4:
 					text = setting.getTraces();
 					break;
-				case 4:
+				case 5:
 					text = "";
 					break;
-				case 5:
+				case 6:
 					text = setting.getReferenceIdentifier();
 					break;
-				case 6:
+				case 7:
 					text = setting.getName();
 					break;
 				default:

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,27 +33,30 @@ public class PeakIdentifierComparator extends AbstractRecordTableComparator impl
 					sortOrder = setting2.getName().compareTo(setting1.getName());
 					break;
 				case 1:
-					sortOrder = Integer.compare(setting2.getStartRetentionTime(), setting1.getStartRetentionTime());
+					sortOrder = Double.compare(setting2.getPositionStart(), setting1.getPositionStart());
 					break;
 				case 2:
-					sortOrder = Integer.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
+					sortOrder = Double.compare(setting2.getPositionStop(), setting1.getPositionStop());
 					break;
 				case 3:
-					sortOrder = setting2.getCasNumber().compareTo(setting1.getCasNumber());
+					sortOrder = setting2.getPositionDirective().compareTo(setting1.getPositionDirective());
 					break;
 				case 4:
-					sortOrder = setting2.getComments().compareTo(setting1.getComments());
+					sortOrder = setting2.getCasNumber().compareTo(setting1.getCasNumber());
 					break;
 				case 5:
-					sortOrder = setting2.getContributor().compareTo(setting1.getContributor());
+					sortOrder = setting2.getComments().compareTo(setting1.getComments());
 					break;
 				case 6:
-					sortOrder = setting2.getReference().compareTo(setting1.getReference());
+					sortOrder = setting2.getContributor().compareTo(setting1.getContributor());
 					break;
 				case 7:
-					sortOrder = setting2.getTraces().compareTo(setting1.getTraces());
+					sortOrder = setting2.getReference().compareTo(setting1.getReference());
 					break;
 				case 8:
+					sortOrder = setting2.getTraces().compareTo(setting1.getTraces());
+					break;
+				case 9:
 					sortOrder = setting2.getReferenceIdentifier().compareTo(setting1.getReferenceIdentifier());
 					break;
 				default:

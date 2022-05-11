@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -30,24 +30,27 @@ public class PeakDetectorComparator extends AbstractRecordTableComparator implem
 			//
 			switch(getPropertyIndex()) {
 				case 0:
-					sortOrder = Integer.compare(setting2.getStartRetentionTime(), setting1.getStartRetentionTime());
+					sortOrder = Double.compare(setting2.getPositionStart(), setting1.getPositionStart());
 					break;
 				case 1:
-					sortOrder = Integer.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
+					sortOrder = Double.compare(setting2.getPositionStop(), setting1.getPositionStop());
 					break;
 				case 2:
-					sortOrder = setting2.getDetectorType().compareTo(setting1.getDetectorType());
+					sortOrder = setting2.getPositionDirective().compareTo(setting1.getPositionDirective());
 					break;
 				case 3:
-					sortOrder = setting2.getTraces().compareTo(setting1.getTraces());
+					sortOrder = setting2.getPeakType().compareTo(setting1.getPeakType());
 					break;
 				case 4:
-					sortOrder = Boolean.compare(setting2.isOptimizeRange(), setting1.isOptimizeRange());
+					sortOrder = setting2.getTraces().compareTo(setting1.getTraces());
 					break;
 				case 5:
-					sortOrder = setting2.getReferenceIdentifier().compareTo(setting1.getReferenceIdentifier());
+					sortOrder = Boolean.compare(setting2.isOptimizeRange(), setting1.isOptimizeRange());
 					break;
 				case 6:
+					sortOrder = setting2.getReferenceIdentifier().compareTo(setting1.getReferenceIdentifier());
+					break;
+				case 7:
 					sortOrder = setting2.getName().compareTo(setting1.getName());
 					break;
 				default:

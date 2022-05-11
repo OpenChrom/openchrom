@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,15 +33,18 @@ public class ReportComparator extends AbstractRecordTableComparator implements I
 					sortOrder = setting2.getName().compareTo(setting1.getName());
 					break;
 				case 1:
-					sortOrder = Integer.compare(setting2.getStartRetentionTime(), setting1.getStartRetentionTime());
+					sortOrder = Double.compare(setting2.getPositionStart(), setting1.getPositionStart());
 					break;
 				case 2:
-					sortOrder = Integer.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
+					sortOrder = Double.compare(setting2.getPositionStop(), setting1.getPositionStop());
 					break;
 				case 3:
-					sortOrder = setting2.getCasNumber().compareTo(setting1.getCasNumber());
+					sortOrder = setting2.getPositionDirective().compareTo(setting1.getPositionDirective());
 					break;
 				case 4:
+					sortOrder = setting2.getCasNumber().compareTo(setting1.getCasNumber());
+					break;
+				case 5:
 					sortOrder = setting2.getReportStrategy().compareTo(setting1.getReportStrategy());
 					break;
 				default:

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,6 +15,7 @@ import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.IntegratorSetting;
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 
 public class PeakIntegratorValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
@@ -24,8 +25,9 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
 	private String identifier = "";
-	private double startRetentionTimeMinutes = 0;
-	private double stopRetentionTimeMinutes = 0;
+	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
+	private double positionStart = 0;
+	private double positionStop = 0;
 	private String integrator = "";
 
 	@Override
@@ -50,13 +52,14 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 						/*
 						 * Evaluation
 						 */
-						startRetentionTimeMinutes = parseDouble(values, 0);
-						if(startRetentionTimeMinutes < 0.0d) {
-							message = "The start retention time must be not lower than 0.";
-						}
-						stopRetentionTimeMinutes = parseDouble(values, 1);
+						positionStart = parseDouble(values, 0);
+						positionStop = parseDouble(values, 1);
 						identifier = parseString(values, 2);
 						integrator = parseString(values, 3);
+						positionDirective = parsePositionDirective(parseString(values, 4));
+						/*
+						 * Validations
+						 */
 						if("".equals(integrator)) {
 							message = "An integrator needs to be set.";
 						} else {
@@ -64,16 +67,14 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 								message = "The integrator must be either '" + IntegratorSetting.INTEGRATOR_NAME_TRAPEZOID + "' or '" + IntegratorSetting.INTEGRATOR_NAME_MAX + "'";
 							}
 						}
-						/*
-						 * Extended Check
-						 */
-						if(startRetentionTimeMinutes == 0.0d && stopRetentionTimeMinutes == 0.0d) {
+						//
+						if(positionStart == 0.0d && positionStop == 0.0d) {
 							if("".equals(identifier)) {
 								message = "A substance name needs to be set.";
 							}
 						} else {
-							if(stopRetentionTimeMinutes <= startRetentionTimeMinutes) {
-								message = "The stop retention time must be greater then the start retention time.";
+							if(positionStop <= positionStart) {
+								message = "The stop position must be greater than the start position.";
 							}
 						}
 					} else {
@@ -95,10 +96,13 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 	public IntegratorSetting getSetting() {
 
 		IntegratorSetting setting = new IntegratorSetting();
-		setting.setStartRetentionTimeMinutes(startRetentionTimeMinutes);
-		setting.setStopRetentionTimeMinutes(stopRetentionTimeMinutes);
+		//
+		setting.setPositionStart(positionStart);
+		setting.setPositionStop(positionStop);
 		setting.setIdentifier(identifier);
 		setting.setIntegrator(integrator);
+		setting.setPositionDirective(positionDirective);
+		//
 		return setting;
 	}
 }

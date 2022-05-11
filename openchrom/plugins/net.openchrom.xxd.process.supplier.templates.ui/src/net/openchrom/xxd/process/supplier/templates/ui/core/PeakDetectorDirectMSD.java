@@ -76,7 +76,7 @@ public class PeakDetectorDirectMSD<P extends IPeak, C extends IChromatogram<P>, 
 						DetectorSetting detectorSetting = new DetectorSetting();
 						detectorSetting.setStartRetentionTime(startRetentionTime);
 						detectorSetting.setStopRetentionTime(stopRetentionTime);
-						detectorSetting.setDetectorType(DetectorType.translate(settingsDirect.getDetectorType()));
+						detectorSetting.setPeakType(DetectorType.translate(settingsDirect.getDetectorType()));
 						detectorSetting.setTraces(getTraces(peak));
 						detectorSetting.setOptimizeRange(settingsDirect.isOptimizeRange());
 						detectorSettings.add(detectorSetting);
@@ -95,7 +95,7 @@ public class PeakDetectorDirectMSD<P extends IPeak, C extends IChromatogram<P>, 
 					DetectorSetting detectorSetting = new DetectorSetting();
 					detectorSetting.setStartRetentionTime(startRetentionTime);
 					detectorSetting.setStopRetentionTime(stopRetentionTime);
-					detectorSetting.setDetectorType(DetectorType.translate(settingsDirect.getDetectorType()));
+					detectorSetting.setPeakType(DetectorType.translate(settingsDirect.getDetectorType()));
 					detectorSetting.setTraces(settingsDirect.getTraces());
 					detectorSetting.setOptimizeRange(settingsDirect.isOptimizeRange());
 					detectorSettings.add(detectorSetting);
@@ -113,7 +113,7 @@ public class PeakDetectorDirectMSD<P extends IPeak, C extends IChromatogram<P>, 
 					DetectorSetting detectorSetting = new DetectorSetting();
 					detectorSetting.setStartRetentionTime(startRetentionTime);
 					detectorSetting.setStopRetentionTime(stopRetentionTime);
-					detectorSetting.setDetectorType(DetectorType.translate(settingsDirect.getDetectorType()));
+					detectorSetting.setPeakType(DetectorType.translate(settingsDirect.getDetectorType()));
 					detectorSetting.setTraces(settingsDirect.getTraces());
 					detectorSetting.setOptimizeRange(settingsDirect.isOptimizeRange());
 					detectorSettings.add(detectorSetting);

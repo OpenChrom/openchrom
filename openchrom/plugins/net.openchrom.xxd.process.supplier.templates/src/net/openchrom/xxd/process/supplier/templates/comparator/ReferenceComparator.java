@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,7 +20,7 @@ public class ReferenceComparator implements Comparator<AssignerReference> {
 	@Override
 	public int compare(AssignerReference setting1, AssignerReference setting2) {
 
-		int result = Integer.compare(setting1.getStartRetentionTime(), setting2.getStartRetentionTime());
+		int result = Double.compare(setting1.getPositionStart(), setting2.getPositionStart());
 		if(result == 0) {
 			result = setting1.getInternalStandard().compareTo(setting2.getInternalStandard());
 		}

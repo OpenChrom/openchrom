@@ -11,35 +11,25 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
-import java.text.DecimalFormat;
-
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.support.text.ValueFormat;
-import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 
-public class ReportLabelProvider extends AbstractChemClipseLabelProvider {
+public class ReportLabelProvider extends AbstractTemplateLabelProvider {
 
-	public static final String NAME = "Name";
-	public static final String START_RETENTION_TIME = "Start Retention Time [min]";
-	public static final String STOP_RETENTION_TIME = "Stop Retention Time [min]";
-	public static final String CAS_NUMBER = "CAS";
-	public static final String REPORT_STRATEGY = "Strategy";
-	//
-	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
-	//
 	public static final String[] TITLES = { //
 			NAME, //
-			START_RETENTION_TIME, //
-			STOP_RETENTION_TIME, //
+			POSITION_START, //
+			POSITION_STOP, //
+			POSITION_DIRECTIVE, //
 			CAS_NUMBER, //
 			REPORT_STRATEGY //
 	};
 	public static final int[] BOUNDS = { //
 			200, //
+			100, //
 			100, //
 			100, //
 			100, //
@@ -66,15 +56,18 @@ public class ReportLabelProvider extends AbstractChemClipseLabelProvider {
 					text = setting.getName();
 					break;
 				case 1:
-					text = decimalFormat.format(setting.getStartRetentionTimeMinutes());
+					text = getFormattedPosition(setting.getPositionStart());
 					break;
 				case 2:
-					text = decimalFormat.format(setting.getStopRetentionTimeMinutes());
+					text = getFormattedPosition(setting.getPositionStop());
 					break;
 				case 3:
-					text = setting.getCasNumber();
+					text = setting.getPositionDirective().label();
 					break;
 				case 4:
+					text = setting.getCasNumber();
+					break;
+				case 5:
 					text = setting.getReportStrategy().label();
 					break;
 				default:

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,6 +27,7 @@ import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -53,14 +54,15 @@ public class ReviewExport extends AbstractChromatogramExportConverter implements
 			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
 			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), identificationTargetComparator);
 			if(libraryInformation != null) {
-				ReviewSetting reviewSetting = new ReviewSetting();
-				reviewSetting.setStartRetentionTime(peakModel.getStartRetentionTime() - deltaLeft);
-				reviewSetting.setStopRetentionTime(peakModel.getStopRetentionTime() + deltaRight);
-				reviewSetting.setName(libraryInformation.getName());
-				reviewSetting.setCasNumber(libraryInformation.getCasNumber());
-				reviewSetting.setTraces(extractTraces(peak, numberTraces));
-				reviewSetting.setOptimizeRange(optimizeRange);
-				reviewSettings.add(reviewSetting);
+				ReviewSetting setting = new ReviewSetting();
+				setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
+				setting.setPositionStart((peakModel.getStartRetentionTime() - deltaLeft) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				setting.setPositionStop((peakModel.getStopRetentionTime() + deltaRight) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				setting.setName(libraryInformation.getName());
+				setting.setCasNumber(libraryInformation.getCasNumber());
+				setting.setTraces(extractTraces(peak, numberTraces));
+				setting.setOptimizeRange(optimizeRange);
+				reviewSettings.add(setting);
 			}
 		}
 		//

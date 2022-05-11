@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,6 +15,7 @@ import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 
 public class StandardsAssignerValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
@@ -23,8 +24,9 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 	private static final String SEPARATOR_ENTRY = StandardsAssignerListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
-	private double startRetentionTimeMinutes = 0;
-	private double stopRetentionTimeMinutes = 0;
+	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
+	private double positionStart = 0;
+	private double positionStop = 0;
 	private String name = "";
 	private double concentration = 0.0d;
 	private String concentrationUnit = "";
@@ -54,37 +56,40 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 						/*
 						 * Evaluation
 						 */
-						startRetentionTimeMinutes = parseDouble(values, 0);
-						if(startRetentionTimeMinutes < 0.0d) {
-							message = "The start retention time must be not lower than 0.";
-						}
-						//
-						stopRetentionTimeMinutes = parseDouble(values, 1);
-						if(stopRetentionTimeMinutes <= startRetentionTimeMinutes) {
-							message = "The stop retention time must be greater then the start retention time.";
-						}
-						//
+						positionStart = parseDouble(values, 0);
+						positionStop = parseDouble(values, 1);
 						name = parseString(values, 2);
+						concentration = parseDouble(values, 3);
+						concentrationUnit = parseString(values, 4);
+						responseFactor = parseDouble(values, 5);
+						traces = parseString(values, 6, "");
+						positionDirective = parsePositionDirective(parseString(values, 7));
+						/*
+						 * Validations
+						 */
+						if(positionStart < 0.0d) {
+							message = "The start position must be not lower than 0.";
+						}
+						//
+						if(positionStop <= positionStart) {
+							message = "The stop position must be greater than the start position.";
+						}
+						//
 						if("".equals(name)) {
 							message = "A substance name needs to be set.";
 						}
 						//
-						concentration = parseDouble(values, 3);
 						if(concentration <= 0) {
 							message = "The concentration must be > 0.";
 						}
 						//
-						concentrationUnit = parseString(values, 4);
 						if("".equals(concentrationUnit)) {
 							message = "A concentration unit needs to be set.";
 						}
 						//
-						responseFactor = parseDouble(values, 5);
 						if(responseFactor <= 0) {
 							message = "The response factor must be > 0.";
 						}
-						//
-						traces = parseString(values, 6, "");
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -103,14 +108,17 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 
 	public AssignerStandard getSetting() {
 
-		AssignerStandard settings = new AssignerStandard();
-		settings.setStartRetentionTimeMinutes(startRetentionTimeMinutes);
-		settings.setStopRetentionTimeMinutes(stopRetentionTimeMinutes);
-		settings.setName(name);
-		settings.setConcentration(concentration);
-		settings.setConcentrationUnit(concentrationUnit);
-		settings.setResponseFactor(responseFactor);
-		settings.setTracesIdentification(traces);
-		return settings;
+		AssignerStandard setting = new AssignerStandard();
+		//
+		setting.setPositionStart(positionStart);
+		setting.setPositionStop(positionStop);
+		setting.setName(name);
+		setting.setConcentration(concentration);
+		setting.setConcentrationUnit(concentrationUnit);
+		setting.setResponseFactor(responseFactor);
+		setting.setTracesIdentification(traces);
+		setting.setPositionDirective(positionDirective);
+		//
+		return setting;
 	}
 }

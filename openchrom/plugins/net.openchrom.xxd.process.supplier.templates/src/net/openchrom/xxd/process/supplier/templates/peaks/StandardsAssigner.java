@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.model.quantitation.InternalStandard;
+import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -29,6 +30,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSettings;
+import net.openchrom.xxd.process.supplier.templates.support.RetentionIndexSupport;
 import net.openchrom.xxd.process.supplier.templates.util.TracesUtil;
 
 @SuppressWarnings("rawtypes")
@@ -42,9 +44,10 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 		IProcessingInfo processingInfo = validate(peaks, settings, monitor);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof StandardsAssignerSettings) {
+				RetentionIndexMap retentionIndexMap = RetentionIndexSupport.getRetentionIndexMap(peaks);
 				StandardsAssignerSettings standardsAssignerSettings = (StandardsAssignerSettings)settings;
 				for(AssignerStandard assignerSetting : standardsAssignerSettings.getAssignerSettings()) {
-					assignPeak(peaks, assignerSetting);
+					assignPeak(peaks, assignerSetting, retentionIndexMap);
 				}
 			} else {
 				processingInfo.addErrorMessage(StandardsAssignerSettings.DESCRIPTION, "The settings instance is wrong.");
@@ -84,10 +87,10 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 		return settings;
 	}
 
-	private void assignPeak(List<? extends IPeak> peaks, AssignerStandard assignerSetting) {
+	private void assignPeak(List<? extends IPeak> peaks, AssignerStandard setting, RetentionIndexMap retentionIndexMap) {
 
-		int startRetentionTime = assignerSetting.getStartRetentionTime();
-		int stopRetentionTime = assignerSetting.getStopRetentionTime();
+		int startRetentionTime = setting.getRetentionTimeStart(retentionIndexMap);
+		int stopRetentionTime = setting.getRetentionTimeStop(retentionIndexMap);
 		TracesUtil tracesUtil = new TracesUtil();
 		//
 		try {
@@ -95,11 +98,11 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 				for(IPeak peak : peaks) {
 					if(isPeakMatch(peak, startRetentionTime, stopRetentionTime)) {
 						if(peak.getIntegratedArea() > 0.0d) {
-							if(tracesUtil.isTraceMatch(peak, assignerSetting.getTracesIdentification())) {
-								String name = assignerSetting.getName();
-								double concentration = assignerSetting.getConcentration();
-								String concentrationUnit = assignerSetting.getConcentrationUnit();
-								double responseFactor = assignerSetting.getResponseFactor();
+							if(tracesUtil.isTraceMatch(peak, setting.getTracesIdentification())) {
+								String name = setting.getName();
+								double concentration = setting.getConcentration();
+								String concentrationUnit = setting.getConcentrationUnit();
+								double responseFactor = setting.getResponseFactor();
 								InternalStandard internalStandard = new InternalStandard(name, concentration, concentrationUnit, responseFactor);
 								peak.addInternalStandard(internalStandard);
 							}

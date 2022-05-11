@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,28 +12,24 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
-
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 
 public class PeakDetectorValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
-	public static final Set<PeakType> DETECTOR_TYPES = Collections.unmodifiableSet(EnumSet.of(PeakType.VV, PeakType.BB, PeakType.MM));
-	//
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = PeakDetectorListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = PeakDetectorListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
-	private double startRetentionTimeMinutes = 0;
-	private double stopRetentionTimeMinutes = 0;
-	private PeakType detectorType = PeakType.VV;
+	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
+	private double positionStart = 0;
+	private double positionStop = 0;
+	private PeakType peakType = PeakType.VV;
 	private String traces = "";
 	private boolean optimizeRange = true;
 	private String referenceIdentifier = "";
@@ -61,28 +57,35 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 						/*
 						 * Evaluation
 						 */
-						startRetentionTimeMinutes = parseDouble(values, 0);
-						if(startRetentionTimeMinutes < 0.0d) {
-							message = "The start retention time must be not lower than 0.";
-						}
-						//
-						stopRetentionTimeMinutes = parseDouble(values, 1);
-						if(stopRetentionTimeMinutes <= startRetentionTimeMinutes) {
-							message = "The stop retention time must be greater then the start retention time.";
-						}
-						//
-						detectorType = parseType(parseString(values, 2));
-						if(detectorType == null) {
-							message = "Please select a detector type: " + PeakType.VV + " or " + PeakType.BB + " or " + PeakType.MM;
-						}
-						//
+						positionStart = parseDouble(values, 0);
+						positionStop = parseDouble(values, 1);
+						peakType = parsePeakType(parseString(values, 2));
 						String traceValues = parseString(values, 3);
-						message = validateTraces(traceValues);
-						traces = (message == null) ? traceValues : "";
-						//
 						optimizeRange = parseBoolean(values, 4, false);
 						referenceIdentifier = parseString(values, 5, "");
 						name = parseString(values, 6, "");
+						positionDirective = parsePositionDirective(parseString(values, 7));
+						/*
+						 * Validations
+						 */
+						if(positionStart < 0.0d) {
+							message = "The start position must be not lower than 0.";
+						}
+						//
+						if(positionStop <= positionStart) {
+							message = "The stop position must be greater than the start position.";
+						}
+						//
+						if(peakType == null) {
+							message = "Please select a peak type: " + PeakType.VV + " or " + PeakType.BB + " or " + PeakType.MM;
+						}
+						//
+						IStatus status = validateTraces(traceValues);
+						if(status.isOK()) {
+							traces = traceValues;
+						} else {
+							message = status.getMessage();
+						}
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -99,31 +102,19 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 		}
 	}
 
-	public static PeakType parseType(String parseString) {
-
-		if(parseString != null) {
-			try {
-				PeakType type = PeakType.valueOf(parseString.toUpperCase());
-				if(DETECTOR_TYPES.contains(type)) {
-					return type;
-				}
-			} catch(RuntimeException e) {
-				// invalid!
-			}
-		}
-		return null;
-	}
-
 	public DetectorSetting getSetting() {
 
 		DetectorSetting setting = new DetectorSetting();
-		setting.setStartRetentionTimeMinutes(startRetentionTimeMinutes);
-		setting.setStopRetentionTimeMinutes(stopRetentionTimeMinutes);
-		setting.setDetectorType(detectorType);
+		//
+		setting.setPositionStart(positionStart);
+		setting.setPositionStop(positionStop);
+		setting.setPeakType(peakType);
 		setting.setTraces(traces);
 		setting.setOptimizeRange(optimizeRange);
 		setting.setReferenceIdentifier(referenceIdentifier);
 		setting.setName(name);
+		setting.setPositionDirective(positionDirective);
+		//
 		return setting;
 	}
 }

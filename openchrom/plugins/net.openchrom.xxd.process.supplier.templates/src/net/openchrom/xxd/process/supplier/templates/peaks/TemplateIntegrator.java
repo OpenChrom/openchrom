@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -29,6 +30,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import net.openchrom.xxd.process.supplier.templates.model.IntegratorSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakIntegrationSettings;
+import net.openchrom.xxd.process.supplier.templates.support.RetentionIndexSupport;
 
 public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
 
@@ -38,14 +40,15 @@ public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
 		IProcessingInfo<T> processingInfo = super.validate(peaks, settings);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakIntegrationSettings) {
+				RetentionIndexMap retentionIndexMap = RetentionIndexSupport.getRetentionIndexMap(peaks);
 				PeakIntegrationSettings peakIntegrationSettings = (PeakIntegrationSettings)settings;
 				List<IntegratorSetting> integratorSettings = peakIntegrationSettings.getIntegratorSettings();
-				for(IntegratorSetting integratorSetting : integratorSettings) {
+				for(IntegratorSetting setting : integratorSettings) {
 					/*
 					 * Bounds
 					 */
-					int startRetentionTime = integratorSetting.getStartRetentionTime();
-					int stopRetentionTime = integratorSetting.getStopRetentionTime();
+					int startRetentionTime = setting.getRetentionTimeStart(retentionIndexMap);
+					int stopRetentionTime = setting.getRetentionTimeStop(retentionIndexMap);
 					List<IPeak> peaksToIntegrate = new ArrayList<>();
 					for(IPeak peak : peaks) {
 						//
@@ -55,7 +58,7 @@ public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
 							 * 0.0 | 0.0 | Styrene | Max
 							 * 0.0 | 0.0 | Benzene | Trapezoid
 							 */
-							String identifier = integratorSetting.getIdentifier();
+							String identifier = setting.getIdentifier();
 							if(isIdentifierMatch(peak, identifier)) {
 								peaksToIntegrate.add(peak);
 							}
@@ -71,7 +74,7 @@ public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
 						}
 					}
 					//
-					integratePeaks(peaksToIntegrate, integratorSetting.getIntegrator());
+					integratePeaks(peaksToIntegrate, setting.getIntegrator());
 				}
 				//
 				// IPeakIntegrationResults peakIntegrationResults = new PeakIntegrationResults();

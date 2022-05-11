@@ -290,7 +290,7 @@ public class ProcessReviewUI extends Composite {
 
 	private PeakReviewListUI createTable(Composite parent) {
 
-		PeakReviewListUI peakReviewListUI = new PeakReviewListUI(parent, SWT.BORDER);
+		PeakReviewListUI peakReviewListUI = new PeakReviewListUI(parent, SWT.BORDER, false);
 		Table table = peakReviewListUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
 		//

@@ -33,11 +33,9 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implements IPeakDetectorSettingsMSD, IPeakDetectorSettingsCSD, IPeakDetectorSettingsWSD, ITemplateSettings {
 
 	public static final String DETECTOR_DESCRIPTION = "Template Peak Detector";
-	/*
-	 * 10.52 | 10.63 | VV | 103, 104, 108-110 | true | Styrene | Benzene
-	 */
+	//
 	@JsonProperty(value = "Detector Settings", defaultValue = "")
-	@JsonPropertyDescription(value = "Example: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'")
+	@JsonPropertyDescription(value = "Use the editor to modify the settings.")
 	private String detectorSettings = "";
 
 	public void setDetectorSettings(String detectorSettings) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,39 +11,28 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
-import java.text.DecimalFormat;
-
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.support.text.ValueFormat;
-import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
 
-public class StandardsAssignerLabelProvider extends AbstractChemClipseLabelProvider {
+public class StandardsAssignerLabelProvider extends AbstractTemplateLabelProvider {
 
-	public static final String NAME = "ISTD (Internal Standard)";
-	public static final String START_RETENTION_TIME = "Start Retention Time [min]";
-	public static final String STOP_RETENTION_TIME = "Stop Retention Time [min]";
-	public static final String CONCENTRATION = "Concentration";
-	public static final String CONCENTRATION_UNIT = "Concentration Unit";
-	public static final String RESPONSE_FACTOR = "Response Factor";
-	public static final String TRACES_IDENTIFICATION = "Traces Identification";
-	//
-	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
-	//
 	public static final String[] TITLES = { //
-			NAME, //
-			START_RETENTION_TIME, //
-			STOP_RETENTION_TIME, //
+			NAME_ISTD, //
+			POSITION_START, //
+			POSITION_STOP, //
+			POSITION_DIRECTIVE, //
 			CONCENTRATION, //
 			CONCENTRATION_UNIT, //
 			RESPONSE_FACTOR, //
-			TRACES_IDENTIFICATION //
+			TRACES //
 	};
+	//
 	public static final int[] BOUNDS = { //
 			200, //
+			100, //
 			100, //
 			100, //
 			50, //
@@ -72,21 +61,24 @@ public class StandardsAssignerLabelProvider extends AbstractChemClipseLabelProvi
 					text = setting.getName();
 					break;
 				case 1:
-					text = decimalFormat.format(setting.getStartRetentionTimeMinutes());
+					text = getFormattedPosition(setting.getPositionStart());
 					break;
 				case 2:
-					text = decimalFormat.format(setting.getStopRetentionTimeMinutes());
+					text = getFormattedPosition(setting.getPositionStop());
 					break;
 				case 3:
-					text = decimalFormat.format(setting.getConcentration());
+					text = setting.getPositionDirective().label();
 					break;
 				case 4:
-					text = setting.getConcentrationUnit();
+					text = decimalFormat.format(setting.getConcentration());
 					break;
 				case 5:
-					text = decimalFormat.format(setting.getResponseFactor());
+					text = setting.getConcentrationUnit();
 					break;
 				case 6:
+					text = decimalFormat.format(setting.getResponseFactor());
+					break;
+				case 7:
 					text = setting.getTracesIdentification();
 					break;
 				default:

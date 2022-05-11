@@ -37,6 +37,7 @@ import org.eclipse.chemclipse.model.core.support.HeaderField;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.support.HeaderUtil;
+import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -49,6 +50,7 @@ import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 
+import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReportColumns;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
@@ -120,7 +122,7 @@ public class ReportWriter {
 					printWriter.println("");
 				}
 				printWriter.println("Summary");
-				printResults(chromatogramReportSettings, sumResults, columnsToPrint, fileExists, chromatogramNameMaster, traces, printWriter);
+				printResults(chromatogramReportSettings, sumResults, columnsToPrint, fileExists, chromatogramNameMaster, traces, null, printWriter);
 			}
 		}
 	}
@@ -194,8 +196,9 @@ public class ReportWriter {
 
 		Map<ReportSetting, List<IPeak>> mappedResults = mapChromatogram(chromatogram, chromatogramReportSettings);
 		//
+		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
 		printChromatogramHeader(chromatogram, chromatogramReportSettings, printWriter);
-		printResults(chromatogramReportSettings, mappedResults, columnsToPrint, fileExists, chromatogramName, traces, printWriter);
+		printResults(chromatogramReportSettings, mappedResults, columnsToPrint, fileExists, chromatogramName, traces, retentionIndexMap, printWriter);
 		//
 		return mappedResults;
 	}
@@ -242,11 +245,11 @@ public class ReportWriter {
 		}
 	}
 
-	private void printResults(ChromatogramReportSettings chromatogramReportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, boolean fileExists, String chromatogramName, List<Integer> traces, PrintWriter printWriter) {
+	private void printResults(ChromatogramReportSettings chromatogramReportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, boolean fileExists, String chromatogramName, List<Integer> traces, RetentionIndexMap retentionIndexMap, PrintWriter printWriter) {
 
 		List<ReportSetting> reportSettings = chromatogramReportSettings.getReportSettings();
 		printResultHeader(chromatogramReportSettings, columnsToPrint, fileExists, printWriter);
-		printResultData(reportSettings, mappedResults, columnsToPrint, chromatogramName, traces, printWriter);
+		printResultData(reportSettings, mappedResults, columnsToPrint, chromatogramName, traces, retentionIndexMap, printWriter);
 		//
 		if(chromatogramReportSettings.isPrintSectionSeparator()) {
 			printWriter.println("");
@@ -267,7 +270,7 @@ public class ReportWriter {
 		}
 	}
 
-	private void printResultData(List<ReportSetting> reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, String chromatogramName, List<Integer> traces, PrintWriter printWriter) {
+	private void printResultData(List<ReportSetting> reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, String chromatogramName, List<Integer> traces, RetentionIndexMap retentionIndexMap, PrintWriter printWriter) {
 
 		/*
 		 * The sort order of the report setting list is important.
@@ -304,8 +307,8 @@ public class ReportWriter {
 				dataMap.put(ReportColumns.CHROMATOGRAM_NAME, chromatogramName);
 				dataMap.put(ReportColumns.PEAK_NAME, reportSetting.getName());
 				dataMap.put(ReportColumns.CAS_NUMBER, reportSetting.getCasNumber());
-				dataMap.put(ReportColumns.START_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStartRetentionTime()));
-				dataMap.put(ReportColumns.STOP_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getStopRetentionTime()));
+				dataMap.put(ReportColumns.START_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getRetentionTimeStart(retentionIndexMap)));
+				dataMap.put(ReportColumns.STOP_TIME_SETTING, getRetentionTimeMinutes(reportSetting.getRetentionTimeStop(retentionIndexMap)));
 				dataMap.put(ReportColumns.NUM_PEAKS, Integer.toString(peaks.size()));
 				dataMap.put(ReportColumns.MIN_RETENTION_TIME_PEAKS, startRetentionTime);
 				dataMap.put(ReportColumns.MEAN_RETENTION_TIME_PEAKS, meanRetentionTime);
@@ -363,9 +366,10 @@ public class ReportWriter {
 	private Map<ReportSetting, List<IPeak>> mapChromatogram(IChromatogram<? extends IPeak> chromatogram, ChromatogramReportSettings chromatogramReportSettings) {
 
 		Map<ReportSetting, List<IPeak>> mappedResults = new HashMap<>();
+		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
 		//
 		for(ReportSetting reportSetting : chromatogramReportSettings.getReportSettings()) {
-			List<IPeak> matchedPeaks = extractPeaks(chromatogram, reportSetting);
+			List<IPeak> matchedPeaks = extractPeaks(chromatogram, reportSetting, retentionIndexMap);
 			List<IPeak> storedPeaks = mappedResults.get(reportSetting);
 			if(storedPeaks == null) {
 				mappedResults.put(reportSetting, matchedPeaks);
@@ -378,14 +382,14 @@ public class ReportWriter {
 		return mappedResults;
 	}
 
-	private List<IPeak> extractPeaks(IChromatogram<? extends IPeak> chromatogram, ReportSetting reportSetting) {
+	private List<IPeak> extractPeaks(IChromatogram<? extends IPeak> chromatogram, ReportSetting reportSetting, RetentionIndexMap retentionIndexMap) {
 
-		int startRetentionTime = reportSetting.getStartRetentionTime();
-		int stopRetentionTime = reportSetting.getStopRetentionTime();
+		int startRetentionTime = reportSetting.getRetentionTimeStart(retentionIndexMap);
+		int stopRetentionTime = reportSetting.getRetentionTimeStop(retentionIndexMap);
 		/*
 		 * Expand the retention time to max range if no selection has been made.
 		 */
-		if(startRetentionTime == 0 && stopRetentionTime == 0) {
+		if(startRetentionTime == AbstractSetting.FULL_RETENTION_TIME && stopRetentionTime == AbstractSetting.FULL_RETENTION_TIME) {
 			startRetentionTime = chromatogram.getStartRetentionTime();
 			stopRetentionTime = chromatogram.getStopRetentionTime();
 		}

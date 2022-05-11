@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -174,22 +174,15 @@ public class ReportSettings extends ArrayList<ReportSetting> implements ISetting
 
 	private void extractSetting(ReportSetting setting, StringBuilder builder) {
 
-		builder.append(getFormattedRetentionTime(setting.getStartRetentionTimeMinutes()));
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(getFormattedRetentionTime(setting.getStopRetentionTimeMinutes()));
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getName());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getCasNumber());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getReportStrategy().toString());
+		List<String> entries = new ArrayList<>();
+		//
+		entries.add(getFormattedPosition(setting.getPositionStart()));
+		entries.add(getFormattedPosition(setting.getPositionStop()));
+		entries.add(setting.getName());
+		entries.add(setting.getCasNumber());
+		entries.add(setting.getReportStrategy().name());
+		entries.add(setting.getPositionDirective().name());
+		//
+		compile(builder, entries);
 	}
 }

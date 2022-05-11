@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,18 +11,17 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.support.text.ILabel;
 
-public enum DetectorType implements ILabel {
+public enum PositionDirective implements ILabel {
 
-	VV("VV (Valley)"), //
-	BB("BB (Baseline)"), //
-	MM("MM (Manual)");
+	RETENTION_TIME_MIN("min"), //
+	RETENTION_TIME_MS("ms"), //
+	RETENTION_INDEX("RI"); //
 
 	private String label = "";
 
-	private DetectorType(String label) {
+	private PositionDirective(String label) {
 
 		this.label = label;
 	}
@@ -35,16 +34,5 @@ public enum DetectorType implements ILabel {
 	public static String[][] getOptions() {
 
 		return ILabel.getOptions(values());
-	}
-
-	public static PeakType translate(DetectorType detectorType) {
-
-		if(DetectorType.BB.equals(detectorType)) {
-			return PeakType.BB;
-		} else if(DetectorType.MM.equals(detectorType)) {
-			return PeakType.MM;
-		} else {
-			return PeakType.VV;
-		}
 	}
 }

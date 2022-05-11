@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -38,19 +38,25 @@ public class IntegratorSetting_2_Test extends TestCase {
 
 	public void test2() {
 
-		setting.setStartRetentionTimeMinutes(2.10d);
-		assertEquals(2.10d, setting.getStartRetentionTimeMinutes());
+		setting.setPositionStart(2.10d);
+		assertEquals(2.10d, setting.getPositionStart());
 	}
 
 	public void test3() {
 
-		setting.setStopRetentionTimeMinutes(7.46d);
-		assertEquals(7.46d, setting.getStopRetentionTimeMinutes());
+		setting.setPositionStop(7.46d);
+		assertEquals(7.46d, setting.getPositionStop());
 	}
 
 	public void test4() {
 
 		setting.setIntegrator("PeakMax");
 		assertEquals("PeakMax", setting.getIntegrator());
+	}
+
+	public void test5() {
+
+		setting.setPositionDirective(PositionDirective.RETENTION_INDEX);
+		assertEquals(PositionDirective.RETENTION_INDEX, setting.getPositionDirective());
 	}
 }

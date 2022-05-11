@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,31 +11,27 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
-
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 
 public class ReviewValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
-	public static final Set<PeakType> DETECTOR_TYPES = Collections.unmodifiableSet(EnumSet.of(PeakType.BB, PeakType.VV, PeakType.MM));
-	//
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + ReviewListUtil.EXAMPLE_SINGLE + "'";
 	private static final String SEPARATOR_TOKEN = ReviewListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = ReviewListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
-	private double startRetentionTimeMinutes = 0;
-	private double stopRetentionTimeMinutes = 0;
+	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
+	private double positionStart = 0;
+	private double positionStop = 0;
 	private String name = "";
 	private String casNumber = "";
 	private String traces = "";
-	private PeakType detectorType = PeakType.VV;
+	private PeakType peakType = PeakType.VV;
 	private boolean optimizeRange = true;
 
 	@Override
@@ -60,33 +56,39 @@ public class ReviewValidator extends AbstractTemplateValidator implements ITempl
 						/*
 						 * Evaluation
 						 */
-						startRetentionTimeMinutes = parseDouble(values, 0);
-						if(startRetentionTimeMinutes < 0.0d) {
-							message = "The start retention time must be not lower than 0.";
-						}
-						//
-						stopRetentionTimeMinutes = parseDouble(values, 1);
-						if(stopRetentionTimeMinutes <= startRetentionTimeMinutes) {
-							message = "The stop retention time must be greater then the start retention time.";
-						}
-						//
+						positionStart = parseDouble(values, 0);
+						positionStop = parseDouble(values, 1);
 						name = parseString(values, 2);
+						casNumber = parseString(values, 3);
+						String traceValues = parseString(values, 4);
+						peakType = parsePeakType(parseString(values, 5));
+						optimizeRange = parseBoolean(values, 6, true);
+						positionDirective = parsePositionDirective(parseString(values, 7));
+						/*
+						 * Validations
+						 */
+						if(positionStart < 0.0d) {
+							message = "The start position must be not lower than 0.";
+						}
+						//
+						if(positionStop <= positionStart) {
+							message = "The stop position must be greater than the start position.";
+						}
+						//
 						if("".equals(name)) {
 							message = "A substance name needs to be set.";
 						}
 						//
-						casNumber = parseString(values, 3);
-						//
-						String traceValues = parseString(values, 4);
-						message = validateTraces(traceValues);
-						traces = (message == null) ? traceValues : "";
-						//
-						detectorType = parseType(parseString(values, 5));
-						if(detectorType == null) {
-							detectorType = PeakType.VV;
+						IStatus status = validateTraces(traceValues);
+						if(status.isOK()) {
+							traces = traceValues;
+						} else {
+							message = status.getMessage();
 						}
 						//
-						optimizeRange = parseBoolean(values, 6, true);
+						if(peakType == null) {
+							message = "Please select a peak type: " + PeakType.VV + " or " + PeakType.BB + " or " + PeakType.MM;
+						}
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -121,13 +123,16 @@ public class ReviewValidator extends AbstractTemplateValidator implements ITempl
 	public ReviewSetting getSetting() {
 
 		ReviewSetting setting = new ReviewSetting();
-		setting.setStartRetentionTimeMinutes(startRetentionTimeMinutes);
-		setting.setStopRetentionTimeMinutes(stopRetentionTimeMinutes);
+		//
+		setting.setPositionStart(positionStart);
+		setting.setPositionStop(positionStop);
 		setting.setName(name);
 		setting.setCasNumber(casNumber);
 		setting.setTraces(traces);
-		setting.setDetectorType(detectorType);
+		setting.setPeakType(peakType);
 		setting.setOptimizeRange(optimizeRange);
+		setting.setPositionDirective(positionDirective);
+		//
 		return setting;
 	}
 }

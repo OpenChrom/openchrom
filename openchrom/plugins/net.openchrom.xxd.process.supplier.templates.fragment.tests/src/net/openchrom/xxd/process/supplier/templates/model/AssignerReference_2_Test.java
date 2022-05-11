@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -38,19 +38,25 @@ public class AssignerReference_2_Test extends TestCase {
 
 	public void test2() {
 
-		setting.setStartRetentionTimeMinutes(3.45d);
-		assertEquals(3.45d, setting.getStartRetentionTimeMinutes());
+		setting.setPositionStart(3.45d);
+		assertEquals(3.45d, setting.getPositionStart());
 	}
 
 	public void test3() {
 
-		setting.setStopRetentionTimeMinutes(10.98d);
-		assertEquals(10.98d, setting.getStopRetentionTimeMinutes());
+		setting.setPositionStop(10.98d);
+		assertEquals(10.98d, setting.getPositionStop());
 	}
 
 	public void test4() {
 
 		setting.setIdentifier("World");
 		assertEquals("World", setting.getIdentifier());
+	}
+
+	public void test5() {
+
+		setting.setPositionDirective(PositionDirective.RETENTION_INDEX);
+		assertEquals(PositionDirective.RETENTION_INDEX, setting.getPositionDirective());
 	}
 }

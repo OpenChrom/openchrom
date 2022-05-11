@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,7 +14,6 @@ package net.openchrom.xxd.process.supplier.templates.ui.swt;
 import java.util.List;
 
 import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
-import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
@@ -24,7 +23,7 @@ import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakInt
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakIntegratorFilter;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakIntegratorLabelProvider;
 
-public class PeakIntegratorListUI extends ExtendedTableViewer {
+public class PeakIntegratorListUI extends AbstractTemplateListUI {
 
 	private static final String[] TITLES = PeakIntegratorLabelProvider.TITLES;
 	private static final int[] BOUNDS = PeakIntegratorLabelProvider.BOUNDS;
@@ -34,6 +33,7 @@ public class PeakIntegratorListUI extends ExtendedTableViewer {
 	private PeakIntegratorFilter listFilter = new PeakIntegratorFilter();
 
 	public PeakIntegratorListUI(Composite parent, int style) {
+
 		super(parent, style);
 		createColumns();
 	}
@@ -42,11 +42,6 @@ public class PeakIntegratorListUI extends ExtendedTableViewer {
 
 		listFilter.setSearchText(searchText, caseSensitive);
 		refresh();
-	}
-
-	public void clear() {
-
-		setInput(null);
 	}
 
 	private void createColumns() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,6 +18,7 @@ import java.util.Set;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReportStrategy;
 
@@ -30,8 +31,9 @@ public class ReportValidator extends AbstractTemplateValidator implements ITempl
 	private static final String SEPARATOR_ENTRY = ReportListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
-	private double startRetentionTimeMinutes = 0;
-	private double stopRetentionTimeMinutes = 0;
+	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
+	private double positionStart = 0;
+	private double positionStop = 0;
 	private String name = "";
 	private String casNumber = "";
 	private ReportStrategy reportStrategy = ReportStrategy.ALL;
@@ -58,10 +60,16 @@ public class ReportValidator extends AbstractTemplateValidator implements ITempl
 						/*
 						 * Evaluation
 						 */
-						startRetentionTimeMinutes = parseDouble(values, 0);
-						stopRetentionTimeMinutes = parseDouble(values, 1);
-						//
-						if(startRetentionTimeMinutes == 0.0d && stopRetentionTimeMinutes == 0.0d) {
+						positionStart = parseDouble(values, 0);
+						positionStop = parseDouble(values, 1);
+						name = parseString(values, 2);
+						casNumber = parseString(values, 3);
+						reportStrategy = parseReportStrategy(parseString(values, 4));
+						positionDirective = parsePositionDirective(parseString(values, 5));
+						/*
+						 * Validations
+						 */
+						if(positionStart == 0.0d && positionStop == 0.0d) {
 							/*
 							 * No validation if both values are zero -> complete chromatogram range.
 							 */
@@ -69,21 +77,19 @@ public class ReportValidator extends AbstractTemplateValidator implements ITempl
 							/*
 							 * Validate > zero
 							 */
-							if(startRetentionTimeMinutes < 0.0d) {
-								message = "The start retention time must be not lower than 0.";
+							if(positionStart < 0.0d) {
+								message = "The start position must be not lower than 0.";
 							}
 							//
-							if(stopRetentionTimeMinutes <= startRetentionTimeMinutes) {
-								message = "The stop retention time must be greater then the start retention time.";
+							if(positionStop <= positionStart) {
+								message = "The stop position must be greater than the start position.";
 							}
 						}
 						//
-						name = parseString(values, 2);
 						if("".equals(name)) {
 							message = "A substance name needs to be set.";
 						}
 						//
-						casNumber = parseString(values, 3);
 						//
 						try {
 							reportStrategy = ReportStrategy.valueOf(parseString(values, 4));
@@ -109,11 +115,14 @@ public class ReportValidator extends AbstractTemplateValidator implements ITempl
 	public ReportSetting getSetting() {
 
 		ReportSetting setting = new ReportSetting();
-		setting.setStartRetentionTimeMinutes(startRetentionTimeMinutes);
-		setting.setStopRetentionTimeMinutes(stopRetentionTimeMinutes);
+		//
+		setting.setPositionStart(positionStart);
+		setting.setPositionStop(positionStop);
 		setting.setName(name);
 		setting.setCasNumber(casNumber);
 		setting.setReportStrategy(reportStrategy);
+		setting.setPositionDirective(positionDirective);
+		//
 		return setting;
 	}
 }

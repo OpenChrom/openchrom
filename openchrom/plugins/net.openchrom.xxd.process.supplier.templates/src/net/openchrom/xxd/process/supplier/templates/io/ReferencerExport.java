@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,8 +27,10 @@ import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 import net.openchrom.xxd.process.supplier.templates.model.AssignerReferences;
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
 public class ReferencerExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
@@ -56,21 +58,22 @@ public class ReferencerExport extends AbstractChromatogramExportConverter implem
 					/*
 					 * Create a reference
 					 */
-					AssignerReference assignerReference = new AssignerReference();
-					assignerReference.setInternalStandard(reference);
-					assignerReference.setIdentifier(identifier);
+					AssignerReference setting = new AssignerReference();
+					setting.setInternalStandard(reference);
+					setting.setIdentifier(identifier);
+					setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
 					/*
 					 * If no identifier is available, use the retention time.
 					 */
 					if("".equals(identifier)) {
-						assignerReference.setStartRetentionTime(peakModel.getStartRetentionTime() - deltaLeft);
-						assignerReference.setStopRetentionTime(peakModel.getStopRetentionTime() + deltaRight);
+						setting.setPositionStart((peakModel.getStartRetentionTime() - deltaLeft) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+						setting.setPositionStop((peakModel.getStopRetentionTime() + deltaRight) / IChromatogram.MINUTE_CORRELATION_FACTOR);
 					} else {
-						assignerReference.setStartRetentionTime(0);
-						assignerReference.setStopRetentionTime(0);
+						setting.setPositionStart(AbstractSetting.FULL_RETENTION_TIME);
+						setting.setPositionStop(AbstractSetting.FULL_RETENTION_TIME);
 					}
 					//
-					assignerReferences.add(assignerReference);
+					assignerReferences.add(setting);
 				}
 			}
 		}

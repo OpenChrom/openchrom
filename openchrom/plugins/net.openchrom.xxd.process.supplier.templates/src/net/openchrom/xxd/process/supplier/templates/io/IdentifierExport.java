@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
 import net.openchrom.xxd.process.supplier.templates.model.IdentifierSettings;
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
 public class IdentifierExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
@@ -52,17 +53,18 @@ public class IdentifierExport extends AbstractChromatogramExportConverter implem
 			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
 			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), identificationTargetComparator);
 			if(libraryInformation != null) {
-				IdentifierSetting identifierSetting = new IdentifierSetting();
-				identifierSetting.setStartRetentionTime(peakModel.getStartRetentionTime() - deltaLeft);
-				identifierSetting.setStopRetentionTime(peakModel.getStopRetentionTime() + deltaRight);
-				identifierSetting.setName(libraryInformation.getName());
-				identifierSetting.setCasNumber(libraryInformation.getCasNumber());
-				identifierSetting.setComments(libraryInformation.getComments());
-				identifierSetting.setContributor(libraryInformation.getContributor());
-				identifierSetting.setReference(libraryInformation.getReferenceIdentifier());
-				identifierSetting.setTraces(extractTraces(peak, numberTraces));
-				identifierSetting.setReferenceIdentifier("");
-				identifierSettings.add(identifierSetting);
+				IdentifierSetting setting = new IdentifierSetting();
+				setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
+				setting.setPositionStart((peakModel.getStartRetentionTime() - deltaLeft) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				setting.setPositionStop((peakModel.getStopRetentionTime() + deltaRight) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				setting.setName(libraryInformation.getName());
+				setting.setCasNumber(libraryInformation.getCasNumber());
+				setting.setComments(libraryInformation.getComments());
+				setting.setContributor(libraryInformation.getContributor());
+				setting.setReference(libraryInformation.getReferenceIdentifier());
+				setting.setTraces(extractTraces(peak, numberTraces));
+				setting.setReferenceIdentifier("");
+				identifierSettings.add(setting);
 			}
 		}
 		//

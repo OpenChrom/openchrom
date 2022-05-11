@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,12 +33,15 @@ public class StandardsReferencerComparator extends AbstractRecordTableComparator
 					sortOrder = setting2.getInternalStandard().compareTo(setting1.getInternalStandard());
 					break;
 				case 1:
-					sortOrder = Integer.compare(setting2.getStartRetentionTime(), setting1.getStartRetentionTime());
+					sortOrder = Double.compare(setting2.getPositionStart(), setting1.getPositionStart());
 					break;
 				case 2:
-					sortOrder = Integer.compare(setting2.getStopRetentionTime(), setting1.getStopRetentionTime());
+					sortOrder = Double.compare(setting2.getPositionStop(), setting1.getPositionStop());
 					break;
 				case 3:
+					sortOrder = setting2.getPositionDirective().compareTo(setting1.getPositionDirective());
+					break;
+				case 4:
 					sortOrder = setting2.getIdentifier().compareTo(setting1.getIdentifier());
 					break;
 				default:

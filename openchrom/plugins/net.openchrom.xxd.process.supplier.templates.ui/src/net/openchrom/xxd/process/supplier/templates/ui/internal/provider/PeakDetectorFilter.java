@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -38,7 +38,7 @@ public class PeakDetectorFilter extends ViewerFilter {
 		//
 		if(element instanceof DetectorSetting) {
 			DetectorSetting setting = (DetectorSetting)element;
-			PeakType detectorType = setting.getDetectorType();
+			PeakType detectorType = setting.getPeakType();
 			String traces = setting.getTraces();
 			String referenceIdenfifier = setting.getReferenceIdentifier();
 			String name = setting.getName();

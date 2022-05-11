@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,18 +20,19 @@ public class ReviewSetting extends AbstractSetting {
 	private String name = "";
 	private String casNumber = "";
 	private String traces = "";
-	private PeakType detectorType = PeakType.VV; // VV => include background: true
+	private PeakType peakType = PeakType.VV; // VV => include background: true
 	private boolean optimizeRange = false;
 
 	public void copyFrom(ReviewSetting setting) {
 
 		if(setting != null) {
-			setStartRetentionTime(setting.getStartRetentionTime());
-			setStopRetentionTime(setting.getStopRetentionTime());
+			setPositionStart(setting.getPositionStart());
+			setPositionStop(setting.getPositionStop());
+			setPositionDirective(setting.getPositionDirective());
 			setName(setting.getName());
 			setCasNumber(setting.getCasNumber());
 			setTraces(setting.getTraces());
-			setDetectorType(setting.getDetectorType());
+			setPeakType(setting.getPeakType());
 			setOptimizeRange(setting.isOptimizeRange());
 		}
 	}
@@ -66,14 +67,14 @@ public class ReviewSetting extends AbstractSetting {
 		this.traces = traces;
 	}
 
-	public PeakType getDetectorType() {
+	public PeakType getPeakType() {
 
-		return detectorType;
+		return peakType;
 	}
 
-	public void setDetectorType(PeakType detectorType) {
+	public void setPeakType(PeakType peakType) {
 
-		this.detectorType = detectorType;
+		this.peakType = peakType;
 	}
 
 	public boolean isOptimizeRange() {
@@ -84,44 +85,5 @@ public class ReviewSetting extends AbstractSetting {
 	public void setOptimizeRange(boolean optimizeRange) {
 
 		this.optimizeRange = optimizeRange;
-	}
-
-	@Override
-	public int hashCode() {
-
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-
-		if(this == obj)
-			return true;
-		if(obj == null)
-			return false;
-		if(getClass() != obj.getClass())
-			return false;
-		ReviewSetting other = (ReviewSetting)obj;
-		if(name == null) {
-			if(other.name != null)
-				return false;
-		} else if(!name.equals(other.name))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-
-		return "IdentifierSetting [startRetentionTime=" + getStartRetentionTime() + //
-				", stopRetentionTime=" + getStopRetentionTime() + //
-				", name=" + name + ", casNumber=" + casNumber + //
-				", traces=" + traces + //
-				", detectorType=" + detectorType + //
-				", optimizeRange=" + optimizeRange + //
-				"]";//
 	}
 }

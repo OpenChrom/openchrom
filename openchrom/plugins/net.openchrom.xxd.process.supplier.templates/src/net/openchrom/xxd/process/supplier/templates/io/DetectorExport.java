@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSettings;
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
 public class DetectorExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
@@ -49,19 +50,20 @@ public class DetectorExport extends AbstractChromatogramExportConverter implemen
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
-			DetectorSetting detectorSetting = new DetectorSetting();
-			detectorSetting.setStartRetentionTime(peakModel.getStartRetentionTime() - deltaLeft);
-			detectorSetting.setStopRetentionTime(peakModel.getStopRetentionTime() + deltaRight);
-			detectorSetting.setDetectorType(PeakType.VV);
-			detectorSetting.setTraces(extractTraces(peak, numberTraces));
-			detectorSetting.setOptimizeRange(optimizeRange);
-			detectorSetting.setReferenceIdentifier("");
+			DetectorSetting setting = new DetectorSetting();
+			setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
+			setting.setPositionStart((peakModel.getStartRetentionTime() - deltaLeft) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+			setting.setPositionStop((peakModel.getStopRetentionTime() + deltaRight) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+			setting.setPeakType(PeakType.VV);
+			setting.setTraces(extractTraces(peak, numberTraces));
+			setting.setOptimizeRange(optimizeRange);
+			setting.setReferenceIdentifier("");
 			//
 			float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
 			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(retentionIndex);
 			IIdentificationTarget identificationTarget = IIdentificationTarget.getBestIdentificationTarget(peak.getTargets(), identificationTargetComparator);
-			detectorSetting.setName(identificationTarget != null ? identificationTarget.getLibraryInformation().getName() : "");
-			detectorSettings.add(detectorSetting);
+			setting.setName(identificationTarget != null ? identificationTarget.getLibraryInformation().getName() : "");
+			detectorSettings.add(setting);
 		}
 		//
 		detectorSettings.exportItems(file);

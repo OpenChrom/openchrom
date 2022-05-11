@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -37,14 +37,14 @@ public class AssignerStandard_2_Test extends TestCase {
 
 	public void test2() {
 
-		setting.setStartRetentionTimeMinutes(92.2d);
-		assertEquals(92.2d, setting.getStartRetentionTimeMinutes());
+		setting.setPositionStart(92.2d);
+		assertEquals(92.2d, setting.getPositionStart());
 	}
 
 	public void test3() {
 
-		setting.setStopRetentionTimeMinutes(392.4d);
-		assertEquals(392.4d, setting.getStopRetentionTimeMinutes());
+		setting.setPositionStop(392.4d);
+		assertEquals(392.4d, setting.getPositionStop());
 	}
 
 	public void test4() {
@@ -69,5 +69,11 @@ public class AssignerStandard_2_Test extends TestCase {
 
 		setting.setTracesIdentification("104 103");
 		assertEquals("104 103", setting.getTracesIdentification());
+	}
+
+	public void test8() {
+
+		setting.setPositionDirective(PositionDirective.RETENTION_INDEX);
+		assertEquals(PositionDirective.RETENTION_INDEX, setting.getPositionDirective());
 	}
 }

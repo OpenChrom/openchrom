@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,6 +27,7 @@ import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -51,12 +52,13 @@ public class ReportExport extends AbstractChromatogramExportConverter implements
 			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
 			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), identificationTargetComparator);
 			if(libraryInformation != null) {
-				ReportSetting reportSetting = new ReportSetting();
-				reportSetting.setStartRetentionTime(peakModel.getStartRetentionTime() - deltaLeft);
-				reportSetting.setStopRetentionTime(peakModel.getStopRetentionTime() + deltaRight);
-				reportSetting.setName(libraryInformation.getName());
-				reportSetting.setCasNumber(libraryInformation.getCasNumber());
-				reportSettings.add(reportSetting);
+				ReportSetting setting = new ReportSetting();
+				setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
+				setting.setPositionStart((peakModel.getStartRetentionTime() - deltaLeft) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				setting.setPositionStop((peakModel.getStopRetentionTime() + deltaRight) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				setting.setName(libraryInformation.getName());
+				setting.setCasNumber(libraryInformation.getCasNumber());
+				reportSettings.add(setting);
 			}
 		}
 		//

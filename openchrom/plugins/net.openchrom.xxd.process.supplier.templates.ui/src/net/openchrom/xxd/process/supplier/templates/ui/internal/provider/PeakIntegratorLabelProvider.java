@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,32 +11,23 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
-import java.text.DecimalFormat;
-
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.support.text.ValueFormat;
-import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.process.supplier.templates.model.IntegratorSetting;
 
-public class PeakIntegratorLabelProvider extends AbstractChemClipseLabelProvider {
+public class PeakIntegratorLabelProvider extends AbstractTemplateLabelProvider {
 
-	public static final String START_RETENTION_TIME = "Start Retention Time [min]";
-	public static final String STOP_RETENTION_TIME = "Stop Retention Time [min]";
-	public static final String IDENTIFIER = "Identifier";
-	public static final String INTEGRATOR = "Integrator";
-	//
-	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
-	//
 	public static final String[] TITLES = { //
-			START_RETENTION_TIME, //
-			STOP_RETENTION_TIME, //
+			POSITION_START, //
+			POSITION_STOP, //
+			POSITION_DIRECTIVE, //
 			IDENTIFIER, //
 			INTEGRATOR //
 	};
 	public static final int[] BOUNDS = { //
+			100, //
 			100, //
 			100, //
 			200, //
@@ -60,18 +51,18 @@ public class PeakIntegratorLabelProvider extends AbstractChemClipseLabelProvider
 			IntegratorSetting setting = (IntegratorSetting)element;
 			switch(columnIndex) {
 				case 0:
-					double startRT = setting.getStartRetentionTimeMinutes();
-					text = (startRT == 0.0d) ? "--" : decimalFormat.format(startRT);
+					text = getFormattedPosition(setting.getPositionStart(), PLACEHOLDER);
 					break;
 				case 1:
-					double stopRT = setting.getStopRetentionTimeMinutes();
-					text = (stopRT == 0.0d) ? "--" : decimalFormat.format(stopRT);
+					text = getFormattedPosition(setting.getPositionStop(), PLACEHOLDER);
 					break;
 				case 2:
-					String identifier = setting.getIdentifier();
-					text = ("".equals(identifier)) ? "--" : identifier;
+					text = setting.getPositionDirective().label();
 					break;
 				case 3:
+					text = getFormattedIdentifier(setting.getIdentifier());
+					break;
+				case 4:
 					text = setting.getIntegrator();
 					break;
 				default:

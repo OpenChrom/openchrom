@@ -12,65 +12,45 @@
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import org.eclipse.chemclipse.model.cas.CasSupport;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakIdentifierListUI;
 import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
 
-public class PeakIdentifierEditingSupport extends EditingSupport {
-
-	private CellEditor cellEditor;
-	private PeakIdentifierListUI tableViewer;
-	private String column;
+public class PeakIdentifierEditingSupport extends AbstractTemplateEditingSupport {
 
 	public PeakIdentifierEditingSupport(PeakIdentifierListUI tableViewer, String column) {
 
-		super(tableViewer);
-		this.column = column;
-		this.cellEditor = new TextCellEditor(tableViewer.getTable());
-		this.tableViewer = tableViewer;
-	}
-
-	@Override
-	protected CellEditor getCellEditor(Object element) {
-
-		return cellEditor;
-	}
-
-	@Override
-	protected boolean canEdit(Object element) {
-
-		return tableViewer.isEditEnabled();
+		super(tableViewer, column);
 	}
 
 	@Override
 	protected Object getValue(Object element) {
 
 		if(element instanceof IdentifierSetting) {
-			IdentifierSetting setting = (IdentifierSetting)element;
-			switch(column) {
-				/*
-				 * Do not edit the name
-				 */
-				case PeakIdentifierLabelProvider.START_RETENTION_TIME:
-					return Double.toString(setting.getStartRetentionTimeMinutes());
-				case PeakIdentifierLabelProvider.STOP_RETENTION_TIME:
-					return Double.toString(setting.getStopRetentionTimeMinutes());
-				case PeakIdentifierLabelProvider.CAS_NUMBER:
-					return setting.getCasNumber();
-				case PeakIdentifierLabelProvider.COMMENTS:
-					return setting.getComments();
-				case PeakIdentifierLabelProvider.CONTRIBUTOR:
-					return setting.getContributor();
-				case PeakIdentifierLabelProvider.REFERENCE:
-					return setting.getReference();
-				case PeakIdentifierLabelProvider.TRACES:
-					return setting.getTraces();
-				case PeakIdentifierLabelProvider.REFERENCE_IDENTIFIER:
-					return setting.getReferenceIdentifier();
+			Object object = super.getValue(element);
+			if(object != null) {
+				return object;
+			} else {
+				IdentifierSetting setting = (IdentifierSetting)element;
+				switch(getColumn()) {
+					/*
+					 * Do not edit the name
+					 */
+					case AbstractTemplateLabelProvider.CAS_NUMBER:
+						return setting.getCasNumber();
+					case AbstractTemplateLabelProvider.COMMENTS:
+						return setting.getComments();
+					case AbstractTemplateLabelProvider.CONTRIBUTOR:
+						return setting.getContributor();
+					case AbstractTemplateLabelProvider.REFERENCE:
+						return setting.getReference();
+					case AbstractTemplateLabelProvider.TRACES:
+						return setting.getTraces();
+					case AbstractTemplateLabelProvider.REFERENCE_IDENTIFIER:
+						return setting.getReferenceIdentifier();
+				}
 			}
 		}
 		return false;
@@ -81,65 +61,37 @@ public class PeakIdentifierEditingSupport extends EditingSupport {
 
 		if(element instanceof IdentifierSetting) {
 			IdentifierSetting setting = (IdentifierSetting)element;
-			double result;
-			switch(column) {
+			super.setValue(element, value);
+			switch(getColumn()) {
 				/*
 				 * Do not edit the name
 				 */
-				case PeakIdentifierLabelProvider.START_RETENTION_TIME:
-					result = convertValue(value);
-					if(!Double.isNaN(result)) {
-						if(result <= setting.getStopRetentionTimeMinutes()) {
-							setting.setStartRetentionTimeMinutes(result);
-						}
-					}
-					break;
-				case PeakIdentifierLabelProvider.STOP_RETENTION_TIME:
-					result = convertValue(value);
-					if(!Double.isNaN(result)) {
-						if(result >= setting.getStartRetentionTimeMinutes()) {
-							setting.setStopRetentionTimeMinutes(result);
-						}
-					}
-					break;
-				case PeakIdentifierLabelProvider.CAS_NUMBER:
+				case AbstractTemplateLabelProvider.CAS_NUMBER:
 					setting.setCasNumber(CasSupport.format(((String)value).trim()));
 					break;
-				case PeakIdentifierLabelProvider.COMMENTS:
+				case AbstractTemplateLabelProvider.COMMENTS:
 					setting.setComments(((String)value).trim());
 					break;
-				case PeakIdentifierLabelProvider.CONTRIBUTOR:
+				case AbstractTemplateLabelProvider.CONTRIBUTOR:
 					setting.setContributor(((String)value).trim());
 					break;
-				case PeakIdentifierLabelProvider.REFERENCE:
+				case AbstractTemplateLabelProvider.REFERENCE:
 					setting.setReference(((String)value).trim());
 					break;
-				case PeakIdentifierLabelProvider.TRACES:
+				case AbstractTemplateLabelProvider.TRACES:
 					String traces = ((String)value).trim();
 					PeakIdentifierValidator validator = new PeakIdentifierValidator();
-					String message = validator.validateTraces(traces);
-					if(message == null) {
+					IStatus status = validator.validateTraces(traces);
+					if(status.isOK()) {
 						setting.setTraces(traces);
 					}
 					break;
-				case PeakIdentifierLabelProvider.REFERENCE_IDENTIFIER:
+				case AbstractTemplateLabelProvider.REFERENCE_IDENTIFIER:
 					setting.setReferenceIdentifier(((String)value).trim());
 					break;
 			}
 			//
-			tableViewer.refresh();
-			tableViewer.updateContent();
+			updateTableViewer();
 		}
-	}
-
-	private double convertValue(Object value) {
-
-		double result = Double.NaN;
-		try {
-			result = Double.parseDouble(((String)value).trim());
-		} catch(NumberFormatException e) {
-			//
-		}
-		return result;
 	}
 }

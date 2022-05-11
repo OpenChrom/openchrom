@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,6 +23,7 @@ import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -30,6 +31,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsReferencerSettings;
+import net.openchrom.xxd.process.supplier.templates.support.RetentionIndexSupport;
 
 @SuppressWarnings("rawtypes")
 public class StandardsReferencer extends AbstractPeakQuantifier implements IPeakQuantifier {
@@ -42,9 +44,10 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 		IProcessingInfo processingInfo = validate(peaks, settings, monitor);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof StandardsReferencerSettings) {
+				RetentionIndexMap retentionIndexMap = RetentionIndexSupport.getRetentionIndexMap(peaks);
 				StandardsReferencerSettings standardsReferencerSettings = (StandardsReferencerSettings)settings;
 				for(AssignerReference assignerReference : standardsReferencerSettings.getReferencerSettings()) {
-					referencePeak(peaks, assignerReference);
+					referencePeak(peaks, assignerReference, retentionIndexMap);
 				}
 			} else {
 				processingInfo.addErrorMessage(StandardsReferencerSettings.DESCRIPTION, "The settings instance is wrong.");
@@ -84,12 +87,12 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 		return settings;
 	}
 
-	private void referencePeak(List<? extends IPeak> peaks, AssignerReference assignerReference) {
+	private void referencePeak(List<? extends IPeak> peaks, AssignerReference setting, RetentionIndexMap retentionIndexMap) {
 
-		int startRetentionTime = assignerReference.getStartRetentionTime();
-		int stopRetentionTime = assignerReference.getStopRetentionTime();
-		String quantitationReference = assignerReference.getInternalStandard();
-		String identifierReference = assignerReference.getIdentifier();
+		int startRetentionTime = setting.getRetentionTimeStart(retentionIndexMap);
+		int stopRetentionTime = setting.getRetentionTimeStop(retentionIndexMap);
+		String quantitationReference = setting.getInternalStandard();
+		String identifierReference = setting.getIdentifier();
 		//
 		try {
 			if(isValidRetentionTimeRange(startRetentionTime, stopRetentionTime)) {

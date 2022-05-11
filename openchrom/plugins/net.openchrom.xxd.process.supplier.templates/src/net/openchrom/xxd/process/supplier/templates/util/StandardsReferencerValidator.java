@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,6 +15,7 @@ import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 
 public class StandardsReferencerValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
@@ -23,8 +24,9 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator impl
 	private static final String SEPARATOR_ENTRY = StandardsReferencerListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
-	private double startRetentionTimeMinutes = 0;
-	private double stopRetentionTimeMinutes = 0;
+	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
+	private double positionStart = 0;
+	private double positionStop = 0;
 	private String internalStandard = "";
 	private String identifier = "";
 
@@ -51,28 +53,26 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator impl
 						/*
 						 * Evaluation
 						 */
-						startRetentionTimeMinutes = parseDouble(values, 0);
-						if(startRetentionTimeMinutes < 0.0d) {
-							message = "The start retention time must be not lower than 0.";
-						}
-						//
-						stopRetentionTimeMinutes = parseDouble(values, 1);
+						positionStart = parseDouble(values, 0);
+						positionStop = parseDouble(values, 1);
 						internalStandard = parseString(values, 2);
-						if("".equals(internalStandard)) {
-							message = "The name of the internal standards needs to be set.";
-						}
 						identifier = parseString(values, 3);
+						positionDirective = parsePositionDirective(parseString(values, 4));
 						/*
-						 * Extended Check
+						 * Validations
 						 */
-						if(startRetentionTimeMinutes == 0.0d && stopRetentionTimeMinutes == 0.0d) {
+						if(positionStart == 0.0d && positionStop == 0.0d) {
 							if("".equals(identifier)) {
-								message = "Please set a source identifier instead of the start/stop retention time.";
+								message = "Please set a source identifier instead of the start/stop position.";
 							}
 						} else {
-							if(stopRetentionTimeMinutes <= startRetentionTimeMinutes) {
-								message = "The stop retention time must be greater then the start retention time.";
+							if(positionStop <= positionStart) {
+								message = "The stop position must be greater than the start position.";
 							}
+						}
+						//
+						if("".equals(internalStandard)) {
+							message = "The name of the internal standards needs to be set.";
 						}
 					} else {
 						message = ERROR_ENTRY;
@@ -92,11 +92,14 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator impl
 
 	public AssignerReference getSetting() {
 
-		AssignerReference settings = new AssignerReference();
-		settings.setStartRetentionTimeMinutes(startRetentionTimeMinutes);
-		settings.setStopRetentionTimeMinutes(stopRetentionTimeMinutes);
-		settings.setInternalStandard(internalStandard);
-		settings.setIdentifier(identifier);
-		return settings;
+		AssignerReference setting = new AssignerReference();
+		//
+		setting.setPositionStart(positionStart);
+		setting.setPositionStop(positionStop);
+		setting.setInternalStandard(internalStandard);
+		setting.setIdentifier(identifier);
+		setting.setPositionDirective(positionDirective);
+		//
+		return setting;
 	}
 }

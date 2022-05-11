@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,33 +11,24 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
-import java.text.DecimalFormat;
-
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.support.text.ValueFormat;
-import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 
-public class StandardsReferencerLabelProvider extends AbstractChemClipseLabelProvider {
+public class StandardsReferencerLabelProvider extends AbstractTemplateLabelProvider {
 
-	public static final String NAME = "Target ISTD (Internal Standard)";
-	public static final String START_RETENTION_TIME = "Source Start Retention Time [min]";
-	public static final String STOP_RETENTION_TIME = "Source Stop Retention Time [min]";
-	public static final String IDENTIFIER = "Source Identifier";
-	//
-	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
-	//
 	public static final String[] TITLES = { //
-			NAME, //
-			START_RETENTION_TIME, //
-			STOP_RETENTION_TIME, //
+			NAME_ISTD, //
+			POSITION_START, //
+			POSITION_STOP, //
+			POSITION_DIRECTIVE, //
 			IDENTIFIER //
 	};
 	public static final int[] BOUNDS = { //
 			200, //
+			100, //
 			100, //
 			100, //
 			200 //
@@ -63,14 +54,15 @@ public class StandardsReferencerLabelProvider extends AbstractChemClipseLabelPro
 					text = setting.getInternalStandard();
 					break;
 				case 1:
-					double startRT = setting.getStartRetentionTimeMinutes();
-					text = (startRT == 0.0d) ? "--" : decimalFormat.format(startRT);
+					text = getFormattedPosition(setting.getPositionStart(), PLACEHOLDER);
 					break;
 				case 2:
-					double stopRT = setting.getStopRetentionTimeMinutes();
-					text = (stopRT == 0.0d) ? "--" : decimalFormat.format(stopRT);
+					text = getFormattedPosition(setting.getPositionStop(), PLACEHOLDER);
 					break;
 				case 3:
+					text = setting.getPositionDirective().label();
+					break;
+				case 4:
 					text = setting.getIdentifier();
 					break;
 				default:

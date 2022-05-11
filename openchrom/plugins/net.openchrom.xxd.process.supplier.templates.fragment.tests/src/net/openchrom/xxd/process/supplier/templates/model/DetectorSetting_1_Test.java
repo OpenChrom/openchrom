@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -34,17 +34,17 @@ public class DetectorSetting_1_Test extends TestCase {
 
 	public void test1() {
 
-		assertEquals(0.0d, setting.getStartRetentionTimeMinutes());
+		assertEquals(0.0d, setting.getPositionStart());
 	}
 
 	public void test2() {
 
-		assertEquals(0.0d, setting.getStopRetentionTimeMinutes());
+		assertEquals(0.0d, setting.getPositionStop());
 	}
 
 	public void test3() {
 
-		assertEquals(PeakType.VV, setting.getDetectorType());
+		assertEquals(PeakType.VV, setting.getPeakType());
 	}
 
 	public void test4() {
@@ -65,5 +65,10 @@ public class DetectorSetting_1_Test extends TestCase {
 	public void test7() {
 
 		assertEquals("", setting.getName());
+	}
+
+	public void test8() {
+
+		assertEquals(PositionDirective.RETENTION_TIME_MIN, setting.getPositionDirective());
 	}
 }

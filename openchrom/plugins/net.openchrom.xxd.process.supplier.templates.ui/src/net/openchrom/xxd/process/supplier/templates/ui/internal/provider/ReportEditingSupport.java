@@ -12,72 +12,39 @@
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import org.eclipse.chemclipse.model.cas.CasSupport;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReportStrategy;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.ReportListUI;
-import net.openchrom.xxd.process.supplier.templates.util.ReportValidator;
 
-public class ReportEditingSupport extends EditingSupport {
-
-	private CellEditor cellEditor;
-	private ReportListUI tableViewer;
-	private String column;
+public class ReportEditingSupport extends AbstractTemplateEditingSupport {
 
 	public ReportEditingSupport(ReportListUI tableViewer, String column) {
 
-		super(tableViewer);
-		this.column = column;
-		if(column.equals(ReportLabelProvider.REPORT_STRATEGY)) {
-			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite)tableViewer.getControl());
-			ComboViewer comboViewer = editor.getViewer();
-			comboViewer.setContentProvider(ArrayContentProvider.getInstance());
-			comboViewer.setInput(ReportValidator.REPORT_STRATEGIES);
-			this.cellEditor = editor;
-		} else {
-			this.cellEditor = new TextCellEditor(tableViewer.getTable());
-		}
-		this.tableViewer = tableViewer;
-	}
-
-	@Override
-	protected CellEditor getCellEditor(Object element) {
-
-		return cellEditor;
-	}
-
-	@Override
-	protected boolean canEdit(Object element) {
-
-		return tableViewer.isEditEnabled();
+		super(tableViewer, column);
 	}
 
 	@Override
 	protected Object getValue(Object element) {
 
 		if(element instanceof ReportSetting) {
-			ReportSetting setting = (ReportSetting)element;
-			switch(column) {
-				/*
-				 * Do not edit the name
-				 */
-				case ReportLabelProvider.START_RETENTION_TIME:
-					return Double.toString(setting.getStartRetentionTimeMinutes());
-				case ReportLabelProvider.STOP_RETENTION_TIME:
-					return Double.toString(setting.getStopRetentionTimeMinutes());
-				case ReportLabelProvider.CAS_NUMBER:
-					return setting.getCasNumber();
-				case ReportLabelProvider.REPORT_STRATEGY:
-					return setting.getReportStrategy();
+			Object object = super.getValue(element);
+			if(object != null) {
+				return object;
+			} else {
+				ReportSetting setting = (ReportSetting)element;
+				switch(getColumn()) {
+					/*
+					 * Do not edit the name
+					 */
+					case AbstractTemplateLabelProvider.CAS_NUMBER:
+						return setting.getCasNumber();
+					case AbstractTemplateLabelProvider.REPORT_STRATEGY:
+						return setting.getReportStrategy();
+				}
 			}
 		}
+		//
 		return false;
 	}
 
@@ -86,40 +53,22 @@ public class ReportEditingSupport extends EditingSupport {
 
 		if(element instanceof ReportSetting) {
 			ReportSetting setting = (ReportSetting)element;
-			switch(column) {
+			super.setValue(element, value);
+			switch(getColumn()) {
 				/*
 				 * Do not edit the name
 				 */
-				case PeakIdentifierLabelProvider.START_RETENTION_TIME:
-					setting.setStartRetentionTimeMinutes(convertDouble(value));
-					break;
-				case PeakIdentifierLabelProvider.STOP_RETENTION_TIME:
-					setting.setStopRetentionTimeMinutes(convertDouble(value));
-					break;
-				case PeakIdentifierLabelProvider.CAS_NUMBER:
+				case AbstractTemplateLabelProvider.CAS_NUMBER:
 					setting.setCasNumber(CasSupport.format(((String)value).trim()));
 					break;
-				case ReportLabelProvider.REPORT_STRATEGY:
+				case AbstractTemplateLabelProvider.REPORT_STRATEGY:
 					if(value instanceof ReportStrategy) {
 						setting.setReportStrategy((ReportStrategy)value);
 					}
 					break;
 			}
 			//
-			tableViewer.refresh();
-			tableViewer.updateContent();
+			updateTableViewer();
 		}
-	}
-
-	private double convertDouble(Object value) {
-
-		double result = 0.0d;
-		try {
-			result = Double.parseDouble(((String)value).trim());
-			result = (result < 0.0d) ? 0.0d : result;
-		} catch(NumberFormatException e) {
-			//
-		}
-		return result;
 	}
 }

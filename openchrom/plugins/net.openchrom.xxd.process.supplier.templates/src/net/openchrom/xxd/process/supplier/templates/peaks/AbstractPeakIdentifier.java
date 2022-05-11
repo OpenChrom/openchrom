@@ -30,6 +30,7 @@ import org.eclipse.chemclipse.model.identifier.LibraryInformation;
 import org.eclipse.chemclipse.model.implementation.IdentificationTarget;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.support.IRetentionTimeRange;
+import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -68,14 +69,14 @@ public abstract class AbstractPeakIdentifier {
 		return settings;
 	}
 
-	protected <T> IProcessingInfo<T> applyIdentifier(List<? extends IPeak> peaks, IIdentifierSettings settings, IProgressMonitor monitor) {
+	protected <T> IProcessingInfo<T> applyIdentifier(List<? extends IPeak> peaks, IIdentifierSettings settings, RetentionIndexMap retentionIndexMap, IProgressMonitor monitor) {
 
 		IProcessingInfo<T> processingInfo = validate(peaks, settings, monitor);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakIdentifierSettings) {
 				PeakIdentifierSettings peakIdentifierSettings = (PeakIdentifierSettings)settings;
 				for(IdentifierSetting identifierSetting : peakIdentifierSettings.getIdentifierSettingsList()) {
-					identifyPeak(peaks, identifierSetting);
+					identifyPeak(peaks, identifierSetting, retentionIndexMap);
 				}
 			} else {
 				processingInfo.addErrorMessage(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION, "The settings instance is wrong.");
@@ -84,10 +85,10 @@ public abstract class AbstractPeakIdentifier {
 		return processingInfo;
 	}
 
-	private void identifyPeak(List<? extends IPeak> peaks, IdentifierSetting identifierSetting) {
+	private void identifyPeak(List<? extends IPeak> peaks, IdentifierSetting identifierSetting, RetentionIndexMap retentionIndexMap) {
 
 		PeakSupport retentionTimeSupport = new PeakSupport();
-		IRetentionTimeRange retentionTimeRange = retentionTimeSupport.getRetentionTimeRange(peaks, identifierSetting, identifierSetting.getReferenceIdentifier());
+		IRetentionTimeRange retentionTimeRange = retentionTimeSupport.getRetentionTimeRange(peaks, identifierSetting, identifierSetting.getReferenceIdentifier(), retentionIndexMap);
 		int startRetentionTime = retentionTimeRange.getStartRetentionTime();
 		int stopRetentionTime = retentionTimeRange.getStopRetentionTime();
 		TracesUtil tracesUtil = new TracesUtil();

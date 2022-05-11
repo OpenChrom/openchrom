@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,7 +16,7 @@ import org.eclipse.chemclipse.model.core.PeakType;
 
 public class DetectorSetting extends AbstractSetting {
 
-	private PeakType detectorType = PeakType.VV; // VV => include background: true
+	private PeakType peakType = PeakType.VV; // VV => include background: true
 	private String traces = "";
 	private boolean optimizeRange = false;
 	private String referenceIdentifier = ""; // Used for relative retention time
@@ -25,9 +25,10 @@ public class DetectorSetting extends AbstractSetting {
 	public void copyFrom(DetectorSetting setting) {
 
 		if(setting != null) {
-			setStartRetentionTime(setting.getStartRetentionTime());
-			setStopRetentionTime(setting.getStopRetentionTime());
-			setDetectorType(setting.getDetectorType());
+			setPositionDirective(setting.getPositionDirective());
+			setPositionStart(setting.getPositionStart());
+			setPositionStart(setting.getPositionStop());
+			setPeakType(setting.getPeakType());
 			setTraces(setting.getTraces());
 			setOptimizeRange(setting.isOptimizeRange());
 			setReferenceIdentifier(setting.getReferenceIdentifier());
@@ -35,19 +36,19 @@ public class DetectorSetting extends AbstractSetting {
 		}
 	}
 
-	public PeakType getDetectorType() {
+	public PeakType getPeakType() {
 
-		return detectorType;
+		return peakType;
 	}
 
-	public void setDetectorType(PeakType detectorType) {
+	public void setPeakType(PeakType detectorType) {
 
-		this.detectorType = detectorType;
+		this.peakType = detectorType;
 	}
 
 	public boolean isIncludeBackground() {
 
-		return (PeakType.VV.equals(detectorType)) ? true : false;
+		return (PeakType.VV.equals(peakType)) ? true : false;
 	}
 
 	public String getTraces() {
@@ -88,18 +89,5 @@ public class DetectorSetting extends AbstractSetting {
 	public void setName(String name) {
 
 		this.name = name;
-	}
-
-	@Override
-	public String toString() {
-
-		return "DetectorSetting [startRetentionTime=" + getStartRetentionTime() + //
-				", stopRetentionTime=" + getStopRetentionTime() + //
-				", detectorType=" + detectorType + //
-				", traces=" + traces + //
-				", optimizeRange=" + optimizeRange + //
-				", referenceIdentifier=" + referenceIdentifier + //
-				", name=" + name + //
-				"]";
 	}
 }

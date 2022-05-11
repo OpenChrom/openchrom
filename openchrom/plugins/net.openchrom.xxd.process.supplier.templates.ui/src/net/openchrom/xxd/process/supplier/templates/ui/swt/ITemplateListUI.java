@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,17 +9,17 @@
  * Contributors:
  * Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.templates.comparator;
+package net.openchrom.xxd.process.supplier.templates.ui.swt;
 
-import java.util.Comparator;
+import org.eclipse.chemclipse.model.updates.IUpdateListener;
 
-import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
+public interface ITemplateListUI {
 
-public class ReportComparator implements Comparator<ReportSetting> {
+	void setSearchText(String searchText, boolean caseSensitive);
 
-	@Override
-	public int compare(ReportSetting setting1, ReportSetting setting2) {
+	void setUpdateListener(IUpdateListener updateListener);
 
-		return Double.compare(setting1.getPositionStart(), setting2.getPositionStart());
-	}
+	void updateContent();
+
+	void clear();
 }

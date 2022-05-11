@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -174,30 +174,17 @@ public class AssignerStandards extends ArrayList<AssignerStandard> implements IS
 
 	private void extractSetting(AssignerStandard setting, StringBuilder builder) {
 
-		builder.append(getFormattedRetentionTime(setting.getStartRetentionTimeMinutes()));
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(getFormattedRetentionTime(setting.getStopRetentionTimeMinutes()));
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getName());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getConcentration());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getConcentrationUnit());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getResponseFactor());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getTracesIdentification());
+		List<String> entries = new ArrayList<>();
+		//
+		entries.add(getFormattedPosition(setting.getPositionStart()));
+		entries.add(getFormattedPosition(setting.getPositionStop()));
+		entries.add(setting.getName());
+		entries.add(Double.toString(setting.getConcentration()));
+		entries.add(setting.getConcentrationUnit());
+		entries.add(Double.toString(setting.getResponseFactor()));
+		entries.add(setting.getTracesIdentification());
+		entries.add(setting.getPositionDirective().name());
+		//
+		compile(builder, entries);
 	}
 }

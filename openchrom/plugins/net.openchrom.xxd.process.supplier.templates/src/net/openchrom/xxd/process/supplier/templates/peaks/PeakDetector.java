@@ -29,6 +29,7 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
@@ -100,12 +101,13 @@ public class PeakDetector<P extends IPeak, C extends IChromatogram<P>, R> extend
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakDetectorSettings) {
 				IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
+				RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
 				PeakDetectorSettings peakDetectorSettings = (PeakDetectorSettings)settings;
 				List<DetectorSetting> detectorSettings = peakDetectorSettings.getDetectorSettingsList();
 				SubMonitor subMonitor = SubMonitor.convert(monitor, detectorSettings.size());
 				//
 				for(DetectorSetting detectorSetting : detectorSettings) {
-					setPeakBySettings(chromatogram, detectorSetting);
+					setPeakBySettings(chromatogram, detectorSetting, retentionIndexMap);
 					subMonitor.worked(1);
 				}
 			} else {
@@ -115,9 +117,9 @@ public class PeakDetector<P extends IPeak, C extends IChromatogram<P>, R> extend
 		return processingInfo;
 	}
 
-	private void setPeakBySettings(IChromatogram<? extends IPeak> chromatogram, DetectorSetting detectorSetting) {
+	private void setPeakBySettings(IChromatogram<? extends IPeak> chromatogram, DetectorSetting detectorSetting, RetentionIndexMap retentionIndexMap) {
 
-		RetentionTimeRange retentionTimeRange = peakSupport.getRetentionTimeRange(chromatogram.getPeaks(), detectorSetting, detectorSetting.getReferenceIdentifier());
+		RetentionTimeRange retentionTimeRange = peakSupport.getRetentionTimeRange(chromatogram.getPeaks(), detectorSetting, detectorSetting.getReferenceIdentifier(), retentionIndexMap);
 		setPeakByRetentionTimeRange(chromatogram, retentionTimeRange, detectorSetting);
 	}
 

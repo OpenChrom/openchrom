@@ -76,7 +76,7 @@ public class PeakReviewDirectWSD<T> extends AbstractPeakIdentifier implements IP
 					reviewSetting.setStopRetentionTime(peakModel.getStopRetentionTime());
 					reviewSetting.setName(libraryInformation.getName());
 					reviewSetting.setCasNumber(libraryInformation.getCasNumber());
-					reviewSetting.setDetectorType(PeakType.VV);
+					reviewSetting.setPeakType(PeakType.VV);
 					reviewSetting.setTraces(getTraces(peak));
 					reviewSetting.setOptimizeRange(true);
 					reviewSettings.add(reviewSetting);

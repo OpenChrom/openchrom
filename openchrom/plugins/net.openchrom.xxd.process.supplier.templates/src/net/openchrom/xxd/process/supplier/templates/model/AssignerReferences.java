@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -155,18 +155,12 @@ public class AssignerReferences extends ArrayList<AssignerReference> implements 
 
 	private void extractSetting(AssignerReference setting, StringBuilder builder) {
 
-		builder.append(getFormattedRetentionTime(setting.getStartRetentionTimeMinutes()));
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(getFormattedRetentionTime(setting.getStopRetentionTimeMinutes()));
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getInternalStandard());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getIdentifier());
+		List<String> entries = new ArrayList<>();
+		//
+		entries.add(getFormattedPosition(setting.getPositionStart()));
+		entries.add(getFormattedPosition(setting.getPositionStop()));
+		entries.add(setting.getInternalStandard());
+		entries.add(setting.getIdentifier());
+		entries.add(setting.getPositionDirective().name());
 	}
 }
