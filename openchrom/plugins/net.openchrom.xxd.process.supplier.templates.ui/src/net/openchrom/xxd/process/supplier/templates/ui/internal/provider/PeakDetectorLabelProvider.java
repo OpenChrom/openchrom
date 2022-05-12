@@ -76,6 +76,7 @@ public class PeakDetectorLabelProvider extends AbstractTemplateLabelProvider {
 					break;
 				case 3:
 					text = getFormattedPeakType(setting.getPeakType());
+					break;
 				case 4:
 					text = setting.getTraces();
 					break;
