@@ -11,12 +11,17 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.support;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
+
+import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
+import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 
 public class RetentionIndexSupport {
 
@@ -29,6 +34,58 @@ public class RetentionIndexSupport {
 		}
 		//
 		return retentionIndexMap;
+	}
+
+	public static List<DetectorSetting> adjustDetectorSettings(IChromatogram<?> chromatogram, List<DetectorSetting> settings) {
+
+		List<DetectorSetting> settingsAdjusted = new ArrayList<>();
+		//
+		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
+		for(DetectorSetting setting : settings) {
+			if(setting.getPositionDirective().equals(PositionDirective.RETENTION_INDEX)) {
+				/*
+				 * Translate RI to retention time minutes.
+				 */
+				double positionStart = retentionIndexMap.getRetentionTime((int)Math.round(setting.getPositionStart()));
+				double positionStop = retentionIndexMap.getRetentionTime((int)Math.round(setting.getPositionStop()));
+				if(positionStart != RetentionIndexMap.VALUE_NOT_AVAILABLE && positionStop != RetentionIndexMap.VALUE_NOT_AVAILABLE) {
+					setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
+					setting.setPositionStart(positionStart / IChromatogram.MINUTE_CORRELATION_FACTOR);
+					setting.setPositionStop(positionStop / IChromatogram.MINUTE_CORRELATION_FACTOR);
+					settingsAdjusted.add(setting);
+				}
+			} else {
+				settingsAdjusted.add(setting);
+			}
+		}
+		//
+		return settingsAdjusted;
+	}
+
+	public static List<ReviewSetting> adjustReviewSettings(IChromatogram<?> chromatogram, List<ReviewSetting> settings) {
+
+		List<ReviewSetting> settingsAdjusted = new ArrayList<>();
+		//
+		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
+		for(ReviewSetting setting : settings) {
+			if(setting.getPositionDirective().equals(PositionDirective.RETENTION_INDEX)) {
+				/*
+				 * Translate RI to retention time minutes.
+				 */
+				double positionStart = retentionIndexMap.getRetentionTime((int)Math.round(setting.getPositionStart()));
+				double positionStop = retentionIndexMap.getRetentionTime((int)Math.round(setting.getPositionStop()));
+				if(positionStart != RetentionIndexMap.VALUE_NOT_AVAILABLE && positionStop != RetentionIndexMap.VALUE_NOT_AVAILABLE) {
+					setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
+					setting.setPositionStart(positionStart / IChromatogram.MINUTE_CORRELATION_FACTOR);
+					setting.setPositionStop(positionStop / IChromatogram.MINUTE_CORRELATION_FACTOR);
+					settingsAdjusted.add(setting);
+				}
+			} else {
+				settingsAdjusted.add(setting);
+			}
+		}
+		//
+		return settingsAdjusted;
 	}
 
 	private static IChromatogram<?> getChromatogram(List<? extends IPeak> peaks) {

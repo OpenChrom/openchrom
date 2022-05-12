@@ -50,9 +50,13 @@ public class PeakReviewMSD<T> extends AbstractPeakIdentifier implements IPeakIde
 	private void runProcess(List<? extends IPeakMSD> peaks, IPeakIdentifierSettingsMSD peakIdentifierSettings, IProcessingInfo<IIdentificationResults> processingInfo, IProgressMonitor monitor) {
 
 		if(peakIdentifierSettings instanceof PeakReviewSettings) {
+			/*
+			 * RI will be adjusted to retention time (minutes).
+			 */
 			PeakReviewSettings settings = (PeakReviewSettings)peakIdentifierSettings;
 			IChromatogram<?> chromatogram = getChromatogram(peaks);
 			ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
+			//
 			try {
 				DisplayUtils.executeInUserInterfaceThread(new Runnable() {
 

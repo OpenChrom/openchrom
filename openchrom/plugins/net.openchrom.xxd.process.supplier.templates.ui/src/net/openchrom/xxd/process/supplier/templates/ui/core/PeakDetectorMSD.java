@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -42,9 +42,13 @@ public class PeakDetectorMSD<P extends IPeak, C extends IChromatogram<P>, R> ext
 
 		IProcessingInfo<R> processingInfo = new ProcessingInfo<>();
 		if(peakDetectorSettings instanceof PeakDetectorSettings) {
+			/*
+			 * RI will be adjusted to retention time (minutes).
+			 */
 			PeakDetectorSettings settings = (PeakDetectorSettings)peakDetectorSettings;
 			IChromatogram<? extends IPeak> chromatogram = chromatogramSelection.getChromatogram();
 			List<DetectorSetting> detectorSettings = ChromatogramValidator.filterValidDetectorSettings(chromatogram, settings);
+			//
 			if(detectorSettings.isEmpty()) {
 				processingInfo.addWarnMessage(DESCRIPTION, "The chromatogram doesn't contain any of the given peak traces.");
 			} else {

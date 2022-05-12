@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,6 +22,7 @@ import net.openchrom.xxd.process.supplier.templates.comparator.ReviewComparator;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
+import net.openchrom.xxd.process.supplier.templates.support.RetentionIndexSupport;
 
 public class ProcessReviewSettings {
 
@@ -33,7 +34,7 @@ public class ProcessReviewSettings {
 
 		this.processingInfo = processingInfo;
 		this.chromatogram = chromatogram;
-		this.reviewSettings.addAll(peakReviewSettings.getReviewSettingsList());
+		this.reviewSettings.addAll(RetentionIndexSupport.adjustReviewSettings(chromatogram, peakReviewSettings.getReviewSettingsList()));
 		//
 		if(PreferenceSupplier.isReviewSettingsSort()) {
 			Collections.sort(reviewSettings, new ReviewComparator()); // SORT OK

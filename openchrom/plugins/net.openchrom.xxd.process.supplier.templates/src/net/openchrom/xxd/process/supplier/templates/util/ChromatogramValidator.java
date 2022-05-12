@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.chemclipse.csd.model.core.IScanCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -26,6 +27,7 @@ import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
+import net.openchrom.xxd.process.supplier.templates.support.RetentionIndexSupport;
 
 public class ChromatogramValidator {
 
@@ -43,7 +45,7 @@ public class ChromatogramValidator {
 			}
 		}
 		//
-		return detectorSettings;
+		return RetentionIndexSupport.adjustDetectorSettings(chromatogram, detectorSettings);
 	}
 
 	public static List<ReviewSetting> filterValidReviewSettings(IChromatogram<?> chromatogram, PeakReviewSettings settings) {
@@ -85,6 +87,9 @@ public class ChromatogramValidator {
 							break exitloop;
 						}
 					}
+				} else if(scan instanceof IScanCSD) {
+					tracesAvailable = true; // No traces are used here, hence true.
+					break exitloop;
 				}
 			}
 		} else {
