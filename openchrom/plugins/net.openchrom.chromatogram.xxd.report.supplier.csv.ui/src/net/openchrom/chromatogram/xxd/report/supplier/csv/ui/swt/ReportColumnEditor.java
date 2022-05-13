@@ -135,6 +135,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 
 		Table table = createTable(parent);
 		table.setToolTipText("The following columns are available.");
+		addTableColumn(table, "Available", 500);
 		table.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -170,6 +171,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 
 		Table table = createTable(parent);
 		table.setToolTipText("If no column is listed, all columns are reported.");
+		addTableColumn(table, "Reported", 500);
 		table.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -217,9 +219,6 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
-		//
-		addTableColumn(table, "Column", 500);
-		//
 		return table;
 	}
 
