@@ -68,6 +68,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 
+import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -244,7 +245,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 			@Override
 			public void update() {
 
-				setInput();
+				listControl.get().refresh();
 			}
 		});
 		//
@@ -260,6 +261,27 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		gridData.grabExcessVerticalSpace = true;
 		gridData.verticalAlignment = SWT.TOP;
 		table.setLayoutData(gridData);
+		//
+		table.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				/*
+				 * Set the selected elements.
+				 */
+				List<AbstractSetting> settings = new ArrayList<>();
+				List<?> objects = peakReviewListUI.getStructuredSelection().toList();
+				//
+				for(Object object : objects) {
+					if(object instanceof AbstractSetting) {
+						settings.add((AbstractSetting)object);
+					}
+				}
+				//
+				toolbarAdjuster.get().setInput(settings);
+			}
+		});
 		//
 		peakReviewListUI.setEditEnabled(true);
 		peakReviewListUI.setUpdateListener(new IUpdateListener() {

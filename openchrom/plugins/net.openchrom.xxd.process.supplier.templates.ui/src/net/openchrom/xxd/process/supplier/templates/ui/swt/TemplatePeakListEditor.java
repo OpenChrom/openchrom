@@ -67,6 +67,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 
+import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -203,6 +204,27 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		gridData.grabExcessVerticalSpace = true;
 		gridData.verticalAlignment = SWT.TOP;
 		table.setLayoutData(gridData);
+		//
+		table.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				/*
+				 * Set the selected elements.
+				 */
+				List<AbstractSetting> settings = new ArrayList<>();
+				List<?> objects = peakDetectorListUI.getStructuredSelection().toList();
+				//
+				for(Object object : objects) {
+					if(object instanceof AbstractSetting) {
+						settings.add((AbstractSetting)object);
+					}
+				}
+				//
+				toolbarAdjuster.get().setInput(settings);
+			}
+		});
 		//
 		peakDetectorListUI.setEditEnabled(true);
 		peakDetectorListUI.setUpdateListener(new IUpdateListener() {
@@ -442,7 +464,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 			@Override
 			public void update() {
 
-				setInput();
+				listControl.get().refresh();
 			}
 		});
 		//
