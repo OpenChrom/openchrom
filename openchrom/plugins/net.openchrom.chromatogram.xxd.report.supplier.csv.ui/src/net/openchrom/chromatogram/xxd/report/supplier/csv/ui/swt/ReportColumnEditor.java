@@ -53,6 +53,16 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		createControl();
 	}
 
+	@Override
+	public void setEnabled(boolean enabled) {
+
+		tableAvailableColumns.setEnabled(enabled);
+		tableReportColumns.setEnabled(enabled);
+		for(ToolItem toolItem : toolItems) {
+			toolItem.setEnabled(enabled);
+		}
+	}
+
 	public ReportColumns getReportColumns() {
 
 		return reportColumns;
