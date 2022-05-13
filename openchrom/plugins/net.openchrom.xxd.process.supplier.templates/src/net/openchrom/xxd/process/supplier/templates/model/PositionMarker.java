@@ -14,10 +14,13 @@ package net.openchrom.xxd.process.supplier.templates.model;
 import org.eclipse.chemclipse.support.text.ILabel;
 
 public enum PositionMarker implements ILabel {
+
 	RT_MIN_START("Start Retention Time [min]"), //
 	RT_MIN_STOP("Stop Retention Time [min]"), //
 	RT_MS_START("Start Retention Time [ms]"), //
-	RT_MS_STOP("Stop Retention Time [ms]");
+	RT_MS_STOP("Stop Retention Time [ms]"), //
+	RI_START("Start Retention Index"), //
+	RI_STOP("Stop Retention Index"); //
 
 	private String label = "";
 
