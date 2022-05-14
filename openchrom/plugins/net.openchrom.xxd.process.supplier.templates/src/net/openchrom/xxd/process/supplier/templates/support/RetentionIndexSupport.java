@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
+import org.eclipse.chemclipse.model.support.RetentionIndexMath;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
@@ -48,7 +49,7 @@ public class RetentionIndexSupport {
 				 */
 				double positionStart = retentionIndexMap.getRetentionTime((int)Math.round(setting.getPositionStart()));
 				double positionStop = retentionIndexMap.getRetentionTime((int)Math.round(setting.getPositionStop()));
-				if(positionStart != RetentionIndexMap.VALUE_NOT_AVAILABLE && positionStop != RetentionIndexMap.VALUE_NOT_AVAILABLE) {
+				if(positionStart != RetentionIndexMath.RETENTION_TIME_MISSING && positionStop != RetentionIndexMath.RETENTION_TIME_MISSING) {
 					setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
 					setting.setPositionStart(positionStart / IChromatogram.MINUTE_CORRELATION_FACTOR);
 					setting.setPositionStop(positionStop / IChromatogram.MINUTE_CORRELATION_FACTOR);
@@ -74,7 +75,7 @@ public class RetentionIndexSupport {
 				 */
 				double positionStart = retentionIndexMap.getRetentionTime((int)Math.round(setting.getPositionStart()));
 				double positionStop = retentionIndexMap.getRetentionTime((int)Math.round(setting.getPositionStop()));
-				if(positionStart != RetentionIndexMap.VALUE_NOT_AVAILABLE && positionStop != RetentionIndexMap.VALUE_NOT_AVAILABLE) {
+				if(positionStart != RetentionIndexMath.RETENTION_TIME_MISSING && positionStop != RetentionIndexMath.RETENTION_TIME_MISSING) {
 					setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
 					setting.setPositionStart(positionStart / IChromatogram.MINUTE_CORRELATION_FACTOR);
 					setting.setPositionStop(positionStop / IChromatogram.MINUTE_CORRELATION_FACTOR);

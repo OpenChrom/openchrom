@@ -15,6 +15,7 @@ import java.util.Objects;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
+import org.eclipse.chemclipse.model.support.RetentionIndexMath;
 
 public abstract class AbstractSetting {
 
@@ -124,7 +125,7 @@ public abstract class AbstractSetting {
 			case RETENTION_INDEX:
 				if(retentionIndexMap != null) {
 					int calculatedRetentionTime = retentionIndexMap.getRetentionTime((int)value);
-					if(calculatedRetentionTime != RetentionIndexMap.VALUE_NOT_AVAILABLE) {
+					if(calculatedRetentionTime != RetentionIndexMath.RETENTION_TIME_MISSING) {
 						retentionTime = calculatedRetentionTime;
 					}
 				}

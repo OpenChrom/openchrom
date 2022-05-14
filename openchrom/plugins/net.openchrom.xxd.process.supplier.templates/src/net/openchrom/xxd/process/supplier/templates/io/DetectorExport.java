@@ -20,6 +20,7 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -45,10 +46,11 @@ public class DetectorExport extends AbstractTemplateExport {
 		boolean optimizeRange = PreferenceSupplier.isExportOptimizeRangeDetector();
 		int numberTraces = PreferenceSupplier.getExportNumberTracesDetector();
 		PositionDirective positionDirective = PreferenceSupplier.getExportPositionDirectiveDetector();
+		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
 		//
 		for(IPeak peak : peaks) {
 			DetectorSetting setting = new DetectorSetting();
-			setPosition(chromatogram, peak, setting, positionDirective, deltaLeft, deltaRight);
+			setPosition(peak, retentionIndexMap, setting, positionDirective, deltaLeft, deltaRight);
 			setting.setPeakType(PeakType.VV);
 			setting.setTraces(extractTraces(peak, numberTraces));
 			setting.setOptimizeRange(optimizeRange);

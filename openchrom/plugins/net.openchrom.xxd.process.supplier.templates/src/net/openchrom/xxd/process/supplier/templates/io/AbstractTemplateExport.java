@@ -16,13 +16,14 @@ import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverte
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
+import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 
 public abstract class AbstractTemplateExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
 
-	protected void setPosition(IChromatogram<? extends IPeak> chromatogram, IPeak peak, AbstractSetting setting, PositionDirective positionDirective, double deltaLeft, double deltaRight) {
+	protected void setPosition(IPeak peak, RetentionIndexMap retentionIndexMap, AbstractSetting setting, PositionDirective positionDirective, double deltaLeft, double deltaRight) {
 
 		IPeakModel peakModel = peak.getPeakModel();
 		setting.setPositionDirective(positionDirective);
@@ -39,16 +40,8 @@ public abstract class AbstractTemplateExport extends AbstractChromatogramExportC
 				setting.setPositionStop((stopRetentionTime + deltaRight) / IChromatogram.MINUTE_CORRELATION_FACTOR);
 				break;
 			case RETENTION_INDEX:
-				int retentionIndexStart = 0;
-				int retentionIndexStop = 0;
-				int startScan = chromatogram.getScanNumber(startRetentionTime);
-				int stopScan = chromatogram.getScanNumber(stopRetentionTime);
-				if(startScan > 0 && stopScan > 0) {
-					retentionIndexStart = (int)Math.round(chromatogram.getScan(startScan).getRetentionIndex() - deltaLeft);
-					retentionIndexStop = (int)Math.round(chromatogram.getScan(stopScan).getRetentionIndex() + deltaRight);
-				}
-				setting.setPositionStart(retentionIndexStart);
-				setting.setPositionStop(retentionIndexStop);
+				setting.setPositionStart(Math.round(retentionIndexMap.getRetentionIndex(startRetentionTime)) - deltaLeft);
+				setting.setPositionStop(Math.round(retentionIndexMap.getRetentionIndex(stopRetentionTime)) + deltaRight);
 				break;
 			default:
 				break;
