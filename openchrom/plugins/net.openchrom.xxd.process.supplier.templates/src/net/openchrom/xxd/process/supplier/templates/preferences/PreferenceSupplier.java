@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.xxd.process.supplier.templates.Activator;
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorDirectSettings;
@@ -38,6 +39,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 			{"BOTH", Visibility.BOTH.name()} //
 	};
 	//
+	public static final double MIN_DELTA_POSITION = 0;
+	public static final double MAX_DELTA_POSITION = 120000;
 	public static final int MIN_DELTA_MILLISECONDS = 0; // 0 Minutes
 	public static final int MAX_DELTA_MILLISECONDS = 120000; // 2 Minutes
 	public static final int MIN_NUMBER_TRACES = 0; // 0 = TIC
@@ -103,10 +106,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int DEF_EXPORT_NUMBER_TRACES_DETECTOR = 10;
 	public static final String P_EXPORT_OPTIMIZE_RANGE_DETECTOR = "exportOptimizeRangeDetector";
 	public static final boolean DEF_EXPORT_OPTIMIZE_RANGE_DETECTOR = true;
-	public static final String P_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR = "exportDeltaLeftMillisecondsDetector";
-	public static final int DEF_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR = 1000; // 1 [s]
-	public static final String P_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR = "exportDeltaRightMillisecondsDetector";
-	public static final int DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR = 1000; // 1 [s]
+	public static final String P_EXPORT_DELTA_LEFT_POSITION_DETECTOR = "exportDeltaLeftPositionDetector";
+	public static final double DEF_EXPORT_DELTA_LEFT_POSITION_DETECTOR = 0.0d;
+	public static final String P_EXPORT_DELTA_RIGHT_POSITION_DETECTOR = "exportDeltaRightPositionDetector";
+	public static final double DEF_EXPORT_DELTA_RIGHT_POSITION_DETECTOR = 0.0d;
+	public static final String P_EXPORT_POSITION_DIRECTIVE_DETECTOR = "exportPositionDirectiveDetector";
+	public static final String DEF_EXPORT_POSITION_DIRECTIVE_DETECTOR = PositionDirective.RETENTION_TIME_MIN.name();
 	/*
 	 * Identifier
 	 */
@@ -301,8 +306,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		//
 		defaultValues.put(P_EXPORT_NUMBER_TRACES_DETECTOR, Integer.toString(DEF_EXPORT_NUMBER_TRACES_DETECTOR));
 		defaultValues.put(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, Boolean.toString(DEF_EXPORT_OPTIMIZE_RANGE_DETECTOR));
-		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR));
-		defaultValues.put(P_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR, Integer.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR));
+		defaultValues.put(P_EXPORT_DELTA_LEFT_POSITION_DETECTOR, Double.toString(DEF_EXPORT_DELTA_LEFT_POSITION_DETECTOR));
+		defaultValues.put(P_EXPORT_DELTA_RIGHT_POSITION_DETECTOR, Double.toString(DEF_EXPORT_DELTA_RIGHT_POSITION_DETECTOR));
+		defaultValues.put(P_EXPORT_POSITION_DIRECTIVE_DETECTOR, DEF_EXPORT_POSITION_DIRECTIVE_DETECTOR);
 		//
 		defaultValues.put(P_EXPORT_NUMBER_TRACES_IDENTIFIER, Integer.toString(DEF_EXPORT_NUMBER_TRACES_IDENTIFIER));
 		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER));
@@ -464,26 +470,34 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		putBoolean(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, optimizeRange);
 	}
 
-	public static int getExportDeltaLeftMillisecondsDetector() {
+	public static double getExportDeltaLeftPositionDetector() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR);
+		return getDouble(P_EXPORT_DELTA_LEFT_POSITION_DETECTOR, DEF_EXPORT_DELTA_LEFT_POSITION_DETECTOR);
 	}
 
-	public static void setExportDeltaLeftMillisecondsDetector(int deltaMilliseconds) {
+	public static void setExportDeltaLeftPositionDetector(double delta) {
 
-		putInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_DETECTOR, deltaMilliseconds);
+		putDouble(P_EXPORT_DELTA_LEFT_POSITION_DETECTOR, delta);
 	}
 
-	public static int getExportDeltaRightMillisecondsDetector() {
+	public static double getExportDeltaRightPositionDetector() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR);
+		return getDouble(P_EXPORT_DELTA_RIGHT_POSITION_DETECTOR, DEF_EXPORT_DELTA_RIGHT_POSITION_DETECTOR);
 	}
 
-	public static void setExportDeltaRightMillisecondsDetector(int deltaMilliseconds) {
+	public static void setExportDeltaRightPositionDetector(double delta) {
 
-		putInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_DETECTOR, deltaMilliseconds);
+		putDouble(P_EXPORT_DELTA_RIGHT_POSITION_DETECTOR, delta);
+	}
+
+	public static PositionDirective getExportPositionDirectiveDetector() {
+
+		return getPositionDirective(P_EXPORT_POSITION_DIRECTIVE_DETECTOR, DEF_EXPORT_POSITION_DIRECTIVE_DETECTOR);
+	}
+
+	public static void setExportPositionDirectiveDetector(PositionDirective positionDirective) {
+
+		putPositionDirective(P_EXPORT_POSITION_DIRECTIVE_DETECTOR, positionDirective);
 	}
 
 	public static int getExportDeltaLeftMillisecondsIdentifier() {
@@ -979,5 +993,37 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		} catch(BackingStoreException e) {
 			logger.warn(e);
 		}
+	}
+
+	private static double getDouble(String key, double def) {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getDouble(key, def);
+	}
+
+	private static void putDouble(String key, double value) {
+
+		try {
+			IEclipsePreferences preferences = INSTANCE().getPreferences();
+			preferences.putDouble(key, value);
+			preferences.flush();
+		} catch(BackingStoreException e) {
+			logger.warn(e);
+		}
+	}
+
+	private static PositionDirective getPositionDirective(String key, String def) {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		try {
+			return PositionDirective.valueOf(preferences.get(key, def));
+		} catch(Exception e) {
+			return PositionDirective.RETENTION_TIME_MIN;
+		}
+	}
+
+	private static void putPositionDirective(String key, PositionDirective positionDirective) {
+
+		putString(key, positionDirective.name());
 	}
 }

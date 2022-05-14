@@ -15,12 +15,9 @@ package net.openchrom.xxd.process.supplier.templates.io;
 import java.io.File;
 import java.util.List;
 
-import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
-import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
 import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -32,7 +29,7 @@ import net.openchrom.xxd.process.supplier.templates.model.DetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
-public class DetectorExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
+public class DetectorExport extends AbstractTemplateExport {
 
 	private static final String DESCRIPTION = "Detector Template Export";
 
@@ -43,17 +40,15 @@ public class DetectorExport extends AbstractChromatogramExportConverter implemen
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		DetectorSettings detectorSettings = new DetectorSettings();
 		//
-		int deltaLeft = PreferenceSupplier.getExportDeltaLeftMillisecondsDetector();
-		int deltaRight = PreferenceSupplier.getExportDeltaRightMillisecondsDetector();
+		double deltaLeft = PreferenceSupplier.getExportDeltaLeftPositionDetector();
+		double deltaRight = PreferenceSupplier.getExportDeltaRightPositionDetector();
 		boolean optimizeRange = PreferenceSupplier.isExportOptimizeRangeDetector();
 		int numberTraces = PreferenceSupplier.getExportNumberTracesDetector();
+		PositionDirective positionDirective = PreferenceSupplier.getExportPositionDirectiveDetector();
 		//
 		for(IPeak peak : peaks) {
-			IPeakModel peakModel = peak.getPeakModel();
 			DetectorSetting setting = new DetectorSetting();
-			setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
-			setting.setPositionStart((peakModel.getStartRetentionTime() - deltaLeft) / IChromatogram.MINUTE_CORRELATION_FACTOR);
-			setting.setPositionStop((peakModel.getStopRetentionTime() + deltaRight) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+			setPosition(chromatogram, peak, setting, positionDirective, deltaLeft, deltaRight);
 			setting.setPeakType(PeakType.VV);
 			setting.setTraces(extractTraces(peak, numberTraces));
 			setting.setOptimizeRange(optimizeRange);
