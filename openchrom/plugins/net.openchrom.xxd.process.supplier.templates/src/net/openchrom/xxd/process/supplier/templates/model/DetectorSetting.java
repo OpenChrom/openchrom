@@ -27,7 +27,7 @@ public class DetectorSetting extends AbstractSetting {
 		if(setting != null) {
 			setPositionDirective(setting.getPositionDirective());
 			setPositionStart(setting.getPositionStart());
-			setPositionStart(setting.getPositionStop());
+			setPositionStop(setting.getPositionStop());
 			setPeakType(setting.getPeakType());
 			setTraces(setting.getTraces());
 			setOptimizeRange(setting.isOptimizeRange());

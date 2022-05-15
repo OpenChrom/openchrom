@@ -27,12 +27,6 @@ public interface ISettings {
 		return decimalFormat.format(position);
 	}
 
-	default String getFormattedRetentionTime(double retentionTimeMinutes) {
-
-		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
-		return decimalFormat.format(retentionTimeMinutes);
-	}
-
 	default void compile(StringBuilder builder, List<String> entries) {
 
 		Iterator<String> iterator = entries.iterator();

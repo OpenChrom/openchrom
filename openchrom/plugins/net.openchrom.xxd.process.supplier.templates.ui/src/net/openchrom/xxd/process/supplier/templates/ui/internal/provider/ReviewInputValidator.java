@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -17,15 +17,16 @@ import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IInputValidator;
 
-import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
-import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator;
+import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
+import net.openchrom.xxd.process.supplier.templates.util.ReviewValidator;
 
 public class ReviewInputValidator implements IInputValidator {
 
-	private PeakIdentifierValidator validator = new PeakIdentifierValidator();
+	private ReviewValidator validator = new ReviewValidator();
 	private Set<String> names = new HashSet<>();
 
 	public ReviewInputValidator(Set<String> names) {
+
 		if(names != null) {
 			this.names = names;
 		}
@@ -36,7 +37,7 @@ public class ReviewInputValidator implements IInputValidator {
 
 		IStatus status = validator.validate(target);
 		if(status.isOK()) {
-			IdentifierSetting setting = validator.getSetting();
+			ReviewSetting setting = validator.getSetting();
 			String name = setting.getName();
 			if(names.contains(name)) {
 				return "The element already exists.";

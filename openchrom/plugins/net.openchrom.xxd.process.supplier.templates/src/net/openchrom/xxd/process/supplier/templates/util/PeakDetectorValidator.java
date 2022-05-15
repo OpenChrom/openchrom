@@ -27,8 +27,8 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
 	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
-	private double positionStart = 0;
-	private double positionStop = 0;
+	private double positionStart = 0.0d;
+	private double positionStop = 0.0d;
 	private PeakType peakType = PeakType.VV;
 	private String traces = "";
 	private boolean optimizeRange = true;
