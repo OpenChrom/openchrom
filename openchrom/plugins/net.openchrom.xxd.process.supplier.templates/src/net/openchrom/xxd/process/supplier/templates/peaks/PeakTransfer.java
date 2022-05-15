@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -408,10 +408,12 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 
 	private IIdentificationTarget createIdentificationTarget(IIdentificationTarget identificationTarget) {
 
+		float matchFactor = PreferenceSupplier.getMatchQualityTransfer();
 		ILibraryInformation libraryInformation = new LibraryInformation(identificationTarget.getLibraryInformation());
-		IComparisonResult comparisonResult = new ComparisonResult(identificationTarget.getComparisonResult());
+		IComparisonResult comparisonResult = new ComparisonResult(matchFactor, matchFactor, matchFactor, matchFactor);
 		IIdentificationTarget identificationTargetSink = new IdentificationTarget(libraryInformation, comparisonResult);
 		identificationTargetSink.setIdentifier(PeakTransferSettings.IDENTIFIER_DESCRIPTION);
+		//
 		return identificationTargetSink;
 	}
 

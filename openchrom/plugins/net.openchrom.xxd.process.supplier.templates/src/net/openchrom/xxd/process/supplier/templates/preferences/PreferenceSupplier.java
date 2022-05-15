@@ -52,6 +52,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int MAX_PEAK_OVERLAP_COVERAGE = 100; // %
 	public static final int MIN_TRACES = 1;
 	public static final int MAX_TRACES = 100;
+	public static final float MIN_FACTOR = 0.0f;
+	public static final float MAX_FACTOR = 100.0f;
 	//
 	public static final String P_PEAK_DETECTOR_LIST_MSD = "peakDetectorListMSD";
 	public static final String DEF_PEAK_DETECTOR_LIST_MSD = "";
@@ -122,6 +124,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER = 0;
 	public static final String P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER = "exportDeltaRightMillisecondsIdentifier";
 	public static final int DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER = 0;
+	//
+	public static final String P_LIMIT_MATCH_FACTOR_IDENTIFIER = "limitMatchFactorIdentifier";
+	public static final float DEF_LIMIT_MATCH_FACTOR_IDENTIFIER = 80.0f;
+	public static final String P_MATCH_QUALITY_IDENTIFIER = "matchQualityIdentifier";
+	public static final float DEF_MATCH_QUALITY_IDENTIFIER = 80.0f;
 	/*
 	 * Review
 	 */
@@ -186,6 +193,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_TRANSFER_CHECK_PURITY = true;
 	public static final String P_TRANSFER_NUMBER_TRACES = "transferNumberTraces";
 	public static final int DEF_TRANSFER_NUMBER_TRACES = 15;
+	//
+	public static final String P_MATCH_QUALITY_TRANSFER = "matchQualityTransfer";
+	public static final float DEF_MATCH_QUALITY_TRANSFER = 80.0f;
 	/*
 	 * Report
 	 */
@@ -314,6 +324,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_EXPORT_NUMBER_TRACES_IDENTIFIER, Integer.toString(DEF_EXPORT_NUMBER_TRACES_IDENTIFIER));
 		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER));
 		defaultValues.put(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, Integer.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER));
+		defaultValues.put(P_LIMIT_MATCH_FACTOR_IDENTIFIER, Float.toString(DEF_LIMIT_MATCH_FACTOR_IDENTIFIER));
+		defaultValues.put(P_MATCH_QUALITY_IDENTIFIER, Float.toString(DEF_MATCH_QUALITY_IDENTIFIER));
 		//
 		defaultValues.put(P_EXPORT_NUMBER_TRACES_REVIEW, Integer.toString(DEF_EXPORT_NUMBER_TRACES_REVIEW));
 		defaultValues.put(P_EXPORT_OPTIMIZE_RANGE_REVIEW, Boolean.toString(DEF_EXPORT_OPTIMIZE_RANGE_REVIEW));
@@ -345,6 +357,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_TRANSFER_OPTIMIZE_RANGE, Boolean.toString(DEF_TRANSFER_OPTIMIZE_RANGE));
 		defaultValues.put(P_TRANSFER_CHECK_PURITY, Boolean.toString(DEF_TRANSFER_CHECK_PURITY));
 		defaultValues.put(P_TRANSFER_NUMBER_TRACES, Integer.toString(DEF_TRANSFER_NUMBER_TRACES));
+		defaultValues.put(P_MATCH_QUALITY_TRANSFER, Float.toString(DEF_MATCH_QUALITY_TRANSFER));
 		//
 		defaultValues.put(P_REPORT_REFERENCED_CHROMATOGRAMS, Boolean.toString(DEF_REPORT_REFERENCED_CHROMATOGRAMS));
 		/*
@@ -528,6 +541,18 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		putInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, deltaMilliseconds);
 	}
 
+	public static float getLimitMatchFactorIdentifier() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getFloat(P_LIMIT_MATCH_FACTOR_IDENTIFIER, DEF_LIMIT_MATCH_FACTOR_IDENTIFIER);
+	}
+
+	public static float getMatchQualityIdentifier() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getFloat(P_MATCH_QUALITY_IDENTIFIER, DEF_MATCH_QUALITY_IDENTIFIER);
+	}
+
 	public static int getExportDeltaLeftMillisecondsReview() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
@@ -548,6 +573,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void setExportDeltaRightMillisecondsReview(int deltaMilliseconds) {
 
 		putInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW, deltaMilliseconds);
+	}
+
+	public static float getMatchQualityTransfer() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getFloat(P_MATCH_QUALITY_TRANSFER, DEF_MATCH_QUALITY_TRANSFER);
 	}
 
 	public static int getExportNumberTracesAssigner() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -30,6 +30,7 @@ import org.eclipse.chemclipse.model.identifier.LibraryInformation;
 import org.eclipse.chemclipse.model.implementation.IdentificationTarget;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.support.IRetentionTimeRange;
+import org.eclipse.chemclipse.model.support.LimitSupport;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
@@ -92,25 +93,29 @@ public abstract class AbstractPeakIdentifier {
 		int startRetentionTime = retentionTimeRange.getStartRetentionTime();
 		int stopRetentionTime = retentionTimeRange.getStopRetentionTime();
 		TracesUtil tracesUtil = new TracesUtil();
+		float limitMatchFactor = PreferenceSupplier.getLimitMatchFactorIdentifier();
+		float matchFactor = PreferenceSupplier.getMatchQualityIdentifier();
 		//
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {
 				for(IPeak peak : peaks) {
-					if(isPeakMatch(peak, startRetentionTime, stopRetentionTime)) {
-						if(tracesUtil.isTraceMatch(peak, identifierSetting.getTraces())) {
-							/*
-							 * Target
-							 */
-							ILibraryInformation libraryInformation = new LibraryInformation();
-							libraryInformation.setName(identifierSetting.getName());
-							libraryInformation.setCasNumber(identifierSetting.getCasNumber());
-							libraryInformation.setComments(identifierSetting.getComments());
-							libraryInformation.setContributor(identifierSetting.getContributor());
-							libraryInformation.setReferenceIdentifier(identifierSetting.getReference());
-							IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
-							IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
-							identificationTarget.setIdentifier(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION);
-							peak.getTargets().add(identificationTarget);
+					if(LimitSupport.doIdentify(peak.getTargets(), limitMatchFactor)) {
+						if(isPeakMatch(peak, startRetentionTime, stopRetentionTime)) {
+							if(tracesUtil.isTraceMatch(peak, identifierSetting.getTraces())) {
+								/*
+								 * Target
+								 */
+								ILibraryInformation libraryInformation = new LibraryInformation();
+								libraryInformation.setName(identifierSetting.getName());
+								libraryInformation.setCasNumber(identifierSetting.getCasNumber());
+								libraryInformation.setComments(identifierSetting.getComments());
+								libraryInformation.setContributor(identifierSetting.getContributor());
+								libraryInformation.setReferenceIdentifier(identifierSetting.getReference());
+								IComparisonResult comparisonResult = new ComparisonResult(matchFactor, matchFactor, matchFactor, matchFactor);
+								IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
+								identificationTarget.setIdentifier(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION);
+								peak.getTargets().add(identificationTarget);
+							}
 						}
 					}
 				}
