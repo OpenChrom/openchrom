@@ -57,10 +57,6 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new FloatFieldEditor(PreferenceSupplier.P_MATCH_QUALITY_IDENTIFIER, "Match Quality", PreferenceSupplier.MIN_FACTOR, PreferenceSupplier.MAX_FACTOR, getFieldEditorParent()));
 		//
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
-		addField(new LabelFieldEditor("Peak Transfer", getFieldEditorParent()));
-		addField(new FloatFieldEditor(PreferenceSupplier.P_MATCH_QUALITY_TRANSFER, "Match Quality", PreferenceSupplier.MIN_FACTOR, PreferenceSupplier.MAX_FACTOR, getFieldEditorParent()));
-		//
-		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_SORT_IMPORT_TEMPLATE, "Sort Import Template", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_SORT_EXPORT_TEMPLATE, "Sort Export Template", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_SETTINGS_SORT, "Sort Detector Settings", getFieldEditorParent()));

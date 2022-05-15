@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,9 +15,12 @@ import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetec
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.AbstractPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.support.settings.DoubleSettingsProperty;
+import org.eclipse.chemclipse.support.settings.FloatSettingsProperty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
 public class PeakTransferSettings extends AbstractPeakDetectorSettingsMSD implements IPeakDetectorSettingsMSD, IPeakDetectorSettingsCSD {
 
@@ -31,6 +34,11 @@ public class PeakTransferSettings extends AbstractPeakDetectorSettingsMSD implem
 	@JsonProperty(value = "Transfer Best Target Only", defaultValue = "false")
 	@JsonPropertyDescription(value = "If this value is true, only the best target will be transfered.")
 	private boolean useBestTargetOnly = false;
+	//
+	@JsonProperty(value = "Match Quality", defaultValue = "80.0")
+	@JsonPropertyDescription(value = "The match quality is set as the Match Factor.")
+	@FloatSettingsProperty(minValue = PreferenceSupplier.MIN_FACTOR, maxValue = PreferenceSupplier.MAX_FACTOR)
+	private float matchQuality = 80.0f;
 	//
 	@JsonProperty(value = "Delta Retention Time Left [ms]", defaultValue = "0")
 	@JsonPropertyDescription(value = "This is the left delta retention time in milliseconds.")
@@ -87,6 +95,16 @@ public class PeakTransferSettings extends AbstractPeakDetectorSettingsMSD implem
 	public void setUseBestTargetOnly(boolean useBestTargetOnly) {
 
 		this.useBestTargetOnly = useBestTargetOnly;
+	}
+
+	public float getMatchQuality() {
+
+		return matchQuality;
+	}
+
+	public void setMatchQuality(float matchQuality) {
+
+		this.matchQuality = matchQuality;
 	}
 
 	public int getDeltaRetentionTimeLeft() {

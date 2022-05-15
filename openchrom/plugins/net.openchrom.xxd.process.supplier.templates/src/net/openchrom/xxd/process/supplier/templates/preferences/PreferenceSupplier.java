@@ -175,6 +175,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY = true;
 	public static final String P_TRANSFER_USE_BEST_TARGET_ONLY = "transferUseBestTargetOnly";
 	public static final boolean DEF_TRANSFER_USE_BEST_TARGET_ONLY = true;
+	public static final String P_TRANSFER_MATCH_QUALITY = "transferMatchQuality";
+	public static final float DEF_TRANSFER_MATCH_QUALITY = 80.0f;
 	public static final String P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT = "transferRetentionTimeMillisecondsLeft";
 	public static final int DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT = 0;
 	public static final String P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT = "transferRetentionTimeMillisecondsRight";
@@ -193,9 +195,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_TRANSFER_CHECK_PURITY = true;
 	public static final String P_TRANSFER_NUMBER_TRACES = "transferNumberTraces";
 	public static final int DEF_TRANSFER_NUMBER_TRACES = 15;
-	//
-	public static final String P_MATCH_QUALITY_TRANSFER = "matchQualityTransfer";
-	public static final float DEF_MATCH_QUALITY_TRANSFER = 80.0f;
 	/*
 	 * Report
 	 */
@@ -348,6 +347,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		 */
 		defaultValues.put(P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, Boolean.toString(DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY));
 		defaultValues.put(P_TRANSFER_USE_BEST_TARGET_ONLY, Boolean.toString(DEF_TRANSFER_USE_BEST_TARGET_ONLY));
+		defaultValues.put(P_TRANSFER_MATCH_QUALITY, Float.toString(DEF_TRANSFER_MATCH_QUALITY));
 		defaultValues.put(P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT, Integer.toString(DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT));
 		defaultValues.put(P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT, Integer.toString(DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT));
 		defaultValues.put(P_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM, Integer.toString(DEF_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM));
@@ -357,7 +357,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_TRANSFER_OPTIMIZE_RANGE, Boolean.toString(DEF_TRANSFER_OPTIMIZE_RANGE));
 		defaultValues.put(P_TRANSFER_CHECK_PURITY, Boolean.toString(DEF_TRANSFER_CHECK_PURITY));
 		defaultValues.put(P_TRANSFER_NUMBER_TRACES, Integer.toString(DEF_TRANSFER_NUMBER_TRACES));
-		defaultValues.put(P_MATCH_QUALITY_TRANSFER, Float.toString(DEF_MATCH_QUALITY_TRANSFER));
 		//
 		defaultValues.put(P_REPORT_REFERENCED_CHROMATOGRAMS, Boolean.toString(DEF_REPORT_REFERENCED_CHROMATOGRAMS));
 		/*
@@ -573,12 +572,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void setExportDeltaRightMillisecondsReview(int deltaMilliseconds) {
 
 		putInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW, deltaMilliseconds);
-	}
-
-	public static float getMatchQualityTransfer() {
-
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getFloat(P_MATCH_QUALITY_TRANSFER, DEF_MATCH_QUALITY_TRANSFER);
 	}
 
 	public static int getExportNumberTracesAssigner() {
@@ -937,6 +930,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_TRANSFER_USE_BEST_TARGET_ONLY, DEF_TRANSFER_USE_BEST_TARGET_ONLY);
+	}
+
+	public static float getMatchQualityTransfer() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getFloat(P_TRANSFER_MATCH_QUALITY, DEF_TRANSFER_MATCH_QUALITY);
 	}
 
 	public static int getTransferRetentionTimeMillisecondsLeft() {

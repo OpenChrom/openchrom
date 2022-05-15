@@ -35,6 +35,7 @@ import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD
 import org.eclipse.chemclipse.csd.model.implementation.ChromatogramPeakCSD;
 import org.eclipse.chemclipse.csd.model.implementation.PeakModelCSD;
 import org.eclipse.chemclipse.csd.model.implementation.ScanCSD;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
@@ -66,6 +67,8 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakTransferSetting
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 
 public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetector<P, C, R> implements IPeakDetectorMSD<P, C, R>, IPeakDetectorCSD<P, C, R> {
+
+	private static final Logger logger = Logger.getLogger(PeakTransfer.class);
 
 	@Override
 	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD settings, IProgressMonitor monitor) {
@@ -99,6 +102,7 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 		//
 		settings.setUseIdentifiedPeaksOnly(PreferenceSupplier.isTransferUseIdentifiedPeaksOnly());
 		settings.setUseBestTargetOnly(PreferenceSupplier.isTransferUseBestTargetOnly());
+		settings.setMatchQuality(PreferenceSupplier.getMatchQualityTransfer());
 		settings.setDeltaRetentionTimeLeft(PreferenceSupplier.getTransferRetentionTimeMillisecondsLeft());
 		settings.setDeltaRetentionTimeRight(PreferenceSupplier.getTransferRetentionTimeMillisecondsRight());
 		settings.setOffsetRetentionTimePeakMaximum(PreferenceSupplier.getTransferOffsetRetentionTimePeakMaximum());
@@ -157,7 +161,11 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 				 * Peak Group
 				 */
 				for(IPeak peak : peakz) {
-					transfer(peak, chromatogramSink, peakTransferSettings);
+					try {
+						transfer(peak, chromatogramSink, peakTransferSettings);
+					} catch(Exception e) {
+						logger.warn(e);
+					}
 				}
 			}
 		}
@@ -392,23 +400,23 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 
 	private void transferTargets(IPeak peakSource, IPeak peakSink, PeakTransferSettings peakTransferSettings) {
 
+		float matchFactor = peakTransferSettings.getMatchQuality();
 		if(peakTransferSettings.isUseBestTargetOnly()) {
 			float retentionIndex = peakSource.getPeakModel().getPeakMaximum().getRetentionIndex();
 			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(retentionIndex);
 			IIdentificationTarget identificationTarget = IIdentificationTarget.getBestIdentificationTarget(peakSource.getTargets(), identificationTargetComparator);
 			if(identificationTarget != null) {
-				peakSink.getTargets().add(createIdentificationTarget(identificationTarget));
+				peakSink.getTargets().add(createIdentificationTarget(identificationTarget, matchFactor));
 			}
 		} else {
 			for(IIdentificationTarget identificationTarget : peakSource.getTargets()) {
-				peakSink.getTargets().add(createIdentificationTarget(identificationTarget));
+				peakSink.getTargets().add(createIdentificationTarget(identificationTarget, matchFactor));
 			}
 		}
 	}
 
-	private IIdentificationTarget createIdentificationTarget(IIdentificationTarget identificationTarget) {
+	private IIdentificationTarget createIdentificationTarget(IIdentificationTarget identificationTarget, float matchFactor) {
 
-		float matchFactor = PreferenceSupplier.getMatchQualityTransfer();
 		ILibraryInformation libraryInformation = new LibraryInformation(identificationTarget.getLibraryInformation());
 		IComparisonResult comparisonResult = new ComparisonResult(matchFactor, matchFactor, matchFactor, matchFactor);
 		IIdentificationTarget identificationTargetSink = new IdentificationTarget(libraryInformation, comparisonResult);
