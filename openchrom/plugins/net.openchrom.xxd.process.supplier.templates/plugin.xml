@@ -344,4 +344,14 @@
             isImportable="false">
       </ChromatogramSupplier>
    </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.filter.chromatogramFilterSupplier">   
+	   <ChromatogramFilterSupplier
+	            description="This filter extracts and maps existing retention indices."
+	            filter="net.openchrom.xxd.process.supplier.templates.chromatogram.ChromatogramFilterRetentionIndexMapper"
+	            filterName="Chromatogram (Retention Index Mapper)"
+	            filterSettings="net.openchrom.xxd.process.supplier.templates.settings.FilterSettingsRetentionIndexMapper"
+	            id="net.openchrom.xxd.process.supplier.templates.chromatogram.retentionIndexMapper">
+	   </ChromatogramFilterSupplier>
+   </extension>  
 </plugin>

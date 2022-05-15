@@ -25,6 +25,7 @@ import net.openchrom.xxd.process.supplier.templates.Activator;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
+import net.openchrom.xxd.process.supplier.templates.settings.FilterSettingsRetentionIndexMapper;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorDirectSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
@@ -395,6 +396,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.get(key, def);
+	}
+
+	public static FilterSettingsRetentionIndexMapper getFilterSettings() {
+
+		return new FilterSettingsRetentionIndexMapper();
 	}
 
 	public static String getListPathImport() {
