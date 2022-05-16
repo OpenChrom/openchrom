@@ -66,10 +66,8 @@ public class ConfigurableReportWriter {
 	private void printHeader(CSVPrinter csvPrinter, ReportColumns reportColumns, ChromatogramReportSettings reportSettings, boolean fileExists) throws IOException {
 
 		boolean printHeader = reportSettings.isPrintResultsHeader();
-		if(printHeader) {
-			if(fileExists) {
-				printHeader = reportSettings.isAppendResultsHeader();
-			}
+		if(printHeader && fileExists) {
+			printHeader = reportSettings.isAppendResultsHeader();
 		}
 		//
 		if(printHeader) {
@@ -88,204 +86,311 @@ public class ConfigurableReportWriter {
 	private void printChromatogramData(CSVPrinter csvPrinter, ReportColumns reportColumns, IChromatogram<? extends IPeak> chromatogram, boolean printSectionSeparator) throws IOException {
 
 		int peakNumber = 1;
+		List<Object> records = new ArrayList<>();
 		for(IPeak peak : chromatogram.getPeaks()) {
 			for(String reportColumn : reportColumns) {
 				if(reportColumn.equals(ReportColumns.CHROMATOGRAM_NAME)) {
-					csvPrinter.print(chromatogram.getName());
+					records.add(chromatogram.getName());
 				}
 				if(reportColumn.equals(ReportColumns.BARCODE)) {
-					csvPrinter.print(chromatogram.getBarcode());
+					records.add(chromatogram.getBarcode());
 				}
 				if(reportColumn.equals(ReportColumns.BARCODE_TYPE)) {
-					csvPrinter.print(chromatogram.getBarcodeType());
+					records.add(chromatogram.getBarcodeType());
 				}
 				if(reportColumn.equals(ReportColumns.DATA_NAME)) {
-					csvPrinter.print(chromatogram.getDataName());
+					records.add(chromatogram.getDataName());
 				}
 				if(reportColumn.equals(ReportColumns.DATE)) {
-					csvPrinter.print(chromatogram.getDate());
+					records.add(chromatogram.getDate());
 				}
 				if(reportColumn.equals(ReportColumns.DETAILED_INFO)) {
-					csvPrinter.print(chromatogram.getDetailedInfo());
+					records.add(chromatogram.getDetailedInfo());
 				}
 				if(reportColumn.equals(ReportColumns.MISC_INFO)) {
-					csvPrinter.print(chromatogram.getMiscInfo());
+					records.add(chromatogram.getMiscInfo());
 				}
 				if(reportColumn.equals(ReportColumns.MISC_INFO_SEPARATED)) {
-					csvPrinter.print(chromatogram.getMiscInfoSeparated());
+					records.add(chromatogram.getMiscInfoSeparated());
 				}
 				if(reportColumn.equals(ReportColumns.OPERATOR)) {
-					csvPrinter.print(chromatogram.getOperator());
+					records.add(chromatogram.getOperator());
 				}
 				if(reportColumn.equals(ReportColumns.SAMPLE_GROUP)) {
-					csvPrinter.print(chromatogram.getSampleGroup());
+					records.add(chromatogram.getSampleGroup());
 				}
 				if(reportColumn.equals(ReportColumns.SAMPLE_WEIGHT)) {
-					csvPrinter.print(chromatogram.getSampleWeight());
+					records.add(chromatogram.getSampleWeight());
 				}
 				if(reportColumn.equals(ReportColumns.SAMPLE_WEIGHT_UNIT)) {
-					csvPrinter.print(chromatogram.getSampleWeightUnit());
+					records.add(chromatogram.getSampleWeightUnit());
 				}
 				if(reportColumn.equals(ReportColumns.SHORT_INFO)) {
-					csvPrinter.print(chromatogram.getShortInfo());
+					records.add(chromatogram.getShortInfo());
 				}
 				if(reportColumn.equals(ReportColumns.NUMBER_PEAKS)) {
-					csvPrinter.print(chromatogram.getNumberOfPeaks());
+					records.add(chromatogram.getNumberOfPeaks());
 				}
 				if(reportColumn.equals(ReportColumns.PEAK_NUMBER)) {
-					csvPrinter.print(peakNumber);
+					records.add(peakNumber);
 				}
-				if(peak instanceof IChromatogramPeak) {
-					IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
-					if(reportColumn.equals(ReportColumns.PURITY)) {
-						csvPrinter.print(chromatogramPeak.getPurity());
+				if(reportColumn.equals(ReportColumns.PURITY)) {
+					if(peak instanceof IChromatogramPeak) {
+						IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
+						records.add(chromatogramPeak.getPurity());
+					} else {
+						records.add("");
 					}
-					if(reportColumn.equals(ReportColumns.SIGNAL_TO_NOISE)) {
-						csvPrinter.print(chromatogramPeak.getSignalToNoiseRatio());
+				}
+				if(reportColumn.equals(ReportColumns.SIGNAL_TO_NOISE)) {
+					if(peak instanceof IChromatogramPeak) {
+						IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
+						records.add(chromatogramPeak.getSignalToNoiseRatio());
+					} else {
+						records.add("");
 					}
 				}
 				if(reportColumn.equals(ReportColumns.COMPONENTS)) {
-					csvPrinter.print(peak.getSuggestedNumberOfComponents());
+					records.add(peak.getSuggestedNumberOfComponents());
 				}
 				if(reportColumn.equals(ReportColumns.PEAK_AREA)) {
-					csvPrinter.print(peak.getIntegratedArea());
+					records.add(peak.getIntegratedArea());
 				}
 				if(reportColumn.equals(ReportColumns.INTEGRATOR)) {
-					csvPrinter.print(peak.getIntegratorDescription());
+					records.add(peak.getIntegratorDescription());
 				}
 				if(reportColumn.equals(ReportColumns.MODEL)) {
-					csvPrinter.print(peak.getModelDescription());
+					records.add(peak.getModelDescription());
 				}
 				if(reportColumn.equals(ReportColumns.DETECTOR)) {
-					csvPrinter.print(peak.getDetectorDescription());
+					records.add(peak.getDetectorDescription());
 				}
 				if(reportColumn.equals(ReportColumns.QUANTIFIER)) {
-					csvPrinter.print(peak.getQuantifierDescription());
+					records.add(peak.getQuantifierDescription());
 				}
 				if(reportColumn.equals(ReportColumns.CLASSIFIER)) {
-					csvPrinter.print(peak.getClassifier());
+					records.add(peak.getClassifier());
 				}
 				IPeakModel peakModel = peak.getPeakModel();
 				if(reportColumn.equals(ReportColumns.RETENTION_TIME)) {
 					int retentionTimePeakMax = peakModel.getRetentionTimeAtPeakMaximum();
-					csvPrinter.print(retentionTimePeakMax / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+					records.add(retentionTimePeakMax / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				}
 				if(reportColumn.equals(ReportColumns.PEAK_HEIGHT)) {
-					csvPrinter.print(peakModel.getPeakAbundanceByInflectionPoints());
+					records.add(peakModel.getPeakAbundanceByInflectionPoints());
 				}
 				if(reportColumn.equals(ReportColumns.LEADING)) {
-					csvPrinter.print(peakModel.getLeading());
+					records.add(peakModel.getLeading());
 				}
 				if(reportColumn.equals(ReportColumns.TAILING)) {
-					csvPrinter.print(peakModel.getTailing());
+					records.add(peakModel.getTailing());
 				}
 				if(reportColumn.equals(ReportColumns.START_RT)) {
-					csvPrinter.print(peakModel.getStartRetentionTime());
+					records.add(peakModel.getStartRetentionTime());
 				}
 				if(reportColumn.equals(ReportColumns.STOP_RT)) {
-					csvPrinter.print(peakModel.getStopRetentionTime());
+					records.add(peakModel.getStopRetentionTime());
 				}
 				if(reportColumn.equals(ReportColumns.RETENTION_INDEX)) {
-					csvPrinter.print(peakModel.getPeakMaximum().getRetentionIndex());
+					records.add(peakModel.getPeakMaximum().getRetentionIndex());
 				}
 				if(reportColumn.equals(ReportColumns.SCANS)) {
-					csvPrinter.print(peakModel.getNumberOfScans());
+					records.add(peakModel.getNumberOfScans());
 				}
 				Set<IIdentificationTarget> peakTargets = peak.getTargets();
+				ILibraryInformation libraryInformation = null;
+				IComparisonResult comparisonResult = null;
 				if(!peakTargets.isEmpty()) {
 					IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC);
 					List<IIdentificationTarget> peakTargetList = new ArrayList<>(peakTargets);
 					Collections.sort(peakTargetList, identificationTargetComparator);
 					IIdentificationTarget peakTarget = peakTargetList.get(0);
-					ILibraryInformation libraryInformation = peakTarget.getLibraryInformation();
-					IComparisonResult comparisonResult = peakTarget.getComparisonResult();
-					if(reportColumn.equals(ReportColumns.TARGET)) {
-						csvPrinter.print(libraryInformation.getName());
+					libraryInformation = peakTarget.getLibraryInformation();
+					comparisonResult = peakTarget.getComparisonResult();
+				}
+				if(reportColumn.equals(ReportColumns.TARGET)) {
+					if(libraryInformation != null) {
+						records.add(libraryInformation.getName());
+					} else {
+						records.add("");
 					}
-					if(reportColumn.equals(ReportColumns.CAS)) {
-						csvPrinter.print(libraryInformation.getCasNumber());
+				}
+				if(reportColumn.equals(ReportColumns.CAS)) {
+					if(libraryInformation != null) {
+						records.add(libraryInformation.getCasNumber());
+					} else {
+						records.add("");
 					}
-					if(reportColumn.equals(ReportColumns.MATCH_FACTOR)) {
-						csvPrinter.print(comparisonResult.getMatchFactor());
+				}
+				if(reportColumn.equals(ReportColumns.MATCH_FACTOR)) {
+					if(comparisonResult != null) {
+						records.add(comparisonResult.getMatchFactor());
+					} else {
+						records.add("");
 					}
-					if(reportColumn.equals(ReportColumns.MATCH_FACTOR_REVERSED)) {
-						csvPrinter.print(comparisonResult.getReverseMatchFactor());
+				}
+				if(reportColumn.equals(ReportColumns.MATCH_FACTOR_REVERSED)) {
+					if(comparisonResult != null) {
+						records.add(comparisonResult.getReverseMatchFactor());
+					} else {
+						records.add("");
 					}
-					if(reportColumn.equals(ReportColumns.PROBABILITY)) {
-						csvPrinter.print(comparisonResult.getProbability());
+				}
+				if(reportColumn.equals(ReportColumns.PROBABILITY)) {
+					if(comparisonResult != null) {
+						records.add(comparisonResult.getProbability());
+					} else {
+						records.add("");
 					}
-					if(reportColumn.equals(ReportColumns.MOL_WEIGHT)) {
-						csvPrinter.print(libraryInformation.getMolWeight());
+				}
+				if(reportColumn.equals(ReportColumns.MOL_WEIGHT)) {
+					if(libraryInformation != null) {
+						records.add(libraryInformation.getMolWeight());
+					} else {
+						records.add("");
 					}
-					if(reportColumn.equals(ReportColumns.IDENTIFIER)) {
-						csvPrinter.print(libraryInformation.getReferenceIdentifier());
+				}
+				if(reportColumn.equals(ReportColumns.IDENTIFIER)) {
+					if(libraryInformation != null) {
+						records.add(libraryInformation.getReferenceIdentifier());
+					} else {
+						records.add("");
 					}
-					if(reportColumn.equals(ReportColumns.DATABASE)) {
-						csvPrinter.print(libraryInformation.getDatabase());
+				}
+				if(reportColumn.equals(ReportColumns.DATABASE)) {
+					if(libraryInformation != null) {
+						records.add(libraryInformation.getDatabase());
+					} else {
+						records.add("");
 					}
 				}
 				List<IInternalStandard> internalStandards = peak.getInternalStandards();
+				IInternalStandard internalStandard = null;
 				if(!internalStandards.isEmpty()) {
-					IInternalStandard internalStandard = internalStandards.get(0);
-					if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_CHEMICAL_CLASS)) {
-						internalStandard.getChemicalClass();
+					internalStandard = internalStandards.get(0);
+				}
+				if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_CHEMICAL_CLASS)) {
+					if(internalStandard != null) {
+						records.add(internalStandard.getChemicalClass());
+					} else {
+						records.add("");
 					}
-					if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_CONCENTRATION)) {
-						internalStandard.getConcentration();
+				}
+				if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_CONCENTRATION)) {
+					if(internalStandard != null) {
+						records.add(internalStandard.getConcentration());
+					} else {
+						records.add("");
 					}
-					if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_CONCENTRATION_UNIT)) {
-						internalStandard.getConcentrationUnit();
+				}
+				if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_CONCENTRATION_UNIT)) {
+					if(internalStandard != null) {
+						records.add(internalStandard.getConcentrationUnit());
+					} else {
+						records.add("");
 					}
-					if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_NAME)) {
-						internalStandard.getName();
+				}
+				if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_NAME)) {
+					if(internalStandard != null) {
+						records.add(internalStandard.getName());
+					} else {
+						records.add("");
 					}
-					if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_RESPONSE_FACTOR)) {
-						internalStandard.getResponseFactor();
+				}
+				if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_RESPONSE_FACTOR)) {
+					if(internalStandard != null) {
+						records.add(internalStandard.getResponseFactor());
+					} else {
+						records.add("");
 					}
 				}
 				List<IQuantitationEntry> quantitationEntries = peak.getQuantitationEntries();
+				IQuantitationEntry quantitationEntry = null;
 				if(!quantitationEntries.isEmpty()) {
-					IQuantitationEntry quantitationEntry = quantitationEntries.get(0);
-					if(reportColumn.equals(ReportColumns.QUANTITATION_ENTRY_AREA)) {
-						quantitationEntry.getArea();
-					}
-					if(reportColumn.equals(ReportColumns.QUANTITATION_CALIBRATION_METHOD)) {
-						quantitationEntry.getCalibrationMethod();
-					}
-					if(reportColumn.equals(ReportColumns.QUANTITATION_CHEMICAL_CLASS)) {
-						quantitationEntry.getChemicalClass();
-					}
-					if(reportColumn.equals(ReportColumns.QUANTITATION_CONCENTRATION)) {
-						quantitationEntry.getConcentration();
-					}
-					if(reportColumn.equals(ReportColumns.QUANTITATION_CONCENTRATION_UNIT)) {
-						quantitationEntry.getConcentrationUnit();
-					}
-					if(reportColumn.equals(ReportColumns.QUANTITATION_DESCRIPTION)) {
-						quantitationEntry.getDescription();
-					}
-					if(reportColumn.equals(ReportColumns.QUANTITATION_NAME)) {
-						quantitationEntry.getName();
-					}
-					if(reportColumn.equals(ReportColumns.QUANTITATION_FLAG)) {
-						quantitationEntry.getQuantitationFlag().label();
-					}
-					if(reportColumn.equals(ReportColumns.QUANTITATION_SIGNAL)) {
-						quantitationEntry.getSignal();
-					}
-					if(reportColumn.equals(ReportColumns.QUANTITATION_CROSS_ZERO)) {
-						quantitationEntry.getUsedCrossZero();
+					quantitationEntry = quantitationEntries.get(0);
+				}
+				if(reportColumn.equals(ReportColumns.QUANTITATION_ENTRY_AREA)) {
+					if(quantitationEntry != null) {
+						records.add(quantitationEntry.getArea());
+					} else {
+						records.add("");
 					}
 				}
-				List<String> quantitationReferences = peak.getQuantitationReferences();
-				if(!quantitationReferences.isEmpty()) {
-					if(reportColumn.equals(ReportColumns.QUANTITATION_REFERENCE)) {
-						quantitationReferences.get(0);
+				if(reportColumn.equals(ReportColumns.QUANTITATION_CALIBRATION_METHOD)) {
+					if(quantitationEntry != null) {
+						records.add(quantitationEntry.getCalibrationMethod());
+					} else {
+						records.add("");
+					}
+				}
+				if(reportColumn.equals(ReportColumns.QUANTITATION_CHEMICAL_CLASS)) {
+					if(quantitationEntry != null) {
+						records.add(quantitationEntry.getChemicalClass());
+					} else {
+						records.add("");
+					}
+				}
+				if(reportColumn.equals(ReportColumns.QUANTITATION_CONCENTRATION)) {
+					if(quantitationEntry != null) {
+						records.add(quantitationEntry.getConcentration());
+					} else {
+						records.add("");
+					}
+				}
+				if(reportColumn.equals(ReportColumns.QUANTITATION_CONCENTRATION_UNIT)) {
+					if(quantitationEntry != null) {
+						records.add(quantitationEntry.getConcentrationUnit());
+					} else {
+						records.add("");
+					}
+				}
+				if(reportColumn.equals(ReportColumns.QUANTITATION_DESCRIPTION)) {
+					if(quantitationEntry != null) {
+						records.add(quantitationEntry.getDescription());
+					} else {
+						records.add("");
+					}
+				}
+				if(reportColumn.equals(ReportColumns.QUANTITATION_NAME)) {
+					if(quantitationEntry != null) {
+						records.add(quantitationEntry.getName());
+					} else {
+						records.add("");
+					}
+				}
+				if(reportColumn.equals(ReportColumns.QUANTITATION_FLAG)) {
+					if(quantitationEntry != null) {
+						records.add(quantitationEntry.getQuantitationFlag().label());
+					} else {
+						records.add("");
+					}
+				}
+				if(reportColumn.equals(ReportColumns.QUANTITATION_SIGNAL)) {
+					if(quantitationEntry != null) {
+						records.add(quantitationEntry.getSignal());
+					} else {
+						records.add("");
+					}
+				}
+				if(reportColumn.equals(ReportColumns.QUANTITATION_CROSS_ZERO)) {
+					if(quantitationEntry != null) {
+						records.add(quantitationEntry.getUsedCrossZero());
+					} else {
+						records.add("");
+					}
+				}
+				if(reportColumn.equals(ReportColumns.QUANTITATION_REFERENCE)) {
+					List<String> quantitationReferences = peak.getQuantitationReferences();
+					if(!quantitationReferences.isEmpty()) {
+						records.add(quantitationReferences.get(0));
+					} else {
+						records.add("");
 					}
 				}
 			}
 			peakNumber++;
-			csvPrinter.println();
+			csvPrinter.printRecord(records);
+			records.clear();
 		}
 		//
 		if(printSectionSeparator) {
