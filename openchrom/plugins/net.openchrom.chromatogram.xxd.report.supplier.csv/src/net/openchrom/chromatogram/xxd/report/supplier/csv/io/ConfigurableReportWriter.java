@@ -179,6 +179,30 @@ public class ConfigurableReportWriter {
 				if(reportColumn.equals(ReportColumns.PEAK_HEIGHT)) {
 					records.add(peakModel.getPeakAbundanceByInflectionPoints());
 				}
+				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_BASELINE_FROM_INFLECTION_POINTS)) {
+					records.add(peakModel.getWidthBaselineByInflectionPoints());
+				}
+				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_BASELINE_TOTAL)) {
+					records.add(peakModel.getWidthBaselineTotal());
+				}
+				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_BY_INFLECTION_POINTS)) {
+					records.add(peakModel.getWidthByInflectionPoints());
+				}
+				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_0)) {
+					records.add(peakModel.getWidthByInflectionPoints(0f));
+				}
+				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_10)) {
+					records.add(peakModel.getWidthByInflectionPoints(0.f));
+				}
+				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_15)) {
+					records.add(peakModel.getWidthByInflectionPoints(0.15f));
+				}
+				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_50)) {
+					records.add(peakModel.getWidthByInflectionPoints(0.5f));
+				}
+				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_85)) {
+					records.add(peakModel.getWidthByInflectionPoints(0.85f));
+				}
 				if(reportColumn.equals(ReportColumns.LEADING)) {
 					records.add(peakModel.getLeading());
 				}
