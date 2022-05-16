@@ -12,6 +12,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
+import java.util.Objects;
+
 import org.eclipse.chemclipse.model.core.PeakType;
 
 public class DetectorSetting extends AbstractSetting {
@@ -89,5 +91,33 @@ public class DetectorSetting extends AbstractSetting {
 	public void setName(String name) {
 
 		this.name = name;
+	}
+
+	@Override
+	public int hashCode() {
+
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(traces);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if(this == obj)
+			return true;
+		if(!super.equals(obj))
+			return false;
+		if(getClass() != obj.getClass())
+			return false;
+		DetectorSetting other = (DetectorSetting)obj;
+		return Objects.equals(traces, other.traces);
+	}
+
+	@Override
+	public String toString() {
+
+		return "DetectorSetting [traces=" + traces + ", getPositionStart()=" + getPositionStart() + ", getPositionStop()=" + getPositionStop() + "]";
 	}
 }
