@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.openchrom.xxd.process.supplier.templates.feature"
-      label="Feature"
+      label="Templates"
       version="1.4.0.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description url="https://www.openchrom.net">
+      Peak detection configured by a set of rules.
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright url="http://www.openchrom.net">
+      Copyright (c) 2018, 2022 Lablicate GmbH.
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="http://www.openchrom.net">
+      Copyright (c) 2018, 2022 Lablicate GmbH.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License
+v1.0 which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
    </license>
 
    <plugin
