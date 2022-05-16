@@ -31,7 +31,7 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String SAMPLE_WEIGHT = "Sample Weight";
 	public static final String SAMPLE_WEIGHT_UNIT = "Sample Weight Unit";
 	public static final String SHORT_INFO = "Short Info";
-	public static final String NUMBER_PEAKS = "Number Peak(s)";
+	public static final String NUMBER_PEAKS = "Number Peaks";
 	public static final String PEAK_NUMBER = "Peak Number";
 	public static final String RETENTION_TIME = "Retention Time";
 	public static final String RETENTION_INDEX = "Retention Index";
@@ -74,14 +74,14 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String QUANTITATION_SIGNAL = "Quantitation Signal";
 	public static final String QUANTITATION_CROSS_ZERO = "Quantitation Cross 0";
 	public static final String QUANTITATION_REFERENCE = "Quantitation Reference";
-	public static final String PEAK_WIDTH_BASELINE_FROM_INFLECTION_POINTS = "Peak Width Baseline From Inflection Points";
+	public static final String PEAK_WIDTH_BASELINE_FROM_INFLECTION_POINTS = "Peak Width Baseline from Inflection Points";
 	public static final String PEAK_WIDTH_BASELINE_TOTAL = "Peak Width Baseline Total";
-	public static final String PEAK_WIDTH_BY_INFLECTION_POINTS = "Peak Width At Half Peak Height";
-	public static final String PEAK_WIDTH_0 = "Peak Width (0% Height)";
-	public static final String PEAK_WIDTH_10 = "Peak Width (10% Height)";
-	public static final String PEAK_WIDTH_15 = "Peak Width (15% Height)";
-	public static final String PEAK_WIDTH_50 = "Peak Width (50% Height)";
-	public static final String PEAK_WIDTH_85 = "Peak Width (85% Height)";
+	public static final String PEAK_WIDTH_BY_INFLECTION_POINTS = "Peak Width at Half Peak Height";
+	public static final String PEAK_WIDTH_0 = "Peak Width at 0% Height";
+	public static final String PEAK_WIDTH_10 = "Peak Width at 10% Height";
+	public static final String PEAK_WIDTH_15 = "Peak Width at 15% Height";
+	public static final String PEAK_WIDTH_50 = "Peak Width at 50% Height";
+	public static final String PEAK_WIDTH_85 = "Peak Width at 85% Height";
 	//
 	private static final String SEPARATOR = ",";
 	private static final String SINGLE_TICK = "'";
