@@ -74,6 +74,14 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String QUANTITATION_SIGNAL = "Quantitation Signal";
 	public static final String QUANTITATION_CROSS_ZERO = "Quantitation Cross 0";
 	public static final String QUANTITATION_REFERENCE = "Quantitation Reference";
+	public static final String PEAK_WIDTH_BASELINE_FROM_INFLECTION_POINTS = "Peak Width Baseline From Inflection Points";
+	public static final String PEAK_WIDTH_BASELINE_TOTAL = "Peak Width Baseline Total";
+	public static final String PEAK_WIDTH_BY_INFLECTION_POINTS = "Peak Width At Half Peak Height";
+	public static final String PEAK_WIDTH_0 = "Peak Width (0% Height)";
+	public static final String PEAK_WIDTH_10 = "Peak Width (10% Height)";
+	public static final String PEAK_WIDTH_15 = "Peak Width (15% Height)";
+	public static final String PEAK_WIDTH_50 = "Peak Width (50% Height)";
+	public static final String PEAK_WIDTH_85 = "Peak Width (85% Height)";
 	//
 	private static final String SEPARATOR = ",";
 	private static final String SINGLE_TICK = "'";
@@ -139,6 +147,14 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(QUANTITATION_SIGNAL);
 		reportColumns.add(QUANTITATION_CROSS_ZERO);
 		reportColumns.add(QUANTITATION_REFERENCE);
+		reportColumns.add(PEAK_WIDTH_BASELINE_FROM_INFLECTION_POINTS);
+		reportColumns.add(PEAK_WIDTH_BASELINE_TOTAL);
+		reportColumns.add(PEAK_WIDTH_BY_INFLECTION_POINTS);
+		reportColumns.add(PEAK_WIDTH_0);
+		reportColumns.add(PEAK_WIDTH_10);
+		reportColumns.add(PEAK_WIDTH_15);
+		reportColumns.add(PEAK_WIDTH_50);
+		reportColumns.add(PEAK_WIDTH_85);
 		//
 		return reportColumns;
 	}
