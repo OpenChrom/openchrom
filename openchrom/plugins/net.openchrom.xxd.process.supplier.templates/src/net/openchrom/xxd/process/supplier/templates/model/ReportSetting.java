@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
+import java.util.Objects;
+
 public class ReportSetting extends AbstractSetting {
 
 	private String name = "";
@@ -57,5 +59,33 @@ public class ReportSetting extends AbstractSetting {
 	public void setReportStrategy(ReportStrategy reportStrategy) {
 
 		this.reportStrategy = reportStrategy;
+	}
+
+	@Override
+	public int hashCode() {
+
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(name);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if(this == obj)
+			return true;
+		if(!super.equals(obj))
+			return false;
+		if(getClass() != obj.getClass())
+			return false;
+		ReportSetting other = (ReportSetting)obj;
+		return Objects.equals(name, other.name);
+	}
+
+	@Override
+	public String toString() {
+
+		return "ReportSetting [name=" + name + ", getPositionStart()=" + getPositionStart() + ", getPositionStop()=" + getPositionStop() + "]";
 	}
 }
