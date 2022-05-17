@@ -120,8 +120,8 @@ public class AssignerStandards extends ArrayList<AssignerStandard> implements IS
 
 	public boolean exportItems(File file) {
 
-		try {
-			PrintWriter printWriter = new PrintWriter(file);
+		boolean success = false;
+		try (PrintWriter printWriter = new PrintWriter(file)) {
 			//
 			List<AssignerStandard> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
@@ -134,12 +134,12 @@ public class AssignerStandards extends ArrayList<AssignerStandard> implements IS
 				printWriter.println(builder.toString());
 			}
 			printWriter.flush();
-			printWriter.close();
-			return true;
+			success = true;
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
-			return false;
 		}
+		//
+		return success;
 	}
 
 	private AssignerStandard extract(String text) {

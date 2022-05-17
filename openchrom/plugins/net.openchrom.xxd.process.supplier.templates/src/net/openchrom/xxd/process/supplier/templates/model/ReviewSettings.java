@@ -119,8 +119,8 @@ public class ReviewSettings extends ArrayList<ReviewSetting> implements ISetting
 
 	public boolean exportItems(File file) {
 
-		try {
-			PrintWriter printWriter = new PrintWriter(file);
+		boolean success = false;
+		try (PrintWriter printWriter = new PrintWriter(file)) {
 			//
 			List<ReviewSetting> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
@@ -133,12 +133,12 @@ public class ReviewSettings extends ArrayList<ReviewSetting> implements ISetting
 				printWriter.println(builder.toString());
 			}
 			printWriter.flush();
-			printWriter.close();
-			return true;
+			success = true;
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
-			return false;
 		}
+		//
+		return success;
 	}
 
 	private ReviewSetting extract(String text) {

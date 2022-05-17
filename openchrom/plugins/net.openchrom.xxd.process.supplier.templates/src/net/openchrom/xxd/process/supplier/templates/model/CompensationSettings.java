@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -120,8 +120,8 @@ public class CompensationSettings extends ArrayList<CompensationSetting> {
 
 	public boolean exportItems(File file) {
 
-		try {
-			PrintWriter printWriter = new PrintWriter(file);
+		boolean success = false;
+		try (PrintWriter printWriter = new PrintWriter(file)) {
 			//
 			List<CompensationSetting> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
@@ -134,12 +134,12 @@ public class CompensationSettings extends ArrayList<CompensationSetting> {
 				printWriter.println(builder.toString());
 			}
 			printWriter.flush();
-			printWriter.close();
-			return true;
+			success = true;
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
-			return false;
 		}
+		//
+		return success;
 	}
 
 	private CompensationSetting extract(String text) {

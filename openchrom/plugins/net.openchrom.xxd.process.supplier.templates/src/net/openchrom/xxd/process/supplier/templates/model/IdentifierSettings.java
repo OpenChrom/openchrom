@@ -120,8 +120,8 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 
 	public boolean exportItems(File file) {
 
-		try {
-			PrintWriter printWriter = new PrintWriter(file);
+		boolean success = false;
+		try (PrintWriter printWriter = new PrintWriter(file)) {
 			//
 			List<IdentifierSetting> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
@@ -134,12 +134,12 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 				printWriter.println(builder.toString());
 			}
 			printWriter.flush();
-			printWriter.close();
-			return true;
+			success = true;
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
-			return false;
 		}
+		//
+		return success;
 	}
 
 	private IdentifierSetting extract(String text) {

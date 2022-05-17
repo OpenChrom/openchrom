@@ -101,8 +101,8 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> implements 
 
 	public boolean exportItems(File file) {
 
-		try {
-			PrintWriter printWriter = new PrintWriter(file);
+		boolean success = false;
+		try (PrintWriter printWriter = new PrintWriter(file)) {
 			//
 			List<IntegratorSetting> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
@@ -115,12 +115,12 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> implements 
 				printWriter.println(builder.toString());
 			}
 			printWriter.flush();
-			printWriter.close();
-			return true;
+			success = true;
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
-			return false;
 		}
+		//
+		return success;
 	}
 
 	private IntegratorSetting extract(String text) {

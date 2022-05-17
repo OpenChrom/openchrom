@@ -108,13 +108,11 @@ public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> imp
 	@Override
 	public void exportItems(File file, String[] items) {
 
-		try {
-			PrintWriter printWriter = new PrintWriter(file);
+		try (PrintWriter printWriter = new PrintWriter(file)) {
 			for(String item : items) {
 				printWriter.println(item);
 			}
 			printWriter.flush();
-			printWriter.close();
 		} catch(FileNotFoundException e1) {
 			logger.warn(e1);
 		}
