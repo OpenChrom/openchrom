@@ -293,9 +293,9 @@
       <ChromatogramSupplier
             description="Exports a list of named traces for overlay purposes."
             exportConverter="net.openchrom.xxd.process.supplier.templates.chromatogram.ChromatogramExportNamedTraces"
-            fileExtension=".txt"
-            fileName="NamedTraces.txt"
-            filterName="Named Traces (*.txt)"
+            fileExtension=".ntr"
+            fileName="NamedTraces.ntr"
+            filterName="Named Traces (*.ntr)"
             id="net.openchrom.xxd.process.supplier.templates.export.chromatogram.namedtraces"
             importMagicNumberMatcher="net.openchrom.xxd.process.supplier.templates.chromatogram.MagicNumberMatcher"
             isExportable="true"
