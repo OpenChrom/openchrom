@@ -36,7 +36,7 @@ public class TracesValidator implements IValidator<Object> {
 			message = "Invalid input.";
 		} else if(value instanceof String && !"".equals(value)) {
 			/*
-			 * Preparation(s)
+			 * Preparations
 			 */
 			String traces = ((String)value).trim();
 			String[] traceValues;

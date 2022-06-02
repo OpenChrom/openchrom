@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -35,7 +35,7 @@ public class PeakDetectorDirectSettings extends AbstractPeakDetectorSettingsMSD 
 	@JsonPropertyDescription(value = "If VV as a peak detector type has been selected, the peak will be optimized.")
 	private boolean optimizeRange = false;
 	@JsonProperty(value = "Use Existing Peaks", defaultValue = "true")
-	@JsonPropertyDescription(value = "If true, ranges will be created using the existing peak(s).")
+	@JsonPropertyDescription(value = "If true, ranges will be created using the existing peaks.")
 	private boolean useExistingPeaks = true;
 	@JsonProperty(value = "Use Selected Range", defaultValue = "true")
 	@JsonPropertyDescription(value = "If true, a range will be created using the start and stop retention time of the selection.")

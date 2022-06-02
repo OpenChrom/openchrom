@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,7 +33,7 @@ public class ReportSettingsProfile extends DefaultChromatogramReportSettings {
 	@IntSettingsProperty(maxValue = PreferenceSupplier.MAX_NUMBER_LARGEST_PEAKS, minValue = PreferenceSupplier.MIN_NUMBER_LARGEST_PEAKS)
 	@JsonProperty(value = "Number Largest Peaks", defaultValue = "" + PreferenceSupplier.DEF_NUMBER_LARGEST_PEAKS)
 	private int numberLargestPeaks = -1;
-	@JsonProperty(value = "Print all target(s)", defaultValue = "false")
+	@JsonProperty(value = "Print all targets", defaultValue = "false")
 	private boolean printAllTargets = false;
 
 	public File getReportBanner() {

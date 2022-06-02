@@ -174,12 +174,12 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 	private Map<Integer, List<IPeak>> extractPeakGroups(List<? extends IPeak> peaks, PeakTransferSettings peakTransferSettings) {
 
 		/*
-		 * Select the peak(s).
+		 * Select the peaks.
 		 */
 		List<IPeak> peaksSource = new ArrayList<>();
 		if(peakTransferSettings.isUseIdentifiedPeaksOnly()) {
 			/*
-			 * Add identified peak(s).
+			 * Add identified peaks.
 			 */
 			for(IPeak peak : peaks) {
 				if(!peak.getTargets().isEmpty()) {
@@ -190,7 +190,7 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 			}
 		} else {
 			/*
-			 * Add all peak(s).
+			 * Add all peaks.
 			 */
 			for(IPeak peak : peaks) {
 				if(peak.isActiveForAnalysis()) {

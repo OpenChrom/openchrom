@@ -62,7 +62,7 @@ public class PeakDetectorDirectWSD<P extends IPeak, C extends IChromatogram<P>, 
 				processingInfo.addWarnMessage(DESCRIPTION, "The chromatogram doesn't contain the given traces: " + tracesSetting);
 			} else {
 				/*
-				 * Peak(s)
+				 * Peaks
 				 */
 				if(settingsDirect.isUseExistingPeaks()) {
 					for(IPeak peak : chromatogram.getPeaks(chromatogramSelection)) {

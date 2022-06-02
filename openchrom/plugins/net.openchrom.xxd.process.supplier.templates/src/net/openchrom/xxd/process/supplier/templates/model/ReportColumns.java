@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,23 +23,23 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String CAS_NUMBER = "CAS#";
 	public static final String START_TIME_SETTING = "Start Time Setting [min]";
 	public static final String STOP_TIME_SETTING = "Stop Time Setting [min]";
-	public static final String NUM_PEAKS = "Number Peak(s)";
-	public static final String MIN_RETENTION_TIME_PEAKS = "Min Time Peak(s) [min]";
-	public static final String MEAN_RETENTION_TIME_PEAKS = "Mean Time Peak(s) [min]";
-	public static final String MEDIAN_RETENTION_TIME_PEAKS = "Median Time Peak(s) [min]";
-	public static final String MAX_RETENTION_TIME_PEAKS = "Max Time Peak(s) [min]";
-	public static final String MIN_RETENTION_INDEX_PEAKS = "Min Retention Index Peak(s)";
-	public static final String MEAN_RETENTION_INDEX_PEAKS = "Mean Retention Index Peak(s)";
-	public static final String MEDIAN_RETENTION_INDEX_PEAKS = "Median Retention Index Peak(s)";
-	public static final String MAX_RETENTION_INDEX_PEAKS = "Max Retention Index Peak(s)";
-	public static final String MIN_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Min S/N Peak(s)";
-	public static final String MEAN_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Mean S/N Peak(s)";
-	public static final String MEDIAN_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Median S/N Peak(s)";
-	public static final String MAX_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Max S/N Peak(s)";
-	public static final String TRACES_MIN_AREA_PEAKS = "Traces Min Area Peak(s)";
-	public static final String TRACES_MEAN_AREA_PEAKS = "Traces Mean Area Peak(s)";
-	public static final String TRACES_MEDIAN_AREA_PEAKS = "Traces Median Area Peak(s)";
-	public static final String TRACES_MAX_AREA_PEAKS = "Traces Max Area Peak(s)";
+	public static final String NUM_PEAKS = "Number Peaks";
+	public static final String MIN_RETENTION_TIME_PEAKS = "Min Time Peaks [min]";
+	public static final String MEAN_RETENTION_TIME_PEAKS = "Mean Time Peaks [min]";
+	public static final String MEDIAN_RETENTION_TIME_PEAKS = "Median Time Peaks [min]";
+	public static final String MAX_RETENTION_TIME_PEAKS = "Max Time Peaks [min]";
+	public static final String MIN_RETENTION_INDEX_PEAKS = "Min Retention Index Peaks";
+	public static final String MEAN_RETENTION_INDEX_PEAKS = "Mean Retention Index Peaks";
+	public static final String MEDIAN_RETENTION_INDEX_PEAKS = "Median Retention Index Peaks";
+	public static final String MAX_RETENTION_INDEX_PEAKS = "Max Retention Index Peaks";
+	public static final String MIN_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Min S/N Peaks";
+	public static final String MEAN_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Mean S/N Peaks";
+	public static final String MEDIAN_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Median S/N Peaks";
+	public static final String MAX_SIGNAL_TO_NOISE_RATIOS_PEAKS = "Max S/N Peaks";
+	public static final String TRACES_MIN_AREA_PEAKS = "Traces Min Area Peaks";
+	public static final String TRACES_MEAN_AREA_PEAKS = "Traces Mean Area Peaks";
+	public static final String TRACES_MEDIAN_AREA_PEAKS = "Traces Median Area Peaks";
+	public static final String TRACES_MAX_AREA_PEAKS = "Traces Max Area Peaks";
 	public static final String SUM_AREA = "Sum Area";
 	public static final String MIN_AREA = "Min Area";
 	public static final String MAX_AREA = "Max Area";

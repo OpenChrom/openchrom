@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,10 +21,10 @@ import net.openchrom.chromatogram.msd.identifier.supplier.cdk.preferences.Prefer
 public class CleanerSettings extends ChromatogramIdentifierAdapterSettings {
 
 	@JsonPropertyDescription(value = "Remove targets where the SMILES formula is not set.")
-	@JsonProperty(value = "Delete Scan Target(s)", defaultValue = "false")
+	@JsonProperty(value = "Delete Scan Targets", defaultValue = "false")
 	private boolean deleteScanTargets = PreferenceSupplier.DEF_DELETE_SCAN_TARGETS;
 	@JsonPropertyDescription(value = "Remove targets where the SMILES formula is not set.")
-	@JsonProperty(value = "Delete Peak Target(s)", defaultValue = "false")
+	@JsonProperty(value = "Delete Peak Targets", defaultValue = "false")
 	private boolean deletePeakTargets = PreferenceSupplier.DEF_DELETE_PEAK_TARGETS;
 
 	public boolean isDeleteScanTargets() {

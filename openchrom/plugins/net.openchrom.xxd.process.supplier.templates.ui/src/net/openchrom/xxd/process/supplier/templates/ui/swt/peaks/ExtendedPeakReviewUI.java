@@ -131,7 +131,7 @@ public class ExtendedPeakReviewUI extends Composite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
-		button.setToolTipText("Delete the selected peak(s)");
+		button.setToolTipText("Delete the selected peaks");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
@@ -147,7 +147,7 @@ public class ExtendedPeakReviewUI extends Composite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
-		button.setToolTipText("Delete all peak(s)");
+		button.setToolTipText("Delete all peaks");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
@@ -156,8 +156,8 @@ public class ExtendedPeakReviewUI extends Composite {
 
 				if(controller != null) {
 					MessageBox messageBox = new MessageBox(e.display.getActiveShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-					messageBox.setText("Delete Peak(s)");
-					messageBox.setMessage("Would you like to delete all peak(s)?");
+					messageBox.setText("Delete Peaks");
+					messageBox.setMessage("Would you like to delete all peaks?");
 					if(messageBox.open() == SWT.YES) {
 						controller.deletePeaks(messageBox.getParent(), peaks);
 					}
@@ -208,7 +208,7 @@ public class ExtendedPeakReviewUI extends Composite {
 			@Override
 			public String getName() {
 
-				return "Delete Peak(s)";
+				return "Delete Peaks";
 			}
 
 			@Override
@@ -230,11 +230,11 @@ public class ExtendedPeakReviewUI extends Composite {
 
 		if(reviewSetting != null) {
 			MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-			messageBox.setText("Delete Peak(s)");
-			messageBox.setMessage("Would you like to delete the selected peak(s)?");
+			messageBox.setText("Delete Peaks");
+			messageBox.setMessage("Would you like to delete the selected peaks?");
 			if(messageBox.open() == SWT.YES) {
 				/*
-				 * Delete Peak(s)
+				 * Delete Peaks
 				 */
 				List<IPeak> peaksToDelete = new ArrayList<>();
 				Iterator iterator = peakStatusListUI.getStructuredSelection().iterator();

@@ -52,11 +52,11 @@ public class PeakReviewSupport {
 		try {
 			int status = wizardDialog.open();
 			if(status == Dialog.OK) {
-				processingInfo.addInfoMessage(DESCRIPTION, "Successfully reviewed the peak(s).");
+				processingInfo.addInfoMessage(DESCRIPTION, "Successfully reviewed the peaks.");
 			} else if(status == Dialog.CANCEL) {
-				processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peak(s) reviewed.");
+				processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peaks reviewed.");
 			} else {
-				processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to review the peak(s).");
+				processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to review the peaks.");
 			}
 		} finally {
 			wizard.dispose();

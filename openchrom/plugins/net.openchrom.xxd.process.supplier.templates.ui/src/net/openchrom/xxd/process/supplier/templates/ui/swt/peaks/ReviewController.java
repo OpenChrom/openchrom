@@ -206,14 +206,14 @@ public class ReviewController {
 				boolean deletePeaks = true;
 				if(containsReviewedPeaks(peaks)) {
 					MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-					messageBox.setText("Delete Peak(s)");
+					messageBox.setText("Delete Peaks");
 					messageBox.setMessage("At least one peak has been reviewed already. Delete anyway?");
 					if(messageBox.open() != SWT.YES) {
 						deletePeaks = false;
 					}
 				}
 				/*
-				 * Delete the peak(s)
+				 * Delete the peaks
 				 */
 				if(deletePeaks) {
 					chromatogram.removePeaks(peaks);

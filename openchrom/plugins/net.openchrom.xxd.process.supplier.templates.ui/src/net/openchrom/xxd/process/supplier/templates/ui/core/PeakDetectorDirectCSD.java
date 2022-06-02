@@ -51,7 +51,7 @@ public class PeakDetectorDirectCSD<P extends IPeak, C extends IChromatogram<P>, 
 			IChromatogram<? extends IPeak> chromatogram = chromatogramSelection.getChromatogram();
 			List<DetectorSetting> detectorSettings = new ArrayList<>();
 			/*
-			 * Peak(s)
+			 * Peaks
 			 */
 			if(settingsDirect.isUseExistingPeaks()) {
 				for(IPeak peak : chromatogram.getPeaks(chromatogramSelection)) {

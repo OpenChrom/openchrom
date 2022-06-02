@@ -255,7 +255,7 @@ public class ExtendedTargetsUI extends Composite {
 			@Override
 			public String getName() {
 
-				return "Delete Target(s)";
+				return "Delete Targets";
 			}
 
 			@Override
@@ -276,8 +276,8 @@ public class ExtendedTargetsUI extends Composite {
 	private void deleteTargets(Shell shell) {
 
 		MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-		messageBox.setText("Delete Target(s)");
-		messageBox.setMessage("Would you like to delete the selected target(s)?");
+		messageBox.setText("Delete Targets");
+		messageBox.setMessage("Would you like to delete the selected targets?");
 		if(messageBox.open() == SWT.YES) {
 			/*
 			 * Delete Target
@@ -314,7 +314,7 @@ public class ExtendedTargetsUI extends Composite {
 			@Override
 			public String getName() {
 
-				return "Verify Target(s) Check";
+				return "Verify Targets Check";
 			}
 
 			@Override
@@ -338,7 +338,7 @@ public class ExtendedTargetsUI extends Composite {
 			@Override
 			public String getName() {
 
-				return "Verify Target(s) Uncheck";
+				return "Verify Targets Uncheck";
 			}
 
 			@Override

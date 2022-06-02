@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2021 Lablicate GmbH.
+ * Copyright (c) 2013, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This
  * program and the accompanying materials are made available under the terms of
@@ -55,8 +55,8 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_WARN_RATHER_THAN_FAIL, "Warn Rather Than Fail On Uninterpretable Stereochemistry", getFieldEditorParent()));
 		//
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_DELETE_SCAN_TARGETS, "Delete Scan Target(s) - No SMILES", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_DELETE_PEAK_TARGETS, "Delete Peak Target(s) - No SMILES", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_DELETE_SCAN_TARGETS, "Delete Scan Targets - No SMILES", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_DELETE_PEAK_TARGETS, "Delete Peak Targets - No SMILES", getFieldEditorParent()));
 		//
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_SHOW_ATOMS_H, "Show H Atoms", getFieldEditorParent()));

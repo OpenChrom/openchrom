@@ -18,7 +18,7 @@
             identifierSettings="net.openchrom.chromatogram.msd.identifier.supplier.cdk.settings.IdentifierSettings">
       </ChromatogramIdentificationSupplier>
       <ChromatogramIdentificationSupplier
-            description="This files cleans empty SMILES target(s)."
+            description="This files cleans empty SMILES targets."
             id="net.openchrom.chromatogram.msd.identifier.supplier.cdk.cleaner"
             identifier="net.openchrom.chromatogram.msd.identifier.supplier.cdk.core.ChromatogramCleaner"
             identifierName="SMILES Target Cleaner"

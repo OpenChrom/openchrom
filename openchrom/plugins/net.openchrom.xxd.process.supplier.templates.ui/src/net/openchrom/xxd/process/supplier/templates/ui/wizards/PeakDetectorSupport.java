@@ -53,11 +53,11 @@ public class PeakDetectorSupport {
 		try {
 			int status = wizardDialog.open();
 			if(status == Dialog.OK) {
-				processingInfo.addInfoMessage(DESCRIPTION, "Successfully modified/added the peak(s).");
+				processingInfo.addInfoMessage(DESCRIPTION, "Successfully modified/added the peaks.");
 			} else if(status == Dialog.CANCEL) {
-				processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peak(s) added.");
+				processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peaks added.");
 			} else {
-				processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to add the peak(s).");
+				processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to add the peaks.");
 			}
 		} finally {
 			wizard.dispose();
