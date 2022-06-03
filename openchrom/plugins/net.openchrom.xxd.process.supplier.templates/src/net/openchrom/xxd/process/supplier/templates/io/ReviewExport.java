@@ -16,21 +16,15 @@ import java.util.List;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.core.IPeakModel;
-import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
-import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
-import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
-import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
-import net.openchrom.xxd.process.supplier.templates.model.ReviewSettings;
+import net.openchrom.xxd.process.supplier.templates.compiler.ReviewTemplateCompiler;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
+import net.openchrom.xxd.process.supplier.templates.system.ReviewExportProcessSettings;
 
 public class ReviewExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
 
@@ -41,35 +35,21 @@ public class ReviewExport extends AbstractChromatogramExportConverter implements
 
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
-		ReviewSettings reviewSettings = new ReviewSettings();
 		//
-		int deltaLeft = PreferenceSupplier.getExportDeltaLeftMillisecondsReview();
-		int deltaRight = PreferenceSupplier.getExportDeltaRightMillisecondsReview();
-		int numberTraces = PreferenceSupplier.getExportNumberTracesReview();
-		boolean optimizeRange = PreferenceSupplier.isExportOptimizeRangeReview();
+		ReviewExportProcessSettings reviewExportProcessSettings = new ReviewExportProcessSettings();
+		reviewExportProcessSettings.setRetentionTimeDeltaLeft(PreferenceSupplier.getExportDeltaLeftMillisecondsReview());
+		reviewExportProcessSettings.setRetentionTimeDeltaRight(PreferenceSupplier.getExportDeltaRightMillisecondsReview());
+		reviewExportProcessSettings.setNumberTraces(PreferenceSupplier.getExportNumberTracesReview());
+		reviewExportProcessSettings.setOptimizeRange(PreferenceSupplier.isExportOptimizeRangeReview());
+		ReviewTemplateCompiler reviewTemplateCompiler = new ReviewTemplateCompiler();
 		//
-		for(IPeak peak : peaks) {
-			IPeakModel peakModel = peak.getPeakModel();
-			float retentionIndex = peakModel.getPeakMaximum().getRetentionIndex();
-			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
-			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), identificationTargetComparator);
-			if(libraryInformation != null) {
-				ReviewSetting setting = new ReviewSetting();
-				setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
-				setting.setPositionStart((peakModel.getStartRetentionTime() - deltaLeft) / IChromatogram.MINUTE_CORRELATION_FACTOR);
-				setting.setPositionStop((peakModel.getStopRetentionTime() + deltaRight) / IChromatogram.MINUTE_CORRELATION_FACTOR);
-				setting.setName(libraryInformation.getName());
-				setting.setCasNumber(libraryInformation.getCasNumber());
-				setting.setTraces(extractTraces(peak, numberTraces));
-				setting.setOptimizeRange(optimizeRange);
-				reviewSettings.add(setting);
-			}
+		if(reviewTemplateCompiler.compilePeaks(file, peaks, reviewExportProcessSettings)) {
+			processingInfo.setProcessingResult(file);
+			processingInfo.addInfoMessage(DESCRIPTION, "The review template has been exported successfully.");
+		} else {
+			processingInfo.addWarnMessage(DESCRIPTION, "Something has gone wrong to export the review template.");
 		}
 		//
-		reviewSettings.exportItems(file);
-		//
-		processingInfo.setProcessingResult(file);
-		processingInfo.addInfoMessage(DESCRIPTION, "The review template has been exported successfully.");
 		return processingInfo;
 	}
 }

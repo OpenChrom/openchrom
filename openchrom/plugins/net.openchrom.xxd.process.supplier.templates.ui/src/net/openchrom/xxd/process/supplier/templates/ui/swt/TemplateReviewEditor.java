@@ -86,10 +86,6 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	private AtomicReference<PositionAdjusterUI> toolbarAdjuster = new AtomicReference<>();
 	private AtomicReference<PeakReviewListUI> listControl = new AtomicReference<>();
 	//
-	private static final String FILTER_EXTENSION = "*.txt";
-	private static final String FILTER_NAME = "Review Template (*.txt)";
-	private static final String FILE_NAME = "ReviewTemplate.txt";
-	//
 	private static final String CATEGORY = "Peak Identifier";
 	private static final String DELETE = "Delete";
 	//
@@ -412,8 +408,8 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.READ_ONLY);
 				fileDialog.setText(IMPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{FILTER_NAME});
+				fileDialog.setFilterExtensions(new String[]{ReviewSettings.FILTER_EXTENSION});
+				fileDialog.setFilterNames(new String[]{ReviewSettings.FILTER_NAME});
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathImport());
 				String path = fileDialog.open();
 				if(path != null) {
@@ -442,9 +438,9 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.SAVE);
 				fileDialog.setOverwrite(true);
 				fileDialog.setText(EXPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{FILTER_NAME});
-				fileDialog.setFileName(FILE_NAME);
+				fileDialog.setFilterExtensions(new String[]{ReviewSettings.FILTER_EXTENSION});
+				fileDialog.setFilterNames(new String[]{ReviewSettings.FILTER_NAME});
+				fileDialog.setFileName(ReviewSettings.FILE_NAME);
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathExport());
 				String path = fileDialog.open();
 				if(path != null) {

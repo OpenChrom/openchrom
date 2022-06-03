@@ -38,6 +38,13 @@ public class ReviewSettings extends ArrayList<ReviewSetting> implements ISetting
 
 	private static final Logger logger = Logger.getLogger(ReviewSettings.class);
 	private static final long serialVersionUID = -6161941038059031059L;
+	//
+	public static final String DESCRIPTION = "Peak Review Template";
+	public static final String FILE_EXTENSION = ".prt";
+	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
+	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
+	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
+	//
 	private ReviewListUtil listUtil = new ReviewListUtil();
 
 	public Set<String> keySet() {
