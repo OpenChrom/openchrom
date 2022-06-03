@@ -32,6 +32,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.util.trace.TraceRatioValidat
 public class TraceRatios extends ArrayList<TraceRatio> implements IPeakRatios<TraceRatio> {
 
 	private static final Logger logger = Logger.getLogger(TraceRatios.class);
+	private static final long serialVersionUID = 3055499236651500754L;
 	//
 	public static final String DESCRIPTION = "Trace Ratios";
 	public static final String FILE_EXTENSION = ".trr";
@@ -39,7 +40,6 @@ public class TraceRatios extends ArrayList<TraceRatio> implements IPeakRatios<Tr
 	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
 	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
 	//
-	private static final long serialVersionUID = 3055499236651500754L;
 	private TraceRatioListUtil listUtil = new TraceRatioListUtil();
 	private static final String SEPARATOR_TOKEN = TraceRatioListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = TraceRatioListUtil.SEPARATOR_ENTRY;

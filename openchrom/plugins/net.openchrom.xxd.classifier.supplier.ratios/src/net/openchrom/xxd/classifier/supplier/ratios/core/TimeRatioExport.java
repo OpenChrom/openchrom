@@ -16,18 +16,15 @@ import java.util.List;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
-import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.compiler.TimeRatioCompiler;
 import net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceSupplier;
+import net.openchrom.xxd.classifier.supplier.ratios.settings.TimeRatioExportSettings;
 
 public class TimeRatioExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
 
@@ -38,30 +35,19 @@ public class TimeRatioExport extends AbstractChromatogramExportConverter impleme
 
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
-		TimeRatios settings = new TimeRatios();
 		//
-		float deviationWarn = PreferenceSupplier.getAllowedDeviationOk();
-		float deviationError = PreferenceSupplier.getAllowedDeviationWarn();
+		TimeRatioExportSettings timeRatioExportSettings = new TimeRatioExportSettings();
+		timeRatioExportSettings.setAllowedDeviationOk(PreferenceSupplier.getAllowedDeviationOk());
+		timeRatioExportSettings.setAllowedDeviationWarn(PreferenceSupplier.getAllowedDeviationWarn());
 		//
-		for(IPeak peak : peaks) {
-			float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
-			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
-			String name = getName(peak, identificationTargetComparator);
-			if(!"".equals(name)) {
-				IPeakModel peakModel = peak.getPeakModel();
-				TimeRatio timeRatio = new TimeRatio();
-				timeRatio.setName(name);
-				timeRatio.setExpectedRetentionTime(peakModel.getRetentionTimeAtPeakMaximum());
-				timeRatio.setDeviationWarn(deviationWarn);
-				timeRatio.setDeviationError(deviationError);
-				settings.add(timeRatio);
-			}
+		TimeRatioCompiler timeRatioCompiler = new TimeRatioCompiler();
+		if(timeRatioCompiler.compilePeaks(file, peaks, timeRatioExportSettings)) {
+			processingInfo.setProcessingResult(file);
+			processingInfo.addInfoMessage(DESCRIPTION, "The time classifier settings have been exported successfully.");
+		} else {
+			processingInfo.addWarnMessage(DESCRIPTION, "Something went wrong to compile the time ratios.");
 		}
 		//
-		settings.exportItems(file);
-		//
-		processingInfo.setProcessingResult(file);
-		processingInfo.addInfoMessage(DESCRIPTION, "The time classifier settings have been exported successfully.");
 		return processingInfo;
 	}
 }

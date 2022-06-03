@@ -35,13 +35,13 @@ public class TraceRatioExport extends AbstractChromatogramExportConverter implem
 
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
-		TraceRatioCompiler traceRatioCompiler = new TraceRatioCompiler();
 		//
 		TraceRatioExportSettings traceRatioExportSettings = new TraceRatioExportSettings();
-		traceRatioExportSettings.setNumberTraces(PreferenceSupplier.getNumberTraces());
 		traceRatioExportSettings.setAllowedDeviationOk(PreferenceSupplier.getAllowedDeviationOk());
 		traceRatioExportSettings.setAllowedDeviationWarn(PreferenceSupplier.getAllowedDeviationWarn());
+		traceRatioExportSettings.setNumberTraces(PreferenceSupplier.getNumberTraces());
 		//
+		TraceRatioCompiler traceRatioCompiler = new TraceRatioCompiler();
 		if(traceRatioCompiler.compilePeaks(file, peaks, traceRatioExportSettings)) {
 			processingInfo.setProcessingResult(file);
 			processingInfo.addInfoMessage(DESCRIPTION, "The trace classifier settings have been exported successfully.");

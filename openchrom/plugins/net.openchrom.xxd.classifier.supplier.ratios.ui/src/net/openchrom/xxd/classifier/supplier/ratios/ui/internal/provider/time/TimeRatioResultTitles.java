@@ -63,6 +63,7 @@ public class TimeRatioResultTitles extends AbstractPeakRatioTitles implements Co
 	public Collection<? extends ColumnDefinition<?, ?>> getColumnDefinitions() {
 
 		List<ColumnDefinition<?, ?>> list = new ArrayList<>();
+		//
 		list.add(defaultSortableColumn(RETENTION_TIME, 80, new Function<TimeRatio, Double>() {
 
 			@Override
@@ -76,6 +77,7 @@ public class TimeRatioResultTitles extends AbstractPeakRatioTitles implements Co
 				}
 			}
 		}).create());
+		//
 		list.add(defaultSortableColumn(NAME, 150, new Function<TimeRatio, String>() {
 
 			@Override
@@ -84,6 +86,7 @@ public class TimeRatioResultTitles extends AbstractPeakRatioTitles implements Co
 				return ratio.getName();
 			}
 		}).create());
+		//
 		list.add(defaultSortableColumn(EXPECTED_RETENTION_TIME, 80, new Function<TimeRatio, Integer>() {
 
 			@Override
@@ -92,6 +95,7 @@ public class TimeRatioResultTitles extends AbstractPeakRatioTitles implements Co
 				return ratio.getExpectedRetentionTime();
 			}
 		}).create());
+		//
 		list.add(defaultSortableColumn(DEVIATION, 80, new Function<TimeRatio, Double>() {
 
 			@Override
@@ -100,6 +104,7 @@ public class TimeRatioResultTitles extends AbstractPeakRatioTitles implements Co
 				return ratio.getDeviation();
 			}
 		}).create());
+		//
 		return list;
 	}
 }

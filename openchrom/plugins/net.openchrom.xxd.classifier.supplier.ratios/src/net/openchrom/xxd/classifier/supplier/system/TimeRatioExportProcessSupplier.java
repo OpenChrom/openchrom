@@ -23,14 +23,15 @@ import org.eclipse.chemclipse.processing.system.ISystemProcessSettings;
 import org.osgi.service.component.annotations.Component;
 
 import net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceSupplier;
+import net.openchrom.xxd.classifier.supplier.ratios.settings.TimeRatioExportSettings;
 import net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioExportSettings;
 
 @Component(service = {IProcessTypeSupplier.class})
-public class TraceRatioExportProcessSupplier extends AbstractSystemProcessSettings {
+public class TimeRatioExportProcessSupplier extends AbstractSystemProcessSettings {
 
-	private static final String ID = "net.openchrom.xxd.classifier.supplier.system.traceratioexport";
-	private static final String NAME = "Trace Ratio Export";
-	private static final String DESCRIPTION = "Trace ratio export system settings.";
+	private static final String ID = "net.openchrom.xxd.classifier.supplier.system.timeratioexport";
+	private static final String NAME = "Time Ratio Export";
+	private static final String DESCRIPTION = "Time ratio export system settings.";
 
 	@Override
 	public Collection<IProcessSupplier<?>> getProcessorSuppliers() {
@@ -48,11 +49,10 @@ public class TraceRatioExportProcessSupplier extends AbstractSystemProcessSettin
 		@Override
 		public void executeUserSettings(ISystemProcessSettings settings, ProcessExecutionContext context) throws Exception {
 
-			if(settings instanceof TraceRatioExportSettings) {
-				TraceRatioExportSettings processSettings = (TraceRatioExportSettings)settings;
+			if(settings instanceof TimeRatioExportSettings) {
+				TimeRatioExportSettings processSettings = (TimeRatioExportSettings)settings;
 				PreferenceSupplier.setAllowedDeviationOk(processSettings.getAllowedDeviationOk());
 				PreferenceSupplier.setAllowedDeviationWarn(processSettings.getAllowedDeviationWarn());
-				PreferenceSupplier.setNumberTraces(processSettings.getNumberTraces());
 			}
 		}
 	}

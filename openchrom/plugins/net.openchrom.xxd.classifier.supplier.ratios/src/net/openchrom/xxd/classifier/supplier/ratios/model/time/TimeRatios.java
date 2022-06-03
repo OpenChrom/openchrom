@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -34,8 +34,14 @@ import net.openchrom.xxd.classifier.supplier.ratios.util.time.TimeRatioValidator
 public class TimeRatios extends ArrayList<TimeRatio> implements IPeakRatios<TimeRatio> {
 
 	private static final Logger logger = Logger.getLogger(TimeRatios.class);
-	//
 	private static final long serialVersionUID = 3055499236651500754L;
+	//
+	public static final String DESCRIPTION = "Time Ratios";
+	public static final String FILE_EXTENSION = ".tir";
+	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
+	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
+	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
+	//
 	private TimeRatioListUtil listUtil = new TimeRatioListUtil();
 	private static final String SEPARATOR_TOKEN = TimeRatioListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = TimeRatioListUtil.SEPARATOR_ENTRY;

@@ -37,4 +37,5 @@ Export-Package: net.openchrom.xxd.classifier.supplier.ratios,
  net.openchrom.xxd.classifier.supplier.ratios.util.quant,
  net.openchrom.xxd.classifier.supplier.ratios.util.time,
  net.openchrom.xxd.classifier.supplier.ratios.util.trace
-Service-Component: OSGI-INF/net.openchrom.xxd.classifier.supplier.system.TraceRatioExportProcessSupplier.xml
+Service-Component: OSGI-INF/net.openchrom.xxd.classifier.supplier.system.TimeRatioExportProcessSupplier.xml,
+ OSGI-INF/net.openchrom.xxd.classifier.supplier.system.TraceRatioExportProcessSupplier.xml
