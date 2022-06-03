@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -34,8 +34,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final float MIN_DEVIATION = 0.0f;
 	public static final float MAX_DEVIATION = 100.0f;
 	//
-	public static final String P_ALLOWED_DEVIATION = "allowedDeviationOK";
-	public static final float DEF_ALLOWED_DEVIATION = 20.0f;
+	public static final String P_ALLOWED_DEVIATION_OK = "allowedDeviationOK";
+	public static final float DEF_ALLOWED_DEVIATION_OK = 20.0f;
 	public static final String P_ALLOWED_DEVIATION_WARN = "allowedDeviationWarn";
 	public static final float DEF_ALLOWED_DEVIATION_WARN = 40.0f;
 	//
@@ -83,7 +83,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		Map<String, String> defaultValues = new HashMap<String, String>();
 		//
-		defaultValues.put(P_ALLOWED_DEVIATION, Float.toString(DEF_ALLOWED_DEVIATION));
+		defaultValues.put(P_ALLOWED_DEVIATION_OK, Float.toString(DEF_ALLOWED_DEVIATION_OK));
 		defaultValues.put(P_ALLOWED_DEVIATION_WARN, Float.toString(DEF_ALLOWED_DEVIATION_WARN));
 		//
 		defaultValues.put(P_TRACE_RATIO_LIST, DEF_TRACE_RATIO_LIST);
@@ -130,10 +130,20 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return new QualRatioSettings();
 	}
 
-	public static float getAllowedDeviation() {
+	public static void setAllowedDeviationOk(float allowedDeviationOk) {
+
+		putFloat(P_ALLOWED_DEVIATION_OK, allowedDeviationOk);
+	}
+
+	public static float getAllowedDeviationOk() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getFloat(P_ALLOWED_DEVIATION, DEF_ALLOWED_DEVIATION);
+		return preferences.getFloat(P_ALLOWED_DEVIATION_OK, DEF_ALLOWED_DEVIATION_OK);
+	}
+
+	public static void setAllowedDeviationWarn(float allowedDeviationWarn) {
+
+		putFloat(P_ALLOWED_DEVIATION_WARN, allowedDeviationWarn);
 	}
 
 	public static float getAllowedDeviationWarn() {
@@ -162,6 +172,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		setFilterPath(P_LIST_PATH_EXPORT, filterPath);
 	}
 
+	public static void setNumberTraces(int numberTraces) {
+
+		putInteger(P_EXPORT_NUMBER_TRACES, numberTraces);
+	}
+
 	public static int getNumberTraces() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
@@ -185,6 +200,28 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		try {
 			IEclipsePreferences preferences = INSTANCE().getPreferences();
 			preferences.put(key, filterPath);
+			preferences.flush();
+		} catch(BackingStoreException e) {
+			logger.warn(e);
+		}
+	}
+
+	private static void putInteger(String key, int value) {
+
+		try {
+			IEclipsePreferences preferences = INSTANCE().getPreferences();
+			preferences.putInt(key, value);
+			preferences.flush();
+		} catch(BackingStoreException e) {
+			logger.warn(e);
+		}
+	}
+
+	private static void putFloat(String key, float value) {
+
+		try {
+			IEclipsePreferences preferences = INSTANCE().getPreferences();
+			preferences.putFloat(key, value);
 			preferences.flush();
 		} catch(BackingStoreException e) {
 			logger.warn(e);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -26,6 +26,7 @@ public class TraceRatioInputValidator implements IInputValidator {
 	private List<TraceRatio> settings = new ArrayList<>();
 
 	public TraceRatioInputValidator(List<TraceRatio> settings) {
+
 		if(settings != null) {
 			this.settings = settings;
 		}

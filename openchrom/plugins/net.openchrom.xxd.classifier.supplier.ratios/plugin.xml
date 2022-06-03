@@ -74,9 +74,9 @@
       <ChromatogramSupplier
             description="Exports a Trace Ratio Classifier Template "
             exportConverter="net.openchrom.xxd.classifier.supplier.ratios.core.TraceRatioExport"
-            fileExtension=".txt"
-            fileName="TraceRatioClassifierTemplate.txt"
-            filterName="Template Trace Ratios (*.txt)"
+            fileExtension=".trr"
+            fileName="TraceRatioClassifierTemplate.trr"
+            filterName="Template Trace Ratios (*.trr)"
             id="net.openchrom.xxd.classifier.supplier.ratios.traceRatioTemplateMSD"
             importMagicNumberMatcher="net.openchrom.xxd.classifier.supplier.ratios.core.MagicNumberMatcher"
             isExportable="true"

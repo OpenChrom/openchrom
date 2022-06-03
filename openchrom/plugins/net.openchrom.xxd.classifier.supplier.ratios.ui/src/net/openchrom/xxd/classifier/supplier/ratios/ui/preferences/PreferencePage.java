@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,9 +24,11 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.Activator;
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PreferencePage() {
+
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Ratio Classifier");
+		setTitle("Ratio Classifier");
+		setDescription("");
 	}
 
 	/**
@@ -37,7 +39,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	@Override
 	public void createFieldEditors() {
 
-		addField(new FloatFieldEditor(PreferenceSupplier.P_ALLOWED_DEVIATION, "Allowed Deviation (%)", PreferenceSupplier.MIN_DEVIATION, PreferenceSupplier.MAX_DEVIATION, getFieldEditorParent()));
+		addField(new FloatFieldEditor(PreferenceSupplier.P_ALLOWED_DEVIATION_OK, "Allowed Deviation Ok (%)", PreferenceSupplier.MIN_DEVIATION, PreferenceSupplier.MAX_DEVIATION, getFieldEditorParent()));
 		addField(new FloatFieldEditor(PreferenceSupplier.P_ALLOWED_DEVIATION_WARN, "Allowed Deviation Warn (%)", PreferenceSupplier.MIN_DEVIATION, PreferenceSupplier.MAX_DEVIATION, getFieldEditorParent()));
 		//
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_LIST_PATH_IMPORT, "List Path Import", getFieldEditorParent()));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -71,6 +71,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 	public Collection<? extends ColumnDefinition<?, ?>> getColumnDefinitions() {
 
 		List<ColumnDefinition<?, ?>> list = new ArrayList<>();
+		//
 		list.add(defaultSortableColumn(RETENTION_TIME, 80, new Function<TraceRatio, Double>() {
 
 			@Override
@@ -84,6 +85,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 				}
 			}
 		}).create());
+		//
 		list.add(defaultSortableColumn(NAME, 130, new Function<TraceRatio, String>() {
 
 			@Override
@@ -92,6 +94,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getName();
 			}
 		}).create());
+		//
 		list.add(defaultSortableColumn(TEST_CASE, 110, new Function<TraceRatio, String>() {
 
 			@Override
@@ -100,6 +103,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getTestCase();
 			}
 		}).create());
+		//
 		list.add(defaultSortableColumn(EXPECTED_RATIO, 80, new Function<TraceRatio, Double>() {
 
 			@Override
@@ -108,6 +112,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getExpectedRatio();
 			}
 		}).create());
+		//
 		list.add(defaultSortableColumn(RATIO, 80, new Function<TraceRatio, Double>() {
 
 			@Override
@@ -116,6 +121,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getRatio();
 			}
 		}).create());
+		//
 		list.add(defaultSortableColumn(DEVIATION, 80, new Function<TraceRatio, Double>() {
 
 			@Override
@@ -124,6 +130,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getDeviation();
 			}
 		}).create());
+		//
 		return list;
 	}
 }

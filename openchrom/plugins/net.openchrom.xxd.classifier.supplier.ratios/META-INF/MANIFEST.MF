@@ -22,7 +22,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.wsd.model;bundle-version="0.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
+Import-Package: org.osgi.service.component.annotations;version="1.2.0"
 Export-Package: net.openchrom.xxd.classifier.supplier.ratios,
+ net.openchrom.xxd.classifier.supplier.ratios.compiler,
  net.openchrom.xxd.classifier.supplier.ratios.core,
  net.openchrom.xxd.classifier.supplier.ratios.model,
  net.openchrom.xxd.classifier.supplier.ratios.model.qual,
@@ -35,3 +37,4 @@ Export-Package: net.openchrom.xxd.classifier.supplier.ratios,
  net.openchrom.xxd.classifier.supplier.ratios.util.quant,
  net.openchrom.xxd.classifier.supplier.ratios.util.time,
  net.openchrom.xxd.classifier.supplier.ratios.util.trace
+Service-Component: OSGI-INF/net.openchrom.xxd.classifier.supplier.system.TraceRatioExportProcessSupplier.xml
