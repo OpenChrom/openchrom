@@ -381,8 +381,7 @@ public class ReviewController {
 
 	private void updateExtendedTargetsUI(IPeak peak) {
 
-		Set<IIdentificationTarget> targets = peak != null ? peak.getTargets() : null;
-		extendedTargetsUI.setInput(reviewSetting, peak, targets);
+		extendedTargetsUI.setInput(reviewSetting, peak);
 	}
 
 	private boolean isRetentionTimeRangeValid(int startRetentionTime, int stopRetentionTime) {
