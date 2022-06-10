@@ -505,12 +505,18 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 
 	private void updateInput() {
 
+		updateComboTarget();
 		updateIdentifierControl();
 		updateTargetList();
 		updateSearchText();
 		updateButtons();
 		//
 		fireUpdate(false);
+	}
+
+	private void updateComboTarget() {
+
+		comboTarget.updateContentProposals();
 	}
 
 	private void updateIdentifierControl() {
