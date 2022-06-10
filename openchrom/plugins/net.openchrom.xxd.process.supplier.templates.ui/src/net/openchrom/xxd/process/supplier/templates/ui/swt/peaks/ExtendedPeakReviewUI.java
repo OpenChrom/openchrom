@@ -11,19 +11,25 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.quantitation.IQuantitationEntry;
 import org.eclipse.chemclipse.model.targets.TargetListUtil;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.chemclipse.support.ui.swt.ITableSettings;
+import org.eclipse.chemclipse.swt.ui.components.InformationUI;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.IExtendedPartUI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
@@ -44,16 +50,21 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakStatusListUI;
 
-public class ExtendedPeakReviewUI extends Composite {
+public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 
 	private static final String MENU_CATEGORY_PEAKS = "Peaks";
 	//
 	private ReviewController controller;
 	private Text textTarget;
-	private PeakStatusListUI peakStatusListUI;
+	//
+	private AtomicReference<PeakStatusListUI> peakStatusControl = new AtomicReference<>();
+	private Button buttonToolbarInfo;
+	private AtomicReference<InformationUI> toolbarInfo = new AtomicReference<>();
 	//
 	private List<IPeak> peaks;
 	private ReviewSetting reviewSetting;
+	//
+	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0000");
 
 	public ExtendedPeakReviewUI(Composite parent, int style) {
 
@@ -67,7 +78,7 @@ public class ExtendedPeakReviewUI extends Composite {
 		this.peaks = peaks;
 		//
 		update(reviewSetting);
-		peakStatusListUI.setInput(peaks);
+		peakStatusControl.get().setInput(peaks);
 		if(peak != null) {
 			selectPeakMatch(peak);
 		} else {
@@ -88,16 +99,25 @@ public class ExtendedPeakReviewUI extends Composite {
 		setLayout(gridLayout);
 		//
 		createToolbarMain(this);
-		peakStatusListUI = createTablePeaks(this);
+		createTablePeaks(this);
+		createToolbarInfo(this);
+		//
+		initialize();
+	}
+
+	private void initialize() {
+
+		enableToolbar(toolbarInfo, buttonToolbarInfo, IApplicationImage.IMAGE_INFO, TOOLTIP_INFO, true);
 	}
 
 	private void createToolbarMain(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		composite.setLayout(new GridLayout(4, false));
+		composite.setLayout(new GridLayout(5, false));
 		//
 		textTarget = createTargetText(composite);
+		buttonToolbarInfo = createButtonToggleToolbar(composite, toolbarInfo, IMAGE_INFO, TOOLTIP_INFO);
 		createMarkPeakButton(composite);
 		createDeletePeakButton(composite);
 		createDeletePeaksButton(composite);
@@ -166,10 +186,10 @@ public class ExtendedPeakReviewUI extends Composite {
 		});
 	}
 
-	private PeakStatusListUI createTablePeaks(Composite parent) {
+	private void createTablePeaks(Composite parent) {
 
-		PeakStatusListUI listUI = new PeakStatusListUI(parent, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		Table table = listUI.getTable();
+		PeakStatusListUI peakStatusListUI = new PeakStatusListUI(parent, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
+		Table table = peakStatusListUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
 		//
 		table.addSelectionListener(new SelectionAdapter() {
@@ -192,13 +212,21 @@ public class ExtendedPeakReviewUI extends Composite {
 		/*
 		 * Add the delete targets support.
 		 */
-		Shell shell = listUI.getTable().getShell();
-		ITableSettings tableSettings = listUI.getTableSettings();
+		Shell shell = peakStatusListUI.getTable().getShell();
+		ITableSettings tableSettings = peakStatusListUI.getTableSettings();
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
-		listUI.applySettings(tableSettings);
+		peakStatusListUI.applySettings(tableSettings);
 		//
-		return listUI;
+		peakStatusControl.set(peakStatusListUI);
+	}
+
+	private void createToolbarInfo(Composite parent) {
+
+		InformationUI informationUI = new InformationUI(parent, SWT.NONE);
+		informationUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		//
+		toolbarInfo.set(informationUI);
 	}
 
 	private void addDeleteMenuEntry(Shell shell, ITableSettings tableSettings) {
@@ -237,7 +265,7 @@ public class ExtendedPeakReviewUI extends Composite {
 				 * Delete Peaks
 				 */
 				List<IPeak> peaksToDelete = new ArrayList<>();
-				Iterator iterator = peakStatusListUI.getStructuredSelection().iterator();
+				Iterator iterator = peakStatusControl.get().getStructuredSelection().iterator();
 				while(iterator.hasNext()) {
 					Object object = iterator.next();
 					if(object instanceof IPeak) {
@@ -273,7 +301,7 @@ public class ExtendedPeakReviewUI extends Composite {
 			boolean isPeakReviewed = ReviewSupport.isPeakReviewed(peak);
 			boolean setTarget = PreferenceSupplier.isReviewSetTargetVerification();
 			ReviewSupport.setReview(peak, reviewSetting, setTarget, !isPeakReviewed);
-			peakStatusListUI.refresh();
+			peakStatusControl.get().refresh();
 			update(reviewSetting);
 			updateSelection(true);
 		}
@@ -281,7 +309,7 @@ public class ExtendedPeakReviewUI extends Composite {
 
 	private IPeak getSelectedPeak() {
 
-		Object object = peakStatusListUI.getStructuredSelection().getFirstElement();
+		Object object = peakStatusControl.get().getStructuredSelection().getFirstElement();
 		if(object instanceof IPeak) {
 			return (IPeak)object;
 		}
@@ -291,7 +319,7 @@ public class ExtendedPeakReviewUI extends Composite {
 	private List<IPeak> getSelectedPeaks() {
 
 		List<IPeak> peaks = new ArrayList<>();
-		Iterator<?> iterator = peakStatusListUI.getStructuredSelection().iterator();
+		Iterator<?> iterator = peakStatusControl.get().getStructuredSelection().iterator();
 		while(iterator.hasNext()) {
 			Object object = iterator.next();
 			if(object instanceof IPeak) {
@@ -308,7 +336,7 @@ public class ExtendedPeakReviewUI extends Composite {
 			for(int i = 0; i < peaks.size(); i++) {
 				if(peaks.get(i) == peak) {
 					if(ReviewSupport.isCompoundAvailable(peak.getTargets(), reviewSetting)) {
-						peakStatusListUI.getTable().select(i);
+						peakStatusControl.get().getTable().select(i);
 						break exitloop;
 					}
 				}
@@ -324,7 +352,7 @@ public class ExtendedPeakReviewUI extends Composite {
 				for(int i = 0; i < peaks.size(); i++) {
 					IPeak peak = peaks.get(i);
 					if(ReviewSupport.isCompoundAvailable(peak.getTargets(), reviewSetting)) {
-						peakStatusListUI.getTable().select(i);
+						peakStatusControl.get().getTable().select(i);
 						break exitloop;
 					}
 				}
@@ -351,11 +379,41 @@ public class ExtendedPeakReviewUI extends Composite {
 		/*
 		 * Color code for the identification.
 		 */
-		peakStatusListUI.setReviewSetting(reviewSetting);
+		peakStatusControl.get().setReviewSetting(reviewSetting);
 	}
 
 	private void updateSelection(boolean updateChart) {
 
+		StringBuilder builder = new StringBuilder();
+		Object object = peakStatusControl.get().getStructuredSelection().getFirstElement();
+		if(object instanceof IPeak) {
+			/*
+			 * Peak -> Quant
+			 */
+			IPeak peak = (IPeak)object;
+			List<IQuantitationEntry> quantitationEntries = peak.getQuantitationEntries();
+			//
+			builder.append("Quantitations");
+			builder.append(" ");
+			builder.append("(");
+			builder.append(quantitationEntries.size());
+			builder.append(")");
+			builder.append(":");
+			builder.append(" ");
+			//
+			if(!quantitationEntries.isEmpty()) {
+				IQuantitationEntry quantitationEntry = peak.getQuantitationEntries().get(0);
+				builder.append(quantitationEntry.getName());
+				builder.append(" ");
+				builder.append(decimalFormat.format(quantitationEntry.getConcentration()));
+				builder.append(" ");
+				builder.append(quantitationEntry.getConcentrationUnit());
+			} else {
+				builder.append("--");
+			}
+		}
+		toolbarInfo.get().setText(builder.toString());
+		//
 		if(controller != null) {
 			List<IPeak> peaks = getSelectedPeaks();
 			if(updateChart) {

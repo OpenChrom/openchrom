@@ -151,6 +151,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 			public void update(Display display) {
 
 				updateInput();
+				fireUpdate(true);
 			}
 		});
 		//
@@ -217,6 +218,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 	private void applySettings() {
 
 		updateInput();
+		fireUpdate(false);
 	}
 
 	private void createToolbarSearch(Composite parent) {
@@ -453,6 +455,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		}
 		//
 		updateInput();
+		fireUpdate(true);
 	}
 
 	private Button createButtonTargetDelete(Composite parent) {
@@ -492,6 +495,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 			}
 			//
 			updateInput();
+			fireUpdate(true);
 		}
 	}
 
@@ -510,8 +514,6 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		updateTargetList();
 		updateSearchText();
 		updateButtons();
-		//
-		fireUpdate(false);
 	}
 
 	private void updateComboTarget() {
