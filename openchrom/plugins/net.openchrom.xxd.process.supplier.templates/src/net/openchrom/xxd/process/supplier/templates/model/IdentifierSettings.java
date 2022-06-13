@@ -38,6 +38,12 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 
 	private static final Logger logger = Logger.getLogger(IdentifierSettings.class);
 	//
+	public static final String DESCRIPTION = "Peak Identifier Template";
+	public static final String FILE_EXTENSION = ".pit";
+	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
+	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
+	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
+	//
 	private static final long serialVersionUID = 260861794433108481L;
 	private PeakIdentifierListUtil listUtil = new PeakIdentifierListUtil();
 
