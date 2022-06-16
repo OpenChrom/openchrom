@@ -186,11 +186,11 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 		entries.add(getFormattedPosition(setting.getPositionStop()));
 		entries.add(setting.getName());
 		entries.add(setting.getCasNumber());
-		entries.add(setting.getComments());
-		entries.add(setting.getContributor());
-		entries.add(setting.getReference());
+		entries.add(getFormattedString(setting.getComments()));
+		entries.add(getFormattedString(setting.getContributor()));
+		entries.add(getFormattedString(setting.getReference()));
 		entries.add(setting.getTraces());
-		entries.add(setting.getReferenceIdentifier());
+		entries.add(getFormattedString(setting.getReferenceIdentifier()));
 		entries.add(setting.getPositionDirective().name());
 		//
 		compile(builder, entries);

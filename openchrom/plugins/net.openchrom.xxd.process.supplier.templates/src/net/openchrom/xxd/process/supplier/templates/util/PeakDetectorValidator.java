@@ -22,9 +22,6 @@ import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 public class PeakDetectorValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'";
-	private static final String SEPARATOR_TOKEN = PeakDetectorListUtil.SEPARATOR_TOKEN;
-	private static final String SEPARATOR_ENTRY = PeakDetectorListUtil.SEPARATOR_ENTRY;
-	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
 	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
 	private double positionStart = 0.0d;
@@ -44,15 +41,15 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 		} else {
 			if(value instanceof String) {
 				String text = ((String)value).trim();
-				if(text.contains(SEPARATOR_TOKEN)) {
-					message = ERROR_TOKEN;
+				if(text.contains(AbstractTemplateListUtil.SEPARATOR_TOKEN)) {
+					message = AbstractTemplateListUtil.ERROR_TOKEN;
 				} else if("".equals(text.trim())) {
 					message = ERROR_ENTRY;
 				} else {
 					/*
 					 * Extract retention time, ...
 					 */
-					String[] values = text.trim().split("\\" + SEPARATOR_ENTRY); // The pipe needs to be escaped.
+					String[] values = text.trim().split("\\" + AbstractTemplateListUtil.SEPARATOR_ENTRY); // The pipe needs to be escaped.
 					if(values.length >= 3) {
 						/*
 						 * Evaluation

@@ -34,7 +34,7 @@ import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateListUti
 import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantValidator;
 
-public class CompensationSettings extends ArrayList<CompensationSetting> {
+public class CompensationSettings extends ArrayList<CompensationSetting> implements ISettings {
 
 	private static final long serialVersionUID = -1566032312360942165L;
 	private static final Logger logger = Logger.getLogger(CompensationSettings.class);
@@ -174,22 +174,14 @@ public class CompensationSettings extends ArrayList<CompensationSetting> {
 
 	private void extractSetting(CompensationSetting setting, StringBuilder builder) {
 
-		builder.append(setting.getName());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getInternalStandard());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getExpectedConcentration());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.getConcentrationUnit());
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(AbstractTemplateListUtil.SEPARATOR_ENTRY);
-		builder.append(AbstractTemplateListUtil.WHITE_SPACE);
-		builder.append(setting.isAdjustQuantitationEntry());
+		List<String> entries = new ArrayList<>();
+		//
+		entries.add(setting.getName());
+		entries.add(setting.getInternalStandard());
+		entries.add(Double.toString(setting.getExpectedConcentration()));
+		entries.add(setting.getConcentrationUnit());
+		entries.add(Boolean.toString(setting.isAdjustQuantitationEntry()));
+		//
+		compile(builder, entries);
 	}
 }

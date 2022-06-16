@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -19,9 +19,6 @@ import net.openchrom.xxd.process.supplier.templates.model.CompensationSetting;
 public class CompensationQuantValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + CompensationQuantListUtil.EXAMPLE_SINGLE + "'";
-	private static final String SEPARATOR_TOKEN = CompensationQuantListUtil.SEPARATOR_TOKEN;
-	private static final String SEPARATOR_ENTRY = CompensationQuantListUtil.SEPARATOR_ENTRY;
-	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
 	private String name = "";
 	private String internalStandard = "";
@@ -38,15 +35,15 @@ public class CompensationQuantValidator extends AbstractTemplateValidator implem
 		} else {
 			if(value instanceof String) {
 				String text = ((String)value).trim();
-				if(text.contains(SEPARATOR_TOKEN)) {
-					message = ERROR_TOKEN;
+				if(text.contains(AbstractTemplateListUtil.SEPARATOR_TOKEN)) {
+					message = AbstractTemplateListUtil.ERROR_TOKEN;
 				} else if("".equals(text.trim())) {
 					message = ERROR_ENTRY;
 				} else {
 					/*
 					 * Extract retention time, ...
 					 */
-					String[] values = text.trim().split("\\" + SEPARATOR_ENTRY); // The pipe needs to be escaped.
+					String[] values = text.trim().split("\\" + AbstractTemplateListUtil.SEPARATOR_ENTRY); // The pipe needs to be escaped.
 					if(values.length == 5) {
 						/*
 						 * Evaluation

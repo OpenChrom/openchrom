@@ -27,6 +27,17 @@ public interface ISettings {
 		return decimalFormat.format(position);
 	}
 
+	/**
+	 * Replaces the separator chars.
+	 * 
+	 * @param value
+	 * @return String
+	 */
+	default String getFormattedString(String value) {
+
+		return value.replaceAll("\\" + AbstractTemplateListUtil.SEPARATOR_TOKEN, AbstractTemplateListUtil.WHITE_SPACE).replaceAll("\\" + AbstractTemplateListUtil.SEPARATOR_ENTRY, AbstractTemplateListUtil.WHITE_SPACE);
+	}
+
 	default void compile(StringBuilder builder, List<String> entries) {
 
 		Iterator<String> iterator = entries.iterator();

@@ -40,6 +40,8 @@ public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> imp
 	public static final String SEPARATOR_TRACE_RANGE = "-";
 	public static final int TRACE_ERROR = -1;
 	//
+	public static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
+	//
 	private T validator;
 
 	public AbstractTemplateListUtil(T validator) {
