@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
@@ -64,6 +63,8 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Sampl
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
+
+import jakarta.xml.bind.JAXBException;
 
 public class ChromatogramReader extends AbstractChromatogramMSDReader {
 
@@ -150,29 +151,27 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 							int length = seriesSet.getLength();
 							mzs = new double[length];
 							intensities = new float[length];
-							if(seriesSet.getName().equals("Spectrum")) {
-								for(SeriesType series : seriesSet.getSeries()) {
-									if(series.getName().equals("Mass/Charge")) {
-										for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-											List<Double> doubles = individualValueSet.getD();
-											for(int i = 0; i < doubles.size(); i++) {
-												mzs[i] = doubles.get(i);
-											}
-										}
-										for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
-											mzs = BinaryReader.decodeDoubleArray(encodedValueSet.getValue());
+							for(SeriesType series : seriesSet.getSeries()) {
+								if(series.getName().equals("Mass/Charge")) {
+									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
+										List<Double> doubles = individualValueSet.getD();
+										for(int i = 0; i < doubles.size(); i++) {
+											mzs[i] = doubles.get(i);
 										}
 									}
-									if(series.getName().equals("Intensity")) {
-										for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-											List<Float> floats = individualValueSet.getF();
-											for(int i = 0; i < floats.size(); i++) {
-												intensities[i] = floats.get(i);
-											}
+									for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
+										mzs = BinaryReader.decodeDoubleArray(encodedValueSet.getValue());
+									}
+								}
+								if(series.getName().equals("Intensity")) {
+									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
+										List<Float> floats = individualValueSet.getF();
+										for(int i = 0; i < floats.size(); i++) {
+											intensities[i] = floats.get(i);
 										}
-										for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
-											intensities = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
-										}
+									}
+									for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
+										intensities = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
 									}
 								}
 							}

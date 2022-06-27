@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
@@ -35,6 +34,7 @@ import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.chemclipse.wsd.converter.io.AbstractChromatogramWSDReader;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramPeakWSD;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
+import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.chemclipse.wsd.model.core.support.PeakBuilderWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.SAXException;
@@ -60,20 +60,22 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Serie
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
 
+import jakarta.xml.bind.JAXBException;
+
 public class ChromatogramReader extends AbstractChromatogramWSDReader {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 
 	@Override
-	public IChromatogramWSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramWSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
 		try {
 			chromatogram = new VendorChromatogram();
 			AnIMLType animl = XmlReader.getAnIML(file);
 			chromatogram = readSample(animl, chromatogram);
-			List<Integer> retentionTimes = new ArrayList<Integer>();
-			List<Float> intensities = new ArrayList<Float>();
+			List<Integer> retentionTimes = new ArrayList<>();
+			List<Float> intensities = new ArrayList<>();
 			for(ExperimentStepType experimentStep : animl.getExperimentStepSet().getExperimentStep()) {
 				if(experimentStep.getTechnique().getName().equals("UV/Vis Trace Detector")) {
 					MethodType method = experimentStep.getMethod();
@@ -105,9 +107,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 								}
 								if(unit.getLabel().equals("Intensity")) {
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-										for(float f : individualValueSet.getF()) {
-											intensities.add(f);
-										}
+										intensities.addAll(individualValueSet.getF());
 									}
 									for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
 										float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
@@ -149,9 +149,57 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 						}
 					}
 				}
-				List<Float> startTimes = new ArrayList<Float>();
-				List<Float> endTimes = new ArrayList<Float>();
-				List<String> peakNames = new ArrayList<String>();
+				int spectra = 0;
+				float[] wavelengths = null;
+				float[] aborbances = null;
+				if(experimentStep.getTechnique().getName().equals("UV/Vis")) {
+					for(ResultType result : experimentStep.getResult()) {
+						SeriesSetType seriesSet = result.getSeriesSet();
+						if(seriesSet.getName().equals("Spectrum")) {
+							spectra++;
+							int length = seriesSet.getLength();
+							wavelengths = new float[length];
+							aborbances = new float[length];
+							for(SeriesType series : seriesSet.getSeries()) {
+								if(series.getName().equals("Spectrum")) {
+									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
+										List<Float> floats = individualValueSet.getF();
+										for(int i = 0; i < floats.size(); i++) {
+											wavelengths[i] = floats.get(i);
+										}
+									}
+									for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
+										wavelengths = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
+									}
+								}
+								if(series.getName().equals("Intensity")) {
+									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
+										List<Float> floats = individualValueSet.getF();
+										for(int i = 0; i < floats.size(); i++) {
+											aborbances[i] = floats.get(i);
+										}
+									}
+									for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
+										aborbances = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
+									}
+								}
+							}
+						}
+						IScanWSD scan = (IScanWSD)chromatogram.getScan(spectra);
+						scan.removeScanSignal(0); // replace fixed wavelengths with full DAD spectra
+						for(int i = 0; i < seriesSet.getLength(); i++) {
+							float wavelength = wavelengths[i];
+							float aborbance = aborbances[i];
+							IVendorScanSignalWSD signal = new VendorScanSignalWSD();
+							signal.setWavelength(wavelength);
+							signal.setAbundance(aborbance);
+							scan.addScanSignal(signal);
+						}
+					}
+				}
+				List<Float> startTimes = new ArrayList<>();
+				List<Float> endTimes = new ArrayList<>();
+				List<String> peakNames = new ArrayList<>();
 				if(experimentStep.getTechnique().getName().equals("Chromatography Peak Table")) {
 					for(ResultType result : experimentStep.getResult()) {
 						SeriesSetType seriesSet = result.getSeriesSet();
@@ -159,23 +207,17 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 							for(SeriesType series : seriesSet.getSeries()) {
 								if(series.getName().equals("Start Time")) {
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-										for(float f : individualValueSet.getF()) {
-											startTimes.add(f);
-										}
+										startTimes.addAll(individualValueSet.getF());
 									}
 								}
 								if(series.getName().equals("End Time")) {
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-										for(float f : individualValueSet.getF()) {
-											endTimes.add(f);
-										}
+										endTimes.addAll(individualValueSet.getF());
 									}
 								}
 								if(series.getName().equals("Name")) {
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
-										for(String s : individualValueSet.getS()) {
-											peakNames.add(s);
-										}
+										peakNames.addAll(individualValueSet.getS());
 									}
 								}
 							}

@@ -14,6 +14,7 @@ package net.openchrom.wsd.converter.supplier.animl.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import javax.xml.datatype.DatatypeFactory;
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.chemclipse.wsd.converter.io.AbstractChromatogramWSDWriter;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
@@ -32,9 +34,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.google.common.primitives.Doubles;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.BinaryReader;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.Common;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AnIMLType;
@@ -51,6 +50,7 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Metho
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ObjectFactory;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterTypeType;
+import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.PlotScaleType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ResultType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleType;
@@ -59,6 +59,10 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Serie
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.TechniqueType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
 import net.openchrom.xxd.converter.supplier.animl.preferences.PreferenceSupplier;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 
 public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 
@@ -107,14 +111,23 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		chromatographyStep.setTechnique(createChromatographyTechnique());
 		experimentStepSet.getExperimentStep().add(chromatographyStep);
 		//
-		ExperimentStepType detectorStep = new ExperimentStepType();
-		detectorStep.setName("Detector");
-		detectorStep.setExperimentStepID("DETECTOR");
-		detectorStep.getResult().add(createSignal(chromatogram));
-		detectorStep.setMethod(createMethod(chromatogram));
-		detectorStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
-		detectorStep.setTechnique(createUltraVioletDetectorTechnique());
-		experimentStepSet.getExperimentStep().add(detectorStep);
+		ExperimentStepType singleWavelengthStep = new ExperimentStepType();
+		singleWavelengthStep.setName("Single Wavelength");
+		singleWavelengthStep.setExperimentStepID("SINGLE_WAVELENGTH");
+		singleWavelengthStep.getResult().add(createSignal(chromatogram));
+		singleWavelengthStep.setMethod(createMethod(chromatogram));
+		singleWavelengthStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
+		singleWavelengthStep.setTechnique(createUltraVioletDetectorTechnique());
+		experimentStepSet.getExperimentStep().add(singleWavelengthStep);
+		//
+		ExperimentStepType multiWavelengthsStep = new ExperimentStepType();
+		multiWavelengthsStep.setName("Multi Wavelength");
+		multiWavelengthsStep.setExperimentStepID("MULTI_WAVELENGTH");
+		multiWavelengthsStep.setResult(createSpectra(chromatogram));
+		multiWavelengthsStep.setMethod(createMethod(chromatogram));
+		multiWavelengthsStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
+		multiWavelengthsStep.setTechnique(createDiodeArrayDetectorTechnique());
+		experimentStepSet.getExperimentStep().add(multiWavelengthsStep);
 		//
 		ExperimentStepType peakStep = new ExperimentStepType();
 		peakStep.setName("Peaks");
@@ -123,6 +136,73 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		peakStep.setTechnique(createPeakTableTechnique());
 		experimentStepSet.getExperimentStep().add(peakStep);
 		return experimentStepSet;
+	}
+
+	private List<ResultType> createSpectra(IChromatogramWSD chromatogram) {
+
+		List<ResultType> results = new ArrayList<>();
+		for(IScan scan : chromatogram.getScans()) {
+			IScanWSD scanWSD = (IScanWSD)scan;
+			SeriesSetType seriesSet = new SeriesSetType();
+			seriesSet.setId("WAVELENGTH_SPECTRUM");
+			seriesSet.setName("Spectrum");
+			seriesSet.setLength(scanWSD.getNumberOfScanSignals());
+			//
+			SeriesType wavelengthSeries = new SeriesType();
+			wavelengthSeries.setSeriesID("SPECTRUM");
+			wavelengthSeries.setName("Spectrum");
+			UnitType wavelengthUnit = new UnitType();
+			wavelengthUnit.setLabel("Wavelength");
+			wavelengthUnit.setQuantity("nm");
+			wavelengthSeries.setUnit(wavelengthUnit);
+			wavelengthSeries.setDependency(DependencyType.DEPENDENT);
+			wavelengthSeries.setSeriesType(ParameterTypeType.FLOAT_32);
+			wavelengthSeries.setPlotScale(PlotScaleType.LINEAR);
+			//
+			SeriesType intensitySeries = new SeriesType();
+			intensitySeries.setSeriesID("INTENSITY");
+			intensitySeries.setName("Intensity");
+			UnitType intensityUnit = new UnitType();
+			intensityUnit.setLabel("Absorbance");
+			intensityUnit.setQuantity("AU");
+			intensitySeries.setUnit(intensityUnit);
+			intensitySeries.setDependency(DependencyType.DEPENDENT);
+			intensitySeries.setSeriesType(ParameterTypeType.FLOAT_32);
+			intensitySeries.setPlotScale(PlotScaleType.LINEAR);
+			//
+			if(PreferenceSupplier.getChromatogramSaveEncoded()) {
+				int scans = scanWSD.getNumberOfScanSignals();
+				float[] wavelengths = new float[scans];
+				float[] intensities = new float[scans];
+				for(int i = 0; i < scans; i++) {
+					IScanSignalWSD signal = scanWSD.getScanSignal(i);
+					wavelengths[i] = (float)signal.getWavelength();
+					intensities[i] = signal.getAbundance();
+				}
+				EncodedValueSetType encodedWavelengths = new EncodedValueSetType();
+				encodedWavelengths.setValue(BinaryReader.encodeArray(wavelengths));
+				wavelengthSeries.getEncodedValueSet().add(encodedWavelengths);
+				//
+				EncodedValueSetType encodedIntensities = new EncodedValueSetType();
+				encodedIntensities.setValue(BinaryReader.encodeArray(intensities));
+				intensitySeries.getEncodedValueSet().add(encodedIntensities);
+			} else {
+				IndividualValueSetType wavelengths = new IndividualValueSetType();
+				IndividualValueSetType intensities = new IndividualValueSetType();
+				for(IScanSignalWSD signal : scanWSD.getScanSignals()) {
+					wavelengths.getF().add((float)signal.getWavelength());
+					intensities.getF().add(signal.getAbundance());
+				}
+				wavelengthSeries.getIndividualValueSet().add(wavelengths);
+				intensitySeries.getIndividualValueSet().add(intensities);
+			}
+			seriesSet.getSeries().add(wavelengthSeries);
+			seriesSet.getSeries().add(intensitySeries);
+			ResultType result = new ResultType();
+			result.setSeriesSet(seriesSet);
+			results.add(result);
+		}
+		return results;
 	}
 
 	private ResultType createSignal(IChromatogramWSD chromatogram) {
@@ -225,6 +305,15 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		technique.setId("UV_VIS");
 		technique.setName("UV/Vis Trace Detector");
 		technique.setUri("https://github.com/AnIML/techniques/blob/995bef06f90afba00a618239f40c6e591a1c0845/uv-vis-trace.atdd");
+		return technique;
+	}
+
+	private TechniqueType createDiodeArrayDetectorTechnique() {
+
+		TechniqueType technique = new TechniqueType();
+		technique.setId("DAD");
+		technique.setName("UV/Vis");
+		technique.setUri("https://raw.githubusercontent.com/AnIML/techniques/995bef06f90afba00a618239f40c6e591a1c0845/uv-vis.atdd");
 		return technique;
 	}
 
