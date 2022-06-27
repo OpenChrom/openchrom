@@ -40,7 +40,6 @@ import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.SAXException;
 
-import jakarta.xml.bind.JAXBException;
 import net.openchrom.csd.converter.supplier.animl.model.IVendorChromatogram;
 import net.openchrom.csd.converter.supplier.animl.model.VendorChromatogram;
 import net.openchrom.csd.converter.supplier.animl.model.VendorScan;
@@ -57,6 +56,8 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Sampl
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
+
+import jakarta.xml.bind.JAXBException;
 
 public class ChromatogramReader extends AbstractChromatogramCSDReader {
 
@@ -150,7 +151,9 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 								try {
 									IChromatogramPeakCSD chromatogramPeak = PeakBuilderCSD.createPeak(chromatogram, scanRange, true);
 									ILibraryInformation libraryInformation = new LibraryInformation();
-									libraryInformation.setName(peakNames.get(p));
+									if(peakNames.size() >= p) {
+										libraryInformation.setName(peakNames.get(p));
+									}
 									IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
 									IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 									chromatogramPeak.getTargets().add(identificationTarget);
