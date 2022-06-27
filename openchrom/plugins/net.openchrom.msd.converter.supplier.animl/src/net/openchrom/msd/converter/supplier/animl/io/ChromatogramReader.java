@@ -227,7 +227,9 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 								try {
 									IChromatogramPeakMSD chromatogramPeak = PeakBuilderMSD.createPeak(chromatogram, scanRange, true);
 									ILibraryInformation libraryInformation = new LibraryInformation();
-									libraryInformation.setName(peakNames.get(p));
+									if(peakNames.size() >= p) {
+										libraryInformation.setName(peakNames.get(p));
+									}
 									IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
 									IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 									chromatogramPeak.getTargets().add(identificationTarget);
