@@ -29,18 +29,4 @@
             isImportable="true">
       </MassSpectrumSupplier>
    </extension>
-   <extension
-         point="org.eclipse.chemclipse.msd.converter.databaseSupplier">
-      <DatabaseSupplier
-            description="Reads and writes Analytical Information Markup Language Library Mass Spectra."
-            exportConverter="net.openchrom.msd.converter.supplier.animl.converter.DatabaseExportConverter"
-            fileExtension=".animl"
-            filterName="AnIML Mass Spectrum Library (*.animl)"
-            id="net.openchrom.msd.process.supplier.animl.spectrum.db"
-            importConverter="net.openchrom.msd.converter.supplier.animl.converter.DatabaseImportConverter"
-            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.animl.converter.MassSpectrumMagicNumberMatcher"
-            isExportable="true"
-            isImportable="true">
-      </DatabaseSupplier>
-   </extension>
 </plugin>
