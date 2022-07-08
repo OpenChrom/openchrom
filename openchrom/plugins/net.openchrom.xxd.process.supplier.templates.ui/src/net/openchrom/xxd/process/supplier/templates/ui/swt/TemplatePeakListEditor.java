@@ -85,10 +85,6 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	private AtomicReference<PositionAdjusterUI> toolbarAdjuster = new AtomicReference<>();
 	private AtomicReference<PeakDetectorListUI> listControl = new AtomicReference<>();
 	//
-	private static final String FILTER_EXTENSION = "*.txt";
-	private static final String FILTER_NAME = "Peak Detector Template (*.txt)";
-	private static final String FILE_NAME = "PeakDetectorTemplate.txt";
-	//
 	private static final String CATEGORY = "Peak Detector";
 	private static final String DELETE = "Delete";
 	//
@@ -355,8 +351,8 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.READ_ONLY);
 				fileDialog.setText(IMPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{FILTER_NAME});
+				fileDialog.setFilterExtensions(new String[]{DetectorSettings.FILTER_EXTENSION});
+				fileDialog.setFilterNames(new String[]{DetectorSettings.FILTER_NAME});
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathImport());
 				String path = fileDialog.open();
 				if(path != null) {
@@ -385,9 +381,9 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.SAVE);
 				fileDialog.setOverwrite(true);
 				fileDialog.setText(EXPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{FILTER_NAME});
-				fileDialog.setFileName(FILE_NAME);
+				fileDialog.setFilterExtensions(new String[]{DetectorSettings.FILTER_EXTENSION});
+				fileDialog.setFilterNames(new String[]{DetectorSettings.FILTER_NAME});
+				fileDialog.setFileName(DetectorSettings.FILE_NAME);
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathExport());
 				String path = fileDialog.open();
 				if(path != null) {

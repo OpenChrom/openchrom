@@ -37,6 +37,12 @@ public class DetectorSettings extends ArrayList<DetectorSetting> implements ISet
 
 	private static final Logger logger = Logger.getLogger(DetectorSettings.class);
 	//
+	public static final String DESCRIPTION = "Peak Detector Template";
+	public static final String FILE_EXTENSION = ".pdt";
+	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
+	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
+	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
+	//
 	private static final long serialVersionUID = -4685218696168308093L;
 	private PeakDetectorListUtil listUtil = new PeakDetectorListUtil();
 
