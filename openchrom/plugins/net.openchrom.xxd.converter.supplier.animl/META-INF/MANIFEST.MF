@@ -9,7 +9,7 @@ Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.support,
  org.eclipse.chemclipse.model
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.converter.supplier.animl.internal.converter,
  net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core,

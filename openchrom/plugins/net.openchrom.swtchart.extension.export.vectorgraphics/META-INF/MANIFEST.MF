@@ -16,6 +16,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
  org.eclipse.swtchart.export;bundle-version="0.8.0",
  wrapped.de.erichseifert.vectorgraphics2d.VectorGraphics2D;bundle-version="0.13.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.swtchart.extension.export.vectorgraphics.core

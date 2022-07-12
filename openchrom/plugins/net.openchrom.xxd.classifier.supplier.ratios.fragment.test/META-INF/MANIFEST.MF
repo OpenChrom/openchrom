@@ -6,5 +6,5 @@ Bundle-SymbolicName: net.openchrom.xxd.classifier.supplier.ratios.fragment.test
 Bundle-Version: 1.4.0.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.xxd.classifier.supplier.ratios;bundle-version="1.0.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.junit;bundle-version="4.12.0"

@@ -10,7 +10,7 @@ Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.converter
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: net.openchrom.xxd.converter.supplier.gaml.internal.io,
  net.openchrom.xxd.converter.supplier.gaml.internal.v100.model,
  net.openchrom.xxd.converter.supplier.gaml.internal.v110.model,

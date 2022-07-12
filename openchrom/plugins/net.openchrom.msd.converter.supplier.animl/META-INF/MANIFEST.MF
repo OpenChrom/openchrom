@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.xxd.converter.supplier.chemclipse;bundle-version="0.8.0",
  net.openchrom.xxd.converter.supplier.animl,
  org.apache.commons.io
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Import-Package: jakarta.xml.bind
 Export-Package: net.openchrom.msd.converter.supplier.animl.io
