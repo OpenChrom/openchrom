@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.ux.extension.xxd.ui,
  org.eclipse.chemclipse.rcp.ui.icons,
  com.fasterxml.jackson.core.jackson-databind;bundle-version="2.9.93"
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.component.annotations;version="1.3.0"
 Service-Component: OSGI-INF/net.openchrom.chromatogram.xxd.report.supplier.csv.ui.services.ReportColumnsAnnotationService.xml

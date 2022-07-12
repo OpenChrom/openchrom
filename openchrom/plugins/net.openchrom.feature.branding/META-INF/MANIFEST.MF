@@ -4,5 +4,5 @@ Bundle-Name: OpenChrom
 Bundle-SymbolicName: net.openchrom.feature.branding
 Bundle-Version: 1.4.0.qualifier
 Automatic-Module-Name: net.openchrom.feature.branding
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: OpenChrom®

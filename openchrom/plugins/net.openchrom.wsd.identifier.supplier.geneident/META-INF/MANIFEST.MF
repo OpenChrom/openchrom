@@ -7,5 +7,5 @@ Bundle-Version: 1.4.0.qualifier
 Bundle-Activator: net.openchrom.wsd.identifier.supplier.geneident.Activator
 Bundle-Vendor: Lablicate GmbH
 Require-Bundle: org.eclipse.core.runtime
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy

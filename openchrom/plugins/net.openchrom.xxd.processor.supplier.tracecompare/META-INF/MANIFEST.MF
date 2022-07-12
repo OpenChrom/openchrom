@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  org.eclipse.chemclipse.xxd.process;bundle-version="0.8.0",
  org.eclipse.chemclipse.wsd.model;bundle-version="0.8.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.processor.supplier.tracecompare.core,
  net.openchrom.xxd.processor.supplier.tracecompare.io,

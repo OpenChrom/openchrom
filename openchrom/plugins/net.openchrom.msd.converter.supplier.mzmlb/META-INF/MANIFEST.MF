@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  net.openchrom.thirdpartylibraries.jhdf5,
  org.eclipse.chemclipse.msd.converter.supplier.mzml
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.msd.converter.supplier.mzmlb,
  net.openchrom.msd.converter.supplier.mzmlb.converter,
