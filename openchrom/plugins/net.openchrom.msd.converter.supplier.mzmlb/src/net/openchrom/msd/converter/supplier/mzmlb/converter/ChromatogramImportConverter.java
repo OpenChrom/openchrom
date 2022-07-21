@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2021 Lablicate GmbH.
+ * Copyright (c) 2013, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,6 +13,7 @@
 package net.openchrom.msd.converter.supplier.mzmlb.converter;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramImportConverter;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -43,9 +44,12 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 			try {
 				IChromatogramMSD chromatogram = reader.read(file, monitor);
 				processingInfo.setProcessingResult(chromatogram);
-			} catch(Exception e) {
+			} catch(InterruptedException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
+				Thread.currentThread().interrupt();
+			} catch(IOException e) {
+				processingInfo.addErrorMessage(DESCRIPTION, "Can't read file: " + file.getAbsolutePath());
+				e.printStackTrace();
 			}
 		}
 		return processingInfo;
