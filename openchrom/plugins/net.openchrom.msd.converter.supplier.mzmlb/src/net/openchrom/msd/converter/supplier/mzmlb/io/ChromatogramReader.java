@@ -59,10 +59,6 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 
-	public ChromatogramReader() {
-
-	}
-
 	@Override
 	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
@@ -70,7 +66,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	}
 
 	@Override
-	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
 		try {
@@ -138,8 +134,6 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 						} else if(intensities) {
 							intensityDataset = dataSet;
 						}
-						mzs = false;
-						intensities = false;
 					}
 				}
 				IScanMarker scanMarker = new ScanMarker(mzDataset, intensityDataset, length, offset);
