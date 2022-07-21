@@ -54,6 +54,7 @@ import ch.systemsx.cisd.hdf5.IHDF5SimpleReader;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
+import ncsa.hdf.hdf5lib.exceptions.HDF5LibraryException;
 
 public class ChromatogramReader extends AbstractChromatogramReader implements IChromatogramMSDReader {
 
@@ -146,6 +147,8 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				chromatogram.addScan(scanProxy);
 				chromatogram.setFile(file);
 			}
+		} catch(HDF5LibraryException e) {
+			logger.error(e);
 		} catch(ParserConfigurationException e) {
 			logger.warn(e);
 		} catch(SAXException e) {
