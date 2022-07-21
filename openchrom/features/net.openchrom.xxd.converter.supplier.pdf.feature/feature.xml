@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.xxd.converter.supplier.pdf.feature"
       label="PDF Converter"
-      version="1.4.0.qualifier"
+      version="1.5.0.qualifier"
       provider-name="http://www.openchrom.net" plugin="net.openchrom.feature.branding">
 
    <description url="http://www.openchrom.net/plugins/converter/pdf/">

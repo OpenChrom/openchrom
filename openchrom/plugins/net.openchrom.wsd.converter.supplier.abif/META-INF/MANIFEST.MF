@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.wsd.converter.supplier.abif
 Bundle-ManifestVersion: 2
 Bundle-Name: ab1
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.abif;singleton:=true
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.wsd.converter.supplier.abif.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,

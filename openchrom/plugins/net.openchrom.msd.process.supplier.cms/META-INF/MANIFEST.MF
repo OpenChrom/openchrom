@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.process.supplier.cms
 Bundle-ManifestVersion: 2
 Bundle-Name: Cms
 Bundle-SymbolicName: net.openchrom.msd.process.supplier.cms;singleton:=true
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.msd.process.supplier.cms.Activator
 Bundle-Vendor: OpenChrom
 Export-Package: net.openchrom.msd.process.supplier.cms.core,

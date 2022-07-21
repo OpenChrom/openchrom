@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.cdf.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: CDF UI
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.cdf.ui;singleton:=true
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.msd.converter.supplier.cdf.ui.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui;bundle-version="3.5.1",

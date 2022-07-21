@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.xxd.classifier.supplier.ratios.feature"
       label="Ratio Calculator"
-      version="1.4.0.qualifier"
+      version="1.5.0.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="https://www.openchrom.net">

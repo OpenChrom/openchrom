@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.cms.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: CMS UI
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.cms.ui;singleton:=true
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.msd.converter.supplier.cms.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.ui,
  javax.inject;bundle-version="1.0.0",
  org.eclipse.e4.core.di;bundle-version="1.2.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
- net.openchrom.msd.converter.supplier.cms;bundle-version="1.4.0"
+ net.openchrom.msd.converter.supplier.cms;bundle-version="1.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.event;version="1.3.0"

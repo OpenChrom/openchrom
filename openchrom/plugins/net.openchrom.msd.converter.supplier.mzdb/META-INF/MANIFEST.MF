@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.mzmlb
 Bundle-ManifestVersion: 2
 Bundle-Name: mzMB
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.mzdb;singleton:=true
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.msd.converter.supplier.mzdb.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
