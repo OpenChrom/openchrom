@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.classifier.supplier.ratios.fragment.tes
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: net.openchrom.xxd.classifier.supplier.ratios.fragment.test
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.xxd.classifier.supplier.ratios;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17

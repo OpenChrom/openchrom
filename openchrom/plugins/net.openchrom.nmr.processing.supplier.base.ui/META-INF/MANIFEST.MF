@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.nmr.processing.supplier.base.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: Processing UI
 Bundle-SymbolicName: net.openchrom.nmr.processing.supplier.base.ui;singleton:=true
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.nmr.processing.supplier.base.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
@@ -21,12 +21,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.e4.ui.services;bundle-version="1.2.100",
  org.eclipse.e4.ui.di,
  org.eclipse.e4.core.contexts;bundle-version="1.5.1",
- org.eclipse.e4.ui.workbench;bundle-version="1.4.0",
+ org.eclipse.e4.ui.workbench;bundle-version="1.5.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  org.eclipse.chemclipse.rcp.app.ui;bundle-version="0.8.0",
  org.eclipse.jface,
  org.eclipse.chemclipse.processing;bundle-version="0.8.0",
- net.openchrom.nmr.processing.supplier.base;bundle-version="1.4.0",
+ net.openchrom.nmr.processing.supplier.base;bundle-version="1.5.0",
  org.eclipse.chemclipse.support.ui,
  org.eclipse.chemclipse.nmr.converter,
  org.eclipse.chemclipse.processing.ui;bundle-version="0.8.0"

@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.xxd.process.supplier.templates.feature"
       label="Templates"
-      version="1.4.0.qualifier"
+      version="1.5.0.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="https://www.openchrom.net">

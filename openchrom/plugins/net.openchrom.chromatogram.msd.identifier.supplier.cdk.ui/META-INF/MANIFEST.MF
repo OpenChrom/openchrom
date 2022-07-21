@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: CDK Identifier UI
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui;singleton:=true
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,

@@ -3,11 +3,11 @@ Automatic-Module-Name: net.openchrom.msqbatlibs.kerner.utils.collections
 Bundle-ManifestVersion: 2
 Bundle-Name: Collections
 Bundle-SymbolicName: net.openchrom.msqbatlibs.kerner.utils.collections
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.msqbatlibs.kerner.utils.collections.Activator
 Require-Bundle: org.eclipse.core.runtime,
- net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.4.0",
- net.openchrom.msqbatlibs.jranges;bundle-version="1.4.0",
+ net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.5.0",
+ net.openchrom.msqbatlibs.jranges;bundle-version="1.5.0",
  org.eclipse.chemclipse.support;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy

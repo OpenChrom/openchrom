@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.pkf
 Bundle-ManifestVersion: 2
 Bundle-Name: PKF implementation
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.pkf;singleton:=true
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.msd.converter.supplier.pkf.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,

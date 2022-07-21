@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.msqbatlibs.kerner.utils.feature"
       label="MSqBAT Utils"
-      version="1.4.0.qualifier" plugin="net.openchrom.feature.branding">
+      version="1.5.0.qualifier" plugin="net.openchrom.feature.branding">
 
    <copyright url="http://www.example.com/copyright">
       [Enter Copyright Description here.]

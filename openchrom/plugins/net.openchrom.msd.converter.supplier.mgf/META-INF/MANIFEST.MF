@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.mgf
 Bundle-ManifestVersion: 2
 Bundle-Name: MGF implementation
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.mgf;singleton:=true
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.msd.converter.supplier.mgf.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
@@ -13,14 +13,14 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
- net.openchrom.msqbatlibs.bioutils.proteomics;bundle-version="1.4.0",
- net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.4.0",
- net.openchrom.msqbatlibs.jmgf;bundle-version="1.4.0",
- net.openchrom.msqbatlibs.kerner.utils.io;bundle-version="1.4.0",
+ net.openchrom.msqbatlibs.bioutils.proteomics;bundle-version="1.5.0",
+ net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.5.0",
+ net.openchrom.msqbatlibs.jmgf;bundle-version="1.5.0",
+ net.openchrom.msqbatlibs.kerner.utils.io;bundle-version="1.5.0",
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
  net.openchrom.msqbatlibs.kerner.utils.collections,
  net.openchrom.msqbatlibs.jranges,
- net.openchrom.msqbatlibs.bridge;bundle-version="1.4.0"
+ net.openchrom.msqbatlibs.bridge;bundle-version="1.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.msd.converter.supplier.mgf,

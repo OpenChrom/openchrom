@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.msd.converter.supplier.mgf.feature"
       label="MGF Converter"
-      version="1.4.0.qualifier"
+      version="1.5.0.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="http://www.chemclipse.net/plugins/converter/mzml/">
@@ -24,7 +24,7 @@ http://www.eclipse.org/legal/epl-v10.html
    </license>
 
    <requires>
-      <import feature="net.openchrom.msqbatlibs.feature" version="1.4.0.qualifier"/>
+      <import feature="net.openchrom.msqbatlibs.feature" version="1.5.0.qualifier"/>
    </requires>
 
    <plugin

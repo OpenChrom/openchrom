@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>net.openchrom</groupId>
 		<artifactId>sites</artifactId>
-		<version>1.4.0-SNAPSHOT</version>
+		<version>1.5.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>net.openchrom.platform.updateSite</artifactId>
-	<version>1.4.0-SNAPSHOT</version>
+	<version>1.5.0-SNAPSHOT</version>
 	<packaging>eclipse-repository</packaging>
 	<properties>
 		<skip.install>true</skip.install>

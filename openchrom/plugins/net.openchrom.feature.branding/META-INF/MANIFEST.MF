@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: OpenChrom
 Bundle-SymbolicName: net.openchrom.feature.branding
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Automatic-Module-Name: net.openchrom.feature.branding
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: OpenChrom®

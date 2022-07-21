@@ -3,12 +3,12 @@ Automatic-Module-Name: net.openchrom.xxd.converter.supplier.pdf.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: PDF Converter and Report UI
 Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.pdf.ui;singleton:=true
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.xxd.converter.supplier.pdf.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- net.openchrom.xxd.converter.supplier.pdf;bundle-version="1.4.0",
+ net.openchrom.xxd.converter.supplier.pdf;bundle-version="1.5.0",
  org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.support.ui;bundle-version="0.8.0",
  org.eclipse.e4.ui.model.workbench;bundle-version="1.1.0",

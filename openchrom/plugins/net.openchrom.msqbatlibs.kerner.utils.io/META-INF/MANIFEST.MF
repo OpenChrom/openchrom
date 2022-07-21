@@ -3,10 +3,10 @@ Automatic-Module-Name: net.openchrom.msqbatlibs.kerner.utils.io
 Bundle-ManifestVersion: 2
 Bundle-Name: Io
 Bundle-SymbolicName: net.openchrom.msqbatlibs.kerner.utils.io
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.msqbatlibs.kerner.utils.io.Activator
 Require-Bundle: org.eclipse.core.runtime,
- net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.4.0",
+ net.openchrom.msqbatlibs.kerner.utils;bundle-version="1.5.0",
  org.apache.log4j;bundle-version="1.2.15"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
