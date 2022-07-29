@@ -13,7 +13,7 @@ package net.openchrom.xxd.classifier.supplier.ratios.ui.adapter;
 
 import java.io.IOException;
 
-import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
+import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.swt.widgets.Composite;
@@ -40,7 +40,7 @@ public class QuantRatioSettingsAdapterFactory implements IAdapterFactory {
 		return new SettingsUIProvider<QuantRatioSettings>() {
 
 			@Override
-			public SettingsUIProvider.SettingsUIControl createUI(Composite parent, ProcessorPreferences<QuantRatioSettings> preferences, boolean showProfileToolbar) throws IOException {
+			public SettingsUIProvider.SettingsUIControl createUI(Composite parent, IProcessorPreferences<QuantRatioSettings> preferences, boolean showProfileToolbar) throws IOException {
 
 				QuantRatioSettings userSettings = preferences.getUserSettings();
 				return new QuantRatioListEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);

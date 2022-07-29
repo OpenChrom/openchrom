@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
-import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
+import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
@@ -92,9 +92,9 @@ public class TraceRatioListEditor implements SettingsUIProvider.SettingsUIContro
 	private Button buttonExport;
 	//
 	private TraceRatios settings = new TraceRatios();
-	private ProcessorPreferences<TraceRatioSettings> preferences;
+	private IProcessorPreferences<TraceRatioSettings> preferences;
 
-	public TraceRatioListEditor(Composite parent, ProcessorPreferences<TraceRatioSettings> preferences, TraceRatioSettings settings) {
+	public TraceRatioListEditor(Composite parent, IProcessorPreferences<TraceRatioSettings> preferences, TraceRatioSettings settings) {
 
 		this.preferences = preferences;
 		if(settings != null) {

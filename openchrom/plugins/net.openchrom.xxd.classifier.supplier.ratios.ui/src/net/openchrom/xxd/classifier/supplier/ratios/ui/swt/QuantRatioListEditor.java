@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
-import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
+import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
@@ -96,9 +96,9 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 	private Button buttonExport;
 	//
 	private QuantRatios settings = new QuantRatios();
-	private ProcessorPreferences<QuantRatioSettings> preferences;
+	private IProcessorPreferences<QuantRatioSettings> preferences;
 
-	public QuantRatioListEditor(Composite parent, ProcessorPreferences<QuantRatioSettings> preferences, QuantRatioSettings settings) {
+	public QuantRatioListEditor(Composite parent, IProcessorPreferences<QuantRatioSettings> preferences, QuantRatioSettings settings) {
 
 		this.preferences = preferences;
 		if(settings != null) {

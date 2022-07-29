@@ -36,7 +36,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
-import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
+import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
@@ -99,9 +99,9 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	private Button buttonExport;
 	//
 	private ReviewSettings settings = new ReviewSettings();
-	private ProcessorPreferences<PeakReviewSettings> preferences;
+	private IProcessorPreferences<PeakReviewSettings> preferences;
 
-	public TemplateReviewEditor(Composite parent, ProcessorPreferences<PeakReviewSettings> preferences, PeakReviewSettings settings) {
+	public TemplateReviewEditor(Composite parent, IProcessorPreferences<PeakReviewSettings> preferences, PeakReviewSettings settings) {
 
 		this.preferences = preferences;
 		if(settings != null) {

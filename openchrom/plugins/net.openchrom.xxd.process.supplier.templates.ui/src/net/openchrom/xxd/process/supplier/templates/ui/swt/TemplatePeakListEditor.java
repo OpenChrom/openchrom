@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
-import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
+import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
@@ -98,9 +98,9 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	private Button buttonExport;
 	//
 	private DetectorSettings settings = new DetectorSettings();
-	private ProcessorPreferences<PeakDetectorSettings> preferences;
+	private IProcessorPreferences<PeakDetectorSettings> preferences;
 
-	public TemplatePeakListEditor(Composite parent, ProcessorPreferences<PeakDetectorSettings> preferences, PeakDetectorSettings settings) {
+	public TemplatePeakListEditor(Composite parent, IProcessorPreferences<PeakDetectorSettings> preferences, PeakDetectorSettings settings) {
 
 		this.preferences = preferences;
 		if(settings != null) {

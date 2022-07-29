@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
-import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
+import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
@@ -92,9 +92,9 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 	private Button buttonExport;
 	//
 	private TimeRatios settings = new TimeRatios();
-	private ProcessorPreferences<TimeRatioSettings> preferences;
+	private IProcessorPreferences<TimeRatioSettings> preferences;
 
-	public TimeRatioListEditor(Composite parent, ProcessorPreferences<TimeRatioSettings> preferences, TimeRatioSettings settings) {
+	public TimeRatioListEditor(Composite parent, IProcessorPreferences<TimeRatioSettings> preferences, TimeRatioSettings settings) {
 
 		this.preferences = preferences;
 		if(settings != null) {

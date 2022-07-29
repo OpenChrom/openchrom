@@ -37,7 +37,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
-import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
+import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
@@ -100,9 +100,9 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 	private Button buttonExport;
 	//
 	private IdentifierSettings settings = new IdentifierSettings();
-	private ProcessorPreferences<PeakIdentifierSettings> preferences;
+	private IProcessorPreferences<PeakIdentifierSettings> preferences;
 
-	public TemplatePeakIdentifierEditor(Composite parent, ProcessorPreferences<PeakIdentifierSettings> preferences, PeakIdentifierSettings settings) {
+	public TemplatePeakIdentifierEditor(Composite parent, IProcessorPreferences<PeakIdentifierSettings> preferences, PeakIdentifierSettings settings) {
 
 		this.preferences = preferences;
 		if(settings != null) {

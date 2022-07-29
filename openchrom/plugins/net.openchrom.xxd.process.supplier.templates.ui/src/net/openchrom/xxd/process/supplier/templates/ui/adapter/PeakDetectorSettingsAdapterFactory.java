@@ -14,7 +14,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.adapter;
 
 import java.io.IOException;
 
-import org.eclipse.chemclipse.processing.supplier.ProcessorPreferences;
+import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.swt.widgets.Composite;
@@ -41,7 +41,7 @@ public class PeakDetectorSettingsAdapterFactory implements IAdapterFactory {
 		return new SettingsUIProvider<PeakDetectorSettings>() {
 
 			@Override
-			public SettingsUIProvider.SettingsUIControl createUI(Composite parent, ProcessorPreferences<PeakDetectorSettings> preferences, boolean showProfileToolbar) throws IOException {
+			public SettingsUIProvider.SettingsUIControl createUI(Composite parent, IProcessorPreferences<PeakDetectorSettings> preferences, boolean showProfileToolbar) throws IOException {
 
 				PeakDetectorSettings userSettings = preferences.getUserSettings();
 				return new TemplatePeakListEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);
