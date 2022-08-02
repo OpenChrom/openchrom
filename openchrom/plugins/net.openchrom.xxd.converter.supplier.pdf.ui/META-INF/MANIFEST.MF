@@ -30,7 +30,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.swtchart.export;bundle-version="0.8.0",
  com.fasterxml.jackson.core.jackson-databind;bundle-version="2.9.93",
  com.fasterxml.jackson.core.jackson-core;bundle-version="2.9.9",
- org.apache.commons.lang;bundle-version="2.6.0"
+ org.apache.commons.lang;bundle-version="2.6.0",
+ org.eclipse.chemclipse.rcp.ui.icons,
+ org.eclipse.chemclipse.xxd.process.ui;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Import-Package: com.fasterxml.jackson.annotation;version="2.7.1",

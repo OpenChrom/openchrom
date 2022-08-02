@@ -10,4 +10,19 @@
             name="AnIML Converter">
       </page>
    </extension>
+   <extension
+         point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
+      <icon
+            class="net.openchrom.xxd.converter.supplier.animl.ui.icon.MenuIcon"
+            id="net.openchrom.msd.converter.supplier.animl.chromatogram">
+      </icon>
+      <icon
+            class="net.openchrom.xxd.converter.supplier.animl.ui.icon.MenuIcon"
+            id="net.openchrom.msd.converter.supplier.animl.chromatogram">
+      </icon>
+      <icon
+            class="net.openchrom.xxd.converter.supplier.animl.ui.icon.MenuIcon"
+            id="net.openchrom.msd.converter.supplier.animl.chromatogram">
+      </icon>
+   </extension>
 </plugin>

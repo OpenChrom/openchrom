@@ -31,4 +31,15 @@
             reportSettings="net.openchrom.xxd.converter.supplier.pdf.ui.settings.ReportSettingsProfile">
       </ChromatogramReportSupplier>        
    </extension>
+   <extension
+         point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
+         <icon
+            class="net.openchrom.xxd.converter.supplier.pdf.ui.icon.PortableDocumentFormatMenuIcon"
+            id="net.openchrom.xxd.converter.supplier.pdf.ui.chromatogramReportPDF">
+      </icon>
+      <icon
+            class="net.openchrom.xxd.converter.supplier.pdf.ui.icon.PortableDocumentFormatMenuIcon"
+            id="net.openchrom.xxd.converter.supplier.pdf">
+      </icon>
+   </extension>
 </plugin>
