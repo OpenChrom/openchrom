@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - logging
  *******************************************************************************/
 package net.sf.bioutils.proteomics.digest;
 
@@ -18,12 +19,11 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+
 import net.sf.bioutils.proteomics.peptides.AminoAcid;
 import net.sf.bioutils.proteomics.peptides.Peptide;
 import net.sf.bioutils.proteomics.peptides.PeptideSequenceChargedSingle;
-import net.sf.jranges.range.integerrange.impl.RangeIntegerDummy;
-
-import org.apache.log4j.Logger;
 
 public class DigesterTrypsin extends DigesterAbstract {
 
@@ -41,7 +41,7 @@ public class DigesterTrypsin extends DigesterAbstract {
 			seq.setModifications(peptides.getModifications());
 			result.add(seq);
 		} else {
-			logger.debug("skip invalid range " + new RangeIntegerDummy(indexLow, indexHigh));
+			// logger.debug("skip invalid range " + new RangeIntegerDummy(indexLow, indexHigh));
 		}
 	}
 

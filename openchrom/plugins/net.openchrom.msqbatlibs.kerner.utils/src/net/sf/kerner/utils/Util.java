@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - logging
  *******************************************************************************/
 package net.sf.kerner.utils;
 
@@ -17,7 +18,7 @@ import java.io.StringWriter;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.eclipse.chemclipse.logging.core.Logger;
 
 /**
  * General utility class.
@@ -100,5 +101,6 @@ public class Util {
 	}
 
 	private Util() {
+
 	}
 }

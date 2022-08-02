@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - logging
  *******************************************************************************/
 package net.sf.kerner.utils.concurrent;
 
@@ -20,9 +21,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import net.sf.kerner.utils.concurrent.FutureTaskNotifying.ListenerDone;
+import org.eclipse.chemclipse.logging.core.Logger;
 
-import org.apache.log4j.Logger;
+import net.sf.kerner.utils.concurrent.FutureTaskNotifying.ListenerDone;
 
 public class ExecutorNotifying implements ExecutorService {
 
@@ -31,9 +32,11 @@ public class ExecutorNotifying implements ExecutorService {
 	private int numCPUs;
 
 	public ExecutorNotifying() {
+
 	}
 
 	public ExecutorNotifying(final int numCPUs) {
+
 		this.numCPUs = numCPUs;
 		delegate = ThreadPoolExecutorNotifying.build(numCPUs);
 	}

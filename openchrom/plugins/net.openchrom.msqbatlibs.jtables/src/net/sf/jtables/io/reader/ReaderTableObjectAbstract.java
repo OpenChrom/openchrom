@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - logging
  *******************************************************************************/
 package net.sf.jtables.io.reader;
 
@@ -19,9 +20,9 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.kerner.utils.io.buffered.IOIterator;
+import org.eclipse.chemclipse.logging.core.Logger;
 
-import org.apache.log4j.Logger;
+import net.sf.kerner.utils.io.buffered.IOIterator;
 
 public abstract class ReaderTableObjectAbstract<T> implements IOIterator<T> {
 
@@ -29,38 +30,47 @@ public abstract class ReaderTableObjectAbstract<T> implements IOIterator<T> {
 	private final static Logger logger = Logger.getLogger(ReaderTableObjectAbstract.class);
 
 	public ReaderTableObjectAbstract(final BufferedReader reader, final boolean columnIds, final boolean rowIds) throws IOException {
+
 		this.reader = new ReaderTableString(reader, columnIds, rowIds);
 	}
 
 	public ReaderTableObjectAbstract(final BufferedReader reader, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
+
 		this.reader = new ReaderTableString(reader, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableObjectAbstract(final File file) throws IOException {
+
 		this.reader = new ReaderTableString(file, true, false);
 	}
 
 	public ReaderTableObjectAbstract(final File file, final boolean columnIds, final boolean rowIds) throws IOException {
+
 		this.reader = new ReaderTableString(file, columnIds, rowIds);
 	}
 
 	public ReaderTableObjectAbstract(final File file, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
+
 		this.reader = new ReaderTableString(file, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableObjectAbstract(final InputStream stream, final boolean columnIds, final boolean rowIds) throws IOException {
+
 		this.reader = new ReaderTableString(stream, columnIds, rowIds);
 	}
 
 	public ReaderTableObjectAbstract(final InputStream stream, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
+
 		this.reader = new ReaderTableString(stream, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableObjectAbstract(final Reader reader, final boolean columnIds, final boolean rowIds) throws IOException {
+
 		this.reader = new ReaderTableString(reader, columnIds, rowIds);
 	}
 
 	public ReaderTableObjectAbstract(final Reader reader, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
+
 		this.reader = new ReaderTableString(reader, columnIds, rowIds, delim);
 	}
 
@@ -80,7 +90,7 @@ public abstract class ReaderTableObjectAbstract<T> implements IOIterator<T> {
 		while(hasNext()) {
 			final T next = next();
 			if(next == null) {
-				logger.debug("omit null element");
+				// logger.debug("omit null element");
 			} else {
 				result.add(next);
 			}

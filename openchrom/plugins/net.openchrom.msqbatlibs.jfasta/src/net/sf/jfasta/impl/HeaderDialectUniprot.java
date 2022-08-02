@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,16 +8,17 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - logging
  *******************************************************************************/
 package net.sf.jfasta.impl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+
 import net.sf.jfasta.HeaderDialect;
 import net.sf.kerner.utils.UtilString;
-
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -65,9 +66,11 @@ public class HeaderDialectUniprot implements HeaderDialect {
 	private String headerString;
 
 	public HeaderDialectUniprot() {
+
 	}
 
 	public HeaderDialectUniprot(final String header) {
+
 		setHeaderString(header);
 	}
 
@@ -139,7 +142,7 @@ public class HeaderDialectUniprot implements HeaderDialect {
 		if(b) {
 			return m.group(1).trim();
 		} else {
-			logger.debug("no match (" + regex + ") for " + getHeaderString());
+			// logger.debug("no match (" + regex + ") for " + getHeaderString());
 			return null;
 		}
 	}

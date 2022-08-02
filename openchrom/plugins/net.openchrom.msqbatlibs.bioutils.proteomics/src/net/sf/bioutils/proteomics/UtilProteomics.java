@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,19 +8,20 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - logging
  *******************************************************************************/
 package net.sf.bioutils.proteomics;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+
 import net.sf.bioutils.proteomics.peak.Peak;
 import net.sf.bioutils.proteomics.peak.PeakFractionated;
 import net.sf.bioutils.proteomics.peptides.AminoAcid;
 import net.sf.bioutils.proteomics.sample.Sample;
 import net.sf.kerner.utils.UtilString;
-
-import org.apache.log4j.Logger;
 
 public class UtilProteomics {
 
@@ -91,5 +92,6 @@ public class UtilProteomics {
 	}
 
 	private UtilProteomics() {
+
 	}
 }

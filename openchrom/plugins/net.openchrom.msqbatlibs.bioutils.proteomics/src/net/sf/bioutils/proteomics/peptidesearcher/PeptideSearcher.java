@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - logging
  *******************************************************************************/
 package net.sf.bioutils.proteomics.peptidesearcher;
 
@@ -19,6 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.chemclipse.logging.core.Logger;
+
 import net.sf.jfasta.FASTAElement;
 import net.sf.jfasta.FASTAFile;
 import net.sf.jfasta.FASTAFileReader;
@@ -27,8 +30,6 @@ import net.sf.jfasta.impl.FASTAFileReaderImpl;
 import net.sf.kerner.utils.Cache;
 import net.sf.kerner.utils.UtilString;
 import net.sf.kerner.utils.collections.list.UtilList;
-
-import org.apache.log4j.Logger;
 
 public class PeptideSearcher {
 
@@ -66,22 +67,26 @@ public class PeptideSearcher {
 	public final static int DEFAULT_CACHE_SIZE = 10000;
 
 	public PeptideSearcher() {
+
 		cache = new Cache<String, List<String>>(DEFAULT_CACHE_SIZE);
 		cacheFASTAFileMap = new HashMap<File, FASTAFile>();
 	}
 
 	public PeptideSearcher(final Cache<String, List<String>> cache) {
+
 		this.cache = cache;
 		cacheFASTAFileMap = new HashMap<File, FASTAFile>();
 	}
 
 	public PeptideSearcher(final Cache<String, List<String>> cache, final Map<File, FASTAFile> cacheFASTAFileMap) {
+
 		this.cache = cache;
 		this.cacheFASTAFileMap = cacheFASTAFileMap;
 		logger.info("Initiated with given cache (capacity of " + cache.getCapacity() + ", size of " + cache.getSize() + ", hash " + cache.hashCode() + ")");
 	}
 
 	public PeptideSearcher(final int cacheSize) {
+
 		cache = new Cache<String, List<String>>(cacheSize);
 		cacheFASTAFileMap = new HashMap<File, FASTAFile>();
 	}

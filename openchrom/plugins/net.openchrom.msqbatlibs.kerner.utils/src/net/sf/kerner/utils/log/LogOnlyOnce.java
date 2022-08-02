@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,13 +8,14 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - logging
  *******************************************************************************/
 package net.sf.kerner.utils.log;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.eclipse.chemclipse.logging.core.Logger;
 
 public class LogOnlyOnce {
 
@@ -22,6 +23,7 @@ public class LogOnlyOnce {
 	private final Logger logger;
 
 	public LogOnlyOnce(final Logger log) {
+
 		this.logger = log;
 	}
 
@@ -30,7 +32,7 @@ public class LogOnlyOnce {
 		if(logged.contains(msg)) {
 			return;
 		}
-		logger.debug(msg);
+		// logger.debug(msg);
 		logged.add(msg);
 	}
 
@@ -39,7 +41,7 @@ public class LogOnlyOnce {
 		if(logged.contains(msg)) {
 			return;
 		}
-		logger.debug(msg, exception);
+		// logger.debug(msg, exception);
 		logged.add(msg);
 	}
 
