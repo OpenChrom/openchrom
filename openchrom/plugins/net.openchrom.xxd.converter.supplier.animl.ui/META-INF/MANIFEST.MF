@@ -9,7 +9,9 @@ Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.chemclipse.support.ui,
- org.eclipse.chemclipse.support
+ org.eclipse.chemclipse.support,
+ org.eclipse.chemclipse.xxd.process.ui,
+ org.eclipse.chemclipse.rcp.ui.icons
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Import-Package: net.openchrom.xxd.converter.supplier.animl.preferences
