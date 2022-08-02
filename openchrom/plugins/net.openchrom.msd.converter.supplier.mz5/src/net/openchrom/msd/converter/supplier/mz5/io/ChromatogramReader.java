@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,14 +12,11 @@
 package net.openchrom.msd.converter.supplier.mz5.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramReader;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
@@ -48,18 +45,18 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	}
 
 	@Override
-	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
-		try {
+		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
 			chromatogram = new VendorChromatogram();
 			//
-			IHDF5SimpleReader reader = HDF5Factory.openForReading(file);
 			CVReference[] cvReferences = reader.readCompoundArray("CVReference", CVReference.class);
 			int dateReference = 0;
 			for(int c = 0; c < cvReferences.length; c++) {
-				if(cvReferences[c].accession == 1000747 && cvReferences[c].name.equals("completion time"))
+				if(cvReferences[c].accession == 1000747 && cvReferences[c].name.equals("completion time")) {
 					dateReference = c;
+				}
 			}
 			CVParam[] cvParams = reader.readCompoundArray("CVParam", CVParam.class);
 			for(CVParam cvParam : cvParams) {
@@ -76,71 +73,77 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	}
 
 	@Override
-	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
 		chromatogram = new VendorChromatogram();
-		IHDF5SimpleReader reader = HDF5Factory.openForReading(file);
-		CVReference[] cvReferences = reader.readCompoundArray("CVReference", CVReference.class);
-		int retentionTimeReference = 0;
-		int spectrumTitleReference = 0;
-		int msLevelReference = 0;
-		for(int c = 0; c < cvReferences.length; c++) {
-			if(cvReferences[c].accession == 1000016 && cvReferences[c].name.equals("scan start time"))
-				retentionTimeReference = c;
-			if(cvReferences[c].accession == 1000796 && cvReferences[c].name.equals("spectrum title"))
-				spectrumTitleReference = c;
-			if(cvReferences[c].accession == 1000511 && cvReferences[c].name.equals("ms level"))
-				msLevelReference = c;
-		}
-		int[] spectrumIndex = reader.readIntArray("SpectrumIndex");
-		CVParam[] cvParams = reader.readCompoundArray("CVParam", CVParam.class);
-		int[] retentionTimes = new int[spectrumIndex.length];
-		String[] spectrumTitles = new String[spectrumIndex.length];
-		short[] msLevels = new short[spectrumIndex.length];
-		int p = 0;
-		for(CVParam cvParam : cvParams) {
-			if(cvParam.cvRefID == retentionTimeReference) {
-				int multiplicator = 1; // to milisecond
-				CVReference unit = cvReferences[cvParam.uRefID];
-				if(unit.accession == 10 && unit.name.equals("second"))
-					multiplicator = 1000;
-				if(unit.accession == 31 && unit.name.equals("minute"))
-					multiplicator = 60 * 1000;
-				retentionTimes[p] = Math.round(Float.parseFloat(cvParam.value) * multiplicator);
-				p++;
-			}
-			if(cvParam.cvRefID == spectrumTitleReference) {
-				spectrumTitles[p] = cvParam.value;
-			}
-			if(cvParam.cvRefID == msLevelReference) {
-				msLevels[p] = Short.parseShort(cvParam.value);
-			}
-		}
-		try {
-			double[] mzs = reader.readDoubleArray("SpectrumMZ");
-			float[] spectrumIntensity = reader.readFloatArray("SpectrumIntensity");
-			int start = 0;
-			for(int i = 0; i < spectrumIndex.length; i++) {
-				int offset = spectrumIndex[i];
-				IScanMarker scanMarker = new ScanMarker(start, offset);
-				IVendorScanProxy scanProxy = new VendorScanProxy(mzs, spectrumIntensity, scanMarker);
-				scanProxy.setScanNumber(i);
-				scanProxy.setIdentifier(spectrumTitles[i]);
-				scanProxy.setRetentionTime(retentionTimes[i]);
-				scanProxy.setMassSpectrometer(msLevels[i]);
-				float totalSignal = 0;
-				for(int o = start; o < offset; o++) {
-					totalSignal = totalSignal + spectrumIntensity[o];
+		chromatogram.setFile(file);
+		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
+			CVReference[] cvReferences = reader.readCompoundArray("CVReference", CVReference.class);
+			int retentionTimeReference = 0;
+			int spectrumTitleReference = 0;
+			int msLevelReference = 0;
+			for(int c = 0; c < cvReferences.length; c++) {
+				if(cvReferences[c].accession == 1000016 && cvReferences[c].name.equals("scan start time")) {
+					retentionTimeReference = c;
 				}
-				scanProxy.setTotalSignal(totalSignal);
-				chromatogram.addScan(scanProxy);
-				start = offset;
+				if(cvReferences[c].accession == 1000796 && cvReferences[c].name.equals("spectrum title")) {
+					spectrumTitleReference = c;
+				}
+				if(cvReferences[c].accession == 1000511 && cvReferences[c].name.equals("ms level")) {
+					msLevelReference = c;
+				}
 			}
-			chromatogram.setFile(file);
-		} catch(OutOfMemoryError e) {
-			logger.error(e);
+			int[] spectrumIndex = reader.readIntArray("SpectrumIndex");
+			CVParam[] cvParams = reader.readCompoundArray("CVParam", CVParam.class);
+			int[] retentionTimes = new int[spectrumIndex.length];
+			String[] spectrumTitles = new String[spectrumIndex.length];
+			short[] msLevels = new short[spectrumIndex.length];
+			int p = 0;
+			for(CVParam cvParam : cvParams) {
+				if(cvParam.cvRefID == retentionTimeReference) {
+					int multiplicator = 1; // to milisecond
+					CVReference unit = cvReferences[cvParam.uRefID];
+					if(unit.accession == 10 && unit.name.equals("second")) {
+						multiplicator = 1000;
+					}
+					if(unit.accession == 31 && unit.name.equals("minute")) {
+						multiplicator = 60 * 1000;
+					}
+					retentionTimes[p] = Math.round(Float.parseFloat(cvParam.value) * multiplicator);
+					p++;
+				}
+				if(cvParam.cvRefID == spectrumTitleReference) {
+					spectrumTitles[p] = cvParam.value;
+				}
+				if(cvParam.cvRefID == msLevelReference) {
+					msLevels[p] = Short.parseShort(cvParam.value);
+				}
+			}
+			try {
+				double[] mzs = reader.readDoubleArray("SpectrumMZ");
+				float[] spectrumIntensity = reader.readFloatArray("SpectrumIntensity");
+				int start = 0;
+				for(int i = 0; i < spectrumIndex.length; i++) {
+					int offset = spectrumIndex[i];
+					IScanMarker scanMarker = new ScanMarker(start, offset);
+					IVendorScanProxy scanProxy = new VendorScanProxy(mzs, spectrumIntensity, scanMarker);
+					scanProxy.setScanNumber(i);
+					scanProxy.setIdentifier(spectrumTitles[i]);
+					scanProxy.setRetentionTime(retentionTimes[i]);
+					scanProxy.setMassSpectrometer(msLevels[i]);
+					float totalSignal = 0;
+					for(int o = start; o < offset; o++) {
+						totalSignal = totalSignal + spectrumIntensity[o];
+					}
+					scanProxy.setTotalSignal(totalSignal);
+					chromatogram.addScan(scanProxy);
+					start = offset;
+				}
+			} catch(OutOfMemoryError e) {
+				logger.error(e);
+			}
+			return chromatogram;
 		}
-		return chromatogram;
 	}
 }

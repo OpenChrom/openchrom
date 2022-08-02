@@ -34,9 +34,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import net.openchrom.wsd.converter.supplier.gaml.model.IVendorChromatogram;
 import net.openchrom.wsd.converter.supplier.gaml.model.IVendorScanSignalWSD;
 import net.openchrom.wsd.converter.supplier.gaml.model.VendorChromatogram;
@@ -55,6 +52,10 @@ import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Units;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Ydata;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader120;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 public class ChromatogramReaderVersion120 extends AbstractChromatogramReader implements IChromatogramWSDReader {
 

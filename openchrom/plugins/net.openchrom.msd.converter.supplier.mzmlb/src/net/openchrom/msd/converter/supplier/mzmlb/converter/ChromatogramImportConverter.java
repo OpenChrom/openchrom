@@ -49,7 +49,7 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 				Thread.currentThread().interrupt();
 			} catch(IOException e) {
 				processingInfo.addErrorMessage(DESCRIPTION, "Can't read file: " + file.getAbsolutePath());
-				e.printStackTrace();
+				logger.warn(e);
 			}
 		}
 		return processingInfo;
