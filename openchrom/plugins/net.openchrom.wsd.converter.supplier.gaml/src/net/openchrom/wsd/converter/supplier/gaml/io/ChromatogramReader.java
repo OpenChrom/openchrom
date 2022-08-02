@@ -12,12 +12,9 @@
 package net.openchrom.wsd.converter.supplier.gaml.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.wsd.converter.io.AbstractChromatogramWSDReader;
 import org.eclipse.chemclipse.wsd.converter.io.IChromatogramWSDReader;
@@ -33,10 +30,10 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader implements
 
 		IChromatogramWSDReader chromatogramReader = null;
 		//
-		final FileReader fileReader = new FileReader(file);
 		final char[] charBuffer = new char[100];
-		fileReader.read(charBuffer);
-		fileReader.close();
+		try (FileReader fileReader = new FileReader(file)) {
+			fileReader.read(charBuffer);
+		}
 		//
 		final String header = new String(charBuffer);
 		if(header.contains(IConstants.GAML_V_120)) {
@@ -56,7 +53,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader implements
 	}
 
 	@Override
-	public IChromatogramOverview readOverview(final File file, final IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramOverview readOverview(final File file, final IProgressMonitor monitor) throws IOException {
 
 		final IChromatogramWSDReader chromatogramReader = getReader(file);
 		return chromatogramReader.readOverview(file, monitor);

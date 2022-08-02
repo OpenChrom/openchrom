@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2021 Lablicate GmbH.
+ * Copyright (c) 2008, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -13,6 +13,7 @@
 package net.openchrom.wsd.converter.supplier.animl.converter;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramImportConverter;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -43,9 +44,9 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 			try {
 				IChromatogramWSD chromatogram = reader.read(file, monitor);
 				processingInfo.setProcessingResult(chromatogram);
-			} catch(Exception e) {
+			} catch(IOException e) {
+				processingInfo.addErrorMessage(DESCRIPTION, "Can't read file: " + file.getAbsolutePath());
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
 			}
 		}
 		return processingInfo;

@@ -13,15 +13,12 @@
 package net.openchrom.csd.converter.supplier.animl.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.csd.converter.io.AbstractChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramPeakCSD;
@@ -120,9 +117,9 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 						}
 					}
 				}
-				List<Float> startTimes = new ArrayList<Float>();
-				List<Float> endTimes = new ArrayList<Float>();
-				List<String> peakNames = new ArrayList<String>();
+				List<Float> startTimes = new ArrayList<>();
+				List<Float> endTimes = new ArrayList<>();
+				List<String> peakNames = new ArrayList<>();
 				if(experimentStep.getTechnique().getName().equals("Chromatography Peak Table")) {
 					for(ResultType result : experimentStep.getResult()) {
 						SeriesSetType seriesSet = result.getSeriesSet();
@@ -180,7 +177,7 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 	}
 
 	@Override
-	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
 		try {

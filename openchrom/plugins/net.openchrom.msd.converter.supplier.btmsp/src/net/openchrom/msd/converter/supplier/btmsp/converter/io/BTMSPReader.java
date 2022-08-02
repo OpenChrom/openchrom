@@ -14,7 +14,6 @@ package net.openchrom.msd.converter.supplier.btmsp.converter.io;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -29,7 +28,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
@@ -50,7 +48,7 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 	private static final Logger logger = Logger.getLogger(BTMSPReader.class);
 
 	@Override
-	public IMassSpectra read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IMassSpectra read(File file, IProgressMonitor monitor) throws IOException {
 
 		ZipFile zipFile = new ZipFile(file);
 		Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
@@ -58,8 +56,9 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 		while(zipEntries.hasMoreElements()) {
 			ZipEntry zipEntry = zipEntries.nextElement();
 			String name = zipEntry.getName();
-			if(!name.equals("[Content_Types].xml"))
+			if(!name.equals("[Content_Types].xml")) {
 				zipData = zipEntry;
+			}
 		}
 		if(zipData == null) {
 			zipFile.close();
@@ -118,10 +117,12 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 				while(peakAttributes.hasNext()) {
 					Attribute attribute = peakAttributes.next();
 					String attributeName = attribute.getName().getLocalPart();
-					if(attributeName.equals("relativeIntensity"))
+					if(attributeName.equals("relativeIntensity")) {
 						abundance = Float.parseFloat(attribute.getValue());
-					if(attributeName.equals("mass"))
+					}
+					if(attributeName.equals("mass")) {
 						ion = Double.parseDouble(attribute.getValue());
+					}
 					if(abundance > 0 && ion > 0) {
 						mainSpectrum.addIon(new Ion(ion, abundance));
 						abundance = 0;

@@ -13,7 +13,6 @@ package net.openchrom.msd.converter.supplier.mzmlb.io;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -21,8 +20,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramReader;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
@@ -61,7 +58,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 
 	@Override
-	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
 
 		return null;
 	}
@@ -70,8 +67,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
-		try {
-			IHDF5SimpleReader reader = HDF5Factory.openForReading(file);
+		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
 			byte[] xml = reader.readAsByteArray(IConstants.NODE_MZML);
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -83,6 +79,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			MzML mzML = (MzML)unmarshaller.unmarshal(topNode.item(0));
 			RunType run = mzML.getRun();
 			chromatogram = new VendorChromatogram();
+			chromatogram.setFile(file);
 			SpectrumListType spectrumList = run.getSpectrumList();
 			monitor.beginTask(IConstants.IMPORT_CHROMATOGRAM, spectrumList.getCount().intValue());
 			for(SpectrumType spectrum : spectrumList.getSpectrum()) {
@@ -145,7 +142,6 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				scanProxy.setMassSpectrometer(msLevel);
 				scanProxy.setTotalSignal(abundance);
 				chromatogram.addScan(scanProxy);
-				chromatogram.setFile(file);
 			}
 		} catch(HDF5LibraryException e) {
 			logger.error(e);

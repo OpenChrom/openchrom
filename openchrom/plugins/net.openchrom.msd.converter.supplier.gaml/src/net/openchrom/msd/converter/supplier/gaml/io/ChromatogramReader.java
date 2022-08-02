@@ -12,12 +12,9 @@
 package net.openchrom.msd.converter.supplier.gaml.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.AbstractChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
@@ -33,10 +30,10 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 
 		IChromatogramMSDReader chromatogramReader = null;
 		//
-		final FileReader fileReader = new FileReader(file);
 		final char[] charBuffer = new char[100];
-		fileReader.read(charBuffer);
-		fileReader.close();
+		try (FileReader fileReader = new FileReader(file)) {
+			fileReader.read(charBuffer);
+		}
 		//
 		final String header = new String(charBuffer);
 		if(header.contains(IConstants.GAML_V_100)) {
@@ -53,24 +50,16 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 	}
 
 	@Override
-	public IChromatogramMSD read(final File file, final IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException, InterruptedException {
+	public IChromatogramMSD read(final File file, final IProgressMonitor monitor) throws IOException, InterruptedException {
 
 		final IChromatogramMSDReader chromatogramReader = getReader(file);
-		if(chromatogramReader != null) {
-			return chromatogramReader.read(file, monitor);
-		} else {
-			return null;
-		}
+		return chromatogramReader.read(file, monitor);
 	}
 
 	@Override
-	public IChromatogramOverview readOverview(final File file, final IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramOverview readOverview(final File file, final IProgressMonitor monitor) throws IOException {
 
 		final IChromatogramMSDReader chromatogramReader = getReader(file);
-		if(chromatogramReader != null) {
-			return chromatogramReader.readOverview(file, monitor);
-		} else {
-			return null;
-		}
+		return chromatogramReader.readOverview(file, monitor);
 	}
 }

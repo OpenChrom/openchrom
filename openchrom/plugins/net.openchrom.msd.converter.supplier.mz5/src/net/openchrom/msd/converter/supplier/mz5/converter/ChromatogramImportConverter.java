@@ -13,6 +13,7 @@
 package net.openchrom.msd.converter.supplier.mz5.converter;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramImportConverter;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -43,9 +44,12 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 			try {
 				IChromatogramMSD chromatogram = reader.read(file, monitor);
 				processingInfo.setProcessingResult(chromatogram);
-			} catch(Exception e) {
+			} catch(InterruptedException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
+				Thread.currentThread().interrupt();
+			} catch(IOException e) {
+				logger.warn(e);
+				processingInfo.addErrorMessage(DESCRIPTION, "Error reading file: " + file.getAbsolutePath());
 			}
 		}
 		return processingInfo;

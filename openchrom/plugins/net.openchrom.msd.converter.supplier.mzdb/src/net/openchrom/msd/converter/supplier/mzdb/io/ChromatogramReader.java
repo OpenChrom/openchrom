@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -54,52 +54,51 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	}
 
 	@Override
-	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
-		try {
+		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:" + file.toString())) {
 			Class.forName("org.sqlite.JDBC");
-			Connection connection = DriverManager.getConnection("jdbc:sqlite:" + file.toString());
-			Statement statement = connection.createStatement();
-			//
-			ResultSet mzdbResultSet = statement.executeQuery("SELECT * FROM mzdb;");
-			long epoch = mzdbResultSet.getLong("creation_timestamp") * 1000; // to milliseconds
-			chromatogram = new VendorChromatogram();
-			chromatogram.setDate(new Date(epoch));
-			float version = mzdbResultSet.getFloat("version");
-			if(version > 0.7)
-				logger.warn("The .mzDB file may be incompatible.");
-			mzdbResultSet.close();
-			//
-			ResultSet nameResultSet = statement.executeQuery("SELECT name FROM sample;");
-			String sampleName = nameResultSet.getString(1);
-			chromatogram.setDataName(sampleName);
-			nameResultSet.close();
-			//
-			ResultSet timeUnitResultSet = statement.executeQuery("SELECT unit_accession FROM cv_term WHERE accession='MS:1000016';");
-			int timeMultiplicator = getTimeMultiplicator(timeUnitResultSet.getString(1));
-			timeUnitResultSet.close();
-			//
-			ResultSet spectrumResultSet = statement.executeQuery("SELECT * FROM spectrum;");
-			while(spectrumResultSet.next()) {
-				IVendorScan scan = new VendorScan();
-				int cycle = spectrumResultSet.getInt("cycle");
-				scan.setScanNumber(cycle);
-				String title = spectrumResultSet.getString("title");
-				scan.setIdentifier(title);
-				int retentionTime = Math.round(spectrumResultSet.getFloat("time") * timeMultiplicator);
-				scan.setRetentionTime(retentionTime);
-				short msLevel = spectrumResultSet.getShort("ms_level");
-				scan.setMassSpectrometer(msLevel);
-				float abundance = spectrumResultSet.getFloat("tic");
-				IIon ion = new Ion(IIon.TIC_ION, abundance);
-				scan.addIon(ion);
-				chromatogram.addScan(scan);
+			try (Statement statement = connection.createStatement()) {
+				//
+				ResultSet mzdbResultSet = statement.executeQuery("SELECT * FROM mzdb;");
+				long epoch = mzdbResultSet.getLong("creation_timestamp") * 1000; // to milliseconds
+				chromatogram = new VendorChromatogram();
+				chromatogram.setFile(file);
+				chromatogram.setDate(new Date(epoch));
+				float version = mzdbResultSet.getFloat("version");
+				if(version > 0.7) {
+					logger.warn("The .mzDB file may be incompatible.");
+				}
+				mzdbResultSet.close();
+				//
+				ResultSet nameResultSet = statement.executeQuery("SELECT name FROM sample;");
+				String sampleName = nameResultSet.getString(1);
+				chromatogram.setDataName(sampleName);
+				nameResultSet.close();
+				//
+				ResultSet timeUnitResultSet = statement.executeQuery("SELECT unit_accession FROM cv_term WHERE accession='MS:1000016';");
+				int timeMultiplicator = getTimeMultiplicator(timeUnitResultSet.getString(1));
+				timeUnitResultSet.close();
+				//
+				ResultSet spectrumResultSet = statement.executeQuery("SELECT * FROM spectrum;");
+				while(spectrumResultSet.next()) {
+					IVendorScan scan = new VendorScan();
+					int cycle = spectrumResultSet.getInt("cycle");
+					scan.setScanNumber(cycle);
+					String title = spectrumResultSet.getString("title");
+					scan.setIdentifier(title);
+					int retentionTime = Math.round(spectrumResultSet.getFloat("time") * timeMultiplicator);
+					scan.setRetentionTime(retentionTime);
+					short msLevel = spectrumResultSet.getShort("ms_level");
+					scan.setMassSpectrometer(msLevel);
+					float abundance = spectrumResultSet.getFloat("tic");
+					IIon ion = new Ion(IIon.TIC_ION, abundance);
+					scan.addIon(ion);
+					chromatogram.addScan(scan);
+				}
+				spectrumResultSet.close();
 			}
-			spectrumResultSet.close();
-			statement.close();
-			connection.close();
-			chromatogram.setFile(file);
 		} catch(SQLException e) {
 			logger.warn(e);
 		} catch(AbundanceLimitExceededException e) {
