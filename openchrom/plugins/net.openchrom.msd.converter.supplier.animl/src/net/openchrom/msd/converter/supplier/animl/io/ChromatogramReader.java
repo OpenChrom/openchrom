@@ -80,6 +80,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 		try {
 			AnIMLType animl = XmlReader.getAnIML(file);
 			chromatogram = new VendorChromatogram();
+			chromatogram.setFile(file);
 			chromatogram = readSample(animl, chromatogram);
 			List<Integer> retentionTimes = new ArrayList<>();
 			List<Float> signals = new ArrayList<>();
