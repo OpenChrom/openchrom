@@ -17,7 +17,6 @@
 		<module>net.openchrom.chromatogram.msd.identifier.supplier.cdk.fragment.test</module>
 		<module>net.openchrom.chromatogram.msd.identifier.supplier.cdk.ui</module>
 		<module>net.openchrom.chromatogram.msd.identifier.supplier.cdk</module>
-		<module>net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.fragment.test</module>
 		<module>net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui</module>
 		<module>net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector</module>
 		<module>net.openchrom.msd.converter.supplier.btmsp.fragment.test</module>
@@ -35,7 +34,6 @@
 		<module>net.openchrom.msd.converter.supplier.mgf.fragment.test</module>
 		<module>net.openchrom.msd.converter.supplier.mgf.ui</module>
 		<module>net.openchrom.msd.converter.supplier.mgf</module>
-		<module>net.openchrom.xxd.converter.supplier.pdf.fragment.test</module>
 		<module>net.openchrom.xxd.converter.supplier.pdf.ui</module>
 		<module>net.openchrom.xxd.converter.supplier.pdf</module>
 		<module>net.openchrom.msd.process.supplier.cms.fragment.test</module>
@@ -58,14 +56,12 @@
 		<module>net.openchrom.msqbatlibs.kerner.utils.io.fragment.test</module>
 		<module>net.openchrom.msqbatlibs.kerner.utils.io</module>
 		<module>net.openchrom.msqbatlibs.kerner.utils</module>
-		<module>net.openchrom.nmr.processing.supplier.base.fragment.test</module>
 		<module>net.openchrom.nmr.processing.supplier.base.ui</module>
 		<module>net.openchrom.nmr.processing.supplier.base</module>
 		<module>net.openchrom.swtchart.extension.export.vectorgraphics</module>
 		<module>net.openchrom.wsd.converter.supplier.abif.fragment.test</module>
 		<module>net.openchrom.wsd.converter.supplier.abif.ui</module>
 		<module>net.openchrom.wsd.converter.supplier.abif</module>
-		<module>net.openchrom.wsd.identifier.supplier.geneident.fragment.test</module>
 		<module>net.openchrom.wsd.identifier.supplier.geneident.ui</module>
 		<module>net.openchrom.wsd.identifier.supplier.geneident</module>
 		<module>net.openchrom.xxd.classifier.supplier.ratios.fragment.test</module>
@@ -74,7 +70,6 @@
 		<module>net.openchrom.xxd.process.supplier.templates.fragment.tests</module>
 		<module>net.openchrom.xxd.process.supplier.templates.ui</module>
 		<module>net.openchrom.xxd.process.supplier.templates</module>
-		<module>net.openchrom.xxd.processor.supplier.tracecompare.fragment.test</module>
 		<module>net.openchrom.xxd.processor.supplier.tracecompare.ui</module>
 		<module>net.openchrom.xxd.processor.supplier.tracecompare</module>
 		<module>net.openchrom.rcp.compilation.community.ui</module>
