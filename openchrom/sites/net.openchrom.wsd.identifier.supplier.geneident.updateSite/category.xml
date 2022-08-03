@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <feature url="features/net.openchrom.wsd.identifier.supplier.geneident.feature_1.2.0.qualifier.jar" id="net.openchrom.wsd.identifier.supplier.geneident.feature" version="1.2.0.qualifier">
-      <category name="net.openchrom.chromatogram.wsd.plugins.identifier"/>
-   </feature>
-   <category-def name="net.openchrom.chromatogram.wsd.plugins.identifier" label="Open Identifier"/>
-</site>
