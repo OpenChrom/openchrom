@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,6 +9,7 @@
  * Contributors:
  * Alexander Stark - initial API and implementation
  * Christoph Läubrich - add general purpose static filling function
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
@@ -23,7 +24,7 @@ import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
-import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.core.IMessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -32,13 +33,14 @@ import org.osgi.service.component.annotations.Component;
 import net.openchrom.nmr.processing.supplier.base.settings.ZeroFillingSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
-@Component(service = { Filter.class, IMeasurementFilter.class })
+@Component(service = {Filter.class, IMeasurementFilter.class})
 public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSettings> {
 
 	private static final long serialVersionUID = -7190114750655302768L;
 	private static final String FILTER_NAME = "Zero Filling";
 
-	public ZeroFillingProcessor(){
+	public ZeroFillingProcessor() {
+
 		super(ZeroFillingSettings.class);
 	}
 
@@ -49,7 +51,7 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, ZeroFillingSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, ZeroFillingSettings> context, IMessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		List<? extends FIDSignal> signals = context.getFilteredObject().getSignals();
 		int signalsize = signals.size();
@@ -77,7 +79,8 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 
 		private BigDecimal time;
 
-		public ZeroFIDSignal(BigDecimal time){
+		public ZeroFIDSignal(BigDecimal time) {
+
 			this.time = time;
 		}
 
@@ -129,7 +132,7 @@ public class ZeroFillingProcessor extends AbstractFIDSignalFilter<ZeroFillingSet
 			return lowerBound;
 		}
 		int value = 1;
-		while (value <= currentLenth) {
+		while(value <= currentLenth) {
 			value = value << 1;
 		}
 		return value;

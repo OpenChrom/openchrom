@@ -9,6 +9,7 @@
  * Contributors:
  * Alexander Stark - initial API and implementation
  * Christoph Läubrich - rework for new filter model
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.phasecorrection;
 
@@ -34,7 +35,7 @@ import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
-import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.core.IMessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -45,7 +46,7 @@ import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.SpectrumData;
 import net.openchrom.nmr.processing.supplier.base.settings.AutoPhaseCorrectionSettings;
 
-@Component(service = { Filter.class, IMeasurementFilter.class })
+@Component(service = {Filter.class, IMeasurementFilter.class})
 public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<AutoPhaseCorrectionSettings> {
 
 	private static final long serialVersionUID = 5088365386062088062L;
@@ -78,7 +79,8 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		AutoPhaseCorrectionProcessor.maximumIterations = maximumIterations;
 	}
 
-	public AutoPhaseCorrectionProcessor(){
+	public AutoPhaseCorrectionProcessor() {
+
 		super(AutoPhaseCorrectionSettings.class);
 	}
 
@@ -93,11 +95,13 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		private T zerothOrderValue;
 		private T firstOrderValue;
 
-		public PhaseCorrectionValue(T zerothOrderValue){
+		public PhaseCorrectionValue(T zerothOrderValue) {
+
 			this.zerothOrderValue = zerothOrderValue;
 		}
 
-		public PhaseCorrectionValue(T zerothOrderValue, T firstOrderValue){
+		public PhaseCorrectionValue(T zerothOrderValue, T firstOrderValue) {
+
 			this.zerothOrderValue = zerothOrderValue;
 			this.firstOrderValue = firstOrderValue;
 		}
@@ -124,15 +128,15 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		public double[] toArray() {
 
 			if(this.firstOrderValue == null) {
-				return new double[] { this.zerothOrderValue.doubleValue() };
+				return new double[]{this.zerothOrderValue.doubleValue()};
 			} else {
-				return new double[] { this.zerothOrderValue.doubleValue(), this.firstOrderValue.doubleValue() };
+				return new double[]{this.zerothOrderValue.doubleValue(), this.firstOrderValue.doubleValue()};
 			}
 		}
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, AutoPhaseCorrectionSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, AutoPhaseCorrectionSettings> context, IMessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		SpectrumData spectrumData = UtilityFunctions.toComplexSpectrumData(context.getFilteredObject());
 		perform(spectrumData, context.getFilterConfig());
@@ -207,7 +211,8 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 		private final Complex[] fourierTransformedData;
 		private final AutoPhaseCorrectionSettings settings;
 
-		public CalculateACMEEntropy(Complex[] fourierTransformedData, AutoPhaseCorrectionSettings settings){
+		public CalculateACMEEntropy(Complex[] fourierTransformedData, AutoPhaseCorrectionSettings settings) {
+
 			this.fourierTransformedData = fourierTransformedData;
 			this.settings = settings;
 		}
@@ -236,7 +241,7 @@ public class AutoPhaseCorrectionProcessor extends AbstractSpectrumSignalFilter<A
 			 * "cut" left and right edges of spectrum (often distorted)
 			 */
 			double cutPercentage = settings.getOmitPercentOfTheSpectrum(); // ignore this % of spectrum each side
-			int cutPartOfSpectrum = (int) Math.round(nmrDataReal.length * cutPercentage * 0.01);
+			int cutPartOfSpectrum = (int)Math.round(nmrDataReal.length * cutPercentage * 0.01);
 			for(int i = 0; i <= cutPartOfSpectrum; i++) {
 				nmrDataReal[i] = 0;
 			}

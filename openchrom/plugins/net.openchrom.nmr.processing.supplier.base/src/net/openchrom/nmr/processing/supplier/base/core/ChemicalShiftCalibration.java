@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Alexander Stark - initial API and implementation
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
@@ -23,7 +24,7 @@ import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FilteredSpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.DataCategory;
-import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.core.IMessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -41,7 +42,7 @@ import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlign
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities;
 import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentUtilities.Interval;
 
-@Component(service = { Filter.class, IMeasurementFilter.class })
+@Component(service = {Filter.class, IMeasurementFilter.class})
 public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShiftCalibrationSettings> {
 
 	@Override
@@ -59,11 +60,11 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 	@Override
 	public DataCategory[] getDataCategories() {
 
-		return new DataCategory[] { DataCategory.NMR };
+		return new DataCategory[]{DataCategory.NMR};
 	}
 
 	@Override
-	public <ResultType> ResultType filterIMeasurements(Collection<? extends IMeasurement> filterItems, ChemicalShiftCalibrationSettings configuration, Function<? super Collection<? extends IMeasurement>, ResultType> chain, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
+	public <ResultType> ResultType filterIMeasurements(Collection<? extends IMeasurement> filterItems, ChemicalShiftCalibrationSettings configuration, Function<? super Collection<? extends IMeasurement>, ResultType> chain, IMessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
 
 		if(configuration == null) {
 			configuration = createNewConfiguration();
@@ -71,7 +72,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 		Collection<SpectrumMeasurement> collection = new ArrayList<>();
 		for(IMeasurement measurement : filterItems) {
 			if(measurement instanceof SpectrumMeasurement) {
-				collection.add((SpectrumMeasurement) measurement);
+				collection.add((SpectrumMeasurement)measurement);
 			} else {
 				throw new IllegalArgumentException();
 			}
@@ -126,7 +127,7 @@ public class ChemicalShiftCalibration implements IMeasurementFilter<ChemicalShif
 		BigDecimal[] chemicalShiftAxis = ChemicalShiftCalibrationUtilities.getChemicalShiftAxis(experimentalDatasetsList);
 		Collection<? extends SpectrumMeasurement> newDatasetsList = copyPartlyCalibratedData(experimentalDatasetsList, calibratedData);
 		int checkIterator = 0;
-		while (!checkCalibration(calibratedData, chemicalShiftAxis, alignmentSettings)) { // check for quality of calibration
+		while(!checkCalibration(calibratedData, chemicalShiftAxis, alignmentSettings)) { // check for quality of calibration
 			newDatasetsList = copyPartlyCalibratedData(newDatasetsList, calibratedData);
 			// try to calibrate datasets again
 			calibratedData = icoShiftAlignment.process(newDatasetsList, alignmentSettings, null);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,6 +9,7 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  * Christoph Läubrich - complete rework of filter
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.apodization;
 
@@ -18,7 +19,7 @@ import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
-import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.core.IMessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -37,6 +38,7 @@ public class ExponentialApodizationFunctionProcessor extends AbstractFIDSignalFi
 	private static final BigDecimal PI = BigDecimal.valueOf(Math.PI);
 
 	public ExponentialApodizationFunctionProcessor() {
+
 		super(ExponentialApodizationSettings.class);
 	}
 
@@ -47,7 +49,7 @@ public class ExponentialApodizationFunctionProcessor extends AbstractFIDSignalFi
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, ExponentialApodizationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, ExponentialApodizationSettings> context, IMessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		double broadeningFactor = context.getFilterConfig().getExponentialLineBroadeningFactor();
 		if(broadeningFactor > 0 || broadeningFactor < 0) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Alexander Stark - initial API and implementation
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.ft;
 
@@ -30,7 +31,7 @@ import org.eclipse.chemclipse.nmr.model.core.DataDimension;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
-import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.core.IMessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -58,7 +59,7 @@ public class InverseFourierTransformationProcessor extends AbstractSpectrumSigna
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, InverseFourierTransformationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, InverseFourierTransformationSettings> context, IMessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		// IFFT spectrum to fid
 		SpectrumMeasurement spectrumMeasurement = context.getFilteredObject();

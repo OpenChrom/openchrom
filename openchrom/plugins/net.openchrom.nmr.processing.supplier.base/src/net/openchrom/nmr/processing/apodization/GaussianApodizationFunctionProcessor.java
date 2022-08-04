@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2020 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,7 +20,7 @@ import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
-import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.core.IMessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -52,7 +52,7 @@ public class GaussianApodizationFunctionProcessor extends AbstractFIDSignalFilte
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, GaussianApodizationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, GaussianApodizationSettings> context, IMessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		double gaussianLineBroadeningFactor = context.getFilterConfig().getGaussianLineBroadeningFactor();
 		if(gaussianLineBroadeningFactor > 0) {

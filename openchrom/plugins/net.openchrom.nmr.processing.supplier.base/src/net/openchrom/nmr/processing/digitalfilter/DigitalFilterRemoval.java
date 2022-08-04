@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,6 +9,7 @@
  * Contributors:
  * Alexander Stark - initial API and implementation
  * Christoph Läubrich - Change to use a more generic API, cleanup the code and streamline the algorithm flow
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.digitalfilter;
 
@@ -21,7 +22,7 @@ import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FilteredFIDMeasurement;
-import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.core.IMessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -32,14 +33,15 @@ import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions;
 import net.openchrom.nmr.processing.supplier.base.core.UtilityFunctions.ComplexFIDData;
 import net.openchrom.nmr.processing.supplier.base.settings.DigitalFilterRemovalSettings;
 
-@Component(service = { Filter.class, IMeasurementFilter.class })
+@Component(service = {Filter.class, IMeasurementFilter.class})
 public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterRemovalSettings> implements Serializable {
 
 	private static final long serialVersionUID = 4481720817522447928L;
 	private static final String FILTER_NAME = "Digital Filter Removal";
 	private static final String MARKER = DigitalFilterRemoval.class.getName() + ".filtered";
 
-	public DigitalFilterRemoval(){
+	public DigitalFilterRemoval() {
+
 		super(DigitalFilterRemovalSettings.class);
 	}
 
@@ -56,7 +58,7 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, DigitalFilterRemovalSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, DigitalFilterRemovalSettings> context, IMessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		DigitalFilterRemovalSettings config = context.getFilterConfig();
 		double multiplicationFactor = config.getDcOffsetMultiplicationFactor();
@@ -75,18 +77,18 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 		}
 		if(Math.abs(leftRotationFid) > 0) {
 			int treatmentOption = 0;
-			switch (config.getTreatmentOptions()) {
-			case SHIFT_ONLY:
-				treatmentOption = 1;
-				break;
-			case SUBSTITUTE_WITH_ZERO:
-				treatmentOption = 2;
-				break;
-			case SUBSTITUTE_WITH_NOISE:
-				treatmentOption = 3;
-				break;
-			default:
-				throw new IllegalArgumentException("unsupported TreatmentOptions: " + config.getTreatmentOptions());
+			switch(config.getTreatmentOptions()) {
+				case SHIFT_ONLY:
+					treatmentOption = 1;
+					break;
+				case SUBSTITUTE_WITH_ZERO:
+					treatmentOption = 2;
+					break;
+				case SUBSTITUTE_WITH_NOISE:
+					treatmentOption = 3;
+					break;
+				default:
+					throw new IllegalArgumentException("unsupported TreatmentOptions: " + config.getTreatmentOptions());
 			}
 			DigitalFilterRemoval.removeDigitalFilter(fidData, leftRotationFid, treatmentOption, messageConsumer);
 			messageConsumer.addInfoMessage(FILTER_NAME, "Digital Filter was removed");
@@ -98,7 +100,7 @@ public class DigitalFilterRemoval extends AbstractFIDSignalFilter<DigitalFilterR
 		return filteredFIDMeasurement;
 	}
 
-	private static void removeDigitalFilter(ComplexFIDData fidData, int leftRotationFid, int treatmentOption, MessageConsumer messageConsumer) {
+	private static void removeDigitalFilter(ComplexFIDData fidData, int leftRotationFid, int treatmentOption, IMessageConsumer messageConsumer) {
 
 		Complex[] digitalFilter = Arrays.copyOfRange(fidData.signals, 0, leftRotationFid);
 		Complex[] analogFID = Arrays.copyOfRange(fidData.signals, leftRotationFid, fidData.signals.length);

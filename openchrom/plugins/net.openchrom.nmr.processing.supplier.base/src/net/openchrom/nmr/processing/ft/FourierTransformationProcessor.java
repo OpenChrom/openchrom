@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018,2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,6 +9,7 @@
  * Contributors:
  * Alexander Stark - initial API and implementation
  * Christoph Läubrich - changes for ne processor api and process optimizations
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.ft;
 
@@ -31,7 +32,7 @@ import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
-import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.core.IMessageConsumer;
 import org.eclipse.chemclipse.processing.filter.Filter;
 import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -44,18 +45,19 @@ import net.openchrom.nmr.processing.supplier.base.core.ZeroFillingProcessor;
 import net.openchrom.nmr.processing.supplier.base.settings.FourierTransformationSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.support.ZeroFillingFactor;
 
-@Component(service = { Filter.class, IMeasurementFilter.class })
+@Component(service = {Filter.class, IMeasurementFilter.class})
 public class FourierTransformationProcessor extends AbstractFIDSignalFilter<FourierTransformationSettings> {
 
 	private static final long serialVersionUID = 4689862977089790920L;
 	private static final String NAME = "Fourier Transformation";
 
-	public FourierTransformationProcessor(){
+	public FourierTransformationProcessor() {
+
 		super(FourierTransformationSettings.class);
 	}
 
 	@Override
-	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, FourierTransformationSettings> context, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	protected IMeasurement doFiltering(FilterContext<FIDMeasurement, FourierTransformationSettings> context, IMessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		FIDMeasurement measurement = context.getFilteredObject();
 		List<? extends FIDSignal> signals = measurement.getSignals();
@@ -100,7 +102,8 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		private static final long serialVersionUID = -3570180428815391262L;
 		private List<? extends SpectrumSignal> signals;
 
-		public FFTFilteredMeasurement(FilterContext<FIDMeasurement, FourierTransformationSettings> filterContext, List<FFTSpectrumSignal> signals){
+		public FFTFilteredMeasurement(FilterContext<FIDMeasurement, FourierTransformationSettings> filterContext, List<FFTSpectrumSignal> signals) {
+
 			super(filterContext);
 			this.signals = Collections.unmodifiableList(signals);
 		}
@@ -124,7 +127,8 @@ public class FourierTransformationProcessor extends AbstractFIDSignalFilter<Four
 		private BigDecimal shift;
 		private Complex complex;
 
-		public FFTSpectrumSignal(BigDecimal shift, Complex complex){
+		public FFTSpectrumSignal(BigDecimal shift, Complex complex) {
+
 			this.shift = shift;
 			this.complex = complex;
 		}

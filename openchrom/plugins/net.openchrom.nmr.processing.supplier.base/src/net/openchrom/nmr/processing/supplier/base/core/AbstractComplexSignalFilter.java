@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Christoph Läubrich - initial API and implementation
+ * Philip Wenig - refactoring
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
@@ -21,7 +22,7 @@ import org.eclipse.chemclipse.model.core.FilteredMeasurement;
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
-import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.core.IMessageConsumer;
 import org.eclipse.chemclipse.processing.filter.FilterContext;
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -33,6 +34,7 @@ public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IC
 	private Class<ConfigType> configClass;
 
 	public AbstractComplexSignalFilter(Class<ConfigType> configClass) {
+
 		this.configClass = configClass;
 	}
 
@@ -72,7 +74,7 @@ public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IC
 	}
 
 	@Override
-	public <ResultType> ResultType filterIMeasurements(Collection<? extends IMeasurement> filterItems, ConfigType configuration, Function<? super Collection<? extends IMeasurement>, ResultType> chain, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
+	public <ResultType> ResultType filterIMeasurements(Collection<? extends IMeasurement> filterItems, ConfigType configuration, Function<? super Collection<? extends IMeasurement>, ResultType> chain, IMessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, getName(), 100 * filterItems.size());
 		// collect filtered items here...
@@ -109,7 +111,7 @@ public abstract class AbstractComplexSignalFilter<ConfigType, SubType extends IC
 
 	protected abstract boolean acceptsIMeasurement(IMeasurement measurement);
 
-	protected abstract IMeasurement doFiltering(FilterContext<SubType, ConfigType> context, MessageConsumer messageConsumer, IProgressMonitor monitor);
+	protected abstract IMeasurement doFiltering(FilterContext<SubType, ConfigType> context, IMessageConsumer messageConsumer, IProgressMonitor monitor);
 
 	protected boolean isValidConfig(ConfigType config) {
 

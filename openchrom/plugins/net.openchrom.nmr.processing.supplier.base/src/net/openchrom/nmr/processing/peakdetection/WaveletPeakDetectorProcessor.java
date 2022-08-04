@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,7 +24,7 @@ import org.eclipse.chemclipse.model.core.PeakPosition;
 import org.eclipse.chemclipse.model.detector.IMeasurementPeakDetector;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
-import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.core.IMessageConsumer;
 import org.eclipse.chemclipse.processing.detector.Detector;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
@@ -48,7 +48,7 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 	}
 
 	@Override
-	public <T extends IMeasurement> Map<T, PeakList> detectIMeasurementPeaks(Collection<T> detectorInputItems, WaveletPeakDetectorSettings configuration, MessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
+	public <T extends IMeasurement> Map<T, PeakList> detectIMeasurementPeaks(Collection<T> detectorInputItems, WaveletPeakDetectorSettings configuration, IMessageConsumer messageConsumer, IProgressMonitor monitor) throws IllegalArgumentException {
 
 		SubMonitor convert = SubMonitor.convert(monitor, getName(), detectorInputItems.size() * 100);
 		LinkedHashMap<T, PeakList> map = new LinkedHashMap<>();
@@ -61,7 +61,7 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 	}
 
 	@SuppressWarnings("unused")
-	private PeakList detect(List<? extends SpectrumSignal> signals, WaveletPeakDetectorSettings configuration, MessageConsumer messageConsumer, IProgressMonitor monitor) {
+	private PeakList detect(List<? extends SpectrumSignal> signals, WaveletPeakDetectorSettings configuration, IMessageConsumer messageConsumer, IProgressMonitor monitor) {
 
 		/*
 		 * TODO detect the peaks
