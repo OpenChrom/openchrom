@@ -1,4 +1,4 @@
-<img src="https://www.openchrom.net/img/LogoTrans.png" height="50" align="right">
+<img src="OpenChrom.png" height="50" align="right">
 
 # OpenChrom® Analytics Edition
 
