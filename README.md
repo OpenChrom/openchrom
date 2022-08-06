@@ -14,7 +14,7 @@ If you would like to **contribute** to this project, please have a look at the [
 
 For user- and developer **documentation**, have a look at our [wiki](https://github.com/OpenChrom/openchrom/wiki).
 
-Builds for Windows, macOS and Linux can be [downloaded](https://www.lablicate.com/platform/openchrom/download) including proprietary converter bundles.
+Builds for Windows, macOS and Linux can be **[downloaded](https://openchrom.net/download)** including proprietary converter bundles.
 
 ---
 
