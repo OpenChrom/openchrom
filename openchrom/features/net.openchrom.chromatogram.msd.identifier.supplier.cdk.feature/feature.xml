@@ -23,7 +23,6 @@ http://www.eclipse.org/legal/epl-v10.html
 
    <requires>
       <import feature="net.openchrom.thirdpartylibraries.cdk.feature" version="2.3.0.qualifier"/>
-      <import feature="net.openchrom.thirdpartylibraries.opsin.feature" version="2.4.0.qualifier"/>
    </requires>
 
    <plugin
@@ -42,13 +41,6 @@ http://www.eclipse.org/legal/epl-v10.html
 
    <plugin
          id="net.openchrom.thirdpartylibraries.cdk"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.openchrom.thirdpartylibraries.opsin"
          download-size="0"
          install-size="0"
          version="0.0.0"
