@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.chromatogram.msd.identifier.supplier.cdk
-Eclipse-RegisterBuddy: net.openchrom.thirdpartylibraries.cdk.feature, net.openchrom.thirdpartylibraries.opsin
+Eclipse-RegisterBuddy: net.openchrom.thirdpartylibraries.cdk.feature
 Bundle-ManifestVersion: 2
 Bundle-Name: CDK Identifier
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.identifier.supplier.cdk;singleton:=true
@@ -11,12 +11,16 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
- net.openchrom.thirdpartylibraries.opsin;bundle-version="2.6.0",
  org.eclipse.chemclipse.chromatogram.msd.identifier;bundle-version="0.8.0",
  org.eclipse.chemclipse.processing;bundle-version="0.8.0",
  net.openchrom.thirdpartylibraries.cdk;bundle-version="2.3.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
- com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.7.1"
+ com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.7.1",
+ wrapped.uk.ac.cam.ch.opsin.opsin-core;bundle-version="2.6.0",
+ stax2-api;bundle-version="4.2.1",
+ wrapped.dk.brics.automaton;bundle-version="1.12.0",
+ org.apache.logging.log4j.api;bundle-version="2.18.0",
+ com.fasterxml.woodstox.woodstox-core;bundle-version="6.2.7"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.chromatogram.msd.identifier.supplier.cdk.converter,
