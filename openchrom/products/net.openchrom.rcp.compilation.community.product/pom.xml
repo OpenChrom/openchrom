@@ -27,12 +27,14 @@
 						<goals>
 							<goal>materialize-products</goal>
 						</goals>
+						<phase>install</phase>
 					</execution>
 					<execution>
 						<id>archive-products</id>
 						<goals>
 							<goal>archive-products</goal>
 						</goals>
+						<phase>install</phase>
 						<configuration>
 							<formats>
 								<linux>tar.gz</linux>
