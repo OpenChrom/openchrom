@@ -27,10 +27,6 @@ and is available at http://www.eclipse.org/legal/epl-v10.html
       <discovery label="NetCDF" url="http://www.unidata.ucar.edu/software/netcdf-java"/>
    </url>
 
-   <requires>
-      <import feature="net.openchrom.thirdpartylibraries.netcdf.feature" version="4.3.19.qualifier"/>
-   </requires>
-
    <plugin
          id="net.openchrom.msd.converter.supplier.cdf"
          download-size="0"

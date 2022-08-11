@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.msd.converter.supplier.cdf
-Eclipse-RegisterBuddy: 	org.eclipse.chemclipse.model, org.eclipse.chemclipse.msd.model, net.openchrom.thirdpartylibraries.netcdf
+Eclipse-RegisterBuddy: org.eclipse.chemclipse.model, org.eclipse.chemclipse.msd.model
 Bundle-ManifestVersion: 2
 Bundle-Name: Cdf Plug-in
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.cdf;singleton:=true
@@ -13,8 +13,18 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.processing;bundle-version="0.8.0",
  org.eclipse.chemclipse.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
- net.openchrom.thirdpartylibraries.netcdf;bundle-version="4.3.19",
- org.eclipse.chemclipse.support;bundle-version="0.8.0"
+ org.eclipse.chemclipse.support;bundle-version="0.8.0",
+ wrapped.edu.ucar.cdm-core;bundle-version="5.5.3",
+ wrapped.com.beust.jcommander;bundle-version="1.82.0",
+ wrapped.edu.ucar.udunits;bundle-version="5.5.3",
+ wrapped.edu.ucar.httpservices;bundle-version="5.5.3",
+ com.google.guava;bundle-version="30.1.0",
+ com.google.protobuf;bundle-version="3.21.5",
+ wrapped.com.google.re2j.re2j;bundle-version="1.7.0",
+ wrapped.org.jdom.jdom2;bundle-version="2.0.6",
+ org.slf4j.api;bundle-version="1.7.30",
+ org.apache.httpcomponents.httpclient;bundle-version="4.5.13",
+ org.apache.httpcomponents.httpcore;bundle-version="4.4.15"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: ChemClipse
