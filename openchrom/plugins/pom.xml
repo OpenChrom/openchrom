@@ -22,7 +22,6 @@
 		<module>net.openchrom.msd.converter.supplier.btmsp.fragment.test</module>
 		<module>net.openchrom.msd.converter.supplier.btmsp.ui</module>
 		<module>net.openchrom.msd.converter.supplier.btmsp</module>
-		<module>net.openchrom.csd.converter.supplier.cdf.fragment.test</module>
 		<module>net.openchrom.csd.converter.supplier.cdf.ui</module>
 		<module>net.openchrom.csd.converter.supplier.cdf</module>
 		<module>net.openchrom.msd.converter.supplier.cdf.fragment.test</module>
