@@ -37,4 +37,4 @@ jobs:
         java-version: '17'
         cache: 'maven'
     - name: Build with Maven
-      run: cd openchrom && mvn -f openchrom/releng/net.openchrom.aggregator/pom.xml -T 1C install --batch-mode --no-transfer-progress
+      run: cd openchrom && mvn -f openchrom/releng/net.openchrom.aggregator/pom.xml -T 1C verify --batch-mode --no-transfer-progress -DskipArchive=true
