@@ -47,7 +47,6 @@
     <module>../net.openchrom.targetplatform</module>
     <module>../../plugins</module>
     <module>../../features</module>
-    <module>../../sites</module>
     <module>../../products</module>
   </modules>
 </project>
