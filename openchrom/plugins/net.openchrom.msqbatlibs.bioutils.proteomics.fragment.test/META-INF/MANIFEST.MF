@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.msqbatlibs.bioutils.proteomics.fragment.test
 Bundle-ManifestVersion: 2
-Bundle-Name: Test
+Bundle-Name: BioUtils Proteomics Test
 Bundle-SymbolicName: net.openchrom.msqbatlibs.bioutils.proteomics.fragment.test
 Bundle-Version: 1.5.0.qualifier
 Fragment-Host: net.openchrom.msqbatlibs.bioutils.proteomics;bundle-version="1.5.0"

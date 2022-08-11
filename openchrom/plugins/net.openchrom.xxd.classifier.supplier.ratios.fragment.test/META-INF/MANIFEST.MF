@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.xxd.classifier.supplier.ratios.fragment.test
 Bundle-ManifestVersion: 2
-Bundle-Name: Test
+Bundle-Name: Ratio Calculator Test
 Bundle-SymbolicName: net.openchrom.xxd.classifier.supplier.ratios.fragment.test
 Bundle-Version: 1.5.0.qualifier
 Bundle-Vendor: OpenChrom
