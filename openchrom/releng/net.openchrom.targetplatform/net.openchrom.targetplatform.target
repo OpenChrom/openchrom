@@ -12,7 +12,6 @@
 <unit id="net.openchrom.thirdpartylibraries.jhdf5.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.pdfjet.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.cdk.feature.feature.group" version="0.0.0"/>
-<unit id="net.openchrom.thirdpartylibraries.netcdf.feature.feature.group" version="0.0.0"/>
 <unit id="net.openchrom.thirdpartylibraries.splash.feature.feature.group" version="0.0.0"/>
 <repository location="https://update.openchrom.net/repositories/community/latest/3rdparty"/>
 </location>
@@ -136,12 +135,110 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-api</artifactId>
 				<version>2.18.0</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
+	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>edu.ucar</groupId>
+				<artifactId>cdm-core</artifactId>
+				<version>5.5.3</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+		<repositories>
+			<repository>
+				<id>Unidata All</id>
+				<url>https://artifacts.unidata.ucar.edu/repository/unidata-all/</url>
+			</repository>
+		</repositories>
+	</location>
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>edu.ucar</groupId>
+				<artifactId>httpservices</artifactId>
+				<version>5.5.3</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+		<repositories>
+			<repository>
+				<id>Unidata All</id>
+				<url>https://artifacts.unidata.ucar.edu/repository/unidata-all/</url>
+			</repository>
+		</repositories>
+	</location>
+	<location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>edu.ucar</groupId>
+				<artifactId>udunits</artifactId>
+				<version>5.5.3</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+		<repositories>
+			<repository>
+				<id>Unidata All</id>
+				<url>https://artifacts.unidata.ucar.edu/repository/unidata-all/</url>
+			</repository>
+		</repositories>
+	</location>
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>com.beust</groupId>
+				<artifactId>jcommander</artifactId>
+				<version>1.82</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
+	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>com.google.protobuf</groupId>
+				<artifactId>protobuf-java</artifactId>
+				<version>3.21.5</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
+	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>com.google.re2j</groupId>
+				<artifactId>re2j</artifactId>
+				<version>1.7</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
+	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>2.10.14</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
+	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>org.jdom</groupId>
+				<artifactId>jdom2</artifactId>
+				<version>2.0.6.1</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>
