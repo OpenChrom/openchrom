@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Lablicate GmbH.
+ * Copyright (c) 2015, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -19,8 +19,11 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.btmsp.TestPathHelper;
+import net.openchrom.msd.converter.supplier.btmsp.converter.model.BTMSPMassSpectrum;
+import net.openchrom.msd.converter.supplier.btmsp.converter.model.IBTMSPMassSpectrum;
 
 import junit.framework.TestCase;
 
@@ -45,12 +48,14 @@ public class MassSpectrumImportConverter_Cattle_ITest extends TestCase {
 		super.tearDown();
 	}
 
+	@Test
 	public void testBasicValidation() {
 
 		assertNotNull(massSpectra);
-		assertEquals("Rind 1. Versuch", massSpectra.getName());
 		assertFalse(massSpectra.getList().isEmpty());
 		IScanMSD massSpectrum = massSpectra.getList().get(0);
 		assertEquals(70, massSpectrum.getNumberOfIons());
+		IBTMSPMassSpectrum btmsp = (BTMSPMassSpectrum)massSpectrum;
+		assertEquals("Rind 1. Versuch", btmsp.getLibraryInformation().getName());
 	}
 }
