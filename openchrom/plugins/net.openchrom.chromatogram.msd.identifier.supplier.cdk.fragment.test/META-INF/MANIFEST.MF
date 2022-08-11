@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.chromatogram.msd.identifier.supplier.cdk.fragment.test
 Bundle-ManifestVersion: 2
-Bundle-Name: Test
+Bundle-Name: CDK Test
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.identifier.supplier.cdk.fragment.test
 Bundle-Version: 1.5.0.qualifier
 Bundle-Vendor: ChemClipse

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.msqbatlibs.jtables.fragment.test
 Bundle-ManifestVersion: 2
-Bundle-Name: Test
+Bundle-Name: JTables Test
 Bundle-SymbolicName: net.openchrom.msqbatlibs.jtables.fragment.test
 Bundle-Version: 1.5.0.qualifier
 Fragment-Host: net.openchrom.msqbatlibs.jtables;bundle-version="1.5.0"

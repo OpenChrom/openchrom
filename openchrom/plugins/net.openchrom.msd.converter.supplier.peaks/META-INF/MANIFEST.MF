@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.msd.converter.supplier.peaks
 Bundle-ManifestVersion: 2
-Bundle-Name: BTMSP implementation
+Bundle-Name: Spectra Bank / SPECLUST .peaks Converter
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.peaks;singleton:=true
 Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.msd.converter.supplier.peaks.Activator

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.wsd.converter.supplier.abif.fragment.test
 Bundle-ManifestVersion: 2
-Bundle-Name: Test
+Bundle-Name: ab1 Converter Test
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.abif.fragment.test
 Bundle-Version: 1.5.0.qualifier
 Bundle-Vendor: OpenChrom
