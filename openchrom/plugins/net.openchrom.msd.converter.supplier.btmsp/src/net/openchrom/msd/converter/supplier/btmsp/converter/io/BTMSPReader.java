@@ -28,7 +28,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
@@ -50,93 +49,113 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 	@Override
 	public IMassSpectra read(File file, IProgressMonitor monitor) throws IOException {
 
-		ZipFile zipFile = new ZipFile(file);
-		Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
-		ZipEntry zipData = null;
-		while(zipEntries.hasMoreElements()) {
-			ZipEntry zipEntry = zipEntries.nextElement();
-			String name = zipEntry.getName();
-			if(!name.equals("[Content_Types].xml")) {
-				zipData = zipEntry;
-			}
-		}
-		if(zipData == null) {
-			zipFile.close();
-			throw new FileIsNotReadableException();
-		}
 		IMassSpectra massSpectra = new MassSpectra();
+		massSpectra.setName(file.getName());
+		try (ZipFile zipFile = new ZipFile(file)) {
+			Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
+			while(zipEntries.hasMoreElements()) {
+				ZipEntry zipEntry = zipEntries.nextElement(); // UTF8, no BOM
+				if(zipEntry.getName().equals("[Content_Types].xml")) {
+					continue;
+				}
+				BTMSPMassSpectrum mainSpectrum = readSpectrum(zipFile, zipEntry);
+				massSpectra.addMassSpectrum(mainSpectrum);
+			}
+		}
+		return massSpectra;
+	}
+
+	private BTMSPMassSpectrum readSpectrum(ZipFile zipFile, ZipEntry zipEntry) {
+
 		ILibraryInformation libraryInformation = new PeakLibraryInformation();
+		BTMSPMassSpectrum mainSpectrum = new BTMSPMassSpectrum();
 		try {
-			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-			InputStream dataXML = zipFile.getInputStream(zipData); // UTF8, no BOM
-			BufferedInputStream bufferedInputStream = new BufferedInputStream(dataXML);
-			XMLEventReader eventReader = inputFactory.createXMLEventReader(bufferedInputStream);
-			EventFilter eventFilter = new EventFilterMainSpectrum();
-			XMLEventReader filteredEventReader = inputFactory.createFilteredReader(eventReader, eventFilter);
-			XMLEvent xmlEvent = filteredEventReader.nextEvent();
-			Iterator<? extends Attribute> mainSpectrumAttributes = xmlEvent.asStartElement().getAttributes();
-			while(mainSpectrumAttributes.hasNext()) {
-				Attribute attribute = mainSpectrumAttributes.next();
-				String attributeName = attribute.getName().getLocalPart();
-				if(attributeName.equals("name")) {
-					massSpectra.setName(attribute.getValue());
-					libraryInformation.setName(attribute.getValue());
-				}
-			}
-			dataXML = zipFile.getInputStream(zipData);
-			bufferedInputStream = new BufferedInputStream(dataXML);
-			eventReader = inputFactory.createXMLEventReader(bufferedInputStream);
-			eventFilter = new EventFilterSample();
-			filteredEventReader = inputFactory.createFilteredReader(eventReader, eventFilter);
-			if(filteredEventReader.hasNext()) {
-				xmlEvent = filteredEventReader.nextEvent();
-				Iterator<? extends Attribute> sampleAttributes = xmlEvent.asStartElement().getAttributes();
-				while(sampleAttributes.hasNext()) {
-					Attribute attribute = sampleAttributes.next();
-					String attributeName = attribute.getName().getLocalPart();
-					if(attributeName.equals("providedBy")) {
-						libraryInformation.setContributor(attribute.getValue());
-					} else if(attributeName.equals("comment")) {
-						libraryInformation.setComments(attribute.getValue());
-					} else if(attributeName.equals("growingConditions")) {
-						libraryInformation.setMiscellaneous(attribute.getValue());
-					}
-				}
-			}
-			dataXML = zipFile.getInputStream(zipData);
-			BufferedInputStream newBufferedInputStream = new BufferedInputStream(dataXML);
-			eventReader = inputFactory.createXMLEventReader(newBufferedInputStream);
-			eventFilter = new EventFilterPeakData();
-			filteredEventReader = inputFactory.createFilteredReader(eventReader, eventFilter);
-			BTMSPMassSpectrum mainSpectrum = new BTMSPMassSpectrum(); // TODO this only parses the MSP, but the source spectra are saved in here as well
-			while(filteredEventReader.hasNext()) {
-				xmlEvent = filteredEventReader.nextEvent();
-				Iterator<? extends Attribute> peakAttributes = xmlEvent.asStartElement().getAttributes();
-				float abundance = 0;
-				double ion = 0;
-				while(peakAttributes.hasNext()) {
-					Attribute attribute = peakAttributes.next();
-					String attributeName = attribute.getName().getLocalPart();
-					if(attributeName.equals("relativeIntensity")) {
-						abundance = Float.parseFloat(attribute.getValue());
-					}
-					if(attributeName.equals("mass")) {
-						ion = Double.parseDouble(attribute.getValue());
-					}
-					if(abundance > 0 && ion > 0) {
-						mainSpectrum.addIon(new Ion(ion, abundance));
-						abundance = 0;
-						ion = 0;
-					}
-				}
-			}
+			readMainSpectrum(zipFile, zipEntry, libraryInformation);
+			readSample(zipFile, zipEntry, libraryInformation);
+			mainSpectrum = readPeakData(zipFile, zipEntry);
 			mainSpectrum.setLibraryInformation(libraryInformation);
-			massSpectra.addMassSpectrum(mainSpectrum);
 		} catch(XMLStreamException | AbundanceLimitExceededException
-				| IonLimitExceededException e) {
+				| IonLimitExceededException | IOException e) {
 			logger.warn(e);
 		}
-		zipFile.close();
-		return massSpectra;
+		return mainSpectrum;
+	}
+
+	private void readMainSpectrum(ZipFile zipFile, ZipEntry zipEntry, ILibraryInformation libraryInformation) throws XMLStreamException, IOException {
+
+		InputStream dataXML = zipFile.getInputStream(zipEntry);
+		BufferedInputStream bufferedInputStream = new BufferedInputStream(dataXML);
+		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+		XMLEventReader eventReader = inputFactory.createXMLEventReader(bufferedInputStream);
+		EventFilter eventFilter = new EventFilterMainSpectrum();
+		XMLEventReader filteredEventReader = inputFactory.createFilteredReader(eventReader, eventFilter);
+		XMLEvent xmlEvent = filteredEventReader.nextEvent();
+		Iterator<? extends Attribute> mainSpectrumAttributes = xmlEvent.asStartElement().getAttributes();
+		while(mainSpectrumAttributes.hasNext()) {
+			Attribute attribute = mainSpectrumAttributes.next();
+			String attributeName = attribute.getName().getLocalPart();
+			if(attributeName.equals("name")) {
+				libraryInformation.setName(attribute.getValue());
+			}
+		}
+	}
+
+	private void readSample(ZipFile zipFile, ZipEntry zipEntry, ILibraryInformation libraryInformation) throws XMLStreamException, IOException {
+
+		InputStream dataXML = zipFile.getInputStream(zipEntry);
+		BufferedInputStream bufferedInputStream = new BufferedInputStream(dataXML);
+		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+		XMLEventReader eventReader = inputFactory.createXMLEventReader(bufferedInputStream);
+		EventFilterSample eventFilter = new EventFilterSample();
+		XMLEventReader filteredEventReader = inputFactory.createFilteredReader(eventReader, eventFilter);
+		if(filteredEventReader.hasNext()) {
+			XMLEvent xmlEvent = filteredEventReader.nextEvent();
+			Iterator<? extends Attribute> sampleAttributes = xmlEvent.asStartElement().getAttributes();
+			while(sampleAttributes.hasNext()) {
+				Attribute attribute = sampleAttributes.next();
+				String attributeName = attribute.getName().getLocalPart();
+				if(attributeName.equals("providedBy")) {
+					libraryInformation.setContributor(attribute.getValue());
+				} else if(attributeName.equals("comment")) {
+					libraryInformation.setComments(attribute.getValue());
+				} else if(attributeName.equals("growingConditions")) {
+					libraryInformation.setMiscellaneous(attribute.getValue());
+				}
+			}
+		}
+	}
+
+	// TODO this only parses the MSP, but the source spectra are saved in here as well
+	private BTMSPMassSpectrum readPeakData(ZipFile zipFile, ZipEntry zipEntry) throws XMLStreamException, AbundanceLimitExceededException, IonLimitExceededException, IOException {
+
+		InputStream dataXML = zipFile.getInputStream(zipEntry);
+		BufferedInputStream bufferedInputStream = new BufferedInputStream(dataXML);
+		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+		XMLEventReader eventReader = inputFactory.createXMLEventReader(bufferedInputStream);
+		EventFilterPeakData eventFilter = new EventFilterPeakData();
+		XMLEventReader filteredEventReader = inputFactory.createFilteredReader(eventReader, eventFilter);
+		BTMSPMassSpectrum mainSpectrum = new BTMSPMassSpectrum();
+		while(filteredEventReader.hasNext()) {
+			XMLEvent xmlEvent = filteredEventReader.nextEvent();
+			Iterator<? extends Attribute> peakAttributes = xmlEvent.asStartElement().getAttributes();
+			float abundance = 0;
+			double ion = 0;
+			while(peakAttributes.hasNext()) {
+				Attribute attribute = peakAttributes.next();
+				String attributeName = attribute.getName().getLocalPart();
+				if(attributeName.equals("relativeIntensity")) {
+					abundance = Float.parseFloat(attribute.getValue());
+				}
+				if(attributeName.equals("mass")) {
+					ion = Double.parseDouble(attribute.getValue());
+				}
+				if(abundance > 0 && ion > 0) {
+					mainSpectrum.addIon(new Ion(ion, abundance));
+					abundance = 0;
+					ion = 0;
+				}
+			}
+		}
+		return mainSpectrum;
 	}
 }
