@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,9 +18,9 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 
-public class BTMSPMassSpectrum extends AbstractRegularLibraryMassSpectrum implements IBTMSPMassSpectrum {
+public class MainSpectraProjection extends AbstractRegularLibraryMassSpectrum implements IMainSpectraProjection {
 
-	private static final Logger logger = Logger.getLogger(BTMSPMassSpectrum.class);
+	private static final Logger logger = Logger.getLogger(MainSpectraProjection.class);
 	/**
 	 *
 	 */
@@ -33,9 +33,9 @@ public class BTMSPMassSpectrum extends AbstractRegularLibraryMassSpectrum implem
 	}
 
 	@Override
-	public BTMSPMassSpectrum makeDeepCopy() throws CloneNotSupportedException {
+	public MainSpectraProjection makeDeepCopy() throws CloneNotSupportedException {
 
-		final BTMSPMassSpectrum massSpectrum = (BTMSPMassSpectrum)super.clone();
+		final MainSpectraProjection massSpectrum = (MainSpectraProjection)super.clone();
 		IIon mz;
 		/*
 		 * The instance variables have been copied by super.clone();.<br/> The

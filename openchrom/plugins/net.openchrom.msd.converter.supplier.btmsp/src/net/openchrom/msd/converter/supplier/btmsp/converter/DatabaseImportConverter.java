@@ -24,7 +24,7 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.btmsp.converter.io.BTMSPReader;
+import net.openchrom.msd.converter.supplier.btmsp.converter.io.MainSpectraProjectionReader;
 
 public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 
@@ -37,7 +37,7 @@ public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 		final IProcessingInfo<IMassSpectra> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			try {
-				final BTMSPReader btmspReader = new BTMSPReader();
+				final MainSpectraProjectionReader btmspReader = new MainSpectraProjectionReader();
 				final IMassSpectra massSpectra = btmspReader.read(file, monitor);
 				if(massSpectra != null && massSpectra.size() > 0) {
 					processingInfo.setProcessingResult(massSpectra);

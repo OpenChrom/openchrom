@@ -22,8 +22,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.btmsp.TestPathHelper;
-import net.openchrom.msd.converter.supplier.btmsp.converter.model.BTMSPMassSpectrum;
-import net.openchrom.msd.converter.supplier.btmsp.converter.model.IBTMSPMassSpectrum;
+import net.openchrom.msd.converter.supplier.btmsp.converter.model.IMainSpectraProjection;
+import net.openchrom.msd.converter.supplier.btmsp.converter.model.MainSpectraProjection;
 
 import junit.framework.TestCase;
 
@@ -55,7 +55,7 @@ public class MassSpectrumImportConverter_Cattle_ITest extends TestCase {
 		assertFalse(massSpectra.getList().isEmpty());
 		IScanMSD massSpectrum = massSpectra.getList().get(0);
 		assertEquals(70, massSpectrum.getNumberOfIons());
-		IBTMSPMassSpectrum btmsp = (BTMSPMassSpectrum)massSpectrum;
+		IMainSpectraProjection btmsp = (MainSpectraProjection)massSpectrum;
 		assertEquals("Rind 1. Versuch", btmsp.getLibraryInformation().getName());
 	}
 }

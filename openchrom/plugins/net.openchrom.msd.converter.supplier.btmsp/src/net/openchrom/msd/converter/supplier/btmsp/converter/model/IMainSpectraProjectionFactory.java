@@ -11,7 +11,11 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.btmsp.converter.model;
 
-import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
+public class IMainSpectraProjectionFactory implements IScanMSDFactory {
 
-public interface IBTMSPMassSpectrum extends IRegularLibraryMassSpectrum {
+	@Override
+	public MainSpectraProjection build() {
+
+		return new MainSpectraProjection();
+	}
 }

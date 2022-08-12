@@ -40,11 +40,11 @@ import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.btmsp.converter.model.BTMSPMassSpectrum;
+import net.openchrom.msd.converter.supplier.btmsp.converter.model.MainSpectraProjection;
 
-public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpectraReader {
+public class MainSpectraProjectionReader extends AbstractMassSpectraReader implements IMassSpectraReader {
 
-	private static final Logger logger = Logger.getLogger(BTMSPReader.class);
+	private static final Logger logger = Logger.getLogger(MainSpectraProjectionReader.class);
 
 	@Override
 	public IMassSpectra read(File file, IProgressMonitor monitor) throws IOException {
@@ -58,17 +58,17 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 				if(zipEntry.getName().equals("[Content_Types].xml")) {
 					continue;
 				}
-				BTMSPMassSpectrum mainSpectrum = readSpectrum(zipFile, zipEntry);
+				MainSpectraProjection mainSpectrum = readSpectrum(zipFile, zipEntry);
 				massSpectra.addMassSpectrum(mainSpectrum);
 			}
 		}
 		return massSpectra;
 	}
 
-	private BTMSPMassSpectrum readSpectrum(ZipFile zipFile, ZipEntry zipEntry) {
+	private MainSpectraProjection readSpectrum(ZipFile zipFile, ZipEntry zipEntry) {
 
 		ILibraryInformation libraryInformation = new PeakLibraryInformation();
-		BTMSPMassSpectrum mainSpectrum = new BTMSPMassSpectrum();
+		MainSpectraProjection mainSpectrum = new MainSpectraProjection();
 		try {
 			readMainSpectrum(zipFile, zipEntry, libraryInformation);
 			readSample(zipFile, zipEntry, libraryInformation);
@@ -125,8 +125,7 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 		}
 	}
 
-	// TODO this only parses the MSP, but the source spectra are saved in here as well
-	private BTMSPMassSpectrum readPeakData(ZipFile zipFile, ZipEntry zipEntry) throws XMLStreamException, AbundanceLimitExceededException, IonLimitExceededException, IOException {
+	private MainSpectraProjection readPeakData(ZipFile zipFile, ZipEntry zipEntry) throws XMLStreamException, AbundanceLimitExceededException, IonLimitExceededException, IOException {
 
 		InputStream dataXML = zipFile.getInputStream(zipEntry);
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(dataXML);
@@ -134,7 +133,7 @@ public class BTMSPReader extends AbstractMassSpectraReader implements IMassSpect
 		XMLEventReader eventReader = inputFactory.createXMLEventReader(bufferedInputStream);
 		EventFilterPeakData eventFilter = new EventFilterPeakData();
 		XMLEventReader filteredEventReader = inputFactory.createFilteredReader(eventReader, eventFilter);
-		BTMSPMassSpectrum mainSpectrum = new BTMSPMassSpectrum();
+		MainSpectraProjection mainSpectrum = new MainSpectraProjection();
 		while(filteredEventReader.hasNext()) {
 			XMLEvent xmlEvent = filteredEventReader.nextEvent();
 			Iterator<? extends Attribute> peakAttributes = xmlEvent.asStartElement().getAttributes();
