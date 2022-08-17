@@ -52,7 +52,8 @@ Require-Bundle: org.eclipse.ui,
  com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.9.2",
  com.fasterxml.jackson.core.jackson-core;bundle-version="2.9.2",
  com.fasterxml.jackson.core.jackson-databind;bundle-version="2.9.2",
- org.eclipse.help;bundle-version="3.8.100"
+ org.eclipse.help;bundle-version="3.8.100",
+ org.eclipse.chemclipse.chromatogram.xxd.integrator;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Import-Package: jakarta.xml.bind,

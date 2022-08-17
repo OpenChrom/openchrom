@@ -20,8 +20,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -38,6 +40,15 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> implements 
 	//
 	private static final long serialVersionUID = -5759647615014062815L;
 	private PeakIntegratorListUtil listUtil = new PeakIntegratorListUtil();
+
+	public Set<String> keySet() {
+
+		Set<String> keys = new HashSet<>();
+		for(IntegratorSetting integratorSetting : this) {
+			keys.add(integratorSetting.getIdentifier());
+		}
+		return keys;
+	}
 
 	public void load(String items) {
 
