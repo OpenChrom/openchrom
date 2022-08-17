@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
@@ -49,8 +50,7 @@ public class ReportLabelProvider extends AbstractTemplateLabelProvider {
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof ReportSetting) {
-			ReportSetting setting = (ReportSetting)element;
+		if(element instanceof ReportSetting setting) {
 			switch(columnIndex) {
 				case 0:
 					text = setting.getName();
@@ -80,6 +80,6 @@ public class ReportLabelProvider extends AbstractTemplateLabelProvider {
 	@Override
 	public Image getImage(Object element) {
 
-		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IDENTIFY_PEAKS, IApplicationImage.SIZE_16x16);
+		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IDENTIFY_PEAKS, IApplicationImageProvider.SIZE_16x16);
 	}
 }

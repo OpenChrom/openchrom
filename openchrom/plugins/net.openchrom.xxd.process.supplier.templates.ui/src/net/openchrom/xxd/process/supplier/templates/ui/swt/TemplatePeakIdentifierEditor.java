@@ -282,10 +282,9 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 				Object object = structuredSelection.getFirstElement();
-				if(object instanceof IdentifierSetting) {
+				if(object instanceof IdentifierSetting setting) {
 					Set<String> keySetEdit = new HashSet<>();
 					keySetEdit.addAll(settings.keySet());
-					IdentifierSetting setting = (IdentifierSetting)object;
 					keySetEdit.remove(setting.getName());
 					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new PeakIdentifierInputValidator(keySetEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {

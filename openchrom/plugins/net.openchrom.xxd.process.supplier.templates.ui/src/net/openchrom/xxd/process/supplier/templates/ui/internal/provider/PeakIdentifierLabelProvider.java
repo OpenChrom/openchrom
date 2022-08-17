@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
@@ -57,8 +58,7 @@ public class PeakIdentifierLabelProvider extends AbstractTemplateLabelProvider {
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof IdentifierSetting) {
-			IdentifierSetting setting = (IdentifierSetting)element;
+		if(element instanceof IdentifierSetting setting) {
 			switch(columnIndex) {
 				case 0:
 					text = setting.getName();
@@ -100,6 +100,6 @@ public class PeakIdentifierLabelProvider extends AbstractTemplateLabelProvider {
 	@Override
 	public Image getImage(Object element) {
 
-		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IDENTIFY_PEAKS, IApplicationImage.SIZE_16x16);
+		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IDENTIFY_PEAKS, IApplicationImageProvider.SIZE_16x16);
 	}
 }

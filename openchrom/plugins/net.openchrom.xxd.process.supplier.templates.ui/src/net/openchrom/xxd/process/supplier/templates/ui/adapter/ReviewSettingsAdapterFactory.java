@@ -26,8 +26,7 @@ public class ReviewSettingsAdapterFactory implements IAdapterFactory {
 	@Override
 	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 
-		if(adaptableObject instanceof PeakReviewSettings) {
-			PeakReviewSettings settings = (PeakReviewSettings)adaptableObject;
+		if(adaptableObject instanceof PeakReviewSettings settings) {
 			if(adapterType == SettingsUIProvider.class) {
 				return adapterType.cast(createSettingsUIProvider(settings));
 			}

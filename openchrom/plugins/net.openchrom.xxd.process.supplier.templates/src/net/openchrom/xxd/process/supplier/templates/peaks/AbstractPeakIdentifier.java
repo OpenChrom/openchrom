@@ -74,8 +74,7 @@ public abstract class AbstractPeakIdentifier {
 
 		IProcessingInfo<T> processingInfo = validate(peaks, settings, monitor);
 		if(!processingInfo.hasErrorMessages()) {
-			if(settings instanceof PeakIdentifierSettings) {
-				PeakIdentifierSettings peakIdentifierSettings = (PeakIdentifierSettings)settings;
+			if(settings instanceof PeakIdentifierSettings peakIdentifierSettings) {
 				for(IdentifierSetting identifierSetting : peakIdentifierSettings.getIdentifierSettingsList()) {
 					identifyPeak(peaks, identifierSetting, retentionIndexMap);
 				}
