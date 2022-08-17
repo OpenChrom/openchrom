@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -57,8 +57,13 @@ public class PeakIntegrationSettings extends AbstractPeakIntegrationSettings imp
 		this.integratorSettings = settings.extractSettings(integratorSettings);
 	}
 
+	public String getIntegratorSettings() {
+
+		return integratorSettings;
+	}
+
 	@JsonIgnore
-	public List<IntegratorSetting> getIntegratorSettings() {
+	public List<IntegratorSetting> getIntegrationSettingsList() {
 
 		PeakIntegratorListUtil util = new PeakIntegratorListUtil();
 		PeakIntegratorValidator validator = new PeakIntegratorValidator();

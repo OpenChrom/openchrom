@@ -41,7 +41,7 @@ public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakIntegrationSettings peakIntegrationSettings) {
 				RetentionIndexMap retentionIndexMap = RetentionIndexSupport.getRetentionIndexMap(peaks);
-				List<IntegratorSetting> integratorSettings = peakIntegrationSettings.getIntegratorSettings();
+				List<IntegratorSetting> integratorSettings = peakIntegrationSettings.getIntegrationSettingsList();
 				for(IntegratorSetting setting : integratorSettings) {
 					/*
 					 * Bounds

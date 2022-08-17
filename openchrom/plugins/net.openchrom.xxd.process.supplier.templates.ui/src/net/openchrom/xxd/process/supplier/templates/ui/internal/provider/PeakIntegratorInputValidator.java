@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -11,8 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IInputValidator;
@@ -23,11 +23,12 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakIntegratorValidator
 public class PeakIntegratorInputValidator implements IInputValidator {
 
 	private PeakIntegratorValidator validator = new PeakIntegratorValidator();
-	private List<IntegratorSetting> settings = new ArrayList<>();
+	private Set<String> identifiers = new HashSet<>();
 
-	public PeakIntegratorInputValidator(List<IntegratorSetting> settings) {
-		if(settings != null) {
-			this.settings = settings;
+	public PeakIntegratorInputValidator(Set<String> identifiers) {
+
+		if(identifiers != null) {
+			this.identifiers = identifiers;
 		}
 	}
 
@@ -37,7 +38,8 @@ public class PeakIntegratorInputValidator implements IInputValidator {
 		IStatus status = validator.validate(target);
 		if(status.isOK()) {
 			IntegratorSetting setting = validator.getSetting();
-			if(settings.contains(setting)) {
+			String identifier = setting.getIdentifier();
+			if(identifiers.contains(identifier)) {
 				return "The element already exists.";
 			}
 		} else {
