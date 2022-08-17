@@ -82,8 +82,7 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> implements 
 
 	public void importItems(File file) {
 
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
 				IntegratorSetting setting = extract(line);
@@ -91,7 +90,6 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> implements 
 					add(setting);
 				}
 			}
-			bufferedReader.close();
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		} catch(IOException e) {

@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
@@ -54,8 +55,7 @@ public class StandardsAssignerLabelProvider extends AbstractTemplateLabelProvide
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof AssignerStandard) {
-			AssignerStandard setting = (AssignerStandard)element;
+		if(element instanceof AssignerStandard setting) {
 			switch(columnIndex) {
 				case 0:
 					text = setting.getName();
@@ -91,6 +91,6 @@ public class StandardsAssignerLabelProvider extends AbstractTemplateLabelProvide
 	@Override
 	public Image getImage(Object element) {
 
-		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_QUANTITATION_DEFAULT, IApplicationImage.SIZE_16x16);
+		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_QUANTITATION_DEFAULT, IApplicationImageProvider.SIZE_16x16);
 	}
 }

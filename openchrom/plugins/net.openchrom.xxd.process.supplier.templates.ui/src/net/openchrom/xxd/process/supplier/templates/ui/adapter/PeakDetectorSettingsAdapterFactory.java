@@ -27,8 +27,7 @@ public class PeakDetectorSettingsAdapterFactory implements IAdapterFactory {
 	@Override
 	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 
-		if(adaptableObject instanceof PeakDetectorSettings) {
-			PeakDetectorSettings settings = (PeakDetectorSettings)adaptableObject;
+		if(adaptableObject instanceof PeakDetectorSettings settings) {
 			if(adapterType == SettingsUIProvider.class) {
 				return adapterType.cast(createSettingsUIProvider(settings));
 			}

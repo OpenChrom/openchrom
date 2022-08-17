@@ -39,9 +39,8 @@ public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
 
 		IProcessingInfo<T> processingInfo = super.validate(peaks, settings);
 		if(!processingInfo.hasErrorMessages()) {
-			if(settings instanceof PeakIntegrationSettings) {
+			if(settings instanceof PeakIntegrationSettings peakIntegrationSettings) {
 				RetentionIndexMap retentionIndexMap = RetentionIndexSupport.getRetentionIndexMap(peaks);
-				PeakIntegrationSettings peakIntegrationSettings = (PeakIntegrationSettings)settings;
 				List<IntegratorSetting> integratorSettings = peakIntegrationSettings.getIntegratorSettings();
 				for(IntegratorSetting setting : integratorSettings) {
 					/*
@@ -155,7 +154,7 @@ public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
 
 	private void integratePeaks(List<IPeak> peaks, String integrator) {
 
-		if(peaks.size() > 0) {
+		if(!peaks.isEmpty()) {
 			String integratorId;
 			switch(integrator) {
 				case IntegratorSetting.INTEGRATOR_NAME_MAX:

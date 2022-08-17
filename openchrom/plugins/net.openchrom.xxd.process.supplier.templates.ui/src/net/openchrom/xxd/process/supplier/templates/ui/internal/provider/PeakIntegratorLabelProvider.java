@@ -47,8 +47,7 @@ public class PeakIntegratorLabelProvider extends AbstractTemplateLabelProvider {
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof IntegratorSetting) {
-			IntegratorSetting setting = (IntegratorSetting)element;
+		if(element instanceof IntegratorSetting setting) {
 			switch(columnIndex) {
 				case 0:
 					text = getFormattedPosition(setting.getPositionStart(), PLACEHOLDER);

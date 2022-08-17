@@ -14,6 +14,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
@@ -49,10 +50,9 @@ public class PeakDetectorLabelProvider extends AbstractTemplateLabelProvider {
 		if(columnIndex == 0) {
 			return getImage(element);
 		} else if(columnIndex == INDEX_OPTIMIZE_RANGE) {
-			if(element instanceof DetectorSetting) {
-				DetectorSetting setting = (DetectorSetting)element;
+			if(element instanceof DetectorSetting setting) {
 				String fileName = (setting.isOptimizeRange()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
-				return ApplicationImageFactory.getInstance().getImage(fileName, IApplicationImage.SIZE_16x16);
+				return ApplicationImageFactory.getInstance().getImage(fileName, IApplicationImageProvider.SIZE_16x16);
 			}
 		}
 		return null;
@@ -62,8 +62,7 @@ public class PeakDetectorLabelProvider extends AbstractTemplateLabelProvider {
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof DetectorSetting) {
-			DetectorSetting setting = (DetectorSetting)element;
+		if(element instanceof DetectorSetting setting) {
 			switch(columnIndex) {
 				case 0:
 					text = getFormattedPosition(setting.getPositionStart());
@@ -99,6 +98,6 @@ public class PeakDetectorLabelProvider extends AbstractTemplateLabelProvider {
 	@Override
 	public Image getImage(Object element) {
 
-		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PEAK_DETECTOR, IApplicationImage.SIZE_16x16);
+		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PEAK_DETECTOR, IApplicationImageProvider.SIZE_16x16);
 	}
 }
