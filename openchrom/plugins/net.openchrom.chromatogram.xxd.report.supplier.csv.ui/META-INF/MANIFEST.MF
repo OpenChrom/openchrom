@@ -9,12 +9,13 @@ Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.chromatogram.xxd.report.supplier.csv;bundle-version="0.9.0",
  org.eclipse.chemclipse.support;bundle-version="0.9.0",
- org.eclipse.chemclipse.support.ui,
+ org.eclipse.chemclipse.support.ui;bundle-version="0.9.0",
  org.eclipse.ui;bundle-version="3.109.100",
  org.eclipse.chemclipse.ux.extension.ui;bundle-version="0.9.0",
- org.eclipse.chemclipse.ux.extension.xxd.ui,
- org.eclipse.chemclipse.rcp.ui.icons,
- com.fasterxml.jackson.core.jackson-databind;bundle-version="2.9.93"
+ org.eclipse.chemclipse.ux.extension.xxd.ui;bundle-version="0.9.0",
+ org.eclipse.chemclipse.rcp.ui.icons;bundle-version="0.9.0",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.9.93",
+ org.eclipse.chemclipse.xxd.process.ui;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.component.annotations;version="1.3.0"
