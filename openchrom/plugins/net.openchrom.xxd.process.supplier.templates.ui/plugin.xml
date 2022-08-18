@@ -289,4 +289,25 @@
             file="controls.xml">
       </toc>
    </extension>
+   <extension
+         point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
+      <icon
+            class="net.openchrom.xxd.process.supplier.templates.ui.icon.TemplateMenuIcon"
+            id="net.openchrom.xxd.process.supplier.templates.peaks.detector">
+      </icon>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
+      <icon
+            class="net.openchrom.xxd.process.supplier.templates.ui.icon.TemplateMenuIcon"
+            id="net.openchrom.xxd.process.supplier.templates.peaks.identifier">
+      </icon>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
+      <icon
+            class="net.openchrom.xxd.process.supplier.templates.ui.icon.TemplateMenuIcon"
+            id="net.openchrom.xxd.process.supplier.templates.peakIntegrator">
+      </icon>
+   </extension>
 </plugin>
