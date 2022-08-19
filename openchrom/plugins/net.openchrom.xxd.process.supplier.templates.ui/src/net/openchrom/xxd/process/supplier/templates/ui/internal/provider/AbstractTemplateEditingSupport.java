@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
-import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
@@ -27,7 +27,7 @@ import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.IntegratorSetting;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.AbstractTemplateListUI;
-import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
+import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateValidator;
 import net.openchrom.xxd.process.supplier.templates.util.ReportValidator;
 
 public abstract class AbstractTemplateEditingSupport extends EditingSupport {
@@ -53,7 +53,7 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite)tableViewer.getControl());
 			ComboViewer comboViewer = editor.getViewer();
 			comboViewer.setContentProvider(ArrayContentProvider.getInstance());
-			comboViewer.setInput(PeakDetectorValidator.DETECTOR_TYPES);
+			comboViewer.setInput(AbstractTemplateValidator.DETECTOR_TYPES);
 			this.cellEditor = editor;
 		} else if(column.equals(AbstractTemplateLabelProvider.POSITION_DIRECTIVE)) {
 			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite)tableViewer.getControl());
@@ -67,8 +67,6 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 			comboViewer.setContentProvider(ArrayContentProvider.getInstance());
 			comboViewer.setInput(ReportValidator.REPORT_STRATEGIES);
 			this.cellEditor = editor;
-		} else if(column.equals(AbstractTemplateLabelProvider.OPTIMIZE_RANGE)) {
-			this.cellEditor = new CheckboxCellEditor(tableViewer.getTable());
 		} else if(column.equals(AbstractTemplateLabelProvider.INTEGRATOR)) {
 			this.cellEditor = new ComboBoxCellEditor(tableViewer.getTable(), //
 					integratorItems, //
@@ -108,8 +106,7 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof AbstractSetting) {
-			AbstractSetting setting = (AbstractSetting)element;
+		if(element instanceof AbstractSetting setting) {
 			switch(column) {
 				case AbstractTemplateLabelProvider.POSITION_START:
 					return Double.toString(setting.getPositionStart());
@@ -126,8 +123,7 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof AbstractSetting) {
-			AbstractSetting setting = (AbstractSetting)element;
+		if(element instanceof AbstractSetting setting) {
 			switch(column) {
 				case AbstractTemplateLabelProvider.POSITION_START:
 					double start = convertValue(value);
@@ -147,8 +143,7 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 					break;
 				case AbstractTemplateLabelProvider.POSITION_DIRECTIVE:
 					PositionDirective positionDirective = setting.getPositionDirective();
-					if(value instanceof PositionDirective) {
-						PositionDirective positionDirectiveNew = (PositionDirective)value;
+					if(value instanceof PositionDirective positionDirectiveNew) {
 						double positionStart = getAdjustedPosition(positionDirective, positionDirectiveNew, setting.getPositionStart());
 						double positionStop = getAdjustedPosition(positionDirective, positionDirectiveNew, setting.getPositionStop());
 						setting.setPositionDirective(positionDirectiveNew);
@@ -166,12 +161,12 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 			switch(positionDirectiveSink) {
 				case RETENTION_TIME_MS:
 					if(positionDirectiveSource.equals(PositionDirective.RETENTION_TIME_MIN)) {
-						value = value * IChromatogram.MINUTE_CORRELATION_FACTOR;
+						value = value * IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 					}
 					break;
 				case RETENTION_TIME_MIN:
 					if(positionDirectiveSource.equals(PositionDirective.RETENTION_TIME_MS)) {
-						value = value / IChromatogram.MINUTE_CORRELATION_FACTOR;
+						value = value / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 					}
 					break;
 				default:
