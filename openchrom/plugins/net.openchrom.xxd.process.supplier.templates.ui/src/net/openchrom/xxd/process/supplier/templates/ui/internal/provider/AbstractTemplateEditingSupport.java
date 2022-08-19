@@ -46,6 +46,7 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 		super(tableViewer);
 		this.tableViewer = tableViewer;
 		this.column = column;
+		EnumLabelProvider enumLabelProvider = new EnumLabelProvider();
 		//
 		if(column.equals(AbstractTemplateLabelProvider.OPTIMIZE_RANGE)) {
 			this.cellEditor = new CheckboxCellEditor(tableViewer.getTable());
@@ -54,12 +55,14 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 			ComboViewer comboViewer = editor.getViewer();
 			comboViewer.setContentProvider(ArrayContentProvider.getInstance());
 			comboViewer.setInput(AbstractTemplateValidator.DETECTOR_TYPES);
+			comboViewer.setLabelProvider(enumLabelProvider);
 			this.cellEditor = editor;
 		} else if(column.equals(AbstractTemplateLabelProvider.POSITION_DIRECTIVE)) {
 			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite)tableViewer.getControl());
 			ComboViewer comboViewer = editor.getViewer();
 			comboViewer.setContentProvider(ArrayContentProvider.getInstance());
 			comboViewer.setInput(PositionDirective.values());
+			comboViewer.setLabelProvider(enumLabelProvider);
 			this.cellEditor = editor;
 		} else if(column.equals(AbstractTemplateLabelProvider.REPORT_STRATEGY)) {
 			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite)tableViewer.getControl());
