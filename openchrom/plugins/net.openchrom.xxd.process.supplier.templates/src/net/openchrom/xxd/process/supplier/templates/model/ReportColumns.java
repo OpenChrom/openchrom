@@ -161,7 +161,7 @@ public class ReportColumns extends ArrayList<String> {
 		if(!"".equals(items)) {
 			String[] values = items.split(SEPARATOR);
 			for(String value : values) {
-				value = value.replaceAll(SINGLE_TICK, "").replaceAll(DOUBLE_TICK, "").trim();
+				value = value.replace(SINGLE_TICK, "").replace(DOUBLE_TICK, "").trim();
 				if(!value.isEmpty()) {
 					add(value);
 				}

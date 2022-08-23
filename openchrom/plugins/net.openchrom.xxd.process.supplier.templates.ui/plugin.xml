@@ -289,6 +289,13 @@
                type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
          </adapter>
       </factory>
+      <factory
+            adaptableType="net.openchrom.xxd.process.supplier.templates.settings.StandardsReferencerSettings"
+            class="net.openchrom.xxd.process.supplier.templates.ui.adapter.StandardsReferencerSettingsAdapterFactory">
+         <adapter
+               type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
+         </adapter>
+      </factory>
    </extension>
    <extension
          point="org.eclipse.help.toc">

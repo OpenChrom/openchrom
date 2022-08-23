@@ -30,7 +30,7 @@
             peakDetectorName="Peak Detector [Template]"
             peakDetectorSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings">
       </PeakDetector>
-   </extension>   
+   </extension>
    <extension
          point="org.eclipse.chemclipse.chromatogram.msd.identifier.peakIdentifier">
       <PeakIdentificationSupplier
@@ -40,7 +40,7 @@
             identifierName="Peak Identifier [Template]"
             identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings">
       </PeakIdentificationSupplier>
-   </extension>   
+   </extension>
    <extension
          point="org.eclipse.chemclipse.chromatogram.csd.identifier.peakIdentifier">
       <PeakIdentificationSupplier
@@ -60,7 +60,7 @@
             identifierName="Peak Identifier [Template]"
             identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings">
       </PeakIdentificationSupplier>
-   </extension>   
+   </extension>
    <extension
          point="org.eclipse.chemclipse.chromatogram.wsd.identifier.peakIdentifier">
       <PeakIdentificationSupplier
@@ -70,7 +70,7 @@
             identifierName="Peak Identifier [Template]"
             identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakIdentifierSettings">
       </PeakIdentificationSupplier>
-   </extension>   
+   </extension>
    <extension
          point="org.eclipse.chemclipse.chromatogram.msd.quantifier.peakQuantifierSupplier">
       <PeakQuantifierSupplier
@@ -100,7 +100,7 @@
             peakQuantifier="net.openchrom.xxd.process.supplier.templates.peaks.StandardsExtractor"
             peakQuantifierName="Peak Standards Extractor (ISTD)"
             peakQuantifierSettings="net.openchrom.xxd.process.supplier.templates.settings.StandardsExtractorSettings">
-      </PeakQuantifierSupplier>                        
+      </PeakQuantifierSupplier>
    </extension>
    <extension
          point="org.eclipse.chemclipse.chromatogram.xxd.integrator.peakIntegratorSupplier">

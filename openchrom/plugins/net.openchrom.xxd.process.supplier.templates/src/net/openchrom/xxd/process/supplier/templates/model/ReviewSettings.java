@@ -56,6 +56,7 @@ public class ReviewSettings extends ArrayList<ReviewSetting> implements ISetting
 		return keys;
 	}
 
+	@Override
 	public boolean add(ReviewSetting setting) {
 
 		if(setting != null) {
@@ -107,8 +108,7 @@ public class ReviewSettings extends ArrayList<ReviewSetting> implements ISetting
 
 	public void importItems(File file) {
 
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
 				ReviewSetting setting = extract(line);
@@ -116,7 +116,6 @@ public class ReviewSettings extends ArrayList<ReviewSetting> implements ISetting
 					add(setting);
 				}
 			}
-			bufferedReader.close();
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		} catch(IOException e) {
