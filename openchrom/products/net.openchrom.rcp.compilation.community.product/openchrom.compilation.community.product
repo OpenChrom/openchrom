@@ -35,15 +35,9 @@
       location="net.openchrom.rcp.compilation.community.ui" />
    <launcher name="openchrom">
       <linux icon="icons/linux/Icon.xpm"/>
-      <win useIco="false">
-         <bmp
-            winSmallHigh="icons/windows/16x16-32.bmp"
-            winSmallLow="icons/windows/16x16-8.bmp"
-            winMediumHigh="icons/windows/32x32-32.bmp"
-            winMediumLow="icons/windows/32x32-8.bmp"
-            winLargeHigh="icons/windows/48x48-32.bmp"
-            winLargeLow="icons/windows/48x48-8.bmp"
-            winExtraLargeHigh="icons/windows/256x256-32.bmp"/>
+      <win useIco="true">
+         <ico path="icons/windows/Icon.ico"/>
+         <bmp/>
       </win>
    </launcher>
 
@@ -80,9 +74,9 @@ Contributors:
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4" />
-      <property name="osgi.requiredJavaVersion" value="17" />
-      <property name="org.eclipse.update.reconcile" value="false" />
       <property name="sun.awt.xembedserver" value="true" />
+      <property name="org.eclipse.update.reconcile" value="false" />
+      <property name="osgi.requiredJavaVersion" value="17" />
    </configurations>
 
    <preferencesInfo>
