@@ -35,6 +35,7 @@
       location="net.openchrom.rcp.compilation.community.ui" />
    <launcher name="openchrom">
       <linux icon="icons/linux/Icon.xpm"/>
+      <macosx icon="icons/mac/Icon.icns"/>
       <win useIco="true">
          <ico path="icons/windows/Icon.ico"/>
          <bmp/>
@@ -74,9 +75,9 @@ Contributors:
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4" />
-      <property name="sun.awt.xembedserver" value="true" />
       <property name="org.eclipse.update.reconcile" value="false" />
       <property name="osgi.requiredJavaVersion" value="17" />
+      <property name="sun.awt.xembedserver" value="true" />
    </configurations>
 
    <preferencesInfo>
