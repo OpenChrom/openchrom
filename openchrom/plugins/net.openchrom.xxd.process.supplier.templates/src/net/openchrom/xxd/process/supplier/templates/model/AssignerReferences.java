@@ -20,8 +20,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -38,6 +40,15 @@ public class AssignerReferences extends ArrayList<AssignerReference> implements 
 	//
 	private static final long serialVersionUID = -219152470872308287L;
 	private StandardsReferencerListUtil listUtil = new StandardsReferencerListUtil();
+
+	public Set<String> keySet() {
+
+		Set<String> keys = new HashSet<>();
+		for(AssignerReference setting : this) {
+			keys.add(setting.getIdentifier());
+		}
+		return keys;
+	}
 
 	public void load(String items) {
 
@@ -82,8 +93,7 @@ public class AssignerReferences extends ArrayList<AssignerReference> implements 
 
 	public void importItems(File file) {
 
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
 				AssignerReference setting = extract(line);
@@ -91,7 +101,6 @@ public class AssignerReferences extends ArrayList<AssignerReference> implements 
 					add(setting);
 				}
 			}
-			bufferedReader.close();
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		} catch(IOException e) {
@@ -162,5 +171,7 @@ public class AssignerReferences extends ArrayList<AssignerReference> implements 
 		entries.add(setting.getInternalStandard());
 		entries.add(setting.getIdentifier());
 		entries.add(setting.getPositionDirective().name());
+		//
+		compile(builder, entries);
 	}
 }

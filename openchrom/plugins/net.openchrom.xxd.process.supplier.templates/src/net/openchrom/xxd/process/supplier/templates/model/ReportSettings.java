@@ -50,6 +50,7 @@ public class ReportSettings extends ArrayList<ReportSetting> implements ISetting
 		return keys;
 	}
 
+	@Override
 	public boolean add(ReportSetting setting) {
 
 		if(setting != null) {
@@ -101,8 +102,7 @@ public class ReportSettings extends ArrayList<ReportSetting> implements ISetting
 
 	public void importItems(File file) {
 
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
 				ReportSetting setting = extract(line);
@@ -110,7 +110,6 @@ public class ReportSettings extends ArrayList<ReportSetting> implements ISetting
 					add(setting);
 				}
 			}
-			bufferedReader.close();
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		} catch(IOException e) {

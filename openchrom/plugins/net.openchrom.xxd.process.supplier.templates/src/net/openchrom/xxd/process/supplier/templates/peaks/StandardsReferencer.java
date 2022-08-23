@@ -41,12 +41,11 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 	@Override
 	public IProcessingInfo<?> quantify(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(peaks, settings, monitor);
+		IProcessingInfo processingInfo = validate(peaks, settings);
 		if(!processingInfo.hasErrorMessages()) {
-			if(settings instanceof StandardsReferencerSettings) {
+			if(settings instanceof StandardsReferencerSettings standardsReferencerSettings) {
 				RetentionIndexMap retentionIndexMap = RetentionIndexSupport.getRetentionIndexMap(peaks);
-				StandardsReferencerSettings standardsReferencerSettings = (StandardsReferencerSettings)settings;
-				for(AssignerReference assignerReference : standardsReferencerSettings.getReferencerSettings()) {
+				for(AssignerReference assignerReference : standardsReferencerSettings.getReferencerSettingsList()) {
 					referencePeak(peaks, assignerReference, retentionIndexMap);
 				}
 			} else {
@@ -59,7 +58,7 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 	@Override
 	public IProcessingInfo<?> quantify(IPeak peak, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
-		List<IPeak> peaks = new ArrayList<IPeak>();
+		List<IPeak> peaks = new ArrayList<>();
 		peaks.add(peak);
 		return quantify(peaks, settings, monitor);
 	}
@@ -67,7 +66,7 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 	@Override
 	public IProcessingInfo<?> quantify(IPeak peak, IProgressMonitor monitor) {
 
-		List<IPeak> peaks = new ArrayList<IPeak>();
+		List<IPeak> peaks = new ArrayList<>();
 		peaks.add(peak);
 		StandardsReferencerSettings settings = getSettings();
 		return quantify(peaks, settings, monitor);
@@ -165,7 +164,7 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 		}
 	}
 
-	private IProcessingInfo validate(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
+	private IProcessingInfo validate(List<IPeak> peaks, IPeakQuantifierSettings settings) {
 
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		if(peaks == null) {

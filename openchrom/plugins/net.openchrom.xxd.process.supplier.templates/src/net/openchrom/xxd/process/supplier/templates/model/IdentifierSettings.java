@@ -56,6 +56,7 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 		return keys;
 	}
 
+	@Override
 	public boolean add(IdentifierSetting setting) {
 
 		if(setting != null) {
@@ -107,8 +108,7 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 
 	public void importItems(File file) {
 
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
 				IdentifierSetting setting = extract(line);
@@ -116,7 +116,6 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 					add(setting);
 				}
 			}
-			bufferedReader.close();
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		} catch(IOException e) {

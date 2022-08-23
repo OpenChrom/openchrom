@@ -89,8 +89,7 @@ public class DetectorSettings extends ArrayList<DetectorSetting> implements ISet
 
 	public void importItems(File file) {
 
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
 				DetectorSetting setting = extract(line);
@@ -98,7 +97,6 @@ public class DetectorSettings extends ArrayList<DetectorSetting> implements ISet
 					add(setting);
 				}
 			}
-			bufferedReader.close();
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		} catch(IOException e) {

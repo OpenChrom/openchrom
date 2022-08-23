@@ -50,6 +50,7 @@ public class CompensationSettings extends ArrayList<CompensationSetting> impleme
 		return keys;
 	}
 
+	@Override
 	public boolean add(CompensationSetting setting) {
 
 		if(setting != null) {
@@ -101,8 +102,7 @@ public class CompensationSettings extends ArrayList<CompensationSetting> impleme
 
 	public void importItems(File file) {
 
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
 				CompensationSetting setting = extract(line);
@@ -110,7 +110,6 @@ public class CompensationSettings extends ArrayList<CompensationSetting> impleme
 					add(setting);
 				}
 			}
-			bufferedReader.close();
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		} catch(IOException e) {
