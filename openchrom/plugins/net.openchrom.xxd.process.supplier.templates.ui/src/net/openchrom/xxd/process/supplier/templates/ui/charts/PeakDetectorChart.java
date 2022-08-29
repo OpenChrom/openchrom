@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -10,7 +10,7 @@
  * Dr. Philip Wenig - initial API and implementation
  * Christoph Läubrich - add support for comments
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
+package net.openchrom.xxd.process.supplier.templates.ui.charts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +45,9 @@ import org.eclipse.swtchart.extensions.core.RangeRestriction;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.peaks.DeltaRangePaintListener;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.peaks.IRangeUpdateListener;
+import net.openchrom.xxd.process.supplier.templates.ui.swt.peaks.ISectionUpdateListener;
 
 public class PeakDetectorChart extends ChromatogramPeakChart {
 
@@ -58,8 +61,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	//
 	private PeakSupport peakSupport = new PeakSupport();
 	private DetectorRange detectorRange;
-	@SuppressWarnings("rawtypes")
-	private IChromatogramSelection chromatogramSelection = null;
+	private IChromatogramSelection<?, ?> chromatogramSelection = null;
 	//
 	private IPeakUpdateListener peakUpdateListener = null;
 	private ISectionUpdateListener sectionUpdateListener = null;
@@ -69,6 +71,11 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private DeltaRangePaintListener deltaRangePaintListener = new DeltaRangePaintListener(this.getBaseChart());
 	//
 	private boolean isReplacePeak = false;
+
+	public PeakDetectorChart() {
+
+		super();
+	}
 
 	public PeakDetectorChart(Composite parent, int style) {
 
