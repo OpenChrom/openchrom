@@ -110,6 +110,11 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 		createControl(parent);
 	}
 
+	public void updateInput() {
+
+		setInput();
+	}
+
 	@Override
 	public void setEnabled(boolean enabled) {
 

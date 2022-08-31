@@ -110,6 +110,11 @@ public class TraceRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		createControl(parent);
 	}
 
+	public void updateInput() {
+
+		setInput();
+	}
+
 	@Override
 	public void setEnabled(boolean enabled) {
 
