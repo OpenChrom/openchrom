@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -9,9 +9,29 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
+package net.openchrom.xxd.classifier.supplier.ratios.ui.swt;
 
-public enum DisplayOption {
-	SETTINGS, //
-	RESULTS;
+import org.eclipse.chemclipse.support.text.ILabel;
+
+public enum DisplayOption implements ILabel {
+
+	SETTINGS("Settings"), //
+	RESULTS("Results");
+
+	private String label = "";
+
+	private DisplayOption(String label) {
+
+		this.label = label;
+	}
+
+	public String label() {
+
+		return label;
+	}
+
+	public static String[][] getOptions() {
+
+		return ILabel.getOptions(values());
+	}
 }

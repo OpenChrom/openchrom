@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,7 +18,6 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioEditingSupport;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioLabelProvider;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioResultTitles;
@@ -33,6 +32,7 @@ public class QuantRatioListUI extends AbstractRatioListUI {
 	private QuantRatioTableComparator tableComparator = new QuantRatioTableComparator(DisplayOption.SETTINGS);
 
 	public QuantRatioListUI(Composite parent, int style) {
+
 		super(parent, style);
 		createColumns();
 	}

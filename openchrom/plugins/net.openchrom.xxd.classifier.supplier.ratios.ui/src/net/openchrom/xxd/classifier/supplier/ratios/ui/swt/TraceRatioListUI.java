@@ -18,7 +18,6 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioEditingSupport;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioLabelProvider;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioResultTitles;
@@ -26,21 +25,30 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.T
 
 public class TraceRatioListUI extends AbstractRatioListUI {
 
-	private static final String[] TITLES = TraceRatioResultTitles.TITLES_SETTINGS;
-	private static final int[] BOUNDS = TraceRatioResultTitles.BOUNDS_SETTINGS;
-	//
-	private TraceRatioLabelProvider labelProvider = new TraceRatioLabelProvider(DisplayOption.SETTINGS);
-	private TraceRatioTableComparator tableComparator = new TraceRatioTableComparator(DisplayOption.SETTINGS);
+	private TraceRatioLabelProvider labelProvider;
+	private TraceRatioTableComparator tableComparator;
+	private DisplayOption displayOption;
 
 	public TraceRatioListUI(Composite parent, int style) {
 
+		this(parent, style, DisplayOption.SETTINGS);
+	}
+
+	public TraceRatioListUI(Composite parent, int style, DisplayOption displayOption) {
+
 		super(parent, style);
+		this.displayOption = displayOption;
+		labelProvider = new TraceRatioLabelProvider(displayOption);
+		tableComparator = new TraceRatioTableComparator(displayOption);
 		createColumns();
 	}
 
 	private void createColumns() {
 
-		createColumns(TITLES, BOUNDS);
+		String[] titles = DisplayOption.SETTINGS.equals(displayOption) ? TraceRatioResultTitles.TITLES_SETTINGS : TraceRatioResultTitles.TITLES_RESULTS;
+		int[] bounds = DisplayOption.SETTINGS.equals(displayOption) ? TraceRatioResultTitles.BOUNDS_SETTINGS : TraceRatioResultTitles.BOUNDS_RESULTS;
+		//
+		createColumns(titles, bounds);
 		setLabelProvider(labelProvider);
 		setContentProvider(new ListContentProvider());
 		setComparator(tableComparator);

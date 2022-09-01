@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,7 +18,6 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioEditingSupport;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioLabelProvider;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioResultTitles;
@@ -26,20 +25,30 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.Ti
 
 public class TimeRatioListUI extends AbstractRatioListUI {
 
-	private static final String[] TITLES = TimeRatioResultTitles.TITLES_SETTINGS;
-	private static final int[] BOUNDS = TimeRatioResultTitles.BOUNDS_SETTINGS;
-	//
-	private TimeRatioLabelProvider labelProvider = new TimeRatioLabelProvider(DisplayOption.SETTINGS);
-	private TimeRatioTableComparator tableComparator = new TimeRatioTableComparator(DisplayOption.SETTINGS);
+	private TimeRatioLabelProvider labelProvider;
+	private TimeRatioTableComparator tableComparator;
+	private DisplayOption displayOption;
 
 	public TimeRatioListUI(Composite parent, int style) {
+
+		this(parent, style, DisplayOption.SETTINGS);
+	}
+
+	public TimeRatioListUI(Composite parent, int style, DisplayOption displayOption) {
+
 		super(parent, style);
+		this.displayOption = displayOption;
+		labelProvider = new TimeRatioLabelProvider(displayOption);
+		tableComparator = new TimeRatioTableComparator(displayOption);
 		createColumns();
 	}
 
 	private void createColumns() {
 
-		createColumns(TITLES, BOUNDS);
+		String[] titles = DisplayOption.SETTINGS.equals(displayOption) ? TimeRatioResultTitles.TITLES_SETTINGS : TimeRatioResultTitles.TITLES_RESULTS;
+		int[] bounds = DisplayOption.SETTINGS.equals(displayOption) ? TimeRatioResultTitles.BOUNDS_SETTINGS : TimeRatioResultTitles.BOUNDS_RESULTS;
+		//
+		createColumns(titles, bounds);
 		setLabelProvider(labelProvider);
 		setContentProvider(new ListContentProvider());
 		setComparator(tableComparator);

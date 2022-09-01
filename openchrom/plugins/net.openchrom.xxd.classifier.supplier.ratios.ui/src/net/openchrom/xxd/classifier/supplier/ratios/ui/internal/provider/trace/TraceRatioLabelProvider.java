@@ -23,7 +23,7 @@ import org.eclipse.swt.graphics.Image;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractTraceRatioLabelProvider;
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.DisplayOption;
 
 public class TraceRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 

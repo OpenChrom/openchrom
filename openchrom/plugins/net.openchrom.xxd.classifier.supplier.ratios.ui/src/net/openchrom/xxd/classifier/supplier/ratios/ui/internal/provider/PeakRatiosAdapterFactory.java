@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Christoph Läubrich - initial API and implementation
+ * Philip Wenig - Display options
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
 
@@ -26,6 +27,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.Ti
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioResultTitles;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioLabelProvider;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioResultTitles;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.DisplayOption;
 
 public class PeakRatiosAdapterFactory implements IAdapterFactory {
 

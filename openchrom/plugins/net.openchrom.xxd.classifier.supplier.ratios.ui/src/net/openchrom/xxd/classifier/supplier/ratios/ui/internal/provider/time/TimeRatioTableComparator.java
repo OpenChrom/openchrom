@@ -17,7 +17,7 @@ import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.Viewer;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
-import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.DisplayOption;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.DisplayOption;
 
 public class TimeRatioTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
 

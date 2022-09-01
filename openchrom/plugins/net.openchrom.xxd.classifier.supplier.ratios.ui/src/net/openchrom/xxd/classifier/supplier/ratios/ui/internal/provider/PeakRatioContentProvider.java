@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,16 +20,19 @@ import org.eclipse.jface.viewers.Viewer;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.DisplayOption;
 
 public class PeakRatioContentProvider implements IStructuredContentProvider {
 
 	private DisplayOption displayOption = DisplayOption.RESULTS;
 
 	public PeakRatioContentProvider() {
+
 		this(DisplayOption.RESULTS);
 	}
 
 	public PeakRatioContentProvider(DisplayOption displayOption) {
+
 		this.displayOption = displayOption;
 	}
 
