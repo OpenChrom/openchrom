@@ -65,6 +65,7 @@ Import-Package: jakarta.xml.bind,
  org.osgi.service.component.annotations;version="[1.2.0,2.0.0)", 
  org.osgi.service.event;version="[1.0.0,2.0.0)"
 Export-Package: net.openchrom.xxd.process.supplier.templates.ui.charts,
- net.openchrom.xxd.process.supplier.templates.ui.core
+ net.openchrom.xxd.process.supplier.templates.ui.core,
+ net.openchrom.xxd.process.supplier.templates.ui.swt.peaks
 Service-Component: OSGI-INF/net.openchrom.xxd.process.supplier.templates.ui.services.ReportColumnsAnnotationService.xml,
  OSGI-INF/net.openchrom.xxd.process.supplier.templates.ui.services.ReportSettingsAnnotationService.xml
