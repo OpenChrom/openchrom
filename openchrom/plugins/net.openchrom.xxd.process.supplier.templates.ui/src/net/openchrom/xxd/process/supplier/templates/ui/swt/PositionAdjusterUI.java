@@ -96,8 +96,8 @@ public class PositionAdjusterUI extends Composite {
 			@Override
 			public String getText(Object element) {
 
-				if(element instanceof PositionMarker) {
-					return ((PositionMarker)element).label();
+				if(element instanceof PositionMarker positionMarker) {
+					return positionMarker.label();
 				}
 				return null;
 			}
@@ -173,8 +173,8 @@ public class PositionAdjusterUI extends Composite {
 	private PositionMarker getPositionMarker() {
 
 		Object object = comboControl.get().getStructuredSelection().getFirstElement();
-		if(object instanceof PositionMarker) {
-			return (PositionMarker)object;
+		if(object instanceof PositionMarker positionMarker) {
+			return positionMarker;
 		}
 		//
 		return null;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -41,11 +41,10 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 	@Override
 	public IProcessingInfo<?> quantify(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(peaks, settings, monitor);
+		IProcessingInfo processingInfo = validate(peaks, settings);
 		if(!processingInfo.hasErrorMessages()) {
-			if(settings instanceof CompensationQuantifierSettings) {
-				CompensationQuantifierSettings compensationQuantifierSettings = (CompensationQuantifierSettings)settings;
-				for(CompensationSetting compensationSetting : compensationQuantifierSettings.getCompensationSettings()) {
+			if(settings instanceof CompensationQuantifierSettings compensationQuantifierSettings) {
+				for(CompensationSetting compensationSetting : compensationQuantifierSettings.getCompensationSettingsList()) {
 					compensateQuantification(peaks, compensationSetting);
 				}
 			} else {
@@ -58,7 +57,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 	@Override
 	public IProcessingInfo<?> quantify(IPeak peak, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
-		List<IPeak> peaks = new ArrayList<IPeak>();
+		List<IPeak> peaks = new ArrayList<>();
 		peaks.add(peak);
 		return quantify(peaks, settings, monitor);
 	}
@@ -66,7 +65,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 	@Override
 	public IProcessingInfo<?> quantify(IPeak peak, IProgressMonitor monitor) {
 
-		List<IPeak> peaks = new ArrayList<IPeak>();
+		List<IPeak> peaks = new ArrayList<>();
 		peaks.add(peak);
 		CompensationQuantifierSettings settings = getSettings();
 		return quantify(peaks, settings, monitor);
@@ -145,7 +144,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 		for(IPeak peak : peaks) {
 			if(isIdentifierMatch(peak, compensationSetting.getInternalStandard())) {
 				List<IQuantitationEntry> quantitationEntries = getQuantitationEntries(peak, compensationSetting.getInternalStandard(), compensationSetting.getConcentrationUnit());
-				if(quantitationEntries.size() > 0) {
+				if(!quantitationEntries.isEmpty()) {
 					for(IQuantitationEntry quantitationEntry : quantitationEntries) {
 						concentration = quantitationEntry.getConcentration();
 					}
@@ -184,7 +183,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 		return quantitationEntries;
 	}
 
-	private IProcessingInfo validate(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
+	private IProcessingInfo validate(List<IPeak> peaks, IPeakQuantifierSettings settings) {
 
 		IProcessingInfo processingInfo = new ProcessingInfo();
 		if(peaks == null) {
