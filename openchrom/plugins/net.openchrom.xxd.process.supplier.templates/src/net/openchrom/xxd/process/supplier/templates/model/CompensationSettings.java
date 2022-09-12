@@ -37,6 +37,13 @@ import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantValida
 public class CompensationSettings extends ArrayList<CompensationSetting> implements ISettings {
 
 	private static final long serialVersionUID = -1566032312360942165L;
+	//
+	public static final String DESCRIPTION = "Peak Compensation Quantifier";
+	public static final String FILE_EXTENSION = ".pcq";
+	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
+	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
+	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
+	//
 	private static final Logger logger = Logger.getLogger(CompensationSettings.class);
 	//
 	private CompensationQuantListUtil listUtil = new CompensationQuantListUtil();

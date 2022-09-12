@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,7 +14,6 @@ package net.openchrom.xxd.process.supplier.templates.ui.swt;
 import java.util.List;
 
 import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
-import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
@@ -24,7 +23,7 @@ import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.Compens
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.CompensationQuantifierFilter;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.CompensationQuantifierLabelProvider;
 
-public class CompensationQuantifierListUI extends ExtendedTableViewer {
+public class CompensationQuantifierListUI extends AbstractTemplateListUI {
 
 	private static final String[] TITLES = CompensationQuantifierLabelProvider.TITLES;
 	private static final int[] BOUNDS = CompensationQuantifierLabelProvider.BOUNDS;
@@ -34,16 +33,19 @@ public class CompensationQuantifierListUI extends ExtendedTableViewer {
 	private CompensationQuantifierFilter listFilter = new CompensationQuantifierFilter();
 
 	public CompensationQuantifierListUI(Composite parent, int style) {
+
 		super(parent, style);
 		createColumns();
 	}
 
+	@Override
 	public void setSearchText(String searchText, boolean caseSensitive) {
 
 		listFilter.setSearchText(searchText, caseSensitive);
 		refresh();
 	}
 
+	@Override
 	public void clear() {
 
 		setInput(null);

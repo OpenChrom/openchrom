@@ -296,6 +296,13 @@
                type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
          </adapter>
       </factory>
+      <factory
+            adaptableType="net.openchrom.xxd.process.supplier.templates.settings.CompensationQuantifierSettings"
+            class="net.openchrom.xxd.process.supplier.templates.ui.adapter.CompensationQuantifierSettingsAdapterFactory">
+         <adapter
+               type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
+         </adapter>
+      </factory>
    </extension>
    <extension
          point="org.eclipse.help.toc">

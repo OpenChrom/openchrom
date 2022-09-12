@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-public class CompensationSetting {
+public class CompensationSetting extends AbstractSetting {
 
 	private String name = "";
 	private String internalStandard = "";
@@ -92,18 +92,23 @@ public class CompensationSetting {
 	@Override
 	public boolean equals(Object obj) {
 
-		if(this == obj)
+		if(this == obj) {
 			return true;
-		if(obj == null)
+		}
+		if(obj == null) {
 			return false;
-		if(getClass() != obj.getClass())
+		}
+		if(getClass() != obj.getClass()) {
 			return false;
+		}
 		CompensationSetting other = (CompensationSetting)obj;
 		if(name == null) {
-			if(other.name != null)
+			if(other.name != null) {
 				return false;
-		} else if(!name.equals(other.name))
+			}
+		} else if(!name.equals(other.name)) {
 			return false;
+		}
 		return true;
 	}
 
