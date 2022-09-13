@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -40,6 +40,9 @@ public class CompensationQuantifierComparator extends AbstractRecordTableCompara
 					break;
 				case 3:
 					sortOrder = setting2.getConcentrationUnit().compareTo(setting1.getConcentrationUnit());
+					break;
+				case 4:
+					sortOrder = setting2.getTargetUnit().compareTo(setting1.getTargetUnit());
 					break;
 				default:
 					sortOrder = 0;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -26,6 +26,7 @@ public class CompensationQuantifierInputValidator implements IInputValidator {
 	private Set<String> names = new HashSet<>();
 
 	public CompensationQuantifierInputValidator(Set<String> names) {
+
 		if(names != null) {
 			this.names = names;
 		}

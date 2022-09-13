@@ -17,6 +17,7 @@ public class CompensationSetting extends AbstractSetting {
 	private String internalStandard = "";
 	private double expectedConcentration = 0.0d;
 	private String concentrationUnit = "";
+	private String targetUnit = ""; // Could be also empty to match all units.
 	private boolean adjustQuantitationEntry = false;
 
 	public void copyFrom(CompensationSetting setting) {
@@ -26,6 +27,7 @@ public class CompensationSetting extends AbstractSetting {
 			setInternalStandard(setting.getInternalStandard());
 			setExpectedConcentration(setting.getExpectedConcentration());
 			setConcentrationUnit(setting.getConcentrationUnit());
+			setTargetUnit(setting.getTargetUnit());
 			setAdjustQuantitationEntry(adjustQuantitationEntry);
 		}
 	}
@@ -68,6 +70,16 @@ public class CompensationSetting extends AbstractSetting {
 	public void setConcentrationUnit(String concentrationUnit) {
 
 		this.concentrationUnit = concentrationUnit;
+	}
+
+	public String getTargetUnit() {
+
+		return targetUnit;
+	}
+
+	public void setTargetUnit(String targetUnit) {
+
+		this.targetUnit = targetUnit;
 	}
 
 	public boolean isAdjustQuantitationEntry() {
@@ -115,6 +127,6 @@ public class CompensationSetting extends AbstractSetting {
 	@Override
 	public String toString() {
 
-		return "CompensationSetting [name=" + name + ", internalStandard=" + internalStandard + ", expectedConcentration=" + expectedConcentration + ", concentrationUnit=" + concentrationUnit + ", adjustQuantitationEntry=" + adjustQuantitationEntry + "]";
+		return "CompensationSetting [name=" + name + ", internalStandard=" + internalStandard + ", expectedConcentration=" + expectedConcentration + ", concentrationUnit=" + concentrationUnit + ", targetUnit=" + targetUnit + ", adjustQuantitationEntry=" + adjustQuantitationEntry + "]";
 	}
 }

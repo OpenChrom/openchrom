@@ -187,6 +187,7 @@ public class CompensationSettings extends ArrayList<CompensationSetting> impleme
 		entries.add(Double.toString(setting.getExpectedConcentration()));
 		entries.add(setting.getConcentrationUnit());
 		entries.add(Boolean.toString(setting.isAdjustQuantitationEntry()));
+		entries.add(setting.getTargetUnit());
 		//
 		compile(builder, entries);
 	}

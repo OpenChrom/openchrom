@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -13,10 +13,11 @@ package net.openchrom.xxd.process.supplier.templates.util;
 
 public class CompensationQuantListUtil extends AbstractTemplateListUtil<CompensationQuantValidator> {
 
-	public static final String EXAMPLE_SINGLE = "Substance A | Styrene | 1.0 | mg/L | false";
-	public static final String EXAMPLE_MULTIPLE = "Substance A | Styrene | 1.0 | mg/L | false ; Substance B | Benzene | 1.2 | g/kg | true";
+	public static final String EXAMPLE_SINGLE = "Substance A | Styrene | 1.0 | mg/L | false | ppm";
+	public static final String EXAMPLE_MULTIPLE = "Substance A | Styrene | 1.0 | mg/L | false | ppm ; Substance B | Benzene | 1.2 | g/kg | true | ";
 
 	public CompensationQuantListUtil() {
+
 		super(new CompensationQuantValidator());
 	}
 }

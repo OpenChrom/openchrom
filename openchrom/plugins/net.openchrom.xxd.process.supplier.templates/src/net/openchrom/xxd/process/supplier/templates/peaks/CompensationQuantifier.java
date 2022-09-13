@@ -101,7 +101,10 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 				List<IQuantitationEntry> quantitationEntriesAdd = new ArrayList<>();
 				List<IQuantitationEntry> quantitationEntriesDelete = (adjustQuantitationEntry) ? new ArrayList<>() : null;
 				//
-				for(IQuantitationEntry quantitationEntry : getQuantitationEntries(peak, compensationSetting.getName(), compensationSetting.getConcentrationUnit())) {
+				String name = compensationSetting.getName();
+				String targetUnit = compensationSetting.getTargetUnit();
+				//
+				for(IQuantitationEntry quantitationEntry : getQuantitationEntries(peak, name, targetUnit)) {
 					quantitationEntriesAdd.add(createAdjustedQuantitationEntry(compensationSetting, compensationFactor, quantitationEntry));
 					if(adjustQuantitationEntry) {
 						quantitationEntriesDelete.add(quantitationEntry);
@@ -143,7 +146,9 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 		exitloop:
 		for(IPeak peak : peaks) {
 			if(isIdentifierMatch(peak, compensationSetting.getInternalStandard())) {
-				List<IQuantitationEntry> quantitationEntries = getQuantitationEntries(peak, compensationSetting.getInternalStandard(), compensationSetting.getConcentrationUnit());
+				String internalStandard = compensationSetting.getInternalStandard();
+				String concentrationUnit = compensationSetting.getConcentrationUnit();
+				List<IQuantitationEntry> quantitationEntries = getQuantitationEntries(peak, internalStandard, concentrationUnit);
 				if(!quantitationEntries.isEmpty()) {
 					for(IQuantitationEntry quantitationEntry : quantitationEntries) {
 						concentration = quantitationEntry.getConcentration();
@@ -168,13 +173,13 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 		return false;
 	}
 
-	private List<IQuantitationEntry> getQuantitationEntries(IPeak peak, String name, String concentrationUnit) {
+	private List<IQuantitationEntry> getQuantitationEntries(IPeak peak, String name, String unit) {
 
 		List<IQuantitationEntry> quantitationEntries = new ArrayList<>();
 		//
 		for(IQuantitationEntry quantitationEntry : peak.getQuantitationEntries()) {
 			if(quantitationEntry.getName().equals(name)) {
-				if(quantitationEntry.getConcentrationUnit().equals(concentrationUnit)) {
+				if(unit.isEmpty() || quantitationEntry.getConcentrationUnit().equals(unit)) {
 					quantitationEntries.add(quantitationEntry);
 				}
 			}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -26,6 +26,7 @@ public class CompensationQuantifierEditingSupport extends EditingSupport {
 	private String column;
 
 	public CompensationQuantifierEditingSupport(ExtendedTableViewer tableViewer, String column) {
+
 		super(tableViewer);
 		this.column = column;
 		if(column.equals(CompensationQuantifierLabelProvider.ADJUST_QUANTITATION_ENTRY)) {
@@ -63,6 +64,8 @@ public class CompensationQuantifierEditingSupport extends EditingSupport {
 					return Double.toString(setting.getExpectedConcentration());
 				case CompensationQuantifierLabelProvider.CONCENTRATION_UNIT:
 					return setting.getConcentrationUnit();
+				case CompensationQuantifierLabelProvider.TARGET_UNIT:
+					return setting.getTargetUnit();
 				case CompensationQuantifierLabelProvider.ADJUST_QUANTITATION_ENTRY:
 					return setting.isAdjustQuantitationEntry();
 			}
@@ -73,8 +76,7 @@ public class CompensationQuantifierEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof CompensationSetting) {
-			CompensationSetting setting = (CompensationSetting)element;
+		if(element instanceof CompensationSetting setting) {
 			double result;
 			switch(column) {
 				/*
@@ -91,6 +93,9 @@ public class CompensationQuantifierEditingSupport extends EditingSupport {
 					break;
 				case CompensationQuantifierLabelProvider.CONCENTRATION_UNIT:
 					setting.setConcentrationUnit(value.toString());
+					break;
+				case CompensationQuantifierLabelProvider.TARGET_UNIT:
+					setting.setTargetUnit(value.toString());
 					break;
 				case CompensationQuantifierLabelProvider.ADJUST_QUANTITATION_ENTRY:
 					setting.setAdjustQuantitationEntry((boolean)value);

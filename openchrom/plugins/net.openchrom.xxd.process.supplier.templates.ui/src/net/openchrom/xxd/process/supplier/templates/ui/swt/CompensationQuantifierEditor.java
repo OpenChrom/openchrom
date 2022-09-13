@@ -115,6 +115,11 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 		createControl(parent);
 	}
 
+	public void updateInput() {
+
+		setInput();
+	}
+
 	@Override
 	public void setEnabled(boolean enabled) {
 

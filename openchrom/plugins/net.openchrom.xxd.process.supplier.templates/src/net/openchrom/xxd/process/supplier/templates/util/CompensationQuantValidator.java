@@ -24,6 +24,7 @@ public class CompensationQuantValidator extends AbstractTemplateValidator implem
 	private String internalStandard = "";
 	private double expectedConcentration = 0.0d;
 	private String concentrationUnit = "";
+	private String targetUnit = "";
 	private boolean adjustQuantitationEntry = false;
 
 	@Override
@@ -44,7 +45,7 @@ public class CompensationQuantValidator extends AbstractTemplateValidator implem
 					 * Extract retention time, ...
 					 */
 					String[] values = text.trim().split("\\" + AbstractTemplateListUtil.SEPARATOR_ENTRY); // The pipe needs to be escaped.
-					if(values.length == 5) {
+					if(values.length >= 5) {
 						/*
 						 * Evaluation
 						 */
@@ -69,6 +70,7 @@ public class CompensationQuantValidator extends AbstractTemplateValidator implem
 						}
 						//
 						adjustQuantitationEntry = parseBoolean(values, 4);
+						targetUnit = parseString(values, 5);
 					} else {
 						message = ERROR_ENTRY;
 					}
@@ -92,6 +94,7 @@ public class CompensationQuantValidator extends AbstractTemplateValidator implem
 		setting.setInternalStandard(internalStandard);
 		setting.setExpectedConcentration(expectedConcentration);
 		setting.setConcentrationUnit(concentrationUnit);
+		setting.setTargetUnit(targetUnit);
 		setting.setAdjustQuantitationEntry(adjustQuantitationEntry);
 		return setting;
 	}
