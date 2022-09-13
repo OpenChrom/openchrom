@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -32,8 +32,14 @@ import net.openchrom.xxd.classifier.supplier.ratios.util.quant.QuantRatioValidat
 public class QuantRatios extends ArrayList<QuantRatio> implements IPeakRatios<QuantRatio> {
 
 	private static final Logger logger = Logger.getLogger(QuantRatios.class);
-	//
 	private static final long serialVersionUID = 3055499236651500754L;
+	//
+	public static final String DESCRIPTION = "Quant Ratios";
+	public static final String FILE_EXTENSION = ".qar";
+	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
+	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
+	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
+	//
 	private QuantRatioListUtil listUtil = new QuantRatioListUtil();
 	private static final String SEPARATOR_TOKEN = QuantRatioListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = QuantRatioListUtil.SEPARATOR_ENTRY;

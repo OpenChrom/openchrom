@@ -50,9 +50,9 @@ public class QuantRatioClassifier extends AbstractRatioClassifier {
 			/*
 			 * Calculate the result.
 			 */
-			QuantRatios traceRatios = calculateRatios(chromatogramSelection.getChromatogram(), settings);
-			PeakRatioResult classifierResult = new PeakRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", traceRatios);
-			IMeasurementResult<?> measurementResult = new MeasurementResult("Quant Ratio Classifier", CLASSIFIER_ID, "Quant Ratios", traceRatios);
+			QuantRatios quantRatios = calculateRatios(chromatogramSelection.getChromatogram(), settings);
+			PeakRatioResult classifierResult = new PeakRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", quantRatios);
+			IMeasurementResult<?> measurementResult = new MeasurementResult("Quant Ratio Classifier", CLASSIFIER_ID, "Quant Ratios", quantRatios);
 			chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
 			processingInfo.setProcessingResult(classifierResult);
 		}

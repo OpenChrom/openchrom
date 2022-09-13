@@ -25,21 +25,30 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.Q
 
 public class QuantRatioListUI extends AbstractRatioListUI {
 
-	private static final String[] TITLES = QuantRatioResultTitles.TITLES_SETTINGS;
-	private static final int[] BOUNDS = QuantRatioResultTitles.BOUNDS_SETTINGS;
-	//
-	private QuantRatioLabelProvider labelProvider = new QuantRatioLabelProvider(DisplayOption.SETTINGS);
-	private QuantRatioTableComparator tableComparator = new QuantRatioTableComparator(DisplayOption.SETTINGS);
+	private QuantRatioLabelProvider labelProvider;
+	private QuantRatioTableComparator tableComparator;
+	private DisplayOption displayOption;
 
 	public QuantRatioListUI(Composite parent, int style) {
 
+		this(parent, style, DisplayOption.SETTINGS);
+	}
+
+	public QuantRatioListUI(Composite parent, int style, DisplayOption displayOption) {
+
 		super(parent, style);
+		this.displayOption = displayOption;
+		labelProvider = new QuantRatioLabelProvider(displayOption);
+		tableComparator = new QuantRatioTableComparator(displayOption);
 		createColumns();
 	}
 
 	private void createColumns() {
 
-		createColumns(TITLES, BOUNDS);
+		String[] titles = DisplayOption.SETTINGS.equals(displayOption) ? QuantRatioResultTitles.TITLES_SETTINGS : QuantRatioResultTitles.TITLES_RESULTS;
+		int[] bounds = DisplayOption.SETTINGS.equals(displayOption) ? QuantRatioResultTitles.BOUNDS_SETTINGS : QuantRatioResultTitles.BOUNDS_RESULTS;
+		//
+		createColumns(titles, bounds);
 		setLabelProvider(labelProvider);
 		setContentProvider(new ListContentProvider());
 		setComparator(tableComparator);

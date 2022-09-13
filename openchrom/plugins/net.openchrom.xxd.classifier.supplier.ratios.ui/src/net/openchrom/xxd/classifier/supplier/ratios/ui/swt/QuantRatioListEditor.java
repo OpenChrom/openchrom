@@ -79,10 +79,6 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
 	private AtomicReference<QuantRatioListUI> listControl = new AtomicReference<>();
 	//
-	private static final String FILTER_EXTENSION = "*.txt";
-	private static final String FILTER_NAME = "Quant Ratio Template (*.txt)";
-	private static final String FILE_NAME = "QuantRatioTemplate.txt";
-	//
 	private static final String CATEGORY = "Quant Ratio";
 	private static final String DELETE = "Delete";
 	//
@@ -105,18 +101,18 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 			this.settings.load(settings.getRatioSettings());
 		}
 		//
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout gridLayout = new GridLayout(1, false);
-		gridLayout.marginWidth = 0;
-		gridLayout.marginHeight = 0;
-		composite.setLayout(gridLayout);
-		//
-		createToolbarMain(composite);
-		createSearchSection(composite);
-		createTableSection(composite);
-		//
-		initialize();
-		setControl(composite);
+		createControl(parent);
+	}
+
+	public QuantRatioListEditor(Composite parent, QuantRatios quantRatios) {
+
+		this.settings = quantRatios;
+		createControl(parent);
+	}
+
+	public void updateInput() {
+
+		setInput();
 	}
 
 	@Override
@@ -179,6 +175,22 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 	public String getValues() {
 
 		return settings.save();
+	}
+
+	private void createControl(Composite parent) {
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridLayout gridLayout = new GridLayout(1, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		composite.setLayout(gridLayout);
+		//
+		createToolbarMain(composite);
+		createSearchSection(composite);
+		createTableSection(composite);
+		//
+		initialize();
+		setControl(composite);
 	}
 
 	private void initialize() {
@@ -324,8 +336,8 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.READ_ONLY);
 				fileDialog.setText(IMPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{FILTER_NAME});
+				fileDialog.setFilterExtensions(new String[]{QuantRatios.FILTER_EXTENSION});
+				fileDialog.setFilterNames(new String[]{QuantRatios.FILTER_NAME});
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathImport());
 				String path = fileDialog.open();
 				if(path != null) {
@@ -354,9 +366,9 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.SAVE);
 				fileDialog.setOverwrite(true);
 				fileDialog.setText(EXPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{FILTER_NAME});
-				fileDialog.setFileName(FILE_NAME);
+				fileDialog.setFilterExtensions(new String[]{QuantRatios.FILTER_EXTENSION});
+				fileDialog.setFilterNames(new String[]{QuantRatios.FILTER_NAME});
+				fileDialog.setFileName(QuantRatios.FILE_NAME);
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathExport());
 				String path = fileDialog.open();
 				if(path != null) {
