@@ -106,18 +106,13 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 			this.settings.load(settings.getCompensationSettings());
 		}
 		//
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout gridLayout = new GridLayout(1, false);
-		gridLayout.marginWidth = 0;
-		gridLayout.marginHeight = 0;
-		composite.setLayout(gridLayout);
-		//
-		createToolbarMain(composite);
-		createSearchSection(composite);
-		createTableSection(composite);
-		//
-		initialize();
-		setControl(composite);
+		createControl(parent);
+	}
+
+	public CompensationQuantifierEditor(Composite parent, CompensationSettings settings) {
+
+		this.settings = settings;
+		createControl(parent);
 	}
 
 	@Override
@@ -180,6 +175,22 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 	public String getValues() {
 
 		return settings.save();
+	}
+
+	private void createControl(Composite parent) {
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridLayout gridLayout = new GridLayout(1, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		composite.setLayout(gridLayout);
+		//
+		createToolbarMain(composite);
+		createSearchSection(composite);
+		createTableSection(composite);
+		//
+		initialize();
+		setControl(composite);
 	}
 
 	private void initialize() {
