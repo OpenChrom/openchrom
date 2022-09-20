@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="net.openchrom.nmr.processing.supplier.base.feature"
-      label="NMR Processing Algorithms"
+      id="net.openchrom.rcp.app.compilation.marketplace.feature"
+      label="OpenChrom Marketplace"
       version="1.5.0.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
    <description url="http://www.openchrom.net">
-      NMR Processing Algorithms
+      Download extensions
    </description>
 
    <copyright url="http://www.openchrom.net">
