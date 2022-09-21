@@ -671,10 +671,20 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getInt(P_DETECTOR_DELTA_LEFT_MILLISECONDS, DEF_DETECTOR_DELTA_LEFT_MILLISECONDS);
 	}
 
+	public static void setDetectorDeltaLeftMilliseconds(int milliseconds) {
+
+		putInteger(P_DETECTOR_DELTA_LEFT_MILLISECONDS, milliseconds);
+	}
+
 	public static int getDetectorDeltaRightMilliseconds() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_DETECTOR_DELTA_RIGHT_MILLISECONDS, DEF_DETECTOR_DELTA_RIGHT_MILLISECONDS);
+	}
+
+	public static void setDetectorDeltaRightMilliseconds(int milliseconds) {
+
+		putInteger(P_DETECTOR_DELTA_RIGHT_MILLISECONDS, milliseconds);
 	}
 
 	public static int getDetectorDynamicOffsetMilliseconds() {
@@ -737,10 +747,20 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getInt(P_REVIEW_DELTA_LEFT_MILLISECONDS, DEF_REVIEW_DELTA_LEFT_MILLISECONDS);
 	}
 
+	public static void setReviewDeltaLeftMilliseconds(int milliseconds) {
+
+		putInteger(P_REVIEW_DELTA_LEFT_MILLISECONDS, milliseconds);
+	}
+
 	public static int getReviewDeltaRightMilliseconds() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getInt(P_REVIEW_DELTA_RIGHT_MILLISECONDS, DEF_REVIEW_DELTA_RIGHT_MILLISECONDS);
+	}
+
+	public static void setReviewDeltaRightMilliseconds(int milliseconds) {
+
+		putInteger(P_REVIEW_DELTA_RIGHT_MILLISECONDS, milliseconds);
 	}
 
 	public static int getReviewDynamicOffsetMilliseconds() {
