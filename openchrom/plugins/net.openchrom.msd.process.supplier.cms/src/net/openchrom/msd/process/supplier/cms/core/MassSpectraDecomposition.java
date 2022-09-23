@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2022 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,12 +20,12 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.ejml.data.DenseMatrix64F;
-import org.ejml.factory.LinearSolverFactory;
+import org.ejml.data.DMatrixRMaj;
+import org.ejml.dense.row.CommonOps_DDRM;
+import org.ejml.dense.row.SpecializedOps_DDRM;
+import org.ejml.dense.row.factory.LinearSolverFactory_DDRM;
 import org.ejml.interfaces.decomposition.QRPDecomposition;
-import org.ejml.interfaces.linsol.LinearSolver;
-import org.ejml.ops.CommonOps;
-import org.ejml.ops.SpecializedOps;
+import org.ejml.interfaces.linsol.LinearSolverDense;
 
 import net.openchrom.msd.converter.supplier.cms.model.CalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
@@ -44,15 +44,15 @@ public class MassSpectraDecomposition {
 
 	private static final Logger logger = Logger.getLogger(MassSpectraDecomposition.class);
 	//
-	private DenseMatrix64F y = new DenseMatrix64F(1, 1); // unknown mass spectrum measurements matrix
-	private DenseMatrix64F x = new DenseMatrix64F(1, 1); // matrix containing computed component fractions
-	private DenseMatrix64F A = new DenseMatrix64F(1, 1); // mass spectrum library components matrix
-	private DenseMatrix64F P = new DenseMatrix64F(1, 1); // error weight matrix
-	private DenseMatrix64F wtA = new DenseMatrix64F(1, 1); // error weighted A matrix used and possibly modified by linear solver
-	private DenseMatrix64F wty = new DenseMatrix64F(1, 1); // error weighted y matrix used by linear solver and to compute weighted sum of squares error
-	private DenseMatrix64F ynew = new DenseMatrix64F(1, 1); // calculated y after solving for x
-	private DenseMatrix64F yResid = new DenseMatrix64F(1, 1); // (ynew-y)
-	private DenseMatrix64F wtyerr = new DenseMatrix64F(1, 1); // P*yerr
+	private DMatrixRMaj y = new DMatrixRMaj(1, 1); // unknown mass spectrum measurements matrix
+	private DMatrixRMaj x = new DMatrixRMaj(1, 1); // matrix containing computed component fractions
+	private DMatrixRMaj A = new DMatrixRMaj(1, 1); // mass spectrum library components matrix
+	private DMatrixRMaj P = new DMatrixRMaj(1, 1); // error weight matrix
+	private DMatrixRMaj wtA = new DMatrixRMaj(1, 1); // error weighted A matrix used and possibly modified by linear solver
+	private DMatrixRMaj wty = new DMatrixRMaj(1, 1); // error weighted y matrix used by linear solver and to compute weighted sum of squares error
+	private DMatrixRMaj ynew = new DMatrixRMaj(1, 1); // calculated y after solving for x
+	private DMatrixRMaj yResid = new DMatrixRMaj(1, 1); // (ynew-y)
+	private DMatrixRMaj wtyerr = new DMatrixRMaj(1, 1); // P*yerr
 	private double ssError; // sum of squares error
 	private double wtssError; // weighted sum of squares error
 	private boolean solverRetVal;
@@ -85,8 +85,7 @@ public class MassSpectraDecomposition {
 			double libMatrixQuality;
 			for(IScanMSD libSpectrum : libMassSpectra.getList()) {
 				// first (re)read the library and save a reference to each library component
-				if((libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) && (((ICalibratedVendorLibraryMassSpectrum)libSpectrum).isSelected())) {
-					ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)libSpectrum;
+				if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum && libraryMassSpectrum.isSelected()) {
 					int componentSequence;
 					try {
 						componentSequence = fitDataset.addNewComponent(libraryMassSpectrum);
@@ -108,12 +107,13 @@ public class MassSpectraDecomposition {
 				} // if
 			} // for
 				// then read ions present in the unknown scan
-			System.out.println("SCAN: \"" + ((CalibratedVendorMassSpectrum)scan).getScanName() + "\"");
+			CalibratedVendorMassSpectrum calibratedVendorMassSpectrum = (CalibratedVendorMassSpectrum)scan;
+			System.out.println("SCAN: \"" + calibratedVendorMassSpectrum.getScanName() + "\"");
 			System.out.print("\t");
-			fitDataset.setScanRef((ICalibratedVendorMassSpectrum)scan);
-			for(IIonMeasurement sigpeak : ((ICalibratedVendorMassSpectrum)scan).getIonMeasurements()) {
+			fitDataset.setScanRef(calibratedVendorMassSpectrum);
+			for(IIonMeasurement sigpeak : calibratedVendorMassSpectrum.getIonMeasurements()) {
 				System.out.print("(" + sigpeak.getMZ() + ", " + sigpeak.getSignal() + ")");
-				fitDataset.addScanIon(sigpeak.getMZ(), sigpeak.getSignal(), (ICalibratedVendorMassSpectrum)scan);
+				fitDataset.addScanIon(sigpeak.getMZ(), sigpeak.getSignal(), calibratedVendorMassSpectrum);
 			} // for
 			System.out.println();
 			// then match ions found in the unknown scan with ions found in the library components
@@ -163,18 +163,18 @@ public class MassSpectraDecomposition {
 					// 1); // for testing without error weights
 				} // for
 				if(useWeightedError) {
-					CommonOps.mult(P, A, wtA);
-					CommonOps.mult(P, y, wty);
+					CommonOps_DDRM.mult(P, A, wtA);
+					CommonOps_DDRM.mult(P, y, wty);
 				} else {
-					wtA.set(A);
-					wty.set(y);
+					wtA = new DMatrixRMaj(A);
+					wty = new DMatrixRMaj(y);
 				}
 				// solve the linear system Ax=y for x using a solver that tolerates a singular A matrix
-				LinearSolver<DenseMatrix64F> solver = LinearSolverFactory.leastSquaresQrPivot(false, false);
-				QRPDecomposition<DenseMatrix64F> decomp = solver.getDecomposition();
+				LinearSolverDense<DMatrixRMaj> solver = LinearSolverFactory_DDRM.leastSquaresQrPivot(false, false);
+				QRPDecomposition<DMatrixRMaj> decomp = solver.getDecomposition();
 				// decomp.setSingularThreshold(1e-2); // used to test if a higher threshold for detecting a singular condition is useful
 				solverRetVal = solver.setA(wtA);
-				int pivots[] = decomp.getPivots();
+				int pivots[] = decomp.getColPivots();
 				int rank = decomp.getRank();
 				System.out.println("Solver = " + solver);
 				System.out.println("Decomposition = " + decomp);
@@ -202,11 +202,11 @@ public class MassSpectraDecomposition {
 				// solve
 				solver.solve(wty, x);
 				// compute sum of squares error and residuals vector
-				CommonOps.mult(A, x, ynew);
-				CommonOps.subtract(y, ynew, yResid);
-				ssError = SpecializedOps.elementSumSq(yResid);
-				CommonOps.mult(P, yResid, wtyerr);
-				wtssError = SpecializedOps.elementSumSq(wtyerr);
+				CommonOps_DDRM.mult(A, x, ynew);
+				CommonOps_DDRM.subtract(y, ynew, yResid);
+				ssError = SpecializedOps_DDRM.elementSumSq(yResid);
+				CommonOps_DDRM.mult(P, yResid, wtyerr);
+				wtssError = SpecializedOps_DDRM.elementSumSq(wtyerr);
 				decompositionResult = new DecompositionResult(ssError, wtssError, fitDataset.getScanRef().getSourcePressure(), fitDataset.getScanRef().getSourcePressureUnits(), fitDataset.getScanRef().getEtimes(), fitDataset.getScanRef().getSignalUnits());
 				// display the result
 				System.out.println("SOLVED");
