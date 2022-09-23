@@ -13,9 +13,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.processing;bundle-version="0.8.0",
  com.fasterxml.jackson.core.jackson-annotations,
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
- org.eclipse.chemclipse.ejml.038x;bundle-version="0.8.0",
  org.apache.commons.math3;bundle-version="3.5.0",
- org.apache.commons.lang3;bundle-version="3.1.0"
+ org.apache.commons.lang3;bundle-version="3.1.0",
+ wrapped.org.ejml.ejml-simple;bundle-version="0.41.0",
+ wrapped.org.ejml.ejml-core;bundle-version="0.41.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.component.annotations;version="1.2.0"
