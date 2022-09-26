@@ -179,7 +179,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 				 * Dynamically show different settings, based on the selected scan type.
 				 */
 				List<Class<? extends IPreferencePage>> preferencePages = getPreferencePages();
-				showPreferencesDialog(event, preferencePages, settingsHandler);
+				showPreferencesDialog(event, preferencePages, settingsHandler, true);
 			}
 		});
 	}
