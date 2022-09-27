@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Matthias Mailänder.
+ * Copyright (c) 2020, 2022 Matthias Mailänder.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,7 +14,7 @@ package net.openchrom.msd.converter.supplier.pkf.converter.io;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;

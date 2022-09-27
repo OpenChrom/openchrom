@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Matthias Mailänder.
+ * Copyright (c) 2020, 2022 Matthias Mailänder.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,8 +21,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.lang.NotImplementedException;
-import org.apache.commons.lang.text.StrBuilder;
+import org.apache.commons.lang3.NotImplementedException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraWriter;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
@@ -57,10 +56,11 @@ public class PeaksWriter extends AbstractMassSpectraWriter implements IMassSpect
 
 	private byte[] writePeaks(IScanMSD massSpectrum) throws IOException {
 
-		StrBuilder peaks = new StrBuilder();
+		StringBuilder peaks = new StringBuilder();
 		List<IIon> ions = massSpectrum.getIons();
 		for(IIon ion : ions) {
-			peaks.appendln(ion.getIon());
+			peaks.append(ion.getIon());
+			peaks.append("\n");
 		}
 		return peaks.toString().getBytes();
 	}
