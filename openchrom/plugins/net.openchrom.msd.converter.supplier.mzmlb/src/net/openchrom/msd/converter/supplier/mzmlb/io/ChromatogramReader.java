@@ -48,10 +48,10 @@ import net.openchrom.msd.converter.supplier.mzmlb.model.VendorScanProxy;
 
 import ch.systemsx.cisd.hdf5.HDF5Factory;
 import ch.systemsx.cisd.hdf5.IHDF5SimpleReader;
+import hdf.hdf5lib.exceptions.HDF5LibraryException;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
-import ncsa.hdf.hdf5lib.exceptions.HDF5LibraryException;
 
 public class ChromatogramReader extends AbstractChromatogramReader implements IChromatogramMSDReader {
 
