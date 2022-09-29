@@ -43,9 +43,4 @@
             splashId="net.openchrom.rcp.compilation.community.ui.splash.enhancedSplashHandler">
       </splashHandlerProductBinding>
    </extension>
-   <extension
-         point="org.eclipse.ui.startup">
-      <startup
-            class="net.openchrom.rcp.compilation.community.ui.PluginStartup"></startup>
-   </extension>
 </plugin>
