@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swtchart.IAxis;
 import org.eclipse.swtchart.Range;
-import org.eclipse.swtchart.export.images.ImageSupplier;
+import org.eclipse.swtchart.extensions.clipboard.ImageSupplier;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.ISeriesData;
