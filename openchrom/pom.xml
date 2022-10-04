@@ -20,7 +20,7 @@
 		<relativePath>../../chemclipse/chemclipse/pom.xml</relativePath>
 	</parent>
 	<properties>
-		<tycho.version>2.7.4</tycho.version>
+		<tycho.version>2.7.5</tycho.version>
 		<tycho.target.groupId>net.openchrom</tycho.target.groupId>
 		<tycho.target.artifactId>net.openchrom.targetplatform</tycho.target.artifactId>
 		<tycho.target.version>${project.version}</tycho.target.version>
