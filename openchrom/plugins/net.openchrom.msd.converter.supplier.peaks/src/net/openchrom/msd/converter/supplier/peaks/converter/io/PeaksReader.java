@@ -13,7 +13,6 @@ package net.openchrom.msd.converter.supplier.peaks.converter.io;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,7 +21,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
@@ -43,7 +41,7 @@ public class PeaksReader extends AbstractMassSpectraReader implements IMassSpect
 	private static final Logger logger = Logger.getLogger(PeaksReader.class);
 
 	@Override
-	public IMassSpectra read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IMassSpectra read(File file, IProgressMonitor monitor) throws IOException {
 
 		IMassSpectra massSpectra = new MassSpectra();
 		massSpectra.setName(StringUtils.substringBefore(file.getName(), ".zip"));
@@ -56,8 +54,9 @@ public class PeaksReader extends AbstractMassSpectraReader implements IMassSpect
 		while(zipEntries.hasMoreElements()) {
 			ZipEntry zipEntry = zipEntries.nextElement();
 			String name = zipEntry.getName();
-			if(!name.endsWith(".peaks"))
+			if(!name.endsWith(".peaks")) {
 				continue;
+			}
 			PeaksMassSpectrum peakList = new PeaksMassSpectrum();
 			ILibraryInformation libraryInformation = new PeakLibraryInformation();
 			libraryInformation.setName(StringUtils.substringBefore(name, ".peaks"));
