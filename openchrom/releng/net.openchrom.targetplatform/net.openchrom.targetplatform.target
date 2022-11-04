@@ -33,10 +33,6 @@
 				<version>6.0.5</version>
 				<type>jar</type>
 			</dependency>
-		</dependencies>
-	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-		<dependencies>
 			<dependency>
 				<groupId>org.biojava</groupId>
 				<artifactId>biojava-ws</artifactId>
@@ -145,7 +141,7 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>edu.ucar</groupId>
@@ -153,32 +149,12 @@
 				<version>5.5.3</version>
 				<type>jar</type>
 			</dependency>
-		</dependencies>
-		<repositories>
-			<repository>
-				<id>Unidata All</id>
-				<url>https://artifacts.unidata.ucar.edu/repository/unidata-all/</url>
-			</repository>
-		</repositories>
-	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-		<dependencies>
 			<dependency>
 				<groupId>edu.ucar</groupId>
 				<artifactId>httpservices</artifactId>
 				<version>5.5.3</version>
 				<type>jar</type>
 			</dependency>
-		</dependencies>
-		<repositories>
-			<repository>
-				<id>Unidata All</id>
-				<url>https://artifacts.unidata.ucar.edu/repository/unidata-all/</url>
-			</repository>
-		</repositories>
-	</location>
-	<location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-		<dependencies>
 			<dependency>
 				<groupId>edu.ucar</groupId>
 				<artifactId>udunits</artifactId>
@@ -203,7 +179,7 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>com.google.protobuf</groupId>
@@ -213,7 +189,7 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>com.google.re2j</groupId>
@@ -223,7 +199,7 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>joda-time</groupId>
@@ -233,7 +209,7 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>org.jdom</groupId>
