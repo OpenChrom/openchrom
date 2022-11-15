@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Lablicate GmbH.
+ * Copyright (c) 2017, 2022 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -32,16 +32,17 @@ public class MagicNumberMatcherDatabase extends AbstractMagicNumberMatcher imple
 
 		if(checkFileExtension(file, ".pkf")) {
 			byte[] buffer = new byte[PKF_HEADER_SIZE];
-			try {
-				InputStream inputStream = Files.newInputStream(file.toPath());
-				if(inputStream.read(buffer) != PKF_HEADER_SIZE)
+			try (InputStream inputStream = Files.newInputStream(file.toPath())) {
+				if(inputStream.read(buffer) != PKF_HEADER_SIZE) {
 					return false;
+				}
 			} catch(IOException e) {
 				logger.warn(e);
 				return false;
 			}
-			if(Arrays.equals(buffer, PKF_HEADER))
+			if(Arrays.equals(buffer, PKF_HEADER)) {
 				return true;
+			}
 		}
 		return false;
 	}
