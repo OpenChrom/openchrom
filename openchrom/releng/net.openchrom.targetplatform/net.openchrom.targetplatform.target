@@ -30,7 +30,7 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" label="org.biojava" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>org.biojava</groupId>
@@ -146,7 +146,7 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" label="edu.ucar" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>edu.ucar</groupId>
