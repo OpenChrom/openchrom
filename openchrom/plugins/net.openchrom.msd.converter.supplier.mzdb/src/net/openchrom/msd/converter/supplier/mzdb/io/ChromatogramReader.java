@@ -57,8 +57,13 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
-		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:" + file.toString())) {
+		try {
 			Class.forName("org.sqlite.JDBC");
+		} catch(ClassNotFoundException e) {
+			logger.error(e);
+			return chromatogram;
+		}
+		try (Connection connection = DriverManager.getConnection("jdbc:sqlite:" + file.toString())) {
 			try (Statement statement = connection.createStatement()) {
 				//
 				ResultSet mzdbResultSet = statement.executeQuery("SELECT * FROM mzdb;");
@@ -104,8 +109,6 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		} catch(AbundanceLimitExceededException e) {
 			logger.warn(e);
 		} catch(IonLimitExceededException e) {
-			logger.warn(e);
-		} catch(ClassNotFoundException e) {
 			logger.warn(e);
 		}
 		monitor.done();
