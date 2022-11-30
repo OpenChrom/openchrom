@@ -54,6 +54,9 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int MAX_TRACES = 100;
 	public static final float MIN_FACTOR = 0.0f;
 	public static final float MAX_FACTOR = 100.0f;
+	public static final int MIN_DELTA_REPLACE_PEAK_MILLISECONDS = 0;
+	public static final int MAX_DELTA_REPLACE_PEAK_MILLISECONDS = Integer.MAX_VALUE;
+	public static final int DEF_DELTA_REPLACE_PEAK_MILLISECONDS = 5000; // 5 Seconds
 	//
 	public static final String P_PEAK_DETECTOR_LIST_MSD = "peakDetectorListMSD";
 	public static final String DEF_PEAK_DETECTOR_LIST_MSD = "";
@@ -211,6 +214,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int DEF_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS = 1000;
 	public static final String P_DETECTOR_REPLACE_NEAREST_PEAK = "detectorReplaceNearestPeak";
 	public static final boolean DEF_DETECTOR_REPLACE_NEAREST_PEAK = true;
+	public static final String P_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS = "reviewReplacePeakDeltaMilliseconds";
+	public static final int DEF_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS = DEF_DELTA_REPLACE_PEAK_MILLISECONDS;
 	public static final String P_DETECTOR_VISIBILITY = "detectorVisibility";
 	public static final String DEF_DETECTOR_VISIBILITY = Visibility.BOTH.name();;
 	public static final String P_DETECTOR_FOCUS_XIC = "detectorFocusXIC";
@@ -230,6 +235,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final int DEF_REVIEW_DYNAMIC_OFFSET_MILLISECONDS = 1000;
 	public static final String P_REVIEW_REPLACE_NEAREST_PEAK = "reviewReplaceNearestPeak";
 	public static final boolean DEF_REVIEW_REPLACE_NEAREST_PEAK = true;
+	public static final String P_REVIEW_REPLACE_PEAK_DELTA_MILLISECONDS = "reviewReplacePeakDeltaMilliseconds";
+	public static final int DEF_REVIEW_REPLACE_PEAK_DELTA_MILLISECONDS = DEF_DELTA_REPLACE_PEAK_MILLISECONDS;
 	public static final String P_REVIEW_SET_TARGET_DETECTED_PEAK = "reviewSetTargetDetectedPeak";
 	public static final boolean DEF_REVIEW_SET_TARGET_DETECTED_PEAK = true;
 	public static final String P_REVIEW_AUTO_SELECT_BEST_MATCH = "reviewAutoSelectBestMatch";
@@ -368,6 +375,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_DETECTOR_DELTA_RIGHT_MILLISECONDS, Integer.toString(DEF_DETECTOR_DELTA_RIGHT_MILLISECONDS));
 		defaultValues.put(P_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS, Integer.toString(DEF_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS));
 		defaultValues.put(P_DETECTOR_REPLACE_NEAREST_PEAK, Boolean.toString(DEF_DETECTOR_REPLACE_NEAREST_PEAK));
+		defaultValues.put(P_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS, Integer.toString(DEF_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS));
 		defaultValues.put(P_DETECTOR_VISIBILITY, DEF_DETECTOR_VISIBILITY);
 		defaultValues.put(P_DETECTOR_FOCUS_XIC, Boolean.toString(DEF_DETECTOR_FOCUS_XIC));
 		defaultValues.put(P_DETECTOR_SHOW_BASELINE, Boolean.toString(DEF_DETECTOR_SHOW_BASELINE));
@@ -379,6 +387,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_REVIEW_DELTA_RIGHT_MILLISECONDS, Integer.toString(DEF_REVIEW_DELTA_RIGHT_MILLISECONDS));
 		defaultValues.put(P_REVIEW_DYNAMIC_OFFSET_MILLISECONDS, Integer.toString(DEF_REVIEW_DYNAMIC_OFFSET_MILLISECONDS));
 		defaultValues.put(P_REVIEW_REPLACE_NEAREST_PEAK, Boolean.toString(DEF_REVIEW_REPLACE_NEAREST_PEAK));
+		defaultValues.put(P_REVIEW_REPLACE_PEAK_DELTA_MILLISECONDS, Integer.toString(DEF_REVIEW_REPLACE_PEAK_DELTA_MILLISECONDS));
 		defaultValues.put(P_REVIEW_SET_TARGET_VERIFICATION, Boolean.toString(DEF_REVIEW_SET_TARGET_VERIFICATION));
 		defaultValues.put(P_REVIEW_AUTO_SELECT_BEST_MATCH, Boolean.toString(DEF_REVIEW_AUTO_SELECT_BEST_MATCH));
 		defaultValues.put(P_REVIEW_CLEAR_PEAKS, Boolean.toString(DEF_REVIEW_CLEAR_PEAKS));
@@ -708,6 +717,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		putBoolean(P_DETECTOR_REPLACE_NEAREST_PEAK, !replacePeak);
 	}
 
+	public static int getDetectorReplacePeakDeltaMilliseconds() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS, DEF_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS);
+	}
+
 	public static Visibility getDetectorVisibility() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
@@ -782,6 +797,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		boolean replacePeak = isReviewReplaceNearestPeak();
 		putBoolean(P_REVIEW_REPLACE_NEAREST_PEAK, !replacePeak);
+	}
+
+	public static int getReviewReplacePeakDeltaMilliseconds() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getInt(P_REVIEW_REPLACE_PEAK_DELTA_MILLISECONDS, DEF_REVIEW_REPLACE_PEAK_DELTA_MILLISECONDS);
 	}
 
 	public static boolean isReviewSetTargetVerification() {

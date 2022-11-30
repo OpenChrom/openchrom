@@ -18,6 +18,7 @@ public class PeakDetectorChartSettings extends PeakChartSettings {
 	private int deltaRetentionTimeLeft = 0;
 	private int deltaRetentionTimeRight = 0;
 	private boolean replacePeak = false;
+	private int replacePeakDelta = 5000; // 5 Seconds
 
 	public int getDeltaRetentionTimeLeft() {
 
@@ -47,5 +48,15 @@ public class PeakDetectorChartSettings extends PeakChartSettings {
 	public void setReplacePeak(boolean replacePeak) {
 
 		this.replacePeak = replacePeak;
+	}
+
+	public int getReplacePeakDelta() {
+
+		return replacePeakDelta;
+	}
+
+	public void setReplacePeakDelta(int replacePeakDelta) {
+
+		this.replacePeakDelta = replacePeakDelta;
 	}
 }

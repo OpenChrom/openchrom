@@ -181,6 +181,7 @@ public class ReviewController {
 								chartSettings.setDeltaRetentionTimeLeft(PreferenceSupplier.getReviewDeltaLeftMilliseconds());
 								chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getReviewDeltaRightMilliseconds());
 								chartSettings.setReplacePeak(PreferenceSupplier.isReviewReplaceNearestPeak());
+								chartSettings.setReplacePeakDelta(PreferenceSupplier.getReviewReplacePeakDeltaMilliseconds());
 								//
 								peakDetectorChart.update(detectorRange, chartSettings);
 								/*

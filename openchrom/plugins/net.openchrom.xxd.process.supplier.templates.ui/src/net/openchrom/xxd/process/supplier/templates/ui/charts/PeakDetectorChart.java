@@ -71,6 +71,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private DeltaRangePaintListener deltaRangePaintListener = new DeltaRangePaintListener(this.getBaseChart());
 	//
 	private boolean isReplacePeak = false;
+	private int replacePeakDelta = 5000; // 5 Seconds
 
 	public PeakDetectorChart() {
 
@@ -122,6 +123,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		int deltaRetentionTimeRight = chartSettings.getDeltaRetentionTimeRight();
 		deltaRangePaintListener.setDeltaRetentionTime(deltaRetentionTimeLeft, deltaRetentionTimeRight);
 		isReplacePeak = chartSettings.isReplacePeak();
+		replacePeakDelta = chartSettings.getReplacePeakDelta();
 		updateDetectorRange(chartSettings);
 	}
 
@@ -407,7 +409,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 						int startRetentionTime = detectorRange.getRetentionTimeStart();
 						int stopRetentionTime = detectorRange.getRetentionTimeStop();
 						Set<Integer> traces = detectorRange.getTraces();
-						removeClosestPeak(peak, traces, chromatogram, startRetentionTime, stopRetentionTime);
+						removeClosestPeak(peak, traces, chromatogram, startRetentionTime, stopRetentionTime, replacePeakDelta);
 					}
 					//
 					chromatogram.addPeak(peak);
@@ -418,7 +420,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		return peak;
 	}
 
-	private void removeClosestPeak(IPeak peakSource, Set<Integer> traces, IChromatogram<IPeak> chromatogram, int startRetentionTime, int stopRetentionTime) {
+	private void removeClosestPeak(IPeak peakSource, Set<Integer> traces, IChromatogram<IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, int replacePeakDelta) {
 
 		int retentionTimeSource = peakSource.getPeakModel().getRetentionTimeAtPeakMaximum();
 		List<IPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
@@ -443,10 +445,14 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 			}
 		}
 		/*
-		 * Delete the peak if a specific peak was found.
+		 * Delete the peak if a specific peak was found and
+		 * the peak top is inside the delta range of the existing peak.
 		 */
 		if(peakDelete != null) {
-			chromatogram.removePeak(peakDelete);
+			int retentionTimeTarget = peakDelete.getPeakModel().getRetentionTimeAtPeakMaximum();
+			if(Math.abs(retentionTimeSource - retentionTimeTarget) <= replacePeakDelta) {
+				chromatogram.removePeak(peakDelete);
+			}
 		}
 	}
 

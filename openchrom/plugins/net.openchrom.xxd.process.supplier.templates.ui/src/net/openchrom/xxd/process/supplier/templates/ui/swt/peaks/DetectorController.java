@@ -130,6 +130,7 @@ public class DetectorController {
 								chartSettings.setDeltaRetentionTimeLeft(PreferenceSupplier.getDetectorDeltaLeftMilliseconds());
 								chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getDetectorDeltaRightMilliseconds());
 								chartSettings.setReplacePeak(PreferenceSupplier.isDetectorReplaceNearestPeak());
+								chartSettings.setReplacePeakDelta(PreferenceSupplier.getDetectorReplacePeakDeltaMilliseconds());
 								//
 								peakDetectorChart.update(detectorRange, chartSettings);
 								/*
