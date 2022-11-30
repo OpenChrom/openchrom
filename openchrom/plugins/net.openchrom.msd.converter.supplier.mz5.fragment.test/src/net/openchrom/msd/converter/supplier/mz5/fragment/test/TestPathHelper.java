@@ -19,7 +19,6 @@ import net.openchrom.msd.converter.supplier.mz5.PathResolver;
  */
 public class TestPathHelper extends PathResolver {
 
-	public static final String CONVERTER_ID = "org.eclipse.chemclipse.msd.converter.supplier.mz5";
 	/*
 	 * IMPORT
 	 */
