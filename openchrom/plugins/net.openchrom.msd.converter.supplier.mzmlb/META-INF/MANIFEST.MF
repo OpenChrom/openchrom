@@ -18,10 +18,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.converter.supplier.mzml
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
-Export-Package: net.openchrom.msd.converter.supplier.mzmlb,
- net.openchrom.msd.converter.supplier.mzmlb.converter,
- net.openchrom.msd.converter.supplier.mzmlb.io,
- net.openchrom.msd.converter.supplier.mzmlb.model
 Import-Package: jakarta.xml.bind,
  jakarta.xml.bind.annotation,
  jakarta.xml.bind.annotation.adapters
