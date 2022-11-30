@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
+import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
 import org.eclipse.chemclipse.csd.model.core.support.PeakBuilderCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
@@ -30,12 +31,16 @@ import org.eclipse.chemclipse.model.support.IScanRange;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
+import org.eclipse.chemclipse.wsd.model.core.IPeakWSD;
+import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.chemclipse.wsd.model.core.support.PeakBuilderWSD;
+import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
 
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.RetentionTimeRange;
@@ -44,6 +49,55 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSetting
 public class PeakSupport {
 
 	private static final Logger logger = Logger.getLogger(PeakSupport.class);
+
+	public static boolean isPeakRelevant(IPeak peak, Set<Integer> traces) {
+
+		boolean isPeakRelevant = false;
+		if(traces != null && peak != null) {
+			/*
+			 * In case if CSD or if the traces are empty, TIC is assumed.
+			 */
+			if(peak instanceof IPeakCSD || traces.isEmpty()) {
+				isPeakRelevant = true;
+			} else {
+				if(peak instanceof IPeakMSD peakMSD) {
+					/*
+					 * MSD
+					 */
+					isPeakRelevant = true;
+					IScanMSD scanMSD = peakMSD.getPeakModel().getPeakMassSpectrum();
+					IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
+					exitloop:
+					for(int trace : traces) {
+						float abundance = extractedIonSignal.getAbundance(trace);
+						if(abundance == 0) {
+							isPeakRelevant = false;
+							break exitloop;
+						}
+					}
+				} else if(peak instanceof IPeakWSD peakWSD) {
+					/*
+					 * WSD
+					 */
+					isPeakRelevant = true;
+					IScan scan = peakWSD.getPeakModel().getPeakMaximum();
+					if(scan instanceof IScanWSD scanWSD) {
+						IExtractedWavelengthSignal extractedWavelengthSignal = scanWSD.getExtractedWavelengthSignal();
+						exitloop:
+						for(int trace : traces) {
+							float abundance = extractedWavelengthSignal.getAbundance(trace);
+							if(abundance == 0) {
+								isPeakRelevant = false;
+								break exitloop;
+							}
+						}
+					}
+				}
+			}
+		}
+		//
+		return isPeakRelevant;
+	}
 
 	public static int getStartScan(IChromatogram<?> chromatogram, int retentionTime) {
 

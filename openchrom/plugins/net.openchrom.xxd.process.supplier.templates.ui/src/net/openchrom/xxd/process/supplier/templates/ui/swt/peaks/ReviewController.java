@@ -36,6 +36,7 @@ import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
+import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.charts.DetectorRange;
 import net.openchrom.xxd.process.supplier.templates.ui.charts.PeakDetectorChart;
 import net.openchrom.xxd.process.supplier.templates.ui.charts.PeakDetectorChartSettings;

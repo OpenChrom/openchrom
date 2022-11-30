@@ -62,6 +62,7 @@ public class ExtendedPeaksUI extends Composite {
 		if(peak != null) {
 			selectPeakMatch(peak);
 		}
+		//
 		updateSelection(false);
 	}
 
