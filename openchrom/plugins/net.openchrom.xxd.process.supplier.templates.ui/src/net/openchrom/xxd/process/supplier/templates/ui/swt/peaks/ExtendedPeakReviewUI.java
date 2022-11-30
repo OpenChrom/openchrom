@@ -47,7 +47,7 @@ import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewSupport;
+import net.openchrom.xxd.process.supplier.templates.ui.support.ReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakStatusListUI;
 
 public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {

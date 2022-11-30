@@ -47,7 +47,7 @@ public class DetectorController {
 	private static final String DETECTOR_DESCRIPTION = "Manual (Detector UI)";
 	//
 	private ProcessDetectorUI processDetectorUI;
-	private ExtendedPeaksUI extendedPeaksUI;
+	private ExtendedPeakDetectorUI extendedPeaksUI;
 	private PeakDetectorChart peakDetectorChart;
 	//
 	private PeakDetectorListUtil peakDetectorListUtil = new PeakDetectorListUtil();
@@ -167,7 +167,7 @@ public class DetectorController {
 
 	protected void createExtendedPeaksUI(Composite parent) {
 
-		extendedPeaksUI = new ExtendedPeaksUI(parent, SWT.NONE);
+		extendedPeaksUI = new ExtendedPeakDetectorUI(parent, SWT.NONE);
 		extendedPeaksUI.setController(this);
 	}
 
@@ -291,7 +291,7 @@ public class DetectorController {
 
 	private void updateChartPeaks(List<IPeak> peaks) {
 
-		peakDetectorChart.updatePeaks(peaks);
+		peakDetectorChart.updatePeaks(peaks, false); // By default false
 	}
 
 	@SuppressWarnings("unchecked")

@@ -70,7 +70,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewSupport;
+import net.openchrom.xxd.process.supplier.templates.ui.support.ReviewSupport;
 
 public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 

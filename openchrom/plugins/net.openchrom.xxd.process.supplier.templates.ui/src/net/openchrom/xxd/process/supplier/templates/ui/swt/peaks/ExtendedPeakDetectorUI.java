@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.chemclipse.support.ui.swt.ITableSettings;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -37,7 +38,7 @@ import org.eclipse.swt.widgets.Table;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakListUI;
 
-public class ExtendedPeaksUI extends Composite {
+public class ExtendedPeakDetectorUI extends Composite {
 
 	private static final String MENU_CATEGORY_PEAKS = "Peaks";
 	//
@@ -48,7 +49,7 @@ public class ExtendedPeaksUI extends Composite {
 	//
 	private DetectorSetting detectorSetting;
 
-	public ExtendedPeaksUI(Composite parent, int style) {
+	public ExtendedPeakDetectorUI(Composite parent, int style) {
 
 		super(parent, style);
 		createControl();
@@ -61,6 +62,13 @@ public class ExtendedPeaksUI extends Composite {
 		peakListUI.setInput(peaks);
 		if(peak != null) {
 			selectPeakMatch(peak);
+		} else {
+			/*
+			 * As we not neccesarily have an identifier here, select all peaks.
+			 */
+			if(peaks != null && !peaks.isEmpty()) {
+				selectPeakMatch(peaks.get(0));
+			}
 		}
 		//
 		updateSelection(false);
@@ -224,13 +232,7 @@ public class ExtendedPeaksUI extends Composite {
 	private void selectPeakMatch(IPeak peak) {
 
 		if(peaks != null && peak != null) {
-			exitloop:
-			for(int i = 0; i < peaks.size(); i++) {
-				if(peaks.get(i) == peak) {
-					peakListUI.getTable().select(i);
-					break exitloop;
-				}
-			}
+			peakListUI.setSelection(new StructuredSelection(peak));
 		}
 	}
 

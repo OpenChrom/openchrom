@@ -85,7 +85,12 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 
 	public void updatePeaks(List<IPeak> peaks) {
 
-		super.updatePeaks(peaks);
+		updatePeaks(peaks, false);
+	}
+
+	public void updatePeaks(List<IPeak> peaks, boolean clearPeakSeries) {
+
+		super.updatePeaks(peaks, clearPeakSeries);
 		adjustChartRange();
 	}
 

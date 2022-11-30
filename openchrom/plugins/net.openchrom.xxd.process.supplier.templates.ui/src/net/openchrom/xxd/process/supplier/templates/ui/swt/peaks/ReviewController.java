@@ -40,7 +40,7 @@ import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.charts.DetectorRange;
 import net.openchrom.xxd.process.supplier.templates.ui.charts.PeakDetectorChart;
 import net.openchrom.xxd.process.supplier.templates.ui.charts.PeakDetectorChartSettings;
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewSupport;
+import net.openchrom.xxd.process.supplier.templates.ui.support.ReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
@@ -337,7 +337,8 @@ public class ReviewController {
 
 	private void updateChartPeaks(List<IPeak> peaks) {
 
-		peakDetectorChart.updatePeaks(peaks);
+		boolean clearPeakSeries = PreferenceSupplier.isReviewClearPeaks();
+		peakDetectorChart.updatePeaks(peaks, clearPeakSeries);
 	}
 
 	@SuppressWarnings("unchecked")

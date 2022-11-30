@@ -234,6 +234,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_REVIEW_SET_TARGET_DETECTED_PEAK = true;
 	public static final String P_REVIEW_AUTO_SELECT_BEST_MATCH = "reviewAutoSelectBestMatch";
 	public static final boolean DEF_REVIEW_AUTO_SELECT_BEST_MATCH = false;
+	public static final String P_REVIEW_CLEAR_PEAKS = "reviewClearPeaks";
+	public static final boolean DEF_REVIEW_CLEAR_PEAKS = true;
 	public static final String P_REVIEW_SET_TARGET_VERIFICATION = "reviewSetTargetVerification";
 	public static final boolean DEF_REVIEW_SET_TARGET_VERIFICATION = true;
 	public static final String P_REVIEW_VISIBILITY = "reviewVisibility";
@@ -379,6 +381,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_REVIEW_REPLACE_NEAREST_PEAK, Boolean.toString(DEF_REVIEW_REPLACE_NEAREST_PEAK));
 		defaultValues.put(P_REVIEW_SET_TARGET_VERIFICATION, Boolean.toString(DEF_REVIEW_SET_TARGET_VERIFICATION));
 		defaultValues.put(P_REVIEW_AUTO_SELECT_BEST_MATCH, Boolean.toString(DEF_REVIEW_AUTO_SELECT_BEST_MATCH));
+		defaultValues.put(P_REVIEW_CLEAR_PEAKS, Boolean.toString(DEF_REVIEW_CLEAR_PEAKS));
 		defaultValues.put(P_REVIEW_SET_TARGET_DETECTED_PEAK, Boolean.toString(DEF_REVIEW_SET_TARGET_DETECTED_PEAK));
 		defaultValues.put(P_REVIEW_VISIBILITY, DEF_REVIEW_VISIBILITY);
 		defaultValues.put(P_REVIEW_FOCUS_XIC, Boolean.toString(DEF_REVIEW_FOCUS_XIC));
@@ -791,6 +794,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.getBoolean(P_REVIEW_AUTO_SELECT_BEST_MATCH, DEF_REVIEW_AUTO_SELECT_BEST_MATCH);
+	}
+
+	public static boolean isReviewClearPeaks() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_REVIEW_CLEAR_PEAKS, DEF_REVIEW_CLEAR_PEAKS);
 	}
 
 	public static boolean isReviewSetTargetDetectedPeak() {

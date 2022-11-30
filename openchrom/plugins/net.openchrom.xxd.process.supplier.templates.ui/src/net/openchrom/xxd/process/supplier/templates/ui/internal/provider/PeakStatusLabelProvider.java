@@ -23,6 +23,8 @@ import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import net.openchrom.xxd.process.supplier.templates.ui.support.ReviewSupport;
+
 public class PeakStatusLabelProvider extends AbstractChemClipseLabelProvider {
 
 	public static final String START_RETENTION_TIME = "Start [min]";

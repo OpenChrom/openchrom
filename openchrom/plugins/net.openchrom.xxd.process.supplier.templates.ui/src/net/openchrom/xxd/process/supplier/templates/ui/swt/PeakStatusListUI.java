@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakStatusComparator;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakStatusLabelProvider;
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.ReviewSupport;
+import net.openchrom.xxd.process.supplier.templates.ui.support.ReviewSupport;
 
 public class PeakStatusListUI extends ExtendedTableViewer {
 
