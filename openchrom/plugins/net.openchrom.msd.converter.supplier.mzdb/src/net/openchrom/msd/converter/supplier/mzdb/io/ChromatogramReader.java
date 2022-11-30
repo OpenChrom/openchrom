@@ -82,6 +82,24 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				ResultSet timeUnitResultSet = statement.executeQuery("SELECT unit_accession FROM cv_term WHERE accession='MS:1000016';");
 				int timeMultiplicator = getTimeMultiplicator(timeUnitResultSet.getString(1));
 				timeUnitResultSet.close();
+				ResultSet dataProcessingSet = statement.executeQuery("SELECT name FROM data_processing ORDER BY id;");
+				List<String> dataProcessing = new ArrayList<>();
+				while(dataProcessingSet.next()) {
+					dataProcessing.add(dataProcessingSet.getString("name"));
+				}
+				dataProcessingSet.close();
+				//
+				ResultSet softwareResultSet = statement.executeQuery("SELECT name FROM software ORDER BY id;");
+				List<String> software = new ArrayList<>();
+				while(softwareResultSet.next()) {
+					software.add(softwareResultSet.getString("name"));
+				}
+				softwareResultSet.close();
+				//
+				int size = Math.min(dataProcessing.size(), software.size());
+				for(int i = 0; i < size; i++) {
+					chromatogram.getEditHistory().add(new EditInformation(dataProcessing.get(i), software.get(i)));
+				}
 				//
 				ResultSet spectrumResultSet = statement.executeQuery("SELECT * FROM spectrum;");
 				while(spectrumResultSet.next()) {
