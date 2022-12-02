@@ -125,12 +125,21 @@ public class PeakSupport {
 		 * If a reference identifier is set, the retention time range
 		 * is adjusted dynamically by the position of the given peak.
 		 */
-		if(!"".equals(referenceIdentifier)) {
+		if(!referenceIdentifier.isEmpty()) {
 			IPeak peak = getReferencePeak(peaks, referenceIdentifier);
 			if(peak != null) {
-				int retentionTime = peak.getPeakModel().getRetentionTimeAtPeakMaximum();
-				startRetentionTime += retentionTime;
-				stopRetentionTime += retentionTime;
+				/*
+				 * The start / stop retention could be also negative.
+				 * This allows to address peaks that are in time before the marker peak.
+				 * ---
+				 * Positive
+				 * REF ... (start ~ stop)
+				 * ---
+				 * Negative
+				 * (start ~ stop) ... REF
+				 */
+				startRetentionTime += peak.getPeakModel().getStartRetentionTime();
+				stopRetentionTime += peak.getPeakModel().getStopRetentionTime();
 			}
 		}
 		//

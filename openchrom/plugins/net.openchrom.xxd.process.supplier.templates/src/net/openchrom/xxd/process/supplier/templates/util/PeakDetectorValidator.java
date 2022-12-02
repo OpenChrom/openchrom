@@ -65,23 +65,18 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 						/*
 						 * Validations
 						 */
-						if(positionStart < 0.0d) {
-							message = "The start position must be not lower than 0.";
-						}
-						//
-						if(positionStop <= positionStart) {
-							message = "The stop position must be greater than the start position.";
-						}
-						//
-						if(peakType == null) {
-							message = "Please select a peak type: " + PeakType.VV + " or " + PeakType.BB + " or " + PeakType.MM;
-						}
-						//
-						IStatus status = validateTraces(traceValues);
-						if(status.isOK()) {
-							traces = traceValues;
-						} else {
-							message = status.getMessage();
+						message = validateRetentionTime(referenceIdentifier, positionStart, positionStop);
+						if(message == null) {
+							if(peakType == null) {
+								message = "Please select a peak type: " + PeakType.VV + " or " + PeakType.BB + " or " + PeakType.MM;
+							}
+							//
+							IStatus status = validateTraces(traceValues);
+							if(status.isOK()) {
+								traces = traceValues;
+							} else {
+								message = status.getMessage();
+							}
 						}
 					} else {
 						message = ERROR_ENTRY;

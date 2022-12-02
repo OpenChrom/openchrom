@@ -67,23 +67,18 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 						/*
 						 * Validations
 						 */
-						if(positionStart < 0.0d) {
-							message = "The start position must be not lower than 0.";
-						}
-						//
-						if(positionStop <= positionStart) {
-							message = "The stop position must be greater than the start position.";
-						}
-						//
-						if("".equals(name)) {
-							message = "A substance name needs to be set.";
-						}
-						//
-						IStatus status = validateTraces(traceValues);
-						if(status.isOK()) {
-							traces = traceValues;
-						} else {
-							message = status.getMessage();
+						message = validateRetentionTime(referenceIdentifier, positionStart, positionStop);
+						if(message == null) {
+							if(name.isEmpty()) {
+								message = "A substance name needs to be set.";
+							}
+							//
+							IStatus status = validateTraces(traceValues);
+							if(status.isOK()) {
+								traces = traceValues;
+							} else {
+								message = status.getMessage();
+							}
 						}
 					} else {
 						message = ERROR_ENTRY;

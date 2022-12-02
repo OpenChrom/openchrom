@@ -86,4 +86,26 @@ public abstract class AbstractTemplateValidator extends ValueParserSupport imple
 		//
 		return null; // On purpose
 	}
+
+	protected String validateRetentionTime(String referenceIdentifier, double positionStart, double positionStop) {
+
+		if(positionStart >= 0 && positionStop >= 0) {
+			return validateRetentionTime(positionStart, positionStop);
+		} else {
+			if(referenceIdentifier.isEmpty()) {
+				return "A negative start/stop position is only allowed if the reference identifier is set.";
+			}
+		}
+		//
+		return null;
+	}
+
+	private String validateRetentionTime(double positionStart, double positionStop) {
+
+		if(positionStop <= positionStart) {
+			return "The stop position must be greater than the start position.";
+		}
+		//
+		return null;
+	}
 }
