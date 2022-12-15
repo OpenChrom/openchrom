@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2019 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2022 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,9 +18,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import org.eclipse.chemclipse.model.columns.SeparationColumnType;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.core.RetentionIndexType;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.msd.model.core.AbstractRegularMassSpectrum;
@@ -56,6 +56,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	private float signalOffset = 0f; // ignored in compareTo()
 
 	public CalibratedVendorMassSpectrum() {
+
 		/*
 		 * Initialize the values.
 		 */
@@ -778,19 +779,19 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	@Override
-	public float getRetentionIndex(RetentionIndexType retentionIndexType) {
+	public float getRetentionIndex(SeparationColumnType separationColumnType) {
 
 		return 0;
 	}
 
 	@Override
-	public Map<RetentionIndexType, Float> getRetentionIndicesTyped() {
+	public Map<SeparationColumnType, Float> getRetentionIndicesTyped() {
 
 		return null;
 	}
 
 	@Override
-	public void setRetentionIndex(RetentionIndexType retentionIndexType, float retentionIndex) {
+	public void setRetentionIndex(SeparationColumnType separationColumnType, float retentionIndex) {
 
 	}
 
