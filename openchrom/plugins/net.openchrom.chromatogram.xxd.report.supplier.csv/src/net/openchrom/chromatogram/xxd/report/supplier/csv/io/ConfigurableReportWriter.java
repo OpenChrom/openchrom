@@ -180,28 +180,28 @@ public class ConfigurableReportWriter {
 					records.add(peakModel.getPeakAbundanceByInflectionPoints());
 				}
 				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_BASELINE_FROM_INFLECTION_POINTS)) {
-					records.add(peakModel.getWidthBaselineByInflectionPoints());
+					records.add(peakModel.getWidthBaselineByInflectionPoints() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				}
 				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_BASELINE_TOTAL)) {
-					records.add(peakModel.getWidthBaselineTotal());
+					records.add(peakModel.getWidthBaselineTotal() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				}
 				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_BY_INFLECTION_POINTS)) {
-					records.add(peakModel.getWidthByInflectionPoints());
+					records.add(peakModel.getWidthByInflectionPoints() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				}
 				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_0)) {
-					records.add(peakModel.getWidthByInflectionPoints(0f));
+					records.add(peakModel.getWidthByInflectionPoints(0.0f) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				}
 				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_10)) {
-					records.add(peakModel.getWidthByInflectionPoints(0.f));
+					records.add(peakModel.getWidthByInflectionPoints(0.10f) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				}
 				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_15)) {
-					records.add(peakModel.getWidthByInflectionPoints(0.15f));
+					records.add(peakModel.getWidthByInflectionPoints(0.15f) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				}
 				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_50)) {
-					records.add(peakModel.getWidthByInflectionPoints(0.5f));
+					records.add(peakModel.getWidthByInflectionPoints(0.50f) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				}
 				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_85)) {
-					records.add(peakModel.getWidthByInflectionPoints(0.85f));
+					records.add(peakModel.getWidthByInflectionPoints(0.85f) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				}
 				if(reportColumn.equals(ReportColumns.LEADING)) {
 					records.add(peakModel.getLeading());
