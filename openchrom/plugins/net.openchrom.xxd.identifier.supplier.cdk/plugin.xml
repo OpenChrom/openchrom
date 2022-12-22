@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.identifier.chromatogramIdentifier">
+      <ChromatogramIdentificationSupplier
+            description="This identifier calculates a SMILES formula for each identification entry."
+            id="net.openchrom.chromatogram.msd.identifier.supplier.cdk"
+            identifier="net.openchrom.xxd.identifier.supplier.cdk.core.ChromatogramIdentifier"
+            identifierName="SMILES Identifier"
+            identifierSettings="net.openchrom.xxd.identifier.supplier.cdk.settings.IdentifierSettings">
+      </ChromatogramIdentificationSupplier>
+      <ChromatogramIdentificationSupplier
+            description="This identifier calculates the mol weight for each identification entry."
+            id="net.openchrom.chromatogram.msd.identifier.supplier.cdk.molweight"
+            identifier="net.openchrom.xxd.identifier.supplier.cdk.core.MolWeightCalculator"
+            identifierName="Mol Weight Calculator"
+            identifierSettings="net.openchrom.xxd.identifier.supplier.cdk.settings.IdentifierSettings">
+      </ChromatogramIdentificationSupplier>
+      <ChromatogramIdentificationSupplier
+            description="This files cleans empty SMILES targets."
+            id="net.openchrom.chromatogram.msd.identifier.supplier.cdk.cleaner"
+            identifier="net.openchrom.xxd.identifier.supplier.cdk.core.ChromatogramCleaner"
+            identifierName="SMILES Target Cleaner"
+            identifierSettings="net.openchrom.xxd.identifier.supplier.cdk.settings.CleanerSettings">
+      </ChromatogramIdentificationSupplier>      
+   </extension>    
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="net.openchrom.xxd.identifier.supplier.cdk.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>   
+</plugin>

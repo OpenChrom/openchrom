@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.xxd.identifier.supplier.cdk.fragment.test
+Bundle-ManifestVersion: 2
+Bundle-Name: CDK Test
+Bundle-SymbolicName: net.openchrom.xxd.identifier.supplier.cdk.fragment.test
+Bundle-Version: 1.5.0.qualifier
+Bundle-Vendor: ChemClipse
+Fragment-Host: net.openchrom.xxd.identifier.supplier.cdk;bundle-version="0.8.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Require-Bundle: org.junit;bundle-version="4.11.0"
