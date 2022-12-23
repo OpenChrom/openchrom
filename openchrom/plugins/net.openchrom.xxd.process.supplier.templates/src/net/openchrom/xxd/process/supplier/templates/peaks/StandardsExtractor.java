@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Lablicate GmbH.
+ * Copyright (c) 2019, 2022 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.chemclipse.chromatogram.msd.quantitation.core.AbstractPeakQuantifier;
-import org.eclipse.chemclipse.chromatogram.msd.quantitation.core.IPeakQuantifier;
-import org.eclipse.chemclipse.chromatogram.msd.quantitation.settings.IPeakQuantifierSettings;
+import org.eclipse.chemclipse.chromatogram.xxd.quantitation.core.AbstractPeakQuantifier;
+import org.eclipse.chemclipse.chromatogram.xxd.quantitation.core.IPeakQuantifier;
+import org.eclipse.chemclipse.chromatogram.xxd.quantitation.settings.IPeakQuantifierSettings;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramPeakCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;

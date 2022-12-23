@@ -72,7 +72,7 @@
       </PeakIdentificationSupplier>
    </extension>
    <extension
-         point="org.eclipse.chemclipse.chromatogram.msd.quantifier.peakQuantifierSupplier">
+         point="org.eclipse.chemclipse.chromatogram.xxd.quantifier.peakQuantifierSupplier">
       <PeakQuantifierSupplier
             description="This methods sets the ISTD information."
             id="net.openchrom.xxd.process.supplier.templates.peaks.standards.assigner"

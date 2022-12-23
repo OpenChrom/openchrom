@@ -76,13 +76,13 @@
       </page>              
       <page
             name="Standards Assigner (ISTD)"
-            category="org.eclipse.chemclipse.chromatogram.msd.quantitation.ui.preferences.quantifierPreferencePage"
+            category="org.eclipse.chemclipse.chromatogram.xxd.quantitation.ui.preferences.preferencePage"
             class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageStandardsAssigner"
             id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageStandardsAssigner">
       </page>
       <page
             name="Standards Referencer (ISTD)"
-            category="org.eclipse.chemclipse.chromatogram.msd.quantitation.ui.preferences.quantifierPreferencePage"
+            category="org.eclipse.chemclipse.chromatogram.xxd.quantitation.ui.preferences.preferencePage"
             class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageStandardsReferencer"
             id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageStandardsReferencer">
       </page>
@@ -94,13 +94,13 @@
       </page>
       <page
             name="Compensation Quantifier (ISTD)"
-            category="org.eclipse.chemclipse.chromatogram.msd.quantitation.ui.preferences.quantifierPreferencePage"
+            category="org.eclipse.chemclipse.chromatogram.xxd.quantitation.ui.preferences.preferencePage"
             class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageCompensationQuantifier"
             id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageCompensationQuantifier">
       </page>
       <page
             name="Standards Extractor (ISTD)"
-            category="org.eclipse.chemclipse.chromatogram.msd.quantitation.ui.preferences.quantifierPreferencePage"
+            category="org.eclipse.chemclipse.chromatogram.xxd.quantitation.ui.preferences.preferencePage"
             class="net.openchrom.xxd.process.supplier.templates.ui.preferences.PageStandardsExtractor"
             id="net.openchrom.xxd.process.supplier.templates.ui.preferences.pageStandardsExtractor">
       </page>

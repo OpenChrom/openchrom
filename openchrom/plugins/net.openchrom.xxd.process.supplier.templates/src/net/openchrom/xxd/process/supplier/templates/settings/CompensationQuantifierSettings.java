@@ -14,7 +14,7 @@ package net.openchrom.xxd.process.supplier.templates.settings;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.chemclipse.chromatogram.msd.quantitation.settings.AbstractPeakQuantifierSettings;
+import org.eclipse.chemclipse.chromatogram.xxd.quantitation.settings.AbstractPeakQuantifierSettings;
 import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
 import org.eclipse.core.runtime.IStatus;
 

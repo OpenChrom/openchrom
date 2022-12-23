@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.chemclipse.chromatogram.msd.quantitation.core.AbstractPeakQuantifier;
-import org.eclipse.chemclipse.chromatogram.msd.quantitation.core.IPeakQuantifier;
-import org.eclipse.chemclipse.chromatogram.msd.quantitation.settings.IPeakQuantifierSettings;
+import org.eclipse.chemclipse.chromatogram.xxd.quantitation.core.AbstractPeakQuantifier;
+import org.eclipse.chemclipse.chromatogram.xxd.quantitation.core.IPeakQuantifier;
+import org.eclipse.chemclipse.chromatogram.xxd.quantitation.settings.IPeakQuantifierSettings;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
