@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,6 +13,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.peaks;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -100,21 +101,45 @@ public class PeakDetector<P extends IPeak, C extends IChromatogram<P>, R> extend
 		IProcessingInfo<R> processingInfo = super.validate(chromatogramSelection, settings, new NullProgressMonitor());
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakDetectorSettings) {
+				/*
+				 * Configuration
+				 */
 				IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
 				RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
 				PeakDetectorSettings peakDetectorSettings = (PeakDetectorSettings)settings;
 				List<DetectorSetting> detectorSettings = peakDetectorSettings.getDetectorSettingsList();
 				SubMonitor subMonitor = SubMonitor.convert(monitor, detectorSettings.size());
+				/*
+				 * Sort by reference identifier. First, detect peaks without reference identifier.
+				 * Then run all settings with identifier as they could refer to peaks that might have
+				 * been detected before.
+				 */
+				List<DetectorSetting> detectorSettingsWithoutReferenceIdentifier = new ArrayList<>();
+				List<DetectorSetting> detectorSettingsWithReferenceIdentifier = new ArrayList<>();
 				//
 				for(DetectorSetting detectorSetting : detectorSettings) {
-					setPeakBySettings(chromatogram, detectorSetting, retentionIndexMap);
-					subMonitor.worked(1);
+					if(detectorSetting.getReferenceIdentifier().isEmpty()) {
+						detectorSettingsWithoutReferenceIdentifier.add(detectorSetting);
+					} else {
+						detectorSettingsWithReferenceIdentifier.add(detectorSetting);
+					}
 				}
+				//
+				applySettings(chromatogram, detectorSettingsWithoutReferenceIdentifier, retentionIndexMap, subMonitor);
+				applySettings(chromatogram, detectorSettingsWithReferenceIdentifier, retentionIndexMap, subMonitor);
 			} else {
 				processingInfo.addErrorMessage(PeakDetectorSettings.DETECTOR_DESCRIPTION, "The settings instance is wrong.");
 			}
 		}
 		return processingInfo;
+	}
+
+	private void applySettings(IChromatogram<?> chromatogram, List<DetectorSetting> detectorSettings, RetentionIndexMap retentionIndexMap, SubMonitor subMonitor) {
+
+		for(DetectorSetting detectorSetting : detectorSettings) {
+			setPeakBySettings(chromatogram, detectorSetting, retentionIndexMap);
+			subMonitor.worked(1);
+		}
 	}
 
 	private void setPeakBySettings(IChromatogram<? extends IPeak> chromatogram, DetectorSetting detectorSetting, RetentionIndexMap retentionIndexMap) {
