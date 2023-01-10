@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.core.MarkedTraceModus;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
@@ -29,6 +30,7 @@ import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.support.IScanRange;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
+import org.eclipse.chemclipse.model.support.RetentionIndexMath;
 import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
@@ -43,6 +45,8 @@ import org.eclipse.chemclipse.wsd.model.core.support.PeakBuilderWSD;
 import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
 
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
+import net.openchrom.xxd.process.supplier.templates.model.DefaultSetting;
+import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.RetentionTimeRange;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 
@@ -119,16 +123,21 @@ public class PeakSupport {
 
 	public RetentionTimeRange getRetentionTimeRange(List<? extends IPeak> peaks, AbstractSetting setting, String referenceIdentifier, RetentionIndexMap retentionIndexMap) {
 
-		int startRetentionTime = setting.getRetentionTimeStart(retentionIndexMap);
-		int stopRetentionTime = setting.getRetentionTimeStop(retentionIndexMap);
 		/*
-		 * If a reference identifier is set, the retention time range
-		 * is adjusted dynamically by the position of the given peak.
+		 * Retention Time (milliseconds)
 		 */
+		int startRetentionTime = 0;
+		int stopRetentionTime = 0;
+		//
 		if(!referenceIdentifier.isEmpty()) {
+			/*
+			 * Position via Reference
+			 */
 			IPeak peak = getReferencePeak(peaks, referenceIdentifier);
 			if(peak != null) {
 				/*
+				 * If a reference identifier is set, the retention time range
+				 * is adjusted dynamically by the position of the given peak.
 				 * The start / stop retention could be also negative.
 				 * This allows to address peaks that are in time before the marker peak.
 				 * ---
@@ -138,9 +147,47 @@ public class PeakSupport {
 				 * Negative
 				 * (start ~ stop) ... REF
 				 */
-				startRetentionTime += peak.getPeakModel().getStartRetentionTime();
-				stopRetentionTime += peak.getPeakModel().getStopRetentionTime();
+				IPeakModel peakModel = peak.getPeakModel();
+				int startRetentionTimePeak = peakModel.getStartRetentionTime();
+				int stopRetentionTimePeak = peakModel.getStopRetentionTime();
+				//
+				if(isUseRetentionIndex(setting)) {
+					/*
+					 * The position is based on retention index.
+					 * Hence, the retention index of the reference peak must be retrieved first.
+					 * Then the RI based correction must be applied and converted back
+					 * to the retention time in milliseconds
+					 */
+					float retentionIndexStart = retentionIndexMap.getRetentionIndex(startRetentionTimePeak);
+					if(retentionIndexStart != RetentionIndexMath.RETENTION_INDEX_MISSING) {
+						float retentionIndexStop = retentionIndexMap.getRetentionIndex(stopRetentionTimePeak);
+						if(retentionIndexStop != RetentionIndexMath.RETENTION_INDEX_MISSING) {
+							retentionIndexStart += setting.getPositionStart();
+							retentionIndexStop += setting.getPositionStop();
+							//
+							DefaultSetting defaultSetting = new DefaultSetting();
+							defaultSetting.setPositionDirective(PositionDirective.RETENTION_INDEX);
+							defaultSetting.setPositionStart(retentionIndexStart);
+							defaultSetting.setPositionStop(retentionIndexStop);
+							startRetentionTime = defaultSetting.getRetentionTimeStart(retentionIndexMap);
+							stopRetentionTime = defaultSetting.getRetentionTimeStop(retentionIndexMap);
+						}
+					}
+				} else {
+					/*
+					 * The position is based on retention time (minutes or milliseconds).
+					 * Hence, the correction can be applied directly.
+					 */
+					startRetentionTime = setting.getRetentionTimeStart(retentionIndexMap) + startRetentionTimePeak;
+					stopRetentionTime = setting.getRetentionTimeStop(retentionIndexMap) + stopRetentionTimePeak;
+				}
 			}
+		} else {
+			/*
+			 * Position Direct
+			 */
+			startRetentionTime = setting.getRetentionTimeStart(retentionIndexMap);
+			stopRetentionTime = setting.getRetentionTimeStop(retentionIndexMap);
 		}
 		//
 		return new RetentionTimeRange(startRetentionTime, stopRetentionTime);
@@ -335,5 +382,10 @@ public class PeakSupport {
 			}
 		}
 		return null;
+	}
+
+	private boolean isUseRetentionIndex(AbstractSetting setting) {
+
+		return PositionDirective.RETENTION_INDEX.equals(setting.getPositionDirective());
 	}
 }

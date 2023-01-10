@@ -101,32 +101,12 @@ public class PeakDetector<P extends IPeak, C extends IChromatogram<P>, R> extend
 		IProcessingInfo<R> processingInfo = super.validate(chromatogramSelection, settings, new NullProgressMonitor());
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakDetectorSettings) {
-				/*
-				 * Configuration
-				 */
 				IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
 				RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
 				PeakDetectorSettings peakDetectorSettings = (PeakDetectorSettings)settings;
 				List<DetectorSetting> detectorSettings = peakDetectorSettings.getDetectorSettingsList();
 				SubMonitor subMonitor = SubMonitor.convert(monitor, detectorSettings.size());
-				/*
-				 * Sort by reference identifier. First, detect peaks without reference identifier.
-				 * Then run all settings with identifier as they could refer to peaks that might have
-				 * been detected before.
-				 */
-				List<DetectorSetting> detectorSettingsWithoutReferenceIdentifier = new ArrayList<>();
-				List<DetectorSetting> detectorSettingsWithReferenceIdentifier = new ArrayList<>();
-				//
-				for(DetectorSetting detectorSetting : detectorSettings) {
-					if(detectorSetting.getReferenceIdentifier().isEmpty()) {
-						detectorSettingsWithoutReferenceIdentifier.add(detectorSetting);
-					} else {
-						detectorSettingsWithReferenceIdentifier.add(detectorSetting);
-					}
-				}
-				//
-				applySettings(chromatogram, detectorSettingsWithoutReferenceIdentifier, retentionIndexMap, subMonitor);
-				applySettings(chromatogram, detectorSettingsWithReferenceIdentifier, retentionIndexMap, subMonitor);
+				applySettingsCombined(chromatogram, detectorSettings, retentionIndexMap, subMonitor);
 			} else {
 				processingInfo.addErrorMessage(PeakDetectorSettings.DETECTOR_DESCRIPTION, "The settings instance is wrong.");
 			}
@@ -134,7 +114,29 @@ public class PeakDetector<P extends IPeak, C extends IChromatogram<P>, R> extend
 		return processingInfo;
 	}
 
-	private void applySettings(IChromatogram<?> chromatogram, List<DetectorSetting> detectorSettings, RetentionIndexMap retentionIndexMap, SubMonitor subMonitor) {
+	private void applySettingsCombined(IChromatogram<?> chromatogram, List<DetectorSetting> detectorSettings, RetentionIndexMap retentionIndexMap, SubMonitor subMonitor) {
+
+		/*
+		 * Sort by reference identifier. First, detect peaks without reference identifier.
+		 * Then run all settings with identifier as they could refer to peaks that might have
+		 * been detected before.
+		 */
+		List<DetectorSetting> detectorSettingsWithoutReferenceIdentifier = new ArrayList<>();
+		List<DetectorSetting> detectorSettingsWithReferenceIdentifier = new ArrayList<>();
+		//
+		for(DetectorSetting detectorSetting : detectorSettings) {
+			if(detectorSetting.getReferenceIdentifier().isEmpty()) {
+				detectorSettingsWithoutReferenceIdentifier.add(detectorSetting);
+			} else {
+				detectorSettingsWithReferenceIdentifier.add(detectorSetting);
+			}
+		}
+		//
+		applySettingsSeparated(chromatogram, detectorSettingsWithoutReferenceIdentifier, retentionIndexMap, subMonitor);
+		applySettingsSeparated(chromatogram, detectorSettingsWithReferenceIdentifier, retentionIndexMap, subMonitor);
+	}
+
+	private void applySettingsSeparated(IChromatogram<?> chromatogram, List<DetectorSetting> detectorSettings, RetentionIndexMap retentionIndexMap, SubMonitor subMonitor) {
 
 		for(DetectorSetting detectorSetting : detectorSettings) {
 			setPeakBySettings(chromatogram, detectorSetting, retentionIndexMap);
