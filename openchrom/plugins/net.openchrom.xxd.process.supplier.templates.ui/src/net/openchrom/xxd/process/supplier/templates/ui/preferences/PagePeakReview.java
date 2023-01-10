@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -47,7 +47,7 @@ public class PagePeakReview extends FieldEditorPreferencePage implements IWorkbe
 		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_REVIEW_REPLACE_PEAK_DELTA_MILLISECONDS, "Replace Max Delta [ms]", PreferenceSupplier.MIN_DELTA_REPLACE_PEAK_MILLISECONDS, PreferenceSupplier.MAX_DELTA_REPLACE_PEAK_MILLISECONDS, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SET_TARGET_DETECTED_PEAK, "Set Target (Manual Peak Detection)", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_AUTO_SELECT_BEST_MATCH, "Autoselect Best Match", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_CLEAR_PEAKS, "Clear Peaks", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_HIDE_EXISTING_PEAKS, "Hide Existing Peaks", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SET_TARGET_VERIFICATION, "Set Target (Peak Verification)", getFieldEditorParent()));
 		addField(new ComboFieldEditor(PreferenceSupplier.P_REVIEW_VISIBILITY, "Visibility", PreferenceSupplier.VISIBILITY_OPTIONS, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_FOCUS_XIC, "Focus XIC", getFieldEditorParent()));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -216,6 +216,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_DETECTOR_REPLACE_NEAREST_PEAK = true;
 	public static final String P_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS = "reviewReplacePeakDeltaMilliseconds";
 	public static final int DEF_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS = DEF_DELTA_REPLACE_PEAK_MILLISECONDS;
+	public static final String P_DETECTOR_HIDE_EXISTING_PEAKS = "detectorHideExistingPeaks";
+	public static final boolean DEF_DETECTOR_HIDE_EXISTING_PEAKS = false;
 	public static final String P_DETECTOR_VISIBILITY = "detectorVisibility";
 	public static final String DEF_DETECTOR_VISIBILITY = Visibility.BOTH.name();;
 	public static final String P_DETECTOR_FOCUS_XIC = "detectorFocusXIC";
@@ -241,8 +243,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final boolean DEF_REVIEW_SET_TARGET_DETECTED_PEAK = true;
 	public static final String P_REVIEW_AUTO_SELECT_BEST_MATCH = "reviewAutoSelectBestMatch";
 	public static final boolean DEF_REVIEW_AUTO_SELECT_BEST_MATCH = false;
-	public static final String P_REVIEW_CLEAR_PEAKS = "reviewClearPeaks";
-	public static final boolean DEF_REVIEW_CLEAR_PEAKS = true;
+	public static final String P_REVIEW_HIDE_EXISTING_PEAKS = "reviewHideExistingPeaks";
+	public static final boolean DEF_REVIEW_HIDE_EXISTING_PEAKS = true;
 	public static final String P_REVIEW_SET_TARGET_VERIFICATION = "reviewSetTargetVerification";
 	public static final boolean DEF_REVIEW_SET_TARGET_VERIFICATION = true;
 	public static final String P_REVIEW_VISIBILITY = "reviewVisibility";
@@ -376,6 +378,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS, Integer.toString(DEF_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS));
 		defaultValues.put(P_DETECTOR_REPLACE_NEAREST_PEAK, Boolean.toString(DEF_DETECTOR_REPLACE_NEAREST_PEAK));
 		defaultValues.put(P_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS, Integer.toString(DEF_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS));
+		defaultValues.put(P_DETECTOR_HIDE_EXISTING_PEAKS, Boolean.toString(DEF_DETECTOR_HIDE_EXISTING_PEAKS));
 		defaultValues.put(P_DETECTOR_VISIBILITY, DEF_DETECTOR_VISIBILITY);
 		defaultValues.put(P_DETECTOR_FOCUS_XIC, Boolean.toString(DEF_DETECTOR_FOCUS_XIC));
 		defaultValues.put(P_DETECTOR_SHOW_BASELINE, Boolean.toString(DEF_DETECTOR_SHOW_BASELINE));
@@ -390,7 +393,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_REVIEW_REPLACE_PEAK_DELTA_MILLISECONDS, Integer.toString(DEF_REVIEW_REPLACE_PEAK_DELTA_MILLISECONDS));
 		defaultValues.put(P_REVIEW_SET_TARGET_VERIFICATION, Boolean.toString(DEF_REVIEW_SET_TARGET_VERIFICATION));
 		defaultValues.put(P_REVIEW_AUTO_SELECT_BEST_MATCH, Boolean.toString(DEF_REVIEW_AUTO_SELECT_BEST_MATCH));
-		defaultValues.put(P_REVIEW_CLEAR_PEAKS, Boolean.toString(DEF_REVIEW_CLEAR_PEAKS));
+		defaultValues.put(P_REVIEW_HIDE_EXISTING_PEAKS, Boolean.toString(DEF_REVIEW_HIDE_EXISTING_PEAKS));
 		defaultValues.put(P_REVIEW_SET_TARGET_DETECTED_PEAK, Boolean.toString(DEF_REVIEW_SET_TARGET_DETECTED_PEAK));
 		defaultValues.put(P_REVIEW_VISIBILITY, DEF_REVIEW_VISIBILITY);
 		defaultValues.put(P_REVIEW_FOCUS_XIC, Boolean.toString(DEF_REVIEW_FOCUS_XIC));
@@ -741,6 +744,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getBoolean(P_DETECTOR_FOCUS_XIC, DEF_DETECTOR_FOCUS_XIC);
 	}
 
+	public static boolean isDetectorHideExistingPeaks() {
+
+		IEclipsePreferences preferences = INSTANCE().getPreferences();
+		return preferences.getBoolean(P_DETECTOR_HIDE_EXISTING_PEAKS, DEF_DETECTOR_HIDE_EXISTING_PEAKS);
+	}
+
 	public static boolean isShowBaselineDetector() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
@@ -817,10 +826,10 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		return preferences.getBoolean(P_REVIEW_AUTO_SELECT_BEST_MATCH, DEF_REVIEW_AUTO_SELECT_BEST_MATCH);
 	}
 
-	public static boolean isReviewClearPeaks() {
+	public static boolean isReviewHideExistingPeaks() {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_CLEAR_PEAKS, DEF_REVIEW_CLEAR_PEAKS);
+		return preferences.getBoolean(P_REVIEW_HIDE_EXISTING_PEAKS, DEF_REVIEW_HIDE_EXISTING_PEAKS);
 	}
 
 	public static boolean isReviewSetTargetDetectedPeak() {

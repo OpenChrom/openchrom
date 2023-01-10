@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -43,6 +43,7 @@ public class PagePeakDetector extends FieldEditorPreferencePage implements IWork
 		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS, "Dynamic Offset [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_REPLACE_NEAREST_PEAK, "Replace Peak", getFieldEditorParent()));
 		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS, "Replace Max Delta [ms]", PreferenceSupplier.MIN_DELTA_REPLACE_PEAK_MILLISECONDS, PreferenceSupplier.MAX_DELTA_REPLACE_PEAK_MILLISECONDS, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_HIDE_EXISTING_PEAKS, "Hide Existing Peaks", getFieldEditorParent()));
 		addField(new ComboFieldEditor(PreferenceSupplier.P_DETECTOR_VISIBILITY, "Visibility", PreferenceSupplier.VISIBILITY_OPTIONS, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_FOCUS_XIC, "Focus XIC", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_SHOW_BASELINE, "Show Baseline", getFieldEditorParent()));
