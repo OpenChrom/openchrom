@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -13,6 +13,7 @@ package net.openchrom.csd.converter.supplier.cdf.model;
 
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.tsd.model.core.AbstractChromatogramTSD;
+import org.eclipse.chemclipse.tsd.model.core.TypeTSD;
 
 public class VendorChromatogramTSD extends AbstractChromatogramTSD {
 
@@ -37,9 +38,9 @@ public class VendorChromatogramTSD extends AbstractChromatogramTSD {
 	}
 
 	@Override
-	public boolean isType2() {
+	public TypeTSD getTypeTSD() {
 
-		return true;
+		return TypeTSD.GCxGC_MS;
 	}
 
 	@Override
