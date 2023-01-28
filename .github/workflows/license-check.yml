@@ -1,4 +1,4 @@
-# Copyright (c) 2020, 2021 Contributors to the Eclipse Foundation
+# Copyright (c) 2020, 2023 Contributors to the Eclipse Foundation
 #
 #  Contributors:
 #  Thomas Jaeckle - initial API and implementation
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: jitterbit/get-changed-files@v1
+      - uses: masesgroup/retrieve-changed-files@v2
         id: changed-files
         continue-on-error: true
       - name: Print changed files
