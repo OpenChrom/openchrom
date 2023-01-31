@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,8 +24,7 @@ import org.eclipse.chemclipse.converter.io.AbstractChromatogramReader;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
-import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.converter.IConstants;
-import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.converter.XmlReader;
+import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.converter.XmlReader110;
 import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.BinaryDataArrayType;
 import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.CVParamType;
 import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.MzML;
@@ -56,6 +55,7 @@ import jakarta.xml.bind.Unmarshaller;
 public class ChromatogramReader extends AbstractChromatogramReader implements IChromatogramMSDReader {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
+	private static final String IMPORT_CHROMATOGRAM = "Import mzMLb Chromatogram";
 
 	@Override
 	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
@@ -68,12 +68,12 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 		IVendorChromatogram chromatogram = null;
 		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
-			byte[] xml = reader.readAsByteArray(IConstants.NODE_MZML);
+			byte[] xml = reader.readAsByteArray("mzML");
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			InputStream inputStream = new ByteArrayInputStream(xml);
 			Document document = documentBuilder.parse(inputStream);
-			NodeList topNode = document.getElementsByTagName(IConstants.NODE_MZML);
+			NodeList topNode = document.getElementsByTagName("mzML");
 			JAXBContext jaxbContext = JAXBContext.newInstance(MzML.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			MzML mzML = (MzML)unmarshaller.unmarshal(topNode.item(0));
@@ -81,9 +81,9 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			chromatogram = new VendorChromatogram();
 			chromatogram.setFile(file);
 			SpectrumListType spectrumList = run.getSpectrumList();
-			monitor.beginTask(IConstants.IMPORT_CHROMATOGRAM, spectrumList.getCount().intValue());
+			monitor.beginTask(IMPORT_CHROMATOGRAM, spectrumList.getCount().intValue());
 			for(SpectrumType spectrum : spectrumList.getSpectrum()) {
-				monitor.subTask(IConstants.SCAN + " " + spectrum.getIndex().intValue());
+				monitor.subTask("scan" + " " + spectrum.getIndex().intValue());
 				float abundance = 0.0f;
 				int retentionTime = 0;
 				short msLevel = 0;
@@ -101,7 +101,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 					for(ScanType scan : spectrum.getScanList().getScan()) {
 						for(CVParamType cvParamScan : scan.getCvParam()) {
 							if(cvParamScan.getAccession().equals("MS:1000016") && cvParamScan.getName().equals("scan start time")) {
-								int multiplicator = XmlReader.getTimeMultiplicator(cvParamScan);
+								int multiplicator = XmlReader110.getTimeMultiplicator(cvParamScan);
 								retentionTime = Math.round(Float.parseFloat(cvParamScan.getValue()) * multiplicator);
 							}
 						}
