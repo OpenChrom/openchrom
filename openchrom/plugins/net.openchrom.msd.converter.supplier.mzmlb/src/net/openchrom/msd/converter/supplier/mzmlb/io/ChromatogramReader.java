@@ -27,7 +27,7 @@ import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.converter.XmlReader110;
 import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.BinaryDataArrayType;
 import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.CVParamType;
-import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.MzML;
+import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.MzMLType;
 import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.RunType;
 import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.ScanType;
 import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.SpectrumListType;
@@ -74,16 +74,16 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			InputStream inputStream = new ByteArrayInputStream(xml);
 			Document document = documentBuilder.parse(inputStream);
 			NodeList topNode = document.getElementsByTagName("mzML");
-			JAXBContext jaxbContext = JAXBContext.newInstance(MzML.class);
+			JAXBContext jaxbContext = JAXBContext.newInstance(MzMLType.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			MzML mzML = (MzML)unmarshaller.unmarshal(topNode.item(0));
+			MzMLType mzML = (MzMLType)unmarshaller.unmarshal(topNode.item(0));
 			RunType run = mzML.getRun();
 			chromatogram = new VendorChromatogram();
 			chromatogram.setFile(file);
 			SpectrumListType spectrumList = run.getSpectrumList();
 			monitor.beginTask(IMPORT_CHROMATOGRAM, spectrumList.getCount().intValue());
 			for(SpectrumType spectrum : spectrumList.getSpectrum()) {
-				monitor.subTask("scan" + " " + spectrum.getIndex().intValue());
+				monitor.subTask("Scan" + " " + spectrum.getIndex().intValue());
 				float abundance = 0.0f;
 				int retentionTime = 0;
 				short msLevel = 0;
