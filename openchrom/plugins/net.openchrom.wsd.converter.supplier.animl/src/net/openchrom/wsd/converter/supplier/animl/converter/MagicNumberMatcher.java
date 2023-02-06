@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,6 +22,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import net.openchrom.wsd.converter.supplier.animl.io.ChromatogramReader;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.IConstants;
 
 public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
@@ -45,7 +46,7 @@ public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IM
 			int techniques = techniquesList.getLength();
 			for(int t = 0; t < techniques; t++) {
 				Element element = (Element)techniquesList.item(t);
-				if(element.getAttribute("name").equals("UV/Vis Trace Detector")) {
+				if(element.getAttribute("uri").equals(ChromatogramReader.URI)) {
 					isValidFormat = true;
 				}
 			}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -31,24 +31,24 @@ public class BinaryReader {
 		return values;
 	}
 
-	public static float[] decodeFloatArray(byte[] binary) {
+	public static Float[] decodeFloatArray(byte[] binary) {
 
 		ByteBuffer byteBuffer = ByteBuffer.wrap(binary);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		FloatBuffer floatBuffer = byteBuffer.asFloatBuffer();
-		float[] values = new float[floatBuffer.capacity()];
+		Float[] values = new Float[floatBuffer.capacity()];
 		for(int index = 0; index < floatBuffer.capacity(); index++) {
 			values[index] = floatBuffer.get(index);
 		}
 		return values;
 	}
 
-	public static double[] decodeDoubleArray(byte[] binary) {
+	public static Double[] decodeDoubleArray(byte[] binary) {
 
 		ByteBuffer byteBuffer = ByteBuffer.wrap(binary);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		DoubleBuffer doubleBuffer = byteBuffer.asDoubleBuffer();
-		double[] values = new double[doubleBuffer.capacity()];
+		Double[] values = new Double[doubleBuffer.capacity()];
 		for(int index = 0; index < doubleBuffer.capacity(); index++) {
 			values[index] = doubleBuffer.get(index);
 		}

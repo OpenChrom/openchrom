@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,12 +22,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AnIMLType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ObjectFactory;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 public class XmlReader {
 
@@ -46,13 +47,13 @@ public class XmlReader {
 	public static int getTimeMultiplicator(UnitType unit) {
 
 		int multiplicator = 1;
-		if(unit.getQuantity().equals("ms")) {
+		if(unit.getLabel().equals("ms")) {
 			multiplicator = 1;
 		}
-		if(unit.getQuantity().equals("s")) {
+		if(unit.getLabel().equals("s")) {
 			multiplicator = 1000;
 		}
-		if(unit.getQuantity().equals("min")) {
+		if(unit.getLabel().equals("min")) {
 			multiplicator = 60 * 1000;
 		}
 		return multiplicator;
