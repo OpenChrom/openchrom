@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -84,8 +84,8 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 			chromatogram = readSample(animl, chromatogram);
 			List<Integer> retentionTimes = new ArrayList<>();
 			List<Float> signals = new ArrayList<>();
-			double[] mzs = null;
-			float[] intensities = null;
+			Double[] mzs = null;
+			Float[] intensities = null;
 			for(ExperimentStepType experimentStep : animl.getExperimentStepSet().getExperimentStep()) {
 				if(experimentStep.getTechnique().getName().equals("Mass Spectrum Time Trace")) {
 					MethodType method = experimentStep.getMethod();
@@ -120,7 +120,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 										signals.addAll(individualValueSet.getF());
 									}
 									for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
-										float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
+										Float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
 										for(float f : decodedValues) {
 											signals.add(f);
 										}
@@ -150,8 +150,8 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 						if(seriesSet.getName().equals("Spectrum")) {
 							spectra++;
 							int length = seriesSet.getLength();
-							mzs = new double[length];
-							intensities = new float[length];
+							mzs = new Double[length];
+							intensities = new Float[length];
 							for(SeriesType series : seriesSet.getSeries()) {
 								if(series.getName().equals("Mass/Charge")) {
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -91,7 +91,7 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 										}
 									}
 									for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
-										float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
+										Float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
 										for(float f : decodedValues) {
 											retentionTimes.add(multiplicator * f);
 										}
@@ -102,7 +102,7 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 										signals.addAll(individualValueSet.getF());
 									}
 									for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
-										float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
+										Float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
 										for(float f : decodedValues) {
 											signals.add(f);
 										}

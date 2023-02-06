@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import jakarta.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -47,6 +46,8 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Sampl
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesType;
 
+import jakarta.xml.bind.JAXBException;
+
 public class MassSpectrumReader extends AbstractMassSpectraReader implements IMassSpectraReader {
 
 	private static final Logger logger = Logger.getLogger(MassSpectrumReader.class);
@@ -67,8 +68,8 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 			massSpectrum.setFile(file);
 			massSpectrum.setIdentifier(file.getName());
 			//
-			double[] mzs = null;
-			float[] intensities = null;
+			Double[] mzs = null;
+			Float[] intensities = null;
 			int length = 0;
 			//
 			for(ExperimentStepType experimentStep : animl.getExperimentStepSet().getExperimentStep()) {
@@ -87,8 +88,8 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 						}
 						SeriesSetType seriesSet = result.getSeriesSet();
 						length = seriesSet.getLength();
-						mzs = new double[length];
-						intensities = new float[length];
+						mzs = new Double[length];
+						intensities = new Float[length];
 						if(seriesSet.getName().equals("Spectrum")) {
 							for(SeriesType series : seriesSet.getSeries()) {
 								if(series.getName().equals("Mass/Charge")) {
