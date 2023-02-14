@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -46,7 +46,7 @@ public class MoleculeImageService implements IMoleculeImageService {
 	@Override
 	public String getName() {
 
-		return "Molecule Image (CDK)";
+		return "OPSIN and CDK";
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class MoleculeImageService implements IMoleculeImageService {
 	@Override
 	public String getDescription() {
 
-		return "This service tries to create an image by using OPSIN and the Chemistry Development Kit (CDK).";
+		return "This service tries to create a molecular formula by using OPSIN and the Chemistry Development Kit (CDK).";
 	}
 
 	@Override
@@ -119,10 +119,6 @@ public class MoleculeImageService implements IMoleculeImageService {
 
 		Image image = null;
 		try {
-			/*
-			 * DepictionGenerator depictionGenerator = new DepictionGenerator();
-			 * depictionGenerator.depict(molecule).writeTo(path);
-			 */
 			Point point = calculateMoleculeImageSize(width, height);
 			image = ImageConverter.getInstance().moleculeToImage(display, structureConverter, converterInput, point);
 		} catch(Exception e) {

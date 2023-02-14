@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Marwin Wollschläger.
+ * Copyright (c) 2013, 2023 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -30,6 +30,7 @@ import org.openscience.cdk.interfaces.IIsotope;
 public class IsotopeDeciderFactory {
 
 	private static final Logger logger = Logger.getLogger(IsotopeDeciderFactory.class);
+	private static final String ERROR = "Failed to get isotope.";
 	private static IsotopeDeciderFactory singleton;
 
 	private IsotopeDeciderFactory() {
@@ -51,7 +52,7 @@ public class IsotopeDeciderFactory {
 	 */
 	public IsotopeDecider getBasicIsotopes() {
 
-		Set<String> isotopes = new HashSet<String>();
+		Set<String> isotopes = new HashSet<>();
 		isotopes.add("C");
 		isotopes.add("H");
 		isotopes.add("N");
@@ -66,7 +67,7 @@ public class IsotopeDeciderFactory {
 	 */
 	public IsotopeDecider getImportantOrganicIsotopes() {
 
-		Set<String> isotopes = new HashSet<String>();
+		Set<String> isotopes = new HashSet<>();
 		isotopes.add("C");
 		isotopes.add("H");
 		isotopes.add("N");
@@ -85,13 +86,13 @@ public class IsotopeDeciderFactory {
 		IsotopeDecider isotopeDecider = new IsotopeDecider();
 		try {
 			IsotopeDeciderFactory isotopeFactory = IsotopeDeciderFactory.getInstance();
-			List<IIsotope> isotopeSet = new ArrayList<IIsotope>();
+			List<IIsotope> isotopeSet = new ArrayList<>();
 			for(String isotope : isotopes) {
 				isotopeSet.add(isotopeFactory.getIsotope(isotope));
 			}
 			isotopeDecider.setIsotopeSet(isotopeSet);
 		} catch(Exception e) {
-			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
+			logger.warn(ERROR, e);
 		}
 		return isotopeDecider;
 	}
@@ -99,7 +100,7 @@ public class IsotopeDeciderFactory {
 	public IsotopeDecider getIsotopeDeciderFromIsotopeSet(Set<IIsotope> isotopes) {
 
 		IsotopeDecider isotopeDecider = new IsotopeDecider();
-		List<IIsotope> isotopeSet = new ArrayList<IIsotope>();
+		List<IIsotope> isotopeSet = new ArrayList<>();
 		for(IIsotope toAdd : isotopes) {
 			isotopeSet.add(toAdd);
 		}
@@ -114,7 +115,7 @@ public class IsotopeDeciderFactory {
 			IsotopeDeciderFactory isotopeFactory = IsotopeDeciderFactory.getInstance();
 			result = isotopeFactory.getIsotope(elementSymbol);
 		} catch(Exception e) {
-			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
+			logger.warn(ERROR, e);
 		}
 		return result;
 	}
@@ -126,7 +127,7 @@ public class IsotopeDeciderFactory {
 			IsotopeDeciderFactory isotopeFactory = IsotopeDeciderFactory.getInstance();
 			result = isotopeFactory.getIsotope(elementSymbol, massNumber);
 		} catch(Exception e) {
-			logger.warn("For some Reason i couldnt instantiate an instance of IsotopeFactory and this is because of the error:\n" + e);
+			logger.warn(ERROR, e);
 		}
 		return result;
 	}

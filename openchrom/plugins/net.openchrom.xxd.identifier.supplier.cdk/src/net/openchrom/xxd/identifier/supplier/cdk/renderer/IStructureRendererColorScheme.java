@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Marwin Wollschläger.
+ * Copyright (c) 2013, 2023 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -43,7 +43,7 @@ public interface IStructureRendererColorScheme {
 
 	public void setSingleBondColor(Color singleBondColor);
 
-	public void setDoubleBondColor(Color DoubleBondColor);
+	public void setDoubleBondColor(Color doubleBondColor);
 
 	public void setTripleBondColor(Color tripleBondColor);
 

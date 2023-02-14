@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2022 Lablicate GmbH.
+ * Copyright (c) 2016, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -41,11 +41,10 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 
 		IProcessingInfo<?> processingInfo = validate(chromatogramSelection, chromatogramIdentifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
-			if(chromatogramIdentifierSettings instanceof IdentifierSettings) {
+			if(chromatogramIdentifierSettings instanceof IdentifierSettings identifierSettings) {
 				/*
 				 * Settings
 				 */
-				IdentifierSettings identifierSettings = (IdentifierSettings)chromatogramIdentifierSettings;
 				NameToStructure nameStructure = NameToStructure.getInstance();
 				NameToStructureConfig nameStructureConfig = new NameToStructureConfig();
 				nameStructureConfig.setAllowRadicals(identifierSettings.isAllowRadicals());
@@ -64,12 +63,11 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 				 */
 				for(int scan = startScan; scan <= stopScan; scan++) {
 					IScan supplierScan = chromatogram.getScan(scan);
-					if(supplierScan instanceof IScanMSD) {
-						IScanMSD scanMSD = (IScanMSD)supplierScan;
+					if(supplierScan instanceof IScanMSD scanMSD) {
 						/*
 						 * Scan
 						 */
-						if(scanMSD.getTargets().size() > 0) {
+						if(!scanMSD.getTargets().isEmpty()) {
 							calculateSmilesFormula(scanMSD, nameStructure, nameStructureConfig);
 						}
 						/*
@@ -77,7 +75,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 						 */
 						IScanMSD optimizedMassSpectrum = scanMSD.getOptimizedMassSpectrum();
 						if(optimizedMassSpectrum != null) {
-							if(optimizedMassSpectrum.getTargets().size() > 0) {
+							if(!optimizedMassSpectrum.getTargets().isEmpty()) {
 								calculateSmilesFormula(optimizedMassSpectrum, nameStructure, nameStructureConfig);
 							}
 						}
@@ -86,7 +84,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 				/*
 				 * Peaks
 				 */
-				List<IPeakMSD> peaks = new ArrayList<IPeakMSD>();
+				List<IPeakMSD> peaks = new ArrayList<>();
 				for(IPeakMSD peakMSD : chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection)) {
 					peaks.add(peakMSD);
 				}
@@ -118,13 +116,8 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 	private void calculateSmilesFormula(Set<IIdentificationTarget> targets, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
 
 		for(IIdentificationTarget target : targets) {
-			/*
-			 * Check if the peak is a peak identification entry.
-			 */
-			if(target instanceof IIdentificationTarget) {
-				ILibraryInformation libraryInformation = ((IIdentificationTarget)target).getLibraryInformation();
-				OpsinSupport.calculateSmilesIfAbsent(libraryInformation, nameStructure, nameStructureConfig);
-			}
+			ILibraryInformation libraryInformation = target.getLibraryInformation();
+			OpsinSupport.calculateSmilesIfAbsent(libraryInformation, nameStructure, nameStructureConfig);
 		}
 	}
 }

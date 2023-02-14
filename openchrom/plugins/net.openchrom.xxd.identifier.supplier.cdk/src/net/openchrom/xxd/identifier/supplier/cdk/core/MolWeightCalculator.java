@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -52,11 +52,10 @@ public class MolWeightCalculator extends AbstractChromatogramIdentifier {
 
 		IProcessingInfo<?> processingInfo = validate(chromatogramSelection, chromatogramIdentifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
-			if(chromatogramIdentifierSettings instanceof IdentifierSettings) {
+			if(chromatogramIdentifierSettings instanceof IdentifierSettings identifierSettings) {
 				/*
 				 * Settings
 				 */
-				IdentifierSettings identifierSettings = (IdentifierSettings)chromatogramIdentifierSettings;
 				NameToStructure nameStructure = NameToStructure.getInstance();
 				NameToStructureConfig nameStructureConfig = new NameToStructureConfig();
 				nameStructureConfig.setAllowRadicals(identifierSettings.isAllowRadicals());
@@ -75,12 +74,11 @@ public class MolWeightCalculator extends AbstractChromatogramIdentifier {
 				 */
 				for(int scan = startScan; scan <= stopScan; scan++) {
 					IScan supplierScan = chromatogram.getScan(scan);
-					if(supplierScan instanceof IScanMSD) {
-						IScanMSD scanMSD = (IScanMSD)supplierScan;
+					if(supplierScan instanceof IScanMSD scanMSD) {
 						/*
 						 * Scan
 						 */
-						if(scanMSD.getTargets().size() > 0) {
+						if(!scanMSD.getTargets().isEmpty()) {
 							calculateMolWeight(scanMSD, nameStructure, nameStructureConfig);
 						}
 						/*
@@ -88,7 +86,7 @@ public class MolWeightCalculator extends AbstractChromatogramIdentifier {
 						 */
 						IScanMSD optimizedMassSpectrum = scanMSD.getOptimizedMassSpectrum();
 						if(optimizedMassSpectrum != null) {
-							if(optimizedMassSpectrum.getTargets().size() > 0) {
+							if(!optimizedMassSpectrum.getTargets().isEmpty()) {
 								calculateMolWeight(optimizedMassSpectrum, nameStructure, nameStructureConfig);
 							}
 						}
@@ -97,7 +95,7 @@ public class MolWeightCalculator extends AbstractChromatogramIdentifier {
 				/*
 				 * Peaks
 				 */
-				List<IPeakMSD> peaks = new ArrayList<IPeakMSD>();
+				List<IPeakMSD> peaks = new ArrayList<>();
 				for(IPeakMSD peakMSD : chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection)) {
 					peaks.add(peakMSD);
 				}
@@ -132,23 +130,21 @@ public class MolWeightCalculator extends AbstractChromatogramIdentifier {
 			/*
 			 * Check if the peak is a peak identification entry.
 			 */
-			if(target instanceof IIdentificationTarget) {
-				ILibraryInformation libraryInformation = ((IIdentificationTarget)target).getLibraryInformation();
-				OpsinSupport.calculateSmilesIfAbsent(libraryInformation, nameStructure, nameStructureConfig);
-				String smiles = libraryInformation.getSmiles();
-				if(!smiles.isEmpty()) {
-					IAtomContainer molecule = generate(libraryInformation.getSmiles());
+			ILibraryInformation libraryInformation = target.getLibraryInformation();
+			OpsinSupport.calculateSmilesIfAbsent(libraryInformation, nameStructure, nameStructureConfig);
+			String smiles = libraryInformation.getSmiles();
+			if(!smiles.isEmpty()) {
+				IAtomContainer molecule = generate(libraryInformation.getSmiles());
+				double molWeight = AtomContainerManipulator.getMass(molecule);
+				libraryInformation.setMolWeight(molWeight);
+			} else {
+				String formula = libraryInformation.getFormula();
+				if(!formula.isEmpty()) {
+					IMolecularFormula molecularFormula = new MolecularFormula();
+					molecularFormula = MolecularFormulaManipulator.getMolecularFormula(formula, molecularFormula);
+					IAtomContainer molecule = MolecularFormulaManipulator.getAtomContainer(molecularFormula);
 					double molWeight = AtomContainerManipulator.getMass(molecule);
 					libraryInformation.setMolWeight(molWeight);
-				} else {
-					String formula = libraryInformation.getFormula();
-					if(!formula.isEmpty()) {
-						IMolecularFormula molecularFormula = new MolecularFormula();
-						molecularFormula = MolecularFormulaManipulator.getMolecularFormula(formula, molecularFormula);
-						IAtomContainer molecule = MolecularFormulaManipulator.getAtomContainer(molecularFormula);
-						double molWeight = AtomContainerManipulator.getMass(molecule);
-						libraryInformation.setMolWeight(molWeight);
-					}
 				}
 			}
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2022 Lablicate GmbH.
+ * Copyright (c) 2016, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -50,8 +50,7 @@ public class SmilesCalculator {
 			}
 			//
 			ILibraryInformation libraryInformation = null;
-			if(scanMSD instanceof IRegularLibraryMassSpectrum) {
-				IRegularLibraryMassSpectrum libraryMassSpectrum = (IRegularLibraryMassSpectrum)scanMSD;
+			if(scanMSD instanceof IRegularLibraryMassSpectrum libraryMassSpectrum) {
 				libraryInformation = libraryMassSpectrum.getLibraryInformation();
 			} else {
 				float retentionIndex = scanMSD.getRetentionIndex();

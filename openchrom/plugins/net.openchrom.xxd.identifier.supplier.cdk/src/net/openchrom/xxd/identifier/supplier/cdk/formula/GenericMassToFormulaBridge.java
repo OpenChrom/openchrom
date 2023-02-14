@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Marwin Wollschläger.
+ * Copyright (c) 2013, 2023 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,15 +15,13 @@ package net.openchrom.xxd.identifier.supplier.cdk.formula;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.chemclipse.logging.core.Logger;
-import org.openscience.cdk.DefaultChemObjectBuilder;
-import org.openscience.cdk.exception.CDKException;
-import org.openscience.cdk.formula.MassToFormulaTool;
-import org.openscience.cdk.formula.rules.ElementRule;
-import org.openscience.cdk.formula.rules.IRule;
+import org.openscience.cdk.formula.MolecularFormulaGenerator;
+import org.openscience.cdk.formula.MolecularFormulaRange;
+import org.openscience.cdk.interfaces.IChemObjectBuilder;
 import org.openscience.cdk.interfaces.IIsotope;
 import org.openscience.cdk.interfaces.IMolecularFormula;
 import org.openscience.cdk.interfaces.IMolecularFormulaSet;
+import org.openscience.cdk.silent.SilentChemObjectBuilder;
 
 /**
  * A Bridge class that should simplify the communication between the
@@ -32,44 +30,20 @@ import org.openscience.cdk.interfaces.IMolecularFormulaSet;
  * @author administrator_marwin
  * 
  */
-@SuppressWarnings("deprecation")
 public class GenericMassToFormulaBridge {
 
-	private static final Logger logger = Logger.getLogger(GenericMassToFormulaBridge.class);
-	private MassToFormulaTool massToFormula;
+	private MolecularFormulaGenerator molecularFormulaGenerator;
 
-	public GenericMassToFormulaBridge() {
+	public GenericMassToFormulaBridge(IsotopeDecider isotopeDecider, double mass) {
 
-		massToFormula = new MassToFormulaTool(DefaultChemObjectBuilder.getInstance());
+		IChemObjectBuilder builder = SilentChemObjectBuilder.getInstance();
+		MolecularFormulaRange range = isotopeDecider.getMolecularFormulaRange();
+		molecularFormulaGenerator = new MolecularFormulaGenerator(builder, mass, mass, range);
 	}
 
-	/**
-	 * Sets which isotopes shall be taken into account for the formula calculation.
-	 * 
-	 * @param isotopeDecider
-	 */
-	public void setIsotopeDecider(IsotopeDecider isotopeDecider) {
+	public IMolecularFormulaSet generate() {
 
-		/*
-		 * Set molecular formula range to params object.
-		 * And create a new rule and set restrictions.
-		 */
-		Object[] params = new Object[1];
-		params[0] = isotopeDecider.getMolecularFormulaRange();
-		List<IRule> rulesNew = new ArrayList<IRule>();
-		IRule rule = new ElementRule();
-		try {
-			rule.setParameters(params);
-			rulesNew.add(rule);
-			massToFormula.setRestrictions(rulesNew);
-		} catch(CDKException e) {
-			logger.warn(e);
-		}
-	}
-
-	public IMolecularFormulaSet generate(double mass) {
-
-		return massToFormula.generate(mass);
+		return molecularFormulaGenerator.getAllFormulas();
 	}
 
 	/**
@@ -81,7 +55,7 @@ public class GenericMassToFormulaBridge {
 	 */
 	public List<Double> getRatings(double actualMass, IMolecularFormulaSet formulas) {
 
-		List<Double> ratings = new ArrayList<Double>();
+		List<Double> ratings = new ArrayList<>();
 		for(int j = 0; j < formulas.size(); j++) {
 			IMolecularFormula formula = formulas.getMolecularFormula(j);
 			double mass = 0.0;
@@ -96,15 +70,15 @@ public class GenericMassToFormulaBridge {
 
 	public List<String> getNames(IMolecularFormulaSet formulas) {
 
-		List<String> results = new ArrayList<String>();
+		List<String> results = new ArrayList<>();
 		//
 		for(int i = 0; i < formulas.size(); i++) {
 			IMolecularFormula molecularFormulaIterator = formulas.getMolecularFormula(i);
-			String formulaString = "";
+			StringBuilder formulaString = new StringBuilder();
 			for(IIsotope isoIter : molecularFormulaIterator.isotopes()) {
-				formulaString += isoIter.getSymbol() + molecularFormulaIterator.getIsotopeCount(isoIter);
+				formulaString.append(isoIter.getSymbol() + molecularFormulaIterator.getIsotopeCount(isoIter));
 			}
-			results.add(formulaString);
+			results.add(formulaString.toString());
 		}
 		return results;
 	}

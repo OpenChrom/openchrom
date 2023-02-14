@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -37,7 +37,7 @@ public class CDKMolToMoleculeConverter implements IStructureConverter {
 		IAtomContainer molecule = null;
 		if(input != null) {
 			try (MDLV2000Reader mdlReader = new MDLV2000Reader(new ByteArrayInputStream(input.getBytes()), Mode.RELAXED)) {
-				ChemFile chemFile = (ChemFile)mdlReader.read(new ChemFile());
+				ChemFile chemFile = mdlReader.read(new ChemFile());
 				if(chemFile.getChemSequenceCount() > 0) {
 					IChemSequence chemSequence = chemFile.getChemSequence(0);
 					if(chemSequence.getChemModelCount() > 0) {

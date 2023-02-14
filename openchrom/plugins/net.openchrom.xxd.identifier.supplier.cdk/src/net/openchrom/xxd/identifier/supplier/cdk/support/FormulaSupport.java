@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2022 Lablicate GmbH.
+ * Copyright (c) 2014, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,7 +23,6 @@ import net.openchrom.xxd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 public class FormulaSupport {
 
 	private static FormulaSupport instance = null;
-	private GenericMassToFormulaBridge massToFormulaBridge = new GenericMassToFormulaBridge();
 
 	private FormulaSupport() {
 
@@ -39,19 +38,19 @@ public class FormulaSupport {
 
 	public List<NameAndRating> getFormulaNamesAndRatings(Double ion) {
 
-		massToFormulaBridge.setIsotopeDecider(PreferenceSupplier.getIsotopeDecider());
-		IMolecularFormulaSet formulas = massToFormulaBridge.generate(ion);
-		List<String> formulaNames = new ArrayList<String>();
+		GenericMassToFormulaBridge massToFormulaBridge = new GenericMassToFormulaBridge(PreferenceSupplier.getIsotopeDecider(), ion);
+		IMolecularFormulaSet formulas = massToFormulaBridge.generate();
+		List<String> formulaNames = new ArrayList<>();
 		if(formulas != null) {
 			formulaNames = massToFormulaBridge.getNames(formulas);
 		}
 		//
-		List<Double> formulaRatings = new ArrayList<Double>();
+		List<Double> formulaRatings = new ArrayList<>();
 		if(formulas != null) {
 			formulaRatings = massToFormulaBridge.getRatings(ion, formulas);
 		}
 		//
-		List<NameAndRating> formulaNamesAndRatings = new ArrayList<NameAndRating>();
+		List<NameAndRating> formulaNamesAndRatings = new ArrayList<>();
 		for(int i = 0; i < formulaNames.size() && i < formulaRatings.size(); i++) {
 			String formulaName = formulaNames.get(i);
 			Double formulaRating = formulaRatings.get(i);
