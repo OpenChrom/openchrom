@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Marwin Wollschläger.
+ * Copyright (c) 2013, 2023 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -37,8 +37,8 @@ public class StructureRendererSimpleColorTheme implements IStructureRendererColo
 
 	public StructureRendererSimpleColorTheme() {
 
-		atomToColorMap = new ArrayList<AtomToColorMapping>();
-		symbolicAtoms = new ArrayList<IAtom>();
+		atomToColorMap = new ArrayList<>();
+		symbolicAtoms = new ArrayList<>();
 		AtomToColorMapping cToBlue = new AtomToColorMapping(new Atom("C"), Color.BLUE);
 		atomToColorMap.add(cToBlue);
 		symbolicAtoms.add(new Atom("Cl"));
@@ -90,7 +90,7 @@ public class StructureRendererSimpleColorTheme implements IStructureRendererColo
 	}
 
 	@Override
-	public void setDoubleBondColor(Color DoubleBondColor) {
+	public void setDoubleBondColor(Color doubleBondColor) {
 
 	}
 

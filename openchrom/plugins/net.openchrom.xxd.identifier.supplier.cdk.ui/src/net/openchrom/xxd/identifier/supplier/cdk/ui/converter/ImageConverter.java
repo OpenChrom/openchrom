@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Marwin Wollschläger.
+ * Copyright (c) 2013, 2023 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -118,7 +118,7 @@ public class ImageConverter {
 			 */
 			IAtomContainer diagramMolecule = structureDiagramGenerator.getMolecule();
 			// Generators make the image elements
-			List<IGenerator<IAtomContainer>> generators = new ArrayList<IGenerator<IAtomContainer>>();
+			List<IGenerator<IAtomContainer>> generators = new ArrayList<>();
 			generators.add(new BasicSceneGenerator());
 			generators.add(new BasicBondGenerator());
 			generators.add(new BasicAtomGenerator());

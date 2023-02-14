@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Lablicate GmbH.
+ * Copyright (c) 2013, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This
  * program and the accompanying materials are made available under the terms of
@@ -30,7 +30,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setTitle("CDK (Chemistry Development Kit)");
-		setDescription("");
+		setDescription("Use an offline library to generate molecular formulas.");
 	}
 
 	/**

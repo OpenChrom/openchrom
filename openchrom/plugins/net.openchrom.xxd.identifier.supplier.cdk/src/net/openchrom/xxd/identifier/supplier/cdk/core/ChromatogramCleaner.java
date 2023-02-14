@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -37,12 +37,10 @@ public class ChromatogramCleaner extends AbstractChromatogramIdentifier {
 
 		IProcessingInfo<?> processingInfo = validate(chromatogramSelection, chromatogramIdentifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
-			if(chromatogramIdentifierSettings instanceof CleanerSettings) {
+			if(chromatogramIdentifierSettings instanceof CleanerSettings cleanerSettings) {
 				/*
 				 * Settings
 				 */
-				CleanerSettings cleanerSettings = (CleanerSettings)chromatogramIdentifierSettings;
-				//
 				IChromatogramMSD chromatogram = chromatogramSelection.getChromatogram();
 				int startScan = chromatogram.getScanNumber(chromatogramSelection.getStartRetentionTime());
 				int stopScan = chromatogram.getScanNumber(chromatogramSelection.getStopRetentionTime());
@@ -52,7 +50,7 @@ public class ChromatogramCleaner extends AbstractChromatogramIdentifier {
 				if(cleanerSettings.isDeleteScanTargets()) {
 					for(int scan = startScan; scan <= stopScan; scan++) {
 						IScan supplierScan = chromatogram.getScan(scan);
-						if(supplierScan.getTargets().size() > 0) {
+						if(!supplierScan.getTargets().isEmpty()) {
 							cleanTargets(supplierScan);
 						}
 					}
@@ -61,7 +59,7 @@ public class ChromatogramCleaner extends AbstractChromatogramIdentifier {
 				 * Peaks
 				 */
 				if(cleanerSettings.isDeletePeakTargets()) {
-					List<IPeakMSD> peaks = new ArrayList<IPeakMSD>();
+					List<IPeakMSD> peaks = new ArrayList<>();
 					for(IPeakMSD peakMSD : chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection)) {
 						peaks.add(peakMSD);
 					}
@@ -84,7 +82,7 @@ public class ChromatogramCleaner extends AbstractChromatogramIdentifier {
 		for(IPeakMSD peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
 			IScan scan = peakModel.getPeakMaximum();
-			if(scan.getTargets().size() > 0) {
+			if(!scan.getTargets().isEmpty()) {
 				cleanTargets(scan);
 			}
 		}

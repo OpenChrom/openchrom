@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Marwin Wollschläger, Dr. Philip Wenig.
+ * Copyright (c) 2013, 2023 Marwin Wollschläger, Dr. Philip Wenig.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -38,12 +38,12 @@ public class IsotopeParser {
 
 	public IsotopeParser() {
 
-		isotopePattern = Pattern.compile("([0-9]*)([A-Z][a-z]*)");
+		isotopePattern = Pattern.compile("([\\d]*)([A-Z][a-z]*)");
 	}
 
 	public Set<IIsotope> extract(String input) {
 
-		Set<IIsotope> isotopes = new HashSet<IIsotope>();
+		Set<IIsotope> isotopes = new HashSet<>();
 		IsotopeDeciderFactory isotopeDeciderFactory = IsotopeDeciderFactory.getInstance();
 		/*
 		 * Extract the isotope names.

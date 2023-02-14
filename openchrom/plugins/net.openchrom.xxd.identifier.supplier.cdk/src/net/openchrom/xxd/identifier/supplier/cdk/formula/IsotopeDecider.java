@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Marwin Wollschläger.
+ * Copyright (c) 2013, 2023 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -66,7 +66,7 @@ public class IsotopeDecider {
 
 	public void setIsotopeSetAsString(List<String> isotopeNames) {
 
-		List<IIsotope> isotopesToSet = new ArrayList<IIsotope>();
+		List<IIsotope> isotopesToSet = new ArrayList<>();
 		for(String name : isotopeNames) {
 			isotopesToSet.add(isotopeFactory.getIsotope(name));
 		}
