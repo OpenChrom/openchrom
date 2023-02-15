@@ -13,12 +13,17 @@ package net.openchrom.chromatogram.xxd.report.supplier.csv.ui.swt;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
+import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.methods.IChangeListener;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.part.support.DataUpdateSupport;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -37,8 +42,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
-import net.openchrom.chromatogram.xxd.report.supplier.csv.model.HeaderColumns;
 import net.openchrom.chromatogram.xxd.report.supplier.csv.model.ReportColumns;
+import net.openchrom.chromatogram.xxd.report.supplier.csv.ui.Activator;
 
 public class ReportColumnEditor extends Composite implements IChangeListener {
 
@@ -48,11 +53,25 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 	//
 	private ReportColumns reportColumns = new ReportColumns();
 	private List<String> availableColumns = new ArrayList<>();
+	private Set<String> headerColumns = new HashSet<>();
 
 	public ReportColumnEditor(Composite parent, int style) {
 
 		super(parent, style);
 		createControl();
+		checkUpdates(IChemClipseEvents.TOPIC_CHROMATOGRAM_XXD_UPDATE_SELECTION);
+	}
+
+	void checkUpdates(String event) {
+
+		DataUpdateSupport dataUpdateSupport = Activator.getDefault().getDataUpdateSupport();
+		List<Object> overviews = dataUpdateSupport.getUpdates(event);
+		if(!overviews.isEmpty()) {
+			Object first = overviews.get(0);
+			if(first instanceof IChromatogramSelection<?, ?> overview) {
+				headerColumns = overview.getChromatogram().getHeaderDataMap().keySet();
+			}
+		}
 	}
 
 	@Override
@@ -394,6 +413,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		 */
 		availableColumns.clear();
 		availableColumns.addAll(ReportColumns.getDefault());
+		availableColumns.addAll(headerColumns);
 		//
 		for(String reportColumn : reportColumns) {
 			availableColumns.remove(reportColumn);

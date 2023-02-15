@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Lablicate GmbH.
+ * Copyright (c) 2022, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -19,18 +19,6 @@ public class ReportColumns extends ArrayList<String> {
 	private static final long serialVersionUID = 727322817550120355L;
 	//
 	public static final String CHROMATOGRAM_NAME = "Chromatogram Name";
-	public static final String BARCODE = "Barcode";
-	public static final String BARCODE_TYPE = "Barcode Type";
-	public static final String DATA_NAME = "Data Name";
-	public static final String DATE = "Date";
-	public static final String DETAILED_INFO = "Detailed Info";
-	public static final String MISC_INFO = "Misc Info";
-	public static final String MISC_INFO_SEPARATED = "Misc Info Separated";
-	public static final String OPERATOR = "Operator";
-	public static final String SAMPLE_GROUP = "Sample Group";
-	public static final String SAMPLE_WEIGHT = "Sample Weight";
-	public static final String SAMPLE_WEIGHT_UNIT = "Sample Weight Unit";
-	public static final String SHORT_INFO = "Short Info";
 	public static final String NUMBER_PEAKS = "Number Peaks";
 	public static final String PEAK_NUMBER = "Peak Number";
 	public static final String RETENTION_TIME = "Retention Time";
@@ -92,18 +80,6 @@ public class ReportColumns extends ArrayList<String> {
 		ReportColumns reportColumns = new ReportColumns();
 		//
 		reportColumns.add(CHROMATOGRAM_NAME);
-		reportColumns.add(BARCODE);
-		reportColumns.add(BARCODE_TYPE);
-		reportColumns.add(DATA_NAME);
-		reportColumns.add(DATE);
-		reportColumns.add(DETAILED_INFO);
-		reportColumns.add(MISC_INFO);
-		reportColumns.add(MISC_INFO_SEPARATED);
-		reportColumns.add(OPERATOR);
-		reportColumns.add(SAMPLE_GROUP);
-		reportColumns.add(SAMPLE_WEIGHT);
-		reportColumns.add(SAMPLE_WEIGHT_UNIT);
-		reportColumns.add(SHORT_INFO);
 		reportColumns.add(NUMBER_PEAKS);
 		reportColumns.add(PEAK_NUMBER);
 		reportColumns.add(RETENTION_TIME);

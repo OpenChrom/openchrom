@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.csv.CSVPrinter;
@@ -92,41 +93,11 @@ public class ConfigurableReportWriter {
 				if(reportColumn.equals(ReportColumns.CHROMATOGRAM_NAME)) {
 					records.add(chromatogram.getName());
 				}
-				if(reportColumn.equals(ReportColumns.BARCODE)) {
-					records.add(chromatogram.getBarcode());
-				}
-				if(reportColumn.equals(ReportColumns.BARCODE_TYPE)) {
-					records.add(chromatogram.getBarcodeType());
-				}
-				if(reportColumn.equals(ReportColumns.DATA_NAME)) {
-					records.add(chromatogram.getDataName());
-				}
-				if(reportColumn.equals(ReportColumns.DATE)) {
-					records.add(chromatogram.getDate());
-				}
-				if(reportColumn.equals(ReportColumns.DETAILED_INFO)) {
-					records.add(chromatogram.getDetailedInfo());
-				}
-				if(reportColumn.equals(ReportColumns.MISC_INFO)) {
-					records.add(chromatogram.getMiscInfo());
-				}
-				if(reportColumn.equals(ReportColumns.MISC_INFO_SEPARATED)) {
-					records.add(chromatogram.getMiscInfoSeparated());
-				}
-				if(reportColumn.equals(ReportColumns.OPERATOR)) {
-					records.add(chromatogram.getOperator());
-				}
-				if(reportColumn.equals(ReportColumns.SAMPLE_GROUP)) {
-					records.add(chromatogram.getSampleGroup());
-				}
-				if(reportColumn.equals(ReportColumns.SAMPLE_WEIGHT)) {
-					records.add(chromatogram.getSampleWeight());
-				}
-				if(reportColumn.equals(ReportColumns.SAMPLE_WEIGHT_UNIT)) {
-					records.add(chromatogram.getSampleWeightUnit());
-				}
-				if(reportColumn.equals(ReportColumns.SHORT_INFO)) {
-					records.add(chromatogram.getShortInfo());
+				Map<String, String> headerMap = chromatogram.getHeaderDataMap();
+				for(String headerKey : headerMap.keySet()) {
+					if(reportColumn.equals(headerKey)) {
+						records.add(headerMap.get(headerKey));
+					}
 				}
 				if(reportColumn.equals(ReportColumns.NUMBER_PEAKS)) {
 					records.add(chromatogram.getNumberOfPeaks());
