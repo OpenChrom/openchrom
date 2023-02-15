@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,11 +16,10 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.support.text.ValueFormat;
-import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
@@ -29,7 +28,7 @@ public class CSVExportWriter {
 
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
 
-	public void write(File file, ProcessorData processorData, IProgressMonitor monitor) throws FileNotFoundException {
+	public void write(File file, ProcessorData processorData) throws FileNotFoundException {
 
 		PrintWriter printWriter = new PrintWriter(file);
 		//
@@ -76,7 +75,7 @@ public class CSVExportWriter {
 
 		IScan scan = chromatogram.getScan(scanNumber);
 		if(scan != null) {
-			return decimalFormat.format(scan.getRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+			return decimalFormat.format(scan.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 		} else {
 			return decimalFormat.format(-1.0d);
 		}
