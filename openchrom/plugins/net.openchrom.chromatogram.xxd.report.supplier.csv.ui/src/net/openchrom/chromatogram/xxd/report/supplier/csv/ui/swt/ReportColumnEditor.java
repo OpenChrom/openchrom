@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Philip Wenig - initial API and implementation
+ * Matthias Mailänder - search bar
  *******************************************************************************/
 package net.openchrom.chromatogram.xxd.report.supplier.csv.ui.swt;
 
@@ -17,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -39,6 +41,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
@@ -92,7 +95,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 	public void load(String entries) {
 
 		reportColumns.load(entries);
-		updateTables();
+		resetTables();
 	}
 
 	public String save() {
@@ -135,28 +138,39 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		gridLayout.marginHeight = 0;
 		setLayout(gridLayout);
 		//
-		createDataSection(this);
+		GridData searchGridData = new GridData(GridData.FILL_HORIZONTAL);
+		searchGridData.horizontalSpan = 3;
+		searchGridData.grabExcessHorizontalSpace = true;
+		Text text = createTextSearch(this);
+		text.setLayoutData(searchGridData);
+		//
+		GridData availableColumnsGridData = new GridData(GridData.FILL_BOTH);
+		availableColumnsGridData.grabExcessHorizontalSpace = true;
+		availableColumnsGridData.grabExcessVerticalSpace = true;
+		tableAvailableColumns = createTableAvailableColumns(this);
+		tableAvailableColumns.setLayoutData(availableColumnsGridData);
+		//
+		createToolbarSelectItems(this);
+		//
+		GridData reportColumnsGridData = new GridData(GridData.FILL_BOTH);
+		reportColumnsGridData.grabExcessHorizontalSpace = true;
+		reportColumnsGridData.grabExcessVerticalSpace = true;
+		tableReportColumns = createTableReportColumns(this);
+		tableReportColumns.setLayoutData(reportColumnsGridData);
 		//
 		initialize();
 	}
 
 	private void initialize() {
 
-		updateTables();
-	}
-
-	private void createDataSection(Composite parent) {
-
-		tableAvailableColumns = createTableAvailableColumns(parent);
-		createToolbarSelectItems(parent);
-		tableReportColumns = createTableReportColumns(parent);
+		resetTables();
 	}
 
 	private Table createTableAvailableColumns(Composite parent) {
 
 		Table table = createTable(parent);
 		table.setToolTipText("The following columns are available.");
-		addTableColumn(table, "Available", 500);
+		addTableColumn(table, "Available", 280);
 		table.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -185,11 +199,41 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		return table;
 	}
 
+	private Text createTextSearch(Composite parent) {
+
+		Text text = new Text(parent, SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL | SWT.ICON_SEARCH);
+		text.setText("");
+		text.setToolTipText("Type to filter available columns.");
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		text.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				filterColumn(text.getText());
+			}
+		});
+		text.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+
+				if(e.detail == SWT.ICON_CANCEL) {
+					text.setText("");
+					filterColumn(text.getText());
+				} else if(e.detail == SWT.ICON_SEARCH) {
+					filterColumn(text.getText());
+				}
+			}
+		});
+		return text;
+	}
+
 	private Table createTableReportColumns(Composite parent) {
 
 		Table table = createTable(parent);
 		table.setToolTipText("If no column is listed, all columns are reported.");
-		addTableColumn(table, "Reported", 500);
+		addTableColumn(table, "Reported", 280);
 		table.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -303,7 +347,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 			public void widgetSelected(SelectionEvent e) {
 
 				reportColumns.clear();
-				updateTables();
+				resetTables();
 			}
 		});
 		//
@@ -351,7 +395,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		int index = tableAvailableColumns.getSelectionIndex();
 		if(index >= 0 && index < availableColumns.size()) {
 			reportColumns.add(availableColumns.get(index));
-			updateTables();
+			resetTables();
 		}
 	}
 
@@ -360,14 +404,14 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		int index = tableReportColumns.getSelectionIndex();
 		if(index >= 0 && index < reportColumns.size()) {
 			reportColumns.remove(index);
-			updateTables();
+			resetTables();
 		}
 	}
 
 	private void moveColumnUp() {
 
 		int indexNew = switchColumns(true);
-		updateTables();
+		resetTables();
 		if(indexNew != -1) {
 			tableReportColumns.select(indexNew);
 		}
@@ -376,7 +420,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 	private void moveColumnDown() {
 
 		int indexNew = switchColumns(false);
-		updateTables();
+		resetTables();
 		if(indexNew != -1) {
 			tableReportColumns.select(indexNew);
 		}
@@ -399,30 +443,37 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		return indexNew;
 	}
 
-	private void updateTables() {
+	private void clearTables() {
 
-		/*
-		 * Clear the current tables.
-		 */
 		disposeTableItems(tableAvailableColumns);
 		tableAvailableColumns.clearAll();
 		disposeTableItems(tableReportColumns);
 		tableReportColumns.clearAll();
-		/*
-		 * Reset the available columns.
-		 */
+	}
+
+	private void resetAvailable() {
+
 		availableColumns.clear();
 		availableColumns.addAll(ReportColumns.getDefault());
 		availableColumns.addAll(headerColumns);
-		//
+	}
+
+	private void updateTables() {
+
 		for(String reportColumn : reportColumns) {
 			availableColumns.remove(reportColumn);
 			addTableRow(tableReportColumns, reportColumn);
 		}
-		//
 		for(String availableColumn : availableColumns) {
 			addTableRow(tableAvailableColumns, availableColumn);
 		}
+	}
+
+	private void resetTables() {
+
+		clearTables();
+		resetAvailable();
+		updateTables();
 	}
 
 	private void addTableRow(Table table, String text) {
@@ -436,5 +487,25 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		for(TableItem tableItem : table.getItems()) {
 			tableItem.dispose();
 		}
+	}
+
+	private void filterColumn(String searchText) {
+
+		clearTables();
+		resetAvailable();
+		if(searchText == null || searchText.isEmpty() || searchText.isBlank()) {
+			updateTables();
+			return;
+		}
+		List<String> toRemove = new ArrayList<>();
+		for(String columnText : availableColumns) {
+			if(!StringUtils.containsAnyIgnoreCase(columnText, searchText)) {
+				toRemove.add(columnText);
+			}
+		}
+		for(String column : toRemove) {
+			availableColumns.remove(column);
+		}
+		updateTables();
 	}
 }
