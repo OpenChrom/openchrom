@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.chromatogram.xxd.report.supplier.csv
 Bundle-ManifestVersion: 2
-Bundle-Name: CSV Report
+Bundle-Name: CSV Peak Report
 Bundle-SymbolicName: net.openchrom.chromatogram.xxd.report.supplier.csv;singleton:=true
 Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.chromatogram.xxd.report.supplier.csv.Activator

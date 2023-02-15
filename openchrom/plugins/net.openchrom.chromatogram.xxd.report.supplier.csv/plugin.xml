@@ -6,10 +6,10 @@
       <ChromatogramReportSupplier
             description="Reports Chromatograms as CSV"
             fileExtension=".csv"
-            fileName="CSV Chromatogram Report"
+            fileName="CSV Chromatogram Peak Report"
             id="net.openchrom.chromatogram.xxd.report.supplier.openchrom.chromatogramReportCSV"
             reportGenerator="net.openchrom.chromatogram.xxd.report.supplier.csv.core.ConfigurableReport"
-            reportName="Chromatogram Report (*.csv)"
+            reportName="Chromatogram Peak Report (*.csv)"
             reportSettings="net.openchrom.chromatogram.xxd.report.supplier.csv.settings.ChromatogramReportSettings">
       </ChromatogramReportSupplier>
    </extension>
