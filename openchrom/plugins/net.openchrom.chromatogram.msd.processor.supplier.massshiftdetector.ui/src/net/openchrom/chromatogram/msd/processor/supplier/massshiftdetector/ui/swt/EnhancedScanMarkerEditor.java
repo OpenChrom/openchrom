@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,6 +24,7 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.processing.ui.Activator;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.listener.AbstractControllerComposite;
 import org.eclipse.chemclipse.swt.ui.notifier.UpdateNotifierUI;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.ChromatogramEditorMSD;
@@ -68,7 +69,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 	public EnhancedScanMarkerEditor(Composite parent, int style) {
 
 		super(parent, style);
-		buttons = new ArrayList<Button>();
+		buttons = new ArrayList<>();
 		createControl();
 	}
 
@@ -83,7 +84,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 			if(scanMarkerListUI.getTable().getItemCount() == 0) {
 				List<IScanMarker> scanMarkerList = editorProcessor.getProcessorData().getProcessorModel().getScanMarker();
 				scanMarkerListUI.setInput(scanMarkerList);
-				if(scanMarkerList.size() > 0) {
+				if(!scanMarkerList.isEmpty()) {
 					scanMarkerListUI.getTable().select(0);
 					updateMassShiftList();
 					updateComparisonViews(getDisplay());
@@ -206,16 +207,17 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 		//
 		try {
 			monitor.run(true, true, runnable);
-		} catch(InterruptedException e1) {
-			logger.warn(e1);
-		} catch(InvocationTargetException e1) {
-			logger.warn(e1);
+		} catch(InterruptedException ex) {
+			logger.warn(ex);
+			Thread.currentThread().interrupt();
+		} catch(InvocationTargetException ex) {
+			logger.warn(ex);
 		}
 		//
 		List<IScanMarker> scanMarker = runnable.getScanMarker();
 		processorData.getProcessorModel().setScanMarker(scanMarker);
 		scanMarkerListUI.setInput(scanMarker);
-		if(scanMarker.size() > 0) {
+		if(!scanMarker.isEmpty()) {
 			scanMarkerListUI.getTable().select(0);
 		}
 		updateMassShiftList();
@@ -263,10 +265,11 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 							editorProcessor.doSave(monitor);
 						}
 					});
-				} catch(InvocationTargetException e1) {
-					logger.warn(e1);
-				} catch(InterruptedException e1) {
-					logger.warn(e1);
+				} catch(InvocationTargetException ex) {
+					logger.warn(ex);
+				} catch(InterruptedException ex) {
+					logger.warn(ex);
+					Thread.currentThread().interrupt();
 				}
 			}
 		});
@@ -277,7 +280,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Export");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImageProvider.SIZE_16x16));
 		button.setLayoutData(gridData);
 		button.addSelectionListener(new SelectionAdapter() {
 
@@ -300,11 +303,10 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
 		IStructuredSelection selection = scanMarkerListUI.getStructuredSelection();
 		Object object = selection.getFirstElement();
-		if(object instanceof IScanMarker) {
+		if(object instanceof IScanMarker scanMarker) {
 			/*
 			 * Display the mass shifts
 			 */
-			IScanMarker scanMarker = (IScanMarker)object;
 			massShiftListUI.setInput(scanMarker.getMassShifts());
 		}
 	}
@@ -313,11 +315,10 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
 		IStructuredSelection selection = scanMarkerListUI.getStructuredSelection();
 		Object object = selection.getFirstElement();
-		if(object instanceof IScanMarker) {
+		if(object instanceof IScanMarker scanMarker) {
 			/*
 			 * Update the comparison UI.
 			 */
-			IScanMarker scanMarker = (IScanMarker)object;
 			ProcessorData processorData = editorProcessor.getProcessorData();
 			int scan = scanMarker.getScanNumber();
 			IChromatogramMSD referenceChromatogram = processorData.getReferenceChromatogram();
@@ -334,11 +335,9 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 					if(partService != null) {
 						Collection<MPart> parts = partService.getParts();
 						for(MPart part : parts) {
-							if(part.getObject() instanceof ChromatogramEditorMSD) {
-								ChromatogramEditorMSD chromatogramEditorMSD = (ChromatogramEditorMSD)part.getObject();
+							if(part.getObject() instanceof ChromatogramEditorMSD chromatogramEditorMSD) {
 								IChromatogramSelection<?, ?> chromatogramSelection = chromatogramEditorMSD.getChromatogramSelection();
-								if(chromatogramSelection instanceof IChromatogramSelectionMSD) {
-									IChromatogramSelectionMSD chromatogramSelectionMSD = (IChromatogramSelectionMSD)chromatogramSelection;
+								if(chromatogramSelection instanceof IChromatogramSelectionMSD chromatogramSelectionMSD) {
 									if(chromatogramSelectionMSD.getChromatogram().getName().equals(referenceChromatogram.getName())) {
 										chromatogramSelectionMSD.setSelectedScan(referenceMassSpectrum);
 										int startRetentionTime = referenceMassSpectrum.getRetentionTime() - 5000; // -5 seconds
@@ -351,7 +350,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 							}
 						}
 					}
-				} catch(Exception e1) {
+				} catch(Exception ex) {
 					//
 				}
 			}

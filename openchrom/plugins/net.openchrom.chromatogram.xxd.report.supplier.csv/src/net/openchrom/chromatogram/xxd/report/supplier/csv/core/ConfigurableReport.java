@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2022 Lablicate GmbH.
+ * Copyright (c) 2012, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -37,9 +37,8 @@ public class ConfigurableReport extends AbstractChromatogramReportGenerator {
 		IProcessingInfo<File> processingInfo = super.validate(file);
 		//
 		if(!processingInfo.hasErrorMessages()) {
-			if(settings instanceof ChromatogramReportSettings) {
+			if(settings instanceof ChromatogramReportSettings reportSettings) {
 				try {
-					ChromatogramReportSettings reportSettings = (ChromatogramReportSettings)settings;
 					ConfigurableReportWriter chromatogramReport = new ConfigurableReportWriter();
 					chromatogramReport.generate(file, append, chromatograms, reportSettings);
 					processingInfo.setProcessingResult(file);
