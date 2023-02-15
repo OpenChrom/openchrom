@@ -16,8 +16,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.rcp.ui.icons;bundle-version="0.9.0",
  com.fasterxml.jackson.core.jackson-databind;bundle-version="2.9.93",
  org.eclipse.chemclipse.xxd.process.ui;bundle-version="0.9.0",
- org.eclipse.chemclipse.model,
- org.eclipse.e4.core.services
+ org.eclipse.chemclipse.model;bundle-version="0.9.0",
+ org.apache.commons.lang3;bundle-version="3.12.0",
+ org.eclipse.e4.core.services;bundle-version="2.3.400"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.component.annotations;version="1.3.0"
