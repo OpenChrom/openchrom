@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -123,8 +123,11 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 
 		double adjustedConcentration = quantitationEntry.getConcentration() * compensationFactor;
 		String name = compensationSetting.isAdjustQuantitationEntry() ? compensationSetting.getName() : compensationSetting.getName() + LABEL_ADJUSTED;
-		//
-		IQuantitationEntry adjustedQuantitationEntry = new QuantitationEntry(name, adjustedConcentration, compensationSetting.getConcentrationUnit(), quantitationEntry.getArea());
+		String unit = quantitationEntry.getConcentrationUnit();
+		/*
+		 * Keep the original unit.
+		 */
+		IQuantitationEntry adjustedQuantitationEntry = new QuantitationEntry(name, adjustedConcentration, unit, quantitationEntry.getArea());
 		adjustedQuantitationEntry.setChemicalClass(quantitationEntry.getChemicalClass());
 		adjustedQuantitationEntry.setCalibrationMethod(quantitationEntry.getCalibrationMethod());
 		adjustedQuantitationEntry.setUsedCrossZero(quantitationEntry.getUsedCrossZero());
@@ -134,8 +137,15 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 		 * Add the adjustment information.
 		 */
 		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
-		String description = "Adjusted with factor " + decimalFormat.format(compensationFactor) + " based on " + compensationSetting.getInternalStandard();
-		adjustedQuantitationEntry.appendDescription(description);
+		StringBuilder builder = new StringBuilder();
+		builder.append("Adjusted with factor ");
+		builder.append(decimalFormat.format(compensationFactor));
+		builder.append(" based on ");
+		builder.append(compensationSetting.getInternalStandard());
+		builder.append(" [");
+		builder.append(compensationSetting.getConcentrationUnit());
+		builder.append("]");
+		adjustedQuantitationEntry.appendDescription(builder.toString());
 		//
 		return adjustedQuantitationEntry;
 	}
