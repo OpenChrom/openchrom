@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.chemclipse.chromatogram.msd.identifier.chromatogramIdentifier">
+         point="org.eclipse.chemclipse.chromatogram.xxd.identifier.chromatogramIdentifier">
       <ChromatogramIdentificationSupplier
             description="This identifier calculates a SMILES formula for each identification entry."
             id="net.openchrom.chromatogram.msd.identifier.supplier.cdk"

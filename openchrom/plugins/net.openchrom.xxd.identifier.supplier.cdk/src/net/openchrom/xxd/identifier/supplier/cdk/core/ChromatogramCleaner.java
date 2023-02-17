@@ -14,16 +14,16 @@ package net.openchrom.xxd.identifier.supplier.cdk.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.chromatogram.AbstractChromatogramIdentifier;
-import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IChromatogramIdentifierSettings;
+import org.eclipse.chemclipse.chromatogram.xxd.identifier.chromatogram.AbstractChromatogramIdentifier;
+import org.eclipse.chemclipse.chromatogram.xxd.identifier.settings.IChromatogramIdentifierSettings;
+import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.core.ITargetSupplier;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
-import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -33,7 +33,7 @@ import net.openchrom.xxd.identifier.supplier.cdk.settings.CleanerSettings;
 public class ChromatogramCleaner extends AbstractChromatogramIdentifier {
 
 	@Override
-	public IProcessingInfo<?> identify(IChromatogramSelectionMSD chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> identify(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
 
 		IProcessingInfo<?> processingInfo = validate(chromatogramSelection, chromatogramIdentifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
@@ -41,7 +41,7 @@ public class ChromatogramCleaner extends AbstractChromatogramIdentifier {
 				/*
 				 * Settings
 				 */
-				IChromatogramMSD chromatogram = chromatogramSelection.getChromatogram();
+				IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
 				int startScan = chromatogram.getScanNumber(chromatogramSelection.getStartRetentionTime());
 				int stopScan = chromatogram.getScanNumber(chromatogramSelection.getStopRetentionTime());
 				/*
@@ -59,9 +59,9 @@ public class ChromatogramCleaner extends AbstractChromatogramIdentifier {
 				 * Peaks
 				 */
 				if(cleanerSettings.isDeletePeakTargets()) {
-					List<IPeakMSD> peaks = new ArrayList<>();
-					for(IPeakMSD peakMSD : chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection)) {
-						peaks.add(peakMSD);
+					List<IPeak> peaks = new ArrayList<>();
+					for(IPeak peak : chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection)) {
+						peaks.add(peak);
 					}
 					cleanPeaks(peaks);
 				}
@@ -71,15 +71,15 @@ public class ChromatogramCleaner extends AbstractChromatogramIdentifier {
 	}
 
 	@Override
-	public IProcessingInfo<?> identify(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<?> identify(IChromatogramSelection<?, ?> chromatogramSelection, IProgressMonitor monitor) {
 
 		CleanerSettings settings = PreferenceSupplier.getCleanerSettings();
 		return identify(chromatogramSelection, settings, monitor);
 	}
 
-	private void cleanPeaks(List<IPeakMSD> peaks) {
+	private void cleanPeaks(List<IPeak> peaks) {
 
-		for(IPeakMSD peak : peaks) {
+		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
 			IScan scan = peakModel.getPeakMaximum();
 			if(!scan.getTargets().isEmpty()) {
