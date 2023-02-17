@@ -9,9 +9,7 @@ Bundle-Activator: net.openchrom.xxd.identifier.supplier.cdk.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
- org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
- org.eclipse.chemclipse.chromatogram.msd.identifier;bundle-version="0.8.0",
  org.eclipse.chemclipse.processing;bundle-version="0.8.0",
  net.openchrom.thirdpartylibraries.cdk;bundle-version="2.3.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
@@ -20,7 +18,8 @@ Require-Bundle: org.eclipse.core.runtime,
  stax2-api;bundle-version="4.2.1",
  wrapped.dk.brics.automaton;bundle-version="1.12.0",
  org.apache.logging.log4j.api;bundle-version="2.18.0",
- com.fasterxml.woodstox.woodstox-core;bundle-version="6.2.7"
+ com.fasterxml.woodstox.woodstox-core;bundle-version="6.2.7",
+ org.eclipse.chemclipse.chromatogram.xxd.identifier;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.identifier.supplier.cdk.converter,
