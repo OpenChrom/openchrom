@@ -15,15 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.chromatogram.AbstractChromatogramIdentifier;
-import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IChromatogramIdentifierSettings;
+import org.eclipse.chemclipse.chromatogram.xxd.identifier.chromatogram.AbstractChromatogramIdentifier;
+import org.eclipse.chemclipse.chromatogram.xxd.identifier.settings.IChromatogramIdentifierSettings;
+import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
-import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
-import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -37,7 +36,7 @@ import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
 public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 
 	@Override
-	public IProcessingInfo<?> identify(IChromatogramSelectionMSD chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> identify(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
 
 		IProcessingInfo<?> processingInfo = validate(chromatogramSelection, chromatogramIdentifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
@@ -55,7 +54,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 				/*
 				 * Scans
 				 */
-				IChromatogramMSD chromatogram = chromatogramSelection.getChromatogram();
+				IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
 				int startScan = chromatogram.getScanNumber(chromatogramSelection.getStartRetentionTime());
 				int stopScan = chromatogram.getScanNumber(chromatogramSelection.getStopRetentionTime());
 				/*
@@ -63,30 +62,19 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 				 */
 				for(int scan = startScan; scan <= stopScan; scan++) {
 					IScan supplierScan = chromatogram.getScan(scan);
-					if(supplierScan instanceof IScanMSD scanMSD) {
-						/*
-						 * Scan
-						 */
-						if(!scanMSD.getTargets().isEmpty()) {
-							calculateSmilesFormula(scanMSD, nameStructure, nameStructureConfig);
-						}
-						/*
-						 * Optimized Scan.
-						 */
-						IScanMSD optimizedMassSpectrum = scanMSD.getOptimizedMassSpectrum();
-						if(optimizedMassSpectrum != null) {
-							if(!optimizedMassSpectrum.getTargets().isEmpty()) {
-								calculateSmilesFormula(optimizedMassSpectrum, nameStructure, nameStructureConfig);
-							}
-						}
+					/*
+					 * Scan
+					 */
+					if(!supplierScan.getTargets().isEmpty()) {
+						calculateSmilesFormula(supplierScan, nameStructure, nameStructureConfig);
 					}
 				}
 				/*
 				 * Peaks
 				 */
-				List<IPeakMSD> peaks = new ArrayList<>();
-				for(IPeakMSD peakMSD : chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection)) {
-					peaks.add(peakMSD);
+				List<IPeak> peaks = new ArrayList<>();
+				for(IPeak peak : chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection)) {
+					peaks.add(peak);
 				}
 				calculateSmilesFormula(peaks, nameStructure, nameStructureConfig);
 			}
@@ -95,20 +83,20 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 	}
 
 	@Override
-	public IProcessingInfo<?> identify(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<?> identify(IChromatogramSelection<?, ?> chromatogramSelection, IProgressMonitor monitor) {
 
 		IdentifierSettings identifierSettings = PreferenceSupplier.getIdentifierSettings();
 		return identify(chromatogramSelection, identifierSettings, monitor);
 	}
 
-	private void calculateSmilesFormula(IScanMSD scanMSD, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
+	private void calculateSmilesFormula(IScan scan, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
 
-		calculateSmilesFormula(scanMSD.getTargets(), nameStructure, nameStructureConfig);
+		calculateSmilesFormula(scan.getTargets(), nameStructure, nameStructureConfig);
 	}
 
-	private void calculateSmilesFormula(List<IPeakMSD> peaks, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
+	private void calculateSmilesFormula(List<IPeak> peaks, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
 
-		for(IPeakMSD peak : peaks) {
+		for(IPeak peak : peaks) {
 			calculateSmilesFormula(peak.getTargets(), nameStructure, nameStructureConfig);
 		}
 	}
