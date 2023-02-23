@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,17 +20,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.xir.model.core.SignalXIR;
+import org.eclipse.chemclipse.xir.model.implementation.SignalXIR;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
-import net.openchrom.xir.converter.supplier.gaml.model.IVendorScanXIR;
-import net.openchrom.xir.converter.supplier.gaml.model.VendorScanXIR;
+import net.openchrom.xir.converter.supplier.gaml.model.IVendorSpectrumXIR;
+import net.openchrom.xir.converter.supplier.gaml.model.VendorSpectrumXIR;
 import net.openchrom.xxd.converter.supplier.gaml.internal.io.IConstants;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Experiment;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.GAML;
@@ -41,13 +38,17 @@ import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Ydata;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader110;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
+
 public class ScanReaderVersion110 {
 
 	private static final Logger logger = Logger.getLogger(ScanReaderVersion110.class);
 
-	public IVendorScanXIR read(File file, IProgressMonitor monitor) throws IOException {
+	public IVendorSpectrumXIR read(File file, IProgressMonitor monitor) throws IOException {
 
-		IVendorScanXIR vendorScan = null;
+		IVendorSpectrumXIR vendorScan = null;
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -57,7 +58,7 @@ public class ScanReaderVersion110 {
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			GAML gaml = (GAML)unmarshaller.unmarshal(nodeList.item(0));
 			for(Experiment experiment : gaml.getExperiment()) {
-				vendorScan = new VendorScanXIR();
+				vendorScan = new VendorSpectrumXIR();
 				vendorScan.setDataName(experiment.getName());
 				XMLGregorianCalendar collectDate = experiment.getCollectdate();
 				if(collectDate != null) {
@@ -79,7 +80,7 @@ public class ScanReaderVersion110 {
 					}
 					int scans = Math.min(waveNumbers.length, absorbance.length);
 					for(int i = 0; i < scans; i++) {
-						vendorScan.getProcessedSignals().add(new SignalXIR(waveNumbers[i], absorbance[i], 0));
+						vendorScan.getScanXIR().getProcessedSignals().add(new SignalXIR(waveNumbers[i], absorbance[i], 0));
 					}
 				}
 			}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -26,7 +26,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.xir.converter.supplier.gaml.io.ScanReaderVersion100;
 import net.openchrom.xir.converter.supplier.gaml.io.ScanReaderVersion110;
 import net.openchrom.xir.converter.supplier.gaml.io.ScanReaderVersion120;
-import net.openchrom.xir.converter.supplier.gaml.model.IVendorScanXIR;
+import net.openchrom.xir.converter.supplier.gaml.model.IVendorSpectrumXIR;
 import net.openchrom.xxd.converter.supplier.gaml.internal.io.IConstants;
 
 @SuppressWarnings("rawtypes")
@@ -35,9 +35,9 @@ public class ScanImportConverter extends AbstractScanImportConverter implements 
 	private static final Logger logger = Logger.getLogger(ScanImportConverter.class);
 
 	@Override
-	public IProcessingInfo<IVendorScanXIR> convert(File file, IProgressMonitor monitor) {
+	public IProcessingInfo<IVendorSpectrumXIR> convert(File file, IProgressMonitor monitor) {
 
-		IProcessingInfo<IVendorScanXIR> processingInfo = new ProcessingInfo<>();
+		IProcessingInfo<IVendorSpectrumXIR> processingInfo = new ProcessingInfo<>();
 		try {
 			final FileReader fileReader = new FileReader(file);
 			final char[] charBuffer = new char[100];
@@ -47,15 +47,15 @@ public class ScanImportConverter extends AbstractScanImportConverter implements 
 			final String header = new String(charBuffer);
 			if(header.contains(IConstants.GAML_V_100)) {
 				ScanReaderVersion100 scanReader = new ScanReaderVersion100();
-				IVendorScanXIR vendorScan = scanReader.read(file, monitor);
+				IVendorSpectrumXIR vendorScan = scanReader.read(file, monitor);
 				processingInfo.setProcessingResult(vendorScan);
 			} else if(header.contains(IConstants.GAML_V_110)) {
 				ScanReaderVersion110 scanReader = new ScanReaderVersion110();
-				IVendorScanXIR vendorScan = scanReader.read(file, monitor);
+				IVendorSpectrumXIR vendorScan = scanReader.read(file, monitor);
 				processingInfo.setProcessingResult(vendorScan);
 			} else if(header.contains(IConstants.GAML_V_120)) {
 				ScanReaderVersion120 scanReader = new ScanReaderVersion120();
-				IVendorScanXIR vendorScan = scanReader.read(file, monitor);
+				IVendorSpectrumXIR vendorScan = scanReader.read(file, monitor);
 				processingInfo.setProcessingResult(vendorScan);
 			} else {
 				throw new UnknownVersionException();
