@@ -122,10 +122,20 @@ public class MolWeightCalculator extends AbstractChromatogramIdentifier {
 			OpsinSupport.calculateSmilesIfAbsent(libraryInformation, nameStructure, nameStructureConfig);
 			String smiles = libraryInformation.getSmiles();
 			if(!smiles.isEmpty()) {
+				/*
+				 * SMILES exists
+				 */
 				IAtomContainer molecule = generate(libraryInformation.getSmiles());
 				double molWeight = AtomContainerManipulator.getMass(molecule);
 				libraryInformation.setMolWeight(molWeight);
+				if(libraryInformation.getFormula().isEmpty()) {
+					IMolecularFormula molecularFormula = MolecularFormulaManipulator.getMolecularFormula(molecule);
+					libraryInformation.setFormula(MolecularFormulaManipulator.getString(molecularFormula));
+				}
 			} else {
+				/*
+				 * Formula
+				 */
 				String formula = libraryInformation.getFormula();
 				if(!formula.isEmpty()) {
 					IMolecularFormula molecularFormula = new MolecularFormula();
