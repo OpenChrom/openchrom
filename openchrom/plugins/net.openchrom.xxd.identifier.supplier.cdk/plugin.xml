@@ -13,8 +13,8 @@
       <ChromatogramIdentificationSupplier
             description="This identifier calculates the mol weight for each identification entry."
             id="net.openchrom.chromatogram.msd.identifier.supplier.cdk.molweight"
-            identifier="net.openchrom.xxd.identifier.supplier.cdk.core.MolWeightCalculator"
-            identifierName="Mol Weight Calculator"
+            identifier="net.openchrom.xxd.identifier.supplier.cdk.core.TargetPropertyCalculator"
+            identifierName="Target Property Calculator (SMILES, Mol Weight, Formula)"
             identifierSettings="net.openchrom.xxd.identifier.supplier.cdk.settings.IdentifierSettings">
       </ChromatogramIdentificationSupplier>
       <ChromatogramIdentificationSupplier

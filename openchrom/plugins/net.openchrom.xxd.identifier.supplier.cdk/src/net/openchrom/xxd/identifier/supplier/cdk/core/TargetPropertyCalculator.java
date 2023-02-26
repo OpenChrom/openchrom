@@ -42,7 +42,7 @@ import net.openchrom.xxd.identifier.supplier.cdk.settings.IdentifierSettings;
 import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
 import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
 
-public class MolWeightCalculator extends AbstractChromatogramIdentifier {
+public class TargetPropertyCalculator extends AbstractChromatogramIdentifier {
 
 	private SmilesParser smilesParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
 
