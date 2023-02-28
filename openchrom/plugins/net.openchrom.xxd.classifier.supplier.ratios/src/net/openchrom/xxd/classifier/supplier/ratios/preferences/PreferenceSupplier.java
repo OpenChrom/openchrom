@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,12 +14,10 @@ package net.openchrom.xxd.classifier.supplier.ratios.preferences;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.xxd.classifier.supplier.ratios.Activator;
 import net.openchrom.xxd.classifier.supplier.ratios.settings.QualRatioSettings;
@@ -29,8 +27,6 @@ import net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioSettings;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
-	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
-	//
 	public static final float MIN_DEVIATION = 0.0f;
 	public static final float MAX_DEVIATION = 100.0f;
 	//
@@ -132,7 +128,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static void setAllowedDeviationOk(float allowedDeviationOk) {
 
-		putFloat(P_ALLOWED_DEVIATION_OK, allowedDeviationOk);
+		INSTANCE().putFloat(P_ALLOWED_DEVIATION_OK, allowedDeviationOk);
 	}
 
 	public static float getAllowedDeviationOk() {
@@ -143,7 +139,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static void setAllowedDeviationWarn(float allowedDeviationWarn) {
 
-		putFloat(P_ALLOWED_DEVIATION_WARN, allowedDeviationWarn);
+		INSTANCE().putFloat(P_ALLOWED_DEVIATION_WARN, allowedDeviationWarn);
 	}
 
 	public static float getAllowedDeviationWarn() {
@@ -154,27 +150,27 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static String getListPathImport() {
 
-		return getFilterPath(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
+		return INSTANCE().get(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
 	}
 
 	public static void setListPathImport(String filterPath) {
 
-		setFilterPath(P_LIST_PATH_IMPORT, filterPath);
+		INSTANCE().put(P_LIST_PATH_IMPORT, filterPath);
 	}
 
 	public static String getListPathExport() {
 
-		return getFilterPath(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
+		return INSTANCE().get(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
 	}
 
 	public static void setListPathExport(String filterPath) {
 
-		setFilterPath(P_LIST_PATH_EXPORT, filterPath);
+		INSTANCE().put(P_LIST_PATH_EXPORT, filterPath);
 	}
 
 	public static void setNumberTraces(int numberTraces) {
 
-		putInteger(P_EXPORT_NUMBER_TRACES, numberTraces);
+		INSTANCE().putInteger(P_EXPORT_NUMBER_TRACES, numberTraces);
 	}
 
 	public static int getNumberTraces() {
@@ -187,44 +183,5 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		return preferences.get(key, def);
-	}
-
-	private static String getFilterPath(String key, String def) {
-
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.get(key, def);
-	}
-
-	private static void setFilterPath(String key, String filterPath) {
-
-		try {
-			IEclipsePreferences preferences = INSTANCE().getPreferences();
-			preferences.put(key, filterPath);
-			preferences.flush();
-		} catch(BackingStoreException e) {
-			logger.warn(e);
-		}
-	}
-
-	private static void putInteger(String key, int value) {
-
-		try {
-			IEclipsePreferences preferences = INSTANCE().getPreferences();
-			preferences.putInt(key, value);
-			preferences.flush();
-		} catch(BackingStoreException e) {
-			logger.warn(e);
-		}
-	}
-
-	private static void putFloat(String key, float value) {
-
-		try {
-			IEclipsePreferences preferences = INSTANCE().getPreferences();
-			preferences.putFloat(key, value);
-			preferences.flush();
-		} catch(BackingStoreException e) {
-			logger.warn(e);
-		}
 	}
 }

@@ -14,12 +14,10 @@ package net.openchrom.xxd.process.supplier.templates.preferences;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.xxd.process.supplier.templates.Activator;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
@@ -32,8 +30,6 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
-	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
-	//
 	public static final String[][] VISIBILITY_OPTIONS = new String[][]{//
 			{"TIC", Visibility.TIC.name()}, //
 			{"TRACE", Visibility.TRACE.name()}, //
@@ -437,7 +433,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static void setListPathImport(String filterPath) {
 
-		putString(P_LIST_PATH_IMPORT, filterPath);
+		INSTANCE().put(P_LIST_PATH_IMPORT, filterPath);
 	}
 
 	public static String getListPathExport() {
@@ -447,80 +443,72 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static void setListPathExport(String filterPath) {
 
-		putString(P_LIST_PATH_EXPORT, filterPath);
+		INSTANCE().put(P_LIST_PATH_EXPORT, filterPath);
 	}
 
 	public static int getOffsetMinY() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_OFFSET_MIN_Y, DEF_OFFSET_MIN_Y);
+		return INSTANCE().getInteger(P_OFFSET_MIN_Y, DEF_OFFSET_MIN_Y);
 	}
 
 	public static int getOffsetMaxY() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_OFFSET_MAX_Y, DEF_OFFSET_MAX_Y);
+		return INSTANCE().getInteger(P_OFFSET_MAX_Y, DEF_OFFSET_MAX_Y);
 	}
 
 	public static boolean isSortImportTemplate() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_SORT_IMPORT_TEMPLATE, DEF_SORT_IMPORT_TEMPLATE);
+		return INSTANCE().getBoolean(P_SORT_IMPORT_TEMPLATE, DEF_SORT_IMPORT_TEMPLATE);
 	}
 
 	public static boolean isSortExportTemplate() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_SORT_EXPORT_TEMPLATE, DEF_SORT_EXPORT_TEMPLATE);
+		return INSTANCE().getBoolean(P_SORT_EXPORT_TEMPLATE, DEF_SORT_EXPORT_TEMPLATE);
 	}
 
 	public static boolean isDetectorSettingsSort() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_DETECTOR_SETTINGS_SORT, DEF_DETECTOR_SETTINGS_SORT);
+		return INSTANCE().getBoolean(P_DETECTOR_SETTINGS_SORT, DEF_DETECTOR_SETTINGS_SORT);
 	}
 
 	public static boolean isReviewSettingsSort() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_SETTINGS_SORT, DEF_REVIEW_SETTINGS_SORT);
+		return INSTANCE().getBoolean(P_REVIEW_SETTINGS_SORT, DEF_REVIEW_SETTINGS_SORT);
 	}
 
 	public static boolean isReportSettingsSort() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REPORT_SETTINGS_SORT, DEF_REPORT_SETTINGS_SORT);
+		return INSTANCE().getBoolean(P_REPORT_SETTINGS_SORT, DEF_REPORT_SETTINGS_SORT);
 	}
 
 	public static boolean isExportOptimizeRangeDetector() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, DEF_EXPORT_OPTIMIZE_RANGE_DETECTOR);
+		return INSTANCE().getBoolean(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, DEF_EXPORT_OPTIMIZE_RANGE_DETECTOR);
 	}
 
 	public static void setExportOptimizeRangeDetector(boolean optimizeRange) {
 
-		putBoolean(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, optimizeRange);
+		INSTANCE().putBoolean(P_EXPORT_OPTIMIZE_RANGE_DETECTOR, optimizeRange);
 	}
 
 	public static double getExportDeltaLeftPositionDetector() {
 
-		return getDouble(P_EXPORT_DELTA_LEFT_POSITION_DETECTOR, DEF_EXPORT_DELTA_LEFT_POSITION_DETECTOR);
+		return INSTANCE().getDouble(P_EXPORT_DELTA_LEFT_POSITION_DETECTOR, DEF_EXPORT_DELTA_LEFT_POSITION_DETECTOR);
 	}
 
 	public static void setExportDeltaLeftPositionDetector(double delta) {
 
-		putDouble(P_EXPORT_DELTA_LEFT_POSITION_DETECTOR, delta);
+		INSTANCE().putDouble(P_EXPORT_DELTA_LEFT_POSITION_DETECTOR, delta);
 	}
 
 	public static double getExportDeltaRightPositionDetector() {
 
-		return getDouble(P_EXPORT_DELTA_RIGHT_POSITION_DETECTOR, DEF_EXPORT_DELTA_RIGHT_POSITION_DETECTOR);
+		return INSTANCE().getDouble(P_EXPORT_DELTA_RIGHT_POSITION_DETECTOR, DEF_EXPORT_DELTA_RIGHT_POSITION_DETECTOR);
 	}
 
 	public static void setExportDeltaRightPositionDetector(double delta) {
 
-		putDouble(P_EXPORT_DELTA_RIGHT_POSITION_DETECTOR, delta);
+		INSTANCE().putDouble(P_EXPORT_DELTA_RIGHT_POSITION_DETECTOR, delta);
 	}
 
 	public static PositionDirective getExportPositionDirectiveDetector() {
@@ -535,47 +523,42 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static int getExportDeltaLeftMillisecondsIdentifier() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER);
+		return INSTANCE().getInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER);
 	}
 
 	public static void setExportDeltaLeftMillisecondsIdentifier(int deltaMilliseconds) {
 
-		putInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, deltaMilliseconds);
+		INSTANCE().putInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, deltaMilliseconds);
 	}
 
 	public static int getExportDeltaRightMillisecondsIdentifier() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER);
+		return INSTANCE().getInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER);
 	}
 
 	public static void setExportDeltaRightMillisecondsIdentifier(int deltaMilliseconds) {
 
-		putInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, deltaMilliseconds);
+		INSTANCE().putInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, deltaMilliseconds);
 	}
 
 	public static float getLimitMatchFactorIdentifier() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getFloat(P_LIMIT_MATCH_FACTOR_IDENTIFIER, DEF_LIMIT_MATCH_FACTOR_IDENTIFIER);
+		return INSTANCE().getFloat(P_LIMIT_MATCH_FACTOR_IDENTIFIER, DEF_LIMIT_MATCH_FACTOR_IDENTIFIER);
 	}
 
 	public static float getMatchQualityIdentifier() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getFloat(P_MATCH_QUALITY_IDENTIFIER, DEF_MATCH_QUALITY_IDENTIFIER);
+		return INSTANCE().getFloat(P_MATCH_QUALITY_IDENTIFIER, DEF_MATCH_QUALITY_IDENTIFIER);
 	}
 
 	public static int getExportDeltaLeftMillisecondsReview() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW);
+		return INSTANCE().getInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW);
 	}
 
 	public static void setExportDeltaLeftMillisecondsReview(int deltaMilliseconds) {
 
-		putInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW, deltaMilliseconds);
+		INSTANCE().putInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_REVIEW, deltaMilliseconds);
 	}
 
 	public static int getExportDeltaRightMillisecondsReview() {
@@ -586,126 +569,112 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static void setExportDeltaRightMillisecondsReview(int deltaMilliseconds) {
 
-		putInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW, deltaMilliseconds);
+		INSTANCE().putInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW, deltaMilliseconds);
 	}
 
 	public static int getExportNumberTracesAssigner() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_NUMBER_TRACES_ASSIGNER, DEF_EXPORT_NUMBER_TRACES_ASSIGNER);
+		return INSTANCE().getInteger(P_EXPORT_NUMBER_TRACES_ASSIGNER, DEF_EXPORT_NUMBER_TRACES_ASSIGNER);
 	}
 
 	public static void setExportNumberTracesAssigner(int numberTraces) {
 
-		putInteger(P_EXPORT_NUMBER_TRACES_ASSIGNER, numberTraces);
+		INSTANCE().putInteger(P_EXPORT_NUMBER_TRACES_ASSIGNER, numberTraces);
 	}
 
 	public static int getExportDeltaLeftMillisecondsAssigner() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER);
+		return INSTANCE().getInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_ASSIGNER);
 	}
 
 	public static int getExportDeltaRightMillisecondsAssigner() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_ASSIGNER, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_ASSIGNER);
+		return INSTANCE().getInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_ASSIGNER, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_ASSIGNER);
 	}
 
 	public static int getExportDeltaLeftMillisecondsStandards() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_STANDARDS, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_STANDARDS);
+		return INSTANCE().getInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_STANDARDS, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_STANDARDS);
 	}
 
 	public static int getExportDeltaRightMillisecondsStandards() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_STANDARDS, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_STANDARDS);
+		return INSTANCE().getInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_STANDARDS, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_STANDARDS);
 	}
 
 	public static int getExportDeltaLeftMillisecondsReport() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_DELTA_LEFT_MILLISECONDS_REPORT, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REPORT);
+		return INSTANCE().getInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_REPORT, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_REPORT);
 	}
 
 	public static int getExportDeltaRightMillisecondsReport() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REPORT, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REPORT);
+		return INSTANCE().getInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REPORT, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REPORT);
 	}
 
 	public static int getExportNumberTracesDetector() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_NUMBER_TRACES_DETECTOR, DEF_EXPORT_NUMBER_TRACES_DETECTOR);
+		return INSTANCE().getInteger(P_EXPORT_NUMBER_TRACES_DETECTOR, DEF_EXPORT_NUMBER_TRACES_DETECTOR);
 	}
 
 	public static void setExportNumberTracesDetector(int numberTraces) {
 
-		putInteger(P_EXPORT_NUMBER_TRACES_DETECTOR, numberTraces);
+		INSTANCE().putInteger(P_EXPORT_NUMBER_TRACES_DETECTOR, numberTraces);
 	}
 
 	public static int getExportNumberTracesIdentifier() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_NUMBER_TRACES_IDENTIFIER, DEF_EXPORT_NUMBER_TRACES_IDENTIFIER);
+		return INSTANCE().getInteger(P_EXPORT_NUMBER_TRACES_IDENTIFIER, DEF_EXPORT_NUMBER_TRACES_IDENTIFIER);
 	}
 
 	public static void setExportNumberTracesIdentifier(int numberTraces) {
 
-		putInteger(P_EXPORT_NUMBER_TRACES_IDENTIFIER, numberTraces);
+		INSTANCE().putInteger(P_EXPORT_NUMBER_TRACES_IDENTIFIER, numberTraces);
 	}
 
 	public static int getExportNumberTracesReview() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_NUMBER_TRACES_REVIEW, DEF_EXPORT_NUMBER_TRACES_REVIEW);
+		return INSTANCE().getInteger(P_EXPORT_NUMBER_TRACES_REVIEW, DEF_EXPORT_NUMBER_TRACES_REVIEW);
 	}
 
 	public static void setExportNumberTracesReview(int numberTraces) {
 
-		putInteger(P_EXPORT_NUMBER_TRACES_REVIEW, numberTraces);
+		INSTANCE().putInteger(P_EXPORT_NUMBER_TRACES_REVIEW, numberTraces);
 	}
 
 	public static boolean isExportOptimizeRangeReview() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_EXPORT_OPTIMIZE_RANGE_REVIEW, DEF_EXPORT_OPTIMIZE_RANGE_REVIEW);
+		return INSTANCE().getBoolean(P_EXPORT_OPTIMIZE_RANGE_REVIEW, DEF_EXPORT_OPTIMIZE_RANGE_REVIEW);
 	}
 
 	public static void setExportOptimizeRangeReview(boolean optimizeRange) {
 
-		putBoolean(P_EXPORT_OPTIMIZE_RANGE_REVIEW, optimizeRange);
+		INSTANCE().putBoolean(P_EXPORT_OPTIMIZE_RANGE_REVIEW, optimizeRange);
 	}
 
 	public static int getDetectorDeltaLeftMilliseconds() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_DETECTOR_DELTA_LEFT_MILLISECONDS, DEF_DETECTOR_DELTA_LEFT_MILLISECONDS);
+		return INSTANCE().getInteger(P_DETECTOR_DELTA_LEFT_MILLISECONDS, DEF_DETECTOR_DELTA_LEFT_MILLISECONDS);
 	}
 
 	public static void setDetectorDeltaLeftMilliseconds(int milliseconds) {
 
-		putInteger(P_DETECTOR_DELTA_LEFT_MILLISECONDS, milliseconds);
+		INSTANCE().putInteger(P_DETECTOR_DELTA_LEFT_MILLISECONDS, milliseconds);
 	}
 
 	public static int getDetectorDeltaRightMilliseconds() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_DETECTOR_DELTA_RIGHT_MILLISECONDS, DEF_DETECTOR_DELTA_RIGHT_MILLISECONDS);
+		return INSTANCE().getInteger(P_DETECTOR_DELTA_RIGHT_MILLISECONDS, DEF_DETECTOR_DELTA_RIGHT_MILLISECONDS);
 	}
 
 	public static void setDetectorDeltaRightMilliseconds(int milliseconds) {
 
-		putInteger(P_DETECTOR_DELTA_RIGHT_MILLISECONDS, milliseconds);
+		INSTANCE().putInteger(P_DETECTOR_DELTA_RIGHT_MILLISECONDS, milliseconds);
 	}
 
 	public static int getDetectorDynamicOffsetMilliseconds() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS, DEF_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS);
+		return INSTANCE().getInteger(P_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS, DEF_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS);
 	}
 
 	public static boolean isDetectorReplaceNearestPeak() {
@@ -717,13 +686,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void toggleDetectorReplaceNearestPeak() {
 
 		boolean replacePeak = isDetectorReplaceNearestPeak();
-		putBoolean(P_DETECTOR_REPLACE_NEAREST_PEAK, !replacePeak);
+		INSTANCE().putBoolean(P_DETECTOR_REPLACE_NEAREST_PEAK, !replacePeak);
 	}
 
 	public static int getDetectorReplacePeakDeltaMilliseconds() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS, DEF_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS);
+		return INSTANCE().getInteger(P_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS, DEF_DETECTOR_REPLACE_PEAK_DELTA_MILLISECONDS);
 	}
 
 	public static Visibility getDetectorVisibility() {
@@ -735,65 +703,58 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static void setDetectorVisibility(Visibility visibility) {
 
-		putString(P_DETECTOR_VISIBILITY, visibility.name());
+		INSTANCE().put(P_DETECTOR_VISIBILITY, visibility.name());
 	}
 
 	public static boolean isDetectorFocusXIC() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_DETECTOR_FOCUS_XIC, DEF_DETECTOR_FOCUS_XIC);
+		return INSTANCE().getBoolean(P_DETECTOR_FOCUS_XIC, DEF_DETECTOR_FOCUS_XIC);
 	}
 
 	public static boolean isDetectorHideExistingPeaks() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_DETECTOR_HIDE_EXISTING_PEAKS, DEF_DETECTOR_HIDE_EXISTING_PEAKS);
+		return INSTANCE().getBoolean(P_DETECTOR_HIDE_EXISTING_PEAKS, DEF_DETECTOR_HIDE_EXISTING_PEAKS);
 	}
 
 	public static boolean isShowBaselineDetector() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_DETECTOR_SHOW_BASELINE, DEF_DETECTOR_SHOW_BASELINE);
+		return INSTANCE().getBoolean(P_DETECTOR_SHOW_BASELINE, DEF_DETECTOR_SHOW_BASELINE);
 	}
 
 	public static void toggleShowBaselineDetector() {
 
 		boolean show = isShowBaselineDetector();
-		putBoolean(P_DETECTOR_SHOW_BASELINE, !show);
+		INSTANCE().putBoolean(P_DETECTOR_SHOW_BASELINE, !show);
 	}
 
 	public static boolean isDetectorShowOnlyRelevantPeaks() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS, DEF_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS);
+		return INSTANCE().getBoolean(P_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS, DEF_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS);
 	}
 
 	public static int getReviewDeltaLeftMilliseconds() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_REVIEW_DELTA_LEFT_MILLISECONDS, DEF_REVIEW_DELTA_LEFT_MILLISECONDS);
+		return INSTANCE().getInteger(P_REVIEW_DELTA_LEFT_MILLISECONDS, DEF_REVIEW_DELTA_LEFT_MILLISECONDS);
 	}
 
 	public static void setReviewDeltaLeftMilliseconds(int milliseconds) {
 
-		putInteger(P_REVIEW_DELTA_LEFT_MILLISECONDS, milliseconds);
+		INSTANCE().putInteger(P_REVIEW_DELTA_LEFT_MILLISECONDS, milliseconds);
 	}
 
 	public static int getReviewDeltaRightMilliseconds() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_REVIEW_DELTA_RIGHT_MILLISECONDS, DEF_REVIEW_DELTA_RIGHT_MILLISECONDS);
+		return INSTANCE().getInteger(P_REVIEW_DELTA_RIGHT_MILLISECONDS, DEF_REVIEW_DELTA_RIGHT_MILLISECONDS);
 	}
 
 	public static void setReviewDeltaRightMilliseconds(int milliseconds) {
 
-		putInteger(P_REVIEW_DELTA_RIGHT_MILLISECONDS, milliseconds);
+		INSTANCE().putInteger(P_REVIEW_DELTA_RIGHT_MILLISECONDS, milliseconds);
 	}
 
 	public static int getReviewDynamicOffsetMilliseconds() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_REVIEW_DYNAMIC_OFFSET_MILLISECONDS, DEF_REVIEW_DYNAMIC_OFFSET_MILLISECONDS);
+		return INSTANCE().getInteger(P_REVIEW_DYNAMIC_OFFSET_MILLISECONDS, DEF_REVIEW_DYNAMIC_OFFSET_MILLISECONDS);
 	}
 
 	public static boolean isReviewReplaceNearestPeak() {
@@ -805,7 +766,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void toggleReviewReplaceNearestPeak() {
 
 		boolean replacePeak = isReviewReplaceNearestPeak();
-		putBoolean(P_REVIEW_REPLACE_NEAREST_PEAK, !replacePeak);
+		INSTANCE().putBoolean(P_REVIEW_REPLACE_NEAREST_PEAK, !replacePeak);
 	}
 
 	public static int getReviewReplacePeakDeltaMilliseconds() {
@@ -847,7 +808,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static void setReviewVisibility(Visibility visibility) {
 
-		putString(P_REVIEW_VISIBILITY, visibility.name());
+		INSTANCE().put(P_REVIEW_VISIBILITY, visibility.name());
 	}
 
 	public static boolean isReviewFocusXIC() {
@@ -865,7 +826,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void toggleShowBaselineReview() {
 
 		boolean show = isShowBaselineReview();
-		putBoolean(P_REVIEW_SHOW_BASELINE, !show);
+		INSTANCE().putBoolean(P_REVIEW_SHOW_BASELINE, !show);
 	}
 
 	public static boolean isShowReviewDetails() {
@@ -877,7 +838,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void toggleShowReviewDetails() {
 
 		boolean show = isShowReviewDetails();
-		putBoolean(P_REVIEW_SHOW_DETAILS, !show);
+		INSTANCE().putBoolean(P_REVIEW_SHOW_DETAILS, !show);
 	}
 
 	public static boolean isReviewUpdateSearchTarget() {
@@ -993,118 +954,57 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static float getMatchQualityTransfer() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getFloat(P_TRANSFER_MATCH_QUALITY, DEF_TRANSFER_MATCH_QUALITY);
+		return INSTANCE().getFloat(P_TRANSFER_MATCH_QUALITY, DEF_TRANSFER_MATCH_QUALITY);
 	}
 
 	public static int getTransferRetentionTimeMillisecondsLeft() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT, DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT);
+		return INSTANCE().getInteger(P_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT, DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_LEFT);
 	}
 
 	public static int getTransferRetentionTimeMillisecondsRight() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT, DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT);
+		return INSTANCE().getInteger(P_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT, DEF_TRANSFER_RETENTION_TIME_MILLISECONDS_RIGHT);
 	}
 
 	public static int getTransferOffsetRetentionTimePeakMaximum() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM, DEF_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM);
+		return INSTANCE().getInteger(P_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM, DEF_TRANSFER_OFFSET_RETENTION_TIME_MILLISECONDS_PEAK_MAXIMUM);
 	}
 
 	public static boolean isTransferAdjustPeakHeight() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_TRANSFER_ADJUST_PEAK_HEIGHT, DEF_TRANSFER_ADJUST_PEAK_HEIGHT);
+		return INSTANCE().getBoolean(P_TRANSFER_ADJUST_PEAK_HEIGHT, DEF_TRANSFER_ADJUST_PEAK_HEIGHT);
 	}
 
 	public static boolean isTransferCreateModelPeak() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_TRANSFER_CREATE_MODEL_PEAK, DEF_TRANSFER_CREATE_MODEL_PEAK);
+		return INSTANCE().getBoolean(P_TRANSFER_CREATE_MODEL_PEAK, DEF_TRANSFER_CREATE_MODEL_PEAK);
 	}
 
 	public static double getTransferPeakOverlapCoverage() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(P_TRANSFER_PEAK_OVERLAP_COVERAGE, DEF_TRANSFER_PEAK_OVERLAP_COVERAGE);
+		return INSTANCE().getDouble(P_TRANSFER_PEAK_OVERLAP_COVERAGE, DEF_TRANSFER_PEAK_OVERLAP_COVERAGE);
 	}
 
 	public static boolean isTransferOptimizeRange() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_TRANSFER_OPTIMIZE_RANGE, DEF_TRANSFER_OPTIMIZE_RANGE);
+		return INSTANCE().getBoolean(P_TRANSFER_OPTIMIZE_RANGE, DEF_TRANSFER_OPTIMIZE_RANGE);
 	}
 
 	public static boolean isTransferCheckPurity() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_TRANSFER_CHECK_PURITY, DEF_TRANSFER_CHECK_PURITY);
+		return INSTANCE().getBoolean(P_TRANSFER_CHECK_PURITY, DEF_TRANSFER_CHECK_PURITY);
 	}
 
 	public static int getTransferNumberTraces() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_TRANSFER_NUMBER_TRACES, DEF_TRANSFER_NUMBER_TRACES);
+		return INSTANCE().getInteger(P_TRANSFER_NUMBER_TRACES, DEF_TRANSFER_NUMBER_TRACES);
 	}
 
 	public static int getPeakExportNumberTraces() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_PEAK_EXPORT_NUMBER_TRACES, DEF_PEAK_EXPORT_NUMBER_TRACES);
-	}
-
-	private static void putBoolean(String key, boolean value) {
-
-		try {
-			IEclipsePreferences preferences = INSTANCE().getPreferences();
-			preferences.putBoolean(key, value);
-			preferences.flush();
-		} catch(BackingStoreException e) {
-			logger.warn(e);
-		}
-	}
-
-	private static void putInteger(String key, int value) {
-
-		try {
-			IEclipsePreferences preferences = INSTANCE().getPreferences();
-			preferences.putInt(key, value);
-			preferences.flush();
-		} catch(BackingStoreException e) {
-			logger.warn(e);
-		}
-	}
-
-	private static void putString(String key, String value) {
-
-		try {
-			IEclipsePreferences preferences = INSTANCE().getPreferences();
-			preferences.put(key, value);
-			preferences.flush();
-		} catch(BackingStoreException e) {
-			logger.warn(e);
-		}
-	}
-
-	private static double getDouble(String key, double def) {
-
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getDouble(key, def);
-	}
-
-	private static void putDouble(String key, double value) {
-
-		try {
-			IEclipsePreferences preferences = INSTANCE().getPreferences();
-			preferences.putDouble(key, value);
-			preferences.flush();
-		} catch(BackingStoreException e) {
-			logger.warn(e);
-		}
+		return INSTANCE().getInteger(P_PEAK_EXPORT_NUMBER_TRACES, DEF_PEAK_EXPORT_NUMBER_TRACES);
 	}
 
 	private static PositionDirective getPositionDirective(String key, String def) {
@@ -1119,6 +1019,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	private static void putPositionDirective(String key, PositionDirective positionDirective) {
 
-		putString(key, positionDirective.name());
+		INSTANCE().put(key, positionDirective.name());
 	}
 }
