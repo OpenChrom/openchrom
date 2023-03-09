@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
- org.apache.commons.io;bundle-version="2.6.0",
+ org.apache.commons.commons-io;bundle-version="2.6.0",
  org.apache.commons.lang3;bundle-version="3.1.0",
  wrapped.us.hebi.matlab.mat.mfl-core;bundle-version="0.5.8"
 Bundle-RequiredExecutionEnvironment: JavaSE-17

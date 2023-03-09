@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.csd.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.csd.model;bundle-version="0.8.0",
  net.openchrom.xxd.converter.supplier.animl,
- org.apache.commons.io
+ org.apache.commons.commons-io;bundle-version="2.11.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Import-Package: jakarta.xml.bind
