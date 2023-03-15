@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.sf.kerner.utils.io;
 
@@ -78,12 +79,13 @@ public class UtilIO {
 			}
 	}
 
-	public static <V> V deepCopy(final Class<V> c, final Serializable s) throws IOException, ClassNotFoundException {
+	public static <V> V deepCopy(final Class<V> c, final Serializable value) throws IOException, ClassNotFoundException {
 
-		if(c == null || s == null)
+		if(c == null || value == null) {
 			throw new NullPointerException();
+		}
 		final ByteArrayOutputStream bs = new ByteArrayOutputStream();
-		new ObjectOutputStream(bs).writeObject(s);
+		new ObjectOutputStream(bs).writeObject(value);
 		final ByteArrayInputStream bi = new ByteArrayInputStream(bs.toByteArray());
 		final V v = c.cast(new ObjectInputStream(bi).readObject());
 		bs.close();
@@ -330,23 +332,24 @@ public class UtilIO {
 	 * </p>
 	 *
 	 * @see Serializable
-	 * @param s
+	 * @param value
 	 *            {@code Object} that will be serialized
 	 * @param stream
 	 *            stream to write to
 	 * @throws IOException
 	 *             if anything goes wrong
 	 */
-	public static void objectToStream(final Serializable s, final OutputStream stream) throws IOException {
+	public static void objectToStream(final Serializable value, final OutputStream stream) throws IOException {
 
-		if(s == null || stream == null)
+		if(value == null || stream == null) {
 			throw new NullPointerException();
+		}
 		ObjectOutputStream outStream = null;
 		BufferedOutputStream bos = null;
 		try {
 			bos = new BufferedOutputStream(stream);
 			outStream = new ObjectOutputStream(bos);
-			outStream.writeObject(s);
+			outStream.writeObject(value);
 		} finally {
 			if(outStream != null)
 				outStream.close();
@@ -432,5 +435,6 @@ public class UtilIO {
 	 * TODO description
 	 */
 	private UtilIO() {
+
 	}
 }

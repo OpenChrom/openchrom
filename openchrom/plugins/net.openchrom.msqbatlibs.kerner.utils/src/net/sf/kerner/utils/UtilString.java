@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.sf.kerner.utils;
 
@@ -40,8 +41,8 @@ public class UtilString {
 
 	public static boolean allEmpty(final Collection<? extends String> strings) {
 
-		for(final String s : strings) {
-			if(!emptyString(s)) {
+		for(final String value : strings) {
+			if(!emptyString(value)) {
 				return false;
 			}
 		}
@@ -96,5 +97,6 @@ public class UtilString {
 	}
 
 	private UtilString() {
+
 	}
 }

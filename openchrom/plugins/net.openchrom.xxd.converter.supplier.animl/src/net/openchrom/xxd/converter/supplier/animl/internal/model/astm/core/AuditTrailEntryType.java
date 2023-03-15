@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,11 +8,14 @@
  *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.annotation.XmlAccessType;
@@ -25,7 +28,6 @@ import jakarta.xml.bind.annotation.XmlSchemaType;
 import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * Describes a set of changes made to the particular AnIML document by one user at a given time.
@@ -231,7 +233,7 @@ public class AuditTrailEntryType {
 	 *
 	 *
 	 * <p>
-	 * Objects of the following type(s) are allowed in the list
+	 * Objects of the following types are allowed in the list
 	 * {@link DiffType }
 	 *
 	 *
@@ -261,7 +263,7 @@ public class AuditTrailEntryType {
 	 *
 	 *
 	 * <p>
-	 * Objects of the following type(s) are allowed in the list
+	 * Objects of the following types are allowed in the list
 	 * {@link JAXBElement }{@code <}{@link Object }{@code >}
 	 *
 	 *

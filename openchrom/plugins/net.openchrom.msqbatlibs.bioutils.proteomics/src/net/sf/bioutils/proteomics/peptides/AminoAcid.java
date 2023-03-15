@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.sf.bioutils.proteomics.peptides;
 
@@ -38,6 +39,7 @@ import net.sf.bioutils.proteomics.exception.ExceptionUnknownAminoAcid;
  * 
  */
 public enum AminoAcid {
+
 	/**
 	 * <a href="http://en.wikipedia.org/wiki/Alanine">en.wikipedia.org/wiki/
 	 * Alanine</a>
@@ -91,20 +93,21 @@ public enum AminoAcid {
 		throw new ExceptionUnknownAminoAcid("unknown peptide " + c);
 	}
 
-	public static AminoAcid parseTrippleChar(final String s) {
+	public static AminoAcid parseTrippleChar(final String value) {
 
 		for(final AminoAcid p : values()) {
-			if(p.getTrippeCharIdent().equals(s)) {
+			if(p.getTrippeCharIdent().equals(value)) {
 				return p;
 			}
 		}
-		throw new IllegalArgumentException("unknown peptide " + s);
+		throw new IllegalArgumentException("unknown peptide " + value);
 	}
 
 	private final double molWeight;
 	private final String trippleCharIdent;
 
 	private AminoAcid(final String trippleCharIdent, final double molWeight) {
+
 		this.molWeight = molWeight;
 		this.trippleCharIdent = trippleCharIdent;
 	}

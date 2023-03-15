@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core;
 
@@ -20,7 +21,7 @@ import jakarta.xml.bind.annotation.XmlType;
 public enum ActionType {
 
 	/**
-	 * The given user has created the references item(s).
+	 * The given user has created the references items.
 	 *
 	 */
 	@XmlEnumValue("created")
@@ -38,7 +39,7 @@ public enum ActionType {
 	@XmlEnumValue("converted")
 	CONVERTED("converted"),
 	/**
-	 * The given user has exercised read access on the referenced item(s).
+	 * The given user has exercised read access on the referenced items.
 	 *
 	 */
 	@XmlEnumValue("read")

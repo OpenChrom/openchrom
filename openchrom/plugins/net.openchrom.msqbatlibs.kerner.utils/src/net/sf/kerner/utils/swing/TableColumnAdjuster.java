@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.sf.kerner.utils.swing;
 
@@ -52,13 +53,14 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
 		private final boolean isSelectedColumn;
 
 		public ColumnAction(final boolean isSelectedColumn, final boolean isAdjust) {
+
 			this.isSelectedColumn = isSelectedColumn;
 			this.isAdjust = isAdjust;
 		}
 
 		public void actionPerformed(final ActionEvent e) {
 
-			// Handle selected column(s) width change actions
+			// Handle selected columns width change actions
 			if(isSelectedColumn) {
 				final int[] columns = table.getSelectedColumns();
 				for(int i = 0; i < columns.length; i++) {
@@ -86,6 +88,7 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
 		private final boolean isToggleLarger;
 
 		public ToggleAction(final boolean isToggleDynamic, final boolean isToggleLarger) {
+
 			this.isToggleDynamic = isToggleDynamic;
 			this.isToggleLarger = isToggleLarger;
 		}
@@ -115,6 +118,7 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
 	 * Specify the table and use default spacing
 	 */
 	public TableColumnAdjuster(final JTable table) {
+
 		this(table, 6);
 	}
 
@@ -122,6 +126,7 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
 	 * Specify the table and spacing
 	 */
 	public TableColumnAdjuster(final JTable table, final int spacing) {
+
 		this.table = table;
 		this.spacing = spacing;
 		setColumnHeaderIncluded(true);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.sf.jtables.io.reader;
 
@@ -42,34 +43,42 @@ import net.sf.jtables.table.impl.TableInteger;
 public class ReaderTableInteger extends ReaderTableAbstract<Integer> {
 
 	public ReaderTableInteger(BufferedReader reader, boolean columnIds, boolean rowIds, String delim) throws IOException {
+
 		super(reader, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableInteger(BufferedReader reader, boolean columnIds, boolean rowIds) throws IOException {
+
 		super(reader, columnIds, rowIds);
 	}
 
 	public ReaderTableInteger(File file, boolean columnIds, boolean rowIds, String delim) throws IOException {
+
 		super(file, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableInteger(File file, boolean columnIds, boolean rowIds) throws IOException {
+
 		super(file, columnIds, rowIds);
 	}
 
 	public ReaderTableInteger(InputStream stream, boolean columnIds, boolean rowIds, String delim) throws IOException {
+
 		super(stream, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableInteger(InputStream stream, boolean columnIds, boolean rowIds) throws IOException {
+
 		super(stream, columnIds, rowIds);
 	}
 
 	public ReaderTableInteger(Reader reader, boolean columnIds, boolean rowIds, String delim) throws IOException {
+
 		super(reader, columnIds, rowIds, delim);
 	}
 
 	public ReaderTableInteger(Reader reader, boolean columnIds, boolean rowIds) throws IOException {
+
 		super(reader, columnIds, rowIds);
 	}
 
@@ -78,9 +87,9 @@ public class ReaderTableInteger extends ReaderTableAbstract<Integer> {
 		return new TableInteger();
 	}
 
-	protected Integer parse(String s) throws NumberFormatException {
+	protected Integer parse(String value) throws NumberFormatException {
 
-		return Integer.parseInt(s);
+		return Integer.parseInt(value);
 	}
 
 	public TableInteger readTableAtOnce() throws IOException {

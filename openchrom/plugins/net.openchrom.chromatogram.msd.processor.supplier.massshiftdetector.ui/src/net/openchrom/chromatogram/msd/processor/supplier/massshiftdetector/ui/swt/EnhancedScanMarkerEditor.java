@@ -359,6 +359,6 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 
 	private void setScanMarkerInfoLabel(int scanMarkerSize) {
 
-		scanMarkerInfoLabel.setText("In summary: " + scanMarkerSize + " possible scan(s) containing isotope shifts have been identified.");
+		scanMarkerInfoLabel.setText("In summary: " + scanMarkerSize + " possible scans containing isotope shifts have been identified.");
 	}
 }

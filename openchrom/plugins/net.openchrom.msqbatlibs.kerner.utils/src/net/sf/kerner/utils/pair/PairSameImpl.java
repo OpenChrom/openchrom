@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.sf.kerner.utils.pair;
 
@@ -43,27 +44,30 @@ import java.util.List;
 public class PairSameImpl<T> extends PairImpl<T, T> implements PairSame<T> {
 
 	public PairSameImpl() {
+
 		super();
 	}
 
 	public PairSameImpl(final Pair<? extends T, ? extends T> template) {
+
 		super(template);
 	}
 
 	public PairSameImpl(final T first, final T second) {
+
 		super(first, second);
 	}
 
 	public List<T> asList() {
 
-		final T f = getFirst();
-		final T s = getSecond();
+		final T first = getFirst();
+		final T second = getSecond();
 		final List<T> result = new ArrayList<T>();
-		if(f != null) {
-			result.add(f);
+		if(first != null) {
+			result.add(first);
 		}
-		if(s != null) {
-			result.add(s);
+		if(second != null) {
+			result.add(second);
 		}
 		return result;
 	}

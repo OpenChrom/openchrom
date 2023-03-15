@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,14 +18,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import net.sf.kerner.utils.io.UtilIO;
-import net.sf.kerner.utils.io.lazy.LazyStringReader;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import net.sf.kerner.utils.io.UtilIO;
+import net.sf.kerner.utils.io.lazy.LazyStringReader;
 
 /**
  * @author <a href="mailto:alex.kerner.24@googlemail.com">Alexander Kerner</a>
@@ -33,7 +33,7 @@ import org.junit.Test;
  */
 public class TestBufferedStringWriter {
 
-	private String s;
+	private String value;
 	private StringWriter sw;
 	private BufferedStringWriter writer;
 
@@ -50,7 +50,7 @@ public class TestBufferedStringWriter {
 	@Before
 	public void setUp() throws Exception {
 
-		s = "test";
+		value = "test";
 		sw = new StringWriter();
 		writer = new BufferedStringWriter(sw);
 		new File("src/test/resources/smallTestFileWrite.txt").delete();
@@ -98,9 +98,9 @@ public class TestBufferedStringWriter {
 	@Test
 	public final void testWriteString() throws IOException {
 
-		writer.write(s);
+		writer.write(value);
 		writer.close();
-		assertEquals(s, sw.toString());
+		assertEquals(value, sw.toString());
 	}
 
 	/**
@@ -111,9 +111,9 @@ public class TestBufferedStringWriter {
 	@Test
 	public final void testWriteString01() throws IOException {
 
-		writer.write(s);
+		writer.write(value);
 		writer.flush();
-		assertEquals(s, sw.toString());
+		assertEquals(value, sw.toString());
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class TestBufferedStringWriter {
 	public final void testClose() throws IOException {
 
 		writer.close();
-		writer.write(s);
+		writer.write(value);
 	}
 
 	/**
@@ -136,9 +136,9 @@ public class TestBufferedStringWriter {
 	@Test
 	public final void testWriteNextLine() throws IOException {
 
-		writer.writeNextLine(s);
+		writer.writeNextLine(value);
 		writer.close();
-		assertEquals(s + UtilIO.NEW_LINE_STRING, sw.toString());
+		assertEquals(value + UtilIO.NEW_LINE_STRING, sw.toString());
 	}
 
 	/**
@@ -149,9 +149,9 @@ public class TestBufferedStringWriter {
 	@Test
 	public final void testWriteChar() throws IOException {
 
-		writer.write(s.charAt(0));
+		writer.write(value.charAt(0));
 		writer.close();
-		assertEquals(String.valueOf(s.charAt(0)), sw.toString());
+		assertEquals(String.valueOf(value.charAt(0)), sw.toString());
 	}
 
 	/**
@@ -162,9 +162,9 @@ public class TestBufferedStringWriter {
 	@Test
 	public final void testWriteCharArray() throws IOException {
 
-		writer.write(s.toCharArray());
+		writer.write(value.toCharArray());
 		writer.close();
-		assertEquals(s, sw.toString());
+		assertEquals(value, sw.toString());
 	}
 
 	/**
@@ -175,9 +175,9 @@ public class TestBufferedStringWriter {
 	@Test
 	public final void testFlush() throws IOException {
 
-		writer.write(s);
+		writer.write(value);
 		writer.flush();
-		assertEquals(s, sw.toString());
+		assertEquals(value, sw.toString());
 	}
 
 	@Test

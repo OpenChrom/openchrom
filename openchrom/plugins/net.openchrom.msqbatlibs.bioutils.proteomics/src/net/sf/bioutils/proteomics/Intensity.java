@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.sf.bioutils.proteomics;
 
@@ -35,27 +36,32 @@ public class Intensity extends Number implements Serializable, Comparable<Intens
 	}
 
 	public Intensity() {
+
 		delegate = BigDecimal.ZERO;
 		setScale();
 	}
 
 	public Intensity(final BigDecimal delegate) {
+
 		this.delegate = delegate;
 		setScale();
 	}
 
 	public Intensity(final double doubleValue) {
+
 		delegate = new BigDecimal(doubleValue);
 		setScale();
 	}
 
 	public Intensity(final Intensity template) {
+
 		delegate = template.delegate;
 		setScale();
 	}
 
-	public Intensity(final String s) {
-		delegate = new BigDecimal(s);
+	public Intensity(final String value) {
+
+		delegate = new BigDecimal(value);
 		setScale();
 	}
 

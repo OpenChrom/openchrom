@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Alexander Stark - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings.support;
 
@@ -34,7 +35,7 @@ public class IcoShiftAlignmentUtilities {
 		private T start;
 		private T stop;
 
-		public Interval(T start, T stop){
+		public Interval(T start, T stop) {
 
 			this.start = start;
 			this.stop = stop;
@@ -123,7 +124,7 @@ public class IcoShiftAlignmentUtilities {
 		private double real;
 		private BigDecimal hz;
 
-		public IcoShiftSignal(BigDecimal hz, double real){
+		public IcoShiftSignal(BigDecimal hz, double real) {
 
 			this.hz = hz;
 			this.real = real;
@@ -160,8 +161,8 @@ public class IcoShiftAlignmentUtilities {
 					String[] tempIntervalValues = interval.split("-");
 					double[] intervalValues = new double[tempIntervalValues.length];
 					int position = 0;
-					for(String s : tempIntervalValues) {
-						intervalValues[position] = Double.parseDouble(s);
+					for(String value : tempIntervalValues) {
+						intervalValues[position] = Double.parseDouble(value);
 						position++;
 					}
 					if(intervalValues[0] < intervalValues[1]) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.sf.kerner.utils.io.buffered.impl;
 
@@ -19,14 +20,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 
-import net.sf.kerner.utils.io.UtilIO;
-import net.sf.kerner.utils.io.lazy.LazyStringReader;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import net.sf.kerner.utils.io.UtilIO;
+import net.sf.kerner.utils.io.lazy.LazyStringReader;
 
 /**
  * @author <a href="mailto:alex.kerner.24@googlemail.com">Alexander Kerner</a>
@@ -34,7 +35,7 @@ import org.junit.Test;
  */
 public class TestBufferedStringReader {
 
-	private String s;
+	private String value;
 	private StringReader sr;
 	private BufferedStringReader reader;
 
@@ -51,8 +52,8 @@ public class TestBufferedStringReader {
 	@Before
 	public void setUp() throws Exception {
 
-		s = "test";
-		sr = new StringReader(s);
+		value = "test";
+		sr = new StringReader(value);
 		reader = new BufferedStringReader(sr);
 	}
 
@@ -61,7 +62,7 @@ public class TestBufferedStringReader {
 
 		reader = null;
 		sr = null;
-		s = null;
+		value = null;
 	}
 
 	/**
@@ -118,7 +119,7 @@ public class TestBufferedStringReader {
 
 		final String s2 = reader.nextString(1);
 		reader.close();
-		assertEquals(String.valueOf(s.charAt(0)), s2);
+		assertEquals(String.valueOf(value.charAt(0)), s2);
 	}
 
 	/**
@@ -142,7 +143,7 @@ public class TestBufferedStringReader {
 
 		final String s2 = reader.nextString(4);
 		reader.close();
-		assertEquals(s, s2);
+		assertEquals(value, s2);
 	}
 
 	/**
@@ -155,7 +156,7 @@ public class TestBufferedStringReader {
 
 		final String s2 = reader.nextString(5);
 		reader.close();
-		assertEquals(s, s2);
+		assertEquals(value, s2);
 	}
 
 	/**
@@ -201,7 +202,7 @@ public class TestBufferedStringReader {
 
 		final String s2 = String.valueOf(reader.nextChars(5));
 		reader.close();
-		assertEquals(s, s2);
+		assertEquals(value, s2);
 	}
 
 	/**
@@ -214,7 +215,7 @@ public class TestBufferedStringReader {
 
 		final String s2 = String.valueOf(reader.nextChars(1));
 		reader.close();
-		assertEquals(String.valueOf(s.charAt(0)), s2);
+		assertEquals(String.valueOf(value.charAt(0)), s2);
 	}
 
 	/**
@@ -274,7 +275,7 @@ public class TestBufferedStringReader {
 
 		final String s2 = String.valueOf(reader.nextChars());
 		reader.close();
-		assertEquals(s, s2);
+		assertEquals(value, s2);
 	}
 
 	/**
@@ -287,7 +288,7 @@ public class TestBufferedStringReader {
 
 		final String s2 = String.valueOf(reader.nextLine());
 		reader.close();
-		assertEquals(s, s2);
+		assertEquals(value, s2);
 	}
 
 	/**
@@ -314,7 +315,7 @@ public class TestBufferedStringReader {
 
 		char c = (char)reader.nextChar();
 		reader.close();
-		assertEquals(s.charAt(0), c);
+		assertEquals(value.charAt(0), c);
 	}
 
 	/**
@@ -328,7 +329,7 @@ public class TestBufferedStringReader {
 		char c = (char)reader.nextChar();
 		c = (char)reader.nextChar();
 		reader.close();
-		assertEquals(s.charAt(1), c);
+		assertEquals(value.charAt(1), c);
 	}
 
 	@Test
@@ -363,12 +364,12 @@ public class TestBufferedStringReader {
 	public final void exampleReadFromAFileCharacterByCharacter() throws IOException {
 
 		// Use BfferedStringReader to read a String from a java.io.Reader character by character.
-		final String s = "abcd";
-		final BufferedStringReader reader = new BufferedStringReader(new StringReader(s));
+		final String value = "abcd";
+		final BufferedStringReader reader = new BufferedStringReader(new StringReader(value));
 		int counter = 0;
 		int nextChar;
 		while((nextChar = reader.nextChar()) != -1) {
-			assertEquals(s.charAt(counter), (char)nextChar);
+			assertEquals(value.charAt(counter), (char)nextChar);
 			counter++;
 		}
 		reader.close();

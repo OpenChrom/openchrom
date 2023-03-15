@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.sf.jtables.io.reader;
 
@@ -22,17 +23,19 @@ public class VisitorFirstLine implements Filter<String> {
 	private final Collection<String> needsToMatch;
 
 	public VisitorFirstLine(Collection<String> needsToMatch) {
+
 		this.needsToMatch = new HashSet<String>(needsToMatch);
 	}
 
 	public VisitorFirstLine(String needsToMatch) {
+
 		this(Arrays.asList(needsToMatch));
 	}
 
 	public boolean filter(String line) {
 
-		for(String s : needsToMatch) {
-			if(!line.contains(s)) {
+		for(String value : needsToMatch) {
+			if(!line.contains(value)) {
 				return false;
 			}
 		}

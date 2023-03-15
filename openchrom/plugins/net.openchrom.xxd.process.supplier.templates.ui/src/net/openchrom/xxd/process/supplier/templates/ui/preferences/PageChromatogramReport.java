@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -38,7 +38,7 @@ public class PageChromatogramReport extends FieldEditorPreferencePage implements
 	public void createFieldEditors() {
 
 		addField(new ReportFieldEditor(PreferenceSupplier.P_CHROMATOGRAM_REPORT_LIST, "", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_REPORT_REFERENCED_CHROMATOGRAMS, "Report Referenced Chromatogram(s)", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_REPORT_REFERENCED_CHROMATOGRAMS, "Report Referenced Chromatograms", getFieldEditorParent()));
 	}
 
 	/*

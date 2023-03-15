@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -57,7 +57,7 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	@JsonPropertyDescription(value = "Select the report columns.")
 	@ValidatorSettingsProperty(validator = ReportColumnsValidator.class)
 	private ReportColumns reportColumns;
-	@JsonProperty(value = "Use Reference(s)", defaultValue = "false")
+	@JsonProperty(value = "Use References", defaultValue = "false")
 	@JsonPropertyDescription(value = "Report all referenced chromatograms.")
 	private boolean reportReferencedChromatograms = false;
 

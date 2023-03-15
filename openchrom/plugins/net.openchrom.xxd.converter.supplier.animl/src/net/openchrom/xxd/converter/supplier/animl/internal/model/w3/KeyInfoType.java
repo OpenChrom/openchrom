@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,11 +8,14 @@
  *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.openchrom.xxd.converter.supplier.animl.internal.model.w3;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.w3c.dom.Element;
 
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.annotation.XmlAccessType;
@@ -27,8 +30,6 @@ import jakarta.xml.bind.annotation.XmlSchemaType;
 import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.w3c.dom.Element;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "KeyInfoType", propOrder = {"content"})
@@ -61,7 +62,7 @@ public class KeyInfoType {
 	 *
 	 *
 	 * <p>
-	 * Objects of the following type(s) are allowed in the list
+	 * Objects of the following types are allowed in the list
 	 * {@link JAXBElement }{@code <}{@link KeyValueType }{@code >}
 	 * {@link JAXBElement }{@code <}{@link X509DataType }{@code >}
 	 * {@link JAXBElement }{@code <}{@link PGPDataType }{@code >}

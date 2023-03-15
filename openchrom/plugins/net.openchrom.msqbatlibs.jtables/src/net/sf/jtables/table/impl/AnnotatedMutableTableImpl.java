@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.sf.jtables.table.impl;
 
@@ -68,6 +69,7 @@ public class AnnotatedMutableTableImpl<T> extends MutableTableImpl<T> implements
 	 * Creates an empty {@code AnnotatedMutableTableImpl}.
 	 */
 	public AnnotatedMutableTableImpl() {
+
 		super();
 	}
 
@@ -78,10 +80,12 @@ public class AnnotatedMutableTableImpl<T> extends MutableTableImpl<T> implements
 	 *            rows initially contained by this {@code Table}
 	 */
 	public AnnotatedMutableTableImpl(final List<Row<T>> rows) {
+
 		super(rows);
 	}
 
 	public AnnotatedMutableTableImpl(final Table<T> template) {
+
 		super(template);
 		if(template instanceof TableAnnotated) {
 			setColumnIdentifier(((TableAnnotated)template).getColumnIdentifier());
@@ -195,8 +199,8 @@ public class AnnotatedMutableTableImpl<T> extends MutableTableImpl<T> implements
 		final AnnotatedMutableTableImpl<T> result = new AnnotatedMutableTableImpl<T>();
 		result.setColumnIdentifier(sorted);
 		result.setRowIdentifier(getRowIdentifier());
-		for(final String s : sorted) {
-			result.addColumn(this.getColumn(s));
+		for(final String value : sorted) {
+			result.addColumn(this.getColumn(value));
 		}
 		return result;
 	}

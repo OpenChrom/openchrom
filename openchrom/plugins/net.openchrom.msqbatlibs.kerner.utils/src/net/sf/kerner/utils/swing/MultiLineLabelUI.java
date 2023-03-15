@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2014 Alexander Kerner.
+ * Copyright (c) 2010, 2014 Alexander Kerner.
  * 
  * All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * 
+ * Philip Wenig - refactorings
  ******************************************************************************/
 /*
  * The MIT License
@@ -127,6 +129,7 @@ public class MultiLineLabelUI extends BasicLabelUI implements ComponentListener 
 
 		/** Private constructor. */
 		private SegmentCache() {
+
 		}
 	}
 
@@ -192,21 +195,21 @@ public class MultiLineLabelUI extends BasicLabelUI implements ComponentListener 
 	 *            the label to paint
 	 * @param fm
 	 *            font metrics
-	 * @param s
+	 * @param value
 	 *            the string to paint
 	 * @param bounds
 	 *            the text bounds rectangle
 	 * @return the x-coordinate to use when painting for proper alignment
 	 */
-	protected int alignmentX(final JLabel label, final FontMetrics fm, final String s, final Rectangle bounds) {
+	protected int alignmentX(final JLabel label, final FontMetrics fm, final String value, final Rectangle bounds) {
 
 		if(label instanceof MultiLineLabel) {
 			final int align = ((MultiLineLabel)label).getHorizontalTextAlignment();
 			switch(align) {
 				case JLabel.RIGHT:
-					return bounds.x + paintViewR.width - fm.stringWidth(s);
+					return bounds.x + paintViewR.width - fm.stringWidth(value);
 				case JLabel.CENTER:
-					return bounds.x + paintViewR.width / 2 - fm.stringWidth(s) / 2;
+					return bounds.x + paintViewR.width / 2 - fm.stringWidth(value) / 2;
 				default:
 					return bounds.x;
 			}

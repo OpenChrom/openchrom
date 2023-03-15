@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.sf.jtables.io.reader;
 
@@ -87,6 +88,7 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	private List<VisitorFirstLine> visitors = new ArrayList<VisitorFirstLine>();
 
 	public ReaderTableAbstract(final File file) throws IOException {
+
 		this(file, false, false, null);
 	}
 
@@ -103,6 +105,7 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	 *             if anything goes wrong
 	 */
 	public ReaderTableAbstract(final File file, final boolean columnIds, final boolean rowIds) throws IOException {
+
 		this(file, columnIds, rowIds, null);
 	}
 
@@ -121,6 +124,7 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	 *             if anything goes wrong
 	 */
 	public ReaderTableAbstract(final File file, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
+
 		this(new FileInputStream(file), columnIds, rowIds, delim);
 	}
 
@@ -137,6 +141,7 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	 *             if anything goes wrong
 	 */
 	public ReaderTableAbstract(final InputStream stream, final boolean columnIds, final boolean rowIds) throws IOException {
+
 		this(stream, columnIds, rowIds, null);
 	}
 
@@ -155,6 +160,7 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	 *             if anything goes wrong
 	 */
 	public ReaderTableAbstract(final InputStream stream, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
+
 		super(stream);
 		this.colsB = columnIds;
 		this.rowsB = rowIds;
@@ -177,6 +183,7 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	 *             if anything goes wrong
 	 */
 	public ReaderTableAbstract(final Reader reader, final boolean columnIds, final boolean rowIds) throws IOException {
+
 		this(reader, columnIds, rowIds, null);
 	}
 
@@ -195,6 +202,7 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 	 *             if anything goes wrong
 	 */
 	public ReaderTableAbstract(final Reader reader, final boolean columnIds, final boolean rowIds, final String delim) throws IOException {
+
 		super(reader);
 		this.colsB = columnIds;
 		this.rowsB = rowIds;
@@ -262,15 +270,12 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 			// first column (row headers)?
 			boolean first = true;
 			while(scanner.hasNext()) {
-				final String s = scanner.next();
-				// if(UtilStrings.emptyString(s)){
-				// continue;
-				// }
+				final String value = scanner.next();
 				if(rowsB && first) {
-					rowHeaders.add(s);
+					rowHeaders.add(value);
 					first = false;
 				} else {
-					result.add(parse(s));
+					result.add(parse(value));
 				}
 			}
 			if(result.isEmpty())
@@ -298,8 +303,8 @@ public abstract class ReaderTableAbstract<T> extends AbstractIOIterator<Row<T>> 
 		scanner.useDelimiter(delim);
 		List<String> list = new ArrayList<String>();
 		while(scanner.hasNext()) {
-			final String s = scanner.next();
-			list.add(s);
+			final String value = scanner.next();
+			list.add(value);
 		}
 		scanner.close();
 		if(rowsB) {

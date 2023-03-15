@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Dr. Alexander Kerner - initial API and implementation
+ * Philip Wenig - refactorings
  *******************************************************************************/
 package net.sf.jtables.table.impl;
 
@@ -31,10 +32,12 @@ import net.sf.kerner.utils.collections.list.UtilList;
 public class TableString extends AnnotatedMutableTableImpl<String> {
 
 	public TableString() {
+
 		super();
 	}
 
 	public TableString(final List<Row<String>> rows) {
+
 		super(rows);
 	}
 
@@ -54,9 +57,9 @@ public class TableString extends AnnotatedMutableTableImpl<String> {
 	public List<ColumnString> getColumns(final String idPattern) {
 
 		final List<ColumnString> result = new ArrayList<ColumnString>();
-		for(final Object s : getColumnIdentifier()) {
-			if(s.toString().matches(idPattern)) {
-				result.add((ColumnString)getColumn(s));
+		for(final Object value : getColumnIdentifier()) {
+			if(value.toString().matches(idPattern)) {
+				result.add((ColumnString)getColumn(value));
 			}
 		}
 		return result;
@@ -65,9 +68,9 @@ public class TableString extends AnnotatedMutableTableImpl<String> {
 	public List<RowString> getRows(final String idPattern) {
 
 		final List<RowString> result = new ArrayList<RowString>();
-		for(final Object s : getRowIdentifier()) {
-			if(s.toString().matches(idPattern)) {
-				result.add((RowString)getRow(s));
+		for(final Object value : getRowIdentifier()) {
+			if(value.toString().matches(idPattern)) {
+				result.add((RowString)getRow(value));
 			}
 		}
 		return result;
@@ -80,8 +83,8 @@ public class TableString extends AnnotatedMutableTableImpl<String> {
 		final TableString result = new TableString();
 		result.setColumnIdentifier(sorted);
 		result.setRowIdentifier(getRowIdentifier());
-		for(final String s : sorted) {
-			result.addColumn(this.getColumn(s));
+		for(final String value : sorted) {
+			result.addColumn(this.getColumn(value));
 		}
 		return result;
 	}
