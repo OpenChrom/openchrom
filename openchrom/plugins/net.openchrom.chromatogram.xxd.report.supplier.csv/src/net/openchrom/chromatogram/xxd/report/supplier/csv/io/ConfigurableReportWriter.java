@@ -54,11 +54,12 @@ public class ConfigurableReportWriter {
 			 * Data
 			 */
 			for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
-				printChromatogramData(csvPrinter, reportColumns, chromatogram, printSectionSeparator);
 				if(reportSettings.reportReferencedChromatograms()) {
 					for(IChromatogram<?> referencedChromatograms : chromatogram.getReferencedChromatograms()) {
 						printChromatogramData(csvPrinter, reportColumns, referencedChromatograms, printSectionSeparator);
 					}
+				} else {
+					printChromatogramData(csvPrinter, reportColumns, chromatogram, printSectionSeparator);
 				}
 			}
 		}
