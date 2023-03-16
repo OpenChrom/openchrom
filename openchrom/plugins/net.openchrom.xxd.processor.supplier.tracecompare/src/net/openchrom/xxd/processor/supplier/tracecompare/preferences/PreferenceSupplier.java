@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,19 +14,15 @@ package net.openchrom.xxd.processor.supplier.tracecompare.preferences;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.osgi.service.prefs.BackingStoreException;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.Activator;
 
 public class PreferenceSupplier implements IPreferenceSupplier {
 
-	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
-	//
 	public static final String DETECTOR_MSD = "MSD";
 	public static final String DETECTOR_CSD = "CSD";
 	public static final String DETECTOR_WSD = "WSD";
@@ -42,8 +38,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	//
 	public static final String P_SAMPLE_DIRECTORY = "sampleDirectory";
 	public static final String DEF_SAMPLE_DIRECTORY = "";
-	public static final String P_REFERNCE_DIRECTORY = "referenceDirectory";
-	public static final String DEF_REFERNCE_DIRECTORY = "";
+	public static final String P_REFERENCE_DIRECTORY = "referenceDirectory";
+	public static final String DEF_REFERENCE_DIRECTORY = "";
 	//
 	public static final String P_SEARCH_CASE_SENSITIVE = "searchCaseSensitive"; // $NON-NLS-1$
 	public static final boolean DEF_SEARCH_CASE_SENSITIVE = false; // $NON-NLS-1$
@@ -116,7 +112,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_FILE_EXTENSION, DEF_FILE_EXTENSION);
 		defaultValues.put(P_FILE_PATTERN, DEF_FILE_PATTERN);
 		defaultValues.put(P_SAMPLE_DIRECTORY, DEF_SAMPLE_DIRECTORY);
-		defaultValues.put(P_REFERNCE_DIRECTORY, DEF_REFERNCE_DIRECTORY);
+		defaultValues.put(P_REFERENCE_DIRECTORY, DEF_REFERENCE_DIRECTORY);
 		defaultValues.put(P_SEARCH_CASE_SENSITIVE, Boolean.toString(DEF_SEARCH_CASE_SENSITIVE));
 		defaultValues.put(P_SCAN_VELOCITY, Integer.toString(DEF_SCAN_VELOCITY));
 		defaultValues.put(P_COLOR_DATA_190, DEF_COLOR_DATA_190);
@@ -174,174 +170,126 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static String getFileExtension() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_FILE_EXTENSION, DEF_FILE_EXTENSION);
+		return INSTANCE().get(P_FILE_EXTENSION, DEF_FILE_EXTENSION);
 	}
 
 	public static String getFilePattern() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_FILE_PATTERN, DEF_FILE_PATTERN);
+		return INSTANCE().get(P_FILE_PATTERN, DEF_FILE_PATTERN);
 	}
 
 	public static String getSampleDirectory() {
 
-		return getDirectoryPath(P_SAMPLE_DIRECTORY, DEF_SAMPLE_DIRECTORY);
+		return INSTANCE().get(P_SAMPLE_DIRECTORY, DEF_SAMPLE_DIRECTORY);
 	}
 
 	public static void setSampleDirectory(String filterPath) {
 
-		setFilterPath(P_SAMPLE_DIRECTORY, filterPath);
+		INSTANCE().put(P_SAMPLE_DIRECTORY, filterPath);
 	}
 
 	public static String getReferenceDirectory() {
 
-		return getDirectoryPath(P_REFERNCE_DIRECTORY, DEF_REFERNCE_DIRECTORY);
+		return INSTANCE().get(P_REFERENCE_DIRECTORY, DEF_REFERENCE_DIRECTORY);
 	}
 
 	public static void setReferenceDirectory(String filterPath) {
 
-		setFilterPath(P_REFERNCE_DIRECTORY, filterPath);
+		INSTANCE().put(P_REFERENCE_DIRECTORY, filterPath);
 	}
 
 	public static boolean isSearchCaseSensitive() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.getBoolean(P_SEARCH_CASE_SENSITIVE, DEF_SEARCH_CASE_SENSITIVE);
+		return INSTANCE().getBoolean(P_SEARCH_CASE_SENSITIVE, DEF_SEARCH_CASE_SENSITIVE);
 	}
 
 	public static void setSearchCaseSensitive(boolean searchCaseSensitive) {
 
-		try {
-			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-			eclipsePreferences.putBoolean(P_SEARCH_CASE_SENSITIVE, searchCaseSensitive);
-			eclipsePreferences.flush();
-		} catch(BackingStoreException e) {
-			logger.warn(e);
-		}
+		INSTANCE().putBoolean(P_SEARCH_CASE_SENSITIVE, searchCaseSensitive);
 	}
 
 	public static int getScanVelocity() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.getInt(P_SCAN_VELOCITY, DEF_SCAN_VELOCITY);
+		return INSTANCE().getInteger(P_SCAN_VELOCITY, DEF_SCAN_VELOCITY);
 	}
 
 	public static boolean isMirrorReferenceData() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.getBoolean(P_MIRROR_REFERENCE_DATA, DEF_MIRROR_REFERENCE_DATA);
+		return INSTANCE().getBoolean(P_MIRROR_REFERENCE_DATA, DEF_MIRROR_REFERENCE_DATA);
 	}
 
 	public static boolean isUseDataValidation() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.getBoolean(P_USE_DATA_VALIDATION, DEF_USE_DATA_VALIDATION);
+		return INSTANCE().getBoolean(P_USE_DATA_VALIDATION, DEF_USE_DATA_VALIDATION);
 	}
 
 	public static void setUseDataValidation(boolean useDataValidation) {
 
-		try {
-			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-			eclipsePreferences.putBoolean(P_USE_DATA_VALIDATION, useDataValidation);
-			eclipsePreferences.flush();
-		} catch(BackingStoreException e) {
-			logger.warn(e);
-		}
+		INSTANCE().putBoolean(P_USE_DATA_VALIDATION, useDataValidation);
 	}
 
 	public static String getLineStyleSample() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_LINE_STYLE_SAMPLE, DEF_LINE_STYLE_SAMPLE);
+		return INSTANCE().get(P_LINE_STYLE_SAMPLE, DEF_LINE_STYLE_SAMPLE);
 	}
 
 	public static int getLineWidthSample() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.getInt(P_LINE_WIDTH_SAMPLE, DEF_LINE_WIDTH_SAMPLE);
+		return INSTANCE().getInteger(P_LINE_WIDTH_SAMPLE, DEF_LINE_WIDTH_SAMPLE);
 	}
 
 	public static String getLineStyleReference() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_LINE_STYLE_REFERENCE, DEF_LINE_STYLE_REFERENCE);
+		return INSTANCE().get(P_LINE_STYLE_REFERENCE, DEF_LINE_STYLE_REFERENCE);
 	}
 
 	public static int getLineWidthReference() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.getInt(P_LINE_WIDTH_REFERENCE, DEF_LINE_WIDTH_REFERENCE);
+		return INSTANCE().getInteger(P_LINE_WIDTH_REFERENCE, DEF_LINE_WIDTH_REFERENCE);
 	}
 
 	public static int getLineWidthHighlight() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.getInt(P_LINE_WIDTH_HIGHLIGHT, DEF_LINE_WIDTH_HIGHLIGHT);
+		return INSTANCE().getInteger(P_LINE_WIDTH_HIGHLIGHT, DEF_LINE_WIDTH_HIGHLIGHT);
 	}
 
 	public static String getColorData190() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_COLOR_DATA_190, DEF_COLOR_DATA_190);
+		return INSTANCE().get(P_COLOR_DATA_190, DEF_COLOR_DATA_190);
 	}
 
 	public static String getColorData200() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_COLOR_DATA_200, DEF_COLOR_DATA_200);
+		return INSTANCE().get(P_COLOR_DATA_200, DEF_COLOR_DATA_200);
 	}
 
 	public static String getColorData220() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_COLOR_DATA_220, DEF_COLOR_DATA_220);
+		return INSTANCE().get(P_COLOR_DATA_220, DEF_COLOR_DATA_220);
 	}
 
 	public static String getColorData240() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_COLOR_DATA_240, DEF_COLOR_DATA_240);
+		return INSTANCE().get(P_COLOR_DATA_240, DEF_COLOR_DATA_240);
 	}
 
 	public static String getColorData260() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_COLOR_DATA_260, DEF_COLOR_DATA_260);
+		return INSTANCE().get(P_COLOR_DATA_260, DEF_COLOR_DATA_260);
 	}
 
 	public static String getColorData280() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_COLOR_DATA_280, DEF_COLOR_DATA_280);
+		return INSTANCE().get(P_COLOR_DATA_280, DEF_COLOR_DATA_280);
 	}
 
 	public static String getColorData300() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_COLOR_DATA_300, DEF_COLOR_DATA_300);
+		return INSTANCE().get(P_COLOR_DATA_300, DEF_COLOR_DATA_300);
 	}
 
 	public static String getColorDataDefault() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_COLOR_DATA_DEFAULT, DEF_COLOR_DATA_DEFAULT);
-	}
-
-	private static String getDirectoryPath(String key, String def) {
-
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(key, def);
-	}
-
-	private static void setFilterPath(String key, String filterPath) {
-
-		try {
-			IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-			eclipsePreferences.put(key, filterPath);
-			eclipsePreferences.flush();
-		} catch(BackingStoreException e) {
-			logger.warn(e);
-		}
+		return INSTANCE().get(P_COLOR_DATA_DEFAULT, DEF_COLOR_DATA_DEFAULT);
 	}
 }

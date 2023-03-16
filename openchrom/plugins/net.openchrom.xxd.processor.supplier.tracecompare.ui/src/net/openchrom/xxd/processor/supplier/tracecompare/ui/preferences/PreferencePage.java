@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -28,6 +28,7 @@ import net.openchrom.xxd.processor.supplier.tracecompare.ui.Activator;
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PreferencePage() {
+
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setDescription("Trace Compare");
@@ -47,7 +48,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new ComboFieldEditor(PreferenceSupplier.P_DETECTOR_TYPE, "Detector Type:", PreferenceSupplier.getDetectorTypes(), getFieldEditorParent()));
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_SAMPLE_DIRECTORY, "Sample Directory:", getFieldEditorParent()));
-		addField(new DirectoryFieldEditor(PreferenceSupplier.P_REFERNCE_DIRECTORY, "Reference Directory:", getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(PreferenceSupplier.P_REFERENCE_DIRECTORY, "Reference Directory:", getFieldEditorParent()));
 		addField(scanVelocityFieldEditor);
 		//
 		addField(new SpacerFieldEditor(getFieldEditorParent()));

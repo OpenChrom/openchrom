@@ -103,21 +103,21 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static TraceRatioSettings getSettingsTrace() {
 
 		TraceRatioSettings settings = new TraceRatioSettings();
-		settings.setRatioSettings(getSettings(P_TRACE_RATIO_LIST, DEF_TRACE_RATIO_LIST));
+		settings.setRatioSettings(INSTANCE().get(P_TRACE_RATIO_LIST, DEF_TRACE_RATIO_LIST));
 		return settings;
 	}
 
 	public static TimeRatioSettings getSettingsTime() {
 
 		TimeRatioSettings settings = new TimeRatioSettings();
-		settings.setRatioSettings(getSettings(P_TIME_RATIO_LIST, DEF_TIME_RATIO_LIST));
+		settings.setRatioSettings(INSTANCE().get(P_TIME_RATIO_LIST, DEF_TIME_RATIO_LIST));
 		return settings;
 	}
 
 	public static QuantRatioSettings getSettingsQuant() {
 
 		QuantRatioSettings settings = new QuantRatioSettings();
-		settings.setRatioSettings(getSettings(P_QUANT_RATIO_LIST, DEF_QUANT_RATIO_LIST));
+		settings.setRatioSettings(INSTANCE().get(P_QUANT_RATIO_LIST, DEF_QUANT_RATIO_LIST));
 		return settings;
 	}
 
@@ -133,8 +133,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static float getAllowedDeviationOk() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getFloat(P_ALLOWED_DEVIATION_OK, DEF_ALLOWED_DEVIATION_OK);
+		return INSTANCE().getFloat(P_ALLOWED_DEVIATION_OK, DEF_ALLOWED_DEVIATION_OK);
 	}
 
 	public static void setAllowedDeviationWarn(float allowedDeviationWarn) {
@@ -144,8 +143,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static float getAllowedDeviationWarn() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getFloat(P_ALLOWED_DEVIATION_WARN, DEF_ALLOWED_DEVIATION_WARN);
+		return INSTANCE().getFloat(P_ALLOWED_DEVIATION_WARN, DEF_ALLOWED_DEVIATION_WARN);
 	}
 
 	public static String getListPathImport() {
@@ -175,13 +173,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static int getNumberTraces() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_NUMBER_TRACES, DEF_EXPORT_NUMBER_TRACES);
-	}
-
-	private static String getSettings(String key, String def) {
-
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.get(key, def);
+		return INSTANCE().getInteger(P_EXPORT_NUMBER_TRACES, DEF_EXPORT_NUMBER_TRACES);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,7 +13,6 @@ package net.openchrom.xxd.classifier.supplier.ratios.ui.preferences;
 
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.FloatFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpinnerFieldEditor;
-import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -41,9 +40,6 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 
 		addField(new FloatFieldEditor(PreferenceSupplier.P_ALLOWED_DEVIATION_OK, "Allowed Deviation Ok (%)", PreferenceSupplier.MIN_DEVIATION, PreferenceSupplier.MAX_DEVIATION, getFieldEditorParent()));
 		addField(new FloatFieldEditor(PreferenceSupplier.P_ALLOWED_DEVIATION_WARN, "Allowed Deviation Warn (%)", PreferenceSupplier.MIN_DEVIATION, PreferenceSupplier.MAX_DEVIATION, getFieldEditorParent()));
-		//
-		addField(new DirectoryFieldEditor(PreferenceSupplier.P_LIST_PATH_IMPORT, "List Path Import", getFieldEditorParent()));
-		addField(new DirectoryFieldEditor(PreferenceSupplier.P_LIST_PATH_EXPORT, "List Path Export", getFieldEditorParent()));
 		//
 		addField(new SpinnerFieldEditor(PreferenceSupplier.P_EXPORT_NUMBER_TRACES, "Export Number Traces", PreferenceSupplier.MIN_NUMBER_TRACES, PreferenceSupplier.MAX_NUMBER_TRACES, getFieldEditorParent()));
 	}

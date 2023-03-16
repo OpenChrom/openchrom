@@ -417,8 +417,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static String getSettings(String key, String def) {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.get(key, def);
+		return INSTANCE().get(key, def);
 	}
 
 	public static FilterSettingsRetentionIndexMapper getFilterSettings() {
@@ -428,7 +427,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static String getListPathImport() {
 
-		return getFilterPath(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
+		return INSTANCE().get(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
 	}
 
 	public static void setListPathImport(String filterPath) {
@@ -438,7 +437,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static String getListPathExport() {
 
-		return getFilterPath(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
+		return INSTANCE().get(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
 	}
 
 	public static void setListPathExport(String filterPath) {
@@ -563,8 +562,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static int getExportDeltaRightMillisecondsReview() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW);
+		return INSTANCE().getInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REVIEW);
 	}
 
 	public static void setExportDeltaRightMillisecondsReview(int deltaMilliseconds) {
@@ -679,8 +677,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static boolean isDetectorReplaceNearestPeak() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_DETECTOR_REPLACE_NEAREST_PEAK, DEF_DETECTOR_REPLACE_NEAREST_PEAK);
+		return INSTANCE().getBoolean(P_DETECTOR_REPLACE_NEAREST_PEAK, DEF_DETECTOR_REPLACE_NEAREST_PEAK);
 	}
 
 	public static void toggleDetectorReplaceNearestPeak() {
@@ -696,9 +693,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static Visibility getDetectorVisibility() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		String option = preferences.get(P_DETECTOR_VISIBILITY, DEF_DETECTOR_VISIBILITY);
-		return Visibility.valueOf(option);
+		try {
+			return Visibility.valueOf(INSTANCE().get(P_DETECTOR_VISIBILITY, DEF_DETECTOR_VISIBILITY));
+		} catch(Exception e) {
+			return Visibility.BOTH;
+		}
 	}
 
 	public static void setDetectorVisibility(Visibility visibility) {
@@ -759,8 +758,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static boolean isReviewReplaceNearestPeak() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_REPLACE_NEAREST_PEAK, DEF_REVIEW_REPLACE_NEAREST_PEAK);
+		return INSTANCE().getBoolean(P_REVIEW_REPLACE_NEAREST_PEAK, DEF_REVIEW_REPLACE_NEAREST_PEAK);
 	}
 
 	public static void toggleReviewReplaceNearestPeak() {
@@ -771,39 +769,36 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static int getReviewReplacePeakDeltaMilliseconds() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_REVIEW_REPLACE_PEAK_DELTA_MILLISECONDS, DEF_REVIEW_REPLACE_PEAK_DELTA_MILLISECONDS);
+		return INSTANCE().getInteger(P_REVIEW_REPLACE_PEAK_DELTA_MILLISECONDS, DEF_REVIEW_REPLACE_PEAK_DELTA_MILLISECONDS);
 	}
 
 	public static boolean isReviewSetTargetVerification() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_SET_TARGET_VERIFICATION, DEF_REVIEW_SET_TARGET_VERIFICATION);
+		return INSTANCE().getBoolean(P_REVIEW_SET_TARGET_VERIFICATION, DEF_REVIEW_SET_TARGET_VERIFICATION);
 	}
 
 	public static boolean isReviewAutoSelectBestMatch() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_AUTO_SELECT_BEST_MATCH, DEF_REVIEW_AUTO_SELECT_BEST_MATCH);
+		return INSTANCE().getBoolean(P_REVIEW_AUTO_SELECT_BEST_MATCH, DEF_REVIEW_AUTO_SELECT_BEST_MATCH);
 	}
 
 	public static boolean isReviewHideExistingPeaks() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_HIDE_EXISTING_PEAKS, DEF_REVIEW_HIDE_EXISTING_PEAKS);
+		return INSTANCE().getBoolean(P_REVIEW_HIDE_EXISTING_PEAKS, DEF_REVIEW_HIDE_EXISTING_PEAKS);
 	}
 
 	public static boolean isReviewSetTargetDetectedPeak() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_SET_TARGET_DETECTED_PEAK, DEF_REVIEW_SET_TARGET_DETECTED_PEAK);
+		return INSTANCE().getBoolean(P_REVIEW_SET_TARGET_DETECTED_PEAK, DEF_REVIEW_SET_TARGET_DETECTED_PEAK);
 	}
 
 	public static Visibility getReviewVisibility() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		String option = preferences.get(P_REVIEW_VISIBILITY, DEF_REVIEW_VISIBILITY);
-		return Visibility.valueOf(option);
+		try {
+			return Visibility.valueOf(INSTANCE().get(P_REVIEW_VISIBILITY, DEF_REVIEW_VISIBILITY));
+		} catch(Exception e) {
+			return Visibility.BOTH;
+		}
 	}
 
 	public static void setReviewVisibility(Visibility visibility) {
@@ -813,14 +808,12 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static boolean isReviewFocusXIC() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_FOCUS_XIC, DEF_REVIEW_FOCUS_XIC);
+		return INSTANCE().getBoolean(P_REVIEW_FOCUS_XIC, DEF_REVIEW_FOCUS_XIC);
 	}
 
 	public static boolean isShowBaselineReview() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_SHOW_BASELINE, DEF_REVIEW_SHOW_BASELINE);
+		return INSTANCE().getBoolean(P_REVIEW_SHOW_BASELINE, DEF_REVIEW_SHOW_BASELINE);
 	}
 
 	public static void toggleShowBaselineReview() {
@@ -831,8 +824,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static boolean isShowReviewDetails() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_SHOW_DETAILS, DEF_REVIEW_SHOW_DETAILS);
+		return INSTANCE().getBoolean(P_REVIEW_SHOW_DETAILS, DEF_REVIEW_SHOW_DETAILS);
 	}
 
 	public static void toggleShowReviewDetails() {
@@ -843,49 +835,42 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static boolean isReviewUpdateSearchTarget() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_UPDATE_SEARCH_TARGET, DEF_REVIEW_UPDATE_SEARCH_TARGET);
+		return INSTANCE().getBoolean(P_REVIEW_UPDATE_SEARCH_TARGET, DEF_REVIEW_UPDATE_SEARCH_TARGET);
 	}
 
 	public static boolean isReviewFetchLibrarySpectrum() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_FETCH_LIBRARY_SPECTRUM, DEF_REVIEW_FETCH_LIBRARY_SPECTRUM);
+		return INSTANCE().getBoolean(P_REVIEW_FETCH_LIBRARY_SPECTRUM, DEF_REVIEW_FETCH_LIBRARY_SPECTRUM);
 	}
 
 	public static boolean isReviewShowOnlyRelevantPeaks() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS, DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS);
+		return INSTANCE().getBoolean(P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS, DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS);
 	}
 
 	public static boolean isReviewIgnoreNullCasNumber() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REVIEW_IGNORE_NULL_CAS_NUMBER, DEF_REVIEW_IGNORE_NULL_CAS_NUMBER);
+		return INSTANCE().getBoolean(P_REVIEW_IGNORE_NULL_CAS_NUMBER, DEF_REVIEW_IGNORE_NULL_CAS_NUMBER);
 	}
 
 	public static PeakDetectorSettings getPeakDetectorSettingsCSD() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		PeakDetectorSettings settings = new PeakDetectorSettings();
-		settings.setDetectorSettings(preferences.get(P_PEAK_DETECTOR_LIST_CSD, DEF_PEAK_DETECTOR_LIST_CSD));
+		settings.setDetectorSettings(INSTANCE().get(P_PEAK_DETECTOR_LIST_CSD, DEF_PEAK_DETECTOR_LIST_CSD));
 		return settings;
 	}
 
 	public static PeakDetectorSettings getPeakDetectorSettingsMSD() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		PeakDetectorSettings settings = new PeakDetectorSettings();
-		settings.setDetectorSettings(preferences.get(P_PEAK_DETECTOR_LIST_MSD, DEF_PEAK_DETECTOR_LIST_MSD));
+		settings.setDetectorSettings(INSTANCE().get(P_PEAK_DETECTOR_LIST_MSD, DEF_PEAK_DETECTOR_LIST_MSD));
 		return settings;
 	}
 
 	public static PeakDetectorSettings getPeakDetectorSettingsWSD() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		PeakDetectorSettings settings = new PeakDetectorSettings();
-		settings.setDetectorSettings(preferences.get(P_PEAK_DETECTOR_LIST_WSD, DEF_PEAK_DETECTOR_LIST_WSD));
+		settings.setDetectorSettings(INSTANCE().get(P_PEAK_DETECTOR_LIST_WSD, DEF_PEAK_DETECTOR_LIST_WSD));
 		return settings;
 	}
 
@@ -905,51 +890,39 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static ChromatogramReportSettings getChromatogramReportSettings() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		ChromatogramReportSettings settings = new ChromatogramReportSettings();
-		settings.setReportReferencedChromatograms(preferences.getBoolean(P_REPORT_REFERENCED_CHROMATOGRAMS, DEF_REPORT_REFERENCED_CHROMATOGRAMS));
-		settings.getReportSettings().load(preferences.get(P_CHROMATOGRAM_REPORT_LIST, DEF_CHROMATOGRAM_REPORT_LIST));
+		settings.setReportReferencedChromatograms(INSTANCE().getBoolean(P_REPORT_REFERENCED_CHROMATOGRAMS, DEF_REPORT_REFERENCED_CHROMATOGRAMS));
+		settings.getReportSettings().load(INSTANCE().get(P_CHROMATOGRAM_REPORT_LIST, DEF_CHROMATOGRAM_REPORT_LIST));
 		return settings;
 	}
 
 	public static PeakReviewSettings getReviewSettingsMSD() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		PeakReviewSettings settings = new PeakReviewSettings();
-		settings.setReviewSettings(preferences.get(P_CHROMATOGRAM_REVIEW_LIST_MSD, DEF_CHROMATOGRAM_REVIEW_LIST_MSD));
+		settings.setReviewSettings(INSTANCE().get(P_CHROMATOGRAM_REVIEW_LIST_MSD, DEF_CHROMATOGRAM_REVIEW_LIST_MSD));
 		return settings;
 	}
 
 	public static PeakReviewSettings getReviewSettingsCSD() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		PeakReviewSettings settings = new PeakReviewSettings();
-		settings.setReviewSettings(preferences.get(P_CHROMATOGRAM_REVIEW_LIST_CSD, DEF_CHROMATOGRAM_REVIEW_LIST_CSD));
+		settings.setReviewSettings(INSTANCE().get(P_CHROMATOGRAM_REVIEW_LIST_CSD, DEF_CHROMATOGRAM_REVIEW_LIST_CSD));
 		return settings;
-	}
-
-	private static String getFilterPath(String key, String def) {
-
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.get(key, def);
 	}
 
 	public static String getStandardsExtractorConcentrationUnit() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.get(P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT, DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT);
+		return INSTANCE().get(P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT, DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT);
 	}
 
 	public static boolean isTransferUseIdentifiedPeaksOnly() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY);
+		return INSTANCE().getBoolean(P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, DEF_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY);
 	}
 
 	public static boolean isTransferUseBestTargetOnly() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_TRANSFER_USE_BEST_TARGET_ONLY, DEF_TRANSFER_USE_BEST_TARGET_ONLY);
+		return INSTANCE().getBoolean(P_TRANSFER_USE_BEST_TARGET_ONLY, DEF_TRANSFER_USE_BEST_TARGET_ONLY);
 	}
 
 	public static float getMatchQualityTransfer() {
@@ -1009,9 +982,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	private static PositionDirective getPositionDirective(String key, String def) {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
 		try {
-			return PositionDirective.valueOf(preferences.get(key, def));
+			return PositionDirective.valueOf(INSTANCE().get(key, def));
 		} catch(Exception e) {
 			return PositionDirective.RETENTION_TIME_MIN;
 		}
