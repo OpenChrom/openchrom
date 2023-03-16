@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Lablicate GmbH.
+ * Copyright (c) 2022, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -31,6 +31,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
@@ -45,6 +47,8 @@ public class PositionAdjusterUI extends Composite {
 	//
 	private List<? extends AbstractSetting> settings;
 	private IUpdateListener updateListener;
+	//
+	private Listener listener;
 
 	public PositionAdjusterUI(Composite parent, int style) {
 
@@ -52,9 +56,22 @@ public class PositionAdjusterUI extends Composite {
 		createControl();
 	}
 
+	public void addChangeListener(Listener listener) {
+
+		this.listener = listener;
+		//
+		comboControl.get().getCombo().addListener(SWT.Selection, listener);
+		textControl.get().addListener(SWT.KeyUp, listener);
+		buttonControl.get().addListener(SWT.KeyUp, listener);
+	}
+
 	public void setInput(List<? extends AbstractSetting> settings) {
 
 		this.settings = settings;
+		//
+		if(listener != null) {
+			listener.handleEvent(new Event());
+		}
 	}
 
 	public void setUpdateListener(IUpdateListener updateListener) {
