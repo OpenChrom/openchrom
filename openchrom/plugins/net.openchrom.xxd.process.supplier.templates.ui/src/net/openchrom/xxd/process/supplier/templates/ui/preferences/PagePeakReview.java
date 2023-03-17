@@ -15,7 +15,6 @@ import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.ExtendedIntege
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -57,8 +56,6 @@ public class PagePeakReview extends FieldEditorPreferencePage implements IWorkbe
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_FETCH_LIBRARY_SPECTRUM, "Fetch Library Spectrum", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS, "Show Only Relevant Peaks", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_IGNORE_NULL_CAS_NUMBER, "Ignore CAS# 0-00-0", getFieldEditorParent()));
-		addField(new StringFieldEditor(PreferenceSupplier.P_REVIEW_COLUMN_ORDER, "Column Order", getFieldEditorParent()));
-		addField(new StringFieldEditor(PreferenceSupplier.P_REVIEW_COLUMN_WIDTH, "Column Width", getFieldEditorParent()));
 	}
 
 	/*
