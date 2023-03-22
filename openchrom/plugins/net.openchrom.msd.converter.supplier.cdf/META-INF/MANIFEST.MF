@@ -22,9 +22,9 @@ Require-Bundle: org.eclipse.core.runtime,
  com.google.protobuf;bundle-version="3.21.5",
  wrapped.com.google.re2j.re2j;bundle-version="1.7.0",
  wrapped.org.jdom.jdom2;bundle-version="2.0.6",
- org.slf4j.api;bundle-version="1.7.30",
  wrapped.org.apache.httpcomponents.httpclient;bundle-version="4.5.14",
- wrapped.org.apache.httpcomponents.httpcore;bundle-version="4.4.16"
+ wrapped.org.apache.httpcomponents.httpcore;bundle-version="4.4.16",
+ slf4j.api;bundle-version="1.7.36"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: ChemClipse
