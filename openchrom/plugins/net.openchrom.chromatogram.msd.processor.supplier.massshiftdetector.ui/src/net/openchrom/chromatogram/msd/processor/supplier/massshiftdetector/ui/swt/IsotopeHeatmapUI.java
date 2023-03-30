@@ -93,6 +93,12 @@ public class IsotopeHeatmapUI extends Composite {
 	}
 
 	private void initialize(Composite parent) {
+	@Override
+	public void dispose() {
+
+		intensityGraphFigure.dispose();
+	}
+
 
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.FILL);
