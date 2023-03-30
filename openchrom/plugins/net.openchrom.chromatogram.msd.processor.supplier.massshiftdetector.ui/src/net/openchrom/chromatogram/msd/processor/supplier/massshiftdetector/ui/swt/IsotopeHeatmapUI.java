@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,9 +14,10 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.s
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.nebula.visualization.widgets.datadefinition.ColorMap;
 import org.eclipse.nebula.visualization.widgets.figures.IntensityGraphFigure;
@@ -49,8 +50,6 @@ public class IsotopeHeatmapUI extends Composite {
 
 	private Combo comboIsotopeLevel;
 	private Text textCertaintyThreshold;
-	private Button buttonDecreaseThreshold;
-	private Button buttonIncreaseThreshold;
 	private Scale scaleThreshold;
 	private LightweightSystem lightweightSystem;
 	private IntensityGraphFigure intensityGraphFigure;
@@ -59,8 +58,9 @@ public class IsotopeHeatmapUI extends Composite {
 	private Map<Integer, ColorMap> colorMaps;
 
 	public IsotopeHeatmapUI(Composite parent, int style) {
+
 		super(parent, style);
-		initialize(parent);
+		initialize();
 	}
 
 	public void update(ProcessorData processorData) {
@@ -92,19 +92,19 @@ public class IsotopeHeatmapUI extends Composite {
 		}
 	}
 
-	private void initialize(Composite parent) {
 	@Override
 	public void dispose() {
 
 		intensityGraphFigure.dispose();
 	}
 
+	private void initialize() {
 
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.FILL);
 		composite.setLayout(new GridLayout(3, false));
 		//
-		colorMaps = new HashMap<Integer, ColorMap>();
+		colorMaps = new HashMap<>();
 		for(int i = MassShiftDetector.SCALE_CERTAINTY_MIN; i <= MassShiftDetector.SCALE_CERTAINTY_MAX; i++) {
 			ColorMap colorMap = new ColorMap();
 			double threshold = 1.0d / MassShiftDetector.SCALE_CERTAINTY_MAX * i;
@@ -217,9 +217,9 @@ public class IsotopeHeatmapUI extends Composite {
 
 	private void createButtonDecreaseThreshold(Composite parent) {
 
-		buttonDecreaseThreshold = new Button(parent, SWT.PUSH);
+		Button buttonDecreaseThreshold = new Button(parent, SWT.PUSH);
 		buttonDecreaseThreshold.setText("");
-		buttonDecreaseThreshold.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
+		buttonDecreaseThreshold.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		buttonDecreaseThreshold.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -254,9 +254,9 @@ public class IsotopeHeatmapUI extends Composite {
 
 	private void createButtonIncreaseThreshold(Composite parent) {
 
-		buttonIncreaseThreshold = new Button(parent, SWT.PUSH);
+		Button buttonIncreaseThreshold = new Button(parent, SWT.PUSH);
 		buttonIncreaseThreshold.setText("");
-		buttonIncreaseThreshold.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
+		buttonIncreaseThreshold.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		buttonIncreaseThreshold.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -282,8 +282,8 @@ public class IsotopeHeatmapUI extends Composite {
 				//
 				int startScan = calculatedIonCertainties.getStartScan();
 				int stopScan = calculatedIonCertainties.getStopScan();
-				double startRetentionTimeMinutes = calculatedIonCertainties.getStartRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR;
-				double stopRetentionTimeMinutes = calculatedIonCertainties.getStopRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR;
+				double startRetentionTimeMinutes = calculatedIonCertainties.getStartRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
+				double stopRetentionTimeMinutes = calculatedIonCertainties.getStopRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 				//
 				int startIon = calculatedIonCertainties.getShiftLevelStartIonMap().get(massShiftLevel);
 				int stopIon = calculatedIonCertainties.getShiftLevelStopIonMap().get(massShiftLevel);
