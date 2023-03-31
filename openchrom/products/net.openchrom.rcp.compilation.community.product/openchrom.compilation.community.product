@@ -85,7 +85,6 @@ Contributors:
    </preferencesInfo>
 
    <cssInfo>
-      <file path="/org.eclipse.chemclipse.rcp.app.ui/css/chemclipse.css"/>
    </cssInfo>
 
 </product>

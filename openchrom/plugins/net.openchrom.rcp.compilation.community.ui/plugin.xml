@@ -26,10 +26,6 @@
                name="applicationXMI"
                value="platform:/plugin/org.eclipse.chemclipse.rcp.app.ui/Application.e4xmi">
          </property>
-         <property
-               name="applicationCSS"
-               value="platform:/plugin/org.eclipse.chemclipse.rcp.app.ui/css/chemclipse.css">
-         </property>
       </product>
    </extension>
    <extension
