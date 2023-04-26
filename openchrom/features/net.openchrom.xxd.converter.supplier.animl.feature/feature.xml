@@ -6,11 +6,11 @@
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding">
 
-   <description url="http://www.chemclipse.net">
+   <description url="http://www.openchrom.net">
       This is a AnIML converter supplier.
    </description>
 
-   <copyright url="http://www.chemclipse.net">
+   <copyright url="http://www.lablicate.com">
       Copyright (c) 2014, 2021 Lablicate GmbH.
    </copyright>
 
