@@ -5,11 +5,11 @@
       version="1.5.0.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
 
-   <description url="http://www.chemclipse.net/plugins/converter/mzml/">
-      This is the mgf mass spectrum converter.
+   <description url="http://www.openchrom.net/">
+      This is the MGF mass spectrum converter.
    </description>
 
-   <copyright url="http://www.chemclipse.net/plugins/converter/mzml/">
+   <copyright url="http://www.lablicate.com/">
       Copyright (c) 2015, 2018 Dr. Philip Wenig, Dr. Alexander Kerner.
    </copyright>
 
