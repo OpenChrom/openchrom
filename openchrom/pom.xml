@@ -24,11 +24,11 @@
 		<tycho.target.groupId>net.openchrom</tycho.target.groupId>
 		<tycho.target.artifactId>net.openchrom.targetplatform</tycho.target.artifactId>
 		<tycho.target.version>${project.version}</tycho.target.version>
+		<skip.install>false</skip.install>
 		<!-- other settings -->
 		<tycho.groupid>org.eclipse.tycho</tycho.groupid>
 		<maven.groupid>org.apache.maven.plugins</maven.groupid>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<skip.install>true</skip.install>
 	</properties>
 	<build>
 		<!-- PLUGINS -->
