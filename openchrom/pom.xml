@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (c) 2012, 2022 Lablicate GmbH. All rights reserved. This program 
-	and the accompanying materials are made available under the terms of the 
-	Eclipse Public License v1.0 which accompanies this distribution, and is available 
-	at http://www.eclipse.org/legal/epl-v10.html Contributors: Dr. Philip Wenig 
+<!-- Copyright (c) 2012, 2023 Lablicate GmbH. All rights reserved. This program
+	and the accompanying materials are made available under the terms of the
+	Eclipse Public License v1.0 which accompanies this distribution, and is available
+	at http://www.eclipse.org/legal/epl-v10.html Contributors: Dr. Philip Wenig
 	- created the pom to build the plug-ins -->
 <project
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
@@ -13,17 +13,228 @@
 	<version>1.5.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<parent>
-		<groupId>org.eclipse.chemclipse</groupId>
-		<artifactId>master</artifactId>
-		<version>0.9.0-SNAPSHOT</version>
-		<relativePath>../../chemclipse/chemclipse/pom.xml</relativePath>
-	</parent>
 	<properties>
+		<!-- versions for plugins to use -->
 		<tycho.version>3.0.4</tycho.version>
+		<pmd.version>3.16.0</pmd.version>
+		<checkstyle.version>3.1.2</checkstyle.version>
+		<maven-install-plugin.version>2.5.2</maven-install-plugin.version>
+		<cbi-version>1.1.5</cbi-version>
+		<!-- definition of the target to use -->
 		<tycho.target.groupId>net.openchrom</tycho.target.groupId>
 		<tycho.target.artifactId>net.openchrom.targetplatform</tycho.target.artifactId>
 		<tycho.target.version>${project.version}</tycho.target.version>
-		<skip.install>false</skip.install>
+		<!-- other settings -->
+		<tycho.groupid>org.eclipse.tycho</tycho.groupid>
+		<maven.groupid>org.apache.maven.plugins</maven.groupid>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<skip.install>true</skip.install>
 	</properties>
+	<build>
+		<!-- PLUGINS -->
+		<plugins>
+			<plugin>
+				<groupId>${tycho.groupid}</groupId>
+				<artifactId>tycho-packaging-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>${tycho.groupid}</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>${tycho.groupid}</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<target>
+						<artifact>
+							<groupId>${tycho.target.groupId}</groupId>
+							<artifactId>${tycho.target.artifactId}</artifactId>
+							<version>${tycho.target.version}</version>
+						</artifact>
+					</target>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>${tycho.groupid}</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<id>plugin-source</id>
+						<goals>
+							<goal>plugin-source</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>${tycho.groupid}</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<excludes>
+						<exclude>**/*TestCase.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>${maven.groupid}</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>${pmd.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>${maven.groupid}</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${checkstyle.version}</version>
+				<configuration>
+					<enableRulesSummary>false</enableRulesSummary>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>${maven.groupid}</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>${maven-install-plugin.version}</version>
+				<configuration>
+					<skip>${skip.install}</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>process-about.mappings</id>
+						<phase>prepare-package</phase>
+						<configuration>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<overwrite>true</overwrite>
+							<resources>
+								<resource>
+									<directory>${basedir}</directory>
+									<includes>
+										<include>about.mappings</include>
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-packaging-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<additionalFileSets>
+					<fileSet>
+						<directory>${project.build.directory}</directory>
+						<includes>
+							<include>about.mappings</include>
+						</includes>
+					</fileSet>
+					</additionalFileSets>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>3.0.0</version>
+					<executions>
+						<execution>
+							<id>enforce-maven</id>
+							<goals>
+								<goal>enforce</goal>
+							</goals>
+							<configuration>
+								<rules>
+									<requireMavenVersion>
+									<version>3.0</version>
+									</requireMavenVersion>
+								</rules>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-director-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<executions>
+						<execution>
+							<id>materialize-products</id>
+							<goals>
+								<goal>materialize-products</goal>
+							</goals>
+							<phase>install</phase>
+						</execution>
+						<execution>
+							<id>archive-products</id>
+							<goals>
+								<goal>archive-products</goal>
+							</goals>
+							<phase>install</phase>
+							<configuration>
+								<formats>
+									<linux>tar.gz</linux>
+									<macosx>tar.gz</macosx>
+								</formats>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-repository-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<configuration>
+						<includeAllDependencies>true</includeAllDependencies>
+						<skipArchive>true</skipArchive>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>
