@@ -21,11 +21,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout ChemClipse
-      uses: actions/checkout@v3
-      with:
-        path: chemclipse
-        repository: 'eclipse/chemclipse'
     - name: Checkout OpenChrom
       uses: actions/checkout@v3
       with:
