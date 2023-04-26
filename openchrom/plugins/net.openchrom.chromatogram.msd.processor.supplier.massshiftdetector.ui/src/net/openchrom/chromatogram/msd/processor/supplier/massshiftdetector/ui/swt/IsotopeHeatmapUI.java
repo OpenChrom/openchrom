@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
+import org.eclipse.chemclipse.support.ui.swt.EnhancedCombo;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.nebula.visualization.widgets.datadefinition.ColorMap;
 import org.eclipse.nebula.visualization.widgets.figures.IntensityGraphFigure;
@@ -135,7 +136,7 @@ public class IsotopeHeatmapUI extends Composite {
 
 	private void createMassShiftCombo(Composite parent) {
 
-		comboIsotopeLevel = new Combo(parent, SWT.READ_ONLY);
+		comboIsotopeLevel = EnhancedCombo.create(parent, SWT.READ_ONLY);
 		comboIsotopeLevel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		comboIsotopeLevel.addSelectionListener(new SelectionAdapter() {
 

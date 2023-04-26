@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.wizards;
 
+import org.eclipse.chemclipse.support.ui.swt.EnhancedCombo;
 import org.eclipse.chemclipse.support.ui.wizards.AbstractExtendedWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -44,6 +45,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 	private String[] ionSelectionStrategies = new String[]{IProcessorSettings.STRATEGY_SELECT_ALL, IProcessorSettings.STRATEGY_ABOVE_MEAN, IProcessorSettings.STRATEGY_ABOVE_MEDIAN, IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY};
 
 	public PageSettings(IProcessorWizardElements wizardElements) {
+
 		//
 		super(PageSettings.class.getName());
 		setTitle("Settings");
@@ -197,7 +199,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		label.setText("Ion Selection Strategy:");
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		//
-		ionSelectionStrategyCombo = new Combo(parent, SWT.READ_ONLY);
+		ionSelectionStrategyCombo = EnhancedCombo.create(parent, SWT.READ_ONLY);
 		ionSelectionStrategyCombo.setItems(ionSelectionStrategies);
 		ionSelectionStrategyCombo.select(0);
 		ionSelectionStrategyCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

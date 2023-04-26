@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,6 +29,7 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.editors.AbstractExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.editors.IExtendedEditorPage;
+import org.eclipse.chemclipse.support.ui.swt.EnhancedCombo;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.ux.extension.ui.provider.ISupplierEditorSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.editors.EditorSupportFactory;
@@ -337,7 +338,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		createLabel(client, "Ion Selection Strategy:");
 		//
 		ionSelectionStrategies = new String[]{IProcessorSettings.STRATEGY_SELECT_ALL, IProcessorSettings.STRATEGY_ABOVE_MEAN, IProcessorSettings.STRATEGY_ABOVE_MEDIAN, IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY};
-		ionSelectionStrategyCombo = new Combo(client, SWT.READ_ONLY);
+		ionSelectionStrategyCombo = EnhancedCombo.create(client, SWT.READ_ONLY);
 		ionSelectionStrategyCombo.setItems(ionSelectionStrategies);
 		ionSelectionStrategyCombo.select(0);
 		ionSelectionStrategyCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

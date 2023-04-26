@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.provider.AbstractLabelProvider;
+import org.eclipse.chemclipse.support.ui.swt.EnhancedComboViewer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
@@ -105,7 +106,7 @@ public class PositionAdjusterUI extends Composite {
 
 	private void createComboViewer(Composite parent) {
 
-		ComboViewer comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
+		ComboViewer comboViewer = new EnhancedComboViewer(parent, SWT.READ_ONLY);
 		Combo combo = comboViewer.getCombo();
 		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
 		comboViewer.setLabelProvider(new AbstractLabelProvider() {
