@@ -39,4 +39,25 @@
             splashId="net.openchrom.rcp.compilation.community.ui.splash.enhancedSplashHandler">
       </splashHandlerProductBinding>
    </extension>
+   <extension
+         point="org.eclipse.e4.ui.css.swt.theme">
+      <stylesheet
+            uri="css/default.css">
+         <themeid
+               refid="org.eclipse.e4.ui.css.theme.e4_default">
+         </themeid>
+      </stylesheet>
+      <stylesheet
+            uri="css/classic.css">
+         <themeid
+               refid="org.eclipse.e4.ui.css.theme.e4_classic">
+         </themeid>
+      </stylesheet>
+      <stylesheet
+            uri="css/dark.css">
+         <themeid
+               refid="org.eclipse.e4.ui.css.theme.e4_dark">
+         </themeid>
+      </stylesheet>
+   </extension>
 </plugin>
