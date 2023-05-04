@@ -27,6 +27,7 @@ public class PeakDetectorControl extends Composite {
 
 		super(parent, style);
 		createControl();
+		setData("org.eclipse.e4.ui.css.CssClassName", "PeakDetectorControl");
 	}
 
 	public void setInput(ProcessDetectorSettings processSettings) {
