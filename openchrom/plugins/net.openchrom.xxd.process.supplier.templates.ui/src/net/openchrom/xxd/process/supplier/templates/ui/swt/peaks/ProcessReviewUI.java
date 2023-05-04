@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.provider.AbstractLabelProvider;
 import org.eclipse.chemclipse.support.ui.swt.EnhancedComboViewer;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
@@ -159,10 +160,10 @@ public class ProcessReviewUI extends Composite {
 
 		if(PreferenceSupplier.isShowReviewDetails()) {
 			button.setToolTipText("Details are active.");
-			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_REVIEW_DETAILS_SHOW, IApplicationImage.SIZE_16x16));
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_REVIEW_DETAILS_SHOW, IApplicationImageProvider.SIZE_16x16));
 		} else {
 			button.setToolTipText("Details are deactivated.");
-			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_REVIEW_DETAILS_HIDE, IApplicationImage.SIZE_16x16));
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_REVIEW_DETAILS_HIDE, IApplicationImageProvider.SIZE_16x16));
 		}
 	}
 
@@ -171,7 +172,7 @@ public class ProcessReviewUI extends Composite {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setToolTipText("Toggle search toolbar.");
 		button.setText("");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -179,9 +180,9 @@ public class ProcessReviewUI extends Composite {
 
 				boolean visible = PartSupport.toggleCompositeVisibility(toolbarSearch);
 				if(visible) {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImageProvider.SIZE_16x16));
 				} else {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImageProvider.SIZE_16x16));
 				}
 			}
 		});
@@ -199,8 +200,8 @@ public class ProcessReviewUI extends Composite {
 			@Override
 			public String getText(Object element) {
 
-				if(element instanceof Visibility) {
-					return ((Visibility)element).name();
+				if(element instanceof Visibility visibility) {
+					return visibility.name();
 				}
 				return null;
 			}
@@ -216,8 +217,7 @@ public class ProcessReviewUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				Object object = comboViewer.getStructuredSelection().getFirstElement();
-				if(object instanceof Visibility) {
-					Visibility visibility = (Visibility)object;
+				if(object instanceof Visibility visibility) {
 					PreferenceSupplier.setReviewVisibility(visibility);
 					updateSelection();
 				}
@@ -251,10 +251,10 @@ public class ProcessReviewUI extends Composite {
 
 		if(PreferenceSupplier.isReviewReplaceNearestPeak()) {
 			button.setToolTipText("Replace the nearest peak.");
-			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PEAK_REPLACE, IApplicationImage.SIZE_16x16));
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PEAK_REPLACE, IApplicationImageProvider.SIZE_16x16));
 		} else {
 			button.setToolTipText("Add the peak.");
-			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PEAK_ADD, IApplicationImage.SIZE_16x16));
+			button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PEAK_ADD, IApplicationImageProvider.SIZE_16x16));
 		}
 	}
 
@@ -263,7 +263,7 @@ public class ProcessReviewUI extends Composite {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText("Open the Settings");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -325,8 +325,8 @@ public class ProcessReviewUI extends Composite {
 	private ReviewSetting getReviewSetting() {
 
 		Object object = peakReviewListUI.getStructuredSelection().getFirstElement();
-		if(object instanceof ReviewSetting) {
-			return (ReviewSetting)object;
+		if(object instanceof ReviewSetting reviewSetting) {
+			return reviewSetting;
 		}
 		return null;
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -268,8 +268,8 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 				Iterator iterator = peakStatusControl.get().getStructuredSelection().iterator();
 				while(iterator.hasNext()) {
 					Object object = iterator.next();
-					if(object instanceof IPeak) {
-						peaksToDelete.add((IPeak)object);
+					if(object instanceof IPeak peak) {
+						peaksToDelete.add(peak);
 					}
 				}
 				//
@@ -310,8 +310,8 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 	private IPeak getSelectedPeak() {
 
 		Object object = peakStatusControl.get().getStructuredSelection().getFirstElement();
-		if(object instanceof IPeak) {
-			return (IPeak)object;
+		if(object instanceof IPeak peak) {
+			return peak;
 		}
 		return null;
 	}
@@ -322,8 +322,8 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 		Iterator<?> iterator = peakStatusControl.get().getStructuredSelection().iterator();
 		while(iterator.hasNext()) {
 			Object object = iterator.next();
-			if(object instanceof IPeak) {
-				peaks.add((IPeak)object);
+			if(object instanceof IPeak peak) {
+				peaks.add(peak);
 			}
 		}
 		return peaks;
@@ -386,11 +386,10 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 
 		StringBuilder builder = new StringBuilder();
 		Object object = peakStatusControl.get().getStructuredSelection().getFirstElement();
-		if(object instanceof IPeak) {
+		if(object instanceof IPeak peak) {
 			/*
 			 * Peak -> Quant
 			 */
-			IPeak peak = (IPeak)object;
 			List<IQuantitationEntry> quantitationEntries = peak.getQuantitationEntries();
 			//
 			builder.append("Quantitations");

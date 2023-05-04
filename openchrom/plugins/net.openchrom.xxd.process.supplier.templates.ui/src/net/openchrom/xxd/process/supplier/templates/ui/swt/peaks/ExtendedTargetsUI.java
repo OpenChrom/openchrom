@@ -199,8 +199,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		Object[] scanIdentifierServices = Activator.getDefault().getScanIdentifierServices();
 		if(scanIdentifierServices != null) {
 			for(Object object : scanIdentifierServices) {
-				if(object instanceof IScanIdentifierService) {
-					IScanIdentifierService scanIdentifierService = (IScanIdentifierService)object;
+				if(object instanceof IScanIdentifierService scanIdentifierService) {
 					DataType dataType = scanIdentifierService.getDataType();
 					if(scanDataType.equals(dataType)) {
 						Class<? extends IWorkbenchPreferencePage> preferencePage = scanIdentifierService.getPreferencePage();
@@ -374,8 +373,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		Iterator iterator = targetListControl.get().getStructuredSelection().iterator();
 		while(iterator.hasNext()) {
 			Object object = iterator.next();
-			if(object instanceof IIdentificationTarget) {
-				IIdentificationTarget identificationTarget = (IIdentificationTarget)object;
+			if(object instanceof IIdentificationTarget identificationTarget) {
 				identificationTarget.setVerified(verified);
 			}
 		}
@@ -418,7 +416,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 			public void update(IIdentificationTarget identificationTarget) {
 
 				if(identificationTarget != null) {
-					setTarget(comboTarget.getDisplay(), identificationTarget);
+					setTarget(identificationTarget);
 				}
 			}
 		});
@@ -439,7 +437,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 
 				IIdentificationTarget identificationTarget = comboTarget.createTarget();
 				if(identificationTarget != null) {
-					setTarget(e.display, identificationTarget);
+					setTarget(identificationTarget);
 				}
 			}
 		});
@@ -447,10 +445,9 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		return button;
 	}
 
-	private void setTarget(Display display, IIdentificationTarget identificationTarget) {
+	private void setTarget(IIdentificationTarget identificationTarget) {
 
-		if(peak instanceof ITargetSupplier) {
-			ITargetSupplier targetSupplier = (ITargetSupplier)peak;
+		if(peak instanceof ITargetSupplier targetSupplier) {
 			targetSupplier.getTargets().add(identificationTarget);
 		}
 		//
@@ -535,9 +532,8 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 	private void updateTargetList() {
 
 		TargetsListUI targetListUI = targetListControl.get();
-		if(peak instanceof ITargetSupplier) {
+		if(peak instanceof ITargetSupplier targetSupplier) {
 			float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
-			ITargetSupplier targetSupplier = (ITargetSupplier)peak;
 			List<IIdentificationTarget> identificationTargets = new ArrayList<>(targetSupplier.getTargets());
 			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
 			Collections.sort(identificationTargets, identificationTargetComparator);
@@ -545,7 +541,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 			/*
 			 * Select the first entry if available.
 			 */
-			if(identificationTargets != null && !identificationTargets.isEmpty()) {
+			if(!identificationTargets.isEmpty()) {
 				targetListUI.getTable().select(0);
 			}
 		} else {
@@ -573,8 +569,8 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 	private IIdentificationTarget getIdentificationTarget() {
 
 		Object object = targetListControl.get().getStructuredSelection().getFirstElement();
-		if(object instanceof IIdentificationTarget) {
-			return (IIdentificationTarget)object;
+		if(object instanceof IIdentificationTarget identificationTarget) {
+			return identificationTarget;
 		}
 		//
 		return null;
