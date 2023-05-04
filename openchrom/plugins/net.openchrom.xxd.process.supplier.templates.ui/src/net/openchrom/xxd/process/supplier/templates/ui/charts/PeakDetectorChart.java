@@ -84,11 +84,13 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		createControl();
 	}
 
+	@Override
 	public void updatePeaks(List<IPeak> peaks) {
 
 		updatePeaks(peaks, false);
 	}
 
+	@Override
 	public void updatePeaks(List<IPeak> peaks, boolean hideExistingPeaks) {
 
 		super.updatePeaks(peaks, hideExistingPeaks);
@@ -339,12 +341,12 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 
 	private boolean showTracesMSD(IChromatogram<? extends IPeak> chromatogram, Set<Integer> traces) {
 
-		return chromatogram instanceof IChromatogramMSD && traces.size() > 0;
+		return chromatogram instanceof IChromatogramMSD && !traces.isEmpty();
 	}
 
 	private boolean showTracesWSD(IChromatogram<? extends IPeak> chromatogram, Set<Integer> traces) {
 
-		return chromatogram instanceof IChromatogramWSD && traces.size() > 0;
+		return chromatogram instanceof IChromatogramWSD && !traces.isEmpty();
 	}
 
 	private void updateChart(IPeak peak) {
@@ -408,8 +410,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 					if(isReplacePeak) {
 						int startRetentionTime = detectorRange.getRetentionTimeStart();
 						int stopRetentionTime = detectorRange.getRetentionTimeStop();
-						Set<Integer> traces = detectorRange.getTraces();
-						removeClosestPeak(peak, traces, chromatogram, startRetentionTime, stopRetentionTime, replacePeakDelta);
+						removeClosestPeak(peak, chromatogram, startRetentionTime, stopRetentionTime, replacePeakDelta);
 					}
 					//
 					chromatogram.addPeak(peak);
@@ -420,7 +421,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		return peak;
 	}
 
-	private void removeClosestPeak(IPeak peakSource, Set<Integer> traces, IChromatogram<IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, int replacePeakDelta) {
+	private void removeClosestPeak(IPeak peakSource, IChromatogram<IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, int replacePeakDelta) {
 
 		int retentionTimeSource = peakSource.getPeakModel().getRetentionTimeAtPeakMaximum();
 		List<IPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);

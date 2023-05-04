@@ -93,52 +93,50 @@ public class DetectorController {
 	public void updateDetectorChart() {
 
 		if(peakDetectorChart != null && processDetectorUI != null) {
-			if(processSettings != null) {
-				if(processSettings != null && detectorSetting != null) {
-					IChromatogram<?> chromatogram = processSettings.getChromatogram();
-					if(chromatogram != null) {
-						/*
-						 * Settings
-						 * Validate min/max retention time ranges.
-						 */
-						int startRetentionTime = getStartRetentionTime();
-						int stopRetentionTime = getStopRetentionTime();
+			if(processSettings != null && detectorSetting != null) {
+				IChromatogram<?> chromatogram = processSettings.getChromatogram();
+				if(chromatogram != null) {
+					/*
+					 * Settings
+					 * Validate min/max retention time ranges.
+					 */
+					int startRetentionTime = getStartRetentionTime();
+					int stopRetentionTime = getStopRetentionTime();
+					//
+					if(isRetentionTimeRangeValid(startRetentionTime, stopRetentionTime)) {
+						startRetentionTime = (startRetentionTime < chromatogram.getStartRetentionTime()) ? chromatogram.getStartRetentionTime() : startRetentionTime;
+						stopRetentionTime = (stopRetentionTime > chromatogram.getStopRetentionTime()) ? chromatogram.getStopRetentionTime() : stopRetentionTime;
+						PeakType peakType = detectorSetting.getPeakType();
+						boolean optimizeRange = detectorSetting.isOptimizeRange();
 						//
-						if(isRetentionTimeRangeValid(startRetentionTime, stopRetentionTime)) {
-							startRetentionTime = (startRetentionTime < chromatogram.getStartRetentionTime()) ? chromatogram.getStartRetentionTime() : startRetentionTime;
-							stopRetentionTime = (stopRetentionTime > chromatogram.getStopRetentionTime()) ? chromatogram.getStopRetentionTime() : stopRetentionTime;
-							PeakType peakType = detectorSetting.getPeakType();
-							boolean optimizeRange = detectorSetting.isOptimizeRange();
+						if(peakType != null) {
+							/*
+							 * The detector range defines how to detect peaks.
+							 */
+							DetectorRange detectorRange = new DetectorRange();
+							detectorRange.setChromatogram(chromatogram);
+							detectorRange.setRetentionTimeStart(startRetentionTime);
+							detectorRange.setRetentionTimeStop(stopRetentionTime);
+							detectorRange.setTraces(peakDetectorListUtil.extractTraces(detectorSetting.getTraces()));
+							detectorRange.setDetectorType(peakType);
+							detectorRange.setOptimizeRange(optimizeRange);
+							/*
+							 * Settings display data
+							 */
+							PeakDetectorChartSettings chartSettings = new PeakDetectorChartSettings();
+							setVisibilityOptions(chartSettings, chromatogram);
+							chartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineDetector());
+							chartSettings.setDeltaRetentionTimeLeft(PreferenceSupplier.getDetectorDeltaLeftMilliseconds());
+							chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getDetectorDeltaRightMilliseconds());
+							chartSettings.setReplacePeak(PreferenceSupplier.isDetectorReplaceNearestPeak());
+							chartSettings.setReplacePeakDelta(PreferenceSupplier.getDetectorReplacePeakDeltaMilliseconds());
 							//
-							if(peakType != null) {
-								/*
-								 * The detector range defines how to detect peaks.
-								 */
-								DetectorRange detectorRange = new DetectorRange();
-								detectorRange.setChromatogram(chromatogram);
-								detectorRange.setRetentionTimeStart(startRetentionTime);
-								detectorRange.setRetentionTimeStop(stopRetentionTime);
-								detectorRange.setTraces(peakDetectorListUtil.extractTraces(detectorSetting.getTraces()));
-								detectorRange.setDetectorType(peakType);
-								detectorRange.setOptimizeRange(optimizeRange);
-								/*
-								 * Settings display data
-								 */
-								PeakDetectorChartSettings chartSettings = new PeakDetectorChartSettings();
-								setVisibilityOptions(chartSettings, chromatogram);
-								chartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineDetector());
-								chartSettings.setDeltaRetentionTimeLeft(PreferenceSupplier.getDetectorDeltaLeftMilliseconds());
-								chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getDetectorDeltaRightMilliseconds());
-								chartSettings.setReplacePeak(PreferenceSupplier.isDetectorReplaceNearestPeak());
-								chartSettings.setReplacePeakDelta(PreferenceSupplier.getDetectorReplacePeakDeltaMilliseconds());
-								//
-								peakDetectorChart.update(detectorRange, chartSettings);
-								/*
-								 * Focus XIC
-								 */
-								if(focusXIC(detectorRange, chartSettings)) {
-									peakDetectorChart.focusTraces(PreferenceSupplier.getOffsetMaxY());
-								}
+							peakDetectorChart.update(detectorRange, chartSettings);
+							/*
+							 * Focus XIC
+							 */
+							if(focusXIC(detectorRange, chartSettings)) {
+								peakDetectorChart.focusTraces(PreferenceSupplier.getOffsetMaxY());
 							}
 						}
 					}

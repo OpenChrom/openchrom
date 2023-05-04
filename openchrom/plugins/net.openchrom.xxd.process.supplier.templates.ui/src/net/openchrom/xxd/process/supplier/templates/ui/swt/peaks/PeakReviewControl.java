@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -50,17 +50,17 @@ public class PeakReviewControl extends Composite {
 		 * Details
 		 */
 		if(PreferenceSupplier.isShowReviewDetails()) {
-			sashFormMain.setWeights(new int[]{600, 400});
+			sashFormMain.setWeights(600, 400);
 		} else {
-			sashFormMain.setWeights(new int[]{1000, 0});
+			sashFormMain.setWeights(1000, 0);
 		}
 		/*
 		 * Show Comparison
 		 */
 		if(showComparisonUI) {
-			sashFormDetails.setWeights(new int[]{333, 333, 333});
+			sashFormDetails.setWeights(333, 333, 333);
 		} else {
-			sashFormDetails.setWeights(new int[]{1000, 0, 0});
+			sashFormDetails.setWeights(1000, 0, 0);
 		}
 	}
 
@@ -82,7 +82,7 @@ public class PeakReviewControl extends Composite {
 		createReviewSection(sashForm);
 		controller.createPeakDetectorChart(sashForm);
 		//
-		sashForm.setWeights(new int[]{350, 650});
+		sashForm.setWeights(350, 650);
 		//
 		return sashForm;
 	}
