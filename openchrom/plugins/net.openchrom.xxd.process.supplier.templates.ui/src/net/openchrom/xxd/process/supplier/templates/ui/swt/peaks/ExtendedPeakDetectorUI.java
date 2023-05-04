@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -204,8 +204,8 @@ public class ExtendedPeakDetectorUI extends Composite {
 				Iterator iterator = peakListUI.getStructuredSelection().iterator();
 				while(iterator.hasNext()) {
 					Object object = iterator.next();
-					if(object instanceof IPeak) {
-						peaksToDelete.add((IPeak)object);
+					if(object instanceof IPeak peak) {
+						peaksToDelete.add(peak);
 					}
 				}
 				controller.deletePeaks(peaksToDelete);
@@ -242,8 +242,8 @@ public class ExtendedPeakDetectorUI extends Composite {
 		Iterator<?> iterator = peakListUI.getStructuredSelection().iterator();
 		while(iterator.hasNext()) {
 			Object object = iterator.next();
-			if(object instanceof IPeak) {
-				peaks.add((IPeak)object);
+			if(object instanceof IPeak peak) {
+				peaks.add(peak);
 			}
 		}
 		return peaks;

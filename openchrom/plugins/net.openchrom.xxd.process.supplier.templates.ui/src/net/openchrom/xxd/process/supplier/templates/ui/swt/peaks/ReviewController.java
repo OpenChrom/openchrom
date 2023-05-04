@@ -143,54 +143,50 @@ public class ReviewController {
 	 */
 	public void updateDetectorChart() {
 
-		if(peakDetectorChart != null && processReviewUI != null) {
-			if(processSettings != null) {
-				if(processSettings != null && reviewSetting != null) {
-					IChromatogram<?> chromatogram = processSettings.getChromatogram();
-					if(chromatogram != null) {
+		if(peakDetectorChart != null && processReviewUI != null && processSettings != null && reviewSetting != null) {
+			IChromatogram<?> chromatogram = processSettings.getChromatogram();
+			if(chromatogram != null) {
+				/*
+				 * Settings
+				 * Validate min/max retention time ranges.
+				 */
+				int startRetentionTime = getStartRetentionTime();
+				int stopRetentionTime = getStopRetentionTime();
+				//
+				if(isRetentionTimeRangeValid(startRetentionTime, stopRetentionTime)) {
+					startRetentionTime = (startRetentionTime < chromatogram.getStartRetentionTime()) ? chromatogram.getStartRetentionTime() : startRetentionTime;
+					stopRetentionTime = (stopRetentionTime > chromatogram.getStopRetentionTime()) ? chromatogram.getStopRetentionTime() : stopRetentionTime;
+					PeakType peakType = reviewSetting.getPeakType();
+					boolean optimizeRange = reviewSetting.isOptimizeRange();
+					//
+					if(peakType != null) {
 						/*
-						 * Settings
-						 * Validate min/max retention time ranges.
+						 * The detector range defines how to detect peaks.
 						 */
-						int startRetentionTime = getStartRetentionTime();
-						int stopRetentionTime = getStopRetentionTime();
+						DetectorRange detectorRange = new DetectorRange();
+						detectorRange.setChromatogram(chromatogram);
+						detectorRange.setRetentionTimeStart(startRetentionTime);
+						detectorRange.setRetentionTimeStop(stopRetentionTime);
+						detectorRange.setTraces(peakDetectorListUtil.extractTraces(reviewSetting.getTraces()));
+						detectorRange.setDetectorType(peakType);
+						detectorRange.setOptimizeRange(optimizeRange);
+						/*
+						 * Settings display data
+						 */
+						PeakDetectorChartSettings chartSettings = new PeakDetectorChartSettings();
+						setVisibilityOptions(chartSettings, chromatogram);
+						chartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineReview());
+						chartSettings.setDeltaRetentionTimeLeft(PreferenceSupplier.getReviewDeltaLeftMilliseconds());
+						chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getReviewDeltaRightMilliseconds());
+						chartSettings.setReplacePeak(PreferenceSupplier.isReviewReplaceNearestPeak());
+						chartSettings.setReplacePeakDelta(PreferenceSupplier.getReviewReplacePeakDeltaMilliseconds());
 						//
-						if(isRetentionTimeRangeValid(startRetentionTime, stopRetentionTime)) {
-							startRetentionTime = (startRetentionTime < chromatogram.getStartRetentionTime()) ? chromatogram.getStartRetentionTime() : startRetentionTime;
-							stopRetentionTime = (stopRetentionTime > chromatogram.getStopRetentionTime()) ? chromatogram.getStopRetentionTime() : stopRetentionTime;
-							PeakType peakType = reviewSetting.getPeakType();
-							boolean optimizeRange = reviewSetting.isOptimizeRange();
-							//
-							if(peakType != null) {
-								/*
-								 * The detector range defines how to detect peaks.
-								 */
-								DetectorRange detectorRange = new DetectorRange();
-								detectorRange.setChromatogram(chromatogram);
-								detectorRange.setRetentionTimeStart(startRetentionTime);
-								detectorRange.setRetentionTimeStop(stopRetentionTime);
-								detectorRange.setTraces(peakDetectorListUtil.extractTraces(reviewSetting.getTraces()));
-								detectorRange.setDetectorType(peakType);
-								detectorRange.setOptimizeRange(optimizeRange);
-								/*
-								 * Settings display data
-								 */
-								PeakDetectorChartSettings chartSettings = new PeakDetectorChartSettings();
-								setVisibilityOptions(chartSettings, chromatogram);
-								chartSettings.setShowBaseline(PreferenceSupplier.isShowBaselineReview());
-								chartSettings.setDeltaRetentionTimeLeft(PreferenceSupplier.getReviewDeltaLeftMilliseconds());
-								chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getReviewDeltaRightMilliseconds());
-								chartSettings.setReplacePeak(PreferenceSupplier.isReviewReplaceNearestPeak());
-								chartSettings.setReplacePeakDelta(PreferenceSupplier.getReviewReplacePeakDeltaMilliseconds());
-								//
-								peakDetectorChart.update(detectorRange, chartSettings);
-								/*
-								 * Focus XIC
-								 */
-								if(focusXIC(detectorRange, chartSettings)) {
-									peakDetectorChart.focusTraces(PreferenceSupplier.getOffsetMaxY());
-								}
-							}
+						peakDetectorChart.update(detectorRange, chartSettings);
+						/*
+						 * Focus XIC
+						 */
+						if(focusXIC(detectorRange, chartSettings)) {
+							peakDetectorChart.focusTraces(PreferenceSupplier.getOffsetMaxY());
 						}
 					}
 				}
@@ -250,11 +246,9 @@ public class ReviewController {
 					Range selectedRangeX = peakDetectorChart.getCurrentRangeX();
 					Range selectedRangeY = peakDetectorChart.getCurrentRangeY();
 					//
-					if(PreferenceSupplier.isReviewSetTargetDetectedPeak()) {
-						if(reviewSetting != null) {
-							peak.setDetectorDescription(DETECTOR_DESCRIPTION);
-							ReviewSupport.setReview(peak, reviewSetting, true, true);
-						}
+					if(PreferenceSupplier.isReviewSetTargetDetectedPeak() && reviewSetting != null) {
+						peak.setDetectorDescription(DETECTOR_DESCRIPTION);
+						ReviewSupport.setReview(peak, reviewSetting, true, true);
 					}
 					/*
 					 * Update the chart and list.
@@ -347,29 +341,25 @@ public class ReviewController {
 
 		List<IPeak> peaks = new ArrayList<>();
 		//
-		if(processReviewUI != null) {
-			if(reviewSetting != null) {
-				if(processSettings != null) {
-					IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
-					if(chromatogram != null) {
-						/*
-						 * Settings
-						 */
-						int startRetentionTime = getStartRetentionTime();
-						int stopRetentionTime = getStopRetentionTime();
-						List<IPeak> chromatogramPeaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
-						//
-						if(PreferenceSupplier.isReviewShowOnlyRelevantPeaks() && isChromatogramMSD(chromatogram)) {
-							Set<Integer> traces = peakDetectorListUtil.extractTraces(reviewSetting.getTraces());
-							for(IPeak chromatogramPeak : chromatogramPeaks) {
-								if(PeakSupport.isPeakRelevant(chromatogramPeak, traces)) {
-									peaks.add(chromatogramPeak);
-								}
-							}
-						} else {
-							peaks.addAll(chromatogramPeaks);
+		if(processReviewUI != null && reviewSetting != null && processSettings != null) {
+			IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
+			if(chromatogram != null) {
+				/*
+				 * Settings
+				 */
+				int startRetentionTime = getStartRetentionTime();
+				int stopRetentionTime = getStopRetentionTime();
+				List<IPeak> chromatogramPeaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
+				//
+				if(PreferenceSupplier.isReviewShowOnlyRelevantPeaks() && isChromatogramMSD(chromatogram)) {
+					Set<Integer> traces = peakDetectorListUtil.extractTraces(reviewSetting.getTraces());
+					for(IPeak chromatogramPeak : chromatogramPeaks) {
+						if(PeakSupport.isPeakRelevant(chromatogramPeak, traces)) {
+							peaks.add(chromatogramPeak);
 						}
 					}
+				} else {
+					peaks.addAll(chromatogramPeaks);
 				}
 			}
 		}
@@ -419,7 +409,7 @@ public class ReviewController {
 
 	private boolean focusXIC(DetectorRange detectorRange, PeakDetectorChartSettings chartSettings) {
 
-		return detectorRange.getTraces().size() > 0 && chartSettings.isShowChromatogramTraces() && PreferenceSupplier.isReviewFocusXIC();
+		return !detectorRange.getTraces().isEmpty() && chartSettings.isShowChromatogramTraces() && PreferenceSupplier.isReviewFocusXIC();
 	}
 
 	private boolean containsReviewedPeaks(List<IPeak> peaks) {
