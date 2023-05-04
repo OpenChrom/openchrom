@@ -31,6 +31,7 @@ public class PeakReviewControl extends Composite {
 	public PeakReviewControl(Composite parent, int style) {
 
 		super(parent, style);
+		setBackgroundMode(SWT.INHERIT_DEFAULT);
 		sashFormMain = createControl();
 		updateWidgets();
 	}
