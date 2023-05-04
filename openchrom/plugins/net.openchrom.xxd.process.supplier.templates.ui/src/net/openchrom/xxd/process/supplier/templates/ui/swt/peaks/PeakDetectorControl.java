@@ -47,7 +47,7 @@ public class PeakDetectorControl extends Composite {
 		createListSection(sashForm);
 		controller.createPeakDetectorChart(sashForm);
 		//
-		sashForm.setWeights(new int[]{350, 650});
+		sashForm.setWeights(350, 650);
 	}
 
 	private void createListSection(Composite parent) {
@@ -57,6 +57,6 @@ public class PeakDetectorControl extends Composite {
 		controller.createExtendedDetectorUI(sashForm);
 		controller.createExtendedPeaksUI(sashForm);
 		//
-		sashForm.setWeights(new int[]{700, 300});
+		sashForm.setWeights(700, 300);
 	}
 }
