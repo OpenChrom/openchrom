@@ -20,7 +20,6 @@
 -Xmx4096M
 -Dapplication.name=OpenChrom_Analytics_Edition
 -Dapplication.version=1.5.x
--Denable.cli.support=false
 -Dosgi.instance.area=@user.home/OpenChrom/1.5.x
 -Dosgi.user.area=@user.home/.openchrom/1.5.x
 -Dorg.eclipse.update.reconcile=false
