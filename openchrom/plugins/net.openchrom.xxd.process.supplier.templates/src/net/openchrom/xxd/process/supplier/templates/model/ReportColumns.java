@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -46,6 +46,8 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String MEAN_AREA = "Mean Area";
 	public static final String MEDIAN_AREA = "Median Area";
 	public static final String STDEV_AREA = "Standard Deviation Area";
+	public static final String AREA_PERCENT = "Area [%]";
+	public static final String CONCENTRATIONS = "Concentrations";
 	/*
 	 * Internal markers
 	 */
@@ -95,6 +97,8 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(MEAN_AREA);
 		reportColumns.add(MEDIAN_AREA);
 		reportColumns.add(STDEV_AREA);
+		reportColumns.add(AREA_PERCENT);
+		reportColumns.add(CONCENTRATIONS);
 		//
 		return reportColumns;
 	}

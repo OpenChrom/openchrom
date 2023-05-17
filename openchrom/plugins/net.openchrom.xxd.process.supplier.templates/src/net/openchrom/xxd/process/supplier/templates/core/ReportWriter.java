@@ -36,6 +36,7 @@ import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.core.support.HeaderField;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.quantitation.IQuantitationEntry;
 import org.eclipse.chemclipse.model.support.HeaderUtil;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
@@ -122,7 +123,7 @@ public class ReportWriter {
 					printWriter.println("");
 				}
 				printWriter.println("Summary");
-				printResults(chromatogramReportSettings, sumResults, columnsToPrint, fileExists, chromatogramNameMaster, traces, null, printWriter);
+				printResults(chromatogramReportSettings, sumResults, columnsToPrint, fileExists, chromatogramNameMaster, traces, null, 0.0d, printWriter);
 			}
 		}
 	}
@@ -196,9 +197,10 @@ public class ReportWriter {
 
 		Map<ReportSetting, List<IPeak>> mappedResults = mapChromatogram(chromatogram, chromatogramReportSettings);
 		//
+		double chromatogramPeakArea = chromatogram.getPeakIntegratedArea();
 		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
 		printChromatogramHeader(chromatogram, chromatogramReportSettings, printWriter);
-		printResults(chromatogramReportSettings, mappedResults, columnsToPrint, fileExists, chromatogramName, traces, retentionIndexMap, printWriter);
+		printResults(chromatogramReportSettings, mappedResults, columnsToPrint, fileExists, chromatogramName, traces, retentionIndexMap, chromatogramPeakArea, printWriter);
 		//
 		return mappedResults;
 	}
@@ -245,11 +247,11 @@ public class ReportWriter {
 		}
 	}
 
-	private void printResults(ChromatogramReportSettings chromatogramReportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, boolean fileExists, String chromatogramName, List<Integer> traces, RetentionIndexMap retentionIndexMap, PrintWriter printWriter) {
+	private void printResults(ChromatogramReportSettings chromatogramReportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, boolean fileExists, String chromatogramName, List<Integer> traces, RetentionIndexMap retentionIndexMap, double chromatogramPeakArea, PrintWriter printWriter) {
 
 		List<ReportSetting> reportSettings = chromatogramReportSettings.getReportSettings();
 		printResultHeader(chromatogramReportSettings, columnsToPrint, fileExists, printWriter);
-		printResultData(reportSettings, mappedResults, columnsToPrint, chromatogramName, traces, retentionIndexMap, printWriter);
+		printResultData(reportSettings, mappedResults, columnsToPrint, chromatogramName, traces, retentionIndexMap, chromatogramPeakArea, printWriter);
 		//
 		if(chromatogramReportSettings.isPrintSectionSeparator()) {
 			printWriter.println("");
@@ -270,7 +272,7 @@ public class ReportWriter {
 		}
 	}
 
-	private void printResultData(List<ReportSetting> reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, String chromatogramName, List<Integer> traces, RetentionIndexMap retentionIndexMap, PrintWriter printWriter) {
+	private void printResultData(List<ReportSetting> reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, String chromatogramName, List<Integer> traces, RetentionIndexMap retentionIndexMap, double chromatogramPeakArea, PrintWriter printWriter) {
 
 		/*
 		 * The sort order of the report setting list is important.
@@ -300,6 +302,7 @@ public class ReportWriter {
 				String meanSignalToNoiseRatios = SIGNAL_TO_NOISE_FORMAT.format(Calculations.getMean(signalToNoiseRatios));
 				String medianSignalToNoiseRatios = SIGNAL_TO_NOISE_FORMAT.format(Calculations.getMedian(signalToNoiseRatios));
 				String stopSignalToNoiseRatios = SIGNAL_TO_NOISE_FORMAT.format(Calculations.getMax(signalToNoiseRatios));
+				String concentrations = getConcentrations(peaks);
 				/*
 				 * Data
 				 */
@@ -337,6 +340,8 @@ public class ReportWriter {
 				dataMap.put(ReportColumns.MEAN_AREA, AREA_FORMAT.format(Calculations.getMean(areas)));
 				dataMap.put(ReportColumns.MEDIAN_AREA, AREA_FORMAT.format(Calculations.getMedian(areas)));
 				dataMap.put(ReportColumns.STDEV_AREA, AREA_FORMAT.format(Calculations.getStandardDeviation(areas)));
+				dataMap.put(ReportColumns.AREA_PERCENT, AREA_FORMAT.format(getAreaPercent(areas, chromatogramPeakArea)));
+				dataMap.put(ReportColumns.CONCENTRATIONS, concentrations);
 				/*
 				 * Print all selected columns.
 				 */
@@ -664,5 +669,38 @@ public class ReportWriter {
 		}
 		//
 		return area;
+	}
+
+	private double getAreaPercent(double[] areas, double chromatogramPeakArea) {
+
+		if(chromatogramPeakArea > 0.0d) {
+			return (100.0d / chromatogramPeakArea) * Calculations.getSum(areas);
+		}
+		//
+		return 0.0d;
+	}
+
+	private String getConcentrations(List<IPeak> peaks) {
+
+		StringBuilder builder = new StringBuilder();
+		//
+		List<IQuantitationEntry> quantitationEntries = new ArrayList<>();
+		for(IPeak peak : peaks) {
+			quantitationEntries.addAll(peak.getQuantitationEntries());
+		}
+		//
+		Collections.sort(quantitationEntries, (q1, q2) -> q1.getName().compareTo(q2.getName()));
+		Iterator<IQuantitationEntry> iterator = quantitationEntries.iterator();
+		while(iterator.hasNext()) {
+			IQuantitationEntry quantitationEntry = iterator.next();
+			builder.append(quantitationEntry.getConcentration());
+			builder.append(" ");
+			builder.append(quantitationEntry.getConcentrationUnit());
+			if(iterator.hasNext()) {
+				builder.append(" | ");
+			}
+		}
+		//
+		return builder.toString();
 	}
 }

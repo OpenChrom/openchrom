@@ -37,6 +37,7 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.process.supplier.templates,
+ net.openchrom.xxd.process.supplier.templates.chromatogram,
  net.openchrom.xxd.process.supplier.templates.comparator,
  net.openchrom.xxd.process.supplier.templates.compiler,
  net.openchrom.xxd.process.supplier.templates.io,
