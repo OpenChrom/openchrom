@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Lablicate GmbH.
+ * Copyright (c) 2013, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -205,12 +205,15 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 			ArrayFloat.D1 valuesArrayPeakRententionTime = (ArrayFloat.D1)valuesPeakRententionTime.read();
 			long rts = valuesArrayPeakRententionTime.getSize();
 			for(int p = 0; p < rts; p++) {
-				float rt = valuesArrayPeakRententionTime.get(p);
+				float retentionTime = valuesArrayPeakRententionTime.get(p);
 				ILibraryInformation libraryInformation = new LibraryInformation();
 				libraryInformation.setName(valuesArrayPeakName.getString(p));
 				IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
 				IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
-				vendorChromatogram.getScan(vendorChromatogram.getScanNumber(rt)).getTargets().add(identificationTarget);
+				int scanNumber = vendorChromatogram.getScanNumber(retentionTime);
+				if(scanNumber >= 1) {
+					vendorChromatogram.getScan(scanNumber).getTargets().add(identificationTarget);
+				}
 			}
 		} catch(Exception e) {
 			System.out.println("Failed to read the peak table.");
