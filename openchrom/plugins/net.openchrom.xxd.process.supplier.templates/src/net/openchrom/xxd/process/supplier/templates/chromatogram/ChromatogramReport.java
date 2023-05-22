@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -31,6 +31,12 @@ import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportS
 public class ChromatogramReport extends AbstractChromatogramReportGenerator {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReport.class);
+	//
+	public static final String DESCRIPTION = "Template Chromatogram Report";
+	public static final String FILE_EXTENSION = ".txt";
+	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
+	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
+	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
 
 	@Override
 	public IProcessingInfo<File> generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, IChromatogramReportSettings settings, IProgressMonitor monitor) {
@@ -45,7 +51,7 @@ public class ChromatogramReport extends AbstractChromatogramReportGenerator {
 					processingInfo.setProcessingResult(file);
 				} catch(IOException e) {
 					logger.warn(e);
-					processingInfo.addErrorMessage("Template Chromatogram Report", "The report couldn't be created. An error occured.");
+					processingInfo.addErrorMessage(DESCRIPTION, "The report couldn't be created. An error occured.");
 				}
 			} else {
 				logger.warn("The settings are not of type: " + ChromatogramReportSettings.class);

@@ -73,7 +73,6 @@ import org.eclipse.swt.widgets.Table;
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 import net.openchrom.xxd.process.supplier.templates.model.AssignerReferences;
-import net.openchrom.xxd.process.supplier.templates.model.IdentifierSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsReferencerSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.StandardsReferencerInputValidator;
@@ -124,6 +123,12 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 		//
 		initialize();
 		setControl(composite);
+	}
+
+	public void setSettings(AssignerReferences settings) {
+
+		this.settings = settings;
+		setInput();
 	}
 
 	@Override
@@ -356,8 +361,8 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.READ_ONLY);
 				fileDialog.setText(IMPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{IdentifierSettings.FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{IdentifierSettings.FILTER_NAME});
+				fileDialog.setFilterExtensions(new String[]{AssignerReferences.FILTER_EXTENSION});
+				fileDialog.setFilterNames(new String[]{AssignerReferences.FILTER_NAME});
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathImport());
 				String path = fileDialog.open();
 				if(path != null) {
@@ -386,9 +391,9 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.SAVE);
 				fileDialog.setOverwrite(true);
 				fileDialog.setText(EXPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{IdentifierSettings.FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{IdentifierSettings.FILTER_NAME});
-				fileDialog.setFileName(IdentifierSettings.FILE_NAME);
+				fileDialog.setFilterExtensions(new String[]{AssignerReferences.FILTER_EXTENSION});
+				fileDialog.setFilterNames(new String[]{AssignerReferences.FILTER_NAME});
+				fileDialog.setFileName(AssignerReferences.FILE_NAME);
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathExport());
 				String path = fileDialog.open();
 				if(path != null) {

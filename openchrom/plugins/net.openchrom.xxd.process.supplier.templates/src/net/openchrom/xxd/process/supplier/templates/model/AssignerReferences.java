@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -37,6 +37,12 @@ import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerVali
 public class AssignerReferences extends ArrayList<AssignerReference> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(AssignerReferences.class);
+	//
+	public static final String DESCRIPTION = "Internal References";
+	public static final String FILE_EXTENSION = ".irt";
+	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
+	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
+	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
 	//
 	private static final long serialVersionUID = -219152470872308287L;
 	private StandardsReferencerListUtil listUtil = new StandardsReferencerListUtil();

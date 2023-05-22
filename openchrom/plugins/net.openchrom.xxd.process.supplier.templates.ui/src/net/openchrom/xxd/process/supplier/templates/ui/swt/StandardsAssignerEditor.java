@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -73,7 +73,6 @@ import org.eclipse.swt.widgets.Table;
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
 import net.openchrom.xxd.process.supplier.templates.model.AssignerStandards;
-import net.openchrom.xxd.process.supplier.templates.model.IdentifierSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.StandardsAssignerInputValidator;
@@ -124,6 +123,12 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 		//
 		initialize();
 		setControl(composite);
+	}
+
+	public void setSettings(AssignerStandards settings) {
+
+		this.settings = settings;
+		setInput();
 	}
 
 	@Override
@@ -354,8 +359,8 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.READ_ONLY);
 				fileDialog.setText(IMPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{IdentifierSettings.FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{IdentifierSettings.FILTER_NAME});
+				fileDialog.setFilterExtensions(new String[]{AssignerStandards.FILTER_EXTENSION});
+				fileDialog.setFilterNames(new String[]{AssignerStandards.FILTER_NAME});
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathImport());
 				String path = fileDialog.open();
 				if(path != null) {
@@ -384,9 +389,9 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.SAVE);
 				fileDialog.setOverwrite(true);
 				fileDialog.setText(EXPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{IdentifierSettings.FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{IdentifierSettings.FILTER_NAME});
-				fileDialog.setFileName(IdentifierSettings.FILE_NAME);
+				fileDialog.setFilterExtensions(new String[]{AssignerStandards.FILTER_EXTENSION});
+				fileDialog.setFilterNames(new String[]{AssignerStandards.FILTER_NAME});
+				fileDialog.setFileName(AssignerStandards.FILE_NAME);
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathExport());
 				String path = fileDialog.open();
 				if(path != null) {
