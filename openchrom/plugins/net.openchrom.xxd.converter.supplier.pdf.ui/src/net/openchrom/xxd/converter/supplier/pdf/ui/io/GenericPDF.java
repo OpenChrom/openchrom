@@ -1,11 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  * Christoph Läubrich - Settings support
@@ -34,6 +34,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
@@ -101,7 +102,6 @@ public class GenericPDF {
 		this.settings = settings;
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	public void createPDF(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) throws IOException {
 
 		try (PDDocument document = new PDDocument()) {
@@ -109,7 +109,7 @@ public class GenericPDF {
 			 * Report Name
 			 */
 			createChromatogramPDF(chromatogram, document, monitor);
-			for(IChromatogram chromatogramReference : chromatogram.getReferencedChromatograms()) {
+			for(IChromatogram<?> chromatogramReference : chromatogram.getReferencedChromatograms()) {
 				createChromatogramPDF(chromatogramReference, document, monitor);
 			}
 			document.save(file);
@@ -358,7 +358,7 @@ public class GenericPDF {
 			IPeakModel peakModel = peak.getPeakModel();
 			List<String> row = new ArrayList<>();
 			row.add("P" + i++);
-			row.add(dfRetentionTime.format(peakModel.getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+			row.add(dfRetentionTime.format(peakModel.getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR));
 			row.add(dfAreaPercent.format(getPercentagePeakArea(totalPeakArea, peak.getIntegratedArea())));
 			row.add(getBestIdentification(peak.getTargets(), peakModel.getPeakMaximum().getRetentionIndex()));
 			pdTable.addDataRow(row);
@@ -381,7 +381,7 @@ public class GenericPDF {
 		for(IScan scan : scans) {
 			List<String> row = new ArrayList<>();
 			row.add("S" + i++);
-			row.add(dfRetentionTime.format(scan.getRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+			row.add(dfRetentionTime.format(scan.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR));
 			row.add(Integer.toString(scan.getScanNumber()));
 			row.add(getBestIdentification(scan.getTargets(), scan.getRetentionIndex()));
 			pdTable.addDataRow(row);

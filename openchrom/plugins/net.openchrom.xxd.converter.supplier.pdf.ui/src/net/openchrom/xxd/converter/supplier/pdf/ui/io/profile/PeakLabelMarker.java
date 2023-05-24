@@ -1,11 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -39,7 +39,7 @@ public class PeakLabelMarker extends AbstractLabelMarker {
 
 	private List<String> getPeakLabels(List<? extends IPeak> peaks) {
 
-		List<String> labels = new ArrayList<String>();
+		List<String> labels = new ArrayList<>();
 		double areaLimitToPrintLabels = getAreaLimitToPrintLabels(peaks);
 		//
 		if(peaks != null) {
