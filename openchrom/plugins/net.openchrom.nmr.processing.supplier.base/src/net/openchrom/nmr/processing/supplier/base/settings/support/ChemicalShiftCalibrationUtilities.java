@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -44,7 +44,7 @@ public class ChemicalShiftCalibrationUtilities {
 
 	public static int[] getActualPeakPositions(Interval<Integer> intervalIndices, SimpleMatrix calibratedData) {
 
-		int numRowsMax = calibratedData.numRows();
+		int numRowsMax = calibratedData.getNumRows();
 		int[] actualPositions = new int[numRowsMax];
 		for(int r = 0; r < numRowsMax; r++) {
 			double[] rowVector = IcoShiftAlignmentUtilities.extractVectorFromMatrix(calibratedData, true, r);
