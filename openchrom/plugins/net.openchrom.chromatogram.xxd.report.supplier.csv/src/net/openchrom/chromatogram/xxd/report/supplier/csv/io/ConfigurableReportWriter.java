@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.csv.CSVPrinter;
@@ -94,9 +95,9 @@ public class ConfigurableReportWriter {
 					records.add(chromatogram.getName());
 				}
 				Map<String, String> headerMap = chromatogram.getHeaderDataMap();
-				for(String headerKey : headerMap.keySet()) {
-					if(reportColumn.equals(headerKey)) {
-						records.add(headerMap.get(headerKey));
+				for(Entry<String, String> header : headerMap.entrySet()) {
+					if(reportColumn.equals(header.getKey())) {
+						records.add(header.getValue());
 					}
 				}
 				if(reportColumn.equals(ReportColumns.NUMBER_PEAKS)) {
