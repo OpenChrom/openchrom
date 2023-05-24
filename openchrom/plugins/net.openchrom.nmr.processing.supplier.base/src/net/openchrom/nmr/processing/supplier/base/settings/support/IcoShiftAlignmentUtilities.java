@@ -83,7 +83,7 @@ public class IcoShiftAlignmentUtilities {
 
 	public static SimpleMatrix calculateSquareRootOfSum(SimpleMatrix matrix) {
 
-		int rows = matrix.numRows();
+		int rows = matrix.getNumRows();
 		matrix = matrix.elementPower(2);
 		SimpleMatrix sumMatrix = new SimpleMatrix(rows, 1);
 		for(int r = 0; r < rows; r++) {
