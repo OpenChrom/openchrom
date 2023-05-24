@@ -70,6 +70,7 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String PEAK_WIDTH_15 = "Peak Width at 15% Height";
 	public static final String PEAK_WIDTH_50 = "Peak Width at 50% Height";
 	public static final String PEAK_WIDTH_85 = "Peak Width at 85% Height";
+	public static final String PEAK_RESOLUTION = "Peak Resolution";
 	//
 	private static final String SEPARATOR = ",";
 	private static final String SINGLE_TICK = "'";
@@ -131,6 +132,7 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(PEAK_WIDTH_15);
 		reportColumns.add(PEAK_WIDTH_50);
 		reportColumns.add(PEAK_WIDTH_85);
+		reportColumns.add(PEAK_RESOLUTION);
 		//
 		return reportColumns;
 	}

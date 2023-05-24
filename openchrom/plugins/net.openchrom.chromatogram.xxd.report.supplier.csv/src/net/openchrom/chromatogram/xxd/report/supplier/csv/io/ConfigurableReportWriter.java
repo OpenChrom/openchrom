@@ -32,6 +32,7 @@ import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.identifier.IComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.implementation.PeakResolution;
 import org.eclipse.chemclipse.model.quantitation.IInternalStandard;
 import org.eclipse.chemclipse.model.quantitation.IQuantitationEntry;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
@@ -190,6 +191,24 @@ public class ConfigurableReportWriter {
 				}
 				if(reportColumn.equals(ReportColumns.SCANS)) {
 					records.add(peakModel.getNumberOfScans());
+				}
+				if(reportColumn.equals(ReportColumns.PEAK_RESOLUTION)) {
+					int peakIndex = chromatogram.getPeaks().indexOf(peak);
+					if(peakIndex != -1) {
+						PeakResolution resolution = null;
+						if(peakIndex < chromatogram.getNumberOfPeaks() - 1) {
+							IPeak nextPeak = chromatogram.getPeaks().get(peakIndex + 1);
+							resolution = new PeakResolution(peak, nextPeak);
+						} else if(peakIndex > 0) {
+							IPeak previousPeak = chromatogram.getPeaks().get(peakIndex - 1);
+							resolution = new PeakResolution(previousPeak, peak);
+						}
+						if(resolution != null) {
+							records.add(resolution.calculate());
+						} else {
+							records.add("");
+						}
+					}
 				}
 				Set<IIdentificationTarget> peakTargets = peak.getTargets();
 				ILibraryInformation libraryInformation = null;
