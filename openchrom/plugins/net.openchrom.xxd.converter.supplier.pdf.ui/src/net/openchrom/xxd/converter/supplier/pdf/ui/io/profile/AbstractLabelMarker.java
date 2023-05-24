@@ -1,11 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -31,7 +31,7 @@ import org.eclipse.swtchart.extensions.marker.IBaseChartPaintListener;
 public abstract class AbstractLabelMarker extends AbstractBaseChartPaintListener implements IBaseChartPaintListener {
 
 	private Transform transform = null;
-	private Map<Integer, String> labels = new HashMap<Integer, String>();
+	private Map<Integer, String> labels = new HashMap<>();
 	private int indexSeries = -1;
 	private ISeries serie;
 
@@ -42,7 +42,7 @@ public abstract class AbstractLabelMarker extends AbstractBaseChartPaintListener
 
 	public void setLabels(List<String> labels, int indexSeries, int orientation) {
 
-		Map<Integer, String> labelsMap = new HashMap<Integer, String>();
+		Map<Integer, String> labelsMap = new HashMap<>();
 		int index = 0;
 		for(String label : labels) {
 			labelsMap.put(index++, label);
@@ -58,7 +58,7 @@ public abstract class AbstractLabelMarker extends AbstractBaseChartPaintListener
 
 	public void setLabels(Map<Integer, String> labels, int orientation) {
 
-		this.labels = (labels != null) ? labels : new HashMap<Integer, String>();
+		this.labels = (labels != null) ? labels : new HashMap<>();
 		if(orientation == SWT.VERTICAL) {
 			disposeTransform();
 			transform = new Transform(Display.getDefault());

@@ -1,11 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  * Christoph Läubrich - Settings support
@@ -92,13 +92,12 @@ public class ProfilePDF {
 		this.settings = settings;
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	public void createPDF(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) throws IOException {
 
 		try (PDDocument document = new PDDocument()) {
 			String name = chromatogram.getDataName();
 			createChromatogramPDF(chromatogram, name, document, monitor);
-			for(IChromatogram chromatogramReference : chromatogram.getReferencedChromatograms()) {
+			for(IChromatogram<?> chromatogramReference : chromatogram.getReferencedChromatograms()) {
 				createChromatogramPDF(chromatogramReference, name, document, monitor);
 			}
 			document.save(file);
@@ -122,10 +121,9 @@ public class ProfilePDF {
 			pages += peakDataTable.getNumberDataRows() / MAX_ROWS_PORTRAIT + 1;
 			pages += chromatogramImages.size();
 			//
-			int page;
-			page = printHeaderPages(document, chromatogram, chromatogramName, 1, pages, monitor);
+			int page = printHeaderPages(document, chromatogramName, 1, pages);
 			page = printTablePages(document, peakDataTable, chromatogramName, page, pages, false, monitor);
-			page = printImagePages(document, chromatogramImages, page, pages, monitor);
+			printImagePages(document, chromatogramImages, page, pages, monitor);
 		}
 	}
 
@@ -142,8 +140,7 @@ public class ProfilePDF {
 		return name;
 	}
 
-	@SuppressWarnings("rawtypes")
-	private int printHeaderPages(PDDocument document, IChromatogram chromatogram, String chromatogramName, int page, int pages, IProgressMonitor monitor) throws IOException {
+	private int printHeaderPages(PDDocument document, String chromatogramName, int page, int pages) throws IOException {
 
 		boolean landscape = false;
 		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, PageBase.TOP_LEFT, Unit.MM, landscape));
@@ -168,12 +165,12 @@ public class ProfilePDF {
 
 		for(int i = 0; i < chromatogramImages.size(); i++) {
 			PDImageXObject chromatogramImage = chromatogramImages.get(i);
-			page = printImagePage(document, chromatogramImage, page, pages, monitor);
+			page = printImagePage(document, chromatogramImage, page, pages);
 		}
 		return page;
 	}
 
-	private int printImagePage(PDDocument document, PDImageXObject chromatogramImage, int page, int pages, IProgressMonitor monitor) throws IOException {
+	private int printImagePage(PDDocument document, PDImageXObject chromatogramImage, int page, int pages) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, PageBase.TOP_LEFT, Unit.MM, true));
 		//
@@ -199,12 +196,12 @@ public class ProfilePDF {
 			stopIndex = (stopIndex > pdTable.getNumberDataRows()) ? pdTable.getNumberDataRows() : stopIndex;
 			pdTable.setStartIndex(startIndex);
 			pdTable.setStopIndex(stopIndex);
-			page = printTablePage(document, pdTable, chromatogramName, page, pages, landscape, monitor);
+			page = printTablePage(document, pdTable, chromatogramName, page, pages, landscape);
 		}
 		return page;
 	}
 
-	private int printTablePage(PDDocument document, PDTable pdTable, String chromatogramName, int page, int pages, boolean landscape, IProgressMonitor monitor) throws IOException {
+	private int printTablePage(PDDocument document, PDTable pdTable, String chromatogramName, int page, int pages, boolean landscape) throws IOException {
 
 		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, PageBase.TOP_LEFT, Unit.MM, landscape));
 		printPageHeader(pageUtil);
@@ -310,7 +307,7 @@ public class ProfilePDF {
 		double percents = 0;
 		//
 		for(IPeak peak : peaks) {
-			if(peak.getTargets().size() > 0) {
+			if(!peak.getTargets().isEmpty()) {
 				double areaPercent = getPercentagePeakArea(totalPeakArea, peak.getIntegratedArea());
 				percents += areaPercent;
 				List<IIdentificationTarget> sortedTargets = getSortedTargets(peak.getTargets(), peak.getPeakModel().getPeakMaximum().getRetentionIndex());

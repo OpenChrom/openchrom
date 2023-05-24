@@ -1,7 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2022 Lablicate GmbH.
+ * Copyright (c) 2012, 2023 Lablicate GmbH.
  *
  * All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.converter.supplier.pdf.internal.io;
 
@@ -15,7 +21,6 @@ import org.eclipse.chemclipse.model.signals.ITotalScanSignal;
 import org.eclipse.chemclipse.model.signals.ITotalScanSignalExtractor;
 import org.eclipse.chemclipse.model.signals.ITotalScanSignals;
 import org.eclipse.chemclipse.model.signals.TotalScanSignalExtractor;
-import org.eclipse.chemclipse.msd.model.core.AbstractChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 
@@ -137,17 +142,17 @@ public class PDFSupport {
 		yPosition += L_5_MM;
 		createUpperBoxText(page, box, "Max Abundance: " + maxAbundance, yPosition);
 		yPosition += L_5_MM;
-		createUpperBoxText(page, box, "Min Retention Time: " + decimalFormat.format(minRetentionTime / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR) + " Minutes = " + (int)minRetentionTime + " Milliseconds", yPosition);
+		createUpperBoxText(page, box, "Min Retention Time: " + decimalFormat.format(minRetentionTime / IChromatogramOverview.MINUTE_CORRELATION_FACTOR) + " Minutes = " + (int)minRetentionTime + " Milliseconds", yPosition);
 		yPosition += L_5_MM;
-		createUpperBoxText(page, box, "Max Retention Time: " + decimalFormat.format(maxRetentionTime / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR) + " Minutes = " + (int)maxRetentionTime + " Milliseconds", yPosition);
+		createUpperBoxText(page, box, "Max Retention Time: " + decimalFormat.format(maxRetentionTime / IChromatogramOverview.MINUTE_CORRELATION_FACTOR) + " Minutes = " + (int)maxRetentionTime + " Milliseconds", yPosition);
 		yPosition += L_5_MM;
 		createUpperBoxText(page, box, "Scans: " + chromatogram.getNumberOfScans(), yPosition);
 		yPosition += L_5_MM;
 		createUpperBoxText(page, box, "Ions: " + chromatogram.getNumberOfScanIons(), yPosition);
 		yPosition += L_5_MM;
-		createUpperBoxText(page, box, "Scan Delay: " + decimalFormat.format(chromatogram.getScanDelay() / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR) + " Minutes = " + chromatogram.getScanDelay() + " Milliseconds", yPosition);
+		createUpperBoxText(page, box, "Scan Delay: " + decimalFormat.format(chromatogram.getScanDelay() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR) + " Minutes = " + chromatogram.getScanDelay() + " Milliseconds", yPosition);
 		yPosition += L_5_MM;
-		createUpperBoxText(page, box, "Scan Interval: " + decimalFormat.format(chromatogram.getScanInterval() / AbstractChromatogramMSD.MINUTE_CORRELATION_FACTOR) + " Minutes = " + chromatogram.getScanInterval() + " Milliseconds", yPosition);
+		createUpperBoxText(page, box, "Scan Interval: " + decimalFormat.format(chromatogram.getScanInterval() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR) + " Minutes = " + chromatogram.getScanInterval() + " Milliseconds", yPosition);
 		/*
 		 * Logo
 		 */

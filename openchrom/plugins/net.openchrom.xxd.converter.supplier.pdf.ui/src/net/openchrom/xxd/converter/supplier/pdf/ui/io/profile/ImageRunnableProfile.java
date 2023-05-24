@@ -1,11 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2021 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -137,7 +137,7 @@ public class ImageRunnableProfile implements Runnable {
 	private List<? extends IPeak> addPeaks(BaseChart baseChart, List<ILineSeriesData> lineSeriesDataList) {
 
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
-		if(peaks.size() > 0) {
+		if(!peaks.isEmpty()) {
 			Collections.sort(peaks, peakRetentionTimeComparator);
 			ILineSeriesData lineSeriesData = peakChartSupport.getPeaks(peaks, true, false, Colors.GRAY, "Peaks");
 			ILineSeriesSettings lineSeriesSettings = lineSeriesData.getSettings();
@@ -191,10 +191,8 @@ public class ImageRunnableProfile implements Runnable {
 		/*
 		 * Create the directory if it not exists.
 		 */
-		if(!dir.exists()) {
-			if(!dir.mkdirs()) {
-				logger.warn("The temporarily file directory could not be created: " + dir.getAbsolutePath());
-			}
+		if(!dir.exists() && !dir.mkdirs()) {
+			logger.warn("The temporarily file directory could not be created: " + dir.getAbsolutePath());
 		}
 		/*
 		 * Create the file.
