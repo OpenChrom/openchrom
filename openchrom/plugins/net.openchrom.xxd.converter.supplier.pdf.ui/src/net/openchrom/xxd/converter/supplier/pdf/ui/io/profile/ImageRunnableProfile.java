@@ -101,16 +101,19 @@ public class ImageRunnableProfile implements Runnable {
 				/*
 				 * Create the chart
 				 */
-				ImageFactory<ChromatogramChart> imageFactory = new ImageFactory<ChromatogramChart>(ChromatogramChart.class, width, height);
+				ImageFactory<ChromatogramChart> imageFactory = new ImageFactory<>(ChromatogramChart.class, width, height);
 				ChromatogramChart chromatogramChart = imageFactory.getChart();
 				IChartSettings chartSettings = chromatogramChart.getChartSettings();
+				chartSettings.setBackground(Colors.WHITE);
+				chartSettings.setBackgroundChart(Colors.WHITE);
+				chartSettings.setBackgroundPlotArea(Colors.WHITE);
 				chartSettings.setTitle(chromatogramName);
 				chartSettings.setTitleVisible(true);
 				chartSettings.setTitleColor(Colors.BLACK);
 				RangeRestriction rangeRestriction = chartSettings.getRangeRestriction();
 				rangeRestriction.setExtendMaxY(0.7d);
 				chromatogramChart.applySettings(chartSettings);
-				List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
+				List<ILineSeriesData> lineSeriesDataList = new ArrayList<>();
 				//
 				addChromatogram(lineSeriesDataList);
 				BaseChart baseChart = chromatogramChart.getBaseChart();

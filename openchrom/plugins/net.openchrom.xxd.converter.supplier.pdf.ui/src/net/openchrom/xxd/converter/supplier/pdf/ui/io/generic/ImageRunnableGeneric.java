@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -103,6 +103,9 @@ public class ImageRunnableGeneric implements Runnable {
 				ImageFactory<ChromatogramChart> imageFactory = new ImageFactory<>(ChromatogramChart.class, width, height);
 				ChromatogramChart chromatogramChart = imageFactory.getChart();
 				IChartSettings chartSettings = chromatogramChart.getChartSettings();
+				chartSettings.setBackground(Colors.WHITE);
+				chartSettings.setBackgroundChart(Colors.WHITE);
+				chartSettings.setBackgroundPlotArea(Colors.WHITE);
 				RangeRestriction rangeRestriction = chartSettings.getRangeRestriction();
 				rangeRestriction.setExtendMaxY(0.1d);
 				rangeRestriction.setForceZeroMinY(false);
