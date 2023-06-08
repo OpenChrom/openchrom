@@ -9,5 +9,3 @@ Fragment-Host: net.openchrom.msd.converter.supplier.peaks;bundle-version="1.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.junit;bundle-version="4.11.0",
  org.eclipse.chemclipse.rcp.app.test;bundle-version="0.8.0"
-Import-Package: net.openchrom.msd.converter.supplier.peaks,
- net.openchrom.msd.converter.supplier.peaks.converter
