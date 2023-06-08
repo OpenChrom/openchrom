@@ -46,6 +46,7 @@
   <modules>
     <module>../net.openchrom.targetplatform</module>
     <module>../../plugins</module>
+    <module>../../tests</module>
     <module>../../features</module>
     <module>../../products</module>
   </modules>
