@@ -20,14 +20,14 @@ import org.eclipse.chemclipse.xir.converter.core.IScanExportConverter;
 import org.eclipse.chemclipse.xir.model.core.ISpectrumXIR;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-@SuppressWarnings("rawtypes")
 public class ScanExportConverter extends AbstractScanExportConverter implements IScanExportConverter {
 
 	@Override
-	public IProcessingInfo<?> convert(File file, ISpectrumXIR scan, IProgressMonitor monitor) {
+	public IProcessingInfo<File> convert(File file, ISpectrumXIR scan, IProgressMonitor monitor) {
 
-		IProcessingInfo<?> processingInfo = new ProcessingInfo<>();
+		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		processingInfo.addInfoMessage("GAML", "Export is not available");
+		//
 		return processingInfo;
 	}
 }
