@@ -33,7 +33,7 @@ public class ChromatogramReport extends AbstractChromatogramReportGenerator {
 	private static final Logger logger = Logger.getLogger(ChromatogramReport.class);
 	//
 	public static final String DESCRIPTION = "Template Chromatogram Report";
-	public static final String FILE_EXTENSION = ".txt";
+	public static final String FILE_EXTENSION = ".tsv";
 	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
 	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
 	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
@@ -43,9 +43,8 @@ public class ChromatogramReport extends AbstractChromatogramReportGenerator {
 
 		IProcessingInfo<File> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
-			if(settings instanceof ChromatogramReportSettings) {
+			if(settings instanceof ChromatogramReportSettings reportSettings) {
 				try {
-					ChromatogramReportSettings reportSettings = (ChromatogramReportSettings)settings;
 					ReportWriter reportWriter = new ReportWriter();
 					reportWriter.generate(file, append, chromatograms, reportSettings, monitor);
 					processingInfo.setProcessingResult(file);

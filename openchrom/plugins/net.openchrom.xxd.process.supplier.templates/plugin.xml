@@ -280,11 +280,11 @@
          point="org.eclipse.chemclipse.chromatogram.xxd.report.chromatogramReportSupplier">
       <ChromatogramReportSupplier
             description="Template Chromatogram Report"
-            fileExtension=".txt"
+            fileExtension=".tsv"
             fileName="TemplateReport"
             id="org.eclipse.chemclipse.chromatogram.xxd.report.supplier.openchrom.templateChromatogramReport"
             reportGenerator="net.openchrom.xxd.process.supplier.templates.chromatogram.ChromatogramReport"
-            reportName="Peak Report [Template] (*.txt)"
+            reportName="Peak Report [Template] (*.tsv)"
             reportSettings="net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings">
       </ChromatogramReportSupplier>         
    </extension>
