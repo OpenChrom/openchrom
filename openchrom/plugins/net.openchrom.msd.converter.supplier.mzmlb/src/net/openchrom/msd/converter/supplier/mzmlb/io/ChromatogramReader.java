@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
@@ -101,7 +101,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 					for(ScanType scan : spectrum.getScanList().getScan()) {
 						for(CVParamType cvParamScan : scan.getCvParam()) {
 							if(cvParamScan.getAccession().equals("MS:1000016") && cvParamScan.getName().equals("scan start time")) {
-								int multiplicator = XmlReader110.getTimeMultiplicator(cvParamScan);
+								float multiplicator = XmlReader110.getTimeMultiplicator(cvParamScan);
 								retentionTime = Math.round(Float.parseFloat(cvParamScan.getValue()) * multiplicator);
 							}
 						}
