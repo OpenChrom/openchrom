@@ -70,6 +70,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
 			byte[] xml = reader.readAsByteArray("mzML");
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			documentBuilderFactory.setNamespaceAware(true);
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			InputStream inputStream = new ByteArrayInputStream(xml);
 			Document document = documentBuilder.parse(inputStream);
