@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.system;
 
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.processing.system.ISystemProcessSettings;
 import org.eclipse.chemclipse.support.settings.DoubleSettingsProperty;
 import org.eclipse.chemclipse.support.settings.IntSettingsProperty;
@@ -27,6 +28,9 @@ public class DetectorExportProcessSettings implements ISystemProcessSettings {
 	@IntSettingsProperty(minValue = PreferenceSupplier.MIN_NUMBER_TRACES, maxValue = PreferenceSupplier.MAX_NUMBER_TRACES)
 	@JsonPropertyDescription(value = "Select the number of highest traces to be exported.")
 	private int numberTraces = 0;
+	@JsonProperty(value = "Peak Type", defaultValue = "VV")
+	@JsonPropertyDescription(value = "Select the peak type. Currently supported VV, BB and MM (default VV).")
+	private PeakType peakType = PeakType.VV;
 	@JsonProperty(value = "Export Optimize Range", defaultValue = "true")
 	@JsonPropertyDescription(value = "Try to optimize the range when running a manual peak detection.")
 	private boolean optimizeRange = true;
@@ -50,6 +54,16 @@ public class DetectorExportProcessSettings implements ISystemProcessSettings {
 	public void setNumberTraces(int numberTraces) {
 
 		this.numberTraces = numberTraces;
+	}
+
+	public PeakType getPeakType() {
+
+		return peakType;
+	}
+
+	public void setPeakType(PeakType peakType) {
+
+		this.peakType = peakType;
 	}
 
 	public boolean isOptimizeRange() {

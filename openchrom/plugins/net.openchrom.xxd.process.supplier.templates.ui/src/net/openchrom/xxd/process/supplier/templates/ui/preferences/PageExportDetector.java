@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.preferences;
 
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.DoubleFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.ExtendedIntegerFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
@@ -41,6 +42,7 @@ public class PageExportDetector extends FieldEditorPreferencePage implements IWo
 	public void createFieldEditors() {
 
 		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_EXPORT_NUMBER_TRACES_DETECTOR, "Number Traces (0 = TIC)", PreferenceSupplier.MIN_NUMBER_TRACES, PreferenceSupplier.MAX_NUMBER_TRACES, getFieldEditorParent()));
+		addField(new ComboFieldEditor(PreferenceSupplier.P_EXPORT_PEAK_TYPE_DETECTOR, "Peak Type (VV, BB or MM)", PeakType.getOptions(), getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_EXPORT_OPTIMIZE_RANGE_DETECTOR, "Export Optimize Range", getFieldEditorParent()));
 		addField(new DoubleFieldEditor(PreferenceSupplier.P_EXPORT_DELTA_LEFT_POSITION_DETECTOR, "Delta Left", PreferenceSupplier.MIN_DELTA_POSITION, PreferenceSupplier.MAX_DELTA_POSITION, getFieldEditorParent()));
 		addField(new DoubleFieldEditor(PreferenceSupplier.P_EXPORT_DELTA_RIGHT_POSITION_DETECTOR, "Delta Right", PreferenceSupplier.MIN_DELTA_POSITION, PreferenceSupplier.MAX_DELTA_POSITION, getFieldEditorParent()));

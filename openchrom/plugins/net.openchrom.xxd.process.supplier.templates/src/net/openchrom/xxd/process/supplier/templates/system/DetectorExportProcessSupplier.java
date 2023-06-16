@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -47,9 +47,9 @@ public class DetectorExportProcessSupplier extends AbstractSystemProcessSettings
 		@Override
 		public void executeUserSettings(ISystemProcessSettings settings, ProcessExecutionContext context) throws Exception {
 
-			if(settings instanceof DetectorExportProcessSettings) {
-				DetectorExportProcessSettings processSettings = (DetectorExportProcessSettings)settings;
+			if(settings instanceof DetectorExportProcessSettings processSettings) {
 				PreferenceSupplier.setExportNumberTracesDetector(processSettings.getNumberTraces());
+				PreferenceSupplier.setExportPeakTypeDetector(processSettings.getPeakType());
 				PreferenceSupplier.setExportOptimizeRangeDetector(processSettings.isOptimizeRange());
 				PreferenceSupplier.setExportDeltaLeftPositionDetector(processSettings.getPositionDeltaLeft());
 				PreferenceSupplier.setExportDeltaRightPositionDetector(processSettings.getPositionDeltaRight());

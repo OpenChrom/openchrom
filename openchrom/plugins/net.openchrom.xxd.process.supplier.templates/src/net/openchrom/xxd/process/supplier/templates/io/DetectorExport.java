@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -47,14 +47,15 @@ public class DetectorExport extends AbstractTemplateExport {
 		int numberTraces = PreferenceSupplier.getExportNumberTracesDetector();
 		PositionDirective positionDirective = PreferenceSupplier.getExportPositionDirectiveDetector();
 		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
+		PeakType peakType = PreferenceSupplier.getExportPeakTypeDetector();
 		//
 		for(IPeak peak : peaks) {
 			DetectorSetting setting = new DetectorSetting();
 			setPosition(peak, retentionIndexMap, setting, positionDirective, deltaLeft, deltaRight);
-			setting.setPeakType(PeakType.VV);
+			setting.setPeakType(peakType);
 			setting.setTraces(extractTraces(peak, numberTraces));
 			setting.setOptimizeRange(optimizeRange);
-			setting.setReferenceIdentifier("");
+			setting.setReferenceIdentifier(""); // The absolute time is used, hence not needed here.
 			//
 			float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
 			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(retentionIndex);

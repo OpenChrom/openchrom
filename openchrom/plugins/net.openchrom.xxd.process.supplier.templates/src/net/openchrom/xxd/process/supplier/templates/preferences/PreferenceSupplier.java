@@ -14,6 +14,7 @@ package net.openchrom.xxd.process.supplier.templates.preferences;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
@@ -114,6 +115,8 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static final double DEF_EXPORT_DELTA_RIGHT_POSITION_DETECTOR = 0.0d;
 	public static final String P_EXPORT_POSITION_DIRECTIVE_DETECTOR = "exportPositionDirectiveDetector";
 	public static final String DEF_EXPORT_POSITION_DIRECTIVE_DETECTOR = PositionDirective.RETENTION_TIME_MIN.name();
+	public static final String P_EXPORT_PEAK_TYPE_DETECTOR = "exportPeakTypeDetector";
+	public static final String DEF_EXPORT_PEAK_TYPE_DETECTOR = PeakType.VV.name();
 	/*
 	 * Identifier
 	 */
@@ -322,6 +325,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 		defaultValues.put(P_EXPORT_DELTA_LEFT_POSITION_DETECTOR, Double.toString(DEF_EXPORT_DELTA_LEFT_POSITION_DETECTOR));
 		defaultValues.put(P_EXPORT_DELTA_RIGHT_POSITION_DETECTOR, Double.toString(DEF_EXPORT_DELTA_RIGHT_POSITION_DETECTOR));
 		defaultValues.put(P_EXPORT_POSITION_DIRECTIVE_DETECTOR, DEF_EXPORT_POSITION_DIRECTIVE_DETECTOR);
+		defaultValues.put(P_EXPORT_PEAK_TYPE_DETECTOR, DEF_EXPORT_PEAK_TYPE_DETECTOR);
 		//
 		defaultValues.put(P_EXPORT_NUMBER_TRACES_IDENTIFIER, Integer.toString(DEF_EXPORT_NUMBER_TRACES_IDENTIFIER));
 		defaultValues.put(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER));
@@ -512,6 +516,20 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 	public static void setExportPositionDirectiveDetector(PositionDirective positionDirective) {
 
 		putPositionDirective(P_EXPORT_POSITION_DIRECTIVE_DETECTOR, positionDirective);
+	}
+
+	public static PeakType getExportPeakTypeDetector() {
+
+		try {
+			return PeakType.valueOf(INSTANCE().get(P_EXPORT_PEAK_TYPE_DETECTOR, DEF_EXPORT_PEAK_TYPE_DETECTOR));
+		} catch(Exception e) {
+			return PeakType.VV;
+		}
+	}
+
+	public static void setExportPeakTypeDetector(PeakType peakType) {
+
+		INSTANCE().put(P_EXPORT_PEAK_TYPE_DETECTOR, peakType.name());
 	}
 
 	public static int getExportDeltaLeftMillisecondsIdentifier() {
