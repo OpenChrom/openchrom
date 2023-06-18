@@ -68,6 +68,7 @@ Export-Package: net.openchrom.xxd.process.supplier.templates.ui.charts,
  net.openchrom.xxd.process.supplier.templates.ui.core,
  net.openchrom.xxd.process.supplier.templates.ui.fieldeditors,
  net.openchrom.xxd.process.supplier.templates.ui.swt,
- net.openchrom.xxd.process.supplier.templates.ui.swt.peaks
+ net.openchrom.xxd.process.supplier.templates.ui.swt.peaks,
+ net.openchrom.xxd.process.supplier.templates.ui.validators
 Service-Component: OSGI-INF/net.openchrom.xxd.process.supplier.templates.ui.services.ReportColumnsAnnotationService.xml,
  OSGI-INF/net.openchrom.xxd.process.supplier.templates.ui.services.ReportSettingsAnnotationService.xml

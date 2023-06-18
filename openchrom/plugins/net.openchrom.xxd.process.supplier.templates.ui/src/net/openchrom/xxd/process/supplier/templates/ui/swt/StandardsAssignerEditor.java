@@ -75,7 +75,7 @@ import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
 import net.openchrom.xxd.process.supplier.templates.model.AssignerStandards;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSettings;
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.StandardsAssignerInputValidator;
+import net.openchrom.xxd.process.supplier.templates.ui.validators.StandardsAssignerInputValidator;
 import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerListUtil;
 
 public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUIControl, IExtendedPartUI {
