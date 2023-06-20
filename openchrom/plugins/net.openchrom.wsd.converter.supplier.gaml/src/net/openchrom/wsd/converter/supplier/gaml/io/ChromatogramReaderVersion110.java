@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,9 +20,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -57,6 +54,10 @@ import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Units;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Ydata;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader110;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 public class ChromatogramReaderVersion110 extends AbstractChromatogramReader implements IChromatogramWSDReader {
 
@@ -149,7 +150,7 @@ public class ChromatogramReaderVersion110 extends AbstractChromatogramReader imp
 					for(int a = 0; a < absorbances.length; a++) {
 						IVendorScanSignalWSD scanSignal = new VendorScanSignalWSD();
 						scanSignal.setAbundance((float)absorbances[a]);
-						scanSignal.setWavelength(waveLengths[a]);
+						scanSignal.setWavelength((float)waveLengths[a]);
 						scan.addScanSignal(scanSignal);
 					}
 					rt++;

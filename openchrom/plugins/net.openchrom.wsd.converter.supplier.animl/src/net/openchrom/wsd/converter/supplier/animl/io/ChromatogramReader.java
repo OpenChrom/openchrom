@@ -257,7 +257,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 			VendorScan scan = new VendorScan();
 			IVendorScanSignalWSD signal = new VendorScanSignalWSD();
 			signal.setAbundance(intensities.get(i));
-			signal.setWavelength(wavelength);
+			signal.setWavelength((float)wavelength);
 			scan.addScanSignal(signal);
 			if(!retentionTimes.isEmpty()) {
 				scan.setRetentionTime(Math.round(retentionTimes.get(i)));
