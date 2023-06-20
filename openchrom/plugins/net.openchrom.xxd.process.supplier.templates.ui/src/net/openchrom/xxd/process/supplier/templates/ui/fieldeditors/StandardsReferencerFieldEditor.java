@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.templates.ui.fieldeditors;
 
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 import net.openchrom.xxd.process.supplier.templates.ui.swt.StandardsReferencerEditor;
 
@@ -27,12 +28,17 @@ public class StandardsReferencerFieldEditor extends AbstractFieldEditor {
 	}
 
 	@Override
+	public int getNumberOfControls() {
+
+		return 1;
+	}
+
+	@Override
 	protected void doFillIntoGrid(Composite parent, int numColumns) {
 
 		getLabelControl(parent);
 		editor = new StandardsReferencerEditor(parent, null, null);
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		editor.getControl().setLayoutData(gridData);
+		editor.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
 
 	@Override
@@ -56,18 +62,11 @@ public class StandardsReferencerFieldEditor extends AbstractFieldEditor {
 	}
 
 	@Override
-	public int getNumberOfControls() {
-
-		return 1;
-	}
-
-	@Override
 	protected void adjustForNumColumns(int numColumns) {
 
-		if(numColumns >= 2) {
-			GridData gridData = (GridData)editor.getControl().getLayoutData();
-			gridData.horizontalSpan = numColumns - 1;
-			gridData.grabExcessHorizontalSpace = true;
-		}
+		Control control = editor.getControl();
+		GridData gridData = (GridData)control.getLayoutData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalSpan = (numColumns >= 2) ? numColumns - 1 : 1;
 	}
 }

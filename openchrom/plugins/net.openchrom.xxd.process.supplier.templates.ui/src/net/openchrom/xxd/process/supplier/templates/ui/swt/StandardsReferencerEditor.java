@@ -80,13 +80,13 @@ import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerList
 
 public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIControl, IExtendedPartUI {
 
-	private Composite control;
-	//
-	private Button buttonToolbarSearch;
+	private AtomicReference<Button> buttonSearchControl = new AtomicReference<>();;
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
-	private Button buttonToolbarAdjust;
+	private AtomicReference<Button> buttonAdjustControl = new AtomicReference<>();;
 	private AtomicReference<PositionAdjusterUI> toolbarAdjuster = new AtomicReference<>();
 	private AtomicReference<StandardsReferencerListUI> listControl = new AtomicReference<>();
+	//
+	private Composite control;
 	//
 	private static final String CATEGORY = "Peak Identifier";
 	private static final String DELETE = "Delete";
@@ -110,7 +110,7 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 			this.settings.load(settings.getReferencerSettings());
 		}
 		//
-		createControl(parent);
+		control = createControl(parent);
 	}
 
 	public void setSettings(AssignerReferences settings) {
@@ -183,7 +183,7 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 		return settings.save();
 	}
 
-	private void createControl(Composite parent) {
+	private Composite createControl(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout(1, false);
@@ -197,13 +197,14 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 		createTableSection(composite);
 		//
 		initialize();
-		setControl(composite);
+		//
+		return composite;
 	}
 
 	private void initialize() {
 
-		enableToolbar(toolbarSearch, buttonToolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH, false);
-		enableToolbar(toolbarAdjuster, buttonToolbarAdjust, IMAGE_ADJUST_POSITION, TOOLTIP_ADJUST_POSITION, false);
+		enableToolbar(toolbarSearch, buttonSearchControl.get(), IMAGE_SEARCH, TOOLTIP_SEARCH, false);
+		enableToolbar(toolbarAdjuster, buttonAdjustControl.get(), IMAGE_ADJUST_POSITION, TOOLTIP_ADJUST_POSITION, false);
 		setInput();
 	}
 
@@ -211,7 +212,12 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 
 		StandardsReferencerListUI standardsReferencerListUI = new StandardsReferencerListUI(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		Table table = standardsReferencerListUI.getTable();
-		table.setLayoutData(new GridData(GridData.FILL_BOTH));
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.widthHint = 600;
+		gridData.heightHint = 400;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		table.setLayoutData(gridData);
 		//
 		table.addSelectionListener(new SelectionAdapter() {
 
@@ -430,14 +436,30 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 		composite.setLayoutData(gridData);
 		composite.setLayout(new GridLayout(8, false));
 		//
-		add(buttonToolbarSearch = createButtonToggleToolbar(composite, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH));
-		add(buttonToolbarAdjust = createButtonToggleToolbar(composite, toolbarAdjuster, IMAGE_ADJUST_POSITION, TOOLTIP_ADJUST_POSITION));
+		add(createButtonToggleSearch(composite));
+		add(createButtonToggleAdjust(composite));
 		add(buttonAdd = createButtonAdd(composite));
 		add(buttonEdit = createButtonEdit(composite));
 		add(buttonRemove = createButtonRemove(composite));
 		add(buttonRemoveAll = createButtonRemoveAll(composite));
 		add(buttonImport = createButtonImport(composite));
 		add(buttonExport = createButtonExport(composite));
+	}
+
+	private Button createButtonToggleSearch(Composite parent) {
+
+		Button button = createButtonToggleToolbar(parent, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH);
+		buttonSearchControl.set(button);
+		//
+		return button;
+	}
+
+	private Button createButtonToggleAdjust(Composite parent) {
+
+		Button button = createButtonToggleToolbar(parent, toolbarAdjuster, IMAGE_ADJUST_POSITION, TOOLTIP_ADJUST_POSITION);
+		buttonAdjustControl.set(button);
+		//
+		return button;
 	}
 
 	private void add(Button button) {
@@ -527,10 +549,5 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 			}
 			setInput();
 		}
-	}
-
-	private void setControl(Composite composite) {
-
-		this.control = composite;
 	}
 }
