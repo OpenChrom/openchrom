@@ -110,19 +110,7 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 			this.settings.load(settings.getReferencerSettings());
 		}
 		//
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout gridLayout = new GridLayout(1, false);
-		gridLayout.marginWidth = 0;
-		gridLayout.marginHeight = 0;
-		composite.setLayout(gridLayout);
-		//
-		createToolbarMain(composite);
-		createSearchSection(composite);
-		createAdjustSection(composite);
-		createTableSection(composite);
-		//
-		initialize();
-		setControl(composite);
+		createControl(parent);
 	}
 
 	public void setSettings(AssignerReferences settings) {
@@ -195,6 +183,23 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 		return settings.save();
 	}
 
+	private void createControl(Composite parent) {
+
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridLayout gridLayout = new GridLayout(1, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		composite.setLayout(gridLayout);
+		//
+		createToolbarMain(composite);
+		createSearchSection(composite);
+		createAdjustSection(composite);
+		createTableSection(composite);
+		//
+		initialize();
+		setControl(composite);
+	}
+
 	private void initialize() {
 
 		enableToolbar(toolbarSearch, buttonToolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH, false);
@@ -206,11 +211,7 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 
 		StandardsReferencerListUI standardsReferencerListUI = new StandardsReferencerListUI(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		Table table = standardsReferencerListUI.getTable();
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.heightHint = 450;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.verticalAlignment = SWT.TOP;
-		table.setLayoutData(gridData);
+		table.setLayoutData(new GridData(GridData.FILL_BOTH));
 		//
 		table.addSelectionListener(new SelectionAdapter() {
 
