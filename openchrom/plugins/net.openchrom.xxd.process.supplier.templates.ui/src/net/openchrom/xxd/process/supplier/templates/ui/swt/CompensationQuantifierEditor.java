@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -78,11 +78,11 @@ import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantListUt
 
 public class CompensationQuantifierEditor implements SettingsUIProvider.SettingsUIControl, IExtendedPartUI {
 
-	private Composite control;
-	//
-	private Button buttonToolbarSearch;
+	private AtomicReference<Button> buttonSearchControl = new AtomicReference<>();
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
 	private AtomicReference<CompensationQuantifierListUI> listControl = new AtomicReference<>();
+	//
+	private Composite control;
 	//
 	private static final String CATEGORY = "Compensation Quantifier";
 	private static final String DELETE = "Delete";
@@ -106,13 +106,13 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 			this.settings.load(settings.getCompensationSettings());
 		}
 		//
-		createControl(parent);
+		control = createControl(parent);
 	}
 
 	public CompensationQuantifierEditor(Composite parent, CompensationSettings settings) {
 
 		this.settings = settings;
-		createControl(parent);
+		control = createControl(parent);
 	}
 
 	public void updateInput() {
@@ -182,7 +182,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 		return settings.save();
 	}
 
-	private void createControl(Composite parent) {
+	private Composite createControl(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout(1, false);
@@ -195,12 +195,13 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 		createTableSection(composite);
 		//
 		initialize();
-		setControl(composite);
+		//
+		return composite;
 	}
 
 	private void initialize() {
 
-		enableToolbar(toolbarSearch, buttonToolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH, false);
+		enableToolbar(toolbarSearch, buttonSearchControl.get(), IMAGE_SEARCH, TOOLTIP_SEARCH, false);
 		setInput();
 	}
 
@@ -208,10 +209,11 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 
 		CompensationQuantifierListUI compensationQuantifierListUI = new CompensationQuantifierListUI(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		Table table = compensationQuantifierListUI.getTable();
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.heightHint = 450;
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		gridData.widthHint = 600;
+		gridData.heightHint = 400;
+		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-		gridData.verticalAlignment = SWT.TOP;
 		table.setLayoutData(gridData);
 		//
 		table.addSelectionListener(new SelectionAdapter() {
@@ -428,13 +430,21 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 		composite.setLayoutData(gridData);
 		composite.setLayout(new GridLayout(8, false));
 		//
-		add(buttonToolbarSearch = createButtonToggleToolbar(composite, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH));
+		add(createButtonToggleSearch(composite));
 		add(buttonAdd = createButtonAdd(composite));
 		add(buttonEdit = createButtonEdit(composite));
 		add(buttonRemove = createButtonRemove(composite));
 		add(buttonRemoveAll = createButtonRemoveAll(composite));
 		add(buttonImport = createButtonImport(composite));
 		add(buttonExport = createButtonExport(composite));
+	}
+
+	private Button createButtonToggleSearch(Composite parent) {
+
+		Button button = createButtonToggleToolbar(parent, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH);
+		buttonSearchControl.set(button);
+		//
+		return button;
 	}
 
 	private void add(Button button) {
@@ -507,10 +517,5 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 			}
 			setInput();
 		}
-	}
-
-	private void setControl(Composite composite) {
-
-		this.control = composite;
 	}
 }

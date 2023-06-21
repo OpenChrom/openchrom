@@ -80,9 +80,9 @@ import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerListUt
 
 public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUIControl, IExtendedPartUI {
 
-	private AtomicReference<Button> buttonSearchControl = new AtomicReference<>();;
+	private AtomicReference<Button> buttonSearchControl = new AtomicReference<>();
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
-	private AtomicReference<Button> buttonAdjustControl = new AtomicReference<>();;
+	private AtomicReference<Button> buttonAdjustControl = new AtomicReference<>();
 	private AtomicReference<PositionAdjusterUI> toolbarAdjuster = new AtomicReference<>();
 	private AtomicReference<StandardsAssignerListUI> listControl = new AtomicReference<>();
 	//
@@ -210,7 +210,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 
 		StandardsAssignerListUI standardsAssignerListUI = new StandardsAssignerListUI(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		Table table = standardsAssignerListUI.getTable();
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.widthHint = 600;
 		gridData.heightHint = 400;
 		gridData.grabExcessHorizontalSpace = true;

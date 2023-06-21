@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Lablicate GmbH.
+ * Copyright (c) 2022, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -73,11 +73,11 @@ import net.openchrom.xxd.classifier.supplier.ratios.util.time.TimeRatioListUtil;
 
 public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl, IExtendedPartUI {
 
-	private Composite control;
-	//
-	private Button buttonToolbarSearch;
+	private AtomicReference<Button> buttonSearchControl = new AtomicReference<>();
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
 	private AtomicReference<TimeRatioListUI> listControl = new AtomicReference<>();
+	//
+	private Composite control;
 	//
 	private static final String CATEGORY = "Time Ratio";
 	private static final String DELETE = "Delete";
@@ -101,13 +101,13 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 			this.settings.load(settings.getRatioSettings());
 		}
 		//
-		createControl(parent);
+		control = createControl(parent);
 	}
 
 	public TimeRatioListEditor(Composite parent, TimeRatios timeRatios) {
 
 		this.settings = timeRatios;
-		createControl(parent);
+		control = createControl(parent);
 	}
 
 	public void updateInput() {
@@ -177,7 +177,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 		return settings.save();
 	}
 
-	private void createControl(Composite parent) {
+	private Composite createControl(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout(1, false);
@@ -190,12 +190,13 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 		createTableSection(composite);
 		//
 		initialize();
-		setControl(composite);
+		//
+		return composite;
 	}
 
 	private void initialize() {
 
-		enableToolbar(toolbarSearch, buttonToolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH, false);
+		enableToolbar(toolbarSearch, buttonSearchControl.get(), IMAGE_SEARCH, TOOLTIP_SEARCH, false);
 		setInput();
 	}
 
@@ -203,10 +204,11 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 
 		TimeRatioListUI timeRatioListUI = new TimeRatioListUI(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		Table table = timeRatioListUI.getTable();
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.heightHint = 450;
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		gridData.widthHint = 600;
+		gridData.heightHint = 400;
+		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-		gridData.verticalAlignment = SWT.TOP;
 		table.setLayoutData(gridData);
 		//
 		timeRatioListUI.setEditEnabled(true);
@@ -403,13 +405,21 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 		composite.setLayoutData(gridData);
 		composite.setLayout(new GridLayout(7, false));
 		//
-		add(buttonToolbarSearch = createButtonToggleToolbar(composite, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH));
+		add(createButtonToggleSearch(composite));
 		add(buttonAdd = createButtonAdd(composite));
 		add(buttonEdit = createButtonEdit(composite));
 		add(buttonRemove = createButtonRemove(composite));
 		add(buttonRemoveAll = createButtonRemoveAll(composite));
 		add(buttonImport = createButtonImport(composite));
 		add(buttonExport = createButtonExport(composite));
+	}
+
+	private Button createButtonToggleSearch(Composite parent) {
+
+		Button button = createButtonToggleToolbar(parent, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH);
+		buttonSearchControl.set(button);
+		//
+		return button;
 	}
 
 	private void add(Button button) {
@@ -484,10 +494,5 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 			settings.removeAll(removeElements);
 			setInput();
 		}
-	}
-
-	private void setControl(Composite composite) {
-
-		this.control = composite;
 	}
 }
