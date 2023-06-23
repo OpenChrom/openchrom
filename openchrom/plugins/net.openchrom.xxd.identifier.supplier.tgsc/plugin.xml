@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.xxd.identifier.targetIdentifier">
+      <TargetIdentificationSupplier
+            description="Links to the corresponding TGSC database entry."
+            id="net.openchrom.xxd.identifier.supplier.tgsc.identifier"
+            identifierName="TGSC"
+            targetURL="net.openchrom.xxd.identifier.supplier.tgsc.identifier.TheGoodScentCompanyTargetIdentifier">
+      </TargetIdentificationSupplier>
+   </extension>
+</plugin>
