@@ -133,6 +133,10 @@
          id="net.openchrom.msd.converter.supplier.splash.feature"
          version="0.0.0"/>
 
+   <includes
+         id="net.openchrom.xxd.identifier.supplier.tgsc.feature"
+         version="0.0.0"/>
+
    <plugin
          id="net.openchrom.rcp.compilation.community.ui"
          download-size="0"
@@ -289,13 +293,6 @@
 
    <plugin
          id="wrapped.org.apache.httpcomponents.httpcore"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.openchrom.xxd.identifier.supplier.tgsc"
          download-size="0"
          install-size="0"
          version="0.0.0"

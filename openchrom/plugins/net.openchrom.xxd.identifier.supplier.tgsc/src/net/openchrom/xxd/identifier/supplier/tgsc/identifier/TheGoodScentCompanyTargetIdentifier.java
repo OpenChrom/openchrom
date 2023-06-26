@@ -54,7 +54,7 @@ public class TheGoodScentCompanyTargetIdentifier implements ITargetIdentifierSup
 
 		URL url = null;
 		try {
-			var cas = libraryInformation.getCasNumber();
+			String cas = libraryInformation.getCasNumber();
 			url = new URL(MessageFormat.format(URL, cas));
 		} catch(MalformedURLException e) {
 			logger.warn(e);
