@@ -1,11 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
@@ -49,15 +49,16 @@ public class Common {
 		SoftwareType software = new SoftwareType();
 		software.setName("OpenChrom");
 		IProduct product = Platform.getProduct();
-		Version version = product.getDefiningBundle().getVersion();
-		software.setVersion(version.toString());
+		if(product != null) {
+			Version version = product.getDefiningBundle().getVersion();
+			software.setVersion(version.toString());
+		}
 		software.setManufacturer("Lablicate GmbH");
 		software.setOperatingSystem(System.getProperty("os.name"));
 		return software;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public static ResultType createPeaks(IChromatogram chromatogram) {
+	public static ResultType createPeaks(IChromatogram<?> chromatogram) {
 
 		SeriesSetType seriesSet = new SeriesSetType();
 		seriesSet.setId("PEAK_TABLE");
@@ -152,8 +153,7 @@ public class Common {
 		IndividualValueSetType peakHeights = new IndividualValueSetType();
 		int i = 0;
 		for(Object object : chromatogram.getPeaks()) {
-			if(object instanceof IChromatogramPeak) {
-				IChromatogramPeak peak = (IChromatogramPeak)object;
+			if(object instanceof IChromatogramPeak peak) {
 				numbers.getI().add(i);
 				Set<IIdentificationTarget> targets = peak.getTargets();
 				if(!targets.isEmpty()) {
