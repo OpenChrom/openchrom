@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.converter
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
-Export-Package: net.openchrom.xxd.converter.supplier.gaml.internal.io,
+Export-Package: net.openchrom.xxd.converter.supplier.gaml.converter,
+ net.openchrom.xxd.converter.supplier.gaml.internal.io,
  net.openchrom.xxd.converter.supplier.gaml.internal.v100.model,
  net.openchrom.xxd.converter.supplier.gaml.internal.v110.model,
  net.openchrom.xxd.converter.supplier.gaml.internal.v120.model,
