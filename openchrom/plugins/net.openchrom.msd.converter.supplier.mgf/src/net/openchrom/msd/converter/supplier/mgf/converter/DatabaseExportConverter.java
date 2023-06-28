@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -26,7 +26,6 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.mgf.converter.internal.io.SpecificationValidator;
 import net.openchrom.msd.converter.supplier.mgf.converter.io.MGFWriter;
 
 public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
@@ -37,7 +36,6 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 	@Override
 	public IProcessingInfo<File> convert(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) {
 
-		file = SpecificationValidator.validateSpecification(file);
 		IProcessingInfo<File> processingInfo = validate(file, massSpectra);
 		if(!processingInfo.hasErrorMessages()) {
 			try {
@@ -71,7 +69,7 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 
 	private IProcessingInfo<File> validate(File file, IMassSpectra massSpectra) {
 
-		IProcessingInfo<File> processingInfo = new ProcessingInfo<File>();
+		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		processingInfo.addMessages(super.validate(file));
 		processingInfo.addMessages(super.validate(massSpectra));
 		return processingInfo;
