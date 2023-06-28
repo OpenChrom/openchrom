@@ -9,7 +9,8 @@
             filterName="GAML MSD Chromatogram (*.gaml)"
             id="net.openchrom.msd.converter.supplier.gaml.chromatogram"
             importConverter="net.openchrom.msd.converter.supplier.gaml.converter.ChromatogramImportConverter"
-            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.gaml.converter.MagicNumberMatcher"
+            importMagicNumberMatcher="net.openchrom.xxd.converter.supplier.gaml.converter.MagicNumberMatcher"
+            importContentMatcher="net.openchrom.msd.converter.supplier.gaml.converter.FileContentMatcher"
             isExportable="false"
             isImportable="true">
       </ChromatogramSupplier>

@@ -10,7 +10,8 @@
             filterName="NMR Spectroscopy (*.gaml)"
             id="net.openchrom.nmr.converter.supplier.gaml"
             importConverter="net.openchrom.nmr.converter.supplier.gaml.converter.ScanImportConverter"
-            importMagicNumberMatcher="net.openchrom.nmr.converter.supplier.gaml.converter.MagicNumberMatcher"
+            importMagicNumberMatcher="net.openchrom.xxd.converter.supplier.gaml.converter.MagicNumberMatcher"
+            importContentMatcher="net.openchrom.nmr.converter.supplier.gaml.converter.FileContentMatcher"
             isExportable="false"
             isImportable="true">
       </ScanSupplier>
