@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.nmr.converter.supplier.gaml.fragment.test
+Bundle-ManifestVersion: 2
+Bundle-Name: GAML NMR Test
+Bundle-SymbolicName: net.openchrom.nmr.converter.supplier.gaml.fragment.test
+Bundle-Version: 1.5.0.qualifier
+Bundle-Vendor: OpenChrom
+Fragment-Host: net.openchrom.nmr.converter.supplier.gaml;bundle-version="1.5.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Require-Bundle: org.junit;bundle-version="4.11.0",
+ org.eclipse.chemclipse.rcp.app.test;bundle-version="0.8.0",
+ com.sun.xml.bind.jaxb-core;bundle-version="4.0.1",
+ com.sun.xml.bind.jaxb-impl;bundle-version="4.0.1",
+ org.glassfish.hk2.osgi-resource-locator;bundle-version="1.0.3"
