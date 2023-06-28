@@ -10,7 +10,7 @@
             filterName="Mascot Generic Format (*.mgf)"
             id="org.eclipse.chemclipse.msd.converter.supplier.mgf"
             importConverter="net.openchrom.msd.converter.supplier.mgf.converter.DatabaseImportConverter"
-            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.mgf.converter.MagicNumberMatcherDatabase"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.mgf.converter.MagicNumberMatcher"
             isExportable="true"
             isImportable="true">
       </DatabaseSupplier>
@@ -24,7 +24,7 @@
             filterName="MGF Chromatogram (*.mgf)"
             id="net.openchrom.msd.converter.supplier.mgf"
             importConverter="net.openchrom.msd.converter.supplier.mgf.converter.ChromatogramImportConverter"
-            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.mgf.converter.MagicNumberMatcherChromatogram"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.mgf.converter.MagicNumberMatcher"
             isExportable="true"
             isImportable="false">
       </ChromatogramSupplier>
