@@ -4,11 +4,12 @@
    <extension
          point="org.eclipse.chemclipse.wsd.converter.chromatogramSupplier">
       <ChromatogramSupplier
-            description="Reads Analytical Information Markup Language Chromatograms"
+            description="Reads and writes Analytical Information Markup Language Chromatograms"
+            exportConverter="net.openchrom.wsd.converter.supplier.animl.converter.ChromatogramExportConverter"
             fileExtension=".animl"
             filterName="AnIML UV-Vis Chromatogram (*.animl)"
             id="net.openchrom.wsd.converter.supplier.animl.chromatogram"
-            exportConverter="net.openchrom.wsd.converter.supplier.animl.converter.ChromatogramExportConverter"
+            importContentMatcher="net.openchrom.wsd.converter.supplier.animl.converter.FileContentMatcher"
             importConverter="net.openchrom.wsd.converter.supplier.animl.converter.ChromatogramImportConverter"
             importMagicNumberMatcher="net.openchrom.wsd.converter.supplier.animl.converter.MagicNumberMatcher"
             isExportable="true"

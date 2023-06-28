@@ -5,12 +5,13 @@
          point="org.eclipse.chemclipse.msd.converter.chromatogramSupplier">
       <ChromatogramSupplier
             description="Reads and writes Analytical Information Markup Language Chromatograms"
+            exportConverter="net.openchrom.msd.converter.supplier.animl.converter.ChromatogramExportConverter"
             fileExtension=".animl"
             filterName="AnIML MSD Chromatogram (*.animl)"
             id="net.openchrom.msd.converter.supplier.animl.chromatogram"
+            importContentMatcher="net.openchrom.msd.converter.supplier.animl.converter.ChromatogramFileContentMatcher"
             importConverter="net.openchrom.msd.converter.supplier.animl.converter.ChromatogramImportConverter"
             importMagicNumberMatcher="net.openchrom.msd.converter.supplier.animl.converter.ChromatogramMagicNumberMatcher"
-            exportConverter="net.openchrom.msd.converter.supplier.animl.converter.ChromatogramExportConverter"
             isExportable="true"
             isImportable="true">
       </ChromatogramSupplier>
@@ -23,6 +24,7 @@
             fileExtension=".animl"
             filterName="AnIML Mass Spectrum (*.animl)"
             id="net.openchrom.msd.converter.supplier.animl.spectrum"
+            importContentMatcher="net.openchrom.msd.converter.supplier.animl.converter.MassSpectrumFileContentMatcher"
             importConverter="net.openchrom.msd.converter.supplier.animl.converter.MassSpectrumImportConverter"
             importMagicNumberMatcher="net.openchrom.msd.converter.supplier.animl.converter.MassSpectrumMagicNumberMatcher"
             isExportable="true"

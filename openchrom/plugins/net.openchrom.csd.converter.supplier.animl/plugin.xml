@@ -4,11 +4,12 @@
    <extension
          point="org.eclipse.chemclipse.csd.converter.chromatogramSupplier">
       <ChromatogramSupplier
-            description="Writes AnIML Chromatograms."
+            description="Reads and writes AnIML Chromatograms."
             exportConverter="net.openchrom.csd.converter.supplier.animl.converter.ChromatogramExportConverter"
             fileExtension=".animl"
             filterName="AnIML FID Chromatogram (*.animl)"
             id="net.openchrom.csd.converter.supplier.animl"
+            importContentMatcher="net.openchrom.csd.converter.supplier.animl.converter.FileContentMatcher"
             importConverter="net.openchrom.csd.converter.supplier.animl.converter.ChromatogramImportConverter"
             importMagicNumberMatcher="net.openchrom.csd.converter.supplier.animl.converter.MagicNumberMatcher"
             isExportable="true"
