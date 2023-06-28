@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.cdf.converter;
 
+import java.io.File;
+
+import org.eclipse.chemclipse.converter.core.IFileContentMatcher;
 import org.eclipse.chemclipse.converter.core.IMagicNumberMatcher;
 import org.eclipse.chemclipse.model.settings.IProcessSettings;
 import org.eclipse.chemclipse.tsd.converter.core.IExportConverterTSD;
@@ -76,6 +79,19 @@ public class ChromatogramImportConverterTSD implements IConverterServiceTSD {
 	public IMagicNumberMatcher getMagicNumberMatcher() {
 
 		return new MagicNumberMatcher();
+	}
+
+	@Override
+	public IFileContentMatcher getFileContentMatcher() {
+
+		return new IFileContentMatcher() {
+
+			@Override
+			public boolean checkFileFormat(File file) {
+
+				return true;
+			}
+		};
 	}
 
 	@Override
