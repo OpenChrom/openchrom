@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Matthias Mailänder, Dr. Philip Wenig.
+ * Copyright (c) 2016, 2023 Matthias Mailänder, Dr. Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,14 +13,13 @@
 package net.openchrom.wsd.converter.supplier.abif.internal.support;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.io.support.AbstractArrayReader;
 
 public class ChromatogramArrayReader extends AbstractArrayReader implements IChromatogramArrayReader {
 
-	public ChromatogramArrayReader(File file) throws FileNotFoundException, IOException {
+	public ChromatogramArrayReader(File file) throws IOException {
 		super(file);
 	}
 }
