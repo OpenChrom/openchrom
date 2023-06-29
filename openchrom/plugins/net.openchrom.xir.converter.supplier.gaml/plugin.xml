@@ -11,7 +11,7 @@
             id="net.openchrom.xir.converter.supplier.gaml"
             importConverter="net.openchrom.xir.converter.supplier.gaml.converter.ScanImportConverter"
             importMagicNumberMatcher="net.openchrom.xxd.converter.supplier.gaml.converter.MagicNumberMatcher"
-            importFileContentMatcher="net.openchrom.xir.converter.supplier.gaml.converter.FileContentMatcher"
+            importContentMatcher="net.openchrom.xir.converter.supplier.gaml.converter.FileContentMatcher"
             isExportable="false"
             isImportable="true">
       </ScanSupplier>
