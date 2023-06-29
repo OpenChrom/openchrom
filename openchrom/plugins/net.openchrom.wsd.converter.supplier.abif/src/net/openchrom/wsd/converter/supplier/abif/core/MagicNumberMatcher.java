@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Matthias Mailänder, Dr. Philip Wenig.
+ * Copyright (c) 2016, 2023 Matthias Mailänder, Dr. Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,28 +17,17 @@ import java.io.File;
 import org.eclipse.chemclipse.converter.core.AbstractMagicNumberMatcher;
 import org.eclipse.chemclipse.converter.core.IMagicNumberMatcher;
 
-import net.openchrom.wsd.converter.supplier.abif.internal.support.ChromatogramArrayReader;
-import net.openchrom.wsd.converter.supplier.abif.internal.support.IChromatogramArrayReader;
-import net.openchrom.wsd.converter.supplier.abif.internal.support.SpecificationValidator;
-
 public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
+
+	// abbreviation ABIF stands for Applied Biosystems, Inc. Format
+	private static final byte[] MAGIC_CODE = new byte[]{(byte)'A', (byte)'B', (byte)'I', (byte)'F'};
 
 	@Override
 	public boolean checkFileFormat(File file) {
 
-		boolean isValidFormat = false;
-		try {
-			file = SpecificationValidator.validateSpecification(file);
-			IChromatogramArrayReader in = new ChromatogramArrayReader(file);
-			in.resetPosition();
-			String fileSignature = in.readBytesAsString(4);
-			// Magic byte abbreviation stands for Applied Biosystems, Inc. Format.
-			if(fileSignature.equals("ABIF")) {
-				isValidFormat = true;
-			}
-		} catch(Exception e) {
-			// Print no exception.
+		if(!checkFileExtension(file, ".ab1")) {
+			return false;
 		}
-		return isValidFormat;
+		return checkMagicCode(file, MAGIC_CODE);
 	}
 }
