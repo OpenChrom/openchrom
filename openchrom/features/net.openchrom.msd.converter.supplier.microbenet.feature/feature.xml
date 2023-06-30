@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.msd.converter.supplier.microbenet.feature"
+      label="MicrobeNet MALDI XML"
+      version="1.5.0.qualifier"
+      provider-name="OpenChrom"
+      plugin="net.openchrom.feature.branding">
+
+   <description url="https://microbenet.cdc.gov/">
+      This converter allows to save as MALDI XML file for use with CDC MicrobeNet.
+   </description>
+
+   <copyright url="http://www.lablicate.com/">
+      Copyright (c) 2023 Lablicate GmbH
+   </copyright>
+
+   <license url="http://www.eclipse.org/legal/epl-v10.html">
+      All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License
+v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+   </license>
+
+   <plugin
+         id="net.openchrom.msd.converter.supplier.microbenet"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
