@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2019 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2023 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -43,7 +43,7 @@ public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 				file = SpecificationValidator.validateSpecification(file);
 				IMassSpectraReader massSpectraReader = new MassSpectrumReader();
 				IMassSpectra massSpectra = massSpectraReader.read(file, monitor);
-				if(massSpectra != null && massSpectra.size() > 0) {
+				if(massSpectra != null && !massSpectra.isEmpty()) {
 					processingInfo.setProcessingResult(massSpectra);
 				} else {
 					processingInfo.addErrorMessage(DESCRIPTION, "No mass spectra are stored." + file.getAbsolutePath());

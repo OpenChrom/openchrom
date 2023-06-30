@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -69,6 +69,7 @@ public class WriterTableBufferedImpl extends AbstractBufferedWriter implements W
 	 *             if file is not accessible for writing
 	 */
 	public WriterTableBufferedImpl(final File file) throws IOException {
+
 		super(file);
 	}
 
@@ -81,6 +82,7 @@ public class WriterTableBufferedImpl extends AbstractBufferedWriter implements W
 	 *             if stream is not accessible for writing
 	 */
 	public WriterTableBufferedImpl(final OutputStream stream) throws IOException {
+
 		super(stream);
 	}
 
@@ -93,6 +95,7 @@ public class WriterTableBufferedImpl extends AbstractBufferedWriter implements W
 	 *             if writer is not accessible for writing
 	 */
 	public WriterTableBufferedImpl(final Writer writer) throws IOException {
+
 		super(writer);
 	}
 
@@ -121,21 +124,25 @@ public class WriterTableBufferedImpl extends AbstractBufferedWriter implements W
 		this.rowIds = rowIds;
 	}
 
+	@Override
 	public WriterTableBufferedImpl write(final List<? extends Row<? extends Object>> rows) throws IOException {
 
 		return write(DEFAULT_DELIMITER, rows);
 	}
 
+	@Override
 	public WriterTableBufferedImpl write(final Row<? extends Object> row) throws IOException {
 
 		return write(DEFAULT_DELIMITER, row);
 	}
 
+	@Override
 	public WriterTableBufferedImpl write(final Row<? extends Object>... rows) throws IOException {
 
 		return write(DEFAULT_DELIMITER, rows);
 	}
 
+	@Override
 	public WriterTableBufferedImpl write(final String delimiter, final List<? extends Row<? extends Object>> rows) throws IOException {
 
 		final Iterator<? extends Row<? extends Object>> it = rows.iterator();
@@ -146,14 +153,16 @@ public class WriterTableBufferedImpl extends AbstractBufferedWriter implements W
 		return this;
 	}
 
+	@Override
 	public WriterTableBufferedImpl write(final String delimiter, final Row<? extends Object>... rows) throws IOException {
 
 		return write(delimiter, Arrays.asList(rows));
 	}
 
+	@Override
 	public WriterTableBufferedImpl write(final String delimiter, final Row<?> row) throws IOException {
 
-		if(firstRow && colIds != null && colIds.size() > 0) {
+		if(firstRow && colIds != null && !colIds.isEmpty()) {
 			writer.write(UtilCollection.toString(colIds, delimiter));
 			writer.newLine();
 			firstRow = false;
@@ -163,17 +172,19 @@ public class WriterTableBufferedImpl extends AbstractBufferedWriter implements W
 		return this;
 	}
 
+	@Override
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public WriterTable write(final String delimiter, final Table<? extends Object> table) throws IOException {
 
-		if(table instanceof TableAnnotated) {
-			setColIds(((TableAnnotated)table).getColumnIdentifier());
-			setRowIds(((TableAnnotated)table).getRowIdentifier());
+		if(table instanceof TableAnnotated tableAnnotated) {
+			setColIds(tableAnnotated.getColumnIdentifier());
+			setRowIds(tableAnnotated.getRowIdentifier());
 		}
 		write(delimiter, table.getRows());
 		return this;
 	}
 
+	@Override
 	public WriterTable write(final Table<? extends Object> table) throws IOException {
 
 		return write(DEFAULT_DELIMITER, table);

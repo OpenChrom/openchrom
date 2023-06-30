@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Lablicate GmbH.
+ * Copyright (c) 2016, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,7 +13,6 @@
 package net.openchrom.msd.converter.supplier.mgf.converter.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
@@ -31,7 +30,6 @@ import net.openchrom.msd.converter.supplier.mgf.converter.model.TransformerIScan
 import net.sf.bioutils.proteomics.peak.Peak;
 import net.sf.jmgf.MGFElement;
 import net.sf.jmgf.MGFFile;
-import net.sf.kerner.utils.io.CloserProperly;
 import net.sf.kerner.utils.io.UtilIO;
 
 public class MGFWriter extends AbstractMassSpectraWriter implements IMassSpectraWriter {
@@ -43,12 +41,12 @@ public class MGFWriter extends AbstractMassSpectraWriter implements IMassSpectra
 	private final static TransformerIScanMSDMGFElement TRANSFORMER_ISCANMSD_MGFELEMENT = new TransformerIScanMSDMGFElement();
 
 	@Override
-	public void write(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void write(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
 		write(file, massSpectra.getList(), append, monitor);
 	}
 
-	public void write(File file, Collection<? extends IScanMSD> scans, boolean append, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void write(File file, Collection<? extends IScanMSD> scans, boolean append, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
 		for(IScanMSD scan : scans) {
 			write(file, scan, append, monitor);
@@ -56,14 +54,10 @@ public class MGFWriter extends AbstractMassSpectraWriter implements IMassSpectra
 	}
 
 	@Override
-	public void write(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void write(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
-		FileWriter fileWriter = null;
-		try {
-			fileWriter = new FileWriter(file, append);
+		try (FileWriter fileWriter = new FileWriter(file, append)) {
 			writeMassSpectrum(fileWriter, massSpectrum, monitor);
-		} finally {
-			new CloserProperly().closeProperly(fileWriter);
 		}
 	}
 

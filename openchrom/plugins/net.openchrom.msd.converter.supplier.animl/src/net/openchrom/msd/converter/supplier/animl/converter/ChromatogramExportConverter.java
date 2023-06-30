@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2022 Lablicate GmbH.
+ * Copyright (c) 2014, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -12,9 +12,11 @@
 package net.openchrom.msd.converter.supplier.animl.converter;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
+import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -38,15 +40,17 @@ public class ChromatogramExportConverter extends AbstractChromatogramExportConve
 		/*
 		 * Don't process if errors have occurred.
 		 */
-		if(!processingInfo.hasErrorMessages() && chromatogram instanceof IChromatogramMSD) {
-			IChromatogramMSD chromatogramMSD = (IChromatogramMSD)chromatogram;
+		if(!processingInfo.hasErrorMessages() && chromatogram instanceof IChromatogramMSD chromatogramMSD) {
 			monitor.subTask(IConstants.EXPORT_CHROMATOGRAM);
 			IChromatogramMSDWriter writer = new ChromatogramWriter();
 			try {
 				writer.writeChromatogram(file, chromatogramMSD, monitor);
-			} catch(Exception e) {
+			} catch(IOException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, "Failed to write file: " + file.getAbsolutePath());
+			} catch(FileIsNotWriteableException e) {
+				logger.warn(e);
+				processingInfo.addErrorMessage(DESCRIPTION, "Failed to write file: " + file.getAbsolutePath());
 			}
 			processingInfo.setProcessingResult(file);
 		}

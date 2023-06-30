@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.splash.io.MassSpectrumWriter;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
 public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 
 	private static final Logger logger = Logger.getLogger(DatabaseExportConverter.class);
@@ -37,7 +36,7 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 	@Override
 	public IProcessingInfo<File> convert(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(file, massSpectra);
+		IProcessingInfo<File> processingInfo = validate(file, massSpectra);
 		if(!processingInfo.hasErrorMessages()) {
 			try {
 				/*
@@ -54,7 +53,7 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 				processingInfo.addErrorMessage(DESCRIPTION, "The file is not writeable: " + file.getAbsolutePath());
 			} catch(IOException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has gone completely wrong: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, "Failed to write file: " + file.getAbsolutePath());
 			}
 		}
 		return processingInfo;
@@ -70,7 +69,7 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 
 	private IProcessingInfo<File> validate(File file, IMassSpectra massSpectra) {
 
-		IProcessingInfo<File> processingInfo = new ProcessingInfo<File>();
+		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		processingInfo.addMessages(super.validate(file));
 		processingInfo.addMessages(super.validate(massSpectra));
 		return processingInfo;
