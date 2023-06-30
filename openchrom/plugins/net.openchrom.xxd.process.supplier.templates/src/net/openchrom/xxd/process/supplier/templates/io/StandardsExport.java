@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -47,7 +47,7 @@ public class StandardsExport extends AbstractChromatogramExportConverter impleme
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
 			List<IInternalStandard> internalStandards = peak.getInternalStandards();
-			if(internalStandards.size() > 0) {
+			if(!internalStandards.isEmpty()) {
 				for(IInternalStandard internalStandard : internalStandards) {
 					AssignerStandard setting = new AssignerStandard();
 					setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);

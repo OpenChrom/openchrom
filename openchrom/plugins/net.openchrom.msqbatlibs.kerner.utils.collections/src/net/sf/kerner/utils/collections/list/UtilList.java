@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -118,8 +118,9 @@ public class UtilList {
 
 	public static <E> void fill(final List<E> list, final int numElements, final Factory<? extends E> factory) {
 
-		if(numElements < list.size())
+		if(numElements < list.size()) {
 			return;
+		}
 		final int iterations = numElements - list.size();
 		for(int i = 0; i < iterations; i++) {
 			list.add(factory.create());
@@ -128,8 +129,9 @@ public class UtilList {
 
 	public static <E> void fillElement(final List<E> list, final int numElements, final E e) {
 
-		if(numElements < list.size())
+		if(numElements < list.size()) {
 			return;
+		}
 		final int iterations = numElements - list.size();
 		for(int i = 0; i < iterations; i++) {
 			list.add(e);
@@ -138,8 +140,9 @@ public class UtilList {
 
 	public static <E> void fillNull(final List<E> list, final int numElements) {
 
-		if(numElements < list.size())
+		if(numElements < list.size()) {
 			return;
+		}
 		final int iterations = numElements - list.size();
 		for(int i = 0; i < iterations; i++) {
 			list.add(null);
@@ -225,12 +228,15 @@ public class UtilList {
 
 	public static <C> List<C> meld(final List<? extends C> c1, final List<? extends C> c2) {
 
-		if(c1 == null && c2 == null)
+		if(c1 == null && c2 == null) {
 			return new ArrayListFactory<C>().createCollection();
-		if(c1 == null)
+		}
+		if(c1 == null) {
 			return new ArrayListFactory<C>().createCollection(c2);
-		if(c2 == null)
+		}
+		if(c2 == null) {
 			return new ArrayListFactory<C>().createCollection(c1);
+		}
 		return meld(c1, c2, new ArrayListFactory<C>());
 	}
 
@@ -267,20 +273,21 @@ public class UtilList {
 			final C e1 = i1.next();
 			if(i2.hasNext()) {
 				final C e2 = i2.next();
-				if(e1 == null && e2 == null)
+				if(e1 == null && e2 == null) {
 					result.add(null);
-				else if(e1 == null)
+				} else if(e1 == null) {
 					result.add(e2);
-				else if(e2 == null)
+				} else if(e2 == null) {
 					result.add(e1);
-				else if(e1.equals(e2))
+				} else if(e1.equals(e2)) {
 					result.add(e1);
-				else {
+				} else {
 					result.add(e1);
 					result.add(e2);
 				}
-			} else
+			} else {
 				result.add(e1);
+			}
 		}
 		while(i2.hasNext()) {
 			final C e2 = i2.next();
@@ -379,12 +386,15 @@ public class UtilList {
 
 	public static <T> void setAll(final List<T> parent, final List<T> sublist, final int index) {
 
-		if(parent.size() < sublist.size())
+		if(parent.size() < sublist.size()) {
 			throw new IllegalArgumentException("parent too small for child");
-		if(parent.size() < sublist.size() + index)
+		}
+		if(parent.size() < sublist.size() + index) {
 			throw new IllegalArgumentException("parent too small for index");
-		if(index < 0)
+		}
+		if(index < 0) {
 			throw new IllegalArgumentException("invalid index " + index);
+		}
 		for(int i = 0; i < sublist.size(); i++) {
 			parent.set(i + index, sublist.get(i));
 		}
@@ -431,13 +441,13 @@ public class UtilList {
 		final List<List<T>> result = newList();
 		List<T> newList = factory.createCollection();
 		for(int i = 0; i < list.size(); i++) {
-			if(i % maxElements == 0 && newList.size() > 0) {
+			if(i % maxElements == 0 && !newList.isEmpty()) {
 				result.add(factory.createCollection(newList));
 				newList = factory.createCollection();
 			}
 			newList.add(list.get(i));
 		}
-		if(newList().size() > 0) {
+		if(!newList().isEmpty()) {
 			result.add(newList);
 		}
 		return result;
@@ -463,13 +473,15 @@ public class UtilList {
 
 		final List<V> result = factory.createCollection();
 		for(final V o : list) {
-			if(o != null)
+			if(o != null) {
 				result.add(o);
+			}
 		}
 		return result;
 	}
 
 	private UtilList() {
+
 		// Singleton
 	}
 }

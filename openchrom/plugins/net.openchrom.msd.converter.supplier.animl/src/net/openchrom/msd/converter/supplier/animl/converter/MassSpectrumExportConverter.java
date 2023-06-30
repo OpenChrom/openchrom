@@ -40,7 +40,7 @@ public class MassSpectrumExportConverter extends AbstractMassSpectrumExportConve
 	private IProcessingInfo<File> getProcessingInfo() {
 
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
-		processingInfo.addErrorMessage(DESCRIPTION, "It's not possible to export mass spectrum data as mzXML yet.");
+		processingInfo.addErrorMessage(DESCRIPTION, "It's not possible to export mass spectrum data as AnIML yet.");
 		//
 		return processingInfo;
 	}

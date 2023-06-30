@@ -178,7 +178,7 @@ public class ReportWriter {
 
 	private boolean isTraceColumnSelectedAndActive(String column, List<Integer> traces) {
 
-		if(traces.size() > 0) {
+		if(!traces.isEmpty()) {
 			if(column.equals(ReportColumns.TRACES_MIN_AREA_PEAKS)) {
 				return true;
 			} else if(column.equals(ReportColumns.TRACES_MEAN_AREA_PEAKS)) {
@@ -402,7 +402,7 @@ public class ReportWriter {
 		List<? extends IPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
 		List<IPeak> matchedPeaks = new ArrayList<>();
 		//
-		if(peaks != null && peaks.size() > 0) {
+		if(peaks != null && !peaks.isEmpty()) {
 			switch(reportSetting.getReportStrategy()) {
 				case ALL:
 					/*
