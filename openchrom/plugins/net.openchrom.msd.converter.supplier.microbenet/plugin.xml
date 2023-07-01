@@ -6,6 +6,8 @@
       <DatabaseSupplier
             description="Writes MicrobeNet MALDI XML files."
             exportConverter="net.openchrom.msd.converter.supplier.microbenet.converter.DatabaseExportConverter"
+            importConverter="net.openchrom.msd.converter.supplier.microbenet.converter.DatabaseImportConverter"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.microbenet.converter.MagicNumberMatcher"            
             fileExtension=".xml"
             filterName="MicrobeNet MALDI (*.xml)"
             id="net.openchrom.msd.converter.supplier.microbenet"
