@@ -15,6 +15,9 @@ name: License Header
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   check-license-header-year:
     name: Year

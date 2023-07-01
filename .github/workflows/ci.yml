@@ -11,10 +11,12 @@
 #     Alexander Fedorov (ArSysOp) - initial API and implementation
 #     Matthias Mailänder - adapted for OpenChrom
 ###############################################################################
-
 name: Continuous Integration
 on:
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   build:
