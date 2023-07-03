@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -77,6 +77,7 @@ public class QuantRatioTableComparator extends AbstractRecordTableComparator imp
 					sortOrder = Double.compare(ratio2.getDeviationError(), ratio1.getDeviationError());
 					break;
 			}
+			//
 			if(getDirection() == ASCENDING) {
 				sortOrder = -sortOrder;
 			}
@@ -115,7 +116,11 @@ public class QuantRatioTableComparator extends AbstractRecordTableComparator imp
 				case 5:
 					sortOrder = Double.compare(ratio2.getDeviation(), ratio1.getDeviation());
 					break;
+				case 6:
+					sortOrder = Double.compare(ratio2.getResponseFactor(), ratio1.getResponseFactor());
+					break;
 			}
+			//
 			if(getDirection() == ASCENDING) {
 				sortOrder = -sortOrder;
 			}

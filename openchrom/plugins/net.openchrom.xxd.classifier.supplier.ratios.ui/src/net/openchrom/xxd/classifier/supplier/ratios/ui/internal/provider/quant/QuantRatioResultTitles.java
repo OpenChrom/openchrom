@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,6 +33,7 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 	public static final String CONCENTRATION = "Concentration";
 	public static final String CONCENTRATION_UNIT = "ConcentrationUnit";
 	public static final String EXPECTED_CONCENTRATION = "Expected Concentration";
+	public static final String RESPONSE_FACTOR = "Response Factor";
 	//
 	public static final String[] TITLES_SETTINGS = { //
 			NAME, //
@@ -58,15 +59,17 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 			EXPECTED_CONCENTRATION, //
 			CONCENTRATION, //
 			CONCENTRATION_UNIT, //
-			DEVIATION //
+			DEVIATION, //
+			RESPONSE_FACTOR //
 	};
 	//
 	public static final int[] BOUNDS_RESULTS = { //
 			80, //
-			150, //
 			80, //
 			80, //
-			100, //
+			80, //
+			80, //
+			80, //
 			80 //
 	};
 
@@ -74,6 +77,20 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 	public Collection<? extends ColumnDefinition<?, ?>> getColumnDefinitions() {
 
 		List<ColumnDefinition<?, ?>> list = new ArrayList<>();
+		//
+		addColumnRetentionTime(list);
+		addColumnQuantitationName(list);
+		addColumnExpectedConcentration(list);
+		addColumnConcentration(list);
+		addColumnConcentrationUnit(list);
+		addColumnDeviation(list);
+		addColumnResponseFactor(list);
+		//
+		return list;
+	}
+
+	private void addColumnRetentionTime(List<ColumnDefinition<?, ?>> list) {
+
 		list.add(defaultSortableColumn(RETENTION_TIME, 80, new Function<QuantRatio, Double>() {
 
 			@Override
@@ -87,7 +104,11 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 				}
 			}
 		}).create());
-		list.add(defaultSortableColumn(QUANTITATION_NAME, 150, new Function<QuantRatio, String>() {
+	}
+
+	private void addColumnQuantitationName(List<ColumnDefinition<?, ?>> list) {
+
+		list.add(defaultSortableColumn(QUANTITATION_NAME, 80, new Function<QuantRatio, String>() {
 
 			@Override
 			public String apply(QuantRatio ratio) {
@@ -95,6 +116,10 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getName();
 			}
 		}).create());
+	}
+
+	private void addColumnExpectedConcentration(List<ColumnDefinition<?, ?>> list) {
+
 		list.add(defaultSortableColumn(EXPECTED_CONCENTRATION, 80, new Function<QuantRatio, Double>() {
 
 			@Override
@@ -103,6 +128,10 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getExpectedConcentration();
 			}
 		}).create());
+	}
+
+	private void addColumnConcentration(List<ColumnDefinition<?, ?>> list) {
+
 		list.add(defaultSortableColumn(CONCENTRATION, 80, new Function<QuantRatio, Double>() {
 
 			@Override
@@ -111,7 +140,11 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getConcentration();
 			}
 		}).create());
-		list.add(defaultSortableColumn(CONCENTRATION_UNIT, 100, new Function<QuantRatio, String>() {
+	}
+
+	private void addColumnConcentrationUnit(List<ColumnDefinition<?, ?>> list) {
+
+		list.add(defaultSortableColumn(CONCENTRATION_UNIT, 80, new Function<QuantRatio, String>() {
 
 			@Override
 			public String apply(QuantRatio ratio) {
@@ -119,6 +152,10 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getConcentrationUnit();
 			}
 		}).create());
+	}
+
+	private void addColumnDeviation(List<ColumnDefinition<?, ?>> list) {
+
 		list.add(defaultSortableColumn(DEVIATION, 80, new Function<QuantRatio, Double>() {
 
 			@Override
@@ -127,6 +164,17 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getDeviation();
 			}
 		}).create());
-		return list;
+	}
+
+	private void addColumnResponseFactor(List<ColumnDefinition<?, ?>> list) {
+
+		list.add(defaultSortableColumn(RESPONSE_FACTOR, 80, new Function<QuantRatio, Double>() {
+
+			@Override
+			public Double apply(QuantRatio ratio) {
+
+				return ratio.getResponseFactor();
+			}
+		}).create());
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,22 +12,23 @@
 package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.QuantRatioListUI;
 
 public class QuantRatioEditingSupport extends EditingSupport {
 
 	private static final Logger logger = Logger.getLogger(QuantRatioEditingSupport.class);
 	//
 	private CellEditor cellEditor;
-	private ExtendedTableViewer tableViewer;
+	private QuantRatioListUI tableViewer;
 	private String column;
 
-	public QuantRatioEditingSupport(ExtendedTableViewer tableViewer, String column) {
+	public QuantRatioEditingSupport(QuantRatioListUI tableViewer, String column) {
+
 		super(tableViewer);
 		this.column = column;
 		this.cellEditor = new TextCellEditor(tableViewer.getTable());
@@ -49,8 +50,7 @@ public class QuantRatioEditingSupport extends EditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof QuantRatio) {
-			QuantRatio setting = (QuantRatio)element;
+		if(element instanceof QuantRatio setting) {
 			switch(column) {
 				case QuantRatioResultTitles.QUANTITATION_NAME:
 					return setting.getQuantitationName();
@@ -70,8 +70,7 @@ public class QuantRatioEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof QuantRatio) {
-			QuantRatio setting = (QuantRatio)element;
+		if(element instanceof QuantRatio setting) {
 			switch(column) {
 				case QuantRatioResultTitles.QUANTITATION_NAME:
 					String quantitationName = (String)value;
@@ -104,7 +103,9 @@ public class QuantRatioEditingSupport extends EditingSupport {
 					}
 					break;
 			}
+			//
 			tableViewer.refresh();
+			tableViewer.updateContent();
 		}
 	}
 

@@ -95,4 +95,12 @@
          </adapter>
       </factory>               
    </extension>
+   
+   <extension
+         point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
+      <icon
+            class="net.openchrom.xxd.classifier.supplier.ratios.ui.icon.MenuIcon"
+            id="net.openchrom.xxd.classifier.supplier.ratios.quant">
+      </icon>
+   </extension>   
 </plugin>

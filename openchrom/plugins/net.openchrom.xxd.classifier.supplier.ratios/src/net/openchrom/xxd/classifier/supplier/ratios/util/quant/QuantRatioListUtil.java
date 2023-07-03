@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -15,10 +15,14 @@ import net.openchrom.xxd.classifier.supplier.ratios.util.AbstractRatioListUtil;
 
 public class QuantRatioListUtil extends AbstractRatioListUtil<QuantRatioValidator> {
 
-	public static final String EXAMPLE_SINGLE = "Naphthalin | Naphthalin-D8 | 1.0 | mg/L | 5.0 | 15.0";
-	public static final String EXAMPLE_MULTIPLE = "Naphthalin | Naphthalin-D8 | 1.0 | mg/L | 5.0 | 15.0; Styrene | Toluene | 12.0 | g/L | 5.0 | 15.0";
+	private static final String EXAMPLE_1 = "Naphthalin | Naphthalin-D8 | 1.0 | mg/L | 5.0 | 15.0";
+	private static final String EXAMPLE_2 = "Styrene | Toluene | 12.0 | g/L | 5.0 | 15.0";
+	//
+	public static final String EXAMPLE_SINGLE = EXAMPLE_1;
+	public static final String EXAMPLE_MULTIPLE = EXAMPLE_1 + SEPARATOR_TOKEN + EXAMPLE_2;
 
 	public QuantRatioListUtil() {
+
 		super(new QuantRatioValidator());
 	}
 }

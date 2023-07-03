@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -35,6 +35,7 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 	@Override
 	public IStatus validate(Object value) {
 
+		reset();
 		String message = null;
 		if(value == null) {
 			message = ERROR_ENTRY;
@@ -55,12 +56,12 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 						 * Evaluation
 						 */
 						name = parseString(values, 0);
-						if("".equals(name)) {
+						if(name.isEmpty()) {
 							message = "A substance name needs to be set.";
 						}
 						//
 						quantitationName = parseString(values, 1);
-						if("".equals(quantitationName)) {
+						if(quantitationName.isEmpty()) {
 							message = "A quantitation name needs to be set.";
 						}
 						//
@@ -70,7 +71,7 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 						}
 						//
 						concentrationUnit = parseString(values, 3);
-						if("".equals(concentrationUnit)) {
+						if(concentrationUnit.isEmpty()) {
 							message = "A concentration unit needs to be set.";
 						}
 						//
@@ -104,6 +105,16 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 		}
 	}
 
+	private void reset() {
+
+		name = "";
+		quantitationName = "";
+		expectedConcentration = 0.0d;
+		concentrationUnit = "";
+		deviationWarn = 0.0d;
+		deviationError = 0.0d;
+	}
+
 	public QuantRatio getSetting() {
 
 		QuantRatio setting = new QuantRatio();
@@ -113,6 +124,7 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 		setting.setConcentrationUnit(concentrationUnit);
 		setting.setDeviationWarn(deviationWarn);
 		setting.setDeviationError(deviationError);
+		//
 		return setting;
 	}
 }

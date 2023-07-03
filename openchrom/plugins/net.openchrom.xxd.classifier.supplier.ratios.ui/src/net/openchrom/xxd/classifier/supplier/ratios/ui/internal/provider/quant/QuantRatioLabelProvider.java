@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -72,8 +72,7 @@ public class QuantRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 	private String getColumnTextSettings(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof QuantRatio) {
-			QuantRatio ratio = (QuantRatio)element;
+		if(element instanceof QuantRatio ratio) {
 			switch(columnIndex) {
 				case 0:
 					text = ratio.getName();
@@ -101,8 +100,7 @@ public class QuantRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 	private String getColumnTextResults(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof QuantRatio) {
-			QuantRatio ratio = (QuantRatio)element;
+		if(element instanceof QuantRatio ratio) {
 			switch(columnIndex) {
 				case 0:
 					IPeak peak = ratio.getPeak();
@@ -126,6 +124,9 @@ public class QuantRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 					break;
 				case 5:
 					text = decimalFormat.format(ratio.getDeviation());
+					break;
+				case 6:
+					text = decimalFormat.format(ratio.getResponseFactor());
 					break;
 			}
 		}

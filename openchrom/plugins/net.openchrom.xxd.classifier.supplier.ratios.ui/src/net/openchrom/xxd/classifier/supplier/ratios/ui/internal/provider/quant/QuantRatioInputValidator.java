@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -26,6 +26,7 @@ public class QuantRatioInputValidator implements IInputValidator {
 	private List<QuantRatio> settings = new ArrayList<>();
 
 	public QuantRatioInputValidator(List<QuantRatio> settings) {
+
 		if(settings != null) {
 			this.settings = settings;
 		}
