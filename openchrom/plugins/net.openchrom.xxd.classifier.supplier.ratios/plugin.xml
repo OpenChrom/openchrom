@@ -52,7 +52,7 @@
       <ChromatogramSupplier
             description="Exports a Quant Ratio Classifier Template "
             exportConverter="net.openchrom.xxd.classifier.supplier.ratios.core.QuantRatioExport"
-            fileExtension=".txt"
+            fileExtension=".qar"
             fileName="QuantRatioClassifierTemplate.qar"
             filterName="Template Quant Ratios (*.qar)"
             id="net.openchrom.xxd.classifier.supplier.ratios.quantRatioTemplateMSD"
@@ -88,7 +88,7 @@
       <ChromatogramSupplier
             description="Exports a Quant Ratio Classifier Template "
             exportConverter="net.openchrom.xxd.classifier.supplier.ratios.core.QuantRatioExport"
-            fileExtension=".txt"
+            fileExtension=".qar"
             fileName="QuantRatioClassifierTemplate.qar"
             filterName="Template Quant Ratios (*.qar)"
             id="net.openchrom.xxd.classifier.supplier.ratios.quantRatioTemplateCSD"
