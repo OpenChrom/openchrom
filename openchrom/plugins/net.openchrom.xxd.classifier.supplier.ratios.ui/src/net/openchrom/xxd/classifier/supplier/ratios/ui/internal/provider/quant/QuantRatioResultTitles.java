@@ -55,6 +55,7 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 	//
 	public static final String[] TITLES_RESULTS = { //
 			RETENTION_TIME, //
+			NAME, //
 			QUANTITATION_NAME, //
 			EXPECTED_CONCENTRATION, //
 			CONCENTRATION, //
@@ -70,6 +71,7 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 			80, //
 			80, //
 			80, //
+			80, //
 			80 //
 	};
 
@@ -79,6 +81,7 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 		List<ColumnDefinition<?, ?>> list = new ArrayList<>();
 		//
 		addColumnRetentionTime(list);
+		addColumnName(list);
 		addColumnQuantitationName(list);
 		addColumnExpectedConcentration(list);
 		addColumnConcentration(list);
@@ -106,6 +109,18 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 		}).create());
 	}
 
+	private void addColumnName(List<ColumnDefinition<?, ?>> list) {
+
+		list.add(defaultSortableColumn(NAME, 80, new Function<QuantRatio, String>() {
+
+			@Override
+			public String apply(QuantRatio ratio) {
+
+				return ratio.getName();
+			}
+		}).create());
+	}
+
 	private void addColumnQuantitationName(List<ColumnDefinition<?, ?>> list) {
 
 		list.add(defaultSortableColumn(QUANTITATION_NAME, 80, new Function<QuantRatio, String>() {
@@ -113,7 +128,7 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 			@Override
 			public String apply(QuantRatio ratio) {
 
-				return ratio.getName();
+				return ratio.getQuantitationName();
 			}
 		}).create());
 	}

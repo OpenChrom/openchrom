@@ -14,7 +14,7 @@ package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant;
 
 import java.text.DecimalFormat;
 
-import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -105,27 +105,30 @@ public class QuantRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 				case 0:
 					IPeak peak = ratio.getPeak();
 					if(peak != null) {
-						text = decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR);
+						text = decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 					} else {
 						text = "--";
 					}
 					break;
 				case 1:
-					text = ratio.getQuantitationName();
+					text = ratio.getName();
 					break;
 				case 2:
-					text = decimalFormat.format(ratio.getExpectedConcentration());
+					text = ratio.getQuantitationName();
 					break;
 				case 3:
-					text = decimalFormat.format(ratio.getConcentration());
+					text = decimalFormat.format(ratio.getExpectedConcentration());
 					break;
 				case 4:
-					text = ratio.getConcentrationUnit();
+					text = decimalFormat.format(ratio.getConcentration());
 					break;
 				case 5:
-					text = decimalFormat.format(ratio.getDeviation());
+					text = ratio.getConcentrationUnit();
 					break;
 				case 6:
+					text = decimalFormat.format(ratio.getDeviation());
+					break;
+				case 7:
 					text = decimalFormat.format(ratio.getResponseFactor());
 					break;
 			}

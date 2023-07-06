@@ -53,10 +53,7 @@ public class QuantRatioTableComparator extends AbstractRecordTableComparator imp
 	public int compareSettings(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof QuantRatio && e2 instanceof QuantRatio) {
-			QuantRatio ratio1 = (QuantRatio)e1;
-			QuantRatio ratio2 = (QuantRatio)e2;
-			//
+		if(e1 instanceof QuantRatio ratio1 && e2 instanceof QuantRatio ratio2) {
 			switch(getPropertyIndex()) {
 				case 0:
 					sortOrder = ratio2.getName().compareTo(ratio1.getName());
@@ -88,10 +85,7 @@ public class QuantRatioTableComparator extends AbstractRecordTableComparator imp
 	public int compareResults(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof QuantRatio && e2 instanceof QuantRatio) {
-			QuantRatio ratio1 = (QuantRatio)e1;
-			QuantRatio ratio2 = (QuantRatio)e2;
-			//
+		if(e1 instanceof QuantRatio ratio1 && e2 instanceof QuantRatio ratio2) {
 			IPeak peak1 = ratio1.getPeak();
 			IPeak peak2 = ratio2.getPeak();
 			//
@@ -102,21 +96,24 @@ public class QuantRatioTableComparator extends AbstractRecordTableComparator imp
 					}
 					break;
 				case 1:
-					sortOrder = ratio2.getQuantitationName().compareTo(ratio1.getQuantitationName());
+					sortOrder = ratio2.getName().compareTo(ratio1.getName());
 					break;
 				case 2:
-					sortOrder = Double.compare(ratio2.getExpectedConcentration(), ratio1.getExpectedConcentration());
+					sortOrder = ratio2.getQuantitationName().compareTo(ratio1.getQuantitationName());
 					break;
 				case 3:
-					sortOrder = Double.compare(ratio2.getConcentration(), ratio1.getConcentration());
+					sortOrder = Double.compare(ratio2.getExpectedConcentration(), ratio1.getExpectedConcentration());
 					break;
 				case 4:
-					sortOrder = ratio2.getConcentrationUnit().compareTo(ratio1.getConcentrationUnit());
+					sortOrder = Double.compare(ratio2.getConcentration(), ratio1.getConcentration());
 					break;
 				case 5:
-					sortOrder = Double.compare(ratio2.getDeviation(), ratio1.getDeviation());
+					sortOrder = ratio2.getConcentrationUnit().compareTo(ratio1.getConcentrationUnit());
 					break;
 				case 6:
+					sortOrder = Double.compare(ratio2.getDeviation(), ratio1.getDeviation());
+					break;
+				case 7:
 					sortOrder = Double.compare(ratio2.getResponseFactor(), ratio1.getResponseFactor());
 					break;
 			}
