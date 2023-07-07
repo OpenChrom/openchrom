@@ -3,7 +3,9 @@
       id="net.openchrom.csd.converter.supplier.cdf.feature"
       label="NetCDF FID (*.cdf)"
       version="1.5.0.qualifier"
-      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding"
+      license-feature="org.eclipse.license"
+      license-feature-version="1.0.0.qualifier">
 
    <description url="http://www.openchrom.net">
       This is the NetCDF FID converter.
@@ -13,12 +15,8 @@
       Copyright (c) 2014, 2023 Lablicate GmbH.
    </copyright>
 
-   <license url="http://www.eclipse.org/legal/epl-v10.html">
-      Copyright (c) 2014, 2023 Lablicate GmbH.
-All rights reserved. This program and the accompanying materials
-are made available under the terms of the Eclipse Public License
-v1.0 which accompanies this distribution, and is available at
-http://www.eclipse.org/legal/epl-v10.html
+   <license url="%licenseURL">
+      %license
    </license>
 
    <url>

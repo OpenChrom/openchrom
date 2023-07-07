@@ -3,7 +3,9 @@
       id="net.openchrom.platform.feature"
       label="OpenChrom Platform"
       version="1.5.0.qualifier"
-      plugin="net.openchrom.feature.branding">
+      plugin="net.openchrom.feature.branding"
+      license-feature="org.eclipse.license"
+      license-feature-version="1.0.0.qualifier">
 
    <description url="https://www.openchrom.net/">
       This contains the OpenChrom platform
@@ -13,8 +15,8 @@
       Copyright (C) 2020, 2022 Lablicate GmbH
    </copyright>
 
-   <license url="http://www.eclipse.org/legal/epl-v10.html">
-      Eclipse Public License
+   <license url="%licenseURL">
+      %license
    </license>
 
    <includes

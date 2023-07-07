@@ -2,14 +2,15 @@
 <feature
       id="net.openchrom.msqbatlibs.kerner.utils.feature"
       label="MSqBAT Utils"
-      version="1.5.0.qualifier" plugin="net.openchrom.feature.branding">
+      version="1.5.0.qualifier" plugin="net.openchrom.feature.branding"
+      license-feature="org.eclipse.license" license-feature-version="1.0.0.qualifier">
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright url="http://www.openchrom.net">
+      Copyright (c) 2015, 2018 Dr. Alexander Kerner
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="%licenseURL">
+      %license
    </license>
 
    <plugin
