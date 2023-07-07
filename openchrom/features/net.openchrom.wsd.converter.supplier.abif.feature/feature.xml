@@ -3,7 +3,8 @@
       id="net.openchrom.wsd.converter.supplier.abif.feature"
       label="ABIF Converter"
       version="1.5.0.qualifier"
-      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding"
+      license-feature="org.eclipse.license" license-feature-version="1.0.0.qualifier">
 
    <description url="http://www.openchrom.net">
       This feature is an ABIF converter.
@@ -13,18 +14,9 @@
       Copyright (c) 2016, 2018 Matthias Mailänder, Dr. Philip Wenig.
    </copyright>
 
-   <license url="http://www.eclipse.org/legal/epl-v10.html">
-      Copyright (c) 2016, 2018 Matthias Mailänder, Dr. Philip Wenig.
-
-All rights reserved. This program and the accompanying materials
-are made available under the terms of the Eclipse Public License
-v1.0
-which accompanies this distribution, and is available at
-http://www.eclipse.org/legal/epl-v10.html
+   <license url="%licenseURL">
+      %license
    </license>
-
-   <requires>
-   </requires>
 
    <plugin
          id="net.openchrom.wsd.converter.supplier.abif"

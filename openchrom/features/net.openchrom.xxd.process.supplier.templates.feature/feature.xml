@@ -3,7 +3,8 @@
       id="net.openchrom.xxd.process.supplier.templates.feature"
       label="Templates"
       version="1.5.0.qualifier"
-      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding"
+      license-feature="org.eclipse.license" license-feature-version="1.0.0.qualifier">
 
    <description url="https://www.openchrom.net">
       Peak detection configured by a set of rules.
@@ -13,12 +14,8 @@
       Copyright (c) 2018, 2022 Lablicate GmbH.
    </copyright>
 
-   <license url="http://www.openchrom.net">
-      Copyright (c) 2018, 2022 Lablicate GmbH.
-All rights reserved. This program and the accompanying materials
-are made available under the terms of the Eclipse Public License
-v1.0 which accompanies this distribution, and is available at
-http://www.eclipse.org/legal/epl-v10.html
+   <license url="%licenseURL">
+      %license
    </license>
 
    <plugin
