@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.msd.identifier.supplier.massbank
+Bundle-ManifestVersion: 2
+Bundle-Name: MassBank Identifier
+Bundle-SymbolicName: net.openchrom.msd.identifier.supplier.massbank;singleton:=true
+Bundle-Version: 1.5.0.qualifier
+Bundle-Activator: net.openchrom.msd.identifier.supplier.massbank.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.chemclipse.support;bundle-version="0.9.0",
+ org.eclipse.chemclipse.model;bundle-version="0.9.0",
+ org.eclipse.chemclipse.processing;bundle-version="0.9.0",
+ org.eclipse.chemclipse.logging;bundle-version="0.9.0",
+ org.eclipse.chemclipse.chromatogram.xxd.identifier;bundle-version="0.9.0",
+ org.eclipse.chemclipse.msd.model;bundle-version="0.9.0",
+ net.openchrom.thirdpartylibraries.splash;bundle-version="1.8.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-ActivationPolicy: lazy

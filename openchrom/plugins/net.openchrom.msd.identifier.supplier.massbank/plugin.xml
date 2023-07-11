@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.xxd.identifier.targetIdentifier">
+      <TargetIdentificationSupplier
+            description="Links to the corresponding MassBank entry."
+            id="net.openchrom.msd.identifier.supplier.massbank.target.identifier"
+            identifierName="MassBank"
+            targetURL="net.openchrom.msd.identifier.supplier.massbank.identifier.TargetIdentifier">
+      </TargetIdentificationSupplier>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.xxd.identifier.scanIdentifier">
+      <ScanIdentificationSupplier
+            description="Links to the corresponding MassBank entry."
+            id="net.openchrom.msd.identifier.supplier.massbank.scan.identifier"
+            identifierName="MassBank"
+            targetURL="net.openchrom.msd.identifier.supplier.massbank.identifier.ScanIdentifier">
+      </ScanIdentificationSupplier>
+   </extension>
+</plugin>
