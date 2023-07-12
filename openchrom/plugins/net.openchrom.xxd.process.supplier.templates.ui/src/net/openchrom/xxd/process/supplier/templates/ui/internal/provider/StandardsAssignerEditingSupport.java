@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -38,8 +38,8 @@ public class StandardsAssignerEditingSupport extends AbstractTemplateEditingSupp
 						return Double.toString(setting.getConcentration());
 					case AbstractTemplateLabelProvider.CONCENTRATION_UNIT:
 						return setting.getConcentrationUnit();
-					case AbstractTemplateLabelProvider.RESPONSE_FACTOR:
-						return Double.toString(setting.getResponseFactor());
+					case AbstractTemplateLabelProvider.COMPENSATION_FACTOR:
+						return Double.toString(setting.getCompensationFactor());
 					case AbstractTemplateLabelProvider.TRACES:
 						return setting.getTracesIdentification();
 				}
@@ -72,11 +72,11 @@ public class StandardsAssignerEditingSupport extends AbstractTemplateEditingSupp
 						setting.setConcentrationUnit(text);
 					}
 					break;
-				case AbstractTemplateLabelProvider.RESPONSE_FACTOR:
+				case AbstractTemplateLabelProvider.COMPENSATION_FACTOR:
 					double factor = convertValue(value);
 					if(!Double.isNaN(factor)) {
 						if(factor > 0.0d) {
-							setting.setResponseFactor(factor);
+							setting.setCompensationFactor(factor);
 						}
 					}
 					break;

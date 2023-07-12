@@ -50,7 +50,7 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String INTERNAL_STANDARD_CONCENTRATION = "Internal Standard Concentration";
 	public static final String INTERNAL_STANDARD_CONCENTRATION_UNIT = "Internal Standard Concentration Unit";
 	public static final String INTERNAL_STANDARD_NAME = "Internal Standard Name";
-	public static final String INTERNAL_STANDARD_RESPONSE_FACTOR = "Internal Standard Response Factor";
+	public static final String INTERNAL_STANDARD_COMPENSATION_FACTOR = "Internal Standard Compensation Factor";
 	public static final String QUANTITATION_ENTRY_AREA = "Quantitation Area";
 	public static final String QUANTITATION_CALIBRATION_METHOD = "Quantitation Calibration Method";
 	public static final String QUANTITATION_CHEMICAL_CLASS = "Quantitation Chemical Class";
@@ -112,7 +112,7 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(INTERNAL_STANDARD_CONCENTRATION);
 		reportColumns.add(INTERNAL_STANDARD_CONCENTRATION_UNIT);
 		reportColumns.add(INTERNAL_STANDARD_NAME);
-		reportColumns.add(INTERNAL_STANDARD_RESPONSE_FACTOR);
+		reportColumns.add(INTERNAL_STANDARD_COMPENSATION_FACTOR);
 		reportColumns.add(QUANTITATION_ENTRY_AREA);
 		reportColumns.add(QUANTITATION_CALIBRATION_METHOD);
 		reportColumns.add(QUANTITATION_CHEMICAL_CLASS);

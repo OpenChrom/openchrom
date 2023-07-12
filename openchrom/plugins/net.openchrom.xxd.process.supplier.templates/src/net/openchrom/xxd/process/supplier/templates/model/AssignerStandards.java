@@ -186,7 +186,7 @@ public class AssignerStandards extends ArrayList<AssignerStandard> implements IS
 		entries.add(setting.getName());
 		entries.add(Double.toString(setting.getConcentration()));
 		entries.add(setting.getConcentrationUnit());
-		entries.add(Double.toString(setting.getResponseFactor()));
+		entries.add(Double.toString(setting.getCompensationFactor()));
 		entries.add(setting.getTracesIdentification());
 		entries.add(setting.getPositionDirective().name());
 		//

@@ -310,9 +310,9 @@ public class ConfigurableReportWriter {
 						records.add("");
 					}
 				}
-				if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_RESPONSE_FACTOR)) {
+				if(reportColumn.equals(ReportColumns.INTERNAL_STANDARD_COMPENSATION_FACTOR)) {
 					if(internalStandard != null) {
-						records.add(internalStandard.getResponseFactor());
+						records.add(internalStandard.getCompensationFactor());
 					} else {
 						records.add("");
 					}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,12 +13,14 @@ package net.openchrom.xxd.process.supplier.templates.model;
 
 import java.util.Objects;
 
+import org.eclipse.chemclipse.model.quantitation.IInternalStandard;
+
 public class AssignerStandard extends AbstractSetting {
 
 	private String name = "";
 	private double concentration = 0.0d;
 	private String concentrationUnit = "";
-	private double responseFactor = 1.0d;
+	private double compensationFactor = IInternalStandard.STANDARD_COMPENSATION_FACTOR;
 	private String tracesIdentification = "";
 
 	public void copyFrom(AssignerStandard setting) {
@@ -30,7 +32,7 @@ public class AssignerStandard extends AbstractSetting {
 			setName(setting.getName());
 			setConcentration(setting.getConcentration());
 			setConcentrationUnit(setting.getConcentrationUnit());
-			setResponseFactor(setting.getResponseFactor());
+			setCompensationFactor(setting.getCompensationFactor());
 			setTracesIdentification(setting.getTracesIdentification());
 		}
 	}
@@ -65,14 +67,14 @@ public class AssignerStandard extends AbstractSetting {
 		this.concentrationUnit = concentrationUnit;
 	}
 
-	public double getResponseFactor() {
+	public double getCompensationFactor() {
 
-		return responseFactor;
+		return compensationFactor;
 	}
 
-	public void setResponseFactor(double responseFactor) {
+	public void setCompensationFactor(double compensationFactor) {
 
-		this.responseFactor = responseFactor;
+		this.compensationFactor = compensationFactor;
 	}
 
 	public String getTracesIdentification() {

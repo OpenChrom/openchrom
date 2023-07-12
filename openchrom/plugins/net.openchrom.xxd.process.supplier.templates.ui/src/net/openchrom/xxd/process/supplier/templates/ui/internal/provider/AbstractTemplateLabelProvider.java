@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Lablicate GmbH.
+ * Copyright (c) 2022, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -37,7 +37,7 @@ public abstract class AbstractTemplateLabelProvider extends AbstractChemClipseLa
 	public static final String NAME_ISTD = "ISTD (Internal Standard)";
 	public static final String CONCENTRATION = "Concentration";
 	public static final String CONCENTRATION_UNIT = "Concentration Unit";
-	public static final String RESPONSE_FACTOR = "Response Factor";
+	public static final String COMPENSATION_FACTOR = "Compensation Factor";
 	//
 	public static final String PLACEHOLDER = "--";
 	//

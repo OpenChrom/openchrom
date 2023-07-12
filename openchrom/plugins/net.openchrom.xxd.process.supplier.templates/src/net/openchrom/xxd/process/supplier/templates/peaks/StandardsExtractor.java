@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,6 +25,7 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.quantitation.IInternalStandard;
 import org.eclipse.chemclipse.model.quantitation.InternalStandard;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -129,8 +130,8 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 								String name = identificationTarget.getLibraryInformation().getName();
 								double concentration = standard.getConcentration();
 								String concentrationUnit = extractorSettings.getConcentrationUnit();
-								double responseFactor = 1.0d;
-								InternalStandard internalStandard = new InternalStandard(name, concentration, concentrationUnit, responseFactor);
+								double compensationFactor = IInternalStandard.STANDARD_COMPENSATION_FACTOR;
+								InternalStandard internalStandard = new InternalStandard(name, concentration, concentrationUnit, compensationFactor);
 								peak.addInternalStandard(internalStandard);
 							} else {
 								logger.warn("The peak area is 0.");

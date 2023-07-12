@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -101,8 +101,8 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 								String name = setting.getName();
 								double concentration = setting.getConcentration();
 								String concentrationUnit = setting.getConcentrationUnit();
-								double responseFactor = setting.getResponseFactor();
-								InternalStandard internalStandard = new InternalStandard(name, concentration, concentrationUnit, responseFactor);
+								double compensationFactor = setting.getCompensationFactor();
+								InternalStandard internalStandard = new InternalStandard(name, concentration, concentrationUnit, compensationFactor);
 								peak.addInternalStandard(internalStandard);
 							}
 						} else {

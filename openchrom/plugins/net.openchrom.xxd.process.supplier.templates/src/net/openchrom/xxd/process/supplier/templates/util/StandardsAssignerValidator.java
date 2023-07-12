@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
+import org.eclipse.chemclipse.model.quantitation.IInternalStandard;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
@@ -27,13 +28,14 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 	private String name = "";
 	private double concentration = 0.0d;
 	private String concentrationUnit = "";
-	private double responseFactor = 1.0d;
+	private double compensationFactor = IInternalStandard.STANDARD_COMPENSATION_FACTOR;
 	private String traces = "";
 
 	//
 	@Override
 	public IStatus validate(Object value) {
 
+		clean();
 		String message = null;
 		if(value == null) {
 			message = ERROR_ENTRY;
@@ -58,7 +60,7 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 						name = parseString(values, 2);
 						concentration = parseDouble(values, 3);
 						concentrationUnit = parseString(values, 4);
-						responseFactor = parseDouble(values, 5);
+						compensationFactor = parseDouble(values, 5);
 						traces = parseString(values, 6, "");
 						positionDirective = parsePositionDirective(parseString(values, 7));
 						/*
@@ -84,8 +86,8 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 							message = "A concentration unit needs to be set.";
 						}
 						//
-						if(responseFactor <= 0) {
-							message = "The response factor must be > 0.";
+						if(compensationFactor <= 0) {
+							message = "The compensation factor must be > 0.";
 						}
 					} else {
 						message = ERROR_ENTRY;
@@ -103,6 +105,18 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 		}
 	}
 
+	private void clean() {
+
+		positionDirective = PositionDirective.RETENTION_TIME_MIN;
+		positionStart = 0;
+		positionStop = 0;
+		name = "";
+		concentration = 0.0d;
+		concentrationUnit = "";
+		compensationFactor = 1.0d;
+		traces = "";
+	}
+
 	public AssignerStandard getSetting() {
 
 		AssignerStandard setting = new AssignerStandard();
@@ -112,7 +126,7 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 		setting.setName(name);
 		setting.setConcentration(concentration);
 		setting.setConcentrationUnit(concentrationUnit);
-		setting.setResponseFactor(responseFactor);
+		setting.setCompensationFactor(compensationFactor);
 		setting.setTracesIdentification(traces);
 		setting.setPositionDirective(positionDirective);
 		//

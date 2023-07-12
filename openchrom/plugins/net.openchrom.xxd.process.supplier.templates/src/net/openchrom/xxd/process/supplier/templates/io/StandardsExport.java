@@ -56,7 +56,7 @@ public class StandardsExport extends AbstractChromatogramExportConverter impleme
 					setting.setName(internalStandard.getName());
 					setting.setConcentration(internalStandard.getConcentration());
 					setting.setConcentrationUnit(internalStandard.getConcentrationUnit());
-					setting.setResponseFactor(internalStandard.getResponseFactor());
+					setting.setCompensationFactor(internalStandard.getCompensationFactor());
 					setting.setTracesIdentification(extractTraces(peak, numberTraces));
 					assignerStandards.add(setting);
 				}

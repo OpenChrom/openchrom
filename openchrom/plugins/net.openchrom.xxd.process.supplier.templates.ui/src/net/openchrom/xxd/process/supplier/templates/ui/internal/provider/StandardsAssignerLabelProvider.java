@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,7 +27,7 @@ public class StandardsAssignerLabelProvider extends AbstractTemplateLabelProvide
 			POSITION_DIRECTIVE, //
 			CONCENTRATION, //
 			CONCENTRATION_UNIT, //
-			RESPONSE_FACTOR, //
+			COMPENSATION_FACTOR, //
 			TRACES //
 	};
 	//
@@ -76,7 +76,7 @@ public class StandardsAssignerLabelProvider extends AbstractTemplateLabelProvide
 					text = setting.getConcentrationUnit();
 					break;
 				case 6:
-					text = decimalFormat.format(setting.getResponseFactor());
+					text = decimalFormat.format(setting.getCompensationFactor());
 					break;
 				case 7:
 					text = setting.getTracesIdentification();
