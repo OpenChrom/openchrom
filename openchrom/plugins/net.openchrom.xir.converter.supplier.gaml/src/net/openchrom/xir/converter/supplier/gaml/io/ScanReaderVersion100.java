@@ -20,7 +20,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.xir.model.implementation.SignalXIR;
+import org.eclipse.chemclipse.xir.model.implementation.SignalInfrared;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -80,7 +80,7 @@ public class ScanReaderVersion100 {
 					}
 					int scans = Math.min(waveNumbers.length, absorbance.length);
 					for(int i = 0; i < scans; i++) {
-						vendorScan.getScanXIR().getProcessedSignals().add(new SignalXIR(waveNumbers[i], absorbance[i], 0));
+						vendorScan.getScanXIR().getProcessedSignals().add(new SignalInfrared(waveNumbers[i], absorbance[i], 0));
 					}
 				}
 			}
