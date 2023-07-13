@@ -17,6 +17,7 @@ import java.text.MessageFormat;
 
 import org.eclipse.chemclipse.chromatogram.xxd.identifier.targets.ITargetIdentifierSupplier;
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.cas.CasSupport;
 import org.eclipse.chemclipse.model.identifier.IIdentifierSettings;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 
@@ -55,7 +56,9 @@ public class TheGoodScentCompanyTargetIdentifier implements ITargetIdentifierSup
 		URL url = null;
 		try {
 			String cas = libraryInformation.getCasNumber();
-			url = new URL(MessageFormat.format(URL, cas));
+			if(cas != null && !cas.isEmpty() && !CasSupport.CAS_DEFAULT.equals(cas)) {
+				url = new URL(MessageFormat.format(URL, cas));
+			}
 		} catch(MalformedURLException e) {
 			logger.warn(e);
 		}
