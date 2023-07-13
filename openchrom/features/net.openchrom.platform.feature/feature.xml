@@ -147,6 +147,11 @@
          id="net.openchrom.msd.identifier.supplier.massbank.feature"
          version="0.0.0"/>
 
+
+   <includes
+         id="net.openchrom.xxd.identifier.supplier.foodb.feature"
+         version="0.0.0"/>
+
    <plugin
          id="net.openchrom.rcp.compilation.community.ui"
          download-size="0"
