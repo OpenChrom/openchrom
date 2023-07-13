@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.xxd.identifier.targetIdentifier">
+      <TargetIdentificationSupplier
+            description="Links to the corresponding FooDB entry."
+            id="net.openchrom.xxd.identifier.supplier.foodb.target.identifier"
+            identifierName="FooDB"
+            targetURL="net.openchrom.xxd.identifier.supplier.foodb.identifier.TargetIdentifier">
+      </TargetIdentificationSupplier>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.xxd.identifier.scanIdentifier">
+      <ScanIdentificationSupplier
+            description="Links to the corresponding FooDB entry."
+            id="net.openchrom.xxd.identifier.supplier.foodb.scan.identifier"
+            identifierName="FooDB"
+            targetURL="net.openchrom.xxd.identifier.supplier.foodb.identifier.ScanIdentifier">
+      </ScanIdentificationSupplier>
+   </extension>
+</plugin>
