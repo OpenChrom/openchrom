@@ -52,14 +52,6 @@
          version="0.0.0"/>
 
    <includes
-         id="net.openchrom.msqbatlibs.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="net.openchrom.msqbatlibs.kerner.utils.feature"
-         version="0.0.0"/>
-
-   <includes
          id="net.openchrom.wsd.converter.supplier.abif.feature"
          version="0.0.0"/>
 
