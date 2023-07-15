@@ -23,7 +23,7 @@ import net.sf.kerner.utils.collections.list.AbstractTransformingListFactory;
 public class TransformerMGFElementIScan extends AbstractTransformingListFactory<MGFElement, IScan> {
 
 	private final TransformerPeakIon transformer = new TransformerPeakIon();
-	private final static IScanMSDFactory DEFAULT_SCAN_FACTORY = new IMGFMassSpectrumFactory();
+	private static final IScanMSDFactory DEFAULT_SCAN_FACTORY = new IMGFMassSpectrumFactory();
 	private IScanMSDFactory scanFactory = DEFAULT_SCAN_FACTORY;
 
 	public synchronized IScanMSDFactory getScanFactory() {
@@ -61,8 +61,8 @@ public class TransformerMGFElementIScan extends AbstractTransformingListFactory<
 			String[] tags = precursorIonTag.split(separator);
 			if(tags.length <= 2) {
 				double precursorIon = Double.parseDouble(tags[0].trim());
-				if(scan instanceof IFragmentedIonScan) {
-					((IFragmentedIonScan)scan).setPrecursorIon(precursorIon);
+				if(scan instanceof IFragmentedIonScan fragmentedIonScan) {
+					fragmentedIonScan.setPrecursorIon(precursorIon);
 				}
 			}
 		}
@@ -74,7 +74,7 @@ public class TransformerMGFElementIScan extends AbstractTransformingListFactory<
 		if(retentionTimeInSecondsTag != null && !retentionTimeInSecondsTag.equals(MGFElement.TAG_NA)) {
 			double retentionTimeInSeconds = Double.parseDouble(retentionTimeInSecondsTag);
 			final double scale = retentionTimeInSeconds * 1000;
-			scan.setRetentionTime((int)Math.round(scale)); // Math.round() - OK
+			scan.setRetentionTime((int)Math.round(scale));
 		}
 	}
 }
