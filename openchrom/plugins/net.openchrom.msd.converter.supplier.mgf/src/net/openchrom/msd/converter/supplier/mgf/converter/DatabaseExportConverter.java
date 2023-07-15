@@ -26,7 +26,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.mgf.converter.io.MGFWriter;
+import net.openchrom.msd.converter.supplier.mgf.converter.io.MassSpectraWriter;
 
 public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 
@@ -42,7 +42,7 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 				/*
 				 * Convert the mass spectra.
 				 */
-				IMassSpectraWriter massSpectraWriter = new MGFWriter();
+				IMassSpectraWriter massSpectraWriter = new MassSpectraWriter();
 				massSpectraWriter.write(file, massSpectra, append, monitor);
 				processingInfo.setProcessingResult(file);
 			} catch(FileNotFoundException e) {

@@ -23,7 +23,7 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.mgf.converter.io.MGFReader;
+import net.openchrom.msd.converter.supplier.mgf.converter.io.MassSpectraReader;
 
 public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 
@@ -36,7 +36,7 @@ public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 		final IProcessingInfo<IMassSpectra> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			try {
-				final MGFReader mgfReader = new MGFReader();
+				final MassSpectraReader mgfReader = new MassSpectraReader();
 				final IMassSpectra massSpectra = mgfReader.read(file, monitor);
 				if(massSpectra != null && !massSpectra.isEmpty()) {
 					processingInfo.setProcessingResult(massSpectra);

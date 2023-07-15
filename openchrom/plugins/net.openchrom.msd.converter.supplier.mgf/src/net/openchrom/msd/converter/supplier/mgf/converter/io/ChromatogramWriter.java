@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Lablicate GmbH.
+ * Copyright (c) 2016, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -13,7 +13,6 @@
 package net.openchrom.msd.converter.supplier.mgf.converter.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
@@ -26,13 +25,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 
 	@Override
-	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
-		// file.createNewFile();
-		MGFWriter mgfWriter = new MGFWriter();
+		MassSpectraWriter mgfWriter = new MassSpectraWriter();
 		for(IScan scan : chromatogram.getScans()) {
-			if(scan instanceof IScanMSD) {
-				IScanMSD scanMSD = (IScanMSD)scan;
+			if(scan instanceof IScanMSD scanMSD) {
 				mgfWriter.write(file, scanMSD, true, monitor);
 			}
 		}
