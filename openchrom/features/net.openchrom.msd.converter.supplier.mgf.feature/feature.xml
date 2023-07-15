@@ -18,10 +18,6 @@
       %license
    </license>
 
-   <requires>
-      <import feature="net.openchrom.msqbatlibs.feature" version="1.5.0.qualifier"/>
-   </requires>
-
    <plugin
          id="net.openchrom.msd.converter.supplier.mgf"
          download-size="0"
