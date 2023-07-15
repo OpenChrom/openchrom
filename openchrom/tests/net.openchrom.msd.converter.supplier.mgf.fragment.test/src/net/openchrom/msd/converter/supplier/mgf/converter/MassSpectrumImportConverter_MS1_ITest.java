@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2020 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,12 +17,12 @@ import java.io.File;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-
-import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
+import org.junit.Test;
 
 import junit.framework.TestCase;
+import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
 
-public class MassSpectrumImportConverter_1_ITest extends TestCase {
+public class MassSpectrumImportConverter_MS1_ITest extends TestCase {
 
 	private IMassSpectra massSpectra;
 
@@ -43,8 +43,19 @@ public class MassSpectrumImportConverter_1_ITest extends TestCase {
 		super.tearDown();
 	}
 
-	public void testExceptions_1() {
+	@Test
+	public void testMassSpectra() {
 
 		assertNotNull(massSpectra);
+		assertEquals(5, massSpectra.getList().size());
+	}
+
+	@Test
+	public void testMassSpectrum() {
+
+		assertEquals(551, massSpectra.getMassSpectrum(1).getNumberOfIons());
+		assertEquals(9535f, massSpectra.getMassSpectrum(2).getBasePeakAbundance());
+		assertEquals(297916, massSpectra.getMassSpectrum(3).getRetentionTime());
+		assertEquals(184.0712109, massSpectra.getMassSpectrum(4).getBasePeak());
 	}
 }
