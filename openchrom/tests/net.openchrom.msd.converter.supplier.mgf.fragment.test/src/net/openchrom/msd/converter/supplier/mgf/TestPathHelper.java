@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2022 Lablicate GmbH.
+ * Copyright (c) 2015, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,4 +27,7 @@ public class TestPathHelper extends PathResolver {
 	 * IMPORT
 	 */
 	public static final String TESTFILE_IMPORT_MS_1 = "testData/files/import/MS1.mgf";
+	public static final String TESTFILE_IMPORT_MSFORID_TESTMIX = "testData/files/import/msforid/Testgemisch_U_PP_LXQ_20141210.mgf";
+	public static final String TESTFILE_IMPORT_PROTEINPILOT_MANY_ELEMENTS = "testData/files/import/proteinpilot/manyElements.mgf";
+	public static final String TESTFILE_IMPORT_PROTEINPILOT_SINGLE_ELEMENT = "testData/files/import/proteinpilot/singleElement.mgf";
 }
