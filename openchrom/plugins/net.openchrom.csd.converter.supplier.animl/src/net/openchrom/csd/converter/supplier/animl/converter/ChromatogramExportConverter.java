@@ -1,11 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2022 Lablicate GmbH.
- * 
+ * Copyright (c) 2014, 2023 Lablicate GmbH.
+ *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -38,15 +38,14 @@ public class ChromatogramExportConverter extends AbstractChromatogramExportConve
 		/*
 		 * Don't process if errors have occurred.
 		 */
-		if(!processingInfo.hasErrorMessages() && chromatogram instanceof IChromatogramCSD) {
-			IChromatogramCSD chromatogramCSD = (IChromatogramCSD)chromatogram;
+		if(!processingInfo.hasErrorMessages() && chromatogram instanceof IChromatogramCSD chromatogramCSD) {
 			monitor.subTask(IConstants.EXPORT_CHROMATOGRAM);
 			IChromatogramCSDWriter writer = new ChromatogramWriter();
 			try {
 				writer.writeChromatogram(file, chromatogramCSD, monitor);
 			} catch(Exception e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, "Failed to write file: " + file.getAbsolutePath());
 			}
 			processingInfo.setProcessingResult(file);
 		}

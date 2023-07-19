@@ -1,11 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
@@ -39,10 +39,6 @@ import ch.systemsx.cisd.hdf5.IHDF5SimpleReader;
 public class ChromatogramReader extends AbstractChromatogramReader implements IChromatogramMSDReader {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
-
-	public ChromatogramReader() {
-
-	}
 
 	@Override
 	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
@@ -105,10 +101,10 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 					int multiplicator = 1; // to milisecond
 					CVReference unit = cvReferences[cvParam.uRefID];
 					if(unit.accession == 10 && unit.name.equals("second")) {
-						multiplicator = 1000;
+						multiplicator = (int)IChromatogramOverview.SECOND_CORRELATION_FACTOR;
 					}
 					if(unit.accession == 31 && unit.name.equals("minute")) {
-						multiplicator = 60 * 1000;
+						multiplicator = (int)IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 					}
 					retentionTimes[p] = Math.round(Float.parseFloat(cvParam.value) * multiplicator);
 					p++;
