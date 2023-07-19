@@ -4,13 +4,14 @@
    <extension
          point="org.eclipse.chemclipse.msd.converter.chromatogramSupplier">
       <ChromatogramSupplier
-            description="Reads mz5 Chromatograms"
+            description="Reads and writes mz5 Chromatograms"
             fileExtension=".mz5"
             filterName="mz5 Chromatogram (*.mz5)"
             id="net.openchrom.msd.converter.supplier.mz5"
             importConverter="net.openchrom.msd.converter.supplier.mz5.converter.ChromatogramImportConverter"
+            exportConverter="net.openchrom.msd.converter.supplier.mz5.converter.ChromatogramExportConverter"
             importMagicNumberMatcher="net.openchrom.msd.converter.supplier.mz5.converter.MagicNumberMatcher"
-            isExportable="false"
+            isExportable="true"
             isImportable="true">
       </ChromatogramSupplier>
    </extension>
