@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,13 +17,11 @@ import java.util.List;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.quantitation.IQuantitationEntry;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
-import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -47,10 +45,7 @@ public class QuantRatioExport extends AbstractChromatogramExportConverter implem
 		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
 		//
 		for(IPeak peak : peaks) {
-			float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
-			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
-			String name = getName(peak, identificationTargetComparator);
-			//
+			String name = getName(peak);
 			if(!"".equals(name)) {
 				List<IQuantitationEntry> quantitationEntries = peak.getQuantitationEntries();
 				for(IQuantitationEntry quantitationEntry : quantitationEntries) {

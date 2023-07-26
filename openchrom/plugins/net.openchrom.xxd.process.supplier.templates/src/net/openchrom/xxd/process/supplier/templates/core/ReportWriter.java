@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
@@ -421,9 +420,7 @@ public class ReportWriter {
 					break;
 				case BEST_MATCH:
 					for(IPeak peak : peaks) {
-						float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
-						IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(retentionIndex);
-						IIdentificationTarget identificationTarget = IIdentificationTarget.getBestIdentificationTarget(peak.getTargets(), identificationTargetComparator);
+						IIdentificationTarget identificationTarget = IIdentificationTarget.getIdentificationTarget(peak);
 						if(identificationTarget != null) {
 							if(isTargetMatch(identificationTarget, reportSetting)) {
 								matchedPeaks.add(peak);

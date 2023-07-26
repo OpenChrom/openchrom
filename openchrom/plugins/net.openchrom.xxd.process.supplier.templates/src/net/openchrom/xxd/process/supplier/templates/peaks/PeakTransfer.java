@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -36,7 +36,6 @@ import org.eclipse.chemclipse.csd.model.implementation.ChromatogramPeakCSD;
 import org.eclipse.chemclipse.csd.model.implementation.PeakModelCSD;
 import org.eclipse.chemclipse.csd.model.implementation.ScanCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -402,9 +401,7 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 
 		float matchFactor = peakTransferSettings.getMatchQuality();
 		if(peakTransferSettings.isUseBestTargetOnly()) {
-			float retentionIndex = peakSource.getPeakModel().getPeakMaximum().getRetentionIndex();
-			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(retentionIndex);
-			IIdentificationTarget identificationTarget = IIdentificationTarget.getBestIdentificationTarget(peakSource.getTargets(), identificationTargetComparator);
+			IIdentificationTarget identificationTarget = IIdentificationTarget.getIdentificationTarget(peakSource);
 			if(identificationTarget != null) {
 				peakSink.getTargets().add(createIdentificationTarget(identificationTarget, matchFactor));
 			}

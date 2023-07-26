@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutionException;
 import org.eclipse.chemclipse.chromatogram.csd.identifier.peak.IPeakIdentifierCSD;
 import org.eclipse.chemclipse.chromatogram.csd.identifier.settings.IPeakIdentifierSettingsCSD;
 import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -64,11 +63,8 @@ public class PeakReviewDirectCSD<T> extends AbstractPeakIdentifier implements IP
 		List<ReviewSetting> reviewSettings = new ArrayList<>();
 		for(IPeak peak : peaks) {
 			if(!peak.getTargets().isEmpty()) {
-				float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
-				IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(retentionIndex);
-				IIdentificationTarget identificationTarget = IIdentificationTarget.getBestIdentificationTarget(peak.getTargets(), identificationTargetComparator);
-				if(identificationTarget != null) {
-					ILibraryInformation libraryInformation = identificationTarget.getLibraryInformation();
+				ILibraryInformation libraryInformation = IIdentificationTarget.getLibraryInformation(peak);
+				if(libraryInformation != null) {
 					IPeakModel peakModel = peak.getPeakModel();
 					ReviewSetting reviewSetting = new ReviewSetting();
 					reviewSetting.setStartRetentionTime(peakModel.getStartRetentionTime());

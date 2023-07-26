@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,9 +11,6 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.core;
 
-import java.util.Set;
-
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -21,19 +18,18 @@ import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 
 public interface ITemplateExport {
 
-	default String getName(IPeak peak, IdentificationTargetComparator comparator) {
+	default String getName(IPeak peak) {
 
-		return getName(peak.getTargets(), comparator);
+		return getName(IIdentificationTarget.getLibraryInformation(peak));
 	}
 
-	default String getName(IScan scan, IdentificationTargetComparator comparator) {
+	default String getName(IScan scan) {
 
-		return getName(scan.getTargets(), comparator);
+		return getName(IIdentificationTarget.getLibraryInformation(scan));
 	}
 
-	default String getName(Set<IIdentificationTarget> targets, IdentificationTargetComparator comparator) {
+	default String getName(ILibraryInformation libraryInformation) {
 
-		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(targets, comparator);
 		return (libraryInformation != null) ? libraryInformation.getName() : "";
 	}
 }

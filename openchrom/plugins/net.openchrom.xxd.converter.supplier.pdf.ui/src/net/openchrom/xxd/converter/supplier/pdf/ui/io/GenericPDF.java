@@ -31,7 +31,6 @@ import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
@@ -53,7 +52,6 @@ import org.eclipse.chemclipse.pdfbox.extensions.settings.ReferenceX;
 import org.eclipse.chemclipse.pdfbox.extensions.settings.ReferenceY;
 import org.eclipse.chemclipse.pdfbox.extensions.settings.TextOption;
 import org.eclipse.chemclipse.pdfbox.extensions.settings.Unit;
-import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
@@ -445,8 +443,7 @@ public class GenericPDF {
 
 	private String getBestIdentification(Set<IIdentificationTarget> targets, float retentionIndex) {
 
-		IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
-		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(targets, identificationTargetComparator);
+		ILibraryInformation libraryInformation = IIdentificationTarget.getLibraryInformation(targets, retentionIndex);
 		if(libraryInformation != null) {
 			return normalizeText(libraryInformation.getName());
 		} else {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IIon;
@@ -46,12 +45,9 @@ public class TraceRatioCompiler implements ITemplateExport {
 		float deviationError = traceRatioExportSettings.getAllowedDeviationWarn();
 		//
 		for(IPeak peak : peaks) {
-			if(peak instanceof IPeakMSD) {
-				float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
-				IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
-				String name = getName(peak, identificationTargetComparator);
+			if(peak instanceof IPeakMSD peakMSD) {
+				String name = getName(peak);
 				if(!name.isEmpty()) {
-					IPeakMSD peakMSD = (IPeakMSD)peak;
 					IScanMSD scanMSD = peakMSD.getPeakModel().getPeakMassSpectrum();
 					settings.addAll(extract(scanMSD, name, numberTraces, deviationWarn, deviationError));
 				}
@@ -70,9 +66,7 @@ public class TraceRatioCompiler implements ITemplateExport {
 		float deviationError = traceRatioExportSettings.getAllowedDeviationWarn();
 		//
 		for(IScanMSD scanMSD : scansMSD) {
-			float retentionIndex = scanMSD.getRetentionIndex();
-			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
-			String name = getName(scanMSD, identificationTargetComparator);
+			String name = getName(scanMSD);
 			if(!name.isEmpty()) {
 				settings.addAll(extract(scanMSD, name, numberTraces, deviationWarn, deviationError));
 			}

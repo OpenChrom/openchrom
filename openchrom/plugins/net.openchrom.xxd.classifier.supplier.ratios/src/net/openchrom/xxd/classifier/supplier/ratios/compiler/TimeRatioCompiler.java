@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,11 +14,9 @@ package net.openchrom.xxd.classifier.supplier.ratios.compiler;
 import java.io.File;
 import java.util.List;
 
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
-import org.eclipse.chemclipse.support.comparator.SortOrder;
 
 import net.openchrom.xxd.classifier.supplier.ratios.core.ITemplateExport;
 import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
@@ -37,9 +35,7 @@ public class TimeRatioCompiler implements ITemplateExport {
 		float deviationError = timeRatioExportSettings.getAllowedDeviationWarn();
 		//
 		for(IPeak peak : peaks) {
-			float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
-			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
-			String name = getName(peak, identificationTargetComparator);
+			String name = getName(peak);
 			if(!name.isEmpty()) {
 				IPeakModel peakModel = peak.getPeakModel();
 				TimeRatio timeRatio = new TimeRatio();
@@ -64,9 +60,7 @@ public class TimeRatioCompiler implements ITemplateExport {
 		float deviationError = timeRatioExportSettings.getAllowedDeviationWarn();
 		//
 		for(IScan scan : scans) {
-			float retentionIndex = scan.getRetentionIndex();
-			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
-			String name = getName(scan, identificationTargetComparator);
+			String name = getName(scan);
 			if(!name.isEmpty()) {
 				TimeRatio timeRatio = new TimeRatio();
 				timeRatio.setName(name);

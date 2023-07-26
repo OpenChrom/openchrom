@@ -12,13 +12,11 @@
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.core.ITargetSupplier;
@@ -29,7 +27,6 @@ import org.eclipse.chemclipse.model.updates.ITargetUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
@@ -534,9 +531,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		TargetsListUI targetListUI = targetListControl.get();
 		if(peak instanceof ITargetSupplier targetSupplier) {
 			float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
-			List<IIdentificationTarget> identificationTargets = new ArrayList<>(targetSupplier.getTargets());
-			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
-			Collections.sort(identificationTargets, identificationTargetComparator);
+			List<IIdentificationTarget> identificationTargets = IIdentificationTarget.getTargetsSorted(targetSupplier.getTargets(), retentionIndex);
 			targetListUI.setInput(identificationTargets);
 			/*
 			 * Select the first entry if available.

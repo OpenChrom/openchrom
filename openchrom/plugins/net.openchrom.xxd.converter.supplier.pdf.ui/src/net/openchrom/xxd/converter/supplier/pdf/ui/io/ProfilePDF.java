@@ -20,10 +20,8 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
@@ -31,7 +29,6 @@ import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -47,7 +44,6 @@ import org.eclipse.chemclipse.pdfbox.extensions.settings.ReferenceX;
 import org.eclipse.chemclipse.pdfbox.extensions.settings.ReferenceY;
 import org.eclipse.chemclipse.pdfbox.extensions.settings.TextOption;
 import org.eclipse.chemclipse.pdfbox.extensions.settings.Unit;
-import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
@@ -310,7 +306,7 @@ public class ProfilePDF {
 			if(!peak.getTargets().isEmpty()) {
 				double areaPercent = getPercentagePeakArea(totalPeakArea, peak.getIntegratedArea());
 				percents += areaPercent;
-				List<IIdentificationTarget> sortedTargets = getSortedTargets(peak.getTargets(), peak.getPeakModel().getPeakMaximum().getRetentionIndex());
+				List<IIdentificationTarget> sortedTargets = IIdentificationTarget.getTargetsSorted(peak.getTargets(), peak.getPeakModel().getPeakMaximum().getRetentionIndex());
 				String percentageArea = (areaPercent >= 0.005d) ? formatAreaPercent.format(areaPercent) : "tr"; // tr = trace
 				/*
 				 * Best Hit
@@ -362,14 +358,6 @@ public class ProfilePDF {
 			totalPeakArea += peak.getIntegratedArea();
 		}
 		return totalPeakArea;
-	}
-
-	private List<IIdentificationTarget> getSortedTargets(Set<IIdentificationTarget> targets, float retentionIndex) {
-
-		List<IIdentificationTarget> sortedTargets = new ArrayList<>(targets);
-		IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
-		Collections.sort(sortedTargets, identificationTargetComparator);
-		return sortedTargets;
 	}
 
 	private String normalizeText(String text) {

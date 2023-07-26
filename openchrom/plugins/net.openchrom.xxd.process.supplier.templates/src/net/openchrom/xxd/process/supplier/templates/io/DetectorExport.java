@@ -15,11 +15,11 @@ package net.openchrom.xxd.process.supplier.templates.io;
 import java.io.File;
 import java.util.List;
 
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
@@ -57,10 +57,8 @@ public class DetectorExport extends AbstractTemplateExport {
 			setting.setOptimizeRange(optimizeRange);
 			setting.setReferenceIdentifier(""); // The absolute time is used, hence not needed here.
 			//
-			float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
-			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(retentionIndex);
-			IIdentificationTarget identificationTarget = IIdentificationTarget.getBestIdentificationTarget(peak.getTargets(), identificationTargetComparator);
-			setting.setName(identificationTarget != null ? identificationTarget.getLibraryInformation().getName() : "");
+			ILibraryInformation libraryInformation = IIdentificationTarget.getLibraryInformation(peak);
+			setting.setName(libraryInformation != null ? libraryInformation.getName() : "");
 			detectorSettings.add(setting);
 		}
 		//

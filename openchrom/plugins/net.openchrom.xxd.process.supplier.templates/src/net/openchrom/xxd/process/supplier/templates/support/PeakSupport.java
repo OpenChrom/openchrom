@@ -19,7 +19,6 @@ import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
 import org.eclipse.chemclipse.csd.model.core.support.PeakBuilderCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
@@ -37,7 +36,6 @@ import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
-import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.wsd.model.core.IPeakWSD;
 import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
@@ -365,9 +363,7 @@ public class PeakSupport {
 	private IPeak getReferencePeak(List<? extends IPeak> peaks, String referenceIdentifier) {
 
 		for(IPeak peak : peaks) {
-			float retentionIndex = peak.getPeakModel().getPeakMaximum().getRetentionIndex();
-			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
-			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), identificationTargetComparator);
+			ILibraryInformation libraryInformation = IIdentificationTarget.getLibraryInformation(peak);
 			if(libraryInformation != null) {
 				if(referenceIdentifier.equals(libraryInformation.getName())) {
 					return peak;

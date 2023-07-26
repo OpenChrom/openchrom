@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
@@ -24,7 +23,6 @@ import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
-import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
@@ -48,9 +46,7 @@ public class ReportExport extends AbstractChromatogramExportConverter implements
 		//
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
-			float retentionIndex = peakModel.getPeakMaximum().getRetentionIndex();
-			IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
-			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), identificationTargetComparator);
+			ILibraryInformation libraryInformation = IIdentificationTarget.getLibraryInformation(peak);
 			if(libraryInformation != null) {
 				ReportSetting setting = new ReportSetting();
 				setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);

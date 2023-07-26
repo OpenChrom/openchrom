@@ -17,11 +17,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
-import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 
@@ -73,8 +71,7 @@ public class PeakLabelMarker extends AbstractLabelMarker {
 
 	private String getBestIdentification(Set<IIdentificationTarget> targets, float retentionIndex) {
 
-		IdentificationTargetComparator identificationTargetComparator = new IdentificationTargetComparator(SortOrder.DESC, retentionIndex);
-		ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(targets, identificationTargetComparator);
+		ILibraryInformation libraryInformation = IIdentificationTarget.getLibraryInformation(targets, retentionIndex);
 		if(libraryInformation != null) {
 			return normalizeText(libraryInformation.getName());
 		} else {
