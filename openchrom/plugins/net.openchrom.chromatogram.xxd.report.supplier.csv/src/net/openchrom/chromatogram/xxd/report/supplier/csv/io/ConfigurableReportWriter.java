@@ -50,6 +50,7 @@ public class ConfigurableReportWriter {
 			 * Header
 			 */
 			ReportColumns reportColumns = reportSettings.getReportColumns();
+			reportColumns = getValidatedReportColumns(reportColumns);
 			printHeader(csvPrinter, reportColumns, reportSettings, fileExists);
 			boolean printSectionSeparator = reportSettings.isPrintSectionSeparator();
 			/*
@@ -64,6 +65,14 @@ public class ConfigurableReportWriter {
 				}
 			}
 		}
+	}
+
+	/*
+	 * Print all columns if no column was selected.
+	 */
+	private ReportColumns getValidatedReportColumns(ReportColumns reportColumns) {
+
+		return reportColumns.isEmpty() ? ReportColumns.getDefault() : reportColumns;
 	}
 
 	private void printHeader(CSVPrinter csvPrinter, ReportColumns reportColumns, ChromatogramReportSettings reportSettings, boolean fileExists) throws IOException {
