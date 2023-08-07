@@ -8,11 +8,11 @@
       license-feature-version="1.0.0.qualifier">
 
    <description url="https://www.openchrom.net/">
-      This contains the OpenChrom platform
+      This feature contains the OpenChrom platform.
    </description>
 
    <copyright url="https://lablicate.com/">
-      Copyright (C) 2020, 2022 Lablicate GmbH
+      Copyright (C) 2020, 2023 Lablicate GmbH
    </copyright>
 
    <license url="%licenseURL">
@@ -138,7 +138,6 @@
    <includes
          id="net.openchrom.msd.identifier.supplier.massbank.feature"
          version="0.0.0"/>
-
 
    <includes
          id="net.openchrom.xxd.identifier.supplier.foodb.feature"
@@ -307,6 +306,20 @@
 
    <plugin
          id="javax.vecmath"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xxd.base"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xxd.base.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
