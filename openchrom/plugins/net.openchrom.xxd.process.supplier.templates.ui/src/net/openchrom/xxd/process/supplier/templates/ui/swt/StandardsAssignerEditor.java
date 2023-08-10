@@ -37,6 +37,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
+import org.eclipse.chemclipse.processing.core.ICategories;
 import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -88,7 +89,6 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 	//
 	private Composite control;
 	//
-	private static final String CATEGORY = "Peak Identifier";
 	private static final String DELETE = "Delete";
 	//
 	private Listener listener;
@@ -511,7 +511,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 			@Override
 			public String getCategory() {
 
-				return CATEGORY;
+				return ICategories.PEAK_IDENTIFIER;
 			}
 
 			@Override

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
+import org.eclipse.chemclipse.processing.core.ICategories;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
@@ -68,7 +69,6 @@ import net.openchrom.xxd.process.supplier.templates.util.ReportListUtil;
 
 public class TemplateReportEditor extends Composite implements IChangeListener, IExtendedPartUI {
 
-	private static final String CATEGORY = "Chromatogram Report";
 	private static final String DELETE = "Delete";
 	//
 	private Button buttonToolbarSearch;
@@ -396,7 +396,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 			@Override
 			public String getCategory() {
 
-				return CATEGORY;
+				return ICategories.CHROMATOGRAM_REPORTS;
 			}
 
 			@Override

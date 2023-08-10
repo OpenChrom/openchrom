@@ -36,6 +36,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.updates.IUpdateListener;
+import org.eclipse.chemclipse.processing.core.ICategories;
 import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -86,7 +87,6 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	private AtomicReference<PositionAdjusterUI> toolbarAdjuster = new AtomicReference<>();
 	private AtomicReference<PeakReviewListUI> listControl = new AtomicReference<>();
 	//
-	private static final String CATEGORY = "Peak Identifier";
 	private static final String DELETE = "Delete";
 	//
 	private Listener listener;
@@ -483,7 +483,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 			@Override
 			public String getCategory() {
 
-				return CATEGORY;
+				return ICategories.PEAK_IDENTIFIER;
 			}
 
 			@Override
