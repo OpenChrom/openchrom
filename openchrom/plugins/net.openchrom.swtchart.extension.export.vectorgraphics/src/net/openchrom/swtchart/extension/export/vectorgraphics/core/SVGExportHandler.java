@@ -32,8 +32,8 @@ public class SVGExportHandler extends AbstractExportHandler implements ISeriesEx
 	private static final Logger logger = Logger.getLogger(SVGExportHandler.class);
 	//
 	private static final String FILE_EXTENSION = "*.svg";
-	private static final String NAME = "Vector Graphic (" + FILE_EXTENSION + ")";
-	private static final String TITLE = "Save As Vector Graphic";
+	private static final String NAME = "Vector Graphics 2D (" + FILE_EXTENSION + ")";
+	private static final String TITLE = "Save As SVG";
 
 	@Override
 	public String getName() {
@@ -51,11 +51,11 @@ public class SVGExportHandler extends AbstractExportHandler implements ISeriesEx
 		//
 		String fileName = fileDialog.open();
 		if(fileName != null) {
-			try {
+			try (FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
 				CommandSequence commandSequene = getCommandSequence(shell, scrollableChart);
 				SVGProcessor processor = new SVGProcessor();
 				Document document = processor.getDocument(commandSequene, SELECTED_PAGE_SIZE);
-				document.writeTo(new FileOutputStream(fileName));
+				document.writeTo(fileOutputStream);
 				MessageDialog.openInformation(shell, TITLE, MESSAGE_OK);
 			} catch(IOException e) {
 				logger.warn(e);

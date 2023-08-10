@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.openchrom.swtchart.extension.export.vectorgraphics.feature"
-      label="Feature"
+      label="VectorGraphics 2D"
       version="1.5.0.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding">
 
    <description url="https://projects.eclipse.org/projects/science.eavp">
       This is a SWTChart Extensions to support SVG, EPS and PDF export.
+      https://github.com/eseifert/vectorgraphics2d
    </description>
 
    <copyright url="https://www.lablicate.com">
-      Copyright (c) 2018 Lablicate GmbH.
+      Copyright (c) 2018, 2023 Lablicate GmbH.
    </copyright>
 
    <license url="%licenseURL">
@@ -20,6 +21,13 @@
 
    <plugin
          id="net.openchrom.swtchart.extension.export.vectorgraphics"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="wrapped.de.erichseifert.vectorgraphics2d.VectorGraphics2D"
          download-size="0"
          install-size="0"
          version="0.0.0"

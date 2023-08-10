@@ -32,7 +32,7 @@ public class PDFExportHandler extends AbstractExportHandler implements ISeriesEx
 	private static final Logger logger = Logger.getLogger(PDFExportHandler.class);
 	//
 	private static final String FILE_EXTENSION = "*.pdf";
-	private static final String NAME = "PDF (" + FILE_EXTENSION + ")";
+	private static final String NAME = "Vector Graphics 2D (" + FILE_EXTENSION + ")";
 	private static final String TITLE = "Save As PDF";
 
 	@Override
@@ -51,11 +51,11 @@ public class PDFExportHandler extends AbstractExportHandler implements ISeriesEx
 		//
 		String fileName = fileDialog.open();
 		if(fileName != null) {
-			try {
+			try (FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
 				CommandSequence commandSequene = getCommandSequence(shell, scrollableChart);
 				PDFProcessor processor = new PDFProcessor();
 				Document document = processor.getDocument(commandSequene, SELECTED_PAGE_SIZE);
-				document.writeTo(new FileOutputStream(fileName));
+				document.writeTo(fileOutputStream);
 				MessageDialog.openInformation(shell, TITLE, MESSAGE_OK);
 			} catch(IOException e) {
 				logger.warn(e);

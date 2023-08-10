@@ -8,6 +8,9 @@
       </MenuItemSupplier>
       <MenuItemSupplier
             MenuEntry="net.openchrom.swtchart.extension.export.vectorgraphics.core.PDFExportHandler">
-      </MenuItemSupplier>            
+      </MenuItemSupplier>
+      <MenuItemSupplier
+            MenuEntry="net.openchrom.swtchart.extension.export.vectorgraphics.core.SVGExportHandler">
+      </MenuItemSupplier>                  
    </extension>
 </plugin>
