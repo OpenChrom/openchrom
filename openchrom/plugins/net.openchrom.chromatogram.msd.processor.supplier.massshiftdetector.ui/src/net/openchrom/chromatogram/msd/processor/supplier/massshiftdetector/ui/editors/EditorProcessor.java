@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.support.ui.files.ExtendedFileDialog;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.IPageChangedListener;
@@ -120,7 +121,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 	public void doSaveAs() {
 
 		Shell shell = Display.getDefault().getActiveShell();
-		FileDialog fileDialog = new FileDialog(shell, SWT.SAVE);
+		FileDialog fileDialog = ExtendedFileDialog.create(shell, SWT.SAVE);
 		fileDialog.setOverwrite(true);
 		fileDialog.setText("Save results as *.csv file.");
 		fileDialog.setFilterExtensions(new String[]{"*.csv"});

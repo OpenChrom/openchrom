@@ -43,6 +43,7 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
+import org.eclipse.chemclipse.support.ui.files.ExtendedFileDialog;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.chemclipse.support.ui.swt.ITableSettings;
@@ -366,7 +367,7 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.READ_ONLY);
+				FileDialog fileDialog = ExtendedFileDialog.create(e.widget.getDisplay().getActiveShell(), SWT.READ_ONLY);
 				fileDialog.setText(IMPORT_TITLE);
 				fileDialog.setFilterExtensions(new String[]{AssignerReferences.FILTER_EXTENSION});
 				fileDialog.setFilterNames(new String[]{AssignerReferences.FILTER_NAME});
@@ -395,7 +396,7 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.SAVE);
+				FileDialog fileDialog = ExtendedFileDialog.create(e.widget.getDisplay().getActiveShell(), SWT.SAVE);
 				fileDialog.setOverwrite(true);
 				fileDialog.setText(EXPORT_TITLE);
 				fileDialog.setFilterExtensions(new String[]{AssignerReferences.FILTER_EXTENSION});

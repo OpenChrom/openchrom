@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.support.ui.files.ExtendedFileDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
@@ -43,7 +44,7 @@ public class PDFExportHandler extends AbstractExportHandler implements ISeriesEx
 	@Override
 	public void execute(Shell shell, ScrollableChart scrollableChart) {
 
-		FileDialog fileDialog = new FileDialog(shell, SWT.SAVE);
+		FileDialog fileDialog = ExtendedFileDialog.create(shell, SWT.SAVE);
 		fileDialog.setOverwrite(true);
 		fileDialog.setText(NAME);
 		fileDialog.setFilterExtensions(new String[]{FILE_EXTENSION});

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2017, 2023 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,10 +23,13 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.text.ValueFormat;
+import org.eclipse.chemclipse.support.ui.files.ExtendedFileDialog;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -35,8 +38,19 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.events.*;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
+
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
@@ -57,6 +71,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 	private TableEditor tableEditor;
 
 	public CompositeLibrarySpectraUI(Composite parent, int style) {
+
 		super(parent, style);
 		this.initialize();
 	}
@@ -253,7 +268,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				String pathCmsLibrarySpectra = PreferenceSupplier.getPathCmsLibrarySpectra();
-				FileDialog fileDialog = new FileDialog(Display.getCurrent().getActiveShell(), SWT.READ_ONLY);
+				FileDialog fileDialog = ExtendedFileDialog.create(Display.getCurrent().getActiveShell(), SWT.READ_ONLY);
 				fileDialog.setText("Select the CMS library file.");
 				fileDialog.setFilterExtensions(new String[]{"*.cms", "*.CMS"});
 				fileDialog.setFilterNames(new String[]{"Calibrated Spectra (*.cms)", "Calibrated Spectra (*.CMS)"});

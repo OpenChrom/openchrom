@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,6 +25,7 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.text.ValueFormat;
+import org.eclipse.chemclipse.support.ui.files.ExtendedFileDialog;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferencePage;
@@ -84,6 +85,7 @@ public class DecompositionResultUI extends Composite {
 	private List<IDecompositionResultsListener> resultsListener;
 
 	public DecompositionResultUI(Composite parent, int style) {
+
 		super(parent, style);
 		resultsListener = new ArrayList<IDecompositionResultsListener>();
 		initialize();
@@ -226,7 +228,7 @@ public class DecompositionResultUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				String pathCmsSpectra = PreferenceSupplier.getPathCmsScanSpectra();
-				FileDialog fileDialog = new FileDialog(Display.getCurrent().getActiveShell(), SWT.READ_ONLY);
+				FileDialog fileDialog = ExtendedFileDialog.create(Display.getCurrent().getActiveShell(), SWT.READ_ONLY);
 				fileDialog.setText("Select the CMS spectra file.");
 				fileDialog.setFilterExtensions(new String[]{"*.cms", "*.CMS"});
 				fileDialog.setFilterNames(new String[]{"Calibrated Spectra (*.cms)", "Calibrated Spectra (*.CMS)"});

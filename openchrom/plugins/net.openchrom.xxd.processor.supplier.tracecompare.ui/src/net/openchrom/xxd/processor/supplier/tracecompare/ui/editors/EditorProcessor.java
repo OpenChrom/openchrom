@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2022 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,8 +12,6 @@
 package net.openchrom.xxd.processor.supplier.tracecompare.ui.editors;
 
 import java.io.File;
-
-import jakarta.xml.bind.JAXBException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -30,6 +28,8 @@ import org.eclipse.ui.part.MultiPageEditorPart;
 import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelReader;
 import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelWriter;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
+
+import jakarta.xml.bind.JAXBException;
 
 public class EditorProcessor extends MultiPageEditorPart {
 
@@ -48,6 +48,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 	private boolean isDirty = false;
 
 	public EditorProcessor() {
+
 		/*
 		 * Update the pages.
 		 */
@@ -103,7 +104,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 	public void doSaveAs() {
 
 		// Shell shell = Display.getDefault().getActiveShell();
-		// FileDialog fileDialog = new FileDialog(shell, SWT.SAVE);
+		// FileDialog fileDialog = ExtendedFileDialog.create(shell, SWT.SAVE);
 		// fileDialog.setOverwrite(true);
 		// fileDialog.setText("Save results as *.csv file.");
 		// fileDialog.setFilterExtensions(new String[]{"*.csv"});
