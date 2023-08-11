@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2021 Matthias Mailänder.
+ * Copyright (c) 2016, 2023 Matthias Mailänder.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package net.openchrom.wsd.identifier.supplier.geneident.ui.internal.runnables;
 
-import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
@@ -29,6 +28,7 @@ import org.biojava.nbio.ws.alignment.qblast.NCBIQBlastService;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.progress.core.InfoType;
 import org.eclipse.chemclipse.progress.core.StatusLineLogger;
+import org.eclipse.chemclipse.support.editor.SystemEditor;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -80,15 +80,15 @@ public class NCBIqueuedBLASTRunnable implements IRunnableWithProgress {
 				reader = new BufferedReader(new InputStreamReader(in));
 				// Write BLAST output to specified file.
 				String sampleName = chromtogram.getDataName();
-				File f = File.createTempFile(sampleName + "_" + requestID, ".txt");
-				StatusLineLogger.setInfo(InfoType.MESSAGE, "Saving query results in file " + f.getAbsolutePath());
-				writer = new FileWriter(f);
+				File file = File.createTempFile(sampleName + "_" + requestID, ".txt");
+				StatusLineLogger.setInfo(InfoType.MESSAGE, "Saving query results in file " + file.getAbsolutePath());
+				writer = new FileWriter(file);
 				String line;
 				while((line = reader.readLine()) != null) {
 					writer.write(line + System.getProperty("line.separator"));
 				}
 				// Open the report:
-				Desktop.getDesktop().open(f);
+				SystemEditor.open(file);
 			} catch(Exception e) {
 				logger.warn(e);
 			} finally {
