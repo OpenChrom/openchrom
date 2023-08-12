@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -13,7 +13,7 @@ package net.openchrom.xxd.classifier.supplier.ratios.model;
 
 import java.util.List;
 
-import org.eclipse.chemclipse.chromatogram.msd.classifier.result.ResultStatus;
+import org.eclipse.chemclipse.chromatogram.xxd.classifier.result.ResultStatus;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatios;
 
