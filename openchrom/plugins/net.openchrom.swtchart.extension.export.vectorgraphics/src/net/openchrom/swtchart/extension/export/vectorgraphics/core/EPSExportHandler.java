@@ -7,59 +7,46 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.swtchart.extension.export.vectorgraphics.core;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.support.ui.files.ExtendedFileDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.export.core.ISeriesExportConverter;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
 
-import de.erichseifert.vectorgraphics2d.Document;
+import net.openchrom.swtchart.extension.export.vectorgraphics.internal.io.AbstractExportHandler;
+
 import de.erichseifert.vectorgraphics2d.eps.EPSProcessor;
-import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
 
 public class EPSExportHandler extends AbstractExportHandler implements ISeriesExportConverter {
 
-	private static final Logger logger = Logger.getLogger(EPSExportHandler.class);
-	//
-	private static final String FILE_EXTENSION = "*.eps";
-	private static final String NAME = "Vector Graphics 2D (" + FILE_EXTENSION + ")";
-	private static final String TITLE = "Save As EPS";
+	public static final String DESCRIPTION = "Vector Graphics 2D";
+	public static final String FILE_EXTENSION = ".eps";
+	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
+	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
+	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
+	public static final String TYPE_NAME = "application/postscript";
 
 	@Override
 	public String getName() {
 
-		return NAME;
+		return FILTER_NAME;
+	}
+
+	@Override
+	public Image getIcon() {
+
+		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_VECTOR_DOCUMENT, IApplicationImageProvider.SIZE_16x16);
 	}
 
 	@Override
 	public void execute(Shell shell, ScrollableChart scrollableChart) {
 
-		FileDialog fileDialog = ExtendedFileDialog.create(shell, SWT.SAVE);
-		fileDialog.setOverwrite(true);
-		fileDialog.setText(NAME);
-		fileDialog.setFilterExtensions(new String[]{FILE_EXTENSION});
-		//
-		String fileName = fileDialog.open();
-		if(fileName != null) {
-			try (FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
-				CommandSequence commandSequene = getCommandSequence(shell, scrollableChart);
-				EPSProcessor processor = new EPSProcessor();
-				Document document = processor.getDocument(commandSequene, SELECTED_PAGE_SIZE);
-				document.writeTo(fileOutputStream);
-				MessageDialog.openInformation(shell, TITLE, MESSAGE_OK);
-			} catch(IOException e) {
-				logger.warn(e);
-			}
-		}
+		execute(shell, scrollableChart, new EPSProcessor(), TYPE_NAME, FILTER_NAME, FILTER_EXTENSION, FILE_NAME);
 	}
 }

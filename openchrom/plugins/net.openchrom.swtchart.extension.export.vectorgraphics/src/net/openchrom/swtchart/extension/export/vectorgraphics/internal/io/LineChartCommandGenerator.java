@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2023 Lablicate GmbH.
+ * Copyright (c) 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,24 +7,26 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.swtchart.extension.export.vectorgraphics.core;
+package net.openchrom.swtchart.extension.export.vectorgraphics.internal.io;
 
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
+import org.eclipse.chemclipse.numeric.core.IPoint;
+import org.eclipse.chemclipse.numeric.core.Point;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swtchart.IAxis;
 import org.eclipse.swtchart.ISeries;
-import org.eclipse.swtchart.export.core.AbstractSeriesExportHandler;
-import org.eclipse.swtchart.export.core.ISeriesExportConverter;
+import org.eclipse.swtchart.Range;
 import org.eclipse.swtchart.export.core.VectorExportSettingsDialog;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IAxisScaleConverter;
@@ -32,19 +34,19 @@ import org.eclipse.swtchart.extensions.core.IAxisSettings;
 import org.eclipse.swtchart.extensions.core.ISecondaryAxisSettings;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
 
+import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
+
 import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
 import de.erichseifert.vectorgraphics2d.util.PageSize;
 
-public abstract class AbstractExportHandler extends AbstractSeriesExportHandler implements ISeriesExportConverter {
+public class LineChartCommandGenerator implements IChartCommandGenerator {
 
-	public static final PageSize A0_LANDSCAPE = new PageSize(1189.0, 841.0);
-	public static final PageSize A4_LANDSCAPE = new PageSize(297.0, 210.0);
-	public static final PageSize SELECTED_PAGE_SIZE = A0_LANDSCAPE;
+	@Override
+	public CommandSequence getCommandSequence(Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart) {
 
-	public CommandSequence getCommandSequence(Shell shell, ScrollableChart scrollableChart) {
-
-		Graphics2D graphics2D = new VectorGraphics2D();
+		VectorGraphics2D graphics2D = new VectorGraphics2D();
+		graphics2D.setStroke(pageSizeOption.basicStroke());
 		//
 		DecimalFormat decimalFormatX = new DecimalFormat(("0.00"), new DecimalFormatSymbols(Locale.ENGLISH));
 		DecimalFormat decimalFormatY = new DecimalFormat(("0.0#E0"), new DecimalFormatSymbols(Locale.ENGLISH));
@@ -62,6 +64,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 				/*
 				 * X Axis Settings
 				 */
+				IAxis axisX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
 				IAxisSettings axisSettingsX = baseChart.getXAxisSettings(indexAxisX);
 				IAxisScaleConverter axisScaleConverterX = null;
 				String labelX = "";
@@ -73,6 +76,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 				/*
 				 * Y Axis Settings
 				 */
+				IAxis axisY = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
 				IAxisSettings axisSettingsY = baseChart.getYAxisSettings(indexAxisY);
 				IAxisScaleConverter axisScaleConverterY = null;
 				if(axisSettingsY instanceof ISecondaryAxisSettings) {
@@ -80,10 +84,11 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 					axisScaleConverterY = secondaryAxisSettings.getAxisScaleConverter();
 				}
 				/*
-				 * OK
+				 * Size
 				 */
-				double width = SELECTED_PAGE_SIZE.getWidth();
-				double height = SELECTED_PAGE_SIZE.getHeight();
+				PageSize pageSize = pageSizeOption.pageSize();
+				double width = pageSize.getWidth();
+				double height = pageSize.getHeight();
 				double xBorder = 50;
 				double yBorder = 50;
 				double xIntent = 5;
@@ -94,27 +99,50 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 				if(dataSeries != null) {
 					double[] xSeries = dataSeries.getXSeries();
 					double[] ySeries = dataSeries.getYSeries();
-					double xMin = Arrays.stream(xSeries).min().getAsDouble();
-					double xMax = Arrays.stream(xSeries).max().getAsDouble();
-					double yMin = Arrays.stream(ySeries).min().getAsDouble();
-					double yMax = Arrays.stream(ySeries).max().getAsDouble();
-					//
+					Range rangeX = axisX.getRange();
+					Range rangeY = axisY.getRange();
+					double xMin = rangeX.lower; // Arrays.stream(xSeries).min().getAsDouble();
+					double xMax = rangeX.upper; // Arrays.stream(xSeries).max().getAsDouble();
+					double yMin = rangeY.lower; // Arrays.stream(ySeries).min().getAsDouble();
+					double yMax = rangeY.upper; // Arrays.stream(ySeries).max().getAsDouble();
 					double xDenumerator = xMax - xMin;
 					double yDenumerator = yMax - yMin;
 					//
 					if(xMax > 0 && yMax > 0) {
+						/*
+						 * Factors
+						 */
 						double factorX = (width - 2 * xBorder) / xDenumerator;
 						double factorY = (height - 2 * yBorder) / yDenumerator;
+						//
+						graphics2D.drawString("OpenChrom", 20, 20);
 						/*
 						 * Chromatogram
 						 */
-						int nPoints = xSeries.length - 1;
-						for(int i = 0; i < nPoints; i++) {
-							int x1 = (int)((factorX * (xSeries[i] - xMin)) + xBorder);
-							int y1 = (int)((height - factorY * (ySeries[i] - yMin)) - yBorder);
-							int x2 = (int)((factorX * (xSeries[i + 1] - xMin)) + xBorder);
-							int y2 = (int)((height - factorY * (ySeries[i + 1] - yMin)) - yBorder);
-							graphics2D.drawLine(x1, y1, x2, y2);
+						double xb = 0;
+						List<IPoint> points = new ArrayList<>();
+						for(int i = 0; i < xSeries.length; i++) {
+							double x = xSeries[i];
+							if(x > xb) {
+								if(x >= xMin && x <= xMax) {
+									int x1 = (int)((factorX * (x - xMin)) + xBorder);
+									int y1 = (int)((height - factorY * (ySeries[i] - yMin)) - yBorder);
+									points.add(new Point(x1, y1));
+									xb = x;
+								}
+							}
+						}
+						//
+						int size = points.size();
+						if(size > 0) {
+							int[] xvals = new int[size];
+							int[] yvals = new int[size];
+							for(int i = 0; i < size; i++) {
+								IPoint point = points.get(i);
+								xvals[i] = (int)point.getX();
+								yvals[i] = (int)point.getY();
+							}
+							graphics2D.drawPolyline(xvals, yvals, size);
 						}
 						/*
 						 * Font Metrics
@@ -215,6 +243,6 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 			}
 		}
 		//
-		return ((VectorGraphics2D)graphics2D).getCommands();
+		return graphics2D.getCommands();
 	}
 }

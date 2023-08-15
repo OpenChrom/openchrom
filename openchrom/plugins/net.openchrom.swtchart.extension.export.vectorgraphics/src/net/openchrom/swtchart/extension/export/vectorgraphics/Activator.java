@@ -11,33 +11,27 @@
  *******************************************************************************/
 package net.openchrom.swtchart.extension.export.vectorgraphics;
 
-import org.osgi.framework.BundleActivator;
+import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
 import org.osgi.framework.BundleContext;
 
-public class Activator implements BundleActivator {
+public class Activator extends AbstractActivatorUI {
 
-	private static BundleContext context;
+	private static Activator plugin;
 
-	static BundleContext getContext() {
+	public void start(BundleContext context) throws Exception {
 
-		return context;
+		super.start(context);
+		plugin = this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
-	 */
-	public void start(BundleContext bundleContext) throws Exception {
+	public void stop(BundleContext context) throws Exception {
 
-		Activator.context = bundleContext;
+		plugin = null;
+		super.stop(context);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-	 */
-	public void stop(BundleContext bundleContext) throws Exception {
+	public static Activator getDefault() {
 
-		Activator.context = null;
+		return plugin;
 	}
 }
