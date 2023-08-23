@@ -11,7 +11,9 @@
  *******************************************************************************/
 package net.openchrom.swtchart.extension.export.vectorgraphics.internal.io;
 
+import java.awt.BasicStroke;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.text.DecimalFormat;
@@ -46,7 +48,11 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 	public CommandSequence getCommandSequence(Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart) {
 
 		VectorGraphics2D graphics2D = new VectorGraphics2D();
-		graphics2D.setStroke(pageSizeOption.basicStroke());
+		//
+		float factor = pageSizeOption.factor();
+		graphics2D.setStroke(new BasicStroke(factor, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
+		Font font = new Font("Arial", Font.PLAIN, (int)(14 * factor));
+		graphics2D.setFont(font);
 		//
 		DecimalFormat decimalFormatX = new DecimalFormat(("0.00"), new DecimalFormatSymbols(Locale.ENGLISH));
 		DecimalFormat decimalFormatY = new DecimalFormat(("0.0#E0"), new DecimalFormatSymbols(Locale.ENGLISH));
@@ -89,10 +95,10 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 				PageSize pageSize = pageSizeOption.pageSize();
 				double width = pageSize.getWidth();
 				double height = pageSize.getHeight();
-				double xBorder = 50;
-				double yBorder = 50;
-				double xIntent = 5;
-				double yIntent = 5;
+				double xBorder = 50 * factor;
+				double yBorder = 50 * factor;
+				double xIntent = 5 * factor;
+				double yIntent = 5 * factor;
 				//
 				ISeries<?>[] series = baseChart.getSeriesSet().getSeries();
 				ISeries<?> dataSeries = series[0];
@@ -114,8 +120,6 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 						 */
 						double factorX = (width - 2 * xBorder) / xDenumerator;
 						double factorY = (height - 2 * yBorder) / yDenumerator;
-						//
-						graphics2D.drawString("OpenChrom", 20, 20);
 						/*
 						 * Chromatogram
 						 */
@@ -149,7 +153,6 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 						 */
 						AffineTransform affineTransform = new AffineTransform();
 						FontRenderContext fontRenderContext = new FontRenderContext(affineTransform, true, true);
-						Font font = graphics2D.getFont();
 						/*
 						 * X Axis
 						 */
@@ -238,6 +241,14 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 							graphics2D.drawLine(x1, y1, x2, y2);
 							graphics2D.drawString(text, x3, y3);
 						}
+						/*
+						 * Branding
+						 */
+						String slogan = "https://openchrom.net";
+						FontMetrics fontMetrics = graphics2D.getFontMetrics();
+						int heightSlogan = fontMetrics.getHeight();
+						int widthSlogan = fontMetrics.stringWidth(slogan);
+						graphics2D.drawString(slogan, (int)(width - xBorder - widthSlogan), (int)(height - yBorder + heightSlogan));
 					}
 				}
 			}

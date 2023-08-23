@@ -11,27 +11,25 @@
  *******************************************************************************/
 package net.openchrom.swtchart.extension.export.vectorgraphics.model;
 
-import java.awt.BasicStroke;
-
 import org.eclipse.chemclipse.support.text.ILabel;
 
 import de.erichseifert.vectorgraphics2d.util.PageSize;
 
 public enum PageSizeOption implements ILabel {
 
-	FULL_LANDSCAPE("Full Size (Landscape)", new PageSize(44930, 31780), new BasicStroke(20.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND)), // [px] -> 11887.73, 8408.46 [mm]
-	A0_LANDSCAPE("A0 (Landscape)", new PageSize(4493.858, 3178.583), new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND)), // [px] -> 1189.0, 841.0 [mm]
-	A4_LANDSCAPE("A4 (Landscape)", new PageSize(1122.520, 793.701), new BasicStroke(0.25f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND)); // [px] -> 297.0, 210.0 [mm]
+	FULL_LANDSCAPE("Full Size (Landscape)", new PageSize(44930, 31780), 20.0f), // [px] -> 11887.73, 8408.46 [mm]
+	A0_LANDSCAPE("A0 (Landscape)", new PageSize(4493.858, 3178.583), 1.0f), // [px] -> 1189.0, 841.0 [mm]
+	A4_LANDSCAPE("A4 (Landscape)", new PageSize(1122.520, 793.701), 0.25f); // [px] -> 297.0, 210.0 [mm]
 
 	private String label = "";
 	private PageSize pageSize;
-	private BasicStroke basicStroke;
+	private float factor;
 
-	private PageSizeOption(String label, PageSize pageSize, BasicStroke basicStroke) {
+	private PageSizeOption(String label, PageSize pageSize, float factor) {
 
 		this.label = label;
 		this.pageSize = pageSize;
-		this.basicStroke = basicStroke;
+		this.factor = factor;
 	}
 
 	public String label() {
@@ -44,9 +42,9 @@ public enum PageSizeOption implements ILabel {
 		return pageSize;
 	}
 
-	public BasicStroke basicStroke() {
+	public float factor() {
 
-		return basicStroke;
+		return factor;
 	}
 
 	public static String[][] getOptions() {
