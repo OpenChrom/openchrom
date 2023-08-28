@@ -182,13 +182,6 @@
          unpack="false"/>
 
    <plugin
-         id="net.openchrom.thirdpartylibraries.splash"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="wrapped.uk.ac.cam.ch.opsin.opsin-core"
          download-size="0"
          install-size="0"
