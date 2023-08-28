@@ -11,22 +11,19 @@
  *******************************************************************************/
 package net.openchrom.swtchart.extension.export.vectorgraphics.internal.io;
 
-import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.AffineTransform;
+import java.awt.Graphics2D;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.eclipse.chemclipse.numeric.core.IPoint;
 import org.eclipse.chemclipse.numeric.core.Point;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.IAxis;
+import org.eclipse.swtchart.ILineSeries.PlotSymbolType;
 import org.eclipse.swtchart.ISeries;
 import org.eclipse.swtchart.Range;
 import org.eclipse.swtchart.export.core.VectorExportSettingsDialog;
@@ -34,28 +31,29 @@ import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IAxisScaleConverter;
 import org.eclipse.swtchart.extensions.core.IAxisSettings;
 import org.eclipse.swtchart.extensions.core.ISecondaryAxisSettings;
+import org.eclipse.swtchart.extensions.core.ISeriesSettings;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
+import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
 
+import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSettings;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
+import net.openchrom.swtchart.extension.export.vectorgraphics.support.AWTUtils;
 
 import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
-import de.erichseifert.vectorgraphics2d.util.PageSize;
 
 public class LineChartCommandGenerator implements IChartCommandGenerator {
+
+	private static final int NUMBER_TICS = 20;
 
 	@Override
 	public CommandSequence getCommandSequence(Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart) {
 
 		VectorGraphics2D graphics2D = new VectorGraphics2D();
 		//
-		float factor = pageSizeOption.factor();
-		graphics2D.setStroke(new BasicStroke(factor, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
-		Font font = new Font("Arial", Font.PLAIN, (int)(14 * factor));
-		graphics2D.setFont(font);
-		//
-		DecimalFormat decimalFormatX = new DecimalFormat(("0.00"), new DecimalFormatSymbols(Locale.ENGLISH));
-		DecimalFormat decimalFormatY = new DecimalFormat(("0.0#E0"), new DecimalFormatSymbols(Locale.ENGLISH));
+		PageSettings pageSettings = new PageSettings(pageSizeOption);
+		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.setFont(pageSettings.getFont());
 		//
 		BaseChart baseChart = scrollableChart.getBaseChart();
 		VectorExportSettingsDialog exportSettingsDialog = new VectorExportSettingsDialog(shell, baseChart);
@@ -68,49 +66,199 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 			//
 			if(indexAxisX >= 0 && indexAxisY >= 0) {
 				/*
-				 * X Axis Settings
+				 * Print
 				 */
-				IAxis axisX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
-				IAxisSettings axisSettingsX = baseChart.getXAxisSettings(indexAxisX);
-				IAxisScaleConverter axisScaleConverterX = null;
-				String labelX = "";
-				if(axisSettingsX instanceof ISecondaryAxisSettings) {
-					ISecondaryAxisSettings secondaryAxisSettings = (ISecondaryAxisSettings)axisSettingsX;
-					axisScaleConverterX = secondaryAxisSettings.getAxisScaleConverter();
-					labelX = secondaryAxisSettings.getLabel();
-				}
-				/*
-				 * Y Axis Settings
-				 */
-				IAxis axisY = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
-				IAxisSettings axisSettingsY = baseChart.getYAxisSettings(indexAxisY);
-				IAxisScaleConverter axisScaleConverterY = null;
-				if(axisSettingsY instanceof ISecondaryAxisSettings) {
-					ISecondaryAxisSettings secondaryAxisSettings = (ISecondaryAxisSettings)axisSettingsY;
-					axisScaleConverterY = secondaryAxisSettings.getAxisScaleConverter();
-				}
-				/*
-				 * Size
-				 */
-				PageSize pageSize = pageSizeOption.pageSize();
-				double width = pageSize.getWidth();
-				double height = pageSize.getHeight();
-				double xBorder = 50 * factor;
-				double yBorder = 50 * factor;
-				double xIntent = 5 * factor;
-				double yIntent = 5 * factor;
-				//
-				ISeries<?>[] series = baseChart.getSeriesSet().getSeries();
-				ISeries<?> dataSeries = series[0];
-				if(dataSeries != null) {
-					double[] xSeries = dataSeries.getXSeries();
-					double[] ySeries = dataSeries.getYSeries();
+				drawData(graphics2D, baseChart, pageSettings);
+				drawAxes(graphics2D, baseChart, indexAxisX, indexAxisY, pageSettings);
+				drawBranding(graphics2D, pageSettings);
+			}
+		}
+		//
+		return graphics2D.getCommands();
+	}
+
+	private void drawAxes(Graphics2D graphics2D, BaseChart baseChart, int indexAxisX, int indexAxisY, PageSettings pageSettings) {
+
+		drawAxisX(graphics2D, baseChart, indexAxisX, pageSettings);
+		drawAxisY(graphics2D, baseChart, indexAxisY, pageSettings);
+	}
+
+	private void drawAxisX(Graphics2D graphics2D, BaseChart baseChart, int indexAxisX, PageSettings pageSettings) {
+
+		DecimalFormat decimalFormatX = pageSettings.getDecimalFormatX();
+		double width = pageSettings.getWidth();
+		double height = pageSettings.getHeight();
+		double xBorder = pageSettings.getBorderX();
+		double yBorder = pageSettings.getBorderY();
+		/*
+		 * Font/Color
+		 */
+		Font font = pageSettings.getFont();
+		graphics2D.setFont(font);
+		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.setColor(pageSettings.getColorBlack());
+		FontMetrics fontMetrics = graphics2D.getFontMetrics();
+		/*
+		 * X Axis Settings
+		 */
+		IAxis axisX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
+		IAxisSettings axisSettingsX = baseChart.getXAxisSettings(indexAxisX);
+		IAxisScaleConverter axisScaleConverterX = null;
+		String labelX = axisSettingsX.getLabel();
+		if(axisSettingsX instanceof ISecondaryAxisSettings) {
+			ISecondaryAxisSettings secondaryAxisSettings = (ISecondaryAxisSettings)axisSettingsX;
+			axisScaleConverterX = secondaryAxisSettings.getAxisScaleConverter();
+			labelX = secondaryAxisSettings.getLabel();
+		}
+		/*
+		 * Settings
+		 */
+		Range rangeX = axisX.getRange();
+		double deltaRange = (rangeX.upper + rangeX.lower) / NUMBER_TICS;
+		double deltaWidth = (width - 2 * xBorder) / NUMBER_TICS;
+		/*
+		 * X Axis
+		 */
+		int x11 = (int)(xBorder);
+		int y11 = (int)(height - yBorder);
+		int x12 = (int)(width - xBorder);
+		int y12 = (int)(height - yBorder);
+		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.drawLine(x11, y11, x12, y12);
+		/*
+		 * Scale
+		 */
+		if(!labelX.isEmpty()) {
+			int widthText = fontMetrics.stringWidth(labelX);
+			int heightText = fontMetrics.getHeight();
+			int x = (int)(width / 2 - widthText / 2);
+			int y = (int)(height - yBorder + heightText);
+			graphics2D.drawString(labelX, x, y);
+		}
+		/*
+		 * Grid
+		 */
+		graphics2D.setStroke(pageSettings.getStrokeDashed());
+		graphics2D.setColor(pageSettings.getColorGray());
+		for(int i = 1; i <= NUMBER_TICS; i++) {
+			int x = (int)(xBorder + i * deltaWidth);
+			int y1 = (int)(yBorder);
+			int y2 = (int)(height - yBorder);
+			graphics2D.drawLine(x, y1, x, y2);
+		}
+		/*
+		 * Tics
+		 */
+		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.setColor(pageSettings.getColorBlack());
+		for(int i = 1; i <= NUMBER_TICS; i++) {
+			double xMin = rangeX.lower + i * deltaRange;
+			String label = decimalFormatX.format(axisScaleConverterX != null ? axisScaleConverterX.convertToSecondaryUnit(xMin) : xMin);
+			int widthText = fontMetrics.stringWidth(label);
+			int heightText = fontMetrics.getHeight();
+			int x = (int)(xBorder + i * deltaWidth);
+			int y1 = (int)(height - yBorder);
+			int y2 = (int)(y1 + (yBorder / 4.0d));
+			int x3 = (int)(x - (widthText / 2.0d));
+			int y3 = (int)(y1 + (yBorder / 2.0d) + (heightText / 2.0d));
+			graphics2D.drawLine(x, y1, x, y2);
+			graphics2D.drawString(label, x3, y3);
+		}
+	}
+
+	private void drawAxisY(Graphics2D graphics2D, BaseChart baseChart, int indexAxisY, PageSettings pageSettings) {
+
+		DecimalFormat decimalFormatY = pageSettings.getDecimalFormatY();
+		double width = pageSettings.getWidth();
+		double height = pageSettings.getHeight();
+		double xBorder = pageSettings.getBorderX();
+		double yBorder = pageSettings.getBorderY();
+		/*
+		 * Font/Color
+		 */
+		Font font = pageSettings.getFont();
+		graphics2D.setFont(font);
+		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.setColor(pageSettings.getColorBlack());
+		FontMetrics fontMetrics = graphics2D.getFontMetrics();
+		/*
+		 * Y Axis Settings
+		 */
+		IAxis axisY = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+		IAxisSettings axisSettingsY = baseChart.getYAxisSettings(indexAxisY);
+		IAxisScaleConverter axisScaleConverterY = null;
+		if(axisSettingsY instanceof ISecondaryAxisSettings) {
+			ISecondaryAxisSettings secondaryAxisSettings = (ISecondaryAxisSettings)axisSettingsY;
+			axisScaleConverterY = secondaryAxisSettings.getAxisScaleConverter();
+		}
+		/*
+		 * Settings
+		 */
+		Range rangeY = axisY.getRange();
+		double deltaRange = (rangeY.upper + rangeY.lower) / NUMBER_TICS;
+		double deltaHeight = (height - 2 * yBorder) / NUMBER_TICS;
+		/*
+		 * Y Axis
+		 */
+		int x21 = (int)(xBorder);
+		int y21 = (int)(yBorder);
+		int x22 = (int)(xBorder);
+		int y22 = (int)(height - yBorder);
+		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.drawLine(x21, y21, x22, y22);
+		/*
+		 * Grid
+		 */
+		graphics2D.setStroke(pageSettings.getStrokeDashed());
+		graphics2D.setColor(pageSettings.getColorGray());
+		for(int i = 0; i < NUMBER_TICS; i++) {
+			int x1 = (int)(yBorder);
+			int x2 = (int)(width - yBorder);
+			int y = (int)(yBorder + i * deltaHeight);
+			graphics2D.drawLine(x1, y, x2, y);
+		}
+		/*
+		 * Tics
+		 */
+		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.setColor(pageSettings.getColorBlack());
+		for(int i = NUMBER_TICS; i > 0; i--) {
+			double yMin = rangeY.lower + i * deltaRange;
+			String label = decimalFormatY.format((axisScaleConverterY != null) ? axisScaleConverterY.convertToSecondaryUnit(yMin) : yMin);
+			int heightText = fontMetrics.getHeight();
+			int x = (int)(xBorder / 10.0d);
+			int y = (int)(yBorder - ((i - NUMBER_TICS) * deltaHeight - (heightText / 3.0d)));
+			graphics2D.drawString(label, x, y);
+		}
+	}
+
+	private void drawData(Graphics2D graphics2D, BaseChart baseChart, PageSettings pageSettings) {
+
+		IAxis axisX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
+		IAxis axisY = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+		//
+		double width = pageSettings.getWidth();
+		double height = pageSettings.getHeight();
+		double xBorder = pageSettings.getBorderX();
+		double yBorder = pageSettings.getBorderY();
+		//
+		ISeries<?>[] seriesSet = baseChart.getSeriesSet().getSeries();
+		for(ISeries<?> series : seriesSet) {
+			/*
+			 * Series
+			 */
+			if(series.isVisible()) {
+				String id = series.getId();
+				ISeriesSettings seriesSettings = baseChart.getSeriesSettings(id);
+				if(seriesSettings instanceof ILineSeriesSettings lineSeriesSettings) {
+					double[] xSeries = series.getXSeries();
+					double[] ySeries = series.getYSeries();
 					Range rangeX = axisX.getRange();
 					Range rangeY = axisY.getRange();
-					double xMin = rangeX.lower; // Arrays.stream(xSeries).min().getAsDouble();
-					double xMax = rangeX.upper; // Arrays.stream(xSeries).max().getAsDouble();
-					double yMin = rangeY.lower; // Arrays.stream(ySeries).min().getAsDouble();
-					double yMax = rangeY.upper; // Arrays.stream(ySeries).max().getAsDouble();
+					double xMin = rangeX.lower;
+					double xMax = rangeX.upper;
+					double yMin = rangeY.lower;
+					double yMax = rangeY.upper;
 					double xDenumerator = xMax - xMin;
 					double yDenumerator = yMax - yMin;
 					//
@@ -121,7 +269,7 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 						double factorX = (width - 2 * xBorder) / xDenumerator;
 						double factorY = (height - 2 * yBorder) / yDenumerator;
 						/*
-						 * Chromatogram
+						 * Collect
 						 */
 						double xb = 0;
 						List<IPoint> points = new ArrayList<>();
@@ -136,124 +284,87 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 								}
 							}
 						}
-						//
-						int size = points.size();
-						if(size > 0) {
-							int[] xvals = new int[size];
-							int[] yvals = new int[size];
-							for(int i = 0; i < size; i++) {
-								IPoint point = points.get(i);
-								xvals[i] = (int)point.getX();
-								yvals[i] = (int)point.getY();
-							}
-							graphics2D.drawPolyline(xvals, yvals, size);
-						}
 						/*
-						 * Font Metrics
+						 * Print
 						 */
-						AffineTransform affineTransform = new AffineTransform();
-						FontRenderContext fontRenderContext = new FontRenderContext(affineTransform, true, true);
-						/*
-						 * X Axis
-						 */
-						int x11 = (int)(xBorder);
-						int y11 = (int)(height - yBorder);
-						int x12 = (int)(width - xBorder);
-						int y12 = (int)(height - yBorder);
-						graphics2D.drawLine(x11, y11, x12, y12);
-						/*
-						 * Scale
-						 */
-						if(!"".equals(labelX)) {
-							int textwidth = (int)(font.getStringBounds(labelX, fontRenderContext).getWidth());
-							int textheight = (int)(font.getStringBounds(labelX, fontRenderContext).getHeight());
-							int x1 = (int)(width / 2 - textwidth / 2);
-							int y1 = (int)(height - yBorder + textheight + yIntent);
-							graphics2D.drawString(labelX, x1, y1);
-						}
-						/*
-						 * X Tick 1
-						 */
-						if(axisScaleConverterX != null) {
-							String text = decimalFormatX.format(axisScaleConverterX.convertToSecondaryUnit(xMin));
-							int textwidth = (int)(font.getStringBounds(text, fontRenderContext).getWidth());
-							int textheight = (int)(font.getStringBounds(text, fontRenderContext).getHeight());
-							int x1 = (int)(xBorder);
-							int y1 = (int)(height - yBorder);
-							int x2 = (int)(xBorder);
-							int y2 = (int)(height - yBorder / 2);
-							int x3 = (int)(xBorder - textwidth / 2);
-							int y3 = (int)(height - yBorder / 2 + textheight);
-							graphics2D.drawLine(x1, y1, x2, y2);
-							graphics2D.drawString(text, x3, y3);
-						}
-						/*
-						 * X Tick 5
-						 */
-						if(axisScaleConverterX != null) {
-							String text = decimalFormatX.format(axisScaleConverterX.convertToSecondaryUnit(xMax));
-							int textwidth = (int)(font.getStringBounds(text, fontRenderContext).getWidth());
-							int textheight = (int)(font.getStringBounds(text, fontRenderContext).getHeight());
-							int x1 = (int)(width - xBorder);
-							int y1 = (int)(height - yBorder);
-							int x2 = (int)(width - xBorder);
-							int y2 = (int)(height - yBorder / 2);
-							int x3 = (int)(width - xBorder - textwidth / 2);
-							int y3 = (int)(height - yBorder / 2 + textheight);
-							graphics2D.drawLine(x1, y1, x2, y2);
-							graphics2D.drawString(text, x3, y3);
-						}
-						/*
-						 * Y Axis
-						 */
-						int x21 = (int)(xBorder);
-						int y21 = (int)(yBorder);
-						int x22 = (int)(xBorder);
-						int y22 = (int)(height - yBorder);
-						graphics2D.drawLine(x21, y21, x22, y22);
-						/*
-						 * Y Tick 1
-						 */
-						if(axisScaleConverterY != null) {
-							String text = decimalFormatY.format(axisScaleConverterY.convertToSecondaryUnit(yMin));
-							int textheight = (int)(font.getStringBounds(text, fontRenderContext).getHeight());
-							int x1 = (int)(xBorder - xBorder / 5);
-							int y1 = (int)(height - yBorder);
-							int x2 = (int)(xBorder);
-							int y2 = (int)(height - yBorder);
-							int x3 = (int)(xIntent);
-							int y3 = (int)(height - yBorder + textheight / 2);
-							graphics2D.drawLine(x1, y1, x2, y2);
-							graphics2D.drawString(text, x3, y3);
-						}
-						/*
-						 * Y Tick 5
-						 */
-						if(axisScaleConverterY != null) {
-							String text = decimalFormatY.format(axisScaleConverterY.convertToSecondaryUnit(yMax));
-							int textheight = (int)(font.getStringBounds(text, fontRenderContext).getHeight());
-							int x1 = (int)(xBorder - xBorder / 5);
-							int y1 = (int)(yBorder);
-							int x2 = (int)(xBorder);
-							int y2 = (int)(yBorder);
-							int x3 = (int)(xIntent);
-							int y3 = (int)(yBorder + textheight / 2);
-							graphics2D.drawLine(x1, y1, x2, y2);
-							graphics2D.drawString(text, x3, y3);
-						}
-						/*
-						 * Branding
-						 */
-						String slogan = "https://openchrom.net";
-						FontMetrics fontMetrics = graphics2D.getFontMetrics();
-						int heightSlogan = fontMetrics.getHeight();
-						int widthSlogan = fontMetrics.stringWidth(slogan);
-						graphics2D.drawString(slogan, (int)(width - xBorder - widthSlogan), (int)(height - yBorder + heightSlogan));
+						printLine(graphics2D, points, lineSeriesSettings, pageSettings);
+						printSymbols(graphics2D, points, lineSeriesSettings, pageSettings);
 					}
 				}
 			}
 		}
+	}
+
+	private void printLine(Graphics2D graphics2D, List<IPoint> points, ILineSeriesSettings lineSeriesSettings, PageSettings pageSettings) {
+
+		/*
+		 * Line
+		 */
+		int lineWidth = lineSeriesSettings.getLineWidth();
+		if(lineWidth > 0) {
+			int size = points.size();
+			if(size > 0) {
+				/*
+				 * Area
+				 */
+				int[] xvals = new int[size];
+				int[] yvals = new int[size];
+				for(int i = 0; i < size; i++) {
+					IPoint point = points.get(i);
+					xvals[i] = (int)point.getX();
+					yvals[i] = (int)point.getY();
+				}
+				//
+				graphics2D.setStroke(pageSettings.getStroke(lineSeriesSettings.getLineStyle(), lineWidth));
+				graphics2D.setColor(AWTUtils.convertColor(lineSeriesSettings.getLineColor()));
+				graphics2D.drawPolyline(xvals, yvals, size);
+				if(lineSeriesSettings.isEnableArea()) {
+					// graphics2D.fillPolygon(xvals, yvals, size);
+				}
+			}
+		}
+	}
+
+	private void printSymbols(Graphics2D graphics2D, List<IPoint> points, ILineSeriesSettings lineSeriesSettings, PageSettings pageSettings) {
+
+		/*
+		 * Symbols
+		 */
+		int symbolSize = lineSeriesSettings.getSymbolSize();
+		if(symbolSize > 0) {
+			double size = (lineSeriesSettings.getSymbolSize() * pageSettings.getFactor());
+			double radius = size / 2.0d;
+			graphics2D.setColor(AWTUtils.convertColor(lineSeriesSettings.getSymbolColor()));
+			PlotSymbolType symbolType = lineSeriesSettings.getSymbolType();
+			switch(symbolType) {
+				case CIRCLE:
+					for(IPoint point : points) {
+						int x = (int)(point.getX() - radius);
+						int y = (int)(point.getY() - radius);
+						int width = (int)size;
+						int height = (int)size;
+						graphics2D.fillOval(x, y, width, height);
+					}
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	private void drawBranding(Graphics2D graphics2D, PageSettings pageSettings) {
+
+		double width = pageSettings.getWidth();
+		double xBorder = pageSettings.getBorderX();
+		double yBorder = pageSettings.getBorderY();
 		//
-		return graphics2D.getCommands();
+		graphics2D.setColor(pageSettings.getColorDarkGray());
+		String label = "https://openchrom.net";
+		FontMetrics fontMetrics = graphics2D.getFontMetrics();
+		int widthText = fontMetrics.stringWidth(label);
+		int heightText = fontMetrics.getHeight();
+		int x = (int)(width - xBorder - widthText);
+		int y = (int)((yBorder / 2.0d) + (heightText / 2.0d));
+		graphics2D.drawString(label, x, y);
 	}
 }
