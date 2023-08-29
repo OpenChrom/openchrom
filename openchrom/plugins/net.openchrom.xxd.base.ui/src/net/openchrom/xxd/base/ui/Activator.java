@@ -16,6 +16,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
 import net.openchrom.xxd.base.ui.services.IDeconvolutionService;
+import net.openchrom.xxd.base.ui.services.IIdentificationService;
 
 public class Activator extends AbstractActivatorUI {
 
@@ -23,6 +24,7 @@ public class Activator extends AbstractActivatorUI {
 	private static BundleContext context;
 	//
 	private ServiceTracker<IDeconvolutionService, IDeconvolutionService> deconvolutionServiceTracker = null;
+	private ServiceTracker<IIdentificationService, IIdentificationService> identificationServiceTracker = null;
 
 	public static BundleContext getContext() {
 
@@ -53,14 +55,23 @@ public class Activator extends AbstractActivatorUI {
 		return deconvolutionServiceTracker.getServices();
 	}
 
+	public Object[] getIdentificationServices() {
+
+		return identificationServiceTracker.getServices();
+	}
+
 	private void startServices(BundleContext context) {
 
 		deconvolutionServiceTracker = new ServiceTracker<>(context, IDeconvolutionService.class, null);
 		deconvolutionServiceTracker.open();
+		//
+		identificationServiceTracker = new ServiceTracker<>(context, IIdentificationService.class, null);
+		identificationServiceTracker.open();
 	}
 
 	private void stopServices() {
 
 		deconvolutionServiceTracker.close();
+		identificationServiceTracker.close();
 	}
 }
