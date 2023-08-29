@@ -36,8 +36,10 @@ public class PageSettings {
 	private float factor = 1.0f;
 	private double width = 0;
 	private double height = 0;
-	private double borderX = 0;
-	private double borderY = 0;
+	private double borderLeftX = 0;
+	private double borderRightX = 0;
+	private double borderTopY = 0;
+	private double borderBottomY = 0;
 	private double intentX = 0;
 	private double intentY = 0;
 	//
@@ -54,12 +56,13 @@ public class PageSettings {
 		PageSize pageSize = pageSizeOption.pageSize();
 		//
 		this.factor = pageSizeOption.factor();
-		//
 		this.width = pageSize.getWidth();
 		this.height = pageSize.getHeight();
 		//
-		this.borderX = 50 * factor;
-		this.borderY = 50 * factor;
+		this.borderLeftX = 100 * factor;
+		this.borderRightX = 50 * factor;
+		this.borderTopY = 50 * factor;
+		this.borderBottomY = 100 * factor;
 		this.intentX = 5 * factor;
 		this.intentY = 5 * factor;
 		//
@@ -120,14 +123,24 @@ public class PageSettings {
 		return height;
 	}
 
-	public double getBorderX() {
+	public double getBorderLeftX() {
 
-		return borderX;
+		return borderLeftX;
 	}
 
-	public double getBorderY() {
+	public double getBorderRightX() {
 
-		return borderY;
+		return borderRightX;
+	}
+
+	public double getBorderTopY() {
+
+		return borderTopY;
+	}
+
+	public double getBorderBottomY() {
+
+		return borderBottomY;
 	}
 
 	public double getIntentX() {

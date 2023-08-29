@@ -88,8 +88,10 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 		DecimalFormat decimalFormatX = pageSettings.getDecimalFormatX();
 		double width = pageSettings.getWidth();
 		double height = pageSettings.getHeight();
-		double xBorder = pageSettings.getBorderX();
-		double yBorder = pageSettings.getBorderY();
+		double xBorderLeft = pageSettings.getBorderLeftX();
+		double xBorderRight = pageSettings.getBorderRightX();
+		double yBorderTop = pageSettings.getBorderTopY();
+		double yBorderBottom = pageSettings.getBorderBottomY();
 		/*
 		 * Font/Color
 		 */
@@ -115,24 +117,15 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 		 */
 		Range rangeX = axisX.getRange();
 		double deltaRange = (rangeX.upper + rangeX.lower) / NUMBER_TICS;
-		double deltaWidth = (width - 2 * xBorder) / NUMBER_TICS;
-		/*
-		 * X Axis
-		 */
-		int x11 = (int)(xBorder);
-		int y11 = (int)(height - yBorder);
-		int x12 = (int)(width - xBorder);
-		int y12 = (int)(height - yBorder);
-		graphics2D.setStroke(pageSettings.getStrokeDefault());
-		graphics2D.drawLine(x11, y11, x12, y12);
+		double deltaWidth = (width - xBorderLeft - xBorderRight) / NUMBER_TICS;
 		/*
 		 * Scale
 		 */
 		if(!labelX.isEmpty()) {
 			int widthText = fontMetrics.stringWidth(labelX);
 			int heightText = fontMetrics.getHeight();
-			int x = (int)(width / 2 - widthText / 2);
-			int y = (int)(height - yBorder + heightText);
+			int x = (int)(width / 2.0d - widthText / 2.0d);
+			int y = (int)(height - (yBorderBottom / 2.0d) + heightText);
 			graphics2D.drawString(labelX, x, y);
 		}
 		/*
@@ -141,9 +134,9 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 		graphics2D.setStroke(pageSettings.getStrokeDashed());
 		graphics2D.setColor(pageSettings.getColorGray());
 		for(int i = 1; i <= NUMBER_TICS; i++) {
-			int x = (int)(xBorder + i * deltaWidth);
-			int y1 = (int)(yBorder);
-			int y2 = (int)(height - yBorder);
+			int x = (int)(xBorderLeft + i * deltaWidth);
+			int y1 = (int)(yBorderTop);
+			int y2 = (int)(height - yBorderBottom);
 			graphics2D.drawLine(x, y1, x, y2);
 		}
 		/*
@@ -156,14 +149,23 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 			String label = decimalFormatX.format(axisScaleConverterX != null ? axisScaleConverterX.convertToSecondaryUnit(xMin) : xMin);
 			int widthText = fontMetrics.stringWidth(label);
 			int heightText = fontMetrics.getHeight();
-			int x = (int)(xBorder + i * deltaWidth);
-			int y1 = (int)(height - yBorder);
-			int y2 = (int)(y1 + (yBorder / 4.0d));
+			int x = (int)(xBorderLeft + i * deltaWidth);
+			int y1 = (int)(height - yBorderBottom);
+			int y2 = (int)(y1 + (yBorderBottom / 4.0d));
 			int x3 = (int)(x - (widthText / 2.0d));
-			int y3 = (int)(y1 + (yBorder / 2.0d) + (heightText / 2.0d));
+			int y3 = (int)(y1 + (yBorderBottom / 3.0d) + (heightText / 2.0d));
 			graphics2D.drawLine(x, y1, x, y2);
 			graphics2D.drawString(label, x3, y3);
 		}
+		/*
+		 * X Axis
+		 */
+		int x11 = (int)(xBorderLeft / 2.0d);
+		int y11 = (int)(height - yBorderBottom);
+		int x12 = (int)(width - xBorderRight);
+		int y12 = (int)(height - yBorderBottom);
+		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.drawLine(x11, y11, x12, y12);
 	}
 
 	private void drawAxisY(Graphics2D graphics2D, BaseChart baseChart, int indexAxisY, PageSettings pageSettings) {
@@ -171,8 +173,10 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 		DecimalFormat decimalFormatY = pageSettings.getDecimalFormatY();
 		double width = pageSettings.getWidth();
 		double height = pageSettings.getHeight();
-		double xBorder = pageSettings.getBorderX();
-		double yBorder = pageSettings.getBorderY();
+		double xBorderLeft = pageSettings.getBorderLeftX();
+		double xBorderRight = pageSettings.getBorderRightX();
+		double yBorderTop = pageSettings.getBorderTopY();
+		double yBorderBottom = pageSettings.getBorderBottomY();
 		/*
 		 * Font/Color
 		 */
@@ -196,25 +200,16 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 		 */
 		Range rangeY = axisY.getRange();
 		double deltaRange = (rangeY.upper + rangeY.lower) / NUMBER_TICS;
-		double deltaHeight = (height - 2 * yBorder) / NUMBER_TICS;
-		/*
-		 * Y Axis
-		 */
-		int x21 = (int)(xBorder);
-		int y21 = (int)(yBorder);
-		int x22 = (int)(xBorder);
-		int y22 = (int)(height - yBorder);
-		graphics2D.setStroke(pageSettings.getStrokeDefault());
-		graphics2D.drawLine(x21, y21, x22, y22);
+		double deltaHeight = (height - yBorderTop - yBorderBottom) / NUMBER_TICS;
 		/*
 		 * Grid
 		 */
 		graphics2D.setStroke(pageSettings.getStrokeDashed());
 		graphics2D.setColor(pageSettings.getColorGray());
 		for(int i = 0; i < NUMBER_TICS; i++) {
-			int x1 = (int)(yBorder);
-			int x2 = (int)(width - yBorder);
-			int y = (int)(yBorder + i * deltaHeight);
+			int x1 = (int)(xBorderLeft);
+			int x2 = (int)(width - xBorderRight);
+			int y = (int)(yBorderTop + i * deltaHeight);
 			graphics2D.drawLine(x1, y, x2, y);
 		}
 		/*
@@ -222,25 +217,42 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 		 */
 		graphics2D.setStroke(pageSettings.getStrokeDefault());
 		graphics2D.setColor(pageSettings.getColorBlack());
-		for(int i = NUMBER_TICS; i > 0; i--) {
-			double yMin = rangeY.lower + i * deltaRange;
+		for(int i = 0; i < NUMBER_TICS; i++) {
+			double yMin = rangeY.lower + (NUMBER_TICS - i) * deltaRange;
 			String label = decimalFormatY.format((axisScaleConverterY != null) ? axisScaleConverterY.convertToSecondaryUnit(yMin) : yMin);
 			int heightText = fontMetrics.getHeight();
-			int x = (int)(xBorder / 10.0d);
-			int y = (int)(yBorder - ((i - NUMBER_TICS) * deltaHeight - (heightText / 3.0d)));
-			graphics2D.drawString(label, x, y);
+			int x1 = (int)(xBorderLeft / 4.0d);
+			int x2 = (int)(xBorderLeft / 1.3d);
+			int x3 = (int)(xBorderLeft);
+			int y1 = (int)(yBorderTop + i * deltaHeight);
+			int y2 = (int)(y1 + heightText / 2.75d);
+			graphics2D.drawLine(x2, y1, x3, y1);
+			graphics2D.drawString(label, x1, y2);
 		}
+		/*
+		 * Y Axis
+		 */
+		int x21 = (int)(xBorderLeft);
+		int y21 = (int)(yBorderTop);
+		int x22 = (int)(xBorderLeft);
+		int y22 = (int)(height - yBorderTop);
+		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.drawLine(x21, y21, x22, y22);
 	}
 
 	private void drawData(Graphics2D graphics2D, BaseChart baseChart, PageSettings pageSettings) {
 
-		IAxis axisX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
-		IAxis axisY = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
-		//
 		double width = pageSettings.getWidth();
 		double height = pageSettings.getHeight();
-		double xBorder = pageSettings.getBorderX();
-		double yBorder = pageSettings.getBorderY();
+		double xBorderLeft = pageSettings.getBorderLeftX();
+		double xBorderRight = pageSettings.getBorderRightX();
+		double yBorderTop = pageSettings.getBorderTopY();
+		double yBorderBottom = pageSettings.getBorderBottomY();
+		//
+		double xMin = baseChart.getMinX();
+		double xMax = baseChart.getMaxX();
+		double yMin = baseChart.getMinY();
+		double yMax = baseChart.getMaxY();
 		//
 		ISeries<?>[] seriesSet = baseChart.getSeriesSet().getSeries();
 		for(ISeries<?> series : seriesSet) {
@@ -253,12 +265,6 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 				if(seriesSettings instanceof ILineSeriesSettings lineSeriesSettings) {
 					double[] xSeries = series.getXSeries();
 					double[] ySeries = series.getYSeries();
-					Range rangeX = axisX.getRange();
-					Range rangeY = axisY.getRange();
-					double xMin = rangeX.lower;
-					double xMax = rangeX.upper;
-					double yMin = rangeY.lower;
-					double yMax = rangeY.upper;
 					double xDenumerator = xMax - xMin;
 					double yDenumerator = yMax - yMin;
 					//
@@ -266,8 +272,8 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 						/*
 						 * Factors
 						 */
-						double factorX = (width - 2 * xBorder) / xDenumerator;
-						double factorY = (height - 2 * yBorder) / yDenumerator;
+						double factorX = (width - xBorderLeft - xBorderRight) / xDenumerator;
+						double factorY = (height - yBorderTop - yBorderBottom) / yDenumerator;
 						/*
 						 * Collect
 						 */
@@ -277,8 +283,8 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 							double x = xSeries[i];
 							if(x > xb) {
 								if(x >= xMin && x <= xMax) {
-									int x1 = (int)((factorX * (x - xMin)) + xBorder);
-									int y1 = (int)((height - factorY * (ySeries[i] - yMin)) - yBorder);
+									int x1 = (int)((factorX * (x - xMin)) + xBorderLeft);
+									int y1 = (int)((height - factorY * (ySeries[i] - yMin)) - yBorderBottom);
 									points.add(new Point(x1, y1));
 									xb = x;
 								}
@@ -355,16 +361,16 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 	private void drawBranding(Graphics2D graphics2D, PageSettings pageSettings) {
 
 		double width = pageSettings.getWidth();
-		double xBorder = pageSettings.getBorderX();
-		double yBorder = pageSettings.getBorderY();
+		double xBorderRight = pageSettings.getBorderRightX();
+		double yBorderTop = pageSettings.getBorderTopY();
 		//
 		graphics2D.setColor(pageSettings.getColorDarkGray());
 		String label = "https://openchrom.net";
 		FontMetrics fontMetrics = graphics2D.getFontMetrics();
 		int widthText = fontMetrics.stringWidth(label);
 		int heightText = fontMetrics.getHeight();
-		int x = (int)(width - xBorder - widthText);
-		int y = (int)((yBorder / 2.0d) + (heightText / 2.0d));
+		int x = (int)(width - xBorderRight - widthText);
+		int y = (int)((yBorderTop / 2.0d) + (heightText / 2.0d));
 		graphics2D.drawString(label, x, y);
 	}
 }

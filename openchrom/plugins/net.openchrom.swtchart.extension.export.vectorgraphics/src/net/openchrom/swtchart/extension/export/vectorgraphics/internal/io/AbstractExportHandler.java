@@ -135,6 +135,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 		} else {
 			ChartType chartType = scrollableChart.getChartType();
 			switch(chartType) {
+				case SCATTER:
 				case STEP:
 				case LINE:
 					commandGenerator = new LineChartCommandGenerator();
