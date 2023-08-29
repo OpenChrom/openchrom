@@ -14,6 +14,7 @@ package net.openchrom.swtchart.extension.export.vectorgraphics.internal.io;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,10 @@ import org.eclipse.swtchart.export.core.VectorExportSettingsDialog;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IAxisScaleConverter;
 import org.eclipse.swtchart.extensions.core.IAxisSettings;
+import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.ISecondaryAxisSettings;
 import org.eclipse.swtchart.extensions.core.ISeriesSettings;
+import org.eclipse.swtchart.extensions.core.RangeRestriction;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
 
@@ -85,7 +88,6 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 
 	private void drawAxisX(Graphics2D graphics2D, BaseChart baseChart, int indexAxisX, PageSettings pageSettings) {
 
-		DecimalFormat decimalFormatX = pageSettings.getDecimalFormatX();
 		double width = pageSettings.getWidth();
 		double height = pageSettings.getHeight();
 		double xBorderLeft = pageSettings.getBorderLeftX();
@@ -101,16 +103,19 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 		graphics2D.setColor(pageSettings.getColorBlack());
 		FontMetrics fontMetrics = graphics2D.getFontMetrics();
 		/*
-		 * X Axis Settings
+		 * X Axis
 		 */
 		IAxis axisX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
 		IAxisSettings axisSettingsX = baseChart.getXAxisSettings(indexAxisX);
 		IAxisScaleConverter axisScaleConverterX = null;
 		String labelX = axisSettingsX.getLabel();
+		DecimalFormat decimalFormatX = axisSettingsX.getDecimalFormat();
+		//
 		if(axisSettingsX instanceof ISecondaryAxisSettings) {
 			ISecondaryAxisSettings secondaryAxisSettings = (ISecondaryAxisSettings)axisSettingsX;
 			axisScaleConverterX = secondaryAxisSettings.getAxisScaleConverter();
 			labelX = secondaryAxisSettings.getLabel();
+			decimalFormatX = secondaryAxisSettings.getDecimalFormat();
 		}
 		/*
 		 * Settings
@@ -125,7 +130,7 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 			int widthText = fontMetrics.stringWidth(labelX);
 			int heightText = fontMetrics.getHeight();
 			int x = (int)(width / 2.0d - widthText / 2.0d);
-			int y = (int)(height - (yBorderBottom / 2.0d) + heightText);
+			int y = (int)(height - (yBorderBottom / 3.0d) + heightText);
 			graphics2D.drawString(labelX, x, y);
 		}
 		/*
@@ -170,7 +175,6 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 
 	private void drawAxisY(Graphics2D graphics2D, BaseChart baseChart, int indexAxisY, PageSettings pageSettings) {
 
-		DecimalFormat decimalFormatY = pageSettings.getDecimalFormatY();
 		double width = pageSettings.getWidth();
 		double height = pageSettings.getHeight();
 		double xBorderLeft = pageSettings.getBorderLeftX();
@@ -186,14 +190,19 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 		graphics2D.setColor(pageSettings.getColorBlack());
 		FontMetrics fontMetrics = graphics2D.getFontMetrics();
 		/*
-		 * Y Axis Settings
+		 * Y Axis
 		 */
 		IAxis axisY = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
 		IAxisSettings axisSettingsY = baseChart.getYAxisSettings(indexAxisY);
 		IAxisScaleConverter axisScaleConverterY = null;
+		String labelY = axisSettingsY.getLabel();
+		DecimalFormat decimalFormatY = axisSettingsY.getDecimalFormat();
+		//
 		if(axisSettingsY instanceof ISecondaryAxisSettings) {
 			ISecondaryAxisSettings secondaryAxisSettings = (ISecondaryAxisSettings)axisSettingsY;
 			axisScaleConverterY = secondaryAxisSettings.getAxisScaleConverter();
+			labelY = secondaryAxisSettings.getLabel();
+			decimalFormatY = secondaryAxisSettings.getDecimalFormat();
 		}
 		/*
 		 * Settings
@@ -201,6 +210,21 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 		Range rangeY = axisY.getRange();
 		double deltaRange = (rangeY.upper + rangeY.lower) / NUMBER_TICS;
 		double deltaHeight = (height - yBorderTop - yBorderBottom) / NUMBER_TICS;
+		/*
+		 * Scale
+		 */
+		if(!labelY.isEmpty()) {
+			AffineTransform affineTransformDefault = graphics2D.getTransform();
+			int widthText = fontMetrics.stringWidth(labelY);
+			int heightText = fontMetrics.getHeight();
+			int x = (int)(xBorderLeft / 8.0d);
+			int y = (int)((height - yBorderBottom) / 2.0 - (heightText / 2.0d));
+			AffineTransform affineTransform = new AffineTransform();
+			affineTransform.rotate(-Math.PI / 2.0d, x - (heightText / 1.5d), y - (widthText / 4.0d));
+			graphics2D.setTransform(affineTransform);
+			graphics2D.drawString(labelY, x, y);
+			graphics2D.setTransform(affineTransformDefault);
+		}
 		/*
 		 * Grid
 		 */
@@ -221,8 +245,8 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 			double yMin = rangeY.lower + (NUMBER_TICS - i) * deltaRange;
 			String label = decimalFormatY.format((axisScaleConverterY != null) ? axisScaleConverterY.convertToSecondaryUnit(yMin) : yMin);
 			int heightText = fontMetrics.getHeight();
-			int x1 = (int)(xBorderLeft / 4.0d);
-			int x2 = (int)(xBorderLeft / 1.3d);
+			int x1 = (int)(xBorderLeft / 2.0d);
+			int x2 = (int)(xBorderLeft / 1.2d);
 			int x3 = (int)(xBorderLeft);
 			int y1 = (int)(yBorderTop + i * deltaHeight);
 			int y2 = (int)(y1 + heightText / 2.75d);
@@ -249,6 +273,10 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 		double yBorderTop = pageSettings.getBorderTopY();
 		double yBorderBottom = pageSettings.getBorderBottomY();
 		//
+		IChartSettings chartSettings = baseChart.getChartSettings();
+		RangeRestriction raneRangeRestriction = chartSettings.getRangeRestriction();
+		double extendMaxY = raneRangeRestriction.getExtendMaxY();
+		//
 		double xMin = baseChart.getMinX();
 		double xMax = baseChart.getMaxX();
 		double yMin = baseChart.getMinY();
@@ -266,7 +294,7 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 					double[] xSeries = series.getXSeries();
 					double[] ySeries = series.getYSeries();
 					double xDenumerator = xMax - xMin;
-					double yDenumerator = yMax - yMin;
+					double yDenumerator = (yMax + yMax * extendMaxY) - yMin;
 					//
 					if(xMax > 0 && yMax > 0) {
 						/*

@@ -14,9 +14,6 @@ package net.openchrom.swtchart.extension.export.vectorgraphics.model;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -29,9 +26,6 @@ import de.erichseifert.vectorgraphics2d.util.PageSize;
 public class PageSettings {
 
 	private static final int SIZE_FONT_STANDARD = 14;
-	//
-	private DecimalFormat decimalFormatX = new DecimalFormat(("0.00"), new DecimalFormatSymbols(Locale.ENGLISH));
-	private DecimalFormat decimalFormatY = new DecimalFormat(("0.0#E0"), new DecimalFormatSymbols(Locale.ENGLISH));
 	//
 	private float factor = 1.0f;
 	private double width = 0;
@@ -59,7 +53,7 @@ public class PageSettings {
 		this.width = pageSize.getWidth();
 		this.height = pageSize.getHeight();
 		//
-		this.borderLeftX = 100 * factor;
+		this.borderLeftX = 150 * factor;
 		this.borderRightX = 50 * factor;
 		this.borderTopY = 50 * factor;
 		this.borderBottomY = 100 * factor;
@@ -96,16 +90,6 @@ public class PageSettings {
 		}
 		//
 		return stroke;
-	}
-
-	public DecimalFormat getDecimalFormatX() {
-
-		return decimalFormatX;
-	}
-
-	public DecimalFormat getDecimalFormatY() {
-
-		return decimalFormatY;
 	}
 
 	public float getFactor() {
