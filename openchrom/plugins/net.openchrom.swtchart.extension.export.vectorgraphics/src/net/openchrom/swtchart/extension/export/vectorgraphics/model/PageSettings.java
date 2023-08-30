@@ -26,6 +26,8 @@ import de.erichseifert.vectorgraphics2d.util.PageSize;
 public class PageSettings {
 
 	private static final int SIZE_FONT_STANDARD = 14;
+	private static final String TYPE_FONT_STANDARD = "Arial";
+	public static final int STYLE_FONT_STANDARD = Font.PLAIN;
 	//
 	private float factor = 1.0f;
 	private double width = 0;
@@ -40,10 +42,14 @@ public class PageSettings {
 	private Color colorBlack = AWTUtils.convertColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 	private Color colorDarkGray = AWTUtils.convertColor(Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY));
 	private Color colorGray = AWTUtils.convertColor(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
-	private Font font;
-	private BasicStroke strokeDefault;
-	private BasicStroke strokeDashed;
 	//
+	private Font font;
+	//
+	private BasicStroke strokeSolid;
+	private BasicStroke strokeDash;
+	private BasicStroke strokeDot;
+	private BasicStroke strokeDashDot;
+	private BasicStroke strokeDashDotDot;
 
 	public PageSettings(PageSizeOption pageSizeOption) {
 
@@ -60,9 +66,21 @@ public class PageSettings {
 		this.intentX = 5 * factor;
 		this.intentY = 5 * factor;
 		//
-		this.font = new Font("Arial", Font.PLAIN, (int)(SIZE_FONT_STANDARD * factor));
-		this.strokeDefault = new BasicStroke(factor, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND);
-		this.strokeDashed = new BasicStroke(factor, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+		// BasicStroke.CAP_SQUARE;
+		// BasicStroke.CAP_BUTT;
+		// BasicStroke.CAP_ROUND;
+		//
+		// BasicStroke.JOIN_ROUND;
+		// BasicStroke.JOIN_MITER;
+		// BasicStroke.JOIN_BEVEL;
+		//
+		this.font = getFont(factor);
+		//
+		this.strokeSolid = getStrokeSolid(factor);
+		this.strokeDash = getStrokeDash(factor);
+		this.strokeDot = getStrokeDot(factor);
+		this.strokeDashDot = getStrokeDashDot(factor);
+		this.strokeDashDotDot = getStrokeDashDotDot(factor);
 	}
 
 	public BasicStroke getStroke(LineStyle lineStyle, int lineWidth) {
@@ -72,20 +90,20 @@ public class PageSettings {
 		//
 		switch(lineStyle) {
 			case DASH:
-				stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f, new float[]{2.0f, 0.0f, 2.0f}, 2.0f);
+				stroke = getStrokeDash(width);
 				break;
 			case DOT:
-				stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f, new float[]{1.0f, 0.0f, 1.0f}, 2.0f);
+				stroke = getStrokeDot(width);
 				break;
 			case DASHDOT:
-				stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f, new float[]{2.0f, 0.0f, 1.0f}, 2.0f);
+				stroke = getStrokeDashDot(width);
 				break;
 			case DASHDOTDOT:
-				stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f, new float[]{2.0f, 1.0f, 1.0f}, 2.0f);
+				stroke = getStrokeDashDotDot(width);
 				break;
 			case SOLID:
 			default:
-				stroke = new BasicStroke(width, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND);
+				stroke = getStrokeSolid(width);
 				break;
 		}
 		//
@@ -157,13 +175,60 @@ public class PageSettings {
 		return font;
 	}
 
-	public BasicStroke getStrokeDefault() {
+	public Font getFont(float size) {
 
-		return strokeDefault;
+		return new Font(TYPE_FONT_STANDARD, STYLE_FONT_STANDARD, (int)(SIZE_FONT_STANDARD * size));
 	}
 
-	public BasicStroke getStrokeDashed() {
+	public BasicStroke getStrokeSolid() {
 
-		return strokeDashed;
+		return strokeSolid;
+	}
+
+	public BasicStroke getStrokeDash() {
+
+		return strokeDash;
+	}
+
+	public BasicStroke getStrokeDot() {
+
+		return strokeDot;
+	}
+
+	public BasicStroke getStrokeDashDot() {
+
+		return strokeDashDot;
+	}
+
+	public BasicStroke getStrokeDashDotDot() {
+
+		return strokeDashDotDot;
+	}
+
+	private BasicStroke getStrokeSolid(float width) {
+
+		return new BasicStroke(width, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND);
+	}
+
+	private BasicStroke getStrokeDash(float width) {
+
+		return new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0.0f, new float[]{width}, 0.0f);
+	}
+
+	private BasicStroke getStrokeDot(float width) {
+
+		return new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL, 0.0f, new float[]{width}, 0.0f);
+	}
+
+	private BasicStroke getStrokeDashDot(float width) {
+
+		float halfWidth = width / 2.0f;
+		return new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0.0f, new float[]{width, width, halfWidth, width}, 0.0f);
+	}
+
+	private BasicStroke getStrokeDashDotDot(float width) {
+
+		float halfWidth = width / 2.0f;
+		return new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0.0f, new float[]{width, width, halfWidth, width, halfWidth, width}, 0.0f);
 	}
 }

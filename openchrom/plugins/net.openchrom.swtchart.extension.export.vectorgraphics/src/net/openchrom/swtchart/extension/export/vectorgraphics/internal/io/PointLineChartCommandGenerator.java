@@ -12,7 +12,6 @@
 package net.openchrom.swtchart.extension.export.vectorgraphics.internal.io;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -48,6 +47,15 @@ import net.openchrom.swtchart.extension.export.vectorgraphics.support.AWTUtils;
 import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
 
+/*
+ * Important to now:
+ * Basically, x|y 0,0 is on the left top side.
+ * ---
+ * drawString("text", x, y)
+ * The anchor is on the left side at the bottom.
+ * ---
+ * affineTransform.rotate(Math.toRadians(-90), anchorx, anchory);
+ */
 public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 
 	private static final int NUMBER_TICS = 20;
@@ -58,7 +66,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		VectorGraphics2D graphics2D = new VectorGraphics2D();
 		//
 		PageSettings pageSettings = new PageSettings(pageSizeOption);
-		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		graphics2D.setFont(pageSettings.getFont());
 		//
 		BaseChart baseChart = scrollableChart.getBaseChart();
@@ -74,8 +82,8 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 				/*
 				 * Print
 				 */
-				drawData(graphics2D, baseChart, pageSettings);
 				drawAxes(graphics2D, baseChart, indexAxisX, indexAxisY, pageSettings);
+				drawData(graphics2D, baseChart, pageSettings);
 				drawBranding(graphics2D, pageSettings);
 			}
 		}
@@ -100,9 +108,8 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		/*
 		 * Font/Color
 		 */
-		Font font = pageSettings.getFont();
-		graphics2D.setFont(font);
-		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.setFont(pageSettings.getFont());
+		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		graphics2D.setColor(pageSettings.getColorBlack());
 		FontMetrics fontMetrics = graphics2D.getFontMetrics();
 		/*
@@ -139,7 +146,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		/*
 		 * Grid
 		 */
-		graphics2D.setStroke(pageSettings.getStrokeDashed());
+		graphics2D.setStroke(pageSettings.getStrokeDash());
 		graphics2D.setColor(pageSettings.getColorGray());
 		for(int i = 1; i <= NUMBER_TICS; i++) {
 			int x = (int)(xBorderLeft + i * deltaWidth);
@@ -150,7 +157,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		/*
 		 * Tics
 		 */
-		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		graphics2D.setColor(pageSettings.getColorBlack());
 		for(int i = 1; i <= NUMBER_TICS; i++) {
 			double xMin = rangeX.lower + i * deltaRange;
@@ -172,7 +179,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		int y11 = (int)(height - yBorderBottom);
 		int x12 = (int)(width - xBorderRight);
 		int y12 = (int)(height - yBorderBottom);
-		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		graphics2D.drawLine(x11, y11, x12, y12);
 	}
 
@@ -187,9 +194,8 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		/*
 		 * Font/Color
 		 */
-		Font font = pageSettings.getFont();
-		graphics2D.setFont(font);
-		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.setFont(pageSettings.getFont());
+		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		graphics2D.setColor(pageSettings.getColorBlack());
 		FontMetrics fontMetrics = graphics2D.getFontMetrics();
 		/*
@@ -217,21 +223,16 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		 * Scale
 		 */
 		if(!labelY.isEmpty()) {
-			AffineTransform affineTransformDefault = graphics2D.getTransform();
 			int widthText = fontMetrics.stringWidth(labelY);
 			int heightText = fontMetrics.getHeight();
 			int x = (int)(xBorderLeft / 8.0d);
 			int y = (int)((height - yBorderBottom) / 2.0 - (heightText / 2.0d));
-			AffineTransform affineTransform = new AffineTransform();
-			affineTransform.rotate(-Math.PI / 2.0d, x - (heightText / 1.5d), y - (widthText / 4.0d));
-			graphics2D.setTransform(affineTransform);
-			graphics2D.drawString(labelY, x, y);
-			graphics2D.setTransform(affineTransformDefault);
+			drawString(graphics2D, labelY, -90, x, y, widthText, heightText);
 		}
 		/*
 		 * Grid
 		 */
-		graphics2D.setStroke(pageSettings.getStrokeDashed());
+		graphics2D.setStroke(pageSettings.getStrokeDash());
 		graphics2D.setColor(pageSettings.getColorGray());
 		for(int i = 0; i < NUMBER_TICS; i++) {
 			int x1 = (int)(xBorderLeft);
@@ -242,7 +243,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		/*
 		 * Tics
 		 */
-		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		graphics2D.setColor(pageSettings.getColorBlack());
 		for(int i = 0; i < NUMBER_TICS; i++) {
 			double yMin = rangeY.lower + (NUMBER_TICS - i) * deltaRange;
@@ -263,7 +264,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		int y21 = (int)(yBorderTop);
 		int x22 = (int)(xBorderLeft);
 		int y22 = (int)(height - yBorderTop);
-		graphics2D.setStroke(pageSettings.getStrokeDefault());
+		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		graphics2D.drawLine(x21, y21, x22, y22);
 	}
 
@@ -421,6 +422,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		//
 		if(symbolSize > 0 && !PlotSymbolType.NONE.equals(symbolType)) {
 			double size = (symbolSize * pageSettings.getFactor());
+			graphics2D.setFont(pageSettings.getFont(symbolSize * 2)); // x2 otherwise it's too small
 			graphics2D.setColor(AWTUtils.convertColor(pointSeriesSettings.getSymbolColor()));
 			for(IPoint point : points) {
 				drawSymbol(graphics2D, point, size, symbolType);
@@ -430,46 +432,64 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 
 	private void drawSymbol(Graphics2D graphics2D, IPoint point, double size, PlotSymbolType symbolType) {
 
-		double radius;
+		/*
+		 * Determine X|Y
+		 */
+		double radius = size / 2.0d;
+		int width = (int)size;
+		int height = (int)size;
 		int x;
 		int y;
-		int width;
-		int height;
+		String label = "";
 		//
 		switch(symbolType) {
-			case CIRCLE:
-				radius = size / 2.0d;
+			case TRIANGLE:
+			case INVERTED_TRIANGLE:
+				x = (int)(point.getX());
+				y = (int)(point.getY());
+				break;
+			case CROSS:
+			case PLUS:
+				label = PlotSymbolType.CROSS.equals(symbolType) ? "x" : "+";
+				FontMetrics fontMetrics = graphics2D.getFontMetrics();
+				int widthText = fontMetrics.stringWidth(label);
+				int heightText = fontMetrics.getHeight();
+				x = (int)(point.getX() - (widthText / 2.0d));
+				y = (int)(point.getY() - (heightText / 2.0d));
+				break;
+			default:
 				x = (int)(point.getX() - radius);
 				y = (int)(point.getY() - radius);
-				width = (int)size;
-				height = (int)size;
+				break;
+		}
+		/*
+		 * Draw
+		 */
+		switch(symbolType) {
+			case CIRCLE:
 				graphics2D.fillOval(x, y, width, height);
 				break;
 			case TRIANGLE:
-				// TODO
+				drawTriangle(graphics2D, x, y, width, height);
 				break;
 			case INVERTED_TRIANGLE:
-				// TODO
+				drawInvertedTriangle(graphics2D, x, y, width, height);
 				break;
 			case CROSS:
-				x = (int)(point.getX());
-				y = (int)(point.getY());
-				graphics2D.drawString("x", x, y);
+				graphics2D.drawString(label, x, y);
 				break;
 			case DIAMOND:
-				// TODO
+				AffineTransform affineTransformDefault = graphics2D.getTransform();
+				AffineTransform affineTransform = new AffineTransform();
+				affineTransform.rotate(Math.toRadians(45), x + size / 2.0d, y + size / 2.0d);
+				graphics2D.setTransform(affineTransform);
+				graphics2D.fillRect(x, y, width, height);
+				graphics2D.setTransform(affineTransformDefault);
 				break;
 			case PLUS:
-				x = (int)(point.getX());
-				y = (int)(point.getY());
-				graphics2D.drawString("+", x, y);
+				graphics2D.drawString(label, x, y);
 				break;
 			case SQUARE:
-				radius = size / 2.0d;
-				x = (int)(point.getX() - radius);
-				y = (int)(point.getY() - radius);
-				width = (int)size;
-				height = (int)size;
 				graphics2D.fillRect(x, y, width, height);
 				break;
 			default:
@@ -483,7 +503,10 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		double xBorderRight = pageSettings.getBorderRightX();
 		double yBorderTop = pageSettings.getBorderTopY();
 		//
+		graphics2D.setFont(pageSettings.getFont());
 		graphics2D.setColor(pageSettings.getColorDarkGray());
+		graphics2D.setStroke(pageSettings.getStrokeSolid());
+		//
 		String label = "https://openchrom.net";
 		FontMetrics fontMetrics = graphics2D.getFontMetrics();
 		int widthText = fontMetrics.stringWidth(label);
@@ -491,5 +514,50 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		int x = (int)(width - xBorderRight - widthText);
 		int y = (int)((yBorderTop / 2.0d) + (heightText / 2.0d));
 		graphics2D.drawString(label, x, y);
+	}
+
+	private void drawTriangle(Graphics2D graphics2D, int x, int y, int width, int height) {
+
+		int x1 = x;
+		int y1 = y;
+		int x2 = (int)(x + width / 2.0d);
+		int y2 = y + height;
+		int x3 = (int)(x - width / 2.0d);
+		int y3 = y + height;
+		//
+		drawTriangle(graphics2D, x1, y1, x2, y2, x3, y3);
+	}
+
+	private void drawInvertedTriangle(Graphics2D graphics2D, int x, int y, int width, int height) {
+
+		int x1 = (int)(x + width / 2.0d);
+		int y1 = y;
+		int x2 = (int)(x - width / 2.0d);
+		int y2 = y;
+		int x3 = x;
+		int y3 = y + height;
+		//
+		drawTriangle(graphics2D, x1, y1, x2, y2, x3, y3);
+	}
+
+	private void drawTriangle(Graphics2D graphics2D, int x1, int y1, int x2, int y2, int x3, int y3) {
+
+		int[] xPoints = new int[]{x1, x2, x3};
+		int[] yPoints = new int[]{y1, y2, y3};
+		graphics2D.drawPolygon(xPoints, yPoints, 3);
+		graphics2D.fillPolygon(xPoints, yPoints, 3);
+	}
+
+	private void drawString(Graphics2D graphics2D, String label, int degree, int x, int y, int widthText, int heightText) {
+
+		int x1 = (int)(x + heightText / 2.0d);
+		int y1 = (int)(y + widthText / 2.0d);
+		//
+		AffineTransform affineTransformDefault = graphics2D.getTransform();
+		AffineTransform affineTransform = new AffineTransform();
+		affineTransform.rotate(Math.toRadians(degree), x1, y1);
+		graphics2D.setTransform(affineTransform);
+		graphics2D.drawString(label, x1, y1);
+		graphics2D.setTransform(affineTransformDefault);
 	}
 }
