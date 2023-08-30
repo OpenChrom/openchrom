@@ -281,10 +281,15 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		RangeRestriction raneRangeRestriction = chartSettings.getRangeRestriction();
 		double extendMaxY = raneRangeRestriction.getExtendMaxY();
 		//
-		double xMin = baseChart.getMinX();
-		double xMax = baseChart.getMaxX();
-		double yMin = baseChart.getMinY();
-		double yMax = baseChart.getMaxY();
+		IAxis axisX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
+		IAxis axisY = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+		Range rangeX = axisX.getRange();
+		Range rangeY = axisY.getRange();
+		//
+		double xMin = rangeX.lower; // baseChart.getMinX();
+		double xMax = rangeX.upper; // baseChart.getMaxX();
+		double yMin = baseChart.getMinY(); // Force to have no offset
+		double yMax = rangeY.upper; // baseChart.getMaxY();
 		//
 		ISeries<?>[] seriesSet = baseChart.getSeriesSet().getSeries();
 		for(ISeries<?> series : seriesSet) {
@@ -313,12 +318,14 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 						List<IPoint> points = new ArrayList<>();
 						for(int i = 0; i < xSeries.length; i++) {
 							double x = xSeries[i];
-							if(x > xb) {
-								if(x >= xMin && x <= xMax) {
-									int x1 = (int)((factorX * (x - xMin)) + xBorderLeft);
-									int y1 = (int)((height - factorY * (ySeries[i] - yMin)) - yBorderBottom);
-									points.add(new Point(x1, y1));
-									xb = x;
+							if(x >= xMin && x <= xMax) {
+								if(x > xb) {
+									if(x >= xMin && x <= xMax) {
+										int x1 = (int)((factorX * (x - xMin)) + xBorderLeft);
+										int y1 = (int)((height - factorY * (ySeries[i] - yMin)) - yBorderBottom);
+										points.add(new Point(x1, y1));
+										xb = x;
+									}
 								}
 							}
 						}
