@@ -131,14 +131,14 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 
 		IChartCommandGenerator commandGenerator = null;
 		if(scrollableChart instanceof LineChart) {
-			commandGenerator = new LineChartCommandGenerator();
+			commandGenerator = new PointLineChartCommandGenerator();
 		} else {
 			ChartType chartType = scrollableChart.getChartType();
 			switch(chartType) {
 				case SCATTER:
 				case STEP:
 				case LINE:
-					commandGenerator = new LineChartCommandGenerator();
+					commandGenerator = new PointLineChartCommandGenerator();
 					break;
 				default:
 					break;

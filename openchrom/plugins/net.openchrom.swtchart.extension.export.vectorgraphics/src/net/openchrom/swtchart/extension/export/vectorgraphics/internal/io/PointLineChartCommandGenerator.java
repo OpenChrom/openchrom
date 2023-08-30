@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.swtchart.extension.export.vectorgraphics.internal.io;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -26,12 +27,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.IAxis;
 import org.eclipse.swtchart.ILineSeries.PlotSymbolType;
 import org.eclipse.swtchart.ISeries;
+import org.eclipse.swtchart.LineStyle;
 import org.eclipse.swtchart.Range;
 import org.eclipse.swtchart.export.core.VectorExportSettingsDialog;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IAxisScaleConverter;
 import org.eclipse.swtchart.extensions.core.IAxisSettings;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
+import org.eclipse.swtchart.extensions.core.IPointSeriesSettings;
 import org.eclipse.swtchart.extensions.core.ISecondaryAxisSettings;
 import org.eclipse.swtchart.extensions.core.ISeriesSettings;
 import org.eclipse.swtchart.extensions.core.RangeRestriction;
@@ -45,7 +48,7 @@ import net.openchrom.swtchart.extension.export.vectorgraphics.support.AWTUtils;
 import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
 
-public class LineChartCommandGenerator implements IChartCommandGenerator {
+public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 
 	private static final int NUMBER_TICS = 20;
 
@@ -245,7 +248,7 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 			double yMin = rangeY.lower + (NUMBER_TICS - i) * deltaRange;
 			String label = decimalFormatY.format((axisScaleConverterY != null) ? axisScaleConverterY.convertToSecondaryUnit(yMin) : yMin);
 			int heightText = fontMetrics.getHeight();
-			int x1 = (int)(xBorderLeft / 2.0d);
+			int x1 = (int)(xBorderLeft / 2.5d);
 			int x2 = (int)(xBorderLeft / 1.2d);
 			int x3 = (int)(xBorderLeft);
 			int y1 = (int)(yBorderTop + i * deltaHeight);
@@ -290,7 +293,7 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 			if(series.isVisible()) {
 				String id = series.getId();
 				ISeriesSettings seriesSettings = baseChart.getSeriesSettings(id);
-				if(seriesSettings instanceof ILineSeriesSettings lineSeriesSettings) {
+				if(seriesSettings instanceof IPointSeriesSettings pointSeriesSettings) {
 					double[] xSeries = series.getXSeries();
 					double[] ySeries = series.getYSeries();
 					double xDenumerator = xMax - xMin;
@@ -321,21 +324,26 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 						/*
 						 * Print
 						 */
-						printLine(graphics2D, points, lineSeriesSettings, pageSettings);
-						printSymbols(graphics2D, points, lineSeriesSettings, pageSettings);
+						if(pointSeriesSettings instanceof ILineSeriesSettings lineSeriesSettings) {
+							int minValue = (int)(height - yBorderBottom);
+							printLine(graphics2D, points, minValue, lineSeriesSettings, pageSettings);
+						}
+						printSymbols(graphics2D, points, pointSeriesSettings, pageSettings);
 					}
 				}
 			}
 		}
 	}
 
-	private void printLine(Graphics2D graphics2D, List<IPoint> points, ILineSeriesSettings lineSeriesSettings, PageSettings pageSettings) {
+	private void printLine(Graphics2D graphics2D, List<IPoint> points, int minValue, ILineSeriesSettings lineSeriesSettings, PageSettings pageSettings) {
 
 		/*
 		 * Line
 		 */
 		int lineWidth = lineSeriesSettings.getLineWidth();
-		if(lineWidth > 0) {
+		LineStyle lineStyle = lineSeriesSettings.getLineStyle();
+		//
+		if(lineWidth > 0 && !LineStyle.NONE.equals(lineStyle)) {
 			int size = points.size();
 			if(size > 0) {
 				/*
@@ -349,40 +357,123 @@ public class LineChartCommandGenerator implements IChartCommandGenerator {
 					yvals[i] = (int)point.getY();
 				}
 				//
-				graphics2D.setStroke(pageSettings.getStroke(lineSeriesSettings.getLineStyle(), lineWidth));
-				graphics2D.setColor(AWTUtils.convertColor(lineSeriesSettings.getLineColor()));
+				Color color = AWTUtils.convertColor(lineSeriesSettings.getLineColor());
+				graphics2D.setStroke(pageSettings.getStroke(lineStyle, lineWidth));
+				graphics2D.setColor(color);
 				graphics2D.drawPolyline(xvals, yvals, size);
+				//
 				if(lineSeriesSettings.isEnableArea()) {
-					// graphics2D.fillPolygon(xvals, yvals, size);
+					int sizePolygon = size + 2;
+					int[] xvalsPolygon = transformPolylineToPolygon(xvals, false, minValue);
+					int[] yvalsPolygon = transformPolylineToPolygon(yvals, true, minValue);
+					Color colorBrighter = new Color(color.getRed(), color.getGreen(), color.getBlue(), 50); // ~ Alpha 0.2
+					graphics2D.setColor(colorBrighter);
+					graphics2D.fillPolygon(xvalsPolygon, yvalsPolygon, sizePolygon);
 				}
 			}
 		}
 	}
 
-	private void printSymbols(Graphics2D graphics2D, List<IPoint> points, ILineSeriesSettings lineSeriesSettings, PageSettings pageSettings) {
+	private int[] transformPolylineToPolygon(int[] vals, boolean zero, int minValue) {
+
+		int length = vals.length;
+		int size = length + 2;
+		int[] valsTransformed = new int[size];
+		//
+		if(length >= 2) {
+			/*
+			 * Edges
+			 */
+			int firstValue = 0;
+			int lastValue = 0;
+			//
+			if(zero) {
+				/*
+				 * Max, because the values are transposed to the chart
+				 * coordinate (0,0) left top system already.
+				 */
+				firstValue = minValue;
+				lastValue = minValue;
+			} else {
+				firstValue = vals[0];
+				lastValue = vals[length - 1];
+			}
+			/*
+			 * Transformed
+			 */
+			valsTransformed[0] = firstValue;
+			for(int i = 0; i < length; i++) {
+				valsTransformed[i + 1] = vals[i];
+			}
+			valsTransformed[size - 1] = lastValue;
+		}
+		//
+		return valsTransformed;
+	}
+
+	private void printSymbols(Graphics2D graphics2D, List<IPoint> points, IPointSeriesSettings pointSeriesSettings, PageSettings pageSettings) {
 
 		/*
 		 * Symbols
 		 */
-		int symbolSize = lineSeriesSettings.getSymbolSize();
-		if(symbolSize > 0) {
-			double size = (lineSeriesSettings.getSymbolSize() * pageSettings.getFactor());
-			double radius = size / 2.0d;
-			graphics2D.setColor(AWTUtils.convertColor(lineSeriesSettings.getSymbolColor()));
-			PlotSymbolType symbolType = lineSeriesSettings.getSymbolType();
-			switch(symbolType) {
-				case CIRCLE:
-					for(IPoint point : points) {
-						int x = (int)(point.getX() - radius);
-						int y = (int)(point.getY() - radius);
-						int width = (int)size;
-						int height = (int)size;
-						graphics2D.fillOval(x, y, width, height);
-					}
-					break;
-				default:
-					break;
+		int symbolSize = pointSeriesSettings.getSymbolSize();
+		PlotSymbolType symbolType = pointSeriesSettings.getSymbolType();
+		//
+		if(symbolSize > 0 && !PlotSymbolType.NONE.equals(symbolType)) {
+			double size = (symbolSize * pageSettings.getFactor());
+			graphics2D.setColor(AWTUtils.convertColor(pointSeriesSettings.getSymbolColor()));
+			for(IPoint point : points) {
+				drawSymbol(graphics2D, point, size, symbolType);
 			}
+		}
+	}
+
+	private void drawSymbol(Graphics2D graphics2D, IPoint point, double size, PlotSymbolType symbolType) {
+
+		double radius;
+		int x;
+		int y;
+		int width;
+		int height;
+		//
+		switch(symbolType) {
+			case CIRCLE:
+				radius = size / 2.0d;
+				x = (int)(point.getX() - radius);
+				y = (int)(point.getY() - radius);
+				width = (int)size;
+				height = (int)size;
+				graphics2D.fillOval(x, y, width, height);
+				break;
+			case TRIANGLE:
+				// TODO
+				break;
+			case INVERTED_TRIANGLE:
+				// TODO
+				break;
+			case CROSS:
+				x = (int)(point.getX());
+				y = (int)(point.getY());
+				graphics2D.drawString("x", x, y);
+				break;
+			case DIAMOND:
+				// TODO
+				break;
+			case PLUS:
+				x = (int)(point.getX());
+				y = (int)(point.getY());
+				graphics2D.drawString("+", x, y);
+				break;
+			case SQUARE:
+				radius = size / 2.0d;
+				x = (int)(point.getX() - radius);
+				y = (int)(point.getY() - radius);
+				width = (int)size;
+				height = (int)size;
+				graphics2D.fillRect(x, y, width, height);
+				break;
+			default:
+				break;
 		}
 	}
 
