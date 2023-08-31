@@ -39,6 +39,8 @@ import org.eclipse.swtchart.extensions.core.ISeriesSettings;
 import org.eclipse.swtchart.extensions.core.RangeRestriction;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
+import org.eclipse.swtchart.extensions.model.ICustomSeries;
+import org.eclipse.swtchart.extensions.model.ITextElement;
 
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSettings;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
@@ -83,7 +85,8 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 				 * Print
 				 */
 				drawAxes(graphics2D, baseChart, indexAxisX, indexAxisY, pageSettings);
-				drawData(graphics2D, baseChart, pageSettings);
+				drawStandardData(graphics2D, baseChart, pageSettings);
+				drawCustomData(graphics2D, baseChart, pageSettings);
 				drawBranding(graphics2D, pageSettings);
 			}
 		}
@@ -227,7 +230,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 			int heightText = fontMetrics.getHeight();
 			int x = (int)(xBorderLeft / 8.0d);
 			int y = (int)((height - yBorderBottom) / 2.0 - (heightText / 2.0d));
-			drawString(graphics2D, labelY, -90, x, y, widthText, heightText);
+			drawStringCentered(graphics2D, labelY, -90, x, y, widthText, heightText);
 		}
 		/*
 		 * Grid
@@ -268,7 +271,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		graphics2D.drawLine(x21, y21, x22, y22);
 	}
 
-	private void drawData(Graphics2D graphics2D, BaseChart baseChart, PageSettings pageSettings) {
+	private void drawStandardData(Graphics2D graphics2D, BaseChart baseChart, PageSettings pageSettings) {
 
 		double width = pageSettings.getWidth();
 		double height = pageSettings.getHeight();
@@ -337,6 +340,64 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 							printLine(graphics2D, points, minValue, lineSeriesSettings, pageSettings);
 						}
 						printSymbols(graphics2D, points, pointSeriesSettings, pageSettings);
+					}
+				}
+			}
+		}
+	}
+
+	private void drawCustomData(Graphics2D graphics2D, BaseChart baseChart, PageSettings pageSettings) {
+
+		double width = pageSettings.getWidth();
+		double height = pageSettings.getHeight();
+		double xBorderLeft = pageSettings.getBorderLeftX();
+		double xBorderRight = pageSettings.getBorderRightX();
+		double yBorderTop = pageSettings.getBorderTopY();
+		double yBorderBottom = pageSettings.getBorderBottomY();
+		//
+		IChartSettings chartSettings = baseChart.getChartSettings();
+		RangeRestriction raneRangeRestriction = chartSettings.getRangeRestriction();
+		double extendMaxY = raneRangeRestriction.getExtendMaxY();
+		//
+		graphics2D.setFont(pageSettings.getFont());
+		graphics2D.setColor(pageSettings.getColorBlack());
+		graphics2D.setStroke(pageSettings.getStrokeSolid());
+		FontMetrics fontMetrics = graphics2D.getFontMetrics();
+		//
+		IAxis axisX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
+		IAxis axisY = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+		Range rangeX = axisX.getRange();
+		Range rangeY = axisY.getRange();
+		//
+		double xMin = rangeX.lower; // baseChart.getMinX();
+		double xMax = rangeX.upper; // baseChart.getMaxX();
+		double yMin = baseChart.getMinY(); // Force to have no offset
+		double yMax = rangeY.upper; // baseChart.getMaxY();
+		//
+		double xDenumerator = xMax - xMin;
+		double yDenumerator = (yMax + yMax * extendMaxY) - yMin;
+		//
+		if(xMax > 0 && yMax > 0) {
+			/*
+			 * Factors
+			 */
+			double factorX = (width - xBorderLeft - xBorderRight) / xDenumerator;
+			double factorY = (height - yBorderTop - yBorderBottom) / yDenumerator;
+			//
+			for(ICustomSeries customSeries : baseChart.getCustomSeries()) {
+				if(customSeries.isDraw()) {
+					for(ITextElement textElement : customSeries.getTextElements()) {
+						double x = textElement.getX();
+						if(x >= xMin && x <= xMax) {
+							double y = textElement.getY();
+							String label = textElement.getLabel();
+							int rotation = textElement.getRotation();
+							int widthText = fontMetrics.stringWidth(label);
+							int heightText = fontMetrics.getHeight();
+							int x1 = (int)((factorX * (x - xMin)) + xBorderLeft);
+							int y1 = (int)((height - factorY * (y - yMin)) - yBorderBottom);
+							drawStringNormal(graphics2D, label, rotation, x1, y1, widthText, heightText);
+						}
 					}
 				}
 			}
@@ -555,14 +616,27 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		graphics2D.fillPolygon(xPoints, yPoints, 3);
 	}
 
-	private void drawString(Graphics2D graphics2D, String label, int degree, int x, int y, int widthText, int heightText) {
+	private void drawStringCentered(Graphics2D graphics2D, String label, int rotation, int x, int y, int widthText, int heightText) {
 
 		int x1 = (int)(x + heightText / 2.0d);
 		int y1 = (int)(y + widthText / 2.0d);
 		//
 		AffineTransform affineTransformDefault = graphics2D.getTransform();
 		AffineTransform affineTransform = new AffineTransform();
-		affineTransform.rotate(Math.toRadians(degree), x1, y1);
+		affineTransform.rotate(Math.toRadians(rotation), x1, y1);
+		graphics2D.setTransform(affineTransform);
+		graphics2D.drawString(label, x1, y1);
+		graphics2D.setTransform(affineTransformDefault);
+	}
+
+	private void drawStringNormal(Graphics2D graphics2D, String label, int rotation, int x, int y, int widthText, int heightText) {
+
+		int x1 = (int)(x + (heightText / 4.0d));
+		int y1 = (int)(y - (heightText / 4.0d)); // Small distance
+		//
+		AffineTransform affineTransformDefault = graphics2D.getTransform();
+		AffineTransform affineTransform = new AffineTransform();
+		affineTransform.rotate(Math.toRadians(rotation), x1, y1);
 		graphics2D.setTransform(affineTransform);
 		graphics2D.drawString(label, x1, y1);
 		graphics2D.setTransform(affineTransformDefault);
