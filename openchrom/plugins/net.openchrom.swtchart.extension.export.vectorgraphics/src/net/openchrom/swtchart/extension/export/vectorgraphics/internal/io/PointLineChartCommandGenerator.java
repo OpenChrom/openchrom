@@ -464,7 +464,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		if(y == IElement.POSITION_TOP_Y) {
 			return (int)yBorderTop;
 		} else if(y == IElement.POSITION_BOTTOM_Y) {
-			return (int)(yBorderBottom + pageHeight);
+			return (int)(pageHeight - yBorderBottom);
 		} else {
 			return (int)((pageHeight - factorY * (y - yMin)) - yBorderBottom);
 		}
