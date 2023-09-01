@@ -39,7 +39,11 @@ import org.eclipse.swtchart.extensions.core.ISeriesSettings;
 import org.eclipse.swtchart.extensions.core.RangeRestriction;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
+import org.eclipse.swtchart.extensions.model.ElementLine;
+import org.eclipse.swtchart.extensions.model.ElementRectangle;
 import org.eclipse.swtchart.extensions.model.ICustomSeries;
+import org.eclipse.swtchart.extensions.model.IElement;
+import org.eclipse.swtchart.extensions.model.IGraphicElement;
 import org.eclipse.swtchart.extensions.model.ITextElement;
 
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSettings;
@@ -85,8 +89,8 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 				 * Print
 				 */
 				drawAxes(graphics2D, baseChart, indexAxisX, indexAxisY, pageSettings);
-				drawStandardData(graphics2D, baseChart, pageSettings);
-				drawCustomData(graphics2D, baseChart, pageSettings);
+				drawStandardSeries(graphics2D, baseChart, pageSettings);
+				drawCustomSeries(graphics2D, baseChart, pageSettings);
 				drawBranding(graphics2D, pageSettings);
 			}
 		}
@@ -271,7 +275,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		graphics2D.drawLine(x21, y21, x22, y22);
 	}
 
-	private void drawStandardData(Graphics2D graphics2D, BaseChart baseChart, PageSettings pageSettings) {
+	private void drawStandardSeries(Graphics2D graphics2D, BaseChart baseChart, PageSettings pageSettings) {
 
 		double width = pageSettings.getWidth();
 		double height = pageSettings.getHeight();
@@ -346,7 +350,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		}
 	}
 
-	private void drawCustomData(Graphics2D graphics2D, BaseChart baseChart, PageSettings pageSettings) {
+	private void drawCustomSeries(Graphics2D graphics2D, BaseChart baseChart, PageSettings pageSettings) {
 
 		double width = pageSettings.getWidth();
 		double height = pageSettings.getHeight();
@@ -386,9 +390,17 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 			//
 			for(ICustomSeries customSeries : baseChart.getCustomSeries()) {
 				if(customSeries.isDraw()) {
+					/*
+					 * Text Elements
+					 */
 					for(ITextElement textElement : customSeries.getTextElements()) {
 						double x = textElement.getX();
 						if(x >= xMin && x <= xMax) {
+							//
+							graphics2D.setFont(pageSettings.getFont());
+							graphics2D.setColor(AWTUtils.convertColor(textElement.getColor(), textElement.getAlpha()));
+							graphics2D.setStroke(pageSettings.getStrokeSolid());
+							//
 							double y = textElement.getY();
 							String label = textElement.getLabel();
 							int rotation = textElement.getRotation();
@@ -399,8 +411,80 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 							drawStringNormal(graphics2D, label, rotation, x1, y1, widthText, heightText);
 						}
 					}
+					/*
+					 * Graphic Elements
+					 */
+					for(IGraphicElement graphicElement : customSeries.getGraphicElements()) {
+						double x = graphicElement.getX();
+						if(x >= xMin && x <= xMax) {
+							//
+							graphics2D.setColor(AWTUtils.convertColor(graphicElement.getColor(), graphicElement.getAlpha()));
+							graphics2D.setStroke(pageSettings.getStrokeSolid());
+							//
+							double y = graphicElement.getY();
+							int x1 = getX(factorX, x, width, xMin, xBorderLeft, xBorderRight);
+							int y1 = getY(factorY, y, height, yMin, yBorderTop, yBorderBottom);
+							//
+							if(graphicElement instanceof ElementRectangle elementRectangle) {
+								/*
+								 * Rectangle
+								 */
+								int width1 = getWidth(factorX, elementRectangle.getWidth(), width, xBorderLeft, xBorderRight);
+								int height1 = getHeight(factorY, elementRectangle.getHeight(), height, yBorderTop, yBorderBottom);
+								graphics2D.fillRect(x1, y1, width1, height1);
+							} else if(graphicElement instanceof ElementLine elementLine) {
+								/*
+								 * Line
+								 */
+								int x2 = getX(factorX, elementLine.getX2(), width, xMin, xBorderLeft, xBorderRight);
+								int y2 = getY(factorY, elementLine.getY2(), height, yMin, yBorderTop, yBorderBottom);
+								graphics2D.setStroke(pageSettings.getStroke(elementLine.getLineStyle(), elementLine.getLineWidth()));
+								graphics2D.drawLine(x1, y1, x2, y2);
+							}
+						}
+					}
 				}
 			}
+		}
+	}
+
+	private int getX(double factorX, double x, double pageWidth, double xMin, double xBorderLeft, double xBorderRight) {
+
+		if(x == IElement.POSITION_LEFT_X) {
+			return (int)xBorderLeft;
+		} else if(x == IElement.POSITION_RIGHT_X) {
+			return (int)xBorderRight;
+		} else {
+			return (int)((factorX * (x - xMin)) + xBorderLeft);
+		}
+	}
+
+	private int getY(double factorY, double y, double pageHeight, double yMin, double yBorderTop, double yBorderBottom) {
+
+		if(y == IElement.POSITION_TOP_Y) {
+			return (int)yBorderTop;
+		} else if(y == IElement.POSITION_BOTTOM_Y) {
+			return (int)(yBorderBottom + pageHeight);
+		} else {
+			return (int)((pageHeight - factorY * (y - yMin)) - yBorderBottom);
+		}
+	}
+
+	private int getWidth(double factorX, double width, double pageWidth, double xBorderLeft, double xBorderRight) {
+
+		if(width == IElement.MAX_WIDTH) {
+			return (int)(pageWidth - xBorderLeft - xBorderRight);
+		} else {
+			return (int)(factorX * width);
+		}
+	}
+
+	private int getHeight(double factorY, double height, double pageHeight, double yBorderTop, double yBorderBottom) {
+
+		if(height == IElement.MAX_HEIGHT) {
+			return (int)(pageHeight - yBorderTop - yBorderBottom);
+		} else {
+			return (int)(factorY * height);
 		}
 	}
 
@@ -435,7 +519,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 					int sizePolygon = size + 2;
 					int[] xvalsPolygon = transformPolylineToPolygon(xvals, false, minValue);
 					int[] yvalsPolygon = transformPolylineToPolygon(yvals, true, minValue);
-					Color colorBrighter = new Color(color.getRed(), color.getGreen(), color.getBlue(), 50); // ~ Alpha 0.2
+					Color colorBrighter = new Color(color.getRed(), color.getGreen(), color.getBlue(), AWTUtils.getAlpha(20));
 					graphics2D.setColor(colorBrighter);
 					graphics2D.fillPolygon(xvalsPolygon, yvalsPolygon, sizePolygon);
 				}
