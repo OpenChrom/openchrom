@@ -29,7 +29,9 @@ public class PageSettings {
 	private static final String TYPE_FONT_STANDARD = "Arial";
 	public static final int STYLE_FONT_STANDARD = Font.PLAIN;
 	//
-	private float factor = 1.0f;
+	private float factorGraphics = 1.0f;
+	private float factorFont = 1.0f;
+	//
 	private double width = 0;
 	private double height = 0;
 	private double borderLeftX = 0;
@@ -55,16 +57,18 @@ public class PageSettings {
 
 		PageSize pageSize = pageSizeOption.pageSize();
 		//
-		this.factor = pageSizeOption.factor();
+		this.factorGraphics = pageSizeOption.factorGraphics();
+		this.factorFont = pageSizeOption.factorFont();
+		//
 		this.width = pageSize.getWidth();
 		this.height = pageSize.getHeight();
 		//
-		this.borderLeftX = 150 * factor;
-		this.borderRightX = 50 * factor;
-		this.borderTopY = 50 * factor;
-		this.borderBottomY = 100 * factor;
-		this.intentX = 5 * factor;
-		this.intentY = 5 * factor;
+		this.borderLeftX = 150 * factorGraphics;
+		this.borderRightX = 50 * factorGraphics;
+		this.borderTopY = 50 * factorGraphics;
+		this.borderBottomY = 100 * factorGraphics;
+		this.intentX = 5 * factorGraphics;
+		this.intentY = 5 * factorGraphics;
 		//
 		// BasicStroke.CAP_SQUARE;
 		// BasicStroke.CAP_BUTT;
@@ -74,19 +78,19 @@ public class PageSettings {
 		// BasicStroke.JOIN_MITER;
 		// BasicStroke.JOIN_BEVEL;
 		//
-		this.font = getFont(factor);
+		this.font = getFont(factorFont);
 		//
-		this.strokeSolid = getStrokeSolid(factor);
-		this.strokeDash = getStrokeDash(factor);
-		this.strokeDot = getStrokeDot(factor);
-		this.strokeDashDot = getStrokeDashDot(factor);
-		this.strokeDashDotDot = getStrokeDashDotDot(factor);
+		this.strokeSolid = getStrokeSolid(factorGraphics);
+		this.strokeDash = getStrokeDash(factorGraphics);
+		this.strokeDot = getStrokeDot(factorGraphics);
+		this.strokeDashDot = getStrokeDashDot(factorGraphics);
+		this.strokeDashDotDot = getStrokeDashDotDot(factorGraphics);
 	}
 
 	public BasicStroke getStroke(LineStyle lineStyle, int lineWidth) {
 
 		BasicStroke stroke = null;
-		float width = lineWidth * factor;
+		float width = lineWidth * factorGraphics;
 		//
 		switch(lineStyle) {
 			case DASH:
@@ -110,9 +114,14 @@ public class PageSettings {
 		return stroke;
 	}
 
-	public float getFactor() {
+	public float getFactorGraphics() {
 
-		return factor;
+		return factorGraphics;
+	}
+
+	public float getFactorFont() {
+
+		return factorFont;
 	}
 
 	public double getWidth() {

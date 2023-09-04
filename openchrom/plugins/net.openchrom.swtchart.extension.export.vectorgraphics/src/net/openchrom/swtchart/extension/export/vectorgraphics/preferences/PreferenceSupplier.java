@@ -21,7 +21,7 @@ import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOpti
 public class PreferenceSupplier extends AbstractPreferenceInitializer implements IPreferenceSupplier {
 
 	public static final String P_PAGE_SIZE_OPTION = "pageSizeOption";
-	public static final String DEF_PAGE_SIZE_OPTION = PageSizeOption.A0_LANDSCAPE.name();
+	public static final String DEF_PAGE_SIZE_OPTION = PageSizeOption.FULL_LANDSCAPE.name();
 	//
 	public static final String P_PATH_IMPORT = "pathImport";
 	public static final String DEF_PATH_IMPORT = "";
@@ -59,7 +59,7 @@ public class PreferenceSupplier extends AbstractPreferenceInitializer implements
 		try {
 			return PageSizeOption.valueOf(INSTANCE().get(P_PAGE_SIZE_OPTION));
 		} catch(Exception e) {
-			return PageSizeOption.A0_LANDSCAPE;
+			return PageSizeOption.FULL_LANDSCAPE;
 		}
 	}
 

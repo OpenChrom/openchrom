@@ -17,19 +17,27 @@ import de.erichseifert.vectorgraphics2d.util.PageSize;
 
 public enum PageSizeOption implements ILabel {
 
-	FULL_LANDSCAPE("Full Size (Landscape)", new PageSize(44930, 31780), 20.0f), // [px] -> 11887.73, 8408.46 [mm]
-	A0_LANDSCAPE("A0 (Landscape)", new PageSize(4493.858, 3178.583), 1.0f), // [px] -> 1189.0, 841.0 [mm]
-	A4_LANDSCAPE("A4 (Landscape)", new PageSize(1122.520, 793.701), 0.25f); // [px] -> 297.0, 210.0 [mm]
+	FULL_LANDSCAPE("Full Size (Landscape)", new PageSize(44930, 31780), 20.0f); // [px] -> 11887.73, 8408.46 [mm]
+	// A0_LANDSCAPE("A0 (Landscape)", new PageSize(4493.858, 3178.583), 1.0f), // [px] -> 1189.0, 841.0 [mm]
+	// A4_LANDSCAPE("A4 (Landscape)", new PageSize(1122.520, 793.701), 0.25f), // [px] -> 297.0, 210.0 [mm]
+	// OFFICE_DOCUMENT("Office Document (PowerPoint, Word)", new PageSize(44930, 31780), 20.0f, 1.0f); // [px] -> 11887.73, 8408.46 [mm]
 
 	private String label = "";
 	private PageSize pageSize;
-	private float factor;
+	private float factorGraphics;
+	private float factorFont;
 
 	private PageSizeOption(String label, PageSize pageSize, float factor) {
 
+		this(label, pageSize, factor, factor);
+	}
+
+	private PageSizeOption(String label, PageSize pageSize, float factorGraphics, float factorFont) {
+
 		this.label = label;
 		this.pageSize = pageSize;
-		this.factor = factor;
+		this.factorGraphics = factorGraphics;
+		this.factorFont = factorFont;
 	}
 
 	public String label() {
@@ -42,9 +50,14 @@ public enum PageSizeOption implements ILabel {
 		return pageSize;
 	}
 
-	public float factor() {
+	public float factorGraphics() {
 
-		return factor;
+		return factorGraphics;
+	}
+
+	public float factorFont() {
+
+		return factorFont;
 	}
 
 	public static String[][] getOptions() {

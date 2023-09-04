@@ -573,8 +573,11 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		PlotSymbolType symbolType = pointSeriesSettings.getSymbolType();
 		//
 		if(symbolSize > 0 && !PlotSymbolType.NONE.equals(symbolType)) {
-			double size = (symbolSize * pageSettings.getFactor());
-			graphics2D.setFont(pageSettings.getFont(symbolSize * 2)); // x2 otherwise it's too small
+			/*
+			 * Factor 2, otherwise symbols font is too small.
+			 */
+			double size = (symbolSize * pageSettings.getFactorGraphics());
+			graphics2D.setFont(pageSettings.getFont(symbolSize * 2.0f));
 			graphics2D.setColor(AWTUtils.convertColor(pointSeriesSettings.getSymbolColor()));
 			for(IPoint point : points) {
 				drawSymbol(graphics2D, point, size, symbolType);
