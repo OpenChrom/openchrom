@@ -153,13 +153,15 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		/*
 		 * Grid
 		 */
-		graphics2D.setStroke(pageSettings.getStrokeDash());
-		graphics2D.setColor(pageSettings.getColorGray());
-		for(int i = 1; i <= NUMBER_TICS; i++) {
-			int x = (int)(xBorderLeft + i * deltaWidth);
-			int y1 = (int)(yBorderTop);
-			int y2 = (int)(height - yBorderBottom);
-			graphics2D.drawLine(x, y1, x, y2);
+		if(isGridDisplayed(baseChart.getChartSettings())) {
+			graphics2D.setStroke(pageSettings.getStrokeDash());
+			graphics2D.setColor(pageSettings.getColorGray());
+			for(int i = 1; i <= NUMBER_TICS; i++) {
+				int x = (int)(xBorderLeft + i * deltaWidth);
+				int y1 = (int)(yBorderTop);
+				int y2 = (int)(height - yBorderBottom);
+				graphics2D.drawLine(x, y1, x, y2);
+			}
 		}
 		/*
 		 * Tics
@@ -239,13 +241,15 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		/*
 		 * Grid
 		 */
-		graphics2D.setStroke(pageSettings.getStrokeDash());
-		graphics2D.setColor(pageSettings.getColorGray());
-		for(int i = 0; i < NUMBER_TICS; i++) {
-			int x1 = (int)(xBorderLeft);
-			int x2 = (int)(width - xBorderRight);
-			int y = (int)(yBorderTop + i * deltaHeight);
-			graphics2D.drawLine(x1, y, x2, y);
+		if(isGridDisplayed(baseChart.getChartSettings())) {
+			graphics2D.setStroke(pageSettings.getStrokeDash());
+			graphics2D.setColor(pageSettings.getColorGray());
+			for(int i = 0; i < NUMBER_TICS; i++) {
+				int x1 = (int)(xBorderLeft);
+				int x2 = (int)(width - xBorderRight);
+				int y = (int)(yBorderTop + i * deltaHeight);
+				graphics2D.drawLine(x1, y, x2, y);
+			}
 		}
 		/*
 		 * Tics
@@ -727,5 +731,44 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		graphics2D.setTransform(affineTransform);
 		graphics2D.drawString(label, x1, y1);
 		graphics2D.setTransform(affineTransformDefault);
+	}
+
+	public boolean isGridDisplayed(IChartSettings chartSettings) {
+
+		List<IAxisSettings> axisSettingsList = getAxisSettings(chartSettings);
+		for(IAxisSettings axisSettings : axisSettingsList) {
+			if(isGridDisplayed(axisSettings)) {
+				return true;
+			}
+		}
+		//
+		return false;
+	}
+
+	private List<IAxisSettings> getAxisSettings(IChartSettings chartSettings) {
+
+		List<IAxisSettings> axisSettingsList = new ArrayList<>();
+		/*
+		 * Primary Axis X/Y
+		 */
+		axisSettingsList.add(chartSettings.getPrimaryAxisSettingsX());
+		axisSettingsList.add(chartSettings.getPrimaryAxisSettingsY());
+		/*
+		 * Secondary Axes X/Y
+		 */
+		for(IAxisSettings axisSettings : chartSettings.getSecondaryAxisSettingsListX()) {
+			axisSettingsList.add(axisSettings);
+		}
+		//
+		for(IAxisSettings axisSettings : chartSettings.getSecondaryAxisSettingsListY()) {
+			axisSettingsList.add(axisSettings);
+		}
+		//
+		return axisSettingsList;
+	}
+
+	private boolean isGridDisplayed(IAxisSettings axisSettings) {
+
+		return axisSettings.isVisible() && !LineStyle.NONE.equals(axisSettings.getGridLineStyle());
 	}
 }
