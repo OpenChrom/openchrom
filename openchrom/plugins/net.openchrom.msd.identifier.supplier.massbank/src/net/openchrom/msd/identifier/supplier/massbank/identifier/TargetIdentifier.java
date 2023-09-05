@@ -20,10 +20,12 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.identifier.IIdentifierSettings;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 
+import net.openchrom.msd.identifier.supplier.massbank.preferences.PreferenceSupplier;
+
 public class TargetIdentifier implements ITargetIdentifierSupplier {
 
 	private static final Logger logger = Logger.getLogger(TargetIdentifier.class);
-	private static final String SEARCH_URL = "https://massbank.eu/MassBank/Result.jsp?inchikey={0}&type=inchikey&searchType=inchikey";
+	private static final String SEARCH_URL = "Result.jsp?inchikey={0}&type=inchikey&searchType=inchikey";
 
 	@Override
 	public String getId() {
@@ -56,7 +58,8 @@ public class TargetIdentifier implements ITargetIdentifierSupplier {
 		try {
 			String inchiKey = libraryInformation.getInChIKey();
 			if(inchiKey != null && !inchiKey.isEmpty()) {
-				url = new URL(MessageFormat.format(SEARCH_URL, inchiKey));
+				String combined = PreferenceSupplier.getDomain() + SEARCH_URL;
+				url = new URL(MessageFormat.format(combined, inchiKey));
 			}
 		} catch(MalformedURLException e) {
 			logger.warn(e);
