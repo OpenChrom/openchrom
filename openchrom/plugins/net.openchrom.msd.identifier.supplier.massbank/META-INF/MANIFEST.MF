@@ -4,6 +4,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: MassBank Identifier
 Bundle-SymbolicName: net.openchrom.msd.identifier.supplier.massbank;singleton:=true
 Bundle-Version: 1.5.0.qualifier
+Export-Package: net.openchrom.msd.identifier.supplier.massbank.preferences
 Bundle-Activator: net.openchrom.msd.identifier.supplier.massbank.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,

@@ -28,11 +28,13 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 
+import net.openchrom.msd.identifier.supplier.massbank.preferences.PreferenceSupplier;
+
 public class ScanIdentifier implements IScanIdentifierSupplier {
 
 	private static final Logger logger = Logger.getLogger(ScanIdentifier.class);
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
-	private static final String PEAK_SEARCH_URL = "https://massbank.eu/MassBank/QpeakResult.jsp?type=quick&searchType=peak&sortKey=not&sortAction=1&pageNo=1&qpeak={0}&CUTOFF=5&num=20";
+	private static final String PEAK_SEARCH_URL = "QpeakResult.jsp?type=quick&searchType=peak&sortKey=not&sortAction=1&pageNo=1&qpeak={0}&CUTOFF=5&num=20";
 
 	@Override
 	public String getId() {
@@ -64,7 +66,8 @@ public class ScanIdentifier implements IScanIdentifierSupplier {
 		URL url = null;
 		try {
 			if(scan != null && scan instanceof IScanMSD scanMSD) {
-				url = new URL(MessageFormat.format(PEAK_SEARCH_URL, extractTracesIntensity(scanMSD, 10)));
+				String combined = PreferenceSupplier.getDomain() + PEAK_SEARCH_URL;
+				url = new URL(MessageFormat.format(combined, extractTracesIntensity(scanMSD, 10)));
 			}
 		} catch(MalformedURLException e) {
 			logger.warn(e);

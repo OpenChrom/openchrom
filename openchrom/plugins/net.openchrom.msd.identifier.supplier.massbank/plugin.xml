@@ -19,4 +19,10 @@
             targetURL="net.openchrom.msd.identifier.supplier.massbank.identifier.ScanIdentifier">
       </ScanIdentificationSupplier>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="net.openchrom.msd.identifier.supplier.massbank.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
 </plugin>
