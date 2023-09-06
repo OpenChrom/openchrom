@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Philip Wenig - initial API and implementation
+ * Lorenz Gerber - adding support for alignment
  *******************************************************************************/
 package net.openchrom.xxd.base.ui;
 
@@ -15,6 +16,7 @@ import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
+import net.openchrom.xxd.base.ui.services.IAlignmentService;
 import net.openchrom.xxd.base.ui.services.IDeconvolutionService;
 import net.openchrom.xxd.base.ui.services.IIdentificationService;
 
@@ -25,6 +27,7 @@ public class Activator extends AbstractActivatorUI {
 	//
 	private ServiceTracker<IDeconvolutionService, IDeconvolutionService> deconvolutionServiceTracker = null;
 	private ServiceTracker<IIdentificationService, IIdentificationService> identificationServiceTracker = null;
+	private ServiceTracker<IAlignmentService, IAlignmentService> alignmentServiceTracker = null;
 
 	public static BundleContext getContext() {
 
@@ -60,6 +63,11 @@ public class Activator extends AbstractActivatorUI {
 		return identificationServiceTracker.getServices();
 	}
 
+	public Object[] getAlignmentServices() {
+
+		return alignmentServiceTracker.getServices();
+	}
+
 	private void startServices(BundleContext context) {
 
 		deconvolutionServiceTracker = new ServiceTracker<>(context, IDeconvolutionService.class, null);
@@ -67,11 +75,15 @@ public class Activator extends AbstractActivatorUI {
 		//
 		identificationServiceTracker = new ServiceTracker<>(context, IIdentificationService.class, null);
 		identificationServiceTracker.open();
+		//
+		alignmentServiceTracker = new ServiceTracker<>(context, IAlignmentService.class, null);
+		alignmentServiceTracker.open();
 	}
 
 	private void stopServices() {
 
 		deconvolutionServiceTracker.close();
 		identificationServiceTracker.close();
+		alignmentServiceTracker.close();
 	}
 }
