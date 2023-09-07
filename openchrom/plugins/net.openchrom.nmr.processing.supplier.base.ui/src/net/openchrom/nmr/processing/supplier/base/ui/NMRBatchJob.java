@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -46,12 +46,12 @@ public class NMRBatchJob implements IRunnableWithProgress {
 	public void postConstruct(Composite parent) {
 
 		processTypeSupport = new ProcessTypeSupport();
-		batchJobUI = new BatchJobUI(parent, processTypeSupport, Activator.getDefault().getPreferenceStore(), "nmrBatchUIUserLocation", new DataCategory[]{DataCategory.FID, DataCategory.NMR}, this) {
+		batchJobUI = new BatchJobUI(parent, processTypeSupport, Activator.getDefault().getPreferenceStore(), "nmrBatchUIUserLocation", DataCategory.NMR, this) {
 
 			@Override
-			protected DataListUI createDataList(Composite parent, IPreferenceStore preferenceStore, String userlocationPrefrenceKey, DataCategory[] dataTypes) {
+			protected DataListUI createDataList(Composite parent, IPreferenceStore preferenceStore, String userlocationPrefrenceKey, DataCategory dataCategory) {
 
-				return new NMRDataListUI(parent, this::setEditorDirty, preferenceStore, userlocationPrefrenceKey, DataType.convert(dataTypes));
+				return new NMRDataListUI(parent, this::setEditorDirty, preferenceStore, userlocationPrefrenceKey, DataType.convert(new DataCategory[]{dataCategory}));
 			}
 		};
 		batchJobUI.doLoad(Collections.emptyList(), new ProcessMethod(EnumSet.of(DataCategory.FID, DataCategory.NMR)));
