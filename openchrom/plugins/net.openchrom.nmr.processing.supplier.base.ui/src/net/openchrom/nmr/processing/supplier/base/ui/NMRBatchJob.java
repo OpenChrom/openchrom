@@ -54,7 +54,7 @@ public class NMRBatchJob implements IRunnableWithProgress {
 				return new NMRDataListUI(parent, this::setEditorDirty, preferenceStore, userlocationPrefrenceKey, DataType.convert(new DataCategory[]{dataCategory}));
 			}
 		};
-		batchJobUI.doLoad(Collections.emptyList(), new ProcessMethod(EnumSet.of(DataCategory.FID, DataCategory.NMR)));
+		batchJobUI.doLoad(Collections.emptyList(), new ProcessMethod(EnumSet.of(DataCategory.NMR)));
 	}
 
 	@SuppressWarnings("deprecation")

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Christoph Läubrich - initial API and implementation
+ * Philip Wenig - refactoring data type
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.core;
 
@@ -22,13 +23,14 @@ public abstract class AbstractFIDSignalFilter<ConfigType> extends AbstractComple
 	private static final long serialVersionUID = -6422870258150962140L;
 
 	public AbstractFIDSignalFilter(Class<ConfigType> configClass) {
+
 		super(configClass);
 	}
 
 	@Override
 	public DataCategory[] getDataCategories() {
 
-		return new DataCategory[]{DataCategory.FID};
+		return new DataCategory[]{DataCategory.NMR};
 	}
 
 	@Override
