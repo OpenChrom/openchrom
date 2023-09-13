@@ -33,5 +33,9 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
         cache: 'maven'
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v4.5
+      with:
+        maven-version: 3.9.4
     - name: Build with Maven
       run: cd openchrom && mvn -f openchrom/releng/net.openchrom.aggregator/pom.xml -T 1C verify --batch-mode --no-transfer-progress
