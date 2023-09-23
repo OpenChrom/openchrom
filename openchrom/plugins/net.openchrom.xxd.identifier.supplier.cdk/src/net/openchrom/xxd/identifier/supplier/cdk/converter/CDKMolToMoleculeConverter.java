@@ -16,7 +16,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IChemFile;
@@ -24,6 +23,7 @@ import org.openscience.cdk.interfaces.IChemModel;
 import org.openscience.cdk.interfaces.IChemSequence;
 import org.openscience.cdk.io.IChemObjectReader.Mode;
 import org.openscience.cdk.io.MDLV2000Reader;
+import org.openscience.cdk.silent.SilentChemObjectBuilder;
 
 /**
  * Load MDL MOL streams using CDK
@@ -38,7 +38,7 @@ public class CDKMolToMoleculeConverter implements IStructureConverter {
 		IAtomContainer molecule = null;
 		if(input != null) {
 			try (MDLV2000Reader mdlReader = new MDLV2000Reader(new ByteArrayInputStream(input.getBytes()), Mode.RELAXED)) {
-				IChemFile chemFile = mdlReader.read(DefaultChemObjectBuilder.getInstance().newInstance(IChemFile.class));
+				IChemFile chemFile = mdlReader.read(SilentChemObjectBuilder.getInstance().newInstance(IChemFile.class));
 				if(chemFile.getChemSequenceCount() > 0) {
 					IChemSequence chemSequence = chemFile.getChemSequence(0);
 					if(chemSequence.getChemModelCount() > 0) {
