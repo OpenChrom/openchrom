@@ -18,8 +18,8 @@ import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.silent.SilentChemObjectBuilder;
 
 /**
  * A simple color theme for displaying molecules as an alternative to the CDK representation.
@@ -40,11 +40,11 @@ public class StructureRendererSimpleColorTheme implements IStructureRendererColo
 		atomToColorMap = new ArrayList<>();
 		symbolicAtoms = new ArrayList<>();
 		AtomToColorMapping cToBlue = new AtomToColorMapping(
-			DefaultChemObjectBuilder.getInstance().newInstance(IAtom.class,"C"),
+			SilentChemObjectBuilder.getInstance().newInstance(IAtom.class,"C"),
 			Color.BLUE
 		);
 		atomToColorMap.add(cToBlue);
-		symbolicAtoms.add(DefaultChemObjectBuilder.getInstance().newInstance(IAtom.class, "Cl"));
+		symbolicAtoms.add(SilentChemObjectBuilder.getInstance().newInstance(IAtom.class, "Cl"));
 	}
 
 	@Override

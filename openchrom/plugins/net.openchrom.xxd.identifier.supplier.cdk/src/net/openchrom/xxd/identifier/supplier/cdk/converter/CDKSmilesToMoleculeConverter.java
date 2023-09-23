@@ -13,9 +13,9 @@
 package net.openchrom.xxd.identifier.supplier.cdk.converter;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.InvalidSmilesException;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.smiles.SmilesParser;
 
 import net.openchrom.xxd.identifier.supplier.cdk.preferences.PreferenceSupplier;
@@ -29,7 +29,7 @@ import net.openchrom.xxd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 public class CDKSmilesToMoleculeConverter implements IStructureConverter {
 
 	private static final Logger logger = Logger.getLogger(CDKSmilesToMoleculeConverter.class);
-	private SmilesParser smilesParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
+	private SmilesParser smilesParser = new SmilesParser(SilentChemObjectBuilder.getInstance());
 
 	@Override
 	public IAtomContainer generate(String input) {
