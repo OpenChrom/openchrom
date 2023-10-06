@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -26,9 +26,9 @@ public class ReportSettingsValidator implements IValidator<Object> {
 		if(value == null) {
 			message = "The report setting doesn't exist.";
 		} else {
-			if(value instanceof ReportSettings) {
-				ReportSettings reportSettings = (ReportSettings)value;
-				if(reportSettings.size() == 0) {
+			if(value instanceof ReportSettings settings) {
+				ReportSettings reportSettings = settings;
+				if(reportSettings.isEmpty()) {
 					message = "Please add a template entry to report a peak.";
 				}
 			} else {
