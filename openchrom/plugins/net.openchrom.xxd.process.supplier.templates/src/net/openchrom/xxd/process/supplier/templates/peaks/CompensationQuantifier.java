@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.peaks;
 
@@ -114,6 +114,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 				if(quantitationEntriesDelete != null) {
 					peak.removeQuantitationEntries(quantitationEntriesDelete);
 				}
+				//
 				peak.addAllQuantitationEntries(quantitationEntriesAdd);
 			}
 		}
@@ -123,11 +124,12 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 
 		double adjustedConcentration = quantitationEntry.getConcentration() * compensationFactor;
 		String name = compensationSetting.isAdjustQuantitationEntry() ? compensationSetting.getName() : compensationSetting.getName() + LABEL_ADJUSTED;
+		String group = quantitationEntry.getGroup();
 		String unit = quantitationEntry.getConcentrationUnit();
 		/*
 		 * Keep the original unit.
 		 */
-		IQuantitationEntry adjustedQuantitationEntry = new QuantitationEntry(name, adjustedConcentration, unit, quantitationEntry.getArea());
+		IQuantitationEntry adjustedQuantitationEntry = new QuantitationEntry(name, group, adjustedConcentration, unit, quantitationEntry.getArea());
 		adjustedQuantitationEntry.setChemicalClass(quantitationEntry.getChemicalClass());
 		adjustedQuantitationEntry.setCalibrationMethod(quantitationEntry.getCalibrationMethod());
 		adjustedQuantitationEntry.setUsedCrossZero(quantitationEntry.getUsedCrossZero());
