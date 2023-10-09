@@ -37,6 +37,12 @@ public class PreferenceSupplier extends AbstractPreferenceInitializer implements
 	}
 
 	@Override
+	public String getPostfix() {
+
+		return "";
+	}
+
+	@Override
 	public void initializeDefaultPreferences() {
 
 		IPreferenceStore store = INSTANCE().getPreferences();
