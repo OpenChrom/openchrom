@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Alexander Stark - initial API and implementation
+ * Philip Wenig - refactor update listener
  *******************************************************************************/
 package net.openchrom.nmr.processing.supplier.base.settings;
 
@@ -16,16 +17,6 @@ import org.eclipse.chemclipse.support.settings.SystemSettingsStrategy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * ChemicalShiftCalibrationSettings will define all necessary settings for the
- * calculation of a lorentzian shaped line/peak which in turn will be used for
- * calibration of data using the icoshift alignment algorithm.
- * <p>
- * By default, the data is calibrated to an internal standard at 0 ppm.
- *
- * @author Alexander Stark
- *
- */
 @SystemSettings(SystemSettingsStrategy.NEW_INSTANCE)
 public class ChemicalShiftCalibrationSettings {
 
@@ -147,10 +138,12 @@ public class ChemicalShiftCalibrationSettings {
 	}
 
 	public int getNumberOfQualitiyControlCycles() {
+
 		return numberOfQualitiyControlCycles;
 	}
 
 	public void setNumberOfQualitiyControlCycles(int numberOfQualitiyControlCycles) {
+
 		this.numberOfQualitiyControlCycles = numberOfQualitiyControlCycles;
 	}
 }
