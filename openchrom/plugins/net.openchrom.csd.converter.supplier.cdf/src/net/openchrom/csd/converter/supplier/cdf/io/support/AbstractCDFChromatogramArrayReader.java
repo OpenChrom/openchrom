@@ -208,7 +208,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 				float retentionTime = valuesArrayPeakRententionTime.get(p);
 				ILibraryInformation libraryInformation = new LibraryInformation();
 				libraryInformation.setName(valuesArrayPeakName.getString(p));
-				IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
+				IComparisonResult comparisonResult = ComparisonResult.COMPARISON_RESULT_BEST_MATCH;
 				IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 				int scanNumber = vendorChromatogram.getScanNumber(retentionTime);
 				if(scanNumber >= 1) {

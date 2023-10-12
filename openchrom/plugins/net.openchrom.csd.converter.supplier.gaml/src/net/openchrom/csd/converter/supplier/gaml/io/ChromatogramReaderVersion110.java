@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -41,9 +41,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import net.openchrom.csd.converter.supplier.gaml.model.IVendorChromatogram;
 import net.openchrom.csd.converter.supplier.gaml.model.VendorChromatogram;
 import net.openchrom.csd.converter.supplier.gaml.model.VendorScan;
@@ -61,6 +58,10 @@ import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Units;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Ydata;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader110;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 public class ChromatogramReaderVersion110 extends AbstractChromatogramReader implements IChromatogramCSDReader {
 
@@ -127,7 +128,7 @@ public class ChromatogramReaderVersion110 extends AbstractChromatogramReader imp
 									ILibraryInformation libraryInformation = new LibraryInformation();
 									String name = peak.getName() != null ? peak.getName() : peak.getNumber().toString();
 									libraryInformation.setName(name);
-									IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
+									IComparisonResult comparisonResult = ComparisonResult.COMPARISON_RESULT_BEST_MATCH;
 									IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 									Baseline baseline = peak.getBaseline();
 									if(baseline != null) {

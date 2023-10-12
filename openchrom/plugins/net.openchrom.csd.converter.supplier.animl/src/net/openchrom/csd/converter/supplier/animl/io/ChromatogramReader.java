@@ -152,7 +152,7 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 									if(peakNames.size() >= p) {
 										libraryInformation.setName(peakNames.get(p));
 									}
-									IComparisonResult comparisonResult = ComparisonResult.createBestMatchComparisonResult();
+									IComparisonResult comparisonResult = ComparisonResult.COMPARISON_RESULT_BEST_MATCH;
 									IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 									chromatogramPeak.getTargets().add(identificationTarget);
 									chromatogram.addPeak(chromatogramPeak);
