@@ -173,6 +173,12 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 		return control;
 	}
 
+	@Override
+	public void restoreDefaults() {
+
+		// TODO Setting Defaults
+	}
+
 	public void load(String entries) {
 
 		settings.load(entries);

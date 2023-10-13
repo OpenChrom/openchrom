@@ -167,6 +167,12 @@ public class TraceRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		return control;
 	}
 
+	@Override
+	public void restoreDefaults() {
+
+		// TODO Setting Defaults
+	}
+
 	public void load(String entries) {
 
 		settings.load(entries);

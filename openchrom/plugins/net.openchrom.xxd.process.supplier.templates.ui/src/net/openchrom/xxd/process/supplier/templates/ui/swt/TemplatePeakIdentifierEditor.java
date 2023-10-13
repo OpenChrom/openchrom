@@ -176,6 +176,12 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 		return control;
 	}
 
+	@Override
+	public void restoreDefaults() {
+
+		// TODO Setting Defaults
+	}
+
 	public void load(String entries) {
 
 		settings.load(entries);
