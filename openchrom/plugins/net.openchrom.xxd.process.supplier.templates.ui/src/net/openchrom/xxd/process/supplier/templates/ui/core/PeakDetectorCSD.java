@@ -17,7 +17,6 @@ import java.util.concurrent.ExecutionException;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.AbstractPeakDetectorCSD;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
