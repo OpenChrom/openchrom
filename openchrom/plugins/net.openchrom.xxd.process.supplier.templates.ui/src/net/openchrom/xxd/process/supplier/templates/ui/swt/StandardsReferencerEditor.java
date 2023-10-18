@@ -176,7 +176,7 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 	@Override
 	public void restoreDefaults() {
 
-		// TODO Setting Defaults
+		listControl.get().clear();
 	}
 
 	public void load(String entries) {

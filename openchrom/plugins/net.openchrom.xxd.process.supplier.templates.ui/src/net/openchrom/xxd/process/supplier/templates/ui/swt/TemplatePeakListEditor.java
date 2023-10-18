@@ -179,7 +179,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	@Override
 	public void restoreDefaults() {
 
-		// TODO Setting Defaults
+		listControl.get().clear();
 	}
 
 	public void load(String entries) {

@@ -179,7 +179,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 	@Override
 	public void restoreDefaults() {
 
-		// TODO Setting Defaults
+		listControl.get().clear();
 	}
 
 	public void load(String entries) {
@@ -519,7 +519,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 			IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 			for(Object object : structuredSelection.toArray()) {
 				if(object instanceof IdentifierSetting) {
-					settings.remove((IdentifierSetting)object);
+					settings.remove(object);
 				}
 			}
 			setInput();
