@@ -180,7 +180,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 	@Override
 	public void restoreDefaults() {
 
-		// TODO Setting Defaults
+		listControl.get().clear();
 	}
 
 	public void load(String entries) {

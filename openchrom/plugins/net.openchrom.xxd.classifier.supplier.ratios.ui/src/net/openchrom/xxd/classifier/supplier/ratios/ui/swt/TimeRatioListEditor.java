@@ -170,7 +170,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 	@Override
 	public void restoreDefaults() {
 
-		// TODO Setting Defaults
+		listControl.get().clear();
 	}
 
 	public void load(String entries) {
