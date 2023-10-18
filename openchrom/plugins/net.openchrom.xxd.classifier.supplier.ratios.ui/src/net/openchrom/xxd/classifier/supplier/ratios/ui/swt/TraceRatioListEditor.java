@@ -245,6 +245,7 @@ public class TraceRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 
 				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, TraceRatioListUtil.EXAMPLE_SINGLE, new TraceRatioInputValidator(settings));
@@ -270,6 +271,7 @@ public class TraceRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();

@@ -245,6 +245,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 
 				InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_ADD, TimeRatioListUtil.EXAMPLE_SINGLE, new TimeRatioInputValidator(settings));
@@ -270,6 +271,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();

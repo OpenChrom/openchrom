@@ -126,8 +126,7 @@ public class ReviewController {
 	 */
 	public void update(IPeak peak, IIdentificationTarget identificationTarget) {
 
-		if(peak instanceof IPeakMSD && identificationTarget != null) {
-			IPeakMSD peakMSD = (IPeakMSD)peak;
+		if(peak instanceof IPeakMSD peakMSD && identificationTarget != null) {
 			IScanMSD scanMSD = peakMSD.getExtractedMassSpectrum();
 			IScanMSD unknownMassSpectrum = scanMSD.getOptimizedMassSpectrum() != null ? scanMSD.getOptimizedMassSpectrum() : scanMSD;
 			extendedComparisonUI.update(unknownMassSpectrum, identificationTarget);
@@ -369,8 +368,7 @@ public class ReviewController {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	private boolean isChromatogramMSD(IChromatogram chromatogram) {
+	private boolean isChromatogramMSD(IChromatogram<?> chromatogram) {
 
 		return chromatogram instanceof IChromatogramMSD;
 	}

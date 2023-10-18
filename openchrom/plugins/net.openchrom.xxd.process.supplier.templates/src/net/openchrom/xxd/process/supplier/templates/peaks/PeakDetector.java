@@ -100,10 +100,9 @@ public class PeakDetector<P extends IPeak, C extends IChromatogram<P>, R> extend
 
 		IProcessingInfo<R> processingInfo = super.validate(chromatogramSelection, settings, new NullProgressMonitor());
 		if(!processingInfo.hasErrorMessages()) {
-			if(settings instanceof PeakDetectorSettings) {
+			if(settings instanceof PeakDetectorSettings peakDetectorSettings) {
 				IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
 				RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
-				PeakDetectorSettings peakDetectorSettings = (PeakDetectorSettings)settings;
 				List<DetectorSetting> detectorSettings = peakDetectorSettings.getDetectorSettingsList();
 				SubMonitor subMonitor = SubMonitor.convert(monitor, detectorSettings.size());
 				applySettingsCombined(chromatogram, detectorSettings, retentionIndexMap, subMonitor);

@@ -115,8 +115,7 @@ public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IP
 	private IChromatogram<?> getChromatogram(List<? extends IPeakMSD> peaks) {
 
 		for(IPeakMSD peak : peaks) {
-			if(peak instanceof IChromatogramPeak) {
-				IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
+			if(peak instanceof IChromatogramPeak chromatogramPeak) {
 				return chromatogramPeak.getChromatogram();
 			}
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -28,8 +28,7 @@ public class PeakReviewEditingSupport extends AbstractTemplateEditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof ReviewSetting) {
-			ReviewSetting setting = (ReviewSetting)element;
+		if(element instanceof ReviewSetting setting) {
 			Object object = super.getValue(element);
 			if(object != null) {
 				return object;
@@ -56,8 +55,7 @@ public class PeakReviewEditingSupport extends AbstractTemplateEditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof ReviewSetting) {
-			ReviewSetting setting = (ReviewSetting)element;
+		if(element instanceof ReviewSetting setting) {
 			super.setValue(element, value);
 			switch(getColumn()) {
 				/*
@@ -78,8 +76,8 @@ public class PeakReviewEditingSupport extends AbstractTemplateEditingSupport {
 					}
 					break;
 				case AbstractTemplateLabelProvider.PEAK_TYPE:
-					if(value instanceof PeakType) {
-						setting.setPeakType((PeakType)value);
+					if(value instanceof PeakType peakType) {
+						setting.setPeakType(peakType);
 					}
 					break;
 				case AbstractTemplateLabelProvider.OPTIMIZE_RANGE:
