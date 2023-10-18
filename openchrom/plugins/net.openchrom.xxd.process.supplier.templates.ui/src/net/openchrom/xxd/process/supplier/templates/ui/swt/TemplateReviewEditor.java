@@ -520,8 +520,8 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		if(MessageDialog.openQuestion(shell, DIALOG_TITLE, MESSAGE_REMOVE)) {
 			IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 			for(Object object : structuredSelection.toArray()) {
-				if(object instanceof ReviewSetting) {
-					settings.remove((ReviewSetting)object);
+				if(object instanceof ReviewSetting reviewSettings) {
+					settings.remove(reviewSettings);
 				}
 			}
 			setInput();

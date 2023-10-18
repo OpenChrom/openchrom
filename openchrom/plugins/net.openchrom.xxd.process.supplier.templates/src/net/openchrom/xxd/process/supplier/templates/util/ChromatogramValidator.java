@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -69,8 +69,7 @@ public class ChromatogramValidator {
 			Set<Integer> traces = peakDetectorListUtil.extractTraces(tracesSetting);
 			exitloop:
 			for(IScan scan : chromatogram.getScans()) {
-				if(scan instanceof IScanMSD) {
-					IScanMSD scanMSD = (IScanMSD)scan;
+				if(scan instanceof IScanMSD scanMSD) {
 					IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
 					for(int trace : traces) {
 						if(extractedIonSignal.getAbundance(trace) > 0) {
@@ -78,8 +77,7 @@ public class ChromatogramValidator {
 							break exitloop;
 						}
 					}
-				} else if(scan instanceof IScanWSD) {
-					IScanWSD scanWSD = (IScanWSD)scan;
+				} else if(scan instanceof IScanWSD scanWSD) {
 					IExtractedWavelengthSignal extractedWavelengthSignal = scanWSD.getExtractedWavelengthSignal();
 					for(int trace : traces) {
 						if(extractedWavelengthSignal.getAbundance(trace) != 0) {

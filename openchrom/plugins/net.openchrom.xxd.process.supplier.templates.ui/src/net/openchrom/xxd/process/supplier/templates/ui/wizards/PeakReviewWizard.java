@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -32,12 +32,6 @@ public class PeakReviewWizard extends Wizard {
 	public void addPages() {
 
 		addPage(new PeakReviewPage("Peak Review", processSettings));
-	}
-
-	@Override
-	public boolean performCancel() {
-
-		return super.performCancel();
 	}
 
 	@Override
