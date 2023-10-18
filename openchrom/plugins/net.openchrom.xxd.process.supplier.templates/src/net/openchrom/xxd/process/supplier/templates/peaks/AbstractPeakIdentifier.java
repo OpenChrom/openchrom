@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -76,7 +76,7 @@ public abstract class AbstractPeakIdentifier {
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakIdentifierSettings peakIdentifierSettings) {
 				for(IdentifierSetting identifierSetting : peakIdentifierSettings.getIdentifierSettingsList()) {
-					identifyPeak(peaks, identifierSetting, retentionIndexMap);
+					identifyPeak(peaks, identifierSetting, retentionIndexMap, monitor);
 				}
 			} else {
 				processingInfo.addErrorMessage(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION, "The settings instance is wrong.");
@@ -85,7 +85,7 @@ public abstract class AbstractPeakIdentifier {
 		return processingInfo;
 	}
 
-	private void identifyPeak(List<? extends IPeak> peaks, IdentifierSetting identifierSetting, RetentionIndexMap retentionIndexMap) {
+	private void identifyPeak(List<? extends IPeak> peaks, IdentifierSetting identifierSetting, RetentionIndexMap retentionIndexMap, IProgressMonitor monitor) {
 
 		PeakSupport retentionTimeSupport = new PeakSupport();
 		IRetentionTimeRange retentionTimeRange = retentionTimeSupport.getRetentionTimeRange(peaks, identifierSetting, identifierSetting.getReferenceIdentifier(), retentionIndexMap);
@@ -97,6 +97,7 @@ public abstract class AbstractPeakIdentifier {
 		//
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {
+				monitor.beginTask("Identify peaks", peaks.size());
 				for(IPeak peak : peaks) {
 					if(LimitSupport.doIdentify(peak.getTargets(), limitMatchFactor)) {
 						if(isPeakMatch(peak, startRetentionTime, stopRetentionTime)) {
@@ -117,6 +118,7 @@ public abstract class AbstractPeakIdentifier {
 							}
 						}
 					}
+					monitor.worked(1);
 				}
 			}
 		} catch(PeakException e) {
