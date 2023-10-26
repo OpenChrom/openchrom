@@ -54,7 +54,7 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 
 	public CSVFormat getFormat() {
 
-		return CSVFormat.RFC4180.withDelimiter(delimiter.getCharacter());
+		return CSVFormat.RFC4180.builder().setDelimiter(delimiter.getCharacter()).build();
 	}
 
 	public boolean isPrintResultsHeader() {
