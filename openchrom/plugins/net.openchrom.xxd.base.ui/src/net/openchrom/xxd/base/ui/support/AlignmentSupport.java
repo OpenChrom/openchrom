@@ -21,10 +21,12 @@ public class AlignmentSupport {
 	public static IAlignmentService getAlignmentService(DataType dataType) {
 
 		Object[] services = Activator.getDefault().getAlignmentServices();
-		for(Object service : services) {
-			if(service instanceof IAlignmentService alignmentService) {
-				if(dataType.equals(alignmentService.getDataType())) {
-					return alignmentService;
+		if(services != null) {
+			for(Object service : services) {
+				if(service instanceof IAlignmentService alignmentService) {
+					if(dataType.equals(alignmentService.getDataType())) {
+						return alignmentService;
+					}
 				}
 			}
 		}

@@ -21,10 +21,12 @@ public class IdentificationSupport {
 	public static IIdentificationService getIdentificationService(DataType dataType) {
 
 		Object[] services = Activator.getDefault().getIdentificationServices();
-		for(Object service : services) {
-			if(service instanceof IIdentificationService identificationService) {
-				if(dataType.equals(identificationService.getDataType())) {
-					return identificationService;
+		if(services != null) {
+			for(Object service : services) {
+				if(service instanceof IIdentificationService identificationService) {
+					if(dataType.equals(identificationService.getDataType())) {
+						return identificationService;
+					}
 				}
 			}
 		}

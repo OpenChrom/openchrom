@@ -21,10 +21,12 @@ public class DeconvolutionSupport {
 	public static IDeconvolutionService getDeconvolutionService(DataType dataType) {
 
 		Object[] services = Activator.getDefault().getDeconvolutionServices();
-		for(Object service : services) {
-			if(service instanceof IDeconvolutionService deconvolutionService) {
-				if(dataType.equals(deconvolutionService.getDataType())) {
-					return deconvolutionService;
+		if(services != null) {
+			for(Object service : services) {
+				if(service instanceof IDeconvolutionService deconvolutionService) {
+					if(dataType.equals(deconvolutionService.getDataType())) {
+						return deconvolutionService;
+					}
 				}
 			}
 		}
