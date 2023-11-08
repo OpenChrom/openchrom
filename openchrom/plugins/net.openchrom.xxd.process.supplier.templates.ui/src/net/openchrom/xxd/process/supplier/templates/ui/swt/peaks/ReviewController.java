@@ -233,6 +233,7 @@ public class ReviewController {
 	protected void createPeakDetectorChart(Composite parent) {
 
 		peakDetectorChart = new PeakDetectorChart(parent, SWT.BORDER);
+		peakDetectorChart.setData("org.eclipse.e4.ui.css.CssClassName", "PeakDetectorChart");
 		peakDetectorChart.setPeakUpdateListener(new IPeakUpdateListener() {
 
 			@Override

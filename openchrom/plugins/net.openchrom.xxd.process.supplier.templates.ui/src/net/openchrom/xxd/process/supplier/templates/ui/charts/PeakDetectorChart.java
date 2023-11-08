@@ -82,7 +82,6 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 
 		super(parent, style);
 		createControl();
-		setData("org.eclipse.e4.ui.css.CssClassName", "PeakDetectorChart");
 	}
 
 	@Override
