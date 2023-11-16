@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - refactored MS/MS support
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mgf.converter.io;
 
@@ -23,13 +24,13 @@ import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
-import org.eclipse.chemclipse.msd.model.core.IFragmentedIonScan;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
-import org.eclipse.chemclipse.msd.model.implementation.FragmentedIonScan;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
+import org.eclipse.chemclipse.msd.model.implementation.RegularLibraryMassSpectrum;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 public class MassSpectraReader extends AbstractMassSpectraReader implements IMassSpectraReader {
@@ -51,10 +52,10 @@ public class MassSpectraReader extends AbstractMassSpectraReader implements IMas
 		try (FileReader fileReader = new FileReader(file)) {
 			try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
 				String line = null;
-				IFragmentedIonScan massSpectrum = null;
+				IRegularLibraryMassSpectrum massSpectrum = null;
 				while((line = bufferedReader.readLine()) != null) {
 					if(line.equals(BEGIN_IONS)) {
-						massSpectrum = new FragmentedIonScan();
+						massSpectrum = new RegularLibraryMassSpectrum();
 					}
 					if(line.startsWith(TITLE)) {
 						massSpectrum.setIdentifier(line.replace(TITLE, "").trim());
