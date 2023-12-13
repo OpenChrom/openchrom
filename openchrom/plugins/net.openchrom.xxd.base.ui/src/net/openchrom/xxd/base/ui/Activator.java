@@ -8,7 +8,7 @@
  * 
  * Contributors:
  * Philip Wenig - initial API and implementation
- * Lorenz Gerber - adding support for alignment
+ * Lorenz Gerber - adding support for alignment, batch deconvolution
  *******************************************************************************/
 package net.openchrom.xxd.base.ui;
 
@@ -17,6 +17,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
 import net.openchrom.xxd.base.ui.services.IAlignmentService;
+import net.openchrom.xxd.base.ui.services.IDeconvolutionBatchService;
 import net.openchrom.xxd.base.ui.services.IDeconvolutionService;
 import net.openchrom.xxd.base.ui.services.IIdentificationService;
 
@@ -26,6 +27,7 @@ public class Activator extends AbstractActivatorUI {
 	private static BundleContext context;
 	//
 	private ServiceTracker<IDeconvolutionService, IDeconvolutionService> deconvolutionServiceTracker = null;
+	private ServiceTracker<IDeconvolutionBatchService, IDeconvolutionBatchService> deconvolutionBatchServiceTracker = null;
 	private ServiceTracker<IIdentificationService, IIdentificationService> identificationServiceTracker = null;
 	private ServiceTracker<IAlignmentService, IAlignmentService> alignmentServiceTracker = null;
 
@@ -58,6 +60,11 @@ public class Activator extends AbstractActivatorUI {
 		return deconvolutionServiceTracker.getServices();
 	}
 
+	public Object[] getDeconvolutionBatchServices() {
+
+		return deconvolutionBatchServiceTracker.getServices();
+	}
+
 	public Object[] getIdentificationServices() {
 
 		return identificationServiceTracker.getServices();
@@ -73,6 +80,9 @@ public class Activator extends AbstractActivatorUI {
 		deconvolutionServiceTracker = new ServiceTracker<>(context, IDeconvolutionService.class, null);
 		deconvolutionServiceTracker.open();
 		//
+		deconvolutionBatchServiceTracker = new ServiceTracker<>(context, IDeconvolutionBatchService.class, null);
+		deconvolutionBatchServiceTracker.open();
+		//
 		identificationServiceTracker = new ServiceTracker<>(context, IIdentificationService.class, null);
 		identificationServiceTracker.open();
 		//
@@ -83,6 +93,7 @@ public class Activator extends AbstractActivatorUI {
 	private void stopServices() {
 
 		deconvolutionServiceTracker.close();
+		deconvolutionBatchServiceTracker.close();
 		identificationServiceTracker.close();
 		alignmentServiceTracker.close();
 	}
