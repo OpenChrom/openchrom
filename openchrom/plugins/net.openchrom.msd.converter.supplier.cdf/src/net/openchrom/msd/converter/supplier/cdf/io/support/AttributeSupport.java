@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Lablicate GmbH.
+ * Copyright (c) 2013, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -28,8 +28,7 @@ public class AttributeSupport {
 		cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_DATASET_ORIGIN, "Palo Alto, CA");
 		cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_NETCDF_FILE_DATE_TIME_STAMP, DateSupport.getDate(chromatogram.getDate()));
 		cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_TITLE, chromatogram.getMiscInfo());
-		if(chromatogram instanceof VendorChromatogram) {
-			VendorChromatogram chrom = (VendorChromatogram)chromatogram;
+		if(chromatogram instanceof VendorChromatogram chrom) {
 			cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_DATE_TIME_STAMP, DateSupport.getDate(chrom.getDateOfExperiment()));
 		} else {
 			cdfChromatogram.addGlobalAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_DATE_TIME_STAMP, DateSupport.getDate(chromatogram.getDate()));

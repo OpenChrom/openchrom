@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -34,22 +34,20 @@ public class PeakRatioSelectionListener extends SelectionAdapter implements Sele
 
 		try {
 			Object object = e.getSource();
-			if(object instanceof Table) {
-				Table table = (Table)object;
+			if(object instanceof Table table) {
 				int index = table.getSelectionIndex();
 				TableItem tableItem = table.getItem(index);
 				Object data = tableItem.getData();
 				handleSelection(e.display, data);
 			}
-		} catch(Exception e1) {
+		} catch(Exception ex) {
 			//
 		}
 	}
 
 	public void handleSelection(Display display, Object data) {
 
-		if(data instanceof IPeakRatio) {
-			IPeakRatio peakRatio = (IPeakRatio)data;
+		if(data instanceof IPeakRatio peakRatio) {
 			IPeak peak = peakRatio.getPeak();
 			if(peak != null) {
 				UpdateNotifierUI.update(display, peak);
@@ -61,8 +59,8 @@ public class PeakRatioSelectionListener extends SelectionAdapter implements Sele
 	public void selectionChanged(SelectionChangedEvent event) {
 
 		ISelection selection = event.getSelection();
-		if(selection instanceof IStructuredSelection) {
-			Object element = ((IStructuredSelection)selection).getFirstElement();
+		if(selection instanceof IStructuredSelection structuredSelection) {
+			Object element = structuredSelection.getFirstElement();
 			handleSelection(Display.getDefault(), element);
 		}
 	}

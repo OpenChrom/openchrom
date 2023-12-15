@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -28,9 +28,9 @@ public class RetentionTimeValidator implements IValidator<Object> {
 		if(value == null) {
 			message = ERROR;
 		} else {
-			if(value instanceof String) {
+			if(value instanceof String text) {
 				try {
-					double retentionTime = Double.parseDouble(((String)value).trim());
+					double retentionTime = Double.parseDouble(text.trim());
 					if(retentionTime <= 0.0d) {
 						message = ERROR_VALUE_RANGE;
 					}

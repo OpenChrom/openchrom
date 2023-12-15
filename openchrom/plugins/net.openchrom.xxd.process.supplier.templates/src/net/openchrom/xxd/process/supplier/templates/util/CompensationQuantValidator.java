@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -34,8 +34,8 @@ public class CompensationQuantValidator extends AbstractTemplateValidator implem
 		if(value == null) {
 			message = ERROR_ENTRY;
 		} else {
-			if(value instanceof String) {
-				String text = ((String)value).trim();
+			if(value instanceof String text) {
+				text = text.trim();
 				if(text.contains(AbstractTemplateListUtil.SEPARATOR_TOKEN)) {
 					message = AbstractTemplateListUtil.ERROR_TOKEN;
 				} else if("".equals(text.trim())) {

@@ -119,8 +119,7 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 
 		IProcessingInfo<R> processingInfo = super.validate(chromatogramSelection, settings, monitor);
 		if(!processingInfo.hasErrorMessages()) {
-			if(settings instanceof PeakTransferSettings) {
-				PeakTransferSettings peakTransferSettings = (PeakTransferSettings)settings;
+			if(settings instanceof PeakTransferSettings peakTransferSettings) {
 				transferPeaks(chromatogramSelection, peakTransferSettings);
 			} else {
 				processingInfo.addErrorMessage(PeakDetectorSettings.DETECTOR_DESCRIPTION, "The settings instance is wrong.");
@@ -284,7 +283,7 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 		IPeakModel peakModel = peakSource.getPeakModel();
 		double percentageIntensity = getPercentageIntensity(peakSource);
 		//
-		if(chromatogramSink instanceof IChromatogramCSD && peakTransferSettings.isCreateModelPeak()) {
+		if(chromatogramSink instanceof IChromatogramCSD chromatogramCSD && peakTransferSettings.isCreateModelPeak()) {
 			/*
 			 * Model peak
 			 */
@@ -298,7 +297,6 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 				/*
 				 * Gaussian Peak
 				 */
-				IChromatogramCSD chromatogramCSD = (IChromatogramCSD)chromatogramSink;
 				int deltaRetentionTimeLeft = peakTransferSettings.getDeltaRetentionTimeLeft();
 				int deltaRetentionTimeRight = peakTransferSettings.getDeltaRetentionTimeRight();
 				int startRetentionTime = peakModel.getStartRetentionTime() - deltaRetentionTimeLeft;
@@ -346,8 +344,7 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 	private Set<Integer> getTraces(IPeak peakSource, int numberTraces) {
 
 		Set<Integer> traces = new HashSet<>();
-		if(peakSource instanceof IChromatogramPeakMSD) {
-			IChromatogramPeakMSD peakMSD = (IChromatogramPeakMSD)peakSource;
+		if(peakSource instanceof IChromatogramPeakMSD peakMSD) {
 			if(peakMSD.getPurity() < 1.0f && numberTraces > 0) {
 				IScanMSD scanMSD = peakMSD.getExtractedMassSpectrum();
 				if(scanMSD.getIons().size() <= numberTraces) {
@@ -377,8 +374,7 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 	private double getPercentageIntensity(IPeak peakSource) {
 
 		double percentageIntensity = 1.0d;
-		if(peakSource instanceof IChromatogramPeak) {
-			IChromatogramPeak peak = (IChromatogramPeak)peakSource;
+		if(peakSource instanceof IChromatogramPeak peak) {
 			IChromatogram<?> chromatogram = peak.getChromatogram();
 			if(chromatogram != null) {
 				int scanMax = peak.getScanMax();

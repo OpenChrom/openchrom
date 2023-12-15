@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Lablicate GmbH.
+ * Copyright (c) 2022, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -92,8 +92,7 @@ public class RetentionIndexSupport {
 	private static IChromatogram<?> getChromatogram(List<? extends IPeak> peaks) {
 
 		for(IPeak peak : peaks) {
-			if(peak instanceof IChromatogramPeak) {
-				IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
+			if(peak instanceof IChromatogramPeak chromatogramPeak) {
 				return chromatogramPeak.getChromatogram();
 			}
 		}

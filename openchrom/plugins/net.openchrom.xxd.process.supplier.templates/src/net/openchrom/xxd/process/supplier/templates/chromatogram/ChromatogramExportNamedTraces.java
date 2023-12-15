@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Lablicate GmbH.
+ * Copyright (c) 2022, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -39,11 +39,10 @@ public class ChromatogramExportNamedTraces extends AbstractChromatogramExportCon
 	public IProcessingInfo<File> convert(File file, IChromatogram<? extends IPeak> chromatogram, IProgressMonitor monitor) {
 
 		IProcessingInfo<File> processingInfo = super.validate(file);
-		if(!processingInfo.hasErrorMessages() && chromatogram instanceof IChromatogramMSD) {
+		if(!processingInfo.hasErrorMessages() && chromatogram instanceof IChromatogramMSD chromatogramMSD) {
 			/*
 			 * Settings
 			 */
-			IChromatogramMSD chromatogramMSD = (IChromatogramMSD)chromatogram;
 			int maxCopyTraces = PreferenceSupplier.getPeakExportNumberTraces();
 			/*
 			 * Export

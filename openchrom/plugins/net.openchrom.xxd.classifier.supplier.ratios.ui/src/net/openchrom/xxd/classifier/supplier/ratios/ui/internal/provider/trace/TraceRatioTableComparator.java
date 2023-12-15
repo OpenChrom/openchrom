@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,6 +33,7 @@ public class TraceRatioTableComparator extends AbstractRecordTableComparator imp
 		this.displayOption = displayOption;
 	}
 
+	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int result;
@@ -53,10 +54,7 @@ public class TraceRatioTableComparator extends AbstractRecordTableComparator imp
 	public int compareSettings(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof TraceRatio && e2 instanceof TraceRatio) {
-			TraceRatio traceRatio1 = (TraceRatio)e1;
-			TraceRatio traceRatio2 = (TraceRatio)e2;
-			//
+		if(e1 instanceof TraceRatio traceRatio1 && e2 instanceof TraceRatio traceRatio2) {
 			switch(getPropertyIndex()) {
 				case 0:
 					sortOrder = traceRatio2.getName().compareTo(traceRatio1.getName());
@@ -84,10 +82,7 @@ public class TraceRatioTableComparator extends AbstractRecordTableComparator imp
 	public int compareResults(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof TraceRatio && e2 instanceof TraceRatio) {
-			TraceRatio traceRatio1 = (TraceRatio)e1;
-			TraceRatio traceRatio2 = (TraceRatio)e2;
-			//
+		if(e1 instanceof TraceRatio traceRatio1 && e2 instanceof TraceRatio traceRatio2) {
 			IPeak peak1 = traceRatio1.getPeak();
 			IPeak peak2 = traceRatio2.getPeak();
 			//

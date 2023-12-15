@@ -24,8 +24,7 @@ public class StandardsAssignerEditingSupport extends AbstractTemplateEditingSupp
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof AssignerStandard) {
-			AssignerStandard setting = (AssignerStandard)element;
+		if(element instanceof AssignerStandard setting) {
 			Object object = super.getValue(element);
 			if(object != null) {
 				return object;
@@ -51,8 +50,7 @@ public class StandardsAssignerEditingSupport extends AbstractTemplateEditingSupp
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof AssignerStandard) {
-			AssignerStandard setting = (AssignerStandard)element;
+		if(element instanceof AssignerStandard setting) {
 			super.setValue(element, value);
 			switch(getColumn()) {
 				/*

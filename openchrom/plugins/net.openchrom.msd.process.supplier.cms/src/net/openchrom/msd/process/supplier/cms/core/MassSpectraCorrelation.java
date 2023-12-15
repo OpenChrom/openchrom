@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 Walter Whitlock.
+ * Copyright (c) 2017, 2023 Walter Whitlock.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -54,8 +54,7 @@ public class MassSpectraCorrelation {
 
 		CorrelationResult result = new CorrelationResult(libSpectra.getList().size(), scanSpectrum);
 		for(IScanMSD libSpectrum : libSpectra.getList()) {
-			if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
-				ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum = (ICalibratedVendorLibraryMassSpectrum)libSpectrum;
+			if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum libraryMassSpectrum) {
 				double correlation = getCorrelation(scanSpectrum, libraryMassSpectrum, massTol);
 				result.addResult(correlation, libraryMassSpectrum);
 			} // if
@@ -73,8 +72,7 @@ public class MassSpectraCorrelation {
 		double massTol = 0.2;
 		CorrelationResults results = new CorrelationResults(testSpectra.getName());
 		for(IScanMSD scan : testSpectra.getList()) {
-			if(scan instanceof ICalibratedVendorMassSpectrum) {
-				ICalibratedVendorMassSpectrum scanSpectrum = (ICalibratedVendorMassSpectrum)scan;
+			if(scan instanceof ICalibratedVendorMassSpectrum scanSpectrum) {
 				//
 				// CorrelationResult result = new CorrelationResult(libSpectra.getList().size(), scanSpectrum);
 				// for(IScanMSD libSpectrum : libSpectra.getList()) {

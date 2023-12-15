@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -41,6 +41,7 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 	private ProcessorData processorData;
 
 	public EnhancedIsotopeHeatmapEditor(Composite parent, int style) {
+
 		super(parent, style);
 		buttons = new ArrayList<Button>();
 		createControl();
@@ -80,8 +81,8 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 	 */
 	public void setInput(Object input) {
 
-		if(input instanceof ProcessorData) {
-			this.processorData = (ProcessorData)input;
+		if(input instanceof ProcessorData inputProcessorData) {
+			this.processorData = inputProcessorData;
 		} else {
 			processorData = null;
 		}

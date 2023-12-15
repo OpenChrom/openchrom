@@ -46,12 +46,11 @@ import org.eclipse.swtchart.extensions.model.IElement;
 import org.eclipse.swtchart.extensions.model.IGraphicElement;
 import org.eclipse.swtchart.extensions.model.ITextElement;
 
+import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
+import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSettings;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
 import net.openchrom.swtchart.extension.export.vectorgraphics.support.AWTUtils;
-
-import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
-import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
 
 /*
  * Important to now:
@@ -128,8 +127,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		String labelX = axisSettingsX.getLabel();
 		DecimalFormat decimalFormatX = axisSettingsX.getDecimalFormat();
 		//
-		if(axisSettingsX instanceof ISecondaryAxisSettings) {
-			ISecondaryAxisSettings secondaryAxisSettings = (ISecondaryAxisSettings)axisSettingsX;
+		if(axisSettingsX instanceof ISecondaryAxisSettings secondaryAxisSettings) {
 			axisScaleConverterX = secondaryAxisSettings.getAxisScaleConverter();
 			labelX = secondaryAxisSettings.getLabel();
 			decimalFormatX = secondaryAxisSettings.getDecimalFormat();
@@ -216,8 +214,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		String labelY = axisSettingsY.getLabel();
 		DecimalFormat decimalFormatY = axisSettingsY.getDecimalFormat();
 		//
-		if(axisSettingsY instanceof ISecondaryAxisSettings) {
-			ISecondaryAxisSettings secondaryAxisSettings = (ISecondaryAxisSettings)axisSettingsY;
+		if(axisSettingsY instanceof ISecondaryAxisSettings secondaryAxisSettings) {
 			axisScaleConverterY = secondaryAxisSettings.getAxisScaleConverter();
 			labelY = secondaryAxisSettings.getLabel();
 			decimalFormatY = secondaryAxisSettings.getDecimalFormat();

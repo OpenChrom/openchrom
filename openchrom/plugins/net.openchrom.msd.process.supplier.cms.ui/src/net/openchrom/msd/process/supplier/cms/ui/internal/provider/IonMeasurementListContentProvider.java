@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,11 +25,9 @@ public class IonMeasurementListContentProvider implements IStructuredContentProv
 	@Override
 	public Object[] getElements(Object inputElement) {
 
-		if(inputElement instanceof ICalibratedVendorMassSpectrum) {
-			ICalibratedVendorMassSpectrum massSpectrum = (ICalibratedVendorMassSpectrum)inputElement;
+		if(inputElement instanceof ICalibratedVendorMassSpectrum massSpectrum) {
 			return massSpectrum.getIonMeasurements().toArray();
-		} else if(inputElement instanceof ICalibratedVendorLibraryMassSpectrum) {
-			ICalibratedVendorLibraryMassSpectrum massSpectrum = (ICalibratedVendorLibraryMassSpectrum)inputElement;
+		} else if(inputElement instanceof ICalibratedVendorLibraryMassSpectrum massSpectrum) {
 			return massSpectrum.getIons().toArray();
 		} else {
 			return null;
@@ -51,16 +49,14 @@ public class IonMeasurementListContentProvider implements IStructuredContentProv
 		} else {
 			column1Header = "abundance";
 		}
-		if(newInput instanceof CalibratedVendorLibraryMassSpectrum) {
-			CalibratedVendorLibraryMassSpectrum temp = (CalibratedVendorLibraryMassSpectrum)newInput;
+		if(newInput instanceof CalibratedVendorLibraryMassSpectrum temp) {
 			String signalUnits = temp.getSignalUnits();
 			if((null != signalUnits) && (0 < signalUnits.length())) {
 				column1Header = column1Header + ", " + signalUnits;
 			}
 		}
 		ob = viewer.getControl();
-		if(ob instanceof Table) {
-			Table tab = (Table)ob;
+		if(ob instanceof Table tab) {
 			tab.getColumn(1).setText(column1Header);
 		}
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -34,8 +34,7 @@ public class CompensationQuantifierFilter extends ViewerFilter {
 			return true;
 		}
 		//
-		if(element instanceof CompensationSetting) {
-			CompensationSetting setting = (CompensationSetting)element;
+		if(element instanceof CompensationSetting setting) {
 			String name = setting.getName();
 			String internalStandard = setting.getInternalStandard();
 			String concentrationUnit = setting.getConcentrationUnit();

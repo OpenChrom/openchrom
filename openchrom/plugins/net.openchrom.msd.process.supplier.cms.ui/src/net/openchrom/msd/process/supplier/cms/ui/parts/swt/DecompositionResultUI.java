@@ -510,8 +510,8 @@ public class DecompositionResultUI extends Composite {
 						boolean isOK = false;
 						if(null != cmsSpectra) {
 							for(IScanMSD spectrum : cmsSpectra.getList()) {
-								if(spectrum instanceof ICalibratedVendorMassSpectrum) {
-									isOK = ((ICalibratedVendorMassSpectrum)spectrum).calculateSignalOffset();
+								if(spectrum instanceof ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum) {
+									isOK = calibratedVendorMassSpectrum.calculateSignalOffset();
 									if(!isOK) {
 										break; // for
 									}
@@ -523,8 +523,8 @@ public class DecompositionResultUI extends Composite {
 							}
 							if(!isOK) { // back out of zero offset adjustment
 								for(IScanMSD spectrum : cmsSpectra.getList()) {
-									if(spectrum instanceof ICalibratedVendorMassSpectrum) {
-										((ICalibratedVendorMassSpectrum)spectrum).resetSignalOffset();
+									if(spectrum instanceof ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum) {
+										calibratedVendorMassSpectrum.resetSignalOffset();
 									}
 								}
 							}
@@ -532,8 +532,8 @@ public class DecompositionResultUI extends Composite {
 						}
 					} else { // don't want to use zero correction
 						for(IScanMSD spectrum : cmsSpectra.getList()) {
-							if(spectrum instanceof ICalibratedVendorMassSpectrum) {
-								((ICalibratedVendorMassSpectrum)spectrum).resetSignalOffset();
+							if(spectrum instanceof ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum) {
+								calibratedVendorMassSpectrum.resetSignalOffset();
 							}
 						}
 						buttonApplyZeroCorrection.setSelection(false);
@@ -562,8 +562,8 @@ public class DecompositionResultUI extends Composite {
 				if(null != cmsSpectra) {
 					hasETimes = true;
 					for(IScanMSD spectrum : cmsSpectra.getList()) {
-						if((null != spectrum) && (spectrum instanceof ICalibratedVendorMassSpectrum)) {
-							if(0 > ((ICalibratedVendorMassSpectrum)spectrum).getEtimes()) {
+						if((null != spectrum) && (spectrum instanceof ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum)) {
+							if(0 > calibratedVendorMassSpectrum.getEtimes()) {
 								hasETimes = false;
 							}
 						} else {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -167,11 +167,9 @@ public class DataProcessor {
 	public int getWavelength(IChromatogram<? extends IPeak> measurement) {
 
 		for(IScan scan : measurement.getScans()) {
-			if(scan instanceof IScanWSD) {
-				IScanWSD scanWSD = (IScanWSD)scan;
+			if(scan instanceof IScanWSD scanWSD) {
 				for(IScanSignalWSD signal : scanWSD.getScanSignals()) {
-					int wavelength = (int)signal.getWavelength();
-					return wavelength;
+					return (int)signal.getWavelength();
 				}
 			}
 		}

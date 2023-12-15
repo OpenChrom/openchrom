@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -36,8 +36,8 @@ public class ReportSettingsAnnotationService extends ReportSettingsSerialization
 		gridData.heightHint = 250;
 		templateReportEditor.setLayoutData(gridData);
 		//
-		if(currentSelection instanceof String) {
-			templateReportEditor.load((String)currentSelection);
+		if(currentSelection instanceof String text) {
+			templateReportEditor.load(text);
 		}
 		//
 		return templateReportEditor;

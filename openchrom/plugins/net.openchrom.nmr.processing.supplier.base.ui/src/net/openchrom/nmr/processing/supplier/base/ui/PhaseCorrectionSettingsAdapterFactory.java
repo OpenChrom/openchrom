@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,8 +22,7 @@ public class PhaseCorrectionSettingsAdapterFactory implements IAdapterFactory {
 	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 
 		if(EditorExtension.class.equals(adapterType)) {
-			if(adaptableObject instanceof PhaseCorrectionSettings) {
-				PhaseCorrectionSettings correctionSettings = (PhaseCorrectionSettings)adaptableObject;
+			if(adaptableObject instanceof PhaseCorrectionSettings correctionSettings) {
 				return adapterType.cast(new PhaseCorrectionSettingsEditorExtension(correctionSettings));
 			}
 		}

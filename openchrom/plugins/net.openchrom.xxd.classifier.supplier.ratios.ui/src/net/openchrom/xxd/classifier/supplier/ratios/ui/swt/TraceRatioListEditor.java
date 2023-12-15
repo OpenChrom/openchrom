@@ -276,10 +276,9 @@ public class TraceRatioListEditor implements SettingsUIProvider.SettingsUIContro
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 				Object object = structuredSelection.getFirstElement();
-				if(object instanceof TraceRatio) {
+				if(object instanceof TraceRatio setting) {
 					List<TraceRatio> settingsEdit = new ArrayList<>();
 					settingsEdit.addAll(settings);
-					TraceRatio setting = (TraceRatio)object;
 					settingsEdit.remove(setting);
 					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new TraceRatioInputValidator(settingsEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
@@ -496,8 +495,8 @@ public class TraceRatioListEditor implements SettingsUIProvider.SettingsUIContro
 			IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 			List<TraceRatio> removeElements = new ArrayList<>();
 			for(Object object : structuredSelection.toArray()) {
-				if(object instanceof TraceRatio) {
-					removeElements.add((TraceRatio)object);
+				if(object instanceof TraceRatio setting) {
+					removeElements.add(setting);
 				}
 			}
 			settings.removeAll(removeElements);

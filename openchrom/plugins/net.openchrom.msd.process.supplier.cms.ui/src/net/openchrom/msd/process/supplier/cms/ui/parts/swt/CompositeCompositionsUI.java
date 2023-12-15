@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2017, 2023 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -60,12 +60,12 @@ public class CompositeCompositionsUI extends Composite {
 		double xValue, yValue;
 
 		ClosestPoint(int x, int y) { // x and y are cursor position in pixels, returns x & y value for closest point
+
 			int testXposition, testYposition;
 			double minDist, testDist, testXvalue, testYvalue;
 			// double closestXvalue, closestYvalue;
 			boolean initialized = false;
 			List<Trace> traceList = new ArrayList<Trace>();
-			CircularBufferDataProvider tempDataProvider = new CircularBufferDataProvider(false);
 			traceList = xyGraphComposition.getPlotArea().getTraceList();
 			traceName = "no name";
 			minDist = 0.0;
@@ -75,10 +75,7 @@ public class CompositeCompositionsUI extends Composite {
 			yPos = 0;
 			for(Trace traceTemp : traceList) {
 				if(null != traceTemp) {
-					if(!(traceTemp.getDataProvider() instanceof CircularBufferDataProvider)) {
-						continue;
-					} else {
-						tempDataProvider = (CircularBufferDataProvider)traceTemp.getDataProvider();
+					if(traceTemp.getDataProvider() instanceof CircularBufferDataProvider tempDataProvider) {
 						for(int i = 0; i < tempDataProvider.getSize(); i++) { // linear search over values
 							testXvalue = tempDataProvider.getSample(i).getXValue();
 							testYvalue = tempDataProvider.getSample(i).getYValue();
@@ -171,6 +168,7 @@ public class CompositeCompositionsUI extends Composite {
 	private Yunits yUnits = Yunits.PP;;
 
 	public CompositeCompositionsUI(Composite parent, int style) {
+
 		super(parent, style);
 		this.initialize();
 	}

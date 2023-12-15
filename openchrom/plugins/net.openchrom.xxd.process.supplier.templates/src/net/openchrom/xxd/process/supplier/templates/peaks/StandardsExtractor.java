@@ -170,18 +170,15 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 	private IChromatogram getChromatogram(List<? extends IPeak> peaks) {
 
 		for(IPeak peak : peaks) {
-			if(peak instanceof IChromatogramPeakCSD) {
-				IChromatogramPeakCSD chromatogramPeakCSD = (IChromatogramPeakCSD)peak;
+			if(peak instanceof IChromatogramPeakCSD chromatogramPeakCSD) {
 				if(chromatogramPeakCSD.getChromatogram() != null) {
 					return chromatogramPeakCSD.getChromatogram();
 				}
-			} else if(peak instanceof IChromatogramPeakMSD) {
-				IChromatogramPeakMSD chromatogramPeakMSD = (IChromatogramPeakMSD)peak;
+			} else if(peak instanceof IChromatogramPeakMSD chromatogramPeakMSD) {
 				if(chromatogramPeakMSD.getChromatogram() != null) {
 					return chromatogramPeakMSD.getChromatogram();
 				}
-			} else if(peak instanceof IChromatogramPeakWSD) {
-				IChromatogramPeakWSD chromatogramPeakWSD = (IChromatogramPeakWSD)peak;
+			} else if(peak instanceof IChromatogramPeakWSD chromatogramPeakWSD) {
 				if(chromatogramPeakWSD.getChromatogram() != null) {
 					return chromatogramPeakWSD.getChromatogram();
 				}

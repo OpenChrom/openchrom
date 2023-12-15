@@ -40,8 +40,8 @@ public class QuantRatioClassifier extends AbstractRatioClassifier {
 	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
 
 		QuantRatioSettings settings;
-		if(chromatogramClassifierSettings instanceof QuantRatioSettings) {
-			settings = (QuantRatioSettings)chromatogramClassifierSettings;
+		if(chromatogramClassifierSettings instanceof QuantRatioSettings quantRatioSettings) {
+			settings = quantRatioSettings;
 		} else {
 			settings = PreferenceSupplier.getSettingsQuant();
 		}

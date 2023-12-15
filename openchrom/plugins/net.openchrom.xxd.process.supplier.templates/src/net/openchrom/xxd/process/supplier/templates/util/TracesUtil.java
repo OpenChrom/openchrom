@@ -77,9 +77,8 @@ public class TracesUtil {
 
 		boolean isTraceContained = false;
 		//
-		if(scan instanceof IScanMSD) {
+		if(scan instanceof IScanMSD scanMSD) {
 			try {
-				IScanMSD scanMSD = (IScanMSD)scan;
 				IIon ion = scanMSD.getIon(trace);
 				if(ion != null) {
 					isTraceContained = true;
@@ -87,8 +86,7 @@ public class TracesUtil {
 			} catch(Exception e) {
 				logger.warn(e);
 			}
-		} else if(scan instanceof IScanWSD) {
-			IScanWSD scanWSD = (IScanWSD)scan;
+		} else if(scan instanceof IScanWSD scanWSD) {
 			Optional<IScanSignalWSD> optional = scanWSD.getScanSignal((float)trace);
 			isTraceContained = optional.isPresent();
 		}
@@ -100,7 +98,6 @@ public class TracesUtil {
 
 		TracesValidator tracesValidator = new TracesValidator();
 		IStatus status = tracesValidator.validate(traces);
-		Set<Integer> traceSet = status.isOK() ? tracesValidator.getTraces() : new HashSet<>();
-		return traceSet;
+		return status.isOK() ? tracesValidator.getTraces() : new HashSet<>();
 	}
 }

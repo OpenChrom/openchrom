@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,11 +25,9 @@ public class PeakComparator extends AbstractRecordTableComparator implements IRe
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof IPeak && e2 instanceof IPeak) {
+		if(e1 instanceof IPeak peak1 && e2 instanceof IPeak peak2) {
 			//
-			IPeak peak1 = (IPeak)e1;
 			IPeakModel peakModel1 = peak1.getPeakModel();
-			IPeak peak2 = (IPeak)e2;
 			IPeakModel peakModel2 = peak2.getPeakModel();
 			//
 			switch(getPropertyIndex()) {

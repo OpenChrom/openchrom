@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,14 +24,13 @@ public class QualRatioContentProvider implements IStructuredContentProvider {
 
 		QualRatios qualRatios = null;
 		//
-		if(inputElement instanceof IMeasurementResult) {
-			IMeasurementResult<?> measurementResult = (IMeasurementResult<?>)inputElement;
+		if(inputElement instanceof IMeasurementResult<?> measurementResult) {
 			Object object = measurementResult.getResult();
-			if(object instanceof QualRatios) {
-				qualRatios = (QualRatios)object;
+			if(object instanceof QualRatios qualRatiosResult) {
+				qualRatios = qualRatiosResult;
 			}
-		} else if(inputElement instanceof QualRatios) {
-			qualRatios = (QualRatios)inputElement;
+		} else if(inputElement instanceof QualRatios inputQualRatios) {
+			qualRatios = inputQualRatios;
 		}
 		//
 		if(qualRatios != null) {

@@ -88,8 +88,8 @@ public class CompositeLibrarySpectraUI extends Composite {
 		boolean selectionOK = false;
 		for(int i = 0; i < cmsLibSpectra.getList().size(); i++) {
 			IScanMSD libSpec = cmsLibSpectra.getList().get(i);
-			if(libSpec instanceof ICalibratedVendorLibraryMassSpectrum) {
-				if(((ICalibratedVendorLibraryMassSpectrum)libSpec).isSelected()) {
+			if(libSpec instanceof ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum) {
+				if(calibratedVendorLibraryMassSpectrum.isSelected()) {
 					selectionOK = true;
 				}
 			} else {
@@ -162,8 +162,9 @@ public class CompositeLibrarySpectraUI extends Composite {
 				Point pt = new Point(event.x, event.y);
 				// Clean up any previous editor control
 				Control oldEditor = tableEditor.getEditor();
-				if(oldEditor != null)
+				if(oldEditor != null) {
 					oldEditor.dispose();
+				}
 				TableItem item = tableCmsComponents.getItem(pt);
 				if(item != null) {
 					/* Iterate over all columns and check if event is contained */
@@ -181,6 +182,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 								newEditor.setText(item.getText(COLUMN_0));
 								newEditor.addModifyListener(new ModifyListener() {
 
+									@Override
 									public void modifyText(ModifyEvent e) {
 
 										Text text = (Text)tableEditor.getEditor();
@@ -203,6 +205,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 		// resize component name column(1) to take all width not used by scale column(0)
 		tableCmsComponents.addControlListener(new ControlAdapter() {
 
+			@Override
 			public void controlResized(ControlEvent e) {
 
 				Rectangle area = tableCmsComponents.getClientArea();
@@ -243,9 +246,9 @@ public class CompositeLibrarySpectraUI extends Composite {
 				// 0[xX] HexDigits_opt . HexDigits BinaryExponent FloatTypeSuffix_opt
 				"(0[xX]" + HexDigits + "?(\\.)" + HexDigits + ")" + ")[pP][+-]?" + Digits + "))" + "[fFdD]?))" + "[\\x00-\\x20]*" + // Optional trailing "whitespace"
 				"$"); // and that's all
-		if(Pattern.matches(fpRegex, myString))
+		if(Pattern.matches(fpRegex, myString)) {
 			return true; // Will not throw NumberFormatException
-		else {
+		} else {
 			return false;
 		}
 	}
@@ -322,27 +325,33 @@ public class CompositeLibrarySpectraUI extends Composite {
 				MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 				cmsLibSpectra = massSpectrumReader.read(file, new NullProgressMonitor());
 				if(null != cmsLibSpectra) {
-					if(listCmsComponents instanceof List)
+					if(listCmsComponents instanceof List) {
 						listCmsComponents.removeAll();
-					if(tableCmsComponents instanceof Table)
+					}
+					if(tableCmsComponents instanceof Table) {
 						tableCmsComponents.removeAll();
+					}
 					new StringBuilder();
 					for(IScanMSD spectrum : cmsLibSpectra.getList()) {
-						if((null != spectrum) && (spectrum instanceof ICalibratedVendorLibraryMassSpectrum) && !(spectrum instanceof ICalibratedVendorMassSpectrum)) {
-							if(listCmsComponents instanceof List)
-								listCmsComponents.add(makeListLine((ICalibratedVendorLibraryMassSpectrum)spectrum, false));
-							if(tableCmsComponents instanceof Table)
-								addTableRow(tableCmsComponents, makeTableStrings((ICalibratedVendorLibraryMassSpectrum)spectrum, false));
+						if((null != spectrum) && (spectrum instanceof ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum) && !(spectrum instanceof ICalibratedVendorMassSpectrum)) {
+							if(listCmsComponents instanceof List) {
+								listCmsComponents.add(makeListLine(calibratedVendorLibraryMassSpectrum, false));
+							}
+							if(tableCmsComponents instanceof Table) {
+								addTableRow(tableCmsComponents, makeTableStrings(calibratedVendorLibraryMassSpectrum, false));
+							}
 						} else {
 							String fileName = textCmsLibraryFilePath.getText().trim();
 							int index = fileName.lastIndexOf(File.separator);
 							if(0 < index) {
 								fileName = fileName.substring(1 + index);
 							}
-							if(listCmsComponents instanceof List)
+							if(listCmsComponents instanceof List) {
 								listCmsComponents.removeAll();
-							if(tableCmsComponents instanceof Table)
+							}
+							if(tableCmsComponents instanceof Table) {
 								tableCmsComponents.removeAll();
+							}
 							cmsLibSpectra = null;
 							textCmsLibraryFilePath.setText("");
 							MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "CMS File", "\"" + fileName + "\" is not a CMS library file\nPlease select a CMS library file");

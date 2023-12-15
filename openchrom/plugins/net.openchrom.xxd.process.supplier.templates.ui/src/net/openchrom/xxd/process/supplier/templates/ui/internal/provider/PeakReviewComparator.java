@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,11 +23,7 @@ public class PeakReviewComparator extends AbstractRecordTableComparator implemen
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof ReviewSetting && e2 instanceof ReviewSetting) {
-			//
-			ReviewSetting setting1 = (ReviewSetting)e1;
-			ReviewSetting setting2 = (ReviewSetting)e2;
-			//
+		if(e1 instanceof ReviewSetting setting1 && e2 instanceof ReviewSetting setting2) {
 			switch(getPropertyIndex()) {
 				case 0:
 					sortOrder = setting2.getName().compareTo(setting1.getName());

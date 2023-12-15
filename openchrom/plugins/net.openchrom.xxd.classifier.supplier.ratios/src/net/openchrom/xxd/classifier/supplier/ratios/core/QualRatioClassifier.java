@@ -42,8 +42,8 @@ public class QualRatioClassifier extends AbstractRatioClassifier {
 	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
 
 		QualRatioSettings settings;
-		if(chromatogramClassifierSettings instanceof QualRatioSettings) {
-			settings = (QualRatioSettings)chromatogramClassifierSettings;
+		if(chromatogramClassifierSettings instanceof QualRatioSettings qualRatioSettings) {
+			settings = qualRatioSettings;
 		} else {
 			settings = PreferenceSupplier.getSettingsQual();
 		}
@@ -106,9 +106,7 @@ public class QualRatioClassifier extends AbstractRatioClassifier {
 	private void calculateSignalToNoiseRatio(QualRatio qualRatio, IPeak peak) {
 
 		PeakQuality peakQuality;
-		if(peak instanceof IChromatogramPeak) {
-			IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
-			//
+		if(peak instanceof IChromatogramPeak chromatogramPeak) {
 			float signalToNoiseRatio = chromatogramPeak.getSignalToNoiseRatio();
 			if(signalToNoiseRatio <= 1.0f) {
 				peakQuality = PeakQuality.VERY_BAD;
@@ -121,7 +119,6 @@ public class QualRatioClassifier extends AbstractRatioClassifier {
 			} else {
 				peakQuality = PeakQuality.VERY_GOOD;
 			}
-			//
 			qualRatio.setSignalToNoise(peakQuality);
 		}
 	}

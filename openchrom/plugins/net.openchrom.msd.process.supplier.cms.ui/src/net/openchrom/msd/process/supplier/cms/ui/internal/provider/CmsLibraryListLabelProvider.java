@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -41,11 +42,10 @@ public class CmsLibraryListLabelProvider extends AbstractChemClipseLabelProvider
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
 
-		if(element instanceof IRegularLibraryMassSpectrum) {
+		if(element instanceof IRegularLibraryMassSpectrum libraryMassSpectrum) {
 			/*
 			 * Library Entry
 			 */
-			IRegularLibraryMassSpectrum libraryMassSpectrum = (IRegularLibraryMassSpectrum)element;
 			ILibraryInformation libraryInformation = libraryMassSpectrum.getLibraryInformation();
 			return getText(libraryMassSpectrum, libraryInformation, columnIndex);
 		} else {
@@ -56,8 +56,7 @@ public class CmsLibraryListLabelProvider extends AbstractChemClipseLabelProvider
 	@Override
 	public Image getImage(Object element) {
 
-		Image image = ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_MASS_SPECTRUM, IApplicationImage.SIZE_16x16);
-		return image;
+		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_MASS_SPECTRUM, IApplicationImageProvider.SIZE_16x16);
 	}
 
 	private String getText(IScanMSD massSpectrum, ILibraryInformation libraryInformation, int columnIndex) {

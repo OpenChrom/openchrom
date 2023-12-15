@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -44,10 +44,12 @@ public class IonMeasurementChartUI extends BarChart {
 	private BarSeriesIonComparator barSeriesIonComparator = new BarSeriesIonComparator();
 
 	public IonMeasurementChartUI() {
+
 		initialize();
 	}
 
 	public IonMeasurementChartUI(Composite parent, int style) {
+
 		super(parent, style);
 		initialize();
 	}
@@ -61,8 +63,8 @@ public class IonMeasurementChartUI extends BarChart {
 			 */
 			IChartSettings chartSettings = getChartSettings();
 			String yTitle = (calibratedVendorLibraryMassSpectrum instanceof CalibratedVendorMassSpectrum) ? "signal" : "abundance";
-			if(calibratedVendorLibraryMassSpectrum instanceof CalibratedVendorLibraryMassSpectrum) {
-				String signalUnits = ((CalibratedVendorLibraryMassSpectrum)calibratedVendorLibraryMassSpectrum).getSignalUnits();
+			if(calibratedVendorLibraryMassSpectrum instanceof CalibratedVendorLibraryMassSpectrum massSpectrum) {
+				String signalUnits = massSpectrum.getSignalUnits();
 				if((null != signalUnits) && (0 < signalUnits.length())) {
 					yTitle += ", " + signalUnits;
 				}
@@ -72,7 +74,7 @@ public class IonMeasurementChartUI extends BarChart {
 			/*
 			 * Series
 			 */
-			List<IBarSeriesData> barSeriesDataList = new ArrayList<IBarSeriesData>();
+			List<IBarSeriesData> barSeriesDataList = new ArrayList<>();
 			IBarSeriesData barSeriesData = convert(calibratedVendorLibraryMassSpectrum);
 			barSeriesData.getSettings().setBarColor(Colors.RED);
 			barSeriesDataList.add(barSeriesData);
@@ -145,7 +147,7 @@ public class IonMeasurementChartUI extends BarChart {
 		/*
 		 * Plot the series name above the entry.
 		 */
-		IPlotArea plotArea = (IPlotArea)getBaseChart().getPlotArea();
+		IPlotArea plotArea = getBaseChart().getPlotArea();
 		plotArea.addCustomPaintListener(new ICustomPaintListener() {
 
 			@Override

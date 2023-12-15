@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractPeakRatioTitles;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.AbstractRatioListUI;
 
 public class TraceRatioEditingSupport extends EditingSupport {
@@ -50,16 +51,15 @@ public class TraceRatioEditingSupport extends EditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof TraceRatio) {
-			TraceRatio setting = (TraceRatio)element;
+		if(element instanceof TraceRatio setting) {
 			switch(column) {
 				case TraceRatioResultTitles.TEST_CASE:
 					return setting.getTestCase();
 				case TraceRatioResultTitles.EXPECTED_RATIO:
 					return Double.toString(setting.getExpectedRatio());
-				case TraceRatioResultTitles.DEVIATION_WARN:
+				case AbstractPeakRatioTitles.DEVIATION_WARN:
 					return Double.toString(setting.getDeviationWarn());
-				case TraceRatioResultTitles.DEVIATION_ERROR:
+				case AbstractPeakRatioTitles.DEVIATION_ERROR:
 					return Double.toString(setting.getDeviationError());
 			}
 		}
@@ -69,8 +69,7 @@ public class TraceRatioEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof TraceRatio) {
-			TraceRatio setting = (TraceRatio)element;
+		if(element instanceof TraceRatio setting) {
 			switch(column) {
 				case TraceRatioResultTitles.TEST_CASE:
 					setting.setTestCase((String)value);
@@ -81,13 +80,13 @@ public class TraceRatioEditingSupport extends EditingSupport {
 						setting.setExpectedRatio(expectedRatio);
 					}
 					break;
-				case TraceRatioResultTitles.DEVIATION_WARN:
+				case AbstractPeakRatioTitles.DEVIATION_WARN:
 					double deviationWarn = parseDouble((String)value);
 					if(deviationWarn > 0 && deviationWarn < setting.getDeviationError()) {
 						setting.setDeviationWarn(deviationWarn);
 					}
 					break;
-				case TraceRatioResultTitles.DEVIATION_ERROR:
+				case AbstractPeakRatioTitles.DEVIATION_ERROR:
 					double deviationError = parseDouble((String)value);
 					if(deviationError > 0 && deviationError > setting.getDeviationWarn()) {
 						setting.setDeviationError(deviationError);

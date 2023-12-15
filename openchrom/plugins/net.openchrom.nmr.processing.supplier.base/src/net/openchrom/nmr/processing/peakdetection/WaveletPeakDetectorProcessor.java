@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -53,8 +53,8 @@ public class WaveletPeakDetectorProcessor implements IMeasurementPeakDetector<Wa
 		SubMonitor convert = SubMonitor.convert(monitor, getName(), detectorInputItems.size() * 100);
 		LinkedHashMap<T, PeakList> map = new LinkedHashMap<>();
 		for(T measurement : detectorInputItems) {
-			if(measurement instanceof SpectrumMeasurement) {
-				map.put(measurement, detect(((SpectrumMeasurement)measurement).getSignals(), configuration, messageConsumer, convert.split(100)));
+			if(measurement instanceof SpectrumMeasurement spectrumMeasurement) {
+				map.put(measurement, detect(spectrumMeasurement.getSignals(), configuration, messageConsumer, convert.split(100)));
 			}
 		}
 		return map;

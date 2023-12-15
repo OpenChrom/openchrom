@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -34,11 +34,11 @@ public class TracesValidator implements IValidator<Object> {
 		//
 		if(value == null) {
 			message = "Invalid input.";
-		} else if(value instanceof String && !"".equals(value)) {
+		} else if(value instanceof String text && !"".equals(value)) {
 			/*
 			 * Preparations
 			 */
-			String traces = ((String)value).trim();
+			String traces = text.trim();
 			String[] traceValues;
 			if(traces.contains(SEPARATOR_TRACE_ITEM) || traces.contains(SEPARATOR_TRACE_RANGE)) {
 				/*

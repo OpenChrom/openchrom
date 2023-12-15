@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Lablicate GmbH.
+ * Copyright (c) 2022, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -26,8 +26,7 @@ public class TraceRatioSettingsAdapterFactory implements IAdapterFactory {
 	@Override
 	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 
-		if(adaptableObject instanceof TraceRatioSettings) {
-			TraceRatioSettings settings = (TraceRatioSettings)adaptableObject;
+		if(adaptableObject instanceof TraceRatioSettings settings) {
 			if(adapterType == SettingsUIProvider.class) {
 				return adapterType.cast(createSettingsUIProvider(settings));
 			}

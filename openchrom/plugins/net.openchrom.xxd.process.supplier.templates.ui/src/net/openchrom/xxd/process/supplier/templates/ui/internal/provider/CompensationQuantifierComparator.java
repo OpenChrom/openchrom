@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,10 +23,7 @@ public class CompensationQuantifierComparator extends AbstractRecordTableCompara
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof CompensationSetting && e2 instanceof CompensationSetting) {
-			//
-			CompensationSetting setting1 = (CompensationSetting)e1;
-			CompensationSetting setting2 = (CompensationSetting)e2;
+		if(e1 instanceof CompensationSetting setting1 && e2 instanceof CompensationSetting setting2) {
 			//
 			switch(getPropertyIndex()) {
 				case 0:

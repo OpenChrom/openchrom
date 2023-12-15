@@ -34,6 +34,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.eclipse.chemclipse.processing.core.ICategories;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
 import org.eclipse.chemclipse.support.ui.files.ExtendedFileDialog;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
@@ -221,7 +222,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(ADD_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -247,7 +248,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(EDIT_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -255,10 +256,9 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)tableViewer.get().getSelection();
 				Object object = structuredSelection.getFirstElement();
-				if(object instanceof ReportSetting) {
+				if(object instanceof ReportSetting setting) {
 					ReportSettings reportSettingsMod = new ReportSettings();
 					reportSettingsMod.addAll(reportSettings);
-					ReportSetting setting = (ReportSetting)object;
 					reportSettingsMod.remove(setting);
 					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, reportSettings.extractSetting(setting), new ReportInputValidator(reportSettingsMod));
 					if(IDialogConstants.OK_ID == dialog.open()) {
@@ -279,7 +279,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(REMOVE_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -297,7 +297,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(REMOVE_ALL_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -318,7 +318,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(IMPORT_TITLE);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -347,7 +347,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(EXPORT_TITLE);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -427,8 +427,8 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 		if(MessageDialog.openQuestion(shell, DIALOG_TITLE, MESSAGE_REMOVE)) {
 			IStructuredSelection structuredSelection = (IStructuredSelection)tableViewer.get().getSelection();
 			for(Object object : structuredSelection.toArray()) {
-				if(object instanceof ReportSetting) {
-					reportSettings.remove((ReportSetting)object);
+				if(object instanceof ReportSetting reportSetting) {
+					reportSettings.remove(reportSetting);
 				}
 			}
 			setViewerInput();

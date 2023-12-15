@@ -45,8 +45,8 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
 
 		TraceRatioSettings settings;
-		if(chromatogramClassifierSettings instanceof TraceRatioSettings) {
-			settings = (TraceRatioSettings)chromatogramClassifierSettings;
+		if(chromatogramClassifierSettings instanceof TraceRatioSettings traceRatioSettings) {
+			settings = traceRatioSettings;
 		} else {
 			settings = PreferenceSupplier.getSettingsTrace();
 		}
@@ -82,8 +82,8 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 							int target = Integer.parseInt(values[1]);
 							//
 							IPeakModel peakModel = peak.getPeakModel();
-							if(peakModel instanceof IPeakModelMSD) {
-								ExtractedIonSignal extractedIonSignal = new ExtractedIonSignal(((IPeakModelMSD)peakModel).getPeakMassSpectrum().getIons());
+							if(peakModel instanceof IPeakModelMSD peakModelMSD) {
+								ExtractedIonSignal extractedIonSignal = new ExtractedIonSignal(peakModelMSD.getPeakMassSpectrum().getIons());
 								float intensityReference = extractedIonSignal.getAbundance(reference);
 								if(intensityReference != 0) {
 									double expectedRatio = traceRatio.getExpectedRatio();

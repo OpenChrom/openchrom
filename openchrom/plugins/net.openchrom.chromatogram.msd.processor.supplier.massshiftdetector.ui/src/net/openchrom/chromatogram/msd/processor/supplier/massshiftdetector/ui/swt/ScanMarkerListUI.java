@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -57,8 +57,7 @@ public class ScanMarkerListUI extends ExtendedTableViewer {
 				if((e.stateMask & SWT.MOD1) == SWT.MOD1 && e.keyCode == 32) {
 					IStructuredSelection structuredSelection = getStructuredSelection();
 					Object object = structuredSelection.getFirstElement();
-					if(object instanceof IScanMarker) {
-						IScanMarker scanMarker = (IScanMarker)object;
+					if(object instanceof IScanMarker scanMarker) {
 						scanMarker.setValidated(!scanMarker.isValidated());
 						refresh();
 					}

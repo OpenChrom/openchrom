@@ -40,8 +40,8 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 		if(value == null) {
 			message = ERROR_ENTRY;
 		} else {
-			if(value instanceof String) {
-				String text = ((String)value).trim();
+			if(value instanceof String text) {
+				text = text.trim();
 				if(text.contains(SEPARATOR_TOKEN)) {
 					message = ERROR_TOKEN;
 				} else if("".equals(text.trim())) {

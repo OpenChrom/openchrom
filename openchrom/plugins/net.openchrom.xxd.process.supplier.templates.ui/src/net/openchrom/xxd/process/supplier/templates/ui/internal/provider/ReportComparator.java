@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,11 +23,7 @@ public class ReportComparator extends AbstractRecordTableComparator implements I
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof ReportSetting && e2 instanceof ReportSetting) {
-			//
-			ReportSetting setting1 = (ReportSetting)e1;
-			ReportSetting setting2 = (ReportSetting)e2;
-			//
+		if(e1 instanceof ReportSetting setting1 && e2 instanceof ReportSetting setting2) {
 			switch(getPropertyIndex()) {
 				case 0:
 					sortOrder = setting2.getName().compareTo(setting1.getName());

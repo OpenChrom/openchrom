@@ -40,8 +40,8 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 		if(value == null) {
 			message = ERROR_ENTRY;
 		} else {
-			if(value instanceof String) {
-				String text = ((String)value).trim();
+			if(value instanceof String text) {
+				text = text.trim();
 				if(text.contains(AbstractTemplateListUtil.SEPARATOR_TOKEN)) {
 					message = AbstractTemplateListUtil.ERROR_TOKEN;
 				} else if("".equals(text.trim())) {

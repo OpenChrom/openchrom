@@ -12,16 +12,12 @@
 package net.openchrom.msd.process.supplier.cms.ui.editors;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
-import org.eclipse.chemclipse.converter.exceptions.NoChromatogramConverterAvailableException;
 import org.eclipse.chemclipse.converter.exceptions.NoConverterAvailableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.ChromatogramIsNullException;
@@ -216,8 +212,8 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 			 * will take care itself of this action.
 			 */
 			Object object = part.getObject();
-			if(object instanceof String) {
-				File file = new File((String)object);
+			if(object instanceof String path) {
+				File file = new File(path);
 				importMassSpectra(file);
 			}
 		} catch(Exception e) {
@@ -225,7 +221,7 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 		}
 	}
 
-	private void importMassSpectra(File file) throws FileNotFoundException, NoChromatogramConverterAvailableException, FileIsNotReadableException, FileIsEmptyException, ChromatogramIsNullException {
+	private void importMassSpectra(File file) throws ChromatogramIsNullException {
 
 		/*
 		 * Import the chromatogram here, but do not set to the chromatogram ui,
@@ -286,8 +282,7 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 			public void selectionChanged(SelectionChangedEvent event) {
 
 				Object object = cmsLibraryUI.getStructuredSelection().getFirstElement();
-				if(object instanceof IScanMSD) {
-					IScanMSD massSpectrum = (IScanMSD)object;
+				if(object instanceof IScanMSD massSpectrum) {
 					UpdateNotifier.update(massSpectrum);
 				}
 			}

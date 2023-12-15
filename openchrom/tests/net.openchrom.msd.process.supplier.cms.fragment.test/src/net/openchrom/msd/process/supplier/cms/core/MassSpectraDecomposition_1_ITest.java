@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Lablicate GmbH.
+ * Copyright (c) 2016, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,20 +12,16 @@
 package net.openchrom.msd.process.supplier.cms.core;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import junit.framework.TestCase;
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.process.supplier.cms.TestPathHelper;
-
-import junit.framework.TestCase;
 
 public class MassSpectraDecomposition_1_ITest extends TestCase {
 
@@ -44,7 +40,7 @@ public class MassSpectraDecomposition_1_ITest extends TestCase {
 		super.tearDown();
 	}
 
-	public void test1() throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public void test1() throws IOException {
 
 		/*
 		 * argon, nitrogen, oxygen, ethane, ethylene
@@ -58,8 +54,8 @@ public class MassSpectraDecomposition_1_ITest extends TestCase {
 		File libraryFile = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_TEST_1_LIBRARY_SPECTRA));
 		IMassSpectra librarySpectra = massSpectrumReader.read(libraryFile, new NullProgressMonitor());
 		for(IScanMSD libSpectrum : librarySpectra.getList()) {
-			if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
-				((ICalibratedVendorLibraryMassSpectrum)libSpectrum).setSelected(true);
+			if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum) {
+				calibratedVendorLibraryMassSpectrum.setSelected(true);
 			}
 		}
 		// try {

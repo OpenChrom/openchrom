@@ -32,12 +32,11 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.MultiPageEditorPart;
 
+import jakarta.xml.bind.JAXBException;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.CSVExportWriter;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelReader;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelWriter;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
-
-import jakarta.xml.bind.JAXBException;
 
 public class EditorProcessor extends MultiPageEditorPart {
 
@@ -165,11 +164,8 @@ public class EditorProcessor extends MultiPageEditorPart {
 		String fileName = input.getName();
 		fileName = fileName.substring(0, fileName.length() - 4);
 		setPartName(fileName);
-		if(input instanceof IFileEditorInput) {
-			//
-			//
+		if(input instanceof IFileEditorInput fileEditorInput) {
 			try {
-				IFileEditorInput fileEditorInput = (IFileEditorInput)input;
 				file = fileEditorInput.getFile().getLocation().toFile();
 				ProcessorModelReader processorModelReader = new ProcessorModelReader();
 				processorData = new ProcessorData();

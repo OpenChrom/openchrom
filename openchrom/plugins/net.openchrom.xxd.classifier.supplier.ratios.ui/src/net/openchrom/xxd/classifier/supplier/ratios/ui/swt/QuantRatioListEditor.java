@@ -34,6 +34,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
 import org.eclipse.chemclipse.support.ui.files.ExtendedFileDialog;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
@@ -242,7 +243,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(ADD_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -268,7 +269,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(EDIT_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -276,10 +277,9 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 				Object object = structuredSelection.getFirstElement();
-				if(object instanceof QuantRatio) {
+				if(object instanceof QuantRatio setting) {
 					List<QuantRatio> settingsEdit = new ArrayList<>();
 					settingsEdit.addAll(settings);
-					QuantRatio setting = (QuantRatio)object;
 					settingsEdit.remove(setting);
 					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new QuantRatioInputValidator(settingsEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
@@ -300,7 +300,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(REMOVE_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -318,7 +318,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(REMOVE_ALL_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -339,7 +339,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(IMPORT_TITLE);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -368,7 +368,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(EXPORT_TITLE);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -496,8 +496,8 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 			IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 			List<QuantRatio> removeElements = new ArrayList<>();
 			for(Object object : structuredSelection.toArray()) {
-				if(object instanceof QuantRatio) {
-					removeElements.add((QuantRatio)object);
+				if(object instanceof QuantRatio quantRatio) {
+					removeElements.add(quantRatio);
 				}
 			}
 			settings.removeAll(removeElements);

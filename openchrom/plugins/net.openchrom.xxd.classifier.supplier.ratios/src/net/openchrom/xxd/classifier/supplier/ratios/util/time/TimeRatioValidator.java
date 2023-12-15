@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,12 +17,13 @@ import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.util.AbstractRatioListUtil;
 
 public class TimeRatioValidator extends ValueParserSupport implements IValidator<Object> {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + TimeRatioListUtil.EXAMPLE_SINGLE + "'";
-	private static final String SEPARATOR_TOKEN = TimeRatioListUtil.SEPARATOR_TOKEN;
-	private static final String SEPARATOR_ENTRY = TimeRatioListUtil.SEPARATOR_ENTRY;
+	private static final String SEPARATOR_TOKEN = AbstractRatioListUtil.SEPARATOR_TOKEN;
+	private static final String SEPARATOR_ENTRY = AbstractRatioListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 	//
 	private String name = "";
@@ -37,8 +38,8 @@ public class TimeRatioValidator extends ValueParserSupport implements IValidator
 		if(value == null) {
 			message = ERROR_ENTRY;
 		} else {
-			if(value instanceof String) {
-				String text = ((String)value).trim();
+			if(value instanceof String text) {
+				text = text.trim();
 				if(text.contains(SEPARATOR_TOKEN)) {
 					message = ERROR_TOKEN;
 				} else if("".equals(text.trim())) {

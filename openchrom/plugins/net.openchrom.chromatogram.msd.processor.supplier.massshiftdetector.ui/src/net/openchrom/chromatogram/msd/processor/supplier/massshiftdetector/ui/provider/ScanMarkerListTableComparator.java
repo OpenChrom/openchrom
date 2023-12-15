@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,9 +24,7 @@ public class ScanMarkerListTableComparator extends AbstractRecordTableComparator
 
 		int sortOrder = 0;
 		//
-		if(e1 instanceof IScanMarker && e2 instanceof IScanMarker) {
-			IScanMarker scanMarker1 = (IScanMarker)e1;
-			IScanMarker scanMarker2 = (IScanMarker)e2;
+		if(e1 instanceof IScanMarker scanMarker1 && e2 instanceof IScanMarker scanMarker2) {
 			//
 			switch(getPropertyIndex()) {
 				case 0:

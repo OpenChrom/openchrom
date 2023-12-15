@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.time.TimeRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractPeakRatioTitles;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.AbstractRatioListUI;
 
 public class TimeRatioEditingSupport extends EditingSupport {
@@ -76,13 +77,13 @@ public class TimeRatioEditingSupport extends EditingSupport {
 						setting.setExpectedRetentionTimeMinutes(expectedRetentionTimeMinutes);
 					}
 					break;
-				case TimeRatioResultTitles.DEVIATION_WARN:
+				case AbstractPeakRatioTitles.DEVIATION_WARN:
 					double deviationWarn = parseDouble((String)value);
 					if(deviationWarn > 0 && deviationWarn < setting.getDeviationError()) {
 						setting.setDeviationWarn(deviationWarn);
 					}
 					break;
-				case TimeRatioResultTitles.DEVIATION_ERROR:
+				case AbstractPeakRatioTitles.DEVIATION_ERROR:
 					double deviationError = parseDouble((String)value);
 					if(deviationError > 0 && deviationError > setting.getDeviationWarn()) {
 						setting.setDeviationError(deviationError);
