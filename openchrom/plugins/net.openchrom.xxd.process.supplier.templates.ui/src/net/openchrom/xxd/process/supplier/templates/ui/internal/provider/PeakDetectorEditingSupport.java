@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,12 +29,11 @@ public class PeakDetectorEditingSupport extends AbstractTemplateEditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof DetectorSetting) {
+		if(element instanceof DetectorSetting setting) {
 			Object object = super.getValue(element);
 			if(object != null) {
 				return object;
 			} else {
-				DetectorSetting setting = (DetectorSetting)element;
 				switch(getColumn()) {
 					case AbstractTemplateLabelProvider.PEAK_TYPE:
 						return setting.getPeakType();
@@ -56,13 +55,12 @@ public class PeakDetectorEditingSupport extends AbstractTemplateEditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof DetectorSetting) {
-			DetectorSetting setting = (DetectorSetting)element;
+		if(element instanceof DetectorSetting setting) {
 			super.setValue(element, value);
 			switch(getColumn()) {
 				case AbstractTemplateLabelProvider.PEAK_TYPE:
-					if(value instanceof PeakType) {
-						setting.setPeakType((PeakType)value);
+					if(value instanceof PeakType peakType) {
+						setting.setPeakType(peakType);
 					}
 					break;
 				case AbstractTemplateLabelProvider.TRACES:

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,6 +33,7 @@ public class TimeRatioTableComparator extends AbstractRecordTableComparator impl
 		this.displayOption = displayOption;
 	}
 
+	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int result;
@@ -53,10 +54,7 @@ public class TimeRatioTableComparator extends AbstractRecordTableComparator impl
 	public int compareSettings(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof TimeRatio && e2 instanceof TimeRatio) {
-			TimeRatio timeRatio1 = (TimeRatio)e1;
-			TimeRatio timeRatio2 = (TimeRatio)e2;
-			//
+		if(e1 instanceof TimeRatio timeRatio1 && e2 instanceof TimeRatio timeRatio2) {
 			switch(getPropertyIndex()) {
 				case 0:
 					sortOrder = timeRatio2.getName().compareTo(timeRatio1.getName());
@@ -81,10 +79,7 @@ public class TimeRatioTableComparator extends AbstractRecordTableComparator impl
 	public int compareResults(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof TimeRatio && e2 instanceof TimeRatio) {
-			TimeRatio timeRatio1 = (TimeRatio)e1;
-			TimeRatio timeRatio2 = (TimeRatio)e2;
-			//
+		if(e1 instanceof TimeRatio timeRatio1 && e2 instanceof TimeRatio timeRatio2) {
 			IPeak peak1 = timeRatio1.getPeak();
 			IPeak peak2 = timeRatio2.getPeak();
 			//

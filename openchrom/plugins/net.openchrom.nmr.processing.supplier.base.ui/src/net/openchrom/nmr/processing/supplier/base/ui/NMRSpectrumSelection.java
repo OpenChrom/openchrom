@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -55,6 +55,7 @@ public class NMRSpectrumSelection {
 	private ProcessTypeSupport processTypeSupport;
 
 	public NMRSpectrumSelection(Composite parent, ProcessorFactory filterFactory) {
+
 		this.filterFactory = filterFactory;
 		processTypeSupport = new ProcessTypeSupport();
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
@@ -77,8 +78,8 @@ public class NMRSpectrumSelection {
 				public Color getBackground(Object element) {
 
 					IDataNMRSelection selection = getSelection(element);
-					if(selection instanceof IColorProvider) {
-						return ((IColorProvider)selection).getBackground(element);
+					if(selection instanceof IColorProvider colorProvider) {
+						return colorProvider.getBackground(element);
 					}
 					return null;
 				}
@@ -157,8 +158,7 @@ public class NMRSpectrumSelection {
 						@Override
 						public String getText(Object element) {
 
-							if(element instanceof SpectrumMeasurement) {
-								SpectrumMeasurement measurement = (SpectrumMeasurement)element;
+							if(element instanceof SpectrumMeasurement measurement) {
 								return getName(measurement);
 							}
 							return "-";
@@ -190,11 +190,10 @@ public class NMRSpectrumSelection {
 				Map<SpectrumMeasurement, IDataNMRSelection> items = new LinkedHashMap<>();
 				while(iterator.hasNext()) {
 					Object object = iterator.next();
-					if(object instanceof IDataNMRSelection) {
-						IDataNMRSelection selection = (IDataNMRSelection)object;
+					if(object instanceof IDataNMRSelection selection) {
 						IComplexSignalMeasurement<?> measurement = selection.getMeasurement();
-						if(measurement instanceof SpectrumMeasurement) {
-							items.put((SpectrumMeasurement)measurement, selection);
+						if(measurement instanceof SpectrumMeasurement spectrumMeasurement) {
+							items.put(spectrumMeasurement, selection);
 						}
 					}
 				}
@@ -215,8 +214,7 @@ public class NMRSpectrumSelection {
 						public void accept(Collection<? extends IMeasurement> t) {
 
 							for(IMeasurement measurement : t) {
-								if(items.get(measurement) == null && measurement instanceof Filtered<?, ?>) {
-									Filtered<?, ?> filtered = (Filtered<?, ?>)measurement;
+								if(items.get(measurement) == null && measurement instanceof Filtered<?, ?> filtered) {
 									Object filteredObject = filtered.getFilterContext().getFilteredObject();
 									IDataNMRSelection dataNMRSelection = items.get(filteredObject);
 									if(dataNMRSelection != null) {
@@ -251,8 +249,8 @@ public class NMRSpectrumSelection {
 
 	private IDataNMRSelection getSelection(Object element) {
 
-		if(element instanceof IDataNMRSelection) {
-			return (IDataNMRSelection)element;
+		if(element instanceof IDataNMRSelection dataNMRSelection) {
+			return dataNMRSelection;
 		}
 		return null;
 	}
@@ -264,8 +262,8 @@ public class NMRSpectrumSelection {
 		}
 		if(measurement instanceof Filtered) {
 			Object object = ((Filtered<?, ?>)measurement).getFilterContext().getFilteredObject();
-			if(object instanceof IMeasurement) {
-				return getName((IMeasurement)object) + " > " + measurement.getDataName();
+			if(object instanceof IMeasurement filteredMeasurement) {
+				return getName(filteredMeasurement) + " > " + measurement.getDataName();
 			}
 		}
 		return measurement.getDataName();

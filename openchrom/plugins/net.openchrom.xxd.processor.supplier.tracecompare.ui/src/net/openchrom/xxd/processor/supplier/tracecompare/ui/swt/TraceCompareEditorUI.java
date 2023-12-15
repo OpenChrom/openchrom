@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -31,15 +31,16 @@ public class TraceCompareEditorUI extends Composite {
 	private boolean initialize = true;
 
 	public TraceCompareEditorUI(Composite parent, int style) {
+
 		super(parent, style);
 		initialize(parent);
 	}
 
 	public void update(Object object) {
 
-		if(object instanceof EditorProcessor) {
+		if(object instanceof EditorProcessor editorProcessor) {
 			//
-			editorProcessor = (EditorProcessor)object;
+			this.editorProcessor = editorProcessor;
 			if(initialize) {
 				initializeData();
 				initialize = false;

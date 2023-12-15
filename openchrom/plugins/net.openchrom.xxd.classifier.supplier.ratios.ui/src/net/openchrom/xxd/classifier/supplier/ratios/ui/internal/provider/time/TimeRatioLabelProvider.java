@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,10 +14,11 @@ package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time;
 
 import java.text.DecimalFormat;
 
-import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.swt.graphics.Image;
 
@@ -72,8 +73,7 @@ public class TimeRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 	private String getColumnTextSettings(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof TimeRatio) {
-			TimeRatio timeRatio = (TimeRatio)element;
+		if(element instanceof TimeRatio timeRatio) {
 			switch(columnIndex) {
 				case 0:
 					text = timeRatio.getName();
@@ -95,13 +95,12 @@ public class TimeRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 	private String getColumnTextResults(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof TimeRatio) {
-			TimeRatio timeRatio = (TimeRatio)element;
+		if(element instanceof TimeRatio timeRatio) {
 			switch(columnIndex) {
 				case 0:
 					IPeak peak = timeRatio.getPeak();
 					if(peak != null) {
-						text = decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR);
+						text = decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 					} else {
 						text = "--";
 					}
@@ -123,6 +122,6 @@ public class TimeRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 	@Override
 	public Image getImage(Object element) {
 
-		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CLASSIFIER, IApplicationImage.SIZE_16x16);
+		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CLASSIFIER, IApplicationImageProvider.SIZE_16x16);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -47,8 +47,7 @@ public class ReviewExportProcessSupplier extends AbstractSystemProcessSettings {
 		@Override
 		public void executeUserSettings(ISystemProcessSettings settings, ProcessExecutionContext context) throws Exception {
 
-			if(settings instanceof ReviewExportProcessSettings) {
-				ReviewExportProcessSettings processSettings = (ReviewExportProcessSettings)settings;
+			if(settings instanceof ReviewExportProcessSettings processSettings) {
 				PreferenceSupplier.setExportNumberTracesReview(processSettings.getNumberTraces());
 				PreferenceSupplier.setExportOptimizeRangeReview(processSettings.isOptimizeRange());
 				PreferenceSupplier.setExportDeltaLeftMillisecondsReview(processSettings.getRetentionTimeDeltaLeft());

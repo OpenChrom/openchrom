@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,10 +23,7 @@ public class IonMeasurementListTableComparator extends AbstractRecordTableCompar
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof IIonMeasurement && e2 instanceof IIonMeasurement) {
-			IIonMeasurement ionMeasurement1 = (IIonMeasurement)e1;
-			IIonMeasurement ionMeasurement2 = (IIonMeasurement)e2;
-			//
+		if(e1 instanceof IIonMeasurement ionMeasurement1 && e2 instanceof IIonMeasurement ionMeasurement2) {
 			switch(getPropertyIndex()) {
 				case 0:
 					sortOrder = Double.compare(ionMeasurement2.getMZ(), ionMeasurement1.getMZ());

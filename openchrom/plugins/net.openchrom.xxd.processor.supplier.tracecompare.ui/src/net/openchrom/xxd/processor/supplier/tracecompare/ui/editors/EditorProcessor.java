@@ -25,11 +25,10 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.MultiPageEditorPart;
 
+import jakarta.xml.bind.JAXBException;
 import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelReader;
 import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelWriter;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
-
-import jakarta.xml.bind.JAXBException;
 
 public class EditorProcessor extends MultiPageEditorPart {
 
@@ -136,15 +135,12 @@ public class EditorProcessor extends MultiPageEditorPart {
 		String fileName = input.getName();
 		fileName = fileName.substring(0, fileName.length() - 4);
 		setPartName(fileName);
-		if(input instanceof IFileEditorInput) {
-			//
-			//
+		if(input instanceof IFileEditorInput fileEditorInput) {
 			try {
-				IFileEditorInput fileEditorInput = (IFileEditorInput)input;
 				file = fileEditorInput.getFile().getLocation().toFile();
 				ProcessorModelReader processorModelReader = new ProcessorModelReader();
 				processorModel = processorModelReader.read(file, new NullProgressMonitor());
-				System.out.println(processorModel);
+				logger.info(processorModel);
 			} catch(JAXBException e) {
 				logger.warn(e);
 			}
@@ -171,6 +167,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 		super.dispose();
 	}
 
+	@Override
 	public boolean isDirty() {
 
 		return isDirty;

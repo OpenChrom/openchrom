@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,6 +24,7 @@ public class ScanMarkerCheckBoxEditingSupport extends EditingSupport {
 	private TableViewer tableViewer;
 
 	public ScanMarkerCheckBoxEditingSupport(TableViewer tableViewer) {
+
 		super(tableViewer);
 		this.tableViewer = tableViewer;
 		cellEditor = new CheckboxCellEditor(tableViewer.getTable());
@@ -44,8 +45,7 @@ public class ScanMarkerCheckBoxEditingSupport extends EditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof IScanMarker) {
-			IScanMarker scanMarker = (IScanMarker)element;
+		if(element instanceof IScanMarker scanMarker) {
 			return scanMarker.isValidated();
 		}
 		return false;
@@ -54,8 +54,7 @@ public class ScanMarkerCheckBoxEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof IScanMarker) {
-			IScanMarker scanMarker = (IScanMarker)element;
+		if(element instanceof IScanMarker scanMarker) {
 			scanMarker.setValidated(Boolean.valueOf(value.toString()));
 			tableViewer.refresh();
 		}

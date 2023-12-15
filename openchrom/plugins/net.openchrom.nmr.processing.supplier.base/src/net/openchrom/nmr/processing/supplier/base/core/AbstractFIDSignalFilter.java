@@ -22,7 +22,7 @@ public abstract class AbstractFIDSignalFilter<ConfigType> extends AbstractComple
 
 	private static final long serialVersionUID = -6422870258150962140L;
 
-	public AbstractFIDSignalFilter(Class<ConfigType> configClass) {
+	protected AbstractFIDSignalFilter(Class<ConfigType> configClass) {
 
 		super(configClass);
 	}
@@ -36,7 +36,7 @@ public abstract class AbstractFIDSignalFilter<ConfigType> extends AbstractComple
 	@Override
 	public boolean acceptsIMeasurement(IMeasurement item) {
 
-		return item instanceof FIDMeasurement && accepts((FIDMeasurement)item);
+		return item instanceof FIDMeasurement fidMeasurement && accepts(fidMeasurement);
 	}
 
 	protected boolean accepts(FIDMeasurement item) {

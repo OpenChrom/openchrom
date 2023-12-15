@@ -39,6 +39,7 @@ import org.eclipse.chemclipse.processing.core.ICategories;
 import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
 import org.eclipse.chemclipse.support.ui.files.ExtendedFileDialog;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
@@ -279,8 +280,8 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 				List<?> objects = peakReviewListUI.getStructuredSelection().toList();
 				//
 				for(Object object : objects) {
-					if(object instanceof AbstractSetting) {
-						settings.add((AbstractSetting)object);
+					if(object instanceof AbstractSetting abstractSetting) {
+						settings.add(abstractSetting);
 					}
 				}
 				//
@@ -312,7 +313,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(ADD_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -338,7 +339,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(EDIT_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -346,10 +347,9 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 				Object object = structuredSelection.getFirstElement();
-				if(object instanceof ReviewSetting) {
+				if(object instanceof ReviewSetting setting) {
 					Set<String> keySetEdit = new HashSet<>();
 					keySetEdit.addAll(settings.keySet());
-					ReviewSetting setting = (ReviewSetting)object;
 					keySetEdit.remove(setting.getName());
 					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new ReviewInputValidator(keySetEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
@@ -370,7 +370,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(REMOVE_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -388,7 +388,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(REMOVE_ALL_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -409,7 +409,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(IMPORT_TITLE);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -438,7 +438,7 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(EXPORT_TITLE);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override

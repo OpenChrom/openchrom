@@ -107,8 +107,7 @@ public class PeakReviewDirectCSD<T> extends AbstractPeakIdentifier implements IP
 	private IChromatogram<?> getChromatogram(List<? extends IPeakCSD> peaks) {
 
 		for(IPeakCSD peak : peaks) {
-			if(peak instanceof IChromatogramPeak) {
-				IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
+			if(peak instanceof IChromatogramPeak chromatogramPeak) {
 				return chromatogramPeak.getChromatogram();
 			}
 		}

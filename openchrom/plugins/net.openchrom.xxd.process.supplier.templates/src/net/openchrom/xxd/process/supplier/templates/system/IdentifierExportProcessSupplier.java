@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -47,8 +47,7 @@ public class IdentifierExportProcessSupplier extends AbstractSystemProcessSettin
 		@Override
 		public void executeUserSettings(ISystemProcessSettings settings, ProcessExecutionContext context) throws Exception {
 
-			if(settings instanceof IdentifierExportProcessSettings) {
-				IdentifierExportProcessSettings processSettings = (IdentifierExportProcessSettings)settings;
+			if(settings instanceof IdentifierExportProcessSettings processSettings) {
 				PreferenceSupplier.setExportNumberTracesIdentifier(processSettings.getNumberTraces());
 				PreferenceSupplier.setExportDeltaLeftMillisecondsIdentifier(processSettings.getRetentionTimeDeltaLeft());
 				PreferenceSupplier.setExportDeltaRightMillisecondsIdentifier(processSettings.getRetentionTimeDeltaRight());

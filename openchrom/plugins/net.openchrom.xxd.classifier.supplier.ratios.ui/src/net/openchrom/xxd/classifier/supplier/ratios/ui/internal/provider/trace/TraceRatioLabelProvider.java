@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,10 +14,11 @@ package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace;
 
 import java.text.DecimalFormat;
 
-import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.swt.graphics.Image;
 
@@ -72,8 +73,7 @@ public class TraceRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 	private String getColumnTextSettings(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof TraceRatio) {
-			TraceRatio traceRatio = (TraceRatio)element;
+		if(element instanceof TraceRatio traceRatio) {
 			switch(columnIndex) {
 				case 0:
 					text = traceRatio.getName();
@@ -98,13 +98,12 @@ public class TraceRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 	private String getColumnTextResults(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof TraceRatio) {
-			TraceRatio traceRatio = (TraceRatio)element;
+		if(element instanceof TraceRatio traceRatio) {
 			switch(columnIndex) {
 				case 0:
 					IPeak peak = traceRatio.getPeak();
 					if(peak != null) {
-						text = decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR);
+						text = decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 					} else {
 						text = "--";
 					}
@@ -132,6 +131,6 @@ public class TraceRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 	@Override
 	public Image getImage(Object element) {
 
-		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CLASSIFIER, IApplicationImage.SIZE_16x16);
+		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CLASSIFIER, IApplicationImageProvider.SIZE_16x16);
 	}
 }

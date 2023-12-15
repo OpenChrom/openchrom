@@ -23,11 +23,7 @@ public class StandardsAssignerComparator extends AbstractRecordTableComparator i
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof AssignerStandard && e2 instanceof AssignerStandard) {
-			//
-			AssignerStandard setting1 = (AssignerStandard)e1;
-			AssignerStandard setting2 = (AssignerStandard)e2;
-			//
+		if(e1 instanceof AssignerStandard setting1 && e2 instanceof AssignerStandard setting2) {
 			switch(getPropertyIndex()) {
 				case 0:
 					sortOrder = setting2.getName().compareTo(setting1.getName());

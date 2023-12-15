@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,12 +27,11 @@ public class ReportEditingSupport extends AbstractTemplateEditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof ReportSetting) {
+		if(element instanceof ReportSetting setting) {
 			Object object = super.getValue(element);
 			if(object != null) {
 				return object;
 			} else {
-				ReportSetting setting = (ReportSetting)element;
 				switch(getColumn()) {
 					/*
 					 * Do not edit the name
@@ -51,8 +50,7 @@ public class ReportEditingSupport extends AbstractTemplateEditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof ReportSetting) {
-			ReportSetting setting = (ReportSetting)element;
+		if(element instanceof ReportSetting setting) {
 			super.setValue(element, value);
 			switch(getColumn()) {
 				/*
@@ -62,8 +60,8 @@ public class ReportEditingSupport extends AbstractTemplateEditingSupport {
 					setting.setCasNumber(CasSupport.format(((String)value).trim()));
 					break;
 				case AbstractTemplateLabelProvider.REPORT_STRATEGY:
-					if(value instanceof ReportStrategy) {
-						setting.setReportStrategy((ReportStrategy)value);
+					if(value instanceof ReportStrategy reportStrategy) {
+						setting.setReportStrategy(reportStrategy);
 					}
 					break;
 			}

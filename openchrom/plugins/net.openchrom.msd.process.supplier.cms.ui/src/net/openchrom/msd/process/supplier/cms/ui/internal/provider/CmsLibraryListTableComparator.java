@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,9 +24,7 @@ public class CmsLibraryListTableComparator extends AbstractRecordTableComparator
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof IRegularLibraryMassSpectrum && e2 instanceof IRegularLibraryMassSpectrum) {
-			IRegularLibraryMassSpectrum massSpectrum1 = (IRegularLibraryMassSpectrum)e1;
-			IRegularLibraryMassSpectrum massSpectrum2 = (IRegularLibraryMassSpectrum)e2;
+		if(e1 instanceof IRegularLibraryMassSpectrum massSpectrum1 && e2 instanceof IRegularLibraryMassSpectrum massSpectrum2) {
 			sortOrder = getSortOrder(massSpectrum1, massSpectrum2, massSpectrum1.getLibraryInformation(), massSpectrum2.getLibraryInformation());
 		}
 		if(getDirection() == ASCENDING) {

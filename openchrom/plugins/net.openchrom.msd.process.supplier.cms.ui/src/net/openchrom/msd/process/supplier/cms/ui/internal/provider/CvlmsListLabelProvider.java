@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 whitlow.
+ * Copyright (c) 2017, 2023 Walter Whitlock.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,18 +7,19 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * whitlow - initial API and implementation
+ * Walter Whitlock - initial API and implementation
  * Philip Wenig - refactorings
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui.internal.provider;
 
 import java.text.DecimalFormat;
 
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.preferences.PreferenceSupplier;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
@@ -30,8 +31,8 @@ public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
 	@Override
 	public String getColumnText(Object element, int columnIndex) {
 
-		if(element instanceof ICalibratedVendorLibraryMassSpectrum) {
-			return getText((ICalibratedVendorLibraryMassSpectrum)element, columnIndex);
+		if(element instanceof ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum) {
+			return getText(calibratedVendorLibraryMassSpectrum, columnIndex);
 		} else {
 			return "n.a.";
 		}
@@ -45,8 +46,8 @@ public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
 		libInfo = massSpectrum.getLibraryInformation();
 		switch(columnIndex) {
 			case 0: // Name
-				if(massSpectrum instanceof CalibratedVendorMassSpectrum) {
-					text = "SCAN: " + ((CalibratedVendorMassSpectrum)massSpectrum).getScanName();
+				if(massSpectrum instanceof CalibratedVendorMassSpectrum calibratedVendorMassSpectrum) {
+					text = "SCAN: " + calibratedVendorMassSpectrum.getScanName();
 				} else {
 					if(libInfo != null) {
 						text = "LIB: " + libInfo.getName();
@@ -57,14 +58,14 @@ public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
 				if(massSpectrum.getRetentionTime() == 0) {
 					text = "0";
 				} else {
-					text = decimalFormat.format(massSpectrum.getRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+					text = decimalFormat.format(massSpectrum.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				}
 				break;
 			case 2: // RRT
 				if(massSpectrum.getRelativeRetentionTime() == 0) {
 					text = "0";
 				} else {
-					text = decimalFormat.format(massSpectrum.getRelativeRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+					text = decimalFormat.format(massSpectrum.getRelativeRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				}
 				break;
 			case 3: // RI
@@ -116,8 +117,9 @@ public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
 							} else {
 								text = decimalFormat.format(libInfo.getMolWeight());
 							}
-						} else
+						} else {
 							text = "";
+						}
 					}
 				}
 				break;
@@ -165,7 +167,6 @@ public class CvlmsListLabelProvider extends AbstractChemClipseLabelProvider {
 	@Override
 	public Image getImage(Object element) {
 
-		Image image = ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_MASS_SPECTRUM, IApplicationImage.SIZE_16x16);
-		return image;
+		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_MASS_SPECTRUM, IApplicationImageProvider.SIZE_16x16);
 	}
 }

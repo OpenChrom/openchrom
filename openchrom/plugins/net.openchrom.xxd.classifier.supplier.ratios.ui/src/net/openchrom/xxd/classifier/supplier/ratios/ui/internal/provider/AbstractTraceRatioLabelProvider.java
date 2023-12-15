@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -31,8 +31,7 @@ public abstract class AbstractTraceRatioLabelProvider extends AbstractChemClipse
 	public Color getBackground(Object element, int columnIndex) {
 
 		if(columnIndex == deviationColumn) {
-			if(element instanceof IPeakRatio) {
-				IPeakRatio peakRatio = (IPeakRatio)element;
+			if(element instanceof IPeakRatio peakRatio) {
 				double deviation = peakRatio.getDeviation();
 				double deviationWarn = peakRatio.getDeviationWarn();
 				double deviationError = peakRatio.getDeviationError();
@@ -53,8 +52,7 @@ public abstract class AbstractTraceRatioLabelProvider extends AbstractChemClipse
 	public Color getForeground(Object element, int columnIndex) {
 
 		if(columnIndex == deviationColumn) {
-			if(element instanceof IPeakRatio) {
-				IPeakRatio peakRatio = (IPeakRatio)element;
+			if(element instanceof IPeakRatio peakRatio) {
 				double deviation = peakRatio.getDeviation();
 				double deviationWarn = peakRatio.getDeviationWarn();
 				double deviationError = peakRatio.getDeviationError();

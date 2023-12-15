@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -28,12 +28,11 @@ public class PeakIdentifierEditingSupport extends AbstractTemplateEditingSupport
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof IdentifierSetting) {
+		if(element instanceof IdentifierSetting setting) {
 			Object object = super.getValue(element);
 			if(object != null) {
 				return object;
 			} else {
-				IdentifierSetting setting = (IdentifierSetting)element;
 				switch(getColumn()) {
 					/*
 					 * Do not edit the name
@@ -59,8 +58,7 @@ public class PeakIdentifierEditingSupport extends AbstractTemplateEditingSupport
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof IdentifierSetting) {
-			IdentifierSetting setting = (IdentifierSetting)element;
+		if(element instanceof IdentifierSetting setting) {
 			super.setValue(element, value);
 			switch(getColumn()) {
 				/*

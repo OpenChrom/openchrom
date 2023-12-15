@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,10 +23,7 @@ public class PeakIdentifierComparator extends AbstractRecordTableComparator impl
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof IdentifierSetting && e2 instanceof IdentifierSetting) {
-			//
-			IdentifierSetting setting1 = (IdentifierSetting)e1;
-			IdentifierSetting setting2 = (IdentifierSetting)e2;
+		if(e1 instanceof IdentifierSetting setting1 && e2 instanceof IdentifierSetting setting2) {
 			//
 			switch(getPropertyIndex()) {
 				case 0:

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2022 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -15,6 +15,7 @@ import java.io.File;
 
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.ux.extension.msd.ui.support.MassSpectrumIdentifier;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -29,13 +30,12 @@ public class CmsFileExplorerLabelProvider extends LabelProvider implements ILabe
 	public Image getImage(Object element) {
 
 		ImageDescriptor descriptor = null;
-		if(element instanceof File) {
-			File file = (File)element;
+		if(element instanceof File file) {
 			/*
 			 * Root, directory or file.
 			 */
 			if(file.getName().equals("")) {
-				descriptor = ApplicationImageFactory.getInstance().getImageDescriptor(IApplicationImage.IMAGE_DRIVE, IApplicationImage.SIZE_16x16);
+				descriptor = ApplicationImageFactory.getInstance().getImageDescriptor(IApplicationImage.IMAGE_DRIVE, IApplicationImageProvider.SIZE_16x16);
 			} else {
 				if(file.isDirectory()) {
 					/*
@@ -43,23 +43,22 @@ public class CmsFileExplorerLabelProvider extends LabelProvider implements ILabe
 					 * chromatogram.
 					 */
 					if(massSpectrumIdentifier.isSupplierFile(file)) {
-						descriptor = ApplicationImageFactory.getInstance().getImageDescriptor(IApplicationImage.IMAGE_MASS_SPECTRUM, IApplicationImage.SIZE_16x16);
+						descriptor = ApplicationImageFactory.getInstance().getImageDescriptor(IApplicationImage.IMAGE_MASS_SPECTRUM, IApplicationImageProvider.SIZE_16x16);
 					} else {
-						descriptor = ApplicationImageFactory.getInstance().getImageDescriptor(IApplicationImage.IMAGE_FOLDER_OPENED, IApplicationImage.SIZE_16x16);
+						descriptor = ApplicationImageFactory.getInstance().getImageDescriptor(IApplicationImage.IMAGE_FOLDER_OPENED, IApplicationImageProvider.SIZE_16x16);
 					}
 				} else {
 					/*
 					 * Check if the file could be a registered chromatogram.
 					 */
 					if(massSpectrumIdentifier.isSupplierFile(file)) {
-						descriptor = ApplicationImageFactory.getInstance().getImageDescriptor(IApplicationImage.IMAGE_MASS_SPECTRUM, IApplicationImage.SIZE_16x16);
+						descriptor = ApplicationImageFactory.getInstance().getImageDescriptor(IApplicationImage.IMAGE_MASS_SPECTRUM, IApplicationImageProvider.SIZE_16x16);
 					} else {
-						descriptor = ApplicationImageFactory.getInstance().getImageDescriptor(IApplicationImage.IMAGE_FILE, IApplicationImage.SIZE_16x16);
+						descriptor = ApplicationImageFactory.getInstance().getImageDescriptor(IApplicationImage.IMAGE_FILE, IApplicationImageProvider.SIZE_16x16);
 					}
 				}
 			}
-			Image image = descriptor.createImage();
-			return image;
+			return descriptor.createImage();
 		}
 		return null;
 	}
@@ -67,8 +66,7 @@ public class CmsFileExplorerLabelProvider extends LabelProvider implements ILabe
 	@Override
 	public String getText(Object element) {
 
-		if(element instanceof File) {
-			File file = (File)element;
+		if(element instanceof File file) {
 			String name;
 			if(file.getName().equals("")) {
 				name = file.getAbsolutePath();

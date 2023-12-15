@@ -276,10 +276,9 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 				Object object = structuredSelection.getFirstElement();
-				if(object instanceof TimeRatio) {
+				if(object instanceof TimeRatio setting) {
 					List<TimeRatio> settingsEdit = new ArrayList<>();
 					settingsEdit.addAll(settings);
-					TimeRatio setting = (TimeRatio)object;
 					settingsEdit.remove(setting);
 					InputDialog dialog = new InputDialog(button.getShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new TimeRatioInputValidator(settingsEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
@@ -496,8 +495,8 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 			IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 			List<TimeRatio> removeElements = new ArrayList<>();
 			for(Object object : structuredSelection.toArray()) {
-				if(object instanceof TimeRatio) {
-					removeElements.add((TimeRatio)object);
+				if(object instanceof TimeRatio setting) {
+					removeElements.add(setting);
 				}
 			}
 			settings.removeAll(removeElements);

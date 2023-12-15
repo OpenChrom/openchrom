@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,6 +16,7 @@ import java.text.DecimalFormat;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -28,6 +29,7 @@ public class IonMeasurementListLabelProvider extends AbstractChemClipseLabelProv
 	private DecimalFormat decimalFormatSignal = ValueFormat.getDecimalFormatEnglish("0.0000E00");
 
 	public IonMeasurementListLabelProvider() {
+
 	}
 
 	@Override
@@ -44,8 +46,7 @@ public class IonMeasurementListLabelProvider extends AbstractChemClipseLabelProv
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof IonMeasurement) {
-			IonMeasurement ionMeasurement = (IonMeasurement)element;
+		if(element instanceof IonMeasurement ionMeasurement) {
 			// String.format("ETime,s\tPtotal,%s",ppUnits)
 			switch(columnIndex) {
 				case 0:
@@ -57,8 +58,7 @@ public class IonMeasurementListLabelProvider extends AbstractChemClipseLabelProv
 					// text = String.format("% .4g", ionMeasurement.getSignal());
 					break;
 			}
-		} else if(element instanceof Ion) {
-			Ion ion = (Ion)element;
+		} else if(element instanceof Ion ion) {
 			// String.format("ETime,s\tPtotal,%s",ppUnits)
 			switch(columnIndex) {
 				case 0:
@@ -74,8 +74,9 @@ public class IonMeasurementListLabelProvider extends AbstractChemClipseLabelProv
 		return text;
 	}
 
+	@Override
 	public Image getImage(Object element) {
 
-		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ION, IApplicationImage.SIZE_16x16);
+		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ION, IApplicationImageProvider.SIZE_16x16);
 	}
 }

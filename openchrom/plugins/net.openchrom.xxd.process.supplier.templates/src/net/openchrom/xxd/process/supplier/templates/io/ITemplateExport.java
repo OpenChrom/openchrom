@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -32,8 +32,7 @@ public interface ITemplateExport {
 
 	default String getTraces(IPeak peak) {
 
-		if(peak instanceof IChromatogramPeakMSD) {
-			IChromatogramPeakMSD peakMSD = (IChromatogramPeakMSD)peak;
+		if(peak instanceof IChromatogramPeakMSD peakMSD) {
 			if(peakMSD.getPurity() < 1.0f) {
 				int numberTraces = peakMSD.getPeakModel().getPeakMassSpectrum().getNumberOfIons();
 				return extractTraces(peakMSD, numberTraces);
@@ -47,13 +46,11 @@ public interface ITemplateExport {
 
 		String traces = "";
 		if(numberTraces > 0 && (peak instanceof IPeakMSD || peak instanceof IPeakWSD)) {
-			if(peak instanceof IPeakMSD) {
-				IPeakMSD peakMSD = (IPeakMSD)peak;
+			if(peak instanceof IPeakMSD peakMSD) {
 				IScan scan = peakMSD.getPeakModel().getPeakMaximum();
-				if(scan instanceof IScanMSD) {
+				if(scan instanceof IScanMSD scanMSD) {
 					StringBuilder builder = new StringBuilder();
 					IonAbundanceComparator comparator = new IonAbundanceComparator(SortOrder.DESC);
-					IScanMSD scanMSD = (IScanMSD)scan;
 					List<IIon> ions = new ArrayList<>(scanMSD.getIons());
 					Collections.sort(ions, comparator); // SORT OK
 					Iterator<IIon> iterator = ions.iterator();

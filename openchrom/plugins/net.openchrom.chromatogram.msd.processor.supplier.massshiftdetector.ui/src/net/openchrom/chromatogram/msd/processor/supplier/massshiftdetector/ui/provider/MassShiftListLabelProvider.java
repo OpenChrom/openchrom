@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,9 +13,10 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.p
 
 import java.text.DecimalFormat;
 
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -27,6 +28,7 @@ public class MassShiftListLabelProvider extends AbstractChemClipseLabelProvider 
 	private DecimalFormat decimalFormat;
 
 	public MassShiftListLabelProvider() {
+
 		decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
 	}
 
@@ -43,17 +45,16 @@ public class MassShiftListLabelProvider extends AbstractChemClipseLabelProvider 
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof IMassShift) {
-			IMassShift massShift = (IMassShift)element;
+		if(element instanceof IMassShift massShift) {
 			switch(columnIndex) {
 				case 0:
 					text = Double.toString(massShift.getMz());
 					break;
 				case 1:
-					text = decimalFormat.format(massShift.getRetentionTimeReference() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+					text = decimalFormat.format(massShift.getRetentionTimeReference() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 					break;
 				case 2:
-					text = decimalFormat.format(massShift.getRetentionTimeIsotope() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+					text = decimalFormat.format(massShift.getRetentionTimeIsotope() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 					break;
 				case 3:
 					text = Integer.toString(massShift.getMassShiftLevel());
@@ -68,8 +69,9 @@ public class MassShiftListLabelProvider extends AbstractChemClipseLabelProvider 
 		return text;
 	}
 
+	@Override
 	public Image getImage(Object element) {
 
-		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ION, IApplicationImage.SIZE_16x16);
+		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ION, IApplicationImageProvider.SIZE_16x16);
 	}
 }

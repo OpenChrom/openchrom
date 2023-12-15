@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,12 +24,11 @@ public class StandardsReferencerEditingSupport extends AbstractTemplateEditingSu
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof AssignerReference) {
+		if(element instanceof AssignerReference setting) {
 			Object object = super.getValue(element);
 			if(object != null) {
 				return object;
 			} else {
-				AssignerReference setting = (AssignerReference)element;
 				switch(getColumn()) {
 					/*
 					 * Do not edit the name
@@ -45,16 +44,13 @@ public class StandardsReferencerEditingSupport extends AbstractTemplateEditingSu
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof AssignerReference) {
-			AssignerReference setting = (AssignerReference)element;
+		if(element instanceof AssignerReference setting) {
 			super.setValue(element, value);
-			switch(getColumn()) {
+			if(getColumn().equals(AbstractTemplateLabelProvider.IDENTIFIER)) {
 				/*
 				 * Do not edit the name
 				 */
-				case AbstractTemplateLabelProvider.IDENTIFIER:
-					setting.setIdentifier(value.toString());
-					break;
+				setting.setIdentifier(value.toString());
 			}
 			//
 			updateTableViewer();

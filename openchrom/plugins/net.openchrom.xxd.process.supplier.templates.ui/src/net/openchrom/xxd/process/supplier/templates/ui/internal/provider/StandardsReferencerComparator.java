@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,11 +23,7 @@ public class StandardsReferencerComparator extends AbstractRecordTableComparator
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof AssignerReference && e2 instanceof AssignerReference) {
-			//
-			AssignerReference setting1 = (AssignerReference)e1;
-			AssignerReference setting2 = (AssignerReference)e2;
-			//
+		if(e1 instanceof AssignerReference setting1 && e2 instanceof AssignerReference setting2) {
 			switch(getPropertyIndex()) {
 				case 0:
 					sortOrder = setting2.getInternalStandard().compareTo(setting1.getInternalStandard());

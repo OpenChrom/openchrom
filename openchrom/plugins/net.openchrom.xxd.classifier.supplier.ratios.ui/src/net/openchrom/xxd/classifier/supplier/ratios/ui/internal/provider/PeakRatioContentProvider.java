@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -36,20 +36,19 @@ public class PeakRatioContentProvider implements IStructuredContentProvider {
 		this.displayOption = displayOption;
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({"unchecked"})
 	@Override
 	public Object[] getElements(Object inputElement) {
 
 		IPeakRatios<IPeakRatio> peakRatios = null;
 		//
-		if(inputElement instanceof IMeasurementResult) {
-			IMeasurementResult measurementResult = (IMeasurementResult)inputElement;
+		if(inputElement instanceof IMeasurementResult<?> measurementResult) {
 			Object object = measurementResult.getResult();
-			if(object instanceof IPeakRatios) {
-				peakRatios = (IPeakRatios)object;
+			if(object instanceof IPeakRatios inputPeakRatios) {
+				peakRatios = inputPeakRatios;
 			}
-		} else if(inputElement instanceof IPeakRatios) {
-			peakRatios = (IPeakRatios)inputElement;
+		} else if(inputElement instanceof IPeakRatios inputPeakRatios) {
+			peakRatios = inputPeakRatios;
 		}
 		//
 		if(peakRatios != null) {

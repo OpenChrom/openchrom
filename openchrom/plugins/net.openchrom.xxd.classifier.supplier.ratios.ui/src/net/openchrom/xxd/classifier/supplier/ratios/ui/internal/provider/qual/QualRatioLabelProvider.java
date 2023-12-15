@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,11 +14,12 @@ package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.qual;
 
 import java.text.DecimalFormat;
 
-import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.targets.TargetSupport;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
@@ -47,12 +48,11 @@ public class QualRatioLabelProvider extends AbstractChemClipseLabelProvider impl
 	public String getColumnText(Object element, int columnIndex) {
 
 		String text = "";
-		if(element instanceof QualRatio) {
-			QualRatio ratio = (QualRatio)element;
+		if(element instanceof QualRatio ratio) {
 			IPeak peak = ratio.getPeak();
 			switch(columnIndex) {
 				case 0:
-					text = (peak != null) ? decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR) : "--";
+					text = (peak != null) ? decimalFormat.format(peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR) : "--";
 					break;
 				case 1:
 					text = TargetSupport.getBestTargetLibraryField(peak);
@@ -74,14 +74,13 @@ public class QualRatioLabelProvider extends AbstractChemClipseLabelProvider impl
 	@Override
 	public Image getImage(Object element) {
 
-		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CLASSIFIER, IApplicationImage.SIZE_16x16);
+		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CLASSIFIER, IApplicationImageProvider.SIZE_16x16);
 	}
 
 	@Override
 	public Color getForeground(Object element, int columnIndex) {
 
-		if(element instanceof QualRatio) {
-			QualRatio qualRatio = (QualRatio)element;
+		if(element instanceof QualRatio qualRatio) {
 			if(columnIndex == 2) {
 				return getColorPeakQuality(qualRatio.getLeadingTailing(), false);
 			} else if(columnIndex == 3) {
@@ -96,8 +95,7 @@ public class QualRatioLabelProvider extends AbstractChemClipseLabelProvider impl
 	@Override
 	public Color getBackground(Object element, int columnIndex) {
 
-		if(element instanceof QualRatio) {
-			QualRatio qualRatio = (QualRatio)element;
+		if(element instanceof QualRatio qualRatio) {
 			if(columnIndex == 2) {
 				return getColorPeakQuality(qualRatio.getLeadingTailing(), true);
 			} else if(columnIndex == 3) {

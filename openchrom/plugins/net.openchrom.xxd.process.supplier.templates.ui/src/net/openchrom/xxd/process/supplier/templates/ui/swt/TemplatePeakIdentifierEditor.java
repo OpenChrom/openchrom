@@ -40,6 +40,7 @@ import org.eclipse.chemclipse.processing.core.ICategories;
 import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.events.IKeyEventProcessor;
 import org.eclipse.chemclipse.support.ui.files.ExtendedFileDialog;
 import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
@@ -222,8 +223,8 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 				List<?> objects = peakIdentifierListUI.getStructuredSelection().toList();
 				//
 				for(Object object : objects) {
-					if(object instanceof AbstractSetting) {
-						settings.add((AbstractSetting)object);
+					if(object instanceof AbstractSetting abstractSetting) {
+						settings.add(abstractSetting);
 					}
 				}
 				//
@@ -255,7 +256,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(ADD_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -281,7 +282,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(EDIT_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -312,7 +313,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(REMOVE_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -330,7 +331,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(REMOVE_ALL_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -351,7 +352,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(IMPORT_TITLE);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -380,7 +381,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(EXPORT_TITLE);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override

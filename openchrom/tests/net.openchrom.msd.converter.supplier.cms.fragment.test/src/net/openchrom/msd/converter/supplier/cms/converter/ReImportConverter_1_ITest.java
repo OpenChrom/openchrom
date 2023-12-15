@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2019 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2023 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,12 +15,10 @@ package net.openchrom.msd.converter.supplier.cms.converter;
 
 import java.io.File;
 
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseExportConverter;
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseImportConverter;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
@@ -71,7 +69,7 @@ public class ReImportConverter_1_ITest extends TestCase {
 		super.tearDown();
 	}
 
-	public void test_1() throws AbundanceLimitExceededException, IonLimitExceededException {
+	public void test_1() {
 
 		assertEquals(massSpectra1.size(), massSpectra2.size());
 		for(int i = 1; i <= massSpectra1.size(); i++) {

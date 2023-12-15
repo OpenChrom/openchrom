@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -49,11 +49,10 @@ public class PeakReviewWSD<T> extends AbstractPeakIdentifier implements IPeakIde
 
 	private void runProcess(List<? extends IPeakWSD> peaks, IPeakIdentifierSettingsWSD peakIdentifierSettings, IProcessingInfo<IIdentificationResults> processingInfo, IProgressMonitor monitor) {
 
-		if(peakIdentifierSettings instanceof PeakReviewSettings) {
+		if(peakIdentifierSettings instanceof PeakReviewSettings settings) {
 			/*
 			 * RI will be adjusted to retention time (minutes).
 			 */
-			PeakReviewSettings settings = (PeakReviewSettings)peakIdentifierSettings;
 			IChromatogram<?> chromatogram = getChromatogram(peaks);
 			ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
 			//
@@ -79,8 +78,7 @@ public class PeakReviewWSD<T> extends AbstractPeakIdentifier implements IPeakIde
 	private IChromatogram<?> getChromatogram(List<? extends IPeakWSD> peaks) {
 
 		for(IPeakWSD peak : peaks) {
-			if(peak instanceof IChromatogramPeak) {
-				IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
+			if(peak instanceof IChromatogramPeak chromatogramPeak) {
 				return chromatogramPeak.getChromatogram();
 			}
 		}

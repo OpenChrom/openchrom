@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Lablicate GmbH.
+ * Copyright (c) 2013, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -21,8 +21,8 @@ public class VendorMassSpectra extends AbstractMassSpectra implements IVendorMas
 	public String getName() {
 
 		IScanMSD scanMSD = this.getMassSpectrum(1);
-		if(scanMSD instanceof IVendorStandaloneMassSpectrum) {
-			return ((IVendorStandaloneMassSpectrum)scanMSD).getName();
+		if(scanMSD instanceof IVendorStandaloneMassSpectrum vendorStandaloneMassSpectrum) {
+			return vendorStandaloneMassSpectrum.getName();
 		} else {
 			return super.getName();
 		}

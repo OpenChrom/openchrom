@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -35,10 +35,9 @@ public class PeakRatioFilter extends ViewerFilter {
 			return true;
 		}
 		//
-		if(element instanceof IPeakRatio) {
-			IPeakRatio setting = (IPeakRatio)element;
+		if(element instanceof IPeakRatio setting) {
 			String name = setting.getName();
-			String testCase = (setting instanceof TraceRatio) ? ((TraceRatio)setting).getTestCase() : "";
+			String testCase = (setting instanceof TraceRatio traceRatio) ? traceRatio.getTestCase() : "";
 			//
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();

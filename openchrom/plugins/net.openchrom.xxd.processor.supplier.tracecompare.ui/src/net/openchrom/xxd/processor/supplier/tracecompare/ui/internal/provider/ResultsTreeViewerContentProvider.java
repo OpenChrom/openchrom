@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -32,38 +32,32 @@ public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Object[] getElements(Object inputElement) {
 
-		if(inputElement instanceof List) {
-			return ((List)inputElement).toArray();
-		} else if(inputElement instanceof Collection) {
-			return ((Collection)inputElement).toArray();
-		} else if(inputElement instanceof IReferenceModel) {
-			IReferenceModel referenceModel = (IReferenceModel)inputElement;
+		if(inputElement instanceof List<?> list) {
+			return list.toArray();
+		} else if(inputElement instanceof Collection<?> collection) {
+			return collection.toArray();
+		} else if(inputElement instanceof IReferenceModel referenceModel) {
 			return referenceModel.getSampleModels().values().toArray();
-		} else if(inputElement instanceof ISampleModel) {
-			ISampleModel sampleModel = (ISampleModel)inputElement;
+		} else if(inputElement instanceof ISampleModel sampleModel) {
 			return sampleModel.getTrackModels().values().toArray();
 		}
 		//
 		return null;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Object[] getChildren(Object parentElement) {
 
-		if(parentElement instanceof List) {
-			return ((List)parentElement).toArray();
-		} else if(parentElement instanceof Collection) {
-			return ((Collection)parentElement).toArray();
-		} else if(parentElement instanceof IReferenceModel) {
-			IReferenceModel referenceModel = (IReferenceModel)parentElement;
+		if(parentElement instanceof List<?> list) {
+			return list.toArray();
+		} else if(parentElement instanceof Collection<?> collection) {
+			return collection.toArray();
+		} else if(parentElement instanceof IReferenceModel referenceModel) {
 			return referenceModel.getSampleModels().values().toArray();
-		} else if(parentElement instanceof ISampleModel) {
-			ISampleModel sampleModel = (ISampleModel)parentElement;
+		} else if(parentElement instanceof ISampleModel sampleModel) {
 			return sampleModel.getTrackModels().values().toArray();
 		}
 		//

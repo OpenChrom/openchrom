@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Matthias Mailänder.
+ * Copyright (c) 2016, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -40,16 +40,18 @@ public class NCBIqueuedBLASThandler implements EventHandler {
 	@Execute
 	public void execute(@Named(IServiceConstants.ACTIVE_PART) MPart part) {
 
-		if(chromatogramSelection != null && chromatogramSelection instanceof IChromatogramSelectionWSD) {
+		if(chromatogramSelection != null && chromatogramSelection instanceof IChromatogramSelectionWSD chromatogramSelectionWSD) {
 			StatusLineLogger.setInfo(InfoType.MESSAGE, "Running new queued BLAST search.");
 			ProgressMonitorDialog monitor = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
 			try {
 				// TODO: Make this minimizeable and cancelable with appropriate cleanups.
-				monitor.run(true, false, new NCBIqueuedBLASTRunnable((IChromatogramSelectionWSD)chromatogramSelection));
+				monitor.run(true, false, new NCBIqueuedBLASTRunnable(chromatogramSelectionWSD));
 			} catch(InvocationTargetException e) {
 				logger.warn(e);
+				logger.warn(e.getCause());
 			} catch(InterruptedException e) {
 				logger.warn(e);
+				Thread.currentThread().interrupt();
 			}
 		}
 	}

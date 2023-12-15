@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Lablicate GmbH.
+ * Copyright (c) 2022, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -48,8 +48,7 @@ public class TraceRatioExportProcessSupplier extends AbstractSystemProcessSettin
 		@Override
 		public void executeUserSettings(ISystemProcessSettings settings, ProcessExecutionContext context) throws Exception {
 
-			if(settings instanceof TraceRatioExportSettings) {
-				TraceRatioExportSettings processSettings = (TraceRatioExportSettings)settings;
+			if(settings instanceof TraceRatioExportSettings processSettings) {
 				PreferenceSupplier.setAllowedDeviationOk(processSettings.getAllowedDeviationOk());
 				PreferenceSupplier.setAllowedDeviationWarn(processSettings.getAllowedDeviationWarn());
 				PreferenceSupplier.setNumberTraces(processSettings.getNumberTraces());

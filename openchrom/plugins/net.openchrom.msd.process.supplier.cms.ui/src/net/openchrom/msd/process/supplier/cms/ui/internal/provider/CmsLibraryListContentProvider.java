@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,8 +20,7 @@ public class CmsLibraryListContentProvider implements IStructuredContentProvider
 	@Override
 	public Object[] getElements(Object inputElement) {
 
-		if(inputElement instanceof IMassSpectra) {
-			IMassSpectra massSpectra = (IMassSpectra)inputElement;
+		if(inputElement instanceof IMassSpectra massSpectra) {
 			return massSpectra.getList().toArray();
 		} else {
 			return null;

@@ -553,8 +553,7 @@ public class ReportWriter {
 		float[] signalToNoiseRatios = new float[size];
 		for(int i = 0; i < size; i++) {
 			IPeak peak = peaks.get(i);
-			if(peak instanceof IChromatogramPeak) {
-				IChromatogramPeak chromatogramPeak = (IChromatogramPeak)peak;
+			if(peak instanceof IChromatogramPeak chromatogramPeak) {
 				signalToNoiseRatios[i] = chromatogramPeak.getSignalToNoiseRatio();
 			}
 		}
@@ -568,10 +567,10 @@ public class ReportWriter {
 		for(int i = 0; i < size; i++) {
 			IPeak peak = peaks.get(i);
 			if(peak.getIntegratedArea() > 0) {
-				if(peak instanceof IPeakMSD) {
-					areas[i] = getIntegratedAreaMSD((IPeakMSD)peak, trace);
-				} else if(peak instanceof IPeakWSD) {
-					areas[i] = getIntegratedAreaWSD((IPeakWSD)peak, trace);
+				if(peak instanceof IPeakMSD peakMSD) {
+					areas[i] = getIntegratedAreaMSD(peakMSD, trace);
+				} else if(peak instanceof IPeakWSD peakWSD) {
+					areas[i] = getIntegratedAreaWSD(peakWSD, trace);
 				}
 			}
 		}
@@ -600,8 +599,7 @@ public class ReportWriter {
 			double integratedArea = peakMSD.getIntegratedArea();
 			if(integratedArea > 0) {
 				IScan scan = peakMSD.getPeakModel().getPeakMaximum();
-				if(scan instanceof IScanMSD) {
-					IScanMSD scanMSD = (IScanMSD)scan;
+				if(scan instanceof IScanMSD scanMSD) {
 					double totalIntensity = scanMSD.getTotalSignal();
 					double tracesIntensity = 0.0d;
 					IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
@@ -645,8 +643,7 @@ public class ReportWriter {
 			double integratedArea = peakWSD.getIntegratedArea();
 			if(integratedArea > 0) {
 				IScan scan = peakWSD.getPeakModel().getPeakMaximum();
-				if(scan instanceof IScanWSD) {
-					IScanWSD scanWSD = (IScanWSD)scan;
+				if(scan instanceof IScanWSD scanWSD) {
 					double totalIntensity = scanWSD.getTotalSignal();
 					double tracesIntensity = 0.0d;
 					IExtractedWavelengthSignal extractedWavelengthSignal = scanWSD.getExtractedWavelengthSignal();

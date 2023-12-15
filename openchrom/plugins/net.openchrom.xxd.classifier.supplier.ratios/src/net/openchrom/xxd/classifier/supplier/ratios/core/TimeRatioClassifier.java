@@ -40,8 +40,8 @@ public class TimeRatioClassifier extends AbstractRatioClassifier {
 	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
 
 		TimeRatioSettings settings;
-		if(chromatogramClassifierSettings instanceof TimeRatioSettings) {
-			settings = (TimeRatioSettings)chromatogramClassifierSettings;
+		if(chromatogramClassifierSettings instanceof TimeRatioSettings timeRatioSettings) {
+			settings = timeRatioSettings;
 		} else {
 			settings = PreferenceSupplier.getSettingsTime();
 		}

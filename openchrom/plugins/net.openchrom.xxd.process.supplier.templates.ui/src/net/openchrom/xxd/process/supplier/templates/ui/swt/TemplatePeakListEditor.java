@@ -222,8 +222,8 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 				List<?> objects = peakDetectorListUI.getStructuredSelection().toList();
 				//
 				for(Object object : objects) {
-					if(object instanceof AbstractSetting) {
-						settings.add((AbstractSetting)object);
+					if(object instanceof AbstractSetting abstractSetting) {
+						settings.add(abstractSetting);
 					}
 				}
 				//
@@ -289,10 +289,9 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 
 				IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 				Object object = structuredSelection.getFirstElement();
-				if(object instanceof DetectorSetting) {
+				if(object instanceof DetectorSetting setting) {
 					List<DetectorSetting> settingsEdit = new ArrayList<>();
 					settingsEdit.addAll(settings);
-					DetectorSetting setting = (DetectorSetting)object;
 					settingsEdit.remove(setting);
 					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSettingString(setting), new PeakDetectorInputValidator(settingsEdit));
 					if(IDialogConstants.OK_ID == dialog.open()) {
@@ -520,8 +519,8 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 			IStructuredSelection structuredSelection = (IStructuredSelection)listControl.get().getSelection();
 			List<DetectorSetting> removeElements = new ArrayList<>();
 			for(Object object : structuredSelection.toArray()) {
-				if(object instanceof DetectorSetting) {
-					removeElements.add((DetectorSetting)object);
+				if(object instanceof DetectorSetting detectorSetting) {
+					removeElements.add(detectorSetting);
 				}
 			}
 			settings.removeAll(removeElements);

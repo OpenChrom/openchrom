@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,10 +23,7 @@ public class PeakIntegratorComparator extends AbstractRecordTableComparator impl
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		if(e1 instanceof IntegratorSetting && e2 instanceof IntegratorSetting) {
-			//
-			IntegratorSetting setting1 = (IntegratorSetting)e1;
-			IntegratorSetting setting2 = (IntegratorSetting)e2;
+		if(e1 instanceof IntegratorSetting setting1 && e2 instanceof IntegratorSetting setting2) {
 			//
 			switch(getPropertyIndex()) {
 				case 0:

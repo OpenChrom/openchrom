@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,8 +24,7 @@ public class PeakIntegratorEditingSupport extends AbstractTemplateEditingSupport
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof IntegratorSetting) {
-			IntegratorSetting setting = (IntegratorSetting)element;
+		if(element instanceof IntegratorSetting setting) {
 			Object object = super.getValue(element);
 			if(object != null) {
 				return object;
@@ -52,8 +51,7 @@ public class PeakIntegratorEditingSupport extends AbstractTemplateEditingSupport
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof IntegratorSetting) {
-			IntegratorSetting setting = (IntegratorSetting)element;
+		if(element instanceof IntegratorSetting setting) {
 			super.setValue(element, value);
 			switch(getColumn()) {
 				case AbstractTemplateLabelProvider.IDENTIFIER:
