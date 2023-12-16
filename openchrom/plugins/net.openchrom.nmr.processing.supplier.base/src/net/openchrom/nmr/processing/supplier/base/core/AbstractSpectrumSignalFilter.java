@@ -20,7 +20,7 @@ public abstract class AbstractSpectrumSignalFilter<ConfigType> extends AbstractC
 
 	private static final long serialVersionUID = -597003482088833773L;
 
-	public AbstractSpectrumSignalFilter(Class<ConfigType> configClass) {
+	protected AbstractSpectrumSignalFilter(Class<ConfigType> configClass) {
 
 		super(configClass);
 	}

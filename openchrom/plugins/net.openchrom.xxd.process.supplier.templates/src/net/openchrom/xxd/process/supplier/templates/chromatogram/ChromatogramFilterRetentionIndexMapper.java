@@ -19,7 +19,6 @@ import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSe
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
-import org.eclipse.chemclipse.msd.model.exceptions.FilterException;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.MessageType;
 import org.eclipse.chemclipse.processing.core.ProcessingMessage;
@@ -35,14 +34,10 @@ public class ChromatogramFilterRetentionIndexMapper extends AbstractChromatogram
 
 		IProcessingInfo<IChromatogramFilterResult> processingInfo = validate(chromatogramSelection, chromatogramFilterSettings);
 		if(!processingInfo.hasErrorMessages()) {
-			try {
-				applyChromatogramCleanerFilter(chromatogramSelection, monitor);
-				processingInfo.addMessage(new ProcessingMessage(MessageType.INFO, "Extract RI", "The retention indices have been extracted."));
-				processingInfo.setProcessingResult(new ChromatogramFilterResult(ResultStatus.OK, "Retention indices have been extracted and mapped."));
-				chromatogramSelection.getChromatogram().setDirty(true);
-			} catch(FilterException e) {
-				processingInfo.setProcessingResult(new ChromatogramFilterResult(ResultStatus.EXCEPTION, e.getMessage()));
-			}
+			applyChromatogramCleanerFilter(chromatogramSelection);
+			processingInfo.addMessage(new ProcessingMessage(MessageType.INFO, "Extract RI", "The retention indices have been extracted."));
+			processingInfo.setProcessingResult(new ChromatogramFilterResult(ResultStatus.OK, "Retention indices have been extracted and mapped."));
+			chromatogramSelection.getChromatogram().setDirty(true);
 		}
 		chromatogramSelection.getChromatogram().setDirty(true);
 		return processingInfo;
@@ -55,7 +50,7 @@ public class ChromatogramFilterRetentionIndexMapper extends AbstractChromatogram
 		return applyFilter(chromatogramSelection, filterSettings, monitor);
 	}
 
-	private void applyChromatogramCleanerFilter(IChromatogramSelection<?, ?> chromatogramSelection, IProgressMonitor monitor) throws FilterException {
+	private void applyChromatogramCleanerFilter(IChromatogramSelection<?, ?> chromatogramSelection) {
 
 		IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
 		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);

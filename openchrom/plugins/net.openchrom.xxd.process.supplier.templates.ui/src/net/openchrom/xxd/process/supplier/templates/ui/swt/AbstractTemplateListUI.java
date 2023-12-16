@@ -19,7 +19,7 @@ public abstract class AbstractTemplateListUI extends ExtendedTableViewer impleme
 
 	private IUpdateListener updateListener;
 
-	public AbstractTemplateListUI(Composite parent, int style) {
+	protected AbstractTemplateListUI(Composite parent, int style) {
 
 		super(parent, style);
 	}

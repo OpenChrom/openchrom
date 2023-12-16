@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,7 +29,7 @@ public class BondListType {
 	public List<BondType> getBond() {
 
 		if(bond == null) {
-			bond = new ArrayList<BondType>();
+			bond = new ArrayList<>();
 		}
 		return this.bond;
 	}

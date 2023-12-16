@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -12,12 +12,9 @@
 package net.openchrom.csd.converter.supplier.gaml.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.csd.converter.io.AbstractChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
@@ -50,14 +47,14 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader implements
 	}
 
 	@Override
-	public IChromatogramCSD read(final File file, final IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramCSD read(final File file, final IProgressMonitor monitor) throws IOException {
 
 		final IChromatogramCSDReader chromatogramReader = getReader(file);
 		return chromatogramReader.read(file, monitor);
 	}
 
 	@Override
-	public IChromatogramOverview readOverview(final File file, final IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramOverview readOverview(final File file, final IProgressMonitor monitor) throws IOException {
 
 		final IChromatogramCSDReader chromatogramReader = getReader(file);
 		return chromatogramReader.readOverview(file, monitor);

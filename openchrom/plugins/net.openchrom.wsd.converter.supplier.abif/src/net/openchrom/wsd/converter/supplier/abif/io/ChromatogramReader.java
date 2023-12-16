@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2022 Matthias Mailänder, Dr. Philip Wenig.
+ * Copyright (c) 2016, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,16 +8,14 @@
  * 
  * Contributors:
  * Matthias Mailänder - initial API and implementation
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.wsd.converter.supplier.abif.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
@@ -38,13 +36,13 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 
 	@Override
-	public IChromatogramWSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramWSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		return readChromatogram(file, monitor);
 	}
 
 	@Override
-	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
 
 		return readChromatogram(file, monitor);
 	}
@@ -70,11 +68,12 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		elementSize = in.read2BShortBE(); // how much to read (actually redundant to specified data type)
 		elements = in.read4BIntegerBE(); // number of elements in item
 		dataSize = in.read4BIntegerBE(); // number of bytes
-		if(dataSize > 4) // may also be item's data (if 4 bytes or less)
+		if(dataSize > 4) { // may also be item's data (if 4 bytes or less)
 			dataOffset = in.read4BIntegerBE(); // otherwise where to look for data
+		}
 	}
 
-	private IChromatogramWSD readChromatogram(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	private IChromatogramWSD readChromatogram(File file, IProgressMonitor monitor) throws IOException {
 
 		IChromatogramArrayReader in = new ChromatogramArrayReader(file);
 		/*
@@ -96,19 +95,22 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		 * Read and check the version
 		 */
 		short version = in.read2BShortBE();
-		if(version / 100 != 1)
+		if(version / 100 != 1) {
 			throw new FileIsNotReadableException("ABIF files other than major version 1 are not supported.");
+		}
 		chromatogram.setVersion(version);
 		/*
 		 * Read directory entry structure
 		 */
 		readDirectory(in);
 		in.skipBytes(4); // unused zero byte data handle
-		if(!tagName.equals("tdir"))
+		if(!tagName.equals("tdir")) {
 			throw new FileIsNotReadableException("Can't find ABIF directory entry.");
+		}
 		int expectedDataSize = elements * elementSize; // legacy libraries may have reserved additional space in the directory
-		if(dataSize != expectedDataSize)
+		if(dataSize != expectedDataSize) {
 			logger.warn("Invalid data size " + dataSize + " in ABIF file detected. Expected " + expectedDataSize + ".");
+		}
 		/*
 		 * Read data
 		 */
@@ -119,14 +121,15 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		// temporary data storage as we need to reorder later
 		int scans = 0;
 		short downSamplingFactor = 0;
-		ArrayList<short[]> channels = new ArrayList<short[]>(4);
+		ArrayList<short[]> channels = new ArrayList<>(4);
 		short[] waveLengths = backfallWaveLengths;
 		// Loop through all relevant data
 		int directoryElements = elements;
 		for(int n = 0; n < directoryElements; n++) {
 			readDirectory(in);
-			if(tagName.isEmpty())
+			if(tagName.isEmpty()) {
 				continue;
+			}
 			switch(tagName) {
 				/*
 				 * Read fluorescent dye wavelengths.
@@ -219,8 +222,9 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 					channels.add(data);
 					break;
 				default:
-					if(dataSize <= 4)
+					if(dataSize <= 4) {
 						in.skipBytes(4); // unused data
+					}
 					break;
 			}
 			in.skipBytes(4); // data handle
@@ -231,14 +235,15 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		for(int s = 0; s < scans; s++) {
 			IVendorScan scan = new VendorScan();
 			for(int c = 0; c < waveLengths.length; c++) {
-				int waveLength = (int)waveLengths[c];
+				int waveLength = waveLengths[c];
 				VendorScanSignalDAD scanSignal = new VendorScanSignalDAD();
 				scanSignal.setWavelength(waveLength);
 				short[] channel = channels.get(c);
 				short signal = channel[s];
 				float abundance = signal;
-				if(downSamplingFactor > 0)
+				if(downSamplingFactor > 0) {
 					abundance = signal / downSamplingFactor;
+				}
 				scanSignal.setAbundance(abundance);
 				scan.addScanSignal(scanSignal);
 			}

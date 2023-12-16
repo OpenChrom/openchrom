@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -55,7 +55,7 @@ public class CategoryBlueprintType {
 	public List<SeriesSetBlueprintType> getSeriesSetBlueprint() {
 
 		if(seriesSetBlueprint == null) {
-			seriesSetBlueprint = new ArrayList<SeriesSetBlueprintType>();
+			seriesSetBlueprint = new ArrayList<>();
 		}
 		return this.seriesSetBlueprint;
 	}
@@ -63,7 +63,7 @@ public class CategoryBlueprintType {
 	public List<ParameterBlueprintType> getParameterBlueprint() {
 
 		if(parameterBlueprint == null) {
-			parameterBlueprint = new ArrayList<ParameterBlueprintType>();
+			parameterBlueprint = new ArrayList<>();
 		}
 		return this.parameterBlueprint;
 	}
@@ -71,7 +71,7 @@ public class CategoryBlueprintType {
 	public List<CategoryBlueprintType> getCategoryBlueprint() {
 
 		if(categoryBlueprint == null) {
-			categoryBlueprint = new ArrayList<CategoryBlueprintType>();
+			categoryBlueprint = new ArrayList<>();
 		}
 		return this.categoryBlueprint;
 	}

@@ -38,9 +38,9 @@ public abstract class AbstractTraceRatioLabelProvider extends AbstractChemClipse
 				//
 				if(deviation < deviationWarn) {
 					return Colors.getColor(Colors.LIGHT_GREEN);
-				} else if(deviation >= deviationWarn && deviation < deviationError) {
+				} else if(deviation < deviationError) {
 					return Colors.getColor(Colors.LIGHT_YELLOW);
-				} else if(deviation >= deviationError) {
+				} else {
 					return Colors.getColor(Colors.LIGHT_RED);
 				}
 			}
@@ -59,9 +59,9 @@ public abstract class AbstractTraceRatioLabelProvider extends AbstractChemClipse
 				//
 				if(deviation < deviationWarn) {
 					return Colors.BLACK;
-				} else if(deviation >= deviationWarn && deviation < deviationError) {
+				} else if(deviation < deviationError) {
 					return Colors.BLACK;
-				} else if(deviation >= deviationError) {
+				} else {
 					return Colors.BLACK;
 				}
 			}

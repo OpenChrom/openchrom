@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -7,7 +7,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.io.support;
 
@@ -26,15 +26,11 @@ import ucar.nc2.Variable;
 public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDFChromatogramArrayReader {
 
 	private NetcdfFile chromatogram;
-	private Attribute operator;
-	private Attribute miscInfo;
-	private Attribute date;
-	private Attribute dateOfExperiment;
 	private Dimension scans;
-	private Variable valuesScanAcquisitionTime;
 	private ArrayDouble.D1 valueArrayScanAcquisitionTime;
 
 	public AbstractCDFChromatogramArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
+
 		this.chromatogram = chromatogram;
 		initializeVariables();
 	}
@@ -44,7 +40,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		String variable;
 		String dimension;
 		variable = CDFConstants.VARIABLE_SCAN_ACQUISITION_TIME;
-		valuesScanAcquisitionTime = chromatogram.findVariable(variable);
+		Variable valuesScanAcquisitionTime = chromatogram.findVariable(variable);
 		if(valuesScanAcquisitionTime == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
@@ -94,7 +90,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	@Override
 	public String getMiscInfo() throws NoCDFAttributeDataFound {
 
-		miscInfo = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_TITLE);
+		Attribute miscInfo = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_TITLE);
 		if(miscInfo == null) {
 			throw new NoCDFAttributeDataFound("There could be no data found for the attribute: " + CDFConstants.ATTRIBUTE_EXPERIMENT_TITLE);
 		}
@@ -104,7 +100,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	@Override
 	public String getOperator() throws NoCDFAttributeDataFound {
 
-		operator = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_OPERATOR_NAME);
+		Attribute operator = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_OPERATOR_NAME);
 		if(operator == null) {
 			throw new NoCDFAttributeDataFound("There could be no data found for the attribute: " + CDFConstants.ATTRIBUTE_OPERATOR_NAME);
 		}
@@ -114,7 +110,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	@Override
 	public String getDate() throws NoCDFAttributeDataFound {
 
-		date = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_NETCDF_FILE_DATE_TIME_STAMP);
+		Attribute date = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_NETCDF_FILE_DATE_TIME_STAMP);
 		if(date == null) {
 			throw new NoCDFAttributeDataFound("There could be no data found for the attribute: " + CDFConstants.ATTRIBUTE_NETCDF_FILE_DATE_TIME_STAMP);
 		}
@@ -124,7 +120,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	@Override
 	public String getDateOfExperiment() throws NoCDFAttributeDataFound {
 
-		dateOfExperiment = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_DATE_TIME_STAMP);
+		Attribute dateOfExperiment = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_DATE_TIME_STAMP);
 		if(dateOfExperiment == null) {
 			throw new NoCDFAttributeDataFound("There could be no data found for the attribute: " + CDFConstants.ATTRIBUTE_EXPERIMENT_DATE_TIME_STAMP);
 		}

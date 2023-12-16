@@ -64,7 +64,7 @@ import jakarta.xml.bind.JAXBException;
 
 public class ChromatogramReader extends AbstractChromatogramWSDReader {
 
-	public static String URI = "https://github.com/AnIML/techniques/blob/master/uv-vis-trace.atdd";
+	public static final String URI = "https://github.com/AnIML/techniques/blob/master/uv-vis-trace.atdd";
 	//
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Matthias Mailänder, Dr. Philip Wenig.
+ * Copyright (c) 2016, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,7 +13,6 @@
 package net.openchrom.wsd.converter.supplier.abif.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
@@ -24,7 +23,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 
 	@Override
-	public void writeChromatogram(File file, IChromatogramWSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void writeChromatogram(File file, IChromatogramWSD chromatogram, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
 	}
 }

@@ -7,13 +7,14 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.converter.supplier.pdf.ui.io.profile;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -35,7 +36,7 @@ public abstract class AbstractLabelMarker extends AbstractBaseChartPaintListener
 	private int indexSeries = -1;
 	private ISeries serie;
 
-	public AbstractLabelMarker(BaseChart baseChart) {
+	protected AbstractLabelMarker(BaseChart baseChart) {
 
 		super(baseChart);
 	}
@@ -100,14 +101,13 @@ public abstract class AbstractLabelMarker extends AbstractBaseChartPaintListener
 		BaseChart baseChart = getBaseChart();
 		Rectangle rectangle = baseChart.getPlotArea().getBounds();
 		int size = serie.getXSeries().length;
-		for(int index : labels.keySet()) {
-			if(index < size) {
+		for(Entry<Integer, String> entry : labels.entrySet()) {
+			if(entry.getKey() < size) {
 				/*
 				 * Draw the label if the index is within the
 				 * range of the double array.
 				 */
-				String label = labels.get(index);
-				Point point = serie.getPixelCoordinates(index);
+				Point point = serie.getPixelCoordinates(entry.getKey());
 				//
 				if(point.x > 0 && rectangle.contains(point)) {
 					/*
@@ -115,7 +115,7 @@ public abstract class AbstractLabelMarker extends AbstractBaseChartPaintListener
 					 */
 					int x;
 					int y;
-					Point labelSize = e.gc.textExtent(label);
+					Point labelSize = e.gc.textExtent(entry.getValue());
 					GC gc = e.gc;
 					if(transform != null) {
 						gc.setTransform(transform);
@@ -125,7 +125,7 @@ public abstract class AbstractLabelMarker extends AbstractBaseChartPaintListener
 						x = point.x - labelSize.x / 2;
 						y = point.y - labelSize.y - 15;
 					}
-					gc.drawText(label, x, y, true);
+					gc.drawText(entry.getValue(), x, y, true);
 					gc.setTransform(null);
 				}
 			}

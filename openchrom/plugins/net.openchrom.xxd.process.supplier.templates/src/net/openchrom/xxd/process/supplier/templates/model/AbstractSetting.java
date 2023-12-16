@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,13 +7,13 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
 import java.util.Objects;
 
-import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.model.support.RetentionIndexMath;
 
@@ -46,7 +46,7 @@ public abstract class AbstractSetting {
 	public void setStartRetentionTime(int startRetentionTime) {
 
 		positionDirective = PositionDirective.RETENTION_TIME_MIN;
-		positionStart = startRetentionTime / IChromatogram.MINUTE_CORRELATION_FACTOR;
+		positionStart = startRetentionTime / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public abstract class AbstractSetting {
 	public void setStopRetentionTime(int stopRetentionTime) {
 
 		positionDirective = PositionDirective.RETENTION_TIME_MIN;
-		positionStop = stopRetentionTime / IChromatogram.MINUTE_CORRELATION_FACTOR;
+		positionStop = stopRetentionTime / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 	}
 
 	public int getRetentionTimeStart(RetentionIndexMap retentionIndexMap) {
@@ -120,7 +120,7 @@ public abstract class AbstractSetting {
 				retentionTime = (int)Math.round(value);
 				break;
 			case RETENTION_TIME_MIN:
-				retentionTime = (int)Math.round(value * IChromatogram.MINUTE_CORRELATION_FACTOR);
+				retentionTime = (int)Math.round(value * IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				break;
 			case RETENTION_INDEX:
 				if(retentionIndexMap != null) {
@@ -146,12 +146,15 @@ public abstract class AbstractSetting {
 	@Override
 	public boolean equals(Object obj) {
 
-		if(this == obj)
+		if(this == obj) {
 			return true;
-		if(obj == null)
+		}
+		if(obj == null) {
 			return false;
-		if(getClass() != obj.getClass())
+		}
+		if(getClass() != obj.getClass()) {
 			return false;
+		}
 		AbstractSetting other = (AbstractSetting)obj;
 		return positionDirective == other.positionDirective && Double.doubleToLongBits(positionStart) == Double.doubleToLongBits(other.positionStart) && Double.doubleToLongBits(positionStop) == Double.doubleToLongBits(other.positionStop);
 	}

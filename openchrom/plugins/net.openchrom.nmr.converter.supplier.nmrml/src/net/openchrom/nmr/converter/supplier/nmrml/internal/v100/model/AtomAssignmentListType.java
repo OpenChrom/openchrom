@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,7 +29,7 @@ public class AtomAssignmentListType {
 	public List<MultipletType> getMultiplet() {
 
 		if(multiplet == null) {
-			multiplet = new ArrayList<MultipletType>();
+			multiplet = new ArrayList<>();
 		}
 		return this.multiplet;
 	}

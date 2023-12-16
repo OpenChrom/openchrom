@@ -41,6 +41,7 @@ public class Activator extends AbstractActivatorUI {
 		return activator;
 	}
 
+	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 
 		activator = this;
@@ -48,6 +49,7 @@ public class Activator extends AbstractActivatorUI {
 		startServices(context);
 	}
 
+	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
 
 		stopServices();
