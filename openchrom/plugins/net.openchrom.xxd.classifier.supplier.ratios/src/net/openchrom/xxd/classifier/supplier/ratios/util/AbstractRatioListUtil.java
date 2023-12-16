@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -7,7 +7,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.util;
 
@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public abstract class AbstractRatioListUtil<T extends IValidator<Object>> implem
 	//
 	private T validator;
 
-	public AbstractRatioListUtil(T validator) {
+	protected AbstractRatioListUtil(T validator) {
 
 		this.validator = validator;
 	}
@@ -73,7 +74,7 @@ public abstract class AbstractRatioListUtil<T extends IValidator<Object>> implem
 	@Override
 	public String createList(String[] items) {
 
-		List<String> list = getValues(items);
+		List<String> list = Arrays.asList(items);
 		String values = "";
 		for(String value : list) {
 			values = values.concat(value + SEPARATOR_TOKEN);
@@ -85,8 +86,7 @@ public abstract class AbstractRatioListUtil<T extends IValidator<Object>> implem
 	public List<String> importItems(File file) {
 
 		List<String> items = new ArrayList<>();
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			String item;
 			while((item = bufferedReader.readLine()) != null) {
 				IStatus status = validator.validate(item);
@@ -94,7 +94,6 @@ public abstract class AbstractRatioListUtil<T extends IValidator<Object>> implem
 					items.add(item);
 				}
 			}
-			bufferedReader.close();
 		} catch(FileNotFoundException e1) {
 			logger.warn(e1);
 		} catch(IOException e1) {
@@ -114,36 +113,20 @@ public abstract class AbstractRatioListUtil<T extends IValidator<Object>> implem
 			}
 			printWriter.flush();
 			printWriter.close();
-		} catch(FileNotFoundException e1) {
-			logger.warn(e1);
+		} catch(FileNotFoundException e) {
+			logger.warn(e);
 		}
 	}
 
 	@Override
 	public List<String> getList(String preferenceEntry) {
 
-		List<String> values = new ArrayList<String>();
-		if(preferenceEntry != "") {
+		List<String> values = new ArrayList<>();
+		if(!"".equals(preferenceEntry)) {
 			String[] items = parseString(preferenceEntry);
-			if(items.length > 0) {
-				for(String item : items) {
-					values.add(item);
-				}
-			}
+			values = Arrays.asList(items);
 		}
 		Collections.sort(values);
-		return values;
-	}
-
-	private List<String> getValues(String[] items) {
-
-		List<String> values = new ArrayList<String>();
-		if(items != null) {
-			int size = items.length;
-			for(int i = 0; i < size; i++) {
-				values.add(items[i]);
-			}
-		}
 		return values;
 	}
 }

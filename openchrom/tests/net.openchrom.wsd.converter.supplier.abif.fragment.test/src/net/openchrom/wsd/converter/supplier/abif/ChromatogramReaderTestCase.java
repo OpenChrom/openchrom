@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2019 Matthias Mailänder, Dr. Philip Wenig.
+ * Copyright (c) 2016, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -46,8 +46,6 @@ public class ChromatogramReaderTestCase extends TestCase {
 		pathImport = null;
 		fileImport = null;
 		chromatogram = null;
-		//
-		System.gc();
 		//
 		super.tearDown();
 	}

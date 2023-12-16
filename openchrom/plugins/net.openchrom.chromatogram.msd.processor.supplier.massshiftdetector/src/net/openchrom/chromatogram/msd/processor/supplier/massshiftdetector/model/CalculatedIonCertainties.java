@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model;
 
@@ -34,9 +34,10 @@ public class CalculatedIonCertainties {
 	private Map<Integer, Map<Integer, Map<Integer, Double>>> calculatedIonCertainties;
 
 	public CalculatedIonCertainties() {
-		shiftLevelStartIonMap = new HashMap<Integer, Integer>();
-		shiftLevelStopIonMap = new HashMap<Integer, Integer>();
-		calculatedIonCertainties = new HashMap<Integer, Map<Integer, Map<Integer, Double>>>();
+
+		shiftLevelStartIonMap = new HashMap<>();
+		shiftLevelStopIonMap = new HashMap<>();
+		calculatedIonCertainties = new HashMap<>();
 	}
 
 	public int getStartScan() {

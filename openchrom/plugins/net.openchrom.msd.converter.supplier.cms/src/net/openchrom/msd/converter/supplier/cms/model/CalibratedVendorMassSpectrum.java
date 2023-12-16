@@ -470,10 +470,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	@Override
 	public boolean hasIons() {
 
-		if(ionMeasurements.size() == 0) {
-			return false;
-		}
-		return true;
+		return !ionMeasurements.isEmpty();
 	}
 
 	@Override

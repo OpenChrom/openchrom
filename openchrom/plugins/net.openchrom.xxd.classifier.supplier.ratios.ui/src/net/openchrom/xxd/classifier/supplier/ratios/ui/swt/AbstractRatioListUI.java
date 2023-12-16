@@ -28,7 +28,7 @@ public abstract class AbstractRatioListUI extends ExtendedTableViewer {
 	protected PeakRatioFilter listFilter = new PeakRatioFilter();
 	private IUpdateListener updateListener;
 
-	public AbstractRatioListUI(Composite parent, int style) {
+	protected AbstractRatioListUI(Composite parent, int style) {
 
 		super(parent, style);
 	}

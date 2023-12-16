@@ -68,7 +68,7 @@ import jakarta.xml.bind.Unmarshaller;
 
 public class ChromatogramReaderVersion120 extends AbstractChromatogramReader implements IChromatogramCSDReader {
 
-	private static final Logger logger = Logger.getLogger(ChromatogramReaderVersion100.class);
+	private static final Logger logger = Logger.getLogger(ChromatogramReaderVersion120.class);
 
 	public ChromatogramReaderVersion120() {
 

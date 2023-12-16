@@ -20,7 +20,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatio;
 
 public abstract class AbstractRatioClassifier extends AbstractChromatogramClassifier {
 
-	public AbstractRatioClassifier() {
+	protected AbstractRatioClassifier() {
 
 		super(DataType.MSD);
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -47,7 +47,7 @@ public class AltXdata {
 	public List<Link> getLink() {
 
 		if(link == null) {
-			link = new ArrayList<Link>();
+			link = new ArrayList<>();
 		}
 		return this.link;
 	}
@@ -55,7 +55,7 @@ public class AltXdata {
 	public List<Parameter> getParameter() {
 
 		if(parameter == null) {
-			parameter = new ArrayList<Parameter>();
+			parameter = new ArrayList<>();
 		}
 		return this.parameter;
 	}

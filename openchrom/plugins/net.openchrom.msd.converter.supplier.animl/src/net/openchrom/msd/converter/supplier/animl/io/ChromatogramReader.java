@@ -13,15 +13,12 @@
 package net.openchrom.msd.converter.supplier.animl.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
@@ -44,6 +41,7 @@ import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.SAXException;
 
+import jakarta.xml.bind.JAXBException;
 import net.openchrom.msd.converter.supplier.animl.model.IVendorChromatogram;
 import net.openchrom.msd.converter.supplier.animl.model.IVendorIon;
 import net.openchrom.msd.converter.supplier.animl.model.IVendorScan;
@@ -63,8 +61,6 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Sampl
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
-
-import jakarta.xml.bind.JAXBException;
 
 public class ChromatogramReader extends AbstractChromatogramMSDReader {
 
@@ -255,7 +251,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 	}
 
 	@Override
-	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
 		try {

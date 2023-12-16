@@ -60,243 +60,87 @@ public class AuditTrailEntryType {
 	@XmlSchemaType(name = "ID")
 	protected String id;
 
-	/**
-	 * Ruft den Wert der timestamp-Eigenschaft ab.
-	 *
-	 * @return
-	 *         possible object is
-	 *         {@link XMLGregorianCalendar }
-	 *
-	 */
 	public XMLGregorianCalendar getTimestamp() {
 
 		return timestamp;
 	}
 
-	/**
-	 * Legt den Wert der timestamp-Eigenschaft fest.
-	 *
-	 * @param value
-	 *            allowed object is
-	 *            {@link XMLGregorianCalendar }
-	 *
-	 */
 	public void setTimestamp(XMLGregorianCalendar value) {
 
 		this.timestamp = value;
 	}
 
-	/**
-	 * Ruft den Wert der author-Eigenschaft ab.
-	 *
-	 * @return
-	 *         possible object is
-	 *         {@link AuthorType }
-	 *
-	 */
 	public AuthorType getAuthor() {
 
 		return author;
 	}
 
-	/**
-	 * Legt den Wert der author-Eigenschaft fest.
-	 *
-	 * @param value
-	 *            allowed object is
-	 *            {@link AuthorType }
-	 *
-	 */
 	public void setAuthor(AuthorType value) {
 
 		this.author = value;
 	}
 
-	/**
-	 * Ruft den Wert der software-Eigenschaft ab.
-	 *
-	 * @return
-	 *         possible object is
-	 *         {@link SoftwareType }
-	 *
-	 */
 	public SoftwareType getSoftware() {
 
 		return software;
 	}
 
-	/**
-	 * Legt den Wert der software-Eigenschaft fest.
-	 *
-	 * @param value
-	 *            allowed object is
-	 *            {@link SoftwareType }
-	 *
-	 */
 	public void setSoftware(SoftwareType value) {
 
 		this.software = value;
 	}
 
-	/**
-	 * Ruft den Wert der action-Eigenschaft ab.
-	 *
-	 * @return
-	 *         possible object is
-	 *         {@link ActionType }
-	 *
-	 */
 	public ActionType getAction() {
 
 		return action;
 	}
 
-	/**
-	 * Legt den Wert der action-Eigenschaft fest.
-	 *
-	 * @param value
-	 *            allowed object is
-	 *            {@link ActionType }
-	 *
-	 */
 	public void setAction(ActionType value) {
 
 		this.action = value;
 	}
 
-	/**
-	 * Ruft den Wert der reason-Eigenschaft ab.
-	 *
-	 * @return
-	 *         possible object is
-	 *         {@link String }
-	 *
-	 */
 	public String getReason() {
 
 		return reason;
 	}
 
-	/**
-	 * Legt den Wert der reason-Eigenschaft fest.
-	 *
-	 * @param value
-	 *            allowed object is
-	 *            {@link String }
-	 *
-	 */
 	public void setReason(String value) {
 
 		this.reason = value;
 	}
 
-	/**
-	 * Ruft den Wert der comment-Eigenschaft ab.
-	 *
-	 * @return
-	 *         possible object is
-	 *         {@link String }
-	 *
-	 */
 	public String getComment() {
 
 		return comment;
 	}
 
-	/**
-	 * Legt den Wert der comment-Eigenschaft fest.
-	 *
-	 * @param value
-	 *            allowed object is
-	 *            {@link String }
-	 *
-	 */
 	public void setComment(String value) {
 
 		this.comment = value;
 	}
 
-	/**
-	 * Gets the value of the diff property.
-	 *
-	 * <p>
-	 * This accessor method returns a reference to the live list,
-	 * not a snapshot. Therefore any modification you make to the
-	 * returned list will be present inside the JAXB object.
-	 * This is why there is not a <CODE>set</CODE> method for the diff property.
-	 *
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * <pre>
-	 *    getDiff().add(newItem);
-	 * </pre>
-	 *
-	 *
-	 * <p>
-	 * Objects of the following types are allowed in the list
-	 * {@link DiffType }
-	 *
-	 *
-	 */
 	public List<DiffType> getDiff() {
 
 		if(diff == null) {
-			diff = new ArrayList<DiffType>();
+			diff = new ArrayList<>();
 		}
 		return this.diff;
 	}
 
-	/**
-	 * Gets the value of the reference property.
-	 *
-	 * <p>
-	 * This accessor method returns a reference to the live list,
-	 * not a snapshot. Therefore any modification you make to the
-	 * returned list will be present inside the JAXB object.
-	 * This is why there is not a <CODE>set</CODE> method for the reference property.
-	 *
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * <pre>
-	 *    getReference().add(newItem);
-	 * </pre>
-	 *
-	 *
-	 * <p>
-	 * Objects of the following types are allowed in the list
-	 * {@link JAXBElement }{@code <}{@link Object }{@code >}
-	 *
-	 *
-	 */
 	public List<JAXBElement<Object>> getReference() {
 
 		if(reference == null) {
-			reference = new ArrayList<JAXBElement<Object>>();
+			reference = new ArrayList<>();
 		}
 		return this.reference;
 	}
 
-	/**
-	 * Ruft den Wert der id-Eigenschaft ab.
-	 *
-	 * @return
-	 *         possible object is
-	 *         {@link String }
-	 *
-	 */
 	public String getId() {
 
 		return id;
 	}
 
-	/**
-	 * Legt den Wert der id-Eigenschaft fest.
-	 *
-	 * @param value
-	 *            allowed object is
-	 *            {@link String }
-	 *
-	 */
 	public void setId(String value) {
 
 		this.id = value;

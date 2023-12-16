@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Lablicate GmbH.
+ * Copyright (c) 2017, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui;
 
@@ -20,6 +20,7 @@ public class Activator extends AbstractActivatorUI {
 
 	private static Activator plugin;
 
+	@Override
 	public void start(BundleContext context) throws Exception {
 
 		super.start(context);
@@ -27,6 +28,7 @@ public class Activator extends AbstractActivatorUI {
 		initializePreferenceStore(PreferenceSupplier.INSTANCE());
 	}
 
+	@Override
 	public void stop(BundleContext context) throws Exception {
 
 		plugin = null;

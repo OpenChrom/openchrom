@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2022 Lablicate GmbH.
+ * Copyright (c) 2014, 2023 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.cdf.io;
 
@@ -18,8 +18,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
-import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
-import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.csd.converter.io.AbstractChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
@@ -38,24 +36,25 @@ import net.openchrom.csd.converter.supplier.cdf.io.support.IAbstractCDFChromatog
 import net.openchrom.csd.converter.supplier.cdf.model.VendorChromatogramCSD;
 import net.openchrom.csd.converter.supplier.cdf.model.VendorScan;
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 
 public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader implements IChromatogramCSDReader {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReaderCSD.class);
 
 	@Override
-	public IChromatogramCSD read(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramCSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		return readFile(file, monitor);
 	}
 
 	@Override
-	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
 
 		return readFile(file, monitor);
 	}
 
-	private IChromatogramCSD readFile(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
+	private IChromatogramCSD readFile(File file, IProgressMonitor monitor) throws IOException {
 
 		VendorChromatogramCSD chromatogram;
 		if(!isValidFileFormat(file)) {
@@ -93,10 +92,7 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 			logger.warn(e);
 		}
 		String test = new String(data).trim();
-		if(test.equals(check)) {
-			return true;
-		}
-		return false;
+		return test.equals(check);
 	}
 
 	/**
@@ -110,10 +106,9 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 	 * @throws IonLimitExceededException
 	 * @throws AbundanceLimitExceededException
 	 */
-	private VendorChromatogramCSD readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored, AbundanceLimitExceededException {
+	private VendorChromatogramCSD readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
-		@SuppressWarnings("deprecation")
-		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
+		NetcdfFile cdfChromatogram = NetcdfFiles.open(file.getAbsolutePath());
 		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
 		VendorChromatogramCSD chromatogram = new VendorChromatogramCSD();
 		setChromatogramEntries(chromatogram, in, file);

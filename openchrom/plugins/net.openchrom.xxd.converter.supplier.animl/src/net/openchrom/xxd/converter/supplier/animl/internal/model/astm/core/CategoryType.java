@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -49,7 +49,7 @@ public class CategoryType {
 	public List<ParameterType> getParameter() {
 
 		if(parameter == null) {
-			parameter = new ArrayList<ParameterType>();
+			parameter = new ArrayList<>();
 		}
 		return this.parameter;
 	}
@@ -57,7 +57,7 @@ public class CategoryType {
 	public List<SeriesSetType> getSeriesSet() {
 
 		if(seriesSet == null) {
-			seriesSet = new ArrayList<SeriesSetType>();
+			seriesSet = new ArrayList<>();
 		}
 		return this.seriesSet;
 	}
@@ -65,7 +65,7 @@ public class CategoryType {
 	public List<CategoryType> getCategory() {
 
 		if(category == null) {
-			category = new ArrayList<CategoryType>();
+			category = new ArrayList<>();
 		}
 		return this.category;
 	}

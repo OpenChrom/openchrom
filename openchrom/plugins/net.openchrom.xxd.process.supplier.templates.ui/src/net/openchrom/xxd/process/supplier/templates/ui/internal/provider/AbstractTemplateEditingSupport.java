@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Lablicate GmbH.
+ * Copyright (c) 2022, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -41,7 +41,7 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 	private String column;
 	private CellEditor cellEditor;
 
-	public AbstractTemplateEditingSupport(AbstractTemplateListUI tableViewer, String column) {
+	protected AbstractTemplateEditingSupport(AbstractTemplateListUI tableViewer, String column) {
 
 		super(tableViewer);
 		this.tableViewer = tableViewer;

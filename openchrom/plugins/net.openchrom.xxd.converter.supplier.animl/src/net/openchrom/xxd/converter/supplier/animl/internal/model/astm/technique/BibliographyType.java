@@ -55,7 +55,7 @@ public class BibliographyType {
 	public List<LiteratureReferenceType> getLiteratureReference() {
 
 		if(literatureReference == null) {
-			literatureReference = new ArrayList<LiteratureReferenceType>();
+			literatureReference = new ArrayList<>();
 		}
 		return this.literatureReference;
 	}

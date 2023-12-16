@@ -7,7 +7,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.cdf.io.support;
 
@@ -25,7 +25,6 @@ import net.openchrom.csd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFou
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 import net.openchrom.csd.converter.supplier.cdf.model.VendorChromatogramCSD;
-
 import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayFloat;
 import ucar.nc2.Attribute;
@@ -37,20 +36,13 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 
 	private static final Logger logger = Logger.getLogger(AbstractCDFChromatogramArrayReader.class);
 	private NetcdfFile chromatogram;
-	private Attribute operator;
-	private Attribute date;
-	private Attribute retentionUnit;
 	private Dimension scans;
-	private Variable valuesIntensity;
 	private ArrayFloat.D1 valueArrayIntensity;
-	private Variable valueScanDelayTime;
-	private Variable valueScanInterval;
-	private Variable valueRunTimeLength;
 	//
 	private int scanDelay;
 	private int scanInterval;
 
-	public AbstractCDFChromatogramArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
+	protected AbstractCDFChromatogramArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
 		this.chromatogram = chromatogram;
 		initializeVariables();
@@ -71,13 +63,13 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		}
 		//
 		variable = CDFConstants.VARIABLE_ACTUAL_DELAY_TIME;
-		valueScanDelayTime = chromatogram.findVariable(variable);
+		Variable valueScanDelayTime = chromatogram.findVariable(variable);
 		if(valueScanDelayTime == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
 		//
 		variable = CDFConstants.VARIABLE_ACTUAL_SAMPLING_INTERVAL;
-		valueScanInterval = chromatogram.findVariable(variable);
+		Variable valueScanInterval = chromatogram.findVariable(variable);
 		if(valueScanInterval == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
@@ -88,7 +80,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		scanInterval = 0; // milliseconds
 		//
 		double retentionTimeScaleFactor;
-		retentionUnit = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_RETENTION_UNIT);
+		Attribute retentionUnit = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_RETENTION_UNIT);
 		if(retentionUnit != null) {
 			String unit = retentionUnit.getStringValue().trim();
 			if(unit.equals("seconds") || unit.equals("Seconds")) {
@@ -108,7 +100,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		 * Not all supplier store a run time length.
 		 */
 		variable = CDFConstants.VARIABLE_ACTUAL_RUN_TIME_LENGTH;
-		valueRunTimeLength = chromatogram.findVariable(variable);
+		Variable valueRunTimeLength = chromatogram.findVariable(variable);
 		if(valueRunTimeLength == null) {
 			/*
 			 * Normal
@@ -130,7 +122,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		}
 		//
 		variable = CDFConstants.VARIABLE_ORDINATE_VALUES;
-		valuesIntensity = chromatogram.findVariable(variable);
+		Variable valuesIntensity = chromatogram.findVariable(variable);
 		if(valuesIntensity == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
@@ -160,7 +152,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	@Override
 	public String getOperator() throws NoCDFAttributeDataFound {
 
-		operator = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_OPERATOR_NAME);
+		Attribute operator = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_OPERATOR_NAME);
 		if(operator == null) {
 			throw new NoCDFAttributeDataFound("There could be no data found for the attribute: " + CDFConstants.ATTRIBUTE_OPERATOR_NAME);
 		}
@@ -170,7 +162,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	@Override
 	public String getDate() throws NoCDFAttributeDataFound {
 
-		date = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_DATASET_DATE_TIME_STAMP);
+		Attribute date = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_DATASET_DATE_TIME_STAMP);
 		if(date == null) {
 			throw new NoCDFAttributeDataFound("There could be no data found for the attribute: " + CDFConstants.ATTRIBUTE_DATASET_DATE_TIME_STAMP);
 		}
@@ -186,7 +178,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	@Override
 	public float getIntensity(int scan) {
 
-		return valueArrayIntensity.get(scan--);
+		return valueArrayIntensity.get(scan - 1);
 	}
 
 	@Override
@@ -216,8 +208,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 				}
 			}
 		} catch(Exception e) {
-			System.out.println("Failed to read the peak table.");
-			logger.warn(e);
+			logger.warn("Failed to read the peak table.", e);
 		}
 	}
 }

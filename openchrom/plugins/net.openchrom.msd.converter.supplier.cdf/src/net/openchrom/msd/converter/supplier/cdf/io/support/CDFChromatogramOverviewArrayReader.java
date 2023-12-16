@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -7,7 +7,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.io.support;
 
@@ -26,11 +26,12 @@ public class CDFChromatogramOverviewArrayReader extends AbstractCDFChromatogramA
 	private ArrayDouble.D1 valueArrayTotalIntensity;
 
 	public CDFChromatogramOverviewArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
+
 		super(chromatogram);
 		initializeVariables();
 	}
 
-	private void initializeVariables() throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
+	private void initializeVariables() throws IOException, NoCDFVariableDataFound {
 
 		String variable;
 		variable = CDFConstants.VARIABLE_TOTAL_INTENSITY;

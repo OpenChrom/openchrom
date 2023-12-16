@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -64,7 +64,7 @@ public class AcquisitionParameterSetMultiDType extends AcquisitionParameterSetTy
 	public List<AcquisitionDimensionParameterSetType> getIndirectDimensionParameterSet() {
 
 		if(indirectDimensionParameterSet == null) {
-			indirectDimensionParameterSet = new ArrayList<AcquisitionDimensionParameterSetType>();
+			indirectDimensionParameterSet = new ArrayList<>();
 		}
 		return this.indirectDimensionParameterSet;
 	}
@@ -78,7 +78,7 @@ public class AcquisitionParameterSetMultiDType extends AcquisitionParameterSetTy
 		public List<ValueWithUnitType> getHadamardFrequency() {
 
 			if(hadamardFrequency == null) {
-				hadamardFrequency = new ArrayList<ValueWithUnitType>();
+				hadamardFrequency = new ArrayList<>();
 			}
 			return this.hadamardFrequency;
 		}

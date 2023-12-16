@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  * Alexander Kerner - Generics
  * Christoph Läubrich - adjust naming of methods
  *******************************************************************************/
@@ -72,7 +72,7 @@ public abstract class AbstractPeakIdentifier {
 
 	protected <T> IProcessingInfo<T> applyIdentifier(List<? extends IPeak> peaks, IIdentifierSettings settings, RetentionIndexMap retentionIndexMap, IProgressMonitor monitor) {
 
-		IProcessingInfo<T> processingInfo = validate(peaks, settings, monitor);
+		IProcessingInfo<T> processingInfo = validate(peaks, settings);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakIdentifierSettings peakIdentifierSettings) {
 				for(IdentifierSetting identifierSetting : peakIdentifierSettings.getIdentifierSettingsList()) {
@@ -137,7 +137,7 @@ public abstract class AbstractPeakIdentifier {
 		}
 	}
 
-	private <T> IProcessingInfo<T> validate(List<? extends IPeak> peaks, IIdentifierSettings settings, IProgressMonitor monitor) {
+	private <T> IProcessingInfo<T> validate(List<? extends IPeak> peaks, IIdentifierSettings settings) {
 
 		IProcessingInfo<T> processingInfo = new ProcessingInfo<>();
 		if(peaks == null) {

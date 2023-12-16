@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Lablicate GmbH.
+ * Copyright (c) 2013, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -7,7 +7,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.io.support;
 
@@ -38,12 +38,8 @@ import ucar.nc2.Variable;
 public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReader {
 
 	private static final Logger logger = Logger.getLogger(CDFChromtogramArrayReader.class);
-	private Variable valuesIon;
-	private Variable valuesAbundance;
 	private double[] valueArrayIon;
 	private float[] valueArrayAbundance;
-	private Variable valuesPointCount;
-	private Variable valuesScanIndex;
 	private int[] valueArrayPointCount;
 	private int[] valueArrayScanIndex;
 
@@ -53,26 +49,26 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		initializeVariables();
 	}
 
-	private void initializeVariables() throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
+	private void initializeVariables() throws IOException, NoCDFVariableDataFound {
 
 		String variable;
 		variable = CDFConstants.VARIABLE_MASS_VALUES;
-		valuesIon = getChromatogram().findVariable(variable);
+		Variable valuesIon = getChromatogram().findVariable(variable);
 		if(valuesIon == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
 		variable = CDFConstants.VARIABLE_INTENSITY_VALUES;
-		valuesAbundance = getChromatogram().findVariable(variable);
+		Variable valuesAbundance = getChromatogram().findVariable(variable);
 		if(valuesAbundance == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
 		variable = CDFConstants.VARIABLE_POINT_COUNT;
-		valuesPointCount = getChromatogram().findVariable(variable);
+		Variable valuesPointCount = getChromatogram().findVariable(variable);
 		if(valuesPointCount == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
 		variable = CDFConstants.VARIABLE_SCAN_INDEX;
-		valuesScanIndex = getChromatogram().findVariable(variable);
+		Variable valuesScanIndex = getChromatogram().findVariable(variable);
 		if(valuesScanIndex == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
