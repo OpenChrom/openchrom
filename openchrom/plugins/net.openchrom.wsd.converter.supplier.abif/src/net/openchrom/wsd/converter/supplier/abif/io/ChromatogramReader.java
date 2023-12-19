@@ -178,7 +178,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 					// Pascal style string (length is stored in first byte)
 					int length = in.read1BShortBE();
 					String sampleName = in.readBytesAsString(length);
-					chromatogram.setDataName(sampleName);
+					chromatogram.setSampleName(sampleName);
 					in.resetPosition();
 					in.seek(position);
 					break;

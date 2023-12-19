@@ -199,7 +199,7 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 	private IVendorChromatogram readSample(AnIMLType animl, IVendorChromatogram chromatogram) {
 
 		SampleType sample = animl.getSampleSet().getSample().get(0);
-		chromatogram.setDataName(sample.getName());
+		chromatogram.setSampleName(sample.getName());
 		chromatogram.setBarcode(sample.getBarcode());
 		chromatogram.setDetailedInfo(sample.getSampleID());
 		chromatogram.setMiscInfo(sample.getComment());

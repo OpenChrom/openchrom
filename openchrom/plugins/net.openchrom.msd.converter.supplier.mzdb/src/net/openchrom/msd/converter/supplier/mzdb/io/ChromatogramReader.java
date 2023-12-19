@@ -79,7 +79,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				//
 				ResultSet nameResultSet = statement.executeQuery("SELECT name FROM sample;");
 				String sampleName = nameResultSet.getString(1);
-				chromatogram.setDataName(sampleName);
+				chromatogram.setSampleName(sampleName);
 				nameResultSet.close();
 				//
 				ResultSet dataProcessingSet = statement.executeQuery("SELECT name FROM data_processing ORDER BY id;");

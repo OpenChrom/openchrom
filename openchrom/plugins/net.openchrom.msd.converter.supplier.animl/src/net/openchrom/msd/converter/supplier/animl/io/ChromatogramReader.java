@@ -41,7 +41,6 @@ import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.SAXException;
 
-import jakarta.xml.bind.JAXBException;
 import net.openchrom.msd.converter.supplier.animl.model.IVendorChromatogram;
 import net.openchrom.msd.converter.supplier.animl.model.IVendorIon;
 import net.openchrom.msd.converter.supplier.animl.model.IVendorScan;
@@ -61,6 +60,8 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Sampl
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesSetType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
+
+import jakarta.xml.bind.JAXBException;
 
 public class ChromatogramReader extends AbstractChromatogramMSDReader {
 
@@ -273,7 +274,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 	private IVendorChromatogram readSample(AnIMLType animl, IVendorChromatogram chromatogram) {
 
 		SampleType sample = animl.getSampleSet().getSample().get(0);
-		chromatogram.setDataName(sample.getName());
+		chromatogram.setSampleName(sample.getName());
 		chromatogram.setBarcode(sample.getBarcode());
 		chromatogram.setDetailedInfo(sample.getSampleID());
 		chromatogram.setMiscInfo(sample.getComment());

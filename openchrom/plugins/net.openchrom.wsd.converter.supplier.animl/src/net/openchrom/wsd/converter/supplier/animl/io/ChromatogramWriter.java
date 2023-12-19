@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -93,7 +93,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		SampleSetType sampleSet = new SampleSetType();
 		SampleType sample = new SampleType();
 		sample.setId("OPENCHROM_WSD_EXPORT");
-		sample.setName(chromatogram.getHeaderDataOrDefault("Sample Name", chromatogram.getDataName()));
+		sample.setName(chromatogram.getSampleName());
 		sample.setBarcode(chromatogram.getBarcode());
 		sample.setComment(chromatogram.getMiscInfo());
 		sample.setSampleID(FilenameUtils.removeExtension(chromatogram.getFile().getName()));

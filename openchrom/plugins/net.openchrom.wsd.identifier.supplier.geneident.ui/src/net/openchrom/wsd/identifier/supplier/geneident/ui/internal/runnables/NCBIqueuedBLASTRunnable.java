@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2023 Matthias Mailänder.
+ * Copyright (c) 2016, 2023 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -79,7 +79,7 @@ public class NCBIqueuedBLASTRunnable implements IRunnableWithProgress {
 				InputStream in = service.getAlignmentResults(requestID, outputProps);
 				reader = new BufferedReader(new InputStreamReader(in));
 				// Write BLAST output to specified file.
-				String sampleName = chromtogram.getDataName();
+				String sampleName = chromtogram.getSampleName();
 				File file = File.createTempFile(sampleName + "_" + requestID, ".txt");
 				StatusLineLogger.setInfo(InfoType.MESSAGE, "Saving query results in file " + file.getAbsolutePath());
 				writer = new FileWriter(file);

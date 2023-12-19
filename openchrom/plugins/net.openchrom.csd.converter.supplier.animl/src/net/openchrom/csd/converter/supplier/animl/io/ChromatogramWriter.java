@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -27,9 +27,6 @@ import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.BinaryReader;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.Common;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AnIMLType;
@@ -53,6 +50,10 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Serie
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.TechniqueType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
 import net.openchrom.xxd.converter.supplier.animl.preferences.PreferenceSupplier;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 
 public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 
@@ -83,7 +84,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		SampleSetType sampleSet = new SampleSetType();
 		SampleType sample = new SampleType();
 		sample.setId("OPENCHROM_CSD_EXPORT");
-		sample.setName(chromatogram.getHeaderDataOrDefault("Sample Name", chromatogram.getDataName()));
+		sample.setName(chromatogram.getSampleName());
 		sample.setBarcode(chromatogram.getBarcode());
 		sample.setComment(chromatogram.getMiscInfo());
 		sample.setSampleID(FilenameUtils.removeExtension(chromatogram.getFile().getName()));
