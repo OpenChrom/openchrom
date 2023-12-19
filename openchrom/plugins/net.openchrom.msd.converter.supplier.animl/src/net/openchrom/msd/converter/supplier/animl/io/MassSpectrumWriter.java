@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2023 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -26,9 +26,6 @@ import org.eclipse.chemclipse.msd.model.core.IVendorMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IVendorStandaloneMassSpectrum;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.BinaryReader;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.Common;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AnIMLType;
@@ -53,6 +50,10 @@ import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.Serie
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.TechniqueType;
 import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
 import net.openchrom.xxd.converter.supplier.animl.preferences.PreferenceSupplier;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 
 public class MassSpectrumWriter implements IMassSpectraWriter {
 
@@ -114,7 +115,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		SampleSetType sampleSet = new SampleSetType();
 		SampleType sample = new SampleType();
 		sample.setId("OPENCHROM_MASS_SPECTRUM_EXPORT");
-		sample.setName(massSpectrum.getName());
+		sample.setName(massSpectrum.getSampleName());
 		sample.setComment(massSpectrum.getIdentifier());
 		sample.setSampleID(FilenameUtils.removeExtension(massSpectrum.getFile().getName()));
 		sample.setSourceDataLocation(massSpectrum.getFile().getAbsolutePath());
