@@ -18,7 +18,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramReader;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -29,6 +31,7 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
+import org.eclipse.chemclipse.support.history.EditInformation;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mzdb.model.IVendorChromatogram;
@@ -79,9 +82,6 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				chromatogram.setDataName(sampleName);
 				nameResultSet.close();
 				//
-				ResultSet timeUnitResultSet = statement.executeQuery("SELECT unit_accession FROM cv_term WHERE accession='MS:1000016';");
-				int timeMultiplicator = getTimeMultiplicator(timeUnitResultSet.getString(1));
-				timeUnitResultSet.close();
 				ResultSet dataProcessingSet = statement.executeQuery("SELECT name FROM data_processing ORDER BY id;");
 				List<String> dataProcessing = new ArrayList<>();
 				while(dataProcessingSet.next()) {
@@ -104,44 +104,25 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				ResultSet spectrumResultSet = statement.executeQuery("SELECT * FROM spectrum;");
 				while(spectrumResultSet.next()) {
 					IVendorScan scan = new VendorScan();
-					int cycle = spectrumResultSet.getInt("cycle");
-					scan.setScanNumber(cycle);
-					String title = spectrumResultSet.getString("title");
-					scan.setIdentifier(title);
-					int retentionTime = Math.round(spectrumResultSet.getFloat("time") * timeMultiplicator);
-					scan.setRetentionTime(retentionTime);
-					short msLevel = spectrumResultSet.getShort("ms_level");
-					scan.setMassSpectrometer(msLevel);
-					float abundance = spectrumResultSet.getFloat("tic");
-					IIon ion = new Ion(IIon.TIC_ION, abundance);
-					scan.addIon(ion);
+					scan.setScanNumber(spectrumResultSet.getInt("cycle"));
+					scan.setIdentifier(spectrumResultSet.getString("title"));
+					scan.setRetentionTime(Math.round(spectrumResultSet.getFloat("time") * 1000)); // s to ms
+					scan.setMassSpectrometer(spectrumResultSet.getShort("ms_level"));
+					scan.addIon(new Ion(IIon.TIC_ION, spectrumResultSet.getFloat("tic")));
+					double mainPrecursorMZ = spectrumResultSet.getDouble("main_precursor_mz");
+					scan.setPrecursorIon(mainPrecursorMZ);
 					chromatogram.addScan(scan);
 				}
 				spectrumResultSet.close();
+			} catch(AbundanceLimitExceededException e) {
+				logger.warn(e);
+			} catch(IonLimitExceededException e) {
+				logger.warn(e);
 			}
 		} catch(SQLException e) {
-			logger.warn(e);
-		} catch(AbundanceLimitExceededException e) {
-			logger.warn(e);
-		} catch(IonLimitExceededException e) {
 			logger.warn(e);
 		}
 		monitor.done();
 		return chromatogram;
-	}
-
-	public static int getTimeMultiplicator(String unit) {
-
-		int multiplicator = 1;
-		if(unit.equals("millisecond")) {
-			multiplicator = 1;
-		}
-		if(unit.equals("second")) {
-			multiplicator = 1000;
-		}
-		if(unit.equals("minute")) {
-			multiplicator = 60 * 1000;
-		}
-		return multiplicator;
 	}
 }
