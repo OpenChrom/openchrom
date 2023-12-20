@@ -5,8 +5,8 @@
          point="org.eclipse.ui.preferencePages">
       <page
             category="org.eclipse.chemclipse.chromatogram.msd.identifier.ui.preferences.identifierPreferencePage"
-            class="net.openchrom.chromatogram.msd.identifier.supplier.jmol.ui.preferences.PreferencePage"
-            id="net.openchrom.chromatogram.msd.identifier.supplier.jmol.ui.preferences.preferencePage"
+            class="net.openchrom.chromatogram.xxd.identifier.supplier.jmol.ui.preferences.PreferencePage"
+            id="net.openchrom.chromatogram.xxd.identifier.supplier.jmol.ui.preferences.preferencePage"
             name="JMol">
       </page>
    </extension>
