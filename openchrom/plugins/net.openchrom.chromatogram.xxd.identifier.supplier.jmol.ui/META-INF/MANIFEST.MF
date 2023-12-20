@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.chromatogram.xxd.identifier.supplier.cdk.ui
+Bundle-ManifestVersion: 2
+Bundle-Name: JMol Identifier UI
+Bundle-SymbolicName: net.openchrom.chromatogram.xxd.identifier.supplier.jmol.ui;singleton:=true
+Bundle-Version: 1.5.0.qualifier
+Bundle-Activator: net.openchrom.chromatogram.xxd.identifier.supplier.jmol.ui.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.chemclipse.logging;bundle-version="0.8.0",
+ wrapped.net.sourceforge.jmol.jmol;bundle-version="14.31.10",
+ org.eclipse.chemclipse.swt.ui;bundle-version="0.9.0",
+ org.eclipse.chemclipse.model;bundle-version="0.9.0",
+ org.eclipse.chemclipse.support.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-ActivationPolicy: lazy
+Import-Package: org.osgi.service.event;version="1.3.0",
+ org.osgi.service.component.annotations;version="[1.2.0,2.0.0)"
+Service-Component: OSGI-INF/net.openchrom.chromatogram.xxd.identifier.supplier.jmol.ui.services.MoleculeImageService.xml

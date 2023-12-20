@@ -228,5 +228,15 @@
 			</dependency>
 		</dependencies>
 	</location>
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>net.sourceforge.jmol</groupId>
+				<artifactId>jmol</artifactId>
+				<version>14.31.10</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
 </locations>
 </target>

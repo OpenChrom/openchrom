@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="start" configuration-policy="optional" name="net.openchrom.chromatogram.xxd.identifier.supplier.jmol.ui.services.MoleculeImageService">
+   <service>
+      <provide interface="org.eclipse.chemclipse.swt.ui.services.IMoleculeImageService"/>
+   </service>
+   <implementation class="net.openchrom.chromatogram.xxd.identifier.supplier.jmol.ui.services.MoleculeImageService"/>
+</scr:component>
