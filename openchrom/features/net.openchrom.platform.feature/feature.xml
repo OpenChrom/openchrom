@@ -243,8 +243,4 @@
          id="net.openchrom.xxd.base.ui"
          version="0.0.0"/>
 
-   <plugin
-         id="wrapped.net.sourceforge.jmol.jmol"
-         version="0.0.0"/>
-
 </feature>
