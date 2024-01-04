@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -26,25 +26,20 @@ import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.openscience.cdk.exception.InvalidSmilesException;
-import org.openscience.cdk.formula.MolecularFormula;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IMolecularFormula;
-import org.openscience.cdk.silent.SilentChemObjectBuilder;
-import org.openscience.cdk.smiles.SmilesParser;
-import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
 
 import net.openchrom.xxd.identifier.supplier.cdk.converter.OpsinSupport;
 import net.openchrom.xxd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 import net.openchrom.xxd.identifier.supplier.cdk.settings.IdentifierSettings;
+import net.openchrom.xxd.identifier.supplier.cdk.support.MoleculeMassCalculator;
+import net.openchrom.xxd.identifier.supplier.cdk.support.SmilesSupport;
 
 import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
 import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
 
 public class TargetPropertyCalculator extends AbstractChromatogramIdentifier {
-
-	private SmilesParser smilesParser = new SmilesParser(SilentChemObjectBuilder.getInstance());
 
 	@Override
 	public IProcessingInfo<?> identify(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
@@ -102,17 +97,17 @@ public class TargetPropertyCalculator extends AbstractChromatogramIdentifier {
 
 	private void calculateMolWeight(IScan scan, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
 
-		calculateMolWeight(scan.getTargets(), nameStructure, nameStructureConfig);
+		calculateMolWeightAndExactMass(scan.getTargets(), nameStructure, nameStructureConfig);
 	}
 
 	private void calculateMolWeight(List<IPeak> peaks, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
 
 		for(IPeak peak : peaks) {
-			calculateMolWeight(peak.getTargets(), nameStructure, nameStructureConfig);
+			calculateMolWeightAndExactMass(peak.getTargets(), nameStructure, nameStructureConfig);
 		}
 	}
 
-	private void calculateMolWeight(Set<IIdentificationTarget> targets, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
+	private void calculateMolWeightAndExactMass(Set<IIdentificationTarget> targets, NameToStructure nameStructure, NameToStructureConfig nameStructureConfig) {
 
 		for(IIdentificationTarget target : targets) {
 			/*
@@ -125,12 +120,12 @@ public class TargetPropertyCalculator extends AbstractChromatogramIdentifier {
 				/*
 				 * SMILES exists
 				 */
-				IAtomContainer molecule = generate(libraryInformation.getSmiles());
-				double molWeight = AtomContainerManipulator.getMass(molecule);
-				libraryInformation.setMolWeight(molWeight);
+				IAtomContainer molecule = SmilesSupport.generate(libraryInformation.getSmiles(), PreferenceSupplier.isSmilesStrict());
+				libraryInformation.setMolWeight(MoleculeMassCalculator.calculateMolecularWeight(molecule));
+				libraryInformation.setExactMass(MoleculeMassCalculator.calculateExactMass(MolecularFormulaManipulator.getMolecularFormula(molecule)));
 				if(libraryInformation.getFormula().isEmpty()) {
 					IMolecularFormula molecularFormula = MolecularFormulaManipulator.getMolecularFormula(molecule);
-					libraryInformation.setFormula(MolecularFormulaManipulator.getString(molecularFormula));
+					libraryInformation.setFormula(MolecularFormulaManipulator.getString(molecularFormula)); // Formula
 				}
 			} else {
 				/*
@@ -138,27 +133,10 @@ public class TargetPropertyCalculator extends AbstractChromatogramIdentifier {
 				 */
 				String formula = libraryInformation.getFormula();
 				if(!formula.isEmpty()) {
-					IMolecularFormula molecularFormula = new MolecularFormula();
-					molecularFormula = MolecularFormulaManipulator.getMolecularFormula(formula, molecularFormula);
-					IAtomContainer molecule = MolecularFormulaManipulator.getAtomContainer(molecularFormula);
-					double molWeight = AtomContainerManipulator.getMass(molecule);
-					libraryInformation.setMolWeight(molWeight);
+					libraryInformation.setMolWeight(MoleculeMassCalculator.calculateMolecularWeight(formula));
+					libraryInformation.setExactMass(MoleculeMassCalculator.calculateExactMass(formula));
 				}
 			}
 		}
-	}
-
-	private IAtomContainer generate(String smiles) {
-
-		IAtomContainer molecule = null;
-		if(smiles != null) {
-			try {
-				smilesParser.setStrict(PreferenceSupplier.isSmilesStrict());
-				molecule = smilesParser.parseSmiles(smiles);
-			} catch(InvalidSmilesException e) {
-				//
-			}
-		}
-		return molecule;
 	}
 }
