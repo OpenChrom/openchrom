@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Lablicate GmbH.
+ * Copyright (c) 2023, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,12 +8,14 @@
  * 
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - preference initializer
  *******************************************************************************/
 package net.openchrom.msd.identifier.supplier.massbank.preferences;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
@@ -21,7 +23,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 
 import net.openchrom.msd.identifier.supplier.massbank.Activator;
 
-public class PreferenceSupplier implements IPreferenceSupplier {
+public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
 	public static final String MIRROR_EU = "EU";
 	public static final String MIRROR_JP = "JP";

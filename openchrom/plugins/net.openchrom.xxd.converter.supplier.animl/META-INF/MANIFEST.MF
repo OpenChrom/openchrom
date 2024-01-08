@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.xxd.converter.supplier.animl
 Bundle-ManifestVersion: 2
 Bundle-Name: AnIML
-Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.animl;singleton:=true
+Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.animl
 Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.xxd.converter.supplier.animl.Activator
 Bundle-Vendor: OpenChrom

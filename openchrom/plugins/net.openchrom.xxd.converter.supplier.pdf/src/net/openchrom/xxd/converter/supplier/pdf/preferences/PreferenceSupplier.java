@@ -1,16 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2020 Lablicate GmbH.
+ * Copyright (c) 2014, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.converter.supplier.pdf.preferences;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
@@ -18,7 +19,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 
 import net.openchrom.xxd.converter.supplier.pdf.Activator;
 
-public class PreferenceSupplier implements IPreferenceSupplier {
+public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
 	public static final int MIN_NUMBER_IMAGE_PAGES = 1;
 	public static final int MAX_NUMBER_IMAGE_PAGES = 30;
@@ -87,37 +88,31 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static int getNumberImagePages() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_NUMBER_IMAGE_PAGES, DEF_NUMBER_IMAGE_PAGES);
+		return INSTANCE().getInteger(P_NUMBER_IMAGE_PAGES, DEF_NUMBER_IMAGE_PAGES);
 	}
 
 	public static String getReportBanner() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_REPORT_BANNER, DEF_REPORT_BANNER);
+		return INSTANCE().get(P_REPORT_BANNER, DEF_REPORT_BANNER);
 	}
 
 	public static String getReportSlogan() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_REPORT_SLOGAN, DEF_REPORT_SLOGAN);
+		return INSTANCE().get(P_REPORT_SLOGAN, DEF_REPORT_SLOGAN);
 	}
 
 	public static String getReportMethod() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.get(P_REPORT_METHOD, DEF_REPORT_METHOD);
+		return INSTANCE().get(P_REPORT_METHOD, DEF_REPORT_METHOD);
 	}
 
 	public static int getNumberLargestPeaks() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getInt(P_NUMBER_LARGEST_PEAKS, DEF_NUMBER_LARGEST_PEAKS);
+		return INSTANCE().getInteger(P_NUMBER_LARGEST_PEAKS, DEF_NUMBER_LARGEST_PEAKS);
 	}
 
 	public static boolean printAllTargets() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_PRINT_ALL_TARGETS, DEF_PRINT_ALL_TARGETS);
+		return INSTANCE().getBoolean(P_PRINT_ALL_TARGETS, DEF_PRINT_ALL_TARGETS);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2019 Lablicate GmbH.
+ * Copyright (c) 2013, 2024 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,13 +7,14 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.preferences;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
@@ -21,7 +22,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 
 import net.openchrom.msd.converter.supplier.cdf.Activator;
 
-public class PreferenceSupplier implements IPreferenceSupplier {
+public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
 	public static final String P_PRECISION = "precision";
 	public static final int DEF_PRECISION = 2;
@@ -71,8 +72,7 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static int getPrecision() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		int precision = preferences.getInt(P_PRECISION, DEF_PRECISION);
+		int precision = INSTANCE().getInteger(P_PRECISION, DEF_PRECISION);
 		/*
 		 * Validate the precision.
 		 */
@@ -84,7 +84,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static boolean isForceParseNominal() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_FORCE_PARSE_NOMINAL, DEF_FORCE_PARSE_NOMINAL);
+		return INSTANCE().getBoolean(P_FORCE_PARSE_NOMINAL, DEF_FORCE_PARSE_NOMINAL);
 	}
 }

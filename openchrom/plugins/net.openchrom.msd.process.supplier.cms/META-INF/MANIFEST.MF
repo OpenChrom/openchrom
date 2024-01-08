@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.msd.process.supplier.cms
 Bundle-ManifestVersion: 2
 Bundle-Name: CMS Process
-Bundle-SymbolicName: net.openchrom.msd.process.supplier.cms;singleton:=true
+Bundle-SymbolicName: net.openchrom.msd.process.supplier.cms
 Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.msd.process.supplier.cms.Activator
 Bundle-Vendor: OpenChrom

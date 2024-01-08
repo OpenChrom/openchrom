@@ -24,11 +24,5 @@
             identifierName="SMILES Target Cleaner"
             identifierSettings="net.openchrom.xxd.identifier.supplier.cdk.settings.CleanerSettings">
       </ChromatogramIdentificationSupplier>      
-   </extension>    
-   <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="net.openchrom.xxd.identifier.supplier.cdk.preferences.PreferenceInitializer">
-      </initializer>
-   </extension>   
+   </extension>
 </plugin>

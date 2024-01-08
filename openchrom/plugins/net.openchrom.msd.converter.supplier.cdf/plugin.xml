@@ -16,10 +16,4 @@
             isImportable="true">
       </ChromatogramSupplier>
    </extension>
-   <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="net.openchrom.msd.converter.supplier.cdf.preferences.PreferenceInitializer">
-      </initializer>
-   </extension>
 </plugin>

@@ -13,10 +13,4 @@
             reportSettings="net.openchrom.chromatogram.xxd.report.supplier.csv.settings.ChromatogramReportSettings">
       </ChromatogramReportSupplier>
    </extension>
-   <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="net.openchrom.chromatogram.xxd.report.supplier.csv.preferences.PreferenceInitializer">
-      </initializer>
-   </extension>
 </plugin>

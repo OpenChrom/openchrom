@@ -42,12 +42,6 @@
       </ChromatogramClassifierSupplier>
    </extension>                              
    <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceInitializer">
-      </initializer>
-   </extension>
-   <extension
          point="org.eclipse.chemclipse.msd.converter.chromatogramSupplier">
       <ChromatogramSupplier
             description="Exports a Quant Ratio Classifier Template "

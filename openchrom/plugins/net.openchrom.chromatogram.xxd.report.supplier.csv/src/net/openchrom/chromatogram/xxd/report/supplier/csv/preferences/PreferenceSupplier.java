@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - preference initializer
  *******************************************************************************/
 package net.openchrom.chromatogram.xxd.report.supplier.csv.preferences;
 
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.chemclipse.model.settings.Delimiter;
+import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
@@ -23,7 +25,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import net.openchrom.chromatogram.xxd.report.supplier.csv.Activator;
 import net.openchrom.chromatogram.xxd.report.supplier.csv.settings.ChromatogramReportSettings;
 
-public class PreferenceSupplier implements IPreferenceSupplier {
+public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
 	public static final String P_DELIMITER = "delimiter";
 	public static final Delimiter DEF_DELIMITER = Delimiter.COMMA;
@@ -82,13 +84,11 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static Delimiter getDeliminter() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return Delimiter.valueOf(preferences.get(P_DELIMITER, DEF_DELIMITER.name()));
+		return Delimiter.valueOf(INSTANCE().get(P_DELIMITER, DEF_DELIMITER.name()));
 	}
 
 	public static boolean getReportReferencedChromatograms() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.getBoolean(P_REPORT_REFERENCED_CHROMATOGRAMS, DEF_REPORT_REFERENCED_CHROMATOGRAMS);
+		return INSTANCE().getBoolean(P_REPORT_REFERENCED_CHROMATOGRAMS, DEF_REPORT_REFERENCED_CHROMATOGRAMS);
 	}
 }

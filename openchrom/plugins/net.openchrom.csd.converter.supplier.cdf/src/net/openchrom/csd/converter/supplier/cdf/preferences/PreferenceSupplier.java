@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -14,6 +14,7 @@ package net.openchrom.csd.converter.supplier.cdf.preferences;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
@@ -21,7 +22,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 
 import net.openchrom.csd.converter.supplier.cdf.Activator;
 
-public class PreferenceSupplier implements IPreferenceSupplier {
+public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
 	public static final int MIN_MODULATION_TIME = 1;
 	public static final int MAX_MODULATION_TIME = Integer.MAX_VALUE;
@@ -67,7 +68,6 @@ public class PreferenceSupplier implements IPreferenceSupplier {
 
 	public static int getModulationTime2D() {
 
-		IEclipsePreferences eclipsePreferences = INSTANCE().getPreferences();
-		return eclipsePreferences.getInt(P_MODULATION_TIME_2D, DEF_MODULATION_TIME_2D);
+		return INSTANCE().getInteger(P_MODULATION_TIME_2D, DEF_MODULATION_TIME_2D);
 	}
 }

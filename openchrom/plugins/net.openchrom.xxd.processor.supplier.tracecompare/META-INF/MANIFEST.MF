@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.xxd.processor.supplier.tracecompare
 Bundle-ManifestVersion: 2
 Bundle-Name: Trace Compare (Model)
-Bundle-SymbolicName: net.openchrom.xxd.processor.supplier.tracecompare;singleton:=true
+Bundle-SymbolicName: net.openchrom.xxd.processor.supplier.tracecompare
 Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.xxd.processor.supplier.tracecompare.Activator
 Bundle-Vendor: OpenChrom

@@ -133,12 +133,6 @@
       </PeakDetector>
    </extension>
    <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="net.openchrom.xxd.process.supplier.templates.preferences.PreferenceInitializer">
-      </initializer>
-   </extension>
-   <extension
          point="org.eclipse.chemclipse.msd.converter.chromatogramSupplier">
       <ChromatogramSupplier
             description="Exports a Peak Detector Template "

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector
 Bundle-ManifestVersion: 2
 Bundle-Name: Mass Shift Detector (Model)
-Bundle-SymbolicName: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector;singleton:=true
+Bundle-SymbolicName: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector
 Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.Activator
 Bundle-Vendor: OpenChrom
