@@ -8,14 +8,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.converter.supplier.pdf.preferences;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 
 import net.openchrom.xxd.converter.supplier.pdf.Activator;
 
@@ -45,7 +39,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String P_PRINT_ALL_TARGETS = "printAllTargets";
 	public static final boolean DEF_PRINT_ALL_TARGETS = false;
 	//
-	private static IPreferenceSupplier preferenceSupplier;
+	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
@@ -56,34 +50,20 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	}
 
 	@Override
-	public IScopeContext getScopeContext() {
-
-		return InstanceScope.INSTANCE;
-	}
-
-	@Override
 	public String getPreferenceNode() {
 
 		return Activator.getContext().getBundle().getSymbolicName();
 	}
 
 	@Override
-	public Map<String, String> getDefaultValues() {
+	public void initializeDefaults() {
 
-		Map<String, String> defaultValues = new HashMap<String, String>();
-		defaultValues.put(P_NUMBER_IMAGE_PAGES, Integer.toString(DEF_NUMBER_IMAGE_PAGES));
-		defaultValues.put(P_REPORT_BANNER, DEF_REPORT_BANNER);
-		defaultValues.put(P_REPORT_SLOGAN, DEF_REPORT_SLOGAN);
-		defaultValues.put(P_REPORT_METHOD, DEF_REPORT_METHOD);
-		defaultValues.put(P_NUMBER_LARGEST_PEAKS, Integer.toString(DEF_NUMBER_LARGEST_PEAKS));
-		defaultValues.put(P_PRINT_ALL_TARGETS, Boolean.toString(DEF_PRINT_ALL_TARGETS));
-		return defaultValues;
-	}
-
-	@Override
-	public IEclipsePreferences getPreferences() {
-
-		return getScopeContext().getNode(getPreferenceNode());
+		putDefault(P_NUMBER_IMAGE_PAGES, Integer.toString(DEF_NUMBER_IMAGE_PAGES));
+		putDefault(P_REPORT_BANNER, DEF_REPORT_BANNER);
+		putDefault(P_REPORT_SLOGAN, DEF_REPORT_SLOGAN);
+		putDefault(P_REPORT_METHOD, DEF_REPORT_METHOD);
+		putDefault(P_NUMBER_LARGEST_PEAKS, Integer.toString(DEF_NUMBER_LARGEST_PEAKS));
+		putDefault(P_PRINT_ALL_TARGETS, Boolean.toString(DEF_PRINT_ALL_TARGETS));
 	}
 
 	public static int getNumberImagePages() {

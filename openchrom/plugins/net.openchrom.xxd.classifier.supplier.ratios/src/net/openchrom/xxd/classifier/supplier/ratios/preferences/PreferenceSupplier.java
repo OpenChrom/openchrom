@@ -11,14 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.preferences;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 
 import net.openchrom.xxd.classifier.supplier.ratios.Activator;
 import net.openchrom.xxd.classifier.supplier.ratios.settings.QualRatioSettings;
@@ -53,7 +47,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String P_EXPORT_NUMBER_TRACES = "exportNumberTraces";
 	public static final int DEF_EXPORT_NUMBER_TRACES = 5;
 	//
-	private static IPreferenceSupplier preferenceSupplier;
+	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
@@ -64,41 +58,25 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	}
 
 	@Override
-	public IScopeContext getScopeContext() {
-
-		return InstanceScope.INSTANCE;
-	}
-
-	@Override
 	public String getPreferenceNode() {
 
 		return Activator.getContext().getBundle().getSymbolicName();
 	}
 
 	@Override
-	public Map<String, String> getDefaultValues() {
+	public void initializeDefaults() {
 
-		Map<String, String> defaultValues = new HashMap<String, String>();
+		putDefault(P_ALLOWED_DEVIATION_OK, Float.toString(DEF_ALLOWED_DEVIATION_OK));
+		putDefault(P_ALLOWED_DEVIATION_WARN, Float.toString(DEF_ALLOWED_DEVIATION_WARN));
 		//
-		defaultValues.put(P_ALLOWED_DEVIATION_OK, Float.toString(DEF_ALLOWED_DEVIATION_OK));
-		defaultValues.put(P_ALLOWED_DEVIATION_WARN, Float.toString(DEF_ALLOWED_DEVIATION_WARN));
+		putDefault(P_TRACE_RATIO_LIST, DEF_TRACE_RATIO_LIST);
+		putDefault(P_TIME_RATIO_LIST, DEF_TIME_RATIO_LIST);
+		putDefault(P_QUANT_RATIO_LIST, DEF_QUANT_RATIO_LIST);
 		//
-		defaultValues.put(P_TRACE_RATIO_LIST, DEF_TRACE_RATIO_LIST);
-		defaultValues.put(P_TIME_RATIO_LIST, DEF_TIME_RATIO_LIST);
-		defaultValues.put(P_QUANT_RATIO_LIST, DEF_QUANT_RATIO_LIST);
+		putDefault(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
+		putDefault(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
 		//
-		defaultValues.put(P_LIST_PATH_IMPORT, DEF_LIST_PATH_IMPORT);
-		defaultValues.put(P_LIST_PATH_EXPORT, DEF_LIST_PATH_EXPORT);
-		//
-		defaultValues.put(P_EXPORT_NUMBER_TRACES, Integer.toString(DEF_EXPORT_NUMBER_TRACES));
-		//
-		return defaultValues;
-	}
-
-	@Override
-	public IEclipsePreferences getPreferences() {
-
-		return getScopeContext().getNode(getPreferenceNode());
+		putDefault(P_EXPORT_NUMBER_TRACES, Integer.toString(DEF_EXPORT_NUMBER_TRACES));
 	}
 
 	public static TraceRatioSettings getSettingsTrace() {

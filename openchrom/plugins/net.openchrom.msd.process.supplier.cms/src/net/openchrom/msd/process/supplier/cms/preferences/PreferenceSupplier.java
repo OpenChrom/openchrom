@@ -12,14 +12,8 @@
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.preferences;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 
 import net.openchrom.msd.process.supplier.cms.Activator;
 
@@ -32,7 +26,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String P_PATH_CMS_LIBRARY_SPECTRA = "pathCmsLibrarySpectra";
 	public static final String DEF_PATH_CMS_LIBRARY_SPECTRA = "";
 	//
-	private static IPreferenceSupplier preferenceSupplier;
+	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
@@ -43,33 +37,17 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	}
 
 	@Override
-	public IScopeContext getScopeContext() {
-
-		return InstanceScope.INSTANCE;
-	}
-
-	@Override
 	public String getPreferenceNode() {
 
 		return Activator.getContext().getBundle().getSymbolicName();
 	}
 
 	@Override
-	public Map<String, String> getDefaultValues() {
+	public void initializeDefaults() {
 
-		Map<String, String> defaultValues = new HashMap<String, String>();
-		//
-		defaultValues.put(P_PATH_LIBRARY_EXPLORER, DEF_PATH_LIBRARY_EXPLORER);
-		defaultValues.put(P_PATH_CMS_SCAN_SPECTRA, DEF_PATH_CMS_SCAN_SPECTRA);
-		defaultValues.put(P_PATH_CMS_LIBRARY_SPECTRA, DEF_PATH_CMS_LIBRARY_SPECTRA);
-		//
-		return defaultValues;
-	}
-
-	@Override
-	public IEclipsePreferences getPreferences() {
-
-		return getScopeContext().getNode(getPreferenceNode());
+		putDefault(P_PATH_LIBRARY_EXPLORER, DEF_PATH_LIBRARY_EXPLORER);
+		putDefault(P_PATH_CMS_SCAN_SPECTRA, DEF_PATH_CMS_SCAN_SPECTRA);
+		putDefault(P_PATH_CMS_LIBRARY_SPECTRA, DEF_PATH_CMS_LIBRARY_SPECTRA);
 	}
 
 	public static String getPathLibraryExplorer() {

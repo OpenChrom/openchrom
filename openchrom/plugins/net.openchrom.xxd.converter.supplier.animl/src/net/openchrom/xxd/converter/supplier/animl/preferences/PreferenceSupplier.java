@@ -12,14 +12,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.converter.supplier.animl.preferences;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 
 import net.openchrom.xxd.converter.supplier.animl.Activator;
 import net.openchrom.xxd.converter.supplier.animl.internal.converter.IFormat;
@@ -33,7 +27,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String P_MASS_SPECTRUM_SAVE_ENCODED = "massSpectrumEncoded";
 	public static final boolean DEF_MASS_SPECTRUM_SAVE_ENCODED = true;
 	//
-	private static IPreferenceSupplier preferenceSupplier;
+	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
@@ -44,31 +38,17 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	}
 
 	@Override
-	public IScopeContext getScopeContext() {
-
-		return InstanceScope.INSTANCE;
-	}
-
-	@Override
 	public String getPreferenceNode() {
 
 		return Activator.getContext().getBundle().getSymbolicName();
 	}
 
 	@Override
-	public Map<String, String> getDefaultValues() {
+	public void initializeDefaults() {
 
-		Map<String, String> defaultValues = new HashMap<>();
-		defaultValues.put(P_CHROMATOGRAM_VERSION_SAVE, DEF_CHROMATOGRAM_VERSION_SAVE);
-		defaultValues.put(P_CHROMATOGRAM_SAVE_ENCODED, Boolean.toString(DEF_CHROMATOGRAM_SAVE_ENCODED));
-		defaultValues.put(P_MASS_SPECTRUM_SAVE_ENCODED, Boolean.toString(DEF_MASS_SPECTRUM_SAVE_ENCODED));
-		return defaultValues;
-	}
-
-	@Override
-	public IEclipsePreferences getPreferences() {
-
-		return getScopeContext().getNode(getPreferenceNode());
+		putDefault(P_CHROMATOGRAM_VERSION_SAVE, DEF_CHROMATOGRAM_VERSION_SAVE);
+		putDefault(P_CHROMATOGRAM_SAVE_ENCODED, Boolean.toString(DEF_CHROMATOGRAM_SAVE_ENCODED));
+		putDefault(P_MASS_SPECTRUM_SAVE_ENCODED, Boolean.toString(DEF_MASS_SPECTRUM_SAVE_ENCODED));
 	}
 
 	public static String getChromatogramVersionSave() {

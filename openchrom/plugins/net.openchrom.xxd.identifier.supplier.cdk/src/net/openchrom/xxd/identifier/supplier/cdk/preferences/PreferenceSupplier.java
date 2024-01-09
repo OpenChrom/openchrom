@@ -11,15 +11,10 @@
  *******************************************************************************/
 package net.openchrom.xxd.identifier.supplier.cdk.preferences;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.openscience.cdk.interfaces.IIsotope;
 
 import net.openchrom.xxd.identifier.supplier.cdk.Activator;
@@ -69,7 +64,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String P_SHOW_ATOMS_H = "showAtomsH";
 	public static final boolean DEF_SHOW_ATOMS_H = false;
 	//
-	private static IPreferenceSupplier preferenceSupplier;
+	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
@@ -80,46 +75,30 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	}
 
 	@Override
-	public IScopeContext getScopeContext() {
-
-		return InstanceScope.INSTANCE;
-	}
-
-	@Override
 	public String getPreferenceNode() {
 
 		return Activator.getContext().getBundle().getSymbolicName();
 	}
 
 	@Override
-	public Map<String, String> getDefaultValues() {
+	public void initializeDefaults() {
 
-		Map<String, String> defaultValues = new HashMap<>();
+		putDefault(P_ISOTOPE_ITERATION_DEPTH, Integer.toString(DEF_ISOTOPE_ITERATION_DEPTH));
+		putDefault(P_ISOTOPE_SET, DEF_ISOTOPE_SET);
+		putDefault(P_USER_DEFINED_ISOTOPES, DEF_USER_DEFINED_ISOTOPES);
 		//
-		defaultValues.put(P_ISOTOPE_ITERATION_DEPTH, Integer.toString(DEF_ISOTOPE_ITERATION_DEPTH));
-		defaultValues.put(P_ISOTOPE_SET, DEF_ISOTOPE_SET);
-		defaultValues.put(P_USER_DEFINED_ISOTOPES, DEF_USER_DEFINED_ISOTOPES);
+		putDefault(P_SMILES_STRICT, Boolean.toString(DEF_SMILES_STRICT));
 		//
-		defaultValues.put(P_SMILES_STRICT, Boolean.toString(DEF_SMILES_STRICT));
+		putDefault(P_ALLOW_RADICALS, Boolean.toString(DEF_ALLOW_RADICALS));
+		putDefault(P_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS, Boolean.toString(DEF_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS));
+		putDefault(P_DETAILED_FAILURE_ANALYSIS, Boolean.toString(DEF_DETAILED_FAILURE_ANALYSIS));
+		putDefault(P_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID, Boolean.toString(DEF_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID));
+		putDefault(P_WARN_RATHER_THAN_FAIL, Boolean.toString(DEF_WARN_RATHER_THAN_FAIL));
 		//
-		defaultValues.put(P_ALLOW_RADICALS, Boolean.toString(DEF_ALLOW_RADICALS));
-		defaultValues.put(P_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS, Boolean.toString(DEF_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS));
-		defaultValues.put(P_DETAILED_FAILURE_ANALYSIS, Boolean.toString(DEF_DETAILED_FAILURE_ANALYSIS));
-		defaultValues.put(P_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID, Boolean.toString(DEF_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID));
-		defaultValues.put(P_WARN_RATHER_THAN_FAIL, Boolean.toString(DEF_WARN_RATHER_THAN_FAIL));
+		putDefault(P_DELETE_SCAN_TARGETS, Boolean.toString(DEF_DELETE_SCAN_TARGETS));
+		putDefault(P_DELETE_PEAK_TARGETS, Boolean.toString(DEF_DELETE_PEAK_TARGETS));
 		//
-		defaultValues.put(P_DELETE_SCAN_TARGETS, Boolean.toString(DEF_DELETE_SCAN_TARGETS));
-		defaultValues.put(P_DELETE_PEAK_TARGETS, Boolean.toString(DEF_DELETE_PEAK_TARGETS));
-		//
-		defaultValues.put(P_SHOW_ATOMS_H, Boolean.toString(DEF_SHOW_ATOMS_H));
-		//
-		return defaultValues;
-	}
-
-	@Override
-	public IEclipsePreferences getPreferences() {
-
-		return getScopeContext().getNode(getPreferenceNode());
+		putDefault(P_SHOW_ATOMS_H, Boolean.toString(DEF_SHOW_ATOMS_H));
 	}
 
 	public static IsotopeDecider getIsotopeDecider() {

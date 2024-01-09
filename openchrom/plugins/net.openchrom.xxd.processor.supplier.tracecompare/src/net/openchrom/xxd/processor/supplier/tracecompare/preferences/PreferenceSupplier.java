@@ -11,14 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.processor.supplier.tracecompare.preferences;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.Activator;
 
@@ -83,7 +77,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String P_LINE_WIDTH_HIGHLIGHT = "lineWidthHighlight";
 	public static final int DEF_LINE_WIDTH_HIGHLIGHT = 2;
 	//
-	private static IPreferenceSupplier preferenceSupplier;
+	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
@@ -94,50 +88,36 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	}
 
 	@Override
-	public IScopeContext getScopeContext() {
-
-		return InstanceScope.INSTANCE;
-	}
-
-	@Override
 	public String getPreferenceNode() {
 
 		return Activator.getContext().getBundle().getSymbolicName();
 	}
 
 	@Override
-	public Map<String, String> getDefaultValues() {
+	public void initializeDefaults() {
 
-		Map<String, String> defaultValues = new HashMap<String, String>();
-		defaultValues.put(P_DETECTOR_TYPE, DEF_DETECTOR_TYPE);
-		defaultValues.put(P_FILE_EXTENSION, DEF_FILE_EXTENSION);
-		defaultValues.put(P_FILE_PATTERN, DEF_FILE_PATTERN);
-		defaultValues.put(P_SAMPLE_DIRECTORY, DEF_SAMPLE_DIRECTORY);
-		defaultValues.put(P_REFERENCE_DIRECTORY, DEF_REFERENCE_DIRECTORY);
-		defaultValues.put(P_SEARCH_CASE_SENSITIVE, Boolean.toString(DEF_SEARCH_CASE_SENSITIVE));
-		defaultValues.put(P_SCAN_VELOCITY, Integer.toString(DEF_SCAN_VELOCITY));
-		defaultValues.put(P_COLOR_DATA_190, DEF_COLOR_DATA_190);
-		defaultValues.put(P_COLOR_DATA_200, DEF_COLOR_DATA_200);
-		defaultValues.put(P_COLOR_DATA_220, DEF_COLOR_DATA_220);
-		defaultValues.put(P_COLOR_DATA_240, DEF_COLOR_DATA_240);
-		defaultValues.put(P_COLOR_DATA_260, DEF_COLOR_DATA_260);
-		defaultValues.put(P_COLOR_DATA_280, DEF_COLOR_DATA_280);
-		defaultValues.put(P_COLOR_DATA_300, DEF_COLOR_DATA_300);
-		defaultValues.put(P_COLOR_DATA_DEFAULT, DEF_COLOR_DATA_DEFAULT);
-		defaultValues.put(P_MIRROR_REFERENCE_DATA, Boolean.toString(DEF_MIRROR_REFERENCE_DATA));
-		defaultValues.put(P_USE_DATA_VALIDATION, Boolean.toString(DEF_USE_DATA_VALIDATION));
-		defaultValues.put(P_LINE_STYLE_SAMPLE, DEF_LINE_STYLE_SAMPLE);
-		defaultValues.put(P_LINE_WIDTH_SAMPLE, Integer.toString(DEF_LINE_WIDTH_SAMPLE));
-		defaultValues.put(P_LINE_STYLE_REFERENCE, DEF_LINE_STYLE_REFERENCE);
-		defaultValues.put(P_LINE_WIDTH_REFERENCE, Integer.toString(DEF_LINE_WIDTH_REFERENCE));
-		defaultValues.put(P_LINE_WIDTH_HIGHLIGHT, Integer.toString(DEF_LINE_WIDTH_HIGHLIGHT));
-		return defaultValues;
-	}
-
-	@Override
-	public IEclipsePreferences getPreferences() {
-
-		return getScopeContext().getNode(getPreferenceNode());
+		putDefault(P_DETECTOR_TYPE, DEF_DETECTOR_TYPE);
+		putDefault(P_FILE_EXTENSION, DEF_FILE_EXTENSION);
+		putDefault(P_FILE_PATTERN, DEF_FILE_PATTERN);
+		putDefault(P_SAMPLE_DIRECTORY, DEF_SAMPLE_DIRECTORY);
+		putDefault(P_REFERENCE_DIRECTORY, DEF_REFERENCE_DIRECTORY);
+		putDefault(P_SEARCH_CASE_SENSITIVE, Boolean.toString(DEF_SEARCH_CASE_SENSITIVE));
+		putDefault(P_SCAN_VELOCITY, Integer.toString(DEF_SCAN_VELOCITY));
+		putDefault(P_COLOR_DATA_190, DEF_COLOR_DATA_190);
+		putDefault(P_COLOR_DATA_200, DEF_COLOR_DATA_200);
+		putDefault(P_COLOR_DATA_220, DEF_COLOR_DATA_220);
+		putDefault(P_COLOR_DATA_240, DEF_COLOR_DATA_240);
+		putDefault(P_COLOR_DATA_260, DEF_COLOR_DATA_260);
+		putDefault(P_COLOR_DATA_280, DEF_COLOR_DATA_280);
+		putDefault(P_COLOR_DATA_300, DEF_COLOR_DATA_300);
+		putDefault(P_COLOR_DATA_DEFAULT, DEF_COLOR_DATA_DEFAULT);
+		putDefault(P_MIRROR_REFERENCE_DATA, Boolean.toString(DEF_MIRROR_REFERENCE_DATA));
+		putDefault(P_USE_DATA_VALIDATION, Boolean.toString(DEF_USE_DATA_VALIDATION));
+		putDefault(P_LINE_STYLE_SAMPLE, DEF_LINE_STYLE_SAMPLE);
+		putDefault(P_LINE_WIDTH_SAMPLE, Integer.toString(DEF_LINE_WIDTH_SAMPLE));
+		putDefault(P_LINE_STYLE_REFERENCE, DEF_LINE_STYLE_REFERENCE);
+		putDefault(P_LINE_WIDTH_REFERENCE, Integer.toString(DEF_LINE_WIDTH_REFERENCE));
+		putDefault(P_LINE_WIDTH_HIGHLIGHT, Integer.toString(DEF_LINE_WIDTH_HIGHLIGHT));
 	}
 
 	public static String[][] getDetectorTypes() {

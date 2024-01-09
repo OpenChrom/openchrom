@@ -2,12 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="net.openchrom.swtchart.extension.export.vectorgraphics.preferences.PreferenceSupplier">
-      </initializer>
-   </extension>
-   <extension
          point="org.eclipse.swtchart.extensions.menuitems">
       <MenuItemSupplier
             MenuEntry="net.openchrom.swtchart.extension.export.vectorgraphics.core.EPSExportHandler">
