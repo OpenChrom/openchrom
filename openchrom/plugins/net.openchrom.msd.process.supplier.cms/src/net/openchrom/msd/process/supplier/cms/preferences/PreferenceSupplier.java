@@ -25,15 +25,10 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String DEF_PATH_CMS_SCAN_SPECTRA = "";
 	public static final String P_PATH_CMS_LIBRARY_SPECTRA = "pathCmsLibrarySpectra";
 	public static final String DEF_PATH_CMS_LIBRARY_SPECTRA = "";
-	//
-	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
-		if(preferenceSupplier == null) {
-			preferenceSupplier = new PreferenceSupplier();
-		}
-		return preferenceSupplier;
+		return INSTANCE(PreferenceSupplier.class);
 	}
 
 	@Override

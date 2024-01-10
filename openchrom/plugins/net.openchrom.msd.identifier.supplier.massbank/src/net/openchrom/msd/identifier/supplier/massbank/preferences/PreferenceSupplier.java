@@ -24,15 +24,10 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	//
 	public static final String P_MASSBANK_MIRROR = "massBankMirror";
 	public static final String DEF_MASSBANK_MIRROR = MIRROR_EU;
-	//
-	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
-		if(preferenceSupplier == null) {
-			preferenceSupplier = new PreferenceSupplier();
-		}
-		return preferenceSupplier;
+		return INSTANCE(PreferenceSupplier.class);
 	}
 
 	@Override

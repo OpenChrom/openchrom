@@ -262,15 +262,10 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	 */
 	public static final String P_PEAK_EXPORT_NUMBER_TRACES = "peakExportNumberTraces";
 	public static final int DEF_PEAK_EXPORT_NUMBER_TRACES = 5;
-	//
-	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
-		if(preferenceSupplier == null) {
-			preferenceSupplier = new PreferenceSupplier();
-		}
-		return preferenceSupplier;
+		return INSTANCE(PreferenceSupplier.class);
 	}
 
 	@Override

@@ -38,15 +38,10 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final int DEF_NUMBER_LARGEST_PEAKS = 10;
 	public static final String P_PRINT_ALL_TARGETS = "printAllTargets";
 	public static final boolean DEF_PRINT_ALL_TARGETS = false;
-	//
-	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
-		if(preferenceSupplier == null) {
-			preferenceSupplier = new PreferenceSupplier();
-		}
-		return preferenceSupplier;
+		return INSTANCE(PreferenceSupplier.class);
 	}
 
 	@Override

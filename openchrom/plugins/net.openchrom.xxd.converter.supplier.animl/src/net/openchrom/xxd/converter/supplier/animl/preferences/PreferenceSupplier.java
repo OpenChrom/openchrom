@@ -26,15 +26,10 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final boolean DEF_CHROMATOGRAM_SAVE_ENCODED = true;
 	public static final String P_MASS_SPECTRUM_SAVE_ENCODED = "massSpectrumEncoded";
 	public static final boolean DEF_MASS_SPECTRUM_SAVE_ENCODED = true;
-	//
-	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
-		if(preferenceSupplier == null) {
-			preferenceSupplier = new PreferenceSupplier();
-		}
-		return preferenceSupplier;
+		return INSTANCE(PreferenceSupplier.class);
 	}
 
 	@Override

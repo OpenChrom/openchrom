@@ -76,15 +76,10 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final int DEF_LINE_WIDTH_REFERENCE = 1;
 	public static final String P_LINE_WIDTH_HIGHLIGHT = "lineWidthHighlight";
 	public static final int DEF_LINE_WIDTH_HIGHLIGHT = 2;
-	//
-	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
-		if(preferenceSupplier == null) {
-			preferenceSupplier = new PreferenceSupplier();
-		}
-		return preferenceSupplier;
+		return INSTANCE(PreferenceSupplier.class);
 	}
 
 	@Override

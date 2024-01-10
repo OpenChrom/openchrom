@@ -46,15 +46,10 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final int MAX_NUMBER_TRACES = 10;
 	public static final String P_EXPORT_NUMBER_TRACES = "exportNumberTraces";
 	public static final int DEF_EXPORT_NUMBER_TRACES = 5;
-	//
-	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
-		if(preferenceSupplier == null) {
-			preferenceSupplier = new PreferenceSupplier();
-		}
-		return preferenceSupplier;
+		return INSTANCE(PreferenceSupplier.class);
 	}
 
 	@Override

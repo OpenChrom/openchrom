@@ -23,15 +23,10 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	//
 	public static final String P_MODULATION_TIME_2D = "modulationTime2D"; // $NON-NLS-1$
 	public static final int DEF_MODULATION_TIME_2D = 10000; // Milliseconds = 10 s
-	//
-	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
-		if(preferenceSupplier == null) {
-			preferenceSupplier = new PreferenceSupplier();
-		}
-		return preferenceSupplier;
+		return INSTANCE(PreferenceSupplier.class);
 	}
 
 	@Override

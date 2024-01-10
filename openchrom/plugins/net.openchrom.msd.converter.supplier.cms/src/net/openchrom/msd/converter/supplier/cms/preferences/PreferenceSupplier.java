@@ -25,15 +25,10 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final boolean DEF_REMOVE_INTENSITIES_LOWER_THAN_ONE = true;
 	public static final String P_NORMALIZE_INTENSITIES = "normalizeIntensities";
 	public static final boolean DEF_NORMALIZE_INTENSITIES = true;
-	//
-	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
-		if(preferenceSupplier == null) {
-			preferenceSupplier = new PreferenceSupplier();
-		}
-		return preferenceSupplier;
+		return INSTANCE(PreferenceSupplier.class);
 	}
 
 	@Override

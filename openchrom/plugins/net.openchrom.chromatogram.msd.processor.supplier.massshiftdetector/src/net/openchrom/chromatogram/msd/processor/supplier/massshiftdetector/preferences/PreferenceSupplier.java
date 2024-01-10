@@ -22,15 +22,10 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String DEF_FILTER_PATH_REFERENCE_CHROMATOGRAM = "";
 	public static final String P_FILTER_PATH_ISOTOPE_CHROMATOGRAM = "filterPathIsotopeChromatogram";
 	public static final String DEF_FILTER_PATH_ISOTOPE_CHROMATOGRAM = "";
-	//
-	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
-		if(preferenceSupplier == null) {
-			preferenceSupplier = new PreferenceSupplier();
-		}
-		return preferenceSupplier;
+		return INSTANCE(PreferenceSupplier.class);
 	}
 
 	@Override

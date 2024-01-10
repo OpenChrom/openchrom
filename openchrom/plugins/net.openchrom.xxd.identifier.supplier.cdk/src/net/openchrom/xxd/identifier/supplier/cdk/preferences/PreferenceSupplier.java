@@ -63,15 +63,10 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	 */
 	public static final String P_SHOW_ATOMS_H = "showAtomsH";
 	public static final boolean DEF_SHOW_ATOMS_H = false;
-	//
-	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
 
-		if(preferenceSupplier == null) {
-			preferenceSupplier = new PreferenceSupplier();
-		}
-		return preferenceSupplier;
+		return INSTANCE(PreferenceSupplier.class);
 	}
 
 	@Override
