@@ -70,16 +70,6 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-		<dependencies>
-			<dependency>
-				<groupId>com.github.fracpete</groupId>
-				<artifactId>jcamp-dx</artifactId>
-				<version>0.9.7</version>
-				<type>jar</type>
-			</dependency>
-		</dependencies>
-	</location>
 	<location includeDependencyDepth="none" includeDependencyScopes="compile,runtime" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
