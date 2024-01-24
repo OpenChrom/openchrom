@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.support.editor.SystemEditor;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.core.ReportWriter;
@@ -48,6 +49,9 @@ public class ChromatogramReport extends AbstractChromatogramReportGenerator {
 					ReportWriter reportWriter = new ReportWriter();
 					reportWriter.generate(file, append, chromatograms, reportSettings, monitor);
 					processingInfo.setProcessingResult(file);
+					if(reportSettings.isOpenReportAfterProcessing()) {
+						SystemEditor.open(file);
+					}
 				} catch(IOException e) {
 					logger.warn(e);
 					processingInfo.addErrorMessage(DESCRIPTION, "The report couldn't be created. An error occured.");

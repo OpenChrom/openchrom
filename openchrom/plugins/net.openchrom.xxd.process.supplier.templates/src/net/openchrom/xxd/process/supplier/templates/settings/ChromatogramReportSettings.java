@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -60,6 +60,12 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	@JsonProperty(value = "Use References", defaultValue = "false")
 	@JsonPropertyDescription(value = "Report all referenced chromatograms.")
 	private boolean reportReferencedChromatograms = false;
+	@JsonProperty(value = "Format Concentration (Pattern)", defaultValue = "0.000")
+	@JsonPropertyDescription(value = "Use the decimal format pattern to print concentrations. If empty, print value wihtout formatting.")
+	private String formatConcentration = "0.000";
+	@JsonProperty(value = "Open Report (External)", defaultValue = "false")
+	@JsonPropertyDescription(value = "The report will be opened in the system application after creation.")
+	private boolean openReportAfterProcessing = false;
 
 	public boolean isPrintHeader() {
 
@@ -159,5 +165,25 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	public void setReportReferencedChromatograms(boolean reportReferencedChromatograms) {
 
 		this.reportReferencedChromatograms = reportReferencedChromatograms;
+	}
+
+	public String getFormatConcentration() {
+
+		return formatConcentration;
+	}
+
+	public void setFormatConcentration(String formatConcentration) {
+
+		this.formatConcentration = formatConcentration;
+	}
+
+	public boolean isOpenReportAfterProcessing() {
+
+		return openReportAfterProcessing;
+	}
+
+	public void setOpenReportAfterProcessing(boolean openReportAfterProcessing) {
+
+		this.openReportAfterProcessing = openReportAfterProcessing;
 	}
 }

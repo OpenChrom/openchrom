@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -249,8 +249,11 @@ public class ReportWriter {
 	private void printResults(ChromatogramReportSettings chromatogramReportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, boolean fileExists, String chromatogramName, List<Integer> traces, RetentionIndexMap retentionIndexMap, double chromatogramPeakArea, PrintWriter printWriter) {
 
 		List<ReportSetting> reportSettings = chromatogramReportSettings.getReportSettings();
+		String decimalFormatPattern = chromatogramReportSettings.getFormatConcentration();
+		DecimalFormat decimalFormat = decimalFormatPattern.isEmpty() ? null : ValueFormat.getDecimalFormatEnglish(decimalFormatPattern);
+		//
 		printResultHeader(chromatogramReportSettings, columnsToPrint, fileExists, printWriter);
-		printResultData(reportSettings, mappedResults, columnsToPrint, chromatogramName, traces, retentionIndexMap, chromatogramPeakArea, printWriter);
+		printResultData(reportSettings, mappedResults, columnsToPrint, chromatogramName, traces, retentionIndexMap, chromatogramPeakArea, decimalFormat, printWriter);
 		//
 		if(chromatogramReportSettings.isPrintSectionSeparator()) {
 			printWriter.println("");
@@ -271,7 +274,7 @@ public class ReportWriter {
 		}
 	}
 
-	private void printResultData(List<ReportSetting> reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, String chromatogramName, List<Integer> traces, RetentionIndexMap retentionIndexMap, double chromatogramPeakArea, PrintWriter printWriter) {
+	private void printResultData(List<ReportSetting> reportSettings, Map<ReportSetting, List<IPeak>> mappedResults, List<String> columnsToPrint, String chromatogramName, List<Integer> traces, RetentionIndexMap retentionIndexMap, double chromatogramPeakArea, DecimalFormat decimalFormat, PrintWriter printWriter) {
 
 		/*
 		 * The sort order of the report setting list is important.
@@ -301,7 +304,7 @@ public class ReportWriter {
 				String meanSignalToNoiseRatios = SIGNAL_TO_NOISE_FORMAT.format(Calculations.getMean(signalToNoiseRatios));
 				String medianSignalToNoiseRatios = SIGNAL_TO_NOISE_FORMAT.format(Calculations.getMedian(signalToNoiseRatios));
 				String stopSignalToNoiseRatios = SIGNAL_TO_NOISE_FORMAT.format(Calculations.getMax(signalToNoiseRatios));
-				String concentrations = getConcentrations(peaks);
+				String concentrations = getConcentrations(peaks, decimalFormat);
 				/*
 				 * Data
 				 */
@@ -674,7 +677,7 @@ public class ReportWriter {
 		return 0.0d;
 	}
 
-	private String getConcentrations(List<IPeak> peaks) {
+	private String getConcentrations(List<IPeak> peaks, DecimalFormat decimalFormat) {
 
 		StringBuilder builder = new StringBuilder();
 		//
@@ -687,7 +690,7 @@ public class ReportWriter {
 		Iterator<IQuantitationEntry> iterator = quantitationEntries.iterator();
 		while(iterator.hasNext()) {
 			IQuantitationEntry quantitationEntry = iterator.next();
-			builder.append(quantitationEntry.getConcentration());
+			builder.append(getValue(quantitationEntry.getConcentration(), decimalFormat));
 			builder.append(" ");
 			builder.append(quantitationEntry.getConcentrationUnit());
 			if(iterator.hasNext()) {
@@ -696,5 +699,10 @@ public class ReportWriter {
 		}
 		//
 		return builder.toString();
+	}
+
+	private String getValue(double value, DecimalFormat decimalFormat) {
+
+		return decimalFormat != null ? decimalFormat.format(value) : Double.toString(value);
 	}
 }
