@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2023 Lablicate GmbH.
+ * Copyright (c) 2014, 2024 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -35,6 +35,7 @@ import net.openchrom.csd.converter.supplier.cdf.io.support.DateSupport;
 import net.openchrom.csd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
 import net.openchrom.csd.converter.supplier.cdf.model.VendorChromatogramCSD;
 import net.openchrom.csd.converter.supplier.cdf.model.VendorScan;
+
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 
@@ -108,6 +109,7 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 	 */
 	private VendorChromatogramCSD readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
+		monitor.subTask("Import");
 		NetcdfFile cdfChromatogram = NetcdfFiles.open(file.getAbsolutePath());
 		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
 		VendorChromatogramCSD chromatogram = new VendorChromatogramCSD();
@@ -116,14 +118,17 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 		int retentionTime = in.getScanDelay();
 		int scans = in.getNumberOfScans();
 		for(int i = 0; i < scans; i++) {
-			monitor.subTask(IConstants.SCAN + " " + i);
 			VendorScan scan = new VendorScan(in.getIntensity(i));
 			scan.setRetentionTime(retentionTime);
 			retentionTime += in.getScanInterval();
 			chromatogram.addScan(scan);
 		}
+		/*
+		 * Peak Table
+		 */
 		in.readPeakTable(chromatogram);
 		cdfChromatogram.close();
+		//
 		return chromatogram;
 	}
 

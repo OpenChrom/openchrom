@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2023 Lablicate GmbH.
+ * Copyright (c) 2013, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -25,6 +25,7 @@ import net.openchrom.csd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFou
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 import net.openchrom.csd.converter.supplier.cdf.model.VendorChromatogramCSD;
+
 import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayFloat;
 import ucar.nc2.Attribute;
@@ -178,7 +179,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	@Override
 	public float getIntensity(int scan) {
 
-		return valueArrayIntensity.get(scan - 1);
+		return valueArrayIntensity.get(scan);
 	}
 
 	@Override
