@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.csd.converter.supplier.gaml.fragment.test
 Bundle-ManifestVersion: 2
-Bundle-Name: GAML CSD Test
+Bundle-Name: GAML FID Test
 Bundle-SymbolicName: net.openchrom.csd.converter.supplier.gaml.fragment.test
 Bundle-Version: 1.5.0.qualifier
 Bundle-Vendor: OpenChrom
