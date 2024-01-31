@@ -24,7 +24,7 @@ Require-Bundle: org.eclipse.core.runtime,
  wrapped.org.jdom.jdom2;bundle-version="2.0.6",
  wrapped.org.apache.httpcomponents.httpclient;bundle-version="4.5.14",
  wrapped.org.apache.httpcomponents.httpcore;bundle-version="4.4.16",
- org.slf4j.api;bundle-version="1.7.30"
+ slf4j.api;bundle-version="1.7.30"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: ChemClipse
