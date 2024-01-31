@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,10 +11,6 @@
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui.parts;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.inject.Inject;
-
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.swt.SWT;
@@ -25,6 +21,10 @@ import net.openchrom.msd.process.supplier.cms.core.DecompositionResults;
 import net.openchrom.msd.process.supplier.cms.ui.EventDataHolder;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.DecompositionResultUI;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.IDecompositionResultsListener;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import jakarta.inject.Inject;
 
 public class DecompositionResultPart {
 

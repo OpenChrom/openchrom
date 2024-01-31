@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 Lablicate GmbH.
+ * Copyright (c) 2017, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -12,8 +12,6 @@
 package net.openchrom.msd.process.supplier.cms.ui.parts;
 
 import java.io.File;
-
-import javax.inject.Inject;
 
 import org.eclipse.chemclipse.support.events.IPerspectiveAndViewIds;
 import org.eclipse.core.filesystem.EFS;
@@ -38,6 +36,8 @@ import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
 import net.openchrom.msd.process.supplier.cms.ui.editors.CmsLibraryEditor;
 import net.openchrom.msd.process.supplier.cms.ui.internal.provider.CmsFileExplorerContentProvider;
 import net.openchrom.msd.process.supplier.cms.ui.internal.provider.CmsFileExplorerLabelProvider;
+
+import jakarta.inject.Inject;
 
 public class CmsLibraryExplorerPart {
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2023 Lablicate GmbH.
+ * Copyright (c) 2016, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,8 +13,6 @@
 package net.openchrom.wsd.identifier.supplier.geneident.ui.handlers;
 
 import java.lang.reflect.InvocationTargetException;
-
-import javax.inject.Named;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
@@ -31,6 +29,8 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 import net.openchrom.wsd.identifier.supplier.geneident.ui.internal.runnables.NCBIqueuedBLASTRunnable;
+
+import jakarta.inject.Named;
 
 public class NCBIqueuedBLASThandler implements EventHandler {
 

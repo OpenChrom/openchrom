@@ -30,4 +30,4 @@ Export-Package: net.openchrom.xxd.identifier.supplier.cdk.converter,
  net.openchrom.xxd.identifier.supplier.cdk.renderer,
  net.openchrom.xxd.identifier.supplier.cdk.settings,
  net.openchrom.xxd.identifier.supplier.cdk.support
-Import-Package: javax.annotation;version="1.1.0"
+Import-Package: jakarta.annotation;version="2.1.1"

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Lablicate GmbH.
+ * Copyright (c) 2017, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,10 +13,6 @@ package net.openchrom.msd.process.supplier.cms.ui.editors;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.inject.Inject;
 
 import org.eclipse.chemclipse.converter.exceptions.NoConverterAvailableException;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -57,6 +53,10 @@ import org.eclipse.swt.widgets.TabItem;
 
 import net.openchrom.msd.process.supplier.cms.ui.EventDataHolder;
 import net.openchrom.msd.process.supplier.cms.ui.parts.swt.CmsLibraryUI;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import jakarta.inject.Inject;
 
 public class CmsLibraryEditor implements IChemClipseEditor {
 
