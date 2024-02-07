@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Lablicate GmbH.
+ * Copyright (c) 2023, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -46,11 +46,12 @@ import org.eclipse.swtchart.extensions.model.IElement;
 import org.eclipse.swtchart.extensions.model.IGraphicElement;
 import org.eclipse.swtchart.extensions.model.ITextElement;
 
-import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
-import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSettings;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
 import net.openchrom.swtchart.extension.export.vectorgraphics.support.AWTUtils;
+
+import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
+import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
 
 /*
  * Important to now:
@@ -327,7 +328,11 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 						for(int i = 0; i < xSeries.length; i++) {
 							double x = xSeries[i];
 							if(x >= xMin && x <= xMax) {
-								if(x > xb) {
+								/*
+								 * x >= xb (start/end is at the same x position in case of background)
+								 * boolean areaStrict = lineSeriesSettings.isAreaStrict();
+								 */
+								if(x >= xb) {
 									if(x >= xMin && x <= xMax) {
 										int x1 = (int)((factorX * (x - xMin)) + xBorderLeft);
 										int y1 = (int)((height - factorY * (ySeries[i] - yMin)) - yBorderBottom);
@@ -519,7 +524,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 				if(lineSeriesSettings.isEnableArea()) {
 					int sizePolygon = size + 2;
 					int[] xvalsPolygon = transformPolylineToPolygon(xvals, false, minValue);
-					int[] yvalsPolygon = transformPolylineToPolygon(yvals, true, minValue);
+					int[] yvalsPolygon = transformPolylineToPolygon(yvals, lineSeriesSettings.isAreaStrict() ? false : true, minValue);
 					Color colorBrighter = new Color(color.getRed(), color.getGreen(), color.getBlue(), AWTUtils.getAlpha(20));
 					graphics2D.setColor(colorBrighter);
 					graphics2D.fillPolygon(xvalsPolygon, yvalsPolygon, sizePolygon);
