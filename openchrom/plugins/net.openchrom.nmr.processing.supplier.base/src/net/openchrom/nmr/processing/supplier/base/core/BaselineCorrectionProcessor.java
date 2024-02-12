@@ -52,7 +52,6 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 		return NAME;
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
 	protected IMeasurement doFiltering(FilterContext<SpectrumMeasurement, BaselineCorrectionSettings> context, IMessageConsumer messageConsumer, IProgressMonitor monitor) {
 
@@ -105,7 +104,7 @@ public class BaselineCorrectionProcessor extends AbstractSpectrumSignalFilter<Ba
 			messageConsumer.addWarnMessage(getName(), "maximum iterations reached!");
 		}
 		//
-		FilteredSpectrumMeasurement filtered = new FilteredSpectrumMeasurement(context);
+		FilteredSpectrumMeasurement<?> filtered = new FilteredSpectrumMeasurement<>(context);
 		filtered.setSignals(signals);
 		//
 		return filtered;
