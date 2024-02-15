@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -12,7 +12,6 @@
 package net.openchrom.wsd.converter.supplier.animl.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -34,30 +33,30 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.google.common.primitives.Doubles;
 
-import net.openchrom.xxd.converter.supplier.animl.internal.converter.BinaryReader;
-import net.openchrom.xxd.converter.supplier.animl.internal.converter.Common;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AnIMLType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AuditTrailEntrySetType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AuditTrailEntryType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AuthorType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.CategoryType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.DependencyType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.EncodedValueSetType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ExperimentStepSetType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ExperimentStepType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.IndividualValueSetType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.MethodType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ObjectFactory;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ParameterTypeType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.PlotScaleType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ResultType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleSetType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesSetType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.TechniqueType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
+import net.openchrom.xxd.converter.supplier.animl.converter.BinaryReader;
+import net.openchrom.xxd.converter.supplier.animl.converter.Common;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AnIMLType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AuditTrailEntrySetType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AuditTrailEntryType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AuthorType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.CategoryType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.DependencyType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.EncodedValueSetType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ExperimentStepSetType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ExperimentStepType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.IndividualValueSetType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.MethodType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ObjectFactory;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ParameterType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ParameterTypeType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.PlotScaleType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ResultType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SampleSetType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SampleType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SeriesSetType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SeriesType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.TechniqueType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.UnitType;
 import net.openchrom.xxd.converter.supplier.animl.preferences.PreferenceSupplier;
 
 import jakarta.xml.bind.JAXBContext;
@@ -69,7 +68,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 	private static final Logger logger = Logger.getLogger(ChromatogramWriter.class);
 
 	@Override
-	public void writeChromatogram(File file, IChromatogramWSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void writeChromatogram(File file, IChromatogramWSD chromatogram, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
@@ -176,7 +175,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 				float[] intensities = new float[scans];
 				for(int i = 0; i < scans; i++) {
 					IScanSignalWSD signal = scanWSD.getScanSignal(i);
-					wavelengths[i] = (float)signal.getWavelength();
+					wavelengths[i] = signal.getWavelength();
 					intensities[i] = signal.getAbundance();
 				}
 				EncodedValueSetType encodedWavelengths = new EncodedValueSetType();
@@ -190,7 +189,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 				IndividualValueSetType wavelengths = new IndividualValueSetType();
 				IndividualValueSetType intensities = new IndividualValueSetType();
 				for(IScanSignalWSD signal : scanWSD.getScanSignals()) {
-					wavelengths.getF().add((float)signal.getWavelength());
+					wavelengths.getF().add(signal.getWavelength());
 					intensities.getF().add(signal.getAbundance());
 				}
 				wavelengthSeries.getIndividualValueSet().add(wavelengths);

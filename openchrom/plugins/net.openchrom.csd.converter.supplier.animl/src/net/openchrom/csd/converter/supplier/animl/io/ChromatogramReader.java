@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -40,19 +40,19 @@ import org.xml.sax.SAXException;
 import net.openchrom.csd.converter.supplier.animl.model.IVendorChromatogram;
 import net.openchrom.csd.converter.supplier.animl.model.VendorChromatogram;
 import net.openchrom.csd.converter.supplier.animl.model.VendorScan;
-import net.openchrom.xxd.converter.supplier.animl.internal.converter.BinaryReader;
-import net.openchrom.xxd.converter.supplier.animl.internal.converter.XmlReader;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AnIMLType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.AuthorType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.EncodedValueSetType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ExperimentStepType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.IndividualValueSetType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.MethodType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.ResultType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SampleType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesSetType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.SeriesType;
-import net.openchrom.xxd.converter.supplier.animl.internal.model.astm.core.UnitType;
+import net.openchrom.xxd.converter.supplier.animl.converter.BinaryReader;
+import net.openchrom.xxd.converter.supplier.animl.converter.XmlReader;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AnIMLType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AuthorType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.EncodedValueSetType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ExperimentStepType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.IndividualValueSetType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.MethodType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ResultType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SampleType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SeriesSetType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SeriesType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.UnitType;
 
 import jakarta.xml.bind.JAXBException;
 

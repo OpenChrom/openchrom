@@ -16,12 +16,12 @@ import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 
 import net.openchrom.xxd.converter.supplier.animl.Activator;
-import net.openchrom.xxd.converter.supplier.animl.internal.converter.IFormat;
+import net.openchrom.xxd.converter.supplier.animl.converter.Format;
 
 public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
 	public static final String P_CHROMATOGRAM_VERSION_SAVE = "chromatogramVersionSave";
-	public static final String DEF_CHROMATOGRAM_VERSION_SAVE = IFormat.VERSION_LATEST;
+	public static final String DEF_CHROMATOGRAM_VERSION_SAVE = Format.VERSION_LATEST;
 	public static final String P_CHROMATOGRAM_SAVE_ENCODED = "chromatogramEncoded";
 	public static final boolean DEF_CHROMATOGRAM_SAVE_ENCODED = true;
 	public static final String P_MASS_SPECTRUM_SAVE_ENCODED = "massSpectrumEncoded";
@@ -54,8 +54,8 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static String[][] getChromatogramVersions() {
 
 		String[][] elements = new String[1][2];
-		elements[0][0] = IFormat.ANIML_V_090;
-		elements[0][1] = IFormat.ANIML_V_090;
+		elements[0][0] = Format.ANIML_V_090;
+		elements[0][1] = Format.ANIML_V_090;
 		return elements;
 	}
 

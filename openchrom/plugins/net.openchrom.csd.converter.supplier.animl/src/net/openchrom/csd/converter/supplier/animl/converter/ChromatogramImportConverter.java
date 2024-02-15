@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2021 Lablicate GmbH.
+ * Copyright (c) 2008, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -23,7 +23,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.csd.converter.supplier.animl.io.ChromatogramReader;
-import net.openchrom.xxd.converter.supplier.animl.internal.converter.IConstants;
+import net.openchrom.xxd.converter.supplier.animl.converter.Constants;
 
 public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramCSD> {
 
@@ -39,7 +39,7 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 			 * Read the chromatogram.
 			 */
 			IChromatogramCSDReader reader = new ChromatogramReader();
-			monitor.subTask(IConstants.IMPORT_CHROMATOGRAM);
+			monitor.subTask(Constants.IMPORT_CHROMATOGRAM);
 			try {
 				IChromatogramCSD chromatogram = reader.read(file, monitor);
 				processingInfo.setProcessingResult(chromatogram);
