@@ -26,7 +26,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.animl.io.ChromatogramWriter;
-import net.openchrom.xxd.converter.supplier.animl.converter.Constants;
+import net.openchrom.xxd.converter.supplier.animl.l10n.Messages;
 
 public class ChromatogramExportConverter extends AbstractChromatogramExportConverter implements IChromatogramExportConverter {
 
@@ -41,7 +41,7 @@ public class ChromatogramExportConverter extends AbstractChromatogramExportConve
 		 * Don't process if errors have occurred.
 		 */
 		if(!processingInfo.hasErrorMessages() && chromatogram instanceof IChromatogramMSD chromatogramMSD) {
-			monitor.subTask(Constants.EXPORT_CHROMATOGRAM);
+			monitor.subTask(Messages.exportChromatogram);
 			IChromatogramMSDWriter writer = new ChromatogramWriter();
 			try {
 				writer.writeChromatogram(file, chromatogramMSD, monitor);

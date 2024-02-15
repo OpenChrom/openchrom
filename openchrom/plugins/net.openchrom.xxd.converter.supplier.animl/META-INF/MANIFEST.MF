@@ -12,6 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.converter.supplier.animl.converter,
+ net.openchrom.xxd.converter.supplier.animl.l10n,
  net.openchrom.xxd.converter.supplier.animl.model.astm.core,
  net.openchrom.xxd.converter.supplier.animl.model.astm.technique,
  net.openchrom.xxd.converter.supplier.animl.model.w3,
@@ -19,4 +20,3 @@ Export-Package: net.openchrom.xxd.converter.supplier.animl.converter,
 Import-Package: jakarta.xml.bind,
  jakarta.xml.bind.annotation,
  jakarta.xml.bind.annotation.adapters
-Bundle-Localization: OSGI-INF/l10n/bundle
