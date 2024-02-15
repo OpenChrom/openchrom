@@ -24,7 +24,7 @@ import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.wsd.converter.supplier.animl.io.ChromatogramReader;
-import net.openchrom.xxd.converter.supplier.animl.converter.Constants;
+import net.openchrom.xxd.converter.supplier.animl.l10n.Messages;
 
 public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramWSD> {
 
@@ -40,7 +40,7 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 			 * Read the chromatogram.
 			 */
 			IChromatogramWSDReader reader = new ChromatogramReader();
-			monitor.subTask(Constants.IMPORT_CHROMATOGRAM);
+			monitor.subTask(Messages.importChromatogram);
 			try {
 				IChromatogramWSD chromatogram = reader.read(file, monitor);
 				processingInfo.setProcessingResult(chromatogram);
@@ -61,9 +61,9 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 			try {
 				IChromatogramOverview chromatogramOverview = reader.readOverview(file, monitor);
 				processingInfo.setProcessingResult(chromatogramOverview);
-			} catch(Exception e) {
+			} catch(IOException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, "Failed to read file: " + file.getAbsolutePath());
 			}
 		}
 		return processingInfo;

@@ -13,6 +13,7 @@
 package net.openchrom.csd.converter.supplier.animl.converter;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramImportConverter;
 import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
@@ -23,7 +24,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.csd.converter.supplier.animl.io.ChromatogramReader;
-import net.openchrom.xxd.converter.supplier.animl.converter.Constants;
+import net.openchrom.xxd.converter.supplier.animl.l10n.Messages;
 
 public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramCSD> {
 
@@ -39,13 +40,13 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 			 * Read the chromatogram.
 			 */
 			IChromatogramCSDReader reader = new ChromatogramReader();
-			monitor.subTask(Constants.IMPORT_CHROMATOGRAM);
+			monitor.subTask(Messages.importChromatogram);
 			try {
 				IChromatogramCSD chromatogram = reader.read(file, monitor);
 				processingInfo.setProcessingResult(chromatogram);
-			} catch(Exception e) {
+			} catch(IOException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, "Failed to read file: " + file.getAbsolutePath());
 			}
 		}
 		return processingInfo;
@@ -60,9 +61,9 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 			try {
 				IChromatogramOverview chromatogramOverview = reader.readOverview(file, monitor);
 				processingInfo.setProcessingResult(chromatogramOverview);
-			} catch(Exception e) {
+			} catch(IOException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has definitely gone wrong with the file: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, "Failed to read file: " + file.getAbsolutePath());
 			}
 		}
 		return processingInfo;

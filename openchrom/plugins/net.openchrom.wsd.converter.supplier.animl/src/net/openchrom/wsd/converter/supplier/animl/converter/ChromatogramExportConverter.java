@@ -26,7 +26,7 @@ import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.wsd.converter.supplier.animl.io.ChromatogramWriter;
-import net.openchrom.xxd.converter.supplier.animl.converter.Constants;
+import net.openchrom.xxd.converter.supplier.animl.l10n.Messages;
 
 public class ChromatogramExportConverter extends AbstractChromatogramExportConverter implements IChromatogramExportConverter {
 
@@ -41,7 +41,7 @@ public class ChromatogramExportConverter extends AbstractChromatogramExportConve
 		 * Don't process if errors have occurred.
 		 */
 		if(!processingInfo.hasErrorMessages() && chromatogram instanceof IChromatogramWSD chromatogramWSD) {
-			monitor.subTask(Constants.EXPORT_CHROMATOGRAM);
+			monitor.subTask(Messages.exportChromatogram);
 			IChromatogramWSDWriter writer = new ChromatogramWriter();
 			try {
 				writer.writeChromatogram(file, chromatogramWSD, monitor);
