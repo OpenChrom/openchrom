@@ -16,13 +16,13 @@ import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.chemclipse.converter.core.AbstractFileContentMatcher;
 import org.eclipse.chemclipse.converter.core.IFileContentMatcher;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import net.openchrom.wsd.converter.supplier.animl.model.Technique;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AnIMLType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.TechniqueType;
 
@@ -44,7 +44,7 @@ public class FileContentMatcher extends AbstractFileContentMatcher implements IF
 			int techniques = techniquesList.getLength();
 			for(int t = 0; t < techniques; t++) {
 				Element element = (Element)techniquesList.item(t);
-				if(element.getAttribute("uri").equals(ChromatogramReader.URI)) {
+				if(isMatchingTechnique(element.getAttribute("uri"))) {
 					isValidFormat = true;
 				}
 			}
@@ -52,5 +52,16 @@ public class FileContentMatcher extends AbstractFileContentMatcher implements IF
 			// fail silently
 		}
 		return isValidFormat;
+	}
+
+	// NOTE: everything from name, id even the URI is volatile in this format
+	// URI can be:
+	// https://github.com/AnIML/techniques/blob/master/uv-vis.atdd (no tagged releases)
+	// http://techniques.animl.org/uv-vis/current/uv-vis.atdd (offline)
+	// so we match the file name instead.
+	public static boolean isMatchingTechnique(String uri) {
+
+		String filename = FilenameUtils.getName(uri);
+		return filename.equals("uv-vis-trace.atdd");
 	}
 }

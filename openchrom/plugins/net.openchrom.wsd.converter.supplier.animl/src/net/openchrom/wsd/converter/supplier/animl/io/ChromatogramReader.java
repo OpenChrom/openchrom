@@ -36,9 +36,9 @@ import org.eclipse.chemclipse.wsd.model.core.support.PeakBuilderWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.SAXException;
 
+import net.openchrom.wsd.converter.supplier.animl.converter.FileContentMatcher;
 import net.openchrom.wsd.converter.supplier.animl.model.IVendorChromatogram;
 import net.openchrom.wsd.converter.supplier.animl.model.IVendorScanSignalWSD;
-import net.openchrom.wsd.converter.supplier.animl.model.Technique;
 import net.openchrom.wsd.converter.supplier.animl.model.VendorChromatogram;
 import net.openchrom.wsd.converter.supplier.animl.model.VendorScan;
 import net.openchrom.wsd.converter.supplier.animl.model.VendorScanSignalWSD;
@@ -65,8 +65,6 @@ import jakarta.xml.bind.JAXBException;
 
 public class ChromatogramReader extends AbstractChromatogramWSDReader {
 
-	public static final String URI = "https://github.com/AnIML/techniques/blob/master/uv-vis-trace.atdd";
-	//
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 
 	@Override
@@ -87,7 +85,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 				if(chromatogram.getNumberOfScans() > 0) {
 					referencedChromatogram = new VendorChromatogram();
 				}
-				if(technique.getUri().equals(ChromatogramReader.URI)) {
+				if(FileContentMatcher.isMatchingTechnique(technique.getUri())) {
 					MethodType method = experimentStep.getMethod();
 					if(method != null) {
 						AuthorType author = method.getAuthor();
