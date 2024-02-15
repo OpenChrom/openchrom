@@ -20,7 +20,6 @@ import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
-import org.apache.commons.io.FilenameUtils;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IScan;
@@ -51,6 +50,7 @@ import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ParameterType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ParameterTypeType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.PlotScaleType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ResultType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SIUnitType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SampleSetType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SampleType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SeriesSetType;
@@ -77,7 +77,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 			AnIMLType anIML = new AnIMLType();
 			anIML.setVersion("0.90");
 			anIML.setSampleSet(createSampleSet(chromatogram));
-			anIML.setExperimentStepSet(createExperimentStep(chromatogram));
+			anIML.setExperimentStepSet(createSingleWavelengthExperimentStep(chromatogram));
 			anIML.setAuditTrailEntrySet(createAuditTrail(chromatogram));
 			marshaller.marshal(anIML, file);
 		} catch(JAXBException e) {
@@ -91,28 +91,25 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 
 		SampleSetType sampleSet = new SampleSetType();
 		SampleType sample = new SampleType();
-		sample.setId("OPENCHROM_WSD_EXPORT");
 		sample.setName(chromatogram.getSampleName());
 		sample.setBarcode(chromatogram.getBarcode());
 		sample.setComment(chromatogram.getMiscInfo());
-		sample.setSampleID(FilenameUtils.removeExtension(chromatogram.getFile().getName()));
+		sample.setSampleID(chromatogram.getSampleName());
 		sampleSet.getSample().add(sample);
 		return sampleSet;
 	}
 
-	private ExperimentStepSetType createExperimentStep(IChromatogramWSD chromatogram) {
+	private ExperimentStepSetType createSingleWavelengthExperimentStep(IChromatogramWSD chromatogram) {
 
 		ExperimentStepSetType experimentStepSet = new ExperimentStepSetType();
 		//
 		ExperimentStepType chromatographyStep = new ExperimentStepType();
 		chromatographyStep.setName("Chromatography");
-		chromatographyStep.setExperimentStepID("CHROMATOGRAPHY");
 		chromatographyStep.setTechnique(createChromatographyTechnique());
 		experimentStepSet.getExperimentStep().add(chromatographyStep);
 		//
 		ExperimentStepType singleWavelengthStep = new ExperimentStepType();
-		singleWavelengthStep.setName("Single Wavelength");
-		singleWavelengthStep.setExperimentStepID("SINGLE_WAVELENGTH");
+		singleWavelengthStep.setName(chromatogram.getDataName());
 		singleWavelengthStep.getResult().add(createSignal(chromatogram));
 		singleWavelengthStep.setMethod(createMethod(chromatogram));
 		singleWavelengthStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
@@ -121,7 +118,6 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		//
 		ExperimentStepType multiWavelengthsStep = new ExperimentStepType();
 		multiWavelengthsStep.setName("Multi Wavelength");
-		multiWavelengthsStep.setExperimentStepID("MULTI_WAVELENGTH");
 		multiWavelengthsStep.setResult(createSpectra(chromatogram));
 		multiWavelengthsStep.setMethod(createMethod(chromatogram));
 		multiWavelengthsStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
@@ -130,7 +126,6 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		//
 		ExperimentStepType peakStep = new ExperimentStepType();
 		peakStep.setName("Peaks");
-		peakStep.setExperimentStepID("PEAKS");
 		peakStep.getResult().add(Common.createPeaks(chromatogram));
 		peakStep.setTechnique(createPeakTableTechnique());
 		experimentStepSet.getExperimentStep().add(peakStep);
@@ -143,27 +138,23 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		for(IScan scan : chromatogram.getScans()) {
 			IScanWSD scanWSD = (IScanWSD)scan;
 			SeriesSetType seriesSet = new SeriesSetType();
-			seriesSet.setId("WAVELENGTH_SPECTRUM");
 			seriesSet.setName("Spectrum");
 			seriesSet.setLength(scanWSD.getNumberOfScanSignals());
 			//
 			SeriesType wavelengthSeries = new SeriesType();
-			wavelengthSeries.setSeriesID("SPECTRUM");
 			wavelengthSeries.setName("Spectrum");
 			UnitType wavelengthUnit = new UnitType();
-			wavelengthUnit.setLabel("Wavelength");
-			wavelengthUnit.setQuantity("nm");
+			wavelengthUnit.setLabel("nm");
+			wavelengthUnit.setQuantity("Wavelength");
 			wavelengthSeries.setUnit(wavelengthUnit);
 			wavelengthSeries.setDependency(DependencyType.DEPENDENT);
 			wavelengthSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 			wavelengthSeries.setPlotScale(PlotScaleType.LINEAR);
 			//
 			SeriesType intensitySeries = new SeriesType();
-			intensitySeries.setSeriesID("INTENSITY");
 			intensitySeries.setName("Intensity");
 			UnitType intensityUnit = new UnitType();
-			intensityUnit.setLabel("Absorbance");
-			intensityUnit.setQuantity("AU");
+			intensityUnit.setLabel("mAU");
 			intensitySeries.setUnit(intensityUnit);
 			intensitySeries.setDependency(DependencyType.DEPENDENT);
 			intensitySeries.setSeriesType(ParameterTypeType.FLOAT_32);
@@ -198,6 +189,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 			seriesSet.getSeries().add(wavelengthSeries);
 			seriesSet.getSeries().add(intensitySeries);
 			ResultType result = new ResultType();
+			result.setName("Spectrum");
 			result.setSeriesSet(seriesSet);
 			results.add(result);
 		}
@@ -207,27 +199,10 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 	private ResultType createSignal(IChromatogramWSD chromatogram) {
 
 		SeriesSetType seriesSet = new SeriesSetType();
-		seriesSet.setId("UV_VIS");
-		seriesSet.setName("UV/Vis Trace");
+		seriesSet.setName("Intensity");
 		seriesSet.setLength(chromatogram.getNumberOfScans());
-		//
-		SeriesType retentionTimeSeries = new SeriesType();
-		retentionTimeSeries.setSeriesID("RETENTION_TIME");
-		retentionTimeSeries.setName("Retention Time");
-		UnitType retentionTimeUnit = new UnitType();
-		retentionTimeUnit.setLabel("Time");
-		retentionTimeUnit.setQuantity("ms");
-		retentionTimeSeries.setUnit(retentionTimeUnit);
-		retentionTimeSeries.setDependency(DependencyType.INDEPENDENT);
-		retentionTimeSeries.setSeriesType(ParameterTypeType.INT_32);
-		//
-		SeriesType intensitySeries = new SeriesType();
-		UnitType intensityUnit = new UnitType();
-		intensityUnit.setLabel("Intensity");
-		intensityUnit.setQuantity("arbitrary");
-		intensitySeries.setUnit(intensityUnit);
-		intensitySeries.setDependency(DependencyType.DEPENDENT);
-		intensitySeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		SeriesType retentionTimeSeries = describeRetentionTime();
+		SeriesType intensitySeries = describeIntensities();
 		//
 		int scans = chromatogram.getNumberOfScans();
 		if(PreferenceSupplier.getChromatogramSaveEncoded()) {
@@ -260,10 +235,52 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		}
 		seriesSet.getSeries().add(retentionTimeSeries);
 		seriesSet.getSeries().add(intensitySeries);
-		CategoryType category = new CategoryType();
-		category.setName("Acquisition Wavelength");
-		ParameterType lowerBounds = new ParameterType();
 		ResultType result = new ResultType();
+		result.getCategory().add(annotateWavelength(chromatogram));
+		result.setSeriesSet(seriesSet);
+		result.setName("Trace");
+		return result;
+	}
+
+	private SeriesType describeRetentionTime() {
+
+		SeriesType retentionTimeSeries = new SeriesType();
+		retentionTimeSeries.setName("Time");
+		UnitType retentionTimeUnit = new UnitType();
+		retentionTimeUnit.setLabel("ms");
+		retentionTimeUnit.setQuantity("Time");
+		retentionTimeUnit.getSIUnit().add(createMilisecond());
+		retentionTimeSeries.setUnit(retentionTimeUnit);
+		retentionTimeSeries.setDependency(DependencyType.INDEPENDENT);
+		retentionTimeSeries.setSeriesType(ParameterTypeType.INT_32);
+		return retentionTimeSeries;
+	}
+
+	private SeriesType describeIntensities() {
+
+		SeriesType intensitySeries = new SeriesType();
+		intensitySeries.setName("Absorbance");
+		UnitType intensityUnit = new UnitType();
+		intensityUnit.setLabel("mAU");
+		intensitySeries.setUnit(intensityUnit);
+		intensitySeries.setDependency(DependencyType.DEPENDENT);
+		intensitySeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		return intensitySeries;
+	}
+
+	private SIUnitType createMilisecond() {
+
+		SIUnitType si = new SIUnitType();
+		si.setExponent(-3d);
+		si.setValue("s");
+		return si;
+	}
+
+	private CategoryType annotateWavelength(IChromatogramWSD chromatogram) {
+
+		CategoryType category = new CategoryType();
+		category.setName("Extraction Parameters");
+		ParameterType lowerBounds = new ParameterType();
 		IScanWSD firstScan = chromatogram.getSupplierScan(1);
 		List<IScanSignalWSD> signals = firstScan.getScanSignals();
 		double[] wavelengths = signals.stream().mapToDouble(s -> s.getWavelength()).toArray();
@@ -273,10 +290,8 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		ParameterType upperBounds = new ParameterType();
 		upperBounds.getD().add(Doubles.max(wavelengths));
 		upperBounds.setName("Upper Bound");
-		result.getCategory().add(category);
-		result.setSeriesSet(seriesSet);
-		result.setName("UV/VIS");
-		return result;
+		category.getParameter().add(upperBounds);
+		return category;
 	}
 
 	private MethodType createMethod(IChromatogramWSD chromatogram) {
@@ -292,7 +307,6 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 	private TechniqueType createChromatographyTechnique() {
 
 		TechniqueType technique = new TechniqueType();
-		technique.setId("CHROMATOGRAPHY");
 		technique.setName("Chromatography");
 		technique.setUri("https://github.com/AnIML/techniques/blob/6e30b1e593e6df661a44ae2a9892b6198def0641/chromatography.atdd");
 		return technique;
@@ -301,8 +315,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 	private TechniqueType createUltraVioletDetectorTechnique() {
 
 		TechniqueType technique = new TechniqueType();
-		technique.setId("UV_VIS");
-		technique.setName("UV/Vis Trace Detector");
+		technique.setName("UV Trace");
 		technique.setUri("https://github.com/AnIML/techniques/blob/995bef06f90afba00a618239f40c6e591a1c0845/uv-vis-trace.atdd");
 		return technique;
 	}
@@ -310,8 +323,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 	private TechniqueType createDiodeArrayDetectorTechnique() {
 
 		TechniqueType technique = new TechniqueType();
-		technique.setId("DAD");
-		technique.setName("UV/Vis");
+		technique.setName("Spectrum");
 		technique.setUri("https://raw.githubusercontent.com/AnIML/techniques/995bef06f90afba00a618239f40c6e591a1c0845/uv-vis.atdd");
 		return technique;
 	}
@@ -319,8 +331,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 	private TechniqueType createPeakTableTechnique() {
 
 		TechniqueType technique = new TechniqueType();
-		technique.setId("CHROMATOGRAPHY_PEAK_TABLE");
-		technique.setName("Chromatography Peak Table");
+		technique.setName("Peak Table");
 		technique.setUri("https://github.com/AnIML/techniques/blob/d749979fc21322b97c61e2efd6efe60cfa5a29be/chromatography-peak-table.atdd");
 		return technique;
 	}
