@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,8 +22,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import net.openchrom.wsd.converter.supplier.animl.io.ChromatogramReader;
-import net.openchrom.xxd.converter.supplier.animl.internal.converter.IConstants;
+import net.openchrom.wsd.converter.supplier.animl.model.Technique;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AnIMLType;
+import net.openchrom.xxd.converter.supplier.animl.model.astm.core.TechniqueType;
 
 public class FileContentMatcher extends AbstractFileContentMatcher implements IFileContentMatcher {
 
@@ -35,11 +36,11 @@ public class FileContentMatcher extends AbstractFileContentMatcher implements IF
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			NodeList root = document.getElementsByTagName(IConstants.NODE_ANIML);
+			NodeList root = document.getElementsByTagName(AnIMLType.NODE_NAME);
 			if(root.getLength() != 1) {
 				return isValidFormat;
 			}
-			NodeList techniquesList = document.getElementsByTagName(IConstants.NODE_TECHNIQUE);
+			NodeList techniquesList = document.getElementsByTagName(TechniqueType.NODE_NAME);
 			int techniques = techniquesList.getLength();
 			for(int t = 0; t < techniques; t++) {
 				Element element = (Element)techniquesList.item(t);

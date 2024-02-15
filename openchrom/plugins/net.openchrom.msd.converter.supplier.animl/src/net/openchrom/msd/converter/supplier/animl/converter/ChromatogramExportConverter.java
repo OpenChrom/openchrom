@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2023 Lablicate GmbH.
+ * Copyright (c) 2014, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -26,7 +26,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.animl.io.ChromatogramWriter;
-import net.openchrom.xxd.converter.supplier.animl.internal.converter.IConstants;
+import net.openchrom.xxd.converter.supplier.animl.converter.Constants;
 
 public class ChromatogramExportConverter extends AbstractChromatogramExportConverter implements IChromatogramExportConverter {
 
@@ -41,7 +41,7 @@ public class ChromatogramExportConverter extends AbstractChromatogramExportConve
 		 * Don't process if errors have occurred.
 		 */
 		if(!processingInfo.hasErrorMessages() && chromatogram instanceof IChromatogramMSD chromatogramMSD) {
-			monitor.subTask(IConstants.EXPORT_CHROMATOGRAM);
+			monitor.subTask(Constants.EXPORT_CHROMATOGRAM);
 			IChromatogramMSDWriter writer = new ChromatogramWriter();
 			try {
 				writer.writeChromatogram(file, chromatogramMSD, monitor);
