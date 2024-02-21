@@ -308,7 +308,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 
 		TechniqueType technique = new TechniqueType();
 		technique.setName("Chromatography");
-		technique.setUri("https://github.com/AnIML/techniques/blob/6e30b1e593e6df661a44ae2a9892b6198def0641/chromatography.atdd");
+		technique.setUri("https://animl.openchrom.net/chromatography.atdd");
 		return technique;
 	}
 
@@ -316,7 +316,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 
 		TechniqueType technique = new TechniqueType();
 		technique.setName("UV Trace");
-		technique.setUri("https://github.com/AnIML/techniques/blob/995bef06f90afba00a618239f40c6e591a1c0845/uv-vis-trace.atdd");
+		technique.setUri("https://animl.openchrom.net/uv-vis-trace.atdd");
 		return technique;
 	}
 
@@ -324,7 +324,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 
 		TechniqueType technique = new TechniqueType();
 		technique.setName("Spectrum");
-		technique.setUri("https://raw.githubusercontent.com/AnIML/techniques/995bef06f90afba00a618239f40c6e591a1c0845/uv-vis.atdd");
+		technique.setUri("https://animl.openchrom.net/uv-vis.atdd");
 		return technique;
 	}
 
@@ -332,7 +332,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 
 		TechniqueType technique = new TechniqueType();
 		technique.setName("Peak Table");
-		technique.setUri("https://github.com/AnIML/techniques/blob/d749979fc21322b97c61e2efd6efe60cfa5a29be/chromatography-peak-table.atdd");
+		technique.setUri("https://animl.openchrom.net/chromatography-peak-table.atdd");
 		return technique;
 	}
 

@@ -286,7 +286,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		TechniqueType technique = new TechniqueType();
 		technique.setId("CHROMATOGRAPHY");
 		technique.setName("Chromatography");
-		technique.setUri("https://github.com/AnIML/techniques/blob/6e30b1e593e6df661a44ae2a9892b6198def0641/chromatography.atdd");
+		technique.setUri("https://animl.openchrom.net/chromatography.atdd");
 		return technique;
 	}
 
@@ -295,7 +295,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		TechniqueType technique = new TechniqueType();
 		technique.setId("MS_TRACE");
 		technique.setName("Mass Spectrum Time Trace");
-		technique.setUri("https://github.com/AnIML/techniques/blob/2c9e7fbf5f6435b4dee9f112bdd0d81d135085ff/ms-trace.atdd");
+		technique.setUri("https://animl.openchrom.net/ms-trace.atdd");
 		return technique;
 	}
 
@@ -304,7 +304,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		TechniqueType technique = new TechniqueType();
 		technique.setId("MASS_SPEC");
 		technique.setName("Mass Spectrometry");
-		technique.setUri("https://github.com/AnIML/techniques/blob/db3fcd831c4fce00b647b7e6d8c21f753b76f361/mass-spec.atdd");
+		technique.setUri("https://animl.openchrom.net/mass-spec.atdd");
 		return technique;
 	}
 
@@ -313,7 +313,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		TechniqueType technique = new TechniqueType();
 		technique.setId("PEAKS");
 		technique.setName("Chromatography Peak Table");
-		technique.setUri("https://github.com/AnIML/techniques/blob/d749979fc21322b97c61e2efd6efe60cfa5a29be/chromatography-peak-table.atdd");
+		technique.setUri("https://animl.openchrom.net/chromatography-peak-table.atdd");
 		return technique;
 	}
 

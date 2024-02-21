@@ -140,7 +140,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 
 		TechniqueType technique = new TechniqueType();
 		technique.setName("Mass Spectrometry");
-		technique.setUri("https://github.com/AnIML/techniques/blob/db3fcd831c4fce00b647b7e6d8c21f753b76f361/mass-spec.atdd");
+		technique.setUri("https://animl.openchrom.net/mass-spec.atdd");
 		return technique;
 	}
 
