@@ -199,7 +199,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		TechniqueType technique = new TechniqueType();
 		technique.setId("CHROMATOGRAPHY");
 		technique.setName("Chromatography");
-		technique.setUri("https://github.com/AnIML/techniques/blob/6e30b1e593e6df661a44ae2a9892b6198def0641/chromatography.atdd");
+		technique.setUri("https://animl.openchrom.net/chromatography.atdd");
 		return technique;
 	}
 
@@ -208,7 +208,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		TechniqueType technique = new TechniqueType();
 		technique.setId("FID");
 		technique.setName("Flame Ionization Detector");
-		technique.setUri("https://github.com/AnIML/techniques/blob/6e30b1e593e6df661a44ae2a9892b6198def0641/fid-trace.atdd");
+		technique.setUri("https://animl.openchrom.net/fid-trace.atdd");
 		return technique;
 	}
 
@@ -217,7 +217,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		TechniqueType technique = new TechniqueType();
 		technique.setId("CHROMATOGRAPHY_PEAK_TABLE");
 		technique.setName("Chromatography Peak Table");
-		technique.setUri("https://github.com/AnIML/techniques/blob/d749979fc21322b97c61e2efd6efe60cfa5a29be/chromatography-peak-table.atdd");
+		technique.setUri("https://animl.openchrom.net/chromatography-peak-table.atdd");
 		return technique;
 	}
 
