@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Marwin Wollschläger.
+ * Copyright (c) 2013, 2024 Marwin Wollschläger.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,11 +12,12 @@
  *******************************************************************************/
 package net.openchrom.xxd.identifier.supplier.cdk.converter;
 
+import org.junit.Test;
 import org.openscience.cdk.interfaces.IAtomContainer;
 
 import junit.framework.TestCase;
 
-public class OPSINIupacToIMoleculeConverter_1_Test extends TestCase {
+public class OPSINIupacToMoleculeConverter_Test extends TestCase {
 
 	private OPSINIupacToMoleculeConverter converter;
 
@@ -33,13 +34,15 @@ public class OPSINIupacToIMoleculeConverter_1_Test extends TestCase {
 		super.tearDown();
 	}
 
-	public void testMethod_1() {
+	@Test
+	public void testNotNull() {
 
 		IAtomContainer molecule = converter.generate("tri -(1-chlorophenyl) ethane");
 		assertNotNull(molecule);
 	}
 
-	public void testMethod_2() {
+	@Test
+	public void testNull() {
 
 		IAtomContainer molecule = converter.generate(null);
 		assertNull(molecule);
