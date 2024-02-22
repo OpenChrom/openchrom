@@ -75,6 +75,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 			chromatogram = new VendorChromatogram();
 			chromatogram.setFile(file);
 			AnIMLType animl = XmlReader.getAnIML(file);
+			chromatogram.getEditHistory().addAll(XmlReader.readAuditTrail(animl));
 			chromatogram = readSample(animl, chromatogram);
 			for(ExperimentStepType experimentStep : animl.getExperimentStepSet().getExperimentStep()) {
 				TechniqueType technique = experimentStep.getTechnique();
