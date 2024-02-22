@@ -236,7 +236,6 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		seriesSet.getSeries().add(retentionTimeSeries);
 		seriesSet.getSeries().add(intensitySeries);
 		ResultType result = new ResultType();
-		result.getCategory().add(annotateWavelength(chromatogram));
 		result.setSeriesSet(seriesSet);
 		result.setName("Trace");
 		return result;
@@ -285,11 +284,13 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		List<IScanSignalWSD> signals = firstScan.getScanSignals();
 		double[] wavelengths = signals.stream().mapToDouble(s -> s.getWavelength()).toArray();
 		lowerBounds.setName("Lower Bound");
+		lowerBounds.setParameterType(ParameterTypeType.FLOAT_64);
 		lowerBounds.getD().add(Doubles.min(wavelengths));
 		category.getParameter().add(lowerBounds);
 		ParameterType upperBounds = new ParameterType();
-		upperBounds.getD().add(Doubles.max(wavelengths));
 		upperBounds.setName("Upper Bound");
+		upperBounds.setParameterType(ParameterTypeType.FLOAT_64);
+		upperBounds.getD().add(Doubles.max(wavelengths));
 		category.getParameter().add(upperBounds);
 		return category;
 	}
@@ -301,6 +302,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		MethodType method = new MethodType();
 		method.setAuthor(author);
 		method.setSoftware(Common.createSoftware());
+		method.getCategory().add(annotateWavelength(chromatogram));
 		return method;
 	}
 
