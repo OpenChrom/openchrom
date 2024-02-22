@@ -43,7 +43,7 @@ import net.openchrom.wsd.converter.supplier.animl.model.VendorChromatogram;
 import net.openchrom.wsd.converter.supplier.animl.model.VendorScan;
 import net.openchrom.wsd.converter.supplier.animl.model.VendorScanSignalWSD;
 import net.openchrom.xxd.converter.supplier.animl.converter.BinaryReader;
-import net.openchrom.xxd.converter.supplier.animl.converter.XmlReader;
+import net.openchrom.xxd.converter.supplier.animl.converter.Common;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AnIMLType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AuthorType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AutoIncrementedValueSetType;
@@ -74,8 +74,8 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		try {
 			chromatogram = new VendorChromatogram();
 			chromatogram.setFile(file);
-			AnIMLType animl = XmlReader.getAnIML(file);
-			chromatogram.getEditHistory().addAll(XmlReader.readAuditTrail(animl));
+			AnIMLType animl = Common.getAnIML(file);
+			chromatogram.getEditHistory().addAll(Common.readAuditTrail(animl));
 			chromatogram = readSample(animl, chromatogram);
 			for(ExperimentStepType experimentStep : animl.getExperimentStepSet().getExperimentStep()) {
 				TechniqueType technique = experimentStep.getTechnique();
@@ -100,9 +100,9 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 						SeriesSetType seriesSet = result.getSeriesSet();
 						if(seriesSet.getName().equals("Intensity")) {
 							if(referencedChromatogram != null) {
-								readValueSets(method, result, seriesSet, referencedChromatogram);
+								readValueSets(method, seriesSet, referencedChromatogram);
 							} else {
-								readValueSets(method, result, seriesSet, chromatogram);
+								readValueSets(method, seriesSet, chromatogram);
 							}
 						}
 					}
@@ -135,7 +135,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 
 		IVendorChromatogram chromatogram = null;
 		try {
-			AnIMLType animl = XmlReader.getAnIML(file);
+			AnIMLType animl = Common.getAnIML(file);
 			chromatogram = new VendorChromatogram();
 			chromatogram = readSample(animl, chromatogram);
 		} catch(SAXException e) {
@@ -179,14 +179,14 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		return wavelength;
 	}
 
-	private void readValueSets(MethodType method, ResultType result, SeriesSetType seriesSet, IVendorChromatogram chromatogram) {
+	private void readValueSets(MethodType method, SeriesSetType seriesSet, IVendorChromatogram chromatogram) {
 
 		List<Integer> retentionTimes = new ArrayList<>();
 		List<Float> intensities = new ArrayList<>();
 		for(SeriesType series : seriesSet.getSeries()) {
 			UnitType unit = series.getUnit();
 			if(unit.getQuantity() != null && unit.getQuantity().equals("Time")) {
-				int multiplicator = XmlReader.getTimeMultiplicator(unit);
+				int multiplicator = Common.getTimeMultiplicator(unit);
 				for(AutoIncrementedValueSetType autoIncrementedValueSet : series.getAutoIncrementedValueSet()) {
 					Double start = autoIncrementedValueSet.getStartValue().getD().get(0);
 					chromatogram.setScanDelay((int)Math.round(start * multiplicator));
@@ -220,14 +220,14 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 				}
 				for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
 					if(series.getSeriesType() == ParameterTypeType.FLOAT_32) {
-						Float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
-						for(Float f : decodedValues) {
+						float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
+						for(float f : decodedValues) {
 							intensities.add(f);
 						}
 					} else if(series.getSeriesType() == ParameterTypeType.FLOAT_64) {
-						Double[] decodedValues = BinaryReader.decodeDoubleArray(encodedValueSet.getValue());
-						for(Double d : decodedValues) {
-							intensities.add(d.floatValue());
+						double[] decodedValues = BinaryReader.decodeDoubleArray(encodedValueSet.getValue());
+						for(double d : decodedValues) {
+							intensities.add((float)d);
 						}
 					}
 				}
@@ -251,16 +251,16 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 	private void readSpectra(ExperimentStepType experimentStep, IVendorChromatogram chromatogram) {
 
 		int spectra = 0;
-		Float[] wavelengths = null;
-		Float[] aborbances = null;
+		float[] wavelengths = null;
+		float[] aborbances = null;
 		if(experimentStep.getTechnique().getName().equals("UV/Vis")) {
 			for(ResultType result : experimentStep.getResult()) {
 				SeriesSetType seriesSet = result.getSeriesSet();
 				if(seriesSet.getName().equals("Spectrum")) {
 					spectra++;
 					int length = seriesSet.getLength();
-					wavelengths = new Float[length];
-					aborbances = new Float[length];
+					wavelengths = new float[length];
+					aborbances = new float[length];
 					for(SeriesType series : seriesSet.getSeries()) {
 						if(series.getName().equals("Spectrum")) {
 							for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
@@ -305,7 +305,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		List<Float> startTimes = new ArrayList<>();
 		List<Float> endTimes = new ArrayList<>();
 		List<String> peakNames = new ArrayList<>();
-		if(experimentStep.getTechnique().getName().equals("Chromatography Peak Table")) {
+		if(experimentStep.getTechnique().getName().equals("Peak Table")) {
 			for(ResultType result : experimentStep.getResult()) {
 				SeriesSetType seriesSet = result.getSeriesSet();
 				if(seriesSet.getName().equals("Peak Table")) {

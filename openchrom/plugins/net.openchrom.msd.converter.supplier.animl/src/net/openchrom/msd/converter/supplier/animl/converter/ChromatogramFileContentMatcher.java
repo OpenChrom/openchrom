@@ -16,6 +16,7 @@ import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.chemclipse.converter.core.AbstractFileContentMatcher;
 import org.eclipse.chemclipse.converter.core.IFileContentMatcher;
 import org.w3c.dom.Document;
@@ -39,14 +40,21 @@ public class ChromatogramFileContentMatcher extends AbstractFileContentMatcher i
 			if(root.getLength() != 1) {
 				return isValidFormat;
 			}
+			boolean isMassSpectrometry = false;
+			boolean isChromatography = false;
 			NodeList techniquesList = document.getElementsByTagName(TechniqueType.NODE_NAME);
 			int techniques = techniquesList.getLength();
 			for(int t = 0; t < techniques; t++) {
 				Element element = (Element)techniquesList.item(t);
-				if(element.getAttribute("name").equals("Mass Spectrum Time Trace")) {
-					isValidFormat = true;
+				String uri = element.getAttribute("uri");
+				String filename = FilenameUtils.getName(uri);
+				if(filename.equals("chromatography.atdd")) {
+					isChromatography = true;
+				} else if(filename.equals("ms-trace.atdd") || filename.equals("mass-spec.atdd")) {
+					isMassSpectrometry = true;
 				}
 			}
+			isValidFormat = isChromatography && isMassSpectrometry;
 		} catch(Exception e) {
 			// fail silently
 		}
