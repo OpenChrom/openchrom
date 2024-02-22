@@ -31,24 +31,24 @@ public class BinaryReader {
 		return values;
 	}
 
-	public static Float[] decodeFloatArray(byte[] binary) {
+	public static float[] decodeFloatArray(byte[] binary) {
 
 		ByteBuffer byteBuffer = ByteBuffer.wrap(binary);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		FloatBuffer floatBuffer = byteBuffer.asFloatBuffer();
-		Float[] values = new Float[floatBuffer.capacity()];
+		float[] values = new float[floatBuffer.capacity()];
 		for(int index = 0; index < floatBuffer.capacity(); index++) {
 			values[index] = floatBuffer.get(index);
 		}
 		return values;
 	}
 
-	public static Double[] decodeDoubleArray(byte[] binary) {
+	public static double[] decodeDoubleArray(byte[] binary) {
 
 		ByteBuffer byteBuffer = ByteBuffer.wrap(binary);
 		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 		DoubleBuffer doubleBuffer = byteBuffer.asDoubleBuffer();
-		Double[] values = new Double[doubleBuffer.capacity()];
+		double[] values = new double[doubleBuffer.capacity()];
 		for(int index = 0; index < doubleBuffer.capacity(); index++) {
 			values[index] = doubleBuffer.get(index);
 		}

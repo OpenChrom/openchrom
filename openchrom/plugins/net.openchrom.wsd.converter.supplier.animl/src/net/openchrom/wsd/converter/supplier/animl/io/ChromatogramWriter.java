@@ -50,7 +50,6 @@ import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ParameterType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ParameterTypeType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.PlotScaleType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.ResultType;
-import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SIUnitType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SampleSetType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SampleType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SeriesSetType;
@@ -140,26 +139,8 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 			SeriesSetType seriesSet = new SeriesSetType();
 			seriesSet.setName("Spectrum");
 			seriesSet.setLength(scanWSD.getNumberOfScanSignals());
-			//
-			SeriesType wavelengthSeries = new SeriesType();
-			wavelengthSeries.setName("Spectrum");
-			UnitType wavelengthUnit = new UnitType();
-			wavelengthUnit.setLabel("nm");
-			wavelengthUnit.setQuantity("Wavelength");
-			wavelengthSeries.setUnit(wavelengthUnit);
-			wavelengthSeries.setDependency(DependencyType.DEPENDENT);
-			wavelengthSeries.setSeriesType(ParameterTypeType.FLOAT_32);
-			wavelengthSeries.setPlotScale(PlotScaleType.LINEAR);
-			//
-			SeriesType intensitySeries = new SeriesType();
-			intensitySeries.setName("Intensity");
-			UnitType intensityUnit = new UnitType();
-			intensityUnit.setLabel("mAU");
-			intensitySeries.setUnit(intensityUnit);
-			intensitySeries.setDependency(DependencyType.DEPENDENT);
-			intensitySeries.setSeriesType(ParameterTypeType.FLOAT_32);
-			intensitySeries.setPlotScale(PlotScaleType.LINEAR);
-			//
+			SeriesType intensitySeries = createIntensitySeries();
+			SeriesType wavelengthSeries = createWavelengthSeries();
 			if(PreferenceSupplier.getChromatogramSaveEncoded()) {
 				int scans = scanWSD.getNumberOfScanSignals();
 				float[] wavelengths = new float[scans];
@@ -194,6 +175,33 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 			results.add(result);
 		}
 		return results;
+	}
+
+	private SeriesType createIntensitySeries() {
+
+		SeriesType intensitySeries = new SeriesType();
+		intensitySeries.setName("Intensity");
+		UnitType intensityUnit = new UnitType();
+		intensityUnit.setLabel("mAU");
+		intensitySeries.setUnit(intensityUnit);
+		intensitySeries.setDependency(DependencyType.DEPENDENT);
+		intensitySeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		intensitySeries.setPlotScale(PlotScaleType.LINEAR);
+		return intensitySeries;
+	}
+
+	private SeriesType createWavelengthSeries() {
+
+		SeriesType wavelengthSeries = new SeriesType();
+		wavelengthSeries.setName("Spectrum");
+		UnitType wavelengthUnit = new UnitType();
+		wavelengthUnit.setLabel("nm");
+		wavelengthUnit.setQuantity("Wavelength");
+		wavelengthSeries.setUnit(wavelengthUnit);
+		wavelengthSeries.setDependency(DependencyType.DEPENDENT);
+		wavelengthSeries.setSeriesType(ParameterTypeType.FLOAT_32);
+		wavelengthSeries.setPlotScale(PlotScaleType.LINEAR);
+		return wavelengthSeries;
 	}
 
 	private ResultType createSignal(IChromatogramWSD chromatogram) {
@@ -245,11 +253,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 
 		SeriesType retentionTimeSeries = new SeriesType();
 		retentionTimeSeries.setName("Time");
-		UnitType retentionTimeUnit = new UnitType();
-		retentionTimeUnit.setLabel("ms");
-		retentionTimeUnit.setQuantity("Time");
-		retentionTimeUnit.getSIUnit().add(createMilisecond());
-		retentionTimeSeries.setUnit(retentionTimeUnit);
+		retentionTimeSeries.setUnit(Common.createMilisecond());
 		retentionTimeSeries.setDependency(DependencyType.INDEPENDENT);
 		retentionTimeSeries.setSeriesType(ParameterTypeType.INT_32);
 		return retentionTimeSeries;
@@ -265,14 +269,6 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		intensitySeries.setDependency(DependencyType.DEPENDENT);
 		intensitySeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		return intensitySeries;
-	}
-
-	private SIUnitType createMilisecond() {
-
-		SIUnitType si = new SIUnitType();
-		si.setExponent(-3d);
-		si.setValue("s");
-		return si;
 	}
 
 	private CategoryType annotateWavelength(IChromatogramWSD chromatogram) {

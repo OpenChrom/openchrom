@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2023 Lablicate GmbH.
+ * Copyright (c) 2011, 2024 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -41,7 +41,7 @@ public class ChromatogramImportExport_ITest extends TestCase {
 		/*
 		 * Import
 		 */
-		pathImport = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_CHROMATOGRAM_1);
+		pathImport = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_CHROMATOGRAM_2);
 		extensionPointImport = "org.eclipse.chemclipse.xxd.converter.supplier.chemclipse";
 		/*
 		 * Export/Reimport
@@ -92,13 +92,10 @@ public class ChromatogramImportExport_ITest extends TestCase {
 		super.tearDown();
 	}
 
-	public void testReimport_1() {
+	public void testReimport() {
 
 		assertNotNull(chromatogram);
-	}
-
-	public void testReimport_2() {
-
 		assertEquals(5726, chromatogram.getNumberOfScans());
+		assertEquals(72, chromatogram.getNumberOfPeaks());
 	}
 }

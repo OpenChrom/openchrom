@@ -34,7 +34,7 @@ import net.openchrom.msd.converter.supplier.animl.model.IVendorMassSpectra;
 import net.openchrom.msd.converter.supplier.animl.model.VendorIon;
 import net.openchrom.msd.converter.supplier.animl.model.VendorMassSpectra;
 import net.openchrom.xxd.converter.supplier.animl.converter.BinaryReader;
-import net.openchrom.xxd.converter.supplier.animl.converter.XmlReader;
+import net.openchrom.xxd.converter.supplier.animl.converter.Common;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AnIMLType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.CategoryType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.EncodedValueSetType;
@@ -61,15 +61,15 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 		IVendorStandaloneMassSpectrum massSpectrum = null;
 		//
 		try {
-			AnIMLType animl = XmlReader.getAnIML(file);
+			AnIMLType animl = Common.getAnIML(file);
 			//
 			massSpectrum = new VendorMassSpectrum();
 			massSpectrum = readSample(animl, massSpectrum);
 			massSpectrum.setFile(file);
 			massSpectrum.setIdentifier(file.getName());
 			//
-			Double[] mzs = null;
-			Float[] intensities = null;
+			double[] mzs = null;
+			float[] intensities = null;
 			int length = 0;
 			//
 			for(ExperimentStepType experimentStep : animl.getExperimentStepSet().getExperimentStep()) {
@@ -88,8 +88,8 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 						}
 						SeriesSetType seriesSet = result.getSeriesSet();
 						length = seriesSet.getLength();
-						mzs = new Double[length];
-						intensities = new Float[length];
+						mzs = new double[length];
+						intensities = new float[length];
 						if(seriesSet.getName().equals("Spectrum")) {
 							for(SeriesType series : seriesSet.getSeries()) {
 								if(series.getName().equals("Mass/Charge")) {

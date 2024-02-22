@@ -41,7 +41,7 @@ import net.openchrom.csd.converter.supplier.animl.model.IVendorChromatogram;
 import net.openchrom.csd.converter.supplier.animl.model.VendorChromatogram;
 import net.openchrom.csd.converter.supplier.animl.model.VendorScan;
 import net.openchrom.xxd.converter.supplier.animl.converter.BinaryReader;
-import net.openchrom.xxd.converter.supplier.animl.converter.XmlReader;
+import net.openchrom.xxd.converter.supplier.animl.converter.Common;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AnIMLType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.AuthorType;
 import net.openchrom.xxd.converter.supplier.animl.model.astm.core.EncodedValueSetType;
@@ -65,10 +65,10 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 
 		IVendorChromatogram chromatogram = null;
 		try {
-			AnIMLType animl = XmlReader.getAnIML(file);
+			AnIMLType animl = Common.getAnIML(file);
 			chromatogram = new VendorChromatogram();
 			chromatogram.setFile(file);
-			chromatogram.getEditHistory().addAll(XmlReader.readAuditTrail(animl));
+			chromatogram.getEditHistory().addAll(Common.readAuditTrail(animl));
 			chromatogram = readSample(animl, chromatogram);
 			List<Float> retentionTimes = new ArrayList<>();
 			List<Float> signals = new ArrayList<>();
@@ -85,14 +85,14 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 							for(SeriesType series : seriesSet.getSeries()) {
 								UnitType unit = series.getUnit();
 								if(unit.getLabel().equals("Time")) {
-									int multiplicator = XmlReader.getTimeMultiplicator(unit);
+									int multiplicator = Common.getTimeMultiplicator(unit);
 									for(IndividualValueSetType individualValueSet : series.getIndividualValueSet()) {
 										for(float f : individualValueSet.getF()) {
 											retentionTimes.add(multiplicator * f);
 										}
 									}
 									for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
-										Float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
+										float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
 										for(float f : decodedValues) {
 											retentionTimes.add(multiplicator * f);
 										}
@@ -103,7 +103,7 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 										signals.addAll(individualValueSet.getF());
 									}
 									for(EncodedValueSetType encodedValueSet : series.getEncodedValueSet()) {
-										Float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
+										float[] decodedValues = BinaryReader.decodeFloatArray(encodedValueSet.getValue());
 										for(float f : decodedValues) {
 											signals.add(f);
 										}
@@ -182,7 +182,7 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 
 		IVendorChromatogram chromatogram = null;
 		try {
-			AnIMLType animl = XmlReader.getAnIML(file);
+			AnIMLType animl = Common.getAnIML(file);
 			chromatogram = new VendorChromatogram();
 			chromatogram = readSample(animl, chromatogram);
 		} catch(SAXException e) {
