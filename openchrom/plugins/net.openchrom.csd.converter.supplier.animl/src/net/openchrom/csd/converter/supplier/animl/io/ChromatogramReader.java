@@ -68,6 +68,7 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 			AnIMLType animl = XmlReader.getAnIML(file);
 			chromatogram = new VendorChromatogram();
 			chromatogram.setFile(file);
+			chromatogram.getEditHistory().addAll(XmlReader.readAuditTrail(animl));
 			chromatogram = readSample(animl, chromatogram);
 			List<Float> retentionTimes = new ArrayList<>();
 			List<Float> signals = new ArrayList<>();

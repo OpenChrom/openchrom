@@ -79,6 +79,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 			chromatogram = new VendorChromatogram();
 			chromatogram.setFile(file);
 			chromatogram = readSample(animl, chromatogram);
+			chromatogram.getEditHistory().addAll(XmlReader.readAuditTrail(animl));
 			List<Integer> retentionTimes = new ArrayList<>();
 			List<Float> signals = new ArrayList<>();
 			Double[] mzs = null;
