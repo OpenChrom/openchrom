@@ -159,7 +159,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		return chromatogram;
 	}
 
-	private double readWavelength(MethodType method, ResultType result) {
+	private double readWavelength(MethodType method) {
 
 		double wavelength = 0d;
 		if(method != null) {
@@ -172,25 +172,6 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 							wavelength = parameter.getD().get(0);
 						}
 					}
-				}
-			}
-		}
-		for(CategoryType category : result.getCategory()) {
-			if(category.getName().equals("Acquisition Wavelength")) {
-				double lower = 0d;
-				double upper = 0d;
-				for(ParameterType parameter : category.getParameter()) {
-					if(parameter.getName().equals("Lower Bound")) {
-						lower = parameter.getD().get(0);
-					}
-					if(parameter.getName().equals("Upper Bound")) {
-						upper = parameter.getD().get(0);
-					}
-				}
-				if(lower != 0 && upper != 0) {
-					wavelength = Math.round((lower + upper) / 2);
-				} else {
-					wavelength = Math.max(lower, upper);
 				}
 			}
 		}
@@ -251,7 +232,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 				}
 			}
 		}
-		double wavelength = readWavelength(method, result);
+		double wavelength = readWavelength(method);
 		for(int i = 0; i < seriesSet.getLength(); i++) {
 			VendorScan scan = new VendorScan();
 			IVendorScanSignalWSD signal = new VendorScanSignalWSD();
