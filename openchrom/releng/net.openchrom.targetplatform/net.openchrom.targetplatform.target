@@ -207,5 +207,15 @@
 			</dependency>
 		</dependencies>
 	</location>
+	<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>uk.ac.ebi.beam</groupId>
+				<artifactId>beam-core</artifactId>
+				<version>1.3.5</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
 </locations>
 </target>
