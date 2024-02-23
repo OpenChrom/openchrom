@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2024 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,9 +12,10 @@
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -44,19 +45,18 @@ public class PeakReviewSupport {
 			}
 		};
 		/*
-		 * Initial width and height.
+		 * Processing
 		 */
-		wizardDialog.setMinimumPageSize(PeakReviewWizard.DEFAULT_WIDTH, PeakReviewWizard.DEFAULT_HEIGHT);
-		//
-		IProcessingInfo processingInfo = processSettings.getProcessingInfo();
 		try {
-			int status = wizardDialog.open();
-			if(status == Dialog.OK) {
+			wizardDialog.setMinimumPageSize(PeakReviewWizard.DEFAULT_WIDTH, PeakReviewWizard.DEFAULT_HEIGHT);
+			wizardDialog.create();
+			wizardDialog.getShell().setBackgroundMode(SWT.INHERIT_DEFAULT);
+			//
+			IProcessingInfo processingInfo = processSettings.getProcessingInfo();
+			if(Window.OK == wizardDialog.open()) {
 				processingInfo.addInfoMessage(DESCRIPTION, "Successfully reviewed the peaks.");
-			} else if(status == Dialog.CANCEL) {
-				processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peaks reviewed.");
 			} else {
-				processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to review the peaks.");
+				processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peaks reviewed.");
 			}
 		} finally {
 			wizard.dispose();

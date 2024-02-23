@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2024 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,15 +7,16 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  * Christoph Läubrich - maximize shell
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -45,19 +46,18 @@ public class PeakDetectorSupport {
 			}
 		};
 		/*
-		 * Initial width and height.
+		 * Processing
 		 */
-		wizardDialog.setMinimumPageSize(PeakDetectorWizard.DEFAULT_WIDTH, PeakDetectorWizard.DEFAULT_HEIGHT);
-		//
-		IProcessingInfo processingInfo = processSettings.getProcessingInfo();
 		try {
-			int status = wizardDialog.open();
-			if(status == Dialog.OK) {
+			wizardDialog.setMinimumPageSize(PeakDetectorWizard.DEFAULT_WIDTH, PeakDetectorWizard.DEFAULT_HEIGHT);
+			wizardDialog.create();
+			wizardDialog.getShell().setBackgroundMode(SWT.INHERIT_DEFAULT);
+			//
+			IProcessingInfo processingInfo = processSettings.getProcessingInfo();
+			if(Window.OK == wizardDialog.open()) {
 				processingInfo.addInfoMessage(DESCRIPTION, "Successfully modified/added the peaks.");
-			} else if(status == Dialog.CANCEL) {
-				processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peaks added.");
 			} else {
-				processingInfo.addErrorMessage(DESCRIPTION, "Something went wrong to add the peaks.");
+				processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peaks added.");
 			}
 		} finally {
 			wizard.dispose();
