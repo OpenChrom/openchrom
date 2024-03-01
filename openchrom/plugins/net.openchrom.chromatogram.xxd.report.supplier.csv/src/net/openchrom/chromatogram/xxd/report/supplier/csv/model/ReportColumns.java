@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Lablicate GmbH.
+ * Copyright (c) 2022, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -35,7 +35,11 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String PEAK_HEIGHT = "Peak Height";
 	public static final String INTEGRATOR = "Integrator";
 	public static final String TARGET = "Target";
+	public static final String FORMULA = "Formula";
 	public static final String CAS = "CAS";
+	public static final String SMILES = "SMILES";
+	public static final String INCHI = "InChI";
+	public static final String INCHI_KEY = "InChIKey";
 	public static final String MATCH_FACTOR = "Match Factor";
 	public static final String MATCH_FACTOR_REVERSED = "Reverse Match Factor";
 	public static final String PROBABILITY = "Probability";
@@ -97,7 +101,11 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(PEAK_HEIGHT);
 		reportColumns.add(INTEGRATOR);
 		reportColumns.add(TARGET);
+		reportColumns.add(FORMULA);
 		reportColumns.add(CAS);
+		reportColumns.add(SMILES);
+		reportColumns.add(INCHI);
+		reportColumns.add(INCHI_KEY);
 		reportColumns.add(MATCH_FACTOR);
 		reportColumns.add(MATCH_FACTOR_REVERSED);
 		reportColumns.add(PROBABILITY);
