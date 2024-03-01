@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Lablicate GmbH.
+ * Copyright (c) 2022, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -237,9 +237,37 @@ public class ConfigurableReportWriter {
 						records.add("");
 					}
 				}
+				if(reportColumn.equals(ReportColumns.FORMULA)) {
+					if(libraryInformation != null) {
+						records.add(libraryInformation.getFormula());
+					} else {
+						records.add("");
+					}
+				}
 				if(reportColumn.equals(ReportColumns.CAS)) {
 					if(libraryInformation != null) {
 						records.add(libraryInformation.getCasNumber());
+					} else {
+						records.add("");
+					}
+				}
+				if(reportColumn.equals(ReportColumns.SMILES)) {
+					if(libraryInformation != null) {
+						records.add(libraryInformation.getSmiles());
+					} else {
+						records.add("");
+					}
+				}
+				if(reportColumn.equals(ReportColumns.INCHI)) {
+					if(libraryInformation != null) {
+						records.add(libraryInformation.getInChI());
+					} else {
+						records.add("");
+					}
+				}
+				if(reportColumn.equals(ReportColumns.INCHI_KEY)) {
+					if(libraryInformation != null) {
+						records.add(libraryInformation.getInChIKey());
 					} else {
 						records.add("");
 					}
