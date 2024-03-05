@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Lablicate GmbH.
+ * Copyright (c) 2023, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -50,6 +50,6 @@ public class Omnic_ITest extends TestCase {
 
 	public void testSignals() {
 
-		assertEquals(1868, vendorSpectrum.getScanXIR().getProcessedSignals().size());
+		assertEquals(1868, vendorSpectrum.getScanISD().getProcessedSignals().size());
 	}
 }
