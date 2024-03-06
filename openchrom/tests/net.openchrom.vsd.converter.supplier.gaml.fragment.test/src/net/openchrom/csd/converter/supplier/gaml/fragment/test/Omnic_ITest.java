@@ -1,0 +1,56 @@
+/*******************************************************************************
+ * Copyright (c) 2023, 2024 Lablicate GmbH.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - refactoring vibrational spectroscopy
+ *******************************************************************************/
+package net.openchrom.csd.converter.supplier.gaml.fragment.test;
+
+import java.io.File;
+
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.core.runtime.NullProgressMonitor;
+
+import net.openchrom.vsd.converter.supplier.gaml.PathResolver;
+import net.openchrom.vsd.converter.supplier.gaml.converter.ScanImportConverter;
+import net.openchrom.vsd.converter.supplier.gaml.model.IVendorSpectrumVSD;
+
+import junit.framework.TestCase;
+
+public class Omnic_ITest extends TestCase {
+
+	private IVendorSpectrumVSD vendorSpectrum;
+
+	@Override
+	protected void setUp() throws Exception {
+
+		super.setUp();
+		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TN_OMNIC_FTIR));
+		ScanImportConverter importConverter = new ScanImportConverter();
+		IProcessingInfo<IVendorSpectrumVSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
+		vendorSpectrum = processingInfo.getProcessingResult();
+	}
+
+	@Override
+	protected void tearDown() throws Exception {
+
+		vendorSpectrum = null;
+		super.tearDown();
+	}
+
+	public void testLoading() {
+
+		assertNotNull(vendorSpectrum);
+	}
+
+	public void testSignals() {
+
+		assertEquals(1868, vendorSpectrum.getScanVSD().getProcessedSignals().size());
+	}
+}

@@ -13,7 +13,7 @@
    </description>
 
    <copyright url="http://www.lablicate.net">
-      Copyright (c) 2021 Lablicate GmbH.
+      Copyright (c) 2021, 2024 Lablicate GmbH.
    </copyright>
 
    <license url="%licenseURL">
@@ -53,7 +53,7 @@
          unpack="false"/>
 
    <plugin
-         id="net.openchrom.xir.converter.supplier.gaml"
+         id="net.openchrom.vsd.converter.supplier.gaml"
          download-size="0"
          install-size="0"
          version="0.0.0"
