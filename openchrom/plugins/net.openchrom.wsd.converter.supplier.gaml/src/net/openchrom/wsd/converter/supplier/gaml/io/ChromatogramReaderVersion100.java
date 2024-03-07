@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -148,7 +148,7 @@ public class ChromatogramReaderVersion100 extends AbstractChromatogramReader imp
 					scan.setRetentionTime(Reader100.convertToMiliSeconds(retentionTimes[rt], unit));
 					for(int a = 0; a < absorbances.length; a++) {
 						IVendorScanSignalWSD scanSignal = new VendorScanSignalWSD();
-						scanSignal.setAbundance((float)absorbances[a]);
+						scanSignal.setAbsorbance((float)absorbances[a]);
 						scanSignal.setWavelength((float)waveLengths[a]);
 						scan.addScanSignal(scanSignal);
 					}

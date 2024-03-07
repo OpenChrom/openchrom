@@ -148,7 +148,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 				for(int i = 0; i < scans; i++) {
 					IScanSignalWSD signal = scanWSD.getScanSignal(i);
 					wavelengths[i] = signal.getWavelength();
-					intensities[i] = signal.getAbundance();
+					intensities[i] = signal.getAbsorbance();
 				}
 				EncodedValueSetType encodedWavelengths = new EncodedValueSetType();
 				encodedWavelengths.setValue(BinaryReader.encodeArray(wavelengths));
@@ -162,7 +162,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 				IndividualValueSetType intensities = new IndividualValueSetType();
 				for(IScanSignalWSD signal : scanWSD.getScanSignals()) {
 					wavelengths.getF().add(signal.getWavelength());
-					intensities.getF().add(signal.getAbundance());
+					intensities.getF().add(signal.getAbsorbance());
 				}
 				wavelengthSeries.getIndividualValueSet().add(wavelengths);
 				intensitySeries.getIndividualValueSet().add(intensities);
@@ -220,7 +220,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 				IScanWSD scan = chromatogram.getSupplierScan(i);
 				retentionTimes[i - 1] = scan.getRetentionTime();
 				IScanSignalWSD signal = scan.getScanSignal(0);
-				abundance[i - 1] = signal.getAbundance();
+				abundance[i - 1] = signal.getAbsorbance();
 			}
 			EncodedValueSetType encodedRetentionTimes = new EncodedValueSetType();
 			encodedRetentionTimes.setValue(BinaryReader.encodeArray(retentionTimes));
@@ -236,7 +236,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 				IScanWSD scan = chromatogram.getSupplierScan(i);
 				IScanSignalWSD signal = scan.getScanSignal(0);
 				retentionTimes.getI().add(scan.getRetentionTime());
-				intensities.getF().add(signal.getAbundance());
+				intensities.getF().add(signal.getAbsorbance());
 			}
 			retentionTimeSeries.getIndividualValueSet().add(retentionTimes);
 			intensitySeries.getIndividualValueSet().add(intensities);

@@ -237,7 +237,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		for(int i = 0; i < seriesSet.getLength(); i++) {
 			VendorScan scan = new VendorScan();
 			IVendorScanSignalWSD signal = new VendorScanSignalWSD();
-			signal.setAbundance(intensities.get(i));
+			signal.setAbsorbance(intensities.get(i));
 			signal.setWavelength((float)wavelength);
 			scan.addScanSignal(signal);
 			if(!retentionTimes.isEmpty()) {
@@ -293,7 +293,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 					float aborbance = aborbances[i];
 					IVendorScanSignalWSD signal = new VendorScanSignalWSD();
 					signal.setWavelength(wavelength);
-					signal.setAbundance(aborbance);
+					signal.setAbsorbance(aborbance);
 					scan.addScanSignal(signal);
 				}
 			}
