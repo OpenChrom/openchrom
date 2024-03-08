@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2023 Lablicate GmbH.
+ * Copyright (c) 2013, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -93,23 +93,13 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 		if(file == null) {
 			return false;
 		} else {
-			FileInputStream is = null;
 			byte[] data = new byte[3];
-			try {
-				is = new FileInputStream(file);
+			try (FileInputStream is = new FileInputStream(file)) {
 				is.read(data);
 			} catch(FileNotFoundException e) {
 				logger.warn(e);
 			} catch(IOException e) {
 				logger.warn(e);
-			} finally {
-				if(is != null) {
-					try {
-						is.close();
-					} catch(IOException e) {
-						logger.warn(e);
-					}
-				}
 			}
 			String test = new String(data).trim();
 			if(test.equals(check)) {

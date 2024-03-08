@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2023 Lablicate GmbH.
+ * Copyright (c) 2013, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -29,7 +29,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	private Dimension scans;
 	private ArrayDouble.D1 valueArrayScanAcquisitionTime;
 
-	public AbstractCDFChromatogramArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
+	protected AbstractCDFChromatogramArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
 		this.chromatogram = chromatogram;
 		initializeVariables();
