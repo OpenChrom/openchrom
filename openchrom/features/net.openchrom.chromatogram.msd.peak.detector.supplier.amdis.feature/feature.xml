@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.feature"
+      label="AMDIS Peak Detector"
+      version="1.5.0.qualifier"
+      provider-name="OpenChrom"
+      plugin="net.openchrom.feature.branding"
+      license-feature="org.eclipse.license"
+      license-feature-version="1.0.0.qualifier">
+
+   <description url="https://chemdata.nist.gov/mass-spc/amdis/overview/">
+      This is a peak detector that takes output from AMDIS.
+   </description>
+
+   <copyright url="http://www.openchrom.net">
+      Copyright (c) 2008, 2018 Lablicate GmbH.
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <discovery label="Mass Spectrometry Data Center" url="https://chemdata.nist.gov/dokuwiki/doku.php?id=chemdata:amdis"/>
+   </url>
+
+   <requires>
+      <import feature="org.eclipse.chemclipse.msd.converter.supplier.amdis.feature" version="1.5.0.qualifier"/>
+   </requires>
+
+   <plugin
+         id="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis"
+         version="0.0.0"/>
+
+   <plugin
+         id="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.ui"
+         version="0.0.0"/>
+
+</feature>

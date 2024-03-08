@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+<!-- IDs use an older name for backwards compatibility. -->
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.peak.detector.peakDetectorSupplier">
+      <PeakDetector
+            description="This is the base AMDIS Peak Deconvolution"
+            id="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis"
+            peakDetector="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.core.PeakDetectorAMDIS"
+            peakDetectorName="%amdisExternal"
+            peakDetectorSettings="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.SettingsAMDIS">
+      </PeakDetector>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.msd.peak.detector.peakDetectorSupplier">
+      <PeakDetector
+            description="Import deconvoluted data from an *.ELU file."
+            id="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.elu"
+            peakDetector="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.core.PeakDetectorELU"
+            peakDetectorName="AMDIS Import"
+            peakDetectorSettings="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.SettingsELU">
+      </PeakDetector>
+   </extension>
+</plugin>
