@@ -15,9 +15,9 @@ import org.eclipse.chemclipse.support.text.ILabel;
 
 public enum AdjacentPeakSubtraction implements ILabel {
 
-	TWO("Two", "0"), //
+	TWO("Two", "2"), //
 	ONE("One", "1"), //
-	NONE("None", "2");
+	NONE("None", "0");
 
 	private String label = "";
 	private String value = "";
