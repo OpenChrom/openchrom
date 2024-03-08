@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Component name due to backwards compatibility -->
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.filter.AmbiguousPeakRemoverFilter">
+   <service>
+      <provide interface="org.eclipse.chemclipse.model.filter.IPeakFilter"/>
+      <provide interface="org.eclipse.chemclipse.processing.filter.Filter"/>
+      <provide interface="org.eclipse.chemclipse.processing.Processor"/>
+   </service>
+   <implementation class="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.filter.AmbiguousPeakRemoverFilter"/>
+</scr:component>
