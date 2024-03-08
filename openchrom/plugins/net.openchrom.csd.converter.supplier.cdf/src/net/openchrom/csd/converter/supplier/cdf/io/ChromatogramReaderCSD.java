@@ -142,7 +142,6 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 	 */
 	private void setChromatogramEntries(VendorChromatogramCSD chromatogram, IAbstractCDFChromatogramArrayReader in, File file) {
 
-		assert chromatogram != null : getClass().getName() + " The chromatogram must not be null";
 		/*
 		 * Scan delay must be not negative.
 		 */

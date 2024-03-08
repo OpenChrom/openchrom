@@ -89,7 +89,6 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 	 */
 	private boolean isValidFileFormat(File file) {
 
-		assert file != null : getClass().getName() + " The chromatogram file " + file + " must not be null.";
 		String check = "CDF";
 		if(file == null) {
 			return false;
