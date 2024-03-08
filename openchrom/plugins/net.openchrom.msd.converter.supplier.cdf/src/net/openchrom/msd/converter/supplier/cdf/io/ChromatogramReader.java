@@ -45,6 +45,8 @@ import ucar.nc2.NetcdfFile;
 
 public class ChromatogramReader extends AbstractChromatogramMSDReader implements IChromatogramMSDReader {
 
+	public static final String CONVERTER_ID = "net.openchrom.msd.converter.supplier.cdf";
+	//
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 
 	@Override
@@ -192,7 +194,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader implements
 		/*
 		 * Extension
 		 */
-		chromatogram.setConverterId("net.openchrom.msd.converter.supplier.cdf");
+		chromatogram.setConverterId(CONVERTER_ID);
 		String miscInfo = "";
 		String operator = "";
 		String date = "";

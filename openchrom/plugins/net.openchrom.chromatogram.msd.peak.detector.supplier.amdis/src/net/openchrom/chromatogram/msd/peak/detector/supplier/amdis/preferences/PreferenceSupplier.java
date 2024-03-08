@@ -35,7 +35,6 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
 	//
 	public static final String IDENTIFIER = "AMDIS Identifier";
-	public static final String CONVERTER_ID = "net.openchrom.msd.converter.supplier.cdf"; // exchange CDF with AMDIS
 	//
 	public static final String AMDIS_EXECUTABLE = "AMDIS32$.exe";
 	//
