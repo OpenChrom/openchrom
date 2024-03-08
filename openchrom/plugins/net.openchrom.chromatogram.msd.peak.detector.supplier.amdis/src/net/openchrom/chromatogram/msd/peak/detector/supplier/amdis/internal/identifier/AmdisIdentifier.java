@@ -38,6 +38,7 @@ import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.runtime.Runti
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.IOnsiteSettings;
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.SettingsAMDIS;
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.support.PeakProcessorSupport;
+import net.openchrom.msd.converter.supplier.cdf.io.ChromatogramReader;
 
 public class AmdisIdentifier {
 
@@ -55,7 +56,7 @@ public class AmdisIdentifier {
 		 */
 		File amdisTmpPath = settingsAMDIS.getTmpFolder();
 		File file = new File(amdisTmpPath.getAbsolutePath() + File.separator + chromatogram.getName());
-		IProcessingInfo<File> processingInfo = ChromatogramConverterMSD.getInstance().convert(file, chromatogram, PreferenceSupplier.CONVERTER_ID, subMonitor.split(10));
+		IProcessingInfo<File> processingInfo = ChromatogramConverterMSD.getInstance().convert(file, chromatogram, ChromatogramReader.CONVERTER_ID, subMonitor.split(10));
 		if(processingInfo == null) {
 			result.addErrorMessage(PreferenceSupplier.IDENTIFIER, "Conversion to CDF returned no result");
 			return result;
