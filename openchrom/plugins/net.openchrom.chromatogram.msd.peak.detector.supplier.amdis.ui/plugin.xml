@@ -5,7 +5,7 @@
          point="org.eclipse.ui.preferencePages">
       <page
             category="org.eclipse.chemclipse.chromatogram.msd.peak.detector.ui.preferences.peakDetectorPreferencePage"
-            class="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.ui.preferences.PreferencePage"
+            class="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.ui.preferences.PreferencePage"
             id="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.ui.preferences.amdisPeakDetectorPreferencePage"
             name="%amdisExternal">
       </page>
@@ -13,15 +13,15 @@
    <extension
          point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
       <icon
-            class="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.ui.icon.FileMenuIcon"
+            class="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.ui.icon.FileMenuIcon"
             id="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.elu">
       </icon>
       <icon
-            class="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.ui.icon.AmbiguousPeakRemoverFilterMenuIcon"
+            class="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.ui.icon.AmbiguousPeakRemoverFilterMenuIcon"
             id="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.filter.AmbiguousPeakRemoverFilter">
       </icon>
       <icon
-            class="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.ui.icon.DeconvolutionMenuIcon"
+            class="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.ui.icon.DeconvolutionMenuIcon"
             id="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis">
       </icon>
    </extension>

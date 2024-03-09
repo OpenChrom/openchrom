@@ -11,15 +11,6 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.ui.preferences;
 
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.l10n.Messages;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.model.AdjacentPeakSubtraction;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.model.Resolution;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.model.Sensitivity;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.model.ShapeRequirements;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.model.Threshold;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.preferences.PreferenceSupplier;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.settings.IOnsiteSettings;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.settings.ModelPeakOption;
 import org.eclipse.chemclipse.support.settings.OperatingSystemUtils;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.ExtendedIntegerFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.FloatFieldEditor;
@@ -38,6 +29,15 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.l10n.Messages;
+import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.model.AdjacentPeakSubtraction;
+import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.model.Resolution;
+import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.model.Sensitivity;
+import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.model.ShapeRequirements;
+import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.model.Threshold;
+import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.preferences.PreferenceSupplier;
+import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.IOnsiteSettings;
+import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.ModelPeakOption;
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.ui.Activator;
 
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
