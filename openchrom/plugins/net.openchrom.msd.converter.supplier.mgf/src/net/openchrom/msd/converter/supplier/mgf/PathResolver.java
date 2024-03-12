@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2018 Lablicate GmbH.
+ * Copyright (c) 2015, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -26,7 +26,7 @@ public class PathResolver {
 	/**
 	 * Returns a absolute path of the specified Folder. For example
 	 * TESTDATA_IMPORT_EMPTY as an absolute Path:
-	 * $PluginPath$/testData/files/EMPTY.D/DATA.MS
+	 * $PluginPath$/testData/files/DATA.MGF
 	 *
 	 * @param string
 	 * @return String absolutePath
