@@ -31,7 +31,7 @@
           point="org.eclipse.ui.preferencePages">
        <page
              category="org.eclipse.chemclipse.rcp.app.ui.preferences.settingsPreferencePage"
-             class="com.lablicate.installer.ui.preferences.PreferencePage"
+             class="net.openchrom.installer.ui.preferences.PreferencePage"
              id="com.lablicate.installer.ui.PreferencePage"
              name="Plugin Installer">
        </page>
