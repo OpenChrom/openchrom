@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_71giYHzxEeOENN5Yh22WyA">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_h37UIHzzEeOENN5Yh22WyA" featurename="commands" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
+    <elements xsi:type="commands:Command" xmi:id="_jzDkEHzzEeOENN5Yh22WyA" elementId="net.openchrom.installer.ui.command.install" commandName="Install Converters"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_rXXqEHzzEeOENN5Yh22WyA" featurename="handlers" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
+    <elements xsi:type="commands:Handler" xmi:id="_tPN8gHzzEeOENN5Yh22WyA" elementId="net.openchrom.installer.ui.handler.install" contributionURI="bundleclass://net.openchrom.installer.ui/net.openchrom.installer.ui.discovery.PluginInstallHandler" command="_jzDkEHzzEeOENN5Yh22WyA"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_9H7hoHzzEeOENN5Yh22WyA" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.menu.plugins" positionInList="">
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_DJRZAHz0EeOENN5Yh22WyA" elementId="net.openchrom.installer.ui.handledmenuitem.install" label="Install Converters" iconURI="platform:/plugin/net.openchrom.installer.ui/icons/16x16/plugin.png" command="_jzDkEHzzEeOENN5Yh22WyA"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_JGPGsHz0EeOENN5Yh22WyA" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.toolbar.plugins">
+    <elements xsi:type="menu:HandledToolItem" xmi:id="_NLqrAHz0EeOENN5Yh22WyA" elementId="net.openchrom.installer.ui.handledtoolitem.install" label="Install Converters" iconURI="platform:/plugin/net.openchrom.installer.ui/icons/16x16/plugin.png" command="_jzDkEHzzEeOENN5Yh22WyA"/>
+  </fragments>
+</fragment:ModelFragments>

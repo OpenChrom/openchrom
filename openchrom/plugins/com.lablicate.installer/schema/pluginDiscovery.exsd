@@ -1,0 +1,367 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="net.openchrom.installer" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="net.openchrom.installer" id="pluginDiscovery" name="Plugin Discovery"/>
+      </appinfo>
+      <documentation>
+         An extension point for contributing to the OpenChrom plugin discovery mechanism.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="pluginCategory" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="pluginDescriptor" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="pluginDescriptor">
+      <annotation>
+         <documentation>
+            A description of a plugin, including kinds, description, licensing and brand.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="featureFilter" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="icon" minOccurs="0" maxOccurs="1"/>
+            <element ref="overview" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="kind" type="string" use="required">
+            <annotation>
+               <documentation>
+                  must be a comma-delimited list of the following values: &apos;converter&apos;
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of the plugin.
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="provider" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name of the organization that supplies the plugin.
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="license" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The short name of the license.
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  A description of the plugin.  Plug-ins should provide a description, especially if the description is not self-evident.
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="url" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The URL of the update site containing the plugin.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The id of the feature that installs this plugin
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="categoryId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The id of the plugin category in which this plugin belongs.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="platformFilter" type="string">
+            <annotation>
+               <documentation>
+                  E.g., &quot;(&amp; (osgi.os=macosx) (osgi.ws=carbon))&quot;
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="groupId" type="string">
+            <annotation>
+               <documentation>
+                  The id of the plugin category group.  See group/@id for more details.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="pluginCategory">
+      <annotation>
+         <documentation>
+            a category of plugins, which is a way of organizing plugins in top-level groups.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="icon" minOccurs="0" maxOccurs="1"/>
+            <element ref="overview" minOccurs="0" maxOccurs="1"/>
+            <element ref="group" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  an id that uniquely identifies the category
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of the category, as it is displayed in the ui.
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  A description of the category
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="relevance" type="string">
+            <annotation>
+               <documentation>
+                  A relevance, which is a number from 0 to 100.  Categories with higher relevance are displayed with preference in the UI.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="icon">
+      <complexType>
+         <attribute name="image16" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="image32" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="image48" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="image64" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="image128" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="overview">
+      <annotation>
+         <documentation>
+            An overview that provides more detailed information, which may include a summary, url and screenshot.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="summary" type="string">
+            <annotation>
+               <documentation>
+                  A description providing detailed information about the item.  Newlines can be used to format the text into multiple paragraphs if necessary.  Text must fit into an area 320x240, otherwise it will be truncated in the UI.  More lengthy descriptions can be provided on a  web page if required, see @url.
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="url" type="string">
+            <annotation>
+               <documentation>
+                  An URL that points to a web page with more information relevant to the plugin or category.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="screenshot" type="string">
+            <annotation>
+               <documentation>
+                  320x240 PNG, JPEG or GIF
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="featureFilter">
+      <annotation>
+         <documentation>
+            A means of specifying that a feature must be present in order for the pluginDescriptor to be presented to the user.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="featureId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The id of the feature to test
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="version" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A version specifier, specified in the same manner as version dependencies are specified in an OSGi manifest.  For example: &quot;[3.0,4.0)&quot;
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="group">
+      <annotation>
+         <documentation>
+            groups provide a way to anchor plugins in a grouping with other like entries.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  An identifier that identifies the group.  Must be unique for a particular plugin category.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         1.5.0
+      </documentation>
+   </annotation>
+
+
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright (c) 2023, 2024 Lablicate GmbH.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+      </documentation>
+   </annotation>
+
+</schema>

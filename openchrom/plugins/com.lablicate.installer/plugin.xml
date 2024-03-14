@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+	<extension-point id="pluginDiscovery" name="Plugin Discovery" schema="schema/pluginDiscovery.exsd"/>
+</plugin>
