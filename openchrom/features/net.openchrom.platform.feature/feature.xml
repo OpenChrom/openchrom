@@ -143,6 +143,10 @@
          id="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.feature"
          version="0.0.0"/>
 
+   <includes
+         id="net.openchrom.installer.feature"
+         version="0.0.0"/>
+
    <plugin
          id="net.openchrom.rcp.compilation.community.ui"
          version="0.0.0"/>
