@@ -1249,7 +1249,24 @@
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
-      </pluginDescriptor>      
-      
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters"
+            description="Reads *.dat files."
+            groupId="net.openchrom.xxd.converter"
+            id="net.openchrom.xxd.converter.supplier.n2000.feature"
+            kind="converter"
+            license="End User License"
+            name="N2000 GC-TCD"
+            provider="Lablicate"
+            url="https://converter.openchrom.net/">
+         <icon image32="icons/32x32/N2000.png">
+         </icon>
+         <overview
+               summary="Free for commercial use. Must not be used with other software.">
+         </overview>
+      </pluginDescriptor>
+
    </extension> 
 </plugin>
