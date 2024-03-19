@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2023 Lablicate GmbH.
+ * Copyright (c) 2018, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -47,6 +47,7 @@ public class SVGExportHandler extends AbstractExportHandler implements ISeriesEx
 	@Override
 	public void execute(Shell shell, ScrollableChart scrollableChart) {
 
-		execute(shell, scrollableChart, new SVGProcessor(), TYPE_NAME, FILTER_NAME, FILTER_EXTENSION, FILE_NAME);
+		String fileName = scrollableChart.getFileName().isEmpty() ? FILE_NAME : scrollableChart.getFileName();
+		execute(shell, scrollableChart, new SVGProcessor(), TYPE_NAME, FILTER_NAME, FILTER_EXTENSION, fileName);
 	}
 }
