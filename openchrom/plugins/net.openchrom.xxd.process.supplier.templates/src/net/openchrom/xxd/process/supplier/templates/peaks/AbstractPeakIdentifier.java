@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2023 Lablicate GmbH.
+ * Copyright (c) 2018, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -113,7 +113,7 @@ public abstract class AbstractPeakIdentifier {
 								libraryInformation.setReferenceIdentifier(identifierSetting.getReference());
 								IComparisonResult comparisonResult = new ComparisonResult(matchFactor, matchFactor, matchFactor, matchFactor);
 								IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
-								identificationTarget.setIdentifier(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION);
+								identificationTarget.setIdentifier(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION); // $NON-NLS-N$
 								peak.getTargets().add(identificationTarget);
 							}
 						}
