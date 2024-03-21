@@ -79,6 +79,10 @@ Contributors:
       <property name="sun.awt.xembedserver" value="true" />
    </configurations>
 
+   <repositories>
+      <repository location="https://converter.openchrom.net/" name="Converter" enabled="true" />
+   </repositories>
+
    <preferencesInfo>
       <targetfile overwrite="false"/>
    </preferencesInfo>
