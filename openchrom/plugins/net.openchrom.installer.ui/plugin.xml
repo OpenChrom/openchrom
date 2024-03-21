@@ -1252,7 +1252,7 @@
       </pluginDescriptor>
 
       <pluginDescriptor
-            categoryId="com.lablicate.openchrom.converters"
+            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.dat files."
             groupId="net.openchrom.xxd.converter"
             id="net.openchrom.xxd.converter.supplier.n2000.feature"
