@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.xxd.identifier.supplier.cdk
-Eclipse-RegisterBuddy: net.openchrom.thirdpartylibraries.cdk.feature
+Eclipse-RegisterBuddy: net.openchrom.thirdparty.cdk.feature
 Bundle-ManifestVersion: 2
 Bundle-Name: CDK Identifier
 Bundle-SymbolicName: net.openchrom.xxd.identifier.supplier.cdk;singleton:=true
@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
  org.eclipse.chemclipse.processing;bundle-version="0.8.0",
- net.openchrom.thirdpartylibraries.cdk;bundle-version="2.3.0",
+ net.openchrom.thirdparty.cdk;bundle-version="2.3.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.7.1",
  wrapped.uk.ac.cam.ch.opsin.opsin-core;bundle-version="2.6.0",
