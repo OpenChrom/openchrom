@@ -84,7 +84,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		Attribute retentionUnit = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_RETENTION_UNIT);
 		if(retentionUnit != null) {
 			String unit = retentionUnit.getStringValue().trim();
-			if(unit.equals("seconds") || unit.equals("Seconds")) {
+			if(unit.equals("seconds") || unit.equals("Seconds") || unit.equals("s")) {
 				retentionTimeScaleFactor = 1000;
 			} else if(unit.equals("minutes") || unit.equals("Minutes") || unit.equals("time in minutes")) {
 				retentionTimeScaleFactor = 1000 * 60;
